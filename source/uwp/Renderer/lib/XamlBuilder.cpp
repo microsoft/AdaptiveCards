@@ -369,7 +369,7 @@ AdaptiveNamespaceStart
         ABI::AdaptiveNamespace::HeightType adaptiveCardHeightType;
         THROW_IF_FAILED(adaptiveCard->get_Height(&adaptiveCardHeightType));
 
-        XamlHelpers::AppendXamlElementToPanel(bodyElementHost.Get(), outerPanelAsPanel.Get(), adaptiveCardHeightType);
+        XamlHelpers::AppendXamlElementToPanel(bodyElementHost.Get(), rootAsPanel.Get(), adaptiveCardHeightType);
         THROW_IF_FAILED(bodyElementHost.CopyTo(bodyElementContainer));
 
         if (xamlBuilder && xamlBuilder->m_fixedDimensions)

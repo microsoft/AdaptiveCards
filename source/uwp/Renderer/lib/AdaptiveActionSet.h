@@ -46,6 +46,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         IFACEMETHODIMP get_AdditionalProperties(_Out_ ABI::Windows::Data::Json::IJsonObject** result) { return AdaptiveCardElementBase::get_AdditionalProperties(result); }
         IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value) { return AdaptiveCardElementBase::put_AdditionalProperties(value); }
 
+		IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveNamespace::HeightType* height) { return AdaptiveCardElementBase::get_Height(height); }
+		IFACEMETHODIMP put_Height(_In_ ABI::AdaptiveNamespace::HeightType height) { return AdaptiveCardElementBase::put_Height(height); }
+
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result) { return AdaptiveCardElementBase::ToJson(result); }
 
         virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) override;

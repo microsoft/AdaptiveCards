@@ -27,6 +27,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             ABI::Windows::Data::Json::IJsonObject *,
             ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParsers,
             ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParsers,
+			ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
             ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element);
     };
 

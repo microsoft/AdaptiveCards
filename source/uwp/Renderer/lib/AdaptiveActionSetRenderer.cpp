@@ -34,8 +34,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         ABI::Windows::Data::Json::IJsonObject* jsonObject,
         ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
         ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
+		ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
         ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element)
     {
-        return AdaptiveCards::Rendering::Uwp::FromJson<AdaptiveCards::Rendering::Uwp::AdaptiveActionSet, AdaptiveCards::ActionSet, AdaptiveCards::ActionSetParser>(jsonObject, elementParserRegistration, actionParserRegistration, element);
+		return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveActionSet, AdaptiveSharedNamespace::ActionSet, AdaptiveSharedNamespace::ActionSetParser>(jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
 }}}

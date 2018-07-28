@@ -14,20 +14,11 @@ ActionSet::ActionSet() :
 }
 
 ActionSet::ActionSet(
-    Spacing spacing,
-    bool separator,
     std::vector<std::shared_ptr<BaseActionElement>>& actions) :
-    BaseCardElement(CardElementType::ActionSet, spacing, separator),
+    BaseCardElement(CardElementType::ActionSet),
     m_actions(actions)
 {
     PopulateKnownPropertiesSet();
-}
-
-ActionSet::ActionSet(
-    Spacing spacing,
-    bool separator) :
-    BaseCardElement(CardElementType::ActionSet, spacing, separator)
-{
 }
 
 ActionsOrientation ActionSet::GetOrientation() const
@@ -68,6 +59,7 @@ Json::Value ActionSet::SerializeToJsonValue() const
 std::shared_ptr<BaseCardElement> ActionSetParser::Deserialize(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+	std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const Json::Value& value)
 {
     ParseUtil::ExpectTypeString(value, CardElementType::ActionSet);
@@ -77,7 +69,7 @@ std::shared_ptr<BaseCardElement> ActionSetParser::Deserialize(
     actionSet->SetOrientation(ParseUtil::GetEnumValue<ActionsOrientation>(value, AdaptiveCardSchemaKey::Orientation, ActionsOrientation::None, ActionsOrientationFromString));
 
     // Parse Actions
-    auto actionElements = ParseUtil::GetActionCollection(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::Actions, false);
+    auto actionElements = ParseUtil::GetActionCollection(elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::Actions, false);
     actionSet->m_actions = std::move(actionElements);
 
     return actionSet;
@@ -86,9 +78,10 @@ std::shared_ptr<BaseCardElement> ActionSetParser::Deserialize(
 std::shared_ptr<BaseCardElement> ActionSetParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+	std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const std::string& jsonString)
 {
-    return ActionSetParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+    return ActionSetParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 void ActionSet::PopulateKnownPropertiesSet() 
