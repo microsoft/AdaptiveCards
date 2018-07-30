@@ -46,11 +46,20 @@
         column.columnWidth = @"auto";
     }
 
+    UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
+    if(columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom){
+        leadingBlankSpace = [column addPaddingSpace];
+    }
+
     [ACRRenderer render:column
                rootView:rootView
                  inputs:inputs
           withCardElems:columnElem->GetItems()
           andHostConfig:acoConfig];
+    
+    if(columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && _fillAlignment)){
+        trailingBlankSpace = [column addPaddingSpace];
+    }
 
     [viewGroup addArrangedSubview:column];
 
@@ -69,6 +78,16 @@
     {
         [column addGestureRecognizer:gestureRecognizer];
         column.userInteractionEnabled = YES;
+    }
+    
+    if(leadingBlankSpace != nil && trailingBlankSpace != nil){
+        [NSLayoutConstraint constraintWithItem:leadingBlankSpace
+                                     attribute:NSLayoutAttributeHeight
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:trailingBlankSpace
+                                     attribute:NSLayoutAttributeHeight
+                                    multiplier:1.0
+                                      constant:0].active = YES;
     }
 
     return column;
