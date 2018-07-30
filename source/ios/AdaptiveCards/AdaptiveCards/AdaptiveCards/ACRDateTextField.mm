@@ -55,6 +55,7 @@ using namespace AdaptiveCards;
             
             [formatter setDateFormat:@"yyyy-MM-dd"];
             
+            picker.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
             picker.datePickerMode = UIDatePickerModeDate;
         }
         else

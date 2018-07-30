@@ -52,9 +52,17 @@
         boundingrect.size.height *= 4;
         boundingrect.size.width = viewGroup.frame.size.width;
         txtview.frame = boundingrect;
-
+        txtview.keyboardType = UIKeyboardTypeDefault;
+        txtview.scrollEnabled = NO;
+        
+        CGRect frame = CGRectMake(0, 0, viewGroup.frame.size.width, 30);
+        UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:frame];
+        UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:txtview action:@selector(dismissKeyboard)];
+        [toolBar setItems:@[doneButton, flexSpace] animated:NO];
+        [toolBar sizeToFit];
+        txtview.inputAccessoryView = toolBar;
         inputview = txtview;
-
     } else {
         NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
         ACRTextField *txtInput = [bundle loadNibNamed:@"ACRTextField" owner:rootView options:nil][0];

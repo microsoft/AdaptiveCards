@@ -16,6 +16,8 @@ using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Shapes;
+using Windows.ApplicationModel.UserActivities;
+using Windows.UI.Shell;
 
 namespace AdaptiveCardTestApp.ViewModels
 {
@@ -46,6 +48,8 @@ namespace AdaptiveCardTestApp.ViewModels
         public ObservableCollection<FileViewModel> RemainingHostConfigs { get; }
 
         private UIElement _currentCardVisual;
+        private bool _addToTimeline;
+        private UserActivitySession _currentSession;
         public UIElement CurrentCardVisual
         {
             get { return _currentCardVisual; }
@@ -62,16 +66,16 @@ namespace AdaptiveCardTestApp.ViewModels
         private StorageFolder _tempResultsFolder;
 
         public ObservableCollection<TestResultViewModel> Results { get; } = new ObservableCollection<TestResultViewModel>();
-
-        public RunningTestsViewModel(IEnumerable<FileViewModel> cards, IEnumerable<FileViewModel> hostConfigs, StorageFolder expectedFolder)
+        public RunningTestsViewModel(IEnumerable<FileViewModel> cards, IEnumerable<FileViewModel> hostConfigs, bool addToTimeline, StorageFolder expectedFolder)
         {
             _expectedFolder = expectedFolder;
             _originalCards = cards.ToArray();
 
             RemainingCards = new ObservableCollection<FileViewModel>(_originalCards);
             RemainingHostConfigs = new ObservableCollection<FileViewModel>(hostConfigs);
+            _addToTimeline = addToTimeline;
 
-            if (_originalCards.Length == 0 || RemainingHostConfigs.Count == 0)
+            if (_originalCards.Length == 0 || (RemainingHostConfigs.Count == 0 && !_addToTimeline))
             {
                 throw new InvalidOperationException("There must be some cards and host configs");
             }
@@ -93,7 +97,12 @@ namespace AdaptiveCardTestApp.ViewModels
             // If no cards left
             if (RemainingCards.Count == 0)
             {
-                RemainingHostConfigs.RemoveAt(0);
+                if (RemainingHostConfigs.Count != 0)
+                {
+                    RemainingHostConfigs.RemoveAt(0);
+                }
+
+                _addToTimeline = false;
 
                 // If also no host configs left, done
                 if (RemainingHostConfigs.Count == 0)
@@ -109,19 +118,44 @@ namespace AdaptiveCardTestApp.ViewModels
                 }
             }
 
-            CurrentCard = RemainingCards.First().Name;
-            CurrentHostConfig = RemainingHostConfigs.First().Name;
-
             // Delay a bit to allow UI thread to update, otherwise user would never see an update
             await Task.Delay(10);
 
-            var testResult = await TestCard(RemainingCards.First(), RemainingHostConfigs.First());
-            Results.Add(testResult);
+            var card = RemainingCards.First();
+            CurrentCard = card.Name;
+
+            if (RemainingHostConfigs.Count != 0)
+            {
+                CurrentHostConfig = RemainingHostConfigs.First().Name;
+                var testResult = await TestCard(card, RemainingHostConfigs.First());
+                Results.Add(testResult);
+            }
+
+            if (_addToTimeline)
+            {
+                await AddCardToTimeline(card);
+            }
 
             RemainingCards.RemoveAt(0);
 
             // And start the process again
             Start();
+        }
+
+        public async Task AddCardToTimeline(FileViewModel card)
+        { 
+            UserActivityChannel channel = UserActivityChannel.GetDefault();
+            UserActivity userActivity = await channel.GetOrCreateUserActivityAsync(Guid.NewGuid().ToString());
+            userActivity.VisualElements.DisplayText = "Card error: " + card.Name;
+            userActivity.VisualElements.AttributionDisplayText = card.Name;
+            userActivity.ActivationUri = new Uri("https://github.com/Microsoft/AdaptiveCards/blob/master/samples/" + card.Name + ".json");
+
+            userActivity.VisualElements.Content = AdaptiveCardBuilder.CreateAdaptiveCardFromJson(card.Contents);
+
+            await userActivity.SaveAsync();
+
+            _currentSession?.Dispose();
+            _currentSession = userActivity.CreateSession();
         }
 
         private async Task<TestResultViewModel> TestCard(FileViewModel cardFile, FileViewModel hostConfigFile)

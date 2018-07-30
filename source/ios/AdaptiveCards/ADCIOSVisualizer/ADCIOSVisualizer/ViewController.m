@@ -18,6 +18,7 @@
 {
     BOOL _enableCustomRenderer;
     ACOResourceResolvers *_resolvers;
+    id<ACRIBaseActionSetRenderer> _defaultRenderer;
 }
 
 @end
@@ -74,12 +75,15 @@
         [registration setBaseCardElementRenderer:[CustomInputNumberRenderer getInstance] cardElementType:ACRNumberInput];
         [registration setBaseCardElementRenderer:[CustomImageRenderer getInstance] cardElementType:ACRImage];
         _enableCustomRendererButton.backgroundColor = UIColor.redColor;
+        _defaultRenderer = [registration getActionSetRenderer];
+        [registration setActionSetRenderer:self];
     } else
     {
         [registration setActionRenderer:nil cardElementType:@3];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRTextBlock];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRNumberInput];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRImage];
+        [registration setActionSetRenderer:nil];
         _enableCustomRendererButton.backgroundColor = [UIColor colorWithRed:0/255 green:122.0/255 blue:1 alpha:1];
     }
     [self update:self.editableStr];
@@ -237,7 +241,6 @@
         [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
         [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:3].active = YES;
         [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
-        
     }
 }
 
@@ -277,35 +280,21 @@
 - (void)didFetchSecondaryView:(ACOAdaptiveCard *)card navigationController:(UINavigationController *)navigationController{
     [self presentViewController:navigationController animated:YES completion:nil];
 }
-
-- (void)didFetchUserResponses:(NSData *)json error:(NSError *)error
+- (UIView *)renderButtons:(ACRView *)rootView
+                   inputs:(NSMutableArray *)inputs
+                superview:(UIView<ACRIContentHoldingView> *)superview
+                     card:(ACOAdaptiveCard *)card
+               hostConfig:(ACOHostConfig *)config
 {
-    if(!error && json)
-    {
-        NSString *str = [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding];
-        NSLog(@"user response fetched: %@", str);
-    }
+    UIView *actionSetView = [_defaultRenderer renderButtons:rootView inputs:inputs superview:superview card:card hostConfig:config];
+    ((UIScrollView *)actionSetView).showsHorizontalScrollIndicator = NO;
+    return actionSetView;
 }
-
-- (void)didFetchUserResponses:(NSData *)json data:(NSString *) data error:(NSError *)error
-{
-    if(!error && json && data)
-    {
-        NSString *str = [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding];
-        NSLog(@"user response fetched: %@ with %@", str, data);
-    }
-}
-
-- (void)didFetchHttpRequest:(NSURLRequest *)request
-{
-    NSLog(@"Http Request fetched: %@", request);    
-}
-
 - (void)registerForKeyboardNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWasShown:)
-                                                 name:UIKeyboardDidShowNotification object:nil];
+                                                 name:UIKeyboardWillShowNotification object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillBeHidden:)
