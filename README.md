@@ -51,7 +51,7 @@ There are many ways to [contribute](https://github.com/Microsoft/AdaptiveCards/b
 * [Submit bugs](https://github.com/Microsoft/AdaptiveCards/issues) and help us verify fixes as they are checked in.
 * Review the [source code changes](https://github.com/Microsoft/AdaptiveCards/pulls).
 * Engage with Adaptive Cards users and developers on [StackOverflow](http://stackoverflow.com/questions/tagged/adaptive-cards). 
-* Join the [#adaptivecards](https://twitter.com/#!/search/realtime/%23adaptivecards) discussion on Twitter.
+* Join the [#adaptivecards](https://twitter.com/hashtag/adaptivecards?f=tweets&vertical=default) discussion on Twitter.
 * [Contribute bug fixes](https://github.com/Microsoft/AdaptiveCards/blob/master/CONTRIBUTING.md).
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see 
