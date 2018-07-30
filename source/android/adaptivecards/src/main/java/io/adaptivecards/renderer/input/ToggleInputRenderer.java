@@ -24,7 +24,7 @@ import java.util.Vector;
 
 public class ToggleInputRenderer extends BaseCardElementRenderer
 {
-    private ToggleInputRenderer()
+    protected ToggleInputRenderer()
     {
     }
 

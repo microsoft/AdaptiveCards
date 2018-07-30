@@ -110,6 +110,7 @@
             "color": "Default",
             "isSubtle": false,
             "weight": "Bolder",
+            "maxWidth":150,
             "warp": true
         },
         "value": {

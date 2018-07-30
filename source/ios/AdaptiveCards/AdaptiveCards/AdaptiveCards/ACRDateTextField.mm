@@ -22,7 +22,7 @@ using namespace AdaptiveCards;
                             dateStyle:(NSDateFormatterStyle)dateStyle
 {
     NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-    self = [bundle loadNibNamed:@"ACRDateTextField" owner:self options:nil][0];
+    self = [super init];
     if(self)
     {
         NSString *valueStr = nil;
@@ -55,6 +55,7 @@ using namespace AdaptiveCards;
             
             [formatter setDateFormat:@"yyyy-MM-dd"];
             
+            picker.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
             picker.datePickerMode = UIDatePickerModeDate;
         }
         else
@@ -84,6 +85,7 @@ using namespace AdaptiveCards;
         self.text = valueStr;
         self.allowsEditingTextAttributes = NO;
         self.borderStyle = UITextBorderStyleRoundedRect;
+        self.backgroundColor = UIColor.groupTableViewBackgroundColor;
 
         if(date)
         {
@@ -153,4 +155,5 @@ using namespace AdaptiveCards;
 {
     dictionary[self.id] = self.text;
 }
+
 @end

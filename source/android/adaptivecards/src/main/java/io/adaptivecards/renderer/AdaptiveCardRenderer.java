@@ -22,6 +22,7 @@ import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.IconPlacement;
 import io.adaptivecards.objectmodel.Spacing;
+import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.http.HttpRequestResult;
@@ -31,7 +32,7 @@ public class AdaptiveCardRenderer
 {
     public static final double VERSION = 1.0;
 
-    private AdaptiveCardRenderer()
+    protected AdaptiveCardRenderer()
     {
     }
 
@@ -116,6 +117,8 @@ public class AdaptiveCardRenderer
         LinearLayout rootLayout = new LinearLayout(context);
         rootLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         rootLayout.setOrientation(LinearLayout.VERTICAL);
+        rootLayout.setFocusable(true);
+        rootLayout.setFocusableInTouchMode(true);
 
         LinearLayout layout = new LinearLayout(context);
         layout.setTag(adaptiveCard);
@@ -127,6 +130,21 @@ public class AdaptiveCardRenderer
         else
         {
             layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        }
+
+        VerticalContentAlignment contentAlignment = adaptiveCard.GetVerticalContentAlignment();
+        switch (contentAlignment)
+        {
+            case Center:
+                layout.setGravity(Gravity.CENTER_VERTICAL);
+                break;
+            case Bottom:
+                layout.setGravity(Gravity.BOTTOM);
+                break;
+            case Top:
+            default:
+                layout.setGravity(Gravity.TOP);
+                break;
         }
 
         layout.setOrientation(LinearLayout.VERTICAL);
@@ -178,7 +196,10 @@ public class AdaptiveCardRenderer
                 showCardsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
                 rootLayout.addView(showCardsLayout);
 
-                renderActions(renderedCard, context, fragmentManager, layout, baseActionElementList, cardActionHandler, hostConfig);
+                IActionLayoutRenderer actionLayoutRenderer = CardRendererRegistration.getInstance().getActionLayoutRenderer();
+                if(actionLayoutRenderer != null) {
+                    actionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, layout, baseActionElementList, cardActionHandler, hostConfig);
+                }
             }
         }
         else
@@ -190,6 +211,13 @@ public class AdaptiveCardRenderer
         if (!imageUrl.isEmpty())
         {
             BackgroundImageLoaderAsync loaderAsync = new BackgroundImageLoaderAsync(renderedCard, context, layout, hostConfig.getImageBaseUrl());
+
+            IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
+            if(onlineImageLoader != null)
+            {
+                loaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
+            }
+
             loaderAsync.execute(imageUrl);
         }
 
@@ -203,89 +231,9 @@ public class AdaptiveCardRenderer
         return rootLayout;
     }
 
-    private void renderActions(RenderedAdaptiveCard renderedCard, Context context, FragmentManager fragmentManager, ViewGroup viewGroup, BaseActionElementVector baseActionElementList, ICardActionHandler cardActionHandler, HostConfig hostConfig) {
-        long size;
-        if (baseActionElementList == null || (size = baseActionElementList.size()) <= 0)
-        {
-            return;
-        }
-
-        LinearLayout actionButtonsLayout = new LinearLayout(context);
-        actionButtonsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        int alignment = hostConfig.getActions().getActionAlignment().swigValue();
-        if (alignment == ActionAlignment.Right.swigValue())
-        {
-            actionButtonsLayout.setGravity(Gravity.RIGHT);
-        }
-        else if (alignment == ActionAlignment.Center.swigValue())
-        {
-            actionButtonsLayout.setGravity(Gravity.CENTER_HORIZONTAL);
-        }
-
-        int actionButtonsLayoutOrientation = hostConfig.getActions().getActionsOrientation().swigValue();
-        if (actionButtonsLayoutOrientation == ActionsOrientation.Vertical.swigValue())
-        {
-            actionButtonsLayout.setOrientation(LinearLayout.VERTICAL);
-        }
-        else
-        {
-            actionButtonsLayout.setOrientation(LinearLayout.HORIZONTAL);
-        }
-
-
-        Spacing spacing = hostConfig.getActions().getSpacing();
-        /* Passing false for seperator since we do not have any configuration for seperator in actionsConfig */
-        BaseCardElementRenderer.setSpacingAndSeparator(context, viewGroup, spacing, false, hostConfig, true /* Horizontal Line */);
-
-        if (viewGroup != null)
-        {
-            if(actionButtonsLayoutOrientation == ActionsOrientation.Horizontal.swigValue())
-            {
-                HorizontalScrollView actionButtonsContainer = new HorizontalScrollView(context);
-                actionButtonsContainer.setHorizontalScrollBarEnabled(false);
-                actionButtonsContainer.addView(actionButtonsLayout);
-                viewGroup.addView(actionButtonsContainer);
-            }
-            else
-            {
-                viewGroup.addView(actionButtonsLayout);
-            }
-        }
-
-        int i = 0;
-        long maxActions = hostConfig.getActions().getMaxActions();
-
-        boolean allActionsHaveIcons = true;
-        for(; i < size && i < maxActions; ++i)
-        {
-            BaseActionElement actionElement = baseActionElementList.get(i);
-            if(actionElement.GetIconUrl().isEmpty())
-            {
-                allActionsHaveIcons = false;
-                break;
-            }
-        }
-
-        for (i = 0; i < size && i < maxActions; i++)
-        {
-            BaseActionElement actionElement = baseActionElementList.get(i);
-
-            IconPlacement originalIconPlacement = hostConfig.getActions().getIconPlacement();
-            if(!allActionsHaveIcons)
-            {
-                hostConfig.getActions().setIconPlacement(IconPlacement.LeftOfTitle);
-            }
-            ActionElementRenderer.getInstance().render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig);
-            hostConfig.getActions().setIconPlacement(originalIconPlacement);
-        }
-
-        if (i >= maxActions && size != maxActions)
-        {
-            renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.MAX_ACTIONS_EXCEEDED, "A maximum of " + maxActions + " actions are allowed"));
-        }
-    }
-
     private static AdaptiveCardRenderer s_instance = null;
+
+    private IOnlineImageLoader m_onlineImageLoader = null;
 
     private HostConfig defaultHostConfig = new HostConfig();
 }

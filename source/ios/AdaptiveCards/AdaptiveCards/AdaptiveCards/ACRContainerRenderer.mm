@@ -38,11 +38,14 @@
 
     ACRColumnView *container = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)containerElem->GetStyle()
                                                         parentStyle:[viewGroup style] hostConfig:acoConfig];
+
     UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
     if(containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom){
         leadingBlankSpace = [container addPaddingSpace];
     }
     
+    container.frame = viewGroup.frame;
+
     [ACRRenderer render:container
                rootView:rootView
                  inputs:inputs
