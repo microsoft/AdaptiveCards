@@ -108,5 +108,92 @@ namespace AdaptiveCards.Test
 }";
             Assert.ThrowsException<AdaptiveSerializationException>(() => AdaptiveCard.FromJson(json));
         }
+
+        [TestMethod]
+        public void TestCardsAllImageStrings()
+        {
+            var json = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.0"",
+  ""fallbackText"": ""Fallback Text"",
+  ""speak"": ""Speak"",
+  ""backgroundImage"": ""http://adaptivecards.io/content/cats/1.png"",
+  ""body"": [
+    {
+      ""type"": ""TextBlock"",
+      ""text"": ""Hello""
+    },
+    {
+      ""type"": ""Image"",
+      ""url"": ""http://adaptivecards.io/content/cats/2.png""
+    },
+    {
+      ""type"": ""Container"",
+      ""items"": [
+        {
+          ""type"": ""Image"",
+          ""url"": ""http://adaptivecards.io/content/cats/3.png""
+        },
+        {
+          ""type"": ""ColumnSet"",
+          ""columns"": [
+            {
+              ""type"": ""Column"",
+              ""items"": [
+                {
+                    ""type"": ""Image"",
+                    ""url"": ""http://adaptivecards.io/content/cats/4.png""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          ""type"": ""ImageSet"",
+          ""images"": [
+            {
+              ""type"": ""Image"",
+              ""url"": ""http://adaptivecards.io/content/cats/5.png""
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  ""actions"": [
+    {
+      ""type"": ""Action.ShowCard"",
+      ""card"": {
+          ""type"": ""AdaptiveCard"",
+          ""version"": ""1.0"",
+          ""backgroundImage"": ""http://adaptivecards.io/content/cats/6.png"",
+          ""body"": [
+            {
+              ""type"": ""TextBlock"",
+              ""text"": ""Hello""
+            },
+            {
+              ""type"": ""Image"",
+              ""url"": ""http://adaptivecards.io/content/cats/7.png""
+            }
+          ]
+      }
+    }
+  ]
+}";
+            var card = AdaptiveCard.FromJson(json).Card;
+            var expected = new string[]
+            {
+                "http://adaptivecards.io/content/cats/1.png",
+                "http://adaptivecards.io/content/cats/2.png",
+                "http://adaptivecards.io/content/cats/3.png",
+                "http://adaptivecards.io/content/cats/4.png",
+                "http://adaptivecards.io/content/cats/5.png",
+                "http://adaptivecards.io/content/cats/6.png",
+                "http://adaptivecards.io/content/cats/7.png"
+            };
+            var actual = card.GetAllImageStrings();
+            CollectionAssert.AreEqual(expected, actual);
+        }
     }
 }

@@ -218,5 +218,86 @@ namespace AdaptiveCards
         {
             return false;
         }
+
+        /// <summary>
+        /// Get all the image strings in the whole adaptive card
+        /// </summary>
+        /// <returns>An array of all carad image strings</returns>
+        public string[] GetAllImageStrings()
+        {
+            return GetAllImageStringsInCard(this).ToArray();
+        }
+
+        private List<string> GetAllImageStringsInCard(AdaptiveCard card)
+        {
+            // Initialize the result array
+            List<string> imageStrings = new List<string>();
+
+            // Get background image
+            if (!String.IsNullOrEmpty(card.BackgroundImageString))
+            {
+                imageStrings.Add(card.BackgroundImageString);
+            }
+
+            // Get all images in body
+            foreach (AdaptiveElement bodyElement in card.Body)
+            {
+                imageStrings.AddRange(GetAllImageStringsInElement(bodyElement));
+            }
+
+            // Get all images in ShowCard actions
+            foreach (AdaptiveAction action in card.Actions)
+            {
+                if (action is AdaptiveShowCardAction showCardAction)
+                {
+                    imageStrings.AddRange(GetAllImageStringsInCard(showCardAction.Card));
+                }
+            }
+
+            return imageStrings;
+        }
+
+        private List<string> GetAllImageStringsInElement(AdaptiveElement element)
+        {
+            List<string> imageStrings = new List<string>();
+
+            // Base case
+            if (element is AdaptiveImage imageElement && !String.IsNullOrEmpty(imageElement.UrlString))
+            {
+                imageStrings.Add(imageElement.UrlString);
+            }
+
+            // If element is any kind of container, iterate over its items.
+            else if (element is AdaptiveContainer container)
+            {
+                foreach (AdaptiveElement item in container.Items)
+                {
+                    imageStrings.AddRange(GetAllImageStringsInElement(item));
+                }
+            }
+            else if (element is AdaptiveImageSet imageSet)
+            {
+                foreach (AdaptiveElement item in imageSet.Images)
+                {
+                    imageStrings.AddRange(GetAllImageStringsInElement(item));
+                }
+            }
+            else if (element is AdaptiveColumnSet columnSet)
+            {
+                foreach (AdaptiveElement item in columnSet.Columns)
+                {
+                    imageStrings.AddRange(GetAllImageStringsInElement(item));
+                }
+            }
+            else if (element is AdaptiveColumn column)
+            {
+                foreach (AdaptiveElement item in column.Items)
+                {
+                    imageStrings.AddRange(GetAllImageStringsInElement(item));
+                }
+            }
+
+            return imageStrings;
+        }
     }
 }
