@@ -96,7 +96,7 @@ function monacoEditorLoaded() {
 
     isMonacoEditorLoaded = true;
 
-    updateJsonFromCard();
+    updateJsonFromCard(false);
 }
 
 function getCurrentJsonPayload(): string {
@@ -138,14 +138,16 @@ var updateLayoutTimer: NodeJS.Timer;
 
 var preventCardUpdate: boolean = false;
 
-function updateJsonFromCard() {
+function updateJsonFromCard(addToUndoStack: boolean = true) {
     try {
         preventCardUpdate = true;
 
         if (!preventJsonUpdate && isMonacoEditorLoaded) {
             let cardPayload = app.card.toJSON();
 
-            app.addToUndoStack(cardPayload);
+            if (addToUndoStack) {
+                app.addToUndoStack(cardPayload);
+            }
 
             setJsonPayload(cardPayload);
         }
@@ -824,21 +826,29 @@ class DesignerApp {
     }
 
     addToUndoStack(payload: object) {
-        let undoPayloadsToDiscard = this._undoStack.length - (this._undoStackIndex + 1);
+        let doAdd: boolean = true;
 
-        if (undoPayloadsToDiscard > 0) {
-            this._undoStack.splice(this._undoStackIndex + 1, undoPayloadsToDiscard);
-        }
-        
-        this._undoStack.push(payload);
-
-        if (this._undoStack.length > MAX_UNDO_STACK_SIZE) {
-            this._undoStack.splice(0, 1);
+        if (this._undoStack.length > 0) {
+            doAdd = this._undoStack[this._undoStack.length - 1] != payload;
         }
 
-        this._undoStackIndex = this._undoStack.length - 1;
+        if (doAdd) {
+            let undoPayloadsToDiscard = this._undoStack.length - (this._undoStackIndex + 1);
 
-        this.updateToolbar();
+            if (undoPayloadsToDiscard > 0) {
+                this._undoStack.splice(this._undoStackIndex + 1, undoPayloadsToDiscard);
+            }
+            
+            this._undoStack.push(payload);
+
+            if (this._undoStack.length > MAX_UNDO_STACK_SIZE) {
+                this._undoStack.splice(0, 1);
+            }
+
+            this._undoStackIndex = this._undoStack.length - 1;
+
+            this.updateToolbar();
+        }
     }
 
     get canUndo(): boolean {

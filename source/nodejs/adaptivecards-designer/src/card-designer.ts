@@ -2471,7 +2471,6 @@ export class CardDesigner {
             if (!peer) {
                 let registration = CardDesigner.cardElementPeerRegistry.findTypeRegistration(Adaptive.AdaptiveCard);
 
-                // peer = new AdaptiveCardPeer(this, , action.card);
                 peer = new registration.peerType(this, registration, action.card);
                 
                 let parentPeer = this.findActionPeer(action);
@@ -2655,9 +2654,6 @@ export class CardDesigner {
 
         this.render();
     }
-
-
-
 
     updateLayout(isFullRefresh: boolean = true) {
         for (var i = 0; i < this._allPeers.length; i++) {
