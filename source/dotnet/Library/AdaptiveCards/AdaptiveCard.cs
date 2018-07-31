@@ -220,29 +220,34 @@ namespace AdaptiveCards
         }
 
         /// <summary>
-        /// Get all the image URI strings in the whole adaptive card
+        /// Get resource information for all Images/Media in the whole card
+        /// TODO: Add Media information to the list when Media type is added
         /// </summary>
-        /// <returns>An array of all card image URI strings</returns>
-        public string[] GetAllImageStrings()
+        /// <returns>An array of all card resource information</returns>
+        public RemoteResourceInformation[] GetResourceInformation()
         {
-            return GetAllImageStringsInCard(this).ToArray();
+            return GetResourceInformationInCard(this).ToArray();
         }
 
-        private List<string> GetAllImageStringsInCard(AdaptiveCard card)
+        private List<RemoteResourceInformation> GetResourceInformationInCard(AdaptiveCard card)
         {
             // Initialize the result array
-            List<string> imageStrings = new List<string>();
+            List<RemoteResourceInformation> resourceInformationList = new List<RemoteResourceInformation>();
 
             // Get background image
             if (!String.IsNullOrEmpty(card.BackgroundImageString))
             {
-                imageStrings.Add(card.BackgroundImageString);
+                resourceInformationList.Add(new RemoteResourceInformation(
+                    card.BackgroundImageString,
+                    typeof(AdaptiveImage),
+                    null
+                ));
             }
 
             // Get all images in body
             foreach (AdaptiveElement bodyElement in card.Body)
             {
-                imageStrings.AddRange(GetAllImageStringsInElement(bodyElement));
+                resourceInformationList.AddRange(GetResourceInformationInElement(bodyElement));
             }
 
             // Get all images in ShowCard actions
@@ -250,21 +255,25 @@ namespace AdaptiveCards
             {
                 if (action is AdaptiveShowCardAction showCardAction)
                 {
-                    imageStrings.AddRange(GetAllImageStringsInCard(showCardAction.Card));
+                    resourceInformationList.AddRange(GetResourceInformationInCard(showCardAction.Card));
                 }
             }
 
-            return imageStrings;
+            return resourceInformationList;
         }
 
-        private List<string> GetAllImageStringsInElement(AdaptiveElement element)
+        private List<RemoteResourceInformation> GetResourceInformationInElement(AdaptiveElement element)
         {
-            List<string> imageStrings = new List<string>();
+            List<RemoteResourceInformation> resourceInformationList = new List<RemoteResourceInformation>();
 
             // Base case
             if (element is AdaptiveImage imageElement && !String.IsNullOrEmpty(imageElement.UrlString))
             {
-                imageStrings.Add(imageElement.UrlString);
+                resourceInformationList.Add(new RemoteResourceInformation(
+                    imageElement.UrlString,
+                    typeof(AdaptiveImage),
+                    null
+                ));
             }
 
             // If element is any kind of container, iterate over its items.
@@ -272,32 +281,32 @@ namespace AdaptiveCards
             {
                 foreach (AdaptiveElement item in container.Items)
                 {
-                    imageStrings.AddRange(GetAllImageStringsInElement(item));
+                    resourceInformationList.AddRange(GetResourceInformationInElement(item));
                 }
             }
             else if (element is AdaptiveImageSet imageSet)
             {
                 foreach (AdaptiveElement item in imageSet.Images)
                 {
-                    imageStrings.AddRange(GetAllImageStringsInElement(item));
+                    resourceInformationList.AddRange(GetResourceInformationInElement(item));
                 }
             }
             else if (element is AdaptiveColumnSet columnSet)
             {
                 foreach (AdaptiveElement item in columnSet.Columns)
                 {
-                    imageStrings.AddRange(GetAllImageStringsInElement(item));
+                    resourceInformationList.AddRange(GetResourceInformationInElement(item));
                 }
             }
             else if (element is AdaptiveColumn column)
             {
                 foreach (AdaptiveElement item in column.Items)
                 {
-                    imageStrings.AddRange(GetAllImageStringsInElement(item));
+                    resourceInformationList.AddRange(GetResourceInformationInElement(item));
                 }
             }
 
-            return imageStrings;
+            return resourceInformationList;
         }
     }
 }

@@ -110,8 +110,9 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
-        // Make sure all images in a card are returned
-        public void TestCardsAllImageStrings()
+        // Make sure resource information for all Images and Medias in a card are returned
+        // TODO: Add test for Media information when Media type is added
+        public void TestResourceInformation()
         {
             var json = @"{
   ""type"": ""AdaptiveCard"",
@@ -182,16 +183,40 @@ namespace AdaptiveCards.Test
   ]
 }";
             var card = AdaptiveCard.FromJson(json).Card;
-            var expected = new string[]
+            var expected = new RemoteResourceInformation[]
             {
-                "http://adaptivecards.io/content/cats/1.png",
-                "http://adaptivecards.io/content/cats/2.png",
-                "http://adaptivecards.io/content/cats/3.png",
-                "http://adaptivecards.io/content/cats/2.png",
-                "content/cats/4.png",
-                "http://adaptivecards.io/content/cats/5.png"
+                new RemoteResourceInformation(
+                    "http://adaptivecards.io/content/cats/1.png",
+                    typeof(AdaptiveImage),
+                    null
+                ),
+                new RemoteResourceInformation(
+                    "http://adaptivecards.io/content/cats/2.png",
+                    typeof(AdaptiveImage),
+                    null
+                ),
+                new RemoteResourceInformation(
+                    "http://adaptivecards.io/content/cats/3.png",
+                    typeof(AdaptiveImage),
+                    null
+                ),
+                new RemoteResourceInformation(
+                    "http://adaptivecards.io/content/cats/2.png",
+                    typeof(AdaptiveImage),
+                    null
+                ),
+                new RemoteResourceInformation(
+                    "content/cats/4.png",
+                    typeof(AdaptiveImage),
+                    null
+                ),
+                new RemoteResourceInformation(
+                    "http://adaptivecards.io/content/cats/5.png",
+                    typeof(AdaptiveImage),
+                    null
+                )
             };
-            var actual = card.GetAllImageStrings();
+            var actual = card.GetResourceInformation();
             CollectionAssert.AreEqual(expected, actual);
         }
     }
