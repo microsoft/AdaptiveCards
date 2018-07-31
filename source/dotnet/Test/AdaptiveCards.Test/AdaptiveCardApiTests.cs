@@ -142,7 +142,7 @@ namespace AdaptiveCards.Test
               ""items"": [
                 {
                     ""type"": ""Image"",
-                    ""url"": ""http://adaptivecards.io/content/cats/4.png""
+                    ""url"": ""http://adaptivecards.io/content/cats/2.png""
                 }
               ]
             }
@@ -153,7 +153,7 @@ namespace AdaptiveCards.Test
           ""images"": [
             {
               ""type"": ""Image"",
-              ""url"": ""http://adaptivecards.io/content/cats/5.png""
+              ""url"": ""content/cats/4.png""
             }
           ]
         }
@@ -166,7 +166,6 @@ namespace AdaptiveCards.Test
       ""card"": {
           ""type"": ""AdaptiveCard"",
           ""version"": ""1.0"",
-          ""backgroundImage"": ""http://adaptivecards.io/content/cats/6.png"",
           ""body"": [
             {
               ""type"": ""TextBlock"",
@@ -174,7 +173,7 @@ namespace AdaptiveCards.Test
             },
             {
               ""type"": ""Image"",
-              ""url"": ""http://adaptivecards.io/content/cats/7.png""
+              ""url"": ""http://adaptivecards.io/content/cats/5.png""
             }
           ]
       }
@@ -187,10 +186,9 @@ namespace AdaptiveCards.Test
                 "http://adaptivecards.io/content/cats/1.png",
                 "http://adaptivecards.io/content/cats/2.png",
                 "http://adaptivecards.io/content/cats/3.png",
-                "http://adaptivecards.io/content/cats/4.png",
-                "http://adaptivecards.io/content/cats/5.png",
-                "http://adaptivecards.io/content/cats/6.png",
-                "http://adaptivecards.io/content/cats/7.png"
+                "http://adaptivecards.io/content/cats/2.png",
+                "content/cats/4.png",
+                "http://adaptivecards.io/content/cats/5.png"
             };
             var actual = card.GetAllImageStrings();
             CollectionAssert.AreEqual(expected, actual);
