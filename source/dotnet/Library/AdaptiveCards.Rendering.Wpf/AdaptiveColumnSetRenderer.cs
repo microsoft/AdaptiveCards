@@ -53,13 +53,12 @@ namespace AdaptiveCards.Rendering.Wpf
                     uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
                 else
                 {
-                    double val;
-                    if (double.TryParse(width, out val))
+                    if (double.TryParse(width, out double val))
                         // Weighted proportion
                         uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(val, GridUnitType.Star) });
-                    else if (width.EndsWith("px") && double.TryParse(width.Substring(0, width.Length-2), out val))
+                    else if (width.EndsWith("px") && int.TryParse(width.Substring(0, width.Length-2), out int pxVal))
                         // Exact pixel
-                        uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(val, GridUnitType.Pixel) });
+                        uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(pxVal, GridUnitType.Pixel) });
                     else
                         uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
                 }
