@@ -110,6 +110,7 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
+        // Make sure all images in a card are returned
         public void TestCardsAllImageStrings()
         {
             var json = @"{

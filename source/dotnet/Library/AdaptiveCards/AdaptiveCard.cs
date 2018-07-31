@@ -220,9 +220,9 @@ namespace AdaptiveCards
         }
 
         /// <summary>
-        /// Get all the image strings in the whole adaptive card
+        /// Get all the image URI strings in the whole adaptive card
         /// </summary>
-        /// <returns>An array of all carad image strings</returns>
+        /// <returns>An array of all card image URI strings</returns>
         public string[] GetAllImageStrings()
         {
             return GetAllImageStringsInCard(this).ToArray();
