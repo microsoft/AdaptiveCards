@@ -9,6 +9,8 @@
 #import "ACOMediaEventPrivate.h"
 
 @implementation ACOMediaSource
+
+// list of supported media types
 static NSSet<NSString *> *validAudioFormats = [[NSSet alloc] initWithObjects:@"mpeg", @"mp3", nil];
 static NSSet<NSString *> *validVideoFormats = [[NSSet alloc] initWithObjects:@"mp4", nil];
 static NSSet<NSString *> *validMediaTypes   = [[NSSet alloc] initWithObjects:@"audio", @"video", nil];
@@ -21,6 +23,7 @@ static NSSet<NSString *> *validMediaTypes   = [[NSSet alloc] initWithObjects:@"a
         _mimeType = [NSString stringWithCString:mediaSource->GetMimeType().c_str() encoding:NSUTF8StringEncoding];
         _isValid = NO;
         if([_mimeType length]){
+            // valid media type eg. video/mp4
             NSArray<NSString *> *components = [_mimeType componentsSeparatedByString:@"/"];
             if([validMediaTypes containsObject:components[0]]) {
                 _isVideo = ([components[0] compare:@"video"] == NSOrderedSame) ? YES : NO;
@@ -44,9 +47,19 @@ static NSSet<NSString *> *validMediaTypes   = [[NSSet alloc] initWithObjects:@"a
 {
     self = [super init];
     if(self){
-        NSMutableArray *mediaSources = [[NSMutableArray alloc] init];
+        NSMutableArray<ACOMediaSource *> *mediaSources = [[NSMutableArray alloc] init];
+        BOOL prevMediaTypeIsVideo = NO;
+        _isValid = YES;
         for(auto &mediasource : media->GetSources()){
             [mediaSources addObject:[[ACOMediaSource alloc] initWithMediaSource:mediasource]];
+            if([mediaSources count] > 1) {
+                if (prevMediaTypeIsVideo != [mediaSources lastObject].isVideo) {
+                    _isValid = NO;
+                    break;
+                }
+            } else {
+                prevMediaTypeIsVideo = [mediaSources lastObject].isVideo;
+            }
         }
         _sources = [NSArray arrayWithArray:mediaSources];
     }

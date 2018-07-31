@@ -17,7 +17,6 @@
 @end
 
 @interface ACOMediaEvent:NSObject
-
 @property NSArray<ACOMediaSource *> *sources;
-
+@property BOOL isValid;
 @end    
