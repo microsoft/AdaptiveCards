@@ -1,12 +1,14 @@
 Push-Location $PSScriptRoot
 
+# Disable our build versionning for the tests as it doesn't support .NETCore
+$env:XES_DISABLEMSBUILDVERSIONING ="True"
+
 $testResultsPath = New-Item -ErrorAction Ignore -ItemType directory -Path .\TestResults\$(get-date -f MM-dd-yyyy-HH-mm-ss)
 New-Item -ItemType directory $testResultsPath/HTML
 New-Item -ItemType directory $testResultsPath/WPF
 
 $samplesPath =  "..\..\..\..\samples\v1.0"
 $scenariosPath = $samplesPath + "\scenarios"
-
 
 Write-Host Running unit tests...
 dotnet test .\test\AdaptiveCards.Test
