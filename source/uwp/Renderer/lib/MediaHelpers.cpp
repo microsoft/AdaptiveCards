@@ -20,6 +20,7 @@ using namespace ABI::Windows::Storage::Streams;
 const DOUBLE c_playIconSize = 30;
 const DOUBLE c_playIconCornerRadius = 5;
 const DOUBLE c_playIconOpacity = .5;
+const DOUBLE c_audioHeight = 100;
 
 void GetMediaPosterAsImage(
     IAdaptiveRenderContext* renderContext,
@@ -51,6 +52,10 @@ void GetMediaPosterAsImage(
     ComPtr<IAdaptiveImage> adaptiveImage;
     THROW_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveImage>(&adaptiveImage));
     THROW_IF_FAILED(adaptiveImage->put_Url(posterString.Get()));
+
+    HString altText;
+    THROW_IF_FAILED(adaptiveMedia->get_AltText(altText.GetAddressOf()));
+    THROW_IF_FAILED(adaptiveImage->put_AltText(altText.Get()));
 
     ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
     THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
@@ -231,7 +236,6 @@ void GetMediaSource(
     LPWSTR supportedMimeTypes[] =
     {
         L"video/mp4",
-        L"audio/mp4",
         L"audio/mpeg",
     };
 
@@ -260,7 +264,7 @@ void GetMediaSource(
         {
             THROW_IF_FAILED(WindowsCompareStringOrdinal(mimeType.Get(), HStringReference(supportedMimeTypes[i]).Get(), &isSupported));
 
-            if (isSupported)
+            if (isSupported == 0)
             {
                 selectedSource = currentSource;
                 break;
@@ -315,9 +319,10 @@ HRESULT HandleMediaClick(
     // When the user clicks: hide the poster, show the media element, open and play the media
     if (mediaElement)
     {
-        RETURN_IF_FAILED(posterContainer->put_Visibility(Visibility_Collapsed));
+		ComPtr<IMediaElement> localMediaElement{ mediaElement };
 
-        ComPtr<IMediaElement> localMediaElement{ mediaElement };
+		RETURN_IF_FAILED(posterContainer->put_Visibility(Visibility_Collapsed));
+
         ComPtr<IUIElement> mediaAsUIElement;
         RETURN_IF_FAILED(localMediaElement.As(&mediaAsUIElement));
         RETURN_IF_FAILED(mediaAsUIElement->put_Visibility(Visibility_Visible));
@@ -366,14 +371,28 @@ HRESULT HandleMediaClick(
         EventRegistrationToken mediaOpenedToken;
         THROW_IF_FAILED(mediaElement->add_MediaOpened(Callback<IRoutedEventHandler>([=](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
         {
-            RETURN_IF_FAILED(mediaInvoker->SendMediaPlayEvent(adaptiveMedia));
-            RETURN_IF_FAILED(mediaElement->Play());
+            boolean audioOnly;
+            RETURN_IF_FAILED(localMediaElement->get_IsAudioOnly(&audioOnly));
+
+            ComPtr<IImageSource> posterSource;
+            RETURN_IF_FAILED(localMediaElement->get_PosterSource(&posterSource));
+
+            if (audioOnly && posterSource == nullptr)
+            {
+                // If this is audio only and there's no poster, set the height so that the 
+                // controls are visible.
+                ComPtr<IFrameworkElement> mediaAsFrameworkElement;
+                RETURN_IF_FAILED(localMediaElement.As(&mediaAsFrameworkElement));
+                RETURN_IF_FAILED(mediaAsFrameworkElement->put_Height(c_audioHeight));
+            }
+
+            RETURN_IF_FAILED(localMediaElement->Play());
             return S_OK;
         }).Get(), &mediaOpenedToken));
     }
     else
     {
-        RETURN_IF_FAILED(mediaInvoker->SendMediaPlayEvent(adaptiveMedia));
+        RETURN_IF_FAILED(mediaInvoker->SendMediaClickedEvent(adaptiveMedia));
     }
 
     return S_OK;

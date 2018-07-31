@@ -83,7 +83,7 @@
 
     std::shared_ptr<AdaptiveCards::BaseActionElement> action = [acoAction element];
     NSDictionary *imageViewMap = [rootView getImageMap];
-    NSString *key = [ACRView generateKeyForActionElement:action];
+    NSString *key = [NSString stringWithCString:action->GetIconUrl().c_str() encoding:[NSString defaultCStringEncoding]];
     UIImage *img = imageViewMap[key];
 
     if(img){
