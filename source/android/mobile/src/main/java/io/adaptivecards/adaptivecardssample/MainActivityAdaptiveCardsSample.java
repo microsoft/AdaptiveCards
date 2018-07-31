@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import io.adaptivecards.renderer.OnlineMediaLoader;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -189,6 +190,8 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             elementParserRegistration.AddParser("blah", new CustomBlahParser());
 
             CardRendererRegistration.getInstance().registerRenderer("blah", new CustomBlahRenderer());
+
+            // CardRendererRegistration.getInstance().registerOnlineMediaLoader(new OnlineMediaLoader());
             
             ParseResult parseResult = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.VERSION, elementParserRegistration);
             LinearLayout layout = (LinearLayout) findViewById(R.id.visualAdaptiveCardLayout);

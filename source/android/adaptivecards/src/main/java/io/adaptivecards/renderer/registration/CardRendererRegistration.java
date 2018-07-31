@@ -12,6 +12,8 @@ import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.IActionLayoutRenderer;
 import io.adaptivecards.renderer.IBaseActionElementRenderer;
+import io.adaptivecards.renderer.IOnlineMediaLoader;
+import io.adaptivecards.renderer.OnlineMediaLoader;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.ActionLayoutRenderer;
@@ -121,6 +123,16 @@ public class CardRendererRegistration
         m_actionLayoutRenderer = actionLayoutRenderer;
     }
 
+    public IOnlineMediaLoader getOnlineMediaLoader()
+    {
+        return m_onlineMediaLoader;
+    }
+
+    public void registerOnlineMediaLoader(IOnlineMediaLoader onlineMediaLoader)
+    {
+        m_onlineMediaLoader = onlineMediaLoader;
+    }
+
     public IActionLayoutRenderer getActionLayoutRenderer()
     {
         return m_actionLayoutRenderer;
@@ -175,4 +187,5 @@ public class CardRendererRegistration
     private IBaseActionElementRenderer m_actionRenderer = null;
     private IActionLayoutRenderer m_actionLayoutRenderer = null;
     private IOnlineImageLoader m_onlineImageLoader = null;
+    private IOnlineMediaLoader m_onlineMediaLoader = null;
 }
