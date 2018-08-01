@@ -58,7 +58,7 @@ namespace AdaptiveCards.Rendering.Wpf
                         uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(val, GridUnitType.Star) });
                     else if (width.EndsWith("px") && double.TryParse(width.Substring(0, width.Length-2), out double pxVal) && pxVal >= 0)
                         // Exact pixel (number followed by "px")
-                        uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(pxVal, GridUnitType.Pixel) });
+                        uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength((int)pxVal, GridUnitType.Pixel) });
                     else
                         uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
                 }
