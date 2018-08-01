@@ -819,6 +819,15 @@ export class ActionPeer extends DesignerPeer {
 
             this.changed(false);
         }
+
+        var iconUrl = addLabelAndInput(card, "Icon URL:", Adaptive.TextInput);
+        iconUrl.input.defaultValue = this.action.iconUrl;
+        iconUrl.input.placeholder = "(not set)";
+        iconUrl.input.onValueChanged = () => {
+            this.action.iconUrl = iconUrl.input.value;
+
+            this.changed(false);
+        }
     }
 
     get action(): Adaptive.Action {
@@ -1247,7 +1256,14 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
             }
         }
         else {
-            return this.cardElement.width.toString();
+            switch (this.cardElement.width) {
+                case "stretch":
+                    return "Stretch";
+                case "auto":
+                    return "Automatic";
+                default:
+                    return "";
+            }
         }
     }
 
@@ -1261,7 +1277,7 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
         let width = addLabelAndInput(card, "Width:", Adaptive.ChoiceSetInput);
         width.input.isCompact = true;
         width.input.choices.push(new Adaptive.Choice("Automatic", "auto"));
-        width.input.choices.push(new Adaptive.Choice("Stretched", "stretch"));
+        width.input.choices.push(new Adaptive.Choice("Stretch", "stretch"));
         width.input.choices.push(new Adaptive.Choice("Explicit", "explicit"));
 
         if (this.cardElement.width instanceof Adaptive.SizeAndUnit) {
