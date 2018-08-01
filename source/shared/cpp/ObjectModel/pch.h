@@ -40,8 +40,4 @@
 #pragma warning(default: CPPCORECHECK_STYLE_WARNINGS)
 #pragma warning(default: CPPCORECHECK_TYPE_WARNINGS)
 #pragma warning(default: CPPCORECHECK_UNIQUE_POINTER_WARNINGS)
-
-// ECppCoreCheckWarningCodes::WARNING_MEMBER_UNINIT
-#pragma warning(default: 26495)
-
 #endif
