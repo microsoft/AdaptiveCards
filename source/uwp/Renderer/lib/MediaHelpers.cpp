@@ -236,7 +236,9 @@ void GetMediaSource(
     LPWSTR supportedMimeTypes[] =
     {
         L"video/mp4",
-        L"audio/mpeg",
+        L"audio/mp4",
+		L"audio/aac",
+		L"audio/mpeg",
     };
 
     ComPtr<IVector<AdaptiveMediaSource*>> sources;
