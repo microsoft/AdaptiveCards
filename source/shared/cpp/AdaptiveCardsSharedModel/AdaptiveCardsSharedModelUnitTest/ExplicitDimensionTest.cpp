@@ -349,15 +349,8 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            try
-            {
-                std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
-                Assert::Fail();
-            }
-            catch(const AdaptiveCardParseException &e)
-            { 
-                Assert::AreEqual<bool>(e.GetStatusCode() == ErrorStatusCode::InvalidPropertyValue, true);
-            }
+
+			std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
         }
     };
 }

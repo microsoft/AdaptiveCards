@@ -88,6 +88,15 @@ bool DateTimePreparser::IsValidTimeAndDate(const struct tm &parsedTm, const int 
     return false;
 }
 
+constexpr time_t IntToTimeT(int timeToConvert)
+{
+#pragma warning(push)
+#pragma warning(disable: 26472)
+	// disable warning about using static_cast since we need to hard cast up.
+	return static_cast<time_t>(timeToConvert);
+#pragma warning(pop)
+}
+
 void DateTimePreparser::ParseDateTime(std::string const &in)
 {
     std::vector<DateTimePreparsedToken> sections;
@@ -163,7 +172,7 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
                 // converts to seconds
                 hours *= 3600;
                 minutes *= 60;
-                offset = static_cast<time_t>(hours) + static_cast<time_t>(minutes);
+                offset = IntToTimeT(hours) + IntToTimeT(minutes);
 
                 wchar_t zone = matches[TimeZone].str().at(0);
                 // time zone offset calculation
@@ -192,8 +201,8 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
             // gets local time zone offset
             strftime(tzOffsetBuff, 6, "%z", &parsedTm);
             std::string localTimeZoneOffsetStr(tzOffsetBuff);
-            const int nTzOffset = std::stoi(localTimeZoneOffsetStr);
-            offset += ((time_t)(nTzOffset / 100) * 3600 + (time_t)(nTzOffset % 100) * 60);
+            const time_t nTzOffset = IntToTimeT(std::stoi(localTimeZoneOffsetStr));
+            offset += ((nTzOffset / 100) * 3600 + (nTzOffset % 100) * 60);
             // add offset to utc
             utc += offset;
             struct tm result{};
