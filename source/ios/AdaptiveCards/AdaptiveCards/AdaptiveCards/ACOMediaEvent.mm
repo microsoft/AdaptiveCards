@@ -26,7 +26,7 @@ static NSSet<NSString *> *validMediaTypes   = [[NSSet alloc] initWithObjects:@"a
             // valid media type eg. video/mp4
             NSArray<NSString *> *components = [_mimeType componentsSeparatedByString:@"/"];
             if([validMediaTypes containsObject:components[0]]) {
-                _isVideo = ([components[0] compare:@"video"] == NSOrderedSame) ? YES : NO;
+                _isVideo = [components[0] isEqualToString:@"video"];
                 _mediaFormat = components[1];
                 if(_isVideo){
                     _isValid = [validVideoFormats containsObject:_mediaFormat];

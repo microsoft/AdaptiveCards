@@ -21,7 +21,6 @@ const int posterTag = 0x504F5354;
     NSString *_mimeType;
     __weak ACRView *_view;
     __weak UIView *_containingview;
-    __weak UIView<ACRIContentHoldingView> *_superview;
     BOOL isInline;
 }
 // dedicated initializer
@@ -30,7 +29,6 @@ const int posterTag = 0x504F5354;
                           rootView:(ACRView *)rootView
                             config:(ACOHostConfig *)config
                     containingview:(UIView *)containingview
-                         superview:(UIView<ACRIContentHoldingView> *)superview
 {
     self = [super init];
     if(self) {
@@ -38,7 +36,6 @@ const int posterTag = 0x504F5354;
         _url = url;
         _view = rootView;
         _containingview = containingview;
-        _superview = superview;
         isInline = [config getHostConfig]->media.allowInlinePlayback;
     }
     return self;
@@ -46,16 +43,15 @@ const int posterTag = 0x504F5354;
 
 - (instancetype)initWithMediaEvent:(ACOMediaEvent *)mediaEvent rootView:(ACRView *)rootView config:(ACOHostConfig *)config
 {
-    return [self initWithMediaEvent:mediaEvent url:nil rootView:rootView config:config containingview:nil superview:nil];
+    return [self initWithMediaEvent:mediaEvent url:nil rootView:rootView config:config containingview:nil];
 }
 
 - (instancetype)initWithMediaEvent:(ACOMediaEvent *)mediaEvent
                           rootView:(ACRView *)rootView
                             config:(ACOHostConfig *)config
                     containingview:(UIView *)containingview
-                         superview:(UIView<ACRIContentHoldingView> *)superview
 {
-    return [self initWithMediaEvent:mediaEvent url:nil rootView:rootView config:config containingview:containingview superview:superview];
+    return [self initWithMediaEvent:mediaEvent url:nil rootView:rootView config:config containingview:containingview];
 }
 // delegate for ACRSelectActionDelegate
 - (void)doSelectAction
@@ -91,9 +87,9 @@ const int posterTag = 0x504F5354;
 
                     self->_mediaViewController = [[AVPlayerViewController alloc] init];
                     self->_mediaViewController.player = player;
-                    
+
                     // pass AVPlayerViewController to host; it is not neccessary step for playback test, but it's better, the vc is inside parent vc tree
-                    UIViewController *parentViewController = [_view.mediaDelegate didFetchMediaViewController:self->_mediaViewController card:nil];
+                    [_view.mediaDelegate didFetchMediaViewController:self->_mediaViewController card:nil];
 
                     self->_mediaViewController.videoGravity = AVLayerVideoGravityResizeAspectFill;
                     CGRect frame = self->_containingview.frame;
@@ -108,7 +104,7 @@ const int posterTag = 0x504F5354;
                     ACRAVPlayerViewHoldingUIView *poster = [self->_containingview viewWithTag:posterTag];
                     poster.hidePlayIcon = YES;
                     [poster setNeedsLayout];
-                    
+
                     UIView *playIconView = [poster viewWithTag:playIconTag];
                     if(playIconView){
                         [playIconView removeFromSuperview];
@@ -129,8 +125,6 @@ const int posterTag = 0x504F5354;
 
                     [NSLayoutConstraint activateConstraints:@[[poster.topAnchor constraintEqualToAnchor:overlayview.topAnchor], [poster.bottomAnchor constraintEqualToAnchor:overlayview.bottomAnchor], [poster.leadingAnchor constraintEqualToAnchor:overlayview.leadingAnchor], [poster.trailingAnchor constraintEqualToAnchor:overlayview.trailingAnchor]]];
 
-                    [parentViewController didMoveToParentViewController:self->_mediaViewController];
-
                     [player play];
                     validMediaTypeFound = YES;
                     break;
@@ -139,7 +133,7 @@ const int posterTag = 0x504F5354;
         }
         if(!validMediaTypeFound) {
             // TODO: implemented as a renderer warning -joswo
-            NSLog(@"Warnig: supported media types not found");
+            NSLog(@"Warning: supported media types not found");
         }
     }
 }
@@ -150,12 +144,12 @@ const int posterTag = 0x504F5354;
     [track loadValuesAsynchronouslyForKeys:@[@"naturalSize"] completionHandler:^{
         AVKeyValueStatus status = [asset statusOfValueForKey:@"naturalSize" error:nil];
         if(status == AVKeyValueStatusLoaded) {
-            dispatch_async(dispatch_get_main_queue(), ^{[self getNaturalSize:track asset:asset];});
+            dispatch_async(dispatch_get_main_queue(), ^{[self playMedia:track asset:asset];});
         }
     }];
 }
 
-- (void) getNaturalSize:(AVAssetTrack *)track asset:(AVURLAsset *)asset
+- (void)playMedia:(AVAssetTrack *)track asset:(AVURLAsset *)asset
 {
     // video is ready to play, config AVPlayerViewController view dimension
     CGSize size = track.naturalSize;
@@ -167,7 +161,7 @@ const int posterTag = 0x504F5354;
     self->_mediaViewController.player = player;
 
     if([_view.mediaDelegate respondsToSelector:@selector(didFetchMediaViewController: card:)]){
-        parentViewController = [_view.mediaDelegate didFetchMediaViewController:self->_mediaViewController card:nil];
+        [_view.mediaDelegate didFetchMediaViewController:self->_mediaViewController card:nil];
     }
 
     self->_mediaViewController.videoGravity = AVLayerVideoGravityResizeAspectFill;
@@ -178,17 +172,14 @@ const int posterTag = 0x504F5354;
     mediaView.translatesAutoresizingMaskIntoConstraints = NO;
     [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:frame.size.width].active = YES;
     [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:frame.size.height].active = YES;
-    
+
     ACRAVPlayerViewHoldingUIView *poster = [self->_containingview viewWithTag:posterTag];
     poster.hidden = YES;
-    
+
     [self->_containingview addSubview:mediaView];
     [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
     [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
 
-    if(parentViewController){
-        [parentViewController didMoveToParentViewController:self->_mediaViewController];
-    }
     [player play];
 }
 

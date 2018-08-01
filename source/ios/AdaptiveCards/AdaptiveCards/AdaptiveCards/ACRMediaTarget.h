@@ -21,11 +21,10 @@ extern const int posterTag;
 - (instancetype)initWithMediaEvent:(ACOMediaEvent *)mediaEvent
                           rootView:(ACRView *)rootView
                             config:(ACOHostConfig *)config
-                    containingview:(UIView *)containingview
-                         superview:(UIView<ACRIContentHoldingView> *)superview;
+                    containingview:(UIView *)containingview;
 - (void)doSelectAction;
 
-- (void)getNaturalSize:(AVAssetTrack *)track asset:(AVURLAsset *)asset;
+- (void)playMedia:(AVAssetTrack *)track asset:(AVURLAsset *)asset;
 
 - (void)getAVTrack:(AVURLAsset *)asset;
 

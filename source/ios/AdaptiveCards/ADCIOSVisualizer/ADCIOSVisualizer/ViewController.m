@@ -283,8 +283,8 @@
 }
 
 - (UIViewController *)didFetchMediaViewController:(AVPlayerViewController *)controller card:(ACOAdaptiveCard *)card {
-    [self addChildViewController:controller];
-    //[self presentViewController:controller animated:YES completion:nil];
+    [self addChildViewController:controller];    
+    [controller didMoveToParentViewController:self];
     return self;
 }
 - (UIView *)renderButtons:(ACRView *)rootView
