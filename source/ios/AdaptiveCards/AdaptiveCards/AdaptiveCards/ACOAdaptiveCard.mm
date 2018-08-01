@@ -14,6 +14,7 @@
 #import "ACRParseWarningPrivate.h"
 #import "ParseResult.h"
 #import "ACRErrors.h"
+#import "ACORemoteResourceInformationPrivate.h"
 
 using namespace AdaptiveCards;
 
@@ -95,6 +96,11 @@ using namespace AdaptiveCards;
 - (void)setCard:(std::shared_ptr<AdaptiveCard> const &)card
 {
     _adaptiveCard = card;
+}
+
+- (ACORemoteResourceInformation *)remoteResourceInformation
+{
+    return [[ACORemoteResourceInformation alloc] initWithRemoteResourceInformations:_adaptiveCard->GetResourceInformation()];
 }
 
 @end
