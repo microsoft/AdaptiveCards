@@ -54,10 +54,10 @@ namespace AdaptiveCards.Rendering.Wpf
                 else
                 {
                     if (double.TryParse(width, out double val))
-                        // Weighted proportion (string contains number only)
+                        // Weighted proportion (number only)
                         uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(val, GridUnitType.Star) });
                     else if (width.EndsWith("px") && int.TryParse(width.Substring(0, width.Length-2), out int pxVal))
-                        // Exact pixel (string contains number followed by "px")
+                        // Exact pixel (number followed by "px")
                         uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(pxVal, GridUnitType.Pixel) });
                     else
                         uiColumnSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
