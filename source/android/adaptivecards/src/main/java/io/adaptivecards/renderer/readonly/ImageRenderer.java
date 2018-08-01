@@ -190,11 +190,13 @@ public class ImageRenderer extends BaseCardElementRenderer
             int heightInPixels = Util.dpToPixels(context, pixelHeight);
             if (isAspectRatioNeeded)
             {
-                if (pixelWidth != 0) {
+                if (pixelWidth != 0)
+                {
                     imageView.setMaxWidth(widthInPixels);
                 }
 
-                if (pixelHeight != 0) {
+                if (pixelHeight != 0)
+                {
                     imageView.setMaxHeight(heightInPixels);
                 }
 
