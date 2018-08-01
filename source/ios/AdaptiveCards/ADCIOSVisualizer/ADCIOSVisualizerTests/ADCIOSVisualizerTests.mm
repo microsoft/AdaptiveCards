@@ -34,6 +34,8 @@
             _defaultHostConfig = hostconfigParseResult.config;
         }
     }
+
+    // Put setup code here. This method is called before the invocation of each test method in the class.
 }
 
 - (void)tearDown {
@@ -45,6 +47,9 @@
 }
 
 - (void)testRemoteResouceInformation {
+    // This is an example of a functional test case.
+    // Use XCTAssert and related functions to verify your tests produce the correct results.
+ 
     NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"FoodOrder" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
     
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
@@ -58,14 +63,8 @@
         ];
         unsigned int index = 0;
         for(ACORemoteResourceInformation *info in remoteInformation){
-            XCTAssertTrue([[testStrings objectAtIndex:index++] isEqualToString:info.url.absoluteString]);
-        }
-        
-        for(ACORemoteResourceInformation *info in remoteInformation){
-            XCTAssertTrue([@"" isEqualToString:info.mimeType]);
-        }
-        
-        for(ACORemoteResourceInformation *info in remoteInformation){
+            XCTAssertTrue([[testStrings objectAtIndex:index++] isEqualToString:info.url.absoluteString]);        
+            XCTAssertTrue([@"" isEqualToString:info.mimeType]);     
             XCTAssertTrue(ACRImage == info.resourceType);
         }
     }
