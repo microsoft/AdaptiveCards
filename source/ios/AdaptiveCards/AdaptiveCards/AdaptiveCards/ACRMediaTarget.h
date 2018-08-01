@@ -26,6 +26,6 @@ extern const int posterTag;
 
 - (void)playMedia:(AVAssetTrack *)track asset:(AVURLAsset *)asset;
 
-- (void)getAVTrack:(AVURLAsset *)asset;
+- (void)playVideoWhenTrackIsReady:(AVURLAsset *)asset;
 
 @end

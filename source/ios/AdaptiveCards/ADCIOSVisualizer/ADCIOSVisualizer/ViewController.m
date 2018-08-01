@@ -282,11 +282,11 @@
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
-- (UIViewController *)didFetchMediaViewController:(AVPlayerViewController *)controller card:(ACOAdaptiveCard *)card {
+- (void)didFetchMediaViewController:(AVPlayerViewController *)controller card:(ACOAdaptiveCard *)card {
     [self addChildViewController:controller];    
     [controller didMoveToParentViewController:self];
-    return self;
 }
+
 - (UIView *)renderButtons:(ACRView *)rootView
                    inputs:(NSMutableArray *)inputs
                 superview:(UIView<ACRIContentHoldingView> *)superview

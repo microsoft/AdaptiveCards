@@ -76,7 +76,7 @@ const int posterTag = 0x504F5354;
                     [asset loadValuesAsynchronouslyForKeys:@[@"tracks"] completionHandler:^{
                         AVKeyValueStatus status = [asset statusOfValueForKey:@"tracks" error:nil];
                         if(status == AVKeyValueStatusLoaded) {
-                            dispatch_async(dispatch_get_main_queue(), ^{[self getAVTrack:asset];});
+                            dispatch_async(dispatch_get_main_queue(), ^{[self playVideoWhenTrackIsReady:asset];});
                         }
                     }];
                     validMediaTypeFound = YES;
@@ -138,7 +138,7 @@ const int posterTag = 0x504F5354;
     }
 }
 
-- (void)getAVTrack:(AVURLAsset *)asset
+- (void)playVideoWhenTrackIsReady:(AVURLAsset *)asset
 {
     AVAssetTrack *track = [asset tracksWithMediaCharacteristic:AVMediaCharacteristicVisual][0];
     [track loadValuesAsynchronouslyForKeys:@[@"naturalSize"] completionHandler:^{
@@ -155,7 +155,6 @@ const int posterTag = 0x504F5354;
     CGSize size = track.naturalSize;
     AVPlayerItem *item = [AVPlayerItem playerItemWithAsset:asset];
     AVPlayer *player = [AVPlayer playerWithPlayerItem:item];
-    UIViewController *parentViewController = nil;
 
     self->_mediaViewController = [[AVPlayerViewController alloc] init];
     self->_mediaViewController.player = player;
