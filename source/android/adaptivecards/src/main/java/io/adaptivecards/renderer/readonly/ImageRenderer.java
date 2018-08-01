@@ -129,7 +129,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(renderedCard, imageView, hostConfig.getImageBaseUrl(), image.GetImageStyle());
 
         IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
-        if(onlineImageLoader != null)
+        if (onlineImageLoader != null)
         {
             imageLoaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
         }
@@ -184,11 +184,11 @@ public class ImageRenderer extends BaseCardElementRenderer
         boolean hasExplicitSize = ((pixelHeight != 0) || (pixelWidth != 0));
         boolean isAspectRatioNeeded = !((pixelHeight != 0) && (pixelWidth != 0));
 
-        if(hasExplicitSize)
+        if (hasExplicitSize)
         {
             int widthInPixels = Util.dpToPixels(context, pixelWidth);
             int heightInPixels = Util.dpToPixels(context, pixelHeight);
-            if(isAspectRatioNeeded)
+            if (isAspectRatioNeeded)
             {
                 if (pixelWidth != 0) {
                     imageView.setMaxWidth(widthInPixels);
