@@ -141,7 +141,14 @@ public class ImageRenderer extends BaseCardElementRenderer
         int backgroundColor = -1;
         if(!imageBackgroundColor.isEmpty())
         {
-            backgroundColor = Color.parseColor(imageBackgroundColor);
+            try
+            {
+                // The valid color formats are "#RRGGBB" and "#AARRGGBB", the string doesn't comply with the format, then keep the -1
+                backgroundColor = Color.parseColor(imageBackgroundColor);
+            }
+            catch (IllegalArgumentException e)
+            {
+            }
         }
 
         if(image.GetImageStyle() != ImageStyle.Person)
