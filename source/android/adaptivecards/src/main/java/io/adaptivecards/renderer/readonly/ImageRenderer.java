@@ -179,7 +179,41 @@ public class ImageRenderer extends BaseCardElementRenderer
         //set horizontalAlignment
         imageView.setLayoutParams(layoutParams);
 
-        setImageSize(context, imageView, image.GetImageSize(), hostConfig.getImageSizes());
+        long pixelWidth = image.GetPixelWidth();
+        long pixelHeight = image.GetPixelHeight();
+        boolean hasExplicitSize = ((pixelHeight != 0) || (pixelWidth != 0));
+        boolean isAspectRatioNeeded = !((pixelHeight != 0) && (pixelWidth != 0));
+
+        if(hasExplicitSize)
+        {
+            int widthInPixels = Util.dpToPixels(context, pixelWidth);
+            int heightInPixels = Util.dpToPixels(context, pixelHeight);
+            if(isAspectRatioNeeded)
+            {
+                if (pixelWidth != 0) {
+                    imageView.setMaxWidth(widthInPixels);
+                }
+
+                if (pixelHeight != 0) {
+                    imageView.setMaxHeight(heightInPixels);
+                }
+
+                imageView.setAdjustViewBounds(true);
+            }
+            else
+            {
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                imageView.setMaxWidth(widthInPixels);
+                imageView.setMaxHeight(heightInPixels);
+
+                imageView.getLayoutParams().height = heightInPixels;
+                imageView.getLayoutParams().width = widthInPixels;
+            }
+        }
+        else
+        {
+            setImageSize(context, imageView, image.GetImageSize(), hostConfig.getImageSizes());
+        }
         setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, !(viewGroup instanceof HorizontalFlowLayout) /* horizontal line */);
 
         viewGroup.addView(imageView);
