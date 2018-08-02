@@ -96,19 +96,19 @@ export class SizeAndUnit {
 
         let regExp = /^([0-9]+)(px|\*)?$/g;
         let matches = regExp.exec(input);
-    
+
         if (matches && matches.length >= 2) {
             result.physicalSize = parseInt(matches[1]);
-    
+
             if (matches.length == 3) {
                 if (matches[2] == "px") {
                     result.unit = Enums.SizeUnit.Pixel;
                 }
             }
-    
+
             return result;
         }
-    
+
         throw new Error("Invalid size: " + input);
     }
 
@@ -148,7 +148,7 @@ export abstract class CardElement {
 
         if (this._separatorElement) {
             if (this.parent && this.parent.isFirstElement(this)) {
-                this._separatorElement.style.display = "none";                
+                this._separatorElement.style.display = "none";
             }
             else {
                 this._separatorElement.style.display = this._isVisible ? this._defaultRenderedElementDisplayMode : "none";
@@ -219,10 +219,10 @@ export abstract class CardElement {
     }
 
     protected internalGetNonZeroPadding(padding: PaddingDefinition,
-                                        processTop: boolean = true,
-                                        processRight: boolean = true,
-                                        processBottom: boolean = true,
-                                        processLeft: boolean = true) {
+        processTop: boolean = true,
+        processRight: boolean = true,
+        processBottom: boolean = true,
+        processLeft: boolean = true) {
         if (processTop) {
             if (padding.top == Enums.Spacing.None) {
                 padding.top = this.internalPadding.top;
@@ -287,7 +287,7 @@ export abstract class CardElement {
 
     protected isDesignMode(): boolean {
         var rootElement = this.getRootElement();
-            
+
         return rootElement instanceof AdaptiveCard && rootElement.designMode;
     }
 
@@ -749,13 +749,13 @@ export class TextBlock extends CardElement {
                         break;
                     default:
                         this._computedLineHeight = this.hostConfig.lineHeights.default;
-                        break;    
+                        break;
                 }
             }
             else {
                 // Looks like 1.33 is the magic number to compute line-height
                 // from font size.
-                this._computedLineHeight = fontSize * 1.33;                
+                this._computedLineHeight = fontSize * 1.33;
             }
 
             element.style.fontSize = fontSize + "px";
@@ -959,11 +959,13 @@ export class TextBlock extends CardElement {
     }
 
     renderSpeech(): string {
-        if (this.speak != null)
+        if (this.speak != null) {
             return this.speak + '\n';
+        }
 
-        if (this.text)
+        if (this.text) {
             return '<s>' + this.text + '</s>\n';
+        }
 
         return null;
     }
@@ -1207,7 +1209,7 @@ export class Image extends CardElement {
                     element.style.width = this.hostConfig.imageSizes.medium + "px";
                     break;
             }
-        }    
+        }
     }
 
     protected get useDefaultSizing() {
@@ -2342,7 +2344,7 @@ export abstract class Action {
             }
             else {
                 buttonElement.classList.add("iconLeft");
-                
+
                 if (hasTitle) {
                     iconElement.style.marginRight = "4px";
                 }
@@ -2394,7 +2396,7 @@ export abstract class Action {
 
     parse(json: any, errors?: Array<IValidationError>) {
         raiseParseActionEvent(this, json, errors);
-	    
+        
         this.id = json["id"];
         this.title = json["title"];
         this.iconUrl = json["iconUrl"];
@@ -3629,7 +3631,7 @@ export class Container extends CardElementContainer {
         for (let item of this._items) {
             handleElement(item);
         }
-        
+
         return true;
     }
 
@@ -4327,7 +4329,7 @@ export class ColumnSet extends CardElementContainer {
         super.updateLayout(processChildren);
 
         this.applyPadding();
-        
+
         if (processChildren) {
             for (var i = 0; i < this._columns.length; i++) {
                 this._columns[i].updateLayout();
@@ -4450,6 +4452,201 @@ export class ColumnSet extends CardElementContainer {
     }
 }
 
+export class MediaSource {
+    mimeType: string;
+    url: string;
+
+    parse(json: any): MediaSource {
+        this.mimeType = json["mimeType"];
+        this.url = json["url"];
+        return this;
+    }
+
+    toJSON() {
+        return { mimeType: this.mimeType, url: this.url };
+    }
+}
+
+export class Media extends CardElement {
+    private _mediaType: string;
+    private _mediaElement: HTMLMediaElement;
+    private _playButton: HTMLAnchorElement;
+    private _pauseButton: HTMLAnchorElement;
+    private _resetButton: HTMLAnchorElement;
+    private _poster: Image;
+
+    static readonly acceptedMediaTypes = ["audio", "video"];
+
+    private processSources(): Array<MediaSource> {
+        let goodSources: Array<MediaSource> = [];
+
+        for (let source of this.sources) {
+            let mimeComponents = source.mimeType.split('/');
+
+            if (mimeComponents.length == 2) {
+                if (!this._mediaType) {
+                    let index = Media.acceptedMediaTypes.indexOf(mimeComponents[0]);
+
+                    if (index >= 0) {
+                        this._mediaType = Media.acceptedMediaTypes[index];
+                    }
+                }
+
+                if (mimeComponents[0] == this._mediaType) {
+                    goodSources.push(source);
+                }
+            } 
+        }
+
+        return goodSources;
+    }
+
+    private static makeButton(label: string, buttonHint: string, handler: ()=>void): HTMLAnchorElement {
+        let button = document.createElement("a");
+        button.classList.add("ac-media-button", buttonHint);
+        button.title = buttonHint;
+        button.onclick = e => { handler(); e.preventDefault(); return false; };
+        button.text = label;
+        
+        return button;
+    }
+    
+    private static overlayPlay(img: HTMLImageElement) {
+        img.style.width = "100%";
+        img.style.minWidth = "100%";
+        let playOverlay = document.createElement("div");
+        playOverlay.style.position = "relative";
+        playOverlay.style.minWidth = "100%";
+        playOverlay.style.left = "-100%";
+        playOverlay.style.textAlign = "center";
+        let playChar = document.createElement("p");
+        playChar.style.backgroundColor = "rgba(255,255,255,0.8)";
+        playChar.style.borderStyle = "solid";
+        playChar.style.borderRadius = "100px";
+        playChar.style.boxShadow = "0 0 5px white";
+        playChar.style.fontSize = "48px";
+        playChar.style.margin = "25%";
+        playChar.style.padding = "8%";
+        playChar.innerHTML = "▶";
+        playOverlay.appendChild(playChar);
+        img.parentElement.appendChild(playOverlay);
+    }
+
+    protected internalRender(): HTMLElement {
+        let element = <HTMLElement>document.createElement("div");
+        element.className = this.hostConfig.makeCssClassName("ac-media");
+        let goodSources = this.processSources();
+
+        if (goodSources.length) {
+            this._mediaElement = <HTMLMediaElement>document.createElement(this._mediaType);
+            this._mediaElement.style.width = "100%";
+
+            goodSources.forEach(s => {
+                let src: HTMLSourceElement = document.createElement("source");
+                src.src = s.url;
+                src.type = s.mimeType;
+                this._mediaElement.appendChild(src);
+            });
+            
+            element.appendChild(this._mediaElement);
+            
+            let controlBar = document.createElement("div");
+            controlBar.className = this.hostConfig.makeCssClassName("ac-controlbar");
+            controlBar.style.whiteSpace = "nowrap";
+
+            this._playButton = Media.makeButton("▶️", "play", ()=>this.play());
+            controlBar.appendChild(this._playButton);
+
+            this._pauseButton = Media.makeButton("⏸️", "pause", ()=>this.pause());
+            this._pauseButton.style.display = "none";
+            controlBar.appendChild(this._pauseButton);
+
+            this._resetButton = Media.makeButton("⏮️", "reset", ()=>this.reset());
+            controlBar.appendChild(this._resetButton);
+            
+            element.appendChild(controlBar);
+        }
+        else {
+            let img = new Image();
+            img.url = this.poster;
+            
+            if (this.sources.length > 0) {
+                let openAction = new OpenUrlAction();
+                openAction.url = this.sources[0].url;
+                img.selectAction = openAction;
+            }
+            
+            let renderedImage = img.render();
+            Media.overlayPlay(renderedImage.querySelector("img"));
+            element.appendChild(renderedImage);
+        }
+
+        return element;
+    }
+    
+    poster: string;
+    altText: string;
+    sources: Array<MediaSource> = [];
+
+    play() {
+        this._mediaElement.play();
+        this._playButton.style.display = "none";
+        this._pauseButton.style.display = "";
+    }
+
+    reset() {
+        this._mediaElement.load();
+        this.pause();
+    }
+
+    pause() {
+        this._mediaElement.pause();
+        this._playButton.style.display = "";
+        this._pauseButton.style.display = "none";
+    }
+
+    toJSON() {
+        let result = super.toJSON();
+        Utils.setProperty(result, "poster", this.poster);
+        Utils.setProperty(result, "altText", this.altText);
+        if (this.sources.length) {
+            var sources = [];
+
+            for (let source of this.sources) {
+                sources.push(source.toJSON());
+            }
+
+            Utils.setProperty(result, "sources", sources);
+        }
+
+        return result;
+    }
+
+    parse(json: any) {
+        super.parse(json);
+
+        this.poster = json.poster;
+        this.altText = json.altText;
+
+        if (json["sources"] != undefined) {
+            var sourceArray = json["sources"] as Array<any>;
+            this.sources = sourceArray.map((json: any) => new MediaSource().parse(json));
+        }
+    }
+
+    getJsonTypeName(): string {
+        return "Media";
+    }
+
+    renderSpeech(): string {
+        if (this.speak != null) {
+            return this.speak + '\n';
+        }
+
+        return null;
+    }
+}
+
 export class Version {
     private _versionString: string;
     private _major: number;
@@ -4561,12 +4758,12 @@ function raiseParseElementEvent(element: CardElement, json: any, errors?: Array<
 }
 
 function raiseParseActionEvent(action: Action, json: any, errors?: Array<IValidationError>) {
-	let card = action.parent ? action.parent.getRootElement() as AdaptiveCard : null;
-	let onParseActionHandler = (card && card.onParseAction) ? card.onParseAction : AdaptiveCard.onParseAction;
+    let card = action.parent ? action.parent.getRootElement() as AdaptiveCard : null;
+    let onParseActionHandler = (card && card.onParseAction) ? card.onParseAction : AdaptiveCard.onParseAction;
 
-	if (onParseActionHandler != null) {
-		onParseActionHandler(action, json, errors);
-	}
+    if (onParseActionHandler != null) {
+        onParseActionHandler(action, json, errors);
+    }
 }
 
 function raiseParseError(error: IValidationError, errors: Array<IValidationError>) {
@@ -4791,6 +4988,7 @@ export class ElementTypeRegistry extends TypeRegistry<CardElement> {
         this.registerType("Input.Number", () => { return new NumberInput(); });
         this.registerType("Input.ChoiceSet", () => { return new ChoiceSetInput(); });
         this.registerType("Input.Toggle", () => { return new ToggleInput(); });
+        this.registerType("Media", () => { return new Media(); });
     }
 }
 
@@ -4913,7 +5111,7 @@ export class AdaptiveCard extends ContainerWithActions {
     onImageLoaded: (image: Image) => void = null;
     onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
     onParseElement: (element: CardElement, json: any, errors?: Array<IValidationError>) => void = null;
-	onParseAction: (element: Action, json: any, errors?: Array<IValidationError>) => void = null;
+    onParseAction: (element: Action, json: any, errors?: Array<IValidationError>) => void = null;
 
     version?: Version = new Version(1, 0);
     fallbackText: string;
