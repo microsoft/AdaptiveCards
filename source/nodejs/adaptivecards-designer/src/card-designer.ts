@@ -361,12 +361,123 @@ class PeerCommand {
     }
 }
 
+export class TreeItem {
+    private static collapsedIconClass = "acd-icon-chevronRight";
+    private static expandedIconClass = "acd-icon-chevronDown";
+
+    private _isExpanded: boolean = true;
+    private _labelElement: HTMLElement;
+    private _expandCollapseElement: HTMLElement;
+    private _childContainerElement: HTMLElement;
+
+    readonly owner: DesignerPeer;
+
+    constructor(owner: DesignerPeer) {
+        this.owner = owner;
+    }
+
+    render(indentationLevel: number = 0): HTMLElement {
+        let rootElement = document.createElement("div");
+
+        this._labelElement = document.createElement("div");
+        this._labelElement.classList.add("acd-tree-item-label");
+        this._labelElement.style.display = "flex";
+        this._labelElement.style.alignItems = "center";
+        this._labelElement.style.paddingLeft = 8 + 8 * indentationLevel + "px";
+        this._labelElement.onclick = (e: MouseEvent) => {
+            this._isExpanded = !this._isExpanded;
+
+            this.updateLayout();
+
+            e.cancelBubble = true;
+            e.preventDefault();
+        }
+
+        this._expandCollapseElement = document.createElement("div");
+        this._expandCollapseElement.classList.add("acd-tree-item-expandCollapseButton");
+        this._expandCollapseElement.style.flex = "0 0 auto";
+        this._expandCollapseElement.style.visibility = this.owner.getChildCount() > 0 ? "visible" : "hidden";
+
+        this._labelElement.appendChild(this._expandCollapseElement);
+
+        let textElement = document.createElement("div");
+        textElement.classList.add("acd-tree-item-text");
+        textElement.style.flex = "1 1 auto";
+        textElement.style.whiteSpace = "nowrap";
+        textElement.style.textOverflow = "ellipsis";
+        textElement.style.overflow = "hidden";
+        textElement.onclick = (e: MouseEvent) => {
+            this.owner.isSelected = true;
+
+            e.cancelBubble = true;
+            e.preventDefault();
+        }
+
+        let typeNameSpan = document.createElement("span");
+        typeNameSpan.classList.add("acd-tree-item-text-typeName");
+        typeNameSpan.innerText = this.owner.getCardObjectTypeName();
+
+        textElement.appendChild(typeNameSpan);
+
+        let text = this.owner.getTreeItemText();
+
+        if (text && text != "") {
+            let additionalTextSpan = document.createElement("span");
+            additionalTextSpan.classList.add("acd-tree-item-text-additionalText");
+            additionalTextSpan.innerText = " [" + text + "]";
+
+            textElement.appendChild(additionalTextSpan);
+        }
+
+        this._labelElement.appendChild(textElement);
+
+        rootElement.appendChild(this._labelElement);
+
+        this._childContainerElement = document.createElement("div");
+
+        for (let i = 0; i < this.owner.getChildCount(); i++) {
+            let renderedChildItem = this.owner.getChildAt(i).treeItem.render(indentationLevel + 1);
+
+            this._childContainerElement.appendChild(renderedChildItem);
+        }
+
+        rootElement.appendChild(this._childContainerElement);
+
+        this.updateLayout();
+
+        return rootElement;
+    }
+
+    updateLayout() {
+        if (this._isExpanded) {
+            this._childContainerElement.style.display = null;
+            this._expandCollapseElement.classList.remove(TreeItem.collapsedIconClass);
+            this._expandCollapseElement.classList.add(TreeItem.expandedIconClass);
+        }
+        else {
+            this._childContainerElement.style.display = "none";
+            this._expandCollapseElement.classList.add(TreeItem.collapsedIconClass);
+            this._expandCollapseElement.classList.remove(TreeItem.expandedIconClass);
+        }
+
+        if (this.owner.isSelected) {
+            this._labelElement.classList.add("selected");
+        }
+        else {
+            this._labelElement.classList.remove("selected");
+        }
+    }
+
+    expand() {
+        this._isExpanded = true;
+
+        this.updateLayout();
+    }
+}
+
 export abstract class DesignerPeer extends DraggableElement {
     private _children: Array<DesignerPeer> = [];
     private _isSelected: boolean;
-    private _propertySheetHostConfig: Adaptive.HostConfig;
-
-    protected abstract getCardObjectTypeName(): string;
 
     protected isContainer(): boolean {
         return false;
@@ -445,6 +556,7 @@ export abstract class DesignerPeer extends DraggableElement {
     protected abstract internalRemove(): boolean;
 
     readonly designer: CardDesigner;
+    readonly treeItem: TreeItem;
     parent: DesignerPeer;
 
     onSelectedChanged: (sender: DesignerPeer) => void;
@@ -456,137 +568,17 @@ export abstract class DesignerPeer extends DraggableElement {
         super();
 
         this.designer = designer;
+        this.treeItem = new TreeItem(this);
 
-        this._propertySheetHostConfig = new Adaptive.HostConfig(
-            {
-                preExpandSingleShowCardAction: true,
-                supportsInteractivity: true,
-                fontFamily: "Segoe UI",
-                spacing: {
-                    small: 10,
-                    default: 20,
-                    medium: 30,
-                    large: 40,
-                    extraLarge: 50,
-                    padding: 20
-                },
-                separator: {
-                    lineThickness: 1,
-                    lineColor: "#EEEEEE"
-                },
-                fontSizes: {
-                    small: 12,
-                    default: 14,
-                    medium: 17,
-                    large: 21,
-                    extraLarge: 26
-                },
-                fontWeights: {
-                    lighter: 200,
-                    default: 400,
-                    bolder: 600
-                },
-                imageSizes: {
-                    small: 40,
-                    medium: 80,
-                    large: 160
-                },
-                containerStyles: {
-                    default: {
-                        backgroundColor: "#FFFFFF",
-                        foregroundColors: {
-                            default: {
-                                default: "#333333",
-                                subtle: "#EE333333"
-                            },
-                            accent: {
-                                default: "#2E89FC",
-                                subtle: "#882E89FC"
-                            },
-                            attention: {
-                                default: "#cc3300",
-                                subtle: "#DDcc3300"
-                            },
-                            good: {
-                                default: "#54a254",
-                                subtle: "#DD54a254"
-                            },
-                            warning: {
-                                default: "#e69500",
-                                subtle: "#DDe69500"
-                            }
-                        }
-                    },
-                    emphasis: {
-                        backgroundColor: "#08000000",
-                        foregroundColors: {
-                            default: {
-                                default: "#333333",
-                                subtle: "#EE333333"
-                            },
-                            accent: {
-                                default: "#2E89FC",
-                                subtle: "#882E89FC"
-                            },
-                            attention: {
-                                default: "#cc3300",
-                                subtle: "#DDcc3300"
-                            },
-                            good: {
-                                default: "#54a254",
-                                subtle: "#DD54a254"
-                            },
-                            warning: {
-                                default: "#e69500",
-                                subtle: "#DDe69500"
-                            }
-                        }
-                    }
-                },
-                actions: {
-                    maxActions: 5,
-                    spacing: Adaptive.Spacing.Default,
-                    buttonSpacing: 10,
-                    showCard: {
-                        actionMode: Adaptive.ShowCardActionMode.Inline,
-                        inlineTopMargin: 16
-                    },
-                    actionsOrientation: Adaptive.Orientation.Horizontal,
-                    actionAlignment: Adaptive.ActionAlignment.Left
-                },
-                adaptiveCard: {
-                    allowCustomStyle: true
-                },
-                imageSet: {
-                    imageSize: Adaptive.Size.Medium,
-                    maxImageHeight: 100
-                },
-                factSet: {
-                    title: {
-                        color: Adaptive.TextColor.Default,
-                        size: Adaptive.TextSize.Default,
-                        isSubtle: false,
-                        weight: Adaptive.TextWeight.Bolder,
-                        wrap: true,
-                        maxWidth: 150,
-                    },
-                    value: {
-                        color: Adaptive.TextColor.Default,
-                        size: Adaptive.TextSize.Default,
-                        isSubtle: false,
-                        weight: Adaptive.TextWeight.Default,
-                        wrap: true,
-                    },
-                    spacing: 10
-                }
-            }
-        );
-            
-        this._propertySheetHostConfig.cssClassNamePrefix = "default";
     }
 
     abstract getBoundingRect(): Rect;
+    abstract getCardObjectTypeName(): string;
     abstract addPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean);
+
+    getTreeItemText(): string {
+        return null;
+    }
 
     canDrop(peer: DesignerPeer): boolean {
         return false;
@@ -600,8 +592,14 @@ export abstract class DesignerPeer extends DraggableElement {
         return false;
     }
     
-    addChild(peer: DesignerPeer) {
-        this._children.push(peer);
+    insertChild(peer: DesignerPeer, index: number = -1) {
+        if (index == -1) {
+            this._children.push(peer);
+        }
+        else {
+            this._children.splice(index, 0, peer);
+        }
+
         peer.parent = this;
 
         this.peerAdded(peer);
@@ -676,7 +674,6 @@ export abstract class DesignerPeer extends DraggableElement {
 
     buildPropertySheetCard(): Adaptive.AdaptiveCard {
         var result = new Adaptive.AdaptiveCard();
-        result.hostConfig = this._propertySheetHostConfig;
         result.padding = new Adaptive.PaddingDefinition(
             Adaptive.Spacing.None,
             Adaptive.Spacing.None,
@@ -698,6 +695,12 @@ export abstract class DesignerPeer extends DraggableElement {
 
             this.updateLayout();
 
+            this.treeItem.updateLayout();
+
+            if (this.parent) {
+                this.parent.treeItem.expand();
+            }
+
             if (this.onSelectedChanged) {
                 this.onSelectedChanged(this);
             }
@@ -707,10 +710,6 @@ export abstract class DesignerPeer extends DraggableElement {
 
 export class ActionPeer extends DesignerPeer {
     protected _action: Adaptive.Action;
-
-    protected getCardObjectTypeName(): string {
-        return this.action.getJsonTypeName();
-    }
 
     protected doubleClick(e: MouseEvent) {
         super.doubleClick(e);
@@ -732,6 +731,10 @@ export class ActionPeer extends DesignerPeer {
         return false;
     }
 
+    getCardObjectTypeName(): string {
+        return this.action.getJsonTypeName();
+    }
+
     getBoundingRect(): Rect {
         let designSurfaceOffset = this.designer.getDesignerSurfaceOffset();
         let actionBoundingRect = this.action.renderedElement.getBoundingClientRect();
@@ -742,6 +745,15 @@ export class ActionPeer extends DesignerPeer {
             actionBoundingRect.bottom - designSurfaceOffset.y,
             actionBoundingRect.left - designSurfaceOffset.x
         );
+    }
+
+    getTreeItemText(): string {
+        if (this.action.title && this.action.title != "") {
+            return this.action.title;
+        }
+        else {
+            return super.getTreeItemText();
+        }
     }
 
     addPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
@@ -890,10 +902,6 @@ export class OpenUrlActionPeer extends TypedActionPeer<Adaptive.OpenUrlAction> {
 export class CardElementPeer extends DesignerPeer {
     protected _cardElement: Adaptive.CardElement;
 
-    protected getCardObjectTypeName(): string {
-        return this.cardElement.getJsonTypeName();
-    }
-
     protected insertElementAfter(newElement: Adaptive.CardElement) {
         if (this.cardElement.parent instanceof Adaptive.Container) {
             this.cardElement.parent.insertItemAfter(newElement, this.cardElement);
@@ -915,12 +923,12 @@ export class CardElementPeer extends DesignerPeer {
 
         if (cardElement instanceof Adaptive.CardElementContainer) {
             for (var i = 0; i < cardElement.getItemCount(); i++) {
-                this.addChild(CardDesigner.cardElementPeerRegistry.createPeerInstance(this.designer, this, cardElement.getItemAt(i)));
+                this.insertChild(CardDesigner.cardElementPeerRegistry.createPeerInstance(this.designer, this, cardElement.getItemAt(i)));
             }            
         }
 
         for (var i = 0; i < this.cardElement.getActionCount(); i++) {
-            this.addChild(CardDesigner.actionPeerRegistry.createPeerInstance(this.designer, this, cardElement.getActionAt(i)));
+            this.insertChild(CardDesigner.actionPeerRegistry.createPeerInstance(this.designer, this, cardElement.getActionAt(i)));
         }
     }
 
@@ -937,7 +945,7 @@ export class CardElementPeer extends DesignerPeer {
             let targetChild: DesignerPeer = null;
             let insertAfter: boolean;
 
-            for (var i = 0; i< this.getChildCount(); i++) {
+            for (var i = 0; i < this.getChildCount(); i++) {
                 let rect = this.getChildAt(i).getBoundingRect();
 
                 if (rect.isInside(insertionPoint)) {
@@ -979,7 +987,7 @@ export class CardElementPeer extends DesignerPeer {
                     }
                 }
     
-                this.addChild(peer);
+                this.insertChild(peer, peer.cardElement.index);
                 this.changed(false);
 
                 return true;
@@ -989,8 +997,10 @@ export class CardElementPeer extends DesignerPeer {
         return false;
     }
 
-    boundingRect: Rect = null;
-    
+    getCardObjectTypeName(): string {
+        return this.cardElement.getJsonTypeName();
+    }
+
     getBoundingRect(): Rect {
         let designSurfaceOffset = this.designer.getDesignerSurfaceOffset();
         let cardElementBoundingRect = this.cardElement.renderedElement.getBoundingClientRect();
@@ -1017,6 +1027,7 @@ export class CardElementPeer extends DesignerPeer {
 
     addPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         if (includeHeader) {
+            /*
             let container = new Adaptive.Container();
             container.style = "emphasis";
             container.padding = new Adaptive.PaddingDefinition(
@@ -1024,13 +1035,16 @@ export class CardElementPeer extends DesignerPeer {
                 Adaptive.Spacing.Small,
                 Adaptive.Spacing.Small,
                 Adaptive.Spacing.Small);
+            */
 
             let elementType = new Adaptive.TextBlock();
             elementType.text = "Element type: **" + this.cardElement.getJsonTypeName() + "**";
 
-            container.addItem(elementType);
+            card.addItem(elementType);
 
-            card.addItem(container);
+            // container.addItem(elementType);
+
+            // card.addItem(container);
         }
 
         var id = addLabelAndInput(card, "Id:", Adaptive.TextInput);
@@ -1120,7 +1134,7 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
     protected addAction(action: Adaptive.Action) {
         this.cardElement.addAction(action);
 
-        this.addChild(CardDesigner.actionPeerRegistry.createPeerInstance(this.designer, this, action));
+        this.insertChild(CardDesigner.actionPeerRegistry.createPeerInstance(this.designer, this, action));
     }
 
     protected internalRemove(): boolean {
@@ -1194,6 +1208,20 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
 export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
     protected isContainer(): boolean {
         return true;
+    }
+
+    getTreeItemText(): string {
+        if (this.cardElement.width instanceof Adaptive.SizeAndUnit) {
+            switch (this.cardElement.width.unit) {
+                case Adaptive.SizeUnit.Weight:
+                    return "Weight: " + this.cardElement.width.physicalSize;
+                default:
+                    return this.cardElement.width.physicalSize + " pixels";
+            }
+        }
+        else {
+            return this.cardElement.width.toString();
+        }
     }
 
     isDraggable(): boolean {
@@ -1281,10 +1309,23 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
 
                         this.cardElement.addColumn(column);
 
-                        this.addChild(CardDesigner.cardElementPeerRegistry.createPeerInstance(this.designer, this, column));
+                        this.insertChild(CardDesigner.cardElementPeerRegistry.createPeerInstance(this.designer, this, column));
                     }
                 })
             );
+    }
+
+    getTreeItemText(): string {
+        let columnCount = this.cardElement.getCount();
+
+        switch (columnCount) {
+            case 0:
+                return "No column";
+            case 1:
+                return "1 column";
+            default:
+                return columnCount + " columns";
+        }
     }
 
     addPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
@@ -1348,7 +1389,7 @@ export class ActionSetPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
     protected addAction(action: Adaptive.Action) {
         this.cardElement.addAction(action);
 
-        this.addChild(CardDesigner.actionPeerRegistry.createPeerInstance(this.designer, this, action));
+        this.insertChild(CardDesigner.actionPeerRegistry.createPeerInstance(this.designer, this, action));
     }
 
     protected internalAddCommands(commands: Array<PeerCommand>) {
@@ -1432,7 +1473,7 @@ export class ImageSetPeer extends TypedCardElementPeer<Adaptive.ImageSet> {
 
                         this.cardElement.addImage(newImage);
 
-                        this.addChild(CardDesigner.cardElementPeerRegistry.createPeerInstance(this.designer, this, newImage));
+                        this.insertChild(CardDesigner.cardElementPeerRegistry.createPeerInstance(this.designer, this, newImage));
                     }
                 })
         );
@@ -1595,6 +1636,21 @@ export class FactSetPeer extends TypedCardElementPeer<Adaptive.FactSet> {
             new Adaptive.Fact("Fact 2", "Value 2")
         );
     }
+
+    getTreeItemText(): string {
+        if (this.cardElement.facts.length == 0) {
+            return "No fact";
+        }
+
+        let allNames = this.cardElement.facts.map(
+            (value, index, array) => {
+                return value.name;
+            }
+        )
+
+        return allNames.join(", ");
+    }
+
     addPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.addPropertySheetEntries(card, includeHeader);
 
@@ -1837,6 +1893,10 @@ export class ChoiceSetInputPeer extends InputPeer<Adaptive.ChoiceSetInput> {
 }
 
 export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
+    getTreeItemText(): string {
+        return this.cardElement.text;
+    }
+
     addPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.addPropertySheetEntries(card, includeHeader);
 
@@ -2238,15 +2298,13 @@ export class CardDesigner {
                 result = currentPeer;
             }
 
-            if (canDrop) {
-                for (var i = 0; i < currentPeer.getChildCount(); i++) {
-                    var deeperResult = this.internalFindDropTarget(pointerPosition, currentPeer.getChildAt(i), forPeer);
+            for (var i = 0; i < currentPeer.getChildCount(); i++) {
+                var deeperResult = this.internalFindDropTarget(pointerPosition, currentPeer.getChildAt(i), forPeer);
 
-                    if (deeperResult) {
-                        result = deeperResult;
+                if (deeperResult) {
+                    result = deeperResult;
 
-                        break;
-                    }
+                    break;
                 }
             }
         }
@@ -2288,10 +2346,10 @@ export class CardDesigner {
                 var parentPeer = this.findActionPeer(action);
 
                 if (parentPeer) {
-                    parentPeer.addChild(peer);
+                    parentPeer.insertChild(peer);
                 }
                 else {
-                    this._rootPeer.addChild(peer);
+                    this._rootPeer.insertChild(peer);
                 }
             }
             else {
@@ -2554,6 +2612,10 @@ export class CardDesigner {
             x: x - clientRect.left,
             y: y - clientRect.top
         }
+    }
+
+    get rootPeer(): DesignerPeer {
+        return this._rootPeer;
     }
 
     get selectedPeer(): DesignerPeer {

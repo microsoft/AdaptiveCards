@@ -463,6 +463,10 @@ export abstract class CardElement {
         this.updateRenderedElementVisibility();
     }
 
+    indexOf(cardElement: CardElement): number {
+        return -1;
+    }
+
     isRendered(): boolean {
         return this._renderedElement && this._renderedElement.offsetHeight > 0;
     }
@@ -591,6 +595,15 @@ export abstract class CardElement {
 
     set hostConfig(value: HostConfig.HostConfig) {
         this._hostConfig = value;
+    }
+
+    get index(): number {
+        if (this.parent) {
+            return this.parent.indexOf(this);
+        }
+        else {
+            return 0;
+        }
     }
 
     get isInteractive(): boolean {
@@ -1560,6 +1573,10 @@ export class ImageSet extends CardElementContainer {
         else {
             throw new Error("This image already belongs to another ImageSet");
         }
+    }
+
+    indexOf(cardElement: CardElement): number {
+        return cardElement instanceof Image ? this._images.indexOf(cardElement) : -1;
     }
 
     renderSpeech(): string {
@@ -3110,6 +3127,14 @@ class ActionCollection {
 
             invokeSetCollection(action, null);
 
+            for (let i = 0; i < this.buttons.length; i++) {
+                if (this.buttons[i].action == action) {
+                    this.buttons.splice(i, 1);
+
+                    break;
+                }
+            }
+
             return true;
         }
 
@@ -3825,6 +3850,10 @@ export class Container extends CardElementContainer {
         this.insertItemAt(item, -1);
     }
 
+    indexOf(cardElement: CardElement): number {
+        return this._items.indexOf(cardElement);
+    }
+
     insertItemBefore(item: CardElement, insertBefore: CardElement) {
         this.insertItemAt(item, this._items.indexOf(insertBefore));
     }
@@ -4362,6 +4391,10 @@ export class ColumnSet extends CardElementContainer {
         }
 
         return false;
+    }
+
+    indexOf(cardElement: CardElement): number {
+        return cardElement instanceof Column ? this._columns.indexOf(cardElement) : -1;
     }
 
     isLeftMostElement(element: CardElement): boolean {

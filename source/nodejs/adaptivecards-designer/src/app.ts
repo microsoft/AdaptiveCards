@@ -170,6 +170,7 @@ class SnippetPaletteItem extends BasePaletteItem {
 }
 
 class DesignerApp {
+    private _propertySheetHostConfig: Adaptive.HostConfig;
     private _designer: Designer.CardDesigner;
     private _designerHostElement: HTMLElement;
     private _paletteHostElement: HTMLElement;
@@ -190,7 +191,6 @@ class DesignerApp {
                 card = peer.buildPropertySheetCard();
             }
             else {
-
                 card = new Adaptive.AdaptiveCard();
                 card.parse(
                     {
@@ -213,6 +213,8 @@ class DesignerApp {
                 );
             }
         
+            card.hostConfig = this._propertySheetHostConfig;
+            
             this.propertySheetHostElement.appendChild(card.render());
         }
     }
@@ -317,6 +319,15 @@ class DesignerApp {
         this.hostContainers.push(new SkypeContainer("Skype (Preview)", "css/skype-container.css"));
     }
 
+    private rebuildElementTree() {
+        let elementTreeHost = document.getElementById("elementTreeHost");
+        elementTreeHost.innerHTML = "";
+    
+        if (this.designer.rootPeer) {
+            elementTreeHost.appendChild(this.designer.rootPeer.treeItem.render());
+        }
+    }
+
     private recreateDesigner() {
         let styleSheetLinkElement = <HTMLLinkElement>document.getElementById("adaptiveCardStylesheet");
     
@@ -349,6 +360,36 @@ class DesignerApp {
         this._designer.onLayoutUpdated = (isFullRefresh: boolean) => {
             if (isFullRefresh) {
                 scheduleJsonUpdate();
+            }
+
+            this.rebuildElementTree();
+        };
+        this._designer.onCardValidated = (errors: Array<Adaptive.IValidationError>) => {
+            let errorPane = document.getElementById("errorPane");
+            errorPane.innerHTML = "";
+
+            if (errors.length > 0) {
+                let errorMessages: Array<string> = [];
+
+                for (let error of errors) {
+                    if (errorMessages.indexOf(error.message) < 0) {
+                        errorMessages.push(error.message);
+                    }
+                }
+
+                for (let message of errorMessages) {
+                    let errorElement = document.createElement("div");
+                    errorElement.style.overflow = "hidden";
+                    errorElement.style.textOverflow = "ellipsis";
+                    errorElement.innerText = message;
+
+                    errorPane.appendChild(errorElement);
+                }
+
+                errorPane.style.display = null;
+            }
+            else {
+                errorPane.style.display = "none";
             }
         };
         this._designer.onCardValidated = (errors: Array<Adaptive.IValidationError>) => {
@@ -400,6 +441,133 @@ class DesignerApp {
     commandListHostElement: HTMLElement;
 
     constructor(designerHostElement: HTMLElement) {
+        this._propertySheetHostConfig = new Adaptive.HostConfig(
+            {
+                preExpandSingleShowCardAction: true,
+                supportsInteractivity: true,
+                fontFamily: "Segoe UI",
+                spacing: {
+                    small: 10,
+                    default: 20,
+                    medium: 30,
+                    large: 40,
+                    extraLarge: 50,
+                    padding: 20
+                },
+                separator: {
+                    lineThickness: 1,
+                    lineColor: "#EEEEEE"
+                },
+                fontSizes: {
+                    small: 12,
+                    default: 14,
+                    medium: 17,
+                    large: 21,
+                    extraLarge: 26
+                },
+                fontWeights: {
+                    lighter: 200,
+                    default: 400,
+                    bolder: 600
+                },
+                imageSizes: {
+                    small: 40,
+                    medium: 80,
+                    large: 160
+                },
+                containerStyles: {
+                    default: {
+                        backgroundColor: "#00000000",
+                        foregroundColors: {
+                            default: {
+                                default: "#333333",
+                                subtle: "#EE333333"
+                            },
+                            accent: {
+                                default: "#2E89FC",
+                                subtle: "#882E89FC"
+                            },
+                            attention: {
+                                default: "#cc3300",
+                                subtle: "#DDcc3300"
+                            },
+                            good: {
+                                default: "#54a254",
+                                subtle: "#DD54a254"
+                            },
+                            warning: {
+                                default: "#e69500",
+                                subtle: "#DDe69500"
+                            }
+                        }
+                    },
+                    emphasis: {
+                        backgroundColor: "#08000000",
+                        foregroundColors: {
+                            default: {
+                                default: "#333333",
+                                subtle: "#EE333333"
+                            },
+                            accent: {
+                                default: "#2E89FC",
+                                subtle: "#882E89FC"
+                            },
+                            attention: {
+                                default: "#cc3300",
+                                subtle: "#DDcc3300"
+                            },
+                            good: {
+                                default: "#54a254",
+                                subtle: "#DD54a254"
+                            },
+                            warning: {
+                                default: "#e69500",
+                                subtle: "#DDe69500"
+                            }
+                        }
+                    }
+                },
+                actions: {
+                    maxActions: 5,
+                    spacing: Adaptive.Spacing.Default,
+                    buttonSpacing: 10,
+                    showCard: {
+                        actionMode: Adaptive.ShowCardActionMode.Inline,
+                        inlineTopMargin: 16
+                    },
+                    actionsOrientation: Adaptive.Orientation.Horizontal,
+                    actionAlignment: Adaptive.ActionAlignment.Left
+                },
+                adaptiveCard: {
+                    allowCustomStyle: true
+                },
+                imageSet: {
+                    imageSize: Adaptive.Size.Medium,
+                    maxImageHeight: 100
+                },
+                factSet: {
+                    title: {
+                        color: Adaptive.TextColor.Default,
+                        size: Adaptive.TextSize.Default,
+                        isSubtle: false,
+                        weight: Adaptive.TextWeight.Bolder,
+                        wrap: true,
+                        maxWidth: 150,
+                    },
+                    value: {
+                        color: Adaptive.TextColor.Default,
+                        size: Adaptive.TextSize.Default,
+                        isSubtle: false,
+                        weight: Adaptive.TextWeight.Default,
+                        wrap: true,
+                    },
+                    spacing: 10
+                }
+            }
+        );
+            
+        this._propertySheetHostConfig.cssClassNamePrefix = "default";
+
         this._designerHostElement = designerHostElement;
 
         this.addContainers();
@@ -582,24 +750,31 @@ class Splitter {
 }
 
 var app: DesignerApp;
-var horizontalSplitter: Splitter;
-var verticalSplitter: Splitter;
+var jsonEditorSplitter: Splitter;
+var propertySheetSplitter: Splitter;
+var elementTreeSplitter: Splitter;
 
 window.onload = () => {
     document.getElementById("btnNewCard").onclick = (e) => {
         app.newCard();
     }
 
-    horizontalSplitter = new Splitter(document.getElementById("horizontalSplitter"), document.getElementById("jsonEditorHost"));
-    horizontalSplitter.onRezized = (splitter: Splitter) => {
+    jsonEditorSplitter = new Splitter(document.getElementById("horizontalSplitter"), document.getElementById("jsonEditorHost"));
+    jsonEditorSplitter.onRezized = (splitter: Splitter) => {
         if (isMonacoEditorLoaded) {
             monacoEditor.layout();
         }    
     }
 
-    verticalSplitter = new Splitter(document.getElementById("verticalSplitter"), document.getElementById("propertySheetHost"));
-    verticalSplitter.isVertical = true;
-    verticalSplitter.onRezized = (splitter: Splitter) => {
+    elementTreeSplitter = new Splitter(document.getElementById("elementTreeSplitter"), document.getElementById("elementTreeHost"));
+    elementTreeSplitter.isVertical = true;
+    elementTreeSplitter.onRezized = (splitter: Splitter) => {
+        scheduleLayoutUpdate();
+    }
+
+    propertySheetSplitter = new Splitter(document.getElementById("propertySheetSplitter"), document.getElementById("propertySheetHost"));
+    propertySheetSplitter.isVertical = true;
+    propertySheetSplitter.onRezized = (splitter: Splitter) => {
         scheduleLayoutUpdate();
     }
 

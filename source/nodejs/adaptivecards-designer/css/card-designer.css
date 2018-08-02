@@ -18,6 +18,55 @@
     content: "\ECAB";
 }
 
+.acd-icon-chevronDown::before {
+    content: "\E70D";
+}
+
+.acd-icon-chevronUp::before {
+    content: "\E70E";
+}
+
+.acd-icon-chevronRight::before {
+    content: "\E76C";
+}
+
+.acd-icon-chevronLeft::before {
+    content: "\E76B";
+}
+
+.acd-tree-item-label {
+    cursor: pointer;
+}
+
+.acd-tree-item-label.selected {
+    background-color: #BCE2FF;
+}
+
+.acd-tree-item-label:hover {
+    background-color: #EEEEEE;
+}
+
+.acd-tree-item-label.selected:hover {
+    background-color: #A3D8FF;
+}
+
+.acd-tree-item-expandCollapseButton {
+    font-family: 'FabricMDL2Icons';
+    font-size: 10px;
+}
+
+.acd-tree-item-text {
+    user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    padding: 4px 4px 4px 8px;
+}
+
+.acd-tree-item-text-additionalText {
+    color: gray;
+}
+
 .acd-designersurface {
     outline: none;
 }
