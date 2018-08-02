@@ -71,7 +71,9 @@ namespace AdaptiveCards
         {
             var jObject = JObject.Load(reader);
 
-            var typeName = jObject["type"]?.Value<string>() ?? jObject["@type"]?.Value<string>();
+            var typeName = jObject["type"]?.Value<string>() ?? jObject["@type"]?.Value<string>()
+                // Try to use objectType
+                ?? (objectType == typeof(AdaptiveColumn) ? AdaptiveColumn.TypeName : null);
             if (typeName == null)
             {
                 throw new AdaptiveSerializationException("Required property 'type' not found on adaptive card element");

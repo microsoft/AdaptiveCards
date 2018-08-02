@@ -315,5 +315,44 @@ namespace AdaptiveCards.Test
             Assert.AreEqual("Hello", card.Speak);
 
         }
+
+        [TestMethod]
+        public void ColumnTypeNotRequired()
+        {
+            var json = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.0"",
+  ""body"": [
+    {
+      ""type"": ""ColumnSet"",
+      ""columns"": [
+        {
+          ""items"": [
+            {
+              ""type"": ""Image"",
+              ""url"": ""http://3.bp.blogspot.com/-Xo0EuTNYNQg/UEI1zqGDUTI/AAAAAAAAAYE/PLYx5H4J4-k/s1600/smiley+face+super+happy.jpg"",
+              ""size"": ""stretch""
+            }
+          ]
+        },
+        {
+          ""width"": ""stretch"",
+          ""items"": [
+            {
+              ""type"": ""TextBlock"",
+              ""text"": ""This card has two ColumnSets on top of each other. In each, the left column is explicitly sized to be 50 pixels wide."",
+              ""wrap"": true
+            }
+          ]
+        }
+       ]
+    }
+  ]
+}";
+
+            var result = AdaptiveCard.FromJson(json);
+
+            Assert.IsNotNull(result.Card);
+        }
     }
 }
