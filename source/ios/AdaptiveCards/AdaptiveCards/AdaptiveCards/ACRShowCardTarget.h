@@ -11,12 +11,8 @@
 #import "ACRLongPressGestureRecognizerEventHandler.h"
 #import "ACRView.h"
 #import "ShowCardAction.h"
-#import "ACRShowCardVisibilityHandler.h"
 
 @interface ACRShowCardTarget:NSObject<ACRSelectActionDelegate>
-
-@property (weak) id<ACRShowCardVisibilityHandler> acrShowCardVisibilityDelegate;
-
 
 - (instancetype)initWithActionElement:(std::shared_ptr<AdaptiveCards::ShowCardAction> const &)showCardActionElement
                                config:(ACOHostConfig *)config
