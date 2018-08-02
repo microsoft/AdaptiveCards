@@ -31,4 +31,12 @@
     [self.stackView addArrangedSubview:view];
 }
 
+- (UIView *)addPaddingSpace
+{
+    UIView *blankTrailingSpace = [[UIView alloc] init];
+    [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+    [self addArrangedSubview:blankTrailingSpace];
+    return blankTrailingSpace;
+}
+
 @end

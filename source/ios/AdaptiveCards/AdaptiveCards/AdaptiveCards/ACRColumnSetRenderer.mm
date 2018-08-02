@@ -15,6 +15,9 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACRView.h"
+#import "Column.h"
+#import "ACRColumnRenderer.h"
+#import "Enums.h"
 
 @implementation ACRColumnSetRenderer
 
@@ -43,7 +46,7 @@
     [columnSetView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     [columnSetView setStyle:[viewGroup style]];
 
-    ACRBaseCardElementRenderer *columRenderer =
+    ACRBaseCardElementRenderer *columnRenderer =
         [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInt:(int)CardElementType::Column]] ;
     std::vector<std::shared_ptr<Column>> columns = columnSetElem->GetColumns();
 
@@ -51,7 +54,15 @@
     float relativeColumnWidth = 0, prevRelColumnWidth = 0;
     float multiplier = 1.0;
     NSMutableArray *constraints = [[NSMutableArray alloc] init];
-
+    
+    ACRColumnRenderer *castedRenderer = (ACRColumnRenderer *)columnRenderer;
+    for(std::shared_ptr<Column> column:columns)
+    {
+        if(column->GetVerticalContentAlignment() != VerticalContentAlignment::Top) {
+            castedRenderer.fillAlignment = YES;
+        }
+    }
+    
     ACOBaseCardElement *acoColumn = [[ACOBaseCardElement alloc] init];
     auto firstColumn = columns.begin();
     for(std::shared_ptr<Column> column:columns)
@@ -60,7 +71,7 @@
             [ACRSeparator renderSeparation:column forSuperview:columnSetView withHostConfig:config];
         }
         [acoColumn setElem:column];
-        curView = (ACRColumnView *)[columRenderer render:columnSetView rootView:rootView inputs:inputs baseCardElement:acoColumn hostConfig:acoConfig];
+        curView = (ACRColumnView *)[columnRenderer render:columnSetView rootView:rootView inputs:inputs baseCardElement:acoColumn hostConfig:acoConfig];
 
         // when stretch, views with stretch properties should have equal width
         if(curView.pixelWidth){
@@ -102,7 +113,7 @@
                     prevRelColumnWidth = relativeColumnWidth;
                 }
 
-                if(curView.hasStretchableView){
+                if(curView.hasStretchableView || (columnSetElem->GetHeight() == HeightType::Stretch)){
                     [columnSetView setAlignmentForColumnStretch];
                 }
 
@@ -117,6 +128,8 @@
         }
     }
 
+    castedRenderer.fillAlignment = NO;
+    
     if([constraints count]) [columnSetView addConstraints:constraints];
 
     [columnSetView adjustHuggingForLastElement];

@@ -9,6 +9,8 @@
 
 @interface ACRColumnRenderer:ACRBaseCardElementRenderer
 
+@property BOOL fillAlignment;
+
 + (ACRColumnRenderer *)getInstance;
 
 @end

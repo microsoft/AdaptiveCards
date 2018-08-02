@@ -38,14 +38,36 @@
 
     ACRColumnView *container = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)containerElem->GetStyle()
                                                         parentStyle:[viewGroup style] hostConfig:acoConfig];
+
+    UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
+    if(containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom){
+        leadingBlankSpace = [container addPaddingSpace];
+    }
+    
     container.frame = viewGroup.frame;
+
     [ACRRenderer render:container
                rootView:rootView
                  inputs:inputs
           withCardElems:containerElem->GetItems()
           andHostConfig:acoConfig];
-
+    
+    // Dont add the trailing space if the vertical content alignment is top/default
+    if(containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && !(container.hasStretchableView))){
+        trailingBlankSpace = [container addPaddingSpace];
+    }
+    
     [viewGroup addArrangedSubview:container];
+        
+    if(leadingBlankSpace != nil && trailingBlankSpace != nil){
+        [NSLayoutConstraint constraintWithItem:leadingBlankSpace
+                                     attribute:NSLayoutAttributeHeight
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:trailingBlankSpace
+                                     attribute:NSLayoutAttributeHeight
+                                    multiplier:1.0
+                                      constant:0].active = YES;
+    }
 
     std::shared_ptr<BaseActionElement> selectAction = containerElem->GetSelectAction();
     // instantiate and add tap gesture recognizer
