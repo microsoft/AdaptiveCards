@@ -12,8 +12,11 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    CGFloat radius = self.bounds.size.width / 2.0;
-    [self.layer setCornerRadius:radius];
+    if(_isPersonStyle) {
+        CGFloat radius = self.bounds.size.width / 2.0;
+        [self.layer setCornerRadius:radius];
+        [self.layer setMasksToBounds:YES];
+    }
 }
 
 @end
