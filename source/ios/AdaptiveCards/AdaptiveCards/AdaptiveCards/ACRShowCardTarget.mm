@@ -114,7 +114,7 @@
     BOOL hidden = _adcView.hidden;
     [_superview hideAllShowCards];
     _adcView.hidden = (hidden == YES)? NO: YES;
-    [self.acrShowCardVisibilityDelegate didChangedVisibility:_button isVisible:(!_adcView.hidden)];
+    [self.acrShowCardVisibilityDelegate didChangeVisibility:_button isVisible:(!_adcView.hidden)];
     [_rootView.acrActionDelegate didFetchUserResponses:[_rootView card] action:_actionElement];
 }
 
@@ -126,9 +126,7 @@
 - (void)hideShowCard
 {
     _adcView.hidden = YES;
-    [self.acrShowCardVisibilityDelegate didChangedVisibility:_button isVisible:NO];
+    [self.acrShowCardVisibilityDelegate didChangeVisibility:_button isVisible:NO];
 }
-
-
 
 @end

@@ -15,7 +15,7 @@
 
 @protocol ACRShowCardVisibilityHandler <NSObject>
 
-- (void) didChangedVisibility:(UIButton*)button isVisible:(BOOL)isVisible;
+- (void) didChangeVisibility:(UIButton*)button isVisible:(BOOL)isVisible;
 
 @end
 
