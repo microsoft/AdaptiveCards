@@ -11,13 +11,18 @@
 #import "ACRLongPressGestureRecognizerEventHandler.h"
 #import "ACRView.h"
 #import "ShowCardAction.h"
+#import "ACRShowCardVisibilityHandler.h"
 
 @interface ACRShowCardTarget:NSObject<ACRSelectActionDelegate>
+
+@property (weak) id<ACRShowCardVisibilityHandler> acrShowCardVisibilityDelegate;
+
 
 - (instancetype)initWithActionElement:(std::shared_ptr<AdaptiveCards::ShowCardAction> const &)showCardActionElement
                                config:(ACOHostConfig *)config
                             superview:(UIView<ACRIContentHoldingView> *)superview
-                             rootView:(ACRView *)rootView;
+                             rootView:(ACRView *)rootView
+                               button:(UIButton *)button;
 
 - (void)createShowCard:(NSMutableArray*)inputs;
 

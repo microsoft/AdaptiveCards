@@ -42,7 +42,7 @@ using namespace AdaptiveCards;
             {
                 std::shared_ptr<ShowCardAction> showCardAction = std::dynamic_pointer_cast<ShowCardAction>(action);
                 // instantiate a ShowCardTarget
-                target = [[ACRShowCardTarget alloc] initWithActionElement:showCardAction config:config superview:viewGroup rootView:rootView];
+                target = [[ACRShowCardTarget alloc] initWithActionElement:showCardAction config:config superview:viewGroup rootView:rootView button:nil];
                 break;
             }
             // everything else is not valid request

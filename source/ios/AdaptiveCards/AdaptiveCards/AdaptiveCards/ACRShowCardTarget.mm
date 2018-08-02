@@ -22,6 +22,7 @@
     __weak UIView<ACRIContentHoldingView> *_superview;
     __weak ACRView *_rootView;
     __weak UIView *_adcView;
+    __weak UIButton *_button;
     ACOBaseActionElement *_actionElement;
 }
 
@@ -29,6 +30,7 @@
                               config:(ACOHostConfig *)config
                            superview:(UIView<ACRIContentHoldingView> *)superview
                             rootView:(ACRView *)rootView
+                               button:(UIButton *)button
 {
     self = [super init];
     if(self)
@@ -38,6 +40,7 @@
         _superview = superview;
         _rootView = rootView;
         _adcView = nil;
+        _button = button;
         std::shared_ptr<ShowCardAction> showCardAction = std::make_shared<ShowCardAction>();
         showCardAction->SetCard(showCardActionElement->GetCard());
         _actionElement = [[ACOBaseActionElement alloc]initWithBaseActionElement:std::dynamic_pointer_cast<BaseActionElement>(showCardAction)];
@@ -111,6 +114,7 @@
     BOOL hidden = _adcView.hidden;
     [_superview hideAllShowCards];
     _adcView.hidden = (hidden == YES)? NO: YES;
+    [self.acrShowCardVisibilityDelegate didChangedVisibility:_button isVisible:(!_adcView.hidden)];
     [_rootView.acrActionDelegate didFetchUserResponses:[_rootView card] action:_actionElement];
 }
 
@@ -122,6 +126,9 @@
 - (void)hideShowCard
 {
     _adcView.hidden = YES;
+    [self.acrShowCardVisibilityDelegate didChangedVisibility:_button isVisible:NO];
 }
+
+
 
 @end
