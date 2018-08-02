@@ -44,7 +44,6 @@ import java.io.IOException;
 
 import io.adaptivecards.renderer.IMediaDownloadListener;
 import io.adaptivecards.renderer.IOnlineMediaLoader;
-import io.adaptivecards.renderer.OnlineMediaLoader;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 /**
