@@ -19,6 +19,7 @@
 #import "ACRViewPrivate.h"
 #import "ACRViewController.h"
 #import "ACRContentHoldingUIScrollView.h"
+#import "ACRLongPressGestureRecognizerFactory.h"
 
 using namespace AdaptiveCards;
 
@@ -66,6 +67,16 @@ using namespace AdaptiveCards;
     std::vector<std::shared_ptr<BaseCardElement>> body = adaptiveCard->GetBody();
     ACRColumnView *verticalView = containingView;
 
+    std::shared_ptr<BaseActionElement> selectAction = adaptiveCard->GetSelectAction();
+    if(selectAction) {
+        // instantiate and add tap gesture recognizer
+        [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:verticalView
+                                                                           rootView:rootView
+                                                                      recipientView:verticalView
+                                                                      actionElement:selectAction
+                                                                         hostConfig:config];
+    }
+
     if(![[ACRRegistration getInstance] isElementRendererOverriden:[ACRImageRenderer elemType]]){
         [rootView loadImage:adaptiveCard->GetBackgroundImage()];
         [rootView loadImage:[config getHostConfig]->media.playButton];
@@ -89,14 +100,14 @@ using namespace AdaptiveCards;
         if( adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center || adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom ){
             leadingBlankSpace = [verticalView addPaddingSpace];
         }
-        
+
         [ACRRenderer render:verticalView rootView:rootView inputs:inputs withCardElems:body andHostConfig:config];
 
         // Dont add the trailing space if the vertical content alignment is top/default
         if( adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Top && !(verticalView.hasStretchableView))){
             trailingBlankSpace = [verticalView addPaddingSpace];
         }
-        
+
         [[rootView card] setInputs:inputs];
 
         if(!actions.empty()) {
