@@ -43,6 +43,12 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public ShowCardConfig ShowCard { get; set; } = new ShowCardConfig();
+
+        /// <summary>
+        /// Position of Icon relative to Title
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public AdaptiveIconPlacement IconPlacement { get; set; } = new AdaptiveIconPlacement();
     }
 
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
@@ -88,4 +94,17 @@ namespace AdaptiveCards.Rendering
         Vertical
     }
 
+    [JsonConverter(typeof(StringEnumConverter), true)]
+    public enum AdaptiveIconPlacement
+    {
+        /// <summary>
+        /// Places the icons about the text in actions
+        /// </summary>
+        AboveTitle,
+
+        /// <summary>
+        /// Place the icon to the left of the text in actions
+        /// </summary>
+        LeftOfTitle
+    }
 }

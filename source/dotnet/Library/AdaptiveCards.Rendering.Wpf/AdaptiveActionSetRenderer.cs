@@ -54,7 +54,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 List<FrameworkElement> actionBarCards = new List<FrameworkElement>();
 
                 // See if all actions have icons, otherwise force the icon placement to the left
-                var oldConfigIconPlacement = context.Config.IconPlacement.IconPlacement;
+                var oldConfigIconPlacement = actionsConfig.IconPlacement;
                 bool allActionsHaveIcons = true;
                 foreach (var action in actionsToProcess)
                 {
@@ -67,7 +67,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 if (!allActionsHaveIcons)
                 {
-                    context.Config.IconPlacement.IconPlacement = AdaptiveIconPlacement.LeftOfTitle;
+                    actionsConfig.IconPlacement = AdaptiveIconPlacement.LeftOfTitle;
                 }
 
                 foreach (var action in actionsToProcess)
@@ -130,7 +130,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 }
 
                 // Restore the iconPlacement for the context.
-                context.Config.IconPlacement.IconPlacement = oldConfigIconPlacement;
+                actionsConfig.IconPlacement = oldConfigIconPlacement;
             }
         }
     }
