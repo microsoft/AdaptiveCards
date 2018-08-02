@@ -385,11 +385,14 @@ namespace AdaptiveCards.Rendering.Html
                 }
                 else
                 {
-                    double val;
-                    if (double.TryParse(width, out val))
+                    if (double.TryParse(width, out double val) && val >= 0)
                     {
                         var percent = Convert.ToInt32(100 * (val / max));
                         uiColumn = uiColumn.Style("flex", $"1 1 {percent}%");
+                    }
+                    else if (width.EndsWith("px") && double.TryParse(width.Substring(0, width.Length-2), out double pxVal) && pxVal >= 0)
+                    {
+                        uiColumn = uiColumn.Style("flex", $"0 0 {(int)pxVal}px");
                     }
                     else
                     {
