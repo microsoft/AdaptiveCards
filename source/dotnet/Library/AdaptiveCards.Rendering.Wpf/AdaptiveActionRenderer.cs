@@ -27,17 +27,61 @@ namespace AdaptiveCards.Rendering.Wpf
                 //HorizontalAlignment = HorizontalAlignment.Stretch,
                 Style = context.GetStyle($"Adaptive.{action.Type}"),
                 Padding = new Thickness(6, 4, 6, 4),
-                Content = new TextBlock
-                {
-                    Text = action.Title,
-                    FontSize = context.Config.FontSizes.Default,
-                    Style = context.GetStyle($"Adaptive.Action.Title")
-                }
             };
 
+            var contentStackPanel = new StackPanel();
+            uiButton.Content = contentStackPanel;
+            FrameworkElement uiIcon = null;
+
+            if (action.IconUrl != null)
+            {
+                if (context.Config.IconPlacement.IconPlacement == AdaptiveIconPlacement.AboveTitle)
+                {
+                    contentStackPanel.Orientation = Orientation.Vertical;
+                }
+                else
+                {
+                    contentStackPanel.Orientation = Orientation.Horizontal;
+                }
+                var image = new AdaptiveImage(action.IconUrl)
+                {
+                    HorizontalAlignment = AdaptiveHorizontalAlignment.Center
+                };
+                uiIcon = AdaptiveImageRenderer.Render(image, context);
+                contentStackPanel.Children.Add(uiIcon);
+
+                // Add spacing for the icon for horizontal actions
+                if (context.Config.IconPlacement.IconPlacement == AdaptiveIconPlacement.LeftOfTitle)
+                {
+                    int spacing = context.Config.GetSpacing(AdaptiveSpacing.Default);
+                    var uiSep = new Grid
+                    {
+                        Style = context.GetStyle($"Adaptive.VerticalSeparator"),
+                        VerticalAlignment = VerticalAlignment.Stretch,
+                        Width = spacing,
+                    };
+                    contentStackPanel.Children.Add(uiSep);
+                }
+            }
+
+            var uiTitle = new TextBlock
+            {
+                Text = action.Title,
+                FontSize = context.Config.FontSizes.Default,
+                Style = context.GetStyle($"Adaptive.Action.Title")
+            };
+            contentStackPanel.Children.Add(uiTitle);
+
+            //Size the image to the textblock, wait until layout is complete (loaded event)
+            if (uiIcon != null)
+            {
+                uiIcon.Loaded += (sender, e) =>
+                {
+                    uiIcon.Height = uiTitle.ActualHeight;
+                };
+            }
             string name = context.GetType().Name.Replace("Action", String.Empty);
             return uiButton;
-
         }
     }
 }

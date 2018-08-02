@@ -38,6 +38,9 @@ namespace AdaptiveCards.Rendering
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public SeparatorConfig Separator { get; set; } = new SeparatorConfig();
 
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public IconPlacementConfig IconPlacement { get; set; } = new IconPlacementConfig();
+
         /// <summary>
         /// Toggles whether or not to render inputs and actions
         /// </summary>
@@ -93,6 +96,4 @@ namespace AdaptiveCards.Rendering
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
     }
-
 }
-
