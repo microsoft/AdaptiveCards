@@ -50,6 +50,11 @@ namespace AdaptiveCards.Rendering.Wpf
                     HorizontalAlignment = AdaptiveHorizontalAlignment.Center
                 };
                 uiIcon = AdaptiveImageRenderer.Render(image, context);
+                if (actionsConfig.IconSize != null)
+                {
+                    uiIcon.Width = (double)actionsConfig.IconSize;
+                    uiIcon.Height = (double)actionsConfig.IconSize;
+                }
                 contentStackPanel.Children.Add(uiIcon);
 
                 // Add spacing for the icon for horizontal actions

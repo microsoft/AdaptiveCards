@@ -22,7 +22,6 @@ namespace AdaptiveCards.Rendering
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public AdaptiveHorizontalAlignment ActionAlignment { get; set; } = AdaptiveHorizontalAlignment.Stretch;
 
-
         /// <summary>
         /// Space between actions
         /// </summary>
@@ -49,6 +48,12 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public AdaptiveIconPlacement IconPlacement { get; set; } = new AdaptiveIconPlacement();
+
+        /// <summary>
+        /// Size of Icon
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int? IconSize { get; set; }
     }
 
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
