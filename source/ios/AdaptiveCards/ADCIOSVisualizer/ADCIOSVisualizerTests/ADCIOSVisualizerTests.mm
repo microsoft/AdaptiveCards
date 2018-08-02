@@ -70,6 +70,23 @@
     }
 }
 
+- (void)testRelativeURLInformation {
+    NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"Image.ImageBaseUrl" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
+    ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
+    if(cardParseResult.isValid){
+        ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card config:_defaultHostConfig widthConstraint:355];
+        NSMutableDictionary *dictionary = [renderResult.view getImageMap];
+        // host config base url is successfully parsed
+        XCTAssertTrue([_defaultHostConfig.baseURL.absoluteString isEqualToString:@"https://pbs.twimg.com/profile_images/3647943215/"]);
+        // url was parsed
+        XCTAssertTrue([dictionary.allValues count] == 1);
+        for(UIImage *image in dictionary.allValues){
+            // image was downloaded using the relative url
+            XCTAssertNotNil(image);
+        }
+    }
+}
+
 - (void)testPerformanceExample {
     // This is an example of a performance test case.
     [self measureBlock:^{

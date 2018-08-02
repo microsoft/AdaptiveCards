@@ -372,6 +372,11 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     NSString *nSUrlStr = [NSString stringWithCString:urlStr.c_str()
                                           encoding:[NSString defaultCStringEncoding]];
     NSURL *url = [NSURL URLWithString:nSUrlStr];
+    // if url is nil, try again with adding base url from host config
+    if([url.relativePath isEqualToString:nSUrlStr]) {
+        url = [NSURL URLWithString:nSUrlStr relativeToURL:_hostConfig.baseURL];
+    }
+    
     NSObject<ACOIResourceResolver> *imageResourceResolver = [_hostConfig getResourceResolverForScheme:[url scheme]];
     ImageLoadBlock imageloadblock = nil;
     if(!imageResourceResolver || ![imageResourceResolver respondsToSelector:@selector(resolveImageResource:)]) {
