@@ -422,11 +422,13 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     @Override
     public void onMediaPlay(BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard)
     {
+        showToast("Media started: " + mediaElement, Toast.LENGTH_LONG);
     }
 
     @Override
     public void onMediaStop(BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard)
     {
+        showToast("Media ended playing: " + mediaElement, Toast.LENGTH_LONG);
     }
 
     public void showToast(String text, int duration)
