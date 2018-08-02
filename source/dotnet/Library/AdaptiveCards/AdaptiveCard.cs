@@ -251,6 +251,7 @@ namespace AdaptiveCards
             }
 
             // Get all images in ShowCard actions
+            // TODO: Add resource information for iconUrl after it's added
             foreach (AdaptiveAction action in card.Actions)
             {
                 if (action is AdaptiveShowCardAction showCardAction)
