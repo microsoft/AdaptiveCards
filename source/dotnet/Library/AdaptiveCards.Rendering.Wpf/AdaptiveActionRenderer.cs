@@ -37,7 +37,7 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 var actionsConfig = context.Config.Actions;
 
-                if (actionsConfig.IconPlacement == AdaptiveIconPlacement.AboveTitle)
+                if (actionsConfig.IconPlacement == IconPlacement.AboveTitle)
                 {
                     contentStackPanel.Orientation = Orientation.Vertical;
                 }
@@ -58,7 +58,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 contentStackPanel.Children.Add(uiIcon);
 
                 // Add spacing for the icon for horizontal actions
-                if (actionsConfig.IconPlacement == AdaptiveIconPlacement.LeftOfTitle)
+                if (actionsConfig.IconPlacement == IconPlacement.LeftOfTitle)
                 {
                     int spacing = context.Config.GetSpacing(AdaptiveSpacing.Default);
                     var uiSep = new Grid

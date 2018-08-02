@@ -108,14 +108,56 @@ namespace AdaptiveCards.Rendering.Html
         {
             if (context.Config.SupportsInteractivity)
             {
-                var buttonElement = new HtmlTag("button", false) { Text = action.Title }
+                var actionsConfig = context.Config.Actions;
+                var buttonElement = new HtmlTag("button", false)
                     .Attr("type", "button")
                     .Style("overflow", "hidden")
                     .Style("white-space", "nowrap")
                     .Style("text-overflow", "ellipsis")
                     .Style("flex",
-                        context.Config.Actions.ActionAlignment == AdaptiveHorizontalAlignment.Stretch ? "0 1 100%" : "0 1 auto")
+                        actionsConfig.ActionAlignment == AdaptiveHorizontalAlignment.Stretch ? "0 1 100%" : "0 1 auto")
+                    .Style("display", "flex")
+                    .Style("align-items", "center")
+                    .Style("justify-content", "center")
                     .AddClass("ac-pushButton");
+
+                var hasTitle = !string.IsNullOrEmpty(action.Title);
+
+                if (action.IconUrl != null)
+                {
+                    // Append the icon to the button
+                    var iconElement = new HtmlTag("image", false)
+                        .Attr("src", action.IconUrl);
+                    if (actionsConfig.IconSize != null)
+                    {
+                        iconElement.Style("max-width", $"{actionsConfig.IconSize}px");
+                        iconElement.Style("max-height", $"{actionsConfig.IconSize}px");
+                    }
+
+                    if (actionsConfig.IconPlacement == IconPlacement.LeftOfTitle)
+                    {
+                        buttonElement.Style("flex-direction", "row");
+
+                        if (hasTitle)
+                        {
+                            iconElement.Style("margin-right", "4px");
+                        }
+                    }
+                    else
+                    {
+                        buttonElement.Style("flex-direction", "column");
+
+                        if (hasTitle)
+                        {
+                            iconElement.Style("margin-bottom", "4px");
+                        }
+                    }
+
+                    buttonElement.Append(iconElement);
+                }
+
+                var titleElement = new HtmlTag("div", false) { Text = action.Title };
+                buttonElement.Append(titleElement);
 
                 AddActionAttributes(action, buttonElement, context);
                 return buttonElement;

@@ -47,13 +47,13 @@ namespace AdaptiveCards.Rendering
         /// Position of Icon relative to Title
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public AdaptiveIconPlacement IconPlacement { get; set; } = new AdaptiveIconPlacement();
+        public IconPlacement IconPlacement { get; set; } = new IconPlacement();
 
         /// <summary>
         /// Size of Icon
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public int? IconSize { get; set; }
+        public int? IconSize { get; set; } = 24;
     }
 
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
@@ -100,7 +100,7 @@ namespace AdaptiveCards.Rendering
     }
 
     [JsonConverter(typeof(StringEnumConverter), true)]
-    public enum AdaptiveIconPlacement
+    public enum IconPlacement
     {
         /// <summary>
         /// Places the icons about the text in actions

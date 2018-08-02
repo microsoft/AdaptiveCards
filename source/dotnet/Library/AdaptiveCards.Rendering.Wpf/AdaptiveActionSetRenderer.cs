@@ -67,7 +67,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 if (!allActionsHaveIcons)
                 {
-                    actionsConfig.IconPlacement = AdaptiveIconPlacement.LeftOfTitle;
+                    actionsConfig.IconPlacement = IconPlacement.LeftOfTitle;
                 }
 
                 foreach (var action in actionsToProcess)
