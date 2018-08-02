@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -139,9 +140,16 @@ public class ImageRenderer extends BaseCardElementRenderer
 
         String imageBackgroundColor = image.GetBackgroundColor();
         int backgroundColor = -1;
-        if(!imageBackgroundColor.isEmpty())
+        if(!TextUtils.isEmpty(imageBackgroundColor))
         {
-            backgroundColor = Color.parseColor(imageBackgroundColor);
+            try
+            {
+                backgroundColor = Color.parseColor(imageBackgroundColor);
+            }
+            catch(IllegalArgumentException e)
+            {
+                throw new IllegalArgumentException("Unable to parse image background color: " + imageBackgroundColor);
+            }
         }
 
         if(image.GetImageStyle() != ImageStyle.Person)
