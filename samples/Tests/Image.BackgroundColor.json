@@ -1,0 +1,20 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+	    {
+	        "type": "Image",
+	        "size": "medium",
+	        "url": "http://adaptivecards.io/content/cats/1.png",
+	        "backgroundColor": "#00A1F1"
+	    },
+	    {
+	        "type": "Image",
+	        "size": "medium",
+	        "url": "http://adaptivecards.io/content/cats/1.png",
+	        "backgroundColor": "#F65314",
+	        "style": "person"
+	    }
+	]
+}

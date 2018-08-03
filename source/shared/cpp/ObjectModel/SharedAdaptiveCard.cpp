@@ -92,7 +92,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
 {
     ParseUtil::ThrowIfNotJsonObject(json);
 
-    bool enforceVersion = (rendererVersion != std::numeric_limits<double>::max());
+    const bool enforceVersion = (rendererVersion != std::numeric_limits<double>::max());
 
     // Verify this is an adaptive card
     ParseUtil::ExpectTypeString(json, CardElementType::AdaptiveCard);
@@ -146,11 +146,11 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
 
     if (elementParserRegistration == nullptr)
     {
-        elementParserRegistration.reset(new ElementParserRegistration());
+        elementParserRegistration = std::make_shared<ElementParserRegistration>();
     }
     if (actionParserRegistration == nullptr)
     {
-        actionParserRegistration.reset(new ActionParserRegistration());
+        actionParserRegistration = std::make_shared<ActionParserRegistration>();
     }
 
     // Parse body

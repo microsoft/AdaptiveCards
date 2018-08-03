@@ -67,18 +67,11 @@
 
     std::shared_ptr<BaseActionElement> selectAction = columnElem->GetSelectAction();
     // instantiate and add tap gesture recognizer
-    UILongPressGestureRecognizer * gestureRecognizer =
-        [ACRLongPressGestureRecognizerFactory getLongPressGestureRecognizer:viewGroup
-                                                                   rootView:rootView
-                                                                 targetView:column
-                                                              actionElement:selectAction
-                                                                     inputs:inputs
-                                                                 hostConfig:acoConfig];
-    if(gestureRecognizer)
-    {
-        [column addGestureRecognizer:gestureRecognizer];
-        column.userInteractionEnabled = YES;
-    }
+    [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:viewGroup
+                                                                       rootView:rootView
+                                                                  recipientView:column
+                                                                  actionElement:selectAction
+                                                                     hostConfig:acoConfig];
     
     if(leadingBlankSpace != nil && trailingBlankSpace != nil){
         [NSLayoutConstraint constraintWithItem:leadingBlankSpace
@@ -89,7 +82,6 @@
                                     multiplier:1.0
                                       constant:0].active = YES;
     }
-
     return column;
 }
 

@@ -18,7 +18,7 @@ namespace AdaptiveSharedNamespace {
         void AddTextToken(std::string const &text, DateTimePreparsedTokenFormat format);
         void AddDateToken(std::string const &text, struct tm date, DateTimePreparsedTokenFormat format);
         std::string Concatenate() const;
-        static bool IsValidTimeAndDate(const struct tm &parsedTm, int hours, int minutes);
+        static bool IsValidTimeAndDate(const struct tm &parsedTm, const int hours, const int minutes);
         void ParseDateTime(std::string const &in);
 
         std::vector<std::shared_ptr<DateTimePreparsedToken>> m_textTokenCollection;

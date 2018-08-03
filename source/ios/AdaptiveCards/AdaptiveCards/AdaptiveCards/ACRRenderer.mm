@@ -68,6 +68,7 @@ using namespace AdaptiveCards;
 
     if(![[ACRRegistration getInstance] isElementRendererOverriden:[ACRImageRenderer elemType]]){
         [rootView loadImage:adaptiveCard->GetBackgroundImage()];
+        [rootView loadImage:[config getHostConfig]->media.playButton];
     }
     if(!body.empty()) {
         ACRContainerStyle style = ([config getHostConfig]->adaptiveCard.allowCustomStyle)? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;

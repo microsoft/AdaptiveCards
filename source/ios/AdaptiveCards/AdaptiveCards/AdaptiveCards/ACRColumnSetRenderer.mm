@@ -138,18 +138,11 @@
 
     std::shared_ptr<BaseActionElement> selectAction = columnSetElem->GetSelectAction();
     // instantiate and add long press gesture recognizer
-    UILongPressGestureRecognizer * gestureRecognizer =
-        [ACRLongPressGestureRecognizerFactory getLongPressGestureRecognizer:viewGroup
-                                                                   rootView:rootView
-                                                                 targetView:columnSetView
-                                                              actionElement:selectAction
-                                                                     inputs:inputs
-                                                                 hostConfig:acoConfig];
-    if(gestureRecognizer)
-    {
-        [columnSetView addGestureRecognizer:gestureRecognizer];
-        columnSetView.userInteractionEnabled = YES;
-    }
+    [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:viewGroup
+                                                                       rootView:rootView
+                                                                  recipientView:columnSetView
+                                                                  actionElement:selectAction
+                                                                     hostConfig:acoConfig];
     return columnSetView;
 }
 

@@ -39,5 +39,4 @@
     [_view.acrActionDelegate didFetchUserResponses:[_view card] action:_actionElement];
 }
 
-
 @end
