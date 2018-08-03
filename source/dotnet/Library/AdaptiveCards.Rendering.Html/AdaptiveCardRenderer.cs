@@ -126,11 +126,12 @@ namespace AdaptiveCards.Rendering.Html
                 if (action.IconUrl != null)
                 {
                     // Append the icon to the button
+                    // NOTE: always using icon size since it's difficult
+                    // to match icon's height with text's height
                     var iconElement = new HtmlTag("image", false)
                         .Attr("src", action.IconUrl)
                         .Style("max-height", $"{actionsConfig.IconSize}px");
 
-                    // Todo: set the height of the icon to the height of the text
                     if (actionsConfig.IconPlacement == IconPlacement.LeftOfTitle)
                     {
                         buttonElement.Style("flex-direction", "row");
@@ -210,6 +211,7 @@ namespace AdaptiveCards.Rendering.Html
                 var uiButtonStrip = new DivTag()
                     .AddClass("ac-actionset")
                     .Style("display", "flex");
+                var actionsConfig = context.Config.Actions;
 
                 // TODO: This top marging is currently being double applied, will have to investigate later
                 //.Style("margin-top", $"{context.Config.GetSpacing(context.Config.Actions.Spacing)}px");
@@ -217,11 +219,11 @@ namespace AdaptiveCards.Rendering.Html
                 // contains ShowCardAction.AdaptiveCard
                 var showCards = new List<HtmlTag>();
 
-                if (context.Config.Actions.ActionsOrientation == ActionsOrientation.Horizontal)
+                if (actionsConfig.ActionsOrientation == ActionsOrientation.Horizontal)
                 {
                     uiButtonStrip.Style("flex-direction", "row");
 
-                    switch (context.Config.Actions.ActionAlignment)
+                    switch (actionsConfig.ActionAlignment)
                     {
                         case AdaptiveHorizontalAlignment.Center:
                             uiButtonStrip.Style("justify-content", "center");
@@ -237,7 +239,7 @@ namespace AdaptiveCards.Rendering.Html
                 else
                 {
                     uiButtonStrip.Style("flex-direction", "column");
-                    switch (context.Config.Actions.ActionAlignment)
+                    switch (actionsConfig.ActionAlignment)
                     {
                         case AdaptiveHorizontalAlignment.Center:
                             uiButtonStrip.Style("align-items", "center");
@@ -254,7 +256,24 @@ namespace AdaptiveCards.Rendering.Html
                     }
                 }
 
-                var maxActions = Math.Min(context.Config.Actions.MaxActions, actions.Count);
+                var maxActions = Math.Min(actionsConfig.MaxActions, actions.Count);
+                // See if all actions have icons, otherwise force the icon placement to the left
+                var oldConfigIconPlacement = actionsConfig.IconPlacement;
+                bool allActionsHaveIcons = true;
+                for (var i = 0; i < maxActions; i++)
+                {
+                    if (string.IsNullOrEmpty(actions[i].IconUrl))
+                    {
+                        allActionsHaveIcons = false;
+                        break;
+                    }
+                }
+
+                if (!allActionsHaveIcons)
+                {
+                    actionsConfig.IconPlacement = IconPlacement.LeftOfTitle;
+                }
+
                 for (var i = 0; i < maxActions; i++)
                 {
                     // add actions
@@ -272,7 +291,7 @@ namespace AdaptiveCards.Rendering.Html
                                     .AddClass("ac-showCard")
                                     .Style("padding", "0")
                                     .Style("display", "none")
-                                    .Style("margin-top", $"{context.Config.Actions.ShowCard.InlineTopMargin}px");
+                                    .Style("margin-top", $"{actionsConfig.ShowCard.InlineTopMargin}px");
 
                                 showCards.Add(uiCard);
                             }
@@ -281,18 +300,18 @@ namespace AdaptiveCards.Rendering.Html
                     }
 
                     // add spacer between buttons according to config
-                    if (i < maxActions - 1 && context.Config.Actions.ButtonSpacing > 0)
+                    if (i < maxActions - 1 && actionsConfig.ButtonSpacing > 0)
                     {
                         var uiSpacer = new DivTag();
 
-                        if (context.Config.Actions.ActionsOrientation == ActionsOrientation.Horizontal)
+                        if (actionsConfig.ActionsOrientation == ActionsOrientation.Horizontal)
                         {
                             uiSpacer.Style("flex", "0 0 auto");
-                            uiSpacer.Style("width", context.Config.Actions.ButtonSpacing + "px");
+                            uiSpacer.Style("width", actionsConfig.ButtonSpacing + "px");
                         }
                         else
                         {
-                            uiSpacer.Style("height", context.Config.Actions.ButtonSpacing + "px");
+                            uiSpacer.Style("height", actionsConfig.ButtonSpacing + "px");
                         }
                         uiButtonStrip.Children.Add(uiSpacer);
                     }
