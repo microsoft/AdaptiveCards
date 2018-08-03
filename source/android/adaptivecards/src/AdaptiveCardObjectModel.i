@@ -141,6 +141,7 @@ struct tm {
 %shared_ptr(AdaptiveCards::SubmitActionParser)
 %shared_ptr(AdaptiveCards::ImageSetParser)
 %shared_ptr(AdaptiveCards::DateInputParser)
+%shared_ptr(AdaptiveCards::DateTimePreparsedToken)
 %shared_ptr(AdaptiveCards::MediaSource)
 %shared_ptr(AdaptiveCards::Media)
 %shared_ptr(AdaptiveCards::MediaParser)
