@@ -547,6 +547,15 @@ HRESULT GenerateSharedSeparator(
 
 HRESULT GetColorFromString(std::string colorString, ABI::Windows::UI::Color *color) noexcept try
 {
+    // Expected format for color string: "#AARRGGBB"
+    // Other format is ignored (set alpha to 0)
+    if (colorString.length() != 9)
+    {
+        color->A = static_cast<BYTE>(0);
+
+        return S_OK;
+    }
+
     std::string alphaString = colorString.substr(1, 2);
     INT32 alpha = strtol(alphaString.c_str(), nullptr, 16);
 
