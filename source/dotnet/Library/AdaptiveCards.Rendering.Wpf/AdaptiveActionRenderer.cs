@@ -52,22 +52,16 @@ namespace AdaptiveCards.Rendering.Wpf
                 if (actionsConfig.IconPlacement == IconPlacement.AboveTitle)
                 {
                     contentStackPanel.Orientation = Orientation.Vertical;
-                    if (actionsConfig.IconSize != null)
-                    {
-                        uiIcon.Height = (double)actionsConfig.IconSize;
-                    }
+                    uiIcon.Height = (double)actionsConfig.IconSize;
                 }
                 else
                 {
                     contentStackPanel.Orientation = Orientation.Horizontal;
                     //Size the image to the textblock, wait until layout is complete (loaded event)
-                    if (uiIcon != null)
+                    uiIcon.Loaded += (sender, e) =>
                     {
-                        uiIcon.Loaded += (sender, e) =>
-                        {
-                            uiIcon.Height = uiTitle.ActualHeight;
-                        };
-                    }
+                        uiIcon.Height = uiTitle.ActualHeight;
+                    };
                 }
                 contentStackPanel.Children.Add(uiIcon);
 

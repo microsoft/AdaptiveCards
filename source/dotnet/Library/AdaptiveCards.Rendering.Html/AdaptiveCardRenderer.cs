@@ -127,11 +127,8 @@ namespace AdaptiveCards.Rendering.Html
                 {
                     // Append the icon to the button
                     var iconElement = new HtmlTag("image", false)
-                        .Attr("src", action.IconUrl);
-                    if (actionsConfig.IconPlacement == IconPlacement.AboveTitle)
-                    {
-                        iconElement.Style("max-height", $"{actionsConfig.IconSize}px");
-                    }
+                        .Attr("src", action.IconUrl)
+                        .Style("max-height", $"{actionsConfig.IconSize}px");
 
                     // Todo: set the height of the icon to the height of the text
                     if (actionsConfig.IconPlacement == IconPlacement.LeftOfTitle)
