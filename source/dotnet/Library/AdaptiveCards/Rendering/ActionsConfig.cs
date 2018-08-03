@@ -8,7 +8,7 @@ namespace AdaptiveCards.Rendering
     /// Properties which control rendering of actions
     /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class ActionsConfig 
+    public class ActionsConfig
     {
         /// <summary>
         /// Arrange actions horizontal or vertical
@@ -53,7 +53,7 @@ namespace AdaptiveCards.Rendering
         /// Size of Icon
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public int? IconSize { get; set; } = 24;
+        public int IconSize { get; set; } = 30;
     }
 
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
