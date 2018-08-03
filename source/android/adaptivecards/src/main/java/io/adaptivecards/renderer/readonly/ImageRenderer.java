@@ -4,9 +4,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,10 +55,11 @@ public class ImageRenderer extends BaseCardElementRenderer
 
     private class ImageRendererImageLoaderAsync extends InnerImageLoaderAsync
     {
-        ImageRendererImageLoaderAsync(RenderedAdaptiveCard renderedCard, ImageView imageView, String imageBaseUrl, ImageStyle imageStyle)
+        ImageRendererImageLoaderAsync(RenderedAdaptiveCard renderedCard, ImageView imageView, String imageBaseUrl, ImageStyle imageStyle, int backgroundColor)
         {
             super(renderedCard, imageView, imageBaseUrl);
             m_imageStyle = imageStyle;
+            m_backgroundColor = backgroundColor;
         }
 
         @Override
@@ -67,10 +71,16 @@ public class ImageRenderer extends BaseCardElementRenderer
                 BitmapShader shader = new BitmapShader(bitmap,  Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
                 Paint paint = new Paint();
                 paint.setShader(shader);
+
+                Paint backgroundColorPaint = new Paint();
+                backgroundColorPaint.setColor(m_backgroundColor);
+
                 Canvas c = new Canvas(circleBitmap);
+                c.drawCircle(bitmap.getWidth()/2, bitmap.getHeight()/2, bitmap.getWidth()/2, backgroundColorPaint);
                 c.drawCircle(bitmap.getWidth()/2, bitmap.getHeight()/2, bitmap.getWidth()/2, paint);
                 bitmap = circleBitmap;
             }
+
             return bitmap;
     }
 
@@ -82,6 +92,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
 
         private ImageStyle m_imageStyle;
+        private int m_backgroundColor;
     }
 
     private static void setImageSize(Context context, ImageView imageView, ImageSize imageSize, ImageSizesConfig imageSizesConfig) {
@@ -126,7 +137,27 @@ public class ImageRenderer extends BaseCardElementRenderer
 
         ImageView imageView = new ImageView(context);
         imageView.setTag(image);
-        ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(renderedCard, imageView, hostConfig.getImageBaseUrl(), image.GetImageStyle());
+
+        String imageBackgroundColor = image.GetBackgroundColor();
+        int backgroundColor = -1;
+        if(!TextUtils.isEmpty(imageBackgroundColor))
+        {
+            try
+            {
+                backgroundColor = Color.parseColor(imageBackgroundColor);
+            }
+            catch(IllegalArgumentException e)
+            {
+                throw new IllegalArgumentException("Unable to parse image background color: " + imageBackgroundColor);
+            }
+        }
+
+        if(image.GetImageStyle() != ImageStyle.Person)
+        {
+            imageView.setBackgroundColor(backgroundColor);
+        }
+
+        ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(renderedCard, imageView, hostConfig.getImageBaseUrl(), image.GetImageStyle(), backgroundColor);
 
         IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
         if (onlineImageLoader != null)
