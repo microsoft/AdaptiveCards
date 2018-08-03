@@ -2,6 +2,7 @@
 #include <locale>
 #include <codecvt>
 #include <string>
+#include <regex>
 
 #include "AdaptiveColumn.h"
 #include "AdaptiveColumnSet.h"
@@ -547,9 +548,10 @@ HRESULT GenerateSharedSeparator(
 
 HRESULT GetColorFromString(std::string colorString, ABI::Windows::UI::Color *color) noexcept try
 {
-    // Expected format for color string: "#AARRGGBB"
+    // Expected format for color string: "#AARRGGBB" with hex values
     // Other format is ignored (set alpha to 0)
-    if (colorString.length() != 9)
+    regex validColorRegex("(#)([0-9a-f]{8})", regex_constants::icase);
+    if (!regex_match(colorString, validColorRegex))
     {
         color->A = static_cast<BYTE>(0);
 
