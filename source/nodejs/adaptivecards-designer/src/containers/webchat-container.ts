@@ -1,60 +1,19 @@
 import { HostContainer } from "./host-container";
-import {
-    AdaptiveCard,
-    HostConfig,
-    Size,
-    TextSize,
-    TextColor,
-    TextWeight,
-    Spacing,
-    ShowCardActionMode,
-    Orientation,
-    ActionAlignment,
-} from "adaptivecards";
+import * as Adaptive from "adaptivecards";
 
 export class WebChatContainer extends HostContainer {
-    protected renderContainer(adaptiveCard: AdaptiveCard, target: HTMLElement): HTMLElement {
-        var outerElement = document.createElement("div");
-        outerElement.className = "webChatOuterContainer";
+    public renderTo(hostElement: HTMLElement) {
+        this.cardHost.classList.add("webChatOuterContainer");
 
-        var resizeCard = () => {
-            if (outerElement.parentElement) {
-                var bounds = outerElement.parentElement.getBoundingClientRect();
+        let frame = document.createElement("div");
+        frame.className = "webChatInnerContainer";
+        frame.appendChild(this.cardHost);
 
-                var newWidth: string = "216px";
-
-                if (bounds.width >= 500) {
-                    newWidth = "416px";
-                }
-                else if (bounds.width >= 400) {
-                    newWidth = "320px";
-                }
-
-                if (outerElement.style.width != newWidth) {
-                    outerElement.style.width = newWidth;
-                }
-
-                adaptiveCard.updateLayout();
-            }
-        };
-
-        window.addEventListener("resize", resizeCard);
-
-        var innerElement = document.createElement("div");
-        innerElement.className = "webChatInnerContainer";
-
-        target.appendChild(outerElement);
-        outerElement.appendChild(innerElement);
-
-        var renderedCard = adaptiveCard.render();
-        innerElement.appendChild(renderedCard);
-        resizeCard();
-
-        return outerElement;
+        hostElement.appendChild(frame);
     }
 
-    public getHostConfig(): HostConfig {
-        return new HostConfig({
+    public getHostConfig(): Adaptive.HostConfig {
+        return new Adaptive.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -140,36 +99,36 @@ export class WebChatContainer extends HostContainer {
             },
             actions: {
                 maxActions: 5,
-                spacing: Spacing.Default,
+                spacing: Adaptive.Spacing.Default,
                 buttonSpacing: 10,
                 showCard: {
-                    actionMode: ShowCardActionMode.Inline,
+                    actionMode: Adaptive.ShowCardActionMode.Inline,
                     inlineTopMargin: 16
                 },
-                actionsOrientation: Orientation.Horizontal,
-                actionAlignment: ActionAlignment.Left
+                actionsOrientation: Adaptive.Orientation.Horizontal,
+                actionAlignment: Adaptive.ActionAlignment.Left
             },
             adaptiveCard: {
                 allowCustomStyle: false
             },
             imageSet: {
-                imageSize: Size.Medium,
+                imageSize: Adaptive.Size.Medium,
                 maxImageHeight: 100
             },
             factSet: {
                 title: {
-                    color: TextColor.Default,
-                    size: TextSize.Default,
+                    color: Adaptive.TextColor.Default,
+                    size: Adaptive.TextSize.Default,
                     isSubtle: false,
-                    weight: TextWeight.Bolder,
+                    weight: Adaptive.TextWeight.Bolder,
                     wrap: true,
                     maxWidth: 150
                 },
                 value: {
-                    color: TextColor.Default,
-                    size: TextSize.Default,
+                    color: Adaptive.TextColor.Default,
+                    size: Adaptive.TextSize.Default,
                     isSubtle: false,
-                    weight: TextWeight.Default,
+                    weight: Adaptive.TextWeight.Default,
                     wrap: true
                 },
                 spacing: 10

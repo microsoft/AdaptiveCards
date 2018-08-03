@@ -29,15 +29,18 @@ a.default-ac-anchor:visited:active {
     color: #004D84;
 }
 
-.default-ac-container.default-ac-selectable, .default-ac-columnSet.default-ac-selectable {
-    padding: 0px;
+.default-ac-container.default-ac-selectable,
+.default-ac-columnSet.default-ac-selectable {
+    padding: 0;
 }
 
-.default-ac-container.default-ac-selectable:hover, .default-ac-columnSet.default-ac-selectable:hover {
+.default-ac-container.default-ac-selectable:hover,
+.default-ac-columnSet.default-ac-selectable:hover {
     background-color: rgba(0, 0, 0, 0.1) !important;
 }
 
-.default-ac-container.default-ac-selectable:active, .default-ac-columnSet.default-ac-selectable:active {
+.default-ac-container.default-ac-selectable:active,
+.default-ac-columnSet.default-ac-selectable:active {
     background-color: rgba(0, 0, 0, 0.15) !important;
 }
 
@@ -120,11 +123,27 @@ a.default-ac-anchor:visited:active {
     height: 72px;
 }
 
-.default-ac-input.default-ac-textInput, .default-ac-input.default-ac-numberInput, .default-ac-input.default-ac-dateInput, .default-ac-input.default-ac-timeInput {
+.default-ac-input.default-ac-textInput,
+.default-ac-input.default-ac-numberInput,
+.default-ac-input.default-ac-dateInput,
+.default-ac-input.default-ac-timeInput {
     height: 31px;
 }
 
-.default-ac-input.default-ac-textInput, .default-ac-input.default-ac-numberInput, .default-ac-input.default-ac-dateInput, .default-ac-input.default-ac-timeInput, .default-ac-input.default-ac-multichoiceInput {
+.default-ac-input.default-ac-textInput,
+.default-ac-input.default-ac-numberInput,
+.default-ac-input.default-ac-dateInput,
+.default-ac-input.default-ac-timeInput,
+.default-ac-input.default-ac-multichoiceInput {
     border: 1px solid #DDDDDD;
     padding: 4px 8px 4px 8px;
+}
+
+.default-ac-textBlock {
+    cursor: default;
+}
+
+.default-ac-textBlock.default-ac-selectable:hover {
+    color: #3A96DD !important;
+    cursor: pointer;
 }
