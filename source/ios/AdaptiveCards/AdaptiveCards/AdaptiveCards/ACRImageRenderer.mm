@@ -134,11 +134,18 @@
     std::string backgroundColor = imgElem->GetBackgroundColor();
     if(!backgroundColor.empty()) {
         try{
-            unsigned long num = std::stoul(imgElem->GetBackgroundColor().substr(1), nullptr, 16);
-            view.backgroundColor = [UIColor colorWithRed:((num & 0x00FF0000)>> 16) / 255.0
-                                                   green:((num & 0x0000FF00)>> 8) / 255.0
-                                                    blue:((num & 0x000000FF)) / 255.0
-                                                   alpha:((num & 0xFF000000)>> 24) / 255.0];
+            
+            if(backgroundColor.length() == 7 || backgroundColor.length() == 9) {
+                unsigned long num = std::stoul(imgElem->GetBackgroundColor().substr(1), nullptr, 16);
+                // valid format of  color format is #AARRGGBB or #RRGGBB and assumes AA to have 0xFF
+                if(backgroundColor.length() == 7) {
+                    num |= 0xFF000000;
+                }
+                view.backgroundColor = [UIColor colorWithRed:((num & 0x00FF0000)>> 16) / 255.0
+                                                       green:((num & 0x0000FF00)>> 8) / 255.0
+                                                        blue:((num & 0x000000FF)) / 255.0
+                                                       alpha:((num & 0xFF000000)>> 24) / 255.0];
+            }
         } catch(std::invalid_argument e) {
             // TODO: add it as AdaptiveCard warnings - joswo
             NSLog(@"Warning - invalid background color format = %@", [NSString stringWithCString:imgElem->GetBackgroundColor().c_str() encoding:NSUTF8StringEncoding]);
