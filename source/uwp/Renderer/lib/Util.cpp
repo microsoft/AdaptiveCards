@@ -546,34 +546,58 @@ HRESULT GenerateSharedSeparator(
     return S_OK;
 } CATCH_RETURN;
 
+// Get a Color object from color string
+// Expected formats are "#AARRGGBB" (with alpha channel) and "#RRGGBB" (without alpha channel)
 HRESULT GetColorFromString(std::string colorString, ABI::Windows::UI::Color *color) noexcept try
 {
-    // Expected format for color string: "#AARRGGBB" with hex values
-    // Other format is ignored (set alpha to 0)
-    regex validColorRegex("(#)([0-9a-f]{8})", regex_constants::icase);
-    if (!regex_match(colorString, validColorRegex))
+    if (colorString._Starts_with("#"))
     {
-        color->A = static_cast<BYTE>(0);
+        // Get the pure hex value (without #)
+        std::string hexColorString = colorString.substr(1, string::npos);
 
-        return S_OK;
+        regex colorWithAlphaRegex("[0-9a-f]{8}", regex_constants::icase);
+        if (regex_match(hexColorString, colorWithAlphaRegex))
+        {
+            // If color string has alpha channel, extract and set to color
+            std::string alphaString = hexColorString.substr(0, 2);
+            INT32 alpha = strtol(alphaString.c_str(), nullptr, 16);
+
+            color->A = static_cast<BYTE>(alpha);
+
+            hexColorString = hexColorString.substr(2, string::npos);
+        }
+        else
+        {
+            // Otherwise, set full opacity
+            std::string alphaString = "FF";
+            INT32 alpha = strtol(alphaString.c_str(), nullptr, 16);
+            color->A = static_cast<BYTE>(alpha);
+        }
+
+        // A valid string at this point should have 6 hex characters (RRGGBB)
+        regex colorWithoutAlphaRegex("[0-9a-f]{6}", regex_constants::icase);
+        if (regex_match(hexColorString, colorWithoutAlphaRegex))
+        {
+            // Then set all other Red, Green, and Blue channels
+            std::string redString = hexColorString.substr(0, 2);
+            INT32 red = strtol(redString.c_str(), nullptr, 16);
+
+            std::string greenString = hexColorString.substr(2, 2);
+            INT32 green = strtol(greenString.c_str(), nullptr, 16);
+
+            std::string blueString = hexColorString.substr(4, 2);
+            INT32 blue = strtol(blueString.c_str(), nullptr, 16);
+
+            color->R = static_cast<BYTE>(red);
+            color->G = static_cast<BYTE>(green);
+            color->B = static_cast<BYTE>(blue);
+
+            return S_OK;
+        }
     }
 
-    std::string alphaString = colorString.substr(1, 2);
-    INT32 alpha = strtol(alphaString.c_str(), nullptr, 16);
-
-    std::string redString = colorString.substr(3, 2);
-    INT32 red = strtol(redString.c_str(), nullptr, 16);
-
-    std::string greenString = colorString.substr(5, 2);
-    INT32 green = strtol(greenString.c_str(), nullptr, 16);
-
-    std::string blueString = colorString.substr(7, 2);
-    INT32 blue = strtol(blueString.c_str(), nullptr, 16);
-
-    color->A = static_cast<BYTE>(alpha);
-    color->R = static_cast<BYTE>(red);
-    color->G = static_cast<BYTE>(green);
-    color->B = static_cast<BYTE>(blue);
+    // All other formats are ignored (set alpha to 0)
+    color->A = static_cast<BYTE>(0);
 
     return S_OK;
 } CATCH_RETURN;
