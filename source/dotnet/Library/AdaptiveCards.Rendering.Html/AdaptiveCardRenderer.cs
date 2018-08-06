@@ -327,6 +327,9 @@ namespace AdaptiveCards.Rendering.Html
                 {
                     uiContainer.Children.Add(showCard);
                 }
+
+                // Restore the iconPlacement for the context.
+                actionsConfig.IconPlacement = oldConfigIconPlacement;
             }
         }
 
