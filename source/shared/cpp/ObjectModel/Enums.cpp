@@ -69,6 +69,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::Height, "height" },
         { AdaptiveCardSchemaKey::HorizontalAlignment, "horizontalAlignment" },
         { AdaptiveCardSchemaKey::IconPlacement, "iconPlacement" },
+        { AdaptiveCardSchemaKey::IconSize, "iconSize" },
         { AdaptiveCardSchemaKey::IconUrl, "iconUrl" },
         { AdaptiveCardSchemaKey::Id, "id" },
         { AdaptiveCardSchemaKey::Image, "image" },

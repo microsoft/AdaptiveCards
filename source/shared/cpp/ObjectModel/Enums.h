@@ -84,6 +84,7 @@ enum class AdaptiveCardSchemaKey
     Height,
     HorizontalAlignment,
     IconPlacement,
+    IconSize,
     IconUrl,
     Id,
     Image,
