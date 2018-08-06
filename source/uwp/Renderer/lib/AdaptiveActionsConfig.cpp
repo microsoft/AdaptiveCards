@@ -22,6 +22,7 @@ AdaptiveNamespaceStart
         m_maxActions = actionsConfig.maxActions;
         m_spacing = static_cast<ABI::AdaptiveNamespace::Spacing>(actionsConfig.spacing);
         m_iconPlacement = static_cast<ABI::AdaptiveNamespace::IconPlacement>(actionsConfig.iconPlacement);
+        m_iconSize = actionsConfig.iconSize;
 
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveShowCardActionConfig>(m_showCardActionConfig.GetAddressOf(), actionsConfig.showCard));
 
@@ -122,6 +123,20 @@ AdaptiveNamespaceStart
     HRESULT AdaptiveActionsConfig::put_IconPlacement(ABI::AdaptiveNamespace::IconPlacement value)
     {
         m_iconPlacement = value;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+        HRESULT AdaptiveActionsConfig::get_IconSize(UINT32* value)
+    {
+        *value = m_iconSize;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+        HRESULT AdaptiveActionsConfig::put_IconSize(UINT32 value)
+    {
+        m_iconSize = value;
         return S_OK;
     }
 AdaptiveNamespaceEnd

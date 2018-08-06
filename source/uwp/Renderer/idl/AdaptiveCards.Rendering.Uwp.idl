@@ -2119,6 +2119,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT IconPlacement([out][retval] IconPlacement* value);
         [propput] HRESULT IconPlacement([in] IconPlacement value);
+
+        [propget] HRESULT IconSize([out][retval] UINT32* value);
+        [propput] HRESULT IconSize([in] UINT32 value);
     };
 
     [

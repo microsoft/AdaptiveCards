@@ -37,6 +37,9 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_IconPlacement(_Out_ ABI::AdaptiveNamespace::IconPlacement* value);
         IFACEMETHODIMP put_IconPlacement(_In_ ABI::AdaptiveNamespace::IconPlacement value);
 
+        IFACEMETHODIMP get_IconSize(_Out_ UINT32* value);
+        IFACEMETHODIMP put_IconSize(_In_ UINT32 value);
+
     private:
         ABI::AdaptiveNamespace::ActionAlignment m_actionAlignment;
         ABI::AdaptiveNamespace::ActionsOrientation m_actionsOrientation;
@@ -44,6 +47,7 @@ AdaptiveNamespaceStart
         UINT m_maxActions;
         ABI::AdaptiveNamespace::Spacing m_spacing;
         ABI::AdaptiveNamespace::IconPlacement m_iconPlacement;
+        UINT m_iconSize;
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveShowCardActionConfig> m_showCardActionConfig;
     };

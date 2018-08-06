@@ -794,21 +794,15 @@ AdaptiveNamespaceStart
         // Check if the button has an iconUrl
         if (iconUrl != nullptr)
         {
+            // Get icon configs
             ABI::AdaptiveNamespace::IconPlacement iconPlacement;
+            UINT32 iconSize;
+
             THROW_IF_FAILED(actionsConfig->get_IconPlacement(&iconPlacement));
+            THROW_IF_FAILED(actionsConfig->get_IconSize(&iconSize));
 
             // Define the alignment for the button contents
             ComPtr<IStackPanel> buttonContentsStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
-            if (iconPlacement == ABI::AdaptiveNamespace::IconPlacement::AboveTitle && allActionsHaveIcons)
-            {
-                THROW_IF_FAILED(buttonContentsStackPanel->put_Orientation(Orientation::Orientation_Vertical));
-            }
-            else
-            {
-                THROW_IF_FAILED(buttonContentsStackPanel->put_Orientation(Orientation::Orientation_Horizontal));
-            }
-            ComPtr<IPanel> buttonContentsPanel;
-            THROW_IF_FAILED(buttonContentsStackPanel.As(&buttonContentsPanel));
 
             // Create image and add it to the button
             ComPtr<IAdaptiveImage> adaptiveImage;
@@ -829,9 +823,43 @@ AdaptiveNamespaceStart
                 XamlHelpers::SetContent(localButton.Get(), title.Get());
                 return;
             }
-            XamlHelpers::AppendXamlElementToPanel(buttonIcon.Get(), buttonContentsPanel.Get()); // Add image to stack panel
+
+            // Create title text block
+            ComPtr<ITextBlock> buttonText = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+            THROW_IF_FAILED(buttonText->put_Text(title.Get()));
+            THROW_IF_FAILED(buttonText->put_TextAlignment(TextAlignment::TextAlignment_Center));
+
+            // Handle different arrangements inside button
             ComPtr<IFrameworkElement> buttonIconAsFrameworkElement;
             THROW_IF_FAILED(buttonIcon.As(&buttonIconAsFrameworkElement));
+            if (iconPlacement == ABI::AdaptiveNamespace::IconPlacement::AboveTitle && allActionsHaveIcons)
+            {
+                THROW_IF_FAILED(buttonContentsStackPanel->put_Orientation(Orientation::Orientation_Vertical));
+
+                // Set height to iconSize (aspect ratio is automatically maintained)
+                THROW_IF_FAILED(buttonIconAsFrameworkElement->put_Height(iconSize));
+            }
+            else
+            {
+                THROW_IF_FAILED(buttonContentsStackPanel->put_Orientation(Orientation::Orientation_Horizontal));
+
+                // Add event to the image to resize itself when the textblock is rendered
+                ComPtr<IImage> buttonIconAsImage;
+                THROW_IF_FAILED(buttonIcon.As(&buttonIconAsImage));
+
+                EventRegistrationToken eventToken;
+                THROW_IF_FAILED(buttonIconAsImage->add_ImageOpened(Callback<IRoutedEventHandler>(
+                    [buttonIconAsFrameworkElement, buttonText](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+                {
+                    return SetImageSizeAsTextBlockSize(buttonIconAsFrameworkElement.Get(), buttonText.Get());
+                }).Get(), &eventToken));
+            }
+
+            ComPtr<IPanel> buttonContentsPanel;
+            THROW_IF_FAILED(buttonContentsStackPanel.As(&buttonContentsPanel));
+
+            // Add image to stack panel
+            XamlHelpers::AppendXamlElementToPanel(buttonIcon.Get(), buttonContentsPanel.Get());
 
             // Just add spacing when the icon must be located at the left of the title
             if (iconPlacement == ABI::AdaptiveNamespace::IconPlacement::LeftOfTitle)
@@ -844,23 +872,10 @@ AdaptiveNamespaceStart
                 XamlHelpers::AppendXamlElementToPanel(separator.Get(), buttonContentsPanel.Get());
             }
 
-            // Add text to button
-            ComPtr<ITextBlock> buttonText = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
-            THROW_IF_FAILED(buttonText->put_Text(title.Get()));
-            THROW_IF_FAILED(buttonText->put_TextAlignment(TextAlignment::TextAlignment_Center));
-            XamlHelpers::AppendXamlElementToPanel(buttonText.Get(), buttonContentsPanel.Get()); // Add text to stack panel
+            // Add text to stack panel
+            XamlHelpers::AppendXamlElementToPanel(buttonText.Get(), buttonContentsPanel.Get());
 
-                                                                                                // Add event to the image to resize itself when the textblock is rendered
-            ComPtr<IImage> buttonIconAsImage;
-            THROW_IF_FAILED(buttonIcon.As(&buttonIconAsImage));
-
-            EventRegistrationToken eventToken;
-            THROW_IF_FAILED(buttonIconAsImage->add_ImageOpened(Callback<IRoutedEventHandler>(
-                [buttonIconAsFrameworkElement, buttonText](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
-            {
-                return SetImageSizeAsTextBlockSize(buttonIconAsFrameworkElement.Get(), buttonText.Get());
-            }).Get(), &eventToken));
-
+            // Put everything inside the final button
             ComPtr<IContentControl> buttonContentControl;
             THROW_IF_FAILED(localButton.As(&buttonContentControl));
             THROW_IF_FAILED(buttonContentControl->put_Content(buttonContentsPanel.Get()));
