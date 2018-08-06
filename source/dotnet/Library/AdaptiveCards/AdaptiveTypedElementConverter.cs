@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
@@ -84,9 +83,9 @@ namespace AdaptiveCards
                 // If this objectType does not require "Type" attribute, use the objectType's XML "TypeName" attribute
                 if (typeJsonPropertyRequiredValue == "0")
                 {
-                    typeName = objectType.CustomAttributes.Where(x => x.AttributeType == typeof(XmlTypeAttribute)).FirstOrDefault()?
-                        .NamedArguments.Where(x => x.MemberName == "TypeName").FirstOrDefault()
-                        .TypedValue.Value.ToString();
+                    typeName = objectType
+                        .GetRuntimeFields().Where(x => x.Name == "TypeName").FirstOrDefault()?
+                        .GetValue("TypeName").ToString();
                 }
                 else
                 {
