@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import io.adaptivecards.objectmodel.AdaptiveCardParseWarning;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
@@ -147,7 +148,7 @@ public class ImageRenderer extends BaseCardElementRenderer
             {
                 try
                 {
-                    // if the color string is not valid, parseColor throws a IllegalArgumentException
+                    // if the color string is not valid, parseColor will throw a IllegalArgumentException so we just turn the color to transparent on the catch statement
                     backgroundColor = Color.parseColor(imageBackgroundColor);
                 }
                 catch (IllegalArgumentException e)
