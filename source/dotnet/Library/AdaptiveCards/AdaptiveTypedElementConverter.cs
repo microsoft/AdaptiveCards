@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
@@ -71,12 +72,26 @@ namespace AdaptiveCards
         {
             var jObject = JObject.Load(reader);
 
-            var typeName = jObject["type"]?.Value<string>() ?? jObject["@type"]?.Value<string>()
-                // Try to use objectType
-                ?? (objectType == typeof(AdaptiveColumn) ? AdaptiveColumn.TypeName : null);
+            var typeName = jObject["type"]?.Value<string>() ?? jObject["@type"]?.Value<string>();
             if (typeName == null)
             {
-                throw new AdaptiveSerializationException("Required property 'type' not found on adaptive card element");
+                // Get value of this objectType's "Type" JsonProperty(Required)
+                var typeJsonPropertyRequiredValue = objectType.GetRuntimeProperty("Type")
+                    .CustomAttributes.Where(a => a.AttributeType == typeof(JsonPropertyAttribute)).FirstOrDefault()?
+                    .NamedArguments.Where(a => a.TypedValue.ArgumentType == typeof(Required)).FirstOrDefault()
+                    .TypedValue.Value.ToString();
+
+                // If this objectType does not require "Type" attribute, use the objectType's XML "TypeName" attribute
+                if (typeJsonPropertyRequiredValue == "0")
+                {
+                    typeName = objectType.CustomAttributes.Where(x => x.AttributeType == typeof(XmlTypeAttribute)).FirstOrDefault()?
+                        .NamedArguments.Where(x => x.MemberName == "TypeName").FirstOrDefault()
+                        .TypedValue.Value.ToString();
+                }
+                else
+                {
+                    throw new AdaptiveSerializationException("Required property 'type' not found on adaptive card element");
+                }
             }
 
             if (TypedElementTypes.Value.TryGetValue(typeName, out var type))
