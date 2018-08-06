@@ -8,7 +8,7 @@ namespace AdaptiveCards.Rendering
     /// Properties which control rendering of actions
     /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class ActionsConfig 
+    public class ActionsConfig
     {
         /// <summary>
         /// Arrange actions horizontal or vertical
@@ -21,7 +21,6 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public AdaptiveHorizontalAlignment ActionAlignment { get; set; } = AdaptiveHorizontalAlignment.Stretch;
-
 
         /// <summary>
         /// Space between actions
@@ -43,6 +42,18 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public ShowCardConfig ShowCard { get; set; } = new ShowCardConfig();
+
+        /// <summary>
+        /// Position of Icon relative to Title
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public IconPlacement IconPlacement { get; set; } = new IconPlacement();
+
+        /// <summary>
+        /// Size of Icon
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int IconSize { get; set; } = 30;
     }
 
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
@@ -88,4 +99,17 @@ namespace AdaptiveCards.Rendering
         Vertical
     }
 
+    [JsonConverter(typeof(StringEnumConverter), true)]
+    public enum IconPlacement
+    {
+        /// <summary>
+        /// Places the icons about the text in actions
+        /// </summary>
+        AboveTitle,
+
+        /// <summary>
+        /// Place the icon to the left of the text in actions
+        /// </summary>
+        LeftOfTitle
+    }
 }

@@ -93,6 +93,4 @@ namespace AdaptiveCards.Rendering
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
     }
-
 }
-
