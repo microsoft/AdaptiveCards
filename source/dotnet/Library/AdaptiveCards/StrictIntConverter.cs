@@ -9,15 +9,15 @@ namespace AdaptiveCards
 
         public override bool CanConvert(Type objectType)
         {
-            //throw new NotImplementedException();
+            // Only use this converter for Integer types
             return objectType.IsIntegerType();
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            //throw new NotImplementedException();
             switch (reader.TokenType)
             {
+                // Only allow Integer or Null
                 case JsonToken.Integer:
                 case JsonToken.Null:
                     return defaultSerializer.Deserialize(reader, objectType);
