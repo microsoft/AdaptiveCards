@@ -37,6 +37,14 @@ public class MediaParser extends BaseCardElementParser {
     super.delete();
   }
 
+  public MediaParser() {
+    this(AdaptiveCardObjectModelJNI.new_MediaParser__SWIG_0(), true);
+  }
+
+  public MediaParser(MediaParser arg0) {
+    this(AdaptiveCardObjectModelJNI.new_MediaParser__SWIG_1(MediaParser.getCPtr(arg0), arg0), true);
+  }
+
   public BaseCardElement Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, JsonValue root) {
     long cPtr = AdaptiveCardObjectModelJNI.MediaParser_Deserialize(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, JsonValue.getCPtr(root), root);
     return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
@@ -45,10 +53,6 @@ public class MediaParser extends BaseCardElementParser {
   public BaseCardElement DeserializeFromString(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, String jsonString) {
     long cPtr = AdaptiveCardObjectModelJNI.MediaParser_DeserializeFromString(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, jsonString);
     return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
-  }
-
-  public MediaParser() {
-    this(AdaptiveCardObjectModelJNI.new_MediaParser(), true);
   }
 
 }

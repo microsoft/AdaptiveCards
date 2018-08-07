@@ -17,6 +17,8 @@ public:
     void swig_connect_director(JNIEnv *jenv, jobject jself, jclass jcls, bool swig_mem_own, bool weak_global);
     SwigDirector_BaseCardElement(JNIEnv *jenv, AdaptiveCards::CardElementType type, AdaptiveCards::Spacing spacing, bool separator, AdaptiveCards::HeightType height);
     SwigDirector_BaseCardElement(JNIEnv *jenv, AdaptiveCards::CardElementType type);
+    SwigDirector_BaseCardElement(JNIEnv *jenv, AdaptiveCards::BaseCardElement const &arg0);
+    SwigDirector_BaseCardElement(JNIEnv *jenv, AdaptiveCards::BaseCardElement &&arg0);
     virtual ~SwigDirector_BaseCardElement();
     virtual std::string GetElementTypeString() const;
     virtual void SetElementTypeString(std::string const &value);
@@ -27,14 +29,15 @@ public:
     virtual std::string GetId() const;
     virtual void SetId(std::string const &value);
     virtual AdaptiveCards::CardElementType const GetElementType() const;
+    virtual std::string Serialize() const;
     virtual Json::Value SerializeToJsonValue() const;
-    virtual void GetResourceInformation(std::vector< RemoteResourceInformation > &resourceUris);
+    virtual void GetResourceInformation(std::vector< AdaptiveCards::RemoteResourceInformation > &resourceUris);
 public:
     bool swig_overrides(int n) {
-      return (n < 11 ? swig_override[n] : false);
+      return (n < 12 ? swig_override[n] : false);
     }
 protected:
-    Swig::BoolArray<11> swig_override;
+    Swig::BoolArray<12> swig_override;
 };
 
 class SwigDirector_BaseActionElement : public AdaptiveCards::BaseActionElement, public Swig::Director {
@@ -42,6 +45,8 @@ class SwigDirector_BaseActionElement : public AdaptiveCards::BaseActionElement, 
 public:
     void swig_connect_director(JNIEnv *jenv, jobject jself, jclass jcls, bool swig_mem_own, bool weak_global);
     SwigDirector_BaseActionElement(JNIEnv *jenv, AdaptiveCards::ActionType type);
+    SwigDirector_BaseActionElement(JNIEnv *jenv, AdaptiveCards::BaseActionElement const &arg0);
+    SwigDirector_BaseActionElement(JNIEnv *jenv, AdaptiveCards::BaseActionElement &&arg0);
     virtual ~SwigDirector_BaseActionElement();
     virtual std::string GetElementTypeString() const;
     virtual void SetElementTypeString(std::string const &value);
@@ -53,7 +58,7 @@ public:
     virtual void SetIconUrl(std::string const &value);
     virtual AdaptiveCards::ActionType const GetElementType() const;
     virtual Json::Value SerializeToJsonValue() const;
-    virtual void GetResourceInformation(std::vector< RemoteResourceInformation > &resourceUris);
+    virtual void GetResourceInformation(std::vector< AdaptiveCards::RemoteResourceInformation > &resourceUris);
 public:
     bool swig_overrides(int n) {
       return (n < 11 ? swig_override[n] : false);

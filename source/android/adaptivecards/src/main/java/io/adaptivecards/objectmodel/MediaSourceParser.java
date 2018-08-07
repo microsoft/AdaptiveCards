@@ -35,6 +35,14 @@ public class MediaSourceParser {
     }
   }
 
+  public MediaSourceParser() {
+    this(AdaptiveCardObjectModelJNI.new_MediaSourceParser__SWIG_0(), true);
+  }
+
+  public MediaSourceParser(MediaSourceParser arg0) {
+    this(AdaptiveCardObjectModelJNI.new_MediaSourceParser__SWIG_1(MediaSourceParser.getCPtr(arg0), arg0), true);
+  }
+
   public static MediaSource Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, JsonValue root) {
     long cPtr = AdaptiveCardObjectModelJNI.MediaSourceParser_Deserialize(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, JsonValue.getCPtr(root), root);
     return (cPtr == 0) ? null : new MediaSource(cPtr, true);
@@ -43,10 +51,6 @@ public class MediaSourceParser {
   public static MediaSource DeserializeFromString(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, String jsonString) {
     long cPtr = AdaptiveCardObjectModelJNI.MediaSourceParser_DeserializeFromString(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, jsonString);
     return (cPtr == 0) ? null : new MediaSource(cPtr, true);
-  }
-
-  public MediaSourceParser() {
-    this(AdaptiveCardObjectModelJNI.new_MediaSourceParser(), true);
   }
 
 }

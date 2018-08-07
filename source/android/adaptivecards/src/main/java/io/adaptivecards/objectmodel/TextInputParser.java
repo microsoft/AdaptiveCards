@@ -37,6 +37,14 @@ public class TextInputParser extends BaseCardElementParser {
     super.delete();
   }
 
+  public TextInputParser() {
+    this(AdaptiveCardObjectModelJNI.new_TextInputParser__SWIG_0(), true);
+  }
+
+  public TextInputParser(TextInputParser arg0) {
+    this(AdaptiveCardObjectModelJNI.new_TextInputParser__SWIG_1(TextInputParser.getCPtr(arg0), arg0), true);
+  }
+
   public BaseCardElement Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, JsonValue root) {
     long cPtr = AdaptiveCardObjectModelJNI.TextInputParser_Deserialize(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, JsonValue.getCPtr(root), root);
     return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
@@ -45,10 +53,6 @@ public class TextInputParser extends BaseCardElementParser {
   public BaseCardElement DeserializeFromString(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, String jsonString) {
     long cPtr = AdaptiveCardObjectModelJNI.TextInputParser_DeserializeFromString(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, jsonString);
     return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
-  }
-
-  public TextInputParser() {
-    this(AdaptiveCardObjectModelJNI.new_TextInputParser(), true);
   }
 
 }

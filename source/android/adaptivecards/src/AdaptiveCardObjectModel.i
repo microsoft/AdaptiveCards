@@ -61,6 +61,7 @@ struct tm {
 #include <memory>
 #include <time.h>
 #include "../../../shared/cpp/ObjectModel/Enums.h"
+#include "../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
 #include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseInputElement.h"
@@ -287,6 +288,7 @@ namespace Json {
   }
 %}
 
+%template(RemoteResourceInformationVector) std::vector<AdaptiveCards::RemoteResourceInformation>;
 %template(AdaptiveCardParseWarningVector) std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning> >;
 %template(BaseCardElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement> >; 
 %template(ImageVector) std::vector<std::shared_ptr<AdaptiveCards::Image> >; 
@@ -572,6 +574,7 @@ namespace Json {
 
 %include "../../../shared/cpp/ObjectModel/pch.h"
 %include "../../../shared/cpp/ObjectModel/Enums.h"
+%include "../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
 %include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseInputElement.h"
