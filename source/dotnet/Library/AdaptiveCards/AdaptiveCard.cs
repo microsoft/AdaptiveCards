@@ -184,7 +184,8 @@ namespace AdaptiveCards
             {
                 parseResult.Card = JsonConvert.DeserializeObject<AdaptiveCard>(json, new JsonSerializerSettings
                 {
-                    ContractResolver = new WarningLoggingContractResolver(parseResult)
+                    ContractResolver = new WarningLoggingContractResolver(parseResult),
+                    Converters = { new StrictIntConverter() }
                 });
             }
             catch (JsonException ex)

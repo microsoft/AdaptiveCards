@@ -75,7 +75,10 @@ namespace AdaptiveCards.Rendering
         {
             try
             {
-                return JsonConvert.DeserializeObject<AdaptiveHostConfig>(json);
+                return JsonConvert.DeserializeObject<AdaptiveHostConfig>(json, new JsonSerializerSettings
+                {
+                    Converters = { new StrictIntConverter() }
+                });
             }
             catch (JsonException ex)
             {
