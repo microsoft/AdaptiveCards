@@ -20,7 +20,7 @@ namespace AdaptiveCardsSharedModelUnitTest
     public:
         TEST_METHOD(PositiveTest)
         {
-            std::string testJsonString = 
+            std::string testJsonString =
             "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
@@ -44,7 +44,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
         TEST_METHOD(PositiveTestWithOneDimensionOnly)
         {
-            std::string testJsonString = 
+            std::string testJsonString =
             "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
@@ -68,7 +68,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         TEST_METHOD(MalformedUnitTest)
         {
-            std::string testJsonString = 
+            std::string testJsonString =
             "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
@@ -88,14 +88,14 @@ namespace AdaptiveCardsSharedModelUnitTest
                 std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
             }
             catch(const AdaptiveCardParseException &e)
-            { 
+            {
                 Assert::AreEqual<bool>(e.GetStatusCode() == ErrorStatusCode::InvalidPropertyValue, true);
             }
         }
 
         TEST_METHOD(MalformedUnitLengthTest)
         {
-            std::string testJsonString = 
+            std::string testJsonString =
             "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
@@ -115,14 +115,14 @@ namespace AdaptiveCardsSharedModelUnitTest
                 std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
             }
             catch(const AdaptiveCardParseException &e)
-            { 
+            {
                 Assert::AreEqual<bool>(e.GetStatusCode() == ErrorStatusCode::InvalidPropertyValue, true);
             }
         }
 
         TEST_METHOD(MalformedUnitTypeTest)
         {
-            std::string testJsonString = 
+            std::string testJsonString =
             "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
@@ -142,14 +142,14 @@ namespace AdaptiveCardsSharedModelUnitTest
                 std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
             }
             catch(const AdaptiveCardParseException &e)
-            { 
+            {
                 Assert::AreEqual<bool>(e.GetStatusCode() == ErrorStatusCode::InvalidPropertyValue, true);
             }
         }
 
         TEST_METHOD(MalformedNegativeIntValueTest)
         {
-            std::string testJsonString = 
+            std::string testJsonString =
             "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
@@ -169,7 +169,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                 std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
             }
             catch(const AdaptiveCardParseException &e)
-            { 
+            {
                 Assert::AreEqual<bool>(e.GetStatusCode() == ErrorStatusCode::InvalidPropertyValue, true);
             }
         }
@@ -180,7 +180,7 @@ namespace AdaptiveCardsSharedModelUnitTest
     public:
         TEST_METHOD(PositiveValueTest)
         {
-            std::string testJsonString = 
+            std::string testJsonString =
             "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
@@ -208,7 +208,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         TEST_METHOD(PositiveRelativeWidthTest)
         {
-            std::string testJsonString = 
+            std::string testJsonString =
             "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
@@ -237,7 +237,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         TEST_METHOD(PositiveExplicitWidthTest)
         {
-            std::string testJsonString = 
+            std::string testJsonString =
             "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
@@ -266,7 +266,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         TEST_METHOD(ExplicitWidthMalformedUnitTest)
         {
-            std::string testJsonString = 
+            std::string testJsonString =
             "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
@@ -291,14 +291,14 @@ namespace AdaptiveCardsSharedModelUnitTest
                 Assert::Fail();
             }
             catch(const AdaptiveCardParseException &e)
-            { 
+            {
                 Assert::AreEqual<bool>(e.GetStatusCode() == ErrorStatusCode::InvalidPropertyValue, true);
             }
         }
 
         TEST_METHOD(ExplicitWidthMalformedValueTest)
         {
-            std::string testJsonString = 
+            std::string testJsonString =
             "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
@@ -323,14 +323,14 @@ namespace AdaptiveCardsSharedModelUnitTest
                 Assert::Fail();
             }
             catch(const AdaptiveCardParseException &e)
-            { 
+            {
                 Assert::AreEqual<bool>(e.GetStatusCode() == ErrorStatusCode::InvalidPropertyValue, true);
             }
         }
 
         TEST_METHOD(ExplicitWidthFloatValueTest)
         {
-            std::string testJsonString = 
+            std::string testJsonString =
             "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
@@ -349,15 +349,13 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            try
-            {
-                std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
-                Assert::Fail();
-            }
-            catch(const AdaptiveCardParseException &e)
-            { 
-                Assert::AreEqual<bool>(e.GetStatusCode() == ErrorStatusCode::InvalidPropertyValue, true);
-            }
+
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
+			std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
+			std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
+			std::shared_ptr<Column> column = columnSet->GetColumns().front();
+			Assert::AreEqual<std::string>("20.5px", column->GetWidth());
+			Assert::AreEqual<bool>(column->GetPixelWidth() == 20, true);
         }
     };
 }

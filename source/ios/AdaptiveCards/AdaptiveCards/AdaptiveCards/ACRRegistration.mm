@@ -12,6 +12,7 @@
 #import "ACRColumnSetView.h"
 #import "ACRImageRenderer.h"
 #import "ACRImageSetRenderer.h"
+#import "ACRMediaRenderer.h"
 #import "ACRTextBlockRenderer.h"
 #import "ACRInputRenderer.h"
 #import "ACRInputToggleRenderer.h"
@@ -50,6 +51,7 @@ using namespace AdaptiveCards;
     {
         typeToRendererDict =
             [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+             [ACRMediaRenderer getInstance],      [NSNumber numberWithInt:(int)[ACRMediaRenderer elemType]],
              [ACRImageRenderer getInstance],      [NSNumber numberWithInt:(int)[ACRImageRenderer elemType]],
              [ACRImageSetRenderer getInstance],   [NSNumber numberWithInt:(int)[ACRImageSetRenderer elemType]],
              [ACRTextBlockRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRTextBlockRenderer elemType]],

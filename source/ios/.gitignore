@@ -11,3 +11,9 @@ cscope.po.out
 *.a
 xcshareddata/
 *.swp
+CMakeCache.txt        
+CMakeFiles/           
+Makefile              
+cmake_install.cmake   
+commitslists          
+compile_commands.json 
