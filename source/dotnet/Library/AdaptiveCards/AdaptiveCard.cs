@@ -244,16 +244,26 @@ namespace AdaptiveCards
                 ));
             }
 
-            // Get all images in body
+            // Get all resource information in body
             foreach (AdaptiveElement bodyElement in card.Body)
             {
                 resourceInformationList.AddRange(GetResourceInformationInElement(bodyElement));
             }
 
-            // Get all images in ShowCard actions
-            // TODO: Add resource information for iconUrl after it's added
+            // Get all resource information in actions
             foreach (AdaptiveAction action in card.Actions)
             {
+                // Get all resource information for iconUrl
+                if (!String.IsNullOrEmpty(action.IconUrl))
+                {
+                    resourceInformationList.Add(new RemoteResourceInformation(
+                        action.IconUrl,
+                        typeof(AdaptiveImage),
+                        null
+                    ));
+                }
+
+                // Get all resource information in ShowCard actions' cards
                 if (action is AdaptiveShowCardAction showCardAction)
                 {
                     resourceInformationList.AddRange(GetResourceInformationInCard(showCardAction.Card));

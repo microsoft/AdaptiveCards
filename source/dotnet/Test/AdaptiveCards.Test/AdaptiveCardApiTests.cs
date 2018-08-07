@@ -165,6 +165,7 @@ namespace AdaptiveCards.Test
   ""actions"": [
     {
       ""type"": ""Action.ShowCard"",
+      ""iconUrl"": ""http://adaptivecards.io/content/cats/5.png"",
       ""card"": {
           ""type"": ""AdaptiveCard"",
           ""version"": ""1.0"",
@@ -175,7 +176,7 @@ namespace AdaptiveCards.Test
             },
             {
               ""type"": ""Image"",
-              ""url"": ""http://adaptivecards.io/content/cats/5.png""
+              ""url"": ""http://adaptivecards.io/content/cats/6.png""
             }
           ]
       }
@@ -212,6 +213,11 @@ namespace AdaptiveCards.Test
                 ),
                 new RemoteResourceInformation(
                     "http://adaptivecards.io/content/cats/5.png",
+                    typeof(AdaptiveImage),
+                    null
+                ),
+                new RemoteResourceInformation(
+                    "http://adaptivecards.io/content/cats/6.png",
                     typeof(AdaptiveImage),
                     null
                 )
