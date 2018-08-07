@@ -163,6 +163,7 @@
     <ClCompile Include="AdditionalPropertiesTest.cpp" />
     <ClCompile Include="CustomParsingForIOSTest.cpp" />
     <ClCompile Include="ExplicitDimensionTest.cpp" />
+    <ClCompile Include="ImageBackgroundColorTest.cpp" />
     <ClCompile Include="ResourceInformationTests.cpp" />
     <ClCompile Include="MarkDownUnitTest.cpp" />
     <ClCompile Include="ObjectModelTest.cpp" />
