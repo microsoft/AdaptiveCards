@@ -832,6 +832,7 @@ AdaptiveNamespaceStart
             // Handle different arrangements inside button
             ComPtr<IFrameworkElement> buttonIconAsFrameworkElement;
             THROW_IF_FAILED(buttonIcon.As(&buttonIconAsFrameworkElement));
+            ComPtr<IUIElement> separator;
             if (iconPlacement == ABI::AdaptiveNamespace::IconPlacement::AboveTitle && allActionsHaveIcons)
             {
                 THROW_IF_FAILED(buttonContentsStackPanel->put_Orientation(Orientation::Orientation_Vertical));
@@ -853,6 +854,13 @@ AdaptiveNamespaceStart
                 {
                     return SetImageSizeAsTextBlockSize(buttonIconAsFrameworkElement.Get(), buttonText.Get());
                 }).Get(), &eventToken));
+
+                // Only add spacing when the icon must be located at the left of the title
+                UINT spacingSize;
+                THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig, ABI::AdaptiveNamespace::Spacing::Default, &spacingSize));
+
+                ABI::Windows::UI::Color color = { 0 };
+                separator = CreateSeparator(renderContext, spacingSize, spacingSize, color, false);
             }
 
             ComPtr<IPanel> buttonContentsPanel;
@@ -861,14 +869,9 @@ AdaptiveNamespaceStart
             // Add image to stack panel
             XamlHelpers::AppendXamlElementToPanel(buttonIcon.Get(), buttonContentsPanel.Get());
 
-            // Just add spacing when the icon must be located at the left of the title
-            if (iconPlacement == ABI::AdaptiveNamespace::IconPlacement::LeftOfTitle)
+            // Add separator to stack panel
+            if (separator != nullptr)
             {
-                UINT spacingSize;
-                THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig, ABI::AdaptiveNamespace::Spacing::Default, &spacingSize));
-
-                ABI::Windows::UI::Color color = { 0 };
-                auto separator = CreateSeparator(renderContext, spacingSize, spacingSize, color, false);
                 XamlHelpers::AppendXamlElementToPanel(separator.Get(), buttonContentsPanel.Get());
             }
 
