@@ -44,7 +44,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 			};
 
 			// Define custom element parser
-			class TestCustomParser : public BaseCardElementParser
+			class TestCustomElementParser : public BaseCardElementParser
 			{
 			public:
 				virtual std::shared_ptr<BaseCardElement> Deserialize(
@@ -71,35 +71,50 @@ namespace AdaptiveCardsSharedModelUnitTest
 				}
 			};
 
-			ActionParserRegistration parser;
+			ActionParserRegistration actionParser;
+			ElementParserRegistration elementParser;
 
 			std::string elemType("notRegisteredYet");
 			// make sure we don't already have this parser
-			Assert::IsTrue(!parser.GetParser(elemType));
-			auto customParser = std::make_shared<TestCustomActionParser>();
+			Assert::IsTrue(!actionParser.GetParser(elemType));
+			auto customActionParser = std::make_shared<TestCustomActionParser>();
+			auto customElementParser = std::make_shared<TestCustomElementParser>();
 
 			// make sure we can't override a known parser
-			Assert::ExpectException<AdaptiveCardParseException>([&]() { parser.AddParser(ActionTypeToString(ActionType::OpenUrl), customParser); });
+			Assert::ExpectException<AdaptiveCardParseException>([&]() { actionParser.AddParser(ActionTypeToString(ActionType::OpenUrl), customActionParser); });
+			Assert::ExpectException<AdaptiveCardParseException>([&]() { elementParser.AddParser(CardElementTypeToString(CardElementType::Container), customElementParser); });
 
 			// add our new parser
-			parser.AddParser(elemType, customParser);
-			Assert::IsTrue(customParser == parser.GetParser(elemType));
+			actionParser.AddParser(elemType, customActionParser);
+			Assert::IsTrue(customActionParser == actionParser.GetParser(elemType));
+			elementParser.AddParser(elemType, customElementParser);
+			Assert::IsTrue(customElementParser == elementParser.GetParser(elemType));
 			
 			// overwrite our new parser
-			auto customParser2 = std::make_shared<TestCustomActionParser>();
-			parser.AddParser(elemType, customParser2);
-			Assert::IsTrue(customParser2 == parser.GetParser(elemType));
+			auto customActionParser2 = std::make_shared<TestCustomActionParser>();
+			actionParser.AddParser(elemType, customActionParser2);
+			Assert::IsTrue(customActionParser2 == actionParser.GetParser(elemType));
+			auto customElementParser2 = std::make_shared<TestCustomElementParser>();
+			elementParser.AddParser(elemType, customElementParser2);
+			Assert::IsTrue(customElementParser2 == elementParser.GetParser(elemType));
 
 			// remove custom parser twice. shouldn't throw
-			parser.RemoveParser(elemType);
-			Assert::IsTrue(!parser.GetParser(elemType));
-			parser.RemoveParser(elemType);
-			Assert::IsTrue(!parser.GetParser(elemType));
+			actionParser.RemoveParser(elemType);
+			Assert::IsTrue(!actionParser.GetParser(elemType));
+			actionParser.RemoveParser(elemType);
+			Assert::IsTrue(!actionParser.GetParser(elemType));
+			elementParser.RemoveParser(elemType);
+			Assert::IsTrue(!elementParser.GetParser(elemType));
+			elementParser.RemoveParser(elemType);
+			Assert::IsTrue(!elementParser.GetParser(elemType));
 
-			// attempt to remove known parser. shouldn't throw, but shouldn't remove
-			Assert::IsTrue((bool)parser.GetParser(ActionTypeToString(ActionType::OpenUrl)));
-			parser.RemoveParser(ActionTypeToString(ActionType::OpenUrl));
-			Assert::IsTrue((bool)parser.GetParser(ActionTypeToString(ActionType::OpenUrl)));
+			// make sure we can't remove known parser
+			Assert::IsTrue((bool)actionParser.GetParser(ActionTypeToString(ActionType::OpenUrl)));
+			Assert::ExpectException<AdaptiveCardParseException>([&]() { actionParser.RemoveParser(ActionTypeToString(ActionType::OpenUrl)); });
+			Assert::IsTrue((bool)actionParser.GetParser(ActionTypeToString(ActionType::OpenUrl)));
+			Assert::IsTrue((bool)elementParser.GetParser(CardElementTypeToString(CardElementType::Container)));
+			Assert::ExpectException<AdaptiveCardParseException>([&]() { elementParser.RemoveParser(CardElementTypeToString(CardElementType::Container)); });
+			Assert::IsTrue((bool)elementParser.GetParser(CardElementTypeToString(CardElementType::Container)));
 		}
 	};
 }
