@@ -10,7 +10,7 @@
 #import "ACVTableViewController.h"
 #import <AdaptiveCards/ACFramework.h>
 
-@interface ViewController:UIViewController <ACVTableViewControllerDelegate, ACRActionDelegate, ACRIBaseActionSetRenderer>
+@interface ViewController:UIViewController <ACVTableViewControllerDelegate, ACRActionDelegate, ACRMediaDelegate, ACRIBaseActionSetRenderer>
 
 @property (strong, nonatomic) ACVTableViewController *ACVTabVC;
 @property (strong, nonatomic) UITextView *editView;

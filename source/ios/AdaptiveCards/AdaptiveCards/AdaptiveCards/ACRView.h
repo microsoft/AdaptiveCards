@@ -11,10 +11,12 @@
 #import "ACOAdaptiveCard.h"
 #import "ACOHostConfig.h"
 #import "ACRColumnView.h"
+#import "ACRIMedia.h"
 
 @interface ACRView:ACRColumnView
 
 @property (weak) id<ACRActionDelegate>acrActionDelegate;
+@property (weak) id<ACRMediaDelegate>mediaDelegate;
 
 - (instancetype)init:(ACOAdaptiveCard *)card hostconfig:(ACOHostConfig *)config widthConstraint:(float)width;
 

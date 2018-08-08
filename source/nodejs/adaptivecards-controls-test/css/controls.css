@@ -25,19 +25,24 @@
 
 .ms-ctrl-slide {
   animation-duration: 0.5s;
-  animation-timing-function: cubic-bezier(0.1, 0.9, 0.2, 1); }
+  animation-timing-function: cubic-bezier(0.1, 0.9, 0.2, 1);
+}
 
 .ms-ctrl-slide.ms-ctrl-slideTopToBottom {
-  animation-name: fadeIn,slideTopToBottom; }
+  animation-name: fadeIn,slideTopToBottom;
+}
 
 .ms-ctrl-slide.ms-ctrl-slideBottomToTop {
-  animation-name: fadeIn,slideBottomToTop; }
+  animation-name: fadeIn,slideBottomToTop;
+}
 
 .ms-ctrl-slide.ms-ctrl-slideLeftToRight {
-  animation-name: fadeIn,slideLeftToRight; }
+  animation-name: fadeIn,slideLeftToRight;
+}
 
 .ms-ctrl-slide.ms-ctrl-slideRightToLeft {
-  animation-name: fadeIn,slideRightToLeft; }
+  animation-name: fadeIn,slideRightToLeft;
+}
 
 @font-face {
   font-family: 'FabricMDL2Icons';
