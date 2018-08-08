@@ -38,7 +38,7 @@ namespace AdaptiveCards.Sample.Html
                 }
 
                 // Get payload search path
-                var payloadPath = pathArg.Value ?? "..\\..\\..\\..\\samples\\v1.0\\Scenarios";
+                var payloadPath = pathArg.Value ?? "..\\..\\..\\..\\samples\\v1.0\\Test";
                 if (pathArg.Value == null)
                 {
                     Console.WriteLine($"No path argument specified, trying {payloadPath}...");

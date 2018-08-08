@@ -10,7 +10,7 @@ package io.adaptivecards.objectmodel;
 
 public class RemoteResourceInformation {
   private transient long swigCPtr;
-  protected transient boolean swigCMemOwn;
+  private transient boolean swigCMemOwn;
 
   protected RemoteResourceInformation(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;

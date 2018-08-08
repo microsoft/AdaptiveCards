@@ -22,6 +22,7 @@ import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.ActionsOrientation;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.HostConfig;
+import io.adaptivecards.objectmodel.ActionsConfig;
 import io.adaptivecards.objectmodel.IconPlacement;
 import io.adaptivecards.objectmodel.ShowCardAction;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
@@ -170,11 +171,13 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
     private class ActionElementRendererIconImageLoaderAsync extends InnerImageLoaderAsync
     {
         private IconPlacement m_iconPlacement;
+        private long m_iconSize;
 
-        protected ActionElementRendererIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl, IconPlacement iconPlacement)
+        protected ActionElementRendererIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl, IconPlacement iconPlacement, long iconSize)
         {
             super(renderedCard, containerView, imageBaseUrl);
             m_iconPlacement = iconPlacement;
+            m_iconSize = iconSize;
         }
 
         @Override
@@ -183,7 +186,16 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             Button button = (Button) super.m_view;
 
             Drawable originalDrawableIcon = new BitmapDrawable(null, bitmap);
-            double imageHeight = button.getTextSize();
+
+            double imageHeight;
+            if (m_iconPlacement == IconPlacement.AboveTitle) {
+                // If icon is above title, iconSize should be used as the height of the image
+                imageHeight = m_iconSize;
+            } else {
+                // Otherwise, the height of the image should be the height of the action's text
+                imageHeight = button.getTextSize();
+            }
+
             double scaleRatio = imageHeight / originalDrawableIcon.getIntrinsicHeight();
             double imageWidth = scaleRatio * originalDrawableIcon.getIntrinsicWidth();
 
@@ -213,13 +225,14 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
     {
         Button button = new Button(context);
         button.setText(baseActionElement.GetTitle());
-        ActionAlignment alignment = hostConfig.getActions().getActionAlignment();
-        ActionsOrientation orientation = hostConfig.getActions().getActionsOrientation();
+        ActionsConfig actionsConfig = hostConfig.getActions();
+        ActionAlignment alignment = actionsConfig.getActionAlignment();
+        ActionsOrientation orientation = actionsConfig.getActionsOrientation();
         LinearLayout.LayoutParams layoutParams;
         if (orientation == ActionsOrientation.Horizontal)
         {
             layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
-            long spacing = hostConfig.getActions().getButtonSpacing();
+            long spacing = actionsConfig.getButtonSpacing();
             layoutParams.rightMargin = Util.dpToPixels(context, spacing);
         }
         else
@@ -236,11 +249,17 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
 
         String iconUrl = baseActionElement.GetIconUrl();
         if( !iconUrl.isEmpty() ) {
-            ActionElementRendererIconImageLoaderAsync imageLoader = new ActionElementRendererIconImageLoaderAsync(renderedCard, button, hostConfig.getImageBaseUrl(), hostConfig.getActions().getIconPlacement());
+            ActionElementRendererIconImageLoaderAsync imageLoader = new ActionElementRendererIconImageLoaderAsync(
+                    renderedCard,
+                    button,
+                    hostConfig.getImageBaseUrl(),
+                    actionsConfig.getIconPlacement(),
+                    actionsConfig.getIconSize()
+            );
             imageLoader.execute(baseActionElement.GetIconUrl());
 
             // Only when the icon must be placed to the left of the title, we have to do this
-            if (hostConfig.getActions().getIconPlacement() == IconPlacement.LeftOfTitle) {
+            if (actionsConfig.getIconPlacement() == IconPlacement.LeftOfTitle) {
                 int padding = (int) hostConfig.getSpacing().getDefaultSpacing();
                 ButtonOnLayoutChangedListener layoutChangedListener = new ButtonOnLayoutChangedListener();
                 layoutChangedListener.setPadding(padding);
