@@ -28,15 +28,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 					BaseCardElement(AdaptiveCards::CardElementType::Custom),
 					BaseActionElement(AdaptiveCards::ActionType::Custom)
 				{
-					m_customImage = value.get("customImageProperty", Json::Value()).asString();
-				}
-
-				virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris) override
-				{
-					RemoteResourceInformation resourceInfo;
-					resourceInfo.url = m_customImage;
-					resourceInfo.resourceType = CardElementType::Image;
-					resourceUris.push_back(resourceInfo);
+					m_customImage = value.get("customProperty", Json::Value()).asString();
 				}
 
 			private:
