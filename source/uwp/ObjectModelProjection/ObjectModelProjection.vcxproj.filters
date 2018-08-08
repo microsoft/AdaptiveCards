@@ -96,6 +96,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseWarning.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Media.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MediaSource.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\RemoteResourceInformation.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">

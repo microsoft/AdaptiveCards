@@ -46,6 +46,24 @@ namespace AdaptiveCards.Rendering.Wpf
                 bool isInline = (actionsConfig.ShowCard.ActionMode == ShowCardActionMode.Inline);
 
                 int iPos = 0;
+
+                // See if all actions have icons, otherwise force the icon placement to the left
+                var oldConfigIconPlacement = actionsConfig.IconPlacement;
+                bool allActionsHaveIcons = true;
+                foreach (var action in actionsToProcess)
+                {
+                    if (string.IsNullOrEmpty(action.IconUrl))
+                    {
+                        allActionsHaveIcons = false;
+                        break;
+                    }
+                }
+
+                if (!allActionsHaveIcons)
+                {
+                    actionsConfig.IconPlacement = IconPlacement.LeftOfTitle;
+                }
+                
                 foreach (var action in actionsToProcess)
                 {
                     // add actions
@@ -73,11 +91,31 @@ namespace AdaptiveCards.Rendering.Wpf
                         // Only support 1 level of showCard
                         if (isInline && context.CardDepth == 1)
                         {
-                            FrameworkElement uiShowCardContainer = showCardAction.CreateShowCard(context, actionsConfig);
+                            Grid uiShowCardContainer = new Grid();
+                            uiShowCardContainer.Style = context.GetStyle("Adaptive.Actions.ShowCard");
+                            uiShowCardContainer.DataContext = showCardAction;
+                            uiShowCardContainer.Margin = new Thickness(0, actionsConfig.ShowCard.InlineTopMargin, 0, 0);
+                            uiShowCardContainer.Visibility = Visibility.Collapsed;
+
+                            // render the card
+                            var uiShowCardWrapper = (Grid)context.Render(showCardAction.Card);
+                            uiShowCardWrapper.Background = context.GetColorBrush("Transparent");
+                            uiShowCardWrapper.DataContext = showCardAction;
+
+                            // Remove the card padding
+                            var innerCard = (Grid)uiShowCardWrapper.Children[0];
+                            innerCard.Margin = new Thickness(0);
+
+                            uiShowCardContainer.Children.Add(uiShowCardWrapper);
+
+                            // Add to the list of show cards in context
                             context.ActionShowCards.Add(new Tuple<FrameworkElement, Button>(uiShowCardContainer, uiAction));
                         }
                     }
                 }
+
+                // Restore the iconPlacement for the context.
+                actionsConfig.IconPlacement = oldConfigIconPlacement;
             }
         }
     }

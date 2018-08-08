@@ -27,6 +27,10 @@ FOUNDATION_EXPORT const unsigned char AdaptiveCarsFrameworkVersionString[];
 
 #import <AdaptiveCards/ACOAdaptiveCardParseResult.h>
 
+#import <AdaptiveCards/ACOResourceResolvers.h>
+
+#import <AdaptiveCards/ACOIResourceResolver.h>
+
 #import <AdaptiveCards/ACRRenderer.h>
 
 #import <AdaptiveCards/ACRRenderResult.h>
@@ -78,3 +82,9 @@ FOUNDATION_EXPORT const unsigned char AdaptiveCarsFrameworkVersionString[];
 #import <AdaptiveCards/ACRActionShowCardRenderer.h>
 
 #import <AdaptiveCards/ACRActionSubmitRenderer.h>
+
+#import <AdaptiveCards/ACRIMedia.h>
+
+#import <AdaptiveCards/ACOMediaEvent.h>
+
+#import <AdaptiveCards/ACRMediaTarget.h>

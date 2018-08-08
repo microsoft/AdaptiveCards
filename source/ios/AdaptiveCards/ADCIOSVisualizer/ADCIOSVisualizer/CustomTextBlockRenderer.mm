@@ -87,7 +87,7 @@
     }
 
     [viewGroup addArrangedSubview:lab];
-    
+
     lab.backgroundColor = UIColor.lightGrayColor;
 
     lab.translatesAutoresizingMaskIntoConstraints = false;

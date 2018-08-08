@@ -19,4 +19,6 @@
 
 - (void)getDefaultInput:(NSMutableDictionary *)dictionary;
 
+- (NSString *)getTitlesOfChoices;
+
 @end

@@ -40,7 +40,7 @@ namespace AdaptiveCardTestApp.Pages
                 throw new NullReferenceException("Must provide start model");
             }
 
-            var model = new RunningTestsViewModel(startModel.SelectedCards, startModel.SelectedHostConfigs, startModel.ExpectedFolder);
+            var model = new RunningTestsViewModel(startModel.SelectedCards, startModel.SelectedHostConfigs, startModel.AddToTimeline, startModel.ExpectedFolder);
             model.OnTestsCompleted += Model_OnTestsCompleted;
             model.OnSingleTestCompleted += Model_OnSingleTestCompleted;
             DataContext = model;

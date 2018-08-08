@@ -69,6 +69,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::Height, "height" },
         { AdaptiveCardSchemaKey::HorizontalAlignment, "horizontalAlignment" },
         { AdaptiveCardSchemaKey::IconPlacement, "iconPlacement" },
+        { AdaptiveCardSchemaKey::IconSize, "iconSize" },
         { AdaptiveCardSchemaKey::IconUrl, "iconUrl" },
         { AdaptiveCardSchemaKey::Id, "id" },
         { AdaptiveCardSchemaKey::Image, "image" },
@@ -626,7 +627,6 @@ void GetVerticalContentAlignmentEnumMappings(
 {
     static std::unordered_map<VerticalContentAlignment, std::string, EnumHash> verticalContentAlignmentEnumToName =
     {
-        { VerticalContentAlignment::Stretch, "Stretch" },
         { VerticalContentAlignment::Top, "Top" },
         { VerticalContentAlignment::Center, "Center" },
         { VerticalContentAlignment::Bottom, "Bottom" }
@@ -1135,7 +1135,7 @@ VerticalContentAlignment VerticalContentAlignmentFromString(const std::string& v
 
     if (verticalContentAlignmentNameToEnum.find(verticalContentAlignment) == verticalContentAlignmentNameToEnum.end())
     {
-        return VerticalContentAlignment::Stretch;
+        return VerticalContentAlignment::Top;
     }
     return verticalContentAlignmentNameToEnum[verticalContentAlignment];
 }

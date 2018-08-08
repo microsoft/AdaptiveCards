@@ -26,6 +26,8 @@ namespace AdaptiveCards.Rendering.Wpf
                     if (isInline && context.CardDepth == 1)
                     {
                         FrameworkElement uiShowCardContainer = showCardAction.CreateShowCard(context, actionsConfig);
+
+                        // Add to the list of show cards in context
                         context.ActionShowCards.Add(new Tuple<FrameworkElement, Button>(uiShowCardContainer, uiButton));
                     }
                 }

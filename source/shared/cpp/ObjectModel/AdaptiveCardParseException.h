@@ -9,9 +9,8 @@ class AdaptiveCardParseException : public std::exception
 {
 public:
     AdaptiveCardParseException(AdaptiveSharedNamespace::ErrorStatusCode statusCode, const std::string& message);
-    ~AdaptiveCardParseException();
 
-    virtual const char* what() const throw();
+    const char* what() const throw() override;
     AdaptiveSharedNamespace::ErrorStatusCode GetStatusCode() const;
     const std::string& GetReason() const;
 

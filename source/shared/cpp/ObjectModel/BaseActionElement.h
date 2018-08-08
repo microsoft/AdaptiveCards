@@ -4,6 +4,7 @@
 #include "Enums.h"
 #include "json/json.h"
 #include "ParseUtil.h"
+#include "RemoteResourceInformation.h"
 
 namespace AdaptiveSharedNamespace {
 class BaseActionElement
@@ -11,7 +12,11 @@ class BaseActionElement
 public:
     BaseActionElement(ActionType type);
 
-    virtual ~BaseActionElement();
+    BaseActionElement(const BaseActionElement&) = default;
+    BaseActionElement(BaseActionElement&&) = default;
+    BaseActionElement& operator=(const BaseActionElement&) = default;
+    BaseActionElement& operator=(BaseActionElement&&) = default;
+    virtual ~BaseActionElement() = default;
 
     virtual std::string GetElementTypeString() const;
     virtual void SetElementTypeString(const std::string &value);
@@ -36,10 +41,10 @@ public:
     Json::Value GetAdditionalProperties() const;
     void SetAdditionalProperties(Json::Value const &additionalProperties);
 
-    virtual void GetResourceUris(std::vector<std::string>& resourceUris);
+    virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris);
 
 private:
-    void PopulateKnownPropertiesSet();
+    virtual void PopulateKnownPropertiesSet();
 
     ActionType m_type;
     std::string m_typeString;
