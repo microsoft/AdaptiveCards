@@ -63,7 +63,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 {
                     actionsConfig.IconPlacement = IconPlacement.LeftOfTitle;
                 }
-                
+
                 foreach (var action in actionsToProcess)
                 {
                     // add actions
