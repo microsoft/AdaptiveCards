@@ -38,7 +38,21 @@ public class OpenUrlActionParser extends ActionElementParser {
   }
 
   public OpenUrlActionParser() {
-    this(AdaptiveCardObjectModelJNI.new_OpenUrlActionParser(), true);
+    this(AdaptiveCardObjectModelJNI.new_OpenUrlActionParser__SWIG_0(), true);
+  }
+
+  public OpenUrlActionParser(OpenUrlActionParser arg0) {
+    this(AdaptiveCardObjectModelJNI.new_OpenUrlActionParser__SWIG_1(OpenUrlActionParser.getCPtr(arg0), arg0), true);
+  }
+
+  public BaseActionElement Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, JsonValue value) {
+    long cPtr = AdaptiveCardObjectModelJNI.OpenUrlActionParser_Deserialize(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, JsonValue.getCPtr(value), value);
+    return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
+  }
+
+  public BaseActionElement DeserializeFromString(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, String jsonString) {
+    long cPtr = AdaptiveCardObjectModelJNI.OpenUrlActionParser_DeserializeFromString(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, jsonString);
+    return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
   }
 
 }
