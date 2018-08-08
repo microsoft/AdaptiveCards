@@ -14,6 +14,9 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiButton.Click += (sender, e) =>
                 {
                     context.InvokeAction(uiButton, new AdaptiveActionEventArgs(action));
+
+                    // Prevent nested events from triggering
+                    e.Handled = true;
                 };
                 return uiButton;
             }
