@@ -225,14 +225,13 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
     {
         Button button = new Button(context);
         button.setText(baseActionElement.GetTitle());
-        ActionsConfig actionsConfig = hostConfig.getActions();
-        ActionAlignment alignment = actionsConfig.getActionAlignment();
-        ActionsOrientation orientation = actionsConfig.getActionsOrientation();
+        ActionAlignment alignment = hostConfig.getActions().getActionAlignment();
+        ActionsOrientation orientation = hostConfig.getActions().getActionsOrientation();
         LinearLayout.LayoutParams layoutParams;
         if (orientation == ActionsOrientation.Horizontal)
         {
             layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
-            long spacing = actionsConfig.getButtonSpacing();
+            long spacing = hostConfig.getActions().getButtonSpacing();
             layoutParams.rightMargin = Util.dpToPixels(context, spacing);
         }
         else
@@ -253,13 +252,13 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
                     renderedCard,
                     button,
                     hostConfig.getImageBaseUrl(),
-                    actionsConfig.getIconPlacement(),
-                    actionsConfig.getIconSize()
+                    hostConfig.getActions().getIconPlacement(),
+                    hostConfig.getActions().getIconSize()
             );
             imageLoader.execute(baseActionElement.GetIconUrl());
 
             // Only when the icon must be placed to the left of the title, we have to do this
-            if (actionsConfig.getIconPlacement() == IconPlacement.LeftOfTitle) {
+            if (hostConfig.getActions().getIconPlacement() == IconPlacement.LeftOfTitle) {
                 int padding = (int) hostConfig.getSpacing().getDefaultSpacing();
                 ButtonOnLayoutChangedListener layoutChangedListener = new ButtonOnLayoutChangedListener();
                 layoutChangedListener.setPadding(padding);
