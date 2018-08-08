@@ -1,4 +1,4 @@
-﻿import * as Enums from "./enums";
+import * as Enums from "./enums";
 import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
@@ -990,7 +990,9 @@ export class TextBlock extends CardElement {
         this.color = Utils.getEnumValueOrDefault(Enums.TextColor, json["color"], this.color);
         this.isSubtle = json["isSubtle"];
         this.wrap = json["wrap"] === undefined ? false : json["wrap"];
+        if (typeof (json["maxLines"]) === "number") {
         this.maxLines = json["maxLines"];
+    }
     }
 
     getJsonTypeName(): string {
