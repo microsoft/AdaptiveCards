@@ -62,8 +62,8 @@ public class ColumnSet extends BaseCardElement {
     AdaptiveCardObjectModelJNI.ColumnSet_SetLanguage(swigCPtr, this, language);
   }
 
-  public void GetResourceInformation(SWIGTYPE_p_std__vectorT_RemoteResourceInformation_t resourceInfo) {
-    AdaptiveCardObjectModelJNI.ColumnSet_GetResourceInformation(swigCPtr, this, SWIGTYPE_p_std__vectorT_RemoteResourceInformation_t.getCPtr(resourceInfo));
+  public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {
+    AdaptiveCardObjectModelJNI.ColumnSet_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceInfo), resourceInfo);
   }
 
   public static ColumnSet dynamic_cast(BaseCardElement baseCardElement) {

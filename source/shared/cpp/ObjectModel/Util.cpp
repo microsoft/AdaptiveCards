@@ -37,6 +37,35 @@ void PropagateLanguage(const std::string& language, std::vector<std::shared_ptr<
     }
 }
 
+std::string ValidateColor(const std::string& backgroundColor, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings) 
+{
+    size_t backgroundColorLength = backgroundColor.length();
+    bool isValidColor = ((backgroundColor[0] == '#') && (backgroundColorLength == 7 || backgroundColorLength == 9));
+    for (size_t i = 1; i < backgroundColorLength && isValidColor; ++i)
+    {
+        isValidColor = isxdigit(backgroundColor[i]);
+    }
+
+    if (!isValidColor)
+    {
+        warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(AdaptiveSharedNamespace::WarningStatusCode::InvalidColorFormat, "Image background color doesn't follor #AARRGGBB or #RRGGBB format"));
+        return "#00000000";
+    }
+
+    std::string validBackgroundColor;
+    // If format given was #RRGGBB
+    if (backgroundColorLength == 7)
+    {
+        validBackgroundColor = "#FF" + backgroundColor.substr(1, 6);
+    }
+    else
+    {
+        validBackgroundColor = backgroundColor;
+    }
+
+    return validBackgroundColor;
+}
+
 void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::string &requestedDimension,
     int &parsedDimension)
 {
@@ -76,3 +105,4 @@ void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::s
         }
     }
 }
+
