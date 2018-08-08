@@ -1,4 +1,4 @@
-import * as Enums from "./enums";
+﻿import * as Enums from "./enums";
 import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
@@ -993,6 +993,8 @@ export class TextBlock extends CardElement {
         if (typeof (json["maxLines"]) === "number") {
         this.maxLines = json["maxLines"];
     }
+            this.maxLines = json["maxLines"];
+        }
     }
 
     getJsonTypeName(): string {
