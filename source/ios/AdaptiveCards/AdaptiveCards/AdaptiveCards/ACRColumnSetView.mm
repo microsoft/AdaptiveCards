@@ -30,4 +30,9 @@
         [[super.stackView.arrangedSubviews objectAtIndex:[super.stackView.arrangedSubviews count ] - 1] setContentHuggingPriority:UILayoutPriorityFittingSizeLevel forAxis:UILayoutConstraintAxisHorizontal];
 }
 
+- (void)setAlignmentForColumnStretch
+{
+    super.stackView.alignment = UIStackViewAlignmentFill;
+}
+
 @end

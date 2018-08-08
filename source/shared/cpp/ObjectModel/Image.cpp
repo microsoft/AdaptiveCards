@@ -18,7 +18,7 @@ Image::Image() :
 
 Json::Value Image::SerializeToJsonValue() const
 {
-    const char pixelstring[] = "px";
+	const std::string pixelstring("px");
 
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
@@ -226,10 +226,10 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
         parsedDimensions.push_back(parsedDimension);
     }
 
-    if (parsedDimensions[0] != 0 || parsedDimensions[1] != 0)
+    if (parsedDimensions.at(0) != 0 || parsedDimensions.at(1) != 0)
     {
-        image->SetPixelWidth(parsedDimensions[0]);
-        image->SetPixelHeight(parsedDimensions[1]);
+        image->SetPixelWidth(parsedDimensions.at(0));
+        image->SetPixelHeight(parsedDimensions.at(1));
     }
     else
     {
@@ -255,9 +255,11 @@ void Image::PopulateKnownPropertiesSet()
         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)});
 }
 
-void Image::GetResourceUris(std::vector<std::string>& resourceUris)
+void Image::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
 {
-    auto url = GetUrl();
-    resourceUris.push_back(url);
+    RemoteResourceInformation imageResourceInfo;
+    imageResourceInfo.url = GetUrl();
+    imageResourceInfo.resourceType = CardElementType::Image;
+    resourceInfo.push_back(imageResourceInfo);
     return;
 }

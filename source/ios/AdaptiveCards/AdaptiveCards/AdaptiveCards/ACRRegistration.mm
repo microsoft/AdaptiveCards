@@ -12,6 +12,7 @@
 #import "ACRColumnSetView.h"
 #import "ACRImageRenderer.h"
 #import "ACRImageSetRenderer.h"
+#import "ACRMediaRenderer.h"
 #import "ACRTextBlockRenderer.h"
 #import "ACRInputRenderer.h"
 #import "ACRInputToggleRenderer.h"
@@ -26,6 +27,7 @@
 #import "ACRActionOpenURLRenderer.h"
 #import "ACRActionShowCardRenderer.h"
 #import "ACRActionSubmitRenderer.h"
+#import "ACRActionSetRenderer.h"
 #import "ACRCustomRenderer.h"
 #import "BaseCardElement.h"
 #import "HostConfig.h"
@@ -36,9 +38,10 @@ using namespace AdaptiveCards;
 {
     NSDictionary *typeToRendererDict;
     NSDictionary *actionRendererDict;
+    id<ACRIBaseActionSetRenderer> _actionSetRenderer;
     NSMutableDictionary *overridenBaseElementRendererList;
     NSMutableDictionary *overridenBaseActionRendererList;
-
+    id<ACRIBaseActionSetRenderer> _defaultActionSetRenderer;
 }
 
 - (instancetype) init
@@ -48,6 +51,7 @@ using namespace AdaptiveCards;
     {
         typeToRendererDict =
             [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+             [ACRMediaRenderer getInstance],      [NSNumber numberWithInt:(int)[ACRMediaRenderer elemType]],
              [ACRImageRenderer getInstance],      [NSNumber numberWithInt:(int)[ACRImageRenderer elemType]],
              [ACRImageSetRenderer getInstance],   [NSNumber numberWithInt:(int)[ACRImageSetRenderer elemType]],
              [ACRTextBlockRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRTextBlockRenderer elemType]],
@@ -69,13 +73,16 @@ using namespace AdaptiveCards;
              [ACRActionShowCardRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::ShowCard],
              [ACRActionSubmitRenderer   getInstance], [NSNumber numberWithInt:(int)ActionType::Submit],
              nil];
+        _actionSetRenderer = [ACRActionSetRenderer getInstance];
+        _defaultActionSetRenderer = _actionSetRenderer;
+        
         overridenBaseElementRendererList = [[NSMutableDictionary alloc] init];
         overridenBaseActionRendererList  = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
 
-+ (ACRRegistration *) getInstance
++ (ACRRegistration *)getInstance
 {
     static ACRRegistration *singletonInstance = nil;
     static dispatch_once_t predicate;
@@ -83,7 +90,7 @@ using namespace AdaptiveCards;
     return singletonInstance;
 }
 
-- (ACRBaseCardElementRenderer *) getRenderer:(NSNumber *)cardElementType
+- (ACRBaseCardElementRenderer *)getRenderer:(NSNumber *)cardElementType
 {
     if([overridenBaseElementRendererList objectForKey:cardElementType]){
         return [overridenBaseElementRendererList objectForKey:cardElementType];
@@ -91,12 +98,22 @@ using namespace AdaptiveCards;
     return [typeToRendererDict objectForKey:cardElementType];
 }
 
-- (ACRBaseActionElementRenderer *) getActionRenderer:(NSNumber *)cardElementType
+- (ACRBaseActionElementRenderer *)getActionRenderer:(NSNumber *)cardElementType
 {
     if([overridenBaseActionRendererList objectForKey:cardElementType]){
         return [overridenBaseActionRendererList objectForKey:cardElementType];
     }
     return [actionRendererDict objectForKey:cardElementType];
+}
+
+- (id<ACRIBaseActionSetRenderer>)getActionSetRenderer
+{
+    return (!_actionSetRenderer)? _defaultActionSetRenderer : _actionSetRenderer;
+}
+
+- (void)setActionSetRenderer:(id<ACRIBaseActionSetRenderer>)actionsetRenderer
+{
+    _actionSetRenderer = actionsetRenderer;
 }
 
 - (void) setActionRenderer:(ACRBaseActionElementRenderer *)renderer cardElementType:(NSNumber *)cardElementType

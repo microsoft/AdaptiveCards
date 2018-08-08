@@ -52,6 +52,24 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 int iPos = 0;
                 List<FrameworkElement> actionBarCards = new List<FrameworkElement>();
+
+                // See if all actions have icons, otherwise force the icon placement to the left
+                var oldConfigIconPlacement = actionsConfig.IconPlacement;
+                bool allActionsHaveIcons = true;
+                foreach (var action in actionsToProcess)
+                {
+                    if (string.IsNullOrEmpty(action.IconUrl))
+                    {
+                        allActionsHaveIcons = false;
+                        break;
+                    }
+                }
+
+                if (!allActionsHaveIcons)
+                {
+                    actionsConfig.IconPlacement = IconPlacement.LeftOfTitle;
+                }
+
                 foreach (var action in actionsToProcess)
                 {
                     // add actions
@@ -85,7 +103,7 @@ namespace AdaptiveCards.Rendering.Wpf
                             uiShowCardContainer.Visibility = Visibility.Collapsed;
 
                             // render the card
-                            var uiShowCardWrapper = (Grid)context.Render(showCardAction.Card);                            
+                            var uiShowCardWrapper = (Grid)context.Render(showCardAction.Card);
                             uiShowCardWrapper.Background = context.GetColorBrush("Transparent");
                             uiShowCardWrapper.DataContext = showCardAction;
 
@@ -110,6 +128,9 @@ namespace AdaptiveCards.Rendering.Wpf
                         }
                     }
                 }
+
+                // Restore the iconPlacement for the context.
+                actionsConfig.IconPlacement = oldConfigIconPlacement;
             }
         }
     }

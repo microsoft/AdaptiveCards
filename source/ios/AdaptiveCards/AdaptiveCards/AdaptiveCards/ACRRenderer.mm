@@ -12,6 +12,7 @@
 #import "ACRBaseActionElementRenderer.h"
 #import "ACRColumnSetView.h"
 #import "ACRColumnView.h"
+#import "ACRImageRenderer.h"
 #import "ACRRegistration.h"
 #import "ACRRendererPrivate.h"
 #import "ACRSeparator.h"
@@ -65,6 +66,10 @@ using namespace AdaptiveCards;
     std::vector<std::shared_ptr<BaseCardElement>> body = adaptiveCard->GetBody();
     ACRColumnView *verticalView = containingView;
 
+    if(![[ACRRegistration getInstance] isElementRendererOverriden:[ACRImageRenderer elemType]]){
+        [rootView loadImage:adaptiveCard->GetBackgroundImage()];
+        [rootView loadImage:[config getHostConfig]->media.playButton];
+    }
     if(!body.empty()) {
         ACRContainerStyle style = ([config getHostConfig]->adaptiveCard.allowCustomStyle)? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
         style = (style == ACRNone)? ACRDefault : style;
@@ -72,17 +77,35 @@ using namespace AdaptiveCards;
 
         [rootView addTasksToConcurrentQueue:body];
 
+        std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
+
+        if(!actions.empty()) {
+            [rootView loadImagesForActionsAndCheckIfAllActionsHaveIconImages:actions hostconfig:config];
+        }
+
         [rootView waitForAsyncTasksToFinish];
 
+        UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
+        if( adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center || adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom ){
+            leadingBlankSpace = [verticalView addPaddingSpace];
+        }
+        
         [ACRRenderer render:verticalView rootView:rootView inputs:inputs withCardElems:body andHostConfig:config];
 
-       [[rootView card] setInputs:inputs];
+        // Dont add the trailing space if the vertical content alignment is top/default
+        if( adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Top && !(verticalView.hasStretchableView))){
+            trailingBlankSpace = [verticalView addPaddingSpace];
+        }
+        
+        [[rootView card] setInputs:inputs];
 
-        std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
         if(!actions.empty()) {
             [ACRSeparator renderActionsSeparator:verticalView hostConfig:[config getHostConfig]];
+
             // renders buttons and their associated actions
-            [ACRRenderer renderButton:rootView inputs:inputs superview:verticalView actionElems:actions hostConfig:config];
+            ACOAdaptiveCard *card = [[ACOAdaptiveCard alloc] init];
+            [card setCard:adaptiveCard];
+            [ACRRenderer renderActions:rootView inputs:inputs superview:verticalView card:card hostConfig:config];
         }
         [verticalView adjustHuggingForLastElement];
     }
@@ -90,88 +113,14 @@ using namespace AdaptiveCards;
     return verticalView;
 }
 
-+ (UIView<ACRIContentHoldingView> *)renderButton:(ACRView *)rootView
-                                          inputs:(NSMutableArray *)inputs
-                                       superview:(UIView<ACRIContentHoldingView> *)superview
-                                     actionElems:(std::vector<std::shared_ptr<BaseActionElement>> const &)elems
-                                      hostConfig:(ACOHostConfig *)config
++ (UIView *)renderActions:(ACRView *)rootView
+                  inputs:(NSMutableArray *)inputs
+               superview:(UIView<ACRIContentHoldingView> *)superview
+                    card:(ACOAdaptiveCard *)card
+               hostConfig:(ACOHostConfig *)config
 {
     ACRRegistration *reg = [ACRRegistration getInstance];
-    UIView<ACRIContentHoldingView> *childview = nil;
-    NSDictionary<NSString *, NSNumber*> *attributes =
-        @{@"spacing":[NSNumber numberWithInt:[config getHostConfig]->actions.buttonSpacing],
-          @"distribution":[NSNumber numberWithInt:UIStackViewDistributionFillEqually]};
-
-    if(ActionsOrientation::Horizontal == [config getHostConfig]->actions.actionsOrientation){
-        childview = [[ACRColumnSetView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height) attributes:attributes];
-    }
-    else{
-        childview = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height) attributes:attributes];
-    }
-
-    ACOBaseActionElement *acoElem = [[ACOBaseActionElement alloc] init];
-    float accumulatedWidth = 0, accumulatedHeight = 0, spacing = [config getHostConfig]->actions.buttonSpacing, maxWidth = 0, maxHeight = 0;
-    for(const auto &elem:elems){
-        ACRBaseActionElementRenderer *actionRenderer =
-        [reg getActionRenderer:[NSNumber numberWithInt:(int)elem->GetElementType()]];
-
-        if(actionRenderer == nil){
-            NSLog(@"Unsupported card action type:%d\n", (int) elem->GetElementType());
-            continue;
-        }
-
-        [acoElem setElem:elem];
-        UIButton *button = [actionRenderer renderButton:rootView inputs:inputs superview:superview baseActionElement:acoElem hostConfig:config];
-
-        accumulatedWidth += [button intrinsicContentSize].width;
-        accumulatedHeight += [button intrinsicContentSize].height;
-        maxWidth = MAX(maxWidth, [button intrinsicContentSize].width);
-        maxHeight = MAX(maxHeight, [button intrinsicContentSize].height);
-
-        [childview addArrangedSubview:button];
-    }
-
-    float contentWidth = accumulatedWidth, contentHeight = accumulatedHeight;
-    [childview adjustHuggingForLastElement];
-    if(ActionsOrientation::Horizontal == [config getHostConfig]->actions.actionsOrientation){
-        contentWidth += (elems.size() - 1) * spacing;
-        contentHeight = maxHeight;
-    } else {
-        contentHeight += (elems.size() - 1) * spacing;
-        contentWidth = maxWidth;
-    }
-    childview.frame = CGRectMake(0, 0, contentWidth, contentHeight);
-
-    ACRContentHoldingUIScrollView *containingView = [[ACRContentHoldingUIScrollView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, contentHeight)];
-    containingView.translatesAutoresizingMaskIntoConstraints = NO;
-    [superview addArrangedSubview:containingView];
-    [containingView addSubview:childview];
-    [NSLayoutConstraint constraintWithItem:containingView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:childview attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
-    [NSLayoutConstraint constraintWithItem:containingView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:childview attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
-    [NSLayoutConstraint constraintWithItem:containingView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:childview attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
-    [NSLayoutConstraint constraintWithItem:containingView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:childview attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
-    NSLayoutConstraint *hConstraint = [NSLayoutConstraint constraintWithItem:childview attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:containingView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0];
-    NSLayoutConstraint *vConstraint = [NSLayoutConstraint constraintWithItem:childview attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:containingView attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0];
-
-    hConstraint.active = YES;
-    vConstraint.active = YES;
-
-    if(ActionsOrientation::Horizontal == [config getHostConfig]->actions.actionsOrientation){
-        hConstraint.priority = UILayoutPriorityDefaultLow;
-        if(contentWidth > superview.frame.size.width){
-            containingView.showsHorizontalScrollIndicator = YES;
-        } else
-        {
-            if([config getHostConfig]->actions.actionAlignment == ActionAlignment::Stretch){
-                [NSLayoutConstraint constraintWithItem:containingView attribute:NSLayoutAttributeWidth
-                                             relatedBy:NSLayoutRelationEqual toItem:childview
-                                             attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;
-            }
-        }
-    } else {
-        vConstraint.priority = UILayoutPriorityDefaultLow;
-    }
-    return childview;
+    return [[reg getActionSetRenderer] renderButtons:rootView inputs:inputs superview:superview card:card hostConfig:config];
 }
 
 + (UIView *)render:(UIView<ACRIContentHoldingView> *)view
@@ -183,9 +132,14 @@ using namespace AdaptiveCards;
     ACRRegistration *reg = [ACRRegistration getInstance];
     ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] init];
 
+    UIView *prevStretchableElem = nil, *curStretchableElem = nil;
+
+    auto firstelem = elems.begin();
     for(const auto &elem:elems)
     {
-        [ACRSeparator renderSeparation:elem forSuperview:view withHostConfig:[config getHostConfig]];
+        if(*firstelem != elem){
+            [ACRSeparator renderSeparation:elem forSuperview:view withHostConfig:[config getHostConfig]];
+        }
 
         ACRBaseCardElementRenderer *renderer =
             [reg getRenderer:[NSNumber numberWithInt:(int)elem->GetElementType()]];
@@ -197,7 +151,29 @@ using namespace AdaptiveCards;
         }
 
         [acoElem setElem:elem];
-        [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
+
+        curStretchableElem = [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
+
+        if(elem->GetHeight() == HeightType::Stretch){
+            if(prevStretchableElem){
+                NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:curStretchableElem
+                                             attribute:NSLayoutAttributeHeight
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:prevStretchableElem
+                                             attribute:NSLayoutAttributeHeight
+                                            multiplier:1
+                                              constant:0];
+                heightConstraint.priority = UILayoutPriorityDefaultLow;
+                heightConstraint.active = YES;
+            }
+
+            if([view isKindOfClass:[ACRColumnView class]]){
+                ACRColumnView *columnView = (ACRColumnView*)view;
+                columnView.hasStretchableView = YES;
+            }
+
+            prevStretchableElem = curStretchableElem;
+        }
     }
 
     return view;

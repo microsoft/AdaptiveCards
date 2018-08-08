@@ -23,15 +23,9 @@ AdaptiveNamespaceStart
     } CATCH_RETURN;
 
     _Use_decl_annotations_
-    HRESULT AdaptiveMediaEventInvoker::SendMediaPlayEvent(IAdaptiveMedia* mediaElement)
+    HRESULT AdaptiveMediaEventInvoker::SendMediaClickedEvent(IAdaptiveMedia* mediaElement)
     {
-        return m_renderResult->SendMediaPlayEvent(mediaElement);
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveMediaEventInvoker::SendMediaEndedEvent(IAdaptiveMedia* mediaElement)
-    {
-        return m_renderResult->SendMediaEndedEvent(mediaElement);
+        return m_renderResult->SendMediaClickedEvent(mediaElement);
     }
 
 AdaptiveNamespaceEnd

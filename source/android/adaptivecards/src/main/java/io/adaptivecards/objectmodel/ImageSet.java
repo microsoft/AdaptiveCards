@@ -57,8 +57,8 @@ public class ImageSet extends BaseCardElement {
     return new ImageVector(AdaptiveCardObjectModelJNI.ImageSet_GetImages__SWIG_0(swigCPtr, this), false);
   }
 
-  public void GetResourceUris(StringVector resourceUris) {
-    AdaptiveCardObjectModelJNI.ImageSet_GetResourceUris(swigCPtr, this, StringVector.getCPtr(resourceUris), resourceUris);
+  public void GetResourceInformation(SWIGTYPE_p_std__vectorT_RemoteResourceInformation_t resourceInfo) {
+    AdaptiveCardObjectModelJNI.ImageSet_GetResourceInformation(swigCPtr, this, SWIGTYPE_p_std__vectorT_RemoteResourceInformation_t.getCPtr(resourceInfo));
   }
 
   public static ImageSet dynamic_cast(BaseCardElement baseCardElement) {

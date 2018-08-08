@@ -103,7 +103,6 @@ namespace AdaptiveCards.Rendering.Wpf
 
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
-
             AdaptiveContainerRenderer.AddContainerElements(grid, card.Body, context);
             AdaptiveActionSetRenderer.AddActions(grid, card.Actions, context);
 
@@ -111,7 +110,11 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (card.SelectAction != null)
             {
-                return context.RenderSelectAction(card.SelectAction, outerGrid);
+                context.IsRenderingCard = true;
+                var outerGridWithSelectAction = context.RenderSelectAction(card.SelectAction, outerGrid);
+                context.IsRenderingCard = false;
+
+                return outerGridWithSelectAction;
             }
 
             return outerGrid;

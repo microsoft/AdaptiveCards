@@ -37,7 +37,8 @@ void PropagateLanguage(const std::string& language, std::vector<std::shared_ptr<
     }
 }
 
-void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::string &requestedDimension, int &parsedDimension)
+void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::string &requestedDimension,
+    int &parsedDimension)
 {
     if (requestedDimension.empty())
     {
@@ -48,26 +49,30 @@ void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::s
         const std::size_t foundIndex = requestedDimension.find(unit);
         if (std::string::npos == foundIndex || requestedDimension.size() != foundIndex + unit.size())
         {
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "unit is either missing or inproper form: " + requestedDimension);
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
+                "unit is either missing or inproper form: " + requestedDimension);
         }
         try
         {
-            float parsedVal = stof(requestedDimension.substr(0, foundIndex));
-            if(parsedVal != (int) parsedVal || parsedVal < 0)
+            int parsedVal = std::stoi(requestedDimension.substr(0, foundIndex));
+            if (parsedVal < 0)
             {
-                throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "unsigned integer is accepted but received : " + requestedDimension);
+                throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
+                    "unsigned integer is accepted but received : " + requestedDimension);
             }
-            parsedDimension = (int)parsedVal;
+            parsedDimension = parsedVal;
         }
         catch (const std::invalid_argument &e)
         {
             (void)e;
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "unsigned integer is accepted but received : " + requestedDimension);
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
+                "unsigned integer is accepted but received : " + requestedDimension);
         }
         catch (const std::out_of_range &e)
         {
             (void)e;
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "out of range: " + requestedDimension);
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
+                "out of range: " + requestedDimension);
         }
     }
 }

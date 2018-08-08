@@ -5,7 +5,10 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#import "ACOBaseCardElementPrivate.h"
 #import "ACRTextField.h"
+#import "TextInput.h"
+
 
 @implementation ACRTextField
 
@@ -39,4 +42,17 @@
     [self resignFirstResponder];
 }
 
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if(!_maxLength){
+        return YES;
+    }
+    
+    if(range.length + range.location > textField.text.length) {
+        return NO;
+    }
+    
+    NSUInteger newLength = [textField.text length] + [string length] - range.length;
+    return newLength <= _maxLength;
+}
 @end
