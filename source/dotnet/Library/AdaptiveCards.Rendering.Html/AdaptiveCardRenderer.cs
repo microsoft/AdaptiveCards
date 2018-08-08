@@ -598,8 +598,7 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("color", context.GetColor(textBlock.Color, textBlock.IsSubtle))
                 .Style("line-height", $"{lineHeight.ToString("F")}px")
                 .Style("font-size", $"{fontSize}px")
-                .Style("font-weight", $"{weight}")
-                .Style("height", "100%");
+                .Style("font-weight", $"{weight}");
 
             if (textBlock.MaxLines > 0)
                 uiTextBlock = uiTextBlock

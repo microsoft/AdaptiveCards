@@ -84,6 +84,7 @@ enum class AdaptiveCardSchemaKey
     Height,
     HorizontalAlignment,
     IconPlacement,
+    IconSize,
     IconUrl,
     Id,
     Image,
@@ -311,6 +312,7 @@ enum class WarningStatusCode {
     UnsupportedSchemaVersion,
     UnsupportedMediaType,
     InvalidMediaMix,
+    InvalidColorFormat,
 };
 
 enum class DateTimePreparsedTokenFormat {

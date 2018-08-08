@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import io.adaptivecards.objectmodel.AdaptiveCardParseWarning;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
@@ -139,16 +140,25 @@ public class ImageRenderer extends BaseCardElementRenderer
         imageView.setTag(image);
 
         String imageBackgroundColor = image.GetBackgroundColor();
-        int backgroundColor = -1;
+        int backgroundColor = 0;
         if(!TextUtils.isEmpty(imageBackgroundColor))
         {
-            try
+            // check that it has 9 characters and that the color string isn't a color name
+            if(imageBackgroundColor.length() == 9 && imageBackgroundColor.charAt(0) == '#')
             {
-                backgroundColor = Color.parseColor(imageBackgroundColor);
+                try
+                {
+                    // if the color string is not valid, parseColor will throw a IllegalArgumentException so we just turn the color to transparent on the catch statement
+                    backgroundColor = Color.parseColor(imageBackgroundColor);
+                }
+                catch (IllegalArgumentException e)
+                {
+                    backgroundColor = 0;
+                }
             }
-            catch(IllegalArgumentException e)
+            else
             {
-                throw new IllegalArgumentException("Unable to parse image background color: " + imageBackgroundColor);
+                backgroundColor = 0;
             }
         }
 
