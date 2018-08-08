@@ -103,7 +103,6 @@ namespace AdaptiveCards
         ///     When Wrap is true, you can specify the maximum number of lines to allow the textBlock to use.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        //[JsonConverter(typeof(StrictIntConverter))]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
