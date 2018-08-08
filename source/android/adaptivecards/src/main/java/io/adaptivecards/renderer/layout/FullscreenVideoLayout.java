@@ -28,6 +28,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -74,12 +75,10 @@ public class FullscreenVideoLayout extends FullscreenVideoView implements View.O
 
     private void arrangeControlBar()
     {
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params.addRule(ALIGN_PARENT_BOTTOM);
-        addView(m_videoControlsView, params);
-
         LinearLayout controlsAndSeekBarLayout = new LinearLayout(m_context);
-        controlsAndSeekBarLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        params.gravity = Gravity.BOTTOM;
+        controlsAndSeekBarLayout.setLayoutParams(params);
         controlsAndSeekBarLayout.setOrientation(LinearLayout.VERTICAL);
         m_videoControlsView.addView(controlsAndSeekBarLayout);
 
@@ -128,12 +127,15 @@ public class FullscreenVideoLayout extends FullscreenVideoView implements View.O
 
         if (m_videoControlsView == null)
         {
-            m_videoControlsView = new RelativeLayout(m_context);
-            LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            m_videoControlsView.setLayoutParams(lp);
+            m_videoControlsView = new FrameLayout(m_context);
+            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.gravity = Gravity.BOTTOM;
+            m_videoControlsView.setLayoutParams(layoutParams);
 
             // Apply black color so elapsed time and total time are visible
             m_videoControlsView.setBackgroundColor(0x44000000);
+
+            addView(m_videoControlsView);
         }
 
         if (m_videoControlsView != null)

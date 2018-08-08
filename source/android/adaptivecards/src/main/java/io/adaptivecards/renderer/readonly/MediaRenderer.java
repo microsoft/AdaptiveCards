@@ -214,7 +214,7 @@ public class MediaRenderer extends BaseCardElementRenderer
         }
         mediaView.setShouldAutoplay(true);
 
-        RelativeLayout.LayoutParams videoViewLayoutParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        RelativeLayout.LayoutParams videoViewLayoutParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         videoViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         videoViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         videoViewLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);

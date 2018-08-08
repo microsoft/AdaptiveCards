@@ -39,7 +39,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 
-import android.widget.RelativeLayout;
+import android.widget.FrameLayout;
 import java.io.IOException;
 
 import io.adaptivecards.renderer.IMediaDownloadListener;
@@ -54,7 +54,7 @@ import io.adaptivecards.renderer.registration.CardRendererRegistration;
  * @since 1.0
  */
 @SuppressLint("NewApi")
-public class FullscreenVideoView extends RelativeLayout implements OnPreparedListener, OnErrorListener, OnSeekCompleteListener, OnCompletionListener, OnInfoListener, OnVideoSizeChangedListener, OnBufferingUpdateListener, TextureView.SurfaceTextureListener
+public class FullscreenVideoView extends FrameLayout implements OnPreparedListener, OnErrorListener, OnSeekCompleteListener, OnCompletionListener, OnInfoListener, OnVideoSizeChangedListener, OnBufferingUpdateListener, TextureView.SurfaceTextureListener
 {
     protected Context m_context;
 
@@ -391,13 +391,8 @@ public class FullscreenVideoView extends RelativeLayout implements OnPreparedLis
             m_textureView.setSurfaceTextureListener(this);
         }
 
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        layoutParams.addRule(CENTER_IN_PARENT);
-        m_textureView.setLayoutParams(layoutParams);
+        m_textureView.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         addView(m_textureView);
-
-        layoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        layoutParams.addRule(CENTER_IN_PARENT);
 
         m_currentState = State.IDLE;
     }
@@ -504,11 +499,10 @@ public class FullscreenVideoView extends RelativeLayout implements OnPreparedLis
                     }
 
                     if (m_textureView != null) {
-                        RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) m_textureView.getLayoutParams();
-                        lp.addRule(CENTER_IN_PARENT);
-                        lp.width = screenWidth;
-                        lp.height = newHeight;
-                        m_textureView.setLayoutParams(lp);
+                        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) m_textureView.getLayoutParams();
+                        layoutParams.width = screenWidth;
+                        layoutParams.height = newHeight;
+                        m_textureView.setLayoutParams(layoutParams);
                     }
                 }
             }
