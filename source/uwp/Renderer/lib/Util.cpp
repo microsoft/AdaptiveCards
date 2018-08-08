@@ -2,6 +2,7 @@
 #include <locale>
 #include <codecvt>
 #include <string>
+#include <regex>
 
 #include "AdaptiveColumn.h"
 #include "AdaptiveColumnSet.h"
@@ -545,24 +546,58 @@ HRESULT GenerateSharedSeparator(
     return S_OK;
 } CATCH_RETURN;
 
+// Get a Color object from color string
+// Expected formats are "#AARRGGBB" (with alpha channel) and "#RRGGBB" (without alpha channel)
 HRESULT GetColorFromString(std::string colorString, ABI::Windows::UI::Color *color) noexcept try
 {
-    std::string alphaString = colorString.substr(1, 2);
-    INT32 alpha = strtol(alphaString.c_str(), nullptr, 16);
+    if (colorString._Starts_with("#"))
+    {
+        // Get the pure hex value (without #)
+        std::string hexColorString = colorString.substr(1, string::npos);
 
-    std::string redString = colorString.substr(3, 2);
-    INT32 red = strtol(redString.c_str(), nullptr, 16);
+        regex colorWithAlphaRegex("[0-9a-f]{8}", regex_constants::icase);
+        if (regex_match(hexColorString, colorWithAlphaRegex))
+        {
+            // If color string has alpha channel, extract and set to color
+            std::string alphaString = hexColorString.substr(0, 2);
+            INT32 alpha = strtol(alphaString.c_str(), nullptr, 16);
 
-    std::string greenString = colorString.substr(5, 2);
-    INT32 green = strtol(greenString.c_str(), nullptr, 16);
+            color->A = static_cast<BYTE>(alpha);
 
-    std::string blueString = colorString.substr(7, 2);
-    INT32 blue = strtol(blueString.c_str(), nullptr, 16);
+            hexColorString = hexColorString.substr(2, string::npos);
+        }
+        else
+        {
+            // Otherwise, set full opacity
+            std::string alphaString = "FF";
+            INT32 alpha = strtol(alphaString.c_str(), nullptr, 16);
+            color->A = static_cast<BYTE>(alpha);
+        }
 
-    color->A = static_cast<BYTE>(alpha);
-    color->R = static_cast<BYTE>(red);
-    color->G = static_cast<BYTE>(green);
-    color->B = static_cast<BYTE>(blue);
+        // A valid string at this point should have 6 hex characters (RRGGBB)
+        regex colorWithoutAlphaRegex("[0-9a-f]{6}", regex_constants::icase);
+        if (regex_match(hexColorString, colorWithoutAlphaRegex))
+        {
+            // Then set all other Red, Green, and Blue channels
+            std::string redString = hexColorString.substr(0, 2);
+            INT32 red = strtol(redString.c_str(), nullptr, 16);
+
+            std::string greenString = hexColorString.substr(2, 2);
+            INT32 green = strtol(greenString.c_str(), nullptr, 16);
+
+            std::string blueString = hexColorString.substr(4, 2);
+            INT32 blue = strtol(blueString.c_str(), nullptr, 16);
+
+            color->R = static_cast<BYTE>(red);
+            color->G = static_cast<BYTE>(green);
+            color->B = static_cast<BYTE>(blue);
+
+            return S_OK;
+        }
+    }
+
+    // All other formats are ignored (set alpha to 0)
+    color->A = static_cast<BYTE>(0);
 
     return S_OK;
 } CATCH_RETURN;
@@ -805,17 +840,17 @@ std::string WstringToString(const std::wstring& input)
     return utfConverter.to_bytes(input);
 }
 
-void RemoteResourceElementToUriStringVector(
+void RemoteResourceElementToRemoteResourceInformationVector(
     ABI::AdaptiveNamespace::IAdaptiveElementWithRemoteResources* remoteResourceElement,
-    std::vector<std::string>& resourceUris)
+    std::vector<RemoteResourceInformation>& resourceUris)
 {
-    ComPtr<ABI::Windows::Foundation::Collections::IVectorView<ABI::Windows::Foundation::Uri*>> remoteResourceUris;
-    THROW_IF_FAILED(remoteResourceElement->GetResourceUris(remoteResourceUris.GetAddressOf()));
+    ComPtr<ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveNamespace::AdaptiveRemoteResourceInformation*>> remoteResources;
+    THROW_IF_FAILED(remoteResourceElement->GetResourceInformation(remoteResources.GetAddressOf()));
 
-    ComPtr<IIterable<ABI::Windows::Foundation::Uri*>> vectorIterable;
-    THROW_IF_FAILED(remoteResourceUris.As<IIterable<ABI::Windows::Foundation::Uri*>>(&vectorIterable));
+    ComPtr<IIterable<ABI::AdaptiveNamespace::AdaptiveRemoteResourceInformation*>> vectorIterable;
+    THROW_IF_FAILED(remoteResources.As<IIterable<ABI::AdaptiveNamespace::AdaptiveRemoteResourceInformation*>>(&vectorIterable));
 
-    Microsoft::WRL::ComPtr<IIterator<ABI::Windows::Foundation::Uri*>> vectorIterator;
+    Microsoft::WRL::ComPtr<IIterator<ABI::AdaptiveNamespace::AdaptiveRemoteResourceInformation*>> vectorIterator;
     HRESULT hr = vectorIterable->First(&vectorIterator);
 
     boolean hasCurrent;
@@ -823,15 +858,26 @@ void RemoteResourceElementToUriStringVector(
 
     while (SUCCEEDED(hr) && hasCurrent)
     {
-        ComPtr<ABI::Windows::Foundation::IUriRuntimeClass> uri;
-        THROW_IF_FAILED(vectorIterator->get_Current(&uri));
+        ComPtr<ABI::AdaptiveNamespace::IAdaptiveRemoteResourceInformation> resourceInformation;
+        THROW_IF_FAILED(vectorIterator->get_Current(&resourceInformation));
 
-        HString uriHString;
-        THROW_IF_FAILED(uri->get_AbsoluteUri(uriHString.GetAddressOf()));
-        std::string uriString;
-        THROW_IF_FAILED(HStringToUTF8(uriHString.Get(), uriString));
+        HString url;
+        THROW_IF_FAILED(resourceInformation->get_Url(url.GetAddressOf()));
 
-        resourceUris.push_back(uriString);
+        RemoteResourceInformation uriInfo;
+        THROW_IF_FAILED(HStringToUTF8(url.Get(), uriInfo.url));
+
+        ABI::AdaptiveNamespace::ElementType elementType;
+        THROW_IF_FAILED(resourceInformation->get_ResourceType(&elementType));
+
+        uriInfo.resourceType = (AdaptiveSharedNamespace::CardElementType) elementType;
+
+        HString mimeType;
+        THROW_IF_FAILED(resourceInformation->get_MimeType(mimeType.GetAddressOf()));
+
+        uriInfo.mimeType = HStringToUTF8(mimeType.Get());
+
+        resourceUris.push_back(uriInfo);
 
         hr = vectorIterator->MoveNext(&hasCurrent);
     }

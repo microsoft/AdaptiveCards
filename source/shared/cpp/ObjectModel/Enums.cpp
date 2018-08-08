@@ -1,6 +1,16 @@
 #include "pch.h"
 #include "Enums.h"
 
+#ifdef USE_CPPCORECHECK
+#pragma warning(push)
+
+// Unfortunately, the checker for WARNING_NO_GLOBAL_INIT_CALLS (26426) has an issue: it considers initialization of the
+// below std::unordered_map statics to be global, and thus flags them all as having overly-complex initialization. We
+// want to keep this check on, in general, but turn it off for this file (all warning instances were reviewed prior to
+// disablement).
+#pragma warning(disable: 26426)
+#endif
+
 namespace AdaptiveSharedNamespace {
 
 void GetAdaptiveCardSchemaKeyEnumMappings(
@@ -59,6 +69,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::Height, "height" },
         { AdaptiveCardSchemaKey::HorizontalAlignment, "horizontalAlignment" },
         { AdaptiveCardSchemaKey::IconPlacement, "iconPlacement" },
+        { AdaptiveCardSchemaKey::IconSize, "iconSize" },
         { AdaptiveCardSchemaKey::IconUrl, "iconUrl" },
         { AdaptiveCardSchemaKey::Id, "id" },
         { AdaptiveCardSchemaKey::Image, "image" },
@@ -616,7 +627,6 @@ void GetVerticalContentAlignmentEnumMappings(
 {
     static std::unordered_map<VerticalContentAlignment, std::string, EnumHash> verticalContentAlignmentEnumToName =
     {
-        { VerticalContentAlignment::Stretch, "Stretch" },
         { VerticalContentAlignment::Top, "Top" },
         { VerticalContentAlignment::Center, "Center" },
         { VerticalContentAlignment::Bottom, "Bottom" }
@@ -1125,9 +1135,13 @@ VerticalContentAlignment VerticalContentAlignmentFromString(const std::string& v
 
     if (verticalContentAlignmentNameToEnum.find(verticalContentAlignment) == verticalContentAlignmentNameToEnum.end())
     {
-        return VerticalContentAlignment::Stretch;
+        return VerticalContentAlignment::Top;
     }
     return verticalContentAlignmentNameToEnum[verticalContentAlignment];
 }
 
 }
+
+#ifdef USE_CPPCORECHECK
+#pragma warning(pop)
+#endif

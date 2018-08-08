@@ -81,7 +81,10 @@ namespace AdaptiveCards.Rendering
         {
             try
             {
-                return JsonConvert.DeserializeObject<AdaptiveHostConfig>(json);
+                return JsonConvert.DeserializeObject<AdaptiveHostConfig>(json, new JsonSerializerSettings
+                {
+                    Converters = { new StrictIntConverter() }
+                });
             }
             catch (JsonException ex)
             {
@@ -99,6 +102,4 @@ namespace AdaptiveCards.Rendering
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
     }
-
 }
-

@@ -42,8 +42,7 @@ AdaptiveNamespaceStart
         m_warnings = warnings;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveInputs>(&m_inputs));
         m_actionEvents = std::make_shared<ActionEventSource>();
-        m_mediaPlayEvents = std::make_shared<MediaEventSource>();
-        m_mediaEndedEvents = std::make_shared<MediaEventSource>();
+        m_mediaClickedEvents = std::make_shared<MediaEventSource>();
         return S_OK;
     }
 
@@ -80,31 +79,17 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT RenderedAdaptiveCard::add_MediaPlay(
+    HRESULT RenderedAdaptiveCard::add_MediaClicked(
         ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*, ABI::AdaptiveNamespace::AdaptiveMediaEventArgs*>* handler,
         EventRegistrationToken* token)
     {
-        return m_mediaPlayEvents->Add(handler, token);
+        return m_mediaClickedEvents->Add(handler, token);
     }
 
     _Use_decl_annotations_
-    HRESULT RenderedAdaptiveCard::remove_MediaPlay(EventRegistrationToken token)
+    HRESULT RenderedAdaptiveCard::remove_MediaClicked(EventRegistrationToken token)
     {
-        return m_mediaPlayEvents->Remove(token);
-    }
-
-    _Use_decl_annotations_
-    HRESULT RenderedAdaptiveCard::add_MediaEnded(
-        ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*, ABI::AdaptiveNamespace::AdaptiveMediaEventArgs*>* handler,
-        EventRegistrationToken* token)
-    {
-        return m_mediaEndedEvents->Add(handler, token);
-    }
-
-    _Use_decl_annotations_
-    HRESULT RenderedAdaptiveCard::remove_MediaEnded(EventRegistrationToken token)
-    {
-        return m_mediaEndedEvents->Remove(token);
+        return m_mediaClickedEvents->Remove(token);
     }
 
     _Use_decl_annotations_
@@ -130,20 +115,12 @@ AdaptiveNamespaceStart
         return m_actionEvents->InvokeAll(this, eventArgs.Get());
     }
 
-    HRESULT RenderedAdaptiveCard::SendMediaPlayEvent(IAdaptiveMedia* mediaElement)
+    HRESULT RenderedAdaptiveCard::SendMediaClickedEvent(IAdaptiveMedia* mediaElement)
     {
         ComPtr<IAdaptiveMediaEventArgs> eventArgs;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveMediaEventArgs>(&eventArgs, mediaElement));
 
-        return m_mediaPlayEvents->InvokeAll(this, eventArgs.Get());
-    }
-
-    HRESULT RenderedAdaptiveCard::SendMediaEndedEvent(IAdaptiveMedia* mediaElement)
-    {
-        ComPtr<IAdaptiveMediaEventArgs> eventArgs;
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveMediaEventArgs>(&eventArgs, mediaElement));
-
-        return m_mediaEndedEvents->InvokeAll(this, eventArgs.Get());
+        return m_mediaClickedEvents->InvokeAll(this, eventArgs.Get());
     }
 
     void RenderedAdaptiveCard::SetFrameworkElement(ABI::Windows::UI::Xaml::IFrameworkElement* value)

@@ -59,4 +59,8 @@ public class MediaSource {
     AdaptiveCardObjectModelJNI.MediaSource_SetUrl(swigCPtr, this, value);
   }
 
+  public void GetResourceInformation(SWIGTYPE_p_std__vectorT_RemoteResourceInformation_t resourceInfo) {
+    AdaptiveCardObjectModelJNI.MediaSource_GetResourceInformation(swigCPtr, this, SWIGTYPE_p_std__vectorT_RemoteResourceInformation_t.getCPtr(resourceInfo));
+  }
+
 }

@@ -16,8 +16,7 @@ AdaptiveNamespaceStart
 
         HRESULT RuntimeClassInitialize(AdaptiveNamespace::RenderedAdaptiveCard* renderResult) noexcept;
 
-        IFACEMETHODIMP SendMediaPlayEvent(_In_ ABI::AdaptiveNamespace::IAdaptiveMedia* mediaElement);
-        IFACEMETHODIMP SendMediaEndedEvent(_In_ ABI::AdaptiveNamespace::IAdaptiveMedia* mediaElement);
+        IFACEMETHODIMP SendMediaClickedEvent(_In_ ABI::AdaptiveNamespace::IAdaptiveMedia* mediaElement);
 
     private:
         Microsoft::WRL::ComPtr<AdaptiveNamespace::RenderedAdaptiveCard> m_renderResult;

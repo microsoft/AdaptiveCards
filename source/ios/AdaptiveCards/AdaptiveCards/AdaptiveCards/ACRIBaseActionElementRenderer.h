@@ -13,9 +13,18 @@
 
 @protocol ACRIBaseActionElementRenderer
 
-- (UIButton* )renderButton:(ACRView *)rootView
+- (UIButton *)renderButton:(ACRView *)rootView
                     inputs:(NSMutableArray *)inputs
                  superview:(UIView *)superview
          baseActionElement:(ACOBaseActionElement *)acoElem
                 hostConfig:(ACOHostConfig *)acoConfig;
+@end
+
+@protocol ACRIBaseActionSetRenderer
+
+- (UIView *)renderButtons:(ACRView *)rootView
+                   inputs:(NSMutableArray *)inputs
+                superview:(UIView<ACRIContentHoldingView> *)superview
+                     card:(ACOAdaptiveCard *)card
+               hostConfig:(ACOHostConfig *)config;
 @end
