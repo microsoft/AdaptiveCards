@@ -61,6 +61,28 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual(std::string("#FF00A1F1"), backgroundColor);
         }
 
+        TEST_METHOD(LowerCaseCharactersTest)
+        {
+            std::string testJsonString =
+                "{\
+                \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
+                \"type\": \"AdaptiveCard\",\
+                \"version\": \"1.0\",\
+                \"body\": [\
+                    {\
+                        \"type\": \"Image\",\
+                        \"url\": \"Image\",\
+                        \"backgroundColor\": \"#ffa65314\"\
+                    }\
+                ]\
+            }";
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
+            std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
+            std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
+            std::string backgroundColor = image->GetBackgroundColor();
+            Assert::AreEqual(std::string("#ffa65314"), backgroundColor);
+        }
+
         TEST_METHOD(InvalidLengthTest)
         {
             std::string testJsonString =
