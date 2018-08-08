@@ -160,10 +160,12 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AdaptiveCardParseExceptionTest.cpp" />
     <ClCompile Include="AdditionalPropertiesTest.cpp" />
     <ClCompile Include="CustomParsingForIOSTest.cpp" />
     <ClCompile Include="ExplicitDimensionTest.cpp" />
     <ClCompile Include="ImageBackgroundColorTest.cpp" />
+    <ClCompile Include="ParserRegistrationTest.cpp" />
     <ClCompile Include="ResourceInformationTests.cpp" />
     <ClCompile Include="MarkDownUnitTest.cpp" />
     <ClCompile Include="ObjectModelTest.cpp" />
