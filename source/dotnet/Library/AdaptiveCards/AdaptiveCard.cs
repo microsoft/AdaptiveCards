@@ -184,7 +184,8 @@ namespace AdaptiveCards
             {
                 parseResult.Card = JsonConvert.DeserializeObject<AdaptiveCard>(json, new JsonSerializerSettings
                 {
-                    ContractResolver = new WarningLoggingContractResolver(parseResult)
+                    ContractResolver = new WarningLoggingContractResolver(parseResult),
+                    Converters = { new StrictIntConverter() }
                 });
             }
             catch (JsonException ex)
@@ -217,6 +218,107 @@ namespace AdaptiveCards
         public bool ShouldSerializeJsonSchema()
         {
             return false;
+        }
+
+        /// <summary>
+        /// Get resource information for all Images/Media in the whole card
+        /// TODO: Add Media information to the list when Media type is added
+        /// </summary>
+        /// <returns>An array of all card resource information</returns>
+        public RemoteResourceInformation[] GetResourceInformation()
+        {
+            return GetResourceInformationInCard(this).ToArray();
+        }
+
+        private List<RemoteResourceInformation> GetResourceInformationInCard(AdaptiveCard card)
+        {
+            // Initialize the result array
+            List<RemoteResourceInformation> resourceInformationList = new List<RemoteResourceInformation>();
+
+            // Get background image
+            if (!String.IsNullOrEmpty(card.BackgroundImageString))
+            {
+                resourceInformationList.Add(new RemoteResourceInformation(
+                    card.BackgroundImageString,
+                    typeof(AdaptiveImage),
+                    null
+                ));
+            }
+
+            // Get all resource information in body
+            foreach (AdaptiveElement bodyElement in card.Body)
+            {
+                resourceInformationList.AddRange(GetResourceInformationInElement(bodyElement));
+            }
+
+            // Get all resource information in actions
+            foreach (AdaptiveAction action in card.Actions)
+            {
+                // Get all resource information for iconUrl
+                if (!String.IsNullOrEmpty(action.IconUrl))
+                {
+                    resourceInformationList.Add(new RemoteResourceInformation(
+                        action.IconUrl,
+                        typeof(AdaptiveImage),
+                        null
+                    ));
+                }
+
+                // Get all resource information in ShowCard actions' cards
+                if (action is AdaptiveShowCardAction showCardAction)
+                {
+                    resourceInformationList.AddRange(GetResourceInformationInCard(showCardAction.Card));
+                }
+            }
+
+            return resourceInformationList;
+        }
+
+        private List<RemoteResourceInformation> GetResourceInformationInElement(AdaptiveElement element)
+        {
+            List<RemoteResourceInformation> resourceInformationList = new List<RemoteResourceInformation>();
+
+            // Base case
+            if (element is AdaptiveImage imageElement && !String.IsNullOrEmpty(imageElement.UrlString))
+            {
+                resourceInformationList.Add(new RemoteResourceInformation(
+                    imageElement.UrlString,
+                    typeof(AdaptiveImage),
+                    null
+                ));
+            }
+
+            // If element is any kind of container, iterate over its items.
+            else if (element is AdaptiveContainer container)
+            {
+                foreach (AdaptiveElement item in container.Items)
+                {
+                    resourceInformationList.AddRange(GetResourceInformationInElement(item));
+                }
+            }
+            else if (element is AdaptiveImageSet imageSet)
+            {
+                foreach (AdaptiveElement item in imageSet.Images)
+                {
+                    resourceInformationList.AddRange(GetResourceInformationInElement(item));
+                }
+            }
+            else if (element is AdaptiveColumnSet columnSet)
+            {
+                foreach (AdaptiveElement item in columnSet.Columns)
+                {
+                    resourceInformationList.AddRange(GetResourceInformationInElement(item));
+                }
+            }
+            else if (element is AdaptiveColumn column)
+            {
+                foreach (AdaptiveElement item in column.Items)
+                {
+                    resourceInformationList.AddRange(GetResourceInformationInElement(item));
+                }
+            }
+
+            return resourceInformationList;
         }
     }
 }
