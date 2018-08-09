@@ -315,5 +315,29 @@ namespace AdaptiveCards.Test
             Assert.AreEqual("Hello", card.Speak);
 
         }
+
+        [TestMethod]
+        public void CardLevelSelectAction()
+        {
+            var json = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.0"",
+  ""selectAction"": {
+      ""type"": ""Action.OpenUrl"",
+      ""title"": ""Open URL"",
+      ""url"": ""http://adaptivecards.io""
+  }
+}";
+            var card = AdaptiveCard.FromJson(json).Card;
+            var actualSelectAction = card.SelectAction as AdaptiveOpenUrlAction;
+
+            var expectedSelectAction = new AdaptiveOpenUrlAction
+            {
+                Title = "Open URL",
+                UrlString = "http://adaptivecards.io"
+            };
+            Assert.AreEqual(expectedSelectAction.Title, actualSelectAction.Title);
+            Assert.AreEqual(expectedSelectAction.UrlString, actualSelectAction.UrlString);
+        }
     }
 }
