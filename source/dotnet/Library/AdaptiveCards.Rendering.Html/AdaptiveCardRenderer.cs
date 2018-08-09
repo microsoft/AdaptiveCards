@@ -633,8 +633,7 @@ namespace AdaptiveCards.Rendering.Html
             {
                 try
                 {
-                    Uri baseUri = new Uri(context.Config.ImageBaseUrl);
-                    return new Uri(baseUri, uri.ToString()).ToString();
+                    return new Uri(context.Config.ImageBaseUrl, uri.ToString()).ToString();
                 }
                 catch (UriFormatException)
                 {

@@ -87,7 +87,7 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
-        public static Uri ResolveFinalAbsoluteUri(Uri uri, String imageBaseUrl)
+        public static Uri ResolveFinalAbsoluteUri(Uri uri, Uri imageBaseUrl)
         {
             if (uri == null)
             {
@@ -99,12 +99,11 @@ namespace AdaptiveCards.Rendering.Wpf
                 return uri;
             }
 
-            if (!String.IsNullOrEmpty(imageBaseUrl))
+            if (imageBaseUrl != null)
             {
                 try
                 {
-                    Uri baseUri = new Uri(imageBaseUrl);
-                    Uri finalUri = new Uri(baseUri, uri.ToString());
+                    Uri finalUri = new Uri(imageBaseUrl, uri.ToString());
                     if (finalUri.IsAbsoluteUri)
                     {
                         return finalUri;

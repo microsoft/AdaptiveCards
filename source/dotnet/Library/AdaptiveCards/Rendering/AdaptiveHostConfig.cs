@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Newtonsoft.Json;
 
 namespace AdaptiveCards.Rendering
@@ -47,7 +48,7 @@ namespace AdaptiveCards.Rendering
         /// Image Base URL for relative URLs
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public string ImageBaseUrl { get; set; } = null;
+        public Uri ImageBaseUrl { get; set; } = null;
 
         public int GetSpacing(AdaptiveSpacing spacing)
         {
