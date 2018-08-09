@@ -178,7 +178,7 @@ namespace AdaptiveCards.Rendering.Html
                 uiCard.Style("font-family", context.Config.FontFamily);
 
             if (card.BackgroundImage != null)
-                uiCard.Style("background-image", $"url('{ResolveImageUrl(card.BackgroundImage, context)}')")
+                uiCard.Style("background-image", $"url('{context.Config.ResolveFinalAbsoluteUri(card.BackgroundImage)}')")
                     .Style("background-repeat", "no-repeat")
                     .Style("background-size", "cover");
 
@@ -627,23 +627,6 @@ namespace AdaptiveCards.Rendering.Html
             return uiTextBlock;
         }
 
-        protected static String ResolveImageUrl(Uri uri, AdaptiveRenderContext context)
-        {
-            if (context.Config.ImageBaseUrl != null)
-            {
-                try
-                {
-                    return new Uri(context.Config.ImageBaseUrl, uri.ToString()).ToString();
-                }
-                catch (UriFormatException)
-                {
-                    return uri.ToString();
-                }
-            }
-
-            return uri.ToString();
-        }
-
         protected static HtmlTag ImageRender(AdaptiveImage image, AdaptiveRenderContext context)
         {
             var uiDiv = new DivTag()
@@ -673,7 +656,7 @@ namespace AdaptiveCards.Rendering.Html
             var uiImage = new HtmlTag("img")
                 .Style("width", "100%")
                 .Attr("alt", image.AltText ?? "card image")
-                .Attr("src", ResolveImageUrl(image.Url, context));
+                .Attr("src", context.Config.ResolveFinalAbsoluteUri(image.Url));
 
             switch (image.Style)
             {

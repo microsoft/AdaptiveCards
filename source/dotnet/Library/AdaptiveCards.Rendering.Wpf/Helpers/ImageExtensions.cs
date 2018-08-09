@@ -87,41 +87,10 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
-        public static Uri ResolveFinalAbsoluteUri(Uri uri, Uri imageBaseUrl)
-        {
-            if (uri == null)
-            {
-                return null;
-            }
-
-            if (uri.IsAbsoluteUri)
-            {
-                return uri;
-            }
-
-            if (imageBaseUrl != null)
-            {
-                try
-                {
-                    Uri finalUri = new Uri(imageBaseUrl, uri.ToString());
-                    if (finalUri.IsAbsoluteUri)
-                    {
-                        return finalUri;
-                    }
-                }
-                catch (UriFormatException)
-                {
-                    return null;
-                }
-            }
-
-            return null;
-        }
-
         public static async void SetBackgroundSource(this Grid grid, Uri uri, AdaptiveRenderContext context)
         {
             // Try to resolve the image URI
-            Uri finalUri = ResolveFinalAbsoluteUri(uri, context.Config.ImageBaseUrl);
+            Uri finalUri = context.Config.ResolveFinalAbsoluteUri(uri);
             if (finalUri == null)
             {
                 return;

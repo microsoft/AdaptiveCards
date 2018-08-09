@@ -14,7 +14,7 @@ namespace AdaptiveCards.Rendering.Wpf
             var uiImage = new Image();
 
             // Try to resolve the image URI
-            Uri finalUri = ImageExtensions.ResolveFinalAbsoluteUri(image.Url, context.Config.ImageBaseUrl);
+            Uri finalUri = context.Config.ResolveFinalAbsoluteUri(image.Url);
             if (finalUri == null)
             {
                 return uiImage;

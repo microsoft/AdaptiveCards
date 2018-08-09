@@ -50,6 +50,37 @@ namespace AdaptiveCards.Rendering
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public Uri ImageBaseUrl { get; set; } = null;
 
+        public Uri ResolveFinalAbsoluteUri(Uri uri)
+        {
+            if (uri == null)
+            {
+                return null;
+            }
+
+            if (uri.IsAbsoluteUri)
+            {
+                return uri;
+            }
+
+            if (ImageBaseUrl != null)
+            {
+                try
+                {
+                    Uri finalUri = new Uri(ImageBaseUrl, uri.ToString());
+                    if (finalUri.IsAbsoluteUri)
+                    {
+                        return finalUri;
+                    }
+                }
+                catch (UriFormatException)
+                {
+                    return null;
+                }
+            }
+
+            return null;
+        }
+
         public int GetSpacing(AdaptiveSpacing spacing)
         {
             switch (spacing)
