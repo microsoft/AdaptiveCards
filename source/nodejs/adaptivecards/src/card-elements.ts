@@ -2292,9 +2292,7 @@ class ActionButton {
     constructor(action: Action, parentContainerStyle: string) {
         this.action = action;
         this._parentContainerStyle = parentContainerStyle;
-    }
 
-    initialize() {
         this.action.render();
         this.action.renderedElement.onclick = (e) => { this.click(); };
 
@@ -3105,15 +3103,13 @@ class ActionCollection {
                     
                     if (!actionButton) {
                         actionButton = new ActionButton(this.items[i], parentContainerStyle);
+                        actionButton.action.renderedElement.style.overflow = "hidden";
+                        actionButton.action.renderedElement.style.overflow = "table-cell";
+                        actionButton.action.renderedElement.style.flex = this._owner.hostConfig.actions.actionAlignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
+                        actionButton.onClick = (ab) => { this.actionClicked(ab); };
 
                         this.buttons.push(actionButton);
                     }
-
-                    actionButton.initialize();
-                    actionButton.action.renderedElement.style.overflow = "hidden";
-                    actionButton.action.renderedElement.style.overflow = "table-cell";
-                    actionButton.action.renderedElement.style.flex = this._owner.hostConfig.actions.actionAlignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
-                    actionButton.onClick = (ab) => { this.actionClicked(ab); };
 
                     buttonStrip.appendChild(actionButton.action.renderedElement);
 
@@ -4033,7 +4029,13 @@ export class Container extends CardElementContainer {
 
     get style(): string {
         if (this.allowCustomStyle) {
-            return this._style && this.hostConfig.containerStyles.getStyleByName(this._style) ? this._style : this.defaultStyle;
+            if (this._style && this.hostConfig.containerStyles.getStyleByName(this._style)) {
+                return this._style;
+            }
+
+            let parentContainer = this.getParentContainer();
+
+            return parentContainer ? parentContainer.style : this.defaultStyle;
         }
         else {
             return this.defaultStyle;
