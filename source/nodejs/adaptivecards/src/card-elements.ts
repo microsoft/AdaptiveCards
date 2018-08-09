@@ -23,6 +23,18 @@ function isActionAllowed(action: Action, forbiddenActionTypes: Array<string>): b
 }
 
 export function createActionInstance(json: any, errors: Array<IValidationError>): Action {
+    if (!json["title"] && json["title"] !== "") {
+        raiseParseError(
+            {
+                error: Enums.ValidationError.ActionTitleCantBeNull,
+                message: "Action title is null"
+            },
+            errors
+        );
+
+        return null;
+    }
+
     var actionType = json["type"];
 
     var result = AdaptiveCard.actionTypeRegistry.createInstance(actionType);

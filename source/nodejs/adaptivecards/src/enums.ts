@@ -119,6 +119,7 @@ export class ContainerStyle {
 export enum ValidationError {
     Hint,
     ActionTypeNotAllowed,
+    ActionTitleCantBeNull,
     CollectionCantBeEmpty,
     Deprecated,
     ElementTypeNotAllowed,
