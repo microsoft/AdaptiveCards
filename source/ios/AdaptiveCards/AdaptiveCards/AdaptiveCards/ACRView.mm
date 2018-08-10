@@ -17,6 +17,7 @@
 #import "ColumnSet.h"
 #import "Column.h"
 #import "Image.h"
+#import "Media.h"
 #import "ACRImageRenderer.h"
 #import "TextBlock.h"
 #import "ACRTextBlockRenderer.h"
@@ -78,12 +79,13 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 - (UIView *)render
 {
     NSMutableArray *inputs = [[NSMutableArray alloc] init];
-
+    
+    if(self.frame.size.width){
+        [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.frame.size.width].active = YES;
+    }
+    
     UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card] inputs:inputs context:self containingView:self hostconfig:_hostConfig];
 
-    if(self.frame.size.width){
-        [NSLayoutConstraint constraintWithItem:newView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.frame.size.width].active = YES;
-    }
     ContainerStyle style = ([_hostConfig getHostConfig]->adaptiveCard.allowCustomStyle)? [_adaptiveCard card]->GetStyle(): ContainerStyle::Default;
     if(style != ContainerStyle::None)
     {
@@ -102,16 +104,16 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                          blue:((num & 0x000000FF)) / 255.0
                         alpha:((num & 0xFF000000) >> 24) / 255.0];
     }
-    //store key
-    NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)[_adaptiveCard card].get()];
-    NSString *key = [number stringValue];
+    
+    NSString *key = [NSString stringWithCString:[_adaptiveCard card]->GetBackgroundImage().c_str() encoding:[NSString defaultCStringEncoding]];
     if([key length]){
         UIView *imgView = nil;
+        UIImage *img = nil;
         if(![[ACRRegistration getInstance] isElementRendererOverriden:[ACRImageRenderer elemType]]){
-            UIImage *img = _imageViewMap[key];
+            img = _imageViewMap[key];
             imgView = [[ACRUIImageView alloc] initWithImage:img];
         }
-        if(imgView) {
+        if(img) {
             imgView.translatesAutoresizingMaskIntoConstraints = NO;
             [newView addSubview:imgView];
             [newView sendSubviewToBack:imgView];
@@ -214,6 +216,20 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                         [self loadImage:img->GetUrl()];
                     }
                 }
+                break;
+            }
+            case CardElementType::Media:
+            {
+                std::shared_ptr<Media> mediaElem = std::static_pointer_cast<Media>(elem);
+                std::string poster =  mediaElem->GetPoster();
+                if(poster.empty()) {
+                    poster = [_hostConfig getHostConfig]->media.defaultPoster;
+                }
+
+                if(!poster.empty()){
+                    [self loadImage:poster];
+                }                
+                
                 break;
             }
             // continue on search
