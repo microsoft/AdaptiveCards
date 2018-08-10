@@ -1,1 +1,0 @@
-{"actions":[{"iconUrl":"http://adaptivecards.io/content/cats/2.png","id":"","title":"Open URL","type":"Action.OpenUrl","url":"http://adaptivecards.io/"}],"body":[{"text":"Action icon placement and size depend on host","type":"TextBlock","wrap":true}],"type":"AdaptiveCard","version":"1.0"}
