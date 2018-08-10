@@ -41,7 +41,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::IsTrue(ContainerStyle::None == everythingBagel->GetStyle());
             Assert::AreEqual("1.0"s, everythingBagel->GetVersion());
             Assert::IsTrue(VerticalContentAlignment::Top == everythingBagel->GetVerticalContentAlignment());
-            
+
             // validate body
             {
                 auto body = everythingBagel->GetBody();
@@ -155,6 +155,14 @@ namespace AdaptiveCardsSharedModelUnitTest
                             subCard->Serialize());
                     }
                 }
+            }
+
+            // validate fallback card
+            {
+                auto fallbackCard = everythingBagel->MakeFallbackTextCard("fallback"s, "en"s);
+                auto fallbackTextBlock = std::static_pointer_cast<TextBlock>(fallbackCard->GetBody().at(0));
+                Assert::AreEqual("fallback"s, fallbackTextBlock->GetText());
+                Assert::AreEqual("en"s, fallbackTextBlock->GetLanguage());
             }
         }
     };
