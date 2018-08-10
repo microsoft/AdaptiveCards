@@ -91,7 +91,9 @@
 			"inlineTopMargin": 16
 		},
 		"actionsOrientation": "vertical",
-		"actionAlignment": "stretch"
+		"actionAlignment": "stretch",
+		"iconPlacement": "LeftOfTitle",
+		"iconSize": 100
 	},
 	"adaptiveCard": {
 		"allowCustomStyle": false
