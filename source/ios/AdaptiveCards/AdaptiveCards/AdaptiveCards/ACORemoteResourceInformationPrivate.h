@@ -9,8 +9,6 @@
 
 @interface ACORemoteResourceInformation()
 
-- (instancetype)initWithRemoteResourceInformations:(std::vector<AdaptiveCards::RemoteResourceInformation> const &)remoteResourceInformations;
-- (std::vector<AdaptiveCards::RemoteResourceInformation>)getRemoteResourceInformations;
-- (void)setRemoteResourceInformations:(std::vector<AdaptiveCards::RemoteResourceInformation> const &)remoteResourceInformations;
+- (instancetype)initWithRemoteResourceInformation:(AdaptiveCards::RemoteResourceInformation const &)remoteResourceInformation;
 
 @end

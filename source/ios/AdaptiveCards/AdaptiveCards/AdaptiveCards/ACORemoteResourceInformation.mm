@@ -10,27 +10,16 @@
 using namespace AdaptiveCards;
 
 @implementation ACORemoteResourceInformation
-{
-    std::vector<RemoteResourceInformation> _remoteResourceInformations;
-}
 
-- (instancetype)initWithRemoteResourceInformations:(std::vector<RemoteResourceInformation> const &)remoteResourceInformations
+- (instancetype)initWithRemoteResourceInformation:(RemoteResourceInformation const &)remoteResourceInformation
 {
     self = [super init];
     if(self){
-        _remoteResourceInformations = remoteResourceInformations;
+        _url = [NSString stringWithCString:remoteResourceInformation.url.c_str() encoding:NSUTF8StringEncoding];
+        _mimeType = [NSString stringWithCString:remoteResourceInformation.mimeType.c_str() encoding:NSUTF8StringEncoding]; ;
+        _resourceType = (ACRCardElementType)remoteResourceInformation.resourceType;
     }
     return self;
-}
-
-- (std::vector<AdaptiveCards::RemoteResourceInformation>)getRemoteResourceInformations
-{
-    return _remoteResourceInformations;
-}
-
-- (void)setRemoteResourceInformations:(std::vector<AdaptiveCards::RemoteResourceInformation> const &)remoteResourceInformations
-{
-    _remoteResourceInformations = remoteResourceInformations;
 }
 
 @end

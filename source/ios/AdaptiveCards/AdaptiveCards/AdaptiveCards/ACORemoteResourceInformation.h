@@ -6,8 +6,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ACOResourceResolvers.h"
+#import "ACOBaseCardElement.h"
 
 @interface ACORemoteResourceInformation:NSObject
+
+@property (readonly) NSString* url;
+@property (readonly) ACRCardElementType resourceType;
+@property (readonly) NSString* mimeType;
 
 @end    

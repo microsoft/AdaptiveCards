@@ -98,9 +98,23 @@ using namespace AdaptiveCards;
     _adaptiveCard = card;
 }
 
-- (ACORemoteResourceInformation *)remoteResourceInformation
+- (NSArray<ACORemoteResourceInformation *> *)remoteResourceInformation
 {
-    return [[ACORemoteResourceInformation alloc] initWithRemoteResourceInformations:_adaptiveCard->GetResourceInformation()];
+    NSMutableArray *mutableRemoteResources = nil;
+    std::vector<RemoteResourceInformation> remoteResourceVector = _adaptiveCard->GetResourceInformation();
+    if(!remoteResourceVector.empty()){
+        mutableRemoteResources = [[NSMutableArray alloc] init];
+        for(const auto &remoteResource : remoteResourceVector){
+            ACORemoteResourceInformation *remoteResourceObjc =
+                [[ACORemoteResourceInformation alloc] initWithRemoteResourceInformation:remoteResource];
+            if(remoteResourceObjc){
+                [mutableRemoteResources addObject:remoteResourceObjc];
+            }
+        }
+        NSArray<ACORemoteResourceInformation *> *remoteResources = [NSArray arrayWithArray:mutableRemoteResources];
+        return remoteResources;
+    }    
+    return nil;
 }
 
 @end
