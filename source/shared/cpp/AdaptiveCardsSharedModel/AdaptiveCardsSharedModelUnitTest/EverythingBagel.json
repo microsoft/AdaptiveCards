@@ -224,6 +224,7 @@
         {
             "type": "Action.Submit",
             "title": "Action.Submit",
+            "id": "Action.Submit_id",
             "data": {
                 "submitValue": true
             }
@@ -231,6 +232,7 @@
         {
             "type": "Action.ShowCard",
             "title": "Action.ShowCard",
+            "id": "Action.ShowCard_id",
             "card" : {
                 "type": "AdaptiveCard",
                 "body": [
