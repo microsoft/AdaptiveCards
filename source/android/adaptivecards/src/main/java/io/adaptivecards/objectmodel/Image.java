@@ -118,8 +118,8 @@ public class Image extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Image_SetPixelHeight(swigCPtr, this, value);
   }
 
-  public void GetResourceInformation(SWIGTYPE_p_std__vectorT_RemoteResourceInformation_t resourceInfo) {
-    AdaptiveCardObjectModelJNI.Image_GetResourceInformation(swigCPtr, this, SWIGTYPE_p_std__vectorT_RemoteResourceInformation_t.getCPtr(resourceInfo));
+  public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {
+    AdaptiveCardObjectModelJNI.Image_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceInfo), resourceInfo);
   }
 
   public static Image dynamic_cast(BaseCardElement baseCardElement) {

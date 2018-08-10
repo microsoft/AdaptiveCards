@@ -312,6 +312,7 @@ enum class WarningStatusCode {
     UnsupportedSchemaVersion,
     UnsupportedMediaType,
     InvalidMediaMix,
+    InvalidColorFormat,
 };
 
 enum class DateTimePreparsedTokenFormat {

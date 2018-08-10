@@ -172,6 +172,16 @@ namespace AdaptiveCards
         public string Lang { get; set; }
 
         /// <summary>
+        ///     Action for the card (this allows a default action at the card level)
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(null)]
+        public AdaptiveAction SelectAction { get; set; }
+
+        /// <summary>
         /// Parse an AdaptiveCard from a JSON string
         /// </summary>
         /// <param name="json">A JSON-serialized Adaptive Card</param>
