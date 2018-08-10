@@ -13,9 +13,9 @@ import java.net.URL;
 import io.adaptivecards.renderer.IMediaDownloadListener;
 import io.adaptivecards.renderer.IOnlineMediaLoader;
 
-/**
- * Created by almedina on 8/10/2018.
- */
+/*
+* MediaDataSource implementation taken from https://github.com/jacks205/MediaDataSourceExample
+* */
 
 @TargetApi(Build.VERSION_CODES.M)
 public class OnlineMediaLoader extends IOnlineMediaLoader
@@ -26,7 +26,7 @@ public class OnlineMediaLoader extends IOnlineMediaLoader
         public void run() {
             try
             {
-                URL url = new URL("https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4");
+                URL url = new URL(getMediaUrl());
                 InputStream inputStream = url.openStream();
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 int read = 0;

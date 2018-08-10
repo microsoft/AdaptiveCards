@@ -4,10 +4,6 @@ import android.media.MediaDataSource;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
-/**
- * Created by almedina on 7/31/2018.
- */
-
 @RequiresApi(api = Build.VERSION_CODES.M)
 public abstract class IOnlineMediaLoader extends MediaDataSource
 {
@@ -18,6 +14,11 @@ public abstract class IOnlineMediaLoader extends MediaDataSource
     public IOnlineMediaLoader(String mediaUri)
     {
         m_mediaUrl = mediaUri;
+    }
+
+    public String getMediaUrl()
+    {
+        return m_mediaUrl;
     }
 
     public abstract void loadMedia(IMediaDownloadListener mediaLoaderListener);
