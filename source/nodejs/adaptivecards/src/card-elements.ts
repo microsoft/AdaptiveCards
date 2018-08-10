@@ -990,9 +990,7 @@ export class TextBlock extends CardElement {
         this.color = Utils.getEnumValueOrDefault(Enums.TextColor, json["color"], this.color);
         this.isSubtle = json["isSubtle"];
         this.wrap = json["wrap"] === undefined ? false : json["wrap"];
-        if (typeof (json["maxLines"]) === "number") {
-        this.maxLines = json["maxLines"];
-    }
+        if (typeof json["maxLines"] === "number") {
             this.maxLines = json["maxLines"];
         }
     }
