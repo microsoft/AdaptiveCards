@@ -211,7 +211,8 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
             CardRendererRegistration.getInstance().registerRenderer("blah", new CustomBlahRenderer());
 
-            CardRendererRegistration.getInstance().registerOnlineMediaLoader(new OnlineMediaLoader());
+            // Example on how a custom OnlineMediaLoader should be registered
+            // CardRendererRegistration.getInstance().registerOnlineMediaLoader(new OnlineMediaLoader());
             
             ParseResult parseResult = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.VERSION, elementParserRegistration);
             LinearLayout layout = (LinearLayout) findViewById(R.id.visualAdaptiveCardLayout);
