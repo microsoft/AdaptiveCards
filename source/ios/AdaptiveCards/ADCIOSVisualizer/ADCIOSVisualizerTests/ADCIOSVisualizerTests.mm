@@ -58,7 +58,7 @@
         ];
         unsigned int index = 0;
         for(ACORemoteResourceInformation *info in remoteInformation){
-            XCTAssertTrue([[testStrings objectAtIndex:index++] isEqualToString:info.url]);
+            XCTAssertTrue([[testStrings objectAtIndex:index++] isEqualToString:info.url.absoluteString]);
         }
         
         for(ACORemoteResourceInformation *info in remoteInformation){

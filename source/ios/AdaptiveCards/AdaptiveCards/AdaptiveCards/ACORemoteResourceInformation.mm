@@ -15,7 +15,10 @@ using namespace AdaptiveCards;
 {
     self = [super init];
     if(self){
-        _url = [NSString stringWithCString:remoteResourceInformation.url.c_str() encoding:NSUTF8StringEncoding];
+        NSString *URLString = [NSString stringWithCString:remoteResourceInformation.url.c_str() encoding:NSUTF8StringEncoding];
+        if([URLString length]){
+            _url =[NSURL URLWithString:URLString];
+        }
         _mimeType = [NSString stringWithCString:remoteResourceInformation.mimeType.c_str() encoding:NSUTF8StringEncoding]; ;
         _resourceType = (ACRCardElementType)remoteResourceInformation.resourceType;
     }
