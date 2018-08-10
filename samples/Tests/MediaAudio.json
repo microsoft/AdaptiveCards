@@ -13,7 +13,7 @@
 			"poster": "http://adaptivecards.io/content/cats/1.png",
 			"sources": [
 				{
-					"mimeType": "audio/mp4",
+					"mimeType": "audio/mpeg",
 					"url": ""
 				}
 			]
@@ -27,7 +27,7 @@
 			"type": "Media",
 			"sources": [
 				{
-					"mimeType": "audio/mp3",
+					"mimeType": "audio/mpeg",
 					"url": ""
 				}
 			]

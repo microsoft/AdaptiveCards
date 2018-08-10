@@ -15,10 +15,6 @@ import io.adaptivecards.renderer.http.HttpRequestHelper;
 import io.adaptivecards.renderer.layout.FullscreenVideoView;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
-/**
- * Created by almedina on 7/31/2018.
- */
-
 // I have to move this thing from here to use the Correct resource resolver
 public class MediaLoaderAsync extends AsyncTask<String, Void, Void>
 {
