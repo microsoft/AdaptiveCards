@@ -59,23 +59,29 @@ public class MediaRenderer extends BaseCardElementRenderer
         @Override
         public void onClick(View v)
         {
-            if(m_allowedInlinePlayback)
+            if(!m_alreadyClicked)
             {
-                if(m_poster != null)
+                if (m_allowedInlinePlayback)
                 {
-                    m_poster.setVisibility(View.GONE);
+                    if (m_poster != null)
+                    {
+                        m_poster.setVisibility(View.GONE);
+                    }
+                    m_playButton.setVisibility(View.GONE);
+                    m_mediaView.setVisibility(View.VISIBLE);
                 }
-                m_playButton.setVisibility(View.GONE);
-                m_mediaView.setVisibility(View.VISIBLE);
-            }
 
-            m_cardActionHandler.onMediaPlay(m_cardMediaElement, m_renderedAdaptiveCard);
+                m_cardActionHandler.onMediaPlay(m_cardMediaElement, m_renderedAdaptiveCard);
+
+                m_alreadyClicked = true;
+            }
         }
 
         private ImageView m_poster;
         private ImageView m_playButton;
         private FullscreenVideoView m_mediaView;
         private boolean m_allowedInlinePlayback = true;
+        private boolean m_alreadyClicked = false;
 
         private BaseCardElement m_cardMediaElement;
         private RenderedAdaptiveCard m_renderedAdaptiveCard;
@@ -104,7 +110,7 @@ public class MediaRenderer extends BaseCardElementRenderer
 
     private boolean isSupportedMimeType(String mimetype)
     {
-        final String supportedMimeTypes[] = {"video/mp4", "audio/mp3", "audio/mpeg"};
+        final String supportedMimeTypes[] = {"video/mp4", "audio/mp4", "audio/aac", "audio/mpeg"};
         for(String supportedMimeType : supportedMimeTypes)
         {
             if(supportedMimeType.compareTo(mimetype) == 0)

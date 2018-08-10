@@ -41,6 +41,8 @@ import android.view.View;
 
 import android.widget.FrameLayout;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 import io.adaptivecards.renderer.IMediaDownloadListener;
 import io.adaptivecards.renderer.IOnlineMediaLoader;
@@ -425,7 +427,7 @@ public class FullscreenVideoView extends FrameLayout implements OnPreparedListen
     }
 
     // Calls prepare() method of MediaPlayer
-    protected void prepare() throws IllegalStateException
+    public void prepare() throws IllegalStateException
     {
         m_currentState = State.PREPARING;
         m_mediaPlayer.prepareAsync();
@@ -488,7 +490,7 @@ public class FullscreenVideoView extends FrameLayout implements OnPreparedListen
                 if (currentParent != null)
                 {
                     int screenWidth = currentParent.getWidth();
-                    int newHeight;
+                    int newHeight = 200;
                     if(!m_isAudioOnly)
                     {
                         newHeight = (int) ((float) (screenWidth * m_initialMovieHeight) / (float) m_initialMovieWidth);
@@ -814,8 +816,7 @@ public class FullscreenVideoView extends FrameLayout implements OnPreparedListen
         } else throw new RuntimeException("Media Player is not initialized");
     }
 
-    public void setDataSource(MediaDataSource mediaDataSource, boolean isAudio)
-    {
+    public void setDataSource(MediaDataSource mediaDataSource, String mediaUri, boolean isAudio) throws NoSuchMethodException {
         if(m_mediaPlayer != null)
         {
             if (m_currentState != State.IDLE)
@@ -828,14 +829,43 @@ public class FullscreenVideoView extends FrameLayout implements OnPreparedListen
             m_isAudioOnly = isAudio;
 
             IOnlineMediaLoader onlineMediaLoader = CardRendererRegistration.getInstance().getOnlineMediaLoader();
-            onlineMediaLoader.loadMedia(new IMediaDownloadListener() {
-                @Override
-                public void onMediaDownloaded() {
-                    m_currentState = State.INITIALIZED;
-                    prepare();
-                }
-            });
-            m_mediaPlayer.setDataSource(onlineMediaLoader);
+
+            IOnlineMediaLoader onlineMediaLoader2 = null;
+            try
+            {
+                Class<?> c = onlineMediaLoader.getClass();
+                Constructor<?> con = c.getConstructor(String.class);
+                onlineMediaLoader2 = (IOnlineMediaLoader) con.newInstance(new Object[] {mediaUri});
+            }
+            catch (InstantiationException e)
+            {
+                e.printStackTrace();
+            }
+            catch (IllegalAccessException e)
+            {
+                e.printStackTrace();
+            }
+            catch (InvocationTargetException e)
+            {
+                e.printStackTrace();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
+            if(onlineMediaLoader2 != null)
+            {
+                onlineMediaLoader2.loadMedia(new IMediaDownloadListener() {
+                    @Override
+                    public void onMediaDownloaded() {
+                        prepare();
+                    }
+                });
+            }
+
+            m_mediaPlayer.setDataSource(onlineMediaLoader2);
+            m_currentState = State.INITIALIZED;
         }
     }
 

@@ -44,7 +44,7 @@ public class MediaLoaderAsync extends AsyncTask<String, Void, Void>
 
                 if(onlineMediaLoader != null)
                 {
-                    m_mediaView.setDataSource(onlineMediaLoader, m_isAudio);
+                    m_mediaView.setDataSource(onlineMediaLoader, mediaSourceUrl, m_isAudio);
                 }
                 else
                 {
@@ -66,7 +66,7 @@ public class MediaLoaderAsync extends AsyncTask<String, Void, Void>
 
                     if(onlineMediaLoader != null)
                     {
-                        m_mediaView.setDataSource(onlineMediaLoader, m_isAudio);
+                        m_mediaView.setDataSource(onlineMediaLoader, baseUrl + mediaSourceUrl, m_isAudio);
                     }
                     else
                     {
@@ -83,7 +83,6 @@ public class MediaLoaderAsync extends AsyncTask<String, Void, Void>
                         throw new IOException("Media not found: " + mediaSourceUrl);
                     }
 
-                    // m_mediaView.setVideoPath("android.resource://" + authority + "/" + baseUrl + "/" + mediaSourceUrl, m_isAudio);
                     m_mediaView.setVideoPath("android.resource://" + authority + "/" + baseUrl + "/" + mediaSourceUrl, m_isAudio);
 
                 }
