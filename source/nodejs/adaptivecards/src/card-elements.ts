@@ -26,7 +26,7 @@ export function createActionInstance(json: any, errors: Array<IValidationError>)
     if (!json["title"] && json["title"] !== "") {
         raiseParseError(
             {
-                error: Enums.ValidationError.ActionTitleCantBeNull,
+                error: Enums.ValidationError.PropertyCantBeNull,
                 message: "Action title is null"
             },
             errors
