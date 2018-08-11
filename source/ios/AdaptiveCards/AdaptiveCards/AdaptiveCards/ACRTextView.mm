@@ -73,7 +73,7 @@
 
 - (void)getInput:(NSMutableDictionary *)dictionary
 {
-    dictionary[self.id] = self.text;
+    dictionary[self.id] = ([_placeholderText isEqualToString:self.text])? @"" : self.text;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField

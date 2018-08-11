@@ -165,17 +165,12 @@
     }
     std::shared_ptr<BaseActionElement> selectAction = imgElem->GetSelectAction();
     // instantiate and add tap gesture recognizer
-    UILongPressGestureRecognizer * gestureRecognizer =
-        [ACRLongPressGestureRecognizerFactory getLongPressGestureRecognizer:viewGroup
-                                                                   rootView:rootView
-                                                                 targetView:wrappingview
-                                                              actionElement:selectAction
-                                                                     inputs:inputs
-                                                                 hostConfig:acoConfig];
-    if(gestureRecognizer) {
-        [view addGestureRecognizer:gestureRecognizer];
-        view.userInteractionEnabled = YES;
-    }
+    [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:viewGroup
+                                                                       rootView:rootView
+                                                                  recipientView:view
+                                                                  actionElement:selectAction
+                                                                     hostConfig:acoConfig];
+
     view.translatesAutoresizingMaskIntoConstraints = NO;
     wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
     return wrappingview;

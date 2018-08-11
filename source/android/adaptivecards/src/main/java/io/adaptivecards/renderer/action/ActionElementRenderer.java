@@ -22,6 +22,7 @@ import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.ActionsOrientation;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.HostConfig;
+import io.adaptivecards.objectmodel.ActionsConfig;
 import io.adaptivecards.objectmodel.IconPlacement;
 import io.adaptivecards.objectmodel.ShowCardAction;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
@@ -170,11 +171,13 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
     private class ActionElementRendererIconImageLoaderAsync extends InnerImageLoaderAsync
     {
         private IconPlacement m_iconPlacement;
+        private long m_iconSize;
 
-        protected ActionElementRendererIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl, IconPlacement iconPlacement)
+        protected ActionElementRendererIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl, IconPlacement iconPlacement, long iconSize)
         {
             super(renderedCard, containerView, imageBaseUrl);
             m_iconPlacement = iconPlacement;
+            m_iconSize = iconSize;
         }
 
         @Override
@@ -183,7 +186,19 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             Button button = (Button) super.m_view;
 
             Drawable originalDrawableIcon = new BitmapDrawable(null, bitmap);
-            double imageHeight = button.getTextSize();
+
+            double imageHeight;
+            if (m_iconPlacement == IconPlacement.AboveTitle)
+            {
+                // If icon is above title, iconSize should be used as the height of the image
+                imageHeight = m_iconSize;
+            }
+            else
+            {
+                // Otherwise, the height of the image should be the height of the action's text
+                imageHeight = button.getTextSize();
+            }
+
             double scaleRatio = imageHeight / originalDrawableIcon.getIntrinsicHeight();
             double imageWidth = scaleRatio * originalDrawableIcon.getIntrinsicWidth();
 
@@ -195,9 +210,12 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             Button button = (Button) super.m_view;
             Drawable drawableIcon = new BitmapDrawable(null, bitmap);
 
-            if( m_iconPlacement == IconPlacement.AboveTitle ) {
+            if (m_iconPlacement == IconPlacement.AboveTitle)
+            {
                 button.setCompoundDrawablesWithIntrinsicBounds(null, drawableIcon, null, null);
-            } else {
+            }
+            else
+            {
                 button.setCompoundDrawablesWithIntrinsicBounds(drawableIcon, null, null, null);
                 button.requestLayout();
             }
@@ -235,8 +253,15 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         button.setLayoutParams(layoutParams);
 
         String iconUrl = baseActionElement.GetIconUrl();
-        if( !iconUrl.isEmpty() ) {
-            ActionElementRendererIconImageLoaderAsync imageLoader = new ActionElementRendererIconImageLoaderAsync(renderedCard, button, hostConfig.getImageBaseUrl(), hostConfig.getActions().getIconPlacement());
+        if (!iconUrl.isEmpty())
+        {
+            ActionElementRendererIconImageLoaderAsync imageLoader = new ActionElementRendererIconImageLoaderAsync(
+                    renderedCard,
+                    button,
+                    hostConfig.getImageBaseUrl(),
+                    hostConfig.getActions().getIconPlacement(),
+                    hostConfig.getActions().getIconSize()
+            );
             imageLoader.execute(baseActionElement.GetIconUrl());
 
             // Only when the icon must be placed to the left of the title, we have to do this

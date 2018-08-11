@@ -1,16 +1,5 @@
 import { HostContainer } from "./host-container";
-import {
-    AdaptiveCard,
-    HostConfig,
-    Size,
-    TextSize,
-    TextColor,
-    TextWeight,
-    Spacing,
-    ShowCardActionMode,
-    Orientation,
-    ActionAlignment,
-} from "adaptivecards";
+import * as Adaptive from "adaptivecards";
 
 export class CortanaContainer extends HostContainer {
     public renderTo(hostElement: HTMLElement) {
@@ -68,8 +57,8 @@ export class CortanaContainer extends HostContainer {
         hostElement.appendChild(frame);
     }
 
-    public getHostConfig(): HostConfig {
-        return new HostConfig({
+    public getHostConfig(): Adaptive.HostConfig {
+        return new Adaptive.HostConfig({
             spacing: {
                 small: 3,
                 default: 8,
@@ -171,35 +160,35 @@ export class CortanaContainer extends HostContainer {
             },
             actions: {
                 maxActions: 5,
-                spacing: Spacing.Default,
+                spacing: Adaptive.Spacing.Default,
                 buttonSpacing: 5,
                 showCard: {
-                    actionMode: ShowCardActionMode.Inline,
+                    actionMode: Adaptive.ShowCardActionMode.Inline,
                     inlineTopMargin: 20
                 },
-                actionsOrientation: Orientation.Horizontal,
-                actionAlignment: ActionAlignment.Stretch
+                actionsOrientation: Adaptive.Orientation.Horizontal,
+                actionAlignment: Adaptive.ActionAlignment.Stretch
             },
             adaptiveCard: {
                 allowCustomStyle: false
             },
             imageSet: {
-                imageSize: Size.Small,
+                imageSize: Adaptive.Size.Small,
                 maxImageHeight: 100
             },
             factSet: {
                 title: {
-                    color: TextColor.Default,
-                    size: TextSize.Default,
+                    color: Adaptive.TextColor.Default,
+                    size: Adaptive.TextSize.Default,
                     isSubtle: false,
-                    weight: TextWeight.Bolder,
+                    weight: Adaptive.TextWeight.Bolder,
                     wrap: true
                 },
                 value: {
-                    color: TextColor.Default,
-                    size: TextSize.Default,
+                    color: Adaptive.TextColor.Default,
+                    size: Adaptive.TextSize.Default,
                     isSubtle: false,
-                    weight: TextWeight.Default,
+                    weight: Adaptive.TextWeight.Default,
                     wrap: true,
                 },
                 spacing: 12

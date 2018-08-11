@@ -105,32 +105,41 @@ public class ColumnRenderer extends BaseCardElementRenderer
         }
 
         String columnSize = column.GetWidth().toLowerCase(Locale.getDefault());
-
-        if (TextUtils.isEmpty(columnSize) || columnSize.equals(g_columnSizeStretch))
+        long pixelWidth = column.GetPixelWidth();
+        if (pixelWidth != 0)
         {
             layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-            layoutParams.weight = 1;
-            returnedView.setLayoutParams(layoutParams);
-        }
-        else if (columnSize.equals(g_columnSizeAuto))
-        {
-            layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            layoutParams.width = Util.dpToPixels(context, pixelWidth);
             returnedView.setLayoutParams(layoutParams);
         }
         else
         {
-            try
+            if (TextUtils.isEmpty(columnSize) || columnSize.equals(g_columnSizeStretch))
             {
-                // I'm not sure what's going on here
-                float columnWeight = Float.parseFloat(columnSize);
                 layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-                layoutParams.width = 0;
-                layoutParams.weight = columnWeight;
+                layoutParams.weight = 1;
                 returnedView.setLayoutParams(layoutParams);
             }
-            catch (NumberFormatException numFormatExcep)
+            else if (columnSize.equals(g_columnSizeAuto))
             {
-                throw new IllegalArgumentException("Column Width (" + column.GetWidth() + ") is not a valid weight ('auto', 'stretch', <integer>).");
+                layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                returnedView.setLayoutParams(layoutParams);
+            }
+            else
+            {
+                try
+                {
+                    // I'm not sure what's going on here
+                    float columnWeight = Float.parseFloat(columnSize);
+                    layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                    layoutParams.width = 0;
+                    layoutParams.weight = columnWeight;
+                    returnedView.setLayoutParams(layoutParams);
+                }
+                catch (NumberFormatException numFormatExcep)
+                {
+                    throw new IllegalArgumentException("Column Width (" + column.GetWidth() + ") is not a valid weight ('auto', 'stretch', <integer>).");
+                }
             }
         }
 

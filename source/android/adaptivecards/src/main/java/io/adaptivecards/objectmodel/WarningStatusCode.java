@@ -18,7 +18,8 @@ public enum WarningStatusCode {
   AssetLoadFailed,
   UnsupportedSchemaVersion,
   UnsupportedMediaType,
-  InvalidMediaMix;
+  InvalidMediaMix,
+  InvalidColorFormat;
 
   public final int swigValue() {
     return swigValue;

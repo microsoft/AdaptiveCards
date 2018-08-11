@@ -108,5 +108,122 @@ namespace AdaptiveCards.Test
 }";
             Assert.ThrowsException<AdaptiveSerializationException>(() => AdaptiveCard.FromJson(json));
         }
+
+        [TestMethod]
+        // Make sure resource information for all Images and Medias in a card are returned
+        // TODO: Add test for Media information when Media type is added
+        public void TestResourceInformation()
+        {
+            var json = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.0"",
+  ""fallbackText"": ""Fallback Text"",
+  ""speak"": ""Speak"",
+  ""backgroundImage"": ""http://adaptivecards.io/content/cats/1.png"",
+  ""body"": [
+    {
+      ""type"": ""TextBlock"",
+      ""text"": ""Hello""
+    },
+    {
+      ""type"": ""Image"",
+      ""url"": ""http://adaptivecards.io/content/cats/2.png""
+    },
+    {
+      ""type"": ""Container"",
+      ""items"": [
+        {
+          ""type"": ""Image"",
+          ""url"": ""http://adaptivecards.io/content/cats/3.png""
+        },
+        {
+          ""type"": ""ColumnSet"",
+          ""columns"": [
+            {
+              ""type"": ""Column"",
+              ""items"": [
+                {
+                    ""type"": ""Image"",
+                    ""url"": ""http://adaptivecards.io/content/cats/2.png""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          ""type"": ""ImageSet"",
+          ""images"": [
+            {
+              ""type"": ""Image"",
+              ""url"": ""content/cats/4.png""
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  ""actions"": [
+    {
+      ""type"": ""Action.ShowCard"",
+      ""iconUrl"": ""http://adaptivecards.io/content/cats/5.png"",
+      ""card"": {
+          ""type"": ""AdaptiveCard"",
+          ""version"": ""1.0"",
+          ""body"": [
+            {
+              ""type"": ""TextBlock"",
+              ""text"": ""Hello""
+            },
+            {
+              ""type"": ""Image"",
+              ""url"": ""http://adaptivecards.io/content/cats/6.png""
+            }
+          ]
+      }
+    }
+  ]
+}";
+            var card = AdaptiveCard.FromJson(json).Card;
+            var expected = new RemoteResourceInformation[]
+            {
+                new RemoteResourceInformation(
+                    "http://adaptivecards.io/content/cats/1.png",
+                    typeof(AdaptiveImage),
+                    null
+                ),
+                new RemoteResourceInformation(
+                    "http://adaptivecards.io/content/cats/2.png",
+                    typeof(AdaptiveImage),
+                    null
+                ),
+                new RemoteResourceInformation(
+                    "http://adaptivecards.io/content/cats/3.png",
+                    typeof(AdaptiveImage),
+                    null
+                ),
+                new RemoteResourceInformation(
+                    "http://adaptivecards.io/content/cats/2.png",
+                    typeof(AdaptiveImage),
+                    null
+                ),
+                new RemoteResourceInformation(
+                    "content/cats/4.png",
+                    typeof(AdaptiveImage),
+                    null
+                ),
+                new RemoteResourceInformation(
+                    "http://adaptivecards.io/content/cats/5.png",
+                    typeof(AdaptiveImage),
+                    null
+                ),
+                new RemoteResourceInformation(
+                    "http://adaptivecards.io/content/cats/6.png",
+                    typeof(AdaptiveImage),
+                    null
+                )
+            };
+            var actual = card.GetResourceInformation();
+            CollectionAssert.AreEqual(expected, actual);
+        }
     }
 }
