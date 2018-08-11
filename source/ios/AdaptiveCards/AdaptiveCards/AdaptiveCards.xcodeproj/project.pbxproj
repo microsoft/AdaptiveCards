@@ -24,6 +24,7 @@
 		6B1147D11F32E53A008846EC /* ACRActionDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B1147D01F32E53A008846EC /* ACRActionDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B1147D81F32F922008846EC /* ACRShowCardTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B1147D61F32F922008846EC /* ACRShowCardTarget.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B1147D91F32F922008846EC /* ACRShowCardTarget.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B1147D71F32F922008846EC /* ACRShowCardTarget.mm */; };
+		6B14FC61211BBBEA00A11CC5 /* ACRPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B14FC60211BBBEA00A11CC5 /* ACRPickerView.xib */; };
 		6B268FE720CF19E200D99C1B /* RemoteResourceInformation.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B268FE620CF19E100D99C1B /* RemoteResourceInformation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B3787B720CA00D300015401 /* ACRUILabel.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F44B6A203FA8EF00A2F24C /* ACRUILabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B3787BA20CB3E0E00015401 /* ACRContentHoldingUIScrollView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B3787B820CB3E0E00015401 /* ACRContentHoldingUIScrollView.mm */; };
@@ -276,6 +277,7 @@
 		6B1147D01F32E53A008846EC /* ACRActionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRActionDelegate.h; sourceTree = "<group>"; };
 		6B1147D61F32F922008846EC /* ACRShowCardTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRShowCardTarget.h; sourceTree = "<group>"; };
 		6B1147D71F32F922008846EC /* ACRShowCardTarget.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRShowCardTarget.mm; sourceTree = "<group>"; };
+		6B14FC60211BBBEA00A11CC5 /* ACRPickerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRPickerView.xib; sourceTree = "<group>"; };
 		6B268FE620CF19E100D99C1B /* RemoteResourceInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteResourceInformation.h; path = ../../../../shared/cpp/ObjectModel/RemoteResourceInformation.h; sourceTree = "<group>"; };
 		6B3787B820CB3E0E00015401 /* ACRContentHoldingUIScrollView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRContentHoldingUIScrollView.mm; sourceTree = "<group>"; };
 		6B3787B920CB3E0E00015401 /* ACRContentHoldingUIScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRContentHoldingUIScrollView.h; sourceTree = "<group>"; };
@@ -842,6 +844,7 @@
 				F460324420758583006C5358 /* ACRDatePicker.xib */,
 				F460324620759519006C5358 /* ACRDateTextField.xib */,
 				F46032482075997D006C5358 /* ACRInputTableView.xib */,
+				6B14FC60211BBBEA00A11CC5 /* ACRPickerView.xib */,
 			);
 			name = XIB;
 			sourceTree = "<group>";
@@ -1062,6 +1065,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F460324520758583006C5358 /* ACRDatePicker.xib in Resources */,
+				6B14FC61211BBBEA00A11CC5 /* ACRPickerView.xib in Resources */,
 				6B9AB30220D32A89005C8E15 /* ACRButton.xib in Resources */,
 				F46032492075997D006C5358 /* ACRInputTableView.xib in Resources */,
 				F4603238207575C7006C5358 /* ACRLabelView.xib in Resources */,
