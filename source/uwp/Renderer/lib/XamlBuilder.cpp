@@ -426,12 +426,16 @@ AdaptiveNamespaceStart
             return;
         }
 
-        XamlHelpers::AppendXamlElementToPanel(backgroundImage.Get(), rootPanel);
+		// All background images should be stretched to fill the whole card.
+		ComPtr<IImage> xamlImage;
+		THROW_IF_FAILED(backgroundImage.As(&xamlImage));
+		THROW_IF_FAILED(xamlImage->put_Stretch(Stretch::Stretch_UniformToFill));
+		
+		ComPtr<IFrameworkElement> backgroundAsFrameworkElement;
+		THROW_IF_FAILED(xamlImage.As(&backgroundAsFrameworkElement));
+		THROW_IF_FAILED(backgroundAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Stretch));
 
-        // All background images should be stretched to fill the whole card.
-        ComPtr<IImage> xamlImage;
-        THROW_IF_FAILED(backgroundImage.As(&xamlImage));
-        THROW_IF_FAILED(xamlImage->put_Stretch(Stretch::Stretch_UniformToFill));
+		XamlHelpers::AppendXamlElementToPanel(backgroundImage.Get(), rootPanel);
 
         // The overlay applied to the background image is determined by a resouce, so create
         // the overlay if that resources exists

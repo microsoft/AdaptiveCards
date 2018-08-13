@@ -14,6 +14,7 @@
 #import "ACRParseWarningPrivate.h"
 #import "ParseResult.h"
 #import "ACRErrors.h"
+#import "ACORemoteResourceInformationPrivate.h"
 
 using namespace AdaptiveCards;
 
@@ -95,6 +96,25 @@ using namespace AdaptiveCards;
 - (void)setCard:(std::shared_ptr<AdaptiveCard> const &)card
 {
     _adaptiveCard = card;
+}
+
+- (NSArray<ACORemoteResourceInformation *> *)remoteResourceInformation
+{
+    NSMutableArray *mutableRemoteResources = nil;
+    std::vector<RemoteResourceInformation> remoteResourceVector = _adaptiveCard->GetResourceInformation();
+    if(!remoteResourceVector.empty()){
+        mutableRemoteResources = [[NSMutableArray alloc] init];
+        for(const auto &remoteResource : remoteResourceVector){
+            ACORemoteResourceInformation *remoteResourceObjc =
+                [[ACORemoteResourceInformation alloc] initWithRemoteResourceInformation:remoteResource];
+            if(remoteResourceObjc){
+                [mutableRemoteResources addObject:remoteResourceObjc];
+            }
+        }
+        NSArray<ACORemoteResourceInformation *> *remoteResources = [NSArray arrayWithArray:mutableRemoteResources];
+        return remoteResources;
+    }    
+    return nil;
 }
 
 @end

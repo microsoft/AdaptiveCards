@@ -37,7 +37,9 @@
     ACRShowCardTarget *target = [[ACRShowCardTarget alloc] initWithActionElement:action
                                                                           config:acoConfig
                                                                        superview:superview
-                                                                        rootView:rootView];
+                                                                        rootView:rootView
+                                                                          button:button];
+    
     [button addTarget:target action:@selector(toggleVisibilityOfShowCard) forControlEvents:UIControlEventTouchUpInside];
 
     [superview addTarget:target];
@@ -50,4 +52,5 @@
 
     return button;
 }
+
 @end

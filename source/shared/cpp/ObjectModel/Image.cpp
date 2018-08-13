@@ -18,7 +18,7 @@ Image::Image() :
 
 Json::Value Image::SerializeToJsonValue() const
 {
-    const char pixelstring[] = "px";
+	const std::string pixelstring("px");
 
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
@@ -198,7 +198,7 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
     std::shared_ptr<Image> image = BaseCardElement::Deserialize<Image>(json);
 
     image->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, true));
-    image->SetBackgroundColor(ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundColor));
+    image->SetBackgroundColor(ValidateColor(ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundColor), warnings));
     image->SetImageStyle(ParseUtil::GetEnumValue<ImageStyle>(json, AdaptiveCardSchemaKey::Style, ImageStyle::Default, ImageStyleFromString));
     image->SetAltText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::AltText));
     image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
@@ -226,10 +226,10 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
         parsedDimensions.push_back(parsedDimension);
     }
 
-    if (parsedDimensions[0] != 0 || parsedDimensions[1] != 0)
+    if (parsedDimensions.at(0) != 0 || parsedDimensions.at(1) != 0)
     {
-        image->SetPixelWidth(parsedDimensions[0]);
-        image->SetPixelHeight(parsedDimensions[1]);
+        image->SetPixelWidth(parsedDimensions.at(0));
+        image->SetPixelHeight(parsedDimensions.at(1));
     }
     else
     {
