@@ -31,7 +31,7 @@
                 "url": "https://adaptivecards.io/"
             },
             "size": "auto",
-            "style": "default",
+            "style": "person",
             "url": "https://adaptivecards.io/content/cats/1.png",
             "id": "Image_id",
             "spacing": "none",
@@ -88,6 +88,11 @@
                                 {
                                     "type": "Image",
                                     "url": "https://adaptivecards.io/content/cats/3.png"
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Column3_TextBlock_text",
+                                    "id": "Column3_TextBlock_id"
                                 }
                             ]
                         }
