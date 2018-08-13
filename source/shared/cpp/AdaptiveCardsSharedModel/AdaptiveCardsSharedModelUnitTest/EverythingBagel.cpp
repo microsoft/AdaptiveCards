@@ -1,13 +1,23 @@
 #include "stdafx.h"
 #include "SharedAdaptiveCard.h"
+#include "ChoiceInput.h"
+#include "ChoiceSetInput.h"
 #include "Column.h"
 #include "ColumnSet.h"
 #include "Container.h"
+#include "DateInput.h"
+#include "Fact.h"
+#include "FactSet.h"
 #include "Image.h"
+#include "ImageSet.h"
+#include "NumberInput.h"
 #include "OpenUrlAction.h"
 #include "ShowCardAction.h"
 #include "SubmitAction.h"
 #include "TextBlock.h"
+#include "TextInput.h"
+#include "TimeInput.h"
+#include "ToggleInput.h"
 
 using namespace std::string_literals;
 
@@ -131,7 +141,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
     }
 
-    void ValidateContainer(const Container &container)
+    void ValidateColumnSetContainer(const Container &container)
     {
         Assert::IsTrue(container.GetElementType() == CardElementType::Container);
         Assert::AreEqual(CardElementTypeToString(CardElementType::Container), container.GetElementTypeString());
@@ -154,6 +164,175 @@ namespace AdaptiveCardsSharedModelUnitTest
         ValidateColumnSet(*columnSet);
     }
 
+    void ValidateFactSet(const FactSet &factSet)
+    {
+        Assert::IsTrue(factSet.GetElementType() == CardElementType::FactSet);
+        Assert::AreEqual(CardElementTypeToString(CardElementType::FactSet), factSet.GetElementTypeString());
+        Assert::AreEqual("FactSet_id"s, factSet.GetId());
+
+        auto facts = factSet.GetFacts();
+        Assert::AreEqual(2U, facts.size());
+
+        // validate first fact
+        {
+            auto fact = std::static_pointer_cast<Fact>(facts.at(0));
+            Assert::AreEqual("Topping"s, fact->GetTitle());
+            Assert::AreEqual("poppyseeds"s, fact->GetValue());
+        }
+
+        // validate second fact
+        {
+            auto fact = std::static_pointer_cast<Fact>(facts.at(1));
+            Assert::AreEqual("Topping"s, fact->GetTitle());
+            Assert::AreEqual("onion flakes"s, fact->GetValue());
+        }
+    }
+
+    void ValidateImageSet(const ImageSet &imageSet)
+    {
+        Assert::IsTrue(imageSet.GetElementType() == CardElementType::ImageSet);
+        Assert::AreEqual(CardElementTypeToString(CardElementType::ImageSet), imageSet.GetElementTypeString());
+        Assert::AreEqual("ImageSet_id"s, imageSet.GetId());
+        Assert::IsTrue(ImageSize::Auto == imageSet.GetImageSize());
+
+        auto images = imageSet.GetImages();
+        Assert::AreEqual(3U, images.size());
+        for (unsigned int i = 0; i < images.size(); i++)
+        {
+            auto currImage = std::static_pointer_cast<Image>(images.at(i));
+            Assert::IsTrue(currImage->GetElementType() == CardElementType::Image);
+            std::string expectedUrl = "https://adaptivecards.io/content/cats/";
+            expectedUrl.append(std::to_string(i+1));
+            expectedUrl.append(".png");
+            Assert::AreEqual(expectedUrl, currImage->GetUrl());
+        }
+    }
+
+    void ValidateInputText(const TextInput &textInput)
+    {
+        Assert::IsTrue(textInput.GetElementType() == CardElementType::TextInput);
+        Assert::AreEqual(CardElementTypeToString(CardElementType::TextInput), textInput.GetElementTypeString());
+        Assert::AreEqual("Input.Text_id"s, textInput.GetId());
+
+        Assert::IsFalse(textInput.GetIsMultiline());
+        Assert::IsFalse(textInput.GetIsRequired());
+        Assert::AreEqual(10U, textInput.GetMaxLength());
+        Assert::AreEqual("Input.Text_placeholder"s, textInput.GetPlaceholder());
+        Assert::IsTrue(Spacing::Small == textInput.GetSpacing());
+        Assert::IsTrue(TextInputStyle::Text == textInput.GetTextInputStyle());
+        Assert::AreEqual("Input.Text_value"s, textInput.GetValue());
+    }
+
+    void ValidateInputNumber(const NumberInput &numberInput)
+    {
+        Assert::IsTrue(numberInput.GetElementType() == CardElementType::NumberInput);
+        Assert::AreEqual(CardElementTypeToString(CardElementType::NumberInput), numberInput.GetElementTypeString());
+        Assert::AreEqual("Input.Number_id"s, numberInput.GetId());
+
+        Assert::IsFalse(numberInput.GetIsRequired());
+        Assert::AreEqual(10, numberInput.GetMax());
+        Assert::AreEqual(5, numberInput.GetMin());
+        Assert::AreEqual(7, numberInput.GetValue());
+        Assert::AreEqual("Input.Number_placeholder"s, numberInput.GetPlaceholder());
+    }
+
+    void ValidateInputDate(const DateInput &dateInput)
+    {
+        Assert::IsTrue(dateInput.GetElementType() == CardElementType::DateInput);
+        Assert::AreEqual(CardElementTypeToString(CardElementType::DateInput), dateInput.GetElementTypeString());
+        Assert::AreEqual("Input.Date_id"s, dateInput.GetId());
+
+        Assert::AreEqual("1/1/2020"s, dateInput.GetMax());
+        Assert::AreEqual("8/1/2018"s, dateInput.GetMin());
+        Assert::AreEqual("8/9/2018"s, dateInput.GetValue());
+        Assert::AreEqual("Input.Date_placeholder"s, dateInput.GetPlaceholder());
+    }
+
+    void ValidateInputTime(const TimeInput &timeInput)
+    {
+        Assert::IsTrue(timeInput.GetElementType() == CardElementType::TimeInput);
+        Assert::AreEqual(CardElementTypeToString(CardElementType::TimeInput), timeInput.GetElementTypeString());
+        Assert::AreEqual("Input.Time_id"s, timeInput.GetId());
+
+        Assert::AreEqual("10:00"s, timeInput.GetMin());
+        Assert::AreEqual("17:00"s, timeInput.GetMax());
+        Assert::AreEqual("13:00"s, timeInput.GetValue());
+    }
+
+    void ValidateInputToggle(const ToggleInput &toggleInput)
+    {
+        Assert::IsTrue(toggleInput.GetElementType() == CardElementType::ToggleInput);
+        Assert::AreEqual(CardElementTypeToString(CardElementType::ToggleInput), toggleInput.GetElementTypeString());
+        Assert::AreEqual("Input.Toggle_id"s, toggleInput.GetId());
+
+        Assert::AreEqual("Input.Toggle_title"s, toggleInput.GetTitle());
+        Assert::AreEqual("Input.Toggle_on"s, toggleInput.GetValue());
+        Assert::AreEqual("Input.Toggle_on"s, toggleInput.GetValueOn());
+        Assert::AreEqual("Input.Toggle_off"s, toggleInput.GetValueOff());
+    }
+
+    void ValidateTextBlockInInput(const TextBlock &textBlock)
+    {
+        Assert::IsTrue(textBlock.GetElementType() == CardElementType::TextBlock);
+        Assert::AreEqual(CardElementTypeToString(CardElementType::TextBlock), textBlock.GetElementTypeString());
+        Assert::AreEqual(""s, textBlock.GetId());
+        Assert::AreEqual("Everybody's got choices"s, textBlock.GetText());
+        Assert::IsTrue(TextWeight::Bolder == textBlock.GetTextWeight());
+        Assert::IsTrue(TextSize::Large == textBlock.GetTextSize());
+    }
+
+    void ValidateInputChoiceSet(const ChoiceSetInput &choiceSet)
+    {
+        Assert::IsTrue(choiceSet.GetElementType() == CardElementType::ChoiceSetInput);
+        Assert::AreEqual(CardElementTypeToString(CardElementType::ChoiceSetInput), choiceSet.GetElementTypeString());
+        Assert::AreEqual("Input.ChoiceSet_id"s, choiceSet.GetId());
+        Assert::IsTrue(ChoiceSetStyle::Compact == choiceSet.GetChoiceSetStyle());
+        Assert::AreEqual("Input.Choice2,Input.Choice4"s, choiceSet.GetValue());
+        Assert::IsTrue(choiceSet.GetIsMultiSelect());
+
+        auto choices = choiceSet.GetChoices();
+        Assert::AreEqual(4U, choices.size());
+
+        for (unsigned int i = 0; i < choices.size(); i++)
+        {
+            auto currChoice = choices.at(i);
+            std::string expectedTitle = "Input.Choice";
+            expectedTitle.append(std::to_string(i + 1));
+            Assert::AreEqual(expectedTitle, currChoice->GetValue());
+            expectedTitle.append("_title");
+            Assert::AreEqual(expectedTitle, currChoice->GetTitle());
+        }
+    }
+
+    void ValidateInputContainer(const Container &container)
+    {
+        Assert::AreEqual("Container_id_inputs"s, container.GetId());
+
+        auto items = container.GetItems();
+        Assert::AreEqual(7U, items.size());
+
+        auto textInput = std::static_pointer_cast<TextInput>(items.at(0));
+        ValidateInputText(*textInput);
+
+        auto numberInput = std::static_pointer_cast<NumberInput>(items.at(1));
+        ValidateInputNumber(*numberInput);
+
+        auto dateInput = std::static_pointer_cast<DateInput>(items.at(2));
+        ValidateInputDate(*dateInput);
+
+        auto timeInput = std::static_pointer_cast<TimeInput>(items.at(3));
+        ValidateInputTime(*timeInput);
+
+        auto toggleInput = std::static_pointer_cast<ToggleInput>(items.at(4));
+        ValidateInputToggle(*toggleInput);
+
+        auto textBlock = std::static_pointer_cast<TextBlock>(items.at(5));
+        ValidateTextBlockInInput(*textBlock);
+
+        auto choiceSet = std::static_pointer_cast<ChoiceSetInput>(items.at(6));
+        ValidateInputChoiceSet(*choiceSet);
+    }
+
     void ValidateBody(const AdaptiveCard &everythingBagel)
     {
         auto body = everythingBagel.GetBody();
@@ -166,10 +345,22 @@ namespace AdaptiveCardsSharedModelUnitTest
         // validate image
         auto image = std::static_pointer_cast<Image>(body.at(1));
         ValidateImage(*image);
-        
-        // validate container
-        auto container = std::static_pointer_cast<Container>(body.at(2));
-        ValidateContainer(*container);
+
+        // validate columnset container
+        auto columnSetContainer = std::static_pointer_cast<Container>(body.at(2));
+        ValidateColumnSetContainer(*columnSetContainer);
+
+        // validate factset
+        auto factSet = std::static_pointer_cast<FactSet>(body.at(3));
+        ValidateFactSet(*factSet);
+
+        // validate imageset
+        auto imageSet = std::static_pointer_cast<ImageSet>(body.at(4));
+        ValidateImageSet(*imageSet);
+
+        // validate input container
+        auto inputContainer = std::static_pointer_cast<Container>(body.at(5));
+        ValidateInputContainer(*inputContainer);
     }
 
     void ValidateToplevelActions(const AdaptiveCard &everythingBagel)

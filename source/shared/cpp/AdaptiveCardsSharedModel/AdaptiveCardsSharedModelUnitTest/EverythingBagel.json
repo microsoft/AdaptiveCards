@@ -113,11 +113,6 @@
                     "type": "Fact",
                     "title": "Topping",
                     "value": "onion flakes"
-                },
-                {
-                    "type": "Fact",
-                    "title": "Topping",
-                    "value": "sesame seeds"
                 }
             ]
         },
@@ -202,22 +197,22 @@
                     "choices": [
                         {
                             "type": "Input.Choice",
-                            "title": "Slow?",
+                            "title": "Input.Choice1_title",
                             "value": "Input.Choice1"
                         },
                         {
                             "type": "Input.Choice",
-                            "title": "Trained to go?",
+                            "title": "Input.Choice2_title",
                             "value": "Input.Choice2"
                         },
                         {
                             "type": "Input.Choice",
-                            "title": "Your team weak?",
+                            "title": "Input.Choice3_title",
                             "value": "Input.Choice3"
                         },
                         {
                             "type": "Input.Choice",
-                            "title": "You respected in the stri-neets?",
+                            "title": "Input.Choice4_title",
                             "value": "Input.Choice4"
                         }
                     ]
