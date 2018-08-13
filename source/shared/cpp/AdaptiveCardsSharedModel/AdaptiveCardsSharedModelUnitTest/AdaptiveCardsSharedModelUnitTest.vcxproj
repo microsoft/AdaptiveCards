@@ -194,12 +194,4 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
-  <!--
-  <Target Name="CopyLinkedContentFiles" BeforeTargets="Build">
-    <Copy SourceFiles="%(Content.Identity)" 
-          DestinationFiles="%(Content.Link)" 
-          SkipUnchangedFiles='true' 
-          OverwriteReadOnlyFiles='true' 
-          Condition="'%(Content.Link)' != ''" />
-  </Target>-->
 </Project>
