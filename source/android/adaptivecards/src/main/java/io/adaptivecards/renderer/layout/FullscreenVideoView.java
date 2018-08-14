@@ -21,7 +21,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
-import android.media.MediaDataSource;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnBufferingUpdateListener;
 import android.media.MediaPlayer.OnErrorListener;
@@ -41,10 +40,8 @@ import android.view.View;
 
 import android.widget.FrameLayout;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
-import io.adaptivecards.renderer.IMediaDownloadListener;
+import io.adaptivecards.renderer.IMediaDataSourceOnPreparedListener;
 import io.adaptivecards.renderer.IOnlineMediaLoader;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
@@ -816,7 +813,7 @@ public class FullscreenVideoView extends FrameLayout implements OnPreparedListen
         } else throw new RuntimeException("Media Player is not initialized");
     }
 
-    public void setDataSource(MediaDataSource mediaDataSource, String mediaUri, boolean isAudio) throws NoSuchMethodException {
+    public void setDataSource(String mediaUri, boolean isAudio) throws NoSuchMethodException {
         if(m_mediaPlayer != null)
         {
             if (m_currentState != State.IDLE)
@@ -830,42 +827,17 @@ public class FullscreenVideoView extends FrameLayout implements OnPreparedListen
 
             IOnlineMediaLoader onlineMediaLoader = CardRendererRegistration.getInstance().getOnlineMediaLoader();
 
-            IOnlineMediaLoader onlineMediaLoader2 = null;
-            try
+            if(onlineMediaLoader != null)
             {
-                Class<?> c = onlineMediaLoader.getClass();
-                Constructor<?> con = c.getConstructor(String.class);
-                onlineMediaLoader2 = (IOnlineMediaLoader) con.newInstance(new Object[] {mediaUri});
-            }
-            catch (InstantiationException e)
-            {
-                e.printStackTrace();
-            }
-            catch (IllegalAccessException e)
-            {
-                e.printStackTrace();
-            }
-            catch (InvocationTargetException e)
-            {
-                e.printStackTrace();
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-
-            if(onlineMediaLoader2 != null)
-            {
-                onlineMediaLoader2.loadMedia(new IMediaDownloadListener() {
+                m_mediaPlayer.setDataSource(onlineMediaLoader.loadOnlineMedia(mediaUri, new IMediaDataSourceOnPreparedListener(){
                     @Override
-                    public void onMediaDownloaded() {
+                    public void prepareMediaPlayer() {
                         prepare();
                     }
-                });
+                }));
+                m_currentState = State.INITIALIZED;
             }
 
-            m_mediaPlayer.setDataSource(onlineMediaLoader2);
-            m_currentState = State.INITIALIZED;
         }
     }
 
