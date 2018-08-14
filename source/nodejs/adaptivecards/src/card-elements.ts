@@ -263,7 +263,7 @@ export abstract class CardElement {
             renderedElement.style.flex = "0 0 auto";
         }
         else {
-            renderedElement.style.flex = "1 1 100%";
+            renderedElement.style.flex = "1 1 auto";
         }
     }
 
