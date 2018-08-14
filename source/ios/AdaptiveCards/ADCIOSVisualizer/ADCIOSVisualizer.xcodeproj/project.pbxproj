@@ -28,7 +28,7 @@
 		6B268FE320CEF19400D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B268FE520CEF89100D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B2D8605211143BD008DD972 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2D8604211143BD008DD972 /* AdaptiveCards.framework */; };
-		6B5D23F12123775C0010EB07 /* BackgroundColor.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B5D23F02123775B0010EB07 /* BackgroundColor.json */; };
+		6B5D23F3212393480010EB07 /* Image.BackgroundColor.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B5D23F2212393480010EB07 /* Image.BackgroundColor.json */; };
 		6B7B1A9B20C21CA900260731 /* SportingEvent.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B7B1A9920C21CA800260731 /* SportingEvent.json */; };
 		6B9AB30620D9857B005C8E15 /* Image.Explicit.Size.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B9AB30520D9857A005C8E15 /* Image.Explicit.Size.json */; };
 		6B9AB30C20DC4FB3005C8E15 /* IconsInSomeActions.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B9AB30B20DC4FB3005C8E15 /* IconsInSomeActions.json */; };
@@ -156,7 +156,7 @@
 		30A3886520D32FF700AAEE59 /* VerticalContentAlignment_ForcedColumn.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = VerticalContentAlignment_ForcedColumn.json; path = ../../../../samples/Tests/VerticalContentAlignment_ForcedColumn.json; sourceTree = "<group>"; };
 		30A3886620D32FF700AAEE59 /* VerticalContentAlignment_ForcedContainer.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = VerticalContentAlignment_ForcedContainer.json; path = ../../../../samples/Tests/VerticalContentAlignment_ForcedContainer.json; sourceTree = "<group>"; };
 		6B2D8604211143BD008DD972 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6B5D23F02123775B0010EB07 /* BackgroundColor.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = BackgroundColor.json; path = ../../../../samples/Tests/BackgroundColor.json; sourceTree = "<group>"; };
+		6B5D23F2212393480010EB07 /* Image.BackgroundColor.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.BackgroundColor.json; path = ../../../../samples/Tests/Image.BackgroundColor.json; sourceTree = "<group>"; };
 		6B7B1A9920C21CA800260731 /* SportingEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = SportingEvent.json; path = ../../../../samples/v1.0/Scenarios/SportingEvent.json; sourceTree = "<group>"; };
 		6B9AB30520D9857A005C8E15 /* Image.Explicit.Size.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.Explicit.Size.json; path = ../../../../samples/Tests/Image.Explicit.Size.json; sourceTree = "<group>"; };
 		6B9AB30B20DC4FB3005C8E15 /* IconsInSomeActions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = IconsInSomeActions.json; path = ../../../../samples/Tests/IconsInSomeActions.json; sourceTree = "<group>"; };
@@ -378,6 +378,7 @@
 		F4D33E341F045B6E00941E44 /* Jsons */ = {
 			isa = PBXGroup;
 			children = (
+				6B5D23F2212393480010EB07 /* Image.BackgroundColor.json */,
 				6BED2AF821001BC9006AC43D /* Media.json */,
 				30A3886520D32FF700AAEE59 /* VerticalContentAlignment_ForcedColumn.json */,
 				30A3886620D32FF700AAEE59 /* VerticalContentAlignment_ForcedContainer.json */,
@@ -387,7 +388,6 @@
 				6B9BDF7B20E6E0C200F13155 /* Column.Explicit.Size.json */,
 				6B9AB30B20DC4FB3005C8E15 /* IconsInSomeActions.json */,
 				6B9AB30520D9857A005C8E15 /* Image.Explicit.Size.json */,
-				6B5D23F02123775B0010EB07 /* BackgroundColor.json */,
 				30A3885C20D315AA00AAEE59 /* NotificationCard.json */,
 				30860BC020C9B5C9009F9D99 /* ColumnSet_Container.VerticalStretch.json */,
 				30860BBE20C9B5C8009F9D99 /* ColumnSet.FactSet.VerticalStretch.json */,
@@ -586,6 +586,7 @@
 				30860BCA20C9B5C9009F9D99 /* ColumnSet.FactSet.VerticalStretch.json in Resources */,
 				F4933D031F79853B00F6EBFD /* Inputs.json in Resources */,
 				F4933CD81F79852C00F6EBFD /* Image.Style.json in Resources */,
+				6B5D23F3212393480010EB07 /* Image.BackgroundColor.json in Resources */,
 				30860BC720C9B5C9009F9D99 /* ColumnSet.ImageSet.VerticalStretch.json in Resources */,
 				30A3886720D32FF700AAEE59 /* VerticalContentAlignment_ForcedColumn.json in Resources */,
 				F4933CDD1F79852C00F6EBFD /* Input.Date.json in Resources */,
@@ -607,7 +608,6 @@
 				F4071C831FD63D5400AF4FEA /* Solitaire.json in Resources */,
 				F4933CDB1F79852C00F6EBFD /* ImageSet.json in Resources */,
 				F4933CC61F79852C00F6EBFD /* Column.SelectAction.json in Resources */,
-				6B5D23F12123775C0010EB07 /* BackgroundColor.json in Resources */,
 				F4933D041F79853B00F6EBFD /* Restaurant.json in Resources */,
 				30860BC220C9B5C9009F9D99 /* (null) in Resources */,
 				F423C0881EE1FB6100905679 /* LaunchScreen.storyboard in Resources */,
