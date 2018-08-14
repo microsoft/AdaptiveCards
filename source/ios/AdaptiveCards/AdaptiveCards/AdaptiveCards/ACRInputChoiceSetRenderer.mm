@@ -39,13 +39,14 @@
     ACRInputTableView *choiceSetView = [[ACRInputTableView alloc] initWithSuperview:viewGroup];
     NSObject<UITableViewDelegate, UITableViewDataSource> *dataSource = nil;
 
-    if(choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact) {
+    if(choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact && choiceSet->GetIsMultiSelect() == false) {
         dataSource = [[ACRChoiceSetViewDataSourceCompactStyle alloc] initWithInputChoiceSet:choiceSet rootView:rootView];
         [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     } else {
         dataSource = [[ACRChoiceSetViewDataSource alloc] initWithInputChoiceSet:choiceSet];
-        [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLineEtched];
+        [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     }
+    
     choiceSetView.delegate = dataSource;
     choiceSetView.dataSource = dataSource;
     [inputs addObject:dataSource];    
@@ -71,6 +72,7 @@
                                  attribute:NSLayoutAttributeLeading
                                 multiplier:1.0
                                   constant:0].active = YES;
+    
     [NSLayoutConstraint constraintWithItem:choiceSetView
                                  attribute:NSLayoutAttributeTrailing
                                  relatedBy:NSLayoutRelationLessThanOrEqual

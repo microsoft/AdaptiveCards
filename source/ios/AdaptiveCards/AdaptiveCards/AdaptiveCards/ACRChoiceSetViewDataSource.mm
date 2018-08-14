@@ -12,6 +12,10 @@ using namespace AdaptiveCards;
 
 const CGFloat padding = 16.0f;
 const CGFloat accessoryViewWidth = 50.0f;
+typedef NS_ENUM(NSInteger, ACRCellSelected) {
+    ACRCellSelectedYES = 0,
+    ACRCellSelectedNO = 1
+};
 
 @implementation ACRChoiceSetViewDataSource
 {
@@ -76,14 +80,29 @@ const CGFloat accessoryViewWidth = 50.0f;
                                                       encoding:NSUTF8StringEncoding];
 
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
+    UIImage *radioImage = nil;
+    
     if([_defaultValuesSet containsObject:keyForDefaultValue]){
         _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:YES];
         [_defaultValuesSet removeObject:keyForDefaultValue];
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        
+        if(_isMultiChoicesAllowed) {
+            radioImage = [UIImage imageNamed:@"checked-checkbox-24.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+        } else {
+            radioImage = [UIImage imageNamed:@"checked.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+        }
+        cell.tag = ACRCellSelectedYES;
+            
     } else {
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        if(_isMultiChoicesAllowed) {
+            radioImage = [UIImage imageNamed:@"unchecked-checkbox-24.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+        } else {
+            radioImage = [UIImage imageNamed:@"unchecked.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+        }
+        cell.tag = ACRCellSelectedNO;
     }
+    
+    cell.imageView.image = radioImage;
 
     return cell;
 }
@@ -98,7 +117,7 @@ const CGFloat accessoryViewWidth = 50.0f;
     {
         [self tableView:tableView didSelectRowAtIndexPath:indexPath];
         [cell setSelected:YES animated:NO];
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        //cell.accessoryType = UITableViewCellAccessoryCheckmark;
         _lastSelectedIndexPath = indexPath;
     }
 }
@@ -116,18 +135,31 @@ const CGFloat accessoryViewWidth = 50.0f;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (!_isMultiChoicesAllowed) {
-        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
+        //[tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        UIImage *radioImage = [UIImage imageNamed:@"checked.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+        cell.imageView.image = radioImage;
+        cell.tag = ACRCellSelectedYES;
+        
         _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:YES];
         if (_lastSelectedIndexPath && _lastSelectedIndexPath != indexPath) {
             [self tableView:tableView didDeselectRowAtIndexPath:_lastSelectedIndexPath];
             _lastSelectedIndexPath = nil;
         }
-    } else if ([tableView cellForRowAtIndexPath:indexPath].accessoryType == UITableViewCellAccessoryCheckmark) {
-        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
+    } else if ([tableView cellForRowAtIndexPath:indexPath].tag == ACRCellSelectedYES) {
+        //[tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        cell.tag = ACRCellSelectedNO;
         _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:NO];
+        UIImage *radioImage = [UIImage imageNamed:@"unchecked-checkbox-24.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+        cell.imageView.image = radioImage;
+        cell.tag = ACRCellSelectedNO;
     } else {
-        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:YES];
+        UIImage *radioImage = [UIImage imageNamed:@"checked-checkbox-24.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+        cell.imageView.image = radioImage;
+        cell.tag = ACRCellSelectedYES;
     }
 }
 
@@ -135,8 +167,12 @@ const CGFloat accessoryViewWidth = 50.0f;
 {
     // uncheck selection if multi choice is not allowed
     if (!_isMultiChoicesAllowed) {
-        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
+        //[tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
         _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:NO];
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        UIImage *radioImage = [UIImage imageNamed:@"unchecked.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+        cell.imageView.image = radioImage;
+        cell.tag = ACRCellSelectedNO;
     }
 }
 
