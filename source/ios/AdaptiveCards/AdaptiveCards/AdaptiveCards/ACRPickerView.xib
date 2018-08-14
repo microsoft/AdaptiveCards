@@ -20,6 +20,7 @@
                 <subviews>
                     <pickerView tag="8321" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0cN-WM-J5c">
                         <rect key="frame" x="44" y="-60" width="320" height="162"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     </pickerView>
                 </subviews>
                 <constraints>

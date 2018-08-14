@@ -47,7 +47,7 @@ static NSString *pickerCell = @"pickerCell";
         _tableView = nil;
         _indexPath = nil;
         _tableViewController = nil;
-        _showPickerView = YES;
+        _showPickerView = NO;
 
         NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
         [bundle loadNibNamed:@"ACRPickerView" owner:rootView options:nil];
@@ -104,24 +104,23 @@ static NSString *pickerCell = @"pickerCell";
 // creates top view that hides selection table
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    UITableViewCell *cell = nil;
+    
     if(indexPath.row == 0) {
         static NSString *identifier = @"cellForCompactMode";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if(!cell)
-        {
+        cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if(!cell) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                           reuseIdentifier:identifier];
         }
-
         cell.textLabel.text = ([_defaultString length])? _defaultString : @"";
         cell.textLabel.numberOfLines = 0;
         cell.textLabel.adjustsFontSizeToFitWidth = NO;
         cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-        return cell;
     } else {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:pickerCell];
+        cell = [tableView dequeueReusableCellWithIdentifier:pickerCell];
         if(cell == nil) {
             NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
             cell = [bundle loadNibNamed:@"ACRPickerView" owner:_rootView options:nil][0];
@@ -130,8 +129,9 @@ static NSString *pickerCell = @"pickerCell";
         pickerView.dataSource = self;
         pickerView.delegate = self;
         pickerView.hidden = NO;
-        return cell;
     }
+    cell.backgroundColor = UIColor.groupTableViewBackgroundColor;    
+    return cell;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -200,8 +200,6 @@ static NSString *pickerCell = @"pickerCell";
                              } completion:^(BOOL finished){
                                  pickerView.hidden = NO;
                              }];
-            //[tableView setNeedsLayout];
-            //[tableView invalidateIntrinsicContentSize];
         }
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
