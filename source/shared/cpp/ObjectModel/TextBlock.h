@@ -41,7 +41,7 @@ public:
     void SetHorizontalAlignment(const HorizontalAlignment value);
 
     void SetLanguage(const std::string& value);
-    std::string GetLanguage();
+    std::string GetLanguage() const;
 
 private:
     std::string m_text;
