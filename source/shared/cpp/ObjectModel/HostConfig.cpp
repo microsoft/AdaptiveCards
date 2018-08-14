@@ -218,6 +218,9 @@ ActionsConfig ActionsConfig::Deserialize(const Json::Value& json, const ActionsC
     result.iconPlacement = ParseUtil::GetEnumValue<IconPlacement>(
         json, AdaptiveCardSchemaKey::IconPlacement, defaultValue.iconPlacement, IconPlacementFromString);
 
+    result.iconSize = ParseUtil::GetUInt(
+        json, AdaptiveCardSchemaKey::IconSize, defaultValue.iconSize);
+
     return result;
 }
 

@@ -71,18 +71,11 @@
 
     std::shared_ptr<BaseActionElement> selectAction = containerElem->GetSelectAction();
     // instantiate and add tap gesture recognizer
-    UILongPressGestureRecognizer * gestureRecognizer =
-        [ACRLongPressGestureRecognizerFactory getLongPressGestureRecognizer:viewGroup
-                                                                   rootView:rootView
-                                                                 targetView:container
-                                                              actionElement:selectAction
-                                                                     inputs:inputs
-                                                                 hostConfig:acoConfig];
-    if(gestureRecognizer)
-    {
-        [container addGestureRecognizer:gestureRecognizer];
-        container.userInteractionEnabled = YES;
-    }
+    [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:viewGroup
+                                                                       rootView:rootView
+                                                                  recipientView:container
+                                                                  actionElement:selectAction
+                                                                     hostConfig:acoConfig];
     return viewGroup;
 }
 
