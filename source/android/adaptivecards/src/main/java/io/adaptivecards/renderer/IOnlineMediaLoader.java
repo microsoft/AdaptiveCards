@@ -5,8 +5,10 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import io.adaptivecards.objectmodel.MediaSourceVector;
+
 @RequiresApi(api = Build.VERSION_CODES.M)
 public interface IOnlineMediaLoader
 {
-    MediaDataSource loadOnlineMedia(String uri, IMediaDataSourceOnPreparedListener mediaDataSourceOnPreparedListener);
+    MediaDataSource loadOnlineMedia(MediaSourceVector mediaSources, IMediaDataSourceOnPreparedListener mediaDataSourceOnPreparedListener);
 }

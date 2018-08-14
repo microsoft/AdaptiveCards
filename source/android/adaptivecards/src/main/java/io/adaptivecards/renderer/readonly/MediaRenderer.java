@@ -5,6 +5,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +22,16 @@ import io.adaptivecards.objectmodel.Image;
 import io.adaptivecards.objectmodel.ImageSize;
 import io.adaptivecards.objectmodel.Media;
 import io.adaptivecards.objectmodel.MediaSource;
+import io.adaptivecards.objectmodel.MediaSourceVector;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.IMediaDataSourceOnPreparedListener;
+import io.adaptivecards.renderer.IOnlineMediaLoader;
 import io.adaptivecards.renderer.MediaLoaderAsync;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.layout.FullscreenVideoLayout;
 import io.adaptivecards.renderer.layout.FullscreenVideoView;
+import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public class MediaRenderer extends BaseCardElementRenderer
 {
@@ -199,22 +205,50 @@ public class MediaRenderer extends BaseCardElementRenderer
             Media media,
             HostConfig hostConfig)
     {
-        FullscreenVideoView mediaView = new FullscreenVideoLayout(context);
+        final FullscreenVideoView mediaView = new FullscreenVideoLayout(context);
 
-        final long sourcesSize = media.GetSources().size();
-        for(int i = 0; i < sourcesSize; i++)
+        final MediaSourceVector mediaSources = media.GetSources();
+        final long sourcesSize = mediaSources.size();
+
+        if(sourcesSize > 0)
         {
-            MediaSource mediaSource = media.GetSources().get(i);
-            String mimeType = mediaSource.GetMimeType();
-            if(isSupportedMimeType(mimeType))
+            final boolean isAudio = mediaSources.get(0).GetMimeType().startsWith("audio");
+            boolean registeredOnlineMediaLoader = false;
+
+            // DataMediaSource was introduced in Android M
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             {
-                try
+                // We're leaving everything to the online media loader implementation
+                IOnlineMediaLoader onlineMediaLoader = CardRendererRegistration.getInstance().getOnlineMediaLoader();
+                if (onlineMediaLoader != null)
                 {
-                    new MediaLoaderAsync(mediaView, mediaSource, hostConfig, mimeType.startsWith("audio"), context).execute("").get();
-                    break;
+                    mediaView.setDataSource(onlineMediaLoader.loadOnlineMedia(mediaSources, new IMediaDataSourceOnPreparedListener() {
+                            @Override
+                            public void prepareMediaPlayer() {
+                                mediaView.prepare();
+                            }
+                        }), isAudio);
+                    registeredOnlineMediaLoader = true;
                 }
-                catch(Exception e)
+            }
+
+            if(!registeredOnlineMediaLoader)
+            {
+                for (int i = 0; i < sourcesSize; i++)
                 {
+                    MediaSource mediaSource = mediaSources.get(i);
+                    String mimeType = mediaSource.GetMimeType();
+
+                    if (isSupportedMimeType(mimeType))
+                    {
+                        try
+                        {
+                            new MediaLoaderAsync(mediaView, mediaSource, hostConfig, isAudio, context).execute("").get();
+                            break;
+                        }
+                        catch (Exception e)
+                        { }
+                    }
                 }
             }
         }

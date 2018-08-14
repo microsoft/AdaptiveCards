@@ -21,6 +21,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
+import android.media.MediaDataSource;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnBufferingUpdateListener;
 import android.media.MediaPlayer.OnErrorListener;
@@ -813,7 +814,8 @@ public class FullscreenVideoView extends FrameLayout implements OnPreparedListen
         } else throw new RuntimeException("Media Player is not initialized");
     }
 
-    public void setDataSource(String mediaUri, boolean isAudio) throws NoSuchMethodException {
+    public void setDataSource(MediaDataSource dataSource, boolean isAudio)
+    {
         if(m_mediaPlayer != null)
         {
             if (m_currentState != State.IDLE)
@@ -825,20 +827,9 @@ public class FullscreenVideoView extends FrameLayout implements OnPreparedListen
             m_videoPath = null;
             m_isAudioOnly = isAudio;
 
-            IOnlineMediaLoader onlineMediaLoader = CardRendererRegistration.getInstance().getOnlineMediaLoader();
-
-            if(onlineMediaLoader != null)
-            {
-                m_mediaPlayer.setDataSource(onlineMediaLoader.loadOnlineMedia(mediaUri, new IMediaDataSourceOnPreparedListener(){
-                    @Override
-                    public void prepareMediaPlayer() {
-                        prepare();
-                    }
-                }));
-                m_currentState = State.INITIALIZED;
-            }
-
-        }
+            m_mediaPlayer.setDataSource(dataSource);
+            m_currentState = State.INITIALIZED;
+        } else throw new RuntimeException("Media Player is not initialized");
     }
 
 }

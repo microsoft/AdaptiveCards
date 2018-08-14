@@ -1,6 +1,7 @@
 package io.adaptivecards.adaptivecardssample;
 
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentActivity;
@@ -28,6 +29,7 @@ import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.*;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
+import io.adaptivecards.renderer.http.HttpRequestHelper;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import org.json.JSONException;
@@ -40,6 +42,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -262,6 +265,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         }
 
         private volatile IMediaDataSourceOnPreparedListener m_mediaDataSourceListener;
+
         private volatile String m_mediaUri;
         private volatile byte[] m_mediaBuffer;
     }
@@ -269,10 +273,56 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     @RequiresApi(api = Build.VERSION_CODES.M)
     public class OnlineMediaLoader implements IOnlineMediaLoader
     {
-        @Override
-        public MediaDataSource loadOnlineMedia(String uri, IMediaDataSourceOnPreparedListener mediaDataSourceOnPreparedListener)
+        public class OnlineFileAvailableChecker extends AsyncTask<String, Void, Boolean>
         {
-            return new MediaDataSourceImpl(uri, mediaDataSourceOnPreparedListener);
+            public OnlineFileAvailableChecker(String uri)
+            {
+                m_uri = uri;
+            }
+
+            @Override
+            protected Boolean doInBackground(String... strings) {
+                // if the provided uri is a valid uri or is valid with the resource resolver, then use that
+                // otherwise, try to get the media from a local file
+                try
+                {
+                    HttpRequestHelper.query(m_uri);
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    // Do nothing if the media was not found at all
+                    e.printStackTrace();
+                    return false;
+                }
+            }
+
+            private String m_uri;
+        }
+
+
+        @Override
+        public MediaDataSource loadOnlineMedia(MediaSourceVector mediaSources, IMediaDataSourceOnPreparedListener mediaDataSourceOnPreparedListener)
+        {
+            final long mediaSourcesSize = mediaSources.size();
+            for(int i = 0; i < mediaSourcesSize; i++)
+            {
+                String mediaUri = mediaSources.get(i).GetUrl();
+
+                OnlineFileAvailableChecker checker = new OnlineFileAvailableChecker(mediaUri);
+                try
+                {
+                    Boolean fileExists = checker.execute("").get();
+                    if(fileExists)
+                    {
+                        return new MediaDataSourceImpl(mediaUri, mediaDataSourceOnPreparedListener);
+                    }
+                }
+                catch (Exception e)
+                {
+                }
+            }
+            return null;
         }
     }
 

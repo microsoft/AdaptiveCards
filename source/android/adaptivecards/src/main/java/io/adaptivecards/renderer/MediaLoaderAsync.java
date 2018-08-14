@@ -15,7 +15,6 @@ import io.adaptivecards.renderer.http.HttpRequestHelper;
 import io.adaptivecards.renderer.layout.FullscreenVideoView;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
-// I have to move this thing from here to use the Correct resource resolver
 public class MediaLoaderAsync extends AsyncTask<String, Void, Void>
 {
     public MediaLoaderAsync(FullscreenVideoView mediaPlayer, MediaSource mediaSource, HostConfig hostConfig, boolean isAudio, Context context)
@@ -32,25 +31,22 @@ public class MediaLoaderAsync extends AsyncTask<String, Void, Void>
         // if the provided uri is a valid uri or is valid with the resource resolver, then use that
         // otherwise, try to get the media from a local file
         String mediaSourceUrl = m_mediaSource.GetUrl();
-        try {
-            IOnlineMediaLoader onlineMediaLoader = CardRendererRegistration.getInstance().getOnlineMediaLoader();
+        try
+        {
             // Try loading online using only the path first
-            try {
+            try
+            {
                 HttpRequestHelper.query(mediaSourceUrl);
-
-                if(onlineMediaLoader != null)
-                {
-                    m_mediaView.setDataSource(mediaSourceUrl, m_isAudio);
-                }
-                else
-                {
-                    m_mediaView.setVideoURI(Uri.parse(mediaSourceUrl), m_isAudio);
-                }
-            } catch (MalformedURLException e1) {
+                m_mediaView.setVideoURI(Uri.parse(mediaSourceUrl), m_isAudio);
+            }
+            catch (MalformedURLException e1)
+            {
                 // Then try using image base URL to load online
                 String baseUrl = m_hostConfig.getImageBaseUrl();
-                try {
-                    if (baseUrl == null || baseUrl.isEmpty()) {
+                try
+                {
+                    if (baseUrl == null || baseUrl.isEmpty())
+                    {
                         throw new IOException("Image base URL is empty or not specified");
                     }
 
@@ -59,23 +55,18 @@ public class MediaLoaderAsync extends AsyncTask<String, Void, Void>
                     URL url = new URL(urlContext, mediaSourceUrl);
 
                     HttpRequestHelper.query(url.toString());
+                    m_mediaView.setVideoURI(Uri.parse(baseUrl + mediaSourceUrl), m_isAudio);
 
-                    if(onlineMediaLoader != null)
-                    {
-                        m_mediaView.setDataSource(baseUrl + mediaSourceUrl, m_isAudio);
-                    }
-                    else
-                    {
-                        m_mediaView.setVideoURI(Uri.parse(baseUrl + mediaSourceUrl), m_isAudio);
-                    }
-
-                } catch (MalformedURLException e2) {
+                }
+                catch (MalformedURLException e2)
+                {
                     String authority = m_context.getPackageName();
 
                     // Get media identifier
                     Resources resources = m_context.getResources();
                     int identifier = resources.getIdentifier(mediaSourceUrl, baseUrl, authority);
-                    if (identifier == 0) {
+                    if (identifier == 0)
+                    {
                         throw new IOException("Media not found: " + mediaSourceUrl);
                     }
 
@@ -83,7 +74,9 @@ public class MediaLoaderAsync extends AsyncTask<String, Void, Void>
 
                 }
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
             // Do nothing if the media was not found at all
         }
