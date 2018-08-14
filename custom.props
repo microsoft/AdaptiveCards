@@ -3,6 +3,8 @@
   <PropertyGroup Label="Version">
     <VersionMajor>1</VersionMajor>
     <VersionMinor>1</VersionMinor>
+    <!-- The nuget package version should be incremented when we produce QFEs -->
+    <NuGetPackVersion>1.1.0</NuGetPackVersion>
     <VersionInfoProductName>AdaptiveCards</VersionInfoProductName>
   </PropertyGroup>
 </Project>
