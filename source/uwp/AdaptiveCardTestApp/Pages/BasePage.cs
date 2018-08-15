@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
+using UWPTestLibrary;
 
 namespace AdaptiveCardTestApp.Pages
 {
@@ -27,6 +28,6 @@ namespace AdaptiveCardTestApp.Pages
 
         protected virtual void OnViewModelLoaded() { }
 
-        protected abstract Task<BaseViewModel> InitializeViewModel();
+        protected abstract Task<BindableBase> InitializeViewModel();
     }
 }

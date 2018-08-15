@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using UWPTestLibrary;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -73,7 +74,15 @@ namespace AdaptiveCardTestApp.Views
         private async void ButtonSaveAsExpected_Click(object sender, RoutedEventArgs e)
         {
             base.IsEnabled = false;
-            await (DataContext as TestResultViewModel).SaveAsNewExpectedAsync();
+            //await (DataContext as TestResultViewModel).SaveAsNewExpectedAsync();
+
+            await new StoredTestResultInfo()
+            {
+                HostConfigHash = "1234",
+                CardHash = "5678",
+                Error = "this is an error"
+            }.SaveToFileAsync((DataContext as TestResultViewModel)._expectedFolder, "foo");
+
             base.IsEnabled = true;
         }
 

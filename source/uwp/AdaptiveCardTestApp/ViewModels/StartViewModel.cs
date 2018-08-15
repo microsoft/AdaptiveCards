@@ -6,10 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Storage;
+using UWPTestLibrary;
 
 namespace AdaptiveCardTestApp.ViewModels
 {
-    public class StartViewModel : BaseViewModel
+    public class StartViewModel : BindableBase
     {
         public ObservableCollection<FileViewModel> Cards { get; private set; } = new ObservableCollection<FileViewModel>();
         public ObservableCollection<FileViewModel> HostConfigs { get; private set; } = new ObservableCollection<FileViewModel>();
@@ -23,6 +24,8 @@ namespace AdaptiveCardTestApp.ViewModels
 
         public async Task LoadAsync()
         {
+            ExpectedFolder = await Package.Current.InstalledLocation.GetFolderAsync("Expected");
+
             // Delete any old temp data
             try
             {
@@ -34,15 +37,7 @@ namespace AdaptiveCardTestApp.ViewModels
             }
             catch { }
 
-            await LoadFilesAsync("LinkedCards", Cards);
-            await LoadFilesAsync("LinkedHostConfigs", HostConfigs);
-
-            // Remove the WeatherLarge card since it contains a background image and often fails image comparisons
-            var weatherLarge = Cards.FirstOrDefault(i => i.Name.EndsWith("WeatherLarge"));
-            if (weatherLarge != null)
-            {
-                Cards.Remove(weatherLarge);
-            }
+            await UWPTestLibrary.FileLoadHelpers.LoadAsync(Cards, HostConfigs);
 
             foreach (var c in Cards)
             {
@@ -52,24 +47,6 @@ namespace AdaptiveCardTestApp.ViewModels
             foreach (var hc in HostConfigs)
             {
                 SelectedHostConfigs.Add(hc);
-            }
-        }
-
-        private async Task LoadFilesAsync(string folder, IList<FileViewModel> insertInto)
-        {
-            await LoadFilesAsyncHelper(folder, await Package.Current.InstalledLocation.GetFolderAsync(folder), insertInto);
-        }
-
-        private async Task LoadFilesAsyncHelper(string currentName, StorageFolder currentFolder, IList<FileViewModel> insertInto)
-        {
-            foreach (var file in await currentFolder.GetFilesAsync())
-            {
-                insertInto.Add(await FileViewModel.LoadAsync(file));
-            }
-
-            foreach (var folder in await currentFolder.GetFoldersAsync())
-            {
-                await LoadFilesAsyncHelper(currentName + "/" + folder.Name, folder, insertInto);
             }
         }
     }

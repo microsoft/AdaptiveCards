@@ -1,5 +1,4 @@
 ﻿using AdaptiveCards.Rendering.Uwp;
-using AdaptiveCardTestApp.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,10 +17,11 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Shapes;
 using Windows.ApplicationModel.UserActivities;
 using Windows.UI.Shell;
+using UWPTestLibrary;
 
 namespace AdaptiveCardTestApp.ViewModels
 {
-    public class RunningTestsViewModel : BaseViewModel
+    public class RunningTestsViewModel : BindableBase
     {
         public event EventHandler OnTestsCompleted;
         public event EventHandler<TestStatus> OnSingleTestCompleted;
@@ -179,246 +179,26 @@ namespace AdaptiveCardTestApp.ViewModels
 
         private async Task<Tuple<string, StorageFile, StorageFile, UIElement>> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile)
         {
-            string error = null;
-            RenderTargetBitmap rtb = null;
-            string roundTrippedJsonString = null;
+            var renderResult = await UWPTestLibrary.RenderTestHelpers.RenderCard(cardFile, hostConfigFile);
 
-            try
+            UWPTestLibrary.ImageWaiter imageWaiter = new ImageWaiter(renderResult.Item3);
+
+            CurrentCardVisual = renderResult.Item3;
+            CurrentCardVisualWidth = renderResult.Item4;
+
+            await imageWaiter.WaitOnAllImagesAsync();
+
+            StorageFile imageResultFile = null;
+            StorageFile jsonResultFile = null;
+            if (renderResult.Item1 == null)
             {
-                AdaptiveHostConfig hostConfig = AdaptiveHostConfig.FromJsonString(hostConfigFile.Contents).HostConfig;
+                imageResultFile = await _tempResultsFolder.CreateFileAsync("Result.png", CreationCollisionOption.GenerateUniqueName);
+                jsonResultFile = await _tempResultsFolder.CreateFileAsync("Result.json", CreationCollisionOption.GenerateUniqueName);
 
-                if (hostConfig == null)
-                {
-                    error = "Parsing hostConfig failed";
-                }
-
-                else
-                {
-                    AdaptiveCard card = AdaptiveCard.FromJsonString(cardFile.Contents).AdaptiveCard;
-
-                    if (card == null)
-                    {
-                        error = "Parsing card failed";
-                    }
-
-                    else
-                    {
-                        roundTrippedJsonString = card.ToJson().ToString();
-                        card = AdaptiveCard.FromJsonString(roundTrippedJsonString).AdaptiveCard;
-
-                        var renderer = new AdaptiveCardRenderer()
-                        {
-                            HostConfig = hostConfig
-                        };
-
-                        if (hostConfigFile.Name.Contains("windows-timeline"))
-                        {
-                            renderer.SetFixedDimensions(320, 180);
-                            CurrentCardVisualWidth = 320;
-                        }
-                        else if (hostConfigFile.Name.Contains("windows-live-tile"))
-                        {
-                            renderer.SetFixedDimensions(310, 310);
-                            CurrentCardVisualWidth = 310;
-                        }
-                        else
-                        {
-                            CurrentCardVisualWidth = 400;
-                        }
-
-                        FrameworkElement xaml = renderer.RenderAdaptiveCard(card).FrameworkElement as FrameworkElement;
-
-                        if (xaml == null)
-                        {
-                            error = "Rendering card failed";
-                        }
-
-                        else
-                        {
-                            xaml = new Border()
-                            {
-                                Background = new SolidColorBrush(Colors.White),
-                                Child = xaml,
-                                IsHitTestVisible = false // Disable HitTest so that mouse pointer can't accidently hover over a button
-                            };
-
-                            // The theme is important to set since it'll ensure buttons/inputs appear correctly
-                            if (hostConfigFile.Name.Contains("windows-notification"))
-                            {
-                                xaml.RequestedTheme = ElementTheme.Dark;
-                            }
-                            else
-                            {
-                                xaml.RequestedTheme = ElementTheme.Light;
-                            }
-
-                            CurrentCardVisual = xaml;
-
-                            ExpandShowCards(xaml);
-                            NormalizeTimePickers(xaml);
-                            await WaitOnAllImagesAsync(xaml);
-
-                            rtb = new RenderTargetBitmap();
-                            await rtb.RenderAsync(CurrentCardVisual);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                error = ex.ToString();
+                await UWPTestLibrary.RenderTestHelpers.ResultsToFile(imageResultFile, jsonResultFile, renderResult.Item2, CurrentCardVisual);
             }
 
-            StorageFile file = null;
-            StorageFile file2 = null;
-
-            if (error == null)
-            {
-                file = await _tempResultsFolder.CreateFileAsync("Result.png", CreationCollisionOption.GenerateUniqueName);
-                file2 = await _tempResultsFolder.CreateFileAsync("Result.json", CreationCollisionOption.GenerateUniqueName);
-
-                // https://basquang.wordpress.com/2013/09/26/windows-store-8-1-save-visual-element-to-bitmap-image-file/
-                var buffer = await rtb.GetPixelsAsync();
-
-                using (var stream = await file.OpenAsync(FileAccessMode.ReadWrite))
-                {
-                    var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, stream);
-
-                    encoder.SetPixelData(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight, (uint)rtb.PixelWidth, (uint)rtb.PixelHeight, 96, 96, buffer.ToArray());
-
-                    // Set the size of the card so that it can be rendered just like the bitmap
-                    if (CurrentCardVisual is FrameworkElement fe)
-                    {
-                        fe.Width = rtb.PixelWidth;
-                        fe.Height = rtb.PixelHeight;
-                    }
-
-                    await encoder.FlushAsync();
-                }
-
-                if (roundTrippedJsonString != null)
-                {
-                    await Windows.Storage.FileIO.WriteTextAsync(file2, roundTrippedJsonString);
-                }
-            }
-
-            return new Tuple<string, StorageFile, StorageFile, UIElement>(error, file, file2, CurrentCardVisual);
-        }
-
-        /// <summary>
-        /// This method expands all inline show cards so that changes in how show cards are rendered can be covered by this test suite
-        /// </summary>
-        /// <param name="el"></param>
-        private static void ExpandShowCards(UIElement el)
-        {
-            foreach (var card in GetAllDescendants(el).OfType<Grid>())
-            {
-                if (card.Visibility == Visibility.Collapsed)
-                {
-                    card.Visibility = Visibility.Visible;
-                }
-            }
-        }
-
-        /// <summary>
-        /// This method ensures that any time pickers that didn't have a specific assigned value end up with the same time
-        /// as previous tests, to ensure that the fact that the time is different on a machine doesn't make the test fail
-        /// </summary>
-        /// <param name="el"></param>
-        private static void NormalizeTimePickers(UIElement el)
-        {
-            foreach (var timePicker in GetAllDescendants(el).OfType<TimePicker>())
-            {
-                // If didn't have a value from the Card payload
-                if ((DateTime.Now.TimeOfDay - timePicker.Time).TotalMinutes <= 1)
-                {
-                    timePicker.Time = new TimeSpan(9, 0, 0);
-                }
-            }
-        }
-
-        private static async Task WaitOnAllImagesAsync(UIElement el)
-        {
-            int imageCountRemaining = 0;
-            int totalLoops = 0;
-            const int maxLoops = 500;
-            int loopsUnchanged = 0;
-
-            ExceptionRoutedEventHandler failedHandler = new ExceptionRoutedEventHandler(delegate
-            {
-                imageCountRemaining--;
-            });
-            RoutedEventHandler openedHandler = new RoutedEventHandler(delegate
-            {
-                imageCountRemaining--;
-            });
-
-            EventHandler<object> layoutHandler = new EventHandler<object>(delegate
-            {
-                loopsUnchanged = 0;
-            });
-
-            (el as FrameworkElement).LayoutUpdated += layoutHandler;
-
-            foreach (var shape in GetAllDescendants(el).OfType<Shape>())
-            {
-                if (shape.Fill is ImageBrush)
-                {
-                    imageCountRemaining++;
-                    (shape.Fill as ImageBrush).ImageFailed += failedHandler;
-                    (shape.Fill as ImageBrush).ImageOpened += openedHandler;
-                }
-            }
-
-            foreach (var img in GetAllDescendants(el).OfType<Image>())
-            {
-                imageCountRemaining++;
-                img.ImageFailed += failedHandler;
-                img.ImageOpened += openedHandler;
-            }
-
-            while (((imageCountRemaining > 0) || (loopsUnchanged < 2)) && (totalLoops < maxLoops))
-            {
-                totalLoops++;
-                loopsUnchanged++;
-
-                await Task.Delay(10);
-            }
-
-            (el as FrameworkElement).LayoutUpdated -= layoutHandler;
-        }
-
-        private static IEnumerable<UIElement> GetAllDescendants(UIElement element)
-        {
-            int count = VisualTreeHelper.GetChildrenCount(element);
-            for (int i = 0; i < count; i++)
-            {
-                var child = VisualTreeHelper.GetChild(element, i) as UIElement;
-                if (child != null)
-                {
-                    yield return child;
-
-                    foreach (var descendant in GetAllDescendants(child))
-                    {
-                        yield return descendant;
-                    }
-                }
-            }
-
-            // Make sure contents of touch targets get walked, the VisualTreeHelper doesn't grab these
-            if (element is ContentControl)
-            {
-                var content = (element as ContentControl).Content as UIElement;
-                if (content != null)
-                {
-                    yield return content;
-
-                    foreach (var descendant in GetAllDescendants(content))
-                    {
-                        yield return descendant;
-                    }
-                }
-            }
+            return new Tuple<string, StorageFile, StorageFile, UIElement>(renderResult.Item1, imageResultFile, jsonResultFile, CurrentCardVisual);
         }
 
         private void GoToDoneState()

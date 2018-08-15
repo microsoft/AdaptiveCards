@@ -149,7 +149,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Renderer\AdaptiveCardRenderer.vcxproj">
       <Project>{cf169157-f487-420c-8b9b-ca3abe2bb209}</Project>
-      <Name>XamlCardRenderer</Name>
+      <Name>AdaptiveCardRenderer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

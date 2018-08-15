@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdaptiveCardTestApp.Helpers
+namespace UWPTestLibrary
 {
     public abstract class BindableBase : INotifyPropertyChanged
     {

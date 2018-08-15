@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace AdaptiveCardTestApp.Model
+namespace UWPTestLibrary
 {
     [DataContract]
     public class StoredTestResultInfo

@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Rows>
+  <Row>
+    <A1>1</A1>
+    <A2>1</A2>
+    <Result>2</Result>
+  </Row>
+  <Row>
+    <A1>1</A1>
+    <A2>2</A2>
+    <Result>3</Result>
+  </Row>
+  <Row>
+    <A1>1</A1>
+    <A2>-1</A2>
+    <Result>1</Result>
+  </Row>
+</Rows>

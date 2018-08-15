@@ -1,5 +1,4 @@
-﻿using AdaptiveCardTestApp.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -10,10 +9,11 @@ using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
+using UWPTestLibrary;
 
-namespace AdaptiveCardTestApp.ViewModels
+namespace UWPTestLibrary
 {
-    public class TestResultViewModel : BaseViewModel
+    public class TestResultViewModel : BindableBase
     {
         public string CardName { get; set; }
         public FileViewModel CardFile { get; set; }
@@ -46,7 +46,7 @@ namespace AdaptiveCardTestApp.ViewModels
         public bool DidCardPayloadChange => _oldCardHash != null && _oldCardHash != CardFile.Hash;
         public bool DidRoundtrippedJsonChange => ExpectedRoundtrippedJsonModel != null && ExpectedRoundtrippedJsonModel.Hash != RoundtrippedJsonModel.Hash;
 
-        private StorageFolder _expectedFolder;
+        public StorageFolder _expectedFolder { get; set; }
         private StorageFolder _sourceHostConfigsFolder;
         private StorageFolder _sourceCardsFolder;
         private string _expectedFileNameWithoutExtension;
