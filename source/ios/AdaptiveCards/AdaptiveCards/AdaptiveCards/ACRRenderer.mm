@@ -80,6 +80,7 @@ using namespace AdaptiveCards;
     if(![[ACRRegistration getInstance] isElementRendererOverriden:[ACRImageRenderer elemType]]){
         if(!adaptiveCard->GetBackgroundImage().empty()) {
             [rootView loadImage:adaptiveCard->GetBackgroundImage()];
+        }
         [rootView loadImage:[config getHostConfig]->media.playButton];
     }
     if(!body.empty()) {
@@ -105,7 +106,7 @@ using namespace AdaptiveCards;
         [ACRRenderer render:verticalView rootView:rootView inputs:inputs withCardElems:body andHostConfig:config];
 
         // Dont add the trailing space if the vertical content alignment is top/default
-        if( adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Top && !(verticalView.hasStretchableView))){
+        if(adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Top && !(verticalView.hasStretchableView))){
             trailingBlankSpace = [verticalView addPaddingSpace];
         }
 
