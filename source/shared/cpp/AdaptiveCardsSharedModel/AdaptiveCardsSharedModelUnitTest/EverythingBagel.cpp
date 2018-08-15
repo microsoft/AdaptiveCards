@@ -91,7 +91,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::IsTrue(columnSet.GetSeparator());
 
         auto columns = columnSet.GetColumns();
-        Assert::AreEqual(3U, columns.size());
+        Assert::AreEqual(size_t{ 3 }, columns.size());
 
         // validate first column
         {
@@ -104,7 +104,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::IsTrue(ContainerStyle::Default == firstColumn->GetStyle());
 
             auto items = firstColumn->GetItems();
-            Assert::AreEqual(1U, items.size());
+            Assert::AreEqual(size_t{ 1 }, items.size());
             auto imageItem = std::static_pointer_cast<Image>(items.at(0));
             Assert::AreEqual("https://adaptivecards.io/content/cats/1.png"s, imageItem->GetUrl());
         }
@@ -118,7 +118,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::IsTrue(ContainerStyle::Emphasis == secondColumn->GetStyle());
 
             auto items = secondColumn->GetItems();
-            Assert::AreEqual(1U, items.size());
+            Assert::AreEqual(size_t{ 1 }, items.size());
             auto imageItem = std::static_pointer_cast<Image>(items.at(0));
             Assert::AreEqual("https://adaptivecards.io/content/cats/2.png"s, imageItem->GetUrl());
         }
@@ -132,7 +132,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::IsTrue(ContainerStyle::Default == thirdColumn->GetStyle());
 
             auto items = thirdColumn->GetItems();
-            Assert::AreEqual(2U, items.size());
+            Assert::AreEqual(size_t{ 2 }, items.size());
             auto imageItem = std::static_pointer_cast<Image>(items.at(0));
             Assert::AreEqual("https://adaptivecards.io/content/cats/3.png"s, imageItem->GetUrl());
 
@@ -160,7 +160,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
 
         auto items = container.GetItems();
-        Assert::AreEqual(1U, items.size());
+        Assert::AreEqual(size_t{ 1 }, items.size());
         auto columnSet = std::static_pointer_cast<ColumnSet>(items.at(0));
         ValidateColumnSet(*columnSet);
     }
@@ -172,7 +172,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("FactSet_id"s, factSet.GetId());
 
         auto facts = factSet.GetFacts();
-        Assert::AreEqual(2U, facts.size());
+        Assert::AreEqual(size_t{ 2 }, facts.size());
 
         // validate first fact
         {
@@ -197,7 +197,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::IsTrue(ImageSize::Auto == imageSet.GetImageSize());
 
         auto images = imageSet.GetImages();
-        Assert::AreEqual(3U, images.size());
+        Assert::AreEqual(size_t{ 3 }, images.size());
         for (unsigned int i = 0; i < images.size(); i++)
         {
             auto currImage = std::static_pointer_cast<Image>(images.at(i));
@@ -292,7 +292,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::IsTrue(choiceSet.GetIsMultiSelect());
 
         auto choices = choiceSet.GetChoices();
-        Assert::AreEqual(4U, choices.size());
+        Assert::AreEqual(size_t{ 4 }, choices.size());
 
         for (unsigned int i = 0; i < choices.size(); i++)
         {
@@ -310,7 +310,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("Container_id_inputs"s, container.GetId());
 
         auto items = container.GetItems();
-        Assert::AreEqual(7U, items.size());
+        Assert::AreEqual(size_t{ 7 }, items.size());
 
         auto textInput = std::static_pointer_cast<TextInput>(items.at(0));
         ValidateInputText(*textInput);
@@ -337,7 +337,7 @@ namespace AdaptiveCardsSharedModelUnitTest
     void ValidateBody(const AdaptiveCard &everythingBagel)
     {
         auto body = everythingBagel.GetBody();
-        Assert::AreEqual(6U, body.size());
+        Assert::AreEqual(size_t{ 6 }, body.size());
 
         // validate textblock
         auto textBlock = std::static_pointer_cast<TextBlock>(body.at(0));
@@ -367,7 +367,7 @@ namespace AdaptiveCardsSharedModelUnitTest
     void ValidateToplevelActions(const AdaptiveCard &everythingBagel)
     {
         auto actions = everythingBagel.GetActions();
-        Assert::AreEqual(2U, actions.size());
+        Assert::AreEqual(size_t{ 2 }, actions.size());
 
         // validate submit action
         {
@@ -385,7 +385,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
             std::vector<RemoteResourceInformation> resourceUris;
             submitAction->GetResourceInformation(resourceUris);
-            Assert::AreEqual(0U, resourceUris.size());
+            Assert::AreEqual(size_t{ 0 }, resourceUris.size());
         }
 
         // validate showcard action
@@ -402,12 +402,12 @@ namespace AdaptiveCardsSharedModelUnitTest
 
             std::vector<RemoteResourceInformation> resourceUris;
             showCardAction->GetResourceInformation(resourceUris);
-            Assert::AreEqual(0U, resourceUris.size());
+            Assert::AreEqual(size_t{ 0 }, resourceUris.size());
 
             // validate the subcard
             {
                 auto subCard = std::static_pointer_cast<AdaptiveCard>(showCardAction->GetCard());
-                Assert::AreEqual(0U, subCard->GetActions().size());
+                Assert::AreEqual(size_t{ 0 }, subCard->GetActions().size());
                 Assert::AreEqual(""s, subCard->GetBackgroundImage());
                 Assert::IsTrue(CardElementType::AdaptiveCard == subCard->GetElementType());
                 Assert::AreEqual(""s, subCard->GetFallbackText());
@@ -444,7 +444,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             // ensure we're warning free
             {
                 auto parseWarnings = parseResult->GetWarnings();
-                Assert::AreEqual(0U, parseWarnings.size());
+                Assert::AreEqual(size_t{ 0 }, parseWarnings.size());
             }
 
             // get the card
