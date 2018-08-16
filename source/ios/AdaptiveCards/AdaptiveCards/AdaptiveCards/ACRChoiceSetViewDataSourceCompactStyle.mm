@@ -12,7 +12,7 @@
 #import "ACRActionDelegate.h"
 
 using namespace AdaptiveCards;
-const CGFloat padding = 0;//16.0f;
+const CGFloat padding = 16.0f;
 const CGFloat accessoryViewWidth = 8.0f;
 const NSInteger pickerViewId = 8321;
 static NSString *pickerCell = @"pickerCell";
@@ -28,6 +28,7 @@ static NSString *pickerCell = @"pickerCell";
     NSString *_defaultString;
     UIPickerView *_pickerView;
     BOOL _showPickerView;
+    CGFloat _pickerViewHeight;
     NSLayoutConstraint *_pickerViewHeightConstraint;
 }
 
@@ -121,11 +122,21 @@ static NSString *pickerCell = @"pickerCell";
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     } else {
         cell = [tableView dequeueReusableCellWithIdentifier:pickerCell];
+        BOOL bUpdateConstraint = NO;
+        UIPickerView *pickerView = nil;
         if(cell == nil) {
             NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
             cell = [bundle loadNibNamed:@"ACRPickerView" owner:_rootView options:nil][0];
+            pickerView = [cell viewWithTag:pickerViewId];
+            _pickerViewHeight = pickerView.frame.size.height;
+        } else {
+            bUpdateConstraint = YES;
+            pickerView = [cell viewWithTag:pickerViewId];
         }
-        UIPickerView *pickerView = [cell viewWithTag:pickerViewId];
+        if(bUpdateConstraint) {
+            [NSLayoutConstraint constraintWithItem:pickerView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:cell attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:pickerView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:cell attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
+        }
         pickerView.dataSource = self;
         pickerView.delegate = self;
         pickerView.hidden = NO;
@@ -154,13 +165,7 @@ static NSString *pickerCell = @"pickerCell";
                                                          context:nil].size;
         return labelStringSize.height + padding;
     } else {
-        CGFloat pickerViewHeight = 0.0f;
-        if(_showPickerView){
-            UIPickerView *pickerView = [cell viewWithTag:pickerViewId];
-            pickerViewHeight = pickerView.frame.size.height;
-        }
-        pickerViewHeight = _showPickerView ? pickerViewHeight : 0.0f;
-        return pickerViewHeight;
+        return _showPickerView ? _pickerViewHeight : 0.0f;
     }
 }
 
@@ -185,7 +190,6 @@ static NSString *pickerCell = @"pickerCell";
                                  [tableView.superview layoutIfNeeded];
                              } completion:^(BOOL finished){
                                  pickerView.hidden = YES;
-
                              }];
         } else {
             _showPickerView = YES;
