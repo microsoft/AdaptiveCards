@@ -126,12 +126,21 @@
     }
     view.clipsToBounds = NO;
     if(imgElem->GetImageStyle() == ImageStyle::Person) {
-        CALayer *imgLayer = view.layer;
-        [imgLayer setCornerRadius:cgsize.width/2];
-        [imgLayer setMasksToBounds:YES];
+        view.isPersonStyle = YES;
+        [view setNeedsLayout];
     }
 
     ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
+    std::string backgroundColor = imgElem->GetBackgroundColor();
+    if(!backgroundColor.empty()) {
+        // backgroundColor is either empty or valid, and color format is #AARRGGBB
+        unsigned long num = std::stoul(imgElem->GetBackgroundColor().substr(1), nullptr, 16);
+        view.backgroundColor = [UIColor colorWithRed:((num & 0x00FF0000)>> 16) / 255.0
+                                               green:((num & 0x0000FF00)>> 8) / 255.0
+                                                blue:((num & 0x000000FF)) / 255.0
+                                               alpha:((num & 0xFF000000)>> 24) / 255.0];
+    }
+
     [wrappingview addSubview:view];
 
     [viewGroup addArrangedSubview:wrappingview];

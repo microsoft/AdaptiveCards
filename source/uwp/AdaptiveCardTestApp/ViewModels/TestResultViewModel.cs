@@ -181,7 +181,7 @@ namespace AdaptiveCardTestApp.ViewModels
             }
         }
 
-        private const byte TOLERANCE = 12;
+        private const byte TOLERANCE = 20;
         private static bool ImageBytesAreTheSame(byte[] oldBytes, byte[] newBytes)
         {
             if (oldBytes.Length != newBytes.Length)
