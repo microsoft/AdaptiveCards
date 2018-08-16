@@ -370,7 +370,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     }
     
     NSString *nSUrlStr = [NSString stringWithCString:urlStr.c_str()
-                                          encoding:[NSString defaultCStringEncoding]];
+                                            encoding:[NSString defaultCStringEncoding]];
     NSURL *url = [NSURL URLWithString:nSUrlStr];
     // if url is nil, try again with adding base url from host config
     if([url.relativePath isEqualToString:nSUrlStr]) {
