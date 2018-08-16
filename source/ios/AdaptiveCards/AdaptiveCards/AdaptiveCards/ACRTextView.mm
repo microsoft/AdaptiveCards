@@ -9,6 +9,8 @@
 #import "ACRTextView.h"
 #import "TextInput.h"
 
+const NSInteger kACRTextView = 0x4143525456;
+
 @implementation ACRTextView
 
 - (instancetype)initWithFrame:(CGRect)frame element:(ACOBaseCardElement *)element
@@ -25,6 +27,7 @@
             self.text = _placeholderText;
             self.textColor = [UIColor lightGrayColor];
         }
+        self.tag = kACRTextView;
         [self.layer setCornerRadius:5.0f];
         [self registerForKeyboardNotifications];
     }
