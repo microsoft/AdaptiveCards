@@ -22,6 +22,11 @@ function isActionAllowed(action: Action, forbiddenActionTypes: Array<string>): b
     return true;
 }
 
+function generateUniqueId(): string {
+    return "__ac-" + Utils.UUID.generate();
+}
+
+
 export function createActionInstance(json: any): Action {
     var actionType = json["type"];
 
@@ -981,8 +986,6 @@ export class TextBlock extends CardElement {
 }
 
 class Label extends TextBlock {
-    private static uniqueIdCounter = 0;
-
     protected getRenderedDomElementType(): string {
         return "label";
     }
@@ -998,14 +1001,6 @@ class Label extends TextBlock {
     }
 
     forElementId: string;
-
-    static generateUniqueInputId(): string {
-        let uniqueId = "__ac-input-id" + Label.uniqueIdCounter;
-
-        Label.uniqueIdCounter++;
-
-        return uniqueId;
-    }
 }
 
 export class Fact {
@@ -1723,7 +1718,7 @@ export class ToggleInput extends Input {
         element.style.alignItems = "center";
 
         this._checkboxInputElement = document.createElement("input");
-        this._checkboxInputElement.id = Label.generateUniqueInputId();
+        this._checkboxInputElement.id = generateUniqueId();
         this._checkboxInputElement.type = "checkbox";
         this._checkboxInputElement.style.display = "inline-block";
         this._checkboxInputElement.style.verticalAlign = "middle";
@@ -1806,16 +1801,6 @@ export class Choice {
 }
 
 export class ChoiceSetInput extends Input {
-    private static uniqueCategoryCounter = 0;
-
-    private static getUniqueCategoryName(): string {
-        let uniqueCwtegoryName = "__ac-category" + ChoiceSetInput.uniqueCategoryCounter;
-
-        ChoiceSetInput.uniqueCategoryCounter ++;
-
-        return uniqueCwtegoryName;
-    }
-
     private _selectElement: HTMLSelectElement;
     private _toggleInputs: Array<HTMLInputElement>;
 
@@ -1857,7 +1842,7 @@ export class ChoiceSetInput extends Input {
             }
             else {
                 // Render as a series of radio buttons
-                let uniqueCategoryName = ChoiceSetInput.getUniqueCategoryName();
+                let uniqueCategoryName = generateUniqueId();
 
                 let element = document.createElement("div");
                 element.className = this.hostConfig.makeCssClassName("ac-input");
@@ -1867,7 +1852,7 @@ export class ChoiceSetInput extends Input {
 
                 for (let i = 0; i < this.choices.length; i++) {
                     let radioInput = document.createElement("input");
-                    radioInput.id = Label.generateUniqueInputId();
+                    radioInput.id = generateUniqueId();
                     radioInput.type = "radio";
                     radioInput.style.margin = "0";
                     radioInput.style.display = "inline-block";
@@ -1922,7 +1907,7 @@ export class ChoiceSetInput extends Input {
 
             for (let i = 0; i < this.choices.length; i++) {
                 let checkboxInput = document.createElement("input");
-                checkboxInput.id = Label.generateUniqueInputId();
+                checkboxInput.id = generateUniqueId();
                 checkboxInput.type = "checkbox";
                 checkboxInput.style.margin = "0";
                 checkboxInput.style.display = "inline-block";
