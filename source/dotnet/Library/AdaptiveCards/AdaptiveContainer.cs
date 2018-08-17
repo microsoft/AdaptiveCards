@@ -58,7 +58,7 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
-        [DefaultValue(typeof(AdaptiveContainerStyle), "0")]
-        public AdaptiveContainerStyle Style { get; set; }
+        [DefaultValue(null)]
+        public AdaptiveContainerStyle? Style { get; set; }
     }
 }
