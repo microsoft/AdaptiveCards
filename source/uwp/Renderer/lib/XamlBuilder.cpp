@@ -882,7 +882,7 @@ AdaptiveNamespaceStart
             // Add text to stack panel
             XamlHelpers::AppendXamlElementToPanel(buttonText.Get(), buttonContentsPanel.Get());
 
-            // Put everything inside the final button
+            // Finally, put the stack panel inside the final button
             ComPtr<IContentControl> buttonContentControl;
             THROW_IF_FAILED(localButton.As(&buttonContentControl));
             THROW_IF_FAILED(buttonContentControl->put_Content(buttonContentsPanel.Get()));
