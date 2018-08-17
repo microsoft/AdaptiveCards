@@ -78,9 +78,14 @@ using namespace AdaptiveCards;
     }
 
     if(![[ACRRegistration getInstance] isElementRendererOverriden:[ACRImageRenderer elemType]]){
-        [rootView loadImage:adaptiveCard->GetBackgroundImage()];
-        [rootView loadImage:[config getHostConfig]->media.playButton];
+        if(!adaptiveCard->GetBackgroundImage().empty()) {
+            [rootView loadImage:adaptiveCard->GetBackgroundImage()];
+        }
+        if(![config getHostConfig]->media.playButton.empty()) {
+            [rootView loadImage:[config getHostConfig]->media.playButton];
+        }
     }
+
     if(!body.empty()) {
         ACRContainerStyle style = ([config getHostConfig]->adaptiveCard.allowCustomStyle)? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
         style = (style == ACRNone)? ACRDefault : style;
@@ -97,14 +102,17 @@ using namespace AdaptiveCards;
         [rootView waitForAsyncTasksToFinish];
 
         UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
-        if( adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center || adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom ){
+        if(adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center ||
+           adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom){
             leadingBlankSpace = [verticalView addPaddingSpace];
         }
 
         [ACRRenderer render:verticalView rootView:rootView inputs:inputs withCardElems:body andHostConfig:config];
 
         // Dont add the trailing space if the vertical content alignment is top/default
-        if( adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Top && !(verticalView.hasStretchableView))){
+        if((adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center) ||
+           (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Top &&
+            !(verticalView.hasStretchableView))){
             trailingBlankSpace = [verticalView addPaddingSpace];
         }
 

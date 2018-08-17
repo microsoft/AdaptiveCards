@@ -25,10 +25,12 @@
 		30A3886420D326BE00AAEE59 /* VerticalContentAlignment.json in Resources */ = {isa = PBXBuildFile; fileRef = 30A3886120D326BE00AAEE59 /* VerticalContentAlignment.json */; };
 		30A3886720D32FF700AAEE59 /* VerticalContentAlignment_ForcedColumn.json in Resources */ = {isa = PBXBuildFile; fileRef = 30A3886520D32FF700AAEE59 /* VerticalContentAlignment_ForcedColumn.json */; };
 		30A3886820D32FF700AAEE59 /* VerticalContentAlignment_ForcedContainer.json in Resources */ = {isa = PBXBuildFile; fileRef = 30A3886620D32FF700AAEE59 /* VerticalContentAlignment_ForcedContainer.json */; };
+		6B14FC5D2113BC2200A11CC5 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B268FE320CEF19400D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B268FE520CEF89100D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B2D8605211143BD008DD972 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2D8604211143BD008DD972 /* AdaptiveCards.framework */; };
 		6B5D23F3212393480010EB07 /* Image.BackgroundColor.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B5D23F2212393480010EB07 /* Image.BackgroundColor.json */; };
+		6B5D23FB2124ADAC0010EB07 /* Image.ImageBaseUrl.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B5D23FA2124ADAB0010EB07 /* Image.ImageBaseUrl.json */; };
 		6B7B1A9B20C21CA900260731 /* SportingEvent.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B7B1A9920C21CA800260731 /* SportingEvent.json */; };
 		6B9AB30620D9857B005C8E15 /* Image.Explicit.Size.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B9AB30520D9857A005C8E15 /* Image.Explicit.Size.json */; };
 		6B9AB30C20DC4FB3005C8E15 /* IconsInSomeActions.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B9AB30B20DC4FB3005C8E15 /* IconsInSomeActions.json */; };
@@ -157,6 +159,7 @@
 		30A3886620D32FF700AAEE59 /* VerticalContentAlignment_ForcedContainer.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = VerticalContentAlignment_ForcedContainer.json; path = ../../../../samples/Tests/VerticalContentAlignment_ForcedContainer.json; sourceTree = "<group>"; };
 		6B2D8604211143BD008DD972 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B5D23F2212393480010EB07 /* Image.BackgroundColor.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.BackgroundColor.json; path = ../../../../samples/Tests/Image.BackgroundColor.json; sourceTree = "<group>"; };
+		6B5D23FA2124ADAB0010EB07 /* Image.ImageBaseUrl.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.ImageBaseUrl.json; path = ../../../../samples/v1.0/Elements/Image.ImageBaseUrl.json; sourceTree = "<group>"; };
 		6B7B1A9920C21CA800260731 /* SportingEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = SportingEvent.json; path = ../../../../samples/v1.0/Scenarios/SportingEvent.json; sourceTree = "<group>"; };
 		6B9AB30520D9857A005C8E15 /* Image.Explicit.Size.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.Explicit.Size.json; path = ../../../../samples/Tests/Image.Explicit.Size.json; sourceTree = "<group>"; };
 		6B9AB30B20DC4FB3005C8E15 /* IconsInSomeActions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = IconsInSomeActions.json; path = ../../../../samples/Tests/IconsInSomeActions.json; sourceTree = "<group>"; };
@@ -378,6 +381,7 @@
 		F4D33E341F045B6E00941E44 /* Jsons */ = {
 			isa = PBXGroup;
 			children = (
+				6B5D23FA2124ADAB0010EB07 /* Image.ImageBaseUrl.json */,
 				6B5D23F2212393480010EB07 /* Image.BackgroundColor.json */,
 				6BED2AF821001BC9006AC43D /* Media.json */,
 				30A3886520D32FF700AAEE59 /* VerticalContentAlignment_ForcedColumn.json */,
@@ -603,6 +607,7 @@
 				30A3886220D326BE00AAEE59 /* VerticalContentAlignment_Column.json in Resources */,
 				F4933CE21F79852C00F6EBFD /* Input.Toggle.json in Resources */,
 				6B268FE320CEF19400D99C1B /* (null) in Resources */,
+				6B14FC5D2113BC2200A11CC5 /* (null) in Resources */,
 				F4933CFC1F79853B00F6EBFD /* ActivityUpdate.json in Resources */,
 				F4933CD51F79852C00F6EBFD /* Image.SelectAction.json in Resources */,
 				F4071C831FD63D5400AF4FEA /* Solitaire.json in Resources */,
@@ -636,6 +641,7 @@
 				F4933CD61F79852C00F6EBFD /* Image.Size.json in Resources */,
 				F4D402161F7DB0BF00D0356B /* sample.json in Resources */,
 				F423C0801EE1FB6100905679 /* Main.storyboard in Resources */,
+				6B5D23FB2124ADAC0010EB07 /* Image.ImageBaseUrl.json in Resources */,
 				F4933CD71F79852C00F6EBFD /* Image.Spacing.json in Resources */,
 				30860BC320C9B5C9009F9D99 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json in Resources */,
 				30A3886820D32FF700AAEE59 /* VerticalContentAlignment_ForcedContainer.json in Resources */,
