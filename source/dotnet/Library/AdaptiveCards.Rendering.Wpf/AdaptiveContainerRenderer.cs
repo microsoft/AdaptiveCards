@@ -20,6 +20,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 {
                     containerStyle = context.Config.ContainerStyles.Emphasis;
                 }
+
                 uiContainer.SetBackgroundColor(containerStyle.BackgroundColor, context);
             }
 
