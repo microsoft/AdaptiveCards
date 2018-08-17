@@ -365,6 +365,10 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 
 - (void)loadImage:(std::string const &)urlStr
 {
+    if(urlStr.empty()){
+        return;
+    }
+    
     NSString *nSUrlStr = [NSString stringWithCString:urlStr.c_str()
                                           encoding:[NSString defaultCStringEncoding]];
     NSURL *url = [NSURL URLWithString:nSUrlStr];

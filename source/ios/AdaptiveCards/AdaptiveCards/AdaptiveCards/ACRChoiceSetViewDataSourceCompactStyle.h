@@ -20,6 +20,4 @@
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet
                               rootView:(ACRView *)rootView;
-
-- (void)handleUIBarButtonSystemItemDoneEvent;
 @end

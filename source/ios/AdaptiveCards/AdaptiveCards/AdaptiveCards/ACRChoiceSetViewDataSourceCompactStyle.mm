@@ -19,17 +19,16 @@ static NSString *pickerCell = @"pickerCell";
 @implementation ACRChoiceSetViewDataSourceCompactStyle
 {
     std::shared_ptr<ChoiceSetInput> _choiceSetInput;
-    NSIndexPath *_indexPath;
-    UITableView *_tableView;
-    UITableViewController *_tableViewController;
     NSObject<UITableViewDelegate> *_delegate;
     NSObject<UITableViewDataSource, ACRIBaseInputHandler> *_dataSource;
     NSArray<NSString *> *_titles;
+    NSMutableDictionary<NSString *, NSString *> *_titlesMap;
     NSString *_defaultString;
+    NSString *_userSelectedTitle;
+    NSInteger _userSelectedRow;
     UIPickerView *_pickerView;
     BOOL _showPickerView;
     CGFloat _pickerViewHeight;
-    NSLayoutConstraint *_pickerViewHeightConstraint;
 }
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet
@@ -43,47 +42,35 @@ static NSString *pickerCell = @"pickerCell";
         _isMultiChoicesAllowed = choiceSet->GetIsMultiSelect();
         _choiceSetInput = choiceSet;
         _rootView = rootView;
-        _dataSource = [[ACRChoiceSetViewDataSource alloc] initWithInputChoiceSet:_choiceSetInput];
         _delegate   = (NSObject<UITableViewDelegate> *)_dataSource;
-        _tableView = nil;
-        _indexPath = nil;
-        _tableViewController = nil;
         _showPickerView = NO;
 
         NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
         [bundle loadNibNamed:@"ACRPickerView" owner:rootView options:nil];
+        _titlesMap = [[NSMutableDictionary alloc] init];
         NSMutableDictionary *valuesMap = [[NSMutableDictionary alloc] init];
+
+        NSString *defaultValue = [NSString stringWithCString:_choiceSetInput->GetValue().c_str()
+                                                     encoding:NSUTF8StringEncoding];
         NSMutableArray *mutableArrayStrings = [[NSMutableArray alloc] init];
+        NSInteger index = 0;
         for(auto choice : _choiceSetInput->GetChoices()){
             NSString *title = [NSString stringWithCString:choice->GetTitle().c_str() encoding:NSUTF8StringEncoding];
             NSString *value = [NSString stringWithCString:choice->GetValue().c_str() encoding:NSUTF8StringEncoding];
+            _titlesMap[title] = value;
+            if(_userSelectedRow != 0 && [defaultValue isEqualToString:value]) {
+                _userSelectedRow = index;
+            }
             valuesMap[value] = title;
             [mutableArrayStrings addObject:title];
+            ++index;
         }
 
         if([mutableArrayStrings count]){
             _titles = [NSArray arrayWithArray:mutableArrayStrings];
         }
 
-        NSString *defaultValues = [NSString stringWithCString:_choiceSetInput->GetValue().c_str()
-                                                     encoding:NSUTF8StringEncoding];
-        if([defaultValues length]){
-            NSArray *defaultValuesArray = [defaultValues componentsSeparatedByCharactersInSet:
-                                   [NSCharacterSet characterSetWithCharactersInString:@","]];
-            NSMutableArray<NSString *> *titleArray = [[NSMutableArray alloc] init];
-            for(id defaultValue in defaultValuesArray) {
-                [titleArray addObject:valuesMap[defaultValue]];
-            }
-            _defaultString = [titleArray componentsJoinedByString:@", "];
-        } else {
-            NSString *firstChoice = nil;
-            if(!_choiceSetInput->GetChoices().empty()){
-                firstChoice = [NSString stringWithCString:(_choiceSetInput->GetChoices()[0])->GetTitle().c_str() encoding:NSUTF8StringEncoding];
-                _defaultString = firstChoice;
-            } else {
-                _defaultString = @"";
-            }
-        }
+        _userSelectedTitle = valuesMap[defaultValue];
     }
     return self;
 }
@@ -106,7 +93,7 @@ static NSString *pickerCell = @"pickerCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = nil;
-    
+
     if(indexPath.row == 0) {
         static NSString *identifier = @"cellForCompactMode";
         cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -114,7 +101,11 @@ static NSString *pickerCell = @"pickerCell";
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                           reuseIdentifier:identifier];
         }
-        cell.textLabel.text = ([_defaultString length])? _defaultString : @"";
+        if([_userSelectedTitle length] != 0) {
+            cell.textLabel.text = _userSelectedTitle;
+        } else {
+            cell.textLabel.text = ([_defaultString length])? _defaultString : @"";
+        }
         cell.textLabel.numberOfLines = 0;
         cell.textLabel.adjustsFontSizeToFitWidth = NO;
         cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -122,7 +113,6 @@ static NSString *pickerCell = @"pickerCell";
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     } else {
         cell = [tableView dequeueReusableCellWithIdentifier:pickerCell];
-        BOOL bUpdateConstraint = NO;
         UIPickerView *pickerView = nil;
         if(cell == nil) {
             NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
@@ -130,18 +120,16 @@ static NSString *pickerCell = @"pickerCell";
             pickerView = [cell viewWithTag:pickerViewId];
             _pickerViewHeight = pickerView.frame.size.height;
         } else {
-            bUpdateConstraint = YES;
             pickerView = [cell viewWithTag:pickerViewId];
-        }
-        if(bUpdateConstraint) {
-            [NSLayoutConstraint constraintWithItem:pickerView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:cell attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
-            [NSLayoutConstraint constraintWithItem:pickerView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:cell attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
         }
         pickerView.dataSource = self;
         pickerView.delegate = self;
         pickerView.hidden = NO;
+        [pickerView selectRow:_userSelectedRow
+                  inComponent:0
+                     animated:NO];
     }
-    cell.backgroundColor = UIColor.groupTableViewBackgroundColor;    
+    cell.backgroundColor = UIColor.groupTableViewBackgroundColor;
     return cell;
 }
 
@@ -179,8 +167,8 @@ static NSString *pickerCell = @"pickerCell";
         UIPickerView *pickerView = [cell viewWithTag:pickerViewId];
         if(_showPickerView == YES){
             _showPickerView = NO;
-            [tableView beginUpdates];
-            [tableView endUpdates];
+            //[tableView beginUpdates];
+            //[tableView endUpdates];
             pickerView.alpha = 0.0f;
             [UIView animateWithDuration:0.25
                              animations:^{
@@ -188,38 +176,28 @@ static NSString *pickerCell = @"pickerCell";
                                  [tableView invalidateIntrinsicContentSize];
                                  [tableView.superview setNeedsLayout];
                                  [tableView.superview layoutIfNeeded];
-                             } completion:^(BOOL finished){
+                             } completion:^(BOOL finished){;
+                                 [tableView reloadData];
                                  pickerView.hidden = YES;
                              }];
         } else {
             _showPickerView = YES;
+            pickerView.alpha = 0.0f;
             [tableView beginUpdates];
             [tableView endUpdates];
             [UIView animateWithDuration:0.25
                              animations:^{
-                                 pickerView.alpha = 0.0f;
                                  [tableView invalidateIntrinsicContentSize];
                                  [tableView setNeedsLayout];
                                  [tableView.superview layoutIfNeeded];
                              } completion:^(BOOL finished){
+                                 [tableView reloadData];
                                  pickerView.hidden = NO;
+
                              }];
         }
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
-- (void)handleUIBarButtonSystemItemDoneEvent
-{
-    [_tableViewController dismissViewControllerAnimated:YES completion:nil];
-    if(_indexPath && _tableView)
-    {
-        [_tableView cellForRowAtIndexPath:_indexPath].selected = NO;
-        NSString *choice = [(ACRChoiceSetViewDataSource *)_dataSource getTitlesOfChoices];
-        [_tableView cellForRowAtIndexPath:_indexPath].textLabel.text = (choice)? choice : @"";
-        _indexPath = nil;
-        _tableView = nil;
-    }
 }
 
 - (BOOL)validate:(NSError **)error
@@ -230,20 +208,15 @@ static NSString *pickerCell = @"pickerCell";
 
 - (void)getInput:(NSMutableDictionary *)dictionary
 {
-    // gets inputs from datasource of the table view
-    if(!_tableViewController) {
-        [(ACRChoiceSetViewDataSource *)_dataSource getDefaultInput:dictionary];
-    } else {
-        [_dataSource getInput:dictionary];
-    }
+    dictionary[self.id] = _titlesMap[_userSelectedTitle];
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow: (NSInteger)row inComponent:(NSInteger)component
 {
-    // Handle the selection
-    //selectedCategory = [NSString stringWithFormat:@"%@",[dataArray objectAtIndex:row]];
+    _userSelectedTitle = [_titles objectAtIndex:row];
+    _userSelectedRow = row;
 }
-// tell the picker how many rows are available for a given component
+
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
     return _choiceSetInput->GetChoices().size();
@@ -254,16 +227,8 @@ static NSString *pickerCell = @"pickerCell";
     return 1;
 }
 
-// tell the picker the title for a given component
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-    NSString *title = [NSString stringWithCString:_choiceSetInput->GetChoices()[row]->GetTitle().c_str() encoding:NSUTF8StringEncoding];
-    return title;
+    return [_titles objectAtIndex:row];
 }
-
-//// tell the picker the width of each row for a given component
-//- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
-//    return _maxTitleLength;
-//}
-
 @end

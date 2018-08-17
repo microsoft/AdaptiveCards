@@ -28,8 +28,6 @@
 		6B14FC65211E5AD000A11CC5 /* ACORemoteResourceInformationPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B14FC62211E5AD000A11CC5 /* ACORemoteResourceInformationPrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B14FC66211E5AD000A11CC5 /* ACORemoteResourceInformation.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B14FC63211E5AD000A11CC5 /* ACORemoteResourceInformation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B14FC67211E5AD000A11CC5 /* ACORemoteResourceInformation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B14FC64211E5AD000A11CC5 /* ACORemoteResourceInformation.mm */; };
-		6B14FC6D2122267C00A11CC5 /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B14FC6B2122267C00A11CC5 /* checked.png */; };
-		6B14FC6E2122267C00A11CC5 /* unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B14FC6C2122267C00A11CC5 /* unchecked.png */; };
 		6B268FE720CF19E200D99C1B /* RemoteResourceInformation.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B268FE620CF19E100D99C1B /* RemoteResourceInformation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B3787B720CA00D300015401 /* ACRUILabel.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F44B6A203FA8EF00A2F24C /* ACRUILabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B3787BA20CB3E0E00015401 /* ACRContentHoldingUIScrollView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B3787B820CB3E0E00015401 /* ACRContentHoldingUIScrollView.mm */; };
