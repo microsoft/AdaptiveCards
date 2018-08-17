@@ -25,6 +25,7 @@
 		30A3886420D326BE00AAEE59 /* VerticalContentAlignment.json in Resources */ = {isa = PBXBuildFile; fileRef = 30A3886120D326BE00AAEE59 /* VerticalContentAlignment.json */; };
 		30A3886720D32FF700AAEE59 /* VerticalContentAlignment_ForcedColumn.json in Resources */ = {isa = PBXBuildFile; fileRef = 30A3886520D32FF700AAEE59 /* VerticalContentAlignment_ForcedColumn.json */; };
 		30A3886820D32FF700AAEE59 /* VerticalContentAlignment_ForcedContainer.json in Resources */ = {isa = PBXBuildFile; fileRef = 30A3886620D32FF700AAEE59 /* VerticalContentAlignment_ForcedContainer.json */; };
+		6B14FC5D2113BC2200A11CC5 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B268FE320CEF19400D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B268FE520CEF89100D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B2D8605211143BD008DD972 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2D8604211143BD008DD972 /* AdaptiveCards.framework */; };
@@ -606,6 +607,7 @@
 				30A3886220D326BE00AAEE59 /* VerticalContentAlignment_Column.json in Resources */,
 				F4933CE21F79852C00F6EBFD /* Input.Toggle.json in Resources */,
 				6B268FE320CEF19400D99C1B /* (null) in Resources */,
+				6B14FC5D2113BC2200A11CC5 /* (null) in Resources */,
 				F4933CFC1F79853B00F6EBFD /* ActivityUpdate.json in Resources */,
 				F4933CD51F79852C00F6EBFD /* Image.SelectAction.json in Resources */,
 				F4071C831FD63D5400AF4FEA /* Solitaire.json in Resources */,
@@ -640,6 +642,7 @@
 				F4933CD61F79852C00F6EBFD /* Image.Size.json in Resources */,
 				F4D402161F7DB0BF00D0356B /* sample.json in Resources */,
 				F423C0801EE1FB6100905679 /* Main.storyboard in Resources */,
+				6B5D23FB2124ADAC0010EB07 /* Image.ImageBaseUrl.json in Resources */,
 				F4933CD71F79852C00F6EBFD /* Image.Spacing.json in Resources */,
 				30860BC320C9B5C9009F9D99 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json in Resources */,
 				30A3886820D32FF700AAEE59 /* VerticalContentAlignment_ForcedContainer.json in Resources */,

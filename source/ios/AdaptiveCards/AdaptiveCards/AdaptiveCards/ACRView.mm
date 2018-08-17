@@ -79,11 +79,11 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 - (UIView *)render
 {
     NSMutableArray *inputs = [[NSMutableArray alloc] init];
-    
+
     if(self.frame.size.width){
         [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.frame.size.width].active = YES;
     }
-    
+
     UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card] inputs:inputs context:self containingView:self hostconfig:_hostConfig];
 
     ContainerStyle style = ([_hostConfig getHostConfig]->adaptiveCard.allowCustomStyle)? [_adaptiveCard card]->GetStyle(): ContainerStyle::Default;
@@ -104,7 +104,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                          blue:((num & 0x000000FF)) / 255.0
                         alpha:((num & 0xFF000000) >> 24) / 255.0];
     }
-    
+
     NSString *key = [NSString stringWithCString:[_adaptiveCard card]->GetBackgroundImage().c_str() encoding:[NSString defaultCStringEncoding]];
     if([key length]){
         UIView *imgView = nil;
@@ -228,8 +228,8 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 
                 if(!poster.empty()){
                     [self loadImage:poster];
-                }                
-                
+                }
+
                 break;
             }
             // continue on search
@@ -368,10 +368,15 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     if(urlStr.empty()){
         return;
     }
-    
+
     NSString *nSUrlStr = [NSString stringWithCString:urlStr.c_str()
-                                          encoding:[NSString defaultCStringEncoding]];
+                                            encoding:[NSString defaultCStringEncoding]];
     NSURL *url = [NSURL URLWithString:nSUrlStr];
+    // if url is relative, try again with adding base url from host config
+    if([url.relativePath isEqualToString:nSUrlStr]) {
+        url = [NSURL URLWithString:nSUrlStr relativeToURL:_hostConfig.baseURL];
+    }
+
     NSObject<ACOIResourceResolver> *imageResourceResolver = [_hostConfig getResourceResolverForScheme:[url scheme]];
     ImageLoadBlock imageloadblock = nil;
     if(!imageResourceResolver || ![imageResourceResolver respondsToSelector:@selector(resolveImageResource:)]) {

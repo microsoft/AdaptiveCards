@@ -156,6 +156,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="EverythingBagel.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -163,6 +164,7 @@
     <ClCompile Include="AdaptiveCardParseExceptionTest.cpp" />
     <ClCompile Include="AdditionalPropertiesTest.cpp" />
     <ClCompile Include="CustomParsingForIOSTest.cpp" />
+    <ClCompile Include="EverythingBagel.cpp" />
     <ClCompile Include="ExplicitDimensionTest.cpp" />
     <ClCompile Include="ImageBackgroundColorTest.cpp" />
     <ClCompile Include="ParserRegistrationTest.cpp" />
@@ -182,6 +184,12 @@
     <ProjectReference Include="..\AdaptiveCardsSharedModel\AdaptiveCardsSharedModel.vcxproj">
       <Project>{430407c5-059c-48e8-9260-62a12d30f81c}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="EverythingBagel.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>EverythingBagel.json</Link>
+    </Content>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

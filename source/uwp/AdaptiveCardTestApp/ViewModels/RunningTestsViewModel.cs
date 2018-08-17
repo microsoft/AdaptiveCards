@@ -339,25 +339,32 @@ namespace AdaptiveCardTestApp.ViewModels
 
         private static async Task WaitOnAllImagesAsync(UIElement el)
         {
-            int countRemaining = 0;
-            int loops = 0;
+            int imageCountRemaining = 0;
+            int totalLoops = 0;
             const int maxLoops = 500;
-
+            int loopsUnchanged = 0;
 
             ExceptionRoutedEventHandler failedHandler = new ExceptionRoutedEventHandler(delegate
             {
-                countRemaining--;
+                imageCountRemaining--;
             });
             RoutedEventHandler openedHandler = new RoutedEventHandler(delegate
             {
-                countRemaining--;
+                imageCountRemaining--;
             });
+
+            EventHandler<object> layoutHandler = new EventHandler<object>(delegate
+            {
+                loopsUnchanged = 0;
+            });
+
+            (el as FrameworkElement).LayoutUpdated += layoutHandler;
 
             foreach (var shape in GetAllDescendants(el).OfType<Shape>())
             {
                 if (shape.Fill is ImageBrush)
                 {
-                    countRemaining++;
+                    imageCountRemaining++;
                     (shape.Fill as ImageBrush).ImageFailed += failedHandler;
                     (shape.Fill as ImageBrush).ImageOpened += openedHandler;
                 }
@@ -365,16 +372,20 @@ namespace AdaptiveCardTestApp.ViewModels
 
             foreach (var img in GetAllDescendants(el).OfType<Image>())
             {
-                countRemaining++;
+                imageCountRemaining++;
                 img.ImageFailed += failedHandler;
                 img.ImageOpened += openedHandler;
             }
 
-            while (countRemaining > 0 && loops < maxLoops)
+            while (((imageCountRemaining > 0) || (loopsUnchanged < 2)) && (totalLoops < maxLoops))
             {
+                totalLoops++;
+                loopsUnchanged++;
+
                 await Task.Delay(10);
-                loops++;
             }
+
+            (el as FrameworkElement).LayoutUpdated -= layoutHandler;
         }
 
         private static IEnumerable<UIElement> GetAllDescendants(UIElement element)
