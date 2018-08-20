@@ -841,7 +841,7 @@ AdaptiveNamespaceStart
             {
                 THROW_IF_FAILED(buttonContentsStackPanel->put_Orientation(Orientation::Orientation_Vertical));
 
-                // Set height to iconSize (aspect ratio is automatically maintained)
+                // Set icon height to iconSize (aspect ratio is automatically maintained)
                 THROW_IF_FAILED(buttonIconAsFrameworkElement->put_Height(iconSize));
             }
             else
