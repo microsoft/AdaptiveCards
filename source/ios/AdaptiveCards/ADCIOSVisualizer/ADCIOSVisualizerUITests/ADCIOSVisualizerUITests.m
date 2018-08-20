@@ -7,7 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
-
+#define ACRUNITTEST
 @interface ADCIOSVisualizerUITests : XCTestCase
 
 @end
