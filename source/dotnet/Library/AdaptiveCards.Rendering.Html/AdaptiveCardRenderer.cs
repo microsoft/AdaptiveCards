@@ -763,12 +763,25 @@ namespace AdaptiveCards.Rendering.Html
                         .AddClass("ac-multichoiceInput")
                         .Style("width", "100%");
 
+                    var defaultValues = ParseChoiceSetInputDefaultValues(adaptiveChoiceSetInput.Value);
+
+                    // If more than one option is specified, default to not select any option
+                    if (defaultValues.Count > 1)
+                    {
+                        var option = new HtmlTag("option") { Text = "" }
+                            .Attr("disabled", string.Empty)
+                            .Attr("hidden", string.Empty)
+                            .Attr("selected", string.Empty);
+                        uiSelectElement.Append(option);
+                    }
+
                     foreach (var choice in adaptiveChoiceSetInput.Choices)
                     {
                         var option = new HtmlTag("option") { Text = choice.Title }
                             .Attr("value", choice.Value);
 
-                        if (choice.Value == adaptiveChoiceSetInput.Value)
+                        // Select an option only when one option is specified
+                        if (defaultValues.Contains(choice.Value) && defaultValues.Count == 1)
                         {
                             option.Attr("selected", string.Empty);
                         }
@@ -790,8 +803,7 @@ namespace AdaptiveCards.Rendering.Html
 
         private static HtmlTag ChoiceSetRenderInternal(AdaptiveChoiceSetInput adaptiveChoiceSetInput, AdaptiveRenderContext context, string htmlInputType)
         {
-            // the default values are specified by a comma separated string input.value
-            var defaultValues = adaptiveChoiceSetInput.Value?.Split(',').Select(p => p.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList() ?? new List<string>();
+            var defaultValues = ParseChoiceSetInputDefaultValues(adaptiveChoiceSetInput.Value);
 
             // render as a series of radio buttons
             var uiElement = new DivTag()
@@ -811,8 +823,9 @@ namespace AdaptiveCards.Rendering.Html
                     .Style("display", "inline-block")
                     .Style("vertical-align", "middle");
 
-
-                if (defaultValues.Contains(choice.Value))
+                // Only select an option if isMultiSelect is true (checkboxes)
+                // or there is only one specified value
+                if (defaultValues.Contains(choice.Value) && (adaptiveChoiceSetInput.IsMultiSelect || defaultValues.Count == 1))
                 {
                     uiInput.Attr("checked", string.Empty);
                 }
@@ -828,6 +841,12 @@ namespace AdaptiveCards.Rendering.Html
 
             return uiElement;
 
+        }
+
+        // Default values are specified by a comma separated string
+        private static List<string> ParseChoiceSetInputDefaultValues(string value)
+        {
+            return value?.Split(',').Select(p => p.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList() ?? new List<string>();
         }
 
         private static HtmlTag CreateLabel(string forId, string innerText, AdaptiveRenderContext context)
