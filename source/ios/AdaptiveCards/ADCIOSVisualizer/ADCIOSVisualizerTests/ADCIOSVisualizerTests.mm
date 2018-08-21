@@ -79,6 +79,17 @@
     }
 }
 
+- (void)testACRTextView {
+    NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"Feedback" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
+    ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
+    if(cardParseResult.isValid) {
+        ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card config:_defaultHostConfig widthConstraint:335];
+        ACRTextView *acrTextView = (ACRTextView *)[renderResult.view viewWithTag:kACRTextView];
+        XCTAssertNotNil(acrTextView);
+        XCTAssertTrue([acrTextView.text length] == 0);
+    }
+}
+
 - (void)testPerformanceExample {
     // This is an example of a performance test case.
     [self measureBlock:^{
