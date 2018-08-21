@@ -1,0 +1,160 @@
+package com.example.mobilechatapp;
+
+import android.app.ListActivity;
+import android.database.DataSetObserver;
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.adaptivecards.objectmodel.AdaptiveCard;
+import io.adaptivecards.objectmodel.BaseActionElement;
+import io.adaptivecards.objectmodel.ElementParserRegistration;
+import io.adaptivecards.objectmodel.HostConfig;
+import io.adaptivecards.objectmodel.ParseResult;
+import io.adaptivecards.renderer.AdaptiveCardRenderer;
+import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
+
+public class MainActivity extends AppCompatActivity implements ICardActionHandler, RecyclerViewAdapter.ItemClickListener
+{
+
+    // Used to load the 'adaptivecards-native-lib' library on application startup.
+    static {
+        System.loadLibrary("adaptivecards-native-lib");
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        Log.d("ASDF", "Not clicking, matey!");
+    }
+
+    private class ButtonListener implements View.OnClickListener
+    {
+
+        @Override
+        public void onClick(View view)
+        {
+            try
+            {
+                if (view == m_sendButton)
+                {
+                    String requestedCards = m_cardRequestEdit.getText().toString();
+                    List<Card> cards = CardRetriever.getInstance().searchCards(requestedCards);
+
+                    for (Card card : cards)
+                    {
+                        RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(MainActivity.this, getSupportFragmentManager(), card.getParsedCard().GetAdaptiveCard(), MainActivity.this, m_hostConfig);
+                        m_adapter.addItem(card.getFileName(), renderedCard.getView());
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private class ProgressBarUpdateListener implements IFilesReadListener
+    {
+        @Override
+        public void updateFilesCompletion(int readFiles, int totalFiles)
+        {
+            m_progressBar.setMax(totalFiles);
+            m_progressBar.setProgress(readFiles);
+
+            if(readFiles == totalFiles)
+            {
+                m_progressBarLayout.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        View contentLayout = findViewById(R.id.contentLayout);
+
+        m_sendButton = contentLayout.findViewById(R.id.sendButton);
+        m_sendButton.setOnClickListener(new ButtonListener());
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, s_keywords);
+        m_cardRequestEdit = contentLayout.findViewById(R.id.cardNumberEditText);
+        m_cardRequestEdit.setAdapter(adapter);
+
+        m_recyclerView = contentLayout.findViewById(R.id.cardsView);
+        m_recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        m_adapter = new RecyclerViewAdapter(this);
+        m_recyclerView.setAdapter(m_adapter);
+
+        m_progressBar = contentLayout.findViewById(R.id.readCardsProgressBar);
+        m_progressBarLayout = contentLayout.findViewById(R.id.loadingBarLayout);
+
+        m_hostConfig = new HostConfig();
+        m_elementParserRegistration = new ElementParserRegistration();
+        CardRetriever.getInstance().setFilesReadListener(new ProgressBarUpdateListener());
+        CardRetriever.getInstance().populateCardJsons(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onAction(BaseActionElement actionElement, RenderedAdaptiveCard renderedAdaptiveCard) {
+    }
+
+    private ImageButton m_sendButton;
+    private AutoCompleteTextView m_cardRequestEdit;
+    // private ListView m_cardsView;
+    private RecyclerViewAdapter m_adapter;
+    private RecyclerView m_recyclerView;
+    private LinearLayout m_progressBarLayout;
+    private ProgressBar m_progressBar;
+    private ElementParserRegistration m_elementParserRegistration;
+    private HostConfig m_hostConfig;
+
+    private static final String[] s_keywords = {"all", "random"};
+}
