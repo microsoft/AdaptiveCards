@@ -138,5 +138,9 @@ namespace AdaptiveCards.Rendering
         {
             Visit(action.Card);
         }
+
+        public virtual void Visit(AdaptiveMedia media)
+        {
+        }
     }
 }

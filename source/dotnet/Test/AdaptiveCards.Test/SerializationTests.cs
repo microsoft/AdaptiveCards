@@ -375,5 +375,34 @@ namespace AdaptiveCards.Test
             var containerNonStyle = card.Body[2] as AdaptiveContainer;
             Assert.AreEqual(null, containerNonStyle.Style);
         }
+
+        [TestMethod]
+        public void Media()
+        {
+            var json = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.0"",
+  ""body"": [
+	{
+	    ""type"": ""Media"",
+        ""poster"": ""http://adaptivecards.io/content/cats/1.png"",
+	    ""sources"": [
+		    {
+			    ""mimeType"": ""video/mp4"",
+			    ""url"": ""https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4""
+            }
+	    ]
+	}
+  ]
+}";
+            var card = AdaptiveCard.FromJson(json).Card;
+
+            var mediaElement = card.Body[0] as AdaptiveMedia;
+            Assert.AreEqual("http://adaptivecards.io/content/cats/1.png", mediaElement.Poster);
+
+            var source = mediaElement.Sources[0] as AdaptiveMediaSource;
+            Assert.AreEqual("video/mp4", source.MimeType);
+            Assert.AreEqual("https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4", source.Url);
+        }
     }
 }
