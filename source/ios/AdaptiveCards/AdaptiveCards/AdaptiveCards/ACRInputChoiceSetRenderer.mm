@@ -39,6 +39,11 @@
     ACRInputTableView *choiceSetView = [[ACRInputTableView alloc] initWithSuperview:viewGroup];
     NSObject<UITableViewDelegate, UITableViewDataSource> *dataSource = nil;
 
+    [choiceSetView registerClass:[ACRChoiceSetCell class] forCellReuseIdentifier:checkedCheckboxReuseID];
+    [choiceSetView registerClass:[ACRChoiceSetCell class] forCellReuseIdentifier:uncheckedCheckboxReuseID];
+    [choiceSetView registerClass:[ACRChoiceSetCell class] forCellReuseIdentifier:checkedRadioButtonReuseID];
+    [choiceSetView registerClass:[ACRChoiceSetCell class] forCellReuseIdentifier:uncheckedRadioButtonReuseID];
+
     if(choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact && choiceSet->GetIsMultiSelect() == false) {
         dataSource = [[ACRChoiceSetViewDataSourceCompactStyle alloc] initWithInputChoiceSet:choiceSet rootView:rootView];
         [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
@@ -46,11 +51,11 @@
         dataSource = [[ACRChoiceSetViewDataSource alloc] initWithInputChoiceSet:choiceSet];
         [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     }
-    
+
     choiceSetView.delegate = dataSource;
     choiceSetView.dataSource = dataSource;
-    [inputs addObject:dataSource];    
-    
+    [inputs addObject:dataSource];
+
     if(elem->GetHeight() == HeightType::Stretch){
         ACRColumnView *textInputContainer = [[ACRColumnView alloc] init];
         [textInputContainer addArrangedSubview:choiceSetView];
@@ -72,7 +77,7 @@
                                  attribute:NSLayoutAttributeLeading
                                 multiplier:1.0
                                   constant:0].active = YES;
-    
+
     [NSLayoutConstraint constraintWithItem:choiceSetView
                                  attribute:NSLayoutAttributeTrailing
                                  relatedBy:NSLayoutRelationLessThanOrEqual
