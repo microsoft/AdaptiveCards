@@ -56,9 +56,9 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore, NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
-        [XmlAttribute]
+        [XmlElement]
 #endif
-        [DefaultValue(typeof(AdaptiveContainerStyle), "0")]
-        public AdaptiveContainerStyle Style { get; set; }
+        [DefaultValue(null)]
+        public AdaptiveContainerStyle? Style { get; set; }
     }
 }

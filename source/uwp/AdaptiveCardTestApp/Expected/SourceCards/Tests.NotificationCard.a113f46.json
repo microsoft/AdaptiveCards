@@ -87,21 +87,18 @@
 		{
 			"type": "Action.Submit",
 			"title": "Snooze",
-            "iconUrl": "https://cdn1.iconfinder.com/data/icons/office-22/48/alarm-clock-512.png"
+            "iconUrl": "https://cdn1.iconfinder.com/data/icons/office-22/48/alarm-clock-512.png",
+			"data": {
+				"x": "snooze"
+			}
 		},
 		{
 			"type": "Action.Submit",
 			"title": "Dismiss",
-            "iconUrl": "https://cdn2.iconfinder.com/data/icons/lightly-icons/30/close-480.png"
-        },
-        {
-			"type": "Action.Submit",
-			"title": "Dismiss"
-        },
-        {
-			"type": "Action.Submit",
-			"title": "Dismiss",
-            "iconUrl": "https://cdn2.iconfinder.com/data/icons/lightly-icons/30/close-480.png"
+            "iconUrl": "https://cdn2.iconfinder.com/data/icons/lightly-icons/30/close-480.png",
+			"data": {
+				"x": "dismiss"
+			}
 		}
 	]
 }

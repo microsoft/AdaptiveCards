@@ -498,6 +498,18 @@ namespace AdaptiveCards.Rendering.Html
             var uiContainer = new DivTag()
                 .AddClass($"ac-{container.Type.Replace(".", "").ToLower()}");
 
+            if (container.Style != null)
+            {
+                // Apply background color
+                var containerStyle = context.Config.ContainerStyles.Default;
+                if (container.Style == AdaptiveContainerStyle.Emphasis)
+                {
+                    containerStyle = context.Config.ContainerStyles.Emphasis;
+                }
+
+                uiContainer.Style("background-color", context.GetRGBColor(containerStyle.BackgroundColor));
+            }
+
             AddContainerElements(uiContainer, container.Items, null, context);
 
             AddSelectAction(uiContainer, container.SelectAction, context);

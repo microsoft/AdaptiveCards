@@ -2391,7 +2391,8 @@ AdaptiveNamespaceStart
 
             XamlHelpers::SetContent(comboBoxItem.Get(), title.Get());
 
-            if (IsChoiceSelected(values, adaptiveChoiceInput))
+            // If multiple values are specified, no option is selected
+            if (values.size() == 1 && IsChoiceSelected(values, adaptiveChoiceInput))
             {
                 selectedIndex = currentIndex;
             }
@@ -2444,6 +2445,8 @@ AdaptiveNamespaceStart
                 ComPtr<IFrameworkElement> frameworkElement;
                 THROW_IF_FAILED(checkBox.As(&frameworkElement));
                 SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Choice.Multiselect", frameworkElement.Get());
+
+                XamlHelpers::SetToggleValue(choiceItem.Get(), IsChoiceSelected(values, adaptiveChoiceInput));
             }
             else
             {
@@ -2453,13 +2456,18 @@ AdaptiveNamespaceStart
                 ComPtr<IFrameworkElement> frameworkElement;
                 THROW_IF_FAILED(radioButton.As(&frameworkElement));
                 SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Choice.SingleSelect", frameworkElement.Get());
+
+                if (values.size() == 1)
+                {
+                    // When isMultiSelect is false, only 1 specified value is accepted.
+                    // Otherwise, leave all options unset
+                    XamlHelpers::SetToggleValue(choiceItem.Get(), IsChoiceSelected(values, adaptiveChoiceInput));
+                }
             }
 
             HString title;
             THROW_IF_FAILED(adaptiveChoiceInput->get_Title(title.GetAddressOf()));
             XamlHelpers::SetContent(choiceItem.Get(), title.Get());
-
-            XamlHelpers::SetToggleValue(choiceItem.Get(), IsChoiceSelected(values, adaptiveChoiceInput));
 
             THROW_IF_FAILED(AddHandledTappedEvent(choiceItem.Get()));
             

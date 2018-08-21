@@ -13,6 +13,7 @@
     <PackageLicenseUrl>https://raw.githubusercontent.com/Microsoft/AdaptiveCards/master/LICENSE</PackageLicenseUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <DefineConstants>$(DefineConstants);$(AdditionalConstants)</DefineConstants>
+    <GenerateAssemblyInfo Condition="$(Tfs_PackageVersionNumber) != ''">false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <!--HACKY check to see if UWP SDK is installed, if so, generate a uap10.0 output --> 
@@ -52,5 +53,4 @@
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
     <PackageReference Include="Microsoft.CSharp" Version="4.4.0" />
   </ItemGroup>
-
 </Project>

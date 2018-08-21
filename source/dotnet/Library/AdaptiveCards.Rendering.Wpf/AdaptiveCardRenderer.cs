@@ -146,9 +146,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (card.SelectAction != null)
             {
-                context.IsRenderingCard = true;
                 var outerGridWithSelectAction = context.RenderSelectAction(card.SelectAction, outerGrid);
-                context.IsRenderingCard = false;
 
                 return outerGridWithSelectAction;
             }
