@@ -31,8 +31,8 @@
 - (void)verifyChoiceSetInput:(NSDictionary<NSString *, NSString *> *) expectedValue application:(XCUIApplication *)app {
     NSData *expectedData = [NSJSONSerialization dataWithJSONObject:expectedValue options:NSJSONWritingPrettyPrinted error:nil];
     NSString *expectedString = [[NSString alloc] initWithData:expectedData encoding:NSUTF8StringEncoding];
-    app/*@START_MENU_TOKEN@*/.scrollViews.otherElements[@"ACR Root View"]/*[[".scrollViews.otherElements[@\"ACR Root View\"]",".otherElements[@\"ACR Root View\"]"],[[[-1,1],[-1,0]]],[1]]@END_MENU_TOKEN@*/.staticTexts[expectedString];
-    XCTAssertTrue(true);
+    XCUIElement *queryResult = app/*@START_MENU_TOKEN@*/.scrollViews.otherElements[@"ACR Root View"]/*[[".scrollViews.otherElements[@\"ACR Root View\"]",".otherElements[@\"ACR Root View\"]"],[[[-1,1],[-1,0]]],[1]]@END_MENU_TOKEN@*/.staticTexts[expectedString];
+    XCTAssertTrue([queryResult.label isEqualToString:expectedString]);
 }
 
 - (void)testCanGatherDefaultValuesFromChoiceInputSet {
