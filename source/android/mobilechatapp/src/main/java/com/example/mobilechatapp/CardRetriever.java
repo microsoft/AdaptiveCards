@@ -278,6 +278,11 @@ public class CardRetriever
         s_cardElements.add(elementType);
     }
 
+    public Set<String> getCardElements()
+    {
+        return s_cardElements;
+    }
+
     private static List<Card> s_cardJsons = null;
     private static CardRetriever s_instance = null;
     private static Set<String> s_cardElements = new HashSet<>();

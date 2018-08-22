@@ -9,22 +9,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import io.adaptivecards.objectmodel.AdaptiveCard;
 import io.adaptivecards.objectmodel.BaseActionElement;
@@ -56,12 +63,22 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
         {
             try
             {
+                List<Card> retrievedCards = null;
                 if (view == m_sendButton)
                 {
                     String requestedCards = m_cardRequestEdit.getText().toString();
-                    List<Card> cards = CardRetriever.getInstance().searchCards(requestedCards);
+                    retrievedCards = CardRetriever.getInstance().searchCards(requestedCards);
+                }
+                else
+                {
+                    Button elementTypeButton = (Button)view;
+                    String query = m_cardRequestEdit.getText().toString() + " " + elementTypeButton.getText().toString();
+                    retrievedCards = CardRetriever.getInstance().searchCards(query);
+                }
 
-                    for (Card card : cards)
+                if(retrievedCards != null)
+                {
+                    for (Card card : retrievedCards)
                     {
                         RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(MainActivity.this, getSupportFragmentManager(), card.getParsedCard().GetAdaptiveCard(), MainActivity.this, m_hostConfig);
                         m_adapter.addItem(card.getFileName(), renderedCard.getView());
@@ -86,6 +103,22 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
             if(readFiles == totalFiles)
             {
                 m_progressBarLayout.setVisibility(View.GONE);
+
+                Set<String> cardElements = CardRetriever.getInstance().getCardElements();
+
+                for(String cardElementType : cardElements)
+                {
+                    Button button = new Button(MainActivity.this);
+                    button.setText(cardElementType);
+                    button.setBackgroundColor(MainActivity.this.getResources().getColor(R.color.textEditColor));
+                    button.setOnClickListener(new ButtonListener());
+
+                    button.setPadding(10, 0, 10, 0);
+                    ViewGroup.MarginLayoutParams mlp =  new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                    mlp.setMargins(5, 5, 5, 5);
+                    button.setLayoutParams(mlp);
+                    m_elementTypesButttonsLayout.addView(button);
+                }
             }
         }
     }
@@ -105,6 +138,8 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, s_keywords);
         m_cardRequestEdit = contentLayout.findViewById(R.id.cardNumberEditText);
         m_cardRequestEdit.setAdapter(adapter);
+
+        m_elementTypesButttonsLayout = contentLayout.findViewById(R.id.existingElementTypesButtonLayout);
 
         m_recyclerView = contentLayout.findViewById(R.id.cardsView);
         m_recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -135,7 +170,27 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_help) {
+
+            LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.help_popup, null);
+
+            // create the popup window
+            final PopupWindow popupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+
+            // show the popup window
+            // which view you pass in doesn't matter, it is only used for the window token
+            popupWindow.showAtLocation(m_elementTypesButttonsLayout, Gravity.CENTER, 0, 0);
+
+            // dismiss the popup window when touched
+            popupView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    popupWindow.dismiss();
+                    return true;
+                }
+            });
+
             return true;
         }
 
@@ -151,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
     // private ListView m_cardsView;
     private RecyclerViewAdapter m_adapter;
     private RecyclerView m_recyclerView;
-    private LinearLayout m_progressBarLayout;
+    private LinearLayout m_progressBarLayout, m_elementTypesButttonsLayout;
     private ProgressBar m_progressBar;
     private ElementParserRegistration m_elementParserRegistration;
     private HostConfig m_hostConfig;
