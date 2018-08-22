@@ -14,6 +14,9 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiButton.Click += (sender, e) =>
                 {
                     context.InvokeAction(uiButton, new AdaptiveActionEventArgs(action));
+
+                    // Prevent nested events from triggering
+                    e.Handled = true;
                 };
                 return uiButton;
             }
@@ -24,12 +27,22 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             var uiButton = new Button
             {
-                //HorizontalAlignment = HorizontalAlignment.Stretch,
                 Style = context.GetStyle($"Adaptive.{action.Type}"),
-                Padding = new Thickness(6, 4, 6, 4),
             };
 
             var contentStackPanel = new StackPanel();
+
+            if (!context.IsRenderingSelectAction)
+            {
+                // Only apply padding for normal card actions
+                uiButton.Padding = new Thickness(6, 4, 6, 4);
+            }
+            else
+            {
+                // Remove any extra spacing for selectAction
+                uiButton.Padding = new Thickness(0, 0, 0, 0);
+                contentStackPanel.Margin = new Thickness(0, 0, 0, 0);
+            }
             uiButton.Content = contentStackPanel;
             FrameworkElement uiIcon = null;
 

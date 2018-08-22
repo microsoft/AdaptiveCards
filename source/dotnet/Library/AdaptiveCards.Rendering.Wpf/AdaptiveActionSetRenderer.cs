@@ -45,13 +45,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 bool isInline = (actionsConfig.ShowCard.ActionMode == ShowCardActionMode.Inline);
 
-                if (isInline && actionsToProcess.Any(a => a is AdaptiveShowCardAction))
-                {
-                    uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                }
-
                 int iPos = 0;
-                List<FrameworkElement> actionBarCards = new List<FrameworkElement>();
 
                 // See if all actions have icons, otherwise force the icon placement to the left
                 var oldConfigIconPlacement = actionsConfig.IconPlacement;
@@ -94,7 +88,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
                     if (action is AdaptiveShowCardAction showCardAction)
                     {
-                        if (isInline)
+                        // Only support 1 level of showCard
+                        if (isInline && context.CardDepth == 1)
                         {
                             Grid uiShowCardContainer = new Grid();
                             uiShowCardContainer.Style = context.GetStyle("Adaptive.Actions.ShowCard");
@@ -113,18 +108,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
                             uiShowCardContainer.Children.Add(uiShowCardWrapper);
 
-                            actionBarCards.Add(uiShowCardContainer);
-                            Grid.SetRow(uiShowCardContainer, uiContainer.RowDefinitions.Count - 1);
-                            uiContainer.Children.Add(uiShowCardContainer);
-
-                            uiAction.Click += (sender, e) =>
-                            {
-                                bool showCard = (uiShowCardContainer.Visibility != Visibility.Visible);
-                                foreach (var actionBarCard in actionBarCards)
-                                    actionBarCard.Visibility = Visibility.Collapsed;
-                                if (showCard)
-                                    uiShowCardContainer.Visibility = Visibility.Visible;
-                            };
+                            // Add to the list of show cards in context
+                            context.ActionShowCards.Add(new Tuple<FrameworkElement, Button>(uiShowCardContainer, uiAction));
                         }
                     }
                 }

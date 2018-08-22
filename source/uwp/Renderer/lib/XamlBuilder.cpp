@@ -426,12 +426,16 @@ AdaptiveNamespaceStart
             return;
         }
 
-        XamlHelpers::AppendXamlElementToPanel(backgroundImage.Get(), rootPanel);
+		// All background images should be stretched to fill the whole card.
+		ComPtr<IImage> xamlImage;
+		THROW_IF_FAILED(backgroundImage.As(&xamlImage));
+		THROW_IF_FAILED(xamlImage->put_Stretch(Stretch::Stretch_UniformToFill));
+		
+		ComPtr<IFrameworkElement> backgroundAsFrameworkElement;
+		THROW_IF_FAILED(xamlImage.As(&backgroundAsFrameworkElement));
+		THROW_IF_FAILED(backgroundAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Stretch));
 
-        // All background images should be stretched to fill the whole card.
-        ComPtr<IImage> xamlImage;
-        THROW_IF_FAILED(backgroundImage.As(&xamlImage));
-        THROW_IF_FAILED(xamlImage->put_Stretch(Stretch::Stretch_UniformToFill));
+		XamlHelpers::AppendXamlElementToPanel(backgroundImage.Get(), rootPanel);
 
         // The overlay applied to the background image is determined by a resouce, so create
         // the overlay if that resources exists
@@ -2387,7 +2391,8 @@ AdaptiveNamespaceStart
 
             XamlHelpers::SetContent(comboBoxItem.Get(), title.Get());
 
-            if (IsChoiceSelected(values, adaptiveChoiceInput))
+            // If multiple values are specified, no option is selected
+            if (values.size() == 1 && IsChoiceSelected(values, adaptiveChoiceInput))
             {
                 selectedIndex = currentIndex;
             }
@@ -2440,6 +2445,8 @@ AdaptiveNamespaceStart
                 ComPtr<IFrameworkElement> frameworkElement;
                 THROW_IF_FAILED(checkBox.As(&frameworkElement));
                 SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Choice.Multiselect", frameworkElement.Get());
+
+                XamlHelpers::SetToggleValue(choiceItem.Get(), IsChoiceSelected(values, adaptiveChoiceInput));
             }
             else
             {
@@ -2449,13 +2456,18 @@ AdaptiveNamespaceStart
                 ComPtr<IFrameworkElement> frameworkElement;
                 THROW_IF_FAILED(radioButton.As(&frameworkElement));
                 SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Choice.SingleSelect", frameworkElement.Get());
+
+                if (values.size() == 1)
+                {
+                    // When isMultiSelect is false, only 1 specified value is accepted.
+                    // Otherwise, leave all options unset
+                    XamlHelpers::SetToggleValue(choiceItem.Get(), IsChoiceSelected(values, adaptiveChoiceInput));
+                }
             }
 
             HString title;
             THROW_IF_FAILED(adaptiveChoiceInput->get_Title(title.GetAddressOf()));
             XamlHelpers::SetContent(choiceItem.Get(), title.Get());
-
-            XamlHelpers::SetToggleValue(choiceItem.Get(), IsChoiceSelected(values, adaptiveChoiceInput));
 
             THROW_IF_FAILED(AddHandledTappedEvent(choiceItem.Get()));
             

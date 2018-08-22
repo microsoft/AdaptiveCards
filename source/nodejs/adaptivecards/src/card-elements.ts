@@ -23,6 +23,18 @@ function isActionAllowed(action: Action, forbiddenActionTypes: Array<string>): b
 }
 
 export function createActionInstance(json: any, errors: Array<IValidationError>): Action {
+    if (!json["title"] && json["title"] !== "") {
+        raiseParseError(
+            {
+                error: Enums.ValidationError.PropertyCantBeNull,
+                message: "Actions should always have a title."
+            },
+            errors
+        );
+
+        return null;
+    }
+
     var actionType = json["type"];
 
     var result = AdaptiveCard.actionTypeRegistry.createInstance(actionType);
@@ -47,9 +59,9 @@ export class SpacingDefinition {
     bottom: number = 0;
 
     constructor(top: number = 0,
-                right: number = 0,
-                bottom: number = 0,
-                left: number = 0) {
+        right: number = 0,
+        bottom: number = 0,
+        left: number = 0) {
         this.top = top;
         this.right = right;
         this.bottom = bottom;
@@ -64,9 +76,9 @@ export class PaddingDefinition {
     left: Enums.Spacing = Enums.Spacing.None;
 
     constructor(top: Enums.Spacing = Enums.Spacing.None,
-                right: Enums.Spacing = Enums.Spacing.None,
-                bottom: Enums.Spacing = Enums.Spacing.None,
-                left: Enums.Spacing = Enums.Spacing.None) {
+        right: Enums.Spacing = Enums.Spacing.None,
+        bottom: Enums.Spacing = Enums.Spacing.None,
+        left: Enums.Spacing = Enums.Spacing.None) {
         this.top = top;
         this.right = right;
         this.bottom = bottom;
@@ -96,19 +108,19 @@ export class SizeAndUnit {
 
         let regExp = /^([0-9]+)(px|\*)?$/g;
         let matches = regExp.exec(input);
-    
+
         if (matches && matches.length >= 2) {
             result.physicalSize = parseInt(matches[1]);
-    
+
             if (matches.length == 3) {
                 if (matches[2] == "px") {
                     result.unit = Enums.SizeUnit.Pixel;
                 }
             }
-    
+
             return result;
         }
-    
+
         throw new Error("Invalid size: " + input);
     }
 
@@ -147,7 +159,7 @@ export abstract class CardElement {
 
         if (this._separatorElement) {
             if (this.parent && this.parent.isFirstElement(this)) {
-                this._separatorElement.style.display = "none";                
+                this._separatorElement.style.display = "none";
             }
             else {
                 this._separatorElement.style.display = this._isVisible ? this._defaultRenderedElementDisplayMode : "none";
@@ -218,10 +230,10 @@ export abstract class CardElement {
     }
 
     protected internalGetNonZeroPadding(padding: PaddingDefinition,
-                                        processTop: boolean = true,
-                                        processRight: boolean = true,
-                                        processBottom: boolean = true,
-                                        processLeft: boolean = true) {
+        processTop: boolean = true,
+        processRight: boolean = true,
+        processBottom: boolean = true,
+        processLeft: boolean = true) {
         if (processTop) {
             if (padding.top == Enums.Spacing.None) {
                 padding.top = this.internalPadding.top;
@@ -261,7 +273,7 @@ export abstract class CardElement {
             renderedElement.style.flex = "0 0 auto";
         }
         else {
-            renderedElement.style.flex = "1 1 100%";
+            renderedElement.style.flex = "1 1 auto";
         }
     }
 
@@ -286,7 +298,7 @@ export abstract class CardElement {
 
     protected isDesignMode(): boolean {
         var rootElement = this.getRootElement();
-            
+
         return rootElement instanceof AdaptiveCard && rootElement.designMode;
     }
 
@@ -887,13 +899,13 @@ export class TextBlock extends CardElement {
                     break;
                 default:
                     this._computedLineHeight = this.hostConfig.lineHeights.default;
-                    break;    
+                    break;
             }
         }
         else {
             // Looks like 1.33 is the magic number to compute line-height
             // from font size.
-            this._computedLineHeight = fontSize * 1.33;                
+            this._computedLineHeight = fontSize * 1.33;
         }
 
         targetElement.style.fontSize = fontSize + "px";
@@ -990,7 +1002,9 @@ export class TextBlock extends CardElement {
         this.color = Utils.getEnumValueOrDefault(Enums.TextColor, json["color"], this.color);
         this.isSubtle = json["isSubtle"];
         this.wrap = json["wrap"] === undefined ? false : json["wrap"];
-        this.maxLines = json["maxLines"];
+        if (typeof json["maxLines"] === "number") {
+            this.maxLines = json["maxLines"];
+        }
     }
 
     getJsonTypeName(): string {
@@ -1226,7 +1240,7 @@ export class Image extends CardElement {
                     message: "Invalid image " + name + ": " + value
                 },
                 errors
-            );    
+            );
         }
 
         return 0;
@@ -1260,7 +1274,7 @@ export class Image extends CardElement {
                     element.style.width = this.hostConfig.imageSizes.medium + "px";
                     break;
             }
-        }    
+        }
     }
 
     protected get useDefaultSizing() {
@@ -1778,7 +1792,7 @@ export class TextInput extends Input {
         this.maxLength = json["maxLength"];
         this.isMultiline = json["isMultiline"];
         this.placeholder = json["placeholder"];
-        this.style =  Utils.getEnumValueOrDefault(Enums.InputTextStyle, json["style"], this.style);
+        this.style = Utils.getEnumValueOrDefault(Enums.InputTextStyle, json["style"], this.style);
     }
 
     get value(): string {
@@ -2292,9 +2306,7 @@ class ActionButton {
     constructor(action: Action, parentContainerStyle: string) {
         this.action = action;
         this._parentContainerStyle = parentContainerStyle;
-    }
 
-    initialize() {
         this.action.render();
         this.action.renderedElement.onclick = (e) => { this.click(); };
 
@@ -2406,7 +2418,7 @@ export abstract class Action {
             }
             else {
                 buttonElement.classList.add("iconLeft");
-                
+
                 if (hasTitle) {
                     iconElement.style.marginRight = "4px";
                 }
@@ -2427,7 +2439,7 @@ export abstract class Action {
         if (this.onExecute) {
             this.onExecute(this);
         }
-        
+
         raiseExecuteActionEvent(this);
     }
 
@@ -2458,7 +2470,7 @@ export abstract class Action {
 
     parse(json: any, errors?: Array<IValidationError>) {
         raiseParseActionEvent(this, json, errors);
-	    
+
         this.id = json["id"];
         this.title = json["title"];
         this.iconUrl = json["iconUrl"];
@@ -3102,18 +3114,16 @@ class ActionCollection {
             for (let i = 0; i < this.items.length; i++) {
                 if (isActionAllowed(this.items[i], forbiddenActionTypes)) {
                     let actionButton: ActionButton = this.findActionButton(this.items[i]);
-                    
+
                     if (!actionButton) {
                         actionButton = new ActionButton(this.items[i], parentContainerStyle);
+                        actionButton.action.renderedElement.style.overflow = "hidden";
+                        actionButton.action.renderedElement.style.overflow = "table-cell";
+                        actionButton.action.renderedElement.style.flex = this._owner.hostConfig.actions.actionAlignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
+                        actionButton.onClick = (ab) => { this.actionClicked(ab); };
 
                         this.buttons.push(actionButton);
                     }
-
-                    actionButton.initialize();
-                    actionButton.action.renderedElement.style.overflow = "hidden";
-                    actionButton.action.renderedElement.style.overflow = "table-cell";
-                    actionButton.action.renderedElement.style.flex = this._owner.hostConfig.actions.actionAlignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
-                    actionButton.onClick = (ab) => { this.actionClicked(ab); };
 
                     buttonStrip.appendChild(actionButton.action.renderedElement);
 
@@ -3515,7 +3525,7 @@ export class Container extends CardElementContainer {
 
                     if (effectivePadding.bottom == Enums.Spacing.None) {
                         effectivePadding = Object.assign(
-                            { },
+                            {},
                             effectivePadding,
                             { bottom: Enums.Spacing.Default }
                         );
@@ -3523,7 +3533,7 @@ export class Container extends CardElementContainer {
 
                     if (effectivePadding.left == Enums.Spacing.None) {
                         effectivePadding = Object.assign(
-                            { },
+                            {},
                             effectivePadding,
                             { left: Enums.Spacing.Default }
                         );
@@ -3714,7 +3724,7 @@ export class Container extends CardElementContainer {
         for (let item of this._items) {
             handleElement(item);
         }
-        
+
         return true;
     }
 
@@ -4033,7 +4043,13 @@ export class Container extends CardElementContainer {
 
     get style(): string {
         if (this.allowCustomStyle) {
-            return this._style && this.hostConfig.containerStyles.getStyleByName(this._style) ? this._style : this.defaultStyle;
+            if (this._style && this.hostConfig.containerStyles.getStyleByName(this._style)) {
+                return this._style;
+            }
+
+            let parentContainer = this.getParentContainer();
+
+            return parentContainer ? parentContainer.style : this.defaultStyle;
         }
         else {
             return this.defaultStyle;
@@ -4418,7 +4434,7 @@ export class ColumnSet extends CardElementContainer {
         super.updateLayout(processChildren);
 
         this.applyPadding();
-        
+
         if (processChildren) {
             for (var i = 0; i < this._columns.length; i++) {
                 this._columns[i].updateLayout();
@@ -4656,12 +4672,12 @@ function raiseParseElementEvent(element: CardElement, json: any, errors?: Array<
 }
 
 function raiseParseActionEvent(action: Action, json: any, errors?: Array<IValidationError>) {
-	let card = action.parent ? action.parent.getRootElement() as AdaptiveCard : null;
-	let onParseActionHandler = (card && card.onParseAction) ? card.onParseAction : AdaptiveCard.onParseAction;
+    let card = action.parent ? action.parent.getRootElement() as AdaptiveCard : null;
+    let onParseActionHandler = (card && card.onParseAction) ? card.onParseAction : AdaptiveCard.onParseAction;
 
-	if (onParseActionHandler != null) {
-		onParseActionHandler(action, json, errors);
-	}
+    if (onParseActionHandler != null) {
+        onParseActionHandler(action, json, errors);
+    }
 }
 
 function raiseParseError(error: IValidationError, errors: Array<IValidationError>) {
@@ -5008,7 +5024,7 @@ export class AdaptiveCard extends ContainerWithActions {
     onImageLoaded: (image: Image) => void = null;
     onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
     onParseElement: (element: CardElement, json: any, errors?: Array<IValidationError>) => void = null;
-	onParseAction: (element: Action, json: any, errors?: Array<IValidationError>) => void = null;
+    onParseAction: (element: Action, json: any, errors?: Array<IValidationError>) => void = null;
 
     version?: Version = new Version(1, 0);
     fallbackText: string;
@@ -5077,7 +5093,7 @@ export class AdaptiveCard extends ContainerWithActions {
                         message: e.message
                     },
                     errors
-                );                        
+                );
             }
         }
 
