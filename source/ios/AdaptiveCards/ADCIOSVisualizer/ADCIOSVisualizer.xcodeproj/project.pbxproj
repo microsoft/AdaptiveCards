@@ -634,6 +634,7 @@
 				30A3886320D326BE00AAEE59 /* VerticalContentAlignment_Container.json in Resources */,
 				F4933CE71F79852C00F6EBFD /* TextBlock.IsSubtle.json in Resources */,
 				F4933CC41F79852C00F6EBFD /* Action.ShowCard.Style.json in Resources */,
+				6B5D23FE2126284D0010EB07 /* Feedback.json in Resources */,
 				F4F44B852048CDB300A2F24C /* AdditionalProperty.json in Resources */,
 				30860BC820C9B5C9009F9D99 /* ColumnSet.Input.Toggle.VerticalStretch.json in Resources */,
 				30860BCC20C9B5C9009F9D99 /* ColumnSet_Container.VerticalStretch.json in Resources */,

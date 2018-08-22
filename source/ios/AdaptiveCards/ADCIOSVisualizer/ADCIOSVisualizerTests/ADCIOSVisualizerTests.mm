@@ -79,6 +79,37 @@
     }
 }
 
+- (void)testACRTextView {
+    NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"Feedback" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
+    ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
+    if(cardParseResult.isValid) {
+        ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card config:_defaultHostConfig widthConstraint:335];
+        ACRTextView *acrTextView = (ACRTextView *)[renderResult.view viewWithTag:kACRTextView];
+        XCTAssertNotNil(acrTextView);
+        XCTAssertTrue([acrTextView.text length] == 0);
+    }
+}
+
+- (void)testChoiceSetInputCanGatherDefaultValues {
+    NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"Input.ChoiceSet" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
+    NSDictionary<NSString *, NSString *> *expectedValue = @{
+        @"myColor" : @"1",
+        @"myColor3" : @"1;3",
+        @"myColor2" : @"1",
+        @"myColor4" : @"1"
+        };
+    NSData *expectedData = [NSJSONSerialization dataWithJSONObject:expectedValue options:NSJSONWritingPrettyPrinted error:nil];
+    NSString *expectedString = [[NSString alloc] initWithData:expectedData encoding:NSUTF8StringEncoding];
+    ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
+    if(cardParseResult.isValid){
+        [ACRRenderer render:cardParseResult.card config:_defaultHostConfig widthConstraint:100.0];
+        // manually call input gather function
+        NSData *output = [cardParseResult.card inputs];
+        NSString *str = [[NSString alloc] initWithData:output encoding:NSUTF8StringEncoding];
+        XCTAssertTrue([str isEqualToString:expectedString]);
+    }
+}
+
 - (void)testPerformanceExample {
     // This is an example of a performance test case.
     [self measureBlock:^{
