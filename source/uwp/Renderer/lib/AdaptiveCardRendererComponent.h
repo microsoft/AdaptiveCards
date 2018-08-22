@@ -28,7 +28,13 @@ AdaptiveNamespaceStart
 
         IFACEMETHODIMP RenderAdaptiveCard(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
             _COM_Outptr_ ABI::AdaptiveNamespace::IRenderedAdaptiveCard** result);
-        HRESULT RenderCardAsXamlAsync(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
+
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        IFACEMETHODIMP
+#else
+        HRESULT
+#endif
+        RenderCardAsXamlAsync(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
             _COM_Outptr_ ABI::Windows::Foundation::IAsyncOperation<ABI::AdaptiveNamespace::RenderedAdaptiveCard*>** result);
 
         IFACEMETHODIMP RenderAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson,

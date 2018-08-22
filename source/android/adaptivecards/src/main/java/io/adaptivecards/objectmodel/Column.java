@@ -38,15 +38,7 @@ public class Column extends BaseCardElement {
   }
 
   public Column() {
-    this(AdaptiveCardObjectModelJNI.new_Column__SWIG_0(), true);
-  }
-
-  public Column(Spacing spacing, boolean separation, String size, long explicitWidth, ContainerStyle style) {
-    this(AdaptiveCardObjectModelJNI.new_Column__SWIG_1(spacing.swigValue(), separation, size, explicitWidth, style.swigValue()), true);
-  }
-
-  public Column(Spacing spacing, boolean separation, String size, long explicitWidth, ContainerStyle style, BaseCardElementVector items) {
-    this(AdaptiveCardObjectModelJNI.new_Column__SWIG_2(spacing.swigValue(), separation, size, explicitWidth, style.swigValue(), BaseCardElementVector.getCPtr(items), items), true);
+    this(AdaptiveCardObjectModelJNI.new_Column(), true);
   }
 
   public String Serialize() {
@@ -57,13 +49,13 @@ public class Column extends BaseCardElement {
     return new JsonValue(AdaptiveCardObjectModelJNI.Column_SerializeToJsonValue(swigCPtr, this), true);
   }
 
-  public static Column Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, JsonValue root) {
-    long cPtr = AdaptiveCardObjectModelJNI.Column_Deserialize(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, JsonValue.getCPtr(root), root);
+  public static Column Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, JsonValue root) {
+    long cPtr = AdaptiveCardObjectModelJNI.Column_Deserialize(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, JsonValue.getCPtr(root), root);
     return (cPtr == 0) ? null : new Column(cPtr, true);
   }
 
-  public static Column DeserializeFromString(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.Column_DeserializeFromString(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, jsonString);
+  public static Column DeserializeFromString(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, String jsonString) {
+    long cPtr = AdaptiveCardObjectModelJNI.Column_DeserializeFromString(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, jsonString);
     return (cPtr == 0) ? null : new Column(cPtr, true);
   }
 
@@ -75,12 +67,12 @@ public class Column extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Column_SetWidth(swigCPtr, this, value);
   }
 
-  public int GetExplicitWidth() {
-    return AdaptiveCardObjectModelJNI.Column_GetExplicitWidth(swigCPtr, this);
+  public int GetPixelWidth() {
+    return AdaptiveCardObjectModelJNI.Column_GetPixelWidth(swigCPtr, this);
   }
 
-  public void SetExplicitWidth(int value) {
-    AdaptiveCardObjectModelJNI.Column_SetExplicitWidth(swigCPtr, this, value);
+  public void SetPixelWidth(int value) {
+    AdaptiveCardObjectModelJNI.Column_SetPixelWidth(swigCPtr, this, value);
   }
 
   public ContainerStyle GetStyle() {
@@ -108,8 +100,16 @@ public class Column extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Column_SetLanguage(swigCPtr, this, language);
   }
 
-  public void GetResourceUris(StringVector resourceUris) {
-    AdaptiveCardObjectModelJNI.Column_GetResourceUris(swigCPtr, this, StringVector.getCPtr(resourceUris), resourceUris);
+  public VerticalContentAlignment GetVerticalContentAlignment() {
+    return VerticalContentAlignment.swigToEnum(AdaptiveCardObjectModelJNI.Column_GetVerticalContentAlignment(swigCPtr, this));
+  }
+
+  public void SetVerticalContentAlignment(VerticalContentAlignment value) {
+    AdaptiveCardObjectModelJNI.Column_SetVerticalContentAlignment(swigCPtr, this, value.swigValue());
+  }
+
+  public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {
+    AdaptiveCardObjectModelJNI.Column_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceInfo), resourceInfo);
   }
 
   public static Column dynamic_cast(BaseCardElement baseCardElement) {

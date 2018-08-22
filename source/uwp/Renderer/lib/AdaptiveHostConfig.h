@@ -29,6 +29,9 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_SupportsInteractivity(_Out_ boolean* supportsInteractivity);
         IFACEMETHODIMP put_SupportsInteractivity(_In_ boolean supportsInteractivity);
 
+        IFACEMETHODIMP get_ImageBaseUrl(_Out_ HSTRING* imageBaseUrl);
+        IFACEMETHODIMP put_ImageBaseUrl(_In_ HSTRING imageBaseUrl);
+
         IFACEMETHODIMP get_ContainerStyles(_Out_ ABI::AdaptiveNamespace::IAdaptiveContainerStylesDefinition** value);
         IFACEMETHODIMP put_ContainerStyles(_In_ ABI::AdaptiveNamespace::IAdaptiveContainerStylesDefinition* value);
 
@@ -56,10 +59,15 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_Actions(_Out_ ABI::AdaptiveNamespace::IAdaptiveActionsConfig** actionsOptionConfig);
         IFACEMETHODIMP put_Actions(_In_ ABI::AdaptiveNamespace::IAdaptiveActionsConfig* actionsOptionConfig);
 
+        IFACEMETHODIMP get_Media(_Out_ ABI::AdaptiveNamespace::IAdaptiveMediaConfig** mediaConfig);
+        IFACEMETHODIMP put_Media(_In_ ABI::AdaptiveNamespace::IAdaptiveMediaConfig* mediaConfig);
+
+
     private:
 
         Microsoft::WRL::Wrappers::HString m_fontFamily;
         boolean m_supportsInteractivity;
+        Microsoft::WRL::Wrappers::HString m_imageBaseUrl;
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveFontSizesConfig> m_fontSizes;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveFontWeightsConfig> m_fontWeights;
@@ -72,6 +80,7 @@ AdaptiveNamespaceStart
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveImageConfig> m_image;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveFactSetConfig> m_factSet;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionsConfig> m_actions;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveMediaConfig> m_media;
     };
 
     class AdaptiveHostConfigStaticsImpl WrlFinal

@@ -38,11 +38,7 @@ public class ColumnSet extends BaseCardElement {
   }
 
   public ColumnSet() {
-    this(AdaptiveCardObjectModelJNI.new_ColumnSet__SWIG_0(), true);
-  }
-
-  public ColumnSet(ColumnVector columns) {
-    this(AdaptiveCardObjectModelJNI.new_ColumnSet__SWIG_1(ColumnVector.getCPtr(columns), columns), true);
+    this(AdaptiveCardObjectModelJNI.new_ColumnSet(), true);
   }
 
   public JsonValue SerializeToJsonValue() {
@@ -66,8 +62,8 @@ public class ColumnSet extends BaseCardElement {
     AdaptiveCardObjectModelJNI.ColumnSet_SetLanguage(swigCPtr, this, language);
   }
 
-  public void GetResourceUris(StringVector resourceUris) {
-    AdaptiveCardObjectModelJNI.ColumnSet_GetResourceUris(swigCPtr, this, StringVector.getCPtr(resourceUris), resourceUris);
+  public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {
+    AdaptiveCardObjectModelJNI.ColumnSet_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceInfo), resourceInfo);
   }
 
   public static ColumnSet dynamic_cast(BaseCardElement baseCardElement) {

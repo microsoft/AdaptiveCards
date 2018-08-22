@@ -86,6 +86,18 @@ export enum BackgroundImageMode {
     Repeat
 }
 
+export enum ActionIconPlacement {
+    LeftOfTitle,
+    AboveTitle
+}
+
+export enum InputTextStyle {
+    Text,
+    Tel,
+    Url,
+    Email
+}
+
 /*
     This should really be a string enum, e.g.
     

@@ -11,11 +11,6 @@ ColumnSet::ColumnSet() : BaseCardElement(CardElementType::ColumnSet)
     PopulateKnownPropertiesSet();
 }
 
-ColumnSet::ColumnSet(std::vector<std::shared_ptr<Column>>& columns) : BaseCardElement(CardElementType::ColumnSet), m_columns(columns)
-{
-    PopulateKnownPropertiesSet();
-}
-
 const std::vector<std::shared_ptr<Column>>& ColumnSet::GetColumns() const
 {
     return m_columns;
@@ -44,21 +39,20 @@ void ColumnSet::SetLanguage(const std::string& language)
     }
 }
 
-Json::Value ColumnSet::SerializeToJsonValue()
+Json::Value ColumnSet::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
-    std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Columns);
+    std::string const &propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Columns);
     root[propertyName] = Json::Value(Json::arrayValue);
-    for (const auto& column : GetColumns())
+    for (const auto& column : m_columns)
     {
         root[propertyName].append(column->SerializeToJsonValue());
     }
 
-    std::shared_ptr<BaseActionElement> selectAction = GetSelectAction();
-    if (selectAction != nullptr)
+    if (m_selectAction != nullptr)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = BaseCardElement::SerializeSelectAction(GetSelectAction());
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = BaseCardElement::SerializeSelectAction(m_selectAction);
     }
 
     return root;
@@ -67,6 +61,7 @@ Json::Value ColumnSet::SerializeToJsonValue()
 std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const Json::Value& value)
 {
     ParseUtil::ExpectTypeString(value, CardElementType::ColumnSet);
@@ -74,11 +69,11 @@ std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(
     auto container = BaseCardElement::Deserialize<ColumnSet>(value);
 
     // Parse Columns
-    auto cardElements = ParseUtil::GetElementCollectionOfSingleType<Column>(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::Columns, Column::Deserialize, true);
+    auto cardElements = ParseUtil::GetElementCollectionOfSingleType<Column>(elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::Columns, Column::Deserialize, true);
     container->m_columns = std::move(cardElements);
 
     // Parse optional selectAction
-    container->SetSelectAction(ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, value, AdaptiveCardSchemaKey::SelectAction, false));
+    container->SetSelectAction(ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::SelectAction, false));
 
     return container;
 }
@@ -86,23 +81,24 @@ std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(
 std::shared_ptr<BaseCardElement> ColumnSetParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const std::string& jsonString)
 {
-    return ColumnSetParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+    return ColumnSetParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void ColumnSet::PopulateKnownPropertiesSet() 
+void ColumnSet::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Columns));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction));
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Columns),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)});
 }
 
-void ColumnSet::GetResourceUris(std::vector<std::string>& resourceUris)
+void ColumnSet::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
 {
     auto columns = GetColumns();
     for (auto column : columns)
     {
-        column->GetResourceUris(resourceUris);
+        column->GetResourceInformation(resourceInfo);
     }
     return;
 }

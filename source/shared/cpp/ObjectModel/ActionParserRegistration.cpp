@@ -4,7 +4,7 @@
 #include "ShowCardAction.h"
 #include "SubmitAction.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
     ActionParserRegistration::ActionParserRegistration()
     {
         m_knownElements.insert({
@@ -20,40 +20,45 @@ AdaptiveSharedNamespaceStart
         });
     }
 
-    void ActionParserRegistration::AddParser(std::string elementType, std::shared_ptr<ActionElementParser> parser)
+    void ActionParserRegistration::AddParser(std::string const &elementType,
+        std::shared_ptr<ActionElementParser> parser)
     {
+        // make sure caller isn't attempting to overwrite a known element's parser
         if (m_knownElements.find(elementType) == m_knownElements.end())
         {
             ActionParserRegistration::m_cardElementParsers[elementType] = parser;
         }
         else
         {
-            throw AdaptiveCardParseException(ErrorStatusCode::UnsupportedParserOverride, "Overriding known action parsers is unsupported");
+            throw AdaptiveCardParseException(ErrorStatusCode::UnsupportedParserOverride,
+                "Overriding known action parsers is unsupported");
         }
     }
 
-    void ActionParserRegistration::RemoveParser(std::string elementType)
+    void ActionParserRegistration::RemoveParser(std::string const &elementType)
     {
+        // make sure caller isn't attempting to remove a known element's parser
         if (m_knownElements.find(elementType) == m_knownElements.end())
         {
             ActionParserRegistration::m_cardElementParsers.erase(elementType);
         }
-        else
-        {
-            throw AdaptiveCardParseException(ErrorStatusCode::UnsupportedParserOverride, "Overriding known action parsers is unsupported");
-        }
+		else
+		{
+			throw AdaptiveCardParseException(ErrorStatusCode::UnsupportedParserOverride,
+				"Removing known action parsers is unsupported");
+		}
     }
 
-    std::shared_ptr<ActionElementParser> ActionParserRegistration::GetParser(std::string elementType)
+    std::shared_ptr<ActionElementParser> ActionParserRegistration::GetParser(std::string const &elementType)
     {
         auto parser = m_cardElementParsers.find(elementType);
         if (parser != ActionParserRegistration::m_cardElementParsers.end())
         {
-            return parser->second; 
+            return parser->second;
         }
         else
         {
             return std::shared_ptr<ActionElementParser>(nullptr);
         }
     }
-AdaptiveSharedNamespaceEnd
+}

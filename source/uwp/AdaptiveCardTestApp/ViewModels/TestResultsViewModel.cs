@@ -11,6 +11,8 @@ namespace AdaptiveCardTestApp.ViewModels
     {
         public TestResultsCategoryViewModel Passed { get; }
         public TestResultsCategoryViewModel Failed { get; }
+        public TestResultsCategoryViewModel ImageAndJsonFailed { get; }
+        public TestResultsCategoryViewModel JsonFailed { get; }
         public TestResultsCategoryViewModel FailedButSourceWasChanged { get; }
         public TestResultsCategoryViewModel PassedButSourceWasChanged { get; }
         public TestResultsCategoryViewModel New { get; }
@@ -18,7 +20,9 @@ namespace AdaptiveCardTestApp.ViewModels
         public TestResultsViewModel(IEnumerable<TestResultViewModel> results)
         {
             Passed = new TestResultsCategoryViewModel("Passed", results.Where(i => i.Status == TestStatus.Passed));
-            Failed = new TestResultsCategoryViewModel("Failed", results.Where(i => i.Status == TestStatus.Failed));
+            Failed = new TestResultsCategoryViewModel("Image Comparison Failed", results.Where(i => i.Status == TestStatus.Failed));
+            JsonFailed = new TestResultsCategoryViewModel("Json Roundtrip Failed", results.Where(i => i.Status == TestStatus.JsonFailed));
+            ImageAndJsonFailed = new TestResultsCategoryViewModel("Image Comparison and Json Roundtrip Failed", results.Where(i => i.Status == TestStatus.ImageAndJsonFailed));
             FailedButSourceWasChanged = new TestResultsCategoryViewModel("Failed/source changed", results.Where(i => i.Status == TestStatus.FailedButSourceWasChanged));
             PassedButSourceWasChanged = new TestResultsCategoryViewModel("Passed/source changed", results.Where(i => i.Status == TestStatus.PassedButSourceWasChanged));
             New = new TestResultsCategoryViewModel("New", results.Where(i => i.Status == TestStatus.New));
@@ -37,6 +41,8 @@ namespace AdaptiveCardTestApp.ViewModels
             {
                 Passed.Results.Remove(item);
                 Failed.Results.Remove(item);
+                JsonFailed.Results.Remove(item);
+                ImageAndJsonFailed.Results.Remove(item);
                 FailedButSourceWasChanged.Results.Remove(item);
                 PassedButSourceWasChanged.Results.Remove(item);
                 New.Results.Remove(item);

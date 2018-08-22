@@ -31,7 +31,9 @@ AdaptiveNamespaceStart
         GenerateActionProjection(sharedColumn->GetSelectAction(), &m_selectAction);
 
         m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedColumn->GetStyle());
+        m_verticalAlignment = static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedColumn->GetVerticalContentAlignment());
         RETURN_IF_FAILED(UTF8ToHString(sharedColumn->GetWidth(), m_width.GetAddressOf()));
+        m_pixelWidth = sharedColumn->GetPixelWidth();
 
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedColumn));
         return S_OK;
@@ -50,6 +52,18 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
+    HRESULT AdaptiveColumn::get_PixelWidth(UINT32* pixelWidth)
+    {
+        return *pixelWidth = m_pixelWidth;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::put_PixelWidth(UINT32 pixelWidth)
+    {
+        return m_pixelWidth = pixelWidth;
+    }
+
+    _Use_decl_annotations_
     HRESULT AdaptiveColumn::get_Style(ABI::AdaptiveNamespace::ContainerStyle* style)
     {
         *style = m_style;
@@ -60,6 +74,20 @@ AdaptiveNamespaceStart
     HRESULT AdaptiveColumn::put_Style(ABI::AdaptiveNamespace::ContainerStyle style)
     {
         m_style = style;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::get_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment* verticalAlignment)
+    {
+        *verticalAlignment = m_verticalAlignment;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveColumn::put_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment verticalAlignment)
+    {
+        m_verticalAlignment = verticalAlignment;
         return S_OK;
     }
 
@@ -95,7 +123,9 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(column)));
 
         column->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
+        column->SetVerticalContentAlignment(static_cast<AdaptiveSharedNamespace::VerticalContentAlignment>(m_verticalAlignment));
         column->SetWidth(HStringToUTF8(m_width.Get()));
+        column->SetPixelWidth(m_pixelWidth);
 
         if (m_selectAction != nullptr)
         {

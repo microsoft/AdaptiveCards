@@ -4,7 +4,7 @@
 
 using namespace AdaptiveSharedNamespace;
 
-Separator::Separator()
+Separator::Separator(): m_thickness(SeparatorThickness::Default), m_color(ForegroundColor::Default)
 {
 }
 

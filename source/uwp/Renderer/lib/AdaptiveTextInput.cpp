@@ -118,13 +118,8 @@ AdaptiveNamespaceStart
         textInput->SetIsMultiline(m_isMultiline);
         textInput->SetTextInputStyle(static_cast<AdaptiveSharedNamespace::TextInputStyle>(m_textInputStyle));
 
-        std::string placeholder;
-        RETURN_IF_FAILED(HStringToUTF8(m_placeholder.Get(), placeholder));
-        textInput->SetPlaceholder(placeholder);
-
-        std::string value;
-        RETURN_IF_FAILED(HStringToUTF8(m_value.Get(), value));
-        textInput->SetValue(value);
+        textInput->SetPlaceholder(HStringToUTF8(m_placeholder.Get()));
+        textInput->SetValue(HStringToUTF8(m_value.Get()));
 
         sharedModel = textInput;
 

@@ -1,5 +1,4 @@
 import * as Enums from "./enums";
-import * as HostConfig from "./host-config";
 
 export const ContentTypes = {
     applicationJson : "application/json",
@@ -28,6 +27,18 @@ export function isNullOrEmpty(value: string): boolean {
 export function appendChild(node: Node, child: Node) {
     if (child != null && child != undefined) {
         node.appendChild(child);
+    }
+}
+
+export function setProperty(target: any, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
+    if (propertyValue && (!defaultValue || defaultValue !== propertyValue)) {
+        target[propertyName] = propertyValue;
+    }
+}
+
+export function setEnumProperty(enumType: { [s: number]: string }, target: any, propertyName: string, propertyValue: number, defaultValue?: number) {
+    if (defaultValue === undefined || defaultValue !== propertyValue) {
+        target[propertyName] = enumType[propertyValue];
     }
 }
 
@@ -158,6 +169,10 @@ export class StringWithSubstitutions {
         this._isProcessed = true;
     }
 
+    getOriginal(): string {
+        return this._original;
+    }
+
     get(): string {
         if (!this._isProcessed) {
             return this._original;
@@ -170,6 +185,37 @@ export class StringWithSubstitutions {
     set(value: string) {
         this._original = value;
         this._isProcessed = false;
+    }
+}
+
+export class SizeAndUnit {
+    physicalSize: number;
+    unit: Enums.SizeUnit;
+
+    static parse(input: any): SizeAndUnit {
+        let result = new SizeAndUnit(0, Enums.SizeUnit.Weight);
+
+        let regExp = /^([0-9]+)(px|\*)?$/g;
+        let matches = regExp.exec(input);
+
+        if (matches && matches.length >= 2) {
+            result.physicalSize = parseInt(matches[1]);
+
+            if (matches.length == 3) {
+                if (matches[2] == "px") {
+                    result.unit = Enums.SizeUnit.Pixel;
+                }
+            }
+
+            return result;
+        }
+
+        throw new Error("Invalid size: " + input);
+    }
+
+    constructor(physicalSize: number, unit: Enums.SizeUnit) {
+        this.physicalSize = physicalSize;
+        this.unit = unit;
     }
 }
 

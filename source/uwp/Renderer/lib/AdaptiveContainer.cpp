@@ -35,6 +35,7 @@ AdaptiveNamespaceStart
         GenerateContainedElementsProjection(sharedContainer->GetItems(), m_items.Get());
         GenerateActionProjection(sharedContainer->GetSelectAction(), &m_selectAction);
         m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedContainer->GetStyle());
+        m_verticalAlignment = static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedContainer->GetVerticalContentAlignment());
         
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedContainer));
         return S_OK;
@@ -80,6 +81,20 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
+    _Use_decl_annotations_
+    HRESULT AdaptiveContainer::get_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment* verticalAlignment)
+    {
+        *verticalAlignment = m_verticalAlignment;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveContainer::put_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment verticalAlignment)
+    {
+        m_verticalAlignment = verticalAlignment;
+        return S_OK;
+    }
+
     HRESULT AdaptiveContainer::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     {
         std::shared_ptr<AdaptiveSharedNamespace::Container> container = std::make_shared<AdaptiveSharedNamespace::Container>();
@@ -93,6 +108,7 @@ AdaptiveNamespaceStart
         }
 
         container->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
+        container->SetVerticalContentAlignment(static_cast<AdaptiveSharedNamespace::VerticalContentAlignment>(m_verticalAlignment));
 
         GenerateSharedElements(m_items.Get(), container->GetItems());
 

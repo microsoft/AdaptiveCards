@@ -19,5 +19,6 @@
 - (void)adjustHuggingForLastElement;
 - (ACRContainerStyle)style;
 - (void)setStyle:(ACRContainerStyle)stye;
+- (void)hideAllShowCards;
 
 @end

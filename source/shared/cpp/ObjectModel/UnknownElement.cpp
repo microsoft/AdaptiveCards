@@ -14,19 +14,10 @@ UnknownElement::UnknownElement() :
 {
 }
 
-Json::Value UnknownElement::SerializeToJsonValue()
-{
-    Json::Value root = GetAdditionalProperties();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = CardElementTypeToString(CardElementType::Unknown); 
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Spacing)] = SpacingToString(GetSpacing());
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator)] = GetSeparator();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id)] = GetId();
-    return root;
-}
-
 std::shared_ptr<BaseCardElement> UnknownElementParser::Deserialize(
     std::shared_ptr<ElementParserRegistration>,
     std::shared_ptr<ActionParserRegistration>,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>&,
     const Json::Value& json)
 {
     std::shared_ptr<UnknownElement> unknown = BaseCardElement::Deserialize<UnknownElement>(json);
@@ -36,7 +27,8 @@ std::shared_ptr<BaseCardElement> UnknownElementParser::Deserialize(
 std::shared_ptr<BaseCardElement> UnknownElementParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const std::string& jsonString)
 {
-    return UnknownElementParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+    return UnknownElementParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
 }

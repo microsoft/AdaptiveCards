@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Adaptive Cards Designer (preview)</title>
+    <script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.min.js"></script>
+    <script src="editor/monaco/min/vs/loader.js"></script>
+    <script src="editor/monaco-loader.js"></script>
+
+    <script src="dist/adaptivecards-designer.js"></script>
+
+    <link rel="stylesheet" href="css/app.css" type="text/css" />
+    <link rel="stylesheet" href="css/adaptivecards-default.css" type="text/css" />
+    <link rel="stylesheet" href="css/card-designer.css" type="text/css" />
+    <link rel="stylesheet" href="css/adaptivecards-controls.css" type="text/css" />
+</head>
+
+<body>
+    <div style="display: flex; flex-direction: column; height: 100%;">
+        <div id="header" style="flex: 0 0 auto; background-color: black; display: flex; align-items: center;">
+            <img src="./assets/adaptive-card-square-150.png" style="flex: 0 0 48px; height: 48px; margin-right: 20px;" />
+            <span style="color: white; font-size: 22px;">Adaptive Card Designer (preview)</span>
+        </div>
+        <div id="toolbar" class="acd-toolbar">
+            <button id="btnToggleFullScreen" class="acd-toolbar-button acd-icon-fullScreen">Enter Full Screen</button>
+            <span style="color: black; margin-left: 8px;">Select Host App:</span>
+            <div id="containerPickerHost" style="flex: 0 0 250px; margin: 0px 8px 0px 8px;"></div>
+            <div class="acd-toolbar-separator"></div>
+            <button id="btnUndo" disabled=true class="acd-toolbar-button acd-toolbar-button-iconOnly acd-icon-undo" title="Undo your last changes"></button>
+            <button id="btnRedo" disabled=true class="acd-toolbar-button acd-toolbar-button-iconOnly acd-icon-redo" title="Redo your last changes"></button>
+            <div class="acd-toolbar-separator"></div>
+            <button id="btnNewCard" class="acd-toolbar-button acd-icon-newCard" title="Start a new card from scratch">New card</button>
+            <button id="btnCopyToClipboard" class="acd-toolbar-button acd-icon-copy" title="Copy the JSON for this card to the clipboard">Copy JSON</button>
+        </div>
+        <div class="content" style="display: flex; flex: 1 1 auto; overflow-y: hidden;">
+            <div id="leftCollapsedPaneTabHost" class="acd-verticalCollapsedTabContainer" style="border-right: 1px solid #D2D2D2;"></div>
+            <div id="toolPalettePane" class="selector-toolPalette" style="background-color: white; border-right: 1px solid #D2D2D2;">
+                <div id="toolPalette" class="acd-dockedPane"></div>
+            </div>
+            <div style="display: flex; flex-direction: column; flex: 1 1 100%; overflow: hidden;">
+                <div style="display: flex; flex: 1 1 100%; overflow: hidden;">
+                    <div id="designerBackground" style="flex: 1 1 70%; background-color: #F6F6F6; display: flex; flex-direction: column; overflow: auto;">
+                        <div style="flex: 1 1 100%; overflow: auto;">
+                            <div id="designerHost" style="margin: 20px 40px 20px 20px;"></div>
+                        </div>
+                        <div id="errorPane" class="acd-error-pane acd-hidden"></div>
+                    </div>
+                    <div id="treeViewVerticalSplitter" class="acd-vertical-splitter selector-treeView"></div>
+                    <div id="treeViewPane" class="acd-treeView-pane selector-treeView">
+                        <div id="treeViewHost" class="acd-treeView-host"></div>
+                    </div>
+                    <div id="propertyVerticalSplitter" class="acd-vertical-splitter selector-propertySheet"></div>
+                    <div id="propertySheetPane" class="acd-propertySheet-pane selector-propertySheet">
+                        <div id="propertySheetHost" class="acd-propertySheet-host"></div>
+                    </div>
+                </div>
+                <div id="horizontalSplitter" class="acd-horizontal-splitter selector-jsonEditor"></div>
+                <div id="jsonEditorPane" class="acd-json-editor-pane selector-jsonEditor">
+                    <div id="jsonEditorHost" class="acd-json-editor-host">
+                        <div id="loadingEditor" style="padding: 8px;">Loading editor...</div>
+                    </div>
+                </div>
+                <div id="bottomCollapsedPaneTabHost" style="border-top: 1px solid #D2D2D2;"></div>
+            </div>
+            <div id="rightCollapsedPaneTabHost" class="acd-verticalCollapsedTabContainer" style="border-left: 1px solid #D2D2D2;"></div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -97,21 +97,10 @@ AdaptiveNamespaceStart
 
         RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseInputElement>(timeInput)));
 
-        std::string max;
-        RETURN_IF_FAILED(HStringToUTF8(m_max.Get(), max));
-        timeInput->SetMax(max);
-
-        std::string min;
-        RETURN_IF_FAILED(HStringToUTF8(m_min.Get(), min));
-        timeInput->SetMin(min);
-
-        std::string placeholder;
-        RETURN_IF_FAILED(HStringToUTF8(m_placeholder.Get(), placeholder));
-        timeInput->SetPlaceholder(placeholder);
-
-        std::string value;
-        RETURN_IF_FAILED(HStringToUTF8(m_value.Get(), value));
-        timeInput->SetValue(value);
+        timeInput->SetMax(HStringToUTF8(m_max.Get()));
+        timeInput->SetMin(HStringToUTF8(m_min.Get()));
+        timeInput->SetPlaceholder(HStringToUTF8(m_placeholder.Get()));
+        timeInput->SetValue(HStringToUTF8(m_value.Get()));
 
         sharedModel = timeInput;
 

@@ -7,7 +7,7 @@
 #include "Container.h"
 #include "ShowCardAction.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 
 void ParseUtil::ThrowIfNotJsonObject(const Json::Value& json)
 {
@@ -187,7 +187,7 @@ void ParseUtil::ExpectTypeString(const Json::Value& json, CardElementType bodyTy
 {
     std::string actualType = GetTypeAsString(json);
     std::string expectedTypeStr = CardElementTypeToString(bodyType);
-    bool isTypeCorrect = expectedTypeStr.compare(actualType) == 0;
+    const bool isTypeCorrect = expectedTypeStr.compare(actualType) == 0;
     if (!isTypeCorrect)
     {
         throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "The JSON element did not have the correct type. Expected: " + expectedTypeStr + ", Actual: " + actualType);
@@ -213,15 +213,7 @@ void ParseUtil::ExpectKeyAndValueType(const Json::Value& json, const char* expec
 
 CardElementType ParseUtil::GetCardElementType(const Json::Value& json)
 {
-    std::string actualType = GetTypeAsString(json);
-    try
-    {
-        return CardElementTypeFromString(actualType);
-    }
-    catch (const std::out_of_range&)
-    {
-        throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Invalid CardElementType");
-    }
+    return CardElementTypeFromString(GetTypeAsString(json));
 }
 
 CardElementType ParseUtil::TryGetCardElementType(const Json::Value& json)
@@ -238,15 +230,7 @@ CardElementType ParseUtil::TryGetCardElementType(const Json::Value& json)
 
 ActionType ParseUtil::GetActionType(const Json::Value& json)
 {
-    std::string actualType = GetTypeAsString(json);
-    try
-    {
-        return ActionTypeFromString(actualType);
-    }
-    catch (const std::out_of_range&)
-    {
-        throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Invalid ActionType");
-    }
+    return ActionTypeFromString(GetTypeAsString(json));
 }
 
 ActionType ParseUtil::TryGetActionType(const Json::Value& json)
@@ -280,7 +264,7 @@ Json::Value ParseUtil::GetArray(
     return elementArray;
 }
 
-Json::Value ParseUtil::GetJsonValueFromString(const std::string jsonString)
+Json::Value ParseUtil::GetJsonValueFromString(const std::string &jsonString)
 {
     Json::Reader reader;
     Json::Value jsonValue;
@@ -302,15 +286,18 @@ Json::Value ParseUtil::ExtractJsonValue(const Json::Value& json, AdaptiveCardSch
     return propertyValue;
 }
 
-std::string ParseUtil::ToLowercase(std::string value)
+std::string ParseUtil::ToLowercase(std::string const &value)
 {
-    std::transform(value.begin(), value.end(), value.begin(), [](char c) { return std::tolower(c, std::locale()); });
-    return value;
+    std::string new_value;
+    new_value.resize(value.size());
+    auto new_end = std::transform(value.begin(), value.end(), new_value.begin(), [](char c) { return std::tolower(c, std::locale()); });
+    return new_value;
 }
 
 std::vector<std::shared_ptr<BaseCardElement>> ParseUtil::GetElementCollection(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const Json::Value& json,
     AdaptiveCardSchemaKey key,
     bool isRequired)
@@ -330,18 +317,18 @@ std::vector<std::shared_ptr<BaseCardElement>> ParseUtil::GetElementCollection(
         // Get the element's type
         std::string typeString = GetTypeAsString(curJsonValue);
 
+        // Use the parser that maps to the type
         std::shared_ptr<BaseCardElementParser> parser = elementParserRegistration->GetParser(typeString);
 
-        //Parse it if it's allowed by the current parsers
-        if (parser != nullptr)
-        {
-            // Use the parser that maps to the type
-            elements.push_back(parser->Deserialize(elementParserRegistration, actionParserRegistration, curJsonValue));
-        }
-        else
+        if (parser == nullptr)
         {
             parser = elementParserRegistration->GetParser("Unknown");
-            elements.push_back(parser->Deserialize(elementParserRegistration, actionParserRegistration, curJsonValue));
+        }
+
+        auto element = parser->Deserialize(elementParserRegistration, actionParserRegistration, warnings, curJsonValue);
+        if (element != nullptr)
+        {
+            elements.push_back(element);
         }
     }
 
@@ -351,6 +338,7 @@ std::vector<std::shared_ptr<BaseCardElement>> ParseUtil::GetElementCollection(
 std::shared_ptr<BaseActionElement> ParseUtil::GetActionFromJsonValue(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const Json::Value& json)
 {
     if (json.empty() || !json.isObject())
@@ -367,7 +355,7 @@ std::shared_ptr<BaseActionElement> ParseUtil::GetActionFromJsonValue(
     if (parser != nullptr)
     {
         // Use the parser that maps to the type
-        return parser->Deserialize(elementParserRegistration, actionParserRegistration, json);
+        return parser->Deserialize(elementParserRegistration, actionParserRegistration, warnings, json);
     }
 
     return nullptr;
@@ -376,6 +364,7 @@ std::shared_ptr<BaseActionElement> ParseUtil::GetActionFromJsonValue(
 std::vector<std::shared_ptr<BaseActionElement>> ParseUtil::GetActionCollection(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const Json::Value& json,
     AdaptiveCardSchemaKey key,
     bool isRequired)
@@ -393,7 +382,7 @@ std::vector<std::shared_ptr<BaseActionElement>> ParseUtil::GetActionCollection(
 
     for (const auto& curJsonValue : elementArray)
     {
-        auto action = ParseUtil::GetActionFromJsonValue(elementParserRegistration, actionParserRegistration, curJsonValue);
+        auto action = ParseUtil::GetActionFromJsonValue(elementParserRegistration, actionParserRegistration, warnings, curJsonValue);
         if (action != nullptr)
         {
             elements.push_back(action);
@@ -406,6 +395,7 @@ std::vector<std::shared_ptr<BaseActionElement>> ParseUtil::GetActionCollection(
 std::shared_ptr<BaseActionElement> ParseUtil::GetSelectAction(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const Json::Value& json,
     AdaptiveCardSchemaKey key,
     bool isRequired)
@@ -414,18 +404,9 @@ std::shared_ptr<BaseActionElement> ParseUtil::GetSelectAction(
 
     if (!selectAction.empty())
     {
-        return ParseUtil::GetActionFromJsonValue(elementParserRegistration, actionParserRegistration, selectAction);
+        return ParseUtil::GetActionFromJsonValue(elementParserRegistration, actionParserRegistration, warnings, selectAction);
     }
 
     return nullptr;
 }
-
-ParseUtil::ParseUtil()
-{
 }
-
-ParseUtil::~ParseUtil()
-{
-}
-
-AdaptiveSharedNamespaceEnd

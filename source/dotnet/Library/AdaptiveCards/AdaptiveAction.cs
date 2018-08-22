@@ -27,6 +27,14 @@ namespace AdaptiveCards
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [Obsolete("ActionBase.Speak has been deprecated.  Use AdaptiveCard.Speak", false)]
         public string Speak { get; set; }
-    }
 
+        /// <summary>
+        ///     IconUrl that can be specified for actions
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        public string IconUrl { get; set; }
+    }
 }

@@ -315,5 +315,65 @@ namespace AdaptiveCards.Test
             Assert.AreEqual("Hello", card.Speak);
 
         }
+
+        [TestMethod]
+        public void CardLevelSelectAction()
+        {
+            var json = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.0"",
+  ""selectAction"": {
+      ""type"": ""Action.OpenUrl"",
+      ""title"": ""Open URL"",
+      ""url"": ""http://adaptivecards.io""
+  }
+}";
+            var card = AdaptiveCard.FromJson(json).Card;
+            var actualSelectAction = card.SelectAction as AdaptiveOpenUrlAction;
+
+            var expectedSelectAction = new AdaptiveOpenUrlAction
+            {
+                Title = "Open URL",
+                UrlString = "http://adaptivecards.io"
+            };
+            Assert.AreEqual(expectedSelectAction.Title, actualSelectAction.Title);
+            Assert.AreEqual(expectedSelectAction.UrlString, actualSelectAction.UrlString);
+        }
+
+        [TestMethod]
+        public void ContainerStyle()
+        {
+            var json = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.0"",
+  ""body"": [
+    {
+      ""type"": ""Container"",
+      ""style"": ""default"",
+      ""items"": []
+    },
+    {
+      ""type"": ""Container"",
+      ""style"": ""emphasis"",
+      ""items"": []
+    },
+    {
+      ""type"": ""Container"",
+      ""items"": []
+    }
+  ]
+}";
+            var card = AdaptiveCard.FromJson(json).Card;
+            var actualSelectAction = card.SelectAction as AdaptiveOpenUrlAction;
+
+            var containerDefaultStyle = card.Body[0] as AdaptiveContainer;
+            Assert.AreEqual(AdaptiveContainerStyle.Default, containerDefaultStyle.Style);
+
+            var containerEmphasisStyle = card.Body[1] as AdaptiveContainer;
+            Assert.AreEqual(AdaptiveContainerStyle.Emphasis, containerEmphasisStyle.Style);
+
+            var containerNonStyle = card.Body[2] as AdaptiveContainer;
+            Assert.AreEqual(null, containerNonStyle.Style);
+        }
     }
 }

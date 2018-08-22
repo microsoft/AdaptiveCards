@@ -6,17 +6,15 @@
 #include "Enums.h"
 #include "ElementParserRegistration.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 class BaseInputElement;
 class ChoiceSetInput : public BaseInputElement
 {
 friend class ChoiceSetInputParser;
 public:
     ChoiceSetInput();
-    ChoiceSetInput(Spacing spacing, bool separation);
-    ChoiceSetInput(Spacing spacing, bool separation, std::vector<std::shared_ptr<ChoiceInput>>& choices);
 
-    virtual Json::Value SerializeToJsonValue() override;
+    Json::Value SerializeToJsonValue() const override;
 
     bool GetIsMultiSelect() const;
     void SetIsMultiSelect(const bool isMultiSelect);
@@ -28,29 +26,38 @@ public:
     const std::vector<std::shared_ptr<ChoiceInput>>& GetChoices() const;
 
     std::string GetValue() const;
-    void SetValue(std::string value);
+    void SetValue(const std::string &value);
 
 private:
-    void PopulateKnownPropertiesSet();
+    void PopulateKnownPropertiesSet() override;
 
     std::string m_value;
     bool m_isMultiSelect;
     ChoiceSetStyle m_choiceSetStyle;
 
-    std::vector<std::shared_ptr<ChoiceInput>> m_choices; 
+    std::vector<std::shared_ptr<ChoiceInput>> m_choices;
 };
 
 class ChoiceSetInputParser : public BaseCardElementParser
 {
 public:
+    ChoiceSetInputParser() = default;
+    ChoiceSetInputParser(const ChoiceSetInputParser&) = default;
+    ChoiceSetInputParser(ChoiceSetInputParser&&) = default;
+    ChoiceSetInputParser& operator=(const ChoiceSetInputParser&) = default;
+    ChoiceSetInputParser& operator=(ChoiceSetInputParser&&) = default;
+    virtual ~ChoiceSetInputParser() = default;
+
     std::shared_ptr<BaseCardElement> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const Json::Value& root);
-    
+        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+        const Json::Value& root) override;
+
     std::shared_ptr<BaseCardElement> DeserializeFromString(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
         const std::string& jsonString);
 };
-AdaptiveSharedNamespaceEnd
+}

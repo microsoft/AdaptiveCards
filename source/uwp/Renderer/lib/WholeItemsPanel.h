@@ -4,8 +4,10 @@
 #include <windows.ui.xaml.shapes.h>
 
 AdaptiveNamespaceStart
-    class WholeItemsPanel : public Microsoft::WRL::RuntimeClass<ABI::AdaptiveNamespace::IWholeItemsPanel,
+    class DECLSPEC_UUID("32934D77-6248-4915-BD2A-8F52EF6C8322") WholeItemsPanel : public Microsoft::WRL::RuntimeClass<
+        ABI::AdaptiveNamespace::IWholeItemsPanel,
         ABI::Windows::UI::Xaml::IFrameworkElementOverrides,
+        Microsoft::WRL::CloakedIid<ITypePeek>,
         Microsoft::WRL::ComposableBase<ABI::Windows::UI::Xaml::Controls::IPanelFactory>>
     {
         AdaptiveRuntimeStringClass(WholeItemsPanel)
@@ -35,9 +37,25 @@ AdaptiveNamespaceStart
             virtual HRESULT STDMETHODCALLTYPE IsAllContentClippedOut(__RPC__out boolean* pResult);
             virtual HRESULT STDMETHODCALLTYPE IsTruncated(__RPC__out boolean* pResult);
 
+            void AddElementToStretchablesList(_In_ ABI::Windows::UI::Xaml::IUIElement* element);
+            bool IsUIElementInStretchableList(_In_ ABI::Windows::UI::Xaml::IUIElement* element);
+            void SetVerticalContentAlignment(_In_ ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment);
+
+            // ITypePeek method
+            void *PeekAt(REFIID riid) override
+            {
+                return PeekHelper(riid, this);
+            }
+
     private:
-        unsigned int m_visibleCount = 0;
-        unsigned int m_measuredCount = 0;
+        unsigned int m_visibleCount{};
+        unsigned int m_measuredCount{};
+
+        unsigned int m_accessKeyCount{};
+        float m_calculatedSize{};
+        bool m_allElementsRendered{};
+        std::set<std::string> m_stretchableItems;
+        ABI::AdaptiveNamespace::VerticalContentAlignment m_verticalContentAlignment{};
 
         // true if this represents the mainPanel.
         // Some rules such as images vertical stretching only apply for this panel

@@ -38,11 +38,7 @@ public class Image extends BaseCardElement {
   }
 
   public Image() {
-    this(AdaptiveCardObjectModelJNI.new_Image__SWIG_0(), true);
-  }
-
-  public Image(Spacing spacing, boolean separator, String uri, ImageStyle imageStyle, ImageSize imageSize, long width, long height, String altText, HorizontalAlignment hAlignment) {
-    this(AdaptiveCardObjectModelJNI.new_Image__SWIG_1(spacing.swigValue(), separator, uri, imageStyle.swigValue(), imageSize.swigValue(), width, height, altText, hAlignment.swigValue()), true);
+    this(AdaptiveCardObjectModelJNI.new_Image(), true);
   }
 
   public JsonValue SerializeToJsonValue() {
@@ -55,6 +51,14 @@ public class Image extends BaseCardElement {
 
   public void SetUrl(String value) {
     AdaptiveCardObjectModelJNI.Image_SetUrl(swigCPtr, this, value);
+  }
+
+  public String GetBackgroundColor() {
+    return AdaptiveCardObjectModelJNI.Image_GetBackgroundColor(swigCPtr, this);
+  }
+
+  public void SetBackgroundColor(String value) {
+    AdaptiveCardObjectModelJNI.Image_SetBackgroundColor(swigCPtr, this, value);
   }
 
   public ImageStyle GetImageStyle() {
@@ -98,24 +102,24 @@ public class Image extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Image_SetSelectAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
   }
 
-  public long GetWidth() {
-    return AdaptiveCardObjectModelJNI.Image_GetWidth(swigCPtr, this);
+  public long GetPixelWidth() {
+    return AdaptiveCardObjectModelJNI.Image_GetPixelWidth(swigCPtr, this);
   }
 
-  public void SetWidth(long value) {
-    AdaptiveCardObjectModelJNI.Image_SetWidth(swigCPtr, this, value);
+  public void SetPixelWidth(long value) {
+    AdaptiveCardObjectModelJNI.Image_SetPixelWidth(swigCPtr, this, value);
   }
 
-  public long GetHeight() {
-    return AdaptiveCardObjectModelJNI.Image_GetHeight(swigCPtr, this);
+  public long GetPixelHeight() {
+    return AdaptiveCardObjectModelJNI.Image_GetPixelHeight(swigCPtr, this);
   }
 
-  public void SetHeight(long value) {
-    AdaptiveCardObjectModelJNI.Image_SetHeight(swigCPtr, this, value);
+  public void SetPixelHeight(long value) {
+    AdaptiveCardObjectModelJNI.Image_SetPixelHeight(swigCPtr, this, value);
   }
 
-  public void GetResourceUris(StringVector resourceUris) {
-    AdaptiveCardObjectModelJNI.Image_GetResourceUris(swigCPtr, this, StringVector.getCPtr(resourceUris), resourceUris);
+  public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {
+    AdaptiveCardObjectModelJNI.Image_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceInfo), resourceInfo);
   }
 
   public static Image dynamic_cast(BaseCardElement baseCardElement) {

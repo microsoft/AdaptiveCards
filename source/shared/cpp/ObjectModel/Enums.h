@@ -8,7 +8,7 @@
 #include <strings.h>
 #endif // _WIN32
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 
 struct EnumHash
 {
@@ -27,7 +27,7 @@ struct CaseInsensitiveEqualTo {
 
 struct CaseInsensitiveHash {
     size_t operator() (const std::string& keyval) const {
-        return std::accumulate(keyval.begin(), keyval.end(), size_t{ 0 }, [](size_t acc, char c) { return acc + static_cast<size_t>(std::tolower(c)); });
+        return std::accumulate(keyval.begin(), keyval.end(), size_t{ 0 }, [](size_t acc, unsigned char c) { return acc + std::toupper(c); });
     }
 };
 
@@ -42,6 +42,7 @@ enum class AdaptiveCardSchemaKey
     ActionsOrientation,
     AdaptiveCard,
     AllowCustomStyle,
+    AllowInlinePlayback,
     AltText,
     Attention,
     BackgroundColor,
@@ -70,6 +71,7 @@ enum class AdaptiveCardSchemaKey
     Data,
     DateInput,
     Default,
+    DefaultPoster,
     Emphasis,
     ExtraLarge,
     Facts,
@@ -82,6 +84,7 @@ enum class AdaptiveCardSchemaKey
     Height,
     HorizontalAlignment,
     IconPlacement,
+    IconSize,
     IconUrl,
     Id,
     Image,
@@ -110,12 +113,16 @@ enum class AdaptiveCardSchemaKey
     MaxLength,
     MaxLines,
     MaxWidth,
+    Media, 
     Medium,
     Method,
+    MimeType,
     Min,
     NumberInput,
     Padding,
     Placeholder,
+    PlayButton,
+    Poster,
     Right,
     SelectAction,
     Separator,
@@ -124,6 +131,7 @@ enum class AdaptiveCardSchemaKey
     ShowCardActionConfig,
     Size,
     Small,
+    Sources,
     Spacing,
     SpacingDefinition,
     Speak,
@@ -148,6 +156,7 @@ enum class AdaptiveCardSchemaKey
     ValueOff,
     ValueOn,
     Version,
+    VerticalContentAlignment,
     Warning,
     Weight,
     Width,
@@ -227,6 +236,7 @@ enum class CardElementType
     ToggleInput,
     Custom,
     Unknown,
+    Media
 };
 
 enum class ActionType
@@ -300,6 +310,9 @@ enum class WarningStatusCode {
     MaxActionsExceeded,
     AssetLoadFailed,
     UnsupportedSchemaVersion,
+    UnsupportedMediaType,
+    InvalidMediaMix,
+    InvalidColorFormat,
 };
 
 enum class DateTimePreparsedTokenFormat {
@@ -316,6 +329,19 @@ enum class IconPlacement
     LeftOfTitle
 };
 
+enum class VerticalContentAlignment
+{
+    Top = 0,
+    Center,
+    Bottom
+};
+
+enum class HeightType
+{
+    Auto = 0,
+    Stretch
+};
+
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type);
 AdaptiveCardSchemaKey AdaptiveCardSchemaKeyFromString(const std::string& type);
 
@@ -324,6 +350,9 @@ CardElementType CardElementTypeFromString(const std::string& elementType);
 
 const std::string ActionTypeToString(ActionType actionType);
 ActionType ActionTypeFromString(const std::string& actionType);
+
+const std::string HeightTypeToString(HeightType heightType);
+HeightType HeightTypeFromString(const std::string& heightType);
 
 const std::string HorizontalAlignmentToString(HorizontalAlignment alignment);
 HorizontalAlignment HorizontalAlignmentFromString(const std::string& alignment);
@@ -370,6 +399,9 @@ ActionAlignment ActionAlignmentFromString(const std::string& alignment);
 const std::string IconPlacementToString(IconPlacement placement);
 IconPlacement IconPlacementFromString(const std::string& placement);
 
+const std::string VerticalContentAlignmentToString(VerticalContentAlignment verticalContentAlignment);
+VerticalContentAlignment VerticalContentAlignmentFromString(const std::string& verticalContentAlignment);
+
 template <typename T>
 const std::unordered_map<std::string, T, CaseInsensitiveHash, CaseInsensitiveEqualTo>
 GenerateStringToEnumMap(const std::unordered_map<T, std::string, EnumHash>& keyToStringMap)
@@ -381,4 +413,4 @@ GenerateStringToEnumMap(const std::unordered_map<T, std::string, EnumHash>& keyT
     }
     return result;
 }
-AdaptiveSharedNamespaceEnd
+}

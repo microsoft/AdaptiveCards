@@ -7,20 +7,40 @@ using namespace AdaptiveSharedNamespace;
 TextInput::TextInput() :
     BaseInputElement(CardElementType::TextInput),
     m_isMultiline(false),
-    m_maxLength(0)
+    m_maxLength(0),
+    m_style(TextInputStyle::Text)
 {
     PopulateKnownPropertiesSet();
 }
 
-Json::Value TextInput::SerializeToJsonValue()
+Json::Value TextInput::SerializeToJsonValue() const
 {
     Json::Value root = BaseInputElement::SerializeToJsonValue();
 
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiline)] = GetIsMultiline();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLength)] = GetMaxLength();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder)] = GetPlaceholder();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = GetValue();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = TextInputStyleToString(GetTextInputStyle());
+    if (m_isMultiline)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiline)] = m_isMultiline;
+    }
+
+    if (m_maxLength != 0)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLength)] = m_maxLength;
+    }
+
+    if (!m_placeholder.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder)] = m_placeholder;
+    }
+
+    if (!m_value.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = m_value;
+    }
+
+    if (m_style != TextInputStyle::Text)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = TextInputStyleToString(m_style);
+    }
 
     return root;
 }
@@ -30,7 +50,7 @@ std::string TextInput::GetPlaceholder() const
     return m_placeholder;
 }
 
-void TextInput::SetPlaceholder(const std::string value)
+void TextInput::SetPlaceholder(const std::string &value)
 {
     m_placeholder = value;
 }
@@ -40,7 +60,7 @@ std::string TextInput::GetValue() const
     return m_value;
 }
 
-void TextInput::SetValue(const std::string value)
+void TextInput::SetValue(const std::string &value)
 {
     m_value = value;
 }
@@ -78,6 +98,7 @@ void TextInput::SetTextInputStyle(const TextInputStyle value)
 std::shared_ptr<BaseCardElement> TextInputParser::Deserialize(
     std::shared_ptr<ElementParserRegistration>,
     std::shared_ptr<ActionParserRegistration>,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>&,
     const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::TextInput);
@@ -96,16 +117,17 @@ std::shared_ptr<BaseCardElement> TextInputParser::Deserialize(
 std::shared_ptr<BaseCardElement> TextInputParser::DeserializeFromString(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const std::string& jsonString)
 {
-    return TextInputParser::Deserialize(elementParserRegistration, actionParserRegistration, ParseUtil::GetJsonValueFromString(jsonString));
+    return TextInputParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void TextInput::PopulateKnownPropertiesSet() 
+void TextInput::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiline));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLength));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::TextInput));
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiline),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLength),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::TextInput)});
 }

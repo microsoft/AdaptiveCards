@@ -20,12 +20,11 @@
 
 using namespace AdaptiveSharedNamespace;
 
-DateTimePreparser::DateTimePreparser() :
-    m_hasDateTokens(false)
+DateTimePreparser::DateTimePreparser() : m_hasDateTokens(false)
 {
 }
 
-DateTimePreparser::DateTimePreparser(std::string in)
+DateTimePreparser::DateTimePreparser(std::string const &in) : m_hasDateTokens(false)
 {
     ParseDateTime(in);
 }
@@ -35,12 +34,12 @@ std::vector<std::shared_ptr<DateTimePreparsedToken>> DateTimePreparser::GetTextT
     return m_textTokenCollection;
 }
 
-bool DateTimePreparser::HasDateTokens()
+bool DateTimePreparser::HasDateTokens() const
 {
     return m_hasDateTokens;
 }
 
-void DateTimePreparser::AddTextToken(std::string text, DateTimePreparsedTokenFormat format)
+void DateTimePreparser::AddTextToken(std::string const &text, DateTimePreparsedTokenFormat format)
 {
     if (!text.empty())
     {
@@ -48,13 +47,13 @@ void DateTimePreparser::AddTextToken(std::string text, DateTimePreparsedTokenFor
     }
 }
 
-void DateTimePreparser::AddDateToken(std::string text, struct tm date, DateTimePreparsedTokenFormat format)
+void DateTimePreparser::AddDateToken(std::string const &text, struct tm date, DateTimePreparsedTokenFormat format)
 {
     m_textTokenCollection.emplace_back(std::make_shared<DateTimePreparsedToken>(text, date, format));
     m_hasDateTokens = true;
 }
 
-std::string DateTimePreparser::Concatenate()
+std::string DateTimePreparser::Concatenate() const
 {
     std::string formedString;
     for (const auto& piece : m_textTokenCollection)
@@ -64,7 +63,7 @@ std::string DateTimePreparser::Concatenate()
     return formedString;
 }
 
-bool DateTimePreparser::IsValidTimeAndDate(const struct tm &parsedTm, int hours, int minutes)
+bool DateTimePreparser::IsValidTimeAndDate(const struct tm &parsedTm, const int hours, const int minutes)
 {
     if (parsedTm.tm_mon <= 12 && parsedTm.tm_mday <= 31 && parsedTm.tm_hour <= 24 &&
         parsedTm.tm_min <= 60 && parsedTm.tm_sec <= 60 && hours <= 24 && minutes <= 60)
@@ -89,7 +88,16 @@ bool DateTimePreparser::IsValidTimeAndDate(const struct tm &parsedTm, int hours,
     return false;
 }
 
-void DateTimePreparser::ParseDateTime(std::string in)
+constexpr time_t IntToTimeT(int timeToConvert)
+{
+#pragma warning(push)
+#pragma warning(disable: 26472)
+	// disable warning about using static_cast since we need to hard cast up.
+	return static_cast<time_t>(timeToConvert);
+#pragma warning(pop)
+}
+
+void DateTimePreparser::ParseDateTime(std::string const &in)
 {
     std::vector<DateTimePreparsedToken> sections;
 
@@ -115,22 +123,21 @@ void DateTimePreparser::ParseDateTime(std::string in)
 
     while (std::regex_search(text, matches, pattern))
     {
-        time_t offset{};
-        int  formatStyle{};
+        int formatStyle{};
         // Date is matched
-        bool isDate = matches[IsDate].matched;
+        const bool isDate = matches[IsDate].matched;
         int hours{}, minutes{};
         struct tm parsedTm{};
-        int *addrs[] = {&parsedTm.tm_year, &parsedTm.tm_mon,
-            &parsedTm.tm_mday, &parsedTm.tm_hour, &parsedTm.tm_min,
-            &parsedTm.tm_sec, &hours, &minutes};
+		std::vector<int*> addrs = { &parsedTm.tm_year, &parsedTm.tm_mon,
+			&parsedTm.tm_mday, &parsedTm.tm_hour, &parsedTm.tm_min,
+			&parsedTm.tm_sec, &hours, &minutes };
 
         if (matches[Style].matched)
         {
             // match for long/short/compact
-            bool formatHasSpace = matches[Format].str()[1] == ' ';
-            int formatStartIndex = formatHasSpace ? 2 : 1;
-            formatStyle = matches[Format].str()[formatStartIndex];
+            bool formatHasSpace = matches[Format].str().at(1) == ' ';
+            const int formatStartIndex = formatHasSpace ? 2 : 1;
+            formatStyle = matches[Format].str().at(formatStartIndex);
         }
 
         AddTextToken(matches.prefix().str(), DateTimePreparsedTokenFormat::RegularString);
@@ -144,19 +151,20 @@ void DateTimePreparser::ParseDateTime(std::string in)
 
         for (unsigned int idx = 0; idx < indexer.size(); idx++)
         {
-            if (matches[indexer[idx]].matched)
+            if (matches[indexer.at(idx)].matched)
             {
-                // get indexes for time attributes to index into conrresponding matches
-                // and covert it to string
-                *addrs[idx] = stoi(matches[indexer[idx]]);
+                // get indexes for time attributes to index into corresponding matches
+                // and convert it to string
+				*(addrs.at(idx)) = stoi(matches[indexer.at(idx)]);
             }
         }
 
         // check for date and time validation
         if (IsValidTimeAndDate(parsedTm, hours, minutes))
         {
-            // maches offset sign, 
-            // Z == UTC, 
+			time_t offset{};
+            // maches offset sign,
+            // Z == UTC,
             // + == time added from UTC
             // - == time subtracted from UTC
             if (matches[TimeZone].matched)
@@ -164,10 +172,10 @@ void DateTimePreparser::ParseDateTime(std::string in)
                 // converts to seconds
                 hours *= 3600;
                 minutes *= 60;
-                offset = hours + minutes;
+                offset = IntToTimeT(hours) + IntToTimeT(minutes);
 
-                wchar_t zone = matches[TimeZone].str()[0];
-                // time zone offset calculation 
+                wchar_t zone = matches[TimeZone].str().at(0);
+                // time zone offset calculation
                 if (zone == '+')
                 {
                     offset *= -1;
@@ -186,20 +194,24 @@ void DateTimePreparser::ParseDateTime(std::string in)
                 AddTextToken(matches[0], DateTimePreparsedTokenFormat::RegularString);
             }
 
-            wchar_t tzOffsetBuff[6]{};
+// Disable "array to pointer decay" check for tzOffsetBuff since we can't change strftime's signature
+#pragma warning(push)
+#pragma warning(disable: 26485)
+            char tzOffsetBuff[6]{};
             // gets local time zone offset
-            wcsftime(tzOffsetBuff, 6, L"%z", &parsedTm);
-            std::wstring localTimeZoneOffsetStr(tzOffsetBuff);
-            int nTzOffset = std::stoi(localTimeZoneOffsetStr);
+            strftime(tzOffsetBuff, 6, "%z", &parsedTm);
+            std::string localTimeZoneOffsetStr(tzOffsetBuff);
+            const time_t nTzOffset = IntToTimeT(std::stoi(localTimeZoneOffsetStr));
             offset += ((nTzOffset / 100) * 3600 + (nTzOffset % 100) * 60);
             // add offset to utc
             utc += offset;
             struct tm result{};
+#pragma warning(pop)
 
             // converts to local time from utc
             if (!LOCALTIME(&result, &utc))
             {
-                // localtime() set dst, put_time adjusts time accordingly which is not what we want since 
+                // localtime() set dst, put_time adjusts time accordingly which is not what we want since
                 // we have already taken cared of it in our calculation
                 if (result.tm_isdst == 1)
                 {
@@ -236,7 +248,7 @@ void DateTimePreparser::ParseDateTime(std::string in)
         {
             AddTextToken(matches[0].str(), DateTimePreparsedTokenFormat::RegularString);
         }
-        
+
         text = matches.suffix().str();
     }
 

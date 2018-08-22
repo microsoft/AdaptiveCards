@@ -24,6 +24,12 @@ public class ComboBoxInputHandler extends BaseInputHandler
     {
         // no need to validate
         ChoiceSetInput choiceSetInput = (ChoiceSetInput) m_baseInputElement;
-        return (String) getSpinner().getSelectedItem();
+        int index = getSpinner().getSelectedItemPosition();
+        String selectedItem = "";
+        if (index >= 0 && index < choiceSetInput.GetChoices().size())
+        {
+            selectedItem = choiceSetInput.GetChoices().get(index).GetValue();
+        }
+        return selectedItem;
     }
 }

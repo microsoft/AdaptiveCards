@@ -3,20 +3,19 @@
 
 using namespace AdaptiveSharedNamespace;
 
-AdaptiveCardParseException::AdaptiveCardParseException(const ErrorStatusCode statusCode, const std::string & message) : m_statusCode(statusCode), m_message(message)
+AdaptiveCardParseException::AdaptiveCardParseException(ErrorStatusCode statusCode, const std::string & message) : m_statusCode(statusCode), m_message(message)
 {
 }
 
-AdaptiveCardParseException::~AdaptiveCardParseException()
-{
-}
-
+#pragma warning(push)
+#pragma warning(disable: 26433)
 const char* AdaptiveCardParseException::what() const throw()
 {
     return m_message.c_str();
 }
+#pragma warning(pop)
 
-const ErrorStatusCode AdaptiveCardParseException::GetStatusCode() const
+ErrorStatusCode AdaptiveCardParseException::GetStatusCode() const
 {
     return m_statusCode;
 }

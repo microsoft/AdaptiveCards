@@ -8,10 +8,22 @@ namespace AdaptiveCards.Rendering.Wpf
     {
         public static FrameworkElement Render(AdaptiveContainer container, AdaptiveRenderContext context)
         {
-            var containerStyle = context.Config.ContainerStyles.Default;
             var uiContainer = new Grid();
             //uiContainer.Margin = new Thickness(context.Config.Spacing.Padding);
             uiContainer.Style = context.GetStyle("Adaptive.Container");
+
+            if (container.Style != null)
+            {
+                // Apply background color
+                var containerStyle = context.Config.ContainerStyles.Default;
+                if (container.Style == AdaptiveContainerStyle.Emphasis)
+                {
+                    containerStyle = context.Config.ContainerStyles.Emphasis;
+                }
+
+                uiContainer.SetBackgroundColor(containerStyle.BackgroundColor, context);
+            }
+
             AddContainerElements(uiContainer, container.Items, context);
 
             if (container.SelectAction != null)
@@ -20,7 +32,6 @@ namespace AdaptiveCards.Rendering.Wpf
             }
 
             Grid uiOuterContainer = new Grid();
-            uiOuterContainer.Background = context.GetColorBrush(containerStyle.BackgroundColor);
             uiOuterContainer.Children.Add(uiContainer);
             Border border = new Border();
             border.Child = uiOuterContainer;

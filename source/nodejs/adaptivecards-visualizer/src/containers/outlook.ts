@@ -149,8 +149,7 @@ export class OutlookContainer extends HostContainer {
     }
 
     public getHostConfig(): Adaptive.HostConfig {
-        return new Adaptive.HostConfig({
-            preExpandSingleShowCardAction: true,
+        return new Adaptive.HostConfig({            
             supportsInteractivity: true,
             fontFamily: "Segoe UI",
             spacing: {

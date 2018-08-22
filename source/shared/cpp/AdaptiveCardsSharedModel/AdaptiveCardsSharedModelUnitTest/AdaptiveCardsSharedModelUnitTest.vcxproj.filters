@@ -44,8 +44,28 @@
     <ClCompile Include="ExplicitDimensionTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GatherImagesTest.cpp">
+    <ClCompile Include="ResourceInformationTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ParseUtilTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageBackgroundColorTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ParserRegistrationTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AdaptiveCardParseExceptionTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EverythingBagel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EverythingBagel.json">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
