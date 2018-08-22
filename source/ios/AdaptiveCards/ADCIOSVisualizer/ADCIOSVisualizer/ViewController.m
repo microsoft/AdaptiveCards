@@ -13,6 +13,7 @@
 #import "CustomTextBlockRenderer.h"
 #import "CustomImageRenderer.h"
 #import "ADCResolver.h"
+#import "CustomChoiceSetRenderer.h"
 
 @interface ViewController ()
 {
@@ -74,6 +75,7 @@
         [registration setBaseCardElementRenderer:[CustomTextBlockRenderer getInstance] cardElementType:ACRTextBlock];
         [registration setBaseCardElementRenderer:[CustomInputNumberRenderer getInstance] cardElementType:ACRNumberInput];
         [registration setBaseCardElementRenderer:[CustomImageRenderer getInstance] cardElementType:ACRImage];
+        [registration setBaseCardElementRenderer:[CustomChoiceSetRenderer getInstance] cardElementType:ACRChoiceSetInput];
         _enableCustomRendererButton.backgroundColor = UIColor.redColor;
         _defaultRenderer = [registration getActionSetRenderer];
         [registration setActionSetRenderer:self];
@@ -83,6 +85,7 @@
         [registration setBaseCardElementRenderer:nil cardElementType:ACRTextBlock];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRNumberInput];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRImage];
+        [registration setBaseCardElementRenderer:nil cardElementType:ACRChoiceSetInput];
         [registration setActionSetRenderer:nil];
         _enableCustomRendererButton.backgroundColor = [UIColor colorWithRed:0/255 green:122.0/255 blue:1 alpha:1];
     }

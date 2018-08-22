@@ -40,7 +40,7 @@
 
     ACRInputTableView *inputTableView = [[ACRInputTableView alloc] initWithSuperview:viewGroup];
     [inputTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    ACRToggleInputDataSource *dataSource = [[ACRToggleInputDataSource alloc] initWithInputToggle:toggleBlck WithHostConfig:config];
+    ACRToggleInputDataSource *dataSource = [[ACRToggleInputDataSource alloc] initWithInputToggle:toggleBlck WithHostConfig:config withTintColor:nil];
     inputTableView.delegate = dataSource;
     inputTableView.dataSource = dataSource;
 

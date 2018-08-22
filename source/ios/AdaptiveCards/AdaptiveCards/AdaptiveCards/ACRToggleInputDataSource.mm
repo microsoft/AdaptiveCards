@@ -25,6 +25,7 @@ const CGFloat padding = 16.0f;
 
 - (instancetype)initWithInputToggle:(std::shared_ptr<ToggleInput> const&)toggleInput
       WithHostConfig:(std::shared_ptr<HostConfig> const&)hostConfig
+       withTintColor:(UIColor*) color;
 {
     self = [super init];
 
@@ -32,6 +33,9 @@ const CGFloat padding = 16.0f;
         _title = [NSString stringWithCString:toggleInput->GetTitle().c_str()
                                     encoding:NSUTF8StringEncoding];
         _toggleSwitch = [[UISwitch alloc] init];
+        if(color){
+             [_toggleSwitch setOnTintColor:color];
+        }
         _toggleInputDataSource = toggleInput;
         _config = hostConfig;
         self.id = [[NSString alloc]initWithCString:_toggleInputDataSource->GetId().c_str()
