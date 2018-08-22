@@ -48,8 +48,8 @@
         [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     } else {
         dataSource = [[ACRChoiceSetViewDataSource alloc] initWithInputChoiceSet:choiceSet];
-        ACRChoiceSetViewDataSource *d = (ACRChoiceSetViewDataSource*) dataSource;
-        d.acrChoiceSetResourceDelegate = self;
+        ACRChoiceSetViewDataSource *dataSourceTypeCasted = (ACRChoiceSetViewDataSource*) dataSource;
+        dataSourceTypeCasted.acrChoiceSetResourceDelegate = self;
         [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     }
     

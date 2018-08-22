@@ -254,7 +254,6 @@ typedef NS_ENUM(NSInteger, ACRCellSelected) {
     }
     else{
         image = [UIImage imageNamed:@"checked.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
-        
     }
     return image;
 }
@@ -277,7 +276,6 @@ typedef NS_ENUM(NSInteger, ACRCellSelected) {
     }
     else{
         image = [UIImage imageNamed:@"checked-checkbox-24.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
-        
     }
     return image;
 }
