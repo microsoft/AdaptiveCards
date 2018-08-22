@@ -34,8 +34,8 @@
             _defaultHostConfig = hostconfigParseResult.config;
         }
     }
-
-    // Put setup code here. This method is called before the invocation of each test method in the class.
+    
+    self.continueAfterFailure = NO;
 }
 
 - (void)tearDown {
@@ -82,12 +82,11 @@
 - (void)testACRTextView {
     NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"Feedback" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
-    if(cardParseResult.isValid) {
-        ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card config:_defaultHostConfig widthConstraint:335];
-        ACRTextView *acrTextView = (ACRTextView *)[renderResult.view viewWithTag:kACRTextView];
-        XCTAssertNotNil(acrTextView);
-        XCTAssertTrue([acrTextView.text length] == 0);
-    }
+    XCTAssertTrue(cardParseResult && cardParseResult.isValid);
+    ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card config:_defaultHostConfig widthConstraint:335];
+    ACRTextView *acrTextView = (ACRTextView *)[renderResult.view viewWithTag:kACRTextView];
+    XCTAssertNotNil(acrTextView);
+    XCTAssertTrue([acrTextView.text length] == 0);
 }
 
 - (void)testChoiceSetInputCanGatherDefaultValues {

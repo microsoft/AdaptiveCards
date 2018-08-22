@@ -31,13 +31,13 @@
 		6B3787BB20CB3E0E00015401 /* ACRContentHoldingUIScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B3787B920CB3E0E00015401 /* ACRContentHoldingUIScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B421CC02101503E002F401A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CA74A320181B52002041DF /* QuartzCore.framework */; };
 		6B421CC121015EDD002F401A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F45A071C1EF4BCC3007C6503 /* CoreGraphics.framework */; };
-		6B5D23E9212236A50010EB07 /* unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5D23E7212236A40010EB07 /* unchecked.png */; };
-		6B5D23EA21224B5A0010EB07 /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5D23E6212236A40010EB07 /* checked.png */; };
-		6B5D23ED2122570D0010EB07 /* unchecked-checkbox-24.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5D23EC2122570C0010EB07 /* unchecked-checkbox-24.png */; };
-		6B5D23EF212257170010EB07 /* checked-checkbox-24.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5D23EE212257160010EB07 /* checked-checkbox-24.png */; };
 		6B5D240C212C89E70010EB07 /* ACORemoteResourceInformationPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B5D2409212C89E60010EB07 /* ACORemoteResourceInformationPrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B5D240D212C89E70010EB07 /* ACORemoteResourceInformation.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B5D240A212C89E70010EB07 /* ACORemoteResourceInformation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B5D240E212C89E70010EB07 /* ACORemoteResourceInformation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B5D240B212C89E70010EB07 /* ACORemoteResourceInformation.mm */; };
+		6B5D2418212E1CF80010EB07 /* checked-checkbox-24.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5D2414212E1CF70010EB07 /* checked-checkbox-24.png */; };
+		6B5D2419212E1CF80010EB07 /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5D2415212E1CF70010EB07 /* checked.png */; };
+		6B5D241A212E1CF80010EB07 /* unchecked-checkbox-24.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5D2416212E1CF70010EB07 /* unchecked-checkbox-24.png */; };
+		6B5D241B212E1CF80010EB07 /* unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5D2417212E1CF70010EB07 /* unchecked.png */; };
 		6B6840F91F25EC2D008A933F /* ACRInputChoiceSetRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B6840F71F25EC2D008A933F /* ACRInputChoiceSetRenderer.mm */; };
 		6B7B1A9120B4D2AB00260731 /* Media.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B7B1A8D20B4D2AA00260731 /* Media.cpp */; };
 		6B7B1A9220B4D2AB00260731 /* MediaSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B7B1A8E20B4D2AA00260731 /* MediaSource.cpp */; };
@@ -298,18 +298,16 @@
 		6B1147D61F32F922008846EC /* ACRShowCardTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRShowCardTarget.h; sourceTree = "<group>"; };
 		6B1147D71F32F922008846EC /* ACRShowCardTarget.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRShowCardTarget.mm; sourceTree = "<group>"; };
 		6B14FC60211BBBEA00A11CC5 /* ACRPickerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRPickerView.xib; sourceTree = "<group>"; };
-		6B14FC6B2122267C00A11CC5 /* checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = checked.png; path = "AdaptiveCards/radio-res-ios/checked.png"; sourceTree = SOURCE_ROOT; };
-		6B14FC6C2122267C00A11CC5 /* unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = unchecked.png; path = "AdaptiveCards/radio-res-ios/unchecked.png"; sourceTree = SOURCE_ROOT; };
 		6B268FE620CF19E100D99C1B /* RemoteResourceInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteResourceInformation.h; path = ../../../../shared/cpp/ObjectModel/RemoteResourceInformation.h; sourceTree = "<group>"; };
 		6B3787B820CB3E0E00015401 /* ACRContentHoldingUIScrollView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRContentHoldingUIScrollView.mm; sourceTree = "<group>"; };
 		6B3787B920CB3E0E00015401 /* ACRContentHoldingUIScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRContentHoldingUIScrollView.h; sourceTree = "<group>"; };
-		6B5D23E6212236A40010EB07 /* checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = checked.png; path = AdaptiveCards/checked.png; sourceTree = SOURCE_ROOT; };
-		6B5D23E7212236A40010EB07 /* unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unchecked.png; sourceTree = "<group>"; };
-		6B5D23EC2122570C0010EB07 /* unchecked-checkbox-24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unchecked-checkbox-24.png"; sourceTree = "<group>"; };
-		6B5D23EE212257160010EB07 /* checked-checkbox-24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checked-checkbox-24.png"; sourceTree = "<group>"; };
 		6B5D2409212C89E60010EB07 /* ACORemoteResourceInformationPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACORemoteResourceInformationPrivate.h; sourceTree = "<group>"; };
 		6B5D240A212C89E70010EB07 /* ACORemoteResourceInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACORemoteResourceInformation.h; sourceTree = "<group>"; };
 		6B5D240B212C89E70010EB07 /* ACORemoteResourceInformation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACORemoteResourceInformation.mm; sourceTree = "<group>"; };
+		6B5D2414212E1CF70010EB07 /* checked-checkbox-24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checked-checkbox-24.png"; sourceTree = "<group>"; };
+		6B5D2415212E1CF70010EB07 /* checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checked.png; sourceTree = "<group>"; };
+		6B5D2416212E1CF70010EB07 /* unchecked-checkbox-24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unchecked-checkbox-24.png"; sourceTree = "<group>"; };
+		6B5D2417212E1CF70010EB07 /* unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unchecked.png; sourceTree = "<group>"; };
 		6B6840F61F25EC2D008A933F /* ACRInputChoiceSetRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRInputChoiceSetRenderer.h; sourceTree = "<group>"; };
 		6B6840F71F25EC2D008A933F /* ACRInputChoiceSetRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRInputChoiceSetRenderer.mm; sourceTree = "<group>"; };
 		6B7B1A8D20B4D2AA00260731 /* Media.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Media.cpp; path = ../../../../shared/cpp/ObjectModel/Media.cpp; sourceTree = "<group>"; };
@@ -573,8 +571,10 @@
 		6B14FC682122263800A11CC5 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				6B14FC6B2122267C00A11CC5 /* checked.png */,
-				6B14FC6C2122267C00A11CC5 /* unchecked.png */,
+				6B5D2414212E1CF70010EB07 /* checked-checkbox-24.png */,
+				6B5D2415212E1CF70010EB07 /* checked.png */,
+				6B5D2416212E1CF70010EB07 /* unchecked-checkbox-24.png */,
+				6B5D2417212E1CF70010EB07 /* unchecked.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -626,10 +626,6 @@
 		F423C0B71EE1FBA900905679 /* AdaptiveCards */ = {
 			isa = PBXGroup;
 			children = (
-				6B5D23E6212236A40010EB07 /* checked.png */,
-				6B5D23E7212236A40010EB07 /* unchecked.png */,
-				6B5D23EE212257160010EB07 /* checked-checkbox-24.png */,
-				6B5D23EC2122570C0010EB07 /* unchecked-checkbox-24.png */,
 				6BB2120621000024009EA1BA /* Media */,
 				F423C0D71EE1FF2F00905679 /* SharedLib */,
 				F42979331F30079D00E89914 /* Actions */,
@@ -653,9 +649,6 @@
 				F4CAE77F1F75AB9000545555 /* ACOAdaptiveCard.h */,
 				F4CAE7811F75AB9000545555 /* ACOAdaptiveCardPrivate.h */,
 				F4CAE7801F75AB9000545555 /* ACOAdaptiveCard.mm */,
-				6B5D23F52124AC630010EB07 /* ACORemoteResourceInformation.h */,
-				6B5D23F62124AC640010EB07 /* ACORemoteResourceInformation.mm */,
-				6B5D23F42124AC630010EB07 /* ACORemoteResourceInformationPrivate.h */,
 				F4F6BA34204F200E003741B6 /* ACRParseWarning.h */,
 				F4F6BA37204F2954003741B6 /* ACRParseWarningPrivate.h */,
 				F4F6BA33204F200E003741B6 /* ACRParseWarning.mm */,
@@ -1156,17 +1149,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6B5D23EF212257170010EB07 /* checked-checkbox-24.png in Resources */,
+				6B5D2418212E1CF80010EB07 /* checked-checkbox-24.png in Resources */,
 				F460324520758583006C5358 /* ACRDatePicker.xib in Resources */,
 				6B14FC61211BBBEA00A11CC5 /* ACRPickerView.xib in Resources */,
 				6B9AB30220D32A89005C8E15 /* ACRButton.xib in Resources */,
 				F46032492075997D006C5358 /* ACRInputTableView.xib in Resources */,
-				6B5D23E9212236A50010EB07 /* unchecked.png in Resources */,
-				6B5D23ED2122570D0010EB07 /* unchecked-checkbox-24.png in Resources */,
-				6B5D23EA21224B5A0010EB07 /* checked.png in Resources */,
+				6B5D241A212E1CF80010EB07 /* unchecked-checkbox-24.png in Resources */,
+				6B5D2419212E1CF80010EB07 /* checked.png in Resources */,
 				F4603238207575C7006C5358 /* ACRLabelView.xib in Resources */,
 				F460324720759519006C5358 /* ACRDateTextField.xib in Resources */,
 				F460324120757F38006C5358 /* ACRTextField.xib in Resources */,
+				6B5D241B212E1CF80010EB07 /* unchecked.png in Resources */,
 				6B9AB2FD20D327DB005C8E15 /* ACRCellForCompactMode.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
