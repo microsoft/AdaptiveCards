@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -86,17 +87,25 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
-        public static async void SetBackgroundSource(this Grid grid, Uri url, AdaptiveRenderContext context)
+        public static async void SetBackgroundSource(this Grid grid, Uri uri, AdaptiveRenderContext context)
         {
-            if (url == null)
-                return;
-
-            grid.Background = new ImageBrush(await context.ResolveImageSource(url))
+            // Try to resolve the image URI
+            Uri finalUri = context.Config.ResolveFinalAbsoluteUri(uri);
+            if (finalUri == null)
             {
-                Stretch = Stretch.UniformToFill,
-                AlignmentX = AlignmentX.Left,
-                AlignmentY = AlignmentY.Top
-            };
+                return;
+            }
+
+            BitmapImage bi = await context.ResolveImageSource(finalUri);
+            if (bi != null)
+            {
+                grid.Background = new ImageBrush(bi)
+                {
+                    Stretch = Stretch.UniformToFill,
+                    AlignmentX = AlignmentX.Left,
+                    AlignmentY = AlignmentY.Top
+                };
+            }
         }
 
         public static void SetImageProperties(this Image imageview, AdaptiveImage image, AdaptiveRenderContext context)

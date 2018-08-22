@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
@@ -10,7 +12,16 @@ namespace AdaptiveCards.Rendering.Wpf
         public static FrameworkElement Render(AdaptiveImage image, AdaptiveRenderContext context)
         {
             var uiImage = new Image();
-            uiImage.SetSource(image.Url, context);
+
+            // Try to resolve the image URI
+            Uri finalUri = context.Config.ResolveFinalAbsoluteUri(image.Url);
+            if (finalUri == null)
+            {
+                return uiImage;
+            }
+
+            uiImage.SetSource(finalUri, context);
+
             uiImage.SetHorizontalAlignment(image.HorizontalAlignment);
 
             string style = $"Adaptive.{image.Type}";

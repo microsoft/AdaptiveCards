@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using Newtonsoft.Json;
@@ -177,7 +178,7 @@ namespace AdaptiveCards.Rendering.Html
                 uiCard.Style("font-family", context.Config.FontFamily);
 
             if (card.BackgroundImage != null)
-                uiCard.Style("background-image", $"url('{card.BackgroundImage}')")
+                uiCard.Style("background-image", $"url('{context.Config.ResolveFinalAbsoluteUri(card.BackgroundImage)}')")
                     .Style("background-repeat", "no-repeat")
                     .Style("background-size", "cover");
 
@@ -689,7 +690,7 @@ namespace AdaptiveCards.Rendering.Html
             var uiImage = new HtmlTag("img")
                 .Style("width", "100%")
                 .Attr("alt", image.AltText ?? "card image")
-                .Attr("src", image.Url.ToString());
+                .Attr("src", context.Config.ResolveFinalAbsoluteUri(image.Url));
 
             switch (image.Style)
             {
