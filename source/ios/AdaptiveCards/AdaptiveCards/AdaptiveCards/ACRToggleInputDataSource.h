@@ -18,5 +18,6 @@
 @property NSString *valueOff;
 
 - (instancetype)initWithInputToggle:(std::shared_ptr<AdaptiveCards::ToggleInput> const&)toggleInput
-                     WithHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const&)hostConfig;
+                     WithHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const&)hostConfig
+                      withTintColor:(UIColor*) color;
 @end
