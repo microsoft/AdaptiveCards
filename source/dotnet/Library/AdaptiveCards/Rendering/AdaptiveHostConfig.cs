@@ -38,6 +38,9 @@ namespace AdaptiveCards.Rendering
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public SeparatorConfig Separator { get; set; } = new SeparatorConfig();
 
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public MediaConfig Media { get; set; } = new MediaConfig();
+
         /// <summary>
         /// Toggles whether or not to render inputs and actions
         /// </summary>

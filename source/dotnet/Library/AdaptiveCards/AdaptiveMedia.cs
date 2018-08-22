@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 namespace AdaptiveCards
 {
     /// <summary>
-    ///     The Image element allows for the inclusion of images in an Adaptive Card.
+    ///     The Media element allows for the inclusion of medias (videos and audios) in an Adaptive Card.
     /// </summary>
 #if !NETSTANDARD1_3
     [XmlType(TypeName = TypeName)]
