@@ -50,7 +50,7 @@ namespace AdaptiveCards
                 }
             }
 
-            Warnings.Add(new AdaptiveWarning(-1, $"Token \"{reader.Value}\" of type {reader.TokenType} was not specified as a proper color in the format #AARRGGBB or #RRGGBB"));
+            Warnings.Add(new AdaptiveWarning(-1, $"The Value \"{reader.Value}\" for field \"{reader.Path}\" of type \"{reader.TokenType}\" was not specified as a proper color in the format #AARRGGBB or #RRGGBB, it will be ignored."));
             return null;
         }
 
