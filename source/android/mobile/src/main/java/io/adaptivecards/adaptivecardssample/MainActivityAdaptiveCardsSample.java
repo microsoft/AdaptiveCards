@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.ArrayMap;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -23,6 +24,7 @@ import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.*;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
+import io.adaptivecards.renderer.inputhandler.IInputWatcher;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import org.json.JSONException;
@@ -39,7 +41,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivityAdaptiveCardsSample extends FragmentActivity
-    implements ICardActionHandler
+    implements ICardActionHandler, IInputWatcher
 {
 
     // Used to load the 'adaptivecards-native-lib' library on application startup.
@@ -48,6 +50,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     }
 
     private static String IS_CARD = "isCard";
+    private static Map <String, String> inputValue = new ArrayMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +96,11 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
         jsonEditText.addTextChangedListener(watcher);
         configEditText.addTextChangedListener(watcher);
+    }
+
+    @Override
+    public void onInputChange(String id, String value) {
+        inputValue.put(id, value);
     }
 
     public class CustomCardElement extends BaseCardElement
@@ -168,7 +176,171 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     {
         try
         {
-            String jsonText = ((EditText) findViewById(R.id.jsonAdaptiveCard)).getText().toString();
+            String jsonText = "{\n" +
+                    "  \"type\": \"AdaptiveCard\",\n" +
+                    "  \"version\": \"1.0\",\n" +
+                    "  \"body\": [\n" +
+                    "    {\n" +
+                    "      \"type\": \"TextBlock\",\n" +
+                    "      \"text\": \"Your registration is almost complete\",\n" +
+                    "      \"size\": \"medium\",\n" +
+                    "      \"weight\": \"bolder\"\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "      \"type\": \"TextBlock\",\n" +
+                    "      \"text\": \"What type of food do you prefer?\",\n" +
+                    "      \"wrap\": true\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "      \"type\": \"ImageSet\",\n" +
+                    "      \"imageSize\": \"medium\",\n" +
+                    "      \"images\": [\n" +
+                    "        {\n" +
+                    "          \"type\": \"Image\",\n" +
+                    "          \"url\": \"http://contososcubabot.azurewebsites.net/assets/steak.jpg\"\n" +
+                    "        },\n" +
+                    "        {\n" +
+                    "          \"type\": \"Image\",\n" +
+                    "          \"url\": \"http://contososcubabot.azurewebsites.net/assets/chicken.jpg\"\n" +
+                    "        },\n" +
+                    "        {\n" +
+                    "          \"type\": \"Image\",\n" +
+                    "          \"url\": \"http://contososcubabot.azurewebsites.net/assets/tofu.jpg\"\n" +
+                    "        }\n" +
+                    "      ]\n" +
+                    "    }\n" +
+                    "  ],\n" +
+                    "  \"actions\": [\n" +
+                    "    {\n" +
+                    "      \"type\": \"Action.ShowCard\",\n" +
+                    "      \"title\": \"Steak\",\n" +
+                    "      \"card\": {\n" +
+                    "        \"type\": \"AdaptiveCard\",\n" +
+                    "        \"body\": [\n" +
+                    "          {\n" +
+                    "            \"type\": \"TextBlock\",\n" +
+                    "            \"text\": \"How would you like your steak prepared?\",\n" +
+                    "            \"size\": \"medium\",\n" +
+                    "            \"wrap\": true\n" +
+                    "          },\n" +
+                    "          {\n" +
+                    "            \"type\": \"Input.ChoiceSet\",\n" +
+                    "            \"id\": \"SteakTemp\",\n" +
+                    "            \"style\": \"expanded\",\n" +
+                    "            \"choices\": [\n" +
+                    "              {\n" +
+                    "                \"title\": \"Rare\",\n" +
+                    "                \"value\": \"rare\"\n" +
+                    "              },\n" +
+                    "              {\n" +
+                    "                \"title\": \"Medium-Rare\",\n" +
+                    "                \"value\": \"medium-rare\"\n" +
+                    "              },\n" +
+                    "              {\n" +
+                    "                \"title\": \"Well-done\",\n" +
+                    "                \"value\": \"well-done\"\n" +
+                    "              }\n" +
+                    "            ]\n" +
+                    "          },\n" +
+                    "          {\n" +
+                    "            \"type\": \"Input.Text\",\n" +
+                    "            \"id\": \"SteakOther\",\n" +
+                    "            \"isMultiline\": true,\n" +
+                    "            \"placeholder\": \"Any other preparation requestes?\"\n" +
+                    "          }\n" +
+                    "        ],\n" +
+                    "        \"actions\": [\n" +
+                    "          {\n" +
+                    "            \"type\": \"Action.Submit\",\n" +
+                    "            \"title\": \"OK\",\n" +
+                    "            \"data\": {\n" +
+                    "              \"FoodChoice\": \"Steak\"\n" +
+                    "            }\n" +
+                    "          }\n" +
+                    "        ]\n" +
+                    "      }\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "      \"type\": \"Action.ShowCard\",\n" +
+                    "      \"title\": \"Chicken\",\n" +
+                    "      \"card\": {\n" +
+                    "        \"type\": \"AdaptiveCard\",\n" +
+                    "        \"body\": [\n" +
+                    "          {\n" +
+                    "            \"type\": \"TextBlock\",\n" +
+                    "            \"text\": \"Do you have any allergies?\",\n" +
+                    "            \"size\": \"medium\",\n" +
+                    "            \"wrap\": true\n" +
+                    "          },\n" +
+                    "          {\n" +
+                    "            \"type\": \"Input.ChoiceSet\",\n" +
+                    "            \"id\": \"ChickenAllergy\",\n" +
+                    "            \"style\": \"expanded\",\n" +
+                    "            \"isMultiSelect\": true,\n" +
+                    "            \"choices\": [\n" +
+                    "              {\n" +
+                    "                \"title\": \"I'm allergic to peanuts\",\n" +
+                    "                \"value\": \"peanut\"\n" +
+                    "              }\n" +
+                    "            ]\n" +
+                    "          },\n" +
+                    "          {\n" +
+                    "            \"type\": \"Input.Text\",\n" +
+                    "            \"id\": \"ChickenOther\",\n" +
+                    "            \"isMultiline\": true,\n" +
+                    "            \"placeholder\": \"Any other preparation requestes?\"\n" +
+                    "          }\n" +
+                    "        ],\n" +
+                    "        \"actions\": [\n" +
+                    "          {\n" +
+                    "            \"type\": \"Action.Submit\",\n" +
+                    "            \"title\": \"OK\",\n" +
+                    "            \"data\": {\n" +
+                    "              \"FoodChoice\": \"Chicken\"\n" +
+                    "            }\n" +
+                    "          }\n" +
+                    "        ]\n" +
+                    "      }\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "      \"type\": \"Action.ShowCard\",\n" +
+                    "      \"title\": \"Tofu\",\n" +
+                    "      \"card\": {\n" +
+                    "        \"type\": \"AdaptiveCard\",\n" +
+                    "        \"body\": [\n" +
+                    "          {\n" +
+                    "            \"type\": \"TextBlock\",\n" +
+                    "            \"text\": \"Would you like it prepared vegan?\",\n" +
+                    "            \"size\": \"medium\",\n" +
+                    "            \"wrap\": true\n" +
+                    "          },\n" +
+                    "          {\n" +
+                    "            \"type\": \"Input.Toggle\",\n" +
+                    "            \"id\": \"Vegetarian\",\n" +
+                    "            \"title\": \"Please prepare it vegan\",\n" +
+                    "            \"valueOn\": \"vegan\",\n" +
+                    "            \"valueOff\": \"notVegan\"\n" +
+                    "          },\n" +
+                    "          {\n" +
+                    "            \"type\": \"Input.Text\",\n" +
+                    "            \"id\": \"VegOther\",\n" +
+                    "            \"isMultiline\": true,\n" +
+                    "            \"placeholder\": \"Any other preparation requestes?\"\n" +
+                    "          }\n" +
+                    "        ],\n" +
+                    "        \"actions\": [\n" +
+                    "          {\n" +
+                    "            \"type\": \"Action.Submit\",\n" +
+                    "            \"title\": \"OK\",\n" +
+                    "            \"data\": {\n" +
+                    "              \"FoodChoice\": \"Vegetarian\"\n" +
+                    "            }\n" +
+                    "          }\n" +
+                    "        ]\n" +
+                    "      }\n" +
+                    "    }\n" +
+                    "  ]\n" +
+                    "}";
             if (jsonText == null)
             {
                 return;
@@ -189,11 +361,13 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             elementParserRegistration.AddParser("blah", new CustomBlahParser());
 
             CardRendererRegistration.getInstance().registerRenderer("blah", new CustomBlahRenderer());
+            CardRendererRegistration.getInstance().setInputWatcher(this);
             
             ParseResult parseResult = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.VERSION, elementParserRegistration);
             LinearLayout layout = (LinearLayout) findViewById(R.id.visualAdaptiveCardLayout);
             layout.removeAllViews();
             RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), parseResult.GetAdaptiveCard(), this, hostConfig);
+            renderedCard.setInputs(inputValue);
             layout.addView(renderedCard.getView());
         }
         catch (Exception ex)

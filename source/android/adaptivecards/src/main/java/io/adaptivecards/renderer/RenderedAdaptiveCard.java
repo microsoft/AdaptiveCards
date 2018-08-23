@@ -53,6 +53,23 @@ public class RenderedAdaptiveCard {
         return input;
     }
 
+    public void setInputs(Map <String, String> inputs)
+    {
+        //Iterate over all handlers
+        for (IInputHandler handler: handlers)
+        {
+            //For each entry we will find the id which matches with the handler and then call handler.setInput to update the values
+            for (Map.Entry<String, String> input : inputs.entrySet())
+            {
+                if (input.getKey().equals(handler.getId()))
+                {
+                    handler.setInput(input.getValue());
+                    break;
+                }
+            }
+        }
+    }
+
     public AdaptiveCard getAdaptiveCard()
     {
         return adaptiveCard;

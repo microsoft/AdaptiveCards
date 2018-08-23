@@ -4,8 +4,10 @@ import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -20,12 +22,12 @@ import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.CheckBoxSetInputHandler;
 import io.adaptivecards.renderer.inputhandler.ComboBoxInputHandler;
-import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.ChoiceSetInput;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.inputhandler.RadioGroupInputHandler;
+import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import java.util.Arrays;
 import java.util.List;
@@ -62,12 +64,21 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         String value = choiceSetInput.GetValue();
         Vector<String> defaults = new Vector<>();
         defaults.addAll(Arrays.asList(value.split(",")));
+        final CheckBoxSetInputHandler checkBoxSetInputHandler = new CheckBoxSetInputHandler(choiceSetInput, checkBoxList);
+        checkBoxSetInputHandler.setView(layout);
+        layout.setTag(checkBoxSetInputHandler);
+
         for (int i = 0; i < size; i++)
         {
             ChoiceInput choiceInput = choiceInputVector.get(i);
             CheckBox checkBox = new CheckBox(context);
             checkBox.setText(choiceInput.GetTitle());
-
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    CardRendererRegistration.getInstance().notifyInputChange(checkBoxSetInputHandler.getId(), checkBoxSetInputHandler.getInput());
+                }
+            });
             if (defaults.contains(choiceInput.GetValue()))
             {
                 checkBox.setChecked(true);
@@ -76,9 +87,6 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             layout.addView(checkBox);
         }
 
-        CheckBoxSetInputHandler checkBoxSetInputHandler = new CheckBoxSetInputHandler(choiceSetInput, checkBoxList);
-        checkBoxSetInputHandler.setView(layout);
-        layout.setTag(checkBoxSetInputHandler);
         renderedCard.registerInputHandler(checkBoxSetInputHandler);
         return layout;
     }
@@ -89,6 +97,16 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             ChoiceSetInput choiceSetInput)
     {
         RadioGroup radioGroup = new RadioGroup(context);
+        final RadioGroupInputHandler radioGroupInputHandler = new RadioGroupInputHandler(choiceSetInput);
+        radioGroupInputHandler.setView(radioGroup);
+        radioGroup.setTag(radioGroupInputHandler);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                CardRendererRegistration.getInstance().notifyInputChange(radioGroupInputHandler.getId(), radioGroupInputHandler.getInput());
+            }
+        });
+
         radioGroup.setOrientation(RadioGroup.VERTICAL);
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
         long size = choiceInputVector.size();
@@ -105,10 +123,6 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             }
             radioGroup.addView(radioButton);
         }
-
-        RadioGroupInputHandler radioGroupInputHandler = new RadioGroupInputHandler(choiceSetInput);
-        radioGroupInputHandler.setView(radioGroup);
-        radioGroup.setTag(radioGroupInputHandler);
         renderedCard.registerInputHandler(radioGroupInputHandler);
         return radioGroup;
     }
@@ -134,11 +148,22 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             }
         }
 
-        ComboBoxInputHandler comboBoxInputHandler = new ComboBoxInputHandler(choiceSetInput);
+        final ComboBoxInputHandler comboBoxInputHandler = new ComboBoxInputHandler(choiceSetInput);
         Spinner spinner = new Spinner(context);
         comboBoxInputHandler.setView(spinner);
         spinner.setTag(comboBoxInputHandler);
         renderedCard.registerInputHandler(comboBoxInputHandler);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                CardRendererRegistration.getInstance().notifyInputChange(comboBoxInputHandler.getId(), comboBoxInputHandler.getInput());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                CardRendererRegistration.getInstance().notifyInputChange(comboBoxInputHandler.getId(), comboBoxInputHandler.getInput());
+            }
+        });
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, titleList);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerArrayAdapter);
