@@ -13,6 +13,10 @@ test('Can get actions for AdaptiveCard', () => {
 	adaptiveCard.addAction(adaptiveCardAction1);
 	adaptiveCard.addAction(adaptiveCardAction2);
 	
-	let actions = adaptiveCard.getActions();
-	expect(actions && actions.length).toEqual(2);
+	const actions = adaptiveCard.getActions();
+
+	expect(actions).toBeDefined();
+	expect(actions).toContain(adaptiveCardAction1);
+	expect(actions).toContain(adaptiveCardAction2);
+	expect(actions.length).toEqual(2);
 });
