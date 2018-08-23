@@ -4764,7 +4764,11 @@ export abstract class ContainerWithActions extends Container {
         var result: Action = this._actionCollection.getActionById(id);
 
         return result ? result : super.getActionById(id);
-    }
+	}
+	
+	getActions(): Action[] {
+		return this._actionCollection.items;
+	}
 
     parse(json: any, errors?: Array<IValidationError>) {
         super.parse(json, errors);
