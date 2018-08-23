@@ -375,5 +375,46 @@ namespace AdaptiveCards.Test
             var containerNonStyle = card.Body[2] as AdaptiveContainer;
             Assert.AreEqual(null, containerNonStyle.Style);
         }
+
+
+        [TestMethod]
+        public void ImageBackgroundColor()
+        {
+            var json = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.0"",
+  ""body"": [
+    {
+      ""type"": ""Image"",
+      ""url"": ""http://adaptivecards.io/content/cats/2.png"",
+      ""backgroundColor"" : ""Blue""
+    },
+    {
+      ""type"": ""Image"",
+      ""url"": ""http://adaptivecards.io/content/cats/2.png"",
+      ""backgroundColor"" : ""#FF00FF""
+    },
+    {
+      ""type"": ""Image"",
+      ""url"": ""http://adaptivecards.io/content/cats/2.png"",
+      ""backgroundColor"" : ""#FF00FFAA""
+    },
+    {
+      ""type"": ""Image"",
+      ""url"": ""http://adaptivecards.io/content/cats/2.png"",
+      ""backgroundColor"" : ""#FREEBACE""
+    },
+    {
+      ""type"": ""Image"",
+      ""url"": ""http://adaptivecards.io/content/cats/2.png"",
+      ""backgroundColor"" : ""#GREENS""
+    }
+  ]
+}";
+
+            // There should be 3 invalid colors in this card
+            var parseResult = AdaptiveCard.FromJson(json);
+            Assert.AreEqual(3, parseResult.Warnings.Count);
+        }
     }
 }

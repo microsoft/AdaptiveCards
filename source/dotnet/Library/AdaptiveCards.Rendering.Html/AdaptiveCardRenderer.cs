@@ -703,7 +703,6 @@ namespace AdaptiveCards.Rendering.Html
                     break;
             }
 
-
             switch (image.HorizontalAlignment)
             {
                 case AdaptiveHorizontalAlignment.Left:
@@ -722,6 +721,12 @@ namespace AdaptiveCards.Rendering.Html
                         .Style("display", "block");
                     break;
             }
+
+            if (!string.IsNullOrEmpty(image.BackgroundColor))
+            {
+                uiImage.Style("background-color", context.GetRGBColor(image.BackgroundColor));
+            }
+
             uiDiv.Children.Add(uiImage);
 
             AddSelectAction(uiDiv, image.SelectAction, context);
