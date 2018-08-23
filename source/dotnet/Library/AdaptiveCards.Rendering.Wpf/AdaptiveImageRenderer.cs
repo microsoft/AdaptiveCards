@@ -11,7 +11,21 @@ namespace AdaptiveCards.Rendering.Wpf
     {
         public static FrameworkElement Render(AdaptiveImage image, AdaptiveRenderContext context)
         {
+            FrameworkElement uiBorder = null;
             var uiImage = new Image();
+            // If we have a background color, we'll create a border for the background and put the image on top
+            if (!string.IsNullOrEmpty(image.BackgroundColor))
+            {
+                Color color = (Color)ColorConverter.ConvertFromString(image.BackgroundColor);
+                if (color.A != 0)
+                {
+                    uiBorder = new Border()
+                    {
+                        Background = new SolidColorBrush(color),
+                        Child = uiImage
+                    };
+                }
+            }
 
             // Try to resolve the image URI
             Uri finalUri = context.Config.ResolveFinalAbsoluteUri(image.Url);
@@ -37,18 +51,22 @@ namespace AdaptiveCards.Rendering.Wpf
                     RadiusY = 0.5,
                     GradientStops = new GradientStopCollection()
                 };
-                mask.GradientStops.Add(new GradientStop((Color)ColorConverter.ConvertFromString("#ffffffff"), .9));
+                mask.GradientStops.Add(new GradientStop((Color)ColorConverter.ConvertFromString("#ffffffff"), 1.0));
                 mask.GradientStops.Add(new GradientStop((Color)ColorConverter.ConvertFromString("#00ffffff"), 1.0));
                 uiImage.OpacityMask = mask;
+                if (uiBorder != null)
+                {
+                    uiBorder.OpacityMask = mask;
+                }
             }
             uiImage.Style = context.GetStyle(style);
             uiImage.SetImageProperties(image, context);
 
             if (image.SelectAction != null)
             {
-                return context.RenderSelectAction(image.SelectAction, uiImage);
+                return context.RenderSelectAction(image.SelectAction, uiBorder ?? uiImage);
             }
-            return uiImage;
+            return uiBorder ?? uiImage;
         }
 
     }
