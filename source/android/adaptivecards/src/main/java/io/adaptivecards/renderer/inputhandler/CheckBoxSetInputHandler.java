@@ -40,7 +40,8 @@ public class CheckBoxSetInputHandler extends BaseInputHandler {
         ChoiceSetInput choiceSetInput = (ChoiceSetInput) m_baseInputElement;
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
 
-        if (values.isEmpty()) {
+        if (values.isEmpty())
+        {
             for (int i = 0 ; i < choiceInputVector.size(); i++)
             {
                 m_checkBoxList.get(i).setChecked(false);

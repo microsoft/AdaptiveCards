@@ -84,6 +84,16 @@ public class TextInputRenderer extends BaseCardElementRenderer
         editText.setTag(textInputHandler);
         editText.setTextColor(Color.BLACK);
         renderedCard.registerInputHandler(textInputHandler);
+
+        if (!TextUtils.isEmpty(value))
+        {
+            editText.setText(value);
+        }
+
+        if (!TextUtils.isEmpty(placeHolder))
+        {
+            editText.setHint(placeHolder);
+        }
         editText.addTextChangedListener(new TextWatcher()
         {
             @Override
@@ -104,16 +114,6 @@ public class TextInputRenderer extends BaseCardElementRenderer
                 CardRendererRegistration.getInstance().notifyInputChange(textInputHandler.getId(), textInputHandler.getInput());
             }
         });
-
-        if (!TextUtils.isEmpty(value))
-        {
-            editText.setText(value);
-        }
-
-        if (!TextUtils.isEmpty(placeHolder))
-        {
-            editText.setHint(placeHolder);
-        }
 
         viewGroup.addView(editText);
         return editText;

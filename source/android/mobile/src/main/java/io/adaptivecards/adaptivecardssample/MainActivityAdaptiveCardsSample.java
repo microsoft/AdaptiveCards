@@ -50,7 +50,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     }
 
     private static String IS_CARD = "isCard";
-    private static Map <String, String> inputValue = new ArrayMap<>();
+    private Map <String, String> inputValue = new ArrayMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,164 +177,200 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         try
         {
             String jsonText = "{\n" +
+                    "  \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\n" +
                     "  \"type\": \"AdaptiveCard\",\n" +
                     "  \"version\": \"1.0\",\n" +
                     "  \"body\": [\n" +
                     "    {\n" +
                     "      \"type\": \"TextBlock\",\n" +
-                    "      \"text\": \"Your registration is almost complete\",\n" +
                     "      \"size\": \"medium\",\n" +
-                    "      \"weight\": \"bolder\"\n" +
+                    "      \"weight\": \"bolder\",\n" +
+                    "      \"text\": \"Input.Text elements\",\n" +
+                    "      \"horizontalAlignment\": \"center\"\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "      \"type\": \"Input.Text\",\n" +
+                    "      \"placeholder\": \"Name\",\n" +
+                    "      \"style\": \"text\",\n" +
+                    "      \"maxLength\": 0,\n" +
+                    "      \"id\": \"SimpleVal\"\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "      \"type\": \"Input.Text\",\n" +
+                    "      \"placeholder\": \"Homepage\",\n" +
+                    "      \"style\": \"url\",\n" +
+                    "      \"maxLength\": 0,\n" +
+                    "      \"id\": \"UrlVal\"\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "      \"type\": \"Input.Text\",\n" +
+                    "      \"placeholder\": \"Email\",\n" +
+                    "      \"style\": \"email\",\n" +
+                    "      \"maxLength\": 0,\n" +
+                    "      \"id\": \"EmailVal\"\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "      \"type\": \"Input.Text\",\n" +
+                    "      \"placeholder\": \"Phone\",\n" +
+                    "      \"style\": \"tel\",\n" +
+                    "      \"maxLength\": 0,\n" +
+                    "      \"id\": \"TelVal\"\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "      \"type\": \"Input.Text\",\n" +
+                    "      \"placeholder\": \"Comments\",\n" +
+                    "      \"style\": \"text\",\n" +
+                    "      \"isMultiline\": true,\n" +
+                    "      \"maxLength\": 0,\n" +
+                    "      \"id\": \"MultiLineVal\"\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "      \"type\": \"Input.Number\",\n" +
+                    "      \"placeholder\": \"Quantity\",\n" +
+                    "      \"min\": -5,\n" +
+                    "      \"max\": 5,\n" +
+                    "      \"value\": 1,\n" +
+                    "      \"id\": \"NumVal\"\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "      \"type\": \"Input.Date\",\n" +
+                    "      \"placeholder\": \"Due Date\",\n" +
+                    "      \"id\": \"DateVal\",\n" +
+                    "      \"value\": \"2017-09-20\"\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "      \"type\": \"Input.Time\",\n" +
+                    "      \"placeholder\": \"Start time\",\n" +
+                    "      \"id\": \"TimeVal\",\n" +
+                    "      \"value\": \"16:59\"\n" +
                     "    },\n" +
                     "    {\n" +
                     "      \"type\": \"TextBlock\",\n" +
-                    "      \"text\": \"What type of food do you prefer?\",\n" +
-                    "      \"wrap\": true\n" +
+                    "      \"size\": \"medium\",\n" +
+                    "      \"weight\": \"bolder\",\n" +
+                    "      \"text\": \"Input.ChoiceSet\",\n" +
+                    "      \"horizontalAlignment\": \"center\"\n" +
                     "    },\n" +
                     "    {\n" +
-                    "      \"type\": \"ImageSet\",\n" +
-                    "      \"imageSize\": \"medium\",\n" +
-                    "      \"images\": [\n" +
+                    "      \"type\": \"TextBlock\",\n" +
+                    "      \"text\": \"What color do you want? (compact)\"\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "      \"type\": \"Input.ChoiceSet\",\n" +
+                    "      \"id\": \"CompactSelectVal\",\n" +
+                    "      \"style\": \"compact\",\n" +
+                    "      \"value\": \"1\",\n" +
+                    "      \"choices\": [\n" +
                     "        {\n" +
-                    "          \"type\": \"Image\",\n" +
-                    "          \"url\": \"http://contososcubabot.azurewebsites.net/assets/steak.jpg\"\n" +
+                    "          \"title\": \"Red\",\n" +
+                    "          \"value\": \"1\"\n" +
                     "        },\n" +
                     "        {\n" +
-                    "          \"type\": \"Image\",\n" +
-                    "          \"url\": \"http://contososcubabot.azurewebsites.net/assets/chicken.jpg\"\n" +
+                    "          \"title\": \"Green\",\n" +
+                    "          \"value\": \"2\"\n" +
                     "        },\n" +
                     "        {\n" +
-                    "          \"type\": \"Image\",\n" +
-                    "          \"url\": \"http://contososcubabot.azurewebsites.net/assets/tofu.jpg\"\n" +
+                    "          \"title\": \"Blue\",\n" +
+                    "          \"value\": \"3\"\n" +
                     "        }\n" +
                     "      ]\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "      \"type\": \"TextBlock\",\n" +
+                    "      \"text\": \"What color do you want? (expanded)\"\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "      \"type\": \"Input.ChoiceSet\",\n" +
+                    "      \"id\": \"SingleSelectVal\",\n" +
+                    "      \"style\": \"expanded\",\n" +
+                    "      \"value\": \"1\",\n" +
+                    "      \"choices\": [\n" +
+                    "        {\n" +
+                    "          \"title\": \"Red\",\n" +
+                    "          \"value\": \"1\"\n" +
+                    "        },\n" +
+                    "        {\n" +
+                    "          \"title\": \"Green\",\n" +
+                    "          \"value\": \"2\"\n" +
+                    "        },\n" +
+                    "        {\n" +
+                    "          \"title\": \"Blue\",\n" +
+                    "          \"value\": \"3\"\n" +
+                    "        }\n" +
+                    "      ]\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "      \"type\": \"TextBlock\",\n" +
+                    "      \"text\": \"What colors do you want? (multiselect)\"\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "      \"type\": \"Input.ChoiceSet\",\n" +
+                    "      \"id\": \"MultiSelectVal\",\n" +
+                    "      \"isMultiSelect\": true,\n" +
+                    "      \"value\": \"1,3\",\n" +
+                    "      \"choices\": [\n" +
+                    "        {\n" +
+                    "          \"title\": \"Red\",\n" +
+                    "          \"value\": \"1\"\n" +
+                    "        },\n" +
+                    "        {\n" +
+                    "          \"title\": \"Green\",\n" +
+                    "          \"value\": \"2\"\n" +
+                    "        },\n" +
+                    "        {\n" +
+                    "          \"title\": \"Blue\",\n" +
+                    "          \"value\": \"3\"\n" +
+                    "        }\n" +
+                    "      ]\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "      \"type\": \"TextBlock\",\n" +
+                    "      \"size\": \"medium\",\n" +
+                    "      \"weight\": \"bolder\",\n" +
+                    "      \"text\": \"Input.Toggle\",\n" +
+                    "      \"horizontalAlignment\": \"center\"\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "      \"type\": \"Input.Toggle\",\n" +
+                    "      \"title\": \"I accept the terms and conditions (True/False)\",\n" +
+                    "      \"valueOn\": \"true\",\n" +
+                    "      \"valueOff\": \"false\",\n" +
+                    "      \"id\": \"AcceptsTerms\"\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "      \"type\": \"Input.Toggle\",\n" +
+                    "      \"title\": \"Red cars are better than other cars\",\n" +
+                    "      \"valueOn\": \"RedCars\",\n" +
+                    "      \"valueOff\": \"NotRedCars\",\n" +
+                    "      \"id\": \"ColorPreference\"\n" +
                     "    }\n" +
                     "  ],\n" +
                     "  \"actions\": [\n" +
                     "    {\n" +
-                    "      \"type\": \"Action.ShowCard\",\n" +
-                    "      \"title\": \"Steak\",\n" +
-                    "      \"card\": {\n" +
-                    "        \"type\": \"AdaptiveCard\",\n" +
-                    "        \"body\": [\n" +
-                    "          {\n" +
-                    "            \"type\": \"TextBlock\",\n" +
-                    "            \"text\": \"How would you like your steak prepared?\",\n" +
-                    "            \"size\": \"medium\",\n" +
-                    "            \"wrap\": true\n" +
-                    "          },\n" +
-                    "          {\n" +
-                    "            \"type\": \"Input.ChoiceSet\",\n" +
-                    "            \"id\": \"SteakTemp\",\n" +
-                    "            \"style\": \"expanded\",\n" +
-                    "            \"choices\": [\n" +
-                    "              {\n" +
-                    "                \"title\": \"Rare\",\n" +
-                    "                \"value\": \"rare\"\n" +
-                    "              },\n" +
-                    "              {\n" +
-                    "                \"title\": \"Medium-Rare\",\n" +
-                    "                \"value\": \"medium-rare\"\n" +
-                    "              },\n" +
-                    "              {\n" +
-                    "                \"title\": \"Well-done\",\n" +
-                    "                \"value\": \"well-done\"\n" +
-                    "              }\n" +
-                    "            ]\n" +
-                    "          },\n" +
-                    "          {\n" +
-                    "            \"type\": \"Input.Text\",\n" +
-                    "            \"id\": \"SteakOther\",\n" +
-                    "            \"isMultiline\": true,\n" +
-                    "            \"placeholder\": \"Any other preparation requestes?\"\n" +
-                    "          }\n" +
-                    "        ],\n" +
-                    "        \"actions\": [\n" +
-                    "          {\n" +
-                    "            \"type\": \"Action.Submit\",\n" +
-                    "            \"title\": \"OK\",\n" +
-                    "            \"data\": {\n" +
-                    "              \"FoodChoice\": \"Steak\"\n" +
-                    "            }\n" +
-                    "          }\n" +
-                    "        ]\n" +
+                    "      \"type\": \"Action.Submit\",\n" +
+                    "      \"title\": \"Submit\",\n" +
+                    "      \"data\": {\n" +
+                    "        \"id\": \"1234567890\"\n" +
                     "      }\n" +
                     "    },\n" +
                     "    {\n" +
                     "      \"type\": \"Action.ShowCard\",\n" +
-                    "      \"title\": \"Chicken\",\n" +
+                    "      \"title\": \"Show Card\",\n" +
                     "      \"card\": {\n" +
                     "        \"type\": \"AdaptiveCard\",\n" +
                     "        \"body\": [\n" +
                     "          {\n" +
-                    "            \"type\": \"TextBlock\",\n" +
-                    "            \"text\": \"Do you have any allergies?\",\n" +
-                    "            \"size\": \"medium\",\n" +
-                    "            \"wrap\": true\n" +
-                    "          },\n" +
-                    "          {\n" +
-                    "            \"type\": \"Input.ChoiceSet\",\n" +
-                    "            \"id\": \"ChickenAllergy\",\n" +
-                    "            \"style\": \"expanded\",\n" +
-                    "            \"isMultiSelect\": true,\n" +
-                    "            \"choices\": [\n" +
-                    "              {\n" +
-                    "                \"title\": \"I'm allergic to peanuts\",\n" +
-                    "                \"value\": \"peanut\"\n" +
-                    "              }\n" +
-                    "            ]\n" +
-                    "          },\n" +
-                    "          {\n" +
                     "            \"type\": \"Input.Text\",\n" +
-                    "            \"id\": \"ChickenOther\",\n" +
-                    "            \"isMultiline\": true,\n" +
-                    "            \"placeholder\": \"Any other preparation requestes?\"\n" +
+                    "            \"placeholder\": \"enter comment\",\n" +
+                    "            \"style\": \"text\",\n" +
+                    "            \"maxLength\": 0,\n" +
+                    "            \"id\": \"CommentVal\"\n" +
                     "          }\n" +
                     "        ],\n" +
                     "        \"actions\": [\n" +
                     "          {\n" +
                     "            \"type\": \"Action.Submit\",\n" +
-                    "            \"title\": \"OK\",\n" +
-                    "            \"data\": {\n" +
-                    "              \"FoodChoice\": \"Chicken\"\n" +
-                    "            }\n" +
-                    "          }\n" +
-                    "        ]\n" +
-                    "      }\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"type\": \"Action.ShowCard\",\n" +
-                    "      \"title\": \"Tofu\",\n" +
-                    "      \"card\": {\n" +
-                    "        \"type\": \"AdaptiveCard\",\n" +
-                    "        \"body\": [\n" +
-                    "          {\n" +
-                    "            \"type\": \"TextBlock\",\n" +
-                    "            \"text\": \"Would you like it prepared vegan?\",\n" +
-                    "            \"size\": \"medium\",\n" +
-                    "            \"wrap\": true\n" +
-                    "          },\n" +
-                    "          {\n" +
-                    "            \"type\": \"Input.Toggle\",\n" +
-                    "            \"id\": \"Vegetarian\",\n" +
-                    "            \"title\": \"Please prepare it vegan\",\n" +
-                    "            \"valueOn\": \"vegan\",\n" +
-                    "            \"valueOff\": \"notVegan\"\n" +
-                    "          },\n" +
-                    "          {\n" +
-                    "            \"type\": \"Input.Text\",\n" +
-                    "            \"id\": \"VegOther\",\n" +
-                    "            \"isMultiline\": true,\n" +
-                    "            \"placeholder\": \"Any other preparation requestes?\"\n" +
-                    "          }\n" +
-                    "        ],\n" +
-                    "        \"actions\": [\n" +
-                    "          {\n" +
-                    "            \"type\": \"Action.Submit\",\n" +
-                    "            \"title\": \"OK\",\n" +
-                    "            \"data\": {\n" +
-                    "              \"FoodChoice\": \"Vegetarian\"\n" +
-                    "            }\n" +
+                    "            \"title\": \"OK\"\n" +
                     "          }\n" +
                     "        ]\n" +
                     "      }\n" +
@@ -361,12 +397,14 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             elementParserRegistration.AddParser("blah", new CustomBlahParser());
 
             CardRendererRegistration.getInstance().registerRenderer("blah", new CustomBlahRenderer());
-            CardRendererRegistration.getInstance().setInputWatcher(this);
+
             
             ParseResult parseResult = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.VERSION, elementParserRegistration);
             LinearLayout layout = (LinearLayout) findViewById(R.id.visualAdaptiveCardLayout);
             layout.removeAllViews();
+            CardRendererRegistration.getInstance().setInputWatcher(null);
             RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), parseResult.GetAdaptiveCard(), this, hostConfig);
+            CardRendererRegistration.getInstance().setInputWatcher(this);
             renderedCard.setInputs(inputValue);
             layout.addView(renderedCard.getView());
         }
