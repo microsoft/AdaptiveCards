@@ -266,5 +266,57 @@ namespace AdaptiveCardsSharedModelUnitTest
             auto resourceInformation = AdaptiveCard::DeserializeFromString(testJsonString, 1.0, elementRegistration, actionRegistration)->GetAdaptiveCard()->GetResourceInformation();
             ValidateResourceInformation(expectedValues, resourceInformation);
         }
+
+        TEST_METHOD(CanGatherImagesInActions)
+        {
+            // Expected images to find in the card
+            std::vector<RemoteResourceInformation> expectedValues = {
+                { "BackgroundImage.png", CardElementType::Image, "" },
+                { "Image.png", CardElementType::Image, "" },
+                { "SubmitAction.png", CardElementType::Image, "" },
+                { "OpenUrl.png", CardElementType::Image, "" },
+            };
+
+            // Test card containing custom element and action with images
+            std::string testJsonString =
+                "{\
+                \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
+                \"type\": \"AdaptiveCard\",\
+                \"version\": \"1.0\",\
+                \"backgroundImage\": \"BackgroundImage.png\",\
+                \"body\": [\
+                    {\
+                        \"type\": \"Image\",\
+                        \"url\": \"Image.png\"\
+                    },\
+                    {\
+                        \"type\": \"CustomTypeWithImage\",\
+                        \"customImageProperty\": \"Custom.png\"\
+                    }\
+                ], \
+                \"actions\" : \
+                [ \
+                    {\
+                        \"type\": \"Action.Submit\",\
+                        \"title\": \"Snooze\",\
+                        \"iconUrl\": \"SubmitAction.png\"\
+                    },\
+                    {\
+                        \"type\": \"Action.Submit\",\
+                        \"title\": \"Dismiss\"\
+                    },\
+                    {\
+                        \"type\": \"Action.OpenUrl\",\
+                        \"title\" : \"Action.OpenUrl\",\
+                        \"iconUrl\": \"OpenUrl.png\",\
+                        \"url\" : \"http://adaptivecards.io\"\
+                    }\
+                ] \
+            }";
+
+            // Parse the card and get the image uris
+            auto resourceInformation = AdaptiveCard::DeserializeFromString(testJsonString, 1.0)->GetAdaptiveCard()->GetResourceInformation();
+            ValidateResourceInformation(expectedValues, resourceInformation);
+        }
     };
 }

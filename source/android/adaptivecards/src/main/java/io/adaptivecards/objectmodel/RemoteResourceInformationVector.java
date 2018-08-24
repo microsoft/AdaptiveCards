@@ -68,7 +68,7 @@ public class RemoteResourceInformationVector {
   }
 
   public RemoteResourceInformation get(int i) {
-    return new RemoteResourceInformation(AdaptiveCardObjectModelJNI.RemoteResourceInformationVector_get(swigCPtr, this, i), false);
+    return new RemoteResourceInformation(AdaptiveCardObjectModelJNI.RemoteResourceInformationVector_get(swigCPtr, this, i), true);
   }
 
   public void set(int i, RemoteResourceInformation val) {

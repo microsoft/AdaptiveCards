@@ -378,5 +378,82 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(expectedSelectAction.Title, actualSelectAction.Title);
             Assert.AreEqual(expectedSelectAction.UrlString, actualSelectAction.UrlString);
         }
+
+        [TestMethod]
+        public void ContainerStyle()
+        {
+            var json = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.0"",
+  ""body"": [
+    {
+      ""type"": ""Container"",
+      ""style"": ""default"",
+      ""items"": []
+    },
+    {
+      ""type"": ""Container"",
+      ""style"": ""emphasis"",
+      ""items"": []
+    },
+    {
+      ""type"": ""Container"",
+      ""items"": []
+    }
+  ]
+}";
+            var card = AdaptiveCard.FromJson(json).Card;
+            var actualSelectAction = card.SelectAction as AdaptiveOpenUrlAction;
+
+            var containerDefaultStyle = card.Body[0] as AdaptiveContainer;
+            Assert.AreEqual(AdaptiveContainerStyle.Default, containerDefaultStyle.Style);
+
+            var containerEmphasisStyle = card.Body[1] as AdaptiveContainer;
+            Assert.AreEqual(AdaptiveContainerStyle.Emphasis, containerEmphasisStyle.Style);
+
+            var containerNonStyle = card.Body[2] as AdaptiveContainer;
+            Assert.AreEqual(null, containerNonStyle.Style);
+        }
+
+
+        [TestMethod]
+        public void ImageBackgroundColor()
+        {
+            var json = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.0"",
+  ""body"": [
+    {
+      ""type"": ""Image"",
+      ""url"": ""http://adaptivecards.io/content/cats/2.png"",
+      ""backgroundColor"" : ""Blue""
+    },
+    {
+      ""type"": ""Image"",
+      ""url"": ""http://adaptivecards.io/content/cats/2.png"",
+      ""backgroundColor"" : ""#FF00FF""
+    },
+    {
+      ""type"": ""Image"",
+      ""url"": ""http://adaptivecards.io/content/cats/2.png"",
+      ""backgroundColor"" : ""#FF00FFAA""
+    },
+    {
+      ""type"": ""Image"",
+      ""url"": ""http://adaptivecards.io/content/cats/2.png"",
+      ""backgroundColor"" : ""#FREEBACE""
+    },
+    {
+      ""type"": ""Image"",
+      ""url"": ""http://adaptivecards.io/content/cats/2.png"",
+      ""backgroundColor"" : ""#GREENS""
+    }
+  ]
+}";
+
+            // There should be 3 invalid colors in this card
+            var parseResult = AdaptiveCard.FromJson(json);
+            Assert.AreEqual(3, parseResult.Warnings.Count);
+        }
     }
 }

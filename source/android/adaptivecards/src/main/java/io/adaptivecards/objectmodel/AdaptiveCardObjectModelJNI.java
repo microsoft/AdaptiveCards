@@ -787,6 +787,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native int ActionsConfig_spacing_get(long jarg1, ActionsConfig jarg1_);
   public final static native void ActionsConfig_iconPlacement_set(long jarg1, ActionsConfig jarg1_, int jarg2);
   public final static native int ActionsConfig_iconPlacement_get(long jarg1, ActionsConfig jarg1_);
+  public final static native void ActionsConfig_iconSize_set(long jarg1, ActionsConfig jarg1_, long jarg2);
+  public final static native long ActionsConfig_iconSize_get(long jarg1, ActionsConfig jarg1_);
   public final static native long ActionsConfig_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, ActionsConfig jarg2_);
   public final static native long new_ActionsConfig();
   public final static native void delete_ActionsConfig(long jarg1);

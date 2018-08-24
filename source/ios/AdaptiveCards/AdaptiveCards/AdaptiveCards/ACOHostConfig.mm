@@ -38,6 +38,10 @@ using namespace AdaptiveCards;
         }
         _allActionsHaveIcons = YES;
         _buttonPadding = 5;
+        if(!_config->imageBaseUrl.empty()) {
+            NSString *tmpURLString = [NSString stringWithCString:_config->imageBaseUrl.c_str() encoding:NSUTF8StringEncoding];
+            _baseURL = [NSURL URLWithString:tmpURLString];
+        }
     }
     return self;
 }

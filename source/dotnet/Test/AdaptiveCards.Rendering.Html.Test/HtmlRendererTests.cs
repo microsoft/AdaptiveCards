@@ -40,6 +40,51 @@ namespace AdaptiveCards.Rendering.Html.Test
             {
                 return TextBlockRender(element, context);
             }
+
+            public static HtmlTag CallChoiceSetInputRender(AdaptiveChoiceSetInput element, AdaptiveRenderContext context)
+            {
+                return ChoiceSetRender(element, context);
+            }
+        }
+
+        [TestMethod]
+        public void ChoiceSetInput()
+        {
+            var renderContext = new AdaptiveRenderContext(
+                new AdaptiveHostConfig(),
+                new AdaptiveElementRenderers<HtmlTag, AdaptiveRenderContext>());
+
+            var dropdownList = new AdaptiveChoiceSetInput()
+            {
+                Id = "1",
+                Value = "1,3",
+                Style = AdaptiveChoiceInputStyle.Compact,
+                Choices =
+                {
+                    new AdaptiveChoice()
+                    {
+                        Title = "Value 1",
+                        Value = "1"
+                    },
+                    new AdaptiveChoice()
+                    {
+                        Title = "Value 2",
+                        Value = "2"
+                    },
+                    new AdaptiveChoice()
+                    {
+                        Title = "Value 3",
+                        Value = "3"
+                    }
+                }
+            };
+
+            var dropdownGeneratedHtml = TestHtmlRenderer.CallChoiceSetInputRender(dropdownList, renderContext).ToString();
+
+            // Generated HTML should have an additional disabled and hidden option which is selected.
+            Assert.AreEqual(
+                "<select class='ac-input ac-multichoiceInput' name='1' style='width: 100%;'><option disabled='' hidden='' selected=''/><option value='1'>Value 1</option><option value='2'>Value 2</option><option value='3'>Value 3</option></select>",
+                dropdownGeneratedHtml);
         }
     }
 }

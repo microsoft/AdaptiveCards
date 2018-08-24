@@ -16,18 +16,25 @@
 
 + (void)setImageView:(UIImage*)image inButton:(UIButton*)button withConfig:(ACOHostConfig *)config
 {
-    // Format the image so it fits in the button and is placed where it must be placed
-    CGSize contentSize = [button.titleLabel intrinsicContentSize];
-    float imageHeight = contentSize.height;
+    float imageHeight = 0.0f;
     IconPlacement iconPlacement = [config getHostConfig]->actions.iconPlacement;
+    CGSize contentSize = [button.titleLabel intrinsicContentSize];
+
+    //apply explicit image size when the below condition is met
+    if(iconPlacement == AdaptiveCards::IconPlacement::AboveTitle && config.allActionsHaveIcons) {
+        imageHeight = [config getHostConfig]->actions.iconSize;
+        // TODO: if height is zero, create warning
+    } else { // Format the image so it fits in the button
+        imageHeight = contentSize.height;
+    }
 
     CGFloat widthToHeightRatio = 0.0f;
-    if(image){
-        if(image.size.height > 0) {
-            widthToHeightRatio = image.size.width / image.size.height;
-        }
+    if(image && image.size.height > 0) {
+        widthToHeightRatio = image.size.width / image.size.height;
     }
+
     CGSize imageSize = CGSizeMake(imageHeight * widthToHeightRatio, imageHeight);
+
     ACRUIImageView *imageView = [[ACRUIImageView alloc] initWithFrame:CGRectMake(0, 0, imageSize.width, imageSize.height)];
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     imageView.image = image;

@@ -12,7 +12,7 @@
 #import "HostConfig.h"
 #import "ACRView.h"
 
-@interface ACRChoiceSetViewDataSourceCompactStyle:NSObject<UITableViewDataSource, UITableViewDelegate, ACRIBaseInputHandler>
+@interface ACRChoiceSetViewDataSourceCompactStyle:NSObject<UITableViewDataSource, UITableViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, ACRIBaseInputHandler>
 @property NSString *id;
 @property BOOL isMultiChoicesAllowed;
 @property NSMutableDictionary *results;
@@ -20,6 +20,4 @@
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet
                               rootView:(ACRView *)rootView;
-
-- (void)handleUIBarButtonSystemItemDoneEvent;
 @end

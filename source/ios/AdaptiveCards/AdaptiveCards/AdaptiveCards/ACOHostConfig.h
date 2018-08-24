@@ -15,6 +15,7 @@
 @property BOOL allActionsHaveIcons;
 @property CGFloat buttonPadding;
 @property ACOResourceResolvers *resolvers;
+@property NSURL *baseURL;
 
 - (instancetype)init;
 

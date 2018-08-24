@@ -1,5 +1,8 @@
 package io.adaptivecards.adaptivecardssample;
 
+import android.media.MediaPlayer;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentActivity;
 import android.content.Context;
@@ -8,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -18,25 +22,35 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import io.adaptivecards.renderer.IMediaDataSourceOnPreparedListener;
+import io.adaptivecards.renderer.IOnlineMediaLoader;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.*;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
+import io.adaptivecards.renderer.http.HttpRequestHelper;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import android.media.MediaDataSource;
+import android.support.annotation.RequiresApi;
 
 public class MainActivityAdaptiveCardsSample extends FragmentActivity
     implements ICardActionHandler
@@ -164,6 +178,154 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         }
     }
 
+    /*
+    * MediaDataSource implementation taken from https://github.com/jacks205/MediaDataSourceExample
+    * */
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public class MediaDataSourceImpl extends MediaDataSource
+    {
+        MediaDataSourceImpl(String uri, IMediaDataSourceOnPreparedListener mediaDataSourceOnPreparedListener)
+        {
+            m_mediaUri = uri;
+            m_mediaDataSourceListener = mediaDataSourceOnPreparedListener;
+            Thread mediaDownloadThread = new Thread(m_downloadMediaRunnable);
+            mediaDownloadThread.start();
+        }
+
+        Runnable m_downloadMediaRunnable = new Runnable() {
+            @Override
+            public void run() {
+                try
+                {
+                    URL url = new URL(m_mediaUri);
+                    InputStream inputStream = url.openStream();
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    int read = 0;
+                    while(read != -1)
+                    {
+                        read = inputStream.read();
+                        byteArrayOutputStream.write(read);
+                    }
+                    inputStream.close();
+
+                    byteArrayOutputStream.flush();
+                    m_mediaBuffer = byteArrayOutputStream.toByteArray();
+
+                    byteArrayOutputStream.close();
+
+                    // Call this function to signalize that the mediaPlayer is able to prepare with the current state for DataMediaSource
+                    m_mediaDataSourceListener.prepareMediaPlayer();
+                }
+                catch (MalformedURLException urlException)
+                {
+                    urlException.printStackTrace();
+                    Log.d("Error on video download", urlException.toString());
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                    Log.d("Error on video download", e.toString());
+                }
+            }
+        };
+
+        @Override
+        public int readAt(long position, byte[] buffer, int offset, int size) throws IOException
+        {
+            synchronized (m_mediaBuffer)
+            {
+                int length = m_mediaBuffer.length;
+                if(position >= length)
+                {
+                    return -1;
+                }
+
+                if(position + size > length)
+                {
+                    size -= (position + size) - length;
+                    // size = length - position;
+                }
+                System.arraycopy(m_mediaBuffer, (int)position, buffer, offset, size);
+                return size;
+            }
+        }
+
+        @Override
+        public long getSize() throws IOException
+        {
+            synchronized (m_mediaBuffer)
+            {
+                return m_mediaBuffer.length;
+            }
+        }
+
+        @Override
+        public void close() throws IOException
+        {
+        }
+
+        private volatile IMediaDataSourceOnPreparedListener m_mediaDataSourceListener;
+
+        private volatile String m_mediaUri;
+        private volatile byte[] m_mediaBuffer;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public class OnlineMediaLoader implements IOnlineMediaLoader
+    {
+        public class OnlineFileAvailableChecker extends AsyncTask<String, Void, Boolean>
+        {
+            public OnlineFileAvailableChecker(String uri)
+            {
+                m_uri = uri;
+            }
+
+            @Override
+            protected Boolean doInBackground(String... strings) {
+                // if the provided uri is a valid uri or is valid with the resource resolver, then use that
+                // otherwise, try to get the media from a local file
+                try
+                {
+                    HttpRequestHelper.query(m_uri);
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    // Do nothing if the media was not found at all
+                    e.printStackTrace();
+                    return false;
+                }
+            }
+
+            private String m_uri;
+        }
+
+
+        @Override
+        public MediaDataSource loadOnlineMedia(MediaSourceVector mediaSources, IMediaDataSourceOnPreparedListener mediaDataSourceOnPreparedListener)
+        {
+            final long mediaSourcesSize = mediaSources.size();
+            for(int i = 0; i < mediaSourcesSize; i++)
+            {
+                String mediaUri = mediaSources.get(i).GetUrl();
+
+                OnlineFileAvailableChecker checker = new OnlineFileAvailableChecker(mediaUri);
+                try
+                {
+                    Boolean fileExists = checker.execute("").get();
+                    if(fileExists)
+                    {
+                        return new MediaDataSourceImpl(mediaUri, mediaDataSourceOnPreparedListener);
+                    }
+                }
+                catch (Exception e)
+                {
+                }
+            }
+            return null;
+        }
+    }
+
     private void renderAdaptiveCard(boolean showErrorToast)
     {
         try
@@ -189,6 +351,9 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             elementParserRegistration.AddParser("blah", new CustomBlahParser());
 
             CardRendererRegistration.getInstance().registerRenderer("blah", new CustomBlahRenderer());
+
+            // Example on how a custom OnlineMediaLoader should be registered
+            CardRendererRegistration.getInstance().registerOnlineMediaLoader(new OnlineMediaLoader());
             
             ParseResult parseResult = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.VERSION, elementParserRegistration);
             LinearLayout layout = (LinearLayout) findViewById(R.id.visualAdaptiveCardLayout);
@@ -414,6 +579,18 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         {
             showToast("Unknown Action!" , Toast.LENGTH_LONG);
         }
+    }
+
+    @Override
+    public void onMediaPlay(BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard)
+    {
+        showToast("Media started: " + mediaElement, Toast.LENGTH_LONG);
+    }
+
+    @Override
+    public void onMediaStop(BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard)
+    {
+        showToast("Media ended playing: " + mediaElement, Toast.LENGTH_LONG);
     }
 
     public void showToast(String text, int duration)
