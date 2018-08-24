@@ -127,7 +127,7 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
         {
             params = new LinearLayout.LayoutParams(
                     horizontalLine ? LinearLayout.LayoutParams.MATCH_PARENT : spacingSize,
-                    horizontalLine ? spacingSize : LinearLayout.LayoutParams.MATCH_PARENT);
+                    horizontalLine ? spacingSize : 0);
         }
         view.setLayoutParams(params);
         viewGroup.addView(view);
