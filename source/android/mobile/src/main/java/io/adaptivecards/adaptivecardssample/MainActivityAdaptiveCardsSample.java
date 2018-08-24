@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.ArrayMap;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -24,7 +23,6 @@ import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.*;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
-import io.adaptivecards.renderer.inputhandler.IInputWatcher;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import org.json.JSONException;
@@ -41,7 +39,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivityAdaptiveCardsSample extends FragmentActivity
-    implements ICardActionHandler, IInputWatcher
+        implements ICardActionHandler
 {
 
     // Used to load the 'adaptivecards-native-lib' library on application startup.
@@ -50,7 +48,6 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     }
 
     private static String IS_CARD = "isCard";
-    private Map <String, String> inputValue = new ArrayMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,11 +93,6 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
         jsonEditText.addTextChangedListener(watcher);
         configEditText.addTextChangedListener(watcher);
-    }
-
-    @Override
-    public void onInputChange(String id, String value) {
-        inputValue.put(id, value);
     }
 
     public class CustomCardElement extends BaseCardElement
@@ -176,207 +168,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     {
         try
         {
-            String jsonText = "{\n" +
-                    "  \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\n" +
-                    "  \"type\": \"AdaptiveCard\",\n" +
-                    "  \"version\": \"1.0\",\n" +
-                    "  \"body\": [\n" +
-                    "    {\n" +
-                    "      \"type\": \"TextBlock\",\n" +
-                    "      \"size\": \"medium\",\n" +
-                    "      \"weight\": \"bolder\",\n" +
-                    "      \"text\": \"Input.Text elements\",\n" +
-                    "      \"horizontalAlignment\": \"center\"\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"type\": \"Input.Text\",\n" +
-                    "      \"placeholder\": \"Name\",\n" +
-                    "      \"style\": \"text\",\n" +
-                    "      \"maxLength\": 0,\n" +
-                    "      \"id\": \"SimpleVal\"\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"type\": \"Input.Text\",\n" +
-                    "      \"placeholder\": \"Homepage\",\n" +
-                    "      \"style\": \"url\",\n" +
-                    "      \"maxLength\": 0,\n" +
-                    "      \"id\": \"UrlVal\"\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"type\": \"Input.Text\",\n" +
-                    "      \"placeholder\": \"Email\",\n" +
-                    "      \"style\": \"email\",\n" +
-                    "      \"maxLength\": 0,\n" +
-                    "      \"id\": \"EmailVal\"\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"type\": \"Input.Text\",\n" +
-                    "      \"placeholder\": \"Phone\",\n" +
-                    "      \"style\": \"tel\",\n" +
-                    "      \"maxLength\": 0,\n" +
-                    "      \"id\": \"TelVal\"\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"type\": \"Input.Text\",\n" +
-                    "      \"placeholder\": \"Comments\",\n" +
-                    "      \"style\": \"text\",\n" +
-                    "      \"isMultiline\": true,\n" +
-                    "      \"maxLength\": 0,\n" +
-                    "      \"id\": \"MultiLineVal\"\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"type\": \"Input.Number\",\n" +
-                    "      \"placeholder\": \"Quantity\",\n" +
-                    "      \"min\": -5,\n" +
-                    "      \"max\": 5,\n" +
-                    "      \"value\": 1,\n" +
-                    "      \"id\": \"NumVal\"\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"type\": \"Input.Date\",\n" +
-                    "      \"placeholder\": \"Due Date\",\n" +
-                    "      \"id\": \"DateVal\",\n" +
-                    "      \"value\": \"2017-09-20\"\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"type\": \"Input.Time\",\n" +
-                    "      \"placeholder\": \"Start time\",\n" +
-                    "      \"id\": \"TimeVal\",\n" +
-                    "      \"value\": \"16:59\"\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"type\": \"TextBlock\",\n" +
-                    "      \"size\": \"medium\",\n" +
-                    "      \"weight\": \"bolder\",\n" +
-                    "      \"text\": \"Input.ChoiceSet\",\n" +
-                    "      \"horizontalAlignment\": \"center\"\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"type\": \"TextBlock\",\n" +
-                    "      \"text\": \"What color do you want? (compact)\"\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"type\": \"Input.ChoiceSet\",\n" +
-                    "      \"id\": \"CompactSelectVal\",\n" +
-                    "      \"style\": \"compact\",\n" +
-                    "      \"value\": \"1\",\n" +
-                    "      \"choices\": [\n" +
-                    "        {\n" +
-                    "          \"title\": \"Red\",\n" +
-                    "          \"value\": \"1\"\n" +
-                    "        },\n" +
-                    "        {\n" +
-                    "          \"title\": \"Green\",\n" +
-                    "          \"value\": \"2\"\n" +
-                    "        },\n" +
-                    "        {\n" +
-                    "          \"title\": \"Blue\",\n" +
-                    "          \"value\": \"3\"\n" +
-                    "        }\n" +
-                    "      ]\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"type\": \"TextBlock\",\n" +
-                    "      \"text\": \"What color do you want? (expanded)\"\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"type\": \"Input.ChoiceSet\",\n" +
-                    "      \"id\": \"SingleSelectVal\",\n" +
-                    "      \"style\": \"expanded\",\n" +
-                    "      \"value\": \"1\",\n" +
-                    "      \"choices\": [\n" +
-                    "        {\n" +
-                    "          \"title\": \"Red\",\n" +
-                    "          \"value\": \"1\"\n" +
-                    "        },\n" +
-                    "        {\n" +
-                    "          \"title\": \"Green\",\n" +
-                    "          \"value\": \"2\"\n" +
-                    "        },\n" +
-                    "        {\n" +
-                    "          \"title\": \"Blue\",\n" +
-                    "          \"value\": \"3\"\n" +
-                    "        }\n" +
-                    "      ]\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"type\": \"TextBlock\",\n" +
-                    "      \"text\": \"What colors do you want? (multiselect)\"\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"type\": \"Input.ChoiceSet\",\n" +
-                    "      \"id\": \"MultiSelectVal\",\n" +
-                    "      \"isMultiSelect\": true,\n" +
-                    "      \"value\": \"1,3\",\n" +
-                    "      \"choices\": [\n" +
-                    "        {\n" +
-                    "          \"title\": \"Red\",\n" +
-                    "          \"value\": \"1\"\n" +
-                    "        },\n" +
-                    "        {\n" +
-                    "          \"title\": \"Green\",\n" +
-                    "          \"value\": \"2\"\n" +
-                    "        },\n" +
-                    "        {\n" +
-                    "          \"title\": \"Blue\",\n" +
-                    "          \"value\": \"3\"\n" +
-                    "        }\n" +
-                    "      ]\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"type\": \"TextBlock\",\n" +
-                    "      \"size\": \"medium\",\n" +
-                    "      \"weight\": \"bolder\",\n" +
-                    "      \"text\": \"Input.Toggle\",\n" +
-                    "      \"horizontalAlignment\": \"center\"\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"type\": \"Input.Toggle\",\n" +
-                    "      \"title\": \"I accept the terms and conditions (True/False)\",\n" +
-                    "      \"valueOn\": \"true\",\n" +
-                    "      \"valueOff\": \"false\",\n" +
-                    "      \"id\": \"AcceptsTerms\"\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"type\": \"Input.Toggle\",\n" +
-                    "      \"title\": \"Red cars are better than other cars\",\n" +
-                    "      \"valueOn\": \"RedCars\",\n" +
-                    "      \"valueOff\": \"NotRedCars\",\n" +
-                    "      \"id\": \"ColorPreference\"\n" +
-                    "    }\n" +
-                    "  ],\n" +
-                    "  \"actions\": [\n" +
-                    "    {\n" +
-                    "      \"type\": \"Action.Submit\",\n" +
-                    "      \"title\": \"Submit\",\n" +
-                    "      \"data\": {\n" +
-                    "        \"id\": \"1234567890\"\n" +
-                    "      }\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"type\": \"Action.ShowCard\",\n" +
-                    "      \"title\": \"Show Card\",\n" +
-                    "      \"card\": {\n" +
-                    "        \"type\": \"AdaptiveCard\",\n" +
-                    "        \"body\": [\n" +
-                    "          {\n" +
-                    "            \"type\": \"Input.Text\",\n" +
-                    "            \"placeholder\": \"enter comment\",\n" +
-                    "            \"style\": \"text\",\n" +
-                    "            \"maxLength\": 0,\n" +
-                    "            \"id\": \"CommentVal\"\n" +
-                    "          }\n" +
-                    "        ],\n" +
-                    "        \"actions\": [\n" +
-                    "          {\n" +
-                    "            \"type\": \"Action.Submit\",\n" +
-                    "            \"title\": \"OK\"\n" +
-                    "          }\n" +
-                    "        ]\n" +
-                    "      }\n" +
-                    "    }\n" +
-                    "  ]\n" +
-                    "}";
+            String jsonText = ((EditText) findViewById(R.id.jsonAdaptiveCard)).getText().toString();
             if (jsonText == null)
             {
                 return;
@@ -398,14 +190,10 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
             CardRendererRegistration.getInstance().registerRenderer("blah", new CustomBlahRenderer());
 
-            
             ParseResult parseResult = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.VERSION, elementParserRegistration);
             LinearLayout layout = (LinearLayout) findViewById(R.id.visualAdaptiveCardLayout);
             layout.removeAllViews();
-            CardRendererRegistration.getInstance().setInputWatcher(null);
             RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), parseResult.GetAdaptiveCard(), this, hostConfig);
-            CardRendererRegistration.getInstance().setInputWatcher(this);
-            renderedCard.setInputs(inputValue);
             layout.addView(renderedCard.getView());
         }
         catch (Exception ex)
