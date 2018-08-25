@@ -95,7 +95,6 @@
 		F4933D001F79853B00F6EBFD /* FoodOrder.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CF31F79853B00F6EBFD /* FoodOrder.json */; };
 		F4933D011F79853B00F6EBFD /* ImageGallery.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CF41F79853B00F6EBFD /* ImageGallery.json */; };
 		F4933D021F79853B00F6EBFD /* InputForm.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CF51F79853B00F6EBFD /* InputForm.json */; };
-		F4933D031F79853B00F6EBFD /* Inputs.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CF61F79853B00F6EBFD /* Inputs.json */; };
 		F4933D041F79853B00F6EBFD /* Restaurant.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CF71F79853B00F6EBFD /* Restaurant.json */; };
 		F4933D061F79853B00F6EBFD /* StockUpdate.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CF91F79853B00F6EBFD /* StockUpdate.json */; };
 		F4933D071F79853B00F6EBFD /* WeatherCompact.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933CFA1F79853B00F6EBFD /* WeatherCompact.json */; };
@@ -235,7 +234,6 @@
 		F4933CF31F79853B00F6EBFD /* FoodOrder.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = FoodOrder.json; path = ../../../../samples/v1.0/Scenarios/FoodOrder.json; sourceTree = "<group>"; };
 		F4933CF41F79853B00F6EBFD /* ImageGallery.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ImageGallery.json; path = ../../../../samples/v1.0/Scenarios/ImageGallery.json; sourceTree = "<group>"; };
 		F4933CF51F79853B00F6EBFD /* InputForm.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = InputForm.json; path = ../../../../samples/v1.0/Scenarios/InputForm.json; sourceTree = "<group>"; };
-		F4933CF61F79853B00F6EBFD /* Inputs.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Inputs.json; path = ../../../../samples/v1.0/Scenarios/Inputs.json; sourceTree = "<group>"; };
 		F4933CF71F79853B00F6EBFD /* Restaurant.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Restaurant.json; path = ../../../../samples/v1.0/Scenarios/Restaurant.json; sourceTree = "<group>"; };
 		F4933CF91F79853B00F6EBFD /* StockUpdate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = StockUpdate.json; path = ../../../../samples/v1.0/Scenarios/StockUpdate.json; sourceTree = "<group>"; };
 		F4933CFA1F79853B00F6EBFD /* WeatherCompact.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = WeatherCompact.json; path = ../../../../samples/v1.0/Scenarios/WeatherCompact.json; sourceTree = "<group>"; };
@@ -418,7 +416,6 @@
 				F4933CF31F79853B00F6EBFD /* FoodOrder.json */,
 				F4933CF41F79853B00F6EBFD /* ImageGallery.json */,
 				F4933CF51F79853B00F6EBFD /* InputForm.json */,
-				F4933CF61F79853B00F6EBFD /* Inputs.json */,
 				F4933CF71F79853B00F6EBFD /* Restaurant.json */,
 				F4933CF91F79853B00F6EBFD /* StockUpdate.json */,
 				F4933CFB1F79853B00F6EBFD /* WeatherLarge.json */,
@@ -591,7 +588,6 @@
 				F4933D021F79853B00F6EBFD /* InputForm.json in Resources */,
 				6B9AB30620D9857B005C8E15 /* Image.Explicit.Size.json in Resources */,
 				30860BCA20C9B5C9009F9D99 /* ColumnSet.FactSet.VerticalStretch.json in Resources */,
-				F4933D031F79853B00F6EBFD /* Inputs.json in Resources */,
 				F4933CD81F79852C00F6EBFD /* Image.Style.json in Resources */,
 				6B5D23F3212393480010EB07 /* Image.BackgroundColor.json in Resources */,
 				30860BC720C9B5C9009F9D99 /* ColumnSet.ImageSet.VerticalStretch.json in Resources */,
@@ -794,7 +790,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -844,7 +840,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
