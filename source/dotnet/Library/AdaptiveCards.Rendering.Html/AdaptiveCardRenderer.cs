@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using Newtonsoft.Json;
@@ -108,14 +109,54 @@ namespace AdaptiveCards.Rendering.Html
         {
             if (context.Config.SupportsInteractivity)
             {
-                var buttonElement = new HtmlTag("button", false) { Text = action.Title }
+                var actionsConfig = context.Config.Actions;
+                var buttonElement = new HtmlTag("button", false)
                     .Attr("type", "button")
                     .Style("overflow", "hidden")
                     .Style("white-space", "nowrap")
                     .Style("text-overflow", "ellipsis")
                     .Style("flex",
-                        context.Config.Actions.ActionAlignment == AdaptiveHorizontalAlignment.Stretch ? "0 1 100%" : "0 1 auto")
+                        actionsConfig.ActionAlignment == AdaptiveHorizontalAlignment.Stretch ? "0 1 100%" : "0 1 auto")
+                    .Style("display", "flex")
+                    .Style("align-items", "center")
+                    .Style("justify-content", "center")
                     .AddClass("ac-pushButton");
+
+                var hasTitle = !string.IsNullOrEmpty(action.Title);
+
+                if (action.IconUrl != null)
+                {
+                    // Append the icon to the button
+                    // NOTE: always using icon size since it's difficult
+                    // to match icon's height with text's height
+                    var iconElement = new HtmlTag("image", false)
+                        .Attr("src", action.IconUrl)
+                        .Style("max-height", $"{actionsConfig.IconSize}px");
+
+                    if (actionsConfig.IconPlacement == IconPlacement.LeftOfTitle)
+                    {
+                        buttonElement.Style("flex-direction", "row");
+
+                        if (hasTitle)
+                        {
+                            iconElement.Style("margin-right", "4px");
+                        }
+                    }
+                    else
+                    {
+                        buttonElement.Style("flex-direction", "column");
+
+                        if (hasTitle)
+                        {
+                            iconElement.Style("margin-bottom", "4px");
+                        }
+                    }
+
+                    buttonElement.Append(iconElement);
+                }
+
+                var titleElement = new HtmlTag("div", false) { Text = action.Title };
+                buttonElement.Append(titleElement);
 
                 AddActionAttributes(action, buttonElement, context);
                 return buttonElement;
@@ -137,13 +178,49 @@ namespace AdaptiveCards.Rendering.Html
                 uiCard.Style("font-family", context.Config.FontFamily);
 
             if (card.BackgroundImage != null)
-                uiCard.Style("background-image", $"url('{card.BackgroundImage}')")
+                uiCard.Style("background-image", $"url('{context.Config.ResolveFinalAbsoluteUri(card.BackgroundImage)}')")
                     .Style("background-repeat", "no-repeat")
                     .Style("background-size", "cover");
 
             AddContainerElements(uiCard, card.Body, card.Actions, context);
 
+            AddSelectAction(uiCard, card.SelectAction, context);
+
+            // Add all accumulated selectAction show cards
+            foreach (var showCard in context.ShowCardTags)
+            {
+                uiCard.Children.Add(showCard);
+            }
+
             return uiCard;
+        }
+
+        protected static void AddSelectAction(HtmlTag tag, AdaptiveAction selectAction, AdaptiveRenderContext context)
+        {
+            if (context.Config.SupportsInteractivity && selectAction != null)
+            {
+                tag.AddClass("ac-selectable");
+                AddActionAttributes(selectAction, tag, context);
+
+                // Create the additional card below for showCard actions
+                if (selectAction is AdaptiveShowCardAction showCardAction)
+                {
+                    var cardId = tag.Attributes["data-ac-showCardId"];
+
+                    var uiShowCard = context.Render(showCardAction.Card);
+                    if (uiShowCard != null)
+                    {
+                        uiShowCard.Attr("id", cardId)
+                            .AddClass("ac-showCard")
+                            .Style("padding", "0")
+                            .Style("display", "none")
+                            .Style("margin-top", $"{context.Config.Actions.ShowCard.InlineTopMargin}px");
+
+                        // Store all showCard tags inside context
+                        context.ShowCardTags.Add(uiShowCard);
+                    }
+                }
+            }
         }
 
         protected static void AddContainerElements(HtmlTag uiContainer, IList<AdaptiveElement> elements, IList<AdaptiveAction> actions, AdaptiveRenderContext context)
@@ -171,6 +248,7 @@ namespace AdaptiveCards.Rendering.Html
                 var uiButtonStrip = new DivTag()
                     .AddClass("ac-actionset")
                     .Style("display", "flex");
+                var actionsConfig = context.Config.Actions;
 
                 // TODO: This top marging is currently being double applied, will have to investigate later
                 //.Style("margin-top", $"{context.Config.GetSpacing(context.Config.Actions.Spacing)}px");
@@ -178,11 +256,11 @@ namespace AdaptiveCards.Rendering.Html
                 // contains ShowCardAction.AdaptiveCard
                 var showCards = new List<HtmlTag>();
 
-                if (context.Config.Actions.ActionsOrientation == ActionsOrientation.Horizontal)
+                if (actionsConfig.ActionsOrientation == ActionsOrientation.Horizontal)
                 {
                     uiButtonStrip.Style("flex-direction", "row");
 
-                    switch (context.Config.Actions.ActionAlignment)
+                    switch (actionsConfig.ActionAlignment)
                     {
                         case AdaptiveHorizontalAlignment.Center:
                             uiButtonStrip.Style("justify-content", "center");
@@ -198,7 +276,7 @@ namespace AdaptiveCards.Rendering.Html
                 else
                 {
                     uiButtonStrip.Style("flex-direction", "column");
-                    switch (context.Config.Actions.ActionAlignment)
+                    switch (actionsConfig.ActionAlignment)
                     {
                         case AdaptiveHorizontalAlignment.Center:
                             uiButtonStrip.Style("align-items", "center");
@@ -215,7 +293,24 @@ namespace AdaptiveCards.Rendering.Html
                     }
                 }
 
-                var maxActions = Math.Min(context.Config.Actions.MaxActions, actions.Count);
+                var maxActions = Math.Min(actionsConfig.MaxActions, actions.Count);
+                // See if all actions have icons, otherwise force the icon placement to the left
+                var oldConfigIconPlacement = actionsConfig.IconPlacement;
+                bool allActionsHaveIcons = true;
+                for (var i = 0; i < maxActions; i++)
+                {
+                    if (string.IsNullOrEmpty(actions[i].IconUrl))
+                    {
+                        allActionsHaveIcons = false;
+                        break;
+                    }
+                }
+
+                if (!allActionsHaveIcons)
+                {
+                    actionsConfig.IconPlacement = IconPlacement.LeftOfTitle;
+                }
+
                 for (var i = 0; i < maxActions; i++)
                 {
                     // add actions
@@ -233,7 +328,7 @@ namespace AdaptiveCards.Rendering.Html
                                     .AddClass("ac-showCard")
                                     .Style("padding", "0")
                                     .Style("display", "none")
-                                    .Style("margin-top", $"{context.Config.Actions.ShowCard.InlineTopMargin}px");
+                                    .Style("margin-top", $"{actionsConfig.ShowCard.InlineTopMargin}px");
 
                                 showCards.Add(uiCard);
                             }
@@ -242,18 +337,18 @@ namespace AdaptiveCards.Rendering.Html
                     }
 
                     // add spacer between buttons according to config
-                    if (i < maxActions - 1 && context.Config.Actions.ButtonSpacing > 0)
+                    if (i < maxActions - 1 && actionsConfig.ButtonSpacing > 0)
                     {
                         var uiSpacer = new DivTag();
 
-                        if (context.Config.Actions.ActionsOrientation == ActionsOrientation.Horizontal)
+                        if (actionsConfig.ActionsOrientation == ActionsOrientation.Horizontal)
                         {
                             uiSpacer.Style("flex", "0 0 auto");
-                            uiSpacer.Style("width", context.Config.Actions.ButtonSpacing + "px");
+                            uiSpacer.Style("width", actionsConfig.ButtonSpacing + "px");
                         }
                         else
                         {
-                            uiSpacer.Style("height", context.Config.Actions.ButtonSpacing + "px");
+                            uiSpacer.Style("height", actionsConfig.ButtonSpacing + "px");
                         }
                         uiButtonStrip.Children.Add(uiSpacer);
                     }
@@ -269,6 +364,9 @@ namespace AdaptiveCards.Rendering.Html
                 {
                     uiContainer.Children.Add(showCard);
                 }
+
+                // Restore the iconPlacement for the context.
+                actionsConfig.IconPlacement = oldConfigIconPlacement;
             }
         }
 
@@ -309,12 +407,7 @@ namespace AdaptiveCards.Rendering.Html
 
             AddContainerElements(uiColumn, column.Items, null, context);
 
-            // selectAction
-            if (context.Config.SupportsInteractivity && column.SelectAction != null)
-            {
-                uiColumn.AddClass("ac-selectable");
-                AddActionAttributes(column.SelectAction, uiColumn, context);
-            }
+            AddSelectAction(uiColumn, column.SelectAction, context);
 
             return uiColumn;
         }
@@ -326,12 +419,7 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("overflow", "hidden")
                 .Style("display", "flex");
 
-            // selectAction
-            if (context.Config.SupportsInteractivity && columnSet.SelectAction != null)
-            {
-                uiColumnSet.AddClass("ac-selectable");
-                AddActionAttributes(columnSet.SelectAction, uiColumnSet, context);
-            }
+            AddSelectAction(uiColumnSet, columnSet.SelectAction, context);
 
             var max = Math.Max(1.0, columnSet.Columns.Select(col =>
             {
@@ -385,11 +473,14 @@ namespace AdaptiveCards.Rendering.Html
                 }
                 else
                 {
-                    double val;
-                    if (double.TryParse(width, out val))
+                    if (double.TryParse(width, out double val) && val >= 0)
                     {
                         var percent = Convert.ToInt32(100 * (val / max));
                         uiColumn = uiColumn.Style("flex", $"1 1 {percent}%");
+                    }
+                    else if (width.EndsWith("px") && double.TryParse(width.Substring(0, width.Length-2), out double pxVal) && pxVal >= 0)
+                    {
+                        uiColumn = uiColumn.Style("flex", $"0 0 {(int)pxVal}px");
                     }
                     else
                     {
@@ -408,13 +499,21 @@ namespace AdaptiveCards.Rendering.Html
             var uiContainer = new DivTag()
                 .AddClass($"ac-{container.Type.Replace(".", "").ToLower()}");
 
+            if (container.Style != null)
+            {
+                // Apply background color
+                var containerStyle = context.Config.ContainerStyles.Default;
+                if (container.Style == AdaptiveContainerStyle.Emphasis)
+                {
+                    containerStyle = context.Config.ContainerStyles.Emphasis;
+                }
+
+                uiContainer.Style("background-color", context.GetRGBColor(containerStyle.BackgroundColor));
+            }
+
             AddContainerElements(uiContainer, container.Items, null, context);
 
-            if (context.Config.SupportsInteractivity && container.SelectAction != null)
-            {
-                uiContainer.AddClass("ac-selectable");
-                AddActionAttributes(container.SelectAction, uiContainer, context);
-            }
+            AddSelectAction(uiContainer, container.SelectAction, context);
 
             return uiContainer;
         }
@@ -512,8 +611,7 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("color", context.GetColor(textBlock.Color, textBlock.IsSubtle))
                 .Style("line-height", $"{lineHeight.ToString("F")}px")
                 .Style("font-size", $"{fontSize}px")
-                .Style("font-weight", $"{weight}")
-                .Style("height", "100%");
+                .Style("font-weight", $"{weight}");
 
             if (textBlock.MaxLines > 0)
                 uiTextBlock = uiTextBlock
@@ -592,7 +690,7 @@ namespace AdaptiveCards.Rendering.Html
             var uiImage = new HtmlTag("img")
                 .Style("width", "100%")
                 .Attr("alt", image.AltText ?? "card image")
-                .Attr("src", image.Url.ToString());
+                .Attr("src", context.Config.ResolveFinalAbsoluteUri(image.Url));
 
             switch (image.Style)
             {
@@ -604,7 +702,6 @@ namespace AdaptiveCards.Rendering.Html
                         .Style("background-repeat", "no-repeat");
                     break;
             }
-
 
             switch (image.HorizontalAlignment)
             {
@@ -624,13 +721,15 @@ namespace AdaptiveCards.Rendering.Html
                         .Style("display", "block");
                     break;
             }
+
+            if (!string.IsNullOrEmpty(image.BackgroundColor))
+            {
+                uiImage.Style("background-color", context.GetRGBColor(image.BackgroundColor));
+            }
+
             uiDiv.Children.Add(uiImage);
 
-            if (context.Config.SupportsInteractivity && image.SelectAction != null)
-            {
-                uiDiv.AddClass("ac-selectable");
-                AddActionAttributes(image.SelectAction, uiDiv, context);
-            }
+            AddSelectAction(uiDiv, image.SelectAction, context);
             return uiDiv;
         }
 
@@ -670,12 +769,25 @@ namespace AdaptiveCards.Rendering.Html
                         .AddClass("ac-multichoiceInput")
                         .Style("width", "100%");
 
+                    var defaultValues = ParseChoiceSetInputDefaultValues(adaptiveChoiceSetInput.Value);
+
+                    // If more than one option is specified, default to not select any option
+                    if (defaultValues.Count > 1)
+                    {
+                        var option = new HtmlTag("option") { Text = "" }
+                            .Attr("disabled", string.Empty)
+                            .Attr("hidden", string.Empty)
+                            .Attr("selected", string.Empty);
+                        uiSelectElement.Append(option);
+                    }
+
                     foreach (var choice in adaptiveChoiceSetInput.Choices)
                     {
                         var option = new HtmlTag("option") { Text = choice.Title }
                             .Attr("value", choice.Value);
 
-                        if (choice.Value == adaptiveChoiceSetInput.Value)
+                        // Select an option only when one option is specified
+                        if (defaultValues.Contains(choice.Value) && defaultValues.Count == 1)
                         {
                             option.Attr("selected", string.Empty);
                         }
@@ -697,8 +809,7 @@ namespace AdaptiveCards.Rendering.Html
 
         private static HtmlTag ChoiceSetRenderInternal(AdaptiveChoiceSetInput adaptiveChoiceSetInput, AdaptiveRenderContext context, string htmlInputType)
         {
-            // the default values are specified by a comma separated string input.value
-            var defaultValues = adaptiveChoiceSetInput.Value?.Split(',').Select(p => p.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList() ?? new List<string>();
+            var defaultValues = ParseChoiceSetInputDefaultValues(adaptiveChoiceSetInput.Value);
 
             // render as a series of radio buttons
             var uiElement = new DivTag()
@@ -718,8 +829,9 @@ namespace AdaptiveCards.Rendering.Html
                     .Style("display", "inline-block")
                     .Style("vertical-align", "middle");
 
-
-                if (defaultValues.Contains(choice.Value))
+                // Only select an option if isMultiSelect is true (checkboxes)
+                // or there is only one specified value
+                if (defaultValues.Contains(choice.Value) && (adaptiveChoiceSetInput.IsMultiSelect || defaultValues.Count == 1))
                 {
                     uiInput.Attr("checked", string.Empty);
                 }
@@ -735,6 +847,12 @@ namespace AdaptiveCards.Rendering.Html
 
             return uiElement;
 
+        }
+
+        // Default values are specified by a comma separated string
+        private static List<string> ParseChoiceSetInputDefaultValues(string value)
+        {
+            return value?.Split(',').Select(p => p.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList() ?? new List<string>();
         }
 
         private static HtmlTag CreateLabel(string forId, string innerText, AdaptiveRenderContext context)

@@ -18,9 +18,13 @@
 
 - (ACRBaseActionElementRenderer *)getActionRenderer:(NSNumber *) cardElementType;
 
+- (id<ACRIBaseActionSetRenderer>)getActionSetRenderer;
+
 - (void) setActionRenderer:(ACRBaseActionElementRenderer *)renderer cardElementType:(NSNumber *)cardElementType;
 
 - (void) setBaseCardElementRenderer:(ACRBaseCardElementRenderer *)renderer cardElementType:(ACRCardElementType)cardElementType;
+
+- (void) setActionSetRenderer:(id<ACRIBaseActionSetRenderer>)actionsetRenderer;
 
 - (void) setCustomElementParser:(NSObject<ACOIBaseCardElementParser> *)customElementParser;
 

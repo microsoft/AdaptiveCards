@@ -48,14 +48,24 @@ namespace AdaptiveCards.Rendering.Wpf
                         uiComboItem.Content = choice.Title;
                         uiComboItem.DataContext = choice;
                         uiComboBox.Items.Add(uiComboItem);
-                        if (chosen.Contains(choice.Value))
+
+                        // If multiple values are specified, no option is selected
+                        if (chosen.Contains(choice.Value) && chosen.Count == 1)
+                        {
                             uiComboBox.SelectedItem = uiComboItem;
+                        }
                     }
                     else
                     {
                         var uiRadio = new RadioButton();
                         uiRadio.Content = choice.Title;
-                        uiRadio.IsChecked = chosen.Contains(choice.Value);
+
+                        // When isMultiSelect is false, only 1 specified value is accepted.
+                        // Otherwise, don't set any option
+                        if (chosen.Count == 1)
+                        {
+                            uiRadio.IsChecked = chosen.Contains(choice.Value);
+                        }
                         uiRadio.GroupName = input.Id;
                         uiRadio.DataContext = choice;
                         uiRadio.Style = context.GetStyle("Adaptive.Input.AdaptiveChoiceSetInput.Radio");

@@ -26,7 +26,7 @@
     return ACRChoiceSetInput;
 }
 
-- (UIView *)render:(UIView *)viewGroup
+- (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
           rootView:(ACRView *)rootView
             inputs:(NSMutableArray *)inputs
    baseCardElement:(ACOBaseCardElement *)acoElem
@@ -39,43 +39,54 @@
     ACRInputTableView *choiceSetView = [[ACRInputTableView alloc] initWithSuperview:viewGroup];
     NSObject<UITableViewDelegate, UITableViewDataSource> *dataSource = nil;
 
-    if(choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact)
-    {
+    [choiceSetView registerClass:[ACRChoiceSetCell class] forCellReuseIdentifier:checkedCheckboxReuseID];
+    [choiceSetView registerClass:[ACRChoiceSetCell class] forCellReuseIdentifier:uncheckedCheckboxReuseID];
+    [choiceSetView registerClass:[ACRChoiceSetCell class] forCellReuseIdentifier:checkedRadioButtonReuseID];
+    [choiceSetView registerClass:[ACRChoiceSetCell class] forCellReuseIdentifier:uncheckedRadioButtonReuseID];
+
+    if(choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact && choiceSet->GetIsMultiSelect() == false) {
         dataSource = [[ACRChoiceSetViewDataSourceCompactStyle alloc] initWithInputChoiceSet:choiceSet rootView:rootView];
-    }
-    else
-    {
+        [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    } else {
         dataSource = [[ACRChoiceSetViewDataSource alloc] initWithInputChoiceSet:choiceSet];
+        [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     }
+
     choiceSetView.delegate = dataSource;
     choiceSetView.dataSource = dataSource;
     [inputs addObject:dataSource];
 
-    UIView *inputView = (UIView *)choiceSetView;
+    if(elem->GetHeight() == HeightType::Stretch){
+        ACRColumnView *textInputContainer = [[ACRColumnView alloc] init];
+        [textInputContainer addArrangedSubview:choiceSetView];
 
-    if(viewGroup)
-    {
-        [(UIStackView *)viewGroup addArrangedSubview:inputView];
+        // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
+        UIView *blankTrailingSpace = [[UIView alloc] init];
+        [textInputContainer addArrangedSubview:blankTrailingSpace];
+        [textInputContainer adjustHuggingForLastElement];
+
+        [viewGroup addArrangedSubview:textInputContainer];
+    } else {
+        [viewGroup addArrangedSubview:choiceSetView];
     }
 
-    [viewGroup addConstraint:
-     [NSLayoutConstraint constraintWithItem:inputView
-                                  attribute:NSLayoutAttributeLeading
-                                  relatedBy:NSLayoutRelationLessThanOrEqual
-                                     toItem:viewGroup
-                                  attribute:NSLayoutAttributeLeading
-                                 multiplier:1.0
-                                   constant:0]];
-    [viewGroup addConstraint:
-     [NSLayoutConstraint constraintWithItem:inputView
-                                  attribute:NSLayoutAttributeTrailing
-                                  relatedBy:NSLayoutRelationLessThanOrEqual
-                                     toItem:viewGroup
-                                  attribute:NSLayoutAttributeTrailing
-                                 multiplier:1.0
-                                   constant:0]];
+    [NSLayoutConstraint constraintWithItem:choiceSetView
+                                 attribute:NSLayoutAttributeLeading
+                                 relatedBy:NSLayoutRelationLessThanOrEqual
+                                    toItem:viewGroup
+                                 attribute:NSLayoutAttributeLeading
+                                multiplier:1.0
+                                  constant:0].active = YES;
 
-    return inputView;
+    [NSLayoutConstraint constraintWithItem:choiceSetView
+                                 attribute:NSLayoutAttributeTrailing
+                                 relatedBy:NSLayoutRelationLessThanOrEqual
+                                    toItem:viewGroup
+                                 attribute:NSLayoutAttributeTrailing
+                                multiplier:1.0
+                                  constant:0].active = YES;
+
+    return choiceSetView;
 }
 
 @end

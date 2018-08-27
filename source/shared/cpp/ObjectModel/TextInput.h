@@ -5,13 +5,13 @@
 #include "Enums.h"
 #include "ElementParserRegistration.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 class TextInput : public BaseInputElement
 {
 public:
     TextInput();
 
-    virtual Json::Value SerializeToJsonValue() const override;
+    Json::Value SerializeToJsonValue() const override;
 
     std::string GetPlaceholder() const;
     void SetPlaceholder(const std::string &value);
@@ -29,7 +29,7 @@ public:
     void SetTextInputStyle(const TextInputStyle value);
 
 private:
-    void PopulateKnownPropertiesSet();
+    void PopulateKnownPropertiesSet() override;
 
     std::string m_placeholder;
     std::string m_value;
@@ -41,14 +41,23 @@ private:
 class TextInputParser : public BaseCardElementParser
 {
 public:
+    TextInputParser() = default;
+    TextInputParser(const TextInputParser&) = default;
+    TextInputParser(TextInputParser&&) = default;
+    TextInputParser& operator=(const TextInputParser&) = default;
+    TextInputParser& operator=(TextInputParser&&) = default;
+    virtual ~TextInputParser() = default;
+
     std::shared_ptr<BaseCardElement> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const Json::Value& root);
+        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+        const Json::Value& root) override;
 
     std::shared_ptr<BaseCardElement> DeserializeFromString(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
         const std::string& jsonString);
 };
-AdaptiveSharedNamespaceEnd
+}

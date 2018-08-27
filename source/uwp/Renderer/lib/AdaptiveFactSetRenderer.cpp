@@ -33,8 +33,9 @@ AdaptiveNamespaceStart
         ABI::Windows::Data::Json::IJsonObject* jsonObject,
         ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
         ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
+        ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
         ABI::AdaptiveNamespace::IAdaptiveCardElement** element)
     {
-        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveFactSet, AdaptiveSharedNamespace::FactSet, AdaptiveSharedNamespace::FactSetParser>(jsonObject, elementParserRegistration, actionParserRegistration, element);
+        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveFactSet, AdaptiveSharedNamespace::FactSet, AdaptiveSharedNamespace::FactSetParser>(jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
 AdaptiveNamespaceEnd

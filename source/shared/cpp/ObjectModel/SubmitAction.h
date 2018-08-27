@@ -5,33 +5,44 @@
 #include "Enums.h"
 #include "ActionParserRegistration.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 class SubmitAction : public BaseActionElement
 {
 public:
     SubmitAction();
 
     std::string GetDataJson() const;
-    void SetDataJson(const std::string &value);
+    Json::Value GetDataJsonAsValue() const;
+    void SetDataJson(const Json::Value &value);
 
-    virtual Json::Value SerializeToJsonValue() const override;
+    Json::Value SerializeToJsonValue() const override;
 
 private:
-    void PopulateKnownPropertiesSet();
+    void PopulateKnownPropertiesSet() override;
 
-    std::string m_dataJson;
+    Json::Value m_dataJson;
 };
 
 class SubmitActionParser : public ActionElementParser
 {
+public:
+    SubmitActionParser() = default;
+    SubmitActionParser(const SubmitActionParser&) = default;
+    SubmitActionParser(SubmitActionParser&&) = default;
+    SubmitActionParser& operator=(const SubmitActionParser&) = default;
+    SubmitActionParser& operator=(SubmitActionParser&&) = default;
+    virtual ~SubmitActionParser() = default;
+
     std::shared_ptr<BaseActionElement> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const Json::Value& value);
+        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+        const Json::Value& value) override;
 
     std::shared_ptr<BaseActionElement> DeserializeFromString(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
         const std::string& jsonString);
 };
-AdaptiveSharedNamespaceEnd
+}

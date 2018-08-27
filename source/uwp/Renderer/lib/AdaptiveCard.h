@@ -38,15 +38,21 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_Speak(_Out_ HSTRING* speak);
         IFACEMETHODIMP put_Speak(_In_ HSTRING speak);
 
+        IFACEMETHODIMP get_VerticalContentAlignment(_Out_ ABI::AdaptiveNamespace::VerticalContentAlignment* verticalAlignment);
+        IFACEMETHODIMP put_VerticalContentAlignment(_In_ ABI::AdaptiveNamespace::VerticalContentAlignment verticalAlignment);
+
         IFACEMETHODIMP get_Body(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>** body);
 
         IFACEMETHODIMP get_Actions(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>** actions);
 
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
 
+        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveNamespace::HeightType* heightType);
+        IFACEMETHODIMP put_Height(_In_ ABI::AdaptiveNamespace::HeightType heightType);
+
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
 
-        IFACEMETHODIMP GetResourceUris(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVectorView<ABI::Windows::Foundation::Uri*>** uris);
+        IFACEMETHODIMP GetResourceInformation(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveNamespace::AdaptiveRemoteResourceInformation*>** uris);
 
         HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard>& sharedModel);
 
@@ -64,12 +70,14 @@ AdaptiveNamespaceStart
         Microsoft::WRL::Wrappers::HString m_minVersion;
         Microsoft::WRL::Wrappers::HString m_fallbackText;
         Microsoft::WRL::Wrappers::HString m_speak;
+        ABI::AdaptiveNamespace::HeightType m_height;
         Microsoft::WRL::Wrappers::HString m_language;
 
         Microsoft::WRL::Wrappers::HString m_backgroundImage;
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_selectAction;
         ABI::AdaptiveNamespace::ContainerStyle m_style;
+        ABI::AdaptiveNamespace::VerticalContentAlignment m_verticalAlignment;
     };
 
     class AdaptiveCardStaticsImpl WrlFinal

@@ -70,8 +70,16 @@ public class Container extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Container_SetLanguage(swigCPtr, this, value);
   }
 
-  public void GetResourceUris(StringVector resourceUris) {
-    AdaptiveCardObjectModelJNI.Container_GetResourceUris(swigCPtr, this, StringVector.getCPtr(resourceUris), resourceUris);
+  public VerticalContentAlignment GetVerticalContentAlignment() {
+    return VerticalContentAlignment.swigToEnum(AdaptiveCardObjectModelJNI.Container_GetVerticalContentAlignment(swigCPtr, this));
+  }
+
+  public void SetVerticalContentAlignment(VerticalContentAlignment value) {
+    AdaptiveCardObjectModelJNI.Container_SetVerticalContentAlignment(swigCPtr, this, value.swigValue());
+  }
+
+  public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {
+    AdaptiveCardObjectModelJNI.Container_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceInfo), resourceInfo);
   }
 
   public static Container dynamic_cast(BaseCardElement baseCardElement) {

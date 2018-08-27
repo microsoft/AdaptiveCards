@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Newtonsoft.Json;
 
 namespace AdaptiveCards.Rendering
@@ -43,6 +44,43 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         public bool SupportsInteractivity { get; set; } = true;
 
+        /// <summary>
+        /// Image Base URL for relative URLs
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public Uri ImageBaseUrl { get; set; } = null;
+
+        public Uri ResolveFinalAbsoluteUri(Uri uri)
+        {
+            if (uri == null)
+            {
+                return null;
+            }
+
+            if (uri.IsAbsoluteUri)
+            {
+                return uri;
+            }
+
+            if (ImageBaseUrl != null)
+            {
+                try
+                {
+                    Uri finalUri = new Uri(ImageBaseUrl, uri.ToString());
+                    if (finalUri.IsAbsoluteUri)
+                    {
+                        return finalUri;
+                    }
+                }
+                catch (UriFormatException)
+                {
+                    return null;
+                }
+            }
+
+            return null;
+        }
+
         public int GetSpacing(AdaptiveSpacing spacing)
         {
             switch (spacing)
@@ -75,7 +113,10 @@ namespace AdaptiveCards.Rendering
         {
             try
             {
-                return JsonConvert.DeserializeObject<AdaptiveHostConfig>(json);
+                return JsonConvert.DeserializeObject<AdaptiveHostConfig>(json, new JsonSerializerSettings
+                {
+                    Converters = { new StrictIntConverter() }
+                });
             }
             catch (JsonException ex)
             {
@@ -93,6 +134,4 @@ namespace AdaptiveCards.Rendering
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
     }
-
 }
-

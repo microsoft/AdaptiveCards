@@ -92,6 +92,14 @@ public class ActionsConfig {
     return IconPlacement.swigToEnum(AdaptiveCardObjectModelJNI.ActionsConfig_iconPlacement_get(swigCPtr, this));
   }
 
+  public void setIconSize(long value) {
+    AdaptiveCardObjectModelJNI.ActionsConfig_iconSize_set(swigCPtr, this, value);
+  }
+
+  public long getIconSize() {
+    return AdaptiveCardObjectModelJNI.ActionsConfig_iconSize_get(swigCPtr, this);
+  }
+
   public static ActionsConfig Deserialize(JsonValue json, ActionsConfig defaultValue) {
     return new ActionsConfig(AdaptiveCardObjectModelJNI.ActionsConfig_Deserialize(JsonValue.getCPtr(json), json, ActionsConfig.getCPtr(defaultValue), defaultValue), true);
   }

@@ -63,7 +63,6 @@ a.ac-anchor:visited:active {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
-  height: 31px;
   background-color: white;
   color: #0078D7;
   border: 1px solid #B2E0FF;
@@ -106,8 +105,15 @@ a.ac-anchor:visited:active {
   font-size: 10px;
   font-style: normal;
   font-weight: 900;
-  margin: auto 0px auto 6px;
   content: '\E70D';
+}
+
+.ac-pushButton.noIcon.expandable:after, .ac-pushButton.iconLeft.expandable:after {
+  margin: auto 0px auto 6px;
+}
+
+.ac-pushButton.iconAbove.expandable:after {
+  margin-top: 6px;
 }
 
 .ac-pushButton.expandable.expanded:after {

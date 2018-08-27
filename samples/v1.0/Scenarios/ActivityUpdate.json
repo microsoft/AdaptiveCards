@@ -31,7 +31,7 @@
             {
               "type": "TextBlock",
               "text": "Matt Hidinger",
-             "weight": "bolder",
+              "weight": "bolder",
               "wrap": true
             },
             {

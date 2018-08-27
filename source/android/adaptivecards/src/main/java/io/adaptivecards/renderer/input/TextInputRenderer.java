@@ -6,14 +6,23 @@ import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.method.MovementMethod;
+import android.text.method.ScrollingMovementMethod;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Scroller;
+import android.widget.TextView;
 
 import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -28,6 +37,7 @@ import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import java.util.Vector;
+import java.util.zip.CheckedOutputStream;
 
 public class TextInputRenderer extends BaseCardElementRenderer
 {
@@ -67,6 +77,33 @@ public class TextInputRenderer extends BaseCardElementRenderer
         {
             throw new IllegalArgumentException("Unknown TextInputStyle: " + textInputStyle.toString());
         }
+    }
+
+    private class EditTextTouchListener implements View.OnTouchListener
+    {
+        EditTextTouchListener(Object tag)
+        {
+            m_tag = tag;
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event)
+        {
+            // Solution taken from here: https://stackoverflow.com/questions/6123973/android-edittext-vertical-scrolling-problem
+            if (v.getTag() == m_tag)
+            {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                switch (event.getAction() & MotionEvent.ACTION_MASK)
+                {
+                    case MotionEvent.ACTION_UP:
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+            }
+            return false;
+        }
+
+        private Object m_tag = null;
     }
 
     protected EditText renderInternal(
@@ -115,7 +152,18 @@ public class TextInputRenderer extends BaseCardElementRenderer
             }
         });
 
-        viewGroup.addView(editText);
+        if(baseInputElement.GetHeight() == HeightType.Stretch)
+        {
+            LinearLayout containerLayout = new LinearLayout(context);
+            containerLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+
+            containerLayout.addView(editText);
+            viewGroup.addView(containerLayout);
+        }
+        else
+        {
+            viewGroup.addView(editText);
+        }
         return editText;
     }
 
@@ -148,7 +196,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
         TextInputHandler textInputHandler = new TextInputHandler(textInput);
         setSpacingAndSeparator(context, viewGroup, textInput.GetSpacing(), textInput.GetSeparator(), hostConfig, true /* horizontal line */);
-        EditText editText = renderInternal(
+        final EditText editText = renderInternal(
                 renderedCard,
                 context,
                 viewGroup,
@@ -158,9 +206,13 @@ public class TextInputRenderer extends BaseCardElementRenderer
                 textInputHandler,
                 hostConfig);
         editText.setSingleLine(!textInput.GetIsMultiline());
+        editText.setTag(textInput);
         if (textInput.GetIsMultiline())
         {
             editText.setLines(3);
+            // Solution taken from here: https://stackoverflow.com/questions/6123973/android-edittext-vertical-scrolling-problem
+            editText.setOnTouchListener(new EditTextTouchListener(textInput));
+
         }
         setTextInputStyle(editText, textInput.GetTextInputStyle());
         int maxLength = (int) Math.min(textInput.GetMaxLength(), Integer.MAX_VALUE);

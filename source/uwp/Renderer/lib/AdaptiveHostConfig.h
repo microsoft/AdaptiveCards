@@ -59,6 +59,10 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_Actions(_Out_ ABI::AdaptiveNamespace::IAdaptiveActionsConfig** actionsOptionConfig);
         IFACEMETHODIMP put_Actions(_In_ ABI::AdaptiveNamespace::IAdaptiveActionsConfig* actionsOptionConfig);
 
+        IFACEMETHODIMP get_Media(_Out_ ABI::AdaptiveNamespace::IAdaptiveMediaConfig** mediaConfig);
+        IFACEMETHODIMP put_Media(_In_ ABI::AdaptiveNamespace::IAdaptiveMediaConfig* mediaConfig);
+
+
     private:
 
         Microsoft::WRL::Wrappers::HString m_fontFamily;
@@ -76,6 +80,7 @@ AdaptiveNamespaceStart
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveImageConfig> m_image;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveFactSetConfig> m_factSet;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionsConfig> m_actions;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveMediaConfig> m_media;
     };
 
     class AdaptiveHostConfigStaticsImpl WrlFinal

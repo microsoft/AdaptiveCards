@@ -7,7 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
-
+#import <AdaptiveCards/ACFramework.h>
 @interface ADCIOSVisualizerUITests : XCTestCase
 
 @end
@@ -16,14 +16,10 @@
 
 - (void)setUp {
     [super setUp];
-    
     // Put setup code here. This method is called before the invocation of each test method in the class.
-    
     // In UI tests it is usually best to stop immediately when a failure occurs.
     self.continueAfterFailure = NO;
     // UI tests must launch the application that they test. Doing this in setup will make sure it happens for each test method.
-    [[[XCUIApplication alloc] init] launch];
-    
     // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
 }
 
@@ -32,9 +28,100 @@
     [super tearDown];
 }
 
-- (void)testExample {
-    // Use recording to get started writing UI tests.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
+- (void)verifyChoiceSetInput:(NSDictionary<NSString *, NSString *> *) expectedValue application:(XCUIApplication *)app {
+    NSData *expectedData = [NSJSONSerialization dataWithJSONObject:expectedValue options:NSJSONWritingPrettyPrinted error:nil];
+    NSString *expectedString = [[NSString alloc] initWithData:expectedData encoding:NSUTF8StringEncoding];
+    XCUIElement *queryResult = app/*@START_MENU_TOKEN@*/.scrollViews.otherElements[@"ACR Root View"]/*[[".scrollViews.otherElements[@\"ACR Root View\"]",".otherElements[@\"ACR Root View\"]"],[[[-1,1],[-1,0]]],[1]]@END_MENU_TOKEN@*/.staticTexts[expectedString];
+    XCTAssertTrue([queryResult.label isEqualToString:expectedString]);
+}
+
+- (void)testCanGatherDefaultValuesFromChoiceInputSet {
+    XCUIApplication *app = [[XCUIApplication alloc] init];
+    [app launch];
+    XCUIElementQuery *tablesQuery = app.tables;
+    [tablesQuery/*@START_MENU_TOKEN@*/.staticTexts[@"Input.ChoiceSet.json"]/*[[".cells.staticTexts[@\"Input.ChoiceSet.json\"]",".staticTexts[@\"Input.ChoiceSet.json\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/ tap];
+    [/*@START_MENU_TOKEN@*/[[[app.otherElements[@"ACR Root View"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2].staticTexts[@"Red"]/*[["app","[[[",".scrollViews.otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2]",".cells.staticTexts[@\"Red\"]",".staticTexts[@\"Red\"]",".otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2]"],[[[-1,0,1]],[[1,5,2],[1,2,2]],[[-1,4],[-1,3]]],[0,0,0]]@END_MENU_TOKEN@*/ swipeUp];
+    [/*@START_MENU_TOKEN@*/[[[app.otherElements[@"ACR Root View"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2].staticTexts[@"Blue"]/*[["app","[[[",".scrollViews.otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2]",".cells.staticTexts[@\"Blue\"]",".staticTexts[@\"Blue\"]",".otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2]"],[[[-1,0,1]],[[1,5,2],[1,2,2]],[[-1,4],[-1,3]]],[0,0,0]]@END_MENU_TOKEN@*/ swipeUp];
+    [app/*@START_MENU_TOKEN@*/.otherElements[@"ACR Root View"]/*[[".scrollViews.otherElements[@\"ACR Root View\"]",".otherElements[@\"ACR Root View\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.scrollViews.otherElements.buttons[@"OK"] tap];
+
+    NSDictionary<NSString *, NSString *> *expectedValue = @{
+                                                            @"myColor" : @"1",
+                                                            @"myColor3" : @"1;3",
+                                                            @"myColor2" : @"1",
+                                                            @"myColor4" : @"1"
+                                                            };
+    [self verifyChoiceSetInput:expectedValue application:app];
+}
+
+- (void)testCanGatherCorrectValuesFromCompactRadioButton {
+    XCUIApplication *app = [[XCUIApplication alloc] init];
+    [app launch];
+    XCUIElementQuery *tablesQuery = app.tables;
+    [tablesQuery/*@START_MENU_TOKEN@*/.staticTexts[@"Input.ChoiceSet.json"]/*[[".cells.staticTexts[@\"Input.ChoiceSet.json\"]",".staticTexts[@\"Input.ChoiceSet.json\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/ tap];
+    
+    XCUIElement *acrRootViewElement = app/*@START_MENU_TOKEN@*/.otherElements[@"ACR Root View"]/*[[".scrollViews.otherElements[@\"ACR Root View\"]",".otherElements[@\"ACR Root View\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/;
+    XCUIElement *redStaticText = [acrRootViewElement.tables.cells containingType:XCUIElementTypeButton identifier:@"More Info"].staticTexts[@"Red"];
+    [redStaticText tap];
+    [app/*@START_MENU_TOKEN@*/.otherElements[@"ACR Root View"].tables.pickerWheels[@"Red"]/*[[".scrollViews.otherElements[@\"ACR Root View\"].tables",".cells",".pickers.pickerWheels[@\"Red\"]",".pickerWheels[@\"Red\"]",".otherElements[@\"ACR Root View\"].tables"],[[[-1,4,1],[-1,0,1]],[[-1,3],[-1,2],[-1,1,2]],[[-1,3],[-1,2]]],[0,0]]@END_MENU_TOKEN@*/ swipeUp];
+    [app.otherElements[@"ACR Root View"].tables.pickerWheels[@"Blue"] tap];
+    [redStaticText tap];
+    [acrRootViewElement.staticTexts[@"What colors do you want? (isMultiSelect:true, style:compact)"] swipeUp];
+    [acrRootViewElement.scrollViews.otherElements.buttons[@"OK"] tap];
+    
+    NSDictionary<NSString *, NSString *> *expectedValue = @{
+                                                            @"myColor" : @"3",
+                                                            @"myColor3" : @"1;3",
+                                                            @"myColor2" : @"1",
+                                                            @"myColor4" : @"1"
+                                                            };
+    [self verifyChoiceSetInput:expectedValue application:app];
+}
+
+- (void)testCanGatherCorrectValuesFromExpandedRadioButton {
+    XCUIApplication *app = [[XCUIApplication alloc] init];
+    [app launch];
+    
+    XCUIElementQuery *tablesQuery = app.tables;
+    [tablesQuery/*@START_MENU_TOKEN@*/.staticTexts[@"Input.ChoiceSet.json"]/*[[".cells.staticTexts[@\"Input.ChoiceSet.json\"]",".staticTexts[@\"Input.ChoiceSet.json\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/ tap];
+    
+    XCUIElement *greenStaticText = /*@START_MENU_TOKEN@*/[[[app.otherElements[@"ACR Root View"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:1].staticTexts[@"Green"]/*[["app","[[[",".scrollViews.otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:1]",".cells.staticTexts[@\"Green\"]",".staticTexts[@\"Green\"]",".otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:1]"],[[[-1,0,1]],[[1,5,2],[1,2,2]],[[-1,4],[-1,3]]],[0,0,0]]@END_MENU_TOKEN@*/;
+    [greenStaticText tap];
+    [/*@START_MENU_TOKEN@*/[[[app.otherElements[@"ACR Root View"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:1].staticTexts[@"Blue"]/*[["app","[[[",".scrollViews.otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:1]",".cells.staticTexts[@\"Blue\"]",".staticTexts[@\"Blue\"]",".otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:1]"],[[[-1,0,1]],[[1,5,2],[1,2,2]],[[-1,4],[-1,3]]],[0,0,0]]@END_MENU_TOKEN@*/ tap];
+    [greenStaticText tap];
+    /*@START_MENU_TOKEN@*/[[[[app.otherElements[@"ACR Root View"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2].staticTexts[@"Red"] swipeLeft];/*[["app","[[[",".scrollViews.otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2]",".cells.staticTexts[@\"Red\"]","["," swipeUp];"," swipeLeft];",".staticTexts[@\"Red\"]",".otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2]"],[[[-1,0,1]],[[1,8,2],[1,2,2]],[[-1,7,3],[-1,3,3]],[[4,6],[4,5]]],[0,0,0,0]]@END_MENU_TOKEN@*/
+    [app/*@START_MENU_TOKEN@*/.otherElements[@"ACR Root View"]/*[[".scrollViews.otherElements[@\"ACR Root View\"]",".otherElements[@\"ACR Root View\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.scrollViews.otherElements.buttons[@"OK"] tap];
+    
+    NSDictionary<NSString *, NSString *> *expectedValue = @{
+                                                            @"myColor" : @"1",
+                                                            @"myColor3" : @"3",
+                                                            @"myColor2" : @"2",
+                                                            @"myColor4" : @"1"
+                                                            };
+    [self verifyChoiceSetInput:expectedValue application:app];
+}
+
+- (void)testCanGatherCorrectValuesFromChoiceset {
+    XCUIApplication *app = [[XCUIApplication alloc] init];
+    [app launch];
+    
+    XCUIElementQuery *tablesQuery = app.tables;
+    [tablesQuery/*@START_MENU_TOKEN@*/.staticTexts[@"Input.ChoiceSet.json"]/*[[".cells.staticTexts[@\"Input.ChoiceSet.json\"]",".staticTexts[@\"Input.ChoiceSet.json\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/ tap];
+    
+    XCUIElement *acrRootViewElement = app/*@START_MENU_TOKEN@*/.otherElements[@"ACR Root View"]/*[[".scrollViews.otherElements[@\"ACR Root View\"]",".otherElements[@\"ACR Root View\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/;
+    //[[[[acrRootViewElement childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeOther] elementBoundByIndex:4] swipeUp];
+    [/*@START_MENU_TOKEN@*/[[[app.otherElements[@"ACR Root View"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2].staticTexts[@"Red"]/*[["app","[[[",".scrollViews.otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2]",".cells.staticTexts[@\"Red\"]",".staticTexts[@\"Red\"]",".otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2]"],[[[-1,0,1]],[[1,5,2],[1,2,2]],[[-1,4],[-1,3]]],[0,0,0]]@END_MENU_TOKEN@*/ tap];
+    [/*@START_MENU_TOKEN@*/[[[app.otherElements[@"ACR Root View"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2].staticTexts[@"Blue"]/*[["app","[[[",".scrollViews.otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2]",".cells.staticTexts[@\"Blue\"]",".staticTexts[@\"Blue\"]",".otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2]"],[[[-1,0,1]],[[1,5,2],[1,2,2]],[[-1,4],[-1,3]]],[0,0,0]]@END_MENU_TOKEN@*/ tap];
+    
+    XCUIElementQuery *scrollViewsQuery = acrRootViewElement.scrollViews;
+    [scrollViewsQuery.otherElements.buttons[@"OK"] tap];
+
+    NSDictionary<NSString *, NSString *> *expectedValue = @{
+                                                            @"myColor" : @"1",
+                                                            @"myColor3" : @"",
+                                                            @"myColor2" : @"1",
+                                                            @"myColor4" : @"1"
+                                                            };
+    [self verifyChoiceSetInput:expectedValue application:app];
 }
 
 @end

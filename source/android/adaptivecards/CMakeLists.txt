@@ -60,6 +60,8 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/UnknownElement.cpp
              ../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.cpp
              ../../shared/cpp/ObjectModel/ParseResult.cpp
+             ../../shared/cpp/ObjectModel/MediaSource.cpp
+             ../../shared/cpp/ObjectModel/Media.cpp
              src/main/cpp/objectmodel_wrap.cpp
              )
 

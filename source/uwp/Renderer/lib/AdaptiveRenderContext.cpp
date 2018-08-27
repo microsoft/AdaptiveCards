@@ -32,7 +32,10 @@ AdaptiveNamespaceStart
         m_resourceResolvers = resourceResolvers;
         m_overrideDictionary = overrideDictionary;
 
-        return MakeAndInitialize<AdaptiveActionInvoker>(&m_actionInvoker, renderResult);
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionInvoker>(&m_actionInvoker, renderResult));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveMediaEventInvoker>(&m_mediaEventInvoker, renderResult));
+
+        return S_OK;
     } CATCH_RETURN;
 
     _Use_decl_annotations_
@@ -51,6 +54,12 @@ AdaptiveNamespaceStart
     HRESULT AdaptiveRenderContext::get_ActionInvoker(IAdaptiveActionInvoker** value)
     {
         return m_actionInvoker.CopyTo(value);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveRenderContext::get_MediaEventInvoker(IAdaptiveMediaEventInvoker** value)
+    {
+        return m_mediaEventInvoker.CopyTo(value);
     }
 
     _Use_decl_annotations_

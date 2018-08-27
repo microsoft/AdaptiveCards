@@ -9,11 +9,11 @@
 #include "MarkDownBlockParser.h"
 #include "MarkDownHtmlGenerator.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 class MarkDownParser
 {
 public:
-    MarkDownParser(const std::string &txt); 
+    MarkDownParser(const std::string &txt);
 
     std::string TransformToHtml();
 
@@ -26,4 +26,4 @@ private:
     MarkDownParsedResult m_parsedResult;
     bool m_hasHTMLTag;
 };
-AdaptiveSharedNamespaceEnd
+}

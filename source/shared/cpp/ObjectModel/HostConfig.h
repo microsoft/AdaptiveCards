@@ -4,7 +4,7 @@
 #include "Enums.h"
 #include "json/json.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 
 struct FontSizesConfig
 {
@@ -54,7 +54,7 @@ struct TextConfig
     ForegroundColor color = ForegroundColor::Default;
     bool isSubtle = false;
     bool wrap = true;
-    unsigned int maxWidth = (unsigned int) ~0;
+    unsigned int maxWidth = ~0U;
 
     static TextConfig Deserialize(const Json::Value& json, const TextConfig& defaultValue);
 };
@@ -113,7 +113,7 @@ struct AdaptiveCardConfig
 struct FactSetConfig
 {
     TextConfig title{ TextWeight::Bolder, TextSize::Default, ForegroundColor::Default, false, true, 150 };
-    TextConfig value{ TextWeight::Default, TextSize::Default, ForegroundColor::Default, false, true, (unsigned int)~0 };
+    TextConfig value{ TextWeight::Default, TextSize::Default, ForegroundColor::Default, false, true, ~0U };
     unsigned int spacing = 10;
 
     static FactSetConfig Deserialize(const Json::Value& json, const FactSetConfig& defaultValue);
@@ -132,7 +132,7 @@ struct ContainerStyleDefinition
 struct ContainerStylesDefinition
 {
     ContainerStyleDefinition defaultPalette;
-    ContainerStyleDefinition emphasisPalette = 
+    ContainerStyleDefinition emphasisPalette =
     { "#08000000", "#08000000", 0,
         {
             { "#FF000000", "#B2000000" },   //defaultColor
@@ -166,8 +166,18 @@ struct ActionsConfig
     unsigned int maxActions = 5;
     Spacing spacing = Spacing::Default;
     IconPlacement iconPlacement = IconPlacement::AboveTitle;
+    unsigned int iconSize = 30;
 
     static ActionsConfig Deserialize(const Json::Value& json, const ActionsConfig& defaultValue);
+};
+
+struct MediaConfig
+{
+    std::string defaultPoster;
+    std::string playButton;
+    bool allowInlinePlayback = true;
+
+    static MediaConfig Deserialize(const Json::Value& json, const MediaConfig& defaultValue);
 };
 
 struct HostConfig
@@ -186,8 +196,9 @@ struct HostConfig
     FactSetConfig factSet;
     ActionsConfig actions;
     ContainerStylesDefinition containerStyles;
+    MediaConfig media;
 
     static HostConfig Deserialize(const Json::Value& json);
     static HostConfig DeserializeFromString(const std::string jsonString);
 };
-AdaptiveSharedNamespaceEnd
+}

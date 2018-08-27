@@ -56,7 +56,8 @@ AdaptiveNamespaceStart
         std::shared_ptr<BaseCardElement> Deserialize(
             std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> elementParserRegistration,
             std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> actionParserRegistration,
-            const Json::Value& value);
+            std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+            const Json::Value& value) override;
 
     private:
         Microsoft::WRL::ComPtr<AdaptiveNamespace::AdaptiveElementParserRegistration> m_parserRegistration;
@@ -70,6 +71,7 @@ AdaptiveNamespaceStart
             ABI::Windows::Data::Json::IJsonObject* jsonObject,
             ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
             ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
+            ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
             ABI::AdaptiveNamespace::IAdaptiveCardElement** element)
     {
         std::string jsonString;
@@ -97,8 +99,11 @@ AdaptiveNamespaceStart
             sharedModelActionParserRegistration = std::make_shared<AdaptiveSharedNamespace::ActionParserRegistration>();
         }
 
+        std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings; 
         std::shared_ptr<TSharedModelParser> parser = std::make_shared<TSharedModelParser>();
-        std::shared_ptr<BaseCardElement> baseCardElement = parser->DeserializeFromString(sharedModelElementParserRegistration, sharedModelActionParserRegistration, jsonString);
+        std::shared_ptr<BaseCardElement> baseCardElement = parser->DeserializeFromString(sharedModelElementParserRegistration, sharedModelActionParserRegistration, warnings, jsonString);
+
+        RETURN_IF_FAILED(SharedWarningsToAdaptiveWarnings(warnings, adaptiveWarnings));
 
         THROW_IF_FAILED(MakeAndInitialize<TAdaptiveCardElement>(element, std::AdaptivePointerCast<TSharedModelElement>(baseCardElement)));
 

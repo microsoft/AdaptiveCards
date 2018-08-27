@@ -5,7 +5,7 @@
 #include "json/json.h"
 #include "ElementParserRegistration.h"
 
-AdaptiveSharedNamespaceStart
+namespace AdaptiveSharedNamespace {
 class ChoiceInput
 {
 public:
@@ -23,15 +23,17 @@ public:
     static std::shared_ptr<ChoiceInput> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
         const Json::Value& root);
 
     static std::shared_ptr<ChoiceInput> DeserializeFromString(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
         const std::string& jsonString);
 
 private:
     std::string m_title;
     std::string m_value;
 };
-AdaptiveSharedNamespaceEnd
+}

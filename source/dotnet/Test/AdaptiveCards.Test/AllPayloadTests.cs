@@ -33,6 +33,10 @@ namespace AdaptiveCards.Test
                 if (file.Contains("NotificationCard"))
                     continue;
 
+                // TODO: bring this test back when issue #484 is implemented
+                if (file.Contains("ColumnSet.VerticalStretch") || file.Contains("ColumnSet_Container.VerticalStretch") || file.Contains("ColumnSet.Input.Text.VerticalStretch") || file.Contains("VerticalStretch"))
+                    continue;
+
                 // TODO: bring this test back when issue #1440 is implemented
                 if (file.Contains("Image.ImageBaseUrl"))
                     continue;
@@ -45,7 +49,10 @@ namespace AdaptiveCards.Test
                     Assert.AreEqual(0, parseResult.Warnings.Count);
 
                     // Make sure JsonConvert works also
-                    var card = JsonConvert.DeserializeObject<AdaptiveCard>(json);
+                    var card = JsonConvert.DeserializeObject<AdaptiveCard>(json, new JsonSerializerSettings
+                    {
+                        Converters = { new StrictIntConverter() }
+                    });
                     Assert.AreEqual(parseResult.Card.Body.Count, card.Body.Count);
                     Assert.AreEqual(parseResult.Card.Actions.Count, card.Actions.Count);
                 }

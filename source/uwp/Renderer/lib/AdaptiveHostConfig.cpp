@@ -12,6 +12,7 @@
 #include "AdaptiveImageConfig.h"
 #include "AdaptiveImageSetConfig.h"
 #include "AdaptiveImageSizesConfig.h"
+#include "AdaptiveMediaConfig.h"
 #include "AdaptiveSpacingConfig.h"
 #include "AdaptiveSeparatorConfig.h"
 
@@ -78,6 +79,7 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFactSetConfig>(m_factSet.GetAddressOf(), sharedHostConfig.factSet));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionsConfig>(m_actions.GetAddressOf(), sharedHostConfig.actions));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveImageConfig>(m_image.GetAddressOf(), sharedHostConfig.image));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveMediaConfig>(m_media.GetAddressOf(), sharedHostConfig.media));
 
         return S_OK;
     }
@@ -260,6 +262,19 @@ AdaptiveNamespaceStart
     HRESULT AdaptiveHostConfig::put_Actions(IAdaptiveActionsConfig* actionsConfig)
     {
         m_actions = actionsConfig;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveHostConfig::get_Media(IAdaptiveMediaConfig** mediaConfig)
+    {
+        return m_media.CopyTo(mediaConfig);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveHostConfig::put_Media(IAdaptiveMediaConfig* mediaConfig)
+    {
+        m_media = mediaConfig;
         return S_OK;
     }
 AdaptiveNamespaceEnd

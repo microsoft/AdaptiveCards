@@ -53,6 +53,14 @@ public class Image extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Image_SetUrl(swigCPtr, this, value);
   }
 
+  public String GetBackgroundColor() {
+    return AdaptiveCardObjectModelJNI.Image_GetBackgroundColor(swigCPtr, this);
+  }
+
+  public void SetBackgroundColor(String value) {
+    AdaptiveCardObjectModelJNI.Image_SetBackgroundColor(swigCPtr, this, value);
+  }
+
   public ImageStyle GetImageStyle() {
     return ImageStyle.swigToEnum(AdaptiveCardObjectModelJNI.Image_GetImageStyle(swigCPtr, this));
   }
@@ -110,8 +118,8 @@ public class Image extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Image_SetPixelHeight(swigCPtr, this, value);
   }
 
-  public void GetResourceUris(StringVector resourceUris) {
-    AdaptiveCardObjectModelJNI.Image_GetResourceUris(swigCPtr, this, StringVector.getCPtr(resourceUris), resourceUris);
+  public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {
+    AdaptiveCardObjectModelJNI.Image_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceInfo), resourceInfo);
   }
 
   public static Image dynamic_cast(BaseCardElement baseCardElement) {
