@@ -14,39 +14,58 @@ namespace AdaptiveCards.Test
     {
         public static string SamplesPath => Path.Combine(ApplicationEnvironment.ApplicationBasePath, "..", "..", "..", "..", "..", "..", "..", "samples");
 
-        private void TestPayloadsInDirectory(string path)
+        private void TestPayloadsInDirectory(string path, string[] excludedCards)
         {
             var exceptions = new List<Exception>();
             var files = Directory.GetFiles(path, "*.json").ToList();
             Assert.IsTrue(files.Count > 1);
             foreach (var file in files)
             {
-                // TODO: bring this test back when issue #1334 is implemented
-                if (file.Contains("Image.Explicit.Size"))
-                    continue;
-
-                // TODO: bring these tests back when bug #940 is closed
-                if (file.Contains("Container.Style") || file.Contains("ShowCard.Style"))
-                    continue;
-
-                // TODO: bring this test back when issue #389 is implemented
-                if (file.Contains("NotificationCard"))
-                    continue;
-
-                // TODO: bring this test back when issue #484 is implemented
-                if (file.Contains("ColumnSet.VerticalStretch") || file.Contains("ColumnSet_Container.VerticalStretch") || file.Contains("ColumnSet.Input.Text.VerticalStretch") || file.Contains("VerticalStretch"))
-                    continue;
-
-                // TODO: bring this test back when issue #1440 is implemented
-                if (file.Contains("Image.ImageBaseUrl"))
-                    continue;
+                bool excluded = false;
+                if (excludedCards != null)
+                {
+                    foreach (var card in excludedCards)
+                    {
+                        if (file.Contains(card))
+                        {
+                            excluded = true;
+                            break;
+                        }
+                    }
+                }
 
                 try
                 {
                     var json = File.ReadAllText(file, Encoding.UTF8);
-                    var parseResult = AdaptiveCard.FromJson(json);
+                    AdaptiveCardParseResult parseResult;
+                    try
+                    {
+                        parseResult = AdaptiveCard.FromJson(json);
+                    }
+                    catch
+                    {
+                        // If the card is excluded we might not parse properly
+                        // skip it if there was a parse failure.
+                        if(!excluded)
+                        {
+                            throw;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
                     Assert.IsNotNull(parseResult.Card);
-                    Assert.AreEqual(0, parseResult.Warnings.Count);
+                    if (excluded)
+                    {
+                        // If the card was excluded but parsed, then it would have warnings
+                        // If it doesn't then it shouldn't be excluded
+                        Assert.AreNotEqual(0, parseResult.Warnings.Count);
+                    }
+                    else
+                    {
+                        Assert.AreEqual(0, parseResult.Warnings.Count);
+                    }
 
                     // Make sure JsonConvert works also
                     var card = JsonConvert.DeserializeObject<AdaptiveCard>(json, new JsonSerializerSettings
@@ -60,24 +79,54 @@ namespace AdaptiveCards.Test
                 {
                     exceptions.Add(new Exception($"Payload file failed: {Path.GetFileName(file)}", ex));
                 }
-
             }
 
             if (exceptions.Count > 0)
+            {
                 throw new AggregateException(exceptions);
+            }
         }
 
         [TestMethod]
         public void TestAllScenarios()
         {
-            TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.0", "scenarios"));
+            TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.0", "scenarios"), null);
         }
 
         [TestMethod]
         public void TestAllElements()
         {
             // TODO: bring this test back once I investigate the warnings
-            TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.0", "elements"));
+            TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.0", "elements"),
+                new string[]
+                {
+                    // TODO: bring these tests back when bug #940 is closed
+                    "Container.Style",
+                    "Action.ShowCard.Style"
+                });
+        }
+
+        [TestMethod]
+        public void TestAllTestCards()
+        {
+            TestPayloadsInDirectory(Path.Combine(SamplesPath, "tests"),
+                new string[]
+                {
+                    // These cards are expected to fail
+                    "AdaptiveCard.UnknownElements",
+                    "AdditionalProperty",
+                    "CustomParsingTestUsingProgressBar",
+                    "TypeIsRequired",
+
+                    // These are cards that features haven't been implemented yet
+                    "Column.Explicit.Size", // Not implemented yet
+                    "VerticalStretch", // Not implemented yet
+                    "VerticalContentAlignment", // Not implemented yet
+                    "Image.Explicit.Size", // Not implemented yet
+                    "InputsFormWithHeightStretch", // Not implemented yet
+                    "InvalidMediaMix", // Not implemented yet
+                    "Media", // Not implemented yet
+                });
         }
     }
 }
