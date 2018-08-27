@@ -37,8 +37,7 @@
     std::shared_ptr<ChoiceSetInput> choiceSet = std::dynamic_pointer_cast<ChoiceSetInput>(elem);
     // creates a tableview with pre-defined style
     NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-    if(!bundle){
-        // TODO Add Render Error - jwoo
+    if(!bundle){ // https://github.com/Microsoft/AdaptiveCards/issues/1834
         return nil;
     }
     ACRInputTableView *choiceSetView = [bundle loadNibNamed:@"ACRInputTableView" owner:self options:nil][0];

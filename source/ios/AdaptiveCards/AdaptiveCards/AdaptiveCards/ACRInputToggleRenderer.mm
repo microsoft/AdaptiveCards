@@ -39,8 +39,7 @@
     std::shared_ptr<ToggleInput> toggleBlck = std::dynamic_pointer_cast<ToggleInput>(elem);
 
     NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-    if(!bundle){
-        // TODO Add Render Error - jwoo
+    if(!bundle){ // https://github.com/Microsoft/AdaptiveCards/issues/1834
         return nil;
     }
     ACRInputTableView *inputTableView = [bundle loadNibNamed:@"ACRInputTableView" owner:self options:nil][0];
