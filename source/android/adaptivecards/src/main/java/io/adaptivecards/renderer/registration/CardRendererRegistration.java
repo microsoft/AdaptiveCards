@@ -18,6 +18,7 @@ import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.IActionLayoutRenderer;
 import io.adaptivecards.renderer.IBaseActionElementRenderer;
+import io.adaptivecards.renderer.IOnlineMediaLoader;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.ActionLayoutRenderer;
@@ -39,6 +40,7 @@ import io.adaptivecards.renderer.readonly.ContainerRenderer;
 import io.adaptivecards.renderer.readonly.FactSetRenderer;
 import io.adaptivecards.renderer.readonly.ImageRenderer;
 import io.adaptivecards.renderer.readonly.ImageSetRenderer;
+import io.adaptivecards.renderer.readonly.MediaRenderer;
 import io.adaptivecards.renderer.readonly.TextBlockRenderer;
 
 import java.util.HashMap;
@@ -56,6 +58,7 @@ public class CardRendererRegistration
         registerRenderer(CardElementTypeToString(CardElementType.FactSet), FactSetRenderer.getInstance());
         registerRenderer(CardElementTypeToString(CardElementType.Image), ImageRenderer.getInstance());
         registerRenderer(CardElementTypeToString(CardElementType.ImageSet), ImageSetRenderer.getInstance());
+        registerRenderer(CardElementTypeToString(CardElementType.Media), MediaRenderer.getInstance());
         registerRenderer(CardElementTypeToString(CardElementType.TextBlock), TextBlockRenderer.getInstance());
 
         // Register Input Renderers
@@ -123,6 +126,16 @@ public class CardRendererRegistration
     public void registerActionLayoutRenderer(IActionLayoutRenderer actionLayoutRenderer)
     {
         m_actionLayoutRenderer = actionLayoutRenderer;
+    }
+
+    public IOnlineMediaLoader getOnlineMediaLoader()
+    {
+        return m_onlineMediaLoader;
+    }
+
+    public void registerOnlineMediaLoader(IOnlineMediaLoader onlineMediaLoader)
+    {
+        m_onlineMediaLoader = onlineMediaLoader;
     }
 
     public IActionLayoutRenderer getActionLayoutRenderer()
@@ -226,4 +239,5 @@ public class CardRendererRegistration
     private IBaseActionElementRenderer m_actionRenderer = null;
     private IActionLayoutRenderer m_actionLayoutRenderer = null;
     private IOnlineImageLoader m_onlineImageLoader = null;
+    private IOnlineMediaLoader m_onlineMediaLoader = null;
 }

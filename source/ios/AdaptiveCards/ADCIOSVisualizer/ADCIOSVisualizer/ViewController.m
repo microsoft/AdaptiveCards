@@ -274,6 +274,15 @@
     else if(action.type == ACRSubmit){
         NSData * userInputsAsJson = [card inputs];
         NSString *str = [[NSString alloc] initWithData:userInputsAsJson encoding:NSUTF8StringEncoding];
+        if(!_userResponseLabel) {
+            _userResponseLabel = [[UILabel alloc] init];
+            _userResponseLabel.numberOfLines = 0;
+            _userResponseLabel.backgroundColor = UIColor.groupTableViewBackgroundColor;
+            [(UIStackView *)self.curView addArrangedSubview:_userResponseLabel];
+        }
+        
+        _userResponseLabel.text = str;
+        [self.scrView setNeedsLayout];
         NSLog(@"user response fetched: %@ with %@", str, [action data]);
     }
 }

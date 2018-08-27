@@ -166,6 +166,7 @@
     <ClCompile Include="CustomParsingForIOSTest.cpp" />
     <ClCompile Include="EverythingBagel.cpp" />
     <ClCompile Include="ExplicitDimensionTest.cpp" />
+    <ClCompile Include="FactUnitTest.cpp" />
     <ClCompile Include="ImageBackgroundColorTest.cpp" />
     <ClCompile Include="ParserRegistrationTest.cpp" />
     <ClCompile Include="ResourceInformationTests.cpp" />

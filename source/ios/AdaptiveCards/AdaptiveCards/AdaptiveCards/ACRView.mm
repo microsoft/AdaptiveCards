@@ -67,6 +67,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 {
     self = [self initWithFrame:CGRectMake(0, 0, width, 0)];
     if(self){
+        self.accessibilityLabel = @"ACR Root View";
         _adaptiveCard = card;
         if(config){
             _hostConfig = config;

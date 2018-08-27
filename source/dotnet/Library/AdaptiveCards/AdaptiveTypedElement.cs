@@ -18,7 +18,6 @@ namespace AdaptiveCards
         /// The type name of the element 
         /// </summary>
         [JsonProperty(Order = -10, Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
-        [JsonRequired]
 #if !NETSTANDARD1_3
         [XmlIgnore]
 #endif

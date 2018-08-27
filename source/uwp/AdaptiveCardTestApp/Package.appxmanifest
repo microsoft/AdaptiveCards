@@ -4,7 +4,7 @@
   <mp:PhoneIdentity PhoneProductId="b7560517-f67b-4cd1-ad70-ebc366f40d3a" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>AdaptiveCardTestApp</DisplayName>
-    <PublisherDisplayName>anbare</PublisherDisplayName>
+    <PublisherDisplayName>AdaptiveCards</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>

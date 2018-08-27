@@ -75,7 +75,23 @@ namespace AdaptiveCards
             var typeName = jObject["type"]?.Value<string>() ?? jObject["@type"]?.Value<string>();
             if (typeName == null)
             {
-                throw new AdaptiveSerializationException("Required property 'type' not found on adaptive card element");
+                // Get value of this objectType's "Type" JsonProperty(Required)
+                var typeJsonPropertyRequiredValue = objectType.GetRuntimeProperty("Type")
+                    .CustomAttributes.Where(a => a.AttributeType == typeof(JsonPropertyAttribute)).FirstOrDefault()?
+                    .NamedArguments.Where(a => a.TypedValue.ArgumentType == typeof(Required)).FirstOrDefault()
+                    .TypedValue.Value.ToString();
+
+                // If this objectType does not require "Type" attribute, use the objectType's XML "TypeName" attribute
+                if (typeJsonPropertyRequiredValue == "0")
+                {
+                    typeName = objectType
+                        .GetRuntimeFields().Where(x => x.Name == "TypeName").FirstOrDefault()?
+                        .GetValue("TypeName").ToString();
+                }
+                else
+                {
+                    throw new AdaptiveSerializationException("Required property 'type' not found on adaptive card element");
+                }
             }
 
             if (TypedElementTypes.Value.TryGetValue(typeName, out var type))
