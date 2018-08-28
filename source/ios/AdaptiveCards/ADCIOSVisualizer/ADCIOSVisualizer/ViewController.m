@@ -217,12 +217,12 @@
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:jsonStr];
     if(cardParseResult.isValid){
         ACRRegistration *registration = [ACRRegistration getInstance];
-            
+
         CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
         [registration setCustomElementParser:progressBarRenderer];
 
         renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:335];
-    }	
+    }
     
     if(renderResult.succeeded)
     {
@@ -278,6 +278,7 @@
             _userResponseLabel = [[UILabel alloc] init];
             _userResponseLabel.numberOfLines = 0;
             _userResponseLabel.backgroundColor = UIColor.groupTableViewBackgroundColor;
+            _userResponseLabel.accessibilityIdentifier = @"ACRUserResponse";
             [(UIStackView *)self.curView addArrangedSubview:_userResponseLabel];
         }
         
