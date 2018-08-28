@@ -1,0 +1,332 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Card" nillable="true" type="AdaptiveCard" />
+  <xs:complexType name="AdaptiveCard">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AdaptiveTypedElement">
+        <xs:sequence>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element minOccurs="0" maxOccurs="1" name="TextBlock" type="TextBlock" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Image" type="Image" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Container" type="Container" />
+            <xs:element minOccurs="0" maxOccurs="1" name="ColumnSet" type="ColumnSet" />
+            <xs:element minOccurs="0" maxOccurs="1" name="ImageSet" type="ImageSet" />
+            <xs:element minOccurs="0" maxOccurs="1" name="FactSet" type="FactSet" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Input.Text" type="Input.Text" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Input.Date" type="Input.Date" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Input.Time" type="Input.Time" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Input.Number" type="Input.Number" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Input.Toggle" type="Input.Toggle" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Input.ChoiceSet" type="Input.ChoiceSet" />
+          </xs:choice>
+          <xs:element minOccurs="0" maxOccurs="1" name="Actions" type="ArrayOfChoice1" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Speak" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Version" type="AdaptiveSchemaVersion" />
+        </xs:sequence>
+        <xs:attribute name="BackgroundImage" type="xs:string" />
+        <xs:attribute name="FallbackText" type="xs:string" />
+        <xs:attribute name="Lang" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="AdaptiveTypedElement" abstract="true">
+    <xs:attribute name="Id" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="AdaptiveAction" abstract="true">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AdaptiveTypedElement">
+        <xs:attribute name="Title" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Action.Submit" mixed="true">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AdaptiveAction" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Action.ShowCard">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AdaptiveAction">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="AdaptiveCard" type="AdaptiveCard" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Action.OpenUrl">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AdaptiveAction">
+        <xs:attribute name="Url" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="AdaptiveElement" abstract="true">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AdaptiveTypedElement">
+        <xs:attribute default="Default" name="Spacing" type="AdaptiveSpacing" />
+        <xs:attribute default="false" name="Separator" type="xs:boolean" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="AdaptiveSpacing">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Default" />
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Small" />
+      <xs:enumeration value="Medium" />
+      <xs:enumeration value="Large" />
+      <xs:enumeration value="ExtraLarge" />
+      <xs:enumeration value="Padding" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="AdaptiveInput" abstract="true">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AdaptiveElement" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Input.Toggle">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AdaptiveInput">
+        <xs:attribute name="Title" type="xs:string" />
+        <xs:attribute name="ValueOn" type="xs:string" />
+        <xs:attribute name="ValueOff" type="xs:string" />
+        <xs:attribute name="Value" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Input.ChoiceSet">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AdaptiveInput">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="Choices" type="ArrayOfChoice" />
+        </xs:sequence>
+        <xs:attribute name="Value" type="xs:string" />
+        <xs:attribute name="Style" type="AdaptiveChoiceInputStyle" use="required" />
+        <xs:attribute default="false" name="IsMultiSelect" type="xs:boolean" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfChoice">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Choice" nillable="true" type="Choice" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Choice">
+    <xs:attribute name="Title" type="xs:string" />
+    <xs:attribute name="Value" type="xs:string" />
+  </xs:complexType>
+  <xs:simpleType name="AdaptiveChoiceInputStyle">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Expanded" />
+      <xs:enumeration value="Compact" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="Input.Number">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AdaptiveInput">
+        <xs:attribute name="Placeholder" type="xs:string" />
+        <xs:attribute default="NaN" name="Value" type="xs:double" />
+        <xs:attribute default="NaN" name="Min" type="xs:double" />
+        <xs:attribute default="NaN" name="Max" type="xs:double" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Input.Time">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AdaptiveInput">
+        <xs:attribute name="Placeholder" type="xs:string" />
+        <xs:attribute name="Value" type="xs:string" />
+        <xs:attribute name="Min" type="xs:string" />
+        <xs:attribute name="Max" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Input.Date">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AdaptiveInput">
+        <xs:attribute name="Placeholder" type="xs:string" />
+        <xs:attribute name="Value" type="xs:string" />
+        <xs:attribute name="Min" type="xs:string" />
+        <xs:attribute name="Max" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Input.Text">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AdaptiveInput">
+        <xs:attribute name="Placeholder" type="xs:string" />
+        <xs:attribute name="Value" type="xs:string" />
+        <xs:attribute default="Text" name="Style" type="AdaptiveTextInputStyle" />
+        <xs:attribute default="false" name="IsMultiline" type="xs:boolean" />
+        <xs:attribute default="0" name="MaxLength" type="xs:int" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="AdaptiveTextInputStyle">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Text" />
+      <xs:enumeration value="Tel" />
+      <xs:enumeration value="Url" />
+      <xs:enumeration value="Email" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="FactSet">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AdaptiveElement">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Fact" type="Fact" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Fact">
+    <xs:attribute name="Title" type="xs:string" />
+    <xs:attribute name="Value" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="ImageSet">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AdaptiveElement">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Image" type="Image" />
+        </xs:sequence>
+        <xs:attribute default="Auto" name="ImageSize" type="AdaptiveImageSize" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Image">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AdaptiveElement">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="SelectAction" type="AdaptiveAction" />
+        </xs:sequence>
+        <xs:attribute default="Auto" name="Size" type="AdaptiveImageSize" />
+        <xs:attribute name="Style" type="AdaptiveImageStyle" />
+        <xs:attribute name="Url" type="xs:string" />
+        <xs:attribute default="Left" name="HorizontalAlignment" type="AdaptiveHorizontalAlignment" />
+        <xs:attribute name="AltText" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="AdaptiveImageSize">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Auto" />
+      <xs:enumeration value="Stretch" />
+      <xs:enumeration value="Small" />
+      <xs:enumeration value="Medium" />
+      <xs:enumeration value="Large" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="AdaptiveImageStyle">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Default" />
+      <xs:enumeration value="Person" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="AdaptiveHorizontalAlignment">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Left" />
+      <xs:enumeration value="Center" />
+      <xs:enumeration value="Right" />
+      <xs:enumeration value="Stretch" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="ColumnSet">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AdaptiveElement">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Column" type="Column" />
+          <xs:element minOccurs="0" maxOccurs="1" name="SelectAction" type="AdaptiveAction" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Column">
+    <xs:complexContent mixed="false">
+      <xs:extension base="Container">
+        <xs:attribute name="Width" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Container">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AdaptiveElement">
+        <xs:sequence>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element minOccurs="0" maxOccurs="1" name="TextBlock" type="TextBlock" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Image" type="Image" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Container" type="Container" />
+            <xs:element minOccurs="0" maxOccurs="1" name="ColumnSet" type="ColumnSet" />
+            <xs:element minOccurs="0" maxOccurs="1" name="ImageSet" type="ImageSet" />
+            <xs:element minOccurs="0" maxOccurs="1" name="FactSet" type="FactSet" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Input.Text" type="Input.Text" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Input.Date" type="Input.Date" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Input.Time" type="Input.Time" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Input.Number" type="Input.Number" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Input.ChoiceSet" type="Input.ChoiceSet" />
+            <xs:element minOccurs="0" maxOccurs="1" name="Input.Toggle" type="Input.Toggle" />
+          </xs:choice>
+          <xs:element minOccurs="0" maxOccurs="1" name="SelectAction" type="AdaptiveAction" />
+        </xs:sequence>
+        <xs:attribute name="Style" type="AdaptiveContainerStyle" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="TextBlock" mixed="true">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AdaptiveElement">
+        <xs:attribute default="Default" name="Size" type="AdaptiveTextSize" />
+        <xs:attribute name="Weight" type="AdaptiveTextWeight" />
+        <xs:attribute default="Default" name="Color" type="AdaptiveTextColor" />
+        <xs:attribute default="false" name="IsSubtle" type="xs:boolean" />
+        <xs:attribute default="Left" name="HorizontalAlignment" type="AdaptiveHorizontalAlignment" />
+        <xs:attribute default="false" name="Wrap" type="xs:boolean" />
+        <xs:attribute default="0" name="MaxLines" type="xs:int" />
+        <xs:attribute default="0" name="MaxWidth" type="xs:int" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="AdaptiveTextSize">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Default" />
+      <xs:enumeration value="Small" />
+      <xs:enumeration value="Medium" />
+      <xs:enumeration value="Large" />
+      <xs:enumeration value="ExtraLarge" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="AdaptiveTextWeight">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Default" />
+      <xs:enumeration value="Lighter" />
+      <xs:enumeration value="Bolder" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="AdaptiveTextColor">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Default" />
+      <xs:enumeration value="Dark" />
+      <xs:enumeration value="Light" />
+      <xs:enumeration value="Accent" />
+      <xs:enumeration value="Good" />
+      <xs:enumeration value="Warning" />
+      <xs:enumeration value="Attention" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="AdaptiveContainerStyle">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Default" />
+      <xs:enumeration value="Emphasis" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="ArrayOfChoice1">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element minOccurs="1" maxOccurs="1" name="ShowCard" nillable="true" type="Action.ShowCard" />
+      <xs:element minOccurs="1" maxOccurs="1" name="OpenUrl" nillable="true" type="Action.OpenUrl" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Submit" nillable="true" type="Action.Submit" />
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="AdaptiveSchemaVersion">
+    <xs:attribute name="Major" type="xs:int" use="required" />
+    <xs:attribute name="Minor" type="xs:int" use="required" />
+  </xs:complexType>
+</xs:schema>
