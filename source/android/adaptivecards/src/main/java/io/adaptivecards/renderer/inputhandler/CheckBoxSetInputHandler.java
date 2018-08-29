@@ -11,8 +11,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
-public class CheckBoxSetInputHandler extends BaseInputHandler {
-    public CheckBoxSetInputHandler(BaseInputElement baseInputElement, List<CheckBox> checkBoxList) {
+public class CheckBoxSetInputHandler extends BaseInputHandler
+{
+    public CheckBoxSetInputHandler(BaseInputElement baseInputElement, List<CheckBox> checkBoxList)
+    {
         super(baseInputElement);
         m_checkBoxList = checkBoxList;
     }
@@ -21,7 +23,8 @@ public class CheckBoxSetInputHandler extends BaseInputHandler {
         return m_checkBoxList;
     }
 
-    public String getInput() {
+    public String getInput()
+    {
         // no need to validate
         ChoiceSetInput choiceSetInput = (ChoiceSetInput) m_baseInputElement;
 
@@ -38,7 +41,8 @@ public class CheckBoxSetInputHandler extends BaseInputHandler {
         return TextUtils.join(";", resultList);
     }
 
-    public void setInput(String values) {
+    public void setInput(String values)
+    {
         ChoiceSetInput choiceSetInput = (ChoiceSetInput) m_baseInputElement;
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
 
