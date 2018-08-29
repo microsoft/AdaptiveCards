@@ -56,7 +56,11 @@ namespace AdaptiveCards.Rendering.Wpf
                         uiElement.Margin = new Thickness(0, spacing, 0, 0);
                     }
 
-                    uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                    if (cardElement.Height == AdaptiveHeight.Auto)
+                        uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                    else
+                        uiContainer.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+
                     Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
                     uiContainer.Children.Add(uiElement);
                 }
