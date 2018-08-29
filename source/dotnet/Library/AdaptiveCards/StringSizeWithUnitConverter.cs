@@ -21,11 +21,29 @@ namespace AdaptiveCards
             if (reader.TokenType == JsonToken.String)
             {
                 var dimension = defaultSerializer.Deserialize(reader) as string;
-                if(uint.TryParse(dimension.Substring(0, dimension.Length - 2), out uint dimensionInPix)) {
-                    return dimensionInPix;
-                } else {
+                if (dimension.Length < 3)
+                {
                     Warnings.Add(new AdaptiveWarning(-1, 
-                        $"The Value \"{reader.Value}\" for field \"{reader.Path}\" was not specified as a proper dimension in the format (\\d+(.\\d+)?pix), it will be ignored."));
+                        $"The Value \"{reader.Value}\" for field \"{reader.Path}\" was not specified as a proper dimension in the format (\\d+(.\\d+)?px), it will be ignored."));
+                    return 0U;
+                }
+
+                var unit = dimension.Substring(dimension.Length - 2);
+                if(String.Compare(unit, "px", false) != 0)
+                {
+                    Warnings.Add(new AdaptiveWarning(-1, 
+                        $"The Value \"{unit}\" was not specified as a proper unit(px), it will be ignored."));
+                    return 0U;
+                }
+
+                if(uint.TryParse(dimension.Substring(0, dimension.Length - 2), out uint dimensionInPix))
+                {
+                    return dimensionInPix;
+                }
+                else
+                {
+                    Warnings.Add(new AdaptiveWarning(-1, 
+                        $"The Value \"{reader.Value}\" for field \"{reader.Path}\" was not specified as a proper dimension in the format (\\d+(.\\d+)?px), it will be ignored."));
                     return 0U;
                 }
             }
