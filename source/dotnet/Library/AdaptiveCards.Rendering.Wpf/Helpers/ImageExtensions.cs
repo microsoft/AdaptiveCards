@@ -10,7 +10,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Collections;
 
-
 namespace AdaptiveCards.Rendering.Wpf
 {
     public static class ImageExtensions
