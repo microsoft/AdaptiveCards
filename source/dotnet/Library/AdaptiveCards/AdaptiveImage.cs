@@ -120,5 +120,28 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(null)]
         public string AltText { get; set; }
+
+        /// <summary>
+        ///    Explicit Image Width 
+        /// </summary>
+        [JsonConverter(typeof(StringSizeWithUnitConverter))]
+        [JsonProperty("width", NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(null)]
+        public uint PixelWidth
+        { get; set; }
+
+        /// <summary>
+        ///    Explicit Image Height
+        /// </summary>
+        [JsonConverter(typeof(StringSizeWithUnitConverter))]
+        [JsonProperty("height", NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(null)]
+        public uint PixelHeight { get; set; }
     }
 }
