@@ -182,6 +182,16 @@ namespace AdaptiveCards
         public AdaptiveAction SelectAction { get; set; }
 
         /// <summary>
+        ///     Value that denotes if the card must use all the vertical space that is set to it. Default value is <see cref="AdaptiveHeight.Default"/>.
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(typeof(AdaptiveHeight), "auto")]
+        public AdaptiveHeight Height { get; set; }
+
+        /// <summary>
         /// Parse an AdaptiveCard from a JSON string
         /// </summary>
         /// <param name="json">A JSON-serialized Adaptive Card</param>
