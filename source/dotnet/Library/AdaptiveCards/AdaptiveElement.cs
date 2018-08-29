@@ -86,5 +86,15 @@ namespace AdaptiveCards
                 }
             }
         }
+
+        /// <summary>
+        /// The amount of space the element should be separated from the previous element. Default value is <see cref="AdaptiveHeight.Default"/>.
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(typeof(AdaptiveHeight), "auto")]
+        public AdaptiveHeight Height { get; set; }
     }
 }
