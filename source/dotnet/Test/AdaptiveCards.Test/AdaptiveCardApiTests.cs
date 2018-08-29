@@ -225,5 +225,92 @@ namespace AdaptiveCards.Test
             var actual = card.GetResourceInformation();
             CollectionAssert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void TestExplicitImageTest()
+        {
+            var payload =
+                @"{
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
+                      ""version"": ""1.0"",
+                      ""body"": [
+                          {
+                              ""type"": ""Image"",
+                              ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+                              ""width"": ""20px"",
+                              ""height"": ""50px""
+                          }
+                      ]
+                  }";
+
+            var card = AdaptiveCard.FromJson(payload).Card;
+            Assert.AreEqual(card.Body.Count, 1);
+            var imageBlock = card.Body[0] as AdaptiveImage;
+            Assert.AreEqual(imageBlock.PixelWidth, 20U);
+            Assert.AreEqual(imageBlock.PixelHeight, 50U);
+        }
+
+        [TestMethod]
+        public void TestExplicitImageTestWithMalformedUnit()
+        {
+            var payload =
+                @"{
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
+                      ""version"": ""1.0"",
+                      ""body"": [
+                          {
+                              ""type"": ""Image"",
+                              ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+                              ""width"": ""20"",
+                              ""height"": ""50 p x""
+                          }
+                      ]
+                  }";
+
+            var result = AdaptiveCard.FromJson(payload);
+            var card = result?.Card;
+            Assert.AreEqual(card.Body.Count, 1);
+            var imageBlock = card.Body[0] as AdaptiveImage;
+            Assert.AreEqual(imageBlock.PixelWidth, 0U);
+            Assert.AreEqual(imageBlock.PixelHeight, 0U);
+            Assert.AreEqual(result.Warnings.Count, 2);
+            Assert.AreEqual(result.Warnings[0].Message, 
+                @"The Value ""20"" for field ""width"" was not specified as a proper dimension in the format (\d+(.\d+)?pix), it will be ignored.");
+            Assert.AreEqual(result.Warnings[1].Message, 
+                @"The Value ""50 p x"" for field ""height"" was not specified as a proper dimension in the format (\d+(.\d+)?pix), it will be ignored.");
+        }
+
+        [TestMethod]
+        public void TestExplicitImageTestWithMalformedNumber()
+        {
+            var payload =
+                @"{
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
+                      ""version"": ""1.0"",
+                      ""body"": [
+                          {
+                              ""type"": ""Image"",
+                              ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+                              ""width"": "".20px"",
+                              ""height"": ""50.1234.12px""
+                          }
+                      ]
+                  }";
+
+            var result = AdaptiveCard.FromJson(payload);
+            var card = result?.Card;
+            Assert.AreEqual(card.Body.Count, 1);
+            var imageBlock = card.Body[0] as AdaptiveImage;
+            Assert.AreEqual(imageBlock.PixelWidth, 0U);
+            Assert.AreEqual(imageBlock.PixelHeight, 0U);
+            Assert.AreEqual(result.Warnings.Count, 2);
+            Assert.AreEqual(result.Warnings[0].Message, 
+                @"The Value "".20px"" for field ""width"" was not specified as a proper dimension in the format (\d+(.\d+)?pix), it will be ignored.");
+            Assert.AreEqual(result.Warnings[1].Message, 
+                @"The Value ""50.1234.12px"" for field ""height"" was not specified as a proper dimension in the format (\d+(.\d+)?pix), it will be ignored.");
+        }
     }
 }
