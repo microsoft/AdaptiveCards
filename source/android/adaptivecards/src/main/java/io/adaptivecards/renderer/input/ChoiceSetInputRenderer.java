@@ -86,9 +86,11 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
                 checkBox.setChecked(true);
             }
             checkBoxList.add(checkBox);
-            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+            {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+                {
                     CardRendererRegistration.getInstance().notifyInputChange(checkBoxSetInputHandler.getId(), checkBoxSetInputHandler.getInput());
                 }
             });
@@ -126,9 +128,11 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             radioGroup.addView(radioButton);
         }
         renderedCard.registerInputHandler(radioGroupInputHandler);
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
+            public void onCheckedChanged(RadioGroup group, int checkedId)
+            {
                 CardRendererRegistration.getInstance().notifyInputChange(radioGroupInputHandler.getId(), radioGroupInputHandler.getInput());
             }
         });
@@ -167,12 +171,14 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         spinner.setSelection(selection);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
                 CardRendererRegistration.getInstance().notifyInputChange(comboBoxInputHandler.getId(), comboBoxInputHandler.getInput());
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onNothingSelected(AdapterView<?> parent)
+            {
                 CardRendererRegistration.getInstance().notifyInputChange(comboBoxInputHandler.getId(), comboBoxInputHandler.getInput());
             }
         });
