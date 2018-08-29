@@ -736,18 +736,15 @@ namespace AdaptiveCards.Rendering.Html
             {
                 case AdaptiveHorizontalAlignment.Left:
                     uiDiv = uiDiv.Style("overflow", "hidden");
-                        // .Style("display", "block");
                     break;
                 case AdaptiveHorizontalAlignment.Center:
                     uiDiv = uiDiv.Style("overflow", "hidden")
                         .Style("margin-right", "auto")
                         .Style("margin-left", "auto");
-                        // .Style("display", "block");
                     break;
                 case AdaptiveHorizontalAlignment.Right:
                     uiDiv = uiDiv.Style("overflow", "hidden")
                         .Style("margin-left", "auto");
-                        // .Style("display", "block");
                     break;
             }
 
@@ -856,7 +853,6 @@ namespace AdaptiveCards.Rendering.Html
                 .AddClass("ac-input")
                 .Style("width", "100%")
                 .Style("flex", "1 1 100%");
-            // <!--width: 100 %; box - sizing: border - box; flex: 1 1 100 %; -->
 
             foreach (var choice in adaptiveChoiceSetInput.Choices)
             {
