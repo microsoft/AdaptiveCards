@@ -53,7 +53,7 @@ public class RenderedAdaptiveCard {
         return input;
     }
 
-    public void setInputs(Map <String, String> inputs)
+    public void setInputs(Map<String, String> inputs)
     {
         if (inputs == null || inputs.isEmpty())
         {

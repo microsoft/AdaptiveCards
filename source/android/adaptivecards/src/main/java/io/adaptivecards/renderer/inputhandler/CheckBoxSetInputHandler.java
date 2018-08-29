@@ -27,8 +27,10 @@ public class CheckBoxSetInputHandler extends BaseInputHandler {
 
         Vector<String> resultList = new Vector<String>();
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
-        for (int index = 0; index < m_checkBoxList.size(); index++) {
-            if (m_checkBoxList.get(index).isChecked()) {
+        for (int index = 0; index < m_checkBoxList.size(); index++)
+        {
+            if (m_checkBoxList.get(index).isChecked())
+            {
                 resultList.addElement(choiceInputVector.get(index).GetValue());
             }
         }

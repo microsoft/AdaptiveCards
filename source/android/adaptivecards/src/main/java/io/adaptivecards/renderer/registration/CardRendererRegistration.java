@@ -251,7 +251,7 @@ public class CardRendererRegistration
     }
 
     private static CardRendererRegistration s_instance = null;
-    private static IInputWatcher m_InputWatcher = null;
+    private IInputWatcher m_InputWatcher = null;
     private HashMap<String, IBaseCardElementRenderer> m_typeToRendererMap = new HashMap<String, IBaseCardElementRenderer>();
     private IBaseActionElementRenderer m_actionRenderer = null;
     private IActionLayoutRenderer m_actionLayoutRenderer = null;
