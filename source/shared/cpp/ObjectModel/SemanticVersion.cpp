@@ -24,7 +24,7 @@ SemanticVersion::SemanticVersion(const std::string &version) : _major(0), _minor
     static const std::regex versionMatch(R"regex(^([\d]+)(?:\.([\d]+))?(?:\.([\d]+))?(?:\.([\d]+))?$)regex");
 #pragma warning(pop)
     std::smatch subMatches;
-    if (std::regex_match(version, subMatches, versionMatch) && subMatches.size() >= 5)
+    if (std::regex_match(version, subMatches, versionMatch))
     {
         versionValid = true;
         // subMatches[0] contains the entire string, so no need to refer to it here

@@ -86,6 +86,17 @@ namespace AdaptiveCardsSharedModelUnitTest
             }
 
             {
+                SemanticVersion lhs("1.1");
+                SemanticVersion rhs("1.001");
+                Assert::IsTrue(lhs == rhs);
+                Assert::IsFalse(lhs != rhs);
+                Assert::IsFalse(lhs < rhs);
+                Assert::IsFalse(lhs > rhs);
+                Assert::IsTrue(lhs >= rhs);
+                Assert::IsTrue(lhs <= rhs);
+            }
+
+            {
                 SemanticVersion lhs("1.0");
                 SemanticVersion rhs("1.1");
                 Assert::IsFalse(lhs == rhs);
@@ -121,6 +132,17 @@ namespace AdaptiveCardsSharedModelUnitTest
             {
                 SemanticVersion lhs("1.1.3.100");
                 SemanticVersion rhs("1.1.4.1");
+                Assert::IsFalse(lhs == rhs);
+                Assert::IsTrue(lhs != rhs);
+                Assert::IsTrue(lhs < rhs);
+                Assert::IsFalse(lhs > rhs);
+                Assert::IsFalse(lhs >= rhs);
+                Assert::IsTrue(lhs <= rhs);
+            }
+
+            {
+                SemanticVersion lhs("1.3.1");
+                SemanticVersion rhs("1.10.2");
                 Assert::IsFalse(lhs == rhs);
                 Assert::IsTrue(lhs != rhs);
                 Assert::IsTrue(lhs < rhs);
