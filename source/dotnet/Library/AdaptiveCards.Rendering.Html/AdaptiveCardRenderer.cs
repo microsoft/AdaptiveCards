@@ -697,6 +697,16 @@ namespace AdaptiveCards.Rendering.Html
                     .Style("flex", "1 1 100%");
             }
 
+            if (image.Height == AdaptiveHeight.Auto)
+            {
+                uiDiv.Style("box-sizing", "border-box");
+            }
+            else
+            {
+                uiDiv.Style("align-items", "flex-start")
+                    .Style("flex", "1 1 100%");
+            }
+
             if (image.PixelWidth == 0 || image.PixelHeight == 0)
             {
                 switch (image.Size)
