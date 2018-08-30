@@ -697,17 +697,8 @@ namespace AdaptiveCards.Rendering.Html
                     .Style("flex", "1 1 100%");
             }
 
-            if (image.Height == AdaptiveHeight.Auto)
-            {
-                uiDiv.Style("box-sizing", "border-box");
-            }
-            else
-            {
-                uiDiv.Style("align-items", "flex-start")
-                    .Style("flex", "1 1 100%");
-            }
-
-            if (image.PixelWidth == 0 || image.PixelHeight == 0)
+            // if explicit image size is not used, use Adpative Image size
+            if (image.PixelWidth == 0 && image.PixelHeight == 0)
             {
                 switch (image.Size)
                 {
@@ -733,24 +724,23 @@ namespace AdaptiveCards.Rendering.Html
                 .Attr("alt", image.AltText ?? "card image")
                 .Attr("src", context.Config.ResolveFinalAbsoluteUri(image.Url));
 
+            // if explicit image size is used 
             if (image.PixelWidth != 0 || image.PixelHeight != 0)
             {
                 if (image.PixelWidth != 0)
                 {
-                    //uiDiv = uiDiv.Style("width", $"{image.PixelWidth}px");
                     uiImage = uiImage.Attr("width", $"{image.PixelWidth}px");
                 }
                 if (image.PixelHeight != 0)
                 {
-                    uiImage = uiImage.Attr("height", $"{image.PixelWidth}px");
-                    //uiDiv = uiDiv.Style("height", $"{image.PixelHeight}px");
+                    uiImage = uiImage.Attr("height", $"{image.PixelHeight}px");
                 }
                 uiImage = uiImage.Attr("object-fit", "fill");
             }
-            //var uiImage = new HtmlTag("img")
-            //    .Style("width", "100%")
-            //    .Attr("alt", image.AltText ?? "card image")
-            //    .Attr("src", context.Config.ResolveFinalAbsoluteUri(image.Url));
+            else
+            {
+                uiImage.Style("width", "100%");
+            }
 
             switch (image.Style)
             {

@@ -53,7 +53,7 @@ import android.media.MediaDataSource;
 import android.support.annotation.RequiresApi;
 
 public class MainActivityAdaptiveCardsSample extends FragmentActivity
-    implements ICardActionHandler
+        implements ICardActionHandler
 {
 
     // Used to load the 'adaptivecards-native-lib' library on application startup.
@@ -354,7 +354,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
             // Example on how a custom OnlineMediaLoader should be registered
             CardRendererRegistration.getInstance().registerOnlineMediaLoader(new OnlineMediaLoader());
-            
+
             ParseResult parseResult = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.VERSION, elementParserRegistration);
             LinearLayout layout = (LinearLayout) findViewById(R.id.visualAdaptiveCardLayout);
             layout.removeAllViews();

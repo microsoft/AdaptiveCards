@@ -16,7 +16,6 @@ namespace AdaptiveCards
     {
         public AdaptiveImage()
         {
-
         }
 
         public AdaptiveImage(string url)
@@ -125,7 +124,7 @@ namespace AdaptiveCards
         ///    Explicit Image Width 
         /// </summary>
         [JsonConverter(typeof(StringSizeWithUnitConverter), true)]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore, PropertyName = "width")]
+        [JsonProperty("width", DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -136,7 +135,7 @@ namespace AdaptiveCards
         ///    Explicit Image Height
         /// </summary>
         [JsonConverter(typeof(StringSizeWithUnitConverter), true)]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore, PropertyName = "height")]
+        [JsonProperty("height", DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
