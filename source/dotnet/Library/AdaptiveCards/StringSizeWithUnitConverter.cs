@@ -59,11 +59,12 @@ namespace AdaptiveCards
             return 0U;
         }
 
-        public override bool CanWrite { get { return true; } }
+        public override bool CanWrite { get { return false; } }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            writer.WriteValue("");
+            throw new NotImplementedException();
+            //writer.WriteValue(value.ToString());
         }              
     }
 }
