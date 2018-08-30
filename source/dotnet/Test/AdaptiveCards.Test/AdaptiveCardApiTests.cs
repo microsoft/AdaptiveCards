@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
@@ -285,9 +286,9 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
-        public void TestExplicitImageTestWithMalformedNumber()
+        public void TestExplicitImageTesWarrningMessages()
         {
-            var payload =
+            var payload = 
                 @"{
                       ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
                       ""type"": ""AdaptiveCard"",
@@ -315,6 +316,103 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(
                 @"The Value ""50.1234.12px"" for field ""height"" was not specified as a proper dimension in the format (\d+(.\d+)?px), it will be ignored.",
                 result.Warnings[1].Message); 
+        }
+
+        [TestMethod]
+        public void TestExplicitImageTestWithMalformedDimensionsInput()
+        {
+            ArrayList payloads = new ArrayList
+            {
+                @"{
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
+                      ""version"": ""1.0"",
+                      ""body"": [
+                          {
+                              ""type"": ""Image"",
+                              ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+                              ""width"": "".20px"",
+                              ""height"": ""50.1234.12px""
+                          }
+                      ]
+                  }",
+                @"{
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
+                      ""version"": ""1.0"",
+                      ""body"": [
+                          {
+                              ""type"": ""Image"",
+                              ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+                              ""width"": ""20,00px"",
+                              ""height"": ""200.00   px""
+                          }
+                      ]
+                  }",
+                @"{
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
+                      ""version"": ""1.0"",
+                      ""body"": [
+                          {
+                              ""type"": ""Image"",
+                              ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+                              ""width"": ""2000 px"",
+                              ""height"": ""20a0px""
+                          }
+                      ]
+                  }",
+                @"{
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
+                      ""version"": ""1.0"",
+                      ""body"": [
+                          {
+                              ""type"": ""Image"",
+                              ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+                              ""width"": ""20.a00px"",
+                              ""height"": ""20.00""
+                          }
+                      ]
+                  }",
+                @"{
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
+                      ""version"": ""1.0"",
+                      ""body"": [
+                          {
+                              ""type"": ""Image"",
+                              ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+                              ""width"": "" 20.00px"",
+                              ""height"": ""2 0.00px""
+                          }
+                      ]
+                  }",
+                @"{
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
+                      ""version"": ""1.0"",
+                      ""body"": [
+                          {
+                              ""type"": ""Image"",
+                              ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+                              ""width"": ""200px .00px"",
+                              ""height"": ""2 0px00px""
+                          }
+                      ]
+                  }"
+            };
+
+            foreach (string payload in payloads)
+            {
+                var result = AdaptiveCard.FromJson(payload);
+                var card = result?.Card;
+                Assert.AreEqual(1, card.Body.Count);
+                var imageBlock = card.Body[0] as AdaptiveImage;
+                Assert.AreEqual(0U, imageBlock.PixelWidth);
+                Assert.AreEqual(0U, imageBlock.PixelHeight);
+                Assert.AreEqual(2, result.Warnings.Count);
+            }
         }
     }
 }
