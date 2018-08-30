@@ -130,8 +130,7 @@ namespace AdaptiveCards
         [XmlAttribute]
 #endif
         [DefaultValue(0)]
-        public uint PixelWidth
-        { get; set; }
+        public uint PixelWidth { get; set; }
 
         /// <summary>
         ///    Explicit Image Height
