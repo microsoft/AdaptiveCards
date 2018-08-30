@@ -124,24 +124,23 @@ namespace AdaptiveCards
         /// <summary>
         ///    Explicit Image Width 
         /// </summary>
-        [JsonConverter(typeof(StringSizeWithUnitConverter))]
-        [JsonProperty("width", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonConverter(typeof(StringSizeWithUnitConverter), true)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore, PropertyName = "width")]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
-        [DefaultValue(null)]
-        public uint PixelWidth
-        { get; set; }
+        [DefaultValue(0)]
+        public uint PixelWidth { get; set; }
 
         /// <summary>
         ///    Explicit Image Height
         /// </summary>
-        [JsonConverter(typeof(StringSizeWithUnitConverter))]
-        [JsonProperty("height", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonConverter(typeof(StringSizeWithUnitConverter), true)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore, PropertyName = "height")]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
-        [DefaultValue(null)]
+        [DefaultValue(0)]
         public uint PixelHeight { get; set; }
     }
 }
