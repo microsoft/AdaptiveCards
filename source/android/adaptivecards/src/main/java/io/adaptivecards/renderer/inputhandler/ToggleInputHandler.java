@@ -28,4 +28,11 @@ public class ToggleInputHandler extends BaseInputHandler
         CheckBox checkBox = getCheckBox();
         return checkBox.isChecked() ? toggleInput.GetValueOn() : toggleInput.GetValueOff();
     }
+
+    public void setInput(String value)
+    {
+        ToggleInput toggleInput = (ToggleInput) m_baseInputElement;
+        CheckBox checkBox = getCheckBox();
+        checkBox.setChecked(value.equals(toggleInput.GetValueOn()));
+    }
 }

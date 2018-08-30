@@ -34,6 +34,7 @@ import io.adaptivecards.renderer.input.NumberInputRenderer;
 import io.adaptivecards.renderer.input.TextInputRenderer;
 import io.adaptivecards.renderer.input.TimeInputRenderer;
 import io.adaptivecards.renderer.input.ToggleInputRenderer;
+import io.adaptivecards.renderer.inputhandler.IInputWatcher;
 import io.adaptivecards.renderer.readonly.ColumnRenderer;
 import io.adaptivecards.renderer.readonly.ColumnSetRenderer;
 import io.adaptivecards.renderer.readonly.ContainerRenderer;
@@ -101,6 +102,22 @@ public class CardRendererRegistration
     public IBaseCardElementRenderer getRenderer(String cardElementType)
     {
         return m_typeToRendererMap.get(cardElementType);
+    }
+
+    public void setInputWatcher(IInputWatcher inputWatcher) {
+        m_InputWatcher = inputWatcher;
+    }
+
+    public IInputWatcher getInputWatcher() {
+        return m_InputWatcher;
+    }
+
+    public void notifyInputChange(String id, String value)
+    {
+        if (m_InputWatcher != null)
+        {
+            m_InputWatcher.onInputChange(id, value);
+        }
     }
 
     public void registerOnlineImageLoader(IOnlineImageLoader imageLoader)
@@ -234,7 +251,7 @@ public class CardRendererRegistration
     }
 
     private static CardRendererRegistration s_instance = null;
-
+    private IInputWatcher m_InputWatcher = null;
     private HashMap<String, IBaseCardElementRenderer> m_typeToRendererMap = new HashMap<String, IBaseCardElementRenderer>();
     private IBaseActionElementRenderer m_actionRenderer = null;
     private IActionLayoutRenderer m_actionLayoutRenderer = null;

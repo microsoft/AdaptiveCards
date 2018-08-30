@@ -20,11 +20,10 @@
     IconPlacement iconPlacement = [config getHostConfig]->actions.iconPlacement;
     CGSize contentSize = [button.titleLabel intrinsicContentSize];
 
-    //apply explicit image size when the below condition is met
+    // apply explicit image size when the below condition is met
     if(iconPlacement == AdaptiveCards::IconPlacement::AboveTitle && config.allActionsHaveIcons) {
         imageHeight = [config getHostConfig]->actions.iconSize;
-        // TODO: if height is zero, create warning
-    } else { // Format the image so it fits in the button
+    } else { // format the image so it fits in the button
         imageHeight = contentSize.height;
     }
 
