@@ -228,7 +228,7 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
-        public void TestExplicitImageTest()
+        public void TestExplicitImagePositiveTest()
         {
             var payload =
                 @"{
@@ -253,7 +253,7 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
-        public void TestExplicitImageTestWithMalformedUnit()
+        public void TestExplicitImageWarnningMessagesWithMalformedUnits()
         {
             var payload =
                 @"{
@@ -286,7 +286,7 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
-        public void TestExplicitImageTesWarrningMessages()
+        public void TestExplicitImageWarrningMessagesWithMalformedDimensions()
         {
             var payload = 
                 @"{
@@ -319,7 +319,7 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
-        public void TestExplicitImageTestWithMalformedDimensionsInput()
+        public void TestExplicitImageTestWithMalformedDimensionsInputs()
         {
             ArrayList payloads = new ArrayList
             {
