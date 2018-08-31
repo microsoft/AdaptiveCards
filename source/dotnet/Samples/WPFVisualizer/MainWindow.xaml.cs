@@ -101,7 +101,7 @@ namespace WpfVisualizer
                 // Wire up click handler
                 renderedCard.OnAction += OnAction;
 
-                renderedCard.OnMediaClick += OnMediaClick;
+                renderedCard.OnMediaClicked += OnMediaClick;
 
                 cardGrid.Children.Add(renderedCard.FrameworkElement);
 
