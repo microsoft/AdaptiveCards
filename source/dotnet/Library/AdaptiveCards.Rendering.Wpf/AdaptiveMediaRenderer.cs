@@ -114,7 +114,6 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 var content = new TextBlock()
                 {
-                    Name = "playButton",
                     Text = "⏵",
                     FontFamily = _symbolFontFamily,
                     Foreground = _controlForegroundColor,
@@ -130,6 +129,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             Button uiThumbnailButton = new Button
             {
+                Name = "playButton",
                 Content = uiThumbnail,
             };
             uiThumbnailButton.Visibility = Visibility.Visible;
@@ -141,8 +141,8 @@ namespace AdaptiveCards.Rendering.Wpf
             FrameworkElement uiMediaPlayer = null;
             if (mediaConfig.AllowInlinePlayback)
             {
-                // Media player
-                uiMediaPlayer = RenderMediaPlayer(mediaSource, isAudio);
+                // Media player is only created if inline playback is allowed
+                uiMediaPlayer = RenderMediaPlayer(mediaSource, uiMedia, isAudio);
                 uiMediaPlayer.Visibility = Visibility.Collapsed;
 
                 uiMedia.Children.Add(uiMediaPlayer);
@@ -151,7 +151,7 @@ namespace AdaptiveCards.Rendering.Wpf
             // Add on click handler to play the media
             uiThumbnailButton.Click += (sender, e) =>
             {
-                if (uiMediaPlayer != null)
+                if (mediaConfig.AllowInlinePlayback)
                 {
                     if (isAudio && uiPosterImage != null)
                     {
@@ -166,6 +166,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 }
                 else
                 {
+                    // If inline playback is not allowed, raise an event to send the media to host
                     context.ClickMedia(uiThumbnailButton, new AdaptiveMediaEventArgs(media));
 
                     // Prevent nested events from triggering
@@ -176,7 +177,7 @@ namespace AdaptiveCards.Rendering.Wpf
             return uiMedia;
         }
 
-        private static FrameworkElement RenderMediaPlayer(AdaptiveMediaSource mediaSource, bool isAudio)
+        private static FrameworkElement RenderMediaPlayer(AdaptiveMediaSource mediaSource, FrameworkElement uiMedia, bool isAudio)
         {
             var masterPanel = new Grid();
 
@@ -271,29 +272,9 @@ namespace AdaptiveCards.Rendering.Wpf
                 Height = _panelHeight,
             };
 
-            // Play button
-
-            // Wrap in a Viewbox to control width, height, and aspect ratio
-            var uiPlayButton = new Viewbox()
-            {
-                Name = "playButton",
-                Width = _childHeight,
-                Height = _childHeight,
-                Stretch = Stretch.Fill,
-                Margin = _marginThickness,
-                VerticalAlignment = VerticalAlignment.Center,
-                Child = new TextBlock()
-                {
-                    Text = "⏵",
-                    FontFamily = _symbolFontFamily,
-                    Foreground = _controlForegroundColor,
-                }
-            };
-            uiPlaybackControlContainer.Children.Add(uiPlayButton);
-
             // Play trigger
             // TODO: Handle unplayable https medias
-            var playTrigger = new EventTrigger(UIElement.MouseUpEvent)
+            var playTrigger = new EventTrigger(ButtonBase.ClickEvent)
             {
                 SourceName = "playButton",
             };
@@ -315,6 +296,17 @@ namespace AdaptiveCards.Rendering.Wpf
                 Storyboard = storyboard,
             };
             playTrigger.Actions.Add(beginStoryboard);
+            uiMedia.Triggers.Add(playTrigger);
+
+            // Buffering signal
+            var uiBuffering = new TextBlock()
+            {
+                Text = "Buffering...",
+                Foreground = _controlForegroundColor,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = _marginThickness,
+            };
+            uiPlaybackControlContainer.Children.Add(uiBuffering);
 
             // Pause button
             var uiPauseButton = new Viewbox()
@@ -353,15 +345,18 @@ namespace AdaptiveCards.Rendering.Wpf
             uiPlaybackControlContainer.Children.Add(uiResumeButton);
 
             // Click events
+            MediaState currentMediaState = MediaState.NotStarted;
             uiPauseButton.MouseUp += (sender, e) =>
             {
-                storyboard.Pause(masterPanel);
-                HandleButtonAppearance(MediaState.IsPaused, uiPlayButton, uiPauseButton, uiResumeButton);
+                storyboard.Pause(uiMedia);
+                currentMediaState = MediaState.IsPaused;
+                HandleButtonAppearance(currentMediaState, uiBuffering, uiPauseButton, uiResumeButton);
             };
             uiResumeButton.MouseUp += (sender, e) =>
             {
-                storyboard.Resume(masterPanel);
-                HandleButtonAppearance(MediaState.IsPlaying, uiPlayButton, uiPauseButton, uiResumeButton);
+                storyboard.Resume(uiMedia);
+                currentMediaState = MediaState.IsPlaying;
+                HandleButtonAppearance(currentMediaState, uiBuffering, uiPauseButton, uiResumeButton);
             };
 
             #endregion
@@ -474,7 +469,6 @@ namespace AdaptiveCards.Rendering.Wpf
             uiControlPanel.Children.Add(uiPlaybackPanel);
 
             masterPanel.Children.Add(uiControlPanel);
-            masterPanel.Triggers.Add(playTrigger);
 
             #region Other events
 
@@ -484,7 +478,8 @@ namespace AdaptiveCards.Rendering.Wpf
             mediaElement.MediaOpened += (sender, e) =>
             {
                 // The media is considered playing only after it's opened
-                HandleButtonAppearance(MediaState.IsPlaying, uiPlayButton, uiPauseButton, uiResumeButton);
+                currentMediaState = MediaState.IsPlaying;
+                HandleButtonAppearance(currentMediaState, uiBuffering, uiPauseButton, uiResumeButton);
 
                 // Control panel visibility
                 if (!isAudio)
@@ -500,7 +495,8 @@ namespace AdaptiveCards.Rendering.Wpf
             storyboard.Completed += (sender, e) =>
             {
                 // The media is considered stopped (not started) when it's completed
-                HandleButtonAppearance(MediaState.NotStarted, uiPlayButton, uiPauseButton, uiResumeButton);
+                currentMediaState = MediaState.NotStarted;
+                HandleButtonAppearance(currentMediaState, uiBuffering, uiPauseButton, uiResumeButton);
 
                 // Control panel visibility
                 if (!isAudio)
@@ -531,7 +527,7 @@ namespace AdaptiveCards.Rendering.Wpf
             // Thumb events
             uiTimelineSlider.AddHandler(Thumb.DragStartedEvent, new DragStartedEventHandler((sender, e) =>
             {
-                storyboard.Pause(masterPanel);
+                storyboard.Pause(uiMedia);
             }));
             uiTimelineSlider.AddHandler(Thumb.DragDeltaEvent, new DragDeltaEventHandler((sender, e) =>
             {
@@ -544,8 +540,13 @@ namespace AdaptiveCards.Rendering.Wpf
             uiTimelineSlider.AddHandler(Thumb.DragCompletedEvent, new DragCompletedEventHandler((sender, e) =>
             {
                 int sliderValue = (int)uiTimelineSlider.Value;
-                storyboard.Seek(masterPanel, new TimeSpan(0, 0, 0, 0, sliderValue), TimeSeekOrigin.BeginTime);
-                storyboard.Resume(masterPanel);
+                storyboard.Seek(uiMedia, new TimeSpan(0, 0, 0, 0, sliderValue), TimeSeekOrigin.BeginTime);
+
+                // Only resume playing if it's in playing mode
+                if (currentMediaState == MediaState.IsPlaying)
+                {
+                    storyboard.Resume(uiMedia);
+                }
             }));
 
             #endregion
@@ -554,21 +555,17 @@ namespace AdaptiveCards.Rendering.Wpf
         }
 
         private static void HandleButtonAppearance(MediaState currentMediaState,
-            FrameworkElement playButton, FrameworkElement pauseButton, FrameworkElement resumeButton)
+            FrameworkElement bufferingSignal, FrameworkElement pauseButton, FrameworkElement resumeButton)
         {
-            playButton.Visibility = Visibility.Collapsed;
+            bufferingSignal.Visibility = Visibility.Collapsed;
             pauseButton.Visibility = Visibility.Collapsed;
             resumeButton.Visibility = Visibility.Collapsed;
 
-            if (currentMediaState == MediaState.NotStarted)
-            {
-                playButton.Visibility = Visibility.Visible;
-            }
-            else if (currentMediaState == MediaState.IsPlaying)
+            if (currentMediaState == MediaState.IsPlaying)
             {
                 pauseButton.Visibility = Visibility.Visible;
             }
-            else // IsPaused
+            else if (currentMediaState == MediaState.IsPaused)
             {
                 resumeButton.Visibility = Visibility.Visible;
             }
