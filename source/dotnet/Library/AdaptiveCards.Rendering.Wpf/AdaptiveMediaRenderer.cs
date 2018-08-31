@@ -67,6 +67,12 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiThumbnail.Children.Add(uiPosterImage);
             }
 
+            // If the host doesn't support interactivity, just render the poster image
+            if (!context.Config.SupportsInteractivity)
+            {
+                return uiPosterImage;
+            }
+
             /* Play button */
 
             // TODO: Move default play button offline
@@ -96,27 +102,40 @@ namespace AdaptiveCards.Rendering.Wpf
 
             uiMedia.Children.Add(uiThumbnailButton);
 
-            // Media player
-            var uiMediaPlayer = RenderMediaPlayer(mediaSource, isAudio);
-            uiMediaPlayer.Visibility = Visibility.Collapsed;
+            FrameworkElement uiMediaPlayer = null;
+            if (mediaConfig.AllowInlinePlayback)
+            {
+                // Media player
+                uiMediaPlayer = RenderMediaPlayer(mediaSource, isAudio);
+                uiMediaPlayer.Visibility = Visibility.Collapsed;
 
-            uiMedia.Children.Add(uiMediaPlayer);
+                uiMedia.Children.Add(uiMediaPlayer);
+            }
 
             // Add on click handler to play the media
             // TODO: consider adding a loading gif when video is being loaded
             uiThumbnailButton.Click += (sender, e) =>
             {
-                if (isAudio && uiPosterImage != null)
+                if (uiMediaPlayer != null)
                 {
-                    uiPlayButton.Visibility = Visibility.Collapsed;
-                    uiThumbnailButton.IsEnabled = false;
+                    if (isAudio && uiPosterImage != null)
+                    {
+                        uiPlayButton.Visibility = Visibility.Collapsed;
+                        uiThumbnailButton.IsEnabled = false;
+                    }
+                    else
+                    {
+                        uiThumbnailButton.Visibility = Visibility.Collapsed;
+                    }
+                    uiMediaPlayer.Visibility = Visibility.Visible;
                 }
                 else
                 {
-                    uiThumbnailButton.Visibility = Visibility.Collapsed;
-                }
+                    context.ClickMedia(uiThumbnailButton, new AdaptiveMediaEventArgs(media));
 
-                uiMediaPlayer.Visibility = Visibility.Visible;
+                    // Prevent nested events from triggering
+                    e.Handled = true;
+                }
             };
 
             return uiMedia;

@@ -101,6 +101,8 @@ namespace WpfVisualizer
                 // Wire up click handler
                 renderedCard.OnAction += OnAction;
 
+                renderedCard.OnMediaClick += OnMediaClick;
+
                 cardGrid.Children.Add(renderedCard.FrameworkElement);
 
                 // Report any warnings
@@ -153,6 +155,10 @@ namespace WpfVisualizer
             }
         }
 
+        private void OnMediaClick(RenderedAdaptiveCard sender, AdaptiveMediaEventArgs e)
+        {
+            MessageBox.Show(this, JsonConvert.SerializeObject(e.Media), "Host received a Media");
+        }
 
         private void ShowWarning(string message)
         {

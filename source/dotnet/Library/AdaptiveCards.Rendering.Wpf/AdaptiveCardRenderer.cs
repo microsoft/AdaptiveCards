@@ -166,12 +166,17 @@ namespace AdaptiveCards.Rendering.Wpf
 
             RenderedAdaptiveCard renderCard = null;
 
-            void Callback(object sender, AdaptiveActionEventArgs args)
+            void ActionCallback(object sender, AdaptiveActionEventArgs args)
             {
                 renderCard?.InvokeOnAction(args);
             }
 
-            var context = new AdaptiveRenderContext(Callback, null)
+            void MediaClickCallback(object sender, AdaptiveMediaEventArgs args)
+            {
+                renderCard.InvokeOnMediaClick(args);
+            }
+
+            var context = new AdaptiveRenderContext(ActionCallback, null, MediaClickCallback)
             {
                 ResourceResolvers = ResourceResolvers,
                 ActionHandlers = ActionHandlers,
@@ -215,7 +220,7 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 var cardAssets = await LoadAssetsForCardAsync(card, cancellationToken);
 
-                var context = new AdaptiveRenderContext(null, null)
+                var context = new AdaptiveRenderContext(null, null, null)
                 {
                     CardAssets = cardAssets,
                     ResourceResolvers = ResourceResolvers,
