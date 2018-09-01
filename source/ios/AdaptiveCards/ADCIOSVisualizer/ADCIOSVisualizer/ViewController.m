@@ -220,7 +220,7 @@
 
         CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
         [registration setCustomElementParser:progressBarRenderer];
-
+        _config = hostconfigParseResult.config;
         renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:335];
     }
     
@@ -270,8 +270,7 @@
         NSURL *url = [NSURL URLWithString:[action url]];
         SFSafariViewController *svc = [[SFSafariViewController alloc] initWithURL:url];
         [self presentViewController:svc animated:YES completion:nil];
-    }
-    else if(action.type == ACRSubmit){
+    } else if(action.type == ACRSubmit){
         NSData * userInputsAsJson = [card inputs];
         NSString *str = [[NSString alloc] initWithData:userInputsAsJson encoding:NSUTF8StringEncoding];
         if(!_userResponseLabel) {
@@ -281,11 +280,24 @@
             _userResponseLabel.accessibilityIdentifier = @"ACRUserResponse";
             [(UIStackView *)self.curView addArrangedSubview:_userResponseLabel];
         }
-        
         _userResponseLabel.text = str;
-        [self.scrView setNeedsLayout];
         NSLog(@"user response fetched: %@ with %@", str, [action data]);
     }
+}
+
+- (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame
+{
+    CGRect superViewFrame = _scrView.frame;
+    superViewFrame.origin = [_scrView convertPoint:superViewFrame.origin toView:nil];
+    CGFloat newFrameAbsH =  superViewFrame.origin.y + _scrView.contentSize.height + newFrame.size.height;    
+    CGFloat superViewAbsH = superViewFrame.origin.y + superViewFrame.size.height - _scrView.contentInset.bottom;
+    if(newFrameAbsH > superViewAbsH)
+    {
+        CGFloat offset = newFrameAbsH - superViewAbsH;
+        offset = MIN(offset, _scrView.contentSize.height);
+        [self.scrView setContentOffset:CGPointMake(0, offset) animated:YES];
+    }
+    [self.scrView layoutIfNeeded];
 }
 
 - (void)didChangeVisibility:(UIButton *)button isVisible:(BOOL)isVisible
@@ -297,11 +309,9 @@
     else
     {
         button.backgroundColor = [UIColor colorWithRed:0.11 green:0.68 blue:0.97 alpha:1.0];
-    }
-}
+        [self.scrView layoutIfNeeded];
 
-- (void)didFetchSecondaryView:(ACOAdaptiveCard *)card navigationController:(UINavigationController *)navigationController{
-    [self presentViewController:navigationController animated:YES completion:nil];
+    }
 }
 
 - (void)didFetchMediaViewController:(AVPlayerViewController *)controller card:(ACOAdaptiveCard *)card {
