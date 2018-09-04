@@ -9,7 +9,6 @@ class AdaptiveCardParseWarning
 {
 public:
     AdaptiveCardParseWarning(AdaptiveSharedNamespace::WarningStatusCode statusCode, const std::string& message);
-    ~AdaptiveCardParseWarning();
 
     AdaptiveSharedNamespace::WarningStatusCode GetStatusCode() const;
     const std::string& GetReason() const;

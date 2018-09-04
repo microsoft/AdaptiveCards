@@ -4,9 +4,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +17,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import io.adaptivecards.objectmodel.AdaptiveCardParseWarning;
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.renderer.AdaptiveCardRenderer;
+import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
@@ -29,10 +36,11 @@ import io.adaptivecards.objectmodel.ImageSizesConfig;
 import io.adaptivecards.objectmodel.ImageStyle;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.layout.HorizontalFlowLayout;
+import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public class ImageRenderer extends BaseCardElementRenderer
 {
-    private ImageRenderer()
+    protected ImageRenderer()
     {
     }
 
@@ -48,10 +56,11 @@ public class ImageRenderer extends BaseCardElementRenderer
 
     private class ImageRendererImageLoaderAsync extends InnerImageLoaderAsync
     {
-        ImageRendererImageLoaderAsync(RenderedAdaptiveCard renderedCard, ImageView imageView, String imageBaseUrl, ImageStyle imageStyle)
+        ImageRendererImageLoaderAsync(RenderedAdaptiveCard renderedCard, ImageView imageView, String imageBaseUrl, ImageStyle imageStyle, int backgroundColor)
         {
             super(renderedCard, imageView, imageBaseUrl);
             m_imageStyle = imageStyle;
+            m_backgroundColor = backgroundColor;
         }
 
         @Override
@@ -63,10 +72,16 @@ public class ImageRenderer extends BaseCardElementRenderer
                 BitmapShader shader = new BitmapShader(bitmap,  Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
                 Paint paint = new Paint();
                 paint.setShader(shader);
+
+                Paint backgroundColorPaint = new Paint();
+                backgroundColorPaint.setColor(m_backgroundColor);
+
                 Canvas c = new Canvas(circleBitmap);
+                c.drawCircle(bitmap.getWidth()/2, bitmap.getHeight()/2, bitmap.getWidth()/2, backgroundColorPaint);
                 c.drawCircle(bitmap.getWidth()/2, bitmap.getHeight()/2, bitmap.getWidth()/2, paint);
                 bitmap = circleBitmap;
             }
+
             return bitmap;
         }
 
@@ -78,6 +93,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
 
         private ImageStyle m_imageStyle;
+        private int m_backgroundColor;
     }
 
     private static void setImageSize(Context context, ImageView imageView, ImageSize imageSize, ImageSizesConfig imageSizesConfig) {
@@ -122,18 +138,67 @@ public class ImageRenderer extends BaseCardElementRenderer
 
         ImageView imageView = new ImageView(context);
         imageView.setTag(image);
-        ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(renderedCard, imageView, hostConfig.getImageBaseUrl(), image.GetImageStyle());
+
+        String imageBackgroundColor = image.GetBackgroundColor();
+        int backgroundColor = 0;
+        if(!TextUtils.isEmpty(imageBackgroundColor))
+        {
+            // check that it has 9 characters and that the color string isn't a color name
+            if(imageBackgroundColor.length() == 9 && imageBackgroundColor.charAt(0) == '#')
+            {
+                try
+                {
+                    // if the color string is not valid, parseColor will throw a IllegalArgumentException so we just turn the color to transparent on the catch statement
+                    backgroundColor = Color.parseColor(imageBackgroundColor);
+                }
+                catch (IllegalArgumentException e)
+                {
+                    backgroundColor = 0;
+                }
+            }
+            else
+            {
+                backgroundColor = 0;
+            }
+        }
+
+        if(image.GetImageStyle() != ImageStyle.Person)
+        {
+            imageView.setBackgroundColor(backgroundColor);
+        }
+
+        ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(renderedCard, imageView, hostConfig.getImageBaseUrl(), image.GetImageStyle(), backgroundColor);
+
+        IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
+        if (onlineImageLoader != null)
+        {
+            imageLoaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
+        }
         imageLoaderAsync.execute(image.GetUrl());
 
         LinearLayout.LayoutParams layoutParams;
         if (image.GetImageSize() == ImageSize.Stretch)
         {
             //ImageView must match parent for stretch to work
-            layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            if( image.GetHeight() == HeightType.Stretch )
+            {
+                layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT, 1);
+            }
+            else
+            {
+                layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            }
         }
         else
         {
-            layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            if( image.GetHeight() == HeightType.Stretch )
+            {
+                layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT, 1);
+            }
+            else
+            {
+                layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            }
         }
 
         HorizontalAlignment horizontalAlignment = image.GetHorizontalAlignment();
@@ -155,7 +220,43 @@ public class ImageRenderer extends BaseCardElementRenderer
         //set horizontalAlignment
         imageView.setLayoutParams(layoutParams);
 
-        setImageSize(context, imageView, image.GetImageSize(), hostConfig.getImageSizes());
+        long pixelWidth = image.GetPixelWidth();
+        long pixelHeight = image.GetPixelHeight();
+        boolean hasExplicitSize = ((pixelHeight != 0) || (pixelWidth != 0));
+        boolean isAspectRatioNeeded = !((pixelHeight != 0) && (pixelWidth != 0));
+
+        if (hasExplicitSize)
+        {
+            int widthInPixels = Util.dpToPixels(context, pixelWidth);
+            int heightInPixels = Util.dpToPixels(context, pixelHeight);
+            if (isAspectRatioNeeded)
+            {
+                if (pixelWidth != 0)
+                {
+                    imageView.setMaxWidth(widthInPixels);
+                }
+
+                if (pixelHeight != 0)
+                {
+                    imageView.setMaxHeight(heightInPixels);
+                }
+
+                imageView.setAdjustViewBounds(true);
+            }
+            else
+            {
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                imageView.setMaxWidth(widthInPixels);
+                imageView.setMaxHeight(heightInPixels);
+
+                imageView.getLayoutParams().height = heightInPixels;
+                imageView.getLayoutParams().width = widthInPixels;
+            }
+        }
+        else
+        {
+            setImageSize(context, imageView, image.GetImageSize(), hostConfig.getImageSizes());
+        }
         setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, !(viewGroup instanceof HorizontalFlowLayout) /* horizontal line */);
 
         viewGroup.addView(imageView);

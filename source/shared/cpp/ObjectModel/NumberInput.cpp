@@ -107,10 +107,10 @@ std::shared_ptr<BaseCardElement> NumberInputParser::DeserializeFromString(
     return NumberInputParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void NumberInput::PopulateKnownPropertiesSet() 
+void NumberInput::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min));
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Placeholder),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min)});
 }

@@ -110,7 +110,7 @@ std::string MarkDownParsedResult::GenerateHtmlString()
     // process tags
     std::ostringstream html;
 
-    for (auto itr = m_codeGenTokens.begin(); itr != m_codeGenTokens.end(); itr++)
+    for (auto itr = m_codeGenTokens.begin(); itr != m_codeGenTokens.end(); ++itr)
     {
         html << (*itr)->GenerateHtmlString();
     }
@@ -222,7 +222,7 @@ void MarkDownParsedResult::MatchLeftAndRightEmphasises()
                     else
                     {
                         // move to next token for right delim tokens
-                        currentEmphasis++;
+                        ++currentEmphasis;
                     }
                     // no maching found begin from the start
                     continue;
@@ -234,7 +234,7 @@ void MarkDownParsedResult::MatchLeftAndRightEmphasises()
             // all right delims used, move to next
             if ((*currentEmphasis)->IsDone())
             {
-                currentEmphasis++;
+                ++currentEmphasis;
             }
 
             // all left or right delims used, pop
@@ -245,7 +245,7 @@ void MarkDownParsedResult::MatchLeftAndRightEmphasises()
         }
         else
         {
-            currentEmphasis++;
+            ++currentEmphasis;
         }
     }
 }

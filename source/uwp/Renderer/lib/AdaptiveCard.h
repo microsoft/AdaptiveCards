@@ -52,7 +52,7 @@ AdaptiveNamespaceStart
 
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
 
-        IFACEMETHODIMP GetResourceUris(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVectorView<ABI::Windows::Foundation::Uri*>** uris);
+        IFACEMETHODIMP GetResourceInformation(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveNamespace::AdaptiveRemoteResourceInformation*>** uris);
 
         HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard>& sharedModel);
 

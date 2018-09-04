@@ -3,20 +3,25 @@ package io.adaptivecards.renderer.registration;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import io.adaptivecards.objectmodel.AdaptiveCard;
+import io.adaptivecards.objectmodel.Column;
+import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.AdaptiveWarning;
-<<<<<<< HEAD
-=======
 import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.IActionLayoutRenderer;
 import io.adaptivecards.renderer.IBaseActionElementRenderer;
 import io.adaptivecards.renderer.IOnlineMediaLoader;
->>>>>>> master
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.action.ActionElementRenderer;
+import io.adaptivecards.renderer.ActionLayoutRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.BaseCardElementVector;
@@ -64,6 +69,10 @@ public class CardRendererRegistration
         registerRenderer(CardElementTypeToString(CardElementType.TimeInput), TimeInputRenderer.getInstance());
         registerRenderer(CardElementTypeToString(CardElementType.ToggleInput), ToggleInputRenderer.getInstance());
         registerRenderer(CardElementTypeToString(CardElementType.ChoiceSetInput), ChoiceSetInputRenderer.getInstance());
+
+        // Register Action Renderer
+        m_actionRenderer = ActionElementRenderer.getInstance();
+        m_actionLayoutRenderer = ActionLayoutRenderer.getInstance();
     }
 
     public static CardRendererRegistration getInstance()
@@ -95,8 +104,6 @@ public class CardRendererRegistration
         return m_typeToRendererMap.get(cardElementType);
     }
 
-<<<<<<< HEAD
-=======
     public void setInputWatcher(IInputWatcher inputWatcher) {
         m_InputWatcher = inputWatcher;
     }
@@ -153,7 +160,6 @@ public class CardRendererRegistration
         return m_actionLayoutRenderer;
     }
 
->>>>>>> master
     public View render(
             RenderedAdaptiveCard renderedCard,
             Context context,
@@ -173,12 +179,59 @@ public class CardRendererRegistration
 
         LinearLayout layout = new LinearLayout(context);
         layout.setTag(tag);
-        layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
         layout.setOrientation(LinearLayout.VERTICAL);
 
-        if (viewGroup != null)
+        VerticalContentAlignment verticalContentAlignment = VerticalContentAlignment.Top;
+
+        if(tag instanceof BaseCardElement)
         {
-            viewGroup.addView(layout);
+            if(tag instanceof Column)
+            {
+                Column column = (Column)tag;
+                verticalContentAlignment = column.GetVerticalContentAlignment();
+            }
+            else if(tag instanceof Container)
+            {
+                Container container = (Container)tag;
+                verticalContentAlignment = container.GetVerticalContentAlignment();
+            }
+        }
+        else if(tag instanceof AdaptiveCard)
+        {
+            AdaptiveCard adaptiveCard = (AdaptiveCard)tag;
+            verticalContentAlignment = adaptiveCard.GetVerticalContentAlignment();
+        }
+
+        if(verticalContentAlignment != VerticalContentAlignment.Top)
+        {
+            LinearLayout verticalAlignmentLayout = new LinearLayout(context);
+            verticalAlignmentLayout.setOrientation(LinearLayout.HORIZONTAL);
+            verticalAlignmentLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+            layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            if (verticalContentAlignment == VerticalContentAlignment.Center)
+            {
+                verticalAlignmentLayout.setGravity(Gravity.CENTER_VERTICAL);
+            }
+            else
+            {
+                verticalAlignmentLayout.setGravity(Gravity.BOTTOM);
+            }
+
+            verticalAlignmentLayout.addView(layout);
+
+            if(viewGroup != null)
+            {
+                viewGroup.addView(verticalAlignmentLayout);
+            }
+        }
+        else
+        {
+            if (viewGroup != null)
+            {
+                viewGroup.addView(layout);
+            }
         }
 
         for (int i = 0; i < size; i++)
@@ -200,11 +253,8 @@ public class CardRendererRegistration
     private static CardRendererRegistration s_instance = null;
     private IInputWatcher m_InputWatcher = null;
     private HashMap<String, IBaseCardElementRenderer> m_typeToRendererMap = new HashMap<String, IBaseCardElementRenderer>();
-<<<<<<< HEAD
-=======
     private IBaseActionElementRenderer m_actionRenderer = null;
     private IActionLayoutRenderer m_actionLayoutRenderer = null;
     private IOnlineImageLoader m_onlineImageLoader = null;
     private IOnlineMediaLoader m_onlineMediaLoader = null;
->>>>>>> master
 }

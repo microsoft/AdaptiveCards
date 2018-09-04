@@ -26,7 +26,7 @@
     return ACRChoiceSetInput;
 }
 
-- (UIView *)render:(UIView *)viewGroup
+- (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
           rootView:(ACRView *)rootView
             inputs:(NSMutableArray *)inputs
    baseCardElement:(ACOBaseCardElement *)acoElem
@@ -44,64 +44,37 @@
     choiceSetView.frame = CGRectMake(0, 0, viewGroup.frame.size.width, viewGroup.frame.size.height);
     NSObject<UITableViewDelegate, UITableViewDataSource> *dataSource = nil;
 
-<<<<<<< HEAD
-    if(choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact)
-    {
-=======
     [choiceSetView registerClass:[ACRChoiceSetCell class] forCellReuseIdentifier:checkedCheckboxReuseID];
     [choiceSetView registerClass:[ACRChoiceSetCell class] forCellReuseIdentifier:uncheckedCheckboxReuseID];
     [choiceSetView registerClass:[ACRChoiceSetCell class] forCellReuseIdentifier:checkedRadioButtonReuseID];
     [choiceSetView registerClass:[ACRChoiceSetCell class] forCellReuseIdentifier:uncheckedRadioButtonReuseID];
 
     if(choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact && choiceSet->GetIsMultiSelect() == false) {
->>>>>>> master
         dataSource = [[ACRChoiceSetViewDataSourceCompactStyle alloc] initWithInputChoiceSet:choiceSet rootView:rootView];
-    }
-    else
-    {
-        dataSource = [[ACRChoiceSetViewDataSource alloc] initWithInputChoiceSet:choiceSet];
-<<<<<<< HEAD
-=======
         [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
->>>>>>> master
+    } else {
+        dataSource = [[ACRChoiceSetViewDataSource alloc] initWithInputChoiceSet:choiceSet];
+        [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     }
 
     choiceSetView.delegate = dataSource;
     choiceSetView.dataSource = dataSource;
     [inputs addObject:dataSource];
-<<<<<<< HEAD
-=======
 
     if(elem->GetHeight() == HeightType::Stretch){
         ACRColumnView *textInputContainer = [[ACRColumnView alloc] init];
         [textInputContainer addArrangedSubview:choiceSetView];
->>>>>>> master
 
-    UIView *inputView = (UIView *)choiceSetView;
+        // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
+        UIView *blankTrailingSpace = [[UIView alloc] init];
+        [textInputContainer addArrangedSubview:blankTrailingSpace];
+        [textInputContainer adjustHuggingForLastElement];
 
-    if(viewGroup)
-    {
-        [(UIStackView *)viewGroup addArrangedSubview:inputView];
+        [viewGroup addArrangedSubview:textInputContainer];
+    } else {
+        [viewGroup addArrangedSubview:choiceSetView];
     }
 
-<<<<<<< HEAD
-    [viewGroup addConstraint:
-     [NSLayoutConstraint constraintWithItem:inputView
-                                  attribute:NSLayoutAttributeLeading
-                                  relatedBy:NSLayoutRelationLessThanOrEqual
-                                     toItem:viewGroup
-                                  attribute:NSLayoutAttributeLeading
-                                 multiplier:1.0
-                                   constant:0]];
-    [viewGroup addConstraint:
-     [NSLayoutConstraint constraintWithItem:inputView
-                                  attribute:NSLayoutAttributeTrailing
-                                  relatedBy:NSLayoutRelationLessThanOrEqual
-                                     toItem:viewGroup
-                                  attribute:NSLayoutAttributeTrailing
-                                 multiplier:1.0
-                                   constant:0]];
-=======
     [NSLayoutConstraint constraintWithItem:choiceSetView
                                  attribute:NSLayoutAttributeLeading
                                  relatedBy:NSLayoutRelationLessThanOrEqual
@@ -117,9 +90,8 @@
                                  attribute:NSLayoutAttributeTrailing
                                 multiplier:1.0
                                   constant:0].active = YES;
->>>>>>> master
 
-    return inputView;
+    return choiceSetView;
 }
 
 @end

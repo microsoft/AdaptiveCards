@@ -109,8 +109,8 @@ std::shared_ptr<BaseCardElement> ChoiceSetInputParser::DeserializeFromString(
 
 void ChoiceSetInput::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Choices));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiSelect));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value));
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Choices),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiSelect),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)});
 }

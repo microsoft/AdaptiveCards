@@ -51,6 +51,14 @@ public class MediaConfig {
     return AdaptiveCardObjectModelJNI.MediaConfig_playButton_get(swigCPtr, this);
   }
 
+  public void setAllowInlinePlayback(boolean value) {
+    AdaptiveCardObjectModelJNI.MediaConfig_allowInlinePlayback_set(swigCPtr, this, value);
+  }
+
+  public boolean getAllowInlinePlayback() {
+    return AdaptiveCardObjectModelJNI.MediaConfig_allowInlinePlayback_get(swigCPtr, this);
+  }
+
   public static MediaConfig Deserialize(JsonValue json, MediaConfig defaultValue) {
     return new MediaConfig(AdaptiveCardObjectModelJNI.MediaConfig_Deserialize(JsonValue.getCPtr(json), json, MediaConfig.getCPtr(defaultValue), defaultValue), true);
   }

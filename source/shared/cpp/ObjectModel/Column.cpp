@@ -5,7 +5,7 @@
 
 using namespace AdaptiveSharedNamespace;
 
-Column::Column() : BaseCardElement(CardElementType::Column), m_width("Auto"), m_pixelWidth(0), m_style(ContainerStyle::None), m_verticalContentAlignment(VerticalContentAlignment::Stretch)
+Column::Column() : BaseCardElement(CardElementType::Column), m_width("Auto"), m_pixelWidth(0), m_style(ContainerStyle::None), m_verticalContentAlignment(VerticalContentAlignment::Top)
 {
     PopulateKnownPropertiesSet();
 }
@@ -20,7 +20,7 @@ void Column::SetWidth(const std::string &value)
     m_width = ParseUtil::ToLowercase(value);
 }
 
-// explicit width takes precedence over relative width 
+// explicit width takes precedence over relative width
 int Column::GetPixelWidth() const
 {
     return m_pixelWidth;
@@ -81,7 +81,7 @@ Json::Value Column::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(m_style);
     }
 
-    if (m_verticalContentAlignment != VerticalContentAlignment::Stretch)
+    if (m_verticalContentAlignment != VerticalContentAlignment::Top)
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)] = VerticalContentAlignmentToString(m_verticalContentAlignment);
     }
@@ -116,15 +116,15 @@ std::shared_ptr<Column> Column::Deserialize(
         columnWidth = ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Size);
     }
 
-    // validate user input; validation only applies to user input for explicit column width 
+    // validate user input; validation only applies to user input for explicit column width
     // the other input checks are remained unchanged
     column->SetPixelWidth(0);
     if (!columnWidth.empty() && (isdigit(columnWidth.at(0)) || ('-' == columnWidth.at(0))))
     {
         const std::string unit = "px";
-        std::size_t foundIndex = columnWidth.find(unit);
+        const std::size_t foundIndex = columnWidth.find(unit);
         /// check if width is determined explicitly
-        if (std::string::npos != foundIndex) 
+        if (std::string::npos != foundIndex)
         {
             if (columnWidth.size() == foundIndex + unit.size())
             {
@@ -133,7 +133,7 @@ std::shared_ptr<Column> Column::Deserialize(
                 ValidateUserInputForDimensionWithUnit(unit, requestedDimensions, parsedDimension);
                 column->SetPixelWidth(parsedDimension);
             }
-            else 
+            else
             {
                 throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "unit is in inproper form: " + columnWidth);
             }
@@ -146,7 +146,7 @@ std::shared_ptr<Column> Column::Deserialize(
         ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
 
     column->SetVerticalContentAlignment(
-        ParseUtil::GetEnumValue<VerticalContentAlignment>(value, AdaptiveCardSchemaKey::VerticalContentAlignment, VerticalContentAlignment::Stretch, VerticalContentAlignmentFromString));
+        ParseUtil::GetEnumValue<VerticalContentAlignment>(value, AdaptiveCardSchemaKey::VerticalContentAlignment, VerticalContentAlignment::Top, VerticalContentAlignmentFromString));
 
     // Parse Items
     auto cardElements = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::Items, false);
@@ -177,13 +177,13 @@ void Column::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
     m_selectAction = action;
 }
 
-void Column::PopulateKnownPropertiesSet() 
+void Column::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment));
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)});
 }
 
 void Column::SetLanguage(const std::string& language)
@@ -191,12 +191,12 @@ void Column::SetLanguage(const std::string& language)
     PropagateLanguage(language, m_items);
 }
 
-void Column::GetResourceUris(std::vector<std::string>& resourceUris)
+void Column::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
 {
     auto columnItems = GetItems();
     for (auto item : columnItems)
     {
-        item->GetResourceUris(resourceUris);
+        item->GetResourceInformation(resourceInfo);
     }
     return;
 }

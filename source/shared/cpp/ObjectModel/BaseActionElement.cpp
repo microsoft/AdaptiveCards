@@ -11,10 +11,6 @@ BaseActionElement::BaseActionElement(ActionType type) :
     PopulateKnownPropertiesSet();
 }
 
-BaseActionElement::~BaseActionElement()
-{
-}
-
 std::string BaseActionElement::GetElementTypeString() const
 {
     return m_typeString;
@@ -93,18 +89,12 @@ void BaseActionElement::SetAdditionalProperties(Json::Value const &value)
 
 void BaseActionElement::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IconUrl));
+    m_knownProperties.insert({ AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IconUrl)});
 }
 
-<<<<<<< HEAD
-void BaseActionElement::GetResourceUris(std::vector<std::string>&)
-{
-    return;
-}
-=======
 void BaseActionElement::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
 {
     if (!m_iconUrl.empty()) 
@@ -115,4 +105,3 @@ void BaseActionElement::GetResourceInformation(std::vector<RemoteResourceInforma
         resourceInfo.push_back(imageResourceInfo);
     }
 }
->>>>>>> master

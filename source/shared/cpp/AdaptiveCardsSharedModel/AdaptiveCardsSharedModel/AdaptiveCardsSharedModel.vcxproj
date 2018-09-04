@@ -71,6 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
@@ -91,6 +92,8 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <DisableSpecificWarnings>4702</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <EnablePREfast>true</EnablePREfast>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -234,6 +237,7 @@
     <ClInclude Include="..\..\ObjectModel\TimeInput.h" />
     <ClInclude Include="..\..\ObjectModel\ToggleInput.h" />
     <ClInclude Include="..\..\ObjectModel\UnknownElement.h" />
+    <ClInclude Include="..\..\ObjectModel\RemoteResourceInformation.h" />
     <ClInclude Include="..\..\ObjectModel\Util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

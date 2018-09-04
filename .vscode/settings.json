@@ -1,6 +1,6 @@
 {
-    "editor.insertSpaces": false,
-    "editor.formatOnSave": true, // only if you want auto fomattting on saving the file
+	"editor.insertSpaces": false,
+	"editor.formatOnSave": false, // only if you want auto fomattting on saving the file
 	"editor.detectIndentation": false,
-	
+	"C_Cpp.default.cppStandard": "c++17"
 }

@@ -315,8 +315,6 @@ namespace AdaptiveCards.Test
             Assert.AreEqual("Hello", card.Speak);
 
         }
-<<<<<<< HEAD
-=======
 
         [TestMethod]
         public void ColumnTypeNotRequired()
@@ -495,6 +493,5 @@ namespace AdaptiveCards.Test
             var deserializedActual = deserializedCard.ToJson();
             Assert.AreEqual(expected: expected, actual: deserializedActual);
         }
->>>>>>> master
     }
 }

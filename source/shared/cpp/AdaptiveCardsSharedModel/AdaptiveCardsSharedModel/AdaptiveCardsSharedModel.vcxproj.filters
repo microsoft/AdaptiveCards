@@ -278,14 +278,11 @@
     <ClInclude Include="..\..\ObjectModel\MediaSource.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-<<<<<<< HEAD
-=======
     <ClInclude Include="..\..\ObjectModel\RemoteResourceInformation.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\ObjectModel\SemanticVersion.h">
       <Filter>Source Files</Filter>
     </ClInclude>
->>>>>>> master
   </ItemGroup>
 </Project>

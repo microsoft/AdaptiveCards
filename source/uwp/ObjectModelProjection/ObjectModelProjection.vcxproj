@@ -99,11 +99,8 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MediaSource.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\NumberInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ParseResult.h" />
-<<<<<<< HEAD
-=======
     <ClInclude Include="..\..\shared\cpp\ObjectModel\RemoteResourceInformation.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\SemanticVersion.h" />
->>>>>>> master
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Separator.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\DateTimePreparser.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TextInput.h" />

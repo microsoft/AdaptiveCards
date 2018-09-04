@@ -109,8 +109,6 @@ namespace AdaptiveCards.Test
 }";
             Assert.ThrowsException<AdaptiveSerializationException>(() => AdaptiveCard.FromJson(json));
         }
-<<<<<<< HEAD
-=======
 
         [TestMethod]
         // Make sure resource information for all Images and Medias in a card are returned
@@ -418,6 +416,5 @@ namespace AdaptiveCards.Test
                 Assert.AreEqual(4, result.Warnings.Count);
             }
         }
->>>>>>> master
     }
 }
