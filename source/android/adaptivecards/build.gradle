@@ -36,7 +36,13 @@ signing {
     sign configurations.archives
 }
 
-
+maven {
+    url 'https://microsoft.pkgs.visualstudio.com/_packaging/AdaptiveCards-iOS/maven/v1'
+    credentials {
+        username "VSTS"
+        password System.getenv("VSTS_ENV_ACCESS_TOKEN") ?: "${vstsGradleAccessToken}"
+    }
+}
 uploadArchives {
         repositories {
             mavenDeployer {
