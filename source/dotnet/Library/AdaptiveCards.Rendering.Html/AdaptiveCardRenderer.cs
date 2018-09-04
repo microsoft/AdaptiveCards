@@ -48,8 +48,6 @@ namespace AdaptiveCards.Rendering.Html
 
         public RenderedAdaptiveCard RenderCard(AdaptiveCard card)
         {
-            EnsureCanRender(card);
-
             try
             {
                 var context = new AdaptiveRenderContext(HostConfig, ElementRenderers);

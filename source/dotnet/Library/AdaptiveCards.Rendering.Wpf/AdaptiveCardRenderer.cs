@@ -161,8 +161,6 @@ namespace AdaptiveCards.Rendering.Wpf
         public RenderedAdaptiveCard RenderCard(AdaptiveCard card)
         {
             if (card == null) throw new ArgumentNullException(nameof(card));
-            EnsureCanRender(card);
-
             RenderedAdaptiveCard renderCard = null;
 
             void Callback(object sender, AdaptiveActionEventArgs args)
@@ -194,7 +192,6 @@ namespace AdaptiveCards.Rendering.Wpf
         public async Task<RenderedAdaptiveCardImage> RenderCardToImageAsync(AdaptiveCard card, bool createStaThread, int width = 400, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (card == null) throw new ArgumentNullException(nameof(card));
-            EnsureCanRender(card);
 
             if (createStaThread)
             {

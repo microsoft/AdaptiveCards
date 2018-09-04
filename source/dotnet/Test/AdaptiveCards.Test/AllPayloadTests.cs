@@ -18,7 +18,7 @@ namespace AdaptiveCards.Test
         {
             var exceptions = new List<Exception>();
             var files = Directory.GetFiles(path, "*.json").ToList();
-            Assert.IsTrue(files.Count > 1);
+            Assert.IsTrue(files.Count >= 1);
             foreach (var file in files)
             {
                 bool excluded = false;
@@ -60,11 +60,13 @@ namespace AdaptiveCards.Test
                     {
                         // If the card was excluded but parsed, then it would have warnings
                         // If it doesn't then it shouldn't be excluded
-                        Assert.AreNotEqual(0, parseResult.Warnings.Count);
+                        bool hasFailed = (parseResult.Warnings.Count == 0) || parseResult.Card.Body != null;
+                        Assert.IsTrue(hasFailed);
                     }
                     else
                     {
                         Assert.AreEqual(0, parseResult.Warnings.Count);
+                        Assert.IsNotNull(parseResult.Card.Body);
                     }
 
                     // Make sure JsonConvert works also
@@ -117,6 +119,10 @@ namespace AdaptiveCards.Test
                     "AdditionalProperty",
                     "CustomParsingTestUsingProgressBar",
                     "TypeIsRequired",
+                    "AdaptiveCard.MinVersion",
+                    "AdaptiveCard.MissingVersion",
+                    "AdaptiveCard.Version1.2",
+                    "AdaptiveCard.Version1.3",
 
                     // These are cards that features haven't been implemented yet
                     "Column.Explicit.Size", // Not implemented yet
