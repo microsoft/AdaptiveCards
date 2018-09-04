@@ -6,7 +6,6 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
@@ -301,7 +300,7 @@ namespace AdaptiveCards.Rendering.Wpf
             // Buffering signal
             var uiBuffering = new TextBlock()
             {
-                Text = "Buffering...",
+                Text = "⏳ Buffering...",
                 Foreground = _controlForegroundColor,
                 VerticalAlignment = VerticalAlignment.Center,
                 Margin = _marginThickness,
@@ -309,40 +308,16 @@ namespace AdaptiveCards.Rendering.Wpf
             uiPlaybackControlContainer.Children.Add(uiBuffering);
 
             // Pause button
-            var uiPauseButton = new Viewbox()
-            {
-                Width = _childHeight,
-                Height = _childHeight,
-                Stretch = Stretch.Fill,
-                Margin = _marginThickness,
-                VerticalAlignment = VerticalAlignment.Center,
-                Visibility = Visibility.Collapsed,
-                Child = new TextBlock()
-                {
-                    Text = "⏸",
-                    FontFamily = _symbolFontFamily,
-                    Foreground = _controlForegroundColor,
-                }
-            };
+            var uiPauseButton = RenderPlaybackButton("⏸");
             uiPlaybackControlContainer.Children.Add(uiPauseButton);
 
             // Resume button
-            var uiResumeButton = new Viewbox()
-            {
-                Width = _childHeight,
-                Height = _childHeight,
-                Stretch = Stretch.Fill,
-                Margin = _marginThickness,
-                VerticalAlignment = VerticalAlignment.Center,
-                Visibility = Visibility.Collapsed,
-                Child = new TextBlock()
-                {
-                    Text = "⏵",
-                    FontFamily = _symbolFontFamily,
-                    Foreground = _controlForegroundColor,
-                }
-            };
+            var uiResumeButton = RenderPlaybackButton("⏵");
             uiPlaybackControlContainer.Children.Add(uiResumeButton);
+
+            // Replay button
+            var uiReplayButton = RenderPlaybackButton("🔄");
+            uiPlaybackControlContainer.Children.Add(uiReplayButton);
 
             // Click events
             MediaState currentMediaState = MediaState.NotStarted;
@@ -350,13 +325,13 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 storyboard.Pause(uiMedia);
                 currentMediaState = MediaState.IsPaused;
-                HandleButtonAppearance(currentMediaState, uiBuffering, uiPauseButton, uiResumeButton);
+                HandleButtonAppearance(currentMediaState, uiPauseButton, uiResumeButton, uiReplayButton);
             };
             uiResumeButton.MouseUp += (sender, e) =>
             {
                 storyboard.Resume(uiMedia);
                 currentMediaState = MediaState.IsPlaying;
-                HandleButtonAppearance(currentMediaState, uiBuffering, uiPauseButton, uiResumeButton);
+                HandleButtonAppearance(currentMediaState, uiPauseButton, uiResumeButton, uiReplayButton);
             };
 
             #endregion
@@ -474,12 +449,12 @@ namespace AdaptiveCards.Rendering.Wpf
 
             void showControlPanel(object sender, MouseEventArgs e) { uiControlPanel.Visibility = Visibility.Visible; }
             void collapseControlPanel(object sender, MouseEventArgs e) { uiControlPanel.Visibility = Visibility.Collapsed; }
-
-            mediaElement.MediaOpened += (sender, e) =>
+            void mediaStarted(object sender, RoutedEventArgs e)
             {
-                // The media is considered playing only after it's opened
+                // Playback button visibility
                 currentMediaState = MediaState.IsPlaying;
-                HandleButtonAppearance(currentMediaState, uiBuffering, uiPauseButton, uiResumeButton);
+                uiBuffering.Visibility = Visibility.Collapsed;
+                HandleButtonAppearance(currentMediaState, uiPauseButton, uiResumeButton, uiReplayButton);
 
                 // Control panel visibility
                 if (!isAudio)
@@ -491,12 +466,12 @@ namespace AdaptiveCards.Rendering.Wpf
                     masterPanel.MouseEnter += showControlPanel;
                     masterPanel.MouseLeave += collapseControlPanel;
                 }
-            };
-            storyboard.Completed += (sender, e) =>
+            }
+            void mediaEnded(object sender, EventArgs e)
             {
-                // The media is considered stopped (not started) when it's completed
+                // Playback button visibility
                 currentMediaState = MediaState.NotStarted;
-                HandleButtonAppearance(currentMediaState, uiBuffering, uiPauseButton, uiResumeButton);
+                HandleButtonAppearance(currentMediaState, uiPauseButton, uiResumeButton, uiReplayButton);
 
                 // Control panel visibility
                 if (!isAudio)
@@ -508,6 +483,17 @@ namespace AdaptiveCards.Rendering.Wpf
                     masterPanel.MouseEnter -= showControlPanel;
                     masterPanel.MouseLeave -= collapseControlPanel;
                 }
+            }
+
+            mediaElement.MediaOpened += mediaStarted;
+            storyboard.Completed += mediaEnded;
+            uiReplayButton.MouseUp += (sender, e) =>
+            {
+                // Seek to beginning
+                storyboard.Seek(uiMedia, new TimeSpan(0, 0, 0, 0, 0), TimeSeekOrigin.BeginTime);
+
+                // And start the media as usual
+                mediaStarted(sender, e);
             };
 
             // Timeline slider events
@@ -554,6 +540,26 @@ namespace AdaptiveCards.Rendering.Wpf
             return masterPanel;
         }
 
+        /** Simple template for playback buttons */
+        private static FrameworkElement RenderPlaybackButton(string text)
+        {
+            return new Viewbox()
+            {
+                Width = _childHeight,
+                Height = _childHeight,
+                Stretch = Stretch.Fill,
+                Margin = _marginThickness,
+                VerticalAlignment = VerticalAlignment.Center,
+                Visibility = Visibility.Collapsed,
+                Child = new TextBlock()
+                {
+                    Text = text,
+                    FontFamily = _symbolFontFamily,
+                    Foreground = _controlForegroundColor,
+                }
+            };
+        }
+
         /** Get poster image from either card payload or host config */
         private static Image GetPosterImage(AdaptiveMedia media, AdaptiveRenderContext context)
         {
@@ -576,11 +582,11 @@ namespace AdaptiveCards.Rendering.Wpf
         }
 
         private static void HandleButtonAppearance(MediaState currentMediaState,
-            FrameworkElement bufferingSignal, FrameworkElement pauseButton, FrameworkElement resumeButton)
+            FrameworkElement pauseButton, FrameworkElement resumeButton, FrameworkElement replayButton)
         {
-            bufferingSignal.Visibility = Visibility.Collapsed;
             pauseButton.Visibility = Visibility.Collapsed;
             resumeButton.Visibility = Visibility.Collapsed;
+            replayButton.Visibility = Visibility.Collapsed;
 
             if (currentMediaState == MediaState.IsPlaying)
             {
@@ -589,6 +595,11 @@ namespace AdaptiveCards.Rendering.Wpf
             else if (currentMediaState == MediaState.IsPaused)
             {
                 resumeButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                // Not started (or video is complete)
+                replayButton.Visibility = Visibility.Visible;
             }
         }
 
