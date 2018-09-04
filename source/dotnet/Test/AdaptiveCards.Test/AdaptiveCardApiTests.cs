@@ -278,7 +278,7 @@ namespace AdaptiveCards.Test
             var imageBlock = card.Body[0] as AdaptiveImage;
             Assert.AreEqual(0U, imageBlock.PixelWidth);
             Assert.AreEqual(0U, imageBlock.PixelHeight);
-            Assert.AreEqual(4, result.Warnings.Count);
+            Assert.AreEqual(3, result.Warnings.Count);
             Assert.AreEqual(
                 result.Warnings[0].Message,
                 @"The Value ""20"" for field ""width"" was not specified as a proper dimension in the format (\d+(.\d+)?px), it will be ignored.");
@@ -311,7 +311,7 @@ namespace AdaptiveCards.Test
             var imageBlock = card.Body[0] as AdaptiveImage;
             Assert.AreEqual(0U, imageBlock.PixelWidth);
             Assert.AreEqual(0U, imageBlock.PixelHeight);
-            Assert.AreEqual(4, result.Warnings.Count);
+            Assert.AreEqual(3, result.Warnings.Count);
             Assert.AreEqual(
                 @"The Value "".20px"" for field ""width"" was not specified as a proper dimension in the format (\d+(.\d+)?px), it will be ignored.",
                 result.Warnings[0].Message);
@@ -413,7 +413,7 @@ namespace AdaptiveCards.Test
                 var imageBlock = card.Body[0] as AdaptiveImage;
                 Assert.AreEqual(0U, imageBlock.PixelWidth);
                 Assert.AreEqual(0U, imageBlock.PixelHeight);
-                Assert.AreEqual(4, result.Warnings.Count);
+                Assert.AreEqual(3, result.Warnings.Count);
             }
         }
 
