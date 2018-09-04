@@ -34,7 +34,7 @@ namespace AdaptiveCards
         }
     }
 
-    public static class JsonExtensions
+    public static partial class JsonExtensions
     {
         public static bool IsIntegerType(this Type type)
         {

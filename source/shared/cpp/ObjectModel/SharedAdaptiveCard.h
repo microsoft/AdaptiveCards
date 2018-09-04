@@ -64,15 +64,15 @@ public:
     const CardElementType GetElementType() const;
 #ifdef __ANDROID__
     static std::shared_ptr<ParseResult> DeserializeFromFile(const std::string& jsonFile,
-        double rendererVersion,
+        std::string rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
     static std::shared_ptr<ParseResult> Deserialize(const Json::Value& json,
-        double rendererVersion,
+        std::string rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
     static std::shared_ptr<ParseResult> DeserializeFromString(const std::string& jsonString,
-        double rendererVersion,
+        std::string rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
     static std::shared_ptr<AdaptiveCard> MakeFallbackTextCard(
@@ -81,17 +81,17 @@ public:
 #else
     static std::shared_ptr<ParseResult> DeserializeFromFile(
         const std::string& jsonFile,
-        double rendererVersion,
+        std::string rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr);
 
     static std::shared_ptr<ParseResult> Deserialize(const Json::Value& json,
-        double rendererVersion,
+        std::string rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr);
 
     static std::shared_ptr<ParseResult> DeserializeFromString(const std::string& jsonString,
-        double rendererVersion,
+        std::string rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr);
 

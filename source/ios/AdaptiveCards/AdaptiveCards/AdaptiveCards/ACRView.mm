@@ -64,6 +64,7 @@ using namespace AdaptiveCards;
 {
     self = [self initWithFrame:CGRectMake(0, 0, width, 0)];
     if(self){
+        self.accessibilityLabel = @"ACR Root View";
         _adaptiveCard = card;
         if(config){
             _hostConfig = config;
@@ -77,6 +78,13 @@ using namespace AdaptiveCards;
 {
     NSMutableArray *inputs = [[NSMutableArray alloc] init];
 
+<<<<<<< HEAD
+=======
+    if(self.frame.size.width){
+        [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.frame.size.width].active = YES;
+    }
+
+>>>>>>> master
     UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card] inputs:inputs context:self containingView:self hostconfig:_hostConfig];
 
     if(self.frame.size.width){
@@ -100,6 +108,7 @@ using namespace AdaptiveCards;
                          blue:((num & 0x000000FF)) / 255.0
                         alpha:((num & 0xFF000000) >> 24) / 255.0];
     }
+<<<<<<< HEAD
     std::string backgroundImage = [_adaptiveCard card]->GetBackgroundImage();
     NSString* imgUrl = nil;
     if(!backgroundImage.empty()){
@@ -110,6 +119,19 @@ using namespace AdaptiveCards;
         UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
         if(img){
             ACRUIImageView *imgView = [[ACRUIImageView alloc] initWithImage:img];
+=======
+
+    NSString *key = [NSString stringWithCString:[_adaptiveCard card]->GetBackgroundImage().c_str() encoding:[NSString defaultCStringEncoding]];
+    if([key length]){
+        UIView *imgView = nil;
+        UIImage *img = nil;
+        if(![[ACRRegistration getInstance] isElementRendererOverriden:[ACRImageRenderer elemType]]){
+            img = _imageViewMap[key];
+            imgView = [[ACRUIImageView alloc] initWithImage:img];
+        }
+        if(img) {
+            imgView.translatesAutoresizingMaskIntoConstraints = NO;
+>>>>>>> master
             [newView addSubview:imgView];
             [newView sendSubviewToBack:imgView];
             [newView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
@@ -233,6 +255,23 @@ using namespace AdaptiveCards;
                 }
                 break;
             }
+<<<<<<< HEAD
+=======
+            case CardElementType::Media:
+            {
+                std::shared_ptr<Media> mediaElem = std::static_pointer_cast<Media>(elem);
+                std::string poster =  mediaElem->GetPoster();
+                if(poster.empty()) {
+                    poster = [_hostConfig getHostConfig]->media.defaultPoster;
+                }
+
+                if(!poster.empty()){
+                    [self loadImage:poster];
+                }
+
+                break;
+            }
+>>>>>>> master
             // continue on search
             case CardElementType::Container:
             {
@@ -381,7 +420,31 @@ using namespace AdaptiveCards;
 
 - (void)processImageConcurrently:(std::shared_ptr<Image> const &)imageElem
 {
+<<<<<<< HEAD
     [self addToAsyncRenderingList];
+=======
+    if(urlStr.empty()){
+        return;
+    }
+
+    NSString *nSUrlStr = [NSString stringWithCString:urlStr.c_str()
+                                            encoding:[NSString defaultCStringEncoding]];
+    NSURL *url = [NSURL URLWithString:nSUrlStr];
+    // if url is relative, try again with adding base url from host config
+    if([url.relativePath isEqualToString:nSUrlStr]) {
+        url = [NSURL URLWithString:nSUrlStr relativeToURL:_hostConfig.baseURL];
+    }
+
+    NSObject<ACOIResourceResolver> *imageResourceResolver = [_hostConfig getResourceResolverForScheme:[url scheme]];
+    ImageLoadBlock imageloadblock = nil;
+    if(!imageResourceResolver || ![imageResourceResolver respondsToSelector:@selector(resolveImageResource:)]) {
+        imageloadblock = ^(NSURL *url){
+            // download image
+            UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+            return img;
+        };
+    }
+>>>>>>> master
 
     /// generate a string key to uniquely identify Image
     std::shared_ptr<Image> imgElem = imageElem;

@@ -42,10 +42,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F423C0B41EE1FBA900905679"
-            BuildableName = "AdaptiveCards.framework"
-            BlueprintName = "AdaptiveCards"
-            ReferencedContainer = "container:AdaptiveCards.xcodeproj">
+            BlueprintIdentifier = "F423C0711EE1FB6100905679"
+            BuildableName = "ADCIOSVisualizer.app"
+            BlueprintName = "ADCIOSVisualizer"
+            ReferencedContainer = "container:../ADCIOSVisualizer/ADCIOSVisualizer.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -61,15 +61,6 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F423C0B41EE1FBA900905679"
-            BuildableName = "AdaptiveCards.framework"
-            BlueprintName = "AdaptiveCards"
-            ReferencedContainer = "container:AdaptiveCards.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>

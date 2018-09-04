@@ -792,11 +792,16 @@ AdaptiveNamespaceStart
         // Check if the button has an iconUrl
         if (iconUrl != nullptr)
         {
+            // Get icon configs
             ABI::AdaptiveNamespace::IconPlacement iconPlacement;
+            UINT32 iconSize;
+
             THROW_IF_FAILED(actionsConfig->get_IconPlacement(&iconPlacement));
+            THROW_IF_FAILED(actionsConfig->get_IconSize(&iconSize));
 
             // Define the alignment for the button contents
             ComPtr<IStackPanel> buttonContentsStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+<<<<<<< HEAD
             if (iconPlacement == ABI::AdaptiveNamespace::IconPlacement::AboveTitle)
             {
                 THROW_IF_FAILED(buttonContentsStackPanel->put_Orientation(Orientation::Orientation_Vertical));
@@ -807,6 +812,8 @@ AdaptiveNamespaceStart
             }
             ComPtr<IPanel> buttonContentsPanel;
             THROW_IF_FAILED(buttonContentsStackPanel.As(&buttonContentsPanel));
+=======
+>>>>>>> master
 
             // Create image and add it to the button
             ComPtr<IAdaptiveImage> adaptiveImage;
@@ -827,38 +834,62 @@ AdaptiveNamespaceStart
                 XamlHelpers::SetContent(localButton.Get(), title.Get());
                 return;
             }
-            XamlHelpers::AppendXamlElementToPanel(buttonIcon.Get(), buttonContentsPanel.Get()); // Add image to stack panel
+
+            // Create title text block
+            ComPtr<ITextBlock> buttonText = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+            THROW_IF_FAILED(buttonText->put_Text(title.Get()));
+            THROW_IF_FAILED(buttonText->put_TextAlignment(TextAlignment::TextAlignment_Center));
+
+            // Handle different arrangements inside button
             ComPtr<IFrameworkElement> buttonIconAsFrameworkElement;
             THROW_IF_FAILED(buttonIcon.As(&buttonIconAsFrameworkElement));
-
-            // Just add spacing when the icon must be located at the left of the title
-            if (iconPlacement == ABI::AdaptiveNamespace::IconPlacement::LeftOfTitle)
+            ComPtr<IUIElement> separator;
+            if (iconPlacement == ABI::AdaptiveNamespace::IconPlacement::AboveTitle && allActionsHaveIcons)
             {
+                THROW_IF_FAILED(buttonContentsStackPanel->put_Orientation(Orientation::Orientation_Vertical));
+
+                // Set icon height to iconSize (aspect ratio is automatically maintained)
+                THROW_IF_FAILED(buttonIconAsFrameworkElement->put_Height(iconSize));
+            }
+            else
+            {
+                THROW_IF_FAILED(buttonContentsStackPanel->put_Orientation(Orientation::Orientation_Horizontal));
+
+                // Add event to the image to resize itself when the textblock is rendered
+                ComPtr<IImage> buttonIconAsImage;
+                THROW_IF_FAILED(buttonIcon.As(&buttonIconAsImage));
+
+                EventRegistrationToken eventToken;
+                THROW_IF_FAILED(buttonIconAsImage->add_ImageOpened(Callback<IRoutedEventHandler>(
+                    [buttonIconAsFrameworkElement, buttonText](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+                {
+                    return SetImageSizeAsTextBlockSize(buttonIconAsFrameworkElement.Get(), buttonText.Get());
+                }).Get(), &eventToken));
+
+                // Only add spacing when the icon must be located at the left of the title
                 UINT spacingSize;
                 THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig, ABI::AdaptiveNamespace::Spacing::Default, &spacingSize));
 
                 ABI::Windows::UI::Color color = { 0 };
-                auto separator = CreateSeparator(renderContext, spacingSize, spacingSize, color, false);
+                separator = CreateSeparator(renderContext, spacingSize, spacingSize, color, false);
+            }
+
+            ComPtr<IPanel> buttonContentsPanel;
+            THROW_IF_FAILED(buttonContentsStackPanel.As(&buttonContentsPanel));
+
+            // Add image to stack panel
+            XamlHelpers::AppendXamlElementToPanel(buttonIcon.Get(), buttonContentsPanel.Get());
+
+            // Add separator to stack panel
+            if (separator != nullptr)
+            {
                 XamlHelpers::AppendXamlElementToPanel(separator.Get(), buttonContentsPanel.Get());
             }
 
-            // Add text to button
-            ComPtr<ITextBlock> buttonText = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
-            THROW_IF_FAILED(buttonText->put_Text(title.Get()));
-            THROW_IF_FAILED(buttonText->put_TextAlignment(TextAlignment::TextAlignment_Center));
-            XamlHelpers::AppendXamlElementToPanel(buttonText.Get(), buttonContentsPanel.Get()); // Add text to stack panel
+            // Add text to stack panel
+            XamlHelpers::AppendXamlElementToPanel(buttonText.Get(), buttonContentsPanel.Get());
 
-                                                                                                // Add event to the image to resize itself when the textblock is rendered
-            ComPtr<IImage> buttonIconAsImage;
-            THROW_IF_FAILED(buttonIcon.As(&buttonIconAsImage));
-
-            EventRegistrationToken eventToken;
-            THROW_IF_FAILED(buttonIconAsImage->add_ImageOpened(Callback<IRoutedEventHandler>(
-                [buttonIconAsFrameworkElement, buttonText](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
-            {
-                return SetImageSizeAsTextBlockSize(buttonIconAsFrameworkElement.Get(), buttonText.Get());
-            }).Get(), &eventToken));
-
+            // Finally, put the stack panel inside the final button
             ComPtr<IContentControl> buttonContentControl;
             THROW_IF_FAILED(localButton.As(&buttonContentControl));
             THROW_IF_FAILED(buttonContentControl->put_Content(buttonContentsPanel.Get()));
@@ -2360,7 +2391,8 @@ AdaptiveNamespaceStart
 
             XamlHelpers::SetContent(comboBoxItem.Get(), title.Get());
 
-            if (IsChoiceSelected(values, adaptiveChoiceInput))
+            // If multiple values are specified, no option is selected
+            if (values.size() == 1 && IsChoiceSelected(values, adaptiveChoiceInput))
             {
                 selectedIndex = currentIndex;
             }
@@ -2413,6 +2445,8 @@ AdaptiveNamespaceStart
                 ComPtr<IFrameworkElement> frameworkElement;
                 THROW_IF_FAILED(checkBox.As(&frameworkElement));
                 SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Choice.Multiselect", frameworkElement.Get());
+
+                XamlHelpers::SetToggleValue(choiceItem.Get(), IsChoiceSelected(values, adaptiveChoiceInput));
             }
             else
             {
@@ -2422,13 +2456,18 @@ AdaptiveNamespaceStart
                 ComPtr<IFrameworkElement> frameworkElement;
                 THROW_IF_FAILED(radioButton.As(&frameworkElement));
                 SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Choice.SingleSelect", frameworkElement.Get());
+
+                if (values.size() == 1)
+                {
+                    // When isMultiSelect is false, only 1 specified value is accepted.
+                    // Otherwise, leave all options unset
+                    XamlHelpers::SetToggleValue(choiceItem.Get(), IsChoiceSelected(values, adaptiveChoiceInput));
+                }
             }
 
             HString title;
             THROW_IF_FAILED(adaptiveChoiceInput->get_Title(title.GetAddressOf()));
             XamlHelpers::SetContent(choiceItem.Get(), title.Get());
-
-            XamlHelpers::SetToggleValue(choiceItem.Get(), IsChoiceSelected(values, adaptiveChoiceInput));
 
             THROW_IF_FAILED(AddHandledTappedEvent(choiceItem.Get()));
             

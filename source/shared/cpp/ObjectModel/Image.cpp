@@ -18,7 +18,11 @@ Image::Image() :
 
 Json::Value Image::SerializeToJsonValue() const
 {
+<<<<<<< HEAD
     const char pixelstring[] = "px";
+=======
+    const std::string pixelstring("px");
+>>>>>>> master
 
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 

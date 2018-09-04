@@ -14,7 +14,6 @@
 #include "ElementParserRegistration.h"
 #include "DateTimePreparser.h"
 #include <iomanip>
-#include <regex>
 #include <iostream>
 #include <codecvt>
 
@@ -88,6 +87,18 @@ bool DateTimePreparser::IsValidTimeAndDate(const struct tm &parsedTm, int hours,
     return false;
 }
 
+<<<<<<< HEAD
+=======
+constexpr time_t IntToTimeT(int timeToConvert)
+{
+#pragma warning(push)
+#pragma warning(disable: 26472)
+    // disable warning about using static_cast since we need to hard cast up.
+    return static_cast<time_t>(timeToConvert);
+#pragma warning(pop)
+}
+
+>>>>>>> master
 void DateTimePreparser::ParseDateTime(std::string const &in)
 {
     std::vector<DateTimePreparsedToken> sections;
@@ -120,9 +131,15 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
         bool isDate = matches[IsDate].matched;
         int hours{}, minutes{};
         struct tm parsedTm{};
+<<<<<<< HEAD
         int *addrs[] = {&parsedTm.tm_year, &parsedTm.tm_mon,
             &parsedTm.tm_mday, &parsedTm.tm_hour, &parsedTm.tm_min,
             &parsedTm.tm_sec, &hours, &minutes};
+=======
+        std::vector<int*> addrs = { &parsedTm.tm_year, &parsedTm.tm_mon,
+            &parsedTm.tm_mday, &parsedTm.tm_hour, &parsedTm.tm_min,
+            &parsedTm.tm_sec, &hours, &minutes };
+>>>>>>> master
 
         if (matches[Style].matched)
         {
@@ -145,15 +162,25 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
         {
             if (matches[indexer[idx]].matched)
             {
+<<<<<<< HEAD
                 // get indexes for time attributes to index into conrresponding matches
                 // and covert it to string
                 *addrs[idx] = stoi(matches[indexer[idx]]);
+=======
+                // get indexes for time attributes to index into corresponding matches
+                // and convert it to string
+                *(addrs.at(idx)) = stoi(matches[indexer.at(idx)]);
+>>>>>>> master
             }
         }
 
         // check for date and time validation
         if (IsValidTimeAndDate(parsedTm, hours, minutes))
         {
+<<<<<<< HEAD
+=======
+            time_t offset{};
+>>>>>>> master
             // maches offset sign,
             // Z == UTC,
             // + == time added from UTC

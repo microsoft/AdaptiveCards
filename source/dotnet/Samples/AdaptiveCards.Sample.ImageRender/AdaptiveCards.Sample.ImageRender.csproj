@@ -3,6 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net4.5.2</TargetFramework>
+    <GenerateAssemblyInfo Condition="$(Tfs_PackageVersionNumber) != ''">false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>

@@ -50,7 +50,7 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
                     URL urlContext = new URL(m_imageBaseUrl);
                     URL url = new URL(urlContext, path);
 
-                    return loadOnlineImage(url.toString());
+                    return m_onlineImageLoader.loadOnlineImage(url.toString(), this);
                 }
                 catch (MalformedURLException e2)
                 {

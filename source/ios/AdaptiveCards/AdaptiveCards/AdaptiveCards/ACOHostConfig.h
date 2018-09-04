@@ -11,6 +11,13 @@
 @interface ACOHostConfig:NSObject
 
 @property NSArray<NSString *> *fontFamilyNames;
+<<<<<<< HEAD
+=======
+@property BOOL allActionsHaveIcons;
+@property CGFloat buttonPadding;
+@property ACOResourceResolvers *resolvers;
+@property NSURL *baseURL;
+>>>>>>> master
 
 - (instancetype)init;
 

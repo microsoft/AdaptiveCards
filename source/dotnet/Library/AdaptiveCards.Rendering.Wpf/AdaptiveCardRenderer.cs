@@ -107,6 +107,17 @@ namespace AdaptiveCards.Rendering.Wpf
             AdaptiveActionSetRenderer.AddActions(grid, card.Actions, context);
 
             outerGrid.Children.Add(grid);
+<<<<<<< HEAD
+=======
+
+            if (card.SelectAction != null)
+            {
+                var outerGridWithSelectAction = context.RenderSelectAction(card.SelectAction, outerGrid);
+
+                return outerGridWithSelectAction;
+            }
+
+>>>>>>> master
             return outerGrid;
         }
 

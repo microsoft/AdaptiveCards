@@ -3,9 +3,15 @@ package io.adaptivecards.renderer.input;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.text.method.MovementMethod;
+import android.text.method.ScrollingMovementMethod;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -16,12 +22,14 @@ import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
+import io.adaptivecards.renderer.inputhandler.IInputWatcher;
 import io.adaptivecards.renderer.inputhandler.TextInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.TextInput;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.TextInputStyle;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import java.util.Vector;
 
@@ -72,7 +80,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
             BaseInputElement baseInputElement,
             String value,
             String placeHolder,
-            TextInputHandler textInputHandler,
+            final TextInputHandler textInputHandler,
             HostConfig hostConfig)
     {
         EditText editText = new EditText(context);
@@ -90,6 +98,26 @@ public class TextInputRenderer extends BaseCardElementRenderer
         {
             editText.setHint(placeHolder);
         }
+        editText.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)
+            {
+                CardRendererRegistration.getInstance().notifyInputChange(textInputHandler.getId(), textInputHandler.getInput());
+            }
+        });
 
         viewGroup.addView(editText);
         return editText;
@@ -147,6 +175,6 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
         return editText;
     }
-    
+
     private static TextInputRenderer s_instance = null;
 }

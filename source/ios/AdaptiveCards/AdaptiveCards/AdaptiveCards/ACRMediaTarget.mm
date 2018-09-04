@@ -61,7 +61,7 @@ const int posterTag = 0x504F5354;
         if([_view.mediaDelegate respondsToSelector:@selector(didFetchMediaEvent: card:)]) {
             [_view.mediaDelegate didFetchMediaEvent:_mediaEvent card:[_view card]];
         } else {
-            // TODO: implemented as a renderer warning -joswo
+            // https://github.com/Microsoft/AdaptiveCards/issues/1834
             NSLog(@"Warning: inline media play is disabled and host doesn't handle media event");
         }
     } else {
@@ -131,8 +131,7 @@ const int posterTag = 0x504F5354;
                 }
             }
         }
-        if(!validMediaTypeFound) {
-            // TODO: implemented as a renderer warning -joswo
+        if(!validMediaTypeFound) { // https://github.com/Microsoft/AdaptiveCards/issues/1834
             NSLog(@"Warning: supported media types not found");
         }
     }

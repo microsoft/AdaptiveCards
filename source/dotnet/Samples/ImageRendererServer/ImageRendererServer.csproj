@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
+    <GenerateAssemblyInfo Condition="$(Tfs_PackageVersionNumber) != ''">false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>

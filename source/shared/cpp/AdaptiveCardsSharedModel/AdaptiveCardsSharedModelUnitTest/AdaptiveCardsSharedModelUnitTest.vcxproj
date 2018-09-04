@@ -159,9 +159,20 @@
     <ClCompile Include="AdditionalPropertiesTest.cpp" />
     <ClCompile Include="CustomParsingForIOSTest.cpp" />
     <ClCompile Include="ExplicitDimensionTest.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="GatherImagesTest.cpp" />
     <ClCompile Include="MarkDownUnitTest.cpp" />
     <ClCompile Include="ObjectModelTest.cpp" />
+=======
+    <ClCompile Include="FactUnitTest.cpp" />
+    <ClCompile Include="ImageBackgroundColorTest.cpp" />
+    <ClCompile Include="ParserRegistrationTest.cpp" />
+    <ClCompile Include="ResourceInformationTests.cpp" />
+    <ClCompile Include="MarkDownUnitTest.cpp" />
+    <ClCompile Include="ObjectModelTest.cpp" />
+    <ClCompile Include="ParseUtilTest.cpp" />
+    <ClCompile Include="SemanticVersionTest.cpp" />
+>>>>>>> master
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

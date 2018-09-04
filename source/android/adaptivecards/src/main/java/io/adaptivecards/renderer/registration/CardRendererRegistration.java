@@ -9,6 +9,13 @@ import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.renderer.AdaptiveWarning;
+<<<<<<< HEAD
+=======
+import io.adaptivecards.renderer.IOnlineImageLoader;
+import io.adaptivecards.renderer.IActionLayoutRenderer;
+import io.adaptivecards.renderer.IBaseActionElementRenderer;
+import io.adaptivecards.renderer.IOnlineMediaLoader;
+>>>>>>> master
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
@@ -22,12 +29,14 @@ import io.adaptivecards.renderer.input.NumberInputRenderer;
 import io.adaptivecards.renderer.input.TextInputRenderer;
 import io.adaptivecards.renderer.input.TimeInputRenderer;
 import io.adaptivecards.renderer.input.ToggleInputRenderer;
+import io.adaptivecards.renderer.inputhandler.IInputWatcher;
 import io.adaptivecards.renderer.readonly.ColumnRenderer;
 import io.adaptivecards.renderer.readonly.ColumnSetRenderer;
 import io.adaptivecards.renderer.readonly.ContainerRenderer;
 import io.adaptivecards.renderer.readonly.FactSetRenderer;
 import io.adaptivecards.renderer.readonly.ImageRenderer;
 import io.adaptivecards.renderer.readonly.ImageSetRenderer;
+import io.adaptivecards.renderer.readonly.MediaRenderer;
 import io.adaptivecards.renderer.readonly.TextBlockRenderer;
 
 import java.util.HashMap;
@@ -45,6 +54,7 @@ public class CardRendererRegistration
         registerRenderer(CardElementTypeToString(CardElementType.FactSet), FactSetRenderer.getInstance());
         registerRenderer(CardElementTypeToString(CardElementType.Image), ImageRenderer.getInstance());
         registerRenderer(CardElementTypeToString(CardElementType.ImageSet), ImageSetRenderer.getInstance());
+        registerRenderer(CardElementTypeToString(CardElementType.Media), MediaRenderer.getInstance());
         registerRenderer(CardElementTypeToString(CardElementType.TextBlock), TextBlockRenderer.getInstance());
 
         // Register Input Renderers
@@ -85,6 +95,65 @@ public class CardRendererRegistration
         return m_typeToRendererMap.get(cardElementType);
     }
 
+<<<<<<< HEAD
+=======
+    public void setInputWatcher(IInputWatcher inputWatcher) {
+        m_InputWatcher = inputWatcher;
+    }
+
+    public IInputWatcher getInputWatcher() {
+        return m_InputWatcher;
+    }
+
+    public void notifyInputChange(String id, String value)
+    {
+        if (m_InputWatcher != null)
+        {
+            m_InputWatcher.onInputChange(id, value);
+        }
+    }
+
+    public void registerOnlineImageLoader(IOnlineImageLoader imageLoader)
+    {
+        m_onlineImageLoader = imageLoader;
+    }
+
+    public  IOnlineImageLoader getOnlineImageLoader()
+    {
+        return m_onlineImageLoader;
+    }
+
+    public void registerActionRenderer(IBaseActionElementRenderer actionRenderer)
+    {
+        m_actionRenderer = actionRenderer;
+    }
+
+    public IBaseActionElementRenderer getActionRenderer()
+    {
+        return m_actionRenderer;
+    }
+
+    public void registerActionLayoutRenderer(IActionLayoutRenderer actionLayoutRenderer)
+    {
+        m_actionLayoutRenderer = actionLayoutRenderer;
+    }
+
+    public IOnlineMediaLoader getOnlineMediaLoader()
+    {
+        return m_onlineMediaLoader;
+    }
+
+    public void registerOnlineMediaLoader(IOnlineMediaLoader onlineMediaLoader)
+    {
+        m_onlineMediaLoader = onlineMediaLoader;
+    }
+
+    public IActionLayoutRenderer getActionLayoutRenderer()
+    {
+        return m_actionLayoutRenderer;
+    }
+
+>>>>>>> master
     public View render(
             RenderedAdaptiveCard renderedCard,
             Context context,
@@ -129,6 +198,13 @@ public class CardRendererRegistration
     }
 
     private static CardRendererRegistration s_instance = null;
-
+    private IInputWatcher m_InputWatcher = null;
     private HashMap<String, IBaseCardElementRenderer> m_typeToRendererMap = new HashMap<String, IBaseCardElementRenderer>();
+<<<<<<< HEAD
+=======
+    private IBaseActionElementRenderer m_actionRenderer = null;
+    private IActionLayoutRenderer m_actionLayoutRenderer = null;
+    private IOnlineImageLoader m_onlineImageLoader = null;
+    private IOnlineMediaLoader m_onlineMediaLoader = null;
+>>>>>>> master
 }

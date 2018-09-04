@@ -63,7 +63,30 @@ using namespace AdaptiveCards;
 {
     std::vector<std::shared_ptr<BaseCardElement>> body = adaptiveCard->GetBody();
     ACRColumnView *verticalView = containingView;
+<<<<<<< HEAD
     
+=======
+
+    std::shared_ptr<BaseActionElement> selectAction = adaptiveCard->GetSelectAction();
+    if(selectAction) {
+        // instantiate and add tap gesture recognizer
+        [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:verticalView
+                                                                           rootView:rootView
+                                                                      recipientView:verticalView
+                                                                      actionElement:selectAction
+                                                                         hostConfig:config];
+    }
+
+    if(![[ACRRegistration getInstance] isElementRendererOverriden:[ACRImageRenderer elemType]]){
+        if(!adaptiveCard->GetBackgroundImage().empty()) {
+            [rootView loadImage:adaptiveCard->GetBackgroundImage()];
+        }
+        if(![config getHostConfig]->media.playButton.empty()) {
+            [rootView loadImage:[config getHostConfig]->media.playButton];
+        }
+    }
+
+>>>>>>> master
     if(!body.empty()) {
         [rootView addTasksToConcurrentQueue:body];
         // addTasksToConcurrentQueue spawns concurrent tasks, this flag indicates that
@@ -74,8 +97,36 @@ using namespace AdaptiveCards;
         style = (style == ACRNone)? ACRDefault : style;
         [verticalView setStyle:style];
 
+<<<<<<< HEAD
         [ACRRenderer render:verticalView rootView:rootView inputs:inputs withCardElems:body andHostConfig:config];
 
+=======
+        [rootView addTasksToConcurrentQueue:body];
+
+        std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
+
+        if(!actions.empty()) {
+            [rootView loadImagesForActionsAndCheckIfAllActionsHaveIconImages:actions hostconfig:config];
+        }
+
+        [rootView waitForAsyncTasksToFinish];
+
+        UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
+        if(adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center ||
+           adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom){
+            leadingBlankSpace = [verticalView addPaddingSpace];
+        }
+
+        [ACRRenderer render:verticalView rootView:rootView inputs:inputs withCardElems:body andHostConfig:config];
+
+        // Dont add the trailing space if the vertical content alignment is top/default
+        if((adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center) ||
+           (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Top &&
+            !(verticalView.hasStretchableView))){
+            trailingBlankSpace = [verticalView addPaddingSpace];
+        }
+
+>>>>>>> master
         [[rootView card] setInputs:inputs];
 
         std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();

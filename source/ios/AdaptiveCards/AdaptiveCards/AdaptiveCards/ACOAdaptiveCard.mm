@@ -61,7 +61,7 @@ using namespace AdaptiveCards;
         try
         {
             ACOAdaptiveCard *card = [[ACOAdaptiveCard alloc] init];
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(std::string([payload UTF8String]), 1.0);
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(std::string([payload UTF8String]), std::string("1.1"));
             NSMutableArray *acrParseWarnings;
             std::vector<std::shared_ptr<AdaptiveCardParseWarning>> parseWarnings = parseResult->GetWarnings();
             for(const auto &warning : parseWarnings){
@@ -91,4 +91,32 @@ using namespace AdaptiveCards;
 {
     return _adaptiveCard;
 }
+<<<<<<< HEAD
+=======
+
+- (void)setCard:(std::shared_ptr<AdaptiveCard> const &)card
+{
+    _adaptiveCard = card;
+}
+
+- (NSArray<ACORemoteResourceInformation *> *)remoteResourceInformation
+{
+    NSMutableArray *mutableRemoteResources = nil;
+    std::vector<RemoteResourceInformation> remoteResourceVector = _adaptiveCard->GetResourceInformation();
+    if(!remoteResourceVector.empty()){
+        mutableRemoteResources = [[NSMutableArray alloc] init];
+        for(const auto &remoteResource : remoteResourceVector){
+            ACORemoteResourceInformation *remoteResourceObjc =
+                [[ACORemoteResourceInformation alloc] initWithRemoteResourceInformation:remoteResource];
+            if(remoteResourceObjc){
+                [mutableRemoteResources addObject:remoteResourceObjc];
+            }
+        }
+        NSArray<ACORemoteResourceInformation *> *remoteResources = [NSArray arrayWithArray:mutableRemoteResources];
+        return remoteResources;
+    }
+    return nil;
+}
+
+>>>>>>> master
 @end

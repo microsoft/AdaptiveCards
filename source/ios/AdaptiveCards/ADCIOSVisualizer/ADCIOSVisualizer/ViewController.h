@@ -20,7 +20,12 @@
 @property (strong, nonatomic) UIButton *enableCustomRendererButton;
 @property (strong, nonatomic) NSString *editableStr;
 @property (strong, nonatomic) NSString *hostconfig;
+<<<<<<< HEAD
 @property UIView *curView;
+=======
+@property (strong, nonatomic) UILabel *userResponseLabel;
+@property ACRView *curView;
+>>>>>>> master
 @property UIScrollView *scrView;
 
 @end

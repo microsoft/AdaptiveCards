@@ -34,7 +34,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
             std::shared_ptr<BaseCardElement> elem =  parseResult->GetAdaptiveCard()->GetBody().front();
             std::shared_ptr<Image> image =  std::static_pointer_cast<Image>(elem);
             int width = image->GetPixelWidth();
@@ -57,7 +57,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
             std::shared_ptr<BaseCardElement> elem =  parseResult->GetAdaptiveCard()->GetBody().front();
             std::shared_ptr<Image> image =  std::static_pointer_cast<Image>(elem);
             int height = image->GetPixelHeight();
@@ -83,7 +83,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             }";
             try
             {
-                std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
+                std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
                 std::shared_ptr<BaseCardElement> elem =  parseResult->GetAdaptiveCard()->GetBody().front();
                 std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
             }
@@ -110,7 +110,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             }";
             try
             {
-                std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
+                std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
                 std::shared_ptr<BaseCardElement> elem =  parseResult->GetAdaptiveCard()->GetBody().front();
                 std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
             }
@@ -137,7 +137,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             }";
             try
             {
-                std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
+                std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
                 std::shared_ptr<BaseCardElement> elem =  parseResult->GetAdaptiveCard()->GetBody().front();
                 std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
             }
@@ -164,7 +164,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             }";
             try
             {
-                std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
+                std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
                 std::shared_ptr<BaseCardElement> elem =  parseResult->GetAdaptiveCard()->GetBody().front();
                 std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
             }
@@ -199,7 +199,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
             std::shared_ptr<BaseCardElement> element =  parseResult->GetAdaptiveCard()->GetBody().front();
             std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
             std::shared_ptr<Column> column = columnSet->GetColumns().front();
@@ -227,7 +227,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
             std::shared_ptr<BaseCardElement> element =  parseResult->GetAdaptiveCard()->GetBody().front();
             std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
             std::shared_ptr<Column> column = columnSet->GetColumns().front();
@@ -256,7 +256,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
             std::shared_ptr<BaseCardElement> element =  parseResult->GetAdaptiveCard()->GetBody().front();
             std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
             std::shared_ptr<Column> column = columnSet->GetColumns().front();
@@ -287,7 +287,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             }";
             try
             {
-                std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
+                std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
                 Assert::Fail();
             }
             catch(const AdaptiveCardParseException &e)
@@ -319,7 +319,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             }";
             try
             {
-                std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
+                std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
                 Assert::Fail();
             }
             catch(const AdaptiveCardParseException &e)
@@ -349,6 +349,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
+<<<<<<< HEAD
             try
             {
                 std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
@@ -358,6 +359,15 @@ namespace AdaptiveCardsSharedModelUnitTest
             { 
                 Assert::AreEqual<bool>(e.GetStatusCode() == ErrorStatusCode::InvalidPropertyValue, true);
             }
+=======
+
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
+			std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
+			std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
+			std::shared_ptr<Column> column = columnSet->GetColumns().front();
+			Assert::AreEqual<std::string>("20.5px", column->GetWidth());
+			Assert::AreEqual<bool>(column->GetPixelWidth() == 20, true);
+>>>>>>> master
         }
     };
 }

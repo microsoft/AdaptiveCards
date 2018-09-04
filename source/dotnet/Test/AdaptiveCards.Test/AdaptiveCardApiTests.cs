@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
@@ -108,5 +109,315 @@ namespace AdaptiveCards.Test
 }";
             Assert.ThrowsException<AdaptiveSerializationException>(() => AdaptiveCard.FromJson(json));
         }
+<<<<<<< HEAD
+=======
+
+        [TestMethod]
+        // Make sure resource information for all Images and Medias in a card are returned
+        // TODO: Add test for Media information when Media type is added
+        public void TestResourceInformation()
+        {
+            var json = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.0"",
+  ""fallbackText"": ""Fallback Text"",
+  ""speak"": ""Speak"",
+  ""backgroundImage"": ""http://adaptivecards.io/content/cats/1.png"",
+  ""body"": [
+    {
+      ""type"": ""TextBlock"",
+      ""text"": ""Hello""
+    },
+    {
+      ""type"": ""Image"",
+      ""url"": ""http://adaptivecards.io/content/cats/2.png""
+    },
+    {
+      ""type"": ""Container"",
+      ""items"": [
+        {
+          ""type"": ""Image"",
+          ""url"": ""http://adaptivecards.io/content/cats/3.png""
+        },
+        {
+          ""type"": ""ColumnSet"",
+          ""columns"": [
+            {
+              ""type"": ""Column"",
+              ""items"": [
+                {
+                    ""type"": ""Image"",
+                    ""url"": ""http://adaptivecards.io/content/cats/2.png""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          ""type"": ""ImageSet"",
+          ""images"": [
+            {
+              ""type"": ""Image"",
+              ""url"": ""content/cats/4.png""
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  ""actions"": [
+    {
+      ""type"": ""Action.ShowCard"",
+      ""iconUrl"": ""http://adaptivecards.io/content/cats/5.png"",
+      ""card"": {
+          ""type"": ""AdaptiveCard"",
+          ""version"": ""1.0"",
+          ""body"": [
+            {
+              ""type"": ""TextBlock"",
+              ""text"": ""Hello""
+            },
+            {
+              ""type"": ""Image"",
+              ""url"": ""http://adaptivecards.io/content/cats/6.png""
+            }
+          ]
+      }
+    }
+  ]
+}";
+            var card = AdaptiveCard.FromJson(json).Card;
+            var expected = new RemoteResourceInformation[]
+            {
+                new RemoteResourceInformation(
+                    "http://adaptivecards.io/content/cats/1.png",
+                    typeof(AdaptiveImage),
+                    null
+                ),
+                new RemoteResourceInformation(
+                    "http://adaptivecards.io/content/cats/2.png",
+                    typeof(AdaptiveImage),
+                    null
+                ),
+                new RemoteResourceInformation(
+                    "http://adaptivecards.io/content/cats/3.png",
+                    typeof(AdaptiveImage),
+                    null
+                ),
+                new RemoteResourceInformation(
+                    "http://adaptivecards.io/content/cats/2.png",
+                    typeof(AdaptiveImage),
+                    null
+                ),
+                new RemoteResourceInformation(
+                    "content/cats/4.png",
+                    typeof(AdaptiveImage),
+                    null
+                ),
+                new RemoteResourceInformation(
+                    "http://adaptivecards.io/content/cats/5.png",
+                    typeof(AdaptiveImage),
+                    null
+                ),
+                new RemoteResourceInformation(
+                    "http://adaptivecards.io/content/cats/6.png",
+                    typeof(AdaptiveImage),
+                    null
+                )
+            };
+            var actual = card.GetResourceInformation();
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void TestExplicitImagePositiveTest()
+        {
+            var payload =
+                @"{
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
+                      ""version"": ""1.0"",
+                      ""body"": [
+                          {
+                              ""type"": ""Image"",
+                              ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+                              ""width"": ""20px"",
+                              ""height"": ""50px""
+                          }
+                      ]
+                  }";
+
+            var result = AdaptiveCard.FromJson(payload);
+            var card = result.Card;
+            Assert.AreEqual(card.Body.Count, 1);
+            var imageBlock = card.Body[0] as AdaptiveImage;
+            Assert.AreEqual(0, result.Warnings.Count);
+            Assert.AreEqual(20U,imageBlock.PixelWidth);
+            Assert.AreEqual(50U, imageBlock.PixelHeight);
+        }
+
+        [TestMethod]
+        public void TestExplicitImageWarnningMessagesWithMalformedUnits()
+        {
+            var payload =
+                @"{
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
+                      ""version"": ""1.0"",
+                      ""body"": [
+                          {
+                              ""type"": ""Image"",
+                              ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+                              ""width"": ""20"",
+                              ""height"": ""50 p x""
+                          }
+                      ]
+                  }";
+
+            var result = AdaptiveCard.FromJson(payload);
+            var card = result?.Card;
+            Assert.AreEqual(card.Body.Count, 1);
+            var imageBlock = card.Body[0] as AdaptiveImage;
+            Assert.AreEqual(0U, imageBlock.PixelWidth);
+            Assert.AreEqual(0U, imageBlock.PixelHeight);
+            Assert.AreEqual(4, result.Warnings.Count);
+            Assert.AreEqual(
+                result.Warnings[0].Message,
+                @"The Value ""20"" for field ""width"" was not specified as a proper dimension in the format (\d+(.\d+)?px), it will be ignored.");
+            Assert.AreEqual(
+                result.Warnings[1].Message,
+                @"The Value "" x"" was not specified as a proper unit(px), it will be ignored.");
+        }
+
+        [TestMethod]
+        public void TestExplicitImageWarrningMessagesWithMalformedDimensions()
+        {
+            var payload = 
+                @"{
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
+                      ""version"": ""1.0"",
+                      ""body"": [
+                          {
+                              ""type"": ""Image"",
+                              ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+                              ""width"": "".20px"",
+                              ""height"": ""50.1234.12px""
+                          }
+                      ]
+                  }";
+
+            var result = AdaptiveCard.FromJson(payload);
+            var card = result?.Card;
+            Assert.AreEqual(1, card.Body.Count);
+            var imageBlock = card.Body[0] as AdaptiveImage;
+            Assert.AreEqual(0U, imageBlock.PixelWidth);
+            Assert.AreEqual(0U, imageBlock.PixelHeight);
+            Assert.AreEqual(4, result.Warnings.Count);
+            Assert.AreEqual(
+                @"The Value "".20px"" for field ""width"" was not specified as a proper dimension in the format (\d+(.\d+)?px), it will be ignored.",
+                result.Warnings[0].Message); 
+            Assert.AreEqual(
+                @"The Value ""50.1234.12px"" for field ""height"" was not specified as a proper dimension in the format (\d+(.\d+)?px), it will be ignored.",
+                result.Warnings[1].Message); 
+        }
+
+        [TestMethod]
+        public void TestExplicitImageTestWithMalformedDimensionsInputs()
+        {
+            ArrayList payloads = new ArrayList
+            {
+                @"{
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
+                      ""version"": ""1.0"",
+                      ""body"": [
+                          {
+                              ""type"": ""Image"",
+                              ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+                              ""width"": "".20px"",
+                              ""height"": ""50.1234.12px""
+                          }
+                      ]
+                  }",
+                @"{
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
+                      ""version"": ""1.0"",
+                      ""body"": [
+                          {
+                              ""type"": ""Image"",
+                              ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+                              ""width"": ""20,00px"",
+                              ""height"": ""200.00   px""
+                          }
+                      ]
+                  }",
+                @"{
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
+                      ""version"": ""1.0"",
+                      ""body"": [
+                          {
+                              ""type"": ""Image"",
+                              ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+                              ""width"": ""2000 px"",
+                              ""height"": ""20a0px""
+                          }
+                      ]
+                  }",
+                @"{
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
+                      ""version"": ""1.0"",
+                      ""body"": [
+                          {
+                              ""type"": ""Image"",
+                              ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+                              ""width"": ""20.a00px"",
+                              ""height"": ""20.00""
+                          }
+                      ]
+                  }",
+                @"{
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
+                      ""version"": ""1.0"",
+                      ""body"": [
+                          {
+                              ""type"": ""Image"",
+                              ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+                              ""width"": "" 20.00px"",
+                              ""height"": ""2 0.00px""
+                          }
+                      ]
+                  }",
+                @"{
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
+                      ""version"": ""1.0"",
+                      ""body"": [
+                          {
+                              ""type"": ""Image"",
+                              ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+                              ""width"": ""200px .00px"",
+                              ""height"": ""2 0px00px""
+                          }
+                      ]
+                  }"
+            };
+
+            foreach (string payload in payloads)
+            {
+                var result = AdaptiveCard.FromJson(payload);
+                var card = result?.Card;
+                Assert.AreEqual(1, card.Body.Count);
+                var imageBlock = card.Body[0] as AdaptiveImage;
+                Assert.AreEqual(0U, imageBlock.PixelWidth);
+                Assert.AreEqual(0U, imageBlock.PixelHeight);
+                Assert.AreEqual(4, result.Warnings.Count);
+            }
+        }
+>>>>>>> master
     }
 }

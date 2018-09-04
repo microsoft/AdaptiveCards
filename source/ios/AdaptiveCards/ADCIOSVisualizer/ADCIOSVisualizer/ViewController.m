@@ -203,12 +203,17 @@
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:jsonStr];
     if(cardParseResult.isValid){
         ACRRegistration *registration = [ACRRegistration getInstance];
-            
+
         CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
         [registration setCustomElementParser:progressBarRenderer];
 
+<<<<<<< HEAD
         renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:300];
     }	
+=======
+        renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:335];
+    }
+>>>>>>> master
     
     if(renderResult.succeeded)
     {
@@ -260,6 +265,16 @@
     else if(action.type == ACRSubmit){
         NSData * userInputsAsJson = [card inputs];
         NSString *str = [[NSString alloc] initWithData:userInputsAsJson encoding:NSUTF8StringEncoding];
+        if(!_userResponseLabel) {
+            _userResponseLabel = [[UILabel alloc] init];
+            _userResponseLabel.numberOfLines = 0;
+            _userResponseLabel.backgroundColor = UIColor.groupTableViewBackgroundColor;
+            _userResponseLabel.accessibilityIdentifier = @"ACRUserResponse";
+            [(UIStackView *)self.curView addArrangedSubview:_userResponseLabel];
+        }
+        
+        _userResponseLabel.text = str;
+        [self.scrView setNeedsLayout];
         NSLog(@"user response fetched: %@ with %@", str, [action data]);
     }
 }
