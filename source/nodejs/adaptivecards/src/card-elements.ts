@@ -1033,6 +1033,7 @@ export class FactSet extends CardElement {
 
     protected internalRender(): HTMLElement {
         let element: HTMLElement = null;
+        let hostConfig = this.hostConfig;
 
         if (this.facts.length > 0) {
             element = document.createElement("table");
@@ -1042,6 +1043,7 @@ export class FactSet extends CardElement {
             element.style.borderCollapse = "collapse";
             element.style.display = "block";
             element.style.overflow = "hidden";
+            element.classList.add(hostConfig.makeCssClassName("ac-factset"));
 
             for (var i = 0; i < this.facts.length; i++) {
                 var trElement = document.createElement("tr");
@@ -1052,6 +1054,7 @@ export class FactSet extends CardElement {
 
                 var tdElement = document.createElement("td");
                 tdElement.style.padding = "0";
+                tdElement.classList.add(hostConfig.makeCssClassName("ac-fact-title"));
 
                 if (this.hostConfig.factSet.title.maxWidth) {
                     tdElement.style.maxWidth = this.hostConfig.factSet.title.maxWidth + "px";
@@ -1075,6 +1078,7 @@ export class FactSet extends CardElement {
                 tdElement = document.createElement("td");
                 tdElement.style.padding = "0px 0px 0px 10px";
                 tdElement.style.verticalAlign = "top";
+                tdElement.classList.add(hostConfig.makeCssClassName("ac-fact-value"));
 
                 textBlock = new TextBlock();
                 textBlock.hostConfig = this.hostConfig;
