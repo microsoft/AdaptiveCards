@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 android {
@@ -36,11 +37,15 @@ signing {
     sign configurations.archives
 }
 
-maven {
-    url 'https://microsoft.pkgs.visualstudio.com/_packaging/AdaptiveCards-Android/maven/v1'
-    credentials {
-        username "VSTS"
-        password System.getenv("VSTS_ENV_ACCESS_TOKEN") ?: "${vstsGradleAccessToken}"
+publishing {
+    repositories {
+        maven {
+            url 'https://microsoft.pkgs.visualstudio.com/_packaging/AdaptiveCards-Android/maven/v1'
+            credentials {
+                username "VSTS"
+                password System.getenv("VSTS_ENV_ACCESS_TOKEN") ?: "${vstsGradleAccessToken}"
+            }
+        }
     }
 }
 
