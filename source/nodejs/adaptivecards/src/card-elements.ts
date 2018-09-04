@@ -22,6 +22,10 @@ function isActionAllowed(action: Action, forbiddenActionTypes: Array<string>): b
     return true;
 }
 
+function generateUniqueId(): string {
+    return "__ac-" + Utils.UUID.generate();
+}
+
 export function createActionInstance(json: any, errors: Array<IValidationError>): Action {
     if (!json["title"] && json["title"] !== "") {
         raiseParseError(
@@ -721,11 +725,15 @@ export class TextBlock extends CardElement {
         return false;
     }
 
+    protected getRenderedDomElementType(): string {
+        return "div";
+    }
+    
     protected internalRender(): HTMLElement {
         if (!Utils.isNullOrEmpty(this.text)) {
             let hostConfig = this.hostConfig;
 
-            var element = document.createElement("div");
+            var element = document.createElement(this.getRenderedDomElementType());
             element.classList.add(hostConfig.makeCssClassName("ac-textBlock"));
             element.style.overflow = "hidden";
 
@@ -1057,6 +1065,24 @@ export class TextBlock extends CardElement {
         }
     }
 }
+
+class Label extends TextBlock {
+    protected getRenderedDomElementType(): string {
+        return "label";
+    }
+
+    protected internalRender(): HTMLElement {
+        let renderedElement = <HTMLLabelElement>super.internalRender();
+
+        if (!Utils.isNullOrEmpty(this.forElementId)) {
+            renderedElement.htmlFor = this.forElementId;
+        }
+
+        return renderedElement;
+    }
+    
+    forElementId: string;
+} 
 
 export class Fact {
     name: string;
@@ -1817,8 +1843,10 @@ export class ToggleInput extends Input {
         element.className = this.hostConfig.makeCssClassName("ac-input");
         element.style.width = "100%";
         element.style.display = "flex";
+        element.style.alignItems = "center";
 
         this._checkboxInputElement = document.createElement("input");
+        this._checkboxInputElement.id = generateUniqueId();
         this._checkboxInputElement.type = "checkbox";
         this._checkboxInputElement.style.display = "inline-block";
         this._checkboxInputElement.style.verticalAlign = "middle";
@@ -1836,13 +1864,15 @@ export class ToggleInput extends Input {
         Utils.appendChild(element, this._checkboxInputElement);
 
         if (!Utils.isNullOrEmpty(this.title) || this.isDesignMode()) {
-            var label = new TextBlock();
+            var label = new Label();
+            label.forElementId = this._checkboxInputElement.id;
             label.hostConfig = this.hostConfig;
             label.text = Utils.isNullOrEmpty(this.title) ? this.getJsonTypeName() : this.title;
             label.useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
 
             var labelElement = label.render();
             labelElement.style.display = "inline-block";
+            labelElement.style.flex = "1 1 auto";
             labelElement.style.marginLeft = "6px";
             labelElement.style.verticalAlign = "middle";
 
@@ -1902,6 +1932,16 @@ export class Choice {
 }
 
 export class ChoiceSetInput extends Input {
+    private static uniqueCategoryCounter = 0;
+
+    private static getUniqueCategoryName(): string {
+        let uniqueCwtegoryName = "__ac-category" + ChoiceSetInput.uniqueCategoryCounter;
+        
+        ChoiceSetInput.uniqueCategoryCounter ++;
+
+        return uniqueCwtegoryName;
+    }
+
     private _selectElement: HTMLSelectElement;
     private _toggleInputs: Array<HTMLInputElement>;
 
@@ -1944,6 +1984,8 @@ export class ChoiceSetInput extends Input {
             }
             else {
                 // Render as a series of radio buttons
+                let uniqueCategoryName = ChoiceSetInput.getUniqueCategoryName();
+
                 var element = document.createElement("div");
                 element.className = this.hostConfig.makeCssClassName("ac-input");
                 element.style.width = "100%";
@@ -1952,11 +1994,12 @@ export class ChoiceSetInput extends Input {
 
                 for (var i = 0; i < this.choices.length; i++) {
                     var radioInput = document.createElement("input");
+                    radioInput.id = generateUniqueId(); 
                     radioInput.type = "radio";
                     radioInput.style.margin = "0";
                     radioInput.style.display = "inline-block";
                     radioInput.style.verticalAlign = "middle";
-                    radioInput.name = this.id;
+                    radioInput.name = Utils.isNullOrEmpty(this.id) ? uniqueCategoryName : this.id;
                     radioInput.value = this.choices[i].value;
                     radioInput.style.flex = "0 0 auto";
                     radioInput.setAttribute("aria-label", this.choices[i].title);
@@ -1969,13 +2012,15 @@ export class ChoiceSetInput extends Input {
 
                     this._toggleInputs.push(radioInput);
 
-                    var label = new TextBlock();
+                    var label = new Label();
+                    label.forElementId = radioInput.id;
                     label.hostConfig = this.hostConfig;
                     label.text = Utils.isNullOrEmpty(this.choices[i].title) ? "Choice " + i : this.choices[i].title;
                     label.useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
 
                     var labelElement = label.render();
                     labelElement.style.display = "inline-block";
+                    labelElement.style.flex = "1 1 auto";
                     labelElement.style.marginLeft = "6px";
                     labelElement.style.verticalAlign = "middle";
 
@@ -2003,6 +2048,7 @@ export class ChoiceSetInput extends Input {
 
             for (var i = 0; i < this.choices.length; i++) {
                 var checkboxInput = document.createElement("input");
+                checkboxInput.id = generateUniqueId();
                 checkboxInput.type = "checkbox";
                 checkboxInput.style.margin = "0";
                 checkboxInput.style.display = "inline-block";
@@ -2021,18 +2067,21 @@ export class ChoiceSetInput extends Input {
 
                 this._toggleInputs.push(checkboxInput);
 
-                var label = new TextBlock();
+                var label = new Label();
+                label.forElementId = checkboxInput.id;
                 label.hostConfig = this.hostConfig;
                 label.text = Utils.isNullOrEmpty(this.choices[i].title) ? "Choice " + i : this.choices[i].title;
                 label.useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
 
                 var labelElement = label.render();
                 labelElement.style.display = "inline-block";
+                labelElement.style.flex = "1 1 auto";
                 labelElement.style.marginLeft = "6px";
                 labelElement.style.verticalAlign = "middle";
 
                 var compoundInput = document.createElement("div");
                 compoundInput.style.display = "flex";
+                compoundInput.style.alignItems = "center";
 
                 Utils.appendChild(compoundInput, checkboxInput);
                 Utils.appendChild(compoundInput, labelElement);
