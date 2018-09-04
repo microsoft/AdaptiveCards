@@ -40,13 +40,10 @@ namespace AdaptiveCards.Rendering.Wpf
             // just return the poster image if present
             if (!context.Config.SupportsInteractivity || media.Sources.Count == 0)
             {
-                var uiImage = new Image();
-                uiImage.SetSource(ResolveUri(media.Poster), context);
-
-                return uiImage;
+                return GetPosterImage(media, context);
             }
 
-            AdaptiveMediaSource mediaSource = GetMediaSource(media);
+            AdaptiveMediaSource mediaSource = GetMediaSource(media, context);
             if (mediaSource == null)
             {
                 return null;
@@ -73,21 +70,9 @@ namespace AdaptiveCards.Rendering.Wpf
 
             /* Poster (if present) */
 
-            Image uiPosterImage = null;
-            if (!string.IsNullOrEmpty(media.Poster))
+            Image uiPosterImage = GetPosterImage(media, context);
+            if (uiPosterImage != null)
             {
-                // Use the provided poster
-                uiPosterImage = new Image();
-                uiPosterImage.SetSource(ResolveUri(media.Poster), context);
-
-                uiPosterContainer.Children.Add(uiPosterImage);
-            }
-            else if (!string.IsNullOrEmpty(mediaConfig.DefaultPoster))
-            {
-                // Use the default poster from host
-                uiPosterImage = new Image();
-                uiPosterImage.SetSource(ResolveUri(mediaConfig.DefaultPoster), context);
-
                 uiPosterContainer.Children.Add(uiPosterImage);
             }
 
@@ -111,13 +96,14 @@ namespace AdaptiveCards.Rendering.Wpf
                 Stretch = Stretch.Fill,
                 Margin = _marginThickness,
             };
-            if (!string.IsNullOrEmpty(mediaConfig.PlayButton))
+            if (!string.IsNullOrEmpty(mediaConfig.PlayButton)
+                 && context.Config.ResolveFinalAbsoluteUri(mediaConfig.PlayButton) != null)
             {
                 var content = new Image()
                 {
                     Height = playButtonSize,
                 };
-                content.SetSource(ResolveUri(mediaConfig.PlayButton), context);
+                content.SetSource(context.Config.ResolveFinalAbsoluteUri(mediaConfig.PlayButton), context);
 
                 uiPlayButton.Child = content;
             }
@@ -155,7 +141,7 @@ namespace AdaptiveCards.Rendering.Wpf
             if (mediaConfig.AllowInlinePlayback)
             {
                 // Media player is only created if inline playback is allowed
-                uiMediaPlayer = RenderMediaPlayer(mediaSource, uiMedia, isAudio);
+                uiMediaPlayer = RenderMediaPlayer(context, mediaSource, uiMedia, isAudio);
                 uiMediaPlayer.Visibility = Visibility.Collapsed;
 
                 uiMedia.Children.Add(uiMediaPlayer);
@@ -190,7 +176,7 @@ namespace AdaptiveCards.Rendering.Wpf
             return uiMedia;
         }
 
-        private static FrameworkElement RenderMediaPlayer(AdaptiveMediaSource mediaSource, FrameworkElement uiMedia, bool isAudio)
+        private static FrameworkElement RenderMediaPlayer(AdaptiveRenderContext context, AdaptiveMediaSource mediaSource, FrameworkElement uiMedia, bool isAudio)
         {
             var masterPanel = new Grid();
 
@@ -294,7 +280,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
             var mediaTimeline = new MediaTimeline()
             {
-                Source = ResolveUri(mediaSource.Url),
+                // This URI is previously confirmed to be valid
+                Source = context.Config.ResolveFinalAbsoluteUri(mediaSource.Url),
             };
             Storyboard.SetTarget(mediaTimeline, mediaElement);
 
@@ -567,6 +554,27 @@ namespace AdaptiveCards.Rendering.Wpf
             return masterPanel;
         }
 
+        /** Get poster image from either card payload or host config */
+        private static Image GetPosterImage(AdaptiveMedia media, AdaptiveRenderContext context)
+        {
+            Image uiPosterImage = null;
+            if (!string.IsNullOrEmpty(media.Poster) && context.Config.ResolveFinalAbsoluteUri(media.Poster) != null)
+            {
+                // Use the provided poster
+                uiPosterImage = new Image();
+                uiPosterImage.SetSource(context.Config.ResolveFinalAbsoluteUri(media.Poster), context);
+            }
+            else if (!string.IsNullOrEmpty(context.Config.Media.DefaultPoster)
+                 && context.Config.ResolveFinalAbsoluteUri(context.Config.Media.DefaultPoster) != null)
+            {
+                // Use the default poster from host
+                uiPosterImage = new Image();
+                uiPosterImage.SetSource(context.Config.ResolveFinalAbsoluteUri(context.Config.Media.DefaultPoster), context);
+            }
+
+            return uiPosterImage;
+        }
+
         private static void HandleButtonAppearance(MediaState currentMediaState,
             FrameworkElement bufferingSignal, FrameworkElement pauseButton, FrameworkElement resumeButton)
         {
@@ -584,28 +592,6 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
-        /** Try to resolve a URI from a string */
-        // TODO: add support for relative URI
-        private static Uri ResolveUri(string uri)
-        {
-            if (string.IsNullOrEmpty(uri))
-            {
-                return null;
-            }
-
-            Uri posterUri;
-            try
-            {
-                posterUri = new Uri(uri, UriKind.RelativeOrAbsolute);
-            }
-            catch
-            {
-                return null;
-            }
-
-            return posterUri;
-        }
-
         private static List<string> _supportedMimeTypes = new List<string>
         {
             "video/mp4",
@@ -620,22 +606,45 @@ namespace AdaptiveCards.Rendering.Wpf
         };
 
         /** Get media URI of a given media object */
-        private static AdaptiveMediaSource GetMediaSource(AdaptiveMedia media)
+        private static AdaptiveMediaSource GetMediaSource(AdaptiveMedia media, AdaptiveRenderContext context)
         {
+            // Check if sources contain an invalid mix of MIME types (audio and video)
+            bool? isLastMediaSourceAudio = null;
+            foreach (var source in media.Sources)
+            {
+                if (!isLastMediaSourceAudio.HasValue)
+                {
+                    isLastMediaSourceAudio = IsAudio(source);
+                }
+                else
+                {
+                    if (IsAudio(source) != isLastMediaSourceAudio.Value)
+                    {
+                        // If there is one pair of sources with different MIME types,
+                        // it's an invalid mix and a warning should be logged
+                        context.Warnings.Add(new AdaptiveWarning(-1, "A Media element contains an invalid mix of MIME type"));
+                        return null;
+                    }
+
+                    isLastMediaSourceAudio = IsAudio(source);
+                }
+            }
 
             // Return the first supported source with not-null URI
             foreach (var source in media.Sources)
             {
                 if (_supportedMimeTypes.Contains(source.MimeType))
                 {
-                    if (ResolveUri(source.Url) != null)
+                    Uri finalMediaUri = context.Config.ResolveFinalAbsoluteUri(source.Url);
+                    if (finalMediaUri != null)
                     {
                         return source;
                     }
                 }
             }
 
-            // No good source is found
+            // No valid source is found
+            context.Warnings.Add(new AdaptiveWarning(-1, "A Media element does not have any valid source"));
             return null;
         }
 

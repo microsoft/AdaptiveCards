@@ -53,6 +53,21 @@ namespace AdaptiveCards.Rendering
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public Uri ImageBaseUrl { get; set; } = null;
 
+        public Uri ResolveFinalAbsoluteUri(string uriString)
+        {
+            Uri uri;
+            try
+            {
+                uri = new Uri(uriString, UriKind.RelativeOrAbsolute);
+            }
+            catch (UriFormatException)
+            {
+                return null;
+            }
+
+            return ResolveFinalAbsoluteUri(uri);
+        }
+
         public Uri ResolveFinalAbsoluteUri(Uri uri)
         {
             if (uri == null)
@@ -76,6 +91,10 @@ namespace AdaptiveCards.Rendering
                     }
                 }
                 catch (UriFormatException)
+                {
+                    return null;
+                }
+                catch (ArgumentOutOfRangeException)
                 {
                     return null;
                 }
