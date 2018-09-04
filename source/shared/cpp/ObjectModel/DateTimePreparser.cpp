@@ -62,7 +62,7 @@ std::string DateTimePreparser::Concatenate() const
     return formedString;
 }
 
-bool DateTimePreparser::IsValidTimeAndDate(const struct tm &parsedTm, const int hours, const int minutes)
+bool DateTimePreparser::IsValidTimeAndDate(const struct tm &parsedTm, int hours, int minutes)
 {
     if (parsedTm.tm_mon <= 12 && parsedTm.tm_mday <= 31 && parsedTm.tm_hour <= 24 &&
         parsedTm.tm_min <= 60 && parsedTm.tm_sec <= 60 && hours <= 24 && minutes <= 60)
@@ -87,6 +87,8 @@ bool DateTimePreparser::IsValidTimeAndDate(const struct tm &parsedTm, const int 
     return false;
 }
 
+<<<<<<< HEAD
+=======
 constexpr time_t IntToTimeT(int timeToConvert)
 {
 #pragma warning(push)
@@ -96,6 +98,7 @@ constexpr time_t IntToTimeT(int timeToConvert)
 #pragma warning(pop)
 }
 
+>>>>>>> master
 void DateTimePreparser::ParseDateTime(std::string const &in)
 {
     std::vector<DateTimePreparsedToken> sections;
@@ -122,21 +125,28 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
 
     while (std::regex_search(text, matches, pattern))
     {
-        int formatStyle{};
+        time_t offset{};
+        int  formatStyle{};
         // Date is matched
-        const bool isDate = matches[IsDate].matched;
+        bool isDate = matches[IsDate].matched;
         int hours{}, minutes{};
         struct tm parsedTm{};
+<<<<<<< HEAD
+        int *addrs[] = {&parsedTm.tm_year, &parsedTm.tm_mon,
+            &parsedTm.tm_mday, &parsedTm.tm_hour, &parsedTm.tm_min,
+            &parsedTm.tm_sec, &hours, &minutes};
+=======
         std::vector<int*> addrs = { &parsedTm.tm_year, &parsedTm.tm_mon,
             &parsedTm.tm_mday, &parsedTm.tm_hour, &parsedTm.tm_min,
             &parsedTm.tm_sec, &hours, &minutes };
+>>>>>>> master
 
         if (matches[Style].matched)
         {
             // match for long/short/compact
-            bool formatHasSpace = matches[Format].str().at(1) == ' ';
-            const int formatStartIndex = formatHasSpace ? 2 : 1;
-            formatStyle = matches[Format].str().at(formatStartIndex);
+            bool formatHasSpace = matches[Format].str()[1] == ' ';
+            int formatStartIndex = formatHasSpace ? 2 : 1;
+            formatStyle = matches[Format].str()[formatStartIndex];
         }
 
         AddTextToken(matches.prefix().str(), DateTimePreparsedTokenFormat::RegularString);
@@ -150,18 +160,27 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
 
         for (unsigned int idx = 0; idx < indexer.size(); idx++)
         {
-            if (matches[indexer.at(idx)].matched)
+            if (matches[indexer[idx]].matched)
             {
+<<<<<<< HEAD
+                // get indexes for time attributes to index into conrresponding matches
+                // and covert it to string
+                *addrs[idx] = stoi(matches[indexer[idx]]);
+=======
                 // get indexes for time attributes to index into corresponding matches
                 // and convert it to string
                 *(addrs.at(idx)) = stoi(matches[indexer.at(idx)]);
+>>>>>>> master
             }
         }
 
         // check for date and time validation
         if (IsValidTimeAndDate(parsedTm, hours, minutes))
         {
+<<<<<<< HEAD
+=======
             time_t offset{};
+>>>>>>> master
             // maches offset sign,
             // Z == UTC,
             // + == time added from UTC
@@ -171,9 +190,9 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
                 // converts to seconds
                 hours *= 3600;
                 minutes *= 60;
-                offset = IntToTimeT(hours) + IntToTimeT(minutes);
+                offset = (time_t)hours + (time_t)minutes;
 
-                wchar_t zone = matches[TimeZone].str().at(0);
+                wchar_t zone = matches[TimeZone].str()[0];
                 // time zone offset calculation
                 if (zone == '+')
                 {
@@ -193,19 +212,15 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
                 AddTextToken(matches[0], DateTimePreparsedTokenFormat::RegularString);
             }
 
-// Disable "array to pointer decay" check for tzOffsetBuff since we can't change strftime's signature
-#pragma warning(push)
-#pragma warning(disable: 26485)
             char tzOffsetBuff[6]{};
             // gets local time zone offset
             strftime(tzOffsetBuff, 6, "%z", &parsedTm);
             std::string localTimeZoneOffsetStr(tzOffsetBuff);
-            const time_t nTzOffset = IntToTimeT(std::stoi(localTimeZoneOffsetStr));
-            offset += ((nTzOffset / 100) * 3600 + (nTzOffset % 100) * 60);
+            int nTzOffset = std::stoi(localTimeZoneOffsetStr);
+            offset += ((time_t)(nTzOffset / 100) * 3600 + (time_t)(nTzOffset % 100) * 60);
             // add offset to utc
             utc += offset;
             struct tm result{};
-#pragma warning(pop)
 
             // converts to local time from utc
             if (!LOCALTIME(&result, &utc))

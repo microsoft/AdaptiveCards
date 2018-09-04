@@ -7,13 +7,14 @@ AdaptiveCardParseException::AdaptiveCardParseException(ErrorStatusCode statusCod
 {
 }
 
-#pragma warning(push)
-#pragma warning(disable: 26433)
+AdaptiveCardParseException::~AdaptiveCardParseException()
+{
+}
+
 const char* AdaptiveCardParseException::what() const throw()
 {
     return m_message.c_str();
 }
-#pragma warning(pop)
 
 ErrorStatusCode AdaptiveCardParseException::GetStatusCode() const
 {

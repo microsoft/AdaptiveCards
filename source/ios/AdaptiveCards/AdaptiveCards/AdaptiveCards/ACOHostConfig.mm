@@ -36,27 +36,37 @@ using namespace AdaptiveCards;
         if([UIFont.familyNames containsObject:requestedFontFamilyName]){
             _fontFamilyNames = @[requestedFontFamilyName];
         }
+<<<<<<< HEAD
+    }
+    // if the requested font family name is not supported, use system font instead
+    if(self && !_fontFamilyNames){
+        _fontFamilyNames = @[@"-apple-system", @"HelveticaNeue"];
+=======
         _allActionsHaveIcons = YES;
         _buttonPadding = 5;
         if(!_config->imageBaseUrl.empty()) {
             NSString *tmpURLString = [NSString stringWithCString:_config->imageBaseUrl.c_str() encoding:NSUTF8StringEncoding];
             _baseURL = [NSURL URLWithString:tmpURLString];
         }
+>>>>>>> master
     }
     return self;
 }
 
-+ (ACOHostConfigParseResult *)fromJson:(NSString *)payload resourceResolvers:(ACOResourceResolvers *)resolvers
++ (ACOHostConfigParseResult *)fromJson:(NSString *)payload;
 {
     ACOHostConfigParseResult *result = nil;
-    
-    if(payload) {
-        try {
+
+    if(payload)
+    {
+        try
+        {
             std::shared_ptr<HostConfig> cHostConfig = std::make_shared<HostConfig>(AdaptiveCards::HostConfig::DeserializeFromString(std::string([payload UTF8String])));
             ACOHostConfig *config= [[ACOHostConfig alloc] initWithConfig:cHostConfig];
             result = [[ACOHostConfigParseResult alloc] init:config errors:nil];
-            config->_resolvers = resolvers;
-        } catch(const AdaptiveCardParseException& e) {
+        }
+        catch(const AdaptiveCardParseException& e)
+        {
             // converts AdaptiveCardParseException to NSError
             ErrorStatusCode errorStatusCode = e.GetStatusCode();
             NSInteger errorCode = (long)errorStatusCode;
@@ -70,16 +80,6 @@ using namespace AdaptiveCards;
     return result;
 }
 
-+ (ACOHostConfigParseResult *)fromJson:(NSString *)payload;
-{
-    ACOHostConfigParseResult *result = nil;
-
-    if(payload) {
-        result = [ACOHostConfig fromJson:payload resourceResolvers:nil];
-    }
-    return result;
-}
-
 - (std::shared_ptr<HostConfig>)getHostConfig
 {
     return _config;
@@ -88,15 +88,6 @@ using namespace AdaptiveCards;
 - (void)setHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
     _config = config;
-}
-
-- (NSObject<ACOIResourceResolver> *)getResourceResolverForScheme:(NSString *)scheme
-{
-    if(!scheme) {
-        return nil;
-    }
-    
-    return [_resolvers getResourceResolverForScheme:scheme];
 }
 
 + (UIColor *)getTextBlockColor:(ForegroundColor)txtClr

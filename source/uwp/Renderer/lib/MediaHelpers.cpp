@@ -2,7 +2,6 @@
 #include "XamlHelpers.h"
 #include "XamlBuilder.h"
 #include "AdaptiveImage.h"
-#include "AdaptiveCardGetResourceStreamArgs.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -15,12 +14,10 @@ using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Shapes;
-using namespace ABI::Windows::Storage::Streams;
 
 const DOUBLE c_playIconSize = 30;
 const DOUBLE c_playIconCornerRadius = 5;
 const DOUBLE c_playIconOpacity = .5;
-const DOUBLE c_audioHeight = 100;
 
 void GetMediaPosterAsImage(
     IAdaptiveRenderContext* renderContext,
@@ -52,10 +49,6 @@ void GetMediaPosterAsImage(
     ComPtr<IAdaptiveImage> adaptiveImage;
     THROW_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveImage>(&adaptiveImage));
     THROW_IF_FAILED(adaptiveImage->put_Url(posterString.Get()));
-
-    HString altText;
-    THROW_IF_FAILED(adaptiveMedia->get_AltText(altText.GetAddressOf()));
-    THROW_IF_FAILED(adaptiveImage->put_AltText(altText.Get()));
 
     ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
     THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
@@ -230,15 +223,13 @@ void CreatePosterContainerWithPlayButton(
 void GetMediaSource(
     IAdaptiveHostConfig* hostConfig,
     IAdaptiveMedia* adaptiveMedia,
-    IUriRuntimeClass** mediaSourceUrl,
-    HSTRING * mimeType)
+    IUriRuntimeClass** mediaSourceUrl)
 {
     LPWSTR supportedMimeTypes[] =
     {
         L"video/mp4",
         L"audio/mp4",
-		L"audio/aac",
-		L"audio/mpeg",
+        L"audio/mpeg",
     };
 
     ComPtr<IVector<AdaptiveMediaSource*>> sources;
@@ -266,7 +257,7 @@ void GetMediaSource(
         {
             THROW_IF_FAILED(WindowsCompareStringOrdinal(mimeType.Get(), HStringReference(supportedMimeTypes[i]).Get(), &isSupported));
 
-            if (isSupported == 0)
+            if (isSupported)
             {
                 selectedSource = currentSource;
                 break;
@@ -285,117 +276,5 @@ void GetMediaSource(
         GetUrlFromString(hostConfig, url.Get(), sourceUrl.GetAddressOf());
 
         THROW_IF_FAILED(sourceUrl.CopyTo(mediaSourceUrl));
-        THROW_IF_FAILED(selectedSource->get_MimeType(mimeType));
     }
-}
-
-HRESULT HandleMediaResourceResolverCompleted(
-    IAsyncOperation<IRandomAccessStream*>* operation,
-    AsyncStatus status,
-    IMediaElement* mediaElement,
-    HSTRING mimeType)
-{
-    if (status == AsyncStatus::Completed)
-    {
-        // Get the random access stream
-        ComPtr<IRandomAccessStream> randomAccessStream;
-        RETURN_IF_FAILED(operation->GetResults(&randomAccessStream));
-
-        if (randomAccessStream != nullptr)
-        {
-            RETURN_IF_FAILED(mediaElement->SetSource(randomAccessStream.Get(), mimeType));
-        }
-    }
-    return S_OK;
-}
-
-HRESULT HandleMediaClick(
-    IAdaptiveRenderContext* renderContext,
-    IAdaptiveMedia* adaptiveMedia,
-    IMediaElement* mediaElement,
-    IUIElement* posterContainer,
-    IUriRuntimeClass* mediaSourceUrl,
-    HSTRING mimeType,
-    IAdaptiveMediaEventInvoker* mediaInvoker)
-{
-    // When the user clicks: hide the poster, show the media element, open and play the media
-    if (mediaElement)
-    {
-		ComPtr<IMediaElement> localMediaElement{ mediaElement };
-
-		RETURN_IF_FAILED(posterContainer->put_Visibility(Visibility_Collapsed));
-
-        ComPtr<IUIElement> mediaAsUIElement;
-        RETURN_IF_FAILED(localMediaElement.As(&mediaAsUIElement));
-        RETURN_IF_FAILED(mediaAsUIElement->put_Visibility(Visibility_Visible));
-
-        ComPtr<IAdaptiveCardResourceResolvers> resourceResolvers;
-        THROW_IF_FAILED(renderContext->get_ResourceResolvers(&resourceResolvers));
-
-        ComPtr<IAdaptiveCardResourceResolver> resourceResolver;
-        if (resourceResolvers != nullptr)
-        {
-            HString schemeName;
-            THROW_IF_FAILED(mediaSourceUrl->get_SchemeName(schemeName.GetAddressOf()));
-            THROW_IF_FAILED(resourceResolvers->Get(schemeName.Get(), &resourceResolver));
-        }
-
-        if (resourceResolver == nullptr)
-        {
-            // If there isn't a resource resolver, put the source directly. 
-            THROW_IF_FAILED(mediaElement->put_Source(mediaSourceUrl));    
-        }
-        else
-        {
-            // Create the arguments to pass to the resolver
-            ComPtr<IAdaptiveCardGetResourceStreamArgs> args;
-            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveCardGetResourceStreamArgs>(&args, mediaSourceUrl));
-
-            // Call the resolver to get the media stream
-            ComPtr<IAsyncOperation<IRandomAccessStream*>> getResourceStreamOperation;
-            RETURN_IF_FAILED(resourceResolver->GetResourceStreamAsync(args.Get(), &getResourceStreamOperation));
-
-            // Take a reference to the mime type string for the lambda
-            HSTRING lambdaMimeType;
-            WindowsDuplicateString(mimeType, &lambdaMimeType);
-
-            RETURN_IF_FAILED(getResourceStreamOperation->put_Completed(Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationCompletedHandler<IRandomAccessStream*>>>
-                ([localMediaElement, lambdaMimeType](IAsyncOperation<IRandomAccessStream*>* operation, AsyncStatus status) -> HRESULT
-            {
-                // Take ownership of the passed in HSTRING
-                HString localMimeType;
-                localMimeType.Attach(lambdaMimeType);
-
-                return HandleMediaResourceResolverCompleted(operation, status, localMediaElement.Get(), lambdaMimeType);
-            }).Get()));
-        }
-
-        EventRegistrationToken mediaOpenedToken;
-        THROW_IF_FAILED(mediaElement->add_MediaOpened(Callback<IRoutedEventHandler>([=](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
-        {
-            boolean audioOnly;
-            RETURN_IF_FAILED(localMediaElement->get_IsAudioOnly(&audioOnly));
-
-            ComPtr<IImageSource> posterSource;
-            RETURN_IF_FAILED(localMediaElement->get_PosterSource(&posterSource));
-
-            if (audioOnly && posterSource == nullptr)
-            {
-                // If this is audio only and there's no poster, set the height so that the 
-                // controls are visible.
-                ComPtr<IFrameworkElement> mediaAsFrameworkElement;
-                RETURN_IF_FAILED(localMediaElement.As(&mediaAsFrameworkElement));
-                RETURN_IF_FAILED(mediaAsFrameworkElement->put_Height(c_audioHeight));
-            }
-
-            RETURN_IF_FAILED(localMediaElement->Play());
-            return S_OK;
-        }).Get(), &mediaOpenedToken));
-    }
-    else
-    {
-        RETURN_IF_FAILED(mediaInvoker->SendMediaClickedEvent(adaptiveMedia));
-    }
-
-    return S_OK;
 }

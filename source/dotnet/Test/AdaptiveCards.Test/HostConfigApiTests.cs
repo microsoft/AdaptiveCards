@@ -131,9 +131,7 @@ namespace AdaptiveCards.Test
       ""inlineTopMargin"": 16
     },
     ""actionsOrientation"": ""vertical"",
-    ""actionAlignment"": ""stretch"",
-    ""iconPlacement"": ""LeftOfTitle"",
-    ""iconSize"": 20
+    ""actionAlignment"": ""stretch""
   },
   ""adaptiveCard"": {
     ""allowCustomStyle"": false
@@ -214,8 +212,6 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(16, hostConfig.Actions.ShowCard.InlineTopMargin);
             Assert.AreEqual(ActionsOrientation.Vertical, hostConfig.Actions.ActionsOrientation);
             Assert.AreEqual(AdaptiveHorizontalAlignment.Stretch, hostConfig.Actions.ActionAlignment);
-            Assert.AreEqual(IconPlacement.LeftOfTitle, hostConfig.Actions.IconPlacement);
-            Assert.AreEqual(20, hostConfig.Actions.IconSize);
 
             // TODO: Image property not supported (I assume this is where you can set the default image size?)
 

@@ -66,11 +66,6 @@ public class BaseCardElement {
     AdaptiveCardObjectModelJNI.BaseCardElement_director_connect(this, swigCPtr, swigCMemOwn, true);
   }
 
-  public BaseCardElement(BaseCardElement arg0) {
-    this(AdaptiveCardObjectModelJNI.new_BaseCardElement__SWIG_2(BaseCardElement.getCPtr(arg0), arg0), true);
-    AdaptiveCardObjectModelJNI.BaseCardElement_director_connect(this, swigCPtr, swigCMemOwn, true);
-  }
-
   public String GetElementTypeString() {
     return (getClass() == BaseCardElement.class) ? AdaptiveCardObjectModelJNI.BaseCardElement_GetElementTypeString(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseCardElement_GetElementTypeStringSwigExplicitBaseCardElement(swigCPtr, this);
   }
@@ -116,7 +111,7 @@ public class BaseCardElement {
   }
 
   public String Serialize() {
-    return (getClass() == BaseCardElement.class) ? AdaptiveCardObjectModelJNI.BaseCardElement_Serialize(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseCardElement_SerializeSwigExplicitBaseCardElement(swigCPtr, this);
+    return AdaptiveCardObjectModelJNI.BaseCardElement_Serialize(swigCPtr, this);
   }
 
   public JsonValue SerializeToJsonValue() {
@@ -131,8 +126,8 @@ public class BaseCardElement {
     AdaptiveCardObjectModelJNI.BaseCardElement_SetAdditionalProperties(swigCPtr, this, JsonValue.getCPtr(additionalProperties), additionalProperties);
   }
 
-  public void GetResourceInformation(RemoteResourceInformationVector resourceUris) {
-    if (getClass() == BaseCardElement.class) AdaptiveCardObjectModelJNI.BaseCardElement_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceUris), resourceUris); else AdaptiveCardObjectModelJNI.BaseCardElement_GetResourceInformationSwigExplicitBaseCardElement(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceUris), resourceUris);
+  public void GetResourceUris(StringVector resourceUris) {
+    if (getClass() == BaseCardElement.class) AdaptiveCardObjectModelJNI.BaseCardElement_GetResourceUris(swigCPtr, this, StringVector.getCPtr(resourceUris), resourceUris); else AdaptiveCardObjectModelJNI.BaseCardElement_GetResourceUrisSwigExplicitBaseCardElement(swigCPtr, this, StringVector.getCPtr(resourceUris), resourceUris);
   }
 
   public Object swigOriginalObject() {

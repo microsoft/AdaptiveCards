@@ -12,15 +12,21 @@
 #import "ACRActionDelegate.h"
 
 using namespace AdaptiveCards;
+<<<<<<< HEAD
+
+=======
 const CGFloat padding = 16.0f;
 const CGFloat accessoryViewWidth = 8.0f;
 const NSInteger pickerViewId = 8321;
 static NSString *pickerCell = @"pickerCell";
+>>>>>>> master
 @implementation ACRChoiceSetViewDataSourceCompactStyle
 {
     std::shared_ptr<ChoiceSetInput> _choiceSetInput;
     NSObject<UITableViewDelegate> *_delegate;
     NSObject<UITableViewDataSource, ACRIBaseInputHandler> *_dataSource;
+<<<<<<< HEAD
+=======
     NSArray<NSString *> *_titles;
     NSMutableDictionary<NSString *, NSString *> *_titlesMap;
     NSString *_defaultString;
@@ -28,6 +34,7 @@ static NSString *pickerCell = @"pickerCell";
     NSInteger _userSelectedRow;
     BOOL _showPickerView;
     CGFloat _pickerViewHeight;
+>>>>>>> master
 }
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet
@@ -42,6 +49,11 @@ static NSString *pickerCell = @"pickerCell";
         _choiceSetInput = choiceSet;
         _rootView = rootView;
         _delegate   = (NSObject<UITableViewDelegate> *)_dataSource;
+<<<<<<< HEAD
+        _tableView = nil;
+        _indexPath = nil;
+        _tableViewController = nil;
+=======
         _showPickerView = NO;
 
         NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
@@ -70,6 +82,7 @@ static NSString *pickerCell = @"pickerCell";
         }
 
         _userSelectedTitle = valuesMap[defaultValue];
+>>>>>>> master
     }
     return self;
 }
@@ -91,6 +104,19 @@ static NSString *pickerCell = @"pickerCell";
 // creates top view that hides selection table
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+<<<<<<< HEAD
+    static NSString *identifier = @"tabCellId";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    if(!cell)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                      reuseIdentifier:identifier];
+    }
+    NSString *title = @"Make Choice";
+    cell.textLabel.text = title;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+=======
     UITableViewCell *cell = nil;
 
     if(indexPath.row == 0) {
@@ -127,6 +153,7 @@ static NSString *pickerCell = @"pickerCell";
         [pickerView selectRow:_userSelectedRow inComponent:0 animated:NO];
     }
     cell.backgroundColor = UIColor.groupTableViewBackgroundColor;
+>>>>>>> master
     return cell;
 }
 
@@ -140,6 +167,8 @@ static NSString *pickerCell = @"pickerCell";
     return nil;
 }
 
+<<<<<<< HEAD
+=======
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
@@ -154,6 +183,7 @@ static NSString *pickerCell = @"pickerCell";
     }
 }
 
+>>>>>>> master
 // when cell is selected, create a tableView with a navigator control bar.
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -192,7 +222,21 @@ static NSString *pickerCell = @"pickerCell";
                              }];
         }
     }
+<<<<<<< HEAD
+}
+
+- (void)handleUIBarButtonSystemItemDoneEvent
+{
+    [_tableViewController dismissViewControllerAnimated:YES completion:nil];
+    if(_indexPath && _tableView)
+    {
+        [_tableView cellForRowAtIndexPath:_indexPath].selected = NO;
+        _indexPath = nil;
+        _tableView = nil;
+    }
+=======
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+>>>>>>> master
 }
 
 - (BOOL)validate:(NSError **)error

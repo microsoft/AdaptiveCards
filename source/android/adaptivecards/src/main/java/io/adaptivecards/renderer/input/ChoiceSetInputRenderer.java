@@ -17,7 +17,6 @@ import io.adaptivecards.objectmodel.ChoiceInput;
 import io.adaptivecards.objectmodel.ChoiceInputVector;
 import io.adaptivecards.objectmodel.ChoiceSetStyle;
 import io.adaptivecards.objectmodel.ContainerStyle;
-import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -36,7 +35,7 @@ import java.util.Vector;
 
 public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 {
-    protected ChoiceSetInputRenderer()
+    private ChoiceSetInputRenderer()
     {
     }
 
@@ -56,14 +55,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             ChoiceSetInput choiceSetInput)
     {
         LinearLayout layout = new LinearLayout(context);
-        if(choiceSetInput.GetHeight() == HeightType.Stretch)
-        {
-            layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
-        }
-        else
-        {
-            layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        }
+        layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         layout.setOrientation(LinearLayout.VERTICAL);
 
         List<CheckBox> checkBoxList = new Vector<CheckBox>();

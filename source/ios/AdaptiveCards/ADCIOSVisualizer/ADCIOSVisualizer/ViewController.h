@@ -10,7 +10,7 @@
 #import "ACVTableViewController.h"
 #import <AdaptiveCards/ACFramework.h>
 
-@interface ViewController:UIViewController <ACVTableViewControllerDelegate, ACRActionDelegate, ACRMediaDelegate, ACRIBaseActionSetRenderer>
+@interface ViewController:UIViewController <ACVTableViewControllerDelegate, ACRActionDelegate>
 
 @property (strong, nonatomic) ACVTableViewController *ACVTabVC;
 @property (strong, nonatomic) UITextView *editView;
@@ -20,8 +20,12 @@
 @property (strong, nonatomic) UIButton *enableCustomRendererButton;
 @property (strong, nonatomic) NSString *editableStr;
 @property (strong, nonatomic) NSString *hostconfig;
+<<<<<<< HEAD
+@property UIView *curView;
+=======
 @property (strong, nonatomic) UILabel *userResponseLabel;
 @property ACRView *curView;
+>>>>>>> master
 @property UIScrollView *scrView;
 
 @end

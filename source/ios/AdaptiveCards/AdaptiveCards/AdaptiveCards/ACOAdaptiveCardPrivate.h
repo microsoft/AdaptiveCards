@@ -2,7 +2,7 @@
 //  ACOAdaptiveCardPrivate.h
 //  ACOAdaptiveCardPrivate
 //
-//  Copyright © 2018 Microsoft. All rights reserved.
+//  Copyright © 2017 Microsoft. All rights reserved.
 //
 
 #import "ACOAdaptiveCard.h"
@@ -12,6 +12,5 @@ using namespace AdaptiveCards;
 @interface ACOAdaptiveCard()
 
 - (std::shared_ptr<AdaptiveCard> const &)card;
-- (void)setCard:(std::shared_ptr<AdaptiveCard> const &)card;
 
 @end

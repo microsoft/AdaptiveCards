@@ -10,6 +10,8 @@
 
 using namespace AdaptiveCards;
 
+<<<<<<< HEAD
+=======
 NSString *checkedCheckboxReuseID = @"checked-checkbox";
 NSString *uncheckedCheckboxReuseID = @"unchecked-checkbox";
 NSString *checkedRadioButtonReuseID = @"checked-radiobutton";
@@ -44,6 +46,7 @@ const CGFloat accessoryViewWidth = 50.0f;
 
 @end
 
+>>>>>>> master
 @implementation ACRChoiceSetViewDataSource
 {
     std::shared_ptr<ChoiceSetInput> _choiceSetDataSource;
@@ -121,6 +124,12 @@ const CGFloat accessoryViewWidth = 50.0f;
     NSString *title = [NSString stringWithCString:_choiceSetDataSource->GetChoices()[indexPath.row]->GetTitle().c_str()
                                encoding:NSUTF8StringEncoding];
     cell.textLabel.text = title;
+<<<<<<< HEAD
+    NSString *keyForDefaultValue = [NSString stringWithCString:_choiceSetDataSource->GetChoices()[indexPath.row]->GetValue().c_str()
+                                                      encoding:NSUTF8StringEncoding];
+
+=======
+>>>>>>> master
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
     return cell;
@@ -148,6 +157,16 @@ const CGFloat accessoryViewWidth = 50.0f;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+<<<<<<< HEAD
+    if([tableView cellForRowAtIndexPath:indexPath].accessoryType == UITableViewCellAccessoryCheckmark)
+    {
+        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
+        _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:NO];
+    }
+    else
+    {
+        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
+=======
     NSMutableArray *indexPathsToUpdate = [NSMutableArray arrayWithObject:indexPath];
     if (!_isMultiChoicesAllowed) {
         if (_currentSelectedIndexPath && _currentSelectedIndexPath != indexPath) {
@@ -155,6 +174,7 @@ const CGFloat accessoryViewWidth = 50.0f;
             [indexPathsToUpdate addObject:_currentSelectedIndexPath];
             [self tableView:tableView didDeselectRowAtIndexPath:_currentSelectedIndexPath];
         }
+>>>>>>> master
         _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:YES];
 
     } else {
@@ -164,29 +184,35 @@ const CGFloat accessoryViewWidth = 50.0f;
             _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:YES];
         }
     }
+<<<<<<< HEAD
+
+    // didDeselectRowAtIndexPath doesn't get called for the cells that was already selected before the tableView came to view
+    // if multi choice is not allowed, then uncheck pre-selection
+    if(_isMultiChoicesAllowed == NO && _lastSelectedIndexPath.row != indexPath.row)
+    {
+        [tableView cellForRowAtIndexPath:_lastSelectedIndexPath].accessoryType = UITableViewCellAccessoryNone;
+        _userSelections[[NSNumber numberWithInteger:_lastSelectedIndexPath.row]] = [NSNumber numberWithBool:NO];
+    }
+=======
     
     [tableView reloadRowsAtIndexPaths:indexPathsToUpdate withRowAnimation:UITableViewRowAnimationNone];
     _currentSelectedIndexPath = indexPath;
+>>>>>>> master
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
     // uncheck selection if multi choice is not allowed
+<<<<<<< HEAD
+    if(_isMultiChoicesAllowed == NO)
+    {
+        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
+=======
     if (!_isMultiChoicesAllowed) {
+>>>>>>> master
         _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:NO];
         _currentSelectedIndexPath = nil;
     }
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = [tableView.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
-    CGSize labelStringSize =
-        [cell.textLabel.text boundingRectWithSize:CGSizeMake(cell.contentView.frame.size.width - accessoryViewWidth, CGFLOAT_MAX)
-                                          options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                       attributes:@{NSFontAttributeName:cell.textLabel.font}
-                                          context:nil].size;
-    return labelStringSize.height + padding;
 }
 
 - (BOOL)validate:(NSError **)error
@@ -215,26 +241,6 @@ const CGFloat accessoryViewWidth = 50.0f;
         }
     }
     dictionary[self.id] = [values componentsJoinedByString:@";"];
-}
-
-- (NSString *)getTitlesOfChoices
-{
-    NSMutableArray *values = [[NSMutableArray alloc] init];
-    NSEnumerator *enumerator = [_userSelections keyEnumerator];
-    NSNumber *key;
-    while(key = [enumerator nextObject])
-    {
-        if([_userSelections[key] boolValue] == YES)
-        {
-            [values addObject:
-             [NSString stringWithCString:_choiceSetDataSource->GetChoices()[[key integerValue]]->GetTitle().c_str()
-                                encoding:NSUTF8StringEncoding]];
-        }
-    }
-    if([values count] == 0) {
-        return nil;
-    }
-    return [values componentsJoinedByString:@", "];
 }
 
 @end

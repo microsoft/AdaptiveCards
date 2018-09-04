@@ -13,7 +13,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
-import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -30,7 +29,7 @@ import java.util.Vector;
 
 public class FactSetRenderer extends BaseCardElementRenderer
 {
-    protected FactSetRenderer()
+    private FactSetRenderer()
     {
     }
 
@@ -86,35 +85,15 @@ public class FactSetRenderer extends BaseCardElementRenderer
         TableLayout tableLayout = new TableLayout(context);
         tableLayout.setTag(factSet);
         tableLayout.setColumnShrinkable(1, true);
-        HeightType height = factSet.GetHeight();
-
-        if(height == HeightType.Stretch)
-        {
-            tableLayout.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.MATCH_PARENT, 1));
-        }
-        else
-        {
-            tableLayout.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
-        }
 
         FactVector factVector = factSet.GetFacts();
         long factVectorSize = factVector.size();
         long spacing = hostConfig.getFactSet().getSpacing();
-
         for (int i = 0; i < factVectorSize; i++)
         {
             Fact fact = factVector.get(i);
             TableRow factRow = new TableRow(context);
-
-            if( height == HeightType.Stretch )
-            {
-                factRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT, 1));
-            }
-            else
-            {
-                factRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-            }
-
+            factRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
             factRow.addView(createTextView(context, fact.GetTitle(), hostConfig.getFactSet().getTitle(), hostConfig, spacing, containerStyle));
             factRow.addView(createTextView(context, fact.GetValue(), hostConfig.getFactSet().getValue(), hostConfig, 0, containerStyle));
             tableLayout.addView(factRow);

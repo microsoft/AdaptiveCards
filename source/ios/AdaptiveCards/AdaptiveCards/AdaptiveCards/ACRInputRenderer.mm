@@ -8,7 +8,6 @@
 #import "ACRInputRenderer.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRTextField.h"
-#import "ACRTextView.h"
 #import "TextInput.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
@@ -35,8 +34,52 @@
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<TextInput> inputBlck = std::dynamic_pointer_cast<TextInput>(elem);
-    UIView *inputview = nil;
+    ACRTextField *txtInput = [[ACRTextField alloc] init];
+    NSString *placeHolderStr = [NSString stringWithCString:inputBlck->GetPlaceholder().c_str()
+                                                encoding:NSUTF8StringEncoding];
+    txtInput.id = [NSString stringWithCString:inputBlck->GetId().c_str()
+                                     encoding:NSUTF8StringEncoding];
+    txtInput.placeholder = placeHolderStr;
+    txtInput.text = [NSString stringWithCString:inputBlck->GetValue().c_str() encoding:NSUTF8StringEncoding];
+    txtInput.allowsEditingTextAttributes = YES;
+    txtInput.borderStyle = UITextBorderStyleLine;
+    txtInput.isRequired  = inputBlck->GetIsRequired();
+    txtInput.delegate = txtInput;
 
+<<<<<<< HEAD
+    [txtInput setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+   
+    switch(inputBlck->GetTextInputStyle())
+    {
+        case TextInputStyle::Text:
+        {
+            txtInput.keyboardType = UIKeyboardTypeAlphabet;
+            break;
+        }
+        case TextInputStyle::Email:
+        {
+            txtInput.keyboardType = UIKeyboardTypeEmailAddress;
+            break;
+        }
+        case TextInputStyle::Tel:
+        {
+            txtInput.keyboardType = UIKeyboardTypePhonePad;
+            CGRect frame = CGRectMake(0, 0, viewGroup.frame.size.width, 30);
+            UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:frame];
+            UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+            UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:txtInput action:@selector(dismissNumPad)];
+            [toolBar setItems:@[doneButton, flexSpace] animated:NO];
+            [toolBar sizeToFit];
+            txtInput.inputAccessoryView = toolBar;
+            break;
+        }
+        case TextInputStyle::Url:
+        {
+            txtInput.keyboardType = UIKeyboardTypeURL;
+            break;
+        }
+        default:
+=======
     if(inputBlck->GetIsMultiline()) {
         ACRTextView *txtview = [[ACRTextView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) element:acoElem];
         BOOL bRemove = NO;
@@ -87,66 +130,26 @@
         txtInput.delegate = txtInput;
 
         switch(inputBlck->GetTextInputStyle())
+>>>>>>> master
         {
-            case TextInputStyle::Text:
-            {
-                txtInput.keyboardType = UIKeyboardTypeAlphabet;
-                break;
-            }
-            case TextInputStyle::Email:
-            {
-                txtInput.keyboardType = UIKeyboardTypeEmailAddress;
-                break;
-            }
-            case TextInputStyle::Tel:
-            {
-                txtInput.keyboardType = UIKeyboardTypePhonePad;
-                CGRect frame = CGRectMake(0, 0, viewGroup.frame.size.width, 30);
-                UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:frame];
-                UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-                UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:txtInput action:@selector(dismissNumPad)];
-                [toolBar setItems:@[doneButton, flexSpace] animated:NO];
-                [toolBar sizeToFit];
-                txtInput.inputAccessoryView = toolBar;
-                break;
-            }
-            case TextInputStyle::Url:
-            {
-                txtInput.keyboardType = UIKeyboardTypeURL;
-                break;
-            }
-            default:
-            {
-                txtInput.keyboardType = UIKeyboardTypeAlphabet;
-                break;
-            }
+            txtInput.keyboardType = UIKeyboardTypeAlphabet;
+            break;
         }
-        inputview = txtInput;
-    }
-    [inputview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-
-    if(elem->GetHeight() == HeightType::Stretch){
-        ACRColumnView *textInputContainer = [[ACRColumnView alloc] init];
-        [textInputContainer addArrangedSubview:inputview];
-
-        // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
-        UIView *blankTrailingSpace = [[UIView alloc] init];
-        [textInputContainer addArrangedSubview:blankTrailingSpace];
-        [textInputContainer adjustHuggingForLastElement];
-
-        [viewGroup addArrangedSubview:textInputContainer];
-    } else {
-        [viewGroup addArrangedSubview:inputview];
     }
 
-    inputview.translatesAutoresizingMaskIntoConstraints = false;
+    [viewGroup addArrangedSubview: txtInput];
+
+    txtInput.translatesAutoresizingMaskIntoConstraints = false;
+
     NSString *format = [[NSString alloc]initWithFormat:@"H:|-[%%@]-|"];
-    NSDictionary *viewsMap = NSDictionaryOfVariableBindings(inputview);
+
+    NSDictionary *viewsMap = NSDictionaryOfVariableBindings(txtInput);
+
     [ACRBaseCardElementRenderer applyLayoutStyle:format viewsMap:viewsMap];
 
-    [inputs addObject:inputview];
+    [inputs addObject:txtInput];
 
-    return inputview;
+    return txtInput;
 }
 
 @end

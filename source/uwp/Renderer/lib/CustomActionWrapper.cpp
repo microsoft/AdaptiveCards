@@ -50,12 +50,12 @@ HRESULT CustomActionWrapper::GetWrappedElement(ABI::AdaptiveNamespace::IAdaptive
     return m_actionElement.CopyTo(actionElement);
 }
 
-void CustomActionWrapper::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
+void CustomActionWrapper::GetResourceUris(std::vector<std::string>& resourceUris)
 {
     ComPtr<ABI::AdaptiveNamespace::IAdaptiveElementWithRemoteResources> remoteResources;
     if (SUCCEEDED(m_actionElement.As(&remoteResources)))
     {
-        RemoteResourceElementToRemoteResourceInformationVector(remoteResources.Get(), resourceInfo);
+        RemoteResourceElementToUriStringVector(remoteResources.Get(), resourceUris);
     }
 }
 AdaptiveNamespaceEnd

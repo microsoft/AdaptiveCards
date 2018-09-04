@@ -14,13 +14,13 @@ friend class FactSetParser;
 public:
     FactSet();
 
-    Json::Value SerializeToJsonValue() const override;
+    virtual Json::Value SerializeToJsonValue() const override;
 
     std::vector<std::shared_ptr<Fact>>& GetFacts();
     const std::vector<std::shared_ptr<Fact>>& GetFacts() const;
 
 private:
-    void PopulateKnownPropertiesSet() override;
+    void PopulateKnownPropertiesSet();
 
     std::vector<std::shared_ptr<Fact>> m_facts;
 };
@@ -28,13 +28,6 @@ private:
 class FactSetParser : public BaseCardElementParser
 {
 public:
-    FactSetParser() = default;
-    FactSetParser(const FactSetParser&) = default;
-    FactSetParser(FactSetParser&&) = default;
-    FactSetParser& operator=(const FactSetParser&) = default;
-    FactSetParser& operator=(FactSetParser&&) = default;
-    virtual ~FactSetParser() = default;
-
     std::shared_ptr<BaseCardElement> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,

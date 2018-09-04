@@ -47,9 +47,11 @@
     <ClCompile Include="ExplicitDimensionTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceInformationTests.cpp">
+    <ClCompile Include="GatherImagesTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
+=======
     <ClCompile Include="ParseUtilTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -71,5 +73,6 @@
     <ClCompile Include="SemanticVersionTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+>>>>>>> master
   </ItemGroup>
 </Project>

@@ -1,7 +1,11 @@
 {
     "supportsInteractivity": true,
+<<<<<<< HEAD
+    "fontFamily": "Segoe UI",
+=======
     "imageBaseUrl": "https://pbs.twimg.com/profile_images/3647943215/",
     "fontFamily": "Helvetica Neue",
+>>>>>>> master
     "fontSizes": {
         "small": 12,
         "default": 14,
@@ -12,7 +16,7 @@
     "fontWeights": {
         "lighter": 200,
         "default": 400,
-        "bolder": 700
+        "bolder": 600
     },
     "imageSizes": {
         "small": 40,
@@ -83,7 +87,7 @@
     },
     "separator": {
         "lineThickness": 1,
-        "lineColor": "#FF000000"
+        "lineColor": "#EEEEEE"
     },
     "actions": {
         "maxActions": 5,
@@ -95,7 +99,7 @@
             "style": "Emphasis"
         },
         "preExpandSingleShowCardAction": false,
-        "actionsOrientation": "Horizontal",
+        "actionsOrientation": "Vertical",
         "actionAlignment": "Stretch"
     },
     "adaptiveCard": {
@@ -111,7 +115,6 @@
             "color": "Default",
             "isSubtle": false,
             "weight": "Bolder",
-            "maxWidth":150,
             "warp": true
         },
         "value": {
@@ -122,9 +125,5 @@
             "warp": true
         },
         "spacing": 5
-    },
-    "media": {
-        "playButton" :"https://www.shareicon.net/download/64x64/2017/04/08/883361_media_512x512.png",
-        "allowInlinePlayback" : true
     }
 }

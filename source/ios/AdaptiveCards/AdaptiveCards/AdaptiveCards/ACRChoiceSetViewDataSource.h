@@ -27,6 +27,4 @@ extern NSString *uncheckedRadioButtonReuseID;
 
 - (void)getDefaultInput:(NSMutableDictionary *)dictionary;
 
-- (NSString *)getTitlesOfChoices;
-
 @end

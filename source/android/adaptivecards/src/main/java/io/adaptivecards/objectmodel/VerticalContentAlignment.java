@@ -9,7 +9,8 @@
 package io.adaptivecards.objectmodel;
 
 public enum VerticalContentAlignment {
-  Top(0),
+  Stretch(0),
+  Top,
   Center,
   Bottom;
 

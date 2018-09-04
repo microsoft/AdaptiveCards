@@ -27,7 +27,7 @@ struct CaseInsensitiveEqualTo {
 
 struct CaseInsensitiveHash {
     size_t operator() (const std::string& keyval) const {
-        return std::accumulate(keyval.begin(), keyval.end(), size_t{ 0 }, [](size_t acc, unsigned char c) { return acc + std::toupper(c); });
+        return std::accumulate(keyval.begin(), keyval.end(), size_t{ 0 }, [](size_t acc, char c) { return acc + static_cast<size_t>(std::toupper(c)); });
     }
 };
 
@@ -42,7 +42,6 @@ enum class AdaptiveCardSchemaKey
     ActionsOrientation,
     AdaptiveCard,
     AllowCustomStyle,
-    AllowInlinePlayback,
     AltText,
     Attention,
     BackgroundColor,
@@ -84,7 +83,6 @@ enum class AdaptiveCardSchemaKey
     Height,
     HorizontalAlignment,
     IconPlacement,
-    IconSize,
     IconUrl,
     Id,
     Image,
@@ -312,7 +310,6 @@ enum class WarningStatusCode {
     UnsupportedSchemaVersion,
     UnsupportedMediaType,
     InvalidMediaMix,
-    InvalidColorFormat,
 };
 
 enum class DateTimePreparsedTokenFormat {
@@ -331,7 +328,8 @@ enum class IconPlacement
 
 enum class VerticalContentAlignment
 {
-    Top = 0,
+    Stretch = 0,
+    Top,
     Center,
     Bottom
 };

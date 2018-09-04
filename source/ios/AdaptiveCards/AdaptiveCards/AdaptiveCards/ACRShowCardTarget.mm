@@ -22,7 +22,6 @@
     __weak UIView<ACRIContentHoldingView> *_superview;
     __weak ACRView *_rootView;
     __weak UIView *_adcView;
-    __weak UIButton *_button;
     ACOBaseActionElement *_actionElement;
 }
 
@@ -30,7 +29,6 @@
                               config:(ACOHostConfig *)config
                            superview:(UIView<ACRIContentHoldingView> *)superview
                             rootView:(ACRView *)rootView
-                               button:(UIButton *)button
 {
     self = [super init];
     if(self)
@@ -40,7 +38,6 @@
         _superview = superview;
         _rootView = rootView;
         _adcView = nil;
-        _button = button;
         std::shared_ptr<ShowCardAction> showCardAction = std::make_shared<ShowCardAction>();
         showCardAction->SetCard(showCardActionElement->GetCard());
         _actionElement = [[ACOBaseActionElement alloc]initWithBaseActionElement:std::dynamic_pointer_cast<BaseActionElement>(showCardAction)];
@@ -54,20 +51,43 @@
     if(!inputs){
         inputs = [[NSMutableArray alloc] init];
     }
-    ACRColumnView *containingView = [[ACRColumnView alloc] initWithFrame:_rootView.frame];
+    ACRColumnView *containingView = [[ACRColumnView alloc] init];
     UIView *adcView = [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
                                                     inputs:inputs
                                                   context:_rootView
                                            containingView:containingView
                                                 hostconfig:_config];
     [[_rootView card] setInputs:inputs];
-    unsigned int padding = [_config getHostConfig] ->actions.showCard.inlineTopMargin;
+    unsigned int padding = 0;
 
-        ACRContentHoldingUIView *wrappingView = [[ACRContentHoldingUIView alloc] init];
+    switch ([_config getHostConfig] ->actions.spacing)
+    {
+        case Spacing::ExtraLarge:
+            padding = [_config getHostConfig]->spacing.extraLargeSpacing;
+            break;
+        case Spacing::Large:
+            padding = [_config getHostConfig]->spacing.largeSpacing;
+            break;
+        case Spacing::Medium:
+            padding = [_config getHostConfig]->spacing.mediumSpacing;
+            break;
+        case Spacing::Small:
+            padding = [_config getHostConfig]->spacing.smallSpacing;
+            break;
+        case Spacing::Default:
+            padding =  [_config getHostConfig]->spacing.defaultSpacing;
+            break;
+        default:
+            break;
+    }
+    ACRContentHoldingUIView *wrappingView = [[ACRContentHoldingUIView alloc] init];
     [wrappingView addSubview:adcView];
 
-    NSString *horString = [[NSString alloc] initWithFormat:@"H:|-0-[adcView]-0-|"];
-    NSString *verString = [[NSString alloc] initWithFormat:@"V:|-%u-[adcView]-0-|",
+    NSString *horString = [[NSString alloc] initWithFormat:@"H:|-%u-[adcView]-%u-|",
+                           padding,
+                           padding];
+    NSString *verString = [[NSString alloc] initWithFormat:@"V:|-%u-[adcView]-%u-|",
+                           padding,
                            padding];
     NSDictionary *dictionary = NSDictionaryOfVariableBindings(wrappingView, adcView);
     NSArray *horzConst = [NSLayoutConstraint constraintsWithVisualFormat:horString
@@ -114,10 +134,6 @@
     BOOL hidden = _adcView.hidden;
     [_superview hideAllShowCards];
     _adcView.hidden = (hidden == YES)? NO: YES;
-    if ([_rootView.acrActionDelegate respondsToSelector:@selector(didChangeVisibility: isVisible:)])
-    {
-        [_rootView.acrActionDelegate didChangeVisibility:_button isVisible:(!_adcView.hidden)];
-    }
     [_rootView.acrActionDelegate didFetchUserResponses:[_rootView card] action:_actionElement];
 }
 
@@ -129,10 +145,6 @@
 - (void)hideShowCard
 {
     _adcView.hidden = YES;
-    if ([_rootView.acrActionDelegate respondsToSelector:@selector(didChangeVisibility: isVisible:)])
-    {
-        [_rootView.acrActionDelegate didChangeVisibility:_button isVisible:(!_adcView.hidden)];
-    }
 }
 
 @end

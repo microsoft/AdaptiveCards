@@ -187,7 +187,7 @@ void ParseUtil::ExpectTypeString(const Json::Value& json, CardElementType bodyTy
 {
     std::string actualType = GetTypeAsString(json);
     std::string expectedTypeStr = CardElementTypeToString(bodyType);
-    const bool isTypeCorrect = expectedTypeStr.compare(actualType) == 0;
+    bool isTypeCorrect = expectedTypeStr.compare(actualType) == 0;
     if (!isTypeCorrect)
     {
         throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "The JSON element did not have the correct type. Expected: " + expectedTypeStr + ", Actual: " + actualType);
@@ -213,7 +213,15 @@ void ParseUtil::ExpectKeyAndValueType(const Json::Value& json, const char* expec
 
 CardElementType ParseUtil::GetCardElementType(const Json::Value& json)
 {
-    return CardElementTypeFromString(GetTypeAsString(json));
+    std::string actualType = GetTypeAsString(json);
+    try
+    {
+        return CardElementTypeFromString(actualType);
+    }
+    catch (const std::out_of_range&)
+    {
+        throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Invalid CardElementType");
+    }
 }
 
 CardElementType ParseUtil::TryGetCardElementType(const Json::Value& json)
@@ -230,7 +238,15 @@ CardElementType ParseUtil::TryGetCardElementType(const Json::Value& json)
 
 ActionType ParseUtil::GetActionType(const Json::Value& json)
 {
-    return ActionTypeFromString(GetTypeAsString(json));
+    std::string actualType = GetTypeAsString(json);
+    try
+    {
+        return ActionTypeFromString(actualType);
+    }
+    catch (const std::out_of_range&)
+    {
+        throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Invalid ActionType");
+    }
 }
 
 ActionType ParseUtil::TryGetActionType(const Json::Value& json)
@@ -290,7 +306,7 @@ std::string ParseUtil::ToLowercase(std::string const &value)
 {
     std::string new_value;
     new_value.resize(value.size());
-    auto new_end = std::transform(value.begin(), value.end(), new_value.begin(), [](char c) { return std::tolower(c, std::locale()); });
+    std::transform(value.begin(), value.end(), new_value.begin(), [](char c) { return std::tolower(c, std::locale()); });
     return new_value;
 }
 

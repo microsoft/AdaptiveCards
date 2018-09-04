@@ -11,7 +11,7 @@ class DateInput : public BaseInputElement
 public:
     DateInput();
 
-    Json::Value SerializeToJsonValue() const override;
+    virtual Json::Value SerializeToJsonValue() const override;
 
     std::string GetMax() const;
     void SetMax(const std::string &value);
@@ -26,7 +26,7 @@ public:
     void SetValue(const std::string &value);
 
 private:
-    void PopulateKnownPropertiesSet() override;
+    void PopulateKnownPropertiesSet();
 
     std::string m_max;
     std::string m_min;
@@ -37,13 +37,6 @@ private:
 class DateInputParser : public BaseCardElementParser
 {
 public:
-    DateInputParser() = default;
-    DateInputParser(const DateInputParser&) = default;
-    DateInputParser(DateInputParser&&) = default;
-    DateInputParser& operator=(const DateInputParser&) = default;
-    DateInputParser& operator=(DateInputParser&&) = default;
-    virtual ~DateInputParser() = default;
-
     std::shared_ptr<BaseCardElement> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,

@@ -53,7 +53,7 @@ std::string MarkDownParser::EscapeText()
 
     for (std::string::size_type i = 0; i < m_text.length(); i++)
     {
-        switch (m_text.at(i))
+        switch (m_text[i])
         {
         case '<':
             escaped += "&lt;";
@@ -68,7 +68,7 @@ std::string MarkDownParser::EscapeText()
             escaped += "&amp;";
             break;
         default:
-            escaped += m_text.at(i);
+            escaped += m_text[i];
             break;
         }
     }

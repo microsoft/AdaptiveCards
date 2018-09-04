@@ -3,14 +3,11 @@ package io.adaptivecards.renderer.readonly;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
-import io.adaptivecards.objectmodel.HeightType;
-import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
@@ -26,7 +23,7 @@ import java.util.Vector;
 
 public class ContainerRenderer extends BaseCardElementRenderer
 {
-    protected ContainerRenderer()
+    private ContainerRenderer()
     {
     }
 
@@ -64,27 +61,6 @@ public class ContainerRenderer extends BaseCardElementRenderer
         setSpacingAndSeparator(context, viewGroup, container.GetSpacing(),container.GetSeparator(), hostConfig, true /* horizontal line */);
         ContainerStyle styleForThis = container.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? containerStyle : container.GetStyle();
         LinearLayout containerView = new LinearLayout(context);
-
-        if(container.GetHeight() == HeightType.Stretch)
-        {
-            containerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
-        }
-
-        VerticalContentAlignment contentAlignment = container.GetVerticalContentAlignment();
-        switch(contentAlignment)
-        {
-            case Center:
-                containerView.setGravity(Gravity.CENTER_VERTICAL);
-                break;
-            case Bottom:
-                containerView.setGravity(Gravity.BOTTOM);
-                break;
-            case Top:
-            default:
-                containerView.setGravity(Gravity.TOP);
-                break;
-        }
-
         if (!container.GetItems().isEmpty())
         {
             CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, containerView, container, container.GetItems(), cardActionHandler, hostConfig, styleForThis);

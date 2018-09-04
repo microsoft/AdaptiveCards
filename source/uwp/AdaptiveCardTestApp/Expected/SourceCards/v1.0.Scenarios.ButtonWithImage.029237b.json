@@ -1,0 +1,25 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+            "type": "TextBlock",
+			"text": "This is a textblock",
+			"wrap": true
+		}
+	],
+	"actions": [
+		{
+            "type": "Action.Submit",
+            "title": "OK",
+            "iconUrl": "https://i.pinimg.com/originals/d2/27/79/d22779c9cc825e100791cd2de9cb21b2.jpg"
+        },
+{
+			"type": "Action.OpenUrl",
+			"title": "Action.OpenUrl",
+			"url": "http://adaptivecards.io",
+            "iconUrl": "http://156zni49nby62r9lbshm73b1.wpengine.netdna-cdn.com/wp-content/uploads/2016/04/Cat-Meme-4.jpg"
+		}
+	]
+}

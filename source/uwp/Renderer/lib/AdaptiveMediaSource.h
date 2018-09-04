@@ -14,11 +14,11 @@ AdaptiveNamespaceStart
         HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::MediaSource>& sharedMediaSource);
 
         // IAdaptiveMediaSource
-        IFACEMETHODIMP get_MimeType(_Out_ HSTRING *mimeType);
-        IFACEMETHODIMP put_MimeType(_In_ HSTRING mimeType);
+        IFACEMETHODIMP get_MimeType(_Out_ HSTRING *text);
+        IFACEMETHODIMP put_MimeType(_In_ HSTRING text);
 
-        IFACEMETHODIMP get_Url(_Out_ HSTRING *url);
-        IFACEMETHODIMP put_Url(_In_ HSTRING url);
+        IFACEMETHODIMP get_Url(_Out_ HSTRING *text);
+        IFACEMETHODIMP put_Url(_In_ HSTRING text);
 
         virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::MediaSource>& sharedModel);
 

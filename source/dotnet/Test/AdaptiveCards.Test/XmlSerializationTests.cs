@@ -32,10 +32,7 @@ namespace AdaptiveCards.Test
             foreach (var file in Directory.EnumerateFiles(@"..\..\..\..\..\..\..\samples\v1.0\Scenarios"))
             {
                 string json = File.ReadAllText(file);
-                var card = JsonConvert.DeserializeObject<AdaptiveCard>(json, new JsonSerializerSettings
-                {
-                    Converters = { new StrictIntConverter() }
-                });
+                var card = JsonConvert.DeserializeObject<AdaptiveCard>(json);
                 StringBuilder sb = new StringBuilder();
                 serializer.Serialize(new StringWriter(sb), card);
                 string xml = sb.ToString();

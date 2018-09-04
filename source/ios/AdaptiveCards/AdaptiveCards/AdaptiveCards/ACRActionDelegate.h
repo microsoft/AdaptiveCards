@@ -17,6 +17,5 @@
 
 @optional
 - (void)didLoadElements;
-- (void)didChangeVisibility:(UIButton *)button isVisible:(BOOL )isVisible;
 
 @end

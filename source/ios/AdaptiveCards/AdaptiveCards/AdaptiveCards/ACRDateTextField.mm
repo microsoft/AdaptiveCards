@@ -21,8 +21,8 @@ using namespace AdaptiveCards;
 - (instancetype)initWithTimeDateInput:(std::shared_ptr<BaseInputElement> const &)elem
                             dateStyle:(NSDateFormatterStyle)dateStyle
 {
-    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-    self = [super init];
+    self = [self initWithFrame:CGRectMake(0,0,0,0)];
+
     if(self)
     {
         NSString *valueStr = nil;
@@ -33,7 +33,8 @@ using namespace AdaptiveCards;
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         formatter.dateStyle = dateStyle;
         formatter.locale = [NSLocale currentLocale];        
-        UIDatePicker *picker = [bundle loadNibNamed:@"ACRDatePicker" owner:self options:nil][0];
+        
+        UIDatePicker *picker = [[UIDatePicker alloc] init];
         
         self.id = [NSString stringWithCString:elem->GetId().c_str()
                                      encoding:NSUTF8StringEncoding];
@@ -55,7 +56,6 @@ using namespace AdaptiveCards;
             
             [formatter setDateFormat:@"yyyy-MM-dd"];
             
-            picker.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
             picker.datePickerMode = UIDatePickerModeDate;
         }
         else
@@ -85,7 +85,6 @@ using namespace AdaptiveCards;
         self.text = valueStr;
         self.allowsEditingTextAttributes = NO;
         self.borderStyle = UITextBorderStyleRoundedRect;
-        self.backgroundColor = UIColor.groupTableViewBackgroundColor;
 
         if(date)
         {
@@ -113,7 +112,7 @@ using namespace AdaptiveCards;
 }
 
 - (IBAction)dismiss
-{    
+{
     [self endEditing:YES];
     self.text = [self.formatter stringFromDate:((UIDatePicker *)self.inputView).date];
 }
@@ -155,5 +154,4 @@ using namespace AdaptiveCards;
 {
     dictionary[self.id] = self.text;
 }
-
 @end

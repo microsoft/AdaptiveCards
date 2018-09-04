@@ -6,6 +6,7 @@
 //
 
 #import "ACRLongPressGestureRecognizerFactory.h"
+#import "ACRLongPressGestureRecognizerEventHandler.h"
 #import "OpenUrlAction.h"
 #import "ACRShowCardTarget.h"
 #import "ShowCardAction.h"
@@ -19,17 +20,21 @@ using namespace AdaptiveCards;
 // instantiates a target for UILongPressGestureRecognizer object
 // and instantiate a tap gesture reconginizer with target, and return it
 // when failed, nil is returned
-+ (void)addLongPressGestureRecognizerToUIView:(UIView<ACRIContentHoldingView> *)viewGroup
-                                     rootView:(ACRView *)rootView
-                                recipientView:(UIView *)recipientView
-                                actionElement:(std::shared_ptr<BaseActionElement> const &)action
-                                   hostConfig:(ACOHostConfig *)config
++ (UILongPressGestureRecognizer *)getLongPressGestureRecognizer:(UIView<ACRIContentHoldingView> *)viewGroup
+                                             rootView:(ACRView *)rootView
+                                                     targetView:(UIView *)view
+                                                  actionElement:(std::shared_ptr<BaseActionElement> const &)action
+                                                         inputs:(NSMutableArray *)inputs
+                                                     hostConfig:(ACOHostConfig *)config
 {
-    if(action != nullptr){
-        NSObject<ACRSelectActionDelegate> *target = nil;
+    if(action != nullptr)
+    {
+        NSObject<ACRSelectActionDelegate> *target;
+        ACRLongPressGestureRecognizerEventHandler *handler = [[ACRLongPressGestureRecognizerEventHandler alloc] init];
         ACOBaseActionElement *actionElement = [[ACOBaseActionElement alloc] initWithBaseActionElement:action];
 
-        switch(action->GetElementType()) {
+        switch(action->GetElementType())
+        {
             // instantiates a target that handles Submit action
             case ActionType::Submit:
             case ActionType::OpenUrl:
@@ -42,7 +47,7 @@ using namespace AdaptiveCards;
             {
                 std::shared_ptr<ShowCardAction> showCardAction = std::dynamic_pointer_cast<ShowCardAction>(action);
                 // instantiate a ShowCardTarget
-                target = [[ACRShowCardTarget alloc] initWithActionElement:showCardAction config:config superview:viewGroup rootView:rootView button:nil];
+                target = [[ACRShowCardTarget alloc] initWithActionElement:showCardAction config:config superview:viewGroup rootView:rootView];
                 break;
             }
             // everything else is not valid request
@@ -50,31 +55,25 @@ using namespace AdaptiveCards;
             default:
             {
                 NSLog(@"Unknown Action Type");
+                return nil;
             }
         }
 
-        if(target && viewGroup){
-            UILongPressGestureRecognizer *recognizer = [ACRLongPressGestureRecognizerFactory getGestureRecognizer:viewGroup target:target];
-            [recipientView addGestureRecognizer:recognizer];
-            recipientView.userInteractionEnabled = YES;
+        if(target && handler)
+        {
+            // add the target to the viewGroup; life time of the target is as long as the viewGroup
+            // add the handler to the viewGroup; life time of the target is as long as the viewGroup
+            [viewGroup addTarget:target];
+            [viewGroup addTarget:handler];
+            UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:handler action:@selector(processLongPressGesture:)];
+            handler.delegate = target;
+            recognizer.delegate = handler;
+            recognizer.minimumPressDuration = 0.01;
+            recognizer.allowableMovement = 1;
+            return recognizer;
         }
     }
-}
-
-+ (UILongPressGestureRecognizer *)getGestureRecognizer:(UIView<ACRIContentHoldingView> *)viewGroup
-                                                target:(NSObject<ACRSelectActionDelegate> *)target
-{
-    ACRLongPressGestureRecognizerEventHandler *handler = [[ACRLongPressGestureRecognizerEventHandler alloc] init];
-    // add the target to the viewGroup; life time of the target is as long as the viewGroup
-    // add the handler to the viewGroup; life time of the target is as long as the viewGroup
-    [viewGroup addTarget:target];
-    [viewGroup addTarget:handler];
-    UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:handler action:@selector(processLongPressGesture:)];
-    handler.delegate = target;
-    recognizer.delegate = handler;
-    recognizer.minimumPressDuration = 0.01;
-    recognizer.allowableMovement = 1;
-    return recognizer;
+    return nil;
 }
 
 @end

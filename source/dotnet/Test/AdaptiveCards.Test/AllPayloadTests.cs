@@ -68,10 +68,7 @@ namespace AdaptiveCards.Test
                     }
 
                     // Make sure JsonConvert works also
-                    var card = JsonConvert.DeserializeObject<AdaptiveCard>(json, new JsonSerializerSettings
-                    {
-                        Converters = { new StrictIntConverter() }
-                    });
+                    var card = JsonConvert.DeserializeObject<AdaptiveCard>(json);
                     Assert.AreEqual(parseResult.Card.Body.Count, card.Body.Count);
                     Assert.AreEqual(parseResult.Card.Actions.Count, card.Actions.Count);
                 }

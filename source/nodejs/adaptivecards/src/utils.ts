@@ -1,5 +1,35 @@
 import * as Enums from "./enums";
 
+/**
+ * Fast UUID generator, RFC4122 version 4 compliant.
+ * @author Jeff Ward (jcward.com).
+ * @license MIT license
+ * @link http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/21963136#21963136
+ **/
+export class UUID {
+    private static lut = [];
+
+    static generate(): string {
+        let d0 = Math.random() * 0xffffffff | 0;
+        let d1 = Math.random() * 0xffffffff | 0;
+        let d2 = Math.random() * 0xffffffff | 0;
+        let d3 = Math.random() * 0xffffffff | 0;
+
+        return UUID.lut[d0 & 0xff] + UUID.lut[d0 >> 8 & 0xff] + UUID.lut[d0 >> 16 & 0xff] + UUID.lut[d0 >> 24 & 0xff] + '-' +
+            UUID.lut[d1 & 0xff] + UUID.lut[d1 >> 8 & 0xff] + '-' + UUID.lut[d1 >> 16 & 0x0f | 0x40] + UUID.lut[d1 >> 24 & 0xff] + '-' +
+            UUID.lut[d2 & 0x3f | 0x80] + UUID.lut[d2 >> 8 & 0xff] + '-' + UUID.lut[d2 >> 16 & 0xff] + UUID.lut[d2 >> 24 & 0xff] +
+            UUID.lut[d3 & 0xff] + UUID.lut[d3 >> 8 & 0xff] + UUID.lut[d3 >> 16 & 0xff] + UUID.lut[d3 >> 24 & 0xff];
+    }
+
+    static initialize() {
+        for (let i = 0; i < 256; i++) {
+            UUID.lut[i] = (i < 16 ? '0' : '') + i.toString(16);
+        }
+    }
+}
+
+UUID.initialize();
+
 export const ContentTypes = {
     applicationJson : "application/json",
     applicationXWwwFormUrlencoded : "application/x-www-form-urlencoded"
@@ -197,19 +227,19 @@ export class SizeAndUnit {
 
         let regExp = /^([0-9]+)(px|\*)?$/g;
         let matches = regExp.exec(input);
-
+    
         if (matches && matches.length >= 2) {
             result.physicalSize = parseInt(matches[1]);
-
+    
             if (matches.length == 3) {
                 if (matches[2] == "px") {
                     result.unit = Enums.SizeUnit.Pixel;
                 }
             }
-
+    
             return result;
         }
-
+    
         throw new Error("Invalid size: " + input);
     }
 

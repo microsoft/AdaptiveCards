@@ -18,7 +18,11 @@ Image::Image() :
 
 Json::Value Image::SerializeToJsonValue() const
 {
+<<<<<<< HEAD
+    const char pixelstring[] = "px";
+=======
     const std::string pixelstring("px");
+>>>>>>> master
 
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
@@ -150,7 +154,7 @@ void Image::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
     m_selectAction = action;
 }
 
-unsigned int Image::GetPixelWidth() const
+unsigned int Image::GetPixelWidth() const 
 {
     return m_pixelWidth;
 }
@@ -198,7 +202,7 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
     std::shared_ptr<Image> image = BaseCardElement::Deserialize<Image>(json);
 
     image->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, true));
-    image->SetBackgroundColor(ValidateColor(ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundColor), warnings));
+    image->SetBackgroundColor(ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundColor));
     image->SetImageStyle(ParseUtil::GetEnumValue<ImageStyle>(json, AdaptiveCardSchemaKey::Style, ImageStyle::Default, ImageStyleFromString));
     image->SetAltText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::AltText));
     image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
@@ -214,9 +218,9 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
         if (!eachDimension.empty() && (isdigit(eachDimension.at(0)) || ('-' == eachDimension.at(0))))
         {
             const std::string unit = "px";
-            const std::size_t foundIndex = eachDimension.find(unit);
+            std::size_t foundIndex = eachDimension.find(unit);
             /// check if width is determined explicitly
-            if (std::string::npos != foundIndex)
+            if (std::string::npos != foundIndex) 
             {
                 if (eachDimension.size() == foundIndex + unit.size())
                 // validate user inputs
@@ -226,10 +230,10 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
         parsedDimensions.push_back(parsedDimension);
     }
 
-    if (parsedDimensions.at(0) != 0 || parsedDimensions.at(1) != 0)
+    if (parsedDimensions[0] != 0 || parsedDimensions[1] != 0)
     {
-        image->SetPixelWidth(parsedDimensions.at(0));
-        image->SetPixelHeight(parsedDimensions.at(1));
+        image->SetPixelWidth(parsedDimensions[0]);
+        image->SetPixelHeight(parsedDimensions[1]);
     }
     else
     {
@@ -242,24 +246,22 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
     return image;
 }
 
-void Image::PopulateKnownPropertiesSet()
+void Image::PopulateKnownPropertiesSet() 
 {
-    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Url),
-        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundColor),
-        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
-        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size),
-        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText),
-        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment),
-        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width),
-        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height),
-        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)});
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Url));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundColor));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction));
 }
 
-void Image::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
+void Image::GetResourceUris(std::vector<std::string>& resourceUris)
 {
-    RemoteResourceInformation imageResourceInfo;
-    imageResourceInfo.url = GetUrl();
-    imageResourceInfo.resourceType = CardElementType::Image;
-    resourceInfo.push_back(imageResourceInfo);
+    auto url = GetUrl();
+    resourceUris.push_back(url);
     return;
 }

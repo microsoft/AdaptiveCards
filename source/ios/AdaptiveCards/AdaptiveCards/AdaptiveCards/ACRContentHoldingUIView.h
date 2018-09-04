@@ -10,4 +10,5 @@
 
 @interface ACRContentHoldingUIView: UIView
 
+- (void)setAlignmentForSubview:(AdaptiveCards::HorizontalAlignment)alignment;
 @end

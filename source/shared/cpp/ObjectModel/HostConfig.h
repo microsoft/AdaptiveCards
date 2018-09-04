@@ -54,7 +54,7 @@ struct TextConfig
     ForegroundColor color = ForegroundColor::Default;
     bool isSubtle = false;
     bool wrap = true;
-    unsigned int maxWidth = ~0U;
+    unsigned int maxWidth = (unsigned int) ~0;
 
     static TextConfig Deserialize(const Json::Value& json, const TextConfig& defaultValue);
 };
@@ -113,7 +113,7 @@ struct AdaptiveCardConfig
 struct FactSetConfig
 {
     TextConfig title{ TextWeight::Bolder, TextSize::Default, ForegroundColor::Default, false, true, 150 };
-    TextConfig value{ TextWeight::Default, TextSize::Default, ForegroundColor::Default, false, true, ~0U };
+    TextConfig value{ TextWeight::Default, TextSize::Default, ForegroundColor::Default, false, true, (unsigned int)~0 };
     unsigned int spacing = 10;
 
     static FactSetConfig Deserialize(const Json::Value& json, const FactSetConfig& defaultValue);
@@ -166,7 +166,6 @@ struct ActionsConfig
     unsigned int maxActions = 5;
     Spacing spacing = Spacing::Default;
     IconPlacement iconPlacement = IconPlacement::AboveTitle;
-    unsigned int iconSize = 30;
 
     static ActionsConfig Deserialize(const Json::Value& json, const ActionsConfig& defaultValue);
 };
@@ -175,7 +174,6 @@ struct MediaConfig
 {
     std::string defaultPoster;
     std::string playButton;
-    bool allowInlinePlayback = true;
 
     static MediaConfig Deserialize(const Json::Value& json, const MediaConfig& defaultValue);
 };

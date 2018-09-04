@@ -16,8 +16,6 @@ using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Shapes;
-using Windows.ApplicationModel.UserActivities;
-using Windows.UI.Shell;
 
 namespace AdaptiveCardTestApp.ViewModels
 {
@@ -48,8 +46,6 @@ namespace AdaptiveCardTestApp.ViewModels
         public ObservableCollection<FileViewModel> RemainingHostConfigs { get; }
 
         private UIElement _currentCardVisual;
-        private bool _addToTimeline;
-        private UserActivitySession _currentSession;
         public UIElement CurrentCardVisual
         {
             get { return _currentCardVisual; }
@@ -66,16 +62,16 @@ namespace AdaptiveCardTestApp.ViewModels
         private StorageFolder _tempResultsFolder;
 
         public ObservableCollection<TestResultViewModel> Results { get; } = new ObservableCollection<TestResultViewModel>();
-        public RunningTestsViewModel(IEnumerable<FileViewModel> cards, IEnumerable<FileViewModel> hostConfigs, bool addToTimeline, StorageFolder expectedFolder)
+
+        public RunningTestsViewModel(IEnumerable<FileViewModel> cards, IEnumerable<FileViewModel> hostConfigs, StorageFolder expectedFolder)
         {
             _expectedFolder = expectedFolder;
             _originalCards = cards.ToArray();
 
             RemainingCards = new ObservableCollection<FileViewModel>(_originalCards);
             RemainingHostConfigs = new ObservableCollection<FileViewModel>(hostConfigs);
-            _addToTimeline = addToTimeline;
 
-            if (_originalCards.Length == 0 || (RemainingHostConfigs.Count == 0 && !_addToTimeline))
+            if (_originalCards.Length == 0 || RemainingHostConfigs.Count == 0)
             {
                 throw new InvalidOperationException("There must be some cards and host configs");
             }
@@ -97,12 +93,7 @@ namespace AdaptiveCardTestApp.ViewModels
             // If no cards left
             if (RemainingCards.Count == 0)
             {
-                if (RemainingHostConfigs.Count != 0)
-                {
-                    RemainingHostConfigs.RemoveAt(0);
-                }
-
-                _addToTimeline = false;
+                RemainingHostConfigs.RemoveAt(0);
 
                 // If also no host configs left, done
                 if (RemainingHostConfigs.Count == 0)
@@ -118,44 +109,19 @@ namespace AdaptiveCardTestApp.ViewModels
                 }
             }
 
+            CurrentCard = RemainingCards.First().Name;
+            CurrentHostConfig = RemainingHostConfigs.First().Name;
+
             // Delay a bit to allow UI thread to update, otherwise user would never see an update
             await Task.Delay(10);
 
-            var card = RemainingCards.First();
-            CurrentCard = card.Name;
-
-            if (RemainingHostConfigs.Count != 0)
-            {
-                CurrentHostConfig = RemainingHostConfigs.First().Name;
-                var testResult = await TestCard(card, RemainingHostConfigs.First());
-                Results.Add(testResult);
-            }
-
-            if (_addToTimeline)
-            {
-                await AddCardToTimeline(card);
-            }
+            var testResult = await TestCard(RemainingCards.First(), RemainingHostConfigs.First());
+            Results.Add(testResult);
 
             RemainingCards.RemoveAt(0);
 
             // And start the process again
             Start();
-        }
-
-        public async Task AddCardToTimeline(FileViewModel card)
-        { 
-            UserActivityChannel channel = UserActivityChannel.GetDefault();
-            UserActivity userActivity = await channel.GetOrCreateUserActivityAsync(Guid.NewGuid().ToString());
-            userActivity.VisualElements.DisplayText = "Card error: " + card.Name;
-            userActivity.VisualElements.AttributionDisplayText = card.Name;
-            userActivity.ActivationUri = new Uri("https://github.com/Microsoft/AdaptiveCards/blob/master/samples/" + card.Name + ".json");
-
-            userActivity.VisualElements.Content = AdaptiveCardBuilder.CreateAdaptiveCardFromJson(card.Contents);
-
-            await userActivity.SaveAsync();
-
-            _currentSession?.Dispose();
-            _currentSession = userActivity.CreateSession();
         }
 
         private async Task<TestResultViewModel> TestCard(FileViewModel cardFile, FileViewModel hostConfigFile)
@@ -339,32 +305,22 @@ namespace AdaptiveCardTestApp.ViewModels
 
         private static async Task WaitOnAllImagesAsync(UIElement el)
         {
-            int imageCountRemaining = 0;
-            int totalLoops = 0;
-            const int maxLoops = 500;
-            int loopsUnchanged = 0;
+            int countRemaining = 0;
 
             ExceptionRoutedEventHandler failedHandler = new ExceptionRoutedEventHandler(delegate
             {
-                imageCountRemaining--;
+                countRemaining--;
             });
             RoutedEventHandler openedHandler = new RoutedEventHandler(delegate
             {
-                imageCountRemaining--;
+                countRemaining--;
             });
-
-            EventHandler<object> layoutHandler = new EventHandler<object>(delegate
-            {
-                loopsUnchanged = 0;
-            });
-
-            (el as FrameworkElement).LayoutUpdated += layoutHandler;
 
             foreach (var shape in GetAllDescendants(el).OfType<Shape>())
             {
                 if (shape.Fill is ImageBrush)
                 {
-                    imageCountRemaining++;
+                    countRemaining++;
                     (shape.Fill as ImageBrush).ImageFailed += failedHandler;
                     (shape.Fill as ImageBrush).ImageOpened += openedHandler;
                 }
@@ -372,20 +328,15 @@ namespace AdaptiveCardTestApp.ViewModels
 
             foreach (var img in GetAllDescendants(el).OfType<Image>())
             {
-                imageCountRemaining++;
+                countRemaining++;
                 img.ImageFailed += failedHandler;
                 img.ImageOpened += openedHandler;
             }
 
-            while (((imageCountRemaining > 0) || (loopsUnchanged < 2)) && (totalLoops < maxLoops))
+            while (countRemaining > 0)
             {
-                totalLoops++;
-                loopsUnchanged++;
-
                 await Task.Delay(10);
             }
-
-            (el as FrameworkElement).LayoutUpdated -= layoutHandler;
         }
 
         private static IEnumerable<UIElement> GetAllDescendants(UIElement element)

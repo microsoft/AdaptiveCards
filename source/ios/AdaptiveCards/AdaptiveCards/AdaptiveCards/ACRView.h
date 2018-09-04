@@ -11,12 +11,11 @@
 #import "ACOAdaptiveCard.h"
 #import "ACOHostConfig.h"
 #import "ACRColumnView.h"
-#import "ACRIMedia.h"
 
 @interface ACRView:ACRColumnView
 
 @property (weak) id<ACRActionDelegate>acrActionDelegate;
-@property (weak) id<ACRMediaDelegate>mediaDelegate;
+@property BOOL seenAllElements;
 
 - (instancetype)init:(ACOAdaptiveCard *)card hostconfig:(ACOHostConfig *)config widthConstraint:(float)width;
 
@@ -26,9 +25,13 @@
 
 - (NSMutableDictionary *)getTextMap;
 
+- (NSMutableDictionary *)getActionsMap;
+
+- (dispatch_queue_t)getSerialTextQueue;
+
 - (ACOAdaptiveCard *)card;
 
 - (UIView *)render;
 
-- (void)waitForAsyncTasksToFinish;
++ (void) setImageView:(UIImageView*)imageView inButton:(UIButton*)button withConfig:(ACOHostConfig *)config;
 @end

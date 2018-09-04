@@ -87,18 +87,18 @@ std::shared_ptr<BaseCardElement> ColumnSetParser::DeserializeFromString(
     return ColumnSetParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void ColumnSet::PopulateKnownPropertiesSet()
+void ColumnSet::PopulateKnownPropertiesSet() 
 {
-    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Columns),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)});
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Columns));
+    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction));
 }
 
-void ColumnSet::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
+void ColumnSet::GetResourceUris(std::vector<std::string>& resourceUris)
 {
     auto columns = GetColumns();
     for (auto column : columns)
     {
-        column->GetResourceInformation(resourceInfo);
+        column->GetResourceUris(resourceUris);
     }
     return;
 }

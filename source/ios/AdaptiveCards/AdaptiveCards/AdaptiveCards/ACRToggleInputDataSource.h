@@ -9,10 +9,10 @@
 #import "ACRIBaseInputHandler.h"
 #import "ACRIBaseCardElementRenderer.h"
 #import "HostConfig.h"
-#import "ACRColumnSetView.h"
 
-@interface ACRToggleInputDataSource:NSObject<UITableViewDataSource, UITableViewDelegate, ACRIBaseInputHandler> 
+@interface ACRToggleInputDataSource:NSObject<UITableViewDelegate, UITableViewDataSource, ACRIBaseInputHandler>
 
+@property BOOL isSelected;
 @property NSString *id;
 @property NSString *valueOn;
 @property NSString *valueOff;

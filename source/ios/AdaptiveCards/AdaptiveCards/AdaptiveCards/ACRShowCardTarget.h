@@ -17,8 +17,7 @@
 - (instancetype)initWithActionElement:(std::shared_ptr<AdaptiveCards::ShowCardAction> const &)showCardActionElement
                                config:(ACOHostConfig *)config
                             superview:(UIView<ACRIContentHoldingView> *)superview
-                             rootView:(ACRView *)rootView
-                               button:(UIButton *)button;
+                             rootView:(ACRView *)rootView;
 
 - (void)createShowCard:(NSMutableArray*)inputs;
 

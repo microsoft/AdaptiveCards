@@ -19,8 +19,6 @@ namespace AdaptiveCards.Rendering.Html
 
         public IList<AdaptiveWarning> Warnings { get; } = new List<AdaptiveWarning>();
 
-        public IList<HtmlTag> ShowCardTags { get; } = new List<HtmlTag>();
-
         public HtmlTag Render(AdaptiveTypedElement element)
         {
             // If non-inertactive, inputs should just render text

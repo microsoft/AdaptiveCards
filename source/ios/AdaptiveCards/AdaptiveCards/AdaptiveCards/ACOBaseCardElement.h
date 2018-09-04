@@ -32,7 +32,6 @@ typedef NS_ENUM(NSInteger, ACRCardElementType) {
     ACRToggleInput,
     ACRCustom,
     ACRUnknown,
-    ACRMedia,
 };
 
 typedef NS_ENUM(NSInteger, ACRContainerStyle) {

@@ -10,7 +10,6 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
-import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -27,7 +26,7 @@ import java.util.Vector;
 
 public class ToggleInputRenderer extends BaseCardElementRenderer
 {
-    protected ToggleInputRenderer()
+    private ToggleInputRenderer()
     {
     }
 
@@ -100,17 +99,7 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
             }
         });
 
-        if(toggleInput.GetHeight() == HeightType.Stretch)
-        {
-            LinearLayout toggleInputContainer = new LinearLayout(context);
-            toggleInputContainer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
-            toggleInputContainer.addView(checkBox);
-            viewGroup.addView(toggleInputContainer);
-        }
-        else
-        {
-            viewGroup.addView(checkBox);
-        }
+        viewGroup.addView(checkBox);
         return checkBox;
     }
 

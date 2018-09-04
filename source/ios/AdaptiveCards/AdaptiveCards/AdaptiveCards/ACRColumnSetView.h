@@ -8,6 +8,4 @@
 
 @interface ACRColumnSetView:ACRContentStackView
 
-- (void)setAlignmentForColumnStretch;
-
 @end

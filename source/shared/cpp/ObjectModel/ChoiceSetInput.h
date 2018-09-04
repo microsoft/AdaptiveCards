@@ -14,7 +14,7 @@ friend class ChoiceSetInputParser;
 public:
     ChoiceSetInput();
 
-    Json::Value SerializeToJsonValue() const override;
+    virtual Json::Value SerializeToJsonValue() const override;
 
     bool GetIsMultiSelect() const;
     void SetIsMultiSelect(const bool isMultiSelect);
@@ -29,7 +29,7 @@ public:
     void SetValue(const std::string &value);
 
 private:
-    void PopulateKnownPropertiesSet() override;
+    void PopulateKnownPropertiesSet();
 
     std::string m_value;
     bool m_isMultiSelect;
@@ -41,13 +41,6 @@ private:
 class ChoiceSetInputParser : public BaseCardElementParser
 {
 public:
-    ChoiceSetInputParser() = default;
-    ChoiceSetInputParser(const ChoiceSetInputParser&) = default;
-    ChoiceSetInputParser(ChoiceSetInputParser&&) = default;
-    ChoiceSetInputParser& operator=(const ChoiceSetInputParser&) = default;
-    ChoiceSetInputParser& operator=(ChoiceSetInputParser&&) = default;
-    virtual ~ChoiceSetInputParser() = default;
-
     std::shared_ptr<BaseCardElement> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,

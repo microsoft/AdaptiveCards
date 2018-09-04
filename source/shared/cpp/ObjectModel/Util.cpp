@@ -8,7 +8,7 @@ void PropagateLanguage(const std::string& language, std::vector<std::shared_ptr<
 {
     for (auto& bodyElement : m_body)
     {
-        const CardElementType elementType = bodyElement->GetElementType();
+        CardElementType elementType = bodyElement->GetElementType();
 
         if (elementType == CardElementType::ColumnSet)
         {
@@ -37,45 +37,7 @@ void PropagateLanguage(const std::string& language, std::vector<std::shared_ptr<
     }
 }
 
-std::string ValidateColor(const std::string& backgroundColor,
-    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings)
-{
-    if (backgroundColor.empty())
-    {
-        return backgroundColor;
-    }
-
-    const size_t backgroundColorLength = backgroundColor.length();
-    bool isValidColor = ((backgroundColor.at(0) == '#') && (backgroundColorLength == 7 || backgroundColorLength == 9));
-    for (size_t i = 1; i < backgroundColorLength && isValidColor; ++i)
-    {
-        isValidColor = isxdigit(backgroundColor.at(i));
-    }
-
-    if (!isValidColor)
-    {
-        warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
-                AdaptiveSharedNamespace::WarningStatusCode::InvalidColorFormat,
-                "Image background color specified, but doesn't follow #AARRGGBB or #RRGGBB format"));
-        return "#00000000";
-    }
-
-    std::string validBackgroundColor;
-    // If format given was #RRGGBB
-    if (backgroundColorLength == 7)
-    {
-        validBackgroundColor = "#FF" + backgroundColor.substr(1, 6);
-    }
-    else
-    {
-        validBackgroundColor = backgroundColor;
-    }
-
-    return validBackgroundColor;
-}
-
-void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::string &requestedDimension,
-    int &parsedDimension)
+void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::string &requestedDimension, int &parsedDimension)
 {
     if (requestedDimension.empty())
     {
@@ -83,33 +45,29 @@ void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::s
     }
     else
     {
-        const std::size_t foundIndex = requestedDimension.find(unit);
+        std::size_t foundIndex = requestedDimension.find(unit);
         if (std::string::npos == foundIndex || requestedDimension.size() != foundIndex + unit.size())
         {
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
-                "unit is either missing or inproper form: " + requestedDimension);
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "unit is either missing or inproper form: " + requestedDimension);
         }
         try
         {
-            int parsedVal = std::stoi(requestedDimension.substr(0, foundIndex));
-            if (parsedVal < 0)
+            float parsedVal = stof(requestedDimension.substr(0, foundIndex));
+            if(parsedVal != (int) parsedVal || parsedVal < 0)
             {
-                throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
-                    "unsigned integer is accepted but received : " + requestedDimension);
+                throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "unsigned integer is accepted but received : " + requestedDimension);
             }
-            parsedDimension = parsedVal;
+            parsedDimension = (int)parsedVal;
         }
         catch (const std::invalid_argument &e)
         {
             (void)e;
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
-                "unsigned integer is accepted but received : " + requestedDimension);
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "unsigned integer is accepted but received : " + requestedDimension);
         }
         catch (const std::out_of_range &e)
         {
             (void)e;
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
-                "out of range: " + requestedDimension);
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "out of range: " + requestedDimension);
         }
     }
 }

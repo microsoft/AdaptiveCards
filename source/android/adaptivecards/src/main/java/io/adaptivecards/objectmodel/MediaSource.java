@@ -36,11 +36,7 @@ public class MediaSource {
   }
 
   public MediaSource() {
-    this(AdaptiveCardObjectModelJNI.new_MediaSource__SWIG_0(), true);
-  }
-
-  public MediaSource(MediaSource arg0) {
-    this(AdaptiveCardObjectModelJNI.new_MediaSource__SWIG_1(MediaSource.getCPtr(arg0), arg0), true);
+    this(AdaptiveCardObjectModelJNI.new_MediaSource(), true);
   }
 
   public JsonValue SerializeToJsonValue() {
@@ -61,10 +57,6 @@ public class MediaSource {
 
   public void SetUrl(String value) {
     AdaptiveCardObjectModelJNI.MediaSource_SetUrl(swigCPtr, this, value);
-  }
-
-  public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {
-    AdaptiveCardObjectModelJNI.MediaSource_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceInfo), resourceInfo);
   }
 
 }

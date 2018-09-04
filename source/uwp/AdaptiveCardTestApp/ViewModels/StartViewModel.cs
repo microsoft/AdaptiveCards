@@ -17,7 +17,6 @@ namespace AdaptiveCardTestApp.ViewModels
         public ObservableCollection<FileViewModel> SelectedCards { get; private set; } = new ObservableCollection<FileViewModel>();
 
         public ObservableCollection<FileViewModel> SelectedHostConfigs { get; private set; } = new ObservableCollection<FileViewModel>();
-        public Boolean AddToTimeline { get; set; } = false;
 
         public StorageFolder ExpectedFolder { get; set; }
 

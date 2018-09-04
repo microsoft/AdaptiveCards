@@ -128,8 +128,8 @@ public class AdaptiveCard {
     return new BaseActionElementVector(AdaptiveCardObjectModelJNI.AdaptiveCard_GetActions__SWIG_0(swigCPtr, this), false);
   }
 
-  public RemoteResourceInformationVector GetResourceInformation() {
-    return new RemoteResourceInformationVector(AdaptiveCardObjectModelJNI.AdaptiveCard_GetResourceInformation(swigCPtr, this), true);
+  public StringVector GetResourceUris() {
+    return new StringVector(AdaptiveCardObjectModelJNI.AdaptiveCard_GetResourceUris(swigCPtr, this), true);
   }
 
   public CardElementType GetElementType() {
