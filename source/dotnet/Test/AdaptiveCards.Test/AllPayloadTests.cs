@@ -122,7 +122,6 @@ namespace AdaptiveCards.Test
                     "Column.Explicit.Size", // Not implemented yet
                     "VerticalStretch", // Not implemented yet
                     "VerticalContentAlignment", // Not implemented yet
-                    "Image.Explicit.Size", // Not implemented yet
                     "InputsFormWithHeightStretch", // Not implemented yet
                     "InvalidMediaMix", // Not implemented yet
                     "Media", // Not implemented yet

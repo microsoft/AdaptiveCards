@@ -53,6 +53,22 @@ public class RenderedAdaptiveCard {
         return input;
     }
 
+    public void setInputs(Map<String, String> inputs)
+    {
+        if (inputs == null || inputs.isEmpty())
+        {
+            return;
+        }
+        //Iterate over all handlers
+        for (IInputHandler handler: handlers)
+        {
+            if (inputs.containsKey(handler.getId()))
+            {
+                handler.setInput(inputs.get(handler.getId()));
+            }
+        }
+    }
+
     public AdaptiveCard getAdaptiveCard()
     {
         return adaptiveCard;

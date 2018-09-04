@@ -20,6 +20,7 @@
 #include <unordered_set>
 #include <fstream>
 #include <locale>
+#include <regex>
 
 #if defined(_MSC_BUILD) && !defined(__ANDROID__) && !defined(__APPLE__) && !defined(ADAPTIVE_CARDS_WINDOWS)
 #define USE_CPPCORECHECK
