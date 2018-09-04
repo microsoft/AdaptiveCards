@@ -60,7 +60,16 @@ namespace AdaptiveCards.Rendering.Wpf
 
             var mediaConfig = context.Config.Media;
 
-            var uiThumbnail = new Grid();
+            var uiThumbnailButton = new Grid
+            {
+                Name = "thumbnailButton",
+                Visibility = Visibility.Visible
+            };
+
+            var uiPosterContainer = new Grid()
+            {
+                Background = _controlBackgroundColor,
+            };
 
             /* Poster (if present) */
 
@@ -71,7 +80,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiPosterImage = new Image();
                 uiPosterImage.SetSource(ResolveUri(media.Poster), context);
 
-                uiThumbnail.Children.Add(uiPosterImage);
+                uiPosterContainer.Children.Add(uiPosterImage);
             }
             else if (!string.IsNullOrEmpty(mediaConfig.DefaultPoster))
             {
@@ -79,7 +88,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiPosterImage = new Image();
                 uiPosterImage.SetSource(ResolveUri(mediaConfig.DefaultPoster), context);
 
-                uiThumbnail.Children.Add(uiPosterImage);
+                uiPosterContainer.Children.Add(uiPosterImage);
             }
 
             // If the host doesn't support interactivity, just render the poster image
@@ -87,6 +96,8 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 return uiPosterImage;
             }
+
+            uiThumbnailButton.Children.Add(uiPosterContainer);
 
             /* Play button */
 
@@ -117,7 +128,6 @@ namespace AdaptiveCards.Rendering.Wpf
                     Text = "⏵",
                     FontFamily = _symbolFontFamily,
                     Foreground = _controlForegroundColor,
-                    Background = _controlBackgroundColor,
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Center,
                 };
@@ -125,14 +135,17 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiPlayButton.Child = content;
             }
 
-            uiThumbnail.Children.Add(uiPlayButton);
+            uiThumbnailButton.Children.Add(uiPlayButton);
 
-            Button uiThumbnailButton = new Button
+            // Mouse hover handlers to signify playable media element
+            uiThumbnailButton.MouseEnter += (sender, e) =>
             {
-                Name = "playButton",
-                Content = uiThumbnail,
+                uiPosterContainer.OpacityMask = _controlBackgroundColor;
             };
-            uiThumbnailButton.Visibility = Visibility.Visible;
+            uiThumbnailButton.MouseLeave += (sender, e) =>
+            {
+                uiPosterContainer.OpacityMask = null;
+            };
 
             #endregion
 
@@ -149,7 +162,7 @@ namespace AdaptiveCards.Rendering.Wpf
             }
 
             // Add on click handler to play the media
-            uiThumbnailButton.Click += (sender, e) =>
+            uiThumbnailButton.MouseUp += (sender, e) =>
             {
                 if (mediaConfig.AllowInlinePlayback)
                 {
@@ -167,7 +180,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 else
                 {
                     // If inline playback is not allowed, raise an event to send the media to host
-                    context.ClickMedia(uiThumbnailButton, new AdaptiveMediaEventArgs(media));
+                    context.ClickMedia(uiPosterContainer, new AdaptiveMediaEventArgs(media));
 
                     // Prevent nested events from triggering
                     e.Handled = true;
@@ -274,9 +287,9 @@ namespace AdaptiveCards.Rendering.Wpf
 
             // Play trigger
             // TODO: Handle unplayable https medias
-            var playTrigger = new EventTrigger(ButtonBase.ClickEvent)
+            var playTrigger = new EventTrigger(UIElement.MouseUpEvent)
             {
-                SourceName = "playButton",
+                SourceName = "thumbnailButton",
             };
 
             var mediaTimeline = new MediaTimeline()
