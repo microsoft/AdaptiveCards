@@ -43,7 +43,7 @@ namespace AdaptiveCards.Rendering.Wpf
             }
             uiImage.Style = context.GetStyle(style);
 
-            if (image.PixelHeight != 0 && image.PixelWidth != 0)
+            if (image.PixelHeight == 0 && image.PixelWidth == 0)
             {
                 uiImage.SetImageProperties(image, context);
             }
