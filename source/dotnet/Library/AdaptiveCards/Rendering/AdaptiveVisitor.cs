@@ -43,6 +43,9 @@ namespace AdaptiveCards.Rendering
 
             if (adaptiveElement is AdaptiveToggleInput toggleInput)
                 Visit(toggleInput);
+
+            if (adaptiveElement is AdaptiveMedia media)
+                Visit(media);
         }
 
         public virtual void Visit(AdaptiveCard card)
