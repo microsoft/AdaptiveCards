@@ -27,15 +27,21 @@ namespace AdaptiveCards
             if (reader.Depth == 0)
             {
                 if (jObject.Value<string>("version") == null)
+                {
                     throw new AdaptiveSerializationException("Could not parse required key: version. It was not found.");
+                }
 
                 // If this is the root AdaptiveCard and missing a version we fail parsing. 
                 // The depth checks that cards within a Action.ShowCard don't require the version
                 if (jObject.Value<string>("version") == "")
+                {
                     throw new AdaptiveSerializationException("Property is required but was found empty: version");
+                }
 
                 if (new AdaptiveSchemaVersion(jObject.Value<string>("version")) > AdaptiveCard.KnownSchemaVersion)
+                {
                     return MakeFallbackTextCard(jObject);
+                }
             }
             var typedElementConverter = serializer.ContractResolver.ResolveContract(typeof(AdaptiveTypedElement)).Converter;
 
@@ -55,8 +61,10 @@ namespace AdaptiveCards
             string language = jObject.Value<string>("language");
             string fallbackText = jObject.Value<string>("fallbackText");
 
-            if (fallbackText == null || fallbackText == "")
+            if (String.IsNullOrEmpty(fallbackText))
+            {
                 fallbackText = "We're sorry, this card couldn't be displayed";
+            }
 
             // Define AdaptiveCard to return
             AdaptiveCard fallbackTextCard = new AdaptiveCard("1.0");

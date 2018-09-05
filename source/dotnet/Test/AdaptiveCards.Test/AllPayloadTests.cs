@@ -60,8 +60,8 @@ namespace AdaptiveCards.Test
                     {
                         // If the card was excluded but parsed, then it would have warnings
                         // If it doesn't then it shouldn't be excluded
-                        bool hasFailed = (parseResult.Warnings.Count == 0) || parseResult.Card.Body != null;
-                        Assert.IsTrue(hasFailed);
+                        Assert.AreNotEqual(0, parseResult.Warnings.Count);
+                        Assert.IsNotNull(parseResult.Card.Body);
                     }
                     else
                     {
