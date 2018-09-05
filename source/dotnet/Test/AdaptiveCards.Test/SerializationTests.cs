@@ -416,6 +416,23 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
+        public void MediaInvalid_ShouldThrowException()
+        {
+            var json = @"{
+  ""type"": ""Hello"",
+  ""version"": ""1.0"",
+  ""body"": [
+	{
+	    ""type"": ""Media"",
+        ""poster"": ""http://adaptivecards.io/content/cats/1.png""
+    }
+  ]
+}";
+
+            Assert.ThrowsException<AdaptiveSerializationException>(() => AdaptiveCard.FromJson(json));
+        }
+
+        [TestMethod]
         public void Media()
         {
             var json = @"{
@@ -424,24 +441,39 @@ namespace AdaptiveCards.Test
   ""body"": [
 	{
 	    ""type"": ""Media"",
-        ""poster"": ""http://adaptivecards.io/content/cats/1.png"",
 	    ""sources"": [
 		    {
 			    ""mimeType"": ""video/mp4"",
-			    ""url"": ""https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4""
+			    ""url"": ""http://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4""
             }
 	    ]
-	}
+	},
+	{
+	    ""type"": ""Media"",
+        ""poster"": ""http://adaptivecards.io/content/cats/1.png"",
+        ""altText"": ""Adaptive Cards Overview Video"",
+	    ""sources"": [
+		    {
+			    ""mimeType"": ""video/mp4"",
+			    ""url"": ""http://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4""
+            }
+	    ]
+    }
   ]
 }";
             var card = AdaptiveCard.FromJson(json).Card;
 
             var mediaElement = card.Body[0] as AdaptiveMedia;
-            Assert.AreEqual("http://adaptivecards.io/content/cats/1.png", mediaElement.Poster);
+            Assert.IsNull(mediaElement.Poster);
+            Assert.IsNull(mediaElement.AltText);
 
-            var source = mediaElement.Sources[0] as AdaptiveMediaSource;
+            var mediaElementFull = card.Body[1] as AdaptiveMedia;
+            Assert.AreEqual("http://adaptivecards.io/content/cats/1.png", mediaElementFull.Poster);
+            Assert.AreEqual("Adaptive Cards Overview Video", mediaElementFull.AltText);
+
+            var source = mediaElementFull.Sources[0] as AdaptiveMediaSource;
             Assert.AreEqual("video/mp4", source.MimeType);
-            Assert.AreEqual("https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4", source.Url);
+            Assert.AreEqual("http://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4", source.Url);
         }
 
         [TestMethod]
