@@ -68,9 +68,6 @@ namespace AdaptiveCards
 
             // Define AdaptiveCard to return
             AdaptiveCard fallbackTextCard = new AdaptiveCard("1.0");
-            fallbackTextCard.BackgroundImage = null;
-            fallbackTextCard.Lang = language ?? "en";
-            fallbackTextCard.Speak = "";
             fallbackTextCard.Body.Add(new AdaptiveTextBlock
             {
                 Text = fallbackText
