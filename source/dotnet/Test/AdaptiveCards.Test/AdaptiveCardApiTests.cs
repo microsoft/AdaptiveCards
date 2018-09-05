@@ -424,41 +424,41 @@ namespace AdaptiveCards.Test
                 @"{
                     ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
                     ""type"": ""AdaptiveCard"",
-	                ""version"": ""1.0"",
-	                ""body"": [
-		                {
-			                ""type"": ""ColumnSet"",
-			                ""columns"": [
-				                {
-					                ""type"": ""Column"",
-					                ""items"": [
-						                {
-							                ""type"": ""TextBlock"",
-							                ""text"": ""Tell us about yourself"",
-							                ""weight"": ""bolder"",
-							                ""size"": ""medium""
+                    ""version"": ""1.0"",
+                    ""body"": [
+                        {
+                            ""type"": ""ColumnSet"",
+                            ""columns"": [
+                                {
+                                    ""type"": ""Column"",
+                                    ""items"": [
+                                        {
+                                            ""type"": ""TextBlock"",
+                                            ""text"": ""Tell us about yourself"",
+                                            ""weight"": ""bolder"",
+                                            ""size"": ""medium""
                                         }
-					                ]
-				                },
-				                {
-					                ""type"": ""Column"",
-					                ""items"": [
-						                {
-							                ""type"": ""Image"",
-							                ""url"": ""https://upload.wikimedia.org/wikipedia/commons/b/b2/Diver_Silhouette%2C_Great_Barrier_Reef.jpg"",
-							                ""size"": ""auto"",
-						                }
-					                ]
-				                }
+                                    ]
+                                },
+                                {
+                                     ""type"": ""Column"",
+                                     ""items"": [
+                                        {
+                                            ""type"": ""Image"",
+                                            ""url"": ""https://upload.wikimedia.org/wikipedia/commons/b/b2/Diver_Silhouette%2C_Great_Barrier_Reef.jpg"",
+                                            ""size"": ""auto"",
+                                        }
+                                    ]
+                                }
                             ]
-		                }
-	                ],
-	                ""actions"": [
-		                {
-			                ""type"": ""Action.Submit"",
-			                ""title"": ""Submit""
-		                }
-	                ]
+                        }
+                    ],
+                    ""actions"": [
+                        {
+                            ""type"": ""Action.Submit"",
+                            ""title"": ""Submit""
+                        }
+                    ]
                 }";
 
             var result = AdaptiveCard.FromJson(payload);
