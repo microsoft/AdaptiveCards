@@ -18,13 +18,16 @@ namespace AdaptiveCards.Rendering.Wpf
             IsPaused,
         }
 
-        // Button margin * 2 + button height = panel height (50)
-        private static readonly int _panelHeight = 50;
-        private static readonly int _childMargin = 5;
-        private static readonly Thickness _marginThickness = new Thickness(_childMargin, _childMargin, _childMargin, _childMargin);
-        private static readonly int _childHeight = _panelHeight - _childMargin * 2;
+        #region Appearance Config
 
-        // Contrasting colors
+        // Element height and margin
+        // NOTE: Child height + child margin * 2 = panel height (50)
+        private static readonly int _childHeight = 40;
+        private static readonly int _childMargin = 5;
+        private static readonly int _panelHeight = _childHeight + _childMargin * 2;
+        private static readonly Thickness _marginThickness = new Thickness(_childMargin, _childMargin, _childMargin, _childMargin);
+
+        // Use contrasting colors for foreground and background
         private static readonly SolidColorBrush _controlForegroundColor = new SolidColorBrush(Colors.White);
         private static readonly SolidColorBrush _controlBackgroundColor = new SolidColorBrush(Colors.Gray)
         {
@@ -32,6 +35,8 @@ namespace AdaptiveCards.Rendering.Wpf
         };
 
         private static readonly FontFamily _symbolFontFamily = new FontFamily("Segoe UI Symbol");
+
+        #endregion
 
         public static FrameworkElement Render(AdaptiveMedia media, AdaptiveRenderContext context)
         {
@@ -48,11 +53,10 @@ namespace AdaptiveCards.Rendering.Wpf
                 return null;
             }
 
-            bool isAudio = IsAudio(mediaSource);
-
+            // Main element to return
             var uiMedia = new Grid();
 
-            #region Thumbnail
+            #region Thumbnail button
 
             var mediaConfig = context.Config.Media;
 
@@ -62,12 +66,14 @@ namespace AdaptiveCards.Rendering.Wpf
                 Visibility = Visibility.Visible
             };
 
+            /* Poster Image */
+
+            // A poster container is necessary to handle background color and opacity mask
+            // in case poster image is not found or does not exist
             var uiPosterContainer = new Grid()
             {
                 Background = _controlBackgroundColor,
             };
-
-            /* Poster (if present) */
 
             Image uiPosterImage = GetPosterImage(media, context);
             if (uiPosterImage != null)
@@ -75,51 +81,10 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiPosterContainer.Children.Add(uiPosterImage);
             }
 
-            // If the host doesn't support interactivity, just render the poster image
-            if (!context.Config.SupportsInteractivity)
-            {
-                return uiPosterImage;
-            }
-
             uiThumbnailButton.Children.Add(uiPosterContainer);
 
-            /* Play button */
-
-            var playButtonSize = 100;
-
-            // Wrap in a Viewbox to control width, height, and aspect ratio
-            var uiPlayButton = new Viewbox()
-            {
-                Width = playButtonSize,
-                Height = playButtonSize,
-                Stretch = Stretch.Fill,
-                Margin = _marginThickness,
-            };
-            if (!string.IsNullOrEmpty(mediaConfig.PlayButton)
-                 && context.Config.ResolveFinalAbsoluteUri(mediaConfig.PlayButton) != null)
-            {
-                var content = new Image()
-                {
-                    Height = playButtonSize,
-                };
-                content.SetSource(context.Config.ResolveFinalAbsoluteUri(mediaConfig.PlayButton), context);
-
-                uiPlayButton.Child = content;
-            }
-            else
-            {
-                var content = new TextBlock()
-                {
-                    Text = "⏵",
-                    FontFamily = _symbolFontFamily,
-                    Foreground = _controlForegroundColor,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                };
-
-                uiPlayButton.Child = content;
-            }
-
+            // Play button
+            var uiPlayButton = RenderThumbnailPlayButton(context);
             uiThumbnailButton.Children.Add(uiPlayButton);
 
             // Mouse hover handlers to signify playable media element
@@ -140,26 +105,31 @@ namespace AdaptiveCards.Rendering.Wpf
             if (mediaConfig.AllowInlinePlayback)
             {
                 // Media player is only created if inline playback is allowed
-                uiMediaPlayer = RenderMediaPlayer(context, mediaSource, uiMedia, isAudio);
+                uiMediaPlayer = RenderMediaPlayer(context, mediaSource, uiMedia);
                 uiMediaPlayer.Visibility = Visibility.Collapsed;
 
                 uiMedia.Children.Add(uiMediaPlayer);
             }
 
-            // Add on click handler to play the media
+            // Play the media
             uiThumbnailButton.MouseUp += (sender, e) =>
             {
                 if (mediaConfig.AllowInlinePlayback)
                 {
-                    if (isAudio && uiPosterImage != null)
+                    if (IsAudio(mediaSource) && uiPosterImage != null)
                     {
+                        // If media is audio, keep only the poster image (if present)
+                        // and disable the thumbnail button to prevent further clicks
                         uiPlayButton.Visibility = Visibility.Collapsed;
                         uiThumbnailButton.IsEnabled = false;
                     }
                     else
                     {
+                        // Otherwise, collapse all the thumbnail button
                         uiThumbnailButton.Visibility = Visibility.Collapsed;
                     }
+
+                    // Show the media player to start
                     uiMediaPlayer.Visibility = Visibility.Visible;
                 }
                 else
@@ -175,21 +145,76 @@ namespace AdaptiveCards.Rendering.Wpf
             return uiMedia;
         }
 
-        private static FrameworkElement RenderMediaPlayer(AdaptiveRenderContext context, AdaptiveMediaSource mediaSource, FrameworkElement uiMedia, bool isAudio)
+        private static FrameworkElement RenderThumbnailPlayButton(AdaptiveRenderContext context)
         {
-            var masterPanel = new Grid();
+            var playButtonSize = 100;
 
-            // Media element
+            // Wrap in a Viewbox to control width, height, and aspect ratio
+            var uiPlayButton = new Viewbox()
+            {
+                Width = playButtonSize,
+                Height = playButtonSize,
+                Stretch = Stretch.Fill,
+                Margin = _marginThickness,
+            };
+
+            MediaConfig mediaConfig = context.Config.Media;
+            if (!string.IsNullOrEmpty(mediaConfig.PlayButton)
+                 && context.Config.ResolveFinalAbsoluteUri(mediaConfig.PlayButton) != null)
+            {
+                // Try to use provided image from host config
+                var content = new Image()
+                {
+                    Height = playButtonSize,
+                };
+                content.SetSource(context.Config.ResolveFinalAbsoluteUri(mediaConfig.PlayButton), context);
+
+                uiPlayButton.Child = content;
+            }
+            else
+            {
+                // Otherwise, use the default play symbol
+                var content = new TextBlock()
+                {
+                    Text = "⏵",
+                    FontFamily = _symbolFontFamily,
+                    Foreground = _controlForegroundColor,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                };
+
+                uiPlayButton.Child = content;
+            }
+
+            return uiPlayButton;
+        }
+
+        /** The media player contains the following elements:
+         *  - Media element
+         *  - Control panel:
+         *      - Timeline panel to keep track of media progress and provide seek to functionality
+         *      - Playback panel:
+         *          - Pause button
+         *          - Resume button
+         *          - Replay button
+         *          - Volume controls:
+         *              - Mute/unmute
+         *              - Volume slider
+         */
+        private static FrameworkElement RenderMediaPlayer(AdaptiveRenderContext context, AdaptiveMediaSource mediaSource, FrameworkElement uiMedia)
+        {
+            var uiMediaPlayer = new Grid();
+
             var mediaElement = new MediaElement()
             {
                 Stretch = Stretch.Fill,
             };
-            masterPanel.Children.Add(mediaElement);
+            uiMediaPlayer.Children.Add(mediaElement);
 
-            if (!isAudio)
+            // Add some height to keep the controls (timeline panel + playback panel)
+            if (!IsAudio(mediaSource))
             {
-                // Add some height to keep the controls (timeline panel + playback panel)
-                masterPanel.MinHeight = _panelHeight * 2 + _childMargin * 4;
+                uiMediaPlayer.MinHeight = _panelHeight * 2 + _childMargin * 4;
             }
 
             var uiControlPanel = new StackPanel()
@@ -253,9 +278,9 @@ namespace AdaptiveCards.Rendering.Wpf
 
             uiControlPanel.Children.Add(uiTimelinePanel);
 
-            #region Playback Panel
+            #region Playback + Volume Panel
 
-            var uiPlaybackPanel = new Grid()
+            var uiPlaybackVolumePanel = new Grid()
             {
                 Height = _panelHeight,
             };
@@ -270,8 +295,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 Height = _panelHeight,
             };
 
-            // Play trigger
-            // TODO: Handle unplayable https medias
+            // Play trigger attached with the thumbnail button
             var playTrigger = new EventTrigger(UIElement.MouseUpEvent)
             {
                 SourceName = "thumbnailButton",
@@ -279,7 +303,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             var mediaTimeline = new MediaTimeline()
             {
-                // This URI is previously confirmed to be valid
+                // This URI was previously confirmed to be valid
                 Source = context.Config.ResolveFinalAbsoluteUri(mediaSource.Url),
             };
             Storyboard.SetTarget(mediaTimeline, mediaElement);
@@ -291,10 +315,14 @@ namespace AdaptiveCards.Rendering.Wpf
             storyboard.Children.Add(mediaTimeline);
             var beginStoryboard = new BeginStoryboard()
             {
+                // An arbitrary name is necessary for the storyboard to work correctly
                 Name = "beginStoryboard",
                 Storyboard = storyboard,
             };
             playTrigger.Actions.Add(beginStoryboard);
+
+            // The play trigger needs to be added to uiMedia since
+            // uiThumbnailButton is inside uiMedia
             uiMedia.Triggers.Add(playTrigger);
 
             // Buffering signal
@@ -325,24 +353,24 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 storyboard.Pause(uiMedia);
                 currentMediaState = MediaState.IsPaused;
-                HandleButtonAppearance(currentMediaState, uiPauseButton, uiResumeButton, uiReplayButton);
+                HandlePlaybackButtonVisibility(currentMediaState, uiPauseButton, uiResumeButton, uiReplayButton);
             };
             uiResumeButton.MouseUp += (sender, e) =>
             {
                 storyboard.Resume(uiMedia);
                 currentMediaState = MediaState.IsPlaying;
-                HandleButtonAppearance(currentMediaState, uiPauseButton, uiResumeButton, uiReplayButton);
+                HandlePlaybackButtonVisibility(currentMediaState, uiPauseButton, uiResumeButton, uiReplayButton);
             };
 
             #endregion
 
-            // Add to control bar
-            uiPlaybackPanel.ColumnDefinitions.Add(new ColumnDefinition()
+            // Add to control panel
+            uiPlaybackVolumePanel.ColumnDefinitions.Add(new ColumnDefinition()
             {
                 Width = new GridLength(20, GridUnitType.Star),
             });
             Grid.SetColumn(uiPlaybackControlContainer, 0);
-            uiPlaybackPanel.Children.Add(uiPlaybackControlContainer);
+            uiPlaybackVolumePanel.Children.Add(uiPlaybackControlContainer);
 
             #region Create Volume Control Container
 
@@ -352,7 +380,8 @@ namespace AdaptiveCards.Rendering.Wpf
                 VerticalAlignment = VerticalAlignment.Center,
             };
 
-            var uiVolumeButton = new TextBlock()
+            // 2 overlapping buttons to alternate between mute/unmute states
+            var uiVolumeMuteButton = new TextBlock()
             {
                 Text = "🔊",
                 FontFamily = _symbolFontFamily,
@@ -365,11 +394,10 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 Width = new GridLength(20, GridUnitType.Auto),
             });
-            Grid.SetColumn(uiVolumeButton, 0);
-            uiVolumeControlContainer.Children.Add(uiVolumeButton);
+            Grid.SetColumn(uiVolumeMuteButton, 0);
+            uiVolumeControlContainer.Children.Add(uiVolumeMuteButton);
 
-            // Button to alternate between mute/unmute state
-            var uiVolumeMuteButton = new TextBlock()
+            var uiVolumeUnmuteButton = new TextBlock()
             {
                 Text = "🔇",
                 FontFamily = _symbolFontFamily,
@@ -383,8 +411,8 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 Width = new GridLength(20, GridUnitType.Auto),
             });
-            Grid.SetColumn(uiVolumeMuteButton, 0);
-            uiVolumeControlContainer.Children.Add(uiVolumeMuteButton);
+            Grid.SetColumn(uiVolumeUnmuteButton, 0);
+            uiVolumeControlContainer.Children.Add(uiVolumeUnmuteButton);
 
             Slider uiVolumeSlider = new Slider()
             {
@@ -396,11 +424,6 @@ namespace AdaptiveCards.Rendering.Wpf
                 Maximum = 1,
                 Value = 0.5,
             };
-            mediaElement.Volume = uiVolumeSlider.Value; // Initialize
-            uiVolumeSlider.ValueChanged += (sender, e) =>
-            {
-                mediaElement.Volume = uiVolumeSlider.Value;
-            };
             uiVolumeControlContainer.ColumnDefinitions.Add(new ColumnDefinition()
             {
                 Width = new GridLength(20, GridUnitType.Auto),
@@ -408,42 +431,42 @@ namespace AdaptiveCards.Rendering.Wpf
             Grid.SetColumn(uiVolumeSlider, 1);
             uiVolumeControlContainer.Children.Add(uiVolumeSlider);
 
-            // Handle volume button click
-            uiVolumeButton.MouseUp += (sender, e) =>
+            // Initialize media volume to 0.5
+            mediaElement.Volume = uiVolumeSlider.Value;
+
+            // Volume control handlers
+            void muteVolume(object sender, MouseEventArgs e)
             {
-                uiVolumeButton.Visibility = Visibility.Collapsed;
-                uiVolumeMuteButton.Visibility = Visibility.Visible;
+                uiVolumeMuteButton.Visibility = Visibility.Collapsed;
+                uiVolumeUnmuteButton.Visibility = Visibility.Visible;
                 mediaElement.Volume = 0;
-            };
-            uiVolumeMuteButton.MouseUp += (sender, e) =>
+            }
+            void unmuteVolume(object sender, RoutedEventArgs e)
             {
-                uiVolumeMuteButton.Visibility = Visibility.Collapsed;
-                uiVolumeButton.Visibility = Visibility.Visible;
+                uiVolumeUnmuteButton.Visibility = Visibility.Collapsed;
+                uiVolumeMuteButton.Visibility = Visibility.Visible;
                 mediaElement.Volume = uiVolumeSlider.Value;
-            };
-            uiVolumeSlider.ValueChanged += (sender, e) =>
-            {
-                // When volume slider moves, unmute
-                uiVolumeMuteButton.Visibility = Visibility.Collapsed;
-                uiVolumeButton.Visibility = Visibility.Visible;
-                mediaElement.Volume = uiVolumeSlider.Value;
-            };
+            }
+
+            uiVolumeMuteButton.MouseUp += muteVolume;
+            uiVolumeUnmuteButton.MouseUp += unmuteVolume;
+            uiVolumeSlider.ValueChanged += unmuteVolume;
 
             #endregion
 
-            // Add to control bar
-            uiPlaybackPanel.ColumnDefinitions.Add(new ColumnDefinition()
+            // Add to control panel
+            uiPlaybackVolumePanel.ColumnDefinitions.Add(new ColumnDefinition()
             {
                 Width = new GridLength(20, GridUnitType.Auto),
             });
             Grid.SetColumn(uiVolumeControlContainer, 1);
-            uiPlaybackPanel.Children.Add(uiVolumeControlContainer);
+            uiPlaybackVolumePanel.Children.Add(uiVolumeControlContainer);
 
             #endregion
 
-            uiControlPanel.Children.Add(uiPlaybackPanel);
+            uiControlPanel.Children.Add(uiPlaybackVolumePanel);
 
-            masterPanel.Children.Add(uiControlPanel);
+            uiMediaPlayer.Children.Add(uiControlPanel);
 
             #region Other events
 
@@ -454,34 +477,34 @@ namespace AdaptiveCards.Rendering.Wpf
                 // Playback button visibility
                 currentMediaState = MediaState.IsPlaying;
                 uiBuffering.Visibility = Visibility.Collapsed;
-                HandleButtonAppearance(currentMediaState, uiPauseButton, uiResumeButton, uiReplayButton);
+                HandlePlaybackButtonVisibility(currentMediaState, uiPauseButton, uiResumeButton, uiReplayButton);
 
                 // Control panel visibility
-                if (!isAudio)
+                if (!IsAudio(mediaSource))
                 {
                     // Hide when the video starts playing
                     uiControlPanel.Visibility = Visibility.Collapsed;
 
                     // Assign mouse hover events to avoid blocking the video
-                    masterPanel.MouseEnter += showControlPanel;
-                    masterPanel.MouseLeave += collapseControlPanel;
+                    uiMediaPlayer.MouseEnter += showControlPanel;
+                    uiMediaPlayer.MouseLeave += collapseControlPanel;
                 }
             }
             void mediaEnded(object sender, EventArgs e)
             {
                 // Playback button visibility
                 currentMediaState = MediaState.NotStarted;
-                HandleButtonAppearance(currentMediaState, uiPauseButton, uiResumeButton, uiReplayButton);
+                HandlePlaybackButtonVisibility(currentMediaState, uiPauseButton, uiResumeButton, uiReplayButton);
 
                 // Control panel visibility
-                if (!isAudio)
+                if (!IsAudio(mediaSource))
                 {
                     // Show when the video is complete
                     uiControlPanel.Visibility = Visibility.Visible;
 
                     // Remove mouse hover events to always show controls
-                    masterPanel.MouseEnter -= showControlPanel;
-                    masterPanel.MouseLeave -= collapseControlPanel;
+                    uiMediaPlayer.MouseEnter -= showControlPanel;
+                    uiMediaPlayer.MouseLeave -= collapseControlPanel;
                 }
             }
 
@@ -537,27 +560,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             #endregion
 
-            return masterPanel;
-        }
-
-        /** Simple template for playback buttons */
-        private static FrameworkElement RenderPlaybackButton(string text)
-        {
-            return new Viewbox()
-            {
-                Width = _childHeight,
-                Height = _childHeight,
-                Stretch = Stretch.Fill,
-                Margin = _marginThickness,
-                VerticalAlignment = VerticalAlignment.Center,
-                Visibility = Visibility.Collapsed,
-                Child = new TextBlock()
-                {
-                    Text = text,
-                    FontFamily = _symbolFontFamily,
-                    Foreground = _controlForegroundColor,
-                }
-            };
+            return uiMediaPlayer;
         }
 
         /** Get poster image from either card payload or host config */
@@ -581,7 +584,32 @@ namespace AdaptiveCards.Rendering.Wpf
             return uiPosterImage;
         }
 
-        private static void HandleButtonAppearance(MediaState currentMediaState,
+        /** Simple template for playback buttons */
+        private static FrameworkElement RenderPlaybackButton(string text)
+        {
+            return new Viewbox()
+            {
+                Width = _childHeight,
+                Height = _childHeight,
+                Stretch = Stretch.Fill,
+                Margin = _marginThickness,
+                VerticalAlignment = VerticalAlignment.Center,
+                Visibility = Visibility.Collapsed,
+                Child = new TextBlock()
+                {
+                    Text = text,
+                    FontFamily = _symbolFontFamily,
+                    Foreground = _controlForegroundColor,
+                }
+            };
+        }
+
+        /** Handle visibility of playback buttons based on the current media state
+         *  - If it's playing, user can only pause
+         *  - If it's paused, user can only resume
+         *  - If it's complete, user can only replay
+         */
+        private static void HandlePlaybackButtonVisibility(MediaState currentMediaState,
             FrameworkElement pauseButton, FrameworkElement resumeButton, FrameworkElement replayButton)
         {
             pauseButton.Visibility = Visibility.Collapsed;
@@ -598,7 +626,7 @@ namespace AdaptiveCards.Rendering.Wpf
             }
             else
             {
-                // Not started (or video is complete)
+                // Video is complete
                 replayButton.Visibility = Visibility.Visible;
             }
         }
@@ -616,7 +644,7 @@ namespace AdaptiveCards.Rendering.Wpf
             "audio/mpeg"
         };
 
-        /** Get media URI of a given media object */
+        /** Get the first media URI with a supported mime type */
         private static AdaptiveMediaSource GetMediaSource(AdaptiveMedia media, AdaptiveRenderContext context)
         {
             // Check if sources contain an invalid mix of MIME types (audio and video)
