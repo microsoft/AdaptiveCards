@@ -463,10 +463,12 @@ namespace AdaptiveCards.Test
 }";
             var card = AdaptiveCard.FromJson(json).Card;
 
+            // The first media element does not have either poster or alt text
             var mediaElement = card.Body[0] as AdaptiveMedia;
             Assert.IsNull(mediaElement.Poster);
             Assert.IsNull(mediaElement.AltText);
 
+            // The second media element has poster, alt text, and 1 source
             var mediaElementFull = card.Body[1] as AdaptiveMedia;
             Assert.AreEqual("http://adaptivecards.io/content/cats/1.png", mediaElementFull.Poster);
             Assert.AreEqual("Adaptive Cards Overview Video", mediaElementFull.AltText);
