@@ -523,5 +523,29 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(card.Body.Count, 1);
             Assert.AreEqual(card.Body[0].Height, AdaptiveHeight.Stretch);
         }
+
+        [TestMethod]
+        public void TestImageStretch()
+        {
+            var payload =
+                @"{
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
+                      ""version"": ""1.0"",
+                      ""body"": [
+                          {
+                              ""type"": ""Image"",
+                              ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+                              ""height"": ""stretch"",
+                              ""size"": ""small""  
+                          }
+                      ]
+                  }";
+
+            var result = AdaptiveCard.FromJson(payload);
+            var card = result?.Card;
+            Assert.AreEqual(card.Body.Count, 1);
+            Assert.AreEqual(card.Body[0].Height, AdaptiveHeight.Stretch);
+        }
     }
 }
