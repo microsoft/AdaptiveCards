@@ -101,8 +101,11 @@ namespace AdaptiveCards.Rendering.Wpf
 
             uiMedia.Children.Add(uiThumbnailButton);
 
+            // Inline playback is possible only when inline playback is allowed by the host and the chosen media source is not https
+            bool isInlinePlaybackPossible = mediaConfig.AllowInlinePlayback && context.Config.ResolveFinalAbsoluteUri(mediaSource.Url).Scheme != "https";
+
             FrameworkElement uiMediaPlayer = null;
-            if (mediaConfig.AllowInlinePlayback)
+            if (isInlinePlaybackPossible)
             {
                 // Media player is only created if inline playback is allowed
                 uiMediaPlayer = RenderMediaPlayer(context, mediaSource, uiMedia);
@@ -114,7 +117,7 @@ namespace AdaptiveCards.Rendering.Wpf
             // Play the media
             uiThumbnailButton.MouseUp += (sender, e) =>
             {
-                if (mediaConfig.AllowInlinePlayback)
+                if (isInlinePlaybackPossible)
                 {
                     if (IsAudio(mediaSource) && uiPosterImage != null)
                     {
@@ -132,9 +135,9 @@ namespace AdaptiveCards.Rendering.Wpf
                     // Show the media player to start
                     uiMediaPlayer.Visibility = Visibility.Visible;
                 }
+                // Raise an event to send the media to host
                 else
                 {
-                    // If inline playback is not allowed, raise an event to send the media to host
                     context.ClickMedia(uiPosterContainer, new AdaptiveMediaEventArgs(media));
 
                     // Prevent nested events from triggering
@@ -670,6 +673,8 @@ namespace AdaptiveCards.Rendering.Wpf
             }
 
             // Return the first supported source with not-null URI
+            bool isAllHttps = true;
+            AdaptiveMediaSource httpsSource = null;
             foreach (var source in media.Sources)
             {
                 if (_supportedMimeTypes.Contains(source.MimeType))
@@ -677,9 +682,26 @@ namespace AdaptiveCards.Rendering.Wpf
                     Uri finalMediaUri = context.Config.ResolveFinalAbsoluteUri(source.Url);
                     if (finalMediaUri != null)
                     {
-                        return source;
+                        // Since https is not supported by WPF,
+                        // try to use non-https sources first
+                        if (finalMediaUri.Scheme != "https")
+                        {
+                            isAllHttps = false;
+                            return source;
+                        }
+                        else if (httpsSource == null)
+                        {
+                            httpsSource = source;
+                        }
                     }
                 }
+            }
+
+            // If all sources are https, log a warning and return the first one
+            if (isAllHttps)
+            {
+                context.Warnings.Add(new AdaptiveWarning(-1, "All sources have unsupported https scheme. The host would be responsible for playing the media."));
+                return httpsSource;
             }
 
             // No valid source is found
