@@ -57,12 +57,21 @@ namespace AdaptiveCards.Rendering.Wpf
                     }
 
                     if (cardElement.Height == AdaptiveHeight.Auto)
+                    {
                         uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                        Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
+                        uiContainer.Children.Add(uiElement);
+                    }
                     else
-                        uiContainer.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                    {
+                        StackPanel panel = new StackPanel();
+                        panel.Children.Add(uiElement);
 
-                    Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
-                    uiContainer.Children.Add(uiElement);
+                        uiContainer.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                        Grid.SetRow(panel, uiContainer.RowDefinitions.Count - 1);
+                        uiContainer.Children.Add(panel);
+                    }
+                    
                 }
             }
         }
