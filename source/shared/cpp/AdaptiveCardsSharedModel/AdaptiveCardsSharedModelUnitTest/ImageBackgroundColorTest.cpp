@@ -30,7 +30,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-			std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
+			std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
 			std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
 			std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
 			std::string backgroundColor = image->GetBackgroundColor();
@@ -51,7 +51,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
             std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
             std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
             std::string backgroundColor = image->GetBackgroundColor();
@@ -73,7 +73,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
             std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
             std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
             std::string backgroundColor = image->GetBackgroundColor();
@@ -95,7 +95,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
             std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
             std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
             std::string backgroundColor = image->GetBackgroundColor();
@@ -117,7 +117,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
             std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
             std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
             std::string backgroundColor = image->GetBackgroundColor();
@@ -139,7 +139,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
             std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
             std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
             std::string backgroundColor = image->GetBackgroundColor();
@@ -161,7 +161,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
             std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
             std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
             std::string backgroundColor = image->GetBackgroundColor();

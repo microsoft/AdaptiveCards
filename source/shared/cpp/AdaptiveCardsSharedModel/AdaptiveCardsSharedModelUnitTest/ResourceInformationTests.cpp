@@ -163,7 +163,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             }";
 
             // Parse the card and get the image uris
-            auto resourceInformation = AdaptiveCard::DeserializeFromString(testJsonString, 1.0)->GetAdaptiveCard()->GetResourceInformation();
+            auto resourceInformation = AdaptiveCard::DeserializeFromString(testJsonString, "1.0")->GetAdaptiveCard()->GetResourceInformation();
             ValidateResourceInformation(expectedValues, resourceInformation);
         }
 
@@ -263,7 +263,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             actionRegistration->AddParser("CustomActionWithImage", std::make_shared<TestCustomActionParser>());
 
             // Parse the card and get the image uris
-            auto resourceInformation = AdaptiveCard::DeserializeFromString(testJsonString, 1.0, elementRegistration, actionRegistration)->GetAdaptiveCard()->GetResourceInformation();
+            auto resourceInformation = AdaptiveCard::DeserializeFromString(testJsonString, "1.0", elementRegistration, actionRegistration)->GetAdaptiveCard()->GetResourceInformation();
             ValidateResourceInformation(expectedValues, resourceInformation);
         }
 
@@ -315,7 +315,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             }";
 
             // Parse the card and get the image uris
-            auto resourceInformation = AdaptiveCard::DeserializeFromString(testJsonString, 1.0)->GetAdaptiveCard()->GetResourceInformation();
+            auto resourceInformation = AdaptiveCard::DeserializeFromString(testJsonString, "1.0")->GetAdaptiveCard()->GetResourceInformation();
             ValidateResourceInformation(expectedValues, resourceInformation);
         }
     };
