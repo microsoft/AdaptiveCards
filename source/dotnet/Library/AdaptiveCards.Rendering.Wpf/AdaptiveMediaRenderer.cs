@@ -170,7 +170,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 {
                     Height = playButtonSize,
                 };
-                content.SetSource(context.Config.ResolveFinalAbsoluteUri(mediaConfig.PlayButton), context);
+                content.SetImageSource(mediaConfig.PlayButton, context);
 
                 uiPlayButton.Child = content;
             }
@@ -566,6 +566,12 @@ namespace AdaptiveCards.Rendering.Wpf
             return uiMediaPlayer;
         }
 
+        /** Helper function to call async function from context */
+        private static async void SetImageSource(this Image image, string urlString, AdaptiveRenderContext context)
+        {
+            image.Source = await context.ResolveImageSource(context.Config.ResolveFinalAbsoluteUri(urlString));
+        }
+
         /** Get poster image from either card payload or host config */
         private static Image GetPosterImage(AdaptiveMedia media, AdaptiveRenderContext context)
         {
@@ -574,14 +580,14 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 // Use the provided poster
                 uiPosterImage = new Image();
-                uiPosterImage.SetSource(context.Config.ResolveFinalAbsoluteUri(media.Poster), context);
+                uiPosterImage.SetImageSource(media.Poster, context);
             }
             else if (!string.IsNullOrEmpty(context.Config.Media.DefaultPoster)
                  && context.Config.ResolveFinalAbsoluteUri(context.Config.Media.DefaultPoster) != null)
             {
                 // Use the default poster from host
                 uiPosterImage = new Image();
-                uiPosterImage.SetSource(context.Config.ResolveFinalAbsoluteUri(context.Config.Media.DefaultPoster), context);
+                uiPosterImage.SetImageSource(context.Config.Media.DefaultPoster, context);
             }
 
             return uiPosterImage;
