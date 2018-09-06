@@ -123,8 +123,6 @@ namespace AdaptiveCards.Test
                     "VerticalStretch", // Not implemented yet
                     "VerticalContentAlignment", // Not implemented yet
                     "InputsFormWithHeightStretch", // Not implemented yet
-                    "InvalidMediaMix", // Not implemented yet
-                    "Media", // Not implemented yet
                 });
         }
     }
