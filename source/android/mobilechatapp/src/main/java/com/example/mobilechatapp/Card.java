@@ -52,7 +52,8 @@ public class Card
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            // e.printStackTrace();
+            m_exceptionDetailMessage = e.getMessage();
         }
 
         // Register all the types found into the bigger dictionary of existing element types
@@ -211,6 +212,11 @@ public class Card
         return m_filename;
     }
 
+    public String getExceptionDetailMessage()
+    {
+        return m_exceptionDetailMessage;
+    }
+
     private void addElementToElementTypes(String elementType)
     {
         m_elementTypes.add(elementType.toLowerCase());
@@ -224,4 +230,5 @@ public class Card
     private ParseResult m_parsedCard;
     private Set<String> m_elementTypes;
     private String m_filename;
+    private String m_exceptionDetailMessage;
 }

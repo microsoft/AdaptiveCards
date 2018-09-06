@@ -2,6 +2,7 @@ package com.example.mobilechatapp;
 
 import android.app.ListActivity;
 import android.database.DataSetObserver;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -28,6 +29,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,8 +82,32 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
                 {
                     for (Card card : retrievedCards)
                     {
-                        RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(MainActivity.this, getSupportFragmentManager(), card.getParsedCard().GetAdaptiveCard(), MainActivity.this, m_hostConfig);
-                        m_adapter.addItem(card.getFileName(), renderedCard.getView());
+                        try
+                        {
+                            if(card.getParsedCard() != null)
+                            {
+                                RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(MainActivity.this, getSupportFragmentManager(), card.getParsedCard().GetAdaptiveCard(), MainActivity.this, m_hostConfig);
+                                m_adapter.addItem(card.getFileName(), renderedCard.getView());
+                            }
+                            else
+                            {
+                                LinearLayout errorMessageLayout = new LinearLayout(MainActivity.this);
+                                errorMessageLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                                errorMessageLayout.setBackgroundColor(getResources().getColor(R.color.ParsedErrorBackground));
+
+                                TextView errorMessage = new TextView(MainActivity.this);
+                                errorMessage.setPadding(20, 15, 20, 15);
+                                errorMessage.setText("This card failed to render due to: \n" + card.getExceptionDetailMessage());
+                                errorMessage.setTextColor(getResources().getColor(R.color.ErrorMessageColor));
+                                errorMessage.setTextSize(15);
+                                errorMessageLayout.addView(errorMessage);
+                                m_adapter.addItem(card.getFileName(), errorMessageLayout);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
