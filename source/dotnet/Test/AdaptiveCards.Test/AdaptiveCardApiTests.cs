@@ -225,5 +225,57 @@ namespace AdaptiveCards.Test
             var actual = card.GetResourceInformation();
             CollectionAssert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void TestDefaultValueHandling()
+        {
+            var json = @"{
+	            ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+	            ""type"": ""AdaptiveCard"",
+	            ""version"": ""1.0"",
+	            ""body"": [
+		            {
+			            ""type"": ""Container"",
+			            ""style"": ""asdf"",
+			            ""spacing"": ""asdf"",
+			            ""items"": [
+				            {
+					            ""type"": ""TextBlock"",
+					            ""text"": ""Sample text"",
+					            ""color"": ""asdf"",
+					            ""size"": ""asdf"",
+					            ""weight"": ""asdf""
+				            },
+				            {
+					            ""type"": ""Image"",
+					            ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+					            ""style"": ""asdf"",
+					            ""size"": ""asdf""
+				            }
+			            ]
+		            }
+	            ]
+            }";
+
+            var card = AdaptiveCard.FromJson(json).Card;
+
+            // Contents of card for easier access
+            AdaptiveContainer container = (AdaptiveContainer) card.Body[0];
+            AdaptiveTextBlock textblock = (AdaptiveTextBlock) container.Items[0];
+            AdaptiveImage image = (AdaptiveImage) container.Items[1];
+
+            // Container property tests
+            Assert.AreEqual(AdaptiveContainerStyle.Default, container.Style);
+            Assert.AreEqual(AdaptiveSpacing.Default, container.Spacing);
+
+            // TextBlock property tests
+            Assert.AreEqual(AdaptiveTextColor.Default, textblock.Color);
+            Assert.AreEqual(AdaptiveTextSize.Default, textblock.Size);
+            Assert.AreEqual(AdaptiveTextWeight.Default, textblock.Weight);
+
+            // Image property tests
+            Assert.AreEqual(AdaptiveImageStyle.Default, image.Style);
+            Assert.AreEqual(AdaptiveImageSize.Auto, image.Size);
+        }
     }
 }
