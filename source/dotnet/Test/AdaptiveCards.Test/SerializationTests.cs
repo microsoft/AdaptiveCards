@@ -517,5 +517,43 @@ namespace AdaptiveCards.Test
             var parseResult = AdaptiveCard.FromJson(json);
             Assert.AreEqual(3, parseResult.Warnings.Count);
         }
+
+        [TestMethod]
+        public void ExplicitImageSerializationTest()
+        {
+            var expected =
+@"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.0"",
+  ""id"": ""myCard"",
+  ""body"": [
+    {
+      ""type"": ""Image"",
+      ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+      ""width"": ""20px"",
+      ""height"": ""50px""
+    }
+  ]
+}";
+
+            var card = new AdaptiveCard
+            {
+                Id = "myCard",
+                Body =
+                {
+                    new AdaptiveImage("http://adaptivecards.io/content/cats/1.png")
+                    {
+                        PixelWidth = 20,
+                        PixelHeight = 50
+                    },
+                }
+            };
+
+            var actual = card.ToJson();
+            Assert.AreEqual(expected: expected, actual: actual);
+            var deserializedCard = AdaptiveCard.FromJson(expected).Card;
+            var deserializedActual = deserializedCard.ToJson();
+            Assert.AreEqual(expected: expected, actual: deserializedActual);
+        }
     }
 }

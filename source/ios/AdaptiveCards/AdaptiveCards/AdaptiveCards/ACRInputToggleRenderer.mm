@@ -38,7 +38,12 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<ToggleInput> toggleBlck = std::dynamic_pointer_cast<ToggleInput>(elem);
 
-    ACRInputTableView *inputTableView = [[ACRInputTableView alloc] initWithSuperview:viewGroup];
+    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
+    if(!bundle){ // https://github.com/Microsoft/AdaptiveCards/issues/1834
+        return nil;
+    }
+    ACRInputTableView *inputTableView = [bundle loadNibNamed:@"ACRInputTableView" owner:self options:nil][0];
+    inputTableView.frame = CGRectMake(0, 0, viewGroup.frame.size.width, viewGroup.frame.size.height);
     [inputTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     ACRToggleInputDataSource *dataSource = [[ACRToggleInputDataSource alloc] initWithInputToggle:toggleBlck WithHostConfig:config];
     inputTableView.delegate = dataSource;

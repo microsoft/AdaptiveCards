@@ -14,7 +14,6 @@
 #include "ElementParserRegistration.h"
 #include "DateTimePreparser.h"
 #include <iomanip>
-#include <regex>
 #include <iostream>
 #include <codecvt>
 
@@ -92,8 +91,8 @@ constexpr time_t IntToTimeT(int timeToConvert)
 {
 #pragma warning(push)
 #pragma warning(disable: 26472)
-	// disable warning about using static_cast since we need to hard cast up.
-	return static_cast<time_t>(timeToConvert);
+    // disable warning about using static_cast since we need to hard cast up.
+    return static_cast<time_t>(timeToConvert);
 #pragma warning(pop)
 }
 
@@ -128,9 +127,9 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
         const bool isDate = matches[IsDate].matched;
         int hours{}, minutes{};
         struct tm parsedTm{};
-		std::vector<int*> addrs = { &parsedTm.tm_year, &parsedTm.tm_mon,
-			&parsedTm.tm_mday, &parsedTm.tm_hour, &parsedTm.tm_min,
-			&parsedTm.tm_sec, &hours, &minutes };
+        std::vector<int*> addrs = { &parsedTm.tm_year, &parsedTm.tm_mon,
+            &parsedTm.tm_mday, &parsedTm.tm_hour, &parsedTm.tm_min,
+            &parsedTm.tm_sec, &hours, &minutes };
 
         if (matches[Style].matched)
         {
@@ -155,14 +154,14 @@ void DateTimePreparser::ParseDateTime(std::string const &in)
             {
                 // get indexes for time attributes to index into corresponding matches
                 // and convert it to string
-				*(addrs.at(idx)) = stoi(matches[indexer.at(idx)]);
+                *(addrs.at(idx)) = stoi(matches[indexer.at(idx)]);
             }
         }
 
         // check for date and time validation
         if (IsValidTimeAndDate(parsedTm, hours, minutes))
         {
-			time_t offset{};
+            time_t offset{};
             // maches offset sign,
             // Z == UTC,
             // + == time added from UTC
