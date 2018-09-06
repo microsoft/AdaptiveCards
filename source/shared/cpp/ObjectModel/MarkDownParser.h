@@ -18,6 +18,8 @@ public:
     std::string TransformToHtml();
 
     bool HasHtmlTags();
+    
+    bool IsEscaped();
 
 private:
     void ParseBlock();
@@ -25,5 +27,6 @@ private:
     std::string m_text;
     MarkDownParsedResult m_parsedResult;
     bool m_hasHTMLTag;
+    bool m_isEscaped;
 };
 }
