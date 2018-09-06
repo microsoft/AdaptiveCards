@@ -68,6 +68,7 @@ namespace AdaptiveCards.Rendering
             return ResolveFinalAbsoluteUri(uri);
         }
 
+        /** Get the absolute URI either by itself or using imageBaseUrl */
         public Uri ResolveFinalAbsoluteUri(Uri uri)
         {
             if (uri == null)
