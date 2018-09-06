@@ -10,6 +10,9 @@ namespace AdaptiveCards
     {
         public List<AdaptiveWarning> Warnings { get; set; } = new List<AdaptiveWarning>();
 
+        // TODO: temporary warning code for fallback card. Remove when common set of error codes created and integrated.
+        private enum WarningStatusCode { UnsupportedSchemaVersion = 7 };
+
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             throw new NotImplementedException();
@@ -74,7 +77,7 @@ namespace AdaptiveCards
             });
 
             // Add relevant warning
-            Warnings.Add(new AdaptiveWarning(7, "Schema version is not supported"));
+            Warnings.Add(new AdaptiveWarning((int) WarningStatusCode.UnsupportedSchemaVersion, "Schema version is not supported"));
 
             return fallbackTextCard;
         }
