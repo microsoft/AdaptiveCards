@@ -30,8 +30,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         ViewHolder(View itemView)
         {
             super(itemView);
-            m_cardLayout = itemView.findViewById(R.id.cardLayout);
-            m_jsonFileName = itemView.findViewById(R.id.jsonFileName);
+            m_cardLayout = (LinearLayout) itemView.findViewById(R.id.cardLayout);
+            m_jsonFileName = (TextView) itemView.findViewById(R.id.jsonFileName);
             itemView.setOnClickListener(this);
         }
 

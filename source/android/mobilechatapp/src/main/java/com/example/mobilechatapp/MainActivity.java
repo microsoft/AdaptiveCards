@@ -158,22 +158,22 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
 
         View contentLayout = findViewById(R.id.contentLayout);
 
-        m_sendButton = contentLayout.findViewById(R.id.sendButton);
+        m_sendButton = (ImageButton) contentLayout.findViewById(R.id.sendButton);
         m_sendButton.setOnClickListener(new ButtonListener());
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, s_keywords);
-        m_cardRequestEdit = contentLayout.findViewById(R.id.cardNumberEditText);
+        m_cardRequestEdit = (AutoCompleteTextView) contentLayout.findViewById(R.id.cardNumberEditText);
         m_cardRequestEdit.setAdapter(adapter);
 
-        m_elementTypesButttonsLayout = contentLayout.findViewById(R.id.existingElementTypesButtonLayout);
+        m_elementTypesButttonsLayout = (LinearLayout) contentLayout.findViewById(R.id.existingElementTypesButtonLayout);
 
-        m_recyclerView = contentLayout.findViewById(R.id.cardsView);
+        m_recyclerView = (RecyclerView) contentLayout.findViewById(R.id.cardsView);
         m_recyclerView.setLayoutManager(new LinearLayoutManager(this));
         m_adapter = new RecyclerViewAdapter(this);
         m_recyclerView.setAdapter(m_adapter);
 
-        m_progressBar = contentLayout.findViewById(R.id.readCardsProgressBar);
-        m_progressBarLayout = contentLayout.findViewById(R.id.loadingBarLayout);
+        m_progressBar = (ProgressBar) contentLayout.findViewById(R.id.readCardsProgressBar);
+        m_progressBarLayout = (LinearLayout) contentLayout.findViewById(R.id.loadingBarLayout);
 
         m_hostConfig = new HostConfig();
         m_elementParserRegistration = new ElementParserRegistration();
