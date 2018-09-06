@@ -301,9 +301,9 @@ namespace AdaptiveCards.Test
         public void ConsumerCanProvideCardVersion()
         {
             var json = @"{
-	""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
-	""type"": ""AdaptiveCard"",
-	""speak"": ""Hello""
+    ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+    ""type"": ""AdaptiveCard"",
+    ""speak"": ""Hello""
 }";
 
             var jObject = JObject.Parse(json);
@@ -422,8 +422,8 @@ namespace AdaptiveCards.Test
   ""type"": ""Hello"",
   ""version"": ""1.0"",
   ""body"": [
-	{
-	    ""type"": ""Media"",
+    {
+        ""type"": ""Media"",
         ""poster"": ""http://adaptivecards.io/content/cats/1.png""
     }
   ]
@@ -439,25 +439,25 @@ namespace AdaptiveCards.Test
   ""type"": ""AdaptiveCard"",
   ""version"": ""1.0"",
   ""body"": [
-	{
-	    ""type"": ""Media"",
-	    ""sources"": [
-		    {
-			    ""mimeType"": ""video/mp4"",
-			    ""url"": ""http://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4""
+    {
+        ""type"": ""Media"",
+        ""sources"": [
+            {
+                ""mimeType"": ""video/mp4"",
+                ""url"": ""http://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4""
             }
-	    ]
-	},
-	{
-	    ""type"": ""Media"",
+        ]
+    },
+    {
+        ""type"": ""Media"",
         ""poster"": ""http://adaptivecards.io/content/cats/1.png"",
         ""altText"": ""Adaptive Cards Overview Video"",
-	    ""sources"": [
-		    {
-			    ""mimeType"": ""video/mp4"",
-			    ""url"": ""http://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4""
+        ""sources"": [
+            {
+                ""mimeType"": ""video/mp4"",
+                ""url"": ""http://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4""
             }
-	    ]
+        ]
     }
   ]
 }";
