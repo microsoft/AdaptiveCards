@@ -21,7 +21,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 return uiImage;
             }
 
-            uiImage.SetSource(finalUri, context);
+            uiImage.SetSource(image, finalUri, context);
             uiImage.SetHorizontalAlignment(image.HorizontalAlignment);
 
             string style = $"Adaptive.{image.Type}";
@@ -42,7 +42,11 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiImage.OpacityMask = mask;
             }
             uiImage.Style = context.GetStyle(style);
-            uiImage.SetImageProperties(image, context);
+
+            if (image.PixelHeight == 0 && image.PixelWidth == 0)
+            {
+                uiImage.SetImageProperties(image, context);
+            }
 
             // If we have a background color, we'll create a border for the background and put the image on top
             if (!string.IsNullOrEmpty(image.BackgroundColor))

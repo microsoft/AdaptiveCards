@@ -15,7 +15,7 @@ namespace AdaptiveCards.Rendering.Html
     {
         protected override AdaptiveSchemaVersion GetSupportedSchemaVersion()
         {
-            return new AdaptiveSchemaVersion(1, 0);
+            return new AdaptiveSchemaVersion(1, 1);
         }
 
         /// <summary>
@@ -48,8 +48,6 @@ namespace AdaptiveCards.Rendering.Html
 
         public RenderedAdaptiveCard RenderCard(AdaptiveCard card)
         {
-            EnsureCanRender(card);
-
             try
             {
                 var context = new AdaptiveRenderContext(HostConfig, ElementRenderers);
@@ -668,29 +666,50 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("display", "block")
                 .Style("box-sizing", "border-box");
 
-            switch (image.Size)
+            // if explicit image size is not used, use Adpative Image size
+            if (image.PixelWidth == 0 && image.PixelHeight == 0)
             {
-                case AdaptiveImageSize.Auto:
-                    uiDiv = uiDiv.Style("max-width", $"100%");
-                    break;
-                case AdaptiveImageSize.Small:
-                    uiDiv = uiDiv.Style("max-width", $"{context.Config.ImageSizes.Small}px");
-                    break;
-                case AdaptiveImageSize.Medium:
-                    uiDiv = uiDiv.Style("max-width", $"{context.Config.ImageSizes.Medium}px");
-                    break;
-                case AdaptiveImageSize.Large:
-                    uiDiv = uiDiv.Style("max-width", $"{context.Config.ImageSizes.Large}px");
-                    break;
-                case AdaptiveImageSize.Stretch:
-                    uiDiv = uiDiv.Style("width", $"100%");
-                    break;
+                switch (image.Size)
+                {
+                    case AdaptiveImageSize.Auto:
+                        uiDiv = uiDiv.Style("max-width", $"100%");
+                        break;
+                    case AdaptiveImageSize.Small:
+                        uiDiv = uiDiv.Style("max-width", $"{context.Config.ImageSizes.Small}px");
+                        break;
+                    case AdaptiveImageSize.Medium:
+                        uiDiv = uiDiv.Style("max-width", $"{context.Config.ImageSizes.Medium}px");
+                        break;
+                    case AdaptiveImageSize.Large:
+                        uiDiv = uiDiv.Style("max-width", $"{context.Config.ImageSizes.Large}px");
+                        break;
+                    case AdaptiveImageSize.Stretch:
+                        uiDiv = uiDiv.Style("width", $"100%");
+                        break;
+                }
             }
 
             var uiImage = new HtmlTag("img")
-                .Style("width", "100%")
                 .Attr("alt", image.AltText ?? "card image")
                 .Attr("src", context.Config.ResolveFinalAbsoluteUri(image.Url));
+
+            // if explicit image size is used 
+            if (image.PixelWidth != 0 || image.PixelHeight != 0)
+            {
+                if (image.PixelWidth != 0)
+                {
+                    uiImage = uiImage.Attr("width", $"{image.PixelWidth}px");
+                }
+                if (image.PixelHeight != 0)
+                {
+                    uiImage = uiImage.Attr("height", $"{image.PixelHeight}px");
+                }
+                uiImage = uiImage.Attr("object-fit", "fill");
+            }
+            else
+            {
+                uiImage.Style("width", "100%");
+            }
 
             switch (image.Style)
             {

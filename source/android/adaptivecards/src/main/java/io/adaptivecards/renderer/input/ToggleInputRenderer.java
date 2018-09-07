@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
@@ -18,7 +19,9 @@ import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.ToggleInput;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.inputhandler.IInputWatcher;
 import io.adaptivecards.renderer.inputhandler.ToggleInputHandler;
+import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import java.util.Vector;
 
@@ -67,7 +70,7 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
 
         setSpacingAndSeparator(context, viewGroup, toggleInput.GetSpacing(), toggleInput.GetSeparator(), hostConfig, true /* horizontal line */);
 
-        ToggleInputHandler toggleInputHandler = new ToggleInputHandler(toggleInput);
+        final ToggleInputHandler toggleInputHandler = new ToggleInputHandler(toggleInput);
         CheckBox checkBox = new CheckBox(context);
         toggleInputHandler.setView(checkBox);
         checkBox.setTag(toggleInputHandler);
@@ -88,6 +91,14 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
         {
             checkBox.setChecked(true);
         }
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                CardRendererRegistration.getInstance().notifyInputChange(toggleInputHandler.getId(), toggleInputHandler.getInput());
+            }
+        });
 
         if(toggleInput.GetHeight() == HeightType.Stretch)
         {

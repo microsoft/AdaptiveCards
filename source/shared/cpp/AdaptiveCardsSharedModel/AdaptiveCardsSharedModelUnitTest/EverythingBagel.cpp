@@ -439,7 +439,7 @@ namespace AdaptiveCardsSharedModelUnitTest
     public:
         TEST_METHOD(EverythingBagelTests)
         {
-            auto parseResult = AdaptiveCard::DeserializeFromFile("EverythingBagel.json", 1.0);
+            auto parseResult = AdaptiveCard::DeserializeFromFile("EverythingBagel.json", "1.0");
 
             // ensure we're warning free
             {
