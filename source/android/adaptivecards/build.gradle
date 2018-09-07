@@ -73,7 +73,7 @@ uploadArchives {
                 }
                 pom {
                     setGroupId "io.adaptivecards"
-                    setVersion '1.0.1'
+                    setVersion System.getenv("ADAPTIVECARDSVERSION") ?:"1.1.0"
                 }
 
                 pom.project {
