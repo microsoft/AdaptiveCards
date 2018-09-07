@@ -43,6 +43,25 @@ export class ImageSetConfig {
     }
 }
 
+export class MediaConfig {
+    defaultPoster: string;
+    allowInlinePlayback: boolean = true;
+
+    constructor(obj?: any) {
+        if (obj) {
+            this.defaultPoster = obj["defaultPoster"];
+            this.allowInlinePlayback = obj["allowInlinePlayback"] || this.allowInlinePlayback;
+        }
+    }
+
+    toJSON() {
+        return {
+            defaultPoster: this.defaultPoster,
+            allowInlinePlayback: this.allowInlinePlayback
+        }
+    }
+}
+
 export class FactTextDefinition {
     size: Enums.TextSize = Enums.TextSize.Default;
     color: Enums.TextColor = Enums.TextColor.Default;;
@@ -347,6 +366,7 @@ export class HostConfig {
     readonly actions: ActionsConfig = new ActionsConfig();
     readonly adaptiveCard: AdaptiveCardConfig = new AdaptiveCardConfig();
     readonly imageSet: ImageSetConfig = new ImageSetConfig();
+    readonly media: MediaConfig = new MediaConfig();
     readonly factSet: FactSetConfig = new FactSetConfig();
 
     cssClassNamePrefix: string = null;
