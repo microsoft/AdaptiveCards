@@ -19,7 +19,7 @@ public:
 
     bool HasHtmlTags();
     
-    bool IsEscaped();
+    bool IsEscaped() const;
 
 private:
     void ParseBlock();

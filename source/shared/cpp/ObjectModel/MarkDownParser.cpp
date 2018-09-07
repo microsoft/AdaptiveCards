@@ -36,7 +36,7 @@ bool MarkDownParser::HasHtmlTags()
     return m_hasHTMLTag;
 }
 
-bool MarkDownParser::IsEscaped()
+bool MarkDownParser::IsEscaped() const
 {
     return m_isEscaped;
 }
@@ -56,7 +56,7 @@ void MarkDownParser::ParseBlock()
 std::string MarkDownParser::EscapeText()
 {
     std::string escaped;
-    unsigned int unescapedCounts = 0;
+    unsigned int nonEscapedCounts = 0;
     
     for (std::string::size_type i = 0; i < m_text.length(); i++)
     {
@@ -76,15 +76,12 @@ std::string MarkDownParser::EscapeText()
             break;
         default:
             escaped += m_text.at(i);
-            unescapedCounts++;
+            nonEscapedCounts++;
             break;
         }
     }
     
-    if(!m_isEscaped && unescapedCounts != m_text.length())
-    {
-        m_isEscaped = true;
-    }
-
+    m_isEscaped = (nonEscapedCounts != m_text.length());
+    
     return escaped;
 }
