@@ -173,7 +173,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             void MediaClickCallback(object sender, AdaptiveMediaEventArgs args)
             {
-                renderCard.InvokeOnMediaClick(args);
+                renderCard?.InvokeOnMediaClick(args);
             }
 
             var context = new AdaptiveRenderContext(ActionCallback, null, MediaClickCallback)
