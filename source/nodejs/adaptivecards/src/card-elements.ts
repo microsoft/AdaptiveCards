@@ -2677,8 +2677,6 @@ export abstract class Action {
             titleElement.style.whiteSpace = "nowrap";
         }
 
-        titleElement.style.width = "100%";
-
         if (hasTitle) {
             titleElement.innerText = this.title;
         }
