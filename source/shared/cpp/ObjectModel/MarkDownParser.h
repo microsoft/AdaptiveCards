@@ -18,7 +18,7 @@ public:
     std::string TransformToHtml();
 
     bool HasHtmlTags();
-    
+
     bool IsEscaped() const;
 
 private:
