@@ -37,6 +37,7 @@ import java.util.Set;
 
 import io.adaptivecards.objectmodel.AdaptiveCard;
 import io.adaptivecards.objectmodel.BaseActionElement;
+import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.ElementParserRegistration;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.ParseResult;
@@ -225,6 +226,16 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
 
     @Override
     public void onAction(BaseActionElement actionElement, RenderedAdaptiveCard renderedAdaptiveCard) {
+    }
+
+    @Override
+    public void onMediaPlay(BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard) {
+        
+    }
+
+    @Override
+    public void onMediaStop(BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard) {
+
     }
 
     private ImageButton m_sendButton;
