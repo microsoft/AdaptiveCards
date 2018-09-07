@@ -29,7 +29,6 @@ namespace AdaptiveCards.Rendering.Wpf
                     break;
                 case AdaptiveVerticalContentAlignment.Top:
                 default:
-                    uiContainer.VerticalAlignment = VerticalAlignment.Top;
                     break;
             }
 

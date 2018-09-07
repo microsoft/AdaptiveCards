@@ -113,7 +113,6 @@ namespace AdaptiveCards.Rendering.Wpf
                     break;
                 case AdaptiveVerticalContentAlignment.Top:
                 default:
-                    grid.VerticalAlignment = VerticalAlignment.Top;
                     break;
             }
 

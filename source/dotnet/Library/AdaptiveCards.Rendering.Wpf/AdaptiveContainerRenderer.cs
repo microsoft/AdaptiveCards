@@ -34,7 +34,6 @@ namespace AdaptiveCards.Rendering.Wpf
                     break;
                 case AdaptiveVerticalContentAlignment.Top:
                 default:
-                    uiContainer.VerticalAlignment = VerticalAlignment.Top;
                     break;
             }
 
@@ -78,12 +77,22 @@ namespace AdaptiveCards.Rendering.Wpf
                     }
                     else
                     {
-                        StackPanel panel = new StackPanel();
-                        panel.Children.Add(uiElement);
 
-                        uiContainer.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
-                        Grid.SetRow(panel, uiContainer.RowDefinitions.Count - 1);
-                        uiContainer.Children.Add(panel);
+                        if (cardElement.Type == "Container")
+                        {
+                            uiContainer.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                            Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
+                            uiContainer.Children.Add(uiElement);
+                        }
+                        else
+                        {
+                            StackPanel panel = new StackPanel();
+                            panel.Children.Add(uiElement);
+
+                            uiContainer.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                            Grid.SetRow(panel, uiContainer.RowDefinitions.Count - 1);
+                            uiContainer.Children.Add(panel);
+                        }
                     }
                     
                 }
