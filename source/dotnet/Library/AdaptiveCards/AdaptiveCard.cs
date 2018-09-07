@@ -35,7 +35,7 @@ namespace AdaptiveCards
         /// <summary>
         /// The latest known schema version supported by this library
         /// </summary>
-        public static AdaptiveSchemaVersion KnownSchemaVersion = new AdaptiveSchemaVersion(1, 0);
+        public static AdaptiveSchemaVersion KnownSchemaVersion = new AdaptiveSchemaVersion(1, 1);
 
         /// <summary>
         /// Creates an AdaptiveCard using a specific schema version
