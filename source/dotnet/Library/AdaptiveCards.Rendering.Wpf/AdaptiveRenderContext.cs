@@ -41,7 +41,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public ResourceResolver ResourceResolvers { get; set; }
 
-        public bool IsRenderingCard { get; set; }
+        public bool IsRenderingSelectAction { get; set; }
 
         public IDictionary<Uri, MemoryStream> CardAssets { get; set; } = new Dictionary<Uri, MemoryStream>();
 

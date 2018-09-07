@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -15,6 +16,7 @@ namespace AdaptiveCards
         {
             _parseResult = parseResult;
         }
+
         protected override JsonConverter ResolveContractConverter(Type type)
         {
             var converter = base.ResolveContractConverter(type);
@@ -25,6 +27,29 @@ namespace AdaptiveCards
             }
 
             return converter;
+        }
+
+        /// <summary>
+        ///     Override when a member property is being instantiated. At this point we know what converter
+        ///     is being used for the property. If the converter can log warnings, then give it our collection
+        /// </summary>
+        /// <param name="member"></param>
+        /// <param name="memberSerialization"></param>
+        /// <returns></returns>
+        protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
+        {
+            var property = base.CreateProperty(member, memberSerialization);
+            if (property?.Converter is ILogWarnings converter)
+            {
+                converter.Warnings = _parseResult.Warnings;
+            }
+
+            if (property?.MemberConverter is ILogWarnings memberConverter)
+            {
+                memberConverter.Warnings = _parseResult.Warnings;
+            }
+
+            return property;
         }
     }
 }

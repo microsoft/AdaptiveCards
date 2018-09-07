@@ -217,7 +217,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                 ]\
             }";
 
-            auto card = AdaptiveCard::DeserializeFromString(cardWithMediaElement, 1.0)->GetAdaptiveCard();
+            auto card = AdaptiveCard::DeserializeFromString(cardWithMediaElement, "1.0")->GetAdaptiveCard();
             std::shared_ptr<Media> mediaElement = std::static_pointer_cast<Media> (card->GetBody()[0]);
 
             Assert::IsTrue(mediaElement->GetElementType() == CardElementType::Media);

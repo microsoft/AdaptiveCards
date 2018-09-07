@@ -83,7 +83,7 @@ public class ImageRenderer extends BaseCardElementRenderer
             }
 
             return bitmap;
-    }
+        }
 
         @Override
         protected void renderBitmap(Bitmap bitmap)

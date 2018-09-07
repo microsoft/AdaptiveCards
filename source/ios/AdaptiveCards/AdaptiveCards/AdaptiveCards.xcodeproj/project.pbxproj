@@ -24,15 +24,20 @@
 		6B1147D11F32E53A008846EC /* ACRActionDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B1147D01F32E53A008846EC /* ACRActionDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B1147D81F32F922008846EC /* ACRShowCardTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B1147D61F32F922008846EC /* ACRShowCardTarget.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B1147D91F32F922008846EC /* ACRShowCardTarget.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B1147D71F32F922008846EC /* ACRShowCardTarget.mm */; };
-		6B14FC65211E5AD000A11CC5 /* ACORemoteResourceInformationPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B14FC62211E5AD000A11CC5 /* ACORemoteResourceInformationPrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6B14FC66211E5AD000A11CC5 /* ACORemoteResourceInformation.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B14FC63211E5AD000A11CC5 /* ACORemoteResourceInformation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6B14FC67211E5AD000A11CC5 /* ACORemoteResourceInformation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B14FC64211E5AD000A11CC5 /* ACORemoteResourceInformation.mm */; };
+		6B14FC61211BBBEA00A11CC5 /* ACRPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B14FC60211BBBEA00A11CC5 /* ACRPickerView.xib */; };
 		6B268FE720CF19E200D99C1B /* RemoteResourceInformation.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B268FE620CF19E100D99C1B /* RemoteResourceInformation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B3787B720CA00D300015401 /* ACRUILabel.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F44B6A203FA8EF00A2F24C /* ACRUILabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B3787BA20CB3E0E00015401 /* ACRContentHoldingUIScrollView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B3787B820CB3E0E00015401 /* ACRContentHoldingUIScrollView.mm */; };
 		6B3787BB20CB3E0E00015401 /* ACRContentHoldingUIScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B3787B920CB3E0E00015401 /* ACRContentHoldingUIScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B421CC02101503E002F401A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4CA74A320181B52002041DF /* QuartzCore.framework */; };
 		6B421CC121015EDD002F401A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F45A071C1EF4BCC3007C6503 /* CoreGraphics.framework */; };
+		6B5D240C212C89E70010EB07 /* ACORemoteResourceInformationPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B5D2409212C89E60010EB07 /* ACORemoteResourceInformationPrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6B5D240D212C89E70010EB07 /* ACORemoteResourceInformation.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B5D240A212C89E70010EB07 /* ACORemoteResourceInformation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6B5D240E212C89E70010EB07 /* ACORemoteResourceInformation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B5D240B212C89E70010EB07 /* ACORemoteResourceInformation.mm */; };
+		6B5D2418212E1CF80010EB07 /* checked-checkbox-24.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5D2414212E1CF70010EB07 /* checked-checkbox-24.png */; };
+		6B5D2419212E1CF80010EB07 /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5D2415212E1CF70010EB07 /* checked.png */; };
+		6B5D241A212E1CF80010EB07 /* unchecked-checkbox-24.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5D2416212E1CF70010EB07 /* unchecked-checkbox-24.png */; };
+		6B5D241B212E1CF80010EB07 /* unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5D2417212E1CF70010EB07 /* unchecked.png */; };
 		6B6840F91F25EC2D008A933F /* ACRInputChoiceSetRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B6840F71F25EC2D008A933F /* ACRInputChoiceSetRenderer.mm */; };
 		6B7B1A9120B4D2AB00260731 /* Media.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B7B1A8D20B4D2AA00260731 /* Media.cpp */; };
 		6B7B1A9220B4D2AB00260731 /* MediaSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B7B1A8E20B4D2AA00260731 /* MediaSource.cpp */; };
@@ -65,6 +70,8 @@
 		6BCE4B272108FA9300021A62 /* ACRLongPressGestureRecognizerFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BCE4B262108FA9300021A62 /* ACRLongPressGestureRecognizerFactory.mm */; };
 		6BCE4B292108FBD800021A62 /* ACRLongPressGestureRecognizerFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BCE4B282108FBD800021A62 /* ACRLongPressGestureRecognizerFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BF339D320A6649500DA5973 /* json.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F4071C771FCCBAEF00AF4FEA /* json.h */; };
+		7EDC0F67213878E800077A13 /* SemanticVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 7EDC0F65213878E800077A13 /* SemanticVersion.h */; };
+		7EDC0F68213878E800077A13 /* SemanticVersion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7EDC0F66213878E800077A13 /* SemanticVersion.cpp */; };
 		F401A8771F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = F401A8751F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F401A8781F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F401A8761F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm */; };
 		F401A87C1F0DCBC8006D7AF2 /* ACRImageSetRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F401A87A1F0DCBC8006D7AF2 /* ACRImageSetRenderer.mm */; };
@@ -292,12 +299,17 @@
 		6B1147D01F32E53A008846EC /* ACRActionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRActionDelegate.h; sourceTree = "<group>"; };
 		6B1147D61F32F922008846EC /* ACRShowCardTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRShowCardTarget.h; sourceTree = "<group>"; };
 		6B1147D71F32F922008846EC /* ACRShowCardTarget.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRShowCardTarget.mm; sourceTree = "<group>"; };
-		6B14FC62211E5AD000A11CC5 /* ACORemoteResourceInformationPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACORemoteResourceInformationPrivate.h; sourceTree = "<group>"; };
-		6B14FC63211E5AD000A11CC5 /* ACORemoteResourceInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACORemoteResourceInformation.h; sourceTree = "<group>"; };
-		6B14FC64211E5AD000A11CC5 /* ACORemoteResourceInformation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACORemoteResourceInformation.mm; sourceTree = "<group>"; };
+		6B14FC60211BBBEA00A11CC5 /* ACRPickerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRPickerView.xib; sourceTree = "<group>"; };
 		6B268FE620CF19E100D99C1B /* RemoteResourceInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteResourceInformation.h; path = ../../../../shared/cpp/ObjectModel/RemoteResourceInformation.h; sourceTree = "<group>"; };
 		6B3787B820CB3E0E00015401 /* ACRContentHoldingUIScrollView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRContentHoldingUIScrollView.mm; sourceTree = "<group>"; };
 		6B3787B920CB3E0E00015401 /* ACRContentHoldingUIScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRContentHoldingUIScrollView.h; sourceTree = "<group>"; };
+		6B5D2409212C89E60010EB07 /* ACORemoteResourceInformationPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACORemoteResourceInformationPrivate.h; sourceTree = "<group>"; };
+		6B5D240A212C89E70010EB07 /* ACORemoteResourceInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACORemoteResourceInformation.h; sourceTree = "<group>"; };
+		6B5D240B212C89E70010EB07 /* ACORemoteResourceInformation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACORemoteResourceInformation.mm; sourceTree = "<group>"; };
+		6B5D2414212E1CF70010EB07 /* checked-checkbox-24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checked-checkbox-24.png"; sourceTree = "<group>"; };
+		6B5D2415212E1CF70010EB07 /* checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checked.png; sourceTree = "<group>"; };
+		6B5D2416212E1CF70010EB07 /* unchecked-checkbox-24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unchecked-checkbox-24.png"; sourceTree = "<group>"; };
+		6B5D2417212E1CF70010EB07 /* unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unchecked.png; sourceTree = "<group>"; };
 		6B6840F61F25EC2D008A933F /* ACRInputChoiceSetRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRInputChoiceSetRenderer.h; sourceTree = "<group>"; };
 		6B6840F71F25EC2D008A933F /* ACRInputChoiceSetRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRInputChoiceSetRenderer.mm; sourceTree = "<group>"; };
 		6B7B1A8D20B4D2AA00260731 /* Media.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Media.cpp; path = ../../../../shared/cpp/ObjectModel/Media.cpp; sourceTree = "<group>"; };
@@ -331,6 +343,8 @@
 		6BCE4B242108FA7C00021A62 /* ACRMediaRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRMediaRenderer.mm; sourceTree = "<group>"; };
 		6BCE4B262108FA9300021A62 /* ACRLongPressGestureRecognizerFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRLongPressGestureRecognizerFactory.mm; sourceTree = "<group>"; };
 		6BCE4B282108FBD800021A62 /* ACRLongPressGestureRecognizerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRLongPressGestureRecognizerFactory.h; sourceTree = "<group>"; };
+		7EDC0F65213878E800077A13 /* SemanticVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SemanticVersion.h; path = ../../../../shared/cpp/ObjectModel/SemanticVersion.h; sourceTree = "<group>"; };
+		7EDC0F66213878E800077A13 /* SemanticVersion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SemanticVersion.cpp; path = ../../../../shared/cpp/ObjectModel/SemanticVersion.cpp; sourceTree = "<group>"; };
 		F401A8751F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRImageSetUICollectionView.h; sourceTree = "<group>"; };
 		F401A8761F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRImageSetUICollectionView.mm; sourceTree = "<group>"; };
 		F401A8791F0DCBC8006D7AF2 /* ACRImageSetRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRImageSetRenderer.h; sourceTree = "<group>"; };
@@ -558,6 +572,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6B14FC682122263800A11CC5 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				6B5D2414212E1CF70010EB07 /* checked-checkbox-24.png */,
+				6B5D2415212E1CF70010EB07 /* checked.png */,
+				6B5D2416212E1CF70010EB07 /* unchecked-checkbox-24.png */,
+				6B5D2417212E1CF70010EB07 /* unchecked.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
 		6BB2120621000024009EA1BA /* Media */ = {
 			isa = PBXGroup;
 			children = (
@@ -612,6 +637,7 @@
 				F42979341F3007C500E89914 /* ReadOnlyObjects */,
 				F42979351F3007DF00E89914 /* Layouts */,
 				F460323D20757AE6006C5358 /* XIB */,
+				6B14FC682122263800A11CC5 /* Images */,
 				F423C0B81EE1FBAA00905679 /* ACFramework.h */,
 				F4F2556B1F98246000A80D39 /* ACOBaseActionElement.h */,
 				F4F2556D1F98247600A80D39 /* ACOBaseActionElementPrivate.h */,
@@ -619,9 +645,6 @@
 				F4F44B8A2048F83F00A2F24C /* ACOBaseCardElement.h */,
 				F42C2F4B20351A8E008787B0 /* ACOBaseCardElementPrivate.h */,
 				F4F44B882048F82F00A2F24C /* ACOBaseCardElement.mm */,
-				6B14FC63211E5AD000A11CC5 /* ACORemoteResourceInformation.h */,
-				6B14FC64211E5AD000A11CC5 /* ACORemoteResourceInformation.mm */,
-				6B14FC62211E5AD000A11CC5 /* ACORemoteResourceInformationPrivate.h */,
 				F4960C022051FE8000780566 /* ACRView.h */,
 				F4D06949205B27EA003645E4 /* ACRViewPrivate.h */,
 				F4960C032051FE8100780566 /* ACRView.mm */,
@@ -637,6 +660,9 @@
 				F4D4020E1F7DAC2C00D0356B /* ACOAdaptiveCardParseResult.mm */,
 				F4D4020F1F7DAC2C00D0356B /* ACOHostConfigParseResult.h */,
 				F4D402101F7DAC2C00D0356B /* ACOHostConfigParseResult.mm */,
+				6B5D240A212C89E70010EB07 /* ACORemoteResourceInformation.h */,
+				6B5D2409212C89E60010EB07 /* ACORemoteResourceInformationPrivate.h */,
+				6B5D240B212C89E70010EB07 /* ACORemoteResourceInformation.mm */,
 				F427411A1EF8A25200399FBB /* ACRRegistration.h */,
 				F427411B1EF8A25200399FBB /* ACRRegistration.mm */,
 				F496834E1F6CA24600DF0D3A /* ACRRenderer.h */,
@@ -669,6 +695,8 @@
 		F423C0D71EE1FF2F00905679 /* SharedLib */ = {
 			isa = PBXGroup;
 			children = (
+				7EDC0F66213878E800077A13 /* SemanticVersion.cpp */,
+				7EDC0F65213878E800077A13 /* SemanticVersion.h */,
 				6B268FE620CF19E100D99C1B /* RemoteResourceInformation.h */,
 				6B7B1A8D20B4D2AA00260731 /* Media.cpp */,
 				6B7B1A9020B4D2AB00260731 /* Media.h */,
@@ -900,6 +928,7 @@
 				F460324420758583006C5358 /* ACRDatePicker.xib */,
 				F460324620759519006C5358 /* ACRDateTextField.xib */,
 				F46032482075997D006C5358 /* ACRInputTableView.xib */,
+				6B14FC60211BBBEA00A11CC5 /* ACRPickerView.xib */,
 			);
 			name = XIB;
 			sourceTree = "<group>";
@@ -1000,6 +1029,7 @@
 				F4D0694C205B27EA003645E4 /* ACRViewPrivate.h in Headers */,
 				F42E51791FEC3840008F9642 /* MarkDownParser.h in Headers */,
 				6B268FE720CF19E200D99C1B /* RemoteResourceInformation.h in Headers */,
+				7EDC0F67213878E800077A13 /* SemanticVersion.h in Headers */,
 				F4F6BA3C204F3109003741B6 /* ACRAggregateTarget.h in Headers */,
 				F4CA74A12016B3B9002041DF /* ACRLongPressGestureRecognizerEventHandler.h in Headers */,
 				F4D33EA71F06F44C00941E44 /* ACRSeparator.h in Headers */,
@@ -1025,11 +1055,11 @@
 				6B7B1A9320B4D2AB00260731 /* MediaSource.h in Headers */,
 				6BCE4B292108FBD800021A62 /* ACRLongPressGestureRecognizerFactory.h in Headers */,
 				6B9D650A21095C7A00BB5C7B /* ACOMediaEvent.h in Headers */,
+				6B5D240D212C89E70010EB07 /* ACORemoteResourceInformation.h in Headers */,
+				6B5D240C212C89E70010EB07 /* ACORemoteResourceInformationPrivate.h in Headers */,
 				6B9D650921095C7A00BB5C7B /* ACOMediaEventPrivate.h in Headers */,
 				6B9D650E21095CBF00BB5C7B /* ACRMediaTarget.h in Headers */,
-				6B14FC66211E5AD000A11CC5 /* ACORemoteResourceInformation.h in Headers */,
 				6BCE4B222108EB4E00021A62 /* ACRAVPlayerViewHoldingUIView.h in Headers */,
-				6B14FC65211E5AD000A11CC5 /* ACORemoteResourceInformationPrivate.h in Headers */,
 				F4C1F5EB1F2ABD6B0018CB78 /* ACRBaseActionElementRenderer.h in Headers */,
 				6B1147D11F32E53A008846EC /* ACRActionDelegate.h in Headers */,
 				F4F44B8020478C6F00A2F24C /* Util.h in Headers */,
@@ -1126,12 +1156,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B5D2418212E1CF80010EB07 /* checked-checkbox-24.png in Resources */,
 				F460324520758583006C5358 /* ACRDatePicker.xib in Resources */,
+				6B14FC61211BBBEA00A11CC5 /* ACRPickerView.xib in Resources */,
 				6B9AB30220D32A89005C8E15 /* ACRButton.xib in Resources */,
 				F46032492075997D006C5358 /* ACRInputTableView.xib in Resources */,
+				6B5D241A212E1CF80010EB07 /* unchecked-checkbox-24.png in Resources */,
+				6B5D2419212E1CF80010EB07 /* checked.png in Resources */,
 				F4603238207575C7006C5358 /* ACRLabelView.xib in Resources */,
 				F460324720759519006C5358 /* ACRDateTextField.xib in Resources */,
 				F460324120757F38006C5358 /* ACRTextField.xib in Resources */,
+				6B5D241B212E1CF80010EB07 /* unchecked.png in Resources */,
 				6B9AB2FD20D327DB005C8E15 /* ACRCellForCompactMode.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1247,7 +1282,7 @@
 				F44873051EE2261F00FCAFAE /* Container.cpp in Sources */,
 				F44873181EE2261F00FCAFAE /* NumberInput.cpp in Sources */,
 				F4960C052051FE8200780566 /* ACRView.mm in Sources */,
-				6B14FC67211E5AD000A11CC5 /* ACORemoteResourceInformation.mm in Sources */,
+				6B5D240E212C89E70010EB07 /* ACORemoteResourceInformation.mm in Sources */,
 				F401A8801F1045CA006D7AF2 /* ACRContentHoldingUIView.mm in Sources */,
 				F44873121EE2261F00FCAFAE /* Image.cpp in Sources */,
 				F4CAE77B1F7325DF00545555 /* Separator.cpp in Sources */,
@@ -1265,6 +1300,7 @@
 				F427410B1EF864A900399FBB /* ACRBaseCardElementRenderer.mm in Sources */,
 				F43660781F0706D800EBA868 /* SharedAdaptiveCard.cpp in Sources */,
 				6B7B1A9120B4D2AB00260731 /* Media.cpp in Sources */,
+				7EDC0F68213878E800077A13 /* SemanticVersion.cpp in Sources */,
 				F42E517A1FEC3840008F9642 /* MarkDownParser.cpp in Sources */,
 				6B7B1A9720BE2CBC00260731 /* ACRUIImageView.mm in Sources */,
 				6BCE4B252108FA7D00021A62 /* ACRMediaRenderer.mm in Sources */,
@@ -1357,7 +1393,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1414,7 +1450,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -3,6 +3,8 @@ package io.adaptivecards.renderer.inputhandler;
 import android.widget.RadioGroup;
 
 import io.adaptivecards.objectmodel.BaseInputElement;
+import io.adaptivecards.objectmodel.ChoiceInput;
+import io.adaptivecards.objectmodel.ChoiceInputVector;
 import io.adaptivecards.objectmodel.ChoiceSetInput;
 
 import java.text.ParseException;
@@ -32,6 +34,35 @@ public class RadioGroupInputHandler extends BaseInputHandler
         }
         else {
             return "";
+        }
+    }
+
+    public void setInput(String choice)
+    {
+        ChoiceSetInput choiceSetInput = (ChoiceSetInput) m_baseInputElement;
+        RadioGroup radioGroup = getRadioGroup();
+        ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
+
+        if (!choice.isEmpty())
+        {
+            for (int i = 0 ; i < choiceInputVector.size(); i++)
+            {
+                ChoiceInput choiceInput = choiceInputVector.get(i);
+                if (choice.equals(choiceInput.GetValue()))
+                {
+                    /*
+                        We can do this because the id is equal to the index . Check {@link ChoiceSetInputRender}
+                     */
+                    radioGroup.check(i);
+                    break;
+                }
+            }
+        }
+
+        else
+        {
+            // Indicates no item was selected
+            radioGroup.check(-1);
         }
     }
 

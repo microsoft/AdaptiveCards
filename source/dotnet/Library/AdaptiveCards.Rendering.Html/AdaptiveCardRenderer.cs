@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using Newtonsoft.Json;
@@ -177,7 +178,7 @@ namespace AdaptiveCards.Rendering.Html
                 uiCard.Style("font-family", context.Config.FontFamily);
 
             if (card.BackgroundImage != null)
-                uiCard.Style("background-image", $"url('{card.BackgroundImage}')")
+                uiCard.Style("background-image", $"url('{context.Config.ResolveFinalAbsoluteUri(card.BackgroundImage)}')")
                     .Style("background-repeat", "no-repeat")
                     .Style("background-size", "cover");
 
@@ -498,6 +499,18 @@ namespace AdaptiveCards.Rendering.Html
             var uiContainer = new DivTag()
                 .AddClass($"ac-{container.Type.Replace(".", "").ToLower()}");
 
+            if (container.Style != null)
+            {
+                // Apply background color
+                var containerStyle = context.Config.ContainerStyles.Default;
+                if (container.Style == AdaptiveContainerStyle.Emphasis)
+                {
+                    containerStyle = context.Config.ContainerStyles.Emphasis;
+                }
+
+                uiContainer.Style("background-color", context.GetRGBColor(containerStyle.BackgroundColor));
+            }
+
             AddContainerElements(uiContainer, container.Items, null, context);
 
             AddSelectAction(uiContainer, container.SelectAction, context);
@@ -655,29 +668,50 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("display", "block")
                 .Style("box-sizing", "border-box");
 
-            switch (image.Size)
+            // if explicit image size is not used, use Adpative Image size
+            if (image.PixelWidth == 0 && image.PixelHeight == 0)
             {
-                case AdaptiveImageSize.Auto:
-                    uiDiv = uiDiv.Style("max-width", $"100%");
-                    break;
-                case AdaptiveImageSize.Small:
-                    uiDiv = uiDiv.Style("max-width", $"{context.Config.ImageSizes.Small}px");
-                    break;
-                case AdaptiveImageSize.Medium:
-                    uiDiv = uiDiv.Style("max-width", $"{context.Config.ImageSizes.Medium}px");
-                    break;
-                case AdaptiveImageSize.Large:
-                    uiDiv = uiDiv.Style("max-width", $"{context.Config.ImageSizes.Large}px");
-                    break;
-                case AdaptiveImageSize.Stretch:
-                    uiDiv = uiDiv.Style("width", $"100%");
-                    break;
+                switch (image.Size)
+                {
+                    case AdaptiveImageSize.Auto:
+                        uiDiv = uiDiv.Style("max-width", $"100%");
+                        break;
+                    case AdaptiveImageSize.Small:
+                        uiDiv = uiDiv.Style("max-width", $"{context.Config.ImageSizes.Small}px");
+                        break;
+                    case AdaptiveImageSize.Medium:
+                        uiDiv = uiDiv.Style("max-width", $"{context.Config.ImageSizes.Medium}px");
+                        break;
+                    case AdaptiveImageSize.Large:
+                        uiDiv = uiDiv.Style("max-width", $"{context.Config.ImageSizes.Large}px");
+                        break;
+                    case AdaptiveImageSize.Stretch:
+                        uiDiv = uiDiv.Style("width", $"100%");
+                        break;
+                }
             }
 
             var uiImage = new HtmlTag("img")
-                .Style("width", "100%")
                 .Attr("alt", image.AltText ?? "card image")
-                .Attr("src", image.Url.ToString());
+                .Attr("src", context.Config.ResolveFinalAbsoluteUri(image.Url));
+
+            // if explicit image size is used 
+            if (image.PixelWidth != 0 || image.PixelHeight != 0)
+            {
+                if (image.PixelWidth != 0)
+                {
+                    uiImage = uiImage.Attr("width", $"{image.PixelWidth}px");
+                }
+                if (image.PixelHeight != 0)
+                {
+                    uiImage = uiImage.Attr("height", $"{image.PixelHeight}px");
+                }
+                uiImage = uiImage.Attr("object-fit", "fill");
+            }
+            else
+            {
+                uiImage.Style("width", "100%");
+            }
 
             switch (image.Style)
             {
@@ -689,7 +723,6 @@ namespace AdaptiveCards.Rendering.Html
                         .Style("background-repeat", "no-repeat");
                     break;
             }
-
 
             switch (image.HorizontalAlignment)
             {
@@ -709,6 +742,12 @@ namespace AdaptiveCards.Rendering.Html
                         .Style("display", "block");
                     break;
             }
+
+            if (!string.IsNullOrEmpty(image.BackgroundColor))
+            {
+                uiImage.Style("background-color", context.GetRGBColor(image.BackgroundColor));
+            }
+
             uiDiv.Children.Add(uiImage);
 
             AddSelectAction(uiDiv, image.SelectAction, context);
@@ -751,12 +790,25 @@ namespace AdaptiveCards.Rendering.Html
                         .AddClass("ac-multichoiceInput")
                         .Style("width", "100%");
 
+                    var defaultValues = ParseChoiceSetInputDefaultValues(adaptiveChoiceSetInput.Value);
+
+                    // If more than one option is specified, default to not select any option
+                    if (defaultValues.Count > 1)
+                    {
+                        var option = new HtmlTag("option") { Text = "" }
+                            .Attr("disabled", string.Empty)
+                            .Attr("hidden", string.Empty)
+                            .Attr("selected", string.Empty);
+                        uiSelectElement.Append(option);
+                    }
+
                     foreach (var choice in adaptiveChoiceSetInput.Choices)
                     {
                         var option = new HtmlTag("option") { Text = choice.Title }
                             .Attr("value", choice.Value);
 
-                        if (choice.Value == adaptiveChoiceSetInput.Value)
+                        // Select an option only when one option is specified
+                        if (defaultValues.Contains(choice.Value) && defaultValues.Count == 1)
                         {
                             option.Attr("selected", string.Empty);
                         }
@@ -778,8 +830,7 @@ namespace AdaptiveCards.Rendering.Html
 
         private static HtmlTag ChoiceSetRenderInternal(AdaptiveChoiceSetInput adaptiveChoiceSetInput, AdaptiveRenderContext context, string htmlInputType)
         {
-            // the default values are specified by a comma separated string input.value
-            var defaultValues = adaptiveChoiceSetInput.Value?.Split(',').Select(p => p.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList() ?? new List<string>();
+            var defaultValues = ParseChoiceSetInputDefaultValues(adaptiveChoiceSetInput.Value);
 
             // render as a series of radio buttons
             var uiElement = new DivTag()
@@ -799,8 +850,9 @@ namespace AdaptiveCards.Rendering.Html
                     .Style("display", "inline-block")
                     .Style("vertical-align", "middle");
 
-
-                if (defaultValues.Contains(choice.Value))
+                // Only select an option if isMultiSelect is true (checkboxes)
+                // or there is only one specified value
+                if (defaultValues.Contains(choice.Value) && (adaptiveChoiceSetInput.IsMultiSelect || defaultValues.Count == 1))
                 {
                     uiInput.Attr("checked", string.Empty);
                 }
@@ -816,6 +868,12 @@ namespace AdaptiveCards.Rendering.Html
 
             return uiElement;
 
+        }
+
+        // Default values are specified by a comma separated string
+        private static List<string> ParseChoiceSetInputDefaultValues(string value)
+        {
+            return value?.Split(',').Select(p => p.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList() ?? new List<string>();
         }
 
         private static HtmlTag CreateLabel(string forId, string innerText, AdaptiveRenderContext context)
