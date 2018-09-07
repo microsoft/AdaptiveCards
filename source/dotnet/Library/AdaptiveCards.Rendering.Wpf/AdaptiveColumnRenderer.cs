@@ -19,6 +19,20 @@ namespace AdaptiveCards.Rendering.Wpf
                 return context.RenderSelectAction(column.SelectAction, uiContainer);
             }
 
+            switch(column.VerticalContentAlignment)
+            {
+                case AdaptiveVerticalContentAlignment.Center:
+                    uiContainer.VerticalAlignment = VerticalAlignment.Center;
+                    break;
+                case AdaptiveVerticalContentAlignment.Bottom:
+                    uiContainer.VerticalAlignment = VerticalAlignment.Bottom;
+                    break;
+                case AdaptiveVerticalContentAlignment.Top:
+                default:
+                    uiContainer.VerticalAlignment = VerticalAlignment.Top;
+                    break;
+            }
+
             return uiContainer;
         }
     }

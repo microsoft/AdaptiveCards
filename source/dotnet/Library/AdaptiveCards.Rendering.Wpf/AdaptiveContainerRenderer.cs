@@ -24,6 +24,20 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiContainer.SetBackgroundColor(containerStyle.BackgroundColor, context);
             }
 
+            switch (container.VerticalContentAlignment)
+            {
+                case AdaptiveVerticalContentAlignment.Center:
+                    uiContainer.VerticalAlignment = VerticalAlignment.Center;
+                    break;
+                case AdaptiveVerticalContentAlignment.Bottom:
+                    uiContainer.VerticalAlignment = VerticalAlignment.Bottom;
+                    break;
+                case AdaptiveVerticalContentAlignment.Top:
+                default:
+                    uiContainer.VerticalAlignment = VerticalAlignment.Top;
+                    break;
+            }
+
             AddContainerElements(uiContainer, container.Items, context);
 
             if (container.SelectAction != null)
