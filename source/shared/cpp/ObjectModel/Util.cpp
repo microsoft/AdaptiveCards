@@ -75,41 +75,127 @@ std::string ValidateColor(const std::string& backgroundColor,
 }
 
 void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::string &requestedDimension,
-    int &parsedDimension)
+    int &parsedDimension, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings)
 {
-    if (requestedDimension.empty())
-    {
-        parsedDimension = 0;
+    int parsedVal = 0;
+    parsedDimension = 0;
+    if (requestedDimension.empty()) 
+    { 
+        return;
     }
-    else
+
+    const char ch = requestedDimension.at(0);
+    if (isspace(ch))
+    { 
+        warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
+                AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
+                "expected input arugment to be specified as \\d+(.\\d+)?px with no spaces, but received " + requestedDimension)); 
+        return;
+    }
+
+    if (requestedDimension.length() >= unit.length()) 
     {
-        const std::size_t foundIndex = requestedDimension.find(unit);
-        if (std::string::npos == foundIndex || requestedDimension.size() != foundIndex + unit.size())
-        {
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
-                "unit is either missing or inproper form: " + requestedDimension);
-        }
-        try
-        {
-            int parsedVal = std::stoi(requestedDimension.substr(0, foundIndex));
-            if (parsedVal < 0)
+        unsigned int cnts = 1;
+        for (cnts; cnts <= unit.length(); cnts++)
+        { 
+            unsigned int offset = cnts;
+            if (*(requestedDimension.end() - offset) != *(unit.end() - offset))
             {
-                throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
-                    "unsigned integer is accepted but received : " + requestedDimension);
+                warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
+                        AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
+                        "expected input arugment to be specified as \\d+(.\\d+)?px with no spaces, but received " + requestedDimension)); 
+                return;
             }
-            parsedDimension = parsedVal;
-        }
-        catch (const std::invalid_argument &e)
-        {
-            (void)e;
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
-                "unsigned integer is accepted but received : " + requestedDimension);
-        }
-        catch (const std::out_of_range &e)
-        {
-            (void)e;
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
-                "out of range: " + requestedDimension);
         }
     }
+
+    try
+    {
+        size_t nonDigitIndex;
+        parsedVal = std::stoi(requestedDimension, &nonDigitIndex);
+        if (parsedVal < 0)
+        {
+            warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
+                    AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
+                    "expected input arugment to be specified as \\d+(.\\d+)?px with no spaces, but received " + requestedDimension)); 
+            parsedVal = 0;
+        }
+
+        const size_t firstNonDigitIndex = requestedDimension.length() - unit.size();
+        const size_t lastDigitIndex = firstNonDigitIndex - 1;
+        bool bPass = true;
+        // it's assumed that unit is included in the string
+        if (nonDigitIndex != firstNonDigitIndex)
+        { 
+            // check if it's decimal point
+            if (requestedDimension.at(nonDigitIndex) == '.')
+            {
+                // check it contains only digits after decimal point
+                size_t numberIndex = nonDigitIndex + 1;
+                while (numberIndex < firstNonDigitIndex && isdigit(requestedDimension.at(numberIndex)))
+                {
+                    numberIndex++;
+                }
+                if(numberIndex != firstNonDigitIndex)
+                {
+                    bPass = false;
+                }
+            } 
+            else
+            {
+                bPass = false;
+            }
+        }
+
+        if (!bPass)
+        {
+            warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
+                    AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
+                    "expected input arugment to be specified as \\d+(.\\d+)?px with no spaces, but received " + requestedDimension)); 
+            parsedVal = 0;
+        }
+        parsedDimension = parsedVal;
+    }
+    catch (const std::invalid_argument &e)
+    {
+        (void)e;
+        warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
+                AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
+                    "expected input arugment to be specified as \\d+(.\\d+)?px with no spaces, but received " + requestedDimension)); 
+    }
+    catch (const std::out_of_range &e)
+    {
+        (void)e;
+        warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
+                AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
+                "out of range: " + requestedDimension));
+    }
+}
+
+bool ShouldParseForExplicitDimension(const std::string &input)
+{
+    if (input.empty())
+    {
+        return false;
+    }
+
+    char ch = input.at(0);
+
+    if ('-' == ch || '.' == ch)
+    {
+        return true;
+    }
+
+    size_t index = 0;
+    int hasDigit = 0;
+    while (index < input.length())
+    {
+        ch = input.at(index++);
+        hasDigit |= isdigit(ch); 
+        if (hasDigit && (isalpha(ch) || '.' == ch))
+        {
+            return true;
+        }
+    }
+    return false;
 }
