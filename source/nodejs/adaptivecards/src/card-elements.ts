@@ -2669,31 +2669,29 @@ export abstract class Action {
 
         let hasTitle = !Utils.isNullOrEmpty(this.title);
 
+        let titleElement = document.createElement("div");
+        titleElement.style.overflow = "hidden";
+        titleElement.style.textOverflow = "ellipsis";
+
+        if (!(hostConfig.actions.iconPlacement == Enums.ActionIconPlacement.AboveTitle || hostConfig.actions.allowTitleToWrap)) {
+            titleElement.style.whiteSpace = "nowrap";
+        }
+
+        if (hasTitle) {
+            titleElement.innerText = this.title;
+        }
+
         if (Utils.isNullOrEmpty(this.iconUrl)) {
             buttonElement.classList.add("noIcon");
-            buttonElement.style.overflow = "hidden";
-            buttonElement.style.whiteSpace = "nowrap";
-            buttonElement.style.textOverflow = "ellipsis";
 
-            if (hasTitle) {
-                buttonElement.innerText = this.title;
-            }
+            buttonElement.appendChild(titleElement);
         }
         else {
-            let iconElement = document.createElement("div");
+            let iconElement = document.createElement("img");
+            iconElement.src = this.iconUrl;
             iconElement.style.width = hostConfig.actions.iconSize + "px";
-            iconElement.style.height = hostConfig.actions.iconSize + "px";;
-            iconElement.style.backgroundImage = "url('" + this.iconUrl + "')";
-            iconElement.style.backgroundPositionX = "center";
-            iconElement.style.backgroundPositionY = "center";
-            iconElement.style.backgroundRepeat = "no-repeat";
-            iconElement.style.backgroundSize = "contain";
-
-            let titleElement = document.createElement("div");
-
-            if (hasTitle) {
-                titleElement.innerText = this.title;
-            }
+            iconElement.style.height = hostConfig.actions.iconSize + "px";
+            iconElement.style.flex = "0 0 auto";
 
             if (hostConfig.actions.iconPlacement == Enums.ActionIconPlacement.AboveTitle) {
                 buttonElement.classList.add("iconAbove");
