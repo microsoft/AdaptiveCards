@@ -416,11 +416,11 @@ namespace AdaptiveCardsSharedModelUnitTest
                 Assert::IsTrue(!subCard->GetSelectAction());
                 Assert::AreEqual(""s, subCard->GetSpeak());
                 Assert::IsTrue(ContainerStyle::None == subCard->GetStyle());
-                Assert::AreEqual(""s, subCard->GetVersion());
+                Assert::AreEqual("1.0"s, subCard->GetVersion());
                 Assert::IsTrue(VerticalContentAlignment::Top == subCard->GetVerticalContentAlignment());
 
                 //Logger::WriteMessage("Submit Data: '"s.append(subCard->Serialize()).append("'").c_str());
-                Assert::AreEqual("{\"actions\":[],\"body\":[{\"isSubtle\":true,\"text\":\"Action.ShowCard text\",\"type\":\"TextBlock\"}],\"lang\":\"en\",\"type\":\"AdaptiveCard\",\"version\":\"\"}\n"s,
+                Assert::AreEqual("{\"actions\":[],\"body\":[{\"isSubtle\":true,\"text\":\"Action.ShowCard text\",\"type\":\"TextBlock\"}],\"lang\":\"en\",\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}\n"s,
                     subCard->Serialize());
             }
         }
