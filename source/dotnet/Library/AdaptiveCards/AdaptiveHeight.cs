@@ -18,7 +18,7 @@ namespace AdaptiveCards
         Stretch,
 
         /// <summary>
-        ///     
+        ///     The height of the element was explicitly specified (only for Image elements)
         /// </summary>
         Pixel
     }
@@ -55,24 +55,35 @@ namespace AdaptiveCards
 
         public bool ShouldSerializeAdaptiveHeight()
         {
-            if( HeightType == AdaptiveHeightType.Auto )
+            if (HeightType == AdaptiveHeightType.Auto)
+            {
                 return false;
+            }
             if( HeightType == AdaptiveHeightType.Pixel )
             {
                 if (!Unit.HasValue)
+                {
                     return false;
+                }
                 else if (Unit.Value == 0)
+                {
                     return false;
+                }
             }
             return true;
         }
 
         public static bool operator ==(AdaptiveHeight ah1, AdaptiveHeight ah2)
         {
-            if(ah1 != null && ah2 != null)
+            if (ah1 != null && ah2 != null)
+            {
                 return ah1.Equals(ah2);
+            }
+
             if (ah1 == null && ah2 == null)
+            {
                 return true;
+            }
             return false;
         }
 
@@ -84,7 +95,9 @@ namespace AdaptiveCards
         public override int GetHashCode()
         {
             if (!Unit.HasValue)
+            {
                 return -1;
+            }
             return (int)(Unit.Value * 10 + (int)HeightType);
         }
 
@@ -96,7 +109,9 @@ namespace AdaptiveCards
                 if (HeightType == ah.HeightType)
                 {
                     if (HeightType == AdaptiveHeightType.Pixel)
+                    {
                         return Unit == ah.Unit;
+                    }
                     return true;
                 }
             }
