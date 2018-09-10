@@ -10,6 +10,9 @@ namespace AdaptiveCards
     {
         public List<AdaptiveWarning> Warnings { get; set; } = new List<AdaptiveWarning>();
 
+        // TODO: temporary warning code for fallback card. Remove when common set of error codes created and integrated.
+        private enum WarningStatusCode { UnsupportedSchemaVersion = 7 };
+
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             throw new NotImplementedException();
@@ -21,21 +24,31 @@ namespace AdaptiveCards
         {
             var jObject = JObject.Load(reader);
 
-            if(jObject.Value<string>("type") != AdaptiveCard.TypeName)
+            if (jObject.Value<string>("type") != AdaptiveCard.TypeName)
                 throw new AdaptiveSerializationException($"Property 'type' must be '{AdaptiveCard.TypeName}'");
 
+            if (reader.Depth == 0)
+            {
+                if (jObject.Value<string>("version") == null)
+                {
+                    throw new AdaptiveSerializationException("Could not parse required key: version. It was not found.");
+                }
+
+                // If this is the root AdaptiveCard and missing a version we fail parsing. 
+                // The depth checks that cards within a Action.ShowCard don't require the version
+                if (jObject.Value<string>("version") == "")
+                {
+                    throw new AdaptiveSerializationException("Property is required but was found empty: version");
+                }
+
+                if (new AdaptiveSchemaVersion(jObject.Value<string>("version")) > AdaptiveCard.KnownSchemaVersion)
+                {
+                    return MakeFallbackTextCard(jObject);
+                }
+            }
             var typedElementConverter = serializer.ContractResolver.ResolveContract(typeof(AdaptiveTypedElement)).Converter;
 
             var card = (AdaptiveCard)typedElementConverter.ReadJson(jObject.CreateReader(), objectType, existingValue, serializer);
-
-            // If this is the root AdaptiveCard and missing a version we fail parsing. 
-            // The depth checks that cards within a Action.ShowCard don't require the version
-            if (reader.Depth == 0 && card.Version == null)
-            {
-                // TODO: HACK for BF needing to deserialize legacy payloads that did not have a version
-                card.Version = "0.5";
-                //throw new AdaptiveSerializationException("Required property 'version' not found on AdaptiveCard");
-            }
 
             return card;
         }
@@ -43,6 +56,30 @@ namespace AdaptiveCards
         public override bool CanConvert(Type objectType)
         {
             return typeof(AdaptiveCard).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
+        }
+
+        private AdaptiveCard MakeFallbackTextCard(JObject jObject)
+        {
+            // Retrieve fallbackText and language defined by parsed json
+            string language = jObject.Value<string>("language");
+            string fallbackText = jObject.Value<string>("fallbackText");
+
+            if (String.IsNullOrEmpty(fallbackText))
+            {
+                fallbackText = "We're sorry, this card couldn't be displayed";
+            }
+
+            // Define AdaptiveCard to return
+            AdaptiveCard fallbackTextCard = new AdaptiveCard("1.0");
+            fallbackTextCard.Body.Add(new AdaptiveTextBlock
+            {
+                Text = fallbackText
+            });
+
+            // Add relevant warning
+            Warnings.Add(new AdaptiveWarning((int) WarningStatusCode.UnsupportedSchemaVersion, "Schema version is not supported"));
+
+            return fallbackTextCard;
         }
     }
 }

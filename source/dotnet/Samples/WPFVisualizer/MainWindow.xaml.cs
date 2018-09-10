@@ -324,7 +324,7 @@ namespace WpfVisualizer
                     {
                         var textBlock = new TextBlock
                         {
-                            Text = $"Unkown property {x.Key}",
+                            Text = $"Unknown property {x.Key}",
                             TextWrapping = TextWrapping.Wrap,
                             Style = Resources["Warning"] as Style
                         };
