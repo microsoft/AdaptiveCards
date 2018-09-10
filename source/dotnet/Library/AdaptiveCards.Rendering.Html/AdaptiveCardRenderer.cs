@@ -906,40 +906,6 @@ namespace AdaptiveCards.Rendering.Html
 
             #region Play button
 
-            int playButtonArrowWidth = 12;
-            int playButtonArrowHeight = 15;
-
-            // Play symbol (black arrow)
-            var playButtonInnerElement = new DivTag()
-                .AddClass("ac-media-playButton-arrow")
-                .Style("width", playButtonArrowWidth + "px")
-                .Style("height", playButtonArrowHeight + "px")
-                .Style("color", "black")
-                .Style("border-top-width", (playButtonArrowHeight / 2) + "px")
-                .Style("border-bottom-width", (playButtonArrowHeight / 2) + "px")
-                .Style("border-left-width", playButtonArrowWidth + "px")
-                .Style("border-right-width", "0")
-                .Style("border-style", "solid")
-                .Style("border-top-color", "transparent")
-                .Style("border-right-color", "transparent")
-                .Style("border-bottom-color", "transparent");
-
-            // Circle around play symbol
-            var playButtonOuterElement = new DivTag()
-                .AddClass("ac-media-playButton")
-                .Style("display", "flex")
-                .Style("align-items", "center")
-                .Style("justify-content", "center")
-                .Style("width", "56px")
-                .Style("height", "56px")
-                .Style("border", "1px solid #EEEEEE")
-                .Style("border-radius", "28px")
-                .Style("box-shadow", "0px 0px 10px #EEEEEE")
-                .Style("background-color", "rgba(255, 255, 255, 0.9)")
-                .Style("color", "black");
-
-            playButtonOuterElement.Children.Add(playButtonInnerElement);
-
             // Overlay on top of poster image
             var playButtonContainer = new DivTag()
                 .Style("position", "absolute")
@@ -951,7 +917,54 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("justify-content", "center")
                 .Style("align-items", "center");
 
-            playButtonContainer.Children.Add(playButtonOuterElement);
+            // If host specifies a play button URL,
+            // render that image as the play button
+            if (!string.IsNullOrEmpty(context.Config.Media.PlayButton)
+                && context.Config.ResolveFinalAbsoluteUri(context.Config.Media.PlayButton) != null)
+            {
+                var playButtonImage = new HtmlTag("img")
+                    .Attr("src", context.Config.ResolveFinalAbsoluteUri(context.Config.Media.PlayButton).ToString())
+                    .Style("width", "56px")
+                    .Style("height", "56px");
+
+                playButtonContainer.Children.Add(playButtonImage);
+            }
+            else
+            {
+                int playButtonArrowWidth = 12;
+                int playButtonArrowHeight = 15;
+
+                // Play symbol (black arrow)
+                var playButtonInnerElement = new DivTag()
+                    .Style("width", playButtonArrowWidth + "px")
+                    .Style("height", playButtonArrowHeight + "px")
+                    .Style("color", "black")
+                    .Style("border-top-width", (playButtonArrowHeight / 2) + "px")
+                    .Style("border-bottom-width", (playButtonArrowHeight / 2) + "px")
+                    .Style("border-left-width", playButtonArrowWidth + "px")
+                    .Style("border-right-width", "0")
+                    .Style("border-style", "solid")
+                    .Style("border-top-color", "transparent")
+                    .Style("border-right-color", "transparent")
+                    .Style("border-bottom-color", "transparent");
+
+                // Circle around play symbol
+                var playButtonOuterElement = new DivTag()
+                    .Style("display", "flex")
+                    .Style("align-items", "center")
+                    .Style("justify-content", "center")
+                    .Style("width", "56px")
+                    .Style("height", "56px")
+                    .Style("border", "1px solid #EEEEEE")
+                    .Style("border-radius", "28px")
+                    .Style("box-shadow", "0px 0px 10px #EEEEEE")
+                    .Style("background-color", "rgba(255, 255, 255, 0.9)")
+                    .Style("color", "black");
+
+                playButtonOuterElement.Children.Add(playButtonInnerElement);
+
+                playButtonContainer.Children.Add(playButtonOuterElement);
+            }
 
             #endregion
 
