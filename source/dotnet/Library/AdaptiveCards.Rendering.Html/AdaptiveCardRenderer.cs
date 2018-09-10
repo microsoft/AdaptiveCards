@@ -881,21 +881,16 @@ namespace AdaptiveCards.Rendering.Html
                 return uiMedia;
             }
 
-            // A unique ID to link the thumbnail button and the media player
-            // of the same Media element
-            string mediaId = GenerateRandomId();
-
             #region Thumbnail
 
             var thumbnailButton = new DivTag()
                 .AddClass("ac-media-poster")
-                .Attr("data-ac-mediaId", mediaId)
                 .Attr("role", "button")
                 .Attr("aria-label", "Play media")
                 .Attr("role", "contentinfo")
                 .Style("position", "relative")
                 .Style("display", "flex")
-                    .Style("cursor", "pointer");
+                .Style("cursor", "pointer");
 
             if (posterUrl != null)
             {
@@ -966,50 +961,66 @@ namespace AdaptiveCards.Rendering.Html
 
             uiMedia.Children.Add(thumbnailButton);
 
-            #region Media Player
-
-            bool isAudio = IsAudio(mediaSources[0]);
-
-            var uiMediaPlayerContainer = new DivTag()
-                .Attr("id", mediaId)
-                .Style("width", "100%")
-                .Style("height", "100%")
-                .Style("display", "none");
-
-            // If an audio has a poster, display the static poster image
-            // along with the media player
-            if (isAudio && posterUrl != null)
+            if (context.Config.Media.AllowInlinePlayback)
             {
-                var staticPosterImage = new HtmlTag("image", false)
-                    .Attr("src", posterUrl)
+                // Media player is only created if inline playback is allowed
+
+                // A unique ID to link the thumbnail button and the media player
+                // of the same Media element
+                string mediaId = GenerateRandomId();
+
+                thumbnailButton.Attr("data-ac-mediaId", mediaId);
+
+                #region Media Player
+
+                bool isAudio = IsAudio(mediaSources[0]);
+
+                var uiMediaPlayerContainer = new DivTag()
+                    .Attr("id", mediaId)
                     .Style("width", "100%")
-                    .Style("height", "100%");
+                    .Style("height", "100%")
+                    .Style("display", "none");
 
-                uiMediaPlayerContainer.Children.Add(staticPosterImage);
+                // If an audio has a poster, display the static poster image
+                // along with the media player
+                if (isAudio && posterUrl != null)
+                {
+                    var staticPosterImage = new HtmlTag("image", false)
+                        .Attr("src", posterUrl)
+                        .Style("width", "100%")
+                        .Style("height", "100%");
+
+                    uiMediaPlayerContainer.Children.Add(staticPosterImage);
+                }
+
+                var uiMediaPlayer = new HtmlTag(isAudio ? "audio" : "video")
+                    .Attr("id", mediaId + "-player")
+                    .Style("width", "100%")
+                    .Attr("controls", "")
+                    .Attr("preload", "none")
+                    .Attr("poster", posterUrl);
+
+                // Sources
+                foreach (var source in mediaSources)
+                {
+                    var uiSource = new HtmlTag("source")
+                        .Attr("src", context.Config.ResolveFinalAbsoluteUri(source.Url))
+                        .Attr("type", source.MimeType);
+
+                    uiMediaPlayer.Children.Add(uiSource);
+                }
+
+                uiMediaPlayerContainer.Children.Add(uiMediaPlayer);
+
+                #endregion
+
+                uiMedia.Children.Add(uiMediaPlayerContainer);
             }
-
-            var uiMediaPlayer = new HtmlTag(isAudio ? "audio" : "video")
-                .Attr("id", mediaId + "-player")
-                .Style("width", "100%")
-                .Attr("controls", "")
-                .Attr("preload", "none")
-                .Attr("poster", posterUrl);
-
-            // Sources
-            foreach (var source in mediaSources)
+            else
             {
-                var uiSource = new HtmlTag("source")
-                    .Attr("src", context.Config.ResolveFinalAbsoluteUri(source.Url))
-                    .Attr("type", source.MimeType);
-
-                uiMediaPlayer.Children.Add(uiSource);
+                // Attach media data to the thumbnail to be sent to host
+                thumbnailButton.Attr("data-ac-media-sources", JsonConvert.SerializeObject(media.Sources, Formatting.None));
             }
-
-            uiMediaPlayerContainer.Children.Add(uiMediaPlayer);
-
-            #endregion
-
-            uiMedia.Children.Add(uiMediaPlayerContainer);
 
             return uiMedia;
         }

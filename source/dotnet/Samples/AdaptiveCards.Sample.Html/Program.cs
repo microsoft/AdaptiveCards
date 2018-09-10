@@ -161,8 +161,6 @@ namespace AdaptiveCards.Sample.Html
             button.addEventListener('click', function() {
                 const mediaPlayerContainer = document.getElementById(mediaId);
 
-                console.log(i, mediaId, mediaPlayerContainer);
-
                 if (mediaPlayerContainer)
                 {
 
