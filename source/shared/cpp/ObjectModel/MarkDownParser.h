@@ -19,11 +19,14 @@ public:
 
     bool HasHtmlTags();
 
+    bool IsEscaped() const;
+
 private:
     void ParseBlock();
     std::string EscapeText();
     std::string m_text;
     MarkDownParsedResult m_parsedResult;
     bool m_hasHTMLTag;
+    bool m_isEscaped;
 };
 }

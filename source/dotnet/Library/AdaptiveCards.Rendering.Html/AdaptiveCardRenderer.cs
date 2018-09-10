@@ -15,7 +15,7 @@ namespace AdaptiveCards.Rendering.Html
     {
         protected override AdaptiveSchemaVersion GetSupportedSchemaVersion()
         {
-            return new AdaptiveSchemaVersion(1, 0);
+            return new AdaptiveSchemaVersion(1, 1);
         }
 
         /// <summary>
@@ -48,8 +48,6 @@ namespace AdaptiveCards.Rendering.Html
 
         public RenderedAdaptiveCard RenderCard(AdaptiveCard card)
         {
-            EnsureCanRender(card);
-
             try
             {
                 var context = new AdaptiveRenderContext(HostConfig, ElementRenderers);
@@ -404,7 +402,9 @@ namespace AdaptiveCards.Rendering.Html
         protected static HtmlTag ColumnRender(AdaptiveColumn column, AdaptiveRenderContext context)
         {
             var uiColumn = new DivTag()
-                .AddClass($"ac-{column.Type.Replace(".", "").ToLower()}");
+                .AddClass($"ac-{column.Type.Replace(".", "").ToLower()}")
+                .Style("display", "flex")
+                .Style("flex-direction", "column");
 
             AddContainerElements(uiColumn, column.Items, null, context);
 
@@ -500,6 +500,13 @@ namespace AdaptiveCards.Rendering.Html
             var uiContainer = new DivTag()
                 .AddClass($"ac-{container.Type.Replace(".", "").ToLower()}");
 
+            if(container.Height == AdaptiveHeight.Stretch)
+            {
+                uiContainer.Style("display", "flex")
+                .Style("flex-direction", "column")
+                .Style("flex", "1 1 100%");
+            }
+
             if (container.Style != null)
             {
                 // Apply background color
@@ -524,6 +531,12 @@ namespace AdaptiveCards.Rendering.Html
             var uiFactSet = (TableTag)new TableTag()
                 .AddClass($"ac-{factSet.Type.Replace(".", "").ToLower()}")
                 .Style("overflow", "hidden");
+
+            if (factSet.Height == AdaptiveHeight.Stretch)
+            {
+                uiFactSet.Style("display", "block")
+                    .Style("flex", "1 1 100%");
+            }
 
             foreach (var fact in factSet.Facts)
             {
@@ -614,6 +627,11 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("font-size", $"{fontSize}px")
                 .Style("font-weight", $"{weight}");
 
+            if(textBlock.Height == AdaptiveHeight.Stretch)
+            {
+                uiTextBlock.Style("flex", "1 1 100%");
+            }
+
             if (textBlock.MaxLines > 0)
                 uiTextBlock = uiTextBlock
                     .Style("max-height", $"{lineHeight * textBlock.MaxLines}px")
@@ -666,8 +684,17 @@ namespace AdaptiveCards.Rendering.Html
         {
             var uiDiv = new DivTag()
                 .AddClass($"ac-{image.Type.Replace(".", "").ToLower()}")
-                .Style("display", "block")
-                .Style("box-sizing", "border-box");
+                .Style("display", "block");
+
+            if (image.Height == AdaptiveHeight.Auto)
+            {
+                uiDiv.Style("box-sizing", "border-box");
+            }
+            else
+            {
+                uiDiv.Style("align-items", "flex-start")
+                    .Style("flex", "1 1 100%");
+            }
 
             // if explicit image size is not used, use Adpative Image size
             if (image.PixelWidth == 0 && image.PixelHeight == 0)
@@ -728,19 +755,16 @@ namespace AdaptiveCards.Rendering.Html
             switch (image.HorizontalAlignment)
             {
                 case AdaptiveHorizontalAlignment.Left:
-                    uiDiv = uiDiv.Style("overflow", "hidden")
-                        .Style("display", "block");
+                    uiDiv = uiDiv.Style("overflow", "hidden");
                     break;
                 case AdaptiveHorizontalAlignment.Center:
                     uiDiv = uiDiv.Style("overflow", "hidden")
                         .Style("margin-right", "auto")
-                        .Style("margin-left", "auto")
-                        .Style("display", "block");
+                        .Style("margin-left", "auto");
                     break;
                 case AdaptiveHorizontalAlignment.Right:
                     uiDiv = uiDiv.Style("overflow", "hidden")
-                        .Style("margin-left", "auto")
-                        .Style("display", "block");
+                        .Style("margin-left", "auto");
                     break;
             }
 
@@ -995,6 +1019,12 @@ namespace AdaptiveCards.Rendering.Html
             var uiImageSet = new DivTag()
                 .AddClass(imageSet.Type.ToLower());
 
+            if(imageSet.Height == AdaptiveHeight.Stretch)
+            {
+                uiImageSet.Style("display", "flex")
+                    .Style("flex", "1 1 100%");
+            }
+
             foreach (var image in imageSet.Images)
             {
                 if (imageSet.ImageSize != AdaptiveImageSize.Auto)
@@ -1025,6 +1055,11 @@ namespace AdaptiveCards.Rendering.Html
                         .AddClass("ac-input")
                         .AddClass("ac-multichoiceInput")
                         .Style("width", "100%");
+
+                    if(adaptiveChoiceSetInput.Height == AdaptiveHeight.Stretch)
+                    {
+                        uiSelectElement.Style("flex", "1 1 100%");
+                    }
 
                     var defaultValues = ParseChoiceSetInputDefaultValues(adaptiveChoiceSetInput.Value);
 
@@ -1071,7 +1106,8 @@ namespace AdaptiveCards.Rendering.Html
             // render as a series of radio buttons
             var uiElement = new DivTag()
                 .AddClass("ac-input")
-                .Style("width", "100%");
+                .Style("width", "100%")
+                .Style("flex", "1 1 100%");
 
             foreach (var choice in adaptiveChoiceSetInput.Choices)
             {
@@ -1154,6 +1190,11 @@ namespace AdaptiveCards.Rendering.Html
                 uiDateInput.Attr("max", input.Max);
             }
 
+            if(input.Height == AdaptiveHeight.Stretch)
+            {
+                uiDateInput.Style("flex", "1 1 100%");
+            }
+
             return uiDateInput;
         }
 
@@ -1179,6 +1220,11 @@ namespace AdaptiveCards.Rendering.Html
             if (!double.IsNaN(input.Value))
             {
                 uiNumberInput.Attr("value", input.Value.ToString());
+            }
+
+            if(input.Height == AdaptiveHeight.Stretch)
+            {
+                uiNumberInput.Style("flex", "1 1 100%");
             }
 
             return uiNumberInput;
@@ -1222,6 +1268,11 @@ namespace AdaptiveCards.Rendering.Html
                 uiTextInput.Attr("maxLength", input.MaxLength.ToString());
             }
 
+            if(input.Height == AdaptiveHeight.Stretch)
+            {
+                uiTextInput.Style("flex", "1 1 100%");
+            }
+
             return uiTextInput;
         }
 
@@ -1249,6 +1300,11 @@ namespace AdaptiveCards.Rendering.Html
                 uiTimeInput.Attr("max", input.Max);
             }
 
+            if(input.Height == AdaptiveHeight.Stretch)
+            {
+                uiTimeInput.Style("flex", "1 1 100%");
+            }
+
             return uiTimeInput;
         }
 
@@ -1259,6 +1315,11 @@ namespace AdaptiveCards.Rendering.Html
             var uiElement = new DivTag()
                 .AddClass("ac-input")
                 .Style("width", "100%");
+
+            if(toggleInput.Height == AdaptiveHeight.Stretch)
+            {
+                uiElement.Style("flex", "1 1 100%");
+            }
 
             var uiCheckboxInput = new HtmlTag("input")
                 .Attr("id", htmlLabelId)
