@@ -6,5 +6,6 @@ package com.example.mobilechatapp;
 
 public interface IFilesReadListener
 {
-    void updateFilesCompletion(int readFiles, int totalFiles);
+    void setFilesCount(int totalFiles);
+    void updateFilesCompletion();
 }

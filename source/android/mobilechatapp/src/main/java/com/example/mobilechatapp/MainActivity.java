@@ -34,6 +34,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import io.adaptivecards.objectmodel.AdaptiveCard;
 import io.adaptivecards.objectmodel.BaseActionElement;
@@ -122,12 +123,19 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
     private class ProgressBarUpdateListener implements IFilesReadListener
     {
         @Override
-        public void updateFilesCompletion(int readFiles, int totalFiles)
+        public void setFilesCount(int totalFiles)
         {
-            m_progressBar.setMax(totalFiles);
-            m_progressBar.setProgress(readFiles);
+            m_filesCount = totalFiles;
+            m_progressBar.setMax(m_filesCount);
+        }
 
-            if(readFiles == totalFiles)
+        @Override
+        public void updateFilesCompletion()
+        {
+            int filesCompleted = m_filesCompleted.incrementAndGet();
+            m_progressBar.setProgress(filesCompleted);
+
+            if(filesCompleted == m_filesCount)
             {
                 m_progressBarLayout.setVisibility(View.GONE);
 
@@ -148,6 +156,9 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
                 }
             }
         }
+
+        private int m_filesCount = 0;
+        private AtomicInteger m_filesCompleted = new AtomicInteger(0);
     }
 
     @Override
@@ -230,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
 
     @Override
     public void onMediaPlay(BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard) {
-        
+
     }
 
     @Override
