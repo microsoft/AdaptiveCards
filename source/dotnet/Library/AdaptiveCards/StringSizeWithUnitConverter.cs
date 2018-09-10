@@ -39,9 +39,14 @@ namespace AdaptiveCards
         private object GenerateReturnValue(uint px)
         {
             if (!isHeight)
+            {
                 return px;
+            }
+
             if (px != 0)
+            {
                 return new AdaptiveHeight(px);
+            }
             return null;
         }
 
@@ -59,7 +64,9 @@ namespace AdaptiveCards
                     {
                         var heightType = dimension.ToLower();
                         if (String.Compare(dimension, AdaptiveHeightType.Stretch.ToString(), true) == 0)
+                        {
                             return new AdaptiveHeight(AdaptiveHeightType.Stretch);
+                        }
                         return new AdaptiveHeight(AdaptiveHeightType.Auto);
                     }
                 }

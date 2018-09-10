@@ -140,7 +140,9 @@ namespace AdaptiveCards
             get
             {
                 if (Height.Unit != null)
+                {
                     return Height.Unit.Value;
+                }
                 return 0;
             }
             set { Height = new AdaptiveHeight(value); }

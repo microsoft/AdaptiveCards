@@ -77,7 +77,6 @@ namespace AdaptiveCards.Rendering.Wpf
                     }
                     else
                     {
-
                         if (cardElement.Type == "Container")
                         {
                             uiContainer.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });

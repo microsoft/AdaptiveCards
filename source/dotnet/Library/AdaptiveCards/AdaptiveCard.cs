@@ -194,13 +194,19 @@ namespace AdaptiveCards
         public bool ShouldSerializeHeight()
         {
             if (Height == AdaptiveHeight.Auto)
+            {
                 return false;
+            }
             if (Height.HeightType == AdaptiveHeightType.Pixel)
             {
                 if (!Height.Unit.HasValue)
+                {
                     return false;
+                }
                 if (Height.Unit.Value == 0)
+                {
                     return false;
+                }
             }
             return true;
         }
