@@ -8,6 +8,13 @@ body {
     min-height: 100px;
 }
 
+body > #headerAreaHolder {
+    -webkit-box-ordinal-group: 3 !important;
+    -webkit-order: 0 !important;
+    -ms-flex-order: 0 !important;
+     order: 0 !important;
+}
+
 
 @media only screen and (max-width: 601px) {
     code {
@@ -65,8 +72,8 @@ h6 { font-size: 12px; }
 }
 
 .videobanner {
-    width: 100%;
-    float: left;
+    width: calc(100% + 20vw);
+    margin-left: -10vw;
     background-color: #0078D7;
 }
 

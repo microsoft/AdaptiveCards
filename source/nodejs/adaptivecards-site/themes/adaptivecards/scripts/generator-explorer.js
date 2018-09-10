@@ -1,11 +1,8 @@
-"ustr strict";
+"use strict";
 
 var markedschema = require("marked-schema");
 var marked = require("marked");
 var fs = require("hexo-fs");
-
-// TODO: Get UHF
-// https://uhf.microsoft.com/en-US/shell/xml/UHFPortal?headerId=MSDocsHeader-AdaptiveCards&footerid=UHFPortalFooter
 
 hexo.extend.generator.register("generator-explorer", function (locals) {
 
@@ -13,7 +10,7 @@ hexo.extend.generator.register("generator-explorer", function (locals) {
 
         markedschema.buildModel({
             schema: "../../../schemas/adaptive-card.json",
-            toc: "./node_modules/marked-schema/test/toc.yml",
+            toc: "./schema-explorer-toc.yml",
             rootDefinition: "AdaptiveCard",
             examplesPath: "../../../samples/v1.0"
         }).then(function (schemaModel) {
@@ -21,13 +18,15 @@ hexo.extend.generator.register("generator-explorer", function (locals) {
 
             schemaModel.forEach(function (root) {
                 root.children.forEach(function (child) {
+                    child.htmlPath = "explorer/" + child.name + ".html";
                     var page = {
-                        path: "explorer/" + child.name + ".html",
+                        path: child.htmlPath,
                         layout: "explorer",
                         data: {
                             title: "Schema Explorer",
                             schema: schemaModel,
                             element: child,
+                            childPath: child.htmlPath,
                             propertiesSummary: markedschema.generateMarkdown.createPropertiesSummary(child.properties)
                         }
                     }
@@ -43,6 +42,7 @@ hexo.extend.generator.register("generator-explorer", function (locals) {
                                 title: "Schema Explorer",
                                 schema: schemaModel,
                                 element: child,
+                                childPath: child.htmlPath,
                                 propertiesSummary: markedschema.generateMarkdown.createPropertiesSummary(child.properties)
                             }
                         });

@@ -1,15 +1,17 @@
 
 <div id="content-wrapper" class="w3-content sample-browser" style="max-width:1564px">
 
-  <nav id="sidebar-todo" class="toc-todo w3-sidebar w3-container w3-cell w3-hide-small w3-hide-medium w3-bar-block" style="width: 250px">
+  <nav id="sidebar-todo" class="toc-todo w3-sidebar w3-cell w3-hide-small w3-hide-medium w3-bar-block w3-padding-16" style="width: 245px">
     <div class="sidebar__inner">
       <ul>
-        <% page.samples.forEach(function(sample) { %>
-          <li class='<%= is_current(sample.htmlPath) ? "selectedHolder" : "" %>'>
+        <% page.samples.forEach(function(sample, i) { %>
+          <li class='<%= page.samplePath === sample.htmlPath ? "selectedHolder" : "" %>'>
             <a href="<%- url_for(sample.htmlPath) %>"><%= sample.name %></a>
           </li>
         <% }) %>
+      
       </ul>
+      
     </div>
   </nav>
     

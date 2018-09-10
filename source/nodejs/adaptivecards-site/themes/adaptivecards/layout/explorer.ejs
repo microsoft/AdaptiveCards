@@ -1,22 +1,24 @@
 
 <div id="content-wrapper" class="w3-content explorer" style="max-width:1564px">
 
-  <nav id="sidebar-todo" class="toc-todo w3-sidebar w3-container w3-cell w3-hide-small w3-hide-medium w3-bar-block" style="width: 250px">
-    <div class="sidebar__inner">
-      <ul aria-treegrid="true">
-        <% page.schema.forEach(function(root) { %>
-            <li><span onclick="myAccFunc()"><i class="fa fa-angle-down"></i> <%= root.title %></span>
-              <ul>
-                <% root.children.forEach(function(child) { %>
-                  <li class='<%= is_current("explorer/" + child.name + ".html") ? "selectedHolder" : "" %>'>
-                    <a href="<%- url_for('explorer/' + child.name + '.html') %>"><%= child.name %></a>
-                  </li>
-                <% }) %>
-              </ul>
-            </li>
-        <% }) %>
-      </ul>
-    </div>
+  <nav id="sidebar-todo" class="sidebar w3-padding-16" style="width: 245px">
+    <nav class="toc">
+      <div class="sidebar__inner">
+        <ul aria-treegrid="true">
+          <% page.schema.forEach(function(root) { %>
+              <li><span onclick="myAccFunc()"><i class="fa fa-angle-down"></i> <%= root.title %></span>
+                <ul>
+                  <% root.children.forEach(function(child) { %>
+                    <li class='<%= page.childPath === child.htmlPath ? "selectedHolder" : "" %>'>
+                      <a href="<%- url_for(child.htmlPath) %>"><%= child.name %></a>
+                    </li>
+                  <% }) %>
+                </ul>
+              </li>
+          <% }) %>
+        </ul>
+      </div>
+    </nav>
   </nav>
 
   <div class="w3-main" style="margin-left: 260px">
@@ -30,10 +32,10 @@
           <% page.schema.forEach(function(root) { %>
             <optgroup class="noLink" label='<%= root.title %>'>
               <% root.children.forEach(function(child) { %>
-                <% if(is_current("explorer/" + child.name + ".html")) { %>
-                  <option value='<%- url_for("explorer/" + child.name + ".html") %>' selected="selected"><%= child.name %></option>
+                <% if(is_current(child.htmlPath)) { %>
+                  <option value='<%- url_for(child.htmlPath) %>' selected="selected"><%= child.name %></option>
                 <% } else { %>
-                  <option value='<%- url_for("explorer/" + child.name + ".html") %>'><%= child.name %></option>
+                  <option value='<%- url_for(child.htmlPath) %>'><%= child.name %></option>
                 <% } %> 
           
               <% }) %>

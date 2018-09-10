@@ -18,6 +18,13 @@ The adaptivecards.io site is entirely static-generated HTML using NodeJS. It use
     * `layout` - the HTML templates for the pages and partials
     * `_config.yml` - config for the site, like the top-level menu, etc
 
+* **UHF Header Menu** - Microsoft properties have a standard header/footer that is provided by the UHF API.
+* [Get UHF HTML + CSS + Script here](https://uhf.microsoft.com/en-US/shell/xml/UHFPortal?headerId=MSDocsHeader-AdaptiveCards&footerid=UHFPortalFooter)
+    * `head.ejs` contains the CSS includes
+    * `footer.ejs` contains the script includes
+    * `header.ejs` has a manual copy-paste of the HTML
+
+
 # Install and Build
 
 ## Install Hexo
