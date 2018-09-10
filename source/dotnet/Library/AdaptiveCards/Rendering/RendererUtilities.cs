@@ -60,9 +60,13 @@ namespace AdaptiveCards.Rendering
                             }
                             else if (function == Functions.TIME)
                             {
-                                dateTimeFormat = timeHint == TimeHints.LONG ? "T" : "t";
+                                // TIME function has param. Ignore and move on.
+                                if (!string.IsNullOrEmpty(match.Groups[3].Value))
+                                {
+                                    continue;
+                                }
+                                dateTimeFormat = "t";
                             }
-
                             text = text.Replace(match.Value, date.ToString(dateTimeFormat));
                         }
                     }
