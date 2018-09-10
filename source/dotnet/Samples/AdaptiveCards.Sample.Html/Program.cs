@@ -98,7 +98,7 @@ namespace AdaptiveCards.Sample.Html
             background: orange;
             padding: 5px;
             width: 400px;
-        } 
+        }
     </style>
 </head>
 <body>");
@@ -150,6 +150,35 @@ namespace AdaptiveCards.Sample.Html
                 }
 
                 writer.WriteLine("</body>");
+                writer.WriteLine(@"
+    <script>
+        // Sample JavaScript code to make media elements work
+        const mediaPosterButtons = document.getElementsByClassName('ac-media-poster');
+        for (var i = 0; i < mediaPosterButtons.length; i++)
+        {
+            const button = mediaPosterButtons[i];
+            const mediaId = button.dataset.acMediaid;
+            button.addEventListener('click', function() {
+                const mediaPlayerContainer = document.getElementById(mediaId);
+
+                console.log(i, mediaId, mediaPlayerContainer);
+
+                if (mediaPlayerContainer)
+                {
+
+                    // Hide the poster
+                    button.style.display = 'none';
+
+                    // Show the media player container
+                    mediaPlayerContainer.style.display = '';
+
+                    // Play the media
+                    const mediaPlayer = document.getElementById(`${mediaId}-player`);
+                    mediaPlayer.play();
+                }
+            });
+        }
+    </script>");
                 writer.WriteLine("</html>");
 
                 if (outputFile != null)
