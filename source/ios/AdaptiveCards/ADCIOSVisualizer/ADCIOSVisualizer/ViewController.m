@@ -287,17 +287,7 @@
 
 - (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame
 {
-    CGRect superViewFrame = _scrView.frame;
-    superViewFrame.origin = [_scrView convertPoint:superViewFrame.origin toView:nil];
-    CGFloat newFrameAbsH =  superViewFrame.origin.y + _scrView.contentSize.height + newFrame.size.height;    
-    CGFloat superViewAbsH = superViewFrame.origin.y + superViewFrame.size.height - _scrView.contentInset.bottom;
-    if(newFrameAbsH > superViewAbsH)
-    {
-        CGFloat offset = newFrameAbsH - superViewAbsH;
-        offset = MIN(offset, _scrView.contentSize.height);
-        [self.scrView setContentOffset:CGPointMake(0, offset) animated:YES];
-    }
-    [self.scrView layoutIfNeeded];
+    [self.scrView scrollRectToVisible:newFrame animated:YES];
 }
 
 - (void)didChangeVisibility:(UIButton *)button isVisible:(BOOL)isVisible
@@ -310,7 +300,6 @@
     {
         button.backgroundColor = [UIColor colorWithRed:0.11 green:0.68 blue:0.97 alpha:1.0];
         [self.scrView layoutIfNeeded];
-
     }
 }
 
