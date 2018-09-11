@@ -3,6 +3,8 @@
 - Card Elements:
   - TextBlock
   - Image
+  - Media
+  - MediaSource
 - Containers:
   - Container
   - ColumnSet
