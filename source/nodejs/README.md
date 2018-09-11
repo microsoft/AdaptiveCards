@@ -13,21 +13,14 @@ They are built independently, so to make local testing easier, you can use `npm 
 
 ## To build the Visualizer tool
 
+> **IMPORTANT**: You need npm >= 6.x to build the visualizer
+>
+> `npm install -g npm@latest`
+
 1. `cd ../adaptivecards-visualizer`
 1. `npm install`
 1. (Optional) To use the local package of adaptivecards, run `npm link adaptivecards` (creates the symlink to the renderer). Otherwise, you can skip this step since the latest public release is already installed.
 1. `npm run build`
 
 ## To start a local web server
-1. `npm start`
-
-
-
-
-
-# NOT WORKING YET
-1. `npm install -g npm-workspace`
-1. `npm-workspace install`
-1. `cd visualizer`
-1. `npm run build`
 1. `npm start`
