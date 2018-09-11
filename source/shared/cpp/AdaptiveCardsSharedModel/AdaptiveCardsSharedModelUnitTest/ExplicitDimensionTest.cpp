@@ -279,6 +279,19 @@ namespace AdaptiveCardsSharedModelUnitTest
                              \"height\" : \"20,000.0px\"\
                        }\
                      ]\
+                  }",
+                  "{\
+                       \"$schema\": \"http ://adaptivecards.io/schemas/adaptive-card.json\",\
+                       \"type\" : \"AdaptiveCard\",\
+                       \"version\" : \"1.0\",\
+                       \"body\" : [\
+                       {\
+                             \"type\": \"Image\",\
+                             \"url\" : \"http ://adaptivecards.io/content/cats/1.png\",\
+                             \"width\" : \"20.px\",\
+                             \"height\" : \"abc50.px\"\
+                       }\
+                     ]\
                   }"
             }; 
 

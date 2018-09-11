@@ -77,6 +77,7 @@ std::string ValidateColor(const std::string& backgroundColor,
 void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::string &requestedDimension,
     int &parsedDimension, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings)
 {
+    const std::string warningMessage = "expected input arugment to be specified as \\d+(\\.\\d+)?px with no spaces, but received ";
     int parsedVal = 0;
     parsedDimension = 0;
     if (requestedDimension.empty()) 
@@ -89,69 +90,55 @@ void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::s
     { 
         warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
                 AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
-                "expected input arugment to be specified as \\d+(.\\d+)?px with no spaces, but received " + requestedDimension)); 
+                warningMessage + requestedDimension)); 
         return;
     }
 
-    if (requestedDimension.length() >= unit.length()) 
+    if (requestedDimension.length() <= unit.length()) 
     {
-        unsigned int cnts = 1;
-        for (cnts; cnts <= unit.length(); cnts++)
-        { 
-            unsigned int offset = cnts;
-            if (*(requestedDimension.end() - offset) != *(unit.end() - offset))
-            {
-                warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
-                        AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
-                        "expected input arugment to be specified as \\d+(.\\d+)?px with no spaces, but received " + requestedDimension)); 
-                return;
-            }
-        }
+        warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
+                AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
+                warningMessage + requestedDimension)); 
+        return;
+    }
+
+    // verify unit
+    const size_t pos = requestedDimension.length() - unit.length();
+    int bresult = requestedDimension.compare(pos, unit.length(), unit);
+    if (bresult != 0)
+    {
+        warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
+                AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
+                warningMessage + requestedDimension)); 
+        return;
     }
 
     try
     {
-        size_t nonDigitIndex;
-        parsedVal = std::stoi(requestedDimension, &nonDigitIndex);
+        size_t idx;
+        // stoi will get integral value upto non digit char indexed by idx
+        parsedVal = std::stoi(requestedDimension, &idx);
         if (parsedVal < 0)
         {
             warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
                     AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
-                    "expected input arugment to be specified as \\d+(.\\d+)?px with no spaces, but received " + requestedDimension)); 
+                    warningMessage + requestedDimension)); 
             parsedVal = 0;
         }
 
-        const size_t firstNonDigitIndex = requestedDimension.length() - unit.size();
-        const size_t lastDigitIndex = firstNonDigitIndex - 1;
-        bool bPass = true;
-        // it's assumed that unit is included in the string
-        if (nonDigitIndex != firstNonDigitIndex)
-        { 
-            // check if it's decimal point
-            if (requestedDimension.at(nonDigitIndex) == '.')
-            {
-                // check it contains only digits after decimal point
-                size_t numberIndex = nonDigitIndex + 1;
-                while (numberIndex < firstNonDigitIndex && isdigit(requestedDimension.at(numberIndex)))
-                {
-                    numberIndex++;
-                }
-                if(numberIndex != firstNonDigitIndex)
-                {
-                    bPass = false;
-                }
-            } 
-            else
-            {
-                bPass = false;
-            }
+        const size_t startIndexOfUnit = requestedDimension.length() - unit.size();
+        // if it's decimal point, there should be at least one digit and digits only between decimal point and unit
+        if (unit.length() && requestedDimension.at(idx) == '.' && isdigit(requestedDimension.at(idx + 1)))
+        {
+            // advance idx up to first non digit char
+            while (idx < startIndexOfUnit && isdigit(requestedDimension.at(++idx)));
         }
-
-        if (!bPass)
+        // non digit char pointed by idx should be the start index of unit
+        if (idx != startIndexOfUnit)
         {
             warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
                     AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
-                    "expected input arugment to be specified as \\d+(.\\d+)?px with no spaces, but received " + requestedDimension)); 
+                    warningMessage + requestedDimension)); 
             parsedVal = 0;
         }
         parsedDimension = parsedVal;
@@ -161,7 +148,7 @@ void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::s
         (void)e;
         warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
                 AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
-                    "expected input arugment to be specified as \\d+(.\\d+)?px with no spaces, but received " + requestedDimension)); 
+                warningMessage + requestedDimension)); 
     }
     catch (const std::out_of_range &e)
     {
