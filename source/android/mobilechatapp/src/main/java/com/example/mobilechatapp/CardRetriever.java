@@ -1,28 +1,12 @@
 package com.example.mobilechatapp;
 
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.support.annotation.NonNull;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Random;
 import java.util.Set;
-
-import io.adaptivecards.renderer.Util;
-
-/**
- * Created by almedina on 8/15/2018.
- */
+import java.util.TreeSet;
 
 public class CardRetriever
 {
@@ -275,7 +259,7 @@ public class CardRetriever
     private IFilesReadListener m_filesReadListener = null;
     private static List<Card> s_cardJsons = null;
     private static CardRetriever s_instance = null;
-    private static Set<String> s_cardElements = new HashSet<>();
+    private static Set<String> s_cardElements = new TreeSet<>();
     private enum FirstSectionValue { all, random, number, notUnderstood }
     private enum SecondSectionValue { all, elementTypeName, notUnderstood }
 

@@ -1,16 +1,11 @@
 package com.example.mobilechatapp;
 
-import android.app.ListActivity;
-import android.database.DataSetObserver;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,27 +17,20 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import io.adaptivecards.objectmodel.AdaptiveCard;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.ElementParserRegistration;
 import io.adaptivecards.objectmodel.HostConfig;
-import io.adaptivecards.objectmodel.ParseResult;
-import io.adaptivecards.renderer.AdaptiveCardRenderer;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
@@ -88,8 +76,7 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
                         {
                             if(card.getParsedCard() != null)
                             {
-                                RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(MainActivity.this, getSupportFragmentManager(), card.getParsedCard().GetAdaptiveCard(), MainActivity.this, m_hostConfig);
-                                m_adapter.addItem(card.getFileName(), renderedCard.getView());
+                                m_adapter.addItem(card.getFileName(), card.getParsedCard(), MainActivity.this, getSupportFragmentManager(), MainActivity.this, m_hostConfig);
                             }
                             else
                             {
