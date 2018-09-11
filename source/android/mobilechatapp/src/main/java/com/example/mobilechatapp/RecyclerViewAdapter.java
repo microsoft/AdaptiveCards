@@ -147,7 +147,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     void addItem(String filename, ParseResult parseResult, Context context, FragmentManager fragmentManager, ICardActionHandler cardActionHandler, HostConfig hostConfig)
     {
         m_cards.add(new RecyclerViewContent(filename, parseResult, context, fragmentManager, cardActionHandler, hostConfig));
-        // m_adapter.addItem(card.getFileName(), renderedCard.getView());
         notifyDataSetChanged();
     }
 

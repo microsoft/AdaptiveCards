@@ -76,7 +76,10 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
                         {
                             if(card.getParsedCard() != null)
                             {
-                                m_adapter.addItem(card.getFileName(), card.getParsedCard(), MainActivity.this, getSupportFragmentManager(), MainActivity.this, m_hostConfig);
+                                if(!card.ContainsElementType("media"))
+                                {
+                                    m_adapter.addItem(card.getFileName(), card.getParsedCard(), MainActivity.this, getSupportFragmentManager(), MainActivity.this, m_hostConfig);
+                                }
                             }
                             else
                             {
