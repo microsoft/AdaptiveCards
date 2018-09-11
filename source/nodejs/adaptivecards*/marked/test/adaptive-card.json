@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-06/schema#",
   "id": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "object",
-  "title": "Microsoft Adaptive Card Schema",  
+  "title": "Microsoft Adaptive Card Schema",
   "additionalProperties": true,
   "allOf": [
     {
@@ -12,19 +12,26 @@
   "properties": {
     "version": {
       "type": "string",
-      "description": "version of schema that this card was authored "
-    },
-    "minVersion": {
-      "type": "string",
-      "description": "if a client doesn't support the minVersion the card should be rejected and return the fallbackText.  If it does, then the elements that are not supported are safe to ignore"
+      "description": "Schema version that this card requires. If a client is lower than this version the fallbackText will be rendered."
     },
     "fallbackText": {
       "type": "string",
-      "description": "if a client is not able to show the card, show fallbackText to the user. This can be in markdown format. "
+      "description": "Text shown when the client doesn't support the version specified. This can be in markdown format."
+    },
+    "backgroundImage": {
+      "type": "string",
+      "description": "An image to use as the background of the card"
     },
     "speak": {
       "type": "string",
       "description": "Specifies what should be spoken for this entire Item. This is simple text or SSML fragment"
+    },
+    "lang": {
+      "type": "string",
+      "description": "The 2-letter ISO-639-1 language used in the card. Used to localize any date/time functions",
+      "examples": [
+        "en", "fr", "es"
+      ]
     }
   },
   "required": [
@@ -48,16 +55,21 @@
       "additionalProperties": true,
       "description": "When Action.OpenUrl is invoked it will show the given url, either by launching it to an external web browser or showing in-situ with embedded web browser.",
       "properties": {
-        "title": {
-          "type": "string",
-          "description": "Label for button or link that represents this action"
-        },
         "type": {
           "type": "string",
           "description": "Must be Action.OpenUrl",
           "enum": [
             "Action.OpenUrl"
           ]
+        },
+        "title": {
+          "type": "string",
+          "description": "Label for button or link that represents this action"
+        },
+        "iconUrl": {
+          "type": "string",
+          "description": "Optional icon to be shown on the action in conjunction with the title",
+          "version": "1.1"
         },
         "url": {
           "type": "string",
@@ -66,6 +78,7 @@
       },
       "required": [
         "type",
+        "title",
         "url"
       ],
       "type": "object"
@@ -86,12 +99,18 @@
           "type": "string",
           "description": "Label for button or link that represents this action"
         },
+        "iconUrl": {
+          "type": "string",
+          "description": "Optional icon to be shown on the action in conjunction with the title",
+          "version": "1.1"
+        },
         "card": {
           "$ref": "#/definitions/AdaptiveCard"
         }
       },
       "required": [
         "type",
+        "title",
         "card"
       ]
     },
@@ -111,13 +130,22 @@
           "type": "string",
           "description": "Label for button or link that represents this action"
         },
+        "iconUrl": {
+          "type": "string",
+          "description": "Optional icon to be shown on the action in conjunction with the title",
+          "version": "1.1"
+        },
         "data": {
-          "type": [ "string", "object" ],
+          "type": [
+            "string",
+            "object"
+          ],
           "description": "initial data that input fields will be combined with. This is essentially 'hidden' properties"
         }
       },
       "required": [
-        "type"
+        "type",
+        "title"
       ]
     },
     "Actions": {
@@ -146,6 +174,10 @@
         "body": {
           "description": "The Card Elements to show in the primary card region",
           "$ref": "#/definitions/CardElements"
+        },
+        "selectAction": {
+          "$ref": "#/definitions/Action",
+          "description": "An Action that will be invoked when the card is tapped or selected. Action.ShowCard not supported"
         }
       },
       "required": [
@@ -176,7 +208,7 @@
         "type"
       ]
     },
-    "CardElements": { 
+    "CardElements": {
       "type": "array",
       "additionalItems": true,
       "items": [
@@ -227,8 +259,8 @@
       "description": "Describes a Choice input. The value should be a simple string without a \",\"",
       "additionalProperties": true,
       "properties": {
-        "type":{
-          "type":"string",
+        "type": {
+          "type": "string",
           "enum": [
             "Input.Choice"
           ]
@@ -250,6 +282,7 @@
     "ChoiceInputStyle": {
       "type": "string",
       "description": "Style hint for Input.ChoiceSet",
+      "default": "compact",
       "enum": [
         "compact",
         "expanded"
@@ -270,8 +303,16 @@
           "$ref": "#/definitions/CardElements"
         },
         "selectAction": {
-          "description": "An Action that will be invoked when the Column is tapped or selected",
+          "description": "An Action that will be invoked when the Column is tapped or selected. Action.ShowCard not supported",
           "$ref": "#/definitions/Action"
+        },
+        "style": {
+          "type": "string",
+          "description": "Style hint for Column",
+          "enum": [
+            "default",
+            "emphasis"
+          ]
         },
         "width": {
           "type": [
@@ -289,6 +330,7 @@
         }
       },
       "required": [
+        "type",
         "items"
       ]
     },
@@ -311,7 +353,7 @@
         },
         "selectAction": {
           "$ref": "#/definitions/Action",
-          "description": "The Action that is executed when the ColumnSet is clicked/tapped"
+          "description": "An Action that will be invoked when the ColumnSet is tapped or selected. Action.ShowCard not supported"
         },
         "type": {
           "type": "string",
@@ -332,12 +374,19 @@
         }
       ],
       "properties": {
+        "type": {
+          "type": "string",
+          "description": "Must be Container",
+          "enum": [
+            "Container"
+          ]
+        },
         "items": {
           "description": "The Card Elements to render inside the Container",
           "$ref": "#/definitions/CardElements"
         },
         "selectAction": {
-          "description": "An Action that will be invoked when the Image is tapped or selected",
+          "description": "An Action that will be invoked when the Container is tapped or selected. Action.ShowCard not supported",
           "$ref": "#/definitions/Action"
         },
         "style": {
@@ -348,15 +397,20 @@
             "emphasis"
           ]
         },
-        "type": {
+        "verticalContentAlignment": {
           "type": "string",
-          "description": "Must be Container",
-          "enum": [
-            "Container"
-          ]
-        }
+          "description": "Defines how the content should be aligned vertically within the container",
+          "default": "top",
+          "enum:": [
+            "top",
+            "center",
+            "bottom"
+          ],
+          "version": "1.1"
+        }       
       },
       "required": [
+        "type",
         "items"
       ]
     },
@@ -374,7 +428,6 @@
         "title": {
           "type": "string",
           "description": "The title of the fact"
-          
         },
         "value": {
           "type": "string",
@@ -412,12 +465,14 @@
         }
       },
       "required": [
+        "type",
         "facts"
       ]
     },
     "HorizontalAlignment": {
       "type": "string",
       "description": "Controls how Items are horizontally positioned within their container.",
+      "default": "left",
       "enum": [
         "left",
         "center",
@@ -442,11 +497,10 @@
           "$ref": "#/definitions/HorizontalAlignment"
         },
         "selectAction": {
-          "description": "An Action that will be invoked when the Image is tapped or selected",
+          "description": "An Action that will be invoked when the Image is tapped or selected. Action.ShowCard not supported",
           "$ref": "#/definitions/Action"
         },
         "size": {
-          "type": "object",
           "$ref": "#/definitions/ImageSize"
         },
         "style": {
@@ -465,6 +519,7 @@
         }
       },
       "required": [
+        "type",
         "url"
       ]
     },
@@ -497,6 +552,7 @@
         }
       },
       "required": [
+        "type",
         "images"
       ]
     },
@@ -523,7 +579,7 @@
     "Input.ChoiceSet": {
       "additionalProperties": true,
       "type": "object",
-      "description": "Shows an array of Choice objects",      
+      "description": "Shows an array of Choice objects",
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"
@@ -539,11 +595,11 @@
         },
         "id": {
           "type": "string",
-          "description": "Id for the value (will be used to identify collected input when SUBMIT is clicked)"
+          "description": "Id for the value (will be used to identify collected input when Action.Submit is invoked)"
         },
         "isMultiSelect": {
           "type": "boolean",
-          "description": "allow multiple choices to be selected",
+          "description": "Allow multiple choices to be selected",
           "default": false
         },
         "style": {
@@ -562,6 +618,7 @@
         }
       },
       "required": [
+        "type",
         "id",
         "choices"
       ]
@@ -578,7 +635,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Id for the value (will be used to identify collected input when SUBMIT is clicked)"
+          "description": "Id for the value (will be used to identify collected input when Action.Submit is clicked)"
         },
         "max": {
           "type": "string",
@@ -605,6 +662,7 @@
         }
       },
       "required": [
+        "type",
         "id"
       ]
     },
@@ -620,7 +678,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Id for the value (will be used to identify collected input when SUBMIT is clicked)"
+          "description": "Id for the value (will be used to identify collected input when Action.Submit is clicked)"
         },
         "max": {
           "type": "number",
@@ -647,6 +705,7 @@
         }
       },
       "required": [
+        "type",
         "id"
       ]
     },
@@ -662,11 +721,12 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Id for the value (will be used to identify collected input when SUBMIT is clicked)"
+          "description": "Id for the value (will be used to identify collected input when Action.Submit is clicked)"
         },
         "isMultiline": {
           "type": "boolean",
-          "description": "Do you want to allow multiple lines of input"
+          "description": "Allow multiple lines of text input",
+          "default": false
         },
         "maxLength": {
           "type": "number",
@@ -692,6 +752,7 @@
         }
       },
       "required": [
+        "type",
         "id"
       ]
     },
@@ -707,7 +768,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Id for the value (will be used to identify collected input when SUBMIT is clicked)"
+          "description": "Id for the value (will be used to identify collected input when Action.Submit is clicked)"
         },
         "max": {
           "type": "string",
@@ -734,6 +795,7 @@
         }
       },
       "required": [
+        "type",
         "id"
       ]
     },
@@ -749,7 +811,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Id for the value (will be used to identify collected input when SUBMIT is clicked)"
+          "description": "Id for the value (will be used to identify collected input when Action.Submit is clicked)"
         },
         "title": {
           "type": "string",
@@ -764,18 +826,22 @@
         },
         "value": {
           "type": "string",
-          "description": "The current selected value (default:false)"
+          "description": "The current selected value. If the item is selected that \"valueOn\" will be used, otherwise \"valueOff\"",
+          "default": "false"
         },
         "valueOff": {
           "type": "string",
-          "description": "The value when toggle is off (default:false)"
+          "description": "The value when toggle is off",
+          "default": "false"
         },
         "valueOn": {
           "type": "string",
-          "description": "The value when toggle is on (default:true)"
+          "description": "The value when toggle is on",
+          "default": "true"
         }
       },
       "required": [
+        "type",
         "id",
         "title"
       ]
@@ -808,7 +874,8 @@
         },
         "isSubtle": {
           "type": "boolean",
-          "description": "Indicates whether the color of the text should be slightly toned down to appear less prominent"
+          "description": "Indicates whether the color of the text should be slightly toned down to appear less prominent",
+          "default": false
         },
         "maxLines": {
           "type": "number",
@@ -847,10 +914,12 @@
         },
         "wrap": {
           "type": "boolean",
-          "description": "True if be is allowed to wrap"
+          "description": "\"true\" if the text is allowed to wrap",
+          "default": false
         }
       },
       "required": [
+        "type",
         "text"
       ]
     },
@@ -892,6 +961,7 @@
     "TextInputStyle": {
       "type": "string",
       "description": "Style hint for Input.Text.",
+      "default": "text",
       "enum": [
         "text",
         "tel",
