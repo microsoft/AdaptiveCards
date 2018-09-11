@@ -149,33 +149,43 @@ namespace AdaptiveCards.Sample.Html
                     }
                 }
 
+                bool allowInlinePlayback = hostConfig.Media.AllowInlinePlayback;
+
+                // Convert to JavaScript boolean values (False -> false, True -> true)
+                string jsAllowInlinePlayback = allowInlinePlayback.ToString().ToLower();
+
                 writer.WriteLine("</body>");
-                writer.WriteLine(@"
+                writer.WriteLine($@"
     <script>
         // Sample JavaScript code to make media elements work
         const mediaPosterButtons = document.getElementsByClassName('ac-media-poster');
+        const allowInlinePlayback = false;
         for (var i = 0; i < mediaPosterButtons.length; i++)
-        {
+        {{
             const button = mediaPosterButtons[i];
-            const mediaId = button.dataset.acMediaid;
-            button.addEventListener('click', function() {
-                const mediaPlayerContainer = document.getElementById(mediaId);
+            button.addEventListener('click', function() {{
+                if ({jsAllowInlinePlayback}) {{
+                    const mediaId = button.dataset.acMediaid;
+                    const mediaPlayerContainer = document.getElementById(mediaId);
 
-                if (mediaPlayerContainer)
-                {
+                    if (mediaPlayerContainer)
+                    {{
+                        // Hide the poster
+                        button.style.display = 'none';
 
-                    // Hide the poster
-                    button.style.display = 'none';
+                        // Show the media player container
+                        mediaPlayerContainer.style.display = '';
 
-                    // Show the media player container
-                    mediaPlayerContainer.style.display = '';
-
-                    // Play the media
-                    const mediaPlayer = document.getElementById(`${mediaId}-player`);
-                    mediaPlayer.play();
-                }
-            });
-        }
+                        // Play the media
+                        const mediaPlayer = document.getElementById(`${{mediaId}}-player`);
+                        mediaPlayer.play();
+                    }}
+                }} else {{
+                    const mediaSources = button.dataset.acMediaSources;
+                    alert(mediaSources);
+                }}
+            }});
+        }}
     </script>");
                 writer.WriteLine("</html>");
 
