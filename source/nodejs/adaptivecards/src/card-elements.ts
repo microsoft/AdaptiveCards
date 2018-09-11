@@ -563,6 +563,10 @@ export abstract class CardElement {
         return [];
     }
 
+    getAllImageUrls(): Array<string> {
+        return [];
+    }
+
     getElementById(id: string): CardElement {
         return this.id === id ? this : null;
     }
@@ -1530,6 +1534,10 @@ export class Image extends CardElement {
         }
     }
 
+    getAllImageUrls(): Array<string> {
+        return !Utils.isNullOrEmpty(this.url) ? [ this.url ] : [];
+    }
+
     renderSpeech(): string {
         if (this.speak != null) {
             return this.speak + '\n';
@@ -1587,6 +1595,16 @@ export class ImageSet extends CardElementContainer {
 
     getItemAt(index: number): CardElement {
         return this._images[index];
+    }
+
+    getAllImageUrls(): Array<string> {
+        let result: Array<string> = [];
+
+        for (let image of this._images) {
+            result = result.concat(image.getAllImageUrls());
+        }
+
+        return result;
     }
 
     removeItem(item: CardElement): boolean {
@@ -1705,6 +1723,10 @@ export class Media extends CardElement {
     private _selectedMediaType: string;
     private _selectedSources: Array<MediaSource>;
 
+    private getPosterUrl(): string {
+        return this.poster ? this.poster : this.hostConfig.media.defaultPoster;
+    }
+
     private processSources() {
         this._selectedSources = [];
         
@@ -1737,7 +1759,7 @@ export class Media extends CardElement {
         posterRootElement.style.position = "relative";
         posterRootElement.style.display = "flex";
 
-        let posterUrl = this.poster ? this.poster : this.hostConfig.media.defaultPoster;
+        let posterUrl = this.getPosterUrl();
 
         if (posterUrl) {
             let posterImageElement = document.createElement("img");
@@ -1822,7 +1844,7 @@ export class Media extends CardElement {
         if (this._selectedMediaType == "video") {
             let videoPlayer = document.createElement("video");
 
-            let posterUrl = this.poster ? this.poster : this.hostConfig.media.defaultPoster;
+            let posterUrl = this.getPosterUrl();
 
             if (posterUrl) {
                 videoPlayer.poster = posterUrl;
@@ -1909,6 +1931,12 @@ export class Media extends CardElement {
 
     getJsonTypeName(): string {
         return "Media";
+    }
+
+    getAllImageUrls(): Array<string> {
+        let posterUrl = this.getPosterUrl();
+
+        return !Utils.isNullOrEmpty(posterUrl) ? [ posterUrl ] : [];
     }
 
     renderSpeech(): string {
@@ -2773,6 +2801,10 @@ export abstract class Action {
         return [];
     }
 
+    getAllImageUrls(): Array<string> {
+        return !Utils.isNullOrEmpty(this.iconUrl) ? [ this.iconUrl ] : [];
+    }
+
     getActionById(id: string): Action {
         if (this.id == id) {
             return this;
@@ -3053,6 +3085,10 @@ export class ShowCardAction extends Action {
 
     getAllInputs(): Array<Input> {
         return this.card.getAllInputs();
+    }
+
+    getAllImageUrls(): Array<string> {
+        return super.getAllImageUrls().concat(this.card.getAllImageUrls());
     }
 
     getActionById(id: string): Action {
@@ -3516,6 +3552,16 @@ class ActionCollection {
         return result;
     }
 
+    getAllImageUrls(): Array<string> {
+        let result: Array<string> = [];
+
+        for (var i = 0; i < this.items.length; i++) {
+            result = result.concat(this.items[i].getAllImageUrls());
+        }
+
+        return result;
+    }
+
     get renderedActionCount(): number {
         return this._renderedActionCount;
     }
@@ -3607,6 +3653,10 @@ export class ActionSet extends CardElement {
 
     getAllInputs(): Array<Input> {
         return this._actionCollection.getAllInputs();
+    }
+
+    getAllImageUrls(): Array<string> {
+        return this._actionCollection.getAllImageUrls();
     }
 
     renderSpeech(): string {
@@ -4253,6 +4303,16 @@ export class Container extends CardElementContainer {
         return result;
     }
 
+    getAllImageUrls(): Array<string> {
+        let result: Array<string> = this.backgroundImage ? [ this.backgroundImage.url ] : [];
+
+        for (var i = 0; i < this.getItemCount(); i++) {
+            result = result.concat(this.getItemAt(i).getAllImageUrls());
+        }
+
+        return result;
+    }
+
     getElementById(id: string): CardElement {
         var result: CardElement = super.getElementById(id);
 
@@ -4778,6 +4838,16 @@ export class ColumnSet extends CardElementContainer {
         return result;
     }
 
+    getAllImageUrls(): Array<string> {
+        let result: Array<string> = [];
+
+        for (var i = 0; i < this._columns.length; i++) {
+            result = result.concat(this._columns[i].getAllImageUrls());
+        }
+
+        return result;
+    }
+
     getElementById(id: string): CardElement {
         var result: CardElement = super.getElementById(id);
 
@@ -5100,6 +5170,10 @@ export abstract class ContainerWithActions extends Container {
 
     getAllInputs(): Array<Input> {
         return super.getAllInputs().concat(this._actionCollection.getAllInputs());
+    }
+
+    getAllImageUrls(): Array<string> {
+        return super.getAllImageUrls().concat(this._actionCollection.getAllImageUrls());
     }
 
     get isStandalone(): boolean {
