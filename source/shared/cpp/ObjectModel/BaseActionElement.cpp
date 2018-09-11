@@ -66,8 +66,12 @@ Json::Value BaseActionElement::SerializeToJsonValue() const
 {
     Json::Value root = GetAdditionalProperties();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = ActionTypeToString(m_type);
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)] = m_title;
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id)] = m_id;
+
+    if (!m_title.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)] = m_title;
+    }
 
     if (!m_iconUrl.empty())
     {
