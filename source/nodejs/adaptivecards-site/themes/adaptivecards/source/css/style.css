@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "docons";
+    src: url("../content/fonts/docons.woff") format('woff');
+}
+
 html {
     overflow: auto;
 }

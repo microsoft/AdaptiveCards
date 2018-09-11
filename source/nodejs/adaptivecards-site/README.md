@@ -46,6 +46,9 @@ npm install
 Remove the `adaptivecards-visualizer` dependency from `package.json` (this dependency is only used for Microsoft's internal Continuous Integration process), then
 
 ```console
+cd adaptivecards-visualizer
+npm link
+cd ../adaptivecards-site
 npm link adaptivecards-visualizer
 ```
 

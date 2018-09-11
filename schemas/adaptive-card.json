@@ -1,4 +1,4 @@
- {
+{
   "$schema": "http://json-schema.org/draft-06/schema#",
   "id": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "object",
@@ -66,6 +66,11 @@
           "type": "string",
           "description": "Label for button or link that represents this action"
         },
+        "iconUrl": {
+          "type": "string",
+          "description": "Optional icon to be shown on the action in conjunction with the title",
+          "version": "1.1"
+        },
         "url": {
           "type": "string",
           "description": "The URL to open"
@@ -94,6 +99,11 @@
           "type": "string",
           "description": "Label for button or link that represents this action"
         },
+        "iconUrl": {
+          "type": "string",
+          "description": "Optional icon to be shown on the action in conjunction with the title",
+          "version": "1.1"
+        },
         "card": {
           "$ref": "#/definitions/AdaptiveCard"
         }
@@ -119,6 +129,11 @@
         "title": {
           "type": "string",
           "description": "Label for button or link that represents this action"
+        },
+        "iconUrl": {
+          "type": "string",
+          "description": "Optional icon to be shown on the action in conjunction with the title",
+          "version": "1.1"
         },
         "data": {
           "type": [
@@ -185,7 +200,8 @@
         },
         "separator": {
           "type": "boolean",
-          "description": "The Separator object type describes the look and feel of a separation line between two elements."
+          "description": "The Separator object type describes the look and feel of a separation line between two elements.",
+          "default": false
         }
       },
       "required": [
@@ -266,6 +282,7 @@
     "ChoiceInputStyle": {
       "type": "string",
       "description": "Style hint for Input.ChoiceSet",
+      "default": "compact",
       "enum": [
         "compact",
         "expanded"
@@ -313,6 +330,7 @@
         }
       },
       "required": [
+        "type",
         "items"
       ]
     },
@@ -356,6 +374,13 @@
         }
       ],
       "properties": {
+        "type": {
+          "type": "string",
+          "description": "Must be Container",
+          "enum": [
+            "Container"
+          ]
+        },
         "items": {
           "description": "The Card Elements to render inside the Container",
           "$ref": "#/definitions/CardElements"
@@ -372,15 +397,20 @@
             "emphasis"
           ]
         },
-        "type": {
+        "verticalContentAlignment": {
           "type": "string",
-          "description": "Must be Container",
-          "enum": [
-            "Container"
-          ]
-        }
+          "description": "Defines how the content should be aligned vertically within the container",
+          "default": "top",
+          "enum:": [
+            "top",
+            "center",
+            "bottom"
+          ],
+          "version": "1.1"
+        }       
       },
       "required": [
+        "type",
         "items"
       ]
     },
@@ -435,12 +465,14 @@
         }
       },
       "required": [
+        "type",
         "facts"
       ]
     },
     "HorizontalAlignment": {
       "type": "string",
       "description": "Controls how Items are horizontally positioned within their container.",
+      "default": "left",
       "enum": [
         "left",
         "center",
@@ -487,6 +519,7 @@
         }
       },
       "required": [
+        "type",
         "url"
       ]
     },
@@ -519,6 +552,7 @@
         }
       },
       "required": [
+        "type",
         "images"
       ]
     },
@@ -561,11 +595,12 @@
         },
         "id": {
           "type": "string",
-          "description": "Id for the value (will be used to identify collected input when SUBMIT is clicked)"
+          "description": "Id for the value (will be used to identify collected input when Action.Submit is invoked)"
         },
         "isMultiSelect": {
           "type": "boolean",
-          "description": "allow multiple choices to be selected"
+          "description": "Allow multiple choices to be selected",
+          "default": false
         },
         "style": {
           "$ref": "#/definitions/ChoiceInputStyle"
@@ -583,6 +618,7 @@
         }
       },
       "required": [
+        "type",
         "id",
         "choices"
       ]
@@ -599,7 +635,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Id for the value (will be used to identify collected input when SUBMIT is clicked)"
+          "description": "Id for the value (will be used to identify collected input when Action.Submit is clicked)"
         },
         "max": {
           "type": "string",
@@ -626,6 +662,7 @@
         }
       },
       "required": [
+        "type",
         "id"
       ]
     },
@@ -641,7 +678,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Id for the value (will be used to identify collected input when SUBMIT is clicked)"
+          "description": "Id for the value (will be used to identify collected input when Action.Submit is clicked)"
         },
         "max": {
           "type": "number",
@@ -668,6 +705,7 @@
         }
       },
       "required": [
+        "type",
         "id"
       ]
     },
@@ -683,11 +721,12 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Id for the value (will be used to identify collected input when SUBMIT is clicked)"
+          "description": "Id for the value (will be used to identify collected input when Action.Submit is clicked)"
         },
         "isMultiline": {
           "type": "boolean",
-          "description": "Do you want to allow multiple lines of input"
+          "description": "Allow multiple lines of text input",
+          "default": false
         },
         "maxLength": {
           "type": "number",
@@ -713,6 +752,7 @@
         }
       },
       "required": [
+        "type",
         "id"
       ]
     },
@@ -728,7 +768,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Id for the value (will be used to identify collected input when SUBMIT is clicked)"
+          "description": "Id for the value (will be used to identify collected input when Action.Submit is clicked)"
         },
         "max": {
           "type": "string",
@@ -755,6 +795,7 @@
         }
       },
       "required": [
+        "type",
         "id"
       ]
     },
@@ -770,7 +811,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Id for the value (will be used to identify collected input when SUBMIT is clicked)"
+          "description": "Id for the value (will be used to identify collected input when Action.Submit is clicked)"
         },
         "title": {
           "type": "string",
@@ -785,18 +826,22 @@
         },
         "value": {
           "type": "string",
-          "description": "The current selected value (default: false)"
+          "description": "The current selected value. If the item is selected that \"valueOn\" will be used, otherwise \"valueOff\"",
+          "default": "false"
         },
         "valueOff": {
           "type": "string",
-          "description": "The value when toggle is off (default: false)"
+          "description": "The value when toggle is off",
+          "default": "false"
         },
         "valueOn": {
           "type": "string",
-          "description": "The value when toggle is on (default: true)"
+          "description": "The value when toggle is on",
+          "default": "true"
         }
       },
       "required": [
+        "type",
         "id",
         "title"
       ]
@@ -829,7 +874,8 @@
         },
         "isSubtle": {
           "type": "boolean",
-          "description": "Indicates whether the color of the text should be slightly toned down to appear less prominent"
+          "description": "Indicates whether the color of the text should be slightly toned down to appear less prominent",
+          "default": false
         },
         "maxLines": {
           "type": "number",
@@ -868,10 +914,12 @@
         },
         "wrap": {
           "type": "boolean",
-          "description": "True if be is allowed to wrap"
+          "description": "True if be is allowed to wrap",
+          "default": false
         }
       },
       "required": [
+        "type",
         "text"
       ]
     },
@@ -913,6 +961,7 @@
     "TextInputStyle": {
       "type": "string",
       "description": "Style hint for Input.Text.",
+      "default": "text",
       "enum": [
         "text",
         "tel",

@@ -5,7 +5,7 @@ var glob = require("glob");
 var path = require("path");
 var changeCase = require("change-case");
 
-var samplesPath = "../../../samples/v1.0/Scenarios/*.json";
+var samplesPath = "../../../samples/v1.*/Scenarios/*.json";
 
 hexo.extend.generator.register("generator-sampleBrowser", function (locals) {
 
