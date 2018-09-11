@@ -428,7 +428,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
     void ValidateFallbackCard(const AdaptiveCard &everythingBagel)
     {
-        auto fallbackCard = everythingBagel.MakeFallbackTextCard("fallback"s, "en"s);
+        auto fallbackCard = everythingBagel.MakeFallbackTextCard("fallback"s, "en"s, "");
         auto fallbackTextBlock = std::static_pointer_cast<TextBlock>(fallbackCard->GetBody().at(0));
         Assert::AreEqual("fallback"s, fallbackTextBlock->GetText());
         Assert::AreEqual("en"s, fallbackTextBlock->GetLanguage());

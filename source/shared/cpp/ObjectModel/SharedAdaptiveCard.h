@@ -97,7 +97,8 @@ public:
 
     static std::shared_ptr<AdaptiveCard> MakeFallbackTextCard(
         const std::string& fallbackText,
-        const std::string& language);
+        const std::string& language,
+        const std::string& speak);
 
 #endif // __ANDROID__
     Json::Value SerializeToJsonValue() const;
