@@ -27,18 +27,6 @@ function generateUniqueId(): string {
 }
 
 export function createActionInstance(json: any, errors: Array<IValidationError>): Action {
-    if (!json["title"] && json["title"] !== "") {
-        raiseParseError(
-            {
-                error: Enums.ValidationError.PropertyCantBeNull,
-                message: "Actions should always have a title."
-            },
-            errors
-        );
-
-        return null;
-    }
-
     var actionType = json["type"];
 
     var result = AdaptiveCard.actionTypeRegistry.createInstance(actionType);
@@ -1468,6 +1456,7 @@ export class Image extends CardElement {
         super.parse(json, errors);
 
         this.url = json["url"];
+        this.backgroundColor = json["backgroundColor"];
 
         var styleString = json["style"];
 
@@ -2805,8 +2794,19 @@ export abstract class Action {
 
     parse(json: any, errors?: Array<IValidationError>) {
         raiseParseActionEvent(this, json, errors);
-
+    
         this.id = json["id"];
+
+        if (!json["title"] && json["title"] !== "") {
+            raiseParseError(
+                {
+                    error: Enums.ValidationError.PropertyCantBeNull,
+                    message: "Actions should always have a title."
+                },
+                errors
+            );
+        }
+
         this.title = json["title"];
         this.iconUrl = json["iconUrl"];
     }
