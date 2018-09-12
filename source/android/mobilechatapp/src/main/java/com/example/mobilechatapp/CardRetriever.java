@@ -41,7 +41,6 @@ public class CardRetriever
                 }
             }
             m_filesReadListener.setFilesCount(fileCount);
-
             for(String fileName : files)
             {
                 if(isJsonFile(fileName))

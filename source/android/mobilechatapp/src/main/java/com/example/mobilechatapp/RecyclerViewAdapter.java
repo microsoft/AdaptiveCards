@@ -132,12 +132,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return m_cards.size();
     }
 
-    // convenience method for getting data at click position
-    // View getItem(int id)
-    // {
-    //     return m_renderedCards.get(id);
-    // }
-
     // allows clicks events to be caught
     void setClickListener(ItemClickListener itemClickListener)
     {

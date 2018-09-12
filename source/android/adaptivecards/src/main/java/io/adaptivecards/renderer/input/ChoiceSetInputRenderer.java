@@ -56,14 +56,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             ChoiceSetInput choiceSetInput)
     {
         LinearLayout layout = new LinearLayout(context);
-        if(choiceSetInput.GetHeight() == HeightType.Stretch)
-        {
-            layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
-        }
-        else
-        {
-            layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        }
+        layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         layout.setOrientation(LinearLayout.VERTICAL);
 
         List<CheckBox> checkBoxList = new Vector<CheckBox>();
@@ -240,7 +233,19 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             }
         }
 
-        viewGroup.addView(view);
+        if(choiceSetInput.GetHeight() == HeightType.Stretch)
+        {
+            LinearLayout containerLayout = new LinearLayout(context);
+            containerLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+
+            containerLayout.addView(view);
+            viewGroup.addView(containerLayout);
+        }
+        else
+        {
+            viewGroup.addView(view);
+        }
+
         return view;
     }
 
