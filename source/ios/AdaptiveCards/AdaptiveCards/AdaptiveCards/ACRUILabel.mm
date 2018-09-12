@@ -25,7 +25,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-    CGSize sizeThatFitsTextView = [self sizeThatFits:CGSizeMake(self.superview.frame.size.width, MAXFLOAT)];
+    UIView *superview = self.superview;
+    CGSize sizeThatFitsTextView = [self sizeThatFits:CGSizeMake(superview.frame.size.width, MAXFLOAT)];
     self.frame = CGRectMake(0, 0, sizeThatFitsTextView.width, sizeThatFitsTextView.height);
     return self.frame.size;
 }

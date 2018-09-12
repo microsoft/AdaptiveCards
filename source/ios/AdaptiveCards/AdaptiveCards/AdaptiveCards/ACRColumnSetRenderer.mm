@@ -42,7 +42,7 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<ColumnSet> columnSetElem = std::dynamic_pointer_cast<ColumnSet>(elem);
 
-    ACRColumnSetView *columnSetView = [[ACRColumnSetView alloc] init];
+    ACRColumnSetView *columnSetView = [[ACRColumnSetView alloc] initWithFrame:viewGroup.frame];
     [columnSetView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     [columnSetView setStyle:[viewGroup style]];
 
