@@ -107,7 +107,12 @@ function filePickerChanged(evt) {
         let reader = new FileReader();
 
         reader.onload = function (e: ProgressEvent) {
-            currentCardPayload = (e.target as FileReader).result;
+            let downloadedPayload = (e.target as FileReader).result;
+
+            if (typeof downloadedPayload === "string") {
+                currentCardPayload = downloadedPayload;
+            }
+            
             switchToCardEditor();
         }
 

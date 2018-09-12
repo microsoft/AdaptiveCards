@@ -134,6 +134,12 @@ export class SizeAndUnit {
     }
 }
 
+export interface IResourceInformation {
+    url: string;
+    owner: CardElement | Action;
+    mimeType?: string;
+}
+
 export abstract class CardElement {
     private _lang: string = undefined;
     private _hostConfig?: HostConfig.HostConfig = null;
@@ -563,7 +569,7 @@ export abstract class CardElement {
         return [];
     }
 
-    getAllImageUrls(): Array<string> {
+    getResourceInformation(): Array<IResourceInformation> {
         return [];
     }
 
@@ -1534,8 +1540,13 @@ export class Image extends CardElement {
         }
     }
 
-    getAllImageUrls(): Array<string> {
-        return !Utils.isNullOrEmpty(this.url) ? [ this.url ] : [];
+    getResourceInformation(): Array<IResourceInformation> {
+        if (!Utils.isNullOrEmpty(this.url)) {
+            return [ { url: this.url, owner: this } ]
+        }
+        else {
+            return [];
+        }
     }
 
     renderSpeech(): string {
@@ -1597,11 +1608,11 @@ export class ImageSet extends CardElementContainer {
         return this._images[index];
     }
 
-    getAllImageUrls(): Array<string> {
-        let result: Array<string> = [];
+    getResourceInformation(): Array<IResourceInformation> {
+        let result: Array<IResourceInformation> = [];
 
         for (let image of this._images) {
-            result = result.concat(image.getAllImageUrls());
+            result = result.concat(image.getResourceInformation());
         }
 
         return result;
@@ -1933,10 +1944,22 @@ export class Media extends CardElement {
         return "Media";
     }
 
-    getAllImageUrls(): Array<string> {
+    getResourceInformation(): Array<IResourceInformation> {
+        let result: Array<IResourceInformation> = [];
+
         let posterUrl = this.getPosterUrl();
 
-        return !Utils.isNullOrEmpty(posterUrl) ? [ posterUrl ] : [];
+        if (!Utils.isNullOrEmpty(posterUrl)) {
+            result.push({ url: posterUrl, owner: this});
+        }
+
+        for (let mediaSource of this.sources) {
+            if (!Utils.isNullOrEmpty(mediaSource.url)) {
+                result.push({ url: mediaSource.url, owner: this, mimeType: mediaSource.mimeType });
+            }
+        }
+
+        return result;
     }
 
     renderSpeech(): string {
@@ -2801,8 +2824,13 @@ export abstract class Action {
         return [];
     }
 
-    getAllImageUrls(): Array<string> {
-        return !Utils.isNullOrEmpty(this.iconUrl) ? [ this.iconUrl ] : [];
+    getResourceInformation(): Array<IResourceInformation> {
+        if (!Utils.isNullOrEmpty(this.iconUrl)) {
+            return [ { url: this.iconUrl, owner: this } ]
+        }
+        else {
+            return [];
+        }
     }
 
     getActionById(id: string): Action {
@@ -3087,8 +3115,8 @@ export class ShowCardAction extends Action {
         return this.card.getAllInputs();
     }
 
-    getAllImageUrls(): Array<string> {
-        return super.getAllImageUrls().concat(this.card.getAllImageUrls());
+    getResourceInformation(): Array<IResourceInformation> {
+        return super.getResourceInformation().concat(this.card.getResourceInformation());
     }
 
     getActionById(id: string): Action {
@@ -3552,11 +3580,11 @@ class ActionCollection {
         return result;
     }
 
-    getAllImageUrls(): Array<string> {
-        let result: Array<string> = [];
+    getResourceInformation(): Array<IResourceInformation> {
+        let result: Array<IResourceInformation> = [];
 
         for (var i = 0; i < this.items.length; i++) {
-            result = result.concat(this.items[i].getAllImageUrls());
+            result = result.concat(this.items[i].getResourceInformation());
         }
 
         return result;
@@ -3655,8 +3683,8 @@ export class ActionSet extends CardElement {
         return this._actionCollection.getAllInputs();
     }
 
-    getAllImageUrls(): Array<string> {
-        return this._actionCollection.getAllImageUrls();
+    getResourceInformation(): Array<IResourceInformation> {
+        return this._actionCollection.getResourceInformation();
     }
 
     renderSpeech(): string {
@@ -4303,11 +4331,15 @@ export class Container extends CardElementContainer {
         return result;
     }
 
-    getAllImageUrls(): Array<string> {
-        let result: Array<string> = this.backgroundImage ? [ this.backgroundImage.url ] : [];
+    getResourceInformation(): Array<IResourceInformation> {
+        let result: Array<IResourceInformation> = [];
+        
+        if (this.backgroundImage && !Utils.isNullOrEmpty(this.backgroundImage.url)) {
+            result.push({ url: this.backgroundImage.url, owner: this });
+        }
 
         for (var i = 0; i < this.getItemCount(); i++) {
-            result = result.concat(this.getItemAt(i).getAllImageUrls());
+            result = result.concat(this.getItemAt(i).getResourceInformation());
         }
 
         return result;
@@ -4838,11 +4870,11 @@ export class ColumnSet extends CardElementContainer {
         return result;
     }
 
-    getAllImageUrls(): Array<string> {
-        let result: Array<string> = [];
+    getResourceInformation(): Array<IResourceInformation> {
+        let result: Array<IResourceInformation> = [];
 
         for (var i = 0; i < this._columns.length; i++) {
-            result = result.concat(this._columns[i].getAllImageUrls());
+            result = result.concat(this._columns[i].getResourceInformation());
         }
 
         return result;
@@ -5172,8 +5204,8 @@ export abstract class ContainerWithActions extends Container {
         return super.getAllInputs().concat(this._actionCollection.getAllInputs());
     }
 
-    getAllImageUrls(): Array<string> {
-        return super.getAllImageUrls().concat(this._actionCollection.getAllImageUrls());
+    getResourceInformation(): Array<IResourceInformation> {
+        return super.getResourceInformation().concat(this._actionCollection.getResourceInformation());
     }
 
     get isStandalone(): boolean {
