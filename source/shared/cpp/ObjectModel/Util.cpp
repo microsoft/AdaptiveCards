@@ -87,7 +87,7 @@ void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::s
     }
 
     const char ch = requestedDimension.at(0);
-    if (isspace(ch))
+    if (isspace(ch) || ch == '0')
     { 
         warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
                 AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,

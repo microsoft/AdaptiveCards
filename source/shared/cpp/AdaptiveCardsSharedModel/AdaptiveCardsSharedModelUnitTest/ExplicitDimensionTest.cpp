@@ -289,7 +289,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                              \"type\": \"Image\",\
                              \"url\" : \"http ://adaptivecards.io/content/cats/1.png\",\
                              \"width\" : \"20.px\",\
-                             \"height\" : \"abc50.px\"\
+                             \"height\" : \"050px\"\
                        }\
                      ]\
                   }"
