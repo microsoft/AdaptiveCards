@@ -189,38 +189,31 @@ namespace AdaptiveCards.Test
             {
                 new RemoteResourceInformation(
                     "http://adaptivecards.io/content/cats/1.png",
-                    typeof(AdaptiveImage),
-                    null
+                    "image"
                 ),
                 new RemoteResourceInformation(
                     "http://adaptivecards.io/content/cats/2.png",
-                    typeof(AdaptiveImage),
-                    null
+                    "image"
                 ),
                 new RemoteResourceInformation(
                     "http://adaptivecards.io/content/cats/3.png",
-                    typeof(AdaptiveImage),
-                    null
+                    "image"
                 ),
                 new RemoteResourceInformation(
                     "http://adaptivecards.io/content/cats/2.png",
-                    typeof(AdaptiveImage),
-                    null
+                    "image"
                 ),
                 new RemoteResourceInformation(
                     "content/cats/4.png",
-                    typeof(AdaptiveImage),
-                    null
+                    "image"
                 ),
                 new RemoteResourceInformation(
                     "http://adaptivecards.io/content/cats/5.png",
-                    typeof(AdaptiveImage),
-                    null
+                    "image"
                 ),
                 new RemoteResourceInformation(
                     "http://adaptivecards.io/content/cats/6.png",
-                    typeof(AdaptiveImage),
-                    null
+                    "image"
                 )
             };
             var actual = card.GetResourceInformation();

@@ -399,7 +399,7 @@ std::vector<RemoteResourceInformation> AdaptiveCard::GetResourceInformation()
     {
         RemoteResourceInformation backgroundImageInfo;
         backgroundImageInfo.url = backgroundImage;
-        backgroundImageInfo.mimeType = "Image";
+        backgroundImageInfo.mimeType = "image";
         resourceVector.push_back(backgroundImageInfo);
     }
 

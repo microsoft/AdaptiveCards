@@ -46,16 +46,16 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             // Expected images to find in the card
             std::vector<RemoteResourceInformation> expectedValues = {
-                {"BackgroundImage.png", "Image"},
-                { "Image.png", "Image" },
-                { "ImageSet.Image1.png", "Image" },
-                { "ImageSet.Image2.png", "Image" },
-                { "Container.Image1.png", "Image" },
-                { "Container.Image2.png", "Image" },
-                { "ColumnSet.Column1.Image.png", "Image" },
-                { "ColumnSet.Column2.Image.png", "Image" },
-                { "ShowCard.Image.png", "Image" },
-                { "Media.Poster.png", "Image" },
+                {"BackgroundImage.png", "image"},
+                { "Image.png", "image" },
+                { "ImageSet.Image1.png", "image" },
+                { "ImageSet.Image2.png", "image" },
+                { "Container.Image1.png", "image" },
+                { "Container.Image2.png", "image" },
+                { "ColumnSet.Column1.Image.png", "image" },
+                { "ColumnSet.Column2.Image.png", "image" },
+                { "ShowCard.Image.png", "image" },
+                { "Media.Poster.png", "image" },
                 { "Media1.mp4", "video/mp4" },
                 { "Media2.ogg", "video/ogg" },
             };
@@ -170,10 +170,10 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             // Expected images to find in the card
             std::vector<RemoteResourceInformation> expectedValues = {
-                { "BackgroundImage.png", "Image" },
-                { "Image.png", "Image" },
-                { "Custom.png", "Image" },
-                { "Action.Custom.png", "Image" },
+                { "BackgroundImage.png", "image" },
+                { "Image.png", "image" },
+                { "Custom.png", "image" },
+                { "Action.Custom.png", "image" },
             };
 
             // Test card containing custom element and action with images
@@ -218,7 +218,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     {
                         RemoteResourceInformation resourceInfo;
                         resourceInfo.url = m_customImage;
-                        resourceInfo.mimeType = "Image";
+                        resourceInfo.mimeType = "image";
                         resourceUris.push_back(resourceInfo);
                     }
 
@@ -270,10 +270,10 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             // Expected images to find in the card
             std::vector<RemoteResourceInformation> expectedValues = {
-                { "BackgroundImage.png", "Image" },
-                { "Image.png", "Image" },
-                { "SubmitAction.png", "Image" },
-                { "OpenUrl.png", "Image" },
+                { "BackgroundImage.png", "image" },
+                { "Image.png", "image" },
+                { "SubmitAction.png", "image" },
+                { "OpenUrl.png", "image" },
             };
 
             // Test card containing custom element and action with images
