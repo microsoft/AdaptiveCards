@@ -79,82 +79,37 @@ void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::s
     int &parsedDimension, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings)
 {
     const std::string warningMessage = "expected input arugment to be specified as \\d+(\\.\\d+)?px with no spaces, but received ";
-    int parsedVal = 0;
     parsedDimension = 0;
-    if (requestedDimension.empty()) 
-    { 
-        return;
-    }
+    std::string stringPattern = "^([1-9]+\\d*)(\\.\\d+)?";
+    stringPattern += ("(" + unit + ")$");
+    std::regex pattern(stringPattern);
+    std::smatch matches;
 
-    const char ch = requestedDimension.at(0);
-    if (isspace(ch) || ch == '0')
-    { 
-        warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
-                AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
-                warningMessage + requestedDimension)); 
-        return;
-    }
-
-    if (requestedDimension.length() <= unit.length()) 
+    if(std::regex_search(requestedDimension, matches, pattern))
     {
-        warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
-                AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
-                warningMessage + requestedDimension)); 
-        return;
-    }
-
-    // verify unit
-    const size_t pos = requestedDimension.length() - unit.length();
-    int bresult = requestedDimension.compare(pos, unit.length(), unit);
-    if (bresult != 0)
-    {
-        warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
-                AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
-                warningMessage + requestedDimension)); 
-        return;
-    }
-
-    try
-    {
-        size_t idx;
-        // stoi will get integral value upto non digit char indexed by idx
-        parsedVal = std::stoi(requestedDimension, &idx);
-        if (parsedVal < 0)
+        try
+        {
+            // stoi will get integral value upto non digit char indexed by idx
+            parsedDimension = std::stoi(matches[0]);
+        }
+        catch (const std::invalid_argument &)
         {
             warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
                     AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
                     warningMessage + requestedDimension)); 
-            parsedVal = 0;
         }
-
-        const size_t startIndexOfUnit = requestedDimension.length() - unit.size();
-        // if it's decimal point, there should be at least one digit and digits only between decimal point and unit
-        if (unit.length() && requestedDimension.at(idx) == '.' && isdigit(requestedDimension.at(idx + 1)))
-        {
-            // advance idx up to first non digit char
-            while (idx < startIndexOfUnit && isdigit(requestedDimension.at(++idx)));
-        }
-        // non digit char pointed by idx should be the start index of unit
-        if (idx != startIndexOfUnit)
+        catch (const std::out_of_range &)
         {
             warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
                     AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
-                    warningMessage + requestedDimension)); 
-            parsedVal = 0;
+                    "out of range: " + requestedDimension));
         }
-        parsedDimension = parsedVal;
     }
-    catch (const std::invalid_argument &)
+    else 
     {
         warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
                 AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
                 warningMessage + requestedDimension)); 
-    }
-    catch (const std::out_of_range &)
-    {
-        warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
-                AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
-                "out of range: " + requestedDimension));
     }
 }
 
