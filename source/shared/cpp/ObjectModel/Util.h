@@ -14,3 +14,7 @@ void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::s
     int &parsedDimension, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings);
 
 bool ShouldParseForExplicitDimension(const std::string &input);
+
+void EnsureShowCardVersions(
+    std::vector<std::shared_ptr<BaseActionElement>>& actions,
+    std::string& version);

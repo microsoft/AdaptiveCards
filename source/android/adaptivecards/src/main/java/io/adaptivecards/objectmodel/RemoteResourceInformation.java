@@ -43,14 +43,6 @@ public class RemoteResourceInformation {
     return AdaptiveCardObjectModelJNI.RemoteResourceInformation_url_get(swigCPtr, this);
   }
 
-  public void setResourceType(CardElementType value) {
-    AdaptiveCardObjectModelJNI.RemoteResourceInformation_resourceType_set(swigCPtr, this, value.swigValue());
-  }
-
-  public CardElementType getResourceType() {
-    return CardElementType.swigToEnum(AdaptiveCardObjectModelJNI.RemoteResourceInformation_resourceType_get(swigCPtr, this));
-  }
-
   public void setMimeType(String value) {
     AdaptiveCardObjectModelJNI.RemoteResourceInformation_mimeType_set(swigCPtr, this, value);
   }

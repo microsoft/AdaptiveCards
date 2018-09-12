@@ -212,8 +212,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native int VerticalContentAlignmentFromString(String jarg1);
   public final static native void RemoteResourceInformation_url_set(long jarg1, RemoteResourceInformation jarg1_, String jarg2);
   public final static native String RemoteResourceInformation_url_get(long jarg1, RemoteResourceInformation jarg1_);
-  public final static native void RemoteResourceInformation_resourceType_set(long jarg1, RemoteResourceInformation jarg1_, int jarg2);
-  public final static native int RemoteResourceInformation_resourceType_get(long jarg1, RemoteResourceInformation jarg1_);
   public final static native void RemoteResourceInformation_mimeType_set(long jarg1, RemoteResourceInformation jarg1_, String jarg2);
   public final static native String RemoteResourceInformation_mimeType_get(long jarg1, RemoteResourceInformation jarg1_);
   public final static native long new_RemoteResourceInformation();
@@ -838,6 +836,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long new_MarkDownParser(String jarg1);
   public final static native String MarkDownParser_TransformToHtml(long jarg1, MarkDownParser jarg1_);
   public final static native boolean MarkDownParser_HasHtmlTags(long jarg1, MarkDownParser jarg1_);
+  public final static native boolean MarkDownParser_IsEscaped(long jarg1, MarkDownParser jarg1_);
   public final static native void delete_MarkDownParser(long jarg1);
   public final static native long new_DateTimePreparsedToken__SWIG_0();
   public final static native long new_DateTimePreparsedToken__SWIG_1(String jarg1, int jarg2);

@@ -27,18 +27,6 @@ function generateUniqueId(): string {
 }
 
 export function createActionInstance(json: any, errors: Array<IValidationError>): Action {
-    if (!json["title"] && json["title"] !== "") {
-        raiseParseError(
-            {
-                error: Enums.ValidationError.PropertyCantBeNull,
-                message: "Actions should always have a title."
-            },
-            errors
-        );
-
-        return null;
-    }
-
     var actionType = json["type"];
 
     var result = AdaptiveCard.actionTypeRegistry.createInstance(actionType);
@@ -132,6 +120,11 @@ export class SizeAndUnit {
         this.physicalSize = physicalSize;
         this.unit = unit;
     }
+}
+
+export interface IResourceInformation {
+    url: string;
+    mimeType: string;
 }
 
 export abstract class CardElement {
@@ -560,6 +553,10 @@ export abstract class CardElement {
     }
 
     getAllInputs(): Array<Input> {
+        return [];
+    }
+
+    getResourceInformation(): Array<IResourceInformation> {
         return [];
     }
 
@@ -1459,6 +1456,7 @@ export class Image extends CardElement {
         super.parse(json, errors);
 
         this.url = json["url"];
+        this.backgroundColor = json["backgroundColor"];
 
         var styleString = json["style"];
 
@@ -1530,6 +1528,15 @@ export class Image extends CardElement {
         }
     }
 
+    getResourceInformation(): Array<IResourceInformation> {
+        if (!Utils.isNullOrEmpty(this.url)) {
+            return [ { url: this.url, mimeType: "image" } ]
+        }
+        else {
+            return [];
+        }
+    }
+
     renderSpeech(): string {
         if (this.speak != null) {
             return this.speak + '\n';
@@ -1587,6 +1594,16 @@ export class ImageSet extends CardElementContainer {
 
     getItemAt(index: number): CardElement {
         return this._images[index];
+    }
+
+    getResourceInformation(): Array<IResourceInformation> {
+        let result: Array<IResourceInformation> = [];
+
+        for (let image of this._images) {
+            result = result.concat(image.getResourceInformation());
+        }
+
+        return result;
     }
 
     removeItem(item: CardElement): boolean {
@@ -1679,6 +1696,262 @@ export class ImageSet extends CardElementContainer {
         }
 
         return speak;
+    }
+}
+
+export class MediaSource {
+    mimeType: string;
+    url: string;
+
+    parse(json: any, errors?: Array<IValidationError>) {
+        this.mimeType = json["mimeType"];
+        this.url = json["url"];
+    }
+
+    toJSON() {
+        return {
+            mimeType: this.mimeType,
+            url: this.url
+        }
+    }
+}
+
+export class Media extends CardElement {
+    static readonly supportedMediaTypes = ["audio", "video"];
+
+    private _selectedMediaType: string;
+    private _selectedSources: Array<MediaSource>;
+
+    private getPosterUrl(): string {
+        return this.poster ? this.poster : this.hostConfig.media.defaultPoster;
+    }
+
+    private processSources() {
+        this._selectedSources = [];
+        
+ 		for (let source of this.sources) {
+            let mimeComponents = source.mimeType.split('/');
+            
+ 			if (mimeComponents.length == 2) {
+				if (!this._selectedMediaType) {
+                    let index = Media.supportedMediaTypes.indexOf(mimeComponents[0]);
+                    
+ 					if (index >= 0) {
+						this._selectedMediaType = Media.supportedMediaTypes[index];
+					}
+				}
+ 				if (mimeComponents[0] == this._selectedMediaType) {
+					this._selectedSources.push(source);
+				}
+			} 
+        }
+    }
+
+    private renderPoster(): HTMLElement {
+        const playButtonArrowWidth = 12;
+        const playButtonArrowHeight = 15;
+
+        let posterRootElement = document.createElement("div");
+        posterRootElement.className = "ac-media-poster";
+        posterRootElement.setAttribute("role", "contentinfo");
+        posterRootElement.setAttribute("aria-label", this.altText ? this.altText : "Media content");
+        posterRootElement.style.position = "relative";
+        posterRootElement.style.display = "flex";
+
+        let posterUrl = this.getPosterUrl();
+
+        if (posterUrl) {
+            let posterImageElement = document.createElement("img");
+            posterImageElement.style.width = "100%";
+            posterImageElement.style.height = "100%";
+
+            posterImageElement.onerror = (e: Event) => {
+                posterImageElement.parentNode.removeChild(posterImageElement);
+                posterRootElement.classList.add("empty");
+                posterRootElement.style.minHeight = "150px";
+            }
+
+            posterImageElement.src = posterUrl;
+
+            posterRootElement.appendChild(posterImageElement);
+        }
+        else {
+            posterRootElement.classList.add("empty");
+            posterRootElement.style.minHeight = "150px";
+        }
+
+        if (this.hostConfig.supportsInteractivity) {
+            let playButtonOuterElement = document.createElement("div");
+            posterRootElement.setAttribute("role", "button");
+            posterRootElement.setAttribute("aria-label", "Play media");
+            playButtonOuterElement.className = "ac-media-playButton";
+            playButtonOuterElement.style.display = "flex";
+            playButtonOuterElement.style.alignItems = "center";
+            playButtonOuterElement.style.justifyContent = "center";
+            playButtonOuterElement.onclick = (e) => {
+                if (this.hostConfig.media.allowInlinePlayback) {
+                    let mediaPlayerElement = this.renderMediaPlayer();
+                    
+                    this.renderedElement.innerHTML = "";
+                    this.renderedElement.appendChild(mediaPlayerElement);
+
+                    mediaPlayerElement.play();
+                }
+                else {
+                    if (Media.onPlay) {
+                        Media.onPlay(this);
+                    }
+                }
+            }
+
+            let playButtonInnerElement = document.createElement("div");
+            playButtonInnerElement.className = "ac-media-playButton-arrow";
+            playButtonInnerElement.style.width = playButtonArrowWidth + "px";
+            playButtonInnerElement.style.height = playButtonArrowHeight + "px";
+            playButtonInnerElement.style.borderTopWidth = (playButtonArrowHeight / 2) + "px";
+            playButtonInnerElement.style.borderBottomWidth = (playButtonArrowHeight / 2) + "px";
+            playButtonInnerElement.style.borderLeftWidth = playButtonArrowWidth + "px";
+            playButtonInnerElement.style.borderRightWidth = "0";
+            playButtonInnerElement.style.borderStyle = "solid";
+            playButtonInnerElement.style.borderTopColor = "transparent";
+            playButtonInnerElement.style.borderRightColor = "transparent";
+            playButtonInnerElement.style.borderBottomColor = "transparent";
+            playButtonInnerElement.style.transform = "translate(" + (playButtonArrowWidth / 10) + "px,0px)";
+
+            playButtonOuterElement.appendChild(playButtonInnerElement);
+
+            let playButtonContainer = document.createElement("div");
+            playButtonContainer.style.position = "absolute";
+            playButtonContainer.style.left = "0";
+            playButtonContainer.style.top = "0";
+            playButtonContainer.style.width = "100%";
+            playButtonContainer.style.height = "100%";
+            playButtonContainer.style.display = "flex";
+            playButtonContainer.style.justifyContent = "center";
+            playButtonContainer.style.alignItems = "center";
+
+            playButtonContainer.appendChild(playButtonOuterElement);
+            posterRootElement.appendChild(playButtonContainer);
+        }
+
+        return posterRootElement;
+    }
+
+    private renderMediaPlayer(): HTMLMediaElement {
+        let mediaElement: HTMLMediaElement;
+
+        if (this._selectedMediaType == "video") {
+            let videoPlayer = document.createElement("video");
+
+            let posterUrl = this.getPosterUrl();
+
+            if (posterUrl) {
+                videoPlayer.poster = posterUrl;
+            }
+    
+            mediaElement = videoPlayer;
+        }
+        else {
+            mediaElement = document.createElement("audio");
+        }
+
+        mediaElement.controls = true;
+        mediaElement.preload = "none";
+        mediaElement.style.width = "100%";
+    
+        for (let source of this.sources) {
+            let src: HTMLSourceElement = document.createElement("source");
+            src.src = source.url;
+            src.type = source.mimeType;
+
+            mediaElement.appendChild(src);
+        }
+
+        return mediaElement;
+    }
+
+    protected internalRender(): HTMLElement {
+        let element = <HTMLElement>document.createElement("div");
+        element.className = this.hostConfig.makeCssClassName("ac-media");
+
+        this.processSources();
+
+        if (this._selectedSources.length > 0) {
+            element.appendChild(this.renderPoster());
+        }
+
+        return element;
+    }
+
+    static onPlay: (sender: Media) => void;
+
+    sources: Array<MediaSource> = [];
+    poster: string;
+    altText: string;
+
+    parse(json: any, errors?: Array<IValidationError>) {
+        super.parse(json, errors);
+
+        this.poster = json["poster"];
+        this.altText = json["altText"];
+
+        if (json["sources"] != null) {
+            let jsonSources = json["sources"] as Array<any>;
+
+            this.sources = [];
+
+            for (let i = 0; i < jsonSources.length; i++) {
+                let source = new MediaSource();
+                source.parse(jsonSources[i], errors);
+
+                this.sources.push(source);
+            }
+        }
+    }
+
+    toJSON() {
+        let result = super.toJSON();
+
+        Utils.setProperty(result, "poster", this.poster);
+        Utils.setProperty(result, "altText", this.altText);
+
+        if (this.sources.length > 0) {
+            let serializedSources = [];
+
+            for (let source of this.sources) {
+                serializedSources.push(source.toJSON());
+            }
+
+            Utils.setProperty(result, "sources", serializedSources);
+        }
+
+        return result;
+    }
+
+    getJsonTypeName(): string {
+        return "Media";
+    }
+
+    getResourceInformation(): Array<IResourceInformation> {
+        let result: Array<IResourceInformation> = [];
+
+        let posterUrl = this.getPosterUrl();
+
+        if (!Utils.isNullOrEmpty(posterUrl)) {
+            result.push({ url: posterUrl, mimeType: "image" });
+        }
+
+        for (let mediaSource of this.sources) {
+            if (!Utils.isNullOrEmpty(mediaSource.url)) {
+                result.push({ url: mediaSource.url, mimeType: mediaSource.mimeType });
+            }
+        }
+
+        return result;
+    }
+
+    renderSpeech(): string {
+        return this.altText;
     }
 }
 
@@ -2435,31 +2708,29 @@ export abstract class Action {
 
         let hasTitle = !Utils.isNullOrEmpty(this.title);
 
+        let titleElement = document.createElement("div");
+        titleElement.style.overflow = "hidden";
+        titleElement.style.textOverflow = "ellipsis";
+
+        if (!(hostConfig.actions.iconPlacement == Enums.ActionIconPlacement.AboveTitle || hostConfig.actions.allowTitleToWrap)) {
+            titleElement.style.whiteSpace = "nowrap";
+        }
+
+        if (hasTitle) {
+            titleElement.innerText = this.title;
+        }
+
         if (Utils.isNullOrEmpty(this.iconUrl)) {
             buttonElement.classList.add("noIcon");
-            buttonElement.style.overflow = "hidden";
-            buttonElement.style.whiteSpace = "nowrap";
-            buttonElement.style.textOverflow = "ellipsis";
 
-            if (hasTitle) {
-                buttonElement.innerText = this.title;
-            }
+            buttonElement.appendChild(titleElement);
         }
         else {
-            let iconElement = document.createElement("div");
+            let iconElement = document.createElement("img");
+            iconElement.src = this.iconUrl;
             iconElement.style.width = hostConfig.actions.iconSize + "px";
-            iconElement.style.height = hostConfig.actions.iconSize + "px";;
-            iconElement.style.backgroundImage = "url('" + this.iconUrl + "')";
-            iconElement.style.backgroundPositionX = "center";
-            iconElement.style.backgroundPositionY = "center";
-            iconElement.style.backgroundRepeat = "no-repeat";
-            iconElement.style.backgroundSize = "contain";
-
-            let titleElement = document.createElement("div");
-
-            if (hasTitle) {
-                titleElement.innerText = this.title;
-            }
+            iconElement.style.height = hostConfig.actions.iconSize + "px";
+            iconElement.style.flex = "0 0 auto";
 
             if (hostConfig.actions.iconPlacement == Enums.ActionIconPlacement.AboveTitle) {
                 buttonElement.classList.add("iconAbove");
@@ -2523,8 +2794,19 @@ export abstract class Action {
 
     parse(json: any, errors?: Array<IValidationError>) {
         raiseParseActionEvent(this, json, errors);
-
+    
         this.id = json["id"];
+
+        if (!json["title"] && json["title"] !== "") {
+            raiseParseError(
+                {
+                    error: Enums.ValidationError.PropertyCantBeNull,
+                    message: "Actions should always have a title."
+                },
+                errors
+            );
+        }
+
         this.title = json["title"];
         this.iconUrl = json["iconUrl"];
     }
@@ -2539,6 +2821,15 @@ export abstract class Action {
 
     getAllInputs(): Array<Input> {
         return [];
+    }
+
+    getResourceInformation(): Array<IResourceInformation> {
+        if (!Utils.isNullOrEmpty(this.iconUrl)) {
+            return [ { url: this.iconUrl, mimeType: "image" } ]
+        }
+        else {
+            return [];
+        }
     }
 
     getActionById(id: string): Action {
@@ -2821,6 +3112,10 @@ export class ShowCardAction extends Action {
 
     getAllInputs(): Array<Input> {
         return this.card.getAllInputs();
+    }
+
+    getResourceInformation(): Array<IResourceInformation> {
+        return super.getResourceInformation().concat(this.card.getResourceInformation());
     }
 
     getActionById(id: string): Action {
@@ -3284,6 +3579,16 @@ class ActionCollection {
         return result;
     }
 
+    getResourceInformation(): Array<IResourceInformation> {
+        let result: Array<IResourceInformation> = [];
+
+        for (var i = 0; i < this.items.length; i++) {
+            result = result.concat(this.items[i].getResourceInformation());
+        }
+
+        return result;
+    }
+
     get renderedActionCount(): number {
         return this._renderedActionCount;
     }
@@ -3375,6 +3680,10 @@ export class ActionSet extends CardElement {
 
     getAllInputs(): Array<Input> {
         return this._actionCollection.getAllInputs();
+    }
+
+    getResourceInformation(): Array<IResourceInformation> {
+        return this._actionCollection.getResourceInformation();
     }
 
     renderSpeech(): string {
@@ -4021,6 +4330,20 @@ export class Container extends CardElementContainer {
         return result;
     }
 
+    getResourceInformation(): Array<IResourceInformation> {
+        let result: Array<IResourceInformation> = [];
+        
+        if (this.backgroundImage && !Utils.isNullOrEmpty(this.backgroundImage.url)) {
+            result.push({ url: this.backgroundImage.url, mimeType: "image" });
+        }
+
+        for (var i = 0; i < this.getItemCount(); i++) {
+            result = result.concat(this.getItemAt(i).getResourceInformation());
+        }
+
+        return result;
+    }
+
     getElementById(id: string): CardElement {
         var result: CardElement = super.getElementById(id);
 
@@ -4546,6 +4869,16 @@ export class ColumnSet extends CardElementContainer {
         return result;
     }
 
+    getResourceInformation(): Array<IResourceInformation> {
+        let result: Array<IResourceInformation> = [];
+
+        for (var i = 0; i < this._columns.length; i++) {
+            result = result.concat(this._columns[i].getResourceInformation());
+        }
+
+        return result;
+    }
+
     getElementById(id: string): CardElement {
         var result: CardElement = super.getElementById(id);
 
@@ -4870,6 +5203,10 @@ export abstract class ContainerWithActions extends Container {
         return super.getAllInputs().concat(this._actionCollection.getAllInputs());
     }
 
+    getResourceInformation(): Array<IResourceInformation> {
+        return super.getResourceInformation().concat(this._actionCollection.getResourceInformation());
+    }
+
     get isStandalone(): boolean {
         return false;
     }
@@ -4947,6 +5284,7 @@ export class ElementTypeRegistry extends TypeRegistry<CardElement> {
         this.registerType("TextBlock", () => { return new TextBlock(); });
         this.registerType("Image", () => { return new Image(); });
         this.registerType("ImageSet", () => { return new ImageSet(); });
+        this.registerType("Media", () => { return new Media(); });
         this.registerType("FactSet", () => { return new FactSet(); });
         this.registerType("ColumnSet", () => { return new ColumnSet(); });
         this.registerType("Input.Text", () => { return new TextInput(); });
@@ -4969,7 +5307,7 @@ export class ActionTypeRegistry extends TypeRegistry<Action> {
 }
 
 export class AdaptiveCard extends ContainerWithActions {
-    private static currentVersion: Version = new Version(1, 0);
+    private static currentVersion: Version = new Version(1, 1);
 
     static useAutomaticContainerBleeding: boolean = false;
     static useAdvancedTextBlockTruncation: boolean = true;

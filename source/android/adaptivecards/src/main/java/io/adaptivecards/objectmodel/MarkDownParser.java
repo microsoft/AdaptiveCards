@@ -47,4 +47,8 @@ public class MarkDownParser {
     return AdaptiveCardObjectModelJNI.MarkDownParser_HasHtmlTags(swigCPtr, this);
   }
 
+  public boolean IsEscaped() {
+    return AdaptiveCardObjectModelJNI.MarkDownParser_IsEscaped(swigCPtr, this);
+  }
+
 }

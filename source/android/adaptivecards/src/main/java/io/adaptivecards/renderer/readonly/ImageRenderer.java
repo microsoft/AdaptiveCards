@@ -257,7 +257,8 @@ public class ImageRenderer extends BaseCardElementRenderer
         {
             setImageSize(context, imageView, image.GetImageSize(), hostConfig.getImageSizes());
         }
-        setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, !(viewGroup instanceof HorizontalFlowLayout) /* horizontal line */);
+        boolean isInImageSet = viewGroup instanceof HorizontalFlowLayout;
+        setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, !isInImageSet /* horizontal line */, isInImageSet);
 
         viewGroup.addView(imageView);
         return imageView;

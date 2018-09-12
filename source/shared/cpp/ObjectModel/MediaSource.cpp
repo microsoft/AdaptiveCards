@@ -49,7 +49,6 @@ void MediaSource::GetResourceInformation(std::vector<RemoteResourceInformation>&
 {
     RemoteResourceInformation sourceInfo;
     sourceInfo.url = GetUrl();
-    sourceInfo.resourceType = CardElementType::Media;
     sourceInfo.mimeType = GetMimeType();
 
     resourceInfo.push_back(sourceInfo);

@@ -64,8 +64,7 @@
         unsigned int index = 0;
         for(ACORemoteResourceInformation *info in remoteInformation){
             XCTAssertTrue([[testStrings objectAtIndex:index++] isEqualToString:info.url.absoluteString]);        
-            XCTAssertTrue([@"" isEqualToString:info.mimeType]);     
-            XCTAssertTrue(ACRImage == info.resourceType);
+            XCTAssertTrue([@"Image" isEqualToString:info.mimeType]);     
         }
     }
 }
