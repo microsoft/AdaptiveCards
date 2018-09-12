@@ -3,6 +3,7 @@
 #include "Media.h"
 #include "TextBlock.h"
 #include "SharedAdaptiveCard.h"
+#include "ShowCardAction.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
@@ -231,6 +232,66 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual(sources[0]->GetUrl(), "http://source1.mp4"s);
             Assert::AreEqual(sources[1]->GetMimeType(), "video/avi"s);
             Assert::AreEqual(sources[1]->GetUrl(), "http://source2.avi"s);
+        }
+
+        TEST_METHOD(ShowCardSerialization)
+        {
+            std::string cardWithShowCard = "{\
+                \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
+                \"type\" : \"AdaptiveCard\",\
+                \"version\" : \"2.0\",\
+                \"body\" : [\
+                    {\
+                        \"type\": \"TextBlock\",\
+                        \"text\" : \"This card's action will show another card\"\
+                    }\
+                ],\
+                \"actions\": [\
+                    {\
+                        \"type\": \"Action.ShowCard\",\
+                        \"title\" : \"Action.ShowCard\",\
+                        \"card\" : {\
+                        \"type\": \"AdaptiveCard\",\
+                        \"body\" : [\
+                            {\
+                                \"type\": \"TextBlock\",\
+                                \"text\" : \"What do you think?\"\
+                            }\
+                        ],\
+                        \"actions\": [\
+                            {\
+                                \"type\": \"Action.Submit\",\
+                                \"title\" : \"Neat!\"\
+                            }\
+                        ]\
+                        }\
+                    }\
+                ]\
+            }";
+
+            auto mainCard = AdaptiveCard::DeserializeFromString(cardWithShowCard, "2.0")->GetAdaptiveCard();
+            auto showCard = (std::static_pointer_cast<ShowCardAction>(mainCard->GetActions()[0]))->GetCard();
+
+            Assert::AreEqual(showCard->GetVersion(), "2.0"s);
+            Assert::AreEqual(showCard->GetBody().size(), (size_t)1);
+            Assert::IsTrue(showCard->GetBody()[0]->GetElementType() == CardElementType::TextBlock);
+            Assert::AreEqual(std::static_pointer_cast<TextBlock>(showCard->GetBody()[0])->GetText(), "What do you think?"s);
+
+            Assert::AreEqual(showCard->GetActions().size(), (size_t)1);
+            Assert::IsTrue(showCard->GetActions()[0]->GetElementType() == ActionType::Submit);
+            Assert::AreEqual(showCard->GetActions()[0]->GetTitle(), "Neat!"s);
+
+            auto serializedShowCard = showCard->Serialize();
+            auto roundTrippedShowCard = AdaptiveCard::DeserializeFromString(serializedShowCard, "2.0")->GetAdaptiveCard();
+
+            Assert::AreEqual(showCard->GetVersion(), "2.0"s);
+            Assert::AreEqual(roundTrippedShowCard->GetBody().size(), (size_t)1);
+            Assert::IsTrue(roundTrippedShowCard->GetBody()[0]->GetElementType() == CardElementType::TextBlock);
+            Assert::AreEqual(std::static_pointer_cast<TextBlock>(roundTrippedShowCard->GetBody()[0])->GetText(), "What do you think?"s);
+
+            Assert::AreEqual(roundTrippedShowCard->GetActions().size(), (size_t)1);
+            Assert::IsTrue(roundTrippedShowCard->GetActions()[0]->GetElementType() == ActionType::Submit);
+            Assert::AreEqual(roundTrippedShowCard->GetActions()[0]->GetTitle(), "Neat!"s);
         }
     };
 }

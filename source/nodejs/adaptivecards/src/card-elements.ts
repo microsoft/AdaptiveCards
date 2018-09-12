@@ -5307,7 +5307,7 @@ export class ActionTypeRegistry extends TypeRegistry<Action> {
 }
 
 export class AdaptiveCard extends ContainerWithActions {
-    private static currentVersion: Version = new Version(1, 0);
+    private static currentVersion: Version = new Version(1, 1);
 
     static useAutomaticContainerBleeding: boolean = false;
     static useAdvancedTextBlockTruncation: boolean = true;
