@@ -13,7 +13,7 @@ namespace AdaptiveCards.Rendering
     public static class RendererUtilities
     {
         private static readonly Regex TextFunctionRegex =
-            new Regex(@"\{\{(?<func>DATE|TIME){1}\((?<date>\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d[Z+-].*?){1}(?:,\s*(?<hint>SHORT|LONG|COMPACT){1}\s*)??\)\}\}",
+            new Regex(@"\{\{(?<func>DATE|TIME){1}\((?<date>[\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2}:[\d]{2}[Z+-].*?){1}(?:,\s*(?<hint>SHORT|LONG|COMPACT){1}\s*)??\)\}\}",
                 RegexOptions.ExplicitCapture);
 
         private static readonly Regex _regexBinding = new Regex(@"(?<property>\{\{\w+?\}\})+?",
