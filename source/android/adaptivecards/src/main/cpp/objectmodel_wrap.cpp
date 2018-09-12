@@ -5007,40 +5007,6 @@ SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
 }
 
 
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_RemoteResourceInformation_1resourceType_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  AdaptiveCards::RemoteResourceInformation *arg1 = (AdaptiveCards::RemoteResourceInformation *) 0 ;
-  AdaptiveCards::CardElementType arg2 ;
-  std::shared_ptr< AdaptiveCards::RemoteResourceInformation > *smartarg1 = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::RemoteResourceInformation > **)&jarg1;
-  arg1 = (AdaptiveCards::RemoteResourceInformation *)(smartarg1 ? smartarg1->get() : 0); 
-  arg2 = (AdaptiveCards::CardElementType)jarg2; 
-  if (arg1) (arg1)->resourceType = arg2;
-}
-
-
-SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_RemoteResourceInformation_1resourceType_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jint jresult = 0 ;
-  AdaptiveCards::RemoteResourceInformation *arg1 = (AdaptiveCards::RemoteResourceInformation *) 0 ;
-  std::shared_ptr< AdaptiveCards::RemoteResourceInformation > *smartarg1 = 0 ;
-  AdaptiveCards::CardElementType result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::RemoteResourceInformation > **)&jarg1;
-  arg1 = (AdaptiveCards::RemoteResourceInformation *)(smartarg1 ? smartarg1->get() : 0); 
-  result = (AdaptiveCards::CardElementType) ((arg1)->resourceType);
-  jresult = (jint)result; 
-  return jresult;
-}
-
-
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_RemoteResourceInformation_1mimeType_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::RemoteResourceInformation *arg1 = (AdaptiveCards::RemoteResourceInformation *) 0 ;
   std::string *arg2 = 0 ;
@@ -17111,6 +17077,21 @@ SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObject
   (void)jarg1_;
   arg1 = *(AdaptiveCards::MarkDownParser **)&jarg1; 
   result = (bool)(arg1)->HasHtmlTags();
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_MarkDownParser_1IsEscaped(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  AdaptiveCards::MarkDownParser *arg1 = (AdaptiveCards::MarkDownParser *) 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::MarkDownParser **)&jarg1; 
+  result = (bool)((AdaptiveCards::MarkDownParser const *)arg1)->IsEscaped();
   jresult = (jboolean)result; 
   return jresult;
 }
