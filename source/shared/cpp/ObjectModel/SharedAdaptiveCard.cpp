@@ -232,7 +232,8 @@ Json::Value AdaptiveCard::SerializeToJsonValue() const
 #ifdef __ANDROID__
 std::shared_ptr<AdaptiveCard> AdaptiveCard::MakeFallbackTextCard(
     const std::string& fallbackText,
-    const std::string& language) throw(AdaptiveSharedNamespace::AdaptiveCardParseException)
+    const std::string& language,
+    const std::string& speak) throw(AdaptiveSharedNamespace::AdaptiveCardParseException)
 #else
 std::shared_ptr<AdaptiveCard> AdaptiveCard::MakeFallbackTextCard(
     const std::string& fallbackText,
