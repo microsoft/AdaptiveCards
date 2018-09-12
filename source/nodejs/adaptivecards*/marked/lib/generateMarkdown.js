@@ -49,7 +49,7 @@ function getSchemaMarkdown(model) {
             md += style.getSectionMarkdown(child.name, 2);
 
             md += child.description + "\n\n";
-            md += createPropertiesSummary(child.properties, null, true, true) + "\n";
+            md += createPropertiesSummary(child.properties, null, true, true, child.version) + "\n";
 
             // TODO: refactor this to be a "summary-only" generation
             //md += createPropertiesDetails(child) + "\n"
@@ -84,12 +84,12 @@ function getTableOfContentsMarkdown(model) {
 }
 
 
-function createPropertiesSummary(properties, knownTypes, autoLink, includeVersion) {
+function createPropertiesSummary(properties, knownTypes, autoLink, includeVersion, elementVersion) {
     var md = '';
 
     if (properties !== undefined && Object.keys(properties).length > 0) {
 
-        md += '|Property|Type|Required|Description|\n';
+        md += '|Property|Type|Required|Description|';
         if(includeVersion) {
             md += 'Version|';
         }
@@ -111,7 +111,7 @@ function createPropertiesSummary(properties, knownTypes, autoLink, includeVersio
                     '|' + defaultValue(defaultValue(summary.title, summary.description), '&nbsp;');
 
                 if(includeVersion) {
-                    md += '|' +  defaultValue(property.version, "1.0");
+                    md += '|' +  defaultValue(defaultValue(property.version, elementVersion), "1.0");
                 }
 
                 md += '\n';
