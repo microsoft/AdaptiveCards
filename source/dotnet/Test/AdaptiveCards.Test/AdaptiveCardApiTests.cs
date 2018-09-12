@@ -592,5 +592,142 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(card.Body.Count, 1);
             Assert.AreEqual(card.Body[0].Height, AdaptiveHeight.Stretch);
         }
+
+        [TestMethod]
+        public void TestVerticalContentAlignmentColumn()
+        {
+            var payload =
+                @"{
+                    ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                    ""type"": ""AdaptiveCard"",
+                    ""version"": ""1.0"",
+                    ""height"": ""stretch"",
+                    ""verticalContentAlignment"": ""center"",
+                    ""body"": [
+                        {
+                            ""type"": ""ColumnSet"",
+                            ""height"": ""stretch"",
+                            ""columns"": [
+                                {
+                                    ""type"": ""Column"",
+                                    ""items"": [
+                                        {
+                                            ""type"": ""TextBlock"",
+                                            ""text"": ""This text should be at the top""
+                                        }
+                                    ]
+                                },
+                                {
+                                    ""type"": ""Column"",
+                                    ""verticalContentAlignment"": ""top"",
+                                    ""items"": [
+                                        {
+                                            ""type"": ""TextBlock"",
+                                            ""text"": ""This text should be at the top""
+                                        }
+                                    ]
+                                },
+                                {
+                                    ""type"": ""Column"",
+                                    ""verticalContentAlignment"": ""center"",
+                                    ""items"": [
+                                        {
+                                            ""type"": ""TextBlock"",
+                                            ""text"": ""This text should be at the vertical center""
+                                        }
+                                    ]
+                                },
+                                {
+                                    ""type"": ""Column"",
+                                    ""verticalContentAlignment"": ""bottom"",
+                                    ""items"": [
+                                        {
+                                            ""type"": ""TextBlock"",
+                                            ""text"": ""This text should be at the bottom""
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }";
+
+            var result = AdaptiveCard.FromJson(payload);
+            var card = result?.Card;
+            Assert.AreEqual(card.Body.Count, 1);
+
+            var columnSet = (AdaptiveColumnSet)card.Body[0];
+            Assert.AreEqual(columnSet.Height, AdaptiveHeight.Stretch);
+
+            var columns = columnSet.Columns;
+            Assert.AreEqual(4, columns.Count);
+
+            Assert.AreEqual(columns[0].VerticalContentAlignment, AdaptiveVerticalContentAlignment.Top);
+            Assert.AreEqual(columns[1].VerticalContentAlignment, AdaptiveVerticalContentAlignment.Top);
+            Assert.AreEqual(columns[2].VerticalContentAlignment, AdaptiveVerticalContentAlignment.Center);
+            Assert.AreEqual(columns[3].VerticalContentAlignment, AdaptiveVerticalContentAlignment.Bottom);
+        }
+
+        [TestMethod]
+        public void TestVerticalContentAlignmentContainer()
+        {
+            var payload =
+                @"{
+                    ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                    ""type"": ""AdaptiveCard"",
+                    ""version"": ""1.0"",
+                    ""body"": [
+                        {
+                            ""type"": ""Container"",
+                            ""items"": [
+                                {
+                                    ""type"": ""TextBlock"",
+                                    ""text"": ""This text should be at the top""
+                                }
+                            ]
+                        },
+                        {
+                            ""type"": ""Container"",
+                            ""verticalContentAlignment"": ""top"",
+                            ""items"": [
+                                {
+                                    ""type"": ""TextBlock"",
+                                    ""text"": ""This text should be at the top""
+                                }
+                            ]
+                        },
+                        {
+                            ""type"": ""Container"",
+                            ""verticalContentAlignment"": ""center"",
+                            ""items"": [
+                                {
+                                    ""type"": ""TextBlock"",
+                                    ""text"": ""This text should be at the vertical center""
+                                }
+                            ]
+                        },
+                        {
+                            ""type"": ""Container"",
+                            ""verticalContentAlignment"": ""bottom"",
+                            ""items"": [
+                                {
+                                    ""type"": ""TextBlock"",
+                                    ""text"": ""This text should be at the bottom""
+                                }
+                            ]
+                        }
+                    ]
+                }";
+
+            var result = AdaptiveCard.FromJson(payload);
+            var card = result?.Card;
+            var containers = card.Body;
+            Assert.AreEqual(containers.Count, 4);
+
+            Assert.AreEqual(((AdaptiveContainer)containers[0]).VerticalContentAlignment, AdaptiveVerticalContentAlignment.Top);
+            Assert.AreEqual(((AdaptiveContainer)containers[1]).VerticalContentAlignment, AdaptiveVerticalContentAlignment.Top);
+            Assert.AreEqual(((AdaptiveContainer)containers[2]).VerticalContentAlignment, AdaptiveVerticalContentAlignment.Center);
+            Assert.AreEqual(((AdaptiveContainer)containers[3]).VerticalContentAlignment, AdaptiveVerticalContentAlignment.Bottom);
+        }
     }
 }
