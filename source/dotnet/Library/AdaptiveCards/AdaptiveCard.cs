@@ -281,8 +281,7 @@ namespace AdaptiveCards
             {
                 resourceInformationList.Add(new RemoteResourceInformation(
                     card.BackgroundImageString,
-                    typeof(AdaptiveImage),
-                    null
+                    "image"
                 ));
             }
 
@@ -300,8 +299,7 @@ namespace AdaptiveCards
                 {
                     resourceInformationList.Add(new RemoteResourceInformation(
                         action.IconUrl,
-                        typeof(AdaptiveImage),
-                        null
+                        "image"
                     ));
                 }
 
@@ -324,8 +322,7 @@ namespace AdaptiveCards
             {
                 resourceInformationList.Add(new RemoteResourceInformation(
                     imageElement.UrlString,
-                    typeof(AdaptiveImage),
-                    null
+                    "image"
                 ));
             }
 
