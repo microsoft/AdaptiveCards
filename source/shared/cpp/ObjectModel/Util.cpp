@@ -144,16 +144,14 @@ void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::s
         }
         parsedDimension = parsedVal;
     }
-    catch (const std::invalid_argument &e)
+    catch (const std::invalid_argument &)
     {
-        (void)e;
         warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
                 AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
                 warningMessage + requestedDimension)); 
     }
-    catch (const std::out_of_range &e)
+    catch (const std::out_of_range &)
     {
-        (void)e;
         warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
                 AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
                 "out of range: " + requestedDimension));
