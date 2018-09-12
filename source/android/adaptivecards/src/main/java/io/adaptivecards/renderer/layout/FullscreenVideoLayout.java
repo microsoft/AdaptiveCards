@@ -41,7 +41,7 @@ import java.util.Locale;
 public class FullscreenVideoLayout extends FullscreenVideoView implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, MediaPlayer.OnPreparedListener, View.OnTouchListener
 {
     // Handler and Runnable to keep tracking on elapsed time
-    protected static final Handler TIME_THREAD = new Handler();
+    protected static Handler TIME_THREAD = null;
     protected Runnable updateTimeRunnable = new Runnable()
     {
         public void run()
@@ -172,6 +172,10 @@ public class FullscreenVideoLayout extends FullscreenVideoView implements View.O
 
     protected void startCounter()
     {
+        if(TIME_THREAD == null)
+        {
+            TIME_THREAD = new Handler();
+        }
         TIME_THREAD.postDelayed(updateTimeRunnable, 200);
     }
 
