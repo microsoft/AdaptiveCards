@@ -8,7 +8,7 @@
 #import "ACRUILabel.h"
 
 @implementation ACRUILabel
-
+/*
 -(void)drawTextInRect:(CGRect)rect
 {
     if (_isFactSetLabel || _isStretchable) {
@@ -21,5 +21,14 @@
         [super drawTextInRect:rect];
     }
 }
+*/
+
+- (CGSize)intrinsicContentSize
+{
+    CGSize sizeThatFitsTextView = [self sizeThatFits:CGSizeMake(self.superview.frame.size.width, MAXFLOAT)];
+    self.frame = CGRectMake(0, 0, sizeThatFitsTextView.width, sizeThatFitsTextView.height);
+    return self.frame.size;
+}
+
 
 @end

@@ -39,8 +39,10 @@
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<TextBlock> txtBlck = std::dynamic_pointer_cast<TextBlock>(elem);
-    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-    ACRUILabel *lab = [bundle loadNibNamed:@"ACRLabelView" owner:rootView options:nil][0];
+    //NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
+    //ACRUILabel *lab = [bundle loadNibNamed:@"ACRLabelView" owner:rootView options:nil][0];
+    ACRUILabel *lab = [[ACRUILabel alloc] initWithFrame:CGRectMake(0,0,viewGroup.frame.size.width, 0)];
+    lab.backgroundColor = [UIColor clearColor];
 
     lab.style = [viewGroup style];
     NSMutableAttributedString *content = nil;
@@ -60,16 +62,26 @@
             content = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
             // Drop newline char
             [content deleteCharactersInRange:NSMakeRange([content length] -1, 1)];
+            lab.selectable = YES;
+            lab.dataDetectorTypes = UIDataDetectorTypeLink;
+            lab.userInteractionEnabled = YES;
         } else {
             // if html rendering is skipped, remove p tags from both ends (<p>, </p>)
             content = [[NSMutableAttributedString alloc] initWithString:text attributes:descriptor];
             [content deleteCharactersInRange:NSMakeRange(0, 3)];
             [content deleteCharactersInRange:NSMakeRange([content length] -4, 4)];
         }
-
+        //CGRect boundingrect = [lab.layoutManager lineFragmentRectForGlyphAtIndex:0 effectiveRange:nil];
+        //lab.frame = boundingrect;
+        lab.editable = NO;
+        lab.textContainer.lineFragmentPadding = 0;
+        lab.textContainerInset = UIEdgeInsetsZero;
+        lab.layoutManager.usesFontLeading = false;
+        lab.scrollEnabled = NO;
+        
         // Set paragraph style such as line break mode and alignment
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
+        //paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
         paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:txtBlck->GetHorizontalAlignment()];
 
         // Obtain text color to apply to the attributed string
@@ -78,24 +90,29 @@
         config->containerStyles.defaultPalette.foregroundColors;
         // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
         [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACOHostConfig getTextBlockColor:txtBlck->GetTextColor() colorsConfig:colorConfig subtleOption:txtBlck->GetIsSubtle()],} range:NSMakeRange(0, content.length)];
+        //lab.attributedText = content;
+
+        //boundingrect.size.width = viewGroup.frame.size.width;
+        //lab.frame = boundingrect;
+        lab.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
         lab.attributedText = content;
     }
 
-    lab.numberOfLines = int(txtBlck->GetMaxLines());
-    if(!lab.numberOfLines and !txtBlck->GetWrap()){
-        lab.numberOfLines = 1;
+    lab.textContainer.maximumNumberOfLines = int(txtBlck->GetMaxLines());
+    if(!lab.textContainer.maximumNumberOfLines and !txtBlck->GetWrap()){
+        lab.textContainer.maximumNumberOfLines = 1;
     }
-
+    [viewGroup addArrangedSubview:lab];
+    
     if(txtBlck->GetHeight() == HeightType::Auto){
         [lab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-        [lab setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+        [lab setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     } else {
         [lab setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
         [lab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         lab.isStretchable = YES;
     }
-
-    [viewGroup addArrangedSubview:lab];
+    
     return lab;
 }
 
