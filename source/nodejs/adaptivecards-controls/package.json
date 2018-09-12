@@ -4,7 +4,6 @@
   "description": "A library of pure JS/HTML controls designed for use with Adaptive Cards.",
   "main": "built/adaptivecards-controls.js",
   "types": "built/adaptivecards-controls.d.ts",
-  "private": true,
   "scripts": {
     "build-dist": "webpack",
     "tsc": "tsc -p .",    
