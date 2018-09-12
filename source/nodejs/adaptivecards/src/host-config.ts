@@ -43,6 +43,25 @@ export class ImageSetConfig {
     }
 }
 
+export class MediaConfig {
+    defaultPoster: string;
+    allowInlinePlayback: boolean = true;
+
+    constructor(obj?: any) {
+        if (obj) {
+            this.defaultPoster = obj["defaultPoster"];
+            this.allowInlinePlayback = obj["allowInlinePlayback"] || this.allowInlinePlayback;
+        }
+    }
+
+    toJSON() {
+        return {
+            defaultPoster: this.defaultPoster,
+            allowInlinePlayback: this.allowInlinePlayback
+        }
+    }
+}
+
 export class FactTextDefinition {
     size: Enums.TextSize = Enums.TextSize.Default;
     color: Enums.TextColor = Enums.TextColor.Default;;
@@ -138,6 +157,7 @@ export class ActionsConfig {
     actionsOrientation: Enums.Orientation = Enums.Orientation.Horizontal;
     actionAlignment: Enums.ActionAlignment = Enums.ActionAlignment.Left;
     iconPlacement: Enums.ActionIconPlacement = Enums.ActionIconPlacement.LeftOfTitle;
+    allowTitleToWrap: boolean = false;
     iconSize: number = 24;
 
     constructor(obj?: any) {
@@ -150,6 +170,7 @@ export class ActionsConfig {
             this.actionsOrientation = Utils.parseHostConfigEnum(Enums.Orientation, obj["actionsOrientation"], Enums.Orientation.Horizontal);
             this.actionAlignment = Utils.parseHostConfigEnum(Enums.ActionAlignment, obj["actionAlignment"], Enums.ActionAlignment.Left);
             this.iconPlacement = Utils.parseHostConfigEnum(Enums.ActionIconPlacement, obj["iconPlacement"], Enums.ActionIconPlacement.LeftOfTitle);
+            this.allowTitleToWrap = obj["allowTitleToWrap"] != null ? obj["allowTitleToWrap"] : this.allowTitleToWrap;
 
             try {
                 let sizeAndUnit = Utils.SizeAndUnit.parse(obj["iconSize"]);
@@ -347,6 +368,7 @@ export class HostConfig {
     readonly actions: ActionsConfig = new ActionsConfig();
     readonly adaptiveCard: AdaptiveCardConfig = new AdaptiveCardConfig();
     readonly imageSet: ImageSetConfig = new ImageSetConfig();
+    readonly media: MediaConfig = new MediaConfig();
     readonly factSet: FactSetConfig = new FactSetConfig();
 
     cssClassNamePrefix: string = null;

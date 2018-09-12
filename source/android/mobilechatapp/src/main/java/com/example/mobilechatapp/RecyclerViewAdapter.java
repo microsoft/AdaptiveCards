@@ -1,20 +1,21 @@
 package com.example.mobilechatapp;
 
+import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by almedina on 8/16/2018.
- */
+import io.adaptivecards.objectmodel.HostConfig;
+import io.adaptivecards.objectmodel.ParseResult;
+import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
 {
@@ -24,34 +25,65 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         void onItemClick(View view, int position);
     }
 
+    public interface ICardRenderedListener
+    {
+        void onCardFinishedRendering();
+    }
+
     // stores and recycles views as they are scrolled off screen
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ICardRenderedListener
     {
         ViewHolder(View itemView)
         {
             super(itemView);
             m_cardLayout = (LinearLayout) itemView.findViewById(R.id.cardLayout);
             m_jsonFileName = (TextView) itemView.findViewById(R.id.jsonFileName);
+            m_progressBar = (ProgressBar) itemView.findViewById(R.id.recyclerViewProgressBar);
             itemView.setOnClickListener(this);
         }
 
         @Override
-        public void onClick(View view) {
+        public void onClick(View view)
+        {
             if (m_clickListener != null)
             {
                 m_clickListener.onItemClick(view, getAdapterPosition());
             }
         }
 
+        @Override
+        public void onCardFinishedRendering()
+        {
+            m_progressBar.setVisibility(View.GONE);
+            if(m_recyclerViewContent != null)
+            {
+                m_cardLayout.addView(m_recyclerViewContent.getRenderedCard());
+            }
+        }
+
+        public void registerListener(RecyclerViewContent recyclerViewContent)
+        {
+            m_recyclerViewContent = recyclerViewContent;
+        }
+
+        public void unregisterPreviousListener()
+        {
+            if(m_recyclerViewContent != null)
+            {
+                m_recyclerViewContent.unregisterCardRenderedListener();
+            }
+        }
+
+        ProgressBar m_progressBar;
         LinearLayout m_cardLayout;
         TextView m_jsonFileName;
+        RecyclerViewContent m_recyclerViewContent = null;
     }
 
     RecyclerViewAdapter(Context context)
     {
         m_inflater = LayoutInflater.from(context);
-        m_fileNames = new ArrayList<>();
-        m_renderedCards = new ArrayList<>();
+        m_cards = new ArrayList<>();
     }
 
     @Override
@@ -64,31 +96,40 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position)
     {
-        View renderedCard = m_renderedCards.get(position);
+        RecyclerViewContent viewContent = m_cards.get(position);
 
-        ViewGroup parent = (ViewGroup)renderedCard.getParent();
-        if(parent != null)
-        {
-            parent.removeView(renderedCard);
-        }
+        holder.m_jsonFileName.setText(viewContent.getFileName());
 
-        holder.m_jsonFileName.setText(m_fileNames.get(position));
-        while(holder.m_cardLayout.getChildCount() > 1)
+        // Clean the layout to make it as original
+        while (holder.m_cardLayout.getChildCount() > 2)
         {
-            holder.m_cardLayout.removeViewAt(1);
+            holder.m_cardLayout.removeViewAt(2);
         }
-        holder.m_cardLayout.addView(renderedCard);
+        holder.m_progressBar.setVisibility(View.VISIBLE);
+
+        if(viewContent.hasRenderedCard())
+        {
+            View renderedCard = viewContent.getRenderedCard();
+            ViewGroup parent = (ViewGroup) renderedCard.getParent();
+            if (parent != null)
+            {
+                parent.removeView(renderedCard);
+            }
+
+            holder.m_progressBar.setVisibility(View.GONE);
+            holder.m_cardLayout.addView(renderedCard);
+        }
+        else
+        {
+            holder.unregisterPreviousListener();
+            holder.registerListener(viewContent);
+            viewContent.registerCardRenderedListener(holder);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return m_renderedCards.size();
-    }
-
-    // convenience method for getting data at click position
-    View getItem(int id)
-    {
-        return m_renderedCards.get(id);
+        return m_cards.size();
     }
 
     // allows clicks events to be caught
@@ -97,15 +138,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         m_clickListener = itemClickListener;
     }
 
-    void addItem(String fileName, View view)
+    void addItem(String filename, ParseResult parseResult, Context context, FragmentManager fragmentManager, ICardActionHandler cardActionHandler, HostConfig hostConfig)
     {
-        m_fileNames.add(fileName);
-        m_renderedCards.add(view);
+        m_cards.add(new RecyclerViewContent(filename, parseResult, context, fragmentManager, cardActionHandler, hostConfig));
         notifyDataSetChanged();
     }
 
-    private List<String> m_fileNames;
-    private List<View> m_renderedCards;
+    void addItem(String fileName, View view)
+    {
+        m_cards.add(new RecyclerViewContent(fileName, view));
+        notifyDataSetChanged();
+    }
+
+    private List<RecyclerViewContent> m_cards;
     private LayoutInflater m_inflater;
     private ItemClickListener m_clickListener;
 }
