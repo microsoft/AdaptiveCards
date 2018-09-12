@@ -3,6 +3,7 @@
 #include "ColumnSet.h"
 #include "Container.h"
 #include "TextBlock.h"
+#include "ShowCardAction.h"
 
 void PropagateLanguage(const std::string& language, std::vector<std::shared_ptr<BaseCardElement>>& m_body)
 {
@@ -110,6 +111,23 @@ void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::s
             (void)e;
             throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
                 "out of range: " + requestedDimension);
+        }
+    }
+}
+
+void EnsureShowCardVersions(
+    std::vector<std::shared_ptr<BaseActionElement>>& actions, 
+    std::string& version)
+{
+    for (auto& action : actions)
+    {
+        if (action->GetElementType() == ActionType::ShowCard)
+        {
+            auto showCardAction = std::static_pointer_cast<ShowCardAction>(action);
+            if (showCardAction->GetCard()->GetVersion().empty())
+            {
+                showCardAction->GetCard()->SetVersion(version);
+            }
         }
     }
 }
