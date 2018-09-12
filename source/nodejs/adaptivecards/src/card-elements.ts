@@ -136,8 +136,7 @@ export class SizeAndUnit {
 
 export interface IResourceInformation {
     url: string;
-    owner: CardElement | Action;
-    mimeType?: string;
+    mimeType: string;
 }
 
 export abstract class CardElement {
@@ -1542,7 +1541,7 @@ export class Image extends CardElement {
 
     getResourceInformation(): Array<IResourceInformation> {
         if (!Utils.isNullOrEmpty(this.url)) {
-            return [ { url: this.url, owner: this } ]
+            return [ { url: this.url, mimeType: "image" } ]
         }
         else {
             return [];
@@ -1950,12 +1949,12 @@ export class Media extends CardElement {
         let posterUrl = this.getPosterUrl();
 
         if (!Utils.isNullOrEmpty(posterUrl)) {
-            result.push({ url: posterUrl, owner: this});
+            result.push({ url: posterUrl, mimeType: "image" });
         }
 
         for (let mediaSource of this.sources) {
             if (!Utils.isNullOrEmpty(mediaSource.url)) {
-                result.push({ url: mediaSource.url, owner: this, mimeType: mediaSource.mimeType });
+                result.push({ url: mediaSource.url, mimeType: mediaSource.mimeType });
             }
         }
 
@@ -2826,7 +2825,7 @@ export abstract class Action {
 
     getResourceInformation(): Array<IResourceInformation> {
         if (!Utils.isNullOrEmpty(this.iconUrl)) {
-            return [ { url: this.iconUrl, owner: this } ]
+            return [ { url: this.iconUrl, mimeType: "image" } ]
         }
         else {
             return [];
@@ -4335,7 +4334,7 @@ export class Container extends CardElementContainer {
         let result: Array<IResourceInformation> = [];
         
         if (this.backgroundImage && !Utils.isNullOrEmpty(this.backgroundImage.url)) {
-            result.push({ url: this.backgroundImage.url, owner: this });
+            result.push({ url: this.backgroundImage.url, mimeType: "image" });
         }
 
         for (var i = 0; i < this.getItemCount(); i++) {
