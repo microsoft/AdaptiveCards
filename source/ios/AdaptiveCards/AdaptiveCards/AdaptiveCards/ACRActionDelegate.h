@@ -13,10 +13,9 @@
 
 - (void)didFetchUserResponses:(ACOAdaptiveCard *)card action:(ACOBaseActionElement *)action;
 
-- (void)didFetchSecondaryView:(ACOAdaptiveCard *)card navigationController:(UINavigationController *)naviationController;
-
 @optional
 - (void)didLoadElements;
-- (void)didChangeVisibility:(UIButton *)button isVisible:(BOOL )isVisible;
+- (void)didChangeVisibility:(UIButton *)button isVisible:(BOOL)isVisible;
+- (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame;
 
 @end

@@ -307,7 +307,7 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
-        public void TestExplicitImageWarnningMessagesWithMalformedUnits()
+        public void TestExplicitImageWarningMessagesWithMalformedUnits()
         {
             var payload =
                 @"{
@@ -330,7 +330,7 @@ namespace AdaptiveCards.Test
             var imageBlock = card.Body[0] as AdaptiveImage;
             Assert.AreEqual(0U, imageBlock.PixelWidth);
             Assert.AreEqual(0U, imageBlock.PixelHeight);
-            Assert.AreEqual(4, result.Warnings.Count);
+            Assert.AreEqual(3, result.Warnings.Count);
             Assert.AreEqual(
                 result.Warnings[0].Message,
                 @"The Value ""20"" for field ""width"" was not specified as a proper dimension in the format (\d+(.\d+)?px), it will be ignored.");
@@ -340,7 +340,7 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
-        public void TestExplicitImageWarrningMessagesWithMalformedDimensions()
+        public void TestExplicitImageWarningMessagesWithMalformedDimensions()
         {
             var payload =
                 @"{
@@ -363,7 +363,7 @@ namespace AdaptiveCards.Test
             var imageBlock = card.Body[0] as AdaptiveImage;
             Assert.AreEqual(0U, imageBlock.PixelWidth);
             Assert.AreEqual(0U, imageBlock.PixelHeight);
-            Assert.AreEqual(4, result.Warnings.Count);
+            Assert.AreEqual(3, result.Warnings.Count);
             Assert.AreEqual(
                 @"The Value "".20px"" for field ""width"" was not specified as a proper dimension in the format (\d+(.\d+)?px), it will be ignored.",
                 result.Warnings[0].Message);
@@ -378,8 +378,8 @@ namespace AdaptiveCards.Test
             ArrayList payloads = new ArrayList
             {
                 @"{
-                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
-                      ""type"": ""AdaptiveCard"",
+                    ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"", 
+                      ""type"": ""AdaptiveCard"", 
                       ""version"": ""1.0"",
                       ""body"": [
                           {
@@ -391,8 +391,8 @@ namespace AdaptiveCards.Test
                       ]
                   }",
                 @"{
-                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
-                      ""type"": ""AdaptiveCard"",
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"", 
+                      ""type"": ""AdaptiveCard"", 
                       ""version"": ""1.0"",
                       ""body"": [
                           {
@@ -465,8 +465,139 @@ namespace AdaptiveCards.Test
                 var imageBlock = card.Body[0] as AdaptiveImage;
                 Assert.AreEqual(0U, imageBlock.PixelWidth);
                 Assert.AreEqual(0U, imageBlock.PixelHeight);
-                Assert.AreEqual(4, result.Warnings.Count);
+                Assert.AreEqual(3, result.Warnings.Count);
             }
+        }
+
+        [TestMethod]
+        public void DefaultHeightIsAuto()
+        {
+            var payload =
+                @"{
+                    ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                    ""type"": ""AdaptiveCard"",
+                    ""version"": ""1.0"",
+                    ""body"": [
+                        {
+                            ""type"": ""ColumnSet"",
+                            ""columns"": [
+                                {
+                                    ""type"": ""Column"",
+                                    ""items"": [
+                                        {
+                                            ""type"": ""TextBlock"",
+                                            ""text"": ""Tell us about yourself"",
+                                            ""weight"": ""bolder"",
+                                            ""size"": ""medium""
+                                        }
+                                    ]
+                                },
+                                {
+                                     ""type"": ""Column"",
+                                     ""items"": [
+                                        {
+                                            ""type"": ""Image"",
+                                            ""url"": ""https://upload.wikimedia.org/wikipedia/commons/b/b2/Diver_Silhouette%2C_Great_Barrier_Reef.jpg"",
+                                            ""size"": ""auto"",
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    ""actions"": [
+                        {
+                            ""type"": ""Action.Submit"",
+                            ""title"": ""Submit""
+                        }
+                    ]
+                }";
+
+            var result = AdaptiveCard.FromJson(payload);
+            var card = result?.Card;
+            Assert.AreEqual(card.Height, AdaptiveHeight.Auto);
+            Assert.AreEqual(card.Body.Count, 1);
+            var columnSet = (AdaptiveColumnSet)card.Body[0];
+            Assert.AreEqual(columnSet.Height, AdaptiveHeight.Auto);
+            Assert.AreEqual(columnSet.Columns.Count, 2);
+
+            foreach(var column in columnSet.Columns)
+            {
+                Assert.AreEqual(column.Items.Count, 1);
+                var columnContent = column.Items[0];
+                Assert.AreEqual(columnContent.Height, AdaptiveHeight.Auto);
+            }
+
+        }
+
+        [TestMethod]
+        public void TestCardStretch()
+        {
+            var payload =
+                @"{
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
+                      ""version"": ""1.0"",
+                      ""height"": ""stretch"",
+                      ""body"": [
+                          {
+                              ""type"": ""TextBlock"",
+                              ""text"": ""This is a textblock""        
+                          }
+                      ]
+                  }";
+
+            var result = AdaptiveCard.FromJson(payload);
+            var card = result?.Card;
+            Assert.AreEqual(card.Body.Count, 1);
+            Assert.AreEqual(card.Height, AdaptiveHeight.Stretch);
+        }
+
+        [TestMethod]
+        public void TestElementStretch()
+        {
+            var payload =
+                @"{
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
+                      ""version"": ""1.0"",
+                      ""body"": [
+                          {
+                              ""type"": ""TextBlock"",
+                              ""text"": ""This is a textblock"",
+                              ""height"": ""stretch""
+                          }
+                      ]
+                  }";
+
+            var result = AdaptiveCard.FromJson(payload);
+            var card = result?.Card;
+            Assert.AreEqual(card.Body.Count, 1);
+            Assert.AreEqual(card.Body[0].Height, AdaptiveHeight.Stretch);
+        }
+
+        [TestMethod]
+        public void TestImageStretch()
+        {
+            var payload =
+                @"{
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
+                      ""version"": ""1.0"",
+                      ""body"": [
+                          {
+                              ""type"": ""Image"",
+                              ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+                              ""height"": ""stretch"",
+                              ""size"": ""small""  
+                          }
+                      ]
+                  }";
+
+            var result = AdaptiveCard.FromJson(payload);
+            var card = result?.Card;
+            Assert.AreEqual(card.Body.Count, 1);
+            Assert.AreEqual(card.Body[0].Height, AdaptiveHeight.Stretch);
         }
     }
 }
