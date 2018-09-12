@@ -30,9 +30,13 @@
 
 - (void)verifyChoiceSetInput:(NSDictionary<NSString *, NSString *> *) expectedValue application:(XCUIApplication *)app {
     NSData *expectedData = [NSJSONSerialization dataWithJSONObject:expectedValue options:NSJSONWritingPrettyPrinted error:nil];
+    XCUIElement *queryResult = app.scrollViews.staticTexts[@"ACRUserResponse"];
+    NSArray<NSString *> *components = [queryResult.label componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *stringWithNoWhiteSpaces = [components componentsJoinedByString:@""];
     NSString *expectedString = [[NSString alloc] initWithData:expectedData encoding:NSUTF8StringEncoding];
-    XCUIElement *queryResult = app/*@START_MENU_TOKEN@*/.scrollViews.otherElements[@"ACR Root View"]/*[[".scrollViews.otherElements[@\"ACR Root View\"]",".otherElements[@\"ACR Root View\"]"],[[[-1,1],[-1,0]]],[1]]@END_MENU_TOKEN@*/.staticTexts[expectedString];
-    XCTAssertTrue([queryResult.label isEqualToString:expectedString]);
+    NSArray<NSString *> *expectedComponents = [expectedString componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *expectedStringWithNoWhiteSpaces = [expectedComponents componentsJoinedByString:@""];
+    XCTAssertTrue([stringWithNoWhiteSpaces isEqualToString:expectedStringWithNoWhiteSpaces]);
 }
 
 - (void)testCanGatherDefaultValuesFromChoiceInputSet {
@@ -60,7 +64,8 @@
     [tablesQuery/*@START_MENU_TOKEN@*/.staticTexts[@"Input.ChoiceSet.json"]/*[[".cells.staticTexts[@\"Input.ChoiceSet.json\"]",".staticTexts[@\"Input.ChoiceSet.json\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/ tap];
     
     XCUIElement *acrRootViewElement = app/*@START_MENU_TOKEN@*/.otherElements[@"ACR Root View"]/*[[".scrollViews.otherElements[@\"ACR Root View\"]",".otherElements[@\"ACR Root View\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/;
-    XCUIElement *redStaticText = [acrRootViewElement.tables.cells containingType:XCUIElementTypeButton identifier:@"More Info"].staticTexts[@"Red"];
+    XCUIElement *redStaticText = [[[acrRootViewElement childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:0].staticTexts[@"Red"];
+
     [redStaticText tap];
     [app/*@START_MENU_TOKEN@*/.otherElements[@"ACR Root View"].tables.pickerWheels[@"Red"]/*[[".scrollViews.otherElements[@\"ACR Root View\"].tables",".cells",".pickers.pickerWheels[@\"Red\"]",".pickerWheels[@\"Red\"]",".otherElements[@\"ACR Root View\"].tables"],[[[-1,4,1],[-1,0,1]],[[-1,3],[-1,2],[-1,1,2]],[[-1,3],[-1,2]]],[0,0]]@END_MENU_TOKEN@*/ swipeUp];
     [app.otherElements[@"ACR Root View"].tables.pickerWheels[@"Blue"] tap];
@@ -91,12 +96,7 @@
     /*@START_MENU_TOKEN@*/[[[[app.otherElements[@"ACR Root View"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2].staticTexts[@"Red"] swipeLeft];/*[["app","[[[",".scrollViews.otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2]",".cells.staticTexts[@\"Red\"]","["," swipeUp];"," swipeLeft];",".staticTexts[@\"Red\"]",".otherElements[@\"ACR Root View\"] childrenMatchingType:XCUIElementTypeOther].element childrenMatchingType:XCUIElementTypeTable] elementBoundByIndex:2]"],[[[-1,0,1]],[[1,8,2],[1,2,2]],[[-1,7,3],[-1,3,3]],[[4,6],[4,5]]],[0,0,0,0]]@END_MENU_TOKEN@*/
     [app/*@START_MENU_TOKEN@*/.otherElements[@"ACR Root View"]/*[[".scrollViews.otherElements[@\"ACR Root View\"]",".otherElements[@\"ACR Root View\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.scrollViews.otherElements.buttons[@"OK"] tap];
     
-    NSDictionary<NSString *, NSString *> *expectedValue = @{
-                                                            @"myColor" : @"1",
-                                                            @"myColor3" : @"3",
-                                                            @"myColor2" : @"2",
-                                                            @"myColor4" : @"1"
-                                                            };
+    NSDictionary<NSString *, NSString *> *expectedValue = @{@"myColor":@"1",@"myColor3":@"3",@"myColor2":@"2",@"myColor4":@"1"};
     [self verifyChoiceSetInput:expectedValue application:app];
 }
 
@@ -115,12 +115,7 @@
     XCUIElementQuery *scrollViewsQuery = acrRootViewElement.scrollViews;
     [scrollViewsQuery.otherElements.buttons[@"OK"] tap];
 
-    NSDictionary<NSString *, NSString *> *expectedValue = @{
-                                                            @"myColor" : @"1",
-                                                            @"myColor3" : @"",
-                                                            @"myColor2" : @"1",
-                                                            @"myColor4" : @"1"
-                                                            };
+    NSDictionary<NSString *, NSString *> *expectedValue = @{@"myColor":@"1",@"myColor3":@"",@"myColor2":@"1",@"myColor4":@"1"};
     [self verifyChoiceSetInput:expectedValue application:app];
 }
 

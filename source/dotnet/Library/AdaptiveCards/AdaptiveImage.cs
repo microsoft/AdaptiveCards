@@ -16,7 +16,6 @@ namespace AdaptiveCards
     {
         public AdaptiveImage()
         {
-
         }
 
         public AdaptiveImage(string url)
@@ -120,5 +119,34 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(null)]
         public string AltText { get; set; }
+
+        /// <summary>
+        ///    Explicit Image Width 
+        /// </summary>
+        [JsonConverter(typeof(StringSizeWithUnitConverter), false)]
+        [JsonProperty("width", DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(0)]
+        public uint PixelWidth { get; set; }
+
+        /// <summary>
+        ///    Explicit Image Height
+        /// </summary>
+        [JsonIgnore]
+        public uint PixelHeight
+        {
+            get
+            {
+                if (Height.Unit != null)
+                {
+                    return Height.Unit.Value;
+                }
+                return 0;
+            }
+            set { Height = new AdaptiveHeight(value); }
+        }
     }
+
 }

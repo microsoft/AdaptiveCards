@@ -7,9 +7,8 @@ import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.objectmodel.ChoiceInputVector;
 import io.adaptivecards.objectmodel.ChoiceSetInput;
 
-import java.text.ParseException;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 
 public class CheckBoxSetInputHandler extends BaseInputHandler
@@ -20,8 +19,7 @@ public class CheckBoxSetInputHandler extends BaseInputHandler
         m_checkBoxList = checkBoxList;
     }
 
-    protected List<CheckBox> getCheckBox()
-    {
+    protected List<CheckBox> getCheckBox() {
         return m_checkBoxList;
     }
 
@@ -32,7 +30,7 @@ public class CheckBoxSetInputHandler extends BaseInputHandler
 
         Vector<String> resultList = new Vector<String>();
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
-        for (int index = 0;index < m_checkBoxList.size(); index++)
+        for (int index = 0; index < m_checkBoxList.size(); index++)
         {
             if (m_checkBoxList.get(index).isChecked())
             {
@@ -41,6 +39,34 @@ public class CheckBoxSetInputHandler extends BaseInputHandler
         }
 
         return TextUtils.join(";", resultList);
+    }
+
+    public void setInput(String values)
+    {
+        ChoiceSetInput choiceSetInput = (ChoiceSetInput) m_baseInputElement;
+        ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
+
+        if (values.isEmpty())
+        {
+            for (int i = 0 ; i < choiceInputVector.size(); i++)
+            {
+                m_checkBoxList.get(i).setChecked(false);
+            }
+            return;
+        }
+
+        List<String> listValues = Arrays.asList(values.split(";"));
+        for (int i = 0 ; i < choiceInputVector.size(); i++)
+        {
+            if (listValues.contains(choiceInputVector.get(i).GetValue()))
+            {
+                m_checkBoxList.get(i).setChecked(true);
+            }
+            else
+            {
+                m_checkBoxList.get(i).setChecked(false);
+            }
+        }
     }
 
     private List<CheckBox> m_checkBoxList;

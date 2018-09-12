@@ -1,27 +1,12 @@
 package com.example.mobilechatapp;
 
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.support.annotation.NonNull;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Random;
 import java.util.Set;
-
-import io.adaptivecards.renderer.Util;
-
-/**
- * Created by almedina on 8/15/2018.
- */
+import java.util.TreeSet;
 
 public class CardRetriever
 {
@@ -35,21 +20,6 @@ public class CardRetriever
         m_filesReadListener = filesReadListener;
     }
 
-    private String readFile(String fileName, AssetManager assetManager) throws IOException
-    {
-        final int length = 128;
-        byte[] buffer = new byte[length];
-
-        int readBytes;
-        InputStream inputStream = assetManager.open(fileName);
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        while((readBytes = inputStream.read(buffer, 0, length)) > 0)
-        {
-            outputStream.write(buffer, 0, readBytes);
-        }
-        return outputStream.toString();
-    }
-
     private boolean isJsonFile(String fileName)
     {
         return fileName.endsWith(".json");
@@ -57,7 +27,7 @@ public class CardRetriever
 
     public void populateCardJsons(Context context)
     {
-        s_cardJsons = new ArrayList<>();
+        s_cardJsons = Collections.synchronizedList(new ArrayList<Card>());
         final AssetManager assetManager = context.getAssets();
         try
         {
@@ -71,14 +41,12 @@ public class CardRetriever
                 }
             }
 
-            int completedReadFiles = 0;
+            m_filesReadListener.setFilesCount(fileCount);
             for(String fileName : files)
             {
                 if(isJsonFile(fileName))
                 {
-                    s_cardJsons.add(new Card(fileName, readFile(fileName, assetManager)));
-                    completedReadFiles++;
-                    m_filesReadListener.updateFilesCompletion(completedReadFiles, fileCount);
+                    new CardReaderTask(fileName, assetManager, this).execute();
                 }
             }
         }
@@ -271,8 +239,6 @@ public class CardRetriever
         return s_cardJsons;
     }
 
-    private IFilesReadListener m_filesReadListener = null;
-
     public void registerExistingCardElementType(String elementType)
     {
         s_cardElements.add(elementType);
@@ -283,9 +249,16 @@ public class CardRetriever
         return s_cardElements;
     }
 
+    public void addCard(Card card)
+    {
+        s_cardJsons.add(card);
+        m_filesReadListener.updateFilesCompletion();
+    }
+
+    private IFilesReadListener m_filesReadListener = null;
     private static List<Card> s_cardJsons = null;
     private static CardRetriever s_instance = null;
-    private static Set<String> s_cardElements = new HashSet<>();
+    private static Set<String> s_cardElements = new TreeSet<>();
     private enum FirstSectionValue { all, random, number, notUnderstood }
     private enum SecondSectionValue { all, elementTypeName, notUnderstood }
 

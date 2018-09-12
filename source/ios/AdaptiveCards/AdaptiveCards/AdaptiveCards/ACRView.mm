@@ -308,7 +308,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
             NSDictionary *data = nil;
 
             // use Apple's html rendering only if the string has markdowns
-            if(markDownParser->HasHtmlTags()) {
+            if(markDownParser->HasHtmlTags() || markDownParser->IsEscaped()) {
                 NSString *fontFamilyName = nil;
                 if(!self->_hostConfig.fontFamilyNames){
                     fontFamilyName = @"'-apple-system',  'HelveticaNeue'";

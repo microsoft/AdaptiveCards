@@ -22,6 +22,10 @@ function isActionAllowed(action: Action, forbiddenActionTypes: Array<string>): b
     return true;
 }
 
+function generateUniqueId(): string {
+    return "__ac-" + Utils.UUID.generate();
+}
+
 export function createActionInstance(json: any, errors: Array<IValidationError>): Action {
     if (!json["title"] && json["title"] !== "") {
         raiseParseError(
@@ -721,11 +725,15 @@ export class TextBlock extends CardElement {
         return false;
     }
 
+    protected getRenderedDomElementType(): string {
+        return "div";
+    }
+    
     protected internalRender(): HTMLElement {
         if (!Utils.isNullOrEmpty(this.text)) {
             let hostConfig = this.hostConfig;
 
-            var element = document.createElement("div");
+            var element = document.createElement(this.getRenderedDomElementType());
             element.classList.add(hostConfig.makeCssClassName("ac-textBlock"));
             element.style.overflow = "hidden";
 
@@ -1058,6 +1066,24 @@ export class TextBlock extends CardElement {
     }
 }
 
+class Label extends TextBlock {
+    protected getRenderedDomElementType(): string {
+        return "label";
+    }
+
+    protected internalRender(): HTMLElement {
+        let renderedElement = <HTMLLabelElement>super.internalRender();
+
+        if (!Utils.isNullOrEmpty(this.forElementId)) {
+            renderedElement.htmlFor = this.forElementId;
+        }
+
+        return renderedElement;
+    }
+    
+    forElementId: string;
+} 
+
 export class Fact {
     name: string;
     value: string;
@@ -1088,6 +1114,7 @@ export class FactSet extends CardElement {
 
     protected internalRender(): HTMLElement {
         let element: HTMLElement = null;
+        let hostConfig = this.hostConfig;
 
         if (this.facts.length > 0) {
             element = document.createElement("table");
@@ -1097,6 +1124,7 @@ export class FactSet extends CardElement {
             element.style.borderCollapse = "collapse";
             element.style.display = "block";
             element.style.overflow = "hidden";
+            element.classList.add(hostConfig.makeCssClassName("ac-factset"));
 
             for (var i = 0; i < this.facts.length; i++) {
                 var trElement = document.createElement("tr");
@@ -1107,6 +1135,7 @@ export class FactSet extends CardElement {
 
                 var tdElement = document.createElement("td");
                 tdElement.style.padding = "0";
+                tdElement.classList.add(hostConfig.makeCssClassName("ac-fact-title"));
 
                 if (this.hostConfig.factSet.title.maxWidth) {
                     tdElement.style.maxWidth = this.hostConfig.factSet.title.maxWidth + "px";
@@ -1130,6 +1159,7 @@ export class FactSet extends CardElement {
                 tdElement = document.createElement("td");
                 tdElement.style.padding = "0px 0px 0px 10px";
                 tdElement.style.verticalAlign = "top";
+                tdElement.classList.add(hostConfig.makeCssClassName("ac-fact-value"));
 
                 textBlock = new TextBlock();
                 textBlock.hostConfig = this.hostConfig;
@@ -1652,6 +1682,240 @@ export class ImageSet extends CardElementContainer {
     }
 }
 
+export class MediaSource {
+    mimeType: string;
+    url: string;
+
+    parse(json: any, errors?: Array<IValidationError>) {
+        this.mimeType = json["mimeType"];
+        this.url = json["url"];
+    }
+
+    toJSON() {
+        return {
+            mimeType: this.mimeType,
+            url: this.url
+        }
+    }
+}
+
+export class Media extends CardElement {
+    static readonly supportedMediaTypes = ["audio", "video"];
+
+    private _selectedMediaType: string;
+    private _selectedSources: Array<MediaSource>;
+
+    private processSources() {
+        this._selectedSources = [];
+        
+ 		for (let source of this.sources) {
+            let mimeComponents = source.mimeType.split('/');
+            
+ 			if (mimeComponents.length == 2) {
+				if (!this._selectedMediaType) {
+                    let index = Media.supportedMediaTypes.indexOf(mimeComponents[0]);
+                    
+ 					if (index >= 0) {
+						this._selectedMediaType = Media.supportedMediaTypes[index];
+					}
+				}
+ 				if (mimeComponents[0] == this._selectedMediaType) {
+					this._selectedSources.push(source);
+				}
+			} 
+        }
+    }
+
+    private renderPoster(): HTMLElement {
+        const playButtonArrowWidth = 12;
+        const playButtonArrowHeight = 15;
+
+        let posterRootElement = document.createElement("div");
+        posterRootElement.className = "ac-media-poster";
+        posterRootElement.setAttribute("role", "contentinfo");
+        posterRootElement.setAttribute("aria-label", this.altText ? this.altText : "Media content");
+        posterRootElement.style.position = "relative";
+        posterRootElement.style.display = "flex";
+
+        let posterUrl = this.poster ? this.poster : this.hostConfig.media.defaultPoster;
+
+        if (posterUrl) {
+            let posterImageElement = document.createElement("img");
+            posterImageElement.style.width = "100%";
+            posterImageElement.style.height = "100%";
+
+            posterImageElement.onerror = (e: Event) => {
+                posterImageElement.parentNode.removeChild(posterImageElement);
+                posterRootElement.classList.add("empty");
+                posterRootElement.style.minHeight = "150px";
+            }
+
+            posterImageElement.src = posterUrl;
+
+            posterRootElement.appendChild(posterImageElement);
+        }
+        else {
+            posterRootElement.classList.add("empty");
+            posterRootElement.style.minHeight = "150px";
+        }
+
+        if (this.hostConfig.supportsInteractivity) {
+            let playButtonOuterElement = document.createElement("div");
+            posterRootElement.setAttribute("role", "button");
+            posterRootElement.setAttribute("aria-label", "Play media");
+            playButtonOuterElement.className = "ac-media-playButton";
+            playButtonOuterElement.style.display = "flex";
+            playButtonOuterElement.style.alignItems = "center";
+            playButtonOuterElement.style.justifyContent = "center";
+            playButtonOuterElement.onclick = (e) => {
+                if (this.hostConfig.media.allowInlinePlayback) {
+                    let mediaPlayerElement = this.renderMediaPlayer();
+                    
+                    this.renderedElement.innerHTML = "";
+                    this.renderedElement.appendChild(mediaPlayerElement);
+
+                    mediaPlayerElement.play();
+                }
+                else {
+                    if (Media.onPlay) {
+                        Media.onPlay(this);
+                    }
+                }
+            }
+
+            let playButtonInnerElement = document.createElement("div");
+            playButtonInnerElement.className = "ac-media-playButton-arrow";
+            playButtonInnerElement.style.width = playButtonArrowWidth + "px";
+            playButtonInnerElement.style.height = playButtonArrowHeight + "px";
+            playButtonInnerElement.style.borderTopWidth = (playButtonArrowHeight / 2) + "px";
+            playButtonInnerElement.style.borderBottomWidth = (playButtonArrowHeight / 2) + "px";
+            playButtonInnerElement.style.borderLeftWidth = playButtonArrowWidth + "px";
+            playButtonInnerElement.style.borderRightWidth = "0";
+            playButtonInnerElement.style.borderStyle = "solid";
+            playButtonInnerElement.style.borderTopColor = "transparent";
+            playButtonInnerElement.style.borderRightColor = "transparent";
+            playButtonInnerElement.style.borderBottomColor = "transparent";
+            playButtonInnerElement.style.transform = "translate(" + (playButtonArrowWidth / 10) + "px,0px)";
+
+            playButtonOuterElement.appendChild(playButtonInnerElement);
+
+            let playButtonContainer = document.createElement("div");
+            playButtonContainer.style.position = "absolute";
+            playButtonContainer.style.left = "0";
+            playButtonContainer.style.top = "0";
+            playButtonContainer.style.width = "100%";
+            playButtonContainer.style.height = "100%";
+            playButtonContainer.style.display = "flex";
+            playButtonContainer.style.justifyContent = "center";
+            playButtonContainer.style.alignItems = "center";
+
+            playButtonContainer.appendChild(playButtonOuterElement);
+            posterRootElement.appendChild(playButtonContainer);
+        }
+
+        return posterRootElement;
+    }
+
+    private renderMediaPlayer(): HTMLMediaElement {
+        let mediaElement: HTMLMediaElement;
+
+        if (this._selectedMediaType == "video") {
+            let videoPlayer = document.createElement("video");
+
+            let posterUrl = this.poster ? this.poster : this.hostConfig.media.defaultPoster;
+
+            if (posterUrl) {
+                videoPlayer.poster = posterUrl;
+            }
+    
+            mediaElement = videoPlayer;
+        }
+        else {
+            mediaElement = document.createElement("audio");
+        }
+
+        mediaElement.controls = true;
+        mediaElement.preload = "none";
+        mediaElement.style.width = "100%";
+    
+        for (let source of this.sources) {
+            let src: HTMLSourceElement = document.createElement("source");
+            src.src = source.url;
+            src.type = source.mimeType;
+
+            mediaElement.appendChild(src);
+        }
+
+        return mediaElement;
+    }
+
+    protected internalRender(): HTMLElement {
+        let element = <HTMLElement>document.createElement("div");
+        element.className = this.hostConfig.makeCssClassName("ac-media");
+
+        this.processSources();
+
+        if (this._selectedSources.length > 0) {
+            element.appendChild(this.renderPoster());
+        }
+
+        return element;
+    }
+
+    static onPlay: (sender: Media) => void;
+
+    sources: Array<MediaSource> = [];
+    poster: string;
+    altText: string;
+
+    parse(json: any, errors?: Array<IValidationError>) {
+        super.parse(json, errors);
+
+        this.poster = json["poster"];
+        this.altText = json["altText"];
+
+        if (json["sources"] != null) {
+            let jsonSources = json["sources"] as Array<any>;
+
+            this.sources = [];
+
+            for (let i = 0; i < jsonSources.length; i++) {
+                let source = new MediaSource();
+                source.parse(jsonSources[i], errors);
+
+                this.sources.push(source);
+            }
+        }
+    }
+
+    toJSON() {
+        let result = super.toJSON();
+
+        Utils.setProperty(result, "poster", this.poster);
+        Utils.setProperty(result, "altText", this.altText);
+
+        if (this.sources.length > 0) {
+            let serializedSources = [];
+
+            for (let source of this.sources) {
+                serializedSources.push(source.toJSON());
+            }
+
+            Utils.setProperty(result, "sources", serializedSources);
+        }
+
+        return result;
+    }
+
+    getJsonTypeName(): string {
+        return "Media";
+    }
+
+    renderSpeech(): string {
+        return this.altText;
+    }
+}
+
 export abstract class Input extends CardElement implements Utils.IInput {
     protected valueChanged() {
         if (this.onValueChanged) {
@@ -1813,8 +2077,10 @@ export class ToggleInput extends Input {
         element.className = this.hostConfig.makeCssClassName("ac-input");
         element.style.width = "100%";
         element.style.display = "flex";
+        element.style.alignItems = "center";
 
         this._checkboxInputElement = document.createElement("input");
+        this._checkboxInputElement.id = generateUniqueId();
         this._checkboxInputElement.type = "checkbox";
         this._checkboxInputElement.style.display = "inline-block";
         this._checkboxInputElement.style.verticalAlign = "middle";
@@ -1832,13 +2098,15 @@ export class ToggleInput extends Input {
         Utils.appendChild(element, this._checkboxInputElement);
 
         if (!Utils.isNullOrEmpty(this.title) || this.isDesignMode()) {
-            var label = new TextBlock();
+            var label = new Label();
+            label.forElementId = this._checkboxInputElement.id;
             label.hostConfig = this.hostConfig;
             label.text = Utils.isNullOrEmpty(this.title) ? this.getJsonTypeName() : this.title;
             label.useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
 
             var labelElement = label.render();
             labelElement.style.display = "inline-block";
+            labelElement.style.flex = "1 1 auto";
             labelElement.style.marginLeft = "6px";
             labelElement.style.verticalAlign = "middle";
 
@@ -1898,6 +2166,16 @@ export class Choice {
 }
 
 export class ChoiceSetInput extends Input {
+    private static uniqueCategoryCounter = 0;
+
+    private static getUniqueCategoryName(): string {
+        let uniqueCwtegoryName = "__ac-category" + ChoiceSetInput.uniqueCategoryCounter;
+        
+        ChoiceSetInput.uniqueCategoryCounter ++;
+
+        return uniqueCwtegoryName;
+    }
+
     private _selectElement: HTMLSelectElement;
     private _toggleInputs: Array<HTMLInputElement>;
 
@@ -1940,6 +2218,8 @@ export class ChoiceSetInput extends Input {
             }
             else {
                 // Render as a series of radio buttons
+                let uniqueCategoryName = ChoiceSetInput.getUniqueCategoryName();
+
                 var element = document.createElement("div");
                 element.className = this.hostConfig.makeCssClassName("ac-input");
                 element.style.width = "100%";
@@ -1948,11 +2228,12 @@ export class ChoiceSetInput extends Input {
 
                 for (var i = 0; i < this.choices.length; i++) {
                     var radioInput = document.createElement("input");
+                    radioInput.id = generateUniqueId(); 
                     radioInput.type = "radio";
                     radioInput.style.margin = "0";
                     radioInput.style.display = "inline-block";
                     radioInput.style.verticalAlign = "middle";
-                    radioInput.name = this.id;
+                    radioInput.name = Utils.isNullOrEmpty(this.id) ? uniqueCategoryName : this.id;
                     radioInput.value = this.choices[i].value;
                     radioInput.style.flex = "0 0 auto";
                     radioInput.setAttribute("aria-label", this.choices[i].title);
@@ -1965,13 +2246,15 @@ export class ChoiceSetInput extends Input {
 
                     this._toggleInputs.push(radioInput);
 
-                    var label = new TextBlock();
+                    var label = new Label();
+                    label.forElementId = radioInput.id;
                     label.hostConfig = this.hostConfig;
                     label.text = Utils.isNullOrEmpty(this.choices[i].title) ? "Choice " + i : this.choices[i].title;
                     label.useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
 
                     var labelElement = label.render();
                     labelElement.style.display = "inline-block";
+                    labelElement.style.flex = "1 1 auto";
                     labelElement.style.marginLeft = "6px";
                     labelElement.style.verticalAlign = "middle";
 
@@ -1999,6 +2282,7 @@ export class ChoiceSetInput extends Input {
 
             for (var i = 0; i < this.choices.length; i++) {
                 var checkboxInput = document.createElement("input");
+                checkboxInput.id = generateUniqueId();
                 checkboxInput.type = "checkbox";
                 checkboxInput.style.margin = "0";
                 checkboxInput.style.display = "inline-block";
@@ -2017,18 +2301,21 @@ export class ChoiceSetInput extends Input {
 
                 this._toggleInputs.push(checkboxInput);
 
-                var label = new TextBlock();
+                var label = new Label();
+                label.forElementId = checkboxInput.id;
                 label.hostConfig = this.hostConfig;
                 label.text = Utils.isNullOrEmpty(this.choices[i].title) ? "Choice " + i : this.choices[i].title;
                 label.useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
 
                 var labelElement = label.render();
                 labelElement.style.display = "inline-block";
+                labelElement.style.flex = "1 1 auto";
                 labelElement.style.marginLeft = "6px";
                 labelElement.style.verticalAlign = "middle";
 
                 var compoundInput = document.createElement("div");
                 compoundInput.style.display = "flex";
+                compoundInput.style.alignItems = "center";
 
                 Utils.appendChild(compoundInput, checkboxInput);
                 Utils.appendChild(compoundInput, labelElement);
@@ -2382,31 +2669,29 @@ export abstract class Action {
 
         let hasTitle = !Utils.isNullOrEmpty(this.title);
 
+        let titleElement = document.createElement("div");
+        titleElement.style.overflow = "hidden";
+        titleElement.style.textOverflow = "ellipsis";
+
+        if (!(hostConfig.actions.iconPlacement == Enums.ActionIconPlacement.AboveTitle || hostConfig.actions.allowTitleToWrap)) {
+            titleElement.style.whiteSpace = "nowrap";
+        }
+
+        if (hasTitle) {
+            titleElement.innerText = this.title;
+        }
+
         if (Utils.isNullOrEmpty(this.iconUrl)) {
             buttonElement.classList.add("noIcon");
-            buttonElement.style.overflow = "hidden";
-            buttonElement.style.whiteSpace = "nowrap";
-            buttonElement.style.textOverflow = "ellipsis";
 
-            if (hasTitle) {
-                buttonElement.innerText = this.title;
-            }
+            buttonElement.appendChild(titleElement);
         }
         else {
-            let iconElement = document.createElement("div");
+            let iconElement = document.createElement("img");
+            iconElement.src = this.iconUrl;
             iconElement.style.width = hostConfig.actions.iconSize + "px";
-            iconElement.style.height = hostConfig.actions.iconSize + "px";;
-            iconElement.style.backgroundImage = "url('" + this.iconUrl + "')";
-            iconElement.style.backgroundPositionX = "center";
-            iconElement.style.backgroundPositionY = "center";
-            iconElement.style.backgroundRepeat = "no-repeat";
-            iconElement.style.backgroundSize = "contain";
-
-            let titleElement = document.createElement("div");
-
-            if (hasTitle) {
-                titleElement.innerText = this.title;
-            }
+            iconElement.style.height = hostConfig.actions.iconSize + "px";
+            iconElement.style.flex = "0 0 auto";
 
             if (hostConfig.actions.iconPlacement == Enums.ActionIconPlacement.AboveTitle) {
                 buttonElement.classList.add("iconAbove");
@@ -4894,6 +5179,7 @@ export class ElementTypeRegistry extends TypeRegistry<CardElement> {
         this.registerType("TextBlock", () => { return new TextBlock(); });
         this.registerType("Image", () => { return new Image(); });
         this.registerType("ImageSet", () => { return new ImageSet(); });
+        this.registerType("Media", () => { return new Media(); });
         this.registerType("FactSet", () => { return new FactSet(); });
         this.registerType("ColumnSet", () => { return new ColumnSet(); });
         this.registerType("Input.Text", () => { return new TextInput(); });

@@ -1,15 +1,11 @@
 package com.example.mobilechatapp;
 
-import android.app.ListActivity;
-import android.database.DataSetObserver;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,24 +17,20 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import io.adaptivecards.objectmodel.AdaptiveCard;
 import io.adaptivecards.objectmodel.BaseActionElement;
+import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.ElementParserRegistration;
 import io.adaptivecards.objectmodel.HostConfig;
-import io.adaptivecards.objectmodel.ParseResult;
-import io.adaptivecards.renderer.AdaptiveCardRenderer;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
@@ -80,8 +72,34 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
                 {
                     for (Card card : retrievedCards)
                     {
-                        RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(MainActivity.this, getSupportFragmentManager(), card.getParsedCard().GetAdaptiveCard(), MainActivity.this, m_hostConfig);
-                        m_adapter.addItem(card.getFileName(), renderedCard.getView());
+                        try
+                        {
+                            if(card.getParsedCard() != null)
+                            {
+                                if(!card.ContainsElementType("media"))
+                                {
+                                    m_adapter.addItem(card.getFileName(), card.getParsedCard(), MainActivity.this, getSupportFragmentManager(), MainActivity.this, m_hostConfig);
+                                }
+                            }
+                            else
+                            {
+                                LinearLayout errorMessageLayout = new LinearLayout(MainActivity.this);
+                                errorMessageLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                                errorMessageLayout.setBackgroundColor(getResources().getColor(R.color.ParsedErrorBackground));
+
+                                TextView errorMessage = new TextView(MainActivity.this);
+                                errorMessage.setPadding(20, 15, 20, 15);
+                                errorMessage.setText("This card failed to render due to: \n" + card.getExceptionDetailMessage());
+                                errorMessage.setTextColor(getResources().getColor(R.color.ErrorMessageColor));
+                                errorMessage.setTextSize(15);
+                                errorMessageLayout.addView(errorMessage);
+                                m_adapter.addItem(card.getFileName(), errorMessageLayout);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -95,12 +113,19 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
     private class ProgressBarUpdateListener implements IFilesReadListener
     {
         @Override
-        public void updateFilesCompletion(int readFiles, int totalFiles)
+        public void setFilesCount(int totalFiles)
         {
-            m_progressBar.setMax(totalFiles);
-            m_progressBar.setProgress(readFiles);
+            m_filesCount = totalFiles;
+            m_progressBar.setMax(m_filesCount);
+        }
 
-            if(readFiles == totalFiles)
+        @Override
+        public void updateFilesCompletion()
+        {
+            int filesCompleted = m_filesCompleted.incrementAndGet();
+            m_progressBar.setProgress(filesCompleted);
+
+            if(filesCompleted == m_filesCount)
             {
                 m_progressBarLayout.setVisibility(View.GONE);
 
@@ -121,6 +146,9 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
                 }
             }
         }
+
+        private int m_filesCount = 0;
+        private AtomicInteger m_filesCompleted = new AtomicInteger(0);
     }
 
     @Override
@@ -132,22 +160,22 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
 
         View contentLayout = findViewById(R.id.contentLayout);
 
-        m_sendButton = contentLayout.findViewById(R.id.sendButton);
+        m_sendButton = (ImageButton) contentLayout.findViewById(R.id.sendButton);
         m_sendButton.setOnClickListener(new ButtonListener());
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, s_keywords);
-        m_cardRequestEdit = contentLayout.findViewById(R.id.cardNumberEditText);
+        m_cardRequestEdit = (AutoCompleteTextView) contentLayout.findViewById(R.id.cardNumberEditText);
         m_cardRequestEdit.setAdapter(adapter);
 
-        m_elementTypesButttonsLayout = contentLayout.findViewById(R.id.existingElementTypesButtonLayout);
+        m_elementTypesButttonsLayout = (LinearLayout) contentLayout.findViewById(R.id.existingElementTypesButtonLayout);
 
-        m_recyclerView = contentLayout.findViewById(R.id.cardsView);
+        m_recyclerView = (RecyclerView) contentLayout.findViewById(R.id.cardsView);
         m_recyclerView.setLayoutManager(new LinearLayoutManager(this));
         m_adapter = new RecyclerViewAdapter(this);
         m_recyclerView.setAdapter(m_adapter);
 
-        m_progressBar = contentLayout.findViewById(R.id.readCardsProgressBar);
-        m_progressBarLayout = contentLayout.findViewById(R.id.loadingBarLayout);
+        m_progressBar = (ProgressBar) contentLayout.findViewById(R.id.readCardsProgressBar);
+        m_progressBarLayout = (LinearLayout) contentLayout.findViewById(R.id.loadingBarLayout);
 
         m_hostConfig = new HostConfig();
         m_elementParserRegistration = new ElementParserRegistration();
@@ -201,9 +229,18 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
     public void onAction(BaseActionElement actionElement, RenderedAdaptiveCard renderedAdaptiveCard) {
     }
 
+    @Override
+    public void onMediaPlay(BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard) {
+
+    }
+
+    @Override
+    public void onMediaStop(BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard) {
+
+    }
+
     private ImageButton m_sendButton;
     private AutoCompleteTextView m_cardRequestEdit;
-    // private ListView m_cardsView;
     private RecyclerViewAdapter m_adapter;
     private RecyclerView m_recyclerView;
     private LinearLayout m_progressBarLayout, m_elementTypesButttonsLayout;

@@ -5,6 +5,7 @@
 #include "ShowCardAction.h"
 #include "TextBlock.h"
 #include "AdaptiveCardParseWarning.h"
+#include "SemanticVersion.h"
 
 using namespace AdaptiveSharedNamespace;
 
@@ -57,13 +58,13 @@ AdaptiveCard::AdaptiveCard(std::string const &version,
 #ifdef __ANDROID__
 std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(
     const std::string& jsonFile,
-    double rendererVersion,
+    std::string rendererVersion,
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration) throw(AdaptiveSharedNamespace::AdaptiveCardParseException)
 #else
 std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(
     const std::string& jsonFile,
-    double rendererVersion,
+    std::string rendererVersion,
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration)
 #endif // __ANDROID__
@@ -79,20 +80,20 @@ std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(
 #ifdef __ANDROID__
 std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
     const Json::Value& json,
-    double rendererVersion,
+    std::string rendererVersion,
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration) throw(AdaptiveSharedNamespace::AdaptiveCardParseException)
 #else
 std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
     const Json::Value& json,
-    double rendererVersion,
+    std::string rendererVersion,
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration)
 #endif // __ANDROID__
 {
     ParseUtil::ThrowIfNotJsonObject(json);
 
-    const bool enforceVersion = (rendererVersion != std::numeric_limits<double>::max());
+    const bool enforceVersion = !rendererVersion.empty();
 
     // Verify this is an adaptive card
     ParseUtil::ExpectTypeString(json, CardElementType::AdaptiveCard);
@@ -105,25 +106,10 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
 
     if (enforceVersion)
     {
-        double versionAsDouble;
-        try
-        {
-            versionAsDouble = std::stod(version.c_str());
-        }
-        catch (const std::invalid_argument&)
-        {
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Card version invalid: " + version);
-        }
-        catch (const std::out_of_range&)
-        {
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Card version out of range: " + version);
-        }
-        catch (...)
-        {
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Unable to parse card version: " + version);
-        }
+        const SemanticVersion rendererMaxVersion(rendererVersion);
+        const SemanticVersion cardVersion(version);
 
-        if (rendererVersion < versionAsDouble)
+        if (rendererVersion < cardVersion)
         {
             if (fallbackText.empty())
             {
@@ -170,13 +156,13 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
 #ifdef __ANDROID__
 std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(
     const std::string& jsonString,
-    double rendererVersion,
+    std::string rendererVersion,
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration) throw(AdaptiveSharedNamespace::AdaptiveCardParseException)
 #else
 std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(
     const std::string& jsonString,
-    double rendererVersion,
+    std::string rendererVersion,
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration)
 #endif // __ANDROID__

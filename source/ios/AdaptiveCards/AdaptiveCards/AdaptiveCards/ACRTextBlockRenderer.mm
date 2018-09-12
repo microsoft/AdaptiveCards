@@ -69,7 +69,7 @@
 
         // Set paragraph style such as line break mode and alignment
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        paragraphStyle.lineBreakMode = txtBlck->GetWrap() ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
+        paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
         paragraphStyle.alignment = [ACOHostConfig getTextBlockAlignment:txtBlck->GetHorizontalAlignment()];
 
         // Obtain text color to apply to the attributed string
