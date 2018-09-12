@@ -28,7 +28,6 @@ namespace AdaptiveCardsSharedModelUnitTest
                 for (auto resourceInfo : resourceInfos)
                 {
                     if (resourceInfo.url == expectedValue.url &&
-                        resourceInfo.resourceType == expectedValue.resourceType &&
                         resourceInfo.mimeType == expectedValue.mimeType)
                     {
                         found = true;
@@ -47,18 +46,18 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             // Expected images to find in the card
             std::vector<RemoteResourceInformation> expectedValues = {
-                {"BackgroundImage.png", CardElementType::Image, ""},
-                { "Image.png", CardElementType::Image, "" },
-                { "ImageSet.Image1.png", CardElementType::Image, "" },
-                { "ImageSet.Image2.png", CardElementType::Image, "" },
-                { "Container.Image1.png", CardElementType::Image, "" },
-                { "Container.Image2.png", CardElementType::Image, "" },
-                { "ColumnSet.Column1.Image.png", CardElementType::Image, "" },
-                { "ColumnSet.Column2.Image.png", CardElementType::Image, "" },
-                { "ShowCard.Image.png", CardElementType::Image, "" },
-                { "Media.Poster.png", CardElementType::Image, "" },
-                { "Media1.mp4", CardElementType::Media, "video/mp4" },
-                { "Media2.ogg", CardElementType::Media, "video/ogg" },
+                {"BackgroundImage.png", "Image"},
+                { "Image.png", "Image" },
+                { "ImageSet.Image1.png", "Image" },
+                { "ImageSet.Image2.png", "Image" },
+                { "Container.Image1.png", "Image" },
+                { "Container.Image2.png", "Image" },
+                { "ColumnSet.Column1.Image.png", "Image" },
+                { "ColumnSet.Column2.Image.png", "Image" },
+                { "ShowCard.Image.png", "Image" },
+                { "Media.Poster.png", "Image" },
+                { "Media1.mp4", "video/mp4" },
+                { "Media2.ogg", "video/ogg" },
             };
 
             // Test card containing all supported image locations
@@ -171,10 +170,10 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             // Expected images to find in the card
             std::vector<RemoteResourceInformation> expectedValues = {
-                { "BackgroundImage.png", CardElementType::Image, "" },
-                { "Image.png", CardElementType::Image, "" },
-                { "Custom.png", CardElementType::Image, "" },
-                { "Action.Custom.png", CardElementType::Image, "" },
+                { "BackgroundImage.png", "Image" },
+                { "Image.png", "Image" },
+                { "Custom.png", "Image" },
+                { "Action.Custom.png", "Image" },
             };
 
             // Test card containing custom element and action with images
@@ -219,7 +218,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     {
                         RemoteResourceInformation resourceInfo;
                         resourceInfo.url = m_customImage;
-                        resourceInfo.resourceType = CardElementType::Image;
+                        resourceInfo.mimeType = "Image";
                         resourceUris.push_back(resourceInfo);
                     }
 
@@ -271,10 +270,10 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             // Expected images to find in the card
             std::vector<RemoteResourceInformation> expectedValues = {
-                { "BackgroundImage.png", CardElementType::Image, "" },
-                { "Image.png", CardElementType::Image, "" },
-                { "SubmitAction.png", CardElementType::Image, "" },
-                { "OpenUrl.png", CardElementType::Image, "" },
+                { "BackgroundImage.png", "Image" },
+                { "Image.png", "Image" },
+                { "SubmitAction.png", "Image" },
+                { "OpenUrl.png", "Image" },
             };
 
             // Test card containing custom element and action with images
