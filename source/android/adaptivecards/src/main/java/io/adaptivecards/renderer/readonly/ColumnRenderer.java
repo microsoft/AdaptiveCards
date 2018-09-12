@@ -108,7 +108,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
         long pixelWidth = column.GetPixelWidth();
         if (pixelWidth != 0)
         {
-            layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
             layoutParams.width = Util.dpToPixels(context, pixelWidth);
             returnedView.setLayoutParams(layoutParams);
         }
@@ -116,13 +116,13 @@ public class ColumnRenderer extends BaseCardElementRenderer
         {
             if (TextUtils.isEmpty(columnSize) || columnSize.equals(g_columnSizeStretch))
             {
-                layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
                 layoutParams.weight = 1;
                 returnedView.setLayoutParams(layoutParams);
             }
             else if (columnSize.equals(g_columnSizeAuto))
             {
-                layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
                 returnedView.setLayoutParams(layoutParams);
             }
             else
@@ -131,7 +131,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
                 {
                     // I'm not sure what's going on here
                     float columnWeight = Float.parseFloat(columnSize);
-                    layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
                     layoutParams.width = 0;
                     layoutParams.weight = columnWeight;
                     returnedView.setLayoutParams(layoutParams);
