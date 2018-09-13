@@ -85,7 +85,7 @@ void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::s
     std::regex pattern(stringPattern);
     std::smatch matches;
 
-    if(std::regex_search(requestedDimension, matches, pattern))
+    if (std::regex_search(requestedDimension, matches, pattern))
     {
         try
         {
