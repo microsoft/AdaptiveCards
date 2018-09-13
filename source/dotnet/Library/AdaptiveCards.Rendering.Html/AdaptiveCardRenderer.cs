@@ -850,7 +850,6 @@ namespace AdaptiveCards.Rendering.Html
                 return null;
             }
 
-            //var uiMedia = new HtmlTag("div")
             var uiMedia = new DivTag()
                 .Style("width", "100%")
                 .Attr("alt", media.AltText ?? "card media");
