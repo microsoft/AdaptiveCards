@@ -28,6 +28,8 @@ static NSString *pickerCell = @"pickerCell";
     NSInteger _userSelectedRow;
     BOOL _showPickerView;
     CGFloat _pickerViewHeight;
+    NSString *_textInCompactView;
+    CGFloat _compactViewHeight;
 }
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet
@@ -105,6 +107,7 @@ static NSString *pickerCell = @"pickerCell";
         } else {
             cell.textLabel.text = ([_defaultString length])? _defaultString : @"";
         }
+        _textInCompactView = cell.textLabel.text;
         cell.textLabel.numberOfLines = 0;
         cell.textLabel.adjustsFontSizeToFitWidth = NO;
         cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -144,11 +147,14 @@ static NSString *pickerCell = @"pickerCell";
 {
     UITableViewCell *cell = [tableView.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
     if(indexPath.row == 0) {
-        CGSize labelStringSize = [cell.textLabel.text boundingRectWithSize:CGSizeMake(cell.contentView.frame.size.width - accessoryViewWidth, CGFLOAT_MAX)
-                                                         options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                                      attributes:@{NSFontAttributeName:cell.textLabel.font}
-                                                         context:nil].size;
-        return labelStringSize.height + padding;
+        if(!_compactViewHeight || ![_textInCompactView isEqualToString:cell.textLabel.text]) {
+            CGSize labelStringSize = [cell.textLabel.text boundingRectWithSize:CGSizeMake(cell.contentView.frame.size.width - accessoryViewWidth, CGFLOAT_MAX)
+                                                                options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                                             attributes:@{NSFontAttributeName:cell.textLabel.font}
+                                                                context:nil].size;
+            _compactViewHeight = labelStringSize.height;
+        }
+        return _compactViewHeight + padding;
     } else {
         return _showPickerView ? _pickerViewHeight : 0.0f;
     }
@@ -158,10 +164,11 @@ static NSString *pickerCell = @"pickerCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(self.rootView && indexPath.row == 0)
-    {
-        [tableView setNeedsLayout];
+    {        
         UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
         UIPickerView *pickerView = [cell viewWithTag:pickerViewId];
+        CGRect oldFrame = tableView.frame;
+        oldFrame.origin = [tableView convertPoint:tableView.frame.origin toView:nil];
         if(_showPickerView == YES){
             _showPickerView = NO;
             pickerView.alpha = 0.0f;
@@ -169,8 +176,13 @@ static NSString *pickerCell = @"pickerCell";
                              animations:^{
                                  pickerView.alpha = 1.0f;
                                  [tableView invalidateIntrinsicContentSize];
-                                 [tableView.superview setNeedsLayout];
+                                 [tableView setNeedsLayout];
                                  [tableView.superview layoutIfNeeded];
+                                 if([self.rootView.acrActionDelegate respondsToSelector:@selector(didChangeViewLayout:newFrame:)]) {
+                                     CGFloat newHeight = [self tableView:tableView heightForRowAtIndexPath:indexPath];
+                                     CGRect newFrame = CGRectMake(0, 0, 0, newHeight);
+                                     [self.rootView.acrActionDelegate didChangeViewLayout:oldFrame newFrame:newFrame];
+                                 }
                              } completion:^(BOOL finished){;
                                  [tableView reloadData];
                                  pickerView.hidden = YES;
@@ -185,6 +197,13 @@ static NSString *pickerCell = @"pickerCell";
                                  [tableView invalidateIntrinsicContentSize];
                                  [tableView setNeedsLayout];
                                  [tableView.superview layoutIfNeeded];
+                                 if([self.rootView.acrActionDelegate respondsToSelector:@selector(didChangeViewLayout:newFrame:)]) {
+                                     CGFloat newHeight = oldFrame.size.height;
+                                      newHeight += [self tableView:tableView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+                                     CGRect newFrame = oldFrame;
+                                     newFrame.size.height = newHeight;
+                                     [self.rootView.acrActionDelegate didChangeViewLayout:oldFrame newFrame:newFrame];
+                                 }
                              } completion:^(BOOL finished){
                                  [tableView reloadData];
                                  pickerView.hidden = NO;

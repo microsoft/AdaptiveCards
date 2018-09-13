@@ -118,6 +118,15 @@
     {
         [_rootView.acrActionDelegate didChangeVisibility:_button isVisible:(!_adcView.hidden)];
     }
+    
+    if([_rootView.acrActionDelegate respondsToSelector:@selector(didChangeViewLayout:newFrame:)] && _adcView.hidden == NO){
+        CGRect showCardFrame = _adcView.frame;
+        showCardFrame.origin = [_adcView convertPoint:_adcView.frame.origin toView:nil];
+        CGRect oldFrame = showCardFrame;
+        oldFrame.size.height = 0;
+        showCardFrame.size.height += [_config getHostConfig]->actions.showCard.inlineTopMargin;;
+        [_rootView.acrActionDelegate didChangeViewLayout:oldFrame newFrame:showCardFrame];
+    }
     [_rootView.acrActionDelegate didFetchUserResponses:[_rootView card] action:_actionElement];
 }
 

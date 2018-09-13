@@ -259,7 +259,7 @@ void Image::GetResourceInformation(std::vector<RemoteResourceInformation>& resou
 {
     RemoteResourceInformation imageResourceInfo;
     imageResourceInfo.url = GetUrl();
-    imageResourceInfo.resourceType = CardElementType::Image;
+    imageResourceInfo.mimeType = "image";
     resourceInfo.push_back(imageResourceInfo);
     return;
 }

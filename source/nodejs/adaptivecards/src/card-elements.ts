@@ -27,18 +27,6 @@ function generateUniqueId(): string {
 }
 
 export function createActionInstance(json: any, errors: Array<IValidationError>): Action {
-    if (!json["title"] && json["title"] !== "") {
-        raiseParseError(
-            {
-                error: Enums.ValidationError.PropertyCantBeNull,
-                message: "Actions should always have a title."
-            },
-            errors
-        );
-
-        return null;
-    }
-
     var actionType = json["type"];
 
     var result = AdaptiveCard.actionTypeRegistry.createInstance(actionType);
@@ -132,6 +120,11 @@ export class SizeAndUnit {
         this.physicalSize = physicalSize;
         this.unit = unit;
     }
+}
+
+export interface IResourceInformation {
+    url: string;
+    mimeType: string;
 }
 
 export abstract class CardElement {
@@ -560,6 +553,10 @@ export abstract class CardElement {
     }
 
     getAllInputs(): Array<Input> {
+        return [];
+    }
+
+    getResourceInformation(): Array<IResourceInformation> {
         return [];
     }
 
@@ -1459,6 +1456,7 @@ export class Image extends CardElement {
         super.parse(json, errors);
 
         this.url = json["url"];
+        this.backgroundColor = json["backgroundColor"];
 
         var styleString = json["style"];
 
@@ -1530,6 +1528,15 @@ export class Image extends CardElement {
         }
     }
 
+    getResourceInformation(): Array<IResourceInformation> {
+        if (!Utils.isNullOrEmpty(this.url)) {
+            return [ { url: this.url, mimeType: "image" } ]
+        }
+        else {
+            return [];
+        }
+    }
+
     renderSpeech(): string {
         if (this.speak != null) {
             return this.speak + '\n';
@@ -1587,6 +1594,16 @@ export class ImageSet extends CardElementContainer {
 
     getItemAt(index: number): CardElement {
         return this._images[index];
+    }
+
+    getResourceInformation(): Array<IResourceInformation> {
+        let result: Array<IResourceInformation> = [];
+
+        for (let image of this._images) {
+            result = result.concat(image.getResourceInformation());
+        }
+
+        return result;
     }
 
     removeItem(item: CardElement): boolean {
@@ -1705,6 +1722,10 @@ export class Media extends CardElement {
     private _selectedMediaType: string;
     private _selectedSources: Array<MediaSource>;
 
+    private getPosterUrl(): string {
+        return this.poster ? this.poster : this.hostConfig.media.defaultPoster;
+    }
+
     private processSources() {
         this._selectedSources = [];
         
@@ -1737,7 +1758,7 @@ export class Media extends CardElement {
         posterRootElement.style.position = "relative";
         posterRootElement.style.display = "flex";
 
-        let posterUrl = this.poster ? this.poster : this.hostConfig.media.defaultPoster;
+        let posterUrl = this.getPosterUrl();
 
         if (posterUrl) {
             let posterImageElement = document.createElement("img");
@@ -1822,7 +1843,7 @@ export class Media extends CardElement {
         if (this._selectedMediaType == "video") {
             let videoPlayer = document.createElement("video");
 
-            let posterUrl = this.poster ? this.poster : this.hostConfig.media.defaultPoster;
+            let posterUrl = this.getPosterUrl();
 
             if (posterUrl) {
                 videoPlayer.poster = posterUrl;
@@ -1909,6 +1930,24 @@ export class Media extends CardElement {
 
     getJsonTypeName(): string {
         return "Media";
+    }
+
+    getResourceInformation(): Array<IResourceInformation> {
+        let result: Array<IResourceInformation> = [];
+
+        let posterUrl = this.getPosterUrl();
+
+        if (!Utils.isNullOrEmpty(posterUrl)) {
+            result.push({ url: posterUrl, mimeType: "image" });
+        }
+
+        for (let mediaSource of this.sources) {
+            if (!Utils.isNullOrEmpty(mediaSource.url)) {
+                result.push({ url: mediaSource.url, mimeType: mediaSource.mimeType });
+            }
+        }
+
+        return result;
     }
 
     renderSpeech(): string {
@@ -2755,8 +2794,19 @@ export abstract class Action {
 
     parse(json: any, errors?: Array<IValidationError>) {
         raiseParseActionEvent(this, json, errors);
-
+    
         this.id = json["id"];
+
+        if (!json["title"] && json["title"] !== "") {
+            raiseParseError(
+                {
+                    error: Enums.ValidationError.PropertyCantBeNull,
+                    message: "Actions should always have a title."
+                },
+                errors
+            );
+        }
+
         this.title = json["title"];
         this.iconUrl = json["iconUrl"];
     }
@@ -2771,6 +2821,15 @@ export abstract class Action {
 
     getAllInputs(): Array<Input> {
         return [];
+    }
+
+    getResourceInformation(): Array<IResourceInformation> {
+        if (!Utils.isNullOrEmpty(this.iconUrl)) {
+            return [ { url: this.iconUrl, mimeType: "image" } ]
+        }
+        else {
+            return [];
+        }
     }
 
     getActionById(id: string): Action {
@@ -3053,6 +3112,10 @@ export class ShowCardAction extends Action {
 
     getAllInputs(): Array<Input> {
         return this.card.getAllInputs();
+    }
+
+    getResourceInformation(): Array<IResourceInformation> {
+        return super.getResourceInformation().concat(this.card.getResourceInformation());
     }
 
     getActionById(id: string): Action {
@@ -3516,6 +3579,16 @@ class ActionCollection {
         return result;
     }
 
+    getResourceInformation(): Array<IResourceInformation> {
+        let result: Array<IResourceInformation> = [];
+
+        for (var i = 0; i < this.items.length; i++) {
+            result = result.concat(this.items[i].getResourceInformation());
+        }
+
+        return result;
+    }
+
     get renderedActionCount(): number {
         return this._renderedActionCount;
     }
@@ -3607,6 +3680,10 @@ export class ActionSet extends CardElement {
 
     getAllInputs(): Array<Input> {
         return this._actionCollection.getAllInputs();
+    }
+
+    getResourceInformation(): Array<IResourceInformation> {
+        return this._actionCollection.getResourceInformation();
     }
 
     renderSpeech(): string {
@@ -4253,6 +4330,20 @@ export class Container extends CardElementContainer {
         return result;
     }
 
+    getResourceInformation(): Array<IResourceInformation> {
+        let result: Array<IResourceInformation> = [];
+        
+        if (this.backgroundImage && !Utils.isNullOrEmpty(this.backgroundImage.url)) {
+            result.push({ url: this.backgroundImage.url, mimeType: "image" });
+        }
+
+        for (var i = 0; i < this.getItemCount(); i++) {
+            result = result.concat(this.getItemAt(i).getResourceInformation());
+        }
+
+        return result;
+    }
+
     getElementById(id: string): CardElement {
         var result: CardElement = super.getElementById(id);
 
@@ -4778,6 +4869,16 @@ export class ColumnSet extends CardElementContainer {
         return result;
     }
 
+    getResourceInformation(): Array<IResourceInformation> {
+        let result: Array<IResourceInformation> = [];
+
+        for (var i = 0; i < this._columns.length; i++) {
+            result = result.concat(this._columns[i].getResourceInformation());
+        }
+
+        return result;
+    }
+
     getElementById(id: string): CardElement {
         var result: CardElement = super.getElementById(id);
 
@@ -5102,6 +5203,10 @@ export abstract class ContainerWithActions extends Container {
         return super.getAllInputs().concat(this._actionCollection.getAllInputs());
     }
 
+    getResourceInformation(): Array<IResourceInformation> {
+        return super.getResourceInformation().concat(this._actionCollection.getResourceInformation());
+    }
+
     get isStandalone(): boolean {
         return false;
     }
@@ -5202,7 +5307,7 @@ export class ActionTypeRegistry extends TypeRegistry<Action> {
 }
 
 export class AdaptiveCard extends ContainerWithActions {
-    private static currentVersion: Version = new Version(1, 0);
+    private static currentVersion: Version = new Version(1, 1);
 
     static useAutomaticContainerBleeding: boolean = false;
     static useAdvancedTextBlockTruncation: boolean = true;

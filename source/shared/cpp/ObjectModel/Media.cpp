@@ -70,7 +70,7 @@ void Media::GetResourceInformation(std::vector<RemoteResourceInformation>& resou
 {
     RemoteResourceInformation posterResourceInfo;
     posterResourceInfo.url = GetPoster();
-    posterResourceInfo.resourceType = CardElementType::Image;
+    posterResourceInfo.mimeType = "image";
     resourceInfo.push_back(posterResourceInfo);
 
     auto sources = GetSources();

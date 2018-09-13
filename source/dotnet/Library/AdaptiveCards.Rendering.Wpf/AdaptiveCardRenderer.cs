@@ -104,6 +104,19 @@ namespace AdaptiveCards.Rendering.Wpf
 
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
+            switch (card.VerticalContentAlignment)
+            {
+                case AdaptiveVerticalContentAlignment.Center:
+                    grid.VerticalAlignment = VerticalAlignment.Center;
+                    break;
+                case AdaptiveVerticalContentAlignment.Bottom:
+                    grid.VerticalAlignment = VerticalAlignment.Bottom;
+                    break;
+                case AdaptiveVerticalContentAlignment.Top:
+                default:
+                    break;
+            }
+
             AdaptiveContainerRenderer.AddContainerElements(grid, card.Body, context);
             AdaptiveActionSetRenderer.AddActions(grid, card.Actions, context);
 
