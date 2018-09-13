@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Xml;
 using System.Xml.Schema;
@@ -169,7 +170,28 @@ namespace AdaptiveCards
         [XmlAttribute]
 #endif
         [DefaultValue(null)]
-        public string Lang { get; set; }
+        public string Lang
+        {
+            get { return Lang; }
+            internal set
+            {
+                Lang = value;
+
+                Util.PropagateLang(Lang, Body);
+
+                foreach (AdaptiveAction element in Actions)
+                {
+                    if (element.GetType().Equals(AdaptiveShowCardAction.TypeName))
+                    {
+                        var showCard = (AdaptiveShowCardAction)element;
+                        if (showCard != null)
+                        {
+                            showCard.SetLang(Lang);
+                        }
+                    }
+                }
+            }
+        }
 
         /// <summary>
         ///     The content alignment for the eelment inside the container.
@@ -243,7 +265,6 @@ namespace AdaptiveCards
             {
                 throw new AdaptiveSerializationException(ex.Message, ex);
             }
-
             return parseResult;
         }
 

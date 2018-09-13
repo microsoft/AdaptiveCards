@@ -118,5 +118,7 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(0)]
         public int MaxWidth { get; set; }
+
+        public string Lang { get; set; }
     }
 }

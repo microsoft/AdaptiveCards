@@ -26,5 +26,10 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveCard), ElementName = AdaptiveCard.TypeName)]
 #endif
         public AdaptiveCard Card { get; set; }
+
+        internal void SetLang(string value)
+        {
+            Card.Lang = value;
+        }
     }
 }

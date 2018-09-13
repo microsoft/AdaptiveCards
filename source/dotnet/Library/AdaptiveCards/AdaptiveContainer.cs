@@ -70,5 +70,10 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(typeof(AdaptiveVerticalContentAlignment), "top")]
         public AdaptiveVerticalContentAlignment VerticalContentAlignment { get; set; }
+
+        public void SetLang(string value)
+        {
+            Util.PropagateLang(value, Items);
+        }
     }
 }

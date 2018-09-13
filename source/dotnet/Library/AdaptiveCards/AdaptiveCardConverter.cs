@@ -49,6 +49,7 @@ namespace AdaptiveCards
             var typedElementConverter = serializer.ContractResolver.ResolveContract(typeof(AdaptiveTypedElement)).Converter;
 
             var card = (AdaptiveCard)typedElementConverter.ReadJson(jObject.CreateReader(), objectType, existingValue, serializer);
+            card.Lang = jObject.Value<string>("lang");
 
             return card;
         }
