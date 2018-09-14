@@ -20,7 +20,6 @@ using namespace AdaptiveCards;
             _url =[NSURL URLWithString:URLString];
         }
         _mimeType = [NSString stringWithCString:remoteResourceInformation.mimeType.c_str() encoding:NSUTF8StringEncoding]; ;
-        _resourceType = (ACRCardElementType)remoteResourceInformation.resourceType;
     }
     return self;
 }

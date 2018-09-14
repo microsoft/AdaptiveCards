@@ -180,6 +180,20 @@ namespace AdaptiveCards.Rendering.Html
                     .Style("background-repeat", "no-repeat")
                     .Style("background-size", "cover");
 
+            switch (card.VerticalContentAlignment)
+            {
+                case AdaptiveVerticalContentAlignment.Center:
+                    uiCard.Style("justify-content", "center");
+                    break;
+                case AdaptiveVerticalContentAlignment.Bottom:
+                    uiCard.Style("justify-content", "flex-end");
+                    break;
+                case AdaptiveVerticalContentAlignment.Top:
+                default:
+                    uiCard.Style("justify-content", "flex-start");
+                    break;
+            }
+
             AddContainerElements(uiCard, card.Body, card.Actions, context);
 
             AddSelectAction(uiCard, card.SelectAction, context);
@@ -405,6 +419,20 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("display", "flex")
                 .Style("flex-direction", "column");
 
+            switch (column.VerticalContentAlignment)
+            {
+                case AdaptiveVerticalContentAlignment.Center:
+                    uiColumn.Style("justify-content", "center");
+                    break;
+                case AdaptiveVerticalContentAlignment.Bottom:
+                    uiColumn.Style("justify-content", "flex-end");
+                    break;
+                case AdaptiveVerticalContentAlignment.Top:
+                default:
+                    uiColumn.Style("justify-content", "flex-start");
+                    break;
+            }
+
             AddContainerElements(uiColumn, column.Items, null, context);
 
             AddSelectAction(uiColumn, column.SelectAction, context);
@@ -516,6 +544,20 @@ namespace AdaptiveCards.Rendering.Html
                 }
 
                 uiContainer.Style("background-color", context.GetRGBColor(containerStyle.BackgroundColor));
+            }
+
+            switch(container.VerticalContentAlignment)
+            {
+                case AdaptiveVerticalContentAlignment.Center:
+                    uiContainer.Style("justify-content", "center");
+                    break;
+                case AdaptiveVerticalContentAlignment.Bottom:
+                    uiContainer.Style("justify-content", "flex-end");
+                    break;
+                case AdaptiveVerticalContentAlignment.Top:
+                default:
+                    uiContainer.Style("justify-content", "flex-start");
+                    break;
             }
 
             AddContainerElements(uiContainer, container.Items, null, context);

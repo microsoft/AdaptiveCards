@@ -76,10 +76,7 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
                         {
                             if(card.getParsedCard() != null)
                             {
-                                if(!card.ContainsElementType("media"))
-                                {
-                                    m_adapter.addItem(card.getFileName(), card.getParsedCard(), MainActivity.this, getSupportFragmentManager(), MainActivity.this, m_hostConfig);
-                                }
+                                m_adapter.addItem(card.getFileName(), card.getParsedCard(), MainActivity.this, getSupportFragmentManager(), MainActivity.this, m_hostConfig);
                             }
                             else
                             {
@@ -241,7 +238,6 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
 
     private ImageButton m_sendButton;
     private AutoCompleteTextView m_cardRequestEdit;
-    // private ListView m_cardsView;
     private RecyclerViewAdapter m_adapter;
     private RecyclerView m_recyclerView;
     private LinearLayout m_progressBarLayout, m_elementTypesButttonsLayout;

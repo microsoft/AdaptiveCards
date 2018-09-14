@@ -24,6 +24,19 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiContainer.SetBackgroundColor(containerStyle.BackgroundColor, context);
             }
 
+            switch (container.VerticalContentAlignment)
+            {
+                case AdaptiveVerticalContentAlignment.Center:
+                    uiContainer.VerticalAlignment = VerticalAlignment.Center;
+                    break;
+                case AdaptiveVerticalContentAlignment.Bottom:
+                    uiContainer.VerticalAlignment = VerticalAlignment.Bottom;
+                    break;
+                case AdaptiveVerticalContentAlignment.Top:
+                default:
+                    break;
+            }
+
             AddContainerElements(uiContainer, container.Items, context);
 
             if (container.SelectAction != null)
@@ -64,12 +77,21 @@ namespace AdaptiveCards.Rendering.Wpf
                     }
                     else
                     {
-                        StackPanel panel = new StackPanel();
-                        panel.Children.Add(uiElement);
+                        if (cardElement.Type == "Container")
+                        {
+                            uiContainer.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                            Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
+                            uiContainer.Children.Add(uiElement);
+                        }
+                        else
+                        {
+                            StackPanel panel = new StackPanel();
+                            panel.Children.Add(uiElement);
 
-                        uiContainer.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
-                        Grid.SetRow(panel, uiContainer.RowDefinitions.Count - 1);
-                        uiContainer.Children.Add(panel);
+                            uiContainer.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                            Grid.SetRow(panel, uiContainer.RowDefinitions.Count - 1);
+                            uiContainer.Children.Add(panel);
+                        }
                     }
                     
                 }

@@ -354,8 +354,6 @@ AdaptiveNamespaceStart
             RETURN_IF_FAILED(UTF8ToHString(sharedResourceInformation.mimeType, mimeType.GetAddressOf()));
             RETURN_IF_FAILED(remoteResourceInformation->put_MimeType(mimeType.Get()));
 
-            RETURN_IF_FAILED(remoteResourceInformation->put_ResourceType(static_cast<ABI::AdaptiveNamespace::ElementType>(sharedResourceInformation.resourceType)));
-
             RETURN_IF_FAILED(resourceInformation->Append(remoteResourceInformation.Get()));
         }
 

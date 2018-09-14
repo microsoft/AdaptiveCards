@@ -105,7 +105,7 @@ void BaseActionElement::GetResourceInformation(std::vector<RemoteResourceInforma
     {
         RemoteResourceInformation imageResourceInfo;
         imageResourceInfo.url = m_iconUrl;
-        imageResourceInfo.resourceType = CardElementType::Image;
+        imageResourceInfo.mimeType = "image";
         resourceInfo.push_back(imageResourceInfo);
     }
 }
