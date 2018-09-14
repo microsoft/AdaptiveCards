@@ -74,14 +74,8 @@ namespace AdaptiveCardTestApp.Views
         private async void ButtonSaveAsExpected_Click(object sender, RoutedEventArgs e)
         {
             base.IsEnabled = false;
-            //await (DataContext as TestResultViewModel).SaveAsNewExpectedAsync();
+            await (DataContext as TestResultViewModel).SaveAsNewExpectedAsync();
 
-            await new StoredTestResultInfo()
-            {
-                HostConfigHash = "1234",
-                CardHash = "5678",
-                Error = "this is an error"
-            }.SaveToFileAsync((DataContext as TestResultViewModel)._expectedFolder, "foo");
 
             base.IsEnabled = true;
         }

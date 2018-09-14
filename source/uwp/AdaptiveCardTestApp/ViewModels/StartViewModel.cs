@@ -24,8 +24,6 @@ namespace AdaptiveCardTestApp.ViewModels
 
         public async Task LoadAsync()
         {
-            ExpectedFolder = await Package.Current.InstalledLocation.GetFolderAsync("Expected");
-
             // Delete any old temp data
             try
             {
