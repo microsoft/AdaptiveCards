@@ -53,6 +53,11 @@ import io.adaptivecards.renderer.registration.CardRendererRegistration;
  * @version 2015.0527
  * @since 1.0
  */
+
+/**
+ * Portions Copyright (c) Microsoft Corporation
+ */
+
 @SuppressLint("NewApi")
 public class FullscreenVideoView extends FrameLayout implements OnPreparedListener, OnErrorListener, OnSeekCompleteListener, OnCompletionListener, OnInfoListener, OnVideoSizeChangedListener, OnBufferingUpdateListener, TextureView.SurfaceTextureListener
 {
