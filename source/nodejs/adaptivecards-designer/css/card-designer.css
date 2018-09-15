@@ -256,6 +256,10 @@
     content: "\E7A6";
 }
 
+.acd-icon-media::before {
+    content: "\EB1C";
+}
+
 /*
     Side panes
 */
