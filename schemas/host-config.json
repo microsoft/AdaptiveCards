@@ -1,247 +1,438 @@
-!  NOT COMPLETE !
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://adaptivecards.io/schemas/renderer-options.json",
+  "definitions": {
+    "ActionsConfig": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "actionsOrientation": {
+          "type": "string",
+          "enum": [
+            "horizontal",
+            "vertical"
+          ]
+        },
+        "actionAlignment": {
+          "type": "string",
+          "enum": [
+            "left",
+            "center",
+            "right",
+            "stretch"
+          ]
+        },
+        "buttonSpacing": {
+          "type": "integer"
+        },
+        "maxActions": {
+          "type": "integer"
+        },
+        "spacing": {
+          "type": "string",
+          "enum": [
+            "default",
+            "none",
+            "small",
+            "medium",
+            "large",
+            "extraLarge",
+            "padding"
+          ]
+        },
+        "showCard": {
+          "$ref": "#/definitions/ShowCardConfig"
+        },
+        "iconPlacement": {
+          "type": "string",
+          "enum": [
+            "aboveTitle",
+            "leftOfTitle"
+          ]
+        },
+        "iconSize": {
+          "type": "integer"
+        }
+      }
+    },
+    "AdaptiveCardConfig": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "allowCustomStyle": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ContainerStyleConfig": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "backgroundColor": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "foregroundColors": {
+          "$ref": "#/definitions/ForegroundColorsConfig"
+        }
+      }
+    },
+    "ContainerStylesConfig": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "default": {
+          "$ref": "#/definitions/ContainerStyleConfig"
+        },
+        "emphasis": {
+          "$ref": "#/definitions/ContainerStyleConfig"
+        }
+      }
+    },
+    "FactSetConfig": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "title": {
+          "$ref": "#/definitions/TextBlockConfig"
+        },
+        "value": {
+          "$ref": "#/definitions/TextBlockConfig"
+        },
+        "spacing": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "spacing"
+      ]
+    },
+    "FontColorConfig": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "default": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "subtle": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "FontSizesConfig": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "small": {
+          "type": "integer"
+        },
+        "default": {
+          "type": "integer"
+        },
+        "medium": {
+          "type": "integer"
+        },
+        "large": {
+          "type": "integer"
+        },
+        "extraLarge": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "small",
+        "default",
+        "medium",
+        "large",
+        "extraLarge"
+      ]
+    },
+    "FontWeightsConfig": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "lighter": {
+          "type": "integer"
+        },
+        "default": {
+          "type": "integer"
+        },
+        "bolder": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "lighter",
+        "default",
+        "bolder"
+      ]
+    },
+    "ForegroundColorsConfig": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "default": {
+          "$ref": "#/definitions/FontColorConfig"
+        },
+        "accent": {
+          "$ref": "#/definitions/FontColorConfig"
+        },
+        "dark": {
+          "$ref": "#/definitions/FontColorConfig"
+        },
+        "light": {
+          "$ref": "#/definitions/FontColorConfig"
+        },
+        "good": {
+          "$ref": "#/definitions/FontColorConfig"
+        },
+        "warning": {
+          "$ref": "#/definitions/FontColorConfig"
+        },
+        "attention": {
+          "$ref": "#/definitions/FontColorConfig"
+        }
+      }
+    },
+    "ImageSetConfig": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "imageSize": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "stretch",
+            "small",
+            "medium",
+            "large"
+          ]
+        }
+      },
+      "required": [
+        "imageSize"
+      ]
+    },
+    "ImageSizesConfig": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "small": {
+          "type": "integer"
+        },
+        "medium": {
+          "type": "integer"
+        },
+        "large": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "small",
+        "medium",
+        "large"
+      ]
+    },
+    "SeparatorConfig": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "lineThickness": {
+          "type": "integer"
+        },
+        "lineColor": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "lineThickness"
+      ]
+    },
+    "ShowCardConfig": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "actionMode": {
+          "type": "string",
+          "enum": [
+            "inline",
+            "popup"
+          ]
+        },
+        "inlineTopMargin": {
+          "type": "integer"
+        }
+      }
+    },
+    "SpacingsConfig": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "small": {
+          "type": "integer"
+        },
+        "default": {
+          "type": "integer"
+        },
+        "medium": {
+          "type": "integer"
+        },
+        "large": {
+          "type": "integer"
+        },
+        "extraLarge": {
+          "type": "integer"
+        },
+        "padding": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "small",
+        "default",
+        "medium",
+        "large",
+        "extraLarge",
+        "padding"
+      ]
+    },
+    "TextBlockConfig": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "size": {
+          "type": "string",
+          "enum": [
+            "default",
+            "default",
+            "small",
+            "medium",
+            "large",
+            "extraLarge"
+          ]
+        },
+        "weight": {
+          "type": "string",
+          "enum": [
+            "normal",
+            "normal",
+            "lighter",
+            "bolder"
+          ]
+        },
+        "color": {
+          "type": "string",
+          "enum": [
+            "default",
+            "dark",
+            "light",
+            "accent",
+            "good",
+            "warning",
+            "attention"
+          ]
+        },
+        "isSubtle": {
+          "type": "boolean"
+        },
+        "wrap": {
+          "type": "boolean"
+        },
+        "maxWidth": {
+          "type": "integer"
+        }
+      }
+    }
+  },
   "type": "object",
-  "title": "Microsoft Adaptive Card Options Schema",
-  "description": "Adaptive Card renderers use this as settings to control the style of the generated card.",
   "properties": {
-    "AdaptiveCard": {
-      "$ref": "#/definitions/AdaptiveCardOptions"
+    "actions": {
+      "$ref": "#/definitions/ActionsConfig"
     },
-    "TextBlock": {
-      "$ref": "#/definitions/TextBlockOptions"
+    "adaptiveCard": {
+      "$ref": "#/definitions/AdaptiveCardConfig"
     },
-    "Image": {
-      "$ref": "#/definitions/ImageOptions"
+    "containerStyles": {
+      "$ref": "#/definitions/ContainerStylesConfig"
     },
-    "Container": {
-      "$ref": "#/definitions/ContainerOptions"
+    "imageSizes": {
+      "$ref": "#/definitions/ImageSizesConfig"
     },
-    "ColumnSet": {
-      "$ref": "#/definitions/ColumnSetOptions"
+    "imageSet": {
+      "$ref": "#/definitions/ImageSetConfig"
     },
-    "Column": {
-      "$ref": "#/definitions/ColumnOptions"
+    "factSet": {
+      "$ref": "#/definitions/FactSetConfig"
     },
-    "FactSet": {
-      "$ref": "#/definitions/FactSetOptions"
+    "fontFamily": {
+      "type": [
+        "string",
+        "null"
+      ]
     },
-    "ImageSet": {
-      "$ref": "#/definitions/ImageSetOptions"
+    "fontSizes": {
+      "$ref": "#/definitions/FontSizesConfig"
     },
-    "Input": {
-      "$ref": "#/definitions/InputOptions"
+    "fontWeights": {
+      "$ref": "#/definitions/FontWeightsConfig"
     },
-    "Action": {
-      "$ref": "#/definitions/ActionOptions"
+    "spacing": {
+      "$ref": "#/definitions/SpacingsConfig"
+    },
+    "separator": {
+      "$ref": "#/definitions/SeparatorConfig"
+    },
+    "supportsInteractivity": {
+      "type": "boolean"
+    },
+    "imageBaseUrl": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri"
     }
   },
   "required": [
-    "AdaptiveCard",
-    "TextBlock",
-    "Image",
-    "Container",
-    "ColumnSet",
-    "Column",
-    "ImageSet",
-    "FactSet",
-    "Input",
-    "Action"
-  ],
-  "definitions": {
-    "AdaptiveCard": {
-      "Margin": {
-        "$ref": "#/definitions/MarginOptions"
-      },
-      "FontFamily": {
-        "type": "string"
-      },
-      "BackgroundColor": {
-        "type": "string"
-      },
-      "TextColor": {
-        "type": "string"
-      },
-      "ActionsOrientation": {
-        "type": "string"
-      },
-      "ActionAlignment": {
-        "type": "string"
-      },
-      "SupportsInteractivity": {
-        "type": "boolean"
-      },
-      "SupportedActions": {
-        "$ref": "#/definitions/SupportedActionsOptions"
-      },
-      "MaxAction": {
-        "type": "number"
-      }
-    },
-    "TextBlockOptions": {
-      "IsSubtleOpacity": {
-        "type": "number"
-      },
-      "Color": {
-        "Accent": {
-          "type": "string"
-        },
-        "Dark": {
-          "type": "string"
-        },
-        "Light": {
-          "type": "string"
-        },
-        "Attention": {
-          "type": "string"
-        },
-        "Warning": {
-          "type": "string"
-        },
-        "Good": {
-          "type": "string"
-        }
-      },
-      "FontSize": {
-        "Small": {
-          "type": "number"
-        },
-        "Default": {
-          "type": "number"
-        },
-        "Medium": {
-          "type": "number"
-        },
-        "Large": {
-          "type": "number"
-        },
-        "ExtraLarge": {
-          "type": "number"
-        }
-      },
-      "SeparationNone": {
-        "$ref": "#/definitions/separation"
-      },
-      "SeparationDefault": {
-        "$ref": "#/definitions/separation"
-      },
-      "SeparationStrong": {
-        "$ref": "#/definitions/separation"
-      }
-    },
-    "Image": {
-      "Size": {
-        "Small": {
-          "type": "number"
-        },
-        "Medium": {
-          "type": "number"
-        },
-        "Large": {
-          "type": "number"
-        }
-      },
-      "SeparationNone": {
-        "$ref": "#/definitions/separation"
-      },
-      "SeparationDefault": {
-        "$ref": "#/definitions/separation"
-      },
-      "SeparationStrong": {
-        "$ref": "#/definitions/separation"
-      }
-    },
-    "Container": {
-      "MaxActions": {
-        "type": "number"
-      },
-      "SupportedActions": {
-        "$ref": "#/definitions/SupportedActionsOptions"
-      },
-      "SeparationNone": {
-        "$ref": "#/definitions/separation"
-      },
-      "SeparationDefault": {
-        "$ref": "#/definitions/separation"
-      },
-      "SeparationStrong": {
-        "$ref": "#/definitions/separation"
-      }
-    },
-    "ColumnSet": {
-      "SeparationNone": {
-        "$ref": "#/definitions/separation"
-      },
-      "SeparationDefault": {
-        "$ref": "#/definitions/separation"
-      },
-      "SeparationStrong": {
-        "$ref": "#/definitions/separation"
-      }
-    },
-    "Column": {
-      "SeparationNone": {
-        "$ref": "#/definitions/separation"
-      },
-      "SeparationDefault": {
-        "$ref": "#/definitions/separation"
-      },
-      "SeparationStrong": {
-        "$ref": "#/definitions/separation"
-      }
-    },
-    "ImageSet": {
-      "Wrap": {
-        "type": "boolean"
-      },
-      "SeparationNone": {
-        "$ref": "#/definitions/separation"
-      },
-      "SeparationDefault": {
-        "$ref": "#/definitions/separation"
-      },
-      "SeparationStrong": {
-        "$ref": "#/definitions/separation"
-      }
-    },
-    "FactSet": {
-      "SeparationNone": {
-        "$ref": "#/definitions/separation"
-      },
-      "SeparationDefault": {
-        "$ref": "#/definitions/separation"
-      },
-      "SeparationStrong": {
-        "$ref": "#/definitions/separation"
-      }
-
-    },
-    "ActionOptions": {
-      "BackgroundColor": {
-        "type": "string"
-      },
-      "BorderColor": {
-        "type": "string"
-      },
-      "TextColor": {
-        "type": "string"
-      },
-      "BorderThickness": {
-        "type": "number"
-      },
-      "FontWeight": {
-        "type": "number"
-      },
-      "FontSize": {
-        "type": "number"
-      },
-      "Margin": {
-        "$ref": "#/definitions/MarginOptions"
-      },
-      "Padding": {
-        "$ref": "#/definitions/MarginOptions"
-      }
-    },
-  }
+    "supportsInteractivity"
+  ]
 }

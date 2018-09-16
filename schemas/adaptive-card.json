@@ -12,23 +12,26 @@
   "properties": {
     "version": {
       "type": "string",
-      "description": "Schema version that this card requires. If a client is lower than this version the fallbackText will be rendered."
+      "description": "Schema version that this card requires. If a client is **lower** than this version, the `fallbackText` will be rendered.",
+      "examples": [
+        "1.0", "1.1"
+      ]
     },
     "fallbackText": {
       "type": "string",
-      "description": "Text shown when the client doesn't support the version specified. This can be in markdown format."
+      "description": "Text shown when the client doesn't support the version specified (may contain markdown)."
     },
     "backgroundImage": {
       "type": "string",
-      "description": "An image to use as the background of the card"
+      "description": "An image to use as the background of the card."
     },
     "speak": {
       "type": "string",
-      "description": "Specifies what should be spoken for this entire Item. This is simple text or SSML fragment"
+      "description": "Specifies what should be spoken for this entire card. This is simple text or SSML fragment."
     },
     "lang": {
       "type": "string",
-      "description": "The 2-letter ISO-639-1 language used in the card. Used to localize any date/time functions",
+      "description": "The 2-letter ISO-639-1 language used in the card. Used to localize any date/time functions.",
       "examples": [
         "en", "fr", "es"
       ]
@@ -53,18 +56,18 @@
     },
     "Action.OpenUrl": {
       "additionalProperties": true,
-      "description": "When Action.OpenUrl is invoked it will show the given url, either by launching it to an external web browser or showing in-situ with embedded web browser.",
+      "description": "When invoked, show the given url either by launching it in an external web browser or showing in-situ with embedded web browser.",
       "properties": {
         "type": {
           "type": "string",
-          "description": "Must be Action.OpenUrl",
+          "description": "Must be `\"Action.OpenUrl\"`.",
           "enum": [
             "Action.OpenUrl"
           ]
         },
         "title": {
           "type": "string",
-          "description": "Label for button or link that represents this action"
+          "description": "Label for button or link that represents this action."
         },
         "iconUrl": {
           "type": "string",
@@ -73,7 +76,7 @@
         },
         "url": {
           "type": "string",
-          "description": "The URL to open"
+          "description": "The URL to open."
         }
       },
       "required": [
@@ -86,18 +89,18 @@
     "Action.ShowCard": {
       "type": "object",
       "additionalProperties": true,
-      "description": "Action.ShowCard defines an inline AdaptiveCard which is shown to the user when it is clicked.",
+      "description": "Defines an inline AdaptiveCard which is shown to the user when the button or link is clicked.",
       "properties": {
         "type": {
           "type": "string",
-          "description": "Must be Action.ShowCard",
+          "description": "Must be `\"Action.ShowCard\"`.",
           "enum": [
             "Action.ShowCard"
           ]
         },
         "title": {
           "type": "string",
-          "description": "Label for button or link that represents this action"
+          "description": "Label for button or link that represents this action."
         },
         "iconUrl": {
           "type": "string",
@@ -117,18 +120,18 @@
     "Action.Submit": {
       "type": "object",
       "additionalProperties": true,
-      "description": "Submit action gathers up input fields, merges with optional data field and generates event to client asking for data to be submitted. It is up to the client to determine how that data is processed. For example: With BotFramework bots the client would send an activity through the messaging medium to the bot.",
+      "description": "Gathers input fields, merges with optional data field, and sends an event to the client. It is up to the client to determine how this data is processed. For example: With BotFramework bots, the client would send an activity through the messaging medium to the bot.",
       "properties": {
         "type": {
           "type": "string",
-          "description": "Must be Action.Submit",
+          "description": "Must be `\"Action.Submit\"`.",
           "enum": [
             "Action.Submit"
           ]
         },
         "title": {
           "type": "string",
-          "description": "Label for button or link that represents this action"
+          "description": "Label for button or link that represents this action."
         },
         "iconUrl": {
           "type": "string",
@@ -140,7 +143,7 @@
             "string",
             "object"
           ],
-          "description": "initial data that input fields will be combined with. This is essentially 'hidden' properties"
+          "description": "Initial data that input fields will be combined with. These are essentially 'hidden' properties."
         }
       },
       "required": [
@@ -158,26 +161,26 @@
     "AdaptiveCard": {
       "additionalProperties": true,
       "type": "object",
-      "description": "Card schema for an adaptive card",
+      "description": "Root element in an Adaptive Card.",
       "properties": {
         "type": {
           "type": "string",
-          "description": "Must be AdaptiveCard",
+          "description": "Must be `\"AdaptiveCard\"`.",
           "enum": [
             "AdaptiveCard"
           ]
         },
         "actions": {
-          "description": "The Actions to show in the card's action bar",
+          "description": "The Actions to show in the card's action bar.",
           "$ref": "#/definitions/Actions"
         },
         "body": {
-          "description": "The Card Elements to show in the primary card region",
+          "description": "The card elements to show in the primary card region.",
           "$ref": "#/definitions/CardElements"
         },
         "selectAction": {
           "$ref": "#/definitions/Action",
-          "description": "An Action that will be invoked when the card is tapped or selected. Action.ShowCard not supported"
+          "description": "An Action that will be invoked when the card is tapped or selected. `Action.ShowCard` is not supported."
         }
       },
       "required": [
@@ -193,14 +196,14 @@
         },
         "id": {
           "type": "string",
-          "description": "A unique Id associated with the element"
+          "description": "A unique identifier associated with the element."
         },
         "spacing": {
           "$ref": "#/definitions/SpacingStyle"
         },
         "separator": {
           "type": "boolean",
-          "description": "The Separator object type describes the look and feel of a separation line between two elements.",
+          "description": "When `true`, draw a separating line at the top of the element.",
           "default": false
         }
       },
@@ -216,6 +219,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TextBlock"
+            },
+            {
+              "$ref": "#/definitions/Media"
             },
             {
               "$ref": "#/definitions/Image"
@@ -256,7 +262,7 @@
     },
     "Input.Choice": {
       "type": "object",
-      "description": "Describes a Choice input. The value should be a simple string without a \",\"",
+      "description": "Describes a choice for use in a ChoiceSet.",
       "additionalProperties": true,
       "properties": {
         "type": {
@@ -267,11 +273,11 @@
         },
         "title": {
           "type": "string",
-          "description": "The text for a choice"
+          "description": "Text to display."
         },
         "value": {
           "type": "string",
-          "description": "The raw value for the choice. NOTE: do not use a \",\" in the value, since MultiSelect ChoiceSet returns a comma-delimited string of choice values"
+          "description": "The raw value for the choice. **NOTE:** do not use a `,` in the value, since a `ChoiceSet` with `isMultiSelect` set to `true` returns a comma-delimited string of choice values."
         }
       },
       "required": [
@@ -281,7 +287,7 @@
     },
     "ChoiceInputStyle": {
       "type": "string",
-      "description": "Style hint for Input.ChoiceSet",
+      "description": "Style hint for `Input.ChoiceSet`.",
       "default": "compact",
       "enum": [
         "compact",
@@ -291,7 +297,7 @@
     "Column": {
       "additionalProperties": true,
       "type": "object",
-      "description": "Defines a container that is part of a ColumnSet",
+      "description": "Defines a container that is part of a ColumnSet.",
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"
@@ -299,16 +305,16 @@
       ],
       "properties": {
         "items": {
-          "description": "The Card Elements to include in the Column",
+          "description": "The card elements to include in the `Column`.",
           "$ref": "#/definitions/CardElements"
         },
         "selectAction": {
-          "description": "An Action that will be invoked when the Column is tapped or selected. Action.ShowCard not supported",
+          "description": "An Action that will be invoked when the `Column` is tapped or selected. `Action.ShowCard` is not supported.",
           "$ref": "#/definitions/Action"
         },
         "style": {
           "type": "string",
-          "description": "Style hint for Column",
+          "description": "Style hint for `Column`.",
           "enum": [
             "default",
             "emphasis"
@@ -319,11 +325,11 @@
             "string",
             "number"
           ],
-          "description": "\"auto\", \"stretch\", or a number representing relative width of the column in the column group"
+          "description": "`\"auto\"`, `\"stretch\"`, or a number representing relative width of the column in the column group."
         },
         "type": {
           "type": "string",
-          "description": "Must be Column",
+          "description": "Must be `\"Column\"`.",
           "enum": [
             "Column"
           ]
@@ -337,7 +343,7 @@
     "ColumnSet": {
       "additionalProperties": true,
       "type": "object",
-      "description": "ColumnSet divides a region into Column's allowing elements to sit side-by-side",
+      "description": "ColumnSet divides a region into Columns, allowing elements to sit side-by-side.",
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"
@@ -346,18 +352,18 @@
       "properties": {
         "columns": {
           "type": "array",
-          "description": "The array of Columns to divide the region into",
+          "description": "The array of `Columns` to divide the region into.",
           "items": {
             "$ref": "#/definitions/Column"
           }
         },
         "selectAction": {
           "$ref": "#/definitions/Action",
-          "description": "An Action that will be invoked when the ColumnSet is tapped or selected. Action.ShowCard not supported"
+          "description": "An Action that will be invoked when the `ColumnSet` is tapped or selected. `Action.ShowCard` is not supported."
         },
         "type": {
           "type": "string",
-          "description": "Must be ColumnSet",
+          "description": "Must be `\"ColumnSet\"`.",
           "enum": [
             "ColumnSet"
           ]
@@ -367,7 +373,7 @@
     "Container": {
       "additionalProperties": true,
       "type": "object",
-      "description": "Containers group items together",
+      "description": "Containers group items together.",
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"
@@ -376,22 +382,22 @@
       "properties": {
         "type": {
           "type": "string",
-          "description": "Must be Container",
+          "description": "Must be `\"Container\"`.",
           "enum": [
             "Container"
           ]
         },
         "items": {
-          "description": "The Card Elements to render inside the Container",
+          "description": "The card elements to render inside the `Container`.",
           "$ref": "#/definitions/CardElements"
         },
         "selectAction": {
-          "description": "An Action that will be invoked when the Container is tapped or selected. Action.ShowCard not supported",
+          "description": "An Action that will be invoked when the `Container` is tapped or selected. `Action.ShowCard` is not supported.",
           "$ref": "#/definitions/Action"
         },
         "style": {
           "type": "string",
-          "description": "Style hint for Container",
+          "description": "Style hint for `Container`.",
           "enum": [
             "default",
             "emphasis"
@@ -399,7 +405,7 @@
         },
         "verticalContentAlignment": {
           "type": "string",
-          "description": "Defines how the content should be aligned vertically within the container",
+          "description": "Defines how the content should be aligned vertically within the container.",
           "default": "top",
           "enum:": [
             "top",
@@ -407,7 +413,7 @@
             "bottom"
           ],
           "version": "1.1"
-        }       
+        }
       },
       "required": [
         "type",
@@ -417,7 +423,7 @@
     "Fact": {
       "additionalProperties": true,
       "type": "object",
-      "description": "Describes a Fact in a FactSet as a key/value pair",
+      "description": "Describes a Fact in a FactSet as a key/value pair.",
       "properties": {
         "type": {
           "type": "string",
@@ -427,11 +433,11 @@
         },
         "title": {
           "type": "string",
-          "description": "The title of the fact"
+          "description": "The title of the fact."
         },
         "value": {
           "type": "string",
-          "description": "The value of the fact"
+          "description": "The value of the fact."
         }
       },
       "required": [
@@ -442,7 +448,7 @@
     "FactSet": {
       "additionalProperties": true,
       "type": "object",
-      "description": "The FactSet Item makes it simple to display a series of facts (e.g. name/value pairs) in a tabular form.",
+      "description": "The FactSet element displays a series of facts (i.e. name/value pairs) in a tabular form.",
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"
@@ -451,14 +457,14 @@
       "properties": {
         "facts": {
           "type": "array",
-          "description": "The array of Facts",
+          "description": "The array of `Fact`s.",
           "items": {
             "$ref": "#/definitions/Fact"
           }
         },
         "type": {
           "type": "string",
-          "description": "Must be FactSet",
+          "description": "Must be `\"FactSet\"`.",
           "enum": [
             "FactSet"
           ]
@@ -471,7 +477,7 @@
     },
     "HorizontalAlignment": {
       "type": "string",
-      "description": "Controls how Items are horizontally positioned within their container.",
+      "description": "Controls how elements are horizontally positioned within their container.",
       "default": "left",
       "enum": [
         "left",
@@ -479,10 +485,72 @@
         "right"
       ]
     },
+    "MediaSource": {
+      "additionalProperties": true,
+      "type": "object",
+      "description": "Defines a source for a `Media` element",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "MediaSource"
+          ]
+        },
+        "mimeType": {
+          "type": "string",
+          "description": "Mime type of associated media (e.g. `\"video/mp4\"`)."
+        },
+        "url": {
+          "type": "string",
+          "description": "URL to media."
+        }
+      },
+      "required": [
+        "mimeType",
+        "url"
+      ]
+    },
+    "Media": {
+      "additionalProperties": true,
+      "type": "object",
+      "description": "Displays audio or video.",
+      "allOf": [
+        {
+          "$ref": "#/definitions/CardElement"
+        }
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Must be `\"Media\"`.",
+          "enum": [
+            "Media"
+          ]
+        },
+        "sources": {
+          "type": "array",
+          "description": "Array of media sources to attempt to play.",
+          "items": {
+            "$ref": "#/definitions/MediaSource"
+          }
+        },
+        "poster": {
+          "type": "string",
+          "description": "URL of an image to display before playing."
+        },
+        "altText": {
+          "type": "string",
+          "description": "Alternate text describing the audio or video."
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
     "Image": {
       "additionalProperties": true,
       "type": "object",
-      "description": "The Image Item allows for the inclusion of images in an Adaptive Card.",
+      "description": "Displays images.",
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"
@@ -491,13 +559,13 @@
       "properties": {
         "altText": {
           "type": "string",
-          "description": "Alternate text for the image for accessibility"
+          "description": "Alternate text describing the image."
         },
         "horizontalAlignment": {
           "$ref": "#/definitions/HorizontalAlignment"
         },
         "selectAction": {
-          "description": "An Action that will be invoked when the Image is tapped or selected. Action.ShowCard not supported",
+          "description": "An Action that will be invoked when the `Image` is tapped or selected. `Action.ShowCard` is not supported.",
           "$ref": "#/definitions/Action"
         },
         "size": {
@@ -508,7 +576,7 @@
         },
         "type": {
           "type": "string",
-          "description": "Must be Image",
+          "description": "Must be `\"Image\"`.",
           "enum": [
             "Image"
           ]
@@ -526,7 +594,7 @@
     "ImageSet": {
       "additionalProperties": true,
       "type": "object",
-      "description": "The ImageSet allows for the inclusion of a collection images like a photogallery.",
+      "description": "The ImageSet displays a collection of Images similar to a gallery.",
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"
@@ -535,7 +603,7 @@
       "properties": {
         "images": {
           "type": "array",
-          "description": "The array of Image elements to show",
+          "description": "The array of `Image` elements to show.",
           "items": {
             "$ref": "#/definitions/Image"
           }
@@ -545,7 +613,7 @@
         },
         "type": {
           "type": "string",
-          "description": "Must be ImageSet",
+          "description": "Must be `\"ImageSet\"`.",
           "enum": [
             "ImageSet"
           ]
@@ -558,7 +626,7 @@
     },
     "ImageSize": {
       "type": "string",
-      "description": "Controls the approximate size of the image. The physical dimensions will vary per host. Specify \"auto\" for true image dimension or \"stretch\" to force it to fill the container",
+      "description": "Controls the approximate size of the image. The physical dimensions will vary per host. Specify `\"auto\"` for true image dimension, or `\"stretch\"` to force it to fill the container.",
       "default": "auto",
       "enum": [
         "auto",
@@ -570,7 +638,7 @@
     },
     "ImageStyle": {
       "type": "string",
-      "description": "Controls the way Images are displayed",
+      "description": "Controls how this `Image` is displayed.",
       "enum": [
         "default",
         "person"
@@ -579,7 +647,7 @@
     "Input.ChoiceSet": {
       "additionalProperties": true,
       "type": "object",
-      "description": "Shows an array of Choice objects",
+      "description": "Allows a user to input a Choice.",
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"
@@ -588,25 +656,25 @@
       "properties": {
         "choices": {
           "type": "array",
-          "description": "the choice options",
+          "description": "`Choice` options.",
           "items": {
             "$ref": "#/definitions/Input.Choice"
           }
         },
         "id": {
           "type": "string",
-          "description": "Id for the value (will be used to identify collected input when Action.Submit is invoked)"
+          "description": "Unique identifier for the value. Used to identify collected input when the Submit action is performed."
         },
         "isMultiSelect": {
           "type": "boolean",
-          "description": "Allow multiple choices to be selected",
+          "description": "Allow multiple choices to be selected.",
           "default": false
         },
         "style": {
           "$ref": "#/definitions/ChoiceInputStyle"
         },
         "type": {
-          "description": "Must be Input.ChoiceInput",
+          "description": "Must be `\"Input.ChoiceInput\"`.",
           "enum": [
             "Input.ChoiceSet"
           ],
@@ -614,7 +682,7 @@
         },
         "value": {
           "type": "string",
-          "description": "The initial choice (or set of choices) that should be selected. For multi-select, specifcy a comma-separated string of values"
+          "description": "The initial choice (or set of choices) that should be selected. For multi-select, specify a comma-separated string of values."
         }
       },
       "required": [
@@ -626,7 +694,7 @@
     "Input.Date": {
       "additionalProperties": true,
       "type": "object",
-      "description": "Input.Date collects Date from the user,",
+      "description": "Collects a date from the user.",
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"
@@ -635,30 +703,30 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Id for the value (will be used to identify collected input when Action.Submit is clicked)"
+          "description": "Unique identifier for the value. Used to identify collected input when the Submit action is performed."
         },
         "max": {
           "type": "string",
-          "description": "hint of maximum value expressed in ISO-8601 format (may be ignored by some clients)"
+          "description": "Hint of maximum value expressed in ISO-8601 format (may be ignored by some clients)."
         },
         "min": {
           "type": "string",
-          "description": "hint of minimum value expressed in ISO-8601 format (may be ignored by some clients)"
+          "description": "Hint of minimum value expressed in ISO-8601 format (may be ignored by some clients)."
         },
         "placeholder": {
           "type": "string",
-          "description": "Title Description of the input desired"
+          "description": "Description of the input desired. Displayed when no selection has been made."
         },
         "type": {
           "type": "string",
-          "description": "The type must be Input.Date",
+          "description": "Must be `\"Input.Date\"`.",
           "enum": [
             "Input.Date"
           ]
         },
         "value": {
           "type": "string",
-          "description": "The initial value for a field expressed in ISO-8601 format"
+          "description": "The initial value for this field expressed in ISO-8601 format."
         }
       },
       "required": [
@@ -669,7 +737,7 @@
     "Input.Number": {
       "additionalProperties": true,
       "type": "object",
-      "description": "Input.Number collects number from the user,",
+      "description": "Collects a number from the user.",
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"
@@ -678,30 +746,30 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Id for the value (will be used to identify collected input when Action.Submit is clicked)"
+          "description": "Unique identifier for the value. Used to identify collected input when the Submit action is performed."
         },
         "max": {
           "type": "number",
-          "description": "hint of maximum value (may be ignored by some clients)"
+          "description": "Hint of maximum value (may be ignored by some clients)."
         },
         "min": {
           "type": "number",
-          "description": "hint of minimum value (may be ignored by some clients)"
+          "description": "Hint of minimum value (may be ignored by some clients)."
         },
         "placeholder": {
           "type": "string",
-          "description": "Title Description of the input desired"
+          "description": "Description of the input desired. Displayed when no selection has been made."
         },
         "type": {
           "type": "string",
-          "description": "The type must be Input.Number",
+          "description": "Must be `\"Input.Number\"`.",
           "enum": [
             "Input.Number"
           ]
         },
         "value": {
           "type": "number",
-          "description": "The initial value for a field"
+          "description": "Initial value for this field."
         }
       },
       "required": [
@@ -712,7 +780,7 @@
     "Input.Text": {
       "additionalProperties": true,
       "type": "object",
-      "description": "Input.Text collects text from the user,",
+      "description": "Collects text from the user.",
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"
@@ -721,34 +789,33 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Id for the value (will be used to identify collected input when Action.Submit is clicked)"
+          "description": "Unique identifier for the value. Used to identify collected input when the Submit action is performed."
         },
         "isMultiline": {
           "type": "boolean",
-          "description": "Allow multiple lines of text input",
+          "description": "If `true`, allow multiple lines of input.",
           "default": false
         },
         "maxLength": {
           "type": "number",
-          "description": "hint of maximum length characters to collect (may be ignored by some clients)"
+          "description": "Hint of maximum length characters to collect (may be ignored by some clients)."
         },
         "placeholder": {
           "type": "string",
-          "description": "Title Description of the input desired"
+          "description": "Description of the input desired. Displayed when no text has been input."
         },
         "style": {
           "$ref": "#/definitions/TextInputStyle"
         },
         "type": {
           "type": "string",
-          "description": "Input.Text",
+          "description": "Must be `\"Input.Text\"`.",
           "enum": [
-            "Input.Text"
           ]
         },
         "value": {
           "type": "string",
-          "description": "The initial value for a field"
+          "description": "The initial value for this field."
         }
       },
       "required": [
@@ -759,7 +826,7 @@
     "Input.Time": {
       "additionalProperties": true,
       "type": "object",
-      "description": "Input.Time collects Time from the user,",
+      "description": "Collects a time from the user.",
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"
@@ -768,30 +835,30 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Id for the value (will be used to identify collected input when Action.Submit is clicked)"
+          "description": "Unique identifier for the value. Used to identify collected input when the Submit action is performed."
         },
         "max": {
           "type": "string",
-          "description": "hint of maximum value (may be ignored by some clients)"
+          "description": "Hint of maximum value (may be ignored by some clients)."
         },
         "min": {
           "type": "string",
-          "description": "hint of minimum value (may be ignored by some clients)"
+          "description": "Hint of minimum value (may be ignored by some clients)."
         },
         "placeholder": {
           "type": "string",
-          "description": "Title Description of the input desired"
+          "description": "Description of the input desired. Displayed when no time has been selected."
         },
         "type": {
           "type": "string",
-          "description": "The type must be Input.Time",
+          "description": "Must be `\"Input.Time\"`.",
           "enum": [
             "Input.Time"
           ]
         },
         "value": {
           "type": "string",
-          "description": "The initial value for a field expressed in ISO-8601 format"
+          "description": "The initial value for this field expressed in ISO-8601 format."
         }
       },
       "required": [
@@ -802,7 +869,7 @@
     "Input.Toggle": {
       "additionalProperties": true,
       "type": "object",
-      "description": "Input.Toggle collects a true/false response from the user",
+      "description": "Collects a true/false response from the user.",
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"
@@ -811,7 +878,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "description": "Id for the value (will be used to identify collected input when Action.Submit is clicked)"
+          "description": "Unique identifier for the value. Used to identify collected input when the Submit action is performed."
         },
         "title": {
           "type": "string",
@@ -849,7 +916,7 @@
     "TextBlock": {
       "additionalProperties": true,
       "type": "object",
-      "description": "The TextBlock Item allows for the inclusion of text, with various font sizes, weight and color, in Adaptive Cards.",
+      "description": "Displays text allowing control over font sizes, weight, and color.",
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"
@@ -858,7 +925,7 @@
       "properties": {
         "color": {
           "type": "string",
-          "description": "Controls the color of TextBlock Items.",
+          "description": "Controls the color of `TextBlock` elements.",
           "enum": [
             "default",
             "dark",
@@ -874,16 +941,16 @@
         },
         "isSubtle": {
           "type": "boolean",
-          "description": "Indicates whether the color of the text should be slightly toned down to appear less prominent",
+          "description": "If `true`, displays text slightly toned down to appear less prominent.",
           "default": false
         },
         "maxLines": {
           "type": "number",
-          "description": "When Wrap is true, you can specify the maximum number of lines to allow the textBlock to use."
+          "description": "Specifies the maximum number of lines to display."
         },
         "size": {
           "type": "string",
-          "description": "controls size of the text.",
+          "description": "Controls size of text.",
           "enum": [
             "small",
             "default",
@@ -894,18 +961,18 @@
         },
         "text": {
           "type": "string",
-          "description": "The actual text to display"
+          "description": "Text to display."
         },
         "type": {
           "type": "string",
-          "description": "Must be TextBlock",
+          "description": "Must be `\"TextBlock\"`.",
           "enum": [
             "TextBlock"
           ]
         },
         "weight": {
           "type": "string",
-          "description": "Controls the weight of TextBlock Items",
+          "description": "Controls the weight of `TextBlock` elements.",
           "enum": [
             "lighter",
             "default",
@@ -914,7 +981,7 @@
         },
         "wrap": {
           "type": "boolean",
-          "description": "True if be is allowed to wrap",
+          "description": "If `true`, allow text to wrap. Otherwise, text is clipped.",
           "default": false
         }
       },
@@ -925,11 +992,11 @@
     },
     "SeparatorStyle": {
       "type": "object",
-      "description": "Indicates whether there should be a visible separator (e.g. a line) between the element and the one before it. If this property is not specified, no separator is displayed. If it is, a separator line is displayed. A separator will only appear if there was a preceding element.",
+      "description": "Indicates whether there should be a visible separator (i.e. a line) between the element and its predecessor. If not specified, no separator is displayed. A separator will only be displayed if there is a preceding element.",
       "properties": {
         "thickness": {
           "type": "string",
-          "description": "Specifies the thickness of the separation line.",
+          "description": "Specifies separator thickness.",
           "enum": [
             "default",
             "thick"
@@ -937,7 +1004,7 @@
         },
         "color": {
           "type": "string",
-          "description": "Specifies the color of the separation line.",
+          "description": "Specifies separator color.",
           "enum": [
             "default",
             "accent"
@@ -947,7 +1014,7 @@
     },
     "SpacingStyle": {
       "type": "string",
-      "description": "Controls the amount of spacing between this element and the previous element.",
+      "description": "Controls the amount of spacing between this element and the preceding element.",
       "enum": [
         "none",
         "small",
@@ -960,8 +1027,8 @@
     },
     "TextInputStyle": {
       "type": "string",
-      "description": "Style hint for Input.Text.",
       "default": "text",
+      "description": "Style hint for `Input.Text`.",
       "enum": [
         "text",
         "tel",
