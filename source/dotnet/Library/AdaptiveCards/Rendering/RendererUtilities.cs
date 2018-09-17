@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Collections;
@@ -24,7 +25,7 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static string ApplyTextFunctions(string text)
+        public static string ApplyTextFunctions(string text, string lang)
         {
             if (text != null)
             {
@@ -67,7 +68,9 @@ namespace AdaptiveCards.Rendering
                                 }
                                 dateTimeFormat = "t";
                             }
-                            text = text.Replace(match.Value, date.ToString(dateTimeFormat));
+
+                            var provider = new CultureInfo(lang);
+                            text = text.Replace(match.Value, date.ToString(dateTimeFormat, provider));
                         }
                     }
                 }

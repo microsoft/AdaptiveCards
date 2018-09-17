@@ -6,6 +6,7 @@
 #include "TextBlock.h"
 #include "AdaptiveCardParseWarning.h"
 #include "SemanticVersion.h"
+#include "Winnls.h"
 
 using namespace AdaptiveSharedNamespace;
 
@@ -103,6 +104,21 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
     std::string version = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Version, enforceVersion);
     std::string fallbackText = ParseUtil::GetString(json, AdaptiveCardSchemaKey::FallbackText);
     std::string language = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Language);
+
+    try
+    {
+        language = "";// TODO: <CultureInfo(lang)>
+    }
+    catch ()
+    {
+        warnings.push_back(std::make_shared<AdaptiveCardParseWarning>(AdaptiveSharedNamespace::WarningStatusCode::InvalidLanguage, "Invalid language identifier: " + language));
+        
+        LPWSTR lpLCData;
+        int cchData;
+
+        GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LOCALE_SISO639LANGNAME, lpLCData, cchData);// TODO: <CurrentCulture.TwoLetterISOLanguageName>
+
+    }
 
     if (enforceVersion)
     {

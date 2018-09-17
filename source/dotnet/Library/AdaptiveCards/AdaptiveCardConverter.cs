@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -11,7 +12,7 @@ namespace AdaptiveCards
         public List<AdaptiveWarning> Warnings { get; set; } = new List<AdaptiveWarning>();
 
         // TODO: temporary warning code for fallback card. Remove when common set of error codes created and integrated.
-        private enum WarningStatusCode { UnsupportedSchemaVersion = 7 };
+        private enum WarningStatusCode { UnsupportedSchemaVersion = 7, InvalidLanguage = 12 };
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
@@ -49,9 +50,25 @@ namespace AdaptiveCards
             var typedElementConverter = serializer.ContractResolver.ResolveContract(typeof(AdaptiveTypedElement)).Converter;
 
             var card = (AdaptiveCard)typedElementConverter.ReadJson(jObject.CreateReader(), objectType, existingValue, serializer);
-            card.Lang = jObject.Value<string>("lang");
+            card.Lang = ValidateLang(jObject.Value<string>("lang"));
 
             return card;
+        }
+
+        private string ValidateLang(string val)
+        {
+            try
+            {
+                var provider = new CultureInfo(val);
+                return val;
+            }
+            catch (CultureNotFoundException)
+            {
+                Warnings.Add(new AdaptiveWarning((int)WarningStatusCode.InvalidLanguage, "Invalid language identifier: " + val));
+
+                // Default to current system CultureInfo
+                return CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+            }
         }
 
         public override bool CanConvert(Type objectType)

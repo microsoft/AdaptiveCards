@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Xml;
 using System.Xml.Schema;
@@ -170,14 +169,15 @@ namespace AdaptiveCards
         [XmlAttribute]
 #endif
         [DefaultValue(null)]
+        private string _lang;
         public string Lang
         {
-            get { return Lang; }
+            get => _lang;
             internal set
             {
-                Lang = value;
+                _lang = value;
 
-                Util.PropagateLang(Lang, Body);
+                Util.PropagateLang(_lang, Body);
 
                 foreach (AdaptiveAction element in Actions)
                 {
@@ -186,7 +186,7 @@ namespace AdaptiveCards
                         var showCard = (AdaptiveShowCardAction)element;
                         if (showCard != null)
                         {
-                            showCard.SetLang(Lang);
+                            showCard.SetLang(_lang);
                         }
                     }
                 }
