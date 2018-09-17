@@ -1703,6 +1703,11 @@ export class MediaSource {
     mimeType: string;
     url: string;
 
+    constructor(url: string = undefined, mimeType: string = undefined) {
+        this.url = url;
+        this.mimeType = mimeType;
+    }
+
     parse(json: any, errors?: Array<IValidationError>) {
         this.mimeType = json["mimeType"];
         this.url = json["url"];
@@ -1728,6 +1733,7 @@ export class Media extends CardElement {
 
     private processSources() {
         this._selectedSources = [];
+        this._selectedMediaType = undefined;
         
  		for (let source of this.sources) {
             let mimeComponents = source.mimeType.split('/');
@@ -1780,10 +1786,10 @@ export class Media extends CardElement {
             posterRootElement.style.minHeight = "150px";
         }
 
-        if (this.hostConfig.supportsInteractivity) {
+        if (this.hostConfig.supportsInteractivity && this._selectedSources.length > 0) {
             let playButtonOuterElement = document.createElement("div");
-            posterRootElement.setAttribute("role", "button");
-            posterRootElement.setAttribute("aria-label", "Play media");
+            playButtonOuterElement.setAttribute("role", "button");
+            playButtonOuterElement.setAttribute("aria-label", "Play media");
             playButtonOuterElement.className = "ac-media-playButton";
             playButtonOuterElement.style.display = "flex";
             playButtonOuterElement.style.alignItems = "center";
@@ -1876,9 +1882,7 @@ export class Media extends CardElement {
 
         this.processSources();
 
-        if (this._selectedSources.length > 0) {
-            element.appendChild(this.renderPoster());
-        }
+        element.appendChild(this.renderPoster());
 
         return element;
     }
@@ -1952,6 +1956,10 @@ export class Media extends CardElement {
 
     renderSpeech(): string {
         return this.altText;
+    }
+
+    get selectedMediaType(): string {
+        return this._selectedMediaType;
     }
 }
 

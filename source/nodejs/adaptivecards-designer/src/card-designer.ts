@@ -29,6 +29,8 @@ class NameValuePairEditor {
     title: string = "Name/value pairs";
     messageIfEmpty = "This collection is empty.";
     addButtonTitle: string = "Add a new pair";
+    nameInputTitle: string = "Name";
+    valueInputTitle: string = "Value";
 
     render(): Adaptive.Container {
         let result = new Adaptive.Container();
@@ -48,7 +50,7 @@ class NameValuePairEditor {
         else {
             for (let i = 0; i < this.nameValuePairs.length; i++) {
                 let textInput = new Adaptive.TextInput();
-                textInput.placeholder = "Name";
+                textInput.placeholder = this.nameInputTitle;
                 textInput.defaultValue = this.nameValuePairs[i].name;
                 textInput.onValueChanged = (sender) => {
                     this.nameValuePairs[i].name = sender.value;
@@ -60,7 +62,7 @@ class NameValuePairEditor {
                 nameColumn.addItem(textInput);
 
                 textInput = new Adaptive.TextInput();
-                textInput.placeholder = "Value";
+                textInput.placeholder = this.valueInputTitle;
                 textInput.defaultValue = this.nameValuePairs[i].value;
                 textInput.onValueChanged = (sender) => {
                     this.nameValuePairs[i].value = sender.value;
@@ -1696,6 +1698,65 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
     }
 }
 
+export class MediaPeer extends TypedCardElementPeer<Adaptive.Media> {
+    getTreeItemText(): string {
+        if (this.cardElement.selectedMediaType == "audio") {
+            return "audio";
+        }
+        else if (this.cardElement.selectedMediaType == "video") {
+            return "video";
+        }
+        else {
+            return super.getTreeItemText();
+        }
+    }
+
+    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
+        super.internalAddPropertySheetEntries(card, includeHeader);
+
+        let altText = addLabelAndInput(card, "Alternate text:", Adaptive.TextInput);
+        altText.input.placeholder = "(not set)";
+        altText.input.defaultValue = this.cardElement.altText;
+        altText.input.onValueChanged = () => {
+            this.cardElement.altText = altText.input.value;
+
+            this.changed(false);
+        }
+
+        var posterUrl = addLabelAndInput(card, "Poster URL:", Adaptive.TextInput);
+        posterUrl.input.placeholder = "(not set)";
+        posterUrl.input.defaultValue = this.cardElement.poster;
+        posterUrl.input.onValueChanged = () => {
+            this.cardElement.poster = posterUrl.input.value;
+
+            this.changed(false);
+        }
+
+        let sourcesEditor = new NameValuePairEditor();
+        sourcesEditor.title = "Sources:";
+        sourcesEditor.addButtonTitle = "Add a new source";
+        sourcesEditor.messageIfEmpty = "No source has been defined.";
+        sourcesEditor.nameInputTitle = "URL";
+        sourcesEditor.valueInputTitle = "MIME type";
+
+        for (let source of this.cardElement.sources) {
+            sourcesEditor.nameValuePairs.push({ "name": source.url, "value": source.mimeType });
+        }
+
+        sourcesEditor.onChanged = (sender, refreshPropertySheet) => {
+            this.cardElement.sources = [];
+
+            for (let nameValuePair of sender.nameValuePairs) {
+                this.cardElement.sources.push(new Adaptive.MediaSource(nameValuePair.name, nameValuePair.value));
+            }
+
+            this.changed(refreshPropertySheet);
+        };
+
+        card.addItem(sourcesEditor.render());
+    }
+}
+
 export class FactSetPeer extends TypedCardElementPeer<Adaptive.FactSet> {
     initializeCardElement() {
         super.initializeCardElement();
@@ -1924,6 +1985,7 @@ export class ChoiceSetInputPeer extends InputPeer<Adaptive.ChoiceSetInput> {
         choicesEditor.title = "Choices:";
         choicesEditor.addButtonTitle = "Add a new choice";
         choicesEditor.messageIfEmpty = "This ChoiceSet is empty.";
+        choicesEditor.nameInputTitle = "Title";
 
         for (let choice of this.cardElement.choices) {
             choicesEditor.nameValuePairs.push({ "name": choice.title, "value": choice.value });
@@ -2208,6 +2270,7 @@ export class CardElementPeerRegistry extends DesignerPeerRegistry<CardElementTyp
 
         this.registerPeer(Adaptive.TextBlock, TextBlockPeer, DesignerPeerCategory.Elements, "acd-icon-textBlock");
         this.registerPeer(Adaptive.Image, ImagePeer, DesignerPeerCategory.Elements, "acd-icon-image");
+        this.registerPeer(Adaptive.Media, MediaPeer, DesignerPeerCategory.Elements, "acd-icon-media");
         this.registerPeer(Adaptive.ActionSet, ActionSetPeer, DesignerPeerCategory.Elements, "acd-icon-actionSet");
 
         this.registerPeer(Adaptive.TextInput, TextInputPeer, DesignerPeerCategory.Inputs, "acd-icon-inputText");
