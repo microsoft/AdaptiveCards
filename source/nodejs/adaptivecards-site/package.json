@@ -28,7 +28,7 @@
     "hexo-renderer-marked": "^0.3.2",
     "hexo-renderer-stylus": "^0.3.1",
     "hexo-server": "^0.3.3",
-    "marked-schema": "^0.1.1",
+    "marked-schema": "^0.1.2",
     "minimist": "^1.2.0",
     "monaco-editor": "^0.10.1"
   }
