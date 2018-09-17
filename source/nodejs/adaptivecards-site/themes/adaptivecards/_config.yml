@@ -5,7 +5,7 @@ menu:
   Visualizer: /visualizer
   Samples: /samples
   Connect: /connect
-  Designer (Preview): http://acdesigner-ci.azurewebsites.net/
+  Designer: http://acdesigner-ci.azurewebsites.net/
   
 #rss: /atom.xml
 
