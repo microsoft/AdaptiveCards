@@ -582,15 +582,15 @@ class DesignerApp {
     }
 
     private addContainers() {
-        this.hostContainers.push(new WebChatContainer("Bot Framework WebChat", "css/webchat-container.css"));
-        this.hostContainers.push(new LightTeamsContainer("Microsoft Teams - Light (preview)", "css/teams-container-light.css"));
-        this.hostContainers.push(new DarkTeamsContainer("Microsoft Teams - Dark (preview)", "css/teams-container-dark.css"));
-        this.hostContainers.push(new CortanaContainer("Cortana Skills", "css/cortana-container.css"));
-        // this.hostContainers.push(new TimelineContainer("Windows Timeline", "css/timeline-container.css")); This element overflows it's container and can't fit the content
-        this.hostContainers.push(new SkypeContainer("Skype (Preview)", "css/skype-container.css"));
-        this.hostContainers.push(new OutlookContainer("Outlook Actionable Messages", "css/outlook-container.css"));
-        this.hostContainers.push(new ToastContainer("Windows Notifications (Preview)", "css/toast-container.css"));
         this.hostContainers.push(new BotFrameworkContainer("Bot Framework Other Channels (Image render)", "css/bf-image-container.css"));
+        this.hostContainers.push(new WebChatContainer("Bot Framework WebChat", "css/webchat-container.css"));
+        this.hostContainers.push(new CortanaContainer("Cortana Skills", "css/cortana-container.css"));
+        this.hostContainers.push(new DarkTeamsContainer("Microsoft Teams - Dark", "css/teams-container-dark.css"));
+        this.hostContainers.push(new LightTeamsContainer("Microsoft Teams - Light", "css/teams-container-light.css"));
+        this.hostContainers.push(new OutlookContainer("Outlook Actionable Messages", "css/outlook-container.css"));
+        this.hostContainers.push(new SkypeContainer("Skype (Preview)", "css/skype-container.css"));
+        this.hostContainers.push(new ToastContainer("Windows Notifications (Preview)", "css/toast-container.css"));
+        // this.hostContainers.push(new TimelineContainer("Windows Timeline", "css/timeline-container.css")); This element overflows it's container and can't fit the content
     }
 
     private recreateDesigner() {
