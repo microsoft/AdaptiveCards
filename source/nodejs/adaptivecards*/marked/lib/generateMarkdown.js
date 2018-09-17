@@ -89,6 +89,10 @@ function createPropertiesSummary(properties, knownTypes, autoLink, includeVersio
 
     if (properties !== undefined && Object.keys(properties).length > 0) {
 
+        if (includeVersion && defined(elementVersion) && elementVersion != "1.0") {
+            md += "#### Introduced in version " + elementVersion + "\n\n";
+        }
+
         md += '|Property|Type|Required|Description|';
         if(includeVersion) {
             md += 'Version|';
