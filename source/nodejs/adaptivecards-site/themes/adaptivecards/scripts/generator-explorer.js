@@ -27,7 +27,7 @@ hexo.extend.generator.register("generator-explorer", function (locals) {
                             schema: schemaModel,
                             element: child,
                             childPath: child.htmlPath,
-                            propertiesSummary: markedschema.generateMarkdown.createPropertiesSummary(child.properties, null, true, true)
+                            propertiesSummary: markedschema.generateMarkdown.createPropertiesSummary(child.properties, null, true, true, child.version)
                         }
                     }
 
@@ -43,7 +43,7 @@ hexo.extend.generator.register("generator-explorer", function (locals) {
                                 schema: schemaModel,
                                 element: child,
                                 childPath: child.htmlPath,
-                                propertiesSummary: markedschema.generateMarkdown.createPropertiesSummary(child.properties)
+                              propertiesSummary: markedschema.generateMarkdown.createPropertiesSummary(child.properties, null, false, true)
                             }
                         });
                     }

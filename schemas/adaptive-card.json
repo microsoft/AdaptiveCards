@@ -488,7 +488,8 @@
     "MediaSource": {
       "additionalProperties": true,
       "type": "object",
-      "description": "Defines a source for a `Media` element",
+      "description": "Defines a source for a Media element",
+      "version": "1.1",
       "properties": {
         "type": {
           "type": "string",
@@ -514,6 +515,7 @@
       "additionalProperties": true,
       "type": "object",
       "description": "Displays audio or video.",
+      "version": "1.1",
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"
@@ -574,7 +576,7 @@
         "style": {
           "$ref": "#/definitions/ImageStyle"
         },
-        "type": {
+        "type": {
           "type": "string",
           "description": "Must be `\"Image\"`.",
           "enum": [

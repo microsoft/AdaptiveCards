@@ -6,7 +6,7 @@
     "build": "hexo generate",
     "build-all": "cd ../adaptivecards-visualizer && npm run build-all",
     "build-and-generate": "npm run build-all && hexo generate",
-    "generate-md-ac": "node node_modules/bin/marked-schema ../../../../schemas/adaptive-card.json ./schema-explorer-toc.yml -r AdaptiveCard"
+    "generate-md-ac": "node node_modules/marked-schema/bin/marked-schema ../../../schemas/adaptive-card.json ./schema-explorer-toc.yml -r AdaptiveCard"
   },
   "hexo": {
     "version": "3.7.1"
