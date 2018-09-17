@@ -55,32 +55,34 @@ namespace UWPUnitTests
 
             await FileLoadHelpers.LoadAsync(cards, hostConfigs);
 
-            uint count = 0;
+            string passedCards = "";
+
             foreach (var hostConfig in hostConfigs)
             {
                 foreach (var card in cards)
                 {
                     _count++;
-                    await TestCardInDispatcher(hostConfig, card);
+                    passedCards += await TestCardInDispatcher(hostConfig, card);
                 }
             }
 
             _count++;
         }
 
-        public async Task TestCardInDispatcher(FileViewModel hostConfig, FileViewModel card)
+        public async Task<string> TestCardInDispatcher(FileViewModel hostConfig, FileViewModel card)
         {
             _exceptionThrown = null;
             var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
 
             _testCompleted.Reset();
+            string failedString = "";
 
             // Need to move the test to the UI Thread
             await dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
             {
                 try
                 {
-                    await TestCard(hostConfig, card);
+                    failedString = await TestCard(hostConfig, card);
                 }
                 catch (Exception e)
                 {
@@ -97,20 +99,30 @@ namespace UWPUnitTests
             {
                 throw new Exception("Test Failed", _exceptionThrown);
             }
+
+            return failedString;
         }
 
-        async public Task TestCard(FileViewModel hostConfigFile, FileViewModel cardFile)
+        async public Task<string> TestCard(FileViewModel hostConfigFile, FileViewModel cardFile)
         {
             var renderResult = await UWPTestLibrary.RenderTestHelpers.RenderCard(cardFile, hostConfigFile);
 
-            UWPTestLibrary.ImageWaiter imageWaiter = new ImageWaiter(renderResult.Item3);
+            if (renderResult.Item3 != null)
+            {
+                UWPTestLibrary.ImageWaiter imageWaiter = new ImageWaiter(renderResult.Item3);
 
-            Border border = new Border();
-            border.Width = renderResult.Item4;
-            border.Child = renderResult.Item3;
-            (Window.Current.Content as Frame).Content = border;
+                StackPanel stackPanel = new StackPanel();
+                stackPanel.Children.Add(renderResult.Item3);
 
-            await imageWaiter.WaitOnAllImagesAsync();
+                Border border = new Border();
+                border.Width = renderResult.Item4;
+                border.Child = stackPanel;
+                (Window.Current.Content as Frame).Content = border;
+
+                await imageWaiter.WaitOnAllImagesAsync();
+
+            }
+            await Task.Delay(1000*60*10);
 
             StorageFile imageResultFile = null;
             StorageFile jsonResultFile = null;
@@ -138,12 +150,14 @@ namespace UWPUnitTests
             if ((result.Status != TestStatus.Passed) && 
                 (result.Status != TestStatus.PassedButSourceWasChanged))
             {
-                await result.SaveAsNewExpectedAsync();
+                return "";
 
-                throw new Exception();
+                //await result.SaveAsNewExpectedAsync();
+
+                //throw new Exception();
             }
 
-            return;
+            return hostConfigFile.Name + cardFile.Name + "\n";
         }
     }
 }

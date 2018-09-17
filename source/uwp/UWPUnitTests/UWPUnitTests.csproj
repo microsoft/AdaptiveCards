@@ -138,16 +138,16 @@
     <Content Include="..\..\..\samples\v1.0\HostConfig\*.json">
       <Link>LinkedHostConfigs\v1.0\%(FileName)</Link>
     </Content>
-    <Content Include="..\UWPTestLibrary\Expected\*.png">
+    <Content Include="..\AdaptiveCardTestApp\Expected\*.png">
       <Link>Expected\%(FileName).png</Link>
     </Content>
-    <Content Include="..\UWPTestLibrary\Expected\*.json">
+    <Content Include="..\AdaptiveCardTestApp\Expected\*.json">
       <Link>Expected\%(FileName).json</Link>
     </Content>
-    <Content Include="..\UWPTestLibrary\Expected\SourceCards\*.json">
+    <Content Include="..\AdaptiveCardTestApp\Expected\SourceCards\*.json">
       <Link>Expected\SourceCards\%(FileName).json</Link>
     </Content>
-    <Content Include="..\UWPTestLibrary\Expected\SourceHostConfigs\*.json">
+    <Content Include="..\AdaptiveCardTestApp\Expected\SourceHostConfigs\*.json">
       <Link>Expected\SourceHostConfigs\%(FileName).json</Link>
     </Content>
   </ItemGroup>

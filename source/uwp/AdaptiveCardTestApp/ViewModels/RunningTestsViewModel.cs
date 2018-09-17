@@ -188,6 +188,8 @@ namespace AdaptiveCardTestApp.ViewModels
 
             await imageWaiter.WaitOnAllImagesAsync();
 
+            await Task.Delay(1000*60*10);
+
             StorageFile imageResultFile = null;
             StorageFile jsonResultFile = null;
             if (renderResult.Item1 == null)
