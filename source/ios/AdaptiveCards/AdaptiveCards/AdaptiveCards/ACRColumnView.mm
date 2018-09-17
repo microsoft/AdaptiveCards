@@ -11,8 +11,9 @@
 
 - (void)config:(nullable NSDictionary<NSString *, id> *)attributes
 {
-    super.stackView.axis = UILayoutConstraintAxisVertical;
-    super.stackView.distribution = UIStackViewDistributionFill;
+    self.stackView.axis = UILayoutConstraintAxisVertical;
+    //self.stackView.distribution = UIStackViewDistributionFill;
+    //self.stackView.alignment = UIStackViewAlignmentFill;
     [super config:attributes];
 }
 

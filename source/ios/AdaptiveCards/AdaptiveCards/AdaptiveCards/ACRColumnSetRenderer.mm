@@ -75,22 +75,24 @@
 
         // when stretch, views with stretch properties should have equal width
         if(curView.pixelWidth){
-            [NSLayoutConstraint constraintWithItem:curView
-                                attribute:NSLayoutAttributeWidth
-                                relatedBy:NSLayoutRelationEqual
-                                toItem:nil
-                                attribute:NSLayoutAttributeNotAnAttribute
-                                multiplier:1
-                                constant:curView.pixelWidth].active = YES;
+            [constraints addObject:
+             [NSLayoutConstraint constraintWithItem:curView
+                                          attribute:NSLayoutAttributeWidth
+                                          relatedBy:NSLayoutRelationEqual
+                                             toItem:nil
+                                          attribute:NSLayoutAttributeNotAnAttribute
+                                         multiplier:1
+                                           constant:curView.pixelWidth]];
         } else if([curView.columnWidth isEqualToString:@"stretch"]){
             if(stretchView){
-                [NSLayoutConstraint constraintWithItem:curView
-                                    attribute:NSLayoutAttributeWidth
-                                    relatedBy:NSLayoutRelationEqual
-                                    toItem:stretchView
-                                    attribute:NSLayoutAttributeWidth
-                                    multiplier:1
-                                    constant:0].active = YES;
+                [constraints addObject:
+                 [NSLayoutConstraint constraintWithItem:curView
+                                              attribute:NSLayoutAttributeWidth
+                                              relatedBy:NSLayoutRelationEqual
+                                                 toItem:stretchView
+                                              attribute:NSLayoutAttributeWidth
+                                             multiplier:1
+                                               constant:0]];
             }
             stretchView = curView;
         } else if(![curView.columnWidth isEqualToString:@"auto"]){
@@ -101,7 +103,6 @@
 
                 if(prevView && prevRelColumnWidth)
                 {
-
                     [constraints addObject:
                      [NSLayoutConstraint constraintWithItem:curView
                                                   attribute:NSLayoutAttributeWidth
@@ -132,7 +133,7 @@
     
     if([constraints count]) [columnSetView addConstraints:constraints];
 
-    [columnSetView adjustHuggingForLastElement];
+    //[columnSetView adjustHuggingForLastElement];
 
     [viewGroup addArrangedSubview:columnSetView];
 

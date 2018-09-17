@@ -6,6 +6,7 @@
 //
 
 #import "ACRContentHoldingUIView.h"
+#import "ACRUILabel.h"
 
 using namespace AdaptiveCards;
 
@@ -13,7 +14,21 @@ using namespace AdaptiveCards;
 
 - (CGSize)intrinsicContentSize
 {
-    return self.frame.size;
+    UIView *textView = [self viewWithTag:eACRUILabelTag];
+    if(textView) {
+        return [textView intrinsicContentSize];
+    } else
+    {
+        return self.frame.size;
+    }
+}
+
+- (void)layoutSubviews
+{
+    if(self.bChanged){
+        [self invalidateIntrinsicContentSize];
+    }
+    [super layoutSubviews];
 }
 
 @end

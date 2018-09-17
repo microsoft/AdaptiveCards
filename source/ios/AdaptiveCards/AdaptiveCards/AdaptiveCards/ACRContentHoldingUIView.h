@@ -10,4 +10,6 @@
 
 @interface ACRContentHoldingUIView: UIView
 
+@property BOOL bChanged;
+
 @end

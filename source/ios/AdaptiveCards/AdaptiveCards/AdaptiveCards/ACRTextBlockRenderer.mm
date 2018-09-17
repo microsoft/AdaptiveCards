@@ -77,7 +77,6 @@
         lab.textContainer.lineFragmentPadding = 0;
         lab.textContainerInset = UIEdgeInsetsZero;
         lab.layoutManager.usesFontLeading = false;
-        lab.scrollEnabled = NO;
         
         // Set paragraph style such as line break mode and alignment
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
@@ -97,23 +96,63 @@
         lab.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
         lab.attributedText = content;
     }
+    [lab sizeToFit];
+    
+    lab.area = lab.frame.size.width * lab.frame.size.height;
+    //lab.widthConstraint = [NSLayoutConstraint constraintWithItem:lab attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:lab.frame.size.width];
+    //lab.heightConstraint = [NSLayoutConstraint constraintWithItem:lab attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:lab.frame.size.height];
+    lab.widthConstraint.active = YES;
+    lab.heightConstraint.active = YES;
 
+    ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:lab.frame];
+    wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
+    lab.translatesAutoresizingMaskIntoConstraints = NO;
+    [viewGroup addArrangedSubview:wrappingview];
+    //[NSLayoutConstraint constraintWithItem:wrappingview attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:viewGroup attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
+    
+    //[NSLayoutConstraint constraintWithItem:wrappingview attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:viewGroup attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
+    
+    [wrappingview addSubview:lab];
+    NSLayoutAttribute horizontalAlignment = NSLayoutAttributeLeading;
+    if(txtBlck->GetHorizontalAlignment() == HorizontalAlignment::Right) {
+        horizontalAlignment = NSLayoutAttributeTrailing;
+    } else if (txtBlck->GetHorizontalAlignment() == HorizontalAlignment::Center) {
+        horizontalAlignment = NSLayoutAttributeCenterX;
+    }
+
+
+    //[NSLayoutConstraint constraintWithItem:wrappingview attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:viewGroup //attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
+    
+    //[NSLayoutConstraint constraintWithItem:wrappingview attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:viewGroup attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
+    
+    [wrappingview addSubview:lab];
+    
+    [NSLayoutConstraint constraintWithItem:lab attribute:horizontalAlignment relatedBy:NSLayoutRelationEqual toItem:wrappingview attribute:horizontalAlignment multiplier:1.0 constant:0].active = YES;
+    //[NSLayoutConstraint constraintWithItem:lab attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:wrappingview attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
+    [NSLayoutConstraint constraintWithItem:lab attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:wrappingview attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
+    [NSLayoutConstraint constraintWithItem:lab attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:wrappingview attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
+    
     lab.textContainer.maximumNumberOfLines = int(txtBlck->GetMaxLines());
     if(!lab.textContainer.maximumNumberOfLines and !txtBlck->GetWrap()){
         lab.textContainer.maximumNumberOfLines = 1;
     }
-    [viewGroup addArrangedSubview:lab];
-    
+    //[viewGroup addArrangedSubview:lab];
+    //lab.translatesAutoresizingMaskIntoConstraints = NO;
     if(txtBlck->GetHeight() == HeightType::Auto){
-        [lab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-        [lab setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+        [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+        [wrappingview setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
     } else {
-        [lab setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-        [lab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+        [wrappingview setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+        [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         lab.isStretchable = YES;
     }
     
-    return lab;
+    [NSLayoutConstraint constraintWithItem:wrappingview attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:lab attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;
+    
+    [lab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+
+    return wrappingview;
 }
 
 @end

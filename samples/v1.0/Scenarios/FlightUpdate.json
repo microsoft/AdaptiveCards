@@ -57,8 +57,9 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "Sarah Hum",
-							"spacing": "small"
+							"text": "Sarah Hum hello world hello world hello world hello world hello world",
+							"spacing": "small",
+                              "wrap":true
 						},
 						{
 							"type": "TextBlock",
