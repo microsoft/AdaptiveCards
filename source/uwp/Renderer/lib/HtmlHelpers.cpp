@@ -1,6 +1,7 @@
 ﻿#include "pch.h"
 #include "XamlHelpers.h"
 #include "HtmlHelpers.h"
+#include <safeint.h>
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -8,6 +9,7 @@ using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace AdaptiveNamespace;
+using namespace msl::utilities;
 
 HRESULT GetTextFromXmlNode(
     ABI::Windows::Data::Xml::Dom::IXmlNode* node,
@@ -33,12 +35,35 @@ HRESULT AddListInlines(
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> startNode;
     RETURN_IF_FAILED(attributeMap->GetNamedItem(HStringReference(L"start").Get(), &startNode));
 
-    int iteration = 1;
+    unsigned long iteration = 1;
     if (startNode != nullptr)
     {
+        // Get the starting value for this list
         HString start;
         RETURN_IF_FAILED(GetTextFromXmlNode(startNode.Get(), start.GetAddressOf()));
-        iteration = std::stoi(HStringToUTF8(start.Get()));
+        try 
+        {
+            iteration = std::stoul(HStringToUTF8(start.Get()));
+
+            // Check that we can iterate the entire list without overflowing. 
+            // If the list values are too big to store in an unsigned int, start 
+            // the list at 1.
+            ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNodeList> children;
+            RETURN_IF_FAILED(node->get_ChildNodes(&children));
+
+            UINT32 childrenLength;
+            RETURN_IF_FAILED(children->get_Length(&childrenLength));
+
+            unsigned long result;
+            if (!SafeAdd(iteration, childrenLength - 1, result))
+            {
+                iteration = 1;
+            }
+        }
+        catch (const std::out_of_range&)
+        {
+            // If stoul throws out_of_range, start the numbered list at 1.
+        }
     }
 
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> listChild;
@@ -53,11 +78,8 @@ HRESULT AddListInlines(
         }
         else
         {
-            wchar_t buffer[10];
-            swprintf_s(buffer, ARRAYSIZE(buffer), L"%d. ", iteration);
-
-            std::wstring numberElementString(buffer);
-            listElementString += numberElementString;
+            listElementString += std::to_wstring(iteration);
+            listElementString += L". ";
         }
 
         HString listElementHString;
