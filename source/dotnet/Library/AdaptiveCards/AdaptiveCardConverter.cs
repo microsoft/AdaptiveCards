@@ -78,18 +78,32 @@ namespace AdaptiveCards
 
         private AdaptiveCard MakeFallbackTextCard(JObject jObject)
         {
-            // Retrieve fallbackText and language defined by parsed json
-            string language = jObject.Value<string>("language");
+            // Retrieve values defined by parsed json
             string fallbackText = jObject.Value<string>("fallbackText");
+            string speak = jObject.Value<string>("speak");
+            string language = jObject.Value<string>("lang");
 
-            if (String.IsNullOrEmpty(fallbackText))
+            // Replace undefined values by default values
+            if (string.IsNullOrEmpty(fallbackText))
             {
                 fallbackText = "We're sorry, this card couldn't be displayed";
             }
+            if (string.IsNullOrEmpty(speak))
+            {
+                speak = fallbackText;
+            }
+            if (string.IsNullOrEmpty(language))
+            {
+                language = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+            }
 
             // Define AdaptiveCard to return
-            AdaptiveCard fallbackTextCard = new AdaptiveCard("1.0");
-            fallbackTextCard.Body.Add(new AdaptiveTextBlock
+            AdaptiveCard fallbackCard = new AdaptiveCard("1.0")
+            {
+                Speak = speak,
+                Lang = language
+            };
+            fallbackCard.Body.Add(new AdaptiveTextBlock
             {
                 Text = fallbackText
             });
@@ -97,7 +111,7 @@ namespace AdaptiveCards
             // Add relevant warning
             Warnings.Add(new AdaptiveWarning((int) WarningStatusCode.UnsupportedSchemaVersion, "Schema version is not supported"));
 
-            return fallbackTextCard;
+            return fallbackCard;
         }
     }
 }

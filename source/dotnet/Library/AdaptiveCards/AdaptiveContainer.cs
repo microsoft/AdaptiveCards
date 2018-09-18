@@ -38,6 +38,7 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveNumberInput))]
         [XmlElement(typeof(AdaptiveChoiceSetInput))]
         [XmlElement(typeof(AdaptiveToggleInput))]
+        [XmlElement(typeof(AdaptiveMedia))]
 #endif
         public List<AdaptiveElement> Items { get; set; } = new List<AdaptiveElement>();
 

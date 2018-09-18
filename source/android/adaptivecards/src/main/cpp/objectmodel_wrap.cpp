@@ -13756,10 +13756,11 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1MakeFallbackTextCard(JNIEnv *jenv, jclass jcls, jstring jarg1, jstring jarg2) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1MakeFallbackTextCard(JNIEnv *jenv, jclass jcls, jstring jarg1, jstring jarg2, jstring jarg3) {
   jlong jresult = 0 ;
   std::string *arg1 = 0 ;
   std::string *arg2 = 0 ;
+  std::string *arg3 = 0 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCard > result;
   
   (void)jenv;
@@ -13782,8 +13783,17 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   std::string arg2_str(arg2_pstr);
   arg2 = &arg2_str;
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = (const char *)jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
   try {
-    result = AdaptiveCards::AdaptiveCard::MakeFallbackTextCard((std::string const &)*arg1,(std::string const &)*arg2);
+    result = AdaptiveCards::AdaptiveCard::MakeFallbackTextCard((std::string const &)*arg1,(std::string const &)*arg2,(std::string const &)*arg3);
   }
   catch(AdaptiveCards::AdaptiveCardParseException &_e) {
     {

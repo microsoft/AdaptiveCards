@@ -20,13 +20,17 @@ namespace AdaptiveCards.Rendering.Wpf
         public List<Task> AssetTasks { get; } = new List<Task>();
 
         public AdaptiveRenderContext(Action<object, AdaptiveActionEventArgs> actionCallback,
-            Action<object, MissingInputEventArgs> missingDataCallback)
+            Action<object, MissingInputEventArgs> missingDataCallback,
+            Action<object, AdaptiveMediaEventArgs> mediaClickCallback)
         {
             if (actionCallback != null)
                 OnAction += (obj, args) => actionCallback(obj, args);
 
             if (missingDataCallback != null)
                 OnMissingInput += (obj, args) => missingDataCallback(obj, args);
+
+            if (mediaClickCallback != null)
+                OnMediaClick += (obj, args) => mediaClickCallback(obj, args);
         }
 
         public AdaptiveHostConfig Config { get; set; } = new AdaptiveHostConfig();
@@ -49,6 +53,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public event EventHandler<AdaptiveActionEventArgs> OnAction;
 
+        public event EventHandler<AdaptiveMediaEventArgs> OnMediaClick;
+
         /// <summary>
         /// Event fires when missing input for submit/http actions
         /// </summary>
@@ -62,6 +68,11 @@ namespace AdaptiveCards.Rendering.Wpf
         public void MissingInput(AdaptiveAction sender, MissingInputEventArgs args)
         {
             OnMissingInput?.Invoke(sender, args);
+        }
+
+        public void ClickMedia(FrameworkElement ui, AdaptiveMediaEventArgs args)
+        {
+            OnMediaClick?.Invoke(ui, args);
         }
 
         /// <summary>
