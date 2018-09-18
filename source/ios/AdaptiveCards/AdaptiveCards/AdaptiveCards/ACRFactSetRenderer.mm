@@ -37,13 +37,13 @@
                    element:(std::shared_ptr<BaseCardElement> const &)element
 {
     ACRUILabel *lab = [[ACRUILabel alloc] initWithFrame:CGRectMake(0,0,superview.frame.size.width, 0)];
-    lab.isFactSetLabel = YES;
     lab.translatesAutoresizingMaskIntoConstraints = NO;
     lab.style = style;
     lab.editable = NO;
     lab.textContainer.lineFragmentPadding = 0;
     lab.textContainerInset = UIEdgeInsetsZero;
     lab.layoutManager.usesFontLeading = false;
+    lab.tag = eACRUIFactSetTag;
     
     NSMutableAttributedString *content = nil;
     if(rootView){

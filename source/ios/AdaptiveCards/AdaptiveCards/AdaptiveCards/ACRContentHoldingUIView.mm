@@ -26,10 +26,6 @@ using namespace AdaptiveCards;
 
 - (void)layoutSubviews
 {
-    /*
-    if(self.bChanged){
-        [self invalidateIntrinsicContentSize];
-    }*/
     [super layoutSubviews];
 }
 

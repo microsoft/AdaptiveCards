@@ -8,8 +8,8 @@
 #import <UIKit/UIKit.h>
 #import "SharedAdaptiveCard.h"
 
+const NSInteger eACRUILabelTag = 0x1234;
+const NSInteger eACRUIFactSetTag = 0x1236;
+
 @interface ACRContentHoldingUIView: UIView
-
-@property BOOL bChanged;
-
 @end
