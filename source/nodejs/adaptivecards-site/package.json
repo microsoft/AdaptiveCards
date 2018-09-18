@@ -30,6 +30,6 @@
     "hexo-server": "^0.3.3",
     "marked-schema": "^0.1.2",
     "minimist": "^1.2.0",
-    "monaco-editor": "^0.10.1"
+    "monaco-editor": "^0.14.1"
   }
 }

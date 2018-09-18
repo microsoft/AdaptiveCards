@@ -34,6 +34,6 @@
   "dependencies": {
     "adaptivecards": "latest",
     "markdown-it": "^8.4.0",
-    "monaco-editor": "^0.10.1"
+    "monaco-editor": "^0.14.1"
   }
 }
