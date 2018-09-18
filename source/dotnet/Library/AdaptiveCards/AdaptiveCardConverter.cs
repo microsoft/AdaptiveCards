@@ -57,6 +57,12 @@ namespace AdaptiveCards
 
         private string ValidateLang(string val)
         {
+            // lang proprty missing or left empty
+            if (string.IsNullOrEmpty(val))
+            {
+                return CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+            }
+
             try
             {
                 var provider = new CultureInfo(val);

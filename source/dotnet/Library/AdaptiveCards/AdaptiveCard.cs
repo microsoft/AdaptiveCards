@@ -174,7 +174,7 @@ namespace AdaptiveCards
         public string Lang
         {
             get => _lang;
-            internal set
+            set
             {
                 _lang = value;
 
