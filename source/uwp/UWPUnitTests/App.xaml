@@ -1,12 +1,11 @@
 ﻿<Application
-    x:Class="AdaptiveCardTestApp.App"
+    x:Class="UWPUnitTests.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:AdaptiveCardTestApp"
+    xmlns:local="using:UWPUnitTests"
     RequestedTheme="Light">
 
     <Application.Resources>
-
         <ResourceDictionary>
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Default">
@@ -39,7 +38,7 @@
                     <StaticResource x:Key="AccentButtonBorderBrushPressed" ResourceKey="SystemControlHighlightTransparentBrush" />
                     <StaticResource x:Key="AccentButtonBorderBrushDisabled" ResourceKey="SystemControlDisabledTransparentBrush" />
                 </ResourceDictionary>
-                <ResourceDictionary x:Key="Light">
+                <ResourceDictionary x:Key="Lighit">
                     <!-- Resources for AccentButtonStyle -->
                     <StaticResource x:Key="AccentButtonBackground" ResourceKey="SystemControlForegroundAccentBrush" />
                     <StaticResource x:Key="AccentButtonBackgroundPointerOver" ResourceKey="SystemControlForegroundAccentBrush" />
@@ -139,7 +138,5 @@
                 </Setter>
             </Style>
         </ResourceDictionary>
-
     </Application.Resources>
-
 </Application>
