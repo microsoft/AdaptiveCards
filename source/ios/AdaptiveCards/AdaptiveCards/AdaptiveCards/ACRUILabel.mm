@@ -44,11 +44,19 @@ const NSInteger eACRUILabelTag = 0x1234;
 
 - (CGSize)intrinsicContentSize
 {
-    [self sizeToFit];
-    return self.contentSize;
+    CGSize size = self.frame.size;
+    self.scrollEnabled = YES;
+    if(size.height != self.contentSize.height || size.width != self.contentSize.width) {
+        [self sizeToFit];
+    }
+    size = self.frame.size;
+    
+    //CGSize size = [self.layoutManager usedRectForTextContainer:self.textContainer].size;
+    self.scrollEnabled = NO;
+    return size;
 }
 
-
+/*
 - (void)updateConstraints
 {
     CGSize size = self.frame.size;
@@ -63,20 +71,24 @@ const NSInteger eACRUILabelTag = 0x1234;
     _area = contentSize.width * contentSize.height;
     [super updateConstraints];
 }
+ */
 
 - (void)layoutSubviews
 {
+    [super layoutSubviews];
     if([self.superview isKindOfClass:[ACRContentHoldingUIView class]]) {
         CGSize size = self.frame.size;
-        CGFloat area = size.width * size.height;        
+        CGFloat area = size.width * size.height;
         if(area != _area){
-            [self invalidateIntrinsicContentSize];
-            ((ACRContentHoldingUIView *)self.superview).bChanged = YES;
+            //[self setNeedsLayout];
+            //[self invalidateIntrinsicContentSize];
+            [self.superview invalidateIntrinsicContentSize];
+            ((ACRContentHoldingUIView *)self.superview).bChanged = NO;
+            _area = area;
         } else {
             ((ACRContentHoldingUIView *)self.superview).bChanged = NO;
         }
     }
-    [super layoutSubviews];
 }
 
 

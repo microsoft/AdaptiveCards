@@ -16,7 +16,8 @@ using namespace AdaptiveCards;
 {
     UIView *textView = [self viewWithTag:eACRUILabelTag];
     if(textView) {
-        return [textView intrinsicContentSize];
+        CGSize size = [textView intrinsicContentSize];
+        return size;
     } else
     {
         return self.frame.size;
@@ -25,9 +26,10 @@ using namespace AdaptiveCards;
 
 - (void)layoutSubviews
 {
+    /*
     if(self.bChanged){
         [self invalidateIntrinsicContentSize];
-    }
+    }*/
     [super layoutSubviews];
 }
 
