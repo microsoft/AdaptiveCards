@@ -5,6 +5,7 @@
         "object",
         "null"
       ],
+      "description": "Options for `Action`s",
       "properties": {
         "actionsOrientation": {
           "type": "string",
@@ -60,6 +61,7 @@
         "object",
         "null"
       ],
+      "description": "Toplevel options for `AdaptiveCards`",
       "properties": {
         "allowCustomStyle": {
           "type": "boolean"
@@ -144,28 +146,26 @@
       ],
       "properties": {
         "small": {
-          "type": "integer"
+          "type": "integer",
+          "default": 10
         },
         "default": {
-          "type": "integer"
+          "type": "integer",
+          "default": 12
         },
         "medium": {
-          "type": "integer"
+          "type": "integer",
+          "default": 14
         },
         "large": {
-          "type": "integer"
+          "type": "integer",
+          "default": 17
         },
         "extraLarge": {
-          "type": "integer"
+          "type": "integer",
+          "default": 20
         }
-      },
-      "required": [
-        "small",
-        "default",
-        "medium",
-        "large",
-        "extraLarge"
-      ]
+      }
     },
     "FontWeightsConfig": {
       "type": [
@@ -174,20 +174,18 @@
       ],
       "properties": {
         "lighter": {
-          "type": "integer"
+          "type": "integer",
+          "default": 200
         },
         "default": {
-          "type": "integer"
+          "type": "integer",
+          "default": 400
         },
         "bolder": {
-          "type": "integer"
+          "type": "integer",
+          "default": 800
         }
-      },
-      "required": [
-        "lighter",
-        "default",
-        "bolder"
-      ]
+      }
     },
     "ForegroundColorsConfig": {
       "type": [
@@ -196,25 +194,53 @@
       ],
       "properties": {
         "default": {
-          "$ref": "#/definitions/FontColorConfig"
+          "$ref": "#/definitions/FontColorConfig",
+          "default": {
+            "default": "#FF000000",
+            "subtle": "#B2000000"
+          }
         },
         "accent": {
-          "$ref": "#/definitions/FontColorConfig"
+          "$ref": "#/definitions/FontColorConfig",
+          "default": {
+            "default": "#FF0000FF",
+            "subtle": "#B20000FF"
+          }
         },
         "dark": {
-          "$ref": "#/definitions/FontColorConfig"
+          "$ref": "#/definitions/FontColorConfig",
+          "default": {
+            "default": "#FF101010",
+            "subtle": "#B2101010"
+          }
         },
         "light": {
-          "$ref": "#/definitions/FontColorConfig"
+          "$ref": "#/definitions/FontColorConfig",
+          "default": {
+            "default": "#FFFFFFFF",
+            "subtle": "#B2FFFFFF"
+          }
         },
         "good": {
-          "$ref": "#/definitions/FontColorConfig"
+          "$ref": "#/definitions/FontColorConfig",
+          "default": {
+            "default": "#FF008000",
+            "subtle": "#B2008000"
+          }
         },
         "warning": {
-          "$ref": "#/definitions/FontColorConfig"
+          "$ref": "#/definitions/FontColorConfig",
+          "default": {
+            "default": "#FFFFD700",
+            "subtle": "#B2FFD700"
+          }
         },
         "attention": {
-          "$ref": "#/definitions/FontColorConfig"
+          "$ref": "#/definitions/FontColorConfig",
+          "default": {
+            "default": "#FF8B0000",
+            "subtle": "#B28B0000"
+          }
         }
       }
     },
