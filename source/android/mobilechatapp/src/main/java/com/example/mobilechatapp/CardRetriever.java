@@ -40,12 +40,12 @@ public class CardRetriever
                     fileCount--;
                 }
             }
+
             m_filesReadListener.setFilesCount(fileCount);
             for(String fileName : files)
             {
                 if(isJsonFile(fileName))
                 {
-                    // Have to change the logic in here so the cards are parsed in the background
                     new CardReaderTask(fileName, assetManager, this).execute();
                 }
             }

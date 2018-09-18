@@ -504,9 +504,6 @@ AdaptiveNamespaceStart
         [propget] HRESULT Url([out, retval] HSTRING* value);
         [propput] HRESULT Url([in] HSTRING value);
 
-        [propget] HRESULT ResourceType([out, retval] ElementType* value);
-        [propput] HRESULT ResourceType([in] ElementType value);
-
         [propget] HRESULT MimeType([out, retval] HSTRING* value);
         [propput] HRESULT MimeType([in] HSTRING value);
     };

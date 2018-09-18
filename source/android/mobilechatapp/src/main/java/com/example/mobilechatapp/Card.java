@@ -52,7 +52,6 @@ public class Card
         }
         catch (IOException e)
         {
-            // e.printStackTrace();
             m_exceptionDetailMessage = e.getMessage();
         }
 
