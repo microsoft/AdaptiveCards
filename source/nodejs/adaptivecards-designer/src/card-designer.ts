@@ -1345,6 +1345,25 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
+        let backgroundImage = addLabelAndInput(card, "Background image URL:", Adaptive.TextInput);
+        backgroundImage.input.placeholder = "(not set)";
+
+        if (this.cardElement.backgroundImage) {
+            backgroundImage.input.defaultValue = this.cardElement.backgroundImage.url;
+        }
+
+        backgroundImage.input.onValueChanged = () => {
+            if (backgroundImage.input.value) {
+                this.cardElement.backgroundImage = new Adaptive.BackgroundImage();
+                this.cardElement.backgroundImage.url = backgroundImage.input.value;
+            }
+            else {
+                this.cardElement.backgroundImage = null;
+            }
+
+            this.changed(false);
+        }
+
         let style = addLabelAndInput(card, "Style:", Adaptive.ChoiceSetInput);
         style.input.isCompact = true;
         style.input.placeholder = "(not set)";
