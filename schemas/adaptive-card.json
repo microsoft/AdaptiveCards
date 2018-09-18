@@ -71,11 +71,13 @@
         },
         "iconUrl": {
           "type": "string",
+          "format": "uri",
           "description": "Optional icon to be shown on the action in conjunction with the title",
           "version": "1.1"
         },
         "url": {
           "type": "string",
+          "format": "uri",
           "description": "The URL to open."
         }
       },
@@ -104,6 +106,7 @@
         },
         "iconUrl": {
           "type": "string",
+          "format": "uri",
           "description": "Optional icon to be shown on the action in conjunction with the title",
           "version": "1.1"
         },
@@ -135,6 +138,7 @@
         },
         "iconUrl": {
           "type": "string",
+          "format": "uri",
           "description": "Optional icon to be shown on the action in conjunction with the title",
           "version": "1.1"
         },
@@ -503,6 +507,7 @@
         },
         "url": {
           "type": "string",
+          "format": "uri",
           "description": "URL to media."
         }
       },
@@ -538,6 +543,7 @@
         },
         "poster": {
           "type": "string",
+          "format": "uri",
           "description": "URL of an image to display before playing."
         },
         "altText": {
@@ -585,6 +591,7 @@
         },
         "url": {
           "type": "string",
+          "format": "uri",
           "description": "The URL to the image."
         }
       },

@@ -1,14 +1,13 @@
 {
   "definitions": {
     "ActionsConfig": {
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
       "description": "Options for `Action`s",
       "properties": {
         "actionsOrientation": {
           "type": "string",
+          "description": "Controls how buttons are laid out.",
+          "default": "horizontal",
           "enum": [
             "horizontal",
             "vertical"
@@ -16,6 +15,8 @@
         },
         "actionAlignment": {
           "type": "string",
+          "description": "Control layout of buttons.",
+          "default": "stretch",
           "enum": [
             "left",
             "center",
@@ -24,13 +25,19 @@
           ]
         },
         "buttonSpacing": {
-          "type": "integer"
+          "type": "integer",
+          "description": "Controls how much spacing to use between buttons.",
+          "default": 10
         },
         "maxActions": {
-          "type": "integer"
+          "type": "integer",
+          "description": "Controls how many actions are allowed in total.",
+          "default": 5
         },
         "spacing": {
           "type": "string",
+          "description": "Controls overall spacing of action element.",
+          "default": "default",
           "enum": [
             "default",
             "none",
@@ -46,39 +53,41 @@
         },
         "iconPlacement": {
           "type": "string",
+          "description": "Controls where to place the action icon.",
+          "default": "aboveTitle",
           "enum": [
             "aboveTitle",
             "leftOfTitle"
           ]
         },
         "iconSize": {
-          "type": "integer"
+          "type": "integer",
+          "description": "Controls size of action icon.",
+          "default": 30
         }
       }
     },
     "AdaptiveCardConfig": {
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
       "description": "Toplevel options for `AdaptiveCards`",
       "properties": {
         "allowCustomStyle": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "Controls whether custom styling is allowed",
+          "default": true
         }
       }
     },
     "ContainerStyleConfig": {
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
+      "description": "Controls styling of a container.",
       "properties": {
         "backgroundColor": {
           "type": [
             "string",
             "null"
-          ]
+          ],
+          "default": "#FFFFFFFF"
         },
         "foregroundColors": {
           "$ref": "#/definitions/ForegroundColorsConfig"
@@ -86,44 +95,53 @@
       }
     },
     "ContainerStylesConfig": {
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
+      "description": "Controls styling for default and emphasis containers.",
       "properties": {
         "default": {
-          "$ref": "#/definitions/ContainerStyleConfig"
+          "$ref": "#/definitions/ContainerStyleConfig",
+          "description": "Default container style"
         },
         "emphasis": {
-          "$ref": "#/definitions/ContainerStyleConfig"
+          "$ref": "#/definitions/ContainerStyleConfig",
+          "description": "Container style to use for emphasis"
         }
       }
     },
     "FactSetConfig": {
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
+      "description": "Controls the display of `FactSet`s.",
       "properties": {
         "title": {
-          "$ref": "#/definitions/TextBlockConfig"
+          "$ref": "#/definitions/TextBlockConfig",
+          "default": {
+            "weight": "bolder",
+            "size": "default",
+            "color": "default",
+            "isSubtle": false,
+            "wrap": true,
+            "maxWidth": 150
+          }
         },
         "value": {
-          "$ref": "#/definitions/TextBlockConfig"
+          "$ref": "#/definitions/TextBlockConfig",
+          "default": {
+            "weight": "default",
+            "size": "default",
+            "color": "default",
+            "isSubtle": false,
+            "wrap": true,
+            "maxWidth": 0
+          }
         },
         "spacing": {
-          "type": "integer"
+          "type": "integer",
+          "default": 10
         }
-      },
-      "required": [
-        "spacing"
-      ]
+      }
     },
     "FontColorConfig": {
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
       "properties": {
         "default": {
           "type": [
@@ -142,10 +160,7 @@
       }
     },
     "FontSizesConfig": {
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
       "description": "Controls font size metrics for different text styles.",
       "properties": {
         "small": {
@@ -176,10 +191,8 @@
       }
     },
     "FontWeightsConfig": {
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
+      "description": "Controls font weight metrics.",
       "properties": {
         "lighter": {
           "type": "integer",
@@ -196,10 +209,8 @@
       }
     },
     "ForegroundColorsConfig": {
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
+      "description": "Controls various font colors.",
       "properties": {
         "default": {
           "$ref": "#/definitions/FontColorConfig",
@@ -253,125 +264,152 @@
       }
     },
     "ImageSetConfig": {
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
+      "description": "Controls how `ImageSet`s are displayed.",
       "properties": {
         "imageSize": {
           "type": "string",
+          "description": "Controls individual image sizing.",
           "enum": [
             "auto",
             "stretch",
             "small",
             "medium",
             "large"
-          ]
+          ],
+          "default": "auto"
+        },
+        "maxImageHeight": {
+          "type": "integer",
+          "description": "Constrain image height to this value.",
+          "default": 100
         }
-      },
-      "required": [
-        "imageSize"
-      ]
+      }
     },
     "ImageSizesConfig": {
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
+      "description": "Controls `Image` sizes.",
       "properties": {
         "small": {
-          "type": "integer"
+          "type": "integer",
+          "description": "Small image size value",
+          "default": 80
         },
         "medium": {
-          "type": "integer"
+          "type": "integer",
+          "description": "Medium image size value",
+          "default": 120
         },
         "large": {
-          "type": "integer"
+          "type": "integer",
+          "description": "Large image size value",
+          "default": 180
         }
-      },
-      "required": [
-        "small",
-        "medium",
-        "large"
-      ]
+      }
+    },
+    "MediaConfig": {
+      "type": "object",
+      "version": "1.1",
+      "description": "Controls the display and behavior of `Media` elements.",
+      "properties": {
+        "defaultPoster": {
+          "type": "string",
+          "format": "uri",
+          "description": "URI to image to display when play button hasn't been invoked."
+        },
+        "playButton": {
+          "type": "string",
+          "format": "uri",
+          "description": "Image to display as play button."
+        },
+        "allowInlinePlayback": {
+          "type": "boolean",
+          "description": "Whether to display media inline or invoke externally.",
+          "default": true
+        }
+      }
     },
     "SeparatorConfig": {
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
+      "description": "Controls how separators are displayed.",
       "properties": {
         "lineThickness": {
-          "type": "integer"
+          "type": "integer",
+          "description": "Thickness of separator line.",
+          "default": 1
         },
         "lineColor": {
           "type": [
             "string",
             "null"
-          ]
+          ],
+          "description": "Color to use when drawing separator line.",
+          "default": "#B2000000"
         }
-      },
-      "required": [
-        "lineThickness"
-      ]
+      }
     },
     "ShowCardConfig": {
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
+      "description": "Controls behavior and styling of `Action.ShowCard`.",
       "properties": {
         "actionMode": {
           "type": "string",
+          "description": "Controls how the card is displayed.",
           "enum": [
             "inline",
             "popup"
-          ]
+          ],
+          "default": "inline"
+        },
+        "style": {
+          "$ref": "#/definitions/ContainerStyleConfig",
+          "default": "emphasis"
         },
         "inlineTopMargin": {
-          "type": "integer"
+          "type": "integer",
+          "description": "Amount of margin to use when displaying the card",
+          "default": 16
         }
       }
     },
     "SpacingsConfig": {
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
+      "description": "Controls how elements are to be laid out.",
       "properties": {
         "small": {
-          "type": "integer"
+          "type": "integer",
+          "description": "Small spacing value",
+          "default": 3
         },
         "default": {
-          "type": "integer"
+          "type": "integer",
+          "description": "Default spacing value",
+          "default": 8
         },
         "medium": {
-          "type": "integer"
+          "type": "integer",
+          "description": "Medium spacing value",
+          "default": 20
         },
         "large": {
-          "type": "integer"
+          "type": "integer",
+          "description": "Large spacing value",
+          "default": 30
         },
         "extraLarge": {
-          "type": "integer"
+          "type": "integer",
+          "description": "Extra large spacing value",
+          "default": 40
         },
         "padding": {
-          "type": "integer"
+          "type": "integer",
+          "description": "Padding value",
+          "default": 20
         }
-      },
-      "required": [
-        "small",
-        "default",
-        "medium",
-        "large",
-        "extraLarge",
-        "padding"
-      ]
+      }
     },
     "TextBlockConfig": {
-      "type": [
-        "object",
-        "null"
-      ],
+      "type": "object",
       "description": "Parameters controlling the display of text.",
       "properties": {
         "size": {
@@ -430,6 +468,21 @@
   },
   "type": "object",
   "properties": {
+    "supportsInteractivity": {
+      "type": "boolean",
+      "description": "Control whether interactive `Action`s are allowed to be invoke.",
+      "default": true
+    },
+    "imageBaseUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "Base URL to be used when loading resources."
+    },
+    "fontFamily": {
+      "type": "string",
+      "description": "Font face to use when rendering text.",
+      "default": "Calibri"
+    },
     "actions": {
       "$ref": "#/definitions/ActionsConfig"
     },
@@ -448,12 +501,6 @@
     "factSet": {
       "$ref": "#/definitions/FactSetConfig"
     },
-    "fontFamily": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
     "fontSizes": {
       "$ref": "#/definitions/FontSizesConfig"
     },
@@ -466,18 +513,8 @@
     "separator": {
       "$ref": "#/definitions/SeparatorConfig"
     },
-    "supportsInteractivity": {
-      "type": "boolean"
-    },
-    "imageBaseUrl": {
-      "type": [
-        "string",
-        "null"
-      ],
-      "format": "uri"
+    "media": {
+      "$ref": "#/definitions/MediaConfig"
     }
-  },
-  "required": [
-    "supportsInteractivity"
-  ]
+  }
 }

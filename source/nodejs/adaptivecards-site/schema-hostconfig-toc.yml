@@ -8,6 +8,7 @@
     - ForegroundColorsConfig
     - ImageSetConfig
     - ImageSizesConfig
+    - MediaConfig
     - SeparatorConfig
     - ShowCardConfig
     - SpacingsConfig
