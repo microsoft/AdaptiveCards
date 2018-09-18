@@ -6,7 +6,7 @@
       "properties": {
         "actionsOrientation": {
           "type": "string",
-          "description": "Controls how buttons are laid out.",
+          "description": "Controls how buttons are laid out",
           "default": "horizontal",
           "enum": [
             "horizontal",
@@ -15,7 +15,7 @@
         },
         "actionAlignment": {
           "type": "string",
-          "description": "Control layout of buttons.",
+          "description": "Control layout of buttons",
           "default": "stretch",
           "enum": [
             "left",
@@ -26,17 +26,17 @@
         },
         "buttonSpacing": {
           "type": "integer",
-          "description": "Controls how much spacing to use between buttons.",
+          "description": "Controls how much spacing to use between buttons",
           "default": 10
         },
         "maxActions": {
           "type": "integer",
-          "description": "Controls how many actions are allowed in total.",
+          "description": "Controls how many actions are allowed in total",
           "default": 5
         },
         "spacing": {
           "type": "string",
-          "description": "Controls overall spacing of action element.",
+          "description": "Controls overall spacing of action element",
           "default": "default",
           "enum": [
             "default",
@@ -53,7 +53,7 @@
         },
         "iconPlacement": {
           "type": "string",
-          "description": "Controls where to place the action icon.",
+          "description": "Controls where to place the action icon",
           "default": "aboveTitle",
           "enum": [
             "aboveTitle",
@@ -62,7 +62,7 @@
         },
         "iconSize": {
           "type": "integer",
-          "description": "Controls size of action icon.",
+          "description": "Controls size of action icon",
           "default": 30
         }
       }
@@ -80,7 +80,7 @@
     },
     "ContainerStyleConfig": {
       "type": "object",
-      "description": "Controls styling of a container.",
+      "description": "Controls styling of a container",
       "properties": {
         "backgroundColor": {
           "type": [
@@ -96,7 +96,7 @@
     },
     "ContainerStylesConfig": {
       "type": "object",
-      "description": "Controls styling for default and emphasis containers.",
+      "description": "Controls styling for default and emphasis containers",
       "properties": {
         "default": {
           "$ref": "#/definitions/ContainerStyleConfig",
@@ -110,7 +110,7 @@
     },
     "FactSetConfig": {
       "type": "object",
-      "description": "Controls the display of `FactSet`s.",
+      "description": "Controls the display of `FactSet`s",
       "properties": {
         "title": {
           "$ref": "#/definitions/TextBlockConfig",
@@ -161,7 +161,7 @@
     },
     "FontSizesConfig": {
       "type": "object",
-      "description": "Controls font size metrics for different text styles.",
+      "description": "Controls font size metrics for different text styles",
       "properties": {
         "small": {
           "type": "integer",
@@ -192,7 +192,7 @@
     },
     "FontWeightsConfig": {
       "type": "object",
-      "description": "Controls font weight metrics.",
+      "description": "Controls font weight metrics",
       "properties": {
         "lighter": {
           "type": "integer",
@@ -210,7 +210,7 @@
     },
     "ForegroundColorsConfig": {
       "type": "object",
-      "description": "Controls various font colors.",
+      "description": "Controls various font colors",
       "properties": {
         "default": {
           "$ref": "#/definitions/FontColorConfig",
@@ -265,11 +265,11 @@
     },
     "ImageSetConfig": {
       "type": "object",
-      "description": "Controls how `ImageSet`s are displayed.",
+      "description": "Controls how `ImageSet`s are displayed",
       "properties": {
         "imageSize": {
           "type": "string",
-          "description": "Controls individual image sizing.",
+          "description": "Controls individual image sizing",
           "enum": [
             "auto",
             "stretch",
@@ -281,14 +281,14 @@
         },
         "maxImageHeight": {
           "type": "integer",
-          "description": "Constrain image height to this value.",
+          "description": "Constrain image height to this value",
           "default": 100
         }
       }
     },
     "ImageSizesConfig": {
       "type": "object",
-      "description": "Controls `Image` sizes.",
+      "description": "Controls `Image` sizes",
       "properties": {
         "small": {
           "type": "integer",
@@ -310,32 +310,32 @@
     "MediaConfig": {
       "type": "object",
       "version": "1.1",
-      "description": "Controls the display and behavior of `Media` elements.",
+      "description": "Controls the display and behavior of `Media` elements",
       "properties": {
         "defaultPoster": {
           "type": "string",
           "format": "uri",
-          "description": "URI to image to display when play button hasn't been invoked."
+          "description": "URI to image to display when play button hasn't been invoked"
         },
         "playButton": {
           "type": "string",
           "format": "uri",
-          "description": "Image to display as play button."
+          "description": "Image to display as play button"
         },
         "allowInlinePlayback": {
           "type": "boolean",
-          "description": "Whether to display media inline or invoke externally.",
+          "description": "Whether to display media inline or invoke externally",
           "default": true
         }
       }
     },
     "SeparatorConfig": {
       "type": "object",
-      "description": "Controls how separators are displayed.",
+      "description": "Controls how separators are displayed",
       "properties": {
         "lineThickness": {
           "type": "integer",
-          "description": "Thickness of separator line.",
+          "description": "Thickness of separator line",
           "default": 1
         },
         "lineColor": {
@@ -343,18 +343,18 @@
             "string",
             "null"
           ],
-          "description": "Color to use when drawing separator line.",
+          "description": "Color to use when drawing separator line",
           "default": "#B2000000"
         }
       }
     },
     "ShowCardConfig": {
       "type": "object",
-      "description": "Controls behavior and styling of `Action.ShowCard`.",
+      "description": "Controls behavior and styling of `Action.ShowCard`",
       "properties": {
         "actionMode": {
           "type": "string",
-          "description": "Controls how the card is displayed.",
+          "description": "Controls how the card is displayed",
           "enum": [
             "inline",
             "popup"
@@ -374,7 +374,7 @@
     },
     "SpacingsConfig": {
       "type": "object",
-      "description": "Controls how elements are to be laid out.",
+      "description": "Controls how elements are to be laid out",
       "properties": {
         "small": {
           "type": "integer",
@@ -410,11 +410,11 @@
     },
     "TextBlockConfig": {
       "type": "object",
-      "description": "Parameters controlling the display of text.",
+      "description": "Parameters controlling the display of text",
       "properties": {
         "size": {
           "type": "string",
-          "description": "Font size to use when a card doesn't specify.",
+          "description": "Font size to use when a card doesn't specify",
           "enum": [
             "default",
             "small",
@@ -426,7 +426,7 @@
         },
         "weight": {
           "type": "string",
-          "description": "Font weight to use when a card doesn't specify.",
+          "description": "Font weight to use when a card doesn't specify",
           "enum": [
             "normal",
             "lighter",
@@ -436,7 +436,7 @@
         },
         "color": {
           "type": "string",
-          "description": "Font color to use when a card doesn't specify.",
+          "description": "Font color to use when a card doesn't specify",
           "enum": [
             "default",
             "dark",
@@ -450,17 +450,17 @@
         },
         "isSubtle": {
           "type": "boolean",
-          "description": "Should text be subtle if a card doesn't specify.",
+          "description": "Should text be subtle if a card doesn't specify",
           "default": false
         },
         "wrap": {
           "type": "boolean",
-          "description": "Should text wrap if a card doesn't specify.",
+          "description": "Should text wrap if a card doesn't specify",
           "default": true
         },
         "maxWidth": {
           "type": "integer",
-          "description": "Maximum width to use if a card doesn't specify.",
+          "description": "Maximum width to use if a card doesn't specify",
           "default": 0
         }
       }
@@ -470,17 +470,17 @@
   "properties": {
     "supportsInteractivity": {
       "type": "boolean",
-      "description": "Control whether interactive `Action`s are allowed to be invoke.",
+      "description": "Control whether interactive `Action`s are allowed to be invoke",
       "default": true
     },
     "imageBaseUrl": {
       "type": "string",
       "format": "uri",
-      "description": "Base URL to be used when loading resources."
+      "description": "Base URL to be used when loading resources"
     },
     "fontFamily": {
       "type": "string",
-      "description": "Font face to use when rendering text.",
+      "description": "Font face to use when rendering text",
       "default": "Calibri"
     },
     "actions": {
