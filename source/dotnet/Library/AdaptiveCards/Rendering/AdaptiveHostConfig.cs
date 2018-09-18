@@ -39,6 +39,9 @@ namespace AdaptiveCards.Rendering
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public SeparatorConfig Separator { get; set; } = new SeparatorConfig();
 
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public MediaConfig Media { get; set; } = new MediaConfig();
+
         /// <summary>
         /// Toggles whether or not to render inputs and actions
         /// </summary>
@@ -50,6 +53,22 @@ namespace AdaptiveCards.Rendering
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public Uri ImageBaseUrl { get; set; } = null;
 
+        public Uri ResolveFinalAbsoluteUri(string uriString)
+        {
+            Uri uri;
+            try
+            {
+                uri = new Uri(uriString, UriKind.RelativeOrAbsolute);
+            }
+            catch (UriFormatException)
+            {
+                return null;
+            }
+
+            return ResolveFinalAbsoluteUri(uri);
+        }
+
+        /** Get the absolute URI either by itself or using imageBaseUrl */
         public Uri ResolveFinalAbsoluteUri(Uri uri)
         {
             if (uri == null)
@@ -73,6 +92,10 @@ namespace AdaptiveCards.Rendering
                     }
                 }
                 catch (UriFormatException)
+                {
+                    return null;
+                }
+                catch (ArgumentOutOfRangeException)
                 {
                     return null;
                 }

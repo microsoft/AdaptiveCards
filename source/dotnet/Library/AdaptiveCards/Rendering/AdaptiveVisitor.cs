@@ -43,6 +43,9 @@ namespace AdaptiveCards.Rendering
 
             if (adaptiveElement is AdaptiveToggleInput toggleInput)
                 Visit(toggleInput);
+
+            if (adaptiveElement is AdaptiveMedia media)
+                Visit(media);
         }
 
         public virtual void Visit(AdaptiveCard card)
@@ -137,6 +140,10 @@ namespace AdaptiveCards.Rendering
         public virtual void Visit(AdaptiveShowCardAction action)
         {
             Visit(action.Card);
+        }
+
+        public virtual void Visit(AdaptiveMedia media)
+        {
         }
     }
 }
