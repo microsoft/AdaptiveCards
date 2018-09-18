@@ -129,13 +129,15 @@
           "type": [
             "string",
             "null"
-          ]
+          ],
+          "description": "Color to use when displaying default text"
         },
         "subtle": {
           "type": [
             "string",
             "null"
-          ]
+          ],
+          "description": "Color to use when displaying subtle text"
         }
       }
     },
@@ -144,25 +146,31 @@
         "object",
         "null"
       ],
+      "description": "Controls font size metrics for different text styles.",
       "properties": {
         "small": {
           "type": "integer",
+          "description": "Small font size",
           "default": 10
         },
         "default": {
           "type": "integer",
+          "description": "Default font size",
           "default": 12
         },
         "medium": {
           "type": "integer",
+          "description": "Medium font size",
           "default": 14
         },
         "large": {
           "type": "integer",
+          "description": "Large font size",
           "default": 17
         },
         "extraLarge": {
           "type": "integer",
+          "description": "Extra large font size",
           "default": 20
         }
       }
@@ -364,29 +372,33 @@
         "object",
         "null"
       ],
+      "description": "Parameters controlling the display of text.",
       "properties": {
         "size": {
           "type": "string",
+          "description": "Font size to use when a card doesn't specify.",
           "enum": [
-            "default",
             "default",
             "small",
             "medium",
             "large",
             "extraLarge"
-          ]
+          ],
+          "default": "default"
         },
         "weight": {
           "type": "string",
+          "description": "Font weight to use when a card doesn't specify.",
           "enum": [
-            "normal",
             "normal",
             "lighter",
             "bolder"
-          ]
+          ],
+          "default": "normal"
         },
         "color": {
           "type": "string",
+          "description": "Font color to use when a card doesn't specify.",
           "enum": [
             "default",
             "dark",
@@ -395,16 +407,23 @@
             "good",
             "warning",
             "attention"
-          ]
+          ],
+          "default": "default"
         },
         "isSubtle": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "Should text be subtle if a card doesn't specify.",
+          "default": false
         },
         "wrap": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "Should text wrap if a card doesn't specify.",
+          "default": true
         },
         "maxWidth": {
-          "type": "integer"
+          "type": "integer",
+          "description": "Maximum width to use if a card doesn't specify.",
+          "default": 0
         }
       }
     }
