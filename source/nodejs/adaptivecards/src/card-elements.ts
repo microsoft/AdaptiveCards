@@ -5443,6 +5443,8 @@ export class AdaptiveCard extends ContainerWithActions {
         }
 
         Utils.setProperty(result, "fallbackText", this.fallbackText);
+        Utils.setProperty(result, "lang", this.lang);
+        Utils.setProperty(result, "speak", this.speak);
 
         return result;
     }
