@@ -29,6 +29,7 @@
 		6B2630DD215080FB00ED9207 /* ColumnSet.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B2630DC215080FA00ED9207 /* ColumnSet.VerticalStretch.json */; };
 		6B2630DF2151A23000ED9207 /* FactSetWrapping.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B2630DE2151A22F00ED9207 /* FactSetWrapping.json */; };
 		6B2630E12151A26100ED9207 /* LongFactSet.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B2630E02151A26100ED9207 /* LongFactSet.json */; };
+		6B2630E32152CF1500ED9207 /* ColumnSet.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B2630E22152CF1500ED9207 /* ColumnSet.json */; };
 		6B268FE320CEF19400D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B268FE520CEF89100D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B2D8605211143BD008DD972 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2D8604211143BD008DD972 /* AdaptiveCards.framework */; };
@@ -163,6 +164,7 @@
 		6B2630DC215080FA00ED9207 /* ColumnSet.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet.VerticalStretch.json; sourceTree = "<group>"; };
 		6B2630DE2151A22F00ED9207 /* FactSetWrapping.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = FactSetWrapping.json; path = ../../../../samples/Tests/FactSetWrapping.json; sourceTree = "<group>"; };
 		6B2630E02151A26100ED9207 /* LongFactSet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = LongFactSet.json; path = ../../../../samples/Tests/LongFactSet.json; sourceTree = "<group>"; };
+		6B2630E22152CF1500ED9207 /* ColumnSet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.json; path = ../../../../samples/v1.0/Elements/ColumnSet.json; sourceTree = "<group>"; };
 		6B2D8604211143BD008DD972 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B5D23F2212393480010EB07 /* Image.BackgroundColor.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.BackgroundColor.json; path = ../../../../samples/Tests/Image.BackgroundColor.json; sourceTree = "<group>"; };
 		6B5D23FA2124ADAB0010EB07 /* Image.ImageBaseUrl.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.ImageBaseUrl.json; path = ../../../../samples/v1.0/Elements/Image.ImageBaseUrl.json; sourceTree = "<group>"; };
@@ -386,6 +388,7 @@
 		F4D33E341F045B6E00941E44 /* Jsons */ = {
 			isa = PBXGroup;
 			children = (
+				6B2630E22152CF1500ED9207 /* ColumnSet.json */,
 				6B2630E02151A26100ED9207 /* LongFactSet.json */,
 				6B2630DE2151A22F00ED9207 /* FactSetWrapping.json */,
 				6B2630DC215080FA00ED9207 /* ColumnSet.VerticalStretch.json */,
@@ -633,6 +636,7 @@
 				F4933CD31F79852C00F6EBFD /* FactSet.json in Resources */,
 				F4933CC91F79852C00F6EBFD /* Column.Width.json in Resources */,
 				F4933CE51F79852C00F6EBFD /* TextBlock.DateTimeFormatting.json in Resources */,
+				6B2630E32152CF1500ED9207 /* ColumnSet.json in Resources */,
 				6B2630DF2151A23000ED9207 /* FactSetWrapping.json in Resources */,
 				F4933CFF1F79853B00F6EBFD /* FlightUpdate.json in Resources */,
 				F4933D071F79853B00F6EBFD /* WeatherCompact.json in Resources */,
