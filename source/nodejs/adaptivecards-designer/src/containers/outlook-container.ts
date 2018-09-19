@@ -118,7 +118,7 @@ export class OutlookContainer extends HostContainer {
 
     public anchorClicked(element: Adaptive.CardElement, anchor: HTMLAnchorElement): boolean {
         var regEx = /^action:([a-z0-9]+)$/ig;
-        var rootCard = element.getRootElement(); 
+        var rootCard = element.getRootElement() as Adaptive.AdaptiveCard; 
         var matches = regEx.exec(anchor.href);
         
         if (matches) {
