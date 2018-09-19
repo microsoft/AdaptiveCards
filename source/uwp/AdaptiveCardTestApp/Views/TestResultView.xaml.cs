@@ -75,8 +75,6 @@ namespace AdaptiveCardTestApp.Views
         {
             base.IsEnabled = false;
             await (DataContext as TestResultViewModel).SaveAsNewExpectedAsync();
-
-
             base.IsEnabled = true;
         }
 

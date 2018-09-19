@@ -10,7 +10,7 @@
 		},
 		{
 			"type": "TextBlock",
-			"text": "It doesn't wrap by default!",
+			"text": "It doesn't wrap by default",
 			"weight": "bolder"
 		},
 		{

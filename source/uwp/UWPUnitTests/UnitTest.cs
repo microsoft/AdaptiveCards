@@ -25,7 +25,6 @@ namespace UWPUnitTests
         private StorageFolder _sourceHostConfigsFolder;
         private StorageFolder _sourceCardsFolder;
         private StorageFolder _expectedFolder;
-        private int _count = 0;
 
         [ClassInitialize]
         static public async Task Init(TestContext context)
@@ -39,9 +38,6 @@ namespace UWPUnitTests
         }
 
         [TestMethod]
-        //[DataRow(1, 2, 3, DisplayName = "FooBar")]
-        //[DataRow(4, 5, 6, DisplayName = "BarFoo")]
-        //[DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", "D:\\AdaptiveCards\\source\\uwp\\UWPUnitTests\\Cards.xml", "Row", DataAccessMethod.Sequential)]
         public async Task TestMethod()
         {
             _expectedFolder = (TestContext.Properties["ExpectedFolder"] as StorageFolder);
@@ -54,18 +50,14 @@ namespace UWPUnitTests
 
             await FileLoadHelpers.LoadAsync(cards, hostConfigs);
 
-            string passedCards = "";
-
             List<Exception> exceptions = new List<Exception>();
-
             foreach (var hostConfig in hostConfigs)
             {
                 foreach (var card in cards)
                 {
                     try
                     {
-                        _count++;
-                        passedCards += await TestCardInDispatcher(hostConfig, card);
+                        await TestCardInDispatcher(hostConfig, card);
                     }
                     catch (Exception thrown)
                     {
@@ -73,8 +65,6 @@ namespace UWPUnitTests
                     }
                 }
             }
-
-            _count++;
 
             if (exceptions.Count != 0)
             {
@@ -88,20 +78,19 @@ namespace UWPUnitTests
             }
         }
 
-        public async Task<string> TestCardInDispatcher(FileViewModel hostConfig, FileViewModel card)
+        public async Task TestCardInDispatcher(FileViewModel hostConfig, FileViewModel card)
         {
             _exceptionThrown = null;
             var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
 
             _testCompleted.Reset();
-            string failedString = "";
 
             // Need to move the test to the UI Thread
             await dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
             {
                 try
                 {
-                    failedString = await TestCard(hostConfig, card);
+                    await TestCard(hostConfig, card);
                 }
                 catch (Exception e)
                 {
@@ -116,13 +105,11 @@ namespace UWPUnitTests
             _testCompleted.WaitOne();
             if (_exceptionThrown != null)
             {
-                throw new Exception("Test Failed", _exceptionThrown);
+                throw new Exception(_exceptionThrown.Message, _exceptionThrown);
             }
-
-            return failedString;
         }
 
-        async public Task<string> TestCard(FileViewModel hostConfigFile, FileViewModel cardFile)
+        async public Task TestCard(FileViewModel hostConfigFile, FileViewModel cardFile)
         {
             var renderResult = await UWPTestLibrary.RenderTestHelpers.RenderCard(cardFile, hostConfigFile);
 
@@ -141,7 +128,6 @@ namespace UWPUnitTests
                 await imageWaiter.WaitOnAllImagesAsync();
 
             }
-            //await Task.Delay(1000*60*10);
 
             StorageFile imageResultFile = null;
             StorageFile jsonResultFile = null;
@@ -169,14 +155,8 @@ namespace UWPUnitTests
             if ((result.Status != TestStatus.Passed) &&
                 (result.Status != TestStatus.PassedButSourceWasChanged))
             {
-                //return "";
-
-                //await result.SaveAsNewExpectedAsync();
-
-                throw new Exception("Failed: ${result.Status.ToString()} ${result.CardName} ${result.HostConfigName}");
+                throw new Exception(result.Status.ToString() + ": " + result.HostConfigName + "\\"  + result.CardName);
             }
-
-            return hostConfigFile.Name + cardFile.Name + "\n";
         }
     }
 }
