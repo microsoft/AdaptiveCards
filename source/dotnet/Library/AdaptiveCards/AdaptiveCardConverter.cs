@@ -55,26 +55,32 @@ namespace AdaptiveCards
             return card;
         }
 
+        // Checks if lang is valid. Creates warning if not.
         private string ValidateLang(string val)
         {
-            // lang proprty missing or left empty
-            if (string.IsNullOrEmpty(val))
+            if (!string.IsNullOrEmpty(val))
             {
-                return CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+                if (val.Length != 2)
+                {
+                    Warnings.Add(new AdaptiveWarning((int)WarningStatusCode.InvalidLanguage, "Invalid language identifier: " + val));
+                }
+                else
+                {
+                    try
+                    {
+                        var culture = new CultureInfo(val);
+                        if (culture.DisplayName.Contains("Unknown Language"))
+                        {
+                            Warnings.Add(new AdaptiveWarning((int)WarningStatusCode.InvalidLanguage, "Invalid language identifier: " + val));
+                        }
+                    }
+                    catch (CultureNotFoundException)
+                    {
+                        Warnings.Add(new AdaptiveWarning((int)WarningStatusCode.InvalidLanguage, "Invalid language identifier: " + val));
+                    }
+                }
             }
-
-            try
-            {
-                var provider = new CultureInfo(val);
-                return val;
-            }
-            catch (CultureNotFoundException)
-            {
-                Warnings.Add(new AdaptiveWarning((int)WarningStatusCode.InvalidLanguage, "Invalid language identifier: " + val));
-
-                // Default to current system CultureInfo
-                return CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
-            }
+            return val;
         }
 
         public override bool CanConvert(Type objectType)

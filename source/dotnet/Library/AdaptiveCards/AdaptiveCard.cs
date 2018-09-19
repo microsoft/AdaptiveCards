@@ -170,29 +170,7 @@ namespace AdaptiveCards
         [XmlAttribute]
 #endif
         [DefaultValue(null)]
-        private string _lang;
-        public string Lang
-        {
-            get => _lang;
-            set
-            {
-                _lang = value;
-
-                Util.PropagateLang(_lang, Body);
-
-                foreach (AdaptiveAction element in Actions)
-                {
-                    if (element.GetType().Equals(AdaptiveShowCardAction.TypeName))
-                    {
-                        var showCard = (AdaptiveShowCardAction)element;
-                        if (showCard != null)
-                        {
-                            showCard.SetLang(_lang);
-                        }
-                    }
-                }
-            }
-        }
+        public string Lang { get; set; }
 
         /// <summary>
         ///     The content alignment for the eelment inside the container.

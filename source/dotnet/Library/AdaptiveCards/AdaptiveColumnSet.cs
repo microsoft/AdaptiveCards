@@ -38,13 +38,5 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(null)]
         public AdaptiveAction SelectAction { get; set; }
-
-        public void SetLang(string value)
-        {
-            foreach(AdaptiveColumn column in Columns)
-            {
-                column.SetLang(value);
-            }
-        }
     }
 }

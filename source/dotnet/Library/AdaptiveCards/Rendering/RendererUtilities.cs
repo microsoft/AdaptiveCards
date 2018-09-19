@@ -69,13 +69,31 @@ namespace AdaptiveCards.Rendering
                                 dateTimeFormat = "t";
                             }
 
-                            var provider = new CultureInfo(lang);
+                            var provider = GetValidCultureInfo(lang);
                             text = text.Replace(match.Value, date.ToString(dateTimeFormat, provider));
                         }
                     }
                 }
             }
             return text ?? String.Empty;
+        }
+
+        // Get appropriate CultureInfo for lang
+        private static CultureInfo GetValidCultureInfo(string val)
+        {
+            if (val.Length != 2)
+            {
+                return CultureInfo.CurrentCulture;
+            }
+
+            try
+            {
+                return new CultureInfo(val);
+            }
+            catch (CultureNotFoundException)
+            {
+                return CultureInfo.CurrentCulture;
+            }
         }
 
         private enum Functions

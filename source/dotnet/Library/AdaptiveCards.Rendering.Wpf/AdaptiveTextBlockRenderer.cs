@@ -123,7 +123,7 @@ namespace AdaptiveCards.Rendering.Wpf
             marked.Options.Mangle = false;
             marked.Options.Sanitize = true;
 
-            string text = RendererUtilities.ApplyTextFunctions(textBlock.Text, textBlock.Lang);
+            string text = RendererUtilities.ApplyTextFunctions(textBlock.Text, context.Lang);
             // uiTextBlock.Text = textBlock.Text;
             string xaml = $"<TextBlock  xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">{marked.Parse(text)}</TextBlock>";
             StringReader stringReader = new StringReader(xaml);
