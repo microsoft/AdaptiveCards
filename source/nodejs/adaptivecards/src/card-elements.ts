@@ -5325,7 +5325,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static readonly elementTypeRegistry = new ElementTypeRegistry();
     static readonly actionTypeRegistry = new ActionTypeRegistry();
 
-    static onAnchorClicked: (elementd: CardElement, anchor: HTMLAnchorElement) => boolean = null;
+    static onAnchorClicked: (element: CardElement, anchor: HTMLAnchorElement) => boolean = null;
     static onExecuteAction: (action: Action) => void = null;
     static onElementVisibilityChanged: (element: CardElement) => void = null;
     static onImageLoaded: (image: Image) => void = null;
