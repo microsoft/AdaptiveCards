@@ -4391,7 +4391,7 @@ function raiseAnchorClickedEvent(element: CardElement, anchor: HTMLAnchorElement
     let card = element.getRootElement() as AdaptiveCard;
     let onAnchorClickedHandler = (card && card.onAnchorClicked) ? card.onAnchorClicked : AdaptiveCard.onAnchorClicked;
 
-    return onAnchorClickedHandler != null ? onAnchorClickedHandler(card, anchor) : false;
+    return onAnchorClickedHandler != null ? onAnchorClickedHandler(element, anchor) : false;
 }
 
 function raiseExecuteActionEvent(action: Action) {
