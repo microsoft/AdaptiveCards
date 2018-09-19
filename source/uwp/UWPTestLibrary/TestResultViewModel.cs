@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
 using System.Threading.Tasks;
-using Windows.ApplicationModel;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
-using UWPTestLibrary;
 
 namespace UWPTestLibrary
 {

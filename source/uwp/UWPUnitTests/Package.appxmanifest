@@ -6,7 +6,7 @@
   IgnorableNamespaces="uap mp">
 
   <Identity Name="4df22023-bf05-4593-bf9e-2b7230535803"
-            Publisher="CN=rebecch"
+            Publisher="CN=AdaptiveCards"
             Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="4df22023-bf05-4593-bf9e-2b7230535803" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>

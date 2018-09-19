@@ -1,11 +1,6 @@
-﻿using AdaptiveCardTestApp.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.UI.Xaml.Controls;
+﻿using System.Threading.Tasks;
 using UWPTestLibrary;
+using Windows.UI.Xaml.Controls;
 
 namespace AdaptiveCardTestApp.Pages
 {

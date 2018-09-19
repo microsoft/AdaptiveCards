@@ -1,17 +1,16 @@
-﻿using System;
+﻿using AdaptiveCards.Rendering.Uwp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Windows.Storage;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Shapes;
-using Windows.UI.Xaml.Media.Imaging;
-using AdaptiveCards.Rendering.Uwp;
-using Windows.UI;
-using Windows.Graphics.Imaging;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
+using Windows.Graphics.Imaging;
+using Windows.Storage;
+using Windows.UI;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace UWPTestLibrary
 {
