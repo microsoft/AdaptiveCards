@@ -243,7 +243,7 @@ public class MediaRenderer extends BaseCardElementRenderer
                     {
                         try
                         {
-                            new MediaLoaderAsync(mediaView, mediaSource, hostConfig, isAudio, context).execute("").get();
+                            new MediaLoaderAsync(mediaView, mediaSource, hostConfig, isAudio, context).execute("");
                             break;
                         }
                         catch (Exception e)

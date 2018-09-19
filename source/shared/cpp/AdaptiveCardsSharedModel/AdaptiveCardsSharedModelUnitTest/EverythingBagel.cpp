@@ -416,11 +416,11 @@ namespace AdaptiveCardsSharedModelUnitTest
                 Assert::IsTrue(!subCard->GetSelectAction());
                 Assert::AreEqual(""s, subCard->GetSpeak());
                 Assert::IsTrue(ContainerStyle::None == subCard->GetStyle());
-                Assert::AreEqual(""s, subCard->GetVersion());
+                Assert::AreEqual("1.0"s, subCard->GetVersion());
                 Assert::IsTrue(VerticalContentAlignment::Top == subCard->GetVerticalContentAlignment());
 
                 //Logger::WriteMessage("Submit Data: '"s.append(subCard->Serialize()).append("'").c_str());
-                Assert::AreEqual("{\"actions\":[],\"body\":[{\"isSubtle\":true,\"text\":\"Action.ShowCard text\",\"type\":\"TextBlock\"}],\"lang\":\"en\",\"type\":\"AdaptiveCard\",\"version\":\"\"}\n"s,
+                Assert::AreEqual("{\"actions\":[],\"body\":[{\"isSubtle\":true,\"text\":\"Action.ShowCard text\",\"type\":\"TextBlock\"}],\"lang\":\"en\",\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}\n"s,
                     subCard->Serialize());
             }
         }
@@ -428,10 +428,11 @@ namespace AdaptiveCardsSharedModelUnitTest
 
     void ValidateFallbackCard(const AdaptiveCard &everythingBagel)
     {
-        auto fallbackCard = everythingBagel.MakeFallbackTextCard("fallback"s, "en"s);
+        auto fallbackCard = everythingBagel.MakeFallbackTextCard("fallback"s, "en"s, "speak"s);
         auto fallbackTextBlock = std::static_pointer_cast<TextBlock>(fallbackCard->GetBody().at(0));
         Assert::AreEqual("fallback"s, fallbackTextBlock->GetText());
         Assert::AreEqual("en"s, fallbackTextBlock->GetLanguage());
+        Assert::AreEqual("speak"s, fallbackCard->GetSpeak());
     }
 
     TEST_CLASS(EverythingBagel)

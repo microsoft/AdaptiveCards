@@ -34,6 +34,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             ElementRenderers.Set<AdaptiveTextBlock>(AdaptiveTextBlockRenderer.Render);
             ElementRenderers.Set<AdaptiveImage>(AdaptiveImageRenderer.Render);
+            ElementRenderers.Set<AdaptiveMedia>(AdaptiveMediaRenderer.Render);
 
             ElementRenderers.Set<AdaptiveContainer>(AdaptiveContainerRenderer.Render);
             ElementRenderers.Set<AdaptiveColumn>(AdaptiveColumnRenderer.Render);
@@ -103,6 +104,19 @@ namespace AdaptiveCards.Rendering.Wpf
 
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
+            switch (card.VerticalContentAlignment)
+            {
+                case AdaptiveVerticalContentAlignment.Center:
+                    grid.VerticalAlignment = VerticalAlignment.Center;
+                    break;
+                case AdaptiveVerticalContentAlignment.Bottom:
+                    grid.VerticalAlignment = VerticalAlignment.Bottom;
+                    break;
+                case AdaptiveVerticalContentAlignment.Top:
+                default:
+                    break;
+            }
+
             AdaptiveContainerRenderer.AddContainerElements(grid, card.Body, context);
             AdaptiveActionSetRenderer.AddActions(grid, card.Actions, context);
 
@@ -163,12 +177,17 @@ namespace AdaptiveCards.Rendering.Wpf
             if (card == null) throw new ArgumentNullException(nameof(card));
             RenderedAdaptiveCard renderCard = null;
 
-            void Callback(object sender, AdaptiveActionEventArgs args)
+            void ActionCallback(object sender, AdaptiveActionEventArgs args)
             {
                 renderCard?.InvokeOnAction(args);
             }
 
-            var context = new AdaptiveRenderContext(Callback, null)
+            void MediaClickCallback(object sender, AdaptiveMediaEventArgs args)
+            {
+                renderCard?.InvokeOnMediaClick(args);
+            }
+
+            var context = new AdaptiveRenderContext(ActionCallback, null, MediaClickCallback)
             {
                 ResourceResolvers = ResourceResolvers,
                 ActionHandlers = ActionHandlers,
@@ -211,7 +230,7 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 var cardAssets = await LoadAssetsForCardAsync(card, cancellationToken);
 
-                var context = new AdaptiveRenderContext(null, null)
+                var context = new AdaptiveRenderContext(null, null, null)
                 {
                     CardAssets = cardAssets,
                     ResourceResolvers = ResourceResolvers,

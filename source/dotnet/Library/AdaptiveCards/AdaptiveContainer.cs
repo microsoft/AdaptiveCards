@@ -38,6 +38,7 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveNumberInput))]
         [XmlElement(typeof(AdaptiveChoiceSetInput))]
         [XmlElement(typeof(AdaptiveToggleInput))]
+        [XmlElement(typeof(AdaptiveMedia))]
 #endif
         public List<AdaptiveElement> Items { get; set; } = new List<AdaptiveElement>();
 
@@ -60,5 +61,15 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(null)]
         public AdaptiveContainerStyle? Style { get; set; }
+
+        /// <summary>
+        ///     The content alignment for the eelment inside the container.
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(typeof(AdaptiveVerticalContentAlignment), "top")]
+        public AdaptiveVerticalContentAlignment VerticalContentAlignment { get; set; }
     }
 }

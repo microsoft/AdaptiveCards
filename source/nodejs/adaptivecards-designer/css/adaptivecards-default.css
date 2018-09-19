@@ -9,6 +9,33 @@
     font-style: normal;
 }
 
+.default-ac-media-poster {
+}
+
+.default-ac-media-poster.empty {
+    height: 200px;
+    background-color: #F2F2F2;
+}
+
+.default-ac-media-playButton {
+    width: 56px;
+    height: 56px;
+    border: 1px solid #EEEEEE;
+    border-radius: 28px;
+    box-shadow: 0px 0px 10px #EEEEEE;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: black;
+    cursor: pointer;
+}
+
+.default-ac-media-playButton-arrow {
+    color: black;
+}
+
+.default-ac-media-playButton:hover {
+    background-color: white;
+}
+
 a.default-ac-anchor {
     text-decoration: none;
 }

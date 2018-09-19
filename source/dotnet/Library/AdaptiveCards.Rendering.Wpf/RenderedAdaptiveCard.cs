@@ -31,5 +31,15 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             OnAction?.Invoke(this, args);
         }
+
+        /// <summary>
+        /// Event handler for when user clicks a media.
+        /// </summary>
+        public event TypedEventHandler<RenderedAdaptiveCard, AdaptiveMediaEventArgs> OnMediaClicked;
+
+        internal void InvokeOnMediaClick(AdaptiveMediaEventArgs args)
+        {
+            OnMediaClicked?.Invoke(this, args);
+        }
     }
 }

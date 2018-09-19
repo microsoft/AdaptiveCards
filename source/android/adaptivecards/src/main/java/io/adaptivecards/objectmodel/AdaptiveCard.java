@@ -181,8 +181,8 @@ public class AdaptiveCard {
     return (cPtr == 0) ? null : new ParseResult(cPtr, true);
   }
 
-  public static AdaptiveCard MakeFallbackTextCard(String fallbackText, String language) throws java.io.IOException {
-    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_MakeFallbackTextCard(fallbackText, language);
+  public static AdaptiveCard MakeFallbackTextCard(String fallbackText, String language, String speak) throws java.io.IOException {
+    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_MakeFallbackTextCard(fallbackText, language, speak);
     return (cPtr == 0) ? null : new AdaptiveCard(cPtr, true);
   }
 

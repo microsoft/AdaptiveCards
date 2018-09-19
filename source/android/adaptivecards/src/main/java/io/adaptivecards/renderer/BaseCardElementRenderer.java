@@ -92,13 +92,13 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
         return android.graphics.Color.parseColor(isSubtle ? colorConfig.getSubtleColor() : colorConfig.getDefaultColor());
     }
 
-    protected static void setSpacingAndSeparator(
-            Context context,
-            ViewGroup viewGroup,
-            Spacing spacing,
-            boolean separator,
-            HostConfig hostConfig,
-            boolean horizontalLine)
+    protected static void setSpacingAndSeparator(Context context,
+                                               ViewGroup viewGroup,
+                                               Spacing spacing,
+                                               boolean separator,
+                                               HostConfig hostConfig,
+                                               boolean horizontalLine,
+                                               boolean isImageSet)
     {
         if (viewGroup.getChildCount() <= 0)
         {
@@ -125,11 +125,24 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
         }
         else
         {
+            // As ImageSets use HorizontalFlowLayout, assigning the spacing between images as MatchParent will make them
+            // use more space than needed (making a second row of images to render below the space for the imageSet)
             params = new LinearLayout.LayoutParams(
                     horizontalLine ? LinearLayout.LayoutParams.MATCH_PARENT : spacingSize,
-                    horizontalLine ? spacingSize : LinearLayout.LayoutParams.MATCH_PARENT);
+                    horizontalLine ? spacingSize : (isImageSet ? 0 : LinearLayout.LayoutParams.MATCH_PARENT));
         }
         view.setLayoutParams(params);
         viewGroup.addView(view);
+    }
+
+    protected static void setSpacingAndSeparator(
+            Context context,
+            ViewGroup viewGroup,
+            Spacing spacing,
+            boolean separator,
+            HostConfig hostConfig,
+            boolean horizontalLine)
+    {
+        setSpacingAndSeparator(context, viewGroup, spacing, separator, hostConfig, horizontalLine, false /* isImageSet */);
     }
 }

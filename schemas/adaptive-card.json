@@ -83,7 +83,6 @@
       },
       "required": [
         "type",
-        "title",
         "url"
       ],
       "type": "object"
@@ -116,7 +115,6 @@
       },
       "required": [
         "type",
-        "title",
         "card"
       ]
     },
@@ -151,8 +149,7 @@
         }
       },
       "required": [
-        "type",
-        "title"
+        "type"
       ]
     },
     "Actions": {

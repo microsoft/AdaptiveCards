@@ -68,7 +68,7 @@
 						"type": "Input.Text",
 						"id": "SteakOther",
 						"isMultiline": true,
-						"placeholder": "Any other preparation requestes?"
+						"placeholder": "Any other preparation requests?"
 					}
 				],
 				"actions": [
@@ -110,7 +110,7 @@
 						"type": "Input.Text",
 						"id": "ChickenOther",
 						"isMultiline": true,
-						"placeholder": "Any other preparation requestes?"
+						"placeholder": "Any other preparation requests?"
 					}
 				],
 				"actions": [
@@ -147,7 +147,7 @@
 						"type": "Input.Text",
 						"id": "VegOther",
 						"isMultiline": true,
-						"placeholder": "Any other preparation requestes?"
+						"placeholder": "Any other preparation requests?"
 					}
 				],
 				"actions": [
