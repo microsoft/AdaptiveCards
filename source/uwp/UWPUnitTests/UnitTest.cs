@@ -1,15 +1,14 @@
-﻿
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading;
 using System.Threading.Tasks;
 using UWPTestLibrary;
-using Windows.ApplicationModel.Core;
-using Windows.UI.Core;
-using Windows.Storage;
 using Windows.ApplicationModel;
-using AdaptiveCards.Rendering.Uwp;
+using Windows.ApplicationModel.Core;
+using Windows.Storage;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -57,16 +56,36 @@ namespace UWPUnitTests
 
             string passedCards = "";
 
+            List<Exception> exceptions = new List<Exception>();
+
             foreach (var hostConfig in hostConfigs)
             {
                 foreach (var card in cards)
                 {
-                    _count++;
-                    passedCards += await TestCardInDispatcher(hostConfig, card);
+                    try
+                    {
+                        _count++;
+                        passedCards += await TestCardInDispatcher(hostConfig, card);
+                    }
+                    catch (Exception thrown)
+                    {
+                        exceptions.Add(thrown);
+                    }
                 }
             }
 
             _count++;
+
+            if (exceptions.Count != 0)
+            {
+                string message = string.Empty;
+                foreach (var e in exceptions)
+                {
+                    message += $"{e.Message}{Environment.NewLine}";
+                }
+
+                throw new Exception($"Test failed with {exceptions.Count} failures.{Environment.NewLine}{message}");
+            }
         }
 
         public async Task<string> TestCardInDispatcher(FileViewModel hostConfig, FileViewModel card)
@@ -122,7 +141,7 @@ namespace UWPUnitTests
                 await imageWaiter.WaitOnAllImagesAsync();
 
             }
-            await Task.Delay(1000*60*10);
+            //await Task.Delay(1000*60*10);
 
             StorageFile imageResultFile = null;
             StorageFile jsonResultFile = null;
@@ -147,14 +166,14 @@ namespace UWPUnitTests
                 sourceHostConfigsFolder: _sourceHostConfigsFolder,
                 sourceCardsFolder: _sourceCardsFolder);
 
-            if ((result.Status != TestStatus.Passed) && 
+            if ((result.Status != TestStatus.Passed) &&
                 (result.Status != TestStatus.PassedButSourceWasChanged))
             {
-                return "";
+                //return "";
 
                 //await result.SaveAsNewExpectedAsync();
 
-                //throw new Exception();
+                throw new Exception("Failed: ${result.Status.ToString()} ${result.CardName} ${result.HostConfigName}");
             }
 
             return hostConfigFile.Name + cardFile.Name + "\n";
