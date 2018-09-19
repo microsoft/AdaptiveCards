@@ -133,9 +133,177 @@
     }];
 }
 
-- (void)testPerformanceOnSimpleCardsTextBlock{
+- (void)testPerformanceOnRestaurant {
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"Restaurant"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnFoodOrder {
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"FoodOrder"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnActivityUpdate {
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"ActivityUpdate"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsTextBlock {
     // This is an example of a performance test case.
     NSArray<NSString *> *payloadNames = @[@"TextBlock.MaxLines", @"TextBlock.Wrap", @"TextBlock.HorizontalAlignment"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsTextBlockColor {
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"TextBlock.Color"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsTextBlockDateTimeFormatting{
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"TextBlock.DateTimeFormatting"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsTextBlockHorizontalAlignment{
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"TextBlock.HorizontalAlignment"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsTextBlockSubtle{
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"TextBlock.IsSubtle"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsTextBlockLists{
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"TextBlock.Lists"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsTextBlockMarkDown{
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"TextBlock.Markdown"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsTextBlockMaxLines{
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"TextBlock.MaxLines"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsTextBlockSize{
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"TextBlock.Size"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsTextBlockSpacing{
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"TextBlock.Spacing"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsTextBlockWeight{
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"TextBlock.Weight"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsTextBlockWrap{
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"TextBlock.Wrap"];
     NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
     [self measureBlock:^{
         // Put the code you want to measure the time of here.
@@ -180,6 +348,5 @@
         }
     }];
 }
-
 
 @end
