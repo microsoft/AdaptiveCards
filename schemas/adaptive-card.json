@@ -91,7 +91,7 @@
     "Action.ShowCard": {
       "type": "object",
       "additionalProperties": true,
-      "description": "Defines an inline AdaptiveCard which is shown to the user when the button or link is clicked.",
+      "description": "Defines an AdaptiveCard which is shown to the user when the button or link is clicked.",
       "properties": {
         "type": {
           "type": "string",
@@ -340,7 +340,6 @@
         }
       },
       "required": [
-        "type",
         "items"
       ]
     },
@@ -372,7 +371,10 @@
             "ColumnSet"
           ]
         }
-      }
+      },
+      "required": [
+        "type"
+      ]
     },
     "Container": {
       "additionalProperties": true,
@@ -495,12 +497,6 @@
       "description": "Defines a source for a Media element",
       "version": "1.1",
       "properties": {
-        "type": {
-          "type": "string",
-          "enum": [
-            "MediaSource"
-          ]
-        },
         "mimeType": {
           "type": "string",
           "description": "Mime type of associated media (e.g. `\"video/mp4\"`)."
@@ -519,7 +515,7 @@
     "Media": {
       "additionalProperties": true,
       "type": "object",
-      "description": "Displays audio or video.",
+      "description": "Displays a media player for audio or video content.",
       "version": "1.1",
       "allOf": [
         {
@@ -558,7 +554,7 @@
     "Image": {
       "additionalProperties": true,
       "type": "object",
-      "description": "Displays images.",
+      "description": "Displays an image.",
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"
@@ -703,7 +699,7 @@
     "Input.Date": {
       "additionalProperties": true,
       "type": "object",
-      "description": "Collects a date from the user.",
+      "description": "Lets a user choose a date.",
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"
@@ -746,7 +742,7 @@
     "Input.Number": {
       "additionalProperties": true,
       "type": "object",
-      "description": "Collects a number from the user.",
+      "description": "Allows a user to enter a number.",
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"
@@ -789,7 +785,7 @@
     "Input.Text": {
       "additionalProperties": true,
       "type": "object",
-      "description": "Collects text from the user.",
+      "description": "Lets a user enter text.",
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"
@@ -820,6 +816,7 @@
           "type": "string",
           "description": "Must be `\"Input.Text\"`.",
           "enum": [
+            "Input.Text"
           ]
         },
         "value": {
@@ -835,7 +832,7 @@
     "Input.Time": {
       "additionalProperties": true,
       "type": "object",
-      "description": "Collects a time from the user.",
+      "description": "Lets a user select a time.",
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"
@@ -878,7 +875,7 @@
     "Input.Toggle": {
       "additionalProperties": true,
       "type": "object",
-      "description": "Collects a true/false response from the user.",
+      "description": "Lets a user choose between two options.",
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"
@@ -925,7 +922,7 @@
     "TextBlock": {
       "additionalProperties": true,
       "type": "object",
-      "description": "Displays text allowing control over font sizes, weight, and color.",
+      "description": "Displays text, allowing control over font sizes, weight, and color.",
       "allOf": [
         {
           "$ref": "#/definitions/CardElement"
