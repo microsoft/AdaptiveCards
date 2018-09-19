@@ -59,45 +59,47 @@ public:
     std::vector<std::shared_ptr<BaseActionElement>>& GetActions();
     const std::vector<std::shared_ptr<BaseActionElement>>& GetActions() const;
 
-    std::vector<std::string> GetResourceUris();
+    std::vector<RemoteResourceInformation> GetResourceInformation();
 
     const CardElementType GetElementType() const;
 #ifdef __ANDROID__
     static std::shared_ptr<ParseResult> DeserializeFromFile(const std::string& jsonFile,
-        double rendererVersion,
+        std::string rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
     static std::shared_ptr<ParseResult> Deserialize(const Json::Value& json,
-        double rendererVersion,
+        std::string rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
     static std::shared_ptr<ParseResult> DeserializeFromString(const std::string& jsonString,
-        double rendererVersion,
+        std::string rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
     static std::shared_ptr<AdaptiveCard> MakeFallbackTextCard(
         const std::string& fallbackText,
-        const std::string& language) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
+        const std::string& language,
+        const std::string& speak) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
 #else
     static std::shared_ptr<ParseResult> DeserializeFromFile(
         const std::string& jsonFile,
-        double rendererVersion,
+        std::string rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr);
 
     static std::shared_ptr<ParseResult> Deserialize(const Json::Value& json,
-        double rendererVersion,
+        std::string rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr);
 
     static std::shared_ptr<ParseResult> DeserializeFromString(const std::string& jsonString,
-        double rendererVersion,
+        std::string rendererVersion,
         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr);
 
     static std::shared_ptr<AdaptiveCard> MakeFallbackTextCard(
         const std::string& fallbackText,
-        const std::string& language);
+        const std::string& language,
+        const std::string& speak);
 
 #endif // __ANDROID__
     Json::Value SerializeToJsonValue() const;

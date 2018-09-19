@@ -131,7 +131,9 @@ namespace AdaptiveCards.Test
       ""inlineTopMargin"": 16
     },
     ""actionsOrientation"": ""vertical"",
-    ""actionAlignment"": ""stretch""
+    ""actionAlignment"": ""stretch"",
+    ""iconPlacement"": ""LeftOfTitle"",
+    ""iconSize"": 20
   },
   ""adaptiveCard"": {
     ""allowCustomStyle"": false
@@ -142,6 +144,9 @@ namespace AdaptiveCards.Test
   ""imageSet"": {
     ""imageSize"": ""small"",
     ""maxImageHeight"": 100
+  },
+  ""media"": {
+    ""defaultPoster"": ""http://adaptivecards.io/content/media/poster.png""
   },
   ""factSet"": {
     ""title"": {
@@ -212,6 +217,8 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(16, hostConfig.Actions.ShowCard.InlineTopMargin);
             Assert.AreEqual(ActionsOrientation.Vertical, hostConfig.Actions.ActionsOrientation);
             Assert.AreEqual(AdaptiveHorizontalAlignment.Stretch, hostConfig.Actions.ActionAlignment);
+            Assert.AreEqual(IconPlacement.LeftOfTitle, hostConfig.Actions.IconPlacement);
+            Assert.AreEqual(20, hostConfig.Actions.IconSize);
 
             // TODO: Image property not supported (I assume this is where you can set the default image size?)
 
@@ -221,6 +228,39 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(AdaptiveTextColor.Accent, hostConfig.FactSet.Title.Color);
             Assert.AreEqual(false, hostConfig.FactSet.Title.IsSubtle);
             Assert.AreEqual(10, hostConfig.FactSet.Spacing);
+
+            // Media config
+            Assert.AreEqual("http://adaptivecards.io/content/media/poster.png", hostConfig.Media.DefaultPoster);
+        }
+
+        [TestMethod]
+        public void MediaConfig()
+        {
+            // Default values
+            var defaultHostConfig = AdaptiveHostConfig.FromJson(@"{}");
+
+            Assert.IsNotNull(defaultHostConfig);
+
+            Assert.IsNotNull(defaultHostConfig.Media);
+            Assert.IsNull(defaultHostConfig.Media.DefaultPoster);
+            Assert.IsNull(defaultHostConfig.Media.PlayButton);
+            Assert.AreEqual(true, defaultHostConfig.Media.AllowInlinePlayback);
+
+            // Default values
+            var hostConfig = AdaptiveHostConfig.FromJson(@"{
+  ""media"": {
+    ""defaultPoster"": ""http://adaptivecards.io/content/media/poster.png"",
+    ""playButton"": ""http://adaptivecards.io/content/media/playButton.png"",
+    ""allowInlinePlayback"": false
+  }
+}");
+
+            Assert.IsNotNull(hostConfig);
+
+            Assert.IsNotNull(hostConfig.Media);
+            Assert.AreEqual("http://adaptivecards.io/content/media/poster.png", hostConfig.Media.DefaultPoster);
+            Assert.AreEqual("http://adaptivecards.io/content/media/playButton.png", hostConfig.Media.PlayButton);
+            Assert.AreEqual(false, hostConfig.Media.AllowInlinePlayback);
         }
     }
 }

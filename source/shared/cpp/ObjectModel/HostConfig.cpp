@@ -218,6 +218,9 @@ ActionsConfig ActionsConfig::Deserialize(const Json::Value& json, const ActionsC
     result.iconPlacement = ParseUtil::GetEnumValue<IconPlacement>(
         json, AdaptiveCardSchemaKey::IconPlacement, defaultValue.iconPlacement, IconPlacementFromString);
 
+    result.iconSize = ParseUtil::GetUInt(
+        json, AdaptiveCardSchemaKey::IconSize, defaultValue.iconSize);
+
     return result;
 }
 
@@ -325,6 +328,9 @@ MediaConfig MediaConfig::Deserialize(const Json::Value& json, const MediaConfig&
 
     std::string playButton = ParseUtil::GetString(json, AdaptiveCardSchemaKey::PlayButton);
     result.playButton = playButton == "" ? defaultValue.playButton : playButton;
+
+    result.allowInlinePlayback = ParseUtil::GetBool(
+        json, AdaptiveCardSchemaKey::AllowInlinePlayback, defaultValue.allowInlinePlayback);
    
     return result;
 }

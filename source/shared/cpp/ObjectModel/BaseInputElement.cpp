@@ -4,13 +4,12 @@
 
 using namespace AdaptiveSharedNamespace;
 
-BaseInputElement::BaseInputElement(CardElementType elementType) :
-    BaseCardElement(elementType)
+BaseInputElement::BaseInputElement(CardElementType elementType) : BaseCardElement(elementType), m_isRequired(false)
 {
 }
 
 BaseInputElement::BaseInputElement(CardElementType elementType, Spacing spacing, bool separator, HeightType height) :
-    BaseCardElement(elementType, spacing, separator, height)
+    BaseCardElement(elementType, spacing, separator, height), m_isRequired(false)
 {
 }
 

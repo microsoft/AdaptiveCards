@@ -1,4 +1,4 @@
-{
+ {
   "$schema": "http://json-schema.org/draft-06/schema#",
   "id": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "object",
@@ -73,7 +73,6 @@
       },
       "required": [
         "type",
-        "title",
         "url"
       ],
       "type": "object"
@@ -100,7 +99,6 @@
       },
       "required": [
         "type",
-        "title",
         "card"
       ]
     },
@@ -129,8 +127,7 @@
         }
       },
       "required": [
-        "type",
-        "title"
+        "type"
       ]
     },
     "Actions": {
@@ -159,6 +156,10 @@
         "body": {
           "description": "The Card Elements to show in the primary card region",
           "$ref": "#/definitions/CardElements"
+        },
+        "selectAction": {
+          "$ref": "#/definitions/Action",
+          "description": "An Action that will be invoked when the card is tapped or selected. Action.ShowCard not supported"
         }
       },
       "required": [

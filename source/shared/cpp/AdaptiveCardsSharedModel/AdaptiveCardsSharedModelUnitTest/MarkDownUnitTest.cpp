@@ -18,7 +18,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
     };
 
-    TEST_CLASS(EmphasisLeftDelimterTest)
+    TEST_CLASS(EmphasisLeftDelimiterTest)
     {
         TEST_METHOD(LeftDelimiterTest)
         {
@@ -78,7 +78,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual<string>("<p>foo-<em>(bar)</em></p>", parser.TransformToHtml());
         }
     };
-    TEST_CLASS(EmphasisDelimterTest)
+    TEST_CLASS(EmphasisDelimiterTest)
     {
         TEST_METHOD(MatchingRightDelimiterTest)
         {
@@ -95,7 +95,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             MarkDownParser parser("*foo *");
             Assert::AreEqual<string>("<p>*foo *</p>", parser.TransformToHtml());
         }
-        TEST_METHOD(ValidDelimtersSurroundedByPunctuationTest)
+        TEST_METHOD(ValidDelimitersSurroundedByPunctuationTest)
         {
             MarkDownParser parser("*(*foo*)*");
             Assert::AreEqual<string>("<p><em>(<em>foo</em>)</em></p>", parser.TransformToHtml());
@@ -127,7 +127,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
     };
 
-    TEST_CLASS(StrongDelimterTest)
+    TEST_CLASS(StrongDelimiterTest)
     {
         TEST_METHOD(SimpleValidCaseTest)
         {
@@ -562,6 +562,27 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             MarkDownParser parser("Green Eggs & Ham");
             Assert::AreEqual<string>("<p>Green Eggs &amp; Ham</p>", parser.TransformToHtml());
+        }
+
+        TEST_METHOD(CanDetectEscapeTest)
+        {
+            MarkDownParser parser("");
+            Assert::AreEqual<bool>(false, parser.IsEscaped());
+
+            parser.TransformToHtml();
+            Assert::AreEqual<bool>(false, parser.IsEscaped());
+
+            MarkDownParser parser1("&");
+            parser1.TransformToHtml();
+            Assert::AreEqual<bool>(true, parser1.IsEscaped());
+
+            MarkDownParser parser2("Hello World&");
+            parser2.TransformToHtml();
+            Assert::AreEqual<bool>(true, parser2.IsEscaped());
+
+            MarkDownParser parser3(" & ");
+            parser3.TransformToHtml();
+            Assert::AreEqual<bool>(true, parser3.IsEscaped());
         }
     };
 }

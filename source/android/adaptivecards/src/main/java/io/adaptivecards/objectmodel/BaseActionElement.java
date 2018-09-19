@@ -57,7 +57,12 @@ public class BaseActionElement {
   }
 
   public BaseActionElement(ActionType type) {
-    this(AdaptiveCardObjectModelJNI.new_BaseActionElement(type.swigValue()), true);
+    this(AdaptiveCardObjectModelJNI.new_BaseActionElement__SWIG_0(type.swigValue()), true);
+    AdaptiveCardObjectModelJNI.BaseActionElement_director_connect(this, swigCPtr, swigCMemOwn, true);
+  }
+
+  public BaseActionElement(BaseActionElement arg0) {
+    this(AdaptiveCardObjectModelJNI.new_BaseActionElement__SWIG_1(BaseActionElement.getCPtr(arg0), arg0), true);
     AdaptiveCardObjectModelJNI.BaseActionElement_director_connect(this, swigCPtr, swigCMemOwn, true);
   }
 
@@ -113,8 +118,8 @@ public class BaseActionElement {
     AdaptiveCardObjectModelJNI.BaseActionElement_SetAdditionalProperties(swigCPtr, this, JsonValue.getCPtr(additionalProperties), additionalProperties);
   }
 
-  public void GetResourceUris(StringVector resourceUris) {
-    if (getClass() == BaseActionElement.class) AdaptiveCardObjectModelJNI.BaseActionElement_GetResourceUris(swigCPtr, this, StringVector.getCPtr(resourceUris), resourceUris); else AdaptiveCardObjectModelJNI.BaseActionElement_GetResourceUrisSwigExplicitBaseActionElement(swigCPtr, this, StringVector.getCPtr(resourceUris), resourceUris);
+  public void GetResourceInformation(RemoteResourceInformationVector resourceUris) {
+    if (getClass() == BaseActionElement.class) AdaptiveCardObjectModelJNI.BaseActionElement_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceUris), resourceUris); else AdaptiveCardObjectModelJNI.BaseActionElement_GetResourceInformationSwigExplicitBaseActionElement(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceUris), resourceUris);
   }
 
   public Object swigOriginalObject() {

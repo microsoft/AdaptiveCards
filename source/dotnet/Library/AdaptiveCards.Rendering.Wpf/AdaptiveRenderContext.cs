@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -19,13 +20,17 @@ namespace AdaptiveCards.Rendering.Wpf
         public List<Task> AssetTasks { get; } = new List<Task>();
 
         public AdaptiveRenderContext(Action<object, AdaptiveActionEventArgs> actionCallback,
-            Action<object, MissingInputEventArgs> missingDataCallback)
+            Action<object, MissingInputEventArgs> missingDataCallback,
+            Action<object, AdaptiveMediaEventArgs> mediaClickCallback)
         {
             if (actionCallback != null)
                 OnAction += (obj, args) => actionCallback(obj, args);
 
             if (missingDataCallback != null)
                 OnMissingInput += (obj, args) => missingDataCallback(obj, args);
+
+            if (mediaClickCallback != null)
+                OnMediaClick += (obj, args) => mediaClickCallback(obj, args);
         }
 
         public AdaptiveHostConfig Config { get; set; } = new AdaptiveHostConfig();
@@ -40,11 +45,15 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public ResourceResolver ResourceResolvers { get; set; }
 
+        public bool IsRenderingSelectAction { get; set; }
+
         public IDictionary<Uri, MemoryStream> CardAssets { get; set; } = new Dictionary<Uri, MemoryStream>();
 
         public IDictionary<string, Func<string>> InputBindings = new Dictionary<string, Func<string>>();
 
         public event EventHandler<AdaptiveActionEventArgs> OnAction;
+
+        public event EventHandler<AdaptiveMediaEventArgs> OnMediaClick;
 
         /// <summary>
         /// Event fires when missing input for submit/http actions
@@ -61,6 +70,11 @@ namespace AdaptiveCards.Rendering.Wpf
             OnMissingInput?.Invoke(sender, args);
         }
 
+        public void ClickMedia(FrameworkElement ui, AdaptiveMediaEventArgs args)
+        {
+            OnMediaClick?.Invoke(ui, args);
+        }
+
         /// <summary>
         /// All remote assets should be resolved through this method for tracking
         /// </summary>
@@ -69,13 +83,13 @@ namespace AdaptiveCards.Rendering.Wpf
             var completeTask = new TaskCompletionSource<object>();
             AssetTasks.Add(completeTask.Task);
 
-            // Load the stream from the pre-populated CardAssets or try to load from the ResourceResolver
-            var streamTask = CardAssets.TryGetValue(url, out var s) ? Task.FromResult(s) : ResourceResolvers.LoadAssetAsync(url);
-
-            Debug.WriteLine($"ASSETS: Starting asset down task for {url}");
-
             try
             {
+                // Load the stream from the pre-populated CardAssets or try to load from the ResourceResolver
+                var streamTask = CardAssets.TryGetValue(url, out var s) ? Task.FromResult(s) : ResourceResolvers.LoadAssetAsync(url);
+
+                Debug.WriteLine($"ASSETS: Starting asset down task for {url}");
+
                 var source = new BitmapImage();
 
                 var stream = await streamTask;
@@ -111,6 +125,10 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
+        // Flag to distinuish the main card and action show cards
+        public int CardDepth = 0;
+
+        public IList<Tuple<FrameworkElement, Button>> ActionShowCards = new List<Tuple<FrameworkElement, Button>>();
 
         public virtual Style GetStyle(string styleName)
         {
@@ -148,7 +166,21 @@ namespace AdaptiveCards.Rendering.Wpf
             var renderer = ElementRenderers.Get(element.GetType());
             if (renderer != null)
             {
-                return renderer.Invoke(element, this);
+                // Increment card depth before rendering the inner card
+                if (element is AdaptiveCard)
+                {
+                    CardDepth += 1;
+                }
+
+                var rendered = renderer.Invoke(element, this);
+
+                // Decrement card depth after inner card is rendered
+                if (element is AdaptiveCard)
+                {
+                    CardDepth -= 1;
+                }
+
+                return rendered;
             }
 
             Warnings.Add(new AdaptiveWarning(-1, $"No renderer for element '{element.Type}'"));

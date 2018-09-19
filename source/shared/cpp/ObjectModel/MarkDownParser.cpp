@@ -6,7 +6,7 @@
 
 using namespace AdaptiveSharedNamespace;
 
-MarkDownParser::MarkDownParser(const std::string &txt) : m_text(txt), m_hasHTMLTag(false)
+MarkDownParser::MarkDownParser(const std::string &txt) : m_text(txt), m_hasHTMLTag(false), m_isEscaped(false)
 {
 }
 
@@ -35,6 +35,12 @@ bool MarkDownParser::HasHtmlTags()
 {
     return m_hasHTMLTag;
 }
+
+bool MarkDownParser::IsEscaped() const
+{
+    return m_isEscaped;
+}
+
 // MarkDown is consisted of Blocks, this methods parses blocks
 void MarkDownParser::ParseBlock()
 {
@@ -50,10 +56,11 @@ void MarkDownParser::ParseBlock()
 std::string MarkDownParser::EscapeText()
 {
     std::string escaped;
-
+    unsigned int nonEscapedCounts = 0;
+    
     for (std::string::size_type i = 0; i < m_text.length(); i++)
     {
-        switch (m_text[i])
+        switch (m_text.at(i))
         {
         case '<':
             escaped += "&lt;";
@@ -68,10 +75,13 @@ std::string MarkDownParser::EscapeText()
             escaped += "&amp;";
             break;
         default:
-            escaped += m_text[i];
+            escaped += m_text.at(i);
+            nonEscapedCounts++;
             break;
         }
     }
-
+    
+    m_isEscaped = (nonEscapedCounts != m_text.length());
+    
     return escaped;
 }

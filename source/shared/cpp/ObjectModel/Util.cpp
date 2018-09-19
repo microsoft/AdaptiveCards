@@ -3,12 +3,13 @@
 #include "ColumnSet.h"
 #include "Container.h"
 #include "TextBlock.h"
+#include "ShowCardAction.h"
 
 void PropagateLanguage(const std::string& language, std::vector<std::shared_ptr<BaseCardElement>>& m_body)
 {
     for (auto& bodyElement : m_body)
     {
-        CardElementType elementType = bodyElement->GetElementType();
+        const CardElementType elementType = bodyElement->GetElementType();
 
         if (elementType == CardElementType::ColumnSet)
         {
@@ -37,37 +38,122 @@ void PropagateLanguage(const std::string& language, std::vector<std::shared_ptr<
     }
 }
 
-void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::string &requestedDimension, int &parsedDimension)
+std::string ValidateColor(const std::string& backgroundColor,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings)
 {
-    if (requestedDimension.empty())
+    if (backgroundColor.empty())
     {
-        parsedDimension = 0;
+        return backgroundColor;
+    }
+
+    const size_t backgroundColorLength = backgroundColor.length();
+    bool isValidColor = ((backgroundColor.at(0) == '#') && (backgroundColorLength == 7 || backgroundColorLength == 9));
+    for (size_t i = 1; i < backgroundColorLength && isValidColor; ++i)
+    {
+        isValidColor = isxdigit(backgroundColor.at(i));
+    }
+
+    if (!isValidColor)
+    {
+        warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
+                AdaptiveSharedNamespace::WarningStatusCode::InvalidColorFormat,
+                "Image background color specified, but doesn't follow #AARRGGBB or #RRGGBB format"));
+        return "#00000000";
+    }
+
+    std::string validBackgroundColor;
+    // If format given was #RRGGBB
+    if (backgroundColorLength == 7)
+    {
+        validBackgroundColor = "#FF" + backgroundColor.substr(1, 6);
     }
     else
     {
-        std::size_t foundIndex = requestedDimension.find(unit);
-        if (std::string::npos == foundIndex || requestedDimension.size() != foundIndex + unit.size())
-        {
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "unit is either missing or inproper form: " + requestedDimension);
-        }
+        validBackgroundColor = backgroundColor;
+    }
+
+    return validBackgroundColor;
+}
+
+void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::string &requestedDimension,
+    int &parsedDimension, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings)
+{
+    const std::string warningMessage = "expected input arugment to be specified as \\d+(\\.\\d+)?px with no spaces, but received ";
+    parsedDimension = 0;
+    std::string stringPattern = "^([1-9]+\\d*)(\\.\\d+)?";
+    stringPattern += ("(" + unit + ")$");
+    std::regex pattern(stringPattern);
+    std::smatch matches;
+
+    if (std::regex_search(requestedDimension, matches, pattern))
+    {
         try
         {
-            float parsedVal = stof(requestedDimension.substr(0, foundIndex));
-            if(parsedVal != (int) parsedVal || parsedVal < 0)
+            // stoi will get integral value upto non digit char indexed by idx
+            parsedDimension = std::stoi(matches[0]);
+        }
+        catch (const std::invalid_argument &)
+        {
+            warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
+                    AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
+                    warningMessage + requestedDimension)); 
+        }
+        catch (const std::out_of_range &)
+        {
+            warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
+                    AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
+                    "out of range: " + requestedDimension));
+        }
+    }
+    else 
+    {
+        warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
+                AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
+                warningMessage + requestedDimension)); 
+    }
+}
+
+bool ShouldParseForExplicitDimension(const std::string &input)
+{
+    if (input.empty())
+    {
+        return false;
+    }
+
+    char ch = input.at(0);
+
+    if ('-' == ch || '.' == ch)
+    {
+        return true;
+    }
+
+    size_t index = 0;
+    int hasDigit = 0;
+    while (index < input.length())
+    {
+        ch = input.at(index++);
+        hasDigit |= isdigit(ch); 
+        if (hasDigit && (isalpha(ch) || '.' == ch))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+void EnsureShowCardVersions(
+    std::vector<std::shared_ptr<BaseActionElement>>& actions, 
+    std::string& version)
+{
+    for (auto& action : actions)
+    {
+        if (action->GetElementType() == ActionType::ShowCard)
+        {
+            auto showCardAction = std::static_pointer_cast<ShowCardAction>(action);
+            if (showCardAction->GetCard()->GetVersion().empty())
             {
-                throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "unsigned integer is accepted but received : " + requestedDimension);
+                showCardAction->GetCard()->SetVersion(version);
             }
-            parsedDimension = (int)parsedVal;
-        }
-        catch (const std::invalid_argument &e)
-        {
-            (void)e;
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "unsigned integer is accepted but received : " + requestedDimension);
-        }
-        catch (const std::out_of_range &e)
-        {
-            (void)e;
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "out of range: " + requestedDimension);
         }
     }
 }
