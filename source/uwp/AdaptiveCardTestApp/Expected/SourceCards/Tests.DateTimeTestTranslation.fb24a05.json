@@ -84,7 +84,7 @@
                 },                                
                 {
                     "type": "TextBlock",
-                    "text": "Missing seconds {{DATE(2017-10-27T22:27Z)}} {{TIME(2017-10-27T22:27:00Z)}}",
+                    "text": "Missing seconds {{DATE(2017-10-27T22:27Z)}} {{TIME(2017-10-27T22:27Z)}}",
                     "wrap": true
                 },
                 {

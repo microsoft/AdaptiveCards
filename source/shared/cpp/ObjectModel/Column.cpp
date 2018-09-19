@@ -119,25 +119,12 @@ std::shared_ptr<Column> Column::Deserialize(
     // validate user input; validation only applies to user input for explicit column width
     // the other input checks are remained unchanged
     column->SetPixelWidth(0);
-    if (!columnWidth.empty() && (isdigit(columnWidth.at(0)) || ('-' == columnWidth.at(0))))
+    if (ShouldParseForExplicitDimension(columnWidth))
     {
         const std::string unit = "px";
-        const std::size_t foundIndex = columnWidth.find(unit);
-        /// check if width is determined explicitly
-        if (std::string::npos != foundIndex)
-        {
-            if (columnWidth.size() == foundIndex + unit.size())
-            {
-                std::string requestedDimensions = columnWidth;
-                int parsedDimension = 0;
-                ValidateUserInputForDimensionWithUnit(unit, requestedDimensions, parsedDimension);
-                column->SetPixelWidth(parsedDimension);
-            }
-            else
-            {
-                throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "unit is in inproper form: " + columnWidth);
-            }
-        }
+        int parsedDimension = 0;
+        ValidateUserInputForDimensionWithUnit(unit, columnWidth, parsedDimension, warnings);
+        column->SetPixelWidth(parsedDimension);
     }
 
     column->SetWidth(columnWidth);

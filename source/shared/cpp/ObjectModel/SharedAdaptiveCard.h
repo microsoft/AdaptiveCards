@@ -77,7 +77,8 @@ public:
         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
     static std::shared_ptr<AdaptiveCard> MakeFallbackTextCard(
         const std::string& fallbackText,
-        const std::string& language) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
+        const std::string& language,
+        const std::string& speak) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
 #else
     static std::shared_ptr<ParseResult> DeserializeFromFile(
         const std::string& jsonFile,
@@ -97,7 +98,8 @@ public:
 
     static std::shared_ptr<AdaptiveCard> MakeFallbackTextCard(
         const std::string& fallbackText,
-        const std::string& language);
+        const std::string& language,
+        const std::string& speak);
 
 #endif // __ANDROID__
     Json::Value SerializeToJsonValue() const;

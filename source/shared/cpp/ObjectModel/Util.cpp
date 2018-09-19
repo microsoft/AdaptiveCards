@@ -3,6 +3,7 @@
 #include "ColumnSet.h"
 #include "Container.h"
 #include "TextBlock.h"
+#include "ShowCardAction.h"
 
 void PropagateLanguage(const std::string& language, std::vector<std::shared_ptr<BaseCardElement>>& m_body)
 {
@@ -75,41 +76,84 @@ std::string ValidateColor(const std::string& backgroundColor,
 }
 
 void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::string &requestedDimension,
-    int &parsedDimension)
+    int &parsedDimension, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings)
 {
-    if (requestedDimension.empty())
+    const std::string warningMessage = "expected input arugment to be specified as \\d+(\\.\\d+)?px with no spaces, but received ";
+    parsedDimension = 0;
+    std::string stringPattern = "^([1-9]+\\d*)(\\.\\d+)?";
+    stringPattern += ("(" + unit + ")$");
+    std::regex pattern(stringPattern);
+    std::smatch matches;
+
+    if (std::regex_search(requestedDimension, matches, pattern))
     {
-        parsedDimension = 0;
-    }
-    else
-    {
-        const std::size_t foundIndex = requestedDimension.find(unit);
-        if (std::string::npos == foundIndex || requestedDimension.size() != foundIndex + unit.size())
-        {
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
-                "unit is either missing or inproper form: " + requestedDimension);
-        }
         try
         {
-            int parsedVal = std::stoi(requestedDimension.substr(0, foundIndex));
-            if (parsedVal < 0)
+            // stoi will get integral value upto non digit char indexed by idx
+            parsedDimension = std::stoi(matches[0]);
+        }
+        catch (const std::invalid_argument &)
+        {
+            warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
+                    AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
+                    warningMessage + requestedDimension)); 
+        }
+        catch (const std::out_of_range &)
+        {
+            warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
+                    AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
+                    "out of range: " + requestedDimension));
+        }
+    }
+    else 
+    {
+        warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
+                AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
+                warningMessage + requestedDimension)); 
+    }
+}
+
+bool ShouldParseForExplicitDimension(const std::string &input)
+{
+    if (input.empty())
+    {
+        return false;
+    }
+
+    char ch = input.at(0);
+
+    if ('-' == ch || '.' == ch)
+    {
+        return true;
+    }
+
+    size_t index = 0;
+    int hasDigit = 0;
+    while (index < input.length())
+    {
+        ch = input.at(index++);
+        hasDigit |= isdigit(ch); 
+        if (hasDigit && (isalpha(ch) || '.' == ch))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+void EnsureShowCardVersions(
+    std::vector<std::shared_ptr<BaseActionElement>>& actions, 
+    std::string& version)
+{
+    for (auto& action : actions)
+    {
+        if (action->GetElementType() == ActionType::ShowCard)
+        {
+            auto showCardAction = std::static_pointer_cast<ShowCardAction>(action);
+            if (showCardAction->GetCard()->GetVersion().empty())
             {
-                throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
-                    "unsigned integer is accepted but received : " + requestedDimension);
+                showCardAction->GetCard()->SetVersion(version);
             }
-            parsedDimension = parsedVal;
-        }
-        catch (const std::invalid_argument &e)
-        {
-            (void)e;
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
-                "unsigned integer is accepted but received : " + requestedDimension);
-        }
-        catch (const std::out_of_range &e)
-        {
-            (void)e;
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
-                "out of range: " + requestedDimension);
         }
     }
 }

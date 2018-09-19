@@ -867,11 +867,6 @@ void RemoteResourceElementToRemoteResourceInformationVector(
         RemoteResourceInformation uriInfo;
         THROW_IF_FAILED(HStringToUTF8(url.Get(), uriInfo.url));
 
-        ABI::AdaptiveNamespace::ElementType elementType;
-        THROW_IF_FAILED(resourceInformation->get_ResourceType(&elementType));
-
-        uriInfo.resourceType = (AdaptiveSharedNamespace::CardElementType) elementType;
-
         HString mimeType;
         THROW_IF_FAILED(resourceInformation->get_MimeType(mimeType.GetAddressOf()));
 

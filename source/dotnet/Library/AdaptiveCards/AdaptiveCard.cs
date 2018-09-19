@@ -74,6 +74,7 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveNumberInput))]
         [XmlElement(typeof(AdaptiveToggleInput))]
         [XmlElement(typeof(AdaptiveChoiceSetInput))]
+        [XmlElement(typeof(AdaptiveMedia))]
 #endif
         public List<AdaptiveElement> Body { get; set; } = new List<AdaptiveElement>();
 
@@ -170,6 +171,16 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(null)]
         public string Lang { get; set; }
+
+        /// <summary>
+        ///     The content alignment for the eelment inside the container.
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(typeof(AdaptiveVerticalContentAlignment), "top")]
+        public AdaptiveVerticalContentAlignment VerticalContentAlignment { get; set; }
 
         /// <summary>
         ///     Action for the card (this allows a default action at the card level)
@@ -281,8 +292,7 @@ namespace AdaptiveCards
             {
                 resourceInformationList.Add(new RemoteResourceInformation(
                     card.BackgroundImageString,
-                    typeof(AdaptiveImage),
-                    null
+                    "image"
                 ));
             }
 
@@ -300,8 +310,7 @@ namespace AdaptiveCards
                 {
                     resourceInformationList.Add(new RemoteResourceInformation(
                         action.IconUrl,
-                        typeof(AdaptiveImage),
-                        null
+                        "image"
                     ));
                 }
 
@@ -324,8 +333,7 @@ namespace AdaptiveCards
             {
                 resourceInformationList.Add(new RemoteResourceInformation(
                     imageElement.UrlString,
-                    typeof(AdaptiveImage),
-                    null
+                    "image"
                 ));
             }
 
