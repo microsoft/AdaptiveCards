@@ -125,8 +125,6 @@ namespace AdaptiveCards.Test
                     "AdaptiveCard.Version1.3",
 
                     // These are cards that features haven't been implemented yet
-                    "InvalidMediaMix", // Not implemented yet
-                    "Media", // Not implemented yet
                 });
         }
     }

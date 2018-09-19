@@ -301,9 +301,9 @@ namespace AdaptiveCards.Test
         public void ConsumerCanProvideCardVersion()
         {
             var json = @"{
-	""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
-	""type"": ""AdaptiveCard"",
-	""speak"": ""Hello""
+    ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+    ""type"": ""AdaptiveCard"",
+    ""speak"": ""Hello""
 }";
 
             var jObject = JObject.Parse(json);
@@ -415,40 +415,102 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(null, containerNonStyle.Style);
         }
 
+        [TestMethod]
+        public void MediaInvalid_ShouldThrowException()
+        {
+            var json = @"{
+  ""type"": ""Hello"",
+  ""version"": ""1.0"",
+  ""body"": [
+    {
+        ""type"": ""Media"",
+        ""poster"": ""http://adaptivecards.io/content/cats/1.png""
+    }
+  ]
+}";
+
+            Assert.ThrowsException<AdaptiveSerializationException>(() => AdaptiveCard.FromJson(json));
+        }
 
         [TestMethod]
-        public void ImageBackgroundColor()
+        public void Media()
         {
             var json = @"{
   ""type"": ""AdaptiveCard"",
   ""version"": ""1.0"",
   ""body"": [
     {
-      ""type"": ""Image"",
-      ""url"": ""http://adaptivecards.io/content/cats/2.png"",
-      ""backgroundColor"" : ""Blue""
+        ""type"": ""Media"",
+        ""sources"": [
+            {
+                ""mimeType"": ""video/mp4"",
+                ""url"": ""http://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4""
+            }
+        ]
     },
     {
-      ""type"": ""Image"",
-      ""url"": ""http://adaptivecards.io/content/cats/2.png"",
-      ""backgroundColor"" : ""#FF00FF""
-    },
-    {
-      ""type"": ""Image"",
-      ""url"": ""http://adaptivecards.io/content/cats/2.png"",
-      ""backgroundColor"" : ""#FF00FFAA""
-    },
-    {
-      ""type"": ""Image"",
-      ""url"": ""http://adaptivecards.io/content/cats/2.png"",
-      ""backgroundColor"" : ""#FREEBACE""
-    },
-    {
-      ""type"": ""Image"",
-      ""url"": ""http://adaptivecards.io/content/cats/2.png"",
-      ""backgroundColor"" : ""#GREENS""
+        ""type"": ""Media"",
+        ""poster"": ""http://adaptivecards.io/content/cats/1.png"",
+        ""altText"": ""Adaptive Cards Overview Video"",
+        ""sources"": [
+            {
+                ""mimeType"": ""video/mp4"",
+                ""url"": ""http://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4""
+            }
+        ]
     }
   ]
+}";
+            var card = AdaptiveCard.FromJson(json).Card;
+
+            // The first media element does not have either poster or alt text
+            var mediaElement = card.Body[0] as AdaptiveMedia;
+            Assert.IsNull(mediaElement.Poster);
+            Assert.IsNull(mediaElement.AltText);
+
+            // The second media element has poster, alt text, and 1 source
+            var mediaElementFull = card.Body[1] as AdaptiveMedia;
+            Assert.AreEqual("http://adaptivecards.io/content/cats/1.png", mediaElementFull.Poster);
+            Assert.AreEqual("Adaptive Cards Overview Video", mediaElementFull.AltText);
+
+            var source = mediaElementFull.Sources[0] as AdaptiveMediaSource;
+            Assert.AreEqual("video/mp4", source.MimeType);
+            Assert.AreEqual("http://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4", source.Url);
+        }
+
+        [TestMethod]
+        public void ImageBackgroundColor()
+        {
+            var json = @"{
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""body"": [
+    {
+        ""type"": ""Image"",
+        ""url"": ""http://adaptivecards.io/content/cats/2.png"",
+        ""backgroundColor"" : ""Blue""
+    },
+    {
+        ""type"": ""Image"",
+        ""url"": ""http://adaptivecards.io/content/cats/2.png"",
+        ""backgroundColor"" : ""#FF00FF""
+    },
+    {
+        ""type"": ""Image"",
+        ""url"": ""http://adaptivecards.io/content/cats/2.png"",
+        ""backgroundColor"" : ""#FF00FFAA""
+    },
+    {
+        ""type"": ""Image"",
+        ""url"": ""http://adaptivecards.io/content/cats/2.png"",
+        ""backgroundColor"" : ""#FREEBACE""
+    },
+    {
+        ""type"": ""Image"",
+        ""url"": ""http://adaptivecards.io/content/cats/2.png"",
+        ""backgroundColor"" : ""#GREENS""
+    }
+    ]
 }";
 
             // There should be 3 invalid colors in this card

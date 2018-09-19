@@ -617,7 +617,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long AdaptiveCard_DeserializeFromString__SWIG_0(String jarg1, String jarg2, long jarg3, ElementParserRegistration jarg3_, long jarg4, ActionParserRegistration jarg4_) throws java.io.IOException;
   public final static native long AdaptiveCard_DeserializeFromString__SWIG_1(String jarg1, String jarg2, long jarg3, ElementParserRegistration jarg3_) throws java.io.IOException;
   public final static native long AdaptiveCard_DeserializeFromString__SWIG_2(String jarg1, String jarg2) throws java.io.IOException;
-  public final static native long AdaptiveCard_MakeFallbackTextCard(String jarg1, String jarg2) throws java.io.IOException;
+  public final static native long AdaptiveCard_MakeFallbackTextCard(String jarg1, String jarg2, String jarg3) throws java.io.IOException;
   public final static native long AdaptiveCard_SerializeToJsonValue(long jarg1, AdaptiveCard jarg1_);
   public final static native String AdaptiveCard_Serialize(long jarg1, AdaptiveCard jarg1_);
   public final static native void delete_AdaptiveCard(long jarg1);

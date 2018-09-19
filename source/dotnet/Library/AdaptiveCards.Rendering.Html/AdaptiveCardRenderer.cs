@@ -69,6 +69,7 @@ namespace AdaptiveCards.Rendering.Html
 
             ElementRenderers.Set<AdaptiveTextBlock>(TextBlockRender);
             ElementRenderers.Set<AdaptiveImage>(ImageRender);
+            ElementRenderers.Set<AdaptiveMedia>(MediaRender);
 
             ElementRenderers.Set<AdaptiveContainer>(ContainerRender);
             ElementRenderers.Set<AdaptiveColumn>(ColumnRender);
@@ -818,6 +819,264 @@ namespace AdaptiveCards.Rendering.Html
 
             AddSelectAction(uiDiv, image.SelectAction, context);
             return uiDiv;
+        }
+
+        private static List<string> _supportedMimeTypes = new List<string>
+        {
+            "video/mp4",
+            "audio/mp4",
+            "audio/mpeg"
+        };
+
+        private static List<string> _supportedAudioMimeTypes = new List<string>
+        {
+            "audio/mp4",
+            "audio/mpeg"
+        };
+
+        /** Get the first media URI with a supported mime type */
+        private static List<AdaptiveMediaSource> GetMediaSources(AdaptiveMedia media, AdaptiveRenderContext context)
+        {
+            // Check if sources contain an invalid mix of MIME types (audio and video)
+            bool? isLastMediaSourceAudio = null;
+            foreach (var source in media.Sources)
+            {
+                if (!isLastMediaSourceAudio.HasValue)
+                {
+                    isLastMediaSourceAudio = IsAudio(source);
+                }
+                else
+                {
+                    if (IsAudio(source) != isLastMediaSourceAudio.Value)
+                    {
+                        // If there is one pair of sources with different MIME types,
+                        // it's an invalid mix and a warning should be logged
+                        context.Warnings.Add(new AdaptiveWarning(-1, "A Media element contains an invalid mix of MIME type"));
+                        return null;
+                    }
+
+                    isLastMediaSourceAudio = IsAudio(source);
+                }
+            }
+
+            // Return the list of all supported sources with not-null URI
+            List<AdaptiveMediaSource> validSources = new List<AdaptiveMediaSource>();
+            foreach (var source in media.Sources)
+            {
+                if (_supportedMimeTypes.Contains(source.MimeType))
+                {
+                    Uri finalMediaUri = context.Config.ResolveFinalAbsoluteUri(source.Url);
+                    if (finalMediaUri != null)
+                    {
+                        validSources.Add(source);
+                    }
+                }
+            }
+
+            return validSources;
+        }
+
+        private static bool IsAudio(AdaptiveMediaSource mediaSource)
+        {
+            return _supportedAudioMimeTypes.Contains(mediaSource.MimeType);
+        }
+
+        protected static HtmlTag MediaRender(AdaptiveMedia media, AdaptiveRenderContext context)
+        {
+            List<AdaptiveMediaSource> mediaSources = GetMediaSources(media, context);
+
+            // No valid source is found
+            if (mediaSources.Count == 0)
+            {
+                context.Warnings.Add(new AdaptiveWarning(-1, "A Media element does not have any valid source"));
+                return null;
+            }
+
+            var uiMedia = new DivTag()
+                .Style("width", "100%")
+                .Attr("alt", media.AltText ?? "card media");
+
+            string posterUrl = null;
+            if (!string.IsNullOrEmpty(media.Poster) && context.Config.ResolveFinalAbsoluteUri(media.Poster) != null)
+            {
+                posterUrl = context.Config.ResolveFinalAbsoluteUri(media.Poster).ToString();
+            }
+            else if (!string.IsNullOrEmpty(context.Config.Media.DefaultPoster)
+                 && context.Config.ResolveFinalAbsoluteUri(context.Config.Media.DefaultPoster) != null)
+            {
+                // Use the default poster from host
+                posterUrl = context.Config.ResolveFinalAbsoluteUri(context.Config.Media.DefaultPoster).ToString();
+            }
+
+            var thumbnailImage = new HtmlTag("image", false)
+                .Attr("src", posterUrl)
+                .Style("width", "100%")
+                .Style("height", "100%");
+
+            // If host does not support interactivity, simply return the
+            // poster image if present
+            if (!context.Config.SupportsInteractivity)
+            {
+                uiMedia.Children.Add(thumbnailImage);
+
+                return uiMedia;
+            }
+
+            #region Thumbnail
+
+            var thumbnailButton = new DivTag()
+                .AddClass("ac-media-poster")
+                .Attr("role", "button")
+                .Attr("aria-label", "Play media")
+                .Attr("role", "contentinfo")
+                .Style("position", "relative")
+                .Style("display", "flex")
+                .Style("cursor", "pointer");
+
+            if (posterUrl != null)
+            {
+                thumbnailButton.Children.Add(thumbnailImage);
+            }
+            else
+            {
+                thumbnailButton.AddClass("empty")
+                    .Style("height", "200px")
+                    .Style("minHeight", "150px")
+                    .Style("background-color", "#F2F2F2");
+            }
+
+            #region Play button
+
+            // Overlay on top of poster image
+            var playButtonContainer = new DivTag()
+                .Style("position", "absolute")
+                .Style("left", "0")
+                .Style("top", "0")
+                .Style("width", "100%")
+                .Style("height", "100%")
+                .Style("display", "flex")
+                .Style("justify-content", "center")
+                .Style("align-items", "center");
+
+            // If host specifies a play button URL,
+            // render that image as the play button
+            if (!string.IsNullOrEmpty(context.Config.Media.PlayButton)
+                && context.Config.ResolveFinalAbsoluteUri(context.Config.Media.PlayButton) != null)
+            {
+                var playButtonImage = new HtmlTag("img")
+                    .Attr("src", context.Config.ResolveFinalAbsoluteUri(context.Config.Media.PlayButton).ToString())
+                    .Style("width", "56px")
+                    .Style("height", "56px");
+
+                playButtonContainer.Children.Add(playButtonImage);
+            }
+            else
+            {
+                int playButtonArrowWidth = 12;
+                int playButtonArrowHeight = 15;
+
+                // Play symbol (black arrow)
+                var playButtonInnerElement = new DivTag()
+                    .Style("width", playButtonArrowWidth + "px")
+                    .Style("height", playButtonArrowHeight + "px")
+                    .Style("color", "black")
+                    .Style("border-top-width", (playButtonArrowHeight / 2) + "px")
+                    .Style("border-bottom-width", (playButtonArrowHeight / 2) + "px")
+                    .Style("border-left-width", playButtonArrowWidth + "px")
+                    .Style("border-right-width", "0")
+                    .Style("border-style", "solid")
+                    .Style("border-top-color", "transparent")
+                    .Style("border-right-color", "transparent")
+                    .Style("border-bottom-color", "transparent");
+
+                // Circle around play symbol
+                var playButtonOuterElement = new DivTag()
+                    .Style("display", "flex")
+                    .Style("align-items", "center")
+                    .Style("justify-content", "center")
+                    .Style("width", "56px")
+                    .Style("height", "56px")
+                    .Style("border", "1px solid #EEEEEE")
+                    .Style("border-radius", "28px")
+                    .Style("box-shadow", "0px 0px 10px #EEEEEE")
+                    .Style("background-color", "rgba(255, 255, 255, 0.9)")
+                    .Style("color", "black");
+
+                playButtonOuterElement.Children.Add(playButtonInnerElement);
+
+                playButtonContainer.Children.Add(playButtonOuterElement);
+            }
+
+            #endregion
+
+            thumbnailButton.Children.Add(playButtonContainer);
+
+            #endregion
+
+            uiMedia.Children.Add(thumbnailButton);
+
+            if (context.Config.Media.AllowInlinePlayback)
+            {
+                // Media player is only created if inline playback is allowed
+
+                // A unique ID to link the thumbnail button and the media player
+                // of the same Media element
+                string mediaId = GenerateRandomId();
+
+                thumbnailButton.Attr("data-ac-mediaId", mediaId);
+
+                #region Media Player
+
+                bool isAudio = IsAudio(mediaSources[0]);
+
+                var uiMediaPlayerContainer = new DivTag()
+                    .Attr("id", mediaId)
+                    .Style("width", "100%")
+                    .Style("height", "100%")
+                    .Style("display", "none");
+
+                // If an audio has a poster, display the static poster image
+                // along with the media player
+                if (isAudio && posterUrl != null)
+                {
+                    var staticPosterImage = new HtmlTag("image", false)
+                        .Attr("src", posterUrl)
+                        .Style("width", "100%")
+                        .Style("height", "100%");
+
+                    uiMediaPlayerContainer.Children.Add(staticPosterImage);
+                }
+
+                var uiMediaPlayer = new HtmlTag(isAudio ? "audio" : "video")
+                    .Attr("id", mediaId + "-player")
+                    .Style("width", "100%")
+                    .Attr("controls", "")
+                    .Attr("preload", "none")
+                    .Attr("poster", posterUrl);
+
+                // Sources
+                foreach (var source in mediaSources)
+                {
+                    var uiSource = new HtmlTag("source")
+                        .Attr("src", context.Config.ResolveFinalAbsoluteUri(source.Url))
+                        .Attr("type", source.MimeType);
+
+                    uiMediaPlayer.Children.Add(uiSource);
+                }
+
+                uiMediaPlayerContainer.Children.Add(uiMediaPlayer);
+
+                #endregion
+
+                uiMedia.Children.Add(uiMediaPlayerContainer);
+            }
+            else
+            {
+                // Attach media data to the thumbnail to be sent to host
+                thumbnailButton.Attr("data-ac-media-sources", JsonConvert.SerializeObject(media.Sources, Formatting.None));
+            }
+
+            return uiMedia;
         }
 
         protected static HtmlTag ImageSetRender(AdaptiveImageSet imageSet, AdaptiveRenderContext context)
