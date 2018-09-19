@@ -5014,11 +5014,11 @@ function raiseImageLoadedEvent(image: Image) {
     }
 }
 
-function raiseAnchorClickedEvent(textBlock: TextBlock, anchor: HTMLAnchorElement): boolean {
-    let card = textBlock.getRootElement() as AdaptiveCard;
+function raiseAnchorClickedEvent(element: CardElement, anchor: HTMLAnchorElement): boolean {
+    let card = element.getRootElement() as AdaptiveCard;
     let onAnchorClickedHandler = (card && card.onAnchorClicked) ? card.onAnchorClicked : AdaptiveCard.onAnchorClicked;
 
-    return onAnchorClickedHandler != null ? onAnchorClickedHandler(textBlock, anchor) : false;
+    return onAnchorClickedHandler != null ? onAnchorClickedHandler(element, anchor) : false;
 }
 
 function raiseExecuteActionEvent(action: Action) {
@@ -5325,7 +5325,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static readonly elementTypeRegistry = new ElementTypeRegistry();
     static readonly actionTypeRegistry = new ActionTypeRegistry();
 
-    static onAnchorClicked: (textBlock: TextBlock, anchor: HTMLAnchorElement) => boolean = null;
+    static onAnchorClicked: (elementd: CardElement, anchor: HTMLAnchorElement) => boolean = null;
     static onExecuteAction: (action: Action) => void = null;
     static onElementVisibilityChanged: (element: CardElement) => void = null;
     static onImageLoaded: (image: Image) => void = null;
@@ -5417,7 +5417,7 @@ export class AdaptiveCard extends ContainerWithActions {
         return true;
     }
 
-    onAnchorClicked: (textBlock: TextBlock, anchor: HTMLAnchorElement) => boolean = null;
+    onAnchorClicked: (element: CardElement, anchor: HTMLAnchorElement) => boolean = null;
     onExecuteAction: (action: Action) => void = null;
     onElementVisibilityChanged: (element: CardElement) => void = null;
     onImageLoaded: (image: Image) => void = null;
