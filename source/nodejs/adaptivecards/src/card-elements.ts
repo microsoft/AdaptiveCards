@@ -5014,11 +5014,11 @@ function raiseImageLoadedEvent(image: Image) {
     }
 }
 
-function raiseAnchorClickedEvent(element: CardElement, anchor: HTMLAnchorElement): boolean {
-    let card = element.getRootElement() as AdaptiveCard;
+function raiseAnchorClickedEvent(textBlock: TextBlock, anchor: HTMLAnchorElement): boolean {
+    let card = textBlock.getRootElement() as AdaptiveCard;
     let onAnchorClickedHandler = (card && card.onAnchorClicked) ? card.onAnchorClicked : AdaptiveCard.onAnchorClicked;
 
-    return onAnchorClickedHandler != null ? onAnchorClickedHandler(element, anchor) : false;
+    return onAnchorClickedHandler != null ? onAnchorClickedHandler(textBlock, anchor) : false;
 }
 
 function raiseExecuteActionEvent(action: Action) {
@@ -5417,7 +5417,7 @@ export class AdaptiveCard extends ContainerWithActions {
         return true;
     }
 
-    onAnchorClicked: (rootCard: AdaptiveCard, anchor: HTMLAnchorElement) => boolean = null;
+    onAnchorClicked: (textBlock: TextBlock, anchor: HTMLAnchorElement) => boolean = null;
     onExecuteAction: (action: Action) => void = null;
     onElementVisibilityChanged: (element: CardElement) => void = null;
     onImageLoaded: (image: Image) => void = null;
