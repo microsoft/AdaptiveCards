@@ -23,7 +23,7 @@
 {
     self = [super init];
     if(self) {
-        _actionElement = [[ACOBaseActionElement alloc]initWithBaseActionElement:[actionElement element]];
+        _actionElement = [[ACOBaseActionElement alloc] initWithBaseActionElement:[actionElement element]];
         _view = rootView;
     }
     return self;
@@ -31,7 +31,6 @@
 
 - (IBAction)send:(UIButton *)sender
 {
-    [sender setSelected:YES];
     [_view.acrActionDelegate didFetchUserResponses:[_view card] action:_actionElement];
 }
 
@@ -39,6 +38,5 @@
 {
     [_view.acrActionDelegate didFetchUserResponses:[_view card] action:_actionElement];
 }
-
 
 @end

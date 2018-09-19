@@ -12,6 +12,7 @@
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/Microsoft/AdaptiveCards/master/LICENSE</PackageLicenseUrl>
     <DefineConstants>WPF;$(DefineConstants);$(AdditionalConstants)</DefineConstants>
+    <GenerateAssemblyInfo Condition="$(Tfs_PackageVersionNumber) != ''">false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>

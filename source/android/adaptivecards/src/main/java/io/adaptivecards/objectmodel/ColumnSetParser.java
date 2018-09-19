@@ -37,6 +37,14 @@ public class ColumnSetParser extends BaseCardElementParser {
     super.delete();
   }
 
+  public ColumnSetParser() {
+    this(AdaptiveCardObjectModelJNI.new_ColumnSetParser__SWIG_0(), true);
+  }
+
+  public ColumnSetParser(ColumnSetParser arg0) {
+    this(AdaptiveCardObjectModelJNI.new_ColumnSetParser__SWIG_1(ColumnSetParser.getCPtr(arg0), arg0), true);
+  }
+
   public BaseCardElement Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, JsonValue root) {
     long cPtr = AdaptiveCardObjectModelJNI.ColumnSetParser_Deserialize(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, JsonValue.getCPtr(root), root);
     return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
@@ -45,10 +53,6 @@ public class ColumnSetParser extends BaseCardElementParser {
   public BaseCardElement DeserializeFromString(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, String jsonString) {
     long cPtr = AdaptiveCardObjectModelJNI.ColumnSetParser_DeserializeFromString(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, jsonString);
     return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
-  }
-
-  public ColumnSetParser() {
-    this(AdaptiveCardObjectModelJNI.new_ColumnSetParser(), true);
   }
 
 }

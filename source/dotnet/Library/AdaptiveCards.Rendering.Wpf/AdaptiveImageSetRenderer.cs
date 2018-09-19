@@ -21,11 +21,11 @@ namespace AdaptiveCards.Rendering.Wpf
             uiImageSet.Style = context.GetStyle("Adaptive.ImageSet");
             foreach (var image in imageSet.Images)
             {
-                if (image.Size == AdaptiveImageSize.Auto)
-                    if (imageSet.ImageSize != AdaptiveImageSize.Auto)
-                        image.Size = imageSet.ImageSize;
-                    else
-                        image.Size = context.Config.ImageSet.ImageSize;
+                // Use the imageSize in imageSet for all images if present
+                if (imageSet.ImageSize != AdaptiveImageSize.Auto)
+                    image.Size = imageSet.ImageSize;
+                else if (image.Size == AdaptiveImageSize.Auto)
+                    image.Size = context.Config.ImageSet.ImageSize;
 
                 var uiImage = context.Render(image);
                 uiImageSet.Add(uiImage);

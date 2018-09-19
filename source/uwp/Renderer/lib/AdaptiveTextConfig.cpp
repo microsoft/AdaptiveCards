@@ -79,6 +79,7 @@ AdaptiveNamespaceStart
         m_isSubtle = isSubtle;
         return S_OK;
     }
+
     _Use_decl_annotations_
     HRESULT AdaptiveTextConfig::get_Wrap(boolean* wrap)
     {

@@ -14,6 +14,7 @@
 #include <MediaSource.h>
 #include <windows.foundation.collections.h>
 #include "AdaptiveCardParseWarning.h"
+#include "RemoteResourceInformation.h"
 
 #ifdef ADAPTIVE_CARDS_WINDOWS
 using namespace InternalNamespace;
@@ -140,6 +141,7 @@ HRESULT ProjectedActionTypeToHString(ABI::AdaptiveNamespace::ActionType projecte
 HRESULT ProjectedElementTypeToHString(ABI::AdaptiveNamespace::ElementType projectedElementType, HSTRING* result);
 
 typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*, ABI::AdaptiveNamespace::AdaptiveActionEventArgs*>> ActionEventSource;
+typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*, ABI::AdaptiveNamespace::AdaptiveMediaEventArgs*>> MediaEventSource;
 
 // Peek interface to help get implementation types from winrt interfaces
 struct DECLSPEC_UUID("defc7d5f-b4e5-4a74-80be-d87bd50a2f45") ITypePeek : IInspectable
@@ -165,9 +167,9 @@ template<typename T, typename R> Microsoft::WRL::ComPtr<T> PeekInnards(R r)
     return inner;
 }
 
-void RemoteResourceElementToUriStringVector(
+void RemoteResourceElementToRemoteResourceInformationVector(
     ABI::AdaptiveNamespace::IAdaptiveElementWithRemoteResources* remoteResources,
-    std::vector<std::string>& resourceUris);
+    std::vector<RemoteResourceInformation>& resourceUris);
 
 void GetUrlFromString(
     ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,

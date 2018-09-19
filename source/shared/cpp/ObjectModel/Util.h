@@ -8,4 +8,13 @@ using namespace AdaptiveSharedNamespace;
 
 void PropagateLanguage(const std::string& language, std::vector<std::shared_ptr<BaseCardElement>>& m_body);
 
-void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::string &requestedDimension, int &parsedDimension);
+std::string ValidateColor(const std::string &backgroundColor, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings);
+
+void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::string &requestedDimension,
+    int &parsedDimension, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings);
+
+bool ShouldParseForExplicitDimension(const std::string &input);
+
+void EnsureShowCardVersions(
+    std::vector<std::shared_ptr<BaseActionElement>>& actions,
+    std::string& version);

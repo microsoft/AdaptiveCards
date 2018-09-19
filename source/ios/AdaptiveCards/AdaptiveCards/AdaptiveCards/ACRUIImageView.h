@@ -9,5 +9,5 @@
 #import "ACOBaseCardElement.h"
 
 @interface ACRUIImageView:UIImageView
-
+@property BOOL isPersonStyle;
 @end

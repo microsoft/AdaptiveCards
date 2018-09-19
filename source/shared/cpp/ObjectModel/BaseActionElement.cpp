@@ -11,10 +11,6 @@ BaseActionElement::BaseActionElement(ActionType type) :
     PopulateKnownPropertiesSet();
 }
 
-BaseActionElement::~BaseActionElement()
-{
-}
-
 std::string BaseActionElement::GetElementTypeString() const
 {
     return m_typeString;
@@ -70,8 +66,12 @@ Json::Value BaseActionElement::SerializeToJsonValue() const
 {
     Json::Value root = GetAdditionalProperties();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = ActionTypeToString(m_type);
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)] = m_title;
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id)] = m_id;
+
+    if (!m_title.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)] = m_title;
+    }
 
     if (!m_iconUrl.empty())
     {
@@ -93,13 +93,19 @@ void BaseActionElement::SetAdditionalProperties(Json::Value const &value)
 
 void BaseActionElement::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IconUrl));
+    m_knownProperties.insert({ AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id),
+         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IconUrl)});
 }
 
-void BaseActionElement::GetResourceUris(std::vector<std::string>&)
+void BaseActionElement::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
 {
-    return;
+    if (!m_iconUrl.empty()) 
+    {
+        RemoteResourceInformation imageResourceInfo;
+        imageResourceInfo.url = m_iconUrl;
+        imageResourceInfo.mimeType = "image";
+        resourceInfo.push_back(imageResourceInfo);
+    }
 }

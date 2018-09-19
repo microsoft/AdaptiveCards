@@ -153,7 +153,7 @@ void TextBlock::SetHorizontalAlignment(const HorizontalAlignment value)
     m_hAlignment = value;
 }
 
-std::string TextBlock::GetLanguage()
+std::string TextBlock::GetLanguage() const
 {
     return m_language;
 }
@@ -194,14 +194,14 @@ std::shared_ptr<BaseCardElement> TextBlockParser::DeserializeFromString(
     return TextBlockParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void TextBlock::PopulateKnownPropertiesSet() 
+void TextBlock::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Text));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::TextWeight));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSubtle));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLines));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment));
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Text),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::TextWeight),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSubtle),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLines),
+        AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)});
 }

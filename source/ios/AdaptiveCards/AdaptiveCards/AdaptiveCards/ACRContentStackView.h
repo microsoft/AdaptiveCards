@@ -10,15 +10,17 @@
 
 @interface ACRContentStackView:UIView<ACRIContentHoldingView>
 
-@property UIStackView* stackView;
+@property (nonnull) UIStackView* stackView;
 
-- (instancetype)initWithFrame:(CGRect)frame;
+- (instancetype _Nonnull)initWithFrame:(CGRect)frame;
 
-- (void)addArrangedSubview:(UIView *)view;
+- (instancetype _Nonnull)initWithFrame:(CGRect)frame attributes:(nullable NSDictionary<NSString *, id> *)attributes;
 
-- (void)config;
+- (void)addArrangedSubview:(nonnull UIView *)view;
+
+- (void)config:(nullable NSDictionary<NSString *, id> *)attributes;
 
 - (void)adjustHuggingForLastElement;
 
-- (void)addTarget:(NSObject *)target;
+- (void)addTarget:(nonnull NSObject *)target;
 @end
