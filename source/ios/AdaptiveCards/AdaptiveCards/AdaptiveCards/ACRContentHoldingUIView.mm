@@ -14,14 +14,21 @@ using namespace AdaptiveCards;
 
 - (CGSize)intrinsicContentSize
 {
-    UIView *textView = [self viewWithTag:eACRUILabelTag];
-    if(textView) {
-        CGSize size = [textView intrinsicContentSize];
-        return size;
-    } else
-    {
-        return self.frame.size;
+    if(self.subviews.count) {
+        NSInteger tag = self.subviews.firstObject.tag;
+        if(tag == eACRUILabelTag) {
+            UIView *textView = [self viewWithTag:eACRUILabelTag];
+            CGSize size = [textView intrinsicContentSize];
+            return size;
+        } else if (tag == eACRUIImageTag) {
+            UIView *ImageView = [self viewWithTag:eACRUIImageTag];
+            if(ImageView) {
+                CGSize size = [ImageView intrinsicContentSize];
+                return size;
+            }
+        }
     }
+    return self.frame.size;
 }
 
 - (void)layoutSubviews
