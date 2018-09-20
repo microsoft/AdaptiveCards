@@ -18,7 +18,6 @@
     <ClCompile Include="lib\AdaptiveShowCardAction.cpp" />
     <ClCompile Include="lib\AdaptiveSubmitAction.cpp" />
     <ClCompile Include="lib\AdaptiveActionEventArgs.cpp" />
-    <ClCompile Include="lib\InputItem.cpp" />
     <ClCompile Include="lib\AdaptiveChoiceInput.cpp" />
     <ClCompile Include="lib\AdaptiveChoiceSetInput.cpp" />
     <ClCompile Include="lib\AdaptiveDateInput.cpp" />
@@ -75,7 +74,21 @@
     <ClCompile Include="lib\WholeItemsPanel.cpp" />
     <ClCompile Include="lib\AdaptiveError.cpp" />
     <ClCompile Include="lib\AdaptiveWarning.cpp" />
+    <ClCompile Include="lib\DateTimeParser.cpp" />
     <ClCompile Include="lib\HtmlHelpers.cpp" />
+    <ClCompile Include="lib\InputValue.cpp" />
+    <ClCompile Include="lib\pch.cpp" />
+    <ClCompile Include="lib\AdaptiveCardElement.cpp" />
+    <ClCompile Include="lib\AdaptiveInputElement.cpp" />
+    <ClCompile Include="lib\AdaptiveActionElement.cpp" />
+    <ClCompile Include="lib\AdaptiveMedia.cpp" />
+    <ClCompile Include="lib\AdaptiveMediaRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveMediaSource.cpp" />
+    <ClCompile Include="lib\MediaHelpers.cpp" />
+    <ClCompile Include="lib\AdaptiveMediaConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveMediaEventInvoker.cpp" />
+    <ClCompile Include="lib\AdaptiveMediaEventArgs.cpp" />
+    <ClCompile Include="lib\AdaptiveRemoteResourceInformation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -102,7 +115,6 @@
     <ClInclude Include="lib\AdaptiveShowCardAction.h" />
     <ClInclude Include="lib\AdaptiveSubmitAction.h" />
     <ClInclude Include="lib\AdaptiveActionEventArgs.h" />
-    <ClInclude Include="lib\InputItem.h" />
     <ClInclude Include="lib\AdaptiveChoiceInput.h" />
     <ClInclude Include="lib\AdaptiveChoiceSetInput.h" />
     <ClInclude Include="lib\AdaptiveDateInput.h" />
@@ -159,7 +171,20 @@
     <ClInclude Include="lib\WholeItemsPanel.h" />
     <ClInclude Include="lib\AdaptiveError.h" />
     <ClInclude Include="lib\AdaptiveWarning.h" />
+    <ClInclude Include="lib\DateTimeParser.h" />
     <ClInclude Include="lib\HtmlHelpers.h" />
+    <ClInclude Include="lib\InputValue.h" />
+    <ClInclude Include="lib\AdaptiveCardElement.h" />
+    <ClInclude Include="lib\AdaptiveInputElement.h" />
+    <ClInclude Include="lib\AdaptiveActionElement.h" />
+    <ClInclude Include="lib\AdaptiveMedia.h" />
+    <ClInclude Include="lib\AdaptiveMediaRenderer.h" />
+    <ClInclude Include="lib\AdaptiveMediaSource.h" />
+    <ClInclude Include="lib\MediaHelpers.h" />
+    <ClInclude Include="lib\AdaptiveMediaConfig.h" />
+    <ClInclude Include="lib\AdaptiveMediaEventInvoker.h" />
+    <ClInclude Include="lib\AdaptiveMediaEventArgs.h" />
+    <ClInclude Include="lib\AdaptiveRemoteResourceInformation.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />

@@ -3,18 +3,17 @@
 #include "AdaptiveRenderContext.h"
 #include "AdaptiveError.h"
 #include "AdaptiveWarning.h"
-#include "InputItem.h"
+#include "InputValue.h"
 #include "Util.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     HRESULT AdaptiveRenderContext::RuntimeClassInitialize() noexcept
     {
         return S_OK;
@@ -33,7 +32,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         m_resourceResolvers = resourceResolvers;
         m_overrideDictionary = overrideDictionary;
 
-        return MakeAndInitialize<AdaptiveActionInvoker>(&m_actionInvoker, renderResult);
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionInvoker>(&m_actionInvoker, renderResult));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveMediaEventInvoker>(&m_mediaEventInvoker, renderResult));
+
+        return S_OK;
     } CATCH_RETURN;
 
     _Use_decl_annotations_
@@ -55,6 +57,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
+    HRESULT AdaptiveRenderContext::get_MediaEventInvoker(IAdaptiveMediaEventInvoker** value)
+    {
+        return m_mediaEventInvoker.CopyTo(value);
+    }
+
+    _Use_decl_annotations_
     HRESULT AdaptiveRenderContext::get_ResourceResolvers(IAdaptiveCardResourceResolvers** value)
     {
         return m_resourceResolvers.CopyTo(value);
@@ -67,47 +75,28 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveRenderContext::AddError(ABI::AdaptiveCards::Rendering::Uwp::ErrorStatusCode statusCode, HSTRING message)
+    HRESULT AdaptiveRenderContext::AddError(ABI::AdaptiveNamespace::ErrorStatusCode statusCode, HSTRING message)
     {
         ComPtr<AdaptiveError> error;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveError>(&error, statusCode, message));
-        ComPtr<IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveError*>> errors;
+        ComPtr<IVector<ABI::AdaptiveNamespace::IAdaptiveError*>> errors;
         RETURN_IF_FAILED(m_renderResult->get_Errors(&errors));
         return (errors->Append(error.Detach()));
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveRenderContext::AddWarning(ABI::AdaptiveCards::Rendering::Uwp::WarningStatusCode statusCode, HSTRING message)
+    HRESULT AdaptiveRenderContext::AddWarning(ABI::AdaptiveNamespace::WarningStatusCode statusCode, HSTRING message)
     {
         ComPtr<AdaptiveWarning> warning;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveWarning>(&warning, statusCode, message));
-        ComPtr<IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveWarning*>> warnings;
+        ComPtr<IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>> warnings;
         RETURN_IF_FAILED(m_renderResult->get_Warnings(&warnings));
         return (warnings->Append(warning.Detach()));
     }
 
     _Use_decl_annotations_
-    HRESULT AdaptiveRenderContext::AddInputItem(IAdaptiveCardElement* cardElement, ABI::Windows::UI::Xaml::IUIElement* uiElement)
+    HRESULT AdaptiveRenderContext::AddInputValue(IAdaptiveInputValue* inputValue)
     {
-        ComPtr<IAdaptiveCardElement> localCardElement(cardElement);
-        ComPtr<IAdaptiveInputElement> inputElement;
-        THROW_IF_FAILED(localCardElement.As(&inputElement));
-
-        ComPtr<IUIElement> localUiElement(uiElement);
-
-        InputItem item(inputElement.Get(), localUiElement.Get());
-
-        auto inputItems = m_renderResult->GetInputItems();
-
-        if (inputItems != nullptr)
-        {
-            inputItems->push_back(item);
-        }
-        else
-        {
-            // Add to Errors
-        }
-
-        return S_OK;
+        return m_renderResult->AddInputValue(inputValue);
     }
-}}}
+AdaptiveNamespaceEnd

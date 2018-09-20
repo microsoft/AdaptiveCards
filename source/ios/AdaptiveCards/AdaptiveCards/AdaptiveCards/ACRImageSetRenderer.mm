@@ -23,13 +23,13 @@ using namespace AdaptiveCards;
     return singletonInstance;
 }
 
-+ (CardElementType)elemType
++ (ACRCardElementType)elemType
 {
-    return CardElementType::ImageSet;
+    return ACRImageSet;
 }
 
-- (UIView *)render:(UIView *)viewGroup
-rootViewController:(UIViewController *)vc
+- (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
+          rootView:(ACRView *)rootView
             inputs:(NSMutableArray *)inputs
    baseCardElement:(ACOBaseCardElement *)acoElem
         hostConfig:(ACOHostConfig *)acoConfig;
@@ -40,10 +40,10 @@ rootViewController:(UIViewController *)vc
     ACRImageSetUICollectionView *view = [[ACRImageSetUICollectionView alloc] init:imgSetElem
                                                                    WithHostConfig:config
                                                                     WithSuperview:viewGroup
-                                                               rootViewController:vc];
+                                                                         rootView:rootView];
     [view registerClass:[UICollectionViewCell class]forCellWithReuseIdentifier:@"cellId"];
 
-    [(UIStackView *)viewGroup addArrangedSubview:view];
+    [viewGroup addArrangedSubview:view];
     [viewGroup addConstraint:
      [NSLayoutConstraint constraintWithItem:view
                                   attribute:NSLayoutAttributeLeading

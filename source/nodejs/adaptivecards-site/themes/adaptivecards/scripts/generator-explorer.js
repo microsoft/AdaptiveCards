@@ -21,7 +21,6 @@ hexo.extend.generator.register("generator-explorer", function (locals) {
 
             schemaModel.forEach(function (root) {
                 root.children.forEach(function (child) {
-
                     var page = {
                         path: "explorer/" + child.name + ".html",
                         layout: "explorer",
@@ -32,6 +31,7 @@ hexo.extend.generator.register("generator-explorer", function (locals) {
                             propertiesSummary: markedschema.generateMarkdown.createPropertiesSummary(child.properties)
                         }
                     }
+
                     pages.push(page);
 
                     // Set the default root as the index

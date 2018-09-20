@@ -2,10 +2,9 @@
 #include "AdaptiveFontSizesConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     HRESULT AdaptiveFontSizesConfig::RuntimeClassInitialize() noexcept try
     {
         FontSizesConfig fontSizesConfig;
@@ -92,4 +91,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         m_extraLarge = extraLargeFontSize;
         return S_OK;
     }
-}}}
+AdaptiveNamespaceEnd

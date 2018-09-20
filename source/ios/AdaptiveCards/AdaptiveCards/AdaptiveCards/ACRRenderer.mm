@@ -12,10 +12,14 @@
 #import "ACRBaseActionElementRenderer.h"
 #import "ACRColumnSetView.h"
 #import "ACRColumnView.h"
+#import "ACRImageRenderer.h"
 #import "ACRRegistration.h"
 #import "ACRRendererPrivate.h"
 #import "ACRSeparator.h"
-#import "ACRViewControllerPrivate.h"
+#import "ACRViewPrivate.h"
+#import "ACRViewController.h"
+#import "ACRContentHoldingUIScrollView.h"
+#import "ACRLongPressGestureRecognizerFactory.h"
 
 using namespace AdaptiveCards;
 
@@ -28,116 +32,133 @@ using namespace AdaptiveCards;
 }
 
 // This interface is exposed to outside, and returns ACRRenderResult object
-// This object contains a viewController instance which defer rendering adaptiveCard untill viewDidLoad is called.
-+ (ACRRenderResult *)render:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config frame:(CGRect)frame
+// This object contains a viewController instance which defer rendering adaptiveCard until viewDidLoad is called.
++ (ACRRenderResult *)render:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config widthConstraint:(float)width
 {
     ACRRenderResult *result = [[ACRRenderResult alloc] init];
+    // Initializes ACRView instance with HostConfig and AdaptiveCard
+    // ACRViewController does not render adaptiveCard until viewDidLoad calls render
+    ACRView *view = [[ACRView alloc] init:card hostconfig:config widthConstraint:width];
+    result.view = view;
+    result.succeeded = YES;
+    return result;
+}
 
-    // Initializes ACRViewController instance with HostConfig and AdaptiveCard
-    // ACRViewController does not render adaptiveCard untill viewDidLoad calls render
-    ACRViewController *viewcontroller = [[ACRViewController alloc] init:card
-                                                             hostconfig:config
-                                                                  frame:frame];
-
+// This interface is exposed to outside, and returns ACRRenderResult object
+// This object contains a viewController instance which defer rendering adaptiveCard until viewDidLoad is called.
++ (ACRRenderResult *)renderAsViewController:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config frame:(CGRect)frame delegate:(id<ACRActionDelegate>)acrActionDelegate
+{
+    ACRRenderResult *result = [[ACRRenderResult alloc] init];
+    // Initializes ACRView instance with HostConfig and AdaptiveCard
+    // ACRView does not render adaptiveCard until viewDidLoad calls render
+    ACRViewController *viewcontroller = [[ACRViewController alloc] init:card hostconfig:config frame:frame delegate:acrActionDelegate];
     result.viewcontroller = viewcontroller;
     result.succeeded = YES;
     return result;
 }
+
 // transforms (i.e. renders) an adaptiveCard to a new UIView instance
 + (UIView *)renderWithAdaptiveCards:(std::shared_ptr<AdaptiveCard> const &)adaptiveCard
                              inputs:(NSMutableArray *)inputs
-                     viewController:(UIViewController *)vc
-                         guideFrame:(CGRect)guideFrame
-                         hostconfig:(std::shared_ptr<HostConfig> const &)config
+                            context:(ACRView *)rootView
+                     containingView:(ACRColumnView *)containingView
+                         hostconfig:(ACOHostConfig *)config
 {
     std::vector<std::shared_ptr<BaseCardElement>> body = adaptiveCard->GetBody();
+    ACRColumnView *verticalView = containingView;
 
-    ACRColumnView *verticalView = nil;
+    std::shared_ptr<BaseActionElement> selectAction = adaptiveCard->GetSelectAction();
+    if(selectAction) {
+        // instantiate and add tap gesture recognizer
+        [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:verticalView
+                                                                           rootView:rootView
+                                                                      recipientView:verticalView
+                                                                      actionElement:selectAction
+                                                                         hostConfig:config];
+    }
 
-    if(!body.empty())
-    {
-        [(ACRViewController *)vc addTasksToConcurrentQueue:body];
+    if(![[ACRRegistration getInstance] isElementRendererOverriden:[ACRImageRenderer elemType]]){
+        if(!adaptiveCard->GetBackgroundImage().empty()) {
+            [rootView loadImage:adaptiveCard->GetBackgroundImage()];
+        }
+        if(![config getHostConfig]->media.playButton.empty()) {
+            [rootView loadImage:[config getHostConfig]->media.playButton];
+        }
+    }
 
-        verticalView = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, guideFrame.size.width, guideFrame.size.height)];
+    if(!body.empty()) {
+        ACRContainerStyle style = ([config getHostConfig]->adaptiveCard.allowCustomStyle)? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
+        style = (style == ACRNone)? ACRDefault : style;
+        [verticalView setStyle:style];
 
-        [ACRRenderer render:verticalView rootViewController:vc inputs:inputs withCardElems:body andHostConfig:config];
+        [rootView addTasksToConcurrentQueue:body];
 
         std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
 
-        [ACRSeparator renderActionsSeparator:verticalView hostConfig:config];
-        // renders buttons and their associated actions
-        UIView<ACRIContentHoldingView> *actionChildView = [ACRRenderer renderButton:vc inputs:inputs superview:verticalView actionElems:actions hostConfig:config];
-        [verticalView addArrangedSubview:actionChildView];
+        if(!actions.empty()) {
+            [rootView loadImagesForActionsAndCheckIfAllActionsHaveIconImages:actions hostconfig:config];
+        }
+
+        [rootView waitForAsyncTasksToFinish];
+
+        UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
+        if(adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center ||
+           adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom){
+            leadingBlankSpace = [verticalView addPaddingSpace];
+        }
+
+        [ACRRenderer render:verticalView rootView:rootView inputs:inputs withCardElems:body andHostConfig:config];
+
+        // Dont add the trailing space if the vertical content alignment is top/default
+        if((adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center) ||
+           (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Top &&
+            !(verticalView.hasStretchableView))){
+            trailingBlankSpace = [verticalView addPaddingSpace];
+        }
+
+        [[rootView card] setInputs:inputs];
+
+        if(!actions.empty()) {
+            [ACRSeparator renderActionsSeparator:verticalView hostConfig:[config getHostConfig]];
+
+            // renders buttons and their associated actions
+            ACOAdaptiveCard *card = [[ACOAdaptiveCard alloc] init];
+            [card setCard:adaptiveCard];
+            [ACRRenderer renderActions:rootView inputs:inputs superview:verticalView card:card hostConfig:config];
+        }
+        [verticalView adjustHuggingForLastElement];
     }
+
     return verticalView;
 }
 
-+ (UIView<ACRIContentHoldingView> *)renderButton:(UIViewController *)vc
-                                          inputs:(NSMutableArray *)inputs
-                                       superview:(UIView<ACRIContentHoldingView> *)superview
-                                     actionElems:(std::vector<std::shared_ptr<BaseActionElement>> const &)elems
-                                      hostConfig:(std::shared_ptr<HostConfig> const &)config
++ (UIView *)renderActions:(ACRView *)rootView
+                  inputs:(NSMutableArray *)inputs
+               superview:(UIView<ACRIContentHoldingView> *)superview
+                    card:(ACOAdaptiveCard *)card
+               hostConfig:(ACOHostConfig *)config
 {
     ACRRegistration *reg = [ACRRegistration getInstance];
-    UIView<ACRIContentHoldingView> *childview = nil;
-    UILayoutConstraintAxis axis = UILayoutConstraintAxisVertical;
-    if(ActionsOrientation::Horizontal == config->actions.actionsOrientation)
-    {
-        childview = [[ACRColumnSetView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height)];
-        axis = UILayoutConstraintAxisHorizontal;
-    }
-    else
-    {
-        childview = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height)];
-    }
-
-    ACOBaseActionElement *acoElem = [[ACOBaseActionElement alloc] init];
-    ACOHostConfig *acoConfig = [[ACOHostConfig alloc] init];
-    [acoConfig setHostConfig:config];
-
-    for(const auto &elem:elems)
-    {
-        ACRBaseActionElementRenderer *actionRenderer =
-        [reg getActionRenderer:[NSNumber numberWithInt:(int)elem->GetElementType()]];
-
-        if(actionRenderer == nil)
-        {
-            NSLog(@"Unsupported card action type:%d\n", (int) elem->GetElementType());
-            continue;
-        }
-
-        [acoElem setElem:elem];
-
-        UIButton* button = [actionRenderer renderButton:vc
-                                                 inputs:inputs
-                                              superview:superview
-                                      baseActionElement:acoElem
-                                             hostConfig:acoConfig];
-        [childview addArrangedSubview:button];
-
-        [ACRSeparator renderSeparationWithFrame:CGRectMake(0,0,config->actions.buttonSpacing, config->actions.buttonSpacing)
-                                      superview:childview axis:axis];
-    }
-
-    [childview adjustHuggingForLastElement];
-
-    return childview;
+    return [[reg getActionSetRenderer] renderButtons:rootView inputs:inputs superview:superview card:card hostConfig:config];
 }
 
 + (UIView *)render:(UIView<ACRIContentHoldingView> *)view
-            rootViewController:(UIViewController *)vc
+          rootView:(ACRView *)rootView
             inputs:(NSMutableArray *)inputs
      withCardElems:(std::vector<std::shared_ptr<BaseCardElement>> const &)elems
-     andHostConfig:(std::shared_ptr<HostConfig> const &)config
+     andHostConfig:(ACOHostConfig *)config
 {
     ACRRegistration *reg = [ACRRegistration getInstance];
     ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] init];
-    ACOHostConfig *acoConfig = [[ACOHostConfig alloc] init];
-    [acoConfig setHostConfig:config];
 
+    UIView *prevStretchableElem = nil, *curStretchableElem = nil;
+
+    auto firstelem = elems.begin();
     for(const auto &elem:elems)
     {
-        [ACRSeparator renderSeparation:elem forSuperview:view withHostConfig:config];
+        if(*firstelem != elem){
+            [ACRSeparator renderSeparation:elem forSuperview:view withHostConfig:[config getHostConfig]];
+        }
 
         ACRBaseCardElementRenderer *renderer =
             [reg getRenderer:[NSNumber numberWithInt:(int)elem->GetElementType()]];
@@ -149,7 +170,29 @@ using namespace AdaptiveCards;
         }
 
         [acoElem setElem:elem];
-        [renderer render:view rootViewController:vc inputs:inputs baseCardElement:acoElem hostConfig:acoConfig];
+
+        curStretchableElem = [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
+
+        if(elem->GetHeight() == HeightType::Stretch){
+            if(prevStretchableElem){
+                NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:curStretchableElem
+                                             attribute:NSLayoutAttributeHeight
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:prevStretchableElem
+                                             attribute:NSLayoutAttributeHeight
+                                            multiplier:1
+                                              constant:0];
+                heightConstraint.priority = UILayoutPriorityDefaultLow;
+                heightConstraint.active = YES;
+            }
+
+            if([view isKindOfClass:[ACRColumnView class]]){
+                ACRColumnView *columnView = (ACRColumnView*)view;
+                columnView.hasStretchableView = YES;
+            }
+
+            prevStretchableElem = curStretchableElem;
+        }
     }
 
     return view;

@@ -21,32 +21,36 @@
     return singletonInstance;
 }
 
-- (UIButton* )renderButton:(UIViewController *)vc
-                    inputs:(NSArray *)inputs
+- (UIButton* )renderButton:(ACRView *)rootView
+                    inputs:(NSMutableArray *)inputs
                  superview:(UIView<ACRIContentHoldingView> *)superview
          baseActionElement:(ACOBaseActionElement *)acoElem
                 hostConfig:(ACOHostConfig *)acoConfig;
 {
-    std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
-    std::shared_ptr<BaseActionElement> elem = [acoElem getElem];
+    std::shared_ptr<BaseActionElement> elem = [acoElem element];
     std::shared_ptr<ShowCardAction> action = std::dynamic_pointer_cast<ShowCardAction>(elem);
 
-    NSString *title  = [NSString stringWithCString:action->GetTitle().c_str()
-                                          encoding:NSUTF8StringEncoding];
-    UIButton *button = [UIButton acr_renderButton:vc title:title andHostConfig:config];
+    NSString *title  = [NSString stringWithCString:action->GetTitle().c_str() encoding:NSUTF8StringEncoding];
+    
+    UIButton *button = [UIButton rootView:rootView baseActionElement:acoElem title:title andHostConfig:acoConfig];
 
-    ACRShowCardTarget *target = [[ACRShowCardTarget alloc] initWithAdaptiveCard:action->GetCard()
-                                                                         config:config
-                                                                      superview:superview
-                                                                             vc:vc];
-    [button addTarget:target
-               action:@selector(toggleVisibilityOfShowCard)
-     forControlEvents:UIControlEventTouchUpInside];
+    ACRShowCardTarget *target = [[ACRShowCardTarget alloc] initWithActionElement:action
+                                                                          config:acoConfig
+                                                                       superview:superview
+                                                                        rootView:rootView
+                                                                          button:button];
+    
+    [button addTarget:target action:@selector(toggleVisibilityOfShowCard) forControlEvents:UIControlEventTouchUpInside];
 
     [superview addTarget:target];
 
-    [superview addArrangedSubview:button];
+    [target createShowCard:inputs];
+
+    [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    
+    [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 
     return button;
 }
+
 @end

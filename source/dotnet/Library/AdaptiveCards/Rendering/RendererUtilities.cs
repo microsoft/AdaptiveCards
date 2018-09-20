@@ -13,8 +13,8 @@ namespace AdaptiveCards.Rendering
     public static class RendererUtilities
     {
         private static readonly Regex TextFunctionRegex =
-            new Regex(@"\{\{(?<func>DATE|TIME){1}\((?<date>.+?){1}(?:,\s*(?<hint>Short|Long){1}\s*)??\)\}\}",
-                RegexOptions.ExplicitCapture | RegexOptions.IgnoreCase);
+            new Regex(@"\{\{(?<func>DATE|TIME){1}\((?<date>[\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2}:[\d]{2}[Z+-].*?){1}(?:,\s*(?<hint>SHORT|LONG|COMPACT){1}\s*)??\)\}\}",
+                RegexOptions.ExplicitCapture);
 
         private static readonly Regex _regexBinding = new Regex(@"(?<property>\{\{\w+?\}\})+?",
             RegexOptions.ExplicitCapture);
@@ -36,15 +36,37 @@ namespace AdaptiveCards.Rendering
                         DateTime date;
                         if (DateTime.TryParse(match.Groups[2].Value, out date))
                         {
-                            TimeHints timeHint;
-                            if (!Enum.TryParse(match.Groups[3].Value.ToUpper(), out timeHint))
-                                timeHint = TimeHints.LONG;
+                            // Default interpretation: Compact
+                            TimeHints timeHint = TimeHints.COMPACT;
+                            string dateTimeFormat = "d";
 
-                            var dateTimeFormat = "D";
                             if (function == Functions.DATE)
-                                dateTimeFormat = timeHint == TimeHints.LONG ? "D" : "d";
+                            {
+                                if (Enum.TryParse(match.Groups[3].Value, out timeHint))
+                                {
+                                    switch (timeHint)
+                                    {
+                                        case TimeHints.LONG:
+                                            dateTimeFormat = "D";
+                                            break;
+                                        case TimeHints.SHORT:
+                                            dateTimeFormat = "ddd, MMM d, yyyy";
+                                            break;
+                                        default:
+                                            dateTimeFormat = "d";
+                                            break;
+                                    }
+                                }
+                            }
                             else if (function == Functions.TIME)
-                                dateTimeFormat = timeHint == TimeHints.LONG ? "T" : "t";
+                            {
+                                // TIME function has param. Ignore and move on.
+                                if (!string.IsNullOrEmpty(match.Groups[3].Value))
+                                {
+                                    continue;
+                                }
+                                dateTimeFormat = "t";
+                            }
                             text = text.Replace(match.Value, date.ToString(dateTimeFormat));
                         }
                     }
@@ -61,11 +83,12 @@ namespace AdaptiveCards.Rendering
 
         private enum TimeHints
         {
-            LONG,
-            SHORT
+            COMPACT,
+            SHORT,
+            LONG
         }
 
-        public static string JoinString(IList<string> choices, string sep, string last)
+        public static string JoinString(List<string> choices, string sep, string last)
         {
             if (choices == null || choices.Count == 0)
                 return "";

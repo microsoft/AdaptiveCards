@@ -1,0 +1,1 @@
+{"actions":[],"body":[{"text":"Created {{DATE(2017-02-14T06:08:39Z,SHORT)}} {{TIME(2017-02-14T06:08:39Z)}}","type":"TextBlock","wrap":true},{"text":"Created {{DATE(2017-02-14T06:08:39Z,LONG)}} {{TIME(2017-02-14T06:08:39Z)}}","type":"TextBlock","wrap":true}],"type":"AdaptiveCard","version":"1.0"}

@@ -4,8 +4,7 @@
 #include "Enums.h"
 #include "json/json.h"
 
-namespace AdaptiveCards
-{
+namespace AdaptiveSharedNamespace {
 
 struct FontSizesConfig
 {
@@ -55,7 +54,7 @@ struct TextConfig
     ForegroundColor color = ForegroundColor::Default;
     bool isSubtle = false;
     bool wrap = true;
-    unsigned int maxWidth = 150;
+    unsigned int maxWidth = ~0U;
 
     static TextConfig Deserialize(const Json::Value& json, const TextConfig& defaultValue);
 };
@@ -113,8 +112,8 @@ struct AdaptiveCardConfig
 
 struct FactSetConfig
 {
-    TextConfig title = { TextWeight::Bolder };
-    TextConfig value;
+    TextConfig title{ TextWeight::Bolder, TextSize::Default, ForegroundColor::Default, false, true, 150 };
+    TextConfig value{ TextWeight::Default, TextSize::Default, ForegroundColor::Default, false, true, ~0U };
     unsigned int spacing = 10;
 
     static FactSetConfig Deserialize(const Json::Value& json, const FactSetConfig& defaultValue);
@@ -123,6 +122,8 @@ struct FactSetConfig
 struct ContainerStyleDefinition
 {
     std::string backgroundColor = "#FFFFFFFF";
+    std::string borderColor = "#FF7F7F7F7F"; // CAUTION: Experimental feature for iOS. Not in v1 schema, subject to change.
+    unsigned int borderThickness = 0; // CAUTION: Experimental feature for iOS. Not in v1 schema, subject to change.
     ColorsConfig foregroundColors;
 
     static ContainerStyleDefinition Deserialize(const Json::Value& json, const ContainerStyleDefinition& defaultValue);
@@ -131,8 +132,8 @@ struct ContainerStyleDefinition
 struct ContainerStylesDefinition
 {
     ContainerStyleDefinition defaultPalette;
-    ContainerStyleDefinition emphasisPalette = 
-    { "#08000000",
+    ContainerStyleDefinition emphasisPalette =
+    { "#08000000", "#08000000", 0,
         {
             { "#FF000000", "#B2000000" },   //defaultColor
             { "#FF0000FF", "#B20000FF" },   //accent
@@ -164,8 +165,19 @@ struct ActionsConfig
     unsigned int buttonSpacing = 10;
     unsigned int maxActions = 5;
     Spacing spacing = Spacing::Default;
+    IconPlacement iconPlacement = IconPlacement::AboveTitle;
+    unsigned int iconSize = 30;
 
     static ActionsConfig Deserialize(const Json::Value& json, const ActionsConfig& defaultValue);
+};
+
+struct MediaConfig
+{
+    std::string defaultPoster;
+    std::string playButton;
+    bool allowInlinePlayback = true;
+
+    static MediaConfig Deserialize(const Json::Value& json, const MediaConfig& defaultValue);
 };
 
 struct HostConfig
@@ -174,6 +186,7 @@ struct HostConfig
     FontSizesConfig fontSizes;
     FontWeightsConfig fontWeights;
     bool supportsInteractivity = true;
+    std::string imageBaseUrl;
     ImageSizesConfig imageSizes;
     ImageConfig image;
     SeparatorConfig separator;
@@ -183,6 +196,7 @@ struct HostConfig
     FactSetConfig factSet;
     ActionsConfig actions;
     ContainerStylesDefinition containerStyles;
+    MediaConfig media;
 
     static HostConfig Deserialize(const Json::Value& json);
     static HostConfig DeserializeFromString(const std::string jsonString);

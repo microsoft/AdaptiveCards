@@ -1,17 +1,26 @@
+var webpack = require("webpack");
+var path = require("path");
+
 var visualizer = {
-    entry: "./src/app.ts",
-    output: {
-        filename: "./dist/adaptivecards-visualizer.js"
-    },
-
-    // Enable sourcemaps for debugging webpack's output.
     devtool: "source-map",
-
-    resolve: {
-        // Add '.ts' as resolvable extensions.
-        extensions: [".webpack.js", ".web.js", ".ts", ".js"]
+    entry: {
+        "adaptivecards-visualizer": ["./src/app.ts"],
+        "adaptivecards-visualizer.min": ["./src/app.ts"]
     },
-
+    output: {
+        path: path.resolve(__dirname, "dist"),
+        filename: "[name].js",
+    },
+    resolve: {
+        extensions: [".ts", ".tsx", ".js"]
+    },
+    plugins: [
+        new webpack.optimize.UglifyJsPlugin({
+            minimize: true,
+            sourceMap: true,
+            include: /\.min\.js$/,
+        })
+    ],
     module: {
         rules: [
             {
@@ -25,7 +34,8 @@ var visualizer = {
         ]
     },
     externals: {
-        "adaptivecards": { var: "AdaptiveCards" }
+        "adaptivecards": { var: "AdaptiveCards" },
+        "markdown-it": { var: "markdownit"}
     }
 };
 

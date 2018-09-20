@@ -79,7 +79,9 @@ namespace AdaptiveCardVisualizer.ViewModel
                 JsonObject jsonObject;
                 if (JsonObject.TryParse(payload, out jsonObject))
                 {
-                    RenderedAdaptiveCard renderResult = _renderer.RenderAdaptiveCardFromJson(jsonObject);
+                    AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(jsonObject);
+
+                    RenderedAdaptiveCard renderResult = _renderer.RenderAdaptiveCard(parseResult.AdaptiveCard);
                     if (renderResult.FrameworkElement != null)
                     {
                         RenderedCard = renderResult.FrameworkElement;
@@ -105,12 +107,38 @@ namespace AdaptiveCardVisualizer.ViewModel
 
                             await m_actionDialog.ShowAsync();
                         };
+
+                        if (!MainPageViewModel.HostConfigEditor.HostConfig.Media.AllowInlinePlayback)
+                        {
+                            renderResult.MediaClicked += async (sender, e) =>
+                            {
+                                var onPlayDialog = new ContentDialog();
+                                onPlayDialog.Content = "MediaClickedEvent:";
+
+                                foreach (var source in e.Media.Sources)
+                                {
+                                    onPlayDialog.Content += "\n" + source.Url + " (" + source.MimeType + ")";
+                                }
+
+                                onPlayDialog.PrimaryButtonText = "Close";
+
+                                await onPlayDialog.ShowAsync();
+                            };
+                        }
                     }
                     else
                     {
                         newErrors.Add(new ErrorViewModel()
                         {
                             Message = "There was an error Rendering this card",
+                            Type = ErrorViewModelType.Error
+                        });
+                    }
+                    foreach (var error in parseResult.Errors)
+                    {
+                        newErrors.Add(new ErrorViewModel()
+                        {
+                            Message = error.Message,
                             Type = ErrorViewModelType.Error
                         });
                     }
@@ -122,6 +150,15 @@ namespace AdaptiveCardVisualizer.ViewModel
                             Type = ErrorViewModelType.Error
                         });
                     }
+                    foreach (var error in parseResult.Warnings)
+                    {
+                        newErrors.Add(new ErrorViewModel()
+                        {
+                            Message = error.Message,
+                            Type = ErrorViewModelType.Warning
+                        });
+                    }
+
                     foreach (var error in renderResult.Warnings)
                     {
                         newErrors.Add(new ErrorViewModel()

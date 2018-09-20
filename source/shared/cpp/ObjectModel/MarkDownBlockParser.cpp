@@ -1,7 +1,8 @@
+#include "pch.h"
 #include <iostream>
 #include "MarkDownBlockParser.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
 // Parses according to each key words
 void MarkDownBlockParser::ParseBlock(std::stringstream &stream)
@@ -23,13 +24,17 @@ void MarkDownBlockParser::ParseBlock(std::stringstream &stream)
     case ']': case ')':
     {
         // add these char as token to code gen list
-        m_parsedResult.AddNewTokenToParsedResult(static_cast<char>(stream.get()));
+        char streamChar;
+        stream.get(streamChar);
+        m_parsedResult.AddNewTokenToParsedResult(streamChar);
         break;
     }
     case '\n': case '\r':
     {
         // add new line char as token to code gen list
-        m_parsedResult.AddNewLineTokenToParsedResult(static_cast<char>(stream.get()));
+        char streamChar;
+        stream.get(streamChar);
+        m_parsedResult.AddNewLineTokenToParsedResult(streamChar);
         break;
     }
     // handles list block
@@ -71,7 +76,7 @@ void EmphasisParser::Match(std::stringstream &stream)
 {
     while (m_current_state != EmphasisState::Captured)
     {
-        m_current_state = m_stateMachine[m_current_state](*this, stream, m_current_token);
+        m_current_state = m_stateMachine.at(m_current_state)(*this, stream, m_current_token);
     }
 }
 
@@ -85,11 +90,11 @@ EmphasisParser::EmphasisState EmphasisParser::MatchText(EmphasisParser &parser, 
         return EmphasisState::Captured;
     }
 
-    if (parser.IsMarkDownDelimiter(static_cast<char>(stream.peek())))
+    if (parser.IsMarkDownDelimiter(stream.peek()))
     {
         // encounterred first emphasis delimiter
         parser.CaptureCurrentCollectedStringAsRegularToken();
-        DelimiterType emphasisType = EmphasisParser::GetDelimiterTypeForCharAtCurrentPosition(static_cast<char>(stream.peek()));
+        const DelimiterType emphasisType = EmphasisParser::GetDelimiterTypeForCharAtCurrentPosition(stream.peek());
         // get previous character and update the look behind if it was captured before 
         if (stream.tellg())
         {
@@ -98,13 +103,17 @@ EmphasisParser::EmphasisState EmphasisParser::MatchText(EmphasisParser &parser, 
         }
 
         parser.UpdateCurrentEmphasisRunState(emphasisType);
-        token += static_cast<char>(stream.get());
+        char streamChar;
+        stream.get(streamChar);
+        token += streamChar;
         return EmphasisState::Emphasis;
     }
     else
     {
         parser.UpdateLookBehind(stream.peek());
-        token += static_cast<char>(stream.get());
+        char streamChar;
+        stream.get(streamChar);
+        token += streamChar;
         return EmphasisState::Text;
     }
 }
@@ -121,15 +130,17 @@ EmphasisParser::EmphasisState EmphasisParser::MatchEmphasis(EmphasisParser &pars
     }
 
     /// if another emphasis delimiter is encounterred, it is delimiter run
-    if (parser.IsMarkDownDelimiter(static_cast<char>(stream.peek())))
+    if (parser.IsMarkDownDelimiter(stream.peek()))
     {
-        DelimiterType emphasisType = EmphasisParser::GetDelimiterTypeForCharAtCurrentPosition(static_cast<char>(stream.peek()));
+        const DelimiterType emphasisType = EmphasisParser::GetDelimiterTypeForCharAtCurrentPosition((stream.peek()));
         if (parser.IsEmphasisDelimiterRun(emphasisType))
         {
             parser.UpdateCurrentEmphasisRunState(emphasisType);
         }
 
-        token += static_cast<char>(stream.get());
+        char streamChar;
+        stream.get(streamChar);
+        token += streamChar;
     }
     /// delimiter run is ended, capture the current accumulated token as emphasis
     else
@@ -144,7 +155,9 @@ EmphasisParser::EmphasisState EmphasisParser::MatchEmphasis(EmphasisParser &pars
 
         parser.ResetCurrentEmphasisState();
         parser.UpdateLookBehind(stream.peek());
-        token += static_cast<char>(stream.get());
+        char streamChar;
+        stream.get(streamChar);
+        token += streamChar;
         return EmphasisState::Text;
     }
     return EmphasisState::Emphasis;
@@ -166,7 +179,7 @@ void EmphasisParser::Flush(int ch, std::string& currentToken)
     currentToken.clear();
 }
 
-bool EmphasisParser::IsMarkDownDelimiter(char ch)
+bool EmphasisParser::IsMarkDownDelimiter(int ch)
 {
     return ((ch == '*' || ch == '_') && (m_lookBehind != Escape));
 }
@@ -201,7 +214,7 @@ void EmphasisParser::UpdateCurrentEmphasisRunState(DelimiterType emphasisType)
 
 bool EmphasisParser::IsRightEmphasisDelimiter(int ch)
 {
-    if ((isspace(ch) || (ch == EOF)) &&
+    if ((std::isspace(ch) || (ch == EOF)) &&
         (m_lookBehind != WhiteSpace) &&
         (m_checkLookAhead || m_checkIntraWord || m_currentDelimiterType == Asterisk))
     {
@@ -331,7 +344,9 @@ bool LinkParser::MatchAtLinkInit(std::stringstream &lookahead)
 {
     if (lookahead.peek() == '[')
     {
-        m_linkTextParsedResult.AddNewTokenToParsedResult(static_cast<char>(lookahead.get()));
+        char streamChar;
+        lookahead.get(streamChar);
+        m_linkTextParsedResult.AddNewTokenToParsedResult(streamChar);
         return true;
     }
 
@@ -345,7 +360,9 @@ bool LinkParser::MatchAtLinkTextRun(std::stringstream &lookahead)
 {
     if (lookahead.peek() == ']')
     {
-        m_linkTextParsedResult.AddNewTokenToParsedResult(static_cast<char>(lookahead.get()));
+        char streamChar;
+        lookahead.get(streamChar);
+        m_linkTextParsedResult.AddNewTokenToParsedResult(streamChar);
         return true;
     }
     else
@@ -364,7 +381,9 @@ bool LinkParser::MatchAtLinkTextRun(std::stringstream &lookahead)
             if (lookahead.peek() == ']')
             {
                 // move code gen objects to link text list to further process it 
-                m_linkTextParsedResult.AddNewTokenToParsedResult(static_cast<char>(lookahead.get()));
+                char streamChar;
+                lookahead.get(streamChar);
+                m_linkTextParsedResult.AddNewTokenToParsedResult(streamChar);
                 return true;
             }
 
@@ -379,7 +398,9 @@ bool LinkParser::MatchAtLinkTextEnd(std::stringstream &lookahead)
 {
     if (lookahead.peek() == '(')
     {
-        m_linkTextParsedResult.AddNewTokenToParsedResult(static_cast<char>(lookahead.get()));
+        char streamChar;
+        lookahead.get(streamChar);
+        m_linkTextParsedResult.AddNewTokenToParsedResult(streamChar);
         return true;
     }
 
@@ -470,6 +491,7 @@ void LinkParser::CaptureLinkToken()
         std::make_shared<MarkDownStringHtmlGenerator>(html_string);
 
     m_parsedResult.Clear();
+    m_parsedResult.FoundHtmlTags();
     m_parsedResult.AppendToTokens(codeGen);
 }
 
@@ -517,7 +539,9 @@ bool ListParser::MatchNewOrderedListItem(std::stringstream &stream, std::string 
 {
     do
     {
-        number_string += static_cast<char>(stream.get());
+        char streamChar;
+        stream.get(streamChar);
+        number_string += streamChar;
     } while (isdigit(stream.peek()));
 
     if (stream.peek() == '.')
@@ -539,7 +563,8 @@ void ListParser::ParseSubBlocks(std::stringstream &stream)
     {
         if (IsNewLine(stream.peek()))
         {
-            int newLineChar = stream.get();
+            char newLineChar;
+            stream.get(newLineChar);
             // check if it is the start of new block items
             if (isdigit(stream.peek()))
             {
@@ -558,7 +583,7 @@ void ListParser::ParseSubBlocks(std::stringstream &stream)
                 break;
             }
 
-            m_parsedResult.AddNewTokenToParsedResult(static_cast<char>(newLineChar));
+            m_parsedResult.AddNewTokenToParsedResult(newLineChar);
         }
         ParseBlock(stream);
     }
@@ -620,6 +645,7 @@ void ListParser::CaptureListToken()
         std::make_shared<MarkDownListHtmlGenerator>(html_string);
 
     m_parsedResult.Clear();
+    m_parsedResult.FoundHtmlTags();
     m_parsedResult.AppendToTokens(codeGen);
 }
 
@@ -632,7 +658,9 @@ void OrderedListParser::Match(std::stringstream &stream)
     {
         do
         {
-            number_string += static_cast<char>(stream.get());
+            char streamChar;
+            stream.get(streamChar);
+            number_string += streamChar;
         } while (isdigit(stream.peek()));
 
         if (IsDot(stream.peek()))
@@ -673,5 +701,6 @@ void OrderedListParser::CaptureOrderedListToken(std::string &number_string)
         std::make_shared<MarkDownOrderedListHtmlGenerator>(html_string, number_string);
 
     m_parsedResult.Clear();
+    m_parsedResult.FoundHtmlTags();
     m_parsedResult.AppendToTokens(codeGen);
 }

@@ -4,14 +4,13 @@
 #include "Enums.h"
 #include "HostConfig.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     class AdaptiveFontWeightsConfig :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveFontWeightsConfig>
+            ABI::AdaptiveNamespace::IAdaptiveFontWeightsConfig>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveFontWeightsConfig, BaseTrust)
+        AdaptiveRuntime(AdaptiveFontWeightsConfig)
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
@@ -33,4 +32,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     ActivatableClass(AdaptiveFontWeightsConfig);
-}}}
+AdaptiveNamespaceEnd

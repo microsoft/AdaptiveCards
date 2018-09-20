@@ -9,41 +9,34 @@
 
 @implementation ACRColumnView
 
-- (void)config
+- (void)config:(nullable NSDictionary<NSString *, id> *)attributes
 {
-    [super config];
     super.stackView.axis = UILayoutConstraintAxisVertical;
     super.stackView.distribution = UIStackViewDistributionFill;
+    [super config:attributes];
 }
 
 - (void)addArrangedSubview:(UIView *)view
 {
-    [super addArrangedSubview:view];
-    CGRect frame = super.frame;
-    super.frame = frame;
-    enum Bounds { eMinNumRequired = 2};
-    if([self.stackView.arrangedSubviews count] >= eMinNumRequired)
-    {
-        [self addConstraint:
-                [NSLayoutConstraint constraintWithItem:
-                 [self.stackView.arrangedSubviews objectAtIndex:[self.stackView.arrangedSubviews count] - eMinNumRequired]
-                                             attribute:NSLayoutAttributeBottom
-                                             relatedBy:NSLayoutRelationEqual
-                                                toItem:view
-                                             attribute:NSLayoutAttributeTop
-                                            multiplier:1
-                                              constant:0]];
+    // if auto, maintain content size whenever possible
+    if([self.columnWidth isEqualToString:@"auto"]){
+        [view setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+        [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+      // if columnWidth is set to stretch or number, allow column to fill the available space
+    } else {
+        [view setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+        [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     }
-    
-    [self addConstraint:
-     [NSLayoutConstraint constraintWithItem:
-      self.stackView attribute:NSLayoutAttributeWidth
-                      relatedBy:NSLayoutRelationGreaterThanOrEqual
-                         toItem:view
-                      attribute:NSLayoutAttributeWidth
-                     multiplier:1
-                       constant:0]];
 
+    [self.stackView addArrangedSubview:view];
+}
+
+- (UIView *)addPaddingSpace
+{
+    UIView *blankTrailingSpace = [[UIView alloc] init];
+    [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+    [self addArrangedSubview:blankTrailingSpace];
+    return blankTrailingSpace;
 }
 
 @end

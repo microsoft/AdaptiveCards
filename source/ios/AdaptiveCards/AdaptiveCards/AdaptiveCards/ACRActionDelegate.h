@@ -6,12 +6,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ACOAdaptiveCard.h"
+#import "ACOBaseActionElement.h"
 
-@protocol ACRActionDelegate
+@protocol ACRActionDelegate <NSObject>
 
-- (void)didFetchUserResponses:(NSData *)json error:(NSError *)error;
+- (void)didFetchUserResponses:(ACOAdaptiveCard *)card action:(ACOBaseActionElement *)action;
 
-- (void)didFetchUserResponses:(NSData *)json data:(NSString *)data error:(NSError *)error;
+@optional
+- (void)didLoadElements;
+- (void)didChangeVisibility:(UIButton *)button isVisible:(BOOL)isVisible;
+- (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame;
 
-- (void)didFetchHttpRequest:(NSURLRequest *)urlRequest;
 @end

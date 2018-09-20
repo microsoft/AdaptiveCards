@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Reflection;
+using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
@@ -13,6 +14,9 @@ namespace AdaptiveCards
         ///     Title of the action
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
         public string Title { get; set; }
 
         // TODO: Title should be required is NOT a selectAction? Or can we use it as a tooltip?
@@ -23,6 +27,14 @@ namespace AdaptiveCards
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [Obsolete("ActionBase.Speak has been deprecated.  Use AdaptiveCard.Speak", false)]
         public string Speak { get; set; }
-    }
 
+        /// <summary>
+        ///     IconUrl that can be specified for actions
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        public string IconUrl { get; set; }
+    }
 }

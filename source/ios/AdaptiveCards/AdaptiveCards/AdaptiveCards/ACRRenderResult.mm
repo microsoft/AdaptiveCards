@@ -8,15 +8,4 @@
 
 @implementation ACRRenderResult
 
-- (instancetype)init
-{
-    self = [super init];
-    if(self)
-    {
-        self.succeeded= NO;
-        self.viewcontroller = nil;
-    }
-    return self;
-}
-
 @end

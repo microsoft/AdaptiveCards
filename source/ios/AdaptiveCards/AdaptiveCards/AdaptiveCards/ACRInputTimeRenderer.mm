@@ -18,13 +18,13 @@
     return singletonInstance;
 }
 
-+ (CardElementType)elemType
++ (ACRCardElementType)elemType
 {
-    return CardElementType::TimeInput;
+    return ACRTimeInput;
 }
 
 - (UIView *)render:(UIView *)viewGroup
-rootViewController:(UIViewController *)vc
+          rootView:(ACRView *)rootView
             inputs:(NSMutableArray *)inputs
    baseCardElement:(ACOBaseCardElement *)acoElem
         hostConfig:(ACOHostConfig *)acoConfig;
@@ -36,7 +36,19 @@ rootViewController:(UIViewController *)vc
 
     if(viewGroup)
     {
-        [(UIStackView *)viewGroup addArrangedSubview:field];
+        if(elem->GetHeight() == HeightType::Stretch){
+            ACRColumnView *inputContainer = [[ACRColumnView alloc] init];
+            [inputContainer addArrangedSubview: field];
+            
+            // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
+            UIView *blankTrailingSpace = [[UIView alloc] init];
+            [inputContainer addArrangedSubview:blankTrailingSpace];
+            [inputContainer adjustHuggingForLastElement];
+            
+            [(UIStackView *)viewGroup addArrangedSubview: inputContainer];
+        } else {
+            [(UIStackView *)viewGroup addArrangedSubview: field];
+        }
     }
 
     [inputs addObject:field];

@@ -9,19 +9,24 @@
 #include "MarkDownBlockParser.h"
 #include "MarkDownHtmlGenerator.h"
 
-namespace AdaptiveCards
-{
+namespace AdaptiveSharedNamespace {
 class MarkDownParser
 {
 public:
-    MarkDownParser(const std::string &txt); 
+    MarkDownParser(const std::string &txt);
 
     std::string TransformToHtml();
+
+    bool HasHtmlTags();
+
+    bool IsEscaped() const;
 
 private:
     void ParseBlock();
     std::string EscapeText();
     std::string m_text;
     MarkDownParsedResult m_parsedResult;
+    bool m_hasHTMLTag;
+    bool m_isEscaped;
 };
 }

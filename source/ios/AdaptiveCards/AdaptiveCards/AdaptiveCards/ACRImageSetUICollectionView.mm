@@ -10,6 +10,7 @@
 #import "ACRImageRenderer.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "ACRRegistration.h"
 
 using namespace AdaptiveCards;
 
@@ -18,13 +19,14 @@ using namespace AdaptiveCards;
     ACOBaseCardElement *_acoElem;
     ACOHostConfig *_acoConfig;
     std::shared_ptr<ImageSet> _imgSet;
-    UIViewController* _vc;
+    ImageSize _imageSize;
+    ACRView* _rootView;
 }
 
 - (instancetype)init:(std::shared_ptr<ImageSet> const&)imageSet
       WithHostConfig:(std::shared_ptr<HostConfig> const&)hostConfig
        WithSuperview:(UIView *)view
-  rootViewController:(UIViewController *)vc
+  rootView:(ACRView *)rootView
 {
     self = [super initWithFrame:view.frame collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
     if(self)
@@ -32,15 +34,16 @@ using namespace AdaptiveCards;
         self.dataSource = self;
         self.delegate = self;
         self.backgroundColor = UIColor.clearColor;
-        _acoElem = [[ACOBaseCardElement alloc] init];
+        _acoElem = [[ACOBaseCardElement alloc] initWithBaseCardElement:imageSet];
         _acoConfig = [[ACOHostConfig alloc] initWithConfig:hostConfig];
         _imgSet = imageSet;
-        _vc = vc;
-        CGSize sz = [ACRImageRenderer getImageSize:imageSet->GetImageSize() withHostConfig:hostConfig];
-
-        ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize = sz;
-        ((UICollectionViewFlowLayout *)self.collectionViewLayout).scrollDirection = UICollectionViewScrollDirectionVertical;
-
+        _rootView = rootView;
+        _imageSize = _imgSet->GetImageSize();
+        if(_imgSet->GetImageSize() == ImageSize::Auto || _imgSet->GetImageSize()  == ImageSize::Stretch || _imgSet->GetImageSize()  == ImageSize::None){
+            _imageSize = ImageSize::Medium;
+        }
+        ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize = [_acoConfig getImageSize:_imageSize];
+        self.scrollEnabled = NO;
         self.translatesAutoresizingMaskIntoConstraints = NO;
     }
     return self;
@@ -60,14 +63,20 @@ using namespace AdaptiveCards;
 {
     static NSString *identifier = @"cellId";
     [_acoElem setElem:_imgSet->GetImages()[indexPath.row]];
+    ImageSize cellSize = _imgSet->GetImageSize();
+    if(cellSize  == ImageSize::Auto || cellSize  == ImageSize::Stretch || cellSize  == ImageSize::None){
+        _imgSet->GetImages()[indexPath.row]->SetImageSize(_imageSize);
+    }
 
-    UIView *content = [[ACRImageRenderer getInstance] render:nil rootViewController:_vc inputs:nil baseCardElement:_acoElem hostConfig:_acoConfig];
+    ACRBaseCardElementRenderer *imageRenderer = [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInteger:ACRImage]];
+    UIView *content = [imageRenderer render:nil rootView:_rootView inputs:nil baseCardElement:_acoElem hostConfig:_acoConfig];
 
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     if(!cell) {
         cell = [[UICollectionViewCell alloc] initWithFrame:content.frame];
+    } else {
+        cell.contentView.frame = content.frame;
     }
-    cell.contentView.frame = content.frame;
     [cell.contentView addSubview:content];
     return cell;
 }
@@ -80,6 +89,31 @@ using namespace AdaptiveCards;
 
 - (CGSize)intrinsicContentSize
 {
-    return [self.collectionViewLayout collectionViewContentSize];
+    return [self collectionViewContentSize];
+}
+
+- (CGSize)collectionViewContentSize
+{
+    size_t cellCounts = _imgSet->GetImages().size();
+    CGSize imageSize = ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize;
+    float spacing = ((UICollectionViewFlowLayout *)self.collectionViewLayout).minimumInteritemSpacing;
+    float lineSpacing = ((UICollectionViewFlowLayout *)self.collectionViewLayout).minimumLineSpacing;
+
+    // sanity check
+    if(!imageSize.width || !self.frame.size.width || !cellCounts){
+        return CGSizeMake(0, 0);
+    }
+    float frameWidth = self.frame.size.width;
+    float imageWidthWithSpacing = imageSize.width + spacing;
+
+    // if there is spacing to the right edge, it's o.k.
+    int numbersOfItemsInRow = frameWidth / imageWidthWithSpacing;
+    // if addtional image can be fit by removing spacing, do so
+    if(numbersOfItemsInRow * imageWidthWithSpacing + imageSize.width <= frameWidth){
+        numbersOfItemsInRow++;
+    }
+
+    int numbersOfRows = ceil(((float) cellCounts) / numbersOfItemsInRow);
+    return CGSizeMake(self.frame.size.width, (numbersOfRows) * (imageSize.height) + (numbersOfRows - 1) * lineSpacing);
 }
 @end

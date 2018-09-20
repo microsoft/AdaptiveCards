@@ -8,11 +8,11 @@ Adaptive Cards are a new way for developers to exchange card content in a common
 
 Break outside the box of templated cards. Adaptive Cards let you describe your content as you see fit and deliver it beautifully wherever your customers are.
 
-The simple open card format enables an ecosystem of shared tooling, seamless integration between producers and consumers, and native cross-platorm performance on any device.
+The simple open card format enables an ecosystem of shared tooling, seamless integration between producers and consumers, and native cross-platform performance on any device.
 
 ## Get Started
 
-### Check out the [full documenation](https://docs.microsoft.com/en-us/adaptive-cards/display/libraries/htmlclient) for more
+### Check out the [full documentation](https://docs.microsoft.com/en-us/adaptive-cards/display/libraries/htmlclient) for more
 
 ## Install
 
@@ -87,7 +87,7 @@ var adaptiveCard = new AdaptiveCards.AdaptiveCard();
 // Set its hostConfig property unless you want to use the default Host Config
 // Host Config defines the style and behavior of a card
 adaptiveCard.hostConfig = new AdaptiveCards.HostConfig({
-    fontFamily: "Segoe UI, Helvetica Nue, sans-serif"
+    fontFamily: "Segoe UI, Helvetica Neue, sans-serif"
     // More host config options
 });
 

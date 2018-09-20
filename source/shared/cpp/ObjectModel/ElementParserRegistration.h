@@ -3,19 +3,20 @@
 #include "pch.h"
 #include "Enums.h"
 #include "json/json.h"
+#include "AdaptiveCardParseWarning.h"
 
-namespace AdaptiveCards
-{
+namespace AdaptiveSharedNamespace {
     class BaseCardElement;
     class ElementParserRegistration;
     class ActionParserRegistration;
 
-    class IBaseCardElementParser
+    class BaseCardElementParser
     {
     public:
         virtual std::shared_ptr<BaseCardElement> Deserialize(
-            std::shared_ptr<AdaptiveCards::ElementParserRegistration> elementParserRegistration,
-            std::shared_ptr<AdaptiveCards::ActionParserRegistration> actionParserRegistration,
+            std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> elementParserRegistration,
+            std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> actionParserRegistration,
+            std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
             const Json::Value& value) = 0;
     };
 
@@ -25,12 +26,12 @@ namespace AdaptiveCards
 
         ElementParserRegistration();
 
-        void AddParser(std::string elementType, std::shared_ptr<AdaptiveCards::IBaseCardElementParser> parser);
-        void RemoveParser(std::string elementType);
-        std::shared_ptr<AdaptiveCards::IBaseCardElementParser> GetParser(std::string elementType);
+        void AddParser(std::string const &elementType, std::shared_ptr<AdaptiveSharedNamespace::BaseCardElementParser> parser);
+        void RemoveParser(std::string const &elementType);
+        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElementParser> GetParser(std::string const &elementType);
 
     private:
         std::unordered_set<std::string> m_knownElements;
-        std::unordered_map<std::string, std::shared_ptr<AdaptiveCards::IBaseCardElementParser>, CaseInsensitiveHash, CaseInsensitiveEqualTo> m_cardElementParsers;
+        std::unordered_map<std::string, std::shared_ptr<AdaptiveSharedNamespace::BaseCardElementParser>, CaseInsensitiveHash, CaseInsensitiveEqualTo> m_cardElementParsers;
     };
 }

@@ -1,7 +1,17 @@
+#include "pch.h"
 #include "Enums.h"
 
-namespace AdaptiveCards
-{
+#ifdef USE_CPPCORECHECK
+#pragma warning(push)
+
+// Unfortunately, the checker for WARNING_NO_GLOBAL_INIT_CALLS (26426) has an issue: it considers initialization of the
+// below std::unordered_map statics to be global, and thus flags them all as having overly-complex initialization. We
+// want to keep this check on, in general, but turn it off for this file (all warning instances were reviewed prior to
+// disablement).
+#pragma warning(disable: 26426)
+#endif
+
+namespace AdaptiveSharedNamespace {
 
 void GetAdaptiveCardSchemaKeyEnumMappings(
     std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> * adaptiveCardSchemaKeyEnumToNameOut,
@@ -17,6 +27,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::ActionsOrientation, "actionsOrientation" },
         { AdaptiveCardSchemaKey::AdaptiveCard, "adaptiveCard" },
         { AdaptiveCardSchemaKey::AllowCustomStyle, "allowCustomStyle" },
+        { AdaptiveCardSchemaKey::AllowInlinePlayback, "allowInlinePlayback" },
         { AdaptiveCardSchemaKey::AltText, "altText" },
         { AdaptiveCardSchemaKey::Attention, "attention" },
         { AdaptiveCardSchemaKey::BackgroundColor, "backgroundColor" },
@@ -45,6 +56,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::Data, "data" },
         { AdaptiveCardSchemaKey::DateInput, "dateInput" },
         { AdaptiveCardSchemaKey::Default, "default" },
+        { AdaptiveCardSchemaKey::DefaultPoster, "defaultPoster" },
         { AdaptiveCardSchemaKey::Emphasis, "emphasis" },
         { AdaptiveCardSchemaKey::ExtraLarge, "extraLarge" },
         { AdaptiveCardSchemaKey::Facts, "facts" },
@@ -54,9 +66,14 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::FontSizes, "fontSizes" },
         { AdaptiveCardSchemaKey::FontWeights, "fontWeights" },
         { AdaptiveCardSchemaKey::Good, "good" },
+        { AdaptiveCardSchemaKey::Height, "height" },
         { AdaptiveCardSchemaKey::HorizontalAlignment, "horizontalAlignment" },
+        { AdaptiveCardSchemaKey::IconPlacement, "iconPlacement" },
+        { AdaptiveCardSchemaKey::IconSize, "iconSize" },
+        { AdaptiveCardSchemaKey::IconUrl, "iconUrl" },
         { AdaptiveCardSchemaKey::Id, "id" },
         { AdaptiveCardSchemaKey::Image, "image" },
+        { AdaptiveCardSchemaKey::ImageBaseUrl, "imageBaseUrl" },
         { AdaptiveCardSchemaKey::Images, "images" },
         { AdaptiveCardSchemaKey::ImageSet, "imageSet" },
         { AdaptiveCardSchemaKey::ImageSize, "imageSize" },
@@ -68,6 +85,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::IsSelected, "isSelected" },
         { AdaptiveCardSchemaKey::IsSubtle, "isSubtle" },
         { AdaptiveCardSchemaKey::Items, "items" },
+        { AdaptiveCardSchemaKey::Language, "lang" },
         { AdaptiveCardSchemaKey::Large, "large" },
         { AdaptiveCardSchemaKey::Left, "left" },
         { AdaptiveCardSchemaKey::Light, "light" },
@@ -80,13 +98,16 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::MaxLength, "maxLength" },
         { AdaptiveCardSchemaKey::MaxLines, "maxLines" },
         { AdaptiveCardSchemaKey::MaxWidth, "maxWidth" },
+        { AdaptiveCardSchemaKey::Media, "media" },
         { AdaptiveCardSchemaKey::Medium, "medium" },
         { AdaptiveCardSchemaKey::Method, "method" },
+        { AdaptiveCardSchemaKey::MimeType, "mimeType" },
         { AdaptiveCardSchemaKey::Min, "min" },
-        { AdaptiveCardSchemaKey::MinVersion, "minVersion" },
         { AdaptiveCardSchemaKey::NumberInput, "numberInput" },
         { AdaptiveCardSchemaKey::Padding, "padding" },
         { AdaptiveCardSchemaKey::Placeholder, "placeholder" },
+        { AdaptiveCardSchemaKey::PlayButton, "playButton" },
+        { AdaptiveCardSchemaKey::Poster, "poster" },
         { AdaptiveCardSchemaKey::Right, "right" },
         { AdaptiveCardSchemaKey::SelectAction, "selectAction" },
         { AdaptiveCardSchemaKey::Separator, "separator" },
@@ -96,6 +117,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::ShowCardActionConfig, "showCardActionConfig" },
         { AdaptiveCardSchemaKey::Size, "size" },
         { AdaptiveCardSchemaKey::Small, "small" },
+        { AdaptiveCardSchemaKey::Sources, "sources" },
         { AdaptiveCardSchemaKey::Spacing, "spacing" },
         { AdaptiveCardSchemaKey::SpacingDefinition, "spacingDefinition" },
         { AdaptiveCardSchemaKey::Speak, "speak" },
@@ -120,6 +142,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::ValueOff, "valueOff" },
         { AdaptiveCardSchemaKey::ValueOn, "valueOn" },
         { AdaptiveCardSchemaKey::Version, "version" },
+        { AdaptiveCardSchemaKey::VerticalContentAlignment, "verticalContentAlignment" },
         { AdaptiveCardSchemaKey::Warning, "warning" },
         { AdaptiveCardSchemaKey::Weight, "weight" },
         { AdaptiveCardSchemaKey::Width, "width" },
@@ -159,7 +182,9 @@ void GetCardElementTypeEnumMappings(
         { CardElementType::TimeInput, "Input.Time" },
         { CardElementType::ToggleInput, "Input.Toggle" },
         { CardElementType::TextBlock, "TextBlock" },
-        { CardElementType::Custom, "Custom" }
+        { CardElementType::Custom, "Custom" },
+        { CardElementType::Unknown, "Unknown" },
+        { CardElementType::Media, "Media" },
     };
     static std::unordered_map<std::string, CardElementType, CaseInsensitiveHash, CaseInsensitiveEqualTo> cardElementTypeNameToEnum = GenerateStringToEnumMap<CardElementType>(cardElementTypeEnumToName);
 
@@ -195,6 +220,30 @@ void GetActionTypeEnumMappings(
     if (actionTypeNameToEnumOut != nullptr)
     {
         *actionTypeNameToEnumOut = actionTypeNameToEnum;
+    }
+}
+
+void GetHeightTypeEnumMappings(
+    std::unordered_map<HeightType, std::string, EnumHash> * heightTypeEnumToNameOut,
+    std::unordered_map<std::string, HeightType, CaseInsensitiveHash, CaseInsensitiveEqualTo> * heightTypeNameToEnumOut)
+{
+    static std::unordered_map<HeightType, std::string, EnumHash> heightTypeEnumToName =
+    {
+        { HeightType::Auto, "Auto" },
+        { HeightType::Stretch, "Stretch" }
+    };
+
+    static std::unordered_map<std::string, HeightType, CaseInsensitiveHash, CaseInsensitiveEqualTo>
+        heightTypeNameToEnum = GenerateStringToEnumMap<HeightType>(heightTypeEnumToName);
+
+    if (heightTypeEnumToNameOut != nullptr)
+    {
+        *heightTypeEnumToNameOut = heightTypeEnumToName;
+    }
+
+    if (heightTypeNameToEnumOut != nullptr)
+    {
+        *heightTypeNameToEnumOut = heightTypeNameToEnum;
     }
 }
 
@@ -550,6 +599,52 @@ void GetActionAlignmentEnumMappings(
     }
 }
 
+void GetIconPlacementEnumMappings(
+    std::unordered_map<IconPlacement, std::string, EnumHash> * iconPlacementEnumToNameOut,
+    std::unordered_map<std::string, IconPlacement, CaseInsensitiveHash, CaseInsensitiveEqualTo> * iconPlacementNameToEnumOut)
+{
+    static std::unordered_map<IconPlacement, std::string, EnumHash> iconPlacementEnumToName =
+    {
+        {IconPlacement::AboveTitle , "AboveTitle"},
+        {IconPlacement::LeftOfTitle, "LeftOfTitle"}
+    };
+    static std::unordered_map<std::string, IconPlacement, CaseInsensitiveHash, CaseInsensitiveEqualTo> iconPlacementNameToEnum = GenerateStringToEnumMap<IconPlacement>(iconPlacementEnumToName);
+
+    if (iconPlacementEnumToNameOut != nullptr)
+    {
+        *iconPlacementEnumToNameOut = iconPlacementEnumToName;
+    }
+
+    if (iconPlacementNameToEnumOut != nullptr)
+    {
+        *iconPlacementNameToEnumOut = iconPlacementNameToEnum;
+    }
+}
+
+void GetVerticalContentAlignmentEnumMappings(
+    std::unordered_map<VerticalContentAlignment, std::string, EnumHash> * verticalContentAlignmentEnumToNameOut,
+    std::unordered_map<std::string, VerticalContentAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo> * verticalContentAlignmentNameToEnumOut)
+{
+    static std::unordered_map<VerticalContentAlignment, std::string, EnumHash> verticalContentAlignmentEnumToName =
+    {
+        { VerticalContentAlignment::Top, "Top" },
+        { VerticalContentAlignment::Center, "Center" },
+        { VerticalContentAlignment::Bottom, "Bottom" }
+    };
+    static std::unordered_map<std::string, VerticalContentAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo> verticalContentAlignmentNameToEnum =
+        GenerateStringToEnumMap<VerticalContentAlignment>(verticalContentAlignmentEnumToName);
+
+    if (verticalContentAlignmentEnumToNameOut != nullptr)
+    {
+        *verticalContentAlignmentEnumToNameOut = verticalContentAlignmentEnumToName;
+    }
+
+    if (verticalContentAlignmentNameToEnumOut != nullptr)
+    {
+        *verticalContentAlignmentNameToEnumOut = verticalContentAlignmentNameToEnum;
+    }
+}
+
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type)
 {
     std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> adaptiveCardSchemaKeyEnumToName;
@@ -596,7 +691,7 @@ CardElementType CardElementTypeFromString(const std::string& elementType)
 
     if (cardElementTypeNameToEnum.find(elementType) == cardElementTypeNameToEnum.end())
     {
-        throw std::out_of_range("Invalid CardElementType: " + elementType);
+        return CardElementType::Unsupported;
     }
 
     return cardElementTypeNameToEnum[elementType];
@@ -622,10 +717,36 @@ ActionType ActionTypeFromString(const std::string& actionType)
 
     if (actionTypeNameToEnum.find(actionType) == actionTypeNameToEnum.end())
     {
-        throw std::out_of_range("Invalid ActionType: " + actionType);
+        return ActionType::Unsupported;
     }
 
     return actionTypeNameToEnum[actionType];
+}
+
+const std::string HeightTypeToString(HeightType heightType)
+{
+    std::unordered_map<HeightType, std::string, EnumHash> heightTypeEnumToName;
+    GetHeightTypeEnumMappings(&heightTypeEnumToName, nullptr);
+
+    if (heightTypeEnumToName.find(heightType) == heightTypeEnumToName.end())
+    {
+        throw std::out_of_range("Invalid HeightType type");
+    }
+
+    return heightTypeEnumToName[heightType];
+}
+
+HeightType HeightTypeFromString(const std::string& heightType)
+{
+    std::unordered_map<std::string, HeightType, CaseInsensitiveHash, CaseInsensitiveEqualTo> heightTypeNameToEnum;
+    GetHeightTypeEnumMappings(nullptr, &heightTypeNameToEnum);
+
+    if (heightTypeNameToEnum.find(heightType) == heightTypeNameToEnum.end())
+    {
+        return HeightType::Auto;
+    }
+
+    return heightTypeNameToEnum[heightType];
 }
 
 const std::string HorizontalAlignmentToString(HorizontalAlignment alignment)
@@ -647,7 +768,7 @@ HorizontalAlignment HorizontalAlignmentFromString(const std::string& alignment)
 
     if (horizontalAlignmentNameToEnum.find(alignment) == horizontalAlignmentNameToEnum.end())
     {
-        throw std::out_of_range("Invalid HorizontalAlignment: " + alignment);
+        return HorizontalAlignment::Left;
     }
 
     return horizontalAlignmentNameToEnum[alignment];
@@ -672,7 +793,7 @@ ForegroundColor ForegroundColorFromString(const std::string& color)
 
     if (colorNameToEnum.find(color) == colorNameToEnum.end())
     {
-        throw std::out_of_range("Invalid ForegroundColor: " + color);
+        return ForegroundColor::Default;
     }
 
     return colorNameToEnum[color];
@@ -697,7 +818,7 @@ TextWeight TextWeightFromString(const std::string& weight)
 
     if (textWeightNameToEnum.find(weight) == textWeightNameToEnum.end())
     {
-        throw std::out_of_range("Invalid TextWeight: " + weight);
+        return TextWeight::Default;
     }
 
     return textWeightNameToEnum[weight];
@@ -722,7 +843,7 @@ TextSize TextSizeFromString(const std::string& size)
 
     if (textSizeNameToEnum.find(size) == textSizeNameToEnum.end())
     {
-        throw std::out_of_range("Invalid TextSize: " + size);
+        return TextSize::Default;
     }
 
     return textSizeNameToEnum[size];
@@ -747,7 +868,7 @@ ImageSize ImageSizeFromString(const std::string& size)
 
     if (imageSizeNameToEnum.find(size) == imageSizeNameToEnum.end())
     {
-        throw std::out_of_range("Invalid ImageSize: " + size);
+        return ImageSize::Auto;
     }
 
     return imageSizeNameToEnum[size];
@@ -772,7 +893,7 @@ Spacing SpacingFromString(const std::string& spacing)
 
     if (spacingNameToEnum.find(spacing) == spacingNameToEnum.end())
     {
-        throw std::out_of_range("Invalid Spacing: " + spacing);
+        return Spacing::Default;
     }
 
     return spacingNameToEnum[spacing];
@@ -797,7 +918,7 @@ SeparatorThickness SeparatorThicknessFromString(const std::string& thickness)
 
     if (separatorThicknessNameToEnum.find(thickness) == separatorThicknessNameToEnum.end())
     {
-        throw std::out_of_range("Invalid SeparatorThickness: " + thickness);
+        return SeparatorThickness::Default;
     }
 
     return separatorThicknessNameToEnum[thickness];
@@ -822,7 +943,7 @@ ImageStyle ImageStyleFromString(const std::string& style)
 
     if (imageStyleNameToEnum.find(style) == imageStyleNameToEnum.end())
     {
-        throw std::out_of_range("Invalid ImageStyle: " + style);
+        return ImageStyle::Default;
     }
 
     return imageStyleNameToEnum[style];
@@ -847,7 +968,7 @@ ActionsOrientation ActionsOrientationFromString(const std::string& orientation)
 
     if (actionsOrientationNameToEnum.find(orientation) == actionsOrientationNameToEnum.end())
     {
-        throw std::out_of_range("Invalid ActionsOrientation: " + orientation);
+        return ActionsOrientation::Horizontal;
     }
     return actionsOrientationNameToEnum[orientation];
 }
@@ -871,7 +992,7 @@ ActionMode ActionModeFromString(const std::string& mode)
 
     if (actionModeNameToEnum.find(mode) == actionModeNameToEnum.end())
     {
-        throw std::out_of_range("Invalid ActionMode: " + mode);
+        return ActionMode::Inline;
     }
     return actionModeNameToEnum[mode];
 }
@@ -894,7 +1015,7 @@ ChoiceSetStyle ChoiceSetStyleFromString(const std::string & style)
 
     if (choiceSetStyleNameToEnum.find(style) == choiceSetStyleNameToEnum.end())
     {
-        throw std::out_of_range("Invalid ChoiceSetStyle: " + style);
+        return ChoiceSetStyle::Compact;
     }
     return choiceSetStyleNameToEnum[style];
 }
@@ -918,7 +1039,7 @@ TextInputStyle TextInputStyleFromString(const std::string & style)
 
     if (textInputStyleNameToEnum.find(style) == textInputStyleNameToEnum.end())
     {
-        throw std::out_of_range("Invalid TextInputStyle: " + style);
+        return TextInputStyle::Text;
     }
     return textInputStyleNameToEnum[style];
 }
@@ -942,7 +1063,7 @@ ContainerStyle ContainerStyleFromString(const std::string & style)
 
     if (containerStyleNameToEnum.find(style) == containerStyleNameToEnum.end())
     {
-        throw std::out_of_range("Invalid ContainerStyle: " + style);
+        return ContainerStyle::Default;
     }
     return containerStyleNameToEnum[style];
 }
@@ -966,8 +1087,61 @@ ActionAlignment ActionAlignmentFromString(const std::string & alignment)
 
     if (actionAlignmentNameToEnum.find(alignment) == actionAlignmentNameToEnum.end())
     {
-        throw std::out_of_range("Invalid ActionAlignment: " + alignment);
+        return ActionAlignment::Left;
     }
     return actionAlignmentNameToEnum[alignment];
 }
+
+const std::string IconPlacementToString(IconPlacement placement)
+{
+    std::unordered_map<IconPlacement, std::string, EnumHash> iconPlacementEnumToName;
+    GetIconPlacementEnumMappings(&iconPlacementEnumToName, nullptr);
+
+    if (iconPlacementEnumToName.find(placement) == iconPlacementEnumToName.end())
+    {
+        throw std::out_of_range("Invalid IconPlacement");
+    }
+    return iconPlacementEnumToName[placement];
 }
+
+IconPlacement IconPlacementFromString(const std::string& placement)
+{
+    std::unordered_map<std::string, IconPlacement, CaseInsensitiveHash, CaseInsensitiveEqualTo> iconPlacementNameToEnum;
+    GetIconPlacementEnumMappings(nullptr, &iconPlacementNameToEnum);
+
+    if (iconPlacementNameToEnum.find(placement) == iconPlacementNameToEnum.end())
+    {
+        return IconPlacement::AboveTitle;
+    }
+    return iconPlacementNameToEnum[placement];
+}
+
+const std::string VerticalContentAlignmentToString(VerticalContentAlignment verticalContentAlignment)
+{
+    std::unordered_map<VerticalContentAlignment, std::string, EnumHash> verticalContentAlignmentEnumToName;
+    GetVerticalContentAlignmentEnumMappings(&verticalContentAlignmentEnumToName, nullptr);
+
+    if (verticalContentAlignmentEnumToName.find(verticalContentAlignment) == verticalContentAlignmentEnumToName.end())
+    {
+        throw std::out_of_range("Invalid VerticalContentAlignment");
+    }
+    return verticalContentAlignmentEnumToName[verticalContentAlignment];
+}
+
+VerticalContentAlignment VerticalContentAlignmentFromString(const std::string& verticalContentAlignment)
+{
+    std::unordered_map<std::string, VerticalContentAlignment, CaseInsensitiveHash, CaseInsensitiveEqualTo> verticalContentAlignmentNameToEnum;
+    GetVerticalContentAlignmentEnumMappings(nullptr, &verticalContentAlignmentNameToEnum);
+
+    if (verticalContentAlignmentNameToEnum.find(verticalContentAlignment) == verticalContentAlignmentNameToEnum.end())
+    {
+        return VerticalContentAlignment::Top;
+    }
+    return verticalContentAlignmentNameToEnum[verticalContentAlignment];
+}
+
+}
+
+#ifdef USE_CPPCORECHECK
+#pragma warning(pop)
+#endif

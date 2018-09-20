@@ -10,7 +10,7 @@
 #import "ACOBaseActionElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRButton.h"
-#import "ACRSubmitTarget.h"
+#import "ACRAggregateTarget.h"
 #import "SubmitAction.h"
 
 @implementation ACRActionSubmitRenderer
@@ -21,31 +21,28 @@
     return singletonInstance;
 }
 
-- (UIButton* )renderButton:(UIViewController *)vc
+- (UIButton* )renderButton:(ACRView *)view
                     inputs:(NSArray *)inputs
                  superview:(UIView<ACRIContentHoldingView> *)superview
          baseActionElement:(ACOBaseActionElement *)acoElem
                 hostConfig:(ACOHostConfig *)acoConfig;
 {
-    std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
-    std::shared_ptr<BaseActionElement> elem = [acoElem getElem];
+    std::shared_ptr<BaseActionElement> elem = [acoElem element];
     std::shared_ptr<SubmitAction> action = std::dynamic_pointer_cast<SubmitAction>(elem);
 
-    NSString *title = [NSString stringWithCString:action->GetTitle().c_str()
-                                        encoding:NSUTF8StringEncoding];
-    UIButton *button = [UIButton acr_renderButton:vc title:title andHostConfig:config];
+    NSString *title = [NSString stringWithCString:action->GetTitle().c_str() encoding:NSUTF8StringEncoding];
+    
+    UIButton *button = [UIButton rootView:view baseActionElement:acoElem title:title andHostConfig:acoConfig];
 
-    NSString *data = [NSString stringWithCString:action->GetDataJson().c_str()
-                                        encoding:NSUTF8StringEncoding];
-    ACRSubmitTarget *target = [[ACRSubmitTarget alloc] initWithDataString:data
-                                                                   inputs:inputs
-                                                                       vc:vc];
+    ACRAggregateTarget *target = [[ACRAggregateTarget alloc] initWithActionElement:acoElem rootView:(ACRView*)view];
 
-    [button addTarget:target action:@selector(submit:) forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:target action:@selector(send:) forControlEvents:UIControlEventTouchUpInside];
 
     [superview addTarget:target];
 
-    [superview addArrangedSubview:button];
+    [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    
+    [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 
     return button;
 }

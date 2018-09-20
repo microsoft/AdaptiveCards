@@ -4,8 +4,7 @@
 #include "Enums.h"
 #include "json/json.h"
 
-namespace AdaptiveCards
-{
+namespace AdaptiveSharedNamespace {
 class Separator
 {
 public:

@@ -10,11 +10,48 @@
 
 using namespace AdaptiveCards;
 
+NSString *checkedCheckboxReuseID = @"checked-checkbox";
+NSString *uncheckedCheckboxReuseID = @"unchecked-checkbox";
+NSString *checkedRadioButtonReuseID = @"checked-radiobutton";
+NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
+
+const CGFloat padding = 16.0f;
+const CGFloat accessoryViewWidth = 50.0f;
+
+@implementation ACRChoiceSetCell
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(nullable NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if(self) {
+        UIImage *iconImage = nil;
+        if([reuseIdentifier isEqualToString:@"checked-checkbox"]){
+            iconImage = [UIImage imageNamed:@"checked-checkbox-24.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+        } else if([reuseIdentifier isEqualToString:@"checked-radiobutton"]){
+            iconImage = [UIImage imageNamed:@"checked.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+        } else if([reuseIdentifier isEqualToString:@"unchecked-checkbox"]){
+            iconImage = [UIImage imageNamed:@"unchecked-checkbox-24.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+        } else {
+            iconImage = [UIImage imageNamed:@"unchecked.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+        }
+        self.imageView.image = iconImage;
+        self.textLabel.numberOfLines = 0;
+        self.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        self.textLabel.adjustsFontSizeToFitWidth = NO;
+    }
+    return self;
+}
+
+@end
+
 @implementation ACRChoiceSetViewDataSource
 {
     std::shared_ptr<ChoiceSetInput> _choiceSetDataSource;
     NSMutableDictionary *_userSelections;
-    NSIndexPath *_lastSelectedIndexPath;
+    // used for radio button; keep tracking of the current choice
+    NSIndexPath *_currentSelectedIndexPath;
+    NSMutableSet *_defaultValuesSet;
+    NSArray *_defaultValuesArray;
 }
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet
@@ -27,7 +64,26 @@ using namespace AdaptiveCards;
         _isMultiChoicesAllowed = choiceSet->GetIsMultiSelect();
         _choiceSetDataSource = choiceSet;
         _userSelections = [[NSMutableDictionary alloc] init];
-        _lastSelectedIndexPath = nil;
+        _currentSelectedIndexPath = nil;
+        NSString *defaultValues = [NSString stringWithCString:_choiceSetDataSource->GetValue().c_str()
+                                                     encoding:NSUTF8StringEncoding];
+        _defaultValuesArray = [defaultValues componentsSeparatedByCharactersInSet:
+                               [NSCharacterSet characterSetWithCharactersInString:@","]];
+
+        if (_isMultiChoicesAllowed || [_defaultValuesArray count] == 1){
+            _defaultValuesSet = [NSMutableSet setWithArray:_defaultValuesArray];
+        }
+
+        NSUInteger index = 0;
+        for(const auto& choice : _choiceSetDataSource->GetChoices()) {
+            NSString *keyForDefaultValue = [NSString stringWithCString:choice->GetValue().c_str()
+                                                              encoding:NSUTF8StringEncoding];
+
+            if([_defaultValuesSet containsObject:keyForDefaultValue]){
+                _userSelections[[NSNumber numberWithInteger:index]] = [NSNumber numberWithBool:YES];
+            }
+            ++index;
+        }
     }
     return self;
 }
@@ -46,14 +102,22 @@ using namespace AdaptiveCards;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *identifier = @"tabCellId";
-    [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:identifier];
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    if(!cell)
-    {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                      reuseIdentifier:identifier];
+    UITableViewCell *cell = nil;
+
+    if(_userSelections[[NSNumber numberWithInteger:indexPath.row]] == [NSNumber numberWithBool:YES]){
+        if(_isMultiChoicesAllowed) {
+            cell = [tableView dequeueReusableCellWithIdentifier:checkedCheckboxReuseID];
+        } else {
+            cell = [tableView dequeueReusableCellWithIdentifier:checkedRadioButtonReuseID];
+        }
+    } else {
+        if(_isMultiChoicesAllowed) {
+            cell = [tableView dequeueReusableCellWithIdentifier:uncheckedCheckboxReuseID];
+        } else {
+            cell = [tableView dequeueReusableCellWithIdentifier:uncheckedRadioButtonReuseID];
+        }
     }
+
     NSString *title = [NSString stringWithCString:_choiceSetDataSource->GetChoices()[indexPath.row]->GetTitle().c_str()
                                encoding:NSUTF8StringEncoding];
     cell.textLabel.text = title;
@@ -64,16 +128,11 @@ using namespace AdaptiveCards;
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // if this tableView was used before for gathering input,
-    // load the tableView with user selection
+    // update the current selection
     if([_userSelections count] &&
        [_userSelections objectForKey:[NSNumber numberWithInteger:indexPath.row]] &&
-       [[_userSelections objectForKey:[NSNumber numberWithInteger:indexPath.row]] boolValue] == YES)
-    {
-        [self tableView:tableView didSelectRowAtIndexPath:indexPath];
-        [cell setSelected:YES animated:NO];
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
-        _lastSelectedIndexPath = indexPath;
+       [[_userSelections objectForKey:[NSNumber numberWithInteger:indexPath.row]] boolValue] == YES) {
+        _currentSelectedIndexPath = indexPath;
     }
 }
 
@@ -89,34 +148,45 @@ using namespace AdaptiveCards;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if([tableView cellForRowAtIndexPath:indexPath].accessoryType == UITableViewCellAccessoryCheckmark)
-    {
-        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
-        _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:NO];
-    }
-    else
-    {
-        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
+    NSMutableArray *indexPathsToUpdate = [NSMutableArray arrayWithObject:indexPath];
+    if (!_isMultiChoicesAllowed) {
+        if (_currentSelectedIndexPath && _currentSelectedIndexPath != indexPath) {
+            // deselect currently selected index path
+            [indexPathsToUpdate addObject:_currentSelectedIndexPath];
+            [self tableView:tableView didDeselectRowAtIndexPath:_currentSelectedIndexPath];
+        }
         _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:YES];
-    }
 
-    // didDeselectRowAtIndexPath doesn't get called for the cells that was already selected before the tableView came to view
-    // if multi choice is not allowed, then uncheck pre-selection
-    if(_isMultiChoicesAllowed == NO && _lastSelectedIndexPath.row != indexPath.row)
-    {
-        [tableView cellForRowAtIndexPath:_lastSelectedIndexPath].accessoryType = UITableViewCellAccessoryNone;
-        _userSelections[[NSNumber numberWithInteger:_lastSelectedIndexPath.row]] = [NSNumber numberWithBool:NO];
+    } else {
+        if ([_userSelections[[NSNumber numberWithInteger:indexPath.row]] boolValue]) {
+            _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:NO];
+        } else {
+            _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:YES];
+        }
     }
+    
+    [tableView reloadRowsAtIndexPaths:indexPathsToUpdate withRowAnimation:UITableViewRowAnimationNone];
+    _currentSelectedIndexPath = indexPath;
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
     // uncheck selection if multi choice is not allowed
-    if(_isMultiChoicesAllowed == NO)
-    {
-        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
+    if (!_isMultiChoicesAllowed) {
         _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:NO];
+        _currentSelectedIndexPath = nil;
     }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
+    CGSize labelStringSize =
+        [cell.textLabel.text boundingRectWithSize:CGSizeMake(cell.contentView.frame.size.width - accessoryViewWidth, CGFLOAT_MAX)
+                                          options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                       attributes:@{NSFontAttributeName:cell.textLabel.font}
+                                          context:nil].size;
+    return labelStringSize.height + padding;
 }
 
 - (BOOL)validate:(NSError **)error
@@ -125,19 +195,46 @@ using namespace AdaptiveCards;
     return YES;
 }
 
+- (void)getDefaultInput:(NSMutableDictionary *)dictionary
+{
+    dictionary[self.id] = [_defaultValuesArray componentsJoinedByString:@";"];
+}
+
 - (void)getInput:(NSMutableDictionary *)dictionary
 {
     NSMutableArray *values = [[NSMutableArray alloc] init];
-    for(NSInteger i = 0; i < [_userSelections count]; i++)
+    NSEnumerator *enumerator = [_userSelections keyEnumerator];
+    NSNumber *key;
+    while(key = [enumerator nextObject])
     {
-        if([_userSelections[[NSNumber numberWithInteger:i]] boolValue] == YES)
+        if([_userSelections[key] boolValue] == YES)
         {
             [values addObject:
-             [NSString stringWithCString:_choiceSetDataSource->GetChoices()[i]->GetValue().c_str()
+             [NSString stringWithCString:_choiceSetDataSource->GetChoices()[[key integerValue]]->GetValue().c_str()
                                 encoding:NSUTF8StringEncoding]];
         }
     }
     dictionary[self.id] = [values componentsJoinedByString:@";"];
+}
+
+- (NSString *)getTitlesOfChoices
+{
+    NSMutableArray *values = [[NSMutableArray alloc] init];
+    NSEnumerator *enumerator = [_userSelections keyEnumerator];
+    NSNumber *key;
+    while(key = [enumerator nextObject])
+    {
+        if([_userSelections[key] boolValue] == YES)
+        {
+            [values addObject:
+             [NSString stringWithCString:_choiceSetDataSource->GetChoices()[[key integerValue]]->GetTitle().c_str()
+                                encoding:NSUTF8StringEncoding]];
+        }
+    }
+    if([values count] == 0) {
+        return nil;
+    }
+    return [values componentsJoinedByString:@", "];
 }
 
 @end

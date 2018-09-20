@@ -3,13 +3,14 @@
 #include "AdaptiveElementParserRegistration.h"
 #include "CustomActionWrapper.h"
 #include "Util.h"
+#include "Vector.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace Microsoft::WRL::Wrappers;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
-{
+AdaptiveNamespaceStart
     AdaptiveActionParserRegistration::AdaptiveActionParserRegistration()
     {
     }
@@ -24,7 +25,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
 
     HRESULT AdaptiveActionParserRegistration::RuntimeClassInitialize(
-        std::shared_ptr<AdaptiveCards::ActionParserRegistration> sharedParserRegistration) noexcept try
+        std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> sharedParserRegistration) noexcept try
     {
         m_registration = std::make_shared<RegistrationMap>();
         m_sharedParserRegistration = sharedParserRegistration;
@@ -74,31 +75,35 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     }
 
     std::shared_ptr<BaseActionElement> SharedModelActionParser::Deserialize(
-        std::shared_ptr<AdaptiveCards::ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<AdaptiveCards::ActionParserRegistration> actionParserRegistration,
+        std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> elementParserRegistration,
+        std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> actionParserRegistration,
+        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings, 
         const Json::Value& value)
     {
         std::string type = ParseUtil::GetTypeAsString(value);
 
-        HSTRING typeAsHstring;
-        THROW_IF_FAILED(UTF8ToHString(type, &typeAsHstring));
+        HString typeAsHstring;
+        THROW_IF_FAILED(UTF8ToHString(type, typeAsHstring.GetAddressOf()));
 
         ComPtr<IAdaptiveActionParser> parser;
-        THROW_IF_FAILED(m_parserRegistration->Get(typeAsHstring, &parser));
+        THROW_IF_FAILED(m_parserRegistration->Get(typeAsHstring.Get(), &parser));
 
         ComPtr<ABI::Windows::Data::Json::IJsonObject>jsonObject;
         THROW_IF_FAILED(JsonCppToJsonObject(value, &jsonObject));
 
         ComPtr<IAdaptiveElementParserRegistration> adaptiveElementParserRegistration;
-        MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveElementParserRegistration>(&adaptiveElementParserRegistration, elementParserRegistration);
+        MakeAndInitialize<AdaptiveNamespace::AdaptiveElementParserRegistration>(&adaptiveElementParserRegistration, elementParserRegistration);
 
         ComPtr<IAdaptiveActionParserRegistration> adaptiveActionParserRegistration;
-        MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveActionParserRegistration>(&adaptiveActionParserRegistration, actionParserRegistration);
+        MakeAndInitialize<AdaptiveNamespace::AdaptiveActionParserRegistration>(&adaptiveActionParserRegistration, actionParserRegistration);
 
         ComPtr<IAdaptiveActionElement> actionElement;
-        THROW_IF_FAILED(parser->FromJson(jsonObject.Get(), adaptiveElementParserRegistration.Get(), adaptiveActionParserRegistration.Get(), &actionElement));
+        ComPtr<ABI::Windows::Foundation::Collections::IVector<IAdaptiveWarning*>> adaptiveWarnings = Make<Vector<IAdaptiveWarning*>>();
+        THROW_IF_FAILED(parser->FromJson(jsonObject.Get(), adaptiveElementParserRegistration.Get(), adaptiveActionParserRegistration.Get(), adaptiveWarnings.Get(), &actionElement));
+
+        THROW_IF_FAILED(AdaptiveWarningsToSharedWarnings(adaptiveWarnings.Get(), warnings));
 
         std::shared_ptr<CustomActionWrapper> actionWrapper = std::make_shared<CustomActionWrapper>(actionElement.Get());
         return actionWrapper;
     }
-}}}
+AdaptiveNamespaceEnd

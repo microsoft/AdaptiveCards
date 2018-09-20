@@ -43,6 +43,25 @@ export class ImageSetConfig {
     }
 }
 
+export class MediaConfig {
+    defaultPoster: string;
+    allowInlinePlayback: boolean = true;
+
+    constructor(obj?: any) {
+        if (obj) {
+            this.defaultPoster = obj["defaultPoster"];
+            this.allowInlinePlayback = obj["allowInlinePlayback"] || this.allowInlinePlayback;
+        }
+    }
+
+    toJSON() {
+        return {
+            defaultPoster: this.defaultPoster,
+            allowInlinePlayback: this.allowInlinePlayback
+        }
+    }
+}
+
 export class FactTextDefinition {
     size: Enums.TextSize = Enums.TextSize.Default;
     color: Enums.TextColor = Enums.TextColor.Default;;
@@ -55,9 +74,13 @@ export class FactTextDefinition {
             this.size = Utils.parseHostConfigEnum(Enums.TextSize, obj["size"], Enums.TextSize.Default);
             this.color = Utils.parseHostConfigEnum(Enums.TextColor, obj["color"], Enums.TextColor.Default);
             this.isSubtle = obj["isSubtle"] || this.isSubtle;
-            this.weight = Utils.parseHostConfigEnum(Enums.TextWeight, obj["weight"], Enums.TextWeight.Default);
+            this.weight = Utils.parseHostConfigEnum(Enums.TextWeight, obj["weight"], this.getDefaultWeight());
             this.wrap = obj["wrap"] != null ? obj["wrap"] : this.wrap;
         }
+    }
+	
+    getDefaultWeight() {
+		return Enums.TextWeight.Default;
     }
 
     toJSON(): any {
@@ -66,7 +89,7 @@ export class FactTextDefinition {
             color: Enums.TextColor[this.color],
             isSubtle: this.isSubtle,
             weight: Enums.TextWeight[this.weight],
-            warp: this.wrap
+            wrap: this.wrap
         }
     }
 }
@@ -74,13 +97,18 @@ export class FactTextDefinition {
 export class FactTitleDefinition extends FactTextDefinition {
     maxWidth?: number = 150;
     weight: Enums.TextWeight = Enums.TextWeight.Bolder;
-
+	
     constructor(obj?: any) {
         super(obj);
 
         if (obj) {
             this.maxWidth = obj["maxWidth"] != null ? obj["maxWidth"] : this.maxWidth;
+			this.weight = Utils.parseHostConfigEnum(Enums.TextWeight, obj["weight"], Enums.TextWeight.Bolder);
         }
+    }
+	
+    getDefaultWeight() {
+        return Enums.TextWeight.Bolder;
     }
 }
 
@@ -128,6 +156,9 @@ export class ActionsConfig {
     preExpandSingleShowCardAction?: boolean = false;
     actionsOrientation: Enums.Orientation = Enums.Orientation.Horizontal;
     actionAlignment: Enums.ActionAlignment = Enums.ActionAlignment.Left;
+    iconPlacement: Enums.ActionIconPlacement = Enums.ActionIconPlacement.LeftOfTitle;
+    allowTitleToWrap: boolean = false;
+    iconSize: number = 24;
 
     constructor(obj?: any) {
         if (obj) {
@@ -138,6 +169,19 @@ export class ActionsConfig {
             this.preExpandSingleShowCardAction = Utils.getValueOrDefault<boolean>(obj["preExpandSingleShowCardAction"], false);
             this.actionsOrientation = Utils.parseHostConfigEnum(Enums.Orientation, obj["actionsOrientation"], Enums.Orientation.Horizontal);
             this.actionAlignment = Utils.parseHostConfigEnum(Enums.ActionAlignment, obj["actionAlignment"], Enums.ActionAlignment.Left);
+            this.iconPlacement = Utils.parseHostConfigEnum(Enums.ActionIconPlacement, obj["iconPlacement"], Enums.ActionIconPlacement.LeftOfTitle);
+            this.allowTitleToWrap = obj["allowTitleToWrap"] != null ? obj["allowTitleToWrap"] : this.allowTitleToWrap;
+
+            try {
+                let sizeAndUnit = Utils.SizeAndUnit.parse(obj["iconSize"]);
+
+                if (sizeAndUnit.unit == Enums.SizeUnit.Pixel) {
+                    this.iconSize = sizeAndUnit.physicalSize;
+                }
+            }
+            catch (e) {
+                // Swallow this, keep default icon size
+            }
         }
     }
 
@@ -200,6 +244,14 @@ class BuiltInContainerStyleDefinition extends ContainerStyleDefinition {
     get isBuiltIn(): boolean {
         return true;
     }
+}
+
+export interface ILineHeightDefinitions {
+    small: number;
+    medium: number;
+    default: number;
+    large: number;
+    extraLarge: number;
 }
 
 export class ContainerStyleSet {
@@ -275,6 +327,7 @@ export class ContainerStyleSet {
 export class HostConfig {
     choiceSetInputValueSeparator: string = ",";
     supportsInteractivity: boolean = true;
+    lineHeights?: ILineHeightDefinitions;
 
     fontFamily?: string = "Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif";
     
@@ -299,6 +352,7 @@ export class HostConfig {
         large: 21,
         extraLarge: 26
     };
+    
     readonly fontWeights = {
         lighter: 200,
         default: 400,
@@ -314,7 +368,10 @@ export class HostConfig {
     readonly actions: ActionsConfig = new ActionsConfig();
     readonly adaptiveCard: AdaptiveCardConfig = new AdaptiveCardConfig();
     readonly imageSet: ImageSetConfig = new ImageSetConfig();
+    readonly media: MediaConfig = new MediaConfig();
     readonly factSet: FactSetConfig = new FactSetConfig();
+
+    cssClassNamePrefix: string = null;
 
     constructor(obj?: any) {
         if (obj) {
@@ -331,6 +388,16 @@ export class HostConfig {
                 medium: obj.fontSizes && obj.fontSizes["medium"] || this.fontSizes.medium,
                 large: obj.fontSizes && obj.fontSizes["large"] || this.fontSizes.large,
                 extraLarge: obj.fontSizes && obj.fontSizes["extraLarge"] || this.fontSizes.extraLarge
+            };
+
+            if (obj.lineHeights) {
+                this.lineHeights = {
+                    small: obj.lineHeights["small"],
+                    default: obj.lineHeights["default"],
+                    medium: obj.lineHeights["medium"],
+                    large: obj.lineHeights["large"],
+                    extraLarge: obj.lineHeights["extraLarge"]
+                };
             };
 
             this.fontWeights = {
@@ -384,5 +451,23 @@ export class HostConfig {
             default:
                 return 0;
         }
+    }
+
+    makeCssClassName(...classNames: string[]): string {
+        let result = "";
+
+        for (let i = 0; i < classNames.length; i++) {
+            if (i > 0) {
+                result += " ";
+            }
+
+            if (this.cssClassNamePrefix) {
+                result += this.cssClassNamePrefix + "-";
+            }
+
+            result += classNames[i];
+        }
+
+        return result;
     }
 }

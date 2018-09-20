@@ -50,7 +50,6 @@ export class OutlookContainer extends HostContainer {
         Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.Http", () => { return new Adaptive.HttpAction(); });
         Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
 
-        Adaptive.AdaptiveCard.preExpandSingleShowCardAction = true;
         Adaptive.AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = false;
     }
 
@@ -104,14 +103,6 @@ export class OutlookContainer extends HostContainer {
             }
         }
 
-        if (element instanceof Adaptive.Image) {
-            (<Adaptive.Image>element).backgroundColor = json["backgroundColor"];
-        }
-
-        if (element instanceof Adaptive.Column) {
-            (<Adaptive.Column>element).pixelWidth = json["pixelWidth"];
-        }
-
         if (element instanceof Adaptive.Container) {
             var padding = this.parsePadding(json["padding"]);
 
@@ -129,8 +120,9 @@ export class OutlookContainer extends HostContainer {
         }
     }
 
-    public anchorClicked(rootCard: Adaptive.AdaptiveCard, anchor: HTMLAnchorElement): boolean {
+    public anchorClicked(element: Adaptive.CardElement, anchor: HTMLAnchorElement): boolean {
         var regEx = /^action:([a-z0-9]+)$/ig;
+        var rootCard = element.getRootElement() as Adaptive.AdaptiveCard;
 
         var matches = regEx.exec(anchor.href);
         
@@ -154,7 +146,7 @@ export class OutlookContainer extends HostContainer {
     }
 
     public getHostConfig(): Adaptive.HostConfig {
-        return new Adaptive.HostConfig({
+        return new Adaptive.HostConfig({            
             supportsInteractivity: true,
             fontFamily: "Segoe UI",
             spacing: {

@@ -10,7 +10,7 @@ function loadMonacoEditor(jsonSchema, callback) {
                         fileMatch: ["*"],
                     }
                 ],
-                validate: true,
+                validate: false,
                 allowComments: true
             }
 
@@ -21,18 +21,20 @@ function loadMonacoEditor(jsonSchema, callback) {
             document.getElementById('editor'),
             {
                 folding: true,
+                validate: false,
+                fontSize: 13.5,
                 language: 'json',
                 minimap: {
                     enabled: false
                 }
             }
         );
-
+        
         window.addEventListener('resize', function () {
             monacoEditor.layout();
         });
 
-        monacoEditor.layout();
+        //monacoEditor.layout();
 
         callback();
     });

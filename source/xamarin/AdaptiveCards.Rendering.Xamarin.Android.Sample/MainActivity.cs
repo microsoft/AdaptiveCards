@@ -1,6 +1,9 @@
 ﻿using Android.App;
 using Android.Widget;
 using Android.OS;
+using IO.Adaptivecards.Objectmodel;
+using IO.Adaptivecards.Renderer.Actionhandler;
+using IO.Adaptivecards.Renderer;
 using Android.Support.V4.App;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -15,7 +18,7 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 {
     
     [Activity(Label = "AdaptiveCards", MainLauncher = true, Icon = "@mipmap/icon")]
-    public class MainActivity : FragmentActivity, IShowCardActionHandler, ISubmitActionHandler
+    public class MainActivity : FragmentActivity, ICardActionHandler
     {
         private PayloadRetriever m_payloadRetriever = null;
 
@@ -56,11 +59,13 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
         {
             try
             {
-                AdaptiveCard adaptiveCard = AdaptiveCard.DeserializeFromString(jsonText);
-                LinearLayout layout = FindViewById<LinearLayout>(Resource.Id.visualAdaptiveCardLayout);
+                ParseResult parseResult = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.Version);
+                Toast.MakeText(this, parseResult.AdaptiveCard.Body.Capacity().ToString(), ToastLength.Short).Show();
+                LinearLayout layout = (LinearLayout)FindViewById(Resource.Id.visualAdaptiveCardLayout);
                 layout.RemoveAllViews();
 
-                layout.AddView(AdaptiveCardRenderer.Instance.Render(ApplicationContext, SupportFragmentManager, adaptiveCard, this, this, new HostConfig()));
+                var renderedCard = AdaptiveCardRenderer.Instance.Render(Application.Context, SupportFragmentManager, parseResult.AdaptiveCard, this, new HostConfig());
+                layout.AddView(renderedCard.View);
             }
             catch (Exception ex)
             {
@@ -68,12 +73,9 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
             }
         }
 
-        public void OnShowCard(ShowCardAction p0, AdaptiveCard p1)
+        public void OnAction(BaseActionElement element, RenderedAdaptiveCard renderedCard)
         {
-        }
-
-        public void OnSubmit(SubmitAction p0, IDictionary<string, string> p1)
-        {   
+            
         }
     }
 }

@@ -11,7 +11,9 @@ using namespace AdaptiveCards;
 
 @interface ACOBaseCardElement()
 
+- (instancetype)initWithBaseCardElement:(std::shared_ptr<BaseCardElement> const &)element;
 - (std::shared_ptr<BaseCardElement>)element;
 - (void)setElem:(std::shared_ptr<BaseCardElement> const &)elem;
+- (NSData *)additionalProperty;
 
 @end
