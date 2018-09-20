@@ -108,9 +108,16 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
     // check if language is valid
     try 
     {
-        std::locale(language.c_str());
+        if (language.empty() || language.length() == 2 || language.length() == 3)
+        {
+            std::locale(language.c_str());
+        }
+        else
+        {
+            warnings.push_back(std::make_shared<AdaptiveCardParseWarning>(AdaptiveSharedNamespace::WarningStatusCode::InvalidLanguage, "Invalid language identifier: " + language));
+        }
     }
-    catch (...)
+    catch (std::runtime_error)
     {
         warnings.push_back(std::make_shared<AdaptiveCardParseWarning>(AdaptiveSharedNamespace::WarningStatusCode::InvalidLanguage, "Invalid language identifier: " + language));
     }

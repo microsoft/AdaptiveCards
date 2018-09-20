@@ -60,24 +60,20 @@ namespace AdaptiveCards
         {
             if (!string.IsNullOrEmpty(val))
             {
-                if (val.Length != 2)
+                try
                 {
-                    Warnings.Add(new AdaptiveWarning((int)WarningStatusCode.InvalidLanguage, "Invalid language identifier: " + val));
-                }
-                else
-                {
-                    try
+                    if (val.Length == 2 || val.Length == 3)
                     {
-                        var culture = new CultureInfo(val);
-                        if (culture.DisplayName.Contains("Unknown Language"))
-                        {
-                            Warnings.Add(new AdaptiveWarning((int)WarningStatusCode.InvalidLanguage, "Invalid language identifier: " + val));
-                        }
+                        new CultureInfo(val);
                     }
-                    catch (CultureNotFoundException)
+                    else
                     {
                         Warnings.Add(new AdaptiveWarning((int)WarningStatusCode.InvalidLanguage, "Invalid language identifier: " + val));
                     }
+                }
+                catch (CultureNotFoundException)
+                {
+                    Warnings.Add(new AdaptiveWarning((int)WarningStatusCode.InvalidLanguage, "Invalid language identifier: " + val));
                 }
             }
             return val;

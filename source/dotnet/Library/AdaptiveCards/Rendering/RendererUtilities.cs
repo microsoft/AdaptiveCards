@@ -81,13 +81,12 @@ namespace AdaptiveCards.Rendering
         // Get appropriate CultureInfo for lang
         private static CultureInfo GetValidCultureInfo(string val)
         {
-            if (val.Length != 2)
-            {
-                return CultureInfo.CurrentCulture;
-            }
-
             try
             {
+                if (string.IsNullOrEmpty(val))
+                {
+                    return CultureInfo.CurrentCulture;
+                }
                 return new CultureInfo(val);
             }
             catch (CultureNotFoundException)
