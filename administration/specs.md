@@ -26,6 +26,24 @@ On the 4th (or later) business day, the Adaptive Cards spec review team will mee
 
 If the spec is approved, we will mark it approved.
 
+### Internal spec review team
+
+The internal spec review team will be composed of key spec-level stakeholders.
+
+* The devs of Adaptive Cards
+* The PMs of Adaptive Cards (Matt Hidinger, Andrew Leader, David Claux)
+
+The purpose of this meeting is to obtain consensus on whether the spec is complete, and whether all the small details like naming are agreed upon.
+
+Minimum participants to have a quorum...
+
+* At least 2 devs from Adaptive Cards
+* At least 2 PMs from Adaptive Cards
+
+At the end of the review, voting will occur. Participants can either vote **Approved**, **Denied**, or **No Opinion**. If the number of **Approved** is greater than or equal to the number of **Denied**, and there are at least 2 votes of **Approved**, the spec will be approved.
+
+Each partner of Adaptive Cards will only get one vote (so even if one partner brings 5 people with them, they can only cast one collective vote). Everyone else's votes will be counted as-is.
+
 
 ## Stage 4: Implementation
 
