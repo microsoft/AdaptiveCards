@@ -14,14 +14,39 @@ For example...
 
 The proposal body needs a few rough details, like...
 
-* **Requirements**: Link to request collection issue. Can link to multiple if proposal solves multiple.
-* **Summary**: Brief summary of the proposed solution
-* **Schema**: Schema changes
-* **Example**: Provide an example of the schema changes
-* **Host Config**: Describe changes to the host config, if any
-* **Down-level impact**: Describe the impact to authors when their card goes down-level
-* **Host burden**: Describe the impact hosts have when they update their renderer library (do they have to add new host config properties because of this?)
-* **Renderer requirements**: Can be filled out later.
+```
+# Solves requests
+
+* Request name (#issue-number)
+
+
+# Summary
+Brief summary of the proposed solution
+
+
+# Schema
+**New** property on `Action` 
+
+Property|Type|Required|Description
+---|---|---|---
+Style|enum [default, emphasized, destructive] |false|Applies a style to an Action to indicate to intent
+
+
+# Example
+Provide an example payload
+
+
+# Host Config
+Describe changes to the host config, if any.
+
+
+# Down-level impact
+Describe how down-level is impacted for authors.
+
+
+# Host burden
+Describe the burden hosts have when we introduce this feature. For example, are they going to have to add something new to their host config or native styling as a result of a new element we're adding? Are there breaking API changes that hosts have to use? Are we deprecating something from host config that could cause potential confusion?
+```
 
 If there's another proposal, it should be created as a separate issue.
 
