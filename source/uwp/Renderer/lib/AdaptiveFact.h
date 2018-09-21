@@ -24,6 +24,9 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_Value(_Out_ HSTRING* value);
         IFACEMETHODIMP put_Value(_In_ HSTRING value);
 
+        IFACEMETHODIMP get_Language(_Out_ HSTRING *language);
+        IFACEMETHODIMP put_Language(_In_ HSTRING language);
+
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
 
         HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::Fact>& sharedModel);
@@ -36,6 +39,8 @@ AdaptiveNamespaceStart
 
     private:
         std::shared_ptr<AdaptiveSharedNamespace::Fact> m_sharedFact;
+        Microsoft::WRL::Wrappers::HString m_value;
+        Microsoft::WRL::Wrappers::HString m_language;
     };
 
     ActivatableClass(AdaptiveFact);

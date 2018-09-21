@@ -2215,7 +2215,12 @@ AdaptiveNamespaceStart
             ComPtr<ITextBlock> valueTextBlock = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
             HString factValue;
             THROW_IF_FAILED(localFact->get_Value(factValue.GetAddressOf()));
-            THROW_IF_FAILED(valueTextBlock->put_Text(factValue.Get()));
+
+            HString language;
+            THROW_IF_FAILED(localFact->get_Language(language.GetAddressOf()));
+            THROW_IF_FAILED(SetTextOnXamlTextBlock(renderContext, factValue.Get(), language.Get(), valueTextBlock.Get()));
+
+            //THROW_IF_FAILED(valueTextBlock->put_Text(factValue.Get()));
             ComPtr<IAdaptiveTextConfig> valueTextConfig;
             THROW_IF_FAILED(factSetConfig->get_Value(&valueTextConfig));
             StyleXamlTextBlock(valueTextConfig.Get(), containerStyle, valueTextBlock.Get(), hostConfig.Get());

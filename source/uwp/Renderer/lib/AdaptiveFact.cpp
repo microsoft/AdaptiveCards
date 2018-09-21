@@ -21,6 +21,8 @@ AdaptiveNamespaceStart
     HRESULT AdaptiveFact::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Fact>& sharedFact)
     {
         m_sharedFact = sharedFact;
+        RETURN_IF_FAILED(UTF8ToHString(sharedFact->GetValue(), m_value.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedFact->GetLanguage(), m_language.GetAddressOf()));
         return S_OK;
     }
 
@@ -55,6 +57,18 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
+    HRESULT AdaptiveFact::get_Language(HSTRING* language)
+    {
+        return m_language.CopyTo(language);
+    }
+
+    _Use_decl_annotations_
+    HRESULT AdaptiveFact::put_Language(HSTRING language)
+    {
+        return m_language.Set(language);
+    }
+
+    _Use_decl_annotations_
     HRESULT AdaptiveFact::get_ElementType(ElementType* elementType)
     {
         *elementType = ElementType::Fact;
@@ -63,6 +77,19 @@ AdaptiveNamespaceStart
 
     HRESULT AdaptiveFact::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::Fact>& sharedModel)
     {
+        std::shared_ptr<AdaptiveSharedNamespace::Fact> fact = std::make_shared<AdaptiveSharedNamespace::Fact>();
+
+        std::string value;
+        RETURN_IF_FAILED(HStringToUTF8(m_value.Get(), value));
+        fact->SetValue(value);
+
+        std::string language;
+        if (!(WindowsIsStringEmpty(m_language.Get())))
+        {
+            RETURN_IF_FAILED(HStringToUTF8(m_language.Get(), language));
+            fact->SetLanguage(language);
+        }
+
         sharedModel = m_sharedFact;
         return S_OK;
     }
