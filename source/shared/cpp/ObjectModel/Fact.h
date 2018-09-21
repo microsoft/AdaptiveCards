@@ -21,6 +21,9 @@ public:
     std::string GetValue() const;
     void SetValue(const std::string &value);
 
+    void SetLanguage(const std::string& value);
+    std::string GetLanguage() const;
+
     static std::shared_ptr<Fact> Deserialize(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
@@ -36,5 +39,6 @@ public:
 private:
     std::string m_title;
     std::string m_value;
+    std::string m_language;
 };
 }

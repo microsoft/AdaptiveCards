@@ -69,3 +69,13 @@ void Fact::SetValue(const std::string &value)
 {
     m_value = value;
 }
+
+std::string Fact::GetLanguage() const
+{
+    return m_language;
+}
+
+void Fact::SetLanguage(const std::string& value)
+{
+    m_language = value;
+}

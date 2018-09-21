@@ -2,6 +2,7 @@
 #include "Util.h"
 #include "ColumnSet.h"
 #include "Container.h"
+#include "FactSet.h"
 #include "TextBlock.h"
 #include "ShowCardAction.h"
 
@@ -33,6 +34,14 @@ void PropagateLanguage(const std::string& language, std::vector<std::shared_ptr<
             if (textBlock != nullptr)
             {
                 textBlock->SetLanguage(language);
+            }
+        }
+        else if (bodyElement->GetElementType() == CardElementType::FactSet)
+        {
+            auto factset = std::static_pointer_cast<FactSet>(bodyElement);
+            if (factset != nullptr)
+            {
+                factset->SetLanguage(language);
             }
         }
     }
