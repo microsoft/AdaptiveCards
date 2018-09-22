@@ -12,8 +12,6 @@
 - (void)config:(nullable NSDictionary<NSString *, id> *)attributes
 {
     self.stackView.axis = UILayoutConstraintAxisVertical;
-    //self.stackView.distribution = UIStackViewDistributionFill;
-    //self.stackView.alignment = UIStackViewAlignmentFill;
     [super config:attributes];
 }
 
@@ -39,16 +37,5 @@
     [self addArrangedSubview:blankTrailingSpace];
     return blankTrailingSpace;
 }
-/*
-- (CGSize)intrinsicContentSize
-{
-    CGSize contentSize = CGSizeZero;
-    for(UIView *item in self.stackView.subviews){
-        CGSize subViewContentSize = [item intrinsicContentSize];
-        contentSize.width = MAX(contentSize.width, subViewContentSize.width);
-        contentSize.height += subViewContentSize.height;
-    }
-    return contentSize;
-}
-*/
+
 @end

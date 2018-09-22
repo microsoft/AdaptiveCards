@@ -131,10 +131,9 @@
 
     castedRenderer.fillAlignment = NO;
     
-    if([constraints count]) [columnSetView addConstraints:constraints];
-
-    //[columnSetView adjustHuggingForLastElement];
-
+    if([constraints count]) {
+        [columnSetView addConstraints:constraints];
+    }
     [viewGroup addArrangedSubview:columnSetView];
 
     std::shared_ptr<BaseActionElement> selectAction = columnSetElem->GetSelectAction();

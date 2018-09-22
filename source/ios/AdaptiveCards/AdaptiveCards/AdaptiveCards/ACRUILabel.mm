@@ -35,7 +35,7 @@
         [self sizeToFit];
     }
     size = self.frame.size;
-    
+
     self.scrollEnabled = NO;
     return size;
 }
@@ -55,7 +55,6 @@
         }
     }
     _area = area;
-
 }
 
 @end

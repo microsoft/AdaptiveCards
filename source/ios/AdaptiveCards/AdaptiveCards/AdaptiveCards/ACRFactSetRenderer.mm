@@ -44,7 +44,7 @@
     lab.textContainerInset = UIEdgeInsetsZero;
     lab.layoutManager.usesFontLeading = false;
     lab.tag = eACRUIFactSetTag;
-    
+
     NSMutableAttributedString *content = nil;
     if(rootView){
         std::shared_ptr<FactSet> fctSet = std::dynamic_pointer_cast<FactSet>(element);
@@ -68,8 +68,6 @@
             [content deleteCharactersInRange:NSMakeRange([content length] -4, 4)];
         }
         // Set paragraph style such as line break mode and alignment
-        //NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        //paragraphStyle.lineBreakMode = textConfig.wrap ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
         lab.textContainer.lineBreakMode = textConfig.wrap ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
 
         // Obtain text color to apply to the attributed string
@@ -140,14 +138,14 @@
         [titleLab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         [titleLab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         [titleLab setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-        titleLab.isTitle = YES;
+        
         if (config->factSet.title.maxWidth) {
             NSLayoutConstraint *constraintForTitleLab = [NSLayoutConstraint constraintWithItem:titleLab attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:config->factSet.title.maxWidth];
             constraintForTitleLab.active = YES;
             constraintForTitleLab.priority = UILayoutPriorityRequired;
         }
         NSString *value = [NSString stringWithCString:fact->GetValue().c_str() encoding:NSUTF8StringEncoding];
-        UITextView *valueLab = [ACRFactSetRenderer buildLabel:value
+        ACRUILabel *valueLab = [ACRFactSetRenderer buildLabel:value
                                                     superview:viewGroup
                                                    hostConfig:acoConfig
                                                    textConfig:config->factSet.value

@@ -16,24 +16,14 @@ using namespace AdaptiveCards;
 {
     if(self.subviews.count) {
         NSInteger tag = self.subviews.firstObject.tag;
-        if(tag == eACRUILabelTag) {
-            UIView *textView = [self viewWithTag:eACRUILabelTag];
-            CGSize size = [textView intrinsicContentSize];
-            return size;
-        } else if (tag == eACRUIImageTag) {
-            UIView *ImageView = [self viewWithTag:eACRUIImageTag];
-            if(ImageView) {
-                CGSize size = [ImageView intrinsicContentSize];
-                return size;
+        if((tag == eACRUILabelTag) || (tag == eACRUIImageTag)) {
+            UIView *view = [self viewWithTag:tag];
+            if(view) {
+                return [view intrinsicContentSize];
             }
         }
     }
     return self.frame.size;
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
 }
 
 @end

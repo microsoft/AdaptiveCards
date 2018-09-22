@@ -440,9 +440,4 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 {
     return _adaptiveCard;
 }
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-}
 @end
