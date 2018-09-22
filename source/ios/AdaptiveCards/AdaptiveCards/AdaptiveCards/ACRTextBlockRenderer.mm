@@ -88,7 +88,6 @@
         lab.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
         lab.attributedText = content;
     }
-    [lab sizeToFit];
 
     lab.area = lab.frame.size.width * lab.frame.size.height;
 
