@@ -504,9 +504,6 @@ AdaptiveNamespaceStart
         [propget] HRESULT Url([out, retval] HSTRING* value);
         [propput] HRESULT Url([in] HSTRING value);
 
-        [propget] HRESULT ResourceType([out, retval] ElementType* value);
-        [propput] HRESULT ResourceType([in] ElementType value);
-
         [propget] HRESULT MimeType([out, retval] HSTRING* value);
         [propput] HRESULT MimeType([in] HSTRING value);
     };
@@ -2119,6 +2116,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT IconPlacement([out][retval] IconPlacement* value);
         [propput] HRESULT IconPlacement([in] IconPlacement value);
+
+        [propget] HRESULT IconSize([out][retval] UINT32* value);
+        [propput] HRESULT IconSize([in] UINT32 value);
     };
 
     [

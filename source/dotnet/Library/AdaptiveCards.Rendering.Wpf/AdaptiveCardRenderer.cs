@@ -14,7 +14,7 @@ namespace AdaptiveCards.Rendering.Wpf
     {
         protected override AdaptiveSchemaVersion GetSupportedSchemaVersion()
         {
-            return new AdaptiveSchemaVersion(1, 0);
+            return new AdaptiveSchemaVersion(1, 1);
         }
 
         protected Action<object, AdaptiveActionEventArgs> ActionCallback;
@@ -34,6 +34,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             ElementRenderers.Set<AdaptiveTextBlock>(AdaptiveTextBlockRenderer.Render);
             ElementRenderers.Set<AdaptiveImage>(AdaptiveImageRenderer.Render);
+            ElementRenderers.Set<AdaptiveMedia>(AdaptiveMediaRenderer.Render);
 
             ElementRenderers.Set<AdaptiveContainer>(AdaptiveContainerRenderer.Render);
             ElementRenderers.Set<AdaptiveColumn>(AdaptiveColumnRenderer.Render);
@@ -103,6 +104,19 @@ namespace AdaptiveCards.Rendering.Wpf
 
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
+            switch (card.VerticalContentAlignment)
+            {
+                case AdaptiveVerticalContentAlignment.Center:
+                    grid.VerticalAlignment = VerticalAlignment.Center;
+                    break;
+                case AdaptiveVerticalContentAlignment.Bottom:
+                    grid.VerticalAlignment = VerticalAlignment.Bottom;
+                    break;
+                case AdaptiveVerticalContentAlignment.Top:
+                default:
+                    break;
+            }
+
             AdaptiveContainerRenderer.AddContainerElements(grid, card.Body, context);
             AdaptiveActionSetRenderer.AddActions(grid, card.Actions, context);
 
@@ -146,9 +160,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (card.SelectAction != null)
             {
-                context.IsRenderingCard = true;
                 var outerGridWithSelectAction = context.RenderSelectAction(card.SelectAction, outerGrid);
-                context.IsRenderingCard = false;
 
                 return outerGridWithSelectAction;
             }
@@ -163,22 +175,26 @@ namespace AdaptiveCards.Rendering.Wpf
         public RenderedAdaptiveCard RenderCard(AdaptiveCard card)
         {
             if (card == null) throw new ArgumentNullException(nameof(card));
-            EnsureCanRender(card);
-
             RenderedAdaptiveCard renderCard = null;
 
-            void Callback(object sender, AdaptiveActionEventArgs args)
+            void ActionCallback(object sender, AdaptiveActionEventArgs args)
             {
                 renderCard?.InvokeOnAction(args);
             }
 
-            var context = new AdaptiveRenderContext(Callback, null)
+            void MediaClickCallback(object sender, AdaptiveMediaEventArgs args)
+            {
+                renderCard?.InvokeOnMediaClick(args);
+            }
+
+            var context = new AdaptiveRenderContext(ActionCallback, null, MediaClickCallback)
             {
                 ResourceResolvers = ResourceResolvers,
                 ActionHandlers = ActionHandlers,
                 Config = HostConfig ?? new AdaptiveHostConfig(),
                 Resources = Resources,
-                ElementRenderers = ElementRenderers
+                ElementRenderers = ElementRenderers,
+                Lang = card.Lang
             };
 
             var element = context.Render(card);
@@ -196,7 +212,6 @@ namespace AdaptiveCards.Rendering.Wpf
         public async Task<RenderedAdaptiveCardImage> RenderCardToImageAsync(AdaptiveCard card, bool createStaThread, int width = 400, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (card == null) throw new ArgumentNullException(nameof(card));
-            EnsureCanRender(card);
 
             if (createStaThread)
             {
@@ -216,14 +231,15 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 var cardAssets = await LoadAssetsForCardAsync(card, cancellationToken);
 
-                var context = new AdaptiveRenderContext(null, null)
+                var context = new AdaptiveRenderContext(null, null, null)
                 {
                     CardAssets = cardAssets,
                     ResourceResolvers = ResourceResolvers,
                     ActionHandlers = ActionHandlers,
                     Config = HostConfig ?? new AdaptiveHostConfig(),
                     Resources = Resources,
-                    ElementRenderers = ElementRenderers
+                    ElementRenderers = ElementRenderers,
+                    Lang = card.Lang
                 };
 
                 var stream = context.Render(card).RenderToImage(width);

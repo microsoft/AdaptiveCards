@@ -30,14 +30,19 @@ namespace AdaptiveCards.Rendering.Wpf
                 Style = context.GetStyle($"Adaptive.{action.Type}"),
             };
 
-            // Only apply padding for card elements to avoid adding
-            // padding for card-level selectAction
-            if (!context.IsRenderingCard)
+            var contentStackPanel = new StackPanel();
+
+            if (!context.IsRenderingSelectAction)
             {
+                // Only apply padding for normal card actions
                 uiButton.Padding = new Thickness(6, 4, 6, 4);
             }
-
-            var contentStackPanel = new StackPanel();
+            else
+            {
+                // Remove any extra spacing for selectAction
+                uiButton.Padding = new Thickness(0, 0, 0, 0);
+                contentStackPanel.Margin = new Thickness(0, 0, 0, 0);
+            }
             uiButton.Content = contentStackPanel;
             FrameworkElement uiIcon = null;
 

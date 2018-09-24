@@ -18,7 +18,7 @@ Image::Image() :
 
 Json::Value Image::SerializeToJsonValue() const
 {
-	const std::string pixelstring("px");
+    const std::string pixelstring("px");
 
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
@@ -211,17 +211,11 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
     for (auto eachDimension : requestedDimensions)
     {
         int parsedDimension = 0;
-        if (!eachDimension.empty() && (isdigit(eachDimension.at(0)) || ('-' == eachDimension.at(0))))
+        if (ShouldParseForExplicitDimension(eachDimension))
         {
             const std::string unit = "px";
-            const std::size_t foundIndex = eachDimension.find(unit);
-            /// check if width is determined explicitly
-            if (std::string::npos != foundIndex)
-            {
-                if (eachDimension.size() == foundIndex + unit.size())
-                // validate user inputs
-                ValidateUserInputForDimensionWithUnit(unit, eachDimension, parsedDimension);
-            }
+            // validate user inputs
+            ValidateUserInputForDimensionWithUnit(unit, eachDimension, parsedDimension, warnings);
         }
         parsedDimensions.push_back(parsedDimension);
     }
@@ -259,7 +253,7 @@ void Image::GetResourceInformation(std::vector<RemoteResourceInformation>& resou
 {
     RemoteResourceInformation imageResourceInfo;
     imageResourceInfo.url = GetUrl();
-    imageResourceInfo.resourceType = CardElementType::Image;
+    imageResourceInfo.mimeType = "image";
     resourceInfo.push_back(imageResourceInfo);
     return;
 }

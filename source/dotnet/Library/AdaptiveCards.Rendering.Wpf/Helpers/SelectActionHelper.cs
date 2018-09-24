@@ -11,7 +11,9 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             if (context.Config.SupportsInteractivity)
             {
+                context.IsRenderingSelectAction = true;
                 var uiButton = (Button) context.Render(selectAction);
+                context.IsRenderingSelectAction = false;
 
                 // Stretch both the button and button's content to avoid empty spaces
                 uiButton.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -23,6 +25,10 @@ namespace AdaptiveCards.Rendering.Wpf
                 {
                     uiButton.Background = p.Background;
                     p.Background = new SolidColorBrush(Colors.Transparent);
+                }
+                else
+                {
+                    uiButton.Background = new SolidColorBrush(Colors.Transparent);
                 }
                 uiButton.BorderThickness = new Thickness(0);
                 uiButton.Content = uiElement;

@@ -282,7 +282,10 @@ public class TextBlockRenderer extends BaseCardElementRenderer
             htmlString = Html.fromHtml(textString, null, new UlTagHandler());
         }
         textView.setText(trimHtmlString(htmlString));
-        textView.setSingleLine(!textBlock.GetWrap());
+        if (!textBlock.GetWrap())
+        {
+            textView.setMaxLines(1);
+        }
         textView.setEllipsize(TextUtils.TruncateAt.END);
         textView.setOnTouchListener(new TouchTextView(new SpannableString(trimHtmlString(htmlString))));
         textView.setHorizontallyScrolling(false);

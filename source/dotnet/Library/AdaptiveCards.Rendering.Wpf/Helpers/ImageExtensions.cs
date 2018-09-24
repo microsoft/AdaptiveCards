@@ -2,18 +2,28 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-
 namespace AdaptiveCards.Rendering.Wpf
 {
     public static class ImageExtensions
     {
 
+        public class AdaptiveConverterParameters
+        {
+            public AdaptiveConverterParameters(Image image, AdaptiveImage adaptiveImage)
+            {
+                Image = image;
+                AdaptiveImage = adaptiveImage;
+            }
+            public Image Image {get; set;}
+            public AdaptiveImage AdaptiveImage {get; set;}
+        }
         /// <summary>
         /// Renders the element to a bitmap
         /// </summary>
@@ -41,20 +51,21 @@ namespace AdaptiveCards.Rendering.Wpf
             return stream;
         }
 
-        public static async void SetSource(this Image image, Uri url, AdaptiveRenderContext context)
+        public static async void SetSource(this Image image, AdaptiveImage adaptiveImage, Uri url, AdaptiveRenderContext context)
         {
             if (url == null)
                 return;
 
             image.Source = await context.ResolveImageSource(url);
 
+            var parameters = new AdaptiveConverterParameters(image, adaptiveImage); 
             var binding = new Binding
             {
                 RelativeSource = RelativeSource.Self,
                 Path = new PropertyPath("Parent.ActualWidth"),
                 Mode = BindingMode.OneWay,
                 Converter = new StretchConverter(),
-                ConverterParameter = image
+                ConverterParameter = parameters 
             };
 
             image.SetBinding(Image.StretchProperty, binding);
@@ -62,16 +73,35 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public class StretchConverter : IValueConverter
         {
-
             public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
             {
                 var parentWidth = (double)value;
-                var image = (Image)parameter;
-
+                var adaptiveParameters = (AdaptiveConverterParameters)parameter; 
+                var image = adaptiveParameters.Image;
+                var adaptiveImage = adaptiveParameters.AdaptiveImage;
                 var imageWidth = ((BitmapImage) image.Source)?.PixelWidth;
-                if (imageWidth >= parentWidth)
-                {
 
+                if(adaptiveImage.PixelWidth != 0 || adaptiveImage.PixelHeight != 0)
+                {
+                    var imageHeight = ((BitmapImage) image.Source)?.PixelHeight;
+
+                    if(adaptiveImage.PixelWidth == 0)
+                    {
+                        adaptiveImage.PixelWidth = (uint) ((imageWidth / (float)imageHeight) * adaptiveImage.PixelHeight);
+                    }
+
+                    if(adaptiveImage.PixelHeight == 0)
+                    {
+                        adaptiveImage.PixelHeight = (uint) ((imageHeight / (float)imageWidth) * adaptiveImage.PixelWidth);
+                    }
+
+                    image.Width = adaptiveImage.PixelWidth;
+                    image.Height = adaptiveImage.PixelHeight;
+
+                    return Stretch.Fill;
+                }
+                else if (imageWidth >= parentWidth)
+                {
                     return Stretch.Uniform;
                 }
                 else
@@ -86,17 +116,25 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
-        public static async void SetBackgroundSource(this Grid grid, Uri url, AdaptiveRenderContext context)
+        public static async void SetBackgroundSource(this Grid grid, Uri uri, AdaptiveRenderContext context)
         {
-            if (url == null)
-                return;
-
-            grid.Background = new ImageBrush(await context.ResolveImageSource(url))
+            // Try to resolve the image URI
+            Uri finalUri = context.Config.ResolveFinalAbsoluteUri(uri);
+            if (finalUri == null)
             {
-                Stretch = Stretch.UniformToFill,
-                AlignmentX = AlignmentX.Left,
-                AlignmentY = AlignmentY.Top
-            };
+                return;
+            }
+
+            BitmapImage bi = await context.ResolveImageSource(finalUri);
+            if (bi != null)
+            {
+                grid.Background = new ImageBrush(bi)
+                {
+                    Stretch = Stretch.UniformToFill,
+                    AlignmentX = AlignmentX.Left,
+                    AlignmentY = AlignmentY.Top
+                };
+            }
         }
 
         public static void SetImageProperties(this Image imageview, AdaptiveImage image, AdaptiveRenderContext context)

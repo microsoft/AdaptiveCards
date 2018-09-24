@@ -42,11 +42,11 @@ namespace AdaptiveSharedNamespace {
         {
             ActionParserRegistration::m_cardElementParsers.erase(elementType);
         }
-		else
-		{
-			throw AdaptiveCardParseException(ErrorStatusCode::UnsupportedParserOverride,
-				"Removing known action parsers is unsupported");
-		}
+        else
+        {
+            throw AdaptiveCardParseException(ErrorStatusCode::UnsupportedParserOverride,
+                "Removing known action parsers is unsupported");
+        }
     }
 
     std::shared_ptr<ActionElementParser> ActionParserRegistration::GetParser(std::string const &elementType)

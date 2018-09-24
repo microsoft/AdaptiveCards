@@ -35,7 +35,7 @@ namespace AdaptiveCards
         /// <summary>
         /// The latest known schema version supported by this library
         /// </summary>
-        public static AdaptiveSchemaVersion KnownSchemaVersion = new AdaptiveSchemaVersion(1, 0);
+        public static AdaptiveSchemaVersion KnownSchemaVersion = new AdaptiveSchemaVersion(1, 1);
 
         /// <summary>
         /// Creates an AdaptiveCard using a specific schema version
@@ -74,6 +74,7 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveNumberInput))]
         [XmlElement(typeof(AdaptiveToggleInput))]
         [XmlElement(typeof(AdaptiveChoiceSetInput))]
+        [XmlElement(typeof(AdaptiveMedia))]
 #endif
         public List<AdaptiveElement> Body { get; set; } = new List<AdaptiveElement>();
 
@@ -97,7 +98,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     Speak annotation for the card
         /// </summary>
-        [JsonProperty(Order = -6, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(Order = -7, NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlElement]
 #endif
@@ -107,14 +108,14 @@ namespace AdaptiveCards
         /// <summary>
         ///     Title for the card (used when displayed in a dialog)
         /// </summary>
-        [JsonProperty(Order = -5, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(Order = -6, NullValueHandling = NullValueHandling.Ignore)]
         [Obsolete("The Title property is not officially supported right now and should not be used")]
         public string Title { get; set; }
 
         /// <summary>
         ///     Background image for card
         /// </summary>
-        [JsonProperty(Order = -4, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(Order = -5, DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlIgnore]
 #endif
@@ -137,7 +138,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     Schema version that this card requires. If a client is lower than this version the fallbackText will be rendered.
         /// </summary>
-        [JsonProperty(Order = -9, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, NullValueHandling = NullValueHandling.Include)]
+        [JsonProperty(Order = -10, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, NullValueHandling = NullValueHandling.Include)]
 #if !NETSTANDARD1_3
         [XmlElement]
 #endif
@@ -147,14 +148,14 @@ namespace AdaptiveCards
         /// <summary>
         ///     This is obsolete. Use the <see cref="Version" property instead/>
         /// </summary>
-        [JsonProperty(Order = -8, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(Order = -9, NullValueHandling = NullValueHandling.Ignore)]
         [Obsolete("Use the Version property instead")]
         public AdaptiveSchemaVersion MinVersion { get; set; }
 
         /// <summary>
         ///     Text shown when the client doesn’t support the version specified. This can be in markdown format.
         /// </summary>
-        [JsonProperty(Order = -7, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(Order = -8, NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -164,12 +165,22 @@ namespace AdaptiveCards
         /// <summary>
         ///     The 2-letter ISO-639-1 language used in the card. Used to localize any date/time functions
         /// </summary>
-        [JsonProperty(Order = -6, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(Order = -7, NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
         [DefaultValue(null)]
         public string Lang { get; set; }
+
+        /// <summary>
+        ///     The content alignment for the eelment inside the container.
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(typeof(AdaptiveVerticalContentAlignment), "top")]
+        public AdaptiveVerticalContentAlignment VerticalContentAlignment { get; set; }
 
         /// <summary>
         ///     Action for the card (this allows a default action at the card level)
@@ -180,6 +191,37 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(null)]
         public AdaptiveAction SelectAction { get; set; }
+
+        public bool ShouldSerializeHeight()
+        {
+            if (Height == AdaptiveHeight.Auto)
+            {
+                return false;
+            }
+            if (Height.HeightType == AdaptiveHeightType.Pixel)
+            {
+                if (!Height.Unit.HasValue)
+                {
+                    return false;
+                }
+                if (Height.Unit.Value == 0)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        ///     Value that denotes if the card must use all the vertical space that is set to it. Default value is <see cref="AdaptiveHeight.Default"/>.
+        /// </summary>
+        [JsonConverter(typeof(StringSizeWithUnitConverter), true)]
+        [JsonProperty(Order = -4, DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlElement(typeof(AdaptiveHeight))]
+#endif
+        [DefaultValue(typeof(AdaptiveHeight), "auto")]
+        public AdaptiveHeight Height { get; set; }
 
         /// <summary>
         /// Parse an AdaptiveCard from a JSON string
@@ -202,7 +244,6 @@ namespace AdaptiveCards
             {
                 throw new AdaptiveSerializationException(ex.Message, ex);
             }
-
             return parseResult;
         }
 
@@ -250,8 +291,7 @@ namespace AdaptiveCards
             {
                 resourceInformationList.Add(new RemoteResourceInformation(
                     card.BackgroundImageString,
-                    typeof(AdaptiveImage),
-                    null
+                    "image"
                 ));
             }
 
@@ -269,8 +309,7 @@ namespace AdaptiveCards
                 {
                     resourceInformationList.Add(new RemoteResourceInformation(
                         action.IconUrl,
-                        typeof(AdaptiveImage),
-                        null
+                        "image"
                     ));
                 }
 
@@ -293,8 +332,7 @@ namespace AdaptiveCards
             {
                 resourceInformationList.Add(new RemoteResourceInformation(
                     imageElement.UrlString,
-                    typeof(AdaptiveImage),
-                    null
+                    "image"
                 ));
             }
 

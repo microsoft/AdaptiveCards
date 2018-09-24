@@ -94,8 +94,6 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\StorageFileToImageSourceConverter.cs" />
-    <Compile Include="Helpers\BindableBase.cs" />
-    <Compile Include="Model\StoredTestResultInfo.cs" />
     <Compile Include="Pages\BasePage.cs" />
     <Compile Include="Pages\RunningTestsPage.xaml.cs">
       <DependentUpon>RunningTestsPage.xaml</DependentUpon>
@@ -107,11 +105,8 @@
     <Compile Include="Pages\StartPage.xaml.cs">
       <DependentUpon>StartPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\TestResultsViewModel.cs" />
     <Compile Include="ViewModels\TestResultsCategoryViewModel.cs" />
-    <Compile Include="ViewModels\TestResultViewModel.cs" />
-    <Compile Include="ViewModels\FileViewModel.cs" />
     <Compile Include="ViewModels\RunningTestsViewModel.cs" />
     <Compile Include="ViewModels\StartViewModel.cs" />
     <Compile Include="Views\DiffView.xaml.cs">
@@ -129,7 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Adaptive10.png" />
-    <Content Include="Assets\background.jpg" />
+    <Content Include="Assets\background.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -193,8 +188,14 @@
       <Project>{cf169157-f487-420c-8b9b-ca3abe2bb209}</Project>
       <Name>AdaptiveCardRenderer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UWPTestLibrary\UWPTestLibrary.csproj">
+      <Project>{c286ce4a-0aa5-42d8-ae42-4765860bcba1}</Project>
+      <Name>UWPTestLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Model\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

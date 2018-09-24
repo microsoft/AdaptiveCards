@@ -95,7 +95,7 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardParseResult>(&adaptiveParseResult));
         try
         {
-            const double c_rendererVersion = 1.1;
+            const std::string c_rendererVersion = "1.1";
             std::shared_ptr<AdaptiveSharedNamespace::ParseResult> sharedParseResult = AdaptiveSharedNamespace::AdaptiveCard::DeserializeFromString(jsonString, c_rendererVersion, sharedModelElementParserRegistration, sharedModelActionParserRegistration);
             ComPtr<IAdaptiveCard> adaptiveCard;
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&adaptiveCard, sharedParseResult->GetAdaptiveCard()));
@@ -353,8 +353,6 @@ AdaptiveNamespaceStart
             HString mimeType;
             RETURN_IF_FAILED(UTF8ToHString(sharedResourceInformation.mimeType, mimeType.GetAddressOf()));
             RETURN_IF_FAILED(remoteResourceInformation->put_MimeType(mimeType.Get()));
-
-            RETURN_IF_FAILED(remoteResourceInformation->put_ResourceType(static_cast<ABI::AdaptiveNamespace::ElementType>(sharedResourceInformation.resourceType)));
 
             RETURN_IF_FAILED(resourceInformation->Append(remoteResourceInformation.Get()));
         }

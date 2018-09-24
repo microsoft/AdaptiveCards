@@ -11,7 +11,6 @@
 @interface ACORemoteResourceInformation:NSObject
 
 @property (readonly) NSURL* url;
-@property (readonly) ACRCardElementType resourceType;
 @property (readonly) NSString* mimeType;
 
 @end    

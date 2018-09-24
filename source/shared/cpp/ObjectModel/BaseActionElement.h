@@ -65,7 +65,7 @@ std::shared_ptr<T> BaseActionElement::Deserialize(const Json::Value& json)
 
     ParseUtil::ThrowIfNotJsonObject(json);
 
-    baseActionElement->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title, true));
+    baseActionElement->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title));
     baseActionElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id));
     baseActionElement->SetIconUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::IconUrl));
 
