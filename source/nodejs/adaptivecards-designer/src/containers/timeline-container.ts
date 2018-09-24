@@ -2,24 +2,17 @@ import { HostContainer } from "./host-container";
 import * as Adaptive from "adaptivecards";
 
 export class TimelineContainer extends HostContainer {
-    private _width: number;
-    private _height: number;
+    public initialize() {
+        Adaptive.AdaptiveCard.elementTypeRegistry.reset();
+        Adaptive.AdaptiveCard.actionTypeRegistry.reset();
+        
+        Adaptive.AdaptiveCard.useAutomaticContainerBleeding = false;
+        Adaptive.AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = true;
+        Adaptive.AdaptiveCard.useAdvancedCardBottomTruncation = false;
+        Adaptive.AdaptiveCard.useAdvancedTextBlockTruncation = true;
+    }
 
-    // constructor(width: number, height: number, styleSheet: string) {
-    //     super(name, styleSheet);
-
-    //     this._width = width;
-    //     this._height = height;
-    //     // this.supportsActionBar = false;
-    // }
-
-    renderTo(hostElement: HTMLElement) {
-        Adaptive.AdaptiveCard.useAdvancedCardBottomTruncation = true;
-
-        let cardHost = this.cardHost;
-
-        let timelineCardChild = document.querySelector('.timeline-card > div') as HTMLElement;
-
+    public renderTo(hostElement: HTMLElement) {
         let target = document.getElementById("designerHost");
         let frame = document.createElement("div");
         frame.className = "timeline-frame";
@@ -28,11 +21,12 @@ export class TimelineContainer extends HostContainer {
         let cardContainer = document.createElement("div");
         cardContainer.className = "timeline-card";
         frame.appendChild(cardContainer);
-        cardHost.style.height = "178px";
-        cardHost.style.width = "328px";
-        cardHost.style.overflow = "hidden";
 
-        cardContainer.appendChild(cardHost);
+        this.cardHost.style.height = "100%";
+        this.cardHost.style.width = "100%";
+        this.cardHost.style.overflow = "hidden";
+
+        cardContainer.appendChild(this.cardHost);
         hostElement.appendChild(frame);
     }
 

@@ -6,6 +6,9 @@
 
   .timeline-card {
     overflow: hidden;
-    padding-left: 48px;
-    padding-top: 158px;
+    position: relative;
+    left: 48px;
+    top: 158px;
+    width: 328px;
+    height: 178px;
   }
