@@ -839,6 +839,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void Fact_SetTitle(long jarg1, Fact jarg1_, String jarg2);
   public final static native String Fact_GetValue(long jarg1, Fact jarg1_);
   public final static native void Fact_SetValue(long jarg1, Fact jarg1_, String jarg2);
+  public final static native long Fact_GetTitleForDateParsing(long jarg1, Fact jarg1_);
   public final static native long Fact_GetValueForDateParsing(long jarg1, Fact jarg1_);
   public final static native void Fact_SetLanguage(long jarg1, Fact jarg1_, String jarg2);
   public final static native String Fact_GetLanguage(long jarg1, Fact jarg1_);

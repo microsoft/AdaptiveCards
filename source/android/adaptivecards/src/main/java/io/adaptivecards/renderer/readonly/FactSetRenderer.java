@@ -120,8 +120,15 @@ public class FactSetRenderer extends BaseCardElementRenderer
                 factRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
             }
 
-            factRow.addView(createTextView(context, fact.GetTitle(), hostConfig.getFactSet().getTitle(), hostConfig, spacing, containerStyle));
-            factRow.addView(createTextView(context, HandleValueSpecialText(fact), hostConfig.getFactSet().getValue(), hostConfig, 0, containerStyle));
+            DateTimeParser parser = new DateTimeParser(fact.GetLanguage());
+
+            // Handle Title
+            String titleWithFormattedDates = parser.GenerateString(fact.GetTitleForDateParsing());
+            factRow.addView(createTextView(context, handleSpecialText(titleWithFormattedDates), hostConfig.getFactSet().getTitle(), hostConfig, spacing, containerStyle));
+
+            //Handle Value
+            String valueWithFormattedDates = parser.GenerateString(fact.GetValueForDateParsing());
+            factRow.addView(createTextView(context, handleSpecialText(valueWithFormattedDates), hostConfig.getFactSet().getValue(), hostConfig, 0, containerStyle));
 
             tableLayout.addView(factRow);
         }
@@ -130,11 +137,8 @@ public class FactSetRenderer extends BaseCardElementRenderer
         return tableLayout;
     }
 
-    private CharSequence HandleValueSpecialText(Fact fact)
+    private CharSequence handleSpecialText(String textWithFormattedDates)
     {
-      DateTimeParser parser = new DateTimeParser(fact.GetLanguage());
-      String textWithFormattedDates = parser.GenerateString(fact.GetValueForDateParsing());
-
       MarkDownParser markDownParser = new MarkDownParser(textWithFormattedDates);
       String textString = markDownParser.TransformToHtml();
       Spanned htmlString;

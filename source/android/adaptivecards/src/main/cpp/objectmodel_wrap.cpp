@@ -17054,6 +17054,24 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Fact_1GetTitleForDateParsing(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  AdaptiveCards::Fact *arg1 = (AdaptiveCards::Fact *) 0 ;
+  std::shared_ptr< AdaptiveCards::Fact const > *smartarg1 = 0 ;
+  AdaptiveCards::DateTimePreparser result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::Fact > **)&jarg1;
+  arg1 = (AdaptiveCards::Fact *)(smartarg1 ? smartarg1->get() : 0); 
+  result = ((AdaptiveCards::Fact const *)arg1)->GetTitleForDateParsing();
+  *(AdaptiveCards::DateTimePreparser **)&jresult = new AdaptiveCards::DateTimePreparser((const AdaptiveCards::DateTimePreparser &)result); 
+  return jresult;
+}
+
+
 SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Fact_1GetValueForDateParsing(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::Fact *arg1 = (AdaptiveCards::Fact *) 0 ;

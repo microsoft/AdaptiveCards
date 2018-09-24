@@ -67,6 +67,10 @@ public class Fact {
     AdaptiveCardObjectModelJNI.Fact_SetValue(swigCPtr, this, value);
   }
 
+  public DateTimePreparser GetTitleForDateParsing() {
+    return new DateTimePreparser(AdaptiveCardObjectModelJNI.Fact_GetTitleForDateParsing(swigCPtr, this), true);
+  }
+
   public DateTimePreparser GetValueForDateParsing() {
     return new DateTimePreparser(AdaptiveCardObjectModelJNI.Fact_GetValueForDateParsing(swigCPtr, this), true);
   }

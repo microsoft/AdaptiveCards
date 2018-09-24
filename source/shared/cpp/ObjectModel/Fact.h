@@ -21,6 +21,7 @@ public:
 
     std::string GetValue() const;
     void SetValue(const std::string &value);
+    DateTimePreparser GetTitleForDateParsing() const;
     DateTimePreparser GetValueForDateParsing() const;
 
     void SetLanguage(const std::string& value);
