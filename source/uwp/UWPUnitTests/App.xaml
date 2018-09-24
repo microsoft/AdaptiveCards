@@ -1,12 +1,11 @@
 ﻿<Application
-    x:Class="AdaptiveCardTestApp.App"
+    x:Class="UWPUnitTests.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:AdaptiveCardTestApp"
+    xmlns:local="using:UWPUnitTests"
     RequestedTheme="Light">
 
     <Application.Resources>
-
         <ResourceDictionary>
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Default">
@@ -139,7 +138,5 @@
                 </Setter>
             </Style>
         </ResourceDictionary>
-
     </Application.Resources>
-
 </Application>
