@@ -6,20 +6,55 @@
 //
 
 #import "ACRUILabel.h"
+#import "ACRContentHoldingUIView.h"
 
 @implementation ACRUILabel
 
--(void)drawTextInRect:(CGRect)rect
-{
-    if (_isFactSetLabel || _isStretchable) {
-        CGSize labelStringSize = [self.text boundingRectWithSize:CGSizeMake(self.frame.size.width, CGFLOAT_MAX)
-                                                         options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                                      attributes:@{NSFontAttributeName:self.font}
-                                                         context:nil].size;
-        [super drawTextInRect:CGRectMake(0, 0, ceilf(self.frame.size.width),ceilf(labelStringSize.height))];
-    } else {
-        [super drawTextInRect:rect];
+-(instancetype)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if(self) {
+        self.tag = eACRUILabelTag;
     }
+    return self;
+}
+
+-(instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if(self) {
+        self.tag = eACRUILabelTag;
+    }
+    return self;
+}
+
+- (CGSize)intrinsicContentSize
+{
+    CGSize size = self.frame.size;
+    self.scrollEnabled = YES;
+
+    if(size.height != self.contentSize.height || size.width != self.contentSize.width) {
+        [self sizeToFit];
+    }
+    size = self.frame.size;
+
+    self.scrollEnabled = NO;
+    return size;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    CGSize size = self.frame.size;
+    CGFloat area = size.width * size.height;
+    if(self.tag == eACRUILabelTag) {
+        if(area != _area){
+            [self.superview invalidateIntrinsicContentSize];
+        }
+    } else if(self.tag == eACRUIFactSetTag) {
+        if(area != _area){
+            [self invalidateIntrinsicContentSize];
+        }
+    }
+    _area = area;
 }
 
 @end

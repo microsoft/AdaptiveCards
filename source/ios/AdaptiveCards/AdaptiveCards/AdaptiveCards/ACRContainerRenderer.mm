@@ -37,7 +37,7 @@
     std::shared_ptr<Container> containerElem = std::dynamic_pointer_cast<Container>(elem);
 
     ACRColumnView *container = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)containerElem->GetStyle()
-                                                        parentStyle:[viewGroup style] hostConfig:acoConfig];
+                                                        parentStyle:[viewGroup style] hostConfig:acoConfig superview:viewGroup];
 
     UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
     if(containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom){
