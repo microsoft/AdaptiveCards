@@ -6,6 +6,7 @@
 #include "BaseCardElement.h"
 #include "ElementParserRegistration.h"
 
+
 namespace AdaptiveSharedNamespace {
 class BaseCardElement;
 class FactSet : public BaseCardElement

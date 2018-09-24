@@ -53,7 +53,7 @@ public class BaseActionElement {
   // check if the C++ code finds an object and just return ourselves if it doesn't
   public BaseActionElement findImplObj() {
      Object o = swigOriginalObject();
-     return o != null ? (BaseActionElement)o : this; 
+     return o != null ? (BaseActionElement)o : this;
   }
 
   public BaseActionElement(ActionType type) {

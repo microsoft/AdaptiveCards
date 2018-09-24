@@ -1,7 +1,10 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v4.app.FragmentManager;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -14,9 +17,11 @@ import android.widget.TextView;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.objectmodel.MarkDownParser;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
+import io.adaptivecards.renderer.readonly.TextBlockRenderer.UlTagHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.Fact;
@@ -44,7 +49,7 @@ public class FactSetRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    static TextView createTextView(Context context, String text, TextConfig textConfig, HostConfig hostConfig, long spacing, ContainerStyle containerStyle)
+    static TextView createTextView(Context context, CharSequence text, TextConfig textConfig, HostConfig hostConfig, long spacing, ContainerStyle containerStyle)
     {
         TextView textView = new TextView(context);
         textView.setText(text);
@@ -116,12 +121,71 @@ public class FactSetRenderer extends BaseCardElementRenderer
             }
 
             factRow.addView(createTextView(context, fact.GetTitle(), hostConfig.getFactSet().getTitle(), hostConfig, spacing, containerStyle));
-            factRow.addView(createTextView(context, fact.GetValue(), hostConfig.getFactSet().getValue(), hostConfig, 0, containerStyle));
+            factRow.addView(createTextView(context, HandleValueSpecialText(fact), hostConfig.getFactSet().getValue(), hostConfig, 0, containerStyle));
+
             tableLayout.addView(factRow);
         }
 
         viewGroup.addView(tableLayout);
         return tableLayout;
+    }
+
+    private CharSequence HandleValueSpecialText(Fact fact)
+    {
+      DateTimeParser parser = new DateTimeParser(fact.GetLanguage());
+      String textWithFormattedDates = parser.GenerateString(fact.GetValueForDateParsing());
+
+      MarkDownParser markDownParser = new MarkDownParser(textWithFormattedDates);
+      String textString = markDownParser.TransformToHtml();
+      Spanned htmlString;
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+      {
+          htmlString = Html.fromHtml(textString, Html.FROM_HTML_MODE_COMPACT, null, new UlTagHandler());
+      }
+      else
+      {
+          // Before Android N, html.fromHtml adds two newline characters to end of string
+          htmlString = Html.fromHtml(textString, null, new UlTagHandler());
+      }
+      return trimHtmlString(htmlString);
+    }
+
+    private CharSequence trimHtmlString(Spanned htmlString)
+    {
+        int numToRemoveFromEnd = 0;
+        int numToRemoveFromStart = 0;
+
+        for (int i = htmlString.length()-1; i >= 0; --i)
+        {
+            if (htmlString.charAt(i) == '\n')
+            {
+                numToRemoveFromEnd++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        for (int i = 0; i <= htmlString.length()-1; ++i)
+        {
+            if (htmlString.charAt(i) == '\n')
+            {
+                numToRemoveFromStart++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        //Sanity check
+        if (numToRemoveFromStart + numToRemoveFromEnd >= htmlString.length())
+        {
+            return htmlString;
+        }
+
+        return htmlString.subSequence(numToRemoveFromStart, htmlString.length()-numToRemoveFromEnd);
     }
 
     private static FactSetRenderer s_instance = null;

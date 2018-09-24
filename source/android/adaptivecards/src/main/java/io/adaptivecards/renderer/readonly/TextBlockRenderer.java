@@ -133,7 +133,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
     }
 
     // Class to replace ul and li tags
-    public class UlTagHandler implements Html.TagHandler{
+    public static class UlTagHandler implements Html.TagHandler{
         @Override
         public void handleTag(boolean opening, String tag, Editable output,
                               XMLReader xmlReader) {

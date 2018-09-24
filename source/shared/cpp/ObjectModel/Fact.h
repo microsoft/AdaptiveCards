@@ -4,6 +4,7 @@
 #include "Enums.h"
 #include "json/json.h"
 #include "ElementParserRegistration.h"
+#include "DateTimePreparser.h"
 
 namespace AdaptiveSharedNamespace {
 class Fact
@@ -20,6 +21,7 @@ public:
 
     std::string GetValue() const;
     void SetValue(const std::string &value);
+    DateTimePreparser GetValueForDateParsing() const;
 
     void SetLanguage(const std::string& value);
     std::string GetLanguage() const;
