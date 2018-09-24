@@ -110,7 +110,7 @@
     [NSLayoutConstraint constraintWithItem:lab attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:wrappingview attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
 
     lab.textContainer.maximumNumberOfLines = int(txtBlck->GetMaxLines());
-    if(!lab.textContainer.maximumNumberOfLines and !txtBlck->GetWrap()){
+    if(!lab.textContainer.maximumNumberOfLines && !txtBlck->GetWrap()){
         lab.textContainer.maximumNumberOfLines = 1;
     }
 

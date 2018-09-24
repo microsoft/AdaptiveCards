@@ -22,8 +22,8 @@
     self = [super initWithFrame:frame];
     if(self) {
         self.tag = eACRUIImageTag;
+        self.desiredSize = frame.size;
     }
-    self.desiredSize = frame.size;
     return self;
 }
 
