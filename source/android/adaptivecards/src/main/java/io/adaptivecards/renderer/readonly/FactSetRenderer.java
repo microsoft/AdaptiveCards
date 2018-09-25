@@ -124,72 +124,17 @@ public class FactSetRenderer extends BaseCardElementRenderer
 
             // Handle Title
             String titleWithFormattedDates = parser.GenerateString(fact.GetTitleForDateParsing());
-            factRow.addView(createTextView(context, handleSpecialText(titleWithFormattedDates), hostConfig.getFactSet().getTitle(), hostConfig, spacing, containerStyle));
+            factRow.addView(createTextView(context, RendererUtil.handleSpecialText(titleWithFormattedDates), hostConfig.getFactSet().getTitle(), hostConfig, spacing, containerStyle));
 
             //Handle Value
             String valueWithFormattedDates = parser.GenerateString(fact.GetValueForDateParsing());
-            factRow.addView(createTextView(context, handleSpecialText(valueWithFormattedDates), hostConfig.getFactSet().getValue(), hostConfig, 0, containerStyle));
+            factRow.addView(createTextView(context, RendererUtil.handleSpecialText(valueWithFormattedDates), hostConfig.getFactSet().getValue(), hostConfig, 0, containerStyle));
 
             tableLayout.addView(factRow);
         }
 
         viewGroup.addView(tableLayout);
         return tableLayout;
-    }
-
-    private CharSequence handleSpecialText(String textWithFormattedDates)
-    {
-      MarkDownParser markDownParser = new MarkDownParser(textWithFormattedDates);
-      String textString = markDownParser.TransformToHtml();
-      Spanned htmlString;
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-      {
-          htmlString = Html.fromHtml(textString, Html.FROM_HTML_MODE_COMPACT, null, new UlTagHandler());
-      }
-      else
-      {
-          // Before Android N, html.fromHtml adds two newline characters to end of string
-          htmlString = Html.fromHtml(textString, null, new UlTagHandler());
-      }
-      return trimHtmlString(htmlString);
-    }
-
-    private CharSequence trimHtmlString(Spanned htmlString)
-    {
-        int numToRemoveFromEnd = 0;
-        int numToRemoveFromStart = 0;
-
-        for (int i = htmlString.length()-1; i >= 0; --i)
-        {
-            if (htmlString.charAt(i) == '\n')
-            {
-                numToRemoveFromEnd++;
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        for (int i = 0; i <= htmlString.length()-1; ++i)
-        {
-            if (htmlString.charAt(i) == '\n')
-            {
-                numToRemoveFromStart++;
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        //Sanity check
-        if (numToRemoveFromStart + numToRemoveFromEnd >= htmlString.length())
-        {
-            return htmlString;
-        }
-
-        return htmlString.subSequence(numToRemoveFromStart, htmlString.length()-numToRemoveFromEnd);
     }
 
     private static FactSetRenderer s_instance = null;

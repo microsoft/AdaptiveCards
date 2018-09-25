@@ -142,44 +142,6 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         }
     }
 
-    private CharSequence trimHtmlString(Spanned htmlString)
-    {
-        int numToRemoveFromEnd = 0;
-        int numToRemoveFromStart = 0;
-
-        for (int i = htmlString.length()-1; i >= 0; --i)
-        {
-            if (htmlString.charAt(i) == '\n')
-            {
-                numToRemoveFromEnd++;
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        for (int i = 0; i <= htmlString.length()-1; ++i)
-        {
-            if (htmlString.charAt(i) == '\n')
-            {
-                numToRemoveFromStart++;
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        //Sanity check
-        if (numToRemoveFromStart + numToRemoveFromEnd >= htmlString.length())
-        {
-            return htmlString;
-        }
-
-        return htmlString.subSequence(numToRemoveFromStart, htmlString.length()-numToRemoveFromEnd);
-    }
-
     static class TouchTextView implements View.OnTouchListener
     {
         Spannable spannable;
@@ -269,25 +231,14 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         DateTimeParser parser = new DateTimeParser(textBlock.GetLanguage());
         String textWithFormattedDates = parser.GenerateString(textBlock.GetTextForDateParsing());
 
-        MarkDownParser markDownParser = new MarkDownParser(textWithFormattedDates);
-        String textString = markDownParser.TransformToHtml();
-        Spanned htmlString;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-        {
-            htmlString = Html.fromHtml(textString, Html.FROM_HTML_MODE_COMPACT, null, new UlTagHandler());
-        }
-        else
-        {
-            // Before Android N, html.fromHtml adds two newline characters to end of string
-            htmlString = Html.fromHtml(textString, null, new UlTagHandler());
-        }
-        textView.setText(trimHtmlString(htmlString));
+        CharSequence text = RendererUtil.handleSpecialText(textWithFormattedDates);
+        textView.setText(text);
         if (!textBlock.GetWrap())
         {
             textView.setMaxLines(1);
         }
         textView.setEllipsize(TextUtils.TruncateAt.END);
-        textView.setOnTouchListener(new TouchTextView(new SpannableString(trimHtmlString(htmlString))));
+        textView.setOnTouchListener(new TouchTextView(new SpannableString(text)));
         textView.setHorizontallyScrolling(false);
         setTextFormat(textView, hostConfig.getFontFamily(), textBlock.GetTextWeight());
         setTextSize(context, textView, textBlock.GetTextSize(), hostConfig);
