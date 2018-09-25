@@ -70,7 +70,6 @@
     [app/*@START_MENU_TOKEN@*/.otherElements[@"ACR Root View"].tables.pickerWheels[@"Red"]/*[[".scrollViews.otherElements[@\"ACR Root View\"].tables",".cells",".pickers.pickerWheels[@\"Red\"]",".pickerWheels[@\"Red\"]",".otherElements[@\"ACR Root View\"].tables"],[[[-1,4,1],[-1,0,1]],[[-1,3],[-1,2],[-1,1,2]],[[-1,3],[-1,2]]],[0,0]]@END_MENU_TOKEN@*/ swipeUp];
     [app.otherElements[@"ACR Root View"].tables.pickerWheels[@"Blue"] tap];
     [redStaticText tap];
-    [acrRootViewElement.staticTexts[@"What colors do you want? (isMultiSelect:true, style:compact)"] swipeUp];
     [acrRootViewElement.scrollViews.otherElements.buttons[@"OK"] tap];
     
     NSDictionary<NSString *, NSString *> *expectedValue = @{

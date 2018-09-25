@@ -21,8 +21,9 @@ using namespace AdaptiveCards;
 - (instancetype)initWithStyle:(ACRContainerStyle)style
                   parentStyle:(ACRContainerStyle)parentStyle
                    hostConfig:(ACOHostConfig *)acoConfig
+                    superview:(UIView *)superview
 {
-    self = [self initWithFrame:CGRectMake(0,0,0,0)];
+    self = [self initWithFrame:superview.frame];
     if(self){
 
         _style = style;

@@ -37,7 +37,7 @@
     std::shared_ptr<Column> columnElem = std::dynamic_pointer_cast<Column>(elem);
 
     ACRColumnView* column = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)columnElem->GetStyle()
-                                                     parentStyle:[viewGroup style] hostConfig:acoConfig];
+                                                     parentStyle:[viewGroup style] hostConfig:acoConfig superview:viewGroup];
 
     column.pixelWidth = columnElem->GetPixelWidth();
     if(columnElem->GetWidth() == "stretch" || columnElem->GetWidth() == "") {

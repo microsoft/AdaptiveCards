@@ -116,10 +116,20 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
         }
         if(img) {
             imgView.translatesAutoresizingMaskIntoConstraints = NO;
+            imgView.contentMode = UIViewContentModeScaleAspectFill;
             [newView addSubview:imgView];
             [newView sendSubviewToBack:imgView];
             [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
             [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
+            
+            [imgView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+            [imgView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+            [imgView setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+            [imgView setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
         }
     }
     [self callDidLoadElementsIfNeeded];
