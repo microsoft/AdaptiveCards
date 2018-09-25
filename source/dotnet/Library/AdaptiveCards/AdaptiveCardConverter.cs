@@ -12,7 +12,7 @@ namespace AdaptiveCards
         public List<AdaptiveWarning> Warnings { get; set; } = new List<AdaptiveWarning>();
 
         // TODO: temporary warning code for fallback card. Remove when common set of error codes created and integrated.
-        private enum WarningStatusCode { UnsupportedSchemaVersion = 7 };
+        private enum WarningStatusCode { UnsupportedSchemaVersion = 7, InvalidLanguage = 12 };
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
@@ -50,8 +50,33 @@ namespace AdaptiveCards
             var typedElementConverter = serializer.ContractResolver.ResolveContract(typeof(AdaptiveTypedElement)).Converter;
 
             var card = (AdaptiveCard)typedElementConverter.ReadJson(jObject.CreateReader(), objectType, existingValue, serializer);
+            card.Lang = ValidateLang(jObject.Value<string>("lang"));
 
             return card;
+        }
+
+        // Checks if lang is valid. Creates warning if not.
+        private string ValidateLang(string val)
+        {
+            if (!string.IsNullOrEmpty(val))
+            {
+                try
+                {
+                    if (val.Length == 2 || val.Length == 3)
+                    {
+                        new CultureInfo(val);
+                    }
+                    else
+                    {
+                        Warnings.Add(new AdaptiveWarning((int)WarningStatusCode.InvalidLanguage, "Invalid language identifier: " + val));
+                    }
+                }
+                catch (CultureNotFoundException)
+                {
+                    Warnings.Add(new AdaptiveWarning((int)WarningStatusCode.InvalidLanguage, "Invalid language identifier: " + val));
+                }
+            }
+            return val;
         }
 
         public override bool CanConvert(Type objectType)

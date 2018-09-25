@@ -8,11 +8,7 @@
 #import <UIKit/UIKit.h>
 #import "ACOBaseCardElement.h"
 
-@interface ACRUILabel:UILabel
-
+@interface ACRUILabel:UITextView
 @property ACRContainerStyle style;
-@property BOOL isFactSetLabel;
-@property BOOL isTitle;
-@property BOOL isStretchable;
-
+@property CGFloat area;
 @end

@@ -244,7 +244,6 @@ namespace AdaptiveCards
             {
                 throw new AdaptiveSerializationException(ex.Message, ex);
             }
-
             return parseResult;
         }
 

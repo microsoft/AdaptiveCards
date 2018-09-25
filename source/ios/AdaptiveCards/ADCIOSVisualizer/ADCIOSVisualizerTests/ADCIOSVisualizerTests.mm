@@ -34,8 +34,21 @@
             _defaultHostConfig = hostconfigParseResult.config;
         }
     }
-    
+
     self.continueAfterFailure = NO;
+}
+
+- (NSArray<ACOAdaptiveCard *> *)prepCards:(NSArray<NSString *> *)fileNames
+{
+    NSMutableArray<ACOAdaptiveCard *> *cards = [[NSMutableArray alloc] init];
+    for(NSString *fileName in fileNames){
+        NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:fileName ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
+        ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
+        if(cardParseResult.isValid) {
+            [cards addObject:cardParseResult.card];
+        }
+    }
+    return cards;
 }
 
 - (void)tearDown {
@@ -49,9 +62,9 @@
 - (void)testRemoteResouceInformation {
     // This is an example of a functional test case.
     // Use XCTAssert and related functions to verify your tests produce the correct results.
- 
+
     NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"FoodOrder" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
-    
+
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
     if(cardParseResult.isValid){
         NSArray<ACORemoteResourceInformation *> *remoteInformation = [cardParseResult.card remoteResourceInformation];
@@ -63,8 +76,8 @@
         ];
         unsigned int index = 0;
         for(ACORemoteResourceInformation *info in remoteInformation){
-            XCTAssertTrue([[testStrings objectAtIndex:index++] isEqualToString:info.url.absoluteString]);        
-            XCTAssertTrue([@"Image" isEqualToString:info.mimeType]);     
+            XCTAssertTrue([[testStrings objectAtIndex:index++] isEqualToString:info.url.absoluteString]);
+            XCTAssertTrue([@"image" isEqualToString:info.mimeType]);
         }
     }
 }
@@ -108,10 +121,231 @@
     }
 }
 
-- (void)testPerformanceExample {
+- (void)testPerformanceOnComplicatedCards {
     // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"Restaurant", @"FoodOrder", @"ActivityUpdate"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
     [self measureBlock:^{
         // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnRestaurant {
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"Restaurant"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnFoodOrder {
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"FoodOrder"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnActivityUpdate {
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"ActivityUpdate"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsTextBlock {
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"TextBlock.MaxLines", @"TextBlock.Wrap", @"TextBlock.HorizontalAlignment"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsTextBlockColor {
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"TextBlock.Color"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsTextBlockDateTimeFormatting{
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"TextBlock.DateTimeFormatting"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsTextBlockHorizontalAlignment{
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"TextBlock.HorizontalAlignment"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsTextBlockSubtle{
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"TextBlock.IsSubtle"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsTextBlockLists{
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"TextBlock.Lists"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsTextBlockMarkDown{
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"TextBlock.Markdown"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsTextBlockMaxLines{
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"TextBlock.MaxLines"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsTextBlockSize{
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"TextBlock.Size"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsTextBlockSpacing{
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"TextBlock.Spacing"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsTextBlockWeight{
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"TextBlock.Weight"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsTextBlockWrap{
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"TextBlock.Wrap"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsImage{
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"Image.Size", @"Image.Spacing", @"Image.Style", @"Image"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsColumnSet{
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"ColumnSet.Spacing", @"ColumnSet"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
+    }];
+}
+
+- (void)testPerformanceOnSimpleCardsColumn{
+    // This is an example of a performance test case.
+    NSArray<NSString *> *payloadNames = @[@"Column.Size.Ratio", @"Column.Spacing", @"Column.Width.Ratio", @"Column.Width", @"Column"];
+    NSArray<ACOAdaptiveCard *> *cards = [self prepCards:payloadNames];
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for(ACOAdaptiveCard *card in cards) {
+            [ACRRenderer render:card config:self->_defaultHostConfig widthConstraint:320.0];
+        }
     }];
 }
 
