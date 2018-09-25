@@ -179,7 +179,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                 NSString *key = [NSString stringWithCString:textBlockElement->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
                 std::string text = textBlockElement->GetText();
                 [self processTextConcurrently:textBlockElement
-                              elementType:CardElementType::TextBlock//elementType:CardElementType::TextBlock
+                              elementType:CardElementType::TextBlock
                                    textConfig:textConfig
                                     elementId:key
                                          text:text
@@ -295,7 +295,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 }
 
 - (void)processTextConcurrently:(std::shared_ptr<BaseCardElement> const &)textElement
-                    elementType:(CardElementType) elementType//elementType:(CardElementType)elementType
+                    elementType:(CardElementType) elementType
                      textConfig:(TextConfig const &)textConfig
                       elementId:(NSString *)elementId
                            text:(std::string  const &)text
@@ -313,12 +313,10 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 
             if(CardElementType::TextBlock == elementTypeForBlock)
             {
-                //std::shared_ptr<TextBlock> textBlockElement = std::dynamic_pointer_cast<TextBlock>(textElementForBlock);
                 markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:(std::string)textForBlock:(std::string)lang]);//(std::string)textBlockElement->GetLanguage()]);
             }
             else if (CardElementType::Fact == elementTypeForBlock)
             {
-                //std::shared_ptr<Fact> factElement = std::dynamic_pointer_cast<Fact>(textElementForBlock);
                 markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:(std::string)textForBlock:(std::string)lang]);//(std::string)factElement->GetLanguage()]);
             }
             else {
