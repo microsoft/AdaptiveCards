@@ -125,7 +125,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
             [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
             [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
             [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
-            
+
             [imgView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
             [imgView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
             [imgView setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
@@ -311,15 +311,13 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
             NSString* parsedString = nil;
             std::shared_ptr<MarkDownParser> markDownParser = nullptr;
 
-            if(CardElementType::TextBlock == elementTypeForBlock)
+            if (CardElementType::TextBlock == elementTypeForBlock)
             {
-                markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:(std::string)textForBlock:(std::string)lang]);//(std::string)textBlockElement->GetLanguage()]);
-            }
-            else if (CardElementType::Fact == elementTypeForBlock)
+                markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:(std::string)textForBlock:(std::string)lang]);
+            } else if (CardElementType::Fact == elementTypeForBlock)
             {
-                markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:(std::string)textForBlock:(std::string)lang]);//(std::string)factElement->GetLanguage()]);
-            }
-            else {
+                markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:(std::string)textForBlock:(std::string)lang]);
+            } else {
                 markDownParser = std::make_shared<MarkDownParser>(textForBlock);
             }
             // MarkDownParser transforms text with MarkDown to a html string
