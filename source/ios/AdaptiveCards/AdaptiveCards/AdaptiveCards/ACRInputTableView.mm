@@ -17,6 +17,7 @@ using namespace AdaptiveCards;
     self = [super initWithCoder:aDecoder];
     if(self){
         self.translatesAutoresizingMaskIntoConstraints = NO;
+        self.backgroundColor = UIColor.clearColor;
     }
     return self;
 }

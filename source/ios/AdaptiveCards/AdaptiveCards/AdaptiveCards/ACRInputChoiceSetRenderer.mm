@@ -75,22 +75,6 @@
         [viewGroup addArrangedSubview:choiceSetView];
     }
 
-    [NSLayoutConstraint constraintWithItem:choiceSetView
-                                 attribute:NSLayoutAttributeLeading
-                                 relatedBy:NSLayoutRelationLessThanOrEqual
-                                    toItem:viewGroup
-                                 attribute:NSLayoutAttributeLeading
-                                multiplier:1.0
-                                  constant:0].active = YES;
-
-    [NSLayoutConstraint constraintWithItem:choiceSetView
-                                 attribute:NSLayoutAttributeTrailing
-                                 relatedBy:NSLayoutRelationLessThanOrEqual
-                                    toItem:viewGroup
-                                 attribute:NSLayoutAttributeTrailing
-                                multiplier:1.0
-                                  constant:0].active = YES;
-
     return choiceSetView;
 }
 

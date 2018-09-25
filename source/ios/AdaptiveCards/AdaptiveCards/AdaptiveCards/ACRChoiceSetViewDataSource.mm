@@ -38,6 +38,7 @@ const CGFloat accessoryViewWidth = 50.0f;
         self.textLabel.numberOfLines = 0;
         self.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
         self.textLabel.adjustsFontSizeToFitWidth = NO;
+        self.backgroundColor = UIColor.clearColor;
     }
     return self;
 }
