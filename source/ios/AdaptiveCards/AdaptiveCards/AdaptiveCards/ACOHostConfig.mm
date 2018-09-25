@@ -347,19 +347,28 @@ using namespace AdaptiveCards;
     UIColor *color = UIColor.clearColor;
     
     try {
-        long num = std::stoul(hexColorCode.substr(1), nullptr, 16), alpha = 0xFF;
+        size_t idx = 0;
+        long num = std::stoul(hexColorCode.substr(1), &idx, 16), alpha = 0xFF;
         if(hexColorCode.length() == 9) {
             alpha = (num & 0xFF000000) >> 24;
         }
-        color = [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255.0
-                                green:((num & 0x0000FF00) >>  8) / 255.0
-                                 blue:((num & 0x000000FF)) / 255.0
-                                alpha:alpha / 255.0];
+        
+        if(idx != hexColorCode.length() - 1) {
+            NSLog(@"invalid hexcolor code is given for background color: %@",
+                  [NSString stringWithCString:hexColorCode.c_str() encoding:NSUTF8StringEncoding]);
+            color = UIColor.clearColor;
+        } else {
+            color = [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255.0
+                                    green:((num & 0x0000FF00) >>  8) / 255.0
+                                     blue:((num & 0x000000FF)) / 255.0
+                                    alpha:alpha / 255.0];
+        }
     } catch (...) {
         color = UIColor.clearColor;
         NSLog(@"invalid hexcolor code is given for background color: %@",
             [NSString stringWithCString:hexColorCode.c_str() encoding:NSUTF8StringEncoding]);
     }
+    
     return color;
 }
 
