@@ -105,6 +105,23 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
     std::string language = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Language);
     std::string speak = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak);
 
+    // check if language is valid
+    try 
+    {
+        if (language.empty() || language.length() == 2 || language.length() == 3)
+        {
+            std::locale(language.c_str());
+        }
+        else
+        {
+            warnings.push_back(std::make_shared<AdaptiveCardParseWarning>(AdaptiveSharedNamespace::WarningStatusCode::InvalidLanguage, "Invalid language identifier: " + language));
+        }
+    }
+    catch (std::runtime_error)
+    {
+        warnings.push_back(std::make_shared<AdaptiveCardParseWarning>(AdaptiveSharedNamespace::WarningStatusCode::InvalidLanguage, "Invalid language identifier: " + language));
+    }
+
     if (enforceVersion)
     {
         const SemanticVersion rendererMaxVersion(rendererVersion);

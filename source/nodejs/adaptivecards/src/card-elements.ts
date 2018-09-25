@@ -5018,7 +5018,7 @@ function raiseAnchorClickedEvent(element: CardElement, anchor: HTMLAnchorElement
     let card = element.getRootElement() as AdaptiveCard;
     let onAnchorClickedHandler = (card && card.onAnchorClicked) ? card.onAnchorClicked : AdaptiveCard.onAnchorClicked;
 
-    return onAnchorClickedHandler != null ? onAnchorClickedHandler(card, anchor) : false;
+    return onAnchorClickedHandler != null ? onAnchorClickedHandler(element, anchor) : false;
 }
 
 function raiseExecuteActionEvent(action: Action) {
@@ -5325,7 +5325,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static readonly elementTypeRegistry = new ElementTypeRegistry();
     static readonly actionTypeRegistry = new ActionTypeRegistry();
 
-    static onAnchorClicked: (rootCard: AdaptiveCard, anchor: HTMLAnchorElement) => boolean = null;
+    static onAnchorClicked: (element: CardElement, anchor: HTMLAnchorElement) => boolean = null;
     static onExecuteAction: (action: Action) => void = null;
     static onElementVisibilityChanged: (element: CardElement) => void = null;
     static onImageLoaded: (image: Image) => void = null;
@@ -5417,7 +5417,7 @@ export class AdaptiveCard extends ContainerWithActions {
         return true;
     }
 
-    onAnchorClicked: (rootCard: AdaptiveCard, anchor: HTMLAnchorElement) => boolean = null;
+    onAnchorClicked: (element: CardElement, anchor: HTMLAnchorElement) => boolean = null;
     onExecuteAction: (action: Action) => void = null;
     onElementVisibilityChanged: (element: CardElement) => void = null;
     onImageLoaded: (image: Image) => void = null;
@@ -5443,6 +5443,8 @@ export class AdaptiveCard extends ContainerWithActions {
         }
 
         Utils.setProperty(result, "fallbackText", this.fallbackText);
+        Utils.setProperty(result, "lang", this.lang);
+        Utils.setProperty(result, "speak", this.speak);
 
         return result;
     }

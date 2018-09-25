@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Collections;
@@ -24,7 +25,7 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static string ApplyTextFunctions(string text)
+        public static string ApplyTextFunctions(string text, string lang)
         {
             if (text != null)
             {
@@ -67,12 +68,31 @@ namespace AdaptiveCards.Rendering
                                 }
                                 dateTimeFormat = "t";
                             }
-                            text = text.Replace(match.Value, date.ToString(dateTimeFormat));
+
+                            var provider = GetValidCultureInfo(lang);
+                            text = text.Replace(match.Value, date.ToString(dateTimeFormat, provider));
                         }
                     }
                 }
             }
             return text ?? String.Empty;
+        }
+
+        // Get appropriate CultureInfo for lang
+        private static CultureInfo GetValidCultureInfo(string val)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(val))
+                {
+                    return CultureInfo.CurrentCulture;
+                }
+                return new CultureInfo(val);
+            }
+            catch (CultureNotFoundException)
+            {
+                return CultureInfo.CurrentCulture;
+            }
         }
 
         private enum Functions

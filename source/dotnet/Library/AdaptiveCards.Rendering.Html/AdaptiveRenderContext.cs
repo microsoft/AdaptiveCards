@@ -89,5 +89,7 @@ namespace AdaptiveCards.Rendering.Html
             }
             return color;
         }
+
+        public string Lang { get; set; }
     }
 }

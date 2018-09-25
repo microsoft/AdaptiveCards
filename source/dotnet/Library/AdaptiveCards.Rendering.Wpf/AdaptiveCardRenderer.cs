@@ -193,7 +193,8 @@ namespace AdaptiveCards.Rendering.Wpf
                 ActionHandlers = ActionHandlers,
                 Config = HostConfig ?? new AdaptiveHostConfig(),
                 Resources = Resources,
-                ElementRenderers = ElementRenderers
+                ElementRenderers = ElementRenderers,
+                Lang = card.Lang
             };
 
             var element = context.Render(card);
@@ -237,7 +238,8 @@ namespace AdaptiveCards.Rendering.Wpf
                     ActionHandlers = ActionHandlers,
                     Config = HostConfig ?? new AdaptiveHostConfig(),
                     Resources = Resources,
-                    ElementRenderers = ElementRenderers
+                    ElementRenderers = ElementRenderers,
+                    Lang = card.Lang
                 };
 
                 var stream = context.Render(card).RenderToImage(width);
