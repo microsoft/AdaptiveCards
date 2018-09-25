@@ -30,6 +30,6 @@ using namespace AdaptiveCards;
                                       toView:(UIView *)view;
 // find date and time string, and replace them in NSDateFormatterCompactStyle, NSDateFormatterMediumStyle or
 // NSDateFormatterLongStyle of local language
-+ (std::string) getLocalizedDate:(std::shared_ptr<TextBlock> const &)txtBlck;
++ (std::string) getLocalizedDate:(std::string)text: (std::string)language;
 
 @end    

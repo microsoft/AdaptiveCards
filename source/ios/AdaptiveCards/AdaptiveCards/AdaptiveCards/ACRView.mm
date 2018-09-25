@@ -307,10 +307,17 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
             NSString* parsedString = nil;
             std::shared_ptr<MarkDownParser> markDownParser = nullptr;
 
-            if(CardElementType::TextBlock == elementTypeForBlock){
+            if(CardElementType::TextBlock == elementTypeForBlock)
+            {
                 std::shared_ptr<TextBlock> textBlockElement = std::dynamic_pointer_cast<TextBlock>(textElementForBlock);
-                markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textBlockElement]);
-            } else {
+                markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:(std::string)textBlockElement->GetText():(std::string)textBlockElement->GetLanguage()]);
+            }
+            else if (CardElementType::Fact == elementTypeForBlock)
+            {
+                std::shared_ptr<Fact> factElement = std::dynamic_pointer_cast<Fact>(textElementForBlock);
+                markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:(std::string)text:(std::string)factElement->GetLanguage()]);
+            }
+            else {
                 markDownParser = std::make_shared<MarkDownParser>(textForBlock);
             }
             // MarkDownParser transforms text with MarkDown to a html string

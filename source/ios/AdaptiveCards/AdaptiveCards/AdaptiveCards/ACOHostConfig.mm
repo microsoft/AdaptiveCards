@@ -305,10 +305,10 @@ using namespace AdaptiveCards;
 }
 // find date and time string, and replace them in NSDateFormatterCompactStyle, NSDateFormatterMediumStyle or
 // NSDateFormatterLongStyle of local language
-+ (std::string) getLocalizedDate:(std::shared_ptr<TextBlock> const &)txtBlck
++ (std::string) getLocalizedDate:(std::string) text: (std::string) language
 {
     std::string dateParsedString;
-    std::vector<std::shared_ptr<DateTimePreparsedToken>> DateTimePreparsedTokens =  DateTimePreparser(txtBlck->GetText()).GetTextTokens();
+    std::vector<std::shared_ptr<DateTimePreparsedToken>> DateTimePreparsedTokens =  DateTimePreparser(text).GetTextTokens();
     for(auto section : DateTimePreparsedTokens){
         if(section->GetFormat() != DateTimePreparsedTokenFormat::RegularString) {
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -328,7 +328,7 @@ using namespace AdaptiveCards;
                 outputFormatter.dateStyle = NSDateFormatterLongStyle;
             }
 
-            NSString *languageType= [NSString stringWithCString:txtBlck->GetLanguage().c_str() encoding:NSUTF8StringEncoding];
+            NSString *languageType= [NSString stringWithCString:language.c_str() encoding:NSUTF8StringEncoding];
             if(languageType.length > 0){
                 outputFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:languageType];
             }
