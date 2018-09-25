@@ -51,6 +51,7 @@ namespace AdaptiveCards.Rendering.Html
             try
             {
                 var context = new AdaptiveRenderContext(HostConfig, ElementRenderers);
+                context.Lang = card.Lang;
                 var tag = context.Render(card);
                 return new RenderedAdaptiveCard(tag, card, context.Warnings);
             }
@@ -698,7 +699,7 @@ namespace AdaptiveCards.Rendering.Html
                     .Style("word-wrap", "break-word");
             }
 
-            var textTags = MarkdownToHtmlTagConverter.Convert(RendererUtilities.ApplyTextFunctions(textBlock.Text));
+            var textTags = MarkdownToHtmlTagConverter.Convert(RendererUtilities.ApplyTextFunctions(textBlock.Text, context.Lang));
             uiTextBlock.Children.AddRange(textTags);
 
             Action<HtmlTag> setParagraphStyles = null;

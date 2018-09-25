@@ -39,7 +39,7 @@
                     <StaticResource x:Key="AccentButtonBorderBrushPressed" ResourceKey="SystemControlHighlightTransparentBrush" />
                     <StaticResource x:Key="AccentButtonBorderBrushDisabled" ResourceKey="SystemControlDisabledTransparentBrush" />
                 </ResourceDictionary>
-                <ResourceDictionary x:Key="Lighit">
+                <ResourceDictionary x:Key="Light">
                     <!-- Resources for AccentButtonStyle -->
                     <StaticResource x:Key="AccentButtonBackground" ResourceKey="SystemControlForegroundAccentBrush" />
                     <StaticResource x:Key="AccentButtonBackgroundPointerOver" ResourceKey="SystemControlForegroundAccentBrush" />

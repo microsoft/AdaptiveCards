@@ -115,13 +115,35 @@ namespace AdaptiveCards
             // https://stackoverflow.com/questions/34995406/nullvaluehandling-ignore-influences-deserialization-into-extensiondata-despite
 
             // The default behavior of JsonExtensionData is to include properties if the VALUE could not be set, including abstract properties or default values
-            // We don't want to deserialize any properties that exist on the type into AdditionalProperties, so this removes them
+            // We don't want to deserialize any properties that exist on the type into AdditionalProperties, so this function removes them
+
+            // Create a list of known property names
+            List<String> knownPropertyNames = new List<String>();
+            var runtimeProperties = te.GetType().GetRuntimeProperties();
+            foreach (var runtimeProperty in runtimeProperties)
+            {
+                // Check if the property has a JsonPropertyAttribute with the value set
+                String jsonPropertyName = null;
+                foreach (var attribute in runtimeProperty.CustomAttributes)
+                {
+                    if (attribute.AttributeType == typeof(Newtonsoft.Json.JsonPropertyAttribute) &&
+                        attribute.ConstructorArguments.Count == 1)
+                    {
+                        jsonPropertyName = attribute.ConstructorArguments[0].Value as String;
+                        break;
+                    }
+                }
+
+                // Add the json property name if present, otherwise use the runtime property name
+                knownPropertyNames.Add(jsonPropertyName != null ? jsonPropertyName : runtimeProperty.Name);
+            }
+
             te.AdditionalProperties
-                .Select(prop => te.GetType().GetRuntimeProperties()
-                    .SingleOrDefault(p => p.Name.Equals(prop.Key, StringComparison.OrdinalIgnoreCase)))
+                .Select(prop => knownPropertyNames
+                    .SingleOrDefault(p => p.Equals(prop.Key, StringComparison.OrdinalIgnoreCase)))
                 .Where(p => p != null)
                 .ToList()
-                .ForEach(p => te.AdditionalProperties.Remove(p.Name));
+                .ForEach(p => te.AdditionalProperties.Remove(p));
 
             foreach (var prop in te.AdditionalProperties)
             {

@@ -187,5 +187,6 @@ namespace AdaptiveCards.Rendering.Wpf
             return null;
         }
 
+        public string Lang { get; set; }
     }
 }

@@ -154,10 +154,6 @@ public class AdaptiveCardRenderer
         rootLayout.addView(layout);
 
         BaseCardElementVector baseCardElementList = adaptiveCard.GetBody();
-        if (baseCardElementList == null || baseCardElementList.size() <= 0)
-        {
-            throw new IllegalArgumentException("Adaptive Card does not contain a body.");
-        }
 
         ContainerStyle style = ContainerStyle.Default;
 

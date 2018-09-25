@@ -1,22 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
 using Windows.Storage;
 using Windows.Storage.Streams;
 
-namespace AdaptiveCardTestApp.ViewModels
+namespace UWPTestLibrary
 {
-    public class FileViewModel
+    public class FileViewModel 
     {
         public string Name { get; set; }
 
-        /// <summary>
-        /// 7 characters of the SHA 1 hash of Contents
-        /// </summary>
+        // <summary>
+        // 7 characters of the SHA 1 hash of Contents
+        // </summary>
         public string Hash { get; set; }
 
         public string Contents { get; set; }
@@ -43,7 +40,7 @@ namespace AdaptiveCardTestApp.ViewModels
             }
             else if (file.Path.Contains(results))
             {
-                answer.Name = file.Path.Substring(file.Path.IndexOf(results) + expected.Length);
+                answer.Name = file.Path.Substring(file.Path.IndexOf(results) + results.Length);
             }
             else
             {

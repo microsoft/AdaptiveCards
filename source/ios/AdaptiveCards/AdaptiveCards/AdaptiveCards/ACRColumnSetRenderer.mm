@@ -42,7 +42,7 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<ColumnSet> columnSetElem = std::dynamic_pointer_cast<ColumnSet>(elem);
 
-    ACRColumnSetView *columnSetView = [[ACRColumnSetView alloc] init];
+    ACRColumnSetView *columnSetView = [[ACRColumnSetView alloc] initWithFrame:viewGroup.frame];
     [columnSetView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     [columnSetView setStyle:[viewGroup style]];
 
@@ -75,22 +75,24 @@
 
         // when stretch, views with stretch properties should have equal width
         if(curView.pixelWidth){
-            [NSLayoutConstraint constraintWithItem:curView
-                                attribute:NSLayoutAttributeWidth
-                                relatedBy:NSLayoutRelationEqual
-                                toItem:nil
-                                attribute:NSLayoutAttributeNotAnAttribute
-                                multiplier:1
-                                constant:curView.pixelWidth].active = YES;
+            [constraints addObject:
+             [NSLayoutConstraint constraintWithItem:curView
+                                          attribute:NSLayoutAttributeWidth
+                                          relatedBy:NSLayoutRelationEqual
+                                             toItem:nil
+                                          attribute:NSLayoutAttributeNotAnAttribute
+                                         multiplier:1
+                                           constant:curView.pixelWidth]];
         } else if([curView.columnWidth isEqualToString:@"stretch"]){
             if(stretchView){
-                [NSLayoutConstraint constraintWithItem:curView
-                                    attribute:NSLayoutAttributeWidth
-                                    relatedBy:NSLayoutRelationEqual
-                                    toItem:stretchView
-                                    attribute:NSLayoutAttributeWidth
-                                    multiplier:1
-                                    constant:0].active = YES;
+                [constraints addObject:
+                 [NSLayoutConstraint constraintWithItem:curView
+                                              attribute:NSLayoutAttributeWidth
+                                              relatedBy:NSLayoutRelationEqual
+                                                 toItem:stretchView
+                                              attribute:NSLayoutAttributeWidth
+                                             multiplier:1
+                                               constant:0]];
             }
             stretchView = curView;
         } else if(![curView.columnWidth isEqualToString:@"auto"]){
@@ -101,7 +103,6 @@
 
                 if(prevView && prevRelColumnWidth)
                 {
-
                     [constraints addObject:
                      [NSLayoutConstraint constraintWithItem:curView
                                                   attribute:NSLayoutAttributeWidth
@@ -130,10 +131,9 @@
 
     castedRenderer.fillAlignment = NO;
     
-    if([constraints count]) [columnSetView addConstraints:constraints];
-
-    [columnSetView adjustHuggingForLastElement];
-
+    if([constraints count]) {
+        [columnSetView addConstraints:constraints];
+    }
     [viewGroup addArrangedSubview:columnSetView];
 
     std::shared_ptr<BaseActionElement> selectAction = columnSetElem->GetSelectAction();

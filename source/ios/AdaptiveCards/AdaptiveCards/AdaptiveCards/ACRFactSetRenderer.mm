@@ -28,17 +28,23 @@
 }
 
 + (ACRUILabel *)buildLabel:(NSString *)text
-             hostConfig:(ACOHostConfig *)acoConfig
-             textConfig:(TextConfig const &)textConfig
-         containerStyle:(ACRContainerStyle)style
-              elementId:(NSString *)elementId
-               rootView:(ACRView *)rootView
-                element:(std::shared_ptr<BaseCardElement> const &)element
+                 superview:(UIView<ACRIContentHoldingView> *)superview
+                hostConfig:(ACOHostConfig *)acoConfig
+                textConfig:(TextConfig const &)textConfig
+            containerStyle:(ACRContainerStyle)style
+                 elementId:(NSString *)elementId
+                  rootView:(ACRView *)rootView
+                   element:(std::shared_ptr<BaseCardElement> const &)element
 {
-    ACRUILabel *lab = [[ACRUILabel alloc] init];
-    lab.isFactSetLabel = YES;
+    ACRUILabel *lab = [[ACRUILabel alloc] initWithFrame:CGRectMake(0,0,superview.frame.size.width, 0)];
     lab.translatesAutoresizingMaskIntoConstraints = NO;
     lab.style = style;
+    lab.editable = NO;
+    lab.textContainer.lineFragmentPadding = 0;
+    lab.textContainerInset = UIEdgeInsetsZero;
+    lab.layoutManager.usesFontLeading = false;
+    lab.tag = eACRUIFactSetTag;
+
     NSMutableAttributedString *content = nil;
     if(rootView){
         std::shared_ptr<FactSet> fctSet = std::dynamic_pointer_cast<FactSet>(element);
@@ -62,8 +68,7 @@
             [content deleteCharactersInRange:NSMakeRange([content length] -4, 4)];
         }
         // Set paragraph style such as line break mode and alignment
-        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        paragraphStyle.lineBreakMode = textConfig.wrap ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
+        lab.textContainer.lineBreakMode = textConfig.wrap ? NSLineBreakByWordWrapping:NSLineBreakByTruncatingTail;
 
         // Obtain text color to apply to the attributed string
         ACRContainerStyle style = lab.style;
@@ -71,9 +76,11 @@
                                                              config->containerStyles.defaultPalette.foregroundColors;
 
         // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
-        [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle,
-                                NSForegroundColorAttributeName:[ACOHostConfig getTextBlockColor:textConfig.color colorsConfig:colorConfig subtleOption:textConfig.isSubtle],
-                                    NSStrokeWidthAttributeName:[ACOHostConfig getTextStrokeWidthForWeight:textConfig.weight]}
+        [content addAttributes:@{NSForegroundColorAttributeName:
+                                   [ACOHostConfig getTextBlockColor:textConfig.color colorsConfig:colorConfig
+                                       subtleOption:textConfig.isSubtle],
+                                 NSStrokeWidthAttributeName:
+                                   [ACOHostConfig getTextStrokeWidthForWeight:textConfig.weight]}
                          range:NSMakeRange(0, content.length)];
         lab.attributedText = content;
         std::string ID = element->GetId();
@@ -83,7 +90,7 @@
         }
     }
 
-    lab.numberOfLines = textConfig.wrap ? 0 : 1;
+    lab.textContainer.maximumNumberOfLines = textConfig.wrap ? 0 : 1;
 
     return lab;
 }
@@ -121,29 +128,31 @@
     {
         NSString *title = [NSString stringWithCString:fact->GetTitle().c_str() encoding:NSUTF8StringEncoding];
         ACRUILabel *titleLab = [ACRFactSetRenderer buildLabel:title
-                                                hostConfig:acoConfig
-                                                textConfig:config->factSet.title
-                                            containerStyle:style
-                                                 elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
-                                                  rootView:rootView
-                                                   element:elem];
+                                                    superview:viewGroup
+                                                   hostConfig:acoConfig
+                                                   textConfig:config->factSet.title
+                                               containerStyle:style
+                                                    elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
+                                                     rootView:rootView
+                                                      element:elem];
         [titleLab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         [titleLab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         [titleLab setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-        titleLab.isTitle = YES;
+        
         if (config->factSet.title.maxWidth) {
             NSLayoutConstraint *constraintForTitleLab = [NSLayoutConstraint constraintWithItem:titleLab attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:config->factSet.title.maxWidth];
             constraintForTitleLab.active = YES;
             constraintForTitleLab.priority = UILayoutPriorityRequired;
         }
         NSString *value = [NSString stringWithCString:fact->GetValue().c_str() encoding:NSUTF8StringEncoding];
-        UILabel *valueLab = [ACRFactSetRenderer buildLabel:value
-                                                hostConfig:acoConfig
-                                                textConfig:config->factSet.value
-                                            containerStyle:style
-                                                 elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
-                                                  rootView:rootView
-                                                   element:elem];
+        ACRUILabel *valueLab = [ACRFactSetRenderer buildLabel:value
+                                                    superview:viewGroup
+                                                   hostConfig:acoConfig
+                                                   textConfig:config->factSet.value
+                                               containerStyle:style
+                                                    elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
+                                                     rootView:rootView
+                                                      element:elem];
         [valueLab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         [titleStack addArrangedSubview:titleLab];
         [valueStack addArrangedSubview:valueLab];
