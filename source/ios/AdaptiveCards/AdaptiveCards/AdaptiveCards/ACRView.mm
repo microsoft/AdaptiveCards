@@ -177,12 +177,13 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 
                 /// tag a base card element with unique key
                 NSString *key = [NSString stringWithCString:textBlockElement->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
-                std::string text;
+                std::string text = textBlockElement->GetText();
                 [self processTextConcurrently:textBlockElement
-                                  elementType:CardElementType::TextBlock
+                              elementType:CardElementType::TextBlock//elementType:CardElementType::TextBlock
                                    textConfig:textConfig
                                     elementId:key
-                                         text:text];
+                                         text:text
+                                         lang:textBlockElement->GetLanguage()];
                 break;
             }
             case CardElementType::FactSet:
@@ -194,18 +195,20 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                 int rowFactId = 0;
                 for(auto fact : factSet->GetFacts()) {
                     std::string title = fact->GetTitle();
-                    [self processTextConcurrently:elem
-                                      elementType:CardElementType::FactSet
+                    [self processTextConcurrently:factSet
+                                      elementType:CardElementType::Fact
                                        textConfig:[_hostConfig getHostConfig]->factSet.title
                                         elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
-                                             text:title];
+                                             text:title
+                                             lang:fact->GetLanguage()];
 
                     std::string value = fact->GetValue();
-                    [self processTextConcurrently:elem
-                                      elementType:CardElementType::FactSet
+                    [self processTextConcurrently:factSet
+                                      elementType:CardElementType::Fact
                                        textConfig:[_hostConfig getHostConfig]->factSet.value
                                         elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
-                                             text:fact->GetValue()];
+                                             text:value
+                                             lang:fact->GetLanguage()];
                 }
                 break;
             }
@@ -292,10 +295,11 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 }
 
 - (void)processTextConcurrently:(std::shared_ptr<BaseCardElement> const &)textElement
-                    elementType:(CardElementType)elementType
+                    elementType:(CardElementType) elementType//elementType:(CardElementType)elementType
                      textConfig:(TextConfig const &)textConfig
                       elementId:(NSString *)elementId
                            text:(std::string  const &)text
+                           lang:(std::string const &)lang
 {
     std::shared_ptr<BaseCardElement> textElementForBlock = textElement;
     struct TextConfig textConfigForBlock = textConfig;
@@ -309,13 +313,13 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 
             if(CardElementType::TextBlock == elementTypeForBlock)
             {
-                std::shared_ptr<TextBlock> textBlockElement = std::dynamic_pointer_cast<TextBlock>(textElementForBlock);
-                markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:(std::string)textBlockElement->GetText():(std::string)textBlockElement->GetLanguage()]);
+                //std::shared_ptr<TextBlock> textBlockElement = std::dynamic_pointer_cast<TextBlock>(textElementForBlock);
+                markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:(std::string)textForBlock:(std::string)lang]);//(std::string)textBlockElement->GetLanguage()]);
             }
             else if (CardElementType::Fact == elementTypeForBlock)
             {
-                std::shared_ptr<Fact> factElement = std::dynamic_pointer_cast<Fact>(textElementForBlock);
-                markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:(std::string)text:(std::string)factElement->GetLanguage()]);
+                //std::shared_ptr<Fact> factElement = std::dynamic_pointer_cast<Fact>(textElementForBlock);
+                markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:(std::string)textForBlock:(std::string)lang]);//(std::string)factElement->GetLanguage()]);
             }
             else {
                 markDownParser = std::make_shared<MarkDownParser>(textForBlock);
