@@ -354,7 +354,7 @@ using namespace AdaptiveCards;
         }
         
         if(idx != hexColorCode.length() - 1) {
-            NSLog(@"invalid hexcolor code is given for background color: %@",
+            NSLog(@"invalid hexcolor code is given: %@",
                   [NSString stringWithCString:hexColorCode.c_str() encoding:NSUTF8StringEncoding]);
             color = UIColor.clearColor;
         } else {
@@ -365,7 +365,7 @@ using namespace AdaptiveCards;
         }
     } catch (...) {
         color = UIColor.clearColor;
-        NSLog(@"invalid hexcolor code is given for background color: %@",
+        NSLog(@"invalid hexcolor code is given: %@",
             [NSString stringWithCString:hexColorCode.c_str() encoding:NSUTF8StringEncoding]);
     }
     
