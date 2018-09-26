@@ -38,7 +38,7 @@ public class CheckBoxSetInputHandler extends BaseInputHandler
             }
         }
 
-        return TextUtils.join(";", resultList);
+        return TextUtils.join(",", resultList);
     }
 
     public void setInput(String values)

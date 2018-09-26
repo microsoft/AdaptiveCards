@@ -1,19 +1,13 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.support.v4.app.FragmentManager;
-import android.text.Editable;
-import android.text.Html;
 import android.text.Layout;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -25,10 +19,8 @@ import android.widget.TextView;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HeightType;
-import io.adaptivecards.objectmodel.MarkDownParser;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.FontSizesConfig;
 import io.adaptivecards.objectmodel.HorizontalAlignment;
@@ -38,10 +30,7 @@ import io.adaptivecards.objectmodel.TextSize;
 import io.adaptivecards.objectmodel.TextWeight;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 
-import org.xml.sax.XMLReader;
-
 import java.util.HashMap;
-import java.util.Vector;
 
 public class TextBlockRenderer extends BaseCardElementRenderer
 {
@@ -129,16 +118,6 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         else
         {
             textView.setTextColor(getColor(foregroundColor, hostConfig.getContainerStyles().getDefaultPalette().getForegroundColors(), isSubtle));
-        }
-    }
-
-    // Class to replace ul and li tags
-    public static class UlTagHandler implements Html.TagHandler{
-        @Override
-        public void handleTag(boolean opening, String tag, Editable output,
-                              XMLReader xmlReader) {
-            if(tag.equals("ul") && !opening) output.append("\n");
-            if(tag.equals("li") && opening) output.append("\n\t• ");
         }
     }
 
@@ -233,6 +212,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
 
         CharSequence text = RendererUtil.handleSpecialText(textWithFormattedDates);
         textView.setText(text);
+
         if (!textBlock.GetWrap())
         {
             textView.setMaxLines(1);

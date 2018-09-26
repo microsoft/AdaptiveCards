@@ -164,7 +164,7 @@ const CGFloat accessoryViewWidth = 50.0f;
             _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:YES];
         }
     }
-    
+
     [tableView reloadRowsAtIndexPaths:indexPathsToUpdate withRowAnimation:UITableViewRowAnimationNone];
     _currentSelectedIndexPath = indexPath;
 }
@@ -197,7 +197,7 @@ const CGFloat accessoryViewWidth = 50.0f;
 
 - (void)getDefaultInput:(NSMutableDictionary *)dictionary
 {
-    dictionary[self.id] = [_defaultValuesArray componentsJoinedByString:@";"];
+    dictionary[self.id] = [_defaultValuesArray componentsJoinedByString:@","];
 }
 
 - (void)getInput:(NSMutableDictionary *)dictionary
@@ -214,7 +214,7 @@ const CGFloat accessoryViewWidth = 50.0f;
                                 encoding:NSUTF8StringEncoding]];
         }
     }
-    dictionary[self.id] = [values componentsJoinedByString:@";"];
+    dictionary[self.id] = [values componentsJoinedByString:@","];
 }
 
 - (NSString *)getTitlesOfChoices
