@@ -298,7 +298,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         MarkDownParser markDownParser = new MarkDownParser(textWithFormattedDates);
         String textString = markDownParser.TransformToHtml();
 
-        // preprocess string to change <li> to <foo> so we get a chance to handle them
+        // preprocess string to change <li> to <listItem> so we get a chance to handle them
         textString = textString.replace("<li>", "<listItem>");
 
         Spanned htmlString;
