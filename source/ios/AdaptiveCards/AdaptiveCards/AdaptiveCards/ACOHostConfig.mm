@@ -305,7 +305,7 @@ using namespace AdaptiveCards;
 }
 // find date and time string, and replace them in NSDateFormatterCompactStyle, NSDateFormatterMediumStyle or
 // NSDateFormatterLongStyle of local language
-+ (std::string) getLocalizedDate:(std::string const) text: (std::string const) language
++ (std::string) getLocalizedDate:(std::string const) text language:(std::string const) language
 {
     std::string dateParsedString;
     std::vector<std::shared_ptr<DateTimePreparsedToken>> DateTimePreparsedTokens =  DateTimePreparser(text).GetTextTokens();
