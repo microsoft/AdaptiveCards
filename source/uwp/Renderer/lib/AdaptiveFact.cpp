@@ -13,6 +13,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 AdaptiveNamespaceStart
     HRESULT AdaptiveFact::RuntimeClassInitialize() noexcept try
     {
+        RuntimeClassInitialize(std::make_shared<Fact>());
         return S_OK;
     } CATCH_RETURN;
 
