@@ -13,17 +13,15 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 AdaptiveNamespaceStart
     HRESULT AdaptiveFact::RuntimeClassInitialize() noexcept try
     {
-        m_sharedFact = std::make_shared<Fact>();
         return S_OK;
     } CATCH_RETURN;
 
     _Use_decl_annotations_
     HRESULT AdaptiveFact::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Fact>& sharedFact)
     {
-        m_sharedFact = sharedFact;
-        RETURN_IF_FAILED(UTF8ToHString(m_sharedFact->GetTitle(), m_title.GetAddressOf()));
-        RETURN_IF_FAILED(UTF8ToHString(m_sharedFact->GetValue(), m_value.GetAddressOf()));
-        RETURN_IF_FAILED(UTF8ToHString(m_sharedFact->GetLanguage(), m_language.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedFact->GetTitle(), m_title.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedFact->GetValue(), m_value.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedFact->GetLanguage(), m_language.GetAddressOf()));
         return S_OK;
     }
 

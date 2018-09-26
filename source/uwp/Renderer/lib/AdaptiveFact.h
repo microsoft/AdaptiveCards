@@ -38,7 +38,6 @@ AdaptiveNamespaceStart
         }
 
     private:
-        std::shared_ptr<AdaptiveSharedNamespace::Fact> m_sharedFact;
         Microsoft::WRL::Wrappers::HString m_title;
         Microsoft::WRL::Wrappers::HString m_value;
         Microsoft::WRL::Wrappers::HString m_language;
