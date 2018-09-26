@@ -19,7 +19,6 @@ const CGFloat padding = 16.0f;
 {
     std::shared_ptr<ToggleInput> _toggleInputDataSource;
     std::shared_ptr<HostConfig> _config;
-    UISwitch *_toggleSwitch;
     NSString *_title;
 }
 

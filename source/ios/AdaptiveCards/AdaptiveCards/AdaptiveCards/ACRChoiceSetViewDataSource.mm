@@ -7,14 +7,11 @@
 
 #import <Foundation/Foundation.h>
 #import "ACRChoiceSetViewDataSource.h"
+#import "ACOIResourceResolver.h"
 
 using namespace AdaptiveCards;
 
-NSString *checkedCheckboxReuseID = @"checked-checkbox";
-NSString *uncheckedCheckboxReuseID = @"unchecked-checkbox";
-NSString *checkedRadioButtonReuseID = @"checked-radiobutton";
-NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
-
+NSString *choiceSetCellReuseID = @"choiceSetCell";
 const CGFloat padding = 16.0f;
 const CGFloat accessoryViewWidth = 50.0f;
 
@@ -24,17 +21,6 @@ const CGFloat accessoryViewWidth = 50.0f;
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self) {
-        UIImage *iconImage = nil;
-        if([reuseIdentifier isEqualToString:@"checked-checkbox"]){
-            iconImage = [UIImage imageNamed:@"checked-checkbox-24.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
-        } else if([reuseIdentifier isEqualToString:@"checked-radiobutton"]){
-            iconImage = [UIImage imageNamed:@"checked.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
-        } else if([reuseIdentifier isEqualToString:@"unchecked-checkbox"]){
-            iconImage = [UIImage imageNamed:@"unchecked-checkbox-24.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
-        } else {
-            iconImage = [UIImage imageNamed:@"unchecked.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
-        }
-        self.imageView.image = iconImage;
         self.textLabel.numberOfLines = 0;
         self.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
         self.textLabel.adjustsFontSizeToFitWidth = NO;
@@ -54,13 +40,14 @@ const CGFloat accessoryViewWidth = 50.0f;
     NSArray *_defaultValuesArray;
 }
 
-- (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet
+- (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet andHostConfig:(ACOHostConfig *)hostConfig;
 {
     self = [super init];
     if(self)
     {
         self.id = [[NSString alloc]initWithCString:choiceSet->GetId().c_str()
                                            encoding:NSUTF8StringEncoding];
+        self.hostConfig = hostConfig;
         _isMultiChoicesAllowed = choiceSet->GetIsMultiSelect();
         _choiceSetDataSource = choiceSet;
         _userSelections = [[NSMutableDictionary alloc] init];
@@ -100,24 +87,56 @@ const CGFloat accessoryViewWidth = 50.0f;
     return 1;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = nil;
-
+- (void)setImageForCell:(UITableViewCell *)cell choiceSetResourceResolver:(NSObject<ACOIResourceResolver> *)choiceSetResourceResolver indexPath:(NSIndexPath * _Nonnull)indexPath {
     if(_userSelections[[NSNumber numberWithInteger:indexPath.row]] == [NSNumber numberWithBool:YES]){
         if(_isMultiChoicesAllowed) {
-            cell = [tableView dequeueReusableCellWithIdentifier:checkedCheckboxReuseID];
+            if(choiceSetResourceResolver && [choiceSetResourceResolver respondsToSelector:@selector(getCheckBoxButtonSelectedState)])
+            {
+                cell.imageView.image = [choiceSetResourceResolver getCheckBoxButtonSelectedState];
+            }
+            else
+            {
+                cell.imageView.image = [UIImage imageNamed:@"checked-checkbox-24.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+            }
         } else {
-            cell = [tableView dequeueReusableCellWithIdentifier:checkedRadioButtonReuseID];
+            if(choiceSetResourceResolver && [choiceSetResourceResolver respondsToSelector:@selector(getRadioButtonForSelectedState)])
+            {
+                cell.imageView.image = [choiceSetResourceResolver getRadioButtonForSelectedState];
+            }
+            else
+            {
+                cell.imageView.image = [UIImage imageNamed:@"checked.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+            }
         }
     } else {
         if(_isMultiChoicesAllowed) {
-            cell = [tableView dequeueReusableCellWithIdentifier:uncheckedCheckboxReuseID];
+            if(choiceSetResourceResolver && [choiceSetResourceResolver respondsToSelector:@selector(getCheckBoxButtonUnselectedState)])
+            {
+                cell.imageView.image = [choiceSetResourceResolver getCheckBoxButtonUnselectedState];
+            }
+            else
+            {
+                cell.imageView.image = [UIImage imageNamed:@"unchecked-checkbox-24.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+            }
         } else {
-            cell = [tableView dequeueReusableCellWithIdentifier:uncheckedRadioButtonReuseID];
+            if(choiceSetResourceResolver && [choiceSetResourceResolver respondsToSelector:@selector(getRadioButtonForUnselectedState)])
+            {
+                cell.imageView.image = [choiceSetResourceResolver getRadioButtonForUnselectedState];
+            }
+            else
+            {
+                cell.imageView.image = [UIImage imageNamed:@"unchecked.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+            }
         }
     }
+}
 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:choiceSetCellReuseID];;
+    NSObject<ACOIResourceResolver> *choiceSetResourceResolver = [self.hostConfig getResourceResolverForScheme:@"choiceSetImageScheme"];
+    [self setImageForCell:cell choiceSetResourceResolver:choiceSetResourceResolver indexPath:indexPath];
+   
     NSString *title = [NSString stringWithCString:_choiceSetDataSource->GetChoices()[indexPath.row]->GetTitle().c_str()
                                encoding:NSUTF8StringEncoding];
     cell.textLabel.text = title;
