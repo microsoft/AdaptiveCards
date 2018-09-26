@@ -20,14 +20,3 @@ They are built independently, so to make local testing easier, you can use `npm 
 
 ## To start a local web server
 1. `npm start`
-
-
-
-
-
-# NOT WORKING YET
-1. `npm install -g npm-workspace`
-1. `npm-workspace install`
-1. `cd visualizer`
-1. `npm run build`
-1. `npm start`
