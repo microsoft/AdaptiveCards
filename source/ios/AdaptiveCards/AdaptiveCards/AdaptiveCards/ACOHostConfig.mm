@@ -49,7 +49,7 @@ using namespace AdaptiveCards;
 + (ACOHostConfigParseResult *)fromJson:(NSString *)payload resourceResolvers:(ACOResourceResolvers *)resolvers
 {
     ACOHostConfigParseResult *result = nil;
-    
+
     if(payload) {
         try {
             std::shared_ptr<HostConfig> cHostConfig = std::make_shared<HostConfig>(AdaptiveCards::HostConfig::DeserializeFromString(std::string([payload UTF8String])));
@@ -95,7 +95,7 @@ using namespace AdaptiveCards;
     if(!scheme) {
         return nil;
     }
-    
+
     return [_resolvers getResourceResolverForScheme:scheme];
 }
 
@@ -305,7 +305,7 @@ using namespace AdaptiveCards;
 }
 // find date and time string, and replace them in NSDateFormatterCompactStyle, NSDateFormatterMediumStyle or
 // NSDateFormatterLongStyle of local language
-+ (std::string) getLocalizedDate:(std::string) text: (std::string) language
++ (std::string) getLocalizedDate:(std::string const) text: (std::string const) language
 {
     std::string dateParsedString;
     std::vector<std::shared_ptr<DateTimePreparsedToken>> DateTimePreparsedTokens =  DateTimePreparser(text).GetTextTokens();

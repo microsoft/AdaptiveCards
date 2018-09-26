@@ -126,7 +126,7 @@ public class FactSetRenderer extends BaseCardElementRenderer
             String titleWithFormattedDates = parser.GenerateString(fact.GetTitleForDateParsing());
             factRow.addView(createTextView(context, RendererUtil.handleSpecialText(titleWithFormattedDates), hostConfig.getFactSet().getTitle(), hostConfig, spacing, containerStyle));
 
-            //Handle Value
+            // Handle Value
             String valueWithFormattedDates = parser.GenerateString(fact.GetValueForDateParsing());
             factRow.addView(createTextView(context, RendererUtil.handleSpecialText(valueWithFormattedDates), hostConfig.getFactSet().getValue(), hostConfig, 0, containerStyle));
 

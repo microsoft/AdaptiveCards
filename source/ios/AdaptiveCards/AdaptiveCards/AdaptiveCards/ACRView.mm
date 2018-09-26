@@ -196,7 +196,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                 for(auto fact : factSet->GetFacts()) {
                     std::string title = fact->GetTitle();
                     [self processTextConcurrently:factSet
-                                      elementType:CardElementType::Fact
+                                      elementType:CardElementType::FactSet
                                        textConfig:[_hostConfig getHostConfig]->factSet.title
                                         elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
                                              text:title
@@ -204,7 +204,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 
                     std::string value = fact->GetValue();
                     [self processTextConcurrently:factSet
-                                      elementType:CardElementType::Fact
+                                      elementType:CardElementType::FactSet
                                        textConfig:[_hostConfig getHostConfig]->factSet.value
                                         elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
                                              text:value
@@ -308,20 +308,10 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     /// dispatch to concurrent queue
     dispatch_group_async(_async_tasks_group, _global_queue,
         ^{
-            NSString* parsedString = nil;
-            std::shared_ptr<MarkDownParser> markDownParser = nullptr;
+            std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textForBlock:lang]);
 
-            if (CardElementType::TextBlock == elementTypeForBlock)
-            {
-                markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:(std::string)textForBlock:(std::string)lang]);
-            } else if (CardElementType::Fact == elementTypeForBlock)
-            {
-                markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:(std::string)textForBlock:(std::string)lang]);
-            } else {
-                markDownParser = std::make_shared<MarkDownParser>(textForBlock);
-            }
             // MarkDownParser transforms text with MarkDown to a html string
-            parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
+            NSString* parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
             NSDictionary *data = nil;
 
             // use Apple's html rendering only if the string has markdowns

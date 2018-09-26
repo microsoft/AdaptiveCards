@@ -23,9 +23,8 @@ std::vector<std::shared_ptr<Fact>>& FactSet::GetFacts()
 
 void FactSet::SetLanguage(const std::string& language)
 {
-    for (auto& bodyElement : m_facts)
+    for (std::shared_ptr<Fact>& fact : m_facts)
     {
-        auto fact = std::static_pointer_cast<Fact>(bodyElement);
         if (fact != nullptr)
         {
             fact->SetLanguage(language);
