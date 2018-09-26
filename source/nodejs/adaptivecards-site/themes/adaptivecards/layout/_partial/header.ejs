@@ -68,19 +68,15 @@
                                                 Explorer</a>
                                         </li>
                                         <li class="single-link js-nav-menu">
-                                            <a id="Visualizer" class="c-uhf-nav-link" href="<%- url_for('visualizer') %>"
-                                                data-m="{&quot;cN&quot;:&quot;CatNav_Visualizer_nav&quot;,&quot;id&quot;:&quot;n4c8c2m1r1a1&quot;,&quot;sN&quot;:4,&quot;aN&quot;:&quot;c8c2m1r1a1&quot;}">Visualizer</a>
-                                        </li>
-                                        <li class="single-link js-nav-menu">
                                             <a id="c-shellmenu_3" class="c-uhf-nav-link" href="<%- url_for('samples') %>"
                                                 data-m="{&quot;cN&quot;:&quot;CatNav_Samples_nav&quot;,&quot;id&quot;:&quot;n5c8c2m1r1a1&quot;,&quot;sN&quot;:5,&quot;aN&quot;:&quot;c8c2m1r1a1&quot;}">Samples</a>
                                         </li>
                                         <li class="single-link js-nav-menu">
-                                            <a id="c-shellmenu_4" class="c-uhf-nav-link" href="<%- url_for('connect') %>"
-                                                data-m="{&quot;cN&quot;:&quot;CatNav_Connect_nav&quot;,&quot;id&quot;:&quot;n6c8c2m1r1a1&quot;,&quot;sN&quot;:6,&quot;aN&quot;:&quot;c8c2m1r1a1&quot;}">Connect</a>
+                                            <a id="c-shellmenu_4" class="c-uhf-nav-link" href="<%- url_for('archives') %>"
+                                                data-m="{&quot;cN&quot;:&quot;CatNav_Blog_nav&quot;,&quot;id&quot;:&quot;n6c8c2m1r1a1&quot;,&quot;sN&quot;:6,&quot;aN&quot;:&quot;c8c2m1r1a1&quot;}">Blog</a>
                                         </li>
                                         <li class="single-link js-nav-menu">
-                                            <a id="c-shellmenu_5" class="c-uhf-nav-link" href="https://acdesigner-ci.azurewebsites.net/"
+                                            <a id="c-shellmenu_5" class="c-uhf-nav-link" href="<%- url_for('designer') %>"
                                                 data-m="{&quot;cN&quot;:&quot;CatNav_Designer_nav&quot;,&quot;id&quot;:&quot;n6c8c2m1r1a1&quot;,&quot;sN&quot;:6,&quot;aN&quot;:&quot;c8c2m1r1a1&quot;}">Designer</a>
                                         </li>
 
@@ -418,7 +414,7 @@
         </section>
 </div>
 
-    <% if(!is_current('/')) { /* no breadcrumb on home page */ %>
+    <% if(!is_current('/') || page.hideBreadcrumb) { /* no breadcrumb on home page */ %>
     <div class="content-header uhf-container has-padding" data-bi-name="content-header">
         <ul class="breadcrumbs" data-bi-name="breadcrumb" itemscope="" itemtype="http://schema.org/BreadcrumbList" role="navigation"
             aria-label="Breadcrumb">

@@ -13,13 +13,32 @@ import { ToastContainer } from "./containers/toast-container";
 import { BotFrameworkContainer } from "./containers/bf-image-container";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
 import { FullScreenHandler } from "./fullscreenhandler";
+// import * as monaco from "monaco-editor/esm/vs/editor/editor.api.js";
+// import "monaco-editor/esm/vs/language/json/monaco.contribution";
 
+//var monacoEditor: monaco.editor.IStandaloneCodeEditor;
 declare var monacoEditor: any;
 declare function loadMonacoEditor(schema, callback);
+declare global {
+    interface Window { MonacoEnvironment: any; }
+}
+
+// self.MonacoEnvironment = {
+
+// 	getWorkerUrl: function (moduleId, label) {
+
+// 		if (label === 'json') {
+// 			return './json.worker.bundle.js';
+// 		}
+// 		return './editor.worker.bundle.js';
+
+// 	}
+// }
 
 const MAX_UNDO_STACK_SIZE = 50;
 
 var isLocalStorageAvailable: boolean = false;
+
 
 function isStorageAvailable(type: string) {
     try {
@@ -1258,6 +1277,36 @@ window.onload = () => {
     app.card = card;
 
     loadMonacoEditor(adaptiveCardSchema, monacoEditorLoaded);
+
+	// if (adaptiveCardSchema) {
+	// 	var config = {
+	// 		schemas: [
+	// 			{
+	// 				uri: "http://adaptivecards.io/schemas/adaptive-card.json",
+	// 				schema: adaptiveCardSchema,
+	// 				fileMatch: ["*"],
+	// 			}
+	// 		],
+	// 		validate: false,
+	// 		allowComments: true
+	// 	}
+
+	// 	monaco.languages.json.jsonDefaults.setDiagnosticsOptions(config);
+	// }
+
+	// monacoEditor = monaco.editor.create(
+	// 	document.getElementById('jsonEditorHost'),
+	// 	{
+	// 		folding: true,
+	// 		fontSize: 13.5,
+	// 		language: 'json',
+	// 		minimap: {
+	// 			enabled: false
+	// 		}
+	// 	}
+	// );
+
+	// monacoEditorLoaded();
 
     updateCardFromJson();
 };

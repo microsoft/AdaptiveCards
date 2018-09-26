@@ -9,7 +9,7 @@ var glob = require("glob");
 var assets = [
     {
         // Sample payloads
-        path: "../../../samples/v1.0/**/*.json",
+        path: "../../../samples/v1.*/**/*.json",
         dest: function (p) { return "payloads/" + path.basename(p); }
     },
     {
@@ -48,7 +48,29 @@ var assets = [
         // https://github.com/Microsoft/monaco-editor/issues/18
         path: "../adaptivecards-visualizer/src/monaco-loader.js",
         dest: function (p) { return "visualizer/monaco-loader.js" }
-    }
+	},
+	{
+        // monaco loader
+        // this is a temp hack until Monaco works with webpack
+        // https://github.com/Microsoft/monaco-editor/issues/18
+        path: "../adaptivecards-designer/editor/monaco-loader.js",
+        dest: function (p) { return "designer/monaco-loader.js" }
+	},
+	{
+        // designer script
+        path: "node_modules/adaptivecards-designer/dist/adaptivecards-designer.min.js",
+        dest: function (p) { return "designer/adaptivecards-designer.min.js"; }
+    },
+    {
+        // designer css
+        path: "node_modules/adaptivecards-designer/css/*.css",
+        dest: function (p) { return "designer/css/" + path.basename(p); }
+    },
+    {
+        // designer assets
+        path: "node_modules/adaptivecards-designer/assets/*",
+        dest: function (p) { return "designer/assets/" + path.basename(p); }
+    },
 ];
 
 hexo.extend.generator.register("generator-adaptiveassets", function (locals) {

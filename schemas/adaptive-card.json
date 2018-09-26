@@ -218,7 +218,7 @@
     },
     "CardElements": {
       "type": "array",
-      "additionalItems": true,
+	  "additionalItems": true,
       "items": [
         {
           "anyOf": [

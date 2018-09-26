@@ -1,39 +1,19 @@
-![adaptive-cards-1.0](assets/Adaptive1.0.png)
+# Adaptive Cards
 
-# Announcing Adaptive Cards 1.0! 
+![logo](assets/adaptive-card-200.png)
 
-Today, we are excited to announce Adaptive Cards 1.0. We want to first give a huge thank you to you, for being an awesome community who have helped us push towards our goals over the last year. Our vision of Adaptive Cards is to build a universal card rendering framework for making, developing and sharing card content easy for everyone and we can’t do that without having a great community behind us.  
+[Adaptive Cards](https://adaptivecards.io) are a new way for developers to exchange content in a common and consistent way. Get started today by putting Adaptive Cards into Microsoft Teams, Outlook Actionable Messages, Cortana Skills, or Windows Timeline -- or render cards inside your own apps by using our SDKs.
 
-When we first introduced Adaptive Cards at Microsoft Build 2017, we decided to make this project open source so that we could get direct feedback from our developer community since you are our driving force for this product. Over the last year, we have been so impressed by the amount of questions and feedback we've had from the Adaptive Cards community.
+## Dive in
 
-We're absolutely humbled by the investment you've been willing to make in us and we want to make sure we can return that to you with a great 1.0 release!
-With today’s announcement, we are thrilled to have five fully supported SDKs and we're super excited to see the creative ways you'll use them.
-
-
-* JavaScript
-* Android
-* iOS
-* UWP
-* .NET
-
-Developers will be able to test these SDKs with Adaptive Cards in the Bot Framework WebChat, Cortana Skills, and for Windows Insiders in Windows Timeline. Check in here for future partner announcements.  Within Microsoft we have amazing partner teams ideating with Adaptive Cards and as a company we've put our full weight behind integrating this into many current and future experiences you'll be seeing soon.
-
-This is just the beginning of the journey for Adaptive Cards.  We're also are actively working on the vNext and as always, we’d love your input, feedback, and suggestions along the way.  Over the next few months we'll be engaging with the community early and often to understand what you need and we also hope to show a sneak peak at Microsoft Build 2018!
-
-Thanks again for all you do - here's to many more releases together!
-
-
-
-## Learn more at http://adaptivecards.io
 * [Documentation](https://adaptivecards.io/documentation/)
 * [Schema Explorer](https://adaptivecards.io/explorer/)
 * [Sample Cards](https://adaptivecards.io/samples/)
-* [Interactive visualizer](https://adaptivecards.io/visualizer/)
+* [Designer](https://aka.ms/adaptivedesigner)
 
-# Install and Build
+## Install and Build
 
 Adaptive Cards are designed to render anywhere that your users are. The following native platform renderers are under development right now.
-
 
 |Platform|Install|Build|Docs|Status|
 |---|---|---|---|---|
