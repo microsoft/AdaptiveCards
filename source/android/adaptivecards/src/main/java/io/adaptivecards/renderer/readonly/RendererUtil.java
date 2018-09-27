@@ -9,7 +9,8 @@ import org.xml.sax.XMLReader;
 
 import io.adaptivecards.objectmodel.MarkDownParser;
 
-public class RendererUtil {
+public class RendererUtil
+{
 
     public static CharSequence handleSpecialText(String textWithFormattedDates)
     {
@@ -71,13 +72,14 @@ public class RendererUtil {
     }
 
     // Class to replace ul and li tags
-    public static class UlTagHandler implements Html.TagHandler{
+    public static class UlTagHandler implements Html.TagHandler
+    {
         private int tagNumber = 0;
         private boolean orderedList = false;
 
         @Override
-        public void handleTag(boolean opening, String tag, Editable output,
-                              XMLReader xmlReader) {
+        public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader)
+        {
             if (tag.equals("ul") && !opening)
             {
                 output.append("\n");

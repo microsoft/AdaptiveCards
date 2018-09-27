@@ -49,7 +49,6 @@ using namespace AdaptiveCards;
 + (ACOHostConfigParseResult *)fromJson:(NSString *)payload resourceResolvers:(ACOResourceResolvers *)resolvers
 {
     ACOHostConfigParseResult *result = nil;
-
     if(payload) {
         try {
             std::shared_ptr<HostConfig> cHostConfig = std::make_shared<HostConfig>(AdaptiveCards::HostConfig::DeserializeFromString(std::string([payload UTF8String])));
