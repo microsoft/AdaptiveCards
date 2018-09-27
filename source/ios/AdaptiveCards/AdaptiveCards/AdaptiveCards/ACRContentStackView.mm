@@ -30,7 +30,7 @@ using namespace AdaptiveCards;
         if(style != ACRNone &&
             style != parentStyle) {
             std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
-            [self setBackgroundColorWithHostConfig:config];
+            self.backgroundColor = [acoConfig getBackgroundColorForContainerStyle:_style];
             [self setBorderColorWithHostConfig:config];
             [self setBorderThicknessWithHostConfig:config];
             [self removeConstraints:self.constraints];
@@ -96,14 +96,14 @@ using namespace AdaptiveCards;
 
 - (void)setBackgroundColorWithHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    UIColor *color = [[self class] colorFromString:[self paletteForHostConfig:config].backgroundColor];
+    UIColor *color = [ACOHostConfig convertHexColorCodeToUIColor:[self paletteForHostConfig:config].backgroundColor];
 
     self.backgroundColor = color;
 }
 
 - (void)setBorderColorWithHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    UIColor *color = [[self class] colorFromString:[self paletteForHostConfig:config].borderColor];
+    UIColor *color = [ACOHostConfig convertHexColorCodeToUIColor:[self paletteForHostConfig:config].borderColor];
 
     [[self layer] setBorderColor:[color CGColor]];
 }

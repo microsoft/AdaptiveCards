@@ -11,6 +11,7 @@
 #import "AdaptiveCardParseException.h"
 #import "ACRErrors.h"
 #import "TextBlock.h"
+#import "ACOBaseCardElement.h"
 
 using namespace AdaptiveCards;
 
@@ -103,7 +104,6 @@ using namespace AdaptiveCards;
                   colorsConfig:(ColorsConfig const &)config
                   subtleOption:(bool)isSubtle
 {
-    long num = 0;
     const std::string *str;
     switch (txtClr) {
         case ForegroundColor::Dark:{
@@ -142,14 +142,8 @@ using namespace AdaptiveCards;
             break;
         }
     }
-
-    num = std::stoul(str->substr(1), nullptr, 16);
-
-    return [UIColor colorWithRed:((num & 0x00FF0000)>> 16)/ 255.0
-                           green:((num & 0x0000FF00)>> 8)/ 255.0
-                            blue:((num & 0x000000FF))/ 255.0
-                           alpha:((num & 0xFF000000)>> 24)/ 255.0];
-
+    
+    return [ACOHostConfig convertHexColorCodeToUIColor:*str];
 }
 
 - (int)getTextBlockTextSize:(TextSize)txtSz
@@ -339,6 +333,72 @@ using namespace AdaptiveCards;
         }
     }
     return dateParsedString;
+}
+
++ (UIColor *)convertHexColorCodeToUIColor:(const std::string&)hexColorCode
+{
+    if((hexColorCode.length() < 2) || (hexColorCode.at(0) != '#') || !isxdigit(hexColorCode.at(1)) ||
+       ((hexColorCode.length() != 7) && hexColorCode.length() != 9)) {
+        NSLog(@"invalid hexcolor code is given for background color: %@",
+            [NSString stringWithCString:hexColorCode.c_str() encoding:NSUTF8StringEncoding]);
+        return UIColor.clearColor;
+    }
+    
+    UIColor *color = UIColor.clearColor;
+    
+    try {
+        size_t idx = 0;
+        long num = std::stoul(hexColorCode.substr(1), &idx, 16), alpha = 0xFF;
+        if(hexColorCode.length() == 9) {
+            alpha = (num & 0xFF000000) >> 24;
+        }
+        
+        if(idx != hexColorCode.length() - 1) {
+            NSLog(@"invalid hexcolor code is given: %@",
+                  [NSString stringWithCString:hexColorCode.c_str() encoding:NSUTF8StringEncoding]);
+            color = UIColor.clearColor;
+        } else {
+            color = [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255.0
+                                    green:((num & 0x0000FF00) >>  8) / 255.0
+                                     blue:((num & 0x000000FF)) / 255.0
+                                    alpha:alpha / 255.0];
+        }
+    } catch (...) {
+        color = UIColor.clearColor;
+        NSLog(@"invalid hexcolor code is given: %@",
+            [NSString stringWithCString:hexColorCode.c_str() encoding:NSUTF8StringEncoding]);
+    }
+    
+    return color;
+}
+
+- (UIColor *)getBackgroundColorForContainerStyle:(ACRContainerStyle)style
+{
+    const std::string &hexColorCode = (style == ACREmphasis)?
+        _config->containerStyles.emphasisPalette.backgroundColor :
+        _config->containerStyles.defaultPalette.backgroundColor;
+  
+    return [ACOHostConfig convertHexColorCodeToUIColor:hexColorCode];
+}
+
++ (ACRContainerStyle)getPlatformContainerStyle:(ContainerStyle)style
+{
+    ACRContainerStyle containerStyle = ACRDefault;
+    switch (style) {
+        case ContainerStyle::None:
+            containerStyle = ACRNone;
+            break;
+        case ContainerStyle::Default:
+            containerStyle = ACRDefault;
+            break;
+        case ContainerStyle::Emphasis:
+            containerStyle = ACREmphasis;
+            break;
+        default:
+            containerStyle = ACRDefault;
+            break;
+    }
+    return containerStyle;
 }
 
 @end
