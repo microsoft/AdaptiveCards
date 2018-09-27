@@ -86,32 +86,32 @@
     }
 
     if(size != ImageSize::Auto && size != ImageSize::Stretch){
-        [view addConstraints:@[[NSLayoutConstraint constraintWithItem:view
-                                                                attribute:NSLayoutAttributeWidth
-                                                                relatedBy:NSLayoutRelationEqual
-                                                                   toItem:nil
-                                                                attribute:NSLayoutAttributeNotAnAttribute
-                                                               multiplier:1.0
-                                                                 constant:cgsize.width],
-                                   [NSLayoutConstraint constraintWithItem:view
-                                                                attribute:NSLayoutAttributeHeight
-                                                                relatedBy:NSLayoutRelationEqual
-                                                                   toItem:nil
-                                                                attribute:NSLayoutAttributeNotAnAttribute
-                                                               multiplier:1.0
-                                                                 constant:cgsize.height]]];
+        [NSLayoutConstraint activateConstraints:@[[NSLayoutConstraint constraintWithItem:view
+                                                                               attribute:NSLayoutAttributeWidth
+                                                                               relatedBy:NSLayoutRelationEqual
+                                                                                  toItem:nil
+                                                                               attribute:NSLayoutAttributeNotAnAttribute
+                                                                              multiplier:1.0
+                                                                                constant:cgsize.width],
+                                                  [NSLayoutConstraint constraintWithItem:view
+                                                                               attribute:NSLayoutAttributeHeight
+                                                                               relatedBy:NSLayoutRelationEqual
+                                                                                  toItem:nil
+                                                                               attribute:NSLayoutAttributeNotAnAttribute
+                                                                              multiplier:1.0
+                                                                                constant:cgsize.height]]];
         view.desiredSize = cgsize;
     }
 
     if(heightToWidthRatio && widthToHeightRatio && (size == ImageSize::Auto || size == ImageSize::Stretch)){
-        [view addConstraints:@[[NSLayoutConstraint constraintWithItem:view
+        [NSLayoutConstraint activateConstraints:@[[NSLayoutConstraint constraintWithItem:view
                                                                 attribute:NSLayoutAttributeHeight
                                                                 relatedBy:NSLayoutRelationEqual
                                                                    toItem:view
                                                                 attribute:NSLayoutAttributeWidth
                                                                multiplier:heightToWidthRatio
                                                                  constant:0]]];
-        [view addConstraints:@[[NSLayoutConstraint constraintWithItem:view
+        [NSLayoutConstraint activateConstraints:@[[NSLayoutConstraint constraintWithItem:view
                                                                 attribute:NSLayoutAttributeWidth
                                                                 relatedBy:NSLayoutRelationEqual
                                                                    toItem:view
@@ -147,17 +147,17 @@
 
     [viewGroup addArrangedSubview:wrappingview];
 
-    [wrappingview addConstraints:[ACOHostConfig getConstraintsForImageAlignment:imgElem->GetHorizontalAlignment()
-                                           withSuperview:wrappingview
-                                                  toView:view]];
-    // ImageSize::Auto should maintain its intrinsic size
-    if(size == ImageSize::Auto || size == ImageSize::Stretch) {
-        NSArray<NSString *> *visualFormats = [NSArray arrayWithObjects:@"H:[view(<=wrappingview)]", @"V:|-[view(<=wrappingview)]-|", nil];
-        NSDictionary *viewMap = NSDictionaryOfVariableBindings(view, wrappingview);
-        for(NSString *constraint in visualFormats){
-            [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:constraint options:0 metrics:nil views:viewMap]];
-        }
-    } else {
+    [NSLayoutConstraint activateConstraints:[ACOHostConfig getConstraintsForImageAlignment:imgElem->GetHorizontalAlignment()
+                                                                             withSuperview:wrappingview
+                                                                                    toView:view]];
+    NSArray<NSString *> *visualFormats = [NSArray arrayWithObjects:@"H:[view(<=wrappingview)]", @"V:|[view(<=wrappingview)]|", nil];
+    NSDictionary *viewMap = NSDictionaryOfVariableBindings(view, wrappingview);
+    
+    for(NSString *constraint in visualFormats){
+        [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:constraint options:0 metrics:nil views:viewMap]];
+    }
+
+    if(!(size == ImageSize::Auto || size == ImageSize::Stretch)) {
         [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     }
