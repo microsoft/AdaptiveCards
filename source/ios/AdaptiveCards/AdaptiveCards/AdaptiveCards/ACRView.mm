@@ -295,7 +295,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 }
 
 - (void)processTextConcurrently:(std::shared_ptr<BaseCardElement> const &)textElement
-                    elementType:(CardElementType) elementType
+                    elementType:(CardElementType)elementType
                      textConfig:(TextConfig const &)textConfig
                       elementId:(NSString *)elementId
                            text:(std::string  const &)text
