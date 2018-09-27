@@ -83,18 +83,18 @@
                                           attribute:NSLayoutAttributeNotAnAttribute
                                          multiplier:1
                                            constant:curView.pixelWidth]];
-//        } else if([curView.columnWidth isEqualToString:@"stretch"]){
-//            if(stretchView){
-//                [constraints addObject:
-//                 [NSLayoutConstraint constraintWithItem:curView
-//                                              attribute:NSLayoutAttributeWidth
-//                                              relatedBy:NSLayoutRelationEqual
-//                                                 toItem:stretchView
-//                                              attribute:NSLayoutAttributeWidth
-//                                             multiplier:1
-//                                               constant:0]];
-//            }
-//            stretchView = curView;
+        } else if([curView.columnWidth isEqualToString:@"stretch"]){
+            if(stretchView){
+                [constraints addObject:
+                 [NSLayoutConstraint constraintWithItem:curView
+                                              attribute:NSLayoutAttributeWidth
+                                              relatedBy:NSLayoutRelationEqual
+                                                 toItem:stretchView
+                                              attribute:NSLayoutAttributeWidth
+                                             multiplier:1
+                                               constant:0]];
+            }
+            stretchView = curView;
         } else if(![curView.columnWidth isEqualToString:@"auto"]){
             try{
                 relativeColumnWidth = std::stof(column->GetWidth());
