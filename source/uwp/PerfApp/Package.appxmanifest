@@ -8,14 +8,14 @@
 
   <Identity
     Name="d2583be7-81b8-4807-a431-2cf4065b2db2"
-    Publisher="CN=rebecch"
+    Publisher="CN=AdaptiveCards"
     Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="d2583be7-81b8-4807-a431-2cf4065b2db2" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>PerfApp</DisplayName>
-    <PublisherDisplayName>rebecch</PublisherDisplayName>
+    <PublisherDisplayName>AdaptiveCards</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
