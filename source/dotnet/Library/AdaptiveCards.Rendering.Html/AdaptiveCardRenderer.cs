@@ -180,9 +180,6 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("padding", $"{context.Config.Spacing.Padding}px")
                 .Style("box-sizing", "border-box");
 
-            if (!string.IsNullOrEmpty(context.Config.FontFamily))
-                uiCard.Style("font-family", context.Config.FontFamily);
-
             if (card.BackgroundImage != null)
                 uiCard.Style("background-image", $"url('{context.Config.ResolveFinalAbsoluteUri(card.BackgroundImage)}')")
                     .Style("background-repeat", "no-repeat")
@@ -632,35 +629,54 @@ namespace AdaptiveCards.Rendering.Html
 
         protected static HtmlTag TextBlockRender(AdaptiveTextBlock textBlock, AdaptiveRenderContext context)
         {
+            FontStyleConfig styleConfig;
+            switch (textBlock.FontStyle)
+            {
+                case AdaptiveFontStyle.Display:
+                    styleConfig = context.Config.FontStyles.Display;
+                    break;
+                case AdaptiveFontStyle.Monospace:
+                    styleConfig = context.Config.FontStyles.Monospace;
+                    break;
+                case AdaptiveFontStyle.Default:
+                default:
+                    styleConfig = context.Config.FontStyles.Default;
+                    break;
+            }
+
             int fontSize;
             switch (textBlock.Size)
             {
                 case AdaptiveTextSize.Small:
-                    fontSize = context.Config.FontSizes.Small;
+                    fontSize = styleConfig.FontSizes.Small;
                     break;
                 case AdaptiveTextSize.Medium:
-                    fontSize = context.Config.FontSizes.Medium;
+                    fontSize = styleConfig.FontSizes.Medium;
                     break;
                 case AdaptiveTextSize.Large:
-                    fontSize = context.Config.FontSizes.Large;
+                    fontSize = styleConfig.FontSizes.Large;
                     break;
                 case AdaptiveTextSize.ExtraLarge:
-                    fontSize = context.Config.FontSizes.ExtraLarge;
+                    fontSize = styleConfig.FontSizes.ExtraLarge;
                     break;
                 case AdaptiveTextSize.Default:
                 default:
-                    fontSize = context.Config.FontSizes.Default;
+                    fontSize = styleConfig.FontSizes.Default;
                     break;
             }
-            int weight = 400;
+
+            int weight;
             switch (textBlock.Weight)
             {
                 case AdaptiveTextWeight.Lighter:
-                    weight = 200;
+                    weight = styleConfig.FontWeights.Lighter;
                     break;
-
                 case AdaptiveTextWeight.Bolder:
-                    weight = 600;
+                    weight = styleConfig.FontWeights.Bolder;
+                    break;
+                case AdaptiveTextWeight.Default:
+                default:
+                    weight = styleConfig.FontWeights.Default;
                     break;
             }
 
@@ -674,9 +690,10 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("color", context.GetColor(textBlock.Color, textBlock.IsSubtle))
                 .Style("line-height", $"{lineHeight.ToString("F")}px")
                 .Style("font-size", $"{fontSize}px")
-                .Style("font-weight", $"{weight}");
+                .Style("font-weight", $"{weight}")
+                .Style("font-family", styleConfig.FontFamily);
 
-            if(textBlock.Height == AdaptiveHeight.Stretch)
+            if (textBlock.Height == AdaptiveHeight.Stretch)
             {
                 uiTextBlock.Style("flex", "1 1 100%");
             }

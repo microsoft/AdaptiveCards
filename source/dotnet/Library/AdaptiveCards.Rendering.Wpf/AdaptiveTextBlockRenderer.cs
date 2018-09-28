@@ -49,26 +49,6 @@ namespace AdaptiveCards.Rendering.Wpf
             else
                 uiTextBlock.SetColor(colorOption.Default, context);
 
-            switch (textBlock.Size)
-            {
-                case AdaptiveTextSize.Small:
-                    uiTextBlock.FontSize = context.Config.FontSizes.Small;
-                    break;
-                case AdaptiveTextSize.Medium:
-                    uiTextBlock.FontSize = context.Config.FontSizes.Medium;
-                    break;
-                case AdaptiveTextSize.Large:
-                    uiTextBlock.FontSize = context.Config.FontSizes.Large;
-                    break;
-                case AdaptiveTextSize.ExtraLarge:
-                    uiTextBlock.FontSize = context.Config.FontSizes.ExtraLarge;
-                    break;
-                case AdaptiveTextSize.Default:
-                default:
-                    uiTextBlock.FontSize = context.Config.FontSizes.Default;
-                    break;
-            }
-
             if (textBlock.MaxWidth > 0)
             {
                 uiTextBlock.MaxWidth = textBlock.MaxWidth;
@@ -132,20 +112,57 @@ namespace AdaptiveCards.Rendering.Wpf
             var uiTextBlock = (System.Windows.Controls.TextBlock)XamlReader.Load(xmlReader);
             uiTextBlock.Style = context.GetStyle($"Adaptive.{textBlock.Type}");
 
-            uiTextBlock.FontFamily = new FontFamily(context.Config.FontFamily);
             uiTextBlock.TextWrapping = TextWrapping.NoWrap;
+
+            FontStyleConfig fontStyle;
+            switch (textBlock.FontStyle)
+            {
+                case AdaptiveFontStyle.Display:
+                    uiTextBlock.FontFamily = new FontFamily(context.Config.FontStyles.Display.FontFamily);
+                    fontStyle = context.Config.FontStyles.Display;
+                    break;
+                case AdaptiveFontStyle.Monospace:
+                    uiTextBlock.FontFamily = new FontFamily(context.Config.FontStyles.Monospace.FontFamily);
+                    fontStyle = context.Config.FontStyles.Monospace;
+                    break;
+                case AdaptiveFontStyle.Default:
+                default:
+                    uiTextBlock.FontFamily = new FontFamily(context.Config.FontStyles.Default.FontFamily);
+                    fontStyle = context.Config.FontStyles.Default;
+                    break;
+            }
 
             switch (textBlock.Weight)
             {
                 case AdaptiveTextWeight.Bolder:
-                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(700);
+                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(fontStyle.FontWeights.Bolder);
                     break;
                 case AdaptiveTextWeight.Lighter:
-                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(300);
+                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(fontStyle.FontWeights.Lighter);
                     break;
                 case AdaptiveTextWeight.Default:
                 default:
-                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(400);
+                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(fontStyle.FontWeights.Default);
+                    break;
+            }
+
+            switch (textBlock.Size)
+            {
+                case AdaptiveTextSize.Small:
+                    uiTextBlock.FontSize = fontStyle.FontSizes.Small;
+                    break;
+                case AdaptiveTextSize.Medium:
+                    uiTextBlock.FontSize = fontStyle.FontSizes.Medium;
+                    break;
+                case AdaptiveTextSize.Large:
+                    uiTextBlock.FontSize = fontStyle.FontSizes.Large;
+                    break;
+                case AdaptiveTextSize.ExtraLarge:
+                    uiTextBlock.FontSize = fontStyle.FontSizes.ExtraLarge;
+                    break;
+                case AdaptiveTextSize.Default:
+                default:
+                    uiTextBlock.FontSize = fontStyle.FontSizes.Default;
                     break;
             }
 
