@@ -403,6 +403,7 @@ AdaptiveNamespaceStart
         UnsupportedSchemaVersion,
         UnsupportedMediaType,
         InvalidMediaMix,
+        UnsupportedValue
     } WarningStatusCode;
 
     [version(NTDDI_WIN10_RS1)]
@@ -1125,6 +1126,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT TextInputStyle([out, retval] TextInputStyle* value);
         [propput] HRESULT TextInputStyle([in] TextInputStyle value);
+
+        [propget] HRESULT InlineAction([out, retval] IAdaptiveActionElement** value);
+        [propput] HRESULT InlineAction([in] IAdaptiveActionElement* value);
     };
 
     [

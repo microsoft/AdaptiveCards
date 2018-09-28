@@ -856,7 +856,10 @@ AdaptiveNamespaceStart
                 THROW_IF_FAILED(buttonIconAsImage->add_ImageOpened(Callback<IRoutedEventHandler>(
                     [buttonIconAsFrameworkElement, buttonText](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
                 {
-                    return SetImageSizeAsTextBlockSize(buttonIconAsFrameworkElement.Get(), buttonText.Get());
+                    ComPtr<IFrameworkElement> buttonTextAsFrameworkElement;
+                    RETURN_IF_FAILED(buttonText.As(&buttonTextAsFrameworkElement));
+
+                    return SetMatchingHeight(buttonIconAsFrameworkElement.Get(), buttonTextAsFrameworkElement.Get());
                 }).Get(), &eventToken));
 
                 // Only add spacing when the icon must be located at the left of the title
@@ -1512,17 +1515,15 @@ AdaptiveNamespaceStart
     }
 
     _Use_decl_annotations_
-    HRESULT XamlBuilder::SetImageSizeAsTextBlockSize(IFrameworkElement* imageControl, ITextBlock* textBlock)
+    HRESULT XamlBuilder::SetMatchingHeight(
+        IFrameworkElement* elementToChange, 
+        IFrameworkElement* elementToMatch)
     {
-        ComPtr<ITextBlock> localTextBlock(textBlock);
-        ComPtr<IFrameworkElement> textBlockAsFrameworkElement;
-        RETURN_IF_FAILED(localTextBlock.As(&textBlockAsFrameworkElement));
-        DOUBLE textBlockHeight;
-        RETURN_IF_FAILED(textBlockAsFrameworkElement->get_ActualHeight(&textBlockHeight));
+        DOUBLE actualHeight;
+        RETURN_IF_FAILED(elementToMatch->get_ActualHeight(&actualHeight));
 
-        ComPtr<IFrameworkElement> localElement(imageControl);
-        RETURN_IF_FAILED(localElement->put_Height(textBlockHeight));
-        RETURN_IF_FAILED(localElement->put_Width(textBlockHeight));
+        ComPtr<IFrameworkElement> localElement(elementToChange);
+        RETURN_IF_FAILED(localElement->put_Height(actualHeight));
 
         ComPtr<IUIElement> frameworkElementAsUIElement;
         RETURN_IF_FAILED(localElement.As(&frameworkElementAsUIElement));
@@ -2654,10 +2655,202 @@ AdaptiveNamespaceStart
         AddInputValueToContext(renderContext, adaptiveCardElement, *numberInputControl);
     }
 
+    void XamlBuilder::HandleInlineAcion(
+        IAdaptiveRenderContext* renderContext,
+        IAdaptiveRenderArgs* renderArgs,
+        ITextBox* textBox,
+        IAdaptiveActionElement* inlineAction,
+        IUIElement** textBoxWithInlineAction)
+    {
+        ComPtr<ITextBox> localTextBox(textBox);
+        ComPtr<IAdaptiveActionElement> localInlineAction(inlineAction);
+
+        ABI::AdaptiveNamespace::ActionType actionType;
+        THROW_IF_FAILED(localInlineAction->get_ActionType(&actionType));
+
+        // Show cards are not supported for inline actions
+        if (actionType == ActionType_ShowCard)
+        {
+            THROW_IF_FAILED(renderContext->AddWarning(
+                ABI::AdaptiveNamespace::WarningStatusCode::UnsupportedValue,
+                HStringReference(L"Show card not supported for InlineAction").Get()));
+
+            THROW_IF_FAILED(localTextBox.CopyTo(textBoxWithInlineAction));
+            return;
+        }
+
+        // Create a grid to hold the text box and the action button
+        ComPtr<IGridStatics> gridStatics;
+        THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
+
+        ComPtr<IGrid> xamlGrid = XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
+        ComPtr<IVector<ColumnDefinition*>> columnDefinitions;
+        THROW_IF_FAILED(xamlGrid->get_ColumnDefinitions(&columnDefinitions));
+        ComPtr<IPanel> gridAsPanel;
+        THROW_IF_FAILED(xamlGrid.As(&gridAsPanel));
+
+        // Craete the first column and add the text box to it
+        ComPtr<IColumnDefinition> textBoxColumnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
+        THROW_IF_FAILED(textBoxColumnDefinition->put_Width({ 1, GridUnitType::GridUnitType_Star }));
+        THROW_IF_FAILED(columnDefinitions->Append(textBoxColumnDefinition.Get()));
+
+        ComPtr<IUIElement> textBoxAsUIElement;
+        THROW_IF_FAILED(localTextBox.As(&textBoxAsUIElement));
+
+        ComPtr<IFrameworkElement> textBoxAsFrameworkElement;
+        THROW_IF_FAILED(localTextBox.As(&textBoxAsFrameworkElement));
+
+        THROW_IF_FAILED(gridStatics->SetColumn(textBoxAsFrameworkElement.Get(), 0));
+        XamlHelpers::AppendXamlElementToPanel(textBox, gridAsPanel.Get());
+
+        // Create a separator column
+        ComPtr<IColumnDefinition> separatorColumnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
+        THROW_IF_FAILED(separatorColumnDefinition->put_Width({ 1.0, GridUnitType::GridUnitType_Auto }));
+        THROW_IF_FAILED(columnDefinitions->Append(separatorColumnDefinition.Get()));
+
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+        UINT spacingSize;
+        THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), ABI::AdaptiveNamespace::Spacing::Default, &spacingSize));
+
+        auto separator = CreateSeparator(renderContext, spacingSize, 0, { 0 }, false);
+
+        ComPtr<IFrameworkElement> separatorAsFrameworkElement;
+        THROW_IF_FAILED(separator.As(&separatorAsFrameworkElement));
+ 
+        THROW_IF_FAILED(gridStatics->SetColumn(separatorAsFrameworkElement.Get(), 1));
+        XamlHelpers::AppendXamlElementToPanel(separator.Get(), gridAsPanel.Get());
+
+        // Create a column for the button
+        ComPtr<IColumnDefinition> inlineActionColumnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
+        THROW_IF_FAILED(inlineActionColumnDefinition->put_Width({ 0, GridUnitType::GridUnitType_Auto }));
+        THROW_IF_FAILED(columnDefinitions->Append(inlineActionColumnDefinition.Get()));
+
+        // Create a text box with the action title. This will be the tool tip if there's an icon 
+        // or the content of the button otherwise
+        ComPtr<ITextBlock> titleTextBlock = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+        HString title;
+        THROW_IF_FAILED(localInlineAction->get_Title(title.GetAddressOf()));
+        THROW_IF_FAILED(titleTextBlock->put_Text(title.Get()));
+
+        HString iconUrl;
+        THROW_IF_FAILED(localInlineAction->get_IconUrl(iconUrl.GetAddressOf()));
+        ComPtr<IUIElement> actionUIElement;
+        if (iconUrl != nullptr)
+        {
+            // Render the icon using the adaptive image renderer
+            ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
+            THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
+            ComPtr<IAdaptiveElementRenderer> imageRenderer;
+            THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &imageRenderer));
+
+            ComPtr<IAdaptiveImage> adaptiveImage;
+            THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
+
+            THROW_IF_FAILED(adaptiveImage->put_Url(iconUrl.Get()));
+
+            ComPtr<IAdaptiveCardElement> adaptiveImageAsElement;
+            THROW_IF_FAILED(adaptiveImage.As(&adaptiveImageAsElement));
+
+            THROW_IF_FAILED(imageRenderer->Render(adaptiveImageAsElement.Get(), renderContext, renderArgs, &actionUIElement));
+
+            // Add the tool tip
+            ComPtr<IToolTip> toolTip = XamlHelpers::CreateXamlClass<IToolTip>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ToolTip));
+            ComPtr<IContentControl> toolTipAsContentControl;
+            THROW_IF_FAILED(toolTip.As(&toolTipAsContentControl));
+            THROW_IF_FAILED(toolTipAsContentControl->put_Content(titleTextBlock.Get()));
+
+            ComPtr< IToolTipServiceStatics> toolTipService;
+            THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ToolTipService).Get(), &toolTipService));
+
+            ComPtr<IDependencyObject> actionAsDependencyObject;
+            THROW_IF_FAILED(actionUIElement.As(&actionAsDependencyObject));
+
+            THROW_IF_FAILED(toolTipService->SetToolTip(actionAsDependencyObject.Get(), toolTip.Get()));
+        }
+        else
+        {
+            // If there's no icon, just use the title text. Put it centered in a grid so it is 
+            // centered relative to the text box.
+            ComPtr<IFrameworkElement> textBlockAsFrameworkElement;
+            THROW_IF_FAILED(titleTextBlock.As(&textBlockAsFrameworkElement));
+            THROW_IF_FAILED(textBlockAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Center));
+
+            ComPtr<IGrid> titleGrid = XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
+            ComPtr<IPanel> panel;
+            THROW_IF_FAILED(titleGrid.As(&panel));
+            XamlHelpers::AppendXamlElementToPanel(titleTextBlock.Get(), panel.Get());
+
+            THROW_IF_FAILED(panel.As(&actionUIElement));
+        }
+
+        // Make the action the same size as the text box
+        EventRegistrationToken eventToken;
+        THROW_IF_FAILED(textBoxAsFrameworkElement->add_Loaded(Callback<IRoutedEventHandler>(
+            [actionUIElement, textBoxAsFrameworkElement](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT
+        {
+            ComPtr<IFrameworkElement> actionFrameworkElement;
+            RETURN_IF_FAILED(actionUIElement.As(&actionFrameworkElement));
+
+            return SetMatchingHeight(actionFrameworkElement.Get(), textBoxAsFrameworkElement.Get());
+        }).Get(), &eventToken));
+
+        // Wrap the action in a button
+        ComPtr<IUIElement> touchTargetUIElement;
+        WrapInTouchTarget(
+            nullptr, 
+            actionUIElement.Get(), 
+            localInlineAction.Get(), 
+            renderContext, 
+            false, 
+            L"Adaptive.Input.Text.InlineAction",
+            &touchTargetUIElement);
+
+        ComPtr<IFrameworkElement> touchTargetFrameworkElement;
+        THROW_IF_FAILED(touchTargetUIElement.As(&touchTargetFrameworkElement));
+
+        // Align to bottom so the icon stays with the bottom of the text box as it grows in the multiline case
+        THROW_IF_FAILED(touchTargetFrameworkElement->put_VerticalAlignment(VerticalAlignment_Bottom));
+
+        // Add the action to the column
+        THROW_IF_FAILED(gridStatics->SetColumn(touchTargetFrameworkElement.Get(), 2));
+        XamlHelpers::AppendXamlElementToPanel(touchTargetFrameworkElement.Get(), gridAsPanel.Get());
+
+        // If this isn't a multiline input, enter should invoke the action
+        ComPtr<IAdaptiveActionInvoker> actionInvoker;
+        THROW_IF_FAILED(renderContext->get_ActionInvoker(&actionInvoker));
+
+        boolean isMultiLine;
+        THROW_IF_FAILED(textBox->get_AcceptsReturn(&isMultiLine));
+
+        if (!isMultiLine)
+        {
+            EventRegistrationToken keyDownEventToken;
+            THROW_IF_FAILED(textBoxAsUIElement->add_KeyDown(Callback<IKeyEventHandler>(
+                [touchTargetUIElement, actionInvoker, localInlineAction](IInspectable* /*sender*/, IKeyRoutedEventArgs* args) -> HRESULT
+            {
+                ABI::Windows::System::VirtualKey key;
+                RETURN_IF_FAILED(args->get_Key(&key));
+
+                if (key == ABI::Windows::System::VirtualKey::VirtualKey_Enter)
+                {
+                    RETURN_IF_FAILED(actionInvoker->SendActionEvent(localInlineAction.Get()));
+                    RETURN_IF_FAILED(args->put_Handled(true));
+                }
+
+                return S_OK;
+
+            }).Get(), &keyDownEventToken));
+        }
+
+        THROW_IF_FAILED(xamlGrid.CopyTo(textBoxWithInlineAction));
+    }
+
     void XamlBuilder::BuildTextInput(
         IAdaptiveCardElement* adaptiveCardElement,
         IAdaptiveRenderContext* renderContext,
-        IAdaptiveRenderArgs* /*renderArgs*/,
+        IAdaptiveRenderArgs* renderArgs,
         IUIElement** textInputControl)
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
@@ -2721,17 +2914,33 @@ AdaptiveNamespaceStart
 
         THROW_IF_FAILED(textBox->put_InputScope(inputScope.Get()));
 
-        ComPtr<IFrameworkElement> frameworkElement;
-        THROW_IF_FAILED(textBox.As(&frameworkElement));
-        THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Text", frameworkElement.Get()));
+        ComPtr<IFrameworkElement> textBoxAsFrameworkElement;
+        THROW_IF_FAILED(textBox.As(&textBoxAsFrameworkElement));
+        THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Text", textBoxAsFrameworkElement.Get()));
 
         if (!isMultiLine)
         {
-            THROW_IF_FAILED(frameworkElement->put_VerticalAlignment(VerticalAlignment::VerticalAlignment_Top));
+            THROW_IF_FAILED(textBoxAsFrameworkElement->put_VerticalAlignment(VerticalAlignment::VerticalAlignment_Top));
         }
 
-        THROW_IF_FAILED(textBox.CopyTo(textInputControl));
-        AddInputValueToContext(renderContext, adaptiveCardElement, *textInputControl);
+        ComPtr<IUIElement> textBoxAsUIElement;
+        textBox.As(&textBoxAsUIElement);
+        AddInputValueToContext(renderContext, adaptiveCardElement, textBoxAsUIElement.Get());
+
+        ComPtr<IAdaptiveActionElement> inlineAction;
+        THROW_IF_FAILED(adaptiveTextInput->get_InlineAction(&inlineAction));
+
+        if (inlineAction != nullptr)
+        {
+            ComPtr<IUIElement> textBoxWithInlineAction;
+            HandleInlineAcion(renderContext, renderArgs, textBox.Get(), inlineAction.Get(), &textBoxWithInlineAction);
+
+            THROW_IF_FAILED(textBoxWithInlineAction.CopyTo(textInputControl));
+        }
+        else
+        {
+            THROW_IF_FAILED(textBox.CopyTo(textInputControl));
+        }
     }
 
     void XamlBuilder::BuildTimeInput(
@@ -2855,7 +3064,7 @@ AdaptiveNamespaceStart
         CreatePosterContainerWithPlayButton(posterImage.Get(), renderContext, renderArgs, &posterContainer);
 
         ComPtr<IUIElement> touchTargetUIElement;
-        WrapInTouchTarget(adaptiveCardElement, posterContainer.Get(), nullptr, renderContext, true, &touchTargetUIElement);
+        WrapInTouchTarget(adaptiveCardElement, posterContainer.Get(), nullptr, renderContext, true, L"Adaptive.SelectAction", &touchTargetUIElement);
 
         // Create a panel to hold the poster and the media element
         ComPtr<IStackPanel> mediaStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
@@ -2959,6 +3168,7 @@ AdaptiveNamespaceStart
         IAdaptiveActionElement* action,
         IAdaptiveRenderContext* renderContext,
         bool fullWidth,
+        const std::wstring& style,
         IUIElement** finalElement)
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
@@ -3032,7 +3242,7 @@ AdaptiveNamespaceStart
         }
 
         // Style the hit target button
-        THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.SelectAction", buttonAsFrameworkElement.Get()));
+        THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, style.c_str(), buttonAsFrameworkElement.Get()));
 
         if (action != nullptr)
         {
@@ -3053,7 +3263,7 @@ AdaptiveNamespaceStart
     {
         if (selectAction != nullptr && supportsInteractivity)
         {
-            WrapInTouchTarget(adaptiveCardElement, uiElement, selectAction, renderContext, fullWidthTouchTarget, outUiElement);
+            WrapInTouchTarget(adaptiveCardElement, uiElement, selectAction, renderContext, fullWidthTouchTarget, L"Adaptive.SelectAction", outUiElement);
         }
         else
         {
