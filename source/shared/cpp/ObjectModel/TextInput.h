@@ -28,6 +28,9 @@ public:
     TextInputStyle GetTextInputStyle() const;
     void SetTextInputStyle(const TextInputStyle value);
 
+    std::shared_ptr<BaseActionElement> GetInlineAction() const;
+    void SetInlineAction(const std::shared_ptr<BaseActionElement> action);
+
 private:
     void PopulateKnownPropertiesSet() override;
 
@@ -36,6 +39,7 @@ private:
     bool m_isMultiline;
     unsigned int m_maxLength;
     TextInputStyle m_style;
+    std::shared_ptr<BaseActionElement> m_inlineAction;
 };
 
 class TextInputParser : public BaseCardElementParser

@@ -140,7 +140,7 @@ std::shared_ptr<Column> Column::Deserialize(
     column->m_items = std::move(cardElements);
 
     // Parse optional selectAction
-    column->SetSelectAction(ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::SelectAction, false));
+    column->SetSelectAction(ParseUtil::GetAction(elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::SelectAction, false));
 
     return column;
 }
