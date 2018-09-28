@@ -50,7 +50,6 @@ using namespace AdaptiveCards;
 + (ACOHostConfigParseResult *)fromJson:(NSString *)payload resourceResolvers:(ACOResourceResolvers *)resolvers
 {
     ACOHostConfigParseResult *result = nil;
-    
     if(payload) {
         try {
             std::shared_ptr<HostConfig> cHostConfig = std::make_shared<HostConfig>(AdaptiveCards::HostConfig::DeserializeFromString(std::string([payload UTF8String])));
@@ -96,7 +95,7 @@ using namespace AdaptiveCards;
     if(!scheme) {
         return nil;
     }
-    
+
     return [_resolvers getResourceResolverForScheme:scheme];
 }
 
@@ -299,10 +298,10 @@ using namespace AdaptiveCards;
 }
 // find date and time string, and replace them in NSDateFormatterCompactStyle, NSDateFormatterMediumStyle or
 // NSDateFormatterLongStyle of local language
-+ (std::string) getLocalizedDate:(std::shared_ptr<TextBlock> const &)txtBlck
++ (std::string) getLocalizedDate:(std::string const) text language:(std::string const) language
 {
     std::string dateParsedString;
-    std::vector<std::shared_ptr<DateTimePreparsedToken>> DateTimePreparsedTokens =  DateTimePreparser(txtBlck->GetText()).GetTextTokens();
+    std::vector<std::shared_ptr<DateTimePreparsedToken>> DateTimePreparsedTokens =  DateTimePreparser(text).GetTextTokens();
     for(auto section : DateTimePreparsedTokens){
         if(section->GetFormat() != DateTimePreparsedTokenFormat::RegularString) {
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -322,7 +321,7 @@ using namespace AdaptiveCards;
                 outputFormatter.dateStyle = NSDateFormatterLongStyle;
             }
 
-            NSString *languageType= [NSString stringWithCString:txtBlck->GetLanguage().c_str() encoding:NSUTF8StringEncoding];
+            NSString *languageType= [NSString stringWithCString:language.c_str() encoding:NSUTF8StringEncoding];
             if(languageType.length > 0){
                 outputFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:languageType];
             }

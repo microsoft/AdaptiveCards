@@ -2199,11 +2199,16 @@ AdaptiveNamespaceStart
             ComPtr<IAdaptiveFactSetConfig> factSetConfig;
             THROW_IF_FAILED(hostConfig->get_FactSet(&factSetConfig));
 
+            // Get Language
+            HString language;
+            THROW_IF_FAILED(localFact->get_Language(language.GetAddressOf()));
+
             // Create the title xaml textblock and style it from Host options
             ComPtr<ITextBlock> titleTextBlock = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
             HString factTitle;
             THROW_IF_FAILED(localFact->get_Title(factTitle.GetAddressOf()));
-            THROW_IF_FAILED(titleTextBlock->put_Text(factTitle.Get()));
+            THROW_IF_FAILED(SetTextOnXamlTextBlock(renderContext, factTitle.Get(), language.Get(), titleTextBlock.Get()));
+
             ComPtr<IAdaptiveTextConfig> titleTextConfig;
             THROW_IF_FAILED(factSetConfig->get_Title(&titleTextConfig));
 
@@ -2215,7 +2220,8 @@ AdaptiveNamespaceStart
             ComPtr<ITextBlock> valueTextBlock = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
             HString factValue;
             THROW_IF_FAILED(localFact->get_Value(factValue.GetAddressOf()));
-            THROW_IF_FAILED(valueTextBlock->put_Text(factValue.Get()));
+            THROW_IF_FAILED(SetTextOnXamlTextBlock(renderContext, factValue.Get(), language.Get(), valueTextBlock.Get()));
+
             ComPtr<IAdaptiveTextConfig> valueTextConfig;
             THROW_IF_FAILED(factSetConfig->get_Value(&valueTextConfig));
             StyleXamlTextBlock(valueTextConfig.Get(), containerStyle, valueTextBlock.Get(), hostConfig.Get());

@@ -111,7 +111,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
             [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
             [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
             [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
-            
+
             [imgView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
             [imgView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
             [imgView setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
@@ -163,12 +163,13 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 
                 /// tag a base card element with unique key
                 NSString *key = [NSString stringWithCString:textBlockElement->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
-                std::string text;
+                std::string text = textBlockElement->GetText();
                 [self processTextConcurrently:textBlockElement
-                                  elementType:CardElementType::TextBlock
+                              elementType:CardElementType::TextBlock
                                    textConfig:textConfig
                                     elementId:key
-                                         text:text];
+                                         text:text
+                                         lang:textBlockElement->GetLanguage()];
                 break;
             }
             case CardElementType::FactSet:
@@ -180,18 +181,20 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                 int rowFactId = 0;
                 for(auto fact : factSet->GetFacts()) {
                     std::string title = fact->GetTitle();
-                    [self processTextConcurrently:elem
+                    [self processTextConcurrently:factSet
                                       elementType:CardElementType::FactSet
                                        textConfig:[_hostConfig getHostConfig]->factSet.title
                                         elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
-                                             text:title];
+                                             text:title
+                                             lang:fact->GetLanguage()];
 
                     std::string value = fact->GetValue();
-                    [self processTextConcurrently:elem
+                    [self processTextConcurrently:factSet
                                       elementType:CardElementType::FactSet
                                        textConfig:[_hostConfig getHostConfig]->factSet.value
                                         elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
-                                             text:fact->GetValue()];
+                                             text:value
+                                             lang:fact->GetLanguage()];
                 }
                 break;
             }
@@ -282,6 +285,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                      textConfig:(TextConfig const &)textConfig
                       elementId:(NSString *)elementId
                            text:(std::string  const &)text
+                           lang:(std::string const &)lang
 {
     std::shared_ptr<BaseCardElement> textElementForBlock = textElement;
     struct TextConfig textConfigForBlock = textConfig;
@@ -290,17 +294,10 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     /// dispatch to concurrent queue
     dispatch_group_async(_async_tasks_group, _global_queue,
         ^{
-            NSString* parsedString = nil;
-            std::shared_ptr<MarkDownParser> markDownParser = nullptr;
+            std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textForBlock language:lang]);
 
-            if(CardElementType::TextBlock == elementTypeForBlock){
-                std::shared_ptr<TextBlock> textBlockElement = std::dynamic_pointer_cast<TextBlock>(textElementForBlock);
-                markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textBlockElement]);
-            } else {
-                markDownParser = std::make_shared<MarkDownParser>(textForBlock);
-            }
             // MarkDownParser transforms text with MarkDown to a html string
-            parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
+            NSString* parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
             NSDictionary *data = nil;
 
             // use Apple's html rendering only if the string has markdowns

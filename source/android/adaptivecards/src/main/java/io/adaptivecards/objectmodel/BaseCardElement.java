@@ -53,7 +53,7 @@ public class BaseCardElement {
   // check if the C++ code finds an object and just return ourselves if it doesn't
   public BaseCardElement findImplObj() {
      Object o = swigOriginalObject();
-     return o != null ? (BaseCardElement)o : this; 
+     return o != null ? (BaseCardElement)o : this;
   }
 
   public BaseCardElement(CardElementType type, Spacing spacing, boolean separator, HeightType height) {

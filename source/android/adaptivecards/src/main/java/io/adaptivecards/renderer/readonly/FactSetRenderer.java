@@ -3,11 +3,8 @@ package io.adaptivecards.renderer.readonly;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -17,7 +14,6 @@ import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.Fact;
 import io.adaptivecards.objectmodel.FactVector;
@@ -25,8 +21,6 @@ import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.FactSet;
 import io.adaptivecards.objectmodel.TextConfig;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
-
-import java.util.Vector;
 
 public class FactSetRenderer extends BaseCardElementRenderer
 {
@@ -44,7 +38,7 @@ public class FactSetRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    static TextView createTextView(Context context, String text, TextConfig textConfig, HostConfig hostConfig, long spacing, ContainerStyle containerStyle)
+    static TextView createTextView(Context context, CharSequence text, TextConfig textConfig, HostConfig hostConfig, long spacing, ContainerStyle containerStyle)
     {
         TextView textView = new TextView(context);
         textView.setText(text);
@@ -115,8 +109,16 @@ public class FactSetRenderer extends BaseCardElementRenderer
                 factRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
             }
 
-            factRow.addView(createTextView(context, fact.GetTitle(), hostConfig.getFactSet().getTitle(), hostConfig, spacing, containerStyle));
-            factRow.addView(createTextView(context, fact.GetValue(), hostConfig.getFactSet().getValue(), hostConfig, 0, containerStyle));
+            DateTimeParser parser = new DateTimeParser(fact.GetLanguage());
+
+            // Handle Title
+            String titleWithFormattedDates = parser.GenerateString(fact.GetTitleForDateParsing());
+            factRow.addView(createTextView(context, RendererUtil.handleSpecialText(titleWithFormattedDates), hostConfig.getFactSet().getTitle(), hostConfig, spacing, containerStyle));
+
+            // Handle Value
+            String valueWithFormattedDates = parser.GenerateString(fact.GetValueForDateParsing());
+            factRow.addView(createTextView(context, RendererUtil.handleSpecialText(valueWithFormattedDates), hostConfig.getFactSet().getValue(), hostConfig, 0, containerStyle));
+
             tableLayout.addView(factRow);
         }
 

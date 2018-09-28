@@ -1,19 +1,13 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.support.v4.app.FragmentManager;
-import android.text.Editable;
-import android.text.Html;
 import android.text.Layout;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -25,10 +19,8 @@ import android.widget.TextView;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HeightType;
-import io.adaptivecards.objectmodel.MarkDownParser;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.FontSizesConfig;
 import io.adaptivecards.objectmodel.HorizontalAlignment;
@@ -38,10 +30,7 @@ import io.adaptivecards.objectmodel.TextSize;
 import io.adaptivecards.objectmodel.TextWeight;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 
-import org.xml.sax.XMLReader;
-
 import java.util.HashMap;
-import java.util.Vector;
 
 public class TextBlockRenderer extends BaseCardElementRenderer
 {
@@ -130,80 +119,6 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         {
             textView.setTextColor(getColor(foregroundColor, hostConfig.getContainerStyles().getDefaultPalette().getForegroundColors(), isSubtle));
         }
-    }
-
-    // Class to replace ul and li tags
-    public class UlTagHandler implements Html.TagHandler{
-        private int tagNumber = 0;
-        private boolean orderedList = false;
-
-        @Override
-        public void handleTag(boolean opening, String tag, Editable output,
-                              XMLReader xmlReader) {
-            if (tag.equals("ul") && !opening)
-            {
-                output.append("\n");
-            }
-
-            if (tag.equals("listItem") && opening)
-            {
-                if (orderedList)
-                {
-                    output.append("\n");
-                    output.append(String.valueOf(tagNumber));
-                    output.append(". ");
-                    tagNumber++;
-                }
-                else
-                {
-                    output.append("\n• ");
-                }
-            }
-
-            if (tag.equals("ol") && opening)
-            {
-                orderedList = true;
-                tagNumber = 1;
-            }
-        }
-    }
-
-    private CharSequence trimHtmlString(Spanned htmlString)
-    {
-        int numToRemoveFromEnd = 0;
-        int numToRemoveFromStart = 0;
-
-        for (int i = htmlString.length()-1; i >= 0; --i)
-        {
-            if (htmlString.charAt(i) == '\n')
-            {
-                numToRemoveFromEnd++;
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        for (int i = 0; i <= htmlString.length()-1; ++i)
-        {
-            if (htmlString.charAt(i) == '\n')
-            {
-                numToRemoveFromStart++;
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        //Sanity check
-        if (numToRemoveFromStart + numToRemoveFromEnd >= htmlString.length())
-        {
-            return htmlString;
-        }
-
-        return htmlString.subSequence(numToRemoveFromStart, htmlString.length()-numToRemoveFromEnd);
     }
 
     static class TouchTextView implements View.OnTouchListener
@@ -295,29 +210,15 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         DateTimeParser parser = new DateTimeParser(textBlock.GetLanguage());
         String textWithFormattedDates = parser.GenerateString(textBlock.GetTextForDateParsing());
 
-        MarkDownParser markDownParser = new MarkDownParser(textWithFormattedDates);
-        String textString = markDownParser.TransformToHtml();
+        CharSequence text = RendererUtil.handleSpecialText(textWithFormattedDates);
+        textView.setText(text);
 
-        // preprocess string to change <li> to <listItem> so we get a chance to handle them
-        textString = textString.replace("<li>", "<listItem>");
-
-        Spanned htmlString;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-        {
-            htmlString = Html.fromHtml(textString, Html.FROM_HTML_MODE_COMPACT, null, new UlTagHandler());
-        }
-        else
-        {
-            // Before Android N, html.fromHtml adds two newline characters to end of string
-            htmlString = Html.fromHtml(textString, null, new UlTagHandler());
-        }
-        textView.setText(trimHtmlString(htmlString));
         if (!textBlock.GetWrap())
         {
             textView.setMaxLines(1);
         }
         textView.setEllipsize(TextUtils.TruncateAt.END);
-        textView.setOnTouchListener(new TouchTextView(new SpannableString(trimHtmlString(htmlString))));
+        textView.setOnTouchListener(new TouchTextView(new SpannableString(text)));
         textView.setHorizontallyScrolling(false);
         setTextFormat(textView, hostConfig.getFontFamily(), textBlock.GetTextWeight());
         setTextSize(context, textView, textBlock.GetTextSize(), hostConfig);

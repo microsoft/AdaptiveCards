@@ -19,6 +19,8 @@ public:
     std::vector<std::shared_ptr<Fact>>& GetFacts();
     const std::vector<std::shared_ptr<Fact>>& GetFacts() const;
 
+    void SetLanguage(const std::string& value);
+
 private:
     void PopulateKnownPropertiesSet() override;
 
