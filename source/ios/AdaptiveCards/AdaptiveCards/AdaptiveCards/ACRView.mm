@@ -88,23 +88,9 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card] inputs:inputs context:self containingView:self hostconfig:_hostConfig];
 
     ContainerStyle style = ([_hostConfig getHostConfig]->adaptiveCard.allowCustomStyle)? [_adaptiveCard card]->GetStyle(): ContainerStyle::Default;
-    if(style != ContainerStyle::None)
-    {
-        unsigned long num = 0;
-        if(style == ContainerStyle::Emphasis)
-        {
-            num = std::stoul([_hostConfig getHostConfig]->containerStyles.emphasisPalette.backgroundColor.substr(1), nullptr, 16);
-        }
-        else
-        {
-            num = std::stoul([_hostConfig getHostConfig]->containerStyles.defaultPalette.backgroundColor.substr(1), nullptr, 16);
-        }
-        newView.backgroundColor =
-        [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255.0
-                        green:((num & 0x0000FF00) >>  8) / 255.0
-                         blue:((num & 0x000000FF)) / 255.0
-                        alpha:((num & 0xFF000000) >> 24) / 255.0];
-    }
+
+    newView.backgroundColor = [_hostConfig getBackgroundColorForContainerStyle:
+        [ACOHostConfig getPlatformContainerStyle:style]];
 
     NSString *key = [NSString stringWithCString:[_adaptiveCard card]->GetBackgroundImage().c_str() encoding:[NSString defaultCStringEncoding]];
     if([key length]){

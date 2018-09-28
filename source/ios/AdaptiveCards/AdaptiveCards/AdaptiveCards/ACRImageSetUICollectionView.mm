@@ -78,6 +78,8 @@ using namespace AdaptiveCards;
         cell.contentView.frame = content.frame;
     }
     [cell.contentView addSubview:content];
+    [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:content attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
+    [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:content attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
     return cell;
 }
 

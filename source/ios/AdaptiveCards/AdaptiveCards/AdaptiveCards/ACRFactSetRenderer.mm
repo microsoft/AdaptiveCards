@@ -43,6 +43,7 @@
     lab.textContainer.lineFragmentPadding = 0;
     lab.textContainerInset = UIEdgeInsetsZero;
     lab.layoutManager.usesFontLeading = false;
+    lab.backgroundColor = [UIColor clearColor];
     lab.tag = eACRUIFactSetTag;
 
     NSMutableAttributedString *content = nil;

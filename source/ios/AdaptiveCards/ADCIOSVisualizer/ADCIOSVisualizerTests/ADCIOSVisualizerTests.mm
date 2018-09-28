@@ -105,7 +105,7 @@
     NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"Input.ChoiceSet" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
     NSDictionary<NSString *, NSString *> *expectedValue = @{
         @"myColor" : @"1",
-        @"myColor3" : @"1;3",
+        @"myColor3" : @"1,3",
         @"myColor2" : @"1",
         @"myColor4" : @"1"
         };

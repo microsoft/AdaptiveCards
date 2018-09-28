@@ -8,6 +8,8 @@
 
 #import <XCTest/XCTest.h>
 #import <AdaptiveCards/ACFramework.h>
+#import "AdaptiveCards/ACOHostConfigPrivate.h"
+#include <string>
 @interface ADCIOSVisualizerUITests : XCTestCase
 
 @end
@@ -50,7 +52,7 @@
 
     NSDictionary<NSString *, NSString *> *expectedValue = @{
                                                             @"myColor" : @"1",
-                                                            @"myColor3" : @"1;3",
+                                                            @"myColor3" : @"1,3",
                                                             @"myColor2" : @"1",
                                                             @"myColor4" : @"1"
                                                             };
@@ -74,7 +76,7 @@
     
     NSDictionary<NSString *, NSString *> *expectedValue = @{
                                                             @"myColor" : @"3",
-                                                            @"myColor3" : @"1;3",
+                                                            @"myColor3" : @"1,3",
                                                             @"myColor2" : @"1",
                                                             @"myColor4" : @"1"
                                                             };
@@ -116,6 +118,40 @@
 
     NSDictionary<NSString *, NSString *> *expectedValue = @{@"myColor":@"1",@"myColor3":@"",@"myColor2":@"1",@"myColor4":@"1"};
     [self verifyChoiceSetInput:expectedValue application:app];
+}
+
+- (void)testHexColorCodeConversion{
+    const std::string testHexColorCode1 = "#FFa", testHexColorCode2 = "#FF123456",
+        testHexColorCode3 = "#FF1234G6", testHexColorCode4 = "#FF12345G",
+        testHexColorCode5 = "#FF1234  ", testHexColorCode6 = "#FF    56",
+        testHexColorCode7 = "   #FF123", testHexColorCode8 = "# FF12345",
+        testHexColorCode9 = "#  FF1234";
+    UIColor *color1 = [ACOHostConfig convertHexColorCodeToUIColor:testHexColorCode1];
+    XCTAssertTrue(CGColorEqualToColor(color1.CGColor, UIColor.clearColor.CGColor));
+    
+    UIColor *color2 = [ACOHostConfig convertHexColorCodeToUIColor:testHexColorCode2];
+    XCTAssertTrue(!CGColorEqualToColor(color2.CGColor, UIColor.clearColor.CGColor));
+    
+    UIColor *color3 = [ACOHostConfig convertHexColorCodeToUIColor:testHexColorCode3];
+    XCTAssertTrue(CGColorEqualToColor(color3.CGColor, UIColor.clearColor.CGColor));
+    
+    UIColor *color4 = [ACOHostConfig convertHexColorCodeToUIColor:testHexColorCode4];
+    XCTAssertTrue(CGColorEqualToColor(color4.CGColor, UIColor.clearColor.CGColor));
+    
+    UIColor *color5 = [ACOHostConfig convertHexColorCodeToUIColor:testHexColorCode5];
+    XCTAssertTrue(CGColorEqualToColor(color5.CGColor, UIColor.clearColor.CGColor));
+    
+    UIColor *color6 = [ACOHostConfig convertHexColorCodeToUIColor:testHexColorCode6];
+    XCTAssertTrue(CGColorEqualToColor(color6.CGColor, UIColor.clearColor.CGColor));
+    
+    UIColor *color7 = [ACOHostConfig convertHexColorCodeToUIColor:testHexColorCode7];
+    XCTAssertTrue(CGColorEqualToColor(color7.CGColor, UIColor.clearColor.CGColor));
+    
+    UIColor *color8 = [ACOHostConfig convertHexColorCodeToUIColor:testHexColorCode8];
+    XCTAssertTrue(CGColorEqualToColor(color8.CGColor, UIColor.clearColor.CGColor));
+    
+    UIColor *color9 = [ACOHostConfig convertHexColorCodeToUIColor:testHexColorCode9];
+    XCTAssertTrue(CGColorEqualToColor(color9.CGColor, UIColor.clearColor.CGColor));
 }
 
 @end

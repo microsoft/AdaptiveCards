@@ -32,4 +32,10 @@ using namespace AdaptiveCards;
 // NSDateFormatterLongStyle of local language
 + (std::string) getLocalizedDate:(std::string const &)text language:(std::string const &)language;
 
++ (UIColor *)convertHexColorCodeToUIColor:(std::string const &)hexColorCode;
+
+- (UIColor *)getBackgroundColorForContainerStyle:(ACRContainerStyle)style;
+
++ (ACRContainerStyle)getPlatformContainerStyle:(ContainerStyle)style;
+
 @end
