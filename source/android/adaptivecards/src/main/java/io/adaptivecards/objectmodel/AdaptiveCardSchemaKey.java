@@ -61,6 +61,7 @@ public enum AdaptiveCardSchemaKey {
   Height,
   HorizontalAlignment,
   IconPlacement,
+  IconSize,
   IconUrl,
   Id,
   Image,

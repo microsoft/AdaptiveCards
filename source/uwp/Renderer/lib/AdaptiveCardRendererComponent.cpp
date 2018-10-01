@@ -81,8 +81,7 @@ AdaptiveNamespaceStart
     _Use_decl_annotations_
     HRESULT AdaptiveCardRenderer::get_HostConfig(IAdaptiveHostConfig** hostConfig)
     {
-        *hostConfig = m_hostConfig.Get();
-        return S_OK;
+        return m_hostConfig.CopyTo(hostConfig);
     }
 
     _Use_decl_annotations_

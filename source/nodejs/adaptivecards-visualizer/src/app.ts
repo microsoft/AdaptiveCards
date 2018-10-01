@@ -52,7 +52,7 @@ function renderCard(target: HTMLElement): HTMLElement {
             adaptiveCard.hostConfig = new AdaptiveCards.HostConfig(hostContainerOption.hostContainer.getHostConfig());
             adaptiveCard.parse(json);
 
-            wrapper.appendChild(hostContainerOption.hostContainer.render(adaptiveCard, cardContainer));            
+            wrapper.appendChild(hostContainerOption.hostContainer.render(adaptiveCard, cardContainer));
         });
 
         return target.appendChild(wrapper);
@@ -107,7 +107,12 @@ function filePickerChanged(evt) {
         let reader = new FileReader();
 
         reader.onload = function (e: ProgressEvent) {
-            currentCardPayload = (e.target as FileReader).result;
+            let downloadedPayload = (e.target as FileReader).result;
+
+            if (typeof downloadedPayload === "string") {
+                currentCardPayload = downloadedPayload;
+            }
+            
             switchToCardEditor();
         }
 
@@ -187,51 +192,15 @@ function hostContainerPickerChanged() {
 function setupContainerPicker() {
     hostContainerPicker = <HTMLSelectElement>document.getElementById("hostContainerPicker");
 
-
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Bot Framework WebChat",
-            new WebChatContainer("css/webchat.css")));
-
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Cortana Skills",
-            new CortanaContainer(true, "css/cortana.css")));
-
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Windows Timeline",
-            new TimelineContainer(320, 176, "css/timeline.css")));
-
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Skype (Preview)",
-            new SkypeContainer(350, "css/skype.css")));
-            
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Outlook Actionable Messages (Preview)",
-            new OutlookContainer("css/outlook.css")));
-
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Microsoft Teams (Preview)",
-            new TeamsContainer("css/teams.css")));
-
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Windows Notifications (Preview)",
-            new ToastContainer(362, "css/toast.css")));
-
-    hostContainerOptions.push(
-        new HostContainerOption(
-            "Bot Framework Other Channels (Image render)",
-            new BotFrameworkImageContainer(400, "css/bf.css")));
-
-    // hostContainerOptions.push(
-    //     new HostContainerOption(
-    //         "All at once",
-    //         new BotFrameworkImageContainer(400, "css/bf.css")));
+    hostContainerOptions.push(new HostContainerOption("Bot Framework Other Channels (Image render)", new BotFrameworkImageContainer(400, "css/bf.css")));
+    hostContainerOptions.push(new HostContainerOption("Bot Framework WebChat", new WebChatContainer("css/webchat.css")));
+    hostContainerOptions.push(new HostContainerOption("Cortana Skills", new CortanaContainer(true, "css/cortana.css")));
+    hostContainerOptions.push(new HostContainerOption("Microsoft Teams", new TeamsContainer("css/teams.css")));
+    hostContainerOptions.push(new HostContainerOption("Outlook Actionable Messages", new OutlookContainer("css/outlook.css")));
+    hostContainerOptions.push(new HostContainerOption("Windows Timeline", new TimelineContainer(320, 176, "css/timeline.css")));
+    hostContainerOptions.push(new HostContainerOption("Skype (Preview)", new SkypeContainer(350, "css/skype.css")));
+    hostContainerOptions.push(new HostContainerOption("Windows Notifications (Preview)", new ToastContainer(362, "css/toast.css")));
+    // hostContainerOptions.push(//     new HostContainerOption(//         "All at once", //         new BotFrameworkImageContainer(400, "css/bf.css")));
 
     hostContainerPicker.addEventListener("change", hostContainerPickerChanged);
 
@@ -310,7 +279,7 @@ function actionExecuted(action: AdaptiveCards.Action) {
                 }
             ]
         });
- 
+
     window.setTimeout(actionCompletedCallback, 2000, action);
     */
 
@@ -415,8 +384,8 @@ function monacoEditorLoaded() {
         getSelectedHostContainer().parseElement(element, json);
     }
 
-    AdaptiveCards.AdaptiveCard.onAnchorClicked = (rootCard: AdaptiveCards.AdaptiveCard, anchor: HTMLAnchorElement) => {
-        return getSelectedHostContainer().anchorClicked(rootCard, anchor);
+    AdaptiveCards.AdaptiveCard.onAnchorClicked = (element: AdaptiveCards.CardElement, anchor: HTMLAnchorElement) => {
+        return getSelectedHostContainer().anchorClicked(element, anchor);
     }
 
     currentConfigPayload = Constants.defaultConfigPayload;
@@ -434,7 +403,7 @@ function monacoEditorLoaded() {
 
     /*
     Test additional events:
- 
+
     Adaptive.AdaptiveCard.onInlineCardExpanded = inlineCardExpanded;
     Adaptive.AdaptiveCard.onElementVisibilityChanged = elementVisibilityChanged;
     */

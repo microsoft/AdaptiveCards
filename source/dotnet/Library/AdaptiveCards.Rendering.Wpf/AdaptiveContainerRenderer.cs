@@ -8,10 +8,35 @@ namespace AdaptiveCards.Rendering.Wpf
     {
         public static FrameworkElement Render(AdaptiveContainer container, AdaptiveRenderContext context)
         {
-            var containerStyle = context.Config.ContainerStyles.Default;
             var uiContainer = new Grid();
             //uiContainer.Margin = new Thickness(context.Config.Spacing.Padding);
             uiContainer.Style = context.GetStyle("Adaptive.Container");
+
+            if (container.Style != null)
+            {
+                // Apply background color
+                var containerStyle = context.Config.ContainerStyles.Default;
+                if (container.Style == AdaptiveContainerStyle.Emphasis)
+                {
+                    containerStyle = context.Config.ContainerStyles.Emphasis;
+                }
+
+                uiContainer.SetBackgroundColor(containerStyle.BackgroundColor, context);
+            }
+
+            switch (container.VerticalContentAlignment)
+            {
+                case AdaptiveVerticalContentAlignment.Center:
+                    uiContainer.VerticalAlignment = VerticalAlignment.Center;
+                    break;
+                case AdaptiveVerticalContentAlignment.Bottom:
+                    uiContainer.VerticalAlignment = VerticalAlignment.Bottom;
+                    break;
+                case AdaptiveVerticalContentAlignment.Top:
+                default:
+                    break;
+            }
+
             AddContainerElements(uiContainer, container.Items, context);
 
             if (container.SelectAction != null)
@@ -20,7 +45,6 @@ namespace AdaptiveCards.Rendering.Wpf
             }
 
             Grid uiOuterContainer = new Grid();
-            uiOuterContainer.Background = context.GetColorBrush(containerStyle.BackgroundColor);
             uiOuterContainer.Children.Add(uiContainer);
             Border border = new Border();
             border.Child = uiOuterContainer;
@@ -45,9 +69,31 @@ namespace AdaptiveCards.Rendering.Wpf
                         uiElement.Margin = new Thickness(0, spacing, 0, 0);
                     }
 
-                    uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                    Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
-                    uiContainer.Children.Add(uiElement);
+                    if (cardElement.Height == AdaptiveHeight.Auto)
+                    {
+                        uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                        Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
+                        uiContainer.Children.Add(uiElement);
+                    }
+                    else
+                    {
+                        if (cardElement.Type == "Container")
+                        {
+                            uiContainer.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                            Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
+                            uiContainer.Children.Add(uiElement);
+                        }
+                        else
+                        {
+                            StackPanel panel = new StackPanel();
+                            panel.Children.Add(uiElement);
+
+                            uiContainer.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                            Grid.SetRow(panel, uiContainer.RowDefinitions.Count - 1);
+                            uiContainer.Children.Add(panel);
+                        }
+                    }
+                    
                 }
             }
         }

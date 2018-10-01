@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "docons";
+    src: url("../content/fonts/docons.woff") format('woff');
+}
+
 html {
     overflow: auto;
 }
@@ -6,6 +11,13 @@ body {
     font-size: 14px;
     font-family: segoe-ui_normal,Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif;
     min-height: 100px;
+}
+
+body > #headerAreaHolder {
+    -webkit-box-ordinal-group: 3 !important;
+    -webkit-order: 0 !important;
+    -ms-flex-order: 0 !important;
+     order: 0 !important;
 }
 
 
@@ -65,8 +77,8 @@ h6 { font-size: 12px; }
 }
 
 .videobanner {
-    width: 100%;
-    float: left;
+    width: calc(100% + 20vw);
+    margin-left: -10vw;
     background-color: #0078D7;
 }
 
@@ -165,7 +177,7 @@ s {
     color: #0078d7;
 }
 
-.toc.todo>ul {
+.toc.todo > ul {
     display: block;
     margin-left: 0;
     padding-left: 0;
@@ -181,7 +193,7 @@ ul, menu, dir {
     -webkit-padding-start: 40px;
 }
 
-.mainContainer[dir=rtl] main ol.clean, .mainContainer[dir=rtl] main ul.clean, main ol.clean, main ul.clean, ol, ul {
-     /* docs css removes all padding. we want it back */
+/* docs css removes list padding. we want it back */
+.ac-textBlock > ol, .ac-textBlock > ul {
     padding-left: 40px;
 }

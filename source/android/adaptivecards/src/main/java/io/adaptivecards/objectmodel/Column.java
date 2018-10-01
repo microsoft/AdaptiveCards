@@ -108,8 +108,8 @@ public class Column extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Column_SetVerticalContentAlignment(swigCPtr, this, value.swigValue());
   }
 
-  public void GetResourceInformation(SWIGTYPE_p_std__vectorT_RemoteResourceInformation_t resourceInfo) {
-    AdaptiveCardObjectModelJNI.Column_GetResourceInformation(swigCPtr, this, SWIGTYPE_p_std__vectorT_RemoteResourceInformation_t.getCPtr(resourceInfo));
+  public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {
+    AdaptiveCardObjectModelJNI.Column_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceInfo), resourceInfo);
   }
 
   public static Column dynamic_cast(BaseCardElement baseCardElement) {

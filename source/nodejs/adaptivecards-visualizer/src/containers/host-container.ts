@@ -119,7 +119,7 @@ export abstract class HostContainer {
         // Do nothing in base implementation
     }
 
-    public anchorClicked(rootCard: AdaptiveCard, anchor: HTMLAnchorElement): boolean {
+    public anchorClicked(element: CardElement, anchor: HTMLAnchorElement): boolean {
         // Not handled by the host container by default
         return false;
     }

@@ -217,17 +217,18 @@
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:jsonStr];
     if(cardParseResult.isValid){
         ACRRegistration *registration = [ACRRegistration getInstance];
-            
+
         CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
         [registration setCustomElementParser:progressBarRenderer];
-
+        _config = hostconfigParseResult.config;
         renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:335];
-    }	
+    }
     
     if(renderResult.succeeded)
     {
         ACRView *ad = renderResult.view;
         ad.acrActionDelegate = self;
+        ad.mediaDelegate = self;
         if(self.curView)
             [self.curView removeFromSuperview];
 
@@ -263,23 +264,50 @@
     self.hostconfig = payload;
 }
 
-- (void) didFetchUserResponses:(ACOAdaptiveCard *)card action:(ACOBaseActionElement *)action
+- (void)didFetchUserResponses:(ACOAdaptiveCard *)card action:(ACOBaseActionElement *)action
 {
     if(action.type == ACROpenUrl){
         NSURL *url = [NSURL URLWithString:[action url]];
         SFSafariViewController *svc = [[SFSafariViewController alloc] initWithURL:url];
         [self presentViewController:svc animated:YES completion:nil];
-    }
-    else if(action.type == ACRSubmit){
+    } else if(action.type == ACRSubmit){
         NSData * userInputsAsJson = [card inputs];
         NSString *str = [[NSString alloc] initWithData:userInputsAsJson encoding:NSUTF8StringEncoding];
+        if(!_userResponseLabel) {
+            _userResponseLabel = [[UILabel alloc] init];
+            _userResponseLabel.numberOfLines = 0;
+            _userResponseLabel.backgroundColor = UIColor.groupTableViewBackgroundColor;
+            _userResponseLabel.accessibilityIdentifier = @"ACRUserResponse";
+            [(UIStackView *)self.curView addArrangedSubview:_userResponseLabel];
+        }
+        _userResponseLabel.text = str;
         NSLog(@"user response fetched: %@ with %@", str, [action data]);
     }
 }
 
-- (void)didFetchSecondaryView:(ACOAdaptiveCard *)card navigationController:(UINavigationController *)navigationController{
-    [self presentViewController:navigationController animated:YES completion:nil];
+- (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame
+{
+    [self.scrView scrollRectToVisible:newFrame animated:YES];
 }
+
+- (void)didChangeVisibility:(UIButton *)button isVisible:(BOOL)isVisible
+{
+    if(isVisible)
+    {
+        button.backgroundColor = [UIColor redColor];
+    }
+    else
+    {
+        button.backgroundColor = [UIColor colorWithRed:0.11 green:0.68 blue:0.97 alpha:1.0];
+        [self.scrView layoutIfNeeded];
+    }
+}
+
+- (void)didFetchMediaViewController:(AVPlayerViewController *)controller card:(ACOAdaptiveCard *)card {
+    [self addChildViewController:controller];    
+    [controller didMoveToParentViewController:self];
+}
+
 - (UIView *)renderButtons:(ACRView *)rootView
                    inputs:(NSMutableArray *)inputs
                 superview:(UIView<ACRIContentHoldingView> *)superview

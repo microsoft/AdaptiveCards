@@ -48,7 +48,10 @@ namespace AdaptiveCards
                 if (value == null)
                     Data = null;
                 else
-                    Data = JsonConvert.DeserializeObject(value);
+                    Data = JsonConvert.DeserializeObject(value, new JsonSerializerSettings
+                    {
+                        Converters = { new StrictIntConverter() }
+                    });
             }
         }
     }

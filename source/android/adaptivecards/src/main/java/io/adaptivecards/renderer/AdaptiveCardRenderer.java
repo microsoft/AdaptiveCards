@@ -22,6 +22,7 @@ import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.IconPlacement;
 import io.adaptivecards.objectmodel.Spacing;
+import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.http.HttpRequestResult;
@@ -29,7 +30,7 @@ import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public class AdaptiveCardRenderer
 {
-    public static final double VERSION = 1.0;
+    public static final String VERSION = "1.1";
 
     protected AdaptiveCardRenderer()
     {
@@ -131,6 +132,21 @@ public class AdaptiveCardRenderer
             layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
 
+        VerticalContentAlignment contentAlignment = adaptiveCard.GetVerticalContentAlignment();
+        switch (contentAlignment)
+        {
+            case Center:
+                layout.setGravity(Gravity.CENTER_VERTICAL);
+                break;
+            case Bottom:
+                layout.setGravity(Gravity.BOTTOM);
+                break;
+            case Top:
+            default:
+                layout.setGravity(Gravity.TOP);
+                break;
+        }
+
         layout.setOrientation(LinearLayout.VERTICAL);
         int padding = Util.dpToPixels(context, hostConfig.getSpacing().getPaddingSpacing());
         layout.setPadding(padding, padding, padding, padding);
@@ -138,10 +154,6 @@ public class AdaptiveCardRenderer
         rootLayout.addView(layout);
 
         BaseCardElementVector baseCardElementList = adaptiveCard.GetBody();
-        if (baseCardElementList == null || baseCardElementList.size() <= 0)
-        {
-            throw new IllegalArgumentException("Adaptive Card does not contain a body.");
-        }
 
         ContainerStyle style = ContainerStyle.Default;
 

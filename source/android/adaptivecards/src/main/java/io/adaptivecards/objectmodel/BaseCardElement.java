@@ -53,7 +53,7 @@ public class BaseCardElement {
   // check if the C++ code finds an object and just return ourselves if it doesn't
   public BaseCardElement findImplObj() {
      Object o = swigOriginalObject();
-     return o != null ? (BaseCardElement)o : this; 
+     return o != null ? (BaseCardElement)o : this;
   }
 
   public BaseCardElement(CardElementType type, Spacing spacing, boolean separator, HeightType height) {
@@ -63,6 +63,11 @@ public class BaseCardElement {
 
   public BaseCardElement(CardElementType type) {
     this(AdaptiveCardObjectModelJNI.new_BaseCardElement__SWIG_1(type.swigValue()), true);
+    AdaptiveCardObjectModelJNI.BaseCardElement_director_connect(this, swigCPtr, swigCMemOwn, true);
+  }
+
+  public BaseCardElement(BaseCardElement arg0) {
+    this(AdaptiveCardObjectModelJNI.new_BaseCardElement__SWIG_2(BaseCardElement.getCPtr(arg0), arg0), true);
     AdaptiveCardObjectModelJNI.BaseCardElement_director_connect(this, swigCPtr, swigCMemOwn, true);
   }
 
@@ -111,7 +116,7 @@ public class BaseCardElement {
   }
 
   public String Serialize() {
-    return AdaptiveCardObjectModelJNI.BaseCardElement_Serialize(swigCPtr, this);
+    return (getClass() == BaseCardElement.class) ? AdaptiveCardObjectModelJNI.BaseCardElement_Serialize(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseCardElement_SerializeSwigExplicitBaseCardElement(swigCPtr, this);
   }
 
   public JsonValue SerializeToJsonValue() {
@@ -126,8 +131,8 @@ public class BaseCardElement {
     AdaptiveCardObjectModelJNI.BaseCardElement_SetAdditionalProperties(swigCPtr, this, JsonValue.getCPtr(additionalProperties), additionalProperties);
   }
 
-  public void GetResourceInformation(SWIGTYPE_p_std__vectorT_RemoteResourceInformation_t resourceUris) {
-    if (getClass() == BaseCardElement.class) AdaptiveCardObjectModelJNI.BaseCardElement_GetResourceInformation(swigCPtr, this, SWIGTYPE_p_std__vectorT_RemoteResourceInformation_t.getCPtr(resourceUris)); else AdaptiveCardObjectModelJNI.BaseCardElement_GetResourceInformationSwigExplicitBaseCardElement(swigCPtr, this, SWIGTYPE_p_std__vectorT_RemoteResourceInformation_t.getCPtr(resourceUris));
+  public void GetResourceInformation(RemoteResourceInformationVector resourceUris) {
+    if (getClass() == BaseCardElement.class) AdaptiveCardObjectModelJNI.BaseCardElement_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceUris), resourceUris); else AdaptiveCardObjectModelJNI.BaseCardElement_GetResourceInformationSwigExplicitBaseCardElement(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceUris), resourceUris);
   }
 
   public Object swigOriginalObject() {

@@ -22,6 +22,7 @@
     __weak UIView<ACRIContentHoldingView> *_superview;
     __weak ACRView *_rootView;
     __weak UIView *_adcView;
+    __weak UIButton *_button;
     ACOBaseActionElement *_actionElement;
 }
 
@@ -29,6 +30,7 @@
                               config:(ACOHostConfig *)config
                            superview:(UIView<ACRIContentHoldingView> *)superview
                             rootView:(ACRView *)rootView
+                               button:(UIButton *)button
 {
     self = [super init];
     if(self)
@@ -38,6 +40,7 @@
         _superview = superview;
         _rootView = rootView;
         _adcView = nil;
+        _button = button;
         std::shared_ptr<ShowCardAction> showCardAction = std::make_shared<ShowCardAction>();
         showCardAction->SetCard(showCardActionElement->GetCard());
         _actionElement = [[ACOBaseActionElement alloc]initWithBaseActionElement:std::dynamic_pointer_cast<BaseActionElement>(showCardAction)];
@@ -83,24 +86,12 @@
 
     ACRContainerStyle style = (ACRContainerStyle)(containerStyle);
 
-    long num = 0;
-
     if(style == ACRNone) {
         style = [_superview style];
     }
-
-    if(style == ACREmphasis) {
-        num = std::stoul([_config getHostConfig]->containerStyles.emphasisPalette.backgroundColor.substr(1), nullptr, 16);
-    } else {
-        num = std::stoul([_config getHostConfig]->containerStyles.defaultPalette.backgroundColor.substr(1), nullptr, 16);
-    }
-
+    
     wrappingView.translatesAutoresizingMaskIntoConstraints = NO;
-    wrappingView.backgroundColor =
-    [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255.0
-                    green:((num & 0x0000FF00) >>  8) / 255.0
-                     blue:((num & 0x000000FF)) / 255.0
-                    alpha:((num & 0xFF000000) >> 24) / 255.0];
+    wrappingView.backgroundColor = [_config getBackgroundColorForContainerStyle:style];
 
     [_superview addArrangedSubview:_adcView];
     _adcView.hidden = YES;
@@ -111,6 +102,19 @@
     BOOL hidden = _adcView.hidden;
     [_superview hideAllShowCards];
     _adcView.hidden = (hidden == YES)? NO: YES;
+    if ([_rootView.acrActionDelegate respondsToSelector:@selector(didChangeVisibility: isVisible:)])
+    {
+        [_rootView.acrActionDelegate didChangeVisibility:_button isVisible:(!_adcView.hidden)];
+    }
+    
+    if([_rootView.acrActionDelegate respondsToSelector:@selector(didChangeViewLayout:newFrame:)] && _adcView.hidden == NO){
+        CGRect showCardFrame = _adcView.frame;
+        showCardFrame.origin = [_adcView convertPoint:_adcView.frame.origin toView:nil];
+        CGRect oldFrame = showCardFrame;
+        oldFrame.size.height = 0;
+        showCardFrame.size.height += [_config getHostConfig]->actions.showCard.inlineTopMargin;;
+        [_rootView.acrActionDelegate didChangeViewLayout:oldFrame newFrame:showCardFrame];
+    }
     [_rootView.acrActionDelegate didFetchUserResponses:[_rootView card] action:_actionElement];
 }
 
@@ -122,6 +126,10 @@
 - (void)hideShowCard
 {
     _adcView.hidden = YES;
+    if ([_rootView.acrActionDelegate respondsToSelector:@selector(didChangeVisibility: isVisible:)])
+    {
+        [_rootView.acrActionDelegate didChangeVisibility:_button isVisible:(!_adcView.hidden)];
+    }
 }
 
 @end

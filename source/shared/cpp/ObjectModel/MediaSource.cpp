@@ -49,7 +49,6 @@ void MediaSource::GetResourceInformation(std::vector<RemoteResourceInformation>&
 {
     RemoteResourceInformation sourceInfo;
     sourceInfo.url = GetUrl();
-    sourceInfo.resourceType = CardElementType::Media;
     sourceInfo.mimeType = GetMimeType();
 
     resourceInfo.push_back(sourceInfo);
@@ -62,7 +61,7 @@ std::shared_ptr<MediaSource> MediaSourceParser::Deserialize(
     std::vector<std::shared_ptr<AdaptiveCardParseWarning>>&,
     const Json::Value& json)
 {
-    std::shared_ptr<MediaSource> mediaSource{ new MediaSource() };
+    std::shared_ptr<MediaSource> mediaSource = std::make_shared<MediaSource>();
 
     mediaSource->SetMimeType(ParseUtil::GetString(json, AdaptiveCardSchemaKey::MimeType, false));
     mediaSource->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, false));

@@ -17,6 +17,7 @@
 #import "ColumnSet.h"
 #import "Column.h"
 #import "Image.h"
+#import "Media.h"
 #import "ACRImageRenderer.h"
 #import "TextBlock.h"
 #import "ACRTextBlockRenderer.h"
@@ -66,6 +67,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 {
     self = [self initWithFrame:CGRectMake(0, 0, width, 0)];
     if(self){
+        self.accessibilityLabel = @"ACR Root View";
         _adaptiveCard = card;
         if(config){
             _hostConfig = config;
@@ -79,44 +81,41 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 {
     NSMutableArray *inputs = [[NSMutableArray alloc] init];
 
+    if(self.frame.size.width){
+        [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.frame.size.width].active = YES;
+    }
+
     UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card] inputs:inputs context:self containingView:self hostconfig:_hostConfig];
 
-    if(self.frame.size.width){
-        [NSLayoutConstraint constraintWithItem:newView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.frame.size.width].active = YES;
-    }
     ContainerStyle style = ([_hostConfig getHostConfig]->adaptiveCard.allowCustomStyle)? [_adaptiveCard card]->GetStyle(): ContainerStyle::Default;
-    if(style != ContainerStyle::None)
-    {
-        unsigned long num = 0;
-        if(style == ContainerStyle::Emphasis)
-        {
-            num = std::stoul([_hostConfig getHostConfig]->containerStyles.emphasisPalette.backgroundColor.substr(1), nullptr, 16);
-        }
-        else
-        {
-            num = std::stoul([_hostConfig getHostConfig]->containerStyles.defaultPalette.backgroundColor.substr(1), nullptr, 16);
-        }
-        newView.backgroundColor =
-        [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255.0
-                        green:((num & 0x0000FF00) >>  8) / 255.0
-                         blue:((num & 0x000000FF)) / 255.0
-                        alpha:((num & 0xFF000000) >> 24) / 255.0];
-    }
-    //store key
-    NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)[_adaptiveCard card].get()];
-    NSString *key = [number stringValue];
+
+    newView.backgroundColor = [_hostConfig getBackgroundColorForContainerStyle:
+        [ACOHostConfig getPlatformContainerStyle:style]];
+
+    NSString *key = [NSString stringWithCString:[_adaptiveCard card]->GetBackgroundImage().c_str() encoding:[NSString defaultCStringEncoding]];
     if([key length]){
         UIView *imgView = nil;
+        UIImage *img = nil;
         if(![[ACRRegistration getInstance] isElementRendererOverriden:[ACRImageRenderer elemType]]){
-            UIImage *img = _imageViewMap[key];
+            img = _imageViewMap[key];
             imgView = [[ACRUIImageView alloc] initWithImage:img];
         }
-        if(imgView) {
+        if(img) {
             imgView.translatesAutoresizingMaskIntoConstraints = NO;
+            imgView.contentMode = UIViewContentModeScaleAspectFill;
             [newView addSubview:imgView];
             [newView sendSubviewToBack:imgView];
             [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
             [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
+
+            [imgView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+            [imgView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+            [imgView setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+            [imgView setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
         }
     }
     [self callDidLoadElementsIfNeeded];
@@ -164,12 +163,13 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 
                 /// tag a base card element with unique key
                 NSString *key = [NSString stringWithCString:textBlockElement->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
-                std::string text;
+                std::string text = textBlockElement->GetText();
                 [self processTextConcurrently:textBlockElement
-                                  elementType:CardElementType::TextBlock
+                              elementType:CardElementType::TextBlock
                                    textConfig:textConfig
                                     elementId:key
-                                         text:text];
+                                         text:text
+                                         lang:textBlockElement->GetLanguage()];
                 break;
             }
             case CardElementType::FactSet:
@@ -181,18 +181,20 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                 int rowFactId = 0;
                 for(auto fact : factSet->GetFacts()) {
                     std::string title = fact->GetTitle();
-                    [self processTextConcurrently:elem
+                    [self processTextConcurrently:factSet
                                       elementType:CardElementType::FactSet
                                        textConfig:[_hostConfig getHostConfig]->factSet.title
                                         elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
-                                             text:title];
+                                             text:title
+                                             lang:fact->GetLanguage()];
 
                     std::string value = fact->GetValue();
-                    [self processTextConcurrently:elem
+                    [self processTextConcurrently:factSet
                                       elementType:CardElementType::FactSet
                                        textConfig:[_hostConfig getHostConfig]->factSet.value
                                         elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
-                                             text:fact->GetValue()];
+                                             text:value
+                                             lang:fact->GetLanguage()];
                 }
                 break;
             }
@@ -214,6 +216,20 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                         [self loadImage:img->GetUrl()];
                     }
                 }
+                break;
+            }
+            case CardElementType::Media:
+            {
+                std::shared_ptr<Media> mediaElem = std::static_pointer_cast<Media>(elem);
+                std::string poster =  mediaElem->GetPoster();
+                if(poster.empty()) {
+                    poster = [_hostConfig getHostConfig]->media.defaultPoster;
+                }
+
+                if(!poster.empty()){
+                    [self loadImage:poster];
+                }
+
                 break;
             }
             // continue on search
@@ -269,6 +285,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                      textConfig:(TextConfig const &)textConfig
                       elementId:(NSString *)elementId
                            text:(std::string  const &)text
+                           lang:(std::string const &)lang
 {
     std::shared_ptr<BaseCardElement> textElementForBlock = textElement;
     struct TextConfig textConfigForBlock = textConfig;
@@ -277,21 +294,14 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     /// dispatch to concurrent queue
     dispatch_group_async(_async_tasks_group, _global_queue,
         ^{
-            NSString* parsedString = nil;
-            std::shared_ptr<MarkDownParser> markDownParser = nullptr;
+            std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textForBlock language:lang]);
 
-            if(CardElementType::TextBlock == elementTypeForBlock){
-                std::shared_ptr<TextBlock> textBlockElement = std::dynamic_pointer_cast<TextBlock>(textElementForBlock);
-                markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textBlockElement]);
-            } else {
-                markDownParser = std::make_shared<MarkDownParser>(textForBlock);
-            }
             // MarkDownParser transforms text with MarkDown to a html string
-            parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
+            NSString* parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
             NSDictionary *data = nil;
 
             // use Apple's html rendering only if the string has markdowns
-            if(markDownParser->HasHtmlTags()) {
+            if(markDownParser->HasHtmlTags() || markDownParser->IsEscaped()) {
                 NSString *fontFamilyName = nil;
                 if(!self->_hostConfig.fontFamilyNames){
                     fontFamilyName = @"'-apple-system',  'HelveticaNeue'";
@@ -349,9 +359,18 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 
 - (void)loadImage:(std::string const &)urlStr
 {
+    if(urlStr.empty()){
+        return;
+    }
+
     NSString *nSUrlStr = [NSString stringWithCString:urlStr.c_str()
-                                          encoding:[NSString defaultCStringEncoding]];
+                                            encoding:[NSString defaultCStringEncoding]];
     NSURL *url = [NSURL URLWithString:nSUrlStr];
+    // if url is relative, try again with adding base url from host config
+    if([url.relativePath isEqualToString:nSUrlStr]) {
+        url = [NSURL URLWithString:nSUrlStr relativeToURL:_hostConfig.baseURL];
+    }
+
     NSObject<ACOIResourceResolver> *imageResourceResolver = [_hostConfig getResourceResolverForScheme:[url scheme]];
     ImageLoadBlock imageloadblock = nil;
     if(!imageResourceResolver || ![imageResourceResolver respondsToSelector:@selector(resolveImageResource:)]) {

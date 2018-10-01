@@ -10,6 +10,30 @@
   background-color: rgba(0, 0, 0, 0.15);
 }
 
+.ac-media-poster.empty {
+  height: 200px;
+  background-color: #F2F2F2;
+}
+
+.ac-media-playButton {
+  width: 56px;
+  height: 56px;
+  border: 1px solid #EEEEEE;
+  border-radius: 28px;
+  box-shadow: 0px 0px 10px #EEEEEE;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: black;
+  cursor: pointer;
+}
+
+.ac-media-playButton-arrow {
+  color: black;
+}
+
+.ac-media-playButton:hover {
+  background-color: white;
+}
+
 a.ac-anchor {
   text-decoration: none;
 }

@@ -12,7 +12,8 @@
 
 - (instancetype)initWithStyle:(ACRContainerStyle)style
                   parentStyle:(ACRContainerStyle)parentStyle 
-                   hostConfig:(ACOHostConfig *)config;
+                   hostConfig:(ACOHostConfig *)config
+                    superview:(UIView<ACRIContentHoldingView> *)superview;
 - (void)addArrangedSubview:(UIView *)view;
 - (UILayoutConstraintAxis)getAxis;
 - (void)addTarget:(NSObject *)target;

@@ -39,6 +39,11 @@
 
     if(inputBlck->GetIsMultiline()) {
         ACRTextView *txtview = [[ACRTextView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) element:acoElem];
+        BOOL bRemove = NO;
+        if(![txtview.text length]) {
+            txtview.text = @"placeholder text";
+            bRemove = YES;
+        }
         txtview.id = [NSString stringWithCString:inputBlck->GetId().c_str()
                                          encoding:NSUTF8StringEncoding];
         txtview.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
@@ -54,7 +59,11 @@
         txtview.frame = boundingrect;
         txtview.keyboardType = UIKeyboardTypeDefault;
         txtview.scrollEnabled = NO;
-        
+
+        if(bRemove){
+            txtview.text = @"";
+        }
+
         CGRect frame = CGRectMake(0, 0, viewGroup.frame.size.width, 30);
         UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:frame];
         UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];

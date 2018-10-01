@@ -12,4 +12,6 @@
 @property CGFloat pixelWidth;
 @property BOOL hasStretchableView;
 
+- (UIView *)addPaddingSpace;
+
 @end

@@ -61,6 +61,8 @@ FOUNDATION_EXPORT const unsigned char AdaptiveCarsFrameworkVersionString[];
 
 #import <AdaptiveCards/ACRInputRenderer.h>
 
+#import <AdaptiveCards/ACRTextView.h>
+
 #import <AdaptiveCards/ACRInputTimeRenderer.h>
 
 #import <AdaptiveCards/ACRInputToggleRenderer.h>
@@ -82,3 +84,11 @@ FOUNDATION_EXPORT const unsigned char AdaptiveCarsFrameworkVersionString[];
 #import <AdaptiveCards/ACRActionShowCardRenderer.h>
 
 #import <AdaptiveCards/ACRActionSubmitRenderer.h>
+
+#import <AdaptiveCards/ACORemoteResourceInformation.h>
+
+#import <AdaptiveCards/ACRIMedia.h>
+
+#import <AdaptiveCards/ACOMediaEvent.h>
+
+#import <AdaptiveCards/ACRMediaTarget.h>

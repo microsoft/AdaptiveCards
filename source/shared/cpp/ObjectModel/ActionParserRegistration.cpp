@@ -20,23 +20,32 @@ namespace AdaptiveSharedNamespace {
         });
     }
 
-    void ActionParserRegistration::AddParser(std::string const &elementType, std::shared_ptr<ActionElementParser> parser)
+    void ActionParserRegistration::AddParser(std::string const &elementType,
+        std::shared_ptr<ActionElementParser> parser)
     {
+        // make sure caller isn't attempting to overwrite a known element's parser
         if (m_knownElements.find(elementType) == m_knownElements.end())
         {
             ActionParserRegistration::m_cardElementParsers[elementType] = parser;
         }
         else
         {
-            throw AdaptiveCardParseException(ErrorStatusCode::UnsupportedParserOverride, "Overriding known action parsers is unsupported");
+            throw AdaptiveCardParseException(ErrorStatusCode::UnsupportedParserOverride,
+                "Overriding known action parsers is unsupported");
         }
     }
 
     void ActionParserRegistration::RemoveParser(std::string const &elementType)
     {
-        if (m_knownElements.find(elementType) != m_knownElements.end())
+        // make sure caller isn't attempting to remove a known element's parser
+        if (m_knownElements.find(elementType) == m_knownElements.end())
         {
             ActionParserRegistration::m_cardElementParsers.erase(elementType);
+        }
+        else
+        {
+            throw AdaptiveCardParseException(ErrorStatusCode::UnsupportedParserOverride,
+                "Removing known action parsers is unsupported");
         }
     }
 
