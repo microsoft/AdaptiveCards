@@ -112,8 +112,8 @@ AdaptiveNamespaceStart
     void XamlBuilder::BuildXamlTreeFromAdaptiveCard(
         IAdaptiveCard* adaptiveCard,
         IFrameworkElement** xamlTreeRoot, 
-        AdaptiveCardRenderer* renderer,
-        AdaptiveRenderContext* renderContext,
+        IAdaptiveRenderContext* renderContext,
+        std::shared_ptr<XamlBuilder> xamlBuilder,
         boolean isOuterCard,
         ABI::AdaptiveNamespace::ContainerStyle defaultContainerStyle)
     {
@@ -142,9 +142,8 @@ AdaptiveNamespaceStart
             ComPtr<IAdaptiveRenderArgs> renderArgs;
             THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&renderArgs, containerStyle, nullptr));
 
-            ComPtr<IPanel> outerElementContainer;
             ComPtr<IPanel> bodyElementContainer;
-            ComPtr<IUIElement> rootElement = CreateRootCardElement(adaptiveCard, renderContext, renderArgs.Get(), &outerElementContainer, &bodyElementContainer);
+            ComPtr<IUIElement> rootElement = CreateRootCardElement(adaptiveCard, renderContext, renderArgs.Get(), xamlBuilder, &bodyElementContainer);
             ComPtr<IFrameworkElement> childElementContainerAsFE;
             THROW_IF_FAILED(rootElement.As(&childElementContainerAsFE));
 
@@ -177,7 +176,7 @@ AdaptiveNamespaceStart
                 {
                     unsigned int bodyCount;
                     THROW_IF_FAILED(body->get_Size(&bodyCount));
-                    BuildActions(actions.Get(), renderer, outerElementContainer.Get(), bodyElementContainer.Get(), bodyCount > 0, renderContext, containerStyle);
+                    BuildActions(actions.Get(), bodyElementContainer.Get(), bodyCount > 0, renderContext, containerStyle);
                 }
                 else
                 {
@@ -198,19 +197,19 @@ AdaptiveNamespaceStart
 
             THROW_IF_FAILED(childElementContainerAsFE.CopyTo(xamlTreeRoot));
 
-            if (isOuterCard)
+            if (isOuterCard && (xamlBuilder != nullptr))
             {
-                if (m_listeners.size() == 0)
+                if (xamlBuilder->m_listeners.size() == 0)
                 {
                     // If we're done and no one's listening for the images to load, make sure 
                     // any outstanding image loads are no longer tracked.
-                    m_imageLoadTracker.AbandonOutstandingImages();
+                    xamlBuilder->m_imageLoadTracker.AbandonOutstandingImages();
                 }
-                else if (m_imageLoadTracker.GetTotalImagesTracked() == 0)
+                else if (xamlBuilder->m_imageLoadTracker.GetTotalImagesTracked() == 0)
                 {
                     // If there are no images to track, fire the all images loaded
                     // event to signal the xaml is ready
-                    FireAllImagesLoaded();
+                    xamlBuilder->FireAllImagesLoaded();
                 }
             }
         }
@@ -322,7 +321,7 @@ AdaptiveNamespaceStart
         IAdaptiveCard* adaptiveCard,
         IAdaptiveRenderContext* renderContext,
         IAdaptiveRenderArgs* renderArgs,
-        IPanel** outerElementContainer,
+        std::shared_ptr<XamlBuilder> xamlBuilder,
         IPanel** bodyElementContainer)
     {
         // The root of an adaptive card is a composite of several elements, depending on the card
@@ -356,14 +355,7 @@ AdaptiveNamespaceStart
             ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImage, renderContext, renderArgs);
         }
 
-        // Outer panel that contains the main body and any inline show cards
-        ComPtr<WholeItemsPanel> outerPanel;
-        THROW_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&outerPanel));
-        outerPanel->SetMainPanel(TRUE);
-        ComPtr<IPanel> outerPanelAsPanel;
-        THROW_IF_FAILED(outerPanel.As(&outerPanelAsPanel));
-
-        // Now create the inner stack panel to serve as the root host for all the
+        // Now create the inner stack panel to serve as the root host for all the 
         // body elements and apply padding from host configuration
         ComPtr<WholeItemsPanel> bodyElementHost;
         THROW_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&bodyElementHost));
@@ -377,19 +369,16 @@ AdaptiveNamespaceStart
         ABI::AdaptiveNamespace::HeightType adaptiveCardHeightType;
         THROW_IF_FAILED(adaptiveCard->get_Height(&adaptiveCardHeightType));
 
-        XamlHelpers::AppendXamlElementToPanel(bodyElementHost.Get(), outerPanelAsPanel.Get(), adaptiveCardHeightType);
+        XamlHelpers::AppendXamlElementToPanel(bodyElementHost.Get(), rootAsPanel.Get(), adaptiveCardHeightType);
         THROW_IF_FAILED(bodyElementHost.CopyTo(bodyElementContainer));
-        
-        XamlHelpers::AppendXamlElementToPanel(outerPanelAsPanel.Get(), rootAsPanel.Get(), adaptiveCardHeightType);
-        THROW_IF_FAILED(outerPanelAsPanel.CopyTo(outerElementContainer));
 
-        if (m_fixedDimensions)
+        if (xamlBuilder && xamlBuilder->m_fixedDimensions)
         {
             ComPtr<IFrameworkElement> rootAsFrameworkElement;
             THROW_IF_FAILED(rootElement.As(&rootAsFrameworkElement));
-            rootAsFrameworkElement->put_Width(m_fixedWidth);
-            rootAsFrameworkElement->put_Height(m_fixedHeight);
-            rootAsFrameworkElement->put_MaxHeight(m_fixedHeight);
+            rootAsFrameworkElement->put_Width(xamlBuilder->m_fixedWidth);
+            rootAsFrameworkElement->put_Height(xamlBuilder->m_fixedHeight);
+            rootAsFrameworkElement->put_MaxHeight(xamlBuilder->m_fixedHeight);
         }
 
         if (adaptiveCardHeightType == ABI::AdaptiveNamespace::HeightType::Stretch)
@@ -420,10 +409,19 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveCardElement> adaptiveCardElement;
         THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
         ComPtr<IUIElement> backgroundImage;
-        BuildImage(adaptiveCardElement.Get(), renderContext, renderArgs, &backgroundImage);
-        if (backgroundImage == nullptr)
+
+        ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
+        THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
+
+        ComPtr<IAdaptiveElementRenderer> elementRenderer;
+        THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &elementRenderer));
+        if (elementRenderer != nullptr)
         {
-            return;
+            elementRenderer->Render(adaptiveCardElement.Get(), renderContext, renderArgs, &backgroundImage);
+            if (backgroundImage == nullptr)
+            {
+               return;
+            }
         }
 
 		// All background images should be stretched to fill the whole card.
@@ -724,14 +722,14 @@ AdaptiveNamespaceStart
     }
 
     void XamlBuilder::BuildShowCard(
-        AdaptiveCardRenderer* renderer,
         IAdaptiveShowCardActionConfig* showCardActionConfig,
         IAdaptiveActionElement* action,
-        AdaptiveRenderContext* renderContext,
+        IAdaptiveRenderContext* renderContext,
+        bool isBottomActionBar,
         IUIElement** uiShowCard)
     {
         ComPtr<IAdaptiveActionElement> localAction(action);
-        ComPtr<AdaptiveRenderContext> localRenderContext(renderContext);
+        ComPtr<IAdaptiveRenderContext> localRenderContext(renderContext);
         ComPtr<IAdaptiveShowCardAction> showCardAction;
         THROW_IF_FAILED(localAction.As(&showCardAction));
 
@@ -742,7 +740,7 @@ AdaptiveNamespaceStart
         THROW_IF_FAILED(showCardAction->get_Card(showCard.GetAddressOf()));
 
         ComPtr<IFrameworkElement> localUiShowCard;
-        BuildXamlTreeFromAdaptiveCard(showCard.Get(), localUiShowCard.GetAddressOf(), renderer, localRenderContext.Get(), false, showCardConfigStyle);
+        BuildXamlTreeFromAdaptiveCard(showCard.Get(), localUiShowCard.GetAddressOf(), localRenderContext.Get(), nullptr, false, showCardConfigStyle);
 
         ComPtr<IGrid2> showCardGrid;
         THROW_IF_FAILED(localUiShowCard.As(&showCardGrid));
@@ -765,7 +763,12 @@ AdaptiveNamespaceStart
 
         UINT32 inlineTopMargin;
         THROW_IF_FAILED(showCardActionConfig->get_InlineTopMargin(&inlineTopMargin));
-        Thickness margin = { 0, (double)inlineTopMargin, 0, 0 };
+
+        double sideMargin = (double)padding * -1;
+        double topMargin = isBottomActionBar ? inlineTopMargin + padding : inlineTopMargin;
+        double bottomMargin = isBottomActionBar ? (double) padding * -1 : 0;
+
+        Thickness margin = { sideMargin, topMargin, sideMargin, bottomMargin };
         THROW_IF_FAILED(showCardFrameworkElement->put_Margin(margin));
 
         ComPtr<IUIElement> showCardUIElement;
@@ -781,7 +784,7 @@ AdaptiveNamespaceStart
     void XamlBuilder::ArrangeButtonContent(
         IAdaptiveActionElement* action,
         IAdaptiveActionsConfig* actionsConfig,
-        AdaptiveRenderContext* renderContext,
+        IAdaptiveRenderContext* renderContext,
         ABI::AdaptiveNamespace::ContainerStyle containerStyle,
         ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
         bool allActionsHaveIcons,
@@ -820,13 +823,22 @@ AdaptiveNamespaceStart
             ComPtr<AdaptiveRenderArgs> childRenderArgs;
             THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&childRenderArgs, containerStyle, buttonContentsStackPanel.Get()));
 
+            ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
+            THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
+
             ComPtr<IUIElement> buttonIcon;
-            BuildImage(adaptiveCardElement.Get(), renderContext, childRenderArgs.Get(), &buttonIcon);
-            if (buttonIcon == nullptr)
+            ComPtr<IAdaptiveElementRenderer> elementRenderer;
+            THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Image").Get(), &elementRenderer));
+            if (elementRenderer != nullptr)
             {
-                XamlHelpers::SetContent(localButton.Get(), title.Get());
-                return;
+                elementRenderer->Render(adaptiveCardElement.Get(), renderContext, childRenderArgs.Get(), &buttonIcon);
+                if (buttonIcon == nullptr)
+                {
+                    XamlHelpers::SetContent(localButton.Get(), title.Get());
+                    return;
+                }
             }
+
 
             // Create title text block
             ComPtr<ITextBlock> buttonText = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
@@ -896,23 +908,21 @@ AdaptiveNamespaceStart
     _Use_decl_annotations_
     void XamlBuilder::BuildActions(
         IVector<IAdaptiveActionElement*>* children,
-        AdaptiveCardRenderer* renderer,
-        IPanel* parentPanel,
         IPanel* bodyPanel,
         bool insertSeparator,
-        AdaptiveRenderContext* renderContext,
+        IAdaptiveRenderContext* renderContext,
         ABI::AdaptiveNamespace::ContainerStyle containerStyle)
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
         ComPtr<IAdaptiveActionsConfig> actionsConfig;
         THROW_IF_FAILED(hostConfig->get_Actions(actionsConfig.GetAddressOf()));
-        ComPtr<AdaptiveRenderContext> strongRenderContext(renderContext);
+
         // Create a separator between the body and the actions
         if (insertSeparator)
         {
             ABI::AdaptiveNamespace::Spacing spacing;
-            THROW_IF_FAILED(actionsConfig->get_Spacing(&spacing)); 
+            THROW_IF_FAILED(actionsConfig->get_Spacing(&spacing));
 
             UINT spacingSize;
             THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), spacing, &spacingSize));
@@ -921,6 +931,25 @@ AdaptiveNamespaceStart
             auto separator = CreateSeparator(renderContext, spacingSize, 0, color);
             XamlHelpers::AppendXamlElementToPanel(separator.Get(), bodyPanel);
         }
+
+        ComPtr<IUIElement> actionSetControl;
+        BuildActionSetHelper(children, renderContext, true, &actionSetControl, containerStyle);
+
+        XamlHelpers::AppendXamlElementToPanel(actionSetControl.Get(), bodyPanel);
+    }
+
+    void XamlBuilder::BuildActionSetHelper(
+        IVector<IAdaptiveActionElement*>* children,
+        IAdaptiveRenderContext* renderContext,
+        bool isBottomActionBar,
+        IUIElement** actionSetControl,
+        ABI::AdaptiveNamespace::ContainerStyle containerStyle)
+    {
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+        ComPtr<IAdaptiveActionsConfig> actionsConfig;
+        THROW_IF_FAILED(hostConfig->get_Actions(actionsConfig.GetAddressOf()));
+        ComPtr<IAdaptiveRenderContext> strongRenderContext(renderContext);
 
         ABI::AdaptiveNamespace::ActionAlignment actionAlignment;
         THROW_IF_FAILED(actionsConfig->get_ActionAlignment(&actionAlignment));
@@ -1027,7 +1056,6 @@ AdaptiveNamespaceStart
 
         UINT currentAction = 0;
 
-        ComPtr<AdaptiveCardRenderer> strongRenderer(renderer);
         std::shared_ptr<std::vector<ComPtr<IUIElement>>> allShowCards = std::make_shared<std::vector<ComPtr<IUIElement>>>();
         ComPtr<IStackPanel> showCardsStackPanel = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
         ComPtr<IGridStatics> gridStatics;
@@ -1079,7 +1107,7 @@ AdaptiveNamespaceStart
                 if (actionType == ABI::AdaptiveNamespace::ActionType::ShowCard && 
                     showCardActionMode == ABI::AdaptiveNamespace::ActionMode::Inline)
                 {
-                    BuildShowCard(strongRenderer.Get(), showCardActionConfig.Get(), action.Get(), strongRenderContext.Get(), uiShowCard.GetAddressOf());
+                    BuildShowCard(showCardActionConfig.Get(), action.Get(), strongRenderContext.Get(), isBottomActionBar, uiShowCard.GetAddressOf());
                     allShowCards->push_back(uiShowCard);
 
                     ComPtr<IPanel> showCardsPanel;
@@ -1150,9 +1178,15 @@ AdaptiveNamespaceStart
         THROW_IF_FAILED(actionsPanel.As(&actionsPanelAsFrameworkElement));
         THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Actions", actionsPanelAsFrameworkElement.Get()));
 
-        // Buttons go into body panel, show cards go into outer panel so they're not inside the padding
-        XamlHelpers::AppendXamlElementToPanel(actionsPanel.Get(), bodyPanel);
-        XamlHelpers::AppendXamlElementToPanel(showCardsStackPanel.Get(), parentPanel);
+        ComPtr<IStackPanel> actionSet = XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+        ComPtr<IPanel> actionSetAsPanel;
+        actionSet.As(&actionSetAsPanel);
+
+        // Add buttons and show cards to panel
+        XamlHelpers::AppendXamlElementToPanel(actionsPanel.Get(), actionSetAsPanel.Get()); 
+        XamlHelpers::AppendXamlElementToPanel(showCardsStackPanel.Get(), actionSetAsPanel.Get());
+
+        THROW_IF_FAILED(actionSetAsPanel.CopyTo(actionSetControl));
     }
 
     _Use_decl_annotations_

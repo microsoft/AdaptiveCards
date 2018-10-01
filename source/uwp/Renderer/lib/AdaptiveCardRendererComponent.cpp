@@ -132,7 +132,7 @@ AdaptiveNamespaceStart
             m_xamlBuilder->SetEnableXamlImageHandling(true);
             try
             {
-                m_xamlBuilder->BuildXamlTreeFromAdaptiveCard(adaptiveCard, &xamlTreeRoot, this, renderContext.Get());
+                AdaptiveCards::Rendering::Uwp::XamlBuilder::BuildXamlTreeFromAdaptiveCard(adaptiveCard, &xamlTreeRoot, renderContext.Get(), m_xamlBuilder);
                 renderedCard->SetFrameworkElement(xamlTreeRoot.Get());
             }
             catch (...)
