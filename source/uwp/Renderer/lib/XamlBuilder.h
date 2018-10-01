@@ -108,11 +108,6 @@ AdaptiveNamespaceStart
             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
             _Outptr_ ABI::Windows::UI::Xaml::IUIElement** mediaControl);
-        static void BuildActionSet(
-            _In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* adaptiveCardElement,
-            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
-            _Outptr_ ABI::Windows::UI::Xaml::IUIElement** containerControl);			
 
         template<typename T>
         static HRESULT TryGetResourceFromResourceDictionaries(
@@ -191,7 +186,6 @@ AdaptiveNamespaceStart
 
         static void BuildActionSetHelper(
             ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* children,
-            ABI::AdaptiveNamespace::ActionsOrientation actionsOrientation,
             ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
             bool isBottomActionBar,
             ABI::Windows::UI::Xaml::IUIElement** actionSetControl,

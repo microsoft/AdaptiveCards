@@ -905,39 +905,6 @@ AdaptiveNamespaceStart
         }
     }
 
-    void XamlBuilder::BuildActionSet(
-        IAdaptiveCardElement* adaptiveCardElement,
-        IAdaptiveRenderContext* renderContext,
-        IAdaptiveRenderArgs* renderArgs,
-        IUIElement** actionSetControl)
-    {
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-
-        if (!SupportsInteractivity(hostConfig.Get()))
-        {
-            renderContext->AddWarning(
-                ABI::AdaptiveNamespace::WarningStatusCode::InteractivityNotSupported,
-                HStringReference(L"ActionSet was stripped from card because interactivity is not supported").Get());
-            return;
-        }
-
-        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
-        ComPtr<IAdaptiveActionSet> adaptiveActionSet;
-        THROW_IF_FAILED(cardElement.As(&adaptiveActionSet));
-
-        ComPtr<IVector<IAdaptiveActionElement*>> actions;
-        THROW_IF_FAILED(adaptiveActionSet->get_Actions(&actions));
-
-        ABI::AdaptiveNamespace::ActionsOrientation orientation;
-        THROW_IF_FAILED(adaptiveActionSet->get_Orientation(&orientation));
-
-        ABI::AdaptiveNamespace::ContainerStyle containerStyle;
-        renderArgs->get_ContainerStyle(&containerStyle);
-
-        BuildActionSetHelper(actions.Get(), orientation, renderContext, false, actionSetControl, containerStyle);
-    }
-
     _Use_decl_annotations_
     void XamlBuilder::BuildActions(
         IVector<IAdaptiveActionElement*>* children,
@@ -966,14 +933,13 @@ AdaptiveNamespaceStart
         }
 
         ComPtr<IUIElement> actionSetControl;
-        BuildActionSetHelper(children, ABI::AdaptiveNamespace::ActionsOrientation::None, renderContext, true, &actionSetControl, containerStyle);
+        BuildActionSetHelper(children, renderContext, true, &actionSetControl, containerStyle);
 
         XamlHelpers::AppendXamlElementToPanel(actionSetControl.Get(), bodyPanel);
     }
 
     void XamlBuilder::BuildActionSetHelper(
         IVector<IAdaptiveActionElement*>* children,
-        ABI::AdaptiveNamespace::ActionsOrientation actionsOrientation,
         IAdaptiveRenderContext* renderContext,
         bool isBottomActionBar,
         IUIElement** actionSetControl,
@@ -988,10 +954,8 @@ AdaptiveNamespaceStart
         ABI::AdaptiveNamespace::ActionAlignment actionAlignment;
         THROW_IF_FAILED(actionsConfig->get_ActionAlignment(&actionAlignment));
 
-        if (actionsOrientation == ABI::AdaptiveNamespace::ActionsOrientation::None)
-        {
-            THROW_IF_FAILED(actionsConfig->get_ActionsOrientation(&actionsOrientation));
-        }
+        ABI::AdaptiveNamespace::ActionsOrientation actionsOrientation;
+        THROW_IF_FAILED(actionsConfig->get_ActionsOrientation(&actionsOrientation));
 
         // Declare the panel that will host the buttons
         ComPtr<IPanel> actionsPanel;

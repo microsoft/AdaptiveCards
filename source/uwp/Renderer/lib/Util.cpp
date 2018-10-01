@@ -4,7 +4,6 @@
 #include <string>
 #include <regex>
 
-#include "AdaptiveActionSet.h"
 #include "AdaptiveColumn.h"
 #include "AdaptiveColumnSet.h"
 #include "AdaptiveContainer.h"
@@ -116,9 +115,6 @@ HRESULT GenerateSharedElements(
         std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> baseCardElement;
         switch (elementType)
         {
-            case ABI::AdaptiveNamespace::ElementType::ActionSet:
-                baseCardElement = GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveActionSet>(item);
-                break;
             case ABI::AdaptiveNamespace::ElementType::ChoiceSetInput:
                 baseCardElement = GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveChoiceSetInput>(item);
                 break;
@@ -382,10 +378,6 @@ HRESULT GenerateContainedElementsProjection(
         case CardElementType::ToggleInput:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveToggleInput>(&projectedContainedElement,
                 std::AdaptivePointerCast<AdaptiveSharedNamespace::ToggleInput>(containedElement)));
-            break;
-        case CardElementType::ActionSet:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveActionSet>(&projectedContainedElement,
-                std::dynamic_pointer_cast<AdaptiveCards::ActionSet>(containedElement)));
             break;
         case CardElementType::Custom:
             RETURN_IF_FAILED(std::AdaptivePointerCast<CustomElementWrapper>(containedElement)->GetWrappedElement(&projectedContainedElement));
