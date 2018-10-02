@@ -124,6 +124,7 @@ enum class AdaptiveCardSchemaKey
     PlayButton,
     Poster,
     Right,
+    Sentiment,
     SelectAction,
     Separator,
     ShowActionMode,
@@ -344,6 +345,13 @@ enum class HeightType
     Stretch
 };
 
+enum class Sentiment
+{
+    Default = 0,
+    Positive,
+    Destructive
+};
+
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type);
 AdaptiveCardSchemaKey AdaptiveCardSchemaKeyFromString(const std::string& type);
 
@@ -403,6 +411,9 @@ IconPlacement IconPlacementFromString(const std::string& placement);
 
 const std::string VerticalContentAlignmentToString(VerticalContentAlignment verticalContentAlignment);
 VerticalContentAlignment VerticalContentAlignmentFromString(const std::string& verticalContentAlignment);
+
+const std::string SentimentToString(Sentiment sentiment);
+Sentiment SentimentFromString(const std::string& sentiment);
 
 template <typename T>
 const std::unordered_map<std::string, T, CaseInsensitiveHash, CaseInsensitiveEqualTo>

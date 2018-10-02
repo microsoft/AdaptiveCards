@@ -24,6 +24,7 @@ import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.ActionsConfig;
 import io.adaptivecards.objectmodel.IconPlacement;
+import io.adaptivecards.objectmodel.Sentiment;
 import io.adaptivecards.objectmodel.ShowCardAction;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
 import io.adaptivecards.renderer.IBaseActionElementRenderer;
@@ -271,6 +272,20 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
                 layoutChangedListener.setPadding(padding);
                 button.addOnLayoutChangeListener(layoutChangedListener);
             }
+        }
+
+        Sentiment sentiment = baseActionElement.GetSentiment();
+        switch (sentiment)
+        {
+            case Positive:
+                hostConfig.get
+                break;
+            case Destructive:
+
+                break;
+            case Default:
+                default:
+                break;
         }
 
         viewGroup.addView(button);

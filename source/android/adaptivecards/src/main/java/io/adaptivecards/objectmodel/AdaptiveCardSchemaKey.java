@@ -100,6 +100,7 @@ public enum AdaptiveCardSchemaKey {
   PlayButton,
   Poster,
   Right,
+  Sentiment,
   SelectAction,
   Separator,
   ShowActionMode,

@@ -109,6 +109,7 @@ void GetAdaptiveCardSchemaKeyEnumMappings(
         { AdaptiveCardSchemaKey::PlayButton, "playButton" },
         { AdaptiveCardSchemaKey::Poster, "poster" },
         { AdaptiveCardSchemaKey::Right, "right" },
+        { AdaptiveCardSchemaKey::Sentiment, "sentiment" },
         { AdaptiveCardSchemaKey::SelectAction, "selectAction" },
         { AdaptiveCardSchemaKey::Separator, "separator" },
         { AdaptiveCardSchemaKey::Thickness, "thickness" },
@@ -645,6 +646,30 @@ void GetVerticalContentAlignmentEnumMappings(
     }
 }
 
+void GetSentimentEnumMappings(
+    std::unordered_map<Sentiment, std::string, EnumHash> * sentimentEnumToNameOut,
+    std::unordered_map<std::string, Sentiment, CaseInsensitiveHash, CaseInsensitiveEqualTo> * sentimentNameToEnumOut)
+{
+    static std::unordered_map<Sentiment, std::string, EnumHash> sentimentEnumToName =
+    {
+        { Sentiment::Default, "Default" },
+        { Sentiment::Positive, "Positive" },
+        { Sentiment::Destructive, "Destructive" }
+    };
+    static std::unordered_map<std::string, Sentiment, CaseInsensitiveHash, CaseInsensitiveEqualTo> sentimentNameToEnum =
+        GenerateStringToEnumMap<Sentiment>(sentimentEnumToName);
+
+    if (sentimentEnumToNameOut != nullptr)
+    {
+        *sentimentEnumToNameOut = sentimentEnumToName;
+    }
+
+    if (sentimentNameToEnumOut != nullptr)
+    {
+        *sentimentNameToEnumOut = sentimentNameToEnum;
+    }
+}
+
 const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type)
 {
     std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> adaptiveCardSchemaKeyEnumToName;
@@ -1138,6 +1163,30 @@ VerticalContentAlignment VerticalContentAlignmentFromString(const std::string& v
         return VerticalContentAlignment::Top;
     }
     return verticalContentAlignmentNameToEnum[verticalContentAlignment];
+}
+
+const std::string SentimentToString(Sentiment sentiment)
+{
+    std::unordered_map<Sentiment, std::string, EnumHash> sentimentEnumToName;
+    GetSentimentEnumMappings(&sentimentEnumToName, nullptr);
+
+    if (sentimentEnumToName.find(sentiment) == sentimentEnumToName.end())
+    {
+        throw std::out_of_range("Invalid VerticalContentAlignment");
+    }
+    return sentimentEnumToName[sentiment];
+}
+
+Sentiment SentimentFromString(const std::string& sentiment)
+{
+    std::unordered_map<std::string, Sentiment, CaseInsensitiveHash, CaseInsensitiveEqualTo> sentimentNameToEnum;
+    GetSentimentEnumMappings(nullptr, &sentimentNameToEnum);
+
+    if (sentimentNameToEnum.find(sentiment) == sentimentNameToEnum.end())
+    {
+        return Sentiment::Default;
+    }
+    return sentimentNameToEnum[sentiment];
 }
 
 }
