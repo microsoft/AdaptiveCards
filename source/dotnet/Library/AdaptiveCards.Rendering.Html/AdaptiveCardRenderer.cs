@@ -629,56 +629,9 @@ namespace AdaptiveCards.Rendering.Html
 
         protected static HtmlTag TextBlockRender(AdaptiveTextBlock textBlock, AdaptiveRenderContext context)
         {
-            FontStyleConfig styleConfig;
-            switch (textBlock.FontStyle)
-            {
-                case AdaptiveFontStyle.Display:
-                    styleConfig = context.Config.FontStyles.Display;
-                    break;
-                case AdaptiveFontStyle.Monospace:
-                    styleConfig = context.Config.FontStyles.Monospace;
-                    break;
-                case AdaptiveFontStyle.Default:
-                default:
-                    styleConfig = context.Config.FontStyles.Default;
-                    break;
-            }
-
-            int fontSize;
-            switch (textBlock.Size)
-            {
-                case AdaptiveTextSize.Small:
-                    fontSize = styleConfig.FontSizes.Small;
-                    break;
-                case AdaptiveTextSize.Medium:
-                    fontSize = styleConfig.FontSizes.Medium;
-                    break;
-                case AdaptiveTextSize.Large:
-                    fontSize = styleConfig.FontSizes.Large;
-                    break;
-                case AdaptiveTextSize.ExtraLarge:
-                    fontSize = styleConfig.FontSizes.ExtraLarge;
-                    break;
-                case AdaptiveTextSize.Default:
-                default:
-                    fontSize = styleConfig.FontSizes.Default;
-                    break;
-            }
-
-            int weight;
-            switch (textBlock.Weight)
-            {
-                case AdaptiveTextWeight.Lighter:
-                    weight = styleConfig.FontWeights.Lighter;
-                    break;
-                case AdaptiveTextWeight.Bolder:
-                    weight = styleConfig.FontWeights.Bolder;
-                    break;
-                case AdaptiveTextWeight.Default:
-                default:
-                    weight = styleConfig.FontWeights.Default;
-                    break;
-            }
+            string fontFamily = GetFontFamily(textBlock.FontStyle, context.Config);
+            int fontSize = GetFontSize(textBlock.FontStyle, textBlock.Size, context.Config);
+            int weight = GetFontWeight(textBlock.FontStyle, textBlock.Weight, context.Config);
 
             // Not sure where this magic value comes from?
             var lineHeight = fontSize * 1.33;
@@ -690,8 +643,7 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("color", context.GetColor(textBlock.Color, textBlock.IsSubtle))
                 .Style("line-height", $"{lineHeight.ToString("F")}px")
                 .Style("font-size", $"{fontSize}px")
-                .Style("font-weight", $"{weight}")
-                .Style("font-family", styleConfig.FontFamily);
+                .Style("font-weight", $"{weight}");
 
             if (textBlock.Height == AdaptiveHeight.Stretch)
             {
@@ -727,6 +679,7 @@ namespace AdaptiveCards.Rendering.Html
                     htmlTag.Style("margin-top", "0px");
                     htmlTag.Style("margin-bottom", "0px");
                     htmlTag.Style("width", "100%");
+                    htmlTag.Style("font-family", "\'" + fontFamily + "\'");
 
                     if (setWrapStyleOnParagraph)
                     {
@@ -745,6 +698,43 @@ namespace AdaptiveCards.Rendering.Html
 
             return uiTextBlock;
         }
+
+        private static string GetFontFamily(AdaptiveFontStyle fontStyle, AdaptiveHostConfig hostConfig)
+        {
+            string fontFamilyValue = hostConfig.FontStyles.GetFontStyle(fontStyle).FontFamily;
+
+            if (string.IsNullOrEmpty(fontFamilyValue))
+            {
+                fontFamilyValue = hostConfig.FontStyles.Default.FontFamily;
+                if (string.IsNullOrEmpty(fontFamilyValue))
+                {
+                    fontFamilyValue = hostConfig.FontFamily;
+                    if (string.IsNullOrEmpty(fontFamilyValue))
+                    {
+                        fontFamilyValue = "Segoe UI";
+                    }
+                }
+            }
+
+            return fontFamilyValue;
+        }
+
+        private static int GetFontWeight(AdaptiveFontStyle fontStyle, AdaptiveTextWeight requestedWeight, AdaptiveHostConfig hostConfig)
+        {
+            return hostConfig.FontStyles.GetFontStyle(fontStyle).FontWeights.GetFontWeight(requestedWeight)
+                ?? hostConfig.FontStyles.Default.FontWeights.GetFontWeight(requestedWeight)
+                ?? hostConfig.FontWeights.GetFontWeight(requestedWeight)
+                ?? FontWeightsConfig.GetDefaultFontWeight(requestedWeight);
+        }
+
+        private static int GetFontSize(AdaptiveFontStyle fontStyle, AdaptiveTextSize requestedSize, AdaptiveHostConfig hostConfig)
+        {
+            return hostConfig.FontStyles.GetFontStyle(fontStyle).FontSizes.GetFontSize(requestedSize)
+                ?? hostConfig.FontStyles.Default.FontSizes.GetFontSize(requestedSize)
+                ?? hostConfig.FontSizes.GetFontSize(requestedSize)
+                ?? FontSizesConfig.GetDefaultFontSize(requestedSize);
+        }
+
 
         protected static HtmlTag ImageRender(AdaptiveImage image, AdaptiveRenderContext context)
         {
