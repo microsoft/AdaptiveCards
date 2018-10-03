@@ -134,8 +134,14 @@
     <Content Include="..\..\..\samples\v1.0\Scenarios\*.json">
       <Link>LinkedCards\v1.0\Scenarios\%(FileName)</Link>
     </Content>
+    <Content Include="..\..\..\samples\v1.1\Scenarios\*.json">
+      <Link>LinkedCards\v1.1\Scenarios\%(FileName)</Link>
+    </Content>    
     <Content Include="..\..\..\samples\v1.0\Elements\*.json">
       <Link>LinkedCards\v1.0\Elements\%(FileName)</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.1\Elements\*.json">
+      <Link>LinkedCards\v1.1\Elements\%(FileName)</Link>
     </Content>
     <Content Include="..\..\..\samples\v1.0\HostConfig\*.json">
       <Link>LinkedHostConfigs\v1.0\%(FileName)</Link>
