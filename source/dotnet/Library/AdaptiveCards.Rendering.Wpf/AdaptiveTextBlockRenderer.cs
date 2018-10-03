@@ -114,57 +114,9 @@ namespace AdaptiveCards.Rendering.Wpf
 
             uiTextBlock.TextWrapping = TextWrapping.NoWrap;
 
-            FontStyleConfig fontStyle;
-            switch (textBlock.FontStyle)
-            {
-                case AdaptiveFontStyle.Display:
-                    uiTextBlock.FontFamily = new FontFamily(context.Config.FontStyles.Display.FontFamily);
-                    fontStyle = context.Config.FontStyles.Display;
-                    break;
-                case AdaptiveFontStyle.Monospace:
-                    uiTextBlock.FontFamily = new FontFamily(context.Config.FontStyles.Monospace.FontFamily);
-                    fontStyle = context.Config.FontStyles.Monospace;
-                    break;
-                case AdaptiveFontStyle.Default:
-                default:
-                    uiTextBlock.FontFamily = new FontFamily(context.Config.FontStyles.Default.FontFamily);
-                    fontStyle = context.Config.FontStyles.Default;
-                    break;
-            }
-
-            switch (textBlock.Weight)
-            {
-                case AdaptiveTextWeight.Bolder:
-                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(fontStyle.FontWeights.Bolder);
-                    break;
-                case AdaptiveTextWeight.Lighter:
-                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(fontStyle.FontWeights.Lighter);
-                    break;
-                case AdaptiveTextWeight.Default:
-                default:
-                    uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(fontStyle.FontWeights.Default);
-                    break;
-            }
-
-            switch (textBlock.Size)
-            {
-                case AdaptiveTextSize.Small:
-                    uiTextBlock.FontSize = fontStyle.FontSizes.Small;
-                    break;
-                case AdaptiveTextSize.Medium:
-                    uiTextBlock.FontSize = fontStyle.FontSizes.Medium;
-                    break;
-                case AdaptiveTextSize.Large:
-                    uiTextBlock.FontSize = fontStyle.FontSizes.Large;
-                    break;
-                case AdaptiveTextSize.ExtraLarge:
-                    uiTextBlock.FontSize = fontStyle.FontSizes.ExtraLarge;
-                    break;
-                case AdaptiveTextSize.Default:
-                default:
-                    uiTextBlock.FontSize = fontStyle.FontSizes.Default;
-                    break;
-            }
+            uiTextBlock.FontFamily = GetFontFamily(textBlock.FontStyle, context.Config);
+            uiTextBlock.FontWeight = GetFontWeight(textBlock.FontStyle, textBlock.Weight, context.Config);
+            uiTextBlock.FontSize = GetFontSize(textBlock.FontStyle, textBlock.Size, context.Config);
 
             uiTextBlock.TextTrimming = TextTrimming.CharacterEllipsis;
 
@@ -181,6 +133,43 @@ namespace AdaptiveCards.Rendering.Wpf
             return uiTextBlock;
         }
 
+        private static FontFamily GetFontFamily(AdaptiveFontStyle fontStyle, AdaptiveHostConfig hostConfig)
+        {
+            string fontFamilyValue = hostConfig.FontStyles.GetFontStyle(fontStyle).FontFamily;
+
+            if (string.IsNullOrEmpty(fontFamilyValue))
+            {
+                fontFamilyValue = hostConfig.FontStyles.Default.FontFamily;
+                if (string.IsNullOrEmpty(fontFamilyValue))
+                {
+                    fontFamilyValue = hostConfig.FontFamily;
+                    if (string.IsNullOrEmpty(fontFamilyValue))
+                    {
+                        fontFamilyValue = "Segoe UI";
+                    }
+                }
+            }
+            
+            return new FontFamily(fontFamilyValue);
+        }
+
+        private static FontWeight GetFontWeight(AdaptiveFontStyle fontStyle, AdaptiveTextWeight requestedWeight, AdaptiveHostConfig hostConfig)
+        {
+            int resultWeight = hostConfig.FontStyles.GetFontStyle(fontStyle).FontWeights.GetFontWeight(requestedWeight)
+                ?? hostConfig.FontStyles.Default.FontWeights.GetFontWeight(requestedWeight)
+                ?? hostConfig.FontWeights.GetFontWeight(requestedWeight)
+                ?? FontWeightsConfig.GetDefaultFontWeight(requestedWeight);
+
+            return FontWeight.FromOpenTypeWeight(resultWeight);
+        }
+
+        private static int GetFontSize(AdaptiveFontStyle fontStyle, AdaptiveTextSize requestedSize, AdaptiveHostConfig hostConfig)
+        {
+            return hostConfig.FontStyles.GetFontStyle(fontStyle).FontSizes.GetFontSize(requestedSize)
+                ?? hostConfig.FontStyles.Default.FontSizes.GetFontSize(requestedSize)
+                ?? hostConfig.FontSizes.GetFontSize(requestedSize)
+                ?? FontSizesConfig.GetDefaultFontSize(requestedSize);
+        }
 
         private class MultiplyConverter : IValueConverter
         {
