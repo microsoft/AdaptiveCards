@@ -67,6 +67,22 @@ public class Fact {
     AdaptiveCardObjectModelJNI.Fact_SetValue(swigCPtr, this, value);
   }
 
+  public DateTimePreparser GetTitleForDateParsing() {
+    return new DateTimePreparser(AdaptiveCardObjectModelJNI.Fact_GetTitleForDateParsing(swigCPtr, this), true);
+  }
+
+  public DateTimePreparser GetValueForDateParsing() {
+    return new DateTimePreparser(AdaptiveCardObjectModelJNI.Fact_GetValueForDateParsing(swigCPtr, this), true);
+  }
+
+  public void SetLanguage(String value) {
+    AdaptiveCardObjectModelJNI.Fact_SetLanguage(swigCPtr, this, value);
+  }
+
+  public String GetLanguage() {
+    return AdaptiveCardObjectModelJNI.Fact_GetLanguage(swigCPtr, this);
+  }
+
   public static Fact Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, JsonValue root) {
     long cPtr = AdaptiveCardObjectModelJNI.Fact_Deserialize(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, JsonValue.getCPtr(root), root);
     return (cPtr == 0) ? null : new Fact(cPtr, true);

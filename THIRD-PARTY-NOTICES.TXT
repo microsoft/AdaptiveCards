@@ -8,9 +8,9 @@ bring it to our attention. Post an issue or email us:
 
 The attached notices are provided for information only.
 
-License notice for FullScreenVideoLayout
----------------------------
 
+License notice for FullScreenVideoLayout
+----------------------------------------
 Copyright (C) 2016 Toshiro Sugii
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,3 +24,11 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+
+Licence notice for HorizontalFlowLayout
+---------------------------------------
+(c) 2016-18 Henrik Gustafsson
+
+Contains code snippets licensed under Creative Commons Attribution-Share Alike 4.0
+International License available at https://creativecommons.org/licenses/by-sa/4.0/.

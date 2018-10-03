@@ -1364,6 +1364,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT Value([out, retval] HSTRING* value);
         [propput] HRESULT Value([in] HSTRING value);
+
+        [propget] HRESULT Language([out, retval] HSTRING* value);
+        [propput] HRESULT Language([in] HSTRING value);
     };
 
     [

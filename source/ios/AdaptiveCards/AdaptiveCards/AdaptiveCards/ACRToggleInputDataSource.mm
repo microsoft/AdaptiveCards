@@ -71,6 +71,7 @@ const CGFloat padding = 16.0f;
     cell.textLabel.numberOfLines = 0;
     cell.accessoryView = _toggleSwitch;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.backgroundColor = UIColor.clearColor;
     return cell;
 }
 

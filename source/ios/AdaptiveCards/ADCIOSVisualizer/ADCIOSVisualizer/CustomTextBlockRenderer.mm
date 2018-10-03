@@ -47,7 +47,7 @@
 
     NSString* parsedString = nil;
     // MarkDownParser transforms text with MarkDown to a html string
-    std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textBlockElement]);
+    std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textBlockElement->GetText() language:textBlockElement->GetLanguage()]);
     parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
 
     // if correctly initialized, fonFamilyNames array is bigger than zero

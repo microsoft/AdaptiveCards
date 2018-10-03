@@ -15,7 +15,10 @@
   "dependencies": {
     "adaptivecards": "latest",
     "adaptivecards-visualizer": "latest",
+<<<<<<< HEAD
     "adaptivecards-designer": "latest",
+=======
+>>>>>>> master
     "change-case": "^3.0.1",
     "glob": "^7.1.2",
     "hexo": "^3.7.1",
