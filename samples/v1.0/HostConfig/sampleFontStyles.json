@@ -56,7 +56,7 @@
 				"lighter": 200,
 				"default": 400,
 				"bolder": 600
-			},
+			}
 		}
 	},
 	"containerStyles": {
