@@ -30,11 +30,11 @@ namespace AdaptiveCards.Rendering
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [Obsolete("AdaptiveHostConfig.FontSizes has been deprecated.  Use AdaptiveHostConfig.FontStyles.Default.FontSizes", false)]
-        public FontSizesConfig FontSizes { get; set; }
+        public FontSizesConfig FontSizes { get; set; } = new FontSizesConfig();
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [Obsolete("AdaptiveHostConfig.FontWeights has been deprecated.  Use AdaptiveHostConfig.FontStyles.Default.FontWeights", false)]
-        public FontWeightsConfig FontWeights { get; set; }
+        public FontWeightsConfig FontWeights { get; set; } = new FontWeightsConfig();
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public FontStylesConfig FontStyles { get; set; } = new FontStylesConfig();
