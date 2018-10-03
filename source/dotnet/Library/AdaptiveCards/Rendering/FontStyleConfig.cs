@@ -9,7 +9,7 @@ namespace AdaptiveCards.Rendering
         public FontStyleConfig() { }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string FontFamily { get; set; } = "Segoe UI";
+        public string FontFamily { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public FontSizesConfig FontSizes { get; set; } = new FontSizesConfig();

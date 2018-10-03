@@ -25,19 +25,19 @@ namespace AdaptiveCards.Rendering
         public FactSetConfig FactSet { get; set; } = new FactSetConfig();
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [Obsolete("AdaptiveHostConfig.FontFamily has been deprecated.  Use AdaptiveHostConfig.FontStyles.Default.FontFamily", false)]
+        public string FontFamily { get; set; }
+
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [Obsolete("AdaptiveHostConfig.FontSizes has been deprecated.  Use AdaptiveHostConfig.FontStyles.Default.FontSizes", false)]
+        public FontSizesConfig FontSizes { get; set; }
+
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [Obsolete("AdaptiveHostConfig.FontWeights has been deprecated.  Use AdaptiveHostConfig.FontStyles.Default.FontWeights", false)]
+        public FontWeightsConfig FontWeights { get; set; }
+
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public FontStylesConfig FontStyles { get; set; } = new FontStylesConfig();
-
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [Obsolete("AdaptiveHostConfig.FontFamily has been deprecated.  Use AdaptiveHostConfig.FontStyles.FontFamily", false)]
-        public string FontFamily { get; set; } = "Segoe UI";
-
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [Obsolete("AdaptiveHostConfig.FontSizes has been deprecated.  Use AdaptiveHostConfig.FontStyles.FontSizes", false)]
-        public FontSizesConfig FontSizes { get; set; } = new FontSizesConfig();
-
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [Obsolete("AdaptiveHostConfig.FontWeights has been deprecated.  Use AdaptiveHostConfig.FontStyles.FontWeights", false)]
-        public FontWeightsConfig FontWeights { get; set; } = new FontWeightsConfig();
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public SpacingsConfig Spacing { get; set; } = new SpacingsConfig();
@@ -136,7 +136,6 @@ namespace AdaptiveCards.Rendering
                     return Spacing.Default;
             }
         }
-
 
         public static AdaptiveHostConfig FromJson(string json)
         {

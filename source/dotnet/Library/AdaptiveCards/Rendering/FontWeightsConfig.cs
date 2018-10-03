@@ -6,10 +6,38 @@ namespace AdaptiveCards.Rendering
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class FontWeightsConfig
     {
-        public int Lighter { get; set; } = 200;
+        public int? Lighter { get; set; }
 
-        public int Default { get; set; } = 400;
+        public int? Default { get; set; }
 
-        public int Bolder { get; set; } = 600;
+        public int? Bolder { get; set; }
+
+        public int? GetFontWeight(AdaptiveTextWeight fontWeight)
+        {
+            switch (fontWeight)
+            {
+                case AdaptiveTextWeight.Lighter:
+                    return Lighter;
+                case AdaptiveTextWeight.Bolder:
+                    return Bolder;
+                case AdaptiveTextWeight.Default:
+                default:
+                    return Default;
+            }
+        }
+
+        public static int GetDefaultFontWeight(AdaptiveTextWeight fontWeight)
+        {
+            switch (fontWeight)
+            {
+                case AdaptiveTextWeight.Lighter:
+                    return 200;
+                case AdaptiveTextWeight.Bolder:
+                    return 600;
+                case AdaptiveTextWeight.Default:
+                default:
+                    return 400;
+            }
+        }
     }
 }
