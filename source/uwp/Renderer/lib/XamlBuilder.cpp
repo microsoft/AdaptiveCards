@@ -1122,7 +1122,22 @@ AdaptiveNamespaceStart
                     return S_OK;
                 }).Get(), &clickToken));
 
-                THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action", buttonFrameworkElement.Get()));
+
+                ABI::AdaptiveNamespace::Sentiment actionSentiment;
+                THROW_IF_FAILED(action->get_Sentiment(&actionSentiment));
+                switch (actionSentiment)
+                {
+                case ABI::AdaptiveNamespace::Sentiment_Positive:
+                    THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action.Positive", buttonFrameworkElement.Get()));
+                    break;
+                case ABI::AdaptiveNamespace::Sentiment_Destructive:
+                    THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action.Destructive", buttonFrameworkElement.Get()));
+                    break;
+                case ABI::AdaptiveNamespace::Sentiment_Default:
+                default:
+                    THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action", buttonFrameworkElement.Get()));
+                    break;
+                }
 
                 XamlHelpers::AppendXamlElementToPanel(button.Get(), actionsPanel.Get());
 
