@@ -1,4 +1,4 @@
-﻿namespace AdaptiveCards.Rendering.Wpf
+namespace AdaptiveCards.Rendering.Wpf
 {
     public static class XceedAdaptiveCardRenderer
     {

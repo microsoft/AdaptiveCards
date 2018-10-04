@@ -24,7 +24,7 @@ public:
 
     RenderAsyncBase(
         ABI::AdaptiveNamespace::IAdaptiveCard* card, AdaptiveNamespace::AdaptiveCardRenderer* renderer)
-        : m_card(card), 
+        : m_card(card),
           m_renderer(renderer)
     {
         // Get the dispatcher to we can run an async operation to build the xaml tree
@@ -147,7 +147,7 @@ private:
 
 
 
-class RenderCardAsXamlAsyncOperation : 
+class RenderCardAsXamlAsyncOperation :
     public RenderAsyncBase<ABI::AdaptiveNamespace::RenderedAdaptiveCard>
 {
 public:

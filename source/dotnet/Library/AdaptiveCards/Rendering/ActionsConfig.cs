@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
@@ -75,12 +75,12 @@ namespace AdaptiveCards.Rendering
     public enum ShowCardActionMode
     {
         /// <summary>
-        /// Show the card inline 
+        /// Show the card inline
         /// </summary>
         Inline,
 
         /// <summary>
-        /// Popup the card 
+        /// Popup the card
         /// </summary>
         Popup
     }

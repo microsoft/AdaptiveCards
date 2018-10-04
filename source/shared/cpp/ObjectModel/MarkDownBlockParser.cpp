@@ -95,7 +95,7 @@ EmphasisParser::EmphasisState EmphasisParser::MatchText(EmphasisParser &parser, 
         // encounterred first emphasis delimiter
         parser.CaptureCurrentCollectedStringAsRegularToken();
         const DelimiterType emphasisType = EmphasisParser::GetDelimiterTypeForCharAtCurrentPosition(stream.peek());
-        // get previous character and update the look behind if it was captured before 
+        // get previous character and update the look behind if it was captured before
         if (stream.tellg())
         {
             stream.unget();
@@ -374,13 +374,13 @@ bool LinkParser::MatchAtLinkTextRun(std::stringstream &lookahead)
         }
         else
         {
-            // Block() will process the inline items within Link Text block 
+            // Block() will process the inline items within Link Text block
             ParseBlock(lookahead);
             m_linkTextParsedResult.AppendParseResult(m_parsedResult);
 
             if (lookahead.peek() == ']')
             {
-                // move code gen objects to link text list to further process it 
+                // move code gen objects to link text list to further process it
                 char streamChar;
                 lookahead.get(streamChar);
                 m_linkTextParsedResult.AddNewTokenToParsedResult(streamChar);
@@ -458,7 +458,7 @@ bool LinkParser::MatchAtLinkDestinationRun(std::stringstream &lookahead)
 
 // this method is called when link syntax check is complete
 // it processes the parsed result from link destination  and link text
-// and build a MarkDownStringHtmlGenerator that will output 
+// and build a MarkDownStringHtmlGenerator that will output
 // string in link syntax (text)[destination) will converts to
 // <a href=\destination\>text</a>
 void LinkParser::CaptureLinkToken()
@@ -472,7 +472,7 @@ void LinkParser::CaptureLinkToken()
     // when syntax check is complete, we have seen
     // '[', ']', '(', these keywords are not
     // needed anymore, so pop them from the parse result
-    // if syntax check failed for link, then they must be 
+    // if syntax check failed for link, then they must be
     // retained as part of parse result
     m_linkTextParsedResult.PopFront();
     m_linkTextParsedResult.PopBack();
@@ -514,7 +514,7 @@ bool ListParser::MatchNewListItem(std::stringstream &stream)
 
 // if lines are seperated by more than two new lines,
 // they are new block items
-// caller of this method is expected to have matched new line char 
+// caller of this method is expected to have matched new line char
 // before calling this method
 // this method will return true, after it mataches new line char
 // at least once.
@@ -594,7 +594,7 @@ bool ListParser::CompleteListParsing(std::stringstream &stream)
     // check for - of -\s+ list marker
     if (stream.peek() == ' ')
     {
-        // at this point, syntax check is complete, 
+        // at this point, syntax check is complete,
         // thus any other spaces are ignored
         // remove space
         do

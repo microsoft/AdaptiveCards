@@ -35,7 +35,7 @@ AdaptiveNamespaceStart
         GenerateImagesProjection(sharedImageSet->GetImages(), m_images.Get());
 
         m_imageSize = static_cast<ABI::AdaptiveNamespace::ImageSize>(sharedImageSet->GetImageSize());
-        
+
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedImageSet));
         return S_OK;
     } CATCH_RETURN;
@@ -57,7 +57,7 @@ AdaptiveNamespaceStart
     HRESULT AdaptiveImageSet::put_ImageSize(ABI::AdaptiveNamespace::ImageSize imageSize)
     {
         m_imageSize = imageSize;
-        return S_OK; 
+        return S_OK;
     }
 
     _Use_decl_annotations_

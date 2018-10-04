@@ -77,7 +77,7 @@ AdaptiveNamespaceStart
     std::shared_ptr<BaseActionElement> SharedModelActionParser::Deserialize(
         std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> actionParserRegistration,
-        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings, 
+        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
         const Json::Value& value)
     {
         std::string type = ParseUtil::GetTypeAsString(value);

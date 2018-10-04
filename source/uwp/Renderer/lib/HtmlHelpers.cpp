@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include "XamlHelpers.h"
 #include "HtmlHelpers.h"
 #include <safeint.h>
@@ -41,12 +41,12 @@ HRESULT AddListInlines(
         // Get the starting value for this list
         HString start;
         RETURN_IF_FAILED(GetTextFromXmlNode(startNode.Get(), start.GetAddressOf()));
-        try 
+        try
         {
             iteration = std::stoul(HStringToUTF8(start.Get()));
 
-            // Check that we can iterate the entire list without overflowing. 
-            // If the list values are too big to store in an unsigned int, start 
+            // Check that we can iterate the entire list without overflowing.
+            // If the list values are too big to store in an unsigned int, start
             // the list at 1.
             ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNodeList> children;
             RETURN_IF_FAILED(node->get_ChildNodes(&children));
@@ -160,7 +160,7 @@ HRESULT AddSingleTextInline(
 {
     ComPtr<ABI::Windows::UI::Xaml::Documents::IRun> run = XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IRun>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
     RETURN_IF_FAILED(run->put_Text(string));
-    
+
     ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement> runAsTextElement;
     RETURN_IF_FAILED(run.As(&runAsTextElement));
 

@@ -1,4 +1,4 @@
-﻿import * as Enums from "./enums";
+import * as Enums from "./enums";
 import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
@@ -725,7 +725,7 @@ export class TextBlock extends CardElement {
     protected getRenderedDomElementType(): string {
         return "div";
     }
-    
+
     protected internalRender(): HTMLElement {
         if (!Utils.isNullOrEmpty(this.text)) {
             let hostConfig = this.hostConfig;
@@ -1077,9 +1077,9 @@ class Label extends TextBlock {
 
         return renderedElement;
     }
-    
+
     forElementId: string;
-} 
+}
 
 export class Fact {
     name: string;
@@ -1734,14 +1734,14 @@ export class Media extends CardElement {
     private processSources() {
         this._selectedSources = [];
         this._selectedMediaType = undefined;
-        
+
  		for (let source of this.sources) {
             let mimeComponents = source.mimeType.split('/');
-            
+
  			if (mimeComponents.length == 2) {
 				if (!this._selectedMediaType) {
                     let index = Media.supportedMediaTypes.indexOf(mimeComponents[0]);
-                    
+
  					if (index >= 0) {
 						this._selectedMediaType = Media.supportedMediaTypes[index];
 					}
@@ -1749,7 +1749,7 @@ export class Media extends CardElement {
  				if (mimeComponents[0] == this._selectedMediaType) {
 					this._selectedSources.push(source);
 				}
-			} 
+			}
         }
     }
 
@@ -1797,7 +1797,7 @@ export class Media extends CardElement {
             playButtonOuterElement.onclick = (e) => {
                 if (this.hostConfig.media.allowInlinePlayback) {
                     let mediaPlayerElement = this.renderMediaPlayer();
-                    
+
                     this.renderedElement.innerHTML = "";
                     this.renderedElement.appendChild(mediaPlayerElement);
 
@@ -1854,7 +1854,7 @@ export class Media extends CardElement {
             if (posterUrl) {
                 videoPlayer.poster = posterUrl;
             }
-    
+
             mediaElement = videoPlayer;
         }
         else {
@@ -1864,7 +1864,7 @@ export class Media extends CardElement {
         mediaElement.controls = true;
         mediaElement.preload = "none";
         mediaElement.style.width = "100%";
-    
+
         for (let source of this.sources) {
             let src: HTMLSourceElement = document.createElement("source");
             src.src = source.url;
@@ -2217,7 +2217,7 @@ export class ChoiceSetInput extends Input {
 
     private static getUniqueCategoryName(): string {
         let uniqueCwtegoryName = "__ac-category" + ChoiceSetInput.uniqueCategoryCounter;
-        
+
         ChoiceSetInput.uniqueCategoryCounter ++;
 
         return uniqueCwtegoryName;
@@ -2275,7 +2275,7 @@ export class ChoiceSetInput extends Input {
 
                 for (var i = 0; i < this.choices.length; i++) {
                     var radioInput = document.createElement("input");
-                    radioInput.id = generateUniqueId(); 
+                    radioInput.id = generateUniqueId();
                     radioInput.type = "radio";
                     radioInput.style.margin = "0";
                     radioInput.style.display = "inline-block";
@@ -2802,7 +2802,7 @@ export abstract class Action {
 
     parse(json: any, errors?: Array<IValidationError>) {
         raiseParseActionEvent(this, json, errors);
-    
+
         this.id = json["id"];
 
         if (!json["title"] && json["title"] !== "") {
@@ -4340,7 +4340,7 @@ export class Container extends CardElementContainer {
 
     getResourceInformation(): Array<IResourceInformation> {
         let result: Array<IResourceInformation> = [];
-        
+
         if (this.backgroundImage && !Utils.isNullOrEmpty(this.backgroundImage.url)) {
             result.push({ url: this.backgroundImage.url, mimeType: "image" });
         }

@@ -11,7 +11,7 @@
 @protocol ACRIContentHoldingView
 
 - (instancetype)initWithStyle:(ACRContainerStyle)style
-                  parentStyle:(ACRContainerStyle)parentStyle 
+                  parentStyle:(ACRContainerStyle)parentStyle
                    hostConfig:(ACOHostConfig *)config
                     superview:(UIView<ACRIContentHoldingView> *)superview;
 - (void)addArrangedSubview:(UIView *)view;

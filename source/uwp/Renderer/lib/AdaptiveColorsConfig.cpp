@@ -101,7 +101,7 @@ AdaptiveNamespaceStart
         m_warning = colorConfig;
         return S_OK;
     }
-    
+
     _Use_decl_annotations_
     HRESULT AdaptiveColorsConfig::get_Attention(ABI::AdaptiveNamespace::IAdaptiveColorConfig** attentionColorConfig)
     {

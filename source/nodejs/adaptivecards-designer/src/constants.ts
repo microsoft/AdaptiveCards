@@ -38,7 +38,7 @@ export const otherTestPayload: string = `{
 					"title": "View",
 					"url": "http://adaptivecards.io"
 				}
-			]					
+			]
 		}
 	]
 }`;

@@ -89,7 +89,7 @@
     if(style == ACRNone) {
         style = [_superview style];
     }
-    
+
     wrappingView.translatesAutoresizingMaskIntoConstraints = NO;
     wrappingView.backgroundColor = [_config getBackgroundColorForContainerStyle:style];
 
@@ -106,7 +106,7 @@
     {
         [_rootView.acrActionDelegate didChangeVisibility:_button isVisible:(!_adcView.hidden)];
     }
-    
+
     if([_rootView.acrActionDelegate respondsToSelector:@selector(didChangeViewLayout:newFrame:)] && _adcView.hidden == NO){
         CGRect showCardFrame = _adcView.frame;
         showCardFrame.origin = [_adcView convertPoint:_adcView.frame.origin toView:nil];

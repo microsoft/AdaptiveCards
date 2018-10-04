@@ -57,7 +57,7 @@ AdaptiveNamespaceStart
     {
         return m_frameworkElement.CopyTo(value);
     }
-    
+
     _Use_decl_annotations_
     HRESULT RenderedAdaptiveCard::get_UserInputs(ABI::AdaptiveNamespace::IAdaptiveInputs** value)
     {

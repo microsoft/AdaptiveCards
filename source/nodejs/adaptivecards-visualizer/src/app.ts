@@ -1,4 +1,4 @@
-﻿import * as AdaptiveCards from "adaptivecards";
+import * as AdaptiveCards from "adaptivecards";
 import * as MarkdownIt from "markdown-it";
 import * as Constants from "./constants";
 
@@ -112,7 +112,7 @@ function filePickerChanged(evt) {
             if (typeof downloadedPayload === "string") {
                 currentCardPayload = downloadedPayload;
             }
-            
+
             switchToCardEditor();
         }
 

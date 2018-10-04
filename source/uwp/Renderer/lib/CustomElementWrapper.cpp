@@ -33,14 +33,14 @@ AdaptiveNamespaceStart
 
     std::string CustomElementWrapper::GetId() const
     {
-        Wrappers::HString id; 
+        Wrappers::HString id;
         THROW_IF_FAILED(m_cardElement->get_Id(id.GetAddressOf()));
         return HStringToUTF8(id.Get());
     }
 
     void CustomElementWrapper::SetId(const std::string& value)
     {
-        Wrappers::HString id; 
+        Wrappers::HString id;
         THROW_IF_FAILED(UTF8ToHString(value, id.GetAddressOf()));
         THROW_IF_FAILED(m_cardElement->put_Id(id.Get()));
     }

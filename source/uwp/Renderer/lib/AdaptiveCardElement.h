@@ -12,7 +12,7 @@ AdaptiveNamespaceStart
 
         IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveNamespace::Spacing* spacing);
         IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveNamespace::Spacing spacing);
-        
+
         IFACEMETHODIMP get_Separator(boolean* separator);
         IFACEMETHODIMP put_Separator(boolean separator);
 

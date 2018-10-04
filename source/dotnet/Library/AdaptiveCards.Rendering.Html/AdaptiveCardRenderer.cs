@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -493,7 +493,7 @@ namespace AdaptiveCards.Rendering.Html
                     }
                 }
 
-                // do some sizing magic 
+                // do some sizing magic
                 var width = column.Width?.ToLower();
                 if (string.IsNullOrEmpty(width))
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -616,7 +616,7 @@ namespace AdaptiveCards.Rendering.Html
                 var uiValue = context.Render(factValue)
                     .AddClass("ac-factvalue");
 
-                // create row in factset 
+                // create row in factset
                 var uiRow = uiFactSet
                     .AddBodyRow();
                 uiRow.Style("height", "1px");
@@ -772,7 +772,7 @@ namespace AdaptiveCards.Rendering.Html
                 .Attr("alt", image.AltText ?? "card image")
                 .Attr("src", context.Config.ResolveFinalAbsoluteUri(image.Url));
 
-            // if explicit image size is used 
+            // if explicit image size is used
             if (image.PixelWidth != 0 || image.PixelHeight != 0)
             {
                 if (image.PixelWidth != 0)

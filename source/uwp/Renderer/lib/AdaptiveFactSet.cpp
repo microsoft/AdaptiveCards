@@ -33,7 +33,7 @@ AdaptiveNamespaceStart
         }
 
         GenerateFactsProjection(sharedFactSet->GetFacts(), m_facts.Get());
-        
+
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedFactSet));
         return S_OK;
     } CATCH_RETURN;

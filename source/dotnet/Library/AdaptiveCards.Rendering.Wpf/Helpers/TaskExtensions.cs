@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,7 +9,7 @@ namespace AdaptiveCards.Rendering.Wpf
         private static readonly TaskScheduler _staScheduler = new StaTaskScheduler(1); //numberOfThreads: Environment.ProcessorCount);
 
         /// <summary>
-        /// Starts a new STA thread. This is necessary for rendering WPF to bitmaps from a console app or server 
+        /// Starts a new STA thread. This is necessary for rendering WPF to bitmaps from a console app or server
         /// </summary>
         public static Task<T> StartNewSta<T>(this TaskFactory factory, Func<T> action)
         {

@@ -75,7 +75,7 @@ using namespace AdaptiveCards;
              nil];
         _actionSetRenderer = [ACRActionSetRenderer getInstance];
         _defaultActionSetRenderer = _actionSetRenderer;
-        
+
         overridenBaseElementRendererList = [[NSMutableDictionary alloc] init];
         overridenBaseActionRendererList  = [[NSMutableDictionary alloc] init];
     }

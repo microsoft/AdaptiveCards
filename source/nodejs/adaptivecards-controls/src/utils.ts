@@ -85,7 +85,7 @@ export function addMonths(date: Date, months: number): Date {
     if (result.getMonth() !== ((newMonth % CalendarSettings.monthsInYear) + CalendarSettings.monthsInYear) % CalendarSettings.monthsInYear) {
         result = addDays(result, -result.getDate());
     }
-    
+
     return result;
 }
 

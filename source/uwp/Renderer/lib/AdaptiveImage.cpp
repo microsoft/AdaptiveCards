@@ -193,7 +193,7 @@ AdaptiveNamespaceStart
             RETURN_IF_FAILED(HStringToUTF8(m_altText.Get(), out));
             image->SetAltText(out);
         }
-            
+
         image->SetImageStyle(static_cast<AdaptiveSharedNamespace::ImageStyle>(m_imageStyle));
         image->SetImageSize(static_cast<AdaptiveSharedNamespace::ImageSize>(m_imageSize));
         image->SetPixelHeight(m_pixelHeight);

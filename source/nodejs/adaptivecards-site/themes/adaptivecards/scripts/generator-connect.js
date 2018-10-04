@@ -10,4 +10,3 @@ hexo.extend.generator.register("generator-connect", function (locals) {
         }
     }
 });
-

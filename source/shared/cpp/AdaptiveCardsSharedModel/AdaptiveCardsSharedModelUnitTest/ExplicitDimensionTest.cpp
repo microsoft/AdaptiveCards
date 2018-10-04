@@ -85,7 +85,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
             std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
             Assert::AreEqual<int>(1, parseResult->GetWarnings().size());
-            Assert::AreEqual<bool>(true, parseResult->GetWarnings().at(0)->GetStatusCode() == 
+            Assert::AreEqual<bool>(true, parseResult->GetWarnings().at(0)->GetStatusCode() ==
                 WarningStatusCode::InvalidDimensionSpecified);
         }
 
@@ -108,7 +108,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
             std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
             Assert::AreEqual<int>(1, parseResult->GetWarnings().size());
-            Assert::AreEqual<bool>(true, parseResult->GetWarnings().at(0)->GetStatusCode() == 
+            Assert::AreEqual<bool>(true, parseResult->GetWarnings().at(0)->GetStatusCode() ==
                 WarningStatusCode::InvalidDimensionSpecified);
         }
 
@@ -155,13 +155,13 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
             std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
             Assert::AreEqual<int>(parseResult->GetWarnings().size(), 1);
-            Assert::AreEqual<bool>(parseResult->GetWarnings().at(0)->GetStatusCode() == 
+            Assert::AreEqual<bool>(parseResult->GetWarnings().at(0)->GetStatusCode() ==
                 WarningStatusCode::InvalidDimensionSpecified, true);
         }
 
         TEST_METHOD(MalformedDimensionValuesTest)
         {
-            std::vector<std::string>payloads = 
+            std::vector<std::string>payloads =
             {
                 "{\
                       \"$schema\": \"http ://adaptivecards.io/schemas/adaptive-card.json\",\
@@ -293,7 +293,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                        }\
                      ]\
                   }"
-            }; 
+            };
 
             for (auto payload : payloads)
             {
@@ -301,7 +301,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(payload, "1.1");
                     std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
                     std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
-                    
+
                     Assert::AreEqual<int>(2, parseResult->GetWarnings().size());
                     Assert::AreEqual<unsigned int>(0U, image->GetPixelHeight());
                     Assert::AreEqual<unsigned int>(0U, image->GetPixelWidth());
@@ -311,7 +311,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     // no exception should be thrown
                     Assert::Fail();
                 }
-            } 
+            }
         }
     };
 
@@ -427,7 +427,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             }";
             std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
             Assert::AreEqual<int>(parseResult->GetWarnings().size(), 1);
-            Assert::AreEqual<bool>(parseResult->GetWarnings().at(0)->GetStatusCode() == 
+            Assert::AreEqual<bool>(parseResult->GetWarnings().at(0)->GetStatusCode() ==
                 WarningStatusCode::InvalidDimensionSpecified, true);
             std::shared_ptr<BaseCardElement> element =  parseResult->GetAdaptiveCard()->GetBody().front();
             std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
@@ -459,7 +459,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             }";
             std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
             Assert::AreEqual<int>(parseResult->GetWarnings().size(), 1);
-            Assert::AreEqual<bool>(parseResult->GetWarnings().at(0)->GetStatusCode() == 
+            Assert::AreEqual<bool>(parseResult->GetWarnings().at(0)->GetStatusCode() ==
                 WarningStatusCode::InvalidDimensionSpecified, true);
             std::shared_ptr<BaseCardElement> element =  parseResult->GetAdaptiveCard()->GetBody().front();
             std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);

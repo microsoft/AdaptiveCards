@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "XamlBuilder.h"

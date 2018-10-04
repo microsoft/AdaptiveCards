@@ -1,4 +1,4 @@
-﻿using AdaptiveCards;
+using AdaptiveCards;
 using AdaptiveCards.Rendering;
 using AdaptiveCards.Rendering.Wpf;
 using ICSharpCode.AvalonEdit.Document;
@@ -61,7 +61,7 @@ namespace WpfVisualizer
             // Use the Xceed rich input controls
             Renderer.UseXceedElementRenderers();
 
-            // Register custom elements and actions            
+            // Register custom elements and actions
             // TODO: Change to instance property? Change to UWP parser registration
             AdaptiveTypedElementConverter.RegisterTypedElement<MyCustomRating>();
             AdaptiveTypedElementConverter.RegisterTypedElement<MyCustomAction>();

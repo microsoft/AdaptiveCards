@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
@@ -147,8 +147,8 @@ namespace UWPTestLibrary
                 {
                     answer.Status = (answer.Status == TestStatus.Failed ||
                                      answer.Status == TestStatus.ImageAndJsonFailed ||
-                                     answer.Status == TestStatus.JsonFailed) ? 
-                        TestStatus.FailedButSourceWasChanged : 
+                                     answer.Status == TestStatus.JsonFailed) ?
+                        TestStatus.FailedButSourceWasChanged :
                         TestStatus.PassedButSourceWasChanged;
                 }
             }

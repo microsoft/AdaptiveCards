@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace AdaptiveCards
 {
@@ -12,6 +12,6 @@ namespace AdaptiveCards
         /// <summary>
         /// If any modifications were done to the parsed card they will be reported here
         /// </summary>
-        public List<AdaptiveWarning> Warnings { get; } = new List<AdaptiveWarning>();   
+        public List<AdaptiveWarning> Warnings { get; } = new List<AdaptiveWarning>();
     }
 }

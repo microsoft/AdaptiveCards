@@ -174,26 +174,26 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    _Use_decl_annotations_ 
+    _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_Spacing(ABI::AdaptiveNamespace::IAdaptiveSpacingConfig** spacingConfig)
     {
         return m_spacing.CopyTo(spacingConfig);
     }
 
-    _Use_decl_annotations_ 
+    _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::put_Spacing(ABI::AdaptiveNamespace::IAdaptiveSpacingConfig* spacingConfig)
     {
         m_spacing = spacingConfig;
         return S_OK;
     }
 
-    _Use_decl_annotations_ 
+    _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::get_Separator(ABI::AdaptiveNamespace::IAdaptiveSeparatorConfig** separatorConfig)
     {
         return m_separator.CopyTo(separatorConfig);
     }
 
-    _Use_decl_annotations_ 
+    _Use_decl_annotations_
     HRESULT AdaptiveHostConfig::put_Separator(ABI::AdaptiveNamespace::IAdaptiveSeparatorConfig* separatorConfig)
     {
         m_separator = separatorConfig;

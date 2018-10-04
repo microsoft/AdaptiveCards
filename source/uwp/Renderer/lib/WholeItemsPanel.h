@@ -16,14 +16,14 @@ AdaptiveNamespaceStart
             HRESULT STDMETHODCALLTYPE RuntimeClassInitialize();
 
             // IFrameworkElementOverrides
-            virtual HRESULT STDMETHODCALLTYPE MeasureOverride( 
+            virtual HRESULT STDMETHODCALLTYPE MeasureOverride(
                 /* [in] */ ABI::Windows::Foundation::Size availableSize,
                 /* [out][retval] */ __RPC__out ABI::Windows::Foundation::Size *returnValue);
-                        
-            virtual HRESULT STDMETHODCALLTYPE ArrangeOverride( 
+
+            virtual HRESULT STDMETHODCALLTYPE ArrangeOverride(
                 /* [in] */ ABI::Windows::Foundation::Size finalSize,
                 /* [out][retval] */ __RPC__out ABI::Windows::Foundation::Size *returnValue);
-                        
+
             virtual HRESULT STDMETHODCALLTYPE OnApplyTemplate(void);
 
             virtual HRESULT STDMETHODCALLTYPE GetAltText(__RPC__out HSTRING *pResult);

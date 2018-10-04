@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -58,14 +58,14 @@ namespace AdaptiveCards.Rendering.Wpf
 
             image.Source = await context.ResolveImageSource(url);
 
-            var parameters = new AdaptiveConverterParameters(image, adaptiveImage); 
+            var parameters = new AdaptiveConverterParameters(image, adaptiveImage);
             var binding = new Binding
             {
                 RelativeSource = RelativeSource.Self,
                 Path = new PropertyPath("Parent.ActualWidth"),
                 Mode = BindingMode.OneWay,
                 Converter = new StretchConverter(),
-                ConverterParameter = parameters 
+                ConverterParameter = parameters
             };
 
             image.SetBinding(Image.StretchProperty, binding);
@@ -76,7 +76,7 @@ namespace AdaptiveCards.Rendering.Wpf
             public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
             {
                 var parentWidth = (double)value;
-                var adaptiveParameters = (AdaptiveConverterParameters)parameter; 
+                var adaptiveParameters = (AdaptiveConverterParameters)parameter;
                 var image = adaptiveParameters.Image;
                 var adaptiveImage = adaptiveParameters.AdaptiveImage;
                 var imageWidth = ((BitmapImage) image.Source)?.PixelWidth;

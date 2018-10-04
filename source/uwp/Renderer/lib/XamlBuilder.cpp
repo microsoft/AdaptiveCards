@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 
 #include "AdaptiveColorsConfig.h"
 #include "AdaptiveColorConfig.h"
@@ -59,8 +59,8 @@ AdaptiveNamespaceStart
     _Use_decl_annotations_
     ComPtr<IUIElement> XamlBuilder::CreateSeparator(
         _Inout_ IAdaptiveRenderContext* renderContext,
-        UINT spacing, 
-        UINT separatorThickness, 
+        UINT spacing,
+        UINT separatorThickness,
         ABI::Windows::UI::Color separatorColor,
         bool isHorizontal)
     {
@@ -111,7 +111,7 @@ AdaptiveNamespaceStart
     _Use_decl_annotations_
     void XamlBuilder::BuildXamlTreeFromAdaptiveCard(
         IAdaptiveCard* adaptiveCard,
-        IFrameworkElement** xamlTreeRoot, 
+        IFrameworkElement** xamlTreeRoot,
         AdaptiveCardRenderer* renderer,
         AdaptiveRenderContext* renderContext,
         boolean isOuterCard,
@@ -202,7 +202,7 @@ AdaptiveNamespaceStart
             {
                 if (m_listeners.size() == 0)
                 {
-                    // If we're done and no one's listening for the images to load, make sure 
+                    // If we're done and no one's listening for the images to load, make sure
                     // any outstanding image loads are no longer tracked.
                     m_imageLoadTracker.AbandonOutstandingImages();
                 }
@@ -379,7 +379,7 @@ AdaptiveNamespaceStart
 
         XamlHelpers::AppendXamlElementToPanel(bodyElementHost.Get(), outerPanelAsPanel.Get(), adaptiveCardHeightType);
         THROW_IF_FAILED(bodyElementHost.CopyTo(bodyElementContainer));
-        
+
         XamlHelpers::AppendXamlElementToPanel(outerPanelAsPanel.Get(), rootAsPanel.Get(), adaptiveCardHeightType);
         THROW_IF_FAILED(outerPanelAsPanel.CopyTo(outerElementContainer));
 
@@ -430,7 +430,7 @@ AdaptiveNamespaceStart
 		ComPtr<IImage> xamlImage;
 		THROW_IF_FAILED(backgroundImage.As(&xamlImage));
 		THROW_IF_FAILED(xamlImage->put_Stretch(Stretch::Stretch_UniformToFill));
-		
+
 		ComPtr<IFrameworkElement> backgroundAsFrameworkElement;
 		THROW_IF_FAILED(xamlImage.As(&backgroundAsFrameworkElement));
 		THROW_IF_FAILED(backgroundAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Stretch));
@@ -912,7 +912,7 @@ AdaptiveNamespaceStart
         if (insertSeparator)
         {
             ABI::AdaptiveNamespace::Spacing spacing;
-            THROW_IF_FAILED(actionsConfig->get_Spacing(&spacing)); 
+            THROW_IF_FAILED(actionsConfig->get_Spacing(&spacing));
 
             UINT spacingSize;
             THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), spacing, &spacingSize));
@@ -1076,7 +1076,7 @@ AdaptiveNamespaceStart
 
                 // If this is a show card action and we're rendering the actions inline, render the card that will be shown
                 ComPtr<IUIElement> uiShowCard;
-                if (actionType == ABI::AdaptiveNamespace::ActionType::ShowCard && 
+                if (actionType == ABI::AdaptiveNamespace::ActionType::ShowCard &&
                     showCardActionMode == ABI::AdaptiveNamespace::ActionMode::Inline)
                 {
                     BuildShowCard(strongRenderer.Get(), showCardActionConfig.Get(), action.Get(), strongRenderContext.Get(), uiShowCard.GetAddressOf());
@@ -1086,7 +1086,7 @@ AdaptiveNamespaceStart
                     THROW_IF_FAILED(showCardsStackPanel.As(&showCardsPanel));
                     XamlHelpers::AppendXamlElementToPanel(uiShowCard.Get(), showCardsPanel.Get());
                 }
-                
+
                 // Add click handler
                 ComPtr<IButtonBase> buttonBase;
                 THROW_IF_FAILED(button.As(&buttonBase));
@@ -1190,7 +1190,7 @@ AdaptiveNamespaceStart
         THROW_IF_FAILED(cardElement->get_Separator(&hasSeparator));
 
         ABI::Windows::UI::Color localColor = { 0 };
-        UINT localThickness = 0; 
+        UINT localThickness = 0;
         if (hasSeparator)
         {
             ComPtr<IAdaptiveSeparatorConfig> separatorConfig;
@@ -1199,7 +1199,7 @@ AdaptiveNamespaceStart
             THROW_IF_FAILED(separatorConfig->get_LineColor(&localColor));
             THROW_IF_FAILED(separatorConfig->get_LineThickness(&localThickness));
         }
-        
+
         *needsSeparator = hasSeparator ||
             (elementSpacing != ABI::AdaptiveNamespace::Spacing::None);
 
@@ -1361,7 +1361,7 @@ AdaptiveNamespaceStart
                 handledAsHtml = true;
             }
         }
-        
+
         if (!handledAsHtml)
         {
             HString hString;
@@ -1519,7 +1519,7 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(localTextBlock.As(&textBlockAsFrameworkElement));
         DOUBLE textBlockHeight;
         RETURN_IF_FAILED(textBlockAsFrameworkElement->get_ActualHeight(&textBlockHeight));
-        
+
         ComPtr<IFrameworkElement> localElement(imageControl);
         RETURN_IF_FAILED(localElement->put_Height(textBlockHeight));
         RETURN_IF_FAILED(localElement->put_Width(textBlockHeight));
@@ -1732,13 +1732,13 @@ AdaptiveNamespaceStart
 
         if(hasExplicitMeasurements)
         {
-            if(pixelWidth) 
+            if(pixelWidth)
             {
                 THROW_IF_FAILED(frameworkElement->put_Width(pixelWidth));
             }
 
             if(pixelHeight)
-            { 
+            {
                 THROW_IF_FAILED(frameworkElement->put_Height(pixelHeight));
             }
         }
@@ -2008,7 +2008,7 @@ AdaptiveNamespaceStart
         THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
         ComPtr<IAdaptiveElementRenderer> columnRenderer;
         THROW_IF_FAILED(elementRenderers->Get(HStringReference(L"Column").Get(), &columnRenderer));
-        
+
         if (columnRenderer == nullptr)
         {
             renderContext->AddWarning(
@@ -2069,12 +2069,12 @@ AdaptiveNamespaceStart
             THROW_IF_FAILED(WindowsCompareStringOrdinal(adaptiveColumnWidth.Get(), HStringReference(L"auto").Get(), &isAutoResult));
 
             double widthAsDouble = _wtof(adaptiveColumnWidth.GetRawBuffer(nullptr));
-            UINT32 pixelWidth = 0; 
+            UINT32 pixelWidth = 0;
             THROW_IF_FAILED(localColumn->get_PixelWidth(&pixelWidth));
 
             GridLength columnWidth;
             if (pixelWidth)
-            { 
+            {
                 // If pixel width specified, use pixel width
                 columnWidth.GridUnitType = GridUnitType::GridUnitType_Pixel;
                 columnWidth.Value = pixelWidth;
@@ -2494,7 +2494,7 @@ AdaptiveNamespaceStart
             XamlHelpers::SetContent(choiceItem.Get(), title.Get());
 
             THROW_IF_FAILED(AddHandledTappedEvent(choiceItem.Get()));
-            
+
             XamlHelpers::AppendXamlElementToPanel(choiceItem.Get(), panel.Get());
         });
 
@@ -2506,8 +2506,8 @@ AdaptiveNamespaceStart
     }
 
     void AddInputValueToContext(
-        IAdaptiveRenderContext* renderContext, 
-        IAdaptiveCardElement* adaptiveCardElement, 
+        IAdaptiveRenderContext* renderContext,
+        IAdaptiveCardElement* adaptiveCardElement,
         IUIElement* inputUiElement)
     {
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
@@ -2591,9 +2591,9 @@ AdaptiveNamespaceStart
         THROW_IF_FAILED(datePickerAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Top));
 
         THROW_IF_FAILED(datePicker.CopyTo(dateInputControl));
-        
+
         THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Date", datePickerAsFrameworkElement.Get()));
-        
+
         AddInputValueToContext(renderContext, adaptiveCardElement, *dateInputControl);
 
         // TODO: Handle parsing dates for min/max and value

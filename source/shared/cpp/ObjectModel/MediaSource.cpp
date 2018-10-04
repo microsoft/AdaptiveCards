@@ -4,7 +4,7 @@
 
 using namespace AdaptiveSharedNamespace;
 
-MediaSource::MediaSource() 
+MediaSource::MediaSource()
 {
 }
 

@@ -11,4 +11,4 @@
 
 - (UIImage *)resolveImageResource:(NSURL *)url;
 
-@end    
+@end
