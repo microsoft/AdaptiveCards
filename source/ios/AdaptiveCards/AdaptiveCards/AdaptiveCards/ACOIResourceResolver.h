@@ -9,6 +9,11 @@
 
 @protocol ACOIResourceResolver
 
+@optional
 - (UIImage *)resolveImageResource:(NSURL *)url;
+- (UIImage*) getRadioButtonForSelectedState;
+- (UIImage*) getRadioButtonForUnselectedState;
+- (UIImage*) getCheckBoxButtonSelectedState;
+- (UIImage*) getCheckBoxButtonUnselectedState;
 
 @end    

@@ -13,6 +13,7 @@
 #import "CustomTextBlockRenderer.h"
 #import "CustomImageRenderer.h"
 #import "ADCResolver.h"
+#import "ADCChoiceSetResourceResolver.h"
 
 @interface ViewController ()
 {
@@ -109,7 +110,9 @@
     [self registerForKeyboardNotifications];
     _resolvers = [[ACOResourceResolvers alloc] init];
     ADCResolver *resolver = [[ADCResolver alloc] init];
+    ADCChoiceSetResourceResolver *choiceSetResouceResolver = [[ADCChoiceSetResourceResolver alloc] init];
     [_resolvers setResourceResolver:resolver scheme:@"http"];
+    [_resolvers setResourceResolver:choiceSetResouceResolver scheme:@"choiceSetImageScheme"];
     _enableCustomRenderer = NO;
     self.curView = nil;
     self.ACVTabVC = [[ACVTableViewController alloc] init];
