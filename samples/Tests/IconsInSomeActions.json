@@ -2,7 +2,7 @@
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"version": "1.0",
-    "lang": "en",
+	"lang": "en",
 	"body": [
 		{
 			"type": "Container",
@@ -60,26 +60,26 @@
 					"wrap": true
 				},
 				{
-                    "type": "Input.ChoiceSet",
-                    "id": "snoozeFor",
-                    "style": "compact",
-                    "isMultiSelect": false,
-                    "value": "1",
-                    "choices": [
-                        {
-                            "title": "5 minutes",
-                            "value": "1"
-                        },
-                        {
-                            "title": "30 minutes",
-                            "value": "2"
-                        },
-                        {
-                            "title": "1 hour",
-                            "value": "3"
-                        }
-                    ]
-                }
+					"type": "Input.ChoiceSet",
+					"id": "snoozeFor",
+					"style": "compact",
+					"isMultiSelect": false,
+					"value": "1",
+					"choices": [
+						{
+							"title": "5 minutes",
+							"value": "1"
+						},
+						{
+							"title": "30 minutes",
+							"value": "2"
+						},
+						{
+							"title": "1 hour",
+							"value": "3"
+						}
+					]
+				}
 			]
 		}
 	],
@@ -87,7 +87,7 @@
 		{
 			"type": "Action.Submit",
 			"title": "Snooze",
-            "iconUrl": "https://cdn1.iconfinder.com/data/icons/office-22/48/alarm-clock-512.png",
+			"iconUrl": "https://cdn1.iconfinder.com/data/icons/office-22/48/alarm-clock-512.png",
 			"data": {
 				"x": "snooze"
 			}
@@ -95,22 +95,22 @@
 		{
 			"type": "Action.Submit",
 			"title": "Dismiss",
-            "iconUrl": "https://cdn2.iconfinder.com/data/icons/lightly-icons/30/close-480.png",
+			"iconUrl": "https://cdn2.iconfinder.com/data/icons/lightly-icons/30/close-480.png",
 			"data": {
 				"icon": "dismiss"
 			}
-        },
-        {
+		},
+		{
 			"type": "Action.Submit",
 			"title": "Dismiss",
 			"data": {
 				"no icon": "dismiss"
 			}
-        },
-        {
+		},
+		{
 			"type": "Action.Submit",
 			"title": "Dismiss",
-            "iconUrl": "https://cdn2.iconfinder.com/data/icons/lightly-icons/30/close-480.png",
+			"iconUrl": "https://cdn2.iconfinder.com/data/icons/lightly-icons/30/close-480.png",
 			"data": {
 				"2nd icon": "dismiss"
 			}
