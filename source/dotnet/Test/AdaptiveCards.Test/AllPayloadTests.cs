@@ -123,9 +123,10 @@ namespace AdaptiveCards.Test
                     "AdaptiveCard.MissingVersion",
                     "AdaptiveCard.Version1.2",
                     "AdaptiveCard.Version1.3",
-                    "FlightItinerary_es_fail"
+                    "FlightItinerary_es_fail",
 
                     // These are cards that features haven't been implemented yet
+                    "Input.Text.InlineAction.ShowCard.json",
                 });
         }
     }
