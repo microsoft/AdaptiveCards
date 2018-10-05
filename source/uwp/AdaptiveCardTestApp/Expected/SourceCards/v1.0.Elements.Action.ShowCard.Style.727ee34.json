@@ -1,0 +1,54 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "This card's action will show another card"
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.ShowCard",
+			"title": "No Style",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "TextBlock",
+						"text": "This card has no style"
+					}
+				]
+			}
+		},
+		{
+			"type": "Action.ShowCard",
+			"title": "Default Style",
+			"card": {
+				"type": "AdaptiveCard",
+				"style": "default",
+				"body": [
+					{
+						"type": "TextBlock",
+						"text": "This card has default style"
+					}
+				]
+			}
+		},
+		{
+			"type": "Action.ShowCard",
+			"title": "Emphasis Style",
+			"card": {
+				"type": "AdaptiveCard",
+				"style": "emphasis",
+				"body": [
+					{
+						"type": "TextBlock",
+						"text": "This card has emphasis style"
+					}
+				]
+			}
+		}
+	]
+}
