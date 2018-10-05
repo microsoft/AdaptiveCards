@@ -35,6 +35,9 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
                                                                                            result.fontWeights,
                                                                                            FontWeightsConfig::Deserialize);
 
+    result.fontStyles = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontStylesDefinition>(
+        json, AdaptiveCardSchemaKey::FontStyles, result.fontStyles, FontStylesDefinition::Deserialize);
+
     result.containerStyles = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStylesDefinition>(
         json, AdaptiveCardSchemaKey::ContainerStyles, result.containerStyles, ContainerStylesDefinition::Deserialize);
 
@@ -83,6 +86,31 @@ FontSizesConfig FontSizesConfig::Deserialize(const Json::Value& json, const Font
     result.mediumFontSize = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Medium, defaultValue.mediumFontSize);
     result.largeFontSize = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Large, defaultValue.largeFontSize);
     result.extraLargeFontSize = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::ExtraLarge, defaultValue.extraLargeFontSize);
+    return result;
+}
+
+FontStyleDefinition FontStyleDefinition::Deserialize(const Json::Value & json, const FontStyleDefinition & defaultValue)
+{
+    FontStyleDefinition result;
+
+    const std::string fontFamily = ParseUtil::GetString(json, AdaptiveCardSchemaKey::FontFamily);
+    result.fontFamily = fontFamily == "" ? defaultValue.fontFamily : fontFamily;
+    
+    result.fontSizes = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontSizesConfig>(json, AdaptiveCardSchemaKey::FontSizes, defaultValue.fontSizes, FontSizesConfig::Deserialize);
+    
+    result.fontWeights = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontWeightsConfig>(json, AdaptiveCardSchemaKey::FontWeights, defaultValue.fontWeights, FontWeightsConfig::Deserialize);
+
+    return result;
+}
+
+FontStylesDefinition FontStylesDefinition::Deserialize(const Json::Value & json, const FontStylesDefinition & defaultValue)
+{
+    FontStylesDefinition result;
+
+    result.default = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontStyleDefinition>(json, AdaptiveCardSchemaKey::Default, defaultValue.default, FontStyleDefinition::Deserialize);
+    result.display = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontStyleDefinition>(json, AdaptiveCardSchemaKey::Display, defaultValue.default, FontStyleDefinition::Deserialize);
+    result.monospace = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontStyleDefinition>(json, AdaptiveCardSchemaKey::Monospace, defaultValue.default, FontStyleDefinition::Deserialize);
+
     return result;
 }
 

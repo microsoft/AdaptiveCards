@@ -74,6 +74,7 @@ namespace AdaptiveSharedNamespace
         DateInput,
         Default,
         DefaultPoster,
+        Display,
         Emphasis,
         ExtraLarge,
         Facts,
@@ -81,6 +82,7 @@ namespace AdaptiveSharedNamespace
         FallbackText,
         FontFamily,
         FontSizes,
+        FontStyles,
         FontWeights,
         Good,
         Height,
@@ -121,6 +123,7 @@ namespace AdaptiveSharedNamespace
         Method,
         MimeType,
         Min,
+        Monospace,
         NumberInput,
         Padding,
         Placeholder,
@@ -180,6 +183,13 @@ namespace AdaptiveSharedNamespace
         Lighter = 0,
         Default,
         Bolder
+    };
+
+    enum class FontStyle
+    {
+        Default = 0,
+        Display,
+        Monospace
     };
 
     enum class ForegroundColor

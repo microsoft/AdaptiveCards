@@ -96,6 +96,16 @@ void TextBlock::SetTextWeight(const TextWeight value)
     m_textWeight = value;
 }
 
+FontStyle TextBlock::GetFontStyle() const
+{
+    return m_fontStyle;
+}
+
+void TextBlock::SetFontStyle(const FontStyle value)
+{
+    m_fontStyle = value;
+}
+
 ForegroundColor TextBlock::GetTextColor() const
 {
     return m_textColor;

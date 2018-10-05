@@ -26,6 +26,28 @@ namespace AdaptiveSharedNamespace
         static FontWeightsConfig Deserialize(const Json::Value& json, const FontWeightsConfig& defaultValue);
     };
 
+    struct FontStyleDefinition
+    {
+        std::string fontFamily;
+        FontSizesConfig fontSizes;
+        FontWeightsConfig fontWeights;
+
+        static FontStyleDefinition Deserialize(const Json::Value& json, const FontStyleDefinition& defaultValue);
+    };
+
+    struct FontStylesDefinition
+    {
+        FontStyleDefinition default = {
+            "Calibri",            // fontStyle
+            {10, 12, 14, 17, 20}, // fontSizes
+            {200, 400, 800}       // fontWeights
+        };
+        FontStyleDefinition display;
+        FontStyleDefinition monospace;
+
+        static FontStylesDefinition Deserialize(const Json::Value& json, const FontStylesDefinition& defaultValue);
+    };
+
     struct ColorConfig
     {
         std::string defaultColor;
@@ -185,6 +207,7 @@ namespace AdaptiveSharedNamespace
         std::string fontFamily = "Calibri";
         FontSizesConfig fontSizes;
         FontWeightsConfig fontWeights;
+        FontStylesDefinition fontStyles;
         bool supportsInteractivity = true;
         std::string imageBaseUrl;
         ImageSizesConfig imageSizes;
