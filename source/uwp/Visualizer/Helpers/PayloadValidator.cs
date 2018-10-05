@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 using Newtonsoft.Json.Serialization;
@@ -75,7 +75,7 @@ namespace AdaptiveCardVisualizer.Helpers
 
                         foreach (var error in validationErrors)
                         {
-                            
+
                             var err = error;
                             if (err.ChildErrors.Count > 0)
                             {

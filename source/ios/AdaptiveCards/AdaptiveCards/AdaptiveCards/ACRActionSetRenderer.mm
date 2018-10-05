@@ -34,14 +34,14 @@
     NSDictionary<NSString *, NSNumber*> *attributes =
     @{@"spacing":[NSNumber numberWithInt:[config getHostConfig]->actions.buttonSpacing],
       @"distribution":[NSNumber numberWithInt:UIStackViewDistributionFillProportionally] };
-    
+
     if(ActionsOrientation::Horizontal == [config getHostConfig]->actions.actionsOrientation){
         childview = [[ACRColumnSetView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height) attributes:attributes];
     }
     else{
         childview = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height) attributes:attributes];
     }
-    
+
     ACOBaseActionElement *acoElem = [[ACOBaseActionElement alloc] init];
     ACRContentHoldingUIScrollView *containingView = [[ACRContentHoldingUIScrollView alloc] init];
     [superview addArrangedSubview:containingView];
@@ -50,23 +50,23 @@
     for(const auto &elem:elems){
         ACRBaseActionElementRenderer *actionRenderer =
         [reg getActionRenderer:[NSNumber numberWithInt:(int)elem->GetElementType()]];
-        
+
         if(actionRenderer == nil){
             NSLog(@"Unsupported card action type:%d\n", (int) elem->GetElementType());
             continue;
         }
-        
+
         [acoElem setElem:elem];
         UIButton *button = [actionRenderer renderButton:rootView inputs:inputs superview:superview baseActionElement:acoElem hostConfig:config];
-        
+
         accumulatedWidth += [button intrinsicContentSize].width;
         accumulatedHeight += [button intrinsicContentSize].height;
         maxWidth = MAX(maxWidth, [button intrinsicContentSize].width);
         maxHeight = MAX(maxHeight, [button intrinsicContentSize].height);
-        
+
         [childview addArrangedSubview:button];
     }
-    
+
     float contentWidth = accumulatedWidth, contentHeight = accumulatedHeight;
     [childview adjustHuggingForLastElement];
     if(ActionsOrientation::Horizontal == [config getHostConfig]->actions.actionsOrientation){
@@ -86,10 +86,10 @@
     [NSLayoutConstraint constraintWithItem:containingView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:childview attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
     NSLayoutConstraint *hConstraint = [NSLayoutConstraint constraintWithItem:childview attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:containingView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0];
     NSLayoutConstraint *vConstraint = [NSLayoutConstraint constraintWithItem:childview attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:containingView attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0];
-    
+
     hConstraint.active = YES;
     vConstraint.active = YES;
-    
+
     if(ActionsOrientation::Horizontal == [config getHostConfig]->actions.actionsOrientation){
         hConstraint.priority = UILayoutPriorityDefaultLow;
         if(contentWidth > superview.frame.size.width){

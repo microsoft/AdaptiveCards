@@ -207,7 +207,7 @@ AdaptiveNamespaceStart
                 maxDesiredWidth = max(childSize.Width, maxDesiredWidth);
             }
         }
-       
+
         m_calculatedSize = currentHeight;
         if (m_visibleCount == count)
         {
@@ -277,7 +277,7 @@ AdaptiveNamespaceStart
                 {
                     childHeight += extraPaddingPerItem;
                     newHeight += extraPaddingPerItem;
-                } 
+                }
                 else if (newHeight > finalSize.Height) // If we have truncated the first item newHeight may be greater than finalSize
                 {
                     childHeight = finalSize.Height - currentHeight;

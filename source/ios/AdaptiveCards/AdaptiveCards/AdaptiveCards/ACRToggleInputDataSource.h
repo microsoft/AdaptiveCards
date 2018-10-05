@@ -11,7 +11,7 @@
 #import "HostConfig.h"
 #import "ACRColumnSetView.h"
 
-@interface ACRToggleInputDataSource:NSObject<UITableViewDataSource, UITableViewDelegate, ACRIBaseInputHandler> 
+@interface ACRToggleInputDataSource:NSObject<UITableViewDataSource, UITableViewDelegate, ACRIBaseInputHandler>
 
 @property NSString *id;
 @property NSString *valueOn;

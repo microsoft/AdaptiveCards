@@ -78,7 +78,7 @@ export class FactTextDefinition {
             this.wrap = obj["wrap"] != null ? obj["wrap"] : this.wrap;
         }
     }
-	
+
     getDefaultWeight() {
 		return Enums.TextWeight.Default;
     }
@@ -97,7 +97,7 @@ export class FactTextDefinition {
 export class FactTitleDefinition extends FactTextDefinition {
     maxWidth?: number = 150;
     weight: Enums.TextWeight = Enums.TextWeight.Bolder;
-	
+
     constructor(obj?: any) {
         super(obj);
 
@@ -106,7 +106,7 @@ export class FactTitleDefinition extends FactTextDefinition {
 			this.weight = Utils.parseHostConfigEnum(Enums.TextWeight, obj["weight"], Enums.TextWeight.Bolder);
         }
     }
-	
+
     getDefaultWeight() {
         return Enums.TextWeight.Bolder;
     }
@@ -130,7 +130,7 @@ export class ShowCardActionConfig {
     actionMode: Enums.ShowCardActionMode = Enums.ShowCardActionMode.Inline;
     inlineTopMargin: number = 16;
     style?: string = Enums.ContainerStyle.Emphasis;
-    
+
     constructor(obj?: any) {
         if (obj) {
             this.actionMode = Utils.parseHostConfigEnum(Enums.ShowCardActionMode, obj["actionMode"], Enums.ShowCardActionMode.Inline);
@@ -228,13 +228,13 @@ export class ContainerStyleDefinition {
                 this.foregroundColors.warning = this.getTextColorDefinitionOrDefault(obj.foregroundColors["warning"], { default: "#E69500", subtle: "#DDE69500" });
                 this.foregroundColors.attention = this.getTextColorDefinitionOrDefault(obj.foregroundColors["attention"], { default: "#CC3300", subtle: "#DDCC3300" });
             }
-        }        
+        }
     }
 
     constructor(obj?: any) {
         this.parse(obj);
     }
-    
+
     get isBuiltIn(): boolean {
         return false;
     }
@@ -330,7 +330,7 @@ export class HostConfig {
     lineHeights?: ILineHeightDefinitions;
 
     fontFamily?: string = "Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif";
-    
+
     readonly spacing = {
         small: 3,
         default: 8,
@@ -352,7 +352,7 @@ export class HostConfig {
         large: 21,
         extraLarge: 26
     };
-    
+
     readonly fontWeights = {
         lighter: 200,
         default: 400,

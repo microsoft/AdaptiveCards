@@ -51,7 +51,7 @@ AdaptiveNamespaceStart
         }
 
     private:
-        
+
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCard> m_card;
     };
 

@@ -101,7 +101,7 @@ void BaseActionElement::PopulateKnownPropertiesSet()
 
 void BaseActionElement::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
 {
-    if (!m_iconUrl.empty()) 
+    if (!m_iconUrl.empty())
     {
         RemoteResourceInformation imageResourceInfo;
         imageResourceInfo.url = m_iconUrl;

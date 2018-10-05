@@ -16,7 +16,7 @@ export class RadioButton extends InputControl {
     private _label: string = "";
     private _isChecked: boolean;
     private _checkboxElement: HTMLInputElement = null;
-    private _spanElement: HTMLSpanElement = null;    
+    private _spanElement: HTMLSpanElement = null;
 
     private changed() {
         if (this.onChange) {

@@ -106,7 +106,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
     std::string speak = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak);
 
     // check if language is valid
-    try 
+    try
     {
         if (language.empty() || language.length() == 2 || language.length() == 3)
         {

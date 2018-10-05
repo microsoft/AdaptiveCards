@@ -29,16 +29,16 @@
 							"wrap": true
 						},
 						{
-                            "type": "Media",
-                            "poster": "http://adaptivecards.io/content/cats/1.png",
-                            "sources": [
-                                {
-                                    "mimeType": "video/mp4",
-                                    "url": "https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4"
-                                }
-                            ],
-                            "height": "stretch"
-                        },
+							"type": "Media",
+							"poster": "http://adaptivecards.io/content/cats/1.png",
+							"sources": [
+								{
+									"mimeType": "video/mp4",
+									"url": "https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4"
+								}
+							],
+							"height": "stretch"
+						},
 						{
 							"type": "TextBlock",
 							"text": "One last text block at the bottom",

@@ -13,7 +13,7 @@ AdaptiveNamespaceStart
     public:
         AdaptiveHostConfigParseResult();
 
-        HRESULT RuntimeClassInitialize(); 
+        HRESULT RuntimeClassInitialize();
         HRESULT RuntimeClassInitialize(ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig);
 
         // IAdaptiveHostConfigParseResult

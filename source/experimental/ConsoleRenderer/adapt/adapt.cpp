@@ -43,4 +43,3 @@ int main(int /*argc*/, char *argv[])
     RestoreConsoleModeForDisplay(dwOld);
     return 0;
 }
-

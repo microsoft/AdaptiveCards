@@ -105,7 +105,7 @@ AdaptiveNamespaceStart
         ImageLoadResultReceived(sender);
         return S_OK;
     }
-    
+
     _Use_decl_annotations_
     HRESULT ImageLoadTracker::trackedImage_ImageFailed(IInspectable* sender, IExceptionRoutedEventArgs* /*eventArgs*/)
     {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -18,7 +18,7 @@ namespace AdaptiveCards.XamarinForms.BotClient
         private DirectLineClient _client;
         private Conversation _conversation;
         private string _watermark;
- 
+
         private Action<object, MissingInputEventArgs> _onMissingInput = (s, e) => { };
         private Action<object, ActionEventArgs> _onAction = (s, a) => { };
         private AdaptiveCardRenderer _renderer;
@@ -41,7 +41,7 @@ namespace AdaptiveCards.XamarinForms.BotClient
             _conversation = await _client.Conversations.StartConversationAsync().ConfigureAwait(false);
 
             _renderer = new AdaptiveCardRenderer(new HostConfig());
-        
+
             // AdaptiveTestBot
             // d5600769-0c92-4ab3-99f4-61380589a887
             // pass GWGDf3PnKzxLMvi3uo9uNLy
@@ -104,7 +104,7 @@ namespace AdaptiveCards.XamarinForms.BotClient
             try
             {
                 await _client.Conversations.PostActivityAsync(_conversation.ConversationId, activity);
-                await Task.Delay(2000);            
+                await Task.Delay(2000);
                 await GetMessages();
             }
             catch (Exception ex)

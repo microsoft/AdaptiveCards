@@ -36,7 +36,7 @@ AdaptiveNamespaceStart
         GenerateActionProjection(sharedContainer->GetSelectAction(), &m_selectAction);
         m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedContainer->GetStyle());
         m_verticalAlignment = static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedContainer->GetVerticalContentAlignment());
-        
+
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedContainer));
         return S_OK;
     } CATCH_RETURN;

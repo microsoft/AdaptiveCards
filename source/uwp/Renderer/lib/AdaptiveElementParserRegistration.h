@@ -99,7 +99,7 @@ AdaptiveNamespaceStart
             sharedModelActionParserRegistration = std::make_shared<AdaptiveSharedNamespace::ActionParserRegistration>();
         }
 
-        std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings; 
+        std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
         std::shared_ptr<TSharedModelParser> parser = std::make_shared<TSharedModelParser>();
         std::shared_ptr<BaseCardElement> baseCardElement = parser->DeserializeFromString(sharedModelElementParserRegistration, sharedModelActionParserRegistration, warnings, jsonString);
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +36,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     {
                         TryExecuteTask(t);
                     }
-                   
+
                 });
                 thread.IsBackground = true;
                 thread.SetApartmentState(ApartmentState.STA);

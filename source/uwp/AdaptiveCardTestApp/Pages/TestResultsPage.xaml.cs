@@ -1,4 +1,4 @@
-﻿using AdaptiveCardTestApp.ViewModels;
+using AdaptiveCardTestApp.ViewModels;
 using System;
 using System.Collections;
 using System.Linq;

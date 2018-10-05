@@ -13,7 +13,7 @@ AdaptiveNamespaceStart
     public:
         AdaptiveCardParseResult();
 
-        HRESULT RuntimeClassInitialize(); 
+        HRESULT RuntimeClassInitialize();
         HRESULT RuntimeClassInitialize(ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard);
 
         // IAdaptiveCardParseResult

@@ -1,4 +1,4 @@
-﻿using AdaptiveCardTestApp.Pages;
+using AdaptiveCardTestApp.Pages;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;

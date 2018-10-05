@@ -113,7 +113,7 @@ enum class AdaptiveCardSchemaKey
     MaxLength,
     MaxLines,
     MaxWidth,
-    Media, 
+    Media,
     Medium,
     Method,
     MimeType,

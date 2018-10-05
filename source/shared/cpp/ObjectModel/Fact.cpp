@@ -9,7 +9,7 @@ Fact::Fact()
 {
 }
 
-Fact::Fact(std::string const &title, std::string const &value) : 
+Fact::Fact(std::string const &title, std::string const &value) :
     m_title(title), m_value(value)
 {
 }

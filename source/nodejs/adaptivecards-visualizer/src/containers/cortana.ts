@@ -29,10 +29,10 @@ export class CortanaContainer extends HostContainer {
         var cardContainer = document.createElement("div");
 
         if (this._renderFrame) {
-            wrapper.className = "cortanaFrame";            
+            wrapper.className = "cortanaFrame";
             cardContainer.className = "cardWrapper";
         }
- 
+
         adaptiveCard.render(cardContainer);
 
         wrapper.appendChild(cardContainer);

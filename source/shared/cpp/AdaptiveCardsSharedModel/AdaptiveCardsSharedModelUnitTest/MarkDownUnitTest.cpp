@@ -182,7 +182,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual<string>("<p><strong>(foo)</strong>.</p>", parser6.TransformToHtml());
         }
     };
-    
+
 
     TEST_CLASS(DelimiterNestingTest)
     {
@@ -257,7 +257,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual<string>("<p><em>foo</em>***</p>", parser3.TransformToHtml());
 
             MarkDownParser parser4("**Gomphocarpus (*Gomphocarpus physocarpus*, syn.\n*Asclepias physocarpa*)**");
-            Assert::AreEqual<string>("<p><strong>Gomphocarpus (<em>Gomphocarpus physocarpus</em>, syn.\n<em>Asclepias physocarpa</em>)</strong></p>", 
+            Assert::AreEqual<string>("<p><strong>Gomphocarpus (<em>Gomphocarpus physocarpus</em>, syn.\n<em>Asclepias physocarpa</em>)</strong></p>",
                 parser4.TransformToHtml());
 
             MarkDownParser parser5("*Hello* abc ***Hello* def *world***");
@@ -344,46 +344,46 @@ namespace AdaptiveCardsSharedModelUnitTest
     {
         TEST_METHOD(CanGenerateValidHtmlTagForLinkTest)
         {
-            MarkDownParser parser("[hello](www.naver.com)"); 
+            MarkDownParser parser("[hello](www.naver.com)");
             Assert::AreEqual<string>("<p><a href=\"www.naver.com\">hello</a></p>", parser.TransformToHtml());
         }
 
         TEST_METHOD(ValidLinkTestWithUnMatchingBrackets)
         {
-            MarkDownParser parser("[[[[hello](www.naver.com)"); 
+            MarkDownParser parser("[[[[hello](www.naver.com)");
             Assert::AreEqual<string>("<p>[[[<a href=\"www.naver.com\">hello</a></p>", parser.TransformToHtml());
         }
         TEST_METHOD(InvalidLinkTest)
         {
-            MarkDownParser parser("[hello(www.naver.com)"); 
+            MarkDownParser parser("[hello(www.naver.com)");
             Assert::AreEqual<string>("<p>[hello(www.naver.com)</p>", parser.TransformToHtml());
             Assert::AreEqual<bool>(parser.HasHtmlTags(), false);
         }
 
         TEST_METHOD(InvalidLinkTestWithInvalidEmphasis)
         {
-            MarkDownParser parser("*[*hello(www.naver.com)"); 
+            MarkDownParser parser("*[*hello(www.naver.com)");
             Assert::AreEqual<string>("<p>*[*hello(www.naver.com)</p>", parser.TransformToHtml());
             Assert::AreEqual<bool>(parser.HasHtmlTags(), false);
         }
 
         TEST_METHOD(InvalidLinkTestWithValidEmphasis)
         {
-            MarkDownParser parser("*[*hello(www.naver.com)*"); 
+            MarkDownParser parser("*[*hello(www.naver.com)*");
             Assert::AreEqual<string>("<p>*[<em>hello(www.naver.com)</em></p>", parser.TransformToHtml());
             Assert::AreEqual<bool>(parser.HasHtmlTags(), true);
         }
 
         TEST_METHOD(ValidLinkTestWithUnMatchingBracketsWithChars)
         {
-            MarkDownParser parser("[a[b[hello](www.naver.com)"); 
+            MarkDownParser parser("[a[b[hello](www.naver.com)");
             Assert::AreEqual<string>("<p>[a[b<a href=\"www.naver.com\">hello</a></p>", parser.TransformToHtml());
             Assert::AreEqual<bool>(true, parser.HasHtmlTags());
         }
 
         TEST_METHOD(ValidLinkTestWithUnMatchingBracketsWithCharsAndParenthesis)
         {
-            MarkDownParser parser("[[a[b[h(ello](www.naver.com)"); 
+            MarkDownParser parser("[[a[b[h(ello](www.naver.com)");
             Assert::AreEqual<string>("<p>[[a[b<a href=\"www.naver.com\">h(ello</a></p>", parser.TransformToHtml());
             Assert::AreEqual<bool>(true, parser.HasHtmlTags());
         }
@@ -397,35 +397,35 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         TEST_METHOD(OutSideEmphasisAndLinkTest)
         {
-            MarkDownParser parser("*[hello](www.naver.com)*"); 
+            MarkDownParser parser("*[hello](www.naver.com)*");
             Assert::AreEqual<string>("<p><em><a href=\"www.naver.com\">hello</a></em></p>", parser.TransformToHtml());
             Assert::AreEqual<bool>(true, parser.HasHtmlTags());
         }
 
         TEST_METHOD(EmphasisAndLinkTextTest)
         {
-            MarkDownParser parser("[*hello*](www.naver.com)"); 
+            MarkDownParser parser("[*hello*](www.naver.com)");
             Assert::AreEqual<string>("<p><a href=\"www.naver.com\"><em>hello</em></a></p>", parser.TransformToHtml());
         }
 
         TEST_METHOD(UmatchingEmphasisAndLinkTextTest)
         {
-            MarkDownParser parser("*[*hello*](www.naver.com)"); 
+            MarkDownParser parser("*[*hello*](www.naver.com)");
             Assert::AreEqual<string>("<p>*<a href=\"www.naver.com\"><em>hello</em></a></p>", parser.TransformToHtml());
         }
         TEST_METHOD(EmphasisAndLinkDestinationTest)
         {
-            MarkDownParser parser("*[*hello*](*www.naver.com*)"); 
+            MarkDownParser parser("*[*hello*](*www.naver.com*)");
             Assert::AreEqual<string>("<p>*<a href=\"*www.naver.com*\"><em>hello</em></a></p>", parser.TransformToHtml());
         }
         TEST_METHOD(LinkWithComplexEmphasisString)
         {
-            MarkDownParser parser("**Hello** *[*hello*](*www.naver.com*)*"); 
+            MarkDownParser parser("**Hello** *[*hello*](*www.naver.com*)*");
             Assert::AreEqual<string>("<p><strong>Hello</strong> <em><a href=\"*www.naver.com*\"><em>hello</em></a></em></p>", parser.TransformToHtml());
         }
         TEST_METHOD(TwoLinksTest)
         {
-            MarkDownParser parser("*Hello* *[*hello*](*www.naver.com*)** Hello, [second](www.microsoft.com)"); 
+            MarkDownParser parser("*Hello* *[*hello*](*www.naver.com*)** Hello, [second](www.microsoft.com)");
             Assert::AreEqual<string>("<p><em>Hello</em> <em><a href=\"*www.naver.com*\"><em>hello</em></a></em>* Hello, <a href=\"www.microsoft.com\">second</a></p>", parser.TransformToHtml());
         }
     };

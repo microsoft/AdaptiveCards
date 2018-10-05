@@ -49,4 +49,3 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 AdaptiveNamespaceEnd
-

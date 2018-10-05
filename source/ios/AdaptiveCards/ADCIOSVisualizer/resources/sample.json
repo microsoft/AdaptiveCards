@@ -1,130 +1,130 @@
 {
-    "supportsInteractivity": true,
-    "imageBaseUrl": "https://pbs.twimg.com/profile_images/3647943215/",
-    "fontFamily": "Helvetica Neue",
-    "fontSizes": {
-        "small": 12,
-        "default": 14,
-        "medium": 17,
-        "large": 21,
-        "extraLarge": 26
-    },
-    "fontWeights": {
-        "lighter": 200,
-        "default": 400,
-        "bolder": 700
-    },
-    "imageSizes": {
-        "small": 40,
-        "medium": 80,
-        "large": 160
-    },
-    "containerStyles": {
-        "default": {
-            "fontColors": {
-                "default": {
-                    "normal": "#333333",
-                    "subtle": "#EE333333"
-                },
-                "accent": {
-                    "normal": "#2E89FC",
-                    "subtle": "#882E89FC"
-                },
-                "good": {
-                    "normal": "#54a254",
-                    "subtle": "#DD54a254"
-                },
-                "warning": {
-                    "normal": "#c3ab23",
-                    "subtle": "#DDc3ab23"
-                },
-                "attention": {
-                    "normal": "#FF0000",
-                    "subtle": "#DDFF0000"
-                }
-            },
-            "backgroundColor": "#EAEAEA"
-        },
-        "emphasis": {
-            "fontColors": {
-                "default": {
-                    "normal": "#333333",
-                    "subtle": "#EE333333"
-                },
-                "accent": {
-                    "normal": "#2E89FC",
-                    "subtle": "#882E89FC"
-                },
-                "good": {
-                    "normal": "#54a254",
-                    "subtle": "#DD54a254"
-                },
-                "warning": {
-                    "normal": "#c3ab23",
-                    "subtle": "#DDc3ab23"
-                },
-                "attention": {
-                    "normal": "#FF0000",
-                    "subtle": "#DDFF0000"
-                }
-            },
-            "backgroundColor": "#08000000",
-            "borderColor": "#FF000000",
-            "borderThickness": 2
-              }
-    },
-    "spacing": {
-        "small": 3,
-        "default": 8,
-        "medium": 20,
-        "large": 30,
-        "extraLarge": 40,
-        "padding": 5
-    },
-    "separator": {
-        "lineThickness": 1,
-        "lineColor": "#FF000000"
-    },
-    "actions": {
-        "maxActions": 5,
-        "spacing": "Default",
-        "buttonSpacing": 10,
-        "showCard": {
-            "actionMode": "Popup",
-            "inlineTopMargin": 16,
-            "style": "Emphasis"
-        },
-        "preExpandSingleShowCardAction": false,
-        "actionsOrientation": "Horizontal",
-        "actionAlignment": "Stretch"
-    },
-    "adaptiveCard": {
-        "allowCustomStyle": true
-    },
-    "imageSet": {
-        "imageSize": "Medium",
-        "maxImageHeight": 999
-    },
-    "factSet": {
-        "title": {
-            "size": "Default",
-            "color": "Default",
-            "isSubtle": false,
-            "weight": "Bolder",
-            "maxWidth":150,
-            "warp": true
-        },
-        "value": {
-            "size": "Default",
-            "color": "Default",
-            "isSubtle": false,
-            "weight": "Default",
-            "warp": true
-        },
-        "spacing": 5
-    },
-    "media": {
-        "playButton" :"https://www.shareicon.net/download/64x64/2017/04/08/883361_media_512x512.png",
-        "allowInlinePlayback" : true
-    }
+	"supportsInteractivity": true,
+	"imageBaseUrl": "https://pbs.twimg.com/profile_images/3647943215/",
+	"fontFamily": "Helvetica Neue",
+	"fontSizes": {
+		"small": 12,
+		"default": 14,
+		"medium": 17,
+		"large": 21,
+		"extraLarge": 26
+	},
+	"fontWeights": {
+		"lighter": 200,
+		"default": 400,
+		"bolder": 700
+	},
+	"imageSizes": {
+		"small": 40,
+		"medium": 80,
+		"large": 160
+	},
+	"containerStyles": {
+		"default": {
+			"fontColors": {
+				"default": {
+					"normal": "#333333",
+					"subtle": "#EE333333"
+				},
+				"accent": {
+					"normal": "#2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"good": {
+					"normal": "#54a254",
+					"subtle": "#DD54a254"
+				},
+				"warning": {
+					"normal": "#c3ab23",
+					"subtle": "#DDc3ab23"
+				},
+				"attention": {
+					"normal": "#FF0000",
+					"subtle": "#DDFF0000"
+				}
+			},
+			"backgroundColor": "#EAEAEA"
+		},
+		"emphasis": {
+			"fontColors": {
+				"default": {
+					"normal": "#333333",
+					"subtle": "#EE333333"
+				},
+				"accent": {
+					"normal": "#2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"good": {
+					"normal": "#54a254",
+					"subtle": "#DD54a254"
+				},
+				"warning": {
+					"normal": "#c3ab23",
+					"subtle": "#DDc3ab23"
+				},
+				"attention": {
+					"normal": "#FF0000",
+					"subtle": "#DDFF0000"
+				}
+			},
+			"backgroundColor": "#08000000",
+			"borderColor": "#FF000000",
+			"borderThickness": 2
+			}
+	},
+	"spacing": {
+		"small": 3,
+		"default": 8,
+		"medium": 20,
+		"large": 30,
+		"extraLarge": 40,
+		"padding": 5
+	},
+	"separator": {
+		"lineThickness": 1,
+		"lineColor": "#FF000000"
+	},
+	"actions": {
+		"maxActions": 5,
+		"spacing": "Default",
+		"buttonSpacing": 10,
+		"showCard": {
+			"actionMode": "Popup",
+			"inlineTopMargin": 16,
+			"style": "Emphasis"
+		},
+		"preExpandSingleShowCardAction": false,
+		"actionsOrientation": "Horizontal",
+		"actionAlignment": "Stretch"
+	},
+	"adaptiveCard": {
+		"allowCustomStyle": true
+	},
+	"imageSet": {
+		"imageSize": "Medium",
+		"maxImageHeight": 999
+	},
+	"factSet": {
+		"title": {
+			"size": "Default",
+			"color": "Default",
+			"isSubtle": false,
+			"weight": "Bolder",
+			"maxWidth":150,
+			"warp": true
+		},
+		"value": {
+			"size": "Default",
+			"color": "Default",
+			"isSubtle": false,
+			"weight": "Default",
+			"warp": true
+		},
+		"spacing": 5
+	},
+	"media": {
+		"playButton" :"https://www.shareicon.net/download/64x64/2017/04/08/883361_media_512x512.png",
+		"allowInlinePlayback" : true
+	}
 }

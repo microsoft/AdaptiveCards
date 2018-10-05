@@ -19,7 +19,7 @@ namespace AdaptiveCardsSharedModelUnitTest
     public:
         TEST_METHOD(CanGetCustomJsonPayload)
         {
-            std::string testJsonString = 
+            std::string testJsonString =
             "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
@@ -44,7 +44,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         TEST_METHOD(CanGetCustomJsonPayloadWithKnownElementFollowing)
         {
-            std::string testJsonString = 
+            std::string testJsonString =
             "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
@@ -76,7 +76,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         TEST_METHOD(CanGetJsonPayloadOfArrayType)
         {
-            std::string testJsonString = 
+            std::string testJsonString =
             "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\

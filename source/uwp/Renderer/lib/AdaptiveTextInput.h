@@ -64,7 +64,7 @@ AdaptiveNamespaceStart
 
         IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveNamespace::HeightType* height) { return AdaptiveCardElementBase::get_Height(height); }
         IFACEMETHODIMP put_Height(_In_ ABI::AdaptiveNamespace::HeightType height) { return AdaptiveCardElementBase::put_Height(height); }
-        
+
         // ITypePeek method
         void *PeekAt(REFIID riid) override
         {

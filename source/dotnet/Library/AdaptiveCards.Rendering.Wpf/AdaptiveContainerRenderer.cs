@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -65,7 +65,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     }
                     else if (uiContainer.Children.Count > 0)
                     {
-                        var spacing = context.Config.GetSpacing(cardElement.Spacing);                        
+                        var spacing = context.Config.GetSpacing(cardElement.Spacing);
                         uiElement.Margin = new Thickness(0, spacing, 0, 0);
                     }
 
@@ -93,7 +93,7 @@ namespace AdaptiveCards.Rendering.Wpf
                             uiContainer.Children.Add(panel);
                         }
                     }
-                    
+
                 }
             }
         }
@@ -108,7 +108,7 @@ namespace AdaptiveCards.Rendering.Wpf
             int spacing = context.Config.GetSpacing(element.Spacing);
 
             SeparatorConfig sepStyle = context.Config.Separator;
-            
+
             uiSep.Margin = new Thickness(0, (spacing - sepStyle.LineThickness) / 2, 0, 0);
             uiSep.SetHeight(sepStyle.LineThickness);
             if(!string.IsNullOrWhiteSpace(sepStyle.LineColor))

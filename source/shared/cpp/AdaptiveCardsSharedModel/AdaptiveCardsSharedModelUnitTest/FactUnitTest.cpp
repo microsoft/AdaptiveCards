@@ -6,12 +6,12 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
 
-namespace AdaptiveCardsSharedModelUnitTest 
+namespace AdaptiveCardsSharedModelUnitTest
 {
-    TEST_CLASS(FactTest) 
+    TEST_CLASS(FactTest)
     {
     public:
-        TEST_METHOD(DefineFromEmptyConstructor) 
+        TEST_METHOD(DefineFromEmptyConstructor)
         {
             Fact emptyFact;
             Assert::IsTrue(emptyFact.GetTitle().empty());
@@ -38,7 +38,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
 
             auto parsedFact = Fact::DeserializeFromString(elementParserRegistration, actionParserRegistration, warnings, json_data);
-            
+
             Assert::AreEqual(emptyFact.GetTitle(), parsedFact->GetTitle());
             Assert::AreEqual(emptyFact.GetValue(), parsedFact->GetValue());
         }

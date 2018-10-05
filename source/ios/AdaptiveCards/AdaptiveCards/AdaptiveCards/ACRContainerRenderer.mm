@@ -43,7 +43,7 @@
     if(containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom){
         leadingBlankSpace = [container addPaddingSpace];
     }
-    
+
     container.frame = viewGroup.frame;
 
     [ACRRenderer render:container
@@ -51,14 +51,14 @@
                  inputs:inputs
           withCardElems:containerElem->GetItems()
           andHostConfig:acoConfig];
-    
+
     // Dont add the trailing space if the vertical content alignment is top/default
     if(containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && !(container.hasStretchableView))){
         trailingBlankSpace = [container addPaddingSpace];
     }
-    
+
     [viewGroup addArrangedSubview:container];
-        
+
     if(leadingBlankSpace != nil && trailingBlankSpace != nil){
         [NSLayoutConstraint constraintWithItem:leadingBlankSpace
                                      attribute:NSLayoutAttributeHeight
@@ -80,4 +80,3 @@
 }
 
 @end
-
