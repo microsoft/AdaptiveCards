@@ -47,8 +47,7 @@ void PropagateLanguage(const std::string& language, std::vector<std::shared_ptr<
     }
 }
 
-std::string ValidateColor(const std::string& backgroundColor,
-    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings)
+std::string ValidateColor(const std::string& backgroundColor, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings)
 {
     if (backgroundColor.empty())
     {
@@ -64,9 +63,9 @@ std::string ValidateColor(const std::string& backgroundColor,
 
     if (!isValidColor)
     {
-        warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
-                AdaptiveSharedNamespace::WarningStatusCode::InvalidColorFormat,
-                "Image background color specified, but doesn't follow #AARRGGBB or #RRGGBB format"));
+        warnings.emplace_back(
+            std::make_shared<AdaptiveCardParseWarning>(AdaptiveSharedNamespace::WarningStatusCode::InvalidColorFormat,
+                                                       "Image background color specified, but doesn't follow #AARRGGBB or #RRGGBB format"));
         return "#00000000";
     }
 
@@ -84,8 +83,10 @@ std::string ValidateColor(const std::string& backgroundColor,
     return validBackgroundColor;
 }
 
-void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::string &requestedDimension,
-    int &parsedDimension, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings)
+void ValidateUserInputForDimensionWithUnit(const std::string& unit,
+                                           const std::string& requestedDimension,
+                                           int& parsedDimension,
+                                           std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings)
 {
     const std::string warningMessage = "expected input arugment to be specified as \\d+(\\.\\d+)?px with no spaces, but received ";
     parsedDimension = 0;
@@ -101,28 +102,25 @@ void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::s
             // stoi will get integral value upto non digit char indexed by idx
             parsedDimension = std::stoi(matches[0]);
         }
-        catch (const std::invalid_argument &)
+        catch (const std::invalid_argument&)
         {
-            warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
-                    AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
-                    warningMessage + requestedDimension));
+            warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
+                                                                             warningMessage + requestedDimension));
         }
-        catch (const std::out_of_range &)
+        catch (const std::out_of_range&)
         {
-            warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
-                    AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
-                    "out of range: " + requestedDimension));
+            warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
+                                                                             "out of range: " + requestedDimension));
         }
     }
     else
     {
-        warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
-                AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
-                warningMessage + requestedDimension));
+        warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
+                                                                         warningMessage + requestedDimension));
     }
 }
 
-bool ShouldParseForExplicitDimension(const std::string &input)
+bool ShouldParseForExplicitDimension(const std::string& input)
 {
     if (input.empty())
     {
@@ -150,9 +148,7 @@ bool ShouldParseForExplicitDimension(const std::string &input)
     return false;
 }
 
-void EnsureShowCardVersions(
-    std::vector<std::shared_ptr<BaseActionElement>>& actions,
-    std::string& version)
+void EnsureShowCardVersions(std::vector<std::shared_ptr<BaseActionElement>>& actions, std::string& version)
 {
     for (auto& action : actions)
     {

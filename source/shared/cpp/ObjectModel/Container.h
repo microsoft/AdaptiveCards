@@ -6,60 +6,60 @@
 #include "BaseCardElement.h"
 #include "ElementParserRegistration.h"
 
-namespace AdaptiveSharedNamespace {
-class Container : public BaseCardElement
+namespace AdaptiveSharedNamespace
 {
-friend class ContainerParser;
-public:
-    Container();
+    class Container : public BaseCardElement
+    {
+        friend class ContainerParser;
 
-    Json::Value SerializeToJsonValue() const override;
+    public:
+        Container();
 
-    std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
-    const std::vector<std::shared_ptr<BaseCardElement>>& GetItems() const;
+        Json::Value SerializeToJsonValue() const override;
 
-    ContainerStyle GetStyle() const;
-    void SetStyle(const ContainerStyle value);
+        std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
+        const std::vector<std::shared_ptr<BaseCardElement>>& GetItems() const;
 
-    std::shared_ptr<BaseActionElement> GetSelectAction() const;
-    void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
+        ContainerStyle GetStyle() const;
+        void SetStyle(const ContainerStyle value);
 
-    void SetLanguage(const std::string& value);
+        std::shared_ptr<BaseActionElement> GetSelectAction() const;
+        void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
-    VerticalContentAlignment GetVerticalContentAlignment() const;
-    void SetVerticalContentAlignment(const VerticalContentAlignment value);
+        void SetLanguage(const std::string& value);
 
-    void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
+        VerticalContentAlignment GetVerticalContentAlignment() const;
+        void SetVerticalContentAlignment(const VerticalContentAlignment value);
 
-private:
-    void PopulateKnownPropertiesSet() override;
+        void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
-    ContainerStyle m_style;
-    VerticalContentAlignment m_verticalContentAlignment;
-    std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>> m_items;
-    std::shared_ptr<BaseActionElement> m_selectAction;
-};
+    private:
+        void PopulateKnownPropertiesSet() override;
 
-class ContainerParser : public BaseCardElementParser
-{
-public:
-    ContainerParser() = default;
-    ContainerParser(const ContainerParser&) = default;
-    ContainerParser(ContainerParser&&) = default;
-    ContainerParser& operator=(const ContainerParser&) = default;
-    ContainerParser& operator=(ContainerParser&&) = default;
-    virtual ~ContainerParser() = default;
+        ContainerStyle m_style;
+        VerticalContentAlignment m_verticalContentAlignment;
+        std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>> m_items;
+        std::shared_ptr<BaseActionElement> m_selectAction;
+    };
 
-    std::shared_ptr<BaseCardElement> Deserialize(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-        const Json::Value& root) override;
+    class ContainerParser : public BaseCardElementParser
+    {
+    public:
+        ContainerParser() = default;
+        ContainerParser(const ContainerParser&) = default;
+        ContainerParser(ContainerParser&&) = default;
+        ContainerParser& operator=(const ContainerParser&) = default;
+        ContainerParser& operator=(ContainerParser&&) = default;
+        virtual ~ContainerParser() = default;
 
-    std::shared_ptr<BaseCardElement> DeserializeFromString(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-        const std::string& jsonString);
-};
+        std::shared_ptr<BaseCardElement> Deserialize(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+                                                     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+                                                     std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+                                                     const Json::Value& root) override;
+
+        std::shared_ptr<BaseCardElement> DeserializeFromString(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+                                                               std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+                                                               std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+                                                               const std::string& jsonString);
+    };
 }

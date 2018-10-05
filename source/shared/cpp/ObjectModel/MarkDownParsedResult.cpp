@@ -18,7 +18,7 @@ void MarkDownParsedResult::AddBlockTags()
     m_codeGenTokens.back()->MakeItTail();
 }
 
-void MarkDownParsedResult::MarkTags(MarkDownHtmlGenerator &x)
+void MarkDownParsedResult::MarkTags(MarkDownHtmlGenerator& x)
 {
     if (m_codeGenTokens.back()->GetBlockType() != x.GetBlockType())
     {
@@ -35,7 +35,7 @@ void MarkDownParsedResult::MarkTags(MarkDownHtmlGenerator &x)
     }
 }
 // append caller's parsed result to callee's parsed result
-void MarkDownParsedResult::AppendParseResult(MarkDownParsedResult &x)
+void MarkDownParsedResult::AppendParseResult(MarkDownParsedResult& x)
 {
     if (!m_codeGenTokens.empty() && !x.m_codeGenTokens.empty())
     {
@@ -48,7 +48,7 @@ void MarkDownParsedResult::AppendParseResult(MarkDownParsedResult &x)
 }
 
 // append MarkDownHtmlGenerator object to callee's prased result
-void MarkDownParsedResult::AppendToTokens(const std::shared_ptr<MarkDownHtmlGenerator> &x)
+void MarkDownParsedResult::AppendToTokens(const std::shared_ptr<MarkDownHtmlGenerator>& x)
 {
     if (!m_codeGenTokens.empty())
     {
@@ -58,7 +58,7 @@ void MarkDownParsedResult::AppendToTokens(const std::shared_ptr<MarkDownHtmlGene
     m_codeGenTokens.push_back(x);
 }
 
-void MarkDownParsedResult::AppendToLookUpTable(const std::shared_ptr<MarkDownEmphasisHtmlGenerator> &x)
+void MarkDownParsedResult::AppendToLookUpTable(const std::shared_ptr<MarkDownEmphasisHtmlGenerator>& x)
 {
     m_emphasisLookUpTable.push_back(x);
 }
@@ -83,16 +83,14 @@ void MarkDownParsedResult::Clear()
 void MarkDownParsedResult::AddNewTokenToParsedResult(char ch)
 {
     std::string string_token = std::string(1, ch);
-    std::shared_ptr<MarkDownStringHtmlGenerator> htmlToken =
-        std::make_shared<MarkDownStringHtmlGenerator>(string_token);
+    std::shared_ptr<MarkDownStringHtmlGenerator> htmlToken = std::make_shared<MarkDownStringHtmlGenerator>(string_token);
     AppendToTokens(htmlToken);
 }
 
 // create and add new MarkDownStringHtmlGenerator object that has string word
-void MarkDownParsedResult::AddNewTokenToParsedResult(std::string &word)
+void MarkDownParsedResult::AddNewTokenToParsedResult(std::string& word)
 {
-    std::shared_ptr<MarkDownStringHtmlGenerator> htmlToken =
-        std::make_shared<MarkDownStringHtmlGenerator>(word);
+    std::shared_ptr<MarkDownStringHtmlGenerator> htmlToken = std::make_shared<MarkDownStringHtmlGenerator>(word);
     AppendToTokens(htmlToken);
 }
 
@@ -100,8 +98,7 @@ void MarkDownParsedResult::AddNewTokenToParsedResult(std::string &word)
 void MarkDownParsedResult::AddNewLineTokenToParsedResult(char ch)
 {
     std::string string_token = std::string(1, ch);
-    std::shared_ptr<MarkDownHtmlGenerator> htmlToken =
-        std::make_shared<MarkDownNewLineHtmlGenerator>(string_token);
+    std::shared_ptr<MarkDownHtmlGenerator> htmlToken = std::make_shared<MarkDownNewLineHtmlGenerator>(string_token);
     AppendToTokens(htmlToken);
 }
 
@@ -215,7 +212,7 @@ void MarkDownParsedResult::MatchLeftAndRightEmphasises()
                     // check for the reason why we had to backtrack
                     if ((*leftEmphasisToExplore.back())->IsSameType(*(*currentEmphasis)))
                     {
-                        //right emphasis becomes left emphasis
+                        // right emphasis becomes left emphasis
                         /// create new left empahsis html generator from right
                         (*currentEmphasis)->ReverseDirectionType();
                     }
