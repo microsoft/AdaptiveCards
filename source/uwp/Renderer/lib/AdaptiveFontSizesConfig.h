@@ -10,7 +10,7 @@ namespace AdaptiveNamespace {
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
             ABI::AdaptiveNamespace::IAdaptiveFontSizesConfig>
     {
-        AdaptiveRuntime(AdaptiveFontSizesConfig)
+        AdaptiveRuntime(AdaptiveFontSizesConfig);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;

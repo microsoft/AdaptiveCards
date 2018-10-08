@@ -7,7 +7,7 @@ namespace AdaptiveNamespace {
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRt>,
         ABI::AdaptiveNamespace::IAdaptiveActionEventArgs>
     {
-        AdaptiveRuntime(AdaptiveActionEventArgs)
+        AdaptiveRuntime(AdaptiveActionEventArgs);
 
     public:
         HRESULT RuntimeClassInitialize();

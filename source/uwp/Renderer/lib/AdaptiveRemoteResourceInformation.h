@@ -11,7 +11,7 @@ namespace AdaptiveNamespace {
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
             ABI::AdaptiveNamespace::IAdaptiveRemoteResourceInformation>
     {
-        AdaptiveRuntime(AdaptiveRemoteResourceInformation)
+        AdaptiveRuntime(AdaptiveRemoteResourceInformation);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;

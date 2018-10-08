@@ -9,7 +9,7 @@ namespace AdaptiveNamespace {
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
         ABI::AdaptiveNamespace::IAdaptiveInputs>
     {
-        AdaptiveRuntime(AdaptiveInputs)
+        AdaptiveRuntime(AdaptiveInputs);
 
     public:
         AdaptiveInputs();

@@ -11,7 +11,7 @@ namespace AdaptiveNamespace {
             ABI::AdaptiveNamespace::IAdaptiveFact,
             Microsoft::WRL::CloakedIid<ITypePeek>>
     {
-        AdaptiveRuntime(AdaptiveFact)
+        AdaptiveRuntime(AdaptiveFact);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;

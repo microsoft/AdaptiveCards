@@ -13,7 +13,7 @@ namespace AdaptiveNamespace {
             Microsoft::WRL::Implements<ABI::AdaptiveNamespace::IAdaptiveCardRenderer>,
             Microsoft::WRL::FtmBase>
     {
-        AdaptiveRuntime(AdaptiveCardRenderer)
+        AdaptiveRuntime(AdaptiveCardRenderer);
 
     public:
         HRESULT RuntimeClassInitialize();

@@ -11,7 +11,7 @@ namespace AdaptiveNamespace {
         ABI::AdaptiveNamespace::IAdaptiveElementRenderer,
         ABI::AdaptiveNamespace::IAdaptiveElementParser>
     {
-        AdaptiveRuntime(AdaptiveColumnSetRenderer)
+        AdaptiveRuntime(AdaptiveColumnSetRenderer);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;

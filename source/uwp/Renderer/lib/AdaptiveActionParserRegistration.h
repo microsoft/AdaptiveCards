@@ -11,7 +11,7 @@ namespace AdaptiveNamespace {
         Microsoft::WRL::CloakedIid<ITypePeek>,
         Microsoft::WRL::FtmBase>
     {
-        AdaptiveRuntime(AdaptiveActionParserRegistration)
+        AdaptiveRuntime(AdaptiveActionParserRegistration);
 
         typedef std::unordered_map<
             std::string,

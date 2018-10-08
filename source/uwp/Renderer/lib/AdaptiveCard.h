@@ -10,7 +10,7 @@ namespace AdaptiveNamespace {
             ABI::AdaptiveNamespace::IAdaptiveCard,
             Microsoft::WRL::CloakedIid<ITypePeek>>
     {
-        AdaptiveRuntime(AdaptiveCard)
+        AdaptiveRuntime(AdaptiveCard);
 
     public:
         HRESULT RuntimeClassInitialize();
@@ -84,7 +84,7 @@ namespace AdaptiveNamespace {
         : public Microsoft::WRL::AgileActivationFactory<
         ABI::AdaptiveNamespace::IAdaptiveCardStatics>
     {
-        AdaptiveRuntimeStatic(AdaptiveCard)
+        AdaptiveRuntimeStatic(AdaptiveCard);
 
     public:
         IFACEMETHOD(ActivateInstance)(_COM_Outptr_ IInspectable** ppvObject) noexcept override

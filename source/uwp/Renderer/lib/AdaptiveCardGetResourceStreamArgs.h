@@ -7,7 +7,7 @@ namespace AdaptiveNamespace {
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRt>,
             ABI::AdaptiveNamespace::IAdaptiveCardGetResourceStreamArgs>
     {
-        AdaptiveRuntime(AdaptiveCardGetResourceStreamArgs)
+        AdaptiveRuntime(AdaptiveCardGetResourceStreamArgs);
 
     public:
         HRESULT RuntimeClassInitialize(_In_ ABI::Windows::Foundation::IUriRuntimeClass* url);

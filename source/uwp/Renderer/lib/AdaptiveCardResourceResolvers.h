@@ -7,7 +7,7 @@ namespace AdaptiveNamespace {
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
             ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers>
     {
-        AdaptiveRuntime(AdaptiveCardResourceResolvers)
+        AdaptiveRuntime(AdaptiveCardResourceResolvers);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;

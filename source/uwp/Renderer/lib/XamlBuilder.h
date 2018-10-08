@@ -17,7 +17,8 @@ namespace AdaptiveNamespace {
         Microsoft::WRL::FtmBase,
         AdaptiveNamespace::IImageLoadTrackerListener>
     {
-        AdaptiveRuntimeStringClass(XamlBuilder)
+        AdaptiveRuntimeStringClass(XamlBuilder);
+
     public:
         XamlBuilder();
 

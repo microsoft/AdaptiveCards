@@ -11,7 +11,7 @@ namespace AdaptiveNamespace {
             ABI::AdaptiveNamespace::IAdaptiveChoiceInput,
             Microsoft::WRL::CloakedIid<ITypePeek>>
     {
-        AdaptiveRuntime(AdaptiveChoiceInput)
+        AdaptiveRuntime(AdaptiveChoiceInput);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;

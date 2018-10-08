@@ -10,7 +10,7 @@ namespace AdaptiveNamespace {
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
             ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition>
     {
-        AdaptiveRuntime(AdaptiveContainerStyleDefinition)
+        AdaptiveRuntime(AdaptiveContainerStyleDefinition);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;

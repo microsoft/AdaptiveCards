@@ -9,7 +9,7 @@ namespace AdaptiveNamespace {
         Microsoft::WRL::Implements<ABI::AdaptiveNamespace::IAdaptiveError>,
         Microsoft::WRL::FtmBase>
     {
-        AdaptiveRuntime(AdaptiveError)
+        AdaptiveRuntime(AdaptiveError);
 
     public:
         HRESULT RuntimeClassInitialize();

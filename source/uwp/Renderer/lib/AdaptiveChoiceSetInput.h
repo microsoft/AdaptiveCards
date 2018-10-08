@@ -16,7 +16,7 @@ namespace AdaptiveNamespace {
             Microsoft::WRL::CloakedIid<ITypePeek>,
             Microsoft::WRL::CloakedIid<AdaptiveNamespace::AdaptiveInputElementBase>>
     {
-        AdaptiveRuntime(AdaptiveChoiceSetInput)
+        AdaptiveRuntime(AdaptiveChoiceSetInput);
 
     public:
         AdaptiveChoiceSetInput();

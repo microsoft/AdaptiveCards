@@ -7,7 +7,7 @@ namespace AdaptiveNamespace {
             ABI::AdaptiveNamespace::IAdaptiveMediaSource,
             Microsoft::WRL::CloakedIid<ITypePeek>>
     {
-        AdaptiveRuntime(AdaptiveMediaSource)
+        AdaptiveRuntime(AdaptiveMediaSource);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;

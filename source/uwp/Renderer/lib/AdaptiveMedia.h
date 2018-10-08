@@ -13,7 +13,7 @@ namespace AdaptiveNamespace {
             Microsoft::WRL::CloakedIid<ITypePeek>,
             Microsoft::WRL::CloakedIid<AdaptiveNamespace::AdaptiveCardElementBase>>
     {
-        AdaptiveRuntime(AdaptiveMedia)
+        AdaptiveRuntime(AdaptiveMedia);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;

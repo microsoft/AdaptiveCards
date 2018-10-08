@@ -15,7 +15,7 @@ namespace AdaptiveNamespace {
             Microsoft::WRL::CloakedIid<ITypePeek>,
             Microsoft::WRL::CloakedIid<AdaptiveNamespace::AdaptiveInputElementBase>>
     {
-        AdaptiveRuntime(AdaptiveDateInput)
+        AdaptiveRuntime(AdaptiveDateInput);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;

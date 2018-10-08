@@ -10,7 +10,7 @@ namespace AdaptiveNamespace {
         Microsoft::WRL::CloakedIid<ITypePeek>,
         Microsoft::WRL::ComposableBase<ABI::Windows::UI::Xaml::Controls::IPanelFactory>>
     {
-        AdaptiveRuntimeStringClass(WholeItemsPanel)
+        AdaptiveRuntimeStringClass(WholeItemsPanel);
 
         public:
             HRESULT STDMETHODCALLTYPE RuntimeClassInitialize();

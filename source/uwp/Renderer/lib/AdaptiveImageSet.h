@@ -15,7 +15,7 @@ namespace AdaptiveNamespace {
         Microsoft::WRL::CloakedIid<ITypePeek>,
         Microsoft::WRL::CloakedIid<AdaptiveNamespace::AdaptiveCardElementBase>>
     {
-        AdaptiveRuntime(AdaptiveImageSet)
+        AdaptiveRuntime(AdaptiveImageSet);
 
     public:
         AdaptiveImageSet();

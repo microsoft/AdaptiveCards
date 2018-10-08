@@ -8,7 +8,7 @@ namespace AdaptiveNamespace {
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
         ABI::AdaptiveNamespace::IAdaptiveRenderArgs>
     {
-        AdaptiveRuntime(AdaptiveRenderArgs)
+        AdaptiveRuntime(AdaptiveRenderArgs);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;

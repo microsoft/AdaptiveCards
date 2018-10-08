@@ -14,7 +14,7 @@ namespace AdaptiveNamespace {
             Microsoft::WRL::CloakedIid<ITypePeek>,
             Microsoft::WRL::CloakedIid<AdaptiveNamespace::AdaptiveActionElementBase>>
     {
-        AdaptiveRuntime(AdaptiveShowCardAction)
+        AdaptiveRuntime(AdaptiveShowCardAction);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;

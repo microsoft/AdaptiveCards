@@ -12,7 +12,7 @@ namespace AdaptiveNamespace {
         ABI::AdaptiveNamespace::IAdaptiveElementRenderer,
         ABI::AdaptiveNamespace::IAdaptiveElementParser>
     {
-        AdaptiveRuntime(AdaptiveImageRenderer)
+        AdaptiveRuntime(AdaptiveImageRenderer);
 
     public:
         AdaptiveImageRenderer();

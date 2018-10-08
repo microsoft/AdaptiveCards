@@ -8,7 +8,7 @@ namespace AdaptiveNamespace {
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
             Microsoft::WRL::Implements<ABI::AdaptiveNamespace::IAdaptiveCardParseResult>>
     {
-        AdaptiveRuntime(AdaptiveCardParseResult)
+        AdaptiveRuntime(AdaptiveCardParseResult);
 
     public:
         AdaptiveCardParseResult();

@@ -10,7 +10,7 @@ namespace AdaptiveNamespace {
         Microsoft::WRL::Implements<ABI::AdaptiveNamespace::IAdaptiveElementRendererRegistration>,
         Microsoft::WRL::FtmBase>
     {
-        AdaptiveRuntime(AdaptiveElementRendererRegistration)
+        AdaptiveRuntime(AdaptiveElementRendererRegistration);
 
         typedef std::unordered_map<
             std::string,
