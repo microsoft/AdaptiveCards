@@ -11,7 +11,7 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveTextBlock::RuntimeClassInitialize() noexcept try
     {
         std::shared_ptr<AdaptiveSharedNamespace::TextBlock> textBlock = std::make_shared<AdaptiveSharedNamespace::TextBlock>();
@@ -199,4 +199,4 @@ AdaptiveNamespaceStart
         sharedTextBlock = textBlock;
         return S_OK;
     } CATCH_RETURN;
-AdaptiveNamespaceEnd
+}

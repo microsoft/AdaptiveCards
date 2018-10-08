@@ -4,7 +4,7 @@
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveSeparatorConfig::RuntimeClassInitialize() noexcept try
     {
         SeparatorConfig separatorConfig;
@@ -45,4 +45,4 @@ AdaptiveNamespaceStart
         m_lineColor = color;
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

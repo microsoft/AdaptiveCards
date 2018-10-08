@@ -6,7 +6,7 @@ using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::UI;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveCardConfig::RuntimeClassInitialize() noexcept try
     {
         AdaptiveSharedNamespace::AdaptiveCardConfig cardConfig;
@@ -32,4 +32,4 @@ AdaptiveNamespaceStart
         m_allowCustomStyle = allowCustomStyle;
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

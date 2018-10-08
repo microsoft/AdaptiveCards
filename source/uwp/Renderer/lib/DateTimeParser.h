@@ -4,7 +4,7 @@
 #include <codecvt>
 #include <string>
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class DateTimeParser
     {
     public:
@@ -14,4 +14,4 @@ AdaptiveNamespaceStart
     private:
         std::string m_languageString;
     };
-AdaptiveNamespaceEnd
+}

@@ -1,7 +1,7 @@
 #pragma once
 #include "AdaptiveCards.Rendering.Uwp.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class AdaptiveCardGetResourceStreamArgs :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRt>,
@@ -17,4 +17,4 @@ AdaptiveNamespaceStart
     private:
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IUriRuntimeClass> m_url;
     };
-AdaptiveNamespaceEnd
+}

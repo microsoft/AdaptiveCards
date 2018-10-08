@@ -12,7 +12,7 @@ using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveNumberInputRenderer::RuntimeClassInitialize() noexcept try
     {
         return S_OK;
@@ -38,4 +38,4 @@ AdaptiveNamespaceStart
     {
         return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveNumberInput, AdaptiveSharedNamespace::NumberInput, AdaptiveSharedNamespace::NumberInputParser>(jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
-AdaptiveNamespaceEnd
+}

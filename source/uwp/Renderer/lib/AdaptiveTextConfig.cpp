@@ -5,7 +5,7 @@
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveTextConfig::RuntimeClassInitialize() noexcept try
     {
         TextConfig textConfig;
@@ -104,4 +104,4 @@ AdaptiveNamespaceStart
         m_maxWidth = maxWidth;
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

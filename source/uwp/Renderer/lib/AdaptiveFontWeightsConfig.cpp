@@ -4,7 +4,7 @@
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveFontWeightsConfig::RuntimeClassInitialize() noexcept try
     {
         FontWeightsConfig fontWeightsConfig;
@@ -61,4 +61,4 @@ AdaptiveNamespaceStart
         m_bolder = bolder;
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

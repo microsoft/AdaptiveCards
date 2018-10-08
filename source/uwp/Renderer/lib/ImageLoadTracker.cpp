@@ -9,7 +9,7 @@ using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     ImageLoadTracker::~ImageLoadTracker()
     {
         for (auto& eventRegistration : m_eventRegistrations)
@@ -156,4 +156,4 @@ AdaptiveNamespaceStart
             listener->ImagesLoadingHadError();
         }
     }
-AdaptiveNamespaceEnd
+}

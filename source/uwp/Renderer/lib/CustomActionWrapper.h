@@ -3,7 +3,7 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "Util.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class CustomActionWrapper : public AdaptiveSharedNamespace::BaseActionElement
     {
     public:
@@ -27,4 +27,4 @@ AdaptiveNamespaceStart
     private:
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_actionElement;
     };
-AdaptiveNamespaceEnd
+}

@@ -10,7 +10,7 @@ using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::UI;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     AdaptiveElementParserRegistration::AdaptiveElementParserRegistration()
     {
     }
@@ -106,4 +106,4 @@ AdaptiveNamespaceStart
         std::shared_ptr<CustomElementWrapper> elementWrapper = std::make_shared<CustomElementWrapper>(cardElement.Get());
         return elementWrapper;
     }
-AdaptiveNamespaceEnd
+}

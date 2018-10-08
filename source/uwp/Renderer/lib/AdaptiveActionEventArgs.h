@@ -1,7 +1,7 @@
 #pragma once
 #include "AdaptiveCards.Rendering.Uwp.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class AdaptiveActionEventArgs :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRt>,
@@ -21,4 +21,4 @@ AdaptiveNamespaceStart
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_action;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveInputs> m_inputs;
     };
-AdaptiveNamespaceEnd
+}

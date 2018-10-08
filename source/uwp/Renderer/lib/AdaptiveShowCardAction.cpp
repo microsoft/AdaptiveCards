@@ -6,7 +6,7 @@
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveShowCardAction::RuntimeClassInitialize() noexcept try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction> showCardAction = std::make_shared<AdaptiveSharedNamespace::ShowCardAction>();
@@ -60,4 +60,4 @@ AdaptiveNamespaceStart
         sharedModel = showCardAction;
         return S_OK;
     } CATCH_RETURN;
-AdaptiveNamespaceEnd
+}

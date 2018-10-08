@@ -5,7 +5,7 @@
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation::Collections;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveMedia::RuntimeClassInitialize() noexcept try
     {
         std::shared_ptr<AdaptiveSharedNamespace::Media> media = std::make_shared<AdaptiveSharedNamespace::Media>();
@@ -82,4 +82,4 @@ AdaptiveNamespaceStart
         sharedMedia = media;
         return S_OK;
     } CATCH_RETURN;
-AdaptiveNamespaceEnd
+}

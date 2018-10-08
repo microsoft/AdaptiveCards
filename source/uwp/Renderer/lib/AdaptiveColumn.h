@@ -6,7 +6,7 @@
 #include "Column.h"
 #include <windows.foundation.h>
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class DECLSPEC_UUID("d674610a-a76b-4283-bd09-b5a25c41433d") AdaptiveColumn :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
@@ -82,4 +82,4 @@ AdaptiveNamespaceStart
     };
 
     ActivatableClass(AdaptiveColumn);
-AdaptiveNamespaceEnd
+}

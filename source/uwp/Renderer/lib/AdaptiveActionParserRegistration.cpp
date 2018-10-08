@@ -10,7 +10,7 @@ using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::UI;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     AdaptiveActionParserRegistration::AdaptiveActionParserRegistration()
     {
     }
@@ -106,4 +106,4 @@ AdaptiveNamespaceStart
         std::shared_ptr<CustomActionWrapper> actionWrapper = std::make_shared<CustomActionWrapper>(actionElement.Get());
         return actionWrapper;
     }
-AdaptiveNamespaceEnd
+}

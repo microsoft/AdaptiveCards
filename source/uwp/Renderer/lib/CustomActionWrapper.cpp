@@ -4,7 +4,7 @@
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
 
 std::string CustomActionWrapper::GetId() const
 {
@@ -58,4 +58,4 @@ void CustomActionWrapper::GetResourceInformation(std::vector<RemoteResourceInfor
         RemoteResourceElementToRemoteResourceInformationVector(remoteResources.Get(), resourceInfo);
     }
 }
-AdaptiveNamespaceEnd
+}

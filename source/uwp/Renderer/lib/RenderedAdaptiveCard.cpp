@@ -23,7 +23,7 @@ using namespace ABI::Windows::UI;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     RenderedAdaptiveCard::RenderedAdaptiveCard()
     {
     }
@@ -137,4 +137,4 @@ AdaptiveNamespaceStart
     {
         return m_inputs->AddInputValue(inputItem);
     }
-AdaptiveNamespaceEnd
+}

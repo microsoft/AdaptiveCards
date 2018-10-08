@@ -6,7 +6,7 @@ using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::UI;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveColorConfig::RuntimeClassInitialize() noexcept try
     {
         ColorConfig colorConfig;
@@ -48,4 +48,4 @@ AdaptiveNamespaceStart
         m_subtleColor = color;
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

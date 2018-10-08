@@ -5,7 +5,7 @@
 #include "OpenUrlAction.h"
 #include "AdaptiveActionElement.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class DECLSPEC_UUID("96c1ded5-1ef8-4aa8-8ccf-0bea96295ac8") AdaptiveOpenUrlAction :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
@@ -55,4 +55,4 @@ AdaptiveNamespaceStart
     };
 
     ActivatableClass(AdaptiveOpenUrlAction);
-AdaptiveNamespaceEnd
+}

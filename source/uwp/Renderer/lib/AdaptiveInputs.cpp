@@ -12,7 +12,7 @@ using namespace ABI::Windows::UI;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     AdaptiveInputs::AdaptiveInputs()
     {
         m_inputValues = std::make_shared<std::vector<ComPtr<IAdaptiveInputValue>>>();
@@ -98,4 +98,4 @@ AdaptiveNamespaceStart
         return valueSet.CopyTo(value);
     }
 
-AdaptiveNamespaceEnd
+}

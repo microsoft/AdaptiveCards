@@ -10,7 +10,7 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveDateInput::RuntimeClassInitialize() noexcept try
     {
         std::shared_ptr<AdaptiveSharedNamespace::DateInput> dateInput = std::make_shared<AdaptiveSharedNamespace::DateInput>();
@@ -103,4 +103,4 @@ AdaptiveNamespaceStart
 
         return S_OK;
     }CATCH_RETURN;
-AdaptiveNamespaceEnd
+}

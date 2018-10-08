@@ -9,7 +9,7 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveRemoteResourceInformation::RuntimeClassInitialize() noexcept try
     {
         RemoteResourceInformation uriInformation;
@@ -49,4 +49,4 @@ AdaptiveNamespaceStart
         return m_mimeType.Set(mimeType);
     }
 
-AdaptiveNamespaceEnd
+}

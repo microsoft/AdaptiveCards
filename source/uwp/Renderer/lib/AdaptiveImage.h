@@ -6,7 +6,7 @@
 #include <windows.foundation.h>
 #include "AdaptiveCardElement.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class DECLSPEC_UUID("c940ac19-5faa-47f3-9d4b-f4d8e7d6ec1d") AdaptiveImage :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
@@ -93,4 +93,4 @@ AdaptiveNamespaceStart
     };
 
     ActivatableClass(AdaptiveImage);
-AdaptiveNamespaceEnd
+}

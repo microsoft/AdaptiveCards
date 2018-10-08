@@ -5,7 +5,7 @@
 #include "TextBlock.h"
 #include "AdaptiveCardElement.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class DECLSPEC_UUID("0c87566c-a58c-4332-8b3b-79c9714074f6") AdaptiveRemoteResourceInformation :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
@@ -30,4 +30,4 @@ AdaptiveNamespaceStart
     };
 
     ActivatableClass(AdaptiveRemoteResourceInformation);
-AdaptiveNamespaceEnd
+}

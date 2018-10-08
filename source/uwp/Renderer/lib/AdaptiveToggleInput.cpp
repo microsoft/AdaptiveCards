@@ -11,7 +11,7 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveToggleInput::RuntimeClassInitialize() noexcept try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ToggleInput> toggleInput = std::make_shared<AdaptiveSharedNamespace::ToggleInput>();
@@ -105,4 +105,4 @@ AdaptiveNamespaceStart
 
         return S_OK;
     }CATCH_RETURN;
-AdaptiveNamespaceEnd
+}

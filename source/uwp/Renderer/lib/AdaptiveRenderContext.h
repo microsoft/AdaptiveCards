@@ -5,7 +5,7 @@
 #include "AdaptiveActionInvoker.h"
 #include "AdaptiveMediaEventInvoker.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class AdaptiveRenderContext :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
@@ -44,4 +44,4 @@ AdaptiveNamespaceStart
     };
 
     ActivatableClass(AdaptiveRenderContext);
-AdaptiveNamespaceEnd
+}

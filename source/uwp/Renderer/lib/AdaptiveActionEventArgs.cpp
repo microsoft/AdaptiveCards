@@ -5,7 +5,7 @@ using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Data::Json;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveActionEventArgs::RuntimeClassInitialize()
     {
         return S_OK;
@@ -29,4 +29,4 @@ AdaptiveNamespaceStart
     {
         return m_inputs.CopyTo(inputs);
     }
-AdaptiveNamespaceEnd
+}

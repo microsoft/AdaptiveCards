@@ -1,6 +1,6 @@
 #pragma once
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class AdaptiveMediaRenderer :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
@@ -27,4 +27,4 @@ AdaptiveNamespaceStart
     };
 
     ActivatableClass(AdaptiveMediaRenderer);
-AdaptiveNamespaceEnd
+}

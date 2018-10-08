@@ -12,7 +12,7 @@ using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveDateInputRenderer::RuntimeClassInitialize() noexcept try
     {
         return S_OK;
@@ -38,4 +38,4 @@ AdaptiveNamespaceStart
     {
         return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveDateInput, AdaptiveSharedNamespace::DateInput, AdaptiveSharedNamespace::DateInputParser>(jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
-AdaptiveNamespaceEnd
+}

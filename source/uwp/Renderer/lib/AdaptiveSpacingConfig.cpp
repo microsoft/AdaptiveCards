@@ -4,7 +4,7 @@
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveSpacingConfig::RuntimeClassInitialize() noexcept try
     {
         SpacingConfig spacingConfig;
@@ -105,4 +105,4 @@ AdaptiveNamespaceStart
         m_padding = paddingSpacing;
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

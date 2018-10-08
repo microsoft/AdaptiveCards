@@ -4,7 +4,7 @@
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
 
     bool CustomElementWrapper::GetSeparator() const
     {
@@ -69,4 +69,4 @@ AdaptiveNamespaceStart
     {
         return m_cardElement.CopyTo(cardElement);
     }
-AdaptiveNamespaceEnd
+}

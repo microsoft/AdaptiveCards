@@ -14,7 +14,7 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     AdaptiveColumnSet::AdaptiveColumnSet()
     {
         m_columns = Microsoft::WRL::Make<Vector<IAdaptiveColumn*>>();
@@ -101,4 +101,4 @@ AdaptiveNamespaceStart
         sharedModel = columnSet;
         return S_OK;
     }CATCH_RETURN;
-AdaptiveNamespaceEnd
+}
