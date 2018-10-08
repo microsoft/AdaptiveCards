@@ -2673,7 +2673,7 @@ AdaptiveNamespaceStart
         {
             THROW_IF_FAILED(renderContext->AddWarning(
                 ABI::AdaptiveNamespace::WarningStatusCode::UnsupportedValue,
-                HStringReference(L"Show card not supported for InlineAction").Get()));
+                HStringReference(L"ShowCard not supported for InlineAction").Get()));
 
             THROW_IF_FAILED(localTextBox.CopyTo(textBoxWithInlineAction));
             return;
@@ -2689,13 +2689,10 @@ AdaptiveNamespaceStart
         ComPtr<IPanel> gridAsPanel;
         THROW_IF_FAILED(xamlGrid.As(&gridAsPanel));
 
-        // Craete the first column and add the text box to it
+        // Create the first column and add the text box to it
         ComPtr<IColumnDefinition> textBoxColumnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
         THROW_IF_FAILED(textBoxColumnDefinition->put_Width({ 1, GridUnitType::GridUnitType_Star }));
         THROW_IF_FAILED(columnDefinitions->Append(textBoxColumnDefinition.Get()));
-
-        ComPtr<IUIElement> textBoxAsUIElement;
-        THROW_IF_FAILED(localTextBox.As(&textBoxAsUIElement));
 
         ComPtr<IFrameworkElement> textBoxAsFrameworkElement;
         THROW_IF_FAILED(localTextBox.As(&textBoxAsFrameworkElement));
@@ -2826,6 +2823,9 @@ AdaptiveNamespaceStart
 
         if (!isMultiLine)
         {
+            ComPtr<IUIElement> textBoxAsUIElement;
+            THROW_IF_FAILED(localTextBox.As(&textBoxAsUIElement));
+
             EventRegistrationToken keyDownEventToken;
             THROW_IF_FAILED(textBoxAsUIElement->add_KeyDown(Callback<IKeyEventHandler>(
                 [touchTargetUIElement, actionInvoker, localInlineAction](IInspectable* /*sender*/, IKeyRoutedEventArgs* args) -> HRESULT
