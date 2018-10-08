@@ -6,7 +6,7 @@ using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Data::Json;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveSubmitAction::RuntimeClassInitialize() noexcept try
     {
         std::shared_ptr<AdaptiveSharedNamespace::SubmitAction> submitAction = std::make_shared<AdaptiveSharedNamespace::SubmitAction>();
@@ -58,4 +58,4 @@ AdaptiveNamespaceStart
         sharedModel = submitAction;
         return S_OK;
     }CATCH_RETURN;
-AdaptiveNamespaceEnd
+}

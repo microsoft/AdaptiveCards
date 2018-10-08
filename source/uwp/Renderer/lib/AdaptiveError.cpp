@@ -5,7 +5,7 @@ using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveNamespace;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
 
     HRESULT AdaptiveError::RuntimeClassInitialize()
     {
@@ -46,4 +46,4 @@ AdaptiveNamespaceStart
     {
         return m_message.Set(value);
     }
-AdaptiveNamespaceEnd
+}

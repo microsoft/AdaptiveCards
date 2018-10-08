@@ -2,7 +2,7 @@
 
 #include "AdaptiveCards.Rendering.Uwp.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class DECLSPEC_UUID("BB1D1269-2243-4F34-B4EC-5216296EBBA0") InputValue :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
@@ -34,4 +34,4 @@ AdaptiveNamespaceStart
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveInputElement> m_adaptiveInputElement;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> m_uiInputElement;
     };
-AdaptiveNamespaceEnd
+}

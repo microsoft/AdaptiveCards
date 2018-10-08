@@ -12,7 +12,7 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     AdaptiveImageSet::AdaptiveImageSet()
     {
         m_images = Microsoft::WRL::Make<Vector<IAdaptiveImage*>>();
@@ -80,4 +80,4 @@ AdaptiveNamespaceStart
         sharedModel = imageSet;
         return S_OK;
     }CATCH_RETURN;
-AdaptiveNamespaceEnd
+}

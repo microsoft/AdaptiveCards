@@ -4,7 +4,7 @@
 #include "Enums.h"
 #include "TimeInput.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class AdaptiveTimeInputRenderer :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
@@ -31,4 +31,4 @@ AdaptiveNamespaceStart
     };
 
     ActivatableClass(AdaptiveTimeInputRenderer);
-AdaptiveNamespaceEnd
+}

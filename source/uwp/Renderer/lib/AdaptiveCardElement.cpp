@@ -8,7 +8,7 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveCardElementBase::InitializeBaseElement(const std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel)
     {
         m_spacing = static_cast<ABI::AdaptiveNamespace::Spacing>(sharedModel->GetSpacing());
@@ -108,4 +108,4 @@ AdaptiveNamespaceStart
 
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

@@ -3,7 +3,7 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "XamlBuilder.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class XamlBuilder;
 
     // This class is effectively a singleton, and stays around between subsequent renders.
@@ -75,4 +75,4 @@ AdaptiveNamespaceStart
     };
 
     ActivatableClass(AdaptiveCardRenderer);
-AdaptiveNamespaceEnd
+}

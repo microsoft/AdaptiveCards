@@ -18,7 +18,7 @@ using namespace ABI::Windows::UI::Xaml::Shapes;
 using namespace ABI::Windows::UI::Xaml::Media;
 
 static const float OutsidePanelY = -1000.0f;
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT WholeItemsPanel::RuntimeClassInitialize()
     {
         ComPtr<IPanelFactory> spFactory;
@@ -589,4 +589,4 @@ AdaptiveNamespaceStart
         return !isnan(definedImageHeight) || !isnan(definedImageWidth);
     }
 
-AdaptiveNamespaceEnd
+}

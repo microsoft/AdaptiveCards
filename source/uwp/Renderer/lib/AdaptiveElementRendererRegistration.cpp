@@ -6,7 +6,7 @@ using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::UI;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     AdaptiveElementRendererRegistration::AdaptiveElementRendererRegistration()
     {
     }
@@ -44,4 +44,4 @@ AdaptiveNamespaceStart
         m_registration->erase(HStringToUTF8(type));
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

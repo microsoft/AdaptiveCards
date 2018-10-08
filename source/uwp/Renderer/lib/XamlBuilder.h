@@ -9,7 +9,7 @@
 #include "RenderedAdaptiveCard.h"
 #include "AdaptiveRenderContext.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class AdaptiveCardRenderer;
 
     class XamlBuilder : public Microsoft::WRL::RuntimeClass<
@@ -107,7 +107,8 @@ AdaptiveNamespaceStart
             _In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* adaptiveCardElement,
             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
-            _Outptr_ ABI::Windows::UI::Xaml::IUIElement** toggleInputControl);
+            _Outptr_ ABI::Windows::UI::Xaml::IUIElement** mediaControl);
+
         template<typename T>
         static HRESULT TryGetResourceFromResourceDictionaries(
             _In_ ABI::Windows::UI::Xaml::IResourceDictionary* resourceDictionary,
@@ -184,6 +185,13 @@ AdaptiveNamespaceStart
             _Inout_ AdaptiveNamespace::AdaptiveRenderContext* renderContext,
             ABI::AdaptiveNamespace::ContainerStyle containerStyle);
 
+        static void XamlBuilder::HandleInlineAcion(
+            ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+            ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+            ABI::Windows::UI::Xaml::Controls::ITextBox* textBox,
+            ABI::AdaptiveNamespace::IAdaptiveActionElement* inlineAction,
+            ABI::Windows::UI::Xaml::IUIElement** textBoxWithInlineAction);
+
         static Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> CreateSeparator(
             _Inout_  ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
             UINT spacing, UINT separatorThickness, ABI::Windows::UI::Color separatorColor, bool isHorizontal = true);
@@ -235,6 +243,7 @@ AdaptiveNamespaceStart
             _In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
             _Inout_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
             bool fullWidth,
+            const std::wstring& style,
             _Outptr_ ABI::Windows::UI::Xaml::IUIElement** finalElement);
 
         void static HandleSelectAction(
@@ -258,9 +267,9 @@ AdaptiveNamespaceStart
             _In_ IInspectable* parentElement,
             _In_ ABI::Windows::UI::Xaml::Media::Imaging::IBitmapSource* imageSource);
 
-        static HRESULT SetImageSizeAsTextBlockSize(
-            _In_ ABI::Windows::UI::Xaml::IFrameworkElement* imageControl,
-            _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock);
+        static HRESULT SetMatchingHeight(
+            _In_ ABI::Windows::UI::Xaml::IFrameworkElement* elementToChange,
+            _In_ ABI::Windows::UI::Xaml::IFrameworkElement* elementToMatch);
 
         template<typename T>
         static void SetVerticalContentAlignmentToChildren(
@@ -268,4 +277,4 @@ AdaptiveNamespaceStart
             _In_ ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment);
 
     };
-AdaptiveNamespaceEnd
+}

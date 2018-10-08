@@ -20,7 +20,7 @@ using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Data::Json;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     _Use_decl_annotations_
     HRESULT AdaptiveHostConfigStaticsImpl::FromJsonString(HSTRING adaptiveJson, IAdaptiveHostConfigParseResult** parseResult) noexcept try
     {
@@ -277,4 +277,4 @@ AdaptiveNamespaceStart
         m_media = mediaConfig;
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

@@ -2,7 +2,7 @@
 
 #include "AdaptiveCards.Rendering.Uwp.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class AdaptiveRenderArgs :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
@@ -28,4 +28,4 @@ AdaptiveNamespaceStart
     };
 
     ActivatableClass(AdaptiveRenderArgs);
-AdaptiveNamespaceEnd
+}

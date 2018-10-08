@@ -7,7 +7,7 @@ using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize() noexcept try
     {
         std::shared_ptr<AdaptiveSharedNamespace::OpenUrlAction> openUrlAction = std::make_shared<AdaptiveSharedNamespace::OpenUrlAction>();
@@ -71,4 +71,4 @@ AdaptiveNamespaceStart
         sharedModel = openUrlAction;
         return S_OK;
     } CATCH_RETURN;
-AdaptiveNamespaceEnd
+}

@@ -4,7 +4,7 @@
 #include "Enums.h"
 #include "Column.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class AdaptiveColumnRenderer :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
@@ -23,4 +23,4 @@ AdaptiveNamespaceStart
     };
 
     ActivatableClass(AdaptiveColumnRenderer);
-AdaptiveNamespaceEnd
+}

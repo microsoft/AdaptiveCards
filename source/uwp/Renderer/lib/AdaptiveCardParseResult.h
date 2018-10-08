@@ -2,7 +2,7 @@
 
 #include "util.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class AdaptiveCardParseResult :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
@@ -30,4 +30,4 @@ AdaptiveNamespaceStart
     };
 
     ActivatableClass(AdaptiveCardParseResult);
-AdaptiveNamespaceEnd
+}

@@ -4,7 +4,7 @@
 #include "Enums.h"
 #include "HostConfig.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class AdaptiveHostConfig :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
@@ -104,4 +104,4 @@ AdaptiveNamespaceStart
     };
 
     ActivatableClassWithFactory(AdaptiveHostConfig, AdaptiveHostConfigStaticsImpl);
-AdaptiveNamespaceEnd
+}

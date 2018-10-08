@@ -5,7 +5,7 @@
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveMediaConfig::RuntimeClassInitialize() noexcept try
     {
         MediaConfig mediaConfig;
@@ -60,4 +60,4 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-AdaptiveNamespaceEnd
+}

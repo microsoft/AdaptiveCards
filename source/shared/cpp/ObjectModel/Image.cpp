@@ -231,7 +231,7 @@ std::shared_ptr<BaseCardElement> ImageParser::DeserializeWithoutCheckingType(
     }
 
     // Parse optional selectAction
-    image->SetSelectAction(ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, warnings, json, AdaptiveCardSchemaKey::SelectAction, false));
+    image->SetSelectAction(ParseUtil::GetAction(elementParserRegistration, actionParserRegistration, warnings, json, AdaptiveCardSchemaKey::SelectAction, false));
 
     return image;
 }

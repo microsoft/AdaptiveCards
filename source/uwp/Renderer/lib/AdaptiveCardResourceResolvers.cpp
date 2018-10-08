@@ -5,7 +5,7 @@ using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveCardResourceResolvers::RuntimeClassInitialize() noexcept try
     {
         return S_OK;
@@ -28,4 +28,4 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveCardResourceResolver> resolverPtr = m_resourceResolvers[schemeString];
         return resolverPtr.CopyTo(resolver);
     }
-AdaptiveNamespaceEnd
+}

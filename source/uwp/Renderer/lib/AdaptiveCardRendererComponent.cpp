@@ -45,7 +45,7 @@ using namespace ABI::Windows::UI::Xaml::Markup;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
 
     HRESULT AdaptiveCardRenderer::RuntimeClassInitialize()
     {
@@ -307,4 +307,4 @@ AdaptiveNamespaceStart
     {
         return m_xamlBuilder;
     }
-AdaptiveNamespaceEnd
+}

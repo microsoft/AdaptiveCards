@@ -4,7 +4,7 @@
 #include "Enums.h"
 #include "ToggleInput.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class AdaptiveToggleInputRenderer :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
@@ -31,4 +31,4 @@ AdaptiveNamespaceStart
     };
 
     ActivatableClass(AdaptiveToggleInputRenderer);
-AdaptiveNamespaceEnd
+}

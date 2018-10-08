@@ -5,7 +5,7 @@
 #include "NumberInput.h"
 #include "AdaptiveInputElement.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class DECLSPEC_UUID("e54a7a83-8961-4745-8663-bbf5d45b6345") AdaptiveNumberInput :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
@@ -76,4 +76,4 @@ AdaptiveNamespaceStart
     };
 
     ActivatableClass(AdaptiveNumberInput);
-AdaptiveNamespaceEnd
+}

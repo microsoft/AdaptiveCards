@@ -11,7 +11,7 @@ using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     AdaptiveImageRenderer::AdaptiveImageRenderer()
     {
         m_xamlBuilder = std::make_shared<XamlBuilder>();
@@ -46,4 +46,4 @@ AdaptiveNamespaceStart
     {
         return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveImage, AdaptiveSharedNamespace::Image, AdaptiveSharedNamespace::ImageParser>(jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
-AdaptiveNamespaceEnd
+}

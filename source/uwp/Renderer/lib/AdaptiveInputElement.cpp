@@ -8,7 +8,7 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveInputElementBase::InitializeBaseElement(const std::shared_ptr<AdaptiveSharedNamespace::BaseInputElement>& sharedModel)
     {
         AdaptiveCardElementBase::InitializeBaseElement(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(sharedModel));
@@ -37,4 +37,4 @@ AdaptiveNamespaceStart
         sharedCardElement->SetIsRequired(m_isRequired);
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

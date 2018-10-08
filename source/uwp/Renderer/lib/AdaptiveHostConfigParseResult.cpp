@@ -19,7 +19,7 @@ using namespace ABI::Windows::UI;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     AdaptiveHostConfigParseResult::AdaptiveHostConfigParseResult()
     {
     }
@@ -47,4 +47,4 @@ AdaptiveNamespaceStart
     {
         return m_errors.CopyTo(value);
     }
-AdaptiveNamespaceEnd
+}

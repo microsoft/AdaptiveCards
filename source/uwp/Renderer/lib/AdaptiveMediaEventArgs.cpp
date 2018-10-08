@@ -5,7 +5,7 @@ using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Data::Json;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveMediaEventArgs::RuntimeClassInitialize()
     {
         return S_OK;
@@ -23,4 +23,4 @@ AdaptiveNamespaceStart
     {
         return m_media.CopyTo(media);
     }
-AdaptiveNamespaceEnd
+}

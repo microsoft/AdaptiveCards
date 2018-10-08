@@ -12,7 +12,7 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     AdaptiveFactSet::AdaptiveFactSet()
     {
         m_facts = Microsoft::WRL::Make<Vector<IAdaptiveFact*>>();
@@ -62,4 +62,4 @@ AdaptiveNamespaceStart
 
         return S_OK;
     }CATCH_RETURN;
-AdaptiveNamespaceEnd
+}

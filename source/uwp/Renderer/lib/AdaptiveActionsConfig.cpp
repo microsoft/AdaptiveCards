@@ -7,7 +7,7 @@ using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::UI;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveActionsConfig::RuntimeClassInitialize() noexcept try
     {
         ActionsConfig actionsConfig;
@@ -139,4 +139,4 @@ AdaptiveNamespaceStart
         m_iconSize = value;
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

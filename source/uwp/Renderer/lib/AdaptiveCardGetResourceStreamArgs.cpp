@@ -5,7 +5,7 @@ using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     _Use_decl_annotations_
     HRESULT AdaptiveCardGetResourceStreamArgs::RuntimeClassInitialize(IUriRuntimeClass* url)
     {
@@ -20,4 +20,4 @@ AdaptiveNamespaceStart
         *url = localUrl.Detach();
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

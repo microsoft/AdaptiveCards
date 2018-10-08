@@ -5,7 +5,7 @@
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveContainerStylesDefinition::RuntimeClassInitialize() noexcept try
     {
         ContainerStylesDefinition stylesDefinition;
@@ -45,4 +45,4 @@ AdaptiveNamespaceStart
         m_emphasis = value;
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

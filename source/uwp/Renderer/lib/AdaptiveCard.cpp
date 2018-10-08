@@ -21,7 +21,7 @@ using namespace ABI::Windows::UI::Xaml;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     _Use_decl_annotations_
     HRESULT AdaptiveCardStaticsImpl::FromJsonString(HSTRING adaptiveJson, IAdaptiveCardParseResult** parseResult) noexcept try
     {
@@ -95,7 +95,7 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardParseResult>(&adaptiveParseResult));
         try
         {
-            const std::string c_rendererVersion = "1.1";
+            const std::string c_rendererVersion = "1.2";
             std::shared_ptr<AdaptiveSharedNamespace::ParseResult> sharedParseResult = AdaptiveSharedNamespace::AdaptiveCard::DeserializeFromString(jsonString, c_rendererVersion, sharedModelElementParserRegistration, sharedModelActionParserRegistration);
             ComPtr<IAdaptiveCard> adaptiveCard;
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&adaptiveCard, sharedParseResult->GetAdaptiveCard()));
@@ -361,4 +361,4 @@ AdaptiveNamespaceStart
 
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

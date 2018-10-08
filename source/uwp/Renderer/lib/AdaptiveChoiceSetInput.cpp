@@ -12,7 +12,7 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     AdaptiveChoiceSetInput::AdaptiveChoiceSetInput()
     {
         m_choices = Microsoft::WRL::Make<Vector<IAdaptiveChoiceInput*>>();
@@ -113,4 +113,4 @@ AdaptiveNamespaceStart
         return S_OK;
     } CATCH_RETURN;
 
-AdaptiveNamespaceEnd
+}

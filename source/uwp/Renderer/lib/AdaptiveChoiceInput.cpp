@@ -10,7 +10,7 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveChoiceInput::RuntimeClassInitialize() noexcept try
     {
         m_sharedChoiceInput = std::make_shared<ChoiceInput>();
@@ -66,4 +66,4 @@ AdaptiveNamespaceStart
         sharedModel = m_sharedChoiceInput;
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

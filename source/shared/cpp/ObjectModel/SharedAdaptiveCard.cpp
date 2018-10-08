@@ -172,7 +172,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
     result->SetLanguage(language);
 
     // Parse optional selectAction
-    result->SetSelectAction(ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, warnings, json, AdaptiveCardSchemaKey::SelectAction, false));
+    result->SetSelectAction(ParseUtil::GetAction(elementParserRegistration, actionParserRegistration, warnings, json, AdaptiveCardSchemaKey::SelectAction, false));
 
     return std::make_shared<ParseResult>(result, warnings);
 }

@@ -3,7 +3,7 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include <windows.ui.xaml.shapes.h>
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class DECLSPEC_UUID("32934D77-6248-4915-BD2A-8F52EF6C8322") WholeItemsPanel : public Microsoft::WRL::RuntimeClass<
         ABI::AdaptiveNamespace::IWholeItemsPanel,
         ABI::Windows::UI::Xaml::IFrameworkElementOverrides,
@@ -83,4 +83,4 @@ AdaptiveNamespaceStart
     };
 
     ActivatableClass(WholeItemsPanel);
-AdaptiveNamespaceEnd
+}

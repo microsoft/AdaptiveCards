@@ -8,7 +8,7 @@ using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::UI::Xaml;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveRenderArgs::RuntimeClassInitialize() noexcept
     {
         return S_OK;
@@ -49,4 +49,4 @@ AdaptiveNamespaceStart
         m_parentElement = value;
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

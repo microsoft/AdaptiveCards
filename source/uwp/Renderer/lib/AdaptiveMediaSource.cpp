@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "AdaptiveMediaSource.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveMediaSource::RuntimeClassInitialize() noexcept try
     {
         std::shared_ptr<AdaptiveSharedNamespace::MediaSource> mediaSource = std::make_shared<AdaptiveSharedNamespace::MediaSource>();
@@ -56,4 +56,4 @@ AdaptiveNamespaceStart
         sharedMediaSource = mediaSource;
         return S_OK;
     } CATCH_RETURN;
-AdaptiveNamespaceEnd
+}
