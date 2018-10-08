@@ -19,7 +19,7 @@ using namespace ABI::Windows::UI;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     AdaptiveCardParseResult::AdaptiveCardParseResult()
     {
     }
@@ -61,4 +61,4 @@ AdaptiveNamespaceStart
             m_adaptiveCard = value;
             return S_OK;
     }
-AdaptiveNamespaceEnd
+}

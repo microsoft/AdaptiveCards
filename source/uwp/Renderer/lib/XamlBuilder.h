@@ -9,7 +9,7 @@
 #include "RenderedAdaptiveCard.h"
 #include "AdaptiveRenderContext.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class AdaptiveCardRenderer;
 
     class XamlBuilder : public Microsoft::WRL::RuntimeClass<
@@ -268,4 +268,4 @@ AdaptiveNamespaceStart
             _In_ ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment);
 
     };
-AdaptiveNamespaceEnd
+}

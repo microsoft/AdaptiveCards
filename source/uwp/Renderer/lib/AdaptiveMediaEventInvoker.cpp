@@ -9,7 +9,7 @@ using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::UI::Xaml;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveMediaEventInvoker::RuntimeClassInitialize() noexcept
     {
         return S_OK;
@@ -28,4 +28,4 @@ AdaptiveNamespaceStart
         return m_renderResult->SendMediaClickedEvent(mediaElement);
     }
 
-AdaptiveNamespaceEnd
+}

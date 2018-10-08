@@ -5,7 +5,7 @@
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveContainerStyleDefinition::RuntimeClassInitialize() noexcept try
     {
         ContainerStyleDefinition styleDefinition;
@@ -46,4 +46,4 @@ AdaptiveNamespaceStart
         m_foregroundColors = colorsConfig;
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

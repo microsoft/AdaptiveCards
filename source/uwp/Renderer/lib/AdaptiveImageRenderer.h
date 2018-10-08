@@ -5,7 +5,7 @@
 #include "Image.h"
 #include "XamlBuilder.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class AdaptiveImageRenderer :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
@@ -37,4 +37,4 @@ AdaptiveNamespaceStart
     };
 
     ActivatableClass(AdaptiveImageRenderer);
-AdaptiveNamespaceEnd
+}

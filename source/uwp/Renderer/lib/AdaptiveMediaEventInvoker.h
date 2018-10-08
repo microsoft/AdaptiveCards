@@ -3,7 +3,7 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "RenderedAdaptiveCard.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class AdaptiveMediaEventInvoker :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
@@ -23,4 +23,4 @@ AdaptiveNamespaceStart
     };
 
     ActivatableClass(AdaptiveMediaEventInvoker);
-AdaptiveNamespaceEnd
+}

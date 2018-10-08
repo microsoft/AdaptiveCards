@@ -4,7 +4,7 @@
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveImageSetConfig::RuntimeClassInitialize() noexcept try
     {
         ImageSetConfig imageSetConfig;
@@ -45,4 +45,4 @@ AdaptiveNamespaceStart
         m_maxImageHeight = maxImageHeight;
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

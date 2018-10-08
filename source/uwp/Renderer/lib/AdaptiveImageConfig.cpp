@@ -4,7 +4,7 @@
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveImageConfig::RuntimeClassInitialize() noexcept try
     {
         ImageConfig imageConfig;
@@ -30,4 +30,4 @@ AdaptiveNamespaceStart
         m_imageSize = imageSize;
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

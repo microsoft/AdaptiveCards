@@ -12,7 +12,7 @@ using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveTextBlockRenderer::RuntimeClassInitialize() noexcept try
     {
         return S_OK;
@@ -39,4 +39,4 @@ AdaptiveNamespaceStart
         return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveTextBlock, AdaptiveSharedNamespace::TextBlock, AdaptiveSharedNamespace::TextBlockParser>(jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
 
-AdaptiveNamespaceEnd
+}

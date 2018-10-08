@@ -5,7 +5,7 @@
 #include "InputValue.h"
 #include "AdaptiveInputs.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class RenderedAdaptiveCard :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
@@ -59,4 +59,4 @@ AdaptiveNamespaceStart
     };
 
     ActivatableClass(RenderedAdaptiveCard);
-AdaptiveNamespaceEnd
+}

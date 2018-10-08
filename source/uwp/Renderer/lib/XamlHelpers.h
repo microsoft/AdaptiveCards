@@ -3,7 +3,7 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "WholeItemsPanel.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class XamlHelpers
     {
     public:
@@ -168,4 +168,4 @@ AdaptiveNamespaceStart
             XamlHelpers::AppendXamlElementToPanel(item, localPanel.Get());
         }
     };
-AdaptiveNamespaceEnd
+}

@@ -6,7 +6,7 @@ using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::UI;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize() noexcept try
     {
         ShowCardActionConfig showCardActionConfig;
@@ -62,4 +62,4 @@ AdaptiveNamespaceStart
         m_inlineTopMargin = inlineTopMargin;
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

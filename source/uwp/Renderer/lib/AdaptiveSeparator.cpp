@@ -10,7 +10,7 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveSeparator::RuntimeClassInitialize() noexcept try
     {
         m_sharedSeparator = std::make_shared<Separator>();
@@ -51,4 +51,4 @@ AdaptiveNamespaceStart
         m_sharedSeparator->SetThickness(static_cast<AdaptiveSharedNamespace::SeparatorThickness>(thickness));
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

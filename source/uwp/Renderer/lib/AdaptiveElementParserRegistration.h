@@ -4,7 +4,7 @@
 #include "Util.h"
 #include "AdaptiveActionParserRegistration.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class DECLSPEC_UUID("fdf8457d-639f-4bbd-9e32-26c14bac3813") AdaptiveElementParserRegistration :
         public Microsoft::WRL::RuntimeClass<
         Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
@@ -109,4 +109,4 @@ AdaptiveNamespaceStart
 
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

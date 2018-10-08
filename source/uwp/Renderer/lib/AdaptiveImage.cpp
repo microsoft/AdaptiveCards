@@ -10,7 +10,7 @@ using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     AdaptiveImage::AdaptiveImage()
     {
     }
@@ -203,4 +203,4 @@ AdaptiveNamespaceStart
         sharedImage = image;
         return S_OK;
     } CATCH_RETURN;
-AdaptiveNamespaceEnd
+}

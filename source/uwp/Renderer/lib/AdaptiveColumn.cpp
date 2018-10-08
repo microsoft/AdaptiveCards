@@ -12,7 +12,7 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     AdaptiveColumn::AdaptiveColumn()
     {
         m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
@@ -139,4 +139,4 @@ AdaptiveNamespaceStart
         sharedModel = column;
         return S_OK;
     }CATCH_RETURN;
-AdaptiveNamespaceEnd
+}

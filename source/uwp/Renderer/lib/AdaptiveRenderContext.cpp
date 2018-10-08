@@ -13,7 +13,7 @@ using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveRenderContext::RuntimeClassInitialize() noexcept
     {
         return S_OK;
@@ -99,4 +99,4 @@ AdaptiveNamespaceStart
     {
         return m_renderResult->AddInputValue(inputValue);
     }
-AdaptiveNamespaceEnd
+}

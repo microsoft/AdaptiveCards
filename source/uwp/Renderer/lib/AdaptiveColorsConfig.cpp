@@ -5,7 +5,7 @@
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveColorsConfig::RuntimeClassInitialize() noexcept try
     {
         ColorsConfig colorsConfig;
@@ -114,4 +114,4 @@ AdaptiveNamespaceStart
         m_attention = colorConfig;
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

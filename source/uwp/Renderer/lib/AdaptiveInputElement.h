@@ -5,7 +5,7 @@
 #include "BaseInputElement.h"
 #include "AdaptiveCardElement.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class DECLSPEC_UUID("E2E42BA6-A0AE-4B01-B161-29AF2F2B302B") AdaptiveInputElementBase : public AdaptiveCardElementBase
     {
     protected:
@@ -20,4 +20,4 @@ AdaptiveNamespaceStart
     private:
         boolean m_isRequired;
     };
-AdaptiveNamespaceEnd
+}

@@ -21,7 +21,7 @@ using namespace ABI::Windows::UI::Xaml;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     _Use_decl_annotations_
     HRESULT AdaptiveCardStaticsImpl::FromJsonString(HSTRING adaptiveJson, IAdaptiveCardParseResult** parseResult) noexcept try
     {
@@ -361,4 +361,4 @@ AdaptiveNamespaceStart
 
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

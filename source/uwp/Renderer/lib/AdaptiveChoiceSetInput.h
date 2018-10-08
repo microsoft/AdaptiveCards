@@ -6,7 +6,7 @@
 #include <windows.foundation.h>
 #include "AdaptiveInputElement.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     class DECLSPEC_UUID("fa103f57-5d54-48ba-80a5-d8939b85e82d") AdaptiveChoiceSetInput :
         public Microsoft::WRL::RuntimeClass<
             Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
@@ -79,4 +79,4 @@ AdaptiveNamespaceStart
     };
 
     ActivatableClass(AdaptiveChoiceSetInput);
-AdaptiveNamespaceEnd
+}

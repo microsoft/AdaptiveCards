@@ -10,7 +10,7 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveFact::RuntimeClassInitialize() noexcept try
     {
         RuntimeClassInitialize(std::make_shared<Fact>());
@@ -91,4 +91,4 @@ AdaptiveNamespaceStart
         sharedModel = fact;
         return S_OK;
     } CATCH_RETURN;
-AdaptiveNamespaceEnd
+}

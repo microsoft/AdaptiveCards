@@ -4,7 +4,7 @@
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveFontSizesConfig::RuntimeClassInitialize() noexcept try
     {
         FontSizesConfig fontSizesConfig;
@@ -91,4 +91,4 @@ AdaptiveNamespaceStart
         m_extraLarge = extraLargeFontSize;
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

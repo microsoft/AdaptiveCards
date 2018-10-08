@@ -47,7 +47,7 @@ using namespace ABI::Windows::Web::Http::Filters;
 const PCWSTR c_TextBlockSubtleOpacityKey = L"TextBlock.SubtleOpacity";
 const PCWSTR c_BackgroundImageOverlayBrushKey = L"AdaptiveCard.BackgroundOverlayBrush";
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     XamlBuilder::XamlBuilder()
     {
 
@@ -3122,4 +3122,4 @@ AdaptiveNamespaceStart
         panel->SetVerticalContentAlignment(verticalContentAlignment);
     }
 
-AdaptiveNamespaceEnd
+}

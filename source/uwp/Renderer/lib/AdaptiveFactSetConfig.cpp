@@ -5,7 +5,7 @@
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace {
     HRESULT AdaptiveFactSetConfig::RuntimeClassInitialize() noexcept try
     {
         FactSetConfig factSetConfig;
@@ -60,4 +60,4 @@ AdaptiveNamespaceStart
         m_spacing = value;
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}
