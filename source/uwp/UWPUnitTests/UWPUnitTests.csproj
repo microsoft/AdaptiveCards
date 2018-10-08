@@ -143,6 +143,9 @@
     <Content Include="..\..\..\samples\v1.1\Elements\*.json">
       <Link>LinkedCards\v1.1\Elements\%(FileName)</Link>
     </Content>
+    <Content Include="..\..\..\samples\v1.2\Elements\*.json">
+      <Link>LinkedCards\v1.2\Elements\%(FileName)</Link>
+    </Content>
     <Content Include="..\..\..\samples\v1.0\HostConfig\*.json">
       <Link>LinkedHostConfigs\v1.0\%(FileName)</Link>
     </Content>

@@ -106,7 +106,7 @@ std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(
     container->m_items = std::move(cardElements);
 
     // Parse optional selectAction
-    container->SetSelectAction(ParseUtil::GetSelectAction(elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::SelectAction, false));
+    container->SetSelectAction(ParseUtil::GetAction(elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::SelectAction, false));
 
     return container;
 }

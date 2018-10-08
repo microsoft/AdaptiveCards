@@ -37,6 +37,9 @@ namespace AdaptiveNamespace {
         IFACEMETHODIMP get_TextInputStyle(_Out_ ABI::AdaptiveNamespace::TextInputStyle *textInputStyle);
         IFACEMETHODIMP put_TextInputStyle(_In_ ABI::AdaptiveNamespace::TextInputStyle textInputStyle);
 
+        IFACEMETHODIMP get_InlineAction(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** action);
+        IFACEMETHODIMP put_InlineAction(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action);
+
         // IAdaptiveInputElement
         IFACEMETHODIMP get_IsRequired(_Out_ boolean* isRequired) { return AdaptiveInputElementBase::get_IsRequired(isRequired); }
         IFACEMETHODIMP put_IsRequired(_In_ boolean isRequired) { return AdaptiveInputElementBase::put_IsRequired(isRequired); }
@@ -77,6 +80,7 @@ namespace AdaptiveNamespace {
         UINT32 m_maxLength;
         boolean m_isMultiline;
         ABI::AdaptiveNamespace::TextInputStyle m_textInputStyle;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_inlineAction;
     };
 
     ActivatableClass(AdaptiveTextInput);

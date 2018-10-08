@@ -82,7 +82,7 @@ namespace ParseUtil
         AdaptiveCardSchemaKey key,
         bool isRequired = false);
 
-    std::shared_ptr<BaseActionElement> GetSelectAction(
+    std::shared_ptr<BaseActionElement> GetAction(
         std::shared_ptr<ElementParserRegistration> elementParserRegistration,
         std::shared_ptr<ActionParserRegistration> actionParserRegistration,
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,

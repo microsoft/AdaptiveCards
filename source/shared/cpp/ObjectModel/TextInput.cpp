@@ -42,6 +42,11 @@ Json::Value TextInput::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = TextInputStyleToString(m_style);
     }
 
+    if (m_inlineAction != nullptr)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::InlineAction)] = BaseCardElement::SerializeSelectAction(m_inlineAction);
+    }
+
     return root;
 }
 
@@ -95,10 +100,20 @@ void TextInput::SetTextInputStyle(const TextInputStyle value)
     m_style = value;
 }
 
+std::shared_ptr<BaseActionElement> TextInput::GetInlineAction() const
+{
+    return m_inlineAction;
+}
+
+void TextInput::SetInlineAction(const std::shared_ptr<BaseActionElement> action)
+{
+    m_inlineAction = action;
+}
+
 std::shared_ptr<BaseCardElement> TextInputParser::Deserialize(
-    std::shared_ptr<ElementParserRegistration>,
-    std::shared_ptr<ActionParserRegistration>,
-    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>&,
+    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
     const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::TextInput);
@@ -110,6 +125,7 @@ std::shared_ptr<BaseCardElement> TextInputParser::Deserialize(
     textInput->SetIsMultiline(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsMultiline, false));
     textInput->SetMaxLength(ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::MaxLength, 0));
     textInput->SetTextInputStyle(ParseUtil::GetEnumValue<TextInputStyle>(json, AdaptiveCardSchemaKey::Style, TextInputStyle::Text, TextInputStyleFromString));
+    textInput->SetInlineAction(ParseUtil::GetAction(elementParserRegistration, actionParserRegistration, warnings, json, AdaptiveCardSchemaKey::InlineAction, false));
 
     return textInput;
 }

@@ -95,7 +95,7 @@ namespace AdaptiveNamespace {
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardParseResult>(&adaptiveParseResult));
         try
         {
-            const std::string c_rendererVersion = "1.1";
+            const std::string c_rendererVersion = "1.2";
             std::shared_ptr<AdaptiveSharedNamespace::ParseResult> sharedParseResult = AdaptiveSharedNamespace::AdaptiveCard::DeserializeFromString(jsonString, c_rendererVersion, sharedModelElementParserRegistration, sharedModelActionParserRegistration);
             ComPtr<IAdaptiveCard> adaptiveCard;
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&adaptiveCard, sharedParseResult->GetAdaptiveCard()));

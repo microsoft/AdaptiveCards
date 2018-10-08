@@ -392,7 +392,7 @@ std::vector<std::shared_ptr<BaseActionElement>> ParseUtil::GetActionCollection(
     return elements;
 }
 
-std::shared_ptr<BaseActionElement> ParseUtil::GetSelectAction(
+std::shared_ptr<BaseActionElement> ParseUtil::GetAction(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
     std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,

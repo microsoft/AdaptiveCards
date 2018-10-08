@@ -31,6 +31,7 @@ namespace AdaptiveNamespace {
         m_maxLength = sharedTextInput->GetMaxLength();
         m_isMultiline = sharedTextInput->GetIsMultiline();
         m_textInputStyle = static_cast<ABI::AdaptiveNamespace::TextInputStyle>(sharedTextInput->GetTextInputStyle());
+        GenerateActionProjection(sharedTextInput->GetInlineAction(), &m_inlineAction);
 
         InitializeBaseElement(std::static_pointer_cast<BaseInputElement>(sharedTextInput));
 
@@ -102,6 +103,19 @@ namespace AdaptiveNamespace {
     }
 
     _Use_decl_annotations_
+    IFACEMETHODIMP AdaptiveTextInput::get_InlineAction(IAdaptiveActionElement** action)
+    {
+        return m_inlineAction.CopyTo(action);
+    }
+
+    _Use_decl_annotations_
+    IFACEMETHODIMP AdaptiveTextInput::put_InlineAction(IAdaptiveActionElement* action)
+    {
+        m_inlineAction = action;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_
     HRESULT AdaptiveTextInput::get_ElementType(ElementType* elementType)
     {
         *elementType = ElementType::TextInput;
@@ -120,6 +134,13 @@ namespace AdaptiveNamespace {
 
         textInput->SetPlaceholder(HStringToUTF8(m_placeholder.Get()));
         textInput->SetValue(HStringToUTF8(m_value.Get()));
+
+        if (m_inlineAction != nullptr)
+        {
+            std::shared_ptr<BaseActionElement> sharedAction;
+            RETURN_IF_FAILED(GenerateSharedAction(m_inlineAction.Get(), sharedAction));
+            textInput->SetInlineAction(sharedAction);
+        }
 
         sharedModel = textInput;
 
