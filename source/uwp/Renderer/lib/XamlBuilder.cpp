@@ -2655,6 +2655,35 @@ AdaptiveNamespaceStart
         AddInputValueToContext(renderContext, adaptiveCardElement, *numberInputControl);
     }
 
+    HRESULT HandleKeydownForInlineAction(
+        IKeyRoutedEventArgs* args,
+        IAdaptiveActionInvoker* actionInvoker,
+        IAdaptiveActionElement* inlineAction)
+    {
+        ABI::Windows::System::VirtualKey key;
+        RETURN_IF_FAILED(args->get_Key(&key));
+
+        if (key == ABI::Windows::System::VirtualKey::VirtualKey_Enter)
+        {
+            ComPtr<ABI::Windows::UI::Core::ICoreWindowStatic> coreWindowStatics;
+            RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Core_CoreWindow).Get(), &coreWindowStatics));
+
+            ComPtr<ABI::Windows::UI::Core::ICoreWindow> coreWindow;
+            RETURN_IF_FAILED(coreWindowStatics->GetForCurrentThread(&coreWindow));
+
+            ABI::Windows::UI::Core::CoreVirtualKeyStates keyState;
+            RETURN_IF_FAILED(coreWindow->GetKeyState(ABI::Windows::System::VirtualKey_Shift, &keyState));
+
+            if (keyState == ABI::Windows::UI::Core::CoreVirtualKeyStates_None)
+            {
+                RETURN_IF_FAILED(actionInvoker->SendActionEvent(inlineAction));
+                RETURN_IF_FAILED(args->put_Handled(true));
+            }
+        }
+
+        return S_OK;
+    }
+
     void XamlBuilder::HandleInlineAcion(
         IAdaptiveRenderContext* renderContext,
         IAdaptiveRenderArgs* renderArgs,
@@ -2828,19 +2857,9 @@ AdaptiveNamespaceStart
 
             EventRegistrationToken keyDownEventToken;
             THROW_IF_FAILED(textBoxAsUIElement->add_KeyDown(Callback<IKeyEventHandler>(
-                [touchTargetUIElement, actionInvoker, localInlineAction](IInspectable* /*sender*/, IKeyRoutedEventArgs* args) -> HRESULT
+                [actionInvoker, localInlineAction](IInspectable* /*sender*/, IKeyRoutedEventArgs* args) -> HRESULT
             {
-                ABI::Windows::System::VirtualKey key;
-                RETURN_IF_FAILED(args->get_Key(&key));
-
-                if (key == ABI::Windows::System::VirtualKey::VirtualKey_Enter)
-                {
-                    RETURN_IF_FAILED(actionInvoker->SendActionEvent(localInlineAction.Get()));
-                    RETURN_IF_FAILED(args->put_Handled(true));
-                }
-
-                return S_OK;
-
+                return HandleKeydownForInlineAction(args, actionInvoker.Get(), localInlineAction.Get());
             }).Get(), &keyDownEventToken));
         }
 
