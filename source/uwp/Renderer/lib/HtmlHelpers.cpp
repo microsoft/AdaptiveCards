@@ -74,7 +74,8 @@ HRESULT AddListInlines(
         std::wstring listElementString = L"\n";
         if (!isListOrdered)
         {
-            listElementString += L"● ";
+            // Add a bullet
+            listElementString += L"\x2022 ";
         }
         else
         {
