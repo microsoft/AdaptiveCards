@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include "XamlHelpers.h"
 #include "XamlBuilder.h"
 #include "AdaptiveImage.h"
@@ -141,7 +141,7 @@ void AddDefaultPlayIcon(
 }
 
 void AddCustomPlayIcon(
-    IPanel * posterPanel, 
+    IPanel * posterPanel,
     HSTRING playIconString,
     IAdaptiveRenderContext* renderContext,
     IAdaptiveRenderArgs* renderArgs)
@@ -342,8 +342,8 @@ HRESULT HandleMediaClick(
 
         if (resourceResolver == nullptr)
         {
-            // If there isn't a resource resolver, put the source directly. 
-            THROW_IF_FAILED(mediaElement->put_Source(mediaSourceUrl));    
+            // If there isn't a resource resolver, put the source directly.
+            THROW_IF_FAILED(mediaElement->put_Source(mediaSourceUrl));
         }
         else
         {
@@ -381,7 +381,7 @@ HRESULT HandleMediaClick(
 
             if (audioOnly && posterSource == nullptr)
             {
-                // If this is audio only and there's no poster, set the height so that the 
+                // If this is audio only and there's no poster, set the height so that the
                 // controls are visible.
                 ComPtr<IFrameworkElement> mediaAsFrameworkElement;
                 RETURN_IF_FAILED(localMediaElement.As(&mediaAsFrameworkElement));

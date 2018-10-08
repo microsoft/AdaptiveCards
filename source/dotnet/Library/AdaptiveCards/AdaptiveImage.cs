@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
@@ -121,7 +121,7 @@ namespace AdaptiveCards
         public string AltText { get; set; }
 
         /// <summary>
-        ///    Explicit Image Width 
+        ///    Explicit Image Width
         /// </summary>
         [JsonConverter(typeof(StringSizeWithUnitConverter), false)]
         [JsonProperty("width", DefaultValueHandling = DefaultValueHandling.Ignore)]

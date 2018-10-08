@@ -2,6 +2,7 @@
 #include "FactSet.h"
 #include "ParseUtil.h"
 #include "Fact.h"
+#include "Util.h"
 
 using namespace AdaptiveSharedNamespace;
 
@@ -18,6 +19,17 @@ const std::vector<std::shared_ptr<Fact>>& FactSet::GetFacts() const
 std::vector<std::shared_ptr<Fact>>& FactSet::GetFacts()
 {
     return m_facts;
+}
+
+void FactSet::SetLanguage(const std::string& language)
+{
+    for (std::shared_ptr<Fact>& fact : m_facts)
+    {
+        if (fact != nullptr)
+        {
+            fact->SetLanguage(language);
+        }
+    }
 }
 
 Json::Value FactSet::SerializeToJsonValue() const

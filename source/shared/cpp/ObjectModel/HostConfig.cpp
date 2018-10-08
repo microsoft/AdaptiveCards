@@ -331,6 +331,6 @@ MediaConfig MediaConfig::Deserialize(const Json::Value& json, const MediaConfig&
 
     result.allowInlinePlayback = ParseUtil::GetBool(
         json, AdaptiveCardSchemaKey::AllowInlinePlayback, defaultValue.allowInlinePlayback);
-   
+
     return result;
 }

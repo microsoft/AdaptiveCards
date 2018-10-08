@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
@@ -7,7 +7,7 @@ using Windows.Storage.Streams;
 
 namespace UWPTestLibrary
 {
-    public class FileViewModel 
+    public class FileViewModel
     {
         public string Name { get; set; }
 

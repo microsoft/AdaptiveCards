@@ -110,7 +110,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
             Assert::IsTrue(selectAction == nullptr);
         }
-        
+
         // A card JSON with an OpenUrl selectAction
         TEST_METHOD(SelectActionOpenUrlTest)
         {
@@ -157,7 +157,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::IsFalse(selectAction == nullptr);
             Assert::AreEqual(selectAction->GetElementTypeString(), "Action.OpenUrl"s);
         }
-        
+
         // An arbitrary JSON with a Submit selectAction (for other elements such as Container, ColumnSet, etc.)
         TEST_METHOD(SelectActionAnyJsonTest)
         {
@@ -295,4 +295,3 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
     };
 }
-

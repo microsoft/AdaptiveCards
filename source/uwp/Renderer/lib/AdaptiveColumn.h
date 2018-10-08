@@ -72,10 +72,10 @@ AdaptiveNamespaceStart
 
     private:
 
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>> m_items; 
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>> m_items;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_selectAction;
 
-        Microsoft::WRL::Wrappers::HString m_width; 
+        Microsoft::WRL::Wrappers::HString m_width;
         UINT32 m_pixelWidth;
         ABI::AdaptiveNamespace::ContainerStyle m_style;
         ABI::AdaptiveNamespace::VerticalContentAlignment m_verticalAlignment;

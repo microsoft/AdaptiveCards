@@ -12,7 +12,7 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
+
     if(!_hidePlayIcon){
         CGFloat radius = 30.0f;
         CGPoint centerPoint = CGPointMake((self.frame.size.width) / 2, (self.frame.size.height) / 2);
@@ -67,7 +67,7 @@
                 [shapes addObject:layer];
             }
         }
-        
+
         for(CALayer *layer in shapes){
             [layer removeFromSuperlayer];
         }

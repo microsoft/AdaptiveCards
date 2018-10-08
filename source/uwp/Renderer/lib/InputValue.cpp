@@ -10,7 +10,7 @@ using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::Globalization::DateTimeFormatting;
-using namespace ABI::Windows::UI::Xaml; 
+using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
 using namespace AdaptiveNamespace;

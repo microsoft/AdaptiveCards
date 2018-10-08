@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include "AdaptiveCardRendererComponent.h"
 
 #include "AdaptiveCard.h"
@@ -169,7 +169,7 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveCard> parsedCard;
         RETURN_IF_FAILED(adaptiveCardParseResult->get_AdaptiveCard(&parsedCard));
         if (parsedCard == nullptr)
-        {            
+        {
             ComPtr<IVector<IAdaptiveError*>> renderResultErrors;
             RETURN_IF_FAILED(renderedCard->get_Errors(&renderResultErrors));
             ComPtr<IVector<IAdaptiveError*>> parseErrors;

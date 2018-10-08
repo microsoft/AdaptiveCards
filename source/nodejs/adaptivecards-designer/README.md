@@ -35,13 +35,13 @@ To build, follow these steps:
 cd adaptivecards
 
 npm install
-npm build
+npm run build
 npm link
 
 cd ..\adaptivecards-controls
 
 npm install
-npm build
+npm run build
 npm link
 
 cd ..\adaptivecards-designer
@@ -49,7 +49,7 @@ cd ..\adaptivecards-designer
 npm install
 npm link adaptivecards-controls
 npm link adaptivecards
-npm build
+npm run build
 ```
 
 Launch the designer by opening `index.html`

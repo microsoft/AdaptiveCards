@@ -1,4 +1,4 @@
-﻿using UWPTestLibrary;
+using UWPTestLibrary;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 

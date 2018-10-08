@@ -14,4 +14,3 @@ hexo.extend.generator.register("generator-visualizer", function (locals) {
     };
 
 });
-

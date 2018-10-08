@@ -113,7 +113,7 @@ AdaptiveNamespaceStart
         std::shared_ptr<AdaptiveSharedNamespace::TextInput> textInput = std::make_shared<AdaptiveSharedNamespace::TextInput>();
 
         RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseInputElement>(textInput)));
-        
+
         textInput->SetMaxLength(m_maxLength);
         textInput->SetIsMultiline(m_isMultiline);
         textInput->SetTextInputStyle(static_cast<AdaptiveSharedNamespace::TextInputStyle>(m_textInputStyle));

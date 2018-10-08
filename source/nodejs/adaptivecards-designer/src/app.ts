@@ -239,7 +239,7 @@ class SidePaneHeader {
 
         this._iconElement = document.createElement("span")
         this._iconElement.classList.add("acd-icon", "acd-icon-header-expanded");
-        
+
         expandCollapseElement.appendChild(this._iconElement);
 
         this._statusTextElement = document.createElement("span");
@@ -331,7 +331,7 @@ abstract class BasePaletteItem extends Designer.DraggableElement {
         let iconElement = document.createElement("div");
         iconElement.classList.add("acd-icon", this.getIconClass());
         iconElement.style.flex = "0 0 auto";
-        
+
         let labelElement = document.createElement("div");
         labelElement.className = "acd-palette-item-label";
         labelElement.style.flex = "1 1 100%";
@@ -358,7 +358,7 @@ class ElementPaletteItem extends BasePaletteItem {
     protected getIconClass(): string {
         return this.peerRegistration.iconClass;
     }
-    
+
     readonly typeRegistration: Adaptive.ITypeRegistration<Adaptive.CardElement>;
     readonly peerRegistration: Designer.DesignerPeerRegistrationBase;
 
@@ -584,14 +584,13 @@ class DesignerApp {
 
     private addContainers() {
         this.hostContainers.push(new WebChatContainer("Bot Framework WebChat", "css/webchat-container.css"));
-        this.hostContainers.push(new LightTeamsContainer("Microsoft Teams - Light (preview)", "css/teams-container-light.css"));
-        this.hostContainers.push(new DarkTeamsContainer("Microsoft Teams - Dark (preview)", "css/teams-container-dark.css"));
         this.hostContainers.push(new CortanaContainer("Cortana Skills", "css/cortana-container.css"));
-        this.hostContainers.push(new SkypeContainer("Skype (Preview)", "css/skype-container.css"));
         this.hostContainers.push(new OutlookContainer("Outlook Actionable Messages", "css/outlook-container.css"));
         this.hostContainers.push(new TimelineContainer("Windows Timeline", "css/timeline-container.css"));
-        this.hostContainers.push(new ToastContainer("Windows Notifications (Preview)", "css/toast-container.css"));
+        this.hostContainers.push(new DarkTeamsContainer("Microsoft Teams - Dark", "css/teams-container-dark.css"));
+        this.hostContainers.push(new LightTeamsContainer("Microsoft Teams - Light", "css/teams-container-light.css"));
         this.hostContainers.push(new BotFrameworkContainer("Bot Framework Other Channels (Image render)", "css/bf-image-container.css"));
+        this.hostContainers.push(new ToastContainer("Windows Notifications (Preview)", "css/toast-container.css"));
     }
 
     private recreateDesigner() {
@@ -839,7 +838,7 @@ class DesignerApp {
             if (undoPayloadsToDiscard > 0) {
                 this._undoStack.splice(this._undoStackIndex + 1, undoPayloadsToDiscard);
             }
-            
+
             this._undoStack.push(payload);
 
             if (this._undoStack.length > MAX_UNDO_STACK_SIZE) {
@@ -859,7 +858,7 @@ class DesignerApp {
     undo() {
         if (this.canUndo) {
             this._undoStackIndex--;
-            
+
             let card = this._undoStack[this._undoStackIndex];
 
             setJsonPayload(card);
@@ -875,7 +874,7 @@ class DesignerApp {
     redo() {
         if (this._undoStackIndex < this._undoStack.length - 1) {
             this._undoStackIndex++;
-            
+
             let card = this._undoStack[this._undoStackIndex];
 
             setJsonPayload(card);
@@ -907,10 +906,10 @@ class DesignerApp {
         let card = {
             type: "AdaptiveCard",
             version: "1.0",
-            body: [                
+            body: [
             ]
         }
-        
+
         setJsonPayload(card);
     }
 

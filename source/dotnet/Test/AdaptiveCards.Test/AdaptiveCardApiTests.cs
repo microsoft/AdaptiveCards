@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -323,7 +323,7 @@ namespace AdaptiveCards.Test
             var imageBlock = card.Body[0] as AdaptiveImage;
             Assert.AreEqual(0U, imageBlock.PixelWidth);
             Assert.AreEqual(0U, imageBlock.PixelHeight);
-            Assert.AreEqual(3, result.Warnings.Count);
+            Assert.AreEqual(2, result.Warnings.Count);
             Assert.AreEqual(
                 result.Warnings[0].Message,
                 @"The Value ""20"" for field ""width"" was not specified as a proper dimension in the format (\d+(.\d+)?px), it will be ignored.");
@@ -356,7 +356,7 @@ namespace AdaptiveCards.Test
             var imageBlock = card.Body[0] as AdaptiveImage;
             Assert.AreEqual(0U, imageBlock.PixelWidth);
             Assert.AreEqual(0U, imageBlock.PixelHeight);
-            Assert.AreEqual(3, result.Warnings.Count);
+            Assert.AreEqual(2, result.Warnings.Count);
             Assert.AreEqual(
                 @"The Value "".20px"" for field ""width"" was not specified as a proper dimension in the format (\d+(.\d+)?px), it will be ignored.",
                 result.Warnings[0].Message);
@@ -371,8 +371,8 @@ namespace AdaptiveCards.Test
             ArrayList payloads = new ArrayList
             {
                 @"{
-                    ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"", 
-                      ""type"": ""AdaptiveCard"", 
+                    ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
                       ""version"": ""1.0"",
                       ""body"": [
                           {
@@ -384,8 +384,8 @@ namespace AdaptiveCards.Test
                       ]
                   }",
                 @"{
-                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"", 
-                      ""type"": ""AdaptiveCard"", 
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
                       ""version"": ""1.0"",
                       ""body"": [
                           {
@@ -458,7 +458,7 @@ namespace AdaptiveCards.Test
                 var imageBlock = card.Body[0] as AdaptiveImage;
                 Assert.AreEqual(0U, imageBlock.PixelWidth);
                 Assert.AreEqual(0U, imageBlock.PixelHeight);
-                Assert.AreEqual(3, result.Warnings.Count);
+                Assert.AreEqual(2, result.Warnings.Count);
             }
         }
 
@@ -535,7 +535,7 @@ namespace AdaptiveCards.Test
                       ""body"": [
                           {
                               ""type"": ""TextBlock"",
-                              ""text"": ""This is a textblock""        
+                              ""text"": ""This is a textblock""
                           }
                       ]
                   }";
@@ -582,7 +582,7 @@ namespace AdaptiveCards.Test
                               ""type"": ""Image"",
                               ""url"": ""http://adaptivecards.io/content/cats/1.png"",
                               ""height"": ""stretch"",
-                              ""size"": ""small""  
+                              ""size"": ""small""
                           }
                       ]
                   }";
@@ -728,6 +728,77 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(((AdaptiveContainer)containers[1]).VerticalContentAlignment, AdaptiveVerticalContentAlignment.Top);
             Assert.AreEqual(((AdaptiveContainer)containers[2]).VerticalContentAlignment, AdaptiveVerticalContentAlignment.Center);
             Assert.AreEqual(((AdaptiveContainer)containers[3]).VerticalContentAlignment, AdaptiveVerticalContentAlignment.Bottom);
+        }
+
+        [TestMethod]
+        public void BadImageWidthsAsAdditionalProperties()
+        {
+            var payload =
+                @"{
+                    ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                    ""type"": ""AdaptiveCard"",
+                    ""version"": ""1.0"",
+                    ""test-card-prop"" : ""giraffe"",
+                    ""body"": [
+                        {
+                            ""type"": ""Image"",
+                            ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+                            ""width"": ""50px"",
+                            ""height"": ""50px"",
+                            ""test-image-prop"" : ""elephant""
+                        },
+                        {
+                            ""type"": ""Image"",
+                            ""url"": ""http://adaptivecards.io/content/cats/2.png"",
+                            ""width"": ""50boguspx"",
+                            ""height"": ""50boguspx"",
+                            ""test-image-prop"" : ""cheetah""
+                        }
+                    ]
+                }";
+
+            var result = AdaptiveCard.FromJson(payload);
+
+            // Expect one warning for each unknown property (3)
+            // and one for each bad pixel size (2)
+            Assert.AreEqual(5, result.Warnings.Count);
+
+            // Check the card properties
+            var card = result.Card;
+            Assert.AreEqual("AdaptiveCard", card.Type);
+            Assert.AreEqual(1, card.Version.Major);
+            Assert.AreEqual(0, card.Version.Minor);
+
+            // One AdditionalProp
+            Assert.AreEqual(1, card.AdditionalProperties.Count);
+            Assert.AreEqual("giraffe", card.AdditionalProperties["test-card-prop"]);
+
+            // Check the properties on the first image
+            var body = result.Card.Body;
+            Assert.AreEqual(2, body.Count);
+
+            var firstElement = body[0];
+            Assert.AreEqual("Image", firstElement.Type);
+
+            var image = firstElement as AdaptiveImage;
+            Assert.AreEqual("http://adaptivecards.io/content/cats/1.png", image.UrlString);
+            Assert.AreEqual((UInt32)50, image.PixelWidth);
+            Assert.AreEqual((UInt32)50, image.PixelHeight);
+
+            // One AdditionalProp
+            Assert.AreEqual(1, image.AdditionalProperties.Count);
+            Assert.AreEqual("elephant", image.AdditionalProperties["test-image-prop"]);
+
+            // Check the properties on the second image
+            var secondElement = body[1];
+            Assert.AreEqual("Image", secondElement.Type);
+
+            image = secondElement as AdaptiveImage;
+            Assert.AreEqual("http://adaptivecards.io/content/cats/2.png", image.UrlString);
+
+            // One AdditionalProp
+            Assert.AreEqual(1, image.AdditionalProperties.Count);
+            Assert.AreEqual("cheetah", image.AdditionalProperties["test-image-prop"]);
         }
     }
 }

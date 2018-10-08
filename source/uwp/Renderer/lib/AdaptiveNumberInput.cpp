@@ -88,7 +88,7 @@ AdaptiveNamespaceStart
         m_min = min;
         return S_OK;
     }
-    
+
     _Use_decl_annotations_
     HRESULT AdaptiveNumberInput::get_ElementType(ElementType* elementType)
     {

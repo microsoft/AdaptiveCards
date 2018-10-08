@@ -85,7 +85,7 @@ export class AdaptiveCardDocumentContentProvider implements vscode.TextDocumentC
                             },
                             accent: {
                                 normal: "#2E89FC",
-                                subtle: "#882E89FC" 
+                                subtle: "#882E89FC"
                             },
                             attention: {
                                 normal: "#cc3300",
@@ -230,13 +230,13 @@ export class AdaptiveCardDocumentContentProvider implements vscode.TextDocumentC
                     var adaptiveCard = new AdaptiveCards.AdaptiveCard();
                     adaptiveCard.parse(${json});
                     var renderedCard = adaptiveCard.render();
-                    
+
                     document.getElementById('previewDiv').appendChild(renderedCard);
-                    AdaptiveCards.AdaptiveCard.onExecuteAction = function(action) 
+                    AdaptiveCards.AdaptiveCard.onExecuteAction = function(action)
                     {
                         alert(JSON.stringify(action));
                     };
-                    
+
                 </script>
             </body>
         </html>`;

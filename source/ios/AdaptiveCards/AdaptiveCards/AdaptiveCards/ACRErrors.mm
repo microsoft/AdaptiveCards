@@ -10,4 +10,3 @@
 
 NSString *const ACRInputErrorDomain = @"ACRInputErrorDomain";
 NSString *const ACRParseErrorDomain = @"ACRParseErrorDomain";
-

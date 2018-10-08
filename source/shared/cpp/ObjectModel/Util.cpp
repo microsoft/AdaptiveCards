@@ -2,6 +2,7 @@
 #include "Util.h"
 #include "ColumnSet.h"
 #include "Container.h"
+#include "FactSet.h"
 #include "TextBlock.h"
 #include "ShowCardAction.h"
 
@@ -33,6 +34,14 @@ void PropagateLanguage(const std::string& language, std::vector<std::shared_ptr<
             if (textBlock != nullptr)
             {
                 textBlock->SetLanguage(language);
+            }
+        }
+        else if (bodyElement->GetElementType() == CardElementType::FactSet)
+        {
+            auto factset = std::static_pointer_cast<FactSet>(bodyElement);
+            if (factset != nullptr)
+            {
+                factset->SetLanguage(language);
             }
         }
     }
@@ -96,7 +105,7 @@ void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::s
         {
             warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
                     AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
-                    warningMessage + requestedDimension)); 
+                    warningMessage + requestedDimension));
         }
         catch (const std::out_of_range &)
         {
@@ -105,11 +114,11 @@ void ValidateUserInputForDimensionWithUnit(const std::string &unit, const std::s
                     "out of range: " + requestedDimension));
         }
     }
-    else 
+    else
     {
         warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(
                 AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
-                warningMessage + requestedDimension)); 
+                warningMessage + requestedDimension));
     }
 }
 
@@ -132,7 +141,7 @@ bool ShouldParseForExplicitDimension(const std::string &input)
     while (index < input.length())
     {
         ch = input.at(index++);
-        hasDigit |= isdigit(ch); 
+        hasDigit |= isdigit(ch);
         if (hasDigit && (isalpha(ch) || '.' == ch))
         {
             return true;
@@ -142,7 +151,7 @@ bool ShouldParseForExplicitDimension(const std::string &input)
 }
 
 void EnsureShowCardVersions(
-    std::vector<std::shared_ptr<BaseActionElement>>& actions, 
+    std::vector<std::shared_ptr<BaseActionElement>>& actions,
     std::string& version)
 {
     for (auto& action : actions)

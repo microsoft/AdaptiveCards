@@ -37,13 +37,13 @@
     std::shared_ptr<Container> containerElem = std::dynamic_pointer_cast<Container>(elem);
 
     ACRColumnView *container = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)containerElem->GetStyle()
-                                                        parentStyle:[viewGroup style] hostConfig:acoConfig];
+                                                        parentStyle:[viewGroup style] hostConfig:acoConfig superview:viewGroup];
 
     UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
     if(containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom){
         leadingBlankSpace = [container addPaddingSpace];
     }
-    
+
     container.frame = viewGroup.frame;
 
     [ACRRenderer render:container
@@ -51,14 +51,14 @@
                  inputs:inputs
           withCardElems:containerElem->GetItems()
           andHostConfig:acoConfig];
-    
+
     // Dont add the trailing space if the vertical content alignment is top/default
     if(containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && !(container.hasStretchableView))){
         trailingBlankSpace = [container addPaddingSpace];
     }
-    
+
     [viewGroup addArrangedSubview:container];
-        
+
     if(leadingBlankSpace != nil && trailingBlankSpace != nil){
         [NSLayoutConstraint constraintWithItem:leadingBlankSpace
                                      attribute:NSLayoutAttributeHeight
@@ -80,4 +80,3 @@
 }
 
 @end
-

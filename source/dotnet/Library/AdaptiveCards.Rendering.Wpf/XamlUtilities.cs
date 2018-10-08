@@ -1,10 +1,10 @@
-﻿namespace AdaptiveCards.Rendering.Wpf
+namespace AdaptiveCards.Rendering.Wpf
 {
 
     public class XamlUtilities
     {
         /// <summary>
-        /// Get fallback text from the speech element 
+        /// Get fallback text from the speech element
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>

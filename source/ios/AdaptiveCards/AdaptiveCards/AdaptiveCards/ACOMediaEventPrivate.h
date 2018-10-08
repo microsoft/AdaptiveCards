@@ -23,4 +23,4 @@ using namespace AdaptiveCards;
 
 - (instancetype)initWithMedia:(std::shared_ptr<Media> const &)media;
 
-@end    
+@end

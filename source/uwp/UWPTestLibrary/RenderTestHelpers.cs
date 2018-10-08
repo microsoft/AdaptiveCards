@@ -1,4 +1,4 @@
-﻿using AdaptiveCards.Rendering.Uwp;
+using AdaptiveCards.Rendering.Uwp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -134,8 +134,8 @@ namespace UWPTestLibrary
 
         public static async Task ResultsToFile(
             StorageFile imageResult,
-            StorageFile jsonResult, 
-            string roundTrippedJsonString, 
+            StorageFile jsonResult,
+            string roundTrippedJsonString,
             UIElement xaml)
         {
             RenderTargetBitmap rtb = null;

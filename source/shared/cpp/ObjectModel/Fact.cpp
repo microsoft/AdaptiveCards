@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Fact.h"
+#include "DateTimePreparser.h"
 #include "ParseUtil.h"
 
 using namespace AdaptiveSharedNamespace;
@@ -8,7 +9,7 @@ Fact::Fact()
 {
 }
 
-Fact::Fact(std::string const &title, std::string const &value) : 
+Fact::Fact(std::string const &title, std::string const &value) :
     m_title(title), m_value(value)
 {
 }
@@ -68,4 +69,24 @@ std::string Fact::GetValue() const
 void Fact::SetValue(const std::string &value)
 {
     m_value = value;
+}
+
+DateTimePreparser Fact::GetTitleForDateParsing() const
+{
+    return DateTimePreparser(m_title);
+}
+
+DateTimePreparser Fact::GetValueForDateParsing() const
+{
+    return DateTimePreparser(m_value);
+}
+
+std::string Fact::GetLanguage() const
+{
+    return m_language;
+}
+
+void Fact::SetLanguage(const std::string& value)
+{
+    m_language = value;
 }

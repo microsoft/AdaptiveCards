@@ -20,4 +20,3 @@
 @property NSString *userSelectedJSon;
 
 @end
-

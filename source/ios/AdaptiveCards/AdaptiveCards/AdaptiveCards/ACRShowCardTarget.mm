@@ -86,24 +86,12 @@
 
     ACRContainerStyle style = (ACRContainerStyle)(containerStyle);
 
-    long num = 0;
-
     if(style == ACRNone) {
         style = [_superview style];
     }
 
-    if(style == ACREmphasis) {
-        num = std::stoul([_config getHostConfig]->containerStyles.emphasisPalette.backgroundColor.substr(1), nullptr, 16);
-    } else {
-        num = std::stoul([_config getHostConfig]->containerStyles.defaultPalette.backgroundColor.substr(1), nullptr, 16);
-    }
-
     wrappingView.translatesAutoresizingMaskIntoConstraints = NO;
-    wrappingView.backgroundColor =
-    [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255.0
-                    green:((num & 0x0000FF00) >>  8) / 255.0
-                     blue:((num & 0x000000FF)) / 255.0
-                    alpha:((num & 0xFF000000) >> 24) / 255.0];
+    wrappingView.backgroundColor = [_config getBackgroundColorForContainerStyle:style];
 
     [_superview addArrangedSubview:_adcView];
     _adcView.hidden = YES;
@@ -118,7 +106,7 @@
     {
         [_rootView.acrActionDelegate didChangeVisibility:_button isVisible:(!_adcView.hidden)];
     }
-    
+
     if([_rootView.acrActionDelegate respondsToSelector:@selector(didChangeViewLayout:newFrame:)] && _adcView.hidden == NO){
         CGRect showCardFrame = _adcView.frame;
         showCardFrame.origin = [_adcView convertPoint:_adcView.frame.origin toView:nil];

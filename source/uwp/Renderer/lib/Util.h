@@ -62,7 +62,7 @@ HRESULT GenerateSharedElements(
 
 HRESULT GenerateSharedAction(
     ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
-    std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedAction); 
+    std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedAction);
 
 HRESULT GenerateSharedActions(
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* items,

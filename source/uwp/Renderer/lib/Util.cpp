@@ -248,7 +248,7 @@ HRESULT GenerateSharedFacts(
         {
             return E_INVALIDARG;
         }
-        
+
         std::shared_ptr<AdaptiveSharedNamespace::Fact> sharedFact;
         RETURN_IF_FAILED(adaptiveElement->GetSharedModel(sharedFact));
         containedElements.push_back(std::AdaptivePointerCast<AdaptiveSharedNamespace::Fact>(sharedFact));
@@ -509,7 +509,7 @@ HRESULT GenerateMediaSourcesProjection(
     {
         ComPtr<ABI::AdaptiveNamespace::IAdaptiveMediaSource> projectedContainedElement;
         RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveMediaSource>(&projectedContainedElement,
-            std::static_pointer_cast<AdaptiveSharedNamespace::MediaSource>(containedElement))); 
+            std::static_pointer_cast<AdaptiveSharedNamespace::MediaSource>(containedElement)));
 
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
     }
@@ -623,7 +623,7 @@ HRESULT GetColorFromAdaptiveColor(
     }
 
     ComPtr<ABI::AdaptiveNamespace::IAdaptiveColorsConfig> colorsConfig;
-    RETURN_IF_FAILED(styleDefinition->get_ForegroundColors(&colorsConfig)); 
+    RETURN_IF_FAILED(styleDefinition->get_ForegroundColors(&colorsConfig));
 
     ComPtr<ABI::AdaptiveNamespace::IAdaptiveColorConfig> colorConfig;
     switch (adaptiveColor)
@@ -828,7 +828,7 @@ HRESULT ProjectedElementTypeToHString(ABI::AdaptiveNamespace::ElementType projec
     return UTF8ToHString(CardElementTypeToString(sharedElementType), result);
 }
 
-std::wstring StringToWstring(const std::string& in) 
+std::wstring StringToWstring(const std::string& in)
 {
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;
     return utfConverter.from_bytes(in);

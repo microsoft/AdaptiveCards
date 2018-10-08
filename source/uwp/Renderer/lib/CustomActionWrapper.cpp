@@ -22,14 +22,14 @@ void CustomActionWrapper::SetId(const std::string& value)
 
 std::string CustomActionWrapper::GetTitle() const
 {
-    Wrappers::HString title; 
+    Wrappers::HString title;
     THROW_IF_FAILED(m_actionElement->get_Title(title.GetAddressOf()));
     return HStringToUTF8(title.Get());
 }
 
 void CustomActionWrapper::SetTitle(const std::string& value)
 {
-    Wrappers::HString title; 
+    Wrappers::HString title;
     THROW_IF_FAILED(UTF8ToHString(value, title.GetAddressOf()));
     THROW_IF_FAILED(m_actionElement->put_Title(title.Get()));
 }

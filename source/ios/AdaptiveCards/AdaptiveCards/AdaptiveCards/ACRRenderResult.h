@@ -17,4 +17,4 @@
 @property ACRViewController *viewcontroller;
 @property BOOL succeeded;
 
-@end    
+@end

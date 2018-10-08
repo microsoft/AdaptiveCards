@@ -309,4 +309,3 @@ export abstract class HostContainer {
         return this._cardHost;
     }
 }
-

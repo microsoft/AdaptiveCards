@@ -56,7 +56,7 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(card->GetSharedModel(sharedCard));
 
         showCardAction->SetCard(sharedCard);
-        
+
         sharedModel = showCardAction;
         return S_OK;
     } CATCH_RETURN;

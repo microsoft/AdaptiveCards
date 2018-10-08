@@ -20,7 +20,7 @@ std::string MarkDownParser::TransformToHtml()
     // begin parsing html blocks
     ParseBlock();
 
-    // process further what is parsed before outputting 
+    // process further what is parsed before outputting
     // html string
     m_parsedResult.Translate();
 
@@ -57,7 +57,7 @@ std::string MarkDownParser::EscapeText()
 {
     std::string escaped;
     unsigned int nonEscapedCounts = 0;
-    
+
     for (std::string::size_type i = 0; i < m_text.length(); i++)
     {
         switch (m_text.at(i))
@@ -80,8 +80,8 @@ std::string MarkDownParser::EscapeText()
             break;
         }
     }
-    
+
     m_isEscaped = (nonEscapedCounts != m_text.length());
-    
+
     return escaped;
 }

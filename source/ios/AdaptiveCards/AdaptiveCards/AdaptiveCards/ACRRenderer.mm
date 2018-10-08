@@ -86,48 +86,46 @@ using namespace AdaptiveCards;
         }
     }
 
-    if(!body.empty()) {
-        ACRContainerStyle style = ([config getHostConfig]->adaptiveCard.allowCustomStyle)? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
-        style = (style == ACRNone)? ACRDefault : style;
-        [verticalView setStyle:style];
+    ACRContainerStyle style = ([config getHostConfig]->adaptiveCard.allowCustomStyle)? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
+    style = (style == ACRNone)? ACRDefault : style;
+    [verticalView setStyle:style];
 
-        [rootView addTasksToConcurrentQueue:body];
+    [rootView addTasksToConcurrentQueue:body];
 
-        std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
+    std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
 
-        if(!actions.empty()) {
-            [rootView loadImagesForActionsAndCheckIfAllActionsHaveIconImages:actions hostconfig:config];
-        }
-
-        [rootView waitForAsyncTasksToFinish];
-
-        UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
-        if(adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center ||
-           adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom){
-            leadingBlankSpace = [verticalView addPaddingSpace];
-        }
-
-        [ACRRenderer render:verticalView rootView:rootView inputs:inputs withCardElems:body andHostConfig:config];
-
-        // Dont add the trailing space if the vertical content alignment is top/default
-        if((adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center) ||
-           (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Top &&
-            !(verticalView.hasStretchableView))){
-            trailingBlankSpace = [verticalView addPaddingSpace];
-        }
-
-        [[rootView card] setInputs:inputs];
-
-        if(!actions.empty()) {
-            [ACRSeparator renderActionsSeparator:verticalView hostConfig:[config getHostConfig]];
-
-            // renders buttons and their associated actions
-            ACOAdaptiveCard *card = [[ACOAdaptiveCard alloc] init];
-            [card setCard:adaptiveCard];
-            [ACRRenderer renderActions:rootView inputs:inputs superview:verticalView card:card hostConfig:config];
-        }
-        [verticalView adjustHuggingForLastElement];
+    if(!actions.empty()) {
+        [rootView loadImagesForActionsAndCheckIfAllActionsHaveIconImages:actions hostconfig:config];
     }
+
+    [rootView waitForAsyncTasksToFinish];
+
+    UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
+    if(adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center ||
+       adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom){
+        leadingBlankSpace = [verticalView addPaddingSpace];
+    }
+
+    [ACRRenderer render:verticalView rootView:rootView inputs:inputs withCardElems:body andHostConfig:config];
+
+    // Dont add the trailing space if the vertical content alignment is top/default
+    if((adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center) ||
+       (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Top &&
+        !(verticalView.hasStretchableView))){
+        trailingBlankSpace = [verticalView addPaddingSpace];
+    }
+
+    [[rootView card] setInputs:inputs];
+
+    if(!actions.empty()) {
+        [ACRSeparator renderActionsSeparator:verticalView hostConfig:[config getHostConfig]];
+
+        // renders buttons and their associated actions
+        ACOAdaptiveCard *card = [[ACOAdaptiveCard alloc] init];
+        [card setCard:adaptiveCard];
+        [ACRRenderer renderActions:rootView inputs:inputs superview:verticalView card:card hostConfig:config];
+    }
+    [verticalView adjustHuggingForLastElement];
 
     return verticalView;
 }

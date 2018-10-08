@@ -22,7 +22,6 @@ typedef NS_ENUM(NSUInteger, ACRParseWarningStatusCode)
 @interface ACRParseWarning:NSObject
 
 @property (readonly)ACRParseWarningStatusCode statusCode;
-@property (readonly)NSString *reason; 
+@property (readonly)NSString *reason;
 
 @end
-

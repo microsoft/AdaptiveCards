@@ -37,7 +37,7 @@
     std::shared_ptr<Column> columnElem = std::dynamic_pointer_cast<Column>(elem);
 
     ACRColumnView* column = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)columnElem->GetStyle()
-                                                     parentStyle:[viewGroup style] hostConfig:acoConfig];
+                                                     parentStyle:[viewGroup style] hostConfig:acoConfig superview:viewGroup];
 
     column.pixelWidth = columnElem->GetPixelWidth();
     if(columnElem->GetWidth() == "stretch" || columnElem->GetWidth() == "") {
@@ -56,7 +56,7 @@
                  inputs:inputs
           withCardElems:columnElem->GetItems()
           andHostConfig:acoConfig];
-    
+
     if(columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && _fillAlignment)){
         trailingBlankSpace = [column addPaddingSpace];
     }
@@ -72,7 +72,7 @@
                                                                   recipientView:column
                                                                   actionElement:selectAction
                                                                      hostConfig:acoConfig];
-    
+
     if(leadingBlankSpace != nil && trailingBlankSpace != nil){
         [NSLayoutConstraint constraintWithItem:leadingBlankSpace
                                      attribute:NSLayoutAttributeHeight
@@ -86,4 +86,3 @@
 }
 
 @end
-

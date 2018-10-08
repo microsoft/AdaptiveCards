@@ -1,5 +1,5 @@
 //
-//  ACRActionDelegate 
+//  ACRActionDelegate
 //  ACRActionDelegate.h
 //
 //  Copyright © 2017 Microsoft. All rights reserved.

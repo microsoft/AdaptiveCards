@@ -19,7 +19,6 @@ const CGFloat padding = 16.0f;
 {
     std::shared_ptr<ToggleInput> _toggleInputDataSource;
     std::shared_ptr<HostConfig> _config;
-    UISwitch *_toggleSwitch;
     NSString *_title;
 }
 
@@ -71,6 +70,7 @@ const CGFloat padding = 16.0f;
     cell.textLabel.numberOfLines = 0;
     cell.accessoryView = _toggleSwitch;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.backgroundColor = UIColor.clearColor;
     return cell;
 }
 
@@ -97,7 +97,7 @@ const CGFloat padding = 16.0f;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];   
+    UITableViewCell *cell = [tableView.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
     CGFloat toggleHeight = [_toggleSwitch intrinsicContentSize].height;
     CGSize labelStringSize =
     [cell.textLabel.text boundingRectWithSize:CGSizeMake(cell.contentView.frame.size.width, CGFLOAT_MAX)

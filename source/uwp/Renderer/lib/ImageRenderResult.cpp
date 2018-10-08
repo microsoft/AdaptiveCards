@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include "ImageRenderResult.h"
 
 using namespace concurrency;
@@ -45,7 +45,7 @@ namespace AdaptiveCards { namespace XamlCardRenderer
         *width = m_pixelWidth;
         return S_OK;
     }
-    
+
     _Use_decl_annotations_
     HRESULT ImageRenderResult::get_ImageHeightPixels(int* height)
     {

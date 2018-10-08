@@ -98,7 +98,7 @@ AdaptiveNamespaceStart
         MakeAndInitialize<AdaptiveNamespace::AdaptiveActionParserRegistration>(&adaptiveActionParserRegistration, actionParserRegistration);
 
         ComPtr<IAdaptiveCardElement> cardElement;
-        ComPtr<ABI::Windows::Foundation::Collections::IVector<IAdaptiveWarning*>> adaptiveWarnings = Make<Vector<IAdaptiveWarning*>>(); 
+        ComPtr<ABI::Windows::Foundation::Collections::IVector<IAdaptiveWarning*>> adaptiveWarnings = Make<Vector<IAdaptiveWarning*>>();
         THROW_IF_FAILED(parser->FromJson(jsonObject.Get(), adaptiveElementParserRegistration.Get(), adaptiveActionParserRegistration.Get(), adaptiveWarnings.Get(), &cardElement));
 
         THROW_IF_FAILED(AdaptiveWarningsToSharedWarnings(adaptiveWarnings.Get(), warnings));
