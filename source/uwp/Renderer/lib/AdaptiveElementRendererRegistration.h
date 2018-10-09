@@ -3,20 +3,16 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "Util.h"
 
-namespace AdaptiveNamespace {
-    class AdaptiveElementRendererRegistration :
-        public Microsoft::WRL::RuntimeClass<
-        Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        Microsoft::WRL::Implements<ABI::AdaptiveNamespace::IAdaptiveElementRendererRegistration>,
-        Microsoft::WRL::FtmBase>
+namespace AdaptiveNamespace
+{
+    class AdaptiveElementRendererRegistration
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
+                                              Microsoft::WRL::Implements<ABI::AdaptiveNamespace::IAdaptiveElementRendererRegistration>,
+                                              Microsoft::WRL::FtmBase>
     {
         AdaptiveRuntime(AdaptiveElementRendererRegistration);
 
-        typedef std::unordered_map<
-            std::string,
-            Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveElementRenderer>,
-            CaseInsensitiveHash,
-            CaseInsensitiveEqualTo> RegistrationMap;
+        typedef std::unordered_map<std::string, Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveElementRenderer>, CaseInsensitiveHash, CaseInsensitiveEqualTo> RegistrationMap;
 
     public:
         AdaptiveElementRendererRegistration();

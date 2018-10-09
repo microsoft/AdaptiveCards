@@ -21,15 +21,16 @@ using namespace ABI::Windows::UI::Xaml;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-namespace AdaptiveNamespace {
-    _Use_decl_annotations_
-    HRESULT AdaptiveCardStaticsImpl::FromJsonString(HSTRING adaptiveJson, IAdaptiveCardParseResult** parseResult) noexcept try
+namespace AdaptiveNamespace
+{
+    _Use_decl_annotations_ HRESULT AdaptiveCardStaticsImpl::FromJsonString(HSTRING adaptiveJson,
+                                                                           IAdaptiveCardParseResult** parseResult) noexcept try
     {
         return FromJsonStringWithParserRegistration(adaptiveJson, nullptr, nullptr, parseResult);
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCardStaticsImpl::FromJsonStringWithParserRegistration(
+    _Use_decl_annotations_ HRESULT AdaptiveCardStaticsImpl::FromJsonStringWithParserRegistration(
         HSTRING adaptiveJson,
         IAdaptiveElementParserRegistration* elementParserRegistration,
         IAdaptiveActionParserRegistration* actionParserRegistration,
@@ -41,20 +42,21 @@ namespace AdaptiveNamespace {
         RETURN_IF_FAILED(HStringToUTF8(adaptiveJson, adaptiveJsonString));
 
         return FromJsonString(adaptiveJsonString, elementParserRegistration, actionParserRegistration, parseResult);
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCardStaticsImpl::FromJson(IJsonObject* adaptiveJson, IAdaptiveCardParseResult** parseResult) noexcept try
+    _Use_decl_annotations_ HRESULT AdaptiveCardStaticsImpl::FromJson(IJsonObject* adaptiveJson,
+                                                                     IAdaptiveCardParseResult** parseResult) noexcept try
     {
         return FromJsonWithParserRegistration(adaptiveJson, nullptr, nullptr, parseResult);
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCardStaticsImpl::FromJsonWithParserRegistration(
-        IJsonObject* adaptiveJson,
-        IAdaptiveElementParserRegistration* elementParserRegistration,
-        IAdaptiveActionParserRegistration* actionParserRegistration,
-        IAdaptiveCardParseResult** parseResult) noexcept try
+    _Use_decl_annotations_ HRESULT
+    AdaptiveCardStaticsImpl::FromJsonWithParserRegistration(IJsonObject* adaptiveJson,
+                                                            IAdaptiveElementParserRegistration* elementParserRegistration,
+                                                            IAdaptiveActionParserRegistration* actionParserRegistration,
+                                                            IAdaptiveCardParseResult** parseResult) noexcept try
     {
         *parseResult = nullptr;
 
@@ -62,19 +64,19 @@ namespace AdaptiveNamespace {
         RETURN_IF_FAILED(JsonObjectToString(adaptiveJson, adaptiveJsonString));
 
         return FromJsonString(adaptiveJsonString, elementParserRegistration, actionParserRegistration, parseResult);
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCardStaticsImpl::FromJsonString(
-        const std::string jsonString,
-        IAdaptiveElementParserRegistration* elementParserRegistration,
-        IAdaptiveActionParserRegistration* actionParserRegistration,
-        IAdaptiveCardParseResult** parseResult)
+    _Use_decl_annotations_ HRESULT AdaptiveCardStaticsImpl::FromJsonString(const std::string jsonString,
+                                                                           IAdaptiveElementParserRegistration* elementParserRegistration,
+                                                                           IAdaptiveActionParserRegistration* actionParserRegistration,
+                                                                           IAdaptiveCardParseResult** parseResult)
     {
         std::shared_ptr<ElementParserRegistration> sharedModelElementParserRegistration;
         if (elementParserRegistration != nullptr)
         {
-            ComPtr<AdaptiveElementParserRegistration> elementParserRegistrationImpl = PeekInnards<AdaptiveElementParserRegistration>(elementParserRegistration);
+            ComPtr<AdaptiveElementParserRegistration> elementParserRegistrationImpl =
+                PeekInnards<AdaptiveElementParserRegistration>(elementParserRegistration);
             if (elementParserRegistrationImpl != nullptr)
             {
                 sharedModelElementParserRegistration = elementParserRegistrationImpl->GetSharedParserRegistration();
@@ -84,7 +86,8 @@ namespace AdaptiveNamespace {
         std::shared_ptr<ActionParserRegistration> sharedModelActionParserRegistration;
         if (actionParserRegistration != nullptr)
         {
-            ComPtr<AdaptiveActionParserRegistration> actionParserRegistrationImpl = PeekInnards<AdaptiveActionParserRegistration>(actionParserRegistration);
+            ComPtr<AdaptiveActionParserRegistration> actionParserRegistrationImpl =
+                PeekInnards<AdaptiveActionParserRegistration>(actionParserRegistration);
             if (actionParserRegistrationImpl != nullptr)
             {
                 sharedModelActionParserRegistration = actionParserRegistrationImpl->GetSharedParserRegistration();
@@ -96,7 +99,11 @@ namespace AdaptiveNamespace {
         try
         {
             const std::string c_rendererVersion = "1.2";
-            std::shared_ptr<AdaptiveSharedNamespace::ParseResult> sharedParseResult = AdaptiveSharedNamespace::AdaptiveCard::DeserializeFromString(jsonString, c_rendererVersion, sharedModelElementParserRegistration, sharedModelActionParserRegistration);
+            std::shared_ptr<AdaptiveSharedNamespace::ParseResult> sharedParseResult =
+                AdaptiveSharedNamespace::AdaptiveCard::DeserializeFromString(jsonString,
+                                                                             c_rendererVersion,
+                                                                             sharedModelElementParserRegistration,
+                                                                             sharedModelActionParserRegistration);
             ComPtr<IAdaptiveCard> adaptiveCard;
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&adaptiveCard, sharedParseResult->GetAdaptiveCard()));
             RETURN_IF_FAILED(adaptiveParseResult->put_AdaptiveCard(adaptiveCard.Get()));
@@ -113,7 +120,8 @@ namespace AdaptiveNamespace {
             ComPtr<IVector<IAdaptiveError*>> errors;
             RETURN_IF_FAILED(adaptiveParseResult->get_Errors(&errors));
             HString errorMessage;
-            ABI::AdaptiveNamespace::ErrorStatusCode statusCode = static_cast<ABI::AdaptiveNamespace::ErrorStatusCode>(e.GetStatusCode());
+            ABI::AdaptiveNamespace::ErrorStatusCode statusCode =
+                static_cast<ABI::AdaptiveNamespace::ErrorStatusCode>(e.GetStatusCode());
             RETURN_IF_FAILED(UTF8ToHString(e.GetReason(), errorMessage.GetAddressOf()));
             ComPtr<IAdaptiveError> adaptiveError;
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveError>(&adaptiveError, statusCode, errorMessage.Get()));
@@ -124,12 +132,12 @@ namespace AdaptiveNamespace {
 
     HRESULT AdaptiveCard::RuntimeClassInitialize()
     {
-        std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> adaptiveCard = std::make_shared<AdaptiveSharedNamespace::AdaptiveCard>();
+        std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> adaptiveCard =
+            std::make_shared<AdaptiveSharedNamespace::AdaptiveCard>();
         return RuntimeClassInitialize(adaptiveCard);
     }
 
-    _Use_decl_annotations_
-        HRESULT AdaptiveCard::RuntimeClassInitialize(std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> sharedAdaptiveCard)
+    _Use_decl_annotations_ HRESULT AdaptiveCard::RuntimeClassInitialize(std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> sharedAdaptiveCard)
     {
         m_body = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
         if (m_body == nullptr)
@@ -153,7 +161,8 @@ namespace AdaptiveNamespace {
         RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetLanguage(), m_language.GetAddressOf()));
 
         m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedAdaptiveCard->GetStyle());
-        m_verticalAlignment = static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedAdaptiveCard->GetVerticalContentAlignment());
+        m_verticalAlignment =
+            static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedAdaptiveCard->GetVerticalContentAlignment());
         m_height = static_cast<ABI::AdaptiveNamespace::HeightType>(sharedAdaptiveCard->GetHeight());
 
         RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetBackgroundImage(), m_backgroundImage.GetAddressOf()));
@@ -161,142 +170,102 @@ namespace AdaptiveNamespace {
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::get_Version(HSTRING* version)
-    {
-        return m_version.CopyTo(version);
-    }
+    _Use_decl_annotations_ HRESULT AdaptiveCard::get_Version(HSTRING* version) { return m_version.CopyTo(version); }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::put_Version(HSTRING version)
-    {
-        return m_version.Set(version);
-    }
+    _Use_decl_annotations_ HRESULT AdaptiveCard::put_Version(HSTRING version) { return m_version.Set(version); }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::get_FallbackText(HSTRING* fallbackText)
+    _Use_decl_annotations_ HRESULT AdaptiveCard::get_FallbackText(HSTRING* fallbackText)
     {
         return m_fallbackText.CopyTo(fallbackText);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::put_FallbackText(HSTRING fallbackText)
+    _Use_decl_annotations_ HRESULT AdaptiveCard::put_FallbackText(HSTRING fallbackText)
     {
         return m_fallbackText.Set(fallbackText);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::get_Language(HSTRING* language)
-    {
-        return m_language.CopyTo(language);
-    }
+    _Use_decl_annotations_ HRESULT AdaptiveCard::get_Language(HSTRING* language) { return m_language.CopyTo(language); }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::put_Language(HSTRING language)
-    {
-        return m_language.Set(language);
-    }
+    _Use_decl_annotations_ HRESULT AdaptiveCard::put_Language(HSTRING language) { return m_language.Set(language); }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::get_Body(IVector<IAdaptiveCardElement*>** body)
+    _Use_decl_annotations_ HRESULT AdaptiveCard::get_Body(IVector<IAdaptiveCardElement*>** body)
     {
         return m_body.CopyTo(body);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::get_Actions(IVector<IAdaptiveActionElement*>** actions)
+    _Use_decl_annotations_ HRESULT AdaptiveCard::get_Actions(IVector<IAdaptiveActionElement*>** actions)
     {
         return m_actions.CopyTo(actions);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::get_ElementType(ElementType* elementType)
+    _Use_decl_annotations_ HRESULT AdaptiveCard::get_ElementType(ElementType* elementType)
     {
         *elementType = ElementType::AdaptiveCard;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::get_BackgroundImage(HSTRING* backgroundImage)
+    _Use_decl_annotations_ HRESULT AdaptiveCard::get_BackgroundImage(HSTRING* backgroundImage)
     {
         return m_backgroundImage.CopyTo(backgroundImage);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::put_BackgroundImage(HSTRING backgroundImage)
+    _Use_decl_annotations_ HRESULT AdaptiveCard::put_BackgroundImage(HSTRING backgroundImage)
     {
         return m_backgroundImage.Set(backgroundImage);
     }
 
-    _Use_decl_annotations_
-    IFACEMETHODIMP AdaptiveCard::get_SelectAction(IAdaptiveActionElement** action)
+    _Use_decl_annotations_ IFACEMETHODIMP AdaptiveCard::get_SelectAction(IAdaptiveActionElement** action)
     {
         return m_selectAction.CopyTo(action);
     }
 
-    _Use_decl_annotations_
-    IFACEMETHODIMP AdaptiveCard::put_SelectAction(IAdaptiveActionElement* action)
+    _Use_decl_annotations_ IFACEMETHODIMP AdaptiveCard::put_SelectAction(IAdaptiveActionElement* action)
     {
         m_selectAction = action;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::get_Style(ABI::AdaptiveNamespace::ContainerStyle* style)
+    _Use_decl_annotations_ HRESULT AdaptiveCard::get_Style(ABI::AdaptiveNamespace::ContainerStyle* style)
     {
         *style = m_style;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::put_Style(ABI::AdaptiveNamespace::ContainerStyle style)
+    _Use_decl_annotations_ HRESULT AdaptiveCard::put_Style(ABI::AdaptiveNamespace::ContainerStyle style)
     {
         m_style = style;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::get_Speak(HSTRING* speak)
-    {
-        return m_speak.CopyTo(speak);
-    }
+    _Use_decl_annotations_ HRESULT AdaptiveCard::get_Speak(HSTRING* speak) { return m_speak.CopyTo(speak); }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::put_Speak(HSTRING speak)
-    {
-        return m_speak.Set(speak);
-    }
+    _Use_decl_annotations_ HRESULT AdaptiveCard::put_Speak(HSTRING speak) { return m_speak.Set(speak); }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::get_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment* verticalAlignment)
+    _Use_decl_annotations_ HRESULT AdaptiveCard::get_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment* verticalAlignment)
     {
         *verticalAlignment = m_verticalAlignment;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::put_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment verticalAlignment)
+    _Use_decl_annotations_ HRESULT AdaptiveCard::put_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment verticalAlignment)
     {
         m_verticalAlignment = verticalAlignment;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::get_Height(ABI::AdaptiveNamespace::HeightType* heightType)
+    _Use_decl_annotations_ HRESULT AdaptiveCard::get_Height(ABI::AdaptiveNamespace::HeightType* heightType)
     {
         *heightType = m_height;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::put_Height(ABI::AdaptiveNamespace::HeightType heightType)
+    _Use_decl_annotations_ HRESULT AdaptiveCard::put_Height(ABI::AdaptiveNamespace::HeightType heightType)
     {
         m_height = heightType;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::ToJson(IJsonObject** result)
+    _Use_decl_annotations_ HRESULT AdaptiveCard::ToJson(IJsonObject** result)
     {
         std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> sharedModel;
         RETURN_IF_FAILED(GetSharedModel(sharedModel));
@@ -306,7 +275,8 @@ namespace AdaptiveNamespace {
 
     HRESULT AdaptiveCard::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard>& sharedModel)
     {
-        std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> adaptiveCard = std::make_shared<AdaptiveSharedNamespace::AdaptiveCard>();
+        std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> adaptiveCard =
+            std::make_shared<AdaptiveSharedNamespace::AdaptiveCard>();
 
         adaptiveCard->SetVersion(HStringToUTF8(m_version.Get()));
         adaptiveCard->SetFallbackText(HStringToUTF8(m_fallbackText.Get()));
@@ -332,19 +302,21 @@ namespace AdaptiveNamespace {
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCard::GetResourceInformation(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveNamespace::AdaptiveRemoteResourceInformation*>** resourceInformationView)
+    _Use_decl_annotations_ HRESULT AdaptiveCard::GetResourceInformation(
+        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVectorView<ABI::AdaptiveNamespace::AdaptiveRemoteResourceInformation*>** resourceInformationView)
     {
         std::shared_ptr<AdaptiveCards::AdaptiveCard> sharedModel;
         GetSharedModel(sharedModel);
 
         std::vector<RemoteResourceInformation> sharedResourceInformationVector = sharedModel->GetResourceInformation();
 
-        ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRemoteResourceInformation*>> resourceInformation = Make<Vector<ABI::AdaptiveNamespace::AdaptiveRemoteResourceInformation*>>();
+        ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRemoteResourceInformation*>> resourceInformation =
+            Make<Vector<ABI::AdaptiveNamespace::AdaptiveRemoteResourceInformation*>>();
         for (auto sharedResourceInformation : sharedResourceInformationVector)
         {
             ComPtr<ABI::AdaptiveNamespace::IAdaptiveRemoteResourceInformation> remoteResourceInformation;
-            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRemoteResourceInformation>(remoteResourceInformation.GetAddressOf(), sharedResourceInformation));
+            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRemoteResourceInformation>(remoteResourceInformation.GetAddressOf(),
+                                                                                  sharedResourceInformation));
 
             HString resourceUriHString;
             RETURN_IF_FAILED(UTF8ToHString(sharedResourceInformation.url, resourceUriHString.GetAddressOf()));

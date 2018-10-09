@@ -3,14 +3,15 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "Util.h"
 
-namespace AdaptiveNamespace {
+namespace AdaptiveNamespace
+{
     class CustomElementWrapper : public AdaptiveSharedNamespace::BaseCardElement
     {
     public:
-        CustomElementWrapper(ABI::AdaptiveNamespace::IAdaptiveCardElement* cardElement):
-            BaseCardElement(AdaptiveSharedNamespace::CardElementType::Custom),
-            m_cardElement(cardElement)
-        {}
+        CustomElementWrapper(ABI::AdaptiveNamespace::IAdaptiveCardElement* cardElement) :
+            BaseCardElement(AdaptiveSharedNamespace::CardElementType::Custom), m_cardElement(cardElement)
+        {
+        }
 
         bool GetSeparator() const override;
         void SetSeparator(const bool value) override;

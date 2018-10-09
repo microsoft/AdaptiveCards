@@ -4,11 +4,10 @@
 #include "Enums.h"
 #include "Separator.h"
 
-namespace AdaptiveNamespace {
-    class AdaptiveSeparator :
-        public Microsoft::WRL::RuntimeClass<
-            Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveNamespace::IAdaptiveSeparator>
+namespace AdaptiveNamespace
+{
+    class AdaptiveSeparator
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveSeparator>
     {
         AdaptiveRuntime(AdaptiveSeparator);
 

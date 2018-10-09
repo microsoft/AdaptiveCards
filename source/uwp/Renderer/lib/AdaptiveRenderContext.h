@@ -5,23 +5,21 @@
 #include "AdaptiveActionInvoker.h"
 #include "AdaptiveMediaEventInvoker.h"
 
-namespace AdaptiveNamespace {
-    class AdaptiveRenderContext :
-        public Microsoft::WRL::RuntimeClass<
-        Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveNamespace::IAdaptiveRenderContext>
+namespace AdaptiveNamespace
+{
+    class AdaptiveRenderContext
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveRenderContext>
     {
         AdaptiveRuntime(AdaptiveRenderContext);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
 
-        HRESULT RuntimeClassInitialize(
-            ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-            ABI::AdaptiveNamespace::IAdaptiveElementRendererRegistration* elementRendererRegistration,
-            ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers* resourceResolvers,
-            ABI::Windows::UI::Xaml::IResourceDictionary* overrideStyles,
-            AdaptiveNamespace::RenderedAdaptiveCard* renderResult) noexcept;
+        HRESULT RuntimeClassInitialize(ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                                       ABI::AdaptiveNamespace::IAdaptiveElementRendererRegistration* elementRendererRegistration,
+                                       ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers* resourceResolvers,
+                                       ABI::Windows::UI::Xaml::IResourceDictionary* overrideStyles,
+                                       AdaptiveNamespace::RenderedAdaptiveCard* renderResult) noexcept;
 
         IFACEMETHODIMP get_HostConfig(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveHostConfig** value);
         IFACEMETHODIMP get_ElementRenderers(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveElementRendererRegistration** value);

@@ -5,11 +5,10 @@
 #include "TextBlock.h"
 #include "AdaptiveCardElement.h"
 
-namespace AdaptiveNamespace {
-    class DECLSPEC_UUID("0c87566c-a58c-4332-8b3b-79c9714074f6") AdaptiveRemoteResourceInformation :
-        public Microsoft::WRL::RuntimeClass<
-            Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveNamespace::IAdaptiveRemoteResourceInformation>
+namespace AdaptiveNamespace
+{
+    class DECLSPEC_UUID("0c87566c-a58c-4332-8b3b-79c9714074f6") AdaptiveRemoteResourceInformation
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveRemoteResourceInformation>
     {
         AdaptiveRuntime(AdaptiveRemoteResourceInformation);
 
@@ -18,10 +17,10 @@ namespace AdaptiveNamespace {
         HRESULT RuntimeClassInitialize(RemoteResourceInformation& uriInformation);
 
         // IAdaptiveRemoteResourceInformation
-        IFACEMETHODIMP get_Url(_Out_ HSTRING *url);
+        IFACEMETHODIMP get_Url(_Out_ HSTRING* url);
         IFACEMETHODIMP put_Url(_In_ HSTRING url);
 
-        IFACEMETHODIMP get_MimeType(_Out_ HSTRING *text);
+        IFACEMETHODIMP get_MimeType(_Out_ HSTRING* text);
         IFACEMETHODIMP put_MimeType(_In_ HSTRING text);
 
     private:

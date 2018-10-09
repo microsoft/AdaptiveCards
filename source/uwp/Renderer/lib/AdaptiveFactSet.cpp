@@ -12,20 +12,18 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveNamespace {
-    AdaptiveFactSet::AdaptiveFactSet()
-    {
-        m_facts = Microsoft::WRL::Make<Vector<IAdaptiveFact*>>();
-    }
+namespace AdaptiveNamespace
+{
+    AdaptiveFactSet::AdaptiveFactSet() { m_facts = Microsoft::WRL::Make<Vector<IAdaptiveFact*>>(); }
 
     HRESULT AdaptiveFactSet::RuntimeClassInitialize() noexcept try
     {
         std::shared_ptr<AdaptiveSharedNamespace::FactSet> factSet = std::make_shared<AdaptiveSharedNamespace::FactSet>();
         return RuntimeClassInitialize(factSet);
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveFactSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::FactSet>& sharedFactSet) try
+    _Use_decl_annotations_ HRESULT AdaptiveFactSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::FactSet>& sharedFactSet) try
     {
         if (sharedFactSet == nullptr)
         {
@@ -36,16 +34,15 @@ namespace AdaptiveNamespace {
 
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedFactSet));
         return S_OK;
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    IFACEMETHODIMP AdaptiveFactSet::get_Facts(IVector<IAdaptiveFact*>** facts)
+    _Use_decl_annotations_ IFACEMETHODIMP AdaptiveFactSet::get_Facts(IVector<IAdaptiveFact*>** facts)
     {
         return m_facts.CopyTo(facts);
     }
 
-    _Use_decl_annotations_
-    IFACEMETHODIMP AdaptiveFactSet::get_ElementType(ElementType* elementType)
+    _Use_decl_annotations_ IFACEMETHODIMP AdaptiveFactSet::get_ElementType(ElementType* elementType)
     {
         *elementType = ElementType::FactSet;
         return S_OK;
@@ -61,5 +58,6 @@ namespace AdaptiveNamespace {
         sharedModel = factSet;
 
         return S_OK;
-    }CATCH_RETURN;
+    }
+    CATCH_RETURN;
 }

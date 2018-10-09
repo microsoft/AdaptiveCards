@@ -4,12 +4,12 @@
 #include "Enums.h"
 #include "Fact.h"
 
-namespace AdaptiveNamespace {
-    class DECLSPEC_UUID("d37e5b66-2a5e-4a9e-b087-dbef5a1705b1") AdaptiveFact :
-        public Microsoft::WRL::RuntimeClass<
-            Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveNamespace::IAdaptiveFact,
-            Microsoft::WRL::CloakedIid<ITypePeek>>
+namespace AdaptiveNamespace
+{
+    class DECLSPEC_UUID("d37e5b66-2a5e-4a9e-b087-dbef5a1705b1") AdaptiveFact
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
+                                              ABI::AdaptiveNamespace::IAdaptiveFact,
+                                              Microsoft::WRL::CloakedIid<ITypePeek>>
     {
         AdaptiveRuntime(AdaptiveFact);
 
@@ -24,7 +24,7 @@ namespace AdaptiveNamespace {
         IFACEMETHODIMP get_Value(_Out_ HSTRING* value);
         IFACEMETHODIMP put_Value(_In_ HSTRING value);
 
-        IFACEMETHODIMP get_Language(_Out_ HSTRING *language);
+        IFACEMETHODIMP get_Language(_Out_ HSTRING* language);
         IFACEMETHODIMP put_Language(_In_ HSTRING language);
 
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
@@ -32,10 +32,7 @@ namespace AdaptiveNamespace {
         HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::Fact>& sharedModel);
 
         // ITypePeek method
-        void *PeekAt(REFIID riid) override
-        {
-            return PeekHelper(riid, this);
-        }
+        void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
         Microsoft::WRL::Wrappers::HString m_title;

@@ -2,11 +2,11 @@
 
 #include "util.h"
 
-namespace AdaptiveNamespace {
-    class AdaptiveHostConfigParseResult :
-        public Microsoft::WRL::RuntimeClass<
-            Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            Microsoft::WRL::Implements<ABI::AdaptiveNamespace::IAdaptiveHostConfigParseResult>>
+namespace AdaptiveNamespace
+{
+    class AdaptiveHostConfigParseResult
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
+                                              Microsoft::WRL::Implements<ABI::AdaptiveNamespace::IAdaptiveHostConfigParseResult>>
     {
         AdaptiveRuntime(AdaptiveHostConfigParseResult);
 

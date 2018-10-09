@@ -19,10 +19,9 @@ using namespace ABI::Windows::UI;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveNamespace {
-    AdaptiveCardParseResult::AdaptiveCardParseResult()
-    {
-    }
+namespace AdaptiveNamespace
+{
+    AdaptiveCardParseResult::AdaptiveCardParseResult() {}
 
     HRESULT AdaptiveCardParseResult::RuntimeClassInitialize()
     {
@@ -37,28 +36,26 @@ namespace AdaptiveNamespace {
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCardParseResult::get_AdaptiveCard(IAdaptiveCard** value)
+    _Use_decl_annotations_ HRESULT AdaptiveCardParseResult::get_AdaptiveCard(IAdaptiveCard** value)
     {
         return m_adaptiveCard.CopyTo(value);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCardParseResult::get_Errors(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveError*>** value)
+    _Use_decl_annotations_ HRESULT AdaptiveCardParseResult::get_Errors(
+        ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveError*>** value)
     {
         return m_errors.CopyTo(value);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCardParseResult::get_Warnings(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>** value)
+    _Use_decl_annotations_ HRESULT AdaptiveCardParseResult::get_Warnings(
+        ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>** value)
     {
         return m_warnings.CopyTo(value);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveCardParseResult::put_AdaptiveCard(_In_ IAdaptiveCard* value)
+    _Use_decl_annotations_ HRESULT AdaptiveCardParseResult::put_AdaptiveCard(_In_ IAdaptiveCard* value)
     {
-            m_adaptiveCard = value;
-            return S_OK;
+        m_adaptiveCard = value;
+        return S_OK;
     }
 }

@@ -2,21 +2,19 @@
 
 #include "AdaptiveCards.Rendering.Uwp.h"
 
-namespace AdaptiveNamespace {
-    class AdaptiveWarning:
-        public Microsoft::WRL::RuntimeClass<
-        Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        Microsoft::WRL::Implements<ABI::AdaptiveNamespace::IAdaptiveWarning>,
-        Microsoft::WRL::FtmBase>
+namespace AdaptiveNamespace
+{
+    class AdaptiveWarning
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
+                                              Microsoft::WRL::Implements<ABI::AdaptiveNamespace::IAdaptiveWarning>,
+                                              Microsoft::WRL::FtmBase>
     {
         AdaptiveRuntime(AdaptiveWarning);
 
     public:
         HRESULT RuntimeClassInitialize();
 
-        HRESULT RuntimeClassInitialize(
-            ABI::AdaptiveNamespace::WarningStatusCode statusCode,
-            HSTRING message);
+        HRESULT RuntimeClassInitialize(ABI::AdaptiveNamespace::WarningStatusCode statusCode, HSTRING message);
 
         // IAdaptiveWarning
         HRESULT put_StatusCode(_In_ ABI::AdaptiveNamespace::WarningStatusCode value);

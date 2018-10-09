@@ -3,7 +3,8 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "IImageLoadTrackerListener.h"
 
-namespace AdaptiveNamespace {
+namespace AdaptiveNamespace
+{
     struct TrackedImageDetails
     {
         EventRegistrationToken imageOpenedRegistration;
