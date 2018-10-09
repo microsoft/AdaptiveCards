@@ -2,8 +2,8 @@
 #include <string>
 #include "Enums.h"
 
-namespace AdaptiveSharedNamespace {
-
+namespace AdaptiveSharedNamespace
+{
     struct RemoteResourceInformation
     {
         std::string url;

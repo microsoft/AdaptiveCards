@@ -3,19 +3,19 @@
 #include "pch.h"
 #include "Enums.h"
 
-namespace AdaptiveSharedNamespace {
-
-class AdaptiveCardParseWarning
+namespace AdaptiveSharedNamespace
 {
-public:
-    AdaptiveCardParseWarning(AdaptiveSharedNamespace::WarningStatusCode statusCode, const std::string& message);
+    class AdaptiveCardParseWarning
+    {
+    public:
+        AdaptiveCardParseWarning(AdaptiveSharedNamespace::WarningStatusCode statusCode, const std::string& message);
 
-    AdaptiveSharedNamespace::WarningStatusCode GetStatusCode() const;
-    const std::string& GetReason() const;
+        AdaptiveSharedNamespace::WarningStatusCode GetStatusCode() const;
+        const std::string& GetReason() const;
 
-private:
-    const AdaptiveSharedNamespace::WarningStatusCode m_statusCode;
-    const std::string m_message;
-};
+    private:
+        const AdaptiveSharedNamespace::WarningStatusCode m_statusCode;
+        const std::string m_message;
+    };
 
 }

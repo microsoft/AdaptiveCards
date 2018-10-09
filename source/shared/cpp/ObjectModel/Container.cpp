@@ -6,7 +6,9 @@
 
 using namespace AdaptiveSharedNamespace;
 
-Container::Container() : BaseCardElement(CardElementType::Container), m_style(ContainerStyle::None), m_verticalContentAlignment(VerticalContentAlignment::Top)
+Container::Container() :
+    BaseCardElement(CardElementType::Container), m_style(ContainerStyle::None),
+    m_verticalContentAlignment(VerticalContentAlignment::Top)
 {
     PopulateKnownPropertiesSet();
 }
@@ -67,10 +69,11 @@ Json::Value Container::SerializeToJsonValue() const
 
     if (m_verticalContentAlignment != VerticalContentAlignment::Top)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)] = VerticalContentAlignmentToString(m_verticalContentAlignment);
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)] =
+            VerticalContentAlignmentToString(m_verticalContentAlignment);
     }
 
-    std::string const &itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
+    std::string const& itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
     root[itemsPropertyName] = Json::Value(Json::arrayValue);
     for (const auto& cardElement : m_items)
     {
@@ -79,53 +82,56 @@ Json::Value Container::SerializeToJsonValue() const
 
     if (m_selectAction != nullptr)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = BaseCardElement::SerializeSelectAction(m_selectAction);
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] =
+            BaseCardElement::SerializeSelectAction(m_selectAction);
     }
 
     return root;
 }
 
-std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(
-    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-    const Json::Value& value)
+std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+                                                              std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+                                                              std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+                                                              const Json::Value& value)
 {
     ParseUtil::ExpectTypeString(value, CardElementType::Container);
 
     auto container = BaseCardElement::Deserialize<Container>(value);
 
-    container->SetStyle(
-        ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
+    container->SetStyle(ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
 
-    container->SetVerticalContentAlignment(ParseUtil::GetEnumValue<VerticalContentAlignment>(value, AdaptiveCardSchemaKey::VerticalContentAlignment,
-        VerticalContentAlignment::Top, VerticalContentAlignmentFromString));
+    container->SetVerticalContentAlignment(ParseUtil::GetEnumValue<VerticalContentAlignment>(
+        value, AdaptiveCardSchemaKey::VerticalContentAlignment, VerticalContentAlignment::Top, VerticalContentAlignmentFromString));
 
     // Parse Items
-    auto cardElements = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::Items, false);
+    auto cardElements = ParseUtil::GetElementCollection(
+        elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::Items, false);
     container->m_items = std::move(cardElements);
 
     // Parse optional selectAction
-    container->SetSelectAction(ParseUtil::GetAction(elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::SelectAction, false));
+    container->SetSelectAction(ParseUtil::GetAction(
+        elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::SelectAction, false));
 
     return container;
 }
 
-std::shared_ptr<BaseCardElement> ContainerParser::DeserializeFromString(
-    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-    const std::string& jsonString)
+std::shared_ptr<BaseCardElement> ContainerParser::DeserializeFromString(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+                                                                        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+                                                                        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+                                                                        const std::string& jsonString)
 {
-    return ContainerParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
+    return ContainerParser::Deserialize(elementParserRegistration,
+                                        actionParserRegistration,
+                                        warnings,
+                                        ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 void Container::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items)});
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items)});
 }
 
 void Container::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)

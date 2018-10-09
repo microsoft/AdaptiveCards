@@ -3,7 +3,8 @@
 
 using namespace AdaptiveSharedNamespace;
 
-AdaptiveCardParseWarning::AdaptiveCardParseWarning(const WarningStatusCode statusCode, const std::string & message) : m_statusCode(statusCode), m_message(message)
+AdaptiveCardParseWarning::AdaptiveCardParseWarning(const WarningStatusCode statusCode, const std::string& message) :
+    m_statusCode(statusCode), m_message(message)
 {
 }
 

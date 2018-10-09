@@ -5,7 +5,8 @@
 #include "json/json.h"
 #include "AdaptiveCardParseWarning.h"
 
-namespace AdaptiveSharedNamespace {
+namespace AdaptiveSharedNamespace
+{
     class BaseCardElement;
     class ElementParserRegistration;
     class ActionParserRegistration;
@@ -13,22 +14,21 @@ namespace AdaptiveSharedNamespace {
     class BaseCardElementParser
     {
     public:
-        virtual std::shared_ptr<BaseCardElement> Deserialize(
-            std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> elementParserRegistration,
-            std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> actionParserRegistration,
-            std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-            const Json::Value& value) = 0;
+        virtual std::shared_ptr<BaseCardElement>
+        Deserialize(std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> elementParserRegistration,
+                    std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> actionParserRegistration,
+                    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+                    const Json::Value& value) = 0;
     };
 
     class ElementParserRegistration
     {
     public:
-
         ElementParserRegistration();
 
-        void AddParser(std::string const &elementType, std::shared_ptr<AdaptiveSharedNamespace::BaseCardElementParser> parser);
-        void RemoveParser(std::string const &elementType);
-        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElementParser> GetParser(std::string const &elementType);
+        void AddParser(std::string const& elementType, std::shared_ptr<AdaptiveSharedNamespace::BaseCardElementParser> parser);
+        void RemoveParser(std::string const& elementType);
+        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElementParser> GetParser(std::string const& elementType);
 
     private:
         std::unordered_set<std::string> m_knownElements;

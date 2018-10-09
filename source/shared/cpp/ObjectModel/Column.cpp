@@ -5,7 +5,9 @@
 
 using namespace AdaptiveSharedNamespace;
 
-Column::Column() : BaseCardElement(CardElementType::Column), m_width("Auto"), m_pixelWidth(0), m_style(ContainerStyle::None), m_verticalContentAlignment(VerticalContentAlignment::Top)
+Column::Column() :
+    BaseCardElement(CardElementType::Column), m_width("Auto"), m_pixelWidth(0), m_style(ContainerStyle::None),
+    m_verticalContentAlignment(VerticalContentAlignment::Top)
 {
     PopulateKnownPropertiesSet();
 }
@@ -15,7 +17,7 @@ std::string Column::GetWidth() const
     return m_width;
 }
 
-void Column::SetWidth(const std::string &value)
+void Column::SetWidth(const std::string& value)
 {
     m_width = ParseUtil::ToLowercase(value);
 }
@@ -83,7 +85,8 @@ Json::Value Column::SerializeToJsonValue() const
 
     if (m_verticalContentAlignment != VerticalContentAlignment::Top)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)] = VerticalContentAlignmentToString(m_verticalContentAlignment);
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)] =
+            VerticalContentAlignmentToString(m_verticalContentAlignment);
     }
 
     std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
@@ -95,17 +98,17 @@ Json::Value Column::SerializeToJsonValue() const
 
     if (m_selectAction != nullptr)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = BaseCardElement::SerializeSelectAction(m_selectAction);
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] =
+            BaseCardElement::SerializeSelectAction(m_selectAction);
     }
 
     return root;
 }
 
-std::shared_ptr<Column> Column::Deserialize(
-    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-    const Json::Value& value)
+std::shared_ptr<Column> Column::Deserialize(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+                                            std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+                                            std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+                                            const Json::Value& value)
 {
     auto column = BaseCardElement::Deserialize<Column>(value);
 
@@ -129,27 +132,27 @@ std::shared_ptr<Column> Column::Deserialize(
 
     column->SetWidth(columnWidth);
 
-    column->SetStyle(
-        ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
+    column->SetStyle(ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
 
-    column->SetVerticalContentAlignment(
-        ParseUtil::GetEnumValue<VerticalContentAlignment>(value, AdaptiveCardSchemaKey::VerticalContentAlignment, VerticalContentAlignment::Top, VerticalContentAlignmentFromString));
+    column->SetVerticalContentAlignment(ParseUtil::GetEnumValue<VerticalContentAlignment>(
+        value, AdaptiveCardSchemaKey::VerticalContentAlignment, VerticalContentAlignment::Top, VerticalContentAlignmentFromString));
 
     // Parse Items
-    auto cardElements = ParseUtil::GetElementCollection(elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::Items, false);
+    auto cardElements = ParseUtil::GetElementCollection(
+        elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::Items, false);
     column->m_items = std::move(cardElements);
 
     // Parse optional selectAction
-    column->SetSelectAction(ParseUtil::GetAction(elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::SelectAction, false));
+    column->SetSelectAction(ParseUtil::GetAction(
+        elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::SelectAction, false));
 
     return column;
 }
 
-std::shared_ptr<Column> Column::DeserializeFromString(
-    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-    const std::string& jsonString)
+std::shared_ptr<Column> Column::DeserializeFromString(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+                                                      std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+                                                      std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+                                                      const std::string& jsonString)
 {
     return Column::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
 }
@@ -167,10 +170,10 @@ void Column::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
 void Column::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
-         AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)});
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)});
 }
 
 void Column::SetLanguage(const std::string& language)
