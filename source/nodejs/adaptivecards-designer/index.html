@@ -21,7 +21,7 @@
 
 <body>
     <div style="display: flex; flex-direction: column; height: 100%;">
-      <div class="header-holder">
+        <div class="header-holder">
     <div id="headerAreaHolder" data-bi-name="header">
         <section id="headerArea" data-m="{&quot;cN&quot;:&quot;headerArea&quot;,&quot;cT&quot;:&quot;Area_coreuiArea&quot;,&quot;id&quot;:&quot;a1Body&quot;,&quot;sN&quot;:1,&quot;aN&quot;:&quot;Body&quot;}">
             <div id="headerRegion" data-region-key="headerregion" data-m="{&quot;cN&quot;:&quot;headerRegion&quot;,&quot;cT&quot;:&quot;Region_coreui-region&quot;,&quot;id&quot;:&quot;r1a1&quot;,&quot;sN&quot;:1,&quot;aN&quot;:&quot;a1&quot;}">
@@ -494,51 +494,41 @@
             </button>
         </div>
     </div>
-    <div id="disclaimer-holder" class="disclaimer-holder"></div>
-    
-</div>
-        <div id="toolbar" class="acd-toolbar">
-            <button id="btnToggleFullScreen" class="acd-toolbar-button acd-icon-fullScreen">Enter Full Screen</button>
-            <span style="color: black; margin-left: 8px;">Select Host App:</span>
-            <div id="containerPickerHost" style="flex: 0 0 250px; margin: 0px 8px 0px 8px;"></div>
-            <div class="acd-toolbar-separator"></div>
-            <button id="btnUndo" disabled=true class="acd-toolbar-button acd-toolbar-button-iconOnly acd-icon-undo" title="Undo your last changes"></button>
-            <button id="btnRedo" disabled=true class="acd-toolbar-button acd-toolbar-button-iconOnly acd-icon-redo" title="Redo your last changes"></button>
-            <div class="acd-toolbar-separator"></div>
-            <button id="btnNewCard" class="acd-toolbar-button acd-icon-newCard" title="Start a new card from scratch">New card</button>
-            <button id="btnCopyToClipboard" class="acd-toolbar-button acd-icon-copy" title="Copy the JSON for this card to the clipboard">Copy JSON</button>
+    <div id="disclaimer-holder" class="disclaimer-holder"></div>    
         </div>
-        <div class="content" style="display: flex; flex: 1 1 auto; overflow-y: hidden;">
-            <div id="leftCollapsedPaneTabHost" class="acd-verticalCollapsedTabContainer" style="border-right: 1px solid #D2D2D2;"></div>
-            <div id="toolPalettePane" class="selector-toolPalette" style="background-color: white; border-right: 1px solid #D2D2D2;">
-                <div id="toolPalette" class="acd-dockedPane"></div>
-            </div>
-            <div style="display: flex; flex-direction: column; flex: 1 1 100%; overflow: hidden;">
-                <div style="display: flex; flex: 1 1 100%; overflow: hidden;">
-                    <div id="designerBackground" style="flex: 1 1 70%; background-color: #F6F6F6; display: flex; flex-direction: column; overflow: auto;">
-                        <div style="flex: 1 1 100%; overflow: auto;">
-                            <div id="designerHost" style="margin: 20px 40px 20px 20px;"></div>
+        <div id="designerRootHost">
+            <div class="content" style="display: flex; flex: 1 1 auto; overflow-y: hidden;">
+                <div id="leftCollapsedPaneTabHost" class="acd-verticalCollapsedTabContainer" style="border-right: 1px solid #D2D2D2;"></div>
+                <div id="toolPalettePane" class="selector-toolPalette" style="background-color: white; border-right: 1px solid #D2D2D2;">
+                    <div id="toolPalette" class="acd-dockedPane"></div>
+                </div>
+                <div style="display: flex; flex-direction: column; flex: 1 1 100%; overflow: hidden;">
+                    <div style="display: flex; flex: 1 1 100%; overflow: hidden;">
+                        <div id="designerBackground" style="flex: 1 1 70%; background-color: #F6F6F6; display: flex; flex-direction: column; overflow: auto;">
+                            <div style="flex: 1 1 100%; overflow: auto;">
+                                <div id="designerHost" style="margin: 20px 40px 20px 20px;"></div>
+                            </div>
+                            <div id="errorPane" class="acd-error-pane acd-hidden"></div>
                         </div>
-                        <div id="errorPane" class="acd-error-pane acd-hidden"></div>
+                        <div id="treeViewVerticalSplitter" class="acd-vertical-splitter selector-treeView"></div>
+                        <div id="treeViewPane" class="acd-treeView-pane selector-treeView">
+                            <div id="treeViewHost" class="acd-treeView-host"></div>
+                        </div>
+                        <div id="propertyVerticalSplitter" class="acd-vertical-splitter selector-propertySheet"></div>
+                        <div id="propertySheetPane" class="acd-propertySheet-pane selector-propertySheet">
+                            <div id="propertySheetHost" class="acd-propertySheet-host"></div>
+                        </div>
                     </div>
-                    <div id="treeViewVerticalSplitter" class="acd-vertical-splitter selector-treeView"></div>
-                    <div id="treeViewPane" class="acd-treeView-pane selector-treeView">
-                        <div id="treeViewHost" class="acd-treeView-host"></div>
+                    <div id="horizontalSplitter" class="acd-horizontal-splitter selector-jsonEditor"></div>
+                    <div id="jsonEditorPane" class="acd-json-editor-pane selector-jsonEditor">
+                        <div id="jsonEditorHost" class="acd-json-editor-host">
+                            <div id="loadingEditor" style="padding: 8px;">Loading editor...</div>
+                        </div>
                     </div>
-                    <div id="propertyVerticalSplitter" class="acd-vertical-splitter selector-propertySheet"></div>
-                    <div id="propertySheetPane" class="acd-propertySheet-pane selector-propertySheet">
-                        <div id="propertySheetHost" class="acd-propertySheet-host"></div>
-                    </div>
+                    <div id="bottomCollapsedPaneTabHost" style="border-top: 1px solid #D2D2D2;"></div>
                 </div>
-                <div id="horizontalSplitter" class="acd-horizontal-splitter selector-jsonEditor"></div>
-                <div id="jsonEditorPane" class="acd-json-editor-pane selector-jsonEditor">
-                    <div id="jsonEditorHost" class="acd-json-editor-host">
-                        <div id="loadingEditor" style="padding: 8px;">Loading editor...</div>
-                    </div>
-                </div>
-                <div id="bottomCollapsedPaneTabHost" style="border-top: 1px solid #D2D2D2;"></div>
+                <div id="rightCollapsedPaneTabHost" class="acd-verticalCollapsedTabContainer" style="border-left: 1px solid #D2D2D2;"></div>
             </div>
-            <div id="rightCollapsedPaneTabHost" class="acd-verticalCollapsedTabContainer" style="border-left: 1px solid #D2D2D2;"></div>
         </div>
     </div>
 

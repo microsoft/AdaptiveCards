@@ -3,87 +3,23 @@ import * as Adaptive from "adaptivecards";
 import * as Controls from "adaptivecards-controls";
 import * as Constants from "./constants";
 import * as Designer from "./card-designer";
+import { ILoadSettingResult, SettingsManager } from "./settings-manager";
 import { HostContainer } from "./containers/host-container";
 import { OutlookContainer } from "./containers/outlook-container";
 import { LightTeamsContainer, DarkTeamsContainer } from "./containers/teams-container";
 import { CortanaContainer } from "./containers/cortana-container";
-import { SkypeContainer } from "./containers/skype-container";
 import { WebChatContainer } from "./containers/webchat-container";
 import { ToastContainer } from "./containers/toast-container";
 import { TimelineContainer } from "./containers/timeline-container";
 import { BotFrameworkContainer } from "./containers/bf-image-container";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
-import { FullScreenHandler } from "./fullscreenhandler";
+import { FullScreenHandler } from "./fullscreen-handler";
+import { Toolbar, ToolbarButton, ToolbarSeparator, ToolbarLabel, ToolbarChoicePicker } from "./toolbar";
 
 declare var monacoEditor: any;
 declare function loadMonacoEditor(schema, callback);
 
 const MAX_UNDO_STACK_SIZE = 50;
-
-var isLocalStorageAvailable: boolean = false;
-
-function isStorageAvailable(type: string) {
-    try {
-        var storage = window[type],
-            x = '__storage_test__';
-        storage.setItem(x, x);
-        storage.removeItem(x);
-        return true;
-    }
-    catch(e) {
-        return e instanceof DOMException && (
-            // everything except Firefox
-            e.code === 22 ||
-            // Firefox
-            e.code === 1014 ||
-            // test name field too, because code might not be present
-            // everything except Firefox
-            e.name === 'QuotaExceededError' ||
-            // Firefox
-            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
-            // acknowledge QuotaExceededError only if there's something already stored
-            storage.length !== 0;
-    }
-}
-
-function trySaveSetting(name: string, value: string) {
-    if (isLocalStorageAvailable) {
-        localStorage.setItem(name, value);
-    }
-}
-
-interface ILoadSettingResult<T> {
-    succeeded: boolean;
-    value?: T;
-}
-
-function tryLoadNumberSetting(name: string): ILoadSettingResult<number> {
-    if (isLocalStorageAvailable) {
-        let returnValue = localStorage.getItem(name);
-
-        return {
-            succeeded: true,
-            value: returnValue ? parseFloat(returnValue) : undefined
-        };
-    }
-    else {
-        return { succeeded: false };
-    }
-}
-
-function tryLoadBooleanSetting(name: string, defaultValue: boolean): ILoadSettingResult<boolean> {
-    if (isLocalStorageAvailable) {
-        let returnValue = localStorage.getItem(name);
-
-        return {
-            succeeded: true,
-            value: returnValue ? returnValue == "true" : defaultValue
-        };
-    }
-    else {
-        return { succeeded: false };
-    }
-}
 
 var isMonacoEditorLoaded: boolean = false;
 
@@ -102,31 +38,6 @@ function monacoEditorLoaded() {
 
 function getCurrentJsonPayload(): string {
     return isMonacoEditorLoaded ? monacoEditor.getValue() : Constants.defaultPayload;
-}
-
-function sortObjByKey(value: any) {
-    if (typeof value === 'object') {
-        if (Array.isArray(value)) {
-            return value.map(sortObjByKey);
-        }
-        else {
-            return Object.keys(value).sort(
-                (a: string, b: string) => {
-                    return (a == "type" || a == "version") ? -1 : 1;
-                }
-            ).reduce(
-                (o, key) => {
-                    const v = value[key];
-                    o[key] = sortObjByKey(v);
-                    return o;
-                },
-                { }
-            )
-        }
-    }
-    else {
-        return value;
-    }
 }
 
 function setJsonPayload(payload: object) {
@@ -582,17 +493,6 @@ class DesignerApp {
         }
     }
 
-    private addContainers() {
-        this.hostContainers.push(new WebChatContainer("Bot Framework WebChat", "css/webchat-container.css"));
-        this.hostContainers.push(new CortanaContainer("Cortana Skills", "css/cortana-container.css"));
-        this.hostContainers.push(new OutlookContainer("Outlook Actionable Messages", "css/outlook-container.css"));
-        this.hostContainers.push(new TimelineContainer("Windows Timeline", "css/timeline-container.css"));
-        this.hostContainers.push(new DarkTeamsContainer("Microsoft Teams - Dark", "css/teams-container-dark.css"));
-        this.hostContainers.push(new LightTeamsContainer("Microsoft Teams - Light", "css/teams-container-light.css"));
-        this.hostContainers.push(new BotFrameworkContainer("Bot Framework Other Channels (Image render)", "css/bf-image-container.css"));
-        this.hostContainers.push(new ToastContainer("Windows Notifications (Preview)", "css/toast-container.css"));
-    }
-
     private recreateDesigner() {
         let styleSheetLinkElement = <HTMLLinkElement>document.getElementById("adaptiveCardStylesheet");
 
@@ -677,10 +577,95 @@ class DesignerApp {
     propertySheetHostElement: HTMLElement;
     treeViewHostElement: HTMLElement;
     commandListHostElement: HTMLElement;
-    undoButtonElement: HTMLButtonElement;
-    redoButtonElement: HTMLButtonElement;
+
+    private _fullScreenHandler = new FullScreenHandler();
+    private _toolbar: Toolbar;
+    private _fullScreenButton: ToolbarButton;
+    private _hostContainerChoicePicker: ToolbarChoicePicker;
+    private _undoButton: ToolbarButton;
+    private _redoButton: ToolbarButton;
+    private _copyJSONButton: ToolbarButton;
 
     constructor(designerHostElement: HTMLElement) {
+        this.hostContainers.push(new WebChatContainer("Bot Framework WebChat", "css/webchat-container.css"));
+        this.hostContainers.push(new CortanaContainer("Cortana Skills", "css/cortana-container.css"));
+        this.hostContainers.push(new OutlookContainer("Outlook Actionable Messages", "css/outlook-container.css"));
+        this.hostContainers.push(new TimelineContainer("Windows Timeline", "css/timeline-container.css"));
+        this.hostContainers.push(new DarkTeamsContainer("Microsoft Teams - Dark", "css/teams-container-dark.css"));
+        this.hostContainers.push(new LightTeamsContainer("Microsoft Teams - Light", "css/teams-container-light.css"));
+        this.hostContainers.push(new BotFrameworkContainer("Bot Framework Other Channels (Image render)", "css/bf-image-container.css"));
+        this.hostContainers.push(new ToastContainer("Windows Notifications (Preview)", "css/toast-container.css"));
+
+        this._toolbar = new Toolbar();
+
+        this._fullScreenButton = new ToolbarButton(
+            "Enter Full Screen",
+            "acd-icon-fullScreen",
+            (sender) => { this._fullScreenHandler.toggleFullScreen(); });
+
+        this._toolbar.addElement(this._fullScreenButton);
+
+        this._toolbar.addElement(new ToolbarSeparator());
+        this._toolbar.addElement(new ToolbarLabel("Select Host app:"));
+
+        this._hostContainerChoicePicker = new ToolbarChoicePicker();
+
+        for (let i = 0; i < this.hostContainers.length; i++) {
+            this._hostContainerChoicePicker.choices.push(
+                {
+                    name: this.hostContainers[i].name,
+                    value: i.toString(),
+                }
+            );
+        }
+
+        this._hostContainerChoicePicker.onChanged = (sender) => {
+            this._selectedHostContainer = this.hostContainers[Number.parseInt(this._hostContainerChoicePicker.value)];
+
+            this.selectedHostContainerChanged();
+        }
+
+        this._toolbar.addElement(this._hostContainerChoicePicker);
+
+        this._toolbar.addElement(new ToolbarSeparator());
+
+        this._undoButton = new ToolbarButton(
+            "Undo",
+            "acd-icon-undo",
+            (sender) => { this.undo(); });
+        this._undoButton.toolTip = "Undo your last change";
+        this._undoButton.isEnabled = false;
+        this._undoButton.displayCaption = false;
+
+        this._toolbar.addElement(this._undoButton);
+
+        this._redoButton = new ToolbarButton(
+            "Redo",
+            "acd-icon-redo",
+            (sender) => { this.redo(); });
+        this._redoButton.toolTip = "Redo your last changes";
+        this._redoButton.isEnabled = false;
+        this._redoButton.displayCaption = false;
+
+        this._toolbar.addElement(this._redoButton);
+
+        this._toolbar.addElement(new ToolbarSeparator());
+        this._toolbar.addElement(
+            new ToolbarButton(
+                "New card",
+                "acd-icon-newCard",
+                (sender) => { this.newCard(); }));
+
+        this._copyJSONButton = new ToolbarButton("Copy JSON", "acd-icon-copy");
+        this._toolbar.addElement(this._copyJSONButton);
+
+        this._fullScreenHandler = new FullScreenHandler();
+        this._fullScreenHandler.onFullScreenChanged = (isFullScreen: boolean) => {
+            this._fullScreenButton.caption = isFullScreen ? "Exit full screen" : "Enter full screen";
+    
+            updateFullLayout();
+        }
+
         this._propertySheetHostConfig = new Adaptive.HostConfig(
             {
                 preExpandSingleShowCardAction: true,
@@ -810,19 +795,30 @@ class DesignerApp {
         );
 
         this._propertySheetHostConfig.cssClassNamePrefix = "default";
-
         this._designerHostElement = designerHostElement;
-
-        this.addContainers();
-
         this._selectedHostContainer = this.hostContainers[0];
 
         this.recreateDesigner();
     }
 
+    render(): HTMLElement {
+        let root = document.createElement("div");
+        root.appendChild(this._toolbar.render());
+
+        new Clipboard(
+            this._copyJSONButton.renderedElement,
+            {
+                text: function () {
+                    return JSON.stringify(app.card.toJSON(), null, 4);
+                }
+            });
+
+        return root;
+    }
+
     updateToolbar() {
-        this.undoButtonElement.disabled = !this.canUndo;
-        this.redoButtonElement.disabled = !this.canRedo;
+        this._undoButton.isEnabled = this.canUndo;
+        this._redoButton.isEnabled = this.canRedo;
     }
 
     addToUndoStack(payload: object) {
@@ -881,25 +877,6 @@ class DesignerApp {
 
             this.updateToolbar();
         }
-    }
-
-    createContainerPicker(): Controls.DropDown {
-        this._hostContainerPicker = new Controls.DropDown();
-
-        for (var i = 0; i < this.hostContainers.length; i++) {
-            let item = new Controls.DropDownItem(i.toString(), this.hostContainers[i].name);
-
-            this._hostContainerPicker.items.add(item);
-        }
-
-        this._hostContainerPicker.selectedIndex = 0;
-        this._hostContainerPicker.onValueChanged = (sender: Controls.InputControl) => {
-            this._selectedHostContainer = this.hostContainers[Number.parseInt(this._hostContainerPicker.value.key)];
-
-            this.selectedHostContainerChanged();
-        }
-
-        return this._hostContainerPicker;
     }
 
     newCard() {
@@ -1083,35 +1060,8 @@ function updateFullLayout() {
 }
 
 window.onload = () => {
-    isLocalStorageAvailable = isStorageAvailable("localStorage");
-
-    if (!isLocalStorageAvailable) {
+    if (!SettingsManager.isLocalStorageAvailable) {
         console.log("Local storage is not available.");
-    }
-
-    // Prepare toolbar
-
-    let fullScreenHandler = new FullScreenHandler();
-    fullScreenHandler.onFullScreenChanged = (isFullScreen: boolean) => {
-        document.getElementById("btnToggleFullScreen").innerText = isFullScreen ? "Exit full screen" : "Enter full screen";
-
-        updateFullLayout();
-    }
-
-    document.getElementById("btnToggleFullScreen").onclick = (e) => {
-        fullScreenHandler.toggleFullScreen();
-    }
-
-    new Clipboard(
-        document.getElementById("btnCopyToClipboard"),
-        {
-            text: function () {
-                return JSON.stringify(app.card.toJSON(), null, 4);
-            }
-        });
-
-    document.getElementById("btnNewCard").onclick = (e) => {
-        app.newCard();
     }
 
     // Prepare tool palette pane
@@ -1132,7 +1082,7 @@ window.onload = () => {
     jsonEditorPaneHeader.onToggled = (sender: SidePaneHeader) => {
         updateFullLayout();
 
-        trySaveSetting("jsonEditorIsExpanded", sender.isExpanded.toString());
+        SettingsManager.trySaveSetting("jsonEditorIsExpanded", sender.isExpanded.toString());
     };
 
     let jsonEditorPane =  document.getElementById("jsonEditorPane");
@@ -1141,16 +1091,16 @@ window.onload = () => {
     jsonEditorHorizontalSplitter.onResized = (splitter: Splitter, newSize: number) => {
         updateJsonEditorLayout();
 
-        trySaveSetting("jsonEditorHeight", newSize.toString());
+        SettingsManager.trySaveSetting("jsonEditorHeight", newSize.toString());
     }
 
-    let jsonEditorHeightSetting = tryLoadNumberSetting("jsonEditorHeight");
+    let jsonEditorHeightSetting = SettingsManager.tryLoadNumberSetting("jsonEditorHeight");
 
     if (jsonEditorHeightSetting.succeeded && jsonEditorHeightSetting.value != undefined) {
         jsonEditorPane.style.height = jsonEditorHeightSetting.value + "px";
     }
 
-    let jsonEditorIsExpandedSetting = tryLoadBooleanSetting("jsonEditorIsExpanded", true);
+    let jsonEditorIsExpandedSetting = SettingsManager.tryLoadBooleanSetting("jsonEditorIsExpanded", true);
 
     if (jsonEditorIsExpandedSetting.succeeded && !jsonEditorIsExpandedSetting.value) {
         jsonEditorPaneHeader.toggle();
@@ -1165,7 +1115,7 @@ window.onload = () => {
     propertySheetPaneHeader.onToggled = (sender: SidePaneHeader) => {
         updateFullLayout();
 
-        trySaveSetting("propertySheetIsExpanded", sender.isExpanded.toString());
+        SettingsManager.trySaveSetting("propertySheetIsExpanded", sender.isExpanded.toString());
     };
 
     let propertySheetPane = document.getElementById("propertySheetPane");
@@ -1176,16 +1126,16 @@ window.onload = () => {
     propertySheetVerticalSplitter.onResized = (splitter: Splitter, newSize: number) => {
         scheduleLayoutUpdate();
 
-        trySaveSetting("propertySheetWidth", newSize.toString());
+        SettingsManager.trySaveSetting("propertySheetWidth", newSize.toString());
     }
 
-    let propertySheetWidthSetting = tryLoadNumberSetting("propertySheetWidth");
+    let propertySheetWidthSetting = SettingsManager.tryLoadNumberSetting("propertySheetWidth");
 
     if (propertySheetWidthSetting.succeeded && propertySheetWidthSetting.value != undefined) {
         propertySheetPane.style.width = propertySheetWidthSetting.value + "px";
     }
 
-    let propertySheetIsExpandedSetting = tryLoadBooleanSetting("propertySheetIsExpanded", true);
+    let propertySheetIsExpandedSetting = SettingsManager.tryLoadBooleanSetting("propertySheetIsExpanded", true);
 
     if (propertySheetIsExpandedSetting.succeeded && !propertySheetIsExpandedSetting.value) {
         propertySheetPaneHeader.toggle();
@@ -1200,7 +1150,7 @@ window.onload = () => {
     treeViewPaneHeader.onToggled = (sender: SidePaneHeader) => {
         updateFullLayout();
 
-        trySaveSetting("treeViewIsExpanded", sender.isExpanded.toString());
+        SettingsManager.trySaveSetting("treeViewIsExpanded", sender.isExpanded.toString());
     };
 
     let treeViewPane = document.getElementById("treeViewPane");
@@ -1211,16 +1161,16 @@ window.onload = () => {
     treeViewVerticalSplitter.onResized = (splitter: Splitter, newSize: number) => {
         scheduleLayoutUpdate();
 
-        trySaveSetting("treeViewWidth", newSize.toString());
+        SettingsManager.trySaveSetting("treeViewWidth", newSize.toString());
     }
 
-    let treeViewWidthSetting = tryLoadNumberSetting("treeViewWidth");
+    let treeViewWidthSetting = SettingsManager.tryLoadNumberSetting("treeViewWidth");
 
     if (treeViewWidthSetting.succeeded && treeViewWidthSetting.value != undefined) {
         treeViewPane.style.width = treeViewWidthSetting.value + "px";
     }
 
-    let treeViewIsExpandedSetting = tryLoadBooleanSetting("treeViewIsExpanded", true);
+    let treeViewIsExpandedSetting = SettingsManager.tryLoadBooleanSetting("treeViewIsExpanded", true);
 
     if (treeViewIsExpandedSetting.succeeded && !treeViewIsExpandedSetting.value) {
         treeViewPaneHeader.toggle();
@@ -1239,18 +1189,6 @@ window.onload = () => {
     app.commandListHostElement = document.getElementById("commandsHost");
     app.paletteHostElement = document.getElementById("toolPalette");
 
-    app.undoButtonElement = <HTMLButtonElement>document.getElementById("btnUndo");
-    app.undoButtonElement.onclick = (e) => {
-        app.undo();
-    }
-
-    app.redoButtonElement = <HTMLButtonElement>document.getElementById("btnRedo");
-    app.redoButtonElement.onclick = (e) => {
-        app.redo();
-    }
-
-    app.createContainerPicker().attach(document.getElementById("containerPickerHost"));
-
     window.addEventListener("pointermove", (e: PointerEvent) => { app.handlePointerMove(e); });
     window.addEventListener("resize", () => { scheduleLayoutUpdate(); });
     window.addEventListener("pointerup", (e: PointerEvent) => { app.handlePointerUp(e); });
@@ -1260,4 +1198,6 @@ window.onload = () => {
     loadMonacoEditor(adaptiveCardSchema, monacoEditorLoaded);
 
     updateCardFromJson();
+
+    document.getElementById("designerRootHost").appendChild(app.render());
 };
