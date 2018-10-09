@@ -3,13 +3,12 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "RenderedAdaptiveCard.h"
 
-namespace AdaptiveNamespace {
-    class AdaptiveActionInvoker :
-        public Microsoft::WRL::RuntimeClass<
-        Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveNamespace::IAdaptiveActionInvoker>
+namespace AdaptiveNamespace
+{
+    class AdaptiveActionInvoker
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveActionInvoker>
     {
-        AdaptiveRuntime(AdaptiveActionInvoker)
+        AdaptiveRuntime(AdaptiveActionInvoker);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;

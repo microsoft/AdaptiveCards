@@ -3,14 +3,15 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "Util.h"
 
-namespace AdaptiveNamespace {
+namespace AdaptiveNamespace
+{
     class CustomActionWrapper : public AdaptiveSharedNamespace::BaseActionElement
     {
     public:
         CustomActionWrapper(ABI::AdaptiveNamespace::IAdaptiveActionElement* actionElement) :
-            AdaptiveSharedNamespace::BaseActionElement(AdaptiveSharedNamespace::ActionType::Custom),
-            m_actionElement(actionElement)
-        {}
+            AdaptiveSharedNamespace::BaseActionElement(AdaptiveSharedNamespace::ActionType::Custom), m_actionElement(actionElement)
+        {
+        }
 
         std::string GetId() const override;
         void SetId(const std::string& value) override;

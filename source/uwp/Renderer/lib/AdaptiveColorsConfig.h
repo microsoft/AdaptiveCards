@@ -4,13 +4,12 @@
 #include "Enums.h"
 #include "HostConfig.h"
 
-namespace AdaptiveNamespace {
-    class AdaptiveColorsConfig :
-        public Microsoft::WRL::RuntimeClass<
-        Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveNamespace::IAdaptiveColorsConfig>
+namespace AdaptiveNamespace
+{
+    class AdaptiveColorsConfig
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveColorsConfig>
     {
-        AdaptiveRuntime(AdaptiveColorsConfig)
+        AdaptiveRuntime(AdaptiveColorsConfig);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;

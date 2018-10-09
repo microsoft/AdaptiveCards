@@ -4,13 +4,12 @@
 #include "Enums.h"
 #include "HostConfig.h"
 
-namespace AdaptiveNamespace {
-    class AdaptiveSeparatorConfig :
-        public Microsoft::WRL::RuntimeClass<
-            Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveNamespace::IAdaptiveSeparatorConfig>
+namespace AdaptiveNamespace
+{
+    class AdaptiveSeparatorConfig
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveSeparatorConfig>
     {
-        AdaptiveRuntime(AdaptiveSeparatorConfig)
+        AdaptiveRuntime(AdaptiveSeparatorConfig);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;

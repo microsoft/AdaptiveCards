@@ -9,42 +9,37 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveNamespace {
+namespace AdaptiveNamespace
+{
     HRESULT AdaptiveRemoteResourceInformation::RuntimeClassInitialize() noexcept try
     {
         RemoteResourceInformation uriInformation;
         return RuntimeClassInitialize(uriInformation);
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveRemoteResourceInformation::RuntimeClassInitialize(RemoteResourceInformation& uriInformation) try
+    _Use_decl_annotations_ HRESULT AdaptiveRemoteResourceInformation::RuntimeClassInitialize(RemoteResourceInformation& uriInformation) try
     {
         RETURN_IF_FAILED(UTF8ToHString(uriInformation.url, m_url.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(uriInformation.mimeType, m_mimeType.GetAddressOf()));
 
         return S_OK;
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveRemoteResourceInformation::get_Url(HSTRING* url)
+    _Use_decl_annotations_ HRESULT AdaptiveRemoteResourceInformation::get_Url(HSTRING* url)
     {
         return m_url.CopyTo(url);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveRemoteResourceInformation::put_Url(HSTRING url)
-    {
-        return m_url.Set(url);
-    }
+    _Use_decl_annotations_ HRESULT AdaptiveRemoteResourceInformation::put_Url(HSTRING url) { return m_url.Set(url); }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveRemoteResourceInformation::get_MimeType(HSTRING* mimeType)
+    _Use_decl_annotations_ HRESULT AdaptiveRemoteResourceInformation::get_MimeType(HSTRING* mimeType)
     {
         return m_mimeType.CopyTo(mimeType);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveRemoteResourceInformation::put_MimeType(HSTRING mimeType)
+    _Use_decl_annotations_ HRESULT AdaptiveRemoteResourceInformation::put_MimeType(HSTRING mimeType)
     {
         return m_mimeType.Set(mimeType);
     }

@@ -14,44 +14,37 @@
 
 using namespace Microsoft::WRL::Wrappers;
 
-//Helpers for error handling.  General strategy is that errors are always
-//reported as exceptions (so we don't need to special case any STL usage).
+// Helpers for error handling.  General strategy is that errors are always
+// reported as exceptions (so we don't need to special case any STL usage).
 
-//Methods that need to return HRESULTs wrap their body inside an
-//ExceptionBoundary.
+// Methods that need to return HRESULTs wrap their body inside an
+// ExceptionBoundary.
 
-//Generally all errors are reported with an associated HRESULT.  These are
-//represented as an HResultException.  Use ExceptionBoundary() to catch
-//exceptions and translate them to HRESULTs.
+// Generally all errors are reported with an associated HRESULT.  These are
+// represented as an HResultException.  Use ExceptionBoundary() to catch
+// exceptions and translate them to HRESULTs.
 
-//As the constructor is protected, only ThrowHR() can be used to throw an
-//HResultException.  This provides future flexibility in case we some day
-//want to throw more varied types of exception.
+// As the constructor is protected, only ThrowHR() can be used to throw an
+// HResultException.  This provides future flexibility in case we some day
+// want to throw more varied types of exception.
 
 class HResultException
 {
     HRESULT m_Hr;
 
 protected:
-    explicit HResultException(HRESULT hr)
-        : m_Hr(hr)
-    {}
+    explicit HResultException(HRESULT hr) : m_Hr(hr) {}
 
 public:
-    HRESULT GetHr() const
-    {
-        return m_Hr;
-    }
+    HRESULT GetHr() const { return m_Hr; }
 
-    __declspec(noreturn)
-        friend void ThrowHR(HRESULT);
+    __declspec(noreturn) friend void ThrowHR(HRESULT);
 };
 
 //
 // Throws an exception for the given HRESULT.
 //
-__declspec(noreturn) __declspec(noinline)
-inline void ThrowHR(HRESULT hr)
+__declspec(noreturn) __declspec(noinline) inline void ThrowHR(HRESULT hr)
 {
     throw HResultException(hr);
 }
@@ -62,16 +55,14 @@ inline void ThrowHR(HRESULT hr)
 // WinString. We don't take this parameter directly as a WinString to break what would
 // otherwise be a circular dependency (WinString uses ErrorHandling.h in its implementation).
 //
-__declspec(noreturn) __declspec(noinline)
-inline void ThrowHR(HRESULT hr, HSTRING message)
+__declspec(noreturn) __declspec(noinline) inline void ThrowHR(HRESULT hr, HSTRING message)
 {
     RoOriginateError(hr, message);
 
     ThrowHR(hr);
 }
 
-__declspec(noreturn) __declspec(noinline)
-inline void ThrowHR(HRESULT hr, wchar_t const* message)
+__declspec(noreturn) __declspec(noinline) inline void ThrowHR(HRESULT hr, wchar_t const* message)
 {
     using ::Microsoft::WRL::Wrappers::HStringReference;
 
@@ -93,15 +84,13 @@ inline void ThrowIfFailed(HRESULT hr)
 //
 // Throws if the given pointer is null.
 //
-template<typename T>
-inline void ThrowIfNullPointer(T* ptr, HRESULT hrToThrow)
+template<typename T> inline void ThrowIfNullPointer(T* ptr, HRESULT hrToThrow)
 {
     if (ptr == nullptr)
         ThrowHR(hrToThrow);
 }
 
-template<typename T>
-inline void ThrowIfNegative(T value)
+template<typename T> inline void ThrowIfNegative(T value)
 {
     if (value < 0)
         ThrowHR(E_INVALIDARG);
@@ -120,8 +109,7 @@ inline void ThrowIfZeroOrNegative(uint32_t n)
 // expected to be used at the beginning of methods to validate pointer
 // parameters that are marked as [in].
 //
-template<typename T>
-inline void CheckInPointer(T* ptr)
+template<typename T> inline void CheckInPointer(T* ptr)
 {
     ThrowIfNullPointer(ptr, E_INVALIDARG);
 }
@@ -131,8 +119,7 @@ inline void CheckInPointer(T* ptr)
 // it to null.  This is expected to be used at the beginning of methods to
 // validate out pointer parameters that are marked as [out].
 //
-template<typename T>
-inline void CheckAndClearOutPointer(T** ptr)
+template<typename T> inline void CheckAndClearOutPointer(T** ptr)
 {
     CheckInPointer(ptr);
     *ptr = nullptr;
@@ -146,8 +133,7 @@ inline void CheckAndClearOutPointer(T** ptr)
 // Therefore the only way that Make() will return an error is if an allocation
 // fails.
 //
-__declspec(noreturn) __declspec(noinline)
-inline void ThrowBadAlloc()
+__declspec(noreturn) __declspec(noinline) inline void ThrowBadAlloc()
 {
     throw std::bad_alloc();
 }
@@ -161,8 +147,7 @@ inline void CheckMakeResult(bool result)
 //
 // Converts exceptions in the callable code into HRESULTs.
 //
-__declspec(noinline)
-inline HRESULT ThrownExceptionToHResult()
+__declspec(noinline) inline HRESULT ThrownExceptionToHResult()
 {
     try
     {
@@ -182,8 +167,7 @@ inline HRESULT ThrownExceptionToHResult()
     }
 }
 
-template<typename CALLABLE>
-HRESULT ExceptionBoundary(CALLABLE&& fn)
+template<typename CALLABLE> HRESULT ExceptionBoundary(CALLABLE&& fn)
 {
     try
     {
@@ -199,53 +183,31 @@ HRESULT ExceptionBoundary(CALLABLE&& fn)
 // Element traits describe how to store and manipulate the values inside a collection.
 // This default implementation is for value types. The same template is specialized with
 // more interesting versions for reference counted pointer types and strings.
-template<typename T>
-struct ElementTraits
+template<typename T> struct ElementTraits
 {
     typedef T ElementType;
 
-    static ElementType Wrap(T const& value)
-    {
-        return value;
-    }
+    static ElementType Wrap(T const& value) { return value; }
 
-    static void Unwrap(ElementType const& value, _Out_ T* result)
-    {
-        *result = value;
-    }
+    static void Unwrap(ElementType const& value, _Out_ T* result) { *result = value; }
 
-    static bool Equals(T const& value1, T const& value2)
-    {
-        return value1 == value2;
-    }
+    static bool Equals(T const& value1, T const& value2) { return value1 == value2; }
 };
 
 // Specialized element traits for reference counted pointer types.
-template<typename T>
-struct ElementTraits<T*>
+template<typename T> struct ElementTraits<T*>
 {
     typedef Microsoft::WRL::ComPtr<T> ElementType;
 
-    static ElementType Wrap(T* value)
-    {
-        return Microsoft::WRL::ComPtr<T>(value);
-    }
+    static ElementType Wrap(T* value) { return Microsoft::WRL::ComPtr<T>(value); }
 
-    static void Unwrap(ElementType const& value, _Out_ T** result)
-    {
-        ThrowIfFailed(value.CopyTo(result));
-    }
+    static void Unwrap(ElementType const& value, _Out_ T** result) { ThrowIfFailed(value.CopyTo(result)); }
 
-    static bool Equals(Microsoft::WRL::ComPtr<T> const& value1, T* value2)
-    {
-        return value1.Get() == value2;
-    }
+    static bool Equals(Microsoft::WRL::ComPtr<T> const& value1, T* value2) { return value1.Get() == value2; }
 };
 
-
 // Specialized element traits for strings.
-template<>
-struct ElementTraits<HSTRING>
+template<> struct ElementTraits<HSTRING>
 {
     typedef HString ElementType;
 
@@ -256,10 +218,7 @@ struct ElementTraits<HSTRING>
         return hstringValue;
     }
 
-    static void Unwrap(ElementType const& value, _Out_ HSTRING* result)
-    {
-        value.CopyTo(result);
-    }
+    static void Unwrap(ElementType const& value, _Out_ HSTRING* result) { value.CopyTo(result); }
 
     static bool Equals(HSTRING const& value1, HSTRING const& value2)
     {
@@ -269,20 +228,13 @@ struct ElementTraits<HSTRING>
     }
 };
 
-
 // Vector traits describe how the collection itself is implemented.
 // This default version just uses an STL vector.
-template<typename T>
-struct DefaultVectorTraits : public ElementTraits<T>
+template<typename T> struct DefaultVectorTraits : public ElementTraits<T>
 {
     typedef std::vector<ElementType> InternalVectorType;
 
-
-    static unsigned GetSize(InternalVectorType const& vector)
-    {
-        return (unsigned)vector.size();
-    };
-
+    static unsigned GetSize(InternalVectorType const& vector) { return (unsigned)vector.size(); };
 
     static ElementType GetAt(InternalVectorType const& vector, unsigned index)
     {
@@ -292,7 +244,6 @@ struct DefaultVectorTraits : public ElementTraits<T>
         return vector[index];
     }
 
-
     static void SetAt(InternalVectorType& vector, unsigned index, T const& item)
     {
         if (index >= vector.size())
@@ -300,7 +251,6 @@ struct DefaultVectorTraits : public ElementTraits<T>
 
         vector[index] = Wrap(item);
     }
-
 
     static void InsertAt(InternalVectorType& vector, unsigned index, T const& item)
     {
@@ -310,7 +260,6 @@ struct DefaultVectorTraits : public ElementTraits<T>
         vector.insert(vector.begin() + index, Wrap(item));
     }
 
-
     static void RemoveAt(InternalVectorType& vector, unsigned index)
     {
         if (index >= vector.size())
@@ -319,25 +268,15 @@ struct DefaultVectorTraits : public ElementTraits<T>
         vector.erase(vector.begin() + index);
     }
 
+    static void Append(InternalVectorType& vector, T const& item) { vector.push_back(Wrap(item)); }
 
-    static void Append(InternalVectorType& vector, T const& item)
-    {
-        vector.push_back(Wrap(item));
-    }
-
-
-    static void Clear(InternalVectorType& vector)
-    {
-        vector.clear();
-    }
+    static void Clear(InternalVectorType& vector) { vector.clear(); }
 };
-
 
 // Implements the WinRT IVector interface.
 template<typename T, template<typename T_abi> class Traits = DefaultVectorTraits>
-class Vector : public Microsoft::WRL::RuntimeClass<
-    ABI::Windows::Foundation::Collections::IVector<T>,
-    ABI::Windows::Foundation::Collections::IIterable<T>>
+class Vector
+    : public Microsoft::WRL::RuntimeClass<ABI::Windows::Foundation::Collections::IVector<T>, ABI::Windows::Foundation::Collections::IIterable<T>>
 {
     InspectableClass(IVector<T>::z_get_rc_name_impl(), BaseTrust);
 
@@ -355,68 +294,42 @@ private:
     bool isFixedSize;
     bool isChanged;
 
-
 public:
     // Constructs an empty vector.
-    Vector()
-        : isFixedSize(false),
-        isChanged(false)
-    { }
-
+    Vector() : isFixedSize(false), isChanged(false) {}
 
     // Constructs a vector of the specified size.
     template<typename... Args>
-    Vector(bool isFixedSize, Args&&... args)
-        : mVector(std::forward<Args>(args)...),
-        isFixedSize(isFixedSize),
-        isChanged(false)
-    { }
-
+    Vector(bool isFixedSize, Args&&... args) :
+        mVector(std::forward<Args>(args)...), isFixedSize(isFixedSize), isChanged(false)
+    {
+    }
 
     // Checks whether this vector is fixed or resizable.
-    bool IsFixedSize() const
-    {
-        return isFixedSize;
-    }
-
+    bool IsFixedSize() const { return isFixedSize; }
 
     // Checks whether the contents of the vector have changed since the last call to SetChanged(false).
-    bool IsChanged() const
-    {
-        return isChanged;
-    }
-
+    bool IsChanged() const { return isChanged; }
 
     // Sets or clears the IsChanged flag.
-    void SetChanged(bool changed)
-    {
-        isChanged = changed;
-    }
-
+    void SetChanged(bool changed) { isChanged = changed; }
 
     // Expose direct access to the internal STL collection. This lets C++ owners
     // bypass the ExceptionBoundary overhead of the public WinRT API surface.
-    typename Traits::InternalVectorType& InternalVector()
-    {
-        return mVector;
-    }
+    typename Traits::InternalVectorType& InternalVector() { return mVector; }
 
-
-    virtual HRESULT STDMETHODCALLTYPE get_Size(_Out_ unsigned *size)
+    virtual HRESULT STDMETHODCALLTYPE get_Size(_Out_ unsigned* size)
     {
-        return ExceptionBoundary([&]
-        {
+        return ExceptionBoundary([&] {
             CheckInPointer(size);
 
             *size = Traits::GetSize(mVector);
         });
     };
 
-
-    virtual HRESULT STDMETHODCALLTYPE GetAt(_In_opt_ unsigned index, _Out_ T_abi *item)
+    virtual HRESULT STDMETHODCALLTYPE GetAt(_In_opt_ unsigned index, _Out_ T_abi* item)
     {
-        return ExceptionBoundary([&]
-        {
+        return ExceptionBoundary([&] {
             CheckInPointer(item);
             ZeroMemory(item, sizeof(*item));
 
@@ -424,11 +337,9 @@ public:
         });
     }
 
-
-    virtual HRESULT STDMETHODCALLTYPE IndexOf(_In_opt_ T_abi value, _Out_ unsigned *index, _Out_ boolean *found)
+    virtual HRESULT STDMETHODCALLTYPE IndexOf(_In_opt_ T_abi value, _Out_ unsigned* index, _Out_ boolean* found)
     {
-        return ExceptionBoundary([&]
-        {
+        return ExceptionBoundary([&] {
             CheckInPointer(index);
             CheckInPointer(found);
 
@@ -449,21 +360,17 @@ public:
         });
     }
 
-
     virtual HRESULT STDMETHODCALLTYPE SetAt(_In_ unsigned index, _In_opt_ T_abi item)
     {
-        return ExceptionBoundary([&]
-        {
+        return ExceptionBoundary([&] {
             Traits::SetAt(mVector, index, item);
             isChanged = true;
         });
     }
 
-
     virtual HRESULT STDMETHODCALLTYPE InsertAt(_In_ unsigned index, _In_opt_ T_abi item)
     {
-        return ExceptionBoundary([&]
-        {
+        return ExceptionBoundary([&] {
             if (isFixedSize)
                 ThrowHR(E_NOTIMPL);
 
@@ -472,11 +379,9 @@ public:
         });
     }
 
-
     virtual HRESULT STDMETHODCALLTYPE RemoveAt(_In_ unsigned index)
     {
-        return ExceptionBoundary([&]
-        {
+        return ExceptionBoundary([&] {
             if (isFixedSize)
                 ThrowHR(E_NOTIMPL);
 
@@ -485,11 +390,9 @@ public:
         });
     }
 
-
     virtual HRESULT STDMETHODCALLTYPE Append(_In_opt_ T_abi item)
     {
-        return ExceptionBoundary([&]
-        {
+        return ExceptionBoundary([&] {
             if (isFixedSize)
                 ThrowHR(E_NOTIMPL);
 
@@ -498,11 +401,9 @@ public:
         });
     }
 
-
     virtual HRESULT STDMETHODCALLTYPE RemoveAtEnd()
     {
-        return ExceptionBoundary([&]
-        {
+        return ExceptionBoundary([&] {
             if (isFixedSize)
                 ThrowHR(E_NOTIMPL);
 
@@ -511,11 +412,9 @@ public:
         });
     }
 
-
     virtual HRESULT STDMETHODCALLTYPE Clear()
     {
-        return ExceptionBoundary([&]
-        {
+        return ExceptionBoundary([&] {
             if (isFixedSize)
                 ThrowHR(E_NOTIMPL);
 
@@ -524,11 +423,9 @@ public:
         });
     }
 
-
-    virtual HRESULT STDMETHODCALLTYPE ReplaceAll(_In_ unsigned count, _In_reads_(count) T_abi *value)
+    virtual HRESULT STDMETHODCALLTYPE ReplaceAll(_In_ unsigned count, _In_reads_(count) T_abi* value)
     {
-        return ExceptionBoundary([&]
-        {
+        return ExceptionBoundary([&] {
             CheckInPointer(value);
 
             if (count == Traits::GetSize(mVector))
@@ -555,11 +452,9 @@ public:
         });
     }
 
-
-    virtual HRESULT STDMETHODCALLTYPE GetView(_Outptr_result_maybenull_ ABI::Windows::Foundation::Collections::IVectorView<T> **view)
+    virtual HRESULT STDMETHODCALLTYPE GetView(_Outptr_result_maybenull_ ABI::Windows::Foundation::Collections::IVectorView<T>** view)
     {
-        return ExceptionBoundary([&]
-        {
+        return ExceptionBoundary([&] {
             CheckAndClearOutPointer(view);
 
             auto vectorView = Microsoft::WRL::Make<VectorView<T, Vector>>(this);
@@ -569,11 +464,9 @@ public:
         });
     }
 
-
-    virtual HRESULT STDMETHODCALLTYPE First(_Outptr_result_maybenull_ ABI::Windows::Foundation::Collections::IIterator<T> **first)
+    virtual HRESULT STDMETHODCALLTYPE First(_Outptr_result_maybenull_ ABI::Windows::Foundation::Collections::IIterator<T>** first)
     {
-        return ExceptionBoundary([&]
-        {
+        return ExceptionBoundary([&] {
             CheckAndClearOutPointer(first);
 
             auto iterator = Microsoft::WRL::Make<VectorIterator<T, Vector>>(this);
@@ -584,49 +477,37 @@ public:
     }
 };
 
-
 // Implements the WinRT IVectorView interface.
 template<typename T, typename TVector>
-class VectorView : public Microsoft::WRL::RuntimeClass<ABI::Windows::Foundation::Collections::IVectorView<T>,
-    ABI::Windows::Foundation::Collections::IIterable<T>>
+class VectorView
+    : public Microsoft::WRL::RuntimeClass<ABI::Windows::Foundation::Collections::IVectorView<T>, ABI::Windows::Foundation::Collections::IIterable<T>>
 {
     InspectableClass(IVectorView<T>::z_get_rc_name_impl(), BaseTrust);
 
     // Fields.
     Microsoft::WRL::ComPtr<TVector> mVector;
 
-
 public:
     // Constructor wraps around an existing Vector<T>.
-    VectorView(TVector* vector)
-        : mVector(vector)
-    { }
+    VectorView(TVector* vector) : mVector(vector) {}
 
+    virtual HRESULT STDMETHODCALLTYPE get_Size(_Out_ unsigned* size) { return mVector->get_Size(size); };
 
-    virtual HRESULT STDMETHODCALLTYPE get_Size(_Out_ unsigned *size)
-    {
-        return mVector->get_Size(size);
-    };
-
-
-    virtual HRESULT STDMETHODCALLTYPE GetAt(_In_opt_ unsigned index, _Out_ typename TVector::T_abi *item)
+    virtual HRESULT STDMETHODCALLTYPE GetAt(_In_opt_ unsigned index, _Out_ typename TVector::T_abi* item)
     {
         return mVector->GetAt(index, item);
     }
 
-
-    virtual HRESULT STDMETHODCALLTYPE IndexOf(_In_opt_ typename TVector::T_abi value, _Out_ unsigned *index, _Out_ boolean *found)
+    virtual HRESULT STDMETHODCALLTYPE IndexOf(_In_opt_ typename TVector::T_abi value, _Out_ unsigned* index, _Out_ boolean* found)
     {
         return mVector->IndexOf(value, index, found);
     }
 
-
-    virtual HRESULT STDMETHODCALLTYPE First(_Outptr_result_maybenull_ ABI::Windows::Foundation::Collections::IIterator<T> **first)
+    virtual HRESULT STDMETHODCALLTYPE First(_Outptr_result_maybenull_ ABI::Windows::Foundation::Collections::IIterator<T>** first)
     {
         return mVector->First(first);
     }
 };
-
 
 // Implements the WinRT IIterator interface.
 template<typename T, typename TVector>
@@ -638,36 +519,27 @@ class VectorIterator : public Microsoft::WRL::RuntimeClass<ABI::Windows::Foundat
     Microsoft::WRL::ComPtr<TVector> mVector;
     unsigned mPosition;
 
-
 public:
     // Constructor wraps around an existing Vector<T>.
-    VectorIterator(TVector* vector)
-        : mVector(vector),
-        mPosition(0)
-    { }
+    VectorIterator(TVector* vector) : mVector(vector), mPosition(0) {}
 
-
-    virtual HRESULT STDMETHODCALLTYPE get_Current(_Out_ typename TVector::T_abi *current)
+    virtual HRESULT STDMETHODCALLTYPE get_Current(_Out_ typename TVector::T_abi* current)
     {
         return mVector->GetAt(mPosition, current);
     }
 
-
-    virtual HRESULT STDMETHODCALLTYPE get_HasCurrent(_Out_ boolean *hasCurrent)
+    virtual HRESULT STDMETHODCALLTYPE get_HasCurrent(_Out_ boolean* hasCurrent)
     {
-        return ExceptionBoundary([&]
-        {
+        return ExceptionBoundary([&] {
             CheckInPointer(hasCurrent);
 
             *hasCurrent = (mPosition < TVector::Traits::GetSize(mVector->InternalVector()));
         });
     }
 
-
-    virtual HRESULT STDMETHODCALLTYPE MoveNext(_Out_ boolean *hasCurrent)
+    virtual HRESULT STDMETHODCALLTYPE MoveNext(_Out_ boolean* hasCurrent)
     {
-        return ExceptionBoundary([&]
-        {
+        return ExceptionBoundary([&] {
             CheckInPointer(hasCurrent);
 
             auto size = TVector::Traits::GetSize(mVector->InternalVector());

@@ -4,8 +4,8 @@
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 
-namespace AdaptiveNamespace {
-
+namespace AdaptiveNamespace
+{
     bool CustomElementWrapper::GetSeparator() const
     {
         boolean hasSeparator;
@@ -13,17 +13,14 @@ namespace AdaptiveNamespace {
         return hasSeparator;
     }
 
-    void CustomElementWrapper::SetSeparator(const bool value)
-    {
-        THROW_IF_FAILED(m_cardElement->put_Separator(value));
-    }
+    void CustomElementWrapper::SetSeparator(const bool value) { THROW_IF_FAILED(m_cardElement->put_Separator(value)); }
 
     Spacing CustomElementWrapper::GetSpacing() const
     {
         ABI::AdaptiveNamespace::Spacing spacing;
         THROW_IF_FAILED(m_cardElement->get_Spacing(&spacing));
 
-        return static_cast<Spacing> (spacing);
+        return static_cast<Spacing>(spacing);
     }
 
     void CustomElementWrapper::SetSpacing(const Spacing value)

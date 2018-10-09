@@ -3,13 +3,12 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "InputValue.h"
 
-namespace AdaptiveNamespace {
-    class AdaptiveInputs :
-        public Microsoft::WRL::RuntimeClass<
-        Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveNamespace::IAdaptiveInputs>
+namespace AdaptiveNamespace
+{
+    class AdaptiveInputs
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveInputs>
     {
-        AdaptiveRuntime(AdaptiveInputs)
+        AdaptiveRuntime(AdaptiveInputs);
 
     public:
         AdaptiveInputs();

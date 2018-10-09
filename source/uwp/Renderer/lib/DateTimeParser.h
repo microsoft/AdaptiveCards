@@ -4,7 +4,8 @@
 #include <codecvt>
 #include <string>
 
-namespace AdaptiveNamespace {
+namespace AdaptiveNamespace
+{
     class DateTimeParser
     {
     public:

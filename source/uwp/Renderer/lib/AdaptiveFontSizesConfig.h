@@ -4,13 +4,12 @@
 #include "Enums.h"
 #include "HostConfig.h"
 
-namespace AdaptiveNamespace {
-    class AdaptiveFontSizesConfig :
-        public Microsoft::WRL::RuntimeClass<
-            Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveNamespace::IAdaptiveFontSizesConfig>
+namespace AdaptiveNamespace
+{
+    class AdaptiveFontSizesConfig
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveFontSizesConfig>
     {
-        AdaptiveRuntime(AdaptiveFontSizesConfig)
+        AdaptiveRuntime(AdaptiveFontSizesConfig);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
@@ -37,7 +36,6 @@ namespace AdaptiveNamespace {
         UINT32 m_medium;
         UINT32 m_large;
         UINT32 m_extraLarge;
-
     };
 
     ActivatableClass(AdaptiveFontSizesConfig);

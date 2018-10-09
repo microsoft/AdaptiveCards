@@ -4,13 +4,12 @@
 #include "Enums.h"
 #include "HostConfig.h"
 
-namespace AdaptiveNamespace {
-    class AdaptiveHostConfig :
-        public Microsoft::WRL::RuntimeClass<
-            Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveNamespace::IAdaptiveHostConfig>
+namespace AdaptiveNamespace
+{
+    class AdaptiveHostConfig
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveHostConfig>
     {
-        AdaptiveRuntime(AdaptiveHostConfig)
+        AdaptiveRuntime(AdaptiveHostConfig);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
@@ -62,9 +61,7 @@ namespace AdaptiveNamespace {
         IFACEMETHODIMP get_Media(_Out_ ABI::AdaptiveNamespace::IAdaptiveMediaConfig** mediaConfig);
         IFACEMETHODIMP put_Media(_In_ ABI::AdaptiveNamespace::IAdaptiveMediaConfig* mediaConfig);
 
-
     private:
-
         Microsoft::WRL::Wrappers::HString m_fontFamily;
         boolean m_supportsInteractivity;
         Microsoft::WRL::Wrappers::HString m_imageBaseUrl;
@@ -84,8 +81,7 @@ namespace AdaptiveNamespace {
     };
 
     class AdaptiveHostConfigStaticsImpl WrlFinal
-        : public Microsoft::WRL::AgileActivationFactory<
-        ABI::AdaptiveNamespace::IAdaptiveHostConfigStatics>
+        : public Microsoft::WRL::AgileActivationFactory<ABI::AdaptiveNamespace::IAdaptiveHostConfigStatics>
     {
         AdaptiveRuntimeStatic(AdaptiveHostConfig);
 
@@ -96,11 +92,14 @@ namespace AdaptiveNamespace {
         }
 
         // IAdaptiveHostConfigStatics
-        IFACEMETHODIMP FromJsonString(_In_ HSTRING hostConfigJson, _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveHostConfigParseResult** config) noexcept;
-        IFACEMETHODIMP FromJson(_In_ ABI::Windows::Data::Json::IJsonObject* hostConfigJson, _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveHostConfigParseResult** config) noexcept;
+        IFACEMETHODIMP FromJsonString(_In_ HSTRING hostConfigJson,
+                                      _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveHostConfigParseResult** config) noexcept;
+        IFACEMETHODIMP FromJson(_In_ ABI::Windows::Data::Json::IJsonObject* hostConfigJson,
+                                _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveHostConfigParseResult** config) noexcept;
 
     private:
-        HRESULT FromJsonString(_In_ const std::string jsonString, _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveHostConfigParseResult** config);
+        HRESULT FromJsonString(_In_ const std::string jsonString,
+                               _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveHostConfigParseResult** config);
     };
 
     ActivatableClassWithFactory(AdaptiveHostConfig, AdaptiveHostConfigStaticsImpl);

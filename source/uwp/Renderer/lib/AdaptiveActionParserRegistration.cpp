@@ -10,10 +10,9 @@ using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveNamespace {
-    AdaptiveActionParserRegistration::AdaptiveActionParserRegistration()
-    {
-    }
+namespace AdaptiveNamespace
+{
+    AdaptiveActionParserRegistration::AdaptiveActionParserRegistration() {}
 
     HRESULT AdaptiveActionParserRegistration::RuntimeClassInitialize() noexcept try
     {
@@ -21,8 +20,8 @@ namespace AdaptiveNamespace {
         m_registration = std::make_shared<RegistrationMap>();
 
         return S_OK;
-    } CATCH_RETURN;
-
+    }
+    CATCH_RETURN;
 
     HRESULT AdaptiveActionParserRegistration::RuntimeClassInitialize(
         std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> sharedParserRegistration) noexcept try
@@ -31,10 +30,10 @@ namespace AdaptiveNamespace {
         m_sharedParserRegistration = sharedParserRegistration;
 
         return S_OK;
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveActionParserRegistration::Set(HSTRING type, IAdaptiveActionParser* Parser)
+    _Use_decl_annotations_ HRESULT AdaptiveActionParserRegistration::Set(HSTRING type, IAdaptiveActionParser* Parser)
     {
         std::string typeString = HStringToUTF8(type);
 
@@ -46,8 +45,7 @@ namespace AdaptiveNamespace {
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveActionParserRegistration::Get(HSTRING type, IAdaptiveActionParser** result)
+    _Use_decl_annotations_ HRESULT AdaptiveActionParserRegistration::Get(HSTRING type, IAdaptiveActionParser** result)
     {
         *result = nullptr;
 
@@ -59,8 +57,7 @@ namespace AdaptiveNamespace {
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveActionParserRegistration::Remove(_In_ HSTRING type)
+    _Use_decl_annotations_ HRESULT AdaptiveActionParserRegistration::Remove(_In_ HSTRING type)
     {
         std::string typeString = HStringToUTF8(type);
 
@@ -88,18 +85,25 @@ namespace AdaptiveNamespace {
         ComPtr<IAdaptiveActionParser> parser;
         THROW_IF_FAILED(m_parserRegistration->Get(typeAsHstring.Get(), &parser));
 
-        ComPtr<ABI::Windows::Data::Json::IJsonObject>jsonObject;
+        ComPtr<ABI::Windows::Data::Json::IJsonObject> jsonObject;
         THROW_IF_FAILED(JsonCppToJsonObject(value, &jsonObject));
 
         ComPtr<IAdaptiveElementParserRegistration> adaptiveElementParserRegistration;
-        MakeAndInitialize<AdaptiveNamespace::AdaptiveElementParserRegistration>(&adaptiveElementParserRegistration, elementParserRegistration);
+        MakeAndInitialize<AdaptiveNamespace::AdaptiveElementParserRegistration>(&adaptiveElementParserRegistration,
+                                                                                elementParserRegistration);
 
         ComPtr<IAdaptiveActionParserRegistration> adaptiveActionParserRegistration;
-        MakeAndInitialize<AdaptiveNamespace::AdaptiveActionParserRegistration>(&adaptiveActionParserRegistration, actionParserRegistration);
+        MakeAndInitialize<AdaptiveNamespace::AdaptiveActionParserRegistration>(&adaptiveActionParserRegistration,
+                                                                               actionParserRegistration);
 
         ComPtr<IAdaptiveActionElement> actionElement;
-        ComPtr<ABI::Windows::Foundation::Collections::IVector<IAdaptiveWarning*>> adaptiveWarnings = Make<Vector<IAdaptiveWarning*>>();
-        THROW_IF_FAILED(parser->FromJson(jsonObject.Get(), adaptiveElementParserRegistration.Get(), adaptiveActionParserRegistration.Get(), adaptiveWarnings.Get(), &actionElement));
+        ComPtr<ABI::Windows::Foundation::Collections::IVector<IAdaptiveWarning*>> adaptiveWarnings =
+            Make<Vector<IAdaptiveWarning*>>();
+        THROW_IF_FAILED(parser->FromJson(jsonObject.Get(),
+                                         adaptiveElementParserRegistration.Get(),
+                                         adaptiveActionParserRegistration.Get(),
+                                         adaptiveWarnings.Get(),
+                                         &actionElement));
 
         THROW_IF_FAILED(AdaptiveWarningsToSharedWarnings(adaptiveWarnings.Get(), warnings));
 

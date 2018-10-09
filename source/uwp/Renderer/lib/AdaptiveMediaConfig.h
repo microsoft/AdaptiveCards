@@ -4,13 +4,12 @@
 #include "Enums.h"
 #include "HostConfig.h"
 
-namespace AdaptiveNamespace {
-    class AdaptiveMediaConfig :
-        public Microsoft::WRL::RuntimeClass<
-        Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveNamespace::IAdaptiveMediaConfig>
+namespace AdaptiveNamespace
+{
+    class AdaptiveMediaConfig
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveMediaConfig>
     {
-        AdaptiveRuntime(AdaptiveMediaConfig)
+        AdaptiveRuntime(AdaptiveMediaConfig);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;

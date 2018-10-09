@@ -2,17 +2,14 @@
 
 #include "AdaptiveCards.Rendering.Uwp.h"
 
-namespace AdaptiveNamespace {
-    class DECLSPEC_UUID("BB1D1269-2243-4F34-B4EC-5216296EBBA0") InputValue :
-        public Microsoft::WRL::RuntimeClass<
-        Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveNamespace::IAdaptiveInputValue>
+namespace AdaptiveNamespace
+{
+    class DECLSPEC_UUID("BB1D1269-2243-4F34-B4EC-5216296EBBA0") InputValue
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveInputValue>
     {
     public:
-
-        HRESULT RuntimeClassInitialize(
-            ABI::AdaptiveNamespace::IAdaptiveInputElement* adaptiveInputElement,
-            ABI::Windows::UI::Xaml::IUIElement* uiInputElement)
+        HRESULT RuntimeClassInitialize(ABI::AdaptiveNamespace::IAdaptiveInputElement* adaptiveInputElement,
+                                       ABI::Windows::UI::Xaml::IUIElement* uiInputElement)
         {
             m_adaptiveInputElement = adaptiveInputElement;
             m_uiInputElement = uiInputElement;
@@ -20,7 +17,7 @@ namespace AdaptiveNamespace {
         }
 
         IFACEMETHODIMP get_InputElement(_Out_ ABI::AdaptiveNamespace::IAdaptiveInputElement** inputElement);
-        IFACEMETHODIMP get_CurrentValue(_Out_ HSTRING * serializedUserInput);
+        IFACEMETHODIMP get_CurrentValue(_Out_ HSTRING* serializedUserInput);
 
     private:
         std::string SerializeChoiceSetInput() const;

@@ -9,7 +9,8 @@ using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 
-namespace AdaptiveNamespace {
+namespace AdaptiveNamespace
+{
     ImageLoadTracker::~ImageLoadTracker()
     {
         for (auto& eventRegistration : m_eventRegistrations)
@@ -18,15 +19,16 @@ namespace AdaptiveNamespace {
         }
     }
 
-    _Use_decl_annotations_
-    void ImageLoadTracker::TrackBitmapImage(IBitmapImage* bitmapImage)
+    _Use_decl_annotations_ void ImageLoadTracker::TrackBitmapImage(IBitmapImage* bitmapImage)
     {
         ComPtr<IBitmapImage> localBitmapImage(bitmapImage);
         TrackedImageDetails trackedImageDetails;
 
-        ComPtr<IRoutedEventHandler> imageOpenedEventHandler = Microsoft::WRL::Callback<IRoutedEventHandler, ImageLoadTracker>(this, &ImageLoadTracker::trackedImage_ImageLoaded);
+        ComPtr<IRoutedEventHandler> imageOpenedEventHandler =
+            Microsoft::WRL::Callback<IRoutedEventHandler, ImageLoadTracker>(this, &ImageLoadTracker::trackedImage_ImageLoaded);
         THROW_IF_FAILED(bitmapImage->add_ImageOpened(imageOpenedEventHandler.Get(), &trackedImageDetails.imageOpenedRegistration));
-        ComPtr<IExceptionRoutedEventHandler> imageFailedEventHandler = Microsoft::WRL::Callback<IExceptionRoutedEventHandler, ImageLoadTracker>(this, &ImageLoadTracker::trackedImage_ImageFailed);
+        ComPtr<IExceptionRoutedEventHandler> imageFailedEventHandler =
+            Microsoft::WRL::Callback<IExceptionRoutedEventHandler, ImageLoadTracker>(this, &ImageLoadTracker::trackedImage_ImageFailed);
         THROW_IF_FAILED(bitmapImage->add_ImageFailed(imageFailedEventHandler.Get(), &trackedImageDetails.imageFailedRegistration));
 
         // Ensure we don't try and write the private data from multiple threads
@@ -43,8 +45,7 @@ namespace AdaptiveNamespace {
         }
     }
 
-    _Use_decl_annotations_
-    void ImageLoadTracker::MarkFailedLoadBitmapImage(IBitmapImage* bitmapImage)
+    _Use_decl_annotations_ void ImageLoadTracker::MarkFailedLoadBitmapImage(IBitmapImage* bitmapImage)
     {
         // Record failure
         m_hasFailure = true;
@@ -66,8 +67,7 @@ namespace AdaptiveNamespace {
         m_eventRegistrations.clear();
     }
 
-    _Use_decl_annotations_
-    HRESULT ImageLoadTracker::AddListener(IImageLoadTrackerListener* listener) try
+    _Use_decl_annotations_ HRESULT ImageLoadTracker::AddListener(IImageLoadTrackerListener* listener) try
     {
         if (m_listeners.find(listener) == m_listeners.end())
         {
@@ -78,10 +78,10 @@ namespace AdaptiveNamespace {
             return E_INVALIDARG;
         }
         return S_OK;
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT ImageLoadTracker::RemoveListener(IImageLoadTrackerListener* listener) try
+    _Use_decl_annotations_ HRESULT ImageLoadTracker::RemoveListener(IImageLoadTrackerListener* listener) try
     {
         if (m_listeners.find(listener) != m_listeners.end())
         {
@@ -92,29 +92,24 @@ namespace AdaptiveNamespace {
             return E_INVALIDARG;
         }
         return S_OK;
-    } CATCH_RETURN;
-
-    int ImageLoadTracker::GetTotalImagesTracked()
-    {
-        return m_totalImageCount;
     }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT ImageLoadTracker::trackedImage_ImageLoaded(IInspectable* sender, IRoutedEventArgs* /*eventArgs*/)
+    int ImageLoadTracker::GetTotalImagesTracked() { return m_totalImageCount; }
+
+    _Use_decl_annotations_ HRESULT ImageLoadTracker::trackedImage_ImageLoaded(IInspectable* sender, IRoutedEventArgs* /*eventArgs*/)
     {
         ImageLoadResultReceived(sender);
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT ImageLoadTracker::trackedImage_ImageFailed(IInspectable* sender, IExceptionRoutedEventArgs* /*eventArgs*/)
+    _Use_decl_annotations_ HRESULT ImageLoadTracker::trackedImage_ImageFailed(IInspectable* sender, IExceptionRoutedEventArgs* /*eventArgs*/)
     {
         ImageLoadResultReceived(sender);
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    void ImageLoadTracker::ImageLoadResultReceived(IInspectable* sender)
+    _Use_decl_annotations_ void ImageLoadTracker::ImageLoadResultReceived(IInspectable* sender)
     {
         auto exclusiveLock = m_lock.LockExclusive();
         m_trackedImageCount--;
@@ -129,8 +124,7 @@ namespace AdaptiveNamespace {
         }
     }
 
-    _Use_decl_annotations_
-    void ImageLoadTracker::UnsubscribeFromEvents(IInspectable* bitmapImage, TrackedImageDetails& trackedImageDetails)
+    _Use_decl_annotations_ void ImageLoadTracker::UnsubscribeFromEvents(IInspectable* bitmapImage, TrackedImageDetails& trackedImageDetails)
     {
         ComPtr<IInspectable> inspectableBitmapImage(bitmapImage);
         ComPtr<IBitmapImage> localBitmapImage;
