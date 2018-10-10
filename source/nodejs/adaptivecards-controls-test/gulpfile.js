@@ -11,7 +11,7 @@ gulp.task('scripts', function() {
         noImplicitAny: true,
         target: "es5"
       }));
- 
+
   return merge([
     tsResult.dts.pipe(gulp.dest('dist')),
     tsResult.js.pipe(gulp.dest('dist'))
@@ -23,7 +23,7 @@ gulp.task('sass', function () {
     .pipe(sass.sync().on('error', sass.logError))
     .pipe(gulp.dest('./css'));
 });
- 
+
 gulp.task('watch', function () {
   gulp.watch('./css/*.scss', ['sass']);
   gulp.watch('./src/*.ts', ['scripts']);

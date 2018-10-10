@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using AdaptiveCards.Rendering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

@@ -16,7 +16,8 @@
 #include "ToggleInput.h"
 #include "UnknownElement.h"
 
-namespace AdaptiveSharedNamespace {
+namespace AdaptiveSharedNamespace
+{
     ElementParserRegistration::ElementParserRegistration()
     {
         m_knownElements.insert({ 
@@ -37,26 +38,25 @@ namespace AdaptiveSharedNamespace {
             CardElementTypeToString(CardElementType::Unknown),
         });
 
-        m_cardElementParsers.insert({
-            { CardElementTypeToString(CardElementType::ActionSet), std::make_shared<ActionSetParser>() },
-            { CardElementTypeToString(CardElementType::Container), std::make_shared<ContainerParser>() },
-            { CardElementTypeToString(CardElementType::ColumnSet), std::make_shared<ColumnSetParser>() },
-            { CardElementTypeToString(CardElementType::FactSet), std::make_shared<FactSetParser>() },
-            { CardElementTypeToString(CardElementType::Image),  std::make_shared<ImageParser>() },
-            { CardElementTypeToString(CardElementType::ImageSet), std::make_shared<ImageSetParser>() },
-            { CardElementTypeToString(CardElementType::ChoiceSetInput), std::make_shared<ChoiceSetInputParser>() },
-            { CardElementTypeToString(CardElementType::DateInput), std::make_shared<DateInputParser>() },
-            { CardElementTypeToString(CardElementType::Media), std::make_shared<MediaParser>() },
-            { CardElementTypeToString(CardElementType::NumberInput), std::make_shared<NumberInputParser>() },
-            { CardElementTypeToString(CardElementType::TextBlock), std::make_shared<TextBlockParser>() },
-            { CardElementTypeToString(CardElementType::TextInput),  std::make_shared<TextInputParser>() },
-            { CardElementTypeToString(CardElementType::TimeInput), std::make_shared<TimeInputParser>() },
-            { CardElementTypeToString(CardElementType::ToggleInput), std::make_shared<ToggleInputParser>() },
-            { CardElementTypeToString(CardElementType::Unknown), std::make_shared<UnknownElementParser>() }
-        });
+        m_cardElementParsers.insert(
+            {{CardElementTypeToString(CardElementType::ActionSet), std::make_shared<ActionSetParser>()},
+             {CardElementTypeToString(CardElementType::Container), std::make_shared<ContainerParser>()},
+             {CardElementTypeToString(CardElementType::ColumnSet), std::make_shared<ColumnSetParser>()},
+             {CardElementTypeToString(CardElementType::FactSet), std::make_shared<FactSetParser>()},
+             {CardElementTypeToString(CardElementType::Image), std::make_shared<ImageParser>()},
+             {CardElementTypeToString(CardElementType::ImageSet), std::make_shared<ImageSetParser>()},
+             {CardElementTypeToString(CardElementType::ChoiceSetInput), std::make_shared<ChoiceSetInputParser>()},
+             {CardElementTypeToString(CardElementType::DateInput), std::make_shared<DateInputParser>()},
+             {CardElementTypeToString(CardElementType::Media), std::make_shared<MediaParser>()},
+             {CardElementTypeToString(CardElementType::NumberInput), std::make_shared<NumberInputParser>()},
+             {CardElementTypeToString(CardElementType::TextBlock), std::make_shared<TextBlockParser>()},
+             {CardElementTypeToString(CardElementType::TextInput), std::make_shared<TextInputParser>()},
+             {CardElementTypeToString(CardElementType::TimeInput), std::make_shared<TimeInputParser>()},
+             {CardElementTypeToString(CardElementType::ToggleInput), std::make_shared<ToggleInputParser>()},
+             {CardElementTypeToString(CardElementType::Unknown), std::make_shared<UnknownElementParser>()}});
     }
 
-    void ElementParserRegistration::AddParser(std::string const &elementType, std::shared_ptr<BaseCardElementParser> parser)
+    void ElementParserRegistration::AddParser(std::string const& elementType, std::shared_ptr<BaseCardElementParser> parser)
     {
         if (m_knownElements.find(elementType) == m_knownElements.end())
         {
@@ -64,11 +64,12 @@ namespace AdaptiveSharedNamespace {
         }
         else
         {
-            throw AdaptiveCardParseException(ErrorStatusCode::UnsupportedParserOverride, "Overriding known element parsers is unsupported");
+            throw AdaptiveCardParseException(ErrorStatusCode::UnsupportedParserOverride,
+                                             "Overriding known element parsers is unsupported");
         }
     }
 
-    void ElementParserRegistration::RemoveParser(std::string const &elementType)
+    void ElementParserRegistration::RemoveParser(std::string const& elementType)
     {
         if (m_knownElements.find(elementType) == m_knownElements.end())
         {
@@ -76,11 +77,12 @@ namespace AdaptiveSharedNamespace {
         }
         else
         {
-            throw AdaptiveCardParseException(ErrorStatusCode::UnsupportedParserOverride, "Overriding known element parsers is unsupported");
+            throw AdaptiveCardParseException(ErrorStatusCode::UnsupportedParserOverride,
+                                             "Overriding known element parsers is unsupported");
         }
     }
 
-    std::shared_ptr<BaseCardElementParser> ElementParserRegistration::GetParser(std::string const &elementType)
+    std::shared_ptr<BaseCardElementParser> ElementParserRegistration::GetParser(std::string const& elementType)
     {
         auto parser = m_cardElementParsers.find(elementType);
         if (parser != ElementParserRegistration::m_cardElementParsers.end())

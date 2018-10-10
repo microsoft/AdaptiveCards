@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -16,7 +16,7 @@ namespace AdaptiveCards
 
 
         /// <summary>
-        /// Default types to support, register any new types to this list 
+        /// Default types to support, register any new types to this list
         /// </summary>
         private static readonly Lazy<Dictionary<string, Type>> TypedElementTypes = new Lazy<Dictionary<string, Type>>(() =>
         {

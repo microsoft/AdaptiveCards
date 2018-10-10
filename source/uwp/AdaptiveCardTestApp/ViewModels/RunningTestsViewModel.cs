@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -134,7 +134,7 @@ namespace AdaptiveCardTestApp.ViewModels
         }
 
         public async Task AddCardToTimeline(FileViewModel card)
-        { 
+        {
             UserActivityChannel channel = UserActivityChannel.GetDefault();
             UserActivity userActivity = await channel.GetOrCreateUserActivityAsync(Guid.NewGuid().ToString());
             userActivity.VisualElements.DisplayText = "Card error: " + card.Name;

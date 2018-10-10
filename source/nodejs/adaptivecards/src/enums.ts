@@ -100,7 +100,7 @@ export enum InputTextStyle {
 
 /*
     This should really be a string enum, e.g.
-    
+
         export enum ContainerStyle {
             Default = "default",
             Emphasis = "emphasis"

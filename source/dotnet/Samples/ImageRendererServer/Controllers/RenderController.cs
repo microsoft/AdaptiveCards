@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -50,7 +50,7 @@ namespace ImageRendererServer.Controllers
                     SupportsInteractivity = false
                 };
 
-                // TODO: Load custom host configs 
+                // TODO: Load custom host configs
 
                 // Create a renderer
                 AdaptiveCardRenderer renderer = new AdaptiveCardRenderer(hostConfig);

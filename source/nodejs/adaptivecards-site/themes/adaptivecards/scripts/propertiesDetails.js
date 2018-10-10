@@ -14,7 +14,7 @@ hexo.extend.helper.register('propertiesDetails', function (properties) {
 
       // Get the markdown for the property and turn it into HTML
       html += '<div class="w3-container">';
-    
+
       html += marked(markedschema.generateMarkdown.createPropertyDetails(property, 3), { headerPrefix: "dedupe-header" });
       html += '</div>'
 

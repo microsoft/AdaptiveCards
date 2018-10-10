@@ -1,5 +1,5 @@
 ﻿
-$adaptivecardsversion = "$env:XES_PACKAGEVERSIONNUMBER-20$env:BUILD_BUILDNUMBER"
+$adaptivecardsversion = "$env:XES_PACKAGEVERSIONNUMBER-20$env:TFS_VersionNumber"
 foreach($pathComponent in $env:BUILD_SOURCEBRANCH.ToString().Split('\'))
 {
     if($pathComponent -eq "release") {

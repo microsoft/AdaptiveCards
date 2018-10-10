@@ -10,7 +10,7 @@
 #import "ACRBaseActionElementRenderer.h"
 #import "ACOBaseCardElement.h"
 
-@interface ACRRegistration:NSObject 
+@interface ACRRegistration:NSObject
 
 + (ACRRegistration *)getInstance;
 

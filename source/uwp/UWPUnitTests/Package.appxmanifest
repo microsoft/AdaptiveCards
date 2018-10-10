@@ -13,7 +13,7 @@
 
   <Properties>
     <DisplayName>UWPUnitTests</DisplayName>
-    <PublisherDisplayName>rebecch</PublisherDisplayName>
+    <PublisherDisplayName>AdaptiveCards</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 

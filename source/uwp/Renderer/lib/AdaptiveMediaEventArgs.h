@@ -1,13 +1,12 @@
 #pragma once
 #include "AdaptiveCards.Rendering.Uwp.h"
 
-AdaptiveNamespaceStart
-    class AdaptiveMediaEventArgs :
-        public Microsoft::WRL::RuntimeClass<
-        Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRt>,
-        ABI::AdaptiveNamespace::IAdaptiveMediaEventArgs>
+namespace AdaptiveNamespace
+{
+    class AdaptiveMediaEventArgs
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRt>, ABI::AdaptiveNamespace::IAdaptiveMediaEventArgs>
     {
-        AdaptiveRuntime(AdaptiveMediaEventArgs)
+        AdaptiveRuntime(AdaptiveMediaEventArgs);
 
     public:
         HRESULT RuntimeClassInitialize();
@@ -19,4 +18,4 @@ AdaptiveNamespaceStart
     private:
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveMedia> m_media;
     };
-AdaptiveNamespaceEnd
+}

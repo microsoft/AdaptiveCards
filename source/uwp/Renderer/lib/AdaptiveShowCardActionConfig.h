@@ -4,13 +4,12 @@
 #include "Enums.h"
 #include "HostConfig.h"
 
-AdaptiveNamespaceStart
-    class AdaptiveShowCardActionConfig :
-        public Microsoft::WRL::RuntimeClass<
-        Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        ABI::AdaptiveNamespace::IAdaptiveShowCardActionConfig>
+namespace AdaptiveNamespace
+{
+    class AdaptiveShowCardActionConfig
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveShowCardActionConfig>
     {
-        AdaptiveRuntime(AdaptiveShowCardActionConfig)
+        AdaptiveRuntime(AdaptiveShowCardActionConfig);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
@@ -32,4 +31,4 @@ AdaptiveNamespaceStart
     };
 
     ActivatableClass(AdaptiveShowCardActionConfig);
-AdaptiveNamespaceEnd
+}

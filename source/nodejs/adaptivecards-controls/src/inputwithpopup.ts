@@ -73,7 +73,7 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
             else {
                 this._labelElement.innerText = this._placeholderText ? this._placeholderText : "";
                 this._labelElement.classList.add("placeholder");
-            } 
+            }
         }
     }
 
@@ -162,7 +162,7 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
                 "ms-ctrl-slideRightToLeft",
                 "ms-ctrl-slideTopToBottom",
                 "ms-ctrl-slideRightToLeft");
-            
+
             this._overlayElement.appendChild(this._popupControlElement);
 
             var popupElementBounds = this._popupControlElement.getBoundingClientRect();
@@ -176,8 +176,8 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
             if (availableSpaceAbove < popupElementBounds.height && availableSpaceBelow < popupElementBounds.height) {
                 // Not enough space above or below root element
                 var actualPopupHeight = Math.min(popupElementBounds.height, window.innerHeight);
-    
-                this._popupControlElement.style.maxHeight = actualPopupHeight + "px";                
+
+                this._popupControlElement.style.maxHeight = actualPopupHeight + "px";
 
                 if (actualPopupHeight < popupElementBounds.height) {
                     top = Utils.getScrollY();
@@ -192,8 +192,8 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
                 if (availableSpaceLeft < popupElementBounds.width && availableSpaceRight < popupElementBounds.width) {
                     // Not enough space left or right of root element
                     var actualPopupWidth = Math.min(popupElementBounds.width, window.innerWidth);
-        
-                    this._popupControlElement.style.maxWidth = actualPopupWidth + "px";                
+
+                    this._popupControlElement.style.maxWidth = actualPopupWidth + "px";
 
                     if (actualPopupWidth < popupElementBounds.width) {
                         left = Utils.getScrollX();

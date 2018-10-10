@@ -1,0 +1,29 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.2",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Inline action of type show card won't render",
+			"wrap": true
+		},
+		{
+			"type": "Input.Text",
+			"id": "input2",
+			"inlineAction": {
+				"type": "Action.ShowCard",
+				"title": "Reply",
+				"card": {
+					"type": "AdaptiveCard",
+					"body": [
+						{
+							"type": "TextBlock",
+							"text": "Show cards are not supported for inline actions!"
+						}
+					]
+				}
+			}
+		}
+	]
+}

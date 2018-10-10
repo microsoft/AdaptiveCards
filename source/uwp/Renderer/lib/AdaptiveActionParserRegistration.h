@@ -3,21 +3,17 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "Util.h"
 
-AdaptiveNamespaceStart
-    class DECLSPEC_UUID("fc95029a-9ec0-4d93-b170-09c99876db20") AdaptiveActionParserRegistration :
-        public Microsoft::WRL::RuntimeClass<
-        Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-        Microsoft::WRL::Implements<ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration>,
-        Microsoft::WRL::CloakedIid<ITypePeek>,
-        Microsoft::WRL::FtmBase>
+namespace AdaptiveNamespace
+{
+    class DECLSPEC_UUID("fc95029a-9ec0-4d93-b170-09c99876db20") AdaptiveActionParserRegistration
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
+                                              Microsoft::WRL::Implements<ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration>,
+                                              Microsoft::WRL::CloakedIid<ITypePeek>,
+                                              Microsoft::WRL::FtmBase>
     {
-        AdaptiveRuntime(AdaptiveActionParserRegistration)
+        AdaptiveRuntime(AdaptiveActionParserRegistration);
 
-        typedef std::unordered_map<
-            std::string,
-            Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionParser>,
-            CaseInsensitiveHash,
-            CaseInsensitiveEqualTo> RegistrationMap;
+        typedef std::unordered_map<std::string, Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionParser>, CaseInsensitiveHash, CaseInsensitiveEqualTo> RegistrationMap;
 
     public:
         AdaptiveActionParserRegistration();
@@ -30,10 +26,7 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP Remove(_In_ HSTRING type);
 
         // ITypePeek method
-        void *PeekAt(REFIID riid) override
-        {
-            return PeekHelper(riid, this);
-        }
+        void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
         std::shared_ptr<ActionParserRegistration> GetSharedParserRegistration();
 
@@ -49,16 +42,16 @@ AdaptiveNamespaceStart
     public:
         SharedModelActionParser(AdaptiveNamespace::AdaptiveActionParserRegistration* parserRegistration) :
             m_parserRegistration(parserRegistration)
-        {}
+        {
+        }
 
         // IBaseCardActionParser
-        std::shared_ptr<BaseActionElement> Deserialize(
-            std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> elementParserRegistration,
-            std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> actionParserRegistration,
-            std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-            const Json::Value& value) override;
+        std::shared_ptr<BaseActionElement> Deserialize(std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> elementParserRegistration,
+                                                       std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> actionParserRegistration,
+                                                       std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+                                                       const Json::Value& value) override;
 
     private:
         Microsoft::WRL::ComPtr<AdaptiveNamespace::AdaptiveActionParserRegistration> m_parserRegistration;
     };
-AdaptiveNamespaceEnd
+}

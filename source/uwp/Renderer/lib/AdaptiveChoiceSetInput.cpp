@@ -12,7 +12,8 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace
+{
     AdaptiveChoiceSetInput::AdaptiveChoiceSetInput()
     {
         m_choices = Microsoft::WRL::Make<Vector<IAdaptiveChoiceInput*>>();
@@ -20,12 +21,14 @@ AdaptiveNamespaceStart
 
     HRESULT AdaptiveChoiceSetInput::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::ChoiceSetInput> choiceSet = std::make_shared<AdaptiveSharedNamespace::ChoiceSetInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::ChoiceSetInput> choiceSet =
+            std::make_shared<AdaptiveSharedNamespace::ChoiceSetInput>();
         return RuntimeClassInitialize(choiceSet);
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ChoiceSetInput>& sharedChoiceSetInput) try
+    _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInput::RuntimeClassInitialize(
+        const std::shared_ptr<AdaptiveSharedNamespace::ChoiceSetInput>& sharedChoiceSetInput) try
     {
         if (sharedChoiceSetInput == nullptr)
         {
@@ -40,58 +43,51 @@ AdaptiveNamespaceStart
 
         InitializeBaseElement(std::static_pointer_cast<BaseInputElement>(sharedChoiceSetInput));
         return S_OK;
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::get_IsMultiSelect(boolean* isMultiSelect)
+    _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInput::get_IsMultiSelect(boolean* isMultiSelect)
     {
         *isMultiSelect = m_isMultiSelect;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::put_IsMultiSelect(boolean isMultiSelect)
+    _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInput::put_IsMultiSelect(boolean isMultiSelect)
     {
         m_isMultiSelect = isMultiSelect;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::get_ChoiceSetStyle(ABI::AdaptiveNamespace::ChoiceSetStyle* choiceSetStyle)
+    _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInput::get_ChoiceSetStyle(ABI::AdaptiveNamespace::ChoiceSetStyle* choiceSetStyle)
     {
         *choiceSetStyle = m_choiceSetStyle;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::put_ChoiceSetStyle(ABI::AdaptiveNamespace::ChoiceSetStyle choiceSetStyle)
+    _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInput::put_ChoiceSetStyle(ABI::AdaptiveNamespace::ChoiceSetStyle choiceSetStyle)
     {
         m_choiceSetStyle = choiceSetStyle;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::get_Choices(IVector<IAdaptiveChoiceInput*>** choices)
+    _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInput::get_Choices(IVector<IAdaptiveChoiceInput*>** choices)
     {
         return m_choices.CopyTo(choices);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::get_Value(HSTRING * value)
+    _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInput::get_Value(HSTRING* value)
     {
         m_value.CopyTo(value);
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::put_Value(HSTRING value)
+    _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInput::put_Value(HSTRING value)
     {
         m_value.Set(value);
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveChoiceSetInput::get_ElementType(ElementType* elementType)
+    _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInput::get_ElementType(ElementType* elementType)
     {
         *elementType = ElementType::ChoiceSetInput;
         return S_OK;
@@ -99,7 +95,8 @@ AdaptiveNamespaceStart
 
     HRESULT AdaptiveChoiceSetInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::ChoiceSetInput> choiceSet = std::make_shared<AdaptiveSharedNamespace::ChoiceSetInput>();
+        std::shared_ptr<AdaptiveSharedNamespace::ChoiceSetInput> choiceSet =
+            std::make_shared<AdaptiveSharedNamespace::ChoiceSetInput>();
 
         RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseInputElement>(choiceSet)));
 
@@ -111,6 +108,7 @@ AdaptiveNamespaceStart
 
         sharedModel = choiceSet;
         return S_OK;
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-AdaptiveNamespaceEnd
+}
