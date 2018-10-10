@@ -15,27 +15,54 @@ import { BotFrameworkContainer } from "./containers/bf-image-container";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
 import { FullScreenHandler } from "./fullscreen-handler";
 import { Toolbar, ToolbarButton, ToolbarSeparator, ToolbarLabel, ToolbarChoicePicker } from "./toolbar";
+import { SidePane, SidePaneOrientation } from "./side-pane";
+import { Splitter } from "./splitter";
 
-declare var monacoEditor: any;
+// var monacoEditor: any;
+
+// const MAX_UNDO_STACK_SIZE = 50;
+
+// Monaco loads asynchronously via a call to require() from index.html
+// App initialization needs to happen after.
 declare function loadMonacoEditor(schema, callback);
 
-const MAX_UNDO_STACK_SIZE = 50;
+// var isMonacoEditorLoaded: boolean = false;
 
-var isMonacoEditorLoaded: boolean = false;
-
+/*
 function monacoEditorLoaded() {
-    document.getElementById("loadingEditor").remove();
+    if (!isMonacoEditorLoaded) {
+        isMonacoEditorLoaded = true;
 
-    monacoEditor.onDidChangeModelContent(
-        function (e) {
-            scheduleUpdateCardFromJson();
+        monacoEditor = window["monaco"].editor.create(
+            document.getElementById('jsonEditorHost'),
+            {
+                folding: true,
+                validate: false,
+                fontSize: 13.5,
+                language: 'json',
+                minimap: {
+                    enabled: false
+                }
+            }
+        );
+        
+        window.addEventListener('resize', function () {
+            monacoEditor.layout();
         });
 
-    isMonacoEditorLoaded = true;
+        document.getElementById("loadingEditor").remove();
 
-    updateJsonFromCard(false);
+        monacoEditor.onDidChangeModelContent(
+            function (e) {
+                scheduleUpdateCardFromJson();
+            });
+
+        updateJsonFromCard(false);
+    }
 }
+*/
 
+/*
 function getCurrentJsonPayload(): string {
     return isMonacoEditorLoaded ? monacoEditor.getValue() : Constants.defaultPayload;
 }
@@ -43,76 +70,7 @@ function getCurrentJsonPayload(): string {
 function setJsonPayload(payload: object) {
     monacoEditor.setValue(JSON.stringify(payload, null, 4));
 }
-
-var jsonUpdateTimer: NodeJS.Timer;
-var cardUpdateTimer: NodeJS.Timer;
-var updateLayoutTimer: NodeJS.Timer;
-
-var preventCardUpdate: boolean = false;
-
-function updateJsonFromCard(addToUndoStack: boolean = true) {
-    try {
-        preventCardUpdate = true;
-
-        if (!preventJsonUpdate && isMonacoEditorLoaded) {
-            let cardPayload = app.card.toJSON();
-
-            if (addToUndoStack) {
-                app.addToUndoStack(cardPayload);
-            }
-
-            setJsonPayload(cardPayload);
-        }
-    }
-    finally {
-        preventCardUpdate = false;
-    }
-}
-
-function scheduleUpdateJsonFromCard() {
-    clearTimeout(jsonUpdateTimer);
-
-    if (!preventJsonUpdate) {
-        jsonUpdateTimer = setTimeout(updateJsonFromCard, 100);
-    }
-}
-
-var preventJsonUpdate: boolean = false;
-
-function updateCardFromJson() {
-    try {
-        preventJsonUpdate = true;
-
-        if (!preventCardUpdate) {
-            app.designer.parseCard(getCurrentJsonPayload());
-        }
-    }
-    finally {
-        preventJsonUpdate = false;
-    }
-}
-
-function scheduleUpdateCardFromJson() {
-    clearTimeout(cardUpdateTimer);
-
-    if (!preventCardUpdate) {
-        cardUpdateTimer = setTimeout(updateCardFromJson, 100);
-    }
-}
-
-function scheduleLayoutUpdate() {
-    clearTimeout(updateLayoutTimer);
-
-    updateLayoutTimer = setTimeout(
-        () => {
-            app.designer.updateLayout(false);
-        },
-        50);
-}
-
-// Monaco loads asynchronously via a call to require() from index.html
-// App initialization needs to happen after.
-declare function loadMonacoEditor(schema: any, callback: () => void);
+*/
 
 class SidePaneHeader {
     private _sidePaneElement: HTMLElement;
@@ -327,6 +285,11 @@ class SnippetPaletteItem extends BasePaletteItem {
 }
 
 class DesignerApp {
+    private static MAX_UNDO_STACK_SIZE = 50;
+
+    private monacoEditor: any;
+    private isMonacoEditorLoaded: boolean = false;
+
     private _designer: Designer.CardDesigner;
     private _propertySheetHostConfig: Adaptive.HostConfig;
     private _designerHostElement: HTMLElement;
@@ -391,7 +354,7 @@ class DesignerApp {
         }
     }
 
-    private addPaletteItem(paletteItem: BasePaletteItem) {
+    private addPaletteItem(paletteItem: BasePaletteItem, hostElement: HTMLElement) {
         paletteItem.render();
         paletteItem.onStartDrag = (sender: BasePaletteItem) => {
             this._draggedPaletteItem = sender;
@@ -404,83 +367,86 @@ class DesignerApp {
             document.body.appendChild(this._draggedElement);
         }
 
-        this.paletteHostElement.appendChild(paletteItem.renderedElement);
+        hostElement.appendChild(paletteItem.renderedElement);
     }
 
     private buildPalette() {
-        if (this.paletteHostElement) {
-            this.paletteHostElement.innerHTML = "";
-
-            let categorizedTypes: Object = {};
-
-            for (let i = 0; i < Adaptive.AdaptiveCard.elementTypeRegistry.getItemCount(); i++) {
-                let dummyCardElement = Adaptive.AdaptiveCard.elementTypeRegistry.getItemAt(i).createInstance();
-                let peerRegistration = Designer.CardDesigner.cardElementPeerRegistry.findTypeRegistration((<any>dummyCardElement).constructor);
-
-                if (peerRegistration) {
-                    if (!categorizedTypes.hasOwnProperty(peerRegistration.category)) {
-                        categorizedTypes[peerRegistration.category] = [];
-                    }
-
-                    let paletteItem = new ElementPaletteItem(
-                        Adaptive.AdaptiveCard.elementTypeRegistry.getItemAt(i),
-                        peerRegistration
-                    )
-
-                    categorizedTypes[peerRegistration.category].push(paletteItem);
-                }
-            }
-
-            for (let category in categorizedTypes) {
-                let node = document.createElement('li');
-                node.innerText = category;
-                node.className = "acd-palette-category";
-                this.paletteHostElement.appendChild(node);
-
-                for (var i = 0; i < categorizedTypes[category].length; i++) {
-                    this.addPaletteItem(categorizedTypes[category][i]);
-                }
-            }
-
-            /* This is to test "snippet" support. Snippets are not yet fully baked
-            let personaHeaderSnippet = new SnippetPaletteItem("Persona header");
-            personaHeaderSnippet.snippet = {
-                type: "ColumnSet",
-                columns: [
-                    {
-                        width: "auto",
-                        items: [
-                            {
-                                type: "Image",
-                                size: "Small",
-                                style: "Person",
-                                url: "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
-                            }
-                        ]
-                    },
-                    {
-                        width: "stretch",
-                        items: [
-                            {
-                                type: "TextBlock",
-                                text: "John Doe",
-                                weight: "Bolder",
-                                wrap: true
-                            },
-                            {
-                                type: "TextBlock",
-                                spacing: "None",
-                                text: "Additional information",
-                                wrap: true
-                            }
-                        ]
-                    }
-                ]
-            };
-
-            this.addPaletteItem(personaHeaderSnippet);
-            */
+        if (!this._toolPalettePane.content) {
+            this._toolPalettePane.content = document.createElement("div");
+            this._toolPalettePane.content.className = "acd-dockedPane";
         }
+
+        this._toolPalettePane.content.innerHTML = "";
+
+        let categorizedTypes: Object = {};
+
+        for (let i = 0; i < Adaptive.AdaptiveCard.elementTypeRegistry.getItemCount(); i++) {
+            let dummyCardElement = Adaptive.AdaptiveCard.elementTypeRegistry.getItemAt(i).createInstance();
+            let peerRegistration = Designer.CardDesigner.cardElementPeerRegistry.findTypeRegistration((<any>dummyCardElement).constructor);
+
+            if (peerRegistration) {
+                if (!categorizedTypes.hasOwnProperty(peerRegistration.category)) {
+                    categorizedTypes[peerRegistration.category] = [];
+                }
+
+                let paletteItem = new ElementPaletteItem(
+                    Adaptive.AdaptiveCard.elementTypeRegistry.getItemAt(i),
+                    peerRegistration
+                )
+
+                categorizedTypes[peerRegistration.category].push(paletteItem);
+            }
+        }
+
+        for (let category in categorizedTypes) {
+            let node = document.createElement('li');
+            node.innerText = category;
+            node.className = "acd-palette-category";
+            this._toolPalettePane.content.appendChild(node);
+
+            for (var i = 0; i < categorizedTypes[category].length; i++) {
+                this.addPaletteItem(categorizedTypes[category][i], this._toolPalettePane.content);
+            }
+        }
+
+        /* This is to test "snippet" support. Snippets are not yet fully baked
+        let personaHeaderSnippet = new SnippetPaletteItem("Persona header");
+        personaHeaderSnippet.snippet = {
+            type: "ColumnSet",
+            columns: [
+                {
+                    width: "auto",
+                    items: [
+                        {
+                            type: "Image",
+                            size: "Small",
+                            style: "Person",
+                            url: "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+                        }
+                    ]
+                },
+                {
+                    width: "stretch",
+                    items: [
+                        {
+                            type: "TextBlock",
+                            text: "John Doe",
+                            weight: "Bolder",
+                            wrap: true
+                        },
+                        {
+                            type: "TextBlock",
+                            spacing: "None",
+                            text: "Additional information",
+                            wrap: true
+                        }
+                    ]
+                }
+            ]
+        };
+
+        this.addPaletteItem(personaHeaderSnippet);
+        */
     }
 
     private endDrag() {
@@ -524,7 +490,7 @@ class DesignerApp {
         };
         this._designer.onLayoutUpdated = (isFullRefresh: boolean) => {
             if (isFullRefresh) {
-                scheduleUpdateJsonFromCard();
+                this.scheduleUpdateJsonFromCard();
             }
 
             this.buildTreeView();
@@ -572,6 +538,103 @@ class DesignerApp {
         this.recreateDesigner();
     }
 
+    public updateJsonEditorLayout() {
+        if (this.isMonacoEditorLoaded) {
+            // Monaco is very finicky. It will apparently only properly layout if
+            // its direct container has an explicit height.
+            /*
+            let jsonEditorPaneRect = document.getElementById("jsonEditorPane").getBoundingClientRect();
+            let jsonEditorHeaderRect = jsonEditorPaneHeader.getBoundingRect();
+    
+            let jsonEditorHost = document.getElementById("jsonEditorHost");
+    
+            jsonEditorHost.style.height = (jsonEditorPaneRect.height - jsonEditorHeaderRect.height) + "px";
+            */
+          
+            let jsonEditorPaneRect = this._jsonEditorPane.renderedElement.getBoundingClientRect();
+            let jsonEditorHeaderRect = this._jsonEditorPane.getHeaderBoundingRect();
+   
+            this._jsonEditorPane.content.style.height = (jsonEditorPaneRect.height - jsonEditorHeaderRect.height) + "px";
+   
+            this.monacoEditor.layout();
+        }
+    }
+    
+    public updateFullLayout() {
+        this.scheduleLayoutUpdate();
+        this.updateJsonEditorLayout();
+    }
+    
+    private jsonUpdateTimer: NodeJS.Timer;
+    private cardUpdateTimer: NodeJS.Timer;
+    private updateLayoutTimer: NodeJS.Timer;
+    
+    private preventCardUpdate: boolean = false;
+    
+    private setJsonPayload(payload: object) {
+        this.monacoEditor.setValue(JSON.stringify(payload, null, 4));
+    }
+
+    private updateJsonFromCard(addToUndoStack: boolean = true) {
+        try {
+            this.preventCardUpdate = true;
+    
+            if (!this.preventJsonUpdate && this.isMonacoEditorLoaded) {
+                let cardPayload = this.card.toJSON();
+    
+                if (addToUndoStack) {
+                    this.addToUndoStack(cardPayload);
+                }
+    
+                this.setJsonPayload(cardPayload);
+            }
+        }
+        finally {
+            this.preventCardUpdate = false;
+        }
+    }
+    
+    private scheduleUpdateJsonFromCard() {
+        clearTimeout(this.jsonUpdateTimer);
+    
+        if (!this.preventJsonUpdate) {
+            this.jsonUpdateTimer = setTimeout(() => { this.updateJsonFromCard(); }, 100);
+        }
+    }
+    
+    private preventJsonUpdate: boolean = false;
+    
+    private getCurrentJsonPayload(): string {
+        return this.isMonacoEditorLoaded ? this.monacoEditor.getValue() : Constants.defaultPayload;
+    }
+
+    public updateCardFromJson() {
+        try {
+            this.preventJsonUpdate = true;
+    
+            if (!this.preventCardUpdate) {
+                this.designer.parseCard(this.getCurrentJsonPayload());
+            }
+        }
+        finally {
+            this.preventJsonUpdate = false;
+        }
+    }
+    
+    public scheduleUpdateCardFromJson() {
+        clearTimeout(this.cardUpdateTimer);
+    
+        if (!this.preventCardUpdate) {
+            this.cardUpdateTimer = setTimeout(() => { this.updateCardFromJson(); }, 100);
+        }
+    }
+    
+    public scheduleLayoutUpdate() {
+        clearTimeout(this.updateLayoutTimer);
+    
+        this.updateLayoutTimer = setTimeout(() => { app.designer.updateLayout(false); }, 50);
+    }
+    
     readonly hostContainers: Array<HostContainer> = [];
 
     propertySheetHostElement: HTMLElement;
@@ -663,7 +726,7 @@ class DesignerApp {
         this._fullScreenHandler.onFullScreenChanged = (isFullScreen: boolean) => {
             this._fullScreenButton.caption = isFullScreen ? "Exit full screen" : "Enter full screen";
     
-            updateFullLayout();
+            this.updateFullLayout();
         }
 
         this._propertySheetHostConfig = new Adaptive.HostConfig(
@@ -797,12 +860,58 @@ class DesignerApp {
         this._propertySheetHostConfig.cssClassNamePrefix = "default";
         this._designerHostElement = designerHostElement;
         this._selectedHostContainer = this.hostContainers[0];
-
-        this.recreateDesigner();
     }
 
+    private _toolPalettePane: SidePane;
+    private _jsonEditorPane: SidePane;
+
+    private onResize() {
+        this.monacoEditor.layout();
+    }
+
+    private monacoEditorLoaded() {
+        let monacoConfiguration = {
+            schemas: [
+                {
+                    uri: "http://adaptivecards.io/schemas/adaptive-card.json",
+                    schema: adaptiveCardSchema,
+                    fileMatch: ["*"],
+                }
+            ],
+            validate: false,
+            allowComments: true
+        }
+
+        window["monaco"].languages.json.jsonDefaults.setDiagnosticsOptions(monacoConfiguration);
+    
+        this._jsonEditorPane.content.innerHTML = "";
+
+        this.monacoEditor = window["monaco"].editor.create(
+            this._jsonEditorPane.content,
+            {
+                folding: true,
+                validate: false,
+                fontSize: 13.5,
+                language: 'json',
+                minimap: {
+                    enabled: false
+                }
+            }
+        );
+        
+        this.monacoEditor.onDidChangeModelContent(() => { this.scheduleUpdateCardFromJson(); });
+
+        window.addEventListener('resize', () => { this.onResize(); });
+
+        this.isMonacoEditorLoaded = true;
+
+        this.updateJsonFromCard(false);
+    }
+    
     render(): HTMLElement {
         let root = document.createElement("div");
+
+        // Toolbar
         root.appendChild(this._toolbar.render());
 
         new Clipboard(
@@ -812,6 +921,79 @@ class DesignerApp {
                     return JSON.stringify(app.card.toJSON(), null, 4);
                 }
             });
+
+        // Tool palette
+        this._toolPalettePane = new SidePane(
+            "toolPalette",
+            "Tool box",
+            "selector-toolPalette",
+            document.getElementById("leftCollapsedPaneTabHost"));
+        this._toolPalettePane.onToggled = (sender) => {
+            this.updateFullLayout();
+        }
+        this._toolPalettePane.render();
+
+        let surfaceBelowToolbar = document.createElement("div");
+        surfaceBelowToolbar.style.display = "flex";
+        surfaceBelowToolbar.style.flex = "1 1 auto";
+        surfaceBelowToolbar.style.overflowY = "hidden";
+
+        surfaceBelowToolbar.appendChild(this._toolPalettePane.renderedElement);
+
+        let surfaceRightOfToolPalette = document.createElement("div");
+        surfaceRightOfToolPalette.style.display = "flex";
+        surfaceRightOfToolPalette.style.flexDirection = "column";
+        surfaceRightOfToolPalette.style.flex = "1 1 100%";
+        surfaceRightOfToolPalette.style.overflow = "hidden";
+
+        let surfaceAboveJsonEditor = document.createElement("div");
+        surfaceAboveJsonEditor.style.display = "flex";
+        surfaceAboveJsonEditor.style.flex = "1 1 100%";
+        surfaceAboveJsonEditor.style.overflow = "hidden";
+
+        surfaceRightOfToolPalette.appendChild(surfaceAboveJsonEditor);
+
+        // JSON editor pane
+        this._jsonEditorPane = new SidePane(
+            "jsonEditor",
+            "JSON",
+            "selector-jsonEditor",
+            document.getElementById("bottomCollapsedPaneTabHost"),
+            SidePaneOrientation.Horizontal
+        )
+        this._jsonEditorPane.onToggled = (sender) => {
+            this.updateFullLayout();
+        }
+        this._jsonEditorPane.render();
+        this._jsonEditorPane.renderedElement.classList.add("acd-json-editor-pane");
+
+        this._jsonEditorPane.content = document.createElement("div");
+        this._jsonEditorPane.content.className = "acd-json-editor-host";
+        
+        let jsonEditorLoading = document.createElement("div");
+        jsonEditorLoading.style.padding = "8px";
+        jsonEditorLoading.innerText = "Loading editor..."
+
+        this._jsonEditorPane.content.appendChild(jsonEditorLoading);
+
+        // Splitter for JSON editor pane
+        let jsonEditorSplitter = new Splitter(this._jsonEditorPane.renderedElement, false);
+        jsonEditorSplitter.onResized = (splitter: Splitter, newSize: number) => {
+            this.updateJsonEditorLayout();
+
+            this._jsonEditorPane.saveState();
+        }
+        jsonEditorSplitter.renderedElement.classList.add("selector-jsonEditor");
+
+        surfaceRightOfToolPalette.appendChild(jsonEditorSplitter.renderedElement);
+        surfaceRightOfToolPalette.appendChild(this._jsonEditorPane.renderedElement);
+
+        surfaceBelowToolbar.appendChild(surfaceRightOfToolPalette);
+        root.appendChild(surfaceBelowToolbar);
+
+        this.recreateDesigner();
+
+        loadMonacoEditor(adaptiveCardSchema, () => { this.monacoEditorLoaded(); });
 
         return root;
     }
@@ -837,7 +1019,7 @@ class DesignerApp {
 
             this._undoStack.push(payload);
 
-            if (this._undoStack.length > MAX_UNDO_STACK_SIZE) {
+            if (this._undoStack.length > DesignerApp.MAX_UNDO_STACK_SIZE) {
                 this._undoStack.splice(0, 1);
             }
 
@@ -857,7 +1039,7 @@ class DesignerApp {
 
             let card = this._undoStack[this._undoStackIndex];
 
-            setJsonPayload(card);
+            this.setJsonPayload(card);
 
             this.updateToolbar();
         }
@@ -873,7 +1055,7 @@ class DesignerApp {
 
             let card = this._undoStack[this._undoStackIndex];
 
-            setJsonPayload(card);
+            this.setJsonPayload(card);
 
             this.updateToolbar();
         }
@@ -887,7 +1069,7 @@ class DesignerApp {
             ]
         }
 
-        setJsonPayload(card);
+        this.setJsonPayload(card);
     }
 
     handlePointerMove(e: PointerEvent) {
@@ -921,6 +1103,7 @@ class DesignerApp {
         this.designer.endDrag();
     }
 
+    /*
     get paletteHostElement(): HTMLElement {
         return this._paletteHostElement;
     }
@@ -930,6 +1113,7 @@ class DesignerApp {
             this._paletteHostElement = value;
         }
     }
+    */
 
     get card(): Adaptive.AdaptiveCard {
         return this._card;
@@ -957,7 +1141,7 @@ class DesignerApp {
     }
 }
 
-class Splitter {
+class SplitterOld {
     private _splitterElement: HTMLElement;
     private _sizedELement: HTMLElement;
     private _isPointerDown: boolean;
@@ -1017,7 +1201,7 @@ class Splitter {
         this._isPointerDown = false;
     }
 
-    onResized: (sender: Splitter, newSize: number) => void;
+    onResized: (sender: SplitterOld, newSize: number) => void;
 
     isVertical: boolean = false;
     minimum: number = 50;
@@ -1034,30 +1218,10 @@ class Splitter {
 }
 
 var app: DesignerApp;
-var jsonEditorHorizontalSplitter: Splitter;
-var propertySheetVerticalSplitter: Splitter;
-var treeViewVerticalSplitter: Splitter;
+var jsonEditorHorizontalSplitter: SplitterOld;
+var propertySheetVerticalSplitter: SplitterOld;
+var treeViewVerticalSplitter: SplitterOld;
 var jsonEditorPaneHeader: SidePaneHeader;
-
-function updateJsonEditorLayout() {
-    if (isMonacoEditorLoaded) {
-        // Monaco is very finicky. It will apparently only properly layout if
-        // its direct container has an explicit height.
-        let jsonEditorPaneRect = document.getElementById("jsonEditorPane").getBoundingClientRect();
-        let jsonEditorHeaderRect = jsonEditorPaneHeader.getBoundingRect();
-
-        let jsonEditorHost = document.getElementById("jsonEditorHost");
-
-        jsonEditorHost.style.height = (jsonEditorPaneRect.height - jsonEditorHeaderRect.height) + "px";
-
-        monacoEditor.layout();
-    }
-}
-
-function updateFullLayout() {
-    scheduleLayoutUpdate();
-    updateJsonEditorLayout();
-}
 
 window.onload = () => {
     if (!SettingsManager.isLocalStorageAvailable) {
@@ -1066,6 +1230,7 @@ window.onload = () => {
 
     // Prepare tool palette pane
 
+    /*
     let toolPalettePaneHeader = new SidePaneHeader(document.getElementById("toolPalettePane"), "Tool box");
     toolPalettePaneHeader.collapsedTabContainer = document.getElementById("leftCollapsedPaneTabHost");
     toolPalettePaneHeader.collapsedTabClass = "rotated90DegreesCounterClockwise";
@@ -1073,23 +1238,25 @@ window.onload = () => {
     toolPalettePaneHeader.onToggled = (sender: SidePaneHeader) => {
         updateFullLayout();
     };
+    */
 
     // Prepare JSON editor pane
 
+    /*
     jsonEditorPaneHeader = new SidePaneHeader(document.getElementById("jsonEditorPane"), "JSON");
     jsonEditorPaneHeader.collapsedTabContainer = document.getElementById("bottomCollapsedPaneTabHost");
     jsonEditorPaneHeader.targetElementsSelector = "selector-jsonEditor";
     jsonEditorPaneHeader.onToggled = (sender: SidePaneHeader) => {
-        updateFullLayout();
+        app.updateFullLayout();
 
         SettingsManager.trySaveSetting("jsonEditorIsExpanded", sender.isExpanded.toString());
     };
 
     let jsonEditorPane =  document.getElementById("jsonEditorPane");
 
-    jsonEditorHorizontalSplitter = new Splitter(document.getElementById("horizontalSplitter"), jsonEditorPane);
-    jsonEditorHorizontalSplitter.onResized = (splitter: Splitter, newSize: number) => {
-        updateJsonEditorLayout();
+    jsonEditorHorizontalSplitter = new SplitterOld(document.getElementById("horizontalSplitter"), jsonEditorPane);
+    jsonEditorHorizontalSplitter.onResized = (splitter: SplitterOld, newSize: number) => {
+        app.updateJsonEditorLayout();
 
         SettingsManager.trySaveSetting("jsonEditorHeight", newSize.toString());
     }
@@ -1105,6 +1272,7 @@ window.onload = () => {
     if (jsonEditorIsExpandedSetting.succeeded && !jsonEditorIsExpandedSetting.value) {
         jsonEditorPaneHeader.toggle();
     }
+    */
 
     // Prepare property sheet pane
 
@@ -1113,18 +1281,18 @@ window.onload = () => {
     propertySheetPaneHeader.collapsedTabClass = "rotated90DegreesClockwise";
     propertySheetPaneHeader.targetElementsSelector = "selector-propertySheet";
     propertySheetPaneHeader.onToggled = (sender: SidePaneHeader) => {
-        updateFullLayout();
+        app.updateFullLayout();
 
         SettingsManager.trySaveSetting("propertySheetIsExpanded", sender.isExpanded.toString());
     };
 
     let propertySheetPane = document.getElementById("propertySheetPane");
 
-    propertySheetVerticalSplitter = new Splitter(document.getElementById("propertyVerticalSplitter"), propertySheetPane);
+    propertySheetVerticalSplitter = new SplitterOld(document.getElementById("propertyVerticalSplitter"), propertySheetPane);
     propertySheetVerticalSplitter.isVertical = true;
     propertySheetVerticalSplitter.minimum = 230;
-    propertySheetVerticalSplitter.onResized = (splitter: Splitter, newSize: number) => {
-        scheduleLayoutUpdate();
+    propertySheetVerticalSplitter.onResized = (splitter: SplitterOld, newSize: number) => {
+        app.scheduleLayoutUpdate();
 
         SettingsManager.trySaveSetting("propertySheetWidth", newSize.toString());
     }
@@ -1148,18 +1316,18 @@ window.onload = () => {
     treeViewPaneHeader.collapsedTabClass = "rotated90DegreesClockwise";
     treeViewPaneHeader.targetElementsSelector = "selector-treeView";
     treeViewPaneHeader.onToggled = (sender: SidePaneHeader) => {
-        updateFullLayout();
+        app.updateFullLayout();
 
         SettingsManager.trySaveSetting("treeViewIsExpanded", sender.isExpanded.toString());
     };
 
     let treeViewPane = document.getElementById("treeViewPane");
 
-    treeViewVerticalSplitter = new Splitter(document.getElementById("treeViewVerticalSplitter"), treeViewPane);
+    treeViewVerticalSplitter = new SplitterOld(document.getElementById("treeViewVerticalSplitter"), treeViewPane);
     treeViewVerticalSplitter.isVertical = true;
     treeViewVerticalSplitter.minimum = 140;
-    treeViewVerticalSplitter.onResized = (splitter: Splitter, newSize: number) => {
-        scheduleLayoutUpdate();
+    treeViewVerticalSplitter.onResized = (splitter: SplitterOld, newSize: number) => {
+        app.scheduleLayoutUpdate();
 
         SettingsManager.trySaveSetting("treeViewWidth", newSize.toString());
     }
@@ -1180,24 +1348,24 @@ window.onload = () => {
 
     let card = new Adaptive.AdaptiveCard();
     card.onImageLoaded = (image: Adaptive.Image) => {
-        scheduleLayoutUpdate();
+        app.scheduleLayoutUpdate();
     }
 
     app = new DesignerApp(document.getElementById("designerHost"));
     app.propertySheetHostElement = document.getElementById("propertySheetHost");
     app.treeViewHostElement = document.getElementById("treeViewHost");
     app.commandListHostElement = document.getElementById("commandsHost");
-    app.paletteHostElement = document.getElementById("toolPalette");
+    // app.paletteHostElement = document.getElementById("toolPalette");
 
     window.addEventListener("pointermove", (e: PointerEvent) => { app.handlePointerMove(e); });
-    window.addEventListener("resize", () => { scheduleLayoutUpdate(); });
+    window.addEventListener("resize", () => { app.scheduleLayoutUpdate(); });
     window.addEventListener("pointerup", (e: PointerEvent) => { app.handlePointerUp(e); });
+
+    document.getElementById("designerRootHost").appendChild(app.render());
 
     app.card = card;
 
-    loadMonacoEditor(adaptiveCardSchema, monacoEditorLoaded);
+    // loadMonacoEditor(adaptiveCardSchema, monacoEditorLoaded);
 
-    updateCardFromJson();
-
-    document.getElementById("designerRootHost").appendChild(app.render());
+    app.updateCardFromJson();
 };
