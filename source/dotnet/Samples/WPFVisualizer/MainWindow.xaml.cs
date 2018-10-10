@@ -43,7 +43,7 @@ namespace WpfVisualizer
             timer.Tick += Timer_Tick;
             timer.Start();
 
-            foreach (var config in Directory.GetFiles(@"..\..\..\..\..\..\samples\v1.0\HostConfig", "*.json"))
+            foreach (var config in Directory.GetFiles(@"..\..\..\..\..\..\samples\HostConfig", "*.json"))
             {
                 hostConfigs.Items.Add(new ComboBoxItem
                 {
