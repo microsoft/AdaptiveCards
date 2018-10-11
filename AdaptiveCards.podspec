@@ -2,7 +2,7 @@
 Pod::Spec.new do |spec|
   spec.name             = 'AdaptiveCards'
 
-  spec.version          = '1.0.3'
+  spec.version = '1.0.3'
   
   spec.license          = { :type => 'MIT', :text => <<-LICENSE 
                                 Copyright (c) 2017 Microsoft
@@ -33,8 +33,8 @@ Pod::Spec.new do |spec|
   
   spec.summary          = 'Adaptive Cards are a new way for developers to exchange card content in a common and consistent way'
   
-  spec.source = { :http => https://microsoft.vsblob.visualstudio.com/_apis/blob/blobs/87140F29A9B457F345B93737A64E310191F92F85835BD6BEFF22B2842F9F5EE200
- :type => ''zip''}
+  spec.source = { :http => ''
+ :type => 'zip'}
  
   spec.vendored_frameworks = 'AdaptiveCards.framework'
   

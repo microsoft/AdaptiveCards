@@ -15,19 +15,20 @@ headers['Authorization'] = b'Basic ' + base64.b64encode(bytes(personalAccessToke
 url = 'https://artifacts.dev.azure.com/microsoft/_apis/drop/manifests/os%2f20181005.1%2f12228408?api-version=2.0'
 
 r = requests.get(url, headers=headers)
-print(r)
-#urlToArtifacts = (r.json()[0]['blob']['url'])
-#
-#outputBuff = [];
-#with open('AdaptiveCards.podspec', 'r') as f:
-#    lines = f.readlines();
-#    for line in lines:
-#        if 'spec.source' in line:
-#            outputBuff.append("  spec.source = { :http => %s\n :type => ''zip''}\n" % urlToArtifacts) 
-#        elif ':type => ''zip ''' not in line:
-#            outputBuff.append(line)
-#
-#with open('AdaptiveCards.podspec', 'w') as f:
-#    f.writelines(outputBuff)
-#
-#print(urlToArtifacts)
+urlToArtifacts = (r.json()[0]['blob']['url'])
+
+outputBuff = [];
+with open('AdaptiveCards.podspec', 'r') as f:
+    lines = f.readlines();
+    for line in lines:
+        if 'spec.source' in line:
+            outputBuff.append("  spec.source = { :http => \'%s\'\n :type => \'zip\'}\n" % urlToArtifacts) 
+        elif 'spec.version' in line:
+            outputBuff.append("  spec.version = \'%s\'\n" % '1.1.0') 
+        elif ':type => \'zip\'' not in line:
+            outputBuff.append(line)
+
+with open('AdaptiveCards.podspec', 'w') as f:
+    f.writelines(outputBuff)
+
+print(urlToArtifacts)
