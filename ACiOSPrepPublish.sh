@@ -5,7 +5,7 @@ ACPAT='7rvtdw3ihxbfo262z7h24asnkr42znukpzzccy7fl2eoinfdqrdq'
 
 machineRepo='machine microsoft.visualstudio.com'
 userRepo='login joswo@microsoft.com'
-ACRepoPAT='lp4qhhgrruxy5k6sznwdmlb3sk3lyivodox5x4vntnje5vdtaca'
+ACRepoPAT='hj3sp5iwflhtpfcxjru2tlpaki5ac24vejrxjiocaxk5r7gppaxa'
 
 echo -e "\n${machine}" >> ~/.netrc
 echo "  ${user}" >> ~/.netrc
