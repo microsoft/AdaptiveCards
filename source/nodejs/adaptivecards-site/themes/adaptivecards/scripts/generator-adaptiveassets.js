@@ -43,6 +43,15 @@ var assets = [
         dest: function (p) { return "visualizer/" + p; }
     },
     {
+        // monaco editor
+        path: "node_modules/monaco-editor/min/vs/**/*.*",
+        dest: function (p) {
+            var destination = p;
+            var regexp = new RegExp('node_modules/monaco-editor/min/vs', 'i');
+            return destination.replace(regexp, 'designer/monaco');
+        }
+    },
+    {
         // monaco loader
         // this is a temp hack until Monaco works with webpack
         // https://github.com/Microsoft/monaco-editor/issues/18

@@ -1,5 +1,5 @@
 function loadMonacoEditor(jsonSchema, callback) {
-    require.config({ paths: { 'vs': './editor/monaco/min/vs' } });
+    require.config({ paths: { 'vs': './monaco' } });
     require(['vs/editor/editor.main'], function () {
         if (jsonSchema) {
             var config = {
@@ -29,7 +29,7 @@ function loadMonacoEditor(jsonSchema, callback) {
                 }
             }
         );
-        
+
         window.addEventListener(
             "resize", function () {
                 monacoEditor.layout();
