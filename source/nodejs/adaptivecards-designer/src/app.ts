@@ -8,22 +8,30 @@ import { ToastContainer } from "./containers/toast-container";
 import { TimelineContainer } from "./containers/timeline-container";
 import { BotFrameworkContainer } from "./containers/bf-image-container";
 import { ToolbarButton, ToolbarSeparator } from "./toolbar";
+import { HostContainer } from "./containers/host-container";
 
 window.onload = () => {
     if (!SettingsManager.isLocalStorageAvailable) {
         console.log("Local storage is not available.");
     }
 
-    let designer = new CardDesigner();
+    // Prepare a list of host containers
+    // This is not required. When no list is passed (empty array or null), the designer
+    // uses a default built-in host container, and the host container pixker in the
+    // toolbar is hidden.
+    let hostContainers: Array<HostContainer> = [];
+    hostContainers.push(new WebChatContainer("Bot Framework WebChat", "css/webchat-container.css"));
+    hostContainers.push(new CortanaContainer("Cortana Skills", "css/cortana-container.css"));
+    hostContainers.push(new OutlookContainer("Outlook Actionable Messages", "css/outlook-container.css"));
+    hostContainers.push(new TimelineContainer("Windows Timeline", "css/timeline-container.css"));
+    hostContainers.push(new DarkTeamsContainer("Microsoft Teams - Dark", "css/teams-container-dark.css"));
+    hostContainers.push(new LightTeamsContainer("Microsoft Teams - Light", "css/teams-container-light.css"));
+    hostContainers.push(new BotFrameworkContainer("Bot Framework Other Channels (Image render)", "css/bf-image-container.css"));
+    hostContainers.push(new ToastContainer("Windows Notifications (Preview)", "css/toast-container.css"));
 
-    designer.hostContainers.push(new WebChatContainer("Bot Framework WebChat", "css/webchat-container.css"));
-    designer.hostContainers.push(new CortanaContainer("Cortana Skills", "css/cortana-container.css"));
-    designer.hostContainers.push(new OutlookContainer("Outlook Actionable Messages", "css/outlook-container.css"));
-    designer.hostContainers.push(new TimelineContainer("Windows Timeline", "css/timeline-container.css"));
-    designer.hostContainers.push(new DarkTeamsContainer("Microsoft Teams - Dark", "css/teams-container-dark.css"));
-    designer.hostContainers.push(new LightTeamsContainer("Microsoft Teams - Light", "css/teams-container-light.css"));
-    designer.hostContainers.push(new BotFrameworkContainer("Bot Framework Other Channels (Image render)", "css/bf-image-container.css"));
-    designer.hostContainers.push(new ToastContainer("Windows Notifications (Preview)", "css/toast-container.css"));
+    let designer = new CardDesigner(hostContainers);
+
+    /* Here's how to add buttons to the toolbar:
 
     designer.toolbar.addElement(new ToolbarSeparator());
     designer.toolbar.addElement(
@@ -31,17 +39,26 @@ window.onload = () => {
             "Save",
             null,
             (sender) => {
+                // Here is how to get the payload of the current card from the designer
                 let card = designer.getCard();
 
                 alert(JSON.stringify(card, null, 4));
             }
         )
     )
+    */
+
+    // NOTE: Adding toolbar elements must be done BEFORE the designer is attached
 
     designer.attachTo(document.getElementById("designerRootHost"));
 
+    /* Here's how to collapse certain panes by default:
+    
     designer.treeViewPane.collapse();
     designer.jsonEditorPane.collapse();
+    */
+
+    /* Here's how to set the card payload in the designer:
 
     designer.setCard(
         {
@@ -55,4 +72,7 @@ window.onload = () => {
             ]
         }
     );
+    */
+
+    // NOTE: Collapsing panes/setting the card payload must be done AFTER the designer is attached
 };

@@ -201,7 +201,7 @@ export class OutlookContainer extends HostContainer {
                     }
                 },
                 emphasis: {
-                    backgroundColor: "#FF0000",
+                    backgroundColor: "#08000000",
                     foregroundColors: {
                         default: {
                             default: "#333333",

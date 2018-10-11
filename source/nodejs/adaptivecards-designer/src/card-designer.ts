@@ -17,6 +17,7 @@ export class CardDesigner {
     private static MAX_UNDO_STACK_SIZE = 50;
 
     private _monacoEditor: any;
+    private _hostContainers: Array<HostContainer>;
     private _isMonacoEditorLoaded: boolean = false;
     private _designerSurface: Designer.CardDesignerSurface;
     private _propertySheetHostConfig: Adaptive.HostConfig;
@@ -367,23 +368,23 @@ export class CardDesigner {
 
         this.toolbar.addElement(this._fullScreenButton);
 
-        if (this.hostContainers && this.hostContainers.length > 0) {
+        if (this._hostContainers && this._hostContainers.length > 0) {
             this.toolbar.addElement(new ToolbarSeparator());
             this.toolbar.addElement(new ToolbarLabel("Select Host app:"));
 
             this._hostContainerChoicePicker = new ToolbarChoicePicker();
 
-            for (let i = 0; i < this.hostContainers.length; i++) {
+            for (let i = 0; i < this._hostContainers.length; i++) {
                 this._hostContainerChoicePicker.choices.push(
                     {
-                        name: this.hostContainers[i].name,
+                        name: this._hostContainers[i].name,
                         value: i.toString(),
                     }
                 );
             }
 
             this._hostContainerChoicePicker.onChanged = (sender) => {
-                this.activeHostContainer = this.hostContainers[Number.parseInt(this._hostContainerChoicePicker.value)];
+                this.activeHostContainer = this._hostContainers[Number.parseInt(this._hostContainerChoicePicker.value)];
 
                 this.activeHostContainerChanged();
             }
@@ -547,10 +548,11 @@ export class CardDesigner {
         }
     }
 
-    readonly hostContainers: Array<HostContainer> = [];
     readonly toolbar: Toolbar = new Toolbar();
 
-    constructor() {
+    constructor(hostContainers: Array<HostContainer> = null) {
+        this._hostContainers = hostContainers ? hostContainers : [];
+
         this.prepareToolbar();
 
         this._propertySheetHostConfig = new Adaptive.HostConfig(
@@ -685,8 +687,8 @@ export class CardDesigner {
     }
 
     attachTo(root: HTMLElement)  {
-        if (this.hostContainers && this.hostContainers.length > 0) {
-            this._activeHostContainer = this.hostContainers[0];
+        if (this._hostContainers && this._hostContainers.length > 0) {
+            this._activeHostContainer = this._hostContainers[0];
         }
         else {
             this._activeHostContainer = new DefaultContainer("Default", "./css/default-container.css");
