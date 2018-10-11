@@ -9,8 +9,8 @@ headers = {}
 
 headers['Authorization'] = b'Basic ' + base64.b64encode(bytes(personalAccessToken, 'utf-8'))
 
-#buildId = '%2f' + os.environ['BUILD_BUILDNUMBER'] + '%2f' +  os.environ['BUILD_BUILDID']
-
+buildId = '%2f' + os.environ['BUILD_BUILDNUMBER'] + '%2f' +  os.environ['BUILD_BUILDID']
+print(buildId);
 #url = 'https://artifacts.dev.azure.com/microsoft/_apis/drop/manifests/os' + buildId + 'api-version=2.0'
 url = 'https://artifacts.dev.azure.com/microsoft/_apis/drop/manifests/os%2f20181005.1%2f12228408?api-version=2.0'
 
