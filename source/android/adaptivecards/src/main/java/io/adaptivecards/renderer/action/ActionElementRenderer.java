@@ -3,12 +3,14 @@ package io.adaptivecards.renderer.action;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentManager;
+import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
+import io.adaptivecards.R;
 import io.adaptivecards.objectmodel.ActionAlignment;
 import io.adaptivecards.objectmodel.ActionMode;
 import io.adaptivecards.objectmodel.ActionType;
@@ -274,14 +277,22 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             }
         }
 
+        Resources.Theme theme = context.getTheme();
+        TypedValue backgroundColor = new TypedValue();
         Sentiment sentiment = baseActionElement.GetSentiment();
         switch (sentiment)
         {
             case Positive:
-                hostConfig.get
+                if(theme.resolveAttribute(R.attr.adaptiveActionPositive, backgroundColor, true))
+                {
+                    button.setBackgroundColor(backgroundColor.data);
+                }
                 break;
             case Destructive:
-
+                if(theme.resolveAttribute(R.attr.adaptiveActionDestructive, backgroundColor, true))
+                {
+                    button.setBackgroundColor(backgroundColor.data);
+                }
                 break;
             case Default:
                 default:

@@ -1,7 +1,12 @@
 <resources>
 
+    <style name="AdaptiveCardsTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="adaptiveActionPositive">@color/colorAccent</item>
+        <item name="adaptiveActionDestructive">@color/actionDestructive</item>
+    </style>
+
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="AdaptiveCardsTheme">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -21,4 +26,10 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <!--
+    <style name="Adaptive.Action.Positive" parent="Widget.AppCompat.ActionButton">
+        <item name="android:colorBackground">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+    -->
 </resources>

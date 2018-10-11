@@ -16,6 +16,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using AdaptiveCardVisualizer.Helpers;
 using AdaptiveCardVisualizer.ResourceResolvers;
+using Windows.UI.Xaml.Media;
 
 namespace AdaptiveCardVisualizer.ViewModel
 {
@@ -232,6 +233,12 @@ namespace AdaptiveCardVisualizer.ViewModel
 
                 // Custom resource resolvers
                 _renderer.ResourceResolvers.Set("symbol", new MySymbolResourceResolver());
+
+                Style style = new Style(typeof(Button));
+                style.Setters.Add(new Setter(Button.BackgroundProperty, new SolidColorBrush(Windows.UI.Colors.LawnGreen)));
+
+                _renderer.OverrideStyles = new ResourceDictionary();
+                _renderer.OverrideStyles.Add("Adaptive.Action.Positive", style);
             }
             catch
             {
