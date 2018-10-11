@@ -6,7 +6,6 @@ export enum SidePaneOrientation {
 }
 
 export class SidePane {
-    private _renderedElement: HTMLElement = null;
     private _headerRootElement: HTMLElement;
     private _headerContentElement: HTMLElement;
     private _headerTitleElement: HTMLElement;
@@ -19,33 +18,30 @@ export class SidePane {
         return this.id + (this.orientation == SidePaneOrientation.Vertical ? "Height" : "Width");
     }
     
+    readonly attachedTo: HTMLElement = null;
     readonly id: string;
     readonly title: string;
     readonly targetElementSelector: string;
     readonly collapsedTabContainer: HTMLElement = null;
-    // readonly collapsedTabClass: string = null;
     readonly orientation: SidePaneOrientation = SidePaneOrientation.Vertical;
 
     onToggled: (sender: SidePane) => void;
 
     constructor(
+        attachedTo: HTMLElement,
+        collapsedTabContainer: HTMLElement,
         id: string,
         title: string,
         targetElementSelector: string,
-        collapsedTabContainer: HTMLElement,
         orientation: SidePaneOrientation = SidePaneOrientation.Vertical) {
-        // collapsedTabClass: string = null) {
+        this.attachedTo = attachedTo;
+        this.collapsedTabContainer = collapsedTabContainer;
         this.id = id;
         this.title = title;
         this.targetElementSelector = targetElementSelector;
-        this.collapsedTabContainer = collapsedTabContainer;
-        // this.collapsedTabClass = collapsedTabClass;
         this.orientation = orientation;
-    }
 
-    render() {
-        this._renderedElement = document.createElement("div");
-        this._renderedElement.classList.add(this.targetElementSelector);
+        this.attachedTo.classList.add(this.targetElementSelector);
 
         this._headerRootElement = document.createElement("div");
         this._headerRootElement.innerHTML = "";
@@ -91,12 +87,12 @@ export class SidePane {
         this._headerContentElement.appendChild(expandCollapseElement);
         this._headerRootElement.appendChild(this._headerContentElement);
 
-        this._renderedElement.insertBefore(this._headerRootElement, this._renderedElement.firstChild);
+        this.attachedTo.insertBefore(this._headerRootElement, this.attachedTo.firstChild);
         
         let heightSetting = SettingsManager.tryLoadNumberSetting(this.getDimensionSettingName());
 
         if (heightSetting.succeeded && heightSetting.value != undefined) {
-            this._renderedElement.style.height = heightSetting.value + "px";
+            this.attachedTo.style.height = heightSetting.value + "px";
         }
     
         let isExpandedSetting = SettingsManager.tryLoadBooleanSetting(this.id + "IsExpanded", true);
@@ -107,14 +103,14 @@ export class SidePane {
     }
 
     toggle() {
-        if (this._renderedElement) {
+        if (this.attachedTo) {
             if (this._isExpanded) {
                 this._headerIconElement.classList.add("acd-icon-header-collapsed");
                 this._headerIconElement.classList.remove("acd-icon-header-expanded");
                 this._headerStatusTextElement.classList.add("acd-hidden");
 
                 if (this.collapsedTabContainer) {
-                    this._renderedElement.removeChild(this._headerRootElement);
+                    this.attachedTo.removeChild(this._headerRootElement);
                     this.collapsedTabContainer.appendChild(this._headerRootElement);
                 }
             }
@@ -125,7 +121,7 @@ export class SidePane {
 
                 if (this.collapsedTabContainer) {
                     this.collapsedTabContainer.removeChild(this._headerRootElement);
-                    this._renderedElement.insertBefore(this._headerRootElement, this._renderedElement.firstChild);
+                    this.attachedTo.insertBefore(this._headerRootElement, this.attachedTo.firstChild);
                 }
             }
 
@@ -157,7 +153,7 @@ export class SidePane {
     saveState() {
         SettingsManager.trySaveSetting(this.id + "IsExpanded", this.isExpanded.toString());
 
-        let boundingRect = this.renderedElement.getBoundingClientRect();
+        let boundingRect = this.attachedTo.getBoundingClientRect();
 
         SettingsManager.trySaveSetting(
             this.getDimensionSettingName(),
@@ -170,21 +166,17 @@ export class SidePane {
 
     set content(value: HTMLElement) {
         if (this._content) {
-            this._renderedElement.removeChild(this._content);
+            this.attachedTo.removeChild(this._content);
         }
 
         this._content = value;
 
         if (this._content) {
-            this._renderedElement.appendChild(this._content);
+            this.attachedTo.appendChild(this._content);
         }
     }
 
     get isExpanded(): boolean {
         return this._isExpanded;
-    }
-
-    get renderedElement(): HTMLElement {
-        return this._renderedElement;
     }
 }

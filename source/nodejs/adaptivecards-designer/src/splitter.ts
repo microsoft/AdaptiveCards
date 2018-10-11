@@ -9,7 +9,7 @@ export class Splitter {
     private pointerDown(e: PointerEvent) {
         e.preventDefault();
 
-        this.renderedElement.setPointerCapture(e.pointerId);
+        this.attachedTo.setPointerCapture(e.pointerId);
 
         this._lastClickedOffset = { x: e.x, y: e.y };
 
@@ -55,26 +55,30 @@ export class Splitter {
     private pointerUp(e: PointerEvent) {
         e.preventDefault();
 
-        this.renderedElement.releasePointerCapture(e.pointerId);
+        this.attachedTo.releasePointerCapture(e.pointerId);
 
         this._isPointerDown = false;
     }
 
     onResized: (sender: Splitter, newSize: number) => void;
 
-    readonly renderedElement: HTMLElement;
+    readonly attachedTo: HTMLElement;
+
     minimum: number = 50;
 
-    constructor(sizedElement: HTMLElement, isVertical: boolean = false) {
+    constructor(
+        attachedTo: HTMLElement,
+        sizedElement: HTMLElement,
+        isVertical: boolean = false) {
+        this.attachedTo = attachedTo;
         this._sizedELement = sizedElement;
         this._isVertical = isVertical;
 
-        this.renderedElement = document.createElement("div");
-        this.renderedElement.className = this._isVertical ? "acd-vertical-splitter" : "acd-horizontal-splitter";
+        this.attachedTo.classList.add(this._isVertical ? "acd-vertical-splitter" : "acd-horizontal-splitter");
 
-        this.renderedElement.onmousedown = (e: MouseEvent) => {e.preventDefault(); };
-        this.renderedElement.onpointerdown = (e: PointerEvent) => { this.pointerDown(e); };
-        this.renderedElement.onpointermove = (e: PointerEvent) => { this.pointerMove(e); };
-        this.renderedElement.onpointerup = (e: PointerEvent) => { this.pointerUp(e); };
+        this.attachedTo.onmousedown = (e: MouseEvent) => {e.preventDefault(); };
+        this.attachedTo.onpointerdown = (e: PointerEvent) => { this.pointerDown(e); };
+        this.attachedTo.onpointermove = (e: PointerEvent) => { this.pointerMove(e); };
+        this.attachedTo.onpointerup = (e: PointerEvent) => { this.pointerUp(e); };
     }
 }

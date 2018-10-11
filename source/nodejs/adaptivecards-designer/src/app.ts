@@ -18,13 +18,22 @@ import { Toolbar, ToolbarButton, ToolbarSeparator, ToolbarLabel, ToolbarChoicePi
 import { SidePane, SidePaneOrientation } from "./side-pane";
 import { Splitter } from "./splitter";
 
+function loadMonaco(callback) {
+    window["require"].config({ paths: { 'vs': './editor/monaco/min/vs' } });
+    window["require"](
+        ['vs/editor/editor.main'],
+        function () {
+            callback();
+        });
+}
+
 // var monacoEditor: any;
 
 // const MAX_UNDO_STACK_SIZE = 50;
 
 // Monaco loads asynchronously via a call to require() from index.html
 // App initialization needs to happen after.
-declare function loadMonacoEditor(schema, callback);
+// declare function loadMonacoEditor(schema, callback);
 
 // var isMonacoEditorLoaded: boolean = false;
 
@@ -371,12 +380,8 @@ class DesignerApp {
     }
 
     private buildPalette() {
-        if (!this._toolPalettePane.content) {
-            this._toolPalettePane.content = document.createElement("div");
-            this._toolPalettePane.content.className = "acd-dockedPane";
-        }
-
-        this._toolPalettePane.content.innerHTML = "";
+        let toolPaletteHost = document.getElementById("toolPaletteHost");
+        toolPaletteHost.innerHTML = "";
 
         let categorizedTypes: Object = {};
 
@@ -402,10 +407,10 @@ class DesignerApp {
             let node = document.createElement('li');
             node.innerText = category;
             node.className = "acd-palette-category";
-            this._toolPalettePane.content.appendChild(node);
+            toolPaletteHost.appendChild(node);
 
             for (var i = 0; i < categorizedTypes[category].length; i++) {
-                this.addPaletteItem(categorizedTypes[category][i], this._toolPalettePane.content);
+                this.addPaletteItem(categorizedTypes[category][i], toolPaletteHost);
             }
         }
 
@@ -542,16 +547,7 @@ class DesignerApp {
         if (this.isMonacoEditorLoaded) {
             // Monaco is very finicky. It will apparently only properly layout if
             // its direct container has an explicit height.
-            /*
-            let jsonEditorPaneRect = document.getElementById("jsonEditorPane").getBoundingClientRect();
-            let jsonEditorHeaderRect = jsonEditorPaneHeader.getBoundingRect();
-    
-            let jsonEditorHost = document.getElementById("jsonEditorHost");
-    
-            jsonEditorHost.style.height = (jsonEditorPaneRect.height - jsonEditorHeaderRect.height) + "px";
-            */
-          
-            let jsonEditorPaneRect = this._jsonEditorPane.renderedElement.getBoundingClientRect();
+            let jsonEditorPaneRect = this._jsonEditorPane.attachedTo.getBoundingClientRect();
             let jsonEditorHeaderRect = this._jsonEditorPane.getHeaderBoundingRect();
    
             this._jsonEditorPane.content.style.height = (jsonEditorPaneRect.height - jsonEditorHeaderRect.height) + "px";
@@ -862,7 +858,7 @@ class DesignerApp {
         this._selectedHostContainer = this.hostContainers[0];
     }
 
-    private _toolPalettePane: SidePane;
+    // private _toolPalettePane: SidePane;
     private _jsonEditorPane: SidePane;
 
     private onResize() {
@@ -884,10 +880,12 @@ class DesignerApp {
 
         window["monaco"].languages.json.jsonDefaults.setDiagnosticsOptions(monacoConfiguration);
     
-        this._jsonEditorPane.content.innerHTML = "";
+        let jsonEditorHost = document.getElementById("jsonEditorHost");
+
+        jsonEditorHost.innerHTML = "";
 
         this.monacoEditor = window["monaco"].editor.create(
-            this._jsonEditorPane.content,
+            jsonEditorHost,
             {
                 folding: true,
                 validate: false,
@@ -908,11 +906,9 @@ class DesignerApp {
         this.updateJsonFromCard(false);
     }
     
-    render(): HTMLElement {
-        let root = document.createElement("div");
-
+    renderInto(targetElement: HTMLElement)  {
         // Toolbar
-        root.appendChild(this._toolbar.render());
+        targetElement.appendChild(this._toolbar.render());
 
         new Clipboard(
             this._copyJSONButton.renderedElement,
@@ -922,17 +918,86 @@ class DesignerApp {
                 }
             });
 
-        // Tool palette
-        this._toolPalettePane = new SidePane(
+        let root = document.createElement("div");
+
+        root.innerHTML = 
+            '<div class="content" style="display: flex; flex: 1 1 auto; overflow-y: hidden;">' +
+                '<div id="leftCollapsedPaneTabHost" class="acd-verticalCollapsedTabContainer" style="border-right: 1px solid #D2D2D2;"></div>' +
+                '<div id="toolPalettePane" class="selector-toolPalette" style="background-color: white; border-right: 1px solid #D2D2D2;">' +
+                    '<div id="toolPaletteHost" class="acd-dockedPane"></div>' +
+                '</div>' +
+                '<div style="display: flex; flex-direction: column; flex: 1 1 100%; overflow: hidden;">' +
+                    '<div style="display: flex; flex: 1 1 100%; overflow: hidden;">' +
+                        '<div id="designerBackground" style="flex: 1 1 70%; background-color: #F6F6F6; display: flex; flex-direction: column; overflow: auto;">' +
+                            '<div style="flex: 1 1 100%; overflow: auto;">' +
+                                '<div id="designerHost" style="margin: 20px 40px 20px 20px;"></div>' +
+                            '</div>' +
+                            '<div id="errorPane" class="acd-error-pane acd-hidden"></div>' +
+                        '</div>' +
+                        '<div id="treeViewVerticalSplitter" class="acd-vertical-splitter selector-treeView"></div>' +
+                        '<div id="treeViewPane" class="acd-treeView-pane selector-treeView">' +
+                            '<div id="treeViewHost" class="acd-treeView-host"></div>' +
+                        '</div>' +
+                        '<div id="propertyVerticalSplitter" class="acd-vertical-splitter selector-propertySheet"></div>' +
+                        '<div id="propertySheetPane" class="acd-propertySheet-pane selector-propertySheet">' +
+                            '<div id="propertySheetHost" class="acd-propertySheet-host"></div>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div id="jsonEditorSplitter" class="acd-horizontal-splitter selector-jsonEditor"></div>' +
+                    '<div id="jsonEditorPane" class="acd-json-editor-pane selector-jsonEditor">' +
+                        '<div id="jsonEditorHost" class="acd-json-editor-host">' +
+                            '<div id="loadingEditor" style="padding: 8px;">Loading editor...</div>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div id="bottomCollapsedPaneTabHost" style="border-top: 1px solid #D2D2D2;"></div>' +
+                '</div>' +
+                '<div id="rightCollapsedPaneTabHost" class="acd-verticalCollapsedTabContainer" style="border-left: 1px solid #D2D2D2;"></div>' +
+            '</div>';
+
+        targetElement.appendChild(root);
+        
+        // Tool palette pane
+        let toolPalettePane = new SidePane(
+            document.getElementById("toolPalettePane"),
+            document.getElementById("leftCollapsedPaneTabHost"),
             "toolPalette",
             "Tool box",
-            "selector-toolPalette",
-            document.getElementById("leftCollapsedPaneTabHost"));
-        this._toolPalettePane.onToggled = (sender) => {
+            "selector-toolPalette");
+        toolPalettePane.onToggled = (sender) => {
             this.updateFullLayout();
         }
-        this._toolPalettePane.render();
 
+        // Splitter for JSON editor pane
+        let jsonEditorSplitter = new Splitter(
+            document.getElementById("jsonEditorSplitter"),
+            document.getElementById("jsonEditorPane"),
+            false);
+        jsonEditorSplitter.onResized = (splitter: Splitter, newSize: number) => {
+            this.updateJsonEditorLayout();
+
+            this._jsonEditorPane.saveState();
+        }
+        // jsonEditorSplitter.renderedElement.classList.add("selector-jsonEditor");
+        
+        // JSON editor pane
+        this._jsonEditorPane = new SidePane(
+            document.getElementById("jsonEditorPane"),
+            document.getElementById("bottomCollapsedPaneTabHost"),
+            "jsonEditor",
+            "JSON",
+            "selector-jsonEditor",
+            SidePaneOrientation.Horizontal
+        )
+        this._jsonEditorPane.onToggled = (sender) => {
+            this.updateFullLayout();
+        }
+
+        /*
+        this._jsonEditorPane.render();
+        this._jsonEditorPane.renderedElement.classList.add("acd-json-editor-pane");
+        */
+
+        /*
         let surfaceBelowToolbar = document.createElement("div");
         surfaceBelowToolbar.style.display = "flex";
         surfaceBelowToolbar.style.flex = "1 1 auto";
@@ -953,19 +1018,6 @@ class DesignerApp {
 
         surfaceRightOfToolPalette.appendChild(surfaceAboveJsonEditor);
 
-        // JSON editor pane
-        this._jsonEditorPane = new SidePane(
-            "jsonEditor",
-            "JSON",
-            "selector-jsonEditor",
-            document.getElementById("bottomCollapsedPaneTabHost"),
-            SidePaneOrientation.Horizontal
-        )
-        this._jsonEditorPane.onToggled = (sender) => {
-            this.updateFullLayout();
-        }
-        this._jsonEditorPane.render();
-        this._jsonEditorPane.renderedElement.classList.add("acd-json-editor-pane");
 
         this._jsonEditorPane.content = document.createElement("div");
         this._jsonEditorPane.content.className = "acd-json-editor-host";
@@ -976,26 +1028,22 @@ class DesignerApp {
 
         this._jsonEditorPane.content.appendChild(jsonEditorLoading);
 
-        // Splitter for JSON editor pane
-        let jsonEditorSplitter = new Splitter(this._jsonEditorPane.renderedElement, false);
-        jsonEditorSplitter.onResized = (splitter: Splitter, newSize: number) => {
-            this.updateJsonEditorLayout();
-
-            this._jsonEditorPane.saveState();
-        }
-        jsonEditorSplitter.renderedElement.classList.add("selector-jsonEditor");
 
         surfaceRightOfToolPalette.appendChild(jsonEditorSplitter.renderedElement);
         surfaceRightOfToolPalette.appendChild(this._jsonEditorPane.renderedElement);
 
         surfaceBelowToolbar.appendChild(surfaceRightOfToolPalette);
         root.appendChild(surfaceBelowToolbar);
+        */
+
+        this._designerHostElement = document.getElementById("designerHost")
+
 
         this.recreateDesigner();
 
-        loadMonacoEditor(adaptiveCardSchema, () => { this.monacoEditorLoaded(); });
+        loadMonaco(() => { this.monacoEditorLoaded(); });
 
-        return root;
+        // targetElement.appendChild(root);
     }
 
     updateToolbar() {
@@ -1274,8 +1322,16 @@ window.onload = () => {
     }
     */
 
-    // Prepare property sheet pane
+    // Prepare app
+    app = new DesignerApp(document.getElementById("designerHost"));
+    app.propertySheetHostElement = document.getElementById("propertySheetHost");
+    app.treeViewHostElement = document.getElementById("treeViewHost");
+    app.commandListHostElement = document.getElementById("commandsHost");
+    // app.paletteHostElement = document.getElementById("toolPalette");
 
+    app.renderInto(document.getElementById("designerRootHost"));
+
+    // Prepare property sheet pane
     let propertySheetPaneHeader = new SidePaneHeader(document.getElementById("propertySheetPane"), "Element properties");
     propertySheetPaneHeader.collapsedTabContainer = document.getElementById("rightCollapsedPaneTabHost");
     propertySheetPaneHeader.collapsedTabClass = "rotated90DegreesClockwise";
@@ -1310,7 +1366,6 @@ window.onload = () => {
     }
 
     // Prepare tree view pane
-
     let treeViewPaneHeader = new SidePaneHeader(document.getElementById("treeViewPane"), "Visual tree view");
     treeViewPaneHeader.collapsedTabContainer = document.getElementById("rightCollapsedPaneTabHost");
     treeViewPaneHeader.collapsedTabClass = "rotated90DegreesClockwise";
@@ -1345,23 +1400,14 @@ window.onload = () => {
     }
 
     // Setup designer
+    window.addEventListener("pointermove", (e: PointerEvent) => { app.handlePointerMove(e); });
+    window.addEventListener("resize", () => { app.scheduleLayoutUpdate(); });
+    window.addEventListener("pointerup", (e: PointerEvent) => { app.handlePointerUp(e); });
 
     let card = new Adaptive.AdaptiveCard();
     card.onImageLoaded = (image: Adaptive.Image) => {
         app.scheduleLayoutUpdate();
     }
-
-    app = new DesignerApp(document.getElementById("designerHost"));
-    app.propertySheetHostElement = document.getElementById("propertySheetHost");
-    app.treeViewHostElement = document.getElementById("treeViewHost");
-    app.commandListHostElement = document.getElementById("commandsHost");
-    // app.paletteHostElement = document.getElementById("toolPalette");
-
-    window.addEventListener("pointermove", (e: PointerEvent) => { app.handlePointerMove(e); });
-    window.addEventListener("resize", () => { app.scheduleLayoutUpdate(); });
-    window.addEventListener("pointerup", (e: PointerEvent) => { app.handlePointerUp(e); });
-
-    document.getElementById("designerRootHost").appendChild(app.render());
 
     app.card = card;
 
