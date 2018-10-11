@@ -13,7 +13,7 @@ import { IPoint } from "./miscellaneous";
 import { BasePaletteItem, ElementPaletteItem } from "./tool-palette";
 import { DefaultContainer } from "./containers/default-container";
 
-export class DesignerApp {
+export class CardDesigner {
     private static MAX_UNDO_STACK_SIZE = 50;
 
     private _monacoEditor: any;
@@ -28,6 +28,10 @@ export class DesignerApp {
     private _activeHostContainer: HostContainer;
     private _undoStack: Array<object> = [];
     private _undoStackIndex: number = -1;
+    private _toolPalettePane: SidePane;
+    private _jsonEditorPane: SidePane;
+    private _propertySheetPane: SidePane;
+    private _treeViewPane: SidePane;
 
     private buildTreeView() {
         if (this._treeViewPane.content) {
@@ -321,12 +325,12 @@ export class DesignerApp {
         return this._isMonacoEditorLoaded ? this._monacoEditor.getValue() : Constants.defaultPayload;
     }
 
-    public updateCardFromJson() {
+    private updateCardFromJson() {
         try {
             this.preventJsonUpdate = true;
     
             if (!this.preventCardUpdate) {
-                this.designerSurface.parseCard(this.getCurrentJsonPayload());
+                this.designerSurface.setCardPayloadAsString(this.getCurrentJsonPayload());
             }
         }
         finally {
@@ -334,7 +338,7 @@ export class DesignerApp {
         }
     }
     
-    public scheduleUpdateCardFromJson() {
+    private scheduleUpdateCardFromJson() {
         clearTimeout(this.cardUpdateTimer);
     
         if (!this.preventCardUpdate) {
@@ -342,33 +346,30 @@ export class DesignerApp {
         }
     }
     
-    public scheduleLayoutUpdate() {
+    private scheduleLayoutUpdate() {
         clearTimeout(this.updateLayoutTimer);
     
         this.updateLayoutTimer = setTimeout(() => { this.designerSurface.updateLayout(false); }, 50);
     }
     
     private _fullScreenHandler = new FullScreenHandler();
-    private _toolbar: Toolbar;
     private _fullScreenButton: ToolbarButton;
     private _hostContainerChoicePicker: ToolbarChoicePicker;
     private _undoButton: ToolbarButton;
     private _redoButton: ToolbarButton;
     private _copyJSONButton: ToolbarButton;
 
-    private renderToolbar(attachTo: HTMLElement) {
-        this._toolbar = new Toolbar(attachTo);
-
+    private prepareToolbar() {
         this._fullScreenButton = new ToolbarButton(
             "Enter Full Screen",
             "acd-icon-fullScreen",
             (sender) => { this._fullScreenHandler.toggleFullScreen(); });
 
-        this._toolbar.addElement(this._fullScreenButton);
+        this.toolbar.addElement(this._fullScreenButton);
 
         if (this.hostContainers && this.hostContainers.length > 0) {
-            this._toolbar.addElement(new ToolbarSeparator());
-            this._toolbar.addElement(new ToolbarLabel("Select Host app:"));
+            this.toolbar.addElement(new ToolbarSeparator());
+            this.toolbar.addElement(new ToolbarLabel("Select Host app:"));
 
             this._hostContainerChoicePicker = new ToolbarChoicePicker();
 
@@ -387,10 +388,10 @@ export class DesignerApp {
                 this.activeHostContainerChanged();
             }
 
-            this._toolbar.addElement(this._hostContainerChoicePicker);
+            this.toolbar.addElement(this._hostContainerChoicePicker);
         }
 
-        this._toolbar.addElement(new ToolbarSeparator());
+        this.toolbar.addElement(new ToolbarSeparator());
 
         this._undoButton = new ToolbarButton(
             "Undo",
@@ -400,7 +401,7 @@ export class DesignerApp {
         this._undoButton.isEnabled = false;
         this._undoButton.displayCaption = false;
 
-        this._toolbar.addElement(this._undoButton);
+        this.toolbar.addElement(this._undoButton);
 
         this._redoButton = new ToolbarButton(
             "Redo",
@@ -410,17 +411,17 @@ export class DesignerApp {
         this._redoButton.isEnabled = false;
         this._redoButton.displayCaption = false;
 
-        this._toolbar.addElement(this._redoButton);
+        this.toolbar.addElement(this._redoButton);
 
-        this._toolbar.addElement(new ToolbarSeparator());
-        this._toolbar.addElement(
+        this.toolbar.addElement(new ToolbarSeparator());
+        this.toolbar.addElement(
             new ToolbarButton(
                 "New card",
                 "acd-icon-newCard",
                 (sender) => { this.newCard(); }));
 
         this._copyJSONButton = new ToolbarButton("Copy JSON", "acd-icon-copy");
-        this._toolbar.addElement(this._copyJSONButton);
+        this.toolbar.addElement(this._copyJSONButton);
 
         this._fullScreenHandler = new FullScreenHandler();
         this._fullScreenHandler.onFullScreenChanged = (isFullScreen: boolean) => {
@@ -428,16 +429,6 @@ export class DesignerApp {
     
             this.updateFullLayout();
         }
-
-        this._toolbar.render();
-
-        new Clipboard(
-            this._copyJSONButton.renderedElement,
-            {
-                text: function () {
-                    return JSON.stringify(this.card.toJSON(), null, 4);
-                }
-            });
     }
 
     private onResize() {
@@ -494,14 +485,74 @@ export class DesignerApp {
         this.updateJsonFromCard(false);
     }
     
-    private _toolPalettePane: SidePane;
-    private _jsonEditorPane: SidePane;
-    private _propertySheetPane: SidePane;
-    private _treeViewPane: SidePane;
+    private updateToolbar() {
+        this._undoButton.isEnabled = this.canUndo;
+        this._redoButton.isEnabled = this.canRedo;
+    }
+
+    private addToUndoStack(payload: object) {
+        let doAdd: boolean = true;
+
+        if (this._undoStack.length > 0) {
+            doAdd = this._undoStack[this._undoStack.length - 1] != payload;
+        }
+
+        if (doAdd) {
+            let undoPayloadsToDiscard = this._undoStack.length - (this._undoStackIndex + 1);
+
+            if (undoPayloadsToDiscard > 0) {
+                this._undoStack.splice(this._undoStackIndex + 1, undoPayloadsToDiscard);
+            }
+
+            this._undoStack.push(payload);
+
+            if (this._undoStack.length > CardDesigner.MAX_UNDO_STACK_SIZE) {
+                this._undoStack.splice(0, 1);
+            }
+
+            this._undoStackIndex = this._undoStack.length - 1;
+
+            this.updateToolbar();
+        }
+    }
+
+    private handlePointerUp(e: PointerEvent) {
+        this.endDrag();
+        this.designerSurface.endDrag();
+    }
+
+    private handlePointerMove(e: PointerEvent) {
+        this._currentMousePosition = { x: e.x, y: e.y };
+
+        let isPointerOverDesigner = this.designerSurface.isPointerOver(this._currentMousePosition.x, this._currentMousePosition.y);
+        let peerDropped = false;
+
+        if (this._draggedPaletteItem && isPointerOverDesigner) {
+            let peer = this._draggedPaletteItem.createPeer(this.designerSurface);
+
+            let clientCoordinates = this.designerSurface.pageToClientCoordinates(this._currentMousePosition.x, this._currentMousePosition.y);
+
+            if (this.designerSurface.tryDrop(clientCoordinates, peer)) {
+                this.endDrag();
+
+                this.designerSurface.startDrag(peer);
+
+                peerDropped = true;
+            }
+        }
+
+        if (!peerDropped && this._draggedElement) {
+            this._draggedElement.style.left = this._currentMousePosition.x - 10 + "px";
+            this._draggedElement.style.top = this._currentMousePosition.y - 10 + "px";
+        }
+    }
 
     readonly hostContainers: Array<HostContainer> = [];
+    readonly toolbar: Toolbar = new Toolbar();
 
     constructor() {
+        this.prepareToolbar();
+
         this._propertySheetHostConfig = new Adaptive.HostConfig(
             {
                 preExpandSingleShowCardAction: true,
@@ -677,7 +728,15 @@ export class DesignerApp {
                 '<div id="rightCollapsedPaneTabHost" class="acd-verticalCollapsedTabContainer" style="border-left: 1px solid #D2D2D2;"></div>' +
             '</div>';
 
-        this.renderToolbar(document.getElementById("toolbarHost"));
+        this.toolbar.attachTo(document.getElementById("toolbarHost"));
+
+        new Clipboard(
+            this._copyJSONButton.renderedElement,
+            {
+                text: function () {
+                    return JSON.stringify(this.card.toJSON(), null, 4);
+                }
+            });
         
         // Tool palette pane
         this._toolPalettePane = new SidePane(
@@ -784,37 +843,6 @@ export class DesignerApp {
         this.card = card;
     }
 
-    updateToolbar() {
-        this._undoButton.isEnabled = this.canUndo;
-        this._redoButton.isEnabled = this.canRedo;
-    }
-
-    addToUndoStack(payload: object) {
-        let doAdd: boolean = true;
-
-        if (this._undoStack.length > 0) {
-            doAdd = this._undoStack[this._undoStack.length - 1] != payload;
-        }
-
-        if (doAdd) {
-            let undoPayloadsToDiscard = this._undoStack.length - (this._undoStackIndex + 1);
-
-            if (undoPayloadsToDiscard > 0) {
-                this._undoStack.splice(this._undoStackIndex + 1, undoPayloadsToDiscard);
-            }
-
-            this._undoStack.push(payload);
-
-            if (this._undoStack.length > DesignerApp.MAX_UNDO_STACK_SIZE) {
-                this._undoStack.splice(0, 1);
-            }
-
-            this._undoStackIndex = this._undoStack.length - 1;
-
-            this.updateToolbar();
-        }
-    }
-
     undo() {
         if (this.canUndo) {
             this._undoStackIndex--;
@@ -850,37 +878,25 @@ export class DesignerApp {
         this.setJsonPayload(card);
     }
 
-    handlePointerMove(e: PointerEvent) {
-        this._currentMousePosition = { x: e.x, y: e.y };
-
-        let isPointerOverDesigner = this.designerSurface.isPointerOver(this._currentMousePosition.x, this._currentMousePosition.y);
-        let peerDropped = false;
-
-        if (this._draggedPaletteItem && isPointerOverDesigner) {
-            let peer = this._draggedPaletteItem.createPeer(this.designerSurface);
-
-            let clientCoordinates = this.designerSurface.pageToClientCoordinates(this._currentMousePosition.x, this._currentMousePosition.y);
-
-            if (this.designerSurface.tryDrop(clientCoordinates, peer)) {
-                this.endDrag();
-
-                this.designerSurface.startDrag(peer);
-
-                peerDropped = true;
+    setCard(payload: object) {
+        try {
+            this.preventJsonUpdate = true;
+    
+            if (!this.preventCardUpdate) {
+                this.designerSurface.setCardPayloadAsObject(payload);
             }
         }
-
-        if (!peerDropped && this._draggedElement) {
-            this._draggedElement.style.left = this._currentMousePosition.x - 10 + "px";
-            this._draggedElement.style.top = this._currentMousePosition.y - 10 + "px";
+        finally {
+            this.preventJsonUpdate = false;
         }
+
+        this.updateJsonFromCard();
     }
 
-    handlePointerUp(e: PointerEvent) {
-        this.endDrag();
-        this.designerSurface.endDrag();
+    getCard(): object {
+        return this.designerSurface.card.toJSON();
     }
-
+    
     get activeHostContainer(): HostContainer {
         return this._activeHostContainer;
     }
@@ -925,5 +941,21 @@ export class DesignerApp {
 
     get designerSurface(): Designer.CardDesignerSurface {
         return this._designerSurface;
+    }
+
+    get treeViewPane(): SidePane {
+        return this._treeViewPane;
+    }
+
+    get propertySheetPane(): SidePane {
+        return this._propertySheetPane;
+    }
+
+    get jsonEditorPane(): SidePane {
+        return this._jsonEditorPane;
+    }
+
+    get toolPalettePane(): SidePane {
+        return this._toolPalettePane;
     }
 }

@@ -17,6 +17,27 @@ export class SidePane {
     private getDimensionSettingName(): string {
         return this.id + (this.orientation == SidePaneOrientation.Vertical ? "Height" : "Width");
     }
+
+    private updateLayout() {
+        if (this.orientation == SidePaneOrientation.Vertical) {
+            this._headerRootElement.classList.toggle("rotated90DegreesCounterClockwise", !this._isExpanded);
+            this._headerContentElement.classList.toggle("rotated90DegreesCounterClockwise", !this._isExpanded);
+        }
+
+        if (this.targetElementSelector) {
+            let targetNodes = document.getElementsByClassName(this.targetElementSelector);
+
+            for (let i = 0; i < targetNodes.length; i++) {
+                (<HTMLElement>targetNodes[i]).classList.toggle("acd-hidden", !this._isExpanded);
+            }
+        }
+    }
+
+    private toggled() {
+        if (this.onToggled) {
+            this.onToggled(this);
+        }
+    }
     
     readonly attachedTo: HTMLElement = null;
     readonly id: string;
@@ -102,47 +123,50 @@ export class SidePane {
         }
     }
 
+    collapse() {
+        if (this.attachedTo && this._isExpanded) {
+            this._headerIconElement.classList.add("acd-icon-header-collapsed");
+            this._headerIconElement.classList.remove("acd-icon-header-expanded");
+            this._headerStatusTextElement.classList.add("acd-hidden");
+
+            if (this.collapsedTabContainer) {
+                this.attachedTo.removeChild(this._headerRootElement);
+                this.collapsedTabContainer.appendChild(this._headerRootElement);
+            }
+
+            this._isExpanded = false;
+
+            this.updateLayout();
+
+            this.toggled();
+        }
+    }
+
+    expand() {
+        if (this.attachedTo && !this._isExpanded) {
+            this._headerIconElement.classList.add("acd-icon-header-expanded");
+            this._headerIconElement.classList.remove("acd-icon-header-collapsed");
+            this._headerStatusTextElement.classList.remove("acd-hidden");
+
+            if (this.collapsedTabContainer) {
+                this.collapsedTabContainer.removeChild(this._headerRootElement);
+                this.attachedTo.insertBefore(this._headerRootElement, this.attachedTo.firstChild);
+            }
+
+            this._isExpanded = true;
+
+            this.updateLayout();
+
+            this.toggled();
+        }
+    }
+
     toggle() {
-        if (this.attachedTo) {
-            if (this._isExpanded) {
-                this._headerIconElement.classList.add("acd-icon-header-collapsed");
-                this._headerIconElement.classList.remove("acd-icon-header-expanded");
-                this._headerStatusTextElement.classList.add("acd-hidden");
-
-                if (this.collapsedTabContainer) {
-                    this.attachedTo.removeChild(this._headerRootElement);
-                    this.collapsedTabContainer.appendChild(this._headerRootElement);
-                }
-            }
-            else {
-                this._headerIconElement.classList.add("acd-icon-header-expanded");
-                this._headerIconElement.classList.remove("acd-icon-header-collapsed");
-                this._headerStatusTextElement.classList.remove("acd-hidden");
-
-                if (this.collapsedTabContainer) {
-                    this.collapsedTabContainer.removeChild(this._headerRootElement);
-                    this.attachedTo.insertBefore(this._headerRootElement, this.attachedTo.firstChild);
-                }
-            }
-
-            this._isExpanded = !this._isExpanded;
-
-            if (this.orientation == SidePaneOrientation.Vertical) {
-                this._headerRootElement.classList.toggle("rotated90DegreesCounterClockwise", !this._isExpanded);
-                this._headerContentElement.classList.toggle("rotated90DegreesCounterClockwise", !this._isExpanded);
-            }
-
-            if (this.targetElementSelector) {
-                let targetNodes = document.getElementsByClassName(this.targetElementSelector);
-
-                for (let i = 0; i < targetNodes.length; i++) {
-                    (<HTMLElement>targetNodes[i]).classList.toggle("acd-hidden", !this._isExpanded);
-                }
-            }
-
-            if (this.onToggled) {
-                this.onToggled(this);
-            }
+        if (this.isExpanded) {
+            this.collapse();
+        }
+        else {
+            this.expand();
         }
     }
 

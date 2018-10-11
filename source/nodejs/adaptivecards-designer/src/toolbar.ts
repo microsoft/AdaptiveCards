@@ -220,20 +220,17 @@ export class ToolbarChoicePicker extends ToolbarElement {
 
 export class Toolbar {
     private _elements: Array<ToolbarElement> = [];
+    private _attachedTo: HTMLElement;
 
-    readonly attachedTo: HTMLElement;
-
-    constructor(attachedTo: HTMLElement) {
-        this.attachedTo = attachedTo;
-        this.attachedTo.className = "acd-toolbar";
-    }
-
-    render() {
-        this.attachedTo.innerHTML = "";
+    attachTo(element: HTMLElement) {
+        this._attachedTo = element;
+        this._attachedTo.className = "acd-toolbar";
+        this._attachedTo.innerHTML = "";
 
         for (let toolbarElement of this._elements) {
             let renderedToolbarElement = toolbarElement.render();
-            this.attachedTo.appendChild(renderedToolbarElement);
+
+            this._attachedTo.appendChild(renderedToolbarElement);
         }
     }
 

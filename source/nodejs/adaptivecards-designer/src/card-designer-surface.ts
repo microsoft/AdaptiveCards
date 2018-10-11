@@ -288,7 +288,10 @@ export class CardDesignerSurface {
             };
             peer.onChanged = (sender: DesignerPeers.DesignerPeer, updatePropertySheet: boolean) => { this.peerChanged(sender, updatePropertySheet); };
             peer.onPeerRemoved = (sender: DesignerPeers.DesignerPeer) => { this.peerRemoved(sender); };
-            peer.onPeerAdded = (sender: DesignerPeers.DesignerPeer, newPeer: DesignerPeers.DesignerPeer) => { this.addPeer(newPeer); };
+            peer.onPeerAdded = (sender: DesignerPeers.DesignerPeer, newPeer: DesignerPeers.DesignerPeer) => {
+                this.addPeer(newPeer);
+                this.updateLayout();
+            };
             peer.onStartDrag = (sender: DesignerPeers.DesignerPeer) => { this.startDrag(sender); }
             peer.onEndDrag = (sender: DesignerPeers.DesignerPeer) => { this.endDrag(); }
 
@@ -542,12 +545,16 @@ export class CardDesignerSurface {
         this.updateLayout();
     }
 
-    parseCard(json: string) {
+    setCardPayloadAsObject(payload: object) {
         this._lastParseErrors = [];
 
-        this.card.parse(JSON.parse(json), this._lastParseErrors);
+        this.card.parse(payload, this._lastParseErrors);
 
         this.render();
+    }
+
+    setCardPayloadAsString(payload: string) {
+        this.setCardPayloadAsObject(JSON.parse(payload));
     }
 
     updateLayout(isFullRefresh: boolean = true) {
