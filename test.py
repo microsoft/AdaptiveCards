@@ -1,6 +1,6 @@
 import json
 import base64
-import requests
+import urllib
 import os
 
 personalAccessToken = ':7rvtdw3ihxbfo262z7h24asnkr42znukpzzccy7fl2eoinfdqrdq';
