@@ -1,4 +1,4 @@
-import { IPoint } from "./card-designer";
+import { IPoint } from "./miscellaneous";
 
 export class Splitter {
     private _isVertical: boolean = false;
@@ -73,8 +73,6 @@ export class Splitter {
         this.attachedTo = attachedTo;
         this._sizedELement = sizedElement;
         this._isVertical = isVertical;
-
-        this.attachedTo.classList.add(this._isVertical ? "acd-vertical-splitter" : "acd-horizontal-splitter");
 
         this.attachedTo.onmousedown = (e: MouseEvent) => {e.preventDefault(); };
         this.attachedTo.onpointerdown = (e: PointerEvent) => { this.pointerDown(e); };

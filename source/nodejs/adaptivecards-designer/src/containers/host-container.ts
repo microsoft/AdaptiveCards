@@ -154,7 +154,7 @@ export abstract class HostContainer {
             },
             containerStyles: {
                 default: {
-                    backgroundColor: "#00000000",
+                    backgroundColor: "#FFFFFF",
                     foregroundColors: {
                         default: {
                             default: "#333333",
@@ -179,7 +179,7 @@ export abstract class HostContainer {
                     }
                 },
                 emphasis: {
-                    backgroundColor: "08000000",
+                    backgroundColor: "#EEEEEE",
                     foregroundColors: {
                         default: {
                             default: "#333333",
@@ -215,7 +215,8 @@ export abstract class HostContainer {
                 buttonSpacing: 20,
                 showCard: {
                     actionMode: Adaptive.ShowCardActionMode.Inline,
-                    inlineTopMargin: 16
+                    inlineTopMargin: 16,
+                    style: Adaptive.ContainerStyle.Emphasis
                 },
                 actionsOrientation: Adaptive.Orientation.Horizontal,
                 actionAlignment: Adaptive.ActionAlignment.Left

@@ -1,6 +1,6 @@
-import { DesignerPeer } from "./card-designer";
+import { DesignerPeer } from "./designer-peers";
 
-export default class TreeItem {
+export class TreeItem {
     private static collapsedIconClass = "acd-icon-chevronRight";
     private static expandedIconClass = "acd-icon-chevronDown";
 
