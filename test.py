@@ -24,7 +24,7 @@ with open('AdaptiveCards.podspec', 'r') as f:
         if 'spec.source' in line:
             outputBuff.append("  spec.source = { :http => \'%s\',\n                  :type => \'zip\'}\n" % urlToArtifacts) 
         elif 'spec.version' in line:
-            outputBuff.append("  spec.version = \'%s\'\n" % '1.5.0') 
+            outputBuff.append("  spec.version = \'%s\'\n" % '1.0.1') 
         elif ':type => \'zip\'' not in line:
             outputBuff.append(line)
 
