@@ -226,6 +226,32 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         }
     }
 
+    private Context getButtonContext(Context context, Sentiment sentiment)
+    {
+        if(sentiment == Sentiment.Positive || sentiment == Sentiment.Destructive)
+        {
+            Resources.Theme theme = context.getTheme();
+            TypedValue buttonStyle = new TypedValue();
+            boolean styleExists = false;
+
+            if(sentiment == sentiment.Positive)
+            {
+                styleExists = theme.resolveAttribute(R.attr.adaptiveActionPositive, buttonStyle, true);
+            }
+            else
+            {
+                styleExists = theme.resolveAttribute(R.attr.adaptiveActionDestructive, buttonStyle, true);
+            }
+
+            if(styleExists)
+            {
+                return new ContextThemeWrapper(context, buttonStyle.data);
+            }
+        }
+
+        return context;
+    }
+
     public Button renderButton(
             Context context,
             ViewGroup viewGroup,
@@ -233,7 +259,8 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             HostConfig hostConfig,
             RenderedAdaptiveCard renderedCard)
     {
-        Button button = new Button(context);
+        Button button = new Button(getButtonContext(context, baseActionElement.GetSentiment()));
+
         button.setText(baseActionElement.GetTitle());
         ActionAlignment alignment = hostConfig.getActions().getActionAlignment();
         ActionsOrientation orientation = hostConfig.getActions().getActionsOrientation();
@@ -275,28 +302,6 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
                 layoutChangedListener.setPadding(padding);
                 button.addOnLayoutChangeListener(layoutChangedListener);
             }
-        }
-
-        Resources.Theme theme = context.getTheme();
-        TypedValue backgroundColor = new TypedValue();
-        Sentiment sentiment = baseActionElement.GetSentiment();
-        switch (sentiment)
-        {
-            case Positive:
-                if(theme.resolveAttribute(R.attr.adaptiveActionPositive, backgroundColor, true))
-                {
-                    button.setBackgroundColor(backgroundColor.data);
-                }
-                break;
-            case Destructive:
-                if(theme.resolveAttribute(R.attr.adaptiveActionDestructive, backgroundColor, true))
-                {
-                    button.setBackgroundColor(backgroundColor.data);
-                }
-                break;
-            case Default:
-                default:
-                break;
         }
 
         viewGroup.addView(button);
