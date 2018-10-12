@@ -26,12 +26,16 @@ buildNumber = os.environ['BUILD_BUILDNUMBER']
 
 acversion = acversion + '-' + buildNumber;
 
-buildId = '%2f' + buildNumber + '%2f' +  os.environ['BUILD_BUILDID']
+buildId = '%2f' + buildNumber + '%2f' +  os.environ['BUILD_BUILDID'] + '%2f' + '1'
 
 url = 'https://artifacts.dev.azure.com/microsoft/_apis/drop/manifests/os' + buildId + 'api-version=2.0'
 
+urlToArtifacts = ''
+ 
 r = requests.get(url, headers=headers)
-urlToArtifacts = (r.json()[0]['blob']['url'])
+for item in r.json():
+    if 'AdaptiveCards.framework.zip' in item['path']: 
+        urlToArtifacts = item['blob']['url']
 
 outputBuff = [];
 with open('AdaptiveCards.podspec', 'r') as f:
