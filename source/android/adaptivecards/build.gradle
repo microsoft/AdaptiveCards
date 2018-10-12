@@ -80,7 +80,7 @@ publishing {
     publications {
         adaptivecards(MavenPublication) {
             groupId 'io.adaptivecards'
-            version System.getenv("ADAPTIVECARDSVERSION") ?:"1.1.0"
+            version System.getenv("XES_PACKAGEVERSIONNUMBER") ?:"0.0.0"
             artifact(sourceJar)
             artifact("$buildDir/outputs/aar/adaptivecards-release.aar")
         }
@@ -107,7 +107,7 @@ uploadArchives {
                 }
                 pom {
                     setGroupId "io.adaptivecards"
-                    setVersion System.getenv("ADAPTIVECARDSVERSION") ?:"1.1.0"
+                    setVersion System.getenv("XES_PACKAGEVERSIONNUMBER") ?:"0.0.0"
                 }
 
                 pom.project {
