@@ -6,12 +6,14 @@ using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::UI;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace
+{
     HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize() noexcept try
     {
         ShowCardActionConfig showCardActionConfig;
         return RuntimeClassInitialize(showCardActionConfig);
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
     HRESULT AdaptiveShowCardActionConfig::RuntimeClassInitialize(AdaptiveSharedNamespace::ShowCardActionConfig sharedShowCardActionConfig) noexcept
     {
@@ -21,45 +23,39 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT  AdaptiveShowCardActionConfig::get_ActionMode(ABI::AdaptiveNamespace::ActionMode* value)
+    _Use_decl_annotations_ HRESULT AdaptiveShowCardActionConfig::get_ActionMode(ABI::AdaptiveNamespace::ActionMode* value)
     {
         *value = m_actionMode;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT  AdaptiveShowCardActionConfig::put_ActionMode(ABI::AdaptiveNamespace::ActionMode value)
+    _Use_decl_annotations_ HRESULT AdaptiveShowCardActionConfig::put_ActionMode(ABI::AdaptiveNamespace::ActionMode value)
     {
         m_actionMode = value;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-        HRESULT AdaptiveShowCardActionConfig::get_Style(ABI::AdaptiveNamespace::ContainerStyle* style)
+    _Use_decl_annotations_ HRESULT AdaptiveShowCardActionConfig::get_Style(ABI::AdaptiveNamespace::ContainerStyle* style)
     {
         *style = m_containerStyle;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-        HRESULT AdaptiveShowCardActionConfig::put_Style(ABI::AdaptiveNamespace::ContainerStyle style)
+    _Use_decl_annotations_ HRESULT AdaptiveShowCardActionConfig::put_Style(ABI::AdaptiveNamespace::ContainerStyle style)
     {
         m_containerStyle = style;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveShowCardActionConfig::get_InlineTopMargin(UINT32* inlineTopMargin)
+    _Use_decl_annotations_ HRESULT AdaptiveShowCardActionConfig::get_InlineTopMargin(UINT32* inlineTopMargin)
     {
         *inlineTopMargin = m_inlineTopMargin;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveShowCardActionConfig::put_InlineTopMargin(UINT32 inlineTopMargin)
+    _Use_decl_annotations_ HRESULT AdaptiveShowCardActionConfig::put_InlineTopMargin(UINT32 inlineTopMargin)
     {
         m_inlineTopMargin = inlineTopMargin;
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

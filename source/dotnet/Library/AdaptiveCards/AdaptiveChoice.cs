@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
 using Newtonsoft.Json;

@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards.Rendering
@@ -14,7 +14,7 @@ namespace AdaptiveCards.Rendering
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string DefaultPoster { get; set; }
-        
+
         /// <summary>
         /// Play button URL to use for media thumbnail
         /// </summary>

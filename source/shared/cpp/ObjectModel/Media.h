@@ -6,53 +6,53 @@
 #include "ElementParserRegistration.h"
 #include "MediaSource.h"
 
-namespace AdaptiveSharedNamespace {
-class Media : public BaseCardElement
+namespace AdaptiveSharedNamespace
 {
-    friend class MediaParser;
-public:
-    Media();
+    class Media : public BaseCardElement
+    {
+        friend class MediaParser;
 
-    Json::Value SerializeToJsonValue() const override;
+    public:
+        Media();
 
-    std::string GetPoster() const;
-    void SetPoster(const std::string& value);
+        Json::Value SerializeToJsonValue() const override;
 
-    std::string GetAltText() const;
-    void SetAltText(const std::string& value);
+        std::string GetPoster() const;
+        void SetPoster(const std::string& value);
 
-    std::vector<std::shared_ptr<MediaSource>>& GetSources();
+        std::string GetAltText() const;
+        void SetAltText(const std::string& value);
 
-    void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
+        std::vector<std::shared_ptr<MediaSource>>& GetSources();
 
-private:
-    std::string m_poster;
-    std::string m_altText;
-    std::vector<std::shared_ptr<MediaSource>> m_sources;
+        void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
-    void PopulateKnownPropertiesSet() override;
-};
+    private:
+        std::string m_poster;
+        std::string m_altText;
+        std::vector<std::shared_ptr<MediaSource>> m_sources;
 
-class MediaParser : public BaseCardElementParser
-{
-public:
-    MediaParser() = default;
-    MediaParser(const MediaParser&) = default;
-    MediaParser(MediaParser&&) = default;
-    MediaParser& operator=(const MediaParser&) = default;
-    MediaParser& operator=(MediaParser&&) = default;
-    virtual ~MediaParser() = default;
+        void PopulateKnownPropertiesSet() override;
+    };
 
-    std::shared_ptr<BaseCardElement> Deserialize(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-        const Json::Value& root) override;
+    class MediaParser : public BaseCardElementParser
+    {
+    public:
+        MediaParser() = default;
+        MediaParser(const MediaParser&) = default;
+        MediaParser(MediaParser&&) = default;
+        MediaParser& operator=(const MediaParser&) = default;
+        MediaParser& operator=(MediaParser&&) = default;
+        virtual ~MediaParser() = default;
 
-    std::shared_ptr<BaseCardElement> DeserializeFromString(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-        const std::string& jsonString);
-};
+        std::shared_ptr<BaseCardElement> Deserialize(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+                                                     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+                                                     std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+                                                     const Json::Value& root) override;
+
+        std::shared_ptr<BaseCardElement> DeserializeFromString(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+                                                               std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+                                                               std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+                                                               const std::string& jsonString);
+    };
 }

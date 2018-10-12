@@ -5,13 +5,14 @@
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace
+{
     HRESULT AdaptiveContainerStyleDefinition::RuntimeClassInitialize() noexcept try
     {
         ContainerStyleDefinition styleDefinition;
         return RuntimeClassInitialize(styleDefinition);
-    } CATCH_RETURN;
-
+    }
+    CATCH_RETURN;
 
     HRESULT AdaptiveContainerStyleDefinition::RuntimeClassInitialize(ContainerStyleDefinition styleDefinition) noexcept
     {
@@ -20,30 +21,26 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveContainerStyleDefinition::get_BackgroundColor(ABI::Windows::UI::Color* value)
+    _Use_decl_annotations_ HRESULT AdaptiveContainerStyleDefinition::get_BackgroundColor(ABI::Windows::UI::Color* value)
     {
         *value = m_backgroundColor;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveContainerStyleDefinition::put_BackgroundColor(ABI::Windows::UI::Color color)
+    _Use_decl_annotations_ HRESULT AdaptiveContainerStyleDefinition::put_BackgroundColor(ABI::Windows::UI::Color color)
     {
         m_backgroundColor = color;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT  AdaptiveContainerStyleDefinition::get_ForegroundColors(ABI::AdaptiveNamespace::IAdaptiveColorsConfig** colorsConfig)
+    _Use_decl_annotations_ HRESULT AdaptiveContainerStyleDefinition::get_ForegroundColors(ABI::AdaptiveNamespace::IAdaptiveColorsConfig** colorsConfig)
     {
         return m_foregroundColors.CopyTo(colorsConfig);
     }
 
-    _Use_decl_annotations_
-    HRESULT  AdaptiveContainerStyleDefinition::put_ForegroundColors(ABI::AdaptiveNamespace::IAdaptiveColorsConfig* colorsConfig)
+    _Use_decl_annotations_ HRESULT AdaptiveContainerStyleDefinition::put_ForegroundColors(ABI::AdaptiveNamespace::IAdaptiveColorsConfig* colorsConfig)
     {
         m_foregroundColors = colorsConfig;
         return S_OK;
     }
-AdaptiveNamespaceEnd
+}

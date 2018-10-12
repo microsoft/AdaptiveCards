@@ -4,11 +4,11 @@
 #include <windows.foundation.h>
 #include "Enums.h"
 
-AdaptiveNamespaceStart
-    class DECLSPEC_UUID("26488FFF-01BD-474B-8AD4-16E04E5C304B") AdaptiveActionElementBase : public IUnknown
+namespace AdaptiveNamespace
+{
+    class DECLSPEC_UUID("CDCCC115-7C53-4A04-9F5B-754BBC00C80E") AdaptiveActionElementBase : public IUnknown
     {
     protected:
-
         HRESULT InitializeBaseElement(const std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel);
 
         IFACEMETHODIMP get_ActionTypeString(_Out_ HSTRING* value);
@@ -19,7 +19,7 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
         IFACEMETHODIMP put_Id(_In_ HSTRING id);
 
-        IFACEMETHODIMP get_IconUrl(_Out_ HSTRING *iconUrl);
+        IFACEMETHODIMP get_IconUrl(_Out_ HSTRING* iconUrl);
         IFACEMETHODIMP put_IconUrl(_In_ HSTRING iconUrl);
 
         IFACEMETHODIMP get_Sentiment(_Out_ ABI::AdaptiveNamespace::Sentiment *sentiment);
@@ -42,4 +42,4 @@ AdaptiveNamespaceStart
         Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_additionalProperties;
         Microsoft::WRL::Wrappers::HString m_typeString;
     };
-AdaptiveNamespaceEnd
+}

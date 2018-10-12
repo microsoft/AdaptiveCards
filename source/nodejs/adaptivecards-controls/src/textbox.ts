@@ -84,7 +84,7 @@ class MultilineEditBox extends EditBox {
     set placeholder(value: string) {
         this._textareaElement.placeholder = value;
     }
-    
+
     set lineCount(value: number) {
         this._textareaElement.rows = value;
     }

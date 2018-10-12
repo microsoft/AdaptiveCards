@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -16,7 +16,7 @@ namespace AdaptiveCards.Rendering.Wpf
             var factory = new FrameworkElementFactory(typeof(WrapPanel));
             // factory.SetValue(StackPanel.OrientationProperty, Orientation.Horizontal);
             itemsPanelTemplate.VisualTree = factory;
-            uiImageSet.ItemsPanel = itemsPanelTemplate;            
+            uiImageSet.ItemsPanel = itemsPanelTemplate;
 
             uiImageSet.Style = context.GetStyle("Adaptive.ImageSet");
             foreach (var image in imageSet.Images)

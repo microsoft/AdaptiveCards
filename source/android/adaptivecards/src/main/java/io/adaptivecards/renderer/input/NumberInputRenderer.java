@@ -77,6 +77,6 @@ public class NumberInputRenderer extends TextInputRenderer
 
         return editText;
     }
-    
+
     private static NumberInputRenderer s_instance = null;
 }

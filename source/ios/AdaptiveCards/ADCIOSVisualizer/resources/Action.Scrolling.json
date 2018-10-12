@@ -6,7 +6,7 @@
 		{
 			"type": "TextBlock",
 			"text": "This cards shows that action set will have scroll bar when it has more buttons than it can show",
-            "wrap": true
+	"wrap": true
 		}
 	],
 	"actions": [

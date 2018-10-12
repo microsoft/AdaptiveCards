@@ -83,7 +83,7 @@ namespace Docs.Controllers
 	<link rel='stylesheet' href='/content/card.css'>
 	<link rel='stylesheet' href='/explorer/explorer.css'>
     <script src='/node_modules/jquery/dist/jquery.min.js'></script>
-    <script src='/node_modules/adaptive-cards/dist/adaptive-cards.js'></script> 
+    <script src='/node_modules/adaptive-cards/dist/adaptive-cards.js'></script>
 	<script src='/explorer/explorer.js'></script>
 <style>
 body {{
@@ -92,7 +92,7 @@ body {{
 .card {{
     margin:0px;
     width:100%;
-}}                            
+}}
 </style>
 
 </head>
@@ -138,7 +138,7 @@ body {{
 }}
 .card {{
     padding:10px 10px 10px 10px;
-}}                            
+}}
 </style>
 
 </head>

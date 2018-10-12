@@ -222,6 +222,11 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::IsTrue(Spacing::Small == textInput.GetSpacing());
         Assert::IsTrue(TextInputStyle::Text == textInput.GetTextInputStyle());
         Assert::AreEqual("Input.Text_value"s, textInput.GetValue());
+
+        auto inlineAction = std::static_pointer_cast<SubmitAction>(textInput.GetInlineAction());
+        Assert::IsTrue((bool)inlineAction);
+        Assert::AreEqual("Input.Text_Action.Submit"s, inlineAction->GetTitle());
+        Assert::AreEqual("https://adaptivecards.io/content/cats/1.png"s, inlineAction->GetIconUrl());
     }
 
     void ValidateInputNumber(const NumberInput &numberInput)

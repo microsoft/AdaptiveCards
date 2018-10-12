@@ -23,4 +23,4 @@ typedef NS_ENUM(NSInteger, ACRActionType) {
 - (NSString *)data;
 - (NSData *)additionalProperty;
 
-@end    
+@end

@@ -15,4 +15,4 @@ using namespace AdaptiveCards;
 - (std::shared_ptr<BaseActionElement>)element;
 - (void)setElem:(std::shared_ptr<BaseActionElement> const &)elem;
 
-@end    
+@end

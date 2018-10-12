@@ -25,7 +25,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
             Json::Value json;
             std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
-            std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetSelectAction(
+            std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetAction(
                 elementParserRegistration,
                 actionParserRegistration,
                 warnings,
@@ -66,7 +66,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Json::Value json = ParseUtil::GetJsonValueFromString(cardStr);
 
             std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
-            std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetSelectAction(
+            std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetAction(
                 elementParserRegistration,
                 actionParserRegistration,
                 warnings,
@@ -100,7 +100,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Json::Value json = ParseUtil::GetJsonValueFromString(str);
 
             std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
-            std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetSelectAction(
+            std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetAction(
                 elementParserRegistration,
                 actionParserRegistration,
                 warnings,
@@ -110,7 +110,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
             Assert::IsTrue(selectAction == nullptr);
         }
-        
+
         // A card JSON with an OpenUrl selectAction
         TEST_METHOD(SelectActionOpenUrlTest)
         {
@@ -146,7 +146,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Json::Value json = ParseUtil::GetJsonValueFromString(str);
 
             std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
-            std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetSelectAction(
+            std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetAction(
                 elementParserRegistration,
                 actionParserRegistration,
                 warnings,
@@ -157,7 +157,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::IsFalse(selectAction == nullptr);
             Assert::AreEqual(selectAction->GetElementTypeString(), "Action.OpenUrl"s);
         }
-        
+
         // An arbitrary JSON with a Submit selectAction (for other elements such as Container, ColumnSet, etc.)
         TEST_METHOD(SelectActionAnyJsonTest)
         {
@@ -181,7 +181,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Json::Value json = ParseUtil::GetJsonValueFromString(str);
 
             std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
-            std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetSelectAction(
+            std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetAction(
                 elementParserRegistration,
                 actionParserRegistration,
                 warnings,
@@ -295,4 +295,3 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
     };
 }
-

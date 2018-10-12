@@ -61,7 +61,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             };
 
             // Test card containing all supported image locations
-            std::string testJsonString = 
+            std::string testJsonString =
             "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\

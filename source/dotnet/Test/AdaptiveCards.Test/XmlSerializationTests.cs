@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -43,7 +43,7 @@ namespace AdaptiveCards.Test
 
                 var result = compareLogic.Compare(card, card2);
                 //Assert.IsTrue(result.AreEqual, result.DifferencesString);
-                // TODO: This is failing on the Url serialization changing %20 to a space. 
+                // TODO: This is failing on the Url serialization changing %20 to a space.
                 // The serilaization is working through. Will bring this back once I fix the test
             }
         }

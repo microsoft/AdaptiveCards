@@ -12,11 +12,9 @@ using namespace ABI::Windows::UI;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
-    AdaptiveInputs::AdaptiveInputs()
-    {
-        m_inputValues = std::make_shared<std::vector<ComPtr<IAdaptiveInputValue>>>();
-    }
+namespace AdaptiveNamespace
+{
+    AdaptiveInputs::AdaptiveInputs() { m_inputValues = std::make_shared<std::vector<ComPtr<IAdaptiveInputValue>>>(); }
 
     HRESULT AdaptiveInputs::RuntimeClassInitialize() noexcept
     {
@@ -24,8 +22,7 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveInputs::AsJson(IJsonObject** value)
+    _Use_decl_annotations_ HRESULT AdaptiveInputs::AsJson(IJsonObject** value)
     {
         return StringToJsonObject(GetInputItemsAsJsonString(), value);
     }
@@ -64,8 +61,7 @@ AdaptiveNamespaceStart
         return outStream.str();
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveInputs::AsValueSet(IPropertySet** value)
+    _Use_decl_annotations_ HRESULT AdaptiveInputs::AsValueSet(IPropertySet** value)
     {
         *value = nullptr;
         ComPtr<IPropertySet> valueSet;
@@ -74,7 +70,8 @@ AdaptiveNamespaceStart
         RETURN_IF_FAILED(valueSet.As(&propertySetMap));
 
         ComPtr<IPropertyValueStatics> propertyValueFactory;
-        RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &propertyValueFactory));
+        RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(),
+                                              &propertyValueFactory));
 
         for (auto& inputValue : *m_inputValues)
         {
@@ -98,4 +95,4 @@ AdaptiveNamespaceStart
         return valueSet.CopyTo(value);
     }
 
-AdaptiveNamespaceEnd
+}

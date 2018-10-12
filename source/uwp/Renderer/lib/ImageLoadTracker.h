@@ -3,7 +3,8 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "IImageLoadTrackerListener.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace
+{
     struct TrackedImageDetails
     {
         EventRegistrationToken imageOpenedRegistration;
@@ -37,4 +38,4 @@ AdaptiveNamespaceStart
         void FireAllImagesLoaded();
         void FireImagesLoadingHadError();
     };
-AdaptiveNamespaceEnd
+}

@@ -3,7 +3,8 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "WholeItemsPanel.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace
+{
     class XamlHelpers
     {
     public:
@@ -19,9 +20,7 @@ AdaptiveNamespaceStart
         }
 
         template<typename T, typename C>
-        static void IterateOverVector(
-            ABI::Windows::Foundation::Collections::IVector<T*>* vector,
-            C iterationCallback)
+        static void IterateOverVector(ABI::Windows::Foundation::Collections::IVector<T*>* vector, C iterationCallback)
         {
             Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<T*>> localVector(vector);
             ComPtr<IIterable<T*>> vectorIterable;
@@ -50,11 +49,9 @@ AdaptiveNamespaceStart
         }
 
         template<typename T>
-        static void AppendXamlElementToPanel(
-            T* xamlElement,
-            ABI::Windows::UI::Xaml::Controls::IPanel* panel,
-            ABI::AdaptiveNamespace::HeightType heightType = ABI::AdaptiveNamespace::HeightType::Auto
-            )
+        static void AppendXamlElementToPanel(T* xamlElement,
+                                             ABI::Windows::UI::Xaml::Controls::IPanel* panel,
+                                             ABI::AdaptiveNamespace::HeightType heightType = ABI::AdaptiveNamespace::HeightType::Auto)
         {
             if (!xamlElement)
             {
@@ -83,13 +80,11 @@ AdaptiveNamespaceStart
             }
         }
 
-        template<typename T>
-        static void SetToggleValue(
-            T* item,
-            boolean isChecked)
+        template<typename T> static void SetToggleValue(T* item, boolean isChecked)
         {
             ComPtr<IPropertyValueStatics> propertyValueStatics;
-            ABI::Windows::Foundation::GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &propertyValueStatics);
+            ABI::Windows::Foundation::GetActivationFactory(
+                HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &propertyValueStatics);
 
             ComPtr<IPropertyValue> propertyValue;
             propertyValueStatics->CreateBoolean(isChecked, &propertyValue);
@@ -103,10 +98,7 @@ AdaptiveNamespaceStart
             THROW_IF_FAILED(toggleButton->put_IsChecked(boolProperty.Get()));
         }
 
-        template<typename T>
-        static void GetToggleValue(
-            T* item,
-            boolean* isChecked)
+        template<typename T> static void GetToggleValue(T* item, boolean* isChecked)
         {
             ComPtr<T> localItem(item);
             ComPtr<IToggleButton> toggleButton;
@@ -125,25 +117,20 @@ AdaptiveNamespaceStart
             }
         }
 
-        template<typename T>
-        static void SetContent(
-            T* item,
-            HSTRING contentString)
+        template<typename T> static void SetContent(T* item, HSTRING contentString)
         {
             ComPtr<T> localItem(item);
             ComPtr<IContentControl> contentControl;
             THROW_IF_FAILED(localItem.As(&contentControl));
 
-            ComPtr<ITextBlock> content = XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+            ComPtr<ITextBlock> content =
+                XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
             THROW_IF_FAILED(content->put_Text(contentString));
             THROW_IF_FAILED(contentControl->put_Content(content.Get()));
         }
 
         template<typename T>
-        static void AddRow(
-            T* item,
-            ABI::Windows::UI::Xaml::Controls::IGrid* grid,
-            ABI::Windows::UI::Xaml::GridLength rowHeight)
+        static void AddRow(T* item, ABI::Windows::UI::Xaml::Controls::IGrid* grid, ABI::Windows::UI::Xaml::GridLength rowHeight)
         {
             ComPtr<ABI::Windows::UI::Xaml::Controls::IGrid> localGrid(grid);
 
@@ -159,7 +146,8 @@ AdaptiveNamespaceStart
             THROW_IF_FAILED(localItem.As(&localItemAsFrameworkElement));
             gridStatics->SetRow(localItemAsFrameworkElement.Get(), rowIndex);
 
-            ComPtr<IRowDefinition> rowDefinition = XamlHelpers::CreateXamlClass<IRowDefinition>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RowDefinition));
+            ComPtr<IRowDefinition> rowDefinition = XamlHelpers::CreateXamlClass<IRowDefinition>(
+                HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RowDefinition));
             THROW_IF_FAILED(rowDefinition->put_Height(rowHeight));
             THROW_IF_FAILED(rowDefinitions->Append(rowDefinition.Get()));
 
@@ -168,4 +156,4 @@ AdaptiveNamespaceStart
             XamlHelpers::AppendXamlElementToPanel(item, localPanel.Get());
         }
     };
-AdaptiveNamespaceEnd
+}

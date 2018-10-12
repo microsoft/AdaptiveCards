@@ -18,7 +18,7 @@ namespace AdaptiveCardsSharedModelUnitTest
     public:
         TEST_METHOD(CanGetAdditionalProperitesTest)
         {
-            std::string testJsonString = 
+            std::string testJsonString =
             "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
