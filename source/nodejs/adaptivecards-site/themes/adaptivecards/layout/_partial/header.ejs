@@ -421,8 +421,10 @@
                <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem" class="mobile-breadcrumb">
                <a itemprop="item" href="<%- url_for('/archives') %>">Blog</a>
             </li>
-            <% } %>
-            <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"><span itemprop="name"><%= page.title %></span></li>
+			<% } %>
+			<% if(page.title) { %>
+				<li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"><span itemprop="name"><%= page.title %></span></li>
+			<% } %>
         </ul>
         <div class="content-header-controls exit-focus">
             <button type="button" class="ap-collapse-behavior ap-expanded button-border" data-bi-name="ap-collapse">
