@@ -16,7 +16,8 @@
 
 <body>
         <div id="toolbar" class="acd-toolbar">
-            <button id="btnToggleFullScreen" class="acd-toolbar-button acd-icon-fullScreen">Enter Full Screen</button>
+			<button id="btnToggleFullScreen" class="acd-toolbar-button acd-icon-fullScreen">Enter Full Screen</button>
+			
             <span style="color: black; margin-left: 8px;">Select Host App:</span>
             <div id="containerPickerHost" style="flex: 0 0 250px; margin: 0px 8px 0px 8px;"></div>
             <button id="btnPartnerStatus" class="acd-toolbar-button" title="Learn more about integrating with each Host App" onclick="window.open('https://docs.microsoft.com/en-us/adaptive-cards/resources/partners')">Host App Docs</button>
@@ -33,7 +34,7 @@
 
 			<div class="acd-toolbar-separator"></div>
 
-			<button id="btnVisualizer" class="acd-toolbar-button" title="Switch to the classic Visualizer" onclick="window.open('/visualizer')">Classic Visualizer</button>
+			<button id="btnVisualizer" class="acd-toolbar-button" title="Switch to the classic Visualizer" onclick="window.location.href = '/visualizer'">Classic Visualizer</button>
 
 		</div>
         <div class="content" style="display: flex; flex: 1 1 auto; overflow-y: hidden;">
@@ -78,7 +79,6 @@
 <script src="https://statics-uhf-eas.akamaized.net/shell/_scrf/js/themes=default/54-af9f9f/c0-247156/de-099401/e1-a50eee/e7-954872/d8-97d509/f0-251fe2/46-be1318/77-04a268/7f-652c90/63-077520/a4-34de62/2f-2c5417/db-bc0148/bc-5b77d5/78-4c7d22/df-e4d70f/e4-8302f6/cd-23d3b0/6d-1e7ed0/b7-cadaa7/ca-40b7b0/c3-6454d7/f9-7592d3/db-2792b1/f9-fa0ea3/7e-cda2d3/32-6dafa3/b0-8ba565/e0-3c9860/91-97a04f/1f-100dea/33-abe4df/85-2572bb/8f-d24839?ver=2.0&amp;iife=1" defer=""></script>
 
 <script src="monaco/loader.js"></script>
-<script src="monaco-loader.js"></script>
 
 <script src="dist/adaptivecards-designer.min.js"></script>
 

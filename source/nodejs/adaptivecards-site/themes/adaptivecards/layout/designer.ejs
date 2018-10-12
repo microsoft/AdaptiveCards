@@ -1,16 +1,26 @@
 
 <!-- this is copied from ../adaptivecards-designer/index.html -->
-
 <div id="toolbar" class="acd-toolbar">
 	<button id="btnToggleFullScreen" class="acd-toolbar-button acd-icon-fullScreen">Enter Full Screen</button>
+	
 	<span style="color: black; margin-left: 8px;">Select Host App:</span>
 	<div id="containerPickerHost" style="flex: 0 0 250px; margin: 0px 8px 0px 8px;"></div>
+	<button id="btnPartnerStatus" class="acd-toolbar-button" title="Learn more about integrating with each Host App" onclick="window.open('https://docs.microsoft.com/en-us/adaptive-cards/resources/partners')">Host App Docs</button>
+
 	<div class="acd-toolbar-separator"></div>
+
 	<button id="btnUndo" disabled=true class="acd-toolbar-button acd-toolbar-button-iconOnly acd-icon-undo" title="Undo your last changes"></button>
 	<button id="btnRedo" disabled=true class="acd-toolbar-button acd-toolbar-button-iconOnly acd-icon-redo" title="Redo your last changes"></button>
+
 	<div class="acd-toolbar-separator"></div>
+
 	<button id="btnNewCard" class="acd-toolbar-button acd-icon-newCard" title="Start a new card from scratch">New card</button>
 	<button id="btnCopyToClipboard" class="acd-toolbar-button acd-icon-copy" title="Copy the JSON for this card to the clipboard">Copy JSON</button>
+
+	<div class="acd-toolbar-separator"></div>
+
+	<button id="btnVisualizer" class="acd-toolbar-button" title="Switch to the classic Visualizer" onclick="window.location.href = '/visualizer'">Classic Visualizer</button>
+
 </div>
 <div class="content" style="display: flex; flex: 1 1 auto; overflow-y: hidden;">
 	<div id="leftCollapsedPaneTabHost" class="acd-verticalCollapsedTabContainer" style="border-right: 1px solid #D2D2D2;"></div>
