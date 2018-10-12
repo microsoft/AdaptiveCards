@@ -53,16 +53,21 @@ public class BaseCardElement {
   // check if the C++ code finds an object and just return ourselves if it doesn't
   public BaseCardElement findImplObj() {
      Object o = swigOriginalObject();
-     return o != null ? (BaseCardElement)o : this; 
+     return o != null ? (BaseCardElement)o : this;
   }
 
-  public BaseCardElement(CardElementType type, Spacing spacing, boolean separator) {
-    this(AdaptiveCardObjectModelJNI.new_BaseCardElement__SWIG_0(type.swigValue(), spacing.swigValue(), separator), true);
+  public BaseCardElement(CardElementType type, Spacing spacing, boolean separator, HeightType height) {
+    this(AdaptiveCardObjectModelJNI.new_BaseCardElement__SWIG_0(type.swigValue(), spacing.swigValue(), separator, height.swigValue()), true);
     AdaptiveCardObjectModelJNI.BaseCardElement_director_connect(this, swigCPtr, swigCMemOwn, true);
   }
 
   public BaseCardElement(CardElementType type) {
     this(AdaptiveCardObjectModelJNI.new_BaseCardElement__SWIG_1(type.swigValue()), true);
+    AdaptiveCardObjectModelJNI.BaseCardElement_director_connect(this, swigCPtr, swigCMemOwn, true);
+  }
+
+  public BaseCardElement(BaseCardElement arg0) {
+    this(AdaptiveCardObjectModelJNI.new_BaseCardElement__SWIG_2(BaseCardElement.getCPtr(arg0), arg0), true);
     AdaptiveCardObjectModelJNI.BaseCardElement_director_connect(this, swigCPtr, swigCMemOwn, true);
   }
 
@@ -80,6 +85,14 @@ public class BaseCardElement {
 
   public void SetSeparator(boolean value) {
     if (getClass() == BaseCardElement.class) AdaptiveCardObjectModelJNI.BaseCardElement_SetSeparator(swigCPtr, this, value); else AdaptiveCardObjectModelJNI.BaseCardElement_SetSeparatorSwigExplicitBaseCardElement(swigCPtr, this, value);
+  }
+
+  public HeightType GetHeight() {
+    return HeightType.swigToEnum(AdaptiveCardObjectModelJNI.BaseCardElement_GetHeight(swigCPtr, this));
+  }
+
+  public void SetHeight(HeightType value) {
+    AdaptiveCardObjectModelJNI.BaseCardElement_SetHeight(swigCPtr, this, value.swigValue());
   }
 
   public Spacing GetSpacing() {
@@ -103,16 +116,11 @@ public class BaseCardElement {
   }
 
   public String Serialize() {
-    return AdaptiveCardObjectModelJNI.BaseCardElement_Serialize(swigCPtr, this);
+    return (getClass() == BaseCardElement.class) ? AdaptiveCardObjectModelJNI.BaseCardElement_Serialize(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseCardElement_SerializeSwigExplicitBaseCardElement(swigCPtr, this);
   }
 
   public JsonValue SerializeToJsonValue() {
     return new JsonValue((getClass() == BaseCardElement.class) ? AdaptiveCardObjectModelJNI.BaseCardElement_SerializeToJsonValue(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseCardElement_SerializeToJsonValueSwigExplicitBaseCardElement(swigCPtr, this), true);
-  }
-
-  public static BaseActionElement DeserializeSelectAction(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, JsonValue json, AdaptiveCardSchemaKey key) {
-    long cPtr = AdaptiveCardObjectModelJNI.BaseCardElement_DeserializeSelectAction(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, JsonValue.getCPtr(json), json, key.swigValue());
-    return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
   }
 
   public JsonValue GetAdditionalProperties() {
@@ -121,6 +129,10 @@ public class BaseCardElement {
 
   public void SetAdditionalProperties(JsonValue additionalProperties) {
     AdaptiveCardObjectModelJNI.BaseCardElement_SetAdditionalProperties(swigCPtr, this, JsonValue.getCPtr(additionalProperties), additionalProperties);
+  }
+
+  public void GetResourceInformation(RemoteResourceInformationVector resourceUris) {
+    if (getClass() == BaseCardElement.class) AdaptiveCardObjectModelJNI.BaseCardElement_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceUris), resourceUris); else AdaptiveCardObjectModelJNI.BaseCardElement_GetResourceInformationSwigExplicitBaseCardElement(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceUris), resourceUris);
   }
 
   public Object swigOriginalObject() {

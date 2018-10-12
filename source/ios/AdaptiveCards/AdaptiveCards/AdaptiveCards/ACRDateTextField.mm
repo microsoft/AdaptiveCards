@@ -21,29 +21,28 @@ using namespace AdaptiveCards;
 - (instancetype)initWithTimeDateInput:(std::shared_ptr<BaseInputElement> const &)elem
                             dateStyle:(NSDateFormatterStyle)dateStyle
 {
-    self = [self initWithFrame:CGRectMake(0,0,0,0)];
-
+    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
+    self = [super init];
     if(self)
     {
         NSString *valueStr = nil;
         NSString *placeHolderStr = nil;
         NSString *minDateStr = nil;
         NSString *maxDateStr = nil;
-        
+
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         formatter.dateStyle = dateStyle;
-        formatter.locale = [NSLocale currentLocale];        
-        
-        UIDatePicker *picker = [[UIDatePicker alloc] init];
-        
+        formatter.locale = [NSLocale currentLocale];
+        UIDatePicker *picker = [bundle loadNibNamed:@"ACRDatePicker" owner:self options:nil][0];
+
         self.id = [NSString stringWithCString:elem->GetId().c_str()
                                      encoding:NSUTF8StringEncoding];
         self.isRequired = elem->GetIsRequired();
-        
+
         if(dateStyle == NSDateFormatterShortStyle)
         {
             std::shared_ptr<DateInput> dateInput = std::dynamic_pointer_cast<DateInput>(elem);
-            
+
             valueStr = [NSString stringWithCString:dateInput->GetValue().c_str()
                                                  encoding:NSUTF8StringEncoding];
             placeHolderStr = [NSString stringWithCString:dateInput->GetPlaceholder().c_str()
@@ -53,15 +52,16 @@ using namespace AdaptiveCards;
             maxDateStr = [NSString stringWithCString:dateInput->GetMax().c_str()
                                             encoding:NSUTF8StringEncoding];
             formatter.timeStyle = NSDateFormatterNoStyle;
-            
+
             [formatter setDateFormat:@"yyyy-MM-dd"];
-            
+
+            picker.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
             picker.datePickerMode = UIDatePickerModeDate;
         }
         else
         {
             std::shared_ptr<TimeInput> timeInput = std::dynamic_pointer_cast<TimeInput>(elem);
-            
+
             valueStr = [NSString stringWithCString:timeInput->GetValue().c_str()
                                           encoding:NSUTF8StringEncoding];
             placeHolderStr = [NSString stringWithCString:timeInput->GetPlaceholder().c_str()
@@ -71,12 +71,12 @@ using namespace AdaptiveCards;
             maxDateStr = [NSString stringWithCString:timeInput->GetMax().c_str()
                                             encoding:NSUTF8StringEncoding];
             formatter.timeStyle = NSDateFormatterShortStyle;
-            
+
             [formatter setDateFormat:@"HH:mm"];
 
             picker.datePickerMode = UIDatePickerModeTime;
         }
-       
+
         NSDate *date = [formatter dateFromString:valueStr];
         self.formatter = formatter;
         self.min = [formatter dateFromString:minDateStr];
@@ -84,26 +84,27 @@ using namespace AdaptiveCards;
         self.placeholder = placeHolderStr;
         self.text = valueStr;
         self.allowsEditingTextAttributes = NO;
-        self.borderStyle = UITextBorderStyleLine;
+        self.borderStyle = UITextBorderStyleRoundedRect;
+        self.backgroundColor = UIColor.groupTableViewBackgroundColor;
 
         if(date)
         {
             picker.date = date;
         }
-        
+
         [picker setMinimumDate:self.min];
         [picker setMaximumDate:self.max];
         [picker addTarget:self action:@selector(update:) forControlEvents:UIControlEventValueChanged];
-        
+
         UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                 target:self
                                                                                 action:@selector(dismiss)];
         UIToolbar *bar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, picker.frame.size.width, 44)];
         [bar setBarStyle:UIBarStyleBlackOpaque];
-        
+
         bar.items = @[button];
         button.tintColor = [UIColor blackColor];
-        
+
         self.inputAccessoryView = bar;
         self.inputView = picker;
     }
@@ -114,6 +115,7 @@ using namespace AdaptiveCards;
 - (IBAction)dismiss
 {
     [self endEditing:YES];
+    self.text = [self.formatter stringFromDate:((UIDatePicker *)self.inputView).date];
 }
 
 - (IBAction)update:(UIDatePicker *)picker
@@ -153,4 +155,5 @@ using namespace AdaptiveCards;
 {
     dictionary[self.id] = self.text;
 }
+
 @end

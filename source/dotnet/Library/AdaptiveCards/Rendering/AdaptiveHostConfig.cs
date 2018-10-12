@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+using System;
+using System.Diagnostics;
 using Newtonsoft.Json;
 
 namespace AdaptiveCards.Rendering
@@ -38,10 +39,70 @@ namespace AdaptiveCards.Rendering
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public SeparatorConfig Separator { get; set; } = new SeparatorConfig();
 
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public MediaConfig Media { get; set; } = new MediaConfig();
+
         /// <summary>
         /// Toggles whether or not to render inputs and actions
         /// </summary>
         public bool SupportsInteractivity { get; set; } = true;
+
+        /// <summary>
+        /// Image Base URL for relative URLs
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public Uri ImageBaseUrl { get; set; } = null;
+
+        public Uri ResolveFinalAbsoluteUri(string uriString)
+        {
+            Uri uri;
+            try
+            {
+                uri = new Uri(uriString, UriKind.RelativeOrAbsolute);
+            }
+            catch (UriFormatException)
+            {
+                return null;
+            }
+
+            return ResolveFinalAbsoluteUri(uri);
+        }
+
+        /** Get the absolute URI either by itself or using imageBaseUrl */
+        public Uri ResolveFinalAbsoluteUri(Uri uri)
+        {
+            if (uri == null)
+            {
+                return null;
+            }
+
+            if (uri.IsAbsoluteUri)
+            {
+                return uri;
+            }
+
+            if (ImageBaseUrl != null)
+            {
+                try
+                {
+                    Uri finalUri = new Uri(ImageBaseUrl, uri.ToString());
+                    if (finalUri.IsAbsoluteUri)
+                    {
+                        return finalUri;
+                    }
+                }
+                catch (UriFormatException)
+                {
+                    return null;
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    return null;
+                }
+            }
+
+            return null;
+        }
 
         public int GetSpacing(AdaptiveSpacing spacing)
         {
@@ -75,7 +136,10 @@ namespace AdaptiveCards.Rendering
         {
             try
             {
-                return JsonConvert.DeserializeObject<AdaptiveHostConfig>(json);
+                return JsonConvert.DeserializeObject<AdaptiveHostConfig>(json, new JsonSerializerSettings
+                {
+                    Converters = { new StrictIntConverter() }
+                });
             }
             catch (JsonException ex)
             {
@@ -93,6 +157,4 @@ namespace AdaptiveCards.Rendering
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
     }
-
 }
-

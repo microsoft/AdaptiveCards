@@ -5,11 +5,11 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorPrimary</item>
         <item name="colorButtonNormal">@color/colorPrimary</item>
-        <item name="colorControlHighlight">@color/colorAccent</item>
+        <!--<item name="colorControlHighlight">@color/colorAccent</item>-->
         <item name="editTextBackground">@drawable/border</item>
-        <item name="android:editTextBackground">@drawable/border</item>
+        <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Colored</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

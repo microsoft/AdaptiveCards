@@ -4,19 +4,18 @@
 #include "Enums.h"
 #include "ChoiceInput.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
+namespace AdaptiveNamespace
 {
-    class DECLSPEC_UUID("7263dbfb-cb43-47f9-9022-b43372f529f9") AdaptiveChoiceInput :
-        public Microsoft::WRL::RuntimeClass<
-            Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveChoiceInput,
-            Microsoft::WRL::CloakedIid<ITypePeek>>
+    class DECLSPEC_UUID("7263dbfb-cb43-47f9-9022-b43372f529f9") AdaptiveChoiceInput
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
+                                              ABI::AdaptiveNamespace::IAdaptiveChoiceInput,
+                                              Microsoft::WRL::CloakedIid<ITypePeek>>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveChoiceInput, BaseTrust)
+        AdaptiveRuntime(AdaptiveChoiceInput);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::ChoiceInput>& sharedChoiceInput);
+        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput>& sharedChoiceInput);
 
         // IAdaptiveChoiceInput
         IFACEMETHODIMP get_Title(_In_ HSTRING* title);
@@ -25,19 +24,16 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         IFACEMETHODIMP get_Value(_In_ HSTRING* value);
         IFACEMETHODIMP put_Value(_Out_ HSTRING value);
 
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ElementType* elementType);
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
 
-        HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::ChoiceInput>& sharedModel);
+        HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput>& sharedModel);
 
         // ITypePeek method
-        void *PeekAt(REFIID riid) override
-        {
-            return PeekHelper(riid, this);
-        }
+        void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
-        std::shared_ptr<AdaptiveCards::ChoiceInput> m_sharedChoiceInput;
+        std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput> m_sharedChoiceInput;
     };
 
     ActivatableClass(AdaptiveChoiceInput);
-}}}
+}

@@ -6,6 +6,13 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 /**
+ * (c) 2016-18 Henrik Gustafsson
+ *
+ * Contains code snippets licensed under Creative Commons Attribution-Share Alike 4.0
+ * International License available at https://creativecommons.org/licenses/by-sa/4.0/.
+ *
+ * Portions Copyright Microsoft Corporation
+ *
  * A custom view that extends {@link android.view.ViewGroup}
  * and which places its children horizontally,
  * flowing over to a new line whenever it runs out of width.

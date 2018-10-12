@@ -26,7 +26,7 @@ import static android.text.InputType.TYPE_NULL;
 
 public class TimeInputRenderer extends TextInputRenderer
 {
-    private TimeInputRenderer()
+    protected TimeInputRenderer()
     {
     }
 
@@ -113,7 +113,7 @@ public class TimeInputRenderer extends TextInputRenderer
 
         return editText;
     }
-    
+
     private static TimeInputRenderer s_instance = null;
     private static final String TITLE = "Set Time";
 }

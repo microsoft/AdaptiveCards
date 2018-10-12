@@ -33,6 +33,8 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="12"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <Grid>
@@ -82,6 +84,21 @@
                     Foreground="Red"
                     MaxHeight="150"/>
             </Grid>
+            <Grid Grid.Column="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock
+                    Text="Live Card"
+                    Style="{ThemeResource BaseTextBlockStyle}"
+                    Margin="0,6,0,6"/>
+                <Viewbox
+                    Grid.Row="1"
+                    Stretch="Uniform"
+                    Child="{Binding XamlCard}"
+                    />
+            </Grid>
         </Grid>
 
         <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
@@ -95,6 +112,11 @@
                 Margin="0,12,6,0"
                 Content="Compare host config"
                 Click="ButtonCompareHostConfig_Click"/>
+            <Button
+                x:Name="ButtonRoundTrippedJson"
+                Margin="0,12,6,0"
+                Content="Compare round tripped json"
+                Click="ButtonRoundTrippedJson_Click"/>
             <Button
                 x:Name="ButtonSaveAsExpected"
                 Margin="0,12,0,0"

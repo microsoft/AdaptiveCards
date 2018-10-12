@@ -1,6 +1,5 @@
 package io.adaptivecards.renderer.http;
 
-import android.net.Uri;
 import android.text.TextUtils;
 
 import java.io.BufferedInputStream;
@@ -87,6 +86,28 @@ public abstract class HttpRequestHelper
             throws MalformedURLException, URISyntaxException, IOException
     {
         return get(url, null);
+    }
+
+    public static void query(String url, Map<String, String> requestProperty)
+            throws MalformedURLException, URISyntaxException, IOException
+    {
+        HttpURLConnection conn = connect(url, HTTP_METHOD_GET, requestProperty, false, true);
+        conn.connect();
+        int code = conn.getResponseCode();
+        boolean redirected = code == HTTP_MOVED_PERM || code == HTTP_MOVED_TEMP || code == HTTP_SEE_OTHER;
+        String location = conn.getHeaderField("Location");
+        if (!redirected || TextUtils.isEmpty(location))
+        {
+            return;
+        }
+
+        query(location, requestProperty);
+    }
+
+    public static void query(String url)
+            throws MalformedURLException, URISyntaxException, IOException
+    {
+        query(url, null);
     }
 
     private static  byte[] requestBody(String url, String method, Map<String, String> requestProperty, String body)

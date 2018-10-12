@@ -3,22 +3,21 @@
 #include "Util.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp {
-    AdaptiveElementRendererRegistration::AdaptiveElementRendererRegistration()
-    {
-    }
+namespace AdaptiveNamespace
+{
+    AdaptiveElementRendererRegistration::AdaptiveElementRendererRegistration() {}
 
     HRESULT AdaptiveElementRendererRegistration::RuntimeClassInitialize() noexcept try
     {
         m_registration = std::make_shared<RegistrationMap>();
         return S_OK;
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveElementRendererRegistration::Set(HSTRING type, IAdaptiveElementRenderer* renderer)
+    _Use_decl_annotations_ HRESULT AdaptiveElementRendererRegistration::Set(HSTRING type, IAdaptiveElementRenderer* renderer)
     {
         ComPtr<IAdaptiveElementRenderer> localRenderer(renderer);
         (*m_registration)[HStringToUTF8(type)] = localRenderer;
@@ -26,8 +25,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp {
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveElementRendererRegistration::Get(HSTRING type, IAdaptiveElementRenderer** result)
+    _Use_decl_annotations_ HRESULT AdaptiveElementRendererRegistration::Get(HSTRING type, IAdaptiveElementRenderer** result)
     {
         *result = nullptr;
         RegistrationMap::iterator found = m_registration->find(HStringToUTF8(type));
@@ -38,10 +36,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp {
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveElementRendererRegistration::Remove(_In_ HSTRING type)
+    _Use_decl_annotations_ HRESULT AdaptiveElementRendererRegistration::Remove(_In_ HSTRING type)
     {
         m_registration->erase(HStringToUTF8(type));
         return S_OK;
     }
-}}}
+}

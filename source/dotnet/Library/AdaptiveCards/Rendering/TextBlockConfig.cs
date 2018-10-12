@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards.Rendering
@@ -34,6 +34,12 @@ namespace AdaptiveCards.Rendering
         ///  Is it allowed for the text to wrap
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public bool Wrap { get; set; }       
+        public bool Wrap { get; set; }
+
+        /// <summary>
+        /// The maximum width for text
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public int MaxWidth { get; set; }
     }
 }

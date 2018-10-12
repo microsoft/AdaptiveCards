@@ -7,7 +7,7 @@ namespace std {
     protected:
         enable_shared_from_this();
         enable_shared_from_this(const enable_shared_from_this &);
-        ~enable_shared_from_this();        
+        ~enable_shared_from_this();
     };
 }
 
@@ -61,9 +61,11 @@ struct tm {
 #include <memory>
 #include <time.h>
 #include "../../../shared/cpp/ObjectModel/Enums.h"
+#include "../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
 #include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseInputElement.h"
+#include "../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
 #include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
 #include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
 #include "../../../shared/cpp/ObjectModel/Container.h"
@@ -71,8 +73,6 @@ struct tm {
 #include "../../../shared/cpp/ObjectModel/ImageSet.h"
 #include "../../../shared/cpp/ObjectModel/Column.h"
 #include "../../../shared/cpp/ObjectModel/ColumnSet.h"
-#include "../../../shared/cpp/ObjectModel/Fact.h"
-#include "../../../shared/cpp/ObjectModel/FactSet.h"
 #include "../../../shared/cpp/ObjectModel/ChoiceInput.h"
 #include "../../../shared/cpp/ObjectModel/ChoiceSetInput.h"
 #include "../../../shared/cpp/ObjectModel/DateInput.h"
@@ -84,15 +84,18 @@ struct tm {
 #include "../../../shared/cpp/ObjectModel/ShowCardAction.h"
 #include "../../../shared/cpp/ObjectModel/SubmitAction.h"
 #include "../../../shared/cpp/ObjectModel/ParseResult.h"
-#include "../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
 #include "../../../shared/cpp/ObjectModel/SharedAdaptiveCard.h"
 #include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
 #include "../../../shared/cpp/ObjectModel/HostConfig.h"
 #include "../../../shared/cpp/ObjectModel/MarkDownParser.h"
 #include "../../../shared/cpp/ObjectModel/DateTimePreparsedToken.h"
 #include "../../../shared/cpp/ObjectModel/DateTimePreparser.h"
+#include "../../../shared/cpp/ObjectModel/Fact.h"
+#include "../../../shared/cpp/ObjectModel/FactSet.h"
 #include "../../../shared/cpp/ObjectModel/TextBlock.h"
 #include "../../../shared/cpp/ObjectModel/ActionSet.h"
+#include "../../../shared/cpp/ObjectModel/MediaSource.h"
+#include "../../../shared/cpp/ObjectModel/Media.h"
 %}
 
 %shared_ptr(AdaptiveCards::BaseActionElement)
@@ -122,6 +125,7 @@ struct tm {
 %shared_ptr(AdaptiveCards::SubmitAction)
 %shared_ptr(AdaptiveCards::AdaptiveCardParseWarning)
 %shared_ptr(AdaptiveCards::ParseResult)
+%shared_ptr(AdaptiveCards::RemoteResourceInformation)
 %shared_ptr(AdaptiveCards::AdaptiveCard)
 %shared_ptr(AdaptiveCards::ContainerParser)
 %shared_ptr(AdaptiveCards::TextBlockParser)
@@ -139,6 +143,9 @@ struct tm {
 %shared_ptr(AdaptiveCards::ImageSetParser)
 %shared_ptr(AdaptiveCards::DateInputParser)
 %shared_ptr(AdaptiveCards::DateTimePreparsedToken)
+%shared_ptr(AdaptiveCards::MediaSource)
+%shared_ptr(AdaptiveCards::Media)
+%shared_ptr(AdaptiveCards::MediaParser)
 %shared_ptr(AdaptiveCards::ActionSet)
 %shared_ptr(AdaptiveCards::ActionSetParser)
 
@@ -149,7 +156,7 @@ namespace Json {
     %extend Value {
         std::string getString() {
             Json::FastWriter fastWriter;
-            std::string jsonString = fastWriter.write(*self); 
+            std::string jsonString = fastWriter.write(*self);
             return jsonString;
         }
     }
@@ -174,7 +181,7 @@ namespace Json {
   // check if the C++ code finds an object and just return ourselves if it doesn't
   public BaseCardElement findImplObj() {
      Object o = swigOriginalObject();
-     return o != null ? ($javaclassname)o : this; 
+     return o != null ? ($javaclassname)o : this;
   }
 %}
 
@@ -196,7 +203,7 @@ namespace Json {
   // check if the C++ code finds an object and just return ourselves if it doesn't
   public BaseActionElement findImplObj() {
      Object o = swigOriginalObject();
-     return o != null ? ($javaclassname)o : this; 
+     return o != null ? ($javaclassname)o : this;
   }
 %}
 
@@ -285,14 +292,17 @@ namespace Json {
   }
 %}
 
+%template(RemoteResourceInformationVector) std::vector<AdaptiveCards::RemoteResourceInformation>;
 %template(AdaptiveCardParseWarningVector) std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning> >;
-%template(BaseCardElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement> >; 
-%template(ImageVector) std::vector<std::shared_ptr<AdaptiveCards::Image> >; 
-%template(FactVector) std::vector<std::shared_ptr<AdaptiveCards::Fact> >; 
-%template(ColumnVector) std::vector<std::shared_ptr<AdaptiveCards::Column> >; 
-%template(ChoiceInputVector) std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput> >; 
-%template(BaseActionElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement> >; 
+%template(BaseCardElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement> >;
+%template(ImageVector) std::vector<std::shared_ptr<AdaptiveCards::Image> >;
+%template(FactVector) std::vector<std::shared_ptr<AdaptiveCards::Fact> >;
+%template(ColumnVector) std::vector<std::shared_ptr<AdaptiveCards::Column> >;
+%template(ChoiceInputVector) std::vector<std::shared_ptr<AdaptiveCards::ChoiceInput> >;
+%template(MediaSourceVector) std::vector<std::shared_ptr<AdaptiveCards::MediaSource> >;
+%template(BaseActionElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement> >;
 %template(DateTimePreparsedTokenVector) std::vector<std::shared_ptr<AdaptiveCards::DateTimePreparsedToken> >;
+%template(StringVector) std::vector<std::string>;
 
 %template(EnableSharedFromThisContainer) std::enable_shared_from_this<AdaptiveCards::Container>;
 
@@ -551,6 +561,21 @@ namespace Json {
     }
 };
 
+%exception AdaptiveCards::Media::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::Media {
+    static AdaptiveCards::Media *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::Media *>(baseCardElement);
+    }
+};
+
 %exception AdaptiveCards::ActionSet::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
     $action
     if (!result) {
@@ -568,9 +593,11 @@ namespace Json {
 
 %include "../../../shared/cpp/ObjectModel/pch.h"
 %include "../../../shared/cpp/ObjectModel/Enums.h"
+%include "../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
 %include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseInputElement.h"
+%include "../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
 %include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
 %include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
 %include "../../../shared/cpp/ObjectModel/Container.h"
@@ -578,8 +605,6 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/ImageSet.h"
 %include "../../../shared/cpp/ObjectModel/Column.h"
 %include "../../../shared/cpp/ObjectModel/ColumnSet.h"
-%include "../../../shared/cpp/ObjectModel/Fact.h"
-%include "../../../shared/cpp/ObjectModel/FactSet.h"
 %include "../../../shared/cpp/ObjectModel/ChoiceInput.h"
 %include "../../../shared/cpp/ObjectModel/ChoiceSetInput.h"
 %include "../../../shared/cpp/ObjectModel/DateInput.h"
@@ -590,7 +615,6 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/OpenUrlAction.h"
 %include "../../../shared/cpp/ObjectModel/ShowCardAction.h"
 %include "../../../shared/cpp/ObjectModel/SubmitAction.h"
-%include "../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
 %include "../../../shared/cpp/ObjectModel/ParseResult.h"
 %include "../../../shared/cpp/ObjectModel/SharedAdaptiveCard.h"
 %include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
@@ -598,5 +622,9 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/MarkDownParser.h"
 %include "../../../shared/cpp/ObjectModel/DateTimePreparsedToken.h"
 %include "../../../shared/cpp/ObjectModel/DateTimePreparser.h"
+%include "../../../shared/cpp/ObjectModel/Fact.h"
+%include "../../../shared/cpp/ObjectModel/FactSet.h"
 %include "../../../shared/cpp/ObjectModel/TextBlock.h"
+%include "../../../shared/cpp/ObjectModel/MediaSource.h"
+%include "../../../shared/cpp/ObjectModel/Media.h"
 %include "../../../shared/cpp/ObjectModel/ActionSet.h"

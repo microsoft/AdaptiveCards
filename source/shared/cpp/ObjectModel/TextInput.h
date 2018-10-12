@@ -5,51 +5,62 @@
 #include "Enums.h"
 #include "ElementParserRegistration.h"
 
-namespace AdaptiveCards
+namespace AdaptiveSharedNamespace
 {
-class TextInput : public BaseInputElement
-{
-public:
-    TextInput();
+    class TextInput : public BaseInputElement
+    {
+    public:
+        TextInput();
 
-    virtual Json::Value SerializeToJsonValue() override;
+        Json::Value SerializeToJsonValue() const override;
 
-    std::string GetPlaceholder() const;
-    void SetPlaceholder(const std::string value);
+        std::string GetPlaceholder() const;
+        void SetPlaceholder(const std::string& value);
 
-    std::string GetValue() const;
-    void SetValue(const std::string value);
+        std::string GetValue() const;
+        void SetValue(const std::string& value);
 
-    bool GetIsMultiline() const;
-    void SetIsMultiline(const bool value);
+        bool GetIsMultiline() const;
+        void SetIsMultiline(const bool value);
 
-    unsigned int GetMaxLength() const;
-    void SetMaxLength(const unsigned int value);
+        unsigned int GetMaxLength() const;
+        void SetMaxLength(const unsigned int value);
 
-    TextInputStyle GetTextInputStyle() const;
-    void SetTextInputStyle(const TextInputStyle value);
+        TextInputStyle GetTextInputStyle() const;
+        void SetTextInputStyle(const TextInputStyle value);
 
-private:
-    void PopulateKnownPropertiesSet();
+        std::shared_ptr<BaseActionElement> GetInlineAction() const;
+        void SetInlineAction(const std::shared_ptr<BaseActionElement> action);
 
-    std::string m_placeholder;
-    std::string m_value;
-    bool m_isMultiline;
-    unsigned int m_maxLength;
-    TextInputStyle m_style;
-};
+    private:
+        void PopulateKnownPropertiesSet() override;
 
-class TextInputParser : public BaseCardElementParser
-{
-public:
-    std::shared_ptr<BaseCardElement> Deserialize(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const Json::Value& root);
+        std::string m_placeholder;
+        std::string m_value;
+        bool m_isMultiline;
+        unsigned int m_maxLength;
+        TextInputStyle m_style;
+        std::shared_ptr<BaseActionElement> m_inlineAction;
+    };
 
-    std::shared_ptr<BaseCardElement> DeserializeFromString(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const std::string& jsonString);
-};
+    class TextInputParser : public BaseCardElementParser
+    {
+    public:
+        TextInputParser() = default;
+        TextInputParser(const TextInputParser&) = default;
+        TextInputParser(TextInputParser&&) = default;
+        TextInputParser& operator=(const TextInputParser&) = default;
+        TextInputParser& operator=(TextInputParser&&) = default;
+        virtual ~TextInputParser() = default;
+
+        std::shared_ptr<BaseCardElement> Deserialize(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+                                                     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+                                                     std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+                                                     const Json::Value& root) override;
+
+        std::shared_ptr<BaseCardElement> DeserializeFromString(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+                                                               std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+                                                               std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+                                                               const std::string& jsonString);
+    };
 }

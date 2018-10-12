@@ -3,6 +3,8 @@ package io.adaptivecards.renderer.inputhandler;
 import android.widget.Spinner;
 
 import io.adaptivecards.objectmodel.BaseInputElement;
+import io.adaptivecards.objectmodel.ChoiceInput;
+import io.adaptivecards.objectmodel.ChoiceInputVector;
 import io.adaptivecards.objectmodel.ChoiceSetInput;
 
 import java.text.ParseException;
@@ -24,6 +26,31 @@ public class ComboBoxInputHandler extends BaseInputHandler
     {
         // no need to validate
         ChoiceSetInput choiceSetInput = (ChoiceSetInput) m_baseInputElement;
-        return (String) getSpinner().getSelectedItem();
+        int index = getSpinner().getSelectedItemPosition();
+        String selectedItem = "";
+        if (index >= 0 && index < choiceSetInput.GetChoices().size())
+        {
+            selectedItem = choiceSetInput.GetChoices().get(index).GetValue();
+        }
+        return selectedItem;
+    }
+
+    public void setInput(String value)
+    {
+        ChoiceSetInput choiceSetInput = (ChoiceSetInput) m_baseInputElement;
+        ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
+        int selectedPosition = 0;
+
+        for (int i = 0; i < choiceInputVector.size(); i++)
+        {
+            ChoiceInput choiceInput = choiceInputVector.get(i);
+            if (value.equals(choiceInput.GetValue()))
+            {
+                selectedPosition = i;
+                break;
+            }
+        }
+
+        getSpinner().setSelection(selectedPosition);
     }
 }

@@ -4,7 +4,7 @@
 using namespace concurrency;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::Data::Json;
@@ -12,12 +12,9 @@ using namespace ABI::Windows::UI;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
+namespace AdaptiveNamespace
 {
-    AdaptiveInputs::AdaptiveInputs()
-    {
-        m_inputValues = std::make_shared<std::vector<ComPtr<IAdaptiveInputValue>>>();
-    }
+    AdaptiveInputs::AdaptiveInputs() { m_inputValues = std::make_shared<std::vector<ComPtr<IAdaptiveInputValue>>>(); }
 
     HRESULT AdaptiveInputs::RuntimeClassInitialize() noexcept
     {
@@ -25,8 +22,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveInputs::AsJson(IJsonObject** value)
+    _Use_decl_annotations_ HRESULT AdaptiveInputs::AsJson(IJsonObject** value)
     {
         return StringToJsonObject(GetInputItemsAsJsonString(), value);
     }
@@ -65,8 +61,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return outStream.str();
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveInputs::AsValueSet(IPropertySet** value)
+    _Use_decl_annotations_ HRESULT AdaptiveInputs::AsValueSet(IPropertySet** value)
     {
         *value = nullptr;
         ComPtr<IPropertySet> valueSet;
@@ -75,7 +70,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         RETURN_IF_FAILED(valueSet.As(&propertySetMap));
 
         ComPtr<IPropertyValueStatics> propertyValueFactory;
-        RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &propertyValueFactory));
+        RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(),
+                                              &propertyValueFactory));
 
         for (auto& inputValue : *m_inputValues)
         {
@@ -99,4 +95,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return valueSet.CopyTo(value);
     }
 
-}}}
+}

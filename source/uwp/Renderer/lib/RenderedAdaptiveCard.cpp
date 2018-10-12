@@ -8,13 +8,14 @@
 #include "XamlHelpers.h"
 #include "AdaptiveHostConfig.h"
 #include "AdaptiveActionEventArgs.h"
+#include "AdaptiveMediaEventArgs.h"
 #include "AdaptiveError.h"
 #include "vector.h"
 
 using namespace concurrency;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
@@ -22,72 +23,76 @@ using namespace ABI::Windows::UI;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
+namespace AdaptiveNamespace
 {
-    RenderedAdaptiveCard::RenderedAdaptiveCard()
-    {
-    }
+    RenderedAdaptiveCard::RenderedAdaptiveCard() {}
 
     HRESULT RenderedAdaptiveCard::RuntimeClassInitialize()
     {
-        m_errors = Make<Vector<IAdaptiveError*>>();
-        m_warnings = Make<Vector<IAdaptiveWarning*>>();
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveInputs>(&m_inputs));
-        m_events = std::make_shared<ActionEventSource>();
+        RETURN_IF_FAILED(RenderedAdaptiveCard::RuntimeClassInitialize(Make<Vector<IAdaptiveError*>>().Get(),
+                                                                      Make<Vector<IAdaptiveWarning*>>().Get()));
         return S_OK;
     }
 
     HRESULT RenderedAdaptiveCard::RuntimeClassInitialize(
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveError*>* errors,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveWarning*>* warnings)
+        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveError*>* errors,
+        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* warnings)
     {
         m_errors = errors;
         m_warnings = warnings;
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCards::Rendering::Uwp::AdaptiveInputs>(&m_inputs));
-        m_events = std::make_shared<ActionEventSource>();
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveInputs>(&m_inputs));
+        m_actionEvents = std::make_shared<ActionEventSource>();
+        m_mediaClickedEvents = std::make_shared<MediaEventSource>();
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT RenderedAdaptiveCard::get_OriginatingCard(IAdaptiveCard** value)
+    _Use_decl_annotations_ HRESULT RenderedAdaptiveCard::get_OriginatingCard(IAdaptiveCard** value)
     {
         return m_originatingCard.CopyTo(value);
     }
 
-    _Use_decl_annotations_
-    HRESULT RenderedAdaptiveCard::get_FrameworkElement(IFrameworkElement** value)
+    _Use_decl_annotations_ HRESULT RenderedAdaptiveCard::get_FrameworkElement(IFrameworkElement** value)
     {
         return m_frameworkElement.CopyTo(value);
     }
-    
-    _Use_decl_annotations_
-    HRESULT RenderedAdaptiveCard::get_UserInputs(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputs** value)
+
+    _Use_decl_annotations_ HRESULT RenderedAdaptiveCard::get_UserInputs(ABI::AdaptiveNamespace::IAdaptiveInputs** value)
     {
         return m_inputs.CopyTo(value);
     }
 
-    _Use_decl_annotations_
-    HRESULT RenderedAdaptiveCard::add_Action(
-        ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard*, ABI::AdaptiveCards::Rendering::Uwp::AdaptiveActionEventArgs*>* handler,
+    _Use_decl_annotations_ HRESULT RenderedAdaptiveCard::add_Action(
+        ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*, ABI::AdaptiveNamespace::AdaptiveActionEventArgs*>* handler,
         EventRegistrationToken* token)
     {
-        return m_events->Add(handler, token);
+        return m_actionEvents->Add(handler, token);
     }
 
-    _Use_decl_annotations_
-    HRESULT RenderedAdaptiveCard::remove_Action(EventRegistrationToken token)
+    _Use_decl_annotations_ HRESULT RenderedAdaptiveCard::remove_Action(EventRegistrationToken token)
     {
-        return m_events->Remove(token);
+        return m_actionEvents->Remove(token);
     }
 
-    _Use_decl_annotations_
-    HRESULT RenderedAdaptiveCard::get_Errors(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveError*>** value)
+    _Use_decl_annotations_ HRESULT RenderedAdaptiveCard::add_MediaClicked(
+        ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*, ABI::AdaptiveNamespace::AdaptiveMediaEventArgs*>* handler,
+        EventRegistrationToken* token)
+    {
+        return m_mediaClickedEvents->Add(handler, token);
+    }
+
+    _Use_decl_annotations_ HRESULT RenderedAdaptiveCard::remove_MediaClicked(EventRegistrationToken token)
+    {
+        return m_mediaClickedEvents->Remove(token);
+    }
+
+    _Use_decl_annotations_ HRESULT RenderedAdaptiveCard::get_Errors(
+        ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveError*>** value)
     {
         return m_errors.CopyTo(value);
     }
 
-    _Use_decl_annotations_
-    HRESULT RenderedAdaptiveCard::get_Warnings(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveWarning*>** value)
+    _Use_decl_annotations_ HRESULT RenderedAdaptiveCard::get_Warnings(
+        ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>** value)
     {
         return m_warnings.CopyTo(value);
     }
@@ -100,7 +105,15 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         ComPtr<IAdaptiveActionEventArgs> eventArgs;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionEventArgs>(&eventArgs, actionElement, gatheredInputs.Get()));
 
-        return m_events->InvokeAll(this, eventArgs.Get());
+        return m_actionEvents->InvokeAll(this, eventArgs.Get());
+    }
+
+    HRESULT RenderedAdaptiveCard::SendMediaClickedEvent(IAdaptiveMedia* mediaElement)
+    {
+        ComPtr<IAdaptiveMediaEventArgs> eventArgs;
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveMediaEventArgs>(&eventArgs, mediaElement));
+
+        return m_mediaClickedEvents->InvokeAll(this, eventArgs.Get());
     }
 
     void RenderedAdaptiveCard::SetFrameworkElement(ABI::Windows::UI::Xaml::IFrameworkElement* value)
@@ -108,7 +121,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         m_frameworkElement = value;
     }
 
-    void RenderedAdaptiveCard::SetOriginatingCard(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCard* value)
+    void RenderedAdaptiveCard::SetOriginatingCard(ABI::AdaptiveNamespace::IAdaptiveCard* value)
     {
         m_originatingCard = value;
     }
@@ -117,4 +130,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     {
         return m_inputs->AddInputValue(inputItem);
     }
-}}}
+}

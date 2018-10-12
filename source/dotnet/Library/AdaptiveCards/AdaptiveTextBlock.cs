@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
@@ -108,5 +108,15 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(0)]
         public int MaxLines { get; set; }
+
+        /// <summary>
+        ///   The maximum width of the textblock
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(0)]
+        public int MaxWidth { get; set; }
     }
 }

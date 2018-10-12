@@ -1,17 +1,17 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include "XamlHelpers.h"
 #include "HtmlHelpers.h"
+#include <safeint.h>
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
-using namespace AdaptiveCards::Rendering::Uwp;
+using namespace AdaptiveNamespace;
+using namespace msl::utilities;
 
-HRESULT GetTextFromXmlNode(
-    ABI::Windows::Data::Xml::Dom::IXmlNode* node,
-    HSTRING* text)
+HRESULT GetTextFromXmlNode(ABI::Windows::Data::Xml::Dom::IXmlNode* node, HSTRING* text)
 {
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> localNode = node;
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNodeSerializer> textNodeSerializer;
@@ -21,25 +21,10 @@ HRESULT GetTextFromXmlNode(
     return S_OK;
 }
 
-HRESULT XamlRunFromXmlNode(
-    ABI::Windows::Data::Xml::Dom::IXmlNode* node,
-    ABI::Windows::UI::Xaml::Documents::IRun** run)
-{
-    HString text;
-    RETURN_IF_FAILED(GetTextFromXmlNode(node, text.GetAddressOf()));
-
-    ComPtr<ABI::Windows::UI::Xaml::Documents::IRun> localRun = XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IRun>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
-    RETURN_IF_FAILED(localRun->put_Text(text.Get()));
-
-    *run = localRun.Detach();
-    return S_OK;
-}
-
-HRESULT AddListInlines(
-    IAdaptiveRenderContext* renderContext,
-    ABI::Windows::Data::Xml::Dom::IXmlNode* node,
-    bool isListOrdered,
-    IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
+HRESULT AddListInlines(IAdaptiveRenderContext* renderContext,
+                       ABI::Windows::Data::Xml::Dom::IXmlNode* node,
+                       bool isListOrdered,
+                       IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
 {
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNamedNodeMap> attributeMap;
     RETURN_IF_FAILED(node->get_Attributes(&attributeMap));
@@ -47,12 +32,35 @@ HRESULT AddListInlines(
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> startNode;
     RETURN_IF_FAILED(attributeMap->GetNamedItem(HStringReference(L"start").Get(), &startNode));
 
-    int iteration = 1;
+    unsigned long iteration = 1;
     if (startNode != nullptr)
     {
+        // Get the starting value for this list
         HString start;
         RETURN_IF_FAILED(GetTextFromXmlNode(startNode.Get(), start.GetAddressOf()));
-        iteration = std::stoi(HStringToUTF8(start.Get()));
+        try
+        {
+            iteration = std::stoul(HStringToUTF8(start.Get()));
+
+            // Check that we can iterate the entire list without overflowing.
+            // If the list values are too big to store in an unsigned int, start
+            // the list at 1.
+            ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNodeList> children;
+            RETURN_IF_FAILED(node->get_ChildNodes(&children));
+
+            UINT32 childrenLength;
+            RETURN_IF_FAILED(children->get_Length(&childrenLength));
+
+            unsigned long result;
+            if (!SafeAdd(iteration, childrenLength - 1, result))
+            {
+                iteration = 1;
+            }
+        }
+        catch (const std::out_of_range&)
+        {
+            // If stoul throws out_of_range, start the numbered list at 1.
+        }
     }
 
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> listChild;
@@ -63,21 +71,21 @@ HRESULT AddListInlines(
         std::wstring listElementString = L"\n";
         if (!isListOrdered)
         {
-            listElementString += L"● ";
+            // Add a bullet
+            listElementString += L"\x2022 ";
         }
         else
         {
-            wchar_t buffer[10];
-            swprintf_s(buffer, ARRAYSIZE(buffer), L"%d. ", iteration);
-
-            std::wstring numberElementString(buffer);
-            listElementString += numberElementString;
+            listElementString += std::to_wstring(iteration);
+            listElementString += L". ";
         }
 
         HString listElementHString;
         RETURN_IF_FAILED(listElementHString.Set(listElementString.c_str()));
 
-        ComPtr<ABI::Windows::UI::Xaml::Documents::IRun> run = XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IRun>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
+        ComPtr<ABI::Windows::UI::Xaml::Documents::IRun> run =
+            XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IRun>(
+                HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
         RETURN_IF_FAILED(run->put_Text(listElementHString.Get()));
 
         ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> runAsInline;
@@ -96,12 +104,11 @@ HRESULT AddListInlines(
     return S_OK;
 }
 
-HRESULT AddLinkInline(
-    IAdaptiveRenderContext* renderContext,
-    ABI::Windows::Data::Xml::Dom::IXmlNode* node,
-    BOOL isBold,
-    BOOL isItalic,
-    IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
+HRESULT AddLinkInline(IAdaptiveRenderContext* renderContext,
+                      ABI::Windows::Data::Xml::Dom::IXmlNode* node,
+                      BOOL isBold,
+                      BOOL isItalic,
+                      IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
 {
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNamedNodeMap> attributeMap;
     RETURN_IF_FAILED(node->get_Attributes(&attributeMap));
@@ -118,14 +125,14 @@ HRESULT AddLinkInline(
     RETURN_IF_FAILED(GetTextFromXmlNode(hrefNode.Get(), href.GetAddressOf()));
 
     ComPtr<IUriRuntimeClassFactory> uriActivationFactory;
-    RETURN_IF_FAILED(GetActivationFactory(
-        HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(),
-        &uriActivationFactory));
+    RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_Uri).Get(), &uriActivationFactory));
 
     ComPtr<IUriRuntimeClass> uri;
     RETURN_IF_FAILED(uriActivationFactory->CreateUri(href.Get(), uri.GetAddressOf()));
 
-    ComPtr<ABI::Windows::UI::Xaml::Documents::IHyperlink> hyperlink = XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IHyperlink>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Hyperlink));
+    ComPtr<ABI::Windows::UI::Xaml::Documents::IHyperlink> hyperlink =
+        XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IHyperlink>(
+            HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Hyperlink));
     RETURN_IF_FAILED(hyperlink->put_NavigateUri(uri.Get()));
 
     ComPtr<ABI::Windows::UI::Xaml::Documents::ISpan> hyperlinkAsSpan;
@@ -143,12 +150,50 @@ HRESULT AddLinkInline(
     return S_OK;
 }
 
-HRESULT AddTextInlines(
-    IAdaptiveRenderContext* renderContext,
-    ABI::Windows::Data::Xml::Dom::IXmlNode* node,
-    BOOL isBold,
-    BOOL isItalic,
-    IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
+HRESULT AddSingleTextInline(IAdaptiveRenderContext* renderContext,
+                            HSTRING string,
+                            bool isBold,
+                            bool isItalic,
+                            IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
+{
+    ComPtr<ABI::Windows::UI::Xaml::Documents::IRun> run = XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IRun>(
+        HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
+    RETURN_IF_FAILED(run->put_Text(string));
+
+    ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement> runAsTextElement;
+    RETURN_IF_FAILED(run.As(&runAsTextElement));
+
+    if (isBold)
+    {
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+        ComPtr<IAdaptiveFontWeightsConfig> fontWeightsConfig;
+        RETURN_IF_FAILED(hostConfig->get_FontWeights(&fontWeightsConfig));
+
+        ABI::Windows::UI::Text::FontWeight boldFontWeight;
+        RETURN_IF_FAILED(fontWeightsConfig->get_Bolder(&boldFontWeight.Weight));
+
+        RETURN_IF_FAILED(runAsTextElement->put_FontWeight(boldFontWeight));
+    }
+
+    if (isItalic)
+    {
+        RETURN_IF_FAILED(runAsTextElement->put_FontStyle(ABI::Windows::UI::Text::FontStyle::FontStyle_Italic));
+    }
+
+    ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> runAsInline;
+    RETURN_IF_FAILED(run.As(&runAsInline));
+
+    RETURN_IF_FAILED(inlines->Append(runAsInline.Get()));
+    return S_OK;
+}
+
+HRESULT AddTextInlines(IAdaptiveRenderContext* renderContext,
+                       ABI::Windows::Data::Xml::Dom::IXmlNode* node,
+                       BOOL isBold,
+                       BOOL isItalic,
+                       IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
 {
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> childNode;
     RETURN_IF_FAILED(node->get_FirstChild(&childNode));
@@ -176,39 +221,14 @@ HRESULT AddTextInlines(
         }
         else if (isTextResult == 0)
         {
-            ComPtr<ABI::Windows::UI::Xaml::Documents::IRun> run;
-            RETURN_IF_FAILED(XamlRunFromXmlNode(childNode.Get(), &run));
-
-            ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement> runAsTextElement;
-            RETURN_IF_FAILED(run.As(&runAsTextElement));
-
-            if (isBold)
-            {
-                ComPtr<IAdaptiveHostConfig> hostConfig;
-                RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-
-                ComPtr<IAdaptiveFontWeightsConfig> fontWeightsConfig;
-                RETURN_IF_FAILED(hostConfig->get_FontWeights(&fontWeightsConfig));
-
-                ABI::Windows::UI::Text::FontWeight boldFontWeight;
-                RETURN_IF_FAILED(fontWeightsConfig->get_Bolder(&boldFontWeight.Weight));
-
-                RETURN_IF_FAILED(runAsTextElement->put_FontWeight(boldFontWeight));
-            }
-
-            if (isItalic)
-            {
-                RETURN_IF_FAILED(runAsTextElement->put_FontStyle(ABI::Windows::UI::Text::FontStyle::FontStyle_Italic));
-            }
-
-            ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> runAsInline;
-            RETURN_IF_FAILED(run.As(&runAsInline));
-
-            RETURN_IF_FAILED(inlines->Append(runAsInline.Get()));
+            HString text;
+            RETURN_IF_FAILED(GetTextFromXmlNode(childNode.Get(), text.GetAddressOf()));
+            RETURN_IF_FAILED(AddSingleTextInline(renderContext, text.Get(), isBold, isItalic, inlines));
         }
         else
         {
-            RETURN_IF_FAILED(AddTextInlines(renderContext, childNode.Get(), isBold || (isBoldResult == 0), isItalic || (isItalicResult == 0), inlines));
+            RETURN_IF_FAILED(
+                AddTextInlines(renderContext, childNode.Get(), isBold || (isBoldResult == 0), isItalic || (isItalicResult == 0), inlines));
         }
 
         ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> nextChildNode;
@@ -219,10 +239,9 @@ HRESULT AddTextInlines(
     return S_OK;
 }
 
-HRESULT AddHtmlInlines(
-    IAdaptiveRenderContext* renderContext,
-    ABI::Windows::Data::Xml::Dom::IXmlNode * node,
-    IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
+HRESULT AddHtmlInlines(IAdaptiveRenderContext* renderContext,
+                       ABI::Windows::Data::Xml::Dom::IXmlNode* node,
+                       IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
 {
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> childNode;
     RETURN_IF_FAILED(node->get_FirstChild(&childNode));

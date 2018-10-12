@@ -3,15 +3,16 @@
 #include "AdaptiveTextConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
+namespace AdaptiveNamespace
 {
     HRESULT AdaptiveFactSetConfig::RuntimeClassInitialize() noexcept try
     {
         FactSetConfig factSetConfig;
         return RuntimeClassInitialize(factSetConfig);
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
     HRESULT AdaptiveFactSetConfig::RuntimeClassInitialize(FactSetConfig factSetConfig) noexcept
     {
@@ -22,43 +23,37 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveFactSetConfig::get_Title(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextConfig** titleTextConfig)
+    _Use_decl_annotations_ HRESULT AdaptiveFactSetConfig::get_Title(ABI::AdaptiveNamespace::IAdaptiveTextConfig** titleTextConfig)
     {
         return m_title.CopyTo(titleTextConfig);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveFactSetConfig::put_Title(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextConfig* titleTextConfig)
+    _Use_decl_annotations_ HRESULT AdaptiveFactSetConfig::put_Title(ABI::AdaptiveNamespace::IAdaptiveTextConfig* titleTextConfig)
     {
         m_title = titleTextConfig;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveFactSetConfig::get_Value(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextConfig** valueTextConfig)
+    _Use_decl_annotations_ HRESULT AdaptiveFactSetConfig::get_Value(ABI::AdaptiveNamespace::IAdaptiveTextConfig** valueTextConfig)
     {
         return m_value.CopyTo(valueTextConfig);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveFactSetConfig::put_Value(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveTextConfig* valueTextConfig)
+    _Use_decl_annotations_ HRESULT AdaptiveFactSetConfig::put_Value(ABI::AdaptiveNamespace::IAdaptiveTextConfig* valueTextConfig)
     {
         m_value = valueTextConfig;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveFactSetConfig::get_Spacing(UINT32 * value)
+    _Use_decl_annotations_ HRESULT AdaptiveFactSetConfig::get_Spacing(UINT32* value)
     {
         *value = m_spacing;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveFactSetConfig::put_Spacing(UINT32 value)
+    _Use_decl_annotations_ HRESULT AdaptiveFactSetConfig::put_Spacing(UINT32 value)
     {
         m_spacing = value;
         return S_OK;
     }
-}}}
+}

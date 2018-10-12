@@ -7,27 +7,30 @@
 
 #include "ACRContentStackView.h"
 #include "ACOHostConfigPrivate.h"
+#import "ACRShowCardTarget.h"
 
 using namespace AdaptiveCards;
 
 @implementation ACRContentStackView
 {
     NSMutableArray* _targets;
+    NSMutableArray<ACRShowCardTarget *>* _showcardTargets;
     ACRContainerStyle _style;
 }
 
 - (instancetype)initWithStyle:(ACRContainerStyle)style
                   parentStyle:(ACRContainerStyle)parentStyle
                    hostConfig:(ACOHostConfig *)acoConfig
+                    superview:(UIView *)superview
 {
-    self = [self initWithFrame:CGRectMake(0,0,0,0)];
+    self = [self initWithFrame:superview.frame];
     if(self){
 
         _style = style;
         if(style != ACRNone &&
             style != parentStyle) {
             std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
-            [self setBackgroundColorWithHostConfig:config];
+            self.backgroundColor = [acoConfig getBackgroundColorForContainerStyle:_style];
             [self setBorderColorWithHostConfig:config];
             [self setBorderThicknessWithHostConfig:config];
             [self removeConstraints:self.constraints];
@@ -37,15 +40,17 @@ using namespace AdaptiveCards;
     return self;
 }
 
+- (instancetype)initWithFrame:(CGRect)frame attributes:(nullable NSDictionary<NSString *, id> *)attributes{
+    self = [super initWithFrame:CGRectMake(0,0,frame.size.width, frame.size.height)];
+    if(self) {
+        _stackView = [[UIStackView alloc] initWithFrame:frame];
+        [self config:attributes];
+    }
+    return self;
+}
 - (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [super initWithFrame:CGRectMake(0,0,frame.size.width,0)];
-    if(self)
-    {
-        _stackView = [[UIStackView alloc] initWithFrame:frame];
-        [self config];
-    }
-
+    self = [self initWithFrame:CGRectMake(0,0,frame.size.width, frame.size.height) attributes:nil];
     return self;
 }
 
@@ -56,7 +61,7 @@ using namespace AdaptiveCards;
     if (self)
     {
         _stackView = [[UIStackView alloc] init];
-        [self config];
+        [self config:nil];
     }
 
     return self;
@@ -91,14 +96,14 @@ using namespace AdaptiveCards;
 
 - (void)setBackgroundColorWithHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    UIColor *color = [[self class] colorFromString:[self paletteForHostConfig:config].backgroundColor];
+    UIColor *color = [ACOHostConfig convertHexColorCodeToUIColor:[self paletteForHostConfig:config].backgroundColor];
 
     self.backgroundColor = color;
 }
 
 - (void)setBorderColorWithHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    UIColor *color = [[self class] colorFromString:[self paletteForHostConfig:config].borderColor];
+    UIColor *color = [ACOHostConfig convertHexColorCodeToUIColor:[self paletteForHostConfig:config].borderColor];
 
     [[self layer] setBorderColor:[color CGColor]];
 }
@@ -110,7 +115,7 @@ using namespace AdaptiveCards;
     [[self layer] setBorderWidth:borderWidth];
 }
 
-- (void)config
+- (void)config:(nullable NSDictionary<NSString *, id> *)attributes
 {
     if(!self.stackView){
         return;
@@ -121,6 +126,22 @@ using namespace AdaptiveCards;
     self.translatesAutoresizingMaskIntoConstraints = NO;
 
     _targets = [[NSMutableArray alloc] init];
+    _showcardTargets = [[NSMutableArray alloc] init];
+
+    if(attributes){
+        NSNumber *distribAttrib = attributes[@"distribution"];
+        if([distribAttrib boolValue]){
+            self.stackView.distribution = (UIStackViewDistribution)[distribAttrib integerValue];
+        }
+        NSNumber *alignAttrib = attributes[@"alignment"];
+        if([alignAttrib boolValue]){
+            self.stackView.alignment = (UIStackViewAlignment)[alignAttrib integerValue];
+        }
+        NSNumber *spacingAttrib = attributes[@"spacing"];
+        if([spacingAttrib boolValue]){
+            self.stackView.spacing = [spacingAttrib floatValue];
+        }
+    }
 }
 
 - (CGSize)intrinsicContentSize
@@ -136,6 +157,17 @@ using namespace AdaptiveCards;
 - (void)addTarget:(NSObject *)target
 {
     [_targets addObject:target];
+
+    if([target isKindOfClass:[ACRShowCardTarget class]]){
+        [_showcardTargets addObject:(ACRShowCardTarget *)target];
+    }
+}
+
+- (void)hideAllShowCards
+{
+    for(ACRShowCardTarget *target in _showcardTargets){
+        [target hideShowCard];
+    }
 }
 
 // let the last element to strech

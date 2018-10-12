@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
@@ -18,6 +18,8 @@ namespace AdaptiveCards.Rendering.Html
         public AdaptiveElementRenderers<HtmlTag, AdaptiveRenderContext> ElementRenderers { get; set; }
 
         public IList<AdaptiveWarning> Warnings { get; } = new List<AdaptiveWarning>();
+
+        public IList<HtmlTag> ShowCardTags { get; } = new List<HtmlTag>();
 
         public HtmlTag Render(AdaptiveTypedElement element)
         {
@@ -87,5 +89,7 @@ namespace AdaptiveCards.Rendering.Html
             }
             return color;
         }
+
+        public string Lang { get; set; }
     }
 }

@@ -69,6 +69,14 @@ public class HostConfig {
     return AdaptiveCardObjectModelJNI.HostConfig_supportsInteractivity_get(swigCPtr, this);
   }
 
+  public void setImageBaseUrl(String value) {
+    AdaptiveCardObjectModelJNI.HostConfig_imageBaseUrl_set(swigCPtr, this, value);
+  }
+
+  public String getImageBaseUrl() {
+    return AdaptiveCardObjectModelJNI.HostConfig_imageBaseUrl_get(swigCPtr, this);
+  }
+
   public void setImageSizes(ImageSizesConfig value) {
     AdaptiveCardObjectModelJNI.HostConfig_imageSizes_set(swigCPtr, this, ImageSizesConfig.getCPtr(value), value);
   }
@@ -148,6 +156,15 @@ public class HostConfig {
   public ContainerStylesDefinition getContainerStyles() {
     long cPtr = AdaptiveCardObjectModelJNI.HostConfig_containerStyles_get(swigCPtr, this);
     return (cPtr == 0) ? null : new ContainerStylesDefinition(cPtr, false);
+  }
+
+  public void setMedia(MediaConfig value) {
+    AdaptiveCardObjectModelJNI.HostConfig_media_set(swigCPtr, this, MediaConfig.getCPtr(value), value);
+  }
+
+  public MediaConfig getMedia() {
+    long cPtr = AdaptiveCardObjectModelJNI.HostConfig_media_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new MediaConfig(cPtr, false);
   }
 
   public static HostConfig Deserialize(JsonValue json) {

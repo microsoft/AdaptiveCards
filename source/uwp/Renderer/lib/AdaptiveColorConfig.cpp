@@ -3,17 +3,17 @@
 #include "AdaptiveColorConfig.h"
 
 using namespace Microsoft::WRL;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::UI;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
+namespace AdaptiveNamespace
 {
     HRESULT AdaptiveColorConfig::RuntimeClassInitialize() noexcept try
     {
         ColorConfig colorConfig;
         return RuntimeClassInitialize(colorConfig);
-    } CATCH_RETURN;
-
+    }
+    CATCH_RETURN;
 
     HRESULT AdaptiveColorConfig::RuntimeClassInitialize(ColorConfig colorConfig) noexcept
     {
@@ -22,32 +22,27 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveColorConfig::get_Default(ABI::Windows::UI::Color* value)
+    _Use_decl_annotations_ HRESULT AdaptiveColorConfig::get_Default(ABI::Windows::UI::Color* value)
     {
         *value = m_defaultColor;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveColorConfig::put_Default(ABI::Windows::UI::Color color)
+    _Use_decl_annotations_ HRESULT AdaptiveColorConfig::put_Default(ABI::Windows::UI::Color color)
     {
         m_defaultColor = color;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveColorConfig::get_Subtle(ABI::Windows::UI::Color* value)
+    _Use_decl_annotations_ HRESULT AdaptiveColorConfig::get_Subtle(ABI::Windows::UI::Color* value)
     {
         *value = m_subtleColor;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveColorConfig::put_Subtle(ABI::Windows::UI::Color color)
+    _Use_decl_annotations_ HRESULT AdaptiveColorConfig::put_Subtle(ABI::Windows::UI::Color color)
     {
         m_subtleColor = color;
         return S_OK;
     }
-}}}
-
+}

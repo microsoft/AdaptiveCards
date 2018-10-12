@@ -53,11 +53,16 @@ public class BaseActionElement {
   // check if the C++ code finds an object and just return ourselves if it doesn't
   public BaseActionElement findImplObj() {
      Object o = swigOriginalObject();
-     return o != null ? (BaseActionElement)o : this; 
+     return o != null ? (BaseActionElement)o : this;
   }
 
   public BaseActionElement(ActionType type) {
-    this(AdaptiveCardObjectModelJNI.new_BaseActionElement(type.swigValue()), true);
+    this(AdaptiveCardObjectModelJNI.new_BaseActionElement__SWIG_0(type.swigValue()), true);
+    AdaptiveCardObjectModelJNI.BaseActionElement_director_connect(this, swigCPtr, swigCMemOwn, true);
+  }
+
+  public BaseActionElement(BaseActionElement arg0) {
+    this(AdaptiveCardObjectModelJNI.new_BaseActionElement__SWIG_1(BaseActionElement.getCPtr(arg0), arg0), true);
     AdaptiveCardObjectModelJNI.BaseActionElement_director_connect(this, swigCPtr, swigCMemOwn, true);
   }
 
@@ -111,6 +116,10 @@ public class BaseActionElement {
 
   public void SetAdditionalProperties(JsonValue additionalProperties) {
     AdaptiveCardObjectModelJNI.BaseActionElement_SetAdditionalProperties(swigCPtr, this, JsonValue.getCPtr(additionalProperties), additionalProperties);
+  }
+
+  public void GetResourceInformation(RemoteResourceInformationVector resourceUris) {
+    if (getClass() == BaseActionElement.class) AdaptiveCardObjectModelJNI.BaseActionElement_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceUris), resourceUris); else AdaptiveCardObjectModelJNI.BaseActionElement_GetResourceInformationSwigExplicitBaseActionElement(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceUris), resourceUris);
   }
 
   public Object swigOriginalObject() {

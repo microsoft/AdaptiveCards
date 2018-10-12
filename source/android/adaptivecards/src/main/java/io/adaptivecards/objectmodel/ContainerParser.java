@@ -37,18 +37,22 @@ public class ContainerParser extends BaseCardElementParser {
     super.delete();
   }
 
-  public BaseCardElement Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, JsonValue root) {
-    long cPtr = AdaptiveCardObjectModelJNI.ContainerParser_Deserialize(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, JsonValue.getCPtr(root), root);
-    return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
-  }
-
-  public BaseCardElement DeserializeFromString(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.ContainerParser_DeserializeFromString(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, jsonString);
-    return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
-  }
-
   public ContainerParser() {
-    this(AdaptiveCardObjectModelJNI.new_ContainerParser(), true);
+    this(AdaptiveCardObjectModelJNI.new_ContainerParser__SWIG_0(), true);
+  }
+
+  public ContainerParser(ContainerParser arg0) {
+    this(AdaptiveCardObjectModelJNI.new_ContainerParser__SWIG_1(ContainerParser.getCPtr(arg0), arg0), true);
+  }
+
+  public BaseCardElement Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, JsonValue root) {
+    long cPtr = AdaptiveCardObjectModelJNI.ContainerParser_Deserialize(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, JsonValue.getCPtr(root), root);
+    return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
+  }
+
+  public BaseCardElement DeserializeFromString(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, String jsonString) {
+    long cPtr = AdaptiveCardObjectModelJNI.ContainerParser_DeserializeFromString(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, jsonString);
+    return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
   }
 
 }

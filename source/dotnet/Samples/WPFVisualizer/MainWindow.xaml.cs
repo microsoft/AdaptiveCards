@@ -1,4 +1,4 @@
-﻿using AdaptiveCards;
+using AdaptiveCards;
 using AdaptiveCards.Rendering;
 using AdaptiveCards.Rendering.Wpf;
 using ICSharpCode.AvalonEdit.Document;
@@ -43,7 +43,7 @@ namespace WpfVisualizer
             timer.Tick += Timer_Tick;
             timer.Start();
 
-            foreach (var config in Directory.GetFiles(@"..\..\..\..\..\..\samples\v1.0\HostConfig", "*.json"))
+            foreach (var config in Directory.GetFiles(@"..\..\..\..\..\..\samples\HostConfig", "*.json"))
             {
                 hostConfigs.Items.Add(new ComboBoxItem
                 {
@@ -61,7 +61,7 @@ namespace WpfVisualizer
             // Use the Xceed rich input controls
             Renderer.UseXceedElementRenderers();
 
-            // Register custom elements and actions            
+            // Register custom elements and actions
             // TODO: Change to instance property? Change to UWP parser registration
             AdaptiveTypedElementConverter.RegisterTypedElement<MyCustomRating>();
             AdaptiveTypedElementConverter.RegisterTypedElement<MyCustomAction>();
@@ -100,6 +100,8 @@ namespace WpfVisualizer
 
                 // Wire up click handler
                 renderedCard.OnAction += OnAction;
+
+                renderedCard.OnMediaClicked += OnMediaClick;
 
                 cardGrid.Children.Add(renderedCard.FrameworkElement);
 
@@ -153,6 +155,10 @@ namespace WpfVisualizer
             }
         }
 
+        private void OnMediaClick(RenderedAdaptiveCard sender, AdaptiveMediaEventArgs e)
+        {
+            MessageBox.Show(this, JsonConvert.SerializeObject(e.Media), "Host received a Media");
+        }
 
         private void ShowWarning(string message)
         {
@@ -318,7 +324,7 @@ namespace WpfVisualizer
                     {
                         var textBlock = new TextBlock
                         {
-                            Text = $"Unkown property {x.Key}",
+                            Text = $"Unknown property {x.Key}",
                             TextWrapping = TextWrapping.Wrap,
                             Style = Resources["Warning"] as Style
                         };

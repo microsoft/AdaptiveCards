@@ -5,22 +5,21 @@
 #include "NumberInput.h"
 #include "AdaptiveInputElement.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
+namespace AdaptiveNamespace
 {
-    class DECLSPEC_UUID("e54a7a83-8961-4745-8663-bbf5d45b6345") AdaptiveNumberInput :
-        public Microsoft::WRL::RuntimeClass<
-            Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveNumberInput,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputElement,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement,
-            Microsoft::WRL::CloakedIid<ITypePeek>,
-            Microsoft::WRL::CloakedIid<AdaptiveCards::Rendering::Uwp::AdaptiveInputElementBase>>
+    class DECLSPEC_UUID("e54a7a83-8961-4745-8663-bbf5d45b6345") AdaptiveNumberInput
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
+                                              ABI::AdaptiveNamespace::IAdaptiveNumberInput,
+                                              ABI::AdaptiveNamespace::IAdaptiveInputElement,
+                                              ABI::AdaptiveNamespace::IAdaptiveCardElement,
+                                              Microsoft::WRL::CloakedIid<ITypePeek>,
+                                              Microsoft::WRL::CloakedIid<AdaptiveNamespace::AdaptiveInputElementBase>>
     {
-        InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveNumberInput, BaseTrust)
+        AdaptiveRuntime(AdaptiveNumberInput);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::NumberInput>& sharedNumberInput);
+        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::NumberInput>& sharedNumberInput);
 
         // IAdaptiveNumberInput
         IFACEMETHODIMP get_Placeholder(_Out_ HSTRING* placeholder);
@@ -36,35 +35,71 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         IFACEMETHODIMP put_Min(_In_ INT32 value);
 
         // IAdaptiveInputElement
-        IFACEMETHODIMP get_IsRequired(_Out_ boolean* isRequired) { return AdaptiveInputElementBase::get_IsRequired(isRequired); }
-        IFACEMETHODIMP put_IsRequired(_In_ boolean isRequired) { return AdaptiveInputElementBase::put_IsRequired(isRequired); }
+        IFACEMETHODIMP get_IsRequired(_Out_ boolean* isRequired)
+        {
+            return AdaptiveInputElementBase::get_IsRequired(isRequired);
+        }
+        IFACEMETHODIMP put_IsRequired(_In_ boolean isRequired)
+        {
+            return AdaptiveInputElementBase::put_IsRequired(isRequired);
+        }
 
         // IAdaptiveCardElement
-        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ElementType* elementType);
+        IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
 
-        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing) { return AdaptiveCardElementBase::get_Spacing(spacing); }
-        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing) { return AdaptiveCardElementBase::put_Spacing(spacing); }
+        IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveNamespace::Spacing* spacing)
+        {
+            return AdaptiveCardElementBase::get_Spacing(spacing);
+        }
+        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveNamespace::Spacing spacing)
+        {
+            return AdaptiveCardElementBase::put_Spacing(spacing);
+        }
 
-        IFACEMETHODIMP get_Separator(_Out_ boolean* separator) { return AdaptiveCardElementBase::get_Separator(separator); }
-        IFACEMETHODIMP put_Separator(_In_ boolean separator) { return AdaptiveCardElementBase::put_Separator(separator); }
+        IFACEMETHODIMP get_Separator(_Out_ boolean* separator)
+        {
+            return AdaptiveCardElementBase::get_Separator(separator);
+        }
+        IFACEMETHODIMP put_Separator(_In_ boolean separator)
+        {
+            return AdaptiveCardElementBase::put_Separator(separator);
+        }
 
         IFACEMETHODIMP get_Id(_Out_ HSTRING* id) { return AdaptiveCardElementBase::get_Id(id); }
         IFACEMETHODIMP put_Id(_In_ HSTRING id) { return AdaptiveCardElementBase::put_Id(id); }
 
-        IFACEMETHODIMP get_ElementTypeString(_Out_ HSTRING* value) { return AdaptiveCardElementBase::get_ElementTypeString(value); }
+        IFACEMETHODIMP get_ElementTypeString(_Out_ HSTRING* value)
+        {
+            return AdaptiveCardElementBase::get_ElementTypeString(value);
+        }
 
-        IFACEMETHODIMP get_AdditionalProperties(_Out_ ABI::Windows::Data::Json::IJsonObject** result) { return AdaptiveCardElementBase::get_AdditionalProperties(result); }
-        IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value) { return AdaptiveCardElementBase::put_AdditionalProperties(value); }
+        IFACEMETHODIMP get_AdditionalProperties(_Out_ ABI::Windows::Data::Json::IJsonObject** result)
+        {
+            return AdaptiveCardElementBase::get_AdditionalProperties(result);
+        }
+        IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value)
+        {
+            return AdaptiveCardElementBase::put_AdditionalProperties(value);
+        }
 
-        IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result) { return AdaptiveCardElementBase::ToJson(result); }
+        IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result)
+        {
+            return AdaptiveCardElementBase::ToJson(result);
+        }
 
-        virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) override;
+        virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) override;
+
+        IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveNamespace::HeightType* height)
+        {
+            return AdaptiveCardElementBase::get_Height(height);
+        }
+        IFACEMETHODIMP put_Height(_In_ ABI::AdaptiveNamespace::HeightType height)
+        {
+            return AdaptiveCardElementBase::put_Height(height);
+        }
 
         // ITypePeek method
-        void *PeekAt(REFIID riid) override
-        {
-            return PeekHelper(riid, this);
-        }
+        void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
         INT32 m_max;
@@ -74,4 +109,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     };
 
     ActivatableClass(AdaptiveNumberInput);
-}}}
+}

@@ -18,7 +18,7 @@ namespace AdaptiveCardsSharedModelUnitTest
     public:
         TEST_METHOD(CanGetAdditionalProperitesTest)
         {
-            std::string testJsonString = 
+            std::string testJsonString =
             "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
@@ -33,7 +33,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
             std::shared_ptr<BaseCardElement> elem =  parseResult->GetAdaptiveCard()->GetBody().front();
             Json::Value value = elem->GetAdditionalProperties();
             Json::FastWriter fastWriter;

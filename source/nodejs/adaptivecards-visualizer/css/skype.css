@@ -2,6 +2,38 @@
   cursor: pointer;
 }
 
+.ac-image.ac-selectable:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.ac-image.ac-selectable:active {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.ac-media-poster.empty {
+  height: 200px;
+  background-color: #F2F2F2;
+}
+
+.ac-media-playButton {
+  width: 56px;
+  height: 56px;
+  border: 1px solid #EEEEEE;
+  border-radius: 28px;
+  box-shadow: 0px 0px 10px #EEEEEE;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: black;
+  cursor: pointer;
+}
+
+.ac-media-playButton-arrow {
+  color: black;
+}
+
+.ac-media-playButton:hover {
+  background-color: white;
+}
+
 .skypeContainer {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -53,7 +85,6 @@ a.ac-anchor:visited:active {
   font-size: 14px;
   font-weight: 400;
   padding: 4px 10px 6px 10px;
-  height: 31px;
   background-color: white;
   color: #0078d7;
 }

@@ -5,35 +5,27 @@
 #include "ParseUtil.h"
 #include "SubmitAction.h"
 
-using namespace AdaptiveCards;
+using namespace AdaptiveSharedNamespace;
 
-BaseCardElement::BaseCardElement(
-    CardElementType type,
-    Spacing spacing,
-    bool separator) :
-    m_type(type),
-    m_spacing(spacing),
-    m_separator(separator),
-    m_typeString(CardElementTypeToString(type))
+BaseCardElement::BaseCardElement(CardElementType type, Spacing spacing, bool separator, HeightType height) :
+    m_type(type), m_spacing(spacing), m_typeString(CardElementTypeToString(type)), m_separator(separator), m_height(height)
 {
     PopulateKnownPropertiesSet();
 }
 
 BaseCardElement::BaseCardElement(CardElementType type) :
-    m_type(type), m_spacing(Spacing::Default), m_typeString(CardElementTypeToString(type))
+    m_type(type), m_spacing(Spacing::Default), m_typeString(CardElementTypeToString(type)), m_separator(false),
+    m_height(HeightType::Auto)
 {
     PopulateKnownPropertiesSet();
 }
 
 void BaseCardElement::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Spacing));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator));
-}
-
-AdaptiveCards::BaseCardElement::~BaseCardElement()
-{
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Spacing),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height)});
 }
 
 std::string BaseCardElement::GetElementTypeString() const
@@ -41,7 +33,7 @@ std::string BaseCardElement::GetElementTypeString() const
     return m_typeString;
 }
 
-void BaseCardElement::SetElementTypeString(const std::string value)
+void BaseCardElement::SetElementTypeString(const std::string& value)
 {
     m_typeString = value;
 }
@@ -66,58 +58,63 @@ void BaseCardElement::SetSpacing(const Spacing value)
     m_spacing = value;
 }
 
+HeightType BaseCardElement::GetHeight() const
+{
+    return m_height;
+}
+
+void BaseCardElement::SetHeight(const HeightType value)
+{
+    m_height = value;
+}
+
 std::string BaseCardElement::GetId() const
 {
     return m_id;
 }
 
-void BaseCardElement::SetId(const std::string value)
+void BaseCardElement::SetId(const std::string& value)
 {
     m_id = value;
 }
 
-const CardElementType AdaptiveCards::BaseCardElement::GetElementType() const
+const CardElementType BaseCardElement::GetElementType() const
 {
     return m_type;
 }
 
-std::string BaseCardElement::Serialize()
+std::string BaseCardElement::Serialize() const
 {
     Json::FastWriter writer;
     return writer.write(SerializeToJsonValue());
 }
 
-Json::Value BaseCardElement::SerializeToJsonValue()
- {
-    Json::Value root;
+Json::Value BaseCardElement::SerializeToJsonValue() const
+{
+    Json::Value root = GetAdditionalProperties();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = CardElementTypeToString(GetElementType());
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Spacing)] = SpacingToString(GetSpacing());
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator)] = GetSeparator();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id)] = GetId();
 
-    /* Issue #629 to make separator an object
-    Json::Value jsonSeparator;
-    jsonSeparator[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color)] = ForegroundColorToString(GetSeparator()->GetColor());
-    jsonSeparator[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Thickness)] = SeparatorThicknessToString(GetSeparator()->GetThickness());
+    if (m_height != HeightType::Auto)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height)] = HeightTypeToString(GetHeight());
+    }
 
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator)] = jsonSeparator;
-    */
+    if (m_spacing != Spacing::Default)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Spacing)] = SpacingToString(m_spacing);
+    }
+
+    if (m_separator)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator)] = true;
+    }
+
+    if (!m_id.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id)] = m_id;
+    }
 
     return root;
-}
-
-std::shared_ptr<BaseActionElement> BaseCardElement::DeserializeSelectAction(
-    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    const Json::Value& json,
-    AdaptiveCardSchemaKey key)
-{
-    Json::Value selectActionValue = ParseUtil::ExtractJsonValue(json, key, false);
-    if (!selectActionValue.empty())
-    {
-        return ParseUtil::GetActionFromJsonValue(elementParserRegistration, actionParserRegistration, selectActionValue);
-    }
-    return nullptr;
 }
 
 Json::Value BaseCardElement::SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction)
@@ -129,12 +126,17 @@ Json::Value BaseCardElement::SerializeSelectAction(const std::shared_ptr<BaseAct
     return Json::Value();
 }
 
-Json::Value BaseCardElement::GetAdditionalProperties()
+Json::Value BaseCardElement::GetAdditionalProperties() const
 {
     return m_additionalProperties;
 }
 
-void BaseCardElement::SetAdditionalProperties(Json::Value value)
+void BaseCardElement::SetAdditionalProperties(Json::Value const& value)
 {
     m_additionalProperties = value;
+}
+
+void BaseCardElement::GetResourceInformation(std::vector<RemoteResourceInformation>&)
+{
+    return;
 }

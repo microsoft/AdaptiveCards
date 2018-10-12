@@ -10,7 +10,7 @@
 #import "ACRBaseActionElementRenderer.h"
 #import "ACOBaseCardElement.h"
 
-@interface ACRRegistration:NSObject 
+@interface ACRRegistration:NSObject
 
 + (ACRRegistration *)getInstance;
 
@@ -18,10 +18,18 @@
 
 - (ACRBaseActionElementRenderer *)getActionRenderer:(NSNumber *) cardElementType;
 
+- (id<ACRIBaseActionSetRenderer>)getActionSetRenderer;
+
 - (void) setActionRenderer:(ACRBaseActionElementRenderer *)renderer cardElementType:(NSNumber *)cardElementType;
 
 - (void) setBaseCardElementRenderer:(ACRBaseCardElementRenderer *)renderer cardElementType:(ACRCardElementType)cardElementType;
 
+- (void) setActionSetRenderer:(id<ACRIBaseActionSetRenderer>)actionsetRenderer;
+
 - (void) setCustomElementParser:(NSObject<ACOIBaseCardElementParser> *)customElementParser;
+
+- (BOOL) isElementRendererOverriden:(ACRCardElementType)cardElementType;
+
+- (BOOL) isActionRendererOverriden:(NSNumber *)cardElementType;
 
 @end

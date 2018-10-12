@@ -1,18 +1,11 @@
-﻿using AdaptiveCardTestApp.ViewModels;
+using AdaptiveCardTestApp.ViewModels;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using UWPTestLibrary;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -44,6 +37,8 @@ namespace AdaptiveCardTestApp.Pages
             {
                 model.Passed,
                 model.Failed,
+                model.JsonFailed,
+                model.ImageAndJsonFailed,
                 model.FailedButSourceWasChanged,
                 model.PassedButSourceWasChanged,
                 model.New
@@ -52,6 +47,16 @@ namespace AdaptiveCardTestApp.Pages
             if (model.Failed.Results.Count > 0)
             {
                 ListViewCategories.SelectedItem = model.Failed;
+            }
+
+            else if (model.JsonFailed.Results.Count > 0)
+            {
+                ListViewCategories.SelectedItem = model.JsonFailed;
+            }
+
+            else if (model.ImageAndJsonFailed.Results.Count > 0)
+            {
+                ListViewCategories.SelectedItem = model.ImageAndJsonFailed;
             }
 
             else if (model.FailedButSourceWasChanged.Results.Count > 0)

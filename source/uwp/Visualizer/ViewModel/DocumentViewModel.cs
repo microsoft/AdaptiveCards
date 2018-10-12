@@ -1,4 +1,4 @@
-﻿using AdaptiveCards.Rendering.Uwp;
+using AdaptiveCards.Rendering.Uwp;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -116,6 +116,24 @@ namespace AdaptiveCardVisualizer.ViewModel
 
                             await m_actionDialog.ShowAsync();
                         };
+
+                        if (!MainPageViewModel.HostConfigEditor.HostConfig.Media.AllowInlinePlayback)
+                        {
+                            renderResult.MediaClicked += async (sender, e) =>
+                            {
+                                var onPlayDialog = new ContentDialog();
+                                onPlayDialog.Content = "MediaClickedEvent:";
+
+                                foreach (var source in e.Media.Sources)
+                                {
+                                    onPlayDialog.Content += "\n" + source.Url + " (" + source.MimeType + ")";
+                                }
+
+                                onPlayDialog.PrimaryButtonText = "Close";
+
+                                await onPlayDialog.ShowAsync();
+                            };
+                        }
                     }
                     else
                     {

@@ -21,7 +21,7 @@ import java.util.Vector;
 
 public class NumberInputRenderer extends TextInputRenderer
 {
-    private NumberInputRenderer()
+    protected NumberInputRenderer()
     {
     }
 
@@ -77,6 +77,6 @@ public class NumberInputRenderer extends TextInputRenderer
 
         return editText;
     }
-    
+
     private static NumberInputRenderer s_instance = null;
 }

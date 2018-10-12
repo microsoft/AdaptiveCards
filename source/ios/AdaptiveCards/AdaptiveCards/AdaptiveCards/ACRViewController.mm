@@ -45,7 +45,7 @@ using namespace AdaptiveCards;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view = [[[ACRView alloc] init:_adaptiveCard hostconfig:_hostConfig widthConstraint:_guideFrame.size.width] render];
+    self.view = [[ACRView alloc] init:_adaptiveCard hostconfig:_hostConfig widthConstraint:_guideFrame.size.width];
     ((ACRView *)self.view).acrActionDelegate = _delegate;
 }
 

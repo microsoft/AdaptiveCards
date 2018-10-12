@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -17,6 +17,19 @@ namespace AdaptiveCards.Rendering.Wpf
             if (column.SelectAction != null)
             {
                 return context.RenderSelectAction(column.SelectAction, uiContainer);
+            }
+
+            switch(column.VerticalContentAlignment)
+            {
+                case AdaptiveVerticalContentAlignment.Center:
+                    uiContainer.VerticalAlignment = VerticalAlignment.Center;
+                    break;
+                case AdaptiveVerticalContentAlignment.Bottom:
+                    uiContainer.VerticalAlignment = VerticalAlignment.Bottom;
+                    break;
+                case AdaptiveVerticalContentAlignment.Top:
+                default:
+                    break;
             }
 
             return uiContainer;

@@ -8,38 +8,38 @@
 
 namespace AdaptiveCards
 {
-class ActionSet : public BaseCardElement
-{
-friend class ActionSetParser;
-public:
-    ActionSet();
-    ActionSet(Spacing spacing, bool separator);
-    ActionSet(Spacing spacing, bool separator, std::vector<std::shared_ptr<BaseActionElement>>& actions);
+    class ActionSet : public BaseCardElement
+    {
+        friend class ActionSetParser;
 
-    virtual Json::Value SerializeToJsonValue() override;
+    public:
+        ActionSet();
+        ActionSet(std::vector<std::shared_ptr<BaseActionElement>>& actions);
 
-    ActionsOrientation GetOrientation() const;
-    void SetOrientation(const ActionsOrientation value);
+        virtual Json::Value SerializeToJsonValue() const override;
 
-    std::vector<std::shared_ptr<BaseActionElement>>& GetActions();
+        ActionsOrientation GetOrientation() const;
+        void SetOrientation(const ActionsOrientation value);
 
-private:
-    void PopulateKnownPropertiesSet();
-    std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>> m_actions;
-    ActionsOrientation m_orientation;
-};
+        std::vector<std::shared_ptr<BaseActionElement>>& GetActions();
 
-class ActionSetParser : public BaseCardElementParser
-{
-public:
-    std::shared_ptr<BaseCardElement> Deserialize(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const Json::Value& root);
+    private:
+        void PopulateKnownPropertiesSet();
+        std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>> m_actions;
+        ActionsOrientation m_orientation;
+    };
 
-    std::shared_ptr<BaseCardElement> DeserializeFromString(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const std::string& jsonString);
-};
+    class ActionSetParser : public BaseCardElementParser
+    {
+    public:
+        std::shared_ptr<BaseCardElement> Deserialize(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+                                                     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+                                                     std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+                                                     const Json::Value& root);
+
+        std::shared_ptr<BaseCardElement> DeserializeFromString(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+                                                               std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+                                                               std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+                                                               const std::string& jsonString);
+    };
 }

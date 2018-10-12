@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
@@ -38,6 +38,7 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveNumberInput))]
         [XmlElement(typeof(AdaptiveChoiceSetInput))]
         [XmlElement(typeof(AdaptiveToggleInput))]
+        [XmlElement(typeof(AdaptiveMedia))]
 #endif
         public List<AdaptiveElement> Items { get; set; } = new List<AdaptiveElement>();
 
@@ -56,9 +57,19 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore, NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
-        [XmlAttribute]
+        [XmlElement]
 #endif
-        [DefaultValue(typeof(AdaptiveContainerStyle), "0")]
-        public AdaptiveContainerStyle Style { get; set; }
+        [DefaultValue(null)]
+        public AdaptiveContainerStyle? Style { get; set; }
+
+        /// <summary>
+        ///     The content alignment for the eelment inside the container.
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(typeof(AdaptiveVerticalContentAlignment), "top")]
+        public AdaptiveVerticalContentAlignment VerticalContentAlignment { get; set; }
     }
 }

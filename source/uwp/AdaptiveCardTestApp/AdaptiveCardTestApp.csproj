@@ -11,8 +11,8 @@
     <AssemblyName>AdaptiveCardTestApp</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.14393.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion>10.0.17134.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.17134.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -94,8 +94,6 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\StorageFileToImageSourceConverter.cs" />
-    <Compile Include="Helpers\BindableBase.cs" />
-    <Compile Include="Model\StoredTestResultInfo.cs" />
     <Compile Include="Pages\BasePage.cs" />
     <Compile Include="Pages\RunningTestsPage.xaml.cs">
       <DependentUpon>RunningTestsPage.xaml</DependentUpon>
@@ -107,11 +105,8 @@
     <Compile Include="Pages\StartPage.xaml.cs">
       <DependentUpon>StartPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\TestResultsViewModel.cs" />
     <Compile Include="ViewModels\TestResultsCategoryViewModel.cs" />
-    <Compile Include="ViewModels\TestResultViewModel.cs" />
-    <Compile Include="ViewModels\FileViewModel.cs" />
     <Compile Include="ViewModels\RunningTestsViewModel.cs" />
     <Compile Include="ViewModels\StartViewModel.cs" />
     <Compile Include="Views\DiffView.xaml.cs">
@@ -128,6 +123,8 @@
     <None Include="AdaptiveCardTestApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Adaptive10.png" />
+    <Content Include="Assets\background.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -136,17 +133,26 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+    <Content Include="..\..\..\samples\Tests\*.json">
+      <Link>LinkedCards\Tests\%(FileName)</Link>
+    </Content>
     <Content Include="..\..\..\samples\v1.0\Scenarios\*.json">
       <Link>LinkedCards\v1.0\Scenarios\%(FileName)</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.1\Scenarios\*.json">
+      <Link>LinkedCards\v1.1\Scenarios\%(FileName)</Link>
     </Content>
     <Content Include="..\..\..\samples\v1.0\Elements\*.json">
       <Link>LinkedCards\v1.0\Elements\%(FileName)</Link>
     </Content>
-    <Content Include="..\..\..\samples\Tests\*.json">
-      <Link>LinkedCards\Tests\%(FileName)</Link>
+    <Content Include="..\..\..\samples\v1.1\Elements\*.json">
+      <Link>LinkedCards\v1.1\Elements\%(FileName)</Link>
     </Content>
-    <Content Include="..\..\..\samples\v1.0\HostConfig\*.json">
-      <Link>LinkedHostConfigs\v1.0\%(FileName)</Link>
+    <Content Include="..\..\..\samples\v1.2\Elements\*.json">
+      <Link>LinkedCards\v1.2\Elements\%(FileName)</Link>
+    </Content>
+    <Content Include="..\..\..\samples\HostConfig\*.json">
+      <Link>LinkedHostConfigs\%(FileName)</Link>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -180,10 +186,10 @@
       <Version>1.4.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>5.4.0</Version>
+      <Version>6.1.5</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>10.0.3</Version>
+      <Version>11.0.2</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -191,8 +197,14 @@
       <Project>{cf169157-f487-420c-8b9b-ca3abe2bb209}</Project>
       <Name>AdaptiveCardRenderer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UWPTestLibrary\UWPTestLibrary.csproj">
+      <Project>{c286ce4a-0aa5-42d8-ae42-4765860bcba1}</Project>
+      <Name>UWPTestLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Model\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

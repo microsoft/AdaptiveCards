@@ -19,7 +19,7 @@ namespace AdaptiveCardsSharedModelUnitTest
     public:
         TEST_METHOD(CanGetCustomJsonPayload)
         {
-            std::string testJsonString = 
+            std::string testJsonString =
             "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
@@ -31,7 +31,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
             std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
             std::shared_ptr<UnknownElement> delegate = std::static_pointer_cast<UnknownElement>(elem);
             Json::Value value = delegate->GetAdditionalProperties();
@@ -44,7 +44,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         TEST_METHOD(CanGetCustomJsonPayloadWithKnownElementFollowing)
         {
-            std::string testJsonString = 
+            std::string testJsonString =
             "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
@@ -63,7 +63,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
             std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
             std::shared_ptr<UnknownElement> delegate = std::static_pointer_cast<UnknownElement>(elem);
             Json::Value value = delegate->GetAdditionalProperties();
@@ -76,7 +76,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         TEST_METHOD(CanGetJsonPayloadOfArrayType)
         {
-            std::string testJsonString = 
+            std::string testJsonString =
             "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
@@ -102,7 +102,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, 1.0);
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
             std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
             std::shared_ptr<UnknownElement> delegate = std::static_pointer_cast<UnknownElement>(elem);
             Json::Value value = delegate->GetAdditionalProperties();

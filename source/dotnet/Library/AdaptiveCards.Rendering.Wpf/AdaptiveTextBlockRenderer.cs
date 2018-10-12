@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Windows;
@@ -69,6 +69,10 @@ namespace AdaptiveCards.Rendering.Wpf
                     break;
             }
 
+            if (textBlock.MaxWidth > 0)
+            {
+                uiTextBlock.MaxWidth = textBlock.MaxWidth;
+            }
 
             if (textBlock.MaxLines > 0)
             {
@@ -119,7 +123,7 @@ namespace AdaptiveCards.Rendering.Wpf
             marked.Options.Mangle = false;
             marked.Options.Sanitize = true;
 
-            string text = RendererUtilities.ApplyTextFunctions(textBlock.Text);
+            string text = RendererUtilities.ApplyTextFunctions(textBlock.Text, context.Lang);
             // uiTextBlock.Text = textBlock.Text;
             string xaml = $"<TextBlock  xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">{marked.Parse(text)}</TextBlock>";
             StringReader stringReader = new StringReader(xaml);

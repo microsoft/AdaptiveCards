@@ -37,41 +37,52 @@
     std::shared_ptr<Column> columnElem = std::dynamic_pointer_cast<Column>(elem);
 
     ACRColumnView* column = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)columnElem->GetStyle()
-                                                     parentStyle:[viewGroup style] hostConfig:acoConfig];
+                                                     parentStyle:[viewGroup style] hostConfig:acoConfig superview:viewGroup];
+
+    column.pixelWidth = columnElem->GetPixelWidth();
+    if(columnElem->GetWidth() == "stretch" || columnElem->GetWidth() == "") {
+        column.columnWidth = @"stretch";
+    } else if(columnElem->GetWidth() == "auto"){
+        column.columnWidth = @"auto";
+    }
+
+    UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
+    if(columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom){
+        leadingBlankSpace = [column addPaddingSpace];
+    }
+
     [ACRRenderer render:column
                rootView:rootView
                  inputs:inputs
           withCardElems:columnElem->GetItems()
           andHostConfig:acoConfig];
 
-    [viewGroup addArrangedSubview:column];
-
-    [column setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-    [column setClipsToBounds:TRUE];
-    if(columnElem->GetWidth() == "stretch" || columnElem->GetWidth() == "")
-    {
-        [column setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+    if(columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && _fillAlignment)){
+        trailingBlankSpace = [column addPaddingSpace];
     }
 
-    [column adjustHuggingForLastElement];
+    [viewGroup addArrangedSubview:column];
+
+    [column setClipsToBounds:TRUE];
 
     std::shared_ptr<BaseActionElement> selectAction = columnElem->GetSelectAction();
     // instantiate and add tap gesture recognizer
-    UILongPressGestureRecognizer * gestureRecognizer =
-        [ACRLongPressGestureRecognizerFactory getLongPressGestureRecognizer:viewGroup
-                                                                   rootView:rootView
-                                                                 targetView:column
-                                                              actionElement:selectAction
-                                                                     inputs:inputs
-                                                                 hostConfig:acoConfig];
-    if(gestureRecognizer)
-    {
-        [column addGestureRecognizer:gestureRecognizer];
-        column.userInteractionEnabled = YES;
-    }
+    [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:viewGroup
+                                                                       rootView:rootView
+                                                                  recipientView:column
+                                                                  actionElement:selectAction
+                                                                     hostConfig:acoConfig];
 
+    if(leadingBlankSpace != nil && trailingBlankSpace != nil){
+        [NSLayoutConstraint constraintWithItem:leadingBlankSpace
+                                     attribute:NSLayoutAttributeHeight
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:trailingBlankSpace
+                                     attribute:NSLayoutAttributeHeight
+                                    multiplier:1.0
+                                      constant:0].active = YES;
+    }
     return column;
 }
 
 @end
-

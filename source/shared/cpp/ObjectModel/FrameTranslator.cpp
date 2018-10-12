@@ -19,17 +19,11 @@ bool ShouldJsonObjectBePruned(Json::Value value);
 Json::Value DataBindJson(const Json::Value& sourceCard, const Json::Value& frame);
 
 // Find a key between start and end markers. For example pull out the foo in:
-// "This is some text with a {{foo}} in it." 
-// Takes strings for the type of braces ({{}}, [], etc.) and returns the positions of the beginning 
-// and end of the braces surrounding the key. This function will return the first instance after 
+// "This is some text with a {{foo}} in it."
+// Takes strings for the type of braces ({{}}, [], etc.) and returns the positions of the beginning
+// and end of the braces surrounding the key. This function will return the first instance after
 // the passed in startPosition.
-std::string GetKey(
-    std::string string,
-    size_t startPosition,
-    const char * openBraces,
-    const char * closeBraces, 
-    size_t * keyStartPosition,
-    size_t * keyEndPosition)
+std::string GetKey(std::string string, size_t startPosition, const char* openBraces, const char* closeBraces, size_t* keyStartPosition, size_t* keyEndPosition)
 {
     std::string bracesStart(openBraces);
     std::string bracesEnd(closeBraces);
@@ -38,10 +32,10 @@ std::string GetKey(
     size_t bracesEndPosition = string.find(bracesEnd, startPosition);
 
     std::string key;
-    if (bracesStartPosition != std::string::npos &&
-        bracesEndPosition != std::string::npos)
+    if (bracesStartPosition != std::string::npos && bracesEndPosition != std::string::npos)
     {
-        key = string.substr(bracesStartPosition + bracesStart.length(), bracesEndPosition - bracesStartPosition - bracesStart.length());
+        key = string.substr(bracesStartPosition + bracesStart.length(),
+                            bracesEndPosition - bracesStartPosition - bracesStart.length());
         *keyStartPosition = bracesStartPosition;
         *keyEndPosition = bracesEndPosition + bracesEnd.length() - 1;
     }
@@ -49,11 +43,9 @@ std::string GetKey(
     return key;
 }
 
-// Given a key, return the value from the source json. Handles dot notation "foo.bar", indices 
+// Given a key, return the value from the source json. Handles dot notation "foo.bar", indices
 // "foo[bar]" and combinations thereof "foo.bar[stuff.blah]"
-Json::Value GetValue(
-    std::string key,
-    const Json::Value& sourceValue)
+Json::Value GetValue(std::string key, const Json::Value& sourceValue)
 {
     Json::FastWriter fastWriter;
     std::string sourceString = fastWriter.write(sourceValue);
@@ -64,7 +56,7 @@ Json::Value GetValue(
     std::string openBrace("[");
     size_t openBracePosition = key.find(openBrace, 0);
 
-    // Handle dot notation {{foo.bar.stuff}} by looping through the dots to get the last subkey 
+    // Handle dot notation {{foo.bar.stuff}} by looping through the dots to get the last subkey
     // and it's corresponding Json::Value scope
     Json::Value currentSourceScope = sourceValue;
     std::string currentKey = key;
@@ -72,7 +64,7 @@ Json::Value GetValue(
     {
         std::string beforeDotKey = currentKey.substr(0, dotPosition);
         std::string afterDotKey = currentKey.substr(dotPosition + 1, currentKey.length() - dotPosition);
-        
+
         currentSourceScope = currentSourceScope[beforeDotKey];
         currentKey = afterDotKey;
         dotPosition = afterDotKey.find(dot, 0);
@@ -118,9 +110,7 @@ Json::Value GetValue(
     return Json::Value();
 }
 
-Json::Value DataBindString(
-    const Json::Value& sourceCard,
-    const Json::Value& frame)
+Json::Value DataBindString(const Json::Value& sourceCard, const Json::Value& frame)
 {
     std::string frameString = frame.asString();
 
@@ -128,9 +118,7 @@ Json::Value DataBindString(
     size_t bracesStartPosition, bracesEndPosition;
     std::string key = GetKey(frameString, 0, "{{", "}}", &bracesStartPosition, &bracesEndPosition);
 
-    if (!key.empty() && 
-        bracesStartPosition == 0 &&
-        bracesEndPosition == frameString.length() - 1)
+    if (!key.empty() && bracesStartPosition == 0 && bracesEndPosition == frameString.length() - 1)
     {
         // If the entire string is a data binding element, return the result of GetValue, which may be of any type.
         return GetValue(key, sourceCard);
@@ -150,7 +138,7 @@ Json::Value DataBindString(
             // Get the value of the data binding element
             Json::Value result = GetValue(key, sourceCard);
 
-            // If the result wasn't found or wasn't a string, leave the data binding element in 
+            // If the result wasn't found or wasn't a string, leave the data binding element in
             // place. Otherwise append the result.
             if (result.empty() || !result.isString())
             {
@@ -166,7 +154,7 @@ Json::Value DataBindString(
             key = GetKey(frameString, currentFrameStartPosition, "{{", "}}", &bracesStartPosition, &bracesEndPosition);
         }
 
-        // Append the portion of the frame string that is after the last data binding element and 
+        // Append the portion of the frame string that is after the last data binding element and
         // return the result string as a json value.
         resultString += frameString.substr(currentFrameStartPosition, frameString.length() - currentFrameStartPosition);
         return Json::Value(resultString);
@@ -178,9 +166,7 @@ Json::Value DataBindString(
     }
 }
 
-Json::Value DataBindArray(
-    const Json::Value& sourceCard,
-    const Json::Value& frame)
+Json::Value DataBindArray(const Json::Value& sourceCard, const Json::Value& frame)
 {
     // Loop through the sub elements of the array and bind each one
     Json::Value result;
@@ -194,7 +180,7 @@ Json::Value DataBindArray(
         }
         else if (elementResult.isArray())
         {
-            // If we get an array back (from an {{#each}} element, for example), append the 
+            // If we get an array back (from an {{#each}} element, for example), append the
             // elements of that array to this one.
             for (Json::Value::const_iterator itElement = elementResult.begin(); itElement != elementResult.end(); itElement++)
             {
@@ -210,9 +196,7 @@ Json::Value DataBindArray(
     return result;
 }
 
-Json::Value DataBindObject(
-    const Json::Value& sourceCard,
-    const Json::Value& frame)
+Json::Value DataBindObject(const Json::Value& sourceCard, const Json::Value& frame)
 {
     // Loop through the sub elements of the object and bind each one
     Json::Value result;
@@ -239,7 +223,7 @@ Json::Value DataBindObject(
                 Json::Value eachArray = sourceCard[arrayName];
                 if (eachArray.isArray())
                 {
-                    // Iterate throught the array and data bind, using each element of the array 
+                    // Iterate throught the array and data bind, using each element of the array
                     // as the source and the value of this key (*it) as the frame
                     for (Json::Value::const_iterator itArray = eachArray.begin(); itArray != eachArray.end(); itArray++)
                     {
@@ -275,9 +259,7 @@ Json::Value DataBindObject(
     return result;
 }
 
-Json::Value DataBindJson(
-    const Json::Value& sourceCard,
-    const Json::Value& frame)
+Json::Value DataBindJson(const Json::Value& sourceCard, const Json::Value& frame)
 {
     Json::FastWriter fastWriter;
     std::string sourceString = fastWriter.write(sourceCard);
@@ -303,9 +285,7 @@ Json::Value DataBindJson(
     }
 }
 
-Json::Value ApplyFrame(
-    const Json::Value& sourceCard,
-    const Json::Value& frame)
+Json::Value ApplyFrame(const Json::Value& sourceCard, const Json::Value& frame)
 {
     Json::Value result = DataBindJson(sourceCard, frame);
 
@@ -326,46 +306,46 @@ bool ShouldJsonObjectBePruned(Json::Value value)
         // BECKYTODO - un-hardcode the strings and confirm these properties are right for pruning (spec issue)
         switch (elementType)
         {
-            case CardElementType::ActionSet:
-                return value["actions"].empty();
+        case CardElementType::ActionSet:
+            return value["actions"].empty();
 
-            case CardElementType::ChoiceSetInput:
-                return value["choices"].empty();
+        case CardElementType::ChoiceSetInput:
+            return value["choices"].empty();
 
-            case CardElementType::Column:
-            case CardElementType::Container:
-                return value["items"].empty();
+        case CardElementType::Column:
+        case CardElementType::Container:
+            return value["items"].empty();
 
-            case CardElementType::ColumnSet:
-                return value["columns"].empty();
+        case CardElementType::ColumnSet:
+            return value["columns"].empty();
 
-            case CardElementType::FactSet:
-                return value["facts"].empty();
+        case CardElementType::FactSet:
+            return value["facts"].empty();
 
-            case CardElementType::ImageSet:
-                return value["images"].empty();
+        case CardElementType::ImageSet:
+            return value["images"].empty();
 
-            case CardElementType::Image:
-                return value["url"].empty();
+        case CardElementType::Image:
+            return value["url"].empty();
 
-            case CardElementType::TextBlock:
-                return value["text"].empty();
+        case CardElementType::TextBlock:
+            return value["text"].empty();
 
-            case CardElementType::ChoiceInput:
-                return value["title"].empty();
+        case CardElementType::ChoiceInput:
+            return value["title"].empty();
 
-            case CardElementType::Fact:
-                return (value["title"].empty() || value["value"].empty());
+        case CardElementType::Fact:
+            return (value["title"].empty() || value["value"].empty());
 
-            case CardElementType::DateInput:
-            case CardElementType::NumberInput:
-            case CardElementType::TextInput:
-            case CardElementType::TimeInput:
-            case CardElementType::ToggleInput:
-            case CardElementType::Custom:
-            case CardElementType::Unknown:
-            default:
-                return false;
+        case CardElementType::DateInput:
+        case CardElementType::NumberInput:
+        case CardElementType::TextInput:
+        case CardElementType::TimeInput:
+        case CardElementType::ToggleInput:
+        case CardElementType::Custom:
+        case CardElementType::Unknown:
+        default:
+            return false;
         }
     }
     else if (ActionTypeFromString(ParseUtil::GetTypeAsString(value)) != ActionType::Unsupported)

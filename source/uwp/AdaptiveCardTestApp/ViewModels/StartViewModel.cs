@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Windows.ApplicationModel;
+using UWPTestLibrary;
 using Windows.Storage;
 
 namespace AdaptiveCardTestApp.ViewModels
 {
-    public class StartViewModel : BaseViewModel
+    public class StartViewModel : BindableBase
     {
         public ObservableCollection<FileViewModel> Cards { get; private set; } = new ObservableCollection<FileViewModel>();
         public ObservableCollection<FileViewModel> HostConfigs { get; private set; } = new ObservableCollection<FileViewModel>();
@@ -17,6 +14,7 @@ namespace AdaptiveCardTestApp.ViewModels
         public ObservableCollection<FileViewModel> SelectedCards { get; private set; } = new ObservableCollection<FileViewModel>();
 
         public ObservableCollection<FileViewModel> SelectedHostConfigs { get; private set; } = new ObservableCollection<FileViewModel>();
+        public Boolean AddToTimeline { get; set; } = false;
 
         public StorageFolder ExpectedFolder { get; set; }
 
@@ -33,15 +31,7 @@ namespace AdaptiveCardTestApp.ViewModels
             }
             catch { }
 
-            await LoadFilesAsync("LinkedCards", Cards);
-            await LoadFilesAsync("LinkedHostConfigs", HostConfigs);
-
-            // Remove the WeatherLarge card since it contains a background image and often fails image comparisons
-            var weatherLarge = Cards.FirstOrDefault(i => i.Name.EndsWith("WeatherLarge"));
-            if (weatherLarge != null)
-            {
-                Cards.Remove(weatherLarge);
-            }
+            await UWPTestLibrary.FileLoadHelpers.LoadAsync(Cards, HostConfigs);
 
             foreach (var c in Cards)
             {
@@ -51,24 +41,6 @@ namespace AdaptiveCardTestApp.ViewModels
             foreach (var hc in HostConfigs)
             {
                 SelectedHostConfigs.Add(hc);
-            }
-        }
-
-        private async Task LoadFilesAsync(string folder, IList<FileViewModel> insertInto)
-        {
-            await LoadFilesAsyncHelper(folder, await Package.Current.InstalledLocation.GetFolderAsync(folder), insertInto);
-        }
-
-        private async Task LoadFilesAsyncHelper(string currentName, StorageFolder currentFolder, IList<FileViewModel> insertInto)
-        {
-            foreach (var file in await currentFolder.GetFilesAsync())
-            {
-                insertInto.Add(await FileViewModel.LoadAsync(file));
-            }
-
-            foreach (var folder in await currentFolder.GetFoldersAsync())
-            {
-                await LoadFilesAsyncHelper(currentName + "/" + folder.Name, folder, insertInto);
             }
         }
     }

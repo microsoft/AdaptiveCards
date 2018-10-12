@@ -11,6 +11,7 @@
 #import "AdaptiveCardParseException.h"
 #import "ACRErrors.h"
 #import "TextBlock.h"
+#import "ACOBaseCardElement.h"
 
 using namespace AdaptiveCards;
 
@@ -36,28 +37,26 @@ using namespace AdaptiveCards;
         if([UIFont.familyNames containsObject:requestedFontFamilyName]){
             _fontFamilyNames = @[requestedFontFamilyName];
         }
-    }
-    // if the requested font family name is not supported, use system font instead
-    if(self && !_fontFamilyNames){
-        _fontFamilyNames = @[@"-apple-system", @"HelveticaNeue"];
+        _allActionsHaveIcons = YES;
+        _buttonPadding = 5;
+        if(!_config->imageBaseUrl.empty()) {
+            NSString *tmpURLString = [NSString stringWithCString:_config->imageBaseUrl.c_str() encoding:NSUTF8StringEncoding];
+            _baseURL = [NSURL URLWithString:tmpURLString];
+        }
     }
     return self;
 }
 
-+ (ACOHostConfigParseResult *)fromJson:(NSString *)payload;
++ (ACOHostConfigParseResult *)fromJson:(NSString *)payload resourceResolvers:(ACOResourceResolvers *)resolvers
 {
     ACOHostConfigParseResult *result = nil;
-
-    if(payload)
-    {
-        try
-        {
+    if(payload) {
+        try {
             std::shared_ptr<HostConfig> cHostConfig = std::make_shared<HostConfig>(AdaptiveCards::HostConfig::DeserializeFromString(std::string([payload UTF8String])));
             ACOHostConfig *config= [[ACOHostConfig alloc] initWithConfig:cHostConfig];
             result = [[ACOHostConfigParseResult alloc] init:config errors:nil];
-        }
-        catch(const AdaptiveCardParseException& e)
-        {
+            config->_resolvers = resolvers;
+        } catch(const AdaptiveCardParseException& e) {
             // converts AdaptiveCardParseException to NSError
             ErrorStatusCode errorStatusCode = e.GetStatusCode();
             NSInteger errorCode = (long)errorStatusCode;
@@ -67,6 +66,16 @@ using namespace AdaptiveCards;
             NSArray<NSError *> *errors = @[parseError];
             result = [[ACOHostConfigParseResult alloc] init:nil errors:errors];
         }
+    }
+    return result;
+}
+
++ (ACOHostConfigParseResult *)fromJson:(NSString *)payload;
+{
+    ACOHostConfigParseResult *result = nil;
+
+    if(payload) {
+        result = [ACOHostConfig fromJson:payload resourceResolvers:nil];
     }
     return result;
 }
@@ -81,11 +90,19 @@ using namespace AdaptiveCards;
     _config = config;
 }
 
+- (NSObject<ACOIResourceResolver> *)getResourceResolverForScheme:(NSString *)scheme
+{
+    if(!scheme) {
+        return nil;
+    }
+
+    return [_resolvers getResourceResolverForScheme:scheme];
+}
+
 + (UIColor *)getTextBlockColor:(ForegroundColor)txtClr
                   colorsConfig:(ColorsConfig const &)config
                   subtleOption:(bool)isSubtle
 {
-    long num = 0;
     const std::string *str;
     switch (txtClr) {
         case ForegroundColor::Dark:{
@@ -125,13 +142,7 @@ using namespace AdaptiveCards;
         }
     }
 
-    num = std::stoul(str->substr(1), nullptr, 16);
-
-    return [UIColor colorWithRed:((num & 0x00FF0000)>> 16)/ 255.0
-                           green:((num & 0x0000FF00)>> 8)/ 255.0
-                            blue:((num & 0x000000FF))/ 255.0
-                           alpha:((num & 0xFF000000)>> 24)/ 255.0];
-
+    return [ACOHostConfig convertHexColorCodeToUIColor:*str];
 }
 
 - (int)getTextBlockTextSize:(TextSize)txtSz
@@ -287,10 +298,10 @@ using namespace AdaptiveCards;
 }
 // find date and time string, and replace them in NSDateFormatterCompactStyle, NSDateFormatterMediumStyle or
 // NSDateFormatterLongStyle of local language
-+ (std::string) getLocalizedDate:(std::shared_ptr<TextBlock> const &)txtBlck
++ (std::string) getLocalizedDate:(std::string const) text language:(std::string const) language
 {
     std::string dateParsedString;
-    std::vector<std::shared_ptr<DateTimePreparsedToken>> DateTimePreparsedTokens =  DateTimePreparser(txtBlck->GetText()).GetTextTokens();
+    std::vector<std::shared_ptr<DateTimePreparsedToken>> DateTimePreparsedTokens =  DateTimePreparser(text).GetTextTokens();
     for(auto section : DateTimePreparsedTokens){
         if(section->GetFormat() != DateTimePreparsedTokenFormat::RegularString) {
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -310,7 +321,7 @@ using namespace AdaptiveCards;
                 outputFormatter.dateStyle = NSDateFormatterLongStyle;
             }
 
-            NSString *languageType= [NSString stringWithCString:txtBlck->GetLanguage().c_str() encoding:NSUTF8StringEncoding];
+            NSString *languageType= [NSString stringWithCString:language.c_str() encoding:NSUTF8StringEncoding];
             if(languageType.length > 0){
                 outputFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:languageType];
             }
@@ -321,6 +332,72 @@ using namespace AdaptiveCards;
         }
     }
     return dateParsedString;
+}
+
++ (UIColor *)convertHexColorCodeToUIColor:(const std::string&)hexColorCode
+{
+    if((hexColorCode.length() < 2) || (hexColorCode.at(0) != '#') || !isxdigit(hexColorCode.at(1)) ||
+       ((hexColorCode.length() != 7) && hexColorCode.length() != 9)) {
+        NSLog(@"invalid hexcolor code is given for background color: %@",
+            [NSString stringWithCString:hexColorCode.c_str() encoding:NSUTF8StringEncoding]);
+        return UIColor.clearColor;
+    }
+
+    UIColor *color = UIColor.clearColor;
+
+    try {
+        size_t idx = 0;
+        long num = std::stoul(hexColorCode.substr(1), &idx, 16), alpha = 0xFF;
+        if(hexColorCode.length() == 9) {
+            alpha = (num & 0xFF000000) >> 24;
+        }
+
+        if(idx != hexColorCode.length() - 1) {
+            NSLog(@"invalid hexcolor code is given: %@",
+                  [NSString stringWithCString:hexColorCode.c_str() encoding:NSUTF8StringEncoding]);
+            color = UIColor.clearColor;
+        } else {
+            color = [UIColor colorWithRed:((num & 0x00FF0000) >> 16) / 255.0
+                                    green:((num & 0x0000FF00) >>  8) / 255.0
+                                     blue:((num & 0x000000FF)) / 255.0
+                                    alpha:alpha / 255.0];
+        }
+    } catch (...) {
+        color = UIColor.clearColor;
+        NSLog(@"invalid hexcolor code is given: %@",
+            [NSString stringWithCString:hexColorCode.c_str() encoding:NSUTF8StringEncoding]);
+    }
+
+    return color;
+}
+
+- (UIColor *)getBackgroundColorForContainerStyle:(ACRContainerStyle)style
+{
+    const std::string &hexColorCode = (style == ACREmphasis)?
+        _config->containerStyles.emphasisPalette.backgroundColor :
+        _config->containerStyles.defaultPalette.backgroundColor;
+
+    return [ACOHostConfig convertHexColorCodeToUIColor:hexColorCode];
+}
+
++ (ACRContainerStyle)getPlatformContainerStyle:(ContainerStyle)style
+{
+    ACRContainerStyle containerStyle = ACRDefault;
+    switch (style) {
+        case ContainerStyle::None:
+            containerStyle = ACRNone;
+            break;
+        case ContainerStyle::Default:
+            containerStyle = ACRDefault;
+            break;
+        case ContainerStyle::Emphasis:
+            containerStyle = ACREmphasis;
+            break;
+        default:
+            containerStyle = ACRDefault;
+            break;
+    }
+    return containerStyle;
 }
 
 @end

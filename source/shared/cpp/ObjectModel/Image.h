@@ -6,68 +6,81 @@
 #include "Enums.h"
 #include "ElementParserRegistration.h"
 
-namespace AdaptiveCards
+namespace AdaptiveSharedNamespace
 {
-class Image : public BaseCardElement
-{
-public:
-    Image();
-    Image(
-        Spacing spacing,
-        bool separator,
-        std::string uri,
-        ImageStyle imageStyle,
-        ImageSize imageSize,
-        std::string altText,
-        HorizontalAlignment hAlignment);
+    class Image : public BaseCardElement
+    {
+    public:
+        Image();
 
-    virtual Json::Value SerializeToJsonValue() override;
+        Json::Value SerializeToJsonValue() const override;
 
-    std::string GetUrl() const;
-    void SetUrl(const std::string value);
+        std::string GetUrl() const;
+        void SetUrl(const std::string& value);
 
-    ImageStyle GetImageStyle() const;
-    void SetImageStyle(const ImageStyle value);
+        std::string GetBackgroundColor() const;
+        void SetBackgroundColor(const std::string& value);
 
-    ImageSize GetImageSize() const;
-    void SetImageSize(const ImageSize value);
+        ImageStyle GetImageStyle() const;
+        void SetImageStyle(const ImageStyle value);
 
-    std::string GetAltText() const;
-    void SetAltText(const std::string value);
+        ImageSize GetImageSize() const;
+        void SetImageSize(const ImageSize value);
 
-    HorizontalAlignment GetHorizontalAlignment() const;
-    void SetHorizontalAlignment(const HorizontalAlignment value);
+        std::string GetAltText() const;
+        void SetAltText(const std::string& value);
 
-    std::shared_ptr<BaseActionElement> GetSelectAction() const;
-    void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
+        HorizontalAlignment GetHorizontalAlignment() const;
+        void SetHorizontalAlignment(const HorizontalAlignment value);
 
-private:
-    void PopulateKnownPropertiesSet();
+        std::shared_ptr<BaseActionElement> GetSelectAction() const;
+        void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
-    std::string m_url;
-    ImageStyle m_imageStyle;
-    ImageSize m_imageSize;
-    std::string m_altText;
-    HorizontalAlignment m_hAlignment;
-    std::shared_ptr<BaseActionElement> m_selectAction;
-};
+        unsigned int GetPixelWidth() const;
+        void SetPixelWidth(unsigned int value);
 
-class ImageParser : public BaseCardElementParser
-{
-public:
-    std::shared_ptr<BaseCardElement> Deserialize(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const Json::Value& root);
+        unsigned int GetPixelHeight() const;
+        void SetPixelHeight(unsigned int value);
 
-    std::shared_ptr<BaseCardElement> DeserializeWithoutCheckingType(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const Json::Value& root);
+        void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
-    std::shared_ptr<BaseCardElement> DeserializeFromString(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const std::string& jsonString);
-};
+    private:
+        void PopulateKnownPropertiesSet() override;
+
+        std::string m_url;
+        std::string m_backgroundColor;
+        ImageStyle m_imageStyle;
+        ImageSize m_imageSize;
+        unsigned int m_pixelWidth;
+        unsigned int m_pixelHeight;
+        std::string m_altText;
+        HorizontalAlignment m_hAlignment;
+        std::shared_ptr<BaseActionElement> m_selectAction;
+    };
+
+    class ImageParser : public BaseCardElementParser
+    {
+    public:
+        ImageParser() = default;
+        ImageParser(const ImageParser&) = default;
+        ImageParser(ImageParser&&) = default;
+        ImageParser& operator=(const ImageParser&) = default;
+        ImageParser& operator=(ImageParser&&) = default;
+        virtual ~ImageParser() = default;
+
+        std::shared_ptr<BaseCardElement> Deserialize(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+                                                     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+                                                     std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+                                                     const Json::Value& root) override;
+
+        std::shared_ptr<BaseCardElement> DeserializeWithoutCheckingType(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+                                                                        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+                                                                        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+                                                                        const Json::Value& root);
+
+        std::shared_ptr<BaseCardElement> DeserializeFromString(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+                                                               std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+                                                               std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+                                                               const std::string& jsonString);
+    };
 }

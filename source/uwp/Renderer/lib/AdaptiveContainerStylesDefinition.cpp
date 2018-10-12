@@ -5,13 +5,14 @@
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
+namespace AdaptiveNamespace
 {
     HRESULT AdaptiveContainerStylesDefinition::RuntimeClassInitialize() noexcept try
     {
         ContainerStylesDefinition stylesDefinition;
         return RuntimeClassInitialize(stylesDefinition);
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
     HRESULT AdaptiveContainerStylesDefinition::RuntimeClassInitialize(ContainerStylesDefinition stylesDefinition) noexcept
     {
@@ -21,29 +22,25 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveContainerStylesDefinition::get_Default(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition ** value)
+    _Use_decl_annotations_ HRESULT AdaptiveContainerStylesDefinition::get_Default(ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition** value)
     {
         return m_default.CopyTo(value);
     }
 
-    _Use_decl_annotations_
-    HRESULT  AdaptiveContainerStylesDefinition::put_Default(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition * value)
+    _Use_decl_annotations_ HRESULT AdaptiveContainerStylesDefinition::put_Default(ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition* value)
     {
         m_default = value;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT  AdaptiveContainerStylesDefinition::get_Emphasis(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition ** value)
+    _Use_decl_annotations_ HRESULT AdaptiveContainerStylesDefinition::get_Emphasis(ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition** value)
     {
         return m_emphasis.CopyTo(value);
     }
 
-    _Use_decl_annotations_
-    HRESULT  AdaptiveContainerStylesDefinition::put_Emphasis(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveContainerStyleDefinition * value)
+    _Use_decl_annotations_ HRESULT AdaptiveContainerStylesDefinition::put_Emphasis(ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition* value)
     {
         m_emphasis = value;
         return S_OK;
     }
-}}}
+}

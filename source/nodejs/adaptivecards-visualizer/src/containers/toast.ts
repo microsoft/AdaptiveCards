@@ -84,7 +84,7 @@ export class ToastContainer extends HostContainer {
                         warning: {
                             default: "#FFD800",
                             subtle: "#DDFFD800"
-                        }                    
+                        }
                     }
                 },
                 emphasis: {

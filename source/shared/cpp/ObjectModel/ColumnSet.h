@@ -6,44 +6,53 @@
 #include "Column.h"
 #include "ElementParserRegistration.h"
 
-namespace AdaptiveCards
+namespace AdaptiveSharedNamespace
 {
-class ColumnSet : public BaseCardElement
-{
-friend class ColumnSetParser;
-public:
-    ColumnSet();
-    ColumnSet(std::vector<std::shared_ptr<Column>>& columns);
+    class ColumnSet : public BaseCardElement
+    {
+        friend class ColumnSetParser;
 
-    virtual Json::Value SerializeToJsonValue() override;
+    public:
+        ColumnSet();
 
-    std::vector<std::shared_ptr<Column>>& GetColumns();
-    const std::vector<std::shared_ptr<Column>>& GetColumns() const;
+        Json::Value SerializeToJsonValue() const override;
 
-    std::shared_ptr<BaseActionElement> GetSelectAction() const;
-    void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
+        std::vector<std::shared_ptr<Column>>& GetColumns();
+        const std::vector<std::shared_ptr<Column>>& GetColumns() const;
 
-    void SetLanguage(const std::string& language);
+        std::shared_ptr<BaseActionElement> GetSelectAction() const;
+        void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
-private:
-    void PopulateKnownPropertiesSet();
+        void SetLanguage(const std::string& language);
 
-    static const std::unordered_map<CardElementType, std::function<std::shared_ptr<Column>(const Json::Value&)>, EnumHash> ColumnParser;
-    std::vector<std::shared_ptr<Column>> m_columns;
-    std::shared_ptr<BaseActionElement> m_selectAction;
-};
+        void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
-class ColumnSetParser : public BaseCardElementParser
-{
-public:
-    std::shared_ptr<BaseCardElement> Deserialize(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const Json::Value& root);
+    private:
+        void PopulateKnownPropertiesSet() override;
 
-    std::shared_ptr<BaseCardElement> DeserializeFromString(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        const std::string& jsonString);
-};
+        static const std::unordered_map<CardElementType, std::function<std::shared_ptr<Column>(const Json::Value&)>, EnumHash> ColumnParser;
+        std::vector<std::shared_ptr<Column>> m_columns;
+        std::shared_ptr<BaseActionElement> m_selectAction;
+    };
+
+    class ColumnSetParser : public BaseCardElementParser
+    {
+    public:
+        ColumnSetParser() = default;
+        ColumnSetParser(const ColumnSetParser&) = default;
+        ColumnSetParser(ColumnSetParser&&) = default;
+        ColumnSetParser& operator=(const ColumnSetParser&) = default;
+        ColumnSetParser& operator=(ColumnSetParser&&) = default;
+        virtual ~ColumnSetParser() = default;
+
+        std::shared_ptr<BaseCardElement> Deserialize(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+                                                     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+                                                     std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+                                                     const Json::Value& root) override;
+
+        std::shared_ptr<BaseCardElement> DeserializeFromString(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+                                                               std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+                                                               std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+                                                               const std::string& jsonString);
+    };
 }

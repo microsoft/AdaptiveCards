@@ -14,7 +14,7 @@ using namespace AdaptiveCards;
 @interface ACOHostConfig()
 
 - (instancetype)initWithConfig:(std::shared_ptr<HostConfig> const &)config;
-- (std::shared_ptr<HostConfig>) getHostConfig;
+- (std::shared_ptr<HostConfig>)getHostConfig;
 - (void)setHostConfig:(std::shared_ptr<HostConfig> const &)config;
 
 + (NSNumber *)getTextStrokeWidthForWeight:(TextWeight)weight;
@@ -30,6 +30,12 @@ using namespace AdaptiveCards;
                                       toView:(UIView *)view;
 // find date and time string, and replace them in NSDateFormatterCompactStyle, NSDateFormatterMediumStyle or
 // NSDateFormatterLongStyle of local language
-+ (std::string) getLocalizedDate:(std::shared_ptr<TextBlock> const &)txtBlck;
++ (std::string) getLocalizedDate:(std::string const &)text language:(std::string const &)language;
 
-@end    
++ (UIColor *)convertHexColorCodeToUIColor:(std::string const &)hexColorCode;
+
+- (UIColor *)getBackgroundColorForContainerStyle:(ACRContainerStyle)style;
+
++ (ACRContainerStyle)getPlatformContainerStyle:(ContainerStyle)style;
+
+@end

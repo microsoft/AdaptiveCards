@@ -3,7 +3,7 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "IImageLoadTrackerListener.h"
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
+namespace AdaptiveNamespace
 {
     struct TrackedImageDetails
     {
@@ -38,4 +38,4 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         void FireAllImagesLoaded();
         void FireImagesLoadingHadError();
     };
-}}}
+}

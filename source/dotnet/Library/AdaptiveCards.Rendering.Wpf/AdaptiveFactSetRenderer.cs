@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace AdaptiveCards.Rendering.Wpf
@@ -23,6 +23,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     IsSubtle = context.Config.FactSet.Title.IsSubtle,
                     Weight = context.Config.FactSet.Title.Weight,
                     Wrap = context.Config.FactSet.Title.Wrap,
+                    MaxWidth = context.Config.FactSet.Title.MaxWidth,
                     Text = fact.Title
                 });
 
@@ -36,6 +37,8 @@ namespace AdaptiveCards.Rendering.Wpf
                     IsSubtle = context.Config.FactSet.Value.IsSubtle,
                     Weight = context.Config.FactSet.Value.Weight,
                     Wrap = context.Config.FactSet.Value.Wrap,
+                    // MaxWidth is not applicable to the Value field of the Fact
+                    // so ignore it.
                     Text = fact.Value
                 });
 

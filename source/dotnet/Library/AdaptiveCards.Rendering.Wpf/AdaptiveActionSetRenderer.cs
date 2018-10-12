@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -45,13 +45,25 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 bool isInline = (actionsConfig.ShowCard.ActionMode == ShowCardActionMode.Inline);
 
-                if (isInline && actionsToProcess.Any(a => a is AdaptiveShowCardAction))
+                int iPos = 0;
+
+                // See if all actions have icons, otherwise force the icon placement to the left
+                var oldConfigIconPlacement = actionsConfig.IconPlacement;
+                bool allActionsHaveIcons = true;
+                foreach (var action in actionsToProcess)
                 {
-                    uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                    if (string.IsNullOrEmpty(action.IconUrl))
+                    {
+                        allActionsHaveIcons = false;
+                        break;
+                    }
                 }
 
-                int iPos = 0;
-                List<FrameworkElement> actionBarCards = new List<FrameworkElement>();
+                if (!allActionsHaveIcons)
+                {
+                    actionsConfig.IconPlacement = IconPlacement.LeftOfTitle;
+                }
+
                 foreach (var action in actionsToProcess)
                 {
                     // add actions
@@ -76,7 +88,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
                     if (action is AdaptiveShowCardAction showCardAction)
                     {
-                        if (isInline)
+                        // Only support 1 level of showCard
+                        if (isInline && context.CardDepth == 1)
                         {
                             Grid uiShowCardContainer = new Grid();
                             uiShowCardContainer.Style = context.GetStyle("Adaptive.Actions.ShowCard");
@@ -85,7 +98,7 @@ namespace AdaptiveCards.Rendering.Wpf
                             uiShowCardContainer.Visibility = Visibility.Collapsed;
 
                             // render the card
-                            var uiShowCardWrapper = (Grid)context.Render(showCardAction.Card);                            
+                            var uiShowCardWrapper = (Grid)context.Render(showCardAction.Card);
                             uiShowCardWrapper.Background = context.GetColorBrush("Transparent");
                             uiShowCardWrapper.DataContext = showCardAction;
 
@@ -95,21 +108,14 @@ namespace AdaptiveCards.Rendering.Wpf
 
                             uiShowCardContainer.Children.Add(uiShowCardWrapper);
 
-                            actionBarCards.Add(uiShowCardContainer);
-                            Grid.SetRow(uiShowCardContainer, uiContainer.RowDefinitions.Count - 1);
-                            uiContainer.Children.Add(uiShowCardContainer);
-
-                            uiAction.Click += (sender, e) =>
-                            {
-                                bool showCard = (uiShowCardContainer.Visibility != Visibility.Visible);
-                                foreach (var actionBarCard in actionBarCards)
-                                    actionBarCard.Visibility = Visibility.Collapsed;
-                                if (showCard)
-                                    uiShowCardContainer.Visibility = Visibility.Visible;
-                            };
+                            // Add to the list of show cards in context
+                            context.ActionShowCards.Add(new Tuple<FrameworkElement, Button>(uiShowCardContainer, uiAction));
                         }
                     }
                 }
+
+                // Restore the iconPlacement for the context.
+                actionsConfig.IconPlacement = oldConfigIconPlacement;
             }
         }
     }

@@ -1,24 +1,16 @@
-﻿using AdaptiveCardTestApp.ViewModels;
+using AdaptiveCardTestApp.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using System.Threading.Tasks;
+using UWPTestLibrary;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using System.Threading.Tasks;
-using Windows.UI.Popups;
-using Windows.Storage.Pickers;
 using Windows.Graphics.Display;
-using Windows.Storage.AccessCache;
 using Windows.Storage;
+using Windows.Storage.AccessCache;
+using Windows.Storage.Pickers;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -36,7 +28,7 @@ namespace AdaptiveCardTestApp.Pages
             this.InitializeComponent();
         }
 
-        protected override async Task<BaseViewModel> InitializeViewModel()
+        protected override async Task<BindableBase> InitializeViewModel()
         {
             var viewModel = new StartViewModel();
             await viewModel.LoadAsync();
@@ -107,6 +99,11 @@ namespace AdaptiveCardTestApp.Pages
             {
                 viewModelList.Add(selected);
             }
+        }
+
+        private void TimelineCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            ViewModel.AddToTimeline = (TimelineCheckBox.IsChecked == true);
         }
     }
 }

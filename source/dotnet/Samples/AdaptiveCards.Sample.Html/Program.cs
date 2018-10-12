@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -71,7 +71,7 @@ namespace AdaptiveCards.Sample.Html
     <title>Adaptive Cards HTML Renderer Test Bed</title>
     <meta charset=""UTF-8"">
     <style type""text/css"">
-                
+
         * {
             box-sizing: border-box;
             font-family: 'Segoe UI'
@@ -98,7 +98,7 @@ namespace AdaptiveCards.Sample.Html
             background: orange;
             padding: 5px;
             width: 400px;
-        } 
+        }
     </style>
 </head>
 <body>");
@@ -149,7 +149,44 @@ namespace AdaptiveCards.Sample.Html
                     }
                 }
 
+                bool allowInlinePlayback = hostConfig.Media.AllowInlinePlayback;
+
+                // Convert to JavaScript boolean values (False -> false, True -> true)
+                string jsAllowInlinePlayback = allowInlinePlayback.ToString().ToLower();
+
                 writer.WriteLine("</body>");
+                writer.WriteLine($@"
+    <script>
+        // Sample JavaScript code to make media elements work
+        const mediaPosterButtons = document.getElementsByClassName('ac-media-poster');
+        const allowInlinePlayback = false;
+        for (var i = 0; i < mediaPosterButtons.length; i++)
+        {{
+            const button = mediaPosterButtons[i];
+            button.addEventListener('click', function() {{
+                if ({jsAllowInlinePlayback}) {{
+                    const mediaId = button.dataset.acMediaid;
+                    const mediaPlayerContainer = document.getElementById(mediaId);
+
+                    if (mediaPlayerContainer)
+                    {{
+                        // Hide the poster
+                        button.style.display = 'none';
+
+                        // Show the media player container
+                        mediaPlayerContainer.style.display = '';
+
+                        // Play the media
+                        const mediaPlayer = document.getElementById(`${{mediaId}}-player`);
+                        mediaPlayer.play();
+                    }}
+                }} else {{
+                    const mediaSources = button.dataset.acMediaSources;
+                    alert(mediaSources);
+                }}
+            }});
+        }}
+    </script>");
                 writer.WriteLine("</html>");
 
                 if (outputFile != null)

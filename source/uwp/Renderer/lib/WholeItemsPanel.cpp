@@ -9,7 +9,7 @@ using namespace std;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
@@ -18,27 +18,30 @@ using namespace ABI::Windows::UI::Xaml::Shapes;
 using namespace ABI::Windows::UI::Xaml::Media;
 
 static const float OutsidePanelY = -1000.0f;
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
+namespace AdaptiveNamespace
 {
     HRESULT WholeItemsPanel::RuntimeClassInitialize()
     {
         ComPtr<IPanelFactory> spFactory;
         ComPtr<IInspectable> spInnerInspectable;
         ComPtr<IPanel> spInnerPanel;
-        RETURN_IF_FAILED(Windows::Foundation::GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Panel).Get(), &spFactory));
-        RETURN_IF_FAILED(spFactory->CreateInstance(static_cast<IWholeItemsPanel*>(this), spInnerInspectable.GetAddressOf(), spInnerPanel.GetAddressOf()));
+        RETURN_IF_FAILED(
+            Windows::Foundation::GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Panel).Get(), &spFactory));
+        RETURN_IF_FAILED(spFactory->CreateInstance(static_cast<IWholeItemsPanel*>(this),
+                                                   spInnerInspectable.GetAddressOf(),
+                                                   spInnerPanel.GetAddressOf()));
         RETURN_IF_FAILED(SetComposableBasePointers(spInnerInspectable.Get(), spFactory.Get()));
 
         return S_OK;
     }
 
     // IFrameworkElementOverrides
-    HRESULT WholeItemsPanel::MeasureOverride(Size availableSize, __RPC__out Size *returnValue)
+    HRESULT WholeItemsPanel::MeasureOverride(Size availableSize, __RPC__out Size* returnValue)
     {
-        unsigned int count = 0;
-        float currentHeight = 0;
-        float maxDesiredWidth = 0;
-        bool visible = true;
+        unsigned int count{};
+        float currentHeight{};
+        float maxDesiredWidth{};
+        bool visible{true};
 
         ComPtr<IVector<UIElement*>> spChildren;
         ComPtr<IPanel> spThisAsPanel;
@@ -46,13 +49,14 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         RETURN_IF_FAILED(spThisAsPanel->get_Children(spChildren.GetAddressOf()));
         RETURN_IF_FAILED(spChildren->get_Size(&count));
 
-        const Size noVerticalLimit{ availableSize.Width, numeric_limits<float>::infinity() };
+        const Size noVerticalLimit{availableSize.Width, numeric_limits<float>::infinity()};
 
         m_visibleCount = count;
-        for (unsigned int i = 0; i < count; i++)
+        for (unsigned int i{}; i < count; ++i)
         {
             ComPtr<IUIElement> spChild;
             RETURN_IF_FAILED(spChildren->GetAt(i, spChild.GetAddressOf()));
+
             RETURN_IF_FAILED(spChild->Measure(noVerticalLimit));
 
             if (visible)
@@ -67,11 +71,11 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
                     const double availableHeightForItem = availableSize.Height - currentHeight;
                     bool keepItem = m_isMainPanel && (i == 0); // by default, only keep the first item in the main panel.
 
-                                              // Item does not fit
+                    // Item does not fit
                     // 1. We mark the current panel as truncated
                     //    2.1 If the child is a panel: always
-                    //    2.2 If the child is a text block: only if it cannot meet its minlines constraint (default is 1)
-                    //    2.3 If the child is a image or a shape (circular cropped image):
+                    //    2.2 If the child is a text block: only if it cannot meet its minlines constraint (default is
+                    //    1) 2.3 If the child is a image or a shape (circular cropped image):
                     //            - stretched images might be resized
                     ComPtr<IPanel> spChildAsPanel;
                     if (SUCCEEDED(spChild.As(&spChildAsPanel)))
@@ -82,12 +86,12 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
                         // Still being able to reduce its size, for example if it has a minSize which can be respected
                         if (keepItem == false)
                         {
-                            Size remainingSpace = { availableSize.Width, static_cast<float>(availableHeightForItem) };
+                            Size remainingSpace = {availableSize.Width, static_cast<float>(availableHeightForItem)};
                             RETURN_IF_FAILED(spChild->Measure(remainingSpace));
                             bool isChildTruncated = false;
                             RETURN_IF_FAILED(IsAnySubgroupTruncated(spChildAsPanel.Get(), &isChildTruncated));
                             keepItem = !isChildTruncated;
-                            m_isTruncated = keepItem;
+                            m_isTruncated = !keepItem;
                         }
                     }
                     ComPtr<ITextBlock> spTextBlock;
@@ -107,7 +111,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
                             // In order to do this, we remove the wrapping:
                             //   1. if the textblock has a min lines constraint, this will remain as it is implemented with MinHeight
                             //   2. if the textblock has no min lines, constraint, this will measure a single line, which is the default minlines
-                            const Size noLimit{ numeric_limits<float>::infinity(), numeric_limits<float>::infinity() };
+                            const Size noLimit{numeric_limits<float>::infinity(), numeric_limits<float>::infinity()};
                             RETURN_IF_FAILED(spTextBlock->put_TextWrapping(TextWrapping::TextWrapping_NoWrap));
                             RETURN_IF_FAILED(spChild->Measure(noLimit));
                             RETURN_IF_FAILED(spChild->get_DesiredSize(&childSize));
@@ -130,8 +134,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
                                     ComPtr<IFrameworkElementStatics> spFrameworkElementStatics;
                                     ComPtr<IDependencyProperty> spMinHeightProperty;
                                     ComPtr<IDependencyObject> spChildAsDO;
-                                    RETURN_IF_FAILED(Windows::Foundation::GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_FrameworkElement).Get(), &spFrameworkElementStatics));
-                                    RETURN_IF_FAILED(spFrameworkElementStatics->get_MinHeightProperty(spMinHeightProperty.GetAddressOf()));
+                                    RETURN_IF_FAILED(Windows::Foundation::GetActivationFactory(
+                                        HStringReference(RuntimeClass_Windows_UI_Xaml_FrameworkElement).Get(), &spFrameworkElementStatics));
+                                    RETURN_IF_FAILED(spFrameworkElementStatics->get_MinHeightProperty(
+                                        spMinHeightProperty.GetAddressOf()));
                                     RETURN_IF_FAILED(spChild.As(&spChildAsDO));
                                     RETURN_IF_FAILED(spChildAsDO->ClearValue(spMinHeightProperty.Get()));
                                 }
@@ -203,32 +209,38 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
                     visible = false;
                     continue;
                 }
-                else
-                {
-                    currentHeight = newHeight;
-                }
                 currentHeight = newHeight;
                 maxDesiredWidth = max(childSize.Width, maxDesiredWidth);
             }
+        }
+
+        m_calculatedSize = currentHeight;
+        if (m_visibleCount == count)
+        {
+            m_allElementsRendered = true;
+        }
+        else // In the first pass, all the contents will always fit
+        {
+            m_allElementsRendered = false;
         }
 
         // If inside an infinity/auto width container
         if (availableSize.Width == numeric_limits<float>::infinity())
         {
             // We use the calculated max desired width of children
-            *returnValue = { maxDesiredWidth, currentHeight };
+            *returnValue = {maxDesiredWidth, currentHeight};
         }
         else
         {
             // Otherwise we match the fixed width of the container
-            *returnValue = { availableSize.Width, currentHeight };
+            *returnValue = {availableSize.Width, currentHeight};
         }
         return S_OK;
     }
 
-    HRESULT WholeItemsPanel::ArrangeOverride(Size finalSize, __RPC__out Size *returnValue)
+    HRESULT WholeItemsPanel::ArrangeOverride(Size finalSize, __RPC__out Size* returnValue)
     {
-        float currentHeight = 0;
+        float currentHeight{};
         ComPtr<IVector<UIElement*>> spChildren;
 
         ComPtr<IPanel> spThisAsPanel;
@@ -236,7 +248,26 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         RETURN_IF_FAILED(spThisAsPanel->get_Children(spChildren.GetAddressOf()));
         RETURN_IF_FAILED(spChildren->get_Size(&m_measuredCount));
 
-        for (unsigned int i = 0; i < m_measuredCount; i++) {
+        float extraPaddingPerItem{};
+        if (!m_stretchableItems.empty())
+        {
+            extraPaddingPerItem = floor((finalSize.Height - m_calculatedSize) / m_stretchableItems.size());
+        }
+
+        if (m_stretchableItems.empty())
+        {
+            if (m_verticalContentAlignment == ABI::AdaptiveNamespace::VerticalContentAlignment::Center)
+            {
+                currentHeight = (finalSize.Height - m_calculatedSize) / 2;
+            }
+            else if (m_verticalContentAlignment == ABI::AdaptiveNamespace::VerticalContentAlignment::Bottom)
+            {
+                currentHeight = finalSize.Height - m_calculatedSize;
+            }
+        }
+
+        for (unsigned int i{}; i < m_measuredCount; ++i)
+        {
             ComPtr<IUIElement> spChild;
             RETURN_IF_FAILED(spChildren->GetAt(i, spChild.GetAddressOf()));
 
@@ -245,17 +276,20 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
             if (i < m_visibleCount)
             {
-
                 float childHeight = childSize.Height;
                 float newHeight = currentHeight + childSize.Height;
 
-                // If we have truncated the first item newHeight may be greater than finalSize
-                if (newHeight > finalSize.Height)
+                if (m_allElementsRendered && IsUIElementInStretchableList(spChild.Get()))
+                {
+                    childHeight += extraPaddingPerItem;
+                    newHeight += extraPaddingPerItem;
+                }
+                else if (newHeight > finalSize.Height) // If we have truncated the first item newHeight may be greater than finalSize
                 {
                     childHeight = finalSize.Height - currentHeight;
                     newHeight = finalSize.Height;
                 }
-                const Rect rc = { 0.0f, currentHeight, finalSize.Width, childHeight }; // childSize.Width does not respect Text alignment
+                const Rect rc = {0.0f, currentHeight, finalSize.Width, childHeight}; // childSize.Width does not respect Text alignment
                 RETURN_IF_FAILED(spChild->Arrange(rc));
 
                 currentHeight = newHeight;
@@ -263,7 +297,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
             else
             {
                 // Arrange the child outside the panel
-                const Rect rc = { 0.0f, OutsidePanelY - childSize.Height, childSize.Width, childSize.Height };
+                const Rect rc = {0.0f, OutsidePanelY - childSize.Height, childSize.Width, childSize.Height};
                 RETURN_IF_FAILED(spChild->Arrange(rc));
             }
         }
@@ -276,7 +310,8 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         RETURN_IF_FAILED(QueryInterface(IID_PPV_ARGS(&spThisAsIFrameworkElement)));
         RETURN_IF_FAILED(spThisAsIFrameworkElement->get_Margin(&margin));
         Microsoft::WRL::ComPtr<IRectangleGeometry> spClip;
-        RETURN_IF_FAILED(Windows::Foundation::ActivateInstance(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_RectangleGeometry).Get(), &spClip));
+        RETURN_IF_FAILED(
+            Windows::Foundation::ActivateInstance(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_RectangleGeometry).Get(), &spClip));
         ComPtr<IUIElement> spThisAsIUIElement;
         RETURN_IF_FAILED(QueryInterface(IID_PPV_ARGS(&spThisAsIUIElement)));
         RETURN_IF_FAILED(spThisAsIUIElement->put_Clip(spClip.Get()));
@@ -285,9 +320,9 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         float y0 = static_cast<float>(-margin.Top);
         float x1 = static_cast<float>(margin.Left + finalSize.Width + margin.Right);
         float y1 = static_cast<float>(margin.Top + finalSize.Height + margin.Bottom);
-        RETURN_IF_FAILED(spClip->put_Rect( {x0, y0 ,x1, y1} ));
+        RETURN_IF_FAILED(spClip->put_Rect({x0, y0, x1, y1}));
 
-        *returnValue = { finalSize.Width, finalSize.Height };
+        *returnValue = {finalSize.Width, finalSize.Height};
         return S_OK;
     }
 
@@ -323,7 +358,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return S_OK;
     }
 
-    HRESULT WholeItemsPanel::GetAltText(__RPC__out HSTRING *pResult)
+    HRESULT WholeItemsPanel::GetAltText(__RPC__out HSTRING* pResult)
     {
         try
         {
@@ -346,20 +381,52 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return S_OK;
     }
 
-    void WholeItemsPanel::SetAdaptiveHeight(_In_ bool value)
+    void WholeItemsPanel::SetAdaptiveHeight(_In_ bool value) { m_adaptiveHeight = value; }
+
+    void WholeItemsPanel::SetMainPanel(_In_ bool value) { m_isMainPanel = value; }
+
+    void WholeItemsPanel::AddElementToStretchablesList(_In_ IUIElement* element)
     {
-        m_adaptiveHeight = value;
+        ComPtr<IUIElement> localElement(element);
+        ComPtr<IUIElement4> elementWithAccessKey;
+        if (SUCCEEDED(localElement.As(&elementWithAccessKey)))
+        {
+            std::string elementAccessKey = std::to_string(m_accessKeyCount);
+            ++m_accessKeyCount;
+
+            HSTRING accessKey;
+            if (SUCCEEDED(UTF8ToHString(elementAccessKey, &accessKey)))
+            {
+                elementWithAccessKey->put_AccessKey(accessKey);
+                m_stretchableItems.insert(elementAccessKey);
+            }
+        }
     }
 
-    void WholeItemsPanel::SetMainPanel(_In_ bool value)
+    bool WholeItemsPanel::IsUIElementInStretchableList(_In_ IUIElement* element)
     {
-        m_isMainPanel = value;
+        ComPtr<IUIElement> localElement(element);
+        ComPtr<IUIElement4> elementWithAccessKey;
+        if (SUCCEEDED(localElement.As(&elementWithAccessKey)))
+        {
+            HSTRING elementAccessKey;
+            if (SUCCEEDED(elementWithAccessKey->get_AccessKey(&elementAccessKey)))
+            {
+                std::string accessKey = HStringToUTF8(elementAccessKey);
+                return (m_stretchableItems.find(accessKey) != m_stretchableItems.end());
+            }
+        }
+
+        return false; // Couldn't get access key, weird, so it wasnt found
     }
 
-    _Check_return_ HRESULT
-    WholeItemsPanel::IsAnySubgroupTruncated(
-        _In_ ABI::Windows::UI::Xaml::Controls::IPanel* pPanel,
-        _Out_ bool* childTruncated)
+    void WholeItemsPanel::SetVerticalContentAlignment(_In_ ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment)
+    {
+        m_verticalContentAlignment = verticalContentAlignment;
+    }
+
+    _Check_return_ HRESULT WholeItemsPanel::IsAnySubgroupTruncated(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* pPanel,
+                                                                   _Out_ bool* childTruncated)
     {
         *childTruncated = false;
         ComPtr<IVector<UIElement*>> spChildren;
@@ -390,10 +457,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
     // As shapes (used for circular cropping) don't resize as a stretched image, we need do to more
     // things manually. Here, we'll resize the shape to fit the smallest dimension
     // (ideally, we should inherit from Ellipse but it is not possible)
-    _Check_return_ HRESULT WholeItemsPanel::LayoutCroppedImage(
-        _In_ IShape *pShape,
-        _In_ double availableWidth,
-        _In_ double availableHeight)
+    _Check_return_ HRESULT WholeItemsPanel::LayoutCroppedImage(_In_ IShape* pShape, _In_ double availableWidth, _In_ double availableHeight)
     {
         ComPtr<IFrameworkElement> spFrameworkElement;
         VerticalAlignment valign;
@@ -421,21 +485,23 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         buffer.append(WindowsGetStringRawBuffer(hText, nullptr));
     }
 
-    _Check_return_ HRESULT WholeItemsPanel::GetAltAsString(_In_ IUIElement *pElement, _Out_ HSTRING *pResult)
+    _Check_return_ HRESULT WholeItemsPanel::GetAltAsString(_In_ IUIElement* pElement, _Out_ HSTRING* pResult)
     {
         *pResult = nullptr;
         ComPtr<IDependencyObject> spDependencyObject;
         if (SUCCEEDED(pElement->QueryInterface(spDependencyObject.GetAddressOf())))
         {
             ComPtr<Automation::IAutomationPropertiesStatics> automationStatics;
-            RETURN_IF_FAILED(::GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(), &automationStatics));
+            RETURN_IF_FAILED(
+                ::GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
+                                       &automationStatics));
             RETURN_IF_FAILED(automationStatics->GetName(spDependencyObject.Get(), pResult));
         }
         return S_OK;
     }
 
     // Creates the Alt Text
-    _Check_return_ HRESULT WholeItemsPanel::AppendAltTextToUIElement(_In_ IUIElement *pUIElement, _Inout_ std::wstring& buffer)
+    _Check_return_ HRESULT WholeItemsPanel::AppendAltTextToUIElement(_In_ IUIElement* pUIElement, _Inout_ std::wstring& buffer)
     {
         ComPtr<ITextBlock> spTextBlock;
 
@@ -511,7 +577,7 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return S_OK;
     }
 
-    bool WholeItemsPanel::HasExplicitSize(_In_ IFrameworkElement *element)
+    bool WholeItemsPanel::HasExplicitSize(_In_ IFrameworkElement* element)
     {
         DOUBLE definedImageHeight;
         element->get_Height(&definedImageHeight);
@@ -520,4 +586,5 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
         return !isnan(definedImageHeight) || !isnan(definedImageWidth);
     }
-}}}
+
+}

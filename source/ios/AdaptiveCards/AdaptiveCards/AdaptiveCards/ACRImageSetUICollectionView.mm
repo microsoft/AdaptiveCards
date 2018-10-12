@@ -10,6 +10,7 @@
 #import "ACRImageRenderer.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "ACRRegistration.h"
 
 using namespace AdaptiveCards;
 
@@ -66,7 +67,9 @@ using namespace AdaptiveCards;
     if(cellSize  == ImageSize::Auto || cellSize  == ImageSize::Stretch || cellSize  == ImageSize::None){
         _imgSet->GetImages()[indexPath.row]->SetImageSize(_imageSize);
     }
-    UIView *content = [[ACRImageRenderer getInstance] render:nil rootView:_rootView inputs:nil baseCardElement:_acoElem hostConfig:_acoConfig];
+
+    ACRBaseCardElementRenderer *imageRenderer = [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInteger:ACRImage]];
+    UIView *content = [imageRenderer render:nil rootView:_rootView inputs:nil baseCardElement:_acoElem hostConfig:_acoConfig];
 
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     if(!cell) {
@@ -75,6 +78,8 @@ using namespace AdaptiveCards;
         cell.contentView.frame = content.frame;
     }
     [cell.contentView addSubview:content];
+    [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:content attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
+    [NSLayoutConstraint constraintWithItem:cell.contentView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:content attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
     return cell;
 }
 
@@ -89,11 +94,28 @@ using namespace AdaptiveCards;
     return [self collectionViewContentSize];
 }
 
-- (CGSize) collectionViewContentSize
+- (CGSize)collectionViewContentSize
 {
     size_t cellCounts = _imgSet->GetImages().size();
-    int dimension = (ceil(sqrt(cellCounts)));
     CGSize imageSize = ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize;
-    return CGSizeMake(dimension * imageSize.width, dimension * imageSize.height);
+    float spacing = ((UICollectionViewFlowLayout *)self.collectionViewLayout).minimumInteritemSpacing;
+    float lineSpacing = ((UICollectionViewFlowLayout *)self.collectionViewLayout).minimumLineSpacing;
+
+    // sanity check
+    if(!imageSize.width || !self.frame.size.width || !cellCounts){
+        return CGSizeMake(0, 0);
+    }
+    float frameWidth = self.frame.size.width;
+    float imageWidthWithSpacing = imageSize.width + spacing;
+
+    // if there is spacing to the right edge, it's o.k.
+    int numbersOfItemsInRow = frameWidth / imageWidthWithSpacing;
+    // if addtional image can be fit by removing spacing, do so
+    if(numbersOfItemsInRow * imageWidthWithSpacing + imageSize.width <= frameWidth){
+        numbersOfItemsInRow++;
+    }
+
+    int numbersOfRows = ceil(((float) cellCounts) / numbersOfItemsInRow);
+    return CGSizeMake(self.frame.size.width, (numbersOfRows) * (imageSize.height) + (numbersOfRows - 1) * lineSpacing);
 }
 @end

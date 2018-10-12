@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,12 +29,12 @@ namespace AdaptiveCards.Test
         {
             var json = @"{
   ""type"": ""AdaptiveCard"",
-  ""version"": ""1.2""
+  ""version"": ""1.1""
 }";
 
             var result = AdaptiveCard.FromJson(json);
 
-            Assert.AreEqual(new AdaptiveSchemaVersion(1, 2), result.Card.Version);
+            Assert.AreEqual(new AdaptiveSchemaVersion(1, 1), result.Card.Version);
         }
 
         [TestMethod]

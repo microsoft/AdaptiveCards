@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -32,7 +32,10 @@ namespace AdaptiveCards.Test
             foreach (var file in Directory.EnumerateFiles(@"..\..\..\..\..\..\..\samples\v1.0\Scenarios"))
             {
                 string json = File.ReadAllText(file);
-                var card = JsonConvert.DeserializeObject<AdaptiveCard>(json);
+                var card = JsonConvert.DeserializeObject<AdaptiveCard>(json, new JsonSerializerSettings
+                {
+                    Converters = { new StrictIntConverter() }
+                });
                 StringBuilder sb = new StringBuilder();
                 serializer.Serialize(new StringWriter(sb), card);
                 string xml = sb.ToString();
@@ -40,7 +43,7 @@ namespace AdaptiveCards.Test
 
                 var result = compareLogic.Compare(card, card2);
                 //Assert.IsTrue(result.AreEqual, result.DifferencesString);
-                // TODO: This is failing on the Url serialization changing %20 to a space. 
+                // TODO: This is failing on the Url serialization changing %20 to a space.
                 // The serilaization is working through. Will bring this back once I fix the test
             }
         }

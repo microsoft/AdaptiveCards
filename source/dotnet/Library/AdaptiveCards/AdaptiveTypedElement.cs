@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -15,14 +15,13 @@ namespace AdaptiveCards
     public abstract class AdaptiveTypedElement
     {
         /// <summary>
-        /// The type name of the element 
+        /// The type name of the element
         /// </summary>
         [JsonProperty(Order = -10, Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
-        [JsonRequired]
 #if !NETSTANDARD1_3
         [XmlIgnore]
 #endif
-        public abstract string Type { get; set; } 
+        public abstract string Type { get; set; }
 
         /// <summary>
         /// A unique ID associated with the element. For Inputs the ID will be used as the key for Action.Submit response
@@ -32,7 +31,7 @@ namespace AdaptiveCards
         [XmlAttribute]
 #endif
         [DefaultValue(null)]
-        public string Id { get; set; }    
+        public string Id { get; set; }
 
         /// <summary>
         /// Additional properties not found on the default schema

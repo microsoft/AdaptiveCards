@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.MarkedNet;
 
 namespace AdaptiveCards.Rendering.Wpf
@@ -13,6 +13,8 @@ namespace AdaptiveCards.Rendering.Wpf
         public AdaptiveXamlMarkdownRenderer(Options options) : base(options)
         {
         }
+
+        private static readonly string listMarker = "<ListMarker/>";
 
         public override string Blockquote(string quote)
         {
@@ -76,12 +78,27 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public override string List(string body, bool ordered, int start)
         {
+            if (ordered)
+            {
+                int outputNum;
+                int iMarker;
+                for (outputNum = start, iMarker = body.IndexOf(listMarker);
+                    iMarker > 0;
+                    iMarker = body.IndexOf(listMarker), outputNum++)
+                {
+                    body = body.Remove(iMarker, listMarker.Length).Insert(iMarker, outputNum.ToString() + ".");
+                }
+            }
+            else
+            {
+                body = body.Replace(listMarker, "•");
+            }
             return $"{body}<LineBreak/>";
         }
 
         public override string ListItem(string text)
         {
-            return $" • {text}<LineBreak/>";
+            return $" {listMarker} {text}<LineBreak/>";
         }
 
         public override string Paragraph(string text)

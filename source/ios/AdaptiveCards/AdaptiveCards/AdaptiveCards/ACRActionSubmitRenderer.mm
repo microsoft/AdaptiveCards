@@ -27,19 +27,22 @@
          baseActionElement:(ACOBaseActionElement *)acoElem
                 hostConfig:(ACOHostConfig *)acoConfig;
 {
-    std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseActionElement> elem = [acoElem element];
     std::shared_ptr<SubmitAction> action = std::dynamic_pointer_cast<SubmitAction>(elem);
 
-    NSString *title = [NSString stringWithCString:action->GetTitle().c_str()
-                                        encoding:NSUTF8StringEncoding];
-    UIButton *button = [UIButton acr_renderButton:view title:title andHostConfig:config];
+    NSString *title = [NSString stringWithCString:action->GetTitle().c_str() encoding:NSUTF8StringEncoding];
+
+    UIButton *button = [UIButton rootView:view baseActionElement:acoElem title:title andHostConfig:acoConfig];
 
     ACRAggregateTarget *target = [[ACRAggregateTarget alloc] initWithActionElement:acoElem rootView:(ACRView*)view];
 
     [button addTarget:target action:@selector(send:) forControlEvents:UIControlEventTouchUpInside];
 
     [superview addTarget:target];
+
+    [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+
+    [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 
     return button;
 }

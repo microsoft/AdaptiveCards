@@ -1,9 +1,5 @@
-﻿using AdaptiveCardTestApp.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using UWPTestLibrary;
 using Windows.UI.Xaml.Controls;
 
 namespace AdaptiveCardTestApp.Pages
@@ -27,6 +23,6 @@ namespace AdaptiveCardTestApp.Pages
 
         protected virtual void OnViewModelLoaded() { }
 
-        protected abstract Task<BaseViewModel> InitializeViewModel();
+        protected abstract Task<BindableBase> InitializeViewModel();
     }
 }
