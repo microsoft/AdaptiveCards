@@ -11,7 +11,7 @@ using System;
 
 namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 {
-    
+
     [Activity(Label = "AdaptiveCards", MainLauncher = true, Icon = "@mipmap/icon")]
     public class MainActivity : FragmentActivity, ICardActionHandler
     {
@@ -20,7 +20,7 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
             Java.Lang.Runtime.GetRuntime().LoadLibrary("adaptivecards-native-lib");
         }
 
-  
+
         string card = @"
 {
     ""type"": ""AdaptiveCard"",
@@ -78,7 +78,7 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 
         public void OnAction(BaseActionElement element, RenderedAdaptiveCard renderedCard)
         {
-            
+
         }
     }
 }

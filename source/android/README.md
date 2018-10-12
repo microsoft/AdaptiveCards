@@ -2,7 +2,7 @@
 2. Open tools->Android->SDK Manager
 3. From SDK Platforms, select Android 4.0(IceCreamSandwich) and Android 7.1.1(Nougat)
 4. From SDK Tools, select NDK, CMake, LLDB and install
-5. Download Swig: http://www.swig.org (Mac `brew install swig`)
+5. Download [Swig](http://www.swig.org): (Mac `brew install swig`)
 
 # Auto generate model
 
@@ -24,6 +24,12 @@ swig -c++ -java -package io.adaptivecards.objectmodel -outdir main/java/io/adapt
 1. From Android Studio, New->"Import Project..."
 2. Select folder "<github directory>\AdaptiveCards\source\android"
 3. Build->"Rebuild Project"
+
+##or on a Mac
+ ```console
+ cd source/android
+ make
+ ```
 
 ## Build failure "UnsupportedClassVersionError 52.0"
 

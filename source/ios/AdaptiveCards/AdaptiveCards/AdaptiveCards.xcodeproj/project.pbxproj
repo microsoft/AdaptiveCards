@@ -84,7 +84,6 @@
 		F4071C7E1FCCBAEF00AF4FEA /* ActionParserRegistration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4071C781FCCBAEF00AF4FEA /* ActionParserRegistration.cpp */; };
 		F4071C7F1FCCBAEF00AF4FEA /* ElementParserRegistration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4071C791FCCBAEF00AF4FEA /* ElementParserRegistration.cpp */; };
 		F423C0BF1EE1FBAA00905679 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F423C0B51EE1FBA900905679 /* AdaptiveCards.framework */; };
-		F423C0C61EE1FBAA00905679 /* ACFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = F423C0B81EE1FBAA00905679 /* ACFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F42741071EF8624F00399FBB /* ACRIBaseCardElementRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = F42741061EF8624F00399FBB /* ACRIBaseCardElementRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F427410A1EF864A900399FBB /* ACRBaseCardElementRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = F42741081EF864A900399FBB /* ACRBaseCardElementRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F427410B1EF864A900399FBB /* ACRBaseCardElementRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F42741091EF864A900399FBB /* ACRBaseCardElementRenderer.mm */; };
@@ -358,7 +357,7 @@
 		F4071C781FCCBAEF00AF4FEA /* ActionParserRegistration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ActionParserRegistration.cpp; path = ../../../../shared/cpp/ObjectModel/ActionParserRegistration.cpp; sourceTree = "<group>"; };
 		F4071C791FCCBAEF00AF4FEA /* ElementParserRegistration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ElementParserRegistration.cpp; path = ../../../../shared/cpp/ObjectModel/ElementParserRegistration.cpp; sourceTree = "<group>"; };
 		F423C0B51EE1FBA900905679 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F423C0B81EE1FBAA00905679 /* ACFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACFramework.h; sourceTree = "<group>"; };
+		F423C0B81EE1FBAA00905679 /* AdaptiveCards.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdaptiveCards.h; sourceTree = "<group>"; };
 		F423C0B91EE1FBAA00905679 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F423C0BE1EE1FBAA00905679 /* AdaptiveCardsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdaptiveCardsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F42741061EF8624F00399FBB /* ACRIBaseCardElementRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRIBaseCardElementRenderer.h; sourceTree = "<group>"; };
@@ -638,7 +637,7 @@
 				F42979351F3007DF00E89914 /* Layouts */,
 				F460323D20757AE6006C5358 /* XIB */,
 				6B14FC682122263800A11CC5 /* Images */,
-				F423C0B81EE1FBAA00905679 /* ACFramework.h */,
+				F423C0B81EE1FBAA00905679 /* AdaptiveCards.h */,
 				F4F2556B1F98246000A80D39 /* ACOBaseActionElement.h */,
 				F4F2556D1F98247600A80D39 /* ACOBaseActionElementPrivate.h */,
 				F4F2556E1F98247600A80D39 /* ACOBaseActionElement.mm */,
@@ -1063,7 +1062,6 @@
 				F4C1F5EB1F2ABD6B0018CB78 /* ACRBaseActionElementRenderer.h in Headers */,
 				6B1147D11F32E53A008846EC /* ACRActionDelegate.h in Headers */,
 				F4F44B8020478C6F00A2F24C /* Util.h in Headers */,
-				F423C0C61EE1FBAA00905679 /* ACFramework.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

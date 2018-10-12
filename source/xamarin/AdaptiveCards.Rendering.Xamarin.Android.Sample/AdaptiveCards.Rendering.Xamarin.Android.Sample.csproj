@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Xamarin.Build.Download.0.4.11\build\Xamarin.Build.Download.props" Condition="Exists('..\packages\Xamarin.Build.Download.0.4.11\build\Xamarin.Build.Download.props')" />
   <PropertyGroup>
@@ -9,14 +9,13 @@
     <OutputType>Library</OutputType>
     <RootNamespace>AdaptiveCards.Rendering.Xamarin.Android.Sample</RootNamespace>
     <AssemblyName>AdaptiveCards.Rendering.Xamarin.Android.Sample</AssemblyName>
-    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -100,7 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AdaptiveCards.Rendering.Xamarin.Android\AdaptiveCards.Rendering.Xamarin.Android.csproj">
-      <Project>{98A14838-2FDB-4CA1-892C-93154122C3BB}</Project>
+      <Project>{98a14838-2fdb-4ca1-892c-93154122c3bb}</Project>
       <Name>AdaptiveCards.Rendering.Xamarin.Android</Name>
     </ProjectReference>
   </ItemGroup>
