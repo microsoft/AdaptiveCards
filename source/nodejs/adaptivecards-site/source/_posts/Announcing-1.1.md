@@ -2,7 +2,6 @@
 title: Announcing Adaptive Cards 1.1
 ---
 
-Adaptive Cards
 Since the 1.0 release of Adaptive Cards in March this year, the team has been hard at work on our 1.1 release, planning our 1.2 release and investigating the future of portable card and data formats for our 2.0 release.  Full release [here](https://github.com/Microsoft/AdaptiveCards/wiki/1.1-Feature-List)
 
 At the Microsoft Ignite conference we announced the general availability of Adaptive Cards 1.1, unblocking some of the most requested community and partner feature such as a Media element, Action Icons and more layout flexibility. 
