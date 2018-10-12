@@ -16,13 +16,12 @@ layout: layout
   <h3 class="post-subtitle">
     <%- post.subtitle || "" %>
   </h3>
+  <p class="subtitle">
+    Posted <%= post.date.format(config.date_format) %>
+  </p>
   <div class="post-content-preview">
     <%- post.content %>
   </div>
-  <p class="post-meta">
-    Posted by <%- post.author || config.author %> on
-    <%= post.date.format(config.date_format) %>
-  </p>
 </div>
 <% }); %>
 
