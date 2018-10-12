@@ -90,8 +90,6 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS
 		// @property (readonly) NSArray<ACRParseWarning *> * parseWarnings;
 		[Export("parseWarnings")]
 		ACRParseWarning[] ParseWarnings { get; }
-
-
 	}
 
 	// @interface ACOAdaptiveCard : NSObject
@@ -208,5 +206,4 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS
 		[Export("card")]
 		ACOAdaptiveCard Card { get; }
 	}
-
 }

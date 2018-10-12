@@ -149,6 +149,7 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS.Sample
 
         private ACOHostConfigParseResult m_config = null;
         private PayloadRetriever m_payloadRetriever = null;
+        private UIView m_lastRenderedCard = null;
 
         private UIView ReGenerateAdaptiveCard(string json)
         {
@@ -197,16 +198,22 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS.Sample
             {
                 string request = adaptiveCardRequest.Text;
                 var renderedCard = ReGenerateAdaptiveCard(m_payloadRetriever.RequestAdaptiveCard((request)));
+
+                if(m_lastRenderedCard != null)
+                {
+                    m_lastRenderedCard.RemoveFromSuperview();    
+                }
+
                 if (renderedCard != null)
                 {
                     controller.View.AddSubview(renderedCard);
+                    m_lastRenderedCard = renderedCard;
                 }
             };
             controller.View.AddSubview(sendButton);
 
             // make the window visible
             Window.MakeKeyAndVisible();
-
             return true;
         }
         public override void OnResignActivation(UIApplication application)
@@ -241,4 +248,3 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS.Sample
         }
     }
 }
-
