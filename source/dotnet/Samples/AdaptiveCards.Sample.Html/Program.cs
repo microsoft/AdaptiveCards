@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -71,7 +71,7 @@ namespace AdaptiveCards.Sample.Html
     <title>Adaptive Cards HTML Renderer Test Bed</title>
     <meta charset=""UTF-8"">
     <style type""text/css"">
-                
+
         * {
             box-sizing: border-box;
             font-family: 'Segoe UI'

@@ -1,4 +1,4 @@
-﻿namespace AdaptiveCards
+namespace AdaptiveCards
 {
     /// <summary>
     ///     Controls the horizontal size (width) of Column.

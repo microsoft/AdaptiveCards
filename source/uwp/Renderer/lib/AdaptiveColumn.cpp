@@ -12,106 +12,88 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
-    AdaptiveColumn::AdaptiveColumn()
-    {
-        m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
-    }
+namespace AdaptiveNamespace
+{
+    AdaptiveColumn::AdaptiveColumn() { m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>(); }
 
     HRESULT AdaptiveColumn::RuntimeClassInitialize() noexcept try
     {
         std::shared_ptr<AdaptiveSharedNamespace::Column> column = std::make_shared<AdaptiveSharedNamespace::Column>();
         return RuntimeClassInitialize(column);
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Column>& sharedColumn) try
+    _Use_decl_annotations_ HRESULT AdaptiveColumn::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Column>& sharedColumn) try
     {
         GenerateContainedElementsProjection(sharedColumn->GetItems(), m_items.Get());
         GenerateActionProjection(sharedColumn->GetSelectAction(), &m_selectAction);
 
         m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedColumn->GetStyle());
-        m_verticalAlignment = static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedColumn->GetVerticalContentAlignment());
+        m_verticalAlignment =
+            static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedColumn->GetVerticalContentAlignment());
         RETURN_IF_FAILED(UTF8ToHString(sharedColumn->GetWidth(), m_width.GetAddressOf()));
         m_pixelWidth = sharedColumn->GetPixelWidth();
 
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedColumn));
         return S_OK;
-    } CATCH_RETURN;
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_Width(HSTRING* width)
-    {
-        return m_width.CopyTo(width);
     }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_Width(HSTRING width)
-    {
-        return m_width.Set(width);
-    }
+    _Use_decl_annotations_ HRESULT AdaptiveColumn::get_Width(HSTRING* width) { return m_width.CopyTo(width); }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_PixelWidth(UINT32* pixelWidth)
+    _Use_decl_annotations_ HRESULT AdaptiveColumn::put_Width(HSTRING width) { return m_width.Set(width); }
+
+    _Use_decl_annotations_ HRESULT AdaptiveColumn::get_PixelWidth(UINT32* pixelWidth)
     {
         return *pixelWidth = m_pixelWidth;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_PixelWidth(UINT32 pixelWidth)
+    _Use_decl_annotations_ HRESULT AdaptiveColumn::put_PixelWidth(UINT32 pixelWidth)
     {
         return m_pixelWidth = pixelWidth;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_Style(ABI::AdaptiveNamespace::ContainerStyle* style)
+    _Use_decl_annotations_ HRESULT AdaptiveColumn::get_Style(ABI::AdaptiveNamespace::ContainerStyle* style)
     {
         *style = m_style;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_Style(ABI::AdaptiveNamespace::ContainerStyle style)
+    _Use_decl_annotations_ HRESULT AdaptiveColumn::put_Style(ABI::AdaptiveNamespace::ContainerStyle style)
     {
         m_style = style;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment* verticalAlignment)
+    _Use_decl_annotations_ HRESULT AdaptiveColumn::get_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment* verticalAlignment)
     {
         *verticalAlignment = m_verticalAlignment;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment verticalAlignment)
+    _Use_decl_annotations_ HRESULT AdaptiveColumn::put_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment verticalAlignment)
     {
         m_verticalAlignment = verticalAlignment;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_Items(IVector<IAdaptiveCardElement*>** items)
+    _Use_decl_annotations_ HRESULT AdaptiveColumn::get_Items(IVector<IAdaptiveCardElement*>** items)
     {
         return m_items.CopyTo(items);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_SelectAction(IAdaptiveActionElement** action)
+    _Use_decl_annotations_ HRESULT AdaptiveColumn::get_SelectAction(IAdaptiveActionElement** action)
     {
         return m_selectAction.CopyTo(action);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::put_SelectAction(IAdaptiveActionElement* action)
+    _Use_decl_annotations_ HRESULT AdaptiveColumn::put_SelectAction(IAdaptiveActionElement* action)
     {
         m_selectAction = action;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveColumn::get_ElementType(ElementType* elementType)
+    _Use_decl_annotations_ HRESULT AdaptiveColumn::get_ElementType(ElementType* elementType)
     {
         *elementType = ElementType::Column;
         return S_OK;
@@ -138,5 +120,6 @@ AdaptiveNamespaceStart
 
         sharedModel = column;
         return S_OK;
-    }CATCH_RETURN;
-AdaptiveNamespaceEnd
+    }
+    CATCH_RETURN;
+}

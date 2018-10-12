@@ -31,7 +31,7 @@
     std::shared_ptr<ShowCardAction> action = std::dynamic_pointer_cast<ShowCardAction>(elem);
 
     NSString *title  = [NSString stringWithCString:action->GetTitle().c_str() encoding:NSUTF8StringEncoding];
-    
+
     UIButton *button = [UIButton rootView:rootView baseActionElement:acoElem title:title andHostConfig:acoConfig];
 
     ACRShowCardTarget *target = [[ACRShowCardTarget alloc] initWithActionElement:action
@@ -39,7 +39,7 @@
                                                                        superview:superview
                                                                         rootView:rootView
                                                                           button:button];
-    
+
     [button addTarget:target action:@selector(toggleVisibilityOfShowCard) forControlEvents:UIControlEventTouchUpInside];
 
     [superview addTarget:target];
@@ -47,7 +47,7 @@
     [target createShowCard:inputs];
 
     [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-    
+
     [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 
     return button;

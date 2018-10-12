@@ -38,17 +38,17 @@ void ShowCardAction::SetLanguage(const std::string& value)
     }
 }
 
-std::shared_ptr<BaseActionElement> ShowCardActionParser::Deserialize(
-    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-    const Json::Value& json)
+std::shared_ptr<BaseActionElement> ShowCardActionParser::Deserialize(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+                                                                     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+                                                                     std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+                                                                     const Json::Value& json)
 {
     std::shared_ptr<ShowCardAction> showCardAction = BaseActionElement::Deserialize<ShowCardAction>(json);
 
     std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Card);
 
-    auto parseResult = AdaptiveCard::Deserialize(json.get(propertyName, Json::Value()), "", elementParserRegistration, actionParserRegistration);
+    auto parseResult =
+        AdaptiveCard::Deserialize(json.get(propertyName, Json::Value()), "", elementParserRegistration, actionParserRegistration);
 
     auto showCardWarnings = parseResult->GetWarnings();
     auto warningsEnd = warnings.insert(warnings.end(), showCardWarnings.begin(), showCardWarnings.end());
@@ -58,13 +58,16 @@ std::shared_ptr<BaseActionElement> ShowCardActionParser::Deserialize(
     return showCardAction;
 }
 
-std::shared_ptr<BaseActionElement> ShowCardActionParser::DeserializeFromString(
-    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-    const std::string& jsonString)
+std::shared_ptr<BaseActionElement>
+ShowCardActionParser::DeserializeFromString(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+                                            std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+                                            std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+                                            const std::string& jsonString)
 {
-    return ShowCardActionParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
+    return ShowCardActionParser::Deserialize(elementParserRegistration,
+                                             actionParserRegistration,
+                                             warnings,
+                                             ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 void ShowCardAction::PopulateKnownPropertiesSet()

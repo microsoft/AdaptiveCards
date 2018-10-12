@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -371,8 +371,8 @@ namespace AdaptiveCards.Test
             ArrayList payloads = new ArrayList
             {
                 @"{
-                    ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"", 
-                      ""type"": ""AdaptiveCard"", 
+                    ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
                       ""version"": ""1.0"",
                       ""body"": [
                           {
@@ -384,8 +384,8 @@ namespace AdaptiveCards.Test
                       ]
                   }",
                 @"{
-                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"", 
-                      ""type"": ""AdaptiveCard"", 
+                      ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                      ""type"": ""AdaptiveCard"",
                       ""version"": ""1.0"",
                       ""body"": [
                           {
@@ -535,7 +535,7 @@ namespace AdaptiveCards.Test
                       ""body"": [
                           {
                               ""type"": ""TextBlock"",
-                              ""text"": ""This is a textblock""        
+                              ""text"": ""This is a textblock""
                           }
                       ]
                   }";
@@ -582,7 +582,7 @@ namespace AdaptiveCards.Test
                               ""type"": ""Image"",
                               ""url"": ""http://adaptivecards.io/content/cats/1.png"",
                               ""height"": ""stretch"",
-                              ""size"": ""small""  
+                              ""size"": ""small""
                           }
                       ]
                   }";
@@ -759,7 +759,7 @@ namespace AdaptiveCards.Test
 
             var result = AdaptiveCard.FromJson(payload);
 
-            // Expect one warning for each unknown property (3) 
+            // Expect one warning for each unknown property (3)
             // and one for each bad pixel size (2)
             Assert.AreEqual(5, result.Warnings.Count);
 

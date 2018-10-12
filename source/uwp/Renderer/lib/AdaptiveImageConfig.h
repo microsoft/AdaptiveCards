@@ -4,13 +4,12 @@
 #include "Enums.h"
 #include "HostConfig.h"
 
-AdaptiveNamespaceStart
-    class AdaptiveImageConfig :
-        public Microsoft::WRL::RuntimeClass<
-            Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveNamespace::IAdaptiveImageConfig>
+namespace AdaptiveNamespace
+{
+    class AdaptiveImageConfig
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveImageConfig>
     {
-        AdaptiveRuntime(AdaptiveImageConfig)
+        AdaptiveRuntime(AdaptiveImageConfig);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
@@ -24,4 +23,4 @@ AdaptiveNamespaceStart
     };
 
     ActivatableClass(AdaptiveImageConfig);
-AdaptiveNamespaceEnd
+}

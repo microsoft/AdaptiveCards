@@ -42,6 +42,40 @@ task sourceJar(type: Jar) {
     classifier "sources"
 }
 
+task createPom {
+    doLast {
+        pom {
+            project {
+                groupId 'io.adaptivecards'
+                artifactId 'adaptivecards-android'
+                version System.getenv('XES_PACKAGEVERSIONNUMBER') ?: '0.0.0'
+                name 'Android Adaptive Cards Library'
+                description 'Android Adaptive Cards Lib'
+                url 'https://github.com/Microsoft/AdaptiveCards'
+                packaging 'aar'
+                scm {
+                    url 'https://github.com/Microsoft/AdaptiveCards'
+                }
+
+                licenses {
+                    license {
+                        name 'MIT'
+                        url 'https://github.com/Microsoft/AdaptiveCards/blob/master/LICENSE'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'microsoft'
+                        name 'adaptivecards'
+                    }
+                }
+            }
+        }.writeTo("pom.xml")
+    }
+}
+
 publishing {
     publications {
         adaptivecards(MavenPublication) {

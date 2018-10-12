@@ -56,7 +56,7 @@
                  inputs:inputs
           withCardElems:columnElem->GetItems()
           andHostConfig:acoConfig];
-    
+
     if(columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && _fillAlignment)){
         trailingBlankSpace = [column addPaddingSpace];
     }
@@ -72,7 +72,7 @@
                                                                   recipientView:column
                                                                   actionElement:selectAction
                                                                      hostConfig:acoConfig];
-    
+
     if(leadingBlankSpace != nil && trailingBlankSpace != nil){
         [NSLayoutConstraint constraintWithItem:leadingBlankSpace
                                      attribute:NSLayoutAttributeHeight
@@ -86,4 +86,3 @@
 }
 
 @end
-

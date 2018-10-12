@@ -54,10 +54,10 @@ export abstract class HostContainer {
         }
     }
 
-    // process SSML markup into an array of either 
+    // process SSML markup into an array of either
     // * utterenance
     // * number which is delay in msg
-    // * url which is an audio file 
+    // * url which is an audio file
     private processNodes(nodes: NodeList, output: any[]): void {
         for (let i = 0; i < nodes.length; i++) {
             let node = nodes[i];
@@ -73,7 +73,7 @@ export abstract class HostContainer {
             else if (node.nodeName == "break" && node instanceof Element) {
                 if (node.attributes["strength"]) {
                     let strength = node.attributes["strength"].nodeValue;
-                    
+
                     if (strength == "weak") {
                         // output.push(50);
                     } else if (strength == "medium") {
@@ -342,4 +342,3 @@ export abstract class HostContainer {
         return element;
     }
 }
-

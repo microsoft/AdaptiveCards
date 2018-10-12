@@ -6,7 +6,7 @@
 
 using namespace AdaptiveSharedNamespace;
 
-MarkDownParser::MarkDownParser(const std::string &txt) : m_text(txt), m_hasHTMLTag(false), m_isEscaped(false)
+MarkDownParser::MarkDownParser(const std::string& txt) : m_text(txt), m_hasHTMLTag(false), m_isEscaped(false)
 {
 }
 
@@ -20,11 +20,11 @@ std::string MarkDownParser::TransformToHtml()
     // begin parsing html blocks
     ParseBlock();
 
-    // process further what is parsed before outputting 
+    // process further what is parsed before outputting
     // html string
     m_parsedResult.Translate();
 
-    //add block tags such as <p> <ul>
+    // add block tags such as <p> <ul>
     m_parsedResult.AddBlockTags();
 
     m_hasHTMLTag = m_parsedResult.HasHtmlTags();
@@ -57,7 +57,7 @@ std::string MarkDownParser::EscapeText()
 {
     std::string escaped;
     unsigned int nonEscapedCounts = 0;
-    
+
     for (std::string::size_type i = 0; i < m_text.length(); i++)
     {
         switch (m_text.at(i))
@@ -80,8 +80,8 @@ std::string MarkDownParser::EscapeText()
             break;
         }
     }
-    
+
     m_isEscaped = (nonEscapedCounts != m_text.length());
-    
+
     return escaped;
 }

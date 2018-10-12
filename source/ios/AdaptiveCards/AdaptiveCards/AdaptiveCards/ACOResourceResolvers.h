@@ -15,4 +15,4 @@
 - (NSObject<ACOIResourceResolver> *)getResourceResolverForScheme:(NSString *)scheme;
 - (void)setResourceResolver:(NSObject<ACOIResourceResolver> *)resolver scheme:(NSString *)scheme;
 
-@end    
+@end

@@ -141,7 +141,7 @@ using namespace AdaptiveCards;
             break;
         }
     }
-    
+
     return [ACOHostConfig convertHexColorCodeToUIColor:*str];
 }
 
@@ -342,16 +342,16 @@ using namespace AdaptiveCards;
             [NSString stringWithCString:hexColorCode.c_str() encoding:NSUTF8StringEncoding]);
         return UIColor.clearColor;
     }
-    
+
     UIColor *color = UIColor.clearColor;
-    
+
     try {
         size_t idx = 0;
         long num = std::stoul(hexColorCode.substr(1), &idx, 16), alpha = 0xFF;
         if(hexColorCode.length() == 9) {
             alpha = (num & 0xFF000000) >> 24;
         }
-        
+
         if(idx != hexColorCode.length() - 1) {
             NSLog(@"invalid hexcolor code is given: %@",
                   [NSString stringWithCString:hexColorCode.c_str() encoding:NSUTF8StringEncoding]);
@@ -367,7 +367,7 @@ using namespace AdaptiveCards;
         NSLog(@"invalid hexcolor code is given: %@",
             [NSString stringWithCString:hexColorCode.c_str() encoding:NSUTF8StringEncoding]);
     }
-    
+
     return color;
 }
 
@@ -376,7 +376,7 @@ using namespace AdaptiveCards;
     const std::string &hexColorCode = (style == ACREmphasis)?
         _config->containerStyles.emphasisPalette.backgroundColor :
         _config->containerStyles.defaultPalette.backgroundColor;
-  
+
     return [ACOHostConfig convertHexColorCodeToUIColor:hexColorCode];
 }
 

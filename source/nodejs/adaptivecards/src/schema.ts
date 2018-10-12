@@ -39,7 +39,7 @@ export interface ICardElement {
 }
 
 export interface IBackgroundImage {
-    url: string;    
+    url: string;
 }
 
 export interface ITextBlock extends ICardElement {
@@ -149,10 +149,10 @@ export interface IChoiceSetInput extends IInput {
     placeholder?: string;
     choices: IChoice[];
 }
-    
+
 export interface IVersion {
     major: number;
-    minor: number;    
+    minor: number;
 }
 
 export interface IAdaptiveCard extends ICardElement {
@@ -160,6 +160,6 @@ export interface IAdaptiveCard extends ICardElement {
     version?: IVersion | string;
     backgroundImage?: IBackgroundImage | string;
     body?: (ITextBlock | IImage | IImageSet | IFactSet | IColumnSet | IContainer)[];
-    actions?: (ISubmitAction | IOpenUrlAction | IShowCardAction)[];    
+    actions?: (ISubmitAction | IOpenUrlAction | IShowCardAction)[];
     speak?: string;
 }

@@ -25,4 +25,4 @@
 
 + (ACOHostConfigParseResult *)fromJson:(NSString *)payload resourceResolvers:(ACOResourceResolvers *)resolvers;
 
-@end    
+@end

@@ -81,7 +81,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 			Assert::IsTrue(customActionParser == actionParser.GetParser(elemType));
 			elementParser.AddParser(elemType, customElementParser);
 			Assert::IsTrue(customElementParser == elementParser.GetParser(elemType));
-			
+
 			// overwrite our new parser
 			auto customActionParser2 = std::make_shared<TestCustomActionParser>();
 			actionParser.AddParser(elemType, customActionParser2);

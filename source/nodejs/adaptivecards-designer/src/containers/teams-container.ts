@@ -190,7 +190,7 @@ export class DarkTeamsContainer extends BaseTeamsContainer {
     public getBackgroundColor(): string {
         return "#201E1F";
     }
-    
+
     public getHostConfig(): Adaptive.HostConfig {
         return new Adaptive.HostConfig(
             {

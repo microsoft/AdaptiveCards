@@ -4,14 +4,14 @@
 #include "Enums.h"
 #include "ChoiceInput.h"
 
-AdaptiveNamespaceStart
-    class DECLSPEC_UUID("7263dbfb-cb43-47f9-9022-b43372f529f9") AdaptiveChoiceInput :
-        public Microsoft::WRL::RuntimeClass<
-            Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveNamespace::IAdaptiveChoiceInput,
-            Microsoft::WRL::CloakedIid<ITypePeek>>
+namespace AdaptiveNamespace
+{
+    class DECLSPEC_UUID("7263dbfb-cb43-47f9-9022-b43372f529f9") AdaptiveChoiceInput
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
+                                              ABI::AdaptiveNamespace::IAdaptiveChoiceInput,
+                                              Microsoft::WRL::CloakedIid<ITypePeek>>
     {
-        AdaptiveRuntime(AdaptiveChoiceInput)
+        AdaptiveRuntime(AdaptiveChoiceInput);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
@@ -29,14 +29,11 @@ AdaptiveNamespaceStart
         HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput>& sharedModel);
 
         // ITypePeek method
-        void *PeekAt(REFIID riid) override
-        {
-            return PeekHelper(riid, this);
-        }
+        void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
         std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput> m_sharedChoiceInput;
     };
 
     ActivatableClass(AdaptiveChoiceInput);
-AdaptiveNamespaceEnd
+}

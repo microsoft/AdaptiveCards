@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
@@ -35,7 +35,7 @@ namespace AdaptiveCards
                     throw new AdaptiveSerializationException("Could not parse required key: version. It was not found.");
                 }
 
-                // If this is the root AdaptiveCard and missing a version we fail parsing. 
+                // If this is the root AdaptiveCard and missing a version we fail parsing.
                 // The depth checks that cards within a Action.ShowCard don't require the version
                 if (jObject.Value<string>("version") == "")
                 {
