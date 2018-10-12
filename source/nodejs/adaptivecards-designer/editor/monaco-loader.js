@@ -1,5 +1,5 @@
 function loadMonacoEditor(jsonSchema, callback) {
-    require.config({ paths: { 'vs': './monaco' } });
+    require.config({ paths: { 'vs': './vs' } });
     require(['vs/editor/editor.main'], function () {
         if (jsonSchema) {
             var config = {

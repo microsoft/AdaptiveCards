@@ -48,7 +48,7 @@ var assets = [
         dest: function (p) {
             var destination = p;
             var regexp = new RegExp('node_modules/monaco-editor/min/vs', 'i');
-            return destination.replace(regexp, 'designer/monaco');
+            return destination.replace(regexp, 'designer/vs');
         }
     },
     {
