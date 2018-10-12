@@ -371,6 +371,12 @@ namespace AdaptiveSharedNamespace
         Stretch
     };
 
+    const std::string FontStyleToString(FontStyle style);
+    FontStyle FontStyleFromString(const std::string& style);
+
+    const std::string ImageSizeToString(ImageSize size);
+    ImageSize ImageSizeFromString(const std::string& size);
+
     const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type);
     AdaptiveCardSchemaKey AdaptiveCardSchemaKeyFromString(const std::string& type);
 

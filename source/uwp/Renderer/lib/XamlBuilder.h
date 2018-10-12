@@ -180,6 +180,7 @@ namespace AdaptiveNamespace
         static void ApplyMarginToXamlElement(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
                                              _Inout_ ABI::Windows::UI::Xaml::IFrameworkElement* element);
         static void StyleXamlTextBlock(_In_ ABI::AdaptiveNamespace::TextSize size,
+                                       // _In_ ABI::AdaptiveNamespace::FontStyle fontStyle,
                                        _In_ ABI::AdaptiveNamespace::ForegroundColor color,
                                        ABI::AdaptiveNamespace::ContainerStyle containerStyle,
                                        _In_ bool isSubtle,
