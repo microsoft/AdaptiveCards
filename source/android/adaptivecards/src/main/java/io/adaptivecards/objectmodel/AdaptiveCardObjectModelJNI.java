@@ -487,6 +487,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void TextInput_SetMaxLength(long jarg1, TextInput jarg1_, long jarg2);
   public final static native int TextInput_GetTextInputStyle(long jarg1, TextInput jarg1_);
   public final static native void TextInput_SetTextInputStyle(long jarg1, TextInput jarg1_, int jarg2);
+  public final static native long TextInput_GetInlineAction(long jarg1, TextInput jarg1_);
+  public final static native void TextInput_SetInlineAction(long jarg1, TextInput jarg1_, long jarg2, BaseActionElement jarg2_);
   public final static native long TextInput_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native void delete_TextInput(long jarg1);
   public final static native long new_TextInputParser__SWIG_0();
