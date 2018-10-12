@@ -95,6 +95,14 @@ namespace UWPTestLibrary
                             cardWidth = 310;
                         }
 
+                        renderer.OverrideStyles = new ResourceDictionary();
+                        Style actionPositiveStyle = new Style(typeof(Button));
+                        actionPositiveStyle.Setters.Add(new Setter(Button.BackgroundProperty, new SolidColorBrush(Windows.UI.Colors.LawnGreen)));
+                        renderer.OverrideStyles.Add("Adaptive.Action.Positive", actionPositiveStyle);
+                        Style actionDestructiveStyle = new Style(typeof(Button));
+                        actionDestructiveStyle.Setters.Add(new Setter(Button.BackgroundProperty, new SolidColorBrush(Windows.UI.Colors.DarkRed)));                        
+                        renderer.OverrideStyles.Add("Adaptive.Action.Destructive", actionDestructiveStyle);
+
                         xaml = renderer.RenderAdaptiveCard(card).FrameworkElement as FrameworkElement;
 
                         if (xaml == null)
