@@ -17,7 +17,7 @@ with open('custom.props', 'r') as f:
             if m != None:
                 acversion = m.group()
 
-token = ':7rvtdw3ihxbfo262z7h24asnkr42znukpzzccy7fl2eoinfdqrdq'
+token = ':' + os.environ['ACPAT']
 
 headers = {}
 
