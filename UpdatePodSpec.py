@@ -19,7 +19,7 @@ with open('custom.props', 'r') as f:
 
 token = ':7rvtdw3ihxbfo262z7h24asnkr42znukpzzccy7fl2eoinfdqr'
 
-#headers = {}
+headers = {}
 
 headers['Authorization'] = b'Basic ' + base64.b64encode(bytes(token, 'utf-8'))
 
@@ -36,7 +36,7 @@ print('url: ' + url)
 
 urlToArtifacts = ''
  
-r = requests.get(url)#, headers=headers)
+r = requests.get(url, headers=headers)
 for item in r.json():
     if 'AdaptiveCards.framework.zip' in item['path']: 
         urlToArtifacts = item['blob']['url']
