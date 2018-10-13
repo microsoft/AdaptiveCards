@@ -17,15 +17,11 @@ with open('custom.props', 'r') as f:
             if m != None:
                 acversion = m.group()
 
-host = 'machine microsoft.vsblob.visualstudio.com'  
+#token = ':' + tokens[2]
 
-tokens = netrc.netrc().authenticators(host)
+#headers = {}
 
-token = ':' + tokens[2]
-
-headers = {}
-
-headers['Authorization'] = b'Basic ' + base64.b64encode(bytes(token, 'utf-8'))
+#headers['Authorization'] = b'Basic ' + base64.b64encode(bytes(token, 'utf-8'))
 
 buildNumber = os.environ['BUILD_BUILDNUMBER']
 
@@ -37,7 +33,7 @@ url = 'https://artifacts.dev.azure.com/microsoft/_apis/drop/manifests/os' + buil
 
 urlToArtifacts = ''
  
-r = requests.get(url, headers=headers)
+r = requests.get(url)#, headers=headers)
 for item in r.json():
     if 'AdaptiveCards.framework.zip' in item['path']: 
         urlToArtifacts = item['blob']['url']
