@@ -17,11 +17,11 @@ with open('custom.props', 'r') as f:
             if m != None:
                 acversion = m.group()
 
-#token = ':' + tokens[2]
+token = ':7rvtdw3ihxbfo262z7h24asnkr42znukpzzccy7fl2eoinfdqrdq' 
 
-#headers = {}
+headers = {}
 
-#headers['Authorization'] = b'Basic ' + base64.b64encode(bytes(token, 'utf-8'))
+headers['Authorization'] = b'Basic ' + base64.b64encode(bytes(token, 'utf-8'))
 
 buildNumber = os.environ['BUILD_BUILDNUMBER']
 
