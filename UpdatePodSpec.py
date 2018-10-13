@@ -2,6 +2,7 @@ import json
 import base64
 import requests
 import os
+import netrc
 
 import re
 
@@ -16,7 +17,11 @@ with open('custom.props', 'r') as f:
             if m != None:
                 acversion = m.group()
 
-token = ':' + os.environ['ACPAT']
+tokens = netrc.netrc()
+
+host = 'machine microsoft.vsblob.visualstudio.com'  
+
+token = ':' + tokens[host][2]
 
 headers = {}
 
