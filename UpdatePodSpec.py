@@ -17,11 +17,11 @@ with open('custom.props', 'r') as f:
             if m != None:
                 acversion = m.group()
 
-tokens = netrc.netrc()
-
 host = 'machine microsoft.vsblob.visualstudio.com'  
 
-token = ':' + tokens[host][2]
+tokens = netrc.netrc().authenticators(host)
+
+token = ':' + tokens[2]
 
 headers = {}
 
