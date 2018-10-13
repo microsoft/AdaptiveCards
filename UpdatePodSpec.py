@@ -17,19 +17,20 @@ with open('custom.props', 'r') as f:
             if m != None:
                 acversion = m.group()
 
-token = ':7rvtdw3ihxbfo262z7h24asnkr42znukpzzccy7fl2eoinfdqrdq' 
+#token = ':' + tokens[2]
 
-headers = {}
+#headers = {}
 
-headers['Authorization'] = b'Basic ' + base64.b64encode(bytes(token, 'utf-8'))
+#headers['Authorization'] = b'Basic ' + base64.b64encode(bytes(token, 'utf-8'))
 
 buildNumber = os.environ['BUILD_BUILDNUMBER']
 
 acversion = acversion + '-' + buildNumber;
 
 buildId = '%2f' + buildNumber + '%2f' +  os.environ['BUILD_BUILDID'] + '%2f' + '5'
-print(buildId)
+
 url = 'https://artifacts.dev.azure.com/microsoft/_apis/drop/manifests/os' + buildId + 'api-version=2.0'
+print('url: ' + url)
 
 urlToArtifacts = ''
  
