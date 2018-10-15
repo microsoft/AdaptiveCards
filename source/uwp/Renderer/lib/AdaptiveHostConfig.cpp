@@ -73,9 +73,12 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(UTF8ToHString(sharedHostConfig.GetImageBaseUrl(), m_imageBaseUrl.GetAddressOf()));
 
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontSizesConfig>(m_fontSizes.GetAddressOf(), sharedHostConfig.GetFontSizes()));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontWeightsConfig>(m_fontWeights.GetAddressOf(), sharedHostConfig.GetFontWeights()));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontStylesDefinition>(m_fontStyles.GetAddressOf(), sharedHostConfig.GetFontStyles()));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveContainerStylesDefinition>(m_containerStyles.GetAddressOf(), sharedHostConfig.GetContainerStyles()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontWeightsConfig>(m_fontWeights.GetAddressOf(),
+                                                                      sharedHostConfig.GetFontWeights()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontStylesDefinition>(m_fontStyles.GetAddressOf(),
+                                                                         sharedHostConfig.GetFontStyles()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveContainerStylesDefinition>(m_containerStyles.GetAddressOf(),
+                                                                              sharedHostConfig.GetContainerStyles()));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveImageSizesConfig>(m_imageSizes.GetAddressOf(), sharedHostConfig.GetImageSizes()));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveSpacingConfig>(m_spacing.GetAddressOf(), sharedHostConfig.GetSpacing()));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveSeparatorConfig>(m_separator.GetAddressOf(), sharedHostConfig.GetSeparator()));
@@ -118,21 +121,18 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::get_FontStyles(IAdaptiveFontStylesDefinition** value)
+    _Use_decl_annotations_ HRESULT AdaptiveHostConfig::get_FontStyles(IAdaptiveFontStylesDefinition** value)
     {
         return m_fontStyles.CopyTo(value);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::put_FontStyles(IAdaptiveFontStylesDefinition* value)
+    _Use_decl_annotations_ HRESULT AdaptiveHostConfig::put_FontStyles(IAdaptiveFontStylesDefinition* value)
     {
         m_fontStyles = value;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfig::get_SupportsInteractivity(boolean* supporsInteractivity)
+    _Use_decl_annotations_ HRESULT AdaptiveHostConfig::get_SupportsInteractivity(boolean* supporsInteractivity)
     {
         *supporsInteractivity = m_supportsInteractivity;
         return S_OK;

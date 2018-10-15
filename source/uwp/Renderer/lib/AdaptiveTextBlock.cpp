@@ -143,22 +143,19 @@ namespace AdaptiveNamespace
         return m_language.Set(language);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_FontStyle(ABI::AdaptiveNamespace::FontStyle* fontStyle)
+    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::get_FontStyle(ABI::AdaptiveNamespace::FontStyle* fontStyle)
     {
         *fontStyle = m_fontStyle;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::put_FontStyle(ABI::AdaptiveNamespace::FontStyle fontStyle)
+    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::put_FontStyle(ABI::AdaptiveNamespace::FontStyle fontStyle)
     {
         m_fontStyle = fontStyle;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveTextBlock::get_ElementType(ElementType* elementType)
+    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::get_ElementType(ElementType* elementType)
     {
         *elementType = ElementType::TextBlock;
         return S_OK;
