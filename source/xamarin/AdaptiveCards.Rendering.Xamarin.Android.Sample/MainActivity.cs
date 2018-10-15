@@ -7,9 +7,9 @@ using System.Net.Http;
 using System;
 
 using AdaptiveCards.BotConnection;
-using Microsoft.AdaptiveCards.ObjectModel;
-using Microsoft.AdaptiveCards.Renderer;
-using Microsoft.AdaptiveCards.Renderer.ActionHandler;
+using AdaptiveCards.Rendering.Xamarin.Android.ObjectModel;
+using AdaptiveCards.Rendering.Xamarin.Android.Renderer;
+using AdaptiveCards.Rendering.Xamarin.Android.Renderer.ActionHandler;
 
 namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 {
