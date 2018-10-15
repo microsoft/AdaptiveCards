@@ -4,7 +4,7 @@ Adaptive Cards 1.1 is here! Thank you to all the contributors for filing issues 
 
 You can find updated packages for all the platforms below and our updated website and new visual designer are available as well.
 
-## Learn more at http://adaptivecards.io
+## Learn more at https://adaptivecards.io
 * [Documentation](https://adaptivecards.io/documentation/)
 * [Schema Explorer](https://adaptivecards.io/explorer/)
 * [Sample Cards](https://adaptivecards.io/samples/)
