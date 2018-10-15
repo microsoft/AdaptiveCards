@@ -104,6 +104,14 @@ Json::Value GetValue(std::string key, const Json::Value& sourceValue)
                 }
             }
 
+            // Check if we are trying to index something into an array:
+            // foo[0].bar for example, the call if the result is an array
+            // and we have a . following the close brace, index into it.
+            dotPosition = currentKey.find(dot, closeBracePosition);
+            if (dotPosition == closeBracePosition + 1)
+            {
+                result = GetValue(currentKey.substr(dotPosition + dot.length()), result);
+            }
             return result;
         }
     }
@@ -218,9 +226,13 @@ Json::Value DataBindObject(const Json::Value& sourceCard, const Json::Value& fra
 
                 // Get the name of the array
                 size_t arrayStart = specialKey.find_first_not_of(" ", each.length());
-                std::string arrayName = specialKey.substr(arrayStart, specialKey.length() - arrayStart);
+                Json::Value eachArray = sourceCard;
+                if (arrayStart != std::string::npos)
+                {
+                    std::string arrayName = specialKey.substr(arrayStart, specialKey.length() - arrayStart);
+                    eachArray = sourceCard[arrayName];
+                }
 
-                Json::Value eachArray = sourceCard[arrayName];
                 if (eachArray.isArray())
                 {
                     // Iterate throught the array and data bind, using each element of the array
@@ -288,8 +300,15 @@ Json::Value DataBindJson(const Json::Value& sourceCard, const Json::Value& frame
 Json::Value ApplyFrame(const Json::Value& sourceCard, const Json::Value& frame)
 {
     Json::Value result = DataBindJson(sourceCard, frame);
-
-    Json::Value data = sourceCard["data"];
+    Json::Value data;
+    try
+    {
+        data = sourceCard["data"];
+    }
+    catch (...)
+    {
+        data = sourceCard;
+    }
     return DataBindJson(data, result);
 }
 
