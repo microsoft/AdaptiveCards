@@ -182,15 +182,15 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS.Sample
             adaptiveCardRequest = new UITextField();
             adaptiveCardRequest.BorderStyle = UITextBorderStyle.RoundedRect;
             adaptiveCardRequest.Frame = new CoreGraphics.CGRect(0,
-                                                       0,
-                                                       UIScreen.MainScreen.Bounds.Size.Width * 0.9f,
-                                                       UIScreen.MainScreen.Bounds.Size.Height * 0.1f);
+                                                                UIScreen.MainScreen.Bounds.Size.Height * 0.05f,
+                                                                UIScreen.MainScreen.Bounds.Size.Width * 0.9f,
+                                                                UIScreen.MainScreen.Bounds.Size.Height * 0.1f);
             controller.View.AddSubview(adaptiveCardRequest);
 
             // Add button
             sendButton = UIButton.FromType(UIButtonType.System);
             sendButton.Frame = new CoreGraphics.CGRect(UIScreen.MainScreen.Bounds.Size.Width * 0.9f,
-                                                       0,
+                                                       UIScreen.MainScreen.Bounds.Size.Height * 0.05f,
                                                        UIScreen.MainScreen.Bounds.Size.Width * 0.1f,
                                                        UIScreen.MainScreen.Bounds.Size.Height * 0.1f);
             sendButton.SetTitle("Send", UIControlState.Normal);
@@ -199,13 +199,18 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS.Sample
                 string request = adaptiveCardRequest.Text;
                 var renderedCard = ReGenerateAdaptiveCard(m_payloadRetriever.RequestAdaptiveCard((request)));
 
-                if(m_lastRenderedCard != null)
+                if (m_lastRenderedCard != null)
                 {
-                    m_lastRenderedCard.RemoveFromSuperview();    
+                    m_lastRenderedCard.RemoveFromSuperview();
                 }
 
                 if (renderedCard != null)
                 {
+                    renderedCard.TranslatesAutoresizingMaskIntoConstraints = true;
+                    renderedCard.Frame = new CoreGraphics.CGRect(20,
+                                                                 UIScreen.MainScreen.Bounds.Size.Height * 0.15f,
+                                                                 UIScreen.MainScreen.Bounds.Size.Width - 40,
+                                                                 UIScreen.MainScreen.Bounds.Size.Height * 0.7f);
                     controller.View.AddSubview(renderedCard);
                     m_lastRenderedCard = renderedCard;
                 }
