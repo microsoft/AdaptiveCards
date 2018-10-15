@@ -10,7 +10,7 @@ namespace AdaptiveCards.BotConnection
     public class PayloadRetriever
     {
         private int cardToShow = 0;
-        private readonly string[] cards = 
+        private readonly string[] cards =
         {
             "{\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\", \"version\": \"1.0\", \"type\": \"AdaptiveCard\"," +
                 " \"speak\": \"<s>Your flight is confirmed for you and 3 other passengers from San Francisco to Amsterdam on Friday, October 10 8:30 AM</s>\"," +
@@ -65,7 +65,7 @@ namespace AdaptiveCards.BotConnection
 
         public string RequestAdaptiveCard(string request)
         {
-            cardToShow = 1 - cardToShow;
+            cardToShow = (++cardToShow == cards.Length) ? 0 : cardToShow;
             return cards[cardToShow];
         }
     }
