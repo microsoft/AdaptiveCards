@@ -37,44 +37,59 @@
             }
         ]
     },
-    "body": [
-        {
-            "type": "TextBlock",
-            "text": "This is the body of this card",
-            "wrap": true
-        },
-        {
-            "type": "TextBlock",
-            "text": "Here is data1, data2: **{{data1}}, {{data2}}**.",
-            "wrap": true
-        },
-        {
-            "type": "TextBlock",
-            "text": "Here is data3[2]: **{{data3[2]}}**.",
-            "wrap": true
-        },
-        {
-            "type": "TextBlock",
-            "text": "Here is data4.insideArray[1]: **{{data4.insideArray[1]}}**.",
-            "wrap": true
-        },
-        {
-            "type": "TextBlock",
-            "text": "Here is data4.insideArray[dataIndex]: **{{data4.insideArray[dataIndex]}}**.",
-            "wrap": true
-        },
-        {
-            "type": "TextBlock",
-            "text": "Here is data4.insideArray[data5.inside.index]: **{{data4.insideArray[data5.inside.index]}}**.",
-            "wrap": true
-        },
-        {
-            "{{#each disney}}": {
-                "type": "TextBlock",
-                "text": "{{name}} is a {{animal}}"
-            }
-        }
-    ],
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "This is the body of this card",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Here is data1, data2: **{{data1}}, {{data2}}**.",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Here is data3[2]: **{{data3[2]}}**.",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Here is data4.insideArray[1]: **{{data4.insideArray[1]}}**.",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Here is data4.insideArray[dataIndex]: **{{data4.insideArray[dataIndex]}}**.",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Here is data4.insideArray[data5.inside.index]: **{{data4.insideArray[data5.inside.index]}}**.",
+			"wrap": true
+		},
+		{
+			"{{#each disney}}": {
+				"type": "TextBlock",
+				"text": "{{name}} is a {{animal}}"
+			}
+		},
+		{
+			"type": "TextBlock",
+			"text": "{{#? dataThatDoesntExist}}",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "{{dataThatDoesntExist}}",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "{{dataThatDoesntExist}} {{#? dataThatDoesntExist}}",
+			"wrap": true
+		}
+	],
     "actions" :
     [
         {

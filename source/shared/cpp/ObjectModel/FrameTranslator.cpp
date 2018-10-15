@@ -43,6 +43,33 @@ std::string GetKey(std::string string, size_t startPosition, const char* openBra
     return key;
 }
 
+std::string GetArgument(std::string& key, unsigned int startPosition)
+{
+    size_t argumentStart = key.find_first_not_of(" ", startPosition);
+    if (argumentStart != std::string::npos)
+    {
+        return key.substr(argumentStart, key.length() - argumentStart);
+    }
+    return std::string();
+}
+
+std::string GetDataBindingKey(std::string string, size_t startPosition, size_t* keyStartPosition, size_t* keyEndPosition, bool* includeOnlyIfExists)
+{
+    std::string key = GetKey(string, startPosition, "{{", "}}", keyStartPosition, keyEndPosition);
+
+    // If the databinding key includes the existential operator ("{{#? stuff}}"), set the boolean indicating it should
+    // only be included if it exits, and return just the argument ("stuff") as the key
+    *includeOnlyIfExists = false;
+    std::string existentialString = "#?";
+    if (!key.compare(0, existentialString.length(), existentialString))
+    {
+        *includeOnlyIfExists = true;
+        key = GetArgument(key, existentialString.length());
+    }
+
+    return key;
+}
+
 // Given a key, return the value from the source json. Handles dot notation "foo.bar", indices
 // "foo[bar]" and combinations thereof "foo.bar[stuff.blah]"
 Json::Value GetValue(std::string key, const Json::Value& sourceValue)
@@ -123,13 +150,20 @@ Json::Value DataBindString(const Json::Value& sourceCard, const Json::Value& fra
     std::string frameString = frame.asString();
 
     // Look for any data binding keys surrounded in double curly braces
+    bool includeOnlyIfExists;
     size_t bracesStartPosition, bracesEndPosition;
-    std::string key = GetKey(frameString, 0, "{{", "}}", &bracesStartPosition, &bracesEndPosition);
+    std::string key = GetDataBindingKey(frameString, 0, &bracesStartPosition, &bracesEndPosition, &includeOnlyIfExists);
 
     if (!key.empty() && bracesStartPosition == 0 && bracesEndPosition == frameString.length() - 1)
     {
         // If the entire string is a data binding element, return the result of GetValue, which may be of any type.
-        return GetValue(key, sourceCard);
+        Json::Value value = GetValue(key, sourceCard);
+        if (value.empty() && !includeOnlyIfExists)
+        {
+            // If we didn't find a match, return the frame as is
+            value = frame;
+        }
+        return value;
     }
     else if (!key.empty())
     {
@@ -148,9 +182,12 @@ Json::Value DataBindString(const Json::Value& sourceCard, const Json::Value& fra
 
             // If the result wasn't found or wasn't a string, leave the data binding element in
             // place. Otherwise append the result.
-            if (result.empty() || !result.isString())
+            if ((result.empty() || !result.isString()))
             {
-                resultString += frameString.substr(bracesStartPosition, bracesEndPosition - bracesStartPosition + 1);
+                if (!includeOnlyIfExists)
+                {
+                    resultString += frameString.substr(bracesStartPosition, bracesEndPosition - bracesStartPosition + 1);
+                }
             }
             else
             {
@@ -159,7 +196,7 @@ Json::Value DataBindString(const Json::Value& sourceCard, const Json::Value& fra
 
             // Advance the start position on the frame string, and find the next data binding element
             currentFrameStartPosition = bracesEndPosition + 1;
-            key = GetKey(frameString, currentFrameStartPosition, "{{", "}}", &bracesStartPosition, &bracesEndPosition);
+            key = GetDataBindingKey(frameString, currentFrameStartPosition, &bracesStartPosition, &bracesEndPosition, &includeOnlyIfExists);
         }
 
         // Append the portion of the frame string that is after the last data binding element and
@@ -217,23 +254,22 @@ Json::Value DataBindObject(const Json::Value& sourceCard, const Json::Value& fra
         std::string specialKey = GetKey(key, 0, "{{#", "}}", &startPosition, &endPosition);
         if (!specialKey.empty())
         {
-            std::string each("each");
-            if (!specialKey.compare(0, each.length(), each))
+            std::string eachString("each");
+            if (!specialKey.compare(0, eachString.length(), eachString))
             {
                 // Handles #each arrays with syntax such as the following:
                 // {{#each myArray}} : {"type" : "TextBlock, "text" : "{{foo}}"}
                 // where "myArray" is an array of objects each with a "foo" property
 
                 // Get the name of the array
-                size_t arrayStart = specialKey.find_first_not_of(" ", each.length());
+                std::string arrayName = GetArgument(specialKey, eachString.length());
                 Json::Value eachArray = sourceCard;
-                if (arrayStart != std::string::npos)
+                if (!arrayName.empty())
                 {
-                    std::string arrayName = specialKey.substr(arrayStart, specialKey.length() - arrayStart);
                     eachArray = sourceCard[arrayName];
                 }
 
-                if (eachArray.isArray())
+                if (eachArray.isArray()) // TODO - if it's not?
                 {
                     // Iterate throught the array and data bind, using each element of the array
                     // as the source and the value of this key (*it) as the frame
