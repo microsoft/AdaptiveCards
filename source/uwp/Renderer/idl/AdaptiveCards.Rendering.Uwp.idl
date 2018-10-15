@@ -384,8 +384,7 @@ AdaptiveNamespaceStart
     [internal]
 #endif
     typedef [v1_enum] enum FontStyle {
-        None = 0,
-        Default,
+        Default = 0,
         Display,
         Monospace
     } FontStyle;

@@ -82,6 +82,7 @@ namespace AdaptiveSharedNamespace
         FallbackText,
         FontFamily,
         FontSizes,
+        FontStyle,
         FontStyles,
         FontWeights,
         Good,

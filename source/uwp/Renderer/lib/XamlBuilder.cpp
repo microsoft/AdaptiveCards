@@ -1238,17 +1238,16 @@ namespace AdaptiveNamespace
         return solidColorBrushAsBrush;
     }
 
-    _Use_decl_annotations_ void XamlBuilder::StyleXamlTextBlock(
-        //        ABI::AdaptiveNamespace::FontStyle fontStyle,
-        ABI::AdaptiveNamespace::TextSize size,
-        ABI::AdaptiveNamespace::ForegroundColor color,
-        ABI::AdaptiveNamespace::ContainerStyle containerStyle,
-        bool isSubtle,
-        bool wrap,
-        UINT32 maxWidth,
-        ABI::AdaptiveNamespace::TextWeight weight,
-        ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock,
-        IAdaptiveHostConfig* hostConfig)
+    _Use_decl_annotations_ void XamlBuilder::StyleXamlTextBlock(ABI::AdaptiveNamespace::FontStyle fontStyle,
+                                                                ABI::AdaptiveNamespace::TextSize size,
+                                                                ABI::AdaptiveNamespace::ForegroundColor color,
+                                                                ABI::AdaptiveNamespace::ContainerStyle containerStyle,
+                                                                bool isSubtle,
+                                                                bool wrap,
+                                                                UINT32 maxWidth,
+                                                                ABI::AdaptiveNamespace::TextWeight weight,
+                                                                ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock,
+                                                                IAdaptiveHostConfig* hostConfig)
     {
         ComPtr<ITextBlock> localTextBlock(xamlTextBlock);
 
@@ -1259,63 +1258,14 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(localTextBlock->put_Foreground(fontColorBrush.Get()));
 
         HString fontFamilyName;
-        UINT32 fontSize;
+        UINT32* fontSize = new UINT32();
         ABI::Windows::UI::Text::FontWeight xamlFontWeight;
 
-        // TODO: delete old code
-        ComPtr<IAdaptiveFontSizesConfig> fontSizesConfig;
-        THROW_IF_FAILED(hostConfig->get_FontSizes(&fontSizesConfig));
-        switch (size)
-        {
-        case ABI::AdaptiveNamespace::TextSize::Small:
-            THROW_IF_FAILED(fontSizesConfig->get_Small(&fontSize));
-            break;
-        case ABI::AdaptiveNamespace::TextSize::Medium:
-            THROW_IF_FAILED(fontSizesConfig->get_Medium(&fontSize));
-            break;
-        case ABI::AdaptiveNamespace::TextSize::Large:
-            THROW_IF_FAILED(fontSizesConfig->get_Large(&fontSize));
-            break;
-        case ABI::AdaptiveNamespace::TextSize::ExtraLarge:
-            THROW_IF_FAILED(fontSizesConfig->get_ExtraLarge(&fontSize));
-            break;
-        case ABI::AdaptiveNamespace::TextSize::Default:
-        default:
-            THROW_IF_FAILED(fontSizesConfig->get_Default(&fontSize));
-            break;
-        }
-
-        ComPtr<IAdaptiveFontWeightsConfig> fontWeightsConfig;
-        THROW_IF_FAILED(hostConfig->get_FontWeights(&fontWeightsConfig));
-
-        switch (weight)
-        {
-        case ABI::AdaptiveNamespace::TextWeight::Lighter:
-            THROW_IF_FAILED(fontWeightsConfig->get_Lighter(&xamlFontWeight.Weight));
-            break;
-        case ABI::AdaptiveNamespace::TextWeight::Bolder:
-            THROW_IF_FAILED(fontWeightsConfig->get_Bolder(&xamlFontWeight.Weight));
-            break;
-        case ABI::AdaptiveNamespace::TextWeight::Default:
-        default:
-            THROW_IF_FAILED(fontWeightsConfig->get_Default(&xamlFontWeight.Weight));
-            break;
-        }
-
-        THROW_IF_FAILED(hostConfig->get_FontFamily(fontFamilyName.GetAddressOf()));
-        // end TODO
-
-        //// Retrieve the desired FontFamily, FontSize, and FontWeight values
-        // THROW_IF_FAILED(GetFontDataFromStyle(hostConfig,
-        //                        fontStyle,
-        //                        size,
-        //                        weight,
-        //                        fontFamilyName.GetAddressOf(),
-        //                        &fontSize,
-        //                        &xamlFontWeight));
+        // Retrieve the desired FontFamily, FontSize, and FontWeight values
+        THROW_IF_FAILED(GetFontDataFromStyle(hostConfig, fontStyle, size, weight, fontFamilyName.GetAddressOf(), fontSize, &xamlFontWeight));
 
         // Apply font size
-        THROW_IF_FAILED(localTextBlock->put_FontSize((double)fontSize));
+        THROW_IF_FAILED(localTextBlock->put_FontSize((double)*fontSize));
 
         // Apply font weight
         THROW_IF_FAILED(localTextBlock->put_FontWeight(xamlFontWeight));
@@ -1363,9 +1313,16 @@ namespace AdaptiveNamespace
         UINT32 maxWidth;
         THROW_IF_FAILED(textConfig->get_MaxWidth(&maxWidth));
 
-        StyleXamlTextBlock(textSize, textColor, containerStyle, Boolify(isSubtle), wrap, maxWidth, textWeight, xamlTextBlock, hostConfig);
-        // StyleXamlTextBlock(ABI::AdaptiveNamespace::FontStyle::Default, textSize, textColor, containerStyle,
-        // Boolify(isSubtle), wrap, maxWidth, textWeight, xamlTextBlock, hostConfig);
+        StyleXamlTextBlock(ABI::AdaptiveNamespace::FontStyle::Default,
+                           textSize,
+                           textColor,
+                           containerStyle,
+                           Boolify(isSubtle),
+                           wrap,
+                           maxWidth,
+                           textWeight,
+                           xamlTextBlock,
+                           hostConfig);
     }
 
     HRESULT SetTextOnXamlTextBlock(IAdaptiveRenderContext* renderContext, HSTRING textIn, HSTRING language, ITextBlock* textBlock)
@@ -1505,7 +1462,8 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
         ABI::AdaptiveNamespace::FontStyle fontStyle;
         THROW_IF_FAILED(adaptiveTextBlock->get_FontStyle(&fontStyle));
-        StyleXamlTextBlock(textblockSize,
+        StyleXamlTextBlock(fontStyle,
+                           textblockSize,
                            textColor,
                            containerStyle,
                            isSubtle,
@@ -1514,8 +1472,6 @@ namespace AdaptiveNamespace
                            textWeight,
                            xamlTextBlock.Get(),
                            hostConfig.Get());
-        // StyleXamlTextBlock(fontStyle, textblockSize, textColor, containerStyle, isSubtle, shouldWrap, MAXUINT32,
-        // textWeight, xamlTextBlock.Get(), hostConfig.Get());
 
         ComPtr<IFrameworkElement> frameworkElement;
         THROW_IF_FAILED(xamlTextBlock.As(&frameworkElement));

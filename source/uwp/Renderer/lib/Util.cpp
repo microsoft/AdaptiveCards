@@ -791,7 +791,7 @@ HRESULT GetFontFamilyFromStyle(
                     RETURN_IF_FAILED(UTF8ToHString("Times New Roman", result.GetAddressOf()));
                     break;
                 case ABI::AdaptiveNamespace::FontStyle::Monospace:
-                    RETURN_IF_FAILED(UTF8ToHString("Times New Roman", result.GetAddressOf()));// TODO: Find compatible monospace font family
+                    RETURN_IF_FAILED(UTF8ToHString("Courier New", result.GetAddressOf()));// TODO: Find compatible monospace font family
                     break;
                 case ABI::AdaptiveNamespace::FontStyle::Default:
                 default:
@@ -810,54 +810,54 @@ HRESULT GetFontSizeFromStyle(
     _In_ ABI::AdaptiveNamespace::TextSize desiredSize,
     _Out_ UINT32* resultSize) noexcept try
 {
-    UINT32* result = new UINT32();
+    UINT32 result;
     ABI::AdaptiveNamespace::IAdaptiveFontStyleDefinition* styleDefinition;
     ABI::AdaptiveNamespace::IAdaptiveFontSizesConfig* sizesConfig;
 
     // get FontSize from desired style
     RETURN_IF_FAILED(GetFontStyle(hostConfig, style, &styleDefinition));
     RETURN_IF_FAILED(styleDefinition->get_FontSizes(&sizesConfig));
-    RETURN_IF_FAILED(GetFontSize(sizesConfig, desiredSize, result));
+    RETURN_IF_FAILED(GetFontSize(sizesConfig, desiredSize, &result));
 
-    if (result == NULL || *result == MAXUINT32)
+    if (result == MAXUINT32)
     {
         // get FontSize from Default style
         RETURN_IF_FAILED(GetFontStyle(hostConfig, ABI::AdaptiveNamespace::FontStyle::Default, &styleDefinition));
         RETURN_IF_FAILED(styleDefinition->get_FontSizes(&sizesConfig));
-        RETURN_IF_FAILED(GetFontSize(sizesConfig, desiredSize, result));
+        RETURN_IF_FAILED(GetFontSize(sizesConfig, desiredSize, &result));
 
-        if (result == NULL || *result == MAXUINT32)
+        if (result == MAXUINT32)
         {
             // get deprecated FontSize
             RETURN_IF_FAILED(hostConfig->get_FontSizes(&sizesConfig));
-            RETURN_IF_FAILED(GetFontSize(sizesConfig, desiredSize, result));
+            RETURN_IF_FAILED(GetFontSize(sizesConfig, desiredSize, &result));
 
-            if (result == NULL || *result == MAXUINT32)
+            if (result == MAXUINT32)
             {
                 // set system default FontSize based on desired style
                 switch (desiredSize)
                 {
                 case ABI::AdaptiveNamespace::TextSize::Small:
-                    result = new UINT32(10);
+                    result = 10;
                     break;
                 case ABI::AdaptiveNamespace::TextSize::Medium:
-                    result = new UINT32(14);
+                    result = 14;
                     break;
                 case ABI::AdaptiveNamespace::TextSize::Large:
-                    result = new UINT32(17);
+                    result = 17;
                     break;
                 case ABI::AdaptiveNamespace::TextSize::ExtraLarge:
-                    result = new UINT32(20);
+                    result = 20;
                     break;
                 case ABI::AdaptiveNamespace::TextSize::Default:
                 default:
-                    result = new UINT32(12);
+                    result = 12;
                     break;
                 }
             }
         }
     }
-    resultSize = result;
+    *resultSize = result;
     return S_OK;
 } CATCH_RETURN;
 

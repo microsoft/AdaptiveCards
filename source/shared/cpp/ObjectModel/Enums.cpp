@@ -64,6 +64,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::FallbackText, "fallbackText"},
             {AdaptiveCardSchemaKey::FontFamily, "fontFamily"},
             {AdaptiveCardSchemaKey::FontSizes, "fontSizes"},
+            {AdaptiveCardSchemaKey::FontStyle, "fontStyle"},
             {AdaptiveCardSchemaKey::FontStyles, "fontStyles"},
             {AdaptiveCardSchemaKey::FontWeights, "fontWeights"},
             {AdaptiveCardSchemaKey::Good, "good"},
