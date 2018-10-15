@@ -4,16 +4,14 @@
 #include "Enums.h"
 #include "HostConfig.h"
 
-AdaptiveNamespaceStart
-    class AdaptiveFontStylesDefinition :
-        public Microsoft::WRL::RuntimeClass<
-            Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            ABI::AdaptiveNamespace::IAdaptiveFontStylesDefinition>
+namespace AdaptiveNamespace
+{
+    class AdaptiveFontStylesDefinition
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveFontStylesDefinition>
     {
         AdaptiveRuntime(AdaptiveFontStylesDefinition)
 
-    public:
-        HRESULT RuntimeClassInitialize() noexcept;
+            public : HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(FontStylesDefinition stylesDefinition) noexcept;
 
         IFACEMETHODIMP get_Default(_Out_ ABI::AdaptiveNamespace::IAdaptiveFontStyleDefinition** value);
@@ -32,4 +30,4 @@ AdaptiveNamespaceStart
     };
 
     ActivatableClass(AdaptiveFontStylesDefinition);
-AdaptiveNamespaceEnd
+}
