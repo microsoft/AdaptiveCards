@@ -15,7 +15,7 @@ namespace AdaptiveCards.Rendering.Html
     {
         protected override AdaptiveSchemaVersion GetSupportedSchemaVersion()
         {
-            return new AdaptiveSchemaVersion(1, 1);
+            return new AdaptiveSchemaVersion(1, 2);
         }
 
         /// <summary>
