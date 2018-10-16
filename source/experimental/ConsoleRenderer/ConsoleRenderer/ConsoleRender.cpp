@@ -86,7 +86,7 @@ void ApplyTextProperties(bool bold, ForegroundColor color, std::vector<std::stri
             row.insert(0, BOLD_TEXT);
             haveProperties = true;
         }
-        
+
         std::string sgrCode;
         switch (color)
         {
@@ -118,7 +118,7 @@ void ApplyTextProperties(bool bold, ForegroundColor color, std::vector<std::stri
         }
 
         if (!sgrCode.empty())
-        { 
+        {
             std::string sgrSequence = ESC "[" + sgrCode + "m";
             row.insert(0, sgrSequence);
         }
@@ -257,7 +257,7 @@ void VTRestoreCursor()
 {
     printf(ESC "8");
 }
-    
+
 void VTSetCursorPos(size_t x, size_t y)
 {
     printf(ESC "[%d;%dH", (unsigned int)y, (unsigned int)x);
@@ -347,7 +347,7 @@ void RenderToConsole(std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> card
 
     //auto output = ConvertToVector("Some sample text. Let's see how we do!\n Should be exciting."s, 10);
     //auto output2 = ConvertToVector("More samples... This should be rendered to the right of.\n\n<-- That one."s, 10);
-    
+
     /*CompositeVector(outputVector, output, 1, 1);
     CompositeVector(outputVector, output2, 12, 3);*/
 }

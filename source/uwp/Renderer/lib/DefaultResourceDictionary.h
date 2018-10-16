@@ -5,7 +5,7 @@ const PCWSTR c_defaultResourceDictionary = L"\
     xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" \
     xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\"> \
 \
-    <Style x:Key=\"Adaptive.SelectAction\" TargetType=\"Button\"> \
+    <Style x:Key=\"Adaptive.TouchTarget\" TargetType=\"Button\"> \
         <Setter Property=\"Background\" Value=\"{ThemeResource ListViewItemBackground}\" /> \
         <Setter Property=\"BorderThickness\" Value=\"0\" /> \
         <Setter Property=\"Padding\" Value=\"0\" /> \
@@ -62,4 +62,6 @@ const PCWSTR c_defaultResourceDictionary = L"\
             </Setter.Value> \
         </Setter> \
     </Style> \
+    <Style x:Key=\"Adaptive.SelectAction\" TargetType=\"Button\" BasedOn=\"{StaticResource  Adaptive.TouchTarget}\"/> \
+    <Style x:Key=\"Adaptive.Input.Text.InlineAction\" TargetType=\"Button\" BasedOn=\"{StaticResource  Adaptive.TouchTarget}\"/> \
 </ResourceDictionary>";

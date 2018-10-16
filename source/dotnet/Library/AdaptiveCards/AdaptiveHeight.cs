@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 
 namespace AdaptiveCards
 {
@@ -39,7 +39,7 @@ namespace AdaptiveCards
         public AdaptiveHeight(uint px)
         {
             _heightType = AdaptiveHeightType.Pixel;
-            _unit = px;           
+            _unit = px;
         }
 
         public AdaptiveHeight(AdaptiveHeightType heightType)

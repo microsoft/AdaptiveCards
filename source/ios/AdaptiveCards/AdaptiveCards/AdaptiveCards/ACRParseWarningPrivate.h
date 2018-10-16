@@ -14,4 +14,3 @@
 - (instancetype)initWithParseWarning:(std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning> const &)parseWarning;
 
 @end
-

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -46,7 +46,7 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             panel.Background = context.GetColorBrush(color);
         }
-        
+
         public static void SetHeight(this FrameworkElement element, double height)
         {
             element.Height = height;

@@ -9,23 +9,20 @@ using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::UI::Xaml;
 
-AdaptiveNamespaceStart
-    HRESULT AdaptiveActionInvoker::RuntimeClassInitialize() noexcept
-    {
-        return S_OK;
-    }
+namespace AdaptiveNamespace
+{
+    HRESULT AdaptiveActionInvoker::RuntimeClassInitialize() noexcept { return S_OK; }
 
-    HRESULT AdaptiveActionInvoker::RuntimeClassInitialize(
-        RenderedAdaptiveCard* renderResult) noexcept try
+    HRESULT AdaptiveActionInvoker::RuntimeClassInitialize(RenderedAdaptiveCard* renderResult) noexcept try
     {
         m_renderResult = renderResult;
         return S_OK;
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveActionInvoker::SendActionEvent(IAdaptiveActionElement* actionElement)
+    _Use_decl_annotations_ HRESULT AdaptiveActionInvoker::SendActionEvent(IAdaptiveActionElement* actionElement)
     {
         return m_renderResult->SendActionEvent(actionElement);
     }
 
-AdaptiveNamespaceEnd
+}

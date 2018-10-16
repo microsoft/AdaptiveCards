@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+#include "stdafx.h"
 #include "CppUnitTest.h"
 #include "TextBlock.h"
 #include <time.h>
@@ -133,7 +133,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             TextBlock blck;
             // New York
-            string testString = "{{TIME(2017-10-27T22:27:00-04:00)}}"; 
+            string testString = "{{TIME(2017-10-27T22:27:00-04:00)}}";
             blck.SetText(testString);
             Assert::AreEqual<string>("{{TIME(2017-10-27T22:27:00-04:00)}}", blck.GetText());
 
@@ -222,7 +222,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             blck.SetText(testString);
             Assert::AreEqual<string>("{{DATE(2017-10-27T22:27:00-04:00,  COMPACT)}}", blck.GetText());
         }
-    
+
     };
     TEST_CLASS(TimeAndDateInputTest)
     {
@@ -239,8 +239,8 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             TextBlock blck;
             // New York
-            // New York 
-            string testString = "{{TIME(2017-10-27T22:27:00-04:00, LONG)}}"; 
+            // New York
+            string testString = "{{TIME(2017-10-27T22:27:00-04:00, LONG)}}";
             blck.SetText(testString);
             Assert::AreEqual<string>("{{TIME(2017-10-27T22:27:00-04:00, LONG)}}", blck.GetText());
         }
@@ -333,7 +333,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
 
         TEST_METHOD(MalformedCurlybracketsTest)
-        { 
+        {
             TextBlock blck;
             string testString = "{a{DATE(2017-02-13T20:46:30Z, SHORT)}}";
             blck.SetText(testString);

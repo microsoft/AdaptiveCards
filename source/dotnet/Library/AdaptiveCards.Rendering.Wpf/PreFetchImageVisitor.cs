@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -24,7 +24,7 @@ namespace AdaptiveCards.Rendering.Wpf
         }
 
         /// <summary>
-        /// Get all images 
+        /// Get all images
         /// </summary>
         public async Task GetAllImages(AdaptiveCard card)
         {

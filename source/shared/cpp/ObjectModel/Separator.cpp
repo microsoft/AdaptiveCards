@@ -4,17 +4,18 @@
 
 using namespace AdaptiveSharedNamespace;
 
-Separator::Separator(): m_thickness(SeparatorThickness::Default), m_color(ForegroundColor::Default)
+Separator::Separator() : m_thickness(SeparatorThickness::Default), m_color(ForegroundColor::Default)
 {
 }
-
 
 std::shared_ptr<Separator> Separator::Deserialize(const Json::Value& json)
 {
     std::shared_ptr<Separator> separator = std::make_shared<Separator>();
 
-    separator->SetColor(ParseUtil::GetEnumValue<ForegroundColor>(json, AdaptiveCardSchemaKey::Color, ForegroundColor::Default, ForegroundColorFromString));
-    separator->SetThickness(ParseUtil::GetEnumValue<SeparatorThickness>(json, AdaptiveCardSchemaKey::Thickness, SeparatorThickness::Default, SeparatorThicknessFromString));
+    separator->SetColor(
+        ParseUtil::GetEnumValue<ForegroundColor>(json, AdaptiveCardSchemaKey::Color, ForegroundColor::Default, ForegroundColorFromString));
+    separator->SetThickness(ParseUtil::GetEnumValue<SeparatorThickness>(
+        json, AdaptiveCardSchemaKey::Thickness, SeparatorThickness::Default, SeparatorThicknessFromString));
 
     return separator;
 }

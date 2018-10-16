@@ -1039,7 +1039,7 @@ export class CardElementPeer extends DesignerPeer {
                         this.cardElement.insertItemBefore(peer.cardElement, (<CardElementPeer>targetChild).cardElement);
                     }
                 }
-    
+
                 this.insertChild(peer, peer.cardElement.index);
                 this.changed(false);
 
@@ -2316,7 +2316,7 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
         isSubtle.input.title = "";
         isSubtle.input.onValueChanged = () => {
             this.cardElement.isSubtle = isSubtle.input.value == "true";
- 
+
             this.changed(false);
         }
     }
@@ -2709,7 +2709,7 @@ export class CardDesigner {
                 let registration = CardDesigner.cardElementPeerRegistry.findTypeRegistration(Adaptive.AdaptiveCard);
 
                 peer = new registration.peerType(this, registration, action.card);
-                
+
                 let parentPeer = this.findActionPeer(action);
 
                 if (parentPeer) {

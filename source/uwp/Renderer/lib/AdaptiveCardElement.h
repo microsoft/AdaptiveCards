@@ -3,16 +3,16 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "Enums.h"
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace
+{
     class DECLSPEC_UUID("49496982-18E7-48A8-9D16-99E389BE9133") AdaptiveCardElementBase : public IUnknown
     {
     protected:
-
         HRESULT InitializeBaseElement(const std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel);
 
         IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveNamespace::Spacing* spacing);
         IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveNamespace::Spacing spacing);
-        
+
         IFACEMETHODIMP get_Separator(boolean* separator);
         IFACEMETHODIMP put_Separator(boolean separator);
 
@@ -41,4 +41,4 @@ AdaptiveNamespaceStart
         Microsoft::WRL::Wrappers::HString m_typeString;
         ABI::AdaptiveNamespace::HeightType m_height;
     };
-AdaptiveNamespaceEnd
+}

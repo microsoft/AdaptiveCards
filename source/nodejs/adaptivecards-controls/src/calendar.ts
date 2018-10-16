@@ -151,7 +151,7 @@ export class Calendar extends InputControl {
 
                     break;
                 }
-            }        
+            }
         }
     }
 
@@ -170,7 +170,7 @@ export class Calendar extends InputControl {
         var row = document.createElement("tr");
 
         var dayIndex = <number>Utils.CalendarSettings.firstDayOfWeek;
-        
+
         for (var i = 0; i < Utils.CalendarSettings.daysInWeek; i++) {
             var cell = document.createElement("td");
             cell.className = "ms-ctrl ms-ctrl-calendarDayHeader";
@@ -295,8 +295,8 @@ export class Calendar extends InputControl {
     }
 
     set date(value: Date) {
-        var rebuildNeeded = true;        
-        var timeDelta = 0; 
+        var rebuildNeeded = true;
+        var timeDelta = 0;
 
         var newDate = value ? value : new Date();
 
@@ -307,7 +307,7 @@ export class Calendar extends InputControl {
         if (rebuildNeeded) {
             this.rebuildMiniCalendar(newDate, this._date);
         }
-        
+
         this._date = newDate;
 
         this.initializeSelection();

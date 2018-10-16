@@ -54,7 +54,7 @@
     float relativeColumnWidth = 0, prevRelColumnWidth = 0;
     float multiplier = 1.0;
     NSMutableArray *constraints = [[NSMutableArray alloc] init];
-    
+
     ACRColumnRenderer *castedRenderer = (ACRColumnRenderer *)columnRenderer;
     for(std::shared_ptr<Column> column:columns)
     {
@@ -62,7 +62,7 @@
             castedRenderer.fillAlignment = YES;
         }
     }
-    
+
     ACOBaseCardElement *acoColumn = [[ACOBaseCardElement alloc] init];
     auto firstColumn = columns.begin();
     for(std::shared_ptr<Column> column:columns)
@@ -130,7 +130,7 @@
     }
 
     castedRenderer.fillAlignment = NO;
-    
+
     if([constraints count]) {
         [columnSetView addConstraints:constraints];
     }
@@ -147,4 +147,3 @@
 }
 
 @end
-

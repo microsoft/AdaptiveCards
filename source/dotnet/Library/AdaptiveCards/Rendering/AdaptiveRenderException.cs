@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace AdaptiveCards.Rendering
 {
@@ -6,7 +6,7 @@ namespace AdaptiveCards.Rendering
     {
         public AdaptiveRenderException()
         {
-            
+
         }
 
         public AdaptiveRenderException(string message) : base(message)

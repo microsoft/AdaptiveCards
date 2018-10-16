@@ -1,4 +1,4 @@
-﻿using AdaptiveCards;
+using AdaptiveCards;
 
 namespace WpfVisualizer
 {

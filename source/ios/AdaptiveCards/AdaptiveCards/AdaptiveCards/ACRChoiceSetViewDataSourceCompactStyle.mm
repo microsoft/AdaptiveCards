@@ -164,7 +164,7 @@ static NSString *pickerCell = @"pickerCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(self.rootView && indexPath.row == 0)
-    {        
+    {
         UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
         UIPickerView *pickerView = [cell viewWithTag:pickerViewId];
         CGRect oldFrame = tableView.frame;

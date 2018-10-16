@@ -16,7 +16,7 @@ namespace AdaptiveCards.Rendering
             // includes Column
             if (adaptiveElement is AdaptiveContainer container)
                 Visit(container);
-            
+
             if (adaptiveElement is AdaptiveColumnSet set)
                 Visit(set);
 

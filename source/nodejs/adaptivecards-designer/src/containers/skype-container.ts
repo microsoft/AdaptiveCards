@@ -4,7 +4,7 @@ import * as Adaptive from "adaptivecards";
 export class SkypeContainer extends HostContainer {
     public renderTo(hostElement: HTMLElement) {
         this.cardHost.classList.add("skype-card");
-        
+
         var frame = document.createElement("div");
         frame.className = "skype-frame";
 

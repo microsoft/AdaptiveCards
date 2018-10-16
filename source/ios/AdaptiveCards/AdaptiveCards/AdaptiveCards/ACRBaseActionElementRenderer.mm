@@ -14,7 +14,7 @@
                  superview:(UIView *)superview
          baseActionElement:(ACOBaseActionElement *)acoElem
              hostConfig:(ACOHostConfig *)config;
-{ 
+{
    return nil;
 }
 

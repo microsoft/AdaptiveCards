@@ -113,7 +113,7 @@ public class TimeInputRenderer extends TextInputRenderer
 
         return editText;
     }
-    
+
     private static TimeInputRenderer s_instance = null;
     private static final String TITLE = "Set Time";
 }

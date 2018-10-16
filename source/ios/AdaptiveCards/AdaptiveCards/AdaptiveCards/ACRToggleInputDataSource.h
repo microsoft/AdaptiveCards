@@ -11,11 +11,12 @@
 #import "HostConfig.h"
 #import "ACRColumnSetView.h"
 
-@interface ACRToggleInputDataSource:NSObject<UITableViewDataSource, UITableViewDelegate, ACRIBaseInputHandler> 
+@interface ACRToggleInputDataSource:NSObject<UITableViewDataSource, UITableViewDelegate, ACRIBaseInputHandler>
 
 @property NSString *id;
 @property NSString *valueOn;
 @property NSString *valueOff;
+@property UISwitch *toggleSwitch;
 
 - (instancetype)initWithInputToggle:(std::shared_ptr<AdaptiveCards::ToggleInput> const&)toggleInput
                      WithHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const&)hostConfig;
