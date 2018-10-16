@@ -787,15 +787,13 @@ HRESULT GetFontFamilyFromStyle(
                 // set system default FontFamily based on desired style
                 switch (style) 
                 {
-                case ABI::AdaptiveNamespace::FontStyle::Display:
-                    RETURN_IF_FAILED(UTF8ToHString("Times New Roman", result.GetAddressOf()));
-                    break;
                 case ABI::AdaptiveNamespace::FontStyle::Monospace:
-                    RETURN_IF_FAILED(UTF8ToHString("Courier New", result.GetAddressOf()));// TODO: Find compatible monospace font family
+                    RETURN_IF_FAILED(UTF8ToHString("Courier New", result.GetAddressOf()));
                     break;
+                case ABI::AdaptiveNamespace::FontStyle::Display:
                 case ABI::AdaptiveNamespace::FontStyle::Default:
                 default:
-                    RETURN_IF_FAILED(UTF8ToHString("Times New Roman", result.GetAddressOf()));// TODO: Find compatible default font family
+                    RETURN_IF_FAILED(UTF8ToHString("Segoe UI", result.GetAddressOf()));
                     break;
                 }
             }
