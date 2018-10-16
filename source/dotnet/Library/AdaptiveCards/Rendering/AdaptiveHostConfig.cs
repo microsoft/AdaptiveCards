@@ -174,7 +174,7 @@ namespace AdaptiveCards.Rendering
                     fontFamilyValue = FontFamily;
                     if (string.IsNullOrEmpty(fontFamilyValue))
                     {
-                        fontFamilyValue = "Segoe UI";
+                        fontFamilyValue = GetDefaultFontFamily(fontStyle);
                     }
                 }
             }
@@ -196,6 +196,21 @@ namespace AdaptiveCards.Rendering
                 ?? FontStyles.Default.FontSizes.GetFontSize(requestedSize)
                 ?? FontSizes.GetFontSize(requestedSize)
                 ?? FontSizesConfig.GetDefaultFontSize(requestedSize);
+        }
+
+        private string GetDefaultFontFamily(AdaptiveFontStyle fontStyle)
+        {
+            switch (fontStyle)
+            {
+                case AdaptiveFontStyle.Monospace:
+                    return "Courier New";
+                case AdaptiveFontStyle.Display:
+                case AdaptiveFontStyle.Default:
+                default:
+                    // Leave it up to the platform.
+                    // Renderer default is usually "Segoe UI"
+                    return "";
+            }
         }
     }
 }

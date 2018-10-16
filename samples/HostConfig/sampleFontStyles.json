@@ -29,18 +29,18 @@
 			}
 		},
 		"display": {
-			"fontFamily": "Rockwell, Lobster, serif",
+			"fontFamily": "Comic Sans MS",
 			"fontSizes": {
-				"small": 12,
-				"default": 14,
-				"medium": 17,
-				"large": 21,
-				"extraLarge": 26
+				"small": 15,
+				"default": 17,
+				"medium": 20,
+				"large": 24,
+				"extraLarge": 29
 			},
 			"fontWeights": {
-				"lighter": 200,
-				"default": 400,
-				"bolder": 600
+				"lighter": 400,
+				"default": 600,
+				"bolder": 800
 			}
 		},
 		"monospace": {

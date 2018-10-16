@@ -679,7 +679,11 @@ namespace AdaptiveCards.Rendering.Html
                     htmlTag.Style("margin-top", "0px");
                     htmlTag.Style("margin-bottom", "0px");
                     htmlTag.Style("width", "100%");
-                    htmlTag.Style("font-family", "\'" + fontFamily + "\'");
+
+                    if (!string.IsNullOrEmpty(fontFamily))
+                    {
+                        htmlTag.Style("font-family", "'" + fontFamily + "'");
+                    }
 
                     if (setWrapStyleOnParagraph)
                     {
