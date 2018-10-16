@@ -80,7 +80,7 @@ publishing {
     publications {
         adaptivecards(MavenPublication) {
             groupId 'io.adaptivecards'
-            version System.getenv("XES_PACKAGEVERSIONNUMBER") ?:"0.0.0"
+            version System.getenv('XES_SEMANTICVERSION') + '-20' + System.getenv('TFS_VersionNumber')
             artifact(sourceJar)
             artifact("$buildDir/outputs/aar/adaptivecards-release.aar")
         }
