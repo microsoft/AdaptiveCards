@@ -32,8 +32,6 @@ buildId = '%2f' + buildNumber + '%2f' +  os.environ['BUILD_BUILDID'] + '%2f'
 
 url = 'https://artifacts.dev.azure.com/microsoft/_apis/drop/manifests/os' + buildId + '?api-version=2.0'
 
-print('url: ' + url)
-
 urlToArtifacts = ''
 # get Response via REST API
 r = requests.get(url, headers=headers)
@@ -41,7 +39,7 @@ r = requests.get(url, headers=headers)
 for item in r.json():
     if 'AdaptiveCards.framework.zip' in item['path']: 
         urlToArtifacts = item['blob']['url']
-print('urlToAritifact: ' + urlToArtifacts)
+
 outputBuff = [];
 # update podspec
 with open('AdaptiveCards.podspec', 'r') as f:
