@@ -49,7 +49,7 @@ namespace AdaptiveCards.Rendering.Wpf
             var uiTitle = new TextBlock
             {
                 Text = action.Title,
-                FontSize = context.Config.FontSizes.Default.Value,
+                FontSize = context.Config.GetFontSize(AdaptiveFontStyle.Default, AdaptiveTextSize.Default),
                 Style = context.GetStyle($"Adaptive.Action.Title")
             };
 
