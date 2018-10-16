@@ -629,9 +629,9 @@ namespace AdaptiveCards.Rendering.Html
 
         protected static HtmlTag TextBlockRender(AdaptiveTextBlock textBlock, AdaptiveRenderContext context)
         {
-            string fontFamily = GetFontFamily(textBlock.FontStyle, context.Config);
-            int fontSize = GetFontSize(textBlock.FontStyle, textBlock.Size, context.Config);
-            int weight = GetFontWeight(textBlock.FontStyle, textBlock.Weight, context.Config);
+            string fontFamily = context.Config.GetFontFamily(textBlock.FontStyle);
+            int fontSize = context.Config.GetFontSize(textBlock.FontStyle, textBlock.Size);
+            int weight = context.Config.GetFontWeight(textBlock.FontStyle, textBlock.Weight);
 
             // Not sure where this magic value comes from?
             var lineHeight = fontSize * 1.33;
@@ -698,43 +698,6 @@ namespace AdaptiveCards.Rendering.Html
 
             return uiTextBlock;
         }
-
-        private static string GetFontFamily(AdaptiveFontStyle fontStyle, AdaptiveHostConfig hostConfig)
-        {
-            string fontFamilyValue = hostConfig.FontStyles.GetFontStyle(fontStyle).FontFamily;
-
-            if (string.IsNullOrEmpty(fontFamilyValue))
-            {
-                fontFamilyValue = hostConfig.FontStyles.Default.FontFamily;
-                if (string.IsNullOrEmpty(fontFamilyValue))
-                {
-                    fontFamilyValue = hostConfig.FontFamily;
-                    if (string.IsNullOrEmpty(fontFamilyValue))
-                    {
-                        fontFamilyValue = "Segoe UI";
-                    }
-                }
-            }
-
-            return fontFamilyValue;
-        }
-
-        private static int GetFontWeight(AdaptiveFontStyle fontStyle, AdaptiveTextWeight requestedWeight, AdaptiveHostConfig hostConfig)
-        {
-            return hostConfig.FontStyles.GetFontStyle(fontStyle).FontWeights.GetFontWeight(requestedWeight)
-                ?? hostConfig.FontStyles.Default.FontWeights.GetFontWeight(requestedWeight)
-                ?? hostConfig.FontWeights.GetFontWeight(requestedWeight)
-                ?? FontWeightsConfig.GetDefaultFontWeight(requestedWeight);
-        }
-
-        private static int GetFontSize(AdaptiveFontStyle fontStyle, AdaptiveTextSize requestedSize, AdaptiveHostConfig hostConfig)
-        {
-            return hostConfig.FontStyles.GetFontStyle(fontStyle).FontSizes.GetFontSize(requestedSize)
-                ?? hostConfig.FontStyles.Default.FontSizes.GetFontSize(requestedSize)
-                ?? hostConfig.FontSizes.GetFontSize(requestedSize)
-                ?? FontSizesConfig.GetDefaultFontSize(requestedSize);
-        }
-
 
         protected static HtmlTag ImageRender(AdaptiveImage image, AdaptiveRenderContext context)
         {

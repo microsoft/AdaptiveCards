@@ -10,17 +10,17 @@
 		{
 			"type": "TextBlock",
 			"text": "Font style set to *default*.",
-      "fontStyle": "default"
+			"fontStyle": "default"
 		},
 		{
-      "type": "TextBlock",
+			"type": "TextBlock",
 			"text": "Font style set to *display*.",
-      "fontStyle": "display"
+			"fontStyle": "display"
 		},
 		{
-      "type": "TextBlock",
+			"type": "TextBlock",
 			"text": "Font style set to *monospace*.",
-      "fontStyle": "monospace"
+			"fontStyle": "monospace"
 		}
 	]
 }

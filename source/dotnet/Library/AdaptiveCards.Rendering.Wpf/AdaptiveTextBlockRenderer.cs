@@ -114,9 +114,9 @@ namespace AdaptiveCards.Rendering.Wpf
 
             uiTextBlock.TextWrapping = TextWrapping.NoWrap;
 
-            uiTextBlock.FontFamily = GetFontFamily(textBlock.FontStyle, context.Config);
-            uiTextBlock.FontWeight = GetFontWeight(textBlock.FontStyle, textBlock.Weight, context.Config);
-            uiTextBlock.FontSize = GetFontSize(textBlock.FontStyle, textBlock.Size, context.Config);
+            uiTextBlock.FontFamily = new FontFamily(context.Config.GetFontFamily(textBlock.FontStyle));
+            uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(context.Config.GetFontWeight(textBlock.FontStyle, textBlock.Weight));
+            uiTextBlock.FontSize = context.Config.GetFontSize(textBlock.FontStyle, textBlock.Size);
 
             uiTextBlock.TextTrimming = TextTrimming.CharacterEllipsis;
 
@@ -131,44 +131,6 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiTextBlock.TextWrapping = TextWrapping.Wrap;
 
             return uiTextBlock;
-        }
-
-        private static FontFamily GetFontFamily(AdaptiveFontStyle fontStyle, AdaptiveHostConfig hostConfig)
-        {
-            string fontFamilyValue = hostConfig.FontStyles.GetFontStyle(fontStyle).FontFamily;
-
-            if (string.IsNullOrEmpty(fontFamilyValue))
-            {
-                fontFamilyValue = hostConfig.FontStyles.Default.FontFamily;
-                if (string.IsNullOrEmpty(fontFamilyValue))
-                {
-                    fontFamilyValue = hostConfig.FontFamily;
-                    if (string.IsNullOrEmpty(fontFamilyValue))
-                    {
-                        fontFamilyValue = "Segoe UI";
-                    }
-                }
-            }
-            
-            return new FontFamily(fontFamilyValue);
-        }
-
-        private static FontWeight GetFontWeight(AdaptiveFontStyle fontStyle, AdaptiveTextWeight requestedWeight, AdaptiveHostConfig hostConfig)
-        {
-            int resultWeight = hostConfig.FontStyles.GetFontStyle(fontStyle).FontWeights.GetFontWeight(requestedWeight)
-                ?? hostConfig.FontStyles.Default.FontWeights.GetFontWeight(requestedWeight)
-                ?? hostConfig.FontWeights.GetFontWeight(requestedWeight)
-                ?? FontWeightsConfig.GetDefaultFontWeight(requestedWeight);
-
-            return FontWeight.FromOpenTypeWeight(resultWeight);
-        }
-
-        private static int GetFontSize(AdaptiveFontStyle fontStyle, AdaptiveTextSize requestedSize, AdaptiveHostConfig hostConfig)
-        {
-            return hostConfig.FontStyles.GetFontStyle(fontStyle).FontSizes.GetFontSize(requestedSize)
-                ?? hostConfig.FontStyles.Default.FontSizes.GetFontSize(requestedSize)
-                ?? hostConfig.FontSizes.GetFontSize(requestedSize)
-                ?? FontSizesConfig.GetDefaultFontSize(requestedSize);
         }
 
         private class MultiplyConverter : IValueConverter

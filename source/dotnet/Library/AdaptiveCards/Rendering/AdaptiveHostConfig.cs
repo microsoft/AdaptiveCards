@@ -161,5 +161,41 @@ namespace AdaptiveCards.Rendering
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
+
+        public string GetFontFamily(AdaptiveFontStyle fontStyle)
+        {
+            string fontFamilyValue = FontStyles.GetFontStyle(fontStyle).FontFamily;
+
+            if (string.IsNullOrEmpty(fontFamilyValue))
+            {
+                fontFamilyValue = FontStyles.Default.FontFamily;
+                if (string.IsNullOrEmpty(fontFamilyValue))
+                {
+                    fontFamilyValue = FontFamily;
+                    if (string.IsNullOrEmpty(fontFamilyValue))
+                    {
+                        fontFamilyValue = "Segoe UI";
+                    }
+                }
+            }
+
+            return fontFamilyValue;
+        }
+
+        public int GetFontWeight(AdaptiveFontStyle fontStyle, AdaptiveTextWeight requestedWeight)
+        {
+            return FontStyles.GetFontStyle(fontStyle).FontWeights.GetFontWeight(requestedWeight)
+                ?? FontStyles.Default.FontWeights.GetFontWeight(requestedWeight)
+                ?? FontWeights.GetFontWeight(requestedWeight)
+                ?? FontWeightsConfig.GetDefaultFontWeight(requestedWeight);
+        }
+
+        public int GetFontSize(AdaptiveFontStyle fontStyle, AdaptiveTextSize requestedSize)
+        {
+            return FontStyles.GetFontStyle(fontStyle).FontSizes.GetFontSize(requestedSize)
+                ?? FontStyles.Default.FontSizes.GetFontSize(requestedSize)
+                ?? FontSizes.GetFontSize(requestedSize)
+                ?? FontSizesConfig.GetDefaultFontSize(requestedSize);
+        }
     }
 }
