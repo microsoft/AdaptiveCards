@@ -6,17 +6,13 @@
 
 using namespace AdaptiveCards;
 
-ActionSet::ActionSet() : 
-    BaseCardElement(CardElementType::ActionSet),
-    m_orientation(ActionsOrientation::None)
+ActionSet::ActionSet() : BaseCardElement(CardElementType::ActionSet), m_orientation(ActionsOrientation::None)
 {
     PopulateKnownPropertiesSet();
 }
 
-ActionSet::ActionSet(
-    std::vector<std::shared_ptr<BaseActionElement>>& actions) :
-    BaseCardElement(CardElementType::ActionSet),
-    m_actions(actions)
+ActionSet::ActionSet(std::vector<std::shared_ptr<BaseActionElement>>& actions) :
+    BaseCardElement(CardElementType::ActionSet), m_actions(actions)
 {
     PopulateKnownPropertiesSet();
 }
@@ -56,35 +52,38 @@ Json::Value ActionSet::SerializeToJsonValue() const
     return root;
 }
 
-std::shared_ptr<BaseCardElement> ActionSetParser::Deserialize(
-    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-	std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-    const Json::Value& value)
+std::shared_ptr<BaseCardElement> ActionSetParser::Deserialize(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+                                                              std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+                                                              std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+                                                              const Json::Value& value)
 {
     ParseUtil::ExpectTypeString(value, CardElementType::ActionSet);
 
     auto actionSet = BaseCardElement::Deserialize<ActionSet>(value);
 
-    actionSet->SetOrientation(ParseUtil::GetEnumValue<ActionsOrientation>(value, AdaptiveCardSchemaKey::Orientation, ActionsOrientation::None, ActionsOrientationFromString));
+    actionSet->SetOrientation(ParseUtil::GetEnumValue<ActionsOrientation>(
+        value, AdaptiveCardSchemaKey::Orientation, ActionsOrientation::None, ActionsOrientationFromString));
 
     // Parse Actions
-    auto actionElements = ParseUtil::GetActionCollection(elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::Actions, false);
+    auto actionElements = ParseUtil::GetActionCollection(
+        elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::Actions, false);
     actionSet->m_actions = std::move(actionElements);
 
     return actionSet;
 }
 
-std::shared_ptr<BaseCardElement> ActionSetParser::DeserializeFromString(
-    std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-    std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-	std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-    const std::string& jsonString)
+std::shared_ptr<BaseCardElement> ActionSetParser::DeserializeFromString(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
+                                                                        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+                                                                        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+                                                                        const std::string& jsonString)
 {
-    return ActionSetParser::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
+    return ActionSetParser::Deserialize(elementParserRegistration,
+                                        actionParserRegistration,
+                                        warnings,
+                                        ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-void ActionSet::PopulateKnownPropertiesSet() 
+void ActionSet::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Actions));
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Orientation));

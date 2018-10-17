@@ -12,31 +12,37 @@ using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveCards::Rendering::Uwp;
 using namespace ABI::Windows::Foundation;
 
-namespace AdaptiveCards { namespace Rendering { namespace Uwp
+namespace AdaptiveCards
 {
-    HRESULT AdaptiveActionSetRenderer::RuntimeClassInitialize() noexcept try
+    namespace Rendering
     {
-        return S_OK;
-    } CATCH_RETURN;
+        namespace Uwp
+        {
+            HRESULT AdaptiveActionSetRenderer::RuntimeClassInitialize() noexcept try
+            {
+                return S_OK;
+            }
+            CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveActionSetRenderer::Render(
-        IAdaptiveCardElement* cardElement,
-        IAdaptiveRenderContext* renderContext,
-        IAdaptiveRenderArgs* renderArgs,
-        ABI::Windows::UI::Xaml::IUIElement** result)
-    {
-        XamlBuilder::BuildActionSet(cardElement, renderContext, renderArgs, result);
-        return S_OK;
-    }
+            _Use_decl_annotations_ HRESULT AdaptiveActionSetRenderer::Render(IAdaptiveCardElement* cardElement,
+                                                                             IAdaptiveRenderContext* renderContext,
+                                                                             IAdaptiveRenderArgs* renderArgs,
+                                                                             ABI::Windows::UI::Xaml::IUIElement** result)
+            {
+                XamlBuilder::BuildActionSet(cardElement, renderContext, renderArgs, result);
+                return S_OK;
+            }
 
-    HRESULT AdaptiveActionSetRenderer::FromJson(
-        ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-		ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
-        ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element)
-    {
-		return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveActionSet, AdaptiveSharedNamespace::ActionSet, AdaptiveSharedNamespace::ActionSetParser>(jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
+            HRESULT AdaptiveActionSetRenderer::FromJson(
+                ABI::Windows::Data::Json::IJsonObject* jsonObject,
+                ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
+                ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
+                ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
+                ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element)
+            {
+                return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveActionSet, AdaptiveSharedNamespace::ActionSet, AdaptiveSharedNamespace::ActionSetParser>(
+                    jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
+            }
+        }
     }
-}}}
+}
