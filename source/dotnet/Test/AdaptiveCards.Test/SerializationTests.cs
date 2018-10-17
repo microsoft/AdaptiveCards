@@ -112,7 +112,7 @@ namespace AdaptiveCards.Test
 
             var expected = @"{
   ""type"": ""AdaptiveCard"",
-  ""version"": ""1.1"",
+  ""version"": ""1.2"",
   ""id"": ""myCard"",
   ""body"": [
     {
@@ -148,7 +148,7 @@ namespace AdaptiveCards.Test
 
             var expected = @"{
   ""type"": ""AdaptiveCard"",
-  ""version"": ""1.1"",
+  ""version"": ""1.2"",
   ""body"": [
     {
       ""type"": ""TextBlock"",
@@ -524,7 +524,7 @@ namespace AdaptiveCards.Test
             var expected =
 @"{
   ""type"": ""AdaptiveCard"",
-  ""version"": ""1.1"",
+  ""version"": ""1.2"",
   ""id"": ""myCard"",
   ""body"": [
     {

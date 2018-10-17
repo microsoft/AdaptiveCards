@@ -121,7 +121,6 @@ namespace AdaptiveCards.Test
                     "TypeIsRequired",
                     "AdaptiveCard.MinVersion",
                     "AdaptiveCard.MissingVersion",
-                    "AdaptiveCard.Version1.2",
                     "AdaptiveCard.Version1.3",
                     "FlightItinerary_es_fail",
 
