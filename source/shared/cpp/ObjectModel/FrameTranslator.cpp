@@ -241,50 +241,65 @@ Json::Value DataBindArray(const Json::Value& sourceCard, const Json::Value& fram
     return result;
 }
 
-Json::Value DataBindObject(const Json::Value& sourceCard, const Json::Value& frame)
+// Handles #each arrays with syntax such as the following:
+// {{#each myArray}} : {"type" : "TextBlock, "text" : "{{foo}}"}
+// where "myArray" is an array of objects each with a "foo" property
+Json::Value DataBindAsEachObject(const Json::Value& sourceCard, const Json::Value& frame)
 {
-    // Loop through the sub elements of the object and bind each one
     Json::Value result;
-    for (Json::Value::const_iterator it = frame.begin(); it != frame.end(); it++)
+    if (frame.size() == 1)
     {
-        std::string key = it.key().asCString();
+        auto memberNames = frame.getMemberNames();
+        std::string jsonKey = memberNames[0];
 
-        // Check if this is a "special" key
         size_t startPosition, endPosition;
-        std::string specialKey = GetKey(key, 0, "{{#", "}}", &startPosition, &endPosition);
-        if (!specialKey.empty())
-        {
-            std::string eachString("each");
-            if (!specialKey.compare(0, eachString.length(), eachString))
-            {
-                // Handles #each arrays with syntax such as the following:
-                // {{#each myArray}} : {"type" : "TextBlock, "text" : "{{foo}}"}
-                // where "myArray" is an array of objects each with a "foo" property
+        std::string dataBindingKey = GetKey(jsonKey, 0, "{{", "}}", &startPosition, &endPosition);
 
+        if (!dataBindingKey.empty())
+        {
+            std::string eachString("#each");
+            if (!dataBindingKey.compare(0, eachString.length(), eachString))
+            {
                 // Get the name of the array
-                std::string arrayName = GetArgument(specialKey, eachString.length());
+                std::string arrayName = GetArgument(dataBindingKey, eachString.length());
                 Json::Value eachArray = sourceCard;
                 if (!arrayName.empty())
                 {
                     eachArray = sourceCard[arrayName];
                 }
 
-                if (eachArray.isArray()) // TODO - if it's not?
+                if (eachArray.isArray())
                 {
                     // Iterate throught the array and data bind, using each element of the array
-                    // as the source and the value of this key (*it) as the frame
+                    // as the source and the value of the key as the frame
                     for (Json::Value::const_iterator itArray = eachArray.begin(); itArray != eachArray.end(); itArray++)
                     {
-                        result.append(DataBindJson(*itArray, *it));
+                        result.append(DataBindJson(*itArray, frame[jsonKey]));
                     }
-
-                    return result;
                 }
             }
         }
-        else
+    }
+    return result;
+}
+
+Json::Value DataBindObject(const Json::Value& sourceCard, const Json::Value& frame)
+{
+    Json::Value result;
+
+    // Check if this is a #each object.
+    result = DataBindAsEachObject(sourceCard, frame);
+    if (!result.empty())
+    {
+        return result;
+    }
+    else
+    {
+        // Loop through the sub elements of the object and bind each one
+        for (Json::Value::const_iterator it = frame.begin(); it != frame.end(); it++)
         {
-            // Standard case. Data bind the json value in "key" : "value" and add it to the result;
+            std::string key = it.key().asCString();
+            // Data bind the json value in "key" : "value" and add it to the result;
             Json::Value elementResult = DataBindJson(sourceCard, *it);
             if (elementResult.empty())
             {

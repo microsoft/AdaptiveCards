@@ -24,6 +24,10 @@
 				"type": "TextBlock",
 				"text": "{{name}} is a {{animal}}"
 			}
+		},
+		{
+			"type": "TextBlock",
+			"text": "I am a human"
 		}
 	],
 	"actions": [
