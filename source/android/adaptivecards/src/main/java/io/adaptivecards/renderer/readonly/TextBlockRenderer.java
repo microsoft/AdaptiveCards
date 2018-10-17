@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.FontStyle;
 import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
@@ -52,33 +53,10 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    static void setTextSize(Context context, TextView textView, TextSize textSize, HostConfig hostConfig)
+    static void setTextSize(TextView textView, FontStyle style, TextSize textSize, HostConfig hostConfig)
     {
-        FontSizesConfig fontSizesConfig = hostConfig.getFontSizes();
-        if (textSize == TextSize.ExtraLarge)
-        {
-            textView.setTextSize(fontSizesConfig.getExtraLargeFontSize());
-        }
-        else if (textSize == TextSize.Large)
-        {
-            textView.setTextSize(fontSizesConfig.getLargeFontSize());
-        }
-        else if (textSize == TextSize.Medium)
-        {
-            textView.setTextSize(fontSizesConfig.getMediumFontSize());
-        }
-        else if (textSize == TextSize.Default)
-        {
-            textView.setTextSize(fontSizesConfig.getDefaultFontSize());
-        }
-        else if (textSize == TextSize.Small)
-        {
-            textView.setTextSize(fontSizesConfig.getSmallFontSize());
-        }
-        else
-        {
-            throw new IllegalArgumentException("Unknown text size: " + textSize.toString());
-        }
+        long value = hostConfig.GetFontSize(style, textSize);
+        textView.setTextSize(value);
     }
 
     static void setTextAlignment(TextView textView, HorizontalAlignment textAlignment)
@@ -113,11 +91,11 @@ public class TextBlockRenderer extends BaseCardElementRenderer
     {
         if (containerStyle == ContainerStyle.Emphasis)
         {
-            textView.setTextColor(getColor(foregroundColor, hostConfig.getContainerStyles().getEmphasisPalette().getForegroundColors(), isSubtle));
+            textView.setTextColor(getColor(foregroundColor, hostConfig.GetContainerStyles().getEmphasisPalette().getForegroundColors(), isSubtle));
         }
         else
         {
-            textView.setTextColor(getColor(foregroundColor, hostConfig.getContainerStyles().getDefaultPalette().getForegroundColors(), isSubtle));
+            textView.setTextColor(getColor(foregroundColor, hostConfig.GetContainerStyles().getDefaultPalette().getForegroundColors(), isSubtle));
         }
     }
 
@@ -220,8 +198,8 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         textView.setEllipsize(TextUtils.TruncateAt.END);
         textView.setOnTouchListener(new TouchTextView(new SpannableString(text)));
         textView.setHorizontallyScrolling(false);
-        setTextFormat(textView, hostConfig.getFontFamily(), textBlock.GetTextWeight());
-        setTextSize(context, textView, textBlock.GetTextSize(), hostConfig);
+        setTextFormat(textView, hostConfig.GetFontFamily(textBlock.GetFontStyle()), textBlock.GetTextWeight());
+        setTextSize(textView, textBlock.GetFontStyle(), textBlock.GetTextSize(), hostConfig);
         setSpacingAndSeparator(context, viewGroup, textBlock.GetSpacing(), textBlock.GetSeparator(), hostConfig, true);
         setTextColor(textView, textBlock.GetTextColor(), hostConfig, textBlock.GetIsSubtle(), containerStyle);
         setTextAlignment(textView, textBlock.GetHorizontalAlignment());

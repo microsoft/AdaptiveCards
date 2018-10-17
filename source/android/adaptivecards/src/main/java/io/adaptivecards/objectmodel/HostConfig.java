@@ -35,136 +35,8 @@ public class HostConfig {
     }
   }
 
-  public void setFontFamily(String value) {
-    AdaptiveCardObjectModelJNI.HostConfig_fontFamily_set(swigCPtr, this, value);
-  }
-
-  public String getFontFamily() {
-    return AdaptiveCardObjectModelJNI.HostConfig_fontFamily_get(swigCPtr, this);
-  }
-
-  public void setFontSizes(FontSizesConfig value) {
-    AdaptiveCardObjectModelJNI.HostConfig_fontSizes_set(swigCPtr, this, FontSizesConfig.getCPtr(value), value);
-  }
-
-  public FontSizesConfig getFontSizes() {
-    long cPtr = AdaptiveCardObjectModelJNI.HostConfig_fontSizes_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new FontSizesConfig(cPtr, false);
-  }
-
-  public void setFontWeights(FontWeightsConfig value) {
-    AdaptiveCardObjectModelJNI.HostConfig_fontWeights_set(swigCPtr, this, FontWeightsConfig.getCPtr(value), value);
-  }
-
-  public FontWeightsConfig getFontWeights() {
-    long cPtr = AdaptiveCardObjectModelJNI.HostConfig_fontWeights_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new FontWeightsConfig(cPtr, false);
-  }
-
-  public void setSupportsInteractivity(boolean value) {
-    AdaptiveCardObjectModelJNI.HostConfig_supportsInteractivity_set(swigCPtr, this, value);
-  }
-
-  public boolean getSupportsInteractivity() {
-    return AdaptiveCardObjectModelJNI.HostConfig_supportsInteractivity_get(swigCPtr, this);
-  }
-
-  public void setImageBaseUrl(String value) {
-    AdaptiveCardObjectModelJNI.HostConfig_imageBaseUrl_set(swigCPtr, this, value);
-  }
-
-  public String getImageBaseUrl() {
-    return AdaptiveCardObjectModelJNI.HostConfig_imageBaseUrl_get(swigCPtr, this);
-  }
-
-  public void setImageSizes(ImageSizesConfig value) {
-    AdaptiveCardObjectModelJNI.HostConfig_imageSizes_set(swigCPtr, this, ImageSizesConfig.getCPtr(value), value);
-  }
-
-  public ImageSizesConfig getImageSizes() {
-    long cPtr = AdaptiveCardObjectModelJNI.HostConfig_imageSizes_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new ImageSizesConfig(cPtr, false);
-  }
-
-  public void setImage(ImageConfig value) {
-    AdaptiveCardObjectModelJNI.HostConfig_image_set(swigCPtr, this, ImageConfig.getCPtr(value), value);
-  }
-
-  public ImageConfig getImage() {
-    long cPtr = AdaptiveCardObjectModelJNI.HostConfig_image_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new ImageConfig(cPtr, false);
-  }
-
-  public void setSeparator(SeparatorConfig value) {
-    AdaptiveCardObjectModelJNI.HostConfig_separator_set(swigCPtr, this, SeparatorConfig.getCPtr(value), value);
-  }
-
-  public SeparatorConfig getSeparator() {
-    long cPtr = AdaptiveCardObjectModelJNI.HostConfig_separator_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SeparatorConfig(cPtr, false);
-  }
-
-  public void setSpacing(SpacingConfig value) {
-    AdaptiveCardObjectModelJNI.HostConfig_spacing_set(swigCPtr, this, SpacingConfig.getCPtr(value), value);
-  }
-
-  public SpacingConfig getSpacing() {
-    long cPtr = AdaptiveCardObjectModelJNI.HostConfig_spacing_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new SpacingConfig(cPtr, false);
-  }
-
-  public void setAdaptiveCard(AdaptiveCardConfig value) {
-    AdaptiveCardObjectModelJNI.HostConfig_adaptiveCard_set(swigCPtr, this, AdaptiveCardConfig.getCPtr(value), value);
-  }
-
-  public AdaptiveCardConfig getAdaptiveCard() {
-    long cPtr = AdaptiveCardObjectModelJNI.HostConfig_adaptiveCard_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new AdaptiveCardConfig(cPtr, false);
-  }
-
-  public void setImageSet(ImageSetConfig value) {
-    AdaptiveCardObjectModelJNI.HostConfig_imageSet_set(swigCPtr, this, ImageSetConfig.getCPtr(value), value);
-  }
-
-  public ImageSetConfig getImageSet() {
-    long cPtr = AdaptiveCardObjectModelJNI.HostConfig_imageSet_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new ImageSetConfig(cPtr, false);
-  }
-
-  public void setFactSet(FactSetConfig value) {
-    AdaptiveCardObjectModelJNI.HostConfig_factSet_set(swigCPtr, this, FactSetConfig.getCPtr(value), value);
-  }
-
-  public FactSetConfig getFactSet() {
-    long cPtr = AdaptiveCardObjectModelJNI.HostConfig_factSet_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new FactSetConfig(cPtr, false);
-  }
-
-  public void setActions(ActionsConfig value) {
-    AdaptiveCardObjectModelJNI.HostConfig_actions_set(swigCPtr, this, ActionsConfig.getCPtr(value), value);
-  }
-
-  public ActionsConfig getActions() {
-    long cPtr = AdaptiveCardObjectModelJNI.HostConfig_actions_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new ActionsConfig(cPtr, false);
-  }
-
-  public void setContainerStyles(ContainerStylesDefinition value) {
-    AdaptiveCardObjectModelJNI.HostConfig_containerStyles_set(swigCPtr, this, ContainerStylesDefinition.getCPtr(value), value);
-  }
-
-  public ContainerStylesDefinition getContainerStyles() {
-    long cPtr = AdaptiveCardObjectModelJNI.HostConfig_containerStyles_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new ContainerStylesDefinition(cPtr, false);
-  }
-
-  public void setMedia(MediaConfig value) {
-    AdaptiveCardObjectModelJNI.HostConfig_media_set(swigCPtr, this, MediaConfig.getCPtr(value), value);
-  }
-
-  public MediaConfig getMedia() {
-    long cPtr = AdaptiveCardObjectModelJNI.HostConfig_media_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new MediaConfig(cPtr, false);
+  public HostConfig() {
+    this(AdaptiveCardObjectModelJNI.new_HostConfig(), true);
   }
 
   public static HostConfig Deserialize(JsonValue json) {
@@ -175,8 +47,148 @@ public class HostConfig {
     return new HostConfig(AdaptiveCardObjectModelJNI.HostConfig_DeserializeFromString(jsonString), true);
   }
 
-  public HostConfig() {
-    this(AdaptiveCardObjectModelJNI.new_HostConfig(), true);
+  public FontStyleDefinition GetFontStyle(FontStyle style) {
+    return new FontStyleDefinition(AdaptiveCardObjectModelJNI.HostConfig_GetFontStyle(swigCPtr, this, style.swigValue()), true);
+  }
+
+  public String GetFontFamily(FontStyle style) {
+    return AdaptiveCardObjectModelJNI.HostConfig_GetFontFamily__SWIG_0(swigCPtr, this, style.swigValue());
+  }
+
+  public long GetFontSize(FontStyle style, TextSize size) {
+    return AdaptiveCardObjectModelJNI.HostConfig_GetFontSize(swigCPtr, this, style.swigValue(), size.swigValue());
+  }
+
+  public long GetFontWeight(FontStyle style, TextWeight weight) {
+    return AdaptiveCardObjectModelJNI.HostConfig_GetFontWeight(swigCPtr, this, style.swigValue(), weight.swigValue());
+  }
+
+  public String GetFontFamily() {
+    return AdaptiveCardObjectModelJNI.HostConfig_GetFontFamily__SWIG_1(swigCPtr, this);
+  }
+
+  public void SetFontFamily(String value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetFontFamily(swigCPtr, this, value);
+  }
+
+  public FontSizesConfig GetFontSizes() {
+    return new FontSizesConfig(AdaptiveCardObjectModelJNI.HostConfig_GetFontSizes(swigCPtr, this), true);
+  }
+
+  public void SetFontSizes(FontSizesConfig value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetFontSizes(swigCPtr, this, FontSizesConfig.getCPtr(value), value);
+  }
+
+  public FontWeightsConfig GetFontWeights() {
+    return new FontWeightsConfig(AdaptiveCardObjectModelJNI.HostConfig_GetFontWeights(swigCPtr, this), true);
+  }
+
+  public void SetFontWeights(FontWeightsConfig value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetFontWeights(swigCPtr, this, FontWeightsConfig.getCPtr(value), value);
+  }
+
+  public FontStylesDefinition GetFontStyles() {
+    return new FontStylesDefinition(AdaptiveCardObjectModelJNI.HostConfig_GetFontStyles(swigCPtr, this), true);
+  }
+
+  public void SetFontStyles(FontStylesDefinition value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetFontStyles(swigCPtr, this, FontStylesDefinition.getCPtr(value), value);
+  }
+
+  public boolean GetSupportsInteractivity() {
+    return AdaptiveCardObjectModelJNI.HostConfig_GetSupportsInteractivity(swigCPtr, this);
+  }
+
+  public void SetSupportsInteractivity(boolean value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetSupportsInteractivity(swigCPtr, this, value);
+  }
+
+  public String GetImageBaseUrl() {
+    return AdaptiveCardObjectModelJNI.HostConfig_GetImageBaseUrl(swigCPtr, this);
+  }
+
+  public void SetImageBaseUrl(String value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetImageBaseUrl(swigCPtr, this, value);
+  }
+
+  public ImageSizesConfig GetImageSizes() {
+    return new ImageSizesConfig(AdaptiveCardObjectModelJNI.HostConfig_GetImageSizes(swigCPtr, this), true);
+  }
+
+  public void SetImageSizes(ImageSizesConfig value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetImageSizes(swigCPtr, this, ImageSizesConfig.getCPtr(value), value);
+  }
+
+  public ImageConfig GetImage() {
+    return new ImageConfig(AdaptiveCardObjectModelJNI.HostConfig_GetImage(swigCPtr, this), true);
+  }
+
+  public void SetImage(ImageConfig value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetImage(swigCPtr, this, ImageConfig.getCPtr(value), value);
+  }
+
+  public SeparatorConfig GetSeparator() {
+    return new SeparatorConfig(AdaptiveCardObjectModelJNI.HostConfig_GetSeparator(swigCPtr, this), true);
+  }
+
+  public void SetSeparator(SeparatorConfig value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetSeparator(swigCPtr, this, SeparatorConfig.getCPtr(value), value);
+  }
+
+  public SpacingConfig GetSpacing() {
+    return new SpacingConfig(AdaptiveCardObjectModelJNI.HostConfig_GetSpacing(swigCPtr, this), true);
+  }
+
+  public void SetSpacing(SpacingConfig value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetSpacing(swigCPtr, this, SpacingConfig.getCPtr(value), value);
+  }
+
+  public AdaptiveCardConfig GetAdaptiveCard() {
+    return new AdaptiveCardConfig(AdaptiveCardObjectModelJNI.HostConfig_GetAdaptiveCard(swigCPtr, this), true);
+  }
+
+  public void SetAdaptiveCard(AdaptiveCardConfig value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetAdaptiveCard(swigCPtr, this, AdaptiveCardConfig.getCPtr(value), value);
+  }
+
+  public ImageSetConfig GetImageSet() {
+    return new ImageSetConfig(AdaptiveCardObjectModelJNI.HostConfig_GetImageSet(swigCPtr, this), true);
+  }
+
+  public void SetImageSet(ImageSetConfig value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetImageSet(swigCPtr, this, ImageSetConfig.getCPtr(value), value);
+  }
+
+  public FactSetConfig GetFactSet() {
+    return new FactSetConfig(AdaptiveCardObjectModelJNI.HostConfig_GetFactSet(swigCPtr, this), true);
+  }
+
+  public void SetFactSet(FactSetConfig value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetFactSet(swigCPtr, this, FactSetConfig.getCPtr(value), value);
+  }
+
+  public ActionsConfig GetActions() {
+    return new ActionsConfig(AdaptiveCardObjectModelJNI.HostConfig_GetActions(swigCPtr, this), true);
+  }
+
+  public void SetActions(ActionsConfig value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetActions(swigCPtr, this, ActionsConfig.getCPtr(value), value);
+  }
+
+  public ContainerStylesDefinition GetContainerStyles() {
+    return new ContainerStylesDefinition(AdaptiveCardObjectModelJNI.HostConfig_GetContainerStyles(swigCPtr, this), true);
+  }
+
+  public void SetContainerStyles(ContainerStylesDefinition value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetContainerStyles(swigCPtr, this, ContainerStylesDefinition.getCPtr(value), value);
+  }
+
+  public MediaConfig GetMedia() {
+    return new MediaConfig(AdaptiveCardObjectModelJNI.HostConfig_GetMedia(swigCPtr, this), true);
+  }
+
+  public void SetMedia(MediaConfig value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetMedia(swigCPtr, this, MediaConfig.getCPtr(value), value);
   }
 
 }

@@ -85,6 +85,15 @@ public class TextInput extends BaseInputElement {
     AdaptiveCardObjectModelJNI.TextInput_SetTextInputStyle(swigCPtr, this, value.swigValue());
   }
 
+  public BaseActionElement GetInlineAction() {
+    long cPtr = AdaptiveCardObjectModelJNI.TextInput_GetInlineAction(swigCPtr, this);
+    return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
+  }
+
+  public void SetInlineAction(BaseActionElement action) {
+    AdaptiveCardObjectModelJNI.TextInput_SetInlineAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
+  }
+
   public static TextInput dynamic_cast(BaseCardElement baseCardElement) {
     long cPtr = AdaptiveCardObjectModelJNI.TextInput_dynamic_cast(BaseCardElement.getCPtr(baseCardElement), baseCardElement);
     return (cPtr == 0) ? null : new TextInput(cPtr, true);

@@ -226,9 +226,9 @@ namespace AdaptiveSharedNamespace
         static HostConfig DeserializeFromString(const std::string jsonString);
 
         FontStyleDefinition GetFontStyle(FontStyle style);
-        std::string getFontFamily(FontStyle style);
-        unsigned int getFontSize(FontStyle style, TextSize size);
-        unsigned int getFontWeight(FontStyle style, TextWeight weight);
+        std::string GetFontFamily(FontStyle style);
+        unsigned int GetFontSize(FontStyle style, TextSize size);
+        unsigned int GetFontWeight(FontStyle style, TextWeight weight);
 
         std::string GetFontFamily() const;
         void SetFontFamily(const std::string& value);
