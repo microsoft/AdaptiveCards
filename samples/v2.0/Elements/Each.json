@@ -1,0 +1,43 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"data": {
+		"disney": [
+			{
+				"name": "Mickey",
+				"animal": "Mouse"
+			},
+			{
+				"name": "Donald",
+				"animal": "Duck"
+			},
+			{
+				"name": "Pluto",
+				"animal": "Dog"
+			}
+		]
+	},
+	"body": [
+		{
+			"{{#each disney}}": {
+				"type": "TextBlock",
+				"text": "{{name}} is a {{animal}}"
+			}
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "These"
+		},
+		{
+			"type": "Action.Submit",
+			"title": "are"
+		},
+		{
+			"type": "Action.Submit",
+			"title": "actions"
+		}
+	]
+}

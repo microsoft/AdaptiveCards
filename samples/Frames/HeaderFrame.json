@@ -4,6 +4,20 @@
 	"version": "1.0",
 	"body": [
 		{
+			"type": "Image",
+			"url": "{{card.header.image}}"
+		},
+		{
+			"type": "TextBlock",
+			"text": "{{card.header.title}}",
+			"size": "extraLarge"
+		},
+		{
+			"type": "TextBlock",
+			"text": "{{card.header.subtitle}}",
+			"size": "large"
+		},
+		{
 			"type": "Container",
 			"items": "{{card.body}}"
 		},

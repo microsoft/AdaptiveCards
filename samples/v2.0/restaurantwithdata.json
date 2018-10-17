@@ -1,0 +1,74 @@
+{
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"data": {
+		"metatags": {
+			"application-name": [
+				"Yelp"
+			],
+			"og:url": [
+				"https://www.yelp.com/biz/la-isla-cuisine-redmond-2"
+			]
+		},
+		"microdata": {
+			"Restaurant": [
+				{
+					"@context": "http://schema.org/",
+					"@type": "Restaurant",
+					"aggregateRating": {
+						"@context": "http://schema.org/",
+						"@type": "AggregateRating",
+						"ratingValue": "4.0",
+						"reviewCount": "445"
+					},
+					"image": "https://s3-media2.fl.yelpcdn.com/bphoto/K8cqFzbsaHwLPjOBLZpaCQ/ls.jpg",
+					"priceRange": "$11-30",
+					"name": "La Isla Cuisine",
+					"address": {
+						"@context": "http://schema.org/",
+						"@type": "PostalAddress",
+						"streetAddress": "16505 Redmond Way",
+						"addressLocality": "Redmond",
+						"addressRegion": "WA",
+						"postalCode": "98052",
+						"addressCountry": "US"
+					},
+					"telephone": "(425) 298-0374"
+				}
+			]
+		},
+		"content": "Check out this highly rated restaurant in the neighborhood!"
+	},
+	"speak": "This is {{microdata.Restaurant[0].name}}",
+	"fallbackText": "This is {{microdata.Restaurant[0].name}}",
+	"knownLayouts": [ "default", "compact" ],
+	"header": {
+		"title": "{{microdata.Restaurant[0].name}}",
+		"subtitle": "{{microdata.Restaurant[0].aggregateRating.ratingValue}} stars, {{microdata.Restaurant[0].aggregateRating.reviewCount}} reviews",
+		"image": "{{microdata.Restaurant[0].image}}"
+	},
+	"actions": [
+		{
+			"type": "Action.OpenUrl",
+			"title": "Direction to {{microdata.Restaurant[0].name}}",
+			"url": "{{metatags['og:url'][0]}}"
+		}
+	],
+	"body": [
+		{
+			"visibleLayouts": [ "default" ],
+			"type": "Container",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "{{microdata.Restaurant[0].address.streetAddress}}\n {{microdata.Restaurant[0].address.addressLocality}}, {{microdata.Restaurant[0].address.addressRegion}} {{microdata.Restaurant[0].address.postalCode}}",
+					"isSubtle": true
+				}
+			]
+		}
+	],
+	"extensions": {
+		"attribution": "{{metatags['application-name'][0]}}",
+		"profile_imagee": "{{microdata.Restaurant[0].image}}"
+	}
+}

@@ -284,7 +284,7 @@ Json::Value DataBindObject(const Json::Value& sourceCard, const Json::Value& fra
         }
         else
         {
-            // Standard case. Data bind the value in "key" : "value" and add it to the result;
+            // Standard case. Data bind the json value in "key" : "value" and add it to the result;
             Json::Value elementResult = DataBindJson(sourceCard, *it);
             if (elementResult.empty())
             {
@@ -335,17 +335,26 @@ Json::Value DataBindJson(const Json::Value& sourceCard, const Json::Value& frame
 
 Json::Value ApplyFrame(const Json::Value& sourceCard, const Json::Value& frame)
 {
-    Json::Value result = DataBindJson(sourceCard, frame);
-    Json::Value data;
+    Json::Value dataBoundCard;
+
+    // First bind the card to its data if present
     try
     {
-        data = sourceCard["data"];
+        Json::Value data = sourceCard["data"];
+        dataBoundCard = DataBindJson(data, sourceCard);
     }
     catch (...)
     {
-        data = sourceCard;
+        dataBoundCard = sourceCard;
     }
-    return DataBindJson(data, result);
+
+    // Create a data source for the frame binding which has the card stored as "card"
+    // (and someday the runtime object stored as "runtime")
+    Json::Value dataSource;
+    dataSource["card"] = dataBoundCard;
+
+    // Then bind the bound card to its frame
+    return DataBindJson(dataSource, frame);
 }
 
 bool ShouldJsonObjectBePruned(Json::Value value)
