@@ -52,7 +52,7 @@
                         Icon="Document"
                         Label="Frame"
                         IsCompact="True"
-                        Click="AppBarFrameEditor_Click"/>                    
+                        Click="AppBarFrameEditor_Click"/>
                 </StackPanel>
             </CommandBar.Content>
             <CommandBar.SecondaryCommands>

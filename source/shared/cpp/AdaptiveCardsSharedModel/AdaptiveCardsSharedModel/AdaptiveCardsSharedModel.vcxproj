@@ -171,7 +171,7 @@
     <ClCompile Include="..\..\ObjectModel\Enums.cpp" />
     <ClCompile Include="..\..\ObjectModel\Fact.cpp" />
     <ClCompile Include="..\..\ObjectModel\FactSet.cpp" />
-    <ClCompile Include="..\..\ObjectModel\FrameTranslator.cpp" />      
+    <ClCompile Include="..\..\ObjectModel\FrameTranslator.cpp" />
     <ClCompile Include="..\..\ObjectModel\HostConfig.cpp" />
     <ClCompile Include="..\..\ObjectModel\Image.cpp" />
     <ClCompile Include="..\..\ObjectModel\ImageSet.cpp" />
