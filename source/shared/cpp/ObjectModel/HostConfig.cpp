@@ -527,7 +527,7 @@ unsigned int FontWeightsConfig::GetDefaultFontWeight(TextWeight weight)
     }
 }
 
-std::string HostConfig::getFontFamily(FontStyle style)
+std::string HostConfig::GetFontFamily(FontStyle style)
 {
     // desired font family
     auto fontFamilyValue = GetFontStyle(style).fontFamily;
@@ -550,7 +550,7 @@ std::string HostConfig::getFontFamily(FontStyle style)
     return fontFamilyValue;
 }
 
-unsigned int HostConfig::getFontSize(FontStyle style, TextSize size)
+unsigned int HostConfig::GetFontSize(FontStyle style, TextSize size)
 {
     // desired font size
     auto result = GetFontStyle(style).fontSizes.GetFontSize(size);
@@ -574,7 +574,7 @@ unsigned int HostConfig::getFontSize(FontStyle style, TextSize size)
     return result;
 }
 
-unsigned int HostConfig::getFontWeight(FontStyle style, TextWeight weight)
+unsigned int HostConfig::GetFontWeight(FontStyle style, TextWeight weight)
 {
     // desired font weight
     auto result = GetFontStyle(style).fontWeights.GetFontWeight(weight);
