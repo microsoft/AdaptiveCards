@@ -137,17 +137,15 @@ FontStylesDefinition FontStylesDefinition::Deserialize(const Json::Value& json, 
 {
     FontStylesDefinition result;
 
-    result.default = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontStyleDefinition>(json,
-                                                                                         AdaptiveCardSchemaKey::Default,
-                                                                                         defaultValue.default,
+    result.defaultStyle = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontStyleDefinition>(json,
+                                                                                         AdaptiveCardSchemaKey::Default, defaultValue.defaultStyle,
                                                                                          FontStyleDefinition::Deserialize);
-    result.display = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontStyleDefinition>(json,
-                                                                                         AdaptiveCardSchemaKey::Display,
-                                                                                         defaultValue.default,
+    result.displayStyle = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontStyleDefinition>(json,
+                                                                                         AdaptiveCardSchemaKey::Display, defaultValue.defaultStyle,
                                                                                          FontStyleDefinition::Deserialize);
-    result.monospace = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontStyleDefinition>(
-        json, AdaptiveCardSchemaKey::Monospace, defaultValue.default, FontStyleDefinition::Deserialize);
-
+    result.monospaceStyle = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontStyleDefinition>(json,
+                                                                                         AdaptiveCardSchemaKey::Monospace, defaultValue.defaultStyle,
+                                                                                         FontStyleDefinition::Deserialize);
     return result;
 }
 
@@ -424,12 +422,12 @@ FontStyleDefinition HostConfig::GetFontStyle(FontStyle style)
     switch (style)
     {
     case FontStyle::Display:
-        return fontStyles.display;
+        return fontStyles.displayStyle;
     case FontStyle::Monospace:
-        return fontStyles.monospace;
+        return fontStyles.monospaceStyle;
     case FontStyle::Default:
     default:
-        return fontStyles.default;
+        return fontStyles.defaultStyle;
     }
 }
 
@@ -537,7 +535,7 @@ std::string HostConfig::getFontFamily(FontStyle style)
     if (fontFamilyValue.empty())
     {
         // default font family
-        fontFamilyValue = fontStyles.default.fontFamily;
+        fontFamilyValue = fontStyles.defaultStyle.fontFamily;
         if (fontFamilyValue.empty())
         {
             // deprecated font family
@@ -561,7 +559,7 @@ unsigned int HostConfig::getFontSize(FontStyle style, TextSize size)
     if (result == UINT_MAX)
     {
         // default font size
-        result = fontStyles.default.fontSizes.GetFontSize(size);
+        result = fontStyles.defaultStyle.fontSizes.GetFontSize(size);
         if (result == UINT_MAX)
         {
             // deprecated font size
@@ -585,7 +583,7 @@ unsigned int HostConfig::getFontWeight(FontStyle style, TextWeight weight)
     if (result == UINT_MAX)
     {
         // default font weight
-        result = fontStyles.default.fontWeights.GetFontWeight(weight);
+        result = fontStyles.defaultStyle.fontWeights.GetFontWeight(weight);
         if (result == UINT_MAX)
         {
             // deprecated font weight

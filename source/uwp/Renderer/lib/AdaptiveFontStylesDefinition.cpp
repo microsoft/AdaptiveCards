@@ -16,9 +16,9 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveFontStylesDefinition::RuntimeClassInitialize(FontStylesDefinition stylesDefinition) noexcept
     {
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontStyleDefinition>(m_default.GetAddressOf(), stylesDefinition.default));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontStyleDefinition>(m_display.GetAddressOf(), stylesDefinition.display));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontStyleDefinition>(m_monospace.GetAddressOf(), stylesDefinition.monospace));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontStyleDefinition>(m_default.GetAddressOf(), stylesDefinition.defaultStyle));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontStyleDefinition>(m_display.GetAddressOf(), stylesDefinition.displayStyle));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontStyleDefinition>(m_monospace.GetAddressOf(), stylesDefinition.monospaceStyle));
 
         return S_OK;
     }
