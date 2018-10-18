@@ -2640,14 +2640,17 @@ class ActionButton {
     constructor(action: Action, parentContainerStyle: string) {
         this.action = action;
         this._parentContainerStyle = parentContainerStyle;
+    }
 
+    onClick: (actionButton: ActionButton) => void = null;
+
+    render(alignment: Enums.ActionAlignment) {
         this.action.render();
+        this.action.renderedElement.style.flex = alignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
         this.action.renderedElement.onclick = (e) => { this.click(); };
 
         this.updateCssStyle();
     }
-
-    onClick: (actionButton: ActionButton) => void = null;
 
     click() {
         if (this.onClick != null) {
@@ -3473,13 +3476,12 @@ class ActionCollection {
 
                     if (!actionButton) {
                         actionButton = new ActionButton(this.items[i], parentContainerStyle);
-                        actionButton.action.renderedElement.style.overflow = "hidden";
-                        actionButton.action.renderedElement.style.overflow = "table-cell";
-                        actionButton.action.renderedElement.style.flex = this._owner.hostConfig.actions.actionAlignment === Enums.ActionAlignment.Stretch ? "0 1 100%" : "0 1 auto";
                         actionButton.onClick = (ab) => { this.actionClicked(ab); };
 
                         this.buttons.push(actionButton);
                     }
+
+                    actionButton.render(this._owner.hostConfig.actions.actionAlignment);
 
                     buttonStrip.appendChild(actionButton.action.renderedElement);
 

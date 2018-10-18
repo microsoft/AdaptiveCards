@@ -490,6 +490,17 @@
     border-left: 1px solid #D2D2D2;
 }
 
+.acd-toolbar-label {
+    color: black;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.acd-toolbar-choicePicker {
+    flex: 0 0 250px;
+    margin: 0px 8px 0px 8px;
+}
+
 .acd-toolbar-button {
     font-family: 'Segoe UI', sans-serif;
     font-size: 14px;
