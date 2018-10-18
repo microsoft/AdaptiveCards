@@ -24,6 +24,59 @@
 		{
 			"type": "TextBlock",
 			"text": "Check out [Adaptive Cards](http://adaptivecards.io)"
-		}
+		},
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Choice 1 Check out [Adaptive Cards](http://adaptivecards.io) hello world [Adaptive Cards](http://adaptivecards.io)",
+                    "wrap": true
+                }
+            ],
+            "selectAction": {
+                "type": "Action.Submit",
+                "title": "Submit action",
+                "data": {
+                    "info": "Data of choice 1"
+                }
+            }
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Choice 1 Check out [Adaptive Cards](http://adaptivecards.io) hello world [Adaptive Cards](http://adaptivecards.io)",
+                    "horizontalAlignment": "left",
+                    "wrap": true
+                }
+            ],
+            "selectAction": {
+                "type": "Action.Submit",
+                "title": "Submit action",
+                "data": {
+                    "info": "Data of choice 1"
+                }
+            }
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Choice 1 Check out [Adaptive Cards](http://adaptivecards.io) hello world [Adaptive Cards](http://adaptivecards.io)",
+                    "horizontalAlignment": "right",
+                    "wrap": true
+                }
+            ],
+            "selectAction": {
+                "type": "Action.Submit",
+                "title": "Submit action",
+                "data": {
+                    "info": "Data of choice 1"
+                }
+            }
+        }
 	]
 }
