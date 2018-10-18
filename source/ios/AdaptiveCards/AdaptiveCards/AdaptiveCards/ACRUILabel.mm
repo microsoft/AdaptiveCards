@@ -62,24 +62,12 @@
     CGPoint location = point;
     location.x -= self.textContainerInset.left;
     location.y -= self.textContainerInset.top;
-    CGFloat fraction = 20.0f;
-    // find character under touch
-    NSUInteger characterIndex = [self.layoutManager characterIndexForPoint:location inTextContainer:self.textContainer fractionOfDistanceBetweenInsertionPoints:&fraction];
-    CGPoint endPoint =[self.layoutManager locationForGlyphAtIndex:[self.layoutManager glyphIndexForCharacterAtIndex:self.textStorage.length - 1]];
-    CGFloat characterWidth = 2 * endPoint.x - [self.layoutManager locationForGlyphAtIndex:[self.layoutManager glyphIndexForCharacterAtIndex:self.textStorage.length - 2]].x;
-
-    NSLog(@"character index x= %tu", characterIndex	);
-    if (characterIndex < self.textStorage.length) {
-        CGRect linesegment =
-        [self.layoutManager lineFragmentRectForGlyphAtIndex:[self.layoutManager glyphIndexForCharacterAtIndex:self.textStorage.length - 1] effectiveRange:nil];
-        NSLog(@"linesegment x = %f, y = %f, w = %f, h = %f", linesegment.origin.x, linesegment.origin.y, linesegment.size.width, linesegment.size.height);
-        NSLog(@"location x= %f, y=%f", location.x, location.y);
-        if(characterIndex == self.textStorage.length - 1 && location.x > characterWidth	){
-            return nil;
-        }
-        NSURL *url = nil;
-        url = [self.textStorage attribute:NSLinkAttributeName atIndex:characterIndex effectiveRange:NULL];
-        if (url != nil) {
+    CGFloat fraction = 0.0f;
+    NSUInteger characterIndex = [self.layoutManager characterIndexForPoint:location
+                                                           inTextContainer:self.textContainer
+                                  fractionOfDistanceBetweenInsertionPoints:&fraction];
+    if (!(fraction == 0.0 || fraction == 1.0) && characterIndex < self.textStorage.length) {
+        if ([self.textStorage attribute:NSLinkAttributeName atIndex:characterIndex effectiveRange:NULL]) {
             return self;
         }
     }
