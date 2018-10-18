@@ -36,8 +36,9 @@ namespace AdaptiveCards.Rendering.Wpf
                 var topMargin = actionsConfig.ActionsOrientation == ActionsOrientation.Horizontal
                     ? context.Config.GetSpacing(actionsConfig.Spacing)
                     : context.Config.GetSpacing(actionsConfig.Spacing) - actionsConfig.ButtonSpacing;
+                var outerMargin = context.Config.GetSpacing(AdaptiveSpacing.Padding);
 
-                uiActionBar.Margin = new Thickness(0, topMargin, 0, 0);
+                uiActionBar.Margin = new Thickness(outerMargin, topMargin, outerMargin, outerMargin);
 
                 uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                 Grid.SetRow(uiActionBar, uiContainer.RowDefinitions.Count - 1);

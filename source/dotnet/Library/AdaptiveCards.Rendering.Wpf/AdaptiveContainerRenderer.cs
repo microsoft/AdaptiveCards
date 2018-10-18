@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -12,16 +14,23 @@ namespace AdaptiveCards.Rendering.Wpf
             //uiContainer.Margin = new Thickness(context.Config.Spacing.Padding);
             uiContainer.Style = context.GetStyle("Adaptive.Container");
 
-            if (container.Style != null)
-            {
-                // Apply background color
-                var containerStyle = context.Config.ContainerStyles.Default;
-                if (container.Style == AdaptiveContainerStyle.Emphasis)
-                {
-                    containerStyle = context.Config.ContainerStyles.Emphasis;
-                }
+            var parentContainerStyle = context.ContainerStyle;
+            var thisContainerStyle = container.Style ?? parentContainerStyle;
+            var parentDesiredMarginFromParent = context.DesiredMarginFromParent;
+            context.ContainerStyle = thisContainerStyle;
 
-                uiContainer.SetBackgroundColor(containerStyle.BackgroundColor, context);
+            // If style is different, we need to apply background
+            if (parentContainerStyle != thisContainerStyle)
+            {
+                uiContainer.SetBackgroundColor(context.Config.ContainerStyles.Get(thisContainerStyle).BackgroundColor, context);
+
+                // And set desired margin for children
+                context.DesiredMarginFromParent = new AdaptiveThickness(AdaptiveSpacing.Padding);
+            }
+            else
+            {
+                // Ensure no margin for children is added
+                context.DesiredMarginFromParent = new AdaptiveThickness(AdaptiveSpacing.None);
             }
 
             switch (container.VerticalContentAlignment)
@@ -41,18 +50,24 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (container.SelectAction != null)
             {
-                return context.RenderSelectAction(container.SelectAction, uiContainer);
+                var renderedSelectAction = context.RenderSelectAction(container.SelectAction, uiContainer);
+                context.ContainerStyle = parentContainerStyle;
+                return renderedSelectAction;
             }
 
             Grid uiOuterContainer = new Grid();
             uiOuterContainer.Children.Add(uiContainer);
             Border border = new Border();
             border.Child = uiOuterContainer;
+            context.ContainerStyle = parentContainerStyle;
             return border;
         }
 
         public static void AddContainerElements(Grid uiContainer, IList<AdaptiveElement> elements, AdaptiveRenderContext context)
         {
+            var parentDesiredMarginFromParent = context.DesiredMarginFromParent;
+            List<Tuple<AdaptiveElement, FrameworkElement>> renderedElements = new List<Tuple<AdaptiveElement, FrameworkElement>>();
+
             foreach (var cardElement in elements)
             {
                 // each element has a row
@@ -94,7 +109,21 @@ namespace AdaptiveCards.Rendering.Wpf
                         }
                     }
 
+                    renderedElements.Add(new Tuple<AdaptiveElement, FrameworkElement>(cardElement, uiElement));
                 }
+            }
+
+            // Apply margins from parent
+            // We do this after rendering to make sure we apply to the first and last RENDERED child... since a child could fail to render, changing which one is "last"
+            foreach (var renderedElement in renderedElements)
+            {
+                var marginFromParent = parentDesiredMarginFromParent.CombineWith(renderedElement.Item1.MarginFromParent);
+
+                renderedElement.Item2.Margin = new Thickness(
+                    left: context.Config.GetSpacing(marginFromParent.Left.Value),
+                    top: renderedElement == renderedElements.First() ? context.Config.GetSpacing(marginFromParent.Top.Value) : renderedElement.Item2.Margin.Top,
+                    right: context.Config.GetSpacing(marginFromParent.Right.Value),
+                    bottom: renderedElement == renderedElements.Last() ? context.Config.GetSpacing(marginFromParent.Bottom.Value) : renderedElement.Item2.Margin.Bottom);
             }
         }
 

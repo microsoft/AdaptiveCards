@@ -99,11 +99,15 @@ namespace AdaptiveCards
                 if (typeof(AdaptiveInput).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()) && jObject.Value<string>("id") == null)
                     throw new AdaptiveSerializationException($"Required property 'id' not found on '{typeName}'");
 
-                var result = (AdaptiveTypedElement)Activator.CreateInstance(type);
-                serializer.Populate(jObject.CreateReader(), result);
+                try
+                {
+                    var result = (AdaptiveTypedElement)Activator.CreateInstance(type);
+                    serializer.Populate(jObject.CreateReader(), result);
 
-                HandleAdditionalProperties(result);
-                return result;
+                    HandleAdditionalProperties(result);
+                    return result;
+                }
+                catch { return null; }
             }
 
             Warnings.Add(new AdaptiveWarning(-1, $"Unknown element '{typeName}'"));

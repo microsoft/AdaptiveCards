@@ -10,7 +10,22 @@ namespace AdaptiveCards.Rendering
         public ContainerStyleConfig Default { get; set; } = new ContainerStyleConfig();
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public ContainerStyleConfig Emphasis { get; set; } = new ContainerStyleConfig() { };
+        public ContainerStyleConfig Emphasis { get; set; } = new ContainerStyleConfig()
+        {
+            BackgroundColor = "#FFEEEEEE"
+        };
+
+        public ContainerStyleConfig Get(AdaptiveContainerStyle style)
+        {
+            switch (style)
+            {
+                case AdaptiveContainerStyle.Emphasis:
+                    return Emphasis;
+
+                default:
+                    return Default;
+            }
+        }
     }
 
 }

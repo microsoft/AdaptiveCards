@@ -11,6 +11,9 @@ namespace AdaptiveCards.Rendering.Wpf
             var uiColumnSet = new Grid();
             uiColumnSet.Style = context.GetStyle($"Adaptive.{columnSet.Type}");
 
+            var parentDesiredMarginFromParent = context.DesiredMarginFromParent;
+            context.DesiredMarginFromParent = new AdaptiveThickness(AdaptiveSpacing.None);
+
             foreach (var column in columnSet.Columns)
             {
                 FrameworkElement uiContainer = context.Render(column);
@@ -69,8 +72,11 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (columnSet.SelectAction != null)
             {
-                return context.RenderSelectAction(columnSet.SelectAction, uiColumnSet);
+                var renderedSelectAction = context.RenderSelectAction(columnSet.SelectAction, uiColumnSet);
+                context.DesiredMarginFromParent = parentDesiredMarginFromParent;
+                return renderedSelectAction;
             }
+            context.DesiredMarginFromParent = parentDesiredMarginFromParent;
             return uiColumnSet;
         }
 

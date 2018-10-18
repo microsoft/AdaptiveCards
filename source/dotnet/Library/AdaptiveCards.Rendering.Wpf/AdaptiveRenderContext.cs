@@ -51,6 +51,10 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public IDictionary<string, Func<string>> InputBindings = new Dictionary<string, Func<string>>();
 
+        public AdaptiveContainerStyle ContainerStyle { get; set; } = AdaptiveContainerStyle.Default;
+
+        public AdaptiveThickness DesiredMarginFromParent { get; set; } = new AdaptiveThickness(AdaptiveSpacing.Padding);
+
         public event EventHandler<AdaptiveActionEventArgs> OnAction;
 
         public event EventHandler<AdaptiveMediaEventArgs> OnMediaClick;

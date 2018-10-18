@@ -41,5 +41,45 @@ namespace AdaptiveCards
         [XmlIgnore]
 #endif
         public IDictionary<string, object> AdditionalProperties { get; set;  } = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+
+        [JsonConverter(typeof(ThicknessConverter))]
+        public AdaptiveThickness MarginFromParent { get; set; }
+    }
+
+    public class ThicknessConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            return false;
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            try
+            {
+                if (reader.TokenType == JsonToken.StartObject)
+                {
+                    return serializer.Deserialize(reader, objectType);
+                }
+
+                // Just a single spacing value
+                var val = reader.Value.ToString().ToLower();
+                val = val.Substring(0, 1).ToUpper() + val.Substring(1);
+                var spacing = (AdaptiveSpacing)Enum.Parse(typeof(AdaptiveSpacing), val);
+                return new AdaptiveThickness()
+                {
+                    Left = spacing,
+                    Top = spacing,
+                    Right = spacing,
+                    Bottom = spacing
+                };
+            }
+            catch { return null; }
+        }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -94,6 +94,10 @@ namespace WpfVisualizer
                 AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(textBox.Text);
 
                 AdaptiveCard card = parseResult.Card;
+                if (card.MarginFromParent != null)
+                {
+                    MessageBox.Show(card.MarginFromParent.ToString());
+                }
 
                 RenderedAdaptiveCard renderedCard = Renderer.RenderCard(card);
                 // TODO: should we have an option to render fallback card instead of exception?
