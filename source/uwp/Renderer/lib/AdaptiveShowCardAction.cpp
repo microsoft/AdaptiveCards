@@ -6,15 +6,18 @@
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace
+{
     HRESULT AdaptiveShowCardAction::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction> showCardAction = std::make_shared<AdaptiveSharedNamespace::ShowCardAction>();
+        std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction> showCardAction =
+            std::make_shared<AdaptiveSharedNamespace::ShowCardAction>();
         return RuntimeClassInitialize(showCardAction);
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveShowCardAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction>& sharedShowCardAction) try
+    _Use_decl_annotations_ HRESULT AdaptiveShowCardAction::RuntimeClassInitialize(
+        const std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction>& sharedShowCardAction) try
     {
         if (sharedShowCardAction == nullptr)
         {
@@ -25,7 +28,8 @@ AdaptiveNamespaceStart
 
         InitializeBaseElement(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(sharedShowCardAction));
         return S_OK;
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
     IFACEMETHODIMP AdaptiveShowCardAction::get_Card(ABI::AdaptiveNamespace::IAdaptiveCard** card)
     {
@@ -38,8 +42,7 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveShowCardAction::get_ActionType(ABI::AdaptiveNamespace::ActionType* actionType)
+    _Use_decl_annotations_ HRESULT AdaptiveShowCardAction::get_ActionType(ABI::AdaptiveNamespace::ActionType* actionType)
     {
         *actionType = ABI::AdaptiveNamespace::ActionType::ShowCard;
         return S_OK;
@@ -47,7 +50,8 @@ AdaptiveNamespaceStart
 
     HRESULT AdaptiveShowCardAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel) try
     {
-        std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction> showCardAction = std::make_shared<AdaptiveSharedNamespace::ShowCardAction>();
+        std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction> showCardAction =
+            std::make_shared<AdaptiveSharedNamespace::ShowCardAction>();
         RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(showCardAction)));
 
         ComPtr<AdaptiveNamespace::AdaptiveCard> card = PeekInnards<AdaptiveNamespace::AdaptiveCard>(m_card);
@@ -59,5 +63,6 @@ AdaptiveNamespaceStart
 
         sharedModel = showCardAction;
         return S_OK;
-    } CATCH_RETURN;
-AdaptiveNamespaceEnd
+    }
+    CATCH_RETURN;
+}

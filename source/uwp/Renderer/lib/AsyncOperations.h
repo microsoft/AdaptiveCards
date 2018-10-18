@@ -7,29 +7,28 @@
 #include "RenderedAdaptiveCard.h"
 #include "AdaptiveRenderContext.h"
 
-#define MakeAgileDispatcherCallback ::Microsoft::WRL::Callback<::Microsoft::WRL::Implements<::Microsoft::WRL::RuntimeClassFlags<::Microsoft::WRL::ClassicCom>, ::ABI::Windows::UI::Core::IDispatchedHandler, ::Microsoft::WRL::FtmBase>>
+#define MakeAgileDispatcherCallback \
+    ::Microsoft::WRL::Callback< \
+        ::Microsoft::WRL::Implements<::Microsoft::WRL::RuntimeClassFlags<::Microsoft::WRL::ClassicCom>, ::ABI::Windows::UI::Core::IDispatchedHandler, ::Microsoft::WRL::FtmBase>>
 
 /// A base class for IAsyncOperation<T> implementations for use with WRL
 template<typename T>
-class RenderAsyncBase :
-    public Microsoft::WRL::RuntimeClass<
-    Microsoft::WRL::AsyncBase<ABI::Windows::Foundation::IAsyncOperationCompletedHandler<T*>>,
-    ABI::Windows::Foundation::IAsyncOperation<T*>,
-    AdaptiveNamespace::IXamlBuilderListener>
+class RenderAsyncBase
+    : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::AsyncBase<ABI::Windows::Foundation::IAsyncOperationCompletedHandler<T*>>,
+                                          ABI::Windows::Foundation::IAsyncOperation<T*>,
+                                          AdaptiveNamespace::IXamlBuilderListener>
 {
     InspectableClass(L"Windows.Foundation.IAsyncInfo", BaseTrust)
 
-public:
-    typedef ABI::Windows::Foundation::IAsyncOperationCompletedHandler<T*> HandlerType;
+        public : typedef ABI::Windows::Foundation::IAsyncOperationCompletedHandler<T*> HandlerType;
 
-    RenderAsyncBase(
-        ABI::AdaptiveNamespace::IAdaptiveCard* card, AdaptiveNamespace::AdaptiveCardRenderer* renderer)
-        : m_card(card),
-          m_renderer(renderer)
+    RenderAsyncBase(ABI::AdaptiveNamespace::IAdaptiveCard* card, AdaptiveNamespace::AdaptiveCardRenderer* renderer) :
+        m_card(card), m_renderer(renderer)
     {
         // Get the dispatcher to we can run an async operation to build the xaml tree
         ComPtr<ABI::Windows::UI::Core::ICoreWindowStatic> coreWindowStatic;
-        THROW_IF_FAILED(Windows::Foundation::GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Core_CoreWindow).Get(), &coreWindowStatic));
+        THROW_IF_FAILED(
+            Windows::Foundation::GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Core_CoreWindow).Get(), &coreWindowStatic));
         ComPtr<ABI::Windows::UI::Core::ICoreWindow> coreWindow;
         THROW_IF_FAILED(coreWindowStatic->GetForCurrentThread(coreWindow.GetAddressOf()));
         THROW_IF_FAILED(coreWindow->get_Dispatcher(&m_dispatcher));
@@ -55,20 +54,11 @@ public:
     }
 
     // IXamlBuilderListener
-    IFACEMETHODIMP AllImagesLoaded()
-    {
-        return OnXamlImagesLoaded();
-    }
+    IFACEMETHODIMP AllImagesLoaded() { return OnXamlImagesLoaded(); }
 
-    IFACEMETHODIMP ImagesLoadingHadError()
-    {
-        return OnXamlImagesHadError();
-    }
+    IFACEMETHODIMP ImagesLoadingHadError() { return OnXamlImagesHadError(); }
 
-    IFACEMETHODIMP XamlBuilderHadError()
-    {
-        return OnXamlBuilderHadError();
-    }
+    IFACEMETHODIMP XamlBuilderHadError() { return OnXamlBuilderHadError(); }
 
 protected:
     Microsoft::WRL::ComPtr<AdaptiveNamespace::RenderedAdaptiveCard> m_renderResult;
@@ -80,57 +70,57 @@ protected:
     HRESULT OnStart(void) override
     {
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncAction> dispatcherAsyncAction;
-        m_dispatcher->RunAsync(ABI::Windows::UI::Core::CoreDispatcherPriority_Normal,
-            MakeAgileDispatcherCallback([this]() -> HRESULT
-        {
-            m_renderer->GetXamlBuilder()->AddListener(this);
-            try
-            {
-                THROW_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::RenderedAdaptiveCard>(&m_renderResult));
-                ComPtr<ABI::AdaptiveNamespace::IAdaptiveElementRendererRegistration> elementRenderers;
-                THROW_IF_FAILED(m_renderer->get_ElementRenderers(&elementRenderers));
-                ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers> resourceResolvers;
-                THROW_IF_FAILED(m_renderer->get_ResourceResolvers(&resourceResolvers));
-                ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> overrideDictionary = m_renderer->GetMergedDictionary();
+        m_dispatcher->RunAsync(
+            ABI::Windows::UI::Core::CoreDispatcherPriority_Normal,
+            MakeAgileDispatcherCallback([this]() -> HRESULT {
+                m_renderer->GetXamlBuilder()->AddListener(this);
+                try
+                {
+                    THROW_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::RenderedAdaptiveCard>(&m_renderResult));
+                    ComPtr<ABI::AdaptiveNamespace::IAdaptiveElementRendererRegistration> elementRenderers;
+                    THROW_IF_FAILED(m_renderer->get_ElementRenderers(&elementRenderers));
+                    ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers> resourceResolvers;
+                    THROW_IF_FAILED(m_renderer->get_ResourceResolvers(&resourceResolvers));
+                    ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> overrideDictionary = m_renderer->GetMergedDictionary();
 
-                ComPtr<AdaptiveNamespace::AdaptiveRenderContext> renderContext;
-                THROW_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveRenderContext>(
-                    &renderContext,
-                    m_renderer->GetHostConfig(),
-                    elementRenderers.Get(),
-                    resourceResolvers.Get(),
-                    overrideDictionary.Get(),
-                    m_renderResult.Get()));
+                    ComPtr<AdaptiveNamespace::AdaptiveRenderContext> renderContext;
+                    THROW_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveRenderContext>(&renderContext,
+                                                                                                m_renderer->GetHostConfig(),
+                                                                                                elementRenderers.Get(),
+                                                                                                resourceResolvers.Get(),
+                                                                                                overrideDictionary.Get(),
+                                                                                                m_renderResult.Get()));
 
-                m_renderer->GetXamlBuilder()->BuildXamlTreeFromAdaptiveCard(m_card.Get(), &m_rootXamlElement, m_renderer.Get(), renderContext.Get());
-            }
-            catch (...)
-            {
-                //Catch all non-Image loading related problems.
-                return XamlBuilderHadError();
-            }
-            return S_OK;
-        }).Get(),
+                    m_renderer->GetXamlBuilder()->BuildXamlTreeFromAdaptiveCard(m_card.Get(),
+                                                                                &m_rootXamlElement,
+                                                                                m_renderer.Get(),
+                                                                                renderContext.Get());
+                }
+                catch (...)
+                {
+                    // Catch all non-Image loading related problems.
+                    return XamlBuilderHadError();
+                }
+                return S_OK;
+            })
+                .Get(),
             &dispatcherAsyncAction);
 
         dispatcherAsyncAction->put_Completed(
             Microsoft::WRL::Callback<ABI::Windows::Foundation::IAsyncActionCompletedHandler>(
-                [this](ABI::Windows::Foundation::IAsyncAction* action, ABI::Windows::Foundation::AsyncStatus status) -> HRESULT
-        {
-            return XamlRenderCompleted(action, status);
-        }).Get());
+                [this](ABI::Windows::Foundation::IAsyncAction* action, ABI::Windows::Foundation::AsyncStatus status) -> HRESULT {
+                    return XamlRenderCompleted(action, status);
+                })
+                .Get());
         return S_OK;
     }
 
-    void OnClose() override
-    {
-    }
+    void OnClose() override {}
 
-    void OnCancel() override
-    {
-    }
+    void OnCancel() override {}
 
-    virtual HRESULT XamlRenderCompleted(ABI::Windows::Foundation::IAsyncAction* action, ABI::Windows::Foundation::AsyncStatus status) = 0;
+    virtual HRESULT XamlRenderCompleted(ABI::Windows::Foundation::IAsyncAction* action,
+                                        ABI::Windows::Foundation::AsyncStatus status) = 0;
     virtual HRESULT OnXamlImagesLoaded() = 0;
     virtual HRESULT OnXamlImagesHadError() = 0;
 
@@ -141,24 +131,17 @@ protected:
     }
 
 private:
-
     std::function<ABI::AdaptiveNamespace::IRenderedAdaptiveCard*(ABI::AdaptiveNamespace::IAdaptiveCard*)> m_dispatchFunction;
 };
 
-
-
-class RenderCardAsXamlAsyncOperation :
-    public RenderAsyncBase<ABI::AdaptiveNamespace::RenderedAdaptiveCard>
+class RenderCardAsXamlAsyncOperation : public RenderAsyncBase<ABI::AdaptiveNamespace::RenderedAdaptiveCard>
 {
 public:
-    RenderCardAsXamlAsyncOperation(
-        ABI::AdaptiveNamespace::IAdaptiveCard* card,
-        AdaptiveNamespace::AdaptiveCardRenderer* renderer)
-        : RenderAsyncBase<ABI::AdaptiveNamespace::RenderedAdaptiveCard>(card, renderer)
+    RenderCardAsXamlAsyncOperation(ABI::AdaptiveNamespace::IAdaptiveCard* card, AdaptiveNamespace::AdaptiveCardRenderer* renderer) :
+        RenderAsyncBase<ABI::AdaptiveNamespace::RenderedAdaptiveCard>(card, renderer)
     {
         AsyncBase::Start();
     }
-
 
     STDMETHODIMP ABI::Windows::Foundation::IAsyncOperation_impl<TResult_complex>::GetResults(ABI::AdaptiveNamespace::IRenderedAdaptiveCard** result)
     {
@@ -174,15 +157,11 @@ protected:
         return S_OK;
     }
 
-    HRESULT OnXamlImagesLoaded()
-    {
-        return AsyncBase::FireCompletion();
-    }
+    HRESULT OnXamlImagesLoaded() { return AsyncBase::FireCompletion(); }
 
     HRESULT OnXamlImagesHadError()
     {
         AsyncBase::TryTransitionToError(E_FAIL);
         return AsyncBase::FireCompletion();
     }
-
 };

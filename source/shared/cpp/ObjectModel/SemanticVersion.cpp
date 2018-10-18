@@ -4,7 +4,7 @@
 
 using namespace AdaptiveSharedNamespace;
 
-SemanticVersion::SemanticVersion(const std::string &version) : _major(0), _minor(0), _build(0), _revision(0)
+SemanticVersion::SemanticVersion(const std::string& version) : _major(0), _minor(0), _build(0), _revision(0)
 {
     // valid:
     // "1"
@@ -19,7 +19,7 @@ SemanticVersion::SemanticVersion(const std::string &version) : _major(0), _minor
 
     bool versionValid = false;
 #pragma warning(push)
-#pragma warning(disable:26426)
+#pragma warning(disable : 26426)
     // disable spurious warning (Global initializer calls a non-constexpr function.) -- this isn't global
     static const std::regex versionMatch(R"regex(^([\d]+)(?:\.([\d]+))?(?:\.([\d]+))?(?:\.([\d]+))?$)regex");
 #pragma warning(pop)

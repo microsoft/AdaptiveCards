@@ -10,10 +10,9 @@ using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::UI;
 
-AdaptiveNamespaceStart
-    AdaptiveElementParserRegistration::AdaptiveElementParserRegistration()
-    {
-    }
+namespace AdaptiveNamespace
+{
+    AdaptiveElementParserRegistration::AdaptiveElementParserRegistration() {}
 
     HRESULT AdaptiveElementParserRegistration::RuntimeClassInitialize() noexcept try
     {
@@ -21,7 +20,8 @@ AdaptiveNamespaceStart
         m_sharedParserRegistration = std::make_shared<ElementParserRegistration>();
 
         return S_OK;
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
     HRESULT AdaptiveElementParserRegistration::RuntimeClassInitialize(
         std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> sharedParserRegistration) noexcept try
@@ -30,10 +30,10 @@ AdaptiveNamespaceStart
         m_sharedParserRegistration = sharedParserRegistration;
 
         return S_OK;
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveElementParserRegistration::Set(HSTRING type, IAdaptiveElementParser* Parser)
+    _Use_decl_annotations_ HRESULT AdaptiveElementParserRegistration::Set(HSTRING type, IAdaptiveElementParser* Parser)
     {
         std::string typeString = HStringToUTF8(type);
 
@@ -45,8 +45,7 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveElementParserRegistration::Get(HSTRING type, IAdaptiveElementParser** result)
+    _Use_decl_annotations_ HRESULT AdaptiveElementParserRegistration::Get(HSTRING type, IAdaptiveElementParser** result)
     {
         *result = nullptr;
 
@@ -58,8 +57,7 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveElementParserRegistration::Remove(HSTRING type)
+    _Use_decl_annotations_ HRESULT AdaptiveElementParserRegistration::Remove(HSTRING type)
     {
         std::string typeString = HStringToUTF8(type);
 
@@ -88,22 +86,29 @@ AdaptiveNamespaceStart
         ComPtr<IAdaptiveElementParser> parser;
         THROW_IF_FAILED(m_parserRegistration->Get(typeAsHstring.Get(), &parser));
 
-        ComPtr<ABI::Windows::Data::Json::IJsonObject>jsonObject;
+        ComPtr<ABI::Windows::Data::Json::IJsonObject> jsonObject;
         THROW_IF_FAILED(JsonCppToJsonObject(value, &jsonObject));
 
         ComPtr<IAdaptiveElementParserRegistration> adaptiveElementParserRegistration;
-        MakeAndInitialize<AdaptiveNamespace::AdaptiveElementParserRegistration>(&adaptiveElementParserRegistration , elementParserRegistration);
+        MakeAndInitialize<AdaptiveNamespace::AdaptiveElementParserRegistration>(&adaptiveElementParserRegistration,
+                                                                                elementParserRegistration);
 
         ComPtr<IAdaptiveActionParserRegistration> adaptiveActionParserRegistration;
-        MakeAndInitialize<AdaptiveNamespace::AdaptiveActionParserRegistration>(&adaptiveActionParserRegistration, actionParserRegistration);
+        MakeAndInitialize<AdaptiveNamespace::AdaptiveActionParserRegistration>(&adaptiveActionParserRegistration,
+                                                                               actionParserRegistration);
 
         ComPtr<IAdaptiveCardElement> cardElement;
-        ComPtr<ABI::Windows::Foundation::Collections::IVector<IAdaptiveWarning*>> adaptiveWarnings = Make<Vector<IAdaptiveWarning*>>();
-        THROW_IF_FAILED(parser->FromJson(jsonObject.Get(), adaptiveElementParserRegistration.Get(), adaptiveActionParserRegistration.Get(), adaptiveWarnings.Get(), &cardElement));
+        ComPtr<ABI::Windows::Foundation::Collections::IVector<IAdaptiveWarning*>> adaptiveWarnings =
+            Make<Vector<IAdaptiveWarning*>>();
+        THROW_IF_FAILED(parser->FromJson(jsonObject.Get(),
+                                         adaptiveElementParserRegistration.Get(),
+                                         adaptiveActionParserRegistration.Get(),
+                                         adaptiveWarnings.Get(),
+                                         &cardElement));
 
         THROW_IF_FAILED(AdaptiveWarningsToSharedWarnings(adaptiveWarnings.Get(), warnings));
 
         std::shared_ptr<CustomElementWrapper> elementWrapper = std::make_shared<CustomElementWrapper>(cardElement.Get());
         return elementWrapper;
     }
-AdaptiveNamespaceEnd
+}

@@ -10,15 +10,16 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace
+{
     HRESULT AdaptiveDateInput::RuntimeClassInitialize() noexcept try
     {
         std::shared_ptr<AdaptiveSharedNamespace::DateInput> dateInput = std::make_shared<AdaptiveSharedNamespace::DateInput>();
         return RuntimeClassInitialize(dateInput);
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::DateInput>& sharedDateInput) try
+    _Use_decl_annotations_ HRESULT AdaptiveDateInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::DateInput>& sharedDateInput) try
     {
         if (sharedDateInput == nullptr)
         {
@@ -32,58 +33,32 @@ AdaptiveNamespaceStart
 
         InitializeBaseElement(std::static_pointer_cast<BaseInputElement>(sharedDateInput));
         return S_OK;
-    }CATCH_RETURN;
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::get_Max(HSTRING* max)
-    {
-        return m_max.CopyTo(max);
     }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::put_Max(HSTRING max)
-    {
-        return m_max.Set(max);
-    }
+    _Use_decl_annotations_ HRESULT AdaptiveDateInput::get_Max(HSTRING* max) { return m_max.CopyTo(max); }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::get_Min(HSTRING* min)
-    {
-        return m_min.CopyTo(min);
-    }
+    _Use_decl_annotations_ HRESULT AdaptiveDateInput::put_Max(HSTRING max) { return m_max.Set(max); }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::put_Min(HSTRING min)
-    {
-        return m_min.Set(min);
-    }
+    _Use_decl_annotations_ HRESULT AdaptiveDateInput::get_Min(HSTRING* min) { return m_min.CopyTo(min); }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::get_Placeholder(HSTRING* placeholder)
+    _Use_decl_annotations_ HRESULT AdaptiveDateInput::put_Min(HSTRING min) { return m_min.Set(min); }
+
+    _Use_decl_annotations_ HRESULT AdaptiveDateInput::get_Placeholder(HSTRING* placeholder)
     {
         return m_placeholder.CopyTo(placeholder);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::put_Placeholder(HSTRING placeholder)
+    _Use_decl_annotations_ HRESULT AdaptiveDateInput::put_Placeholder(HSTRING placeholder)
     {
         return m_placeholder.Set(placeholder);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::get_Value(HSTRING* value)
-    {
-        return m_value.CopyTo(value);
-    }
+    _Use_decl_annotations_ HRESULT AdaptiveDateInput::get_Value(HSTRING* value) { return m_value.CopyTo(value); }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::put_Value(HSTRING value)
-    {
-        return m_value.Set(value);
-    }
+    _Use_decl_annotations_ HRESULT AdaptiveDateInput::put_Value(HSTRING value) { return m_value.Set(value); }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveDateInput::get_ElementType(ElementType* elementType)
+    _Use_decl_annotations_ HRESULT AdaptiveDateInput::get_ElementType(ElementType* elementType)
     {
         *elementType = ElementType::DateInput;
         return S_OK;
@@ -102,5 +77,6 @@ AdaptiveNamespaceStart
         sharedModel = dateInput;
 
         return S_OK;
-    }CATCH_RETURN;
-AdaptiveNamespaceEnd
+    }
+    CATCH_RETURN;
+}

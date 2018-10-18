@@ -148,7 +148,12 @@
 					"placeholder": "Input.Text_placeholder",
 					"style": "text",
 					"value": "Input.Text_value",
-					"spacing": "small"
+					"spacing": "small",
+					"inlineAction": {
+						"type": "Action.Submit",
+						"iconUrl": "https://adaptivecards.io/content/cats/1.png",
+						"title": "Input.Text_Action.Submit"
+					}
 				},
 				{
 					"type": "Input.Number",

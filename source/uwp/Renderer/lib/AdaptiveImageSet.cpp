@@ -12,20 +12,18 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
-    AdaptiveImageSet::AdaptiveImageSet()
-    {
-        m_images = Microsoft::WRL::Make<Vector<IAdaptiveImage*>>();
-    }
+namespace AdaptiveNamespace
+{
+    AdaptiveImageSet::AdaptiveImageSet() { m_images = Microsoft::WRL::Make<Vector<IAdaptiveImage*>>(); }
 
     HRESULT AdaptiveImageSet::RuntimeClassInitialize() noexcept try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ImageSet> imageSet = std::make_shared<AdaptiveSharedNamespace::ImageSet>();
         return RuntimeClassInitialize(imageSet);
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ImageSet>& sharedImageSet) try
+    _Use_decl_annotations_ HRESULT AdaptiveImageSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ImageSet>& sharedImageSet) try
     {
         if (sharedImageSet == nullptr)
         {
@@ -38,30 +36,27 @@ AdaptiveNamespaceStart
 
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedImageSet));
         return S_OK;
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-        IFACEMETHODIMP AdaptiveImageSet::get_Images(IVector<IAdaptiveImage*>** images)
+    _Use_decl_annotations_ IFACEMETHODIMP AdaptiveImageSet::get_Images(IVector<IAdaptiveImage*>** images)
     {
         return m_images.CopyTo(images);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::get_ImageSize(ABI::AdaptiveNamespace::ImageSize* imageSize)
+    _Use_decl_annotations_ HRESULT AdaptiveImageSet::get_ImageSize(ABI::AdaptiveNamespace::ImageSize* imageSize)
     {
         *imageSize = m_imageSize;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveImageSet::put_ImageSize(ABI::AdaptiveNamespace::ImageSize imageSize)
+    _Use_decl_annotations_ HRESULT AdaptiveImageSet::put_ImageSize(ABI::AdaptiveNamespace::ImageSize imageSize)
     {
         m_imageSize = imageSize;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    IFACEMETHODIMP AdaptiveImageSet::get_ElementType(ElementType* elementType)
+    _Use_decl_annotations_ IFACEMETHODIMP AdaptiveImageSet::get_ElementType(ElementType* elementType)
     {
         *elementType = ElementType::ImageSet;
         return S_OK;
@@ -79,5 +74,6 @@ AdaptiveNamespaceStart
 
         sharedModel = imageSet;
         return S_OK;
-    }CATCH_RETURN;
-AdaptiveNamespaceEnd
+    }
+    CATCH_RETURN;
+}

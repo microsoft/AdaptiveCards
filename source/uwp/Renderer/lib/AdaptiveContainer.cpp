@@ -12,20 +12,18 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
-    AdaptiveContainer::AdaptiveContainer()
-    {
-        m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
-    }
+namespace AdaptiveNamespace
+{
+    AdaptiveContainer::AdaptiveContainer() { m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>(); }
 
     HRESULT AdaptiveContainer::RuntimeClassInitialize() noexcept try
     {
         std::shared_ptr<AdaptiveSharedNamespace::Container> container = std::make_shared<AdaptiveSharedNamespace::Container>();
         return RuntimeClassInitialize(container);
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveContainer::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Container>& sharedContainer) try
+    _Use_decl_annotations_ HRESULT AdaptiveContainer::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Container>& sharedContainer) try
     {
         if (sharedContainer == nullptr)
         {
@@ -35,61 +33,55 @@ AdaptiveNamespaceStart
         GenerateContainedElementsProjection(sharedContainer->GetItems(), m_items.Get());
         GenerateActionProjection(sharedContainer->GetSelectAction(), &m_selectAction);
         m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedContainer->GetStyle());
-        m_verticalAlignment = static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedContainer->GetVerticalContentAlignment());
+        m_verticalAlignment =
+            static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedContainer->GetVerticalContentAlignment());
 
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedContainer));
         return S_OK;
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveContainer::get_Items(IVector<IAdaptiveCardElement*>** items)
+    _Use_decl_annotations_ HRESULT AdaptiveContainer::get_Items(IVector<IAdaptiveCardElement*>** items)
     {
         return m_items.CopyTo(items);
     }
 
-    _Use_decl_annotations_
-    IFACEMETHODIMP AdaptiveContainer::get_SelectAction(IAdaptiveActionElement** action)
+    _Use_decl_annotations_ IFACEMETHODIMP AdaptiveContainer::get_SelectAction(IAdaptiveActionElement** action)
     {
         return m_selectAction.CopyTo(action);
     }
 
-    _Use_decl_annotations_
-    IFACEMETHODIMP AdaptiveContainer::put_SelectAction(IAdaptiveActionElement* action)
+    _Use_decl_annotations_ IFACEMETHODIMP AdaptiveContainer::put_SelectAction(IAdaptiveActionElement* action)
     {
         m_selectAction = action;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveContainer::get_ElementType(ElementType* elementType)
+    _Use_decl_annotations_ HRESULT AdaptiveContainer::get_ElementType(ElementType* elementType)
     {
         *elementType = ElementType::Container;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveContainer::get_Style(ABI::AdaptiveNamespace::ContainerStyle* style)
+    _Use_decl_annotations_ HRESULT AdaptiveContainer::get_Style(ABI::AdaptiveNamespace::ContainerStyle* style)
     {
         *style = m_style;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveContainer::put_Style(ABI::AdaptiveNamespace::ContainerStyle style)
+    _Use_decl_annotations_ HRESULT AdaptiveContainer::put_Style(ABI::AdaptiveNamespace::ContainerStyle style)
     {
         m_style = style;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveContainer::get_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment* verticalAlignment)
+    _Use_decl_annotations_ HRESULT AdaptiveContainer::get_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment* verticalAlignment)
     {
         *verticalAlignment = m_verticalAlignment;
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveContainer::put_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment verticalAlignment)
+    _Use_decl_annotations_ HRESULT AdaptiveContainer::put_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment verticalAlignment)
     {
         m_verticalAlignment = verticalAlignment;
         return S_OK;
@@ -114,5 +106,6 @@ AdaptiveNamespaceStart
 
         sharedModel = container;
         return S_OK;
-    }CATCH_RETURN;
-AdaptiveNamespaceEnd
+    }
+    CATCH_RETURN;
+}

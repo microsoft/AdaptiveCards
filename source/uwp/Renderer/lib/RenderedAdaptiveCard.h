@@ -5,13 +5,13 @@
 #include "InputValue.h"
 #include "AdaptiveInputs.h"
 
-AdaptiveNamespaceStart
-    class RenderedAdaptiveCard :
-        public Microsoft::WRL::RuntimeClass<
-            Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-            Microsoft::WRL::Implements<ABI::AdaptiveNamespace::IRenderedAdaptiveCard>>
+namespace AdaptiveNamespace
+{
+    class RenderedAdaptiveCard
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
+                                              Microsoft::WRL::Implements<ABI::AdaptiveNamespace::IRenderedAdaptiveCard>>
     {
-        AdaptiveRuntime(RenderedAdaptiveCard)
+        AdaptiveRuntime(RenderedAdaptiveCard);
 
     public:
         RenderedAdaptiveCard();
@@ -25,22 +25,19 @@ AdaptiveNamespaceStart
         IFACEMETHODIMP get_OriginatingCard(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCard** value);
         IFACEMETHODIMP get_FrameworkElement(_COM_Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** value);
         IFACEMETHODIMP get_UserInputs(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveInputs** value);
-        IFACEMETHODIMP add_Action(
-            _In_ ABI::Windows::Foundation::ITypedEventHandler<
-                ABI::AdaptiveNamespace::RenderedAdaptiveCard*,
-                ABI::AdaptiveNamespace::AdaptiveActionEventArgs*>* handler,
-            _Out_ EventRegistrationToken* token);
+        IFACEMETHODIMP add_Action(_In_ ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*,
+                                                                                    ABI::AdaptiveNamespace::AdaptiveActionEventArgs*>* handler,
+                                  _Out_ EventRegistrationToken* token);
         IFACEMETHODIMP remove_Action(_In_ EventRegistrationToken token);
 
         IFACEMETHODIMP add_MediaClicked(
-            _In_ ABI::Windows::Foundation::ITypedEventHandler<
-            ABI::AdaptiveNamespace::RenderedAdaptiveCard*,
-            ABI::AdaptiveNamespace::AdaptiveMediaEventArgs*>* handler,
+            _In_ ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*, ABI::AdaptiveNamespace::AdaptiveMediaEventArgs*>* handler,
             _Out_ EventRegistrationToken* token);
         IFACEMETHODIMP remove_MediaClicked(_In_ EventRegistrationToken token);
 
         IFACEMETHODIMP get_Errors(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveError*>** value);
-        IFACEMETHODIMP get_Warnings(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>** value);
+        IFACEMETHODIMP get_Warnings(
+            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>** value);
 
         HRESULT AddInputValue(ABI::AdaptiveNamespace::IAdaptiveInputValue* inputValue);
         void SetFrameworkElement(ABI::Windows::UI::Xaml::IFrameworkElement* value);
@@ -59,4 +56,4 @@ AdaptiveNamespaceStart
     };
 
     ActivatableClass(RenderedAdaptiveCard);
-AdaptiveNamespaceEnd
+}

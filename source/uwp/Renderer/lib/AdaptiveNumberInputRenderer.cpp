@@ -12,18 +12,18 @@ using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 
-AdaptiveNamespaceStart
+namespace AdaptiveNamespace
+{
     HRESULT AdaptiveNumberInputRenderer::RuntimeClassInitialize() noexcept try
     {
         return S_OK;
-    } CATCH_RETURN;
+    }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveNumberInputRenderer::Render(
-        IAdaptiveCardElement* cardElement,
-        IAdaptiveRenderContext* renderContext,
-        IAdaptiveRenderArgs* renderArgs,
-        ABI::Windows::UI::Xaml::IUIElement** result)
+    _Use_decl_annotations_ HRESULT AdaptiveNumberInputRenderer::Render(IAdaptiveCardElement* cardElement,
+                                                                       IAdaptiveRenderContext* renderContext,
+                                                                       IAdaptiveRenderArgs* renderArgs,
+                                                                       ABI::Windows::UI::Xaml::IUIElement** result)
     {
         XamlBuilder::BuildNumberInput(cardElement, renderContext, renderArgs, result);
         return S_OK;
@@ -36,6 +36,7 @@ AdaptiveNamespaceStart
         ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
         ABI::AdaptiveNamespace::IAdaptiveCardElement** element)
     {
-        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveNumberInput, AdaptiveSharedNamespace::NumberInput, AdaptiveSharedNamespace::NumberInputParser>(jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
+        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveNumberInput, AdaptiveSharedNamespace::NumberInput, AdaptiveSharedNamespace::NumberInputParser>(
+            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
-AdaptiveNamespaceEnd
+}

@@ -19,10 +19,9 @@ using namespace ABI::Windows::UI;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 
-AdaptiveNamespaceStart
-    AdaptiveHostConfigParseResult::AdaptiveHostConfigParseResult()
-    {
-    }
+namespace AdaptiveNamespace
+{
+    AdaptiveHostConfigParseResult::AdaptiveHostConfigParseResult() {}
 
     HRESULT AdaptiveHostConfigParseResult::RuntimeClassInitialize()
     {
@@ -36,15 +35,14 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfigParseResult::get_HostConfig(IAdaptiveHostConfig** value)
+    _Use_decl_annotations_ HRESULT AdaptiveHostConfigParseResult::get_HostConfig(IAdaptiveHostConfig** value)
     {
         return m_hostConfig.CopyTo(value);
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveHostConfigParseResult::get_Errors(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveError*>** value)
+    _Use_decl_annotations_ HRESULT AdaptiveHostConfigParseResult::get_Errors(
+        ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveError*>** value)
     {
         return m_errors.CopyTo(value);
     }
-AdaptiveNamespaceEnd
+}
