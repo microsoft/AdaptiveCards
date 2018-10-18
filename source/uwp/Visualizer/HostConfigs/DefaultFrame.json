@@ -1,6 +1,6 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-	"type": "AdaptiveView",
+	"type": "AdaptiveCard",
 	"version": "1.0",
 	"body": [
 		{
@@ -9,7 +9,7 @@
 		},
 		{
 			"type": "ActionSet",
-			"actions": "{{card.actions}}"
+			"actions": "{{#? card.actions}}"
 		}
 	]
 }

@@ -23,7 +23,7 @@
 		},
 		{
 			"type": "ActionSet",
-			"actions": "{{card.actions}}"
+			"actions": "{{#? card.actions}}"
 		}
 	]
 }

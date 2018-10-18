@@ -17,7 +17,8 @@ namespace AdaptiveCards
             {
                 InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveActionSetRenderer, BaseTrust)
 
-                    public : HRESULT RuntimeClassInitialize() noexcept;
+            public:
+                HRESULT RuntimeClassInitialize() noexcept;
 
                 IFACEMETHODIMP Render(_In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* cardElement,
                                       _In_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,

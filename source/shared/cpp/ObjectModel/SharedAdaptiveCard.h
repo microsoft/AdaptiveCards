@@ -88,6 +88,7 @@ namespace AdaptiveSharedNamespace
                             std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr);
 
         static std::shared_ptr<ParseResult> Deserialize(const Json::Value& json,
+                                                        const Json::Value& frame,
                                                         std::string rendererVersion,
                                                         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
                                                         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr);

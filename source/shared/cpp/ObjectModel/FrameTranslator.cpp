@@ -246,6 +246,8 @@ Json::Value DataBindArray(const Json::Value& sourceCard, const Json::Value& fram
 // where "myArray" is an array of objects each with a "foo" property
 Json::Value DataBindAsEachObject(const Json::Value& sourceCard, const Json::Value& frame)
 {
+    // A #each object will have one value with a key that looks like
+    // {{#each myArray}}
     Json::Value result;
     if (frame.size() == 1)
     {
@@ -348,28 +350,29 @@ Json::Value DataBindJson(const Json::Value& sourceCard, const Json::Value& frame
     }
 }
 
-Json::Value ApplyFrame(const Json::Value& sourceCard, const Json::Value& frame)
+Json::Value ApplyJsonTemplating(const Json::Value& sourceCard, const Json::Value& frame)
 {
-    Json::Value dataBoundCard;
-
     // First bind the card to its data if present
-    try
+    Json::Value dataBoundCard = sourceCard;
+    Json::Value data = sourceCard["data"];
+    if (!data.empty())
     {
-        Json::Value data = sourceCard["data"];
         dataBoundCard = DataBindJson(data, sourceCard);
     }
-    catch (...)
+
+    Json::Value result = dataBoundCard;
+    if (!frame.empty())
     {
-        dataBoundCard = sourceCard;
+        // Create a data source for the frame binding which has the card stored as "card"
+        // (and someday the runtime object stored as "runtime")
+        Json::Value dataSource;
+        dataSource["card"] = dataBoundCard;
+
+        // Then bind the bound card to its frame
+        result = DataBindJson(dataSource, frame);
     }
 
-    // Create a data source for the frame binding which has the card stored as "card"
-    // (and someday the runtime object stored as "runtime")
-    Json::Value dataSource;
-    dataSource["card"] = dataBoundCard;
-
-    // Then bind the bound card to its frame
-    return DataBindJson(dataSource, frame);
+    return result;
 }
 
 bool ShouldJsonObjectBePruned(Json::Value value)
@@ -382,7 +385,7 @@ bool ShouldJsonObjectBePruned(Json::Value value)
     auto elementType = CardElementTypeFromString(ParseUtil::GetTypeAsString(value));
     if (elementType != CardElementType::Unsupported)
     {
-        // BECKYTODO - un-hardcode the strings and confirm these properties are right for pruning (spec issue)
+        // TODO - un-hardcode the strings and confirm these properties are right for pruning (spec issue)
         switch (elementType)
         {
         case CardElementType::ActionSet:

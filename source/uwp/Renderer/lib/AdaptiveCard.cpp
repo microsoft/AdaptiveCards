@@ -122,7 +122,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardParseResult>(&adaptiveParseResult));
         try
         {
-            const std::string c_rendererVersion = "1.2";
+            const std::string c_rendererVersion = "2.0";
 
             std::shared_ptr<::AdaptiveCards::ParseResult> sharedParseResult;
             if (jsonFrame.empty())
