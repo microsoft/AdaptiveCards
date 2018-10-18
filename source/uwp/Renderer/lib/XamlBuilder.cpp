@@ -6,6 +6,7 @@
 #include "AdaptiveImage.h"
 #include <windows.foundation.collections.h>
 #include <windows.storage.h>
+#include <windows.ui.xaml.markup.h>
 #include <windows.ui.xaml.shapes.h>
 #include <windows.web.http.h>
 #include <windows.web.http.filters.h>
@@ -36,6 +37,7 @@ using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Data;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
+using namespace ABI::Windows::UI::Xaml::Markup;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 using namespace ABI::Windows::UI::Xaml::Shapes;
@@ -1149,18 +1151,61 @@ namespace AdaptiveNamespace
 
                 ABI::AdaptiveNamespace::Sentiment actionSentiment;
                 THROW_IF_FAILED(action->get_Sentiment(&actionSentiment));
-                switch (actionSentiment)
+
+                if (actionSentiment == ABI::AdaptiveNamespace::Sentiment_Positive || actionSentiment == ABI::AdaptiveNamespace::Sentiment_Destructive)
                 {
-                case ABI::AdaptiveNamespace::Sentiment_Positive:
-                    THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action.Positive", buttonFrameworkElement.Get()));
-                    break;
-                case ABI::AdaptiveNamespace::Sentiment_Destructive:
-                    THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action.Destructive", buttonFrameworkElement.Get()));
-                    break;
-                case ABI::AdaptiveNamespace::Sentiment_Default:
-                default:
+                    ComPtr<IResourceDictionary> resourceDictionary;
+                    THROW_IF_FAILED(renderContext->get_OverrideStyles(&resourceDictionary));
+                    ComPtr<IInspectable> subtleOpacityInspectable;
+
+                    if (actionSentiment == ABI::AdaptiveNamespace::Sentiment_Positive)
+                    {
+                        if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IInspectable>(resourceDictionary.Get(),
+                            L"Adaptive.Action.Positive",
+                            &subtleOpacityInspectable)))
+                        {
+                            THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action.Positive", buttonFrameworkElement.Get()));
+                        }
+                        else
+                        {
+                            // By default, set the action background color to accent color
+                            ComPtr<IResourceDictionary> actionSentimentDictionary = renderContext->GetDefaultActionSentimentDictionary();
+
+                            ComPtr<IStyle> actionPositiveSentimentStyle;
+                            if (SUCCEEDED(TryGetResourceFromResourceDictionaries(actionSentimentDictionary.Get(),
+                                                                                 L"PositiveActionDefaultStyle",
+                                                                                 actionPositiveSentimentStyle.GetAddressOf())))
+                            {
+                                THROW_IF_FAILED(buttonFrameworkElement->put_Style(actionPositiveSentimentStyle.Get()));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IInspectable>(resourceDictionary.Get(),
+                            L"Adaptive.Action.Destructive",
+                            &subtleOpacityInspectable)))
+                        {
+                            THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action.Destructive", buttonFrameworkElement.Get()));
+                        }
+                        else
+                        {
+                            // By default, set the action text color to attention color
+                            ComPtr<IResourceDictionary> actionSentimentDictionary = renderContext->GetDefaultActionSentimentDictionary();
+
+                            ComPtr<IStyle> actionDestructiveSentimentStyle;
+                            if (SUCCEEDED(TryGetResourceFromResourceDictionaries(actionSentimentDictionary.Get(),
+                                                                                 L"DestructiveActionDefaultStyle",
+                                                                                 actionDestructiveSentimentStyle.GetAddressOf())))
+                            {
+                                THROW_IF_FAILED(buttonFrameworkElement->put_Style(actionDestructiveSentimentStyle.Get()));
+                            }
+                        }
+                    }
+                }
+                else
+                {
                     THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action", buttonFrameworkElement.Get()));
-                    break;
                 }
 
                 XamlHelpers::AppendXamlElementToPanel(button.Get(), actionsPanel.Get());

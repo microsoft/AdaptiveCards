@@ -52,6 +52,7 @@ namespace AdaptiveNamespace
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> GetMergedDictionary();
         bool GetFixedDimensions(_Out_ UINT32* width, _Out_ UINT32* height);
         std::shared_ptr<AdaptiveNamespace::XamlBuilder> GetXamlBuilder();
+        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> GetActionSentimentResourceDictionary();
 
         IFACEMETHODIMP get_ResourceResolvers(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers** value);
 
@@ -59,6 +60,7 @@ namespace AdaptiveNamespace
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_overrideDictionary;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_defaultResourceDictionary;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_mergedResourceDictionary;
+        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_actionSentimentResourceDictionary;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveHostConfig> m_hostConfig;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers> m_resourceResolvers;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveElementRendererRegistration> m_elementRendererRegistration;
@@ -67,11 +69,14 @@ namespace AdaptiveNamespace
         bool m_explicitDimensions = false;
         UINT32 m_desiredWidth = 0;
         UINT32 m_desiredHeight = 0;
+        UINT32 m_previousAccentColor = 0x00FFFFFF;
+        UINT32 m_previousAttentionColor = 0x00FFFFFF;
 
         HRESULT CreateAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson,
                                                  _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** adaptiveCard);
         HRESULT RegisterDefaultElementRenderers();
         void InitializeDefaultResourceDictionary();
+        void UpdateActionSentimentResourceDictionary();
         HRESULT SetMergedDictionary();
     };
 

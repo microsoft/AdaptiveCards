@@ -238,7 +238,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                 style.Setters.Add(new Setter(Button.BackgroundProperty, new SolidColorBrush(Windows.UI.Colors.LawnGreen)));
 
                 _renderer.OverrideStyles = new ResourceDictionary();
-                _renderer.OverrideStyles.Add("Adaptive.Action.Positive", style);
+                // _renderer.OverrideStyles.Add("Adaptive.Action.Positive", style);
             }
             catch
             {

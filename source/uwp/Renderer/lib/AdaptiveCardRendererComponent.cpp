@@ -28,6 +28,7 @@
 #include <windows.foundation.collections.h>
 #include <Windows.UI.Xaml.h>
 #include <windows.ui.xaml.markup.h>
+#include "strsafe.h"
 
 using namespace concurrency;
 using namespace Microsoft::WRL;
@@ -54,6 +55,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(RegisterDefaultElementRenderers());
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveHostConfig>(&m_hostConfig));
         InitializeDefaultResourceDictionary();
+        UpdateActionSentimentResourceDictionary();
         return MakeAndInitialize<AdaptiveCardResourceResolvers>(&m_resourceResolvers);
     }
 
@@ -71,6 +73,7 @@ namespace AdaptiveNamespace
     _Use_decl_annotations_ HRESULT AdaptiveCardRenderer::put_HostConfig(IAdaptiveHostConfig* hostConfig)
     {
         m_hostConfig = hostConfig;
+        UpdateActionSentimentResourceDictionary();
         return S_OK;
     }
 
@@ -115,6 +118,7 @@ namespace AdaptiveNamespace
                                                                       m_elementRendererRegistration.Get(),
                                                                       m_resourceResolvers.Get(),
                                                                       m_mergedResourceDictionary.Get(),
+                                                                      m_actionSentimentResourceDictionary.Get(),
                                                                       renderedCard.Get()));
 
             // This path is used for synchronous Xaml card rendering, so we don't want
@@ -214,6 +218,8 @@ namespace AdaptiveNamespace
 
     ComPtr<IResourceDictionary> AdaptiveCardRenderer::GetMergedDictionary() { return m_mergedResourceDictionary; }
 
+    ComPtr<IResourceDictionary> AdaptiveCardRenderer::GetActionSentimentResourceDictionary() { return m_actionSentimentResourceDictionary; }
+
     bool AdaptiveCardRenderer::GetFixedDimensions(_Out_ UINT32* width, _Out_ UINT32* height)
     {
         *width = 0;
@@ -247,6 +253,87 @@ namespace AdaptiveNamespace
 
         m_mergedResourceDictionary = resourceDictionary;
         m_defaultResourceDictionary = resourceDictionary;
+    }
+
+    std::wstring SubstituteColorsForActionSentimentResourceDictionary(int accentColor, int attentionColor)
+    {
+        std::wstring hexAccentColor;
+        THROW_IF_FAILED(ColorToWString(accentColor, hexAccentColor));
+
+        int clearAccentColor = GenerateClearerColor(accentColor);
+        std::wstring hexClearAccentColor;
+        THROW_IF_FAILED(ColorToWString(clearAccentColor, hexClearAccentColor));
+
+        std::wstring hexAtentionColor;
+        THROW_IF_FAILED(ColorToWString(attentionColor, hexAtentionColor));
+
+        int clearAttentionColor = GenerateClearerColor(attentionColor);
+        std::wstring hexClearAttentionColor;
+        THROW_IF_FAILED(ColorToWString(clearAttentionColor, hexClearAttentionColor));
+
+        // The current string contains %s for denoting the places where the color values will be replaced
+        // The color values are formatted as #XXXXXXXX (9 characters) so we add 7 characters per substituted value
+        size_t originalLength = 0;
+        THROW_IF_FAILED(StringCbLengthW(c_defaultActionSentimentResourceDictionary, STRSAFE_MAX_CCH, &originalLength));
+        
+        int expectedFinalLength = originalLength + 7 * 9;
+        std::vector<WCHAR> generatedActionResourceDictionary(expectedFinalLength);
+        THROW_IF_FAILED(StringCbPrintfW(generatedActionResourceDictionary.data(),
+                                        expectedFinalLength * sizeof(WCHAR),
+                                        c_defaultActionSentimentResourceDictionary,
+                                        hexAccentColor.c_str(),
+                                        hexAccentColor.c_str(),
+                                        hexClearAccentColor.c_str(),
+                                        hexClearAccentColor.c_str(),
+                                        hexClearAccentColor.c_str(),
+                                        hexAtentionColor.c_str(),
+                                        hexClearAttentionColor.c_str(),
+                                        hexClearAttentionColor.c_str(),
+                                        hexClearAttentionColor.c_str()));
+
+        return generatedActionResourceDictionary.data();
+    }
+
+    void AdaptiveCardRenderer::UpdateActionSentimentResourceDictionary()
+    {
+        ABI::Windows::UI::Color hostConfigAccentColor;
+        THROW_IF_FAILED(GetColorFromAdaptiveColor(m_hostConfig.Get(),
+                                                  ABI::AdaptiveNamespace::ForegroundColor_Accent,
+                                                  ABI::AdaptiveNamespace::ContainerStyle_Default,
+                                                  false /* isSubtle */,
+                                                  &hostConfigAccentColor));
+
+        ABI::Windows::UI::Color hostConfigAttentionColor;
+        THROW_IF_FAILED(GetColorFromAdaptiveColor(m_hostConfig.Get(),
+                                                  ABI::AdaptiveNamespace::ForegroundColor_Attention,
+                                                  ABI::AdaptiveNamespace::ContainerStyle_Default,
+                                                  false /* isSubtle */,
+                                                  &hostConfigAttentionColor));
+
+        UINT32 accentColor = ColorToInt(hostConfigAccentColor);
+        UINT32 attentionColor = ColorToInt(hostConfigAttentionColor);
+
+        if (accentColor != m_previousAccentColor || attentionColor != m_previousAttentionColor)
+        {
+            m_previousAccentColor = accentColor;
+            m_previousAttentionColor = attentionColor;
+
+            std::wstring defaultActionSentimentResourceDictionary = SubstituteColorsForActionSentimentResourceDictionary(m_previousAccentColor, m_previousAttentionColor);
+
+            ComPtr<IXamlReaderStatics> xamlReaderStatics;
+            THROW_IF_FAILED(RoGetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Markup_XamlReader).Get(),
+                __uuidof(IXamlReaderStatics),
+                reinterpret_cast<void**>(xamlReaderStatics.GetAddressOf())));
+
+            ComPtr<IInspectable> actionResourceDictionaryInspectable;
+            THROW_IF_FAILED(xamlReaderStatics->Load(HStringReference(defaultActionSentimentResourceDictionary.c_str(),
+                                                              defaultActionSentimentResourceDictionary.length()).Get(),
+                                             actionResourceDictionaryInspectable.GetAddressOf()));
+
+            ComPtr<IResourceDictionary> actionSentimentResourceDictionary;
+            THROW_IF_FAILED(actionResourceDictionaryInspectable.As(&actionSentimentResourceDictionary));
+            m_actionSentimentResourceDictionary = actionSentimentResourceDictionary;
+        }
     }
 
     HRESULT AdaptiveCardRenderer::SetMergedDictionary()

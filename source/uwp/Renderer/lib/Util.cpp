@@ -32,6 +32,7 @@
 #include "util.h"
 #include <windows.foundation.collections.h>
 #include "XamlHelpers.h"
+#include "strsafe.h"
 
 using namespace AdaptiveCards;
 using namespace Microsoft::WRL;
@@ -979,4 +980,36 @@ HRESULT AdaptiveWarningsToSharedWarnings(ABI::Windows::Foundation::Collections::
     }
 
     return S_OK;
+}
+
+int ColorToInt(Color color)
+{
+    return ((color.A << 24) | (color.R << 16) | (color.G << 8) | (color.B));
+}
+
+HRESULT ColorToWString(int color, std::wstring& out)
+{
+    WCHAR longColor[10];
+    HRESULT hr = StringCbPrintfW(longColor, 10 * sizeof(WCHAR), L"#%08X", color);
+    if (SUCCEEDED(hr))
+    {
+        out = longColor;
+    }
+    return hr;
+}
+
+int GenerateClearerColor(int originalColor)
+{
+    const double clearIncrement = 0.10;
+
+    int originalR = (originalColor & 0x00FF0000) >> 16;
+    int originalG = (originalColor & 0x0000FF00) >> 8;
+    int originalB = (originalColor & 0x000000FF);
+
+    int clearerColor = (originalColor & 0xFF000000);
+    int newR = originalR + static_cast<int>((255 - originalR) * clearIncrement);
+    int newG = originalG + static_cast<int>((255 - originalG) * clearIncrement);
+    int newB = originalB + static_cast<int>((255 - originalB) * clearIncrement);
+    clearerColor = clearerColor | (newR << 16) | (newG << 8) | newB;
+    return clearerColor;
 }

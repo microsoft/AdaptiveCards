@@ -82,6 +82,7 @@ protected:
                     ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers> resourceResolvers;
                     THROW_IF_FAILED(m_renderer->get_ResourceResolvers(&resourceResolvers));
                     ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> overrideDictionary = m_renderer->GetMergedDictionary();
+                    ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> actionSentimentDefaultDictionary = m_renderer->GetActionSentimentResourceDictionary();
 
                     ComPtr<AdaptiveNamespace::AdaptiveRenderContext> renderContext;
                     THROW_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveRenderContext>(&renderContext,
@@ -89,6 +90,7 @@ protected:
                                                                                                 elementRenderers.Get(),
                                                                                                 resourceResolvers.Get(),
                                                                                                 overrideDictionary.Get(),
+                                                                                                actionSentimentDefaultDictionary.Get(),
                                                                                                 m_renderResult.Get()));
 
                     m_renderer->GetXamlBuilder()->BuildXamlTreeFromAdaptiveCard(m_card.Get(),
