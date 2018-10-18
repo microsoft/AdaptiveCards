@@ -6,6 +6,7 @@ import android.content.ContextWrapper;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -24,6 +25,8 @@ import io.adaptivecards.objectmodel.ActionMode;
 import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.ActionsOrientation;
 import io.adaptivecards.objectmodel.BaseActionElement;
+import io.adaptivecards.objectmodel.ColorsConfig;
+import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.ActionsConfig;
 import io.adaptivecards.objectmodel.IconPlacement;
@@ -226,30 +229,67 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         }
     }
 
-    private Context getButtonContext(Context context, Sentiment sentiment)
+    private int getColor(ForegroundColor color, ColorsConfig colorsConfig)
+    {
+        io.adaptivecards.objectmodel.ColorConfig colorConfig;
+        if (color == ForegroundColor.Accent)
+        {
+            colorConfig = colorsConfig.getAccent();
+        }
+        else if (color == ForegroundColor.Attention)
+        {
+            colorConfig = colorsConfig.getAttention();
+        }
+        else
+        {
+            throw new IllegalArgumentException("Unknown color: " + color.toString());
+        }
+
+        return android.graphics.Color.parseColor(colorConfig.getDefaultColor());
+    }
+
+    private Button createButtonWithTheme(Context context, int theme)
+    {
+        Context themedContext = new ContextThemeWrapper(context, theme);
+        return new Button(themedContext);
+    }
+
+    private Button createButton(Context context, Sentiment sentiment, HostConfig hostConfig)
     {
         if(sentiment == Sentiment.Positive || sentiment == Sentiment.Destructive)
         {
             Resources.Theme theme = context.getTheme();
             TypedValue buttonStyle = new TypedValue();
-            boolean styleExists = false;
 
             if(sentiment == sentiment.Positive)
             {
-                styleExists = theme.resolveAttribute(R.attr.adaptiveActionPositive, buttonStyle, true);
+                if(theme.resolveAttribute(R.attr.adaptiveActionPositive, buttonStyle, true))
+                {
+                    return createButtonWithTheme(context, buttonStyle.data);
+                }
+                else
+                {
+                    Button button = new Button(context);
+                    button.getBackground().setColorFilter(getColor(ForegroundColor.Accent, hostConfig.getContainerStyles().getDefaultPalette().getForegroundColors()), PorterDuff.Mode.MULTIPLY);
+                    return button;
+                }
             }
             else
             {
-                styleExists = theme.resolveAttribute(R.attr.adaptiveActionDestructive, buttonStyle, true);
-            }
-
-            if(styleExists)
-            {
-                return new ContextThemeWrapper(context, buttonStyle.data);
+                if(theme.resolveAttribute(R.attr.adaptiveActionDestructive, buttonStyle, true))
+                {
+                    return createButtonWithTheme(context, buttonStyle.data);
+                }
+                else
+                {
+                    Button button = new Button(context);
+                    button.setTextColor(getColor(ForegroundColor.Attention, hostConfig.getContainerStyles().getDefaultPalette().getForegroundColors()));
+                    return button;
+                }
             }
         }
 
-        return context;
+        return new Button(context);
     }
 
     public Button renderButton(
@@ -259,7 +299,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             HostConfig hostConfig,
             RenderedAdaptiveCard renderedCard)
     {
-        Button button = new Button(getButtonContext(context, baseActionElement.GetSentiment()));
+        Button button = createButton(context, baseActionElement.GetSentiment(), hostConfig);
 
         button.setText(baseActionElement.GetTitle());
         ActionAlignment alignment = hostConfig.getActions().getActionAlignment();
