@@ -8,6 +8,7 @@ import re
 
 acversion = ''
 
+# get AdaptiveCard Version from custom.prop
 with open('custom.props', 'r') as f:
     lines = f.readlines();
     for line in lines:
@@ -16,7 +17,7 @@ with open('custom.props', 'r') as f:
             m = p.search(line)
             if m != None:
                 acversion = m.group()
-#uqybdqjriptweqj4p2uzyj7q5v65dfr6xxe3d5to5j2xmuvcznwq
+
 token = ':' + os.environ['ACPAT']
 
 headers = {}
@@ -27,21 +28,20 @@ buildNumber = os.environ['BUILD_BUILDNUMBER']
 
 acversion = acversion + '-' + buildNumber;
 
-buildId = '%2f' + buildNumber + '%2f' +  os.environ['BUILD_BUILDID'] + '%2f' + '5'
+buildId = '%2f' + buildNumber + '%2f' +  os.environ['BUILD_BUILDID'] + '%2f'
 
-#url = 'https://artifacts.dev.azure.com/microsoft/_apis/drop/manifests/os' + buildId + 'api-version=2.0'
-url = 'https://artifacts.dev.azure.com/microsoft/_apis/drop/manifests/os%2f20181005.1%2f12228408?api-version=2.0'
-
-print('url: ' + url)
+url = 'https://artifacts.dev.azure.com/microsoft/_apis/drop/manifests/os' + buildId + '?api-version=2.0'
 
 urlToArtifacts = ''
- 
+# get Response via REST API
 r = requests.get(url, headers=headers)
+# get url to artifact 
 for item in r.json():
     if 'AdaptiveCards.framework.zip' in item['path']: 
         urlToArtifacts = item['blob']['url']
 
 outputBuff = [];
+# update podspec
 with open('AdaptiveCards.podspec', 'r') as f:
     lines = f.readlines();
     for line in lines:
