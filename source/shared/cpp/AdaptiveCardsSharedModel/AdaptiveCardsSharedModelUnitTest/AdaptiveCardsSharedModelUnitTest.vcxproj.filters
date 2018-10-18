@@ -71,8 +71,5 @@
     <ClCompile Include="SemanticVersionTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-        <ClCompile Include="FrameTranslatorUnitTests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>
