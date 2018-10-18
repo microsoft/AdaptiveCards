@@ -4003,7 +4003,7 @@ export class Container extends CardElementContainer {
                 this.backgroundImage.apply(element);
             }
 
-            var styleDefinition = this.hostConfig.containerStyles.getStyleByName(this.style, this.hostConfig.containerStyles.default);
+            let styleDefinition = this.hostConfig.containerStyles.getStyleByName(this.style, this.hostConfig.containerStyles.getStyleByName(this.defaultStyle));
 
             if (!Utils.isNullOrEmpty(styleDefinition.backgroundColor)) {
                 element.style.backgroundColor = Utils.stringToCssColor(styleDefinition.backgroundColor);
@@ -4431,9 +4431,7 @@ export class Container extends CardElementContainer {
                 return this._style;
             }
 
-            let parentContainer = this.getParentContainer();
-
-            return parentContainer ? parentContainer.style : this.defaultStyle;
+            return null;
         }
         else {
             return this.defaultStyle;
