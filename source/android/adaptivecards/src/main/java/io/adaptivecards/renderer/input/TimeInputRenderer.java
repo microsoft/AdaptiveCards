@@ -51,7 +51,7 @@ public class TimeInputRenderer extends TextInputRenderer
             HostConfig hostConfig,
             ContainerStyle containerStyle)
     {
-        if (!hostConfig.getSupportsInteractivity())
+        if (!hostConfig.GetSupportsInteractivity())
         {
             renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INTERACTIVITY_DISALLOWED, "Input.Time is not allowed"));
             return null;

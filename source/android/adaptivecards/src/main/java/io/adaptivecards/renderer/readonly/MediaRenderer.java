@@ -146,7 +146,7 @@ public class MediaRenderer extends BaseCardElementRenderer
         }
         else
         {
-            poster.SetUrl(hostConfig.getMedia().getDefaultPoster());
+            poster.SetUrl(hostConfig.GetMedia().getDefaultPoster());
         }
 
         if(!poster.GetUrl().isEmpty())
@@ -173,7 +173,7 @@ public class MediaRenderer extends BaseCardElementRenderer
     {
         // Draw play button on top of poster (or instead of the poster if no poster defined)
         ImageView playButtonView;
-        String playButtonUrl = hostConfig.getMedia().getPlayButton();
+        String playButtonUrl = hostConfig.GetMedia().getPlayButton();
         if(!playButtonUrl.isEmpty())
         {
             Image playButton = new Image();
@@ -307,7 +307,7 @@ public class MediaRenderer extends BaseCardElementRenderer
         ImageView playButtonView = renderPlayButton(renderedCard, context, fragmentManager, posterLayout, cardActionHandler, hostConfig, containerStyle);
         FullscreenVideoView mediaView = renderMediaPlayer(context, posterLayout, media, hostConfig);
 
-        posterLayout.setOnClickListener(new PosterOnClickListener(posterView, playButtonView, mediaView, hostConfig.getMedia().getAllowInlinePlayback(), media, renderedCard, cardActionHandler));
+        posterLayout.setOnClickListener(new PosterOnClickListener(posterView, playButtonView, mediaView, hostConfig.GetMedia().getAllowInlinePlayback(), media, renderedCard, cardActionHandler));
         mediaView.setOnCompletionListener(new MediaOnCompletionListener(media, renderedCard, cardActionHandler));
 
         mediaLayout.addView(posterLayout);

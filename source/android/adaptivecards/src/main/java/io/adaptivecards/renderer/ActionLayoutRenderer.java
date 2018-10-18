@@ -47,7 +47,7 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
 
         LinearLayout actionButtonsLayout = new LinearLayout(context);
         actionButtonsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        int alignment = hostConfig.getActions().getActionAlignment().swigValue();
+        int alignment = hostConfig.GetActions().getActionAlignment().swigValue();
         if (alignment == ActionAlignment.Right.swigValue())
         {
             actionButtonsLayout.setGravity(Gravity.RIGHT);
@@ -57,7 +57,7 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
             actionButtonsLayout.setGravity(Gravity.CENTER_HORIZONTAL);
         }
 
-        int actionButtonsLayoutOrientation = hostConfig.getActions().getActionsOrientation().swigValue();
+        int actionButtonsLayoutOrientation = hostConfig.GetActions().getActionsOrientation().swigValue();
         if (actionButtonsLayoutOrientation == ActionsOrientation.Vertical.swigValue())
         {
             actionButtonsLayout.setOrientation(LinearLayout.VERTICAL);
@@ -67,7 +67,7 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
             actionButtonsLayout.setOrientation(LinearLayout.HORIZONTAL);
         }
 
-        Spacing spacing = hostConfig.getActions().getSpacing();
+        Spacing spacing = hostConfig.GetActions().getSpacing();
         /* Passing false for separator since we do not have any configuration for separator in actionsConfig */
         BaseCardElementRenderer.setSpacingAndSeparator(context, viewGroup, spacing, false, hostConfig, true /* Horizontal Line */);
 
@@ -87,7 +87,7 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
         }
 
         int i = 0;
-        long maxActions = hostConfig.getActions().getMaxActions();
+        long maxActions = hostConfig.GetActions().getMaxActions();
 
         boolean allActionsHaveIcons = true;
         for(; i < size && i < maxActions; ++i)
@@ -104,15 +104,15 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
         {
             BaseActionElement actionElement = baseActionElementList.get(i);
 
-            IconPlacement originalIconPlacement = hostConfig.getActions().getIconPlacement();
+            IconPlacement originalIconPlacement = hostConfig.GetActions().getIconPlacement();
             if(!allActionsHaveIcons)
             {
-                hostConfig.getActions().setIconPlacement(IconPlacement.LeftOfTitle);
+                hostConfig.GetActions().setIconPlacement(IconPlacement.LeftOfTitle);
             }
 
             IBaseActionElementRenderer actionRenderer = CardRendererRegistration.getInstance().getActionRenderer();
             actionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig);
-            hostConfig.getActions().setIconPlacement(originalIconPlacement);
+            hostConfig.GetActions().setIconPlacement(originalIconPlacement);
         }
 
         if (i >= maxActions && size != maxActions)

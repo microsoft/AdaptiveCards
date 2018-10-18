@@ -46,7 +46,7 @@ public class NumberInputRenderer extends TextInputRenderer
             HostConfig hostConfig,
             ContainerStyle containerStyle)
     {
-        if (!hostConfig.getSupportsInteractivity())
+        if (!hostConfig.GetSupportsInteractivity())
         {
             renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INTERACTIVITY_DISALLOWED, "Input.Number is not allowed"));
             return null;

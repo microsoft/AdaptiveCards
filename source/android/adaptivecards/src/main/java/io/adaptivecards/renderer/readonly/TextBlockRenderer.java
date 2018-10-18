@@ -82,9 +82,17 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         textView.setGravity(alignment);
     }
 
-    void setTextFormat(TextView textView, String textFamily, TextWeight textWeight)
+    void setTextFormat(TextView textView, HostConfig hostConfig, FontStyle style, TextWeight textWeight)
     {
-        textView.setTypeface(Typeface.create(textFamily, Typeface.NORMAL), m_textWeightMap.get(textWeight));
+        String fontFamily = hostConfig.GetFontFamily(style);
+
+        Typeface typeface = Typeface.create(fontFamily, Typeface.NORMAL);
+        if (fontFamily.isEmpty() && style == FontStyle.Monospace)
+        {
+            typeface = Typeface.MONOSPACE;
+        }
+
+        textView.setTypeface(typeface, m_textWeightMap.get(textWeight));
     }
 
     static void setTextColor(TextView textView, ForegroundColor foregroundColor, HostConfig hostConfig, boolean isSubtle, ContainerStyle containerStyle)
@@ -198,7 +206,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         textView.setEllipsize(TextUtils.TruncateAt.END);
         textView.setOnTouchListener(new TouchTextView(new SpannableString(text)));
         textView.setHorizontallyScrolling(false);
-        setTextFormat(textView, hostConfig.GetFontFamily(textBlock.GetFontStyle()), textBlock.GetTextWeight());
+        setTextFormat(textView, hostConfig, textBlock.GetFontStyle(), textBlock.GetTextWeight());
         setTextSize(textView, textBlock.GetFontStyle(), textBlock.GetTextSize(), hostConfig);
         setSpacingAndSeparator(context, viewGroup, textBlock.GetSpacing(), textBlock.GetSeparator(), hostConfig, true);
         setTextColor(textView, textBlock.GetTextColor(), hostConfig, textBlock.GetIsSubtle(), containerStyle);
