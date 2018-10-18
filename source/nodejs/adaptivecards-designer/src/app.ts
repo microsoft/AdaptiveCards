@@ -1,17 +1,14 @@
-import { SettingsManager } from "./settings-manager";
-import { CardDesigner } from "./card-designer";
-import { OutlookContainer } from "./containers/outlook-container";
-import { LightTeamsContainer, DarkTeamsContainer } from "./containers/teams-container";
-import { CortanaContainer } from "./containers/cortana-container";
+import * as Designer from "adaptivecards-designer-control";
 import { WebChatContainer } from "./containers/webchat-container";
-import { ToastContainer } from "./containers/toast-container";
+import { CortanaContainer } from "./containers/cortana-container";
+import { OutlookContainer } from "./containers/outlook-container";
 import { TimelineContainer } from "./containers/timeline-container";
+import { DarkTeamsContainer, LightTeamsContainer } from "./containers/teams-container";
 import { BotFrameworkContainer } from "./containers/bf-image-container";
-import { ToolbarButton, ToolbarSeparator } from "./toolbar";
-import { HostContainer } from "./containers/host-container";
+import { ToastContainer } from "./containers/toast-container";
 
 window.onload = () => {
-    if (!SettingsManager.isLocalStorageAvailable) {
+    if (!Designer.SettingsManager.isLocalStorageAvailable) {
         console.log("Local storage is not available.");
     }
 
@@ -19,7 +16,7 @@ window.onload = () => {
     // This is not required. When no list is passed (empty array or null), the designer
     // uses a default built-in host container, and the host container pixker in the
     // toolbar is hidden.
-    let hostContainers: Array<HostContainer> = [];
+    let hostContainers: Array<Designer.HostContainer> = [];
     hostContainers.push(new WebChatContainer("Bot Framework WebChat", "css/webchat-container.css"));
     hostContainers.push(new CortanaContainer("Cortana Skills", "css/cortana-container.css"));
     hostContainers.push(new OutlookContainer("Outlook Actionable Messages", "css/outlook-container.css"));
@@ -29,7 +26,7 @@ window.onload = () => {
     hostContainers.push(new BotFrameworkContainer("Bot Framework Other Channels (Image render)", "css/bf-image-container.css"));
     hostContainers.push(new ToastContainer("Windows Notifications (Preview)", "css/toast-container.css"));
 
-    let designer = new CardDesigner(hostContainers);
+    let designer = new Designer.CardDesigner(hostContainers);
 
     /* Here's how to add buttons to the toolbar:
 

@@ -1,7 +1,7 @@
-import { HostContainer } from "./host-container";
 import * as Adaptive from "adaptivecards";
+import * as Designer from "adaptivecards-designer-control";
 
-export class BotFrameworkContainer extends HostContainer {
+export class BotFrameworkContainer extends Designer.HostContainer {
     public renderTo(hostElement: HTMLElement) {
         this.cardHost.classList.add("bf-images-card");
 

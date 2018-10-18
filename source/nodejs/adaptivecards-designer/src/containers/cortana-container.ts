@@ -1,7 +1,7 @@
-import { HostContainer } from "./host-container";
 import * as Adaptive from "adaptivecards";
+import * as Designer from "adaptivecards-designer-control";
 
-export class CortanaContainer extends HostContainer {
+export class CortanaContainer extends Designer.HostContainer {
     public renderTo(hostElement: HTMLElement) {
         this.cardHost.classList.add("cortana-card");
 

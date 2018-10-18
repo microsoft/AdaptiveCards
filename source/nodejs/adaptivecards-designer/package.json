@@ -33,8 +33,6 @@
 	},
 	"dependencies": {
 		"adaptivecards": "latest",
-		"adaptivecards-controls": "latest",
-		"clipboard": "^2.0.1",
 		"markdown-it": "^8.4.0"
 	}
 }

@@ -1,111 +1,108 @@
-import * as Adaptive from "adaptivecards";
-import * as Designer from "adaptivecards-designer-control";
-
-export class TimelineContainer extends Designer.HostContainer {
-    public initialize() {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var Adaptive = require("adaptivecards");
+var HostContainer = /** @class */ (function () {
+    function HostContainer(name, styleSheet) {
+        this.supportsActionBar = false;
+        this.name = name;
+        this.styleSheet = styleSheet;
+        this._cardHost = document.createElement("div");
+    }
+    HostContainer.prototype.initialize = function () {
         Adaptive.AdaptiveCard.elementTypeRegistry.reset();
         Adaptive.AdaptiveCard.actionTypeRegistry.reset();
-        
         Adaptive.AdaptiveCard.useAutomaticContainerBleeding = false;
         Adaptive.AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = true;
         Adaptive.AdaptiveCard.useAdvancedCardBottomTruncation = false;
         Adaptive.AdaptiveCard.useAdvancedTextBlockTruncation = true;
-    }
-
-    public renderTo(hostElement: HTMLElement) {
-        let target = document.getElementById("designerHost");
-        let frame = document.createElement("div");
-        frame.className = "timeline-frame";
-        target.appendChild(frame);
-
-        let cardContainer = document.createElement("div");
-        cardContainer.className = "timeline-card";
-        frame.appendChild(cardContainer);
-
-        this.cardHost.style.height = "100%";
-        this.cardHost.style.width = "100%";
-        this.cardHost.style.overflow = "hidden";
-
-        cardContainer.appendChild(this.cardHost);
-        hostElement.appendChild(frame);
-    }
-
-    public getHostConfig(): Adaptive.HostConfig {
+    };
+    HostContainer.prototype.getBackgroundColor = function () {
+        return "#F6F6F6";
+    };
+    HostContainer.prototype.parseElement = function (element, json) {
+        // Do nothing in base implementation
+    };
+    HostContainer.prototype.anchorClicked = function (element, anchor) {
+        // Not handled by the host container by default
+        return false;
+    };
+    HostContainer.prototype.getHostConfig = function () {
         return new Adaptive.HostConfig({
+            preExpandSingleShowCardAction: false,
             spacing: {
-                small: 4,
-                default: 12,
+                small: 3,
+                default: 8,
                 medium: 20,
                 large: 30,
                 extraLarge: 40,
-                padding: 15
+                padding: 20
             },
             separator: {
                 lineThickness: 1,
                 lineColor: "#EEEEEE"
             },
-            supportsInteractivity: false,
+            supportsInteractivity: true,
             fontFamily: "Segoe UI",
             fontSizes: {
                 small: 12,
                 default: 14,
-                medium: 20,
-                large: 20,
+                medium: 17,
+                large: 21,
                 extraLarge: 26
             },
             fontWeights: {
                 lighter: 200,
                 default: 400,
-                bolder: 700
+                bolder: 600
             },
             containerStyles: {
                 default: {
-                    backgroundColor: "#535454",
+                    backgroundColor: "#FFFFFF",
                     foregroundColors: {
                         default: {
-                            "default": "#FFFFFF",
-                            "subtle": "#9C9E9F"
+                            default: "#333333",
+                            subtle: "#EE333333"
                         },
                         accent: {
-                            "default": "#2E89FC",
-                            "subtle": "#882E89FC"
+                            default: "#2E89FC",
+                            subtle: "#882E89FC"
                         },
                         attention: {
-                            "default": "#FF0000",
-                            "subtle": "#DDFF0000"
+                            default: "#FFD800",
+                            subtle: "#DDFFD800"
                         },
                         good: {
-                            "default": "#00FF00",
-                            "subtle": "#DD00FF00"
+                            default: "#00FF00",
+                            subtle: "#DD00FF00"
                         },
                         warning: {
-                            "default": "#FFD800",
-                            "subtle": "#DDFFD800"
+                            default: "#FF0000",
+                            subtle: "#DDFF0000"
                         }
                     }
                 },
                 emphasis: {
-                    backgroundColor: "#33000000",
+                    backgroundColor: "#EEEEEE",
                     foregroundColors: {
                         default: {
-                            "default": "#FFFFFF",
-                            "subtle": "#9C9E9F"
+                            default: "#333333",
+                            subtle: "#EE333333"
                         },
                         accent: {
-                            "default": "#2E89FC",
-                            "subtle": "#882E89FC"
+                            default: "#2E89FC",
+                            subtle: "#882E89FC"
                         },
                         attention: {
-                            "default": "#FF0000",
-                            "subtle": "#DDFF0000"
+                            default: "#FFD800",
+                            subtle: "#DDFFD800"
                         },
                         good: {
-                            "default": "#00FF00",
-                            "subtle": "#DD00FF00"
+                            default: "#00FF00",
+                            subtle: "#DD00FF00"
                         },
                         warning: {
-                            "default": "#FFD800",
-                            "subtle": "#DDFFD800"
+                            default: "#FF0000",
+                            subtle: "#DDFF0000"
                         }
                     }
                 }
@@ -113,7 +110,7 @@ export class TimelineContainer extends Designer.HostContainer {
             imageSizes: {
                 small: 40,
                 medium: 80,
-                large: 120
+                large: 160
             },
             actions: {
                 maxActions: 5,
@@ -121,7 +118,8 @@ export class TimelineContainer extends Designer.HostContainer {
                 buttonSpacing: 20,
                 showCard: {
                     actionMode: Adaptive.ShowCardActionMode.Inline,
-                    inlineTopMargin: 16
+                    inlineTopMargin: 16,
+                    style: Adaptive.ContainerStyle.Emphasis
                 },
                 actionsOrientation: Adaptive.Orientation.Horizontal,
                 actionAlignment: Adaptive.ActionAlignment.Left
@@ -139,18 +137,28 @@ export class TimelineContainer extends Designer.HostContainer {
                     size: Adaptive.TextSize.Default,
                     isSubtle: false,
                     weight: Adaptive.TextWeight.Bolder,
-                    wrap: false,
-                    maxWidth: 150,
+                    wrap: true,
+                    maxWidth: 150
                 },
                 value: {
                     color: Adaptive.TextColor.Default,
                     size: Adaptive.TextSize.Default,
                     isSubtle: false,
                     weight: Adaptive.TextWeight.Default,
-                    wrap: true,
+                    wrap: true
                 },
                 spacing: 10
             }
         });
-    }
-}
+    };
+    Object.defineProperty(HostContainer.prototype, "cardHost", {
+        get: function () {
+            return this._cardHost;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return HostContainer;
+}());
+exports.HostContainer = HostContainer;
+//# sourceMappingURL=host-container.js.map

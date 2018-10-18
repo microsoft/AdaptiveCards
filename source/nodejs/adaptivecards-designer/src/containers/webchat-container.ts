@@ -1,7 +1,7 @@
-import { HostContainer } from "./host-container";
 import * as Adaptive from "adaptivecards";
+import * as Designer from "adaptivecards-designer-control";
 
-export class WebChatContainer extends HostContainer {
+export class WebChatContainer extends Designer.HostContainer {
     public renderTo(hostElement: HTMLElement) {
         this.cardHost.classList.add("webChatOuterContainer");
 

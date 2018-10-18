@@ -1,5 +1,5 @@
-import { HostContainer } from "./host-container";
 import * as Adaptive from "adaptivecards";
+import * as Designer from "adaptivecards-designer-control";
 
 export class ToggleVisibilityAction extends Adaptive.Action {
     targetElementIds: Array<string> = [];
@@ -27,7 +27,7 @@ export class ToggleVisibilityAction extends Adaptive.Action {
     }
 }
 
-export class OutlookContainer extends HostContainer {
+export class OutlookContainer extends Designer.HostContainer {
     public renderTo(hostElement: HTMLElement) {
         hostElement.classList.add("outlook-frame");
         hostElement.appendChild(this.cardHost);
