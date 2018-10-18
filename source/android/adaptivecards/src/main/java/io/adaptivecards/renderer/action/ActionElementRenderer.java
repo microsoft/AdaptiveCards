@@ -231,13 +231,13 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
     {
         Button button = new Button(context);
         button.setText(baseActionElement.GetTitle());
-        ActionAlignment alignment = hostConfig.getActions().getActionAlignment();
-        ActionsOrientation orientation = hostConfig.getActions().getActionsOrientation();
+        ActionAlignment alignment = hostConfig.GetActions().getActionAlignment();
+        ActionsOrientation orientation = hostConfig.GetActions().getActionsOrientation();
         LinearLayout.LayoutParams layoutParams;
         if (orientation == ActionsOrientation.Horizontal)
         {
             layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
-            long spacing = hostConfig.getActions().getButtonSpacing();
+            long spacing = hostConfig.GetActions().getButtonSpacing();
             layoutParams.rightMargin = Util.dpToPixels(context, spacing);
         }
         else
@@ -258,15 +258,15 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             ActionElementRendererIconImageLoaderAsync imageLoader = new ActionElementRendererIconImageLoaderAsync(
                     renderedCard,
                     button,
-                    hostConfig.getImageBaseUrl(),
-                    hostConfig.getActions().getIconPlacement(),
-                    hostConfig.getActions().getIconSize()
+                    hostConfig.GetImageBaseUrl(),
+                    hostConfig.GetActions().getIconPlacement(),
+                    hostConfig.GetActions().getIconSize()
             );
             imageLoader.execute(baseActionElement.GetIconUrl());
 
             // Only when the icon must be placed to the left of the title, we have to do this
-            if (hostConfig.getActions().getIconPlacement() == IconPlacement.LeftOfTitle) {
-                int padding = (int) hostConfig.getSpacing().getDefaultSpacing();
+            if (hostConfig.GetActions().getIconPlacement() == IconPlacement.LeftOfTitle) {
+                int padding = (int) hostConfig.GetSpacing().getDefaultSpacing();
                 ButtonOnLayoutChangedListener layoutChangedListener = new ButtonOnLayoutChangedListener();
                 layoutChangedListener.setPadding(padding);
                 button.addOnLayoutChangeListener(layoutChangedListener);
@@ -295,7 +295,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         Button button = renderButton(context, viewGroup, baseActionElement, hostConfig, renderedCard);
 
         if (baseActionElement.GetElementType() == ActionType.ShowCard
-                && hostConfig.getActions().getShowCard().getActionMode() == ActionMode.Inline)
+                && hostConfig.GetActions().getShowCard().getActionMode() == ActionMode.Inline)
         {
 
             ShowCardAction showCardAction = null;
@@ -311,7 +311,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             View invisibleCard = AdaptiveCardRenderer.getInstance().internalRender(renderedCard, context, fragmentManager, showCardAction.GetCard(), cardActionHandler, hostConfig, true);
             invisibleCard.setVisibility(View.GONE);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            layoutParams.setMargins(0, Util.dpToPixels(context, hostConfig.getActions().getShowCard().getInlineTopMargin()), 0, 0);
+            layoutParams.setMargins(0, Util.dpToPixels(context, hostConfig.GetActions().getShowCard().getInlineTopMargin()), 0, 0);
             invisibleCard.setLayoutParams(layoutParams);
 
             ViewGroup parent = (ViewGroup) viewGroup.getParent();

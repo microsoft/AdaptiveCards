@@ -8,48 +8,38 @@
 
 package io.adaptivecards.objectmodel;
 
-public enum WarningStatusCode {
-  UnknownElementType(0),
-  UnknownPropertyOnElement,
-  UnknownEnumValue,
-  NoRendererForType,
-  InteractivityNotSupported,
-  MaxActionsExceeded,
-  AssetLoadFailed,
-  UnsupportedSchemaVersion,
-  UnsupportedMediaType,
-  InvalidMediaMix,
-  InvalidColorFormat,
-  InvalidDimensionSpecified,
-  InvalidLanguage;
+public enum FontStyle {
+  Default(0),
+  Display,
+  Monospace;
 
   public final int swigValue() {
     return swigValue;
   }
 
-  public static WarningStatusCode swigToEnum(int swigValue) {
-    WarningStatusCode[] swigValues = WarningStatusCode.class.getEnumConstants();
+  public static FontStyle swigToEnum(int swigValue) {
+    FontStyle[] swigValues = FontStyle.class.getEnumConstants();
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
-    for (WarningStatusCode swigEnum : swigValues)
+    for (FontStyle swigEnum : swigValues)
       if (swigEnum.swigValue == swigValue)
         return swigEnum;
-    throw new IllegalArgumentException("No enum " + WarningStatusCode.class + " with value " + swigValue);
+    throw new IllegalArgumentException("No enum " + FontStyle.class + " with value " + swigValue);
   }
 
   @SuppressWarnings("unused")
-  private WarningStatusCode() {
+  private FontStyle() {
     this.swigValue = SwigNext.next++;
   }
 
   @SuppressWarnings("unused")
-  private WarningStatusCode(int swigValue) {
+  private FontStyle(int swigValue) {
     this.swigValue = swigValue;
     SwigNext.next = swigValue+1;
   }
 
   @SuppressWarnings("unused")
-  private WarningStatusCode(WarningStatusCode swigEnum) {
+  private FontStyle(FontStyle swigEnum) {
     this.swigValue = swigEnum.swigValue;
     SwigNext.next = this.swigValue+1;
   }
