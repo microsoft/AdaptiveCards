@@ -76,18 +76,18 @@
   <ItemGroup>
     <None Include="Additions\AboutAdditions.txt" />
     <None Include="Jars\AboutJars.txt" />
-    <LibraryProjectZip Include="../../android/adaptivecards/build/outputs/aar/adaptivecards-debug.aar" />
+    <LibraryProjectZip  Condition="'$(Configuration)' == 'Debug'" Include="../../android/adaptivecards/build/outputs/aar/adaptivecards-debug.aar">
+      <Link>Jars\adaptivecards-debug.aar</Link>
+    </LibraryProjectZip>
+    <LibraryProjectZip  Condition="'$(Configuration)' == 'Release'" Include="../../android/adaptivecards/build/outputs/aar/adaptivecards-release.aar">
+      <Link>Jars\adaptivecards-release.aar</Link>
+    </LibraryProjectZip>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <TransformFile Include="Transforms\EnumFields.xml" />
     <TransformFile Include="Transforms\EnumMethods.xml" />
     <TransformFile Include="Transforms\Metadata.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <LibraryProjectZip Include="..\..\android\adaptivecards\build\outputs\aar\adaptivecards-debug.aar">
-      <Link>Jars\adaptivecards-debug.aar</Link>
-    </LibraryProjectZip>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.Bindings.targets" />
   <Import Project="..\packages\Xamarin.Android.Support.Annotations.25.3.1\build\MonoAndroid70\Xamarin.Android.Support.Annotations.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Annotations.25.3.1\build\MonoAndroid70\Xamarin.Android.Support.Annotations.targets')" />

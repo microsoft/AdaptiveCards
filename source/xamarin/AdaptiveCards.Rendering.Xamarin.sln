@@ -6,12 +6,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Rendering.Xam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Rendering.Xamarin.Android.Sample", "AdaptiveCards.Rendering.Xamarin.Android.Sample\AdaptiveCards.Rendering.Xamarin.Android.Sample.csproj", "{A6C5A2BF-4829-4E23-AAAF-8BF2E5126204}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ObjectModelProjection", "..\uwp\ObjectModelProjection\ObjectModelProjection.vcxproj", "{2D040C7D-757A-4292-BB59-62BC53A83C9F}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AdaptiveCardRenderer", "..\uwp\Renderer\AdaptiveCardRenderer.vcxproj", "{CF169157-F487-420C-8B9B-CA3ABE2BB209}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Rendering.Xamarin.UWP", "AdaptiveCards.Rendering.UWP\AdaptiveCards.Rendering.Xamarin.UWP.csproj", "{68C89BA6-1E71-42B6-A1DF-1B02E19D5B71}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AdaptiveCards.BotConnection", "AdaptiveCards.BotConnection\AdaptiveCards.BotConnection.shproj", "{1EC290D9-1C0E-4FD7-AE2F-A0E7FA47CD0E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Rendering.Xamarin.iOS", "AdaptiveCards.Rendering.Xamarin.iOS\AdaptiveCards.Rendering.Xamarin.iOS.csproj", "{DC69056C-24E0-4AD1-82A6-6F1DEB2AE70E}"
@@ -22,7 +16,6 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		AdaptiveCards.BotConnection\AdaptiveCards.BotConnection.projitems*{1879973a-ce87-44af-978a-11a31dcf2a4e}*SharedItemsImports = 4
 		AdaptiveCards.BotConnection\AdaptiveCards.BotConnection.projitems*{1ec290d9-1c0e-4fd7-ae2f-a0e7fa47cd0e}*SharedItemsImports = 13
-		AdaptiveCards.BotConnection\AdaptiveCards.BotConnection.projitems*{68c89ba6-1e71-42b6-a1df-1b02e19d5b71}*SharedItemsImports = 4
 		AdaptiveCards.BotConnection\AdaptiveCards.BotConnection.projitems*{a6c5a2bf-4829-4e23-aaaf-8bf2e5126204}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
