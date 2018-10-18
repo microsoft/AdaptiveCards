@@ -17,6 +17,7 @@ with open('custom.props', 'r') as f:
             m = p.search(line)
             if m != None:
                 acversion = m.group()
+                break
 
 token = ':' + os.environ['ACPAT']
 
