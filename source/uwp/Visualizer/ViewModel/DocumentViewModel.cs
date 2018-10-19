@@ -96,6 +96,8 @@ namespace AdaptiveCardVisualizer.ViewModel
 
                     AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(templateResult);
 
+                    TemplatedJson = parseResult.AdaptiveCard.ToJson().ToString();
+
                     RenderedAdaptiveCard renderResult = _renderer.RenderAdaptiveCard(parseResult.AdaptiveCard);
                     if (renderResult.FrameworkElement != null)
                     {

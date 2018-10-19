@@ -18,6 +18,8 @@ using namespace AdaptiveCards;
 bool ShouldJsonObjectBePruned(Json::Value value);
 Json::Value DataBindJson(const Json::Value& sourceCard, const Json::Value& frame);
 
+const char* c_whitespace = " \t";
+
 // Find a key between start and end markers. For example pull out the foo in:
 // "This is some text with a {{foo}} in it."
 // Takes strings for the type of braces ({{}}, [], etc.) and returns the positions of the beginning
@@ -29,29 +31,42 @@ std::string GetKey(std::string string, size_t startPosition, const char* openBra
     std::string bracesEnd(closeBraces);
 
     size_t bracesStartPosition = string.find(bracesStart, startPosition);
-    size_t bracesEndPosition = string.find(bracesEnd, startPosition);
+    size_t bracesEndPosition = string.find(bracesEnd, bracesStartPosition + 1);
 
     std::string key;
     if (bracesStartPosition != std::string::npos && bracesEndPosition != std::string::npos)
     {
         key = string.substr(bracesStartPosition + bracesStart.length(),
                             bracesEndPosition - bracesStartPosition - bracesStart.length());
-        *keyStartPosition = bracesStartPosition;
-        *keyEndPosition = bracesEndPosition + bracesEnd.length() - 1;
+
+        if (keyStartPosition)
+        {
+            *keyStartPosition = bracesStartPosition;
+        }
+        if (keyEndPosition)
+        {
+            *keyEndPosition = bracesEndPosition + bracesEnd.length() - 1;
+        }
     }
 
     return key;
 }
 
-// Get the argument of a data binding function.
-std::string GetArgument(std::string& key, unsigned int startPosition)
+// Determines if this string matches the given keyword, and returns any argument that may be present
+bool IsKeyword(const std::string& string, size_t startPosition, const std::string& keyword, std::string& argument)
 {
-    size_t argumentStart = key.find_first_not_of(" ", startPosition);
-    if (argumentStart != std::string::npos)
+    std::string key = GetKey(string, startPosition, "{{", "}}", nullptr, nullptr);
+
+    if (!key.compare(0, keyword.length(), keyword))
     {
-        return key.substr(argumentStart, key.length() - argumentStart);
+        size_t argumentStart = key.find_first_not_of(c_whitespace, keyword.length());
+        if (argumentStart != std::string::npos)
+        {
+            argument = key.substr(argumentStart, key.length() - argumentStart);
+        }
+        return true;
     }
-    return std::string();
+    return false;
 }
 
 // Gets a databinding key between double curly braces {{key}} and checks for the existential operator.
@@ -61,14 +76,7 @@ std::string GetDataBindingKey(std::string string, size_t startPosition, size_t* 
 
     // If the databinding key includes the existential operator ("{{#? stuff}}"), set the boolean indicating it should
     // only be included if it exits, and return just the argument ("stuff") as the key
-    *includeOnlyIfExists = false;
-    std::string existentialString = "#?";
-    if (!key.compare(0, existentialString.length(), existentialString))
-    {
-        *includeOnlyIfExists = true;
-        key = GetArgument(key, existentialString.length());
-    }
-
+    *includeOnlyIfExists = IsKeyword(string, startPosition, "#?", key);
     return key;
 }
 
@@ -89,6 +97,17 @@ Json::Value GetValue(std::string key, const Json::Value& sourceValue)
     // and it's corresponding Json::Value scope
     Json::Value currentSourceScope = sourceValue;
     std::string currentKey = key;
+
+    // Handle this.stuff where "this" is the current scope
+    std::string thisString = "this";
+    std::string beforeDotKey = currentKey.substr(0, dotPosition);
+    if (!beforeDotKey.compare(0, thisString.length(), thisString))
+    {
+        // Remove the "this" from the string without changing the scope
+        currentKey = currentKey.substr(dotPosition + 1, currentKey.length() - dotPosition);
+        dotPosition = currentKey.find(dot, 0);
+    }
+
     while ((dotPosition != std::string::npos) && (dotPosition < openBracePosition))
     {
         std::string beforeDotKey = currentKey.substr(0, dotPosition);
@@ -213,10 +232,123 @@ Json::Value DataBindString(const Json::Value& sourceCard, const Json::Value& fra
     }
 }
 
+bool EvaluateAsInConditional(std::string conditional, const Json::Value& sourceCard)
+{
+    // Evaluates conditionals of the form {{#if 'foo' in bar}}
+
+    // Find a variable in single quotes
+    size_t startQuotePosition, endQuotePosition;
+    std::string variable = GetKey(conditional, 0, "\'", "\'", &startQuotePosition, &endQuotePosition);
+    if (startQuotePosition == 0 && !variable.empty())
+    {
+        std::string inString = "in";
+        size_t inPositon = conditional.find_first_not_of(c_whitespace, endQuotePosition + 1);
+        if (!conditional.compare(inPositon, inString.length(), inString))
+        {
+            // Find the scope after the whitespace after "in"
+            size_t scopeStartPosition = conditional.find_first_not_of(c_whitespace, inPositon + inString.length());
+            size_t scopeEndPosition = conditional.find_last_not_of(c_whitespace);
+            std::string scope = conditional.substr(scopeStartPosition, scopeEndPosition - scopeStartPosition + 1);
+            
+            // For a conditional of the form {{#if 'foo' in bar}}, create a frame {{#? bar.foo}} to evaluate with
+            // DataBindString. This will return empty if it doesn't exist, non-empty if it does.
+            Json::Value frame("{{#? " + scope + "." + variable + "}}");
+            Json::Value result = DataBindString(sourceCard, frame);
+            return !result.empty();
+        }
+    }
+
+    return false;
+}
+
+bool EvaluateConditional(std::string conditional, const Json::Value& sourceCard)
+{
+    if (!conditional.compare(0, conditional.length(), "true"))
+    {
+        return true;
+    }
+    else if (EvaluateAsInConditional(conditional, sourceCard))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool DataBindIfElseArray(const Json::Value& sourceCard, const Json::Value& frame, Json::Value& resultOut)
+{
+    // Check if the first property of the first object is a #if
+    Json::Value arrayElement = frame[0];
+    if (arrayElement.isObject())
+    {
+        std::string conditional;
+        std::string objectKey = arrayElement.getMemberNames()[0];
+        if (IsKeyword(objectKey, 0, "#if", conditional))
+        {
+            Json::Value result;
+
+            // This is a #if case, evaluate the conditional
+            if (EvaluateConditional(conditional, sourceCard))
+            {
+                result = DataBindJson(sourceCard, arrayElement[objectKey]);
+            }
+            else
+            {
+                // Handle #elseif cases
+                unsigned int frameIndex;
+                for (frameIndex = 1; frameIndex < frame.size(); frameIndex++)
+                {
+                    arrayElement = frame[frameIndex];
+                    if (arrayElement.isObject())
+                    {
+                        objectKey = arrayElement.getMemberNames()[0];
+
+                        if (IsKeyword(objectKey, 0, "#elseif", conditional))
+                        {
+                            if (EvaluateConditional(conditional, sourceCard))
+                            {
+                                result = DataBindJson(sourceCard, arrayElement[objectKey]);
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            // Break out of the loop if we see something other than #elseif
+                            break;
+                        }
+                    }
+                }
+
+                // If we haven't found a result and there are still items left, check for #else
+                if (result.empty() && frameIndex < frame.size())
+                {
+                    std::string arg;
+                    if (IsKeyword(objectKey, 0, "#else", arg))
+                    {
+                        result = DataBindJson(sourceCard, arrayElement[objectKey]);
+                    }
+                }
+            }
+
+            resultOut = result;
+            return true;
+        }
+    }
+    return false;
+}
+
 Json::Value DataBindArray(const Json::Value& sourceCard, const Json::Value& frame)
 {
-    // Loop through the sub elements of the array and bind each one
+    // Handle the case of a #if/#elseif/#else array
     Json::Value result;
+    if (DataBindIfElseArray(sourceCard, frame, result))
+    {
+        return result;
+    }
+
+    // Loop through the sub elements of the array and bind each one
     for (Json::Value::const_iterator it = frame.begin(); it != frame.end(); it++)
     {
         Json::Value elementResult = DataBindJson(sourceCard, *it);
@@ -246,45 +378,38 @@ Json::Value DataBindArray(const Json::Value& sourceCard, const Json::Value& fram
 // Handles #each arrays with syntax such as the following:
 // {{#each myArray}} : {"type" : "TextBlock, "text" : "{{foo}}"}
 // where "myArray" is an array of objects each with a "foo" property
-Json::Value DataBindAsEachObject(const Json::Value& sourceCard, const Json::Value& frame)
+bool DataBindAsEachObject(const Json::Value& sourceCard, const Json::Value& frame, Json::Value& resultOut)
 {
     // A #each object will have one value with a key that looks like
     // {{#each myArray}}
-    Json::Value result;
     if (frame.size() == 1)
     {
         auto memberNames = frame.getMemberNames();
         std::string jsonKey = memberNames[0];
 
-        size_t startPosition, endPosition;
-        std::string dataBindingKey = GetKey(jsonKey, 0, "{{", "}}", &startPosition, &endPosition);
-
-        if (!dataBindingKey.empty())
+        std::string arrayName;
+        if (IsKeyword(jsonKey, 0, "#each", arrayName))
         {
-            std::string eachString("#each");
-            if (!dataBindingKey.compare(0, eachString.length(), eachString))
+            if (!arrayName.empty())
             {
-                // Get the name of the array
-                std::string arrayName = GetArgument(dataBindingKey, eachString.length());
                 Json::Value eachArray = sourceCard;
-                if (!arrayName.empty())
-                {
-                    eachArray = sourceCard[arrayName];
-                }
-
+                eachArray = sourceCard[arrayName];
                 if (eachArray.isArray())
                 {
                     // Iterate throught the array and data bind, using each element of the array
                     // as the source and the value of the key as the frame
+                    Json::Value result;
                     for (Json::Value::const_iterator itArray = eachArray.begin(); itArray != eachArray.end(); itArray++)
                     {
                         result.append(DataBindJson(*itArray, frame[jsonKey]));
                     }
+                    resultOut = result;
+                    return true;
                 }
             }
         }
     }
-    return result;
+    return false;
 }
 
 Json::Value DataBindObject(const Json::Value& sourceCard, const Json::Value& frame)
@@ -292,26 +417,17 @@ Json::Value DataBindObject(const Json::Value& sourceCard, const Json::Value& fra
     Json::Value result;
 
     // Check if this is a #each object.
-    result = DataBindAsEachObject(sourceCard, frame);
-    if (!result.empty())
+    if (DataBindAsEachObject(sourceCard, frame, result))
     {
         return result;
     }
-    else
+
+    // Loop through the sub elements of the object and bind each one
+    for (Json::Value::const_iterator it = frame.begin(); it != frame.end(); it++)
     {
-        // Loop through the sub elements of the object and bind each one
-        for (Json::Value::const_iterator it = frame.begin(); it != frame.end(); it++)
-        {
-            std::string key = it.key().asCString();
-            // Data bind the json value in "key" : "value" and add it to the result;
-            Json::Value elementResult = DataBindJson(sourceCard, *it);
-            if (elementResult.empty())
-            {
-                // If the result is empty, don't add it to the json
-                continue;
-            }
-            result[key] = elementResult;
-        }
+        std::string key = it.key().asCString();
+        // Data bind the json value in "key" : "value" and add it to the result;
+        result[key] = DataBindJson(sourceCard, *it);
     }
 
     // Check if the object should be pruned. If so, return an empty result
@@ -354,13 +470,11 @@ Json::Value DataBindJson(const Json::Value& sourceCard, const Json::Value& frame
 
 Json::Value ApplyJsonTemplating(const Json::Value& sourceCard, const Json::Value& frame)
 {
-    // First bind the card to its data if present
-    Json::Value dataBoundCard = sourceCard;
-    Json::Value data = sourceCard["data"];
-    if (!data.empty())
-    {
-        dataBoundCard = DataBindJson(data, sourceCard);
-    }
+    // First bind the card to its data if present. This will also handle special keywords (#if, #each, etc).
+    Json::Value dataBoundCard = DataBindJson(sourceCard["data"], sourceCard);
+
+    Json::FastWriter fastWriter;
+    std::string resultString = fastWriter.write(dataBoundCard);
 
     Json::Value result = dataBoundCard;
     if (!frame.empty())
@@ -374,6 +488,7 @@ Json::Value ApplyJsonTemplating(const Json::Value& sourceCard, const Json::Value
         result = DataBindJson(dataSource, frame);
     }
 
+    resultString = fastWriter.write(result);
     return result;
 }
 
@@ -400,9 +515,6 @@ bool ShouldJsonObjectBePruned(Json::Value value)
         case CardElementType::Container:
             return value["items"].empty();
 
-        case CardElementType::ColumnSet:
-            return value["columns"].empty();
-
         case CardElementType::FactSet:
             return value["facts"].empty();
 
@@ -421,6 +533,10 @@ bool ShouldJsonObjectBePruned(Json::Value value)
         case CardElementType::Fact:
             return (value["title"].empty() || value["value"].empty());
 
+        case CardElementType::ColumnSet:
+            // Existing cards support empty column sets so don't prune here for now
+            // return value["columns"].empty();
+
         case CardElementType::DateInput:
         case CardElementType::NumberInput:
         case CardElementType::TextInput:
@@ -434,7 +550,9 @@ bool ShouldJsonObjectBePruned(Json::Value value)
     }
     else if (ActionTypeFromString(ParseUtil::GetTypeAsString(value)) != ActionType::Unsupported)
     {
-        return value["title"].empty();
+        // Existing cards support empty action titles do don't prune here for now
+        // return value["title"].empty();
+        return false;
     }
     else
     {
