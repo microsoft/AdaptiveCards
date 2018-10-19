@@ -33,6 +33,7 @@
 	},
 	"dependencies": {
 		"adaptivecards": "latest",
+		"adaptivecards-designer-control": "latest",
 		"markdown-it": "^8.4.0"
 	}
 }

@@ -41,6 +41,7 @@
 	},
 	"dependencies": {
 		"adaptivecards": "latest",
+		"adaptivecards-controls": "latest",
 		"clipboard": "^2.0.1"
 	}
 }
