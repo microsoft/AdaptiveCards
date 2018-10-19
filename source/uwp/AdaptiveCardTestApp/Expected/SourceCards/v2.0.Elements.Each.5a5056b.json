@@ -3,24 +3,24 @@
 	"type": "AdaptiveCard",
 	"version": "2.0",
 	"data": {
-		"disney": [
+		"animals": [
 			{
-				"name": "Mickey",
+				"name": "Squeeks",
 				"animal": "Mouse"
 			},
 			{
-				"name": "Donald",
-				"animal": "Duck"
+				"name": "Mittens",
+				"animal": "Cat"
 			},
 			{
-				"name": "Pluto",
+				"name": "Spot",
 				"animal": "Dog"
 			}
 		]
 	},
 	"body": [
 		{
-			"{{#each disney}}": {
+			"{{#each animals}}": {
 				"type": "TextBlock",
 				"text": "{{name}} is a {{animal}}"
 			}
