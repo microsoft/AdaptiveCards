@@ -23,46 +23,10 @@ using namespace Microsoft::WRL::Wrappers;
 
 namespace AdaptiveNamespace
 {
-    _Use_decl_annotations_ HRESULT AdaptiveCardStaticsImpl::FromJsonString(HSTRING adaptiveJson,
-                                                                           IAdaptiveCardParseResult** parseResult) noexcept try
-    {
-        return FromJsonStringWithParserRegistration(adaptiveJson, nullptr, nullptr, parseResult);
-    }
-    CATCH_RETURN;
-
-    _Use_decl_annotations_ HRESULT AdaptiveCardStaticsImpl::FromJsonStringWithParserRegistration(
-        HSTRING adaptiveJson,
-        IAdaptiveElementParserRegistration* elementParserRegistration,
-        IAdaptiveActionParserRegistration* actionParserRegistration,
-        IAdaptiveCardParseResult** parseResult) noexcept try
-    {
-        *parseResult = nullptr;
-
-        std::string adaptiveJsonString;
-        RETURN_IF_FAILED(HStringToUTF8(adaptiveJson, adaptiveJsonString));
-
-        return FromJsonString(adaptiveJsonString, elementParserRegistration, actionParserRegistration, parseResult);
-    }
-    CATCH_RETURN;
-
-    _Use_decl_annotations_ HRESULT AdaptiveCardStaticsImpl::FromJsonWithFrame(IJsonObject* adaptiveJson,
-                                                                              IJsonObject* adaptiveFrame,
-                                                                              IAdaptiveCardParseResult** parseResult) noexcept try
-    {
-        std::string adaptiveJsonString;
-        RETURN_IF_FAILED(JsonObjectToString(adaptiveJson, adaptiveJsonString));
-
-        std::string adaptiveFrameString;
-        RETURN_IF_FAILED(JsonObjectToString(adaptiveFrame, adaptiveFrameString));
-
-        return FromJsonStringWithFrame(adaptiveJsonString, adaptiveFrameString, nullptr, nullptr, parseResult);
-    }
-    CATCH_RETURN;
-
     _Use_decl_annotations_ HRESULT AdaptiveCardStaticsImpl::FromJson(IJsonObject* adaptiveJson,
                                                                      IAdaptiveCardParseResult** parseResult) noexcept try
     {
-        return FromJsonWithParserRegistration(adaptiveJson, nullptr, nullptr, parseResult);
+        return FromJsonWithParserRegistrationAndFrame(adaptiveJson, nullptr, nullptr, nullptr, parseResult);
     }
     CATCH_RETURN;
 
@@ -74,27 +38,66 @@ namespace AdaptiveNamespace
     {
         *parseResult = nullptr;
 
-        std::string adaptiveJsonString;
-        RETURN_IF_FAILED(JsonObjectToString(adaptiveJson, adaptiveJsonString));
-
-        return FromJsonString(adaptiveJsonString, elementParserRegistration, actionParserRegistration, parseResult);
+        return FromJsonWithParserRegistrationAndFrame(adaptiveJson, elementParserRegistration, actionParserRegistration, nullptr, parseResult);
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveCardStaticsImpl::FromJsonString(const std::string jsonString,
+    _Use_decl_annotations_ HRESULT AdaptiveCardStaticsImpl::FromJsonWithParserRegistrationAndFrame(
+        IJsonObject* adaptiveJson,
+        IAdaptiveElementParserRegistration* elementParserRegistration,
+        IAdaptiveActionParserRegistration* actionParserRegistration,
+        IJsonObject* adaptiveFrame,
+        IAdaptiveCardParseResult** parseResult) noexcept try
+    {
+        *parseResult = nullptr;
+
+        std::string adaptiveJsonString;
+        RETURN_IF_FAILED(JsonObjectToString(adaptiveJson, adaptiveJsonString));
+
+        std::string adaptiveFrameString;
+        RETURN_IF_FAILED(JsonObjectToString(adaptiveFrame, adaptiveFrameString));
+
+        return FromJsonHelper(adaptiveJsonString, elementParserRegistration, actionParserRegistration, adaptiveFrameString, parseResult);
+    }
+    CATCH_RETURN;
+
+    _Use_decl_annotations_ HRESULT AdaptiveCardStaticsImpl::FromJsonString(HSTRING adaptiveJson,
+                                                                           IAdaptiveCardParseResult** parseResult) noexcept try
+    {
+        return FromJsonStringWithParserRegistrationAndFrame(adaptiveJson, nullptr, nullptr, nullptr, parseResult);
+    }
+    CATCH_RETURN;
+
+    _Use_decl_annotations_ HRESULT AdaptiveCardStaticsImpl::FromJsonStringWithParserRegistration(
+        HSTRING adaptiveJson,
+        IAdaptiveElementParserRegistration* elementParserRegistration,
+        IAdaptiveActionParserRegistration* actionParserRegistration,
+        IAdaptiveCardParseResult** parseResult) noexcept try
+    {
+        *parseResult = nullptr;
+
+        return FromJsonStringWithParserRegistrationAndFrame(adaptiveJson, elementParserRegistration, actionParserRegistration, nullptr, parseResult);
+    }
+    CATCH_RETURN;
+
+    _Use_decl_annotations_ HRESULT AdaptiveCardStaticsImpl::FromJsonStringWithParserRegistrationAndFrame(
+        HSTRING adaptiveJson,
+        IAdaptiveElementParserRegistration* elementParserRegistration,
+        IAdaptiveActionParserRegistration* actionParserRegistration,
+        HSTRING adaptiveFrame,
+        IAdaptiveCardParseResult** parseResult) noexcept try
+    {
+        *parseResult = nullptr;
+
+        return FromJsonHelper(HStringToUTF8(adaptiveJson), elementParserRegistration, actionParserRegistration, HStringToUTF8(adaptiveFrame), parseResult);
+    }
+    CATCH_RETURN;
+
+    _Use_decl_annotations_ HRESULT AdaptiveCardStaticsImpl::FromJsonHelper(const std::string jsonString,
                                                                            IAdaptiveElementParserRegistration* elementParserRegistration,
                                                                            IAdaptiveActionParserRegistration* actionParserRegistration,
+                                                                           const std::string jsonFrame,
                                                                            IAdaptiveCardParseResult** parseResult)
-    {
-        std::string jsonFrame;
-        return FromJsonStringWithFrame(jsonString, jsonFrame, elementParserRegistration, actionParserRegistration, parseResult);
-    }
-
-    _Use_decl_annotations_ HRESULT AdaptiveCardStaticsImpl::FromJsonStringWithFrame(const std::string jsonString,
-                                                                                    const std::string jsonFrame,
-                                                                                    IAdaptiveElementParserRegistration* elementParserRegistration,
-                                                                                    IAdaptiveActionParserRegistration* actionParserRegistration,
-                                                                                    IAdaptiveCardParseResult** parseResult)
     {
         std::shared_ptr<ElementParserRegistration> sharedModelElementParserRegistration;
         if (elementParserRegistration != nullptr)
@@ -123,20 +126,8 @@ namespace AdaptiveNamespace
         try
         {
             const std::string c_rendererVersion = "2.0";
-
-            std::shared_ptr<::AdaptiveCards::ParseResult> sharedParseResult;
-            if (jsonFrame.empty())
-            {
-                sharedParseResult = ::AdaptiveCards::AdaptiveCard::DeserializeFromString(jsonString,
-                                                                                         c_rendererVersion,
-                                                                                         sharedModelElementParserRegistration,
-                                                                                         sharedModelActionParserRegistration);
-            }
-            else
-            {
-                sharedParseResult = ::AdaptiveCards::AdaptiveCard::DeserializeFromStringWithFrame(
-                    jsonString, jsonFrame, c_rendererVersion, sharedModelElementParserRegistration, sharedModelActionParserRegistration);
-            }
+            std::shared_ptr<::AdaptiveCards::ParseResult> sharedParseResult = ::AdaptiveCards::AdaptiveCard::DeserializeFromString(
+                jsonString, c_rendererVersion, sharedModelElementParserRegistration, sharedModelActionParserRegistration, jsonFrame);
 
             ComPtr<IAdaptiveCard> adaptiveCard;
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&adaptiveCard, sharedParseResult->GetAdaptiveCard()));

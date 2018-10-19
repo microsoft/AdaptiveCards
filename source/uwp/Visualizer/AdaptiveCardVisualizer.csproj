@@ -103,8 +103,8 @@
       <Link>Schemas\renderer-options.json</Link>
     </Content>
     <Content Include="HostConfigs\DefaultHostConfig.json" />
-    <None Include="AdaptiveCardVisualizer_TemporaryKey.pfx" />
     <Content Include="HostConfigs\DefaultFrame.json" />
+    <None Include="AdaptiveCardVisualizer_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Symbols\down.png" />

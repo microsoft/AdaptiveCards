@@ -93,24 +93,20 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP FromJson(_In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson,
                                 _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult) noexcept;
 
-        IFACEMETHODIMP FromJsonWithFrame(_In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson,
-                                         _In_ ABI::Windows::Data::Json::IJsonObject* adaptiveFrame,
-                                         _COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardParseResult** parseResult) noexcept;
-
         IFACEMETHODIMP FromJsonWithParserRegistration(_In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson,
                                                       ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
                                                       ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
                                                       _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult) noexcept;
 
+        IFACEMETHODIMP FromJsonWithParserRegistrationAndFrame(
+            _In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson,
+            ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
+            ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
+            _In_ ABI::Windows::Data::Json::IJsonObject* adaptiveFrame,
+            _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult) noexcept;
+
         IFACEMETHODIMP FromJsonString(_In_ HSTRING adaptiveJson,
                                       _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult) noexcept;
-
-        _Use_decl_annotations_ IFACEMETHODIMP FromJsonStringWithFrame(
-            const std::string jsonString,
-            const std::string jsonFrame,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
-            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardParseResult** parseResult);
 
         IFACEMETHODIMP FromJsonStringWithParserRegistration(
             _In_ HSTRING adaptiveJson,
@@ -118,10 +114,18 @@ namespace AdaptiveNamespace
             ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
             _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult) noexcept;
 
+        IFACEMETHODIMP FromJsonStringWithParserRegistrationAndFrame(
+            _In_ HSTRING adaptiveJson,
+            ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
+            ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
+            _In_ HSTRING adaptiveFrame,
+            _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult) noexcept;
+
     private:
-        HRESULT FromJsonString(_In_ const std::string jsonString,
+        HRESULT FromJsonHelper(_In_ const std::string jsonString,
                                ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
                                ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
+                               _In_ const std::string jsonFrame,
                                _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult);
     };
 

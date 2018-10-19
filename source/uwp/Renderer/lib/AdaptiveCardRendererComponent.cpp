@@ -80,17 +80,6 @@ namespace AdaptiveNamespace
         return m_hostConfig.CopyTo(hostConfig);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveCardRenderer::put_AdaptiveFrame(ABI::Windows::Data::Json::IJsonObject* frame)
-    {
-        m_frame = frame;
-        return S_OK;
-    }
-
-    IFACEMETHODIMP AdaptiveCardRenderer::get_AdaptiveFrame(ABI::Windows::Data::Json::IJsonObject** frame)
-    {
-        return m_frame.CopyTo(frame);
-    }
-
     _Use_decl_annotations_ HRESULT AdaptiveCardRenderer::SetFixedDimensions(_In_ UINT32 desiredWidth, _In_ UINT32 desiredHeight)
     {
         m_explicitDimensions = true;

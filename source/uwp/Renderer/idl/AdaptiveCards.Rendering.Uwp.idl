@@ -799,12 +799,6 @@ AdaptiveNamespaceStart
     ]
     interface IAdaptiveCardStatics : IInspectable
     {
-        [overload("FromJsonWithFrame")]
-        HRESULT FromJsonWithFrame(
-            [in] Windows.Data.Json.JsonObject* adaptiveJson,
-            [in] Windows.Data.Json.JsonObject* adaptiveFrame,
-            [out, retval] AdaptiveCardParseResult** card);
-
         [overload("FromJson")]
         HRESULT FromJson(
             [in] Windows.Data.Json.JsonObject* adaptiveJson,
@@ -817,6 +811,14 @@ AdaptiveNamespaceStart
             [in] AdaptiveActionParserRegistration* actionRegistration,
             [out, retval] AdaptiveCardParseResult** card);
 
+        [overload("FromJson")] 
+        HRESULT FromJsonWithParserRegistrationAndFrame(
+            [in] Windows.Data.Json.JsonObject * adaptiveJson,
+            [in] AdaptiveElementParserRegistration * elementRegistration,
+            [in] AdaptiveActionParserRegistration * actionRegistration,
+            [in] Windows.Data.Json.JsonObject * adaptiveFrame,
+            [out, retval] AdaptiveCardParseResult * *card);
+
         [overload("FromJsonString")]
         HRESULT FromJsonString(
             [in] HSTRING adaptiveJson,
@@ -828,6 +830,14 @@ AdaptiveNamespaceStart
             [in] AdaptiveElementParserRegistration* elementRegistration,
             [in] AdaptiveActionParserRegistration* actionRegistration,
             [out, retval] AdaptiveCardParseResult** card);
+
+        [overload("FromJsonString")] 
+        HRESULT FromJsonStringWithParserRegistrationAndFrame(
+            [in] HSTRING adaptiveJson,
+            [in] AdaptiveElementParserRegistration * elementRegistration,
+            [in] AdaptiveActionParserRegistration * actionRegistration,
+            [in] HSTRING adaptiveFrame,
+            [out, retval] AdaptiveCardParseResult * *card);
     };
 
     [
@@ -1479,9 +1489,6 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT HostConfig([out, retval] AdaptiveHostConfig** hostConfig);
         [propput] HRESULT HostConfig([in] AdaptiveHostConfig* hostConfig);
-
-        [propget] HRESULT AdaptiveFrame([out, retval] Windows.Data.Json.JsonObject** frame);
-        [propput] HRESULT AdaptiveFrame([in] Windows.Data.Json.JsonObject* frame);
 
         [propget] HRESULT OverrideStyles([out, retval] Windows.UI.Xaml.ResourceDictionary** overrideDictionary);
         [propput] HRESULT OverrideStyles([in] Windows.UI.Xaml.ResourceDictionary* overrideDictionary);

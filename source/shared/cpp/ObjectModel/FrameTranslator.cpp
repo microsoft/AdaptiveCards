@@ -43,6 +43,7 @@ std::string GetKey(std::string string, size_t startPosition, const char* openBra
     return key;
 }
 
+// Get the argument of a data binding function.
 std::string GetArgument(std::string& key, unsigned int startPosition)
 {
     size_t argumentStart = key.find_first_not_of(" ", startPosition);
@@ -53,6 +54,7 @@ std::string GetArgument(std::string& key, unsigned int startPosition)
     return std::string();
 }
 
+// Gets a databinding key between double curly braces {{key}} and checks for the existential operator.
 std::string GetDataBindingKey(std::string string, size_t startPosition, size_t* keyStartPosition, size_t* keyEndPosition, bool* includeOnlyIfExists)
 {
     std::string key = GetKey(string, startPosition, "{{", "}}", keyStartPosition, keyEndPosition);
