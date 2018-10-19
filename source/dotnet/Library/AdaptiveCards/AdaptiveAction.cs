@@ -36,5 +36,14 @@ namespace AdaptiveCards
         [XmlAttribute]
 #endif
         public string IconUrl { get; set; }
+
+        /// <summary>
+        ///     Sentiment that can be specified for actions
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        public AdaptiveSentiment Sentiment { get; set; }
     }
 }
