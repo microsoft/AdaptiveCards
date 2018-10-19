@@ -32,6 +32,8 @@
     "hexo-server": "^0.3.3",
     "marked-schema": "^0.1.2",
     "minimist": "^1.2.0",
-    "monaco-editor": "^0.14.1"
+    "monaco-editor": "^0.14.1",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2"
   }
 }
