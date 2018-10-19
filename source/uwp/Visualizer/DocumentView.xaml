@@ -14,15 +14,32 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="350"/>
         </Grid.ColumnDefinitions>
 
         <!--Editor and errors-->
         <local:GenericDocumentView />
 
-        <!--Preview-->
         <Grid
             Grid.Column="1">
+            <TextBlock Text="{Binding TemplatedJson}" TextWrapping="WrapWholeWords" IsTextSelectionEnabled="True" Margin="20"/>
+        </Grid>
+
+        <toolkitControls:GridSplitter
+            Width="11"
+            Background="{ThemeResource SystemControlBackgroundAccentBrush}"
+            GripperCursor="Default"
+            HorizontalAlignment="Left"
+            Grid.Column="1"
+            ResizeDirection="Auto"
+            ResizeBehavior="BasedOnAlignment"
+            CursorBehavior="ChangeOnSplitterHover"
+            GripperForeground="White"/>        
+        
+        <!--Preview-->
+        <Grid
+            Grid.Column="2">
             <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="11,0,0,0" Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}">
                 <Border
                     x:Name="AdaptiveCardHostContainer"
@@ -45,7 +62,7 @@
             Background="{ThemeResource SystemControlBackgroundAccentBrush}"
             GripperCursor="Default"
             HorizontalAlignment="Left"
-            Grid.Column="1"
+            Grid.Column="2"
             ResizeDirection="Auto"
             ResizeBehavior="BasedOnAlignment"
             CursorBehavior="ChangeOnSplitterHover"

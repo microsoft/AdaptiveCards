@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using Windows.Data.Json;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.UI;
@@ -67,7 +68,9 @@ namespace UWPTestLibrary
 
                 else
                 {
-                    AdaptiveCard card = AdaptiveCard.FromJsonString(cardFile.Contents).AdaptiveCard;
+                    JsonObject templatedJson = AdaptiveJsonTemplater.ApplyJsonTemplating(JsonObject.Parse(cardFile.Contents), null);
+
+                    AdaptiveCard card = AdaptiveCard.FromJson(templatedJson).AdaptiveCard;
 
                     if (card == null)
                     {

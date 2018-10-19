@@ -90,7 +90,8 @@
     <ClCompile Include="lib\AdaptiveMediaEventArgs.cpp" />
     <ClCompile Include="lib\AdaptiveRemoteResourceInformation.cpp" />
     <ClCompile Include="lib\AdaptiveActionSet.cpp" />
-    <ClCompile Include="lib\AdaptiveActionSetRenderer.cpp" />    
+    <ClCompile Include="lib\AdaptiveActionSetRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveTemplater.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -188,7 +189,8 @@
     <ClInclude Include="lib\AdaptiveMediaEventArgs.h" />
     <ClInclude Include="lib\AdaptiveRemoteResourceInformation.h" />
     <ClInclude Include="lib\AdaptiveActionSet.h" />
-    <ClInclude Include="lib\AdaptiveActionSetRenderer.h" />    
+    <ClInclude Include="lib\AdaptiveActionSetRenderer.h" />
+    <ClInclude Include="lib\AdaptiveTemplater.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />
