@@ -116,7 +116,6 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS
         // @property (readonly) NSArray<NSError *> * parseErrors;
         [Export("parseErrors")]
         NSError[] ParseErrors { get; }
-
     }
 
     // @interface ACOHostConfig : NSObject
