@@ -608,8 +608,8 @@ namespace AdaptiveSharedNamespace
     }
 
     void GetSentimentEnumMappings(
-        std::unordered_map<Sentiment, std::string, EnumHash> * sentimentEnumToNameOut,
-        std::unordered_map<std::string, Sentiment, CaseInsensitiveHash, CaseInsensitiveEqualTo> * sentimentNameToEnumOut)
+        std::unordered_map<Sentiment, std::string, EnumHash>* sentimentEnumToNameOut,
+        std::unordered_map<std::string, Sentiment, CaseInsensitiveHash, CaseInsensitiveEqualTo>* sentimentNameToEnumOut)
     {
         static std::unordered_map<Sentiment, std::string, EnumHash> sentimentEnumToName =
         {
@@ -1133,7 +1133,7 @@ namespace AdaptiveSharedNamespace
 
         if (sentimentEnumToName.find(sentiment) == sentimentEnumToName.end())
         {
-            throw std::out_of_range("Invalid VerticalContentAlignment");
+            throw std::out_of_range("Invalid Sentiment");
         }
         return sentimentEnumToName[sentiment];
     }

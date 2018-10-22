@@ -276,10 +276,10 @@ namespace AdaptiveNamespace
         size_t originalLength = 0;
         THROW_IF_FAILED(StringCbLengthW(c_defaultActionSentimentResourceDictionary, STRSAFE_MAX_CCH, &originalLength));
         
-        int expectedFinalLength = originalLength + 7 * 9;
-        std::vector<WCHAR> generatedActionResourceDictionary(expectedFinalLength);
-        THROW_IF_FAILED(StringCbPrintfW(generatedActionResourceDictionary.data(),
-                                        expectedFinalLength * sizeof(WCHAR),
+        int finalLength = originalLength + 7 * 9;
+        std::vector<WCHAR> actionResourceDictionary(finalLength);
+        THROW_IF_FAILED(StringCbPrintfW(actionResourceDictionary.data(),
+                                        finalLength * sizeof(WCHAR),
                                         c_defaultActionSentimentResourceDictionary,
                                         hexAccentColor.c_str(),
                                         hexAccentColor.c_str(),
@@ -291,7 +291,7 @@ namespace AdaptiveNamespace
                                         hexClearAttentionColor.c_str(),
                                         hexClearAttentionColor.c_str()));
 
-        return generatedActionResourceDictionary.data();
+        return actionResourceDictionary.data();
     }
 
     void AdaptiveCardRenderer::UpdateActionSentimentResourceDictionary()
