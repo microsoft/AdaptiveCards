@@ -191,7 +191,7 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             int color = int.Parse(hexColor.Substring(1), System.Globalization.NumberStyles.HexNumber);
 
-            const double colorIncrement = 0.10;
+            const double colorIncrement = 0.25;
             int originalR = (color & 0x00FF0000) >> 16;
             int originalG = (color & 0x0000FF00) >> 8;
             int originalB = (color & 0x000000FF);
