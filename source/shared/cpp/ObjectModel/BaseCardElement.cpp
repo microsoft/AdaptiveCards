@@ -25,7 +25,8 @@ void BaseCardElement::PopulateKnownPropertiesSet()
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Spacing),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height)});
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VisibleViewStates)});
 }
 
 std::string BaseCardElement::GetElementTypeString() const
@@ -78,6 +79,16 @@ void BaseCardElement::SetId(const std::string& value)
     m_id = value;
 }
 
+std::vector<std::string>& BaseCardElement::GetVisibleViewStates()
+{
+    return m_visibleViewStates;
+}
+
+const std::vector<std::string>& BaseCardElement::GetVisibleViewStates() const
+{
+    return m_visibleViewStates;
+}
+
 const CardElementType BaseCardElement::GetElementType() const
 {
     return m_type;
@@ -112,6 +123,12 @@ Json::Value BaseCardElement::SerializeToJsonValue() const
     if (!m_id.empty())
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id)] = m_id;
+    }
+
+    auto visibleViewStatesKey = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VisibleViewStates);
+    for (const auto& visibleViewState : m_visibleViewStates)
+    {
+        root[visibleViewStatesKey].append(visibleViewState);
     }
 
     return root;

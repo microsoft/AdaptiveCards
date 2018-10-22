@@ -1,11 +1,12 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"version": "1.0",
+	"version": "2.0",
 	"backgroundImage": "https://adaptivecards.io/content/cats/1.png",
 	"fallbackText": "fallbackText",
 	"speak": "speak",
 	"lang": "en",
+	"knownViewStates": [ "default", "expanded", "collapsed" ],
 	"body": [
 		{
 			"type": "TextBlock",
@@ -19,7 +20,8 @@
 			"wrap": false,
 			"id": "TextBlock_id",
 			"spacing": "default",
-			"separator": false
+			"separator": false,
+			"visibleViewStates": [ "expanded", "collapsed" ]
 		},
 		{
 			"type": "Image",
@@ -238,7 +240,7 @@
 			"type": "Action.ShowCard",
 			"title": "Action.ShowCard",
 			"id": "Action.ShowCard_id",
-			"card" : {
+			"card": {
 				"type": "AdaptiveCard",
 				"body": [
 					{

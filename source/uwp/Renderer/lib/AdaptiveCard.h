@@ -13,6 +13,8 @@ namespace AdaptiveNamespace
         AdaptiveRuntime(AdaptiveCard);
 
     public:
+        AdaptiveCard();
+
         HRESULT RuntimeClassInitialize();
         HRESULT RuntimeClassInitialize(_In_ std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> sharedAdaptiveCard);
 
@@ -51,6 +53,8 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveNamespace::HeightType* heightType);
         IFACEMETHODIMP put_Height(_In_ ABI::AdaptiveNamespace::HeightType heightType);
 
+        IFACEMETHODIMP get_KnownViewStates(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<HSTRING>** viewStates);
+
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
 
         IFACEMETHODIMP GetResourceInformation(
@@ -77,6 +81,7 @@ namespace AdaptiveNamespace
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_selectAction;
         ABI::AdaptiveNamespace::ContainerStyle m_style;
         ABI::AdaptiveNamespace::VerticalContentAlignment m_verticalAlignment;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<HSTRING>> m_viewStates;
     };
 
     class AdaptiveCardStaticsImpl WrlFinal : public Microsoft::WRL::AgileActivationFactory<ABI::AdaptiveNamespace::IAdaptiveCardStatics>

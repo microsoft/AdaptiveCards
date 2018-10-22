@@ -78,6 +78,11 @@ namespace AdaptiveNamespace
             return AdaptiveCardElementBase::ToJson(result);
         }
 
+        IFACEMETHODIMP get_VisibleViewStates(ABI::Windows::Foundation::Collections::IVector<HSTRING>** viewStates)
+        {
+            return AdaptiveCardElementBase::get_VisibleViewStates(viewStates);
+        }
+
         virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) override;
 
         // ITypePeek method

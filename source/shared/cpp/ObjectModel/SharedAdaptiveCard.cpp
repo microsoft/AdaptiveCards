@@ -21,10 +21,11 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
                            std::string const& speak,
                            std::string const& language,
                            VerticalContentAlignment verticalContentAlignment,
-                           HeightType height) :
+                           HeightType height,
+                           std::vector<std::string> knownViewStates) :
     m_version(version),
-    m_fallbackText(fallbackText), m_backgroundImage(backgroundImage), m_speak(speak), m_style(style),
-    m_language(language), m_verticalContentAlignment(verticalContentAlignment), m_height(height)
+    m_fallbackText(fallbackText), m_backgroundImage(backgroundImage), m_speak(speak), m_style(style), m_language(language),
+    m_verticalContentAlignment(verticalContentAlignment), m_height(height), m_knownViewStates(knownViewStates)
 {
 }
 
@@ -36,11 +37,13 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
                            std::string const& language,
                            VerticalContentAlignment verticalContentAlignment,
                            HeightType height,
+                           std::vector<std::string> knownViewStates,
                            std::vector<std::shared_ptr<BaseCardElement>>& body,
                            std::vector<std::shared_ptr<BaseActionElement>>& actions) :
     m_version(version),
-    m_fallbackText(fallbackText), m_backgroundImage(backgroundImage), m_speak(speak), m_style(style), m_language(language),
-    m_verticalContentAlignment(verticalContentAlignment), m_height(height), m_body(body), m_actions(actions)
+    m_fallbackText(fallbackText), m_backgroundImage(backgroundImage), m_speak(speak), m_style(style),
+    m_language(language), m_verticalContentAlignment(verticalContentAlignment), m_height(height),
+    m_knownViewStates(knownViewStates), m_body(body), m_actions(actions)
 {
 }
 
@@ -91,6 +94,13 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json,
     std::string fallbackText = ParseUtil::GetString(json, AdaptiveCardSchemaKey::FallbackText);
     std::string language = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Language);
     std::string speak = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Speak);
+
+    std::vector<std::string> knownViewStates;
+    auto viewStateArray = ParseUtil::GetArray(json, AdaptiveCardSchemaKey::KnownViewStates, false);
+    for (const auto& viewState : viewStateArray)
+    {
+        knownViewStates.push_back(viewState.asString());
+    }
 
     // check if language is valid
     try
@@ -166,7 +176,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json,
     EnsureShowCardVersions(actions, version);
 
     auto result = std::make_shared<AdaptiveCard>(
-        version, fallbackText, backgroundImage, style, speak, language, verticalContentAlignment, height, body, actions);
+        version, fallbackText, backgroundImage, style, speak, language, verticalContentAlignment, height, knownViewStates, body, actions);
     result->SetLanguage(language);
 
     // Parse optional selectAction
@@ -252,6 +262,12 @@ Json::Value AdaptiveCard::SerializeToJsonValue() const
         root[actionsPropertyName].append(action->SerializeToJsonValue());
     }
 
+    auto knownViewStatesName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::KnownViewStates);
+    for (const auto& knownViewState : m_knownViewStates)
+    {
+        root[knownViewStatesName].append(knownViewState);
+    }
+
     return root;
 }
 
@@ -265,8 +281,9 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::MakeFallbackTextCard(const std::stri
                                                                  const std::string& speak)
 #endif // __ANDROID__
 {
+    std::vector<std::string> knownViewStates;
     std::shared_ptr<AdaptiveCard> fallbackCard = std::make_shared<AdaptiveCard>(
-        "1.0", fallbackText, "", ContainerStyle::Default, speak, language, VerticalContentAlignment::Top, HeightType::Auto);
+        "1.0", fallbackText, "", ContainerStyle::Default, speak, language, VerticalContentAlignment::Top, HeightType::Auto, knownViewStates);
 
     std::shared_ptr<TextBlock> textBlock = std::make_shared<TextBlock>();
     textBlock->SetText(fallbackText);
@@ -410,6 +427,16 @@ VerticalContentAlignment AdaptiveCard::GetVerticalContentAlignment() const
 void AdaptiveCard::SetVerticalContentAlignment(const VerticalContentAlignment value)
 {
     m_verticalContentAlignment = value;
+}
+
+std::vector<std::string>& AdaptiveCard::GetKnownViewStates()
+{
+    return m_knownViewStates;
+}
+
+const std::vector<std::string>& AdaptiveCard::GetKnownViewStates() const
+{
+    return m_knownViewStates;
 }
 
 std::vector<RemoteResourceInformation> AdaptiveCard::GetResourceInformation()

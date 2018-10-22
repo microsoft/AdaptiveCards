@@ -37,8 +37,14 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::IsTrue(!everythingBagel.GetSelectAction());
         Assert::AreEqual("speak"s, everythingBagel.GetSpeak());
         Assert::IsTrue(ContainerStyle::None == everythingBagel.GetStyle());
-        Assert::AreEqual("1.0"s, everythingBagel.GetVersion());
+        Assert::AreEqual("2.0"s, everythingBagel.GetVersion());
         Assert::IsTrue(VerticalContentAlignment::Top == everythingBagel.GetVerticalContentAlignment());
+
+        std::vector<std::string> viewStates = everythingBagel.GetKnownViewStates();
+        Assert::AreEqual((size_t) 3, viewStates.size());
+        Assert::IsTrue(std::find(viewStates.begin(), viewStates.end(), "default") != viewStates.end());
+        Assert::IsTrue(std::find(viewStates.begin(), viewStates.end(), "expanded") != viewStates.end());
+        Assert::IsTrue(std::find(viewStates.begin(), viewStates.end(), "collapsed") != viewStates.end());
     }
 
     void ValidateTextBlock(const TextBlock &textBlock)
@@ -57,6 +63,11 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::IsFalse(textBlock.GetIsSubtle());
         Assert::IsFalse(textBlock.GetSeparator());
         Assert::IsFalse(textBlock.GetWrap());
+
+        std::vector<std::string> viewStates = textBlock.GetVisibleViewStates();
+        Assert::AreEqual((size_t) 2, viewStates.size());
+        Assert::IsTrue(std::find(viewStates.begin(), viewStates.end(), "expanded") != viewStates.end());
+        Assert::IsTrue(std::find(viewStates.begin(), viewStates.end(), "collapsed") != viewStates.end());
     }
 
     void ValidateImage(const Image &image)
@@ -421,11 +432,11 @@ namespace AdaptiveCardsSharedModelUnitTest
                 Assert::IsTrue(!subCard->GetSelectAction());
                 Assert::AreEqual(""s, subCard->GetSpeak());
                 Assert::IsTrue(ContainerStyle::None == subCard->GetStyle());
-                Assert::AreEqual("1.0"s, subCard->GetVersion());
+                Assert::AreEqual("2.0"s, subCard->GetVersion());
                 Assert::IsTrue(VerticalContentAlignment::Top == subCard->GetVerticalContentAlignment());
 
                 //Logger::WriteMessage("Submit Data: '"s.append(subCard->Serialize()).append("'").c_str());
-                Assert::AreEqual("{\"actions\":[],\"body\":[{\"isSubtle\":true,\"text\":\"Action.ShowCard text\",\"type\":\"TextBlock\"}],\"lang\":\"en\",\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}\n"s,
+                Assert::AreEqual("{\"actions\":[],\"body\":[{\"isSubtle\":true,\"text\":\"Action.ShowCard text\",\"type\":\"TextBlock\"}],\"lang\":\"en\",\"type\":\"AdaptiveCard\",\"version\":\"2.0\"}\n"s,
                     subCard->Serialize());
             }
         }
@@ -445,7 +456,7 @@ namespace AdaptiveCardsSharedModelUnitTest
     public:
         TEST_METHOD(EverythingBagelTests)
         {
-            auto parseResult = AdaptiveCard::DeserializeFromFile("EverythingBagel.json", "1.0");
+            auto parseResult = AdaptiveCard::DeserializeFromFile("EverythingBagel.json", "2.0");
 
             // ensure we're warning free
             {

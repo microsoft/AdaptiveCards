@@ -89,6 +89,11 @@ namespace AdaptiveNamespace
             return AdaptiveCardElementBase::put_Height(height);
         }
 
+        IFACEMETHODIMP get_VisibleViewStates(ABI::Windows::Foundation::Collections::IVector<HSTRING>** viewStates)
+        {
+            return AdaptiveCardElementBase::get_VisibleViewStates(viewStates);
+        }
+
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 

@@ -38,6 +38,9 @@ namespace AdaptiveSharedNamespace
         virtual std::string GetId() const;
         virtual void SetId(const std::string& value);
 
+        std::vector<std::string>& GetVisibleViewStates();
+        const std::vector<std::string>& GetVisibleViewStates() const;
+
         virtual const CardElementType GetElementType() const;
 
         virtual std::string Serialize() const;
@@ -65,6 +68,7 @@ namespace AdaptiveSharedNamespace
         bool m_separator;
         Json::Value m_additionalProperties;
         HeightType m_height;
+        std::vector<std::string> m_visibleViewStates;
     };
 
     template<typename T> std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value& json)
@@ -80,6 +84,12 @@ namespace AdaptiveSharedNamespace
         baseCardElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id));
         baseCardElement->SetHeight(
             ParseUtil::GetEnumValue<HeightType>(json, AdaptiveCardSchemaKey::Height, HeightType::Auto, HeightTypeFromString));
+
+        auto viewStateArray = ParseUtil::GetArray(json, AdaptiveCardSchemaKey::VisibleViewStates, false);
+        for (const auto& viewState : viewStateArray)
+        {
+            baseCardElement->m_visibleViewStates.push_back(viewState.asString());
+        }
 
         // Walk all properties and put any unknown ones in the additional properties json
         for (auto it = json.begin(); it != json.end(); ++it)

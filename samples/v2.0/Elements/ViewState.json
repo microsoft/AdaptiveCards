@@ -1,0 +1,62 @@
+{
+	"type": "AdaptiveCard",
+	"version": "2.0",
+	"knownViewStates": [ "default", "expanded" ],
+	"body": [
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "I've got something to tell you...",
+							"wrap": true
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"visibleViewStates": [ "default" ],
+					"size": "auto",
+					"items": [
+						{
+							"type": "ActionSet",
+							"actions": [
+								{
+									"type": "Action.Submit",
+									"title": "Open",
+									"next": "expanded"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"visibleViewStates": [ "expanded" ],
+					"size": "auto",
+					"items": [
+						{
+							"type": "ActionSet",
+							"actions": [
+								{
+									"type": "Action.Submit",
+									"title": "Close",
+									"next": "default"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"visibleViewStates": [ "expanded" ],
+			"text": "Adaptive Cards now supports view states!",
+			"wrap": true
+		}
+	]
+}

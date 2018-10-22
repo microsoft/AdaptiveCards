@@ -532,6 +532,8 @@ AdaptiveNamespaceStart
         [propget] HRESULT Id([out, retval] HSTRING* value);
         [propput] HRESULT Id([in] HSTRING value);
 
+        [propget] HRESULT VisibleViewStates([out, retval] Windows.Foundation.Collections.IVector<HSTRING>** value);
+
         [propget] HRESULT AdditionalProperties([out, retval] Windows.Data.Json.JsonObject** json);
         [propput] HRESULT AdditionalProperties([in] Windows.Data.Json.JsonObject* json);
 
@@ -793,6 +795,8 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT Height([out, retval] HeightType* value);
         [propput] HRESULT Height([in] HeightType value);
+
+        [propget] HRESULT KnownViewStates([out, retval] Windows.Foundation.Collections.IVector<HSTRING>** value);
 
         HRESULT ToJson([out, retval] Windows.Data.Json.JsonObject** value);
 

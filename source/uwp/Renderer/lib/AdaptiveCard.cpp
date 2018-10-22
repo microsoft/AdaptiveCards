@@ -23,6 +23,8 @@ using namespace Microsoft::WRL::Wrappers;
 
 namespace AdaptiveNamespace
 {
+    AdaptiveCard::AdaptiveCard() { m_viewStates = Microsoft::WRL::Make<Vector<HSTRING>>(); }
+
     _Use_decl_annotations_ HRESULT AdaptiveCardStaticsImpl::FromJson(IJsonObject* adaptiveJson,
                                                                      IAdaptiveCardParseResult** parseResult) noexcept try
     {
@@ -162,6 +164,13 @@ namespace AdaptiveNamespace
 
         RETURN_IF_FAILED(UTF8ToHString(sharedAdaptiveCard->GetBackgroundImage(), m_backgroundImage.GetAddressOf()));
 
+        for (auto& viewState : sharedAdaptiveCard->GetKnownViewStates())
+        {
+            HString hstringViewState;
+            RETURN_IF_FAILED(UTF8ToHString(viewState, hstringViewState.GetAddressOf()));
+            RETURN_IF_FAILED(m_viewStates->Append(hstringViewState.Get()));
+        }
+
         return S_OK;
     }
 
@@ -260,6 +269,11 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    IFACEMETHODIMP AdaptiveCard::get_KnownViewStates(ABI::Windows::Foundation::Collections::IVector<HSTRING>** viewStates)
+    {
+        return m_viewStates.CopyTo(viewStates);
+    }
+
     _Use_decl_annotations_ HRESULT AdaptiveCard::ToJson(IJsonObject** result)
     {
         std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> sharedModel;
@@ -292,6 +306,25 @@ namespace AdaptiveNamespace
 
         GenerateSharedElements(m_body.Get(), adaptiveCard->GetBody());
         GenerateSharedActions(m_actions.Get(), adaptiveCard->GetActions());
+
+        ComPtr<IIterable<HSTRING>> iterable;
+        THROW_IF_FAILED(m_viewStates.As<IIterable<HSTRING>>(&iterable));
+
+        Microsoft::WRL::ComPtr<IIterator<HSTRING>> iterator;
+        HRESULT hr = iterable->First(&iterator);
+        if (SUCCEEDED(hr))
+        {
+            boolean hasCurrent = false;
+            HRESULT hr = iterator->get_HasCurrent(&hasCurrent);
+
+            while (SUCCEEDED(hr) && hasCurrent)
+            {
+                HString currentViewState;
+                RETURN_IF_FAILED(iterator->get_Current(currentViewState.GetAddressOf()));
+                adaptiveCard->GetKnownViewStates().push_back(HStringToUTF8(currentViewState.Get()));
+                hr = iterator->MoveNext(&hasCurrent);
+            }
+        }
 
         sharedModel = adaptiveCard;
         return S_OK;

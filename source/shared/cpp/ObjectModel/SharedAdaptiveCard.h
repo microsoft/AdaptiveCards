@@ -21,7 +21,8 @@ namespace AdaptiveSharedNamespace
                      std::string const& speak,
                      std::string const& language,
                      VerticalContentAlignment verticalContentAlignment,
-                     HeightType height);
+                     HeightType height,
+                     std::vector<std::string> knownViewStates);
         AdaptiveCard(std::string const& version,
                      std::string const& fallbackText,
                      std::string const& backgroundImage,
@@ -30,6 +31,7 @@ namespace AdaptiveSharedNamespace
                      std::string const& language,
                      VerticalContentAlignment verticalContentAlignment,
                      HeightType height,
+                     std::vector<std::string> knownViewStates,
                      std::vector<std::shared_ptr<BaseCardElement>>& body,
                      std::vector<std::shared_ptr<BaseActionElement>>& actions);
 
@@ -59,6 +61,9 @@ namespace AdaptiveSharedNamespace
         const std::vector<std::shared_ptr<BaseActionElement>>& GetActions() const;
 
         std::vector<RemoteResourceInformation> GetResourceInformation();
+
+        std::vector<std::string>& GetKnownViewStates();
+        const std::vector<std::string>& GetKnownViewStates() const;
 
         const CardElementType GetElementType() const;
 #ifdef __ANDROID__
@@ -119,5 +124,7 @@ namespace AdaptiveSharedNamespace
         std::vector<std::shared_ptr<BaseActionElement>> m_actions;
 
         std::shared_ptr<BaseActionElement> m_selectAction;
+
+        std::vector<std::string> m_knownViewStates;
     };
 }

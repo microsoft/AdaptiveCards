@@ -76,6 +76,11 @@ namespace AdaptiveNamespace
             return AdaptiveCardElementBase::put_Height(height);
         }
 
+        IFACEMETHODIMP get_VisibleViewStates(ABI::Windows::Foundation::Collections::IVector<HSTRING>** viewStates)
+        {
+            return AdaptiveCardElementBase::get_VisibleViewStates(viewStates);
+        }
+
         IFACEMETHODIMP ToJson(_Out_ ABI::Windows::Data::Json::IJsonObject** result)
         {
             return AdaptiveCardElementBase::ToJson(result);

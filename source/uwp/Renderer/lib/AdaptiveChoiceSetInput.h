@@ -78,6 +78,11 @@ namespace AdaptiveNamespace
             return AdaptiveCardElementBase::put_Separator(separator);
         }
 
+        IFACEMETHODIMP get_VisibleViewStates(ABI::Windows::Foundation::Collections::IVector<HSTRING>** viewStates)
+        {
+            return AdaptiveCardElementBase::get_VisibleViewStates(viewStates);
+        }
+
         IFACEMETHODIMP get_Id(_Out_ HSTRING* id) { return AdaptiveCardElementBase::get_Id(id); }
         IFACEMETHODIMP put_Id(_In_ HSTRING id) { return AdaptiveCardElementBase::put_Id(id); }
 
