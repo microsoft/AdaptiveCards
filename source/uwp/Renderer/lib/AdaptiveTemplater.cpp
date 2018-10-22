@@ -6,6 +6,7 @@ namespace AdaptiveNamespace
 {
     HRESULT AdaptiveJsonTemplaterStaticsImpl::ApplyJsonTemplating(ABI::Windows::Data::Json::IJsonObject* adaptiveJson,
                                                                   ABI::Windows::Data::Json::IJsonObject* adaptiveFrame,
+                                                                  ABI::Windows::Data::Json::IJsonObject* adaptiveRuntimeObject,
                                                                   ABI::Windows::Data::Json::IJsonObject** result) noexcept try
     {
         std::string adaptiveJsonString;
@@ -25,7 +26,15 @@ namespace AdaptiveNamespace
             frame = ParseUtil::GetJsonValueFromString(adaptiveFrameString);
         }
 
-        Json::Value jsonCppResult = ::ApplyJsonTemplating(json, frame);
+        Json::Value runtimeObject;
+        if (adaptiveRuntimeObject)
+        {
+            std::string adaptiveRuntimeObjectString;
+            RETURN_IF_FAILED(JsonObjectToString(adaptiveRuntimeObject, adaptiveRuntimeObjectString));
+            runtimeObject = ParseUtil::GetJsonValueFromString(adaptiveRuntimeObjectString);
+        }
+
+        Json::Value jsonCppResult = ::ApplyJsonTemplating(json, frame, runtimeObject);
 
         Json::FastWriter writer;
         std::string resultString = writer.write(jsonCppResult);

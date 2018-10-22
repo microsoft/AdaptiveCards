@@ -68,7 +68,7 @@ namespace UWPTestLibrary
 
                 else
                 {
-                    JsonObject templatedJson = AdaptiveJsonTemplater.ApplyJsonTemplating(JsonObject.Parse(cardFile.Contents), null);
+                    JsonObject templatedJson = AdaptiveJsonTemplater.ApplyJsonTemplating(JsonObject.Parse(cardFile.Contents), null, null);
 
                     AdaptiveCard card = AdaptiveCard.FromJson(templatedJson).AdaptiveCard;
 

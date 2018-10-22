@@ -2,12 +2,8 @@
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"version": "1.0",
+	"backgroundImage": "{{card.header.image}}",
 	"body": [
-		{
-			"type": "Image",
-			"url": "{{card.header.image}}",
-			"size": "stretch"
-		},
 		{
 			"type": "TextBlock",
 			"text": "{{#? card.header.title}}",
@@ -17,14 +13,6 @@
 			"type": "TextBlock",
 			"text": "{{#? card.header.subtitle}}",
 			"size": "large"
-		},
-		{
-			"type": "Container",
-			"items": "{{card.body}}"
-		},
-		{
-			"type": "ActionSet",
-			"actions": "{{#? card.actions}}"
 		}
 	]
 }

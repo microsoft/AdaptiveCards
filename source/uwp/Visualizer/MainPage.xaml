@@ -53,6 +53,12 @@
                         Label="Frame"
                         IsCompact="True"
                         Click="AppBarFrameEditor_Click"/>
+                    <AppBarToggleButton
+                        x:Name="AppBarRuntimeObjectEditor"
+                        Icon="OutlineStar"
+                        Label="RuntimeObject"
+                        IsCompact="True"
+                        Click="AppBarRuntimeObjectEditor_Click"/>
                 </StackPanel>
             </CommandBar.Content>
             <CommandBar.SecondaryCommands>
@@ -151,6 +157,37 @@
                 <local:GenericDocumentView
                     Grid.Row="1"
                     DataContext="{Binding FrameEditor}"/>
+            </Grid>
+        </Grid>
+
+        <!--RuntimeObject editor-->
+        <Grid
+            Grid.Row="1"
+            x:Name="RuntimeObjectEditorView"
+            Visibility="Collapsed">
+
+            <Rectangle
+                Fill="Black"
+                Opacity="0.3"
+                Tapped="RuntimeObjectTransparentBackdrop_Tapped"/>
+
+            <!--We apply padding on right to keep the preview visible-->
+            <Grid
+                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                BorderThickness="0,0,8,0"
+                BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}"
+                Margin="0,0,320,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock
+                    Text="RuntimeObject"
+                    Style="{ThemeResource SubtitleTextBlockStyle}"
+                    Margin="6"/>
+                <local:GenericDocumentView
+                    Grid.Row="1"
+                    DataContext="{Binding RuntimeObjectEditor}"/>
             </Grid>
         </Grid>
 
