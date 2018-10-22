@@ -18,6 +18,7 @@
     "js-yaml": "^3.10.0",
     "json-schema-ref-parser": "^3.3.1",
     "minimist": "^1.2.0",
+    "npm": "^6.4.1",
     "path": "^0.12.7"
   }
 }

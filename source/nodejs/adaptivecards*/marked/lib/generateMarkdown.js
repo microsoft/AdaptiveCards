@@ -172,7 +172,7 @@ function getPropertySummary(property, knownTypes, autoLink) {
         }
 
         // Custom logic to calculate the types of items in the array
-        if (property.itemTypes) {
+        if (property.itemTypes && defined(property.itemTypes[0])) {
             // Split on . so Action.Submit => Action
             var t = property.itemTypes[0];
             if (property.itemTypes.length > 1 && t[0].indexOf(".") > -1) {
