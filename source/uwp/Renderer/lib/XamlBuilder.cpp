@@ -313,6 +313,39 @@ namespace AdaptiveNamespace
         return E_FAIL;
     }
 
+    HRESULT XamlBuilder::TryInsertResourceToResourceDictionaries(IResourceDictionary* resourceDictionary,
+                                                                 std::wstring resourceName,
+                                                                 IInspectable* value)
+    {
+        if (resourceDictionary == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
+        try
+        {
+            ComPtr<IPropertyValueStatics> propertyValueStatics;
+            THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(),
+                &propertyValueStatics));
+
+            ComPtr<IInspectable> resourceKey;
+            THROW_IF_FAILED(propertyValueStatics->CreateString(HStringReference(resourceName.c_str()).Get(),
+                resourceKey.GetAddressOf()));
+
+            ComPtr<IResourceDictionary> strongDictionary = resourceDictionary;
+            ComPtr<IMap<IInspectable*, IInspectable*>> resourceDictionaryMap;
+            THROW_IF_FAILED(strongDictionary.As(&resourceDictionaryMap));
+
+            boolean replaced{};
+            THROW_IF_FAILED(resourceDictionaryMap->Insert(resourceKey.Get(), value, &replaced));
+            return S_OK;
+        }
+        catch (...)
+        {
+        }
+        return E_FAIL;
+    }
+
     HRESULT XamlBuilder::SetStyleFromResourceDictionary(IAdaptiveRenderContext* renderContext,
                                                         std::wstring resourceName,
                                                         IFrameworkElement* frameworkElement)
