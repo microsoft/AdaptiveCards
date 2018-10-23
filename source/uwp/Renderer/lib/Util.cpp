@@ -32,7 +32,6 @@
 #include "util.h"
 #include <windows.foundation.collections.h>
 #include "XamlHelpers.h"
-#include "strsafe.h"
 
 using namespace AdaptiveCards;
 using namespace Microsoft::WRL;
@@ -980,22 +979,6 @@ HRESULT AdaptiveWarningsToSharedWarnings(ABI::Windows::Foundation::Collections::
     }
 
     return S_OK;
-}
-
-int ColorToInt(Color color)
-{
-    return ((color.A << 24) | (color.R << 16) | (color.G << 8) | (color.B));
-}
-
-HRESULT ColorToWString(int color, std::wstring& out)
-{
-    WCHAR longColor[10];
-    HRESULT hr = StringCbPrintfW(longColor, 10 * sizeof(WCHAR), L"#%08X", color);
-    if (SUCCEEDED(hr))
-    {
-        out = longColor;
-    }
-    return hr;
 }
 
 Color GenerateLighterColor(Color originalColor)

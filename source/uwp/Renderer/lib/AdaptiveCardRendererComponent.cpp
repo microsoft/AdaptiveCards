@@ -28,7 +28,6 @@
 #include <windows.foundation.collections.h>
 #include <Windows.UI.Xaml.h>
 #include <windows.ui.xaml.markup.h>
-#include "strsafe.h"
 
 using namespace concurrency;
 using namespace Microsoft::WRL;
