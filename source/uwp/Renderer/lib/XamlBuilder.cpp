@@ -3343,6 +3343,20 @@ namespace AdaptiveNamespace
 
         if (action != nullptr)
         {
+            // If we have an action, use the title for the AutomationProperties.Name
+            HString title;
+            THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
+
+            ComPtr<IDependencyObject> buttonAsDependencyObject;
+            THROW_IF_FAILED(button.As(&buttonAsDependencyObject));
+
+            ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
+            THROW_IF_FAILED(
+                GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
+                                     &automationPropertiesStatics));
+
+            THROW_IF_FAILED(automationPropertiesStatics->SetName(buttonAsDependencyObject.Get(), title.Get()));
+
             WireButtonClickToAction(button.Get(), action, renderContext);
         }
 
