@@ -167,4 +167,6 @@ int ColorToInt(ABI::Windows::UI::Color color);
 
 HRESULT ColorToWString(int color, std::wstring& out);
 
-int GenerateClearerColor(int originalColor);
+ABI::Windows::UI::Color GenerateLighterColor(ABI::Windows::UI::Color originalColor);
+
+

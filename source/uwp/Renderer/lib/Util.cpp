@@ -998,18 +998,14 @@ HRESULT ColorToWString(int color, std::wstring& out)
     return hr;
 }
 
-int GenerateClearerColor(int originalColor)
+Color GenerateLighterColor(Color originalColor)
 {
-    const double clearIncrement = 0.10;
+    const double lightIncrement = 0.25;
 
-    int originalR = (originalColor & 0x00FF0000) >> 16;
-    int originalG = (originalColor & 0x0000FF00) >> 8;
-    int originalB = (originalColor & 0x000000FF);
-
-    int clearerColor = (originalColor & 0xFF000000);
-    int newR = originalR + static_cast<int>((255 - originalR) * clearIncrement);
-    int newG = originalG + static_cast<int>((255 - originalG) * clearIncrement);
-    int newB = originalB + static_cast<int>((255 - originalB) * clearIncrement);
-    clearerColor = clearerColor | (newR << 16) | (newG << 8) | newB;
-    return clearerColor;
+    Color lighterColor;
+    lighterColor.A = originalColor.A;
+    lighterColor.R = originalColor.R + static_cast<int>((255 - originalColor.R) * lightIncrement);
+    lighterColor.G = originalColor.G + static_cast<int>((255 - originalColor.G) * lightIncrement);
+    lighterColor.B = originalColor.B + static_cast<int>((255 - originalColor.B) * lightIncrement);
+    return lighterColor;
 }
