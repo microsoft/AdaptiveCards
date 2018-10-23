@@ -5,7 +5,7 @@ namespace AdaptiveCards
     /// <summary>
     ///     Controls the action sentiment.
     /// </summary>
-    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveSentiment>), false)]
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveSentiment>), true)]
     public enum AdaptiveSentiment
     {
         /// <summary>

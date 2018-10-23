@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using System;
+using System.ComponentModel;
 using System.Reflection;
 using System.Xml.Serialization;
 
@@ -40,10 +41,11 @@ namespace AdaptiveCards
         /// <summary>
         ///     Sentiment that can be specified for actions
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
+        [DefaultValue(typeof(AdaptiveSentiment), "default")]
         public AdaptiveSentiment Sentiment { get; set; }
     }
 }
