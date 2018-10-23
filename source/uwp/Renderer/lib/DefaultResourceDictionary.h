@@ -74,12 +74,74 @@ const PCWSTR c_defaultActionSentimentResourceDictionary = L"\
     xmlns:dxg=\"http://schemas.devexpress.com/winfx/2008/xaml/grid\" \
     xmlns:dxgt=\"http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys\"> \
 \
+    <SolidColorBrush x:Key=\"Adaptive.Action.Positive.Button.Static.Background\" Color=\"#FFDDDDDD\"/> \
+    <SolidColorBrush x:Key=\"Adaptive.Action.Positive.Button.MouseOver.Background\" Color=\"#FFBEE6FD\" /> \
+    <SolidColorBrush x:Key=\"Adaptive.Action.Positive.Button.Foreground\" Color=\"#FFFFFFFF\" /> \
+\
+    <SolidColorBrush x:Key=\"Adaptive.Action.Destructive.Button.Foreground\" Color=\"#FF838383\" /> \
+    <SolidColorBrush x:Key=\"Adaptive.Action.Destructive.Button.MouseOver.Foreground\" Color=\"#FF838383\" /> \
+\
     <Style x:Key=\"PositiveActionDefaultStyle\" TargetType=\"Button\"> \
-        <Setter Property=\"Background\" Value=\"%s\" /> \
+        <Setter Property=\"Foreground\" Value=\"{ThemeResource Adaptive.Action.Positive.Button.Foreground}\" /> \
+        <Setter Property=\"Background\" Value=\"{ThemeResource Adaptive.Action.Positive.Button.Static.Background}\" /> \
+        <Setter Property=\"Template\"> \
+            <Setter.Value> \
+                <ControlTemplate TargetType=\"Button\"> \
+                    <Grid x:Name=\"RootGrid\" Background=\"{ThemeResource Adaptive.Action.Positive.Button.Static.Background}\"> \
+                        <VisualStateManager.VisualStateGroups> \
+                            <VisualStateGroup x:Name=\"CommonStates\"> \
+                                <VisualState x:Name=\"Normal\"> \
+                                    <Storyboard> \
+                                        <PointerUpThemeAnimation Storyboard.TargetName=\"RootGrid\" /> \
+                                    </Storyboard> \
+                                </VisualState> \
+                                <VisualState x:Name=\"PointerOver\"> \
+                                    <Storyboard> \
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"RootGrid\" Storyboard.TargetProperty=\"Background\"> \
+                                            <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource Adaptive.Action.Positive.Button.MouseOver.Background}\" /> \
+                                        </ObjectAnimationUsingKeyFrames> \
+                                        <PointerUpThemeAnimation Storyboard.TargetName=\"RootGrid\" /> \
+                                    </Storyboard> \
+                                </VisualState> \
+                                <VisualState x:Name=\"Pressed\"> \
+                                    <Storyboard> \
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"RootGrid\" Storyboard.TargetProperty=\"Background\"> \
+                                            <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource Adaptive.Action.Positive.Button.MouseOver.Background}\" /> \
+                                        </ObjectAnimationUsingKeyFrames> \
+                                        <PointerDownThemeAnimation Storyboard.TargetName=\"RootGrid\" /> \
+                                    </Storyboard> \
+                                </VisualState> \
+                                <VisualState x:Name=\"Disabled\"> \
+                                    <Storyboard> \
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"RootGrid\" Storyboard.TargetProperty=\"Background\"> \
+                                            <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource Adaptive.Action.Positive.Button.MouseOver.Background}\" /> \
+                                        </ObjectAnimationUsingKeyFrames> \
+                                    </Storyboard> \
+                                </VisualState> \
+                            </VisualStateGroup> \
+                        </VisualStateManager.VisualStateGroups> \
+                        <ContentPresenter x:Name=\"ContentPresenter\" \
+                            BorderBrush=\"{TemplateBinding BorderBrush}\" \
+                            BorderThickness=\"{TemplateBinding BorderThickness}\" \
+                            Content=\"{TemplateBinding Content}\" \
+                            ContentTransitions=\"{TemplateBinding ContentTransitions}\" \
+                            ContentTemplate=\"{TemplateBinding ContentTemplate}\" \
+                            Padding=\"{TemplateBinding Padding}\" \
+                            HorizontalContentAlignment=\"{TemplateBinding HorizontalContentAlignment}\" \
+                            VerticalContentAlignment=\"{TemplateBinding VerticalContentAlignment}\" \
+                            AutomationProperties.AccessibilityView=\"Raw\" /> \
+                    </Grid> \
+                </ControlTemplate> \
+            </Setter.Value> \
+        </Setter> \
+     </Style> \
+"
+    "<Style x:Key=\"DestructiveActionDefaultStyle\" TargetType=\"Button\"> \
+        <Setter Property=\"Foreground\" Value=\"{ThemeResource Adaptive.Action.Destructive.Button.Foreground}\" /> \
             <Setter Property=\"Template\"> \
                 <Setter.Value> \
                     <ControlTemplate TargetType=\"Button\"> \
-                        <Grid x:Name=\"RootGrid\" Background=\"%s\"> \
+                        <Grid x:Name=\"RootGrid\" Background=\"{TemplateBinding Background}\"> \
                             <VisualStateManager.VisualStateGroups> \
                                 <VisualStateGroup x:Name=\"CommonStates\"> \
                                     <VisualState x:Name=\"Normal\"> \
@@ -89,96 +151,43 @@ const PCWSTR c_defaultActionSentimentResourceDictionary = L"\
                                     </VisualState> \
                                     <VisualState x:Name=\"PointerOver\"> \
                                         <Storyboard> \
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"RootGrid\" Storyboard.TargetProperty=\"Background\"> \
-                                                <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"%s\" /> \
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"ContentPresenter\" Storyboard.TargetProperty=\"Foreground\"> \
+                                                <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource Adaptive.Action.Destructive.Button.MouseOver.Foreground}\" /> \
                                             </ObjectAnimationUsingKeyFrames> \
                                             <PointerUpThemeAnimation Storyboard.TargetName=\"RootGrid\" /> \
                                         </Storyboard> \
                                     </VisualState> \
                                     <VisualState x:Name=\"Pressed\"> \
                                         <Storyboard> \
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"RootGrid\" Storyboard.TargetProperty=\"Background\"> \
-                                                <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"%s\" /> \
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"ContentPresenter\" Storyboard.TargetProperty=\"Foreground\"> \
+                                                <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource Adaptive.Action.Destructive.Button.MouseOver.Foreground}\" /> \
                                             </ObjectAnimationUsingKeyFrames> \
                                             <PointerDownThemeAnimation Storyboard.TargetName=\"RootGrid\" /> \
                                         </Storyboard> \
                                     </VisualState> \
                                     <VisualState x:Name=\"Disabled\"> \
                                         <Storyboard> \
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"RootGrid\" Storyboard.TargetProperty=\"Background\"> \
-                                                <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"%s\" /> \
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"ContentPresenter\" Storyboard.TargetProperty=\"Foreground\"> \
+                                                <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"{ThemeResource Adaptive.Action.Destructive.Button.MouseOver.Foreground}\" /> \
                                             </ObjectAnimationUsingKeyFrames> \
                                         </Storyboard> \
                                     </VisualState> \
                                 </VisualStateGroup> \
                             </VisualStateManager.VisualStateGroups> \
-                            <ContentPresenter x:Name=\"ContentPresenter\" \
-                                BorderBrush=\"{TemplateBinding BorderBrush}\" \
-                                BorderThickness=\"{TemplateBinding BorderThickness}\" \
-                                Content=\"{TemplateBinding Content}\" \
-                                ContentTransitions=\"{TemplateBinding ContentTransitions}\" \
-                                ContentTemplate=\"{TemplateBinding ContentTemplate}\" \
-                                Padding=\"{TemplateBinding Padding}\" \
-                                HorizontalContentAlignment=\"{TemplateBinding HorizontalContentAlignment}\" \
-                                VerticalContentAlignment=\"{TemplateBinding VerticalContentAlignment}\" \
-                                AutomationProperties.AccessibilityView=\"Raw\" /> \
-                        </Grid> \
-                    </ControlTemplate> \
-                </Setter.Value> \
-            </Setter> \
-        </Style> \
-\
-        <Style x:Key=\"DestructiveActionDefaultStyle\" TargetType=\"Button\"> \
-            <Setter Property=\"Foreground\" Value=\"%s\" /> \
-                <Setter Property=\"Template\"> \
-                    <Setter.Value> \
-                        <ControlTemplate TargetType=\"Button\"> \
-                            <Grid x:Name=\"RootGrid\" Background=\"{TemplateBinding Background}\"> \
-                                <VisualStateManager.VisualStateGroups> \
-                                    <VisualStateGroup x:Name=\"CommonStates\"> \
-                                        <VisualState x:Name=\"Normal\"> \
-                                            <Storyboard> \
-                                                <PointerUpThemeAnimation Storyboard.TargetName=\"RootGrid\" /> \
-                                            </Storyboard> \
-                                        </VisualState> \
-                                        <VisualState x:Name=\"PointerOver\"> \
-                                            <Storyboard> \
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"ContentPresenter\" Storyboard.TargetProperty=\"Foreground\"> \
-                                                    <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"%s\" /> \
-                                                </ObjectAnimationUsingKeyFrames> \
-                                                <PointerUpThemeAnimation Storyboard.TargetName=\"RootGrid\" /> \
-                                            </Storyboard> \
-                                        </VisualState> \
-                                        <VisualState x:Name=\"Pressed\"> \
-                                            <Storyboard> \
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"ContentPresenter\" Storyboard.TargetProperty=\"Foreground\"> \
-                                                    <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"%s\" /> \
-                                                </ObjectAnimationUsingKeyFrames> \
-                                                <PointerDownThemeAnimation Storyboard.TargetName=\"RootGrid\" /> \
-                                            </Storyboard> \
-                                        </VisualState> \
-                                        <VisualState x:Name=\"Disabled\"> \
-                                            <Storyboard> \
-                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName=\"ContentPresenter\" Storyboard.TargetProperty=\"Foreground\"> \
-                                                    <DiscreteObjectKeyFrame KeyTime=\"0\" Value=\"%s\" /> \
-                                                </ObjectAnimationUsingKeyFrames> \
-                                            </Storyboard> \
-                                        </VisualState> \
-                                    </VisualStateGroup> \
-                                </VisualStateManager.VisualStateGroups> \
-                            <ContentPresenter x:Name=\"ContentPresenter\" \
-                                BorderBrush=\"{TemplateBinding BorderBrush}\" \
-                                BorderThickness=\"{TemplateBinding BorderThickness}\" \
-                                Content=\"{TemplateBinding Content}\" \
-                                ContentTransitions=\"{TemplateBinding ContentTransitions}\" \
-                                ContentTemplate=\"{TemplateBinding ContentTemplate}\" \
-                                Padding=\"{TemplateBinding Padding}\" \
-                                HorizontalContentAlignment=\"{TemplateBinding HorizontalContentAlignment}\" \
-                                VerticalContentAlignment=\"{TemplateBinding VerticalContentAlignment}\" \
-                                AutomationProperties.AccessibilityView=\"Raw\" /> \
-                        </Grid> \
-                    </ControlTemplate> \
-                </Setter.Value> \
-            </Setter> \
-        </Style> \
-    </ResourceDictionary>";
+                        <ContentPresenter x:Name=\"ContentPresenter\" \
+                            BorderBrush=\"{TemplateBinding BorderBrush}\" \
+                            BorderThickness=\"{TemplateBinding BorderThickness}\" \
+                            Content=\"{TemplateBinding Content}\" \
+                            ContentTransitions=\"{TemplateBinding ContentTransitions}\" \
+                            ContentTemplate=\"{TemplateBinding ContentTemplate}\" \
+                            Padding=\"{TemplateBinding Padding}\" \
+                            HorizontalContentAlignment=\"{TemplateBinding HorizontalContentAlignment}\" \
+                            VerticalContentAlignment=\"{TemplateBinding VerticalContentAlignment}\" \
+                            AutomationProperties.AccessibilityView=\"Raw\" /> \
+                    </Grid> \
+                </ControlTemplate> \
+            </Setter.Value> \
+        </Setter> \
+     </Style> \
+</ResourceDictionary>";
+
