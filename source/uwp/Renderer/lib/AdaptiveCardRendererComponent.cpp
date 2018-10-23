@@ -253,87 +253,45 @@ namespace AdaptiveNamespace
 
         m_mergedResourceDictionary = resourceDictionary;
         m_defaultResourceDictionary = resourceDictionary;
+
+        ComPtr<IInspectable> actionSentimentResourceDictionaryInspectable;
+        THROW_IF_FAILED(xamlReaderStatics->Load(HStringReference(c_defaultActionSentimentResourceDictionary).Get(), &actionSentimentResourceDictionaryInspectable));
+        ComPtr<IResourceDictionary> actionSentimentResourceDictionary;
+        THROW_IF_FAILED(actionSentimentResourceDictionaryInspectable.As(&actionSentimentResourceDictionary));
+
+        m_actionSentimentResourceDictionary = actionSentimentResourceDictionary;
     }
-
-    std::wstring SubstituteColorsForActionSentimentResourceDictionary(int accentColor, int attentionColor)
-    {
-        std::wstring hexAccentColor;
-        THROW_IF_FAILED(ColorToWString(accentColor, hexAccentColor));
-
-        int clearAccentColor = GenerateClearerColor(accentColor);
-        std::wstring hexClearAccentColor;
-        THROW_IF_FAILED(ColorToWString(clearAccentColor, hexClearAccentColor));
-
-        std::wstring hexAtentionColor;
-        THROW_IF_FAILED(ColorToWString(attentionColor, hexAtentionColor));
-
-        int clearAttentionColor = GenerateClearerColor(attentionColor);
-        std::wstring hexClearAttentionColor;
-        THROW_IF_FAILED(ColorToWString(clearAttentionColor, hexClearAttentionColor));
-
-        // The current string contains %s for denoting the places where the color values will be replaced
-        // The color values are formatted as #XXXXXXXX (9 characters) so we add 7 characters per substituted value
-        size_t originalLength = 0;
-        THROW_IF_FAILED(StringCbLengthW(c_defaultActionSentimentResourceDictionary, STRSAFE_MAX_CCH, &originalLength));
-        
-        int finalLength = originalLength + 7 * 9;
-        std::vector<WCHAR> actionResourceDictionary(finalLength);
-        THROW_IF_FAILED(StringCbPrintfW(actionResourceDictionary.data(),
-                                        finalLength * sizeof(WCHAR),
-                                        c_defaultActionSentimentResourceDictionary,
-                                        hexAccentColor.c_str(),
-                                        hexAccentColor.c_str(),
-                                        hexClearAccentColor.c_str(),
-                                        hexClearAccentColor.c_str(),
-                                        hexClearAccentColor.c_str(),
-                                        hexAtentionColor.c_str(),
-                                        hexClearAttentionColor.c_str(),
-                                        hexClearAttentionColor.c_str(),
-                                        hexClearAttentionColor.c_str()));
-
-        return actionResourceDictionary.data();
-    }
-
+    
     void AdaptiveCardRenderer::UpdateActionSentimentResourceDictionary()
     {
-        ABI::Windows::UI::Color hostConfigAccentColor;
+        ABI::Windows::UI::Color accentColor;
         THROW_IF_FAILED(GetColorFromAdaptiveColor(m_hostConfig.Get(),
                                                   ABI::AdaptiveNamespace::ForegroundColor_Accent,
                                                   ABI::AdaptiveNamespace::ContainerStyle_Default,
                                                   false /* isSubtle */,
-                                                  &hostConfigAccentColor));
+                                                  &accentColor));
 
-        ABI::Windows::UI::Color hostConfigAttentionColor;
+        ABI::Windows::UI::Color attentionColor;
         THROW_IF_FAILED(GetColorFromAdaptiveColor(m_hostConfig.Get(),
                                                   ABI::AdaptiveNamespace::ForegroundColor_Attention,
                                                   ABI::AdaptiveNamespace::ContainerStyle_Default,
                                                   false /* isSubtle */,
-                                                  &hostConfigAttentionColor));
+                                                  &attentionColor));
 
-        UINT32 accentColor = ColorToInt(hostConfigAccentColor);
-        UINT32 attentionColor = ColorToInt(hostConfigAttentionColor);
+        ABI::Windows::UI::Color lighterAccentColor = GenerateLighterColor(accentColor);
+        ABI::Windows::UI::Color lighterAttentionColor = GenerateLighterColor(attentionColor);
 
-        if (accentColor != m_previousAccentColor || attentionColor != m_previousAttentionColor)
-        {
-            m_previousAccentColor = accentColor;
-            m_previousAttentionColor = attentionColor;
+        ComPtr<IBrush> accentColorBrush = XamlBuilder::GetSolidColorBrush(accentColor);
+        THROW_IF_FAILED(XamlBuilder::TryInsertResourceToResourceDictionaries(m_actionSentimentResourceDictionary.Get(), L"Adaptive.Action.Positive.Button.Static.Background", accentColorBrush.Get()));
 
-            std::wstring defaultActionSentimentResourceDictionary = SubstituteColorsForActionSentimentResourceDictionary(m_previousAccentColor, m_previousAttentionColor);
+        ComPtr<IBrush> lightAccentColorBrush = XamlBuilder::GetSolidColorBrush(lighterAccentColor);
+        THROW_IF_FAILED(XamlBuilder::TryInsertResourceToResourceDictionaries(m_actionSentimentResourceDictionary.Get(), L"Adaptive.Action.Positive.Button.MouseOver.Background", lightAccentColorBrush.Get()));
 
-            ComPtr<IXamlReaderStatics> xamlReaderStatics;
-            THROW_IF_FAILED(RoGetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Markup_XamlReader).Get(),
-                __uuidof(IXamlReaderStatics),
-                reinterpret_cast<void**>(xamlReaderStatics.GetAddressOf())));
+        ComPtr<IBrush> attentionColorBrush = XamlBuilder::GetSolidColorBrush(attentionColor);
+        THROW_IF_FAILED(XamlBuilder::TryInsertResourceToResourceDictionaries(m_actionSentimentResourceDictionary.Get(), L"Adaptive.Action.Destructive.Button.Foreground", attentionColorBrush.Get()));
 
-            ComPtr<IInspectable> actionResourceDictionaryInspectable;
-            THROW_IF_FAILED(xamlReaderStatics->Load(HStringReference(defaultActionSentimentResourceDictionary.c_str(),
-                                                              defaultActionSentimentResourceDictionary.length()).Get(),
-                                             actionResourceDictionaryInspectable.GetAddressOf()));
-
-            ComPtr<IResourceDictionary> actionSentimentResourceDictionary;
-            THROW_IF_FAILED(actionResourceDictionaryInspectable.As(&actionSentimentResourceDictionary));
-            m_actionSentimentResourceDictionary = actionSentimentResourceDictionary;
-        }
+        ComPtr<IBrush> lightAttentionColorBrush = XamlBuilder::GetSolidColorBrush(lighterAttentionColor);
+        THROW_IF_FAILED(XamlBuilder::TryInsertResourceToResourceDictionaries(m_actionSentimentResourceDictionary.Get(), L"Adaptive.Action.Destructive.Button.MouseOver.Foreground", lightAttentionColorBrush.Get()));
     }
 
     HRESULT AdaptiveCardRenderer::SetMergedDictionary()

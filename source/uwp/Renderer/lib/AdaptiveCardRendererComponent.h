@@ -69,8 +69,6 @@ namespace AdaptiveNamespace
         bool m_explicitDimensions = false;
         UINT32 m_desiredWidth = 0;
         UINT32 m_desiredHeight = 0;
-        UINT32 m_previousAccentColor = 0x00FFFFFF;
-        UINT32 m_previousAttentionColor = 0x00FFFFFF;
 
         HRESULT CreateAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson,
                                                  _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** adaptiveCard);
