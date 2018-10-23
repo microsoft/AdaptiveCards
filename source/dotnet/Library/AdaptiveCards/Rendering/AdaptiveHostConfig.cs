@@ -162,23 +162,34 @@ namespace AdaptiveCards.Rendering
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
 
+        // Handles inheritance behavior for retrieving the name of the font family given the desired AdaptiveFontStyle
         public string GetFontFamily(AdaptiveFontStyle fontStyle)
         {
+            // Value saved in FontStyles.<desiredStyle>
             string fontFamilyValue = FontStyles.GetFontStyle(fontStyle).FontFamily;
 
             if (string.IsNullOrEmpty(fontFamilyValue))
             {
-                fontFamilyValue = FontStyles.Default.FontFamily;
-                if (string.IsNullOrEmpty(fontFamilyValue))
+                if (fontStyle == AdaptiveFontStyle.Monospace)
                 {
-                    fontFamilyValue = FontFamily;
-                    if (string.IsNullOrEmpty(fontFamilyValue))
-                    {
-                        fontFamilyValue = GetDefaultFontFamily(fontStyle);
-                    }
+                  fontFamilyValue = GetDefaultFontFamily(fontStyle);
+                }
+                else
+                {
+                  // Fallback to default fontStyle value
+                  fontFamilyValue = FontStyles.Default.FontFamily;
+                  if (string.IsNullOrEmpty(fontFamilyValue))
+                  {
+                      // Fallback to deprecated fontFamily value
+                      fontFamilyValue = FontFamily;
+                      if (string.IsNullOrEmpty(fontFamilyValue))
+                      {
+                          // Fallback to predefined system default value
+                          fontFamilyValue = GetDefaultFontFamily(fontStyle);
+                      }
+                  }
                 }
             }
-
             return fontFamilyValue;
         }
 

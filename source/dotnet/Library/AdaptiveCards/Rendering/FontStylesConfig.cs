@@ -6,10 +6,8 @@ namespace AdaptiveCards.Rendering
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class FontStylesConfig
     {
-
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public FontStyleConfig Default { get; set; } = new FontStyleConfig();
-
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public FontStyleConfig Display { get; set; } = new FontStyleConfig();
@@ -30,6 +28,5 @@ namespace AdaptiveCards.Rendering
                     return Default;
             }
         }
-
     }
 }
