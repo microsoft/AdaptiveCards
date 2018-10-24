@@ -18,8 +18,11 @@ using namespace AdaptiveCards;
 - (void)setHostConfig:(std::shared_ptr<HostConfig> const &)config;
 
 + (NSNumber *)getTextStrokeWidthForWeight:(TextWeight)weight;
-- (int)getTextBlockFontWeight:(TextWeight)weight;
-- (int)getTextBlockTextSize:(TextSize)txtSz;
+- (int)getTextBlockFontWeight:(FontStyle) style
+                   textWeight:(TextWeight)weight;
+- (int)getTextBlockTextSize:(FontStyle) style
+                 textSize:(TextSize)txtSz;
+- (NSString *)getFontFamily:(AdaptiveCards::FontStyle)style;
 + (UIColor *)getTextBlockColor:(ForegroundColor)txtClr
                   colorsConfig:(ColorsConfig const &)config
                   subtleOption:(bool)isSubtle;

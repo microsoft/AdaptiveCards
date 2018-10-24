@@ -81,12 +81,12 @@ using namespace AdaptiveCards;
         if(!adaptiveCard->GetBackgroundImage().empty()) {
             [rootView loadImage:adaptiveCard->GetBackgroundImage()];
         }
-        if(![config getHostConfig]->media.playButton.empty()) {
-            [rootView loadImage:[config getHostConfig]->media.playButton];
+        if(![config getHostConfig]->GetMedia().playButton.empty()) {
+            [rootView loadImage:[config getHostConfig]->GetMedia().playButton];
         }
     }
 
-    ACRContainerStyle style = ([config getHostConfig]->adaptiveCard.allowCustomStyle)? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
+    ACRContainerStyle style = ([config getHostConfig]->GetAdaptiveCard().allowCustomStyle)? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
     style = (style == ACRNone)? ACRDefault : style;
     [verticalView setStyle:style];
 

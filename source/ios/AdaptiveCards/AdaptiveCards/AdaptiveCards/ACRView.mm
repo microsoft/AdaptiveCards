@@ -16,6 +16,7 @@
 #import "Container.h"
 #import "ColumnSet.h"
 #import "Column.h"
+#import "Enums.h"
 #import "Image.h"
 #import "Media.h"
 #import "ACRImageRenderer.h"
@@ -87,7 +88,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 
     UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card] inputs:inputs context:self containingView:self hostconfig:_hostConfig];
 
-    ContainerStyle style = ([_hostConfig getHostConfig]->adaptiveCard.allowCustomStyle)? [_adaptiveCard card]->GetStyle(): ContainerStyle::Default;
+    ContainerStyle style = ([_hostConfig getHostConfig]->GetAdaptiveCard().allowCustomStyle)? [_adaptiveCard card]->GetStyle(): ContainerStyle::Default;
 
     newView.backgroundColor = [_hostConfig getBackgroundColorForContainerStyle:
         [ACOHostConfig getPlatformContainerStyle:style]];
@@ -156,6 +157,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                 {
                     .weight = textBlockElement->GetTextWeight(),
                     .size = textBlockElement->GetTextSize(),
+                    .style = textBlockElement->GetFontStyle(),
                     .color = textBlockElement->GetTextColor(),
                     .isSubtle = textBlockElement->GetIsSubtle(),
                     .wrap = textBlockElement->GetWrap()
@@ -183,7 +185,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                     std::string title = fact->GetTitle();
                     [self processTextConcurrently:factSet
                                       elementType:CardElementType::FactSet
-                                       textConfig:[_hostConfig getHostConfig]->factSet.title
+                                       textConfig:[_hostConfig getHostConfig]->GetFactSet().title
                                         elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
                                              text:title
                                              lang:fact->GetLanguage()];
@@ -191,7 +193,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                     std::string value = fact->GetValue();
                     [self processTextConcurrently:factSet
                                       elementType:CardElementType::FactSet
-                                       textConfig:[_hostConfig getHostConfig]->factSet.value
+                                       textConfig:[_hostConfig getHostConfig]->GetFactSet().value
                                         elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
                                              text:value
                                              lang:fact->GetLanguage()];
@@ -223,7 +225,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                 std::shared_ptr<Media> mediaElem = std::static_pointer_cast<Media>(elem);
                 std::string poster =  mediaElem->GetPoster();
                 if(poster.empty()) {
-                    poster = [_hostConfig getHostConfig]->media.defaultPoster;
+                    poster = [_hostConfig getHostConfig]->GetMedia().defaultPoster;
                 }
 
                 if(!poster.empty()){
@@ -303,22 +305,30 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
             // use Apple's html rendering only if the string has markdowns
             if(markDownParser->HasHtmlTags() || markDownParser->IsEscaped()) {
                 NSString *fontFamilyName = nil;
-                if(!self->_hostConfig.fontFamilyNames){
-                    fontFamilyName = @"'-apple-system',  'HelveticaNeue'";
+
+                if(![self->_hostConfig getFontFamily:textConfigForBlock.style]){
+                    if(textConfigForBlock.style == FontStyle::Monospace){
+                        fontFamilyName = @"'Courier New'";
+                    } else{
+                        fontFamilyName = @"'-apple-system',  'San Francisco'";
+                    }
                 } else {
-                    fontFamilyName = self->_hostConfig.fontFamilyNames[0];
+                    fontFamilyName = [self->_hostConfig getFontFamily:textConfigForBlock.style];
                 }
                 // Font and text size are applied as CSS style by appending it to the html string
                 parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%dpx; font-weight: %d;}</style>",
                                                                       fontFamilyName,
-                                                                      [self->_hostConfig getTextBlockTextSize:textConfigForBlock.size],
-                                                                      [self->_hostConfig getTextBlockFontWeight:textConfigForBlock.weight]]];
+                                                                      [self->_hostConfig getTextBlockTextSize:textConfigForBlock.style
+                                                                                                     textSize:textConfigForBlock.size],
+                                                                      [self->_hostConfig getTextBlockFontWeight:textConfigForBlock.style
+                                                                                                     textWeight:textConfigForBlock.weight]]];
 
                 NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
                 NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
                 data = @{@"html" : htmlData, @"options" : options};
             } else {
-                int fontweight = [self->_hostConfig getTextBlockFontWeight:textConfigForBlock.weight];
+                int fontweight = [self->_hostConfig getTextBlockFontWeight:textConfigForBlock.style
+                                                                textWeight:textConfigForBlock.weight];
                 // sanity check, 400 is the normal font;
                 if(fontweight <= 0 || fontweight > 900){
                     fontweight = 400;
@@ -326,18 +336,29 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                 UIFont *font = nil;
                 fontweight -= 100;
                 fontweight /= 100;
-                if(!self->_hostConfig.fontFamilyNames){
+
+                if(![self->_hostConfig getFontFamily:textConfigForBlock.style]){
                     const NSArray<NSNumber *> *fontweights = @[@(UIFontWeightUltraLight), @(UIFontWeightThin), @(UIFontWeightLight), @(UIFontWeightRegular), @(UIFontWeightMedium),
                        @(UIFontWeightSemibold), @(UIFontWeightBold), @(UIFontWeightHeavy), @(UIFontWeightBlack)];
-                    font = [UIFont systemFontOfSize:[self->_hostConfig getTextBlockTextSize:textConfigForBlock.size] weight:[fontweights[fontweight] floatValue]];
+                    const CGFloat size = [self->_hostConfig getTextBlockTextSize:textConfigForBlock.style textSize:textConfigForBlock.size];
+                    if(textConfigForBlock.style == FontStyle::Monospace){
+                        const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
+                                                                    @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
+                        UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:@{UIFontDescriptorFamilyAttribute: @"Courier New",
+                                                                                                            UIFontDescriptorFaceAttribute:fontweights[fontweight]}];
+                        font = [UIFont fontWithDescriptor:descriptor size:[self->_hostConfig getTextBlockTextSize:textConfigForBlock.style textSize:textConfigForBlock.size]];
+                    }
+                    else{
+                        font = [UIFont systemFontOfSize:size weight:[fontweights[fontweight] floatValue]];
+                    }
                 } else {
                     // font weight as string since font weight as double doesn't work
                     // normailze fontweight for indexing
                     const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
                                                                 @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
-                    UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:@{UIFontDescriptorFamilyAttribute: self->_hostConfig.fontFamilyNames[0],
+                    UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:@{UIFontDescriptorFamilyAttribute: [self->_hostConfig getFontFamily:textConfigForBlock.style],
                                                                                                           UIFontDescriptorFaceAttribute:fontweights[fontweight]}];
-                    font = [UIFont fontWithDescriptor:descriptor size:[self->_hostConfig getTextBlockTextSize:textConfigForBlock.size]];
+                    font = [UIFont fontWithDescriptor:descriptor size:[self->_hostConfig getTextBlockTextSize:textConfigForBlock.style textSize:textConfigForBlock.size]];
                 }
 
                 NSDictionary *attributeDictionary = @{NSFontAttributeName:font};

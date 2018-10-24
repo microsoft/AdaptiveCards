@@ -170,8 +170,10 @@ TextConfig TextConfig::Deserialize(const Json::Value& json, const TextConfig& de
 {
     TextConfig result;
     result.weight = ParseUtil::GetEnumValue<TextWeight>(json, AdaptiveCardSchemaKey::Weight, defaultValue.weight, TextWeightFromString);
-
+   
     result.size = ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, defaultValue.size, TextSizeFromString);
+
+    result.style = ParseUtil::GetEnumValue<FontStyle>(json, AdaptiveCardSchemaKey::FontStyle, defaultValue.style, FontStyleFromString);
 
     result.color = ParseUtil::GetEnumValue<ForegroundColor>(json, AdaptiveCardSchemaKey::Color, defaultValue.color, ForegroundColorFromString);
 
@@ -194,7 +196,7 @@ ImageSizesConfig ImageSizesConfig::Deserialize(const Json::Value& json, const Im
     return result;
 }
 
-AdaptiveCardConfig AdaptiveCardConfig::Deserialize(const Json::Value& json, const AdaptiveCardConfig& defaultValue)
+ AdaptiveCardConfig AdaptiveCardConfig::Deserialize(const Json::Value& json, const AdaptiveCardConfig& defaultValue)
 {
     AdaptiveCardConfig result;
     result.allowCustomStyle = ParseUtil::GetBool(json, AdaptiveCardSchemaKey::AllowCustomStyle, defaultValue.allowCustomStyle);
