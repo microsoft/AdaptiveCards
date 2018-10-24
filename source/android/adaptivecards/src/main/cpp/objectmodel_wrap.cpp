@@ -13612,7 +13612,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   (void)jarg1_;
   arg1 = *(AdaptiveCards::FontSizesConfig **)&jarg1; 
   arg2 = (AdaptiveCards::TextSize)jarg2; 
-  result = (unsigned int)(arg1)->GetFontSize(arg2);
+  result = (unsigned int)((AdaptiveCards::FontSizesConfig const *)arg1)->GetFontSize(arg2);
   jresult = (jlong)result; 
   return jresult;
 }
@@ -13724,7 +13724,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   (void)jarg1_;
   arg1 = *(AdaptiveCards::FontWeightsConfig **)&jarg1; 
   arg2 = (AdaptiveCards::TextWeight)jarg2; 
-  result = (unsigned int)(arg1)->GetFontWeight(arg2);
+  result = (unsigned int)((AdaptiveCards::FontWeightsConfig const *)arg1)->GetFontWeight(arg2);
   jresult = (jlong)result; 
   return jresult;
 }
@@ -16338,7 +16338,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 
 SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jlong jresult = 0 ;
-  std::string arg1 ;
+  std::string *arg1 = 0 ;
   AdaptiveCards::HostConfig result;
   
   (void)jenv;
@@ -16346,12 +16346,13 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   if(!jarg1) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return 0;
-  } 
+  }
   const char *arg1_pstr = (const char *)jenv->GetStringUTFChars(jarg1, 0); 
   if (!arg1_pstr) return 0;
-  (&arg1)->assign(arg1_pstr);
+  std::string arg1_str(arg1_pstr);
+  arg1 = &arg1_str;
   jenv->ReleaseStringUTFChars(jarg1, arg1_pstr); 
-  result = AdaptiveCards::HostConfig::DeserializeFromString(arg1);
+  result = AdaptiveCards::HostConfig::DeserializeFromString((std::string const &)*arg1);
   *(AdaptiveCards::HostConfig **)&jresult = new AdaptiveCards::HostConfig((const AdaptiveCards::HostConfig &)result); 
   return jresult;
 }
@@ -16368,7 +16369,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   (void)jarg1_;
   arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
   arg2 = (AdaptiveCards::FontStyle)jarg2; 
-  result = (arg1)->GetFontStyle(arg2);
+  result = ((AdaptiveCards::HostConfig const *)arg1)->GetFontStyle(arg2);
   *(AdaptiveCards::FontStyleDefinition **)&jresult = new AdaptiveCards::FontStyleDefinition((const AdaptiveCards::FontStyleDefinition &)result); 
   return jresult;
 }
@@ -16385,7 +16386,7 @@ SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
   (void)jarg1_;
   arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
   arg2 = (AdaptiveCards::FontStyle)jarg2; 
-  result = (arg1)->GetFontFamily(arg2);
+  result = ((AdaptiveCards::HostConfig const *)arg1)->GetFontFamily(arg2);
   jresult = jenv->NewStringUTF((&result)->c_str()); 
   return jresult;
 }
@@ -16404,7 +16405,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
   arg2 = (AdaptiveCards::FontStyle)jarg2; 
   arg3 = (AdaptiveCards::TextSize)jarg3; 
-  result = (unsigned int)(arg1)->GetFontSize(arg2,arg3);
+  result = (unsigned int)((AdaptiveCards::HostConfig const *)arg1)->GetFontSize(arg2,arg3);
   jresult = (jlong)result; 
   return jresult;
 }
@@ -16423,7 +16424,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
   arg2 = (AdaptiveCards::FontStyle)jarg2; 
   arg3 = (AdaptiveCards::TextWeight)jarg3; 
-  result = (unsigned int)(arg1)->GetFontWeight(arg2,arg3);
+  result = (unsigned int)((AdaptiveCards::HostConfig const *)arg1)->GetFontWeight(arg2,arg3);
   jresult = (jlong)result; 
   return jresult;
 }

@@ -121,20 +121,9 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveHostConfig::get_FontStyles(IAdaptiveFontStylesDefinition** value)
+    _Use_decl_annotations_ HRESULT AdaptiveHostConfig::get_SupportsInteractivity(boolean* supportsInteractivity)
     {
-        return m_fontStyles.CopyTo(value);
-    }
-
-    _Use_decl_annotations_ HRESULT AdaptiveHostConfig::put_FontStyles(IAdaptiveFontStylesDefinition* value)
-    {
-        m_fontStyles = value;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_ HRESULT AdaptiveHostConfig::get_SupportsInteractivity(boolean* supporsInteractivity)
-    {
-        *supporsInteractivity = m_supportsInteractivity;
+        *supportsInteractivity = m_supportsInteractivity;
         return S_OK;
     }
 
@@ -261,6 +250,17 @@ namespace AdaptiveNamespace
     _Use_decl_annotations_ HRESULT AdaptiveHostConfig::put_Media(IAdaptiveMediaConfig* mediaConfig)
     {
         m_media = mediaConfig;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_ HRESULT AdaptiveHostConfig::get_FontStyles(IAdaptiveFontStylesDefinition** value)
+    {
+        return m_fontStyles.CopyTo(value);
+    }
+
+    _Use_decl_annotations_ HRESULT AdaptiveHostConfig::put_FontStyles(IAdaptiveFontStylesDefinition* value)
+    {
+        m_fontStyles = value;
         return S_OK;
     }
 }

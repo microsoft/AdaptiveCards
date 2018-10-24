@@ -1258,14 +1258,14 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(localTextBlock->put_Foreground(fontColorBrush.Get()));
 
         HString fontFamilyName;
-        UINT32* fontSize = new UINT32();
+        UINT32 fontSize;
         ABI::Windows::UI::Text::FontWeight xamlFontWeight;
 
         // Retrieve the desired FontFamily, FontSize, and FontWeight values
-        THROW_IF_FAILED(GetFontDataFromStyle(hostConfig, fontStyle, size, weight, fontFamilyName.GetAddressOf(), fontSize, &xamlFontWeight));
+        THROW_IF_FAILED(GetFontDataFromStyle(hostConfig, fontStyle, size, weight, fontFamilyName.GetAddressOf(), &fontSize, &xamlFontWeight));
 
         // Apply font size
-        THROW_IF_FAILED(localTextBlock->put_FontSize((double)*fontSize));
+        THROW_IF_FAILED(localTextBlock->put_FontSize((double)fontSize));
 
         // Apply font weight
         THROW_IF_FAILED(localTextBlock->put_FontWeight(xamlFontWeight));

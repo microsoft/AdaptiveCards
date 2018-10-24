@@ -451,11 +451,8 @@ namespace AdaptiveSharedNamespace
             {FontStyle::Monospace, "Monospace"},
         };
 
-        static std::unordered_map<std::string, FontStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> fontStyleNameToEnum = {
-            {"Default", FontStyle::Default},
-            {"Display", FontStyle::Display},
-            {"Monospace", FontStyle::Monospace},
-        };
+        static std::unordered_map<std::string, FontStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> fontStyleNameToEnum =
+            GenerateStringToEnumMap<FontStyle>(fontStyleEnumToName);
 
         if (fontStyleEnumToNameOut != nullptr)
         {

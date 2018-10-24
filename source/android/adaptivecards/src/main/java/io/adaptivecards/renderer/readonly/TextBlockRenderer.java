@@ -86,10 +86,14 @@ public class TextBlockRenderer extends BaseCardElementRenderer
     {
         String fontFamily = hostConfig.GetFontFamily(style);
 
-        Typeface typeface = Typeface.create(fontFamily, Typeface.NORMAL);
+        Typeface typeface;
         if (fontFamily.isEmpty() && style == FontStyle.Monospace)
         {
             typeface = Typeface.MONOSPACE;
+        }
+        else
+        {
+            typeface = Typeface.create(fontFamily, Typeface.NORMAL);
         }
 
         textView.setTypeface(typeface, m_textWeightMap.get(textWeight));

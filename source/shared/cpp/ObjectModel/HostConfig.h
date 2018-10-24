@@ -1,6 +1,5 @@
 #pragma once
 
-#include "pch.h"
 #include "Enums.h"
 #include "json/json.h"
 
@@ -9,41 +8,44 @@ namespace AdaptiveSharedNamespace
     class FontSizesConfig
     {
     public:
-        FontSizesConfig();
-        FontSizesConfig(unsigned int smallFontSize,
-                        unsigned int defaultFontSize,
-                        unsigned int mediumFontSize,
-                        unsigned int largeFontSize,
-                        unsigned int extraLargeFontSize);
+        FontSizesConfig() = default;
+        FontSizesConfig(unsigned int s, unsigned int d, unsigned int m, unsigned int l, unsigned int xl) :
+            smallFontSize(s), defaultFontSize(d), mediumFontSize(m), largeFontSize(l), extraLargeFontSize(xl)
+        {
+        }
+
         static FontSizesConfig Deserialize(const Json::Value& json, const FontSizesConfig& defaultValue);
         static unsigned int GetDefaultFontSize(TextSize size);
-        unsigned int GetFontSize(TextSize size);
+        unsigned int GetFontSize(TextSize size) const;
         void SetFontSize(TextSize size, unsigned int value);
 
     private:
         // UINT_MAX used to check if value was defined
-        unsigned int smallFontSize;
-        unsigned int defaultFontSize;
-        unsigned int mediumFontSize;
-        unsigned int largeFontSize;
-        unsigned int extraLargeFontSize;
+        unsigned int smallFontSize = UINT_MAX;
+        unsigned int defaultFontSize = UINT_MAX;
+        unsigned int mediumFontSize = UINT_MAX;
+        unsigned int largeFontSize = UINT_MAX;
+        unsigned int extraLargeFontSize = UINT_MAX;
     };
 
     class FontWeightsConfig
     {
     public:
-        FontWeightsConfig();
-        FontWeightsConfig(unsigned int lighterWeight, unsigned int defaultWeight, unsigned int bolderWeight);
+        FontWeightsConfig() = default;
+        FontWeightsConfig(unsigned int lighterWeight, unsigned int defaultWeight, unsigned int bolderWeight) :
+            lighterWeight(lighterWeight), defaultWeight(defaultWeight), bolderWeight(bolderWeight)
+        {
+        }
         static FontWeightsConfig Deserialize(const Json::Value& json, const FontWeightsConfig& defaultValue);
         static unsigned int GetDefaultFontWeight(TextWeight weight);
-        unsigned int GetFontWeight(TextWeight weight);
+        unsigned int GetFontWeight(TextWeight weight) const;
         void SetFontWeight(TextWeight weight, unsigned int value);
 
     private:
         // UINT_MAX used to check if value was defined
-        unsigned int lighterWeight;
-        unsigned int defaultWeight;
-        unsigned int bolderWeight;
+        unsigned int lighterWeight = UINT_MAX;
+        unsigned int defaultWeight = UINT_MAX;
+        unsigned int bolderWeight = UINT_MAX;
     };
 
     struct FontStyleDefinition
@@ -221,14 +223,14 @@ namespace AdaptiveSharedNamespace
     class HostConfig
     {
     public:
-        HostConfig();
+        HostConfig() = default;
         static HostConfig Deserialize(const Json::Value& json);
-        static HostConfig DeserializeFromString(const std::string jsonString);
+        static HostConfig DeserializeFromString(const std::string& jsonString);
 
-        FontStyleDefinition GetFontStyle(FontStyle style);
-        std::string GetFontFamily(FontStyle style);
-        unsigned int GetFontSize(FontStyle style, TextSize size);
-        unsigned int GetFontWeight(FontStyle style, TextWeight weight);
+        FontStyleDefinition GetFontStyle(FontStyle style) const;
+        std::string GetFontFamily(FontStyle style) const;
+        unsigned int GetFontSize(FontStyle style, TextSize size) const;
+        unsigned int GetFontWeight(FontStyle style, TextWeight weight) const;
 
         std::string GetFontFamily() const;
         void SetFontFamily(const std::string& value);
@@ -279,21 +281,21 @@ namespace AdaptiveSharedNamespace
         void SetMedia(const MediaConfig value);
 
     private:
-        std::string fontFamily;
-        FontSizesConfig fontSizes;
-        FontWeightsConfig fontWeights;
-        FontStylesDefinition fontStyles;
-        bool supportsInteractivity = true;
-        std::string imageBaseUrl;
-        ImageSizesConfig imageSizes;
-        ImageConfig image;
-        SeparatorConfig separator;
-        SpacingConfig spacing;
-        AdaptiveCardConfig adaptiveCard;
-        ImageSetConfig imageSet;
-        FactSetConfig factSet;
-        ActionsConfig actions;
-        ContainerStylesDefinition containerStyles;
-        MediaConfig media;
+        std::string _fontFamily;
+        FontSizesConfig _fontSizes;
+        FontWeightsConfig _fontWeights;
+        FontStylesDefinition _fontStyles;
+        bool _supportsInteractivity = true;
+        std::string _imageBaseUrl;
+        ImageSizesConfig _imageSizes;
+        ImageConfig _image;
+        SeparatorConfig _separator;
+        SpacingConfig _spacing;
+        AdaptiveCardConfig _adaptiveCard;
+        ImageSetConfig _imageSet;
+        FactSetConfig _factSet;
+        ActionsConfig _actions;
+        ContainerStylesDefinition _containerStyles;
+        MediaConfig _media;
     };
 }

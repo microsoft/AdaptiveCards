@@ -39,8 +39,8 @@ public class FontSizesConfig {
     this(AdaptiveCardObjectModelJNI.new_FontSizesConfig__SWIG_0(), true);
   }
 
-  public FontSizesConfig(long smallFontSize, long defaultFontSize, long mediumFontSize, long largeFontSize, long extraLargeFontSize) {
-    this(AdaptiveCardObjectModelJNI.new_FontSizesConfig__SWIG_1(smallFontSize, defaultFontSize, mediumFontSize, largeFontSize, extraLargeFontSize), true);
+  public FontSizesConfig(long s, long d, long m, long l, long xl) {
+    this(AdaptiveCardObjectModelJNI.new_FontSizesConfig__SWIG_1(s, d, m, l, xl), true);
   }
 
   public static FontSizesConfig Deserialize(JsonValue json, FontSizesConfig defaultValue) {
