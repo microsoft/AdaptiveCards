@@ -34,7 +34,7 @@ using namespace AdaptiveCards;
             [self setBorderColorWithHostConfig:config];
             [self setBorderThicknessWithHostConfig:config];
             [self removeConstraints:self.constraints];
-            [self applyPadding:config->spacing.paddingSpacing priority:1000];
+            [self applyPadding:config->GetSpacing().paddingSpacing priority:1000];
         }
     }
     return self;
@@ -87,11 +87,9 @@ using namespace AdaptiveCards;
                     alpha:((num & 0xFF000000) >> 24) / 255.0];
 }
 
-- (ContainerStyleDefinition&)paletteForHostConfig:(std::shared_ptr<HostConfig> const &)config
+- (const ContainerStyleDefinition &)paletteForHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    return (_style == ACREmphasis)
-        ? config->containerStyles.emphasisPalette
-        : config->containerStyles.defaultPalette;
+    return (_style == ACREmphasis)? config->GetContainerStyles().emphasisPalette : config->GetContainerStyles().defaultPalette;
 }
 
 - (void)setBackgroundColorWithHostConfig:(std::shared_ptr<HostConfig> const &)config

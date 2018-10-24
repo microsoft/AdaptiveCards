@@ -89,6 +89,7 @@ namespace AdaptiveSharedNamespace
     {
         TextWeight weight = TextWeight::Default;
         TextSize size = TextSize::Default;
+        FontStyle style = FontStyle::Default;
         ForegroundColor color = ForegroundColor::Default;
         bool isSubtle = false;
         bool wrap = true;
@@ -150,8 +151,8 @@ namespace AdaptiveSharedNamespace
 
     struct FactSetConfig
     {
-        TextConfig title{TextWeight::Bolder, TextSize::Default, ForegroundColor::Default, false, true, 150};
-        TextConfig value{TextWeight::Default, TextSize::Default, ForegroundColor::Default, false, true, ~0U};
+        TextConfig title{TextWeight::Bolder, TextSize::Default, FontStyle::Default, ForegroundColor::Default, false, true, 150};
+        TextConfig value{TextWeight::Default, TextSize::Default, FontStyle::Default, ForegroundColor::Default, false, true, ~0U};
         unsigned int spacing = 10;
 
         static FactSetConfig Deserialize(const Json::Value& json, const FactSetConfig& defaultValue);

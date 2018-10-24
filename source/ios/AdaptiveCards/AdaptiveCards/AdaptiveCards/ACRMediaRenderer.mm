@@ -63,7 +63,7 @@
         view.translatesAutoresizingMaskIntoConstraints = NO;
     }
     // process play icon image
-    NSString *piikey = [NSString stringWithCString:[acoConfig getHostConfig]->media.playButton.c_str() encoding:[NSString defaultCStringEncoding]];
+    NSString *piikey = [NSString stringWithCString:[acoConfig getHostConfig]->GetMedia().playButton.c_str() encoding:[NSString defaultCStringEncoding]];
     UIImage *playIconImage = imageViewMap[piikey];
     UIImageView *playIconImageView = nil;
     BOOL drawDefaultPlayIcon = YES;
@@ -110,7 +110,7 @@
                                 multiplier:heightToWidthRatio
                                   constant:0].active = YES;
 
-    if([acoConfig getHostConfig]->supportsInteractivity){
+    if([acoConfig getHostConfig]->GetSupportsInteractivity()){
         ACRMediaTarget *mediaTarget = nil;
         ACOMediaEvent *mediaEvent = [[ACOMediaEvent alloc] initWithMedia:mediaElem];
         if(!mediaEvent.isValid) {
@@ -118,7 +118,7 @@
             return nil;
         }
         // create target for gesture recongnizer;
-        if(![acoConfig getHostConfig]->media.allowInlinePlayback) {
+        if(![acoConfig getHostConfig]->GetMedia().allowInlinePlayback) {
             mediaTarget = [[ACRMediaTarget alloc] initWithMediaEvent:mediaEvent rootView:rootView config:acoConfig];
         } else {
             mediaTarget = [[ACRMediaTarget alloc] initWithMediaEvent:mediaEvent rootView:rootView config:acoConfig containingview:contentholdingview];
