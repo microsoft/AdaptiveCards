@@ -128,6 +128,19 @@ namespace AdaptiveCards.Rendering.Html
                     .Style("justify-content", "center")
                     .AddClass("ac-pushButton");
 
+                switch(action.Sentiment)
+                {
+                    case AdaptiveSentiment.Positive:
+                        buttonElement.AddClass("ac-action-positive");
+                        break;
+                    case AdaptiveSentiment.Destructive:
+                        buttonElement.AddClass("ac-action-destructive");
+                        break;
+                    case AdaptiveSentiment.Default:
+                    default:
+                        break;
+                }
+
                 var hasTitle = !string.IsNullOrEmpty(action.Title);
 
                 if (action.IconUrl != null)
