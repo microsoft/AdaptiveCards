@@ -44,7 +44,7 @@
 			}
 		},
 		"monospace": {
-			"fontFamily": "Courier New",
+			"fontFamily": "Segoe UI Mono",
 			"fontSizes": {
 				"small": 12,
 				"default": 14,
