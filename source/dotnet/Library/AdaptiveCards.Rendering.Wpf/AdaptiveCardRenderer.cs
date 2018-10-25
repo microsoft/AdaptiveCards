@@ -83,24 +83,34 @@ namespace AdaptiveCards.Rendering.Wpf
                     _resources = new ResourceDictionary();
                 }
 
-                var resource = new ResourceDictionary
+                // Wrap this to avoid Console applications to crash because of this : https://github.com/Microsoft/AdaptiveCards/issues/2121
+                try
                 {
-                    Source = new Uri("/AdaptiveCards.Rendering.Wpf;component/Themes/generic.xaml",
-                   UriKind.RelativeOrAbsolute)
-                };
+                    var resource = new ResourceDictionary
+                    {
+                        Source = new Uri("/AdaptiveCards.Rendering.Wpf;component/Themes/generic.xaml",
+                       UriKind.RelativeOrAbsolute)
+                    };
+                    _resources.MergedDictionaries.Add(resource);
+                }
+                catch { }
 
-                _resources.MergedDictionaries.Add(resource);
                 return _resources;
             }
             set
             {
                 _resources = value;
-                var resource = new ResourceDictionary
-                {
-                    Source = new Uri("/AdaptiveCards.Rendering.Wpf;component/Themes/generic.xaml", UriKind.RelativeOrAbsolute)
-                };
 
-                _resources.MergedDictionaries.Add(resource);
+                // Wrap this to avoid Console applications to crash because of this : https://github.com/Microsoft/AdaptiveCards/issues/2121
+                try
+                {
+                    var resource = new ResourceDictionary
+                    {
+                        Source = new Uri("/AdaptiveCards.Rendering.Wpf;component/Themes/generic.xaml", UriKind.RelativeOrAbsolute)
+                    };
+                    _resources.MergedDictionaries.Add(resource);
+                }
+                catch { }
 
             }
 
