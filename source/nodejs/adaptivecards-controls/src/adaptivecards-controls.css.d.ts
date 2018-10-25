@@ -1,0 +1,46 @@
+export interface IAdaptivecardsControlsCss {
+  'ms-ctrl-overlay': string;
+  'ms-ctrl-slide': string;
+  'ms-ctrl-slideTopToBottom': string;
+  'fadeIn': string;
+  'slideTopToBottom': string;
+  'ms-ctrl-slideBottomToTop': string;
+  'slideBottomToTop': string;
+  'ms-ctrl-slideLeftToRight': string;
+  'slideLeftToRight': string;
+  'ms-ctrl-slideRightToLeft': string;
+  'slideRightToLeft': string;
+  'ms-icon': string;
+  'ms-icon-chevronDown': string;
+  'ms-icon-chevronLeft': string;
+  'ms-icon-chevronRight': string;
+  'ms-icon-calendar': string;
+  'ms-icon-radioOff': string;
+  'ms-icon-radioOn': string;
+  'ms-icon-checkboxOff': string;
+  'ms-icon-checkboxOn': string;
+  'ms-icon-checkboxOn-reversed': string;
+  'ms-icon-checkMark': string;
+  'ms-ctrl': string;
+  'ms-ctrl-dropdown': string;
+  'ms-dropdown-label': string;
+  'placeholder': string;
+  'ms-ctrl-dropdown-button': string;
+  'ms-ctrl-dropdown-item': string;
+  'ms-ctrl-popup-container': string;
+  'ms-ctrl-calendar': string;
+  'ms-ctrl-calendarHeader': string;
+  'ms-ctrl-calendarNavButton': string;
+  'ms-ctrl-calendarDayHeader': string;
+  'ms-ctrl-calendarDay': string;
+  'subdued': string;
+  'selected': string;
+  'ms-calendarPopup': string;
+  'ms-ctrl-datePicker': string;
+  'ms-ctrl-checkbox': string;
+  'ms-ctrl-radiobutton': string;
+  'ms-ctrl-textbox': string;
+  'ms-ctrl-textbox-multiline': string;
+}
+
+export const locals: IAdaptivecardsControlsCss;

@@ -2,30 +2,37 @@
 	"name": "adaptivecards-controls",
 	"version": "0.1.0",
 	"description": "A library of pure JS/HTML controls designed for use with Adaptive Cards.",
-	"main": "built/adaptivecards-controls.js",
-	"types": "built/adaptivecards-controls.d.ts",
+	"author": "Microsoft",
+	"license": "MIT",
+	"main": "lib/adaptivecards-controls.js",
+	"types": "lib/adaptivecards-controls.d.ts",
+	"files": [
+		"lib",
+		"dist"
+	],
 	"scripts": {
-		"build-dist": "webpack",
-		"tsc": "tsc -p .",
-		"compile:watch": "npm run clean && tsc -w",
-		"build": "npm run tsc && npm run build-dist && npm run dts",
+		"clean": "rimraf lib dist",
+		"build": "webpack --config webpack.prod.js",
 		"watch": "webpack --watch",
 		"dts": "dts-generator --name adaptivecards-controls --project . --out dist/adaptivecards-controls.d.ts",
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"version": "npm run build"
+		"version": "npm run build && npm run dts"
 	},
 	"devDependencies": {
 		"@types/node": "0.0.2",
-		"@types/vkbeautify": "^0.99.0",
-		"ajv-cli": "1.1.1",
+		"awesome-typescript-loader": "^5.2.1",
+		"clean-webpack-plugin": "^0.1.19",
+		"css-loader": "^1.0.0",
 		"dts-generator": "^2.1.0",
 		"json-loader": "0.5.4",
-		"ts-loader": "^2.0.0",
+		"mini-css-extract-plugin": "^0.4.4",
+		"style-loader": "^0.23.1",
 		"tslint": "^4.4.2",
-		"typescript": "^2.1.5",
-		"webpack": "^2.2.1",
-		"glob": "7.1.2"
-	},
-	"author": "Microsoft",
-	"license": "MIT"
+		"typescript": "^3.0.3",
+		"typings-for-css-modules-loader": "^1.7.0",
+		"webpack": "^4.21.0",
+		"webpack-cli": "^3.1.2",
+		"webpack-dev-server": "^3.1.9",
+		"webpack-merge": "^4.1.4"
+	}
 }

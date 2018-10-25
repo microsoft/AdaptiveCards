@@ -1,5 +1,5 @@
 {
-	"name": "adaptivecards-controls-testapp",
+	"name": "adaptivecards-controls-test",
 	"version": "0.1.0",
 	"description": "Test application for Adaptive Card JS/HTML controls",
 	"main": "built/testapp.js",
@@ -15,8 +15,7 @@
 	},
 	"dependencies": {
 		"@types/node": "0.0.2",
-		"@types/vkbeautify": "^0.99.0",
-		"ajv-cli": "1.1.1",
+		"adaptivecards-controls": "^0.1.0",
 		"brace": "^0.9.1",
 		"http-server": "0.9.0",
 		"json-loader": "0.5.4",
@@ -24,8 +23,8 @@
 		"ts-loader": "^2.0.3",
 		"tslint": "^4.4.2",
 		"typescript": "^2.1.5",
-		"vkbeautify": "^0.99.1",
-		"webpack": "^2.3.1"
+		"webpack": "^4.21.0",
+		"webpack-cli": "^3.1.2"
 	},
 	"author": "Microsoft",
 	"license": "MIT"

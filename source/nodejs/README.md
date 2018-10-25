@@ -20,3 +20,12 @@ They are built independently, so to make local testing easier, you can use `npm 
 
 ## To start a local web server
 1. `npm start`
+
+
+## Bootstrap
+
+`npx lerna bootstrap --hoist`
+
+## Adding a new package
+
+1. `npx lerna add <new-package> --scope=<install-target>`

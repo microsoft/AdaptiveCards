@@ -29,11 +29,12 @@
 		"tslint": "^4.4.2",
 		"typescript": "^2.6.2",
 		"vkbeautify": "^0.99.3",
-		"webpack": "^3.10.0"
+		"webpack": "^4.21.0",
+		"webpack-cli": "^3.1.2"
 	},
 	"dependencies": {
-		"adaptivecards": "latest",
+		"adaptivecards": "^1.1.0-beta1",
 		"markdown-it": "^8.4.0",
-		"monaco-editor": "^0.14.1"
+		"monaco-editor": "^0.14.3"
 	}
 }
