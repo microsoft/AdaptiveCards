@@ -50,6 +50,16 @@ void BaseActionElement::SetIconUrl(const std::string& value)
     m_iconUrl = value;
 }
 
+Sentiment BaseActionElement::GetSentiment() const
+{
+    return m_sentiment;
+}
+
+void BaseActionElement::SetSentiment(const Sentiment& value)
+{
+    m_sentiment = value;
+}
+
 const ActionType BaseActionElement::GetElementType() const
 {
     return m_type;
@@ -70,6 +80,11 @@ Json::Value BaseActionElement::SerializeToJsonValue() const
     if (!m_title.empty())
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)] = m_title;
+    }
+
+    if (m_sentiment != Sentiment::Default)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Sentiment)] = SentimentToString(m_sentiment);
     }
 
     if (!m_iconUrl.empty())
@@ -95,7 +110,8 @@ void BaseActionElement::PopulateKnownPropertiesSet()
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IconUrl)});
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IconUrl),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Sentiment)});
 }
 
 void BaseActionElement::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)

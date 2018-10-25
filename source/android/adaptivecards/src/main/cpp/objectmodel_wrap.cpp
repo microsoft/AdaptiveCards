@@ -661,7 +661,7 @@ namespace Swig {
 namespace Swig {
   namespace {
     jclass jclass_AdaptiveCardObjectModelJNI = NULL;
-    jmethodID director_method_ids[25];
+    jmethodID director_method_ids[27];
   }
 }
 
@@ -1666,6 +1666,59 @@ void SwigDirector_BaseActionElement::SetIconUrl(std::string const &value) {
   if (swigjobj) jenv->DeleteLocalRef(swigjobj);
 }
 
+AdaptiveCards::Sentiment SwigDirector_BaseActionElement::GetSentiment() const {
+  AdaptiveCards::Sentiment c_result = SwigValueInit< AdaptiveCards::Sentiment >() ;
+  jint jresult = 0 ;
+  JNIEnvWrapper swigjnienv(this) ;
+  JNIEnv * jenv = swigjnienv.getJNIEnv() ;
+  jobject swigjobj = (jobject) NULL ;
+  
+  if (!swig_override[8]) {
+    return AdaptiveCards::BaseActionElement::GetSentiment();
+  }
+  swigjobj = swig_get_self(jenv);
+  if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
+    jresult = (jint) jenv->CallStaticIntMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[20], swigjobj);
+    jthrowable swigerror = jenv->ExceptionOccurred();
+    if (swigerror) {
+      jenv->ExceptionClear();
+      throw Swig::DirectorException(jenv, swigerror);
+    }
+    
+    c_result = (AdaptiveCards::Sentiment)jresult; 
+  } else {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null upcall object in AdaptiveCards::BaseActionElement::GetSentiment ");
+  }
+  if (swigjobj) jenv->DeleteLocalRef(swigjobj);
+  return c_result;
+}
+
+void SwigDirector_BaseActionElement::SetSentiment(AdaptiveCards::Sentiment const &value) {
+  JNIEnvWrapper swigjnienv(this) ;
+  JNIEnv * jenv = swigjnienv.getJNIEnv() ;
+  jobject swigjobj = (jobject) NULL ;
+  jint jvalue = 0 ;
+  
+  if (!swig_override[9]) {
+    AdaptiveCards::BaseActionElement::SetSentiment(value);
+    return;
+  }
+  swigjobj = swig_get_self(jenv);
+  if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
+    jvalue = (jint)value;
+    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[21], swigjobj, jvalue);
+    jthrowable swigerror = jenv->ExceptionOccurred();
+    if (swigerror) {
+      jenv->ExceptionClear();
+      throw Swig::DirectorException(jenv, swigerror);
+    }
+    
+  } else {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null upcall object in AdaptiveCards::BaseActionElement::SetSentiment ");
+  }
+  if (swigjobj) jenv->DeleteLocalRef(swigjobj);
+}
+
 AdaptiveCards::ActionType const SwigDirector_BaseActionElement::GetElementType() const {
   AdaptiveCards::ActionType c_result = SwigValueInit< AdaptiveCards::ActionType >() ;
   jint jresult = 0 ;
@@ -1673,12 +1726,12 @@ AdaptiveCards::ActionType const SwigDirector_BaseActionElement::GetElementType()
   JNIEnv * jenv = swigjnienv.getJNIEnv() ;
   jobject swigjobj = (jobject) NULL ;
   
-  if (!swig_override[8]) {
+  if (!swig_override[10]) {
     return AdaptiveCards::BaseActionElement::GetElementType();
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jint) jenv->CallStaticIntMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[20], swigjobj);
+    jresult = (jint) jenv->CallStaticIntMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[22], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       jenv->ExceptionClear();
@@ -1701,12 +1754,12 @@ Json::Value SwigDirector_BaseActionElement::SerializeToJsonValue() const {
   jobject swigjobj = (jobject) NULL ;
   Json::Value *argp ;
   
-  if (!swig_override[9]) {
+  if (!swig_override[11]) {
     return AdaptiveCards::BaseActionElement::SerializeToJsonValue();
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[21], swigjobj);
+    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[23], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       jenv->ExceptionClear();
@@ -1732,14 +1785,14 @@ void SwigDirector_BaseActionElement::GetResourceInformation(std::vector< Adaptiv
   jobject swigjobj = (jobject) NULL ;
   jlong jresourceUris = 0 ;
   
-  if (!swig_override[10]) {
+  if (!swig_override[12]) {
     AdaptiveCards::BaseActionElement::GetResourceInformation(resourceUris);
     return;
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
     *(std::vector< AdaptiveCards::RemoteResourceInformation > **)&jresourceUris = (std::vector< AdaptiveCards::RemoteResourceInformation > *) &resourceUris; 
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[22], swigjobj, jresourceUris);
+    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[24], swigjobj, jresourceUris);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       jenv->ExceptionClear();
@@ -1783,6 +1836,12 @@ void SwigDirector_BaseActionElement::swig_connect_director(JNIEnv *jenv, jobject
       "SetIconUrl", "(Ljava/lang/String;)V", NULL 
     },
     {
+      "GetSentiment", "()Lio/adaptivecards/objectmodel/Sentiment;", NULL 
+    },
+    {
+      "SetSentiment", "(Lio/adaptivecards/objectmodel/Sentiment;)V", NULL 
+    },
+    {
       "GetElementType", "()Lio/adaptivecards/objectmodel/ActionType;", NULL 
     },
     {
@@ -1802,7 +1861,7 @@ void SwigDirector_BaseActionElement::swig_connect_director(JNIEnv *jenv, jobject
       baseclass = (jclass) jenv->NewGlobalRef(baseclass);
     }
     bool derived = (jenv->IsSameObject(baseclass, jcls) ? false : true);
-    for (int i = 0; i < 11; ++i) {
+    for (int i = 0; i < 13; ++i) {
       if (!methods[i].base_methid) {
         methods[i].base_methid = jenv->GetMethodID(baseclass, methods[i].mname, methods[i].mdesc);
         if (!methods[i].base_methid) return;
@@ -1845,7 +1904,7 @@ std::shared_ptr< AdaptiveCards::BaseActionElement > SwigDirector_ActionElementPa
     
     *(std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > **)&jwarnings = (std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *) &warnings; 
     *(Json::Value **)&jvalue = (Json::Value *) &value; 
-    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[23], swigjobj, jelementParserRegistration, jactionParserRegistration, jwarnings, jvalue);
+    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[25], swigjobj, jelementParserRegistration, jactionParserRegistration, jwarnings, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       jenv->ExceptionClear();
@@ -1926,7 +1985,7 @@ std::shared_ptr< AdaptiveCards::BaseCardElement > SwigDirector_BaseCardElementPa
     
     *(std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > **)&jwarnings = (std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *) &warnings; 
     *(Json::Value **)&jvalue = (Json::Value *) &value; 
-    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[24], swigjobj, jelementParserRegistration, jactionParserRegistration, jwarnings, jvalue);
+    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[26], swigjobj, jelementParserRegistration, jactionParserRegistration, jwarnings, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       jenv->ExceptionClear();
@@ -4965,6 +5024,42 @@ SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SentimentToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
+  jstring jresult = 0 ;
+  AdaptiveCards::Sentiment arg1 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (AdaptiveCards::Sentiment)jarg1; 
+  result = AdaptiveCards::SentimentToString(arg1);
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_SentimentFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+  jint jresult = 0 ;
+  std::string *arg1 = 0 ;
+  AdaptiveCards::Sentiment result;
+  
+  (void)jenv;
+  (void)jcls;
+  if(!jarg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg1_pstr = (const char *)jenv->GetStringUTFChars(jarg1, 0); 
+  if (!arg1_pstr) return 0;
+  std::string arg1_str(arg1_pstr);
+  arg1 = &arg1_str;
+  jenv->ReleaseStringUTFChars(jarg1, arg1_pstr); 
+  result = (AdaptiveCards::Sentiment)AdaptiveCards::SentimentFromString((std::string const &)*arg1);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_RemoteResourceInformation_1url_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::RemoteResourceInformation *arg1 = (AdaptiveCards::RemoteResourceInformation *) 0 ;
   std::string *arg2 = 0 ;
@@ -6102,6 +6197,78 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   arg2 = &arg2_str;
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
   (arg1)->AdaptiveCards::BaseActionElement::SetIconUrl((std::string const &)*arg2);
+}
+
+
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1GetSentiment(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  AdaptiveCards::BaseActionElement *arg1 = (AdaptiveCards::BaseActionElement *) 0 ;
+  std::shared_ptr< AdaptiveCards::BaseActionElement const > *smartarg1 = 0 ;
+  AdaptiveCards::Sentiment result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::BaseActionElement > **)&jarg1;
+  arg1 = (AdaptiveCards::BaseActionElement *)(smartarg1 ? smartarg1->get() : 0); 
+  result = (AdaptiveCards::Sentiment)((AdaptiveCards::BaseActionElement const *)arg1)->GetSentiment();
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1GetSentimentSwigExplicitBaseActionElement(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  AdaptiveCards::BaseActionElement *arg1 = (AdaptiveCards::BaseActionElement *) 0 ;
+  std::shared_ptr< AdaptiveCards::BaseActionElement const > *smartarg1 = 0 ;
+  AdaptiveCards::Sentiment result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::BaseActionElement > **)&jarg1;
+  arg1 = (AdaptiveCards::BaseActionElement *)(smartarg1 ? smartarg1->get() : 0); 
+  result = (AdaptiveCards::Sentiment)((AdaptiveCards::BaseActionElement const *)arg1)->AdaptiveCards::BaseActionElement::GetSentiment();
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1SetSentiment(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  AdaptiveCards::BaseActionElement *arg1 = (AdaptiveCards::BaseActionElement *) 0 ;
+  AdaptiveCards::Sentiment *arg2 = 0 ;
+  std::shared_ptr< AdaptiveCards::BaseActionElement > *smartarg1 = 0 ;
+  AdaptiveCards::Sentiment temp2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseActionElement > **)&jarg1;
+  arg1 = (AdaptiveCards::BaseActionElement *)(smartarg1 ? smartarg1->get() : 0); 
+  temp2 = (AdaptiveCards::Sentiment)jarg2; 
+  arg2 = &temp2; 
+  (arg1)->SetSentiment((AdaptiveCards::Sentiment const &)*arg2);
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1SetSentimentSwigExplicitBaseActionElement(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  AdaptiveCards::BaseActionElement *arg1 = (AdaptiveCards::BaseActionElement *) 0 ;
+  AdaptiveCards::Sentiment *arg2 = 0 ;
+  std::shared_ptr< AdaptiveCards::BaseActionElement > *smartarg1 = 0 ;
+  AdaptiveCards::Sentiment temp2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseActionElement > **)&jarg1;
+  arg1 = (AdaptiveCards::BaseActionElement *)(smartarg1 ? smartarg1->get() : 0); 
+  temp2 = (AdaptiveCards::Sentiment)jarg2; 
+  arg2 = &temp2; 
+  (arg1)->AdaptiveCards::BaseActionElement::SetSentiment((AdaptiveCards::Sentiment const &)*arg2);
 }
 
 
@@ -10451,6 +10618,43 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   arg1 = (AdaptiveCards::TextInput *)(smartarg1 ? smartarg1->get() : 0); 
   arg2 = (AdaptiveCards::TextInputStyle)jarg2; 
   (arg1)->SetTextInputStyle(arg2);
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1GetInlineAction(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  AdaptiveCards::TextInput *arg1 = (AdaptiveCards::TextInput *) 0 ;
+  std::shared_ptr< AdaptiveCards::TextInput const > *smartarg1 = 0 ;
+  std::shared_ptr< AdaptiveCards::BaseActionElement > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::TextInput > **)&jarg1;
+  arg1 = (AdaptiveCards::TextInput *)(smartarg1 ? smartarg1->get() : 0); 
+  result = ((AdaptiveCards::TextInput const *)arg1)->GetInlineAction();
+  *(std::shared_ptr< AdaptiveCards::BaseActionElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseActionElement >(result) : 0; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_TextInput_1SetInlineAction(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::TextInput *arg1 = (AdaptiveCards::TextInput *) 0 ;
+  std::shared_ptr< AdaptiveCards::BaseActionElement > arg2 ;
+  std::shared_ptr< AdaptiveCards::TextInput > *smartarg1 = 0 ;
+  std::shared_ptr< AdaptiveCards::BaseActionElement > const *argp2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::TextInput > **)&jarg1;
+  arg1 = (AdaptiveCards::TextInput *)(smartarg1 ? smartarg1->get() : 0); 
+  argp2 = *(std::shared_ptr< AdaptiveCards::BaseActionElement > **)&jarg2; 
+  if (argp2) arg2 = *argp2; 
+  (arg1)->SetInlineAction(arg2);
 }
 
 
@@ -18986,7 +19190,7 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   static struct {
     const char *method;
     const char *signature;
-  } methods[25] = {
+  } methods[27] = {
     {
       "SwigDirector_BaseCardElement_GetElementTypeString", "(Lio/adaptivecards/objectmodel/BaseCardElement;)Ljava/lang/String;" 
     },
@@ -19046,6 +19250,12 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
     },
     {
       "SwigDirector_BaseActionElement_SetIconUrl", "(Lio/adaptivecards/objectmodel/BaseActionElement;Ljava/lang/String;)V" 
+    },
+    {
+      "SwigDirector_BaseActionElement_GetSentiment", "(Lio/adaptivecards/objectmodel/BaseActionElement;)I" 
+    },
+    {
+      "SwigDirector_BaseActionElement_SetSentiment", "(Lio/adaptivecards/objectmodel/BaseActionElement;I)V" 
     },
     {
       "SwigDirector_BaseActionElement_GetElementType", "(Lio/adaptivecards/objectmodel/BaseActionElement;)I" 

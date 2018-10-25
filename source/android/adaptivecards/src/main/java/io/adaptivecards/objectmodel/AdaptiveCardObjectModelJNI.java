@@ -210,6 +210,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native int IconPlacementFromString(String jarg1);
   public final static native String VerticalContentAlignmentToString(int jarg1);
   public final static native int VerticalContentAlignmentFromString(String jarg1);
+  public final static native String SentimentToString(int jarg1);
+  public final static native int SentimentFromString(String jarg1);
   public final static native void RemoteResourceInformation_url_set(long jarg1, RemoteResourceInformation jarg1_, String jarg2);
   public final static native String RemoteResourceInformation_url_get(long jarg1, RemoteResourceInformation jarg1_);
   public final static native void RemoteResourceInformation_mimeType_set(long jarg1, RemoteResourceInformation jarg1_, String jarg2);
@@ -270,6 +272,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native String BaseActionElement_GetIconUrlSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
   public final static native void BaseActionElement_SetIconUrl(long jarg1, BaseActionElement jarg1_, String jarg2);
   public final static native void BaseActionElement_SetIconUrlSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_, String jarg2);
+  public final static native int BaseActionElement_GetSentiment(long jarg1, BaseActionElement jarg1_);
+  public final static native int BaseActionElement_GetSentimentSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
+  public final static native void BaseActionElement_SetSentiment(long jarg1, BaseActionElement jarg1_, int jarg2);
+  public final static native void BaseActionElement_SetSentimentSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_, int jarg2);
   public final static native int BaseActionElement_GetElementType(long jarg1, BaseActionElement jarg1_);
   public final static native int BaseActionElement_GetElementTypeSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
   public final static native String BaseActionElement_Serialize(long jarg1, BaseActionElement jarg1_);
@@ -481,6 +487,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void TextInput_SetMaxLength(long jarg1, TextInput jarg1_, long jarg2);
   public final static native int TextInput_GetTextInputStyle(long jarg1, TextInput jarg1_);
   public final static native void TextInput_SetTextInputStyle(long jarg1, TextInput jarg1_, int jarg2);
+  public final static native long TextInput_GetInlineAction(long jarg1, TextInput jarg1_);
+  public final static native void TextInput_SetInlineAction(long jarg1, TextInput jarg1_, long jarg2, BaseActionElement jarg2_);
   public final static native long TextInput_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native void delete_TextInput(long jarg1);
   public final static native long new_TextInputParser__SWIG_0();
@@ -1008,6 +1016,12 @@ public class AdaptiveCardObjectModelJNI {
   }
   public static void SwigDirector_BaseActionElement_SetIconUrl(BaseActionElement jself, String value) {
     jself.SetIconUrl(value);
+  }
+  public static int SwigDirector_BaseActionElement_GetSentiment(BaseActionElement jself) {
+    return (jself.GetSentiment()).swigValue();
+  }
+  public static void SwigDirector_BaseActionElement_SetSentiment(BaseActionElement jself, int value) {
+    jself.SetSentiment(Sentiment.swigToEnum(value));
   }
   public static int SwigDirector_BaseActionElement_GetElementType(BaseActionElement jself) {
     return (jself.GetElementType()).swigValue();

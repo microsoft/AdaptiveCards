@@ -169,4 +169,12 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
     return VerticalContentAlignment.swigToEnum(AdaptiveCardObjectModelJNI.VerticalContentAlignmentFromString(verticalContentAlignment));
   }
 
+  public static String SentimentToString(Sentiment sentiment) {
+    return AdaptiveCardObjectModelJNI.SentimentToString(sentiment.swigValue());
+  }
+
+  public static Sentiment SentimentFromString(String sentiment) {
+    return Sentiment.swigToEnum(AdaptiveCardObjectModelJNI.SentimentFromString(sentiment));
+  }
+
 }

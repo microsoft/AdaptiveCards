@@ -128,6 +128,7 @@ namespace AdaptiveSharedNamespace
         Poster,
         Right,
         SelectAction,
+        Sentiment,
         Separator,
         ShowActionMode,
         ShowCard,
@@ -348,6 +349,13 @@ namespace AdaptiveSharedNamespace
         LeftOfTitle
     };
 
+    enum class Sentiment
+    {
+        Default = 0,
+        Positive,
+        Destructive
+    };
+
     enum class VerticalContentAlignment
     {
         Top = 0,
@@ -420,6 +428,9 @@ namespace AdaptiveSharedNamespace
 
     const std::string VerticalContentAlignmentToString(VerticalContentAlignment verticalContentAlignment);
     VerticalContentAlignment VerticalContentAlignmentFromString(const std::string& verticalContentAlignment);
+
+    const std::string SentimentToString(Sentiment sentiment);
+    Sentiment SentimentFromString(const std::string& sentiment);
 
     template<typename T>
     const std::unordered_map<std::string, T, CaseInsensitiveHash, CaseInsensitiveEqualTo>
