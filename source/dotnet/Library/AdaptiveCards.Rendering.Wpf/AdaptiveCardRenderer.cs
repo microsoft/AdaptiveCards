@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
+using System.Windows.Media;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
@@ -82,9 +83,37 @@ namespace AdaptiveCards.Rendering.Wpf
                     _resources = new ResourceDictionary();
                 }
 
+                // Wrap this to avoid Console applications to crash because of this : https://github.com/Microsoft/AdaptiveCards/issues/2121
+                try
+                {
+                    var resource = new ResourceDictionary
+                    {
+                        Source = new Uri("/AdaptiveCards.Rendering.Wpf;component/Themes/generic.xaml",
+                       UriKind.RelativeOrAbsolute)
+                    };
+                    _resources.MergedDictionaries.Add(resource);
+                }
+                catch { }
+
                 return _resources;
             }
-            set => _resources = value;
+            set
+            {
+                _resources = value;
+
+                // Wrap this to avoid Console applications to crash because of this : https://github.com/Microsoft/AdaptiveCards/issues/2121
+                try
+                {
+                    var resource = new ResourceDictionary
+                    {
+                        Source = new Uri("/AdaptiveCards.Rendering.Wpf;component/Themes/generic.xaml", UriKind.RelativeOrAbsolute)
+                    };
+                    _resources.MergedDictionaries.Add(resource);
+                }
+                catch { }
+
+            }
+
         }
 
         public AdaptiveActionHandlers ActionHandlers { get; } = new AdaptiveActionHandlers();
@@ -168,6 +197,24 @@ namespace AdaptiveCards.Rendering.Wpf
             return outerGrid;
         }
 
+        private string GenerateLighterColor(string hexColor)
+        {
+            int color = int.Parse(hexColor.Substring(1), System.Globalization.NumberStyles.HexNumber);
+
+            const double colorIncrement = 0.25;
+            int originalR = (color & 0x00FF0000) >> 16;
+            int originalG = (color & 0x0000FF00) >> 8;
+            int originalB = (color & 0x000000FF);
+
+            int newColorR = originalR + (int)((255 - originalR) * colorIncrement);
+            int newColorG = originalG + (int)((255 - originalG) * colorIncrement);
+            int newColorB = originalB + (int)((255 - originalB) * colorIncrement);
+
+            int newColor = ((newColorR << 16) | (newColorG << 8) | (newColorB));
+
+            return "#" + newColor.ToString("X");
+        }
+
         /// <summary>
         /// Renders an adaptive card.
         /// </summary>
@@ -196,6 +243,16 @@ namespace AdaptiveCards.Rendering.Wpf
                 ElementRenderers = ElementRenderers,
                 Lang = card.Lang
             };
+
+            string accentColor = HostConfig.ContainerStyles.Default.ForegroundColors.Accent.Default;
+            string lighterAccentColor = GenerateLighterColor(accentColor);
+            string attentionColor = HostConfig.ContainerStyles.Default.ForegroundColors.Attention.Default;
+            string lighterAttentionColor = GenerateLighterColor(attentionColor);
+
+            Resources["Adaptive.Action.Positive.Button.Static.Background"] = context.GetColorBrush(accentColor);
+            Resources["Adaptive.Action.Positive.Button.MouseOver.Background"] = context.GetColorBrush(lighterAccentColor);
+            Resources["Adaptive.Action.Destructive.Button.Foreground"] = context.GetColorBrush(attentionColor);
+            Resources["Adaptive.Action.Destructive.Button.MouseOver.Foreground"] = context.GetColorBrush(lighterAttentionColor);
 
             var element = context.Render(card);
 
@@ -245,7 +302,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 var stream = context.Render(card).RenderToImage(width);
                 renderCard = new RenderedAdaptiveCardImage(stream, card, context.Warnings);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine($"RENDER Failed. {e.Message}");
             }

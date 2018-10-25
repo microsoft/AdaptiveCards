@@ -114,6 +114,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Poster, "poster"},
             {AdaptiveCardSchemaKey::Right, "right"},
             {AdaptiveCardSchemaKey::SelectAction, "selectAction"},
+            {AdaptiveCardSchemaKey::Sentiment, "sentiment"},
             {AdaptiveCardSchemaKey::Separator, "separator"},
             {AdaptiveCardSchemaKey::Thickness, "thickness"},
             {AdaptiveCardSchemaKey::ShowActionMode, "showActionMode"},
@@ -633,6 +634,30 @@ namespace AdaptiveSharedNamespace
         }
     }
 
+    void GetSentimentEnumMappings(
+        std::unordered_map<Sentiment, std::string, EnumHash>* sentimentEnumToNameOut,
+        std::unordered_map<std::string, Sentiment, CaseInsensitiveHash, CaseInsensitiveEqualTo>* sentimentNameToEnumOut)
+    {
+        static std::unordered_map<Sentiment, std::string, EnumHash> sentimentEnumToName =
+        {
+            {Sentiment::Default, "Default"},
+            {Sentiment::Positive, "Positive"},
+            {Sentiment::Destructive, "Destructive"}
+        };
+        static std::unordered_map<std::string, Sentiment, CaseInsensitiveHash, CaseInsensitiveEqualTo> sentimentNameToEnum =
+            GenerateStringToEnumMap<Sentiment>(sentimentEnumToName);
+
+        if (sentimentEnumToNameOut != nullptr)
+        {
+            *sentimentEnumToNameOut = sentimentEnumToName;
+        }
+
+        if (sentimentNameToEnumOut != nullptr)
+        {
+            *sentimentNameToEnumOut = sentimentNameToEnum;
+        }
+    }
+
     const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type)
     {
         std::unordered_map<AdaptiveCardSchemaKey, std::string, EnumHash> adaptiveCardSchemaKeyEnumToName;
@@ -1149,6 +1174,30 @@ namespace AdaptiveSharedNamespace
             return VerticalContentAlignment::Top;
         }
         return verticalContentAlignmentNameToEnum[verticalContentAlignment];
+    }
+
+    const std::string SentimentToString(Sentiment sentiment)
+    {
+        std::unordered_map<Sentiment, std::string, EnumHash> sentimentEnumToName;
+        GetSentimentEnumMappings(&sentimentEnumToName, nullptr);
+
+        if (sentimentEnumToName.find(sentiment) == sentimentEnumToName.end())
+        {
+            throw std::out_of_range("Invalid Sentiment");
+        }
+        return sentimentEnumToName[sentiment];
+    }
+
+    Sentiment SentimentFromString(const std::string& sentiment)
+    {
+        std::unordered_map<std::string, Sentiment, CaseInsensitiveHash, CaseInsensitiveEqualTo> sentimentNameToEnum;
+        GetSentimentEnumMappings(nullptr, &sentimentNameToEnum);
+
+        if (sentimentNameToEnum.find(sentiment) == sentimentNameToEnum.end())
+        {
+            return Sentiment::Default;
+        }
+        return sentimentNameToEnum[sentiment];
     }
 }
 

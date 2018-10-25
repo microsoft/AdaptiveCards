@@ -106,6 +106,7 @@ public enum AdaptiveCardSchemaKey {
   Poster,
   Right,
   SelectAction,
+  Sentiment,
   Separator,
   ShowActionMode,
   ShowCard,

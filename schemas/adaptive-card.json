@@ -60,10 +60,7 @@
 			"properties": {
 				"type": {
 					"type": "string",
-					"description": "Must be `\"Action.OpenUrl\"`.",
-					"enum": [
-						"Action.OpenUrl"
-					]
+					"description": "Must be `\"Action.OpenUrl\"`."
 				},
 				"title": {
 					"type": "string",
@@ -94,10 +91,7 @@
 			"properties": {
 				"type": {
 					"type": "string",
-					"description": "Must be `\"Action.ShowCard\"`.",
-					"enum": [
-						"Action.ShowCard"
-					]
+					"description": "Must be `\"Action.ShowCard\"`."
 				},
 				"title": {
 					"type": "string",
@@ -125,10 +119,7 @@
 			"properties": {
 				"type": {
 					"type": "string",
-					"description": "Must be `\"Action.Submit\"`.",
-					"enum": [
-						"Action.Submit"
-					]
+					"description": "Must be `\"Action.Submit\"`."
 				},
 				"title": {
 					"type": "string",
@@ -182,15 +173,14 @@
 				"selectAction": {
 					"description": "An Action that will be invoked when the card is tapped or selected. `Action.ShowCard` is not supported.",
 					"type": "object",
-					"enum": [
-						"Action.Submit",
-						"Action.OpenUrl"
+					"oneOf": [
+						{ "$ref": "#/definitions/Action.Submit" },
+						{ "$ref": "#/definitions/Action.OpenUrl" }
 					]
 				}
 			},
 			"required": [
-				"type",
-				"version"
+				"type"
 			]
 		},
 		"CardElement": {
@@ -316,9 +306,9 @@
 				"selectAction": {
 					"description": "An Action that will be invoked when the `Column` is tapped or selected. `Action.ShowCard` is not supported.",
 					"type": "object",
-					"enum": [
-						"Action.Submit",
-						"Action.OpenUrl"
+					"oneOf": [
+						{ "$ref": "#/definitions/Action.Submit" },
+						{ "$ref": "#/definitions/Action.OpenUrl" }
 					]
 				},
 				"style": {
@@ -368,9 +358,9 @@
 				"selectAction": {
 					"description": "An Action that will be invoked when the `ColumnSet` is tapped or selected. `Action.ShowCard` is not supported.",
 					"type": "object",
-					"enum": [
-						"Action.Submit",
-						"Action.OpenUrl"
+					"oneOf": [
+						{ "$ref": "#/definitions/Action.Submit" },
+						{ "$ref": "#/definitions/Action.OpenUrl" }
 					]
 				},
 				"type": {
@@ -409,9 +399,9 @@
 				"selectAction": {
 					"description": "An Action that will be invoked when the `Container` is tapped or selected. `Action.ShowCard` is not supported.",
 					"type": "object",
-					"enum": [
-						"Action.Submit",
-						"Action.OpenUrl"
+					"oneOf": [
+						{ "$ref": "#/definitions/Action.Submit" },
+						{ "$ref": "#/definitions/Action.OpenUrl" }
 					]
 				},
 				"style": {
@@ -584,9 +574,9 @@
 				"selectAction": {
 					"description": "An Action that will be invoked when the `Image` is tapped or selected. `Action.ShowCard` is not supported.",
 					"type": "object",
-					"enum": [
-						"Action.Submit",
-						"Action.OpenUrl"
+					"oneOf": [
+						{ "$ref": "#/definitions/Action.Submit" },
+						{ "$ref": "#/definitions/Action.OpenUrl" }
 					]
 				},
 				"size": {

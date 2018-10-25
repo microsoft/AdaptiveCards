@@ -21,6 +21,7 @@ namespace AdaptiveNamespace
                                                           IAdaptiveElementRendererRegistration* elementRendererRegistration,
                                                           IAdaptiveCardResourceResolvers* resourceResolvers,
                                                           IResourceDictionary* overrideDictionary,
+                                                          IResourceDictionary* defaultActionSentimentStyles,
                                                           RenderedAdaptiveCard* renderResult) noexcept try
     {
         m_hostConfig = hostConfig;
@@ -28,6 +29,7 @@ namespace AdaptiveNamespace
         m_renderResult = renderResult;
         m_resourceResolvers = resourceResolvers;
         m_overrideDictionary = overrideDictionary;
+        m_actionSentimentDefaultDictionary = defaultActionSentimentStyles;
 
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionInvoker>(&m_actionInvoker, renderResult));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveMediaEventInvoker>(&m_mediaEventInvoker, renderResult));
@@ -87,5 +89,10 @@ namespace AdaptiveNamespace
     _Use_decl_annotations_ HRESULT AdaptiveRenderContext::AddInputValue(IAdaptiveInputValue* inputValue)
     {
         return m_renderResult->AddInputValue(inputValue);
+    }
+
+    Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> AdaptiveRenderContext::GetDefaultActionSentimentDictionary()
+    {
+        return m_actionSentimentDefaultDictionary;
     }
 }

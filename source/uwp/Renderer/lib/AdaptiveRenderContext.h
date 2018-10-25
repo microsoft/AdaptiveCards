@@ -19,6 +19,7 @@ namespace AdaptiveNamespace
                                        ABI::AdaptiveNamespace::IAdaptiveElementRendererRegistration* elementRendererRegistration,
                                        ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers* resourceResolvers,
                                        ABI::Windows::UI::Xaml::IResourceDictionary* overrideStyles,
+                                       ABI::Windows::UI::Xaml::IResourceDictionary* defaultActionSentimentStyles,
                                        AdaptiveNamespace::RenderedAdaptiveCard* renderResult) noexcept;
 
         IFACEMETHODIMP get_HostConfig(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveHostConfig** value);
@@ -31,6 +32,8 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP AddError(_In_ ABI::AdaptiveNamespace::ErrorStatusCode statusCode, _In_ HSTRING message);
         IFACEMETHODIMP AddWarning(_In_ ABI::AdaptiveNamespace::WarningStatusCode statusCode, _In_ HSTRING message);
 
+        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> GetDefaultActionSentimentDictionary();
+
     private:
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveHostConfig> m_hostConfig;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveElementRendererRegistration> m_elementRendererRegistration;
@@ -39,6 +42,8 @@ namespace AdaptiveNamespace
         Microsoft::WRL::ComPtr<AdaptiveNamespace::AdaptiveMediaEventInvoker> m_mediaEventInvoker;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers> m_resourceResolvers;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_overrideDictionary;
+
+        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_actionSentimentDefaultDictionary;
     };
 
     ActivatableClass(AdaptiveRenderContext);
