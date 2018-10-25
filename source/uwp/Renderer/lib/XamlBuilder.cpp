@@ -2813,10 +2813,14 @@ namespace AdaptiveNamespace
             ComPtr<ABI::Windows::UI::Core::ICoreWindow> coreWindow;
             RETURN_IF_FAILED(coreWindowStatics->GetForCurrentThread(&coreWindow));
 
-            ABI::Windows::UI::Core::CoreVirtualKeyStates keyState;
-            RETURN_IF_FAILED(coreWindow->GetKeyState(ABI::Windows::System::VirtualKey_Shift, &keyState));
+            ABI::Windows::UI::Core::CoreVirtualKeyStates shiftKeyState;
+            RETURN_IF_FAILED(coreWindow->GetKeyState(ABI::Windows::System::VirtualKey_Shift, &shiftKeyState));
 
-            if (keyState == ABI::Windows::UI::Core::CoreVirtualKeyStates_None)
+            ABI::Windows::UI::Core::CoreVirtualKeyStates ctrlKeyState;
+            RETURN_IF_FAILED(coreWindow->GetKeyState(ABI::Windows::System::VirtualKey_Control, &ctrlKeyState));
+
+            if (shiftKeyState == ABI::Windows::UI::Core::CoreVirtualKeyStates_None &&
+                ctrlKeyState == ABI::Windows::UI::Core::CoreVirtualKeyStates_None)
             {
                 RETURN_IF_FAILED(actionInvoker->SendActionEvent(inlineAction));
                 RETURN_IF_FAILED(args->put_Handled(true));
@@ -2824,6 +2828,36 @@ namespace AdaptiveNamespace
         }
 
         return S_OK;
+    }
+
+    bool WarnForInlineShowCard(IAdaptiveRenderContext* renderContext,
+                               IAdaptiveHostConfig* hostConfig,
+                               IAdaptiveActionElement* action,
+                               std::wstring warning)
+    {
+        if (action != nullptr)
+        {
+            ABI::AdaptiveNamespace::ActionType actionType;
+            THROW_IF_FAILED(action->get_ActionType(&actionType));
+
+            if (actionType == ABI::AdaptiveNamespace::ActionType::ShowCard)
+            {
+                ComPtr<IAdaptiveActionsConfig> actionsConfig;
+                THROW_IF_FAILED(hostConfig->get_Actions(actionsConfig.GetAddressOf()));
+                ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
+                THROW_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
+                ABI::AdaptiveNamespace::ActionMode showCardActionMode;
+                THROW_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
+                if (showCardActionMode == ABI::AdaptiveNamespace::ActionMode::Inline)
+                {
+                    THROW_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::UnsupportedValue,
+                                                              HStringReference(warning.c_str()).Get()));
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     void XamlBuilder::HandleInlineAcion(IAdaptiveRenderContext* renderContext,
@@ -2838,12 +2872,12 @@ namespace AdaptiveNamespace
         ABI::AdaptiveNamespace::ActionType actionType;
         THROW_IF_FAILED(localInlineAction->get_ActionType(&actionType));
 
-        // Show cards are not supported for inline actions
-        if (actionType == ActionType_ShowCard)
-        {
-            THROW_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::UnsupportedValue,
-                                                      HStringReference(L"ShowCard not supported for InlineAction").Get()));
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
+        // Inline ShowCards are not supported for inline actions
+        if (WarnForInlineShowCard(renderContext, hostConfig.Get(), localInlineAction.Get(), L"Inline ShowCard not supported for InlineAction"))
+        {
             THROW_IF_FAILED(localTextBox.CopyTo(textBoxWithInlineAction));
             return;
         }
@@ -2876,9 +2910,6 @@ namespace AdaptiveNamespace
             HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
         THROW_IF_FAILED(separatorColumnDefinition->put_Width({1.0, GridUnitType::GridUnitType_Auto}));
         THROW_IF_FAILED(columnDefinitions->Append(separatorColumnDefinition.Get()));
-
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
         UINT spacingSize;
         THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), ABI::AdaptiveNamespace::Spacing::Default, &spacingSize));
@@ -3347,28 +3378,12 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
-        if (action != nullptr)
+        if (WarnForInlineShowCard(renderContext, hostConfig.Get(), action, L"Inline ShowCard not supported for SelectAction"))
         {
-            ABI::AdaptiveNamespace::ActionType actionType;
-            THROW_IF_FAILED(action->get_ActionType(&actionType));
-
-            // TODO: In future should support inline ShowCard, but that's complicated for inline elements
-            if (actionType == ABI::AdaptiveNamespace::ActionType::ShowCard)
-            {
-                ComPtr<IAdaptiveActionsConfig> actionsConfig;
-                THROW_IF_FAILED(hostConfig->get_Actions(actionsConfig.GetAddressOf()));
-                ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
-                THROW_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
-                ABI::AdaptiveNamespace::ActionMode showCardActionMode;
-                THROW_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
-                if (showCardActionMode == ABI::AdaptiveNamespace::ActionMode::Inline)
-                {
-                    // Was inline show card, so don't wrap the element and just return
-                    ComPtr<IUIElement> localElementToWrap(elementToWrap);
-                    localElementToWrap.CopyTo(finalElement);
-                    return;
-                }
-            }
+            // Was inline show card, so don't wrap the element and just return
+            ComPtr<IUIElement> localElementToWrap(elementToWrap);
+            localElementToWrap.CopyTo(finalElement);
+            return;
         }
 
         ComPtr<IButton> button =
@@ -3421,6 +3436,20 @@ namespace AdaptiveNamespace
 
         if (action != nullptr)
         {
+            // If we have an action, use the title for the AutomationProperties.Name
+            HString title;
+            THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
+
+            ComPtr<IDependencyObject> buttonAsDependencyObject;
+            THROW_IF_FAILED(button.As(&buttonAsDependencyObject));
+
+            ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
+            THROW_IF_FAILED(
+                GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
+                                     &automationPropertiesStatics));
+
+            THROW_IF_FAILED(automationPropertiesStatics->SetName(buttonAsDependencyObject.Get(), title.Get()));
+
             WireButtonClickToAction(button.Get(), action, renderContext);
         }
 
@@ -3502,5 +3531,4 @@ namespace AdaptiveNamespace
         ComPtr<WholeItemsPanel> panel = PeekInnards<WholeItemsPanel>(containerAsPanel);
         panel->SetVerticalContentAlignment(verticalContentAlignment);
     }
-
 }

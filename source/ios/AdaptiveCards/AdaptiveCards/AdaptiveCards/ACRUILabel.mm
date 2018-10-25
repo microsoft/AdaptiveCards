@@ -57,4 +57,21 @@
     _area = area;
 }
 
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+{
+    CGPoint location = point;
+    location.x -= self.textContainerInset.left;
+    location.y -= self.textContainerInset.top;
+    CGFloat fraction = 0.0f;
+    NSUInteger characterIndex = [self.layoutManager characterIndexForPoint:location
+                                                           inTextContainer:self.textContainer
+                                  fractionOfDistanceBetweenInsertionPoints:&fraction];
+    if (!(fraction == 0.0 || fraction == 1.0) && characterIndex < self.textStorage.length) {
+        if ([self.textStorage attribute:NSLinkAttributeName atIndex:characterIndex effectiveRange:NULL]) {
+            return self;
+        }
+    }
+    return nil;
+}
+
 @end
