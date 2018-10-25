@@ -21,6 +21,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Include="Themes\generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AdaptiveCards\AdaptiveCards.csproj" />
   </ItemGroup>
 
