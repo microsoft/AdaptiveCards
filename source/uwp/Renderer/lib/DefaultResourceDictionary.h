@@ -74,12 +74,12 @@ const PCWSTR c_defaultActionSentimentResourceDictionary = L"\
     xmlns:dxg=\"http://schemas.devexpress.com/winfx/2008/xaml/grid\" \
     xmlns:dxgt=\"http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys\"> \
 \
-    <SolidColorBrush x:Key=\"Adaptive.Action.Positive.Button.Static.Background\" Color=\"#FFDDDDDD\"/> \
-    <SolidColorBrush x:Key=\"Adaptive.Action.Positive.Button.MouseOver.Background\" Color=\"#FFBEE6FD\" /> \
+    <SolidColorBrush x:Key=\"Adaptive.Action.Positive.Button.Static.Background\" Color=\"#FF000000\"/> \
+    <SolidColorBrush x:Key=\"Adaptive.Action.Positive.Button.MouseOver.Background\" Color=\"#FF404040\" /> \
     <SolidColorBrush x:Key=\"Adaptive.Action.Positive.Button.Foreground\" Color=\"#FFFFFFFF\" /> \
 \
-    <SolidColorBrush x:Key=\"Adaptive.Action.Destructive.Button.Foreground\" Color=\"#FF838383\" /> \
-    <SolidColorBrush x:Key=\"Adaptive.Action.Destructive.Button.MouseOver.Foreground\" Color=\"#FF838383\" /> \
+    <SolidColorBrush x:Key=\"Adaptive.Action.Destructive.Button.Foreground\" Color=\"#FF8B0000\" /> \
+    <SolidColorBrush x:Key=\"Adaptive.Action.Destructive.Button.MouseOver.Foreground\" Color=\"#FFCB4040\" /> \
 \
     <Style x:Key=\"PositiveActionDefaultStyle\" TargetType=\"Button\"> \
         <Setter Property=\"Foreground\" Value=\"{ThemeResource Adaptive.Action.Positive.Button.Foreground}\" /> \
