@@ -192,6 +192,8 @@ template<typename T> struct ElementTraits
     static void Unwrap(ElementType const& value, _Out_ T* result) { *result = value; }
 
     static bool Equals(T const& value1, T const& value2) { return value1 == value2; }
+
+    static void CopyTo(T const& in, ElementType* out) { *out = in; }
 };
 
 // Specialized element traits for reference counted pointer types.
@@ -204,6 +206,8 @@ template<typename T> struct ElementTraits<T*>
     static void Unwrap(ElementType const& value, _Out_ T** result) { ThrowIfFailed(value.CopyTo(result)); }
 
     static bool Equals(Microsoft::WRL::ComPtr<T> const& value1, T* value2) { return value1.Get() == value2; }
+
+    static void CopyTo(Microsoft::WRL::ComPtr<T> const& in, ElementType* out) { in.CopyTo(out->GetAddressOf()); }
 };
 
 // Specialized element traits for strings.
@@ -220,12 +224,14 @@ template<> struct ElementTraits<HSTRING>
 
     static void Unwrap(ElementType const& value, _Out_ HSTRING* result) { value.CopyTo(result); }
 
-    static bool Equals(HSTRING const& value1, HSTRING const& value2)
+    static bool Equals(HString const& value1, HSTRING const& value2)
     {
         int compareResult;
-        ThrowIfFailed(WindowsCompareStringOrdinal(value1, value2, &compareResult));
+        ThrowIfFailed(WindowsCompareStringOrdinal(value1.Get(), value2, &compareResult));
         return compareResult == 0;
     }
+
+    static void CopyTo(HString const& in, ElementType* out) { in.CopyTo(out->GetAddressOf()); }
 };
 
 // Vector traits describe how the collection itself is implemented.
@@ -236,12 +242,13 @@ template<typename T> struct DefaultVectorTraits : public ElementTraits<T>
 
     static unsigned GetSize(InternalVectorType const& vector) { return (unsigned)vector.size(); };
 
-    static ElementType GetAt(InternalVectorType const& vector, unsigned index)
+    static void GetAt(InternalVectorType const& vector, unsigned index, ElementType* element)
     {
         if (index >= vector.size())
             ThrowHR(E_BOUNDS);
 
-        return vector[index];
+        ElementTraits::CopyTo(vector[index], element);
+        return;
     }
 
     static void SetAt(InternalVectorType& vector, unsigned index, T const& item)
@@ -333,7 +340,9 @@ public:
             CheckInPointer(item);
             ZeroMemory(item, sizeof(*item));
 
-            Traits::Unwrap(Traits::GetAt(mVector, index), item);
+            Traits::ElementType element;
+            Traits::GetAt(mVector, index, &element);
+            Traits::Unwrap(element, item);
         });
     }
 
@@ -350,7 +359,10 @@ public:
 
             for (unsigned i = 0; i < size; i++)
             {
-                if (Traits::Equals(Traits::GetAt(mVector, i), value))
+                Traits::ElementType element;
+                Traits::GetAt(mVector, i, &element);
+
+                if (Traits::Equals(element, value))
                 {
                     *index = i;
                     *found = true;

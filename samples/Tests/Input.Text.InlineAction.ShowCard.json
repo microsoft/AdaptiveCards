@@ -5,7 +5,7 @@
 	"body": [
 		{
 			"type": "TextBlock",
-			"text": "Inline action of type show card won't render",
+			"text": "InlineActions of type ShowCard won't render if show card actionMode is inline.",
 			"wrap": true
 		},
 		{
@@ -19,7 +19,7 @@
 					"body": [
 						{
 							"type": "TextBlock",
-							"text": "Show cards are not supported for inline actions!"
+							"text": "This ShowCard will only show in popup mode!"
 						}
 					]
 				}

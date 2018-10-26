@@ -3,12 +3,15 @@ package io.adaptivecards.renderer.action;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentManager;
+import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +19,18 @@ import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
+import io.adaptivecards.R;
 import io.adaptivecards.objectmodel.ActionAlignment;
 import io.adaptivecards.objectmodel.ActionMode;
 import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.ActionsOrientation;
 import io.adaptivecards.objectmodel.BaseActionElement;
+import io.adaptivecards.objectmodel.ColorsConfig;
+import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.ActionsConfig;
 import io.adaptivecards.objectmodel.IconPlacement;
+import io.adaptivecards.objectmodel.Sentiment;
 import io.adaptivecards.objectmodel.ShowCardAction;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
 import io.adaptivecards.renderer.IBaseActionElementRenderer;
@@ -222,6 +229,69 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         }
     }
 
+    private int getColor(ForegroundColor color, ColorsConfig colorsConfig)
+    {
+        io.adaptivecards.objectmodel.ColorConfig colorConfig;
+        if (color == ForegroundColor.Accent)
+        {
+            colorConfig = colorsConfig.getAccent();
+        }
+        else if (color == ForegroundColor.Attention)
+        {
+            colorConfig = colorsConfig.getAttention();
+        }
+        else
+        {
+            throw new IllegalArgumentException("Unknown color: " + color.toString());
+        }
+
+        return android.graphics.Color.parseColor(colorConfig.getDefaultColor());
+    }
+
+    private Button createButtonWithTheme(Context context, int theme)
+    {
+        Context themedContext = new ContextThemeWrapper(context, theme);
+        return new Button(themedContext);
+    }
+
+    private Button createButton(Context context, Sentiment sentiment, HostConfig hostConfig)
+    {
+        if(sentiment == Sentiment.Positive || sentiment == Sentiment.Destructive)
+        {
+            Resources.Theme theme = context.getTheme();
+            TypedValue buttonStyle = new TypedValue();
+
+            if(sentiment == sentiment.Positive)
+            {
+                if(theme.resolveAttribute(R.attr.adaptiveActionPositive, buttonStyle, true))
+                {
+                    return createButtonWithTheme(context, buttonStyle.data);
+                }
+                else
+                {
+                    Button button = new Button(context);
+                    button.getBackground().setColorFilter(getColor(ForegroundColor.Accent, hostConfig.getContainerStyles().getDefaultPalette().getForegroundColors()), PorterDuff.Mode.MULTIPLY);
+                    return button;
+                }
+            }
+            else
+            {
+                if(theme.resolveAttribute(R.attr.adaptiveActionDestructive, buttonStyle, true))
+                {
+                    return createButtonWithTheme(context, buttonStyle.data);
+                }
+                else
+                {
+                    Button button = new Button(context);
+                    button.setTextColor(getColor(ForegroundColor.Attention, hostConfig.getContainerStyles().getDefaultPalette().getForegroundColors()));
+                    return button;
+                }
+            }
+        }
+
+        return new Button(context);
+    }
+
     public Button renderButton(
             Context context,
             ViewGroup viewGroup,
@@ -229,7 +299,8 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             HostConfig hostConfig,
             RenderedAdaptiveCard renderedCard)
     {
-        Button button = new Button(context);
+        Button button = createButton(context, baseActionElement.GetSentiment(), hostConfig);
+
         button.setText(baseActionElement.GetTitle());
         ActionAlignment alignment = hostConfig.getActions().getActionAlignment();
         ActionsOrientation orientation = hostConfig.getActions().getActionsOrientation();

@@ -104,6 +104,10 @@ namespace AdaptiveNamespace
                                                               _In_ std::wstring resourceName,
                                                               _COM_Outptr_result_maybenull_ T** resource);
 
+        static HRESULT TryInsertResourceToResourceDictionaries(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* resourceDictionary,
+                                                               _In_ std::wstring resourceName,
+                                                               _In_ IInspectable* value);
+
         static HRESULT SetStyleFromResourceDictionary(ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                                       std::wstring resourceName,
                                                       ABI::Windows::UI::Xaml::IFrameworkElement* frameworkElement);

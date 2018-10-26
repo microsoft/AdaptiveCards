@@ -98,6 +98,14 @@ public class BaseActionElement {
     if (getClass() == BaseActionElement.class) AdaptiveCardObjectModelJNI.BaseActionElement_SetIconUrl(swigCPtr, this, value); else AdaptiveCardObjectModelJNI.BaseActionElement_SetIconUrlSwigExplicitBaseActionElement(swigCPtr, this, value);
   }
 
+  public Sentiment GetSentiment() {
+    return Sentiment.swigToEnum((getClass() == BaseActionElement.class) ? AdaptiveCardObjectModelJNI.BaseActionElement_GetSentiment(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseActionElement_GetSentimentSwigExplicitBaseActionElement(swigCPtr, this));
+  }
+
+  public void SetSentiment(Sentiment value) {
+    if (getClass() == BaseActionElement.class) AdaptiveCardObjectModelJNI.BaseActionElement_SetSentiment(swigCPtr, this, value.swigValue()); else AdaptiveCardObjectModelJNI.BaseActionElement_SetSentimentSwigExplicitBaseActionElement(swigCPtr, this, value.swigValue());
+  }
+
   public ActionType GetElementType() {
     return ActionType.swigToEnum((getClass() == BaseActionElement.class) ? AdaptiveCardObjectModelJNI.BaseActionElement_GetElementType(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseActionElement_GetElementTypeSwigExplicitBaseActionElement(swigCPtr, this));
   }

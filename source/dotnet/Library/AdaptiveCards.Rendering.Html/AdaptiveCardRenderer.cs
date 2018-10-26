@@ -128,6 +128,30 @@ namespace AdaptiveCards.Rendering.Html
                     .Style("justify-content", "center")
                     .AddClass("ac-pushButton");
 
+                switch(action.Sentiment)
+                {
+                    case AdaptiveSentiment.Positive:
+                        string accentColor = context.Config.ContainerStyles.Default.ForegroundColors.Accent.Default;
+                        string lighterAccentColor = context.GenerateLighterColor(accentColor);
+                        buttonElement.Style("background-color", context.GetRGBColor(accentColor));
+                        buttonElement.Attr("onMouseOver", "this.style.backgroundColor='" + context.GetRGBColor(lighterAccentColor) + "'");
+                        buttonElement.Attr("onMouseOut", "this.style.backgroundColor='" + context.GetRGBColor(accentColor) + "'");
+                        buttonElement.Style("color", "#FFFFFF");
+                        buttonElement.AddClass("ac-action-positive");
+                        break;
+                    case AdaptiveSentiment.Destructive:
+                        string attentionColor = context.Config.ContainerStyles.Default.ForegroundColors.Attention.Default;
+                        string lighterAttentionColor = context.GenerateLighterColor(attentionColor);
+                        buttonElement.Style("color", context.GetRGBColor(attentionColor));
+                        buttonElement.Attr("onMouseOver", "this.style.color='" + context.GetRGBColor(lighterAttentionColor) + "'");
+                        buttonElement.Attr("onMouseOut", "this.style.color='" + context.GetRGBColor(attentionColor) + "'");
+                        buttonElement.AddClass("ac-action-destructive");
+                        break;
+                    case AdaptiveSentiment.Default:
+                    default:
+                        break;
+                }
+
                 var hasTitle = !string.IsNullOrEmpty(action.Title);
 
                 if (action.IconUrl != null)
