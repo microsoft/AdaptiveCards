@@ -1771,9 +1771,6 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 			// aapt resource value: 0x7f0b000c
 			public const int disableHome = 2131427340;
 			
-			// aapt resource value: 0x7f0b005a
-			public const int editText1 = 2131427418;
-			
 			// aapt resource value: 0x7f0b0049
 			public const int edit_query = 2131427401;
 			
@@ -1828,6 +1825,9 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 			// aapt resource value: 0x7f0b002b
 			public const int list_item = 2131427371;
 			
+			// aapt resource value: 0x7f0b005a
+			public const int local = 2131427418;
+			
 			// aapt resource value: 0x7f0b0062
 			public const int media_actions = 2131427426;
 			
@@ -1836,9 +1836,6 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 			
 			// aapt resource value: 0x7f0b0014
 			public const int multiply = 2131427348;
-			
-			// aapt resource value: 0x7f0b005b
-			public const int myButton = 2131427419;
 			
 			// aapt resource value: 0x7f0b0020
 			public const int never = 2131427360;
@@ -1869,6 +1866,9 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 			
 			// aapt resource value: 0x7f0b0040
 			public const int radio = 2131427392;
+			
+			// aapt resource value: 0x7f0b005b
+			public const int remote = 2131427419;
 			
 			// aapt resource value: 0x7f0b006a
 			public const int right_icon = 2131427434;
@@ -2312,11 +2312,14 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 			// aapt resource value: 0x7f060021
 			public const int app_name = 2131099681;
 			
-			// aapt resource value: 0x7f060022
-			public const int hello = 2131099682;
-			
 			// aapt resource value: 0x7f060013
 			public const int search_menu_title = 2131099667;
+			
+			// aapt resource value: 0x7f060022
+			public const int sendLocal = 2131099682;
+			
+			// aapt resource value: 0x7f060023
+			public const int sendRemote = 2131099683;
 			
 			// aapt resource value: 0x7f060014
 			public const int status_bar_notification_info_overflow = 2131099668;

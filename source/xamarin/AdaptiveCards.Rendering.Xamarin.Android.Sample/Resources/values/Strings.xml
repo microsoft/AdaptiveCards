@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="hello">Send</string>
-	<string name="app_name">AdaptiveCards</string>
+  <string name="sendLocal">Local</string>
+  <string name="sendRemote">Remote</string>
+  <string name="app_name">AdaptiveCards</string>
 </resources>

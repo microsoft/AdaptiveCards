@@ -76,10 +76,10 @@
   <ItemGroup>
     <None Include="Additions\AboutAdditions.txt" />
     <None Include="Jars\AboutJars.txt" />
-    <LibraryProjectZip  Condition="'$(Configuration)' == 'Debug'" Include="../../android/adaptivecards/build/outputs/aar/adaptivecards-debug.aar">
+    <LibraryProjectZip Condition="'$(Configuration)' == 'Debug'" Include="../../android/adaptivecards/build/outputs/aar/adaptivecards-debug.aar">
       <Link>Jars\adaptivecards-debug.aar</Link>
     </LibraryProjectZip>
-    <LibraryProjectZip  Condition="'$(Configuration)' == 'Release'" Include="../../android/adaptivecards/build/outputs/aar/adaptivecards-release.aar">
+    <LibraryProjectZip Condition="'$(Configuration)' == 'Release'" Include="../../android/adaptivecards/build/outputs/aar/adaptivecards-release.aar">
       <Link>Jars\adaptivecards-release.aar</Link>
     </LibraryProjectZip>
     <None Include="packages.config" />

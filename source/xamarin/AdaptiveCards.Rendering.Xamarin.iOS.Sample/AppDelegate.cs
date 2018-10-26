@@ -1,6 +1,5 @@
 ﻿using Foundation;
 using UIKit;
-using AdaptiveCards.Rendering.Xamarin.iOS;
 using AdaptiveCards.BotConnection;
 
 namespace AdaptiveCards.Rendering.Xamarin.iOS.Sample
@@ -18,8 +17,8 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS.Sample
             set;
         }
 
-        private UITextField adaptiveCardRequest;
-        private UIButton sendButton;
+        private UIButton localButton;
+        private UIButton remoteButton;
 
         string hostconfig = @"
         {
@@ -177,50 +176,56 @@ namespace AdaptiveCards.Rendering.Xamarin.iOS.Sample
             m_payloadRetriever = new PayloadRetriever();
 
             Window.RootViewController = controller;
-
-            // Add text field
-            adaptiveCardRequest = new UITextField();
-            adaptiveCardRequest.BorderStyle = UITextBorderStyle.RoundedRect;
-            adaptiveCardRequest.Frame = new CoreGraphics.CGRect(0,
-                                                                UIScreen.MainScreen.Bounds.Size.Height * 0.05f,
-                                                                UIScreen.MainScreen.Bounds.Size.Width * 0.9f,
-                                                                UIScreen.MainScreen.Bounds.Size.Height * 0.1f);
-            controller.View.AddSubview(adaptiveCardRequest);
-
             // Add button
-            sendButton = UIButton.FromType(UIButtonType.System);
-            sendButton.Frame = new CoreGraphics.CGRect(UIScreen.MainScreen.Bounds.Size.Width * 0.9f,
-                                                       UIScreen.MainScreen.Bounds.Size.Height * 0.05f,
-                                                       UIScreen.MainScreen.Bounds.Size.Width * 0.1f,
-                                                       UIScreen.MainScreen.Bounds.Size.Height * 0.1f);
-            sendButton.SetTitle("Send", UIControlState.Normal);
-            sendButton.TouchUpInside += (sender, e) =>
+            localButton = UIButton.FromType(UIButtonType.System);
+            localButton.Frame = new CoreGraphics.CGRect(UIScreen.MainScreen.Bounds.Size.Width * 0.1f,
+                                                        UIScreen.MainScreen.Bounds.Size.Height * 0.05f,
+                                                        UIScreen.MainScreen.Bounds.Size.Width * 0.9f,
+                                                        UIScreen.MainScreen.Bounds.Size.Height * 0.05f);
+            localButton.SetTitle("Local", UIControlState.Normal);
+            localButton.TouchUpInside += (sender, e) =>
             {
-                string request = adaptiveCardRequest.Text;
-                var renderedCard = ReGenerateAdaptiveCard(m_payloadRetriever.RequestAdaptiveCard((request)));
-
-                if (m_lastRenderedCard != null)
-                {
-                    m_lastRenderedCard.RemoveFromSuperview();
-                }
-
-                if (renderedCard != null)
-                {
-                    renderedCard.TranslatesAutoresizingMaskIntoConstraints = true;
-                    renderedCard.Frame = new CoreGraphics.CGRect(20,
-                                                                 UIScreen.MainScreen.Bounds.Size.Height * 0.15f,
-                                                                 UIScreen.MainScreen.Bounds.Size.Width - 40,
-                                                                 UIScreen.MainScreen.Bounds.Size.Height * 0.7f);
-                    controller.View.AddSubview(renderedCard);
-                    m_lastRenderedCard = renderedCard;
-                }
+                RenderAdaptiveCard(m_payloadRetriever.RequestLocalAdaptiveCard(), controller);
             };
-            controller.View.AddSubview(sendButton);
+            controller.View.AddSubview(localButton);
+
+            remoteButton = UIButton.FromType(UIButtonType.System);
+            remoteButton.Frame = new CoreGraphics.CGRect(UIScreen.MainScreen.Bounds.Size.Width * 0.1f,
+                                                         UIScreen.MainScreen.Bounds.Size.Height * 0.1f,
+                                                         UIScreen.MainScreen.Bounds.Size.Width * 0.9f,
+                                                         UIScreen.MainScreen.Bounds.Size.Height * 0.05f);
+            remoteButton.SetTitle("remote", UIControlState.Normal);
+            remoteButton.TouchUpInside += async (sender, e) =>
+            {
+                RenderAdaptiveCard(await m_payloadRetriever.RequestRemoteAdaptiveCard(), controller);
+            };
+            controller.View.AddSubview(remoteButton);
 
             // make the window visible
             Window.MakeKeyAndVisible();
             return true;
         }
+
+        private void RenderAdaptiveCard(string cardToRender, UIViewController controller)
+        {
+            var renderedCard = ReGenerateAdaptiveCard(cardToRender);
+            if (m_lastRenderedCard != null)
+            {
+                m_lastRenderedCard.RemoveFromSuperview();
+            }
+
+            if (renderedCard != null)
+            {
+                renderedCard.TranslatesAutoresizingMaskIntoConstraints = true;
+                renderedCard.Frame = new CoreGraphics.CGRect(20,
+                                                             UIScreen.MainScreen.Bounds.Size.Height * 0.15f,
+                                                             UIScreen.MainScreen.Bounds.Size.Width - 40,
+                                                             UIScreen.MainScreen.Bounds.Size.Height * 0.8f);
+                controller.View.AddSubview(renderedCard);
+                m_lastRenderedCard = renderedCard;
+            }
+        }
+
         public override void OnResignActivation(UIApplication application)
         {
             // Invoked when the application is about to move from active to inactive state.

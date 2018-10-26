@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
 // The intended use for this class is to connect to a given bot (or some other payload generator) and retrieve payloads from a set of available adaptive cards
 // Right now it's only being hardcoded to always retrieve the same adaptive card
@@ -10,6 +12,7 @@ namespace AdaptiveCards.BotConnection
     public class PayloadRetriever
     {
         private int cardToShow = 0;
+        private int remoteCardToShow = 0;
         private readonly string[] cards =
         {
             "{\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\", \"version\": \"1.0\", \"type\": \"AdaptiveCard\"," +
@@ -92,14 +95,47 @@ namespace AdaptiveCards.BotConnection
                 "\"actions\": [ { \"type\": \"Action.Submit\", \"title\": \"OK\", \"data\": { \"FoodChoice\": \"Vegetarian\" } } ] } } ] }"
         };
 
+        private readonly string[] remoteScenarios =
+        {
+            "ActivityUpdate.json",
+            "CalendarReminder.json",
+            "FlightItinerary.json",
+            "FlightUpdate.json",
+            "FoodOrder.json",
+            "ImageGallery.json",
+            "InputForm.json",
+            "Inputs.json",
+            "Restaurant.json",
+            "Solitaire.json",
+            "SportingEvent.json",
+            "StockUpdate.json",
+            "WeatherCompact.json",
+            "WeatherLarge.json"
+        };
+
         public PayloadRetriever()
         {
         }
 
-        public string RequestAdaptiveCard(string request)
+        public string RequestLocalAdaptiveCard()
         {
             cardToShow = (++cardToShow == cards.Length) ? 0 : cardToShow;
             return cards[cardToShow];
+        }
+
+        public async Task<string> RequestRemoteAdaptiveCard()
+        {
+            remoteCardToShow = (++remoteCardToShow == remoteScenarios.Length) ? 0 : remoteCardToShow;
+
+            var httpClient = new HttpClient();
+            var response = await httpClient.GetAsync($"https://raw.githubusercontent.com/Microsoft/AdaptiveCards/master/samples/v1.0/Scenarios/{remoteScenarios[remoteCardToShow]}");
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return content;
+            }
+
+            return string.Empty;
         }
     }
 }

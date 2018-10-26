@@ -1,19 +1,15 @@
-﻿using Android.App;
-using Android.Widget;
-using Android.OS;
-using Android.Support.V4.App;
-using System.Collections.Generic;
-using System.Net.Http;
-using System;
-
-using AdaptiveCards.BotConnection;
+﻿using AdaptiveCards.BotConnection;
 using AdaptiveCards.Rendering.Xamarin.Android.ObjectModel;
 using AdaptiveCards.Rendering.Xamarin.Android.Renderer;
 using AdaptiveCards.Rendering.Xamarin.Android.Renderer.ActionHandler;
+using Android.App;
+using Android.OS;
+using Android.Support.V4.App;
+using Android.Widget;
+using System;
 
 namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 {
-
     [Activity(Label = "AdaptiveCards", MainLauncher = true, Icon = "@mipmap/icon")]
     public class MainActivity : FragmentActivity, ICardActionHandler
     {
@@ -33,23 +29,21 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 
             m_payloadRetriever = new PayloadRetriever();
 
-            Button button = FindViewById<Button>(Resource.Id.myButton);
-            button.Click += buttonClick;
+            Button localButton = FindViewById<Button>(Resource.Id.local);
+            localButton.Click += OnLocalClick;
+
+            Button remoteButton = FindViewById<Button>(Resource.Id.remote);
+            remoteButton.Click += OnRemoteClickAsync;
         }
 
-        private void buttonClick(object sender, EventArgs e)
+        private async void OnRemoteClickAsync(object sender, EventArgs e)
         {
-            /*
-            var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync("https://raw.githubusercontent.com/Microsoft/AdaptiveCards/master/samples/v1.0/Scenarios/FlightUpdate.json");
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                renderAdaptiveCard(content, true);
-            }
-            */
-            EditText adaptiveCardRequest = FindViewById<EditText>(Resource.Id.editText1);
-            RenderAdaptiveCard(m_payloadRetriever.RequestAdaptiveCard(adaptiveCardRequest.Text));
+            RenderAdaptiveCard(await m_payloadRetriever.RequestRemoteAdaptiveCard());
+        }
+
+        private void OnLocalClick(object sender, EventArgs e)
+        {
+            RenderAdaptiveCard(m_payloadRetriever.RequestLocalAdaptiveCard());
         }
 
         private void RenderAdaptiveCard(string jsonText)
@@ -57,7 +51,6 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
             try
             {
                 ParseResult parseResult = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.Version);
-                Toast.MakeText(this, parseResult.AdaptiveCard.Body.Capacity().ToString(), ToastLength.Short).Show();
                 LinearLayout layout = (LinearLayout)FindViewById(Resource.Id.visualAdaptiveCardLayout);
                 layout.RemoveAllViews();
 
@@ -66,16 +59,37 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
             }
             catch (Exception ex)
             {
-                String s = ex.ToString();
+                string s = ex.ToString();
             }
         }
 
         public void OnAction(BaseActionElement element, RenderedAdaptiveCard renderedCard)
         {
-        }
-
-        public void OnSubmit(SubmitAction p0, IDictionary<string, string> p1)
-        {
+            ActionType actionType = element.ElementType;
+            var inputs = renderedCard.Inputs;
+            string inputValues = string.Empty;
+            foreach (var inputString in inputs)
+            {
+                inputValues += $"{{{inputString.Key} : {inputString.Value}}}\n";
+            }
+            if (actionType == ActionType.Submit)
+            {
+                var submitAction = SubmitAction.Dynamic_cast(element);
+                var data = submitAction.DataJson;
+                Toast.MakeText(this, data + "\n" + inputValues, ToastLength.Short).Show();
+            }
+            else if (actionType == ActionType.ShowCard)
+            {
+                var showcardAction = ShowCardAction.Dynamic_cast(element);
+                var card = showcardAction.Card;
+                Toast.MakeText(this, card.ToString() + "\n" + inputValues, ToastLength.Short).Show();
+            }
+            else if (actionType == ActionType.OpenUrl)
+            {
+                var openUrlAction = OpenUrlAction.Dynamic_cast(element);
+                var url = openUrlAction.Url;
+                Toast.MakeText(this, url + "\n" + inputValues, ToastLength.Short).Show();
+            }
         }
 
         public void OnMediaPlay(BaseCardElement element, RenderedAdaptiveCard renderedCard)
