@@ -1,20 +1,3 @@
-* {
-    box-sizing: border-box;
-}
-
-html {
-    overflow: hidden !important;
-}
-
-body {
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 14px;
-    font-weight: normal;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-}
-
 .ms-ctrl-overlay {
   position: absolute;
   left: 0;
@@ -378,6 +361,23 @@ body {
 
 .ms-ctrl-textbox:focus, .ms-ctrl-textbox:active {
   border: 1px solid #0078D7; }
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    overflow: hidden !important;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
 
 /*
     Miscellaneous
