@@ -15,7 +15,7 @@ namespace AdaptiveCards.Rendering.Wpf
     {
         protected override AdaptiveSchemaVersion GetSupportedSchemaVersion()
         {
-            return new AdaptiveSchemaVersion(1, 1);
+            return new AdaptiveSchemaVersion(1, 2);
         }
 
         protected Action<object, AdaptiveActionEventArgs> ActionCallback;
