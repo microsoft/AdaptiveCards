@@ -13,18 +13,52 @@
 		"lineThickness": 1,
 		"lineColor": "#66FFFFFF"
 	},
-	"fontFamily": "Segoe UI",
-	"fontSizes": {
-		"small": 12,
-		"default": 15,
-		"medium": 20,
-		"large": 24,
-		"extraLarge": 34
-	},
-	"fontWeights": {
-		"lighter": 400,
-		"default": 500,
-		"bolder": 700
+	"fontStyles": {
+		"default": {
+			"fontFamily": "Segoe UI",
+			"fontSizes": {
+				"small": 12,
+				"default": 15,
+				"medium": 20,
+				"large": 24,
+				"extraLarge": 34
+			},
+			"fontWeights": {
+				"lighter": 400,
+				"default": 500,
+				"bolder": 700
+			}
+		},
+		"display": {
+			"fontFamily": "Times New Roman",
+			"fontSizes": {
+				"small": 12,
+				"default": 15,
+				"medium": 20,
+				"large": 24,
+				"extraLarge": 34
+			},
+			"fontWeights": {
+				"lighter": 400,
+				"default": 500,
+				"bolder": 700
+			}
+		},
+		"monospace": {
+			"fontFamily": "Segoe UI Mono",
+			"fontSizes": {
+				"small": 12,
+				"default": 15,
+				"medium": 20,
+				"large": 24,
+				"extraLarge": 34
+			},
+			"fontWeights": {
+				"lighter": 400,
+				"default": 500,
+				"bolder": 700
+			}
+		}
 	},
 	"containerStyles": {
 		"default": {

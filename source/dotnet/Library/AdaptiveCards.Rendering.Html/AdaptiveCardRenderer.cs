@@ -15,7 +15,7 @@ namespace AdaptiveCards.Rendering.Html
     {
         protected override AdaptiveSchemaVersion GetSupportedSchemaVersion()
         {
-            return new AdaptiveSchemaVersion(1, 1);
+            return new AdaptiveSchemaVersion(1, 2);
         }
 
         /// <summary>
@@ -203,9 +203,6 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("background-color", context.GetRGBColor(context.Config.ContainerStyles.Default.BackgroundColor))
                 .Style("padding", $"{context.Config.Spacing.Padding}px")
                 .Style("box-sizing", "border-box");
-
-            if (!string.IsNullOrEmpty(context.Config.FontFamily))
-                uiCard.Style("font-family", context.Config.FontFamily);
 
             if (card.BackgroundImage != null)
                 uiCard.Style("background-image", $"url('{context.Config.ResolveFinalAbsoluteUri(card.BackgroundImage)}')")
@@ -656,37 +653,9 @@ namespace AdaptiveCards.Rendering.Html
 
         protected static HtmlTag TextBlockRender(AdaptiveTextBlock textBlock, AdaptiveRenderContext context)
         {
-            int fontSize;
-            switch (textBlock.Size)
-            {
-                case AdaptiveTextSize.Small:
-                    fontSize = context.Config.FontSizes.Small;
-                    break;
-                case AdaptiveTextSize.Medium:
-                    fontSize = context.Config.FontSizes.Medium;
-                    break;
-                case AdaptiveTextSize.Large:
-                    fontSize = context.Config.FontSizes.Large;
-                    break;
-                case AdaptiveTextSize.ExtraLarge:
-                    fontSize = context.Config.FontSizes.ExtraLarge;
-                    break;
-                case AdaptiveTextSize.Default:
-                default:
-                    fontSize = context.Config.FontSizes.Default;
-                    break;
-            }
-            int weight = 400;
-            switch (textBlock.Weight)
-            {
-                case AdaptiveTextWeight.Lighter:
-                    weight = 200;
-                    break;
-
-                case AdaptiveTextWeight.Bolder:
-                    weight = 600;
-                    break;
-            }
+            string fontFamily = context.Config.GetFontFamily(textBlock.FontStyle);
+            int fontSize = context.Config.GetFontSize(textBlock.FontStyle, textBlock.Size);
+            int weight = context.Config.GetFontWeight(textBlock.FontStyle, textBlock.Weight);
 
             // Not sure where this magic value comes from?
             var lineHeight = fontSize * 1.33;
@@ -700,7 +669,7 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("font-size", $"{fontSize}px")
                 .Style("font-weight", $"{weight}");
 
-            if(textBlock.Height == AdaptiveHeight.Stretch)
+            if (textBlock.Height == AdaptiveHeight.Stretch)
             {
                 uiTextBlock.Style("flex", "1 1 100%");
             }
@@ -734,6 +703,11 @@ namespace AdaptiveCards.Rendering.Html
                     htmlTag.Style("margin-top", "0px");
                     htmlTag.Style("margin-bottom", "0px");
                     htmlTag.Style("width", "100%");
+
+                    if (!string.IsNullOrEmpty(fontFamily))
+                    {
+                        htmlTag.Style("font-family", "'" + fontFamily + "'");
+                    }
 
                     if (setWrapStyleOnParagraph)
                     {
