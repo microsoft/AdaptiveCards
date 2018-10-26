@@ -8,9 +8,11 @@ module.exports = {
 		"adaptivecards-designer": "./src/adaptivecards-designer.ts",
 	},
 	output: {
-		path: path.resolve(__dirname, "dist"),
+		path: path.resolve(__dirname, "./dist"),
 		filename: "[name].js",
-		library: "ACDesigner"
+		library: "ACDesigner",
+		//libraryTarget: "umd",
+		//umdNamedDefine: true
 	},
 	resolve: {
 		extensions: [".ts", ".tsx", ".js"]
@@ -40,8 +42,8 @@ module.exports = {
 		})
 	],
 	externals: {
-		"adaptivecards": "AdaptiveCards",
-		"adaptivecards-controls": "ACControls",
-		"monaco-editor/esm/vs/editor/editor.api": "monaco"
+		//"adaptivecards": "AdaptiveCards",
+		//"adaptivecards-controls": "ACControls",
+		//"monaco-editor/esm/vs/editor/editor.api": "monaco"
 	}
 };

@@ -1,6 +1,6 @@
 import * as Clipboard from "clipboard";
 import * as Adaptive from "adaptivecards";
-//import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import * as Constants from "./constants";
 import * as Designer from "./card-designer-surface";
 import * as DesignerPeers from "./designer-peers";
@@ -15,7 +15,11 @@ import { BasePaletteItem, ElementPaletteItem } from "./tool-palette";
 import { DefaultContainer } from "./containers/default-container";
 
 // TODO Change to import once typing error goes away
-require("./adaptivecards-designer.css");
+//require("./adaptivecards-designer.css");
+import "./adaptivecards-designer.css";
+//import "./app.css";
+import "adaptivecards/dist/adaptivecards-default.css";
+import "adaptivecards-controls/dist/adaptivecards-controls.css";
 
 export class CardDesigner {
     private static MAX_UNDO_STACK_SIZE = 50;
@@ -441,19 +445,19 @@ export class CardDesigner {
     }
 
     private loadMonaco(callback: () => void) {
-        window["require"].config({ paths: { 'vs': './editor/monaco/min/vs' } });
-        window["require"](
-            ['vs/editor/editor.main'],
-            function () {
-                callback();
-		    });
+        // window["require"].config({ paths: { 'vs': './editor/monaco/min/vs' } });
+        // window["require"](
+        //     ['vs/editor/editor.main'],
+        //     function () {
+        //         callback();
+		//     });
 		
 		// If loaded using WebPack this should work, but it's not right now...
 		//callback();
     }
     
     
-    private monacoEditorLoaded() {
+    public monacoEditorLoaded() {
         let monacoConfiguration = {
             schemas: [
                 {

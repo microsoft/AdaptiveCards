@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards-designer",
-	"version": "0.1.0",
+	"version": "0.1.0-alpha1",
 	"description": "Adaptive Card designer embeddable control",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -12,6 +12,7 @@
 	],
 	"scripts": {
 		"clean": "rimraf build lib dist",
+		"prebuild": "tsc",
 		"build": "webpack --config webpack.prod.js",
 		"watch": "webpack --watch",
 		"start": "webpack-dev-server --open --config webpack.dev.js",
@@ -46,6 +47,8 @@
 	"dependencies": {
 		"adaptivecards": "^1.1.0-beta1",
 		"adaptivecards-controls": "^0.1.0",
+		"babel-core": "^6.26.3",
+		"babel-loader": "^8.0.4",
 		"clipboard": "^2.0.1",
 		"monaco-editor": "^0.14.3"
 	}

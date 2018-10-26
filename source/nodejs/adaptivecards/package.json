@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards",
-	"version": "1.1.0-beta1",
+	"version": "1.2.0-alpha1",
 	"description": "Adaptive Cards Javascript library for HTML Clients",
 	"author": "AdaptiveCards <adaptivecardspkg@microsoft.com>",
 	"license": "MIT",
@@ -71,5 +71,9 @@
 			"jsx",
 			"json"
 		]
+	},
+	"dependencies": {
+		"babel-core": "^6.26.3",
+		"babel-loader": "^8.0.4"
 	}
 }

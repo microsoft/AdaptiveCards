@@ -1,16 +1,15 @@
 {
 	"compilerOptions": {
-		"module": "commonjs",
-		"target": "es5",
+		"module": "ES2015",
+		"target": "ES2015",
 		"lib": [
 			"dom",
 			"es2015"
 		],
-		"outDir": "lib",
-		"moduleResolution": "node",
-		"noImplicitAny": false,
+		"outDir": "dist/esm",
 		"sourceMap": true,
-		"declaration": true
+		"declaration": true,
+		"declarationDir": "dist/typings"
 	},
-	"files": ["./src/adaptivecards-controls.ts"]
+	"files": ["./src/index.ts"]
 }
