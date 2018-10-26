@@ -10,7 +10,7 @@ namespace AdaptiveSharedNamespace
     public:
         FontSizesConfig() = default;
         FontSizesConfig(unsigned int s, unsigned int d, unsigned int m, unsigned int l, unsigned int xl) :
-            smallFontSize(s), defaultFontSize(d), mediumFontSize(m), largeFontSize(l), extraLargeFontSize(xl)
+            _small(s), _default(d), _medium(m), _large(l), _extraLarge(xl)
         {
         }
 
@@ -21,11 +21,11 @@ namespace AdaptiveSharedNamespace
 
     private:
         // UINT_MAX used to check if value was defined
-        unsigned int smallFontSize = UINT_MAX;
-        unsigned int defaultFontSize = UINT_MAX;
-        unsigned int mediumFontSize = UINT_MAX;
-        unsigned int largeFontSize = UINT_MAX;
-        unsigned int extraLargeFontSize = UINT_MAX;
+        unsigned int _small = UINT_MAX;
+        unsigned int _default = UINT_MAX;
+        unsigned int _medium = UINT_MAX;
+        unsigned int _large = UINT_MAX;
+        unsigned int _extraLarge = UINT_MAX;
     };
 
     class FontWeightsConfig
@@ -33,7 +33,7 @@ namespace AdaptiveSharedNamespace
     public:
         FontWeightsConfig() = default;
         FontWeightsConfig(unsigned int lighterWeight, unsigned int defaultWeight, unsigned int bolderWeight) :
-            lighterWeight(lighterWeight), defaultWeight(defaultWeight), bolderWeight(bolderWeight)
+            _lighter(lighterWeight), _default(defaultWeight), _bolder(bolderWeight)
         {
         }
         static FontWeightsConfig Deserialize(const Json::Value& json, const FontWeightsConfig& defaultValue);
@@ -43,9 +43,9 @@ namespace AdaptiveSharedNamespace
 
     private:
         // UINT_MAX used to check if value was defined
-        unsigned int lighterWeight = UINT_MAX;
-        unsigned int defaultWeight = UINT_MAX;
-        unsigned int bolderWeight = UINT_MAX;
+        unsigned int _lighter = UINT_MAX;
+        unsigned int _default = UINT_MAX;
+        unsigned int _bolder = UINT_MAX;
     };
 
     struct FontStyleDefinition

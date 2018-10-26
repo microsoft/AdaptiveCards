@@ -79,11 +79,11 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
 FontSizesConfig FontSizesConfig::Deserialize(const Json::Value& json, const FontSizesConfig& defaultValue)
 {
     FontSizesConfig result;
-    result.smallFontSize = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Small, defaultValue.smallFontSize);
-    result.defaultFontSize = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Default, defaultValue.defaultFontSize);
-    result.mediumFontSize = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Medium, defaultValue.mediumFontSize);
-    result.largeFontSize = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Large, defaultValue.largeFontSize);
-    result.extraLargeFontSize = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::ExtraLarge, defaultValue.extraLargeFontSize);
+    result._small = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Small, defaultValue._small);
+    result._default = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Default, defaultValue._default);
+    result._medium = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Medium, defaultValue._medium);
+    result._large = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Large, defaultValue._large);
+    result._extraLarge = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::ExtraLarge, defaultValue._extraLarge);
     return result;
 }
 
@@ -341,11 +341,11 @@ FontWeightsConfig FontWeightsConfig::Deserialize(const Json::Value& json, const 
 {
     FontWeightsConfig result;
 
-    result.lighterWeight = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Lighter, defaultValue.lighterWeight);
+    result._lighter = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Lighter, defaultValue._lighter);
 
-    result.defaultWeight = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Default, defaultValue.defaultWeight);
+    result._default = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Default, defaultValue._default);
 
-    result.bolderWeight = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Bolder, defaultValue.bolderWeight);
+    result._bolder = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::Bolder, defaultValue._bolder);
 
     return result;
 }
@@ -395,16 +395,16 @@ unsigned int FontSizesConfig::GetFontSize(TextSize size) const
     switch (size)
     {
     case TextSize::Small:
-        return smallFontSize;
+        return _small;
     case TextSize::Medium:
-        return mediumFontSize;
+        return _medium;
     case TextSize::Large:
-        return largeFontSize;
+        return _large;
     case TextSize::ExtraLarge:
-        return extraLargeFontSize;
+        return _extraLarge;
     case TextSize::Default:
     default:
-        return defaultFontSize;
+        return _default;
     }
 }
 
@@ -413,16 +413,16 @@ void FontSizesConfig::SetFontSize(TextSize size, unsigned int value)
     switch (size)
     {
     case TextSize::Small:
-        smallFontSize = value;
+        _small = value;
     case TextSize::Medium:
-        mediumFontSize = value;
+        _medium = value;
     case TextSize::Large:
-        largeFontSize = value;
+        _large = value;
     case TextSize::ExtraLarge:
-        extraLargeFontSize = value;
+        _extraLarge = value;
     case TextSize::Default:
     default:
-        defaultFontSize = value;
+        _default = value;
     }
 }
 
@@ -449,12 +449,12 @@ unsigned int FontWeightsConfig::GetFontWeight(TextWeight weight) const
     switch (weight)
     {
     case TextWeight::Lighter:
-        return lighterWeight;
+        return _lighter;
     case TextWeight::Bolder:
-        return bolderWeight;
+        return _bolder;
     case TextWeight::Default:
     default:
-        return defaultWeight;
+        return _default;
     }
 }
 
@@ -463,12 +463,12 @@ void FontWeightsConfig::SetFontWeight(TextWeight weight, unsigned int value)
     switch (weight)
     {
     case TextWeight::Lighter:
-        lighterWeight = value;
+        _lighter = value;
     case TextWeight::Bolder:
-        bolderWeight = value;
+        _bolder = value;
     case TextWeight::Default:
     default:
-        defaultWeight = value;
+        _default = value;
     }
 }
 
