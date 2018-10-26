@@ -823,6 +823,14 @@ AdaptiveNamespaceStart
             [in] AdaptiveActionParserRegistration* actionRegistration,
             [out, retval] AdaptiveCardParseResult** card);
 
+        [overload("FromJson")] 
+        HRESULT FromJsonWithParserRegistrationAndFrame(
+            [in] Windows.Data.Json.JsonObject * adaptiveJson,
+            [in] AdaptiveElementParserRegistration * elementRegistration,
+            [in] AdaptiveActionParserRegistration * actionRegistration,
+            [in] Windows.Data.Json.JsonObject * adaptiveFrame,
+            [out, retval] AdaptiveCardParseResult * *card);
+
         [overload("FromJsonString")]
         HRESULT FromJsonString(
             [in] HSTRING adaptiveJson,
@@ -834,6 +842,14 @@ AdaptiveNamespaceStart
             [in] AdaptiveElementParserRegistration* elementRegistration,
             [in] AdaptiveActionParserRegistration* actionRegistration,
             [out, retval] AdaptiveCardParseResult** card);
+
+        [overload("FromJsonString")] 
+        HRESULT FromJsonStringWithParserRegistrationAndFrame(
+            [in] HSTRING adaptiveJson,
+            [in] AdaptiveElementParserRegistration * elementRegistration,
+            [in] AdaptiveActionParserRegistration * actionRegistration,
+            [in] HSTRING adaptiveFrame,
+            [out, retval] AdaptiveCardParseResult * *card);
     };
 
     [

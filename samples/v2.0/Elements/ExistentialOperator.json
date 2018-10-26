@@ -1,0 +1,31 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "2.0",
+	"data": {
+		"data1": "foo",
+		"data2": "bar"
+	},
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "The existential operator (#?) tells us not to include the binding if it doesn't exist",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "{{#? dataThatDoesntExist}}",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "{{dataThatDoesntExist}}",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "{{dataThatDoesntExist}} {{#? dataThatDoesntExist}}",
+			"wrap": true
+		}
+	]
+}

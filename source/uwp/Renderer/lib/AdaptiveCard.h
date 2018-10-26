@@ -98,6 +98,13 @@ namespace AdaptiveNamespace
                                                       ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
                                                       _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult) noexcept;
 
+        IFACEMETHODIMP FromJsonWithParserRegistrationAndFrame(
+            _In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson,
+            ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
+            ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
+            _In_ ABI::Windows::Data::Json::IJsonObject* adaptiveFrame,
+            _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult) noexcept;
+
         IFACEMETHODIMP FromJsonString(_In_ HSTRING adaptiveJson,
                                       _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult) noexcept;
 
@@ -107,10 +114,18 @@ namespace AdaptiveNamespace
             ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
             _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult) noexcept;
 
+        IFACEMETHODIMP FromJsonStringWithParserRegistrationAndFrame(
+            _In_ HSTRING adaptiveJson,
+            ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
+            ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
+            _In_ HSTRING adaptiveFrame,
+            _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult) noexcept;
+
     private:
-        HRESULT FromJsonString(_In_ const std::string jsonString,
+        HRESULT FromJsonHelper(_In_ const std::string jsonString,
                                ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
                                ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
+                               _In_ const std::string jsonFrame,
                                _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult);
     };
 

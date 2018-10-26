@@ -80,7 +80,9 @@ namespace AdaptiveCardVisualizer.ViewModel
                 JsonObject jsonObject;
                 if (JsonObject.TryParse(payload, out jsonObject))
                 {
-                    AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(jsonObject);
+                    JsonObject jsonFrame;
+                    JsonObject.TryParse(MainPageViewModel.FrameEditor.Frame, out jsonFrame);
+                    AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(jsonObject, null, null, jsonFrame);
 
                     RenderedAdaptiveCard renderResult = _renderer.RenderAdaptiveCard(parseResult.AdaptiveCard);
                     if (renderResult.FrameworkElement != null)

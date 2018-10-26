@@ -81,13 +81,14 @@ namespace AdaptiveSharedNamespace
                                                                   const std::string& language,
                                                                   const std::string& speak) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
 #else
-        static std::shared_ptr<ParseResult>
-        DeserializeFromFile(const std::string& jsonFile,
-                            std::string rendererVersion,
-                            std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
-                            std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr);
+        static std::shared_ptr<ParseResult> DeserializeFromFile(const std::string& jsonFile,
+                                                                std::string rendererVersion,
+                                                                std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
+                                                                std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr,
+                                                                const std::string& = nullptr);
 
         static std::shared_ptr<ParseResult> Deserialize(const Json::Value& json,
+                                                        const Json::Value& frame,
                                                         std::string rendererVersion,
                                                         std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
                                                         std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr);
@@ -96,7 +97,8 @@ namespace AdaptiveSharedNamespace
         DeserializeFromString(const std::string& jsonString,
                               std::string rendererVersion,
                               std::shared_ptr<ElementParserRegistration> elementParserRegistration = nullptr,
-                              std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr);
+                              std::shared_ptr<ActionParserRegistration> actionParserRegistration = nullptr,
+                              const std::string& = nullptr);
 
         static std::shared_ptr<AdaptiveCard> MakeFallbackTextCard(const std::string& fallbackText,
                                                                   const std::string& language,

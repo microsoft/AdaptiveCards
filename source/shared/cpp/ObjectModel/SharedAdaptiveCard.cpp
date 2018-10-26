@@ -6,6 +6,7 @@
 #include "TextBlock.h"
 #include "AdaptiveCardParseWarning.h"
 #include "SemanticVersion.h"
+#include "FrameTranslator.h"
 
 using namespace AdaptiveSharedNamespace;
 
@@ -54,7 +55,8 @@ std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(
 std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile,
                                                                std::string rendererVersion,
                                                                std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                               std::shared_ptr<ActionParserRegistration> actionParserRegistration)
+                                                               std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+                                                               const std::string& jsonFrameFile)
 #endif // __ANDROID__
 {
     std::ifstream jsonFileStream(jsonFile);
@@ -62,7 +64,13 @@ std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(const std::string
     Json::Value root;
     jsonFileStream >> root;
 
-    return AdaptiveCard::Deserialize(root, rendererVersion, elementParserRegistration, actionParserRegistration);
+    Json::Value frame;
+    if (!jsonFrameFile.empty())
+    {
+        jsonFileStream >> frame;
+    }
+
+    return AdaptiveCard::Deserialize(root, frame, rendererVersion, elementParserRegistration, actionParserRegistration);
 }
 
 #ifdef __ANDROID__
@@ -72,12 +80,15 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(
     std::shared_ptr<ElementParserRegistration> elementParserRegistration,
     std::shared_ptr<ActionParserRegistration> actionParserRegistration) throw(AdaptiveSharedNamespace::AdaptiveCardParseException)
 #else
-std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json,
+std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& inputJson,
+                                                       const Json::Value& frame,
                                                        std::string rendererVersion,
                                                        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
                                                        std::shared_ptr<ActionParserRegistration> actionParserRegistration)
 #endif // __ANDROID__
 {
+    Json::Value json = ApplyJsonTemplating(inputJson, frame);
+
     ParseUtil::ThrowIfNotJsonObject(json);
 
     const bool enforceVersion = !rendererVersion.empty();
@@ -186,10 +197,17 @@ std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(
 std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(const std::string& jsonString,
                                                                  std::string rendererVersion,
                                                                  std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                                 std::shared_ptr<ActionParserRegistration> actionParserRegistration)
+                                                                 std::shared_ptr<ActionParserRegistration> actionParserRegistration,
+                                                                 const std::string& jsonFrame)
 #endif // __ANDROID__
 {
-    return AdaptiveCard::Deserialize(ParseUtil::GetJsonValueFromString(jsonString), rendererVersion, elementParserRegistration, actionParserRegistration);
+    Json::Value frame;
+    if (!jsonFrame.empty())
+    {
+        frame = ParseUtil::GetJsonValueFromString(jsonFrame);
+    }
+
+    return AdaptiveCard::Deserialize(ParseUtil::GetJsonValueFromString(jsonString), frame, rendererVersion, elementParserRegistration, actionParserRegistration);
 }
 
 Json::Value AdaptiveCard::SerializeToJsonValue() const

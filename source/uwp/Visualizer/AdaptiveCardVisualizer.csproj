@@ -62,6 +62,7 @@
       <DependentUpon>TabView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\ErrorViewModel.cs" />
+    <Compile Include="ViewModel\FrameEditorViewModel.cs" />
     <Compile Include="ViewModel\GenericDocumentViewModel.cs" />
     <Compile Include="ViewModel\HostConfigEditorViewModel.cs" />
     <Compile Include="ViewModel\MainPageViewModel.cs" />
@@ -102,6 +103,7 @@
       <Link>Schemas\renderer-options.json</Link>
     </Content>
     <Content Include="HostConfigs\DefaultHostConfig.json" />
+    <Content Include="HostConfigs\DefaultFrame.json" />
     <None Include="AdaptiveCardVisualizer_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

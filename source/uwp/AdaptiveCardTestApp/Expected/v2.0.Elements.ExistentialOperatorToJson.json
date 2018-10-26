@@ -1,0 +1,1 @@
+{"actions":[],"body":[{"text":"The existential operator (#?) tells us not to include the binding if it doesn't exist","type":"TextBlock","wrap":true},{"text":"{{dataThatDoesntExist}}","type":"TextBlock","wrap":true},{"text":"{{dataThatDoesntExist}} ","type":"TextBlock","wrap":true}],"type":"AdaptiveCard","version":"2.0"}

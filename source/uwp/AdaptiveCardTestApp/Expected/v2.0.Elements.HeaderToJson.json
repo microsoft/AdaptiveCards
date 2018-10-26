@@ -1,0 +1,1 @@
+{"actions":[{"data":"null","id":"","title":"Action!","type":"Action.Submit"}],"body":[{"text":"The title of this card is \"Adaptive Cards 2.0!\" and the subtitle of this card is \"Now with headers!\".","type":"TextBlock","wrap":true}],"type":"AdaptiveCard","version":"2.0"}

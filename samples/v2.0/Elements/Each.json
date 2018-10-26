@@ -1,0 +1,33 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "2.0",
+	"data": {
+		"animals": [
+			{
+				"name": "Squeeks",
+				"animal": "Mouse"
+			},
+			{
+				"name": "Mittens",
+				"animal": "Cat"
+			},
+			{
+				"name": "Spot",
+				"animal": "Dog"
+			}
+		]
+	},
+	"body": [
+		{
+			"{{#each animals}}": {
+				"type": "TextBlock",
+				"text": "{{name}} is a {{animal}}"
+			}
+		},
+		{
+			"type": "TextBlock",
+			"text": "I am a human"
+		}
+	]
+}

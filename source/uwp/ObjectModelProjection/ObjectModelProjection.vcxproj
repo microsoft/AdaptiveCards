@@ -27,6 +27,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\FrameTranslator.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Media.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\MediaSource.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ActionSet.cpp" />    
@@ -89,6 +90,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ElementParserRegistration.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Fact.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\FactSet.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\FrameTranslator.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\HostConfig.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Image.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ImageSet.h" />

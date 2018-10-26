@@ -1,0 +1,46 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "2.0",
+	"data": {
+		"data1": "abcdefg",
+		"data2": "hijklmnop",
+		"data3": [ "Element Zero", "Element One", "Element Two" ],
+		"data4": {
+			"insideArray": [ "Inside Zero", "Inside One", "Inside Two" ]
+		},
+		"dataIndex": 2,
+		"data5": {
+			"inside": {
+				"index": 0
+			}
+		}
+	},
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Here is data1, data2: **{{data1}}, {{data2}}**.",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Here is data3[2]: **{{data3[2]}}**.",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Here is data4.insideArray[1]: **{{data4.insideArray[1]}}**.",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Here is data4.insideArray[dataIndex]: **{{data4.insideArray[dataIndex]}}**.",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Here is data4.insideArray[data5.inside.index]: **{{data4.insideArray[data5.inside.index]}}**.",
+			"wrap": true
+		}
+	]
+}
