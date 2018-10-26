@@ -55,6 +55,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(RegisterDefaultElementRenderers());
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveHostConfig>(&m_hostConfig));
         InitializeDefaultResourceDictionary();
+        UpdateActionSentimentResourceDictionary();
         return MakeAndInitialize<AdaptiveCardResourceResolvers>(&m_resourceResolvers);
     }
 
@@ -72,6 +73,7 @@ namespace AdaptiveNamespace
     _Use_decl_annotations_ HRESULT AdaptiveCardRenderer::put_HostConfig(IAdaptiveHostConfig* hostConfig)
     {
         m_hostConfig = hostConfig;
+        UpdateActionSentimentResourceDictionary();
         return S_OK;
     }
 
@@ -116,6 +118,7 @@ namespace AdaptiveNamespace
                                                                       m_elementRendererRegistration.Get(),
                                                                       m_resourceResolvers.Get(),
                                                                       m_mergedResourceDictionary.Get(),
+                                                                      m_actionSentimentResourceDictionary.Get(),
                                                                       renderedCard.Get()));
 
             // This path is used for synchronous Xaml card rendering, so we don't want
@@ -218,6 +221,8 @@ namespace AdaptiveNamespace
 
     ComPtr<IResourceDictionary> AdaptiveCardRenderer::GetMergedDictionary() { return m_mergedResourceDictionary; }
 
+    ComPtr<IResourceDictionary> AdaptiveCardRenderer::GetActionSentimentResourceDictionary() { return m_actionSentimentResourceDictionary; }
+
     bool AdaptiveCardRenderer::GetFixedDimensions(_Out_ UINT32* width, _Out_ UINT32* height)
     {
         *width = 0;
@@ -251,6 +256,45 @@ namespace AdaptiveNamespace
 
         m_mergedResourceDictionary = resourceDictionary;
         m_defaultResourceDictionary = resourceDictionary;
+
+        ComPtr<IInspectable> actionSentimentResourceDictionaryInspectable;
+        THROW_IF_FAILED(xamlReaderStatics->Load(HStringReference(c_defaultActionSentimentResourceDictionary).Get(), &actionSentimentResourceDictionaryInspectable));
+        ComPtr<IResourceDictionary> actionSentimentResourceDictionary;
+        THROW_IF_FAILED(actionSentimentResourceDictionaryInspectable.As(&actionSentimentResourceDictionary));
+
+        m_actionSentimentResourceDictionary = actionSentimentResourceDictionary;
+    }
+    
+    void AdaptiveCardRenderer::UpdateActionSentimentResourceDictionary()
+    {
+        ABI::Windows::UI::Color accentColor;
+        THROW_IF_FAILED(GetColorFromAdaptiveColor(m_hostConfig.Get(),
+                                                  ABI::AdaptiveNamespace::ForegroundColor_Accent,
+                                                  ABI::AdaptiveNamespace::ContainerStyle_Default,
+                                                  false /* isSubtle */,
+                                                  &accentColor));
+
+        ABI::Windows::UI::Color attentionColor;
+        THROW_IF_FAILED(GetColorFromAdaptiveColor(m_hostConfig.Get(),
+                                                  ABI::AdaptiveNamespace::ForegroundColor_Attention,
+                                                  ABI::AdaptiveNamespace::ContainerStyle_Default,
+                                                  false /* isSubtle */,
+                                                  &attentionColor));
+
+        ABI::Windows::UI::Color lighterAccentColor = GenerateLighterColor(accentColor);
+        ABI::Windows::UI::Color lighterAttentionColor = GenerateLighterColor(attentionColor);
+
+        ComPtr<IBrush> accentColorBrush = XamlBuilder::GetSolidColorBrush(accentColor);
+        THROW_IF_FAILED(XamlBuilder::TryInsertResourceToResourceDictionaries(m_actionSentimentResourceDictionary.Get(), L"Adaptive.Action.Positive.Button.Static.Background", accentColorBrush.Get()));
+
+        ComPtr<IBrush> lightAccentColorBrush = XamlBuilder::GetSolidColorBrush(lighterAccentColor);
+        THROW_IF_FAILED(XamlBuilder::TryInsertResourceToResourceDictionaries(m_actionSentimentResourceDictionary.Get(), L"Adaptive.Action.Positive.Button.MouseOver.Background", lightAccentColorBrush.Get()));
+
+        ComPtr<IBrush> attentionColorBrush = XamlBuilder::GetSolidColorBrush(attentionColor);
+        THROW_IF_FAILED(XamlBuilder::TryInsertResourceToResourceDictionaries(m_actionSentimentResourceDictionary.Get(), L"Adaptive.Action.Destructive.Button.Foreground", attentionColorBrush.Get()));
+
+        ComPtr<IBrush> lightAttentionColorBrush = XamlBuilder::GetSolidColorBrush(lighterAttentionColor);
+        THROW_IF_FAILED(XamlBuilder::TryInsertResourceToResourceDictionaries(m_actionSentimentResourceDictionary.Get(), L"Adaptive.Action.Destructive.Button.MouseOver.Foreground", lightAttentionColorBrush.Get()));
     }
 
     HRESULT AdaptiveCardRenderer::SetMergedDictionary()

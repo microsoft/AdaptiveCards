@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>net4.5.2</TargetFramework>
-    <Authors>AdaptiveCards</Authors>
+    <Authors>Microsoft</Authors>
     <Summary>Adaptive Card renderer for WPF</Summary>
     <Description>This library implements classes for rendering Adaptive Cards into WPF controls</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>adaptivecards;adaptive-cards</PackageTags>
-    <PackageProjectUrl>http://adaptivecards.io</PackageProjectUrl>
-    <PackageIconUrl>http://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
+    <PackageProjectUrl>https://adaptivecards.io</PackageProjectUrl>
+    <PackageIconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/Microsoft/AdaptiveCards/master/LICENSE</PackageLicenseUrl>
     <DefineConstants>WPF;$(DefineConstants);$(AdditionalConstants)</DefineConstants>
@@ -18,6 +18,12 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.MarkedNet" Version="1.0.12" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Include="Themes\generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>

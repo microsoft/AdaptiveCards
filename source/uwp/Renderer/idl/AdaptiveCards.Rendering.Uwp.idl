@@ -444,6 +444,18 @@ AdaptiveNamespaceStart
         Stretch
     } HeightType;
 
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum Sentiment
+    {
+        Default = 0,
+        Positive,
+        Destructive
+    } Sentiment;
+
     declare
     {
         interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
@@ -2343,11 +2355,11 @@ AdaptiveNamespaceStart
     [
         version(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(8b83b4a0-582b-4aa6-801c-e692eae51f37),
+        uuid(95ec200c-fad9-4d8d-b25d-cad3a7f3df61),
         contract(InternalContract, 1),
         internal
 #else
-        uuid(9ab61f28-0c62-4ad2-bda1-2c3d52bc461a)
+        uuid(b9bbff79-17a0-45ae-9a5f-86b9ff31bf88)
 #endif        
     ]
     interface IAdaptiveActionElement : IInspectable
@@ -2363,6 +2375,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT IconUrl([out, retval] HSTRING* value);
         [propput] HRESULT IconUrl([in] HSTRING value);
+
+        [propget] HRESULT Sentiment([out, retval] Sentiment* value);
+        [propput] HRESULT Sentiment([in] Sentiment value);
 
         [propget] HRESULT AdditionalProperties([out, retval] Windows.Data.Json.JsonObject** json);
         [propput] HRESULT AdditionalProperties([in] Windows.Data.Json.JsonObject* json);

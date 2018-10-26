@@ -6,6 +6,7 @@
 #include "AdaptiveImage.h"
 #include <windows.foundation.collections.h>
 #include <windows.storage.h>
+#include <windows.ui.xaml.markup.h>
 #include <windows.ui.xaml.shapes.h>
 #include <windows.web.http.h>
 #include <windows.web.http.filters.h>
@@ -36,6 +37,7 @@ using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Data;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
+using namespace ABI::Windows::UI::Xaml::Markup;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 using namespace ABI::Windows::UI::Xaml::Shapes;
@@ -303,6 +305,39 @@ namespace AdaptiveNamespace
                     return S_OK;
                 }
             }
+        }
+        catch (...)
+        {
+        }
+        return E_FAIL;
+    }
+
+    HRESULT XamlBuilder::TryInsertResourceToResourceDictionaries(IResourceDictionary* resourceDictionary,
+                                                                 std::wstring resourceName,
+                                                                 IInspectable* value)
+    {
+        if (resourceDictionary == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
+        try
+        {
+            ComPtr<IPropertyValueStatics> propertyValueStatics;
+            THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(),
+                &propertyValueStatics));
+
+            ComPtr<IInspectable> resourceKey;
+            THROW_IF_FAILED(propertyValueStatics->CreateString(HStringReference(resourceName.c_str()).Get(),
+                resourceKey.GetAddressOf()));
+
+            ComPtr<IResourceDictionary> strongDictionary = resourceDictionary;
+            ComPtr<IMap<IInspectable*, IInspectable*>> resourceDictionaryMap;
+            THROW_IF_FAILED(strongDictionary.As(&resourceDictionaryMap));
+
+            boolean replaced{};
+            THROW_IF_FAILED(resourceDictionaryMap->Insert(resourceKey.Get(), value, &replaced));
+            return S_OK;
         }
         catch (...)
         {
@@ -1207,7 +1242,65 @@ namespace AdaptiveNamespace
                         .Get(),
                     &clickToken));
 
-                THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action", buttonFrameworkElement.Get()));
+
+                ABI::AdaptiveNamespace::Sentiment actionSentiment;
+                THROW_IF_FAILED(action->get_Sentiment(&actionSentiment));
+
+                if (actionSentiment == ABI::AdaptiveNamespace::Sentiment_Positive || actionSentiment == ABI::AdaptiveNamespace::Sentiment_Destructive)
+                {
+                    ComPtr<IResourceDictionary> resourceDictionary;
+                    THROW_IF_FAILED(renderContext->get_OverrideStyles(&resourceDictionary));
+                    ComPtr<IInspectable> subtleOpacityInspectable;
+
+                    if (actionSentiment == ABI::AdaptiveNamespace::Sentiment_Positive)
+                    {
+                        if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IInspectable>(resourceDictionary.Get(),
+                            L"Adaptive.Action.Positive",
+                            &subtleOpacityInspectable)))
+                        {
+                            THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action.Positive", buttonFrameworkElement.Get()));
+                        }
+                        else
+                        {
+                            // By default, set the action background color to accent color
+                            ComPtr<IResourceDictionary> actionSentimentDictionary = renderContext->GetDefaultActionSentimentDictionary();
+
+                            ComPtr<IStyle> actionPositiveSentimentStyle;
+                            if (SUCCEEDED(TryGetResourceFromResourceDictionaries(actionSentimentDictionary.Get(),
+                                                                                 L"PositiveActionDefaultStyle",
+                                                                                 actionPositiveSentimentStyle.GetAddressOf())))
+                            {
+                                THROW_IF_FAILED(buttonFrameworkElement->put_Style(actionPositiveSentimentStyle.Get()));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IInspectable>(resourceDictionary.Get(),
+                            L"Adaptive.Action.Destructive",
+                            &subtleOpacityInspectable)))
+                        {
+                            THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action.Destructive", buttonFrameworkElement.Get()));
+                        }
+                        else
+                        {
+                            // By default, set the action text color to attention color
+                            ComPtr<IResourceDictionary> actionSentimentDictionary = renderContext->GetDefaultActionSentimentDictionary();
+
+                            ComPtr<IStyle> actionDestructiveSentimentStyle;
+                            if (SUCCEEDED(TryGetResourceFromResourceDictionaries(actionSentimentDictionary.Get(),
+                                                                                 L"DestructiveActionDefaultStyle",
+                                                                                 actionDestructiveSentimentStyle.GetAddressOf())))
+                            {
+                                THROW_IF_FAILED(buttonFrameworkElement->put_Style(actionDestructiveSentimentStyle.Get()));
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action", buttonFrameworkElement.Get()));
+                }
 
                 XamlHelpers::AppendXamlElementToPanel(button.Get(), actionsPanel.Get());
 
@@ -2788,10 +2881,14 @@ namespace AdaptiveNamespace
             ComPtr<ABI::Windows::UI::Core::ICoreWindow> coreWindow;
             RETURN_IF_FAILED(coreWindowStatics->GetForCurrentThread(&coreWindow));
 
-            ABI::Windows::UI::Core::CoreVirtualKeyStates keyState;
-            RETURN_IF_FAILED(coreWindow->GetKeyState(ABI::Windows::System::VirtualKey_Shift, &keyState));
+            ABI::Windows::UI::Core::CoreVirtualKeyStates shiftKeyState;
+            RETURN_IF_FAILED(coreWindow->GetKeyState(ABI::Windows::System::VirtualKey_Shift, &shiftKeyState));
 
-            if (keyState == ABI::Windows::UI::Core::CoreVirtualKeyStates_None)
+            ABI::Windows::UI::Core::CoreVirtualKeyStates ctrlKeyState;
+            RETURN_IF_FAILED(coreWindow->GetKeyState(ABI::Windows::System::VirtualKey_Control, &ctrlKeyState));
+
+            if (shiftKeyState == ABI::Windows::UI::Core::CoreVirtualKeyStates_None &&
+                ctrlKeyState == ABI::Windows::UI::Core::CoreVirtualKeyStates_None)
             {
                 RETURN_IF_FAILED(actionInvoker->SendActionEvent(inlineAction));
                 RETURN_IF_FAILED(args->put_Handled(true));
@@ -2799,6 +2896,36 @@ namespace AdaptiveNamespace
         }
 
         return S_OK;
+    }
+
+    bool WarnForInlineShowCard(IAdaptiveRenderContext* renderContext,
+                               IAdaptiveHostConfig* hostConfig,
+                               IAdaptiveActionElement* action,
+                               std::wstring warning)
+    {
+        if (action != nullptr)
+        {
+            ABI::AdaptiveNamespace::ActionType actionType;
+            THROW_IF_FAILED(action->get_ActionType(&actionType));
+
+            if (actionType == ABI::AdaptiveNamespace::ActionType::ShowCard)
+            {
+                ComPtr<IAdaptiveActionsConfig> actionsConfig;
+                THROW_IF_FAILED(hostConfig->get_Actions(actionsConfig.GetAddressOf()));
+                ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
+                THROW_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
+                ABI::AdaptiveNamespace::ActionMode showCardActionMode;
+                THROW_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
+                if (showCardActionMode == ABI::AdaptiveNamespace::ActionMode::Inline)
+                {
+                    THROW_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::UnsupportedValue,
+                                                              HStringReference(warning.c_str()).Get()));
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     void XamlBuilder::HandleInlineAcion(IAdaptiveRenderContext* renderContext,
@@ -2813,12 +2940,12 @@ namespace AdaptiveNamespace
         ABI::AdaptiveNamespace::ActionType actionType;
         THROW_IF_FAILED(localInlineAction->get_ActionType(&actionType));
 
-        // Show cards are not supported for inline actions
-        if (actionType == ActionType_ShowCard)
-        {
-            THROW_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::UnsupportedValue,
-                                                      HStringReference(L"ShowCard not supported for InlineAction").Get()));
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
+        // Inline ShowCards are not supported for inline actions
+        if (WarnForInlineShowCard(renderContext, hostConfig.Get(), localInlineAction.Get(), L"Inline ShowCard not supported for InlineAction"))
+        {
             THROW_IF_FAILED(localTextBox.CopyTo(textBoxWithInlineAction));
             return;
         }
@@ -2851,9 +2978,6 @@ namespace AdaptiveNamespace
             HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
         THROW_IF_FAILED(separatorColumnDefinition->put_Width({1.0, GridUnitType::GridUnitType_Auto}));
         THROW_IF_FAILED(columnDefinitions->Append(separatorColumnDefinition.Get()));
-
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
         UINT spacingSize;
         THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), ABI::AdaptiveNamespace::Spacing::Default, &spacingSize));
@@ -3322,28 +3446,12 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
-        if (action != nullptr)
+        if (WarnForInlineShowCard(renderContext, hostConfig.Get(), action, L"Inline ShowCard not supported for SelectAction"))
         {
-            ABI::AdaptiveNamespace::ActionType actionType;
-            THROW_IF_FAILED(action->get_ActionType(&actionType));
-
-            // TODO: In future should support inline ShowCard, but that's complicated for inline elements
-            if (actionType == ABI::AdaptiveNamespace::ActionType::ShowCard)
-            {
-                ComPtr<IAdaptiveActionsConfig> actionsConfig;
-                THROW_IF_FAILED(hostConfig->get_Actions(actionsConfig.GetAddressOf()));
-                ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
-                THROW_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
-                ABI::AdaptiveNamespace::ActionMode showCardActionMode;
-                THROW_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
-                if (showCardActionMode == ABI::AdaptiveNamespace::ActionMode::Inline)
-                {
-                    // Was inline show card, so don't wrap the element and just return
-                    ComPtr<IUIElement> localElementToWrap(elementToWrap);
-                    localElementToWrap.CopyTo(finalElement);
-                    return;
-                }
-            }
+            // Was inline show card, so don't wrap the element and just return
+            ComPtr<IUIElement> localElementToWrap(elementToWrap);
+            localElementToWrap.CopyTo(finalElement);
+            return;
         }
 
         ComPtr<IButton> button =
@@ -3396,6 +3504,20 @@ namespace AdaptiveNamespace
 
         if (action != nullptr)
         {
+            // If we have an action, use the title for the AutomationProperties.Name
+            HString title;
+            THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
+
+            ComPtr<IDependencyObject> buttonAsDependencyObject;
+            THROW_IF_FAILED(button.As(&buttonAsDependencyObject));
+
+            ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
+            THROW_IF_FAILED(
+                GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
+                                     &automationPropertiesStatics));
+
+            THROW_IF_FAILED(automationPropertiesStatics->SetName(buttonAsDependencyObject.Get(), title.Get()));
+
             WireButtonClickToAction(button.Get(), action, renderContext);
         }
 
