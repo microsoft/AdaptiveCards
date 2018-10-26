@@ -270,7 +270,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
                 else
                 {
                     Button button = new Button(context);
-                    button.getBackground().setColorFilter(getColor(ForegroundColor.Accent, hostConfig.getContainerStyles().getDefaultPalette().getForegroundColors()), PorterDuff.Mode.MULTIPLY);
+                    button.getBackground().setColorFilter(getColor(ForegroundColor.Accent, hostConfig.GetContainerStyles().getDefaultPalette().getForegroundColors()), PorterDuff.Mode.MULTIPLY);
                     return button;
                 }
             }
@@ -283,7 +283,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
                 else
                 {
                     Button button = new Button(context);
-                    button.setTextColor(getColor(ForegroundColor.Attention, hostConfig.getContainerStyles().getDefaultPalette().getForegroundColors()));
+                    button.setTextColor(getColor(ForegroundColor.Attention, hostConfig.GetContainerStyles().getDefaultPalette().getForegroundColors()));
                     return button;
                 }
             }
