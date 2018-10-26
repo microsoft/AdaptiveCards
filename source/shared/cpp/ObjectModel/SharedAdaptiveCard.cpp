@@ -97,7 +97,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json,
     {
         if (language.empty() || language.length() == 2 || language.length() == 3)
         {
-            std::locale(language.c_str());
+            auto locale = std::locale(language.c_str());
         }
         else
         {

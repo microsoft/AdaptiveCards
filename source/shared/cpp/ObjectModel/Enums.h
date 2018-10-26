@@ -1,38 +1,9 @@
 #pragma once
 #include "pch.h"
-
-#ifdef _WIN32
-#define strncasecmp _strnicmp
-#else
-#include <climits>
-#include <strings.h>
-#endif // _WIN32
+#include "EnumMagic.h"
 
 namespace AdaptiveSharedNamespace
 {
-    struct EnumHash
-    {
-        template<typename T> size_t operator()(T t) const { return static_cast<size_t>(t); }
-    };
-
-    struct CaseInsensitiveEqualTo
-    {
-        bool operator()(const std::string& lhs, const std::string& rhs) const
-        {
-            return strncasecmp(lhs.c_str(), rhs.c_str(), CHAR_MAX) == 0;
-        }
-    };
-
-    struct CaseInsensitiveHash
-    {
-        size_t operator()(const std::string& keyval) const
-        {
-            return std::accumulate(keyval.begin(), keyval.end(), size_t{0}, [](size_t acc, unsigned char c) {
-                return acc + std::toupper(c);
-            });
-        }
-    };
-
     enum class AdaptiveCardSchemaKey
     {
         Accent = 0,
@@ -170,71 +141,7 @@ namespace AdaptiveSharedNamespace
         Width,
         Wrap,
     };
-
-    enum class TextSize
-    {
-        Small = 0,
-        Default,
-        Medium,
-        Large,
-        ExtraLarge
-    };
-
-    enum class TextWeight
-    {
-        Lighter = 0,
-        Default,
-        Bolder
-    };
-
-    enum class FontStyle
-    {
-        Default = 0,
-        Display,
-        Monospace
-    };
-
-    enum class ForegroundColor
-    {
-        Default = 0,
-        Dark,
-        Light,
-        Accent,
-        Good,
-        Warning,
-        Attention
-    };
-
-    enum class HorizontalAlignment
-    {
-        Left = 0,
-        Center,
-        Right
-    };
-
-    enum class ImageStyle
-    {
-        Default = 0,
-        Person
-    };
-
-    enum class ImageSize
-    {
-        None = 0,
-        Auto,
-        Stretch,
-        Small,
-        Medium,
-        Large,
-    };
-
-    enum class TextInputStyle
-    {
-        Text = 0,
-        Tel,
-        Url,
-        Email,
-    };
+    DECLARE_ADAPTIVECARD_ENUM(AdaptiveCardSchemaKey);
 
     enum class CardElementType
     {
@@ -259,6 +166,80 @@ namespace AdaptiveSharedNamespace
         Unknown,
         Media
     };
+    DECLARE_ADAPTIVECARD_ENUM(CardElementType);
+
+    enum class TextSize
+    {
+        Small = 0,
+        Default,
+        Medium,
+        Large,
+        ExtraLarge
+    };
+    DECLARE_ADAPTIVECARD_ENUM(TextSize);
+
+    enum class TextWeight
+    {
+        Lighter = 0,
+        Default,
+        Bolder
+    };
+    DECLARE_ADAPTIVECARD_ENUM(TextWeight);
+
+    enum class FontStyle
+    {
+        Default = 0,
+        Display,
+        Monospace
+    };
+    DECLARE_ADAPTIVECARD_ENUM(FontStyle);
+
+    enum class ForegroundColor
+    {
+        Default = 0,
+        Dark,
+        Light,
+        Accent,
+        Good,
+        Warning,
+        Attention
+    };
+    DECLARE_ADAPTIVECARD_ENUM(ForegroundColor);
+
+    enum class HorizontalAlignment
+    {
+        Left = 0,
+        Center,
+        Right
+    };
+    DECLARE_ADAPTIVECARD_ENUM(HorizontalAlignment);
+
+    enum class ImageStyle
+    {
+        Default = 0,
+        Person
+    };
+    DECLARE_ADAPTIVECARD_ENUM(ImageStyle);
+
+    enum class ImageSize
+    {
+        None = 0,
+        Auto,
+        Stretch,
+        Small,
+        Medium,
+        Large,
+    };
+    DECLARE_ADAPTIVECARD_ENUM(ImageSize);
+
+    enum class TextInputStyle
+    {
+        Text = 0,
+        Tel,
+        Url,
+        Email,
+    };
+    DECLARE_ADAPTIVECARD_ENUM(TextInputStyle);
 
     enum class ActionType
     {
@@ -268,6 +249,7 @@ namespace AdaptiveSharedNamespace
         OpenUrl,
         Custom
     };
+    DECLARE_ADAPTIVECARD_ENUM(ActionType);
 
     enum class ActionAlignment
     {
@@ -276,18 +258,21 @@ namespace AdaptiveSharedNamespace
         Right,
         Stretch,
     };
+    DECLARE_ADAPTIVECARD_ENUM(ActionAlignment);
 
     enum class ChoiceSetStyle
     {
         Compact = 0,
         Expanded
     };
+    DECLARE_ADAPTIVECARD_ENUM(ChoiceSetStyle);
 
     enum class SeparatorThickness
     {
         Default = 0,
         Thick,
     };
+    DECLARE_ADAPTIVECARD_ENUM(SeparatorThickness);
 
     enum class Spacing
     {
@@ -299,18 +284,21 @@ namespace AdaptiveSharedNamespace
         ExtraLarge,
         Padding
     };
+    DECLARE_ADAPTIVECARD_ENUM(Spacing);
 
     enum class ActionsOrientation
     {
         Vertical = 0,
         Horizontal
     };
+    DECLARE_ADAPTIVECARD_ENUM(ActionsOrientation);
 
     enum class ActionMode
     {
         Inline = 0,
         Popup
     };
+    DECLARE_ADAPTIVECARD_ENUM(ActionMode);
 
     enum class ContainerStyle
     {
@@ -318,6 +306,7 @@ namespace AdaptiveSharedNamespace
         Default,
         Emphasis
     };
+    DECLARE_ADAPTIVECARD_ENUM(ContainerStyle);
 
     enum class ErrorStatusCode
     {
@@ -327,6 +316,7 @@ namespace AdaptiveSharedNamespace
         InvalidPropertyValue,
         UnsupportedParserOverride
     };
+    // No mapping to string needed
 
     enum class WarningStatusCode
     {
@@ -344,6 +334,7 @@ namespace AdaptiveSharedNamespace
         InvalidDimensionSpecified,
         InvalidLanguage,
     };
+    // No mapping to string needed
 
     enum class DateTimePreparsedTokenFormat
     {
@@ -353,12 +344,14 @@ namespace AdaptiveSharedNamespace
         DateShort,
         DateLong
     };
+    // No mapping to string needed
 
     enum class IconPlacement
     {
         AboveTitle = 0,
         LeftOfTitle
     };
+    DECLARE_ADAPTIVECARD_ENUM(IconPlacement);
 
     enum class Sentiment
     {
@@ -366,6 +359,7 @@ namespace AdaptiveSharedNamespace
         Positive,
         Destructive
     };
+    DECLARE_ADAPTIVECARD_ENUM(Sentiment);
 
     enum class VerticalContentAlignment
     {
@@ -373,88 +367,12 @@ namespace AdaptiveSharedNamespace
         Center,
         Bottom
     };
+    DECLARE_ADAPTIVECARD_ENUM(VerticalContentAlignment);
 
     enum class HeightType
     {
         Auto = 0,
         Stretch
     };
-
-    const std::string AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type);
-    AdaptiveCardSchemaKey AdaptiveCardSchemaKeyFromString(const std::string& type);
-
-    const std::string CardElementTypeToString(CardElementType elementType);
-    CardElementType CardElementTypeFromString(const std::string& elementType);
-
-    const std::string ActionTypeToString(ActionType actionType);
-    ActionType ActionTypeFromString(const std::string& actionType);
-
-    const std::string HeightTypeToString(HeightType heightType);
-    HeightType HeightTypeFromString(const std::string& heightType);
-
-    const std::string HorizontalAlignmentToString(HorizontalAlignment alignment);
-    HorizontalAlignment HorizontalAlignmentFromString(const std::string& alignment);
-
-    const std::string ForegroundColorToString(ForegroundColor type);
-    ForegroundColor ForegroundColorFromString(const std::string& type);
-
-    const std::string TextWeightToString(TextWeight type);
-    TextWeight TextWeightFromString(const std::string& type);
-
-    const std::string TextSizeToString(TextSize size);
-    TextSize TextSizeFromString(const std::string& size);
-
-    const std::string FontStyleToString(FontStyle style);
-    FontStyle FontStyleFromString(const std::string& style);
-
-    const std::string ImageSizeToString(ImageSize size);
-    ImageSize ImageSizeFromString(const std::string& size);
-
-    const std::string SpacingToString(Spacing spacing);
-    Spacing SpacingFromString(const std::string& spacing);
-
-    const std::string SeparatorThicknessToString(SeparatorThickness separatorThickness);
-    SeparatorThickness SeparatorThicknessFromString(const std::string& separatorThickness);
-
-    const std::string ImageStyleToString(ImageStyle style);
-    ImageStyle ImageStyleFromString(const std::string& style);
-
-    const std::string ActionsOrientationToString(ActionsOrientation orientation);
-    ActionsOrientation ActionsOrientationFromString(const std::string& orientation);
-
-    const std::string ActionModeToString(ActionMode mode);
-    ActionMode ActionModeFromString(const std::string& mode);
-
-    const std::string ChoiceSetStyleToString(ChoiceSetStyle style);
-    ChoiceSetStyle ChoiceSetStyleFromString(const std::string& style);
-
-    const std::string TextInputStyleToString(TextInputStyle style);
-    TextInputStyle TextInputStyleFromString(const std::string& style);
-
-    const std::string ContainerStyleToString(ContainerStyle style);
-    ContainerStyle ContainerStyleFromString(const std::string& style);
-
-    const std::string ActionAlignmentToString(ActionAlignment alignment);
-    ActionAlignment ActionAlignmentFromString(const std::string& alignment);
-
-    const std::string IconPlacementToString(IconPlacement placement);
-    IconPlacement IconPlacementFromString(const std::string& placement);
-
-    const std::string VerticalContentAlignmentToString(VerticalContentAlignment verticalContentAlignment);
-    VerticalContentAlignment VerticalContentAlignmentFromString(const std::string& verticalContentAlignment);
-
-    const std::string SentimentToString(Sentiment sentiment);
-    Sentiment SentimentFromString(const std::string& sentiment);
-
-    template<typename T>
-    const std::unordered_map<std::string, T, CaseInsensitiveHash, CaseInsensitiveEqualTo>
-    GenerateStringToEnumMap(const std::unordered_map<T, std::string, EnumHash>& keyToStringMap)
-    {
-        std::unordered_map<std::string, T, CaseInsensitiveHash, CaseInsensitiveEqualTo> result;
-        for (auto& kv : keyToStringMap)
-        {
-            result[kv.second] = kv.first;
-        }
-        return result;
-    }
+    DECLARE_ADAPTIVECARD_ENUM(HeightType);
 }

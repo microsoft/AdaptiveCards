@@ -99,6 +99,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MediaSource.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\RemoteResourceInformation.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\SemanticVersion.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\EnumMagic.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">

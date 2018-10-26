@@ -60,6 +60,7 @@ struct tm {
 #include "pch.h"
 #include <memory>
 #include <time.h>
+#include "../../../shared/cpp/ObjectModel/EnumMagic.h"
 #include "../../../shared/cpp/ObjectModel/Enums.h"
 #include "../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
 #include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
@@ -574,6 +575,7 @@ namespace Json {
 };
 
 %include "../../../shared/cpp/ObjectModel/pch.h"
+%include "../../../shared/cpp/ObjectModel/EnumMagic.h"
 %include "../../../shared/cpp/ObjectModel/Enums.h"
 %include "../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
 %include "../../../shared/cpp/ObjectModel/BaseCardElement.h"

@@ -85,6 +85,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Column.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ColumnSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ElementParserRegistration.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\EnumMagic.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Fact.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\FactSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\HostConfig.h" />
