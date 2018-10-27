@@ -326,11 +326,11 @@ namespace AdaptiveNamespace
         {
             ComPtr<IPropertyValueStatics> propertyValueStatics;
             THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(),
-                &propertyValueStatics));
+                                                 &propertyValueStatics));
 
             ComPtr<IInspectable> resourceKey;
             THROW_IF_FAILED(propertyValueStatics->CreateString(HStringReference(resourceName.c_str()).Get(),
-                resourceKey.GetAddressOf()));
+                                                               resourceKey.GetAddressOf()));
 
             ComPtr<IResourceDictionary> strongDictionary = resourceDictionary;
             ComPtr<IMap<IInspectable*, IInspectable*>> resourceDictionaryMap;
@@ -1181,11 +1181,11 @@ namespace AdaptiveNamespace
                         .Get(),
                     &clickToken));
 
-
                 ABI::AdaptiveNamespace::Sentiment actionSentiment;
                 THROW_IF_FAILED(action->get_Sentiment(&actionSentiment));
 
-                if (actionSentiment == ABI::AdaptiveNamespace::Sentiment_Positive || actionSentiment == ABI::AdaptiveNamespace::Sentiment_Destructive)
+                if (actionSentiment == ABI::AdaptiveNamespace::Sentiment_Positive ||
+                    actionSentiment == ABI::AdaptiveNamespace::Sentiment_Destructive)
                 {
                     ComPtr<IResourceDictionary> resourceDictionary;
                     THROW_IF_FAILED(renderContext->get_OverrideStyles(&resourceDictionary));
@@ -1194,15 +1194,18 @@ namespace AdaptiveNamespace
                     if (actionSentiment == ABI::AdaptiveNamespace::Sentiment_Positive)
                     {
                         if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IInspectable>(resourceDictionary.Get(),
-                            L"Adaptive.Action.Positive",
-                            &subtleOpacityInspectable)))
+                                                                                           L"Adaptive.Action.Positive",
+                                                                                           &subtleOpacityInspectable)))
                         {
-                            THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action.Positive", buttonFrameworkElement.Get()));
+                            THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext,
+                                                                           L"Adaptive.Action.Positive",
+                                                                           buttonFrameworkElement.Get()));
                         }
                         else
                         {
                             // By default, set the action background color to accent color
-                            ComPtr<IResourceDictionary> actionSentimentDictionary = renderContext->GetDefaultActionSentimentDictionary();
+                            ComPtr<IResourceDictionary> actionSentimentDictionary =
+                                renderContext->GetDefaultActionSentimentDictionary();
 
                             ComPtr<IStyle> actionPositiveSentimentStyle;
                             if (SUCCEEDED(TryGetResourceFromResourceDictionaries(actionSentimentDictionary.Get(),
@@ -1216,15 +1219,18 @@ namespace AdaptiveNamespace
                     else
                     {
                         if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IInspectable>(resourceDictionary.Get(),
-                            L"Adaptive.Action.Destructive",
-                            &subtleOpacityInspectable)))
+                                                                                           L"Adaptive.Action.Destructive",
+                                                                                           &subtleOpacityInspectable)))
                         {
-                            THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action.Destructive", buttonFrameworkElement.Get()));
+                            THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext,
+                                                                           L"Adaptive.Action.Destructive",
+                                                                           buttonFrameworkElement.Get()));
                         }
                         else
                         {
                             // By default, set the action text color to attention color
-                            ComPtr<IResourceDictionary> actionSentimentDictionary = renderContext->GetDefaultActionSentimentDictionary();
+                            ComPtr<IResourceDictionary> actionSentimentDictionary =
+                                renderContext->GetDefaultActionSentimentDictionary();
 
                             ComPtr<IStyle> actionDestructiveSentimentStyle;
                             if (SUCCEEDED(TryGetResourceFromResourceDictionaries(actionSentimentDictionary.Get(),
@@ -1238,7 +1244,8 @@ namespace AdaptiveNamespace
                 }
                 else
                 {
-                    THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action", buttonFrameworkElement.Get()));
+                    THROW_IF_FAILED(
+                        SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action", buttonFrameworkElement.Get()));
                 }
 
                 XamlHelpers::AppendXamlElementToPanel(button.Get(), actionsPanel.Get());
@@ -1418,7 +1425,11 @@ namespace AdaptiveNamespace
                            hostConfig);
     }
 
-    HRESULT SetTextOnXamlTextBlock(IAdaptiveRenderContext* renderContext, HSTRING textIn, HSTRING language, ITextBlock* textBlock)
+    HRESULT SetTextOnXamlTextBlock(IAdaptiveRenderContext* renderContext,
+                                   HSTRING textIn,
+                                   ABI::AdaptiveNamespace::FontStyle fontStyle,
+                                   HSTRING language,
+                                   ITextBlock* textBlock)
     {
         ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> inlines;
         RETURN_IF_FAILED(textBlock->get_Inlines(inlines.GetAddressOf()));
@@ -1448,7 +1459,7 @@ namespace AdaptiveNamespace
                 ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> xmlDocumentAsNode;
                 RETURN_IF_FAILED(xmlDocument.As(&xmlDocumentAsNode));
 
-                RETURN_IF_FAILED(AddHtmlInlines(renderContext, xmlDocumentAsNode.Get(), inlines.Get()));
+                RETURN_IF_FAILED(AddHtmlInlines(renderContext, xmlDocumentAsNode.Get(), inlines.Get(), fontStyle));
                 handledAsHtml = true;
             }
         }
@@ -1457,7 +1468,7 @@ namespace AdaptiveNamespace
         {
             HString hString;
             UTF8ToHString(textWithParsedDates, hString.GetAddressOf());
-            AddSingleTextInline(renderContext, hString.Get(), false, false, inlines.Get());
+            AddSingleTextInline(renderContext, hString.Get(), fontStyle, false, false, inlines.Get());
         }
 
         return S_OK;
@@ -1483,7 +1494,9 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(adaptiveTextBlock->get_Text(text.GetAddressOf()));
         HString language;
         THROW_IF_FAILED(adaptiveTextBlock->get_Language(language.GetAddressOf()));
-        THROW_IF_FAILED(SetTextOnXamlTextBlock(renderContext, text.Get(), language.Get(), xamlTextBlock.Get()));
+        ABI::AdaptiveNamespace::FontStyle fontStyle;
+        THROW_IF_FAILED(adaptiveTextBlock->get_FontStyle(&fontStyle));
+        THROW_IF_FAILED(SetTextOnXamlTextBlock(renderContext, text.Get(), fontStyle, language.Get(), xamlTextBlock.Get()));
 
         ABI::AdaptiveNamespace::ForegroundColor textColor;
         THROW_IF_FAILED(adaptiveTextBlock->get_Color(&textColor));
@@ -1553,8 +1566,6 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
         ABI::AdaptiveNamespace::ContainerStyle containerStyle;
         THROW_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
-        ABI::AdaptiveNamespace::FontStyle fontStyle;
-        THROW_IF_FAILED(adaptiveTextBlock->get_FontStyle(&fontStyle));
         StyleXamlTextBlock(fontStyle,
                            textblockSize,
                            textColor,
@@ -2334,7 +2345,11 @@ namespace AdaptiveNamespace
                     XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
                 HString factTitle;
                 THROW_IF_FAILED(localFact->get_Title(factTitle.GetAddressOf()));
-                THROW_IF_FAILED(SetTextOnXamlTextBlock(renderContext, factTitle.Get(), language.Get(), titleTextBlock.Get()));
+                THROW_IF_FAILED(SetTextOnXamlTextBlock(renderContext,
+                                                       factTitle.Get(),
+                                                       ABI::AdaptiveNamespace::FontStyle::Default,
+                                                       language.Get(),
+                                                       titleTextBlock.Get()));
 
                 ComPtr<IAdaptiveTextConfig> titleTextConfig;
                 THROW_IF_FAILED(factSetConfig->get_Title(&titleTextConfig));
@@ -2348,7 +2363,11 @@ namespace AdaptiveNamespace
                     XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
                 HString factValue;
                 THROW_IF_FAILED(localFact->get_Value(factValue.GetAddressOf()));
-                THROW_IF_FAILED(SetTextOnXamlTextBlock(renderContext, factValue.Get(), language.Get(), valueTextBlock.Get()));
+                THROW_IF_FAILED(SetTextOnXamlTextBlock(renderContext,
+                                                       factValue.Get(),
+                                                       ABI::AdaptiveNamespace::FontStyle::Default,
+                                                       language.Get(),
+                                                       valueTextBlock.Get()));
 
                 ComPtr<IAdaptiveTextConfig> valueTextConfig;
                 THROW_IF_FAILED(factSetConfig->get_Value(&valueTextConfig));
