@@ -26,6 +26,7 @@
 #include "AdaptiveTextInput.h"
 #include "AdaptiveTimeInput.h"
 #include "AdaptiveToggleInput.h"
+#include "AdaptiveToggleViewStateAction.h"
 #include "AdaptiveWarning.h"
 #include "CustomActionWrapper.h"
 #include "CustomElementWrapper.h"
@@ -221,6 +222,11 @@ HRESULT GenerateSharedAction(ABI::AdaptiveNamespace::IAdaptiveActionElement* act
     case ABI::AdaptiveNamespace::ActionType::Submit:
         sharedAction =
             GetSharedModel<AdaptiveSharedNamespace::BaseActionElement, ABI::AdaptiveNamespace::IAdaptiveActionElement, AdaptiveNamespace::AdaptiveSubmitAction>(
+                action);
+        break;
+    case ABI::AdaptiveNamespace::ActionType::ToggleViewState:
+        sharedAction =
+            GetSharedModel<AdaptiveSharedNamespace::BaseActionElement, ABI::AdaptiveNamespace::IAdaptiveActionElement, AdaptiveNamespace::AdaptiveToggleViewStateAction>(
                 action);
         break;
     case ABI::AdaptiveNamespace::ActionType::Custom:
@@ -463,6 +469,10 @@ HRESULT GenerateActionProjection(const std::shared_ptr<AdaptiveSharedNamespace::
     case ActionType::Submit:
         RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveSubmitAction>(
             projectedAction, std::AdaptivePointerCast<AdaptiveSharedNamespace::SubmitAction>(action)));
+        break;
+    case ActionType::ToggleViewState:
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveToggleViewStateAction>(
+            projectedAction, std::AdaptivePointerCast<AdaptiveSharedNamespace::ToggleViewStateAction>(action)));
         break;
     case ActionType::Custom:
         RETURN_IF_FAILED(std::AdaptivePointerCast<CustomActionWrapper>(action)->GetWrappedElement(projectedAction));

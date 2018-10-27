@@ -92,6 +92,7 @@
     <ClCompile Include="lib\AdaptiveActionSet.cpp" />
     <ClCompile Include="lib\AdaptiveActionSetRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveTemplater.cpp" />
+    <ClCompile Include="lib\AdaptiveToggleViewStateAction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -191,6 +192,7 @@
     <ClInclude Include="lib\AdaptiveActionSet.h" />
     <ClInclude Include="lib\AdaptiveActionSetRenderer.h" />
     <ClInclude Include="lib\AdaptiveTemplater.h" />
+    <ClInclude Include="lib\AdaptiveToggleViewStateAction.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />

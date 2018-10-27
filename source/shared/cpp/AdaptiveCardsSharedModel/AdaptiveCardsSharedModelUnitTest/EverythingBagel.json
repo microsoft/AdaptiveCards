@@ -237,6 +237,11 @@
 			}
 		},
 		{
+			"type": "Action.ToggleViewState",
+			"id": "Action.ToggleViewState_id",
+			"next": "Expanded"
+		},
+		{
 			"type": "Action.ShowCard",
 			"title": "Action.ShowCard",
 			"id": "Action.ShowCard_id",

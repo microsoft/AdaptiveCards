@@ -192,6 +192,7 @@
     <ClCompile Include="..\..\ObjectModel\TextInput.cpp" />
     <ClCompile Include="..\..\ObjectModel\TimeInput.cpp" />
     <ClCompile Include="..\..\ObjectModel\ToggleInput.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ToggleViewStateAction.cpp" />
     <ClCompile Include="..\..\ObjectModel\UnknownElement.cpp" />
     <ClCompile Include="..\..\ObjectModel\Util.cpp" />
   </ItemGroup>
@@ -240,6 +241,7 @@
     <ClInclude Include="..\..\ObjectModel\TextInput.h" />
     <ClInclude Include="..\..\ObjectModel\TimeInput.h" />
     <ClInclude Include="..\..\ObjectModel\ToggleInput.h" />
+    <ClInclude Include="..\..\ObjectModel\ToggleViewStateAction.h" />
     <ClInclude Include="..\..\ObjectModel\UnknownElement.h" />
     <ClInclude Include="..\..\ObjectModel\RemoteResourceInformation.h" />
     <ClInclude Include="..\..\ObjectModel\Util.h" />

@@ -19,6 +19,7 @@
 #include "TextInput.h"
 #include "TimeInput.h"
 #include "ToggleInput.h"
+#include "ToggleViewStateAction.h"
 
 using namespace std::string_literals;
 
@@ -383,7 +384,7 @@ namespace AdaptiveCardsSharedModelUnitTest
     void ValidateToplevelActions(const AdaptiveCard &everythingBagel)
     {
         auto actions = everythingBagel.GetActions();
-        Assert::AreEqual(size_t{ 2 }, actions.size());
+        Assert::AreEqual(size_t{ 3 }, actions.size());
 
         // validate submit action
         {
@@ -404,9 +405,25 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual(size_t{ 0 }, resourceUris.size());
         }
 
+        // validate toggle view state action
+        {
+            auto toggleViewStateAction = std::static_pointer_cast<ToggleViewStateAction>(actions.at(1));
+            Assert::IsTrue(toggleViewStateAction->GetElementType() == ActionType::ToggleViewState);
+            Assert::AreEqual(ActionTypeToString(ActionType::ToggleViewState), toggleViewStateAction->GetElementTypeString());
+            Assert::AreEqual("Action.ToggleViewState_id"s, toggleViewStateAction->GetId());
+            Assert::AreEqual("Expanded"s, toggleViewStateAction->GetNext());
+
+            auto additionalProps = toggleViewStateAction->GetAdditionalProperties();
+            Assert::IsTrue(additionalProps.empty());
+
+            std::vector<RemoteResourceInformation> resourceUris;
+            toggleViewStateAction->GetResourceInformation(resourceUris);
+            Assert::AreEqual(size_t{ 0 }, resourceUris.size());
+        }
+
         // validate showcard action
         {
-            auto showCardAction = std::static_pointer_cast<ShowCardAction>(actions.at(1));
+            auto showCardAction = std::static_pointer_cast<ShowCardAction>(actions.at(2));
             Assert::IsTrue(showCardAction->GetElementType() == ActionType::ShowCard);
             Assert::AreEqual(ActionTypeToString(ActionType::ShowCard), showCardAction->GetElementTypeString());
             Assert::AreEqual(""s, showCardAction->GetIconUrl());

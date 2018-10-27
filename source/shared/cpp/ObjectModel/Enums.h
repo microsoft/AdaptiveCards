@@ -123,6 +123,7 @@ namespace AdaptiveSharedNamespace
         Method,
         MimeType,
         Min,
+        Next,
         NumberInput,
         Orientation,
         Padding,
@@ -260,6 +261,7 @@ namespace AdaptiveSharedNamespace
         ShowCard,
         Submit,
         OpenUrl,
+        ToggleViewState,
         Custom
     };
 

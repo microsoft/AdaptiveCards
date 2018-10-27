@@ -3,6 +3,7 @@
 #include "OpenUrlAction.h"
 #include "ShowCardAction.h"
 #include "SubmitAction.h"
+#include "ToggleViewStateAction.h"
 
 namespace AdaptiveSharedNamespace
 {
@@ -16,7 +17,8 @@ namespace AdaptiveSharedNamespace
 
         m_cardElementParsers.insert({{ActionTypeToString(ActionType::OpenUrl), std::make_shared<OpenUrlActionParser>()},
                                      {ActionTypeToString(ActionType::ShowCard), std::make_shared<ShowCardActionParser>()},
-                                     {ActionTypeToString(ActionType::Submit), std::make_shared<SubmitActionParser>()}});
+                                     {ActionTypeToString(ActionType::Submit), std::make_shared<SubmitActionParser>()},
+                                     {ActionTypeToString(ActionType::ToggleViewState), std::make_shared<ToggleViewStateActionParser>()}});
     }
 
     void ActionParserRegistration::AddParser(std::string const& elementType, std::shared_ptr<ActionElementParser> parser)
