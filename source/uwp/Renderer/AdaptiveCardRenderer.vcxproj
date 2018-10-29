@@ -162,6 +162,7 @@
     <ClInclude Include="lib\AdaptiveRenderArgs.h" />
     <ClInclude Include="lib\AdaptiveRenderContext.h" />
     <ClInclude Include="lib\AdaptiveSeparator.h" />
+    <ClInclude Include="lib\AdaptiveTemplater.h" />
     <ClInclude Include="lib\AdaptiveTextBlockRenderer.h" />
     <ClInclude Include="lib\AdaptiveTextInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveTimeInputRenderer.h" />
@@ -222,9 +223,10 @@
     <ClCompile Include="lib\AdaptiveMediaSource.cpp" />
     <ClCompile Include="lib\AdaptiveMediaEventArgs.cpp" />
     <ClCompile Include="lib\AdaptiveRemoteResourceInformation.cpp" />
+    <ClCompile Include="lib\AdaptiveTemplater.cpp" />
     <ClCompile Include="lib\MediaHelpers.cpp" />
     <ClCompile Include="lib\AdaptiveActionSet.cpp" />
-    <ClCompile Include="lib\AdaptiveActionSetRenderer.cpp" />    
+    <ClCompile Include="lib\AdaptiveActionSetRenderer.cpp" />
     <ClCompile Include="lib\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

@@ -102,6 +102,7 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveRemoteResourceInformation;
 
     runtimeclass WholeItemsPanel;
+    runtimeclass AdaptiveJsonTemplater;
 
     interface IAdaptiveCardResourceResolvers;
     interface IAdaptiveCardResourceResolver;
@@ -474,6 +475,38 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveJsonTemplater),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(072DB60B-F1A5-45B5-BA46-78245DB43FAA),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(81DFB727-8CC7-49F1-AE95-6B97ABD84C3A)
+#endif
+    ]
+    interface IAdaptiveJsonTemplaterStatics : IInspectable
+    {
+        HRESULT ApplyJsonTemplating(
+            [in] Windows.Data.Json.JsonObject* card,
+            [in] Windows.Data.Json.JsonObject* frame,
+            [out, retval] Windows.Data.Json.JsonObject** value);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        static(IAdaptiveJsonTemplaterStatics, NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        static(IAdaptiveJsonTemplaterStatics, InternalContract, 1),
+        contract(InternalContract, 1),
+        internal,
+#endif        
+    ]
+    runtimeclass AdaptiveJsonTemplater 
+    { 
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(21f8aa32-e8ca-41cb-b571-d7d234173a88),
         contract(InternalContract, 1),
@@ -823,14 +856,6 @@ AdaptiveNamespaceStart
             [in] AdaptiveActionParserRegistration* actionRegistration,
             [out, retval] AdaptiveCardParseResult** card);
 
-        [overload("FromJson")] 
-        HRESULT FromJsonWithParserRegistrationAndFrame(
-            [in] Windows.Data.Json.JsonObject * adaptiveJson,
-            [in] AdaptiveElementParserRegistration * elementRegistration,
-            [in] AdaptiveActionParserRegistration * actionRegistration,
-            [in] Windows.Data.Json.JsonObject * adaptiveFrame,
-            [out, retval] AdaptiveCardParseResult * *card);
-
         [overload("FromJsonString")]
         HRESULT FromJsonString(
             [in] HSTRING adaptiveJson,
@@ -842,14 +867,6 @@ AdaptiveNamespaceStart
             [in] AdaptiveElementParserRegistration* elementRegistration,
             [in] AdaptiveActionParserRegistration* actionRegistration,
             [out, retval] AdaptiveCardParseResult** card);
-
-        [overload("FromJsonString")] 
-        HRESULT FromJsonStringWithParserRegistrationAndFrame(
-            [in] HSTRING adaptiveJson,
-            [in] AdaptiveElementParserRegistration * elementRegistration,
-            [in] AdaptiveActionParserRegistration * actionRegistration,
-            [in] HSTRING adaptiveFrame,
-            [out, retval] AdaptiveCardParseResult * *card);
     };
 
     [
