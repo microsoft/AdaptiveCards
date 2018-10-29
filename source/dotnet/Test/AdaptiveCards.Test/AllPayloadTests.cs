@@ -125,7 +125,7 @@ namespace AdaptiveCards.Test
                     "FlightItinerary_es_fail",
 
                     // These are cards that features haven't been implemented yet
-                    "Input.Text.InlineAction.ShowCard.json",
+                    //"Input.Text.InlineAction.ShowCard.json",
                 });
         }
     }

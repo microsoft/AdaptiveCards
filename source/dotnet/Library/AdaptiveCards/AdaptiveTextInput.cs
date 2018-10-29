@@ -69,6 +69,17 @@ namespace AdaptiveCards
         [DefaultValue(0)]
         public int MaxLength { get; set; }
 
+        /// <summary>
+        /// The Body elements for this card
+        /// </summary>
+        [JsonProperty("inlineAction", DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlElement(typeof(AdaptiveOpenUrlAction))]
+        [XmlElement(typeof(AdaptiveShowCardAction))]
+        [XmlElement(typeof(AdaptiveSubmitAction))]
+#endif
+        public AdaptiveAction InlineAction { get; set; }
+
         public override string GetNonInteractiveValue()
         {
             return Value ?? $"*[{Placeholder}]*";
