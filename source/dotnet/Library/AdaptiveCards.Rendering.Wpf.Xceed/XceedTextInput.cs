@@ -18,7 +18,9 @@ namespace AdaptiveCards.Rendering.Wpf
                     textBox.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
                 }
                 if (input.MaxLength > 0)
+                {
                     textBox.MaxLength = input.MaxLength;
+                }
 
                 textBox.Watermark = input.Placeholder;
                 textBox.Style = context.GetStyle($"Adaptive.Input.Text.{input.Style}");
@@ -82,6 +84,7 @@ namespace AdaptiveCards.Rendering.Wpf
                                 uiIcon = AdaptiveImageRenderer.Render(image, context);
                                 uiButton.Content = uiIcon;
 
+                                // adjust height
                                 textBox.Loaded += (sender, e) => 
                                 {
                                     uiIcon.Height = textBox.ActualHeight;
@@ -104,24 +107,23 @@ namespace AdaptiveCards.Rendering.Wpf
                                 e.Handled = true;
                             };
 
-                         parentView.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
-                         Grid.SetColumn(uiButton, 2);
-                         parentView.Children.Add(uiButton);
-                         uiButton.VerticalAlignment = VerticalAlignment.Bottom;
-
-                       textBox.KeyDown += (sender, e) =>
-                       {
-                           if (e.Key == System.Windows.Input.Key.Enter)
-                           {
-                               context.InvokeAction(uiButton, new AdaptiveActionEventArgs(input.InlineAction));
-                               e.Handled = true;
-                           }
-                       };
-                         return parentView;
+                            parentView.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+                            Grid.SetColumn(uiButton, 2);
+                            parentView.Children.Add(uiButton);
+                            uiButton.VerticalAlignment = VerticalAlignment.Bottom;
+    
+                            textBox.KeyDown += (sender, e) =>
+                            {
+                                if (e.Key == System.Windows.Input.Key.Enter)
+                                {
+                                    context.InvokeAction(uiButton, new AdaptiveActionEventArgs(input.InlineAction));
+                                    e.Handled = true;
+                                }
+                            };
+                            return parentView;
                         }
                     }
                 }
-
                 return textBox;
             }
             else
