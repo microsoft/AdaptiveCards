@@ -96,10 +96,8 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     if([key length]){
         UIView *imgView = nil;
         UIImage *img = nil;
-        if(![[ACRRegistration getInstance] isElementRendererOverriden:[ACRImageRenderer elemType]]){
-            img = _imageViewMap[key];
-            imgView = [[ACRUIImageView alloc] initWithImage:img];
-        }
+        img = _imageViewMap[key];
+        imgView = [[ACRUIImageView alloc] initWithImage:img];
         if(img) {
             imgView.translatesAutoresizingMaskIntoConstraints = NO;
             imgView.contentMode = UIViewContentModeScaleAspectFill;
