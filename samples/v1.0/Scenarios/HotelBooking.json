@@ -1,0 +1,341 @@
+{
+	"type": "AdaptiveCard",
+	"body": [
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "Container",
+					"style": "emphasis",
+					"items": [
+						{
+							"type": "ColumnSet",
+							"columns": [
+								{
+									"type": "Column",
+									"style": "emphasis",
+									"items": [
+										{
+											"type": "TextBlock",
+											"horizontalAlignment": "Left",
+											"size": "Small",
+											"text": "Confirmation Number"
+										},
+										{
+											"type": "TextBlock",
+											"id": "confirmationNumber",
+											"horizontalAlignment": "Left",
+											"spacing": "Small",
+											"size": "Small",
+											"text": "0987654321"
+										}
+									],
+									"width": "stretch"
+								},
+								{
+									"type": "Column",
+									"style": "emphasis",
+									"items": [
+										{
+											"type": "TextBlock",
+											"horizontalAlignment": "Right",
+											"size": "Small",
+											"text": "PIN"
+										},
+										{
+											"type": "TextBlock",
+											"id": "pinNumber",
+											"horizontalAlignment": "Right",
+											"spacing": "Small",
+											"size": "Small",
+											"text": "1234"
+										}
+									],
+									"width": "stretch"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"id": "hotelName",
+							"size": "ExtraLarge",
+							"text": "Hotel California"
+						},
+						{
+							"type": "TextBlock",
+							"id": "locationName",
+							"spacing": "Small",
+							"size": "Small",
+							"text": "Sydney, New South Wales"
+						}
+					],
+					"width": "stretch"
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"separator": true,
+			"items": [
+				{
+					"type": "ColumnSet",
+					"columns": [
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "Image",
+									"horizontalAlignment": "Center",
+									"url": "https://png.pngtree.com/svg/20170606/mail_icon_1057450.png",
+									"size": "Medium"
+								},
+								{
+									"type": "TextBlock",
+									"horizontalAlignment": "Center",
+									"spacing": "Small",
+									"size": "Small",
+									"text": "Email"
+								}
+							],
+							"width": "stretch"
+						},
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "Image",
+									"horizontalAlignment": "Center",
+									"url": "https://png.pngtree.com/svg/20160218/location_1068772.png",
+									"width": "60px"
+								},
+								{
+									"type": "TextBlock",
+									"horizontalAlignment": "Center",
+									"spacing": "Small",
+									"size": "Small",
+									"text": "Location"
+								}
+							],
+							"width": "stretch"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"separator": true,
+			"items": [
+				{
+					"type": "TextBlock",
+					"size": "Small",
+					"text": "3 nights, 1 apartment for 2 adults, 1 child",
+					"wrap": true
+				},
+				{
+					"type": "TextBlock",
+					"id": "propertyType",
+					"horizontalAlignment": "Left",
+					"weight": "Bolder",
+					"text": "One-Bedroom Apartment"
+				},
+				{
+					"type": "ColumnSet",
+					"columns": [
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "TextBlock",
+									"horizontalAlignment": "Left",
+									"size": "Small",
+									"text": "Guest Name"
+								}
+							],
+							"width": "stretch"
+						},
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "TextBlock",
+									"id": "guestName",
+									"horizontalAlignment": "Right",
+									"size": "Small",
+									"text": "Arafat Tehsin"
+								}
+							],
+							"width": "stretch"
+						}
+					]
+				},
+				{
+					"type": "ColumnSet",
+					"spacing": "None",
+					"separator": true,
+					"columns": [
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "TextBlock",
+									"horizontalAlignment": "Left",
+									"size": "Small",
+									"text": "Max. guests"
+								}
+							],
+							"width": "stretch"
+						},
+						{
+							"type": "Column",
+							"id": "occupancy",
+							"items": [
+								{
+									"type": "TextBlock",
+									"horizontalAlignment": "Right",
+									"size": "Small",
+									"text": "2 adults, 1 child"
+								}
+							],
+							"width": "stretch"
+						}
+					]
+				},
+				{
+					"type": "ColumnSet",
+					"spacing": "None",
+					"separator": true,
+					"columns": [
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "TextBlock",
+									"horizontalAlignment": "Left",
+									"size": "Small",
+									"text": "Smoking preferred?"
+								}
+							],
+							"width": "stretch"
+						},
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "TextBlock",
+									"id": "isSmoking",
+									"horizontalAlignment": "Right",
+									"size": "Small",
+									"text": "No"
+								}
+							],
+							"width": "stretch"
+						}
+					]
+				},
+				{
+					"type": "ColumnSet",
+					"spacing": "None",
+					"separator": true,
+					"columns": [
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "TextBlock",
+									"horizontalAlignment": "Left",
+									"size": "Small",
+									"text": "Meals"
+								}
+							],
+							"width": "stretch"
+						},
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "TextBlock",
+									"id": "mealPromotion",
+									"horizontalAlignment": "Right",
+									"size": "Small",
+									"text": "Enjoy a delicious Breakfast at the hotel for $10 per person, per night",
+									"wrap": true,
+									"maxLines": 3
+								}
+							],
+							"width": "stretch"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "Image",
+			"id": "hotelImage",
+			"separator": true,
+			"url": "https://media.tfehotels.com/media/filer_public_thumbnails/filer_public/bc/71/bc716dcc-4b5b-4cbc-ad18-a18e3054bd3b/adina-apartment-hotel-perth-premier-one-bedroom-apartment-lounge-room-01-2017.jpg__1230x615_q85_crop_subsampling-2_upscale.jpg",
+			"size": "Stretch"
+		},
+		{
+			"type": "ColumnSet",
+			"separator": true,
+			"columns": [
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Check-in"
+						},
+						{
+							"type": "TextBlock",
+							"id": "checkinDate",
+							"horizontalAlignment": "Left",
+							"weight": "Bolder",
+							"text": "Nov 21 2018"
+						},
+						{
+							"type": "TextBlock",
+							"id": "checkinTime",
+							"text": "from 2:00 PM"
+						}
+					],
+					"width": "stretch"
+				},
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Check-out"
+						},
+						{
+							"type": "TextBlock",
+							"id": "checkoutDate",
+							"weight": "Bolder",
+							"text": "Nov 24"
+						},
+						{
+							"type": "TextBlock",
+							"id": "checkoutTime",
+							"text": "until 12:00 PM\n"
+						}
+					],
+					"width": "stretch"
+				}
+			]
+		}
+	],
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.0"
+}
