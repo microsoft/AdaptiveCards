@@ -77,14 +77,13 @@ using namespace AdaptiveCards;
                                                                          hostConfig:config];
     }
 
-    if(![[ACRRegistration getInstance] isElementRendererOverriden:[ACRImageRenderer elemType]]){
-        if(!adaptiveCard->GetBackgroundImage().empty()) {
+    if(!adaptiveCard->GetBackgroundImage().empty()) {
             [rootView loadImage:adaptiveCard->GetBackgroundImage()];
         }
-        if(![config getHostConfig]->GetMedia().playButton.empty()) {
+    if(![config getHostConfig]->GetMedia().playButton.empty()) {
             [rootView loadImage:[config getHostConfig]->GetMedia().playButton];
         }
-    }
+  
 
     ACRContainerStyle style = ([config getHostConfig]->GetAdaptiveCard().allowCustomStyle)? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
     style = (style == ACRNone)? ACRDefault : style;
