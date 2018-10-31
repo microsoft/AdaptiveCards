@@ -56,6 +56,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::DateInput, "dateInput"},
             {AdaptiveCardSchemaKey::Default, "default"},
             {AdaptiveCardSchemaKey::DefaultPoster, "defaultPoster"},
+            {AdaptiveCardSchemaKey::Display, "display"},
             {AdaptiveCardSchemaKey::Emphasis, "emphasis"},
             {AdaptiveCardSchemaKey::ExtraLarge, "extraLarge"},
             {AdaptiveCardSchemaKey::Facts, "facts"},
@@ -63,6 +64,8 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::FallbackText, "fallbackText"},
             {AdaptiveCardSchemaKey::FontFamily, "fontFamily"},
             {AdaptiveCardSchemaKey::FontSizes, "fontSizes"},
+            {AdaptiveCardSchemaKey::FontStyle, "fontStyle"},
+            {AdaptiveCardSchemaKey::FontStyles, "fontStyles"},
             {AdaptiveCardSchemaKey::FontWeights, "fontWeights"},
             {AdaptiveCardSchemaKey::Good, "good"},
             {AdaptiveCardSchemaKey::Height, "height"},
@@ -103,6 +106,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Method, "method"},
             {AdaptiveCardSchemaKey::MimeType, "mimeType"},
             {AdaptiveCardSchemaKey::Min, "min"},
+            {AdaptiveCardSchemaKey::Monospace, "monospace"},
             {AdaptiveCardSchemaKey::NumberInput, "numberInput"},
             {AdaptiveCardSchemaKey::Padding, "padding"},
             {AdaptiveCardSchemaKey::Placeholder, "placeholder"},
@@ -436,6 +440,29 @@ namespace AdaptiveSharedNamespace
         if (textSizeNameToEnumOut != nullptr)
         {
             *textSizeNameToEnumOut = textSizeNameToEnum;
+        }
+    }
+
+    void GetFontStyleEnumMappings(std::unordered_map<FontStyle, std::string, EnumHash>* fontStyleEnumToNameOut,
+                                  std::unordered_map<std::string, FontStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo>* fontStyleNameToEnumOut)
+    {
+        static std::unordered_map<FontStyle, std::string, EnumHash> fontStyleEnumToName = {
+            {FontStyle::Default, "Default"},
+            {FontStyle::Display, "Display"},
+            {FontStyle::Monospace, "Monospace"},
+        };
+
+        static std::unordered_map<std::string, FontStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> fontStyleNameToEnum =
+            GenerateStringToEnumMap<FontStyle>(fontStyleEnumToName);
+
+        if (fontStyleEnumToNameOut != nullptr)
+        {
+            *fontStyleEnumToNameOut = fontStyleEnumToName;
+        }
+
+        if (fontStyleNameToEnumOut != nullptr)
+        {
+            *fontStyleNameToEnumOut = fontStyleNameToEnum;
         }
     }
 
@@ -826,13 +853,36 @@ namespace AdaptiveSharedNamespace
     {
         std::unordered_map<std::string, TextSize, CaseInsensitiveHash, CaseInsensitiveEqualTo> textSizeNameToEnum;
         GetTextSizeEnumMappings(nullptr, &textSizeNameToEnum);
-
         if (textSizeNameToEnum.find(size) == textSizeNameToEnum.end())
         {
             return TextSize::Default;
         }
-
         return textSizeNameToEnum[size];
+    }
+
+    const std::string FontStyleToString(FontStyle style)
+    {
+        std::unordered_map<FontStyle, std::string, EnumHash> fontStyleEnumToName;
+        GetFontStyleEnumMappings(&fontStyleEnumToName, nullptr);
+
+        if (fontStyleEnumToName.find(style) == fontStyleEnumToName.end())
+        {
+            throw std::out_of_range("Invalid FontStyle type");
+        }
+        return fontStyleEnumToName[style];
+    }
+
+    FontStyle FontStyleFromString(const std::string& style)
+    {
+        std::unordered_map<std::string, FontStyle, CaseInsensitiveHash, CaseInsensitiveEqualTo> fontStyleNameToEnum;
+        GetFontStyleEnumMappings(nullptr, &fontStyleNameToEnum);
+
+        if (fontStyleNameToEnum.find(style) == fontStyleNameToEnum.end())
+        {
+            return FontStyle::Default;
+        }
+
+        return fontStyleNameToEnum[style];
     }
 
     const std::string ImageSizeToString(ImageSize size)
@@ -1149,7 +1199,6 @@ namespace AdaptiveSharedNamespace
         }
         return sentimentNameToEnum[sentiment];
     }
-
 }
 
 #ifdef USE_CPPCORECHECK

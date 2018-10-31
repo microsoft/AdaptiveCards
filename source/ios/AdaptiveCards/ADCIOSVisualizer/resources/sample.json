@@ -1,18 +1,52 @@
 {
 	"supportsInteractivity": true,
 	"imageBaseUrl": "https://pbs.twimg.com/profile_images/3647943215/",
-	"fontFamily": "Helvetica Neue",
-	"fontSizes": {
-		"small": 12,
-		"default": 14,
-		"medium": 17,
-		"large": 21,
-		"extraLarge": 26
-	},
-	"fontWeights": {
-		"lighter": 200,
-		"default": 400,
-		"bolder": 700
+	"fontStyles": {
+		"default": {
+			"fontFamily": "San Francisco",
+			"fontSizes": {
+				"small": 12,
+				"default": 14,
+				"medium": 17,
+				"large": 21,
+				"extraLarge": 26
+			},
+			"fontWeights": {
+				"lighter": 200,
+				"default": 400,
+				"bolder": 700
+			}
+		},
+		"display": {
+			"fontFamily": "Times New Roman",
+			"fontSizes": {
+				"small": 12,
+				"default": 14,
+				"medium": 17,
+				"large": 21,
+				"extraLarge": 26
+			},
+			"fontWeights": {
+				"lighter": 200,
+				"default": 400,
+				"bolder": 700
+			}
+		},
+		"monospace": {
+			"fontFamily": "Courier New",
+			"fontSizes": {
+				"small": 12,
+				"default": 14,
+				"medium": 17,
+				"large": 21,
+				"extraLarge": 26
+			},
+			"fontWeights": {
+				"lighter": 200,
+				"default": 400,
+				"bolder": 700
+			}
+		}
 	},
 	"imageSizes": {
 		"small": 40,

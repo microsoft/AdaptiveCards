@@ -79,7 +79,7 @@
     if (!hasExplicitMeasurements){
         size = imgElem->GetImageSize();
         if (size == ImageSize::None) {
-            size = [acoConfig getHostConfig]->image.imageSize;
+            size = [acoConfig getHostConfig]->GetImage().imageSize;
         }
     }
 

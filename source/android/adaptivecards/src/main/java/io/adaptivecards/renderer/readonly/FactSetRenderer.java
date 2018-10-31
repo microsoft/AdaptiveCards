@@ -10,6 +10,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.FontStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
@@ -44,8 +45,8 @@ public class FactSetRenderer extends BaseCardElementRenderer
         textView.setText(text);
 
         TextBlockRenderer.setTextColor(textView, textConfig.getColor(), hostConfig, textConfig.getIsSubtle(), containerStyle);
-        TextBlockRenderer.setTextSize(context, textView, textConfig.getSize(), hostConfig);
-        TextBlockRenderer.getInstance().setTextFormat(textView, hostConfig.getFontFamily(), textConfig.getWeight());
+        TextBlockRenderer.setTextSize(textView, FontStyle.Default, textConfig.getSize(), hostConfig);
+        TextBlockRenderer.getInstance().setTextFormat(textView, hostConfig, FontStyle.Default, textConfig.getWeight());
         textView.setSingleLine(!textConfig.getWrap());
         textView.setMaxWidth(Util.dpToPixels(context, textConfig.getMaxWidth()));
         textView.setEllipsize(TextUtils.TruncateAt.END);
@@ -93,7 +94,7 @@ public class FactSetRenderer extends BaseCardElementRenderer
 
         FactVector factVector = factSet.GetFacts();
         long factVectorSize = factVector.size();
-        long spacing = hostConfig.getFactSet().getSpacing();
+        long spacing = hostConfig.GetFactSet().getSpacing();
 
         for (int i = 0; i < factVectorSize; i++)
         {
@@ -113,11 +114,11 @@ public class FactSetRenderer extends BaseCardElementRenderer
 
             // Handle Title
             String titleWithFormattedDates = parser.GenerateString(fact.GetTitleForDateParsing());
-            factRow.addView(createTextView(context, RendererUtil.handleSpecialText(titleWithFormattedDates), hostConfig.getFactSet().getTitle(), hostConfig, spacing, containerStyle));
+            factRow.addView(createTextView(context, RendererUtil.handleSpecialText(titleWithFormattedDates), hostConfig.GetFactSet().getTitle(), hostConfig, spacing, containerStyle));
 
             // Handle Value
             String valueWithFormattedDates = parser.GenerateString(fact.GetValueForDateParsing());
-            factRow.addView(createTextView(context, RendererUtil.handleSpecialText(valueWithFormattedDates), hostConfig.getFactSet().getValue(), hostConfig, 0, containerStyle));
+            factRow.addView(createTextView(context, RendererUtil.handleSpecialText(valueWithFormattedDates), hostConfig.GetFactSet().getValue(), hostConfig, 0, containerStyle));
 
             tableLayout.addView(factRow);
         }

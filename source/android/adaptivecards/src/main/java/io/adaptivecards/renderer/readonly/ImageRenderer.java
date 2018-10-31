@@ -167,7 +167,7 @@ public class ImageRenderer extends BaseCardElementRenderer
             imageView.setBackgroundColor(backgroundColor);
         }
 
-        ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(renderedCard, imageView, hostConfig.getImageBaseUrl(), image.GetImageStyle(), backgroundColor);
+        ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(renderedCard, imageView, hostConfig.GetImageBaseUrl(), image.GetImageStyle(), backgroundColor);
 
         IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
         if (onlineImageLoader != null)
@@ -255,7 +255,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
         else
         {
-            setImageSize(context, imageView, image.GetImageSize(), hostConfig.getImageSizes());
+            setImageSize(context, imageView, image.GetImageSize(), hostConfig.GetImageSizes());
         }
         boolean isInImageSet = viewGroup instanceof HorizontalFlowLayout;
         setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, !isInImageSet /* horizontal line */, isInImageSet);

@@ -42,7 +42,7 @@ public class MediaLoaderAsync extends AsyncTask<String, Void, Void>
             catch (MalformedURLException e1)
             {
                 // Then try using image base URL to load online
-                String baseUrl = m_hostConfig.getImageBaseUrl();
+                String baseUrl = m_hostConfig.GetImageBaseUrl();
                 try
                 {
                     if (baseUrl == null || baseUrl.isEmpty())

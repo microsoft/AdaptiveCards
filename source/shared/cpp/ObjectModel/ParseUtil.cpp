@@ -283,7 +283,7 @@ namespace AdaptiveSharedNamespace
         Json::Value jsonValue;
         if (!reader.parse(jsonString.c_str(), jsonValue))
         {
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidJson, "Expected JSON Object\n");
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidJson, "Expected JSON Object");
         }
         return jsonValue;
     }
