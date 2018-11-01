@@ -455,7 +455,7 @@ export class CardDesigner {
     }
 	
 	// TODO find the correct monaco type to use 
-    public monacoEditorLoaded(monaco: any) {
+    public monacoEditorLoaded(monaco: any = window["monaco"]) {
 		if(!monaco)
 			monaco = window["monaco"];
 
