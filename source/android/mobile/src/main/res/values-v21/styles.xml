@@ -8,11 +8,6 @@
         <item name="android:colorAccent">@color/actionDestructive</item>
     </style>
 
-    <style name="adaptiveInlineAction" parent="@style/Widget.AppCompat.Button">
-        <!--<item name="colorAccent">@color/actionDestructive</item> -->
-        <item name="android:colorAccent">@color/actionDestructive</item>
-    </style>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
@@ -22,13 +17,13 @@
         <item name="colorButtonNormal">@color/colorPrimary</item>
         <!--<item name="colorControlHighlight">@color/colorAccent</item>-->
         <item name="editTextBackground">@drawable/border</item>
-        <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Colored</item>
+        <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless.Colored</item>
 
         <!-- Example on how to define your own style for Positive and Destructive Actions -->
 
         <item name="adaptiveActionDestructive">@style/adaptiveActionDestructive</item>
         <item name="adaptiveActionPositive">@style/adaptiveActionPositive</item>
-        <item name="adaptiveInlineAction">@style/adaptiveInlineAction</item>
+        <item name="adaptiveInlineAction">@style/Widget.AppCompat.Button.Borderless</item>
 
     </style>
 
