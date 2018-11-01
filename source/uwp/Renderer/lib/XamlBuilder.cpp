@@ -22,6 +22,8 @@
 #include "HtmlHelpers.h"
 #include "DateTimeParser.h"
 #include "MediaHelpers.h"
+#include "Base64.h"
+#include <robuffer.h>
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -532,6 +534,68 @@ namespace AdaptiveNamespace
         // Get the image url scheme
         HString schemeName;
         THROW_IF_FAILED(imageUrl->get_SchemeName(schemeName.GetAddressOf()));
+
+        INT32 isDataUriImage{};
+        THROW_IF_FAILED(WindowsCompareStringOrdinal(schemeName.Get(), HStringReference(L"data").Get(), &isDataUriImage));
+        if (isDataUriImage == 0)
+        {
+            // Decode base 64 string
+            HString dataPath;
+            THROW_IF_FAILED(imageUrl->get_Path(dataPath.GetAddressOf()));
+
+            std::string data = Base64::ExtractDataFromUri(HStringToUTF8(dataPath.Get()));
+            std::string decodedData = Base64::Decode(data);
+
+            ComPtr<IBufferFactory> bufferFactory;
+            THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Storage_Streams_Buffer).Get(), bufferFactory.GetAddressOf()));
+
+            ComPtr<IBuffer> buffer;
+            THROW_IF_FAILED(bufferFactory->Create(decodedData.length(), buffer.GetAddressOf()));
+
+            ComPtr<::Windows::Storage::Streams::IBufferByteAccess> bufferByteAccess;
+            THROW_IF_FAILED(buffer.As(&bufferByteAccess));
+
+            BYTE* dataInternal = nullptr;
+            THROW_IF_FAILED(bufferByteAccess->Buffer(&dataInternal));
+
+            CopyMemory(dataInternal, decodedData.data(), decodedData.length());
+            THROW_IF_FAILED(buffer->put_Length(decodedData.length()));
+          
+            ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(
+                HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
+            THROW_IF_FAILED(bitmapImage->put_CreateOptions(BitmapCreateOptions::BitmapCreateOptions_None));
+            ComPtr<IBitmapSource> bitmapSource;
+            THROW_IF_FAILED(bitmapImage.As(&bitmapSource));
+
+            ComPtr<IRandomAccessStream> randomAccessStream = XamlHelpers::CreateXamlClass<IRandomAccessStream>(
+                HStringReference(RuntimeClass_Windows_Storage_Streams_InMemoryRandomAccessStream));
+
+            ComPtr<IOutputStream> outputStream;
+            THROW_IF_FAILED(randomAccessStream.As(&outputStream));
+
+            ComPtr<IAsyncOperationWithProgress<UINT32, UINT32>> bufferWriteOperation;
+            THROW_IF_FAILED(outputStream->WriteAsync(buffer.Get(), &bufferWriteOperation));
+            
+            ComPtr<T> strongImageControl(uiElement);
+            ComPtr<XamlBuilder> strongThis(this);
+            THROW_IF_FAILED(bufferWriteOperation->put_Completed(
+                Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<UINT32, UINT32>>>(
+                    [strongThis, this, bitmapSource, randomAccessStream, strongImageControl](
+                        IAsyncOperationWithProgress<UINT32, UINT32>* /*operation*/, AsyncStatus /*status*/)->HRESULT {
+
+                        randomAccessStream->Seek(0);
+                        RETURN_IF_FAILED(bitmapSource->SetSource(randomAccessStream.Get()));
+
+                        ComPtr<IImageSource> imageSource;
+                        RETURN_IF_FAILED(bitmapSource.As(&imageSource));
+
+                        SetImageSource(strongImageControl.Get(), imageSource.Get());
+                        return S_OK;
+                    })
+                    .Get()));
+            m_writeAsyncOperations.push_back(bufferWriteOperation);
+            return;
+        }
 
         // Get the resolver for the image
         ComPtr<IAdaptiveCardResourceResolver> resolver;
@@ -1708,6 +1772,8 @@ namespace AdaptiveNamespace
                 XamlHelpers::CreateXamlClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
 
             Stretch stretch = (isAspectRatioNeeded) ? Stretch::Stretch_Fill : Stretch::Stretch_UniformToFill;
+
+            // only do this if image is from uri
             SetImageOnUIElement(imageUrl.Get(), ellipse.Get(), resourceResolvers.Get(), stretch);
 
             ComPtr<IShape> ellipseAsShape;
