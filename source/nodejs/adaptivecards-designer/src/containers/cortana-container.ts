@@ -1,5 +1,5 @@
 import * as Adaptive from "adaptivecards";
-import * as Designer from "adaptivecards-designer";
+import * as Designer from "../adaptivecards-designer";
 
 export class CortanaContainer extends Designer.HostContainer {
     public renderTo(hostElement: HTMLElement) {

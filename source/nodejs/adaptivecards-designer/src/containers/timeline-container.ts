@@ -1,5 +1,5 @@
 import * as Adaptive from "adaptivecards";
-import * as Designer from "adaptivecards-designer";
+import * as Designer from "../adaptivecards-designer";
 
 export class TimelineContainer extends Designer.HostContainer {
     public initialize() {
