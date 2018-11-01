@@ -1,33 +1,44 @@
 package io.adaptivecards.renderer.input;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.method.MovementMethod;
-import android.text.method.ScrollingMovementMethod;
-import android.view.KeyEvent;
+import android.util.TypedValue;
+import android.view.ContextThemeWrapper;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.Scroller;
-import android.widget.TextView;
 
+import io.adaptivecards.R;
+import io.adaptivecards.objectmodel.ActionMode;
+import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.objectmodel.IconPlacement;
+import io.adaptivecards.objectmodel.Sentiment;
+import io.adaptivecards.objectmodel.ShowCardAction;
 import io.adaptivecards.renderer.AdaptiveWarning;
+import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.inputhandler.IInputHandler;
-import io.adaptivecards.renderer.inputhandler.IInputWatcher;
+
 import io.adaptivecards.renderer.inputhandler.TextInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.TextInput;
@@ -36,8 +47,6 @@ import io.adaptivecards.objectmodel.TextInputStyle;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
-import java.util.Vector;
-import java.util.zip.CheckedOutputStream;
 
 public class TextInputRenderer extends BaseCardElementRenderer
 {
@@ -152,6 +161,69 @@ public class TextInputRenderer extends BaseCardElementRenderer
             }
         });
 
+        TextInput textInput = (TextInput)baseInputElement;
+        BaseActionElement action = textInput.GetInlineAction();
+        boolean supportsInteractivity = hostConfig.getSupportsInteractivity();
+
+        LinearLayout textInputViewGroup = null;
+        if(action != null)
+        {
+            if (hostConfig.getActions().getShowCard().getActionMode() == ActionMode.Inline &&
+                (textInput.GetInlineAction() instanceof ShowCardAction))
+            {
+                renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INTERACTIVITY_DISALLOWED, "Inline ShowCard not supported for InlineAction"));
+            }
+            else
+            {
+                textInputViewGroup = new LinearLayout(context);
+                textInputViewGroup.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+                editText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+                textInputViewGroup.addView(editText);
+
+                String title =  action.GetTitle(), url = action.GetIconUrl();
+                if(url != null && !url.isEmpty())
+                {
+                    //private Button createButtonWithTheme(Context context, int theme)
+                    //{
+                    //    Context themedContext = new ContextThemeWrapper(context, theme);
+                    //    return new Button(themedContext);
+                    //}
+
+                    Resources.Theme theme = context.getTheme();
+                    TypedValue buttonStyle = new TypedValue();
+
+                    ImageButton inlineButton = null;
+
+                    if(theme.resolveAttribute(R.attr.adaptiveInlineAction, buttonStyle, true))
+                    {
+                        //return createButtonWithTheme(context, buttonStyle.data);
+                        Context themedContext = new ContextThemeWrapper(context, buttonStyle.data);
+                        inlineButton = new ImageButton(themedContext);
+                    }
+                    else
+                    {
+                        inlineButton = new ImageButton(context);
+                    }
+
+                    InlineActionIconImageLoaderAsync imageLoader =
+                        new InlineActionIconImageLoaderAsync(
+                            renderedCard,
+                            inlineButton,
+                            url,
+                            editText
+                        );
+                    imageLoader.execute(url);
+                    textInputViewGroup.addView(inlineButton);
+                    textInputViewGroup.setGravity(Gravity.BOTTOM);
+                }
+                else
+                {
+                    Button inlineButton = new Button(context);
+                    inlineButton.setText(title);
+                    textInputViewGroup.addView(inlineButton);
+                }
+            }
+        }
         if(baseInputElement.GetHeight() == HeightType.Stretch)
         {
             LinearLayout containerLayout = new LinearLayout(context);
@@ -162,7 +234,15 @@ public class TextInputRenderer extends BaseCardElementRenderer
         }
         else
         {
-            viewGroup.addView(editText);
+            if(textInputViewGroup != null)
+            {
+                viewGroup.addView(textInputViewGroup);
+            }
+            else
+            {
+                editText.setPadding(0,0,0,0);
+                viewGroup.addView(editText);
+            }
         }
         return editText;
     }
@@ -222,6 +302,43 @@ public class TextInputRenderer extends BaseCardElementRenderer
         }
 
         return editText;
+    }
+
+    private class InlineActionIconImageLoaderAsync extends InnerImageLoaderAsync
+    {
+        private EditText m_editText;
+
+        protected InlineActionIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String url, EditText editText)
+        {
+            super(renderedCard, containerView, url);
+            m_editText = editText;
+        }
+/*
+        @Override
+        protected Bitmap styleBitmap(Bitmap bitmap)
+        {
+            Drawable originalDrawableIcon = new BitmapDrawable(null, bitmap);
+
+            double imageHeight = m_editText.getLineHeight() + m_editText.getLineSpacingExtra();
+            double scaleRatio = imageHeight / originalDrawableIcon.getIntrinsicHeight();
+            double imageWidth = scaleRatio * originalDrawableIcon.getIntrinsicWidth();
+
+            return Bitmap.createScaledBitmap(bitmap, (int)imageWidth, (int)imageHeight, false);
+        }
+        */
+
+        @Override
+        protected void renderBitmap(Bitmap bitmap)
+        {
+            ImageButton button = (ImageButton) super.m_view;
+            Drawable drawableIcon = new BitmapDrawable(null, bitmap);
+
+            double editTextHeight = (m_editText.getLineHeight() + (int) m_editText.getLineSpacingExtra()) * 2.5;
+            double intrinsicWidth = drawableIcon.getIntrinsicHeight();
+            double scaleRatio = (editTextHeight )/ drawableIcon.getIntrinsicHeight();
+            double imageWidth = scaleRatio * drawableIcon.getIntrinsicWidth();
+            button.setImageDrawable(new BitmapDrawable(null, Bitmap.createScaledBitmap(bitmap, (int)imageWidth, (int)editTextHeight, false)));
+        }
     }
 
     private static TextInputRenderer s_instance = null;

@@ -2,4 +2,5 @@
 <resources>
     <attr name="adaptiveActionPositive" format="reference" />
     <attr name="adaptiveActionDestructive" format="reference" />
+    <attr name="adaptiveInlineAction" format="reference" />
 </resources>
