@@ -747,9 +747,7 @@ export class CardDesigner {
         new Clipboard(
             this._copyJSONButton.renderedElement,
             {
-                text: function () {
-                    return JSON.stringify(this.card.toJSON(), null, 4);
-                }
+                text: (trigger) => { return JSON.stringify(this.card.toJSON(), null, 4); }
             });
         
         // Tool palette pane
