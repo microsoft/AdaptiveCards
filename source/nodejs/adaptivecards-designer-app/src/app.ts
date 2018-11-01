@@ -1,11 +1,11 @@
 import * as Designer from "adaptivecards-designer";
-import { WebChatContainer } from "./containers/webchat-container";
-import { CortanaContainer } from "./containers/cortana-container";
-import { OutlookContainer } from "./containers/outlook-container";
-import { TimelineContainer } from "./containers/timeline-container";
-import { DarkTeamsContainer, LightTeamsContainer } from "./containers/teams-container";
-import { BotFrameworkContainer } from "./containers/bf-image-container";
-import { ToastContainer } from "./containers/toast-container";
+// import { WebChatContainer } from "./containers/webchat-container";
+// import { CortanaContainer } from "./containers/cortana-container";
+// import { OutlookContainer } from "./containers/outlook-container";
+// import { TimelineContainer } from "./containers/timeline-container";
+// import { DarkTeamsContainer, LightTeamsContainer } from "./containers/teams-container";
+// import { BotFrameworkContainer } from "./containers/bf-image-container";
+// import { ToastContainer } from "./containers/toast-container";
 import "./app.css";
 import "adaptivecards/dist/adaptivecards-default.css";
 import "adaptivecards-controls/dist/adaptivecards-controls.css";
@@ -21,14 +21,14 @@ window.onload = () => {
     // uses a default built-in host container, and the host container pixker in the
     // toolbar is hidden.
     let hostContainers: Array<Designer.HostContainer> = [];
-    hostContainers.push(new WebChatContainer("Bot Framework WebChat", "css/webchat-container.css"));
-    hostContainers.push(new CortanaContainer("Cortana Skills", "css/cortana-container.css"));
-    hostContainers.push(new OutlookContainer("Outlook Actionable Messages", "css/outlook-container.css"));
-    hostContainers.push(new TimelineContainer("Windows Timeline", "css/timeline-container.css"));
-    hostContainers.push(new DarkTeamsContainer("Microsoft Teams - Dark", "css/teams-container-dark.css"));
-    hostContainers.push(new LightTeamsContainer("Microsoft Teams - Light", "css/teams-container-light.css"));
-    hostContainers.push(new BotFrameworkContainer("Bot Framework Other Channels (Image render)", "css/bf-image-container.css"));
-    hostContainers.push(new ToastContainer("Windows Notifications (Preview)", "css/toast-container.css"));
+    // hostContainers.push(new WebChatContainer("Bot Framework WebChat", "css/webchat-container.css"));
+    // hostContainers.push(new CortanaContainer("Cortana Skills", "css/cortana-container.css"));
+    // hostContainers.push(new OutlookContainer("Outlook Actionable Messages", "css/outlook-container.css"));
+    // hostContainers.push(new TimelineContainer("Windows Timeline", "css/timeline-container.css"));
+    // hostContainers.push(new DarkTeamsContainer("Microsoft Teams - Dark", "css/teams-container-dark.css"));
+    // hostContainers.push(new LightTeamsContainer("Microsoft Teams - Light", "css/teams-container-light.css"));
+    // hostContainers.push(new BotFrameworkContainer("Bot Framework Other Channels (Image render)", "css/bf-image-container.css"));
+    // hostContainers.push(new ToastContainer("Windows Notifications (Preview)", "css/toast-container.css"));
 
     let designer = new Designer.CardDesigner(hostContainers);
 

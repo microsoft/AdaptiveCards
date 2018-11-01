@@ -14,8 +14,6 @@ import { IPoint } from "./miscellaneous";
 import { BasePaletteItem, ElementPaletteItem } from "./tool-palette";
 import { DefaultContainer } from "./containers/default-container";
 
-// TODO Change to import once typing error goes away
-//require("./adaptivecards-designer.css");
 import "./adaptivecards-designer.css";
 //import "./app.css";
 import "adaptivecards/dist/adaptivecards-default.css";
@@ -455,9 +453,12 @@ export class CardDesigner {
 		// If loaded using WebPack this should work, but it's not right now...
 		//callback();
     }
-    
-    
-    public monacoEditorLoaded() {
+	
+	// TODO find the correct monaco type to use 
+    public monacoEditorLoaded(monaco: any) {
+		if(!monaco)
+			monaco = window["monaco"];
+
         let monacoConfiguration = {
             schemas: [
                 {
@@ -469,15 +470,12 @@ export class CardDesigner {
             validate: false,
             allowComments: true
         }
-
-        window["monaco"].languages.json.jsonDefaults.setDiagnosticsOptions(monacoConfiguration);
     
 		this._jsonEditorPane.content = document.createElement("div");
 		
-		// This use to be window["monaco"]
+        monaco.languages.json.jsonDefaults.setDiagnosticsOptions(monacoConfiguration);
 
-		// TODO: when import monaco works change to monaco.editor.create
-        this._monacoEditor = window["monaco"].editor.create(
+        this._monacoEditor = monaco.editor.create(
             this._jsonEditorPane.content,
             {
                 folding: true,

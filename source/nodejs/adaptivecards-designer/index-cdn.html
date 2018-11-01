@@ -15,15 +15,15 @@
 				console.log("Local storage is not available.");
 			}
 
+
 			// Prepare a list of host containers
 			// This is not required. When no list is passed (empty array or null), the designer
 			// uses a default built-in host container, and the host container picker in the
 			// toolbar is hidden.
 			let hostContainers = [];
-			hostContainers.push(new WebChatContainer("Bot Framework WebChat", "https://unpkg.com/adaptivecards-designer@0.1.0-alpha1/dist/css/webchat-container.css"));
 
-			let designer = new ACDesigner.CardDesigner(hostContainers, "https://unpkg.com/adaptivecards-designer@0.1.0-alpha1/dist");
-
+			let designer = new ACDesigner.CardDesigner(hostContainers);
+		
 			/* Here's how to add buttons to the toolbar:
 
 			designer.toolbar.addElement(new ToolbarSeparator());
@@ -69,7 +69,7 @@
 
 			// NOTE: Collapsing panes/setting the card payload must be done AFTER the designer is attached
 
-			require.config({ paths: { 'vs': 'https://unpkg.com/adaptivecards-designer@0.1.0-alpha1/dist/monaco-editor/min/vs' } });
+			require.config({ paths: { 'vs': 'monaco-editor/min/vs' } });
 			require(['vs/editor/editor.main'], function () {
 				designer.monacoEditorLoaded();
 			});
