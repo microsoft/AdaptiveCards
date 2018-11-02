@@ -4,9 +4,9 @@
 <head>
 	<title>Adaptive Cards Designer</title>
 	<script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.min.js"></script>
-	<script src="https://unpkg.com/adaptivecards-designer@0.1.0-alpha1/dist/monaco-editor/min/vs/loader.js"></script>
+	<script src="https://unpkg.com/adaptivecards-designer@0.1.0-alpha2/dist/monaco-editor/min/vs/loader.js"></script>
 
-	<script src="https://unpkg.com/adaptivecards-designer@0.1.0-alpha1/dist/adaptivecards-designer.min.js"></script>
+	<script src="https://unpkg.com/adaptivecards-designer@0.1.0-alpha2/dist/adaptivecards-designer.min.js"></script>
 
 	<script type="text/javascript">
 		window.onload = () => {
@@ -29,7 +29,7 @@
 			hostContainers.push(new ACDesigner.ToastContainer("Windows Notifications (Preview)", "containers/toast-container.css"));
 
 			let designer = new ACDesigner.CardDesigner(hostContainers);
-			designer.assetPath = "https://unpkg.com/adaptivecards-designer@0.1.0-alpha1/dist";
+			designer.assetPath = "https://unpkg.com/adaptivecards-designer@0.1.0-alpha2/dist";
 
 			/* Here's how to add buttons to the toolbar:
 
@@ -76,7 +76,7 @@
 
 			// NOTE: Collapsing panes/setting the card payload must be done AFTER the designer is attached
 
-			require.config({ paths: { 'vs': 'https://unpkg.com/adaptivecards-designer@0.1.0-alpha1/dist/monaco-editor/min/vs' } });
+			require.config({ paths: { 'vs': 'https://unpkg.com/adaptivecards-designer@0.1.0-alpha2/dist/monaco-editor/min/vs' } });
 			require(['vs/editor/editor.main'], function () {
 				designer.monacoEditorLoaded();
 			});
