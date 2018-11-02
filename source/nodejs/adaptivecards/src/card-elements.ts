@@ -91,37 +91,6 @@ export interface IValidationError {
     message: string;
 }
 
-export class SizeAndUnit {
-    physicalSize: number;
-    unit: Enums.SizeUnit;
-
-    static parse(input: any): SizeAndUnit {
-        let result = new SizeAndUnit(0, Enums.SizeUnit.Weight);
-
-        let regExp = /^([0-9]+)(px|\*)?$/g;
-        let matches = regExp.exec(input);
-
-        if (matches && matches.length >= 2) {
-            result.physicalSize = parseInt(matches[1]);
-
-            if (matches.length == 3) {
-                if (matches[2] == "px") {
-                    result.unit = Enums.SizeUnit.Pixel;
-                }
-            }
-
-            return result;
-        }
-
-        throw new Error("Invalid size: " + input);
-    }
-
-    constructor(physicalSize: number, unit: Enums.SizeUnit) {
-        this.physicalSize = physicalSize;
-        this.unit = unit;
-    }
-}
-
 export interface IResourceInformation {
     url: string;
     mimeType: string;
@@ -4486,7 +4455,7 @@ export class Column extends Container {
             renderedElement.style.flex = "1 1 50px";
         }
         else {
-            let sizeAndUnit = <SizeAndUnit>this.width;
+            let sizeAndUnit = <Utils.SizeAndUnit>this.width;
 
             if (sizeAndUnit.unit == Enums.SizeUnit.Pixel) {
                 renderedElement.style.flex = "0 0 " + sizeAndUnit.physicalSize + "px";
@@ -4516,7 +4485,7 @@ export class Column extends Container {
     toJSON() {
         let result = super.toJSON();
 
-        if (this.width instanceof SizeAndUnit) {
+        if (this.width instanceof Utils.SizeAndUnit) {
             if (this.width.unit == Enums.SizeUnit.Pixel) {
                 Utils.setProperty(result, "width", this.width.physicalSize + "px");
             }
@@ -4552,36 +4521,23 @@ export class Column extends Container {
 
         var invalidWidth = false;
 
-        if (typeof jsonWidth === "number") {
-            if (jsonWidth > 0) {
-                this.width = new Utils.SizeAndUnit(jsonWidth, Enums.SizeUnit.Weight);
+        try {
+            this.width = Utils.SizeAndUnit.parse(jsonWidth);
+        }
+        catch (e) {
+            if (typeof jsonWidth === "string" && (jsonWidth === "auto" || jsonWidth === "stretch")) {
+                this.width = jsonWidth;
             }
             else {
                 invalidWidth = true;
             }
-        }
-        else if (typeof jsonWidth === "string") {
-            if (jsonWidth != "auto" && jsonWidth != "stretch") {
-                try {
-                    this.width = Utils.SizeAndUnit.parse(jsonWidth);
-                }
-                catch (e) {
-                    invalidWidth = true;
-                }
-            }
-            else {
-                this.width = jsonWidth;
-            }
-        }
-        else if (jsonWidth) {
-            invalidWidth = true;
         }
 
         if (invalidWidth) {
             raiseParseError(
                 {
                     error: Enums.ValidationError.InvalidPropertyValue,
-                    message: "Invalid column width: " + jsonWidth
+                    message: "Invalid column width:" + jsonWidth + " - defaulting to \"auto\""
                 },
                 errors
             );
