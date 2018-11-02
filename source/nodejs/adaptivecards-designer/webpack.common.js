@@ -2,10 +2,12 @@ const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
 	entry: {
 		"adaptivecards-designer": "./src/adaptivecards-designer.ts",
+		//"microsoft-hosts": "./src/containers/index.ts"
 	},
 	output: {
 		path: path.resolve(__dirname, "./dist"),
@@ -39,7 +41,23 @@ module.exports = {
 	plugins: [
 		new MiniCssExtractPlugin({
 			filename: '[name].css'
-		})
+		}),
+		new CopyWebpackPlugin([{
+				from: 'src/containers/**/*.css',
+				to: 'containers/',
+				flatten: true
+			},
+			{
+				from: 'src/containers/**/*.png',
+				to: 'containers/',
+				flatten: true
+			},
+			{
+				from: 'src/containers/**/*.jpg',
+				to: 'containers/',
+				flatten: true
+			}
+		])
 	],
 	externals: {
 		//"adaptivecards": "AdaptiveCards",

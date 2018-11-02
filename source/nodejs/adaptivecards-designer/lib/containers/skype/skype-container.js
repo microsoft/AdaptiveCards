@@ -1,18 +1,43 @@
-import * as Adaptive from "adaptivecards";
-import * as Designer from "../adaptivecards-designer";
-
-export class WebChatContainer extends Designer.HostContainer {
-    public renderTo(hostElement: HTMLElement) {
-        this.cardHost.classList.add("webChatOuterContainer");
-
-        let frame = document.createElement("div");
-        frame.className = "webChatInnerContainer";
-        frame.appendChild(this.cardHost);
-
-        hostElement.appendChild(frame);
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
     }
-
-    public getHostConfig(): Adaptive.HostConfig {
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Adaptive = require("adaptivecards");
+var Designer = require("../../adaptivecards-designer");
+var SkypeContainer = /** @class */ (function (_super) {
+    __extends(SkypeContainer, _super);
+    function SkypeContainer() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    SkypeContainer.prototype.renderTo = function (hostElement) {
+        this.cardHost.classList.add("skype-card");
+        var frame = document.createElement("div");
+        frame.className = "skype-frame";
+        // Draw the hexagon bot logo
+        var hexagonOuter = document.createElement("div");
+        hexagonOuter.className = "skype-hexagon-outer";
+        var hexagonInner = document.createElement("div");
+        hexagonInner.className = "skype-hexagon-inner";
+        var botLogo = document.createElement("div");
+        botLogo.className = "skype-bot-logo";
+        hexagonOuter.appendChild(hexagonInner);
+        hexagonInner.appendChild(botLogo);
+        frame.appendChild(hexagonOuter);
+        frame.appendChild(this.cardHost);
+        hostElement.appendChild(frame);
+    };
+    SkypeContainer.prototype.getHostConfig = function () {
         return new Adaptive.HostConfig({
             spacing: {
                 small: 3,
@@ -42,7 +67,7 @@ export class WebChatContainer extends Designer.HostContainer {
             },
             containerStyles: {
                 default: {
-                    backgroundColor: "#FFFFFF",
+                    backgroundColor: "#EAEAEA",
                     foregroundColors: {
                         default: {
                             default: "#333333",
@@ -102,11 +127,11 @@ export class WebChatContainer extends Designer.HostContainer {
                 spacing: Adaptive.Spacing.Default,
                 buttonSpacing: 10,
                 showCard: {
-                    actionMode: Adaptive.ShowCardActionMode.Inline,
+                    actionMode: Adaptive.ShowCardActionMode.Popup,
                     inlineTopMargin: 16
                 },
-                actionsOrientation: Adaptive.Orientation.Horizontal,
-                actionAlignment: Adaptive.ActionAlignment.Left
+                actionsOrientation: Adaptive.Orientation.Vertical,
+                actionAlignment: Adaptive.ActionAlignment.Stretch
             },
             adaptiveCard: {
                 allowCustomStyle: false
@@ -122,17 +147,20 @@ export class WebChatContainer extends Designer.HostContainer {
                     isSubtle: false,
                     weight: Adaptive.TextWeight.Bolder,
                     wrap: true,
-                    maxWidth: 150
+                    maxWidth: 150,
                 },
                 value: {
                     color: Adaptive.TextColor.Default,
                     size: Adaptive.TextSize.Default,
                     isSubtle: false,
                     weight: Adaptive.TextWeight.Default,
-                    wrap: true
+                    wrap: true,
                 },
-                spacing: 10
+                spacing: 5
             }
         });
-    }
-}
+    };
+    return SkypeContainer;
+}(Designer.HostContainer));
+exports.SkypeContainer = SkypeContainer;
+//# sourceMappingURL=skype-container.js.map

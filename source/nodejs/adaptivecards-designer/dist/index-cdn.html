@@ -20,9 +20,10 @@
 			// uses a default built-in host container, and the host container picker in the
 			// toolbar is hidden.
 			let hostContainers = [];
-			hostContainers.push(new WebChatContainer("Bot Framework WebChat", "https://unpkg.com/adaptivecards-designer@0.1.0-alpha1/dist/css/webchat-container.css"));
+			hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
 
 			let designer = new ACDesigner.CardDesigner(hostContainers);
+			designer.assetPath = "https://unpkg.com/adaptivecards-designer@0.1.0-alpha1/dist";
 
 			/* Here's how to add buttons to the toolbar:
 

@@ -27,6 +27,7 @@
 		"babel-core": "^6.26.3",
 		"babel-loader": "^8.0.4",
 		"clean-webpack-plugin": "^0.1.19",
+		"copy-webpack-plugin": "^4.6.0",
 		"css-loader": "^1.0.0",
 		"dts-generator": "^2.1.0",
 		"json-loader": "0.5.4",

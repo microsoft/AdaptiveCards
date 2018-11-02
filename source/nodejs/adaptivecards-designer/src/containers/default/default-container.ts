@@ -1,4 +1,4 @@
-import { HostContainer } from "./host-container";
+import { HostContainer } from "../host-container";
 
 export class DefaultContainer extends HostContainer {
     public renderTo(hostElement: HTMLElement) {

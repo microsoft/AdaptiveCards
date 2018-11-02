@@ -26,6 +26,7 @@
 		"awesome-typescript-loader": "^5.2.1",
 		"babel-jest": "^21.2.0",
 		"clean-webpack-plugin": "^0.1.19",
+		"copy-webpack-plugin": "^4.6.0",
 		"css-loader": "^1.0.0",
 		"dts-generator": "^2.1.0",
 		"html-webpack-plugin": "^3.2.0",

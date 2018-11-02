@@ -1,36 +1,48 @@
-import * as Adaptive from "adaptivecards";
-import * as Designer from "../adaptivecards-designer";
-
-export class TimelineContainer extends Designer.HostContainer {
-    public initialize() {
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Adaptive = require("adaptivecards");
+var Designer = require("../../adaptivecards-designer");
+var TimelineContainer = /** @class */ (function (_super) {
+    __extends(TimelineContainer, _super);
+    function TimelineContainer() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    TimelineContainer.prototype.initialize = function () {
         Adaptive.AdaptiveCard.elementTypeRegistry.reset();
         Adaptive.AdaptiveCard.actionTypeRegistry.reset();
-        
         Adaptive.AdaptiveCard.useAutomaticContainerBleeding = false;
         Adaptive.AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = true;
         Adaptive.AdaptiveCard.useAdvancedCardBottomTruncation = false;
         Adaptive.AdaptiveCard.useAdvancedTextBlockTruncation = true;
-    }
-
-    public renderTo(hostElement: HTMLElement) {
-        let target = document.getElementById("designerHost");
-        let frame = document.createElement("div");
+    };
+    TimelineContainer.prototype.renderTo = function (hostElement) {
+        var target = document.getElementById("designerHost");
+        var frame = document.createElement("div");
         frame.className = "timeline-frame";
         target.appendChild(frame);
-
-        let cardContainer = document.createElement("div");
+        var cardContainer = document.createElement("div");
         cardContainer.className = "timeline-card";
         frame.appendChild(cardContainer);
-
         this.cardHost.style.height = "100%";
         this.cardHost.style.width = "100%";
         this.cardHost.style.overflow = "hidden";
-
         cardContainer.appendChild(this.cardHost);
         hostElement.appendChild(frame);
-    }
-
-    public getHostConfig(): Adaptive.HostConfig {
+    };
+    TimelineContainer.prototype.getHostConfig = function () {
         return new Adaptive.HostConfig({
             spacing: {
                 small: 4,
@@ -152,5 +164,8 @@ export class TimelineContainer extends Designer.HostContainer {
                 spacing: 10
             }
         });
-    }
-}
+    };
+    return TimelineContainer;
+}(Designer.HostContainer));
+exports.TimelineContainer = TimelineContainer;
+//# sourceMappingURL=timeline-container.js.map

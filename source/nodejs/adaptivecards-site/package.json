@@ -34,5 +34,8 @@
     "marked-schema": "^0.1.4",
     "minimist": "^1.2.0",
     "monaco-editor": "^0.14.3"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^4.6.0"
   }
 }

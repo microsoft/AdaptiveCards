@@ -22,8 +22,20 @@
 			// toolbar is hidden.
 			let hostContainers = [];
 
+			hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
+			hostContainers.push(new ACDesigner.CortanaContainer("Cortana Skills", "containers/cortana-container.css"));
+			hostContainers.push(new ACDesigner.OutlookContainer("Outlook Actionable Messages", "containers/outlook-container.css"));
+			hostContainers.push(new ACDesigner.TimelineContainer("Windows Timeline", "containers/timeline-container.css"));
+			hostContainers.push(new ACDesigner.DarkTeamsContainer("Microsoft Teams - Dark", "containers/teams-container-dark.css"));
+			hostContainers.push(new ACDesigner.LightTeamsContainer("Microsoft Teams - Light", "containers/teams-container-light.css"));
+			hostContainers.push(new ACDesigner.BotFrameworkContainer("Bot Framework Other Channels (Image render)", "containers/bf-image-container.css"));
+			hostContainers.push(new ACDesigner.ToastContainer("Windows Notifications (Preview)", "containers/toast-container.css"));
+
 			let designer = new ACDesigner.CardDesigner(hostContainers);
-		
+			
+			// Change where the designer looks for assets like CSS and container images
+			//designer.assetPath = "http://localhost:8080/";
+
 			/* Here's how to add buttons to the toolbar:
 
 			designer.toolbar.addElement(new ToolbarSeparator());
@@ -69,7 +81,11 @@
 
 			// NOTE: Collapsing panes/setting the card payload must be done AFTER the designer is attached
 
-			require.config({ paths: { 'vs': 'monaco-editor/min/vs' } });
+			require.config({
+				paths: {
+					'vs': 'monaco-editor/min/vs'
+				}
+			});
 			require(['vs/editor/editor.main'], function () {
 				designer.monacoEditorLoaded();
 			});

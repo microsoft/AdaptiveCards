@@ -3,6 +3,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"devDependencies": {
+		"copy-webpack-plugin": "^4.6.0",
 		"grunt": "~0.4.2",
 		"grunt-contrib-clean": "~0.5.0",
 		"grunt-contrib-copy": "~0.4.1",

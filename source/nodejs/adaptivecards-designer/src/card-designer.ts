@@ -10,12 +10,11 @@ import { FullScreenHandler } from "./fullscreen-handler";
 import { Toolbar, ToolbarButton, ToolbarSeparator, ToolbarLabel, ToolbarChoicePicker } from "./toolbar";
 import { SidePane, SidePaneOrientation } from "./side-pane";
 import { Splitter } from "./splitter";
-import { IPoint } from "./miscellaneous";
+import { IPoint, Utils } from "./miscellaneous";
 import { BasePaletteItem, ElementPaletteItem } from "./tool-palette";
-import { DefaultContainer } from "./containers/default-container";
+import { DefaultContainer } from "./containers/default/default-container";
 
 import "./adaptivecards-designer.css";
-//import "./app.css";
 import "adaptivecards/dist/adaptivecards-default.css";
 import "adaptivecards-controls/dist/adaptivecards-controls.css";
 
@@ -38,7 +37,8 @@ export class CardDesigner {
     private _toolPalettePane: SidePane;
     private _jsonEditorPane: SidePane;
     private _propertySheetPane: SidePane;
-    private _treeViewPane: SidePane;
+	private _treeViewPane: SidePane;
+	private _assetPath: string;
 
     private buildTreeView() {
         if (this._treeViewPane.content) {
@@ -203,8 +203,9 @@ export class CardDesigner {
         }
 
         styleSheetLinkElement.rel = "stylesheet";
-        styleSheetLinkElement.type = "text/css";
-        styleSheetLinkElement.href = this.activeHostContainer.styleSheet;
+		styleSheetLinkElement.type = "text/css";
+		
+        styleSheetLinkElement.href = Utils.joinPaths(this._assetPath, this.activeHostContainer.styleSheet);
 
         let designerBackground = document.getElementById("designerBackground");
 
@@ -703,7 +704,7 @@ export class CardDesigner {
             this._activeHostContainer = this._hostContainers[0];
         }
         else {
-            this._activeHostContainer = new DefaultContainer("Default", "./css/default-container.css");
+            this._activeHostContainer = new DefaultContainer("Default", "default-container.css");
         }
 
         root.style.flex = "1 1 auto";
@@ -970,5 +971,13 @@ export class CardDesigner {
 
     get toolPalettePane(): SidePane {
         return this._toolPalettePane;
-    }
+	}
+	
+	get assetPath(): string {
+		return this._assetPath;
+	}
+		
+	set assetPath(value: string) {
+		this._assetPath = value;
+	}
 }

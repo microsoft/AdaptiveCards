@@ -12,4 +12,4 @@ export * from "./toolbar";
 export * from "./tool-palette";
 export * from "./splitter";
 export * from "./treeitem";
-export * from "./containers/host-container";
+export * from "./containers/index";

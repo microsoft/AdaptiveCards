@@ -20,7 +20,7 @@ window.onload = () => {
     // This is not required. When no list is passed (empty array or null), the designer
     // uses a default built-in host container, and the host container pixker in the
     // toolbar is hidden.
-    let hostContainers: Array<Designer.HostContainer> = [];
+	let hostContainers: Array<Designer.HostContainer> = [];
     // hostContainers.push(new WebChatContainer("Bot Framework WebChat", "css/webchat-container.css"));
     // hostContainers.push(new CortanaContainer("Cortana Skills", "css/cortana-container.css"));
     // hostContainers.push(new OutlookContainer("Outlook Actionable Messages", "css/outlook-container.css"));
