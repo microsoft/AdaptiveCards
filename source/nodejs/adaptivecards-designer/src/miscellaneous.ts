@@ -37,17 +37,18 @@ export class Rect {
 }
 
 export class Utils {
-
 	public static joinPaths(...args: string[]) {
-		return args.map((part, i) => {
-			if(!part)
-				part = "";
-			if (i === 0) {
-				return part.trim().replace(/[\/]*$/g, '')
-			} else {
-				return part.trim().replace(/(^[\/]*|[\/]*$)/g, '')
-			}
-		}).filter(x => x.length).join('/')
+		return args.map(
+			(part, i) => {
+				if (!part) {
+					part = "";
+				}
+			
+				if (i === 0) {
+					return part.trim().replace(/[\/]*$/g, '')
+				} else {
+					return part.trim().replace(/(^[\/]*|[\/]*$)/g, '')
+				}
+			}).filter(x => x.length).join('/')
 	}
-
 }
