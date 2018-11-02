@@ -14,6 +14,11 @@
     <SolidColorBrush x:Key="Adaptive.Action.Destructive.Button.Foreground" Color="#FF838383"/>
     <SolidColorBrush x:Key="Adaptive.Action.Destructive.Button.MouseOver.Foreground" Color="#FF838383"/>
 
+    <Style x:Key="Adaptive.Input.Text.InlineAction.Button" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="#FFFFFFFF"/>
+        <Setter Property="BorderBrush" Value="#FFFFFFFF"/>
+    </Style>
+
     <Style x:Key="PositiveActionDefaultStyle" TargetType="{x:Type Button}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
         <Setter Property="Background" Value="{DynamicResource Adaptive.Action.Positive.Button.Static.Background}"/>
