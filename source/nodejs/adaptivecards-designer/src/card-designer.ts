@@ -701,6 +701,14 @@ export class CardDesigner {
     }
 
     attachTo(root: HTMLElement)  {
+        let styleSheetLinkElement = document.createElement("link");
+        styleSheetLinkElement.id = "__ac-designer";
+        styleSheetLinkElement.rel = "stylesheet";
+		styleSheetLinkElement.type = "text/css";		
+        styleSheetLinkElement.href = Utils.joinPaths(this._assetPath, "adaptivecards-designer.css");
+
+        document.getElementsByTagName("head")[0].appendChild(styleSheetLinkElement);
+
         if (this._hostContainers && this._hostContainers.length > 0) {
             this._activeHostContainer = this._hostContainers[0];
         }
