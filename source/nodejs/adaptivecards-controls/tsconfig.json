@@ -6,10 +6,9 @@
 			"dom",
 			"es2015"
 		],
-		"outDir": "dist/esm",
+		"outDir": "lib",
 		"sourceMap": true,
-		"declaration": true,
-		"declarationDir": "dist/typings"
+		"declaration": true
 	},
 	"files": ["./src/index.ts"]
 }

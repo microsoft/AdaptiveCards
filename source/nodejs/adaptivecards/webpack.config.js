@@ -11,24 +11,23 @@ module.exports = (env, argv) => {
 	return {
 		mode: mode,
 		entry: {
-			"adaptivecards-controls": "./lib/index.js",
+			"adaptivecards": "./src/adaptivecards.ts"
 		},
 		output: {
 			path: path.resolve(__dirname, "./dist"),
 			filename: devMode ? "[name].js" : "[name].min.js",
 			libraryTarget: "umd",
-			library: "ACControls",
-			umdNamedDefine: true,
-			publicPath: "/dist/",
-			globalObject: "this"
+			library: "AdaptiveCards"
 		},
 		devtool: devMode ? "inline-source-map" : null,
+		devServer: {
+			contentBase: './dist'
+		},
+		resolve: {
+			extensions: [".ts", ".tsx", ".js"]
+		},
 		module: {
-			rules: [
-				// 	test: /\.t|js$/,
-				// 	use: 'babel-loader'
-				// },
-				{
+			rules: [{
 					test: /\.ts$/,
 					loader: "ts-loader",
 					exclude: /(node_modules|__tests__)/
@@ -37,23 +36,22 @@ module.exports = (env, argv) => {
 					test: /\.css$/,
 					use: [
 						'style-loader',
-						{
-							loader: MiniCssExtractPlugin.loader
-						},
-						'css-loader'
+						MiniCssExtractPlugin.loader,
+						'css-loader',
+						//'typings-for-css-modules-loader?modules&namedExport&camelCase'
 					]
 				}
 			]
 		},
 		plugins: [
 			new MiniCssExtractPlugin({
-				filename: '[name].css',
+				filename: 'adaptivecards-default.css'
 			}),
 			new CopyWebpackPlugin([{
-				from: 'src/adaptivecards-controls.css',
+				from: 'src/adaptivecards-default.css',
 				to: '../lib/',
 				flatten: true
 			}])
 		]
 	};
-};
+}

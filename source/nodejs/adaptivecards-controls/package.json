@@ -4,9 +4,9 @@
 	"description": "A library of pure JS/HTML controls designed for use with Adaptive Cards.",
 	"author": "Microsoft",
 	"license": "MIT",
-	"main": "dist/umd/index.js",
-	"module": "dist/esm/index.js",
-	"types": "dist/typings/index.d.ts",
+	"main": "dist/index.js",
+	"module": "lib/index.js",
+	"types": "lib/index.d.ts",
 	"style": "dist/adaptivecards-controls.css",
 	"files": [
 		"dist"

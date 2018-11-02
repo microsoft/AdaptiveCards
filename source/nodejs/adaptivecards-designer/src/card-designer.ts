@@ -15,13 +15,11 @@ import { BasePaletteItem, ElementPaletteItem } from "./tool-palette";
 import { DefaultContainer } from "./containers/default/default-container";
 
 import "./adaptivecards-designer.css";
-import "adaptivecards/dist/adaptivecards-default.css";
-import "adaptivecards-controls/dist/adaptivecards-controls.css";
 
 export class CardDesigner {
     private static MAX_UNDO_STACK_SIZE = 50;
 
-    private _monacoEditor: any; // monaco.editor.IStandaloneCodeEditor;
+    private _monacoEditor: monaco.editor.IStandaloneCodeEditor;
     private _hostContainers: Array<HostContainer>;
     private _isMonacoEditorLoaded: boolean = false;
     private _designerSurface: Designer.CardDesignerSurface;
@@ -44,7 +42,7 @@ export class CardDesigner {
         if (this._treeViewPane.content) {
             this._treeViewPane.content.innerHTML = "";
             this._treeViewPane.content.appendChild(this.designerSurface.rootPeer.treeItem.render());
-        }
+		}
     }
 
     private buildPropertySheet(peer: DesignerPeers.DesignerPeer) {
@@ -455,8 +453,8 @@ export class CardDesigner {
 		//callback();
     }
 	
-	// TODO find the correct monaco type to use 
-    public monacoEditorLoaded(monaco: any = window["monaco"]) {
+
+    public monacoEditorLoaded(monaco: any = null) {
 		if(!monaco)
 			monaco = window["monaco"];
 
