@@ -69,6 +69,11 @@
 
 			// NOTE: Collapsing panes/setting the card payload must be done AFTER the designer is attached
 
+			// If monaco was already loaded, do this:
+			//designer.monacoEditorLoaded(myMonaco);
+
+
+		  	// Otherwise, do this:
 			require.config({ paths: { 'vs': 'monaco-editor/min/vs' } });
 			require(['vs/editor/editor.main'], function () {
 				designer.monacoEditorLoaded();

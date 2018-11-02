@@ -474,6 +474,7 @@ export class CardDesigner {
     
 		this._jsonEditorPane.content = document.createElement("div");
 		
+		// TODO: set this in our editor instead of defaults
         monaco.languages.json.jsonDefaults.setDiagnosticsOptions(monacoConfiguration);
 
         this._monacoEditor = monaco.editor.create(
