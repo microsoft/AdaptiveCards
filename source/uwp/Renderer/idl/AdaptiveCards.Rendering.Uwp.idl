@@ -51,6 +51,8 @@ AdaptiveNamespaceStart
 
     runtimeclass AdaptiveFontSizesConfig;
     runtimeclass AdaptiveFontWeightsConfig;
+    runtimeclass AdaptiveFontStyleDefinition;
+    runtimeclass AdaptiveFontStylesDefinition;
     runtimeclass AdaptiveColorsConfig;
     runtimeclass AdaptiveColorConfig;
     runtimeclass AdaptiveTextConfig;
@@ -130,6 +132,8 @@ AdaptiveNamespaceStart
 
     interface IAdaptiveFontSizesConfig;
     interface IAdaptiveFontWeightsConfig;
+    interface IAdaptiveFontStyleDefinition;
+    interface IAdaptiveFontStylesDefinition;
     interface IAdaptiveColorConfig;
     interface IAdaptiveColorsConfig;
     interface IAdaptiveTextConfig;
@@ -373,6 +377,17 @@ AdaptiveNamespaceStart
         Default,
         Emphasis
     } ContainerStyle;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef [v1_enum] enum FontStyle {
+        Default = 0,
+        Display,
+        Monospace
+    } FontStyle;
 
     [version(NTDDI_WIN10_RS1)]
 #ifdef ADAPTIVE_CARDS_WINDOWS
@@ -623,6 +638,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT Language([out, retval] HSTRING* value);
         [propput] HRESULT Language([in] HSTRING value);
+
+        [propget] HRESULT FontStyle([out, retval] FontStyle* value);
+        [propput] HRESULT FontStyle([in] FontStyle value);
     };
 
     [
@@ -1688,6 +1706,80 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveFontStyleDefinition),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(485E4650-EDF1-4DAD-BB1A-FA6C85626453),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(9D744C66-DC57-4D4B-9997-D16761FB11D1)
+#endif        
+    ]
+    interface IAdaptiveFontStyleDefinition : IInspectable
+    {
+        [propget] HRESULT FontFamily([out, retval] HSTRING* value);
+        [propput] HRESULT FontFamily([in] HSTRING value);
+
+        [propget] HRESULT FontWeights([out, retval] AdaptiveFontWeightsConfig** value);
+        [propput] HRESULT FontWeights([in] AdaptiveFontWeightsConfig* value);
+
+        [propget] HRESULT FontSizes([out, retval] AdaptiveFontSizesConfig** value);
+        [propput] HRESULT FontSizes([in] AdaptiveFontSizesConfig* value);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
+    ]
+    runtimeclass AdaptiveFontStyleDefinition
+    {
+        [default] interface IAdaptiveFontStyleDefinition;
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveFontStylesDefinition),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(7EA49458-870F-40C9-908A-35E6A20579C6),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(2445D5BF-F0DF-495D-873E-F5B36E53E5D1)
+#endif        
+    ]
+    interface IAdaptiveFontStylesDefinition : IInspectable
+    {
+        [propget] HRESULT Default([out, retval] AdaptiveFontStyleDefinition** value);
+        [propput] HRESULT Default([in] AdaptiveFontStyleDefinition* value);
+
+        [propget] HRESULT Display([out, retval] AdaptiveFontStyleDefinition** value);
+        [propput] HRESULT Display([in] AdaptiveFontStyleDefinition* value);
+
+        [propget] HRESULT Monospace([out, retval] AdaptiveFontStyleDefinition** value);
+        [propput] HRESULT Monospace([in] AdaptiveFontStyleDefinition* value);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
+    ]
+    runtimeclass AdaptiveFontStylesDefinition
+    {
+        [default] interface IAdaptiveFontStylesDefinition;
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveColorConfig),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(743e6ad3-c0ab-497d-a9c9-3dcf69e6a5a1),
@@ -2212,6 +2304,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT FontWeights([out, retval] AdaptiveFontWeightsConfig** value);
         [propput] HRESULT FontWeights([in] AdaptiveFontWeightsConfig* value);
+
+        [propget] HRESULT FontStyles([out, retval] AdaptiveFontStylesDefinition** value);
+        [propput] HRESULT FontStyles([in] AdaptiveFontStylesDefinition* value);
 
         [propget] HRESULT SupportsInteractivity([out, retval] boolean* value);
         [propput] HRESULT SupportsInteractivity([in] boolean value);

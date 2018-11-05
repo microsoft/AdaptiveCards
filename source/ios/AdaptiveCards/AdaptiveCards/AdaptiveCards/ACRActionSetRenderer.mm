@@ -32,10 +32,10 @@
     ACRRegistration *reg = [ACRRegistration getInstance];
     UIView<ACRIContentHoldingView> *childview = nil;
     NSDictionary<NSString *, NSNumber*> *attributes =
-    @{@"spacing":[NSNumber numberWithInt:[config getHostConfig]->actions.buttonSpacing],
+    @{@"spacing":[NSNumber numberWithInt:[config getHostConfig]->GetActions().buttonSpacing],
       @"distribution":[NSNumber numberWithInt:UIStackViewDistributionFillProportionally] };
 
-    if(ActionsOrientation::Horizontal == [config getHostConfig]->actions.actionsOrientation){
+    if(ActionsOrientation::Horizontal == [config getHostConfig]->GetActions().actionsOrientation){
         childview = [[ACRColumnSetView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height) attributes:attributes];
     }
     else{
@@ -45,7 +45,7 @@
     ACOBaseActionElement *acoElem = [[ACOBaseActionElement alloc] init];
     ACRContentHoldingUIScrollView *containingView = [[ACRContentHoldingUIScrollView alloc] init];
     [superview addArrangedSubview:containingView];
-    float accumulatedWidth = 0, accumulatedHeight = 0, spacing = [config getHostConfig]->actions.buttonSpacing, maxWidth = 0, maxHeight = 0;
+    float accumulatedWidth = 0, accumulatedHeight = 0, spacing = [config getHostConfig]->GetActions().buttonSpacing, maxWidth = 0, maxHeight = 0;
     std::vector<std::shared_ptr<BaseActionElement>> elems = [card card]->GetActions();
     for(const auto &elem:elems){
         ACRBaseActionElementRenderer *actionRenderer =
@@ -69,7 +69,7 @@
 
     float contentWidth = accumulatedWidth, contentHeight = accumulatedHeight;
     [childview adjustHuggingForLastElement];
-    if(ActionsOrientation::Horizontal == [config getHostConfig]->actions.actionsOrientation){
+    if(ActionsOrientation::Horizontal == [config getHostConfig]->GetActions().actionsOrientation){
         contentWidth += (elems.size() - 1) * spacing;
         contentHeight = maxHeight;
     } else {
@@ -90,13 +90,13 @@
     hConstraint.active = YES;
     vConstraint.active = YES;
 
-    if(ActionsOrientation::Horizontal == [config getHostConfig]->actions.actionsOrientation){
+    if(ActionsOrientation::Horizontal == [config getHostConfig]->GetActions().actionsOrientation){
         hConstraint.priority = UILayoutPriorityDefaultLow;
         if(contentWidth > superview.frame.size.width){
             containingView.showsHorizontalScrollIndicator = YES;
         } else
         {
-            if([config getHostConfig]->actions.actionAlignment == ActionAlignment::Stretch){
+            if([config getHostConfig]->GetActions().actionAlignment == ActionAlignment::Stretch){
                 [NSLayoutConstraint constraintWithItem:containingView attribute:NSLayoutAttributeWidth
                                              relatedBy:NSLayoutRelationEqual toItem:childview
                                              attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;

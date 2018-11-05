@@ -104,7 +104,7 @@ using namespace AdaptiveCards;
     std::shared_ptr<BaseCardElement> nullBaseCardElem;
     [ACRSeparator renderSeparation:nullBaseCardElem superview:view
                         hostConfig:config
-                           spacing:config->actions.spacing];
+                           spacing:config->GetActions().spacing];
 }
 
 + (void)renderSeparation:(std::shared_ptr<BaseCardElement> const &)elem
@@ -150,8 +150,8 @@ using namespace AdaptiveCards;
             separator->height = spacing;
             if(elem && elem->GetSeparator())
             {
-                separator->rgb = std::stoul(config->separator.lineColor.substr(1), nullptr, 16);
-                separator->lineWidth = config->separator.lineThickness;;
+                separator->rgb = std::stoul(config->GetSeparator().lineColor.substr(1), nullptr, 16);
+                separator->lineWidth = config->GetSeparator().lineThickness;;
             }
 
             separator.backgroundColor = UIColor.clearColor;
@@ -173,15 +173,15 @@ using namespace AdaptiveCards;
     switch (spacing)
     {
         case Spacing::ExtraLarge:
-            return config->spacing.extraLargeSpacing;
+            return config->GetSpacing().extraLargeSpacing;
         case Spacing::Large:
-            return config->spacing.largeSpacing;
+            return config->GetSpacing().largeSpacing;
         case Spacing::Medium:
-            return config->spacing.mediumSpacing;
+            return config->GetSpacing().mediumSpacing;
         case Spacing::Small:
-            return config->spacing.smallSpacing;
+            return config->GetSpacing().smallSpacing;
         case Spacing::Default:
-            return config->spacing.defaultSpacing;
+            return config->GetSpacing().defaultSpacing;
         default:
             break;
     }
