@@ -22,7 +22,7 @@
 #include "HtmlHelpers.h"
 #include "DateTimeParser.h"
 #include "MediaHelpers.h"
-#include "Base64.h"
+#include "AdaptiveBase64Util.h"
 #include <robuffer.h>
 
 using namespace Microsoft::WRL;
@@ -543,27 +543,30 @@ namespace AdaptiveNamespace
             HString dataPath;
             THROW_IF_FAILED(imageUrl->get_Path(dataPath.GetAddressOf()));
 
-            std::string data = Base64::ExtractDataFromUri(HStringToUTF8(dataPath.Get()));
-            std::string decodedData = Base64::Decode(data);
+            std::string data = AdaptiveBase64Util::ExtractDataFromUri(HStringToUTF8(dataPath.Get()));
+            std::string decodedData = AdaptiveBase64Util::Decode(data);
 
             ComPtr<IBufferFactory> bufferFactory;
             THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Storage_Streams_Buffer).Get(), bufferFactory.GetAddressOf()));
 
             ComPtr<IBuffer> buffer;
-            THROW_IF_FAILED(bufferFactory->Create(decodedData.length(), buffer.GetAddressOf()));
+            THROW_IF_FAILED(bufferFactory->Create(decodedData.size(), buffer.GetAddressOf()));
 
             ComPtr<::Windows::Storage::Streams::IBufferByteAccess> bufferByteAccess;
             THROW_IF_FAILED(buffer.As(&bufferByteAccess));
 
-            BYTE* dataInternal = nullptr;
+            BYTE* dataInternal{};
             THROW_IF_FAILED(bufferByteAccess->Buffer(&dataInternal));
 
-            CopyMemory(dataInternal, decodedData.data(), decodedData.length());
-            THROW_IF_FAILED(buffer->put_Length(decodedData.length()));
+            memcpy_s(dataInternal, decodedData.size(), decodedData.data(), decodedData.size());
+
+            // CopyMemory(dataInternal, decodedData.data(), decodedData.size());
+            THROW_IF_FAILED(buffer->put_Length(static_cast<UINT32>(decodedData.size())));
           
             ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(
                 HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
-            THROW_IF_FAILED(bitmapImage->put_CreateOptions(BitmapCreateOptions::BitmapCreateOptions_None));
+            m_imageLoadTracker.TrackBitmapImage(bitmapImage.Get());
+            THROW_IF_FAILED(bitmapImage->put_CreateOptions(BitmapCreateOptions::BitmapCreateOptions_IgnoreImageCache));
             ComPtr<IBitmapSource> bitmapSource;
             THROW_IF_FAILED(bitmapImage.As(&bitmapSource));
 
@@ -1833,18 +1836,28 @@ namespace AdaptiveNamespace
                 THROW_IF_FAILED(brushAsImageBrush->get_ImageSource(&imageSource));
                 ComPtr<IBitmapSource> imageSourceAsBitmap;
                 THROW_IF_FAILED(imageSource.As(&imageSourceAsBitmap));
-                // Collapse the Ellipse while the image loads, so that resizing is not noticeable
-                THROW_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
-                // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
-                EventRegistrationToken eventToken;
-                THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([ellipseAsUIElement](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
+
+                // Get this values to check if the image has already loaded
+                INT32 bitmapPixelWidth{}, bitmapPixelHeight{};
+                THROW_IF_FAILED(imageSourceAsBitmap->get_PixelWidth(&bitmapPixelWidth));
+                THROW_IF_FAILED(imageSourceAsBitmap->get_PixelHeight(&bitmapPixelHeight));
+
+                // If the image hasn't loaded yet
+                if (bitmapPixelWidth == 0 && bitmapPixelHeight == 0)
+                {
+                    // Collapse the Ellipse while the image loads, so that resizing is not noticeable
+                    THROW_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
+                    // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
+                    EventRegistrationToken eventToken;
+                    THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(
+                        Callback<IRoutedEventHandler>([ellipseAsUIElement](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
                         // Don't set the AutoImageSize on the ellipse as it makes the ellipse grow bigger than
                         // what it would be otherwise, just set the visibility when we get the image
                         return ellipseAsUIElement->put_Visibility(Visibility::Visibility_Visible);
                     })
                         .Get(),
-                    &eventToken));
+                        &eventToken));
+                }
             }
         }
         else
@@ -1891,19 +1904,28 @@ namespace AdaptiveNamespace
 
                 ComPtr<IUIElement> imageAsUIElement;
                 THROW_IF_FAILED(xamlImage.As(&imageAsUIElement));
+                
+                // Get this values to check if the image has already loaded
+                INT32 bitmapPixelWidth{}, bitmapPixelHeight{};
+                THROW_IF_FAILED(imageSourceAsBitmap->get_PixelWidth(&bitmapPixelWidth));
+                THROW_IF_FAILED(imageSourceAsBitmap->get_PixelHeight(&bitmapPixelHeight));
 
-                // Collapse the Image control while the image loads, so that resizing is not noticeable
-                THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
+                // If the image hasn't loaded yet
+                if (bitmapPixelWidth == 0 && bitmapPixelHeight == 0)
+                {
+                    // Collapse the Image control while the image loads, so that resizing is not noticeable
+                    THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
 
-                // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
-                EventRegistrationToken eventToken;
-                THROW_IF_FAILED(xamlImage->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([frameworkElement, parentElement, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs *
-                                                                                                         /*args*/) -> HRESULT {
+                    // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
+                    EventRegistrationToken eventToken;
+                    THROW_IF_FAILED(xamlImage->add_ImageOpened(
+                        Callback<IRoutedEventHandler>([frameworkElement, parentElement, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs *
+                            /*args*/) -> HRESULT {
                         return SetAutoImageSize(frameworkElement.Get(), parentElement.Get(), imageSourceAsBitmap.Get());
                     })
                         .Get(),
-                    &eventToken));
+                        &eventToken));
+                }
             }
         }
 

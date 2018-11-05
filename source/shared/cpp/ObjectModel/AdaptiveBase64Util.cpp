@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Base64.h"
+#include "AdaptiveBase64Util.h"
 
 using namespace AdaptiveSharedNamespace;
 
@@ -8,7 +8,7 @@ const char kBase64Alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 "0123456789+/";
 
 
-int DecodedLength(const char *in, size_t in_length) {
+int AdaptiveBase64Util::DecodedLength(const char *in, size_t in_length) {
     int numEq = 0;
 
     const char *in_end = in + in_length;
@@ -17,7 +17,7 @@ int DecodedLength(const char *in, size_t in_length) {
     return ((6 * in_length) / 8) - numEq;
 }
 
-int DecodedLength(const std::string &in) {
+int AdaptiveBase64Util::DecodedLength(const std::string &in) {
     int numEq = 0;
     int n = in.size();
 
@@ -28,32 +28,32 @@ int DecodedLength(const std::string &in) {
     return ((6 * n) / 8) - numEq;
 }
 
-inline int EncodedLength(size_t length) {
+int AdaptiveBase64Util::EncodedLength(size_t length) {
     return (length + 2 - ((length + 2) % 3)) / 3 * 4;
 }
 
-inline int EncodedLength(const std::string &in) {
+int AdaptiveBase64Util::EncodedLength(const std::string &in) {
     return EncodedLength(in.length());
 }
 
-inline void StripPadding(std::string *in) {
+void AdaptiveBase64Util::StripPadding(std::string *in) {
     while (!in->empty() && *(in->rbegin()) == '=') in->resize(in->size() - 1);
 }
 
-static inline void a3_to_a4(unsigned char * a4, unsigned char * a3) {
+void AdaptiveBase64Util::a3_to_a4(unsigned char * a4, unsigned char * a3) {
     a4[0] = (a3[0] & 0xfc) >> 2;
     a4[1] = ((a3[0] & 0x03) << 4) + ((a3[1] & 0xf0) >> 4);
     a4[2] = ((a3[1] & 0x0f) << 2) + ((a3[2] & 0xc0) >> 6);
     a4[3] = (a3[2] & 0x3f);
 }
 
-static inline void a4_to_a3(unsigned char * a3, unsigned char * a4) {
+void AdaptiveBase64Util::a4_to_a3(unsigned char * a3, unsigned char * a4) {
     a3[0] = (a4[0] << 2) + ((a4[1] & 0x30) >> 4);
     a3[1] = ((a4[1] & 0xf) << 4) + ((a4[2] & 0x3c) >> 2);
     a3[2] = ((a4[2] & 0x3) << 6) + a4[3];
 }
 
-static inline unsigned char b64_lookup(unsigned char c) {
+unsigned char AdaptiveBase64Util::b64_lookup(unsigned char c) {
     if (c >= 'A' && c <= 'Z') return c - 'A';
     if (c >= 'a' && c <= 'z') return c - 71;
     if (c >= '0' && c <= '9') return c + 4;
@@ -62,13 +62,13 @@ static inline unsigned char b64_lookup(unsigned char c) {
     return 255;
 }
 
-bool Encode(const std::string &in, std::string *out) {
+bool AdaptiveBase64Util::Encode(const std::string &in, std::string *out) {
     int i = 0, j = 0;
     size_t enc_len = 0;
     unsigned char a3[3];
     unsigned char a4[4];
 
-    out->resize(::EncodedLength(in));
+    out->resize(EncodedLength(in));
 
     int input_len = in.size();
     std::string::const_iterator input = in.begin();
@@ -105,7 +105,7 @@ bool Encode(const std::string &in, std::string *out) {
     return (enc_len == out->size());
 }
 
-bool Encode(const char *input, size_t input_length, char *out, size_t out_length) {
+bool AdaptiveBase64Util::Encode(const char *input, size_t input_length, char *out, size_t out_length) {
     int i = 0, j = 0;
     char *out_begin = out;
     unsigned char a3[3];
@@ -147,7 +147,7 @@ bool Encode(const char *input, size_t input_length, char *out, size_t out_length
     return (out == (out_begin + encoded_length));
 }
 
-bool Decode(const std::string &in, std::string *out) {
+bool AdaptiveBase64Util::Decode(const std::string &in, std::string *out) {
     int i = 0, j = 0;
     size_t dec_len = 0;
     unsigned char a3[3];
@@ -198,6 +198,7 @@ bool Decode(const std::string &in, std::string *out) {
     return (dec_len == out->size());
 }
 
+/*
 bool Decode(const char *input, size_t input_length, char *out, size_t out_length) {
     int i = 0, j = 0;
     char *out_begin = out;
@@ -247,12 +248,12 @@ bool Decode(const char *input, size_t input_length, char *out, size_t out_length
 
     return (out == (out_begin + decoded_length));
 }
+*/
 
 
 
 
-
-size_t Base64::DecodeBase64(char c)
+size_t AdaptiveBase64Util::DecodeBase64(char c)
 {
     const size_t alphabetLength{ 'Z' - 'A' + 1 };
 
@@ -282,7 +283,7 @@ size_t Base64::DecodeBase64(char c)
     }
 }
 
-char Base64::EncodeBase64(size_t c)
+char AdaptiveBase64Util::EncodeBase64(size_t c)
 {
     const size_t alphabetLength{ 'Z' - 'A' + 1 };
     if ((c >= 0) && (c < alphabetLength))
@@ -311,13 +312,13 @@ char Base64::EncodeBase64(size_t c)
     }
 }
 
-std::string Base64::Decode(const std::string& encodedBase64)
+std::string AdaptiveBase64Util::Decode(const std::string& encodedBase64)
 {
     std::string decodedString;
-    ::Decode(encodedBase64, &decodedString);
+    Decode(encodedBase64, &decodedString);
     return decodedString;
 
-
+    /*
     std::string decodedData;
     size_t dataLength = encodedBase64.length();
     while (dataLength && encodedBase64[dataLength - 1] == '=')
@@ -343,9 +344,10 @@ std::string Base64::Decode(const std::string& encodedBase64)
     }
 
     return decodedData;
+    */
 }
 
-std::string Base64::Encode(const std::string& decodedBase64)
+std::string AdaptiveBase64Util::Encode(const std::string& decodedBase64)
 {
     std::string encodedData;
 
@@ -370,7 +372,7 @@ std::string Base64::Encode(const std::string& decodedBase64)
 }
 
 // Format for DataURI is data:[<MediaType>][;base64],data with MediaType and base64 being optional and data is composed of [A-Z a-z 0-9 + /] characters
-std::string Base64::ExtractDataFromUri(const std::string& dataUri)
+std::string AdaptiveBase64Util::ExtractDataFromUri(const std::string& dataUri)
 {
     size_t comaPosition = dataUri.find_last_of(",");
     return dataUri.substr(comaPosition + 1);
