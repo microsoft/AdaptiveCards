@@ -8,6 +8,8 @@
 #import "HostConfig.h"
 #import "TextBlock.h"
 #import <UIKit/UIKit.h>
+#import "ACOBaseActionElement.h"
+#import "ACOBaseCardElement.h"
 
 using namespace AdaptiveCards;
 
@@ -41,4 +43,5 @@ using namespace AdaptiveCards;
 
 + (ACRContainerStyle)getPlatformContainerStyle:(ContainerStyle)style;
 
+- (ACRIconPlacement)getIconPlacement;
 @end

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ACRQuickReplyMultilineView">
+            <connections>
+                <outlet property="button" destination="xAp-fD-6Fu" id="VdJ-Aw-PsK"/>
+                <outlet property="contentView" destination="iN0-l3-epB" id="ayn-gd-IfB"/>
+                <outlet property="textView" destination="Y6b-XL-hIG" id="sya-2b-T0N"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Y6b-XL-hIG" customClass="ACRTextView">
+                    <rect key="frame" x="0.0" y="8" width="307" height="667"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                            <real key="value" value="0.5"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
+                            <color key="value" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="scrollEnabled" value="NO"/>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="allowsEditingTextAttributes" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                </textView>
+                <view contentMode="scaleToFill" horizontalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="tDe-f8-6rk">
+                    <rect key="frame" x="307" y="28" width="30" height="647"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="30" id="Ccl-wi-XWZ"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xAp-fD-6Fu">
+                    <rect key="frame" x="337" y="28" width="30" height="647"/>
+                    <state key="normal">
+                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="tDe-f8-6rk" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" constant="8" id="1C8-gB-oRg"/>
+                <constraint firstItem="xAp-fD-6Fu" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="8" id="9EK-Ya-4yZ"/>
+                <constraint firstAttribute="bottom" secondItem="xAp-fD-6Fu" secondAttribute="bottom" constant="8" id="JHu-uy-hi8"/>
+                <constraint firstItem="Y6b-XL-hIG" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Qc7-YD-TJZ"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="xAp-fD-6Fu" secondAttribute="trailing" constant="8" id="ei0-cB-JM9"/>
+                <constraint firstItem="Y6b-XL-hIG" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="f8n-vY-74Z"/>
+                <constraint firstItem="tDe-f8-6rk" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="8" id="niO-LR-tyw"/>
+                <constraint firstItem="xAp-fD-6Fu" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" constant="8" id="oUk-aZ-rr1"/>
+                <constraint firstItem="xAp-fD-6Fu" firstAttribute="leading" secondItem="tDe-f8-6rk" secondAttribute="trailing" id="piV-He-Ke6"/>
+                <constraint firstItem="tDe-f8-6rk" firstAttribute="leading" secondItem="Y6b-XL-hIG" secondAttribute="trailing" id="wA2-uh-DEw"/>
+                <constraint firstItem="Y6b-XL-hIG" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" constant="8" id="yqh-bQ-Gr6"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="132" y="143.47826086956522"/>
+        </view>
+    </objects>
+</document>

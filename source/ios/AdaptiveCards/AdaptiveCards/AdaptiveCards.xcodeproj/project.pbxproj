@@ -70,6 +70,12 @@
 		6BCE4B272108FA9300021A62 /* ACRLongPressGestureRecognizerFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BCE4B262108FA9300021A62 /* ACRLongPressGestureRecognizerFactory.mm */; };
 		6BCE4B292108FBD800021A62 /* ACRLongPressGestureRecognizerFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BCE4B282108FBD800021A62 /* ACRLongPressGestureRecognizerFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BF339D320A6649500DA5973 /* json.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F4071C771FCCBAEF00AF4FEA /* json.h */; };
+		6BF430742190DCBF0068E432 /* ACRQuickActionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BF430732190DCBF0068E432 /* ACRQuickActionView.xib */; };
+		6BF430772190DDCA0068E432 /* ACRQuickReplyView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BF430752190DDCA0068E432 /* ACRQuickReplyView.h */; };
+		6BF430782190DDCA0068E432 /* ACRQuickReplyView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BF430762190DDCA0068E432 /* ACRQuickReplyView.mm */; };
+		6BF4307C219126CD0068E432 /* ACRQuickActionMultilineView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BF4307B219126CD0068E432 /* ACRQuickActionMultilineView.xib */; };
+		6BF4307F219129600068E432 /* ACRQuickReplyMultilineView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BF4307D219129600068E432 /* ACRQuickReplyMultilineView.h */; };
+		6BF43080219129600068E432 /* ACRQuickReplyMultilineView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BF4307E219129600068E432 /* ACRQuickReplyMultilineView.mm */; };
 		7EDC0F67213878E800077A13 /* SemanticVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 7EDC0F65213878E800077A13 /* SemanticVersion.h */; };
 		7EDC0F68213878E800077A13 /* SemanticVersion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7EDC0F66213878E800077A13 /* SemanticVersion.cpp */; };
 		F401A8771F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = F401A8751F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -343,6 +349,12 @@
 		6BCE4B242108FA7C00021A62 /* ACRMediaRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRMediaRenderer.mm; sourceTree = "<group>"; };
 		6BCE4B262108FA9300021A62 /* ACRLongPressGestureRecognizerFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRLongPressGestureRecognizerFactory.mm; sourceTree = "<group>"; };
 		6BCE4B282108FBD800021A62 /* ACRLongPressGestureRecognizerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRLongPressGestureRecognizerFactory.h; sourceTree = "<group>"; };
+		6BF430732190DCBF0068E432 /* ACRQuickActionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRQuickActionView.xib; sourceTree = "<group>"; };
+		6BF430752190DDCA0068E432 /* ACRQuickReplyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRQuickReplyView.h; sourceTree = "<group>"; };
+		6BF430762190DDCA0068E432 /* ACRQuickReplyView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRQuickReplyView.mm; sourceTree = "<group>"; };
+		6BF4307B219126CD0068E432 /* ACRQuickActionMultilineView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRQuickActionMultilineView.xib; sourceTree = "<group>"; };
+		6BF4307D219129600068E432 /* ACRQuickReplyMultilineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRQuickReplyMultilineView.h; sourceTree = "<group>"; };
+		6BF4307E219129600068E432 /* ACRQuickReplyMultilineView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRQuickReplyMultilineView.mm; sourceTree = "<group>"; };
 		7EDC0F65213878E800077A13 /* SemanticVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SemanticVersion.h; path = ../../../../shared/cpp/ObjectModel/SemanticVersion.h; sourceTree = "<group>"; };
 		7EDC0F66213878E800077A13 /* SemanticVersion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SemanticVersion.cpp; path = ../../../../shared/cpp/ObjectModel/SemanticVersion.cpp; sourceTree = "<group>"; };
 		F401A8751F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRImageSetUICollectionView.h; sourceTree = "<group>"; };
@@ -790,6 +802,10 @@
 		F42979321F30074900E89914 /* Inputs */ = {
 			isa = PBXGroup;
 			children = (
+				6BF430752190DDCA0068E432 /* ACRQuickReplyView.h */,
+				6BF430762190DDCA0068E432 /* ACRQuickReplyView.mm */,
+				6BF4307D219129600068E432 /* ACRQuickReplyMultilineView.h */,
+				6BF4307E219129600068E432 /* ACRQuickReplyMultilineView.mm */,
 				F42979361F31438900E89914 /* ACRIBaseInputHandler.h */,
 				F429793C1F3155EF00E89914 /* ACRTextField.h */,
 				F429793D1F3155EF00E89914 /* ACRTextField.mm */,
@@ -929,6 +945,8 @@
 				F460324620759519006C5358 /* ACRDateTextField.xib */,
 				F46032482075997D006C5358 /* ACRInputTableView.xib */,
 				6B14FC60211BBBEA00A11CC5 /* ACRPickerView.xib */,
+				6BF430732190DCBF0068E432 /* ACRQuickActionView.xib */,
+				6BF4307B219126CD0068E432 /* ACRQuickActionMultilineView.xib */,
 			);
 			name = XIB;
 			sourceTree = "<group>";
@@ -960,6 +978,7 @@
 				F44872FE1EE2261F00FCAFAE /* ChoiceInput.h in Headers */,
 				F44872FC1EE2261F00FCAFAE /* BaseInputElement.h in Headers */,
 				F4071C7A1FCCBAEF00AF4FEA /* ElementParserRegistration.h in Headers */,
+				6BF430772190DDCA0068E432 /* ACRQuickReplyView.h in Headers */,
 				F4071C7B1FCCBAEF00AF4FEA /* ActionParserRegistration.h in Headers */,
 				F4F44B7B20478C5C00A2F24C /* DateTimePreparser.h in Headers */,
 				F42C2F4C20351A8E008787B0 /* ACOBaseCardElementPrivate.h in Headers */,
@@ -1046,6 +1065,7 @@
 				6B9BDF7420E1BD0E00F13155 /* ACRToggleInputDataSource.h in Headers */,
 				6B3787BB20CB3E0E00015401 /* ACRContentHoldingUIScrollView.h in Headers */,
 				6B9BDF8020F40D1000F13155 /* ACOResourceResolvers.h in Headers */,
+				6BF4307F219129600068E432 /* ACRQuickReplyMultilineView.h in Headers */,
 				6BB211FD20FF9FEA009EA1BA /* ACRActionSetRenderer.h in Headers */,
 				6B9BDFCA20F6BF5D00F13155 /* ACOIResourceResolver.h in Headers */,
 				F495FC0B2022A18F0093D4DE /* ACRChoiceSetViewDataSource.h in Headers */,
@@ -1156,7 +1176,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6BF430742190DCBF0068E432 /* ACRQuickActionView.xib in Resources */,
 				6B5D2418212E1CF80010EB07 /* checked-checkbox-24.png in Resources */,
+				6BF4307C219126CD0068E432 /* ACRQuickActionMultilineView.xib in Resources */,
 				F460324520758583006C5358 /* ACRDatePicker.xib in Resources */,
 				6B14FC61211BBBEA00A11CC5 /* ACRPickerView.xib in Resources */,
 				6B9AB30220D32A89005C8E15 /* ACRButton.xib in Resources */,
@@ -1276,6 +1298,7 @@
 				F401A87C1F0DCBC8006D7AF2 /* ACRImageSetRenderer.mm in Sources */,
 				F4F44B6E203FAF9300A2F24C /* ACRUILabel.mm in Sources */,
 				F4F44B7C20478C5C00A2F24C /* DateTimePreparsedToken.cpp in Sources */,
+				6BF430782190DDCA0068E432 /* ACRQuickReplyView.mm in Sources */,
 				F44873211EE2261F00FCAFAE /* SubmitAction.cpp in Sources */,
 				F44872FF1EE2261F00FCAFAE /* ChoiceSetInput.cpp in Sources */,
 				6BB211FC20FF9FEA009EA1BA /* ACRActionSetRenderer.mm in Sources */,
@@ -1307,6 +1330,7 @@
 				F4F6BA3B204F3109003741B6 /* ACRAggregateTarget.mm in Sources */,
 				F42741251EFB274C00399FBB /* ACRColumnRenderer.mm in Sources */,
 				F4F255701F98247600A80D39 /* ACOBaseActionElement.mm in Sources */,
+				6BF43080219129600068E432 /* ACRQuickReplyMultilineView.mm in Sources */,
 				6B9BDF7320E1BD0E00F13155 /* ACRToggleInputDataSource.mm in Sources */,
 				F4C1F5DA1F218ABC0018CB78 /* ACRInputTimeRenderer.mm in Sources */,
 				F4D402121F7DAC2C00D0356B /* ACOAdaptiveCardParseResult.mm in Sources */,
