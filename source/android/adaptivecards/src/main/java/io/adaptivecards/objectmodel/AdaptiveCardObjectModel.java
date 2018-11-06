@@ -73,6 +73,14 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
     return TextSize.swigToEnum(AdaptiveCardObjectModelJNI.TextSizeFromString(size));
   }
 
+  public static String FontStyleToString(FontStyle style) {
+    return AdaptiveCardObjectModelJNI.FontStyleToString(style.swigValue());
+  }
+
+  public static FontStyle FontStyleFromString(String style) {
+    return FontStyle.swigToEnum(AdaptiveCardObjectModelJNI.FontStyleFromString(style));
+  }
+
   public static String ImageSizeToString(ImageSize size) {
     return AdaptiveCardObjectModelJNI.ImageSizeToString(size.swigValue());
   }

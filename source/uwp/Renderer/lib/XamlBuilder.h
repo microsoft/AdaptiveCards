@@ -116,6 +116,7 @@ namespace AdaptiveNamespace
         Microsoft::WRL::ComPtr<ABI::Windows::Storage::Streams::IRandomAccessStreamStatics> m_randomAccessStreamStatics;
         std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<ABI::Windows::Storage::Streams::IInputStream*, ABI::Windows::Web::Http::HttpProgress>>> m_getStreamOperations;
         std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<UINT64, UINT64>>> m_copyStreamOperations;
+        std::vector<Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncOperationWithProgress<UINT32, UINT32>>> m_writeAsyncOperations;
 
         UINT m_fixedWidth = 0;
         UINT m_fixedHeight = 0;
@@ -183,7 +184,8 @@ namespace AdaptiveNamespace
                         bool isHorizontal = true);
         static void ApplyMarginToXamlElement(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
                                              _Inout_ ABI::Windows::UI::Xaml::IFrameworkElement* element);
-        static void StyleXamlTextBlock(_In_ ABI::AdaptiveNamespace::TextSize size,
+        static void StyleXamlTextBlock(_In_ ABI::AdaptiveNamespace::FontStyle fontStyle,
+                                       _In_ ABI::AdaptiveNamespace::TextSize size,
                                        _In_ ABI::AdaptiveNamespace::ForegroundColor color,
                                        ABI::AdaptiveNamespace::ContainerStyle containerStyle,
                                        _In_ bool isSubtle,

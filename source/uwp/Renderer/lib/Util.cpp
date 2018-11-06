@@ -745,6 +745,243 @@ HRESULT GetBackgroundColorFromStyle(ABI::AdaptiveNamespace::ContainerStyle style
 }
 CATCH_RETURN;
 
+HRESULT GetFontDataFromStyle(
+    _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+    _In_ ABI::AdaptiveNamespace::FontStyle style,
+    _In_ ABI::AdaptiveNamespace::TextSize desiredSize,
+    _In_ ABI::AdaptiveNamespace::TextWeight desiredWeight,
+    _Out_ HSTRING* resultFontFamilyName,
+    _Out_ UINT32* resultSize,
+    _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept try 
+{
+    RETURN_IF_FAILED(GetFontFamilyFromStyle(hostConfig, style, resultFontFamilyName));
+    RETURN_IF_FAILED(GetFontSizeFromStyle(hostConfig, style, desiredSize, resultSize));
+    RETURN_IF_FAILED(GetFontWeightFromStyle(hostConfig, style, desiredWeight, resultWeight));
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GetFontFamilyFromStyle(
+    _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+    _In_ ABI::AdaptiveNamespace::FontStyle style,
+    _Out_ HSTRING* resultFontFamilyName) noexcept try 
+{
+    HString result;
+    ABI::AdaptiveNamespace::IAdaptiveFontStyleDefinition* styleDefinition;
+
+    // get FontFamily from desired style
+    RETURN_IF_FAILED(GetFontStyle(hostConfig, style, &styleDefinition));
+    RETURN_IF_FAILED(styleDefinition->get_FontFamily(result.GetAddressOf()));
+    if (result == NULL)
+    {   
+        // get FontFamily from Default style
+        RETURN_IF_FAILED(GetFontStyle(hostConfig, ABI::AdaptiveNamespace::FontStyle::Default, &styleDefinition));
+        RETURN_IF_FAILED(styleDefinition->get_FontFamily(result.GetAddressOf()));
+
+        if (result == NULL) 
+        {
+            // get deprecated FontFamily
+            RETURN_IF_FAILED(hostConfig->get_FontFamily(result.GetAddressOf()));
+
+            if (result == NULL) 
+            {
+                // set system default FontFamily based on desired style
+                switch (style) 
+                {
+                case ABI::AdaptiveNamespace::FontStyle::Monospace:
+                    RETURN_IF_FAILED(UTF8ToHString("Courier New", result.GetAddressOf()));
+                    break;
+                case ABI::AdaptiveNamespace::FontStyle::Display:
+                case ABI::AdaptiveNamespace::FontStyle::Default:
+                default:
+                    RETURN_IF_FAILED(UTF8ToHString("Segoe UI", result.GetAddressOf()));
+                    break;
+                }
+            }
+        }
+    }
+    return result.CopyTo(resultFontFamilyName);
+} CATCH_RETURN;
+
+HRESULT GetFontSizeFromStyle(
+    _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+    _In_ ABI::AdaptiveNamespace::FontStyle style,
+    _In_ ABI::AdaptiveNamespace::TextSize desiredSize,
+    _Out_ UINT32* resultSize) noexcept try
+{
+    UINT32 result;
+    ABI::AdaptiveNamespace::IAdaptiveFontStyleDefinition* styleDefinition;
+    ABI::AdaptiveNamespace::IAdaptiveFontSizesConfig* sizesConfig;
+
+    // get FontSize from desired style
+    RETURN_IF_FAILED(GetFontStyle(hostConfig, style, &styleDefinition));
+    RETURN_IF_FAILED(styleDefinition->get_FontSizes(&sizesConfig));
+    RETURN_IF_FAILED(GetFontSize(sizesConfig, desiredSize, &result));
+
+    if (result == MAXUINT32)
+    {
+        // get FontSize from Default style
+        RETURN_IF_FAILED(GetFontStyle(hostConfig, ABI::AdaptiveNamespace::FontStyle::Default, &styleDefinition));
+        RETURN_IF_FAILED(styleDefinition->get_FontSizes(&sizesConfig));
+        RETURN_IF_FAILED(GetFontSize(sizesConfig, desiredSize, &result));
+
+        if (result == MAXUINT32)
+        {
+            // get deprecated FontSize
+            RETURN_IF_FAILED(hostConfig->get_FontSizes(&sizesConfig));
+            RETURN_IF_FAILED(GetFontSize(sizesConfig, desiredSize, &result));
+
+            if (result == MAXUINT32)
+            {
+                // set system default FontSize based on desired style
+                switch (desiredSize)
+                {
+                case ABI::AdaptiveNamespace::TextSize::Small:
+                    result = 10;
+                    break;
+                case ABI::AdaptiveNamespace::TextSize::Medium:
+                    result = 14;
+                    break;
+                case ABI::AdaptiveNamespace::TextSize::Large:
+                    result = 17;
+                    break;
+                case ABI::AdaptiveNamespace::TextSize::ExtraLarge:
+                    result = 20;
+                    break;
+                case ABI::AdaptiveNamespace::TextSize::Default:
+                default:
+                    result = 12;
+                    break;
+                }
+            }
+        }
+    }
+    *resultSize = result;
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GetFontWeightFromStyle(
+    _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+    _In_ ABI::AdaptiveNamespace::FontStyle style,
+    _In_ ABI::AdaptiveNamespace::TextWeight desiredWeight,
+    _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept try
+{
+    UINT16 result;
+    ABI::AdaptiveNamespace::IAdaptiveFontStyleDefinition* styleDefinition;
+    ABI::AdaptiveNamespace::IAdaptiveFontWeightsConfig* weightConfig;
+
+    // get FontWeight from desired style
+    RETURN_IF_FAILED(GetFontStyle(hostConfig, style, &styleDefinition));
+    RETURN_IF_FAILED(styleDefinition->get_FontWeights(&weightConfig));
+    RETURN_IF_FAILED(GetFontWeight(weightConfig, desiredWeight, &result));
+
+    if (result == MAXUINT16)
+    {
+        // get FontWeight from Default style
+        RETURN_IF_FAILED(GetFontStyle(hostConfig, ABI::AdaptiveNamespace::FontStyle::Default, &styleDefinition));
+        RETURN_IF_FAILED(styleDefinition->get_FontWeights(&weightConfig));
+        RETURN_IF_FAILED(GetFontWeight(weightConfig, desiredWeight, &result));
+
+        if (result == MAXUINT16)
+        {
+            // get deprecated FontWeight
+            RETURN_IF_FAILED(hostConfig->get_FontWeights(&weightConfig));
+            RETURN_IF_FAILED(GetFontWeight(weightConfig, desiredWeight, &result));
+
+            if (result == MAXUINT16)
+            {
+                // set system default FontWeight based on desired style
+                switch (desiredWeight)
+                {
+                case ABI::AdaptiveNamespace::TextWeight::Lighter:
+                    result = 200;
+                    break;
+                case ABI::AdaptiveNamespace::TextWeight::Bolder:
+                    result = 800;
+                    break;
+                case ABI::AdaptiveNamespace::TextWeight::Default:
+                default:
+                    result = 400;
+                    break;
+                }
+            }
+        }
+    }
+    resultWeight->Weight = result;
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GetFontStyle(
+    _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+    _In_ ABI::AdaptiveNamespace::FontStyle style,
+    _Out_ ABI::AdaptiveNamespace::IAdaptiveFontStyleDefinition **styleDefinition) noexcept try
+{
+    ABI::AdaptiveNamespace::IAdaptiveFontStylesDefinition* fontStyles;
+    RETURN_IF_FAILED(hostConfig->get_FontStyles(&fontStyles));
+    
+    switch (style)
+    {
+    case ABI::AdaptiveNamespace::FontStyle::Display:
+        RETURN_IF_FAILED(fontStyles->get_Display(styleDefinition));
+        break;
+    case ABI::AdaptiveNamespace::FontStyle::Monospace:
+        RETURN_IF_FAILED(fontStyles->get_Monospace(styleDefinition));
+        break;
+    case ABI::AdaptiveNamespace::FontStyle::Default:
+    default:
+        RETURN_IF_FAILED(fontStyles->get_Default(styleDefinition));
+        break;
+    }
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GetFontSize(
+    _In_ ABI::AdaptiveNamespace::IAdaptiveFontSizesConfig* sizesConfig,
+    _In_ ABI::AdaptiveNamespace::TextSize desiredSize,
+    _Out_ UINT32* resultSize) noexcept try
+{
+    switch (desiredSize)
+    {
+    case ABI::AdaptiveNamespace::TextSize::Small:
+        RETURN_IF_FAILED(sizesConfig->get_Small(resultSize));
+        break;
+    case ABI::AdaptiveNamespace::TextSize::Medium:
+        RETURN_IF_FAILED(sizesConfig->get_Medium(resultSize));
+        break;
+    case ABI::AdaptiveNamespace::TextSize::Large:
+        RETURN_IF_FAILED(sizesConfig->get_Large(resultSize));
+        break;
+    case ABI::AdaptiveNamespace::TextSize::ExtraLarge:
+        RETURN_IF_FAILED(sizesConfig->get_ExtraLarge(resultSize));
+        break;
+    case ABI::AdaptiveNamespace::TextSize::Default:
+    default:
+        RETURN_IF_FAILED(sizesConfig->get_Default(resultSize));
+        break;
+    }
+    return S_OK;
+} CATCH_RETURN;
+
+HRESULT GetFontWeight(
+    _In_ ABI::AdaptiveNamespace::IAdaptiveFontWeightsConfig* weightsConfig,
+    _In_ ABI::AdaptiveNamespace::TextWeight desiredWeight,
+    _Out_ UINT16* resultWeight) noexcept try
+{
+    switch (desiredWeight)
+    {
+    case ABI::AdaptiveNamespace::TextWeight::Lighter:
+        RETURN_IF_FAILED(weightsConfig->get_Lighter(resultWeight));
+        break;
+    case ABI::AdaptiveNamespace::TextWeight::Bolder:
+        RETURN_IF_FAILED(weightsConfig->get_Bolder(resultWeight));
+        break;
+    case ABI::AdaptiveNamespace::TextWeight::Default:
+    default:
+        RETURN_IF_FAILED(weightsConfig->get_Default(resultWeight));
+        break;
+    }
+    return S_OK;
+} CATCH_RETURN;
+
 HRESULT StringToJsonObject(const string inputString, IJsonObject** result)
 {
     std::wstring asWstring = StringToWstring(inputString);

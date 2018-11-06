@@ -12,12 +12,14 @@
 #import "ACRErrors.h"
 #import "TextBlock.h"
 #import "ACOBaseCardElement.h"
+#import "Enums.h"
 
 using namespace AdaptiveCards;
 
 @implementation ACOHostConfig
 {
     std::shared_ptr<HostConfig> _config;
+    NSMutableDictionary<NSString *, NSString *> *_fontFamilyNames;
 }
 
 - (instancetype)init
@@ -32,19 +34,31 @@ using namespace AdaptiveCards;
     self = [super init];
     if(self && config){
         _config = config;
+        _fontFamilyNames = [NSMutableDictionary dictionary];
+        
         // check if requested font family name is supported by iOS, if so save it for future uses
-        NSString *requestedFontFamilyName = [NSString stringWithCString:_config->fontFamily.c_str() encoding:NSUTF8StringEncoding];
-        if([UIFont.familyNames containsObject:requestedFontFamilyName]){
-            _fontFamilyNames = @[requestedFontFamilyName];
-        }
+        [self importFontFamily: AdaptiveCards::FontStyle::Default];
+        [self importFontFamily: AdaptiveCards::FontStyle::Display];
+        [self importFontFamily: AdaptiveCards::FontStyle::Monospace];
+        
+        
         _allActionsHaveIcons = YES;
         _buttonPadding = 5;
-        if(!_config->imageBaseUrl.empty()) {
-            NSString *tmpURLString = [NSString stringWithCString:_config->imageBaseUrl.c_str() encoding:NSUTF8StringEncoding];
+        if(!_config->GetImageBaseUrl().empty()) {
+            NSString *tmpURLString = [NSString stringWithCString:_config->GetImageBaseUrl().c_str() encoding:NSUTF8StringEncoding];
             _baseURL = [NSURL URLWithString:tmpURLString];
         }
     }
     return self;
+}
+
+- (void) importFontFamily:(AdaptiveCards::FontStyle)style
+{
+    NSString *requestedFontFamilyName = [NSString stringWithCString:_config->GetFontFamily(style).c_str() encoding:NSUTF8StringEncoding];
+    if([UIFont.familyNames containsObject:requestedFontFamilyName]){
+        NSString *key = [NSString stringWithCString:FontStyleToString(style).c_str() encoding:NSUTF8StringEncoding];
+        _fontFamilyNames[key] = requestedFontFamilyName;
+    }
 }
 
 + (ACOHostConfigParseResult *)fromJson:(NSString *)payload resourceResolvers:(ACOResourceResolvers *)resolvers
@@ -145,22 +159,10 @@ using namespace AdaptiveCards;
     return [ACOHostConfig convertHexColorCodeToUIColor:*str];
 }
 
-- (int)getTextBlockTextSize:(TextSize)txtSz
+- (int)getTextBlockTextSize:(FontStyle)style
+                   textSize:(TextSize)txtSz
 {
-    switch (txtSz){
-        case TextSize::Small:
-            return _config->fontSizes.smallFontSize;
-        case TextSize::Default:
-            return _config->fontSizes.defaultFontSize;
-        case TextSize::Medium:
-            return _config->fontSizes.mediumFontSize;
-        case TextSize::Large:
-            return _config->fontSizes.largeFontSize;
-        case TextSize::ExtraLarge:
-            return _config->fontSizes.extraLargeFontSize;
-        default:
-            return _config->fontSizes.defaultFontSize;
-    }
+    return _config->GetFontSize(style, txtSz);
 }
 
 + (NSTextAlignment)getTextBlockAlignment:(HorizontalAlignment) alignment
@@ -189,17 +191,10 @@ using namespace AdaptiveCards;
     }
 }
 
-- (int)getTextBlockFontWeight:(TextWeight)weight
+- (int)getTextBlockFontWeight:(FontStyle) style
+                   textWeight:(TextWeight)weight
 {
-    switch (weight) {
-        default:
-        case TextWeight::Default:
-            return _config->fontWeights.defaultWeight;
-        case TextWeight::Lighter:
-            return _config->fontWeights.lighterWeight;
-        case TextWeight::Bolder:
-            return _config->fontWeights.bolderWeight;
-    }
+    return _config->GetFontWeight(style, weight);
 }
 
 - (CGSize)getImageSize:(ImageSize)imageSize
@@ -208,21 +203,21 @@ using namespace AdaptiveCards;
     switch (imageSize)
     {
         case ImageSize::Large:{
-            sz = _config->imageSizes.largeSize;
+            sz = _config->GetImageSizes().largeSize;
             break;
         }
         case ImageSize::Medium:{
-            sz = _config->imageSizes.mediumSize;
+            sz = _config->GetImageSizes().mediumSize;
             break;
         }
 
         case ImageSize::Small:{
-            sz = _config->imageSizes.smallSize;
+            sz = _config->GetImageSizes().smallSize;
             break;
         }
 
         default:{
-            sz = _config->imageSizes.largeSize;
+            sz = _config->GetImageSizes().largeSize;
         }
     }
     CGSize cgSize = CGSizeMake(sz, sz);
@@ -374,8 +369,8 @@ using namespace AdaptiveCards;
 - (UIColor *)getBackgroundColorForContainerStyle:(ACRContainerStyle)style
 {
     const std::string &hexColorCode = (style == ACREmphasis)?
-        _config->containerStyles.emphasisPalette.backgroundColor :
-        _config->containerStyles.defaultPalette.backgroundColor;
+        _config->GetContainerStyles().emphasisPalette.backgroundColor :
+        _config->GetContainerStyles().defaultPalette.backgroundColor;
 
     return [ACOHostConfig convertHexColorCodeToUIColor:hexColorCode];
 }
@@ -398,6 +393,12 @@ using namespace AdaptiveCards;
             break;
     }
     return containerStyle;
+}
+
+- (NSString *)getFontFamily:(AdaptiveCards::FontStyle)style
+{
+    NSString *key = [NSString stringWithCString:FontStyleToString(style).c_str() encoding:NSUTF8StringEncoding];
+    return _fontFamilyNames[key];
 }
 
 @end

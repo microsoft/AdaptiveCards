@@ -163,10 +163,12 @@
   <ItemGroup>
     <ClCompile Include="AdaptiveCardParseExceptionTest.cpp" />
     <ClCompile Include="AdditionalPropertiesTest.cpp" />
+    <ClCompile Include="Base64Test.cpp" />
     <ClCompile Include="CustomParsingForIOSTest.cpp" />
     <ClCompile Include="EverythingBagel.cpp" />
     <ClCompile Include="ExplicitDimensionTest.cpp" />
     <ClCompile Include="FactUnitTest.cpp" />
+    <ClCompile Include="FontStylesUnitTest.cpp" />
     <ClCompile Include="ImageBackgroundColorTest.cpp" />
     <ClCompile Include="ParserRegistrationTest.cpp" />
     <ClCompile Include="ResourceInformationTests.cpp" />

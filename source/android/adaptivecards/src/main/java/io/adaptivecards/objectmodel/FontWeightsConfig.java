@@ -35,36 +35,28 @@ public class FontWeightsConfig {
     }
   }
 
-  public void setLighterWeight(long value) {
-    AdaptiveCardObjectModelJNI.FontWeightsConfig_lighterWeight_set(swigCPtr, this, value);
+  public FontWeightsConfig() {
+    this(AdaptiveCardObjectModelJNI.new_FontWeightsConfig__SWIG_0(), true);
   }
 
-  public long getLighterWeight() {
-    return AdaptiveCardObjectModelJNI.FontWeightsConfig_lighterWeight_get(swigCPtr, this);
-  }
-
-  public void setDefaultWeight(long value) {
-    AdaptiveCardObjectModelJNI.FontWeightsConfig_defaultWeight_set(swigCPtr, this, value);
-  }
-
-  public long getDefaultWeight() {
-    return AdaptiveCardObjectModelJNI.FontWeightsConfig_defaultWeight_get(swigCPtr, this);
-  }
-
-  public void setBolderWeight(long value) {
-    AdaptiveCardObjectModelJNI.FontWeightsConfig_bolderWeight_set(swigCPtr, this, value);
-  }
-
-  public long getBolderWeight() {
-    return AdaptiveCardObjectModelJNI.FontWeightsConfig_bolderWeight_get(swigCPtr, this);
+  public FontWeightsConfig(long lighterWeight, long defaultWeight, long bolderWeight) {
+    this(AdaptiveCardObjectModelJNI.new_FontWeightsConfig__SWIG_1(lighterWeight, defaultWeight, bolderWeight), true);
   }
 
   public static FontWeightsConfig Deserialize(JsonValue json, FontWeightsConfig defaultValue) {
     return new FontWeightsConfig(AdaptiveCardObjectModelJNI.FontWeightsConfig_Deserialize(JsonValue.getCPtr(json), json, FontWeightsConfig.getCPtr(defaultValue), defaultValue), true);
   }
 
-  public FontWeightsConfig() {
-    this(AdaptiveCardObjectModelJNI.new_FontWeightsConfig(), true);
+  public static long GetDefaultFontWeight(TextWeight weight) {
+    return AdaptiveCardObjectModelJNI.FontWeightsConfig_GetDefaultFontWeight(weight.swigValue());
+  }
+
+  public long GetFontWeight(TextWeight weight) {
+    return AdaptiveCardObjectModelJNI.FontWeightsConfig_GetFontWeight(swigCPtr, this, weight.swigValue());
+  }
+
+  public void SetFontWeight(TextWeight weight, long value) {
+    AdaptiveCardObjectModelJNI.FontWeightsConfig_SetFontWeight(swigCPtr, this, weight.swigValue(), value);
   }
 
 }

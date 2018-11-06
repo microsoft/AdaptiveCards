@@ -91,11 +91,11 @@ public class ContainerRenderer extends BaseCardElementRenderer
         }
         if (styleForThis != containerStyle)
         {
-            int padding = Util.dpToPixels(context, hostConfig.getSpacing().getPaddingSpacing());
+            int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
             containerView.setPadding(padding, padding, padding, padding);
             String color = styleForThis == containerStyle.Emphasis ?
-                    hostConfig.getContainerStyles().getEmphasisPalette().getBackgroundColor() :
-                    hostConfig.getContainerStyles().getDefaultPalette().getBackgroundColor();
+                    hostConfig.GetContainerStyles().getEmphasisPalette().getBackgroundColor() :
+                    hostConfig.GetContainerStyles().getDefaultPalette().getBackgroundColor();
             containerView.setBackgroundColor(Color.parseColor(color));
         }
 

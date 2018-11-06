@@ -15,11 +15,11 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveFontSizesConfig::RuntimeClassInitialize(FontSizesConfig fontSizesConfig) noexcept
     {
-        m_default = fontSizesConfig.defaultFontSize;
-        m_small = fontSizesConfig.smallFontSize;
-        m_medium = fontSizesConfig.mediumFontSize;
-        m_large = fontSizesConfig.largeFontSize;
-        m_extraLarge = fontSizesConfig.extraLargeFontSize;
+        m_default = fontSizesConfig.GetFontSize(AdaptiveCards::TextSize::Default);
+        m_small = fontSizesConfig.GetFontSize(AdaptiveCards::TextSize::Small);
+        m_medium = fontSizesConfig.GetFontSize(AdaptiveCards::TextSize::Medium);
+        m_large = fontSizesConfig.GetFontSize(AdaptiveCards::TextSize::Large);
+        m_extraLarge = fontSizesConfig.GetFontSize(AdaptiveCards::TextSize::ExtraLarge);
 
         return S_OK;
     }

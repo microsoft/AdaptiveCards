@@ -36,7 +36,7 @@
 		},
 		{
 			"type": "Input.Text",
-			"id": "input1",
+			"id": "input3",
 			"isMultiline": true,
 			"inlineAction": {
 				"type": "Action.Submit",
@@ -46,7 +46,7 @@
 		},
 		{
 			"type": "Input.Text",
-			"id": "input2",
+			"id": "input4",
 			"isMultiline": true,
 			"inlineAction": {
 				"type": "Action.OpenUrl",
