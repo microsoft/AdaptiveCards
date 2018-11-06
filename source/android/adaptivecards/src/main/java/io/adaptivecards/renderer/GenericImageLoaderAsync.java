@@ -14,7 +14,6 @@ import java.net.URL;
 
 import io.adaptivecards.renderer.http.HttpRequestHelper;
 import io.adaptivecards.renderer.http.HttpRequestResult;
-import android.util.Base64;
 
 /** Abstract class that specifies image loading mechanism */
 public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, HttpRequestResult<Bitmap>>
@@ -33,22 +32,6 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
     // Main function to try different ways to load an image
     HttpRequestResult<Bitmap> loadImage(String path, Context context)
     {
-        // The syntax of data URIs as in RFX 2397 is  data:[<media type>][;base64],<data>
-        path = path.trim();
-        if( path.startsWith("data:") )
-        {
-            try {
-                //
-                String base64Data = path.split(",")[1];
-                byte[] decodedString = Base64.decode(base64Data, Base64.DEFAULT);
-                Bitmap b = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                return new HttpRequestResult<>(b);
-            } catch (Exception e)
-            {
-                return new HttpRequestResult<>(e);
-            }
-        }
-
         try
         {
             // Try loading online using only the path first

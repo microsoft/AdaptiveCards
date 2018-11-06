@@ -50,10 +50,10 @@ size_t AdaptiveBase64Util::DecodedLength(const char* in, size_t in_length)
 
 size_t AdaptiveBase64Util::DecodedLength(const std::string& in)
 {
-    int numEq{};
+    size_t numEq{};
     size_t n{ in.size() };
 
-    for (auto it = in.rbegin(); *it == '='; ++it)
+    for (auto it = in.rbegin(); (numEq < n) && (*it == '='); ++it)
     {
         ++numEq;
     }
@@ -103,7 +103,7 @@ unsigned char AdaptiveBase64Util::b64_lookup(unsigned char c)
     {
         return 255;
     }
-    return base64Alphabet[c];
+    return static_cast<unsigned char>(base64Alphabet[c]);
 }
 
 bool AdaptiveBase64Util::Encode(const std::vector<char>& in, std::string* out)
