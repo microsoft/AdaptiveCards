@@ -49,9 +49,9 @@
     ACRTextField *txtInput = nil;
     ACRTextView *txtview = nil;
     UIButton *button = nil;
-    
+    ACRQuickReplyMultilineView *multilineview = nil;
+
     if(inputBlck->GetIsMultiline()) {
-        ACRQuickReplyMultilineView *multilineview;
         if(action == nullptr) {
             txtview = [[ACRTextView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) element:acoElem];
             txtview.allowsEditingTextAttributes = YES;
@@ -64,6 +64,9 @@
             multilineview = [[ACRQuickReplyMultilineView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0)];
             txtview = multilineview.textView;
             button = multilineview.button;
+            if(txtview.borderColor) {
+                txtview.layer.borderColor = txtview.borderColor.CGColor;
+            }
         }
         BOOL bRemove = NO;
         if(![txtview.text length]) {
@@ -78,8 +81,19 @@
         CGRect boundingrect = [txtview.layoutManager lineFragmentRectForGlyphAtIndex:0 effectiveRange:nil];
         boundingrect.size.height *= 4;
         boundingrect.size.width = viewGroup.frame.size.width;
-        txtview.frame = boundingrect;
 
+        txtview.frame = boundingrect;
+        
+        if(multilineview) {
+            //txtview.translatesAutoresizingMaskIntoConstraints = YES;
+            //txtview.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+            
+            [NSLayoutConstraint constraintWithItem:multilineview attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:txtview attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;
+            
+            [NSLayoutConstraint constraintWithItem:multilineview attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:txtview attribute:NSLayoutAttributeHeight multiplier:1.0 constant:10].active = YES;
+            
+        }
+        
         if(bRemove){
             txtview.text = @"";
         }
@@ -156,7 +170,11 @@
             }
         }
         if(action != nullptr) {
-            inputview = quickReplyView;
+            if(inputBlck->GetIsMultiline()){
+                inputview = multilineview;
+            } else {
+                inputview = quickReplyView;
+            }
         } else {
             inputview = txtInput;
         }

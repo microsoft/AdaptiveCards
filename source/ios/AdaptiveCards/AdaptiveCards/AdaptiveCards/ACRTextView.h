@@ -16,6 +16,7 @@ extern const NSInteger kACRTextView;
 @property NSString* placeholderText;
 @property bool isRequired;
 @property NSUInteger maxLength;
+@property IBInspectable UIColor* borderColor;
 
 - (instancetype)initWithFrame:(CGRect)frame element:(ACOBaseCardElement *)element;
 
