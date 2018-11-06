@@ -535,71 +535,6 @@ namespace AdaptiveNamespace
         HString schemeName;
         THROW_IF_FAILED(imageUrl->get_SchemeName(schemeName.GetAddressOf()));
 
-        INT32 isDataUriImage{};
-        THROW_IF_FAILED(WindowsCompareStringOrdinal(schemeName.Get(), HStringReference(L"data").Get(), &isDataUriImage));
-        if (isDataUriImage == 0)
-        {
-            // Decode base 64 string
-            HString dataPath;
-            THROW_IF_FAILED(imageUrl->get_Path(dataPath.GetAddressOf()));
-
-            std::string data = AdaptiveBase64Util::ExtractDataFromUri(HStringToUTF8(dataPath.Get()));
-            std::string decodedData = AdaptiveBase64Util::Decode(data);
-
-            ComPtr<IBufferFactory> bufferFactory;
-            THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Storage_Streams_Buffer).Get(), bufferFactory.GetAddressOf()));
-
-            ComPtr<IBuffer> buffer;
-            THROW_IF_FAILED(bufferFactory->Create(decodedData.size(), buffer.GetAddressOf()));
-
-            ComPtr<::Windows::Storage::Streams::IBufferByteAccess> bufferByteAccess;
-            THROW_IF_FAILED(buffer.As(&bufferByteAccess));
-
-            BYTE* dataInternal{};
-            THROW_IF_FAILED(bufferByteAccess->Buffer(&dataInternal));
-
-            memcpy_s(dataInternal, decodedData.size(), decodedData.data(), decodedData.size());
-
-            // CopyMemory(dataInternal, decodedData.data(), decodedData.size());
-            THROW_IF_FAILED(buffer->put_Length(static_cast<UINT32>(decodedData.size())));
-          
-            ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(
-                HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
-            m_imageLoadTracker.TrackBitmapImage(bitmapImage.Get());
-            THROW_IF_FAILED(bitmapImage->put_CreateOptions(BitmapCreateOptions::BitmapCreateOptions_IgnoreImageCache));
-            ComPtr<IBitmapSource> bitmapSource;
-            THROW_IF_FAILED(bitmapImage.As(&bitmapSource));
-
-            ComPtr<IRandomAccessStream> randomAccessStream = XamlHelpers::CreateXamlClass<IRandomAccessStream>(
-                HStringReference(RuntimeClass_Windows_Storage_Streams_InMemoryRandomAccessStream));
-
-            ComPtr<IOutputStream> outputStream;
-            THROW_IF_FAILED(randomAccessStream.As(&outputStream));
-
-            ComPtr<IAsyncOperationWithProgress<UINT32, UINT32>> bufferWriteOperation;
-            THROW_IF_FAILED(outputStream->WriteAsync(buffer.Get(), &bufferWriteOperation));
-            
-            ComPtr<T> strongImageControl(uiElement);
-            ComPtr<XamlBuilder> strongThis(this);
-            THROW_IF_FAILED(bufferWriteOperation->put_Completed(
-                Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<UINT32, UINT32>>>(
-                    [strongThis, this, bitmapSource, randomAccessStream, strongImageControl](
-                        IAsyncOperationWithProgress<UINT32, UINT32>* /*operation*/, AsyncStatus /*status*/)->HRESULT {
-
-                        randomAccessStream->Seek(0);
-                        RETURN_IF_FAILED(bitmapSource->SetSource(randomAccessStream.Get()));
-
-                        ComPtr<IImageSource> imageSource;
-                        RETURN_IF_FAILED(bitmapSource.As(&imageSource));
-
-                        SetImageSource(strongImageControl.Get(), imageSource.Get());
-                        return S_OK;
-                    })
-                    .Get()));
-            m_writeAsyncOperations.push_back(bufferWriteOperation);
-            return;
-        }
-
         // Get the resolver for the image
         ComPtr<IAdaptiveCardResourceResolver> resolver;
         if (resolvers != nullptr)
@@ -666,6 +601,70 @@ namespace AdaptiveNamespace
 
                 return;
             }
+        }
+
+        INT32 isDataUriImage{};
+        THROW_IF_FAILED(WindowsCompareStringOrdinal(schemeName.Get(), HStringReference(L"data").Get(), &isDataUriImage));
+        if (isDataUriImage == 0)
+        {
+            // Decode base 64 string
+            HString dataPath;
+            THROW_IF_FAILED(imageUrl->get_Path(dataPath.GetAddressOf()));
+
+            std::string data = AdaptiveBase64Util::ExtractDataFromUri(HStringToUTF8(dataPath.Get()));
+            std::vector<char> decodedData = AdaptiveBase64Util::Decode(data);
+
+            ComPtr<IBufferFactory> bufferFactory;
+            THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Storage_Streams_Buffer).Get(), bufferFactory.GetAddressOf()));
+
+            ComPtr<IBuffer> buffer;
+            THROW_IF_FAILED(bufferFactory->Create(static_cast<UINT32>(decodedData.size()), buffer.GetAddressOf()));
+
+            ComPtr<::Windows::Storage::Streams::IBufferByteAccess> bufferByteAccess;
+            THROW_IF_FAILED(buffer.As(&bufferByteAccess));
+
+            BYTE* dataInternal{};
+            THROW_IF_FAILED(bufferByteAccess->Buffer(&dataInternal));
+
+            memcpy_s(dataInternal, decodedData.size(), decodedData.data(), decodedData.size());
+
+            THROW_IF_FAILED(buffer->put_Length(static_cast<UINT32>(decodedData.size())));
+
+            ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(
+                HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
+            m_imageLoadTracker.TrackBitmapImage(bitmapImage.Get());
+            THROW_IF_FAILED(bitmapImage->put_CreateOptions(BitmapCreateOptions::BitmapCreateOptions_IgnoreImageCache));
+            ComPtr<IBitmapSource> bitmapSource;
+            THROW_IF_FAILED(bitmapImage.As(&bitmapSource));
+
+            ComPtr<IRandomAccessStream> randomAccessStream = XamlHelpers::CreateXamlClass<IRandomAccessStream>(
+                HStringReference(RuntimeClass_Windows_Storage_Streams_InMemoryRandomAccessStream));
+
+            ComPtr<IOutputStream> outputStream;
+            THROW_IF_FAILED(randomAccessStream.As(&outputStream));
+
+            ComPtr<IAsyncOperationWithProgress<UINT32, UINT32>> bufferWriteOperation;
+            THROW_IF_FAILED(outputStream->WriteAsync(buffer.Get(), &bufferWriteOperation));
+
+            ComPtr<T> strongImageControl(uiElement);
+            ComPtr<XamlBuilder> strongThis(this);
+            THROW_IF_FAILED(bufferWriteOperation->put_Completed(
+                Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<UINT32, UINT32>>>(
+                    [strongThis, this, bitmapSource, randomAccessStream, strongImageControl](
+                        IAsyncOperationWithProgress<UINT32, UINT32>* /*operation*/, AsyncStatus /*status*/)->HRESULT {
+
+                randomAccessStream->Seek(0);
+                RETURN_IF_FAILED(bitmapSource->SetSource(randomAccessStream.Get()));
+
+                ComPtr<IImageSource> imageSource;
+                RETURN_IF_FAILED(bitmapSource.As(&imageSource));
+
+                SetImageSource(strongImageControl.Get(), imageSource.Get());
+                return S_OK;
+            })
+                .Get()));
+            m_writeAsyncOperations.push_back(bufferWriteOperation);
+            return;
         }
 
         // Otherwise, no resolver...
@@ -1770,8 +1769,6 @@ namespace AdaptiveNamespace
                 XamlHelpers::CreateXamlClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
 
             Stretch stretch = (isAspectRatioNeeded) ? Stretch::Stretch_Fill : Stretch::Stretch_UniformToFill;
-
-            // only do this if image is from uri
             SetImageOnUIElement(imageUrl.Get(), ellipse.Get(), resourceResolvers.Get(), stretch);
 
             ComPtr<IShape> ellipseAsShape;
