@@ -59,5 +59,17 @@ namespace AdaptiveCardsSharedModelUnitTest
                                                     AdaptiveBase64Util::Decode(std::string(encodedData[i].begin(), encodedData[i].end()))));
             }
         }
+
+        TEST_METHOD(FailToDecodeTest)
+        {
+            std::vector<std::string> badUri{ "foo_bar", "foo(bar)", "foo-bar", "foo*bar", "foo\"bar", "foo&bar", "foo^bar", "foo#bar", "foo@bar", "foo!bar" };
+
+            // If it crashes in any case the test will fail
+            for (const auto& uri : badUri)
+            {
+                AdaptiveBase64Util::Decode(uri);
+            }
+
+        }
     };
 }
