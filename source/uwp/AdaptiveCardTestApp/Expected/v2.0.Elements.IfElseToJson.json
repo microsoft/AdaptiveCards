@@ -1,0 +1,1 @@
+{"actions":[],"body":[{"text":"The if is true","type":"TextBlock"},{"text":"The first elseif is true","type":"TextBlock"},{"text":"The second elseif is true","type":"TextBlock"},{"text":"None of the ifs were true, this is the else case","type":"TextBlock"}],"type":"AdaptiveCard","version":"2.0"}

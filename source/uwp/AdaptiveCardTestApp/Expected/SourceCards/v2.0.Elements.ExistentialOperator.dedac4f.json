@@ -2,10 +2,6 @@
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"version": "2.0",
-	"data": {
-		"data1": "foo",
-		"data2": "bar"
-	},
 	"body": [
 		{
 			"type": "TextBlock",

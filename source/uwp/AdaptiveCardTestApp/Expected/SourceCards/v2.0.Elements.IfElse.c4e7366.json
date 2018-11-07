@@ -1,0 +1,88 @@
+{
+	"type": "AdaptiveCard",
+	"version": "2.0",
+	"body": [
+		[
+			{
+				"{{#if true}}": {
+					"type": "TextBlock",
+					"text": "The if is true"
+				}
+			}
+		],
+		[
+			{
+				"{{#if false}}": {
+					"type": "TextBlock",
+					"text": "The if is true"
+				}
+			},
+			{
+				"{{#elseif true}}": {
+					"type": "TextBlock",
+					"text": "The first elseif is true"
+				}
+			}
+		],
+		[
+			{
+				"{{#if false}}": {
+					"type": "TextBlock",
+					"text": "The if is true"
+				}
+			},
+			{
+				"{{#elseif false}}": {
+					"type": "TextBlock",
+					"text": "The first elseif is true"
+				}
+			},
+			{
+				"{{#elseif true}}": {
+					"type": "TextBlock",
+					"text": "The second elseif is true"
+				}
+			}
+		],
+		[
+			{
+				"{{#if false}}": {
+					"type": "TextBlock",
+					"text": "The if is true"
+				}
+			},
+			{
+				"{{#elseif false}}": {
+					"type": "TextBlock",
+					"text": "The first elseif is true"
+				}
+			},
+			{
+				"{{#elseif false}}": {
+					"type": "TextBlock",
+					"text": "The second elseif is true"
+				}
+			},
+			{
+				"{{#else}}": {
+					"type": "TextBlock",
+					"text": "None of the ifs were true, this is the else case"
+				}
+			}
+		],
+		[
+			{
+				"{{#if false}}": {
+					"type": "TextBlock",
+					"text": "The if is true"
+				}
+			},
+			{
+				"{{#elseif false}}": {
+					"type": "TextBlock",
+					"text": "The first elseif is true"
+				}
+			}
+		]
+	]
+}

@@ -1,0 +1,70 @@
+{
+	"type": "AdaptiveCard",
+	"version": "2.0",
+	"data": {
+		"object1": {
+			"foo": "stuff"
+		},
+		"object2": {
+			"bar": "stuff"
+		}
+	},
+	"body": [
+		[
+			{
+				"{{#if 'bar' in object1}}": {
+					"type": "TextBlock",
+					"text": "bar exists in object1"
+				}
+			},
+			{
+				"{{#else}}": {
+					"type": "TextBlock",
+					"text": "bar doesn't exist in object1"
+				}
+			}
+		],
+		[
+			{
+				"{{#if 'bar' in object2}}": {
+					"type": "TextBlock",
+					"text": "bar exists in object2"
+				}
+			},
+			{
+				"{{#else}}": {
+					"type": "TextBlock",
+					"text": "bar doesn't exist in object2"
+				}
+			}
+		],
+		[
+			{
+				"{{#if 'object1' in this}}": {
+					"type": "TextBlock",
+					"text": "object1 exists"
+				}
+			},
+			{
+				"{{#else}}": {
+					"type": "TextBlock",
+					"text": "object1 doesn't exist"
+				}
+			}
+		],
+		[
+			{
+				"{{#if 'object3' in this}}": {
+					"type": "TextBlock",
+					"text": "object3 exists"
+				}
+			},
+			{
+				"{{#else}}": {
+					"type": "TextBlock",
+					"text": "object3 doesn't exist"
+				}
+			}
+		]
+	]
+}

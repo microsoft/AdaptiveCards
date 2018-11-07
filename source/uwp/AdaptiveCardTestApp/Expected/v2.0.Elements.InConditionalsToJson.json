@@ -1,0 +1,1 @@
+{"actions":[],"body":[{"text":"bar doesn't exist in object1","type":"TextBlock"},{"text":"bar exists in object2","type":"TextBlock"},{"text":"object1 exists","type":"TextBlock"},{"text":"object3 doesn't exist","type":"TextBlock"}],"type":"AdaptiveCard","version":"2.0"}
