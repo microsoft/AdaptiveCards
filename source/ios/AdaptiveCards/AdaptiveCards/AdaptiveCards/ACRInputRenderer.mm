@@ -50,77 +50,55 @@
     ACRTextView *txtview = nil;
     UIButton *button = nil;
     ACRQuickReplyMultilineView *multilineview = nil;
-
+    ACRQuickReplyView *quickReplyView = nil;
+    BOOL renderAction = NO;
+    if([acoConfig getHostConfig]->GetSupportsInteractivity()) {
+        if(action->GetElementType() == ActionType::ShowCard){
+            if([acoConfig getHostConfig]->GetActions().showCard.actionMode != ActionMode::Inline) {
+                renderAction = YES;
+            }
+        } else {
+            renderAction = YES;
+        }
+    }
     if(inputBlck->GetIsMultiline()) {
         if(action == nullptr) {
-            txtview = [[ACRTextView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) element:acoElem];
+            txtview = [[ACRTextView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0) element:acoElem];
             txtview.allowsEditingTextAttributes = YES;
             txtview.layer.borderWidth = 0.5;
             txtview.layer.borderColor = [[UIColor grayColor] CGColor];
             txtview.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
             txtview.scrollEnabled = NO;
             txtview.keyboardType = UIKeyboardTypeDefault;
-        } else {
+            [txtview.layer setCornerRadius:5.0f];
+            inputview = txtview;
+        } else { // if action is defined, load ACRQuickReplyMultilineView nib for customizable UI
             multilineview = [[ACRQuickReplyMultilineView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0)];
             txtview = multilineview.textView;
+            // configure it with basecard element since init with decoder can't pass in input param
+            [txtview configWithSharedModel:acoElem];
             button = multilineview.button;
+            // borderColor is user defined runtime attribute
             if(txtview.borderColor) {
                 txtview.layer.borderColor = txtview.borderColor.CGColor;
             }
-        }
-        BOOL bRemove = NO;
-        if(![txtview.text length]) {
-            txtview.text = @"placeholder text";
-            bRemove = YES;
-        }
-        txtview.id = [NSString stringWithCString:inputBlck->GetId().c_str()
-                                         encoding:NSUTF8StringEncoding];
-        txtview.isRequired  = inputBlck->GetIsRequired();
-        txtview.delegate = txtview;
-
-        CGRect boundingrect = [txtview.layoutManager lineFragmentRectForGlyphAtIndex:0 effectiveRange:nil];
-        boundingrect.size.height *= 4;
-        boundingrect.size.width = viewGroup.frame.size.width;
-
-        txtview.frame = boundingrect;
-        
-        if(multilineview) {
-            //txtview.translatesAutoresizingMaskIntoConstraints = YES;
-            //txtview.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-            
-            [NSLayoutConstraint constraintWithItem:multilineview attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:txtview attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;
-            
-            [NSLayoutConstraint constraintWithItem:multilineview attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:txtview attribute:NSLayoutAttributeHeight multiplier:1.0 constant:10].active = YES;
-            
-        }
-        
-        if(bRemove){
-            txtview.text = @"";
-        }
-
-        CGRect frame = CGRectMake(0, 0, viewGroup.frame.size.width, 30);
-        UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:frame];
-        UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:txtview action:@selector(dismissKeyboard)];
-        [toolBar setItems:@[doneButton, flexSpace] animated:NO];
-        [toolBar sizeToFit];
-        txtview.inputAccessoryView = toolBar;
-        
-        if (action == nullptr) {
-            inputview = txtview;
-        } else {
+            [NSLayoutConstraint constraintWithItem:multilineview attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                            toItem:txtview attribute:NSLayoutAttributeWidth
+                                        multiplier:1.0 constant:0].active = YES;
             inputview = multilineview;
         }
     } else {
-        ACRQuickReplyView *quickReplyView;
         if(action != nullptr) {
             quickReplyView = [[ACRQuickReplyView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0)];
             txtInput = quickReplyView.textFileld;
             button = quickReplyView.button;
-
+            txtInput.delegate = quickReplyView;
+            inputview = txtInput;
         } else {
             NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
             txtInput = [bundle loadNibNamed:@"ACRTextField" owner:rootView options:nil][0];
+            txtInput.delegate = txtInput;
+            inputview = quickReplyView;
         }
 
         NSString *placeHolderStr = [NSString stringWithCString:inputBlck->GetPlaceholder().c_str()
@@ -132,7 +110,6 @@
         txtInput.text = [NSString stringWithCString:inputBlck->GetValue().c_str() encoding:NSUTF8StringEncoding];
         txtInput.allowsEditingTextAttributes = YES;
         txtInput.isRequired  = inputBlck->GetIsRequired();
-        txtInput.delegate = txtInput;
 
         switch(inputBlck->GetTextInputStyle())
         {
@@ -169,15 +146,6 @@
                 break;
             }
         }
-        if(action != nullptr) {
-            if(inputBlck->GetIsMultiline()){
-                inputview = multilineview;
-            } else {
-                inputview = quickReplyView;
-            }
-        } else {
-            inputview = txtInput;
-        }
     }
 
     [inputview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
@@ -208,7 +176,7 @@
             [inputs addObject:txtInput];
         }
         NSString *title = [NSString stringWithCString:action->GetTitle().c_str() encoding:NSUTF8StringEncoding];
-        
+
         NSDictionary *imageViewMap = [rootView getImageMap];
         NSString *key = [NSString stringWithCString:action->GetIconUrl().c_str() encoding:[NSString defaultCStringEncoding]];
         UIImage *img = imageViewMap[key];
@@ -221,19 +189,21 @@
         ACOBaseActionElement *acoAction = [[ACOBaseActionElement alloc] init];
         [acoAction setElem:action];
         ACRAggregateTarget *target = [[ACRAggregateTarget alloc] initWithActionElement:acoAction rootView:rootView];
-        
+
         switch (action->GetElementType()) {
             case ActionType::ShowCard:
                 [button addTarget:target action:@selector(toggleVisibilityOfShowCard) forControlEvents:UIControlEventTouchUpInside];
                 break;
             case ActionType::Submit:
+                [txtInput setReturnKeyType:UIReturnKeySend];
+                quickReplyView.target = target;
             case ActionType::OpenUrl:
                 [button addTarget:target action:@selector(send:) forControlEvents:UIControlEventTouchUpInside];
                 break;
             default:
                 break;
         }
-        
+
         [viewGroup addTarget:target];
     } else {
         [inputs addObject:inputview];

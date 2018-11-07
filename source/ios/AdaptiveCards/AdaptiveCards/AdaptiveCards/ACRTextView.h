@@ -19,5 +19,6 @@ extern const NSInteger kACRTextView;
 @property IBInspectable UIColor* borderColor;
 
 - (instancetype)initWithFrame:(CGRect)frame element:(ACOBaseCardElement *)element;
+- (void)configWithSharedModel:(ACOBaseCardElement *)element;
 
 @end

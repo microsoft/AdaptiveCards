@@ -33,4 +33,19 @@
     self.contentView.frame = self.bounds;
     self.contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 }
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if(_target) {
+        [_target send:self.button];
+    }
+    [self resignFirstResponder];
+    [self endEditing:YES];
+    return YES;
+}
+
+- (void)dismissNumPad
+{
+    [self resignFirstResponder];
+}
 @end
