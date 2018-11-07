@@ -17,6 +17,7 @@ const NSInteger kACRTextView = 0x4143525456;
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
         [self configWithSharedModel:element];
     }
     return self;
@@ -46,12 +47,9 @@ const NSInteger kACRTextView = 0x4143525456;
         self.text = @"placeholder text";
         bRemove = YES;
     }
-
     CGRect boundingrect = [self.layoutManager lineFragmentRectForGlyphAtIndex:0 effectiveRange:nil];
     boundingrect.size.height *= 4;
-    boundingrect.size.width = self.frame.size.width;
     self.frame = boundingrect;
-
 
     if(bRemove){
         self.text = @"";

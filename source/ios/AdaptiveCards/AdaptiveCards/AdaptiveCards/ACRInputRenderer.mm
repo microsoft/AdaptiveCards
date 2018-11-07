@@ -51,8 +51,9 @@
     UIButton *button = nil;
     ACRQuickReplyMultilineView *multilineview = nil;
     ACRQuickReplyView *quickReplyView = nil;
+
     BOOL renderAction = NO;
-    if([acoConfig getHostConfig]->GetSupportsInteractivity()) {
+    if(action != nullptr && [acoConfig getHostConfig]->GetSupportsInteractivity()) {
         if(action->GetElementType() == ActionType::ShowCard){
             if([acoConfig getHostConfig]->GetActions().showCard.actionMode != ActionMode::Inline) {
                 renderAction = YES;
@@ -61,18 +62,10 @@
             renderAction = YES;
         }
     }
+    
     if(inputBlck->GetIsMultiline()) {
-        if(action == nullptr) {
-            txtview = [[ACRTextView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0) element:acoElem];
-            txtview.allowsEditingTextAttributes = YES;
-            txtview.layer.borderWidth = 0.5;
-            txtview.layer.borderColor = [[UIColor grayColor] CGColor];
-            txtview.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-            txtview.scrollEnabled = NO;
-            txtview.keyboardType = UIKeyboardTypeDefault;
-            [txtview.layer setCornerRadius:5.0f];
-            inputview = txtview;
-        } else { // if action is defined, load ACRQuickReplyMultilineView nib for customizable UI
+        if(renderAction) {
+            // if action is defined, load ACRQuickReplyMultilineView nib for customizable UI
             multilineview = [[ACRQuickReplyMultilineView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0)];
             txtview = multilineview.textView;
             // configure it with basecard element since init with decoder can't pass in input param
@@ -86,19 +79,29 @@
                                             toItem:txtview attribute:NSLayoutAttributeWidth
                                         multiplier:1.0 constant:0].active = YES;
             inputview = multilineview;
+        } else {
+            txtview = [[ACRTextView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0) element:acoElem];
+            txtview.allowsEditingTextAttributes = YES;
+            txtview.layer.borderWidth = 0.5;
+            txtview.layer.borderColor = [[UIColor grayColor] CGColor];
+            txtview.scrollEnabled = NO;
+            txtview.keyboardType = UIKeyboardTypeDefault;
+            [txtview.layer setCornerRadius:5.0f];
+            inputview = txtview;
         }
     } else {
-        if(action != nullptr) {
+        if(renderAction) {
+            // if action is defined, load ACRQuickReplyView nib for customizable UI
             quickReplyView = [[ACRQuickReplyView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0)];
             txtInput = quickReplyView.textFileld;
             button = quickReplyView.button;
             txtInput.delegate = quickReplyView;
-            inputview = txtInput;
+            inputview = quickReplyView;
         } else {
             NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
             txtInput = [bundle loadNibNamed:@"ACRTextField" owner:rootView options:nil][0];
             txtInput.delegate = txtInput;
-            inputview = quickReplyView;
+            inputview = txtInput;
         }
 
         NSString *placeHolderStr = [NSString stringWithCString:inputBlck->GetPlaceholder().c_str()
@@ -169,17 +172,18 @@
     NSDictionary *viewsMap = NSDictionaryOfVariableBindings(inputview);
     [ACRBaseCardElementRenderer applyLayoutStyle:format viewsMap:viewsMap];
 
-    if(action != nullptr) {
+    // configures for action
+    if(renderAction) {
         if(inputBlck->GetIsMultiline()) {
             [inputs addObject:txtview];
         } else {
             [inputs addObject:txtInput];
         }
         NSString *title = [NSString stringWithCString:action->GetTitle().c_str() encoding:NSUTF8StringEncoding];
-
         NSDictionary *imageViewMap = [rootView getImageMap];
         NSString *key = [NSString stringWithCString:action->GetIconUrl().c_str() encoding:[NSString defaultCStringEncoding]];
         UIImage *img = imageViewMap[key];
+
         if(img){
             CGSize contentSize = [button.titleLabel intrinsicContentSize];
             [UIButton setImageView:img inButton:button withConfig:acoConfig contentSize:contentSize inconPlacement:ACRLeftOfTitle];
