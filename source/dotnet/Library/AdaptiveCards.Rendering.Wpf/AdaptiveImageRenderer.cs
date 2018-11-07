@@ -21,7 +21,23 @@ namespace AdaptiveCards.Rendering.Wpf
                 return uiImage;
             }
 
-            uiImage.SetSource(image, finalUri, context);
+            if (finalUri.Scheme == "data")
+            {
+                var encodedData = image.Url.AbsoluteUri.Substring(image.Url.AbsoluteUri.LastIndexOf(',') + 1);
+
+                var decodedDataUri = Convert.FromBase64String(encodedData);
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.StreamSource = new MemoryStream(decodedDataUri);
+                bitmap.EndInit();
+
+                uiImage.Source = bitmap;
+            }
+            else
+            { 
+                uiImage.SetSource(image, finalUri, context);
+            }
+
             uiImage.SetHorizontalAlignment(image.HorizontalAlignment);
 
             string style = $"Adaptive.{image.Type}";
