@@ -20,7 +20,7 @@
 			"type": "Action.OpenUrl",
 			"sentiment": "positive",
 			"url": "http://adaptivecards.io",
-			"title": "Action.Pawsitive"
+			"title": "Action.Positive"
 		},
 		{
 			"type": "Action.OpenUrl",
