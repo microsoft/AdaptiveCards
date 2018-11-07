@@ -21,6 +21,7 @@ import io.adaptivecards.objectmodel.AdaptiveCardParseWarning;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
+import io.adaptivecards.renderer.IDataUriImageLoader;
 import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
@@ -174,6 +175,13 @@ public class ImageRenderer extends BaseCardElementRenderer
         {
             imageLoaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
         }
+
+        IDataUriImageLoader dataUriImageLoader = CardRendererRegistration.getInstance().getDataUriImageLoader();
+        if (dataUriImageLoader != null)
+        {
+            imageLoaderAsync.registerCustomDataUriImageLoader(dataUriImageLoader);
+        }
+
         imageLoaderAsync.execute(image.GetUrl());
 
         LinearLayout.LayoutParams layoutParams;
