@@ -61,6 +61,7 @@ struct tm {
 #include <memory>
 #include <time.h>
 #include "../../../shared/cpp/ObjectModel/Enums.h"
+#include "../../../shared/cpp/ObjectModel/AdaptiveBase64Util.h"
 #include "../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
 #include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
@@ -300,6 +301,7 @@ namespace Json {
 %template(BaseActionElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement> >;
 %template(DateTimePreparsedTokenVector) std::vector<std::shared_ptr<AdaptiveCards::DateTimePreparsedToken> >;
 %template(StringVector) std::vector<std::string>;
+%template(CharVector) std::vector<char>;
 
 %template(EnableSharedFromThisContainer) std::enable_shared_from_this<AdaptiveCards::Container>;
 
@@ -575,6 +577,7 @@ namespace Json {
 
 %include "../../../shared/cpp/ObjectModel/pch.h"
 %include "../../../shared/cpp/ObjectModel/Enums.h"
+%include "../../../shared/cpp/ObjectModel/AdaptiveBase64Util.h"
 %include "../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
 %include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseActionElement.h"

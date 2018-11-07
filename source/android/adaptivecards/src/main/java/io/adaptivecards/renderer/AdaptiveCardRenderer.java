@@ -214,6 +214,12 @@ public class AdaptiveCardRenderer
                 loaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
             }
 
+            IDataUriImageLoader dataUriImageLoader = CardRendererRegistration.getInstance().getDataUriImageLoader();
+            if(dataUriImageLoader != null)
+            {
+                loaderAsync.registerCustomDataUriImageLoader(dataUriImageLoader);
+            }
+
             loaderAsync.execute(imageUrl);
         }
 

@@ -163,6 +163,17 @@ public class AdaptiveCardObjectModelJNI {
   public final static native String StringVector_get(long jarg1, StringVector jarg1_, int jarg2);
   public final static native void StringVector_set(long jarg1, StringVector jarg1_, int jarg2, String jarg3);
   public final static native void delete_StringVector(long jarg1);
+  public final static native long new_CharVector__SWIG_0();
+  public final static native long new_CharVector__SWIG_1(long jarg1);
+  public final static native long CharVector_size(long jarg1, CharVector jarg1_);
+  public final static native long CharVector_capacity(long jarg1, CharVector jarg1_);
+  public final static native void CharVector_reserve(long jarg1, CharVector jarg1_, long jarg2);
+  public final static native boolean CharVector_isEmpty(long jarg1, CharVector jarg1_);
+  public final static native void CharVector_clear(long jarg1, CharVector jarg1_);
+  public final static native void CharVector_add(long jarg1, CharVector jarg1_, char jarg2);
+  public final static native char CharVector_get(long jarg1, CharVector jarg1_, int jarg2);
+  public final static native void CharVector_set(long jarg1, CharVector jarg1_, int jarg2, char jarg3);
+  public final static native void delete_CharVector(long jarg1);
   public final static native long EnableSharedFromThisContainer_shared_from_this(long jarg1, EnableSharedFromThisContainer jarg1_);
   public final static native long new_EnumHash();
   public final static native void delete_EnumHash(long jarg1);
@@ -214,6 +225,11 @@ public class AdaptiveCardObjectModelJNI {
   public final static native int VerticalContentAlignmentFromString(String jarg1);
   public final static native String SentimentToString(int jarg1);
   public final static native int SentimentFromString(String jarg1);
+  public final static native long AdaptiveBase64Util_Decode(String jarg1);
+  public final static native String AdaptiveBase64Util_Encode(long jarg1, CharVector jarg1_);
+  public final static native String AdaptiveBase64Util_ExtractDataFromUri(String jarg1);
+  public final static native long new_AdaptiveBase64Util();
+  public final static native void delete_AdaptiveBase64Util(long jarg1);
   public final static native void RemoteResourceInformation_url_set(long jarg1, RemoteResourceInformation jarg1_, String jarg2);
   public final static native String RemoteResourceInformation_url_get(long jarg1, RemoteResourceInformation jarg1_);
   public final static native void RemoteResourceInformation_mimeType_set(long jarg1, RemoteResourceInformation jarg1_, String jarg2);
@@ -675,6 +691,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native int TextConfig_weight_get(long jarg1, TextConfig jarg1_);
   public final static native void TextConfig_size_set(long jarg1, TextConfig jarg1_, int jarg2);
   public final static native int TextConfig_size_get(long jarg1, TextConfig jarg1_);
+  public final static native void TextConfig_style_set(long jarg1, TextConfig jarg1_, int jarg2);
+  public final static native int TextConfig_style_get(long jarg1, TextConfig jarg1_);
   public final static native void TextConfig_color_set(long jarg1, TextConfig jarg1_, int jarg2);
   public final static native int TextConfig_color_get(long jarg1, TextConfig jarg1_);
   public final static native void TextConfig_isSubtle_set(long jarg1, TextConfig jarg1_, boolean jarg2);

@@ -23,6 +23,7 @@ add_library( # Sets the name of the library.
              # file are automatically included.
              ../../shared/cpp/ObjectModel/jsoncpp.cpp
              ../../shared/cpp/ObjectModel/ActionParserRegistration.cpp
+             ../../shared/cpp/ObjectModel/AdaptiveBase64Util.cpp
              ../../shared/cpp/ObjectModel/AdaptiveCardParseException.cpp
              ../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.cpp
              ../../shared/cpp/ObjectModel/BaseActionElement.cpp
