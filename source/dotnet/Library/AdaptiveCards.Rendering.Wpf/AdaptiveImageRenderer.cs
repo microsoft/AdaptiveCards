@@ -23,15 +23,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (finalUri.Scheme == "data")
             {
-                var encodedData = image.Url.AbsoluteUri.Substring(image.Url.AbsoluteUri.LastIndexOf(',') + 1);
-
-                var decodedDataUri = Convert.FromBase64String(encodedData);
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.StreamSource = new MemoryStream(decodedDataUri);
-                bitmap.EndInit();
-
-                uiImage.Source = bitmap;
+                uiImage.Source = ImageExtensions.GetBitmapFromBase64(finalUri);
             }
             else
             { 
