@@ -35,39 +35,6 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
     // Main function to try different ways to load an image
     HttpRequestResult<Bitmap> loadImage(String path, Context context)
     {
-        // The syntax of data URIs as in RFX 2397 is  data:[<media type>][;base64],<data>
-        path = path.trim();
-        if( path.startsWith("data:") )
-        {
-            try {
-                //
-                String base64Data = path.split(",")[1];
-                byte[] decodedString = Base64.decode(base64Data, Base64.DEFAULT);
-                Bitmap b = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                return new HttpRequestResult<>(b);
-            } catch (Exception e)
-            {
-                return new HttpRequestResult<>(e);
-            }
-        }
-
-        try
-        {
-            // Let's try to see if we got the image in the card as a base64 encoded string
-            // The syntax of data URIs as in RFX 2397 is  data:[<media type>][;base64],<data>
-            path = path.trim();
-            if(path.startsWith("data:"))
-            {
-                if( m_dataUriImageLoader != null )
-                {
-                    return m_dataUriImageLoader.loadDataUriImage(path, this);
-                }
-                else
-                {
-                    return loadDataUriImage(path);
-                }
-            }
-
         try
         {
             // Let's try to see if we got the image in the card as a base64 encoded string
