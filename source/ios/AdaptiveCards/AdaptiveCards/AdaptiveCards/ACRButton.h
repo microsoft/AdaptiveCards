@@ -13,4 +13,6 @@
      baseActionElement:(ACOBaseActionElement *)acoAction
                  title:(NSString *)title
          andHostConfig:(ACOHostConfig *)config;
+
++ (void)setImageView:(UIImage*)image inButton:(UIButton*)button withConfig:(ACOHostConfig *)config contentSize:(CGSize)contentSize inconPlacement:(ACRIconPlacement)iconPlacement;
 @end

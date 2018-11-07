@@ -6,9 +6,8 @@
 //
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "ACOHostConfig.h"
-#import "HostConfig.h"
 #import "AdaptiveCardParseException.h"
+#import "ACOHostConfigPrivate.h"
 #import "ACRErrors.h"
 #import "TextBlock.h"
 #import "ACOBaseCardElement.h"
@@ -401,4 +400,11 @@ using namespace AdaptiveCards;
     return _fontFamilyNames[key];
 }
 
+- (ACRIconPlacement)getIconPlacement
+{
+    if(IconPlacement::AboveTitle == _config->GetActions().iconPlacement) {
+        return ACRAboveTitle;
+    }
+    return ACRLeftOfTitle;
+}
 @end
