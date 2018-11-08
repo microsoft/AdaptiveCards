@@ -14,14 +14,12 @@
 
 @implementation UIButton(ACRButton)
 
-+ (void)setImageView:(UIImage*)image inButton:(UIButton*)button withConfig:(ACOHostConfig *)config
++ (void)setImageView:(UIImage*)image inButton:(UIButton*)button withConfig:(ACOHostConfig *)config contentSize:(CGSize)contentSize inconPlacement:(ACRIconPlacement)iconPlacement
 {
     float imageHeight = 0.0f;
-    IconPlacement iconPlacement = [config getHostConfig]->GetActions().iconPlacement;
-    CGSize contentSize = [button.titleLabel intrinsicContentSize];
 
     // apply explicit image size when the below condition is met
-    if(iconPlacement == AdaptiveCards::IconPlacement::AboveTitle && config.allActionsHaveIcons) {
+    if(iconPlacement == ACRAboveTitle && config.allActionsHaveIcons) {
         imageHeight = [config getHostConfig]->GetActions().iconSize;
     } else { // format the image so it fits in the button
         imageHeight = contentSize.height;
@@ -55,7 +53,7 @@
                                 multiplier:1.0
                                   constant:imageSize.height].active = YES;
 
-    if(iconPlacement == AdaptiveCards::IconPlacement::AboveTitle && config.allActionsHaveIcons) {
+    if(iconPlacement == ACRAboveTitle && config.allActionsHaveIcons) {
         // fix image view to top and center x of the button
         [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:button
             attribute:NSLayoutAttributeTop multiplier:1.0 constant:config.buttonPadding].active = YES;
@@ -93,7 +91,9 @@
     UIImage *img = imageViewMap[key];
 
     if(img){
-        [UIButton setImageView:img inButton:button withConfig:config];
+        CGSize contentSize = [button.titleLabel intrinsicContentSize];
+        [UIButton setImageView:img inButton:button withConfig:config contentSize:contentSize
+                inconPlacement:[config getIconPlacement]];
     } else {
         // button's intrinsic content size is determined by title size and content edge
         // add corner radius to content size by adding it to content edge inset

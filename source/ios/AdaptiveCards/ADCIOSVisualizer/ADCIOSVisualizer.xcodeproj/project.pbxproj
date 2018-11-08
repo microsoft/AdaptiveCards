@@ -53,6 +53,7 @@
 		6BF339D620A665E600DA5973 /* CustomTextBlockRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */; };
 		6BF339E320A66A3F00DA5973 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; };
 		6BF339E420A66A4D00DA5973 /* AdaptiveCards.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6BF4307A2190F1140068E432 /* Input.Text.InlineAction.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BF430792190F1140068E432 /* Input.Text.InlineAction.json */; };
 		F4071C831FD63D5400AF4FEA /* Solitaire.json in Resources */ = {isa = PBXBuildFile; fileRef = F4071C821FD63D5300AF4FEA /* Solitaire.json */; };
 		F423C0771EE1FB6100905679 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C0761EE1FB6100905679 /* main.m */; };
 		F423C07A1EE1FB6100905679 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C0791EE1FB6100905679 /* AppDelegate.m */; };
@@ -195,6 +196,7 @@
 		6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomTextBlockRenderer.mm; sourceTree = "<group>"; };
 		6BF339D520A665E600DA5973 /* CustomTextBlockRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTextBlockRenderer.h; sourceTree = "<group>"; };
 		6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6BF430792190F1140068E432 /* Input.Text.InlineAction.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Input.Text.InlineAction.json; path = ../../../../samples/v1.2/Elements/Input.Text.InlineAction.json; sourceTree = "<group>"; };
 		F4071C821FD63D5300AF4FEA /* Solitaire.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Solitaire.json; path = ../../../../samples/v1.0/Scenarios/Solitaire.json; sourceTree = "<group>"; };
 		F423C0721EE1FB6100905679 /* ADCIOSVisualizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ADCIOSVisualizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F423C0761EE1FB6100905679 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -408,6 +410,7 @@
 		F4D33E341F045B6E00941E44 /* Jsons */ = {
 			isa = PBXGroup;
 			children = (
+				6BF430792190F1140068E432 /* Input.Text.InlineAction.json */,
 				6B980951216574500024B79B /* Media.json */,
 				6B98093E216573EE0024B79B /* Action.IconUrl.TwoActions.json */,
 				6B980944216573EF0024B79B /* Action.OpenUrl.IconUrl.json */,
@@ -644,6 +647,7 @@
 				F4933D001F79853B00F6EBFD /* FoodOrder.json in Resources */,
 				F4933CE21F79852C00F6EBFD /* Input.Toggle.json in Resources */,
 				6B268FE320CEF19400D99C1B /* (null) in Resources */,
+				6BF4307A2190F1140068E432 /* Input.Text.InlineAction.json in Resources */,
 				6B14FC5D2113BC2200A11CC5 /* (null) in Resources */,
 				F4933CFC1F79853B00F6EBFD /* ActivityUpdate.json in Resources */,
 				6B5D2413212E15740010EB07 /* Feedback.json in Resources */,
