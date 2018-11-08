@@ -48,6 +48,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\MediaSource.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\SemanticVersion.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveBase64Util.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ParseContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Container.h" />
@@ -102,6 +103,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\SemanticVersion.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveBase64Util.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\EnumMagic.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ParseContext.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">

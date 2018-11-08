@@ -2,7 +2,7 @@
 #include "CppUnitTest.h"
 #include "Enums.h"
 #include "TextBlock.h"
-#include "ActionParserRegistration.h"
+#include "ParseContext.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
@@ -36,16 +36,10 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::string json_data = emptyTB.Serialize();
             Assert::IsTrue(json_data == "{\"text\":\"\",\"type\":\"TextBlock\"}\n");
 
-            std::shared_ptr<ElementParserRegistration> elementParserRegistration;
-            elementParserRegistration.reset(new ElementParserRegistration());
-
-            std::shared_ptr<ActionParserRegistration> actionParserRegistration;
-            actionParserRegistration.reset(new ActionParserRegistration());
-
-            std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
+            ParseContext context {};
 
             TextBlockParser parser;
-            auto parsedObject = parser.DeserializeFromString(elementParserRegistration, actionParserRegistration, warnings, json_data);
+            auto parsedObject = parser.DeserializeFromString(context, json_data);
 
             Assert::IsTrue(emptyTB.GetFontStyle() == std::dynamic_pointer_cast<TextBlock>(parsedObject)->GetFontStyle());
         }

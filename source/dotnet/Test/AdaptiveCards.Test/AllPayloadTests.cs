@@ -124,6 +124,7 @@ namespace AdaptiveCards.Test
                     "AdaptiveCard.MissingVersion",
                     "AdaptiveCard.Version1.3",
                     "FlightItinerary_es_fail",
+                    "Action.DuplicateIds"
 
                     // These are cards that features haven't been implemented yet
                 });

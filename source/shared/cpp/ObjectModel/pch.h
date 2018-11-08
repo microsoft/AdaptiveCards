@@ -8,19 +8,19 @@
 #define AdaptiveSharedNamespace AdaptiveCards
 #endif
 
-#include <memory>
-#include <vector>
-#include <string>
-#include <exception>
-#include <functional>
-#include <unordered_map>
-#include <numeric>
-#include <cctype>
 #include <algorithm>
-#include <unordered_set>
+#include <cctype>
+#include <exception>
 #include <fstream>
+#include <functional>
 #include <locale>
+#include <memory>
+#include <numeric>
 #include <regex>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
 
 #if defined(_MSC_BUILD) && !defined(__ANDROID__) && !defined(__APPLE__) && !defined(ADAPTIVE_CARDS_WINDOWS)
 #define USE_CPPCORECHECK

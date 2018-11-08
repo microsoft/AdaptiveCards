@@ -13,10 +13,7 @@ Fact::Fact(std::string const& title, std::string const& value) : m_title(title),
 {
 }
 
-std::shared_ptr<Fact> Fact::Deserialize(std::shared_ptr<ElementParserRegistration>,
-                                        std::shared_ptr<ActionParserRegistration>,
-                                        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>&,
-                                        const Json::Value& json)
+std::shared_ptr<Fact> Fact::Deserialize(ParseContext&, const Json::Value& json)
 {
     std::string title = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title, true);
     std::string value = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value, true);
@@ -25,12 +22,9 @@ std::shared_ptr<Fact> Fact::Deserialize(std::shared_ptr<ElementParserRegistratio
     return fact;
 }
 
-std::shared_ptr<Fact> Fact::DeserializeFromString(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                  std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                                  std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                                  const std::string& jsonString)
+std::shared_ptr<Fact> Fact::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
-    return Fact::Deserialize(elementParserRegistration, actionParserRegistration, warnings, ParseUtil::GetJsonValueFromString(jsonString));
+    return Fact::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 std::string Fact::Serialize()

@@ -71,11 +71,7 @@ namespace AdaptiveNamespace
         return m_sharedParserRegistration;
     }
 
-    std::shared_ptr<BaseActionElement> SharedModelActionParser::Deserialize(
-        std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> actionParserRegistration,
-        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-        const Json::Value& value)
+    std::shared_ptr<BaseActionElement> SharedModelActionParser::Deserialize(ParseContext& context, const Json::Value& value)
     {
         std::string type = ParseUtil::GetTypeAsString(value);
 
@@ -90,11 +86,11 @@ namespace AdaptiveNamespace
 
         ComPtr<IAdaptiveElementParserRegistration> adaptiveElementParserRegistration;
         MakeAndInitialize<AdaptiveNamespace::AdaptiveElementParserRegistration>(&adaptiveElementParserRegistration,
-                                                                                elementParserRegistration);
+                                                                                context.elementParserRegistration);
 
         ComPtr<IAdaptiveActionParserRegistration> adaptiveActionParserRegistration;
         MakeAndInitialize<AdaptiveNamespace::AdaptiveActionParserRegistration>(&adaptiveActionParserRegistration,
-                                                                               actionParserRegistration);
+                                                                               context.actionParserRegistration);
 
         ComPtr<IAdaptiveActionElement> actionElement;
         ComPtr<ABI::Windows::Foundation::Collections::IVector<IAdaptiveWarning*>> adaptiveWarnings =
@@ -105,7 +101,7 @@ namespace AdaptiveNamespace
                                          adaptiveWarnings.Get(),
                                          &actionElement));
 
-        THROW_IF_FAILED(AdaptiveWarningsToSharedWarnings(adaptiveWarnings.Get(), warnings));
+        THROW_IF_FAILED(AdaptiveWarningsToSharedWarnings(adaptiveWarnings.Get(), context.warnings));
 
         std::shared_ptr<CustomActionWrapper> actionWrapper = std::make_shared<CustomActionWrapper>(actionElement.Get());
         return actionWrapper;
