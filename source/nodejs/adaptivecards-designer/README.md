@@ -1,7 +1,7 @@
 # Adaptive Card Designer
 The **Adaptive Card Designer** is a tool that makes it easy to craft Adaptive Cards from scratch (or from an existing sample) **without having to write any JSON**. It is built on top of the official TypeScript renderer in order to take advantage of existing rendering logic and let users see exactly what their cards will look like.
 
-The designer is currently live at https://acdesignerbeta.azurewebsites.net
+The designer is currently live at https://adaptivecards.io/designer/
 
 ![Adaptive Card Designer](./screenshot.png)
 
