@@ -529,8 +529,11 @@ namespace AdaptiveNamespace
     void XamlBuilder::SetImageOnUIElement(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl,
                                           T* uiElement,
                                           IAdaptiveCardResourceResolvers* resolvers,
+                                          _Out_ bool* mustHideElement,
                                           _In_ ABI::Windows::UI::Xaml::Media::Stretch stretch)
     {
+        *mustHideElement = true;
+
         // Get the image url scheme
         HString schemeName;
         THROW_IF_FAILED(imageUrl->get_SchemeName(schemeName.GetAddressOf()));
@@ -664,6 +667,7 @@ namespace AdaptiveNamespace
             })
                 .Get()));
             m_writeAsyncOperations.push_back(bufferWriteOperation);
+            *mustHideElement = false;
             return;
         }
 
@@ -1769,7 +1773,8 @@ namespace AdaptiveNamespace
                 XamlHelpers::CreateXamlClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
 
             Stretch stretch = (isAspectRatioNeeded) ? Stretch::Stretch_Fill : Stretch::Stretch_UniformToFill;
-            SetImageOnUIElement(imageUrl.Get(), ellipse.Get(), resourceResolvers.Get(), stretch);
+            bool mustHideElement{true};
+            SetImageOnUIElement(imageUrl.Get(), ellipse.Get(), resourceResolvers.Get(), &mustHideElement, stretch);
 
             ComPtr<IShape> ellipseAsShape;
             THROW_IF_FAILED(ellipse.As(&ellipseAsShape));
@@ -1828,14 +1833,9 @@ namespace AdaptiveNamespace
                 THROW_IF_FAILED(brushAsImageBrush->get_ImageSource(&imageSource));
                 ComPtr<IBitmapSource> imageSourceAsBitmap;
                 THROW_IF_FAILED(imageSource.As(&imageSourceAsBitmap));
-
-                // Get this values to check if the image has already loaded
-                INT32 bitmapPixelWidth{}, bitmapPixelHeight{};
-                THROW_IF_FAILED(imageSourceAsBitmap->get_PixelWidth(&bitmapPixelWidth));
-                THROW_IF_FAILED(imageSourceAsBitmap->get_PixelHeight(&bitmapPixelHeight));
-
+                
                 // If the image hasn't loaded yet
-                if (bitmapPixelWidth == 0 && bitmapPixelHeight == 0)
+                if (mustHideElement)
                 {
                     // Collapse the Ellipse while the image loads, so that resizing is not noticeable
                     THROW_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
@@ -1856,7 +1856,9 @@ namespace AdaptiveNamespace
         {
             ComPtr<IImage> xamlImage =
                 XamlHelpers::CreateXamlClass<IImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Image));
-            SetImageOnUIElement(imageUrl.Get(), xamlImage.Get(), resourceResolvers.Get());
+
+            bool mustHideElement{ true };
+            SetImageOnUIElement(imageUrl.Get(), xamlImage.Get(), resourceResolvers.Get(), &mustHideElement);
 
             if (backgroundColor != nullptr)
             {
@@ -1896,14 +1898,9 @@ namespace AdaptiveNamespace
 
                 ComPtr<IUIElement> imageAsUIElement;
                 THROW_IF_FAILED(xamlImage.As(&imageAsUIElement));
-                
-                // Get this values to check if the image has already loaded
-                INT32 bitmapPixelWidth{}, bitmapPixelHeight{};
-                THROW_IF_FAILED(imageSourceAsBitmap->get_PixelWidth(&bitmapPixelWidth));
-                THROW_IF_FAILED(imageSourceAsBitmap->get_PixelHeight(&bitmapPixelHeight));
 
                 // If the image hasn't loaded yet
-                if (bitmapPixelWidth == 0 && bitmapPixelHeight == 0)
+                if (mustHideElement)
                 {
                     // Collapse the Image control while the image loads, so that resizing is not noticeable
                     THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
@@ -1917,6 +1914,10 @@ namespace AdaptiveNamespace
                     })
                         .Get(),
                         &eventToken));
+                }
+                else
+                {
+                    SetAutoImageSize(frameworkElement.Get(), parentElement.Get(), imageSourceAsBitmap.Get());
                 }
             }
         }

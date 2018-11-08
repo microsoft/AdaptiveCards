@@ -144,6 +144,7 @@ namespace AdaptiveNamespace
         void SetImageOnUIElement(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl,
                                  T* uiElement,
                                  ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers* resolvers,
+                                 _Out_ bool* mustHideElement,
                                  ABI::Windows::UI::Xaml::Media::Stretch stretch = Stretch_UniformToFill);
         template<typename T>
         void PopulateImageFromUrlAsync(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl, T* imageControl);
