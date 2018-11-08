@@ -175,32 +175,24 @@ public class TextInputRenderer extends BaseCardElementRenderer
             }
             else
             {
+                Resources.Theme theme = context.getTheme();
                 textInputViewGroup = new LinearLayout(context);
-                textInputViewGroup.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
                 editText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
                 textInputViewGroup.addView(editText);
 
                 String title =  action.GetTitle(), url = action.GetIconUrl();
+                TypedValue buttonStyle = new TypedValue();
                 if(url != null && !url.isEmpty())
                 {
-                    //private Button createButtonWithTheme(Context context, int theme)
-                    //{
-                    //    Context themedContext = new ContextThemeWrapper(context, theme);
-                    //    return new Button(themedContext);
-                    //}
-
-                    Resources.Theme theme = context.getTheme();
-                    TypedValue buttonStyle = new TypedValue();
-
                     ImageButton inlineButton = null;
-
-                    if(theme.resolveAttribute(R.attr.adaptiveInlineAction, buttonStyle, true))
+                    /*
+                    if(theme.resolveAttribute(R.attr.adaptiveInlineActionImage, buttonStyle, true))
                     {
                         //return createButtonWithTheme(context, buttonStyle.data);
-                        Context themedContext = new ContextThemeWrapper(context, buttonStyle.data);
-                        inlineButton = new ImageButton(themedContext);
+                        Context themedContext = new ContextThemeWrapper(context, R.style.adaptiveInlineActionImage);
+                        inlineButton = new ImageButton(themedContext, null, 0);
                     }
-                    else
+                    else*/
                     {
                         inlineButton = new ImageButton(context);
                     }
@@ -214,15 +206,25 @@ public class TextInputRenderer extends BaseCardElementRenderer
                         );
                     imageLoader.execute(url);
                     textInputViewGroup.addView(inlineButton);
-                    textInputViewGroup.setGravity(Gravity.BOTTOM);
                 }
                 else
                 {
-                    Button inlineButton = new Button(context);
+                    Button inlineButton = null;
+                    /*
+                    if(theme.resolveAttribute(R.attr.adaptiveInlineAction, buttonStyle, true))
+                    {
+                        Context themedContext = new ContextThemeWrapper(context, R.style.adaptiveInlineAction);
+                        inlineButton = new Button(themedContext, null, 0);
+                    }
+                    else*/
+                    {
+                        inlineButton = new Button(context);
+                    }
                     inlineButton.setText(title);
                     textInputViewGroup.addView(inlineButton);
                 }
             }
+
         }
         if(baseInputElement.GetHeight() == HeightType.Stretch)
         {
@@ -236,6 +238,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
         {
             if(textInputViewGroup != null)
             {
+                editText.setPadding(0,0,0,0);
                 viewGroup.addView(textInputViewGroup);
             }
             else
@@ -313,19 +316,6 @@ public class TextInputRenderer extends BaseCardElementRenderer
             super(renderedCard, containerView, url);
             m_editText = editText;
         }
-/*
-        @Override
-        protected Bitmap styleBitmap(Bitmap bitmap)
-        {
-            Drawable originalDrawableIcon = new BitmapDrawable(null, bitmap);
-
-            double imageHeight = m_editText.getLineHeight() + m_editText.getLineSpacingExtra();
-            double scaleRatio = imageHeight / originalDrawableIcon.getIntrinsicHeight();
-            double imageWidth = scaleRatio * originalDrawableIcon.getIntrinsicWidth();
-
-            return Bitmap.createScaledBitmap(bitmap, (int)imageWidth, (int)imageHeight, false);
-        }
-        */
 
         @Override
         protected void renderBitmap(Bitmap bitmap)
