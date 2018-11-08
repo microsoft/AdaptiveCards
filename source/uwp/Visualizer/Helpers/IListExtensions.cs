@@ -16,11 +16,13 @@ namespace AdaptiveCardVisualizer.Helpers
 
             // Remove any of the items that aren't there anymore
             for (int i = 0; i < list.Count; i++)
+            { 
                 if (!desired.Contains(list[i]))
                 {
                     list.RemoveAt(i);
                     i--;
                 }
+            }
 
             for (int i = 0; i < desired.Count; i++)
             {

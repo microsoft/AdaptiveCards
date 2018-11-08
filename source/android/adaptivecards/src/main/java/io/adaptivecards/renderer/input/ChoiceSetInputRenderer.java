@@ -190,7 +190,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             HostConfig hostConfig,
             ContainerStyle containerStyle)
     {
-        if (!hostConfig.getSupportsInteractivity())
+        if (!hostConfig.GetSupportsInteractivity())
         {
             renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INTERACTIVITY_DISALLOWED, "Input.ChoiceSet is not allowed"));
             return null;

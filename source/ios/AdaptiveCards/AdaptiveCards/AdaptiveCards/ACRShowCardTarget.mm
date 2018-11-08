@@ -61,7 +61,7 @@
                                            containingView:containingView
                                                 hostconfig:_config];
     [[_rootView card] setInputs:inputs];
-    unsigned int padding = [_config getHostConfig] ->actions.showCard.inlineTopMargin;
+    unsigned int padding = [_config getHostConfig] ->GetActions().showCard.inlineTopMargin;
 
         ACRContentHoldingUIView *wrappingView = [[ACRContentHoldingUIView alloc] init];
     [wrappingView addSubview:adcView];
@@ -82,7 +82,7 @@
     [wrappingView addConstraints:vertConst];
     _adcView = wrappingView;
 
-    ContainerStyle containerStyle = ([_config getHostConfig]->adaptiveCard.allowCustomStyle)? _adaptiveCard->GetStyle() : [_config getHostConfig]->actions.showCard.style;
+    ContainerStyle containerStyle = ([_config getHostConfig]->GetAdaptiveCard().allowCustomStyle)? _adaptiveCard->GetStyle() : [_config getHostConfig]->GetActions().showCard.style;
 
     ACRContainerStyle style = (ACRContainerStyle)(containerStyle);
 
@@ -112,7 +112,7 @@
         showCardFrame.origin = [_adcView convertPoint:_adcView.frame.origin toView:nil];
         CGRect oldFrame = showCardFrame;
         oldFrame.size.height = 0;
-        showCardFrame.size.height += [_config getHostConfig]->actions.showCard.inlineTopMargin;;
+        showCardFrame.size.height += [_config getHostConfig]->GetActions().showCard.inlineTopMargin;;
         [_rootView.acrActionDelegate didChangeViewLayout:oldFrame newFrame:showCardFrame];
     }
     [_rootView.acrActionDelegate didFetchUserResponses:[_rootView card] action:_actionElement];

@@ -35,52 +35,28 @@ public class FontSizesConfig {
     }
   }
 
-  public void setSmallFontSize(long value) {
-    AdaptiveCardObjectModelJNI.FontSizesConfig_smallFontSize_set(swigCPtr, this, value);
+  public FontSizesConfig() {
+    this(AdaptiveCardObjectModelJNI.new_FontSizesConfig__SWIG_0(), true);
   }
 
-  public long getSmallFontSize() {
-    return AdaptiveCardObjectModelJNI.FontSizesConfig_smallFontSize_get(swigCPtr, this);
-  }
-
-  public void setDefaultFontSize(long value) {
-    AdaptiveCardObjectModelJNI.FontSizesConfig_defaultFontSize_set(swigCPtr, this, value);
-  }
-
-  public long getDefaultFontSize() {
-    return AdaptiveCardObjectModelJNI.FontSizesConfig_defaultFontSize_get(swigCPtr, this);
-  }
-
-  public void setMediumFontSize(long value) {
-    AdaptiveCardObjectModelJNI.FontSizesConfig_mediumFontSize_set(swigCPtr, this, value);
-  }
-
-  public long getMediumFontSize() {
-    return AdaptiveCardObjectModelJNI.FontSizesConfig_mediumFontSize_get(swigCPtr, this);
-  }
-
-  public void setLargeFontSize(long value) {
-    AdaptiveCardObjectModelJNI.FontSizesConfig_largeFontSize_set(swigCPtr, this, value);
-  }
-
-  public long getLargeFontSize() {
-    return AdaptiveCardObjectModelJNI.FontSizesConfig_largeFontSize_get(swigCPtr, this);
-  }
-
-  public void setExtraLargeFontSize(long value) {
-    AdaptiveCardObjectModelJNI.FontSizesConfig_extraLargeFontSize_set(swigCPtr, this, value);
-  }
-
-  public long getExtraLargeFontSize() {
-    return AdaptiveCardObjectModelJNI.FontSizesConfig_extraLargeFontSize_get(swigCPtr, this);
+  public FontSizesConfig(long s, long d, long m, long l, long xl) {
+    this(AdaptiveCardObjectModelJNI.new_FontSizesConfig__SWIG_1(s, d, m, l, xl), true);
   }
 
   public static FontSizesConfig Deserialize(JsonValue json, FontSizesConfig defaultValue) {
     return new FontSizesConfig(AdaptiveCardObjectModelJNI.FontSizesConfig_Deserialize(JsonValue.getCPtr(json), json, FontSizesConfig.getCPtr(defaultValue), defaultValue), true);
   }
 
-  public FontSizesConfig() {
-    this(AdaptiveCardObjectModelJNI.new_FontSizesConfig(), true);
+  public static long GetDefaultFontSize(TextSize size) {
+    return AdaptiveCardObjectModelJNI.FontSizesConfig_GetDefaultFontSize(size.swigValue());
+  }
+
+  public long GetFontSize(TextSize size) {
+    return AdaptiveCardObjectModelJNI.FontSizesConfig_GetFontSize(swigCPtr, this, size.swigValue());
+  }
+
+  public void SetFontSize(TextSize size, long value) {
+    AdaptiveCardObjectModelJNI.FontSizesConfig_SetFontSize(swigCPtr, this, size.swigValue(), value);
   }
 
 }

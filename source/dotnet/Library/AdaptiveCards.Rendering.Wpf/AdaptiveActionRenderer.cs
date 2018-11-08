@@ -1,6 +1,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
@@ -30,6 +31,25 @@ namespace AdaptiveCards.Rendering.Wpf
                 Style = context.GetStyle($"Adaptive.{action.Type}"),
             };
 
+            if(action.Sentiment == AdaptiveSentiment.Positive || action.Sentiment == AdaptiveSentiment.Destructive)
+            {
+                Style sentimentStyle = context.GetStyle($"Adaptive.{action.Type}.{action.Sentiment}");
+
+                if (sentimentStyle == null)
+                {
+                    if (action.Sentiment == AdaptiveSentiment.Positive)
+                    {
+                        sentimentStyle = context.GetStyle("PositiveActionDefaultStyle");
+                    }
+                    else if (action.Sentiment == AdaptiveSentiment.Destructive)
+                    {
+                        sentimentStyle = context.GetStyle("DestructiveActionDefaultStyle");
+                    }
+                }
+
+                uiButton.Style = sentimentStyle;
+            }
+
             var contentStackPanel = new StackPanel();
 
             if (!context.IsRenderingSelectAction)
@@ -49,7 +69,7 @@ namespace AdaptiveCards.Rendering.Wpf
             var uiTitle = new TextBlock
             {
                 Text = action.Title,
-                FontSize = context.Config.FontSizes.Default,
+                FontSize = context.Config.GetFontSize(AdaptiveFontStyle.Default, AdaptiveTextSize.Default),
                 Style = context.GetStyle($"Adaptive.Action.Title")
             };
 
@@ -97,5 +117,6 @@ namespace AdaptiveCards.Rendering.Wpf
             string name = context.GetType().Name.Replace("Action", String.Empty);
             return uiButton;
         }
+
     }
 }

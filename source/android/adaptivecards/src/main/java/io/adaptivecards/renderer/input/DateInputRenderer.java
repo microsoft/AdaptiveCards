@@ -52,7 +52,7 @@ public class DateInputRenderer extends TextInputRenderer
             ContainerStyle containerStyle)
     {
 
-        if (!hostConfig.getSupportsInteractivity())
+        if (!hostConfig.GetSupportsInteractivity())
         {
             renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INTERACTIVITY_DISALLOWED, "Input.Date is not allowed"));
             return null;

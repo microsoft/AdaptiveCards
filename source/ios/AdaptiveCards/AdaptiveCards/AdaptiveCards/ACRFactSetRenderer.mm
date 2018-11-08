@@ -73,8 +73,8 @@
 
         // Obtain text color to apply to the attributed string
         ACRContainerStyle style = lab.style;
-        ColorsConfig &colorConfig = (style == ACREmphasis) ? config->containerStyles.emphasisPalette.foregroundColors :
-                                                             config->containerStyles.defaultPalette.foregroundColors;
+        const ColorsConfig &colorConfig = (style == ACREmphasis) ? config->GetContainerStyles().emphasisPalette.foregroundColors :
+                                                             config->GetContainerStyles().defaultPalette.foregroundColors;
 
         // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
         [content addAttributes:@{NSForegroundColorAttributeName:
@@ -119,9 +119,9 @@
 
     ACRColumnSetView *factSetWrapperView = [[ACRColumnSetView alloc] init];
     [factSetWrapperView addArrangedSubview:titleStack];
-    [ACRSeparator renderSeparationWithFrame:CGRectMake(0, 0, config->factSet.spacing, config->factSet.spacing) superview:factSetWrapperView axis:UILayoutConstraintAxisHorizontal];
+    [ACRSeparator renderSeparationWithFrame:CGRectMake(0, 0, config->GetFactSet().spacing, config->GetFactSet().spacing) superview:factSetWrapperView axis:UILayoutConstraintAxisHorizontal];
     [factSetWrapperView addArrangedSubview:valueStack];
-    [ACRSeparator renderSeparationWithFrame:CGRectMake(0, 0, config->factSet.spacing, config->factSet.spacing) superview:factSetWrapperView axis:UILayoutConstraintAxisHorizontal];
+    [ACRSeparator renderSeparationWithFrame:CGRectMake(0, 0, config->GetFactSet().spacing, config->GetFactSet().spacing) superview:factSetWrapperView axis:UILayoutConstraintAxisHorizontal];
 
     [factSetWrapperView adjustHuggingForLastElement];
 
@@ -131,7 +131,7 @@
         ACRUILabel *titleLab = [ACRFactSetRenderer buildLabel:title
                                                     superview:viewGroup
                                                    hostConfig:acoConfig
-                                                   textConfig:config->factSet.title
+                                                   textConfig:config->GetFactSet().title
                                                containerStyle:style
                                                     elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
                                                      rootView:rootView
@@ -140,8 +140,8 @@
         [titleLab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         [titleLab setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
 
-        if (config->factSet.title.maxWidth) {
-            NSLayoutConstraint *constraintForTitleLab = [NSLayoutConstraint constraintWithItem:titleLab attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:config->factSet.title.maxWidth];
+        if (config->GetFactSet().title.maxWidth) {
+            NSLayoutConstraint *constraintForTitleLab = [NSLayoutConstraint constraintWithItem:titleLab attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:config->GetFactSet().title.maxWidth];
             constraintForTitleLab.active = YES;
             constraintForTitleLab.priority = UILayoutPriorityRequired;
         }
@@ -149,7 +149,7 @@
         ACRUILabel *valueLab = [ACRFactSetRenderer buildLabel:value
                                                     superview:viewGroup
                                                    hostConfig:acoConfig
-                                                   textConfig:config->factSet.value
+                                                   textConfig:config->GetFactSet().value
                                                containerStyle:style
                                                     elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]
                                                      rootView:rootView

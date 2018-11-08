@@ -23,6 +23,7 @@ HRESULT GetTextFromXmlNode(ABI::Windows::Data::Xml::Dom::IXmlNode* node, HSTRING
 
 HRESULT AddListInlines(IAdaptiveRenderContext* renderContext,
                        ABI::Windows::Data::Xml::Dom::IXmlNode* node,
+                       ABI::AdaptiveNamespace::FontStyle fontStyle,
                        bool isListOrdered,
                        IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
 {
@@ -93,7 +94,7 @@ HRESULT AddListInlines(IAdaptiveRenderContext* renderContext,
 
         RETURN_IF_FAILED(inlines->Append(runAsInline.Get()));
 
-        RETURN_IF_FAILED(AddTextInlines(renderContext, listChild.Get(), false, false, inlines));
+        RETURN_IF_FAILED(AddTextInlines(renderContext, listChild.Get(), fontStyle, false, false, inlines));
 
         ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> nextListChild;
         RETURN_IF_FAILED(listChild->get_NextSibling(&nextListChild));
@@ -106,6 +107,7 @@ HRESULT AddListInlines(IAdaptiveRenderContext* renderContext,
 
 HRESULT AddLinkInline(IAdaptiveRenderContext* renderContext,
                       ABI::Windows::Data::Xml::Dom::IXmlNode* node,
+                      ABI::AdaptiveNamespace::FontStyle fontStyle,
                       BOOL isBold,
                       BOOL isItalic,
                       IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
@@ -141,7 +143,7 @@ HRESULT AddLinkInline(IAdaptiveRenderContext* renderContext,
     ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> hyperlinkInlines;
     RETURN_IF_FAILED(hyperlinkAsSpan->get_Inlines(hyperlinkInlines.GetAddressOf()));
 
-    RETURN_IF_FAILED(AddTextInlines(renderContext, node, isBold, isItalic, hyperlinkInlines.Get()));
+    RETURN_IF_FAILED(AddTextInlines(renderContext, node, fontStyle, isBold, isItalic, hyperlinkInlines.Get()));
 
     ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> hyperLinkAsInline;
     RETURN_IF_FAILED(hyperlink.As(&hyperLinkAsInline));
@@ -152,6 +154,7 @@ HRESULT AddLinkInline(IAdaptiveRenderContext* renderContext,
 
 HRESULT AddSingleTextInline(IAdaptiveRenderContext* renderContext,
                             HSTRING string,
+                            ABI::AdaptiveNamespace::FontStyle fontStyle,
                             bool isBold,
                             bool isItalic,
                             IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
@@ -168,11 +171,11 @@ HRESULT AddSingleTextInline(IAdaptiveRenderContext* renderContext,
         ComPtr<IAdaptiveHostConfig> hostConfig;
         RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
-        ComPtr<IAdaptiveFontWeightsConfig> fontWeightsConfig;
-        RETURN_IF_FAILED(hostConfig->get_FontWeights(&fontWeightsConfig));
-
         ABI::Windows::UI::Text::FontWeight boldFontWeight;
-        RETURN_IF_FAILED(fontWeightsConfig->get_Bolder(&boldFontWeight.Weight));
+        RETURN_IF_FAILED(GetFontWeightFromStyle(hostConfig.Get(),
+                                                /*_style_*/ ABI::AdaptiveNamespace::FontStyle::Default,
+                                                ABI::AdaptiveNamespace::TextWeight::Bolder,
+                                                &boldFontWeight));
 
         RETURN_IF_FAILED(runAsTextElement->put_FontWeight(boldFontWeight));
     }
@@ -191,6 +194,7 @@ HRESULT AddSingleTextInline(IAdaptiveRenderContext* renderContext,
 
 HRESULT AddTextInlines(IAdaptiveRenderContext* renderContext,
                        ABI::Windows::Data::Xml::Dom::IXmlNode* node,
+                       ABI::AdaptiveNamespace::FontStyle fontStyle,
                        BOOL isBold,
                        BOOL isItalic,
                        IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
@@ -217,18 +221,18 @@ HRESULT AddTextInlines(IAdaptiveRenderContext* renderContext,
 
         if (isLinkResult == 0)
         {
-            RETURN_IF_FAILED(AddLinkInline(renderContext, childNode.Get(), isBold, isItalic, inlines));
+            RETURN_IF_FAILED(AddLinkInline(renderContext, childNode.Get(), fontStyle, isBold, isItalic, inlines));
         }
         else if (isTextResult == 0)
         {
             HString text;
             RETURN_IF_FAILED(GetTextFromXmlNode(childNode.Get(), text.GetAddressOf()));
-            RETURN_IF_FAILED(AddSingleTextInline(renderContext, text.Get(), isBold, isItalic, inlines));
+            RETURN_IF_FAILED(AddSingleTextInline(renderContext, text.Get(), fontStyle, isBold, isItalic, inlines));
         }
         else
         {
-            RETURN_IF_FAILED(
-                AddTextInlines(renderContext, childNode.Get(), isBold || (isBoldResult == 0), isItalic || (isItalicResult == 0), inlines));
+            RETURN_IF_FAILED(AddTextInlines(
+                renderContext, childNode.Get(), fontStyle, isBold || (isBoldResult == 0), isItalic || (isItalicResult == 0), inlines));
         }
 
         ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> nextChildNode;
@@ -241,7 +245,8 @@ HRESULT AddTextInlines(IAdaptiveRenderContext* renderContext,
 
 HRESULT AddHtmlInlines(IAdaptiveRenderContext* renderContext,
                        ABI::Windows::Data::Xml::Dom::IXmlNode* node,
-                       IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
+                       IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines,
+                       ABI::AdaptiveNamespace::FontStyle fontStyle)
 {
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> childNode;
     RETURN_IF_FAILED(node->get_FirstChild(&childNode));
@@ -262,15 +267,15 @@ HRESULT AddHtmlInlines(IAdaptiveRenderContext* renderContext,
 
         if ((isOrderedListResult == 0) || (isUnorderedListResult == 0))
         {
-            RETURN_IF_FAILED(AddListInlines(renderContext, childNode.Get(), (isOrderedListResult == 0), inlines));
+            RETURN_IF_FAILED(AddListInlines(renderContext, childNode.Get(), fontStyle, (isOrderedListResult == 0), inlines));
         }
         else if (isParagraphResult == 0)
         {
-            RETURN_IF_FAILED(AddTextInlines(renderContext, childNode.Get(), false, false, inlines));
+            RETURN_IF_FAILED(AddTextInlines(renderContext, childNode.Get(), fontStyle, false, false, inlines));
         }
         else
         {
-            RETURN_IF_FAILED(AddHtmlInlines(renderContext, childNode.Get(), inlines));
+            RETURN_IF_FAILED(AddHtmlInlines(renderContext, childNode.Get(), inlines, fontStyle));
         }
 
         ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> nextChildNode;

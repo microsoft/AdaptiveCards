@@ -84,7 +84,7 @@ public class ImageSetRenderer extends BaseCardElementRenderer
             // TODO: temporary - this will be handled in the object model
             image.SetImageSize(imageSize);
             View imageView = imageRenderer.render(renderedCard, context, fragmentManager, horizFlowLayout, image, cardActionHandler, hostConfig, containerStyle);
-            ((ImageView) imageView).setMaxHeight(Util.dpToPixels(context, hostConfig.getImageSet().getMaxImageHeight()));
+            ((ImageView) imageView).setMaxHeight(Util.dpToPixels(context, hostConfig.GetImageSet().getMaxImageHeight()));
         }
 
         if( imageSet.GetHeight() == HeightType.Stretch )

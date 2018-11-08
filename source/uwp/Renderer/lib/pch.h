@@ -20,6 +20,7 @@
 #include <set>
 #include <ppltasks.h>
 #include <sstream>
+#include <limits>
 
 // The #define of this in winbase.h windows.ui.xaml.media.animation.h's IStoryboard defintion
 // so we need to remove it

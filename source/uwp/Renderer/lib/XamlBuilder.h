@@ -100,6 +100,10 @@ namespace AdaptiveNamespace
                                                               _In_ std::wstring resourceName,
                                                               _COM_Outptr_result_maybenull_ T** resource);
 
+        static HRESULT TryInsertResourceToResourceDictionaries(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* resourceDictionary,
+                                                               _In_ std::wstring resourceName,
+                                                               _In_ IInspectable* value);
+
         static HRESULT SetStyleFromResourceDictionary(ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                                       std::wstring resourceName,
                                                       ABI::Windows::UI::Xaml::IFrameworkElement* frameworkElement);
@@ -179,7 +183,8 @@ namespace AdaptiveNamespace
                         bool isHorizontal = true);
         static void ApplyMarginToXamlElement(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
                                              _Inout_ ABI::Windows::UI::Xaml::IFrameworkElement* element);
-        static void StyleXamlTextBlock(_In_ ABI::AdaptiveNamespace::TextSize size,
+        static void StyleXamlTextBlock(_In_ ABI::AdaptiveNamespace::FontStyle fontStyle,
+                                       _In_ ABI::AdaptiveNamespace::TextSize size,
                                        _In_ ABI::AdaptiveNamespace::ForegroundColor color,
                                        ABI::AdaptiveNamespace::ContainerStyle containerStyle,
                                        _In_ bool isSubtle,

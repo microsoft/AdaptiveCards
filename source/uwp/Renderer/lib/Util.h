@@ -49,6 +49,40 @@ HRESULT GetBackgroundColorFromStyle(ABI::AdaptiveNamespace::ContainerStyle style
                                     _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
                                     _Out_ ABI::Windows::UI::Color* backgroundColor) noexcept;
 
+HRESULT GetFontDataFromStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                             _In_ ABI::AdaptiveNamespace::FontStyle style,
+                             _In_ ABI::AdaptiveNamespace::TextSize desiredSize,
+                             _In_ ABI::AdaptiveNamespace::TextWeight desiredWeight,
+                             _Out_ HSTRING* resultFontFamilyName,
+                             _Out_ UINT32* resultSize,
+                             _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept;
+
+HRESULT GetFontFamilyFromStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                               _In_ ABI::AdaptiveNamespace::FontStyle style,
+                               _Out_ HSTRING* resultFontFamilyName) noexcept;
+
+HRESULT GetFontSizeFromStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                             _In_ ABI::AdaptiveNamespace::FontStyle style,
+                             _In_ ABI::AdaptiveNamespace::TextSize desiredSize,
+                             _Out_ UINT32* resultSize) noexcept;
+
+HRESULT GetFontWeightFromStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                               _In_ ABI::AdaptiveNamespace::FontStyle style,
+                               _In_ ABI::AdaptiveNamespace::TextWeight desiredWeight,
+                               _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept;
+
+HRESULT GetFontStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                     _In_ ABI::AdaptiveNamespace::FontStyle style,
+                     _Out_ ABI::AdaptiveNamespace::IAdaptiveFontStyleDefinition** styleDefinition) noexcept;
+
+HRESULT GetFontSize(_In_ ABI::AdaptiveNamespace::IAdaptiveFontSizesConfig* sizesConfig,
+                    _In_ ABI::AdaptiveNamespace::TextSize desiredSize,
+                    _Out_ UINT32* resultSize) noexcept;
+
+HRESULT GetFontWeight(_In_ ABI::AdaptiveNamespace::IAdaptiveFontWeightsConfig* weightsConfig,
+                      _In_ ABI::AdaptiveNamespace::TextWeight desiredWeight,
+                      _Out_ UINT16* resultWeight) noexcept;
+
 HRESULT GetSpacingSizeFromSpacing(ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
                                   ABI::AdaptiveNamespace::Spacing spacing,
                                   UINT* spacingSize) noexcept;
@@ -162,3 +196,5 @@ HRESULT SharedWarningsToAdaptiveWarnings(
 
 HRESULT AdaptiveWarningsToSharedWarnings(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
                                          std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>> sharedWarnings);
+
+ABI::Windows::UI::Color GenerateLighterColor(ABI::Windows::UI::Color originalColor);

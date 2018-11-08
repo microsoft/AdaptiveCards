@@ -74,6 +74,7 @@ namespace AdaptiveSharedNamespace
         DateInput,
         Default,
         DefaultPoster,
+        Display,
         Emphasis,
         ExtraLarge,
         Facts,
@@ -81,6 +82,8 @@ namespace AdaptiveSharedNamespace
         FallbackText,
         FontFamily,
         FontSizes,
+        FontStyle,
+        FontStyles,
         FontWeights,
         Good,
         Height,
@@ -121,6 +124,7 @@ namespace AdaptiveSharedNamespace
         Method,
         MimeType,
         Min,
+        Monospace,
         NumberInput,
         Padding,
         Placeholder,
@@ -128,6 +132,7 @@ namespace AdaptiveSharedNamespace
         Poster,
         Right,
         SelectAction,
+        Sentiment,
         Separator,
         ShowActionMode,
         ShowCard,
@@ -180,6 +185,13 @@ namespace AdaptiveSharedNamespace
         Lighter = 0,
         Default,
         Bolder
+    };
+
+    enum class FontStyle
+    {
+        Default = 0,
+        Display,
+        Monospace
     };
 
     enum class ForegroundColor
@@ -348,6 +360,13 @@ namespace AdaptiveSharedNamespace
         LeftOfTitle
     };
 
+    enum class Sentiment
+    {
+        Default = 0,
+        Positive,
+        Destructive
+    };
+
     enum class VerticalContentAlignment
     {
         Top = 0,
@@ -385,6 +404,9 @@ namespace AdaptiveSharedNamespace
     const std::string TextSizeToString(TextSize size);
     TextSize TextSizeFromString(const std::string& size);
 
+    const std::string FontStyleToString(FontStyle style);
+    FontStyle FontStyleFromString(const std::string& style);
+
     const std::string ImageSizeToString(ImageSize size);
     ImageSize ImageSizeFromString(const std::string& size);
 
@@ -420,6 +442,9 @@ namespace AdaptiveSharedNamespace
 
     const std::string VerticalContentAlignmentToString(VerticalContentAlignment verticalContentAlignment);
     VerticalContentAlignment VerticalContentAlignmentFromString(const std::string& verticalContentAlignment);
+
+    const std::string SentimentToString(Sentiment sentiment);
+    Sentiment SentimentFromString(const std::string& sentiment);
 
     template<typename T>
     const std::unordered_map<std::string, T, CaseInsensitiveHash, CaseInsensitiveEqualTo>

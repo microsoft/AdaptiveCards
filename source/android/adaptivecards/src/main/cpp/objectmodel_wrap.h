@@ -56,15 +56,17 @@ public:
     virtual void SetId(std::string const &value);
     virtual std::string GetIconUrl() const;
     virtual void SetIconUrl(std::string const &value);
+    virtual AdaptiveCards::Sentiment GetSentiment() const;
+    virtual void SetSentiment(AdaptiveCards::Sentiment const &value);
     virtual AdaptiveCards::ActionType const GetElementType() const;
     virtual Json::Value SerializeToJsonValue() const;
     virtual void GetResourceInformation(std::vector< AdaptiveCards::RemoteResourceInformation > &resourceUris);
 public:
     bool swig_overrides(int n) {
-      return (n < 11 ? swig_override[n] : false);
+      return (n < 13 ? swig_override[n] : false);
     }
 protected:
-    Swig::BoolArray<11> swig_override;
+    Swig::BoolArray<13> swig_override;
 };
 
 class SwigDirector_ActionElementParser : public AdaptiveCards::ActionElementParser, public Swig::Director {

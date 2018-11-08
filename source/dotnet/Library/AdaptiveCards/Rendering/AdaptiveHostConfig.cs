@@ -25,13 +25,19 @@ namespace AdaptiveCards.Rendering
         public FactSetConfig FactSet { get; set; } = new FactSetConfig();
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public string FontFamily { get; set; } = "Segoe UI";
+        [Obsolete("AdaptiveHostConfig.FontFamily has been deprecated.  Use AdaptiveHostConfig.FontStyles.Default.FontFamily", false)]
+        public string FontFamily { get; set; }
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [Obsolete("AdaptiveHostConfig.FontSizes has been deprecated.  Use AdaptiveHostConfig.FontStyles.Default.FontSizes", false)]
         public FontSizesConfig FontSizes { get; set; } = new FontSizesConfig();
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [Obsolete("AdaptiveHostConfig.FontWeights has been deprecated.  Use AdaptiveHostConfig.FontStyles.Default.FontWeights", false)]
         public FontWeightsConfig FontWeights { get; set; } = new FontWeightsConfig();
+
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public FontStylesConfig FontStyles { get; set; } = new FontStylesConfig();
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public SpacingsConfig Spacing { get; set; } = new SpacingsConfig();
@@ -131,7 +137,6 @@ namespace AdaptiveCards.Rendering
             }
         }
 
-
         public static AdaptiveHostConfig FromJson(string json)
         {
             try
@@ -155,6 +160,68 @@ namespace AdaptiveCards.Rendering
         public string ToJson()
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented);
+        }
+
+        // Handles inheritance behavior for retrieving the name of the font family given the desired AdaptiveFontStyle
+        public string GetFontFamily(AdaptiveFontStyle fontStyle)
+        {
+            // Value saved in FontStyles.<desiredStyle>
+            string fontFamilyValue = FontStyles.GetFontStyle(fontStyle).FontFamily;
+
+            if (string.IsNullOrEmpty(fontFamilyValue))
+            {
+                if (fontStyle == AdaptiveFontStyle.Monospace)
+                {
+                  fontFamilyValue = GetDefaultFontFamily(fontStyle);
+                }
+                else
+                {
+                  // Fallback to default fontStyle value
+                  fontFamilyValue = FontStyles.Default.FontFamily;
+                  if (string.IsNullOrEmpty(fontFamilyValue))
+                  {
+                      // Fallback to deprecated fontFamily value
+                      fontFamilyValue = FontFamily;
+                      if (string.IsNullOrEmpty(fontFamilyValue))
+                      {
+                          // Fallback to predefined system default value
+                          fontFamilyValue = GetDefaultFontFamily(fontStyle);
+                      }
+                  }
+                }
+            }
+            return fontFamilyValue;
+        }
+
+        public int GetFontWeight(AdaptiveFontStyle fontStyle, AdaptiveTextWeight requestedWeight)
+        {
+            return FontStyles.GetFontStyle(fontStyle).FontWeights.GetFontWeight(requestedWeight)
+                ?? FontStyles.Default.FontWeights.GetFontWeight(requestedWeight)
+                ?? FontWeights.GetFontWeight(requestedWeight)
+                ?? FontWeightsConfig.GetDefaultFontWeight(requestedWeight);
+        }
+
+        public int GetFontSize(AdaptiveFontStyle fontStyle, AdaptiveTextSize requestedSize)
+        {
+            return FontStyles.GetFontStyle(fontStyle).FontSizes.GetFontSize(requestedSize)
+                ?? FontStyles.Default.FontSizes.GetFontSize(requestedSize)
+                ?? FontSizes.GetFontSize(requestedSize)
+                ?? FontSizesConfig.GetDefaultFontSize(requestedSize);
+        }
+
+        private string GetDefaultFontFamily(AdaptiveFontStyle fontStyle)
+        {
+            switch (fontStyle)
+            {
+                case AdaptiveFontStyle.Monospace:
+                    return "Courier New";
+                case AdaptiveFontStyle.Display:
+                case AdaptiveFontStyle.Default:
+                default:
+                    // Leave it up to the platform.
+                    // Renderer default is usually "Segoe UI"
+                    return "";
+            }
         }
     }
 }

@@ -81,6 +81,10 @@ export class OutlookContainer extends HostContainer {
             element.isVisible = json["isVisible"];
         }
 
+        if (element instanceof Adaptive.Container && json["rtl"] != undefined) {
+            element.rtl = json["rtl"];
+        }
+
         if (element instanceof Adaptive.AdaptiveCard) {
             var card = <Adaptive.AdaptiveCard>element;
             var actionArray: Array<Adaptive.Action> = [];
