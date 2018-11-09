@@ -1,4 +1,4 @@
-import * as Enums from "./enums";
+﻿import * as Enums from "./enums";
 import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
@@ -659,6 +659,7 @@ export class TextBlock extends CardElement {
     private _text: string;
     private _processedText: string = null;
     private _selectAction: Action = null;
+    private _effectiveStyleDefinition: HostConfig.ContainerStyleDefinition = null;
 
     private restoreOriginalContent() {
         var maxHeight = this.maxLines
@@ -691,11 +692,34 @@ export class TextBlock extends CardElement {
         return false;
     }
 
+    private getEffectiveStyleDefinition() {
+        if (!this._effectiveStyleDefinition) {
+            this._effectiveStyleDefinition = this.hostConfig.containerStyles.default;
+
+            let parentContainer = this.getParentContainer();
+
+            while (parentContainer) {
+                if (parentContainer.style) {
+                    this._effectiveStyleDefinition = this.hostConfig.containerStyles.getStyleByName(parentContainer.style);
+
+                    break;
+                }
+
+                parentContainer = parentContainer.getParentContainer();
+            }
+        }
+
+        return this._effectiveStyleDefinition;
+    }
+
     protected getRenderedDomElementType(): string {
         return "div";
     }
 
     protected internalRender(): HTMLElement {
+        this._effectiveStyleDefinition = null;
+        this._processedText = null;
+
         if (!Utils.isNullOrEmpty(this.text)) {
             let hostConfig = this.hostConfig;
 
@@ -716,7 +740,30 @@ export class TextBlock extends CardElement {
             if (!this._processedText) {
                 var formattedText = TextFormatters.formatText(this.lang, this.text);
 
+                if (AdaptiveCard.allowMarkForTextHighlighting) {
+                    formattedText = formattedText.replace(/<mark>/g, "===").replace(/<\/mark>/g, "/==");
+                }
+
                 this._processedText = this.useMarkdown ? AdaptiveCard.processMarkdown(formattedText) : formattedText;
+
+                if (AdaptiveCard.allowMarkForTextHighlighting) {
+                    let markStyle: string = "";
+                    let effectiveStyle = this.getEffectiveStyleDefinition();
+
+                    if (effectiveStyle.highlightBackgroundColor) {
+                        markStyle += "background-color: " + effectiveStyle.highlightBackgroundColor + ";";
+                    }
+
+                    if (effectiveStyle.highlightForegroundColor) {
+                        markStyle += "color: " + effectiveStyle.highlightForegroundColor + ";";
+                    }
+
+                    if (!Utils.isNullOrEmpty(markStyle)) {
+                        markStyle = 'style="' + markStyle + '"';
+                    }
+
+                    this._processedText = this._processedText.replace(/===/g, "<mark " + markStyle + ">").replace(/\/==/g, "</mark>");
+                }
             }
 
             element.innerHTML = this._processedText;
@@ -887,7 +934,7 @@ export class TextBlock extends CardElement {
         targetElement.style.fontSize = fontSize + "px";
         targetElement.style.lineHeight = this._computedLineHeight + "px";
 
-        let styleDefinition = this.hostConfig.containerStyles.getStyleByName(parentContainer ? parentContainer.style : Enums.ContainerStyle.Default, this.hostConfig.containerStyles.default);
+        let styleDefinition = this.getEffectiveStyleDefinition();
 
         let actualTextColor = this.color ? this.color : Enums.TextColor.Default;
         let colorDefinition: HostConfig.TextColorDefinition;
@@ -5316,6 +5363,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static useAdvancedTextBlockTruncation: boolean = true;
     static useAdvancedCardBottomTruncation: boolean = false;
     static useMarkdownInRadioButtonAndCheckbox: boolean = true;
+    static allowMarkForTextHighlighting: boolean = false;
 
     static readonly elementTypeRegistry = new ElementTypeRegistry();
     static readonly actionTypeRegistry = new ActionTypeRegistry();
