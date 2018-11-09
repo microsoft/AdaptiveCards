@@ -51,6 +51,7 @@ export class OutlookContainer extends HostContainer {
         Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
 
         Adaptive.AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = false;
+        Adaptive.AdaptiveCard.allowMarkForTextHighlighting = true;
     }
 
     private parsePadding(json: any): Adaptive.PaddingDefinition {
@@ -79,6 +80,10 @@ export class OutlookContainer extends HostContainer {
     public parseElement(element: Adaptive.CardElement, json: any) {
         if (typeof json["isVisible"] === "boolean") {
             element.isVisible = json["isVisible"];
+        }
+
+        if (element instanceof Adaptive.Container && json["rtl"] != undefined) {
+            element.rtl = json["rtl"];
         }
 
         if (element instanceof Adaptive.AdaptiveCard) {

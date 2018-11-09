@@ -15,9 +15,9 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveFontWeightsConfig::RuntimeClassInitialize(FontWeightsConfig fontWeightsConfig) noexcept
     {
-        m_default = static_cast<UINT16>(fontWeightsConfig.defaultWeight);
-        m_lighter = static_cast<UINT16>(fontWeightsConfig.lighterWeight);
-        m_bolder = static_cast<UINT16>(fontWeightsConfig.bolderWeight);
+        m_default = static_cast<UINT16>(fontWeightsConfig.GetFontWeight(AdaptiveCards::TextWeight::Default));
+        m_lighter = static_cast<UINT16>(fontWeightsConfig.GetFontWeight(AdaptiveCards::TextWeight::Lighter));
+        m_bolder = static_cast<UINT16>(fontWeightsConfig.GetFontWeight(AdaptiveCards::TextWeight::Bolder));
 
         return S_OK;
     }

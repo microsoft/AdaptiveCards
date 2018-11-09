@@ -8,6 +8,8 @@
 #include "AdaptiveFactSetConfig.h"
 #include "AdaptiveFontSizesConfig.h"
 #include "AdaptiveFontWeightsConfig.h"
+#include "AdaptiveFontStyleDefinition.h"
+#include "AdaptiveFontStylesDefinition.h"
 #include "AdaptiveHostConfigParseResult.h"
 #include "AdaptiveImageConfig.h"
 #include "AdaptiveImageSetConfig.h"
@@ -66,23 +68,26 @@ namespace AdaptiveNamespace
 
     _Use_decl_annotations_ HRESULT AdaptiveHostConfig::RuntimeClassInitialize(const HostConfig& sharedHostConfig)
     {
-        m_supportsInteractivity = sharedHostConfig.supportsInteractivity;
-        RETURN_IF_FAILED(UTF8ToHString(sharedHostConfig.fontFamily, m_fontFamily.GetAddressOf()));
-        RETURN_IF_FAILED(UTF8ToHString(sharedHostConfig.imageBaseUrl, m_imageBaseUrl.GetAddressOf()));
+        m_supportsInteractivity = sharedHostConfig.GetSupportsInteractivity();
+        RETURN_IF_FAILED(UTF8ToHString(sharedHostConfig.GetFontFamily(), m_fontFamily.GetAddressOf()));
+        RETURN_IF_FAILED(UTF8ToHString(sharedHostConfig.GetImageBaseUrl(), m_imageBaseUrl.GetAddressOf()));
 
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontSizesConfig>(m_fontSizes.GetAddressOf(), sharedHostConfig.fontSizes));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontWeightsConfig>(m_fontWeights.GetAddressOf(), sharedHostConfig.fontWeights));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontSizesConfig>(m_fontSizes.GetAddressOf(), sharedHostConfig.GetFontSizes()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontWeightsConfig>(m_fontWeights.GetAddressOf(),
+                                                                      sharedHostConfig.GetFontWeights()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFontStylesDefinition>(m_fontStyles.GetAddressOf(),
+                                                                         sharedHostConfig.GetFontStyles()));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveContainerStylesDefinition>(m_containerStyles.GetAddressOf(),
-                                                                              sharedHostConfig.containerStyles));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveImageSizesConfig>(m_imageSizes.GetAddressOf(), sharedHostConfig.imageSizes));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveSpacingConfig>(m_spacing.GetAddressOf(), sharedHostConfig.spacing));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveSeparatorConfig>(m_separator.GetAddressOf(), sharedHostConfig.separator));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardConfig>(m_adaptiveCard.GetAddressOf(), sharedHostConfig.adaptiveCard));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveImageSetConfig>(m_imageSet.GetAddressOf(), sharedHostConfig.imageSet));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFactSetConfig>(m_factSet.GetAddressOf(), sharedHostConfig.factSet));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionsConfig>(m_actions.GetAddressOf(), sharedHostConfig.actions));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveImageConfig>(m_image.GetAddressOf(), sharedHostConfig.image));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveMediaConfig>(m_media.GetAddressOf(), sharedHostConfig.media));
+                                                                              sharedHostConfig.GetContainerStyles()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveImageSizesConfig>(m_imageSizes.GetAddressOf(), sharedHostConfig.GetImageSizes()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveSpacingConfig>(m_spacing.GetAddressOf(), sharedHostConfig.GetSpacing()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveSeparatorConfig>(m_separator.GetAddressOf(), sharedHostConfig.GetSeparator()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardConfig>(m_adaptiveCard.GetAddressOf(), sharedHostConfig.GetAdaptiveCard()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveImageSetConfig>(m_imageSet.GetAddressOf(), sharedHostConfig.GetImageSet()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveFactSetConfig>(m_factSet.GetAddressOf(), sharedHostConfig.GetFactSet()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionsConfig>(m_actions.GetAddressOf(), sharedHostConfig.GetActions()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveImageConfig>(m_image.GetAddressOf(), sharedHostConfig.GetImage()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveMediaConfig>(m_media.GetAddressOf(), sharedHostConfig.GetMedia()));
 
         return S_OK;
     }
@@ -116,9 +121,9 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveHostConfig::get_SupportsInteractivity(boolean* supporsInteractivity)
+    _Use_decl_annotations_ HRESULT AdaptiveHostConfig::get_SupportsInteractivity(boolean* supportsInteractivity)
     {
-        *supporsInteractivity = m_supportsInteractivity;
+        *supportsInteractivity = m_supportsInteractivity;
         return S_OK;
     }
 
@@ -245,6 +250,17 @@ namespace AdaptiveNamespace
     _Use_decl_annotations_ HRESULT AdaptiveHostConfig::put_Media(IAdaptiveMediaConfig* mediaConfig)
     {
         m_media = mediaConfig;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_ HRESULT AdaptiveHostConfig::get_FontStyles(IAdaptiveFontStylesDefinition** value)
+    {
+        return m_fontStyles.CopyTo(value);
+    }
+
+    _Use_decl_annotations_ HRESULT AdaptiveHostConfig::put_FontStyles(IAdaptiveFontStylesDefinition* value)
+    {
+        m_fontStyles = value;
         return S_OK;
     }
 }

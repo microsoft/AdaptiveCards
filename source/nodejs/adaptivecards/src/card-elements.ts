@@ -1,4 +1,4 @@
-import * as Enums from "./enums";
+﻿import * as Enums from "./enums";
 import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
@@ -690,6 +690,7 @@ export class TextBlock extends CardElement {
     private _text: string;
     private _processedText: string = null;
     private _selectAction: Action = null;
+    private _effectiveStyleDefinition: HostConfig.ContainerStyleDefinition = null;
 
     private restoreOriginalContent() {
         var maxHeight = this.maxLines
@@ -722,11 +723,34 @@ export class TextBlock extends CardElement {
         return false;
     }
 
+    private getEffectiveStyleDefinition() {
+        if (!this._effectiveStyleDefinition) {
+            this._effectiveStyleDefinition = this.hostConfig.containerStyles.default;
+
+            let parentContainer = this.getParentContainer();
+
+            while (parentContainer) {
+                if (parentContainer.style) {
+                    this._effectiveStyleDefinition = this.hostConfig.containerStyles.getStyleByName(parentContainer.style);
+
+                    break;
+                }
+
+                parentContainer = parentContainer.getParentContainer();
+            }
+        }
+
+        return this._effectiveStyleDefinition;
+    }
+
     protected getRenderedDomElementType(): string {
         return "div";
     }
 
     protected internalRender(): HTMLElement {
+        this._effectiveStyleDefinition = null;
+        this._processedText = null;
+
         if (!Utils.isNullOrEmpty(this.text)) {
             let hostConfig = this.hostConfig;
 
@@ -747,7 +771,30 @@ export class TextBlock extends CardElement {
             if (!this._processedText) {
                 var formattedText = TextFormatters.formatText(this.lang, this.text);
 
+                if (AdaptiveCard.allowMarkForTextHighlighting) {
+                    formattedText = formattedText.replace(/<mark>/g, "===").replace(/<\/mark>/g, "/==");
+                }
+
                 this._processedText = this.useMarkdown ? AdaptiveCard.processMarkdown(formattedText) : formattedText;
+
+                if (AdaptiveCard.allowMarkForTextHighlighting) {
+                    let markStyle: string = "";
+                    let effectiveStyle = this.getEffectiveStyleDefinition();
+
+                    if (effectiveStyle.highlightBackgroundColor) {
+                        markStyle += "background-color: " + effectiveStyle.highlightBackgroundColor + ";";
+                    }
+
+                    if (effectiveStyle.highlightForegroundColor) {
+                        markStyle += "color: " + effectiveStyle.highlightForegroundColor + ";";
+                    }
+
+                    if (!Utils.isNullOrEmpty(markStyle)) {
+                        markStyle = 'style="' + markStyle + '"';
+                    }
+
+                    this._processedText = this._processedText.replace(/===/g, "<mark " + markStyle + ">").replace(/\/==/g, "</mark>");
+                }
             }
 
             element.innerHTML = this._processedText;
@@ -855,19 +902,21 @@ export class TextBlock extends CardElement {
             targetElement.style.fontFamily = this.hostConfig.fontFamily;
         }
 
+        let parentContainer = this.getParentContainer();
+        let isRtl  = parentContainer ? parentContainer.isRtl() : false;
+
         switch (this.horizontalAlignment) {
             case Enums.HorizontalAlignment.Center:
                 targetElement.style.textAlign = "center";
                 break;
             case Enums.HorizontalAlignment.Right:
-                targetElement.style.textAlign = "right";
+                targetElement.style.textAlign = isRtl ? "left" : "right";
                 break;
             default:
-                targetElement.style.textAlign = "left";
+                targetElement.style.textAlign = isRtl ? "right" : "left";
                 break;
         }
 
-        var cssStyle = "text ";
         var fontSize: number;
 
         switch (this.size) {
@@ -916,11 +965,10 @@ export class TextBlock extends CardElement {
         targetElement.style.fontSize = fontSize + "px";
         targetElement.style.lineHeight = this._computedLineHeight + "px";
 
-        var parentContainer = this.getParentContainer();
-        var styleDefinition = this.hostConfig.containerStyles.getStyleByName(parentContainer ? parentContainer.style : Enums.ContainerStyle.Default, this.hostConfig.containerStyles.default);
+        let styleDefinition = this.getEffectiveStyleDefinition();
 
-        var actualTextColor = this.color ? this.color : Enums.TextColor.Default;
-        var colorDefinition: HostConfig.TextColorDefinition;
+        let actualTextColor = this.color ? this.color : Enums.TextColor.Default;
+        let colorDefinition: HostConfig.TextColorDefinition;
 
         switch (actualTextColor) {
             case Enums.TextColor.Accent:
@@ -948,7 +996,7 @@ export class TextBlock extends CardElement {
 
         targetElement.style.color = Utils.stringToCssColor(this.isSubtle ? colorDefinition.subtle : colorDefinition.default);
 
-        var fontWeight: number;
+        let fontWeight: number;
 
         switch (this.weight) {
             case Enums.TextWeight.Lighter:
@@ -1123,14 +1171,15 @@ export class FactSet extends CardElement {
             element.style.overflow = "hidden";
             element.classList.add(hostConfig.makeCssClassName("ac-factset"));
 
-            for (var i = 0; i < this.facts.length; i++) {
-                var trElement = document.createElement("tr");
+            for (let i = 0; i < this.facts.length; i++) {
+                let trElement = document.createElement("tr");
 
                 if (i > 0) {
                     trElement.style.marginTop = this.hostConfig.factSet.spacing + "px";
                 }
 
-                var tdElement = document.createElement("td");
+                // Title column
+                let tdElement = document.createElement("td");
                 tdElement.style.padding = "0";
                 tdElement.classList.add(hostConfig.makeCssClassName("ac-fact-title"));
 
@@ -1140,8 +1189,8 @@ export class FactSet extends CardElement {
 
                 tdElement.style.verticalAlign = "top";
 
-                var textBlock = new TextBlock();
-                textBlock.hostConfig = this.hostConfig;
+                let textBlock = new TextBlock();
+                textBlock.setParent(this);
                 textBlock.text = Utils.isNullOrEmpty(this.facts[i].name) ? "Title" : this.facts[i].name;
                 textBlock.size = this.hostConfig.factSet.title.size;
                 textBlock.color = this.hostConfig.factSet.title.color;
@@ -1153,13 +1202,19 @@ export class FactSet extends CardElement {
                 Utils.appendChild(tdElement, textBlock.render());
                 Utils.appendChild(trElement, tdElement);
 
+                // Spacer column
                 tdElement = document.createElement("td");
-                tdElement.style.padding = "0px 0px 0px 10px";
+                tdElement.style.width = "10px";
+
+                Utils.appendChild(trElement, tdElement);
+
+                // Value column
+                tdElement = document.createElement("td");
                 tdElement.style.verticalAlign = "top";
                 tdElement.classList.add(hostConfig.makeCssClassName("ac-fact-value"));
 
                 textBlock = new TextBlock();
-                textBlock.hostConfig = this.hostConfig;
+                textBlock.setParent(this);
                 textBlock.text = Utils.isNullOrEmpty(this.facts[i].value) ? "Value" : this.facts[i].value;
                 textBlock.size = this.hostConfig.factSet.value.size;
                 textBlock.color = this.hostConfig.factSet.value.color;
@@ -2120,7 +2175,7 @@ export class ToggleInput extends Input {
     private _checkboxInputElement: HTMLInputElement;
 
     protected internalRender(): HTMLElement {
-        var element = document.createElement("div");
+        let element = document.createElement("div");
         element.className = this.hostConfig.makeCssClassName("ac-input");
         element.style.width = "100%";
         element.style.display = "flex";
@@ -2145,18 +2200,22 @@ export class ToggleInput extends Input {
         Utils.appendChild(element, this._checkboxInputElement);
 
         if (!Utils.isNullOrEmpty(this.title) || this.isDesignMode()) {
-            var label = new Label();
+            let label = new Label();
+            label.setParent(this);
             label.forElementId = this._checkboxInputElement.id;
             label.hostConfig = this.hostConfig;
             label.text = Utils.isNullOrEmpty(this.title) ? this.getJsonTypeName() : this.title;
             label.useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
 
-            var labelElement = label.render();
+            let labelElement = label.render();
             labelElement.style.display = "inline-block";
             labelElement.style.flex = "1 1 auto";
-            labelElement.style.marginLeft = "6px";
             labelElement.style.verticalAlign = "middle";
 
+            let spacerElement = document.createElement("div");
+            spacerElement.style.width = "6px";
+
+            Utils.appendChild(element, spacerElement);
             Utils.appendChild(element, labelElement);
         }
 
@@ -2234,7 +2293,7 @@ export class ChoiceSetInput extends Input {
                 this._selectElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-multichoiceInput");
                 this._selectElement.style.width = "100%";
 
-                var option = document.createElement("option");
+                let option = document.createElement("option");
                 option.selected = true;
                 option.disabled = true;
                 option.hidden = true;
@@ -2247,7 +2306,7 @@ export class ChoiceSetInput extends Input {
                 Utils.appendChild(this._selectElement, option);
 
                 for (var i = 0; i < this.choices.length; i++) {
-                    var option = document.createElement("option");
+                    let option = document.createElement("option");
                     option.value = this.choices[i].value;
                     option.text = this.choices[i].title;
                     option.setAttribute("aria-label", this.choices[i].title);
@@ -2267,14 +2326,14 @@ export class ChoiceSetInput extends Input {
                 // Render as a series of radio buttons
                 let uniqueCategoryName = ChoiceSetInput.getUniqueCategoryName();
 
-                var element = document.createElement("div");
+                let element = document.createElement("div");
                 element.className = this.hostConfig.makeCssClassName("ac-input");
                 element.style.width = "100%";
 
                 this._toggleInputs = [];
 
-                for (var i = 0; i < this.choices.length; i++) {
-                    var radioInput = document.createElement("input");
+                for (let i = 0; i < this.choices.length; i++) {
+                    let radioInput = document.createElement("input");
                     radioInput.id = generateUniqueId();
                     radioInput.type = "radio";
                     radioInput.style.margin = "0";
@@ -2293,22 +2352,27 @@ export class ChoiceSetInput extends Input {
 
                     this._toggleInputs.push(radioInput);
 
-                    var label = new Label();
+                    let label = new Label();
+                    label.setParent(this);
                     label.forElementId = radioInput.id;
                     label.hostConfig = this.hostConfig;
                     label.text = Utils.isNullOrEmpty(this.choices[i].title) ? "Choice " + i : this.choices[i].title;
                     label.useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
 
-                    var labelElement = label.render();
+                    let labelElement = label.render();
                     labelElement.style.display = "inline-block";
                     labelElement.style.flex = "1 1 auto";
                     labelElement.style.marginLeft = "6px";
                     labelElement.style.verticalAlign = "middle";
 
-                    var compoundInput = document.createElement("div");
+                    let spacerElement = document.createElement("div");
+                    spacerElement.style.width = "6px";
+    
+                    let compoundInput = document.createElement("div");
                     compoundInput.style.display = "flex";
 
                     Utils.appendChild(compoundInput, radioInput);
+                    Utils.appendChild(compoundInput, spacerElement);
                     Utils.appendChild(compoundInput, labelElement);
 
                     Utils.appendChild(element, compoundInput);
@@ -2319,16 +2383,16 @@ export class ChoiceSetInput extends Input {
         }
         else {
             // Render as a list of toggle inputs
-            var defaultValues = this.defaultValue ? this.defaultValue.split(this.hostConfig.choiceSetInputValueSeparator) : null;
+            let defaultValues = this.defaultValue ? this.defaultValue.split(this.hostConfig.choiceSetInputValueSeparator) : null;
 
-            var element = document.createElement("div");
+            let element = document.createElement("div");
             element.className = this.hostConfig.makeCssClassName("ac-input");
             element.style.width = "100%";
 
             this._toggleInputs = [];
 
-            for (var i = 0; i < this.choices.length; i++) {
-                var checkboxInput = document.createElement("input");
+            for (let i = 0; i < this.choices.length; i++) {
+                let checkboxInput = document.createElement("input");
                 checkboxInput.id = generateUniqueId();
                 checkboxInput.type = "checkbox";
                 checkboxInput.style.margin = "0";
@@ -2348,23 +2412,28 @@ export class ChoiceSetInput extends Input {
 
                 this._toggleInputs.push(checkboxInput);
 
-                var label = new Label();
+                let label = new Label();
+                label.setParent(this);
                 label.forElementId = checkboxInput.id;
                 label.hostConfig = this.hostConfig;
                 label.text = Utils.isNullOrEmpty(this.choices[i].title) ? "Choice " + i : this.choices[i].title;
                 label.useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
 
-                var labelElement = label.render();
+                let labelElement = label.render();
                 labelElement.style.display = "inline-block";
                 labelElement.style.flex = "1 1 auto";
-                labelElement.style.marginLeft = "6px";
+                // labelElement.style.marginLeft = "6px";
                 labelElement.style.verticalAlign = "middle";
 
-                var compoundInput = document.createElement("div");
+                let spacerElement = document.createElement("div");
+                spacerElement.style.width = "6px";
+
+                let compoundInput = document.createElement("div");
                 compoundInput.style.display = "flex";
                 compoundInput.style.alignItems = "center";
 
                 Utils.appendChild(compoundInput, checkboxInput);
+                Utils.appendChild(compoundInput, spacerElement);
                 Utils.appendChild(compoundInput, labelElement);
 
                 Utils.appendChild(element, compoundInput);
@@ -3969,6 +4038,11 @@ export class Container extends CardElementContainer {
         let hostConfig = this.hostConfig;
 
         var element = document.createElement("div");
+
+        if (this.rtl != null && this.rtl) {
+            element.dir = "rtl";
+        }
+
         element.classList.add(hostConfig.makeCssClassName("ac-container"));
         element.style.display = "flex";
         element.style.flexDirection = "column";
@@ -4122,6 +4196,7 @@ export class Container extends CardElementContainer {
 
     backgroundImage: BackgroundImage;
     verticalContentAlignment: Enums.VerticalAlignment = Enums.VerticalAlignment.Top;
+    rtl?: boolean = null;
 
     toJSON() {
         let result = super.toJSON();
@@ -4150,10 +4225,6 @@ export class Container extends CardElementContainer {
         return result;
     }
 
-    isBleeding(): boolean {
-        return this.isLastElementBleeding();
-    }
-
     getItemCount(): number {
         return this._items.length;
     }
@@ -4164,6 +4235,10 @@ export class Container extends CardElementContainer {
 
     getJsonTypeName(): string {
         return "Container";
+    }
+
+    isBleeding(): boolean {
+        return this.isLastElementBleeding();
     }
 
     isFirstElement(element: CardElement): boolean {
@@ -4184,6 +4259,17 @@ export class Container extends CardElementContainer {
         }
 
         return false;
+    }
+
+    isRtl(): boolean {
+        if (this.rtl != null) {
+            return this.rtl;
+        }
+        else {
+            let parentContainer = this.getParentContainer();
+
+            return parentContainer ? parentContainer.isRtl() : false;
+        }
     }
 
     validate(): Array<IValidationError> {
@@ -5321,6 +5407,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static useAdvancedTextBlockTruncation: boolean = true;
     static useAdvancedCardBottomTruncation: boolean = false;
     static useMarkdownInRadioButtonAndCheckbox: boolean = true;
+    static allowMarkForTextHighlighting: boolean = false;
 
     static readonly elementTypeRegistry = new ElementTypeRegistry();
     static readonly actionTypeRegistry = new ActionTypeRegistry();

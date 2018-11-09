@@ -113,6 +113,7 @@ export abstract class HostContainer {
         AdaptiveCard.actionTypeRegistry.reset();
         AdaptiveCard.useAutomaticContainerBleeding = false;
         AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = true;
+        AdaptiveCard.allowMarkForTextHighlighting = false;
     }
 
     public parseElement(element: CardElement, json: any) {

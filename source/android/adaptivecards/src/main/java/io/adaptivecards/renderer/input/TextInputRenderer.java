@@ -178,7 +178,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
             HostConfig hostConfig,
             ContainerStyle containerStyle)
     {
-        if (!hostConfig.getSupportsInteractivity())
+        if (!hostConfig.GetSupportsInteractivity())
         {
             renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INTERACTIVITY_DISALLOWED, "Input.Text is not allowed"));
             return null;

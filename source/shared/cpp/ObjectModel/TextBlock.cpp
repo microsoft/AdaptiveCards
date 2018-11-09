@@ -11,8 +11,8 @@ using namespace AdaptiveSharedNamespace;
 
 TextBlock::TextBlock() :
     BaseCardElement(CardElementType::TextBlock), m_textSize(TextSize::Default), m_textWeight(TextWeight::Default),
-    m_textColor(ForegroundColor::Default), m_isSubtle(false), m_wrap(false), m_maxLines(0),
-    m_hAlignment(HorizontalAlignment::Left), m_language()
+    m_fontStyle(FontStyle::Default), m_textColor(ForegroundColor::Default), m_isSubtle(false), m_wrap(false),
+    m_maxLines(0), m_hAlignment(HorizontalAlignment::Left), m_language()
 {
     PopulateKnownPropertiesSet();
 }
@@ -34,6 +34,11 @@ Json::Value TextBlock::SerializeToJsonValue() const
     if (m_textWeight != TextWeight::Default)
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Weight)] = TextWeightToString(m_textWeight);
+    }
+
+    if (m_fontStyle != FontStyle::Default)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FontStyle)] = FontStyleToString(m_fontStyle);
     }
 
     if (m_hAlignment != HorizontalAlignment::Left)
@@ -94,6 +99,16 @@ TextWeight TextBlock::GetTextWeight() const
 void TextBlock::SetTextWeight(const TextWeight value)
 {
     m_textWeight = value;
+}
+
+FontStyle TextBlock::GetFontStyle() const
+{
+    return m_fontStyle;
+}
+
+void TextBlock::SetFontStyle(const FontStyle value)
+{
+    m_fontStyle = value;
 }
 
 ForegroundColor TextBlock::GetTextColor() const
@@ -171,6 +186,8 @@ std::shared_ptr<BaseCardElement> TextBlockParser::Deserialize(std::shared_ptr<El
         ParseUtil::GetEnumValue<ForegroundColor>(json, AdaptiveCardSchemaKey::Color, ForegroundColor::Default, ForegroundColorFromString));
     textBlock->SetTextWeight(
         ParseUtil::GetEnumValue<TextWeight>(json, AdaptiveCardSchemaKey::TextWeight, TextWeight::Default, TextWeightFromString));
+    textBlock->SetFontStyle(
+        ParseUtil::GetEnumValue<FontStyle>(json, AdaptiveCardSchemaKey::FontStyle, FontStyle::Default, FontStyleFromString));
     textBlock->SetWrap(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Wrap, false));
     textBlock->SetIsSubtle(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsSubtle, false));
     textBlock->SetMaxLines(ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::MaxLines, 0));
@@ -197,6 +214,7 @@ void TextBlock::PopulateKnownPropertiesSet()
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::TextWeight),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FontStyle),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSubtle),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLines),

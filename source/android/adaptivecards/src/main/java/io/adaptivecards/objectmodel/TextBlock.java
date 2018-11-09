@@ -73,6 +73,14 @@ public class TextBlock extends BaseCardElement {
     AdaptiveCardObjectModelJNI.TextBlock_SetTextWeight(swigCPtr, this, value.swigValue());
   }
 
+  public FontStyle GetFontStyle() {
+    return FontStyle.swigToEnum(AdaptiveCardObjectModelJNI.TextBlock_GetFontStyle(swigCPtr, this));
+  }
+
+  public void SetFontStyle(FontStyle value) {
+    AdaptiveCardObjectModelJNI.TextBlock_SetFontStyle(swigCPtr, this, value.swigValue());
+  }
+
   public ForegroundColor GetTextColor() {
     return ForegroundColor.swigToEnum(AdaptiveCardObjectModelJNI.TextBlock_GetTextColor(swigCPtr, this));
   }

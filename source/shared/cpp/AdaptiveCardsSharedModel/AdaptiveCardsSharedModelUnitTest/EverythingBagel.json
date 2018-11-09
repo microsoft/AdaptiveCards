@@ -22,6 +22,36 @@
 			"separator": false
 		},
 		{
+			"type": "TextBlock",
+			"text": "TextBlock_text",
+			"color": "default",
+			"horizontalAlignment": "left",
+			"isSubtle": false,
+			"maxLines": 1,
+			"size": "default",
+			"weight": "default",
+			"wrap": false,
+			"id": "TextBlock_id_mono",
+			"spacing": "default",
+			"separator": false,
+			"fontStyle": "monospace"
+		},
+		{
+			"type": "TextBlock",
+			"text": "TextBlock_text",
+			"color": "default",
+			"horizontalAlignment": "left",
+			"isSubtle": false,
+			"maxLines": 1,
+			"size": "default",
+			"weight": "default",
+			"wrap": false,
+			"id": "TextBlock_id_def",
+			"spacing": "default",
+			"separator": false,
+			"fontStyle": "default"
+		},
+		{
 			"type": "Image",
 			"altText": "Image_altText",
 			"horizontalAlignment": "center",
@@ -92,7 +122,8 @@
 								{
 									"type": "TextBlock",
 									"text": "Column3_TextBlock_text",
-									"id": "Column3_TextBlock_id"
+									"id": "Column3_TextBlock_id",
+									"fontStyle": "display"
 								}
 							]
 						}
@@ -238,7 +269,7 @@
 			"type": "Action.ShowCard",
 			"title": "Action.ShowCard",
 			"id": "Action.ShowCard_id",
-			"card" : {
+			"card": {
 				"type": "AdaptiveCard",
 				"body": [
 					{
