@@ -86,6 +86,17 @@ namespace AdaptiveNamespace
         return (warnings->Append(warning.Detach()));
     }
 
+    HRESULT AdaptiveRenderContext::get_CardFrameworkElement(_COM_Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** value)
+    {
+        return m_cardFrameworkElement.CopyTo(value);
+    }
+
+    HRESULT AdaptiveRenderContext::put_CardFrameworkElement(ABI::Windows::UI::Xaml::IFrameworkElement* value)
+    {
+        m_cardFrameworkElement = value;
+        return S_OK;
+    }
+
     _Use_decl_annotations_ HRESULT AdaptiveRenderContext::AddInputValue(IAdaptiveInputValue* inputValue)
     {
         return m_renderResult->AddInputValue(inputValue);

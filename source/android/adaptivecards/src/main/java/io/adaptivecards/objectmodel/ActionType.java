@@ -13,6 +13,7 @@ public enum ActionType {
   ShowCard,
   Submit,
   OpenUrl,
+  ToggleVisibility,
   Custom;
 
   public final int swigValue() {
