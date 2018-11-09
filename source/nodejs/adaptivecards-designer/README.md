@@ -18,9 +18,9 @@ This package allows you to easily integrate the adaptive cards designer into you
 
 There are two simple ways to consume the designer: CDN script reference or importing the module and using webpack.
 
-### CDN <script> references
+### Option 1: CDN script references
 
-The simplest way to get started it to include 3 <script> tags in your page. 
+The simplest way to get started it to include 3 script tags in your page. 
 
 * **monaco-editor** - provides a rich JSON-editing experience
 * **adaptivecards-designer** - the designer component
@@ -64,7 +64,7 @@ The simplest way to get started it to include 3 <script> tags in your page.
 </body>
 ```
 
-### Node + webpack
+### Option 2: Node + webpack
 
 If you already use webpack and want to to bundle the designer, you need a few packages. **adaptivecards-designer**, **monaco-editor** for the JSON editor, and **markdown-it** for markdown handling. You can use another markdown processor if you choose.
 
@@ -84,29 +84,71 @@ Then in your app, use the following imports and API. The code below was authored
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import * as markdownit from "markdown-it";
 import * as Designer from "adaptivecards-designer";
-import "./app.css";
+
+// if you want to bundle the designer CSS using mini-css-loader:
 import "adaptivecards/dist/adaptivecards-default.css";
 import "adaptivecards-controls/dist/adaptivecards-controls.css";
 import "adaptivecards-designer/dist/adaptivecards-designer.css";
 
 window.onload = () => {
+	// Use markdown-it for markdown handling
+	Designer.CardDesigner.processMarkdown = (text) => { return markdownit(text) };
+
 	if (!Designer.SettingsManager.isLocalStorageAvailable) {
 		console.log("Local storage is not available.");
 	}
 
-	let hostContainers: Array<Designer.HostContainer> = [];
+	let hostContainers = [];
 	hostContainers.push(new Designer.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
 
 	let designer = new Designer.CardDesigner(hostContainers);
-	Designer.CardDesigner.processMarkdown = (text) => { return markdownit(text) };
-	designer.monacoModuleLoaded(monaco);
 	designer.attachTo(document.getElementById("designerRootHost"));
+	designer.monacoModuleLoaded(monaco);
 };
 
 ```
 
+#### Webpack.config.js
+
+The following plugins and configuration should be enough to boostrap the designer and dependencies.
+
+* **monaco-editor-webpack-plugin** - makes it easy to use monaco with webpack
+* **copy-webpack-plugin** - the designer requires a few CSS and image assets to exist in your bundle. This plugin copies them from the designer into your output
+
+```js
+...
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
+module.exports = {
+	...
+	module: {
+		rules: [
+			{
+				test: /\.css$/,
+				use: [
+					'style-loader',
+					'css-loader'
+				]
+			}
+		]
+	},
+	plugins: [
+		new CopyWebpackPlugin([{
+			from: 'node_modules/adaptivecards-designer/dist/containers/*',
+			to: 'containers/',
+			flatten: true
+		}]),
+		new MonacoWebpackPlugin({
+			languages: ['json']
+		})
+	]
+};
+```
 
 ## Advanced configuration
+
+For advanced configuration of the designer use the following APIs.
 
 ```js
 
@@ -162,8 +204,3 @@ window.onload = () => {
 ## Full sample code
 
 See the [full example here](https://unpkg.com/adaptivecards-designer@0.1.0/dist/index-cdn.html)
-
-## Learn more at http://adaptivecards.io
-* [Documentation](http://adaptivecards.io/documentation/)
-* [Schema Explorer](http://adaptivecards.io/explorer/)
-* [Sample Cards](http://adaptivecards.io/samples/)
