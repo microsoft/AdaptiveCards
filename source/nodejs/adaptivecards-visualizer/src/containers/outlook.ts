@@ -51,6 +51,7 @@ export class OutlookContainer extends HostContainer {
         Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
 
         Adaptive.AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = false;
+        Adaptive.AdaptiveCard.allowMarkForTextHighlighting = true;
     }
 
     private parsePadding(json: any): Adaptive.PaddingDefinition {

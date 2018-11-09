@@ -15,8 +15,25 @@ import { BasePaletteItem, ElementPaletteItem } from "./tool-palette";
 import { DefaultContainer } from "./containers/default/default-container";
 
 import "./adaptivecards-designer.css";
+import { AdaptiveCard } from "adaptivecards";
 
 export class CardDesigner {
+    private static internalProcessMarkdown(text: string): string {
+        if (CardDesigner.processMarkdown) {
+            return CardDesigner.processMarkdown(text);
+        }
+        else {
+            // Check for markdownit
+            if (window["markdownit"]) {
+                return window["markdownit"]().render(text);
+            }
+
+            return text;
+        }
+    }
+
+    static processMarkdown: (text: string) => string;
+
     private static MAX_UNDO_STACK_SIZE = 50;
 
     private _monacoEditor: monaco.editor.IStandaloneCodeEditor;
@@ -563,6 +580,10 @@ export class CardDesigner {
     readonly toolbar: Toolbar = new Toolbar();
 
     constructor(hostContainers: Array<HostContainer> = null) {
+        AdaptiveCard.processMarkdown = (text: string) => {
+            return CardDesigner.internalProcessMarkdown(text)
+        }
+
         this._hostContainers = hostContainers ? hostContainers : [];
 
         this.prepareToolbar();
