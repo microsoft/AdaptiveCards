@@ -1,4 +1,4 @@
-import * as Enums from "./enums";
+﻿import * as Enums from "./enums";
 import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
@@ -568,6 +568,10 @@ export abstract class CardElement {
         return null;
     }
 
+    get shouldFallback(): boolean {
+        return false;
+    }
+
     get lang(): string {
         if (this._lang) {
             return this._lang;
@@ -1008,6 +1012,7 @@ export class TextBlock extends CardElement {
         this.color = Utils.getEnumValueOrDefault(Enums.TextColor, json["color"], this.color);
         this.isSubtle = json["isSubtle"];
         this.wrap = json["wrap"] === undefined ? false : json["wrap"];
+
         if (typeof json["maxLines"] === "number") {
             this.maxLines = json["maxLines"];
         }
@@ -3788,6 +3793,7 @@ export class Container extends CardElementContainer {
     private _items: Array<CardElement> = [];
     private _renderedItems: Array<CardElement> = [];
     private _style?: string = null;
+    private _shouldFallback: boolean = false;
 
     private isElementAllowed(element: CardElement, forbiddenElementTypes: Array<string>) {
         if (!this.hostConfig.supportsInteractivity && element.isInteractive) {
@@ -4266,10 +4272,11 @@ export class Container extends CardElementContainer {
     parse(json: any, errors?: Array<IValidationError>) {
         super.parse(json, errors);
 
+        this._shouldFallback = false;
         this._items = [];
         this._renderedItems = [];
 
-        var jsonBackgroundImage = json["backgroundImage"];
+        let jsonBackgroundImage = json["backgroundImage"];
 
         if (jsonBackgroundImage) {
             this.backgroundImage = new BackgroundImage();
@@ -4289,33 +4296,69 @@ export class Container extends CardElementContainer {
         this._style = json["style"];
 
         if (json[this.getItemsCollectionPropertyName()] != null) {
-            var items = json[this.getItemsCollectionPropertyName()] as Array<any>;
+            let items = json[this.getItemsCollectionPropertyName()] as Array<any>;
 
             this.clear();
 
-            for (var i = 0; i < items.length; i++) {
-                var elementType = items[i]["type"];
-
-                var element = AdaptiveCard.elementTypeRegistry.createInstance(elementType);
+            for (let i = 0; i < items.length; i++) {
+                let tryToFallback = false;
+                let item = items[i];
+                let elementType = item["type"];
+                let element = AdaptiveCard.elementTypeRegistry.createInstance(elementType);
 
                 if (!element) {
+                    tryToFallback = true;
+
                     raiseParseError(
                         {
                             error: Enums.ValidationError.UnknownElementType,
-                            message: "Unknown element type: " + elementType
+                            message: "Unknown element type: " + elementType + ". Attempting to fall back."
                         },
                         errors
                     );
                 }
                 else {
-                    this.addItem(element);
+                    element.parse(item, errors);
 
-                    element.parse(items[i], errors);
+                    tryToFallback = element.shouldFallback;
+                }
+
+                if (tryToFallback) {
+                    item = item["fallback"];
+
+                    if (!item) {
+                        this._shouldFallback = true;
+                    }
+                    if (typeof item === "string" && item.toLowerCase() === "drop") {
+                        element = null;
+                    }
+                    else if (typeof item === "object") {
+                        let fallbackElementType = item["type"];
+                        let fallbackElement = AdaptiveCard.elementTypeRegistry.createInstance(fallbackElementType);
+
+                        if (!item) {
+                            raiseParseError(
+                                {
+                                    error: Enums.ValidationError.UnknownElementType,
+                                    message: "Unknown fallback element type: " + fallbackElementType
+                                },
+                                errors
+                            );
+                        }
+                        else {
+                            element = fallbackElement;
+                            element.parse(item, errors);
+                        }
+                    }
+                }
+
+                if (element) {
+                    this.addItem(element);
                 }
             }
         }
 
-        var selectActionJson = json["selectAction"];
+        let selectActionJson = json["selectAction"];
 
         if (selectActionJson != undefined) {
             this.selectAction = createActionInstance(selectActionJson, errors);
@@ -4464,6 +4507,10 @@ export class Container extends CardElementContainer {
                 this._items[i].updateLayout();
             }
         }
+    }
+
+    get shouldFallback(): boolean {
+        return this._shouldFallback;
     }
 
     get style(): string {
@@ -5131,6 +5178,10 @@ export interface ITypeRegistration<T> {
 export abstract class ContainerWithActions extends Container {
     private _actionCollection: ActionCollection;
 
+    protected get renderIfEmpty(): boolean {
+        return false;
+    }
+
     protected internalRender(): HTMLElement {
         var element = super.internalRender();
 
@@ -5149,7 +5200,12 @@ export abstract class ContainerWithActions extends Container {
             Utils.appendChild(element, renderedActions);
         }
 
-        return element.children.length > 0 ? element : null;
+        if (this.renderIfEmpty) {
+            return element;
+        }
+        else {
+            return element.children.length > 0 ? element : null;
+        }
     }
 
     protected isLastElementBleeding(): boolean {
@@ -5397,6 +5453,10 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 
     private _cardTypeName?: string = "AdaptiveCard";
+
+    protected get renderIfEmpty(): boolean {
+        return true;
+    }
 
     protected getItemsCollectionPropertyName(): string {
         return "body";
