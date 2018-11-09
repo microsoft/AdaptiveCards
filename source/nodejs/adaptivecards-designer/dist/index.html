@@ -54,8 +54,7 @@
 
 			// NOTE: Adding toolbar elements must be done BEFORE the designer is attached
 
-			designer.attachTo(document.getElementById("designerRootHost"));
-
+			
 			/* Here's how to collapse certain panes by default:
 			
 			designer.treeViewPane.collapse();
@@ -89,6 +88,9 @@
 			require(['vs/editor/editor.main'], function () {
 				designer.monacoModuleLoaded();
 			});
+
+			designer.attachTo(document.getElementById("designerRootHost"));
+
 		};
 	</script>
 </head>

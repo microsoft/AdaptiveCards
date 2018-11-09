@@ -47,7 +47,7 @@
 	},
 	"dependencies": {
 		"adaptivecards": "^1.2.0-alpha1",
-		"adaptivecards-controls": "^0.1.0-alpha2",
+		"adaptivecards-controls": "^0.1.0",
 		"babel-core": "^6.26.3",
 		"babel-loader": "^8.0.4",
 		"clipboard": "^2.0.1",
