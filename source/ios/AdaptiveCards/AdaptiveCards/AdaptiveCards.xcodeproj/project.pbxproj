@@ -76,6 +76,7 @@
 		6BF4307C219126CD0068E432 /* ACRQuickActionMultilineView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BF4307B219126CD0068E432 /* ACRQuickActionMultilineView.xib */; };
 		6BF4307F219129600068E432 /* ACRQuickReplyMultilineView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BF4307D219129600068E432 /* ACRQuickReplyMultilineView.h */; };
 		6BF43080219129600068E432 /* ACRQuickReplyMultilineView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BF4307E219129600068E432 /* ACRQuickReplyMultilineView.mm */; };
+		7ECFB63D219109B0004727A9 /* EnumMagic.h in Headers */ = {isa = PBXBuildFile; fileRef = 7ECFB63C219109B0004727A9 /* EnumMagic.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7EDC0F67213878E800077A13 /* SemanticVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 7EDC0F65213878E800077A13 /* SemanticVersion.h */; };
 		7EDC0F68213878E800077A13 /* SemanticVersion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7EDC0F66213878E800077A13 /* SemanticVersion.cpp */; };
 		F401A8771F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = F401A8751F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -355,6 +356,8 @@
 		6BF4307B219126CD0068E432 /* ACRQuickActionMultilineView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRQuickActionMultilineView.xib; sourceTree = "<group>"; };
 		6BF4307D219129600068E432 /* ACRQuickReplyMultilineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRQuickReplyMultilineView.h; sourceTree = "<group>"; };
 		6BF4307E219129600068E432 /* ACRQuickReplyMultilineView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRQuickReplyMultilineView.mm; sourceTree = "<group>"; };
+		7ECFB63A219106E1004727A9 /* EnumMagic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EnumMagic.h; path = ../../../../shared/cpp/ObjectModel/EnumMagic.h; sourceTree = "<group>"; };
+		7ECFB63C219109B0004727A9 /* EnumMagic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EnumMagic.h; path = ../../../shared/cpp/ObjectModel/EnumMagic.h; sourceTree = "<group>"; };
 		7EDC0F65213878E800077A13 /* SemanticVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SemanticVersion.h; path = ../../../../shared/cpp/ObjectModel/SemanticVersion.h; sourceTree = "<group>"; };
 		7EDC0F66213878E800077A13 /* SemanticVersion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SemanticVersion.cpp; path = ../../../../shared/cpp/ObjectModel/SemanticVersion.cpp; sourceTree = "<group>"; };
 		F401A8751F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRImageSetUICollectionView.h; sourceTree = "<group>"; };
@@ -441,7 +444,7 @@
 		F44872CF1EE2261F00FCAFAE /* DateInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DateInput.cpp; path = ../../../../shared/cpp/ObjectModel/DateInput.cpp; sourceTree = "<group>"; };
 		F44872D01EE2261F00FCAFAE /* DateInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DateInput.h; path = ../../../../shared/cpp/ObjectModel/DateInput.h; sourceTree = "<group>"; };
 		F44872D11EE2261F00FCAFAE /* Enums.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Enums.cpp; path = ../../../../shared/cpp/ObjectModel/Enums.cpp; sourceTree = "<group>"; };
-		F44872D21EE2261F00FCAFAE /* Enums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Enums.h; path = ../../../../shared/cpp/ObjectModel/Enums.h; sourceTree = "<group>"; };
+		F44872D21EE2261F00FCAFAE /* Enums.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Enums.h; path = ../../../../shared/cpp/ObjectModel/Enums.h; sourceTree = "<group>"; };
 		F44872D31EE2261F00FCAFAE /* Fact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Fact.cpp; path = ../../../../shared/cpp/ObjectModel/Fact.cpp; sourceTree = "<group>"; };
 		F44872D41EE2261F00FCAFAE /* Fact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Fact.h; path = ../../../../shared/cpp/ObjectModel/Fact.h; sourceTree = "<group>"; };
 		F44872D51EE2261F00FCAFAE /* FactSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FactSet.cpp; path = ../../../../shared/cpp/ObjectModel/FactSet.cpp; sourceTree = "<group>"; };
@@ -623,6 +626,7 @@
 		F423C0AB1EE1FBA900905679 = {
 			isa = PBXGroup;
 			children = (
+				7ECFB63C219109B0004727A9 /* EnumMagic.h */,
 				F423C0B71EE1FBA900905679 /* AdaptiveCards */,
 				F423C0C21EE1FBAA00905679 /* AdaptiveCardsTests */,
 				F423C0B61EE1FBA900905679 /* Products */,
@@ -707,6 +711,7 @@
 		F423C0D71EE1FF2F00905679 /* SharedLib */ = {
 			isa = PBXGroup;
 			children = (
+				7ECFB63A219106E1004727A9 /* EnumMagic.h */,
 				7EDC0F66213878E800077A13 /* SemanticVersion.cpp */,
 				7EDC0F65213878E800077A13 /* SemanticVersion.h */,
 				6B268FE620CF19E100D99C1B /* RemoteResourceInformation.h */,
@@ -1070,6 +1075,7 @@
 				6B9BDFCA20F6BF5D00F13155 /* ACOIResourceResolver.h in Headers */,
 				F495FC0B2022A18F0093D4DE /* ACRChoiceSetViewDataSource.h in Headers */,
 				6B7B1A9420B4D2AB00260731 /* Media.h in Headers */,
+				7ECFB63D219109B0004727A9 /* EnumMagic.h in Headers */,
 				F4C1F5E81F2ABB3C0018CB78 /* ACRIBaseActionElementRenderer.h in Headers */,
 				6BB211FF20FFF9C0009EA1BA /* ACRIMedia.h in Headers */,
 				6B7B1A9320B4D2AB00260731 /* MediaSource.h in Headers */,

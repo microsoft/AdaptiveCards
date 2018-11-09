@@ -42,3 +42,5 @@
 #pragma warning(default : CPPCORECHECK_TYPE_WARNINGS)
 #pragma warning(default : CPPCORECHECK_UNIQUE_POINTER_WARNINGS)
 #endif
+
+#include "Enums.h"
