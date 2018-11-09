@@ -141,6 +141,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Thickness, "thickness"},
             {AdaptiveCardSchemaKey::TimeInput, "timeInput"},
             {AdaptiveCardSchemaKey::Title, "title"},
+            {AdaptiveCardSchemaKey::ToggleId, "toggleId"},
             {AdaptiveCardSchemaKey::ToggleInput, "toggleInput"},
             {AdaptiveCardSchemaKey::Top, "top"},
             {AdaptiveCardSchemaKey::Type, "type"},
@@ -212,6 +213,7 @@ namespace AdaptiveSharedNamespace
         static std::unordered_map<ActionType, std::string, EnumHash> actionTypeEnumToName = {{ActionType::OpenUrl, "Action.OpenUrl"},
                                                                                              {ActionType::ShowCard, "Action.ShowCard"},
                                                                                              {ActionType::Submit, "Action.Submit"},
+                                                                                             {ActionType::Submit, "Action.ToggleViewState"},
                                                                                              {ActionType::Custom, "Custom"}};
         static std::unordered_map<std::string, ActionType, CaseInsensitiveHash, CaseInsensitiveEqualTo> actionTypeNameToEnum =
             GenerateStringToEnumMap<ActionType>(actionTypeEnumToName);

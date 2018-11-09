@@ -158,6 +158,7 @@ namespace AdaptiveSharedNamespace
         Thickness,
         TimeInput,
         Title,
+        ToggleId,
         ToggleInput,
         Top,
         Type,
@@ -269,6 +270,7 @@ namespace AdaptiveSharedNamespace
         ShowCard,
         Submit,
         OpenUrl,
+        ToggleViewState,
         Custom
     };
 

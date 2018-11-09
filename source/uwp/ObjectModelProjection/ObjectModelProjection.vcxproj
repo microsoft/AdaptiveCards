@@ -30,7 +30,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\FrameTranslator.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Media.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\MediaSource.cpp" />
-    <ClCompile Include="..\..\shared\cpp\ObjectModel\ActionSet.cpp" />    
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ActionSet.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -73,6 +73,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ShowCardAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\SubmitAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TextBlock.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ToggleViewStateAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\UnknownElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Util.cpp" />
   </ItemGroup>
@@ -123,6 +124,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ShowCardAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\SubmitAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TextBlock.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ToggleViewStateAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\UnknownElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Util.h" />
   </ItemGroup>

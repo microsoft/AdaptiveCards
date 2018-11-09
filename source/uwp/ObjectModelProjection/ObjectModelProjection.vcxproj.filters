@@ -49,6 +49,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\SemanticVersion.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ActionSet.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\FrameTranslator.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ToggleViewStateAction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Container.h" />
@@ -103,6 +104,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\SemanticVersion.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ActionSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\FrameTranslator.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ToggleViewStateAction.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">

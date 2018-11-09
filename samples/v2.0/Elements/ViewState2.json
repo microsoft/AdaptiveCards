@@ -1,0 +1,55 @@
+{
+	"type": "AdaptiveCard",
+	"version": "2.0",
+	"body": [
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "Image",
+							"url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
+							"style": "person"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"size": "auto",
+					"items": [
+						{
+							"type": "TextBlock",
+							"id": "FooBar",
+							"text": "New Feature!",
+							"wrap": true
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"size": "auto",
+					"items": [
+						{
+							"type": "ActionSet",
+							"actions": [
+								{
+									"type": "Action.ToggleViewState",
+									"title": "^",
+									"toggleId": "FooBar"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"id": "FooBar",
+			"text": "Adaptive Cards now supports view states!",
+			"wrap": true
+		}
+	]
+}
