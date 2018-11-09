@@ -454,7 +454,7 @@ export class CardDesigner {
     }
 	
 
-    public monacoEditorLoaded(monaco: any = null) {
+    public monacoModuleLoaded(monaco: any = null) {
 		if(!monaco)
 			monaco = window["monaco"];
 
@@ -850,7 +850,7 @@ export class CardDesigner {
         this.recreateDesignerSurface();
 
 		
-        this.loadMonaco(() => { this.monacoEditorLoaded(); });
+        this.loadMonaco(() => { this.monacoModuleLoaded(); });
 
         window.addEventListener("pointermove", (e: PointerEvent) => { this.handlePointerMove(e); });
         window.addEventListener("resize", () => { this.scheduleLayoutUpdate(); });

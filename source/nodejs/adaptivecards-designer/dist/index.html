@@ -79,6 +79,7 @@
 			*/
 
 			// NOTE: Collapsing panes/setting the card payload must be done AFTER the designer is attached
+			// Initialize monaco-editor for the JSON-editor pane. 
 
 			require.config({
 				paths: {
@@ -86,7 +87,7 @@
 				}
 			});
 			require(['vs/editor/editor.main'], function () {
-				designer.monacoEditorLoaded();
+				designer.monacoModuleLoaded();
 			});
 		};
 	</script>

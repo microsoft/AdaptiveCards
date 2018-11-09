@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
 	entry: {
@@ -33,6 +34,11 @@ module.exports = {
 	},
 	plugins: [
 		//new CleanWebpackPlugin(['dist']),
+		new CopyWebpackPlugin([{
+			from: 'node_modules/adaptivecards-designer/dist/containers/*',
+			to: 'containers/',
+			flatten: true
+		}]),
 		new HtmlWebpackPlugin({
 			title: "Adaptive Cards Designer",
 			template: "./index.html"
@@ -46,6 +52,6 @@ module.exports = {
 	],
 	externals: {
 		//"markdown-it": "markdownit"
-		"monaco-editor/esm/vs/editor/editor.api": "monaco"
+		//"monaco-editor/esm/vs/editor/editor.api": "monaco"
 	}
 };
