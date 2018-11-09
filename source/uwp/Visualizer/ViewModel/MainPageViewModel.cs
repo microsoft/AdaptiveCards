@@ -36,6 +36,8 @@ namespace AdaptiveCardVisualizer.ViewModel
 
         public FrameEditorViewModel FrameEditor { get; private set; }
 
+        public RuntimeObjectEditorViewModel RuntimeObjectEditor { get; private set; }
+
         public bool UseFixedDimensions
         {
             get { return Settings.UseFixedDimensions; }
@@ -126,6 +128,9 @@ namespace AdaptiveCardVisualizer.ViewModel
             viewModel.FrameEditor = await FrameEditorViewModel.LoadAsync(viewModel);
             viewModel.FrameEditor.FrameChanged += viewModel.FrameEditor_FrameChanged;
 
+            viewModel.RuntimeObjectEditor = await RuntimeObjectEditorViewModel.LoadAsync(viewModel);
+            viewModel.RuntimeObjectEditor.RuntimeObjectChanged += viewModel.RuntimeObjectEditor_RuntimeObjectChanged;
+
             var tokens = await GetFileTokensAsync();
             ObservableCollection<DocumentViewModel> documents = new ObservableCollection<DocumentViewModel>();
             foreach (string token in tokens)
@@ -179,6 +184,12 @@ namespace AdaptiveCardVisualizer.ViewModel
         }
 
         private void FrameEditor_FrameChanged(object sender, string e)
+        {
+            DocumentViewModel.InitializeRenderer(HostConfigEditor.HostConfig);
+            ReRenderCards();
+        }
+
+        private void RuntimeObjectEditor_RuntimeObjectChanged(object sender, string e)
         {
             DocumentViewModel.InitializeRenderer(HostConfigEditor.HostConfig);
             ReRenderCards();

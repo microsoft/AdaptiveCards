@@ -151,5 +151,33 @@ namespace AdaptiveCardVisualizer
             AppBarFrameEditor.IsChecked = false;
             SetIsInFrameEditor(false);
         }
+
+        private void AppBarRuntimeObjectEditor_Click(object sender, RoutedEventArgs e)
+        {
+            SetIsInRuntimeObjectEditor(!IsInRuntimeObjectEditor);
+        }
+
+        public bool IsInRuntimeObjectEditor { get; private set; }
+
+        private void SetIsInRuntimeObjectEditor(bool isInRuntimeObjectEditor)
+        {
+            IsInRuntimeObjectEditor = isInRuntimeObjectEditor;
+
+            foreach (var button in StackPanelMainAppBarButtons.Children.OfType<ButtonBase>())
+            {
+                if (button != AppBarRuntimeObjectEditor)
+                {
+                    button.IsEnabled = !isInRuntimeObjectEditor;
+                }
+            }
+
+            RuntimeObjectEditorView.Visibility = isInRuntimeObjectEditor ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void RuntimeObjectTransparentBackdrop_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            AppBarRuntimeObjectEditor.IsChecked = false;
+            SetIsInRuntimeObjectEditor(false);
+        }
     }
 }

@@ -468,7 +468,7 @@ Json::Value DataBindJson(const Json::Value& sourceCard, const Json::Value& frame
     }
 }
 
-Json::Value ApplyJsonTemplating(const Json::Value& sourceCard, const Json::Value& frame)
+Json::Value ApplyJsonTemplating(const Json::Value& sourceCard, const Json::Value& frame, const Json::Value& runtimeObject)
 {
     // First bind the card to its data if present. This will also handle special keywords (#if, #each, etc).
     Json::Value dataBoundCard = DataBindJson(sourceCard["data"], sourceCard);
@@ -480,9 +480,10 @@ Json::Value ApplyJsonTemplating(const Json::Value& sourceCard, const Json::Value
     if (!frame.empty())
     {
         // Create a data source for the frame binding which has the card stored as "card"
-        // (and someday the runtime object stored as "runtime")
+        // and the runtime object stored as "runtime"
         Json::Value dataSource;
         dataSource["card"] = dataBoundCard;
+        dataSource["runtime"] = runtimeObject;
 
         // Then bind the bound card to its frame
         result = DataBindJson(dataSource, frame);

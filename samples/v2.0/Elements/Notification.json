@@ -1,0 +1,32 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "2.0",
+	"data": {
+		"titleData": "Adaptive Cards 2.0!",
+		"subtitleData": "Now with headers!",
+		"imageData": "https://picsum.photos/300/200?image=301"
+	},
+	"header": {
+		"title": "{{titleData}}",
+		"subtitle": "{{subtitleData}}",
+		"image": "{{imageData}}"
+	},
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "The title of this card is \"{{titleData}}\" and the subtitle of this card is \"{{subtitleData}}\".",
+			"wrap": true
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "Action!"
+		}
+	],
+	"extensions": {
+		"attribution": "Cool Notification Sending App",
+		"profile_image": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg"
+	}
+}

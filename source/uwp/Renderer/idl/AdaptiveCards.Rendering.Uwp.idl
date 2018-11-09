@@ -489,6 +489,7 @@ AdaptiveNamespaceStart
         HRESULT ApplyJsonTemplating(
             [in] Windows.Data.Json.JsonObject* card,
             [in] Windows.Data.Json.JsonObject* frame,
+            [in] Windows.Data.Json.JsonObject * runtimeObject,
             [out, retval] Windows.Data.Json.JsonObject** value);
     };
 

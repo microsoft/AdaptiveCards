@@ -1,0 +1,67 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "Image",
+			"size": "stretch",
+			"url": "{{card.header.image}}"
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"width": "auto",
+					"items": [
+						{
+							"type": "Image",
+							"url": [
+								{
+									"{{#if 'profile_image' in this.card.extensions}}": "{{card.extensions.profile_image}}"
+								},
+								{
+									"{{#elseif 'appIcon' in this.runtime.manifest}}": "{{runtime.manifest.appIcon}}"
+								}
+							],
+							"size": "small"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": "stretch",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "{{card.header.title}}",
+							"weight": "bolder",
+							"size": "medium"
+						},
+						{
+							"type": "TextBlock",
+							"text": "{{card.header.subtitle}}",
+							"size": "medium",
+							"isSubtle": true
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "Container",
+			"items": "{{card.body}}"
+		},
+		{
+			"type": "TextBlock",
+			"text": "{{card.extensions.attribution}}",
+			"size": "small",
+			"isSubtle": true
+		},
+		{
+			"type": "ActionSet",
+			"actions": "{{#? card.actions}}"
+		}
+	]
+}
