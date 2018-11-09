@@ -105,9 +105,9 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
             //Do not add space to the first element of a viewgroup
             return;
         }
-        int spacingSize = Util.dpToPixels(context, getSpacingSize(spacing, hostConfig.getSpacing()));
-        int separatorThickness = Util.dpToPixels(context, hostConfig.getSeparator().getLineThickness());
-        int separatorColor = android.graphics.Color.parseColor(hostConfig.getSeparator().getLineColor());
+        int spacingSize = Util.dpToPixels(context, getSpacingSize(spacing, hostConfig.GetSpacing()));
+        int separatorThickness = Util.dpToPixels(context, hostConfig.GetSeparator().getLineThickness());
+        int separatorColor = android.graphics.Color.parseColor(hostConfig.GetSeparator().getLineColor());
 
         View view = new ImageView(context);
         LinearLayout.LayoutParams params;

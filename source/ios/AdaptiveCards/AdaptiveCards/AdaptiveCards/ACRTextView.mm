@@ -17,24 +17,55 @@ const NSInteger kACRTextView = 0x4143525456;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        std::shared_ptr<BaseCardElement> elem = [element element];
-        std::shared_ptr<TextInput> inputBlck = std::dynamic_pointer_cast<TextInput>(elem);
-        _maxLength = inputBlck->GetMaxLength();
-        _placeholderText = [[NSString alloc] initWithCString:inputBlck->GetPlaceholder().c_str() encoding:NSUTF8StringEncoding];
-        if(inputBlck->GetValue().size()){
-            self.text = [[NSString alloc] initWithCString:inputBlck->GetValue().c_str() encoding:NSUTF8StringEncoding];
-        } else if([_placeholderText length]){
-            self.text = _placeholderText;
-            self.textColor = [UIColor lightGrayColor];
-        }
-        self.tag = kACRTextView;
-        [self.layer setCornerRadius:5.0f];
-        [self registerForKeyboardNotifications];
+        self.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+        [self configWithSharedModel:element];
     }
     return self;
 }
 
--(BOOL)textViewShouldEndEditing:(UITextView *)textView {
+- (void)configWithSharedModel:(ACOBaseCardElement *)element
+{
+    std::shared_ptr<BaseCardElement> elem = [element element];
+    std::shared_ptr<TextInput> inputBlck = std::dynamic_pointer_cast<TextInput>(elem);
+    _maxLength = inputBlck->GetMaxLength();
+    _placeholderText = [[NSString alloc] initWithCString:inputBlck->GetPlaceholder().c_str() encoding:NSUTF8StringEncoding];
+    if(inputBlck->GetValue().size()){
+        self.text = [[NSString alloc] initWithCString:inputBlck->GetValue().c_str() encoding:NSUTF8StringEncoding];
+    } else if([_placeholderText length]){
+        self.text = _placeholderText;
+        self.textColor = [UIColor lightGrayColor];
+    }
+    self.isRequired  = inputBlck->GetIsRequired();
+    self.tag = kACRTextView;
+    self.delegate = self;
+    self.id = [NSString stringWithCString:inputBlck->GetId().c_str()
+                                 encoding:NSUTF8StringEncoding];
+    [self registerForKeyboardNotifications];
+
+    BOOL bRemove = NO;
+    if(![self.text length]) {
+        self.text = @"placeholder text";
+        bRemove = YES;
+    }
+    CGRect boundingrect = [self.layoutManager lineFragmentRectForGlyphAtIndex:0 effectiveRange:nil];
+    boundingrect.size.height *= 4;
+    self.frame = boundingrect;
+
+    if(bRemove){
+        self.text = @"";
+    }
+
+    CGRect frame = CGRectMake(0, 0, self.frame.size.width, 30);
+    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:frame];
+    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissKeyboard)];
+    [toolBar setItems:@[doneButton, flexSpace] animated:NO];
+    [toolBar sizeToFit];
+    self.inputAccessoryView = toolBar;
+
+}
+
+- (BOOL)textViewShouldEndEditing:(UITextView *)textView {
     [textView resignFirstResponder];
     return YES;
 }

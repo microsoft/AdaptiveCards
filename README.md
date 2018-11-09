@@ -1,6 +1,6 @@
 # Announcing Adaptive Cards 1.1! 
 
-Adaptive Cards 1.1 is here! Thank you to all the contributors for filing issues and helping us get the right set of new schema entries and bug fixes into this release.  We hope some of the additions like media element and image buttons can help fulfil some of your top requests and make your lives easier.  For a full list of what's in 1.1, check the wiki.
+Adaptive Cards 1.1 is here! Thank you to all the contributors for filing issues and helping us get the right set of new schema entries and bug fixes into this release.  We hope some of the additions like media element and image buttons can help fulfil some of your top requests and make your lives easier.  For a full list of what's in 1.1, check the [wiki](https://github.com/Microsoft/AdaptiveCards/wiki/1.1-Feature-List).
 
 You can find updated packages for all the platforms below and our updated website and new visual designer are available as well.
 

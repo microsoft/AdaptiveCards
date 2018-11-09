@@ -36,7 +36,7 @@ const int posterTag = 0x504F5354;
         _url = url;
         _view = rootView;
         _containingview = containingview;
-        isInline = [config getHostConfig]->media.allowInlinePlayback;
+        isInline = [config getHostConfig]->GetMedia().allowInlinePlayback;
     }
     return self;
 }

@@ -89,6 +89,8 @@
     <ClCompile Include="lib\AdaptiveMediaEventInvoker.cpp" />
     <ClCompile Include="lib\AdaptiveMediaEventArgs.cpp" />
     <ClCompile Include="lib\AdaptiveRemoteResourceInformation.cpp" />
+    <ClCompile Include="lib\AdaptiveFontStyleDefinition.cpp" />
+    <ClCompile Include="lib\AdaptiveFontStylesDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveActionSet.cpp" />
     <ClCompile Include="lib\AdaptiveActionSetRenderer.cpp" />    
   </ItemGroup>
@@ -187,6 +189,8 @@
     <ClInclude Include="lib\AdaptiveMediaEventInvoker.h" />
     <ClInclude Include="lib\AdaptiveMediaEventArgs.h" />
     <ClInclude Include="lib\AdaptiveRemoteResourceInformation.h" />
+    <ClInclude Include="lib\AdaptiveFontStyleDefinition.h" />
+    <ClInclude Include="lib\AdaptiveFontStylesDefinition.h" />
     <ClInclude Include="lib\AdaptiveActionSet.h" />
     <ClInclude Include="lib\AdaptiveActionSetRenderer.h" />    
   </ItemGroup>

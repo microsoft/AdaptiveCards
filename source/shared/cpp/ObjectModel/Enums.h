@@ -75,6 +75,7 @@ namespace AdaptiveSharedNamespace
         DateInput,
         Default,
         DefaultPoster,
+        Display,
         Emphasis,
         ExtraLarge,
         Facts,
@@ -82,6 +83,8 @@ namespace AdaptiveSharedNamespace
         FallbackText,
         FontFamily,
         FontSizes,
+        FontStyle,
+        FontStyles,
         FontWeights,
         Good,
         Height,
@@ -122,6 +125,7 @@ namespace AdaptiveSharedNamespace
         Method,
         MimeType,
         Min,
+        Monospace,
         NumberInput,
         Orientation,
         Padding,
@@ -183,6 +187,13 @@ namespace AdaptiveSharedNamespace
         Lighter = 0,
         Default,
         Bolder
+    };
+
+    enum class FontStyle
+    {
+        Default = 0,
+        Display,
+        Monospace
     };
 
     enum class ForegroundColor
@@ -396,6 +407,9 @@ namespace AdaptiveSharedNamespace
 
     const std::string TextSizeToString(TextSize size);
     TextSize TextSizeFromString(const std::string& size);
+
+    const std::string FontStyleToString(FontStyle style);
+    FontStyle FontStyleFromString(const std::string& style);
 
     const std::string ImageSizeToString(ImageSize size);
     ImageSize ImageSizeFromString(const std::string& size);
