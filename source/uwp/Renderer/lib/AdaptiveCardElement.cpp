@@ -14,6 +14,7 @@ namespace AdaptiveNamespace
     {
         m_spacing = static_cast<ABI::AdaptiveNamespace::Spacing>(sharedModel->GetSpacing());
         m_separator = sharedModel->GetSeparator();
+        m_visibility = sharedModel->GetVisibility();
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetId(), m_id.GetAddressOf()));
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedModel->GetAdditionalProperties(), &m_additionalProperties));
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetElementTypeString(), m_typeString.GetAddressOf()));
@@ -43,6 +44,18 @@ namespace AdaptiveNamespace
     IFACEMETHODIMP AdaptiveCardElementBase::put_Separator(boolean separator)
     {
         m_separator = separator;
+        return S_OK;
+    }
+
+    IFACEMETHODIMP AdaptiveCardElementBase::get_Visibility(boolean* visibility)
+    {
+        *visibility = m_visibility;
+        return S_OK;
+    }
+
+    IFACEMETHODIMP AdaptiveCardElementBase::put_Visibility(boolean visibility)
+    {
+        m_visibility = visibility;
         return S_OK;
     }
 
@@ -87,6 +100,7 @@ namespace AdaptiveNamespace
     {
         sharedCardElement->SetId(HStringToUTF8(m_id.Get()));
         sharedCardElement->SetSeparator(m_separator);
+        sharedCardElement->SetVisibility(m_visibility);
         sharedCardElement->SetSpacing(static_cast<AdaptiveSharedNamespace::Spacing>(m_spacing));
         sharedCardElement->SetHeight(static_cast<AdaptiveSharedNamespace::HeightType>(m_height));
 

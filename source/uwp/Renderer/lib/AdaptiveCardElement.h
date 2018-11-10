@@ -19,6 +19,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Id(HSTRING* id);
         IFACEMETHODIMP put_Id(HSTRING id);
 
+        IFACEMETHODIMP get_Visibility(boolean* separator);
+        IFACEMETHODIMP put_Visibility(boolean separator);
+
         IFACEMETHODIMP get_ElementTypeString(HSTRING* type);
 
         IFACEMETHODIMP get_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result);
@@ -35,6 +38,7 @@ namespace AdaptiveNamespace
 
     private:
         boolean m_separator;
+        boolean m_visibility;
         Microsoft::WRL::Wrappers::HString m_id;
         ABI::AdaptiveNamespace::Spacing m_spacing;
         Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_additionalProperties;

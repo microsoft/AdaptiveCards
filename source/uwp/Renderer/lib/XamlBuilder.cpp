@@ -743,6 +743,14 @@ namespace AdaptiveNamespace
                 ComPtr<IUIElement> newControl;
                 elementRenderer->Render(element, renderContext, renderArgs, &newControl);
 
+                boolean visibility;
+                THROW_IF_FAILED(element->get_Visibility(&visibility));
+
+                if (!visibility)
+                {
+                    newControl->put_Visibility(Visibility_Collapsed);
+                }
+
                 ABI::AdaptiveNamespace::HeightType heightType{};
                 THROW_IF_FAILED(element->get_Height(&heightType));
                 XamlHelpers::AppendXamlElementToPanel(newControl.Get(), parentPanel, heightType);

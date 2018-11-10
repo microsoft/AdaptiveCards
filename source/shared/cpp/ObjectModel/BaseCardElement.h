@@ -38,6 +38,9 @@ namespace AdaptiveSharedNamespace
         virtual std::string GetId() const;
         virtual void SetId(const std::string& value);
 
+        virtual bool GetVisibility() const;
+        virtual void SetVisibility(const bool value);
+
         virtual const CardElementType GetElementType() const;
 
         virtual std::string Serialize() const;
@@ -65,6 +68,7 @@ namespace AdaptiveSharedNamespace
         bool m_separator;
         Json::Value m_additionalProperties;
         HeightType m_height;
+        bool m_visibility;
     };
 
     template<typename T> std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value& json)

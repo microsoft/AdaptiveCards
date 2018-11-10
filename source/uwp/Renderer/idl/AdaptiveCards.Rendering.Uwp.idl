@@ -550,6 +550,9 @@ AdaptiveNamespaceStart
         [propget] HRESULT Id([out, retval] HSTRING* value);
         [propput] HRESULT Id([in] HSTRING value);
 
+        [propget] HRESULT Visibility([out, retval] boolean * value);
+        [propput] HRESULT Visibility([in] boolean value);
+
         [propget] HRESULT AdditionalProperties([out, retval] Windows.Data.Json.JsonObject** json);
         [propput] HRESULT AdditionalProperties([in] Windows.Data.Json.JsonObject* json);
 

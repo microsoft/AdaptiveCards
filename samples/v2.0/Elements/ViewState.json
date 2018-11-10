@@ -7,17 +7,18 @@
 			"columns": [
 				{
 					"type": "Column",
+					"size": "auto",
 					"items": [
 						{
 							"type": "Image",
 							"url": "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
-							"style": "person"
+							"style": "person",
+							"size": "small"
 						}
 					]
 				},
 				{
 					"type": "Column",
-					"size": "auto",
 					"items": [
 						{
 							"type": "TextBlock",
@@ -48,6 +49,7 @@
 		{
 			"type": "TextBlock",
 			"id": "FooBar",
+			"visibility": "false",
 			"text": "Adaptive Cards now supports view states!",
 			"wrap": true
 		}

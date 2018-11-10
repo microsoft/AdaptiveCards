@@ -62,6 +62,15 @@ namespace AdaptiveNamespace
             return AdaptiveCardElementBase::put_Separator(separator);
         }
 
+        IFACEMETHODIMP get_Visibility(_Out_ boolean* visibility)
+        {
+            return AdaptiveCardElementBase::get_Visibility(visibility);
+        }
+        IFACEMETHODIMP put_Visibility(_In_ boolean visibility)
+        {
+            return AdaptiveCardElementBase::put_Visibility(visibility);
+        }
+
         IFACEMETHODIMP get_Id(_Out_ HSTRING* id) { return AdaptiveCardElementBase::get_Id(id); }
         IFACEMETHODIMP put_Id(_In_ HSTRING id) { return AdaptiveCardElementBase::put_Id(id); }
 

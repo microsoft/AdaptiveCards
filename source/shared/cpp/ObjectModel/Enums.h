@@ -168,6 +168,7 @@ namespace AdaptiveSharedNamespace
         ValueOn,
         Version,
         VerticalContentAlignment,
+        Visibility,
         Warning,
         Weight,
         Width,
