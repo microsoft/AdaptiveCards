@@ -169,6 +169,7 @@
     <ClInclude Include="lib\AdaptiveTextInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveTimeInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveToggleInputRenderer.h" />
+    <ClInclude Include="lib\AdaptiveToggleViewStateAction.h" />
     <ClInclude Include="lib\AdaptiveWarning.h" />
     <ClInclude Include="lib\CustomActionWrapper.h" />
     <ClInclude Include="lib\CustomElementWrapper.h" />
@@ -228,6 +229,7 @@
     <ClCompile Include="lib\AdaptiveMediaEventArgs.cpp" />
     <ClCompile Include="lib\AdaptiveRemoteResourceInformation.cpp" />
     <ClCompile Include="lib\AdaptiveTemplater.cpp" />
+    <ClCompile Include="lib\AdaptiveToggleViewStateAction.cpp" />
     <ClCompile Include="lib\MediaHelpers.cpp" />
     <ClCompile Include="lib\AdaptiveActionSet.cpp" />
     <ClCompile Include="lib\AdaptiveActionSetRenderer.cpp" />

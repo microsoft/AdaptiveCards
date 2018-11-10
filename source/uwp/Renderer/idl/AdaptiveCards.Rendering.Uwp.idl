@@ -49,6 +49,7 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveToggleInput;
     runtimeclass AdaptiveSeparator;
     runtimeclass AdaptiveActionSet;
+    runtimeclass AdaptiveToggleViewStateAction;
 
     runtimeclass AdaptiveFontSizesConfig;
     runtimeclass AdaptiveFontWeightsConfig;
@@ -265,6 +266,7 @@ AdaptiveNamespaceStart
         ShowCard,
         Submit,
         OpenUrl,
+        ToggleViewState,
         Custom
     } ActionType;
 
@@ -2604,6 +2606,34 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveSubmitAction
     {
         [default] interface IAdaptiveSubmitAction;
+        interface IAdaptiveActionElement;
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveToggleViewStateAction),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(7DD38D1D-338A-40D3-9AF8-912FBC61427C),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(DF122310-5768-4111-A155-92F6F34BB37A)
+#endif
+    ] interface IAdaptiveToggleViewStateAction : IInspectable
+    {
+        [propget] HRESULT ToggleId([out, retval] HSTRING* value);
+        [propput] HRESULT ToggleId([in] HSTRING value);
+    };
+
+    [version(NTDDI_WIN10_RS1),
+     activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+     contract(InternalContract, 1),
+     internal,
+     activatable(InternalContract, 1)
+#endif
+    ] runtimeclass AdaptiveToggleViewStateAction {
+        [default] interface IAdaptiveToggleViewStateAction;
         interface IAdaptiveActionElement;
     };
 
