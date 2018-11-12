@@ -1240,6 +1240,10 @@ namespace AdaptiveNamespace
                                 THROW_IF_FAILED(uiShowCard->put_Visibility(Visibility_Visible));
                             }
                         }
+                        else if (actionType == ABI::AdaptiveNamespace::ActionType::ToggleViewState)
+                        {
+
+                        }
                         else
                         {
                             THROW_IF_FAILED(actionInvoker->SendActionEvent(action.Get()));

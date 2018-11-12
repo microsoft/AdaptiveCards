@@ -81,6 +81,7 @@ namespace AdaptiveSharedNamespace
         baseCardElement->SetSpacing(
             ParseUtil::GetEnumValue<Spacing>(json, AdaptiveCardSchemaKey::Spacing, Spacing::Default, SpacingFromString));
         baseCardElement->SetSeparator(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Separator, false));
+        baseCardElement->SetVisibility(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Visibility, true));
         baseCardElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id));
         baseCardElement->SetHeight(
             ParseUtil::GetEnumValue<HeightType>(json, AdaptiveCardSchemaKey::Height, HeightType::Auto, HeightTypeFromString));

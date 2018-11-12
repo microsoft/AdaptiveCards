@@ -49,7 +49,7 @@
 		{
 			"type": "TextBlock",
 			"id": "FooBar",
-			"visibility": "false",
+			"visibility": false,
 			"text": "Adaptive Cards now supports view states!",
 			"wrap": true
 		}
