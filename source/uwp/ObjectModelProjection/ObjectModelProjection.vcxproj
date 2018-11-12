@@ -27,6 +27,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveBase64Util.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Media.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\MediaSource.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\pch.cpp">
@@ -78,6 +79,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ActionParserRegistration.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseException.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseWarning.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveBase64Util.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseActionElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseInputElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoiceInput.h" />
