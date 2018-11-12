@@ -213,20 +213,14 @@ public class TextInputRenderer extends BaseCardElementRenderer
                 editText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 10));
                 textInputViewGroup.addView(editText);
 
-                RelativeLayout buttonLayout = new RelativeLayout(context);
-                buttonLayout.setId(View.generateViewId());
-                buttonLayout.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.addRule((RelativeLayout.ALIGN_PARENT_BOTTOM));
-
-                String title =  action.GetTitle(), url = action.GetIconUrl();
                 Resources.Theme theme = context.getTheme();
                 TypedValue buttonStyle = new TypedValue();
 
+                String url = action.GetIconUrl();
                 if(url != null && !url.isEmpty())
                 {
                     ImageButton inlineButton = null;
-
+                    // check for style from resources
                     if(theme.resolveAttribute(R.attr.adaptiveInlineActionImage, buttonStyle, true))
                     {
                         Context themedContext = new ContextThemeWrapper(context, R.style.adaptiveInlineActionImage);
@@ -244,15 +238,16 @@ public class TextInputRenderer extends BaseCardElementRenderer
                             url,
                             editText
                         );
+
                     imageLoader.execute(url);
-                    inlineButton.setId(View.generateViewId());
                     textInputViewGroup.addView(inlineButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
-                    textInputViewGroup.setGravity(Gravity.CENTER);
                 }
                 else
                 {
+                    String title =  action.GetTitle();
                     Button inlineButton = null;
-                   if(theme.resolveAttribute(R.attr.adaptiveInlineAction, buttonStyle, true))
+                    // check for styles from references
+                    if(theme.resolveAttribute(R.attr.adaptiveInlineAction, buttonStyle, true))
                     {
                         Context themedContext = new ContextThemeWrapper(context, R.style.adaptiveInlineAction);
                         inlineButton = new Button(themedContext, null, 0);
@@ -261,15 +256,13 @@ public class TextInputRenderer extends BaseCardElementRenderer
                     {
                         inlineButton = new Button(context);
                     }
-                    inlineButton.setId(View.generateViewId());
                     inlineButton.setText(title);
-                    inlineButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 0));
-                    textInputViewGroup.setGravity(Gravity.CENTER);
                     textInputViewGroup.addView(inlineButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
                 }
+                textInputViewGroup.setGravity(Gravity.CENTER);
             }
-
         }
+
         if(baseInputElement.GetHeight() == HeightType.Stretch)
         {
             LinearLayout containerLayout = new LinearLayout(context);
@@ -342,8 +335,11 @@ public class TextInputRenderer extends BaseCardElementRenderer
         }
         else if (action != null)
         {
+            // Add KeyListener if it's single line and action is submit, so when user touches enter key,
+            // submit action will get triggered.
             editText.setOnKeyListener(new EditTextKeyListener(textInput, cardActionHandler, renderedCard, action));
         }
+
         setTextInputStyle(editText, textInput.GetTextInputStyle());
         int maxLength = (int) Math.min(textInput.GetMaxLength(), Integer.MAX_VALUE);
         if (maxLength > 0)
@@ -353,6 +349,9 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
         if(action != null)
         {
+            // adds click listeners to buttons; it iterates through subviews, and grabs the button
+            // this way is cleaner than modifying interface to accept a cardActionHandler
+            // the subViewGroup has two child views
             View subView = viewGroup.getChildAt(viewGroup.getChildCount() - 1 );
             if(subView instanceof ViewGroup) {
                 ViewGroup subViewGroup = (ViewGroup) subView;
