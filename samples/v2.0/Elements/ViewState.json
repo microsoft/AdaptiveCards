@@ -1,4 +1,4 @@
-﻿{
+{
 	"type": "AdaptiveCard",
 	"version": "2.0",
 	"body": [
@@ -38,6 +38,7 @@
 								{
 									"type": "Action.ToggleViewState",
 									"title": "˅",
+									"toggleTitle": "˄",
 									"toggleId": "FooBar"
 								}
 							]

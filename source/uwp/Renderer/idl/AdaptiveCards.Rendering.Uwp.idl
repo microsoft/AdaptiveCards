@@ -2626,6 +2626,9 @@ AdaptiveNamespaceStart
     {
         [propget] HRESULT ToggleId([out, retval] HSTRING* value);
         [propput] HRESULT ToggleId([in] HSTRING value);
+
+        [propget] HRESULT ToggleTitle([out, retval] HSTRING * value);
+        [propput] HRESULT ToggleTitle([in] HSTRING value);
     };
 
     [version(NTDDI_WIN10_RS1),
@@ -3047,6 +3050,8 @@ AdaptiveNamespaceStart
         [propget] HRESULT MediaEventInvoker([out, retval] AdaptiveMediaEventInvoker** value);
 
         [propget] HRESULT OverrideStyles([out, retval] Windows.UI.Xaml.ResourceDictionary** overrideDictionary);
+
+        [propget] HRESULT CardFrameworkElement([out, retval] Windows.UI.Xaml.FrameworkElement * *value);
 
         HRESULT AddInputValue([in] IAdaptiveInputValue* inputValue);
         HRESULT AddError([in] ErrorStatusCode statusCode, [in] HSTRING message);

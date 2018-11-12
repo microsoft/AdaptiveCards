@@ -30,5 +30,12 @@
 			"wrap": true,
 			"color": "attention"
 		}
-	]
+	],
+	"selectAction": {
+		"type": "Action.Submit",
+		"title": "Submit action",
+		"data": {
+			"info": "My submit action data"
+		}
+	}
 }

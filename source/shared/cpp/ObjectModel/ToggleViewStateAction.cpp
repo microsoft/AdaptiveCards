@@ -19,11 +19,22 @@ void ToggleViewStateAction::SetToggleId(const std::string& value)
     m_toggleId = value;
 }
 
+std::string ToggleViewStateAction::GetToggleTitle() const
+{
+    return m_toggleTitle;
+}
+
+void ToggleViewStateAction::SetToggleTitle(const std::string& value)
+{
+    m_toggleTitle = value;
+}
+
 Json::Value ToggleViewStateAction::SerializeToJsonValue() const
 {
     Json::Value root = BaseActionElement::SerializeToJsonValue();
 
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ToggleId)] = GetToggleId();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ToggleTitle)] = GetToggleTitle();
 
     return root;
 }
@@ -35,6 +46,7 @@ std::shared_ptr<BaseActionElement> ToggleViewStateActionParser::Deserialize(std:
 {
     std::shared_ptr<ToggleViewStateAction> toggleViewStateAction = BaseActionElement::Deserialize<ToggleViewStateAction>(json);
     toggleViewStateAction->SetToggleId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::ToggleId, true));
+    toggleViewStateAction->SetToggleTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::ToggleTitle));
     return toggleViewStateAction;
 }
 
@@ -53,4 +65,5 @@ ToggleViewStateActionParser::DeserializeFromString(std::shared_ptr<ElementParser
 void ToggleViewStateAction::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ToggleId)});
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ToggleTitle)});
 }

@@ -145,8 +145,8 @@ namespace AdaptiveNamespace
             ComPtr<IPanel> bodyElementContainer;
             ComPtr<IUIElement> rootElement =
                 CreateRootCardElement(adaptiveCard, renderContext, renderArgs.Get(), xamlBuilder, &bodyElementContainer);
-            ComPtr<IFrameworkElement> childElementContainerAsFE;
-            THROW_IF_FAILED(rootElement.As(&childElementContainerAsFE));
+            ComPtr<IFrameworkElement> rootAsFrameworkElement;
+            THROW_IF_FAILED(rootElement.As(&rootAsFrameworkElement));
 
             ComPtr<IAdaptiveActionElement> selectAction;
             THROW_IF_FAILED(adaptiveCard->get_SelectAction(&selectAction));
@@ -160,14 +160,19 @@ namespace AdaptiveNamespace
                                SupportsInteractivity(hostConfig.Get()),
                                true,
                                &rootSelectActionElement);
-            THROW_IF_FAILED(rootSelectActionElement.As(&childElementContainerAsFE));
+            THROW_IF_FAILED(rootSelectActionElement.As(&rootAsFrameworkElement));
+
+            ComPtr<AdaptiveNamespace::AdaptiveRenderContext> contextImpl =
+                PeekInnards<AdaptiveNamespace::AdaptiveRenderContext>(renderContext);
+
+            THROW_IF_FAILED(contextImpl->put_CardFrameworkElement(rootAsFrameworkElement.Get()));
 
             // Enumerate the child items of the card and build xaml for them
             ComPtr<IVector<IAdaptiveCardElement*>> body;
             THROW_IF_FAILED(adaptiveCard->get_Body(&body));
             ComPtr<IAdaptiveRenderArgs> bodyRenderArgs;
             THROW_IF_FAILED(
-                MakeAndInitialize<AdaptiveRenderArgs>(&bodyRenderArgs, containerStyle, childElementContainerAsFE.Get()));
+                MakeAndInitialize<AdaptiveRenderArgs>(&bodyRenderArgs, containerStyle, rootAsFrameworkElement.Get()));
             BuildPanelChildren(body.Get(), bodyElementContainer.Get(), renderContext, bodyRenderArgs.Get(), [](IUIElement*) {});
 
             ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment;
@@ -196,16 +201,15 @@ namespace AdaptiveNamespace
 
             if (isOuterCard)
             {
-                THROW_IF_FAILED(
-                    SetStyleFromResourceDictionary(renderContext, L"Adaptive.Card", childElementContainerAsFE.Get()));
+                THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Card", rootAsFrameworkElement.Get()));
             }
             else
             {
                 THROW_IF_FAILED(
-                    SetStyleFromResourceDictionary(renderContext, L"Adaptive.ShowCard.Card", childElementContainerAsFE.Get()));
+                    SetStyleFromResourceDictionary(renderContext, L"Adaptive.ShowCard.Card", rootAsFrameworkElement.Get()));
             }
 
-            THROW_IF_FAILED(childElementContainerAsFE.CopyTo(xamlTreeRoot));
+            THROW_IF_FAILED(rootAsFrameworkElement.CopyTo(xamlTreeRoot));
 
             if (isOuterCard && (xamlBuilder != nullptr))
             {
@@ -1025,6 +1029,40 @@ namespace AdaptiveNamespace
         XamlHelpers::AppendXamlElementToPanel(actionSetControl.Get(), bodyPanel);
     }
 
+    HRESULT HandleToggleViewStateClick(IAdaptiveRenderContext* renderContext, IAdaptiveActionElement* action, IButton* button)
+    {
+        ComPtr<IAdaptiveActionElement> localAction(action);
+        ComPtr<IAdaptiveToggleViewStateAction> toggleAction;
+        RETURN_IF_FAILED(localAction.As(&toggleAction));
+
+        HString toggleId;
+        RETURN_IF_FAILED(toggleAction->get_ToggleId(toggleId.GetAddressOf()));
+
+        ComPtr<IFrameworkElement> cardFrameworkElement;
+        RETURN_IF_FAILED(renderContext->get_CardFrameworkElement(&cardFrameworkElement));
+
+        ComPtr<IInspectable> toggleElement;
+        RETURN_IF_FAILED(cardFrameworkElement->FindName(toggleId.Get(), &toggleElement));
+
+        if (toggleElement != nullptr)
+        {
+            ComPtr<IUIElement> toggleElementAsUIElement;
+            RETURN_IF_FAILED(toggleElement.As(&toggleElementAsUIElement));
+
+            Visibility currentVisibility;
+            RETURN_IF_FAILED(toggleElementAsUIElement->get_Visibility(&currentVisibility));
+            RETURN_IF_FAILED(toggleElementAsUIElement->put_Visibility(
+                (currentVisibility == Visibility_Collapsed) ? Visibility_Visible : Visibility_Collapsed));
+        }
+
+        HString toggleTitle;
+        toggleAction->get_ToggleTitle(toggleTitle.GetAddressOf());
+
+        //button->
+
+        return S_OK;
+    }
+
     void XamlBuilder::BuildActionSetHelper(IVector<IAdaptiveActionElement*>* children,
                                            ABI::AdaptiveNamespace::ActionsOrientation actionsOrientation,
                                            IAdaptiveRenderContext* renderContext,
@@ -1224,42 +1262,36 @@ namespace AdaptiveNamespace
                 THROW_IF_FAILED(strongRenderContext->get_ActionInvoker(&actionInvoker));
                 EventRegistrationToken clickToken;
                 THROW_IF_FAILED(buttonBase->add_Click(
-                    Callback<IRoutedEventHandler>([action, actionType, showCardActionMode, uiShowCard, allShowCards, actionInvoker](
+                    Callback<IRoutedEventHandler>([action, actionType, showCardActionMode, uiShowCard, allShowCards, actionInvoker, strongRenderContext, button](
                                                       IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
                         if (actionType == ABI::AdaptiveNamespace::ActionType::ShowCard &&
                             showCardActionMode != ABI::AdaptiveNamespace::ActionMode_Popup)
                         {
                             // Check if this show card is currently visible
                             Visibility currentVisibility;
-                            THROW_IF_FAILED(uiShowCard->get_Visibility(&currentVisibility));
+                            RETURN_IF_FAILED(uiShowCard->get_Visibility(&currentVisibility));
 
                             // Collapse all cards to make sure that no other show cards are visible
                             for (std::vector<ComPtr<IUIElement>>::iterator it = allShowCards->begin();
                                  it != allShowCards->end();
                                  ++it)
                             {
-                                THROW_IF_FAILED((*it)->put_Visibility(Visibility_Collapsed));
+                                RETURN_IF_FAILED((*it)->put_Visibility(Visibility_Collapsed));
                             }
 
                             // If the card had been collapsed before, show it now
                             if (currentVisibility == Visibility_Collapsed)
                             {
-                                THROW_IF_FAILED(uiShowCard->put_Visibility(Visibility_Visible));
+                                RETURN_IF_FAILED(uiShowCard->put_Visibility(Visibility_Visible));
                             }
                         }
                         else if (actionType == ABI::AdaptiveNamespace::ActionType::ToggleViewState)
                         {
-                            ComPtr<IAdaptiveToggleViewStateAction> toggleAction;
-                            action.As(&toggleAction);
-
-                            HString toggleId;
-                            toggleAction->get_ToggleId(toggleId.GetAddressOf());
-
-
+                            RETURN_IF_FAILED(HandleToggleViewStateClick(strongRenderContext.Get(), action.Get(), button.Get()));
                         }
                         else
                         {
-                            THROW_IF_FAILED(actionInvoker->SendActionEvent(action.Get()));
+                            RETURN_IF_FAILED(actionInvoker->SendActionEvent(action.Get()));
                         }
 
                         return S_OK;
