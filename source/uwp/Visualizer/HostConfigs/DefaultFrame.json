@@ -11,5 +11,6 @@
 			"type": "ActionSet",
 			"actions": "{{#? card.actions}}"
 		}
-	]
+	],
+	"selectAction" :  "{{#? card.selectAction}}"
 }
