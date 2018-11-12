@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		300ECB68219A234D00371DC5 /* Image.DataUri.Style.Person.json in Resources */ = {isa = PBXBuildFile; fileRef = 300ECB65219A234C00371DC5 /* Image.DataUri.Style.Person.json */; };
+		300ECB69219A234D00371DC5 /* Image.DataUri.json in Resources */ = {isa = PBXBuildFile; fileRef = 300ECB66219A234D00371DC5 /* Image.DataUri.json */; };
+		300ECB6A219A234D00371DC5 /* AdaptiveCard.BackgroundImage.DataUri.json in Resources */ = {isa = PBXBuildFile; fileRef = 300ECB67219A234D00371DC5 /* AdaptiveCard.BackgroundImage.DataUri.json */; };
 		30860BC220C9B5C9009F9D99 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		30860BC320C9B5C9009F9D99 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 30860BB720C9B5C8009F9D99 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json */; };
 		30860BC420C9B5C9009F9D99 /* (null) in Resources */ = {isa = PBXBuildFile; };
@@ -153,6 +156,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		300ECB65219A234C00371DC5 /* Image.DataUri.Style.Person.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.DataUri.Style.Person.json; path = ../../../../samples/v1.1/Elements/Image.DataUri.Style.Person.json; sourceTree = "<group>"; };
+		300ECB66219A234D00371DC5 /* Image.DataUri.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.DataUri.json; path = ../../../../samples/v1.1/Elements/Image.DataUri.json; sourceTree = "<group>"; };
+		300ECB67219A234D00371DC5 /* AdaptiveCard.BackgroundImage.DataUri.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdaptiveCard.BackgroundImage.DataUri.json; path = ../../../../samples/v1.1/Elements/AdaptiveCard.BackgroundImage.DataUri.json; sourceTree = "<group>"; };
 		30860BB720C9B5C8009F9D99 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.Input.ChoiceSet.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet.Input.ChoiceSet.VerticalStretch.json; sourceTree = "<group>"; };
 		30860BBA20C9B5C8009F9D99 /* ColumnSet.Input.Number.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.Input.Number.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet.Input.Number.VerticalStretch.json; sourceTree = "<group>"; };
 		30860BBB20C9B5C8009F9D99 /* ColumnSet.ImageSet.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.ImageSet.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet.ImageSet.VerticalStretch.json; sourceTree = "<group>"; };
@@ -410,6 +416,9 @@
 		F4D33E341F045B6E00941E44 /* Jsons */ = {
 			isa = PBXGroup;
 			children = (
+				300ECB67219A234D00371DC5 /* AdaptiveCard.BackgroundImage.DataUri.json */,
+				300ECB66219A234D00371DC5 /* Image.DataUri.json */,
+				300ECB65219A234C00371DC5 /* Image.DataUri.Style.Person.json */,
 				6BF430792190F1140068E432 /* Input.Text.InlineAction.json */,
 				6B980951216574500024B79B /* Media.json */,
 				6B98093E216573EE0024B79B /* Action.IconUrl.TwoActions.json */,
@@ -607,7 +616,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				300ECB68219A234D00371DC5 /* Image.DataUri.Style.Person.json in Resources */,
 				F4933CDE1F79852C00F6EBFD /* Input.Number.json in Resources */,
+				300ECB6A219A234D00371DC5 /* AdaptiveCard.BackgroundImage.DataUri.json in Resources */,
 				F4933CE41F79852C00F6EBFD /* TextBlock.Color.json in Resources */,
 				6B98094F216573F00024B79B /* VerticalContentAlignment_ForcedContainer.json in Resources */,
 				F4933CD41F79852C00F6EBFD /* Image.HorizontalAlignment.json in Resources */,
@@ -676,6 +687,7 @@
 				F4933CEB1F79852C00F6EBFD /* TextBlock.Spacing.json in Resources */,
 				F4933CE61F79852C00F6EBFD /* TextBlock.HorizontalAlignment.json in Resources */,
 				F4933CEA1F79852C00F6EBFD /* TextBlock.Size.json in Resources */,
+				300ECB69219A234D00371DC5 /* Image.DataUri.json in Resources */,
 				F4933CEE1F79852C00F6EBFD /* TextBlock.Wrap.json in Resources */,
 				F4933CE71F79852C00F6EBFD /* TextBlock.IsSubtle.json in Resources */,
 				F4933CC41F79852C00F6EBFD /* Action.ShowCard.Style.json in Resources */,
