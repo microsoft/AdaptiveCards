@@ -30,11 +30,11 @@
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Colored</item>
 
         <!-- Example on how to define your own style for Positive and Destructive Actions -->
-
+        <!--
         <item name="adaptiveActionDestructive">@style/adaptiveActionDestructive</item>
         <item name="adaptiveActionPositive">@style/adaptiveActionPositive</item>
         <item name="adaptiveInlineAction">@style/adaptiveInlineAction</item>
-        <item name="adaptiveInlineActionImage">@style/adaptiveInlineActionImage</item>
+        <item name="adaptiveInlineActionImage">@style/adaptiveInlineActionImage</item> -->
 
 
     </style>
