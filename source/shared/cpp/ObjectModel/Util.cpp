@@ -6,7 +6,9 @@
 #include "TextBlock.h"
 #include "ShowCardAction.h"
 
-void PropagateLanguage(const std::string& language, std::vector<std::shared_ptr<BaseCardElement>>& m_body)
+using namespace AdaptiveSharedNamespace;
+
+void PropagateLanguage(const std::string& language, const std::vector<std::shared_ptr<BaseCardElement>>& m_body)
 {
     for (auto& bodyElement : m_body)
     {
@@ -63,9 +65,8 @@ std::string ValidateColor(const std::string& backgroundColor, std::vector<std::s
 
     if (!isValidColor)
     {
-        warnings.emplace_back(
-            std::make_shared<AdaptiveCardParseWarning>(AdaptiveSharedNamespace::WarningStatusCode::InvalidColorFormat,
-                                                       "Image background color specified, but doesn't follow #AARRGGBB or #RRGGBB format"));
+        warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidColorFormat,
+                                                                         "Image background color specified, but doesn't follow #AARRGGBB or #RRGGBB format"));
         return "#00000000";
     }
 
@@ -104,18 +105,18 @@ void ValidateUserInputForDimensionWithUnit(const std::string& unit,
         }
         catch (const std::invalid_argument&)
         {
-            warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
+            warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
                                                                              warningMessage + requestedDimension));
         }
         catch (const std::out_of_range&)
         {
-            warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
+            warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
                                                                              "out of range: " + requestedDimension));
         }
     }
     else
     {
-        warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(AdaptiveSharedNamespace::WarningStatusCode::InvalidDimensionSpecified,
+        warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
                                                                          warningMessage + requestedDimension));
     }
 }
@@ -148,7 +149,7 @@ bool ShouldParseForExplicitDimension(const std::string& input)
     return false;
 }
 
-void EnsureShowCardVersions(std::vector<std::shared_ptr<BaseActionElement>>& actions, std::string& version)
+void EnsureShowCardVersions(const std::vector<std::shared_ptr<BaseActionElement>>& actions, const std::string& version)
 {
     for (auto& action : actions)
     {
