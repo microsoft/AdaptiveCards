@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentManager;
@@ -20,25 +19,19 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroupOverlay;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import io.adaptivecards.R;
 import io.adaptivecards.objectmodel.ActionMode;
 import io.adaptivecards.objectmodel.ActionType;
-import io.adaptivecards.objectmodel.AdaptiveCard;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.objectmodel.ContainerStyle;
-import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HeightType;
-import io.adaptivecards.objectmodel.IconPlacement;
-import io.adaptivecards.objectmodel.Sentiment;
-import io.adaptivecards.objectmodel.ShowCardAction;
+
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
@@ -196,13 +189,12 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
         TextInput textInput = (TextInput)baseInputElement;
         BaseActionElement action = textInput.GetInlineAction();
-        boolean supportsInteractivity = hostConfig.getSupportsInteractivity();
 
         LinearLayout textInputViewGroup = null;
-        if(action != null && supportsInteractivity)
+        if(action != null)
         {
             if (hostConfig.getActions().getShowCard().getActionMode() == ActionMode.Inline &&
-                (action instanceof ShowCardAction))
+                (action.GetElementType() == ActionType.ShowCard))
             {
                 renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INTERACTIVITY_DISALLOWED, "Inline ShowCard not supported for InlineAction"));
             }
@@ -229,6 +221,8 @@ public class TextInputRenderer extends BaseCardElementRenderer
                     else
                     {
                         inlineButton = new ImageButton(context);
+                        inlineButton.setBackgroundColor(Color.TRANSPARENT);
+                        inlineButton.setPadding(16, 0,0,8);
                     }
 
                     InlineActionIconImageLoaderAsync imageLoader =
@@ -255,6 +249,9 @@ public class TextInputRenderer extends BaseCardElementRenderer
                     else
                     {
                         inlineButton = new Button(context);
+                        inlineButton.setBackgroundColor(Color.TRANSPARENT);
+                        inlineButton.setTextColor(Color.BLACK);
+                        inlineButton.setPadding(16, 0,0,8);
                     }
                     inlineButton.setText(title);
                     textInputViewGroup.addView(inlineButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
