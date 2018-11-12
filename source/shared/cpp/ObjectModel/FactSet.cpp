@@ -23,7 +23,7 @@ std::vector<std::shared_ptr<Fact>>& FactSet::GetFacts()
 
 void FactSet::SetLanguage(const std::string& language)
 {
-    for (std::shared_ptr<Fact>& fact : m_facts)
+    for (const std::shared_ptr<Fact>& fact : m_facts)
     {
         if (fact != nullptr)
         {

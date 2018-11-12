@@ -165,6 +165,7 @@
     <ClCompile Include="AdditionalPropertiesTest.cpp" />
     <ClCompile Include="Base64Test.cpp" />
     <ClCompile Include="CustomParsingForIOSTest.cpp" />
+    <ClCompile Include="EnumTest.cpp" />
     <ClCompile Include="EverythingBagel.cpp" />
     <ClCompile Include="ExplicitDimensionTest.cpp" />
     <ClCompile Include="FactUnitTest.cpp" />

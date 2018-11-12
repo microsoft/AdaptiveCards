@@ -15,6 +15,11 @@ typedef NS_ENUM(NSInteger, ACRActionType) {
     ACROpenUrl,
 };
 
+typedef NS_ENUM(NSInteger, ACRIconPlacement) {
+    ACRAboveTitle = 0,
+    ACRLeftOfTitle
+};
+
 @property ACRActionType type;
 
 - (NSString *)title;

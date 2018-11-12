@@ -19,6 +19,7 @@
 #import "Enums.h"
 #import "Image.h"
 #import "Media.h"
+#import "TextInput.h"
 #import "ACRImageRenderer.h"
 #import "TextBlock.h"
 #import "ACRTextBlockRenderer.h"
@@ -230,6 +231,15 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                     [self loadImage:poster];
                 }
 
+                break;
+            }
+            case CardElementType::TextInput:
+            {
+                std::shared_ptr<TextInput> textInput = std::static_pointer_cast<TextInput>(elem);
+                std::shared_ptr<BaseActionElement> action = textInput->GetInlineAction();
+                if(action != nullptr && !action->GetIconUrl().empty()) {
+                    [self loadImage:action->GetIconUrl()];
+                }
                 break;
             }
             // continue on search
