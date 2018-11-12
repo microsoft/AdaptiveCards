@@ -148,18 +148,6 @@ namespace AdaptiveNamespace
             ComPtr<IFrameworkElement> childElementContainerAsFE;
             THROW_IF_FAILED(rootElement.As(&childElementContainerAsFE));
 
-            // Enumerate the child items of the card and build xaml for them
-            ComPtr<IVector<IAdaptiveCardElement*>> body;
-            THROW_IF_FAILED(adaptiveCard->get_Body(&body));
-            ComPtr<IAdaptiveRenderArgs> bodyRenderArgs;
-            THROW_IF_FAILED(
-                MakeAndInitialize<AdaptiveRenderArgs>(&bodyRenderArgs, containerStyle, childElementContainerAsFE.Get()));
-            BuildPanelChildren(body.Get(), bodyElementContainer.Get(), renderContext, bodyRenderArgs.Get(), [](IUIElement*) {});
-
-            ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment;
-            THROW_IF_FAILED(adaptiveCard->get_VerticalContentAlignment(&verticalContentAlignment));
-            XamlBuilder::SetVerticalContentAlignmentToChildren(bodyElementContainer.Get(), verticalContentAlignment);
-
             ComPtr<IAdaptiveActionElement> selectAction;
             THROW_IF_FAILED(adaptiveCard->get_SelectAction(&selectAction));
 
@@ -173,6 +161,18 @@ namespace AdaptiveNamespace
                                true,
                                &rootSelectActionElement);
             THROW_IF_FAILED(rootSelectActionElement.As(&childElementContainerAsFE));
+
+            // Enumerate the child items of the card and build xaml for them
+            ComPtr<IVector<IAdaptiveCardElement*>> body;
+            THROW_IF_FAILED(adaptiveCard->get_Body(&body));
+            ComPtr<IAdaptiveRenderArgs> bodyRenderArgs;
+            THROW_IF_FAILED(
+                MakeAndInitialize<AdaptiveRenderArgs>(&bodyRenderArgs, containerStyle, childElementContainerAsFE.Get()));
+            BuildPanelChildren(body.Get(), bodyElementContainer.Get(), renderContext, bodyRenderArgs.Get(), [](IUIElement*) {});
+
+            ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment;
+            THROW_IF_FAILED(adaptiveCard->get_VerticalContentAlignment(&verticalContentAlignment));
+            XamlBuilder::SetVerticalContentAlignmentToChildren(bodyElementContainer.Get(), verticalContentAlignment);
 
             ComPtr<IVector<IAdaptiveActionElement*>> actions;
             THROW_IF_FAILED(adaptiveCard->get_Actions(&actions));
@@ -748,8 +748,15 @@ namespace AdaptiveNamespace
 
                 if (!visibility)
                 {
-                    newControl->put_Visibility(Visibility_Collapsed);
+                    THROW_IF_FAILED(newControl->put_Visibility(Visibility_Collapsed));
                 }
+
+                ComPtr<IFrameworkElement> newControlAsFrameworkElement;
+                THROW_IF_FAILED(newControl.As(&newControlAsFrameworkElement));
+
+                HString id;
+                element->get_Id(id.GetAddressOf());
+                THROW_IF_FAILED(newControlAsFrameworkElement->put_Name(id.Get()));
 
                 ABI::AdaptiveNamespace::HeightType heightType{};
                 THROW_IF_FAILED(element->get_Height(&heightType));
@@ -1242,6 +1249,12 @@ namespace AdaptiveNamespace
                         }
                         else if (actionType == ABI::AdaptiveNamespace::ActionType::ToggleViewState)
                         {
+                            ComPtr<IAdaptiveToggleViewStateAction> toggleAction;
+                            action.As(&toggleAction);
+
+                            HString toggleId;
+                            toggleAction->get_ToggleId(toggleId.GetAddressOf());
+
 
                         }
                         else
