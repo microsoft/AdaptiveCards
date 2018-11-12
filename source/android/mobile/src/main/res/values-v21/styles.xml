@@ -7,13 +7,14 @@
     <style name="adaptiveActionDestructive" parent="@style/Widget.AppCompat.Button.Colored">
         <item name="android:colorAccent">@color/actionDestructive</item>
     </style>
+
     <style name="adaptiveInlineAction">
-        <item name="android:background">@android:color/holo_blue_bright</item>
+        <item name="android:background">@android:color/transparent</item>
         <item name="android:paddingLeft">16dp</item>
     </style>
 
     <style name="adaptiveInlineActionImage">
-        <item name="android:background">@android:color/holo_blue_bright</item>
+        <item name="android:background">@android:color/transparent</item>
         <item name="android:paddingLeft">16dp</item>
     </style>
 
