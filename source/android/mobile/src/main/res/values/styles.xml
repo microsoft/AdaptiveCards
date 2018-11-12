@@ -7,12 +7,11 @@
     <style name="adaptiveActionDestructive" parent="@style/Widget.AppCompat.Button.Colored">
         <item name="colorAccent">@color/actionDestructive</item>
     </style>
-
+<!--
     <style name="adaptiveInlineAction" parent="@style/Widget.AppCompat.Button">
-        <!--<item name="colorAccent">@color/actionDestructive</item> -->
         <item name="android:minWidth">300dp</item>
         <item name="android:minHeight">300dp</item>
-    </style>
+    </style> -->
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -29,7 +28,8 @@
 
         <item name="adaptiveActionDestructive">@style/adaptiveActionDestructive</item>
         <item name="adaptiveActionPositive">@style/adaptiveActionPositive</item>
-        <item name="adaptiveInlineAction">@style/adaptiveInlineAction</item>
+        <!--
+        <item name="adaptiveInlineAction">@style/adaptiveInlineAction</item> -->
 
     </style>
 

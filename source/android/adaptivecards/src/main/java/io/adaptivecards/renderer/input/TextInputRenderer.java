@@ -16,16 +16,21 @@ import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroupOverlay;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import io.adaptivecards.R;
 import io.adaptivecards.objectmodel.ActionMode;
+import io.adaptivecards.objectmodel.ActionType;
+import io.adaptivecards.objectmodel.AdaptiveCard;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.objectmodel.ContainerStyle;
@@ -37,6 +42,7 @@ import io.adaptivecards.objectmodel.ShowCardAction;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 import io.adaptivecards.renderer.inputhandler.TextInputHandler;
@@ -94,7 +100,6 @@ public class TextInputRenderer extends BaseCardElementRenderer
         {
             m_tag = tag;
         }
-
         @Override
         public boolean onTouch(View v, MotionEvent event)
         {
@@ -113,6 +118,34 @@ public class TextInputRenderer extends BaseCardElementRenderer
         }
 
         private Object m_tag = null;
+    }
+
+    private class EditTextKeyListener implements View.OnKeyListener
+    {
+        EditTextKeyListener(Object tag, ICardActionHandler actionHandler,
+                            RenderedAdaptiveCard renderedCard, BaseActionElement action) {
+            m_tag = tag;
+            m_cardActionHandler = actionHandler;
+            m_renderedAdaptiveCard = renderedCard;
+            m_action = action;
+        }
+        @Override
+        public boolean onKey(View view, int i, KeyEvent keyEvent) {
+            if(view.getTag() == m_tag) {
+                if(keyEvent.getAction() == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_ENTER &&
+                    m_action.GetElementType() == ActionType.Submit)
+                {
+                    m_cardActionHandler.onAction(m_action, m_renderedAdaptiveCard);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private Object m_tag = null;
+        private ICardActionHandler m_cardActionHandler;
+        private RenderedAdaptiveCard m_renderedAdaptiveCard = null;
+        private BaseActionElement m_action = null;
     }
 
     protected EditText renderInternal(
@@ -175,24 +208,31 @@ public class TextInputRenderer extends BaseCardElementRenderer
             }
             else
             {
-                Resources.Theme theme = context.getTheme();
                 textInputViewGroup = new LinearLayout(context);
-                editText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+                textInputViewGroup.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+                editText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 10));
                 textInputViewGroup.addView(editText);
 
+                RelativeLayout buttonLayout = new RelativeLayout(context);
+                buttonLayout.setId(View.generateViewId());
+                buttonLayout.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                layoutParams.addRule((RelativeLayout.ALIGN_PARENT_BOTTOM));
+
                 String title =  action.GetTitle(), url = action.GetIconUrl();
+                Resources.Theme theme = context.getTheme();
                 TypedValue buttonStyle = new TypedValue();
+
                 if(url != null && !url.isEmpty())
                 {
                     ImageButton inlineButton = null;
-                    /*
+
                     if(theme.resolveAttribute(R.attr.adaptiveInlineActionImage, buttonStyle, true))
                     {
-                        //return createButtonWithTheme(context, buttonStyle.data);
                         Context themedContext = new ContextThemeWrapper(context, R.style.adaptiveInlineActionImage);
                         inlineButton = new ImageButton(themedContext, null, 0);
                     }
-                    else*/
+                    else
                     {
                         inlineButton = new ImageButton(context);
                     }
@@ -205,23 +245,27 @@ public class TextInputRenderer extends BaseCardElementRenderer
                             editText
                         );
                     imageLoader.execute(url);
-                    textInputViewGroup.addView(inlineButton);
+                    inlineButton.setId(View.generateViewId());
+                    textInputViewGroup.addView(inlineButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
+                    textInputViewGroup.setGravity(Gravity.CENTER);
                 }
                 else
                 {
                     Button inlineButton = null;
-                    /*
-                    if(theme.resolveAttribute(R.attr.adaptiveInlineAction, buttonStyle, true))
+                   if(theme.resolveAttribute(R.attr.adaptiveInlineAction, buttonStyle, true))
                     {
                         Context themedContext = new ContextThemeWrapper(context, R.style.adaptiveInlineAction);
                         inlineButton = new Button(themedContext, null, 0);
                     }
-                    else*/
+                    else
                     {
                         inlineButton = new Button(context);
                     }
+                    inlineButton.setId(View.generateViewId());
                     inlineButton.setText(title);
-                    textInputViewGroup.addView(inlineButton);
+                    inlineButton.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 0));
+                    textInputViewGroup.setGravity(Gravity.CENTER);
+                    textInputViewGroup.addView(inlineButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
                 }
             }
 
@@ -238,12 +282,10 @@ public class TextInputRenderer extends BaseCardElementRenderer
         {
             if(textInputViewGroup != null)
             {
-                editText.setPadding(0,0,0,0);
                 viewGroup.addView(textInputViewGroup);
             }
             else
             {
-                editText.setPadding(0,0,0,0);
                 viewGroup.addView(editText);
             }
         }
@@ -290,12 +332,17 @@ public class TextInputRenderer extends BaseCardElementRenderer
                 hostConfig);
         editText.setSingleLine(!textInput.GetIsMultiline());
         editText.setTag(textInput);
+        BaseActionElement action = textInput.GetInlineAction();
+
         if (textInput.GetIsMultiline())
         {
             editText.setLines(3);
             // Solution taken from here: https://stackoverflow.com/questions/6123973/android-edittext-vertical-scrolling-problem
             editText.setOnTouchListener(new EditTextTouchListener(textInput));
-
+        }
+        else if (action != null)
+        {
+            editText.setOnKeyListener(new EditTextKeyListener(textInput, cardActionHandler, renderedCard, action));
         }
         setTextInputStyle(editText, textInput.GetTextInputStyle());
         int maxLength = (int) Math.min(textInput.GetMaxLength(), Integer.MAX_VALUE);
@@ -304,6 +351,19 @@ public class TextInputRenderer extends BaseCardElementRenderer
             editText.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLength)});
         }
 
+        if(action != null)
+        {
+            View subView = viewGroup.getChildAt(viewGroup.getChildCount() - 1 );
+            if(subView instanceof ViewGroup) {
+                ViewGroup subViewGroup = (ViewGroup) subView;
+                for (int index = 0; index < subViewGroup.getChildCount(); ++index) {
+                    View view = subViewGroup.getChildAt(index);
+                    if (view instanceof Button || view instanceof ImageButton) {
+                        view.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(renderedCard, action, cardActionHandler));
+                    }
+                }
+            }
+        }
         return editText;
     }
 
