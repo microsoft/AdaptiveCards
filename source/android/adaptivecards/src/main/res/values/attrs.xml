@@ -4,10 +4,6 @@
     <attr name="adaptiveActionDestructive" format="reference" />
     <attr name="adaptiveInlineAction" format="reference" />
     <attr name="adaptiveInlineActionImage" format="reference" />
-    <attr name="adaptiveInlineActionViewGroup" format="reference" />
-    <style name="adaptiveInlineActionViewGroup" fromat="reference" />
-    <style name="adaptiveInlineActionImage" format="reference" />
     <style name="adaptiveInlineAction" format="reference" />
-
-
+    <style name="adaptiveInlineActionImage" format="reference" />
 </resources>
