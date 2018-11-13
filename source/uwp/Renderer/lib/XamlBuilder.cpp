@@ -610,6 +610,7 @@ namespace AdaptiveNamespace
             // no listeners waiting on the image load callbacks, use Xaml to load the images
             ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(
                 HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
+
             THROW_IF_FAILED(bitmapImage->put_UriSource(imageUrl));
 
             ComPtr<IImageSource> bitmapImageSource;
@@ -842,7 +843,7 @@ namespace AdaptiveNamespace
                                                                   ABI::AdaptiveNamespace::ContainerStyle containerStyle,
                                                                   ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
                                                                   bool allActionsHaveIcons,
-                                                                  IButton* button)
+                                                                  IButtonBase* button)
     {
         HString title;
         THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
@@ -850,7 +851,7 @@ namespace AdaptiveNamespace
         HSTRING iconUrl;
         THROW_IF_FAILED(action->get_IconUrl(&iconUrl));
 
-        ComPtr<IButton> localButton(button);
+        ComPtr<IButtonBase> localButton(button);
 
         // Check if the button has an iconUrl
         if (iconUrl != nullptr)
@@ -1029,7 +1030,7 @@ namespace AdaptiveNamespace
         XamlHelpers::AppendXamlElementToPanel(actionSetControl.Get(), bodyPanel);
     }
 
-    HRESULT HandleToggleViewStateClick(IAdaptiveRenderContext* renderContext, IAdaptiveActionElement* action, IButton* button)
+    HRESULT HandleToggleViewStateClick(IAdaptiveRenderContext* renderContext, IAdaptiveActionElement* action, IButtonBase* button)
     {
         ComPtr<IAdaptiveActionElement> localAction(action);
         ComPtr<IAdaptiveToggleViewStateAction> toggleAction;
@@ -1058,8 +1059,22 @@ namespace AdaptiveNamespace
         HString toggleTitle;
         toggleAction->get_ToggleTitle(toggleTitle.GetAddressOf());
 
-        //button->
+        HString title;
+        action->get_Title(title.GetAddressOf());
 
+        ComPtr<IButtonBase> localButton(button);
+        ComPtr<IToggleButton> toggleButton;
+        localButton.As(&toggleButton);
+
+        ComPtr<IReference<bool>> isChecked;
+        toggleButton->get_IsChecked(isChecked.GetAddressOf());
+
+        boolean isCheckedValue;
+        isChecked->get_Value(&isCheckedValue);
+
+        // BECKYTODO - handle icons...
+        XamlHelpers::SetContent(localButton.Get(), isCheckedValue ? toggleTitle.Get() : title.Get());
+       
         return S_OK;
     }
 
@@ -1194,11 +1209,26 @@ namespace AdaptiveNamespace
             {
                 // Render a button for each action
                 ComPtr<IAdaptiveActionElement> action(child);
-                ComPtr<IButton> button =
-                    XamlHelpers::CreateXamlClass<IButton>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Button));
+
+                ABI::AdaptiveNamespace::ActionType actionType;
+                action->get_ActionType(&actionType);
+
+                ComPtr<IButtonBase> buttonBase;
+                if (actionType == ActionType_ToggleViewState)
+                {
+                    ComPtr<IToggleButton> toggleButton = XamlHelpers::CreateXamlClass<IToggleButton>(
+                        HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Primitives_ToggleButton));
+                    toggleButton.As(&buttonBase);
+                }
+                else
+                {
+                    ComPtr<IButton> button = XamlHelpers::CreateXamlClass<IButton>(
+                        HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Button));
+                    button.As(&buttonBase);
+                }
 
                 ComPtr<IFrameworkElement> buttonFrameworkElement;
-                THROW_IF_FAILED(button.As(&buttonFrameworkElement));
+                THROW_IF_FAILED(buttonBase.As(&buttonFrameworkElement));
 
                 THROW_IF_FAILED(buttonFrameworkElement->put_Margin(buttonMargin));
 
@@ -1233,10 +1263,7 @@ namespace AdaptiveNamespace
                                      containerStyle,
                                      hostConfig.Get(),
                                      allActionsHaveIcons,
-                                     button.Get());
-
-                ABI::AdaptiveNamespace::ActionType actionType;
-                THROW_IF_FAILED(action->get_ActionType(&actionType));
+                                     buttonBase.Get());
 
                 // If this is a show card action and we're rendering the actions inline, render the card that will be shown
                 ComPtr<IUIElement> uiShowCard;
@@ -1256,13 +1283,11 @@ namespace AdaptiveNamespace
                 }
 
                 // Add click handler
-                ComPtr<IButtonBase> buttonBase;
-                THROW_IF_FAILED(button.As(&buttonBase));
                 ComPtr<IAdaptiveActionInvoker> actionInvoker;
                 THROW_IF_FAILED(strongRenderContext->get_ActionInvoker(&actionInvoker));
                 EventRegistrationToken clickToken;
                 THROW_IF_FAILED(buttonBase->add_Click(
-                    Callback<IRoutedEventHandler>([action, actionType, showCardActionMode, uiShowCard, allShowCards, actionInvoker, strongRenderContext, button](
+                    Callback<IRoutedEventHandler>([action, actionType, showCardActionMode, uiShowCard, allShowCards, actionInvoker, strongRenderContext, buttonBase](
                                                       IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
                         if (actionType == ABI::AdaptiveNamespace::ActionType::ShowCard &&
                             showCardActionMode != ABI::AdaptiveNamespace::ActionMode_Popup)
@@ -1287,7 +1312,8 @@ namespace AdaptiveNamespace
                         }
                         else if (actionType == ABI::AdaptiveNamespace::ActionType::ToggleViewState)
                         {
-                            RETURN_IF_FAILED(HandleToggleViewStateClick(strongRenderContext.Get(), action.Get(), button.Get()));
+                            RETURN_IF_FAILED(
+                                HandleToggleViewStateClick(strongRenderContext.Get(), action.Get(), buttonBase.Get()));
                         }
                         else
                         {
@@ -1369,7 +1395,7 @@ namespace AdaptiveNamespace
                         SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action", buttonFrameworkElement.Get()));
                 }
 
-                XamlHelpers::AppendXamlElementToPanel(button.Get(), actionsPanel.Get());
+                XamlHelpers::AppendXamlElementToPanel(buttonBase.Get(), actionsPanel.Get());
 
                 if (columnDefinitions != nullptr)
                 {
