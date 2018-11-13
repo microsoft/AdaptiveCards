@@ -193,7 +193,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
         LinearLayout textInputViewGroup = null;
         if(action != null)
         {
-            if (hostConfig.getActions().getShowCard().getActionMode() == ActionMode.Inline &&
+            if (hostConfig.GetActions().getShowCard().getActionMode() == ActionMode.Inline &&
                 (action.GetElementType() == ActionType.ShowCard))
             {
                 renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INTERACTIVITY_DISALLOWED, "Inline ShowCard not supported for InlineAction"));
