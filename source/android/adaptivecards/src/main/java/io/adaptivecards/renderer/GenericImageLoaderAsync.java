@@ -52,6 +52,7 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
                 }
             }
 
+<<<<<<< HEAD
         try
         {
             // Let's try to see if we got the image in the card as a base64 encoded string
@@ -69,6 +70,8 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
                 }
             }
 
+=======
+>>>>>>> 80678f768d48d86cf6c0ab70b01268c1c7c6b209
             // Try loading online using only the path first
             try
             {
