@@ -52,40 +52,6 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
                 }
             }
 
-        try
-        {
-            // Let's try to see if we got the image in the card as a base64 encoded string
-            // The syntax of data URIs as in RFX 2397 is  data:[<media type>][;base64],<data>
-            path = path.trim();
-            if(path.startsWith("data:"))
-            {
-                if( m_dataUriImageLoader != null )
-                {
-                    return m_dataUriImageLoader.loadDataUriImage(path, this);
-                }
-                else
-                {
-                    return loadDataUriImage(path);
-                }
-            }
-
-        try
-        {
-            // Let's try to see if we got the image in the card as a base64 encoded string
-            // The syntax of data URIs as in RFX 2397 is  data:[<media type>][;base64],<data>
-            path = path.trim();
-            if(path.startsWith("data:"))
-            {
-                if( m_dataUriImageLoader != null )
-                {
-                    return m_dataUriImageLoader.loadDataUriImage(path, this);
-                }
-                else
-                {
-                    return loadDataUriImage(path);
-                }
-            }
-
             // Try loading online using only the path first
             try
             {
