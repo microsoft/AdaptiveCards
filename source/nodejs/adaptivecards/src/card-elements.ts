@@ -26,19 +26,52 @@ function generateUniqueId(): string {
     return "__ac-" + Utils.UUID.generate();
 }
 
-export function createActionInstance(json: any, errors: Array<IValidationError>): Action {
-    var actionType = json["type"];
+export function createActionInstance(
+    parent: CardElement,
+    json: any,
+    errors: Array<IValidationError>): Action {
+    let result: Action = null;
 
-    var result = AdaptiveCard.actionTypeRegistry.createInstance(actionType);
+    if (json) {
+        let tryToFallback = false;
+        let actionType = json["type"];
 
-    if (!result) {
-        raiseParseError(
-            {
-                error: Enums.ValidationError.UnknownActionType,
-                message: "Unknown action type: " + actionType
-            },
-            errors
-        );
+        result = AdaptiveCard.actionTypeRegistry.createInstance(actionType);
+
+        if (!result) {
+            tryToFallback = true;
+
+            raiseParseError(
+                {
+                    error: Enums.ValidationError.UnknownActionType,
+                    message: "Unknown action type: " + actionType + ". Attempting to fall back."
+                },
+                errors
+            );
+        }
+        else {
+            result.setParent(parent);
+            result.parse(json);
+
+            tryToFallback = result.shouldFallback();
+        }
+
+        if (tryToFallback) {
+            let fallback = json["fallback"];
+
+            if (!fallback) {
+                parent.setShouldFallback(true);
+            }
+            if (typeof fallback === "string" && fallback.toLowerCase() === "drop") {
+                result = null;
+            }
+            else if (typeof fallback === "object") {
+                result = createActionInstance(
+                    parent,
+                    fallback,
+                    errors);
+            }
+        }
     }
 
     return result;
@@ -128,6 +161,7 @@ export interface IResourceInformation {
 }
 
 export abstract class CardElement {
+    private _shouldFallback: boolean = false;
     private _lang: string = undefined;
     private _hostConfig?: HostConfig.HostConfig = null;
     private _internalPadding: PaddingDefinition = null;
@@ -347,7 +381,7 @@ export abstract class CardElement {
     separator: boolean = false;
     height: "auto" | "stretch" = "auto";
     customCssSelector: string = null;
-
+    
     abstract getJsonTypeName(): string;
     abstract renderSpeech(): string;
 
@@ -568,8 +602,12 @@ export abstract class CardElement {
         return null;
     }
 
-    get shouldFallback(): boolean {
-        return false;
+    shouldFallback(): boolean {
+        return this._shouldFallback;
+    }
+
+    setShouldFallback(value: boolean) {
+        this._shouldFallback = value;
     }
 
     get lang(): string {
@@ -1529,16 +1567,10 @@ export class Image extends CardElement {
             this.pixelHeight = size;
         }
 
-        var selectActionJson = json["selectAction"];
-
-        if (selectActionJson != undefined) {
-            this.selectAction = createActionInstance(selectActionJson, errors);
-
-            if (this.selectAction) {
-                this.selectAction.setParent(this);
-                this.selectAction.parse(selectActionJson);
-            }
-        }
+        this.selectAction = createActionInstance(
+            this,
+            json["selectAction"],
+            errors);
     }
 
     getResourceInformation(): Array<IResourceInformation> {
@@ -2697,6 +2729,7 @@ class ActionButton {
 }
 
 export abstract class Action {
+    private _shouldFallback: boolean = false;
     private _parent: CardElement = null;
     private _actionCollection: ActionCollection = null; // hold the reference to its action collection
     private _renderedElement: HTMLElement = null;
@@ -2882,6 +2915,10 @@ export abstract class Action {
 
     get renderedElement(): HTMLElement {
         return this._renderedElement;
+    }
+
+    shouldFallback(): boolean {
+        return this._shouldFallback;
     }
 }
 
@@ -3175,10 +3212,6 @@ class ActionCollection {
     private _statusCard: HTMLElement = null;
     private _actionCard: HTMLElement = null;
 
-    private isActionCardContainerVisible(): boolean {
-        return this._actionCardContainer.children.length > 0;
-    }
-
     private refreshContainer() {
         this._actionCardContainer.innerHTML = "";
 
@@ -3328,6 +3361,23 @@ class ActionCollection {
 
     constructor(owner: CardElement) {
         this._owner = owner;
+    }
+
+    parse(json: any, errors?: Array<IValidationError>) {        
+        this.clear();
+
+        if (json && json instanceof Array) {
+            for (let jsonAction of json) {
+                let action = createActionInstance(
+                    this._owner,
+                    jsonAction,
+                    errors);
+
+                if (action) {
+                    this.addAction(action);
+                }
+            }
+        }
     }
 
     toJSON() {
@@ -3554,7 +3604,7 @@ class ActionCollection {
     }
 
     addAction(action: Action) {
-        if ((!action.parent || action.parent === this._owner) && this.items.indexOf(action) < 0) {
+        if (action && (!action.parent || action.parent === this._owner) && this.items.indexOf(action) < 0) {
             this.items.push(action);
 
             if (!action.parent) {
@@ -3693,26 +3743,11 @@ export class ActionSet extends CardElement {
             this.orientation = Utils.getEnumValueOrDefault(Enums.Orientation, jsonOrientation, Enums.Orientation.Horizontal);
         }
 
-        if (json["actions"] != undefined) {
-            var jsonActions = json["actions"] as Array<any>;
-
-            for (var i = 0; i < jsonActions.length; i++) {
-                let action = createActionInstance(jsonActions[i], errors);
-
-                if (action) {
-                    action.setParent(this);
-                    action.parse(jsonActions[i]);
-
-                    this.addAction(action);
-                }
-            }
-        }
+        this._actionCollection.parse(json["actions"], errors);
     }
 
     addAction(action: Action) {
-        if (action != null) {
-            this._actionCollection.addAction(action);
-        }
+        this._actionCollection.addAction(action);
     }
 
     getAllInputs(): Array<Input> {
@@ -3793,7 +3828,6 @@ export class Container extends CardElementContainer {
     private _items: Array<CardElement> = [];
     private _renderedItems: Array<CardElement> = [];
     private _style?: string = null;
-    private _shouldFallback: boolean = false;
 
     private isElementAllowed(element: CardElement, forbiddenElementTypes: Array<string>) {
         if (!this.hostConfig.supportsInteractivity && element.isInteractive) {
@@ -4272,7 +4306,8 @@ export class Container extends CardElementContainer {
     parse(json: any, errors?: Array<IValidationError>) {
         super.parse(json, errors);
 
-        this._shouldFallback = false;
+        this.setShouldFallback(false);
+
         this._items = [];
         this._renderedItems = [];
 
@@ -4294,6 +4329,11 @@ export class Container extends CardElementContainer {
         this.verticalContentAlignment = Utils.getEnumValueOrDefault(Enums.VerticalAlignment, json["verticalContentAlignment"], this.verticalContentAlignment);
 
         this._style = json["style"];
+
+        this.selectAction = createActionInstance(
+            this,
+            json["selectAction"],
+            errors);
 
         if (json[this.getItemsCollectionPropertyName()] != null) {
             let items = json[this.getItemsCollectionPropertyName()] as Array<any>;
@@ -4320,14 +4360,14 @@ export class Container extends CardElementContainer {
                 else {
                     element.parse(item, errors);
 
-                    tryToFallback = element.shouldFallback;
+                    tryToFallback = element.shouldFallback();
                 }
 
                 if (tryToFallback) {
                     item = item["fallback"];
 
                     if (!item) {
-                        this._shouldFallback = true;
+                        this.setShouldFallback(true);
                     }
                     if (typeof item === "string" && item.toLowerCase() === "drop") {
                         element = null;
@@ -4355,17 +4395,6 @@ export class Container extends CardElementContainer {
                 if (element) {
                     this.addItem(element);
                 }
-            }
-        }
-
-        let selectActionJson = json["selectAction"];
-
-        if (selectActionJson != undefined) {
-            this.selectAction = createActionInstance(selectActionJson, errors);
-
-            if (this.selectAction) {
-                this.selectAction.setParent(this);
-                this.selectAction.parse(selectActionJson);
             }
         }
     }
@@ -4507,10 +4536,6 @@ export class Container extends CardElementContainer {
                 this._items[i].updateLayout();
             }
         }
-    }
-
-    get shouldFallback(): boolean {
-        return this._shouldFallback;
     }
 
     get style(): string {
@@ -4847,16 +4872,10 @@ export class ColumnSet extends CardElementContainer {
     parse(json: any, errors?: Array<IValidationError>) {
         super.parse(json, errors);
 
-        var selectActionJson = json["selectAction"];
-
-        if (selectActionJson != undefined) {
-            this.selectAction = createActionInstance(selectActionJson, errors);
-
-            if (this.selectAction) {
-                this.selectAction.setParent(this);
-                this.selectAction.parse(selectActionJson);
-            }
-        }
+        this.selectAction = createActionInstance(
+            this,
+            json["selectAction"],
+            errors);
 
         if (json["columns"] != null) {
             let jsonColumns = json["columns"] as Array<any>;
@@ -4864,8 +4883,7 @@ export class ColumnSet extends CardElementContainer {
             this._columns = [];
 
             for (let i = 0; i < jsonColumns.length; i++) {
-                var column = new Column();
-
+                let column = new Column();
                 column.parse(jsonColumns[i], errors);
 
                 this.addColumn(column);
@@ -5258,22 +5276,7 @@ export abstract class ContainerWithActions extends Container {
     parse(json: any, errors?: Array<IValidationError>) {
         super.parse(json, errors);
 
-        this._actionCollection.clear();
-
-        if (json["actions"] != undefined) {
-            var jsonActions = json["actions"] as Array<any>;
-
-            for (var i = 0; i < jsonActions.length; i++) {
-                var action = createActionInstance(jsonActions[i], errors);
-
-                if (action != null) {
-                    action.setParent(this);
-                    action.parse(jsonActions[i]);
-
-                    this.addAction(action);
-                }
-            }
-        }
+        this._actionCollection.parse(json["actions"]);
     }
 
     validate(): Array<IValidationError> {
@@ -5291,9 +5294,7 @@ export abstract class ContainerWithActions extends Container {
     }
 
     addAction(action: Action) {
-        if (action) {
-            this._actionCollection.addAction(action);
-        }
+        this._actionCollection.addAction(action);
     }
 
     clear() {
@@ -5438,6 +5439,9 @@ export class AdaptiveCard extends ContainerWithActions {
         return text;
     }
 
+    private _cardTypeName?: string = "AdaptiveCard";
+    private _fallbackCard: AdaptiveCard = null;
+
     private isVersionSupported(): boolean {
         if (this.bypassVersionCheck) {
             return true;
@@ -5451,8 +5455,6 @@ export class AdaptiveCard extends ContainerWithActions {
             return !unsupportedVersion;
         }
     }
-
-    private _cardTypeName?: string = "AdaptiveCard";
 
     protected get renderIfEmpty(): boolean {
         return true;
@@ -5526,6 +5528,7 @@ export class AdaptiveCard extends ContainerWithActions {
 
     version?: Version = new Version(1, 0);
     fallbackText: string;
+    fallbackElement: CardElement;
     designMode: boolean = false;
 
     getJsonTypeName(): string {
@@ -5578,6 +5581,8 @@ export class AdaptiveCard extends ContainerWithActions {
     }
 
     parse(json: any, errors?: Array<IValidationError>) {
+        this._fallbackCard = null;
+
         this._cardTypeName = json["type"];
 
         var langId = json["lang"];
@@ -5601,15 +5606,62 @@ export class AdaptiveCard extends ContainerWithActions {
 
         this.fallbackText = json["fallbackText"];
 
+        let jsonFallback = json["fallback"];
+
+        if (jsonFallback && typeof jsonFallback === "object") {
+            this.fallbackElement = AdaptiveCard.elementTypeRegistry.createInstance(jsonFallback["type"]);
+            
+            if (this.fallbackElement) {
+                this.fallbackElement.parse(jsonFallback);
+            }
+        }
+        else {
+            this.fallbackElement = null;
+        }
+
         super.parse(json, errors);
     }
 
     render(target?: HTMLElement): HTMLElement {
-        var renderedCard: HTMLElement;
+        let fallback = false;
+        let renderedCard: HTMLElement;
 
-        if (!this.isVersionSupported()) {
-            renderedCard = document.createElement("div");
-            renderedCard.innerHTML = this.fallbackText ? this.fallbackText : "The specified card version is not supported.";
+        if (this.shouldFallback()) {
+            if (this.fallbackElement) {
+                if (!this._fallbackCard) {
+                    this._fallbackCard = new AdaptiveCard();
+                    this._fallbackCard.hostConfig = this.hostConfig;
+                    this._fallbackCard.addItem(this.fallbackElement);
+                }
+
+                renderedCard = this._fallbackCard.render();
+            }
+            else {
+                let errorText = !Utils.isNullOrEmpty(this.fallbackText) ? this.fallbackText : "The card could not be rendered. It is either malformed or uses features not supported by this host.";
+
+                try {
+                    let fallbackCard = new AdaptiveCard();
+                    fallbackCard.hostConfig = this.hostConfig;
+                    fallbackCard.parse(
+                        {
+                            type: "AdaptiveCard",
+                            version: "1.0",
+                            body: [
+                                {
+                                    type: "TextBlock",
+                                    text: errorText,
+                                    wrap: true
+                                }
+                            ]
+                        });
+
+                    renderedCard = fallbackCard.render();
+                }
+                catch (e) {
+                    renderedCard = document.createElement("div");
+                    renderedCard.innerHTML = errorText;
+                }
+            }
         }
         else {
             renderedCard = super.render();
@@ -5645,6 +5697,10 @@ export class AdaptiveCard extends ContainerWithActions {
 
     canContentBleed(): boolean {
         return true;
+    }
+
+    shouldFallback(): boolean {
+        return super.shouldFallback() || !this.isVersionSupported();
     }
 
     get hasVisibleSeparator(): boolean {
