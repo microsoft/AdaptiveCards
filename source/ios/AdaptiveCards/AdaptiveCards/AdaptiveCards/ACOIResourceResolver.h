@@ -11,4 +11,6 @@
 
 - (UIImage *)resolveImageResource:(NSURL *)url;
 
+- (UIImageView *)resolveImageViewResource:(NSURL *)url;
+
 @end
