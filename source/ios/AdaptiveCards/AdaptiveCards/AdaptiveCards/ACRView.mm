@@ -44,6 +44,8 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     dispatch_queue_t _global_queue;
     dispatch_group_t _async_tasks_group;
     int _serialNumber;
+    NSMutableDictionary *_imageContextMap;
+    NSMutableDictionary *_imageViewContextMap;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -59,6 +61,8 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
         _global_queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         _async_tasks_group = dispatch_group_create();
         _serialNumber = 0;
+        _imageContextMap = [[NSMutableDictionary alloc] init];
+        _imageViewContextMap = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -204,7 +208,19 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
             {
                 /// tag a base card element with unique key
                 std::shared_ptr<Image>imgElem = std::static_pointer_cast<Image>(elem);
-                [self loadImage:imgElem->GetUrl()];
+                NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)imgElem.get()];
+                NSString *key = [number stringValue];
+                NSString *nSUrlStr = [NSString stringWithCString:imgElem->GetUrl().c_str()
+                                                        encoding:[NSString defaultCStringEncoding]];
+                NSURL *url = [NSURL URLWithString:nSUrlStr];
+
+                NSObject<ACOIResourceResolver> *imageResourceResolver = [_hostConfig getResourceResolverForScheme:[url scheme]];
+                if(imageResourceResolver && [imageResourceResolver respondsToSelector:@selector(resolveImageViewResource:)]) {
+                    _imageViewContextMap[key] = [imageResourceResolver resolveImageViewResource:url];
+                    _imageContextMap[key] = [[ACOBaseCardElement alloc] initWithBaseCardElement:elem];
+                } else {
+                    [self loadImage:imgElem->GetUrl()];
+                }
                 break;
             }
             case CardElementType::ImageSet:
@@ -448,6 +464,11 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     return _imageViewMap;
 }
 
+- (UIImageView *)getImageView:(NSString *)key
+{
+    return _imageViewContextMap[key];
+}
+
 - (dispatch_queue_t)getSerialQueue
 {
     return _serial_queue;
@@ -461,5 +482,22 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 - (ACOAdaptiveCard *)card
 {
     return _adaptiveCard;
+}
+
+- (void)observeValueForKeyPath:(NSString *)path ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([path isEqualToString:@"image"])
+    {
+        UIImage *image = [change objectForKey:NSKeyValueChangeNewKey];
+        NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)(context)];
+        NSString *key = [number stringValue];
+        ACRRegistration *reg = [ACRRegistration getInstance];
+        ACRImageRenderer *renderer = (ACRImageRenderer *)[reg getRenderer:[NSNumber numberWithInt:(int)ACRImage]];
+
+        if(renderer) {
+            [renderer configUpdateForUIImageView:_imageContextMap[key] config:_hostConfig image:image imageView:(UIImageView *)object];
+        }
+        [object removeObserver:self forKeyPath:path];
+    }
 }
 @end

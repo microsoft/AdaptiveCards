@@ -22,6 +22,8 @@
 
 - (NSMutableDictionary *)getImageMap;
 
+- (UIImageView *)getImageView:(NSString *)key;
+
 - (dispatch_queue_t)getSerialQueue;
 
 - (NSMutableDictionary *)getTextMap;
