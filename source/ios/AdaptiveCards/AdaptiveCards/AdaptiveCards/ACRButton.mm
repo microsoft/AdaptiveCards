@@ -116,7 +116,7 @@
         }
         
         case AdaptiveCards::Sentiment::Destructive: {
-            NSNumber *obj = button.positiveUseDefault;
+            NSNumber *obj = button.destructiveUseDefault;
             BOOL useDestructiveDefault = [obj boolValue];
         
             if(useDestructiveDefault) {
