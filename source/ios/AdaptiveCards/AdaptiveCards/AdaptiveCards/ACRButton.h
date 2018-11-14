@@ -9,6 +9,14 @@
 #import "ACRView.h"
 
 @interface UIButton(ACRButton)
+
+@property (nonatomic) NSNumber *positiveUseDefault;
+@property (nonatomic) UIColor *positiveForegroundColor;
+@property (nonatomic) UIColor *positiveBackgroundColor;
+@property (nonatomic) NSNumber *destructiveUseDefault;
+@property (nonatomic) UIColor *destructiveForegroundColor;
+@property (nonatomic) UIColor *destructiveBackgroundColor;
+
 + (UIButton *)rootView:(ACRView *)rootView
      baseActionElement:(ACOBaseActionElement *)acoAction
                  title:(NSString *)title

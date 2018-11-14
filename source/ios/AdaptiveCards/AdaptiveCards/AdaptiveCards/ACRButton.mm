@@ -11,8 +11,12 @@
 #import "ACRUIImageView.h"
 #import "SharedAdaptiveCard.h"
 #import "ACOHostConfigPrivate.h"
+#import <objc/runtime.h>
 
 @implementation UIButton(ACRButton)
+
+@dynamic positiveUseDefault, positiveForegroundColor, positiveBackgroundColor;
+@dynamic destructiveUseDefault, destructiveForegroundColor, destructiveBackgroundColor;
 
 + (void)setImageView:(UIImage*)image inButton:(UIButton*)button withConfig:(ACOHostConfig *)config contentSize:(CGSize)contentSize inconPlacement:(ACRIconPlacement)iconPlacement
 {
@@ -84,8 +88,60 @@
     UIButton *button = [bundle loadNibNamed:@"ACRButton" owner:rootView options:nil][0];
     [button setTitle:title forState:UIControlStateNormal];
     button.titleLabel.adjustsFontSizeToFitWidth = YES;
-
+    
     std::shared_ptr<AdaptiveCards::BaseActionElement> action = [acoAction element];
+    std::shared_ptr<AdaptiveCards::HostConfig> hostConfig = [config getHostConfig];
+    
+    switch (action->GetSentiment()) {
+        case AdaptiveCards::Sentiment::Positive: {
+            NSNumber *obj = button.positiveUseDefault;
+            BOOL usePositiveDefault = [obj boolValue];
+            
+            // By default, positive sentiment must have background accentColor and white text/foreground color
+            if(usePositiveDefault) {
+                ContainerStylesDefinition containerStyles = hostConfig->GetContainerStyles();
+                ColorsConfig cc = containerStyles.defaultPalette.foregroundColors;
+                
+                UIColor *color = [ACOHostConfig getTextBlockColor:ForegroundColor::Accent colorsConfig:cc subtleOption:false];
+                [button setBackgroundColor:color];
+                [button setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+            } else {
+                UIColor *foregroundColor = button.positiveForegroundColor;
+                UIColor *backgroundColor = button.positiveBackgroundColor;
+                
+                [button setBackgroundColor:backgroundColor];
+                [button setTitleColor:foregroundColor forState:UIControlStateNormal];
+            }
+            break;
+        }
+        
+        case AdaptiveCards::Sentiment::Destructive: {
+            NSNumber *obj = button.positiveUseDefault;
+            BOOL useDestructiveDefault = [obj boolValue];
+        
+            if(useDestructiveDefault) {
+                
+                ContainerStylesDefinition containerStyles = hostConfig->GetContainerStyles();
+                ColorsConfig cc = containerStyles.defaultPalette.foregroundColors;
+                
+                UIColor *color = [ACOHostConfig getTextBlockColor:ForegroundColor::Attention colorsConfig:cc subtleOption:false];
+                [button setTitleColor:color forState:UIControlStateNormal];
+                
+            } else {
+                UIColor *foregroundColor = button.destructiveForegroundColor;
+                UIColor *backgroundColor = button.destructiveBackgroundColor;
+                
+                [button setBackgroundColor:backgroundColor];
+                [button setTitleColor:foregroundColor forState:UIControlStateNormal];
+            }
+            break;
+        }
+        
+        case AdaptiveCards::Sentiment::Default:
+        default:
+        break;
+    }
+    
     NSDictionary *imageViewMap = [rootView getImageMap];
     NSString *key = [NSString stringWithCString:action->GetIconUrl().c_str() encoding:[NSString defaultCStringEncoding]];
     UIImage *img = imageViewMap[key];
@@ -103,5 +159,52 @@
     return button;
 }
 
+-(void)setPositiveUseDefault:(NSNumber *)_positiveUseDefault {
+    objc_setAssociatedObject(self, @selector(positiveUseDefault), _positiveUseDefault, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+-(NSNumber *)positiveUseDefault {
+    return objc_getAssociatedObject(self, @selector(positiveUseDefault));
+}
+
+-(void)setPositiveForegroundColor:(UIColor *)_positiveForegroundColor {
+    objc_setAssociatedObject(self, @selector(positiveForegroundColor), _positiveForegroundColor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+-(NSNumber *)positiveForegroundColor {
+    return objc_getAssociatedObject(self, @selector(positiveForegroundColor));
+}
+
+-(void)setPositiveBackgroundColor:(UIColor *)_positiveBackgroundColor {
+    objc_setAssociatedObject(self, @selector(positiveBackgroundColor), _positiveBackgroundColor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+-(UIColor *)positiveBackgroundColor {
+    return objc_getAssociatedObject(self, @selector(positiveBackgroundColor));
+}
+
+-(void)setDestructiveUseDefault:(NSNumber *)_destructiveUseDefault {
+    objc_setAssociatedObject(self, @selector(destructiveUseDefault), _destructiveUseDefault, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+-(NSNumber *)destructiveUseDefault {
+    return objc_getAssociatedObject(self, @selector(destructiveUseDefault));
+}
+
+-(void)setDestructiveForegroundColor:(UIColor *)_destructiveForegroundColor {
+    objc_setAssociatedObject(self, @selector(destructiveForegroundColor), _destructiveForegroundColor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+-(NSNumber *)destructiveForegroundColor {
+    return objc_getAssociatedObject(self, @selector(destructiveForegroundColor));
+}
+
+-(void)setDestructiveBackgroundColor:(UIColor *)_destructiveBackgroundColor {
+    objc_setAssociatedObject(self, @selector(destructiveBackgroundColor), _destructiveBackgroundColor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+-(UIColor *)destructiveBackgroundColor {
+    return objc_getAssociatedObject(self, @selector(destructiveBackgroundColor));
+}
 
 @end
