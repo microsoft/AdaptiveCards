@@ -23,11 +23,9 @@ namespace AdaptiveCardsSharedModelUnitTest
 			class TestCustomElement : public BaseCardElement, public BaseActionElement
 			{
 			public:
-				TestCustomElement(
-					const Json::Value& value) :
-					BaseCardElement(AdaptiveCards::CardElementType::Custom),
-					BaseActionElement(AdaptiveCards::ActionType::Custom)
-				{
+				TestCustomElement(const Json::Value& value) : BaseCardElement(AdaptiveCards::CardElementType::Custom),
+                                                              BaseActionElement(AdaptiveCards::ActionType::Custom)
+                {
 					m_customImage = value.get("customProperty", Json::Value()).asString();
 				}
 

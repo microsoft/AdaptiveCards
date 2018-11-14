@@ -205,25 +205,23 @@ namespace AdaptiveCardsSharedModelUnitTest
             // Define custom type. This implements both element and action for convenience
             class TestCustomElement : public BaseCardElement, public BaseActionElement
             {
-                public:
-                    TestCustomElement(
-                        const Json::Value& value) :
-                        BaseCardElement(AdaptiveCards::CardElementType::Custom),
-                        BaseActionElement(AdaptiveCards::ActionType::Custom)
-                    {
-                        m_customImage = value.get("customImageProperty", Json::Value()).asString();
-                    }
+            public:
+                TestCustomElement(const Json::Value& value) : BaseCardElement(AdaptiveCards::CardElementType::Custom),
+                                                              BaseActionElement(AdaptiveCards::ActionType::Custom)
+                {
+                    m_customImage = value.get("customImageProperty", Json::Value()).asString();
+                }
 
-                    virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris) override
-                    {
-                        RemoteResourceInformation resourceInfo;
-                        resourceInfo.url = m_customImage;
-                        resourceInfo.mimeType = "image";
-                        resourceUris.push_back(resourceInfo);
-                    }
+                virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris) override
+                {
+                    RemoteResourceInformation resourceInfo;
+                    resourceInfo.url = m_customImage;
+                    resourceInfo.mimeType = "image";
+                    resourceUris.push_back(resourceInfo);
+                }
 
-                private:
-                    std::string m_customImage;
+            private:
+                std::string m_customImage;
             };
 
             // Define custom element parser
