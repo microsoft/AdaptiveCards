@@ -11,12 +11,8 @@
 #import "ACRUIImageView.h"
 #import "SharedAdaptiveCard.h"
 #import "ACOHostConfigPrivate.h"
-#import <objc/runtime.h>
 
 @implementation ACRButton
-
-// @dynamic positiveUseDefault, positiveForegroundColor, positiveBackgroundColor;
-// @dynamic destructiveUseDefault, destructiveForegroundColor, destructiveBackgroundColor;
 
 + (void)setImageView:(UIImage*)image inButton:(UIButton*)button withConfig:(ACOHostConfig *)config contentSize:(CGSize)contentSize inconPlacement:(ACRIconPlacement)iconPlacement
 {
@@ -94,8 +90,7 @@
     
     switch (action->GetSentiment()) {
         case AdaptiveCards::Sentiment::Positive: {
-            NSNumber *obj = button.positiveUseDefault;
-            BOOL usePositiveDefault = [obj boolValue];
+            BOOL usePositiveDefault = [button.positiveUseDefault boolValue];
             
             // By default, positive sentiment must have background accentColor and white text/foreground color
             if(usePositiveDefault) {
@@ -116,17 +111,14 @@
         }
         
         case AdaptiveCards::Sentiment::Destructive: {
-            NSNumber *obj = button.destructiveUseDefault;
-            BOOL useDestructiveDefault = [obj boolValue];
+            BOOL useDestructiveDefault = [button.destructiveUseDefault boolValue];
         
             if(useDestructiveDefault) {
-                
                 ContainerStylesDefinition containerStyles = hostConfig->GetContainerStyles();
                 ColorsConfig cc = containerStyles.defaultPalette.foregroundColors;
                 
                 UIColor *color = [ACOHostConfig getTextBlockColor:ForegroundColor::Attention colorsConfig:cc subtleOption:false];
                 [button setTitleColor:color forState:UIControlStateNormal];
-                
             } else {
                 UIColor *foregroundColor = button.destructiveForegroundColor;
                 UIColor *backgroundColor = button.destructiveBackgroundColor;
@@ -139,7 +131,7 @@
         
         case AdaptiveCards::Sentiment::Default:
         default:
-        break;
+            break;
     }
     
     NSDictionary *imageViewMap = [rootView getImageMap];
