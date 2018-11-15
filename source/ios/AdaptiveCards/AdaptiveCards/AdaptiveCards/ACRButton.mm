@@ -13,10 +13,10 @@
 #import "ACOHostConfigPrivate.h"
 #import <objc/runtime.h>
 
-@implementation UIButton(ACRButton)
+@implementation ACRButton
 
-@dynamic positiveUseDefault, positiveForegroundColor, positiveBackgroundColor;
-@dynamic destructiveUseDefault, destructiveForegroundColor, destructiveBackgroundColor;
+// @dynamic positiveUseDefault, positiveForegroundColor, positiveBackgroundColor;
+// @dynamic destructiveUseDefault, destructiveForegroundColor, destructiveBackgroundColor;
 
 + (void)setImageView:(UIImage*)image inButton:(UIButton*)button withConfig:(ACOHostConfig *)config contentSize:(CGSize)contentSize inconPlacement:(ACRIconPlacement)iconPlacement
 {
@@ -85,7 +85,7 @@
          andHostConfig:(ACOHostConfig *)config;
 {
     NSBundle* bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-    UIButton *button = [bundle loadNibNamed:@"ACRButton" owner:rootView options:nil][0];
+    ACRButton *button = [bundle loadNibNamed:@"ACRButton" owner:rootView options:nil][0];
     [button setTitle:title forState:UIControlStateNormal];
     button.titleLabel.adjustsFontSizeToFitWidth = YES;
     
@@ -148,7 +148,7 @@
 
     if(img){
         CGSize contentSize = [button.titleLabel intrinsicContentSize];
-        [UIButton setImageView:img inButton:button withConfig:config contentSize:contentSize
+        [ACRButton setImageView:img inButton:button withConfig:config contentSize:contentSize
                 inconPlacement:[config getIconPlacement]];
     } else {
         // button's intrinsic content size is determined by title size and content edge
@@ -157,54 +157,6 @@
     }
 
     return button;
-}
-
--(void)setPositiveUseDefault:(NSNumber *)_positiveUseDefault {
-    objc_setAssociatedObject(self, @selector(positiveUseDefault), _positiveUseDefault, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
--(NSNumber *)positiveUseDefault {
-    return objc_getAssociatedObject(self, @selector(positiveUseDefault));
-}
-
--(void)setPositiveForegroundColor:(UIColor *)_positiveForegroundColor {
-    objc_setAssociatedObject(self, @selector(positiveForegroundColor), _positiveForegroundColor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
--(NSNumber *)positiveForegroundColor {
-    return objc_getAssociatedObject(self, @selector(positiveForegroundColor));
-}
-
--(void)setPositiveBackgroundColor:(UIColor *)_positiveBackgroundColor {
-    objc_setAssociatedObject(self, @selector(positiveBackgroundColor), _positiveBackgroundColor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
--(UIColor *)positiveBackgroundColor {
-    return objc_getAssociatedObject(self, @selector(positiveBackgroundColor));
-}
-
--(void)setDestructiveUseDefault:(NSNumber *)_destructiveUseDefault {
-    objc_setAssociatedObject(self, @selector(destructiveUseDefault), _destructiveUseDefault, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
--(NSNumber *)destructiveUseDefault {
-    return objc_getAssociatedObject(self, @selector(destructiveUseDefault));
-}
-
--(void)setDestructiveForegroundColor:(UIColor *)_destructiveForegroundColor {
-    objc_setAssociatedObject(self, @selector(destructiveForegroundColor), _destructiveForegroundColor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
--(NSNumber *)destructiveForegroundColor {
-    return objc_getAssociatedObject(self, @selector(destructiveForegroundColor));
-}
-
--(void)setDestructiveBackgroundColor:(UIColor *)_destructiveBackgroundColor {
-    objc_setAssociatedObject(self, @selector(destructiveBackgroundColor), _destructiveBackgroundColor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
--(UIColor *)destructiveBackgroundColor {
-    return objc_getAssociatedObject(self, @selector(destructiveBackgroundColor));
 }
 
 @end

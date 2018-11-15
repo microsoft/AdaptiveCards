@@ -8,14 +8,14 @@
 #import <UIKit/UIKit.h>
 #import "ACRView.h"
 
-@interface UIButton(ACRButton)
+@interface ACRButton:UIButton
 
-@property (nonatomic) NSNumber *positiveUseDefault;
-@property (nonatomic) UIColor *positiveForegroundColor;
-@property (nonatomic) UIColor *positiveBackgroundColor;
-@property (nonatomic) NSNumber *destructiveUseDefault;
-@property (nonatomic) UIColor *destructiveForegroundColor;
-@property (nonatomic) UIColor *destructiveBackgroundColor;
+@property IBInspectable NSNumber *positiveUseDefault;
+@property IBInspectable UIColor *positiveForegroundColor;
+@property IBInspectable UIColor *positiveBackgroundColor;
+@property IBInspectable NSNumber *destructiveUseDefault;
+@property IBInspectable UIColor *destructiveForegroundColor;
+@property IBInspectable UIColor *destructiveBackgroundColor;
 
 + (UIButton *)rootView:(ACRView *)rootView
      baseActionElement:(ACOBaseActionElement *)acoAction
