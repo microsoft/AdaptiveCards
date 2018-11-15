@@ -32,7 +32,7 @@ export function createActionInstance(
     errors: Array<IValidationError>): Action {
     let result: Action = null;
 
-    if (json) {
+    if (json && typeof json === "object") {
         let tryToFallback = false;
         let actionType = json["type"];
 
@@ -67,6 +67,55 @@ export function createActionInstance(
             }
             else if (typeof fallback === "object") {
                 result = createActionInstance(
+                    parent,
+                    fallback,
+                    errors);
+            }
+        }
+    }
+
+    return result;
+}
+
+export function createElementInstance(
+    parent: CardElement,
+    json: any,
+    errors: Array<IValidationError>): CardElement {
+    let result: CardElement = null;
+
+    if (json && typeof json === "object") {
+        let tryToFallback = false;
+
+        result = AdaptiveCard.elementTypeRegistry.createInstance(json["type"]);
+
+        if (!result) {
+            tryToFallback = true;
+
+            raiseParseError(
+                {
+                    error: Enums.ValidationError.UnknownElementType,
+                    message: "Unknown element type: " + json["type"] + ". Attempting to fall back."
+                },
+                errors
+            );
+        }
+        else {
+            result.parse(json, errors);
+
+            tryToFallback = result.shouldFallback();
+        }
+
+        if (tryToFallback) {
+            let fallback = json["fallback"];
+
+            if (!fallback) {
+                parent.setShouldFallback(true);
+            }
+            if (typeof fallback === "string" && fallback.toLowerCase() === "drop") {
+                result = null;
+            }
+            else if (typeof fallback === "object") {
+                result = createElementInstance(
                     parent,
                     fallback,
                     errors);
@@ -4341,56 +4390,7 @@ export class Container extends CardElementContainer {
             this.clear();
 
             for (let i = 0; i < items.length; i++) {
-                let tryToFallback = false;
-                let item = items[i];
-                let elementType = item["type"];
-                let element = AdaptiveCard.elementTypeRegistry.createInstance(elementType);
-
-                if (!element) {
-                    tryToFallback = true;
-
-                    raiseParseError(
-                        {
-                            error: Enums.ValidationError.UnknownElementType,
-                            message: "Unknown element type: " + elementType + ". Attempting to fall back."
-                        },
-                        errors
-                    );
-                }
-                else {
-                    element.parse(item, errors);
-
-                    tryToFallback = element.shouldFallback();
-                }
-
-                if (tryToFallback) {
-                    item = item["fallback"];
-
-                    if (!item) {
-                        this.setShouldFallback(true);
-                    }
-                    if (typeof item === "string" && item.toLowerCase() === "drop") {
-                        element = null;
-                    }
-                    else if (typeof item === "object") {
-                        let fallbackElementType = item["type"];
-                        let fallbackElement = AdaptiveCard.elementTypeRegistry.createInstance(fallbackElementType);
-
-                        if (!item) {
-                            raiseParseError(
-                                {
-                                    error: Enums.ValidationError.UnknownElementType,
-                                    message: "Unknown fallback element type: " + fallbackElementType
-                                },
-                                errors
-                            );
-                        }
-                        else {
-                            element = fallbackElement;
-                            element.parse(item, errors);
-                        }
-                    }
-                }
+                let element = createElementInstance(this, items[i], errors);
 
                 if (element) {
                     this.addItem(element);
@@ -5606,18 +5606,7 @@ export class AdaptiveCard extends ContainerWithActions {
 
         this.fallbackText = json["fallbackText"];
 
-        let jsonFallback = json["fallback"];
-
-        if (jsonFallback && typeof jsonFallback === "object") {
-            this.fallbackElement = AdaptiveCard.elementTypeRegistry.createInstance(jsonFallback["type"]);
-            
-            if (this.fallbackElement) {
-                this.fallbackElement.parse(jsonFallback);
-            }
-        }
-        else {
-            this.fallbackElement = null;
-        }
+        this.fallbackElement = createElementInstance(this, json["fallback"], errors);
 
         super.parse(json, errors);
     }
