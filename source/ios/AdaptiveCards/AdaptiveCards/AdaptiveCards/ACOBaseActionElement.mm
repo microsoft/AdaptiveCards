@@ -40,6 +40,7 @@ using namespace AdaptiveCards;
 {
     if(element){
         _type = (ACRActionType)element->GetElementType();
+        _sentiment = (ACRSentiment)element->GetSentiment();
     }
     _elem = element;
 }
