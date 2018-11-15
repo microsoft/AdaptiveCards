@@ -30,7 +30,6 @@ namespace AdaptiveSharedNamespace
     private:
         void PopulateKnownPropertiesSet() override;
 
-        static const std::unordered_map<CardElementType, std::function<std::shared_ptr<Column>(const Json::Value&)>, EnumHash> ColumnParser;
         std::vector<std::shared_ptr<Column>> m_columns;
         std::shared_ptr<BaseActionElement> m_selectAction;
     };

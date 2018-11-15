@@ -19,6 +19,7 @@
 #import "Enums.h"
 #import "Image.h"
 #import "Media.h"
+#import "TextInput.h"
 #import "ACRImageRenderer.h"
 #import "TextBlock.h"
 #import "ACRTextBlockRenderer.h"
@@ -27,6 +28,7 @@
 #import "ACRUILabel.h"
 #import "ACRUIImageView.h"
 #import "FactSet.h"
+#import "AdaptiveBase64Util.h"
 
 using namespace AdaptiveCards;
 typedef UIImage* (^ImageLoadBlock)(NSURL *url);
@@ -232,6 +234,15 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 
                 break;
             }
+            case CardElementType::TextInput:
+            {
+                std::shared_ptr<TextInput> textInput = std::static_pointer_cast<TextInput>(elem);
+                std::shared_ptr<BaseActionElement> action = textInput->GetInlineAction();
+                if(action != nullptr && !action->GetIconUrl().empty()) {
+                    [self loadImage:action->GetIconUrl()];
+                }
+                break;
+            }
             // continue on search
             case CardElementType::Container:
             {
@@ -395,7 +406,16 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     if(!imageResourceResolver || ![imageResourceResolver respondsToSelector:@selector(resolveImageResource:)]) {
         imageloadblock = ^(NSURL *url){
             // download image
-            UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+            UIImage *img = nil;
+            if(url.scheme == @"data") {
+                NSString *absoluteUri = url.absoluteString;
+                std::string dataUri = AdaptiveCards::AdaptiveBase64Util::ExtractDataFromUri(std::string([absoluteUri UTF8String]));
+                std::vector<char> decodedDataUri = AdaptiveCards::AdaptiveBase64Util::Decode(dataUri);
+                NSData *decodedBase64 = [NSData dataWithBytes:decodedDataUri.data() length:decodedDataUri.size()];
+                img = [UIImage imageWithData:decodedBase64];
+            } else {
+                img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+            }
             return img;
         };
     }
