@@ -5083,7 +5083,14 @@ export class Version {
 
         if (matches != null && matches.length == 3) {
             result._major = parseInt(matches[1]);
-            result._minor = parseInt(matches[2]);
+
+            let minorVersion = matches[2];
+
+            while (minorVersion.length < 4) {
+                minorVersion += "0";
+            }
+
+            result._minor = Math.min(parseInt(minorVersion), 9999);
         }
         else {
             result._isValid = false;
@@ -5093,7 +5100,26 @@ export class Version {
     }
 
     toString(): string {
-        return !this._isValid ? this._versionString : this._major + "." + this._minor;
+        let minorVersionString = this._minor.toString();
+
+        while (minorVersionString.length < 4) {
+            minorVersionString = "0" + minorVersionString;
+        }
+
+        let trailingZeros = 0;
+
+        for (let i = minorVersionString.length - 1; i >= 0; i--) {
+            if (minorVersionString[i] == "0") {
+                trailingZeros++;
+            }
+            else {
+                break;
+            }
+        }
+
+        minorVersionString = minorVersionString.substr(0, minorVersionString.length - trailingZeros);
+
+        return !this._isValid ? this._versionString : this._major + "." + minorVersionString;
     }
 
     get major(): number {
@@ -5411,7 +5437,7 @@ export class ActionTypeRegistry extends TypeRegistry<Action> {
 }
 
 export class AdaptiveCard extends ContainerWithActions {
-    private static currentVersion: Version = new Version(1, 1);
+    private static currentVersion: Version = new Version(1, 1000);
 
     static useAutomaticContainerBleeding: boolean = false;
     static useAdvancedTextBlockTruncation: boolean = true;
