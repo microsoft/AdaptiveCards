@@ -13,7 +13,8 @@ public enum ErrorStatusCode {
   RenderFailed,
   RequiredPropertyMissing,
   InvalidPropertyValue,
-  UnsupportedParserOverride;
+  UnsupportedParserOverride,
+  IdCollision;
 
   public final int swigValue() {
     return swigValue;

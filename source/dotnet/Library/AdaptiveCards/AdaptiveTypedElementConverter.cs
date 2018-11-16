@@ -13,7 +13,16 @@ namespace AdaptiveCards
     public class AdaptiveTypedElementConverter : JsonConverter, ILogWarnings
     {
         public List<AdaptiveWarning> Warnings { get; set; } = new List<AdaptiveWarning>();
+        private static HashSet<string> Ids { get; set; } = new HashSet<string>();
+        public static void BeginCard()
+        {
+            Ids.Clear();
+        }
 
+        public static void EndCard()
+        {
+            Ids.Clear();
+        }
 
         /// <summary>
         /// Default types to support, register any new types to this list
@@ -96,8 +105,25 @@ namespace AdaptiveCards
 
             if (TypedElementTypes.Value.TryGetValue(typeName, out var type))
             {
-                if (typeof(AdaptiveInput).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()) && jObject.Value<string>("id") == null)
-                    throw new AdaptiveSerializationException($"Required property 'id' not found on '{typeName}'");
+                if (jObject.Value<string>("id") == null)
+                {
+                    if (typeof(AdaptiveInput).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()))
+                    {
+                        throw new AdaptiveSerializationException($"Required property 'id' not found on '{typeName}'");
+                    }
+                }
+                else
+                {
+                    string objectId = jObject.Value<string>("id");
+                    if (Ids.Contains(objectId))
+                    {
+                        throw new AdaptiveSerializationException($"Duplicate 'id' found: '{objectId}'");
+                    }
+                    else
+                    {
+                        Ids.Add(objectId);
+                    }
+                }
 
                 var result = (AdaptiveTypedElement)Activator.CreateInstance(type);
                 serializer.Populate(jObject.CreateReader(), result);

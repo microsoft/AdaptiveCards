@@ -2,13 +2,14 @@
 
 #include "pch.h"
 #include "Enums.h"
-#include "Fact.h"
 #include "BaseCardElement.h"
 #include "ElementParserRegistration.h"
 
 namespace AdaptiveSharedNamespace
 {
     class BaseCardElement;
+    class Fact;
+
     class FactSet : public BaseCardElement
     {
         friend class FactSetParser;
@@ -37,16 +38,9 @@ namespace AdaptiveSharedNamespace
         FactSetParser(FactSetParser&&) = default;
         FactSetParser& operator=(const FactSetParser&) = default;
         FactSetParser& operator=(FactSetParser&&) = default;
-        virtual ~FactSetParser() = default;
+        ~FactSetParser() = default;
 
-        std::shared_ptr<BaseCardElement> Deserialize(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                                     std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                                     const Json::Value& root) override;
-
-        std::shared_ptr<BaseCardElement> DeserializeFromString(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                               std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                                               std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                                               const std::string& jsonString);
+        std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
+        std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
     };
 }

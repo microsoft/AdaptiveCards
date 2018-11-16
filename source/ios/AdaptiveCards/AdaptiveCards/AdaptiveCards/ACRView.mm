@@ -2,7 +2,7 @@
 //  ACRView.m
 //  ACRView
 //
-//  Copyright © 2018 Microsoft. All rights reserved.
+//  Copyright Â© 2018 Microsoft. All rights reserved.
 //
 
 #import "ACRView.h"
@@ -17,6 +17,7 @@
 #import "ColumnSet.h"
 #import "Column.h"
 #import "Enums.h"
+#import "Fact.h"
 #import "Image.h"
 #import "Media.h"
 #import "TextInput.h"

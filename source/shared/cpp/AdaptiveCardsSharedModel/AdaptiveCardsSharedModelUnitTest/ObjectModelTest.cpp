@@ -4,6 +4,7 @@
 #include "TextBlock.h"
 #include "SharedAdaptiveCard.h"
 #include "ShowCardAction.h"
+#include "ParseContext.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
@@ -17,18 +18,11 @@ namespace AdaptiveCardsSharedModelUnitTest
         // An empty JSON does not produce any selectAction
         TEST_METHOD(SelectActionEmptyJsonTest)
         {
-            std::shared_ptr<ElementParserRegistration> elementParserRegistration;
-            elementParserRegistration.reset(new ElementParserRegistration());
-
-            std::shared_ptr<ActionParserRegistration> actionParserRegistration;
-            actionParserRegistration.reset(new ActionParserRegistration());
+            ParseContext context;
 
             Json::Value json;
-            std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
             std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetAction(
-                elementParserRegistration,
-                actionParserRegistration,
-                warnings,
+                context,
                 json,
                 AdaptiveCardSchemaKey::SelectAction,
                 false);
@@ -39,11 +33,6 @@ namespace AdaptiveCardsSharedModelUnitTest
         // A card JSON without selectAction key does not produce any selectAction
         TEST_METHOD(SelectActionNonExistentTest)
         {
-            std::shared_ptr<ElementParserRegistration> elementParserRegistration;
-            elementParserRegistration.reset(new ElementParserRegistration());
-
-            std::shared_ptr<ActionParserRegistration> actionParserRegistration;
-            actionParserRegistration.reset(new ActionParserRegistration());
 
             // Card without card-level selectAction
             std::string cardStr = "{\
@@ -65,11 +54,9 @@ namespace AdaptiveCardsSharedModelUnitTest
             }";
             Json::Value json = ParseUtil::GetJsonValueFromString(cardStr);
 
-            std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
+            ParseContext context;
             std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetAction(
-                elementParserRegistration,
-                actionParserRegistration,
-                warnings,
+                context,
                 json,
                 AdaptiveCardSchemaKey::SelectAction,
                 false);
@@ -80,12 +67,6 @@ namespace AdaptiveCardsSharedModelUnitTest
         // A card JSON with selectAction of incorrect type does not produce any selectAction
         TEST_METHOD(SelectActionInvalidTypeTest)
         {
-            std::shared_ptr<ElementParserRegistration> elementParserRegistration;
-            elementParserRegistration.reset(new ElementParserRegistration());
-
-            std::shared_ptr<ActionParserRegistration> actionParserRegistration;
-            actionParserRegistration.reset(new ActionParserRegistration());
-
             // An arbitrary JSON with OpenUrl selectAction
             std::string str = "{\
                 \"type\" : \"ColumnSet\",\
@@ -99,11 +80,9 @@ namespace AdaptiveCardsSharedModelUnitTest
             }";
             Json::Value json = ParseUtil::GetJsonValueFromString(str);
 
-            std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
+            ParseContext context;
             std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetAction(
-                elementParserRegistration,
-                actionParserRegistration,
-                warnings,
+                context,
                 json,
                 AdaptiveCardSchemaKey::SelectAction,
                 false);
@@ -114,12 +93,6 @@ namespace AdaptiveCardsSharedModelUnitTest
         // A card JSON with an OpenUrl selectAction
         TEST_METHOD(SelectActionOpenUrlTest)
         {
-            std::shared_ptr<ElementParserRegistration> elementParserRegistration;
-            elementParserRegistration.reset(new ElementParserRegistration());
-
-            std::shared_ptr<ActionParserRegistration> actionParserRegistration;
-            actionParserRegistration.reset(new ActionParserRegistration());
-
             // Card with card-level OpenUrl selectAction
             std::string str = "{\
                 \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
@@ -145,11 +118,9 @@ namespace AdaptiveCardsSharedModelUnitTest
             }";
             Json::Value json = ParseUtil::GetJsonValueFromString(str);
 
-            std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
+            ParseContext context;
             std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetAction(
-                elementParserRegistration,
-                actionParserRegistration,
-                warnings,
+                context,
                 json,
                 AdaptiveCardSchemaKey::SelectAction,
                 false);
@@ -161,12 +132,6 @@ namespace AdaptiveCardsSharedModelUnitTest
         // An arbitrary JSON with a Submit selectAction (for other elements such as Container, ColumnSet, etc.)
         TEST_METHOD(SelectActionAnyJsonTest)
         {
-            std::shared_ptr<ElementParserRegistration> elementParserRegistration;
-            elementParserRegistration.reset(new ElementParserRegistration());
-
-            std::shared_ptr<ActionParserRegistration> actionParserRegistration;
-            actionParserRegistration.reset(new ActionParserRegistration());
-
             // An arbitrary JSON with OpenUrl selectAction
             std::string str = "{\
                 \"type\" : \"ColumnSet\",\
@@ -180,17 +145,93 @@ namespace AdaptiveCardsSharedModelUnitTest
             }";
             Json::Value json = ParseUtil::GetJsonValueFromString(str);
 
-            std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
+            ParseContext context;
             std::shared_ptr<BaseActionElement> selectAction = ParseUtil::GetAction(
-                elementParserRegistration,
-                actionParserRegistration,
-                warnings,
+                context,
                 json,
                 AdaptiveCardSchemaKey::SelectAction,
                 false);
 
             Assert::IsFalse(selectAction == nullptr);
             Assert::AreEqual(selectAction->GetElementTypeString(), "Action.Submit"s);
+        }
+
+        TEST_METHOD(DuplicateIdSimpleTest)
+        {
+            std::string cardWithDuplicateIds = "{\
+                \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
+                \"type\" : \"AdaptiveCard\",\
+                \"version\" : \"1.0\",\
+                \"body\" : [\
+                    {\
+                        \"type\": \"TextBlock\",\
+                        \"text\" : \"This card's has duplicate ids. Oh no!\"\
+                    },\
+                    { \
+                      \"type\": \"Input.Text\", \
+                      \"style\": \"text\", \
+                      \"id\": \"duplicate\" \
+                    }, \
+                    { \
+                      \"type\": \"Input.Text\", \
+                      \"style\": \"url\", \
+                      \"id\": \"duplicate\" \
+                    } \
+                ]\
+            }";
+            std::shared_ptr<ParseResult> parseResult;
+            Assert::ExpectException<AdaptiveCardParseException>([&]() { parseResult = AdaptiveCard::DeserializeFromString(cardWithDuplicateIds, "1.0"); });
+        }
+
+        TEST_METHOD(DuplicateIdNestedTest)
+        {
+            std::string cardWithDuplicateIds = "{\
+               	\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
+               	\"type\": \"AdaptiveCard\",\
+               	\"version\": \"1.0\",\
+               	\"body\": [\
+               		{\
+               			\"type\": \"Input.Text\",\
+               			\"placeholder\": \"Name\",\
+               			\"style\": \"text\",\
+               			\"maxLength\": 0,\
+               			\"id\": \"duplicate\"\
+               		}\
+               	],\
+               	\"actions\": [\
+               		{\
+               			\"type\": \"Action.Submit\",\
+               			\"title\": \"Submit\",\
+               			\"data\": {\
+               				\"id\": \"1234567890\"\
+               			}\
+               		},\
+               		{\
+               			\"type\": \"Action.ShowCard\",\
+               			\"title\": \"Show Card\",\
+               			\"card\": {\
+               				\"type\": \"AdaptiveCard\",\
+               				\"body\": [\
+               					{\
+               						\"type\": \"Input.Text\",\
+               						\"placeholder\": \"enter comment\",\
+               						\"style\": \"text\",\
+               						\"maxLength\": 0,\
+               						\"id\": \"duplicate\"\
+               					}\
+               				],\
+               				\"actions\": [\
+               					{\
+               						\"type\": \"Action.Submit\",\
+               						\"title\": \"OK\"\
+               					}\
+               				]\
+               			}\
+               		}\
+               	]\
+               }";
+            std::shared_ptr<ParseResult> parseResult;
+            Assert::ExpectException<AdaptiveCardParseException>([&]() { parseResult = AdaptiveCard::DeserializeFromString(cardWithDuplicateIds, "1.0"); });
         }
 
         TEST_METHOD(MediaElementTest)

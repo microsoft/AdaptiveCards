@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "OpenUrlAction.h"
+#include "ParseContext.h"
 #include "ParseUtil.h"
 
 using namespace AdaptiveSharedNamespace;
@@ -28,10 +29,7 @@ void OpenUrlAction::SetUrl(const std::string& value)
     m_url = value;
 }
 
-std::shared_ptr<BaseActionElement> OpenUrlActionParser::Deserialize(std::shared_ptr<ElementParserRegistration>,
-                                                                    std::shared_ptr<ActionParserRegistration>,
-                                                                    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>&,
-                                                                    const Json::Value& json)
+std::shared_ptr<BaseActionElement> OpenUrlActionParser::Deserialize(ParseContext&, const Json::Value& json)
 {
     std::shared_ptr<OpenUrlAction> openUrlAction = BaseActionElement::Deserialize<OpenUrlAction>(json);
 
@@ -41,15 +39,9 @@ std::shared_ptr<BaseActionElement> OpenUrlActionParser::Deserialize(std::shared_
 }
 
 std::shared_ptr<BaseActionElement>
-OpenUrlActionParser::DeserializeFromString(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                           std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                           std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                           const std::string& jsonString)
+OpenUrlActionParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
-    return OpenUrlActionParser::Deserialize(elementParserRegistration,
-                                            actionParserRegistration,
-                                            warnings,
-                                            ParseUtil::GetJsonValueFromString(jsonString));
+    return OpenUrlActionParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 void OpenUrlAction::PopulateKnownPropertiesSet()

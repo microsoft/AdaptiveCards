@@ -13,6 +13,7 @@
 #include <Image.h>
 #include <MediaSource.h>
 #include <windows.foundation.collections.h>
+#include <ParseContext.h>
 #include "AdaptiveCardParseWarning.h"
 #include "RemoteResourceInformation.h"
 
