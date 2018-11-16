@@ -822,6 +822,58 @@ namespace AdaptiveNamespace
         }
     }
 
+    void XamlBuilder::SetIdAndTransform(IAdaptiveRenderContext* renderContext, HSTRING id, IUIElement* uiElement)
+    {
+        ComPtr<IUIElement> localUiElement(uiElement);
+
+        ComPtr<IFrameworkElement> uiElementAsFrameworkElement;
+        THROW_IF_FAILED(localUiElement.As(&uiElementAsFrameworkElement));
+
+        THROW_IF_FAILED(uiElementAsFrameworkElement->put_Name(id));
+
+        ComPtr<AdaptiveNamespace::AdaptiveRenderContext> contextImpl =
+            PeekInnards<AdaptiveNamespace::AdaptiveRenderContext>(renderContext);
+
+        ComPtr<IVector<HSTRING>> targetedElements;
+        contextImpl->get_StoryboardTargetedElements(&targetedElements);
+
+        unsigned int index;
+        boolean found;
+        targetedElements->IndexOf(id, &index, &found);
+
+        if (found)
+        {
+            ComPtr<IResourceDictionary> resourceDictionary;
+            renderContext->get_OverrideStyles(&resourceDictionary);
+
+            ComPtr<IInspectable> animationInspectable;
+            if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IInspectable>(resourceDictionary.Get(),
+                                                                               L"Adaptive.Storyboard.Action.ToggleViewState.toggleActionId",
+                                                                               &animationInspectable)))
+            {
+                ComPtr<ITimeline> animationTimeline;
+                animationInspectable.As(&animationTimeline);
+
+                ComPtr<IStoryboardStatics> storyboardStatics;
+                GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Animation_Storyboard).Get(), &storyboardStatics);
+
+                ComPtr<IUIElement> localUiElement(uiElement);
+                ComPtr<IDependencyObject> uiElementAsDependencyObject;
+                localUiElement.As(&uiElementAsDependencyObject);
+
+                storyboardStatics->SetTarget(animationTimeline.Get(), uiElementAsDependencyObject.Get());
+            }
+
+
+            ComPtr<ICompositeTransform> compositeTransform = XamlHelpers::CreateXamlClass<ICompositeTransform>(
+                HStringReference(RuntimeClass_Windows_UI_Xaml_Media_CompositeTransform));
+
+            ComPtr<ITransform> compositeTransformAsTransform;
+            compositeTransform.As(&compositeTransformAsTransform);
+
+            localUiElement->put_RenderTransform(compositeTransformAsTransform.Get());
+        }
+    }
     _Use_decl_annotations_ void XamlBuilder::BuildPanelChildren(IVector<IAdaptiveCardElement*>* children,
                                                                 IPanel* parentPanel,
                                                                 ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
@@ -868,12 +920,13 @@ namespace AdaptiveNamespace
                     THROW_IF_FAILED(newControl->put_Visibility(Visibility_Collapsed));
                 }
 
-                ComPtr<IFrameworkElement> newControlAsFrameworkElement;
-                THROW_IF_FAILED(newControl.As(&newControlAsFrameworkElement));
-
                 HString id;
                 element->get_Id(id.GetAddressOf());
-                THROW_IF_FAILED(newControlAsFrameworkElement->put_Name(id.Get()));
+
+                if (id.IsValid())
+                {
+                    SetIdAndTransform(renderContext, id.Get(), newControl.Get());
+                }
 
                 ABI::AdaptiveNamespace::HeightType heightType{};
                 THROW_IF_FAILED(element->get_Height(&heightType));
@@ -1142,7 +1195,7 @@ namespace AdaptiveNamespace
         XamlHelpers::AppendXamlElementToPanel(actionSetControl.Get(), bodyPanel);
     }
 
-    HRESULT HandleToggleViewStateClick(IAdaptiveRenderContext* renderContext, IAdaptiveActionElement* action, IButtonBase* button)
+    HRESULT XamlBuilder::HandleToggleViewStateClick(IAdaptiveRenderContext* renderContext, IAdaptiveActionElement* action, IButtonBase* button)
     {
         ComPtr<IAdaptiveActionElement> localAction(action);
         ComPtr<IAdaptiveToggleViewStateAction> toggleAction;
@@ -1181,6 +1234,18 @@ namespace AdaptiveNamespace
         boolean isCheckedValue;
         isChecked->get_Value(&isCheckedValue);
 
+        ComPtr<IResourceDictionary> resourceDictionary;
+        renderContext->get_OverrideStyles(&resourceDictionary);
+
+        ComPtr<IInspectable> animationInspectable;
+        if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IInspectable>(resourceDictionary.Get(),
+                                                                           L"Adaptive.Storyboard.Action.ToggleViewState.toggleActionId",
+                                                                           &animationInspectable)))
+        {
+            ComPtr<IStoryboard> animationStoryboard;
+            animationInspectable.As(&animationStoryboard);
+            animationStoryboard->Begin();
+        }
         return S_OK;
     }
 
@@ -1502,6 +1567,16 @@ namespace AdaptiveNamespace
                         (actionType == ActionType_ToggleViewState) ? L"Adaptive.Action.ToggleViewState" : L"Adaptive.Action";
 
                     THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, resourceName, buttonFrameworkElement.Get()));
+                }
+
+                HString id;
+                action->get_Id(id.GetAddressOf());
+
+                if (id.IsValid())
+                {
+                    ComPtr<IUIElement> buttonAsUiElement;
+                    buttonBase.As(&buttonAsUiElement);
+                    SetIdAndTransform(renderContext, id.Get(), buttonAsUiElement.Get());
                 }
 
                 XamlHelpers::AppendXamlElementToPanel(buttonBase.Get(), actionsPanel.Get());
@@ -3673,10 +3748,9 @@ namespace AdaptiveNamespace
 
         // We want the hit target to equally split the vertical space above and below the current item.
         // However, all we know is the spacing of the current item, which only applies to the spacing above.
-        // We don't know what the spacing of the NEXT element will be, so we can't calculate the correct spacing below.
-        // For now, we'll simply assume the bottom spacing is the same as the top.
-        // NOTE: Only apply spacings (padding, margin) for adaptive card elements to avoid adding
-        // spacings to card-level selectAction.
+        // We don't know what the spacing of the NEXT element will be, so we can't calculate the correct spacing
+        // below. For now, we'll simply assume the bottom spacing is the same as the top. NOTE: Only apply spacings
+        // (padding, margin) for adaptive card elements to avoid adding spacings to card-level selectAction.
         if (adaptiveCardElement != nullptr)
         {
             ABI::AdaptiveNamespace::Spacing elementSpacing;

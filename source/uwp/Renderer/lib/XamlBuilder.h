@@ -259,5 +259,13 @@ namespace AdaptiveNamespace
         template<typename T>
         static void SetVerticalContentAlignmentToChildren(_In_ T* container,
                                                           _In_ ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment);
+
+        static HRESULT HandleToggleViewStateClick(ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                                  ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
+                                                  ABI::Windows::UI::Xaml::Controls::Primitives::IButtonBase* button);
+
+        static void SetIdAndTransform(ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                      HSTRING id,
+                                      ABI::Windows::UI::Xaml::IUIElement* uiElement);
     };
 }
