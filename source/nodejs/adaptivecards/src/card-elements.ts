@@ -5597,7 +5597,7 @@ export class AdaptiveCard extends ContainerWithActions {
 
         if (!this.isVersionSupported()) {
             renderedCard = document.createElement("div");
-            renderedCard.innerHTML = this.fallbackText ? this.fallbackText : "The specified card version is not supported.";
+            renderedCard.innerText = this.fallbackText ? this.fallbackText : "The specified card version is not supported.";
         }
         else {
             renderedCard = super.render();
