@@ -313,7 +313,7 @@ namespace AdaptiveSharedNamespace
     template<typename T> static void AddId(const T& element, std::unordered_set<std::string>& ids)
     {
         auto id = element.GetId();
-        if (id != "")
+        if (!id.empty())
         {
             auto search = ids.find(id);
             if (search == ids.end())

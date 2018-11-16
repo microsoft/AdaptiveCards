@@ -2,13 +2,14 @@
 
 #include "pch.h"
 #include "Enums.h"
-#include "Fact.h"
 #include "BaseCardElement.h"
 #include "ElementParserRegistration.h"
 
 namespace AdaptiveSharedNamespace
 {
     class BaseCardElement;
+    class Fact;
+
     class FactSet : public BaseCardElement
     {
         friend class FactSetParser;

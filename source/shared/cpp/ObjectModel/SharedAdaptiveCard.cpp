@@ -116,7 +116,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, 
     // check if language is valid
     _ValidateLanguage(language, context.warnings);
 
-    // Perform version
+    // Perform version validation
     if (enforceVersion)
     {
         const SemanticVersion rendererMaxVersion(rendererVersion);
