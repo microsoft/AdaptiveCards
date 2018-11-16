@@ -129,14 +129,23 @@ namespace AdaptiveNamespace
         HRESULT hr = childrenIterator->get_HasCurrent(&hasCurrent);
         while (SUCCEEDED(hr) && hasCurrent)
         {
-            Microsoft::WRL::ComPtr<ITimeline> currenTimeline = nullptr;
-            hr = childrenIterator->get_Current(&currenTimeline); //BECKYTODO: IFFAILRETURN?
+            Microsoft::WRL::ComPtr<ITimeline> currentTimeline = nullptr;
+            hr = childrenIterator->get_Current(&currentTimeline); //BECKYTODO: IFFAILRETURN?
             if (FAILED(hr))
             {
                 break;
             }
 
-            
+            ComPtr<IStoryboard> childAsStoryboard;
+            currentTimeline.As(&childAsStoryboard);
+
+            ComPtr<IStoryboardStatics> storyboardStatics;
+            GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Animation_Storyboard).Get(),
+                                     &storyboardStatics);
+
+            HString targetProperty;
+            storyboardStatics->GetTargetProperty(currentTimeline.Get(), targetProperty.GetAddressOf());
+
 
             hr = childrenIterator->MoveNext(&hasCurrent);
         }
@@ -182,6 +191,11 @@ namespace AdaptiveNamespace
 
             ComPtr<IStoryboard> valueAsStoryBoard;
             value.As(&valueAsStoryBoard);
+
+            if (valueAsStoryBoard != nullptr)
+            {
+                HashStoryboard(valueAsStoryBoard.Get());
+            }
 
             // iterationCallback(current.Get());
             hr = resourceDictionaryIterator->MoveNext(&hasCurrent);
