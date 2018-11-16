@@ -26,4 +26,15 @@ using namespace AdaptiveCards;
     return self.frame.size;
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    if(_isPersonStyle) {
+        UIView *subview = self.subviews[0];
+        CGFloat radius = subview.bounds.size.width / 2.0;
+        [subview.layer setCornerRadius:radius];
+        [subview.layer setMasksToBounds:YES];
+    }
+}
+
 @end

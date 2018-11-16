@@ -78,12 +78,19 @@ using namespace AdaptiveCards;
     }
 
     if(!adaptiveCard->GetBackgroundImage().empty()) {
-            [rootView loadImage:adaptiveCard->GetBackgroundImage()];
-        }
+        ObserverActionBlock observerAction =
+        ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<Image> const &imgElem, NSURL* url, ACRView* rootView) {
+            UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
+            [rootView setImageView:key imageView:view];
+        };
+        [rootView
+            loadImageAccordingToResourceResolverIFFromString:adaptiveCard->GetBackgroundImage()
+            key:@"backgroundImage" observerAction:observerAction];
+    }
+
     if(![config getHostConfig]->GetMedia().playButton.empty()) {
-            [rootView loadImage:[config getHostConfig]->GetMedia().playButton];
-        }
-  
+        [rootView loadImage:[config getHostConfig]->GetMedia().playButton];
+    }
 
     ACRContainerStyle style = ([config getHostConfig]->GetAdaptiveCard().allowCustomStyle)? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
     style = (style == ACRNone)? ACRDefault : style;

@@ -58,7 +58,7 @@
         }
     } else { // if poster is not availabl, create a 4:3 blank black backgroudn poster view; 16:9 won't provide enough height in case the media is 4:3
         heightToWidthRatio = .75;
-        view = [[ACRAVPlayerViewHoldingUIView alloc] init];
+        view = [[ACRAVPlayerViewHoldingUIView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, viewGroup.frame.size.width * .75)];
         view.backgroundColor = UIColor.blackColor;
         view.translatesAutoresizingMaskIntoConstraints = NO;
     }
@@ -75,7 +75,6 @@
         playIconImageView.translatesAutoresizingMaskIntoConstraints = NO;
     }
 
-    view.frame = CGRectMake(0, 0, viewGroup.frame.size.width, viewGroup.frame.size.width * heightToWidthRatio);
     view.tag = posterTag;
     ACRContentHoldingUIView *contentholdingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
     // if play icon is provided from hostconfig, disable play icon drawing in its sublayer, and invalidate the current sublayer, so it will be updated in the next drawring cycle
@@ -92,23 +91,20 @@
     [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:contentholdingview attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
     [viewGroup addArrangedSubview:contentholdingview];
 
-    [NSLayoutConstraint constraintWithItem:contentholdingview attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:viewGroup attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;
     [NSLayoutConstraint constraintWithItem:contentholdingview
-                                 attribute:NSLayoutAttributeHeight
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:contentholdingview
-                                 attribute:NSLayoutAttributeWidth
-                                multiplier:heightToWidthRatio
-                                  constant:0].active = YES;
+        attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual
+           toItem:viewGroup attribute:NSLayoutAttributeWidth
+       multiplier:1.0 constant:0].active = YES;
 
-    [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:contentholdingview attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;
     [NSLayoutConstraint constraintWithItem:view
-                                 attribute:NSLayoutAttributeHeight
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:view
-                                 attribute:NSLayoutAttributeWidth
-                                multiplier:heightToWidthRatio
-                                  constant:0].active = YES;
+        attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual
+           toItem:contentholdingview attribute:NSLayoutAttributeWidth
+       multiplier:1.0 constant:0].active = YES;
+
+    [NSLayoutConstraint constraintWithItem:contentholdingview
+        attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual
+           toItem:view attribute:NSLayoutAttributeHeight
+       multiplier:1.0 constant:0].active = YES;
 
     if([acoConfig getHostConfig]->GetSupportsInteractivity()){
         ACRMediaTarget *mediaTarget = nil;
@@ -129,7 +125,22 @@
         view.userInteractionEnabled = YES;
     }
 
+    [self configUpdateForMediaView:heightToWidthRatio viewGroup:viewGroup contentHoldingView:contentholdingview imageView:view];
+
     return view;
+}
+
+//- (void)configUpdateForMediaView:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
+- (void)configUpdateForMediaView:(CGFloat)heightToWidthRatio viewGroup:(UIView *)viewGroup contentHoldingView:(UIView *)contentholdingview imageView:(UIImageView *)view
+{
+    //heightToWidthRatio = img.size.height / img.size.width;
+    [NSLayoutConstraint constraintWithItem:view
+                                 attribute:NSLayoutAttributeHeight
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:view
+                                 attribute:NSLayoutAttributeWidth
+                                multiplier:heightToWidthRatio
+                                  constant:0].active = YES;
 }
 
 @end

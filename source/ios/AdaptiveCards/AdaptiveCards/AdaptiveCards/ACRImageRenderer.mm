@@ -71,11 +71,13 @@
         NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)imgElem.get()];
         NSString *key = [number stringValue];
         view = [rootView getImageView:key];
-        if(view) {
-            [view addObserver:rootView forKeyPath:@"image"
-                      options:NSKeyValueObservingOptionNew
-                      context:imgElem.get()];
-        }
+    }
+    
+    ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
+    
+    if(!view)
+    {
+        return wrappingview;
     }
 
     if(!isAspectRatioNeeded){
@@ -85,8 +87,7 @@
     }
 
     view.clipsToBounds = YES;
-
-    ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
+    
     std::string backgroundColor = imgElem->GetBackgroundColor();
     if(!backgroundColor.empty()) {
         view.backgroundColor = [ACOHostConfig convertHexColorCodeToUIColor:imgElem->GetBackgroundColor()];
@@ -95,10 +96,12 @@
     [wrappingview addSubview:view];
 
     [viewGroup addArrangedSubview:wrappingview];
-
-    [NSLayoutConstraint activateConstraints:[ACOHostConfig getConstraintsForImageAlignment:imgElem->GetHorizontalAlignment()
-                                                                             withSuperview:wrappingview
-                                                                                    toView:view]];
+    
+    [NSLayoutConstraint activateConstraints:
+     [ACOHostConfig getConstraintsForImageAlignment:imgElem->GetHorizontalAlignment()
+                                      withSuperview:wrappingview
+                                             toView:view]];
+     
     NSArray<NSString *> *visualFormats = [NSArray arrayWithObjects:@"H:[view(<=wrappingview)]", @"V:|[view(<=wrappingview)]|", nil];
     NSDictionary *viewMap = NSDictionaryOfVariableBindings(view, wrappingview);
 
@@ -135,9 +138,11 @@
                                                                   recipientView:view
                                                                   actionElement:selectAction
                                                                      hostConfig:acoConfig];
-
     view.translatesAutoresizingMaskIntoConstraints = NO;
     wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
+    if(imgElem->GetImageStyle() == ImageStyle::Person) {
+        wrappingview.isPersonStyle = YES;        
+    }
     return wrappingview;
 }
 
@@ -185,20 +190,22 @@
     }
 
     if(size != ImageSize::Auto && size != ImageSize::Stretch){
-        [NSLayoutConstraint activateConstraints:@[[NSLayoutConstraint constraintWithItem:imageView
-                                                                               attribute:NSLayoutAttributeWidth
-                                                                               relatedBy:NSLayoutRelationEqual
-                                                                                  toItem:nil
-                                                                               attribute:NSLayoutAttributeNotAnAttribute
-                                                                              multiplier:1.0
-                                                                                constant:cgsize.width],
-                                                  [NSLayoutConstraint constraintWithItem:imageView
-                                                                               attribute:NSLayoutAttributeHeight
-                                                                               relatedBy:NSLayoutRelationEqual
-                                                                                  toItem:nil
-                                                                               attribute:NSLayoutAttributeNotAnAttribute
-                                                                              multiplier:1.0
-                                                                                constant:cgsize.height]]];
+        [NSLayoutConstraint activateConstraints:
+         @[[NSLayoutConstraint constraintWithItem:imageView
+                                        attribute:NSLayoutAttributeWidth
+                                        relatedBy:NSLayoutRelationEqual
+                                           toItem:nil
+                                        attribute:NSLayoutAttributeNotAnAttribute
+                                       multiplier:1.0
+                                         constant:cgsize.width],
+           [NSLayoutConstraint constraintWithItem:imageView
+                                        attribute:NSLayoutAttributeHeight
+                                        relatedBy:NSLayoutRelationEqual
+                                           toItem:nil
+                                        attribute:NSLayoutAttributeNotAnAttribute
+                                       multiplier:1.0
+                                         constant:cgsize.height]]];
+        
         if([imageView class] == [ACRUIImageView class]) {
             ((ACRUIImageView *)imageView).desiredSize = cgsize;
         }
