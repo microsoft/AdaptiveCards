@@ -311,6 +311,10 @@
                 button.backgroundColor = [UIColor colorWithRed:0.11 green:0.68 blue:0.97 alpha:1.0];
             }
         }
+        else
+        {
+            button.backgroundColor = [UIColor colorWithRed:0.11 green:0.68 blue:0.97 alpha:1.0];
+        }
         [self.scrView layoutIfNeeded];
     }
 }
