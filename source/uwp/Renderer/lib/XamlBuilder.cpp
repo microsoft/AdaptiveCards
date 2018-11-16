@@ -22,6 +22,8 @@
 #include "HtmlHelpers.h"
 #include "DateTimeParser.h"
 #include "MediaHelpers.h"
+#include "AdaptiveBase64Util.h"
+#include <robuffer.h>
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -527,8 +529,11 @@ namespace AdaptiveNamespace
     void XamlBuilder::SetImageOnUIElement(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl,
                                           T* uiElement,
                                           IAdaptiveCardResourceResolvers* resolvers,
+                                          _Out_ bool* mustHideElement,
                                           _In_ ABI::Windows::UI::Xaml::Media::Stretch stretch)
     {
+        *mustHideElement = true;
+
         // Get the image url scheme
         HString schemeName;
         THROW_IF_FAILED(imageUrl->get_SchemeName(schemeName.GetAddressOf()));
@@ -599,6 +604,71 @@ namespace AdaptiveNamespace
 
                 return;
             }
+        }
+
+        INT32 isDataUriImage{};
+        THROW_IF_FAILED(WindowsCompareStringOrdinal(schemeName.Get(), HStringReference(L"data").Get(), &isDataUriImage));
+        if (isDataUriImage == 0)
+        {
+            // Decode base 64 string
+            HString dataPath;
+            THROW_IF_FAILED(imageUrl->get_Path(dataPath.GetAddressOf()));
+
+            std::string data = AdaptiveBase64Util::ExtractDataFromUri(HStringToUTF8(dataPath.Get()));
+            std::vector<char> decodedData = AdaptiveBase64Util::Decode(data);
+
+            ComPtr<IBufferFactory> bufferFactory;
+            THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Storage_Streams_Buffer).Get(), bufferFactory.GetAddressOf()));
+
+            ComPtr<IBuffer> buffer;
+            THROW_IF_FAILED(bufferFactory->Create(static_cast<UINT32>(decodedData.size()), buffer.GetAddressOf()));
+
+            ComPtr<::Windows::Storage::Streams::IBufferByteAccess> bufferByteAccess;
+            THROW_IF_FAILED(buffer.As(&bufferByteAccess));
+
+            BYTE* dataInternal{};
+            THROW_IF_FAILED(bufferByteAccess->Buffer(&dataInternal));
+
+            memcpy_s(dataInternal, decodedData.size(), decodedData.data(), decodedData.size());
+
+            THROW_IF_FAILED(buffer->put_Length(static_cast<UINT32>(decodedData.size())));
+
+            ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(
+                HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
+            m_imageLoadTracker.TrackBitmapImage(bitmapImage.Get());
+            THROW_IF_FAILED(bitmapImage->put_CreateOptions(BitmapCreateOptions::BitmapCreateOptions_IgnoreImageCache));
+            ComPtr<IBitmapSource> bitmapSource;
+            THROW_IF_FAILED(bitmapImage.As(&bitmapSource));
+
+            ComPtr<IRandomAccessStream> randomAccessStream = XamlHelpers::CreateXamlClass<IRandomAccessStream>(
+                HStringReference(RuntimeClass_Windows_Storage_Streams_InMemoryRandomAccessStream));
+
+            ComPtr<IOutputStream> outputStream;
+            THROW_IF_FAILED(randomAccessStream.As(&outputStream));
+
+            ComPtr<IAsyncOperationWithProgress<UINT32, UINT32>> bufferWriteOperation;
+            THROW_IF_FAILED(outputStream->WriteAsync(buffer.Get(), &bufferWriteOperation));
+
+            ComPtr<T> strongImageControl(uiElement);
+            ComPtr<XamlBuilder> strongThis(this);
+            THROW_IF_FAILED(bufferWriteOperation->put_Completed(
+                Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<UINT32, UINT32>>>(
+                    [strongThis, this, bitmapSource, randomAccessStream, strongImageControl](
+                        IAsyncOperationWithProgress<UINT32, UINT32>* /*operation*/, AsyncStatus /*status*/)->HRESULT {
+
+                randomAccessStream->Seek(0);
+                RETURN_IF_FAILED(bitmapSource->SetSource(randomAccessStream.Get()));
+
+                ComPtr<IImageSource> imageSource;
+                RETURN_IF_FAILED(bitmapSource.As(&imageSource));
+
+                SetImageSource(strongImageControl.Get(), imageSource.Get());
+                return S_OK;
+            })
+                .Get()));
+            m_writeAsyncOperations.push_back(bufferWriteOperation);
+            *mustHideElement = false;
+            return;
         }
 
         // Otherwise, no resolver...
@@ -1703,7 +1773,8 @@ namespace AdaptiveNamespace
                 XamlHelpers::CreateXamlClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
 
             Stretch stretch = (isAspectRatioNeeded) ? Stretch::Stretch_Fill : Stretch::Stretch_UniformToFill;
-            SetImageOnUIElement(imageUrl.Get(), ellipse.Get(), resourceResolvers.Get(), stretch);
+            bool mustHideElement{true};
+            SetImageOnUIElement(imageUrl.Get(), ellipse.Get(), resourceResolvers.Get(), &mustHideElement, stretch);
 
             ComPtr<IShape> ellipseAsShape;
             THROW_IF_FAILED(ellipse.As(&ellipseAsShape));
@@ -1762,25 +1833,32 @@ namespace AdaptiveNamespace
                 THROW_IF_FAILED(brushAsImageBrush->get_ImageSource(&imageSource));
                 ComPtr<IBitmapSource> imageSourceAsBitmap;
                 THROW_IF_FAILED(imageSource.As(&imageSourceAsBitmap));
-                // Collapse the Ellipse while the image loads, so that resizing is not noticeable
-                THROW_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
-                // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
-                EventRegistrationToken eventToken;
-                THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([ellipseAsUIElement](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
+                
+                // If the image hasn't loaded yet
+                if (mustHideElement)
+                {
+                    // Collapse the Ellipse while the image loads, so that resizing is not noticeable
+                    THROW_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
+                    // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
+                    EventRegistrationToken eventToken;
+                    THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(
+                        Callback<IRoutedEventHandler>([ellipseAsUIElement](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
                         // Don't set the AutoImageSize on the ellipse as it makes the ellipse grow bigger than
                         // what it would be otherwise, just set the visibility when we get the image
                         return ellipseAsUIElement->put_Visibility(Visibility::Visibility_Visible);
                     })
                         .Get(),
-                    &eventToken));
+                        &eventToken));
+                }
             }
         }
         else
         {
             ComPtr<IImage> xamlImage =
                 XamlHelpers::CreateXamlClass<IImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Image));
-            SetImageOnUIElement(imageUrl.Get(), xamlImage.Get(), resourceResolvers.Get());
+
+            bool mustHideElement{ true };
+            SetImageOnUIElement(imageUrl.Get(), xamlImage.Get(), resourceResolvers.Get(), &mustHideElement);
 
             if (backgroundColor != nullptr)
             {
@@ -1821,18 +1899,26 @@ namespace AdaptiveNamespace
                 ComPtr<IUIElement> imageAsUIElement;
                 THROW_IF_FAILED(xamlImage.As(&imageAsUIElement));
 
-                // Collapse the Image control while the image loads, so that resizing is not noticeable
-                THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
+                // If the image hasn't loaded yet
+                if (mustHideElement)
+                {
+                    // Collapse the Image control while the image loads, so that resizing is not noticeable
+                    THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
 
-                // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
-                EventRegistrationToken eventToken;
-                THROW_IF_FAILED(xamlImage->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([frameworkElement, parentElement, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs *
-                                                                                                         /*args*/) -> HRESULT {
+                    // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
+                    EventRegistrationToken eventToken;
+                    THROW_IF_FAILED(xamlImage->add_ImageOpened(
+                        Callback<IRoutedEventHandler>([frameworkElement, parentElement, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs *
+                            /*args*/) -> HRESULT {
                         return SetAutoImageSize(frameworkElement.Get(), parentElement.Get(), imageSourceAsBitmap.Get());
                     })
                         .Get(),
-                    &eventToken));
+                        &eventToken));
+                }
+                else
+                {
+                    SetAutoImageSize(frameworkElement.Get(), parentElement.Get(), imageSourceAsBitmap.Get());
+                }
             }
         }
 

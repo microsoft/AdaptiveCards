@@ -29,7 +29,7 @@
 			"isSubtle": false,
 			"maxLines": 1,
 			"size": "default",
-			"weight": "default",
+			"weight": "normAl",
 			"wrap": false,
 			"id": "TextBlock_id_mono",
 			"spacing": "default",
@@ -220,7 +220,7 @@
 				},
 				{
 					"type": "TextBlock",
-					"weight": "bolder",
+					"weight": "BoLdEr",
 					"size": "large",
 					"text": "Everybody's got choices"
 				},

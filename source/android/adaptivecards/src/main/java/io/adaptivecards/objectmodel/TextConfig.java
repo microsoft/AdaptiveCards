@@ -51,6 +51,14 @@ public class TextConfig {
     return TextSize.swigToEnum(AdaptiveCardObjectModelJNI.TextConfig_size_get(swigCPtr, this));
   }
 
+  public void setStyle(FontStyle value) {
+    AdaptiveCardObjectModelJNI.TextConfig_style_set(swigCPtr, this, value.swigValue());
+  }
+
+  public FontStyle getStyle() {
+    return FontStyle.swigToEnum(AdaptiveCardObjectModelJNI.TextConfig_style_get(swigCPtr, this));
+  }
+
   public void setColor(ForegroundColor value) {
     AdaptiveCardObjectModelJNI.TextConfig_color_set(swigCPtr, this, value.swigValue());
   }

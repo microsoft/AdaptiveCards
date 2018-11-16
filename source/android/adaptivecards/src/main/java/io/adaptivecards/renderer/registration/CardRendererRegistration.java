@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.AdaptiveCard;
+import io.adaptivecards.objectmodel.AdaptiveCardObjectModel;
 import io.adaptivecards.objectmodel.Column;
 import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.ContainerStyle;
@@ -46,29 +47,27 @@ import io.adaptivecards.renderer.readonly.TextBlockRenderer;
 
 import java.util.HashMap;
 
-import static io.adaptivecards.objectmodel.AdaptiveCardObjectModel.CardElementTypeToString;
-
 public class CardRendererRegistration
 {
     private CardRendererRegistration()
     {
         // Register Readonly Renderers
-        registerRenderer(CardElementTypeToString(CardElementType.Column), ColumnRenderer.getInstance());
-        registerRenderer(CardElementTypeToString(CardElementType.ColumnSet), ColumnSetRenderer.getInstance());
-        registerRenderer(CardElementTypeToString(CardElementType.Container), ContainerRenderer.getInstance());
-        registerRenderer(CardElementTypeToString(CardElementType.FactSet), FactSetRenderer.getInstance());
-        registerRenderer(CardElementTypeToString(CardElementType.Image), ImageRenderer.getInstance());
-        registerRenderer(CardElementTypeToString(CardElementType.ImageSet), ImageSetRenderer.getInstance());
-        registerRenderer(CardElementTypeToString(CardElementType.Media), MediaRenderer.getInstance());
-        registerRenderer(CardElementTypeToString(CardElementType.TextBlock), TextBlockRenderer.getInstance());
+        registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.Column), ColumnRenderer.getInstance());
+        registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.ColumnSet), ColumnSetRenderer.getInstance());
+        registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.Container), ContainerRenderer.getInstance());
+        registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.FactSet), FactSetRenderer.getInstance());
+        registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.Image), ImageRenderer.getInstance());
+        registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.ImageSet), ImageSetRenderer.getInstance());
+        registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.Media), MediaRenderer.getInstance());
+        registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.TextBlock), TextBlockRenderer.getInstance());
 
         // Register Input Renderers
-        registerRenderer(CardElementTypeToString(CardElementType.TextInput), TextInputRenderer.getInstance());
-        registerRenderer(CardElementTypeToString(CardElementType.NumberInput), NumberInputRenderer.getInstance());
-        registerRenderer(CardElementTypeToString(CardElementType.DateInput), DateInputRenderer.getInstance());
-        registerRenderer(CardElementTypeToString(CardElementType.TimeInput), TimeInputRenderer.getInstance());
-        registerRenderer(CardElementTypeToString(CardElementType.ToggleInput), ToggleInputRenderer.getInstance());
-        registerRenderer(CardElementTypeToString(CardElementType.ChoiceSetInput), ChoiceSetInputRenderer.getInstance());
+        registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.TextInput), TextInputRenderer.getInstance());
+        registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.NumberInput), NumberInputRenderer.getInstance());
+        registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.DateInput), DateInputRenderer.getInstance());
+        registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.TimeInput), TimeInputRenderer.getInstance());
+        registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.ToggleInput), ToggleInputRenderer.getInstance());
+        registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.ChoiceSetInput), ChoiceSetInputRenderer.getInstance());
 
         // Register Action Renderer
         m_actionRenderer = ActionElementRenderer.getInstance();
