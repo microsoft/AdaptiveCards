@@ -259,7 +259,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                     "<Storyboard \n" +
                             "xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">\n" +
                         "<DoubleAnimation\n" +
-                            "Storyboard.TargetName=\"togglActionId\"\n" +
+                            "Storyboard.TargetName=\"toggleActionId\"\n" +
                             "Storyboard.TargetProperty=\"(UIElement.RenderTransform).(RotateTransform.Angle)\"\n" +
                             "From=\"180\" To=\"0\" Duration=\"0:0:.35\"\n" +
                         "/>\n" +

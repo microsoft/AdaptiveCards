@@ -111,10 +111,37 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    void HashStoryboard(IStoryboard* storyboard)
+    void HashStoryboard(IAdaptiveRenderContext* renderContext, ITimeline* timeline)
     {
+        ComPtr<ITimeline> localTimeline(timeline);
+
+        ComPtr<IStoryboardStatics> storyboardStatics;
+        GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Animation_Storyboard).Get(), &storyboardStatics);
+
+        HString targetName;
+        storyboardStatics->GetTargetName(localTimeline.Get(), targetName.GetAddressOf());
+
+        if (targetName.IsValid())
+        {
+            ComPtr<AdaptiveNamespace::AdaptiveRenderContext> contextImpl =
+                PeekInnards<AdaptiveNamespace::AdaptiveRenderContext>(renderContext);
+
+            ComPtr<IVector<HSTRING>> storyboardTargetedElements;
+            contextImpl->get_StoryboardTargetedElements(&storyboardTargetedElements);
+
+            storyboardTargetedElements->Append(targetName.Get());
+        }
+
+        ComPtr<IStoryboard> timelineAsStoryboard;
+        localTimeline.As(&timelineAsStoryboard);
+
+        if (timelineAsStoryboard == nullptr)
+        {
+            return;
+        }
+
         ComPtr<IVector<Timeline*>> children;
-        storyboard->get_Children(&children);
+        timelineAsStoryboard->get_Children(&children);
 
         ComPtr<IIterable<Timeline*>> childrenIterable;
         THROW_IF_FAILED(children.As<IIterable<Timeline*>>(&childrenIterable));
@@ -129,23 +156,14 @@ namespace AdaptiveNamespace
         HRESULT hr = childrenIterator->get_HasCurrent(&hasCurrent);
         while (SUCCEEDED(hr) && hasCurrent)
         {
-            Microsoft::WRL::ComPtr<ITimeline> currentTimeline = nullptr;
-            hr = childrenIterator->get_Current(&currentTimeline); //BECKYTODO: IFFAILRETURN?
+            Microsoft::WRL::ComPtr<ITimeline> currentTimeline;
+            hr = childrenIterator->get_Current(&currentTimeline); // BECKYTODO: IFFAILRETURN?
             if (FAILED(hr))
             {
                 break;
             }
 
-            ComPtr<IStoryboard> childAsStoryboard;
-            currentTimeline.As(&childAsStoryboard);
-
-            ComPtr<IStoryboardStatics> storyboardStatics;
-            GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Animation_Storyboard).Get(),
-                                     &storyboardStatics);
-
-            HString targetProperty;
-            storyboardStatics->GetTargetProperty(currentTimeline.Get(), targetProperty.GetAddressOf());
-
+            HashStoryboard(renderContext, currentTimeline.Get());
 
             hr = childrenIterator->MoveNext(&hasCurrent);
         }
@@ -189,12 +207,12 @@ namespace AdaptiveNamespace
             ComPtr<IInspectable> value;
             currentKeyValuePair->get_Value(&value);
 
-            ComPtr<IStoryboard> valueAsStoryBoard;
-            value.As(&valueAsStoryBoard);
+            ComPtr<ITimeline> valueAsTimeline;
+            value.As(&valueAsTimeline);
 
-            if (valueAsStoryBoard != nullptr)
+            if (valueAsTimeline != nullptr)
             {
-                HashStoryboard(valueAsStoryBoard.Get());
+                HashStoryboard(renderContext, valueAsTimeline.Get());
             }
 
             // iterationCallback(current.Get());

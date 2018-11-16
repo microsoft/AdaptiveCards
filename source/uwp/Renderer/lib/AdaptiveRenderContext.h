@@ -36,6 +36,7 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_CardFrameworkElement(_COM_Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** value);
 
         HRESULT put_CardFrameworkElement(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* value);
+        HRESULT get_StoryboardTargetedElements(ABI::Windows::Foundation::Collections::IVector<HSTRING>** targetedElements);
 
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> GetDefaultActionSentimentDictionary();
 
@@ -53,6 +54,7 @@ namespace AdaptiveNamespace
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IFrameworkElement> m_cardFrameworkElement;
 
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_actionSentimentDefaultDictionary;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<HSTRING>> m_storyboardTargetedElements;
     };
 
     ActivatableClass(AdaptiveRenderContext);

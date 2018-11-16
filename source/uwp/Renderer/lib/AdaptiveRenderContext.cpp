@@ -5,6 +5,7 @@
 #include "AdaptiveWarning.h"
 #include "InputValue.h"
 #include "Util.h"
+#include "Vector.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -33,6 +34,8 @@ namespace AdaptiveNamespace
 
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionInvoker>(&m_actionInvoker, renderResult));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveMediaEventInvoker>(&m_mediaEventInvoker, renderResult));
+
+        m_storyboardTargetedElements = Microsoft::WRL::Make<Vector<HSTRING>>();
 
         return S_OK;
     }
@@ -89,6 +92,11 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveRenderContext::get_CardFrameworkElement(_COM_Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** value)
     {
         return m_cardFrameworkElement.CopyTo(value);
+    }
+
+    HRESULT AdaptiveRenderContext::get_StoryboardTargetedElements(ABI::Windows::Foundation::Collections::IVector<HSTRING>** targetedElements)
+    {
+        return m_storyboardTargetedElements.CopyTo(targetedElements);
     }
 
     HRESULT AdaptiveRenderContext::put_CardFrameworkElement(ABI::Windows::UI::Xaml::IFrameworkElement* value)
