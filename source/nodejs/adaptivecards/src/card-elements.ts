@@ -771,33 +771,43 @@ export class TextBlock extends CardElement {
             if (!this._processedText) {
                 var formattedText = TextFormatters.formatText(this.lang, this.text);
 
-                if (AdaptiveCard.allowMarkForTextHighlighting) {
-                    formattedText = formattedText.replace(/<mark>/g, "===").replace(/<\/mark>/g, "/==");
+                if (this.useMarkdown) {
+                    if (AdaptiveCard.allowMarkForTextHighlighting) {
+                        formattedText = formattedText.replace(/<mark>/g, "===").replace(/<\/mark>/g, "/==");
+                    }
+
+                    this._processedText = AdaptiveCard.processMarkdown(formattedText);
+
+                    if (AdaptiveCard.allowMarkForTextHighlighting) {
+                        let markStyle: string = "";
+                        let effectiveStyle = this.getEffectiveStyleDefinition();
+
+                        if (effectiveStyle.highlightBackgroundColor) {
+                            markStyle += "background-color: " + effectiveStyle.highlightBackgroundColor + ";";
+                        }
+
+                        if (effectiveStyle.highlightForegroundColor) {
+                            markStyle += "color: " + effectiveStyle.highlightForegroundColor + ";";
+                        }
+
+                        if (!Utils.isNullOrEmpty(markStyle)) {
+                            markStyle = 'style="' + markStyle + '"';
+                        }
+
+                        this._processedText = this._processedText.replace(/===/g, "<mark " + markStyle + ">").replace(/\/==/g, "</mark>");
+                    }
                 }
-
-                this._processedText = this.useMarkdown ? AdaptiveCard.processMarkdown(formattedText) : formattedText;
-
-                if (AdaptiveCard.allowMarkForTextHighlighting) {
-                    let markStyle: string = "";
-                    let effectiveStyle = this.getEffectiveStyleDefinition();
-
-                    if (effectiveStyle.highlightBackgroundColor) {
-                        markStyle += "background-color: " + effectiveStyle.highlightBackgroundColor + ";";
-                    }
-
-                    if (effectiveStyle.highlightForegroundColor) {
-                        markStyle += "color: " + effectiveStyle.highlightForegroundColor + ";";
-                    }
-
-                    if (!Utils.isNullOrEmpty(markStyle)) {
-                        markStyle = 'style="' + markStyle + '"';
-                    }
-
-                    this._processedText = this._processedText.replace(/===/g, "<mark " + markStyle + ">").replace(/\/==/g, "</mark>");
+                else {
+                    this._processedText = formattedText;
                 }
             }
 
-            element.innerHTML = this._processedText;
+            if (this.useMarkdown) {
+                element.innerHTML = this._processedText;
+            }
+            else {
+                element.innerText = this._processedText;
+            }
 
             if (element.firstElementChild instanceof HTMLElement) {
                 var firstElementChild = <HTMLElement>element.firstElementChild;
