@@ -2,13 +2,14 @@
 //  ACRFactSetRenderer
 //  ACRFactSetRenderer.mm
 //
-//  Copyright © 2017 Microsoft. All rights reserved.
+//  Copyright Â© 2017 Microsoft. All rights reserved.
 //
 #import "ACRTextBlockRenderer.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRFactSetRenderer.h"
 #import "ACRSeparator.h"
 #import "ACRColumnSetView.h"
+#import "Fact.h"
 #import "FactSet.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
