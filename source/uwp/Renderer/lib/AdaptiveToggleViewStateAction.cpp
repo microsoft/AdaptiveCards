@@ -25,7 +25,6 @@ namespace AdaptiveNamespace
         }
 
         RETURN_IF_FAILED(UTF8ToHString(sharedToggleViewStateAction->GetToggleId(), m_toggleId.GetAddressOf()));
-        RETURN_IF_FAILED(UTF8ToHString(sharedToggleViewStateAction->GetToggleTitle(), m_toggleTitle.GetAddressOf()));
 
         InitializeBaseElement(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(sharedToggleViewStateAction));
         return S_OK;
@@ -48,16 +47,6 @@ namespace AdaptiveNamespace
         return m_toggleId.Set(toggleId);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveToggleViewStateAction::get_ToggleTitle(HSTRING* toggleTitle)
-    {
-        return m_toggleTitle.CopyTo(toggleTitle);
-    }
-
-    _Use_decl_annotations_ HRESULT AdaptiveToggleViewStateAction::put_ToggleTitle(HSTRING toggleTitle)
-    {
-        return m_toggleTitle.Set(toggleTitle);
-    }
-
     HRESULT AdaptiveToggleViewStateAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel) try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ToggleViewStateAction> toggleViewStateAction =
@@ -67,10 +56,6 @@ namespace AdaptiveNamespace
         std::string toggleId;
         RETURN_IF_FAILED(HStringToUTF8(m_toggleId.Get(), toggleId));
         toggleViewStateAction->SetToggleId(toggleId);
-
-        std::string toggleTitle;
-        RETURN_IF_FAILED(HStringToUTF8(m_toggleTitle.Get(), toggleTitle));
-        toggleViewStateAction->SetToggleTitle(toggleTitle);
 
         sharedModel = toggleViewStateAction;
         return S_OK;

@@ -15,16 +15,12 @@ namespace AdaptiveSharedNamespace
         std::string GetToggleId() const;
         void SetToggleId(const std::string& value);
 
-        virtual std::string GetToggleTitle() const;
-        virtual void SetToggleTitle(const std::string& value);
-
         Json::Value SerializeToJsonValue() const override;
 
     private:
         void PopulateKnownPropertiesSet() override;
 
         std::string m_toggleId;
-        std::string m_toggleTitle;
     };
 
     class ToggleViewStateActionParser : public ActionElementParser

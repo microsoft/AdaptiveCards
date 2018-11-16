@@ -40,7 +40,7 @@ namespace AdaptiveCardVisualizer
         {
             IsEnabled = false;
 
-            ViewModel = await MainPageViewModel.LoadAsync();
+            ViewModel = await MainPageViewModel.LoadAsync(this.Resources);
             DataContext = ViewModel;
 
             IsEnabled = true;

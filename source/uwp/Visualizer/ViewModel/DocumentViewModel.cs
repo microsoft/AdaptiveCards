@@ -68,7 +68,7 @@ namespace AdaptiveCardVisualizer.ViewModel
             {
                 if (_renderer == null)
                 {
-                    InitializeRenderer(MainPageViewModel.HostConfigEditor.HostConfig);
+                    InitializeRenderer(MainPageViewModel.HostConfigEditor.HostConfig, MainPageViewModel.Resources);
                 }
             }
             catch (Exception ex)
@@ -237,7 +237,7 @@ namespace AdaptiveCardVisualizer.ViewModel
             return answer;
         }
 
-        public static void InitializeRenderer(AdaptiveHostConfig hostConfig)
+        public static void InitializeRenderer(AdaptiveHostConfig hostConfig, ResourceDictionary resources)
         {
             try
             {
@@ -254,6 +254,45 @@ namespace AdaptiveCardVisualizer.ViewModel
 
                 // Custom resource resolvers
                 _renderer.ResourceResolvers.Set("symbol", new MySymbolResourceResolver());
+
+                String toggleAnimation =
+                    "<Storyboard \n" +
+                            "xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">\n" +
+                        "<DoubleAnimation\n" +
+                            "Storyboard.TargetName=\"togglActionId\"\n" +
+                            "Storyboard.TargetProperty=\"(UIElement.RenderTransform).(RotateTransform.Angle)\"\n" +
+                            "From=\"180\" To=\"0\" Duration=\"0:0:.35\"\n" +
+                        "/>\n" +
+                    "</Storyboard>";
+                //        "<DoubleAnimation" +
+                //            "Storyboard.TargetName=\"FooBar\"" +
+                //            "Storyboard.TargetProperty=\"(UIElement.RenderTransform).(CompositeTransform.ScaleY)\"" +
+                //            "From=\"0\" To=\"1\" Duration=\"0:0:.35\"" +
+                //        "/>" +
+                //        "<ObjectAnimationUsingKeyFrames" +
+                //                "Storyboard.TargetName=\"FooBar\"" +
+                //                "Storyboard.TargetProperty=\"(UIElement.Visibility)\">" +
+                //            "<DiscreteObjectKeyFrame KeyTime=\"0\">" +
+                //                "<DiscreteObjectKeyFrame.Value>" +
+                //                    "<Visibility>Collapsed</Visibility>" +
+                //                "</DiscreteObjectKeyFrame.Value>" +
+                //                "</DiscreteObjectKeyFrame>" +
+                //                "<DiscreteObjectKeyFrame KeyTime=\"0:0:0.1\">" +
+                //                "<DiscreteObjectKeyFrame.Value>" +
+                //                    "<Visibility>Visible</Visibility>" +
+                //                "</DiscreteObjectKeyFrame.Value>" +
+                //           "</DiscreteObjectKeyFrame>" +
+                //    "</ObjectAnimationUsingKeyFrames>" +
+                //"</Storyboard>";
+
+                var foo = Windows.UI.Xaml.Markup.XamlReader.Load(toggleAnimation);
+
+                _renderer.OverrideStyles = new ResourceDictionary();
+                _renderer.OverrideStyles.Add("Adaptive.Action.ToggleViewState", resources["Adaptive.Action.ToggleViewState"]);
+
+                //var foo = resources["Adaptive.Storyboard.Action.ToggleViewState.toggleActionId"];
+                _renderer.OverrideStyles.Add("Adaptive.Storyboard.Action.ToggleViewState.toggleActionId", foo);
+                //_renderer.OverrideStyles.Add("Adaptive.Storyboard.Reverse.Action.ToggleViewState.toggleActionId", resources["Adaptive.Storyboard.Reverse.Action.ToggleViewState.toggleActionId"]);
 
                 /*
                  * Example on how to override the Action Positive and Destructive styles

@@ -1,20 +1,30 @@
 using AdaptiveCards.Rendering.Uwp;
+using AdaptiveCardVisualizer.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
-using AdaptiveCardVisualizer.Helpers;
+using Windows.UI.Xaml;
 
 namespace AdaptiveCardVisualizer.ViewModel
 {
     public class MainPageViewModel : BindableBase
     {
+        private ResourceDictionary _resources;
+        public ResourceDictionary Resources
+        {
+            get { return _resources; }
+        }
+
+        public MainPageViewModel(ResourceDictionary resources)
+        {
+            _resources = resources;
+        }
+
         public ObservableCollection<DocumentViewModel> OpenDocuments { get; private set; } = new ObservableCollection<DocumentViewModel>();
 
         private DocumentViewModel _currentDocument;
@@ -48,7 +58,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                     Settings.UseFixedDimensions = value;
 
                     // Need to re-initialize Renderer so it changes whether it uses fixed dimensions
-                    DocumentViewModel.InitializeRenderer(HostConfigEditor.HostConfig);
+                    DocumentViewModel.InitializeRenderer(HostConfigEditor.HostConfig, _resources);
                     ReRenderCards();
                 }
             }
@@ -118,9 +128,9 @@ namespace AdaptiveCardVisualizer.ViewModel
             }
         }
 
-        public static async Task<MainPageViewModel> LoadAsync()
+        public static async Task<MainPageViewModel> LoadAsync(ResourceDictionary resources)
         {
-            var viewModel = new MainPageViewModel();
+            var viewModel = new MainPageViewModel(resources);
 
             viewModel.HostConfigEditor = await HostConfigEditorViewModel.LoadAsync(viewModel);
             viewModel.HostConfigEditor.HostConfigChanged += viewModel.HostConfigEditor_HostConfigChanged;
@@ -179,19 +189,19 @@ namespace AdaptiveCardVisualizer.ViewModel
 
         private void HostConfigEditor_HostConfigChanged(object sender, AdaptiveHostConfig e)
         {
-            DocumentViewModel.InitializeRenderer(e);
+            DocumentViewModel.InitializeRenderer(e, _resources);
             ReRenderCards();
         }
 
         private void FrameEditor_FrameChanged(object sender, string e)
         {
-            DocumentViewModel.InitializeRenderer(HostConfigEditor.HostConfig);
+            DocumentViewModel.InitializeRenderer(HostConfigEditor.HostConfig, _resources);
             ReRenderCards();
         }
 
         private void RuntimeObjectEditor_RuntimeObjectChanged(object sender, string e)
         {
-            DocumentViewModel.InitializeRenderer(HostConfigEditor.HostConfig);
+            DocumentViewModel.InitializeRenderer(HostConfigEditor.HostConfig, _resources);
             ReRenderCards();
         }
 

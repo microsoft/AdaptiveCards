@@ -2626,9 +2626,6 @@ AdaptiveNamespaceStart
     {
         [propget] HRESULT ToggleId([out, retval] HSTRING* value);
         [propput] HRESULT ToggleId([in] HSTRING value);
-
-        [propget] HRESULT ToggleTitle([out, retval] HSTRING * value);
-        [propput] HRESULT ToggleTitle([in] HSTRING value);
     };
 
     [version(NTDDI_WIN10_RS1),

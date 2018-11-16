@@ -160,7 +160,6 @@ namespace AdaptiveSharedNamespace
         Title,
         ToggleId,
         ToggleInput,
-        ToggleTitle,
         Top,
         Type,
         Url,

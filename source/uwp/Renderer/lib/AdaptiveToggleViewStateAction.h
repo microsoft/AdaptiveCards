@@ -24,9 +24,6 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_ToggleId(_Out_ HSTRING* data);
         IFACEMETHODIMP put_ToggleId(_In_ HSTRING data);
 
-        IFACEMETHODIMP get_ToggleTitle(_Out_ HSTRING* data);
-        IFACEMETHODIMP put_ToggleTitle(_In_ HSTRING data);
-
         // IAdaptiveActionElement
         IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType);
         IFACEMETHODIMP get_ActionTypeString(_Out_ HSTRING* value)
@@ -67,7 +64,6 @@ namespace AdaptiveNamespace
 
     private:
         Microsoft::WRL::Wrappers::HString m_toggleId;
-        Microsoft::WRL::Wrappers::HString m_toggleTitle;
     };
 
     ActivatableClass(AdaptiveToggleViewStateAction);

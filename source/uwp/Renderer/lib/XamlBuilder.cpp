@@ -39,6 +39,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
 using namespace ABI::Windows::UI::Xaml::Markup;
 using namespace ABI::Windows::UI::Xaml::Media;
+using namespace ABI::Windows::UI::Xaml::Media::Animation;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 using namespace ABI::Windows::UI::Xaml::Shapes;
 using namespace ABI::Windows::UI::Xaml::Input;
@@ -110,6 +111,83 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    void HashStoryboard(IStoryboard* storyboard)
+    {
+        ComPtr<IVector<Timeline*>> children;
+        storyboard->get_Children(&children);
+
+        ComPtr<IIterable<Timeline*>> childrenIterable;
+        THROW_IF_FAILED(children.As<IIterable<Timeline*>>(&childrenIterable));
+
+        Microsoft::WRL::ComPtr<IIterator<Timeline*>> childrenIterator;
+        if (FAILED(childrenIterable->First(&childrenIterator)))
+        {
+            return;
+        }
+
+        boolean hasCurrent = false;
+        HRESULT hr = childrenIterator->get_HasCurrent(&hasCurrent);
+        while (SUCCEEDED(hr) && hasCurrent)
+        {
+            Microsoft::WRL::ComPtr<ITimeline> currenTimeline = nullptr;
+            hr = childrenIterator->get_Current(&currenTimeline); //BECKYTODO: IFFAILRETURN?
+            if (FAILED(hr))
+            {
+                break;
+            }
+
+            
+
+            hr = childrenIterator->MoveNext(&hasCurrent);
+        }
+    }
+
+    void HashStoryboards(IAdaptiveRenderContext* renderContext)
+    {
+        ComPtr<IResourceDictionary> resourceDictionary;
+        THROW_IF_FAILED(renderContext->get_OverrideStyles(&resourceDictionary));
+
+        ComPtr<IResourceDictionary> localDictionary = resourceDictionary;
+        ComPtr<IIterable<IKeyValuePair<IInspectable*, IInspectable*>*>> resourceDictionaryIterable;
+        localDictionary.As(&resourceDictionaryIterable);
+
+        Microsoft::WRL::ComPtr<IIterator<IKeyValuePair<IInspectable*, IInspectable*>*>> resourceDictionaryIterator;
+        if (FAILED(resourceDictionaryIterable->First(&resourceDictionaryIterator)))
+        {
+            return;
+        }
+
+        boolean hasCurrent = false;
+        HRESULT hr = resourceDictionaryIterator->get_HasCurrent(&hasCurrent);
+        while (SUCCEEDED(hr) && hasCurrent)
+        {
+            Microsoft::WRL::ComPtr<IKeyValuePair<IInspectable*, IInspectable*>> currentKeyValuePair;
+            hr = resourceDictionaryIterator->get_Current(&currentKeyValuePair);
+            if (FAILED(hr))
+            {
+                break;
+            }
+
+            ComPtr<IInspectable> key;
+            currentKeyValuePair->get_Key(&key);
+
+            ComPtr<IPropertyValue> keyAsPropVal;
+            key.As(&keyAsPropVal);
+
+            HString keyString;
+            keyAsPropVal->GetString(keyString.GetAddressOf());
+
+            ComPtr<IInspectable> value;
+            currentKeyValuePair->get_Value(&value);
+
+            ComPtr<IStoryboard> valueAsStoryBoard;
+            value.As(&valueAsStoryBoard);
+
+            // iterationCallback(current.Get());
+            hr = resourceDictionaryIterator->MoveNext(&hasCurrent);
+        }
+    }
+
     _Use_decl_annotations_ void XamlBuilder::BuildXamlTreeFromAdaptiveCard(IAdaptiveCard* adaptiveCard,
                                                                            IFrameworkElement** xamlTreeRoot,
                                                                            IAdaptiveRenderContext* renderContext,
@@ -117,6 +195,8 @@ namespace AdaptiveNamespace
                                                                            boolean isOuterCard,
                                                                            ABI::AdaptiveNamespace::ContainerStyle defaultContainerStyle)
     {
+        HashStoryboards(renderContext);
+
         *xamlTreeRoot = nullptr;
         if (adaptiveCard != nullptr)
         {
@@ -1056,9 +1136,6 @@ namespace AdaptiveNamespace
                 (currentVisibility == Visibility_Collapsed) ? Visibility_Visible : Visibility_Collapsed));
         }
 
-        HString toggleTitle;
-        toggleAction->get_ToggleTitle(toggleTitle.GetAddressOf());
-
         HString title;
         action->get_Title(title.GetAddressOf());
 
@@ -1072,9 +1149,6 @@ namespace AdaptiveNamespace
         boolean isCheckedValue;
         isChecked->get_Value(&isCheckedValue);
 
-        // BECKYTODO - handle icons...
-        XamlHelpers::SetContent(localButton.Get(), isCheckedValue ? toggleTitle.Get() : title.Get());
-       
         return S_OK;
     }
 
@@ -1222,8 +1296,8 @@ namespace AdaptiveNamespace
                 }
                 else
                 {
-                    ComPtr<IButton> button = XamlHelpers::CreateXamlClass<IButton>(
-                        HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Button));
+                    ComPtr<IButton> button =
+                        XamlHelpers::CreateXamlClass<IButton>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Button));
                     button.As(&buttonBase);
                 }
 
@@ -1287,41 +1361,42 @@ namespace AdaptiveNamespace
                 THROW_IF_FAILED(strongRenderContext->get_ActionInvoker(&actionInvoker));
                 EventRegistrationToken clickToken;
                 THROW_IF_FAILED(buttonBase->add_Click(
-                    Callback<IRoutedEventHandler>([action, actionType, showCardActionMode, uiShowCard, allShowCards, actionInvoker, strongRenderContext, buttonBase](
-                                                      IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
-                        if (actionType == ABI::AdaptiveNamespace::ActionType::ShowCard &&
-                            showCardActionMode != ABI::AdaptiveNamespace::ActionMode_Popup)
-                        {
-                            // Check if this show card is currently visible
-                            Visibility currentVisibility;
-                            RETURN_IF_FAILED(uiShowCard->get_Visibility(&currentVisibility));
-
-                            // Collapse all cards to make sure that no other show cards are visible
-                            for (std::vector<ComPtr<IUIElement>>::iterator it = allShowCards->begin();
-                                 it != allShowCards->end();
-                                 ++it)
+                    Callback<IRoutedEventHandler>(
+                        [action, actionType, showCardActionMode, uiShowCard, allShowCards, actionInvoker, strongRenderContext, buttonBase](
+                            IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
+                            if (actionType == ABI::AdaptiveNamespace::ActionType::ShowCard &&
+                                showCardActionMode != ABI::AdaptiveNamespace::ActionMode_Popup)
                             {
-                                RETURN_IF_FAILED((*it)->put_Visibility(Visibility_Collapsed));
+                                // Check if this show card is currently visible
+                                Visibility currentVisibility;
+                                RETURN_IF_FAILED(uiShowCard->get_Visibility(&currentVisibility));
+
+                                // Collapse all cards to make sure that no other show cards are visible
+                                for (std::vector<ComPtr<IUIElement>>::iterator it = allShowCards->begin();
+                                     it != allShowCards->end();
+                                     ++it)
+                                {
+                                    RETURN_IF_FAILED((*it)->put_Visibility(Visibility_Collapsed));
+                                }
+
+                                // If the card had been collapsed before, show it now
+                                if (currentVisibility == Visibility_Collapsed)
+                                {
+                                    RETURN_IF_FAILED(uiShowCard->put_Visibility(Visibility_Visible));
+                                }
+                            }
+                            else if (actionType == ABI::AdaptiveNamespace::ActionType::ToggleViewState)
+                            {
+                                RETURN_IF_FAILED(
+                                    HandleToggleViewStateClick(strongRenderContext.Get(), action.Get(), buttonBase.Get()));
+                            }
+                            else
+                            {
+                                RETURN_IF_FAILED(actionInvoker->SendActionEvent(action.Get()));
                             }
 
-                            // If the card had been collapsed before, show it now
-                            if (currentVisibility == Visibility_Collapsed)
-                            {
-                                RETURN_IF_FAILED(uiShowCard->put_Visibility(Visibility_Visible));
-                            }
-                        }
-                        else if (actionType == ABI::AdaptiveNamespace::ActionType::ToggleViewState)
-                        {
-                            RETURN_IF_FAILED(
-                                HandleToggleViewStateClick(strongRenderContext.Get(), action.Get(), buttonBase.Get()));
-                        }
-                        else
-                        {
-                            RETURN_IF_FAILED(actionInvoker->SendActionEvent(action.Get()));
-                        }
-
-                        return S_OK;
-                    })
+                            return S_OK;
+                        })
                         .Get(),
                     &clickToken));
 
@@ -1391,8 +1466,10 @@ namespace AdaptiveNamespace
                 }
                 else
                 {
-                    THROW_IF_FAILED(
-                        SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action", buttonFrameworkElement.Get()));
+                    std::wstring resourceName =
+                        (actionType == ActionType_ToggleViewState) ? L"Adaptive.Action.ToggleViewState" : L"Adaptive.Action";
+
+                    THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, resourceName, buttonFrameworkElement.Get()));
                 }
 
                 XamlHelpers::AppendXamlElementToPanel(buttonBase.Get(), actionsPanel.Get());
