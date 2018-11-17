@@ -129,6 +129,12 @@ namespace AdaptiveCards.Rendering.Html
         {
         }
     }
+    public class SpanTag : HtmlTag
+    {
+        public SpanTag() : base("span", false)
+        {
+        }
+    }
 
     public class LinkTag : HtmlTag
     {

@@ -33,6 +33,16 @@ namespace AdaptiveCards.Rendering.Html
             return "ac-action-" + suffix.Replace(suffix[0], char.ToLower(suffix[0]));
         };
 
+        ///// <summary>
+        ///// Adds a CSS class to the TextInput inline action is "ac-action-inline-actin"
+        ///// </summary>
+        //public static Func<AdaptiveAction, string> GetActionCssClass = (action) =>
+        //{
+        //    var lenFromDot = action.Type.IndexOf(".") + 1;
+        //    var suffix = action.Type.Substring(lenFromDot, action.Type.Length - lenFromDot);
+        //    return "ac-action-" + suffix.Replace(suffix[0], char.ToLower(suffix[0]));
+        //};
+
         /// <summary>
         /// A set of transforms that are applied to the HtmlTags for specific types
         /// </summary>
@@ -103,6 +113,17 @@ namespace AdaptiveCards.Rendering.Html
         protected static HtmlTag AddActionAttributes(AdaptiveAction action, HtmlTag tag, AdaptiveRenderContext context)
         {
             tag.AddClass(GetActionCssClass(action))
+                .Attr("role", "button")
+                .Attr("aria-label", action.Title ?? "");
+
+            ActionTransformers.Apply(action, tag, context);
+
+            return tag;
+        }
+
+        protected static HtmlTag AddInlineActionAttributes(AdaptiveAction action, HtmlTag tag, AdaptiveRenderContext context)
+        {
+            tag.AddClass("ac-action-inlineAction")
                 .Attr("role", "button")
                 .Attr("aria-label", action.Title ?? "");
 
@@ -1326,8 +1347,16 @@ namespace AdaptiveCards.Rendering.Html
             uiTextInput
                 .Attr("name", input.Id)
                 .AddClass("ac-textinput")
-                .AddClass("ac-input")
-                .Style("width", "100%");
+                .AddClass("ac-input");
+
+            if (input.InlineAction != null)
+            { 
+                uiTextInput.Style("width", "100%");
+            }
+            else
+            {
+                uiTextInput.Style("flex", "1 1 auto");
+            }
 
             if (!string.IsNullOrEmpty(input.Placeholder))
             {
@@ -1344,6 +1373,56 @@ namespace AdaptiveCards.Rendering.Html
                 uiTextInput.Style("flex", "1 1 100%");
             }
 
+            if (context.Config.SupportsInteractivity)
+            {
+                // ShowCard Inline Action Mode is not supported
+                if(input.InlineAction.Type == AdaptiveShowCardAction.TypeName &&
+                     context.Config.Actions.ShowCard.ActionMode == ShowCardActionMode.Inline)
+                {
+                    context.Warnings.Add(new AdaptiveWarning(-1, "Inline ShowCard not supported for InlineAction"));
+                }
+                else
+                {
+                    var uiContainer = new DivTag()
+                        .Style("overflow", "hidden")
+                        .Style("display", "flex");
+
+                    uiContainer.Children.Add(uiTextInput);
+
+                    var actionsConfig = context.Config.Actions;
+
+                    var buttonElement = new HtmlTag("button", false)
+                        .Attr("type", "button")
+                        .Style("overflow", "hidden")
+                        .Style("white-space", "nowrap")
+                        .Style("text-overflow", "ellipsis")
+                        .Style("flex", "0 1 auto")
+                        .Style("display", "flex")
+                        .Style("align-items", "center")
+                        .Style("justify-content", "center");
+
+                    if (input.InlineAction.IconUrl != null)
+                    {
+                        // Append the icon to the button
+                        // NOTE: always using icon size since it's difficult
+                        // to match icon's height with text's height
+                        var iconElement = new HtmlTag("image", false)
+                            .Attr("src", input.InlineAction.IconUrl)
+                            .Style("max-height", $"{actionsConfig.IconSize}px");
+
+                        buttonElement.Append(iconElement);
+                    } 
+                    else 
+                    {
+                        var titleElement = new HtmlTag("div", false) { Text = input.InlineAction.Title };
+                        buttonElement.Append(titleElement);
+                    }
+
+                    AddInlineActionAttributes(input.InlineAction, buttonElement, context);
+                    uiContainer.Children.Add(buttonElement);
+                    return uiContainer;
+                }
+            }
             return uiTextInput;
         }
 
