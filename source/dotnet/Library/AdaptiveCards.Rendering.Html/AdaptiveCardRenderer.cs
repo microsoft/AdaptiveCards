@@ -33,16 +33,6 @@ namespace AdaptiveCards.Rendering.Html
             return "ac-action-" + suffix.Replace(suffix[0], char.ToLower(suffix[0]));
         };
 
-        ///// <summary>
-        ///// Adds a CSS class to the TextInput inline action is "ac-action-inline-actin"
-        ///// </summary>
-        //public static Func<AdaptiveAction, string> GetActionCssClass = (action) =>
-        //{
-        //    var lenFromDot = action.Type.IndexOf(".") + 1;
-        //    var suffix = action.Type.Substring(lenFromDot, action.Type.Length - lenFromDot);
-        //    return "ac-action-" + suffix.Replace(suffix[0], char.ToLower(suffix[0]));
-        //};
-
         /// <summary>
         /// A set of transforms that are applied to the HtmlTags for specific types
         /// </summary>
