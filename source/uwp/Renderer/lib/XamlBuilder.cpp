@@ -6,6 +6,7 @@
 #include "AdaptiveImage.h"
 #include <windows.foundation.collections.h>
 #include <windows.storage.h>
+#include <windows.ui.xaml.markup.h>
 #include <windows.ui.xaml.shapes.h>
 #include <windows.web.http.h>
 #include <windows.web.http.filters.h>
@@ -21,6 +22,8 @@
 #include "HtmlHelpers.h"
 #include "DateTimeParser.h"
 #include "MediaHelpers.h"
+#include "AdaptiveBase64Util.h"
+#include <robuffer.h>
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -36,6 +39,7 @@ using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Data;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
+using namespace ABI::Windows::UI::Xaml::Markup;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
 using namespace ABI::Windows::UI::Xaml::Shapes;
@@ -311,6 +315,39 @@ namespace AdaptiveNamespace
         return E_FAIL;
     }
 
+    HRESULT XamlBuilder::TryInsertResourceToResourceDictionaries(IResourceDictionary* resourceDictionary,
+                                                                 std::wstring resourceName,
+                                                                 IInspectable* value)
+    {
+        if (resourceDictionary == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
+        try
+        {
+            ComPtr<IPropertyValueStatics> propertyValueStatics;
+            THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(),
+                                                 &propertyValueStatics));
+
+            ComPtr<IInspectable> resourceKey;
+            THROW_IF_FAILED(propertyValueStatics->CreateString(HStringReference(resourceName.c_str()).Get(),
+                                                               resourceKey.GetAddressOf()));
+
+            ComPtr<IResourceDictionary> strongDictionary = resourceDictionary;
+            ComPtr<IMap<IInspectable*, IInspectable*>> resourceDictionaryMap;
+            THROW_IF_FAILED(strongDictionary.As(&resourceDictionaryMap));
+
+            boolean replaced{};
+            THROW_IF_FAILED(resourceDictionaryMap->Insert(resourceKey.Get(), value, &replaced));
+            return S_OK;
+        }
+        catch (...)
+        {
+        }
+        return E_FAIL;
+    }
+
     HRESULT XamlBuilder::SetStyleFromResourceDictionary(IAdaptiveRenderContext* renderContext,
                                                         std::wstring resourceName,
                                                         IFrameworkElement* frameworkElement)
@@ -492,8 +529,11 @@ namespace AdaptiveNamespace
     void XamlBuilder::SetImageOnUIElement(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl,
                                           T* uiElement,
                                           IAdaptiveCardResourceResolvers* resolvers,
+                                          _Out_ bool* mustHideElement,
                                           _In_ ABI::Windows::UI::Xaml::Media::Stretch stretch)
     {
+        *mustHideElement = true;
+
         // Get the image url scheme
         HString schemeName;
         THROW_IF_FAILED(imageUrl->get_SchemeName(schemeName.GetAddressOf()));
@@ -564,6 +604,71 @@ namespace AdaptiveNamespace
 
                 return;
             }
+        }
+
+        INT32 isDataUriImage{};
+        THROW_IF_FAILED(WindowsCompareStringOrdinal(schemeName.Get(), HStringReference(L"data").Get(), &isDataUriImage));
+        if (isDataUriImage == 0)
+        {
+            // Decode base 64 string
+            HString dataPath;
+            THROW_IF_FAILED(imageUrl->get_Path(dataPath.GetAddressOf()));
+
+            std::string data = AdaptiveBase64Util::ExtractDataFromUri(HStringToUTF8(dataPath.Get()));
+            std::vector<char> decodedData = AdaptiveBase64Util::Decode(data);
+
+            ComPtr<IBufferFactory> bufferFactory;
+            THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Storage_Streams_Buffer).Get(), bufferFactory.GetAddressOf()));
+
+            ComPtr<IBuffer> buffer;
+            THROW_IF_FAILED(bufferFactory->Create(static_cast<UINT32>(decodedData.size()), buffer.GetAddressOf()));
+
+            ComPtr<::Windows::Storage::Streams::IBufferByteAccess> bufferByteAccess;
+            THROW_IF_FAILED(buffer.As(&bufferByteAccess));
+
+            BYTE* dataInternal{};
+            THROW_IF_FAILED(bufferByteAccess->Buffer(&dataInternal));
+
+            memcpy_s(dataInternal, decodedData.size(), decodedData.data(), decodedData.size());
+
+            THROW_IF_FAILED(buffer->put_Length(static_cast<UINT32>(decodedData.size())));
+
+            ComPtr<IBitmapImage> bitmapImage = XamlHelpers::CreateXamlClass<IBitmapImage>(
+                HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Imaging_BitmapImage));
+            m_imageLoadTracker.TrackBitmapImage(bitmapImage.Get());
+            THROW_IF_FAILED(bitmapImage->put_CreateOptions(BitmapCreateOptions::BitmapCreateOptions_IgnoreImageCache));
+            ComPtr<IBitmapSource> bitmapSource;
+            THROW_IF_FAILED(bitmapImage.As(&bitmapSource));
+
+            ComPtr<IRandomAccessStream> randomAccessStream = XamlHelpers::CreateXamlClass<IRandomAccessStream>(
+                HStringReference(RuntimeClass_Windows_Storage_Streams_InMemoryRandomAccessStream));
+
+            ComPtr<IOutputStream> outputStream;
+            THROW_IF_FAILED(randomAccessStream.As(&outputStream));
+
+            ComPtr<IAsyncOperationWithProgress<UINT32, UINT32>> bufferWriteOperation;
+            THROW_IF_FAILED(outputStream->WriteAsync(buffer.Get(), &bufferWriteOperation));
+
+            ComPtr<T> strongImageControl(uiElement);
+            ComPtr<XamlBuilder> strongThis(this);
+            THROW_IF_FAILED(bufferWriteOperation->put_Completed(
+                Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<UINT32, UINT32>>>(
+                    [strongThis, this, bitmapSource, randomAccessStream, strongImageControl](
+                        IAsyncOperationWithProgress<UINT32, UINT32>* /*operation*/, AsyncStatus /*status*/)->HRESULT {
+
+                randomAccessStream->Seek(0);
+                RETURN_IF_FAILED(bitmapSource->SetSource(randomAccessStream.Get()));
+
+                ComPtr<IImageSource> imageSource;
+                RETURN_IF_FAILED(bitmapSource.As(&imageSource));
+
+                SetImageSource(strongImageControl.Get(), imageSource.Get());
+                return S_OK;
+            })
+                .Get()));
+            m_writeAsyncOperations.push_back(bufferWriteOperation);
+            *mustHideElement = false;
+            return;
         }
 
         // Otherwise, no resolver...
@@ -1146,7 +1251,72 @@ namespace AdaptiveNamespace
                         .Get(),
                     &clickToken));
 
-                THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action", buttonFrameworkElement.Get()));
+                ABI::AdaptiveNamespace::Sentiment actionSentiment;
+                THROW_IF_FAILED(action->get_Sentiment(&actionSentiment));
+
+                if (actionSentiment == ABI::AdaptiveNamespace::Sentiment_Positive ||
+                    actionSentiment == ABI::AdaptiveNamespace::Sentiment_Destructive)
+                {
+                    ComPtr<IResourceDictionary> resourceDictionary;
+                    THROW_IF_FAILED(renderContext->get_OverrideStyles(&resourceDictionary));
+                    ComPtr<IInspectable> subtleOpacityInspectable;
+
+                    if (actionSentiment == ABI::AdaptiveNamespace::Sentiment_Positive)
+                    {
+                        if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IInspectable>(resourceDictionary.Get(),
+                                                                                           L"Adaptive.Action.Positive",
+                                                                                           &subtleOpacityInspectable)))
+                        {
+                            THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext,
+                                                                           L"Adaptive.Action.Positive",
+                                                                           buttonFrameworkElement.Get()));
+                        }
+                        else
+                        {
+                            // By default, set the action background color to accent color
+                            ComPtr<IResourceDictionary> actionSentimentDictionary =
+                                renderContext->GetDefaultActionSentimentDictionary();
+
+                            ComPtr<IStyle> actionPositiveSentimentStyle;
+                            if (SUCCEEDED(TryGetResourceFromResourceDictionaries(actionSentimentDictionary.Get(),
+                                                                                 L"PositiveActionDefaultStyle",
+                                                                                 actionPositiveSentimentStyle.GetAddressOf())))
+                            {
+                                THROW_IF_FAILED(buttonFrameworkElement->put_Style(actionPositiveSentimentStyle.Get()));
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IInspectable>(resourceDictionary.Get(),
+                                                                                           L"Adaptive.Action.Destructive",
+                                                                                           &subtleOpacityInspectable)))
+                        {
+                            THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext,
+                                                                           L"Adaptive.Action.Destructive",
+                                                                           buttonFrameworkElement.Get()));
+                        }
+                        else
+                        {
+                            // By default, set the action text color to attention color
+                            ComPtr<IResourceDictionary> actionSentimentDictionary =
+                                renderContext->GetDefaultActionSentimentDictionary();
+
+                            ComPtr<IStyle> actionDestructiveSentimentStyle;
+                            if (SUCCEEDED(TryGetResourceFromResourceDictionaries(actionSentimentDictionary.Get(),
+                                                                                 L"DestructiveActionDefaultStyle",
+                                                                                 actionDestructiveSentimentStyle.GetAddressOf())))
+                            {
+                                THROW_IF_FAILED(buttonFrameworkElement->put_Style(actionDestructiveSentimentStyle.Get()));
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    THROW_IF_FAILED(
+                        SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action", buttonFrameworkElement.Get()));
+                }
 
                 XamlHelpers::AppendXamlElementToPanel(button.Get(), actionsPanel.Get());
 
@@ -1238,7 +1408,8 @@ namespace AdaptiveNamespace
         return solidColorBrushAsBrush;
     }
 
-    _Use_decl_annotations_ void XamlBuilder::StyleXamlTextBlock(ABI::AdaptiveNamespace::TextSize size,
+    _Use_decl_annotations_ void XamlBuilder::StyleXamlTextBlock(ABI::AdaptiveNamespace::FontStyle fontStyle,
+                                                                ABI::AdaptiveNamespace::TextSize size,
                                                                 ABI::AdaptiveNamespace::ForegroundColor color,
                                                                 ABI::AdaptiveNamespace::ContainerStyle containerStyle,
                                                                 bool isSubtle,
@@ -1256,49 +1427,17 @@ namespace AdaptiveNamespace
         ComPtr<IBrush> fontColorBrush = GetSolidColorBrush(fontColor);
         THROW_IF_FAILED(localTextBlock->put_Foreground(fontColorBrush.Get()));
 
-        // Retrieve the Font Size from Host Options
-        ComPtr<IAdaptiveFontSizesConfig> fontSizesConfig;
-        THROW_IF_FAILED(hostConfig->get_FontSizes(&fontSizesConfig));
+        HString fontFamilyName;
         UINT32 fontSize;
-        switch (size)
-        {
-        case ABI::AdaptiveNamespace::TextSize::Small:
-            THROW_IF_FAILED(fontSizesConfig->get_Small(&fontSize));
-            break;
-        case ABI::AdaptiveNamespace::TextSize::Medium:
-            THROW_IF_FAILED(fontSizesConfig->get_Medium(&fontSize));
-            break;
-        case ABI::AdaptiveNamespace::TextSize::Large:
-            THROW_IF_FAILED(fontSizesConfig->get_Large(&fontSize));
-            break;
-        case ABI::AdaptiveNamespace::TextSize::ExtraLarge:
-            THROW_IF_FAILED(fontSizesConfig->get_ExtraLarge(&fontSize));
-            break;
-        case ABI::AdaptiveNamespace::TextSize::Default:
-        default:
-            THROW_IF_FAILED(fontSizesConfig->get_Default(&fontSize));
-            break;
-        }
+        ABI::Windows::UI::Text::FontWeight xamlFontWeight;
+
+        // Retrieve the desired FontFamily, FontSize, and FontWeight values
+        THROW_IF_FAILED(GetFontDataFromStyle(hostConfig, fontStyle, size, weight, fontFamilyName.GetAddressOf(), &fontSize, &xamlFontWeight));
+
+        // Apply font size
         THROW_IF_FAILED(localTextBlock->put_FontSize((double)fontSize));
 
-        ComPtr<IAdaptiveFontWeightsConfig> fontWeightsConfig;
-        THROW_IF_FAILED(hostConfig->get_FontWeights(&fontWeightsConfig));
-
-        ABI::Windows::UI::Text::FontWeight xamlFontWeight;
-        switch (weight)
-        {
-        case ABI::AdaptiveNamespace::TextWeight::Lighter:
-            THROW_IF_FAILED(fontWeightsConfig->get_Lighter(&xamlFontWeight.Weight));
-            break;
-        case ABI::AdaptiveNamespace::TextWeight::Bolder:
-            THROW_IF_FAILED(fontWeightsConfig->get_Bolder(&xamlFontWeight.Weight));
-            break;
-        case ABI::AdaptiveNamespace::TextWeight::Default:
-        default:
-            THROW_IF_FAILED(fontWeightsConfig->get_Default(&xamlFontWeight.Weight));
-            break;
-        }
-
+        // Apply font weight
         THROW_IF_FAILED(localTextBlock->put_FontWeight(xamlFontWeight));
 
         // Apply the wrap value to the xaml element
@@ -1307,9 +1446,6 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(localTextBlock->put_TextTrimming(TextTrimming::TextTrimming_CharacterEllipsis));
 
         // Apply font family
-        HString fontFamilyName;
-        THROW_IF_FAILED(hostConfig->get_FontFamily(fontFamilyName.GetAddressOf()));
-
         ComPtr<IInspectable> inspectable;
         ComPtr<IFontFamily> fontFamily;
         ComPtr<IFontFamilyFactory> fontFamilyFactory;
@@ -1331,20 +1467,39 @@ namespace AdaptiveNamespace
     {
         ABI::AdaptiveNamespace::TextWeight textWeight;
         THROW_IF_FAILED(textConfig->get_Weight(&textWeight));
+
         ABI::AdaptiveNamespace::ForegroundColor textColor;
         THROW_IF_FAILED(textConfig->get_Color(&textColor));
+
         ABI::AdaptiveNamespace::TextSize textSize;
         THROW_IF_FAILED(textConfig->get_Size(&textSize));
+
         boolean isSubtle;
         THROW_IF_FAILED(textConfig->get_IsSubtle(&isSubtle));
+
         boolean wrap;
         THROW_IF_FAILED(textConfig->get_Wrap(&wrap));
+
         UINT32 maxWidth;
         THROW_IF_FAILED(textConfig->get_MaxWidth(&maxWidth));
-        StyleXamlTextBlock(textSize, textColor, containerStyle, Boolify(isSubtle), wrap, maxWidth, textWeight, xamlTextBlock, hostConfig);
+
+        StyleXamlTextBlock(ABI::AdaptiveNamespace::FontStyle::Default,
+                           textSize,
+                           textColor,
+                           containerStyle,
+                           Boolify(isSubtle),
+                           wrap,
+                           maxWidth,
+                           textWeight,
+                           xamlTextBlock,
+                           hostConfig);
     }
 
-    HRESULT SetTextOnXamlTextBlock(IAdaptiveRenderContext* renderContext, HSTRING textIn, HSTRING language, ITextBlock* textBlock)
+    HRESULT SetTextOnXamlTextBlock(IAdaptiveRenderContext* renderContext,
+                                   HSTRING textIn,
+                                   ABI::AdaptiveNamespace::FontStyle fontStyle,
+                                   HSTRING language,
+                                   ITextBlock* textBlock)
     {
         ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> inlines;
         RETURN_IF_FAILED(textBlock->get_Inlines(inlines.GetAddressOf()));
@@ -1374,7 +1529,7 @@ namespace AdaptiveNamespace
                 ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> xmlDocumentAsNode;
                 RETURN_IF_FAILED(xmlDocument.As(&xmlDocumentAsNode));
 
-                RETURN_IF_FAILED(AddHtmlInlines(renderContext, xmlDocumentAsNode.Get(), inlines.Get()));
+                RETURN_IF_FAILED(AddHtmlInlines(renderContext, xmlDocumentAsNode.Get(), inlines.Get(), fontStyle));
                 handledAsHtml = true;
             }
         }
@@ -1383,7 +1538,7 @@ namespace AdaptiveNamespace
         {
             HString hString;
             UTF8ToHString(textWithParsedDates, hString.GetAddressOf());
-            AddSingleTextInline(renderContext, hString.Get(), false, false, inlines.Get());
+            AddSingleTextInline(renderContext, hString.Get(), fontStyle, false, false, inlines.Get());
         }
 
         return S_OK;
@@ -1409,7 +1564,9 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(adaptiveTextBlock->get_Text(text.GetAddressOf()));
         HString language;
         THROW_IF_FAILED(adaptiveTextBlock->get_Language(language.GetAddressOf()));
-        THROW_IF_FAILED(SetTextOnXamlTextBlock(renderContext, text.Get(), language.Get(), xamlTextBlock.Get()));
+        ABI::AdaptiveNamespace::FontStyle fontStyle;
+        THROW_IF_FAILED(adaptiveTextBlock->get_FontStyle(&fontStyle));
+        THROW_IF_FAILED(SetTextOnXamlTextBlock(renderContext, text.Get(), fontStyle, language.Get(), xamlTextBlock.Get()));
 
         ABI::AdaptiveNamespace::ForegroundColor textColor;
         THROW_IF_FAILED(adaptiveTextBlock->get_Color(&textColor));
@@ -1479,7 +1636,8 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
         ABI::AdaptiveNamespace::ContainerStyle containerStyle;
         THROW_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
-        StyleXamlTextBlock(textblockSize,
+        StyleXamlTextBlock(fontStyle,
+                           textblockSize,
                            textColor,
                            containerStyle,
                            isSubtle,
@@ -1615,7 +1773,8 @@ namespace AdaptiveNamespace
                 XamlHelpers::CreateXamlClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
 
             Stretch stretch = (isAspectRatioNeeded) ? Stretch::Stretch_Fill : Stretch::Stretch_UniformToFill;
-            SetImageOnUIElement(imageUrl.Get(), ellipse.Get(), resourceResolvers.Get(), stretch);
+            bool mustHideElement{true};
+            SetImageOnUIElement(imageUrl.Get(), ellipse.Get(), resourceResolvers.Get(), &mustHideElement, stretch);
 
             ComPtr<IShape> ellipseAsShape;
             THROW_IF_FAILED(ellipse.As(&ellipseAsShape));
@@ -1674,25 +1833,32 @@ namespace AdaptiveNamespace
                 THROW_IF_FAILED(brushAsImageBrush->get_ImageSource(&imageSource));
                 ComPtr<IBitmapSource> imageSourceAsBitmap;
                 THROW_IF_FAILED(imageSource.As(&imageSourceAsBitmap));
-                // Collapse the Ellipse while the image loads, so that resizing is not noticeable
-                THROW_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
-                // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
-                EventRegistrationToken eventToken;
-                THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([ellipseAsUIElement](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
+                
+                // If the image hasn't loaded yet
+                if (mustHideElement)
+                {
+                    // Collapse the Ellipse while the image loads, so that resizing is not noticeable
+                    THROW_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
+                    // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
+                    EventRegistrationToken eventToken;
+                    THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(
+                        Callback<IRoutedEventHandler>([ellipseAsUIElement](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
                         // Don't set the AutoImageSize on the ellipse as it makes the ellipse grow bigger than
                         // what it would be otherwise, just set the visibility when we get the image
                         return ellipseAsUIElement->put_Visibility(Visibility::Visibility_Visible);
                     })
                         .Get(),
-                    &eventToken));
+                        &eventToken));
+                }
             }
         }
         else
         {
             ComPtr<IImage> xamlImage =
                 XamlHelpers::CreateXamlClass<IImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Image));
-            SetImageOnUIElement(imageUrl.Get(), xamlImage.Get(), resourceResolvers.Get());
+
+            bool mustHideElement{ true };
+            SetImageOnUIElement(imageUrl.Get(), xamlImage.Get(), resourceResolvers.Get(), &mustHideElement);
 
             if (backgroundColor != nullptr)
             {
@@ -1733,18 +1899,26 @@ namespace AdaptiveNamespace
                 ComPtr<IUIElement> imageAsUIElement;
                 THROW_IF_FAILED(xamlImage.As(&imageAsUIElement));
 
-                // Collapse the Image control while the image loads, so that resizing is not noticeable
-                THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
+                // If the image hasn't loaded yet
+                if (mustHideElement)
+                {
+                    // Collapse the Image control while the image loads, so that resizing is not noticeable
+                    THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
 
-                // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
-                EventRegistrationToken eventToken;
-                THROW_IF_FAILED(xamlImage->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([frameworkElement, parentElement, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs *
-                                                                                                         /*args*/) -> HRESULT {
+                    // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
+                    EventRegistrationToken eventToken;
+                    THROW_IF_FAILED(xamlImage->add_ImageOpened(
+                        Callback<IRoutedEventHandler>([frameworkElement, parentElement, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs *
+                            /*args*/) -> HRESULT {
                         return SetAutoImageSize(frameworkElement.Get(), parentElement.Get(), imageSourceAsBitmap.Get());
                     })
                         .Get(),
-                    &eventToken));
+                        &eventToken));
+                }
+                else
+                {
+                    SetAutoImageSize(frameworkElement.Get(), parentElement.Get(), imageSourceAsBitmap.Get());
+                }
             }
         }
 
@@ -2257,7 +2431,11 @@ namespace AdaptiveNamespace
                     XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
                 HString factTitle;
                 THROW_IF_FAILED(localFact->get_Title(factTitle.GetAddressOf()));
-                THROW_IF_FAILED(SetTextOnXamlTextBlock(renderContext, factTitle.Get(), language.Get(), titleTextBlock.Get()));
+                THROW_IF_FAILED(SetTextOnXamlTextBlock(renderContext,
+                                                       factTitle.Get(),
+                                                       ABI::AdaptiveNamespace::FontStyle::Default,
+                                                       language.Get(),
+                                                       titleTextBlock.Get()));
 
                 ComPtr<IAdaptiveTextConfig> titleTextConfig;
                 THROW_IF_FAILED(factSetConfig->get_Title(&titleTextConfig));
@@ -2271,7 +2449,11 @@ namespace AdaptiveNamespace
                     XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
                 HString factValue;
                 THROW_IF_FAILED(localFact->get_Value(factValue.GetAddressOf()));
-                THROW_IF_FAILED(SetTextOnXamlTextBlock(renderContext, factValue.Get(), language.Get(), valueTextBlock.Get()));
+                THROW_IF_FAILED(SetTextOnXamlTextBlock(renderContext,
+                                                       factValue.Get(),
+                                                       ABI::AdaptiveNamespace::FontStyle::Default,
+                                                       language.Get(),
+                                                       valueTextBlock.Get()));
 
                 ComPtr<IAdaptiveTextConfig> valueTextConfig;
                 THROW_IF_FAILED(factSetConfig->get_Value(&valueTextConfig));
@@ -2720,10 +2902,14 @@ namespace AdaptiveNamespace
             ComPtr<ABI::Windows::UI::Core::ICoreWindow> coreWindow;
             RETURN_IF_FAILED(coreWindowStatics->GetForCurrentThread(&coreWindow));
 
-            ABI::Windows::UI::Core::CoreVirtualKeyStates keyState;
-            RETURN_IF_FAILED(coreWindow->GetKeyState(ABI::Windows::System::VirtualKey_Shift, &keyState));
+            ABI::Windows::UI::Core::CoreVirtualKeyStates shiftKeyState;
+            RETURN_IF_FAILED(coreWindow->GetKeyState(ABI::Windows::System::VirtualKey_Shift, &shiftKeyState));
 
-            if (keyState == ABI::Windows::UI::Core::CoreVirtualKeyStates_None)
+            ABI::Windows::UI::Core::CoreVirtualKeyStates ctrlKeyState;
+            RETURN_IF_FAILED(coreWindow->GetKeyState(ABI::Windows::System::VirtualKey_Control, &ctrlKeyState));
+
+            if (shiftKeyState == ABI::Windows::UI::Core::CoreVirtualKeyStates_None &&
+                ctrlKeyState == ABI::Windows::UI::Core::CoreVirtualKeyStates_None)
             {
                 RETURN_IF_FAILED(actionInvoker->SendActionEvent(inlineAction));
                 RETURN_IF_FAILED(args->put_Handled(true));
@@ -2731,6 +2917,36 @@ namespace AdaptiveNamespace
         }
 
         return S_OK;
+    }
+
+    bool WarnForInlineShowCard(IAdaptiveRenderContext* renderContext,
+                               IAdaptiveHostConfig* hostConfig,
+                               IAdaptiveActionElement* action,
+                               std::wstring warning)
+    {
+        if (action != nullptr)
+        {
+            ABI::AdaptiveNamespace::ActionType actionType;
+            THROW_IF_FAILED(action->get_ActionType(&actionType));
+
+            if (actionType == ABI::AdaptiveNamespace::ActionType::ShowCard)
+            {
+                ComPtr<IAdaptiveActionsConfig> actionsConfig;
+                THROW_IF_FAILED(hostConfig->get_Actions(actionsConfig.GetAddressOf()));
+                ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
+                THROW_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
+                ABI::AdaptiveNamespace::ActionMode showCardActionMode;
+                THROW_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
+                if (showCardActionMode == ABI::AdaptiveNamespace::ActionMode::Inline)
+                {
+                    THROW_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::UnsupportedValue,
+                                                              HStringReference(warning.c_str()).Get()));
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     void XamlBuilder::HandleInlineAcion(IAdaptiveRenderContext* renderContext,
@@ -2745,12 +2961,12 @@ namespace AdaptiveNamespace
         ABI::AdaptiveNamespace::ActionType actionType;
         THROW_IF_FAILED(localInlineAction->get_ActionType(&actionType));
 
-        // Show cards are not supported for inline actions
-        if (actionType == ActionType_ShowCard)
-        {
-            THROW_IF_FAILED(renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::UnsupportedValue,
-                                                      HStringReference(L"ShowCard not supported for InlineAction").Get()));
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
+        // Inline ShowCards are not supported for inline actions
+        if (WarnForInlineShowCard(renderContext, hostConfig.Get(), localInlineAction.Get(), L"Inline ShowCard not supported for InlineAction"))
+        {
             THROW_IF_FAILED(localTextBox.CopyTo(textBoxWithInlineAction));
             return;
         }
@@ -2783,9 +2999,6 @@ namespace AdaptiveNamespace
             HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ColumnDefinition));
         THROW_IF_FAILED(separatorColumnDefinition->put_Width({1.0, GridUnitType::GridUnitType_Auto}));
         THROW_IF_FAILED(columnDefinitions->Append(separatorColumnDefinition.Get()));
-
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
         UINT spacingSize;
         THROW_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), ABI::AdaptiveNamespace::Spacing::Default, &spacingSize));
@@ -3254,28 +3467,12 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
-        if (action != nullptr)
+        if (WarnForInlineShowCard(renderContext, hostConfig.Get(), action, L"Inline ShowCard not supported for SelectAction"))
         {
-            ABI::AdaptiveNamespace::ActionType actionType;
-            THROW_IF_FAILED(action->get_ActionType(&actionType));
-
-            // TODO: In future should support inline ShowCard, but that's complicated for inline elements
-            if (actionType == ABI::AdaptiveNamespace::ActionType::ShowCard)
-            {
-                ComPtr<IAdaptiveActionsConfig> actionsConfig;
-                THROW_IF_FAILED(hostConfig->get_Actions(actionsConfig.GetAddressOf()));
-                ComPtr<IAdaptiveShowCardActionConfig> showCardActionConfig;
-                THROW_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
-                ABI::AdaptiveNamespace::ActionMode showCardActionMode;
-                THROW_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
-                if (showCardActionMode == ABI::AdaptiveNamespace::ActionMode::Inline)
-                {
-                    // Was inline show card, so don't wrap the element and just return
-                    ComPtr<IUIElement> localElementToWrap(elementToWrap);
-                    localElementToWrap.CopyTo(finalElement);
-                    return;
-                }
-            }
+            // Was inline show card, so don't wrap the element and just return
+            ComPtr<IUIElement> localElementToWrap(elementToWrap);
+            localElementToWrap.CopyTo(finalElement);
+            return;
         }
 
         ComPtr<IButton> button =
@@ -3328,6 +3525,20 @@ namespace AdaptiveNamespace
 
         if (action != nullptr)
         {
+            // If we have an action, use the title for the AutomationProperties.Name
+            HString title;
+            THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
+
+            ComPtr<IDependencyObject> buttonAsDependencyObject;
+            THROW_IF_FAILED(button.As(&buttonAsDependencyObject));
+
+            ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
+            THROW_IF_FAILED(
+                GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
+                                     &automationPropertiesStatics));
+
+            THROW_IF_FAILED(automationPropertiesStatics->SetName(buttonAsDependencyObject.Get(), title.Get()));
+
             WireButtonClickToAction(button.Get(), action, renderContext);
         }
 
@@ -3409,5 +3620,4 @@ namespace AdaptiveNamespace
         ComPtr<WholeItemsPanel> panel = PeekInnards<WholeItemsPanel>(containerAsPanel);
         panel->SetVerticalContentAlignment(verticalContentAlignment);
     }
-
 }

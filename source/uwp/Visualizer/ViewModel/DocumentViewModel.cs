@@ -16,6 +16,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using AdaptiveCardVisualizer.Helpers;
 using AdaptiveCardVisualizer.ResourceResolvers;
+using Windows.UI.Xaml.Media;
 
 namespace AdaptiveCardVisualizer.ViewModel
 {
@@ -232,6 +233,18 @@ namespace AdaptiveCardVisualizer.ViewModel
 
                 // Custom resource resolvers
                 _renderer.ResourceResolvers.Set("symbol", new MySymbolResourceResolver());
+
+                /*
+                 * Example on how to override the Action Positive and Destructive styles
+                Style positiveStyle = new Style(typeof(Button));
+                positiveStyle.Setters.Add(new Setter(Button.BackgroundProperty, new SolidColorBrush(Windows.UI.Colors.LawnGreen)));
+                Style destructiveStyle = new Style(typeof(Button));
+                destructiveStyle.Setters.Add(new Setter(Button.BackgroundProperty, new SolidColorBrush(Windows.UI.Colors.Red)));
+
+                _renderer.OverrideStyles = new ResourceDictionary();
+                _renderer.OverrideStyles.Add("Adaptive.Action.Positive", positiveStyle);
+                _renderer.OverrideStyles.Add("Adaptive.Action.Destructive", destructiveStyle);
+                */
             }
             catch
             {

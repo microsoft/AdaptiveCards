@@ -133,6 +133,8 @@
     <ClInclude Include="lib\AdaptiveCardRendererComponent.h" />
     <ClInclude Include="lib\AdaptiveCardResourceResolvers.h" />
     <ClInclude Include="lib\AdaptiveError.h" />
+    <ClInclude Include="lib\AdaptiveFontStyleDefinition.h" />
+    <ClInclude Include="lib\AdaptiveFontStylesDefinition.h" />
     <ClInclude Include="lib\AdaptiveHostConfigParseResult.h" />
     <ClInclude Include="lib\AdaptiveCardParseResult.h" />
     <ClInclude Include="lib\AdaptiveContainerStyleDefinition.h" />
@@ -213,6 +215,8 @@
     <ClInclude Include="lib\Vector.h" />
     <ClInclude Include="lib\WholeItemsPanel.h" />
     <ClInclude Include="lib\XamlBuilder.h" />
+    <ClCompile Include="lib\AdaptiveFontStyleDefinition.cpp" />
+    <ClCompile Include="lib\AdaptiveFontStylesDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveMedia.cpp" />
     <ClCompile Include="lib\AdaptiveMediaConfig.cpp" />
     <ClCompile Include="lib\AdaptiveMediaEventInvoker.cpp" />

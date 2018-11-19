@@ -30,7 +30,7 @@ import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public class AdaptiveCardRenderer
 {
-    public static final String VERSION = "1.1";
+    public static final String VERSION = "1.2";
 
     protected AdaptiveCardRenderer()
     {
@@ -148,7 +148,7 @@ public class AdaptiveCardRenderer
         }
 
         layout.setOrientation(LinearLayout.VERTICAL);
-        int padding = Util.dpToPixels(context, hostConfig.getSpacing().getPaddingSpacing());
+        int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
         layout.setPadding(padding, padding, padding, padding);
 
         rootLayout.addView(layout);
@@ -157,12 +157,12 @@ public class AdaptiveCardRenderer
 
         ContainerStyle style = ContainerStyle.Default;
 
-        if (isInlineShowCard && hostConfig.getActions().getShowCard().getStyle() != ContainerStyle.None)
+        if (isInlineShowCard && hostConfig.GetActions().getShowCard().getStyle() != ContainerStyle.None)
         {
-            style = hostConfig.getActions().getShowCard().getStyle();
+            style = hostConfig.GetActions().getShowCard().getStyle();
         }
 
-        if (hostConfig.getAdaptiveCard().getAllowCustomStyle() && adaptiveCard.GetStyle() != ContainerStyle.None)
+        if (hostConfig.GetAdaptiveCard().getAllowCustomStyle() && adaptiveCard.GetStyle() != ContainerStyle.None)
         {
             style = adaptiveCard.GetStyle();
         }
@@ -170,18 +170,18 @@ public class AdaptiveCardRenderer
         String color;
         if (style == ContainerStyle.Default)
         {
-            color = hostConfig.getContainerStyles().getDefaultPalette().getBackgroundColor();
+            color = hostConfig.GetContainerStyles().getDefaultPalette().getBackgroundColor();
         }
         else
         {
-            color = hostConfig.getContainerStyles().getEmphasisPalette().getBackgroundColor();
+            color = hostConfig.GetContainerStyles().getEmphasisPalette().getBackgroundColor();
         }
 
         layout.setBackgroundColor(Color.parseColor(color));
 
         CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, layout, adaptiveCard, baseCardElementList, cardActionHandler, hostConfig, style);
 
-        if (hostConfig.getSupportsInteractivity())
+        if (hostConfig.GetSupportsInteractivity())
         {
             // Actions are optional
             BaseActionElementVector baseActionElementList = adaptiveCard.GetActions();
@@ -206,7 +206,7 @@ public class AdaptiveCardRenderer
         String imageUrl = adaptiveCard.GetBackgroundImage();
         if (!imageUrl.isEmpty())
         {
-            BackgroundImageLoaderAsync loaderAsync = new BackgroundImageLoaderAsync(renderedCard, context, layout, hostConfig.getImageBaseUrl());
+            BackgroundImageLoaderAsync loaderAsync = new BackgroundImageLoaderAsync(renderedCard, context, layout, hostConfig.GetImageBaseUrl());
 
             IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
             if(onlineImageLoader != null)

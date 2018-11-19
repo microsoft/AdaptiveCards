@@ -18,9 +18,14 @@ var assets = [
         dest: function (p) { return "schemas/adaptive-card.json"; }
     },
     {
-        // renderer script
-        path: "node_modules/adaptivecards/dist/adaptivecards.min.js",
-        dest: function (p) { return "js/adaptivecards.min.js"; }
+        // adaptive cards module
+        path: "node_modules/adaptivecards/dist/*",
+        dest: function (p) { return p; }
+	},
+	{
+        // designer module
+        path: "node_modules/adaptivecards-designer/dist/**/*.*",
+        dest: function (p) { return p; }
     },
     {
         // visualizer script
@@ -38,48 +43,12 @@ var assets = [
         dest: function (p) { return "visualizer/assets/" + path.basename(p); }
     },
     {
-        // monaco editor
-        path: "node_modules/monaco-editor/min/**/*.*",
-        dest: function (p) { return "visualizer/" + p; }
-    },
-    {
-        // monaco editor
-        path: "node_modules/monaco-editor/min/vs/**/*.*",
-        dest: function (p) {
-            var destination = p;
-            var regexp = new RegExp('node_modules/monaco-editor/min/vs', 'i');
-            return destination.replace(regexp, 'designer/vs');
-        }
-    },
-    {
         // monaco loader
         // this is a temp hack until Monaco works with webpack
         // https://github.com/Microsoft/monaco-editor/issues/18
         path: "../adaptivecards-visualizer/src/monaco-loader.js",
         dest: function (p) { return "visualizer/monaco-loader.js" }
-	},
-	{
-        // monaco loader
-        // this is a temp hack until Monaco works with webpack
-        // https://github.com/Microsoft/monaco-editor/issues/18
-        path: "../adaptivecards-designer/editor/monaco-loader.js",
-        dest: function (p) { return "designer/monaco-loader.js" }
-	},
-	{
-        // designer script
-        path: "node_modules/adaptivecards-designer/dist/adaptivecards-designer.min.js",
-        dest: function (p) { return "designer/adaptivecards-designer.min.js"; }
-    },
-    {
-        // designer css
-        path: "node_modules/adaptivecards-designer/css/*.css",
-        dest: function (p) { return "designer/css/" + path.basename(p); }
-    },
-    {
-        // designer assets
-        path: "node_modules/adaptivecards-designer/assets/*",
-        dest: function (p) { return "designer/assets/" + path.basename(p); }
-    },
+	}
 ];
 
 hexo.extend.generator.register("generator-adaptiveassets", function (locals) {

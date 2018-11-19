@@ -48,6 +48,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Language(_Out_ HSTRING* language);
         IFACEMETHODIMP put_Language(_In_ HSTRING language);
 
+        IFACEMETHODIMP get_FontStyle(_Out_ ABI::AdaptiveNamespace::FontStyle* style);
+        IFACEMETHODIMP put_FontStyle(_In_ ABI::AdaptiveNamespace::FontStyle style);
+
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
 
@@ -111,6 +114,7 @@ namespace AdaptiveNamespace
         UINT32 m_maxLines;
         Microsoft::WRL::Wrappers::HString m_text;
         Microsoft::WRL::Wrappers::HString m_language;
+        ABI::AdaptiveNamespace::FontStyle m_fontStyle;
         ABI::AdaptiveNamespace::TextSize m_textSize;
         ABI::AdaptiveNamespace::TextWeight m_textWeight;
         ABI::AdaptiveNamespace::ForegroundColor m_foregroundColor;

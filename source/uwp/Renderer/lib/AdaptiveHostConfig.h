@@ -25,6 +25,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_FontWeights(_Out_ ABI::AdaptiveNamespace::IAdaptiveFontWeightsConfig** fontWeight);
         IFACEMETHODIMP put_FontWeights(_In_ ABI::AdaptiveNamespace::IAdaptiveFontWeightsConfig* fontWeight);
 
+        IFACEMETHODIMP get_FontStyles(_Out_ ABI::AdaptiveNamespace::IAdaptiveFontStylesDefinition** value);
+        IFACEMETHODIMP put_FontStyles(_In_ ABI::AdaptiveNamespace::IAdaptiveFontStylesDefinition* value);
+
         IFACEMETHODIMP get_SupportsInteractivity(_Out_ boolean* supportsInteractivity);
         IFACEMETHODIMP put_SupportsInteractivity(_In_ boolean supportsInteractivity);
 
@@ -68,6 +71,7 @@ namespace AdaptiveNamespace
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveFontSizesConfig> m_fontSizes;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveFontWeightsConfig> m_fontWeights;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveFontStylesDefinition> m_fontStyles;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveContainerStylesDefinition> m_containerStyles;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveImageSizesConfig> m_imageSizes;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveSpacingConfig> m_spacing;

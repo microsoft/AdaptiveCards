@@ -188,7 +188,7 @@
 		});
 	});
 
-	if ($('#sidebar-todo')) {
+	if ($('#sidebar-todo').length) {
 		new StickySidebar('#sidebar-todo', {
 			topSpacing: 30,
 			bottomSpacing: 20,

@@ -1,57 +1,100 @@
+<script type="text/javascript">
+	window.onload = () => {
 
-<!-- this is copied from ../adaptivecards-designer/index.html -->
-<div id="toolbar" class="acd-toolbar">
-	<button id="btnToggleFullScreen" class="acd-toolbar-button acd-icon-fullScreen">Enter Full Screen</button>
+		function getParameterByName(name, url) {
+			if (!url) {
+				url = window.location.href;
+			}
+
+			name = name.replace(/[\[\]]/g, "\\$&");
+			var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)");
+			var results = regex.exec(url);
+
+			if (results && results[2]) {
+				return decodeURIComponent(results[2].replace(/\+/g, " "));
+			}
+			else {
+				return "";
+			}
+		}
+
+		if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
+			console.log("Local storage is not available.");
+		}
+
+		let hostContainers = [];
+		hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
+		hostContainers.push(new ACDesigner.CortanaContainer("Cortana Skills", "containers/cortana-container.css"));
+		hostContainers.push(new ACDesigner.OutlookContainer("Outlook Actionable Messages", "containers/outlook-container.css"));
+		hostContainers.push(new ACDesigner.TimelineContainer("Windows Timeline", "containers/timeline-container.css"));
+		hostContainers.push(new ACDesigner.DarkTeamsContainer("Microsoft Teams - Dark", "containers/teams-container-dark.css"));
+		hostContainers.push(new ACDesigner.LightTeamsContainer("Microsoft Teams - Light", "containers/teams-container-light.css"));
+		hostContainers.push(new ACDesigner.BotFrameworkContainer("Bot Framework Other Channels (Image render)", "containers/bf-image-container.css"));
+		hostContainers.push(new ACDesigner.ToastContainer("Windows Notifications (Preview)", "containers/toast-container.css"));
+
+		let designer = new ACDesigner.CardDesigner(hostContainers);
+		designer.assetPath = "../node_modules/adaptivecards-designer/dist/";
+
+		/* Here's how to add buttons to the toolbar:
+
+		designer.toolbar.addElement(new ToolbarSeparator());
+		designer.toolbar.addElement(
+			new ToolbarButton(
+				"Save",
+				null,
+				(sender) => {
+					// Here is how to get the payload of the current card from the designer
+					let card = designer.getCard();
+
+					alert(JSON.stringify(card, null, 4));
+				}
+			)
+		)
+		*/
+
+		// NOTE: Adding toolbar elements must be done BEFORE the designer is attached
+		var cardUrl = getParameterByName("card", null);
+
+		if (cardUrl) {
+
+			var xhttp = new XMLHttpRequest();
+
+			xhttp.onload = function () {
+
+				designer.attachTo(document.getElementById("designerRootHost"));
+
+				if (xhttp.responseText && xhttp.responseText != "") {
+					designer.setCard(JSON.parse(xhttp.responseText));
+				}
 	
-	<span style="color: black; margin-left: 8px;">Select Host App:</span>
-	<div id="containerPickerHost" style="flex: 0 0 250px; margin: 0px 8px 0px 8px;"></div>
-	<button id="btnPartnerStatus" class="acd-toolbar-button" title="Learn more about integrating with each Host App" onclick="window.open('https://docs.microsoft.com/en-us/adaptive-cards/resources/partners')">Host App Docs</button>
+				history.replaceState(null, null, "/designer");
+			};
+			// xhttp.onerror = function() {
+			// 	designer.
+			// };
 
-	<div class="acd-toolbar-separator"></div>
+			try {
+				xhttp.open("GET", cardUrl, true);
+				xhttp.send();
+			}
+			catch(e) {
+				designer.attachTo(document.getElementById("designerRootHost"));
+				
+			}
+		}
+		else {
+			designer.attachTo(document.getElementById("designerRootHost"));
+		}
 
-	<button id="btnUndo" disabled=true class="acd-toolbar-button acd-toolbar-button-iconOnly acd-icon-undo" title="Undo your last changes"></button>
-	<button id="btnRedo" disabled=true class="acd-toolbar-button acd-toolbar-button-iconOnly acd-icon-redo" title="Redo your last changes"></button>
+		require.config({ paths: { 'vs': '/node_modules/adaptivecards-designer/dist/monaco-editor/min/vs' } });
+		require(['vs/editor/editor.main'], function () {
+		 	designer.monacoModuleLoaded();
+		 }); 
 
-	<div class="acd-toolbar-separator"></div>
 
-	<button id="btnNewCard" class="acd-toolbar-button acd-icon-newCard" title="Start a new card from scratch">New card</button>
-	<button id="btnCopyToClipboard" class="acd-toolbar-button acd-icon-copy" title="Copy the JSON for this card to the clipboard">Copy JSON</button>
+	};
+</script>
 
-	<div class="acd-toolbar-separator" style="margin-left: auto"></div>
-
-	<button id="btnVisualizer" class="acd-toolbar-button acd-icon-leave" title="Switch to the classic Visualizer" onclick="window.location.href = '/visualizer'">Classic Visualizer</button>
-
-</div>
-<div class="content" style="display: flex; flex: 1 1 auto; overflow-y: hidden;">
-	<div id="leftCollapsedPaneTabHost" class="acd-verticalCollapsedTabContainer" style="border-right: 1px solid #D2D2D2;"></div>
-	<div id="toolPalettePane" class="selector-toolPalette" style="background-color: white; border-right: 1px solid #D2D2D2;">
-		<div id="toolPalette" class="acd-dockedPane"></div>
-	</div>
-	<div style="display: flex; flex-direction: column; flex: 1 1 100%; overflow: hidden;">
-		<div style="display: flex; flex: 1 1 100%; overflow: hidden;">
-			<div id="designerBackground" style="flex: 1 1 70%; background-color: #F6F6F6; display: flex; flex-direction: column; overflow: auto;">
-				<div style="flex: 1 1 100%; overflow: auto;">
-					<div id="designerHost" style="margin: 20px 40px 20px 20px;"></div>
-				</div>
-				<div id="errorPane" class="acd-error-pane acd-hidden"></div>
-			</div>
-			<div id="treeViewVerticalSplitter" class="acd-vertical-splitter selector-treeView"></div>
-			<div id="treeViewPane" class="acd-treeView-pane selector-treeView">
-				<div id="treeViewHost" class="acd-treeView-host"></div>
-			</div>
-			<div id="propertyVerticalSplitter" class="acd-vertical-splitter selector-propertySheet"></div>
-			<div id="propertySheetPane" class="acd-propertySheet-pane selector-propertySheet">
-				<div id="propertySheetHost" class="acd-propertySheet-host"></div>
-			</div>
-		</div>
-		<div id="horizontalSplitter" class="acd-horizontal-splitter selector-jsonEditor"></div>
-		<div id="jsonEditorPane" class="acd-json-editor-pane selector-jsonEditor">
-			<div id="jsonEditorHost" class="acd-json-editor-host">
-				<div id="loadingEditor" style="padding: 8px;">Loading editor...</div>
-			</div>
-		</div>
-		<div id="bottomCollapsedPaneTabHost" style="border-top: 1px solid #D2D2D2;"></div>
-	</div>
-	<div id="rightCollapsedPaneTabHost" class="acd-verticalCollapsedTabContainer" style="border-left: 1px solid #D2D2D2;"></div>
-</div>
+<div style="display: flex; flex-direction: column; height: 100%;">
+	<div id="designerRootHost"></div>
 </div>

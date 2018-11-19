@@ -1,29 +1,69 @@
 #pragma once
 
-#include "pch.h"
 #include "Enums.h"
 #include "json/json.h"
 
 namespace AdaptiveSharedNamespace
 {
-    struct FontSizesConfig
+    class FontSizesConfig
     {
-        unsigned int smallFontSize = 10;
-        unsigned int defaultFontSize = 12;
-        unsigned int mediumFontSize = 14;
-        unsigned int largeFontSize = 17;
-        unsigned int extraLargeFontSize = 20;
+    public:
+        FontSizesConfig() = default;
+        FontSizesConfig(unsigned int s, unsigned int d, unsigned int m, unsigned int l, unsigned int xl) :
+            _small(s), _default(d), _medium(m), _large(l), _extraLarge(xl)
+        {
+        }
 
         static FontSizesConfig Deserialize(const Json::Value& json, const FontSizesConfig& defaultValue);
+        static unsigned int GetDefaultFontSize(TextSize size);
+        unsigned int GetFontSize(TextSize size) const;
+        void SetFontSize(TextSize size, unsigned int value);
+
+    private:
+        // UINT_MAX used to check if value was defined
+        unsigned int _small = UINT_MAX;
+        unsigned int _default = UINT_MAX;
+        unsigned int _medium = UINT_MAX;
+        unsigned int _large = UINT_MAX;
+        unsigned int _extraLarge = UINT_MAX;
     };
 
-    struct FontWeightsConfig
+    class FontWeightsConfig
     {
-        unsigned int lighterWeight = 200;
-        unsigned int defaultWeight = 400;
-        unsigned int bolderWeight = 800;
-
+    public:
+        FontWeightsConfig() = default;
+        FontWeightsConfig(unsigned int lighterWeight, unsigned int defaultWeight, unsigned int bolderWeight) :
+            _lighter(lighterWeight), _default(defaultWeight), _bolder(bolderWeight)
+        {
+        }
         static FontWeightsConfig Deserialize(const Json::Value& json, const FontWeightsConfig& defaultValue);
+        static unsigned int GetDefaultFontWeight(TextWeight weight);
+        unsigned int GetFontWeight(TextWeight weight) const;
+        void SetFontWeight(TextWeight weight, unsigned int value);
+
+    private:
+        // UINT_MAX used to check if value was defined
+        unsigned int _lighter = UINT_MAX;
+        unsigned int _default = UINT_MAX;
+        unsigned int _bolder = UINT_MAX;
+    };
+
+    struct FontStyleDefinition
+    {
+        std::string fontFamily;
+        FontSizesConfig fontSizes;
+        FontWeightsConfig fontWeights;
+
+        static FontStyleDefinition Deserialize(const Json::Value& json, const FontStyleDefinition& defaultValue);
+    };
+
+    struct FontStylesDefinition
+    {
+        FontStyleDefinition defaultStyle;
+        FontStyleDefinition displayStyle;
+        FontStyleDefinition monospaceStyle;
+
+        static FontStylesDefinition Deserialize(const Json::Value& json, const FontStylesDefinition& defaultValue);
     };
 
     struct ColorConfig
@@ -51,6 +91,7 @@ namespace AdaptiveSharedNamespace
     {
         TextWeight weight = TextWeight::Default;
         TextSize size = TextSize::Default;
+        FontStyle style = FontStyle::Default;
         ForegroundColor color = ForegroundColor::Default;
         bool isSubtle = false;
         bool wrap = true;
@@ -112,8 +153,8 @@ namespace AdaptiveSharedNamespace
 
     struct FactSetConfig
     {
-        TextConfig title{TextWeight::Bolder, TextSize::Default, ForegroundColor::Default, false, true, 150};
-        TextConfig value{TextWeight::Default, TextSize::Default, ForegroundColor::Default, false, true, ~0U};
+        TextConfig title{TextWeight::Bolder, TextSize::Default, FontStyle::Default, ForegroundColor::Default, false, true, 150};
+        TextConfig value{TextWeight::Default, TextSize::Default, FontStyle::Default, ForegroundColor::Default, false, true, ~0U};
         unsigned int spacing = 10;
 
         static FactSetConfig Deserialize(const Json::Value& json, const FactSetConfig& defaultValue);
@@ -180,25 +221,82 @@ namespace AdaptiveSharedNamespace
         static MediaConfig Deserialize(const Json::Value& json, const MediaConfig& defaultValue);
     };
 
-    struct HostConfig
+    class HostConfig
     {
-        std::string fontFamily = "Calibri";
-        FontSizesConfig fontSizes;
-        FontWeightsConfig fontWeights;
-        bool supportsInteractivity = true;
-        std::string imageBaseUrl;
-        ImageSizesConfig imageSizes;
-        ImageConfig image;
-        SeparatorConfig separator;
-        SpacingConfig spacing;
-        AdaptiveCardConfig adaptiveCard;
-        ImageSetConfig imageSet;
-        FactSetConfig factSet;
-        ActionsConfig actions;
-        ContainerStylesDefinition containerStyles;
-        MediaConfig media;
-
+    public:
+        HostConfig() = default;
         static HostConfig Deserialize(const Json::Value& json);
-        static HostConfig DeserializeFromString(const std::string jsonString);
+        static HostConfig DeserializeFromString(const std::string& jsonString);
+
+        FontStyleDefinition GetFontStyle(FontStyle style) const;
+        std::string GetFontFamily(FontStyle style) const;
+        unsigned int GetFontSize(FontStyle style, TextSize size) const;
+        unsigned int GetFontWeight(FontStyle style, TextWeight weight) const;
+
+        std::string GetFontFamily() const;
+        void SetFontFamily(const std::string& value);
+
+        FontSizesConfig GetFontSizes() const;
+        void SetFontSizes(const FontSizesConfig value);
+
+        FontWeightsConfig GetFontWeights() const;
+        void SetFontWeights(const FontWeightsConfig value);
+
+        FontStylesDefinition GetFontStyles() const;
+        void SetFontStyles(const FontStylesDefinition value);
+
+        bool GetSupportsInteractivity() const;
+        void SetSupportsInteractivity(const bool value);
+
+        std::string GetImageBaseUrl() const;
+        void SetImageBaseUrl(const std::string& value);
+
+        ImageSizesConfig GetImageSizes() const;
+        void SetImageSizes(const ImageSizesConfig value);
+
+        ImageConfig GetImage() const;
+        void SetImage(const ImageConfig value);
+
+        SeparatorConfig GetSeparator() const;
+        void SetSeparator(const SeparatorConfig value);
+
+        SpacingConfig GetSpacing() const;
+        void SetSpacing(const SpacingConfig value);
+
+        AdaptiveCardConfig GetAdaptiveCard() const;
+        void SetAdaptiveCard(const AdaptiveCardConfig value);
+
+        ImageSetConfig GetImageSet() const;
+        void SetImageSet(const ImageSetConfig value);
+
+        FactSetConfig GetFactSet() const;
+        void SetFactSet(const FactSetConfig value);
+
+        ActionsConfig GetActions() const;
+        void SetActions(const ActionsConfig value);
+
+        ContainerStylesDefinition GetContainerStyles() const;
+        void SetContainerStyles(const ContainerStylesDefinition value);
+
+        MediaConfig GetMedia() const;
+        void SetMedia(const MediaConfig value);
+
+    private:
+        std::string _fontFamily;
+        FontSizesConfig _fontSizes;
+        FontWeightsConfig _fontWeights;
+        FontStylesDefinition _fontStyles;
+        bool _supportsInteractivity = true;
+        std::string _imageBaseUrl;
+        ImageSizesConfig _imageSizes;
+        ImageConfig _image;
+        SeparatorConfig _separator;
+        SpacingConfig _spacing;
+        AdaptiveCardConfig _adaptiveCard;
+        ImageSetConfig _imageSet;
+        FactSetConfig _factSet;
+        ActionsConfig _actions;
+        ContainerStylesDefinition _containerStyles;
+        MediaConfig _media;
     };
 }

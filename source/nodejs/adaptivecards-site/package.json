@@ -10,14 +10,16 @@
     "generate-md-hc": "node node_modules/marked-schema/bin/marked-schema ../../../schemas/host-config.json ./schema-hostconfig-toc.yml -r AdaptiveCardConfig"
   },
   "hexo": {
-    "version": "3.7.1"
+    "version": "3.8.0"
   },
   "dependencies": {
-    "adaptivecards": "latest",
-    "adaptivecards-designer": "latest",
-    "adaptivecards-visualizer": "latest",
+    "adaptivecards": "^1.2.0-alpha1",
+	"adaptivecards-visualizer": "^1.1.0",
+	"adaptivecards-designer": "^0.1.1",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.4",
     "change-case": "^3.0.1",
-    "glob": "^7.1.2",
+    "glob": "7.1.2",
     "hexo": "^3.7.1",
     "hexo-browsersync": "^0.3.0",
     "hexo-cli": "^1.1.0",
@@ -30,10 +32,11 @@
     "hexo-renderer-marked": "^0.3.2",
     "hexo-renderer-stylus": "^0.3.1",
     "hexo-server": "^0.3.3",
-    "marked-schema": "^0.1.2",
+    "marked-schema": "^0.1.4",
     "minimist": "^1.2.0",
-    "monaco-editor": "^0.14.1",
-    "request": "^2.88.0",
-    "request-promise": "^4.2.2"
+    "monaco-editor": "^0.14.3"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^4.6.0"
   }
 }

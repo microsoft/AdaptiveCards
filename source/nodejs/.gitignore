@@ -1,6 +1,6 @@
-**/built/*.js
-**/built/*.js.map
-**/built/*.d.ts
+**/lib/*.js
+**/lib/*.js.map
+**/lib/*.d.ts
 **/dist/*.js
 **/dist/*.js.map
 **/dist/*.d.ts

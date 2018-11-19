@@ -31,6 +31,7 @@ namespace AdaptiveNamespace
         m_subtle = sharedTextBlock->GetIsSubtle();
         m_maxLines = sharedTextBlock->GetMaxLines();
 
+        m_fontStyle = static_cast<ABI::AdaptiveNamespace::FontStyle>(sharedTextBlock->GetFontStyle());
         m_textSize = static_cast<ABI::AdaptiveNamespace::TextSize>(sharedTextBlock->GetTextSize());
         m_textWeight = static_cast<ABI::AdaptiveNamespace::TextWeight>(sharedTextBlock->GetTextWeight());
         m_foregroundColor = static_cast<ABI::AdaptiveNamespace::ForegroundColor>(sharedTextBlock->GetTextColor());
@@ -142,6 +143,18 @@ namespace AdaptiveNamespace
         return m_language.Set(language);
     }
 
+    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::get_FontStyle(ABI::AdaptiveNamespace::FontStyle* fontStyle)
+    {
+        *fontStyle = m_fontStyle;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::put_FontStyle(ABI::AdaptiveNamespace::FontStyle fontStyle)
+    {
+        m_fontStyle = fontStyle;
+        return S_OK;
+    }
+
     _Use_decl_annotations_ HRESULT AdaptiveTextBlock::get_ElementType(ElementType* elementType)
     {
         *elementType = ElementType::TextBlock;
@@ -157,6 +170,7 @@ namespace AdaptiveNamespace
         textBlock->SetWrap(m_wrap);
         textBlock->SetIsSubtle(m_subtle);
         textBlock->SetMaxLines(m_maxLines);
+        textBlock->SetFontStyle(static_cast<AdaptiveSharedNamespace::FontStyle>(m_fontStyle));
         textBlock->SetTextSize(static_cast<AdaptiveSharedNamespace::TextSize>(m_textSize));
         textBlock->SetTextWeight(static_cast<AdaptiveSharedNamespace::TextWeight>(m_textWeight));
         textBlock->SetTextColor(static_cast<AdaptiveSharedNamespace::ForegroundColor>(m_foregroundColor));

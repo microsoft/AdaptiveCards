@@ -1,0 +1,26 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.2",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Font style not set."
+		},
+		{
+			"type": "TextBlock",
+			"text": "Font style set to *default*.",
+			"fontStyle": "default"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Font style set to *display*.",
+			"fontStyle": "display"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Font style set to *monospace*.",
+			"fontStyle": "monospace"
+		}
+	]
+}
