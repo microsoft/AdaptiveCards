@@ -35,8 +35,6 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionInvoker>(&m_actionInvoker, renderResult));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveMediaEventInvoker>(&m_mediaEventInvoker, renderResult));
 
-        m_storyboardTargetedElements = Microsoft::WRL::Make<Vector<HSTRING>>();
-
         return S_OK;
     }
     CATCH_RETURN;
@@ -94,14 +92,21 @@ namespace AdaptiveNamespace
         return m_cardFrameworkElement.CopyTo(value);
     }
 
-    HRESULT AdaptiveRenderContext::get_StoryboardTargetedElements(ABI::Windows::Foundation::Collections::IVector<HSTRING>** targetedElements)
-    {
-        return m_storyboardTargetedElements.CopyTo(targetedElements);
-    }
-
     HRESULT AdaptiveRenderContext::put_CardFrameworkElement(ABI::Windows::UI::Xaml::IFrameworkElement* value)
     {
         m_cardFrameworkElement = value;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveRenderContext::AddAnimationTimeline(HSTRING targetName, ABI::Windows::UI::Xaml::Media::Animation::ITimeline* timeline)
+    {
+        m_animationTimelines[HStringToUTF8(targetName)] = timeline;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveRenderContext::GetAnimationTimline(HSTRING targetName, ABI::Windows::UI::Xaml::Media::Animation::ITimeline** timeline)
+    {
+        m_animationTimelines[HStringToUTF8(targetName)].CopyTo(timeline);
         return S_OK;
     }
 

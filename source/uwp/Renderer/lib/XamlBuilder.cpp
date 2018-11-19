@@ -126,10 +126,7 @@ namespace AdaptiveNamespace
             ComPtr<AdaptiveNamespace::AdaptiveRenderContext> contextImpl =
                 PeekInnards<AdaptiveNamespace::AdaptiveRenderContext>(renderContext);
 
-            ComPtr<IVector<HSTRING>> storyboardTargetedElements;
-            contextImpl->get_StoryboardTargetedElements(&storyboardTargetedElements);
-
-            storyboardTargetedElements->Append(targetName.Get());
+            contextImpl->AddAnimationTimeline(targetName.Get(), localTimeline.Get());
         }
 
         ComPtr<IStoryboard> timelineAsStoryboard;
@@ -834,36 +831,19 @@ namespace AdaptiveNamespace
         ComPtr<AdaptiveNamespace::AdaptiveRenderContext> contextImpl =
             PeekInnards<AdaptiveNamespace::AdaptiveRenderContext>(renderContext);
 
-        ComPtr<IVector<HSTRING>> targetedElements;
-        contextImpl->get_StoryboardTargetedElements(&targetedElements);
+        ComPtr<ITimeline> animationTimeline;
+        contextImpl->GetAnimationTimline(id, &animationTimeline);
 
-        unsigned int index;
-        boolean found;
-        targetedElements->IndexOf(id, &index, &found);
-
-        if (found)
+        if (animationTimeline != nullptr)
         {
-            ComPtr<IResourceDictionary> resourceDictionary;
-            renderContext->get_OverrideStyles(&resourceDictionary);
+            ComPtr<IStoryboardStatics> storyboardStatics;
+            GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Animation_Storyboard).Get(), &storyboardStatics);
 
-            ComPtr<IInspectable> animationInspectable;
-            if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IInspectable>(resourceDictionary.Get(),
-                                                                               L"Adaptive.Storyboard.Action.ToggleViewState.toggleActionId",
-                                                                               &animationInspectable)))
-            {
-                ComPtr<ITimeline> animationTimeline;
-                animationInspectable.As(&animationTimeline);
+            ComPtr<IUIElement> localUiElement(uiElement);
+            ComPtr<IDependencyObject> uiElementAsDependencyObject;
+            localUiElement.As(&uiElementAsDependencyObject);
 
-                ComPtr<IStoryboardStatics> storyboardStatics;
-                GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Media_Animation_Storyboard).Get(), &storyboardStatics);
-
-                ComPtr<IUIElement> localUiElement(uiElement);
-                ComPtr<IDependencyObject> uiElementAsDependencyObject;
-                localUiElement.As(&uiElementAsDependencyObject);
-
-                storyboardStatics->SetTarget(animationTimeline.Get(), uiElementAsDependencyObject.Get());
-            }
-
+            storyboardStatics->SetTarget(animationTimeline.Get(), uiElementAsDependencyObject.Get());
 
             ComPtr<ICompositeTransform> compositeTransform = XamlHelpers::CreateXamlClass<ICompositeTransform>(
                 HStringReference(RuntimeClass_Windows_UI_Xaml_Media_CompositeTransform));
