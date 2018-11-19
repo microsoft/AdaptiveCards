@@ -41,6 +41,10 @@ copyTestFiles {
     from '../../../samples/Tests'
     from '../../../samples/v1.0/Elements'
     from '../../../samples/v1.0/Scenarios'
+    from '../../../samples/v1.1/Elements'
+    from '../../../samples/v1.1/Scenarios'
+    from '../../../samples/v1.2/Elements'
+    from '../../../samples/v1.2/Scenarios'
     into 'src/main/assets'
 }
 
