@@ -779,7 +779,7 @@ export class TextBlock extends CardElement {
                         formattedText = formattedText.replace(/<mark>/g, "===").replace(/<\/mark>/g, "/==");
                     }
 
-                    let markdownProcessingResult = AdaptiveCard.processMarkdown(formattedText);
+                    let markdownProcessingResult = AdaptiveCard.applyMarkdown(formattedText);
 
                     if (markdownProcessingResult.didProcess && markdownProcessingResult.outputHtml) {
                         this._processedText = markdownProcessingResult.outputHtml;
@@ -5448,7 +5448,15 @@ export class AdaptiveCard extends ContainerWithActions {
     static onParseError: (error: IValidationError) => void = null;
     static onProcessMarkdown: (text: string, result: IMarkdownProcessingResult) => void = null;
 
-    static processMarkdown(text: string): IMarkdownProcessingResult {
+    static get processMarkdown(): (text: string) => string {
+        throw new Error("The processMarkdown event has been removed. Please update your code and set onProcessMarkdown instead.")
+    }
+
+    static set processMarkdown(value: (text: string) => string) {
+        throw new Error("The processMarkdown event has been removed. Please update your code and set onProcessMarkdown instead.")
+    }
+
+    static applyMarkdown(text: string): IMarkdownProcessingResult {
         let result: IMarkdownProcessingResult = {
             didProcess: false
         };
