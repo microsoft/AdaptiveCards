@@ -201,8 +201,8 @@ public class TextInputRenderer extends BaseCardElementRenderer
             else
             {
                 textInputViewGroup = new LinearLayout(context);
-                textInputViewGroup.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
-                editText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 10));
+                textInputViewGroup.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                editText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
                 textInputViewGroup.addView(editText);
 
                 Resources.Theme theme = context.getTheme();
@@ -265,7 +265,14 @@ public class TextInputRenderer extends BaseCardElementRenderer
             LinearLayout containerLayout = new LinearLayout(context);
             containerLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
 
-            containerLayout.addView(editText);
+            if(textInputViewGroup != null)
+            {
+                containerLayout.addView(textInputViewGroup);
+            }
+            else
+            {
+                containerLayout.addView(editText);
+            }
             viewGroup.addView(containerLayout);
         }
         else
