@@ -55,10 +55,7 @@ void MediaSource::GetResourceInformation(std::vector<RemoteResourceInformation>&
     return;
 }
 
-std::shared_ptr<MediaSource> MediaSourceParser::Deserialize(std::shared_ptr<ElementParserRegistration>,
-                                                            std::shared_ptr<ActionParserRegistration>,
-                                                            std::vector<std::shared_ptr<AdaptiveCardParseWarning>>&,
-                                                            const Json::Value& json)
+std::shared_ptr<MediaSource> MediaSourceParser::Deserialize(ParseContext&, const Json::Value& json)
 {
     std::shared_ptr<MediaSource> mediaSource = std::make_shared<MediaSource>();
 
@@ -68,13 +65,7 @@ std::shared_ptr<MediaSource> MediaSourceParser::Deserialize(std::shared_ptr<Elem
     return mediaSource;
 }
 
-std::shared_ptr<MediaSource> MediaSourceParser::DeserializeFromString(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                                      std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                                                      std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                                                      const std::string& jsonString)
+std::shared_ptr<MediaSource> MediaSourceParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
-    return MediaSourceParser::Deserialize(elementParserRegistration,
-                                          actionParserRegistration,
-                                          warnings,
-                                          ParseUtil::GetJsonValueFromString(jsonString));
+    return MediaSourceParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }

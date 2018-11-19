@@ -27,8 +27,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveBase64Util.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Media.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\MediaSource.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ParseContext.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -78,6 +80,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ActionParserRegistration.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseException.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseWarning.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveBase64Util.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseActionElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseInputElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoiceInput.h" />
@@ -85,6 +88,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Column.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ColumnSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ElementParserRegistration.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\EnumMagic.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Fact.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\FactSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\HostConfig.h" />
@@ -98,6 +102,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Media.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MediaSource.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\NumberInput.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ParseContext.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ParseResult.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\RemoteResourceInformation.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\SemanticVersion.h" />

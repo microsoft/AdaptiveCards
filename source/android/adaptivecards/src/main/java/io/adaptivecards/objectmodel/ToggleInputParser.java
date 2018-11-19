@@ -45,13 +45,13 @@ public class ToggleInputParser extends BaseCardElementParser {
     this(AdaptiveCardObjectModelJNI.new_ToggleInputParser__SWIG_1(ToggleInputParser.getCPtr(arg0), arg0), true);
   }
 
-  public BaseCardElement Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, JsonValue root) {
-    long cPtr = AdaptiveCardObjectModelJNI.ToggleInputParser_Deserialize(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, JsonValue.getCPtr(root), root);
+  public BaseCardElement Deserialize(ParseContext context, JsonValue root) {
+    long cPtr = AdaptiveCardObjectModelJNI.ToggleInputParser_Deserialize(swigCPtr, this, ParseContext.getCPtr(context), context, JsonValue.getCPtr(root), root);
     return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
   }
 
-  public BaseCardElement DeserializeFromString(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.ToggleInputParser_DeserializeFromString(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, jsonString);
+  public BaseCardElement DeserializeFromString(ParseContext context, String jsonString) {
+    long cPtr = AdaptiveCardObjectModelJNI.ToggleInputParser_DeserializeFromString(swigCPtr, this, ParseContext.getCPtr(context), context, jsonString);
     return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
   }
 

@@ -9,180 +9,268 @@
 package io.adaptivecards.objectmodel;
 
 public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants {
-  public static String AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey type) {
-    return AdaptiveCardObjectModelJNI.AdaptiveCardSchemaKeyToString(type.swigValue());
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__AdaptiveCardSchemaKey_t getAdaptiveCardSchemaKeyEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__AdaptiveCardSchemaKey_t(AdaptiveCardObjectModelJNI.getAdaptiveCardSchemaKeyEnum(), false);
   }
 
-  public static AdaptiveCardSchemaKey AdaptiveCardSchemaKeyFromString(String type) {
-    return AdaptiveCardSchemaKey.swigToEnum(AdaptiveCardObjectModelJNI.AdaptiveCardSchemaKeyFromString(type));
+  public static String AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey t) {
+    return AdaptiveCardObjectModelJNI.AdaptiveCardSchemaKeyToString(t.swigValue());
   }
 
-  public static String CardElementTypeToString(CardElementType elementType) {
-    return AdaptiveCardObjectModelJNI.CardElementTypeToString(elementType.swigValue());
+  public static AdaptiveCardSchemaKey AdaptiveCardSchemaKeyFromString(String t) {
+    return AdaptiveCardSchemaKey.swigToEnum(AdaptiveCardObjectModelJNI.AdaptiveCardSchemaKeyFromString(t));
   }
 
-  public static CardElementType CardElementTypeFromString(String elementType) {
-    return CardElementType.swigToEnum(AdaptiveCardObjectModelJNI.CardElementTypeFromString(elementType));
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__CardElementType_t getCardElementTypeEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__CardElementType_t(AdaptiveCardObjectModelJNI.getCardElementTypeEnum(), false);
   }
 
-  public static String ActionTypeToString(ActionType actionType) {
-    return AdaptiveCardObjectModelJNI.ActionTypeToString(actionType.swigValue());
+  public static String CardElementTypeToString(CardElementType t) {
+    return AdaptiveCardObjectModelJNI.CardElementTypeToString(t.swigValue());
   }
 
-  public static ActionType ActionTypeFromString(String actionType) {
-    return ActionType.swigToEnum(AdaptiveCardObjectModelJNI.ActionTypeFromString(actionType));
+  public static CardElementType CardElementTypeFromString(String t) {
+    return CardElementType.swigToEnum(AdaptiveCardObjectModelJNI.CardElementTypeFromString(t));
   }
 
-  public static String HeightTypeToString(HeightType heightType) {
-    return AdaptiveCardObjectModelJNI.HeightTypeToString(heightType.swigValue());
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__TextSize_t getTextSizeEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__TextSize_t(AdaptiveCardObjectModelJNI.getTextSizeEnum(), false);
   }
 
-  public static HeightType HeightTypeFromString(String heightType) {
-    return HeightType.swigToEnum(AdaptiveCardObjectModelJNI.HeightTypeFromString(heightType));
+  public static String TextSizeToString(TextSize t) {
+    return AdaptiveCardObjectModelJNI.TextSizeToString(t.swigValue());
   }
 
-  public static String HorizontalAlignmentToString(HorizontalAlignment alignment) {
-    return AdaptiveCardObjectModelJNI.HorizontalAlignmentToString(alignment.swigValue());
+  public static TextSize TextSizeFromString(String t) {
+    return TextSize.swigToEnum(AdaptiveCardObjectModelJNI.TextSizeFromString(t));
   }
 
-  public static HorizontalAlignment HorizontalAlignmentFromString(String alignment) {
-    return HorizontalAlignment.swigToEnum(AdaptiveCardObjectModelJNI.HorizontalAlignmentFromString(alignment));
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__TextWeight_t getTextWeightEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__TextWeight_t(AdaptiveCardObjectModelJNI.getTextWeightEnum(), false);
   }
 
-  public static String ForegroundColorToString(ForegroundColor type) {
-    return AdaptiveCardObjectModelJNI.ForegroundColorToString(type.swigValue());
+  public static String TextWeightToString(TextWeight t) {
+    return AdaptiveCardObjectModelJNI.TextWeightToString(t.swigValue());
   }
 
-  public static ForegroundColor ForegroundColorFromString(String type) {
-    return ForegroundColor.swigToEnum(AdaptiveCardObjectModelJNI.ForegroundColorFromString(type));
+  public static TextWeight TextWeightFromString(String t) {
+    return TextWeight.swigToEnum(AdaptiveCardObjectModelJNI.TextWeightFromString(t));
   }
 
-  public static String TextWeightToString(TextWeight type) {
-    return AdaptiveCardObjectModelJNI.TextWeightToString(type.swigValue());
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__FontStyle_t getFontStyleEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__FontStyle_t(AdaptiveCardObjectModelJNI.getFontStyleEnum(), false);
   }
 
-  public static TextWeight TextWeightFromString(String type) {
-    return TextWeight.swigToEnum(AdaptiveCardObjectModelJNI.TextWeightFromString(type));
+  public static String FontStyleToString(FontStyle t) {
+    return AdaptiveCardObjectModelJNI.FontStyleToString(t.swigValue());
   }
 
-  public static String TextSizeToString(TextSize size) {
-    return AdaptiveCardObjectModelJNI.TextSizeToString(size.swigValue());
+  public static FontStyle FontStyleFromString(String t) {
+    return FontStyle.swigToEnum(AdaptiveCardObjectModelJNI.FontStyleFromString(t));
   }
 
-  public static TextSize TextSizeFromString(String size) {
-    return TextSize.swigToEnum(AdaptiveCardObjectModelJNI.TextSizeFromString(size));
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ForegroundColor_t getForegroundColorEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ForegroundColor_t(AdaptiveCardObjectModelJNI.getForegroundColorEnum(), false);
   }
 
-  public static String FontStyleToString(FontStyle style) {
-    return AdaptiveCardObjectModelJNI.FontStyleToString(style.swigValue());
+  public static String ForegroundColorToString(ForegroundColor t) {
+    return AdaptiveCardObjectModelJNI.ForegroundColorToString(t.swigValue());
   }
 
-  public static FontStyle FontStyleFromString(String style) {
-    return FontStyle.swigToEnum(AdaptiveCardObjectModelJNI.FontStyleFromString(style));
+  public static ForegroundColor ForegroundColorFromString(String t) {
+    return ForegroundColor.swigToEnum(AdaptiveCardObjectModelJNI.ForegroundColorFromString(t));
   }
 
-  public static String ImageSizeToString(ImageSize size) {
-    return AdaptiveCardObjectModelJNI.ImageSizeToString(size.swigValue());
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__HorizontalAlignment_t getHorizontalAlignmentEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__HorizontalAlignment_t(AdaptiveCardObjectModelJNI.getHorizontalAlignmentEnum(), false);
   }
 
-  public static ImageSize ImageSizeFromString(String size) {
-    return ImageSize.swigToEnum(AdaptiveCardObjectModelJNI.ImageSizeFromString(size));
+  public static String HorizontalAlignmentToString(HorizontalAlignment t) {
+    return AdaptiveCardObjectModelJNI.HorizontalAlignmentToString(t.swigValue());
   }
 
-  public static String SpacingToString(Spacing spacing) {
-    return AdaptiveCardObjectModelJNI.SpacingToString(spacing.swigValue());
+  public static HorizontalAlignment HorizontalAlignmentFromString(String t) {
+    return HorizontalAlignment.swigToEnum(AdaptiveCardObjectModelJNI.HorizontalAlignmentFromString(t));
   }
 
-  public static Spacing SpacingFromString(String spacing) {
-    return Spacing.swigToEnum(AdaptiveCardObjectModelJNI.SpacingFromString(spacing));
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ImageStyle_t getImageStyleEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ImageStyle_t(AdaptiveCardObjectModelJNI.getImageStyleEnum(), false);
   }
 
-  public static String SeparatorThicknessToString(SeparatorThickness separatorThickness) {
-    return AdaptiveCardObjectModelJNI.SeparatorThicknessToString(separatorThickness.swigValue());
+  public static String ImageStyleToString(ImageStyle t) {
+    return AdaptiveCardObjectModelJNI.ImageStyleToString(t.swigValue());
   }
 
-  public static SeparatorThickness SeparatorThicknessFromString(String separatorThickness) {
-    return SeparatorThickness.swigToEnum(AdaptiveCardObjectModelJNI.SeparatorThicknessFromString(separatorThickness));
+  public static ImageStyle ImageStyleFromString(String t) {
+    return ImageStyle.swigToEnum(AdaptiveCardObjectModelJNI.ImageStyleFromString(t));
   }
 
-  public static String ImageStyleToString(ImageStyle style) {
-    return AdaptiveCardObjectModelJNI.ImageStyleToString(style.swigValue());
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ImageSize_t getImageSizeEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ImageSize_t(AdaptiveCardObjectModelJNI.getImageSizeEnum(), false);
   }
 
-  public static ImageStyle ImageStyleFromString(String style) {
-    return ImageStyle.swigToEnum(AdaptiveCardObjectModelJNI.ImageStyleFromString(style));
+  public static String ImageSizeToString(ImageSize t) {
+    return AdaptiveCardObjectModelJNI.ImageSizeToString(t.swigValue());
   }
 
-  public static String ActionsOrientationToString(ActionsOrientation orientation) {
-    return AdaptiveCardObjectModelJNI.ActionsOrientationToString(orientation.swigValue());
+  public static ImageSize ImageSizeFromString(String t) {
+    return ImageSize.swigToEnum(AdaptiveCardObjectModelJNI.ImageSizeFromString(t));
   }
 
-  public static ActionsOrientation ActionsOrientationFromString(String orientation) {
-    return ActionsOrientation.swigToEnum(AdaptiveCardObjectModelJNI.ActionsOrientationFromString(orientation));
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__TextInputStyle_t getTextInputStyleEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__TextInputStyle_t(AdaptiveCardObjectModelJNI.getTextInputStyleEnum(), false);
   }
 
-  public static String ActionModeToString(ActionMode mode) {
-    return AdaptiveCardObjectModelJNI.ActionModeToString(mode.swigValue());
+  public static String TextInputStyleToString(TextInputStyle t) {
+    return AdaptiveCardObjectModelJNI.TextInputStyleToString(t.swigValue());
   }
 
-  public static ActionMode ActionModeFromString(String mode) {
-    return ActionMode.swigToEnum(AdaptiveCardObjectModelJNI.ActionModeFromString(mode));
+  public static TextInputStyle TextInputStyleFromString(String t) {
+    return TextInputStyle.swigToEnum(AdaptiveCardObjectModelJNI.TextInputStyleFromString(t));
   }
 
-  public static String ChoiceSetStyleToString(ChoiceSetStyle style) {
-    return AdaptiveCardObjectModelJNI.ChoiceSetStyleToString(style.swigValue());
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ActionType_t getActionTypeEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ActionType_t(AdaptiveCardObjectModelJNI.getActionTypeEnum(), false);
   }
 
-  public static ChoiceSetStyle ChoiceSetStyleFromString(String style) {
-    return ChoiceSetStyle.swigToEnum(AdaptiveCardObjectModelJNI.ChoiceSetStyleFromString(style));
+  public static String ActionTypeToString(ActionType t) {
+    return AdaptiveCardObjectModelJNI.ActionTypeToString(t.swigValue());
   }
 
-  public static String TextInputStyleToString(TextInputStyle style) {
-    return AdaptiveCardObjectModelJNI.TextInputStyleToString(style.swigValue());
+  public static ActionType ActionTypeFromString(String t) {
+    return ActionType.swigToEnum(AdaptiveCardObjectModelJNI.ActionTypeFromString(t));
   }
 
-  public static TextInputStyle TextInputStyleFromString(String style) {
-    return TextInputStyle.swigToEnum(AdaptiveCardObjectModelJNI.TextInputStyleFromString(style));
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ActionAlignment_t getActionAlignmentEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ActionAlignment_t(AdaptiveCardObjectModelJNI.getActionAlignmentEnum(), false);
   }
 
-  public static String ContainerStyleToString(ContainerStyle style) {
-    return AdaptiveCardObjectModelJNI.ContainerStyleToString(style.swigValue());
+  public static String ActionAlignmentToString(ActionAlignment t) {
+    return AdaptiveCardObjectModelJNI.ActionAlignmentToString(t.swigValue());
   }
 
-  public static ContainerStyle ContainerStyleFromString(String style) {
-    return ContainerStyle.swigToEnum(AdaptiveCardObjectModelJNI.ContainerStyleFromString(style));
+  public static ActionAlignment ActionAlignmentFromString(String t) {
+    return ActionAlignment.swigToEnum(AdaptiveCardObjectModelJNI.ActionAlignmentFromString(t));
   }
 
-  public static String ActionAlignmentToString(ActionAlignment alignment) {
-    return AdaptiveCardObjectModelJNI.ActionAlignmentToString(alignment.swigValue());
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ChoiceSetStyle_t getChoiceSetStyleEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ChoiceSetStyle_t(AdaptiveCardObjectModelJNI.getChoiceSetStyleEnum(), false);
   }
 
-  public static ActionAlignment ActionAlignmentFromString(String alignment) {
-    return ActionAlignment.swigToEnum(AdaptiveCardObjectModelJNI.ActionAlignmentFromString(alignment));
+  public static String ChoiceSetStyleToString(ChoiceSetStyle t) {
+    return AdaptiveCardObjectModelJNI.ChoiceSetStyleToString(t.swigValue());
   }
 
-  public static String IconPlacementToString(IconPlacement placement) {
-    return AdaptiveCardObjectModelJNI.IconPlacementToString(placement.swigValue());
+  public static ChoiceSetStyle ChoiceSetStyleFromString(String t) {
+    return ChoiceSetStyle.swigToEnum(AdaptiveCardObjectModelJNI.ChoiceSetStyleFromString(t));
   }
 
-  public static IconPlacement IconPlacementFromString(String placement) {
-    return IconPlacement.swigToEnum(AdaptiveCardObjectModelJNI.IconPlacementFromString(placement));
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__SeparatorThickness_t getSeparatorThicknessEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__SeparatorThickness_t(AdaptiveCardObjectModelJNI.getSeparatorThicknessEnum(), false);
   }
 
-  public static String VerticalContentAlignmentToString(VerticalContentAlignment verticalContentAlignment) {
-    return AdaptiveCardObjectModelJNI.VerticalContentAlignmentToString(verticalContentAlignment.swigValue());
+  public static String SeparatorThicknessToString(SeparatorThickness t) {
+    return AdaptiveCardObjectModelJNI.SeparatorThicknessToString(t.swigValue());
   }
 
-  public static VerticalContentAlignment VerticalContentAlignmentFromString(String verticalContentAlignment) {
-    return VerticalContentAlignment.swigToEnum(AdaptiveCardObjectModelJNI.VerticalContentAlignmentFromString(verticalContentAlignment));
+  public static SeparatorThickness SeparatorThicknessFromString(String t) {
+    return SeparatorThickness.swigToEnum(AdaptiveCardObjectModelJNI.SeparatorThicknessFromString(t));
   }
 
-  public static String SentimentToString(Sentiment sentiment) {
-    return AdaptiveCardObjectModelJNI.SentimentToString(sentiment.swigValue());
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__Spacing_t getSpacingEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__Spacing_t(AdaptiveCardObjectModelJNI.getSpacingEnum(), false);
   }
 
-  public static Sentiment SentimentFromString(String sentiment) {
-    return Sentiment.swigToEnum(AdaptiveCardObjectModelJNI.SentimentFromString(sentiment));
+  public static String SpacingToString(Spacing t) {
+    return AdaptiveCardObjectModelJNI.SpacingToString(t.swigValue());
+  }
+
+  public static Spacing SpacingFromString(String t) {
+    return Spacing.swigToEnum(AdaptiveCardObjectModelJNI.SpacingFromString(t));
+  }
+
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ActionsOrientation_t getActionsOrientationEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ActionsOrientation_t(AdaptiveCardObjectModelJNI.getActionsOrientationEnum(), false);
+  }
+
+  public static String ActionsOrientationToString(ActionsOrientation t) {
+    return AdaptiveCardObjectModelJNI.ActionsOrientationToString(t.swigValue());
+  }
+
+  public static ActionsOrientation ActionsOrientationFromString(String t) {
+    return ActionsOrientation.swigToEnum(AdaptiveCardObjectModelJNI.ActionsOrientationFromString(t));
+  }
+
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ActionMode_t getActionModeEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ActionMode_t(AdaptiveCardObjectModelJNI.getActionModeEnum(), false);
+  }
+
+  public static String ActionModeToString(ActionMode t) {
+    return AdaptiveCardObjectModelJNI.ActionModeToString(t.swigValue());
+  }
+
+  public static ActionMode ActionModeFromString(String t) {
+    return ActionMode.swigToEnum(AdaptiveCardObjectModelJNI.ActionModeFromString(t));
+  }
+
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ContainerStyle_t getContainerStyleEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ContainerStyle_t(AdaptiveCardObjectModelJNI.getContainerStyleEnum(), false);
+  }
+
+  public static String ContainerStyleToString(ContainerStyle t) {
+    return AdaptiveCardObjectModelJNI.ContainerStyleToString(t.swigValue());
+  }
+
+  public static ContainerStyle ContainerStyleFromString(String t) {
+    return ContainerStyle.swigToEnum(AdaptiveCardObjectModelJNI.ContainerStyleFromString(t));
+  }
+
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__IconPlacement_t getIconPlacementEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__IconPlacement_t(AdaptiveCardObjectModelJNI.getIconPlacementEnum(), false);
+  }
+
+  public static String IconPlacementToString(IconPlacement t) {
+    return AdaptiveCardObjectModelJNI.IconPlacementToString(t.swigValue());
+  }
+
+  public static IconPlacement IconPlacementFromString(String t) {
+    return IconPlacement.swigToEnum(AdaptiveCardObjectModelJNI.IconPlacementFromString(t));
+  }
+
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__Sentiment_t getSentimentEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__Sentiment_t(AdaptiveCardObjectModelJNI.getSentimentEnum(), false);
+  }
+
+  public static String SentimentToString(Sentiment t) {
+    return AdaptiveCardObjectModelJNI.SentimentToString(t.swigValue());
+  }
+
+  public static Sentiment SentimentFromString(String t) {
+    return Sentiment.swigToEnum(AdaptiveCardObjectModelJNI.SentimentFromString(t));
+  }
+
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__VerticalContentAlignment_t getVerticalContentAlignmentEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__VerticalContentAlignment_t(AdaptiveCardObjectModelJNI.getVerticalContentAlignmentEnum(), false);
+  }
+
+  public static String VerticalContentAlignmentToString(VerticalContentAlignment t) {
+    return AdaptiveCardObjectModelJNI.VerticalContentAlignmentToString(t.swigValue());
+  }
+
+  public static VerticalContentAlignment VerticalContentAlignmentFromString(String t) {
+    return VerticalContentAlignment.swigToEnum(AdaptiveCardObjectModelJNI.VerticalContentAlignmentFromString(t));
+  }
+
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__HeightType_t getHeightTypeEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__HeightType_t(AdaptiveCardObjectModelJNI.getHeightTypeEnum(), false);
+  }
+
+  public static String HeightTypeToString(HeightType t) {
+    return AdaptiveCardObjectModelJNI.HeightTypeToString(t.swigValue());
+  }
+
+  public static HeightType HeightTypeFromString(String t) {
+    return HeightType.swigToEnum(AdaptiveCardObjectModelJNI.HeightTypeFromString(t));
   }
 
 }

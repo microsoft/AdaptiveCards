@@ -83,13 +83,13 @@ public class Fact {
     return AdaptiveCardObjectModelJNI.Fact_GetLanguage(swigCPtr, this);
   }
 
-  public static Fact Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, JsonValue root) {
-    long cPtr = AdaptiveCardObjectModelJNI.Fact_Deserialize(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, JsonValue.getCPtr(root), root);
+  public static Fact Deserialize(ParseContext context, JsonValue root) {
+    long cPtr = AdaptiveCardObjectModelJNI.Fact_Deserialize(ParseContext.getCPtr(context), context, JsonValue.getCPtr(root), root);
     return (cPtr == 0) ? null : new Fact(cPtr, true);
   }
 
-  public static Fact DeserializeFromString(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.Fact_DeserializeFromString(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, jsonString);
+  public static Fact DeserializeFromString(ParseContext context, String jsonString) {
+    long cPtr = AdaptiveCardObjectModelJNI.Fact_DeserializeFromString(ParseContext.getCPtr(context), context, jsonString);
     return (cPtr == 0) ? null : new Fact(cPtr, true);
   }
 

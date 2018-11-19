@@ -28,15 +28,8 @@ namespace AdaptiveSharedNamespace
         void SetLanguage(const std::string& value);
         std::string GetLanguage() const;
 
-        static std::shared_ptr<Fact> Deserialize(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                 std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                                 std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                                 const Json::Value& root);
-
-        static std::shared_ptr<Fact> DeserializeFromString(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                           std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                                           std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                                           const std::string& jsonString);
+        static std::shared_ptr<Fact> Deserialize(ParseContext& context, const Json::Value& root);
+        static std::shared_ptr<Fact> DeserializeFromString(ParseContext& context, const std::string& jsonString);
 
     private:
         std::string m_title;

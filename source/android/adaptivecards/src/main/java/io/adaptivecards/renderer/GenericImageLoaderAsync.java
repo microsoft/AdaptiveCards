@@ -14,6 +14,8 @@ import java.net.URL;
 
 import io.adaptivecards.renderer.http.HttpRequestHelper;
 import io.adaptivecards.renderer.http.HttpRequestResult;
+import io.adaptivecards.objectmodel.CharVector;
+import io.adaptivecards.objectmodel.AdaptiveBase64Util;
 
 /** Abstract class that specifies image loading mechanism */
 public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, HttpRequestResult<Bitmap>>
@@ -21,12 +23,12 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
     RenderedAdaptiveCard m_renderedCard;
     String m_imageBaseUrl;
     IOnlineImageLoader m_onlineImageLoader = null;
+    IDataUriImageLoader m_dataUriImageLoader = null;
 
     GenericImageLoaderAsync(RenderedAdaptiveCard renderedCard, String imageBaseUrl)
     {
         m_renderedCard = renderedCard;
         m_imageBaseUrl = imageBaseUrl;
-        m_onlineImageLoader = new OnlineImageLoader();
     }
 
     // Main function to try different ways to load an image
@@ -34,10 +36,33 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
     {
         try
         {
+            // Let's try to see if we got the image in the card as a base64 encoded string
+            // The syntax of data URIs as in RFX 2397 is  data:[<media type>][;base64],<data>
+            path = path.trim();
+            if(path.startsWith("data:"))
+            {
+                if( m_dataUriImageLoader != null )
+                {
+                    return m_dataUriImageLoader.loadDataUriImage(path, this);
+                }
+                else
+                {
+                    return loadDataUriImage(path);
+                }
+            }
+
             // Try loading online using only the path first
             try
             {
-                return m_onlineImageLoader.loadOnlineImage(path, this);
+                if(m_onlineImageLoader != null)
+                {
+                    return m_onlineImageLoader.loadOnlineImage(path, this);
+                }
+                else
+                {
+                    return loadOnlineImage(path);
+                }
+
             }
             catch (MalformedURLException e1) {
                 // Then try using image base URL to load online
@@ -52,7 +77,15 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
                     URL urlContext = new URL(m_imageBaseUrl);
                     URL url = new URL(urlContext, path);
 
-                    return m_onlineImageLoader.loadOnlineImage(url.toString(), this);
+                    if(m_onlineImageLoader != null)
+                    {
+                        return m_onlineImageLoader.loadOnlineImage(url.toString(), this);
+                    }
+                    else
+                    {
+                        return loadOnlineImage(url.toString());
+                    }
+
                 }
                 catch (MalformedURLException e2)
                 {
@@ -65,6 +98,25 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
         {
             return new HttpRequestResult<>(e);
         }
+    }
+
+    public HttpRequestResult<Bitmap> loadOnlineImage(String url) throws IOException, URISyntaxException
+    {
+        byte[] bytes = HttpRequestHelper.get(url);
+        if (bytes == null)
+        {
+            throw new IOException("Failed to retrieve content from " + url);
+        }
+
+        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        bitmap = styleBitmap(bitmap);
+
+        if (bitmap == null)
+        {
+            throw new IOException("Failed to convert content to bitmap: " + new String(bytes));
+        }
+
+        return new HttpRequestResult<>(bitmap);
     }
 
     // Helper function to load local image URL from res/
@@ -82,11 +134,23 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
 
         InputStream ins = resources.openRawResource(identifier);
         Bitmap bitmap = BitmapFactory.decodeStream(ins);
+        bitmap = styleBitmap(bitmap);
         if (bitmap == null)
         {
             throw new IOException("Failed to convert local content to bitmap: " + url);
         }
 
+        return new HttpRequestResult<>(bitmap);
+    }
+
+    private HttpRequestResult<Bitmap> loadDataUriImage(String uri) throws Exception
+    {
+        String dataUri = AdaptiveBase64Util.ExtractDataFromUri(uri);
+        CharVector decodedDataUri = AdaptiveBase64Util.Decode(dataUri);
+
+        byte[] decodedByteArray = Util.getBytes(decodedDataUri);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+        bitmap = styleBitmap(bitmap);
         return new HttpRequestResult<>(bitmap);
     }
 
@@ -112,6 +176,11 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
     public void registerCustomOnlineImageLoader(IOnlineImageLoader onlineImageLoader)
     {
         m_onlineImageLoader = onlineImageLoader;
+    }
+
+    public void registerCustomDataUriImageLoader(IDataUriImageLoader dataUriImageLoader)
+    {
+        m_dataUriImageLoader = dataUriImageLoader;
     }
 
     abstract void onSuccessfulPostExecute(Bitmap result);

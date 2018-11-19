@@ -72,11 +72,12 @@ namespace AdaptiveNamespace
         return m_sharedParserRegistration;
     }
 
-    std::shared_ptr<BaseCardElement> SharedModelElementParser::Deserialize(
-        std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> actionParserRegistration,
-        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-        const Json::Value& value)
+    std::shared_ptr<BaseCardElement> SharedModelElementParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
+    {
+        return Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
+    }
+
+    std::shared_ptr<BaseCardElement> SharedModelElementParser::Deserialize(ParseContext& context, const Json::Value& value)
     {
         std::string type = ParseUtil::GetTypeAsString(value);
 
@@ -91,11 +92,11 @@ namespace AdaptiveNamespace
 
         ComPtr<IAdaptiveElementParserRegistration> adaptiveElementParserRegistration;
         MakeAndInitialize<AdaptiveNamespace::AdaptiveElementParserRegistration>(&adaptiveElementParserRegistration,
-                                                                                elementParserRegistration);
+                                                                                context.elementParserRegistration);
 
         ComPtr<IAdaptiveActionParserRegistration> adaptiveActionParserRegistration;
         MakeAndInitialize<AdaptiveNamespace::AdaptiveActionParserRegistration>(&adaptiveActionParserRegistration,
-                                                                               actionParserRegistration);
+                                                                               context.actionParserRegistration);
 
         ComPtr<IAdaptiveCardElement> cardElement;
         ComPtr<ABI::Windows::Foundation::Collections::IVector<IAdaptiveWarning*>> adaptiveWarnings =
@@ -106,7 +107,7 @@ namespace AdaptiveNamespace
                                          adaptiveWarnings.Get(),
                                          &cardElement));
 
-        THROW_IF_FAILED(AdaptiveWarningsToSharedWarnings(adaptiveWarnings.Get(), warnings));
+        THROW_IF_FAILED(AdaptiveWarningsToSharedWarnings(adaptiveWarnings.Get(), context.warnings));
 
         std::shared_ptr<CustomElementWrapper> elementWrapper = std::make_shared<CustomElementWrapper>(cardElement.Get());
         return elementWrapper;

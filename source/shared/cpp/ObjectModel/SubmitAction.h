@@ -32,16 +32,9 @@ namespace AdaptiveSharedNamespace
         SubmitActionParser(SubmitActionParser&&) = default;
         SubmitActionParser& operator=(const SubmitActionParser&) = default;
         SubmitActionParser& operator=(SubmitActionParser&&) = default;
-        virtual ~SubmitActionParser() = default;
+        ~SubmitActionParser() = default;
 
-        std::shared_ptr<BaseActionElement> Deserialize(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                       std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                                       std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                                       const Json::Value& value) override;
-
-        std::shared_ptr<BaseActionElement> DeserializeFromString(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                                 std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                                                 std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                                                 const std::string& jsonString);
+        std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) override;
+        std::shared_ptr<BaseActionElement> DeserializeFromString(ParseContext& context, const std::string& jsonString);
     };
 }
