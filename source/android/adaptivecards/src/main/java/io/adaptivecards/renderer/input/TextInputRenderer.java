@@ -222,7 +222,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
                     {
                         inlineButton = new ImageButton(context);
                         inlineButton.setBackgroundColor(Color.TRANSPARENT);
-                        inlineButton.setPadding(16, 0,0,8);
+                        inlineButton.setPadding(16, 0, 0, 8);
                     }
 
                     InlineActionIconImageLoaderAsync imageLoader =
@@ -251,7 +251,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
                         inlineButton = new Button(context);
                         inlineButton.setBackgroundColor(Color.TRANSPARENT);
                         inlineButton.setTextColor(Color.BLACK);
-                        inlineButton.setPadding(16, 0,0,8);
+                        inlineButton.setPadding(16, 0, 0, 8);
                     }
                     inlineButton.setText(title);
                     textInputViewGroup.addView(inlineButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
