@@ -19,21 +19,16 @@ import { AdaptiveCard } from "adaptivecards";
 
 
 export class CardDesigner {
-    private static internalProcessMarkdown(text: string): string {
-        if (CardDesigner.processMarkdown) {
-            return CardDesigner.processMarkdown(text);
+    private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
+        if (CardDesigner.onProcessMarkdown) {
+            CardDesigner.onProcessMarkdown(text, result);
         }
         else {
-            // Check for markdownit
-            if (window["markdownit"]) {
-                return window["markdownit"]().render(text);
-            }
-
-            return text;
+            result.didProcess = false;
         }
     }
 
-    static processMarkdown: (text: string) => string;
+    static onProcessMarkdown: (text: string, result: Adaptive.IMarkdownProcessingResult) => void = null;
 
     private static MAX_UNDO_STACK_SIZE = 50;
 
@@ -592,8 +587,8 @@ export class CardDesigner {
     readonly toolbar: Toolbar = new Toolbar();
 
     constructor(hostContainers: Array<HostContainer> = null) {
-        AdaptiveCard.processMarkdown = (text: string) => {
-            return CardDesigner.internalProcessMarkdown(text)
+        AdaptiveCard.onProcessMarkdown = (text: string, result: Adaptive.IMarkdownProcessingResult) => {
+            CardDesigner.internalProcessMarkdown(text, result);
         }
 
         this._hostContainers = hostContainers ? hostContainers : [];

@@ -7,7 +7,10 @@ import "adaptivecards-controls/dist/adaptivecards-controls.css";
 import "adaptivecards-designer/dist/adaptivecards-designer.css";
 
 window.onload = () => {
-	Designer.CardDesigner.processMarkdown = (text: string) => new markdownit().render(text);
+	Designer.CardDesigner.onProcessMarkdown = (text: string, result: { didProcess: boolean, outputHtml: string }) => {
+		result.outputHtml = new markdownit().render(text);
+		result.didProcess = true;
+	}
 
 	if (!Designer.SettingsManager.isLocalStorageAvailable) {
 		console.log("Local storage is not available.");
