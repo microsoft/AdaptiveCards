@@ -23,11 +23,9 @@ namespace AdaptiveCardsSharedModelUnitTest
 			class TestCustomElement : public BaseCardElement, public BaseActionElement
 			{
 			public:
-				TestCustomElement(
-					const Json::Value& value) :
-					BaseCardElement(AdaptiveCards::CardElementType::Custom),
-					BaseActionElement(AdaptiveCards::ActionType::Custom)
-				{
+				TestCustomElement(const Json::Value& value) : BaseCardElement(AdaptiveCards::CardElementType::Custom),
+                                                              BaseActionElement(AdaptiveCards::ActionType::Custom)
+                {
 					m_customImage = value.get("customProperty", Json::Value()).asString();
 				}
 
@@ -39,13 +37,13 @@ namespace AdaptiveCardsSharedModelUnitTest
 			class TestCustomElementParser : public BaseCardElementParser
 			{
 			public:
-				virtual std::shared_ptr<BaseCardElement> Deserialize(
-					std::shared_ptr<AdaptiveCards::ElementParserRegistration> elementParserRegistration,
-					std::shared_ptr<AdaptiveCards::ActionParserRegistration> actionParserRegistration,
-					std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& warnings,
-					const Json::Value& value) override
+				virtual std::shared_ptr<BaseCardElement> Deserialize(ParseContext &context, const Json::Value& value) override
 				{
 					return std::make_shared<TestCustomElement>(value);
+				}
+                virtual std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext &context, const std::string& value) override
+				{
+					return Deserialize(context, ParseUtil::GetJsonValueFromString(value));
 				}
 			};
 
@@ -53,11 +51,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 			class TestCustomActionParser : public ActionElementParser
 			{
 			public:
-				virtual std::shared_ptr<BaseActionElement> Deserialize(
-					std::shared_ptr<AdaptiveCards::ElementParserRegistration> elementParserRegistration,
-					std::shared_ptr<AdaptiveCards::ActionParserRegistration> actionParserRegistration,
-					std::vector<std::shared_ptr<AdaptiveCards::AdaptiveCardParseWarning>>& warnings,
-					const Json::Value& value) override
+				virtual std::shared_ptr<BaseActionElement> Deserialize(ParseContext &context, const Json::Value& value) override
 				{
 					return std::make_shared<TestCustomElement>(value);
 				}

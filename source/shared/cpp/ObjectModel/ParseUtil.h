@@ -4,8 +4,7 @@
 #include "AdaptiveCardParseException.h"
 #include "Enums.h"
 #include "json/json.h"
-#include "ElementParserRegistration.h"
-#include "ActionParserRegistration.h"
+#include "ParseContext.h"
 
 namespace AdaptiveSharedNamespace
 {
@@ -56,38 +55,25 @@ namespace AdaptiveSharedNamespace
                        std::function<T(const std::string& name)> enumConverter,
                        bool isRequired = false);
 
-        std::vector<std::shared_ptr<BaseCardElement>>
-        GetElementCollection(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                             std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                             std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                             const Json::Value& json,
-                             AdaptiveCardSchemaKey key,
-                             bool isRequired = false);
+        std::vector<std::shared_ptr<BaseCardElement>> GetElementCollection(ParseContext& context,
+                                                                           const Json::Value& json,
+                                                                           AdaptiveCardSchemaKey key,
+                                                                           bool isRequired = false);
 
         template<typename T>
         std::vector<std::shared_ptr<T>> GetElementCollectionOfSingleType(
-            std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-            std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-            std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+            ParseContext& context,
             const Json::Value& json,
             AdaptiveCardSchemaKey key,
-            const std::function<std::shared_ptr<T>(std::shared_ptr<ElementParserRegistration>,
-                                                   std::shared_ptr<ActionParserRegistration>,
-                                                   std::vector<std::shared_ptr<AdaptiveCardParseWarning>>&,
-                                                   const Json::Value&)>& deserializer,
+            const std::function<std::shared_ptr<T>(ParseContext& context, const Json::Value&)>& deserializer,
             bool isRequired = false);
 
-        std::vector<std::shared_ptr<BaseActionElement>>
-        GetActionCollection(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                            std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                            std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                            const Json::Value& json,
-                            AdaptiveCardSchemaKey key,
-                            bool isRequired = false);
+        std::vector<std::shared_ptr<BaseActionElement>> GetActionCollection(ParseContext& context,
+                                                                            const Json::Value& json,
+                                                                            AdaptiveCardSchemaKey key,
+                                                                            bool isRequired = false);
 
-        std::shared_ptr<BaseActionElement> GetAction(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                                     std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+        std::shared_ptr<BaseActionElement> GetAction(ParseContext& context,
                                                      const Json::Value& json,
                                                      AdaptiveCardSchemaKey key,
                                                      bool isRequired = false);
@@ -98,10 +84,7 @@ namespace AdaptiveSharedNamespace
                                               const T& defaultValue,
                                               const std::function<T(const Json::Value&, const T&)>& deserializer);
 
-        std::shared_ptr<BaseActionElement> GetActionFromJsonValue(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                                  std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                                                  std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                                                  const Json::Value& json);
+        std::shared_ptr<BaseActionElement> GetActionFromJsonValue(ParseContext& context, const Json::Value& json);
 
         void ExpectTypeString(const Json::Value& json, CardElementType bodyType);
 
@@ -155,15 +138,10 @@ namespace AdaptiveSharedNamespace
 
     template<typename T>
     std::vector<std::shared_ptr<T>> ParseUtil::GetElementCollectionOfSingleType(
-        std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
+        ParseContext& context,
         const Json::Value& json,
         AdaptiveCardSchemaKey key,
-        const std::function<std::shared_ptr<T>(std::shared_ptr<ElementParserRegistration>,
-                                               std::shared_ptr<ActionParserRegistration>,
-                                               std::vector<std::shared_ptr<AdaptiveCardParseWarning>>&,
-                                               const Json::Value&)>& deserializer,
+        const std::function<std::shared_ptr<T>(ParseContext& context, const Json::Value&)>& deserializer,
         bool isRequired)
     {
         auto elementArray = GetArray(json, key, isRequired);
@@ -180,7 +158,7 @@ namespace AdaptiveSharedNamespace
         for (const Json::Value& curJsonValue : elementArray)
         {
             // Parse the element
-            auto el = deserializer(elementParserRegistration, actionParserRegistration, warnings, curJsonValue);
+            auto el = deserializer(context, curJsonValue);
             if (el != nullptr)
             {
                 elements.push_back(el);

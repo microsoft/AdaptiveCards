@@ -30,6 +30,8 @@ namespace AdaptiveCards
 
             if (reader.Depth == 0)
             {
+                AdaptiveTypedElementConverter.BeginCard();
+
                 if (jObject.Value<string>("version") == null)
                 {
                     throw new AdaptiveSerializationException("Could not parse required key: version. It was not found.");

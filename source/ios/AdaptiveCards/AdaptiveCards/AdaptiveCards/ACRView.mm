@@ -2,7 +2,7 @@
 //  ACRView.m
 //  ACRView
 //
-//  Copyright © 2018 Microsoft. All rights reserved.
+//  Copyright Â© 2018 Microsoft. All rights reserved.
 //
 
 #import "ACRView.h"
@@ -17,6 +17,7 @@
 #import "ColumnSet.h"
 #import "Column.h"
 #import "Enums.h"
+#import "Fact.h"
 #import "Image.h"
 #import "Media.h"
 #import "TextInput.h"
@@ -407,7 +408,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
         imageloadblock = ^(NSURL *url){
             // download image
             UIImage *img = nil;
-            if(url.scheme == @"data") {
+            if([url.scheme isEqualToString:@"data"]) {
                 NSString *absoluteUri = url.absoluteString;
                 std::string dataUri = AdaptiveCards::AdaptiveBase64Util::ExtractDataFromUri(std::string([absoluteUri UTF8String]));
                 std::vector<char> decodedDataUri = AdaptiveCards::AdaptiveBase64Util::Decode(dataUri);

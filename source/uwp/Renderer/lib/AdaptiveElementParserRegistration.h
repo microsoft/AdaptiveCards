@@ -47,10 +47,8 @@ namespace AdaptiveNamespace
         }
 
         // IBaseCardElementParser
-        std::shared_ptr<BaseCardElement> Deserialize(std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> elementParserRegistration,
-                                                     std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> actionParserRegistration,
-                                                     std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                                     const Json::Value& value) override;
+        std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& value) override;
+        std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
 
     private:
         Microsoft::WRL::ComPtr<AdaptiveNamespace::AdaptiveElementParserRegistration> m_parserRegistration;
@@ -69,33 +67,18 @@ namespace AdaptiveNamespace
         std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> sharedModelElementParserRegistration;
         ComPtr<AdaptiveElementParserRegistration> elementParserRegistrationImpl =
             PeekInnards<AdaptiveElementParserRegistration>(elementParserRegistration);
-        if (elementParserRegistrationImpl != nullptr)
-        {
-            sharedModelElementParserRegistration = elementParserRegistrationImpl->GetSharedParserRegistration();
-        }
-        else
-        {
-            sharedModelElementParserRegistration = std::make_shared<AdaptiveSharedNamespace::ElementParserRegistration>();
-        }
-
         std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> sharedModelActionParserRegistration;
         ComPtr<AdaptiveActionParserRegistration> actionParserRegistrationImpl =
             PeekInnards<AdaptiveActionParserRegistration>(actionParserRegistration);
-        if (actionParserRegistrationImpl != nullptr)
-        {
-            sharedModelActionParserRegistration = actionParserRegistrationImpl->GetSharedParserRegistration();
-        }
-        else
-        {
-            sharedModelActionParserRegistration = std::make_shared<AdaptiveSharedNamespace::ActionParserRegistration>();
-        }
+
+        ParseContext context(elementParserRegistrationImpl->GetSharedParserRegistration(),
+                             actionParserRegistrationImpl->GetSharedParserRegistration());
 
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
         std::shared_ptr<TSharedModelParser> parser = std::make_shared<TSharedModelParser>();
-        std::shared_ptr<BaseCardElement> baseCardElement =
-            parser->DeserializeFromString(sharedModelElementParserRegistration, sharedModelActionParserRegistration, warnings, jsonString);
+        std::shared_ptr<BaseCardElement> baseCardElement = parser->DeserializeFromString(context, jsonString);
 
-        RETURN_IF_FAILED(SharedWarningsToAdaptiveWarnings(warnings, adaptiveWarnings));
+        RETURN_IF_FAILED(SharedWarningsToAdaptiveWarnings(context.warnings, adaptiveWarnings));
 
         THROW_IF_FAILED(MakeAndInitialize<TAdaptiveCardElement>(element, std::AdaptivePointerCast<TSharedModelElement>(baseCardElement)));
 

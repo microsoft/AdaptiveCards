@@ -13,6 +13,7 @@
 #import "CustomTextBlockRenderer.h"
 #import "CustomImageRenderer.h"
 #import "ADCResolver.h"
+#import "AdaptiveCards/ACRButton.h"
 
 @interface ViewController ()
 {
@@ -298,7 +299,22 @@
     }
     else
     {
-        button.backgroundColor = [UIColor colorWithRed:0.11 green:0.68 blue:0.97 alpha:1.0];
+        if([button isKindOfClass:[ACRButton class]])
+        {
+            ACRButton *acrButton = (ACRButton*)button;
+            if(acrButton.sentiment != ACRSentimentDefault)
+            {
+                [acrButton applySentimentStyling];
+            }
+            else
+            {
+                button.backgroundColor = [UIColor colorWithRed:0.11 green:0.68 blue:0.97 alpha:1.0];
+            }
+        }
+        else
+        {
+            button.backgroundColor = [UIColor colorWithRed:0.11 green:0.68 blue:0.97 alpha:1.0];
+        }
         [self.scrView layoutIfNeeded];
     }
 }

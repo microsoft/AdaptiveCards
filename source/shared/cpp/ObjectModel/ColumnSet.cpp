@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ColumnSet.h"
+#include "Column.h"
 #include "ParseUtil.h"
 #include "Image.h"
 #include "TextBlock.h"
@@ -59,36 +60,25 @@ Json::Value ColumnSet::SerializeToJsonValue() const
     return root;
 }
 
-std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                              std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                                              std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                                              const Json::Value& value)
+std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(ParseContext& context, const Json::Value& value)
 {
     ParseUtil::ExpectTypeString(value, CardElementType::ColumnSet);
 
     auto container = BaseCardElement::Deserialize<ColumnSet>(value);
 
     // Parse Columns
-    auto cardElements = ParseUtil::GetElementCollectionOfSingleType<Column>(
-        elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::Columns, Column::Deserialize, false);
+    auto cardElements = ParseUtil::GetElementCollectionOfSingleType<Column>(context, value, AdaptiveCardSchemaKey::Columns, Column::Deserialize, false);
     container->m_columns = std::move(cardElements);
 
     // Parse optional selectAction
-    container->SetSelectAction(ParseUtil::GetAction(
-        elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::SelectAction, false));
+    container->SetSelectAction(ParseUtil::GetAction(context, value, AdaptiveCardSchemaKey::SelectAction, false));
 
     return container;
 }
 
-std::shared_ptr<BaseCardElement> ColumnSetParser::DeserializeFromString(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                                        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                                                        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                                                        const std::string& jsonString)
+std::shared_ptr<BaseCardElement> ColumnSetParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
-    return ColumnSetParser::Deserialize(elementParserRegistration,
-                                        actionParserRegistration,
-                                        warnings,
-                                        ParseUtil::GetJsonValueFromString(jsonString));
+    return ColumnSetParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 void ColumnSet::PopulateKnownPropertiesSet()
