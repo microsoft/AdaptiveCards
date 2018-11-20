@@ -1054,7 +1054,7 @@ body {
 }
 
 .acd-toolbar-choicePicker {
-    flex: 0 0 250px;
+    flex: 0 0 auto;
     margin: 0px 8px 0px 8px;
 }
 

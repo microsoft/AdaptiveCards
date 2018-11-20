@@ -489,9 +489,5 @@ function monacoEditorLoaded() {
 }
 
 window.onload = () => {
-    AdaptiveCards.AdaptiveCard.processMarkdown = (text: string) => {
-        return new MarkdownIt().render(text);
-    }
-
     loadMonacoEditor(adaptiveCardSchema, monacoEditorLoaded);
 };
