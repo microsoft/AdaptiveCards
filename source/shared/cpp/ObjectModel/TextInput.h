@@ -51,16 +51,9 @@ namespace AdaptiveSharedNamespace
         TextInputParser(TextInputParser&&) = default;
         TextInputParser& operator=(const TextInputParser&) = default;
         TextInputParser& operator=(TextInputParser&&) = default;
-        virtual ~TextInputParser() = default;
+        ~TextInputParser() = default;
 
-        std::shared_ptr<BaseCardElement> Deserialize(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                     std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                                     std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                                     const Json::Value& root) override;
-
-        std::shared_ptr<BaseCardElement> DeserializeFromString(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                               std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                                               std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                                               const std::string& jsonString);
+        std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
+        std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
     };
 }

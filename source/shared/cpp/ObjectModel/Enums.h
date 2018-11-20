@@ -314,7 +314,8 @@ namespace AdaptiveSharedNamespace
         RenderFailed,
         RequiredPropertyMissing,
         InvalidPropertyValue,
-        UnsupportedParserOverride
+        UnsupportedParserOverride,
+        IdCollision
     };
     // No mapping to string needed
 

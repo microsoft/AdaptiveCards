@@ -50,8 +50,13 @@ public class BaseCardElementParser {
     AdaptiveCardObjectModelJNI.BaseCardElementParser_change_ownership(this, swigCPtr, true);
   }
 
-  public BaseCardElement Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, JsonValue value) {
-    long cPtr = AdaptiveCardObjectModelJNI.BaseCardElementParser_Deserialize(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, JsonValue.getCPtr(value), value);
+  public BaseCardElement Deserialize(ParseContext context, JsonValue value) {
+    long cPtr = AdaptiveCardObjectModelJNI.BaseCardElementParser_Deserialize(swigCPtr, this, ParseContext.getCPtr(context), context, JsonValue.getCPtr(value), value);
+    return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
+  }
+
+  public BaseCardElement DeserializeFromString(ParseContext context, String value) {
+    long cPtr = AdaptiveCardObjectModelJNI.BaseCardElementParser_DeserializeFromString(swigCPtr, this, ParseContext.getCPtr(context), context, value);
     return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
   }
 

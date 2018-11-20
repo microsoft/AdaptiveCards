@@ -49,10 +49,7 @@ Json::Value ImageSet::SerializeToJsonValue() const
     return root;
 }
 
-std::shared_ptr<BaseCardElement> ImageSetParser::Deserialize(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                             std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                                             std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                                             const Json::Value& value)
+std::shared_ptr<BaseCardElement> ImageSetParser::Deserialize(ParseContext& context, const Json::Value& value)
 {
     ParseUtil::ExpectTypeString(value, CardElementType::ImageSet);
 
@@ -63,8 +60,7 @@ std::shared_ptr<BaseCardElement> ImageSetParser::Deserialize(std::shared_ptr<Ele
         ParseUtil::GetEnumValue<ImageSize>(value, AdaptiveCardSchemaKey::ImageSize, ImageSize::None, ImageSizeFromString);
 
     // Parse Images
-    auto images = ParseUtil::GetElementCollection(
-        elementParserRegistration, actionParserRegistration, warnings, value, AdaptiveCardSchemaKey::Images, true);
+    auto images = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Images, true);
 
     for (auto image : images)
     {
@@ -74,15 +70,9 @@ std::shared_ptr<BaseCardElement> ImageSetParser::Deserialize(std::shared_ptr<Ele
     return imageSet;
 }
 
-std::shared_ptr<BaseCardElement> ImageSetParser::DeserializeFromString(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                                       std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                                                       std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                                                       const std::string& jsonString)
+std::shared_ptr<BaseCardElement> ImageSetParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
-    return ImageSetParser::Deserialize(elementParserRegistration,
-                                       actionParserRegistration,
-                                       warnings,
-                                       ParseUtil::GetJsonValueFromString(jsonString));
+    return ImageSetParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 void ImageSet::PopulateKnownPropertiesSet()

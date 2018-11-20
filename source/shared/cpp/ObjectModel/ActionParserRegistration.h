@@ -8,17 +8,13 @@
 namespace AdaptiveSharedNamespace
 {
     class BaseActionElement;
-    class ElementParserRegistration;
-    class ActionParserRegistration;
+    class ParseContext;
 
     class ActionElementParser
     {
     public:
-        virtual std::shared_ptr<BaseActionElement>
-        Deserialize(std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> elementParserRegistration,
-                    std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> actionParserRegistration,
-                    std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                    const Json::Value& value) = 0;
+        virtual ~ActionElementParser() = default;
+        virtual std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) = 0;
     };
 
     class ActionParserRegistration

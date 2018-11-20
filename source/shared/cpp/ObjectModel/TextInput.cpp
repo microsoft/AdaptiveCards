@@ -108,10 +108,7 @@ void TextInput::SetInlineAction(const std::shared_ptr<BaseActionElement> action)
     m_inlineAction = action;
 }
 
-std::shared_ptr<BaseCardElement> TextInputParser::Deserialize(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                              std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                                              std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                                              const Json::Value& json)
+std::shared_ptr<BaseCardElement> TextInputParser::Deserialize(ParseContext& context, const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::TextInput);
 
@@ -123,21 +120,14 @@ std::shared_ptr<BaseCardElement> TextInputParser::Deserialize(std::shared_ptr<El
     textInput->SetMaxLength(ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::MaxLength, 0));
     textInput->SetTextInputStyle(
         ParseUtil::GetEnumValue<TextInputStyle>(json, AdaptiveCardSchemaKey::Style, TextInputStyle::Text, TextInputStyleFromString));
-    textInput->SetInlineAction(ParseUtil::GetAction(
-        elementParserRegistration, actionParserRegistration, warnings, json, AdaptiveCardSchemaKey::InlineAction, false));
+    textInput->SetInlineAction(ParseUtil::GetAction(context, json, AdaptiveCardSchemaKey::InlineAction, false));
 
     return textInput;
 }
 
-std::shared_ptr<BaseCardElement> TextInputParser::DeserializeFromString(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                                        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                                                        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                                                        const std::string& jsonString)
+std::shared_ptr<BaseCardElement> TextInputParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
-    return TextInputParser::Deserialize(elementParserRegistration,
-                                        actionParserRegistration,
-                                        warnings,
-                                        ParseUtil::GetJsonValueFromString(jsonString));
+    return TextInputParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 void TextInput::PopulateKnownPropertiesSet()

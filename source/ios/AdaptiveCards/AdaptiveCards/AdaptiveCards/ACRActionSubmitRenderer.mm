@@ -32,7 +32,7 @@
 
     NSString *title = [NSString stringWithCString:action->GetTitle().c_str() encoding:NSUTF8StringEncoding];
 
-    UIButton *button = [UIButton rootView:view baseActionElement:acoElem title:title andHostConfig:acoConfig];
+    UIButton *button = [ACRButton rootView:view baseActionElement:acoElem title:title andHostConfig:acoConfig];
 
     ACRAggregateTarget *target = [[ACRAggregateTarget alloc] initWithActionElement:acoElem rootView:(ACRView*)view];
 

@@ -36,16 +36,9 @@ namespace AdaptiveSharedNamespace
         ShowCardActionParser(ShowCardActionParser&&) = default;
         ShowCardActionParser& operator=(const ShowCardActionParser&) = default;
         ShowCardActionParser& operator=(ShowCardActionParser&&) = default;
-        virtual ~ShowCardActionParser() = default;
+        ~ShowCardActionParser() = default;
 
-        std::shared_ptr<BaseActionElement> Deserialize(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                       std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                                       std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                                       const Json::Value& value) override;
-
-        std::shared_ptr<BaseActionElement> DeserializeFromString(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                                 std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                                                 std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                                                 const std::string& jsonString);
+        std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) override;
+        std::shared_ptr<BaseActionElement> DeserializeFromString(ParseContext& context, const std::string& jsonString);
     };
 }
