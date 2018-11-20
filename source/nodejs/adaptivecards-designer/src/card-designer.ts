@@ -7,7 +7,7 @@ import * as DesignerPeers from "./designer-peers";
 import { HostContainer } from "./containers/host-container";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
 import { FullScreenHandler } from "./fullscreen-handler";
-import { Toolbar, ToolbarButton, ToolbarSeparator, ToolbarLabel, ToolbarChoicePicker } from "./toolbar";
+import { Toolbar, ToolbarButton, ToolbarChoicePicker, ToolbarElementAlignment } from "./toolbar";
 import { SidePane, SidePaneOrientation } from "./side-pane";
 import { Splitter } from "./splitter";
 import { IPoint, Utils } from "./miscellaneous";
@@ -16,6 +16,7 @@ import { DefaultContainer } from "./containers/default/default-container";
 
 import "./adaptivecards-designer.css";
 import { AdaptiveCard } from "adaptivecards";
+
 
 export class CardDesigner {
     private static internalProcessMarkdown(text: string): string {
@@ -380,21 +381,26 @@ export class CardDesigner {
     private _hostContainerChoicePicker: ToolbarChoicePicker;
     private _undoButton: ToolbarButton;
     private _redoButton: ToolbarButton;
+    private _newCardButton: ToolbarButton;
     private _copyJSONButton: ToolbarButton;
 
     private prepareToolbar() {
         this._fullScreenButton = new ToolbarButton(
+            CardDesigner.ToolbarCommands.FullScreen,
             "Enter Full Screen",
             "acd-icon-fullScreen",
             (sender) => { this._fullScreenHandler.toggleFullScreen(); });
+        this._fullScreenButton.displayCaption = false;
+        this._fullScreenButton.toolTip = "Enter full screen";
+        this._fullScreenButton.alignment = ToolbarElementAlignment.Right;
 
         this.toolbar.addElement(this._fullScreenButton);
 
         if (this._hostContainers && this._hostContainers.length > 0) {
-            this.toolbar.addElement(new ToolbarSeparator());
-            this.toolbar.addElement(new ToolbarLabel("Select Host app:"));
-
-            this._hostContainerChoicePicker = new ToolbarChoicePicker();
+            this._hostContainerChoicePicker = new ToolbarChoicePicker(CardDesigner.ToolbarCommands.HostAppPicker);
+            this._hostContainerChoicePicker.separator = true;
+            this._hostContainerChoicePicker.label = "Select host app:"
+            this._hostContainerChoicePicker.width = 350;
 
             for (let i = 0; i < this._hostContainers.length; i++) {
                 this._hostContainerChoicePicker.choices.push(
@@ -414,12 +420,12 @@ export class CardDesigner {
             this.toolbar.addElement(this._hostContainerChoicePicker);
         }
 
-        this.toolbar.addElement(new ToolbarSeparator());
-
         this._undoButton = new ToolbarButton(
+            CardDesigner.ToolbarCommands.Undo,
             "Undo",
             "acd-icon-undo",
             (sender) => { this.undo(); });
+        this._undoButton.separator = true;
         this._undoButton.toolTip = "Undo your last change";
         this._undoButton.isEnabled = false;
         this._undoButton.displayCaption = false;
@@ -427,6 +433,7 @@ export class CardDesigner {
         this.toolbar.addElement(this._undoButton);
 
         this._redoButton = new ToolbarButton(
+            CardDesigner.ToolbarCommands.Redo,
             "Redo",
             "acd-icon-redo",
             (sender) => { this.redo(); });
@@ -436,19 +443,24 @@ export class CardDesigner {
 
         this.toolbar.addElement(this._redoButton);
 
-        this.toolbar.addElement(new ToolbarSeparator());
-        this.toolbar.addElement(
-            new ToolbarButton(
-                "New card",
-                "acd-icon-newCard",
-                (sender) => { this.newCard(); }));
+        this._newCardButton = new ToolbarButton(
+            CardDesigner.ToolbarCommands.NewCard,
+            "New card",
+            "acd-icon-newCard",
+            (sender) => { this.newCard(); });
+            this._newCardButton.separator = true;
 
-        this._copyJSONButton = new ToolbarButton("Copy JSON", "acd-icon-copy");
+        this.toolbar.addElement(this._newCardButton);
+
+        this._copyJSONButton = new ToolbarButton(
+            CardDesigner.ToolbarCommands.CopyJSON,
+            "Copy JSON",
+            "acd-icon-copy");
         this.toolbar.addElement(this._copyJSONButton);
 
         this._fullScreenHandler = new FullScreenHandler();
         this._fullScreenHandler.onFullScreenChanged = (isFullScreen: boolean) => {
-            this._fullScreenButton.caption = isFullScreen ? "Exit full screen" : "Enter full screen";
+            this._fullScreenButton.toolTip = isFullScreen ? "Exit full screen" : "Enter full screen";
     
             this.updateFullLayout();
         }
@@ -468,12 +480,12 @@ export class CardDesigner {
 		
 		// If loaded using WebPack this should work, but it's not right now...
 		//callback();
-    }
-	
+    }	
 
     public monacoModuleLoaded(monaco: any = null) {
-		if(!monaco)
-			monaco = window["monaco"];
+		if (!monaco) {
+            monaco = window["monaco"];
+        }
 
         let monacoConfiguration = {
             schemas: [
@@ -1008,4 +1020,15 @@ export class CardDesigner {
 	set assetPath(value: string) {
 		this._assetPath = value;
 	}
+}
+
+export module CardDesigner {
+    export class ToolbarCommands {
+        static FullScreen = "__fullScreenButton";
+        static HostAppPicker = "__hostAppPicker";
+        static Undo = "__undoButton";
+        static Redo = "__redoButton";
+        static NewCard = "__newCardButton";
+        static CopyJSON = "__copyJsonButton";
+    }
 }
