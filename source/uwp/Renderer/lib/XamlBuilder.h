@@ -8,6 +8,7 @@
 #include "InputValue.h"
 #include "RenderedAdaptiveCard.h"
 #include "AdaptiveRenderContext.h"
+#include <windows.ui.xaml.shapes.h>
 
 namespace AdaptiveNamespace
 {
@@ -136,6 +137,15 @@ namespace AdaptiveNamespace
                                    _Inout_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                    _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
 
+        void SetAutoSize(ABI::AdaptiveNamespace::ImageSize size,
+                         ABI::AdaptiveNamespace::ImageStyle style,
+                         IInspectable* parentElement,
+                         ABI::Windows::UI::Xaml::Shapes::IEllipse* e,
+                         ABI::Windows::UI::Xaml::Shapes::IShape* ellipseAsShape,
+                         ABI::Windows::UI::Xaml::Controls::IImage* image,
+                         ABI::Windows::UI::Xaml::IFrameworkElement* frameworkElement,
+            bool mustHideElement);
+
         template<typename T>
         void SetImageSource(T* destination,
                             ABI::Windows::UI::Xaml::Media::IImageSource* imageSource,
@@ -145,7 +155,16 @@ namespace AdaptiveNamespace
                                  T* uiElement,
                                  ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers* resolvers,
                                  _Out_ bool* mustHideElement,
-                                 ABI::Windows::UI::Xaml::Media::Stretch stretch = Stretch_UniformToFill);
+            ABI::AdaptiveNamespace::ImageSize size,
+            ABI::AdaptiveNamespace::ImageStyle style,
+            IInspectable* parentElement,
+            ABI::Windows::UI::Xaml::Shapes::IEllipse* e,
+            ABI::Windows::UI::Xaml::Shapes::IShape* ellipseAsShape,
+            ABI::Windows::UI::Xaml::Controls::IImage* image,
+            ABI::Windows::UI::Xaml::IFrameworkElement* frameworkElement,
+                                 ABI::Windows::UI::Xaml::Media::Stretch stretch = Stretch_UniformToFill
+            );
+
         template<typename T>
         void PopulateImageFromUrlAsync(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl, T* imageControl);
         void FireAllImagesLoaded();
