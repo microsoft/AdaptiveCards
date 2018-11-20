@@ -34,11 +34,11 @@
 							"placeholder": "enter comment",
 							"maxLength": 500,
 							"height": "stretch",
-                            "inlineAction": {
-                                "type": "Action.OpenUrl",
-                                "title": "Reply",
-                                "url": "http://adaptivecards.io"
-                            }
+							"inlineAction": {
+								"type": "Action.OpenUrl",
+								"title": "Reply",
+								"url": "http://adaptivecards.io"
+							}
 						},
 						{
 							"type": "TextBlock",
