@@ -138,15 +138,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 return;
             }
 
-            BitmapImage bi = null;
-            if (finalUri.Scheme == "data")
-            {
-                bi = GetBitmapFromBase64(finalUri);
-            }
-            else
-            {
-                bi = await context.ResolveImageSource(finalUri);
-            }
+            BitmapImage bi = await context.ResolveImageSource(finalUri);
 
             if (bi != null)
             {

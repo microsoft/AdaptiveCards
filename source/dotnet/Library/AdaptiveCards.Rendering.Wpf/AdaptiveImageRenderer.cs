@@ -21,15 +21,8 @@ namespace AdaptiveCards.Rendering.Wpf
                 return uiImage;
             }
 
-            if (finalUri.Scheme == "data")
-            {
-                uiImage.Source = ImageExtensions.GetBitmapFromBase64(finalUri);
-            }
-            else
-            { 
-                uiImage.SetSource(image, finalUri, context);
-            }
-
+            uiImage.SetSource(image, finalUri, context);
+            
             uiImage.SetHorizontalAlignment(image.HorizontalAlignment);
 
             string style = $"Adaptive.{image.Type}";
