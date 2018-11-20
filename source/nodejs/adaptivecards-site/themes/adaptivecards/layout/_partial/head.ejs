@@ -3,43 +3,35 @@
 <head>
   <meta charset="utf-8">
   <%
-  var title = page.title;
+	var title = page.title;
 
-  if (is_archive()){
-    title = __("archive_a");
+	if (is_archive()){
+		title = __("archive_a");
 
-    if (is_month()){
-      title += ": " + page.year + "/" + page.month;
-    } else if (is_year()){
-      title += ": " + page.year;
-    }
-  } else if (is_category()){
-    title = __("category") + ": " + page.category;
-  } else if (is_tag()){
-    title = __("tag") + ": " + page.tag;
-  }
-  %>
-  <title><% if (title){ %><%= title %> | <% } %><%= config.title %></title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <%- open_graph({twitter_id: theme.twitter, google_plus: theme.google_plus, fb_admins: theme.fb_admins, fb_app_id: theme.fb_app_id}) %>
+		if (is_month()){
+		title += ": " + page.year + "/" + page.month;
+		} else if (is_year()){
+		title += ": " + page.year;
+		}
+	} else if (is_category()){
+		title = __("category") + ": " + page.category;
+	} else if (is_tag()){
+		title = __("tag") + ": " + page.tag;
+	}
+	%>
+	<title><% if (title){ %><%= title %> | <% } %><%= config.title %></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<%- open_graph({twitter_id: theme.twitter, google_plus: theme.google_plus, fb_admins: theme.fb_admins, fb_app_id: theme.fb_app_id}) %>
 
-  <% if (theme.rss){ %>
-    <link rel="alternate" href="<%- theme.rss %>" title="<%= config.title %>" type="application/atom+xml">
-  <% } %>
+	<% if (theme.rss){ %>
+		<link rel="alternate" href="<%- theme.rss %>" title="<%= config.title %>" type="application/atom+xml">
+	<% } %>
 
-  <% if (theme.favicon){ %>
-    <link rel="icon" href="<%- theme.favicon %>">
-  <% } %>
+	<% if (theme.favicon){ %>
+		<link rel="icon" href="<%- theme.favicon %>">
+	<% } %>
 
-  <% if (config.highlight.enable){ %>
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  <% } %>
-
-
-
-  <% /* Taken from docs.microsoft.com */ %>
-  <link rel="stylesheet" href="https://statics-uhf-eas.akamaized.net/west-european/shell/_scrf/css/themes=default.device=uplevel_web_pc/ec-f8ec33/b7-01890e/67-f66a05/bb-33df2f/d6-3f8236/1c-14fb9c/8e-0f0147/17-1042c1?ver=2.0" type="text/css" media="all" /><link rel="stylesheet" href="https://statics-uhf-eus.akamaized.net/statics/override.css?c=4" type="text/css" />
-
+	<link rel="stylesheet" href="https://statics-uhf-eas.akamaized.net/west-european/shell/_scrf/css/themes=default.device=uplevel_web_pc/ec-f8ec33/b7-01890e/67-f66a05/bb-33df2f/d6-3f8236/1c-14fb9c/8e-0f0147/17-1042c1?ver=2.0" type="text/css" media="all" /><link rel="stylesheet" href="https://statics-uhf-eus.akamaized.net/statics/override.css?c=4" type="text/css" />
 
 	<% if(is_current("visualizer")) { %>
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -54,8 +46,8 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">	  
-		<link rel="stylesheet" href="https://docs.microsoft.com/_themes/docs.theme/master/en-us/_themes/css/ab552cd0.site-ltr.css">
-		<link rel="stylesheet" href="https://docs.microsoft.com/_themes/docs.theme/master/en-us/_themes/css/c9b8eba2.conceptual.css ">
+
+		<%- css("css/extracted.css") %>
 		<%- css("visualizer/css/outlook.css") %>
 		<%- css("css/style.css") %>
 	<% } %>

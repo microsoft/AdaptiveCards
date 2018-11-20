@@ -1,5 +1,6 @@
 ---
 title: Announcing Adaptive Cards 1.1
+date: 2018-10-12
 ---
 
 Since the 1.0 release of Adaptive Cards in March this year, the team has been hard at work on our 1.1 release, planning our 1.2 release and investigating the future of portable card and data formats for our 2.0 release.  Full release [here](https://github.com/Microsoft/AdaptiveCards/wiki/1.1-Feature-List)
