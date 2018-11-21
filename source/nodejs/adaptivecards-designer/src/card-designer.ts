@@ -15,8 +15,8 @@ import { BasePaletteItem, ElementPaletteItem } from "./tool-palette";
 import { DefaultContainer } from "./containers/default/default-container";
 
 import "./adaptivecards-designer.css";
-import { AdaptiveCard } from "adaptivecards";
-
+//import "adaptivecards/dist/adaptivecards-default.css";
+import "adaptivecards-controls/dist/adaptivecards-controls.css";
 
 export class CardDesigner {
     private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
@@ -587,7 +587,7 @@ export class CardDesigner {
     readonly toolbar: Toolbar = new Toolbar();
 
     constructor(hostContainers: Array<HostContainer> = null) {
-        AdaptiveCard.onProcessMarkdown = (text: string, result: Adaptive.IMarkdownProcessingResult) => {
+        Adaptive.AdaptiveCard.onProcessMarkdown = (text: string, result: Adaptive.IMarkdownProcessingResult) => {
             CardDesigner.internalProcessMarkdown(text, result);
         }
 

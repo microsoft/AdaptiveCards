@@ -22,6 +22,11 @@
 			console.log("Local storage is not available.");
 		}
 
+		ACDesigner.CardDesigner.onProcessMarkdown = function(text, result) {
+        	result.outputHtml = new markdownit().render(text);
+			result.didProcess = true;
+		};
+
 		let hostContainers = [];
 		hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
 		hostContainers.push(new ACDesigner.CortanaContainer("Cortana Skills", "containers/cortana-container.css"));
@@ -35,32 +40,32 @@
 		let designer = new ACDesigner.CardDesigner(hostContainers);
 		designer.assetPath = "../node_modules/adaptivecards-designer/dist/";
 
-		/* Here's how to add buttons to the toolbar:
+		let hostDocsButton = new ACDesigner.ToolbarButton(
+			"hostDocs",
+			"Host App Docs",
+			null,
+			(sender) => { window.open("https://docs.microsoft.com/en-us/adaptive-cards/resources/partners") });
+			hostDocsButton.separator = false;
 
-		designer.toolbar.addElement(new ToolbarSeparator());
-		designer.toolbar.addElement(
-			new ToolbarButton(
-				"Save",
-				null,
-				(sender) => {
-					// Here is how to get the payload of the current card from the designer
-					let card = designer.getCard();
+		designer.toolbar.insertElementAfter(hostDocsButton, ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker);
 
-					alert(JSON.stringify(card, null, 4));
-				}
-			)
-		)
-		*/
+		let visualizerButton = new ACDesigner.ToolbarButton(
+			"visualizerButton",
+			"Classic Visualizer",
+			null,
+			(sender) => { window.location.href = "/visualizer" });
+			visualizerButton.separator = true;
+			visualizerButton.alignment = ACDesigner.ToolbarElementAlignment.Right;
 
-		// NOTE: Adding toolbar elements must be done BEFORE the designer is attached
+		designer.toolbar.insertElementBefore(visualizerButton, ACDesigner.CardDesigner.ToolbarCommands.FullScreen);
+
+
 		var cardUrl = getParameterByName("card", null);
 
 		if (cardUrl) {
 
 			var xhttp = new XMLHttpRequest();
-
 			xhttp.onload = function () {
-
 				designer.attachTo(document.getElementById("designerRootHost"));
 
 				if (xhttp.responseText && xhttp.responseText != "") {
@@ -69,6 +74,8 @@
 	
 				history.replaceState(null, null, "/designer");
 			};
+
+			// TODO: when the designer has an addError API we should log that we failed to load the requested card
 			// xhttp.onerror = function() {
 			// 	designer.
 			// };
@@ -78,8 +85,7 @@
 				xhttp.send();
 			}
 			catch(e) {
-				designer.attachTo(document.getElementById("designerRootHost"));
-				
+				designer.attachTo(document.getElementById("designerRootHost"));				
 			}
 		}
 		else {
@@ -90,8 +96,6 @@
 		require(['vs/editor/editor.main'], function () {
 		 	designer.monacoModuleLoaded();
 		 }); 
-
-
 	};
 </script>
 

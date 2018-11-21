@@ -165,20 +165,14 @@ For advanced configuration of the designer use the following APIs.
 
 
 	/* Modify the toolbar */
-	designer.toolbar.addElement(new ToolbarSeparator());
-	designer.toolbar.addElement(
-		new ToolbarButton(
-			"Save",
-			null,
-			(sender) => {
-				// Here is how to get the payload of the current card from the designer
-				let card = designer.getCard();
+    let myButton = new Designer.ToolbarButton(
+        "myButton",
+        "My button",
+        null,
+        (sender) => { alert("My button was clicked"); });
+    myButton.separator = true;
+    designer.toolbar.insertElementAfter(myButton, Designer.CardDesigner.ToolbarCommands.HostAppPicker);
 
-				alert(JSON.stringify(card, null, 4));
-			}
-		)
-	)
-	
 
 	/* Collapse certain panes by default (BEFORE designer attached)	*/
 	designer.treeViewPane.collapse();

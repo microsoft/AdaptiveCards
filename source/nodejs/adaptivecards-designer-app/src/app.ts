@@ -1,32 +1,30 @@
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import * as markdownit from "markdown-it";
-import * as Designer from "adaptivecards-designer";
+import * as ACDesigner from "adaptivecards-designer";
 import "./app.css";
-import "adaptivecards/dist/adaptivecards-default.css";
-import "adaptivecards-controls/dist/adaptivecards-controls.css";
 import "adaptivecards-designer/dist/adaptivecards-designer.css";
 
 window.onload = () => {
-	Designer.CardDesigner.onProcessMarkdown = (text: string, result: { didProcess: boolean, outputHtml: string }) => {
+	ACDesigner.CardDesigner.onProcessMarkdown = (text: string, result: { didProcess: boolean, outputHtml: string }) => {
 		result.outputHtml = new markdownit().render(text);
 		result.didProcess = true;
 	}
 
-	if (!Designer.SettingsManager.isLocalStorageAvailable) {
+	if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
 		console.log("Local storage is not available.");
 	}
 
-	let hostContainers: Array<Designer.HostContainer> = [];
-	hostContainers.push(new Designer.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
-	hostContainers.push(new Designer.CortanaContainer("Cortana Skills", "containers/cortana-container.css"));
-	hostContainers.push(new Designer.OutlookContainer("Outlook Actionable Messages", "containers/outlook-container.css"));
-	hostContainers.push(new Designer.TimelineContainer("Windows Timeline", "containers/timeline-container.css"));
-	hostContainers.push(new Designer.DarkTeamsContainer("Microsoft Teams - Dark", "containers/teams-container-dark.css"));
-	hostContainers.push(new Designer.LightTeamsContainer("Microsoft Teams - Light", "containers/teams-container-light.css"));
-	hostContainers.push(new Designer.BotFrameworkContainer("Bot Framework Other Channels (Image render)", "containers/bf-image-container.css"));
-	hostContainers.push(new Designer.ToastContainer("Windows Notifications (Preview)", "containers/toast-container.css"));
+	let hostContainers: Array<ACDesigner.HostContainer> = [];
+	hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
+	hostContainers.push(new ACDesigner.CortanaContainer("Cortana Skills", "containers/cortana-container.css"));
+	hostContainers.push(new ACDesigner.OutlookContainer("Outlook Actionable Messages", "containers/outlook-container.css"));
+	hostContainers.push(new ACDesigner.TimelineContainer("Windows Timeline", "containers/timeline-container.css"));
+	hostContainers.push(new ACDesigner.DarkTeamsContainer("Microsoft Teams - Dark", "containers/teams-container-dark.css"));
+	hostContainers.push(new ACDesigner.LightTeamsContainer("Microsoft Teams - Light", "containers/teams-container-light.css"));
+	hostContainers.push(new ACDesigner.BotFrameworkContainer("Bot Framework Other Channels (Image render)", "containers/bf-image-container.css"));
+	hostContainers.push(new ACDesigner.ToastContainer("Windows Notifications (Preview)", "containers/toast-container.css"));
 
-	let designer = new Designer.CardDesigner(hostContainers);
+	let designer = new ACDesigner.CardDesigner(hostContainers);
 	designer.attachTo(document.getElementById("designerRootHost"));
 	designer.monacoModuleLoaded(monaco);
 };

@@ -37,20 +37,14 @@
 
 			/* Here's how to add buttons to the toolbar:
 
-			designer.toolbar.addElement(new ToolbarSeparator());
-			designer.toolbar.addElement(
-				new ToolbarButton(
-					"Save",
-					null,
-					(sender) => {
-						// Here is how to get the payload of the current card from the designer
-						let card = designer.getCard();
+			let myButton = new ACDesigner.ToolbarButton(
+				"myButton",
+				"My button",
+				null,
+				(sender) => { alert("My button was clicked"); });
+			myButton.separator = true;
+			designer.toolbar.insertElementAfter(myButton, ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker);
 
-						alert(JSON.stringify(card, null, 4));
-					}
-				)
-			)
-			*/
 
 			// NOTE: Adding toolbar elements must be done BEFORE the designer is attached
 

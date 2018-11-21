@@ -10,12 +10,12 @@
     "generate-md-hc": "node node_modules/marked-schema/bin/marked-schema ../../../schemas/host-config.json ./schema-hostconfig-toc.yml -r AdaptiveCardConfig"
   },
   "hexo": {
-    "version": "3.8.0"
+    "version": "3.7.1"
   },
   "dependencies": {
     "adaptivecards": "^1.2.0-alpha1",
-	"adaptivecards-visualizer": "^1.1.0",
-	"adaptivecards-designer": "^0.1.1",
+    "adaptivecards-visualizer": "^1.1.0",
+    "adaptivecards-designer": "^0.1.1",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.4",
     "change-case": "^3.0.1",

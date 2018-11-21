@@ -13,11 +13,7 @@
 			if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
 				console.log("Local storage is not available.");
 			}
-
-			// Prepare a list of host containers
-			// This is not required. When no list is passed (empty array or null), the designer
-			// uses a default built-in host container, and the host container picker in the
-			// toolbar is hidden.
+			
 			let hostContainers = [];
 			hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
 			hostContainers.push(new ACDesigner.CortanaContainer("Cortana Skills", "containers/cortana-container.css"));
@@ -31,50 +27,7 @@
 			let designer = new ACDesigner.CardDesigner(hostContainers);
 			designer.assetPath = "https://unpkg.com/adaptivecards-designer@0.1.1/dist";
 
-			/* Here's how to add buttons to the toolbar:
-
-			designer.toolbar.addElement(new ToolbarSeparator());
-			designer.toolbar.addElement(
-				new ToolbarButton(
-					"Save",
-					null,
-					(sender) => {
-						// Here is how to get the payload of the current card from the designer
-						let card = designer.getCard();
-
-						alert(JSON.stringify(card, null, 4));
-					}
-				)
-			)
-			*/
-
-			// NOTE: Adding toolbar elements must be done BEFORE the designer is attached
-
 			designer.attachTo(document.getElementById("designerRootHost"));
-
-			/* Here's how to collapse certain panes by default:
-			
-			designer.treeViewPane.collapse();
-			designer.jsonEditorPane.collapse();
-			*/
-
-			/* Here's how to set the card payload in the designer:
-
-			designer.setCard(
-				{
-					type: "AdaptiveCard",
-					version: "1.0",
-					body: [
-						{
-							type: "TextBlock",
-							text: "Hello world"
-						}
-					]
-				}
-			);
-			*/
-
-			// NOTE: Collapsing panes/setting the card payload must be done AFTER the designer is attached
 
 			require.config({ paths: { 'vs': 'https://unpkg.com/adaptivecards-designer@0.1.1/dist/monaco-editor/min/vs' } });
 			require(['vs/editor/editor.main'], function () {
