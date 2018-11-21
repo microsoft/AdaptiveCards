@@ -233,19 +233,14 @@ export class Toolbar {
         separatorPosition: ToolbarElementAlignment) {
 
         for (let i = 0; i < elements.length; i++) {
-            if (elements[i].separator && separatorPosition == ToolbarElementAlignment.Left) {
-                if (i > 0) {
-                    container.appendChild(this.createSeparatorElement());
-                }
-
-                container.appendChild(elements[i].render());
+            if (elements[i].separator && separatorPosition == ToolbarElementAlignment.Left && i > 0) {
+                container.appendChild(this.createSeparatorElement());
             }
-            else {
-                container.appendChild(elements[i].render());
 
-                if (elements[i].separator && i < elements.length - 1) {
-                    container.appendChild(this.createSeparatorElement());
-                }
+            container.appendChild(elements[i].render());
+
+            if (elements[i].separator && separatorPosition == ToolbarElementAlignment.Right && i < elements.length - 1) {
+                container.appendChild(this.createSeparatorElement());
             }
         }
     }
