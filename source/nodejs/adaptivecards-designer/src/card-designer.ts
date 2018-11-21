@@ -15,7 +15,7 @@ import { BasePaletteItem, ElementPaletteItem } from "./tool-palette";
 import { DefaultContainer } from "./containers/default/default-container";
 
 import "./adaptivecards-designer.css";
-//import "adaptivecards/dist/adaptivecards-default.css";
+import "adaptivecards/dist/adaptivecards-default.css";
 import "adaptivecards-controls/dist/adaptivecards-controls.css";
 
 export class CardDesigner {
