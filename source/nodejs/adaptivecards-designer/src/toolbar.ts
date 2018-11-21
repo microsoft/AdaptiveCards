@@ -233,7 +233,7 @@ export class Toolbar {
         separatorPosition: ToolbarElementAlignment) {
 
         for (let i = 0; i < elements.length; i++) {
-            if (separatorPosition == ToolbarElementAlignment.Left) {
+            if (elements[i].separator && separatorPosition == ToolbarElementAlignment.Left) {
                 if (i > 0) {
                     container.appendChild(this.createSeparatorElement());
                 }
@@ -243,7 +243,7 @@ export class Toolbar {
             else {
                 container.appendChild(elements[i].render());
 
-                if (i < elements.length - 1) {
+                if (elements[i].separator && i < elements.length - 1) {
                     container.appendChild(this.createSeparatorElement());
                 }
             }
