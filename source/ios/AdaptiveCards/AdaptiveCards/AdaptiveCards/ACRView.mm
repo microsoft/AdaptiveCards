@@ -260,8 +260,15 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                     poster = [_hostConfig getHostConfig]->GetMedia().defaultPoster;
                 }
 
-                if(!poster.empty()){
-                    [self loadImage:poster];
+                if(!poster.empty()) {
+                    ObserverActionBlock observerAction =
+                    ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<Image> const &imgElem, NSURL* url, ACRView* rootView) {
+                        UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
+                        [rootView setImageView:key imageView:view];
+                    };
+                    [rootView
+                        loadImageAccordingToResourceResolverIFFromString:adaptiveCard->GetBackgroundImage()
+                        key:nil observerAction:observerAction];
                 }
 
                 break;

@@ -18,7 +18,6 @@
 #import "ACOBaseCardElementPrivate.h"
 #import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRContentHoldingUIView.h"
-#import "ACRAVPlayerViewHoldingUIView.h"
 
 @implementation ACRMediaRenderer
 
@@ -45,11 +44,11 @@
     NSMutableDictionary *imageViewMap = [rootView getImageMap];
     NSString *key = [NSString stringWithCString:mediaElem->GetPoster().c_str() encoding:[NSString defaultCStringEncoding]];
     UIImage *img = imageViewMap[key];
-    ACRAVPlayerViewHoldingUIView *view = nil;
+    UIImageView *view = nil;
     CGFloat heightToWidthRatio = 0.0f;
     // if poster is available, restrict the image size to the width of superview, and adjust the height accordingly
     if(img) {
-        view = [[ACRAVPlayerViewHoldingUIView alloc] initWithImage:img];
+        view = [[UIImageView alloc] initWithImage:img];
         view.translatesAutoresizingMaskIntoConstraints = NO;
         view.contentMode = UIViewContentModeScaleAspectFill;
 
@@ -58,7 +57,7 @@
         }
     } else { // if poster is not availabl, create a 4:3 blank black backgroudn poster view; 16:9 won't provide enough height in case the media is 4:3
         heightToWidthRatio = .75;
-        view = [[ACRAVPlayerViewHoldingUIView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, viewGroup.frame.size.width * .75)];
+        view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, viewGroup.frame.size.width * .75)];
         view.backgroundColor = UIColor.blackColor;
         view.translatesAutoresizingMaskIntoConstraints = NO;
     }
@@ -79,8 +78,8 @@
     ACRContentHoldingUIView *contentholdingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
     // if play icon is provided from hostconfig, disable play icon drawing in its sublayer, and invalidate the current sublayer, so it will be updated in the next drawring cycle
     if(!drawDefaultPlayIcon) {
-        view.hidePlayIcon = YES;
-        [view setNeedsLayout];
+        contentholdingview.hidePlayIcon = YES;
+        [contentholdingview setNeedsLayout];
         [view addSubview:playIconImageView];
         [NSLayoutConstraint constraintWithItem:playIconImageView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
         [NSLayoutConstraint constraintWithItem:playIconImageView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
@@ -130,10 +129,8 @@
     return view;
 }
 
-//- (void)configUpdateForMediaView:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
 - (void)configUpdateForMediaView:(CGFloat)heightToWidthRatio viewGroup:(UIView *)viewGroup contentHoldingView:(UIView *)contentholdingview imageView:(UIImageView *)view
 {
-    //heightToWidthRatio = img.size.height / img.size.width;
     [NSLayoutConstraint constraintWithItem:view
                                  attribute:NSLayoutAttributeHeight
                                  relatedBy:NSLayoutRelationEqual

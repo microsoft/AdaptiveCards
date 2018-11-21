@@ -8,6 +8,7 @@
 #import "ACRMediaTarget.h"
 #import "ACRAVPlayerViewHoldingUIView.h"
 #import "ACOHostConfigPrivate.h"
+#import "ACRContentHoldingUIView.h"
 
 // tags for easy accessing of subviews
 const int playIconTag = 0x49434F4E;
@@ -97,28 +98,32 @@ const int posterTag = 0x504F5354;
                     UIView *mediaView = self->_mediaViewController.view;
 
                     mediaView.translatesAutoresizingMaskIntoConstraints = NO;
-                   
-                    ACRAVPlayerViewHoldingUIView *poster = [self->_containingview viewWithTag:posterTag];
-                    poster.hidePlayIcon = YES;
-                    [poster setNeedsLayout];
+
+                    UIImageView* poster = [self->_containingview viewWithTag:posterTag];
 
                     UIView *playIconView = [poster viewWithTag:playIconTag];
                     if(playIconView){
                         [playIconView removeFromSuperview];
                     }
 
+                    ((ACRContentHoldingUIView *)self->_containingview).hidePlayIcon = YES;
+                    [self->_containingview setNeedsLayout];
                     [self->_containingview addSubview:mediaView];
                     [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;
                     [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0].active = YES;
-                    [NSLayoutConstraint constraintWithItem:poster attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:mediaView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;
+
+                    [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;
+                    [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0].active = YES;
                     // poster and plyaIconView are removed from their superviews
                     [poster removeFromSuperview];
-                    
+
                     UIView *overlayview = self->_mediaViewController.contentOverlayView;
                     overlayview.backgroundColor = UIColor.blackColor;
-                    // overlayview sit between AVPLayverViewController view's control view and content view, and here we add the poster.
                     [overlayview addSubview:poster];
-                    [overlayview bringSubviewToFront:poster];
+
+                    [NSLayoutConstraint constraintWithItem:poster attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationLessThanOrEqual toItem:overlayview attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;
+                    [NSLayoutConstraint constraintWithItem:poster attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual toItem:overlayview attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0].active = YES;
+                    // overlayview sit between AVPLayverViewController view's control view and content view, and here we add the poster.
 
                     [player play];
                     validMediaTypeFound = YES;
@@ -166,7 +171,7 @@ const int posterTag = 0x504F5354;
     [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:frame.size.width].active = YES;
     [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:frame.size.height].active = YES;
 
-    ACRAVPlayerViewHoldingUIView *poster = [self->_containingview viewWithTag:posterTag];
+    UIImageView *poster = [self->_containingview viewWithTag:posterTag];
     poster.hidden = YES;
 
     [self->_containingview addSubview:mediaView];
