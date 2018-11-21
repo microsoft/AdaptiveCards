@@ -24,7 +24,11 @@ export class CardDesigner {
             CardDesigner.onProcessMarkdown(text, result);
         }
         else {
-            result.didProcess = false;
+            // Check for markdownit
+            if (window["markdownit"]) {
+                result.outputHtml = window["markdownit"]().render(text);
+                result.didProcess = true;
+            }
         }
     }
 
