@@ -15,5 +15,7 @@ const NSInteger eACRUIImageTag = 0x1236;
 @interface ACRContentHoldingUIView: UIView
 
 @property BOOL isPersonStyle;
+@property BOOL hidePlayIcon;
+@property BOOL isMediaType;
 
 @end
