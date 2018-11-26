@@ -112,7 +112,7 @@ namespace AdaptiveCards.Test
 
             var expected = @"{
   ""type"": ""AdaptiveCard"",
-  ""version"": ""1.2"",
+  ""version"": ""1.0"",
   ""id"": ""myCard"",
   ""body"": [
     {
@@ -148,7 +148,7 @@ namespace AdaptiveCards.Test
 
             var expected = @"{
   ""type"": ""AdaptiveCard"",
-  ""version"": ""1.2"",
+  ""version"": ""1.0"",
   ""body"": [
     {
       ""type"": ""TextBlock"",
@@ -536,7 +536,7 @@ namespace AdaptiveCards.Test
   ]
 }";
 
-            var card = new AdaptiveCard
+            var card = new AdaptiveCard("1.2")
             {
                 Id = "myCard",
                 Body =
