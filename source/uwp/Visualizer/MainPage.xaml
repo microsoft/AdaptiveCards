@@ -12,6 +12,7 @@
             <Setter Property="Margin" Value="5,0,0,0"/>
         </Style>
         <Style x:Key="Adaptive.Action.ToggleViewState" TargetType="ToggleButton">
+            <Setter Property="RenderTransformOrigin" Value="0.5, 0.5"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
@@ -58,17 +59,14 @@
                                     </VisualState>
                                     <VisualState x:Name="Indeterminate">
                                         <Storyboard>
-                                            <PointerUpThemeAnimation Storyboard.TargetName="RootGrid" />
                                         </Storyboard>
                                     </VisualState>
                                     <VisualState x:Name="IndeterminatePointerOver">
                                         <Storyboard>
-                                            <PointerUpThemeAnimation Storyboard.TargetName="RootGrid" />
                                         </Storyboard>
                                     </VisualState>
                                     <VisualState x:Name="IndeterminatePressed">
                                         <Storyboard>
-                                            <PointerDownThemeAnimation Storyboard.TargetName="RootGrid" />
                                         </Storyboard>
                                     </VisualState>
                                     <VisualState x:Name="IndeterminateDisabled">

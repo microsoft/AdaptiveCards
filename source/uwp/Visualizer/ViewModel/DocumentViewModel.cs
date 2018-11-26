@@ -261,7 +261,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                         "<DoubleAnimation\n" +
                             "Storyboard.TargetName=\"toggleActionId\"\n" +
                             "Storyboard.TargetProperty=\"(UIElement.RenderTransform).(CompositeTransform.Rotation)\"\n" +
-                            "From=\"180\" To=\"0\" Duration=\"0:0:.35\"\n" +
+                            "From=\"0\" To=\"180\" Duration=\"0:0:.35\"\n" +
                         "/>\n" +
                     "</Storyboard>";
                 //        "<DoubleAnimation" +

@@ -1217,14 +1217,23 @@ namespace AdaptiveNamespace
         ComPtr<IResourceDictionary> resourceDictionary;
         renderContext->get_OverrideStyles(&resourceDictionary);
 
-        ComPtr<IInspectable> animationInspectable;
-        if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IInspectable>(resourceDictionary.Get(),
-                                                                           L"Adaptive.Storyboard.Action.ToggleViewState.toggleActionId",
-                                                                           &animationInspectable)))
+        HString actionId;
+        localAction->get_Id(actionId.GetAddressOf());
+
+        UINT32 length;
+        std::wstring actionIdWString = WindowsGetStringRawBuffer(actionId.Get(), &length);
+
+        if (isCheckedValue)
         {
-            ComPtr<IStoryboard> animationStoryboard;
-            animationInspectable.As(&animationStoryboard);
-            animationStoryboard->Begin();
+            ComPtr<IInspectable> animationInspectable;
+            if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IInspectable>(resourceDictionary.Get(),
+                                                                               L"Adaptive.Storyboard.Action.ToggleViewState." + actionIdWString,
+                                                                               &animationInspectable)))
+            {
+                ComPtr<IStoryboard> animationStoryboard;
+                animationInspectable.As(&animationStoryboard);
+                animationStoryboard->Begin();
+            }
         }
         return S_OK;
     }
