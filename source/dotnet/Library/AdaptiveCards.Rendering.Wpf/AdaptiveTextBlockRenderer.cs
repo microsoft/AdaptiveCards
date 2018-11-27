@@ -122,9 +122,9 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (textBlock.HorizontalAlignment != AdaptiveHorizontalAlignment.Left)
             {
-                System.Windows.HorizontalAlignment alignment;
-                if (Enum.TryParse<System.Windows.HorizontalAlignment>(textBlock.HorizontalAlignment.ToString(), out alignment))
-                    uiTextBlock.HorizontalAlignment = alignment;
+                System.Windows.TextAlignment alignment;
+                if (Enum.TryParse<System.Windows.TextAlignment>(textBlock.HorizontalAlignment.ToString(), out alignment))
+                    uiTextBlock.TextAlignment = alignment;
             }
 
             if (textBlock.Wrap)
