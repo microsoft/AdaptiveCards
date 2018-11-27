@@ -49,7 +49,7 @@ namespace UWPTestLibrary
             }
         }
 
-        public static async Task<Tuple<string, string, UIElement, double>> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile)
+        public static async Task<Tuple<string, string, UIElement, double>> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile, Dictionary<string, IAdaptiveCardResourceResolver> resourceResolvers)
         {
             string error = null;
             string roundTrippedJsonString = null;
@@ -83,6 +83,11 @@ namespace UWPTestLibrary
                         {
                             HostConfig = hostConfig
                         };
+
+                        foreach (var resourceResolver in resourceResolvers)
+                        {
+                            renderer.ResourceResolvers.Set(resourceResolver.Key, resourceResolver.Value);
+                        }
 
                         if (hostConfigFile.Name.Contains("windows-timeline"))
                         {
