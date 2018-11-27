@@ -137,14 +137,11 @@ namespace AdaptiveNamespace
                                    _Inout_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                    _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
 
-        void SetAutoSize(ABI::AdaptiveNamespace::ImageSize size,
-                         ABI::AdaptiveNamespace::ImageStyle style,
+        template<typename T>
+        void SetAutoSize(T* destination,
                          IInspectable* parentElement,
-                         ABI::Windows::UI::Xaml::Shapes::IEllipse* e,
-                         ABI::Windows::UI::Xaml::Shapes::IShape* ellipseAsShape,
-                         ABI::Windows::UI::Xaml::Controls::IImage* image,
-                         ABI::Windows::UI::Xaml::IFrameworkElement* frameworkElement,
-            bool mustHideElement);
+                         IInspectable* imageContainer,
+                         bool mustHideElement);
 
         template<typename T>
         void SetImageSource(T* destination,
@@ -154,14 +151,10 @@ namespace AdaptiveNamespace
         void SetImageOnUIElement(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl,
                                  T* uiElement,
                                  ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers* resolvers,
+                                 bool isSizeAuto,
+                                 IInspectable* parentElement,
+                                 IInspectable* imageContainer,
                                  _Out_ bool* mustHideElement,
-            ABI::AdaptiveNamespace::ImageSize size,
-            ABI::AdaptiveNamespace::ImageStyle style,
-            IInspectable* parentElement,
-            ABI::Windows::UI::Xaml::Shapes::IEllipse* e,
-            ABI::Windows::UI::Xaml::Shapes::IShape* ellipseAsShape,
-            ABI::Windows::UI::Xaml::Controls::IImage* image,
-            ABI::Windows::UI::Xaml::IFrameworkElement* frameworkElement,
                                  ABI::Windows::UI::Xaml::Media::Stretch stretch = Stretch_UniformToFill
             );
 

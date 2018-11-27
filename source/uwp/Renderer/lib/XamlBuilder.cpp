@@ -529,14 +529,10 @@ namespace AdaptiveNamespace
     void XamlBuilder::SetImageOnUIElement(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl,
                                           T* uiElement,
                                           IAdaptiveCardResourceResolvers* resolvers,
+                                          bool isAutoSize,
+                                          IInspectable* parentElement,
+                                          IInspectable* imageContainer,
                                           _Out_ bool* mustHideElement,
-        ABI::AdaptiveNamespace::ImageSize size,
-        ABI::AdaptiveNamespace::ImageStyle style,
-        IInspectable* parentElement,
-        ABI::Windows::UI::Xaml::Shapes::IEllipse* e,
-        ABI::Windows::UI::Xaml::Shapes::IShape* ellipseAsShape,
-        ABI::Windows::UI::Xaml::Controls::IImage* image,
-        ABI::Windows::UI::Xaml::IFrameworkElement* frameworkElement,
                                           _In_ ABI::Windows::UI::Xaml::Media::Stretch stretch)
     {
         *mustHideElement = true;
@@ -579,7 +575,7 @@ namespace AdaptiveNamespace
                 ComPtr<XamlBuilder> strongThis(this);
                 HRESULT hr = (getResourceStreamOperation->put_Completed(
                     Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationCompletedHandler<IRandomAccessStream*>>>(
-                        [strongThis, this, bitmapSource, strongImageControl, bitmapImage, stretch, size, style, parentElement, e, ellipseAsShape, image, frameworkElement](
+                        [strongThis, this, bitmapSource, strongImageControl, bitmapImage, stretch, isAutoSize, parentElement, imageContainer](
                             IAsyncOperation<IRandomAccessStream*>* operation, AsyncStatus status) -> HRESULT {
                             if (status == AsyncStatus::Completed)
                             {
@@ -601,7 +597,10 @@ namespace AdaptiveNamespace
                                 SetImageSource(strongImageControl.Get(), imageSource.Get(), stretch);
 
                                 // Here should be the auto resizing, at this time we already have the image and everything set
-                                SetAutoSize(size, style, parentElement, e, ellipseAsShape, image, frameworkElement, false);
+                                if (isAutoSize)
+                                {
+                                    SetAutoSize(strongImageControl.Get(), parentElement, imageContainer, false);
+                                }
 
                                 return S_OK;
                             }
@@ -664,7 +663,7 @@ namespace AdaptiveNamespace
             ComPtr<XamlBuilder> strongThis(this);
             THROW_IF_FAILED(bufferWriteOperation->put_Completed(
                 Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<UINT32, UINT32>>>(
-                    [strongThis, this, bitmapSource, randomAccessStream, strongImageControl, size, style, parentElement, e, ellipseAsShape, image, frameworkElement](
+                    [strongThis, this, bitmapSource, randomAccessStream, strongImageControl, isAutoSize, parentElement, imageContainer /*ellipseAsShape, frameworkElement*/](
                         IAsyncOperationWithProgress<UINT32, UINT32>* /*operation*/, AsyncStatus /*status*/)->HRESULT {
 
                 randomAccessStream->Seek(0);
@@ -675,7 +674,10 @@ namespace AdaptiveNamespace
 
                 SetImageSource(strongImageControl.Get(), imageSource.Get());
 
-                SetAutoSize(size, style, parentElement, e, ellipseAsShape, image, frameworkElement, false);
+                if (isAutoSize)
+                {
+                    SetAutoSize(strongImageControl.Get(), parentElement, imageContainer, false);
+                }
 
                 return S_OK;
             })
@@ -698,7 +700,10 @@ namespace AdaptiveNamespace
             THROW_IF_FAILED(bitmapImage.As(&bitmapImageSource));
             SetImageSource(uiElement, bitmapImageSource.Get(), stretch);
 
-            SetAutoSize(size, style, parentElement, e, ellipseAsShape, image, frameworkElement, true);
+            if (isAutoSize)
+            {
+                SetAutoSize(uiElement, parentElement, imageContainer, true);
+            }
         }
         else
         {
@@ -1726,81 +1731,90 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    void XamlBuilder::SetAutoSize(ABI::AdaptiveNamespace::ImageSize size, ABI::AdaptiveNamespace::ImageStyle imageStyle, IInspectable* parentElement, IEllipse* e, IShape* ellipseAsShape, IImage* image, IFrameworkElement* frameworkElement, bool mustHideElement)
+    _Use_decl_annotations_ template<>
+    void XamlBuilder::SetAutoSize<IEllipse>(IEllipse* destination, IInspectable* parentElement, IInspectable* imageContainer, bool mustHideElement)
     {
-        //if container is ellipse
-        if (imageStyle == ImageStyle_Person)
+        // Check if the image source fits in the parent container, if so, set the framework element's size to match the original image.
+        if (parentElement != nullptr && m_enableXamlImageHandling)
         {
-            // Check if the image source fits in the parent container, if so, set the framework element's size to match the original image.
-            if (size == ABI::AdaptiveNamespace::ImageSize::Auto && parentElement != nullptr && m_enableXamlImageHandling)
+            ComPtr<IInspectable> ellipseShape(imageContainer);
+            ComPtr<IShape> ellipseAsShape;
+            THROW_IF_FAILED(ellipseShape.As(&ellipseAsShape));
+
+            ComPtr<IBrush> ellipseBrush;
+            THROW_IF_FAILED(ellipseAsShape->get_Fill(&ellipseBrush));
+            ComPtr<IImageBrush> brushAsImageBrush;
+            THROW_IF_FAILED(ellipseBrush.As(&brushAsImageBrush));
+
+            ComPtr<IEllipse> ellipse(destination);
+
+            ComPtr<IUIElement> ellipseAsUIElement;
+            THROW_IF_FAILED(ellipse.As(&ellipseAsUIElement));
+
+            ComPtr<IImageSource> imageSource;
+            THROW_IF_FAILED(brushAsImageBrush->get_ImageSource(&imageSource));
+            ComPtr<IBitmapSource> imageSourceAsBitmap;
+            THROW_IF_FAILED(imageSource.As(&imageSourceAsBitmap));
+
+            // If the image hasn't loaded yet
+            if (mustHideElement)
             {
-                ComPtr<IBrush> ellipseBrush;
-                THROW_IF_FAILED(ellipseAsShape->get_Fill(&ellipseBrush));
-                ComPtr<IImageBrush> brushAsImageBrush;
-                THROW_IF_FAILED(ellipseBrush.As(&brushAsImageBrush));
-
-                ComPtr<IEllipse> ellipse(e);
-
-                ComPtr<IUIElement> ellipseAsUIElement;
-                THROW_IF_FAILED(ellipse.As(&ellipseAsUIElement));
-
-                ComPtr<IImageSource> imageSource;
-                THROW_IF_FAILED(brushAsImageBrush->get_ImageSource(&imageSource));
-                ComPtr<IBitmapSource> imageSourceAsBitmap;
-                THROW_IF_FAILED(imageSource.As(&imageSourceAsBitmap));
-
-                // If the image hasn't loaded yet
-                if (mustHideElement)
-                {
-                    // Collapse the Ellipse while the image loads, so that resizing is not noticeable
-                    THROW_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
-                    // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
-                    EventRegistrationToken eventToken;
-                    THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(
-                        Callback<IRoutedEventHandler>([ellipseAsUIElement](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
-                        // Don't set the AutoImageSize on the ellipse as it makes the ellipse grow bigger than
-                        // what it would be otherwise, just set the visibility when we get the image
-                        return ellipseAsUIElement->put_Visibility(Visibility::Visibility_Visible);
-                    })
-                        .Get(),
-                        &eventToken));
-                }
+                // Collapse the Ellipse while the image loads, so that resizing is not noticeable
+                THROW_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
+                // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
+                EventRegistrationToken eventToken;
+                THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(
+                    Callback<IRoutedEventHandler>([ellipseAsUIElement](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
+                    // Don't set the AutoImageSize on the ellipse as it makes the ellipse grow bigger than
+                    // what it would be otherwise, just set the visibility when we get the image
+                    return ellipseAsUIElement->put_Visibility(Visibility::Visibility_Visible);
+                })
+                    .Get(),
+                    &eventToken));
             }
         }
-        else
+    }
+
+    _Use_decl_annotations_ template<typename T>
+    void XamlBuilder::SetAutoSize(T* destination, IInspectable* parentElement, IInspectable* imageContainer, bool mustHideElement)
+    {
+        ComPtr<IInspectable> parentElement2(parentElement);
+        //if container is ellipse
+        if (parentElement != nullptr && m_enableXamlImageHandling)
         {
-            if (parentElement != nullptr && size == ABI::AdaptiveNamespace::ImageSize::Auto && m_enableXamlImageHandling)
+            ComPtr<IImage> xamlImage(destination);
+
+            ComPtr<IInspectable> container(imageContainer);
+            ComPtr<IFrameworkElement> frameworkElement;
+            THROW_IF_FAILED(container.As(&frameworkElement));
+
+            ComPtr<IImageSource> imageSource;
+            THROW_IF_FAILED(xamlImage->get_Source(&imageSource));
+            ComPtr<IBitmapSource> imageSourceAsBitmap;
+            THROW_IF_FAILED(imageSource.As(&imageSourceAsBitmap));
+
+            ComPtr<IUIElement> imageAsUIElement;
+            THROW_IF_FAILED(xamlImage.As(&imageAsUIElement));
+
+            // If the image hasn't loaded yet
+            if (mustHideElement)
             {
-                ComPtr<IImage> xamlImage(image);
+                // Collapse the Image control while the image loads, so that resizing is not noticeable
+                THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
 
-                ComPtr<IImageSource> imageSource;
-                THROW_IF_FAILED(xamlImage->get_Source(&imageSource));
-                ComPtr<IBitmapSource> imageSourceAsBitmap;
-                THROW_IF_FAILED(imageSource.As(&imageSourceAsBitmap));
-
-                ComPtr<IUIElement> imageAsUIElement;
-                THROW_IF_FAILED(xamlImage.As(&imageAsUIElement));
-
-                // If the image hasn't loaded yet
-                if (mustHideElement)
-                {
-                    // Collapse the Image control while the image loads, so that resizing is not noticeable
-                    THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
-
-                    // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
-                    EventRegistrationToken eventToken;
-                    THROW_IF_FAILED(xamlImage->add_ImageOpened(
-                        Callback<IRoutedEventHandler>([frameworkElement, parentElement, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs *
-                            /*args*/) -> HRESULT {
-                        return SetAutoImageSize(frameworkElement, parentElement, imageSourceAsBitmap.Get());
-                    })
-                        .Get(),
-                        &eventToken));
-                }
-                else
-                {
-                    SetAutoImageSize(frameworkElement, parentElement, imageSourceAsBitmap.Get());
-                }
+                // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
+                EventRegistrationToken eventToken;
+                HRESULT hr = (xamlImage->add_ImageOpened(
+                Callback<IRoutedEventHandler>([frameworkElement, parentElement2, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs *
+                        /*args*/) -> HRESULT {
+                return SetAutoImageSize(frameworkElement.Get(), parentElement2.Get(), imageSourceAsBitmap.Get());
+                })
+                    .Get(),
+                    &eventToken));
+            }
+            else
+            {
+                SetAutoImageSize(frameworkElement.Get() , parentElement, imageSourceAsBitmap.Get());
             }
         }
     }
@@ -1876,8 +1890,9 @@ namespace AdaptiveNamespace
             ComPtr<IShape> ellipseAsShape;
             THROW_IF_FAILED(ellipse.As(&ellipseAsShape));
 
-            SetImageOnUIElement(imageUrl.Get(), ellipse.Get(), resourceResolvers.Get(), &mustHideElement, size, imageStyle, parentElement.Get(),
-            ellipse.Get(), ellipseAsShape.Get(), nullptr, nullptr, stretch);
+            SetImageOnUIElement(imageUrl.Get(), ellipse.Get(), resourceResolvers.Get(),
+                               (size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize_Auto),
+                               parentElement.Get(), ellipseAsShape.Get(), &mustHideElement, stretch);
 
             ComPtr<IShape> backgroundEllipseAsShape;
             THROW_IF_FAILED(backgroundEllipse.As(&backgroundEllipseAsShape));
@@ -1952,8 +1967,9 @@ namespace AdaptiveNamespace
             ComPtr<IInspectable> parentElement;
             THROW_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
 
-            SetImageOnUIElement(imageUrl.Get(), xamlImage.Get(), resourceResolvers.Get(), &mustHideElement, size, imageStyle, parentElement.Get(), nullptr, nullptr, xamlImage.Get(), frameworkElement.Get());
-            
+            SetImageOnUIElement(imageUrl.Get(), xamlImage.Get(), resourceResolvers.Get(),
+                                (size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize_Auto),
+                                parentElement.Get(), frameworkElement.Get(), &mustHideElement);
         }
 
         ComPtr<IAdaptiveImageSizesConfig> sizeOptions;
