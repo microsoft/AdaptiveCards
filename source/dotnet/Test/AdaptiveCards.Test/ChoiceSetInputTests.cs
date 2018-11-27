@@ -10,7 +10,7 @@ namespace AdaptiveCards.Test
         [TestMethod]
         public void TestChoiceSetExpanded()
         {
-            var card = new AdaptiveCard
+            var card = new AdaptiveCard("1.0")
             {
                 Body = new List<AdaptiveElement>()
                 {
