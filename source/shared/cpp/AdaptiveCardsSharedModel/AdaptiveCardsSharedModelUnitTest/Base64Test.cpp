@@ -37,7 +37,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::vector<std::string> decodedData{ "", "f", "fo", "foo", "foob", "fooba", "foobar" };
             std::vector<std::string> expectedEncodedData{ "", "Zg==", "Zm8=", "Zm9v", "Zm9vYg==", "Zm9vYmE=", "Zm9vYmFy" };
 
-            for (int i{}; i < decodedData.size(); ++i)
+            for (size_t i{}; i < decodedData.size(); ++i)
             {
                 Assert::AreEqual(expectedEncodedData[i].c_str(),
                                  AdaptiveBase64Util::Encode(std::vector<char>(decodedData[i].begin(), decodedData[i].end())).c_str());
@@ -53,7 +53,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::IsTrue(expectedDecodedData[0].size() ==
                 AdaptiveBase64Util::Decode(std::string(encodedData[0].begin(), encodedData[0].end())).size());
 
-            for (int i{1}; i < encodedData.size(); ++i)
+            for (size_t i{1}; i < encodedData.size(); ++i)
             {
                 Assert::IsTrue(ContainSameCharacters(expectedDecodedData[i],
                                                     AdaptiveBase64Util::Decode(std::string(encodedData[i].begin(), encodedData[i].end()))));

@@ -119,10 +119,10 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, 
     // Perform version validation
     if (enforceVersion)
     {
-        const SemanticVersion rendererMaxVersion(rendererVersion);
-        const SemanticVersion cardVersion(version);
+        const SemanticVersion rendererMaxVersion(rendererVersion, WildcardSupport::NotSupported);
+        const SemanticVersion cardVersion(version, WildcardSupport::NotSupported);
 
-        if (rendererVersion < cardVersion)
+        if (rendererMaxVersion < cardVersion)
         {
             if (fallbackText.empty())
             {
