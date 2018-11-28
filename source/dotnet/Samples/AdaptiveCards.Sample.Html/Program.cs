@@ -101,11 +101,6 @@ namespace AdaptiveCards.Sample.Html
         }
 
     </style>
-    <script>
-    function testFuction() {
-document.
-    }
-    </script>
 </head>
 <body>");
 
