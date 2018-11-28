@@ -155,8 +155,7 @@ namespace AdaptiveNamespace
                                  IInspectable* parentElement,
                                  IInspectable* imageContainer,
                                  _Out_ bool* mustHideElement,
-                                 ABI::Windows::UI::Xaml::Media::Stretch stretch = Stretch_UniformToFill
-            );
+                                 ABI::Windows::UI::Xaml::Media::Stretch stretch = Stretch_UniformToFill);
 
         template<typename T>
         void PopulateImageFromUrlAsync(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl, T* imageControl);

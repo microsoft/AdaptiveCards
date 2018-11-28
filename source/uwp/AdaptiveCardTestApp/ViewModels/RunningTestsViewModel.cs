@@ -156,7 +156,6 @@ namespace AdaptiveCardTestApp.ViewModels
             Dictionary<string, IAdaptiveCardResourceResolver> resourceResolvers = new Dictionary<string, IAdaptiveCardResourceResolver>();
             resourceResolvers.Add("symbol", new SampleResourceResolver());
 
-
             var renderResult = await RenderCard(cardFile, hostConfigFile, resourceResolvers);
 
             var result = await TestResultViewModel.CreateAsync(

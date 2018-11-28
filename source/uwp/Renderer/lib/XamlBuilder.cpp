@@ -573,7 +573,7 @@ namespace AdaptiveNamespace
 
                 ComPtr<T> strongImageControl(uiElement);
                 ComPtr<XamlBuilder> strongThis(this);
-                HRESULT hr = (getResourceStreamOperation->put_Completed(
+                THROW_IF_FAILED(getResourceStreamOperation->put_Completed(
                     Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationCompletedHandler<IRandomAccessStream*>>>(
                         [strongThis, this, bitmapSource, strongImageControl, bitmapImage, stretch, isAutoSize, parentElement, imageContainer](
                             IAsyncOperation<IRandomAccessStream*>* operation, AsyncStatus status) -> HRESULT {
@@ -663,7 +663,7 @@ namespace AdaptiveNamespace
             ComPtr<XamlBuilder> strongThis(this);
             THROW_IF_FAILED(bufferWriteOperation->put_Completed(
                 Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<UINT32, UINT32>>>(
-                    [strongThis, this, bitmapSource, randomAccessStream, strongImageControl, isAutoSize, parentElement, imageContainer /*ellipseAsShape, frameworkElement*/](
+                    [strongThis, this, bitmapSource, randomAccessStream, strongImageControl, isAutoSize, parentElement, imageContainer](
                         IAsyncOperationWithProgress<UINT32, UINT32>* /*operation*/, AsyncStatus /*status*/)->HRESULT {
 
                 randomAccessStream->Seek(0);
@@ -1731,7 +1731,7 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_ template<>
+    template<>
     void XamlBuilder::SetAutoSize<IEllipse>(IEllipse* destination, IInspectable* parentElement, IInspectable* imageContainer, bool mustHideElement)
     {
         // Check if the image source fits in the parent container, if so, set the framework element's size to match the original image.
@@ -1775,19 +1775,16 @@ namespace AdaptiveNamespace
         }
     }
 
-    _Use_decl_annotations_ template<typename T>
+    template<typename T>
     void XamlBuilder::SetAutoSize(T* destination, IInspectable* parentElement, IInspectable* imageContainer, bool mustHideElement)
     {
-        ComPtr<IInspectable> parentElement2(parentElement);
-        //if container is ellipse
         if (parentElement != nullptr && m_enableXamlImageHandling)
         {
-            ComPtr<IImage> xamlImage(destination);
-
             ComPtr<IInspectable> container(imageContainer);
             ComPtr<IFrameworkElement> frameworkElement;
             THROW_IF_FAILED(container.As(&frameworkElement));
 
+            ComPtr<IImage> xamlImage(destination);
             ComPtr<IImageSource> imageSource;
             THROW_IF_FAILED(xamlImage->get_Source(&imageSource));
             ComPtr<IBitmapSource> imageSourceAsBitmap;
@@ -1803,11 +1800,12 @@ namespace AdaptiveNamespace
                 THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
 
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
+                ComPtr<IInspectable> strongParentElement(parentElement);
                 EventRegistrationToken eventToken;
-                HRESULT hr = (xamlImage->add_ImageOpened(
-                Callback<IRoutedEventHandler>([frameworkElement, parentElement2, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs *
+                THROW_IF_FAILED(xamlImage->add_ImageOpened(
+                Callback<IRoutedEventHandler>([frameworkElement, strongParentElement, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs *
                         /*args*/) -> HRESULT {
-                return SetAutoImageSize(frameworkElement.Get(), parentElement2.Get(), imageSourceAsBitmap.Get());
+                return SetAutoImageSize(frameworkElement.Get(), strongParentElement.Get(), imageSourceAsBitmap.Get());
                 })
                     .Get(),
                     &eventToken));
