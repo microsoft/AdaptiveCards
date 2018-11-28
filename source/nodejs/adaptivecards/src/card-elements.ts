@@ -26,28 +26,24 @@ function generateUniqueId(): string {
     return "__ac-" + Utils.UUID.generate();
 }
 
-export function createActionInstance(
+function createCardObjectInstance<T extends ICardObject>(
     parent: CardElement,
     json: any,
-    errors: Array<IValidationError>): Action {
-    let result: Action = null;
+    createInstanceCallback: (typeName: string) => T,
+    createValidationErrorCallback: (typeName: string) => IValidationError,
+    errors: Array<IValidationError>): T {
+    let result: T = null;
 
     if (json && typeof json === "object") {
         let tryToFallback = false;
-        let actionType = json["type"];
+        let typeName = json["type"];
 
-        result = AdaptiveCard.actionTypeRegistry.createInstance(actionType);
+        result = createInstanceCallback(typeName);
 
         if (!result) {
             tryToFallback = true;
 
-            raiseParseError(
-                {
-                    error: Enums.ValidationError.UnknownActionType,
-                    message: "Unknown action type: " + actionType + ". Attempting to fall back."
-                },
-                errors
-            );
+            raiseParseError(createValidationErrorCallback(typeName), errors);
         }
         else {
             result.setParent(parent);
@@ -66,9 +62,11 @@ export function createActionInstance(
                 result = null;
             }
             else if (typeof fallback === "object") {
-                result = createActionInstance(
+                result = createCardObjectInstance<T>(
                     parent,
                     fallback,
+                    createInstanceCallback,
+                    createValidationErrorCallback,
                     errors);
             }
         }
@@ -77,53 +75,38 @@ export function createActionInstance(
     return result;
 }
 
+export function createActionInstance(
+    parent: CardElement,
+    json: any,
+    errors: Array<IValidationError>): Action {
+    return createCardObjectInstance<Action>(
+        parent,
+        json,
+        (typeName: string) => { return AdaptiveCard.actionTypeRegistry.createInstance(typeName); },
+        (typeName: string) => {
+            return {
+                error: Enums.ValidationError.UnknownActionType,
+                message: "Unknown action type: " + typeName + ". Attempting to fall back."
+            }
+        },
+        errors);
+}
+
 export function createElementInstance(
     parent: CardElement,
     json: any,
     errors: Array<IValidationError>): CardElement {
-    let result: CardElement = null;
-
-    if (json && typeof json === "object") {
-        let tryToFallback = false;
-
-        result = AdaptiveCard.elementTypeRegistry.createInstance(json["type"]);
-
-        if (!result) {
-            tryToFallback = true;
-
-            raiseParseError(
-                {
-                    error: Enums.ValidationError.UnknownElementType,
-                    message: "Unknown element type: " + json["type"] + ". Attempting to fall back."
-                },
-                errors
-            );
-        }
-        else {
-            result.parse(json, errors);
-
-            tryToFallback = result.shouldFallback();
-        }
-
-        if (tryToFallback) {
-            let fallback = json["fallback"];
-
-            if (!fallback) {
-                parent.setShouldFallback(true);
+    return createCardObjectInstance<CardElement>(
+        parent,
+        json,
+        (typeName: string) => { return AdaptiveCard.elementTypeRegistry.createInstance(typeName); },
+        (typeName: string) => {
+            return                 {
+                error: Enums.ValidationError.UnknownElementType,
+                message: "Unknown element type: " + typeName + ". Attempting to fall back."
             }
-            if (typeof fallback === "string" && fallback.toLowerCase() === "drop") {
-                result = null;
-            }
-            else if (typeof fallback === "object") {
-                result = createElementInstance(
-                    parent,
-                    fallback,
-                    errors);
-            }
-        }
-    }
-
-    return result;
+        },
+        errors);
 }
 
 export class SpacingDefinition {
@@ -209,7 +192,13 @@ export interface IResourceInformation {
     mimeType: string;
 }
 
-export abstract class CardElement {
+export interface ICardObject {
+    shouldFallback(): boolean;
+    setParent(parent: CardElement);
+    parse(json: any);
+}
+
+export abstract class CardElement implements ICardObject {
     private _shouldFallback: boolean = false;
     private _lang: string = undefined;
     private _hostConfig?: HostConfig.HostConfig = null;
@@ -2845,7 +2834,7 @@ class ActionButton {
     }
 }
 
-export abstract class Action {
+export abstract class Action implements ICardObject {
     private _shouldFallback: boolean = false;
     private _parent: CardElement = null;
     private _actionCollection: ActionCollection = null; // hold the reference to its action collection
@@ -3721,7 +3710,11 @@ class ActionCollection {
     }
 
     addAction(action: Action) {
-        if (action && (!action.parent || action.parent === this._owner) && this.items.indexOf(action) < 0) {
+        if (!action) {
+            throw new Error("The action parameter cannot be null.");
+        }
+        
+        if ((!action.parent || action.parent === this._owner) && this.items.indexOf(action) < 0) {
             this.items.push(action);
 
             if (!action.parent) {
@@ -3962,8 +3955,11 @@ export class Container extends CardElementContainer {
         return true;
     }
 
-    private insertItemAt(item: CardElement, index: number) {
-        if (!item.parent) {
+    private insertItemAt(
+        item: CardElement,
+        index: number,
+        forceInsert: boolean) {
+        if (!item.parent || forceInsert) {
             if (item.isStandalone) {
                 if (index < 0 || index >= this._items.length) {
                     this._items.push(item);
@@ -4461,26 +4457,26 @@ export class Container extends CardElementContainer {
                 let element = createElementInstance(this, items[i], errors);
 
                 if (element) {
-                    this.addItem(element);
+                    this.insertItemAt(element, -1, true);
                 }
             }
         }
-    }
-
-    addItem(item: CardElement) {
-        this.insertItemAt(item, -1);
     }
 
     indexOf(cardElement: CardElement): number {
         return this._items.indexOf(cardElement);
     }
 
+    addItem(item: CardElement) {
+        this.insertItemAt(item, -1, false);
+    }
+
     insertItemBefore(item: CardElement, insertBefore: CardElement) {
-        this.insertItemAt(item, this._items.indexOf(insertBefore));
+        this.insertItemAt(item, this._items.indexOf(insertBefore), false);
     }
 
     insertItemAfter(item: CardElement, insertAfter: CardElement) {
-        this.insertItemAt(item, this._items.indexOf(insertAfter) + 1);
+        this.insertItemAt(item, this._items.indexOf(insertAfter) + 1, false);
     }
 
     removeItem(item: CardElement): boolean {
