@@ -60,7 +60,9 @@ struct tm {
 #include "pch.h"
 #include <memory>
 #include <time.h>
+#include "../../../shared/cpp/ObjectModel/EnumMagic.h"
 #include "../../../shared/cpp/ObjectModel/Enums.h"
+#include "../../../shared/cpp/ObjectModel/AdaptiveBase64Util.h"
 #include "../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
 #include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
@@ -83,6 +85,7 @@ struct tm {
 #include "../../../shared/cpp/ObjectModel/OpenUrlAction.h"
 #include "../../../shared/cpp/ObjectModel/ShowCardAction.h"
 #include "../../../shared/cpp/ObjectModel/SubmitAction.h"
+#include "../../../shared/cpp/ObjectModel/ParseContext.h"
 #include "../../../shared/cpp/ObjectModel/ParseResult.h"
 #include "../../../shared/cpp/ObjectModel/SharedAdaptiveCard.h"
 #include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"
@@ -123,6 +126,7 @@ struct tm {
 %shared_ptr(AdaptiveCards::ShowCardAction)
 %shared_ptr(AdaptiveCards::SubmitAction)
 %shared_ptr(AdaptiveCards::AdaptiveCardParseWarning)
+%shared_ptr(AdaptiveCards::ParseContext)
 %shared_ptr(AdaptiveCards::ParseResult)
 %shared_ptr(AdaptiveCards::RemoteResourceInformation)
 %shared_ptr(AdaptiveCards::AdaptiveCard)
@@ -300,6 +304,7 @@ namespace Json {
 %template(BaseActionElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement> >;
 %template(DateTimePreparsedTokenVector) std::vector<std::shared_ptr<AdaptiveCards::DateTimePreparsedToken> >;
 %template(StringVector) std::vector<std::string>;
+%template(CharVector) std::vector<char>;
 
 %template(EnableSharedFromThisContainer) std::enable_shared_from_this<AdaptiveCards::Container>;
 
@@ -574,7 +579,9 @@ namespace Json {
 };
 
 %include "../../../shared/cpp/ObjectModel/pch.h"
+%include "../../../shared/cpp/ObjectModel/EnumMagic.h"
 %include "../../../shared/cpp/ObjectModel/Enums.h"
+%include "../../../shared/cpp/ObjectModel/AdaptiveBase64Util.h"
 %include "../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
 %include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
@@ -597,6 +604,7 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/OpenUrlAction.h"
 %include "../../../shared/cpp/ObjectModel/ShowCardAction.h"
 %include "../../../shared/cpp/ObjectModel/SubmitAction.h"
+%include "../../../shared/cpp/ObjectModel/ParseContext.h"
 %include "../../../shared/cpp/ObjectModel/ParseResult.h"
 %include "../../../shared/cpp/ObjectModel/SharedAdaptiveCard.h"
 %include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"

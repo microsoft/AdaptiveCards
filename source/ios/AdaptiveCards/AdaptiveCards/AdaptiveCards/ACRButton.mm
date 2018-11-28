@@ -9,10 +9,9 @@
 #import "ACRButton.h"
 #import "ACRViewPrivate.h"
 #import "ACRUIImageView.h"
-#import "SharedAdaptiveCard.h"
 #import "ACOHostConfigPrivate.h"
 
-@implementation UIButton(ACRButton)
+@implementation ACRButton
 
 + (void)setImageView:(UIImage*)image inButton:(UIButton*)button withConfig:(ACOHostConfig *)config contentSize:(CGSize)contentSize inconPlacement:(ACRIconPlacement)iconPlacement
 {
@@ -81,10 +80,19 @@
          andHostConfig:(ACOHostConfig *)config;
 {
     NSBundle* bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-    UIButton *button = [bundle loadNibNamed:@"ACRButton" owner:rootView options:nil][0];
+    ACRButton *button = [bundle loadNibNamed:@"ACRButton" owner:rootView options:nil][0];
     [button setTitle:title forState:UIControlStateNormal];
     button.titleLabel.adjustsFontSizeToFitWidth = YES;
-
+    
+    button.sentiment = acoAction.sentiment;
+    
+    std::shared_ptr<AdaptiveCards::HostConfig> hostConfig = [config getHostConfig];
+    ColorsConfig colorsConfig = hostConfig->GetContainerStyles().defaultPalette.foregroundColors;
+    
+    button.defaultPositiveBackgroundColor = [ACOHostConfig getTextBlockColor:ForegroundColor::Accent colorsConfig:colorsConfig subtleOption:false];
+    button.defaultDestructiveForegroundColor = [ACOHostConfig getTextBlockColor:ForegroundColor::Attention colorsConfig:colorsConfig subtleOption:false];
+    [button applySentimentStyling];
+    
     std::shared_ptr<AdaptiveCards::BaseActionElement> action = [acoAction element];
     NSDictionary *imageViewMap = [rootView getImageMap];
     NSString *key = [NSString stringWithCString:action->GetIconUrl().c_str() encoding:[NSString defaultCStringEncoding]];
@@ -92,7 +100,7 @@
 
     if(img){
         CGSize contentSize = [button.titleLabel intrinsicContentSize];
-        [UIButton setImageView:img inButton:button withConfig:config contentSize:contentSize
+        [ACRButton setImageView:img inButton:button withConfig:config contentSize:contentSize
                 inconPlacement:[config getIconPlacement]];
     } else {
         // button's intrinsic content size is determined by title size and content edge
@@ -103,5 +111,39 @@
     return button;
 }
 
+- (void)applySentimentStyling
+{
+    switch (_sentiment) {
+        case ACRSentimentPositive: {
+            BOOL usePositiveDefault = [_positiveUseDefault boolValue];
+            
+            // By default, positive sentiment must have background accentColor and white text/foreground color
+            if(usePositiveDefault) {
+                [self setBackgroundColor:_defaultPositiveBackgroundColor];
+                [self setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+            } else {
+                [self setBackgroundColor:_positiveBackgroundColor];
+                [self setTitleColor:_positiveForegroundColor forState:UIControlStateNormal];
+            }
+            break;
+        }
+        
+        case ACRSentimentDestructive: {
+            BOOL useDestructiveDefault = [_destructiveUseDefault boolValue];
+            
+            if(useDestructiveDefault) {
+                [self setTitleColor:_defaultDestructiveForegroundColor forState:UIControlStateNormal];
+            } else {
+                [self setBackgroundColor:_destructiveBackgroundColor];
+                [self setTitleColor:_destructiveForegroundColor forState:UIControlStateNormal];
+            }
+            break;
+        }
+        
+        case ACRSentimentDefault:
+        default:
+            break;
+    }
+}
 
 @end

@@ -780,7 +780,9 @@ export class TextBlock extends CardElement {
     private _originalInnerHtml: string;
     private _text: string;
     private _processedText: string = null;
+    private _treatAsPlainText: boolean = true;
     private _selectAction: Action = null;
+    private _effectiveStyleDefinition: HostConfig.ContainerStyleDefinition = null;
 
     private restoreOriginalContent() {
         var maxHeight = this.maxLines
@@ -813,15 +815,38 @@ export class TextBlock extends CardElement {
         return false;
     }
 
+    private getEffectiveStyleDefinition() {
+        if (!this._effectiveStyleDefinition) {
+            this._effectiveStyleDefinition = this.hostConfig.containerStyles.default;
+
+            let parentContainer = this.getParentContainer();
+
+            while (parentContainer) {
+                if (parentContainer.style) {
+                    this._effectiveStyleDefinition = this.hostConfig.containerStyles.getStyleByName(parentContainer.style);
+
+                    break;
+                }
+
+                parentContainer = parentContainer.getParentContainer();
+            }
+        }
+
+        return this._effectiveStyleDefinition;
+    }
+
     protected getRenderedDomElementType(): string {
         return "div";
     }
 
     protected internalRender(): HTMLElement {
+        this._effectiveStyleDefinition = null;
+        this._processedText = null;
+
         if (!Utils.isNullOrEmpty(this.text)) {
             let hostConfig = this.hostConfig;
 
-            var element = document.createElement(this.getRenderedDomElementType());
+            let element = document.createElement(this.getRenderedDomElementType());
             element.classList.add(hostConfig.makeCssClassName("ac-textBlock"));
             element.style.overflow = "hidden";
 
@@ -836,15 +861,58 @@ export class TextBlock extends CardElement {
             }
 
             if (!this._processedText) {
-                var formattedText = TextFormatters.formatText(this.lang, this.text);
+                this._treatAsPlainText = true;
 
-                this._processedText = this.useMarkdown ? AdaptiveCard.processMarkdown(formattedText) : formattedText;
+                let formattedText = TextFormatters.formatText(this.lang, this.text);
+
+                if (this.useMarkdown) {
+                    if (AdaptiveCard.allowMarkForTextHighlighting) {
+                        formattedText = formattedText.replace(/<mark>/g, "===").replace(/<\/mark>/g, "/==");
+                    }
+
+                    let markdownProcessingResult = AdaptiveCard.applyMarkdown(formattedText);
+
+                    if (markdownProcessingResult.didProcess && markdownProcessingResult.outputHtml) {
+                        this._processedText = markdownProcessingResult.outputHtml;
+                        this._treatAsPlainText = false;
+
+                        // Only process <mark> tag if markdown processing was applied because
+                        // markdown processing is also responsible for sanitizing the input string
+                        if (AdaptiveCard.allowMarkForTextHighlighting) {
+                            let markStyle: string = "";
+                            let effectiveStyle = this.getEffectiveStyleDefinition();
+
+                            if (effectiveStyle.highlightBackgroundColor) {
+                                markStyle += "background-color: " + effectiveStyle.highlightBackgroundColor + ";";
+                            }
+
+                            if (effectiveStyle.highlightForegroundColor) {
+                                markStyle += "color: " + effectiveStyle.highlightForegroundColor + ";";
+                            }
+
+                            if (!Utils.isNullOrEmpty(markStyle)) {
+                                markStyle = 'style="' + markStyle + '"';
+                            }
+
+                            this._processedText = this._processedText.replace(/===/g, "<mark " + markStyle + ">").replace(/\/==/g, "</mark>");
+                        }
+                    }
+                }
+                else {
+                    this._processedText = formattedText;
+                    this._treatAsPlainText = true;
+                }
             }
 
-            element.innerHTML = this._processedText;
+            if (this._treatAsPlainText) {
+                element.innerText = this._processedText;
+            }
+            else {
+                element.innerHTML = this._processedText;
+            }
 
             if (element.firstElementChild instanceof HTMLElement) {
-                var firstElementChild = <HTMLElement>element.firstElementChild;
+                let firstElementChild = <HTMLElement>element.firstElementChild;
                 firstElementChild.style.marginTop = "0px";
                 firstElementChild.style.width = "100%";
 
@@ -858,10 +926,10 @@ export class TextBlock extends CardElement {
                 (<HTMLElement>element.lastElementChild).style.marginBottom = "0px";
             }
 
-            var anchors = element.getElementsByTagName("a");
+            let anchors = element.getElementsByTagName("a");
 
-            for (var i = 0; i < anchors.length; i++) {
-                var anchor = <HTMLAnchorElement>anchors[i];
+            for (let i = 0; i < anchors.length; i++) {
+                let anchor = <HTMLAnchorElement>anchors[i];
                 anchor.classList.add(this.hostConfig.makeCssClassName("ac-anchor"));
                 anchor.target = "_blank";
                 anchor.onclick = (e) => {
@@ -1009,7 +1077,7 @@ export class TextBlock extends CardElement {
         targetElement.style.fontSize = fontSize + "px";
         targetElement.style.lineHeight = this._computedLineHeight + "px";
 
-        let styleDefinition = this.hostConfig.containerStyles.getStyleByName(parentContainer ? parentContainer.style : Enums.ContainerStyle.Default, this.hostConfig.containerStyles.default);
+        let styleDefinition = this.getEffectiveStyleDefinition();
 
         let actualTextColor = this.color ? this.color : Enums.TextColor.Default;
         let colorDefinition: HostConfig.TextColorDefinition;
@@ -5436,6 +5504,11 @@ export class ActionTypeRegistry extends TypeRegistry<Action> {
     }
 }
 
+export interface IMarkdownProcessingResult {
+    didProcess: boolean;
+    outputHtml?: any;
+}
+
 export class AdaptiveCard extends ContainerWithActions {
     private static currentVersion: Version = new Version(1, 1000);
 
@@ -5443,6 +5516,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static useAdvancedTextBlockTruncation: boolean = true;
     static useAdvancedCardBottomTruncation: boolean = false;
     static useMarkdownInRadioButtonAndCheckbox: boolean = true;
+    static allowMarkForTextHighlighting: boolean = false;
 
     static readonly elementTypeRegistry = new ElementTypeRegistry();
     static readonly actionTypeRegistry = new ActionTypeRegistry();
@@ -5455,14 +5529,33 @@ export class AdaptiveCard extends ContainerWithActions {
     static onParseElement: (element: CardElement, json: any, errors?: Array<IValidationError>) => void = null;
     static onParseAction: (element: Action, json: any, errors?: Array<IValidationError>) => void = null;
     static onParseError: (error: IValidationError) => void = null;
+    static onProcessMarkdown: (text: string, result: IMarkdownProcessingResult) => void = null;
 
-    static processMarkdown = function (text: string): string {
-        // Check for markdownit
-        if (window["markdownit"]) {
-            return window["markdownit"]().render(text);
+    static get processMarkdown(): (text: string) => string {
+        throw new Error("The processMarkdown event has been removed. Please update your code and set onProcessMarkdown instead.")
+    }
+
+    static set processMarkdown(value: (text: string) => string) {
+        throw new Error("The processMarkdown event has been removed. Please update your code and set onProcessMarkdown instead.")
+    }
+
+    static applyMarkdown(text: string): IMarkdownProcessingResult {
+        let result: IMarkdownProcessingResult = {
+            didProcess: false
+        };
+
+        if (AdaptiveCard.onProcessMarkdown) {
+            AdaptiveCard.onProcessMarkdown(text, result);
+        }
+        else {
+            // Check for markdownit
+            if (window["markdownit"]) {
+                result.outputHtml = window["markdownit"]().render(text);
+                result.didProcess = true;
+            }
         }
 
-        return text;
+        return result;
     }
 
     private _cardTypeName?: string = "AdaptiveCard";

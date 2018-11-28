@@ -54,7 +54,8 @@ namespace AdaptiveCards
         /// <summary>
         /// Creates an AdaptiveCard using the <see cref="F:AdaptiveCards.AdaptiveCard.KnownSchemaVersion" /> of this library
         /// </summary>
-        public AdaptiveCard() : this(KnownSchemaVersion) { }
+        [Obsolete("Please use the overload that accepts a version parameter and specify the version your card requires")]
+        public AdaptiveCard() : this(new AdaptiveSchemaVersion(1, 0)) { }
 
         /// <summary>
         /// The Body elements for this card

@@ -14,7 +14,9 @@ namespace AdaptiveCards.Test
         [TestMethod]
         public void TestCardsSerializeInTheCorrectOrder()
         {
+#pragma warning disable 0618
             var card = new AdaptiveCard();
+#pragma warning restore 0618
             card.Version = "1.0";
             card.FallbackText = "Fallback Text";
             card.Speak = "Speak";
@@ -84,7 +86,10 @@ namespace AdaptiveCards.Test
         [TestMethod]
         public void TestSerializingAdditionalData()
         {
-            var card = new AdaptiveCard
+            // Disable this warning since we want to make sure that
+            // the obsoleted constructor also outputs the right version
+#pragma warning disable 0618
+            var card = new AdaptiveCard()
             {
                 Id = "myCard",
                 Body =
@@ -109,10 +114,11 @@ namespace AdaptiveCards.Test
                     ["-ms-test"] = "Card extension data"
                 }
             };
+#pragma warning restore 0618
 
             var expected = @"{
   ""type"": ""AdaptiveCard"",
-  ""version"": ""1.2"",
+  ""version"": ""1.0"",
   ""id"": ""myCard"",
   ""body"": [
     {
@@ -137,7 +143,7 @@ namespace AdaptiveCards.Test
         [TestMethod]
         public void TestDefaultValuesAreNotSerialized()
         {
-            var card = new AdaptiveCard
+            var card = new AdaptiveCard("1.0")
             {
                 Body =
                 {
@@ -148,7 +154,7 @@ namespace AdaptiveCards.Test
 
             var expected = @"{
   ""type"": ""AdaptiveCard"",
-  ""version"": ""1.2"",
+  ""version"": ""1.0"",
   ""body"": [
     {
       ""type"": ""TextBlock"",
@@ -231,7 +237,7 @@ namespace AdaptiveCards.Test
         [TestMethod]
         public void TestSerializingTextBlock()
         {
-            var card = new AdaptiveCard()
+            var card = new AdaptiveCard("1.0")
             {
                 Body =
                 {
@@ -258,7 +264,7 @@ namespace AdaptiveCards.Test
         [TestMethod]
         public void TestShowCardActionSerialization()
         {
-            var card = new AdaptiveCard()
+            var card = new AdaptiveCard("1.0")
             {
                 Body =
                 {
@@ -272,7 +278,7 @@ namespace AdaptiveCards.Test
                     new AdaptiveShowCardAction
                     {
                         Title = "Show Card",
-                        Card = new AdaptiveCard
+                        Card = new AdaptiveCard("1.0")
                         {
                             Version = null,
                             Body =
@@ -536,7 +542,7 @@ namespace AdaptiveCards.Test
   ]
 }";
 
-            var card = new AdaptiveCard
+            var card = new AdaptiveCard("1.2")
             {
                 Id = "myCard",
                 Body =

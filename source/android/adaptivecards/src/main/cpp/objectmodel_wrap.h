@@ -74,7 +74,8 @@ class SwigDirector_ActionElementParser : public AdaptiveCards::ActionElementPars
 public:
     void swig_connect_director(JNIEnv *jenv, jobject jself, jclass jcls, bool swig_mem_own, bool weak_global);
     SwigDirector_ActionElementParser(JNIEnv *jenv);
-    virtual std::shared_ptr< AdaptiveCards::BaseActionElement > Deserialize(std::shared_ptr< AdaptiveCards::ElementParserRegistration > elementParserRegistration, std::shared_ptr< AdaptiveCards::ActionParserRegistration > actionParserRegistration, std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > &warnings, Json::Value const &value);
+    virtual ~SwigDirector_ActionElementParser();
+    virtual std::shared_ptr< AdaptiveCards::BaseActionElement > Deserialize(AdaptiveCards::ParseContext &context, Json::Value const &value);
 public:
     bool swig_overrides(int n) {
       return (n < 1 ? swig_override[n] : false);
@@ -88,13 +89,15 @@ class SwigDirector_BaseCardElementParser : public AdaptiveCards::BaseCardElement
 public:
     void swig_connect_director(JNIEnv *jenv, jobject jself, jclass jcls, bool swig_mem_own, bool weak_global);
     SwigDirector_BaseCardElementParser(JNIEnv *jenv);
-    virtual std::shared_ptr< AdaptiveCards::BaseCardElement > Deserialize(std::shared_ptr< AdaptiveCards::ElementParserRegistration > elementParserRegistration, std::shared_ptr< AdaptiveCards::ActionParserRegistration > actionParserRegistration, std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > &warnings, Json::Value const &value);
+    virtual ~SwigDirector_BaseCardElementParser();
+    virtual std::shared_ptr< AdaptiveCards::BaseCardElement > Deserialize(AdaptiveCards::ParseContext &context, Json::Value const &value);
+    virtual std::shared_ptr< AdaptiveCards::BaseCardElement > DeserializeFromString(AdaptiveCards::ParseContext &context, std::string const &value);
 public:
     bool swig_overrides(int n) {
-      return (n < 1 ? swig_override[n] : false);
+      return (n < 2 ? swig_override[n] : false);
     }
 protected:
-    Swig::BoolArray<1> swig_override;
+    Swig::BoolArray<2> swig_override;
 };
 
 

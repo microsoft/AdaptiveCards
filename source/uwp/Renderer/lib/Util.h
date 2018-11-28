@@ -13,6 +13,7 @@
 #include <Image.h>
 #include <MediaSource.h>
 #include <windows.foundation.collections.h>
+#include <ParseContext.h>
 #include "AdaptiveCardParseWarning.h"
 #include "RemoteResourceInformation.h"
 
@@ -184,7 +185,7 @@ template<typename T, typename R> Microsoft::WRL::ComPtr<T> PeekInnards(R r)
 }
 
 void RemoteResourceElementToRemoteResourceInformationVector(ABI::AdaptiveNamespace::IAdaptiveElementWithRemoteResources* remoteResources,
-                                                            std::vector<RemoteResourceInformation>& resourceUris);
+                                                            std::vector<AdaptiveSharedNamespace::RemoteResourceInformation>& resourceUris);
 
 void GetUrlFromString(ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
                       HSTRING urlString,

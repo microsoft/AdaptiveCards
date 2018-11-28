@@ -43,14 +43,7 @@ namespace AdaptiveSharedNamespace
         MediaSourceParser& operator=(MediaSourceParser&&) = default;
         virtual ~MediaSourceParser() = default;
 
-        static std::shared_ptr<MediaSource> Deserialize(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                                        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                                        const Json::Value& root);
-
-        static std::shared_ptr<MediaSource> DeserializeFromString(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                                  std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                                                  std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                                                  const std::string& jsonString);
+        static std::shared_ptr<MediaSource> Deserialize(ParseContext& context, const Json::Value& root);
+        static std::shared_ptr<MediaSource> DeserializeFromString(ParseContext& context, const std::string& jsonString);
     };
 }
