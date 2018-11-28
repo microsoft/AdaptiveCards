@@ -1,0 +1,274 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.1",
+  "height": "stretch",
+  "verticalContentAlignment": "center",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Hi,"
+    },
+    {
+      "type": "TextBlock",
+      "text": "MasterHip",
+      "isSubtle": true
+    },
+    {
+      "type": "Container",
+      "height": "stretch",
+      "separator": true,
+      "verticalContentAlignment": "center",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "Column 1"
+        },
+        {
+          "type": "FactSet",
+          "facts": [
+            {
+              "title": "Fact 1",
+              "value": "Value 1"
+            },
+            {
+              "title": "Fact 2",
+              "value": "Value 2"
+            },
+            {
+              "title": "Fact 3 Check for an Array Type",
+              "value": "Value 3 For array styles, the latter ones will merge into former one, with overwrite rule for same keys."
+            },
+            {
+              "title": "Fact 4",
+              "value": "Value 5 For array styles, the latter ones will merge into former one, with overwrite rule for same keys.. For array styles, the latter ones will merge into former one, with overwrite rule for same keys."
+            }
+          ]
+        },
+        {
+          "type": "FactSet",
+          "facts": [
+            {
+              "title": "Fact 1 New",
+              "value": "Value 1"
+            },
+            {
+              "title": "Fact 2",
+              "value": "Value 2"
+            },
+            {
+              "title": "Fact 3 ",
+              "value": "Value 3 For array styles, the latter ones will merge into former one, with overwrite rule for same keys."
+            },
+            {
+              "title": "Fact 4",
+              "value": "Value 5 For array styles, the latter ones will merge into former one, with overwrite rule for same keys. For array styles, the latter ones will merge into former one, with overwrite rule for same keys."
+            }
+          ]
+        },
+        {
+          "type": "FactSet",
+          "facts": [
+            {
+              "title": "Fact 1",
+              "value": "Value 1"
+            },
+            {
+              "title": "Fact 2",
+              "value": "Value 2"
+            },
+            {
+              "title": "Fact 3 ",
+              "value": "Value 3"
+            },
+            {
+              "title": "Fact 4",
+              "value": "Value 4"
+            }
+          ]
+        },
+        {
+          "type": "Input.ChoiceSet",
+          "id": "CompactSelectVal",
+          "style": "compact",
+          "value": "1",
+          "choices": [
+            {
+              "title": "Red",
+              "value": "1"
+            },
+            {
+              "title": "Green",
+              "value": "2"
+            },
+            {
+              "title": "Blue",
+              "value": "3"
+            }
+          ]
+        }
+      ],
+      "selectAction": {
+        "type": "Action.OpenUrl",
+        "title": "cool link",
+        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      }
+    },
+    {
+      "type": "Container",
+      "height": "stretch",
+      "separator": false,
+      "style": "emphasis",
+      "verticalContentAlignment": "center",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "Column 1"
+        }
+      ]
+    },
+    {
+      "type": "Container",
+      "style": "emphasis",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "This container has the emphasis style"
+        },
+        {
+          "type": "TextBlock",
+          "text": "color: default",
+          "color": "default"
+        },
+        {
+          "type": "TextBlock",
+          "text": "color: accent",
+          "color": "accent"
+        },
+        {
+          "type": "TextBlock",
+          "text": "color: good",
+          "color": "good"
+        },
+        {
+          "type": "TextBlock",
+          "text": "color: warning",
+          "color": "warning"
+        },
+        {
+          "type": "TextBlock",
+          "text": "color: attention",
+          "color": "attention"
+        },
+        {
+          "type": "TextBlock",
+          "text": "color: light",
+          "color": "light"
+        },
+        {
+          "type": "TextBlock",
+          "text": "color: dark",
+          "color": "dark"
+        },
+        {
+          "type": "Container",
+          "style": "emphasis",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Contained container - no style",
+              "color": "dark"
+            },
+            {
+              "type": "Container",
+              "style": "emphasis",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "Contained container - no style",
+                  "color": "dark"
+                },
+                {
+                  "type": "Container",
+                  "style": "emphasis",
+                  "items": [
+                    {
+                      "type": "TextBlock",
+                      "text": "Contained container - no style",
+                      "color": "dark"
+                    },
+                    {
+                      "type": "Container",
+                      "style": "default",
+                      "separator": true,
+                      "items": [
+                        {
+                          "type": "TextBlock",
+                          "text": "Contained container - Separator style",
+                          "color": "dark"
+                        },
+                        {
+                          "speak": "Tom's Pie is a Pizza restaurant which is rated 9.3 by customers.",
+                          "type": "ColumnSet",
+                          "columns": [
+                            {
+                              "type": "Column",
+                              "width": 2,
+                              "items": [
+                                {
+                                  "type": "TextBlock",
+                                  "text": "PIZZA"
+                                },
+                                {
+                                  "type": "TextBlock",
+                                  "text": "Tom's Pie",
+                                  "weight": "bolder",
+                                  "size": "extraLarge",
+                                  "spacing": "none"
+                                },
+                                {
+                                  "type": "TextBlock",
+                                  "text": "4.2 ★★★☆ (93) · $$",
+                                  "isSubtle": true,
+                                  "spacing": "none"
+                                },
+                                {
+                                  "type": "TextBlock",
+                                  "text": "**Matt H. said** \"I'm compelled to give this place 5 stars due to the number of times I've chosen to eat here this past year!\"",
+                                  "size": "small",
+                                  "wrap": true
+                                }
+                              ]
+                            },
+                            {
+                              "type": "Column",
+                              "width": 1,
+                              "items": [
+                                {
+                                  "type": "Image",
+                                  "url": "https://picsum.photos/300?image=882",
+                                  "size": "auto"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ],
+                      "selectAction": {
+                        "type": "Action.Submit",
+                        "title": "cool link",
+                        "data": {
+                          "x": 13
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

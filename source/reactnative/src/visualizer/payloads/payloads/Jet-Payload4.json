@@ -1,0 +1,35 @@
+{
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Did this answer your question?",
+                            "wrap": true
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "Yes",
+            "value": "Yes",
+            "data": "Yes"
+        },
+        {
+            "type": "Action.Submit",
+            "title": "No",
+            "value": "No",
+            "data": "No"
+        }
+    ]
+}

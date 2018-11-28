@@ -1,0 +1,73 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Please rate your experience",
+			"weight": "bolder",
+			"size": "large"
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "Rating",
+			"style": "compact",
+			"isMultiSelect": false,
+			"spacing": "medium",
+			"value": "5",
+			"choices": [
+				{
+					"title": "Excellent",
+					"value": "5"
+				},
+				{
+					"title": "Good",
+					"value": "4"
+				},
+				{
+					"title": "Average",
+					"value": "3"
+				},
+				{
+					"title": "Poor",
+					"value": "2"
+				},
+				{
+					"title": "Very poor",
+					"value": "1"
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "Leave a comment",
+			"spacing": "large"
+		},
+		{
+			"type": "Input.Text",
+			"id": "FeedbackText",
+			"isMultiline": true,
+			"maxLength": 500,
+			"spacing": "medium"
+		},
+		{
+			"type": "TextBlock",
+			"text": " ",
+			"spacing": "small"
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"id": "SendAction",
+			"title": "Send",
+			"data": {
+				"CardType": "FeedbackCard",
+				"DialogId": "Feedback",
+				"Command": "SendFeedback",
+				"ActionAvailability": "GlobalInterrupt"
+			}
+		}
+	]
+}

@@ -1,0 +1,17 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "This is some **_bold italic_** and **bold** and _italic only_ and **bold** text with _ITaly_",
+			"wrap": true
+		},
+				{
+			"type": "TextBlock",
+			"text": "Check [Mail]out [**FaceBook Cards**](http://facebook.com) and [Phone] [_Amazon_](https://google.com) and http://amazon.com",
+			"wrap": true
+		}
+	]
+}

@@ -1,0 +1,39 @@
+{
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Return Policy",
+                            "size": "medium",
+                            "weight": "bold"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "We offer free returns within 30 days — just go to your Order History page and select “Return Items” to print a free return shipping label. Not all items are eligible for returns. If an item is non-returnable, it’ll be specified at checkout.",
+                            "wrap": true
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.OpenUrl",
+            "title": "Full return policy",
+            "url": "https://jet.com/help-center/returns"
+        },
+        {
+            "type": "Action.OpenUrl",
+            "title": "My Order History",
+            "url": "https://jet.com/account/orders"
+        }
+    ]
+}
