@@ -3724,7 +3724,7 @@ class ActionCollection {
             invokeSetCollection(action, this);
         }
         else {
-            throw new Error("The action already belongs to another element.")
+            throw new Error("The action already belongs to another element.");
         }
     }
 
