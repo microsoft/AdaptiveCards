@@ -113,7 +113,7 @@ namespace AdaptiveCards.Rendering.Html
 
         protected static HtmlTag AddInlineActionAttributes(AdaptiveAction action, HtmlTag tag, AdaptiveRenderContext context)
         {
-            tag.AddClass("ac-action-inlineAction")
+            tag.AddClass(GetActionCssClass(action) + "-inline")
                 .Attr("role", "button")
                 .Attr("aria-label", action.Title ?? "");
 
@@ -1373,9 +1373,14 @@ namespace AdaptiveCards.Rendering.Html
                 }
                 else
                 {
+                    var textInputWithInlineActionId = GenerateRandomId();
                     var uiContainer = new DivTag()
+                        .AddClass("ac-textinput-inlineaction")
+                        .Attr("data-ac-textinput-id", textInputWithInlineActionId)
                         .Style("overflow", "hidden")
                         .Style("display", "flex");
+
+                    uiTextInput.Attr("id", textInputWithInlineActionId);
 
                     uiContainer.Children.Add(uiTextInput);
 
@@ -1409,7 +1414,11 @@ namespace AdaptiveCards.Rendering.Html
                     }
 
                     AddInlineActionAttributes(input.InlineAction, buttonElement, context);
+                    string inlineActionId = GenerateRandomId();
+                    uiContainer.Attr("data-ac-inlineaction-id", inlineActionId);
+                    buttonElement.Attr("id", inlineActionId);
                     uiContainer.Children.Add(buttonElement);
+
                     return uiContainer;
                 }
             }
