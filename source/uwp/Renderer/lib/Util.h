@@ -207,10 +207,18 @@ HRESULT SharedWarningsToAdaptiveWarnings(
     std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>> sharedWarnings,
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings);
 
-HRESULT AdaptiveWarningsToSharedWarnings(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-                                         std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>> sharedWarnings);
+HRESULT AdaptiveWarningsToSharedWarnings(
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
+    std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>> sharedWarnings);
 
 ABI::Windows::UI::Color GenerateLighterColor(const ABI::Windows::UI::Color& originalColor);
+
+ABI::Windows::Foundation::DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int day);
+
+HRESULT GetDateTimeReference(unsigned int year,
+                             unsigned int month,
+                             unsigned int day,
+                             _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::Windows::Foundation::DateTime>** dateTimeReference);
 
 namespace AdaptiveNamespace
 {
@@ -266,4 +274,3 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 }
-

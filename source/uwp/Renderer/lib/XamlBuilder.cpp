@@ -684,9 +684,9 @@ namespace AdaptiveNamespace
                             SetAutoSize(strongImageControl.Get(), parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
                         }
 
-                return S_OK;
-            })
-                .Get()));
+                        return S_OK;
+                    })
+                    .Get()));
 
             m_writeAsyncOperations.push_back(bufferWriteOperation);
             *mustHideElement = false;
@@ -1436,19 +1436,17 @@ namespace AdaptiveNamespace
                 THROW_IF_FAILED(renderContext->get_OverrideStyles(&resourceDictionary));
                 ComPtr<IStyle> styleToApply;
 
-                if ((SUCCEEDED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"default").Get(), &isSentimentDefault))
-                    && (isSentimentDefault == 0))
-                    || WindowsIsStringEmpty(actionSentiment.Get()))
+                if ((SUCCEEDED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"default").Get(), &isSentimentDefault)) &&
+                     (isSentimentDefault == 0)) ||
+                    WindowsIsStringEmpty(actionSentiment.Get()))
                 {
                     THROW_IF_FAILED(
                         SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action", buttonFrameworkElement.Get()));
                 }
-                else if (SUCCEEDED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"positive").Get(), &isSentimentPositive))
-                    && (isSentimentPositive == 0))
+                else if (SUCCEEDED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"positive").Get(), &isSentimentPositive)) &&
+                         (isSentimentPositive == 0))
                 {
-                    if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IStyle>(resourceDictionary.Get(),
-                        L"Adaptive.Action.Positive",
-                        &styleToApply)))
+                    if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IStyle>(resourceDictionary.Get(), L"Adaptive.Action.Positive", &styleToApply)))
                     {
                         THROW_IF_FAILED(buttonFrameworkElement->put_Style(styleToApply.Get()));
                     }
@@ -1459,19 +1457,19 @@ namespace AdaptiveNamespace
                             contextImpl->GetDefaultActionSentimentDictionary();
 
                         if (SUCCEEDED(TryGetResourceFromResourceDictionaries(actionSentimentDictionary.Get(),
-                            L"PositiveActionDefaultStyle",
-                            styleToApply.GetAddressOf())))
+                                                                             L"PositiveActionDefaultStyle",
+                                                                             styleToApply.GetAddressOf())))
                         {
                             THROW_IF_FAILED(buttonFrameworkElement->put_Style(styleToApply.Get()));
                         }
                     }
                 }
-                else if (SUCCEEDED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"destructive").Get(), &isSentimentDestructive))
-                         && (isSentimentDestructive == 0))
+                else if (SUCCEEDED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"destructive").Get(), &isSentimentDestructive)) &&
+                         (isSentimentDestructive == 0))
                 {
                     if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IStyle>(resourceDictionary.Get(),
-                        L"Adaptive.Action.Destructive",
-                        &styleToApply)))
+                                                                                 L"Adaptive.Action.Destructive",
+                                                                                 &styleToApply)))
                     {
                         THROW_IF_FAILED(buttonFrameworkElement->put_Style(styleToApply.Get()));
                     }
@@ -1482,8 +1480,8 @@ namespace AdaptiveNamespace
                             contextImpl->GetDefaultActionSentimentDictionary();
 
                         if (SUCCEEDED(TryGetResourceFromResourceDictionaries(actionSentimentDictionary.Get(),
-                            L"DestructiveActionDefaultStyle",
-                            styleToApply.GetAddressOf())))
+                                                                             L"DestructiveActionDefaultStyle",
+                                                                             styleToApply.GetAddressOf())))
                         {
                             THROW_IF_FAILED(buttonFrameworkElement->put_Style(styleToApply.Get()));
                         }
@@ -1492,9 +1490,12 @@ namespace AdaptiveNamespace
                 else
                 {
                     HString actionSentimentStyle;
-                    THROW_IF_FAILED(WindowsConcatString(HStringReference(L"Adaptive.Action.").Get(), actionSentiment.Get(), actionSentimentStyle.GetAddressOf()));
-                    THROW_IF_FAILED(
-                        SetStyleFromResourceDictionary(renderContext, StringToWstring(HStringToUTF8(actionSentimentStyle.Get())), buttonFrameworkElement.Get()));
+                    THROW_IF_FAILED(WindowsConcatString(HStringReference(L"Adaptive.Action.").Get(),
+                                                        actionSentiment.Get(),
+                                                        actionSentimentStyle.GetAddressOf()));
+                    THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext,
+                                                                   StringToWstring(HStringToUTF8(actionSentimentStyle.Get())),
+                                                                   buttonFrameworkElement.Get()));
                 }
 
                 XamlHelpers::AppendXamlElementToPanel(button.Get(), actionsPanel.Get());
@@ -1934,15 +1935,15 @@ namespace AdaptiveNamespace
                 EventRegistrationToken eventToken;
                 THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(
                     Callback<IRoutedEventHandler>([ellipseAsUIElement, isVisible](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
-                    // Don't set the AutoImageSize on the ellipse as it makes the ellipse grow bigger than
-                    // what it would be otherwise, just set the visibility when we get the image
-                    if (isVisible)
-                    {
-                        RETURN_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Visible));
-                    }
-                    return S_OK;
-                })
-                    .Get(),
+                        // Don't set the AutoImageSize on the ellipse as it makes the ellipse grow bigger than
+                        // what it would be otherwise, just set the visibility when we get the image
+                        if (isVisible)
+                        {
+                            RETURN_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Visible));
+                        }
+                        return S_OK;
+                    })
+                        .Get(),
                     &eventToken));
             }
         }
@@ -1974,16 +1975,20 @@ namespace AdaptiveNamespace
                 ComPtr<IInspectable> strongParentElement(parentElement);
                 EventRegistrationToken eventToken;
                 THROW_IF_FAILED(xamlImage->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([imageAsFrameworkElement, strongParentElement, imageSourceAsBitmap, isVisible](IInspectable* /*sender*/, IRoutedEventArgs *
-                        /*args*/) -> HRESULT {
-                    return SetAutoImageSize(imageAsFrameworkElement.Get(), strongParentElement.Get(), imageSourceAsBitmap.Get(), isVisible);
-                })
-                    .Get(),
+                    Callback<IRoutedEventHandler>(
+                        [imageAsFrameworkElement, strongParentElement, imageSourceAsBitmap, isVisible](IInspectable* /*sender*/, IRoutedEventArgs *
+                                                                                                       /*args*/) -> HRESULT {
+                            return SetAutoImageSize(imageAsFrameworkElement.Get(),
+                                                    strongParentElement.Get(),
+                                                    imageSourceAsBitmap.Get(),
+                                                    isVisible);
+                        })
+                        .Get(),
                     &eventToken));
             }
             else
             {
-                SetAutoImageSize(imageAsFrameworkElement.Get() , parentElement, imageSourceAsBitmap.Get(), isVisible);
+                SetAutoImageSize(imageAsFrameworkElement.Get(), parentElement, imageSourceAsBitmap.Get(), isVisible);
             }
         }
     }
@@ -2062,9 +2067,15 @@ namespace AdaptiveNamespace
             ComPtr<IShape> ellipseAsShape;
             THROW_IF_FAILED(ellipse.As(&ellipseAsShape));
 
-            SetImageOnUIElement(imageUrl.Get(), ellipse.Get(), resourceResolvers.Get(),
-                               (size == ABI::AdaptiveNamespace::ImageSize_Auto),
-                               parentElement.Get(), ellipseAsShape.Get(), isVisible, &mustHideElement, stretch);
+            SetImageOnUIElement(imageUrl.Get(),
+                                ellipse.Get(),
+                                resourceResolvers.Get(),
+                                (size == ABI::AdaptiveNamespace::ImageSize_Auto),
+                                parentElement.Get(),
+                                ellipseAsShape.Get(),
+                                isVisible,
+                                &mustHideElement,
+                                stretch);
 
             ComPtr<IShape> backgroundEllipseAsShape;
             THROW_IF_FAILED(backgroundEllipse.As(&backgroundEllipseAsShape));
@@ -2076,7 +2087,7 @@ namespace AdaptiveNamespace
                 THROW_IF_FAILED(ellipseAsShape->put_Stretch(stretch));
                 THROW_IF_FAILED(backgroundEllipseAsShape->put_Stretch(stretch));
             }
-            
+
             if (backgroundColor != nullptr)
             {
                 // Fill the background ellipse with solid color brush
@@ -2117,7 +2128,7 @@ namespace AdaptiveNamespace
                 THROW_IF_FAILED(GetColorFromString(HStringToUTF8(backgroundColor), &color));
                 ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(color);
                 THROW_IF_FAILED(border->put_Background(backgroundColorBrush.Get()));
-                
+
                 ComPtr<IUIElement> imageAsUiElement;
                 THROW_IF_FAILED(xamlImage.CopyTo(imageAsUiElement.GetAddressOf()));
                 THROW_IF_FAILED(border->put_Child(imageAsUiElement.Get()));
@@ -2138,9 +2149,14 @@ namespace AdaptiveNamespace
             THROW_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
 
             bool mustHideElement{true};
-            SetImageOnUIElement(imageUrl.Get(), xamlImage.Get(), resourceResolvers.Get(),
+            SetImageOnUIElement(imageUrl.Get(),
+                                xamlImage.Get(),
+                                resourceResolvers.Get(),
                                 (size == ABI::AdaptiveNamespace::ImageSize_Auto),
-                                parentElement.Get(), frameworkElement.Get(), isVisible, &mustHideElement);
+                                parentElement.Get(),
+                                frameworkElement.Get(),
+                                isVisible,
+                                &mustHideElement);
         }
 
         ComPtr<IAdaptiveImageSizesConfig> sizeOptions;
@@ -2431,7 +2447,7 @@ namespace AdaptiveNamespace
 
         ABI::AdaptiveNamespace::ContainerStyle containerStyle;
         THROW_IF_FAILED(adaptiveColumnSet->get_Style(&containerStyle));
-        bool hasExplicitContainerStyle{ true };
+        bool hasExplicitContainerStyle{true};
         if (containerStyle == ABI::AdaptiveNamespace::ContainerStyle::None)
         {
             hasExplicitContainerStyle = false;
@@ -2478,7 +2494,7 @@ namespace AdaptiveNamespace
             *columnSetControl = nullptr;
             return;
         }
-        
+
         XamlHelpers::IterateOverVector<AdaptiveColumn, IAdaptiveColumn>(
             columns.Get(),
             [xamlGrid, gridStatics, &currentColumn, renderContext, renderArgs, columnRenderer, hostConfig](IAdaptiveColumn* column) {
@@ -2873,13 +2889,13 @@ namespace AdaptiveNamespace
         ComPtr<IItemsControl> itemsControl;
         THROW_IF_FAILED(comboBox.As(&itemsControl));
 
-        ComPtr< IObservableVector<IInspectable*> > items;
+        ComPtr<IObservableVector<IInspectable*>> items;
         THROW_IF_FAILED(itemsControl->get_Items(items.GetAddressOf()));
 
-        ComPtr< IVector<IInspectable*> > itemsVector;
+        ComPtr<IVector<IInspectable*>> itemsVector;
         THROW_IF_FAILED(items.As(&itemsVector));
 
-        ComPtr<IVector< ABI::AdaptiveNamespace::AdaptiveChoiceInput*> > choices;
+        ComPtr<IVector<ABI::AdaptiveNamespace::AdaptiveChoiceInput*>> choices;
         THROW_IF_FAILED(adaptiveChoiceSetInput->get_Choices(&choices));
 
         std::vector<std::string> values = GetChoiceSetValueVector(adaptiveChoiceSetInput);
@@ -2946,45 +2962,47 @@ namespace AdaptiveNamespace
 
         XamlHelpers::IterateOverVector<AdaptiveChoiceInput, IAdaptiveChoiceInput>(
             choices.Get(), [panel, isMultiSelect, renderContext, values, wrap](IAdaptiveChoiceInput* adaptiveChoiceInput) {
-            ComPtr<IUIElement> choiceItem;
-            if (isMultiSelect)
-            {
-                ComPtr<ICheckBox> checkBox =
-                    XamlHelpers::CreateXamlClass<ICheckBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_CheckBox));
-                THROW_IF_FAILED(checkBox.As(&choiceItem));
-
-                ComPtr<IFrameworkElement> frameworkElement;
-                THROW_IF_FAILED(checkBox.As(&frameworkElement));
-                SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Choice.Multiselect", frameworkElement.Get());
-
-                XamlHelpers::SetToggleValue(choiceItem.Get(), IsChoiceSelected(values, adaptiveChoiceInput));
-            }
-            else
-            {
-                ComPtr<IRadioButton> radioButton = XamlHelpers::CreateXamlClass<IRadioButton>(
-                    HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RadioButton));
-                THROW_IF_FAILED(radioButton.As(&choiceItem));
-
-                ComPtr<IFrameworkElement> frameworkElement;
-                THROW_IF_FAILED(radioButton.As(&frameworkElement));
-                SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Choice.SingleSelect", frameworkElement.Get());
-
-                if (values.size() == 1)
+                ComPtr<IUIElement> choiceItem;
+                if (isMultiSelect)
                 {
-                    // When isMultiSelect is false, only 1 specified value is accepted.
-                    // Otherwise, leave all options unset
+                    ComPtr<ICheckBox> checkBox =
+                        XamlHelpers::CreateXamlClass<ICheckBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_CheckBox));
+                    THROW_IF_FAILED(checkBox.As(&choiceItem));
+
+                    ComPtr<IFrameworkElement> frameworkElement;
+                    THROW_IF_FAILED(checkBox.As(&frameworkElement));
+                    SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Choice.Multiselect", frameworkElement.Get());
+
                     XamlHelpers::SetToggleValue(choiceItem.Get(), IsChoiceSelected(values, adaptiveChoiceInput));
                 }
-            }
+                else
+                {
+                    ComPtr<IRadioButton> radioButton = XamlHelpers::CreateXamlClass<IRadioButton>(
+                        HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RadioButton));
+                    THROW_IF_FAILED(radioButton.As(&choiceItem));
 
-            HString title;
-            THROW_IF_FAILED(adaptiveChoiceInput->get_Title(title.GetAddressOf()));
-            XamlHelpers::SetContent(choiceItem.Get(), title.Get(), wrap);
+                    ComPtr<IFrameworkElement> frameworkElement;
+                    THROW_IF_FAILED(radioButton.As(&frameworkElement));
+                    SetStyleFromResourceDictionary(renderContext,
+                                                   L"Adaptive.Input.Choice.SingleSelect",
+                                                   frameworkElement.Get());
 
-            THROW_IF_FAILED(AddHandledTappedEvent(choiceItem.Get()));
+                    if (values.size() == 1)
+                    {
+                        // When isMultiSelect is false, only 1 specified value is accepted.
+                        // Otherwise, leave all options unset
+                        XamlHelpers::SetToggleValue(choiceItem.Get(), IsChoiceSelected(values, adaptiveChoiceInput));
+                    }
+                }
 
-            XamlHelpers::AppendXamlElementToPanel(choiceItem.Get(), panel.Get());
-        });
+                HString title;
+                THROW_IF_FAILED(adaptiveChoiceInput->get_Title(title.GetAddressOf()));
+                XamlHelpers::SetContent(choiceItem.Get(), title.Get(), wrap);
+
+                THROW_IF_FAILED(AddHandledTappedEvent(choiceItem.Get()));
+
+                XamlHelpers::AppendXamlElementToPanel(choiceItem.Get(), panel.Get());
+            });
 
         ComPtr<IFrameworkElement> choiceSetAsFrameworkElement;
         THROW_IF_FAILED(stackPanel.As(&choiceSetAsFrameworkElement));
@@ -3079,12 +3097,43 @@ namespace AdaptiveNamespace
 
         THROW_IF_FAILED(datePicker.CopyTo(dateInputControl));
 
+
+        // Value
+        HString hstringValue;
+        THROW_IF_FAILED(adaptiveDateInput->get_Value(hstringValue.GetAddressOf()));
+        std::string value = HStringToUTF8(hstringValue.Get());
+        unsigned int year, month, day;
+        if (DateTimePreparser::TryParseSimpleDate(value, &year, &month, &day))
+        {
+            ComPtr<IReference<DateTime>> initialDateTimeReference;
+            GetDateTimeReference(year, month, day, &initialDateTimeReference);
+            THROW_IF_FAILED(datePicker->put_Date(initialDateTimeReference.Get()));
+        }
+
+        // Min date
+        HString hstringMin;
+        THROW_IF_FAILED(adaptiveDateInput->get_Min(hstringMin.GetAddressOf()));
+        std::string min = HStringToUTF8(hstringMin.Get());
+        if (DateTimePreparser::TryParseSimpleDate(min, &year, &month, &day))
+        {
+            DateTime minDate = GetDateTime(year, month, day);
+            THROW_IF_FAILED(datePicker->put_MinDate(minDate));
+        }
+
+        // Max date
+        HString hstringMax;
+        THROW_IF_FAILED(adaptiveDateInput->get_Max(hstringMax.GetAddressOf()));
+        std::string max = HStringToUTF8(hstringMax.Get());
+        if (DateTimePreparser::TryParseSimpleDate(max, &year, &month, &day))
+        {
+            DateTime maxDate = GetDateTime(year, month, day);
+            THROW_IF_FAILED(datePicker->put_MaxDate(maxDate));
+        }
+
         THROW_IF_FAILED(
             SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Date", datePickerAsFrameworkElement.Get()));
 
         AddInputValueToContext(renderContext, adaptiveCardElement, *dateInputControl);
-
-        // TODO: Handle parsing dates for min/max and value
     }
 
     void XamlBuilder::BuildNumberInput(_In_ IAdaptiveCardElement* adaptiveCardElement,
@@ -3517,7 +3566,22 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(
             SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Time", timePickerAsFrameworkElement.Get()));
 
-        // TODO: Handle placeholder text and parsing times for min/max and value
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveTimeInput> adaptiveTimeInput;
+        THROW_IF_FAILED(cardElement.As(&adaptiveTimeInput));
+
+        // Set initial value
+        HString hstringValue;
+        THROW_IF_FAILED(adaptiveTimeInput->get_Value(hstringValue.GetAddressOf()));
+        std::string value = HStringToUTF8(hstringValue.Get());
+        unsigned int hours, minutes;
+        if (DateTimePreparser::TryParseSimpleTime(value, &hours, &minutes))
+        {
+            TimeSpan initialTime{(INT64)(hours * 60 + minutes) * 10000000 * 60};
+            THROW_IF_FAILED(timePicker->put_Time(initialTime));
+        }
+
+        // Note: Placeholder text and min/max are not supported by ITimePicker
 
         THROW_IF_FAILED(timePicker.CopyTo(timeInputControl));
         AddInputValueToContext(renderContext, adaptiveCardElement, *timeInputControl);
