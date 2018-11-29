@@ -2294,13 +2294,13 @@ namespace AdaptiveNamespace
                     columnWidth.GridUnitType = GridUnitType::GridUnitType_Pixel;
                     columnWidth.Value = pixelWidth;
                 }
-                else if (isAutoResult == 0)
+                else if ((isAutoResult == 0) || (widthAsDouble <= 0))
                 {
                     // If auto specified, use auto width
                     columnWidth.GridUnitType = GridUnitType::GridUnitType_Auto;
                     columnWidth.Value = 0;
                 }
-                else if (isStretchResult == 0 || !adaptiveColumnWidth.IsValid() || (widthAsDouble <= 0))
+                else if (isStretchResult == 0 || !adaptiveColumnWidth.IsValid())
                 {
                     // If stretch specified, or column width invalid or set to non-positive, use stretch with default of 1
                     columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
