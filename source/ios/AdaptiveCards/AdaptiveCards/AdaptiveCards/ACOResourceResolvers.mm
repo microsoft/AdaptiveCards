@@ -33,7 +33,7 @@
         _resolversIFMap[scheme] = [NSNumber numberWithInt:ACOImageIF];
     }
     // only one IF per scheme is supported and ACRImageViewIF will be chosen
-    // when both respod
+    // when both are implemented
     if([resolver respondsToSelector:@selector(resolveImageViewResource:)]) {
         _resolversIFMap[scheme] = [NSNumber numberWithInt:ACOImageViewIF];
     }

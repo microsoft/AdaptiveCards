@@ -222,13 +222,12 @@
         CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
         [registration setCustomElementParser:progressBarRenderer];
         _config = hostconfigParseResult.config;
-        renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:335];
+        renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:335 delegate:self];
     }
     
     if(renderResult.succeeded)
     {
         ACRView *ad = renderResult.view;
-        ad.acrActionDelegate = self;
         ad.mediaDelegate = self;
         if(self.curView)
             [self.curView removeFromSuperview];
@@ -330,6 +329,7 @@
                                                  name:UIKeyboardWillHideNotification object:nil];
 
 }
+
 // Called when the UIKeyboardDidShowNotification is sent.
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
@@ -352,5 +352,11 @@
     self.scrView.contentInset = contentInsets;
     self.scrView.scrollIndicatorInsets = contentInsets;
 }
+
+- (void)didLoadElements
+{
+    NSLog(@"complted loading elements");
+}
+
 
 @end
