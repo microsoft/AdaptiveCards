@@ -99,6 +99,7 @@ namespace AdaptiveCards.Sample.Html
             padding: 5px;
             width: 400px;
         }
+
     </style>
 </head>
 <body>");
@@ -184,6 +185,34 @@ namespace AdaptiveCards.Sample.Html
                     const mediaSources = button.dataset.acMediaSources;
                     alert(mediaSources);
                 }}
+            }});
+        }}
+               
+        // Sample JavaScript code to test inlienaction's keyboard event handler 
+        const textinputWithInlineAction = document.getElementsByClassName('ac-textinput-inlineaction');
+        for (var i = 0; i < textinputWithInlineAction.length; i++)
+        {{
+            const container = textinputWithInlineAction[i];
+            const textinputId = container.dataset.acTextinputId;
+            const textinput = document.getElementById(textinputId);
+            textinput.addEventListener('keydown', function (e) {{
+                if (e.keyCode == 13) {{
+                    const inlineactionId = container.dataset.acInlineactionId;
+                    const inlineaction = document.getElementById(inlineactionId);
+
+                    if (inlineaction) {{
+                        var actionAttribute = inlineaction.getAttribute('data-ac-url');
+                        if (actionAttribute != null) {{
+                            window.open(actionAttribute);
+                        }}
+                        else {{
+                            actionAttribute = inlineaction.getAttribute('data-ac-submitData')
+                            if (actionAttribute != null) {{
+                                alert(textinput.value);
+                            }}
+                        }}
+                    }}
+                }} 
             }});
         }}
     </script>");
