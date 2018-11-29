@@ -90,24 +90,6 @@ namespace AdaptiveCards.Rendering.Html
             return color;
         }
 
-        public string GenerateLighterColor(string hexColor)
-        {
-            int color = int.Parse(hexColor.Substring(1), System.Globalization.NumberStyles.HexNumber);
-
-            const double colorIncrement = 0.25;
-            int originalR = (color & 0xFF0000) >> 16;
-            int originalG = (color & 0x00FF00) >> 8;
-            int originalB = (color & 0x0000FF);
-
-            int newColorR = originalR + (int)((255 - originalR) * colorIncrement);
-            int newColorG = originalG + (int)((255 - originalG) * colorIncrement);
-            int newColorB = originalB + (int)((255 - originalB) * colorIncrement);
-
-            int newColor = ((newColorR << 16) | (newColorG << 8) | (newColorB));
-
-            return "#" + newColor.ToString("X");
-        }
-
         public string Lang { get; set; }
     }
 }

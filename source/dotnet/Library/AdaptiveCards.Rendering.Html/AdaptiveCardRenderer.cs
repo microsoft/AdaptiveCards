@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using Newtonsoft.Json;
+using AdaptiveCards;
 
 namespace AdaptiveCards.Rendering.Html
 {
@@ -143,7 +144,7 @@ namespace AdaptiveCards.Rendering.Html
                 {
                     case AdaptiveSentiment.Positive:
                         string accentColor = context.Config.ContainerStyles.Default.ForegroundColors.Accent.Default;
-                        string lighterAccentColor = context.GenerateLighterColor(accentColor);
+                        string lighterAccentColor = ColorUtil.GenerateLighterColor(accentColor);
                         buttonElement.Style("background-color", context.GetRGBColor(accentColor));
                         buttonElement.Attr("onMouseOver", "this.style.backgroundColor='" + context.GetRGBColor(lighterAccentColor) + "'");
                         buttonElement.Attr("onMouseOut", "this.style.backgroundColor='" + context.GetRGBColor(accentColor) + "'");
@@ -152,7 +153,7 @@ namespace AdaptiveCards.Rendering.Html
                         break;
                     case AdaptiveSentiment.Destructive:
                         string attentionColor = context.Config.ContainerStyles.Default.ForegroundColors.Attention.Default;
-                        string lighterAttentionColor = context.GenerateLighterColor(attentionColor);
+                        string lighterAttentionColor = ColorUtil.GenerateLighterColor(attentionColor);
                         buttonElement.Style("color", context.GetRGBColor(attentionColor));
                         buttonElement.Attr("onMouseOver", "this.style.color='" + context.GetRGBColor(lighterAttentionColor) + "'");
                         buttonElement.Attr("onMouseOut", "this.style.color='" + context.GetRGBColor(attentionColor) + "'");
