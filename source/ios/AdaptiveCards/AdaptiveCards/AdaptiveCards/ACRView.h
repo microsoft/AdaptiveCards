@@ -19,6 +19,10 @@
 @property (weak) id<ACRMediaDelegate>mediaDelegate;
 
 - (instancetype)init:(ACOAdaptiveCard *)card hostconfig:(ACOHostConfig *)config widthConstraint:(float)width;
+- (instancetype)init:(ACOAdaptiveCard *)card
+          hostconfig:(ACOHostConfig *)config
+     widthConstraint:(float)width
+            delegate:(id<ACRActionDelegate>)acrActionDelegate;
 
 - (NSMutableDictionary *)getImageMap;
 

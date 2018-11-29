@@ -56,8 +56,7 @@
         }
     }
 
-    if(img)
-    {
+    if (img) {
         ACRUIImageView *acrImageView = [[ACRUIImageView alloc] initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
         acrImageView.image = img;
         if(imgElem->GetImageStyle() == ImageStyle::Person) {
@@ -66,55 +65,53 @@
         }
         view = acrImageView;
         [self configUpdateForUIImageView:acoElem config:acoConfig image:img imageView:view];
-    } else
-    {
+    } else {
         NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)imgElem.get()];
         NSString *key = [number stringValue];
         view = [rootView getImageView:key];
     }
-    
+
     ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
-    
-    if(!view)
-    {
+
+    if (!view) {
         return wrappingview;
     }
 
-    if(!isAspectRatioNeeded){
+    if (!isAspectRatioNeeded){
         view.contentMode = UIViewContentModeScaleToFill;
     } else {
         view.contentMode = UIViewContentModeScaleAspectFit;
     }
 
     view.clipsToBounds = YES;
-    
+
     std::string backgroundColor = imgElem->GetBackgroundColor();
-    if(!backgroundColor.empty()) {
+    if (!backgroundColor.empty()) {
         view.backgroundColor = [ACOHostConfig convertHexColorCodeToUIColor:imgElem->GetBackgroundColor()];
     }
 
     [wrappingview addSubview:view];
 
     [viewGroup addArrangedSubview:wrappingview];
-    
+
     [NSLayoutConstraint activateConstraints:
      [ACOHostConfig getConstraintsForImageAlignment:imgElem->GetHorizontalAlignment()
                                       withSuperview:wrappingview
                                              toView:view]];
-     
+
     NSArray<NSString *> *visualFormats = [NSArray arrayWithObjects:@"H:[view(<=wrappingview)]", @"V:|[view(<=wrappingview)]|", nil];
     NSDictionary *viewMap = NSDictionaryOfVariableBindings(view, wrappingview);
 
-    for(NSString *constraint in visualFormats){
+    for (NSString *constraint in visualFormats){
         [NSLayoutConstraint activateConstraints:[NSLayoutConstraint constraintsWithVisualFormat:constraint options:0 metrics:nil views:viewMap]];
     }
 
-    if(!(size == ImageSize::Auto || size == ImageSize::Stretch)) {
+    if (!(size == ImageSize::Auto || size == ImageSize::Stretch)) {
         [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     }
 
-    if(size != ImageSize::Stretch) {
+    if (size != ImageSize::Stretch) {
         [view setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
@@ -124,7 +121,7 @@
         [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 
-        if(imgElem->GetHeight() == HeightType::Stretch) {
+        if (imgElem->GetHeight() == HeightType::Stretch) {
             UIView *blankTrailingSpace = [[UIView alloc] init];
             [blankTrailingSpace setContentHuggingPriority:(UILayoutPriorityDefaultLow) forAxis:UILayoutConstraintAxisVertical];
             [viewGroup addArrangedSubview:blankTrailingSpace];
@@ -140,8 +137,8 @@
                                                                      hostConfig:acoConfig];
     view.translatesAutoresizingMaskIntoConstraints = NO;
     wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
-    if(imgElem->GetImageStyle() == ImageStyle::Person) {
-        wrappingview.isPersonStyle = YES;        
+    if (imgElem->GetImageStyle() == ImageStyle::Person) {
+        wrappingview.isPersonStyle = YES;
     }
     return wrappingview;
 }
@@ -205,7 +202,7 @@
                                         attribute:NSLayoutAttributeNotAnAttribute
                                        multiplier:1.0
                                          constant:cgsize.height]]];
-        
+
         if([imageView class] == [ACRUIImageView class]) {
             ((ACRUIImageView *)imageView).desiredSize = cgsize;
         }

@@ -15,7 +15,7 @@ using namespace AdaptiveCards;
 @interface ACRView()
 
 typedef void (^ObserverActionBlock)(NSObject<ACOIResourceResolver> *resolver,
-                                    NSString *key, std::shared_ptr<Image> const &imgElem, NSURL *url, ACRView *rootView);
+                                    NSString *key, std::shared_ptr<BaseCardElement> const &elem, NSURL *url, ACRView *rootView);
 
 // Walk through adaptive cards elements and if images are found, download and process images concurrently and on different thread
 // from main thread, so images process won't block UI thread.
