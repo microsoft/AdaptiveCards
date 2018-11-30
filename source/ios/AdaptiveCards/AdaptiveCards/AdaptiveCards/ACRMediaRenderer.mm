@@ -81,23 +81,27 @@
     contentholdingview.isMediaType = YES;
 
     // process play icon image
-    /*
     NSString *piikey = [NSString stringWithCString:[acoConfig getHostConfig]->GetMedia().playButton.c_str() encoding:[NSString defaultCStringEncoding]];
     UIImage *playIconImage = imageViewMap[piikey];
     UIImageView *playIconImageView = nil;
-     */
     BOOL drawDefaultPlayIcon = YES;
-/*
+
+    if(!playIconImage) {
+        playIconImageView  = [rootView getImageView:@"playIconImage"];
+    }
+
     if(playIconImage) {
-        drawDefaultPlayIcon = NO;
         playIconImageView = [[UIImageView alloc] initWithImage:playIconImage];
+    }
+
+    if(playIconImageView) {
+        drawDefaultPlayIcon = NO;
         playIconImageView.tag = playIconTag;
         playIconImageView.translatesAutoresizingMaskIntoConstraints = NO;
     }
-*/
+
     view.tag = posterTag;
     // if play icon is provided from hostconfig, disable play icon drawing in its sublayer, and invalidate the current sublayer, so it will be updated in the next drawring cycle
-    /*
     if(!drawDefaultPlayIcon) {
         contentholdingview.hidePlayIcon = YES;
         [contentholdingview setNeedsLayout];
@@ -105,7 +109,7 @@
         [NSLayoutConstraint constraintWithItem:playIconImageView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
         [NSLayoutConstraint constraintWithItem:playIconImageView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
 
-    }*/
+    }
 
     contentholdingview.hidePlayIcon = YES;
 
