@@ -18,6 +18,7 @@
 #import "Container.h"
 #import "ColumnSet.h"
 #import "Column.h"
+#import "Fact.h"
 #import "Enums.h"
 #import "Media.h"
 #import "TextInput.h"
@@ -550,18 +551,20 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 {
     if ([path isEqualToString:@"image"])
     {
-        UIImage *image = [change objectForKey:NSKeyValueChangeNewKey];
-        NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)(context)];
-        NSString *key = [number stringValue];
-
-        ACRRegistration *reg = [ACRRegistration getInstance];
-        ACOBaseCardElement *baseCardElement = _imageContextMap[key];
-        if(baseCardElement) {
-            ACRBaseCardElementRenderer<ACRIKVONotificationHandler> *renderer = (ACRBaseCardElementRenderer<ACRIKVONotificationHandler> *)[reg getRenderer:[NSNumber numberWithInt:baseCardElement.type]];
-            if(renderer && [[renderer class] conformsToProtocol:@protocol(ACRIKVONotificationHandler)]) {
-                [renderer configUpdateForUIImageView:baseCardElement config:_hostConfig image:image imageView:(UIImageView *)object];
+        if(context) {
+            UIImage *image = [change objectForKey:NSKeyValueChangeNewKey];
+            NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)(context)];
+            NSString *key = [number stringValue];
+            ACRRegistration *reg = [ACRRegistration getInstance];
+            ACOBaseCardElement *baseCardElement = _imageContextMap[key];
+            if(baseCardElement) {
+                ACRBaseCardElementRenderer<ACRIKVONotificationHandler> *renderer = (ACRBaseCardElementRenderer<ACRIKVONotificationHandler> *)[reg getRenderer:[NSNumber numberWithInt:baseCardElement.type]];
+                if(renderer && [[renderer class] conformsToProtocol:@protocol(ACRIKVONotificationHandler)]) {
+                    [renderer configUpdateForUIImageView:baseCardElement config:_hostConfig image:image imageView:(UIImageView *)object];
+                }
             }
         }
+
         _numberOfSubscribers--;
         [object removeObserver:self forKeyPath:path];
         [self callDidLoadElementsIfNeeded];

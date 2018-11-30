@@ -89,6 +89,11 @@ using namespace AdaptiveCards;
         ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &elem, NSURL* url, ACRView* rootView) {
             UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
             [rootView setImageView:key imageView:view];
+            if(view) {
+                [view addObserver:rootView forKeyPath:@"image"
+                          options:NSKeyValueObservingOptionNew
+                          context:nil];
+            }
         };
         [rootView
             loadImageAccordingToResourceResolverIFFromString:adaptiveCard->GetBackgroundImage()
@@ -100,6 +105,11 @@ using namespace AdaptiveCards;
         ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &elem, NSURL* url, ACRView* rootView) {
             UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
             [rootView setImageView:key imageView:view];
+            if(view) {
+                [view addObserver:rootView forKeyPath:@"image"
+                          options:NSKeyValueObservingOptionNew
+                          context:nil];
+            }
         };
         [rootView
             loadImageAccordingToResourceResolverIFFromString:[config getHostConfig]->GetMedia().playButton
