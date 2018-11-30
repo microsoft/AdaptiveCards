@@ -92,15 +92,12 @@ const int posterTag = 0x504F5354;
                     [_view.mediaDelegate didFetchMediaViewController:self->_mediaViewController card:nil];
 
                     self->_mediaViewController.videoGravity = AVLayerVideoGravityResizeAspectFill;
-                    CGRect frame = self->_containingview.frame;
                     // TODO AVPlayerViewController has some constraints conflicts internally; need to fix, so the warning will be turned off, but
                     // system is correctly breaking the ties.
                     UIView *mediaView = self->_mediaViewController.view;
-                    mediaView.frame = frame;
-                    mediaView.translatesAutoresizingMaskIntoConstraints = NO;
-                    [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:frame.size.width].active = YES;
-                    [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:frame.size.height].active = YES;
 
+                    mediaView.translatesAutoresizingMaskIntoConstraints = NO;
+                   
                     ACRAVPlayerViewHoldingUIView *poster = [self->_containingview viewWithTag:posterTag];
                     poster.hidePlayIcon = YES;
                     [poster setNeedsLayout];
@@ -109,21 +106,19 @@ const int posterTag = 0x504F5354;
                     if(playIconView){
                         [playIconView removeFromSuperview];
                     }
-                    // poster and plyaIconView are removed from their superviews
-                    [poster removeFromSuperview];
 
                     [self->_containingview addSubview:mediaView];
+                    [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;
+                    [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0].active = YES;
+                    [NSLayoutConstraint constraintWithItem:poster attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:mediaView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;
+                    // poster and plyaIconView are removed from their superviews
+                    [poster removeFromSuperview];
+                    
                     UIView *overlayview = self->_mediaViewController.contentOverlayView;
-
-                    [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
-                    [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
-
                     overlayview.backgroundColor = UIColor.blackColor;
                     // overlayview sit between AVPLayverViewController view's control view and content view, and here we add the poster.
                     [overlayview addSubview:poster];
                     [overlayview bringSubviewToFront:poster];
-
-                    [NSLayoutConstraint activateConstraints:@[[poster.topAnchor constraintEqualToAnchor:overlayview.topAnchor], [poster.bottomAnchor constraintEqualToAnchor:overlayview.bottomAnchor], [poster.leadingAnchor constraintEqualToAnchor:overlayview.leadingAnchor], [poster.trailingAnchor constraintEqualToAnchor:overlayview.trailingAnchor]]];
 
                     [player play];
                     validMediaTypeFound = YES;

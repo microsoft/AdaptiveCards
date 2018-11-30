@@ -111,6 +111,7 @@
     _resolvers = [[ACOResourceResolvers alloc] init];
     ADCResolver *resolver = [[ADCResolver alloc] init];
     [_resolvers setResourceResolver:resolver scheme:@"http"];
+    [_resolvers setResourceResolver:resolver scheme:@"https"];
     _enableCustomRenderer = NO;
     self.curView = nil;
     self.ACVTabVC = [[ACVTableViewController alloc] init];
