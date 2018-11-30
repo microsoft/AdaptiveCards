@@ -96,7 +96,14 @@ using namespace AdaptiveCards;
     }
 
     if(![config getHostConfig]->GetMedia().playButton.empty()) {
-        [rootView loadImage:[config getHostConfig]->GetMedia().playButton];
+        ObserverActionBlock observerAction =
+        ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &elem, NSURL* url, ACRView* rootView) {
+            UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
+            [rootView setImageView:key imageView:view];
+        };
+        [rootView
+            loadImageAccordingToResourceResolverIFFromString:[config getHostConfig]->GetMedia().playButton
+            key:@"playIconImage" observerAction:observerAction];
     }
 
     ACRContainerStyle style = ([config getHostConfig]->GetAdaptiveCard().allowCustomStyle)? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
