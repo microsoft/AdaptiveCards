@@ -330,7 +330,166 @@ export class ContainerStyleSet {
     }
 }
 
+export class Version {
+    private _versionString: string;
+    private _major: number;
+    private _minor: number;
+    private _isValid: boolean = true;
+
+    constructor(major: number = 1, minor: number = 1) {
+        this._major = major;
+        this._minor = minor;
+    }
+
+    static parse(versionString: string): Version {
+        if (!versionString) {
+            return null;
+        }
+
+        var result = new Version();
+        result._versionString = versionString;
+
+        var regEx = /(\d+).(\d+)/gi;
+        var matches = regEx.exec(versionString);
+
+        if (matches != null && matches.length == 3) {
+            result._major = parseInt(matches[1]);
+
+            let minorVersion = matches[2];
+
+            while (minorVersion.length < 4) {
+                minorVersion += "0";
+            }
+
+            result._minor = Math.min(parseInt(minorVersion), 9999);
+        }
+        else {
+            result._isValid = false;
+        }
+
+        return result;
+    }
+
+    toString(): string {
+        let minorVersionString = this._minor.toString();
+
+        while (minorVersionString.length < 4) {
+            minorVersionString = "0" + minorVersionString;
+        }
+
+        let trailingZeros = 0;
+
+        for (let i = minorVersionString.length - 1; i >= 0; i--) {
+            if (minorVersionString[i] == "0") {
+                trailingZeros++;
+            }
+            else {
+                break;
+            }
+        }
+
+        minorVersionString = minorVersionString.substr(0, minorVersionString.length - trailingZeros);
+
+        return !this._isValid ? this._versionString : this._major + "." + minorVersionString;
+    }
+
+    compareTo(otherVersion: Version): number {
+        if (!this.isValid || !otherVersion.isValid) {
+            throw new Error("Cannot compare invalid version.");
+        }
+
+        if (this.major > otherVersion.major) {
+            return 1;
+        }
+        else if (this.major < otherVersion.major) {
+            return -1;
+        }
+        else if (this.minor > otherVersion.minor) {
+            return 1; 
+        }
+        else if (this.minor < otherVersion.minor) {
+            return -1;
+        }
+
+        return 0;
+    }
+
+    get major(): number {
+        return this._major;
+    }
+
+    get minor(): number {
+        return this._minor;
+    }
+
+    get isValid(): boolean {
+        return this._isValid;
+    }
+}
+
+export type HostCapabilityVersion = Version | "any";
+export type HostCapabilityMap = { [key: string]: HostCapabilityVersion };
+
+export class HostCapabilities {
+    private setCapability(name: string, version: HostCapabilityVersion) {
+        if (!this.capabilities) {
+            this.capabilities = { };
+        }
+
+        this.capabilities[name] = version;
+    }
+
+    capabilities: HostCapabilityMap = null;
+
+    parse(json: any) {
+        if (json) {
+            for (let name in json) {
+                let jsonVersion = json[name];
+
+                if (typeof jsonVersion === "string") {
+                    if (jsonVersion == "any") {
+                        this.setCapability(name, "any");
+                    }
+                    else {
+                        let version = Version.parse(jsonVersion);
+
+                        if (version.isValid) {
+                            this.setCapability(name, version);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    hasCapability(name: string, version: HostCapabilityVersion): boolean {
+        if (this.capabilities && this.capabilities.hasOwnProperty(name)) {
+            if (version == "any" || this.capabilities[name] == "any") {
+                return true;
+            }
+
+            return version.compareTo(<Version>this.capabilities[name]) <= 0;
+        }
+
+        return false;
+    }
+
+    areAllMet(hostCapabilities: HostCapabilities): boolean {
+        if (this.capabilities) {
+            for (let capabilityName in this.capabilities) {
+                if (!hostCapabilities.hasCapability(capabilityName, this.capabilities[capabilityName])) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+}
+
 export class HostConfig {
+    readonly hostCapabilities = new HostCapabilities();
+
     choiceSetInputValueSeparator: string = ",";
     supportsInteractivity: boolean = true;
     lineHeights?: ILineHeightDefinitions;

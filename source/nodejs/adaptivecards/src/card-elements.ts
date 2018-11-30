@@ -412,6 +412,8 @@ export abstract class CardElement implements ICardObject {
         }
     }
 
+    readonly requires = new HostConfig.HostCapabilities();
+
     id: string;
     speak: string;
     horizontalAlignment?: Enums.HorizontalAlignment = null;
@@ -463,6 +465,7 @@ export abstract class CardElement implements ICardObject {
     parse(json: any, errors?: Array<IValidationError>) {
         raiseParseElementEvent(this, json, errors);
 
+        this.requires.parse(json["requires"]);
         this.id = json["id"];
         this.speak = json["speak"];
         this.horizontalAlignment = Utils.getEnumValueOrDefault(Enums.HorizontalAlignment, json["horizontalAlignment"], null);
@@ -641,7 +644,7 @@ export abstract class CardElement implements ICardObject {
     }
 
     shouldFallback(): boolean {
-        return this._shouldFallback;
+        return this._shouldFallback || !this.requires.areAllMet(this.hostConfig.hostCapabilities);
     }
 
     setShouldFallback(value: boolean) {
@@ -2850,6 +2853,8 @@ export abstract class Action implements ICardObject {
 
     abstract getJsonTypeName(): string;
 
+    readonly requires = new HostConfig.HostCapabilities();
+
     id: string;
     title: string;
     iconUrl: string;
@@ -2972,6 +2977,7 @@ export abstract class Action implements ICardObject {
     parse(json: any, errors?: Array<IValidationError>) {
         raiseParseActionEvent(this, json, errors);
 
+        this.requires.parse(json["requires"]);
         this.id = json["id"];
 
         if (!json["title"] && json["title"] !== "") {
@@ -3024,7 +3030,7 @@ export abstract class Action implements ICardObject {
     }
 
     shouldFallback(): boolean {
-        return this._shouldFallback;
+        return this._shouldFallback || !this.requires.areAllMet(this.parent.hostConfig.hostCapabilities);
     }
 }
 
@@ -4948,9 +4954,10 @@ export class ColumnSet extends CardElementContainer {
 
             for (let i = 0; i < jsonColumns.length; i++) {
                 let column = new Column();
+                column.setParent(this);
                 column.parse(jsonColumns[i], errors);
 
-                this.addColumn(column);
+                this._columns.push(column);
             }
         }
     }
@@ -5120,82 +5127,6 @@ export class ColumnSet extends CardElementContainer {
         if (this._selectAction) {
             this._selectAction.setParent(this);
         }
-    }
-}
-
-export class Version {
-    private _versionString: string;
-    private _major: number;
-    private _minor: number;
-    private _isValid: boolean = true;
-
-    constructor(major: number = 1, minor: number = 1) {
-        this._major = major;
-        this._minor = minor;
-    }
-
-    static parse(versionString: string): Version {
-        if (!versionString) {
-            return null;
-        }
-
-        var result = new Version();
-        result._versionString = versionString;
-
-        var regEx = /(\d+).(\d+)/gi;
-        var matches = regEx.exec(versionString);
-
-        if (matches != null && matches.length == 3) {
-            result._major = parseInt(matches[1]);
-
-            let minorVersion = matches[2];
-
-            while (minorVersion.length < 4) {
-                minorVersion += "0";
-            }
-
-            result._minor = Math.min(parseInt(minorVersion), 9999);
-        }
-        else {
-            result._isValid = false;
-        }
-
-        return result;
-    }
-
-    toString(): string {
-        let minorVersionString = this._minor.toString();
-
-        while (minorVersionString.length < 4) {
-            minorVersionString = "0" + minorVersionString;
-        }
-
-        let trailingZeros = 0;
-
-        for (let i = minorVersionString.length - 1; i >= 0; i--) {
-            if (minorVersionString[i] == "0") {
-                trailingZeros++;
-            }
-            else {
-                break;
-            }
-        }
-
-        minorVersionString = minorVersionString.substr(0, minorVersionString.length - trailingZeros);
-
-        return !this._isValid ? this._versionString : this._major + "." + minorVersionString;
-    }
-
-    get major(): number {
-        return this._major;
-    }
-
-    get minor(): number {
-        return this._minor;
-    }
-
-    get isValid(): boolean {
-        return this._isValid;
     }
 }
 
@@ -5506,7 +5437,7 @@ export interface IMarkdownProcessingResult {
 }
 
 export class AdaptiveCard extends ContainerWithActions {
-    private static currentVersion: Version = new Version(1, 1000);
+    private static currentVersion: HostConfig.Version = new HostConfig.Version(1, 1000);
 
     static useAutomaticContainerBleeding: boolean = false;
     static useAdvancedTextBlockTruncation: boolean = true;
@@ -5641,7 +5572,7 @@ export class AdaptiveCard extends ContainerWithActions {
     onParseElement: (element: CardElement, json: any, errors?: Array<IValidationError>) => void = null;
     onParseAction: (element: Action, json: any, errors?: Array<IValidationError>) => void = null;
 
-    version?: Version = new Version(1, 0);
+    version?: HostConfig.Version = new HostConfig.Version(1, 0);
     fallbackText: string;
     fallbackElement: CardElement;
     designMode: boolean = false;
@@ -5717,7 +5648,7 @@ export class AdaptiveCard extends ContainerWithActions {
             }
         }
 
-        this.version = Version.parse(json["version"]);
+        this.version = HostConfig.Version.parse(json["version"]);
 
         this.fallbackText = json["fallbackText"];
 
