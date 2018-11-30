@@ -37,8 +37,6 @@ export class Container extends React.Component {
             if (Element) {
                 this.renderedElement.push(<Element json={element} key={`ELEMENT-${this.generateNumber()}`} />);
             } else {
-                // This fallback is for dev/testing purpose. 
-                TODO: // Must be removed on release version.
                 this.renderedElement.push(
                     <Text style={styles.highlight} key={`ELEMENT-${this.generateNumber()}`}>
                         I'm a 
@@ -67,7 +65,7 @@ export class Container extends React.Component {
         let backgroundStyle = containerJson.style == Constants.Emphasis ?
          styles.emphasisStyle : styles.defaultBGStyle;
 
-        TODO: // verticalContentAlignment property is not considered for now as the container size is determined by its content.
+        // TODO: verticalContentAlignment property is not considered for now as the container size is determined by its content.
         var containerContent = (<View style={[styles.container, backgroundStyle]}>
             <Input json={containerJson} style={backgroundStyle}>
                 <ScrollView style={backgroundStyle}>

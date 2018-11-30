@@ -35,7 +35,7 @@ export class ImageSet extends PureComponent {
 
         const register = new Registry();
         // parse elements 
-        TODO: // This function is repetitive across containers. Needs to be made Generic.
+        // TODO: This function is repetitive across containers. Needs to be made Generic.
         imageSetJson.images.map((element, index) => {
             element[SizeKey] = this.payload.imageSize;
             element[ImageSetKey] = true;
@@ -44,8 +44,6 @@ export class ImageSet extends PureComponent {
                 this.renderedElement.push(<Element json={element} 
                     key={`ELEMENT-${this.generateNumber()}`} />);
             } else {
-                // This fallback is for dev/testing purpose. 
-                TODO: // Must be removed on release version.
                 this.renderedElement.push(
                 <Text style={styles.highlight} key={`ELEMENT-${this.generateNumber()}`}>
                     I'm a <Text style={{ fontWeight: Constants.BoldWeight }}>

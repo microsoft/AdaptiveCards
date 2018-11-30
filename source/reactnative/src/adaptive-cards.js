@@ -43,8 +43,6 @@ export default class AdaptiveCards extends React.Component {
       if (Element) {
         renderedElement.push(<Element json={element} key={`ELEMENT-${index}`} />);
       } else {
-        // This fallback is for dev/testing purpose. 
-        TODO: // Must be removed on release version.
         renderedElement.push(<Text style={styles.highlight} key={`ELEMENT-${index}`}>I'm a <Text style={{ fontWeight: 'bold' }}>{element.type}</Text> element</Text>);
       }
     });
