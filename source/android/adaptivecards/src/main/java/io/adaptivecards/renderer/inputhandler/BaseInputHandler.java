@@ -25,8 +25,6 @@ public abstract class BaseInputHandler implements IInputHandler
         return m_baseInputElement.GetId();
     }
 
-    public abstract void setInput(String input);
-
     protected BaseInputElement m_baseInputElement = null;
     protected View m_view = null;
 
