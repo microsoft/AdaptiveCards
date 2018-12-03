@@ -18,34 +18,20 @@ namespace AdaptiveCards
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            bool fValidString = true;
             if (reader.TokenType == JsonToken.String)
             {
                 var colorString = defaultSerializer.Deserialize(reader, objectType) as string;
-                // We need to have a string in the format #AARRGGBB or #RRGGBB
-                if (!string.IsNullOrEmpty(colorString) && (colorString.Length == 7 || colorString.Length == 9) && colorString[0] == '#')
+                // We need to have a string in the format #AARRGGBB or #RRGGBB               
+                if (ColorUtil.IsValidColor(colorString))
                 {
-                    // Verify that each character is a proper hex digit
-                    for (int i = 1; i < colorString.Length; i++)
-                    {
-                        if (!colorString[i].IsHexDigit())
-                        {
-                            fValidString = false;
-                            break;
-                        }
-                    }
-
                     // We have the right format, and all the digits are hex, return the string
-                    if (fValidString)
+                    if (colorString.Length == 7)
                     {
-                        if (colorString.Length == 7)
-                        {
-                            return $"#FF{colorString.Substring(1).ToUpperInvariant()}";
-                        }
-                        else
-                        {
-                            return colorString.ToUpperInvariant();
-                        }
+                        return $"#FF{colorString.Substring(1).ToUpperInvariant()}";
+                    }
+                    else
+                    {
+                        return colorString.ToUpperInvariant();
                     }
                 }
             }

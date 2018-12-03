@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using Newtonsoft.Json;
+using AdaptiveCards;
 
 namespace AdaptiveCards.Rendering.Html
 {
@@ -111,6 +112,17 @@ namespace AdaptiveCards.Rendering.Html
             return tag;
         }
 
+        protected static HtmlTag AddInlineActionAttributes(AdaptiveAction action, HtmlTag tag, AdaptiveRenderContext context)
+        {
+            tag.AddClass(GetActionCssClass(action) + "-inline")
+                .Attr("role", "button")
+                .Attr("aria-label", action.Title ?? "");
+
+            ActionTransformers.Apply(action, tag, context);
+
+            return tag;
+        }
+
         protected static HtmlTag AdaptiveActionRender(AdaptiveAction action, AdaptiveRenderContext context)
         {
             if (context.Config.SupportsInteractivity)
@@ -132,7 +144,7 @@ namespace AdaptiveCards.Rendering.Html
                 {
                     case AdaptiveSentiment.Positive:
                         string accentColor = context.Config.ContainerStyles.Default.ForegroundColors.Accent.Default;
-                        string lighterAccentColor = context.GenerateLighterColor(accentColor);
+                        string lighterAccentColor = ColorUtil.GenerateLighterColor(accentColor);
                         buttonElement.Style("background-color", context.GetRGBColor(accentColor));
                         buttonElement.Attr("onMouseOver", "this.style.backgroundColor='" + context.GetRGBColor(lighterAccentColor) + "'");
                         buttonElement.Attr("onMouseOut", "this.style.backgroundColor='" + context.GetRGBColor(accentColor) + "'");
@@ -141,7 +153,7 @@ namespace AdaptiveCards.Rendering.Html
                         break;
                     case AdaptiveSentiment.Destructive:
                         string attentionColor = context.Config.ContainerStyles.Default.ForegroundColors.Attention.Default;
-                        string lighterAttentionColor = context.GenerateLighterColor(attentionColor);
+                        string lighterAttentionColor = ColorUtil.GenerateLighterColor(attentionColor);
                         buttonElement.Style("color", context.GetRGBColor(attentionColor));
                         buttonElement.Attr("onMouseOver", "this.style.color='" + context.GetRGBColor(lighterAttentionColor) + "'");
                         buttonElement.Attr("onMouseOut", "this.style.color='" + context.GetRGBColor(attentionColor) + "'");
@@ -1326,8 +1338,16 @@ namespace AdaptiveCards.Rendering.Html
             uiTextInput
                 .Attr("name", input.Id)
                 .AddClass("ac-textinput")
-                .AddClass("ac-input")
-                .Style("width", "100%");
+                .AddClass("ac-input");
+
+            if (input.InlineAction != null)
+            { 
+                uiTextInput.Style("width", "100%");
+            }
+            else
+            {
+                uiTextInput.Style("flex", "1 1 auto");
+            }
 
             if (!string.IsNullOrEmpty(input.Placeholder))
             {
@@ -1344,6 +1364,65 @@ namespace AdaptiveCards.Rendering.Html
                 uiTextInput.Style("flex", "1 1 100%");
             }
 
+            if (context.Config.SupportsInteractivity)
+            {
+                // ShowCard Inline Action Mode is not supported
+                if(input.InlineAction.Type == AdaptiveShowCardAction.TypeName &&
+                     context.Config.Actions.ShowCard.ActionMode == ShowCardActionMode.Inline)
+                {
+                    context.Warnings.Add(new AdaptiveWarning(-1, "Inline ShowCard not supported for InlineAction"));
+                }
+                else
+                {
+                    var textInputWithInlineActionId = GenerateRandomId();
+                    var uiContainer = new DivTag()
+                        .AddClass("ac-textinput-inlineaction")
+                        .Attr("data-ac-textinput-id", textInputWithInlineActionId)
+                        .Style("overflow", "hidden")
+                        .Style("display", "flex");
+
+                    uiTextInput.Attr("id", textInputWithInlineActionId);
+
+                    uiContainer.Children.Add(uiTextInput);
+
+                    var actionsConfig = context.Config.Actions;
+
+                    var buttonElement = new HtmlTag("button", false)
+                        .Attr("type", "button")
+                        .Style("overflow", "hidden")
+                        .Style("white-space", "nowrap")
+                        .Style("text-overflow", "ellipsis")
+                        .Style("flex", "0 1 auto")
+                        .Style("display", "flex")
+                        .Style("align-items", "center")
+                        .Style("justify-content", "center");
+
+                    if (input.InlineAction.IconUrl != null)
+                    {
+                        // Append the icon to the button
+                        // NOTE: always using icon size since it's difficult
+                        // to match icon's height with text's height
+                        var iconElement = new HtmlTag("image", false)
+                            .Attr("src", input.InlineAction.IconUrl)
+                            .Style("max-height", $"{actionsConfig.IconSize}px");
+
+                        buttonElement.Append(iconElement);
+                    } 
+                    else 
+                    {
+                        var titleElement = new HtmlTag("div", false) { Text = input.InlineAction.Title };
+                        buttonElement.Append(titleElement);
+                    }
+
+                    AddInlineActionAttributes(input.InlineAction, buttonElement, context);
+                    string inlineActionId = GenerateRandomId();
+                    uiContainer.Attr("data-ac-inlineaction-id", inlineActionId);
+                    buttonElement.Attr("id", inlineActionId);
+                    uiContainer.Children.Add(buttonElement);
+
+                    return uiContainer;
+                }
+            }
             return uiTextInput;
         }
 

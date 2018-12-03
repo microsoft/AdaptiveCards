@@ -3199,15 +3199,6 @@ namespace AdaptiveNamespace
 
         THROW_IF_FAILED(textBox->put_InputScope(inputScope.Get()));
 
-        ComPtr<IFrameworkElement> textBoxAsFrameworkElement;
-        THROW_IF_FAILED(textBox.As(&textBoxAsFrameworkElement));
-        THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Text", textBoxAsFrameworkElement.Get()));
-
-        if (!isMultiLine)
-        {
-            THROW_IF_FAILED(textBoxAsFrameworkElement->put_VerticalAlignment(VerticalAlignment::VerticalAlignment_Top));
-        }
-
         ComPtr<IUIElement> textBoxAsUIElement;
         textBox.As(&textBoxAsUIElement);
         AddInputValueToContext(renderContext, adaptiveCardElement, textBoxAsUIElement.Get());
@@ -3215,15 +3206,29 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveActionElement> inlineAction;
         THROW_IF_FAILED(adaptiveTextInput->get_InlineAction(&inlineAction));
 
+        ComPtr<IFrameworkElement> textBoxAsFrameworkElement;
+        THROW_IF_FAILED(textBox.As(&textBoxAsFrameworkElement));
+        THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Text", textBoxAsFrameworkElement.Get()));
+
         if (inlineAction != nullptr)
         {
             ComPtr<IUIElement> textBoxWithInlineAction;
             HandleInlineAcion(renderContext, renderArgs, textBox.Get(), inlineAction.Get(), &textBoxWithInlineAction);
+            if (!isMultiLine)
+            {
+                THROW_IF_FAILED(textBoxWithInlineAction.As(&textBoxAsFrameworkElement));
+                THROW_IF_FAILED(textBoxAsFrameworkElement->put_VerticalAlignment(VerticalAlignment::VerticalAlignment_Top));
+            }
 
             THROW_IF_FAILED(textBoxWithInlineAction.CopyTo(textInputControl));
         }
         else
         {
+            if (!isMultiLine)
+            {
+                THROW_IF_FAILED(textBoxAsFrameworkElement->put_VerticalAlignment(VerticalAlignment::VerticalAlignment_Top));
+            }
+
             THROW_IF_FAILED(textBox.CopyTo(textInputControl));
         }
     }

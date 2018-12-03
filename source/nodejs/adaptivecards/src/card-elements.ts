@@ -4596,7 +4596,8 @@ export class Column extends Container {
             let sizeAndUnit = <SizeAndUnit>this.width;
 
             if (sizeAndUnit.unit == Enums.SizeUnit.Pixel) {
-                renderedElement.style.flex = "0 0 " + sizeAndUnit.physicalSize + "px";
+                renderedElement.style.flex = "0 0 auto";
+                renderedElement.style.width = sizeAndUnit.physicalSize + "px";
             }
             else {
                 renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : sizeAndUnit.physicalSize) + "%";
