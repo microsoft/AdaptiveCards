@@ -4,18 +4,17 @@
 
 import React from 'react';
 import { StyleSheet, View, ScrollView ,Text} from 'react-native';
-import { defaultHostConfig, sethostConfig } from './utils/host-config'
 import { Registry } from './components/registration/registry'
 import { InputContextProvider } from './utils/context'
+import { HostConfigManager } from './utils/host-config'
+
 
 export default class AdaptiveCards extends React.Component {
   constructor(props) {
     super(props);
     this.payload = props.payload;
     if (props.hostConfig) {
-      sethostConfig(this.props.hostConfig);
-    } else {
-      sethostConfig(defaultHostConfig);
+      HostConfigManager.setHostConfig(this.props.hostConfig);
     }
   }
 

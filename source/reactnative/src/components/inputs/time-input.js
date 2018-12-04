@@ -10,13 +10,13 @@ import {
     Platform, TextInput, Modal, Button, ViewPropTypes
 } from 'react-native';
 import Input from './input';
-import { gethostConfig } from "../../utils/host-config";
+import { StyleManager } from '../../styles/style-config';
 import { InputContextConsumer } from '../../utils/context';
 import * as Constants from '../../utils/constants';
 
-const hostConfig = gethostConfig();
-
 export class TimeInput extends React.Component {
+
+    styleConfig = StyleManager.getManager().styles;
 
     constructor(props) {
         super(props);
@@ -157,7 +157,7 @@ export class TimeInput extends React.Component {
                         {/* added extra view to fix touch event in ios . */}
                         <View pointerEvents='none'>
                             <TextInput
-                                style={styles.input}
+                                style={[styles.input,this.styleConfig.fontConfig]}
                                 autoCapitalize={Constants.NoneString}
                                 autoCorrect={false}
                                 placeholder={placeholder}
@@ -207,8 +207,6 @@ const styles = StyleSheet.create({
     input: {
         width: Constants.FullWidth,
         height: 44,
-        fontSize: hostConfig.fontSizes.default,
-        fontWeight: hostConfig.fontWeights.default.toString(),
         padding: 5,
         marginTop: 15,
         borderWidth: 1,

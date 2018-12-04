@@ -5,11 +5,15 @@
  */
 
 import React, { Component } from "react";
-import { View, ScrollView, StyleSheet, Text,Dimensions } from 'react-native';
+import { View, StyleSheet, Text,Dimensions } from 'react-native';
 import Input from '../inputs/input';
 import * as Constants from '../../utils/constants';
+import { StyleManager } from '../../styles/style-config'
 
 export class FactSet extends Component {
+
+    styleConfig = StyleManager.getManager().styles;
+
     constructor(props) {
         super(props);
         
@@ -85,11 +89,11 @@ export class FactSet extends Component {
         this.props.json.facts.map((element, index) => {
             checkArray.push(
                 <View style={[styles.textContainer]} key={`FACT--${index}`}>
-                    <Text style={[styles.keyTextStyle]} numberOfLines={500}
+                    <Text style={[styles.keyTextStyle,this.styleConfig.fontConfig]} numberOfLines={500}
                         onLayout={(event) => { this.measureKeyText(event) }}>
                         {element.title}
                     </Text>
-                    <Text style={[styles.valueTextStyle]} numberOfLines={500}>
+                    <Text style={[styles.valueTextStyle,this.styleConfig.fontConfig]} numberOfLines={500}>
                         {element.value}
                     </Text>
                 </View>
@@ -108,12 +112,12 @@ export class FactSet extends Component {
         factsetJson.facts.map((element, index) => {
             renderedElement.push(
                 <View style={[styles.textContainer]} key={`FACT-${element.title}-${index}`}>
-                    <Text style={[styles.keyTextStyle, 
+                    <Text style={[styles.keyTextStyle,this.styleConfig.fontConfig,
                                 { width: this.state.keyWidth }]} 
                                 numberOfLines={500}>
                         {element.title}
                     </Text>
-                    <Text style={[styles.valueTextStyle, 
+                    <Text style={[styles.valueTextStyle,this.styleConfig.fontConfig, 
                                 { width: this.state.valueWidth }]} 
                                 numberOfLines={500}>
                         {element.value}

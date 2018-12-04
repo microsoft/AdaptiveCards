@@ -13,6 +13,17 @@ export default class Renderer extends React.Component {
         this.onModalClose = props.onModalClose;
     }
 
+    myHostConfig = {
+        fontFamily:"Helvetica",
+        fontSizes: {
+            small: 12,
+            default: 14,
+            medium: 17,
+            large: 21,
+            extraLarge: 26
+        }
+    }
+
     onExecuteAction = (actionObject) => {
         if(actionObject.type === "Action.Submit"){
             Alert.alert(
@@ -47,6 +58,7 @@ export default class Renderer extends React.Component {
                     <AdaptiveCards
                         payload={this.payload}
                         onExecuteAction={this.onExecuteAction}
+                        hostConfig = {this.myHostConfig}
                     />
                 </View>
         );

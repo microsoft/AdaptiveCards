@@ -6,13 +6,10 @@
 
 import React, { Component } from "react";
 import { View, Text, StyleSheet } from 'react-native';
-import { gethostConfig } from "../../utils/host-config";
 import { Registry } from '../registration/registry'
 import * as Utils from '../../utils/util';
 import * as Constants from '../../utils/constants';
 import { SelectAction } from '../actions';
-
-const hostConfig = gethostConfig();
 
 export class Column extends Component {
 

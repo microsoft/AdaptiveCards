@@ -6,13 +6,11 @@
 
 import React, { PureComponent } from "react";
 import { View, ScrollView, Text, StyleSheet, Platform, Alert, Linking } from 'react-native';
-import { gethostConfig } from "../../utils/host-config";
 import Input from '../inputs/input';
 import { Registry } from '../registration/registry'
 import { SelectAction } from '../actions'
 import * as Constants from '../../utils/constants';
 
-const hostConfig = gethostConfig();
 
 export class Container extends React.Component {
     

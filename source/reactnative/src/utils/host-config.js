@@ -50,20 +50,25 @@ export class TextColorDefinition {
     }
 }
 
-var hostConfig = defaultHostConfig;
+export class HostConfigManager {
 
-export function gethostConfig() {
-    if (hostConfig) {
-        return hostConfig;
-    }
-    else {
-        return defaultHostConfig;
-    }
-}
+    static hostConfig = null;
 
-export function sethostConfig(value) {
-    newHostConfig = new HostConfig(value)
-    hostConfig = { ...defaultHostConfig, ...newHostConfig };
+    /**
+     * @returns {HostConfigManager}
+     */
+    static getHostConfig() {
+        if (HostConfigManager.hostConfig === null) {
+            HostConfigManager.hostConfig = new HostConfig(defaultHostConfig);
+        }
+
+        return this.hostConfig;
+    }
+
+    static setHostConfig(value) {
+        newHostConfig = { ...defaultHostConfig, ...value }
+        this.hostConfig = new HostConfig(newHostConfig);
+    }
 }
 
 export class AdaptiveCardConfig {
@@ -502,7 +507,7 @@ export class HostConfig {
      * 
      * @param {string} spacing 
      */
-    getEffectiveSpacing(spacing) {
+    getEffectiveSpacing = (spacing) => {
         switch (spacing) {
             case Enums.Spacing.None:
             return this.spacing.none;
@@ -529,7 +534,7 @@ export class HostConfig {
      * @param {string} fontSize 
      */
 
-    getTextFontSize(fontSize) {
+    getTextFontSize = (fontSize) => {
         switch (fontSize) {
             case Enums.TextSize.Small:
                 return this.fontSizes.small;
@@ -552,7 +557,7 @@ export class HostConfig {
      * @param {string} weight
      */
 
-    getTextFontWeight(weight) {
+    getTextFontWeight = (weight) => {
         switch (weight) {
             case Enums.TextWeight.Lighter:
                 return this.fontWeights.lighter;
@@ -571,7 +576,7 @@ export class HostConfig {
     * @param {string} color
     */
 
-    getTextColor(color) {
+    getTextColor = (color) => {
         switch (color) {
             case Enums.TextColor.Attention:
                 return this.containerStyles.default.foregroundColors.attention;
@@ -598,7 +603,7 @@ export class HostConfig {
      * @param {string} alignment
      */
 
-    getTextAlignment(alignment) {
+    getTextAlignment = (alignment) => {
         switch (alignment) {
             case Enums.HorizontalAlignment.Left:
                 return this.horizontalAlignment.left;
@@ -612,7 +617,7 @@ export class HostConfig {
         }
     }
 
-    makeCssClassName(...classNames) {
+    makeCssClassName = (...classNames) => {
         let result = "";
 
         for (let i = 0; i < classNames.length; i++) {
@@ -630,7 +635,7 @@ export class HostConfig {
         return result;
     }
 
-    getEffectiveHeight(height) {
+    getEffectiveHeight = (height) => {
     switch (height) {
         case Enums.Height.Auto:
             return this.height.auto;
@@ -642,145 +647,144 @@ export class HostConfig {
 }
 }
 
-export const defaultHostConfig = new HostConfig(
-    {
-        supportsInteractivity: true,
-        fontFamily: "Segoe UI",
-        spacing: {
-            none:0,
-            small: 10,
-            default: 20,
-            medium: 30,
-            large: 40,
-            extraLarge: 50,
-            padding: 20
-        },
-        separator: {
-            lineThickness: 1,
-            lineColor: "#EEEEEE"
-        },
-        fontSizes: {
-            small: 12,
-            default: 14,
-            medium: 17,
-            large: 21,
-            extraLarge: 26
-        },
-        fontWeights: {
-            lighter: 200,
-            default: 400,
-            bolder: 600
-        },
-        imageSizes: {
-            small: 40,
-            medium: 80,
-            large: 160
-        },
-        containerStyles: {
-            default: {
-                backgroundColor: "#FFFFFF",
-                foregroundColors: {
-                    default: {
-                        default: "#333333",
-                        subtle: "#EE333333"
-                    },
-                    dark: {
-                        default: "#000000",
-                        subtle: "#66000000"
-                    },
-                    light: {
-                        default: "#FFFFFF",
-                        subtle: "#33000000"
-                    },
-                    accent: {
-                        default: "#2E89FC",
-                        subtle: "#882E89FC"
-                    },
-                    attention: {
-                        default: "#cc3300",
-                        subtle: "#DDcc3300"
-                    },
-                    good: {
-                        default: "#54a254",
-                        subtle: "#DD54a254"
-                    },
-                    warning: {
-                        default: "#e69500",
-                        subtle: "#DDe69500"
-                    }
-                }
-            },
-            emphasis: {
-                backgroundColor: "#08000000",
-                foregroundColors: {
-                    default: {
-                        default: "#333333",
-                        subtle: "#EE333333"
-                    },
-                    dark: {
-                        default: "#000000",
-                        subtle: "#66000000"
-                    },
-                    light: {
-                        default: "#FFFFFF",
-                        subtle: "#33000000"
-                    },
-                    accent: {
-                        default: "#2E89FC",
-                        subtle: "#882E89FC"
-                    },
-                    attention: {
-                        default: "#cc3300",
-                        subtle: "#DDcc3300"
-                    },
-                    good: {
-                        default: "#54a254",
-                        subtle: "#DD54a254"
-                    },
-                    warning: {
-                        default: "#e69500",
-                        subtle: "#DDe69500"
-                    }
+export const defaultHostConfig = {
+    supportsInteractivity: true,
+    fontFamily: "Segoe UI",
+    spacing: {
+        none:0,
+        small: 10,
+        default: 20,
+        medium: 30,
+        large: 40,
+        extraLarge: 50,
+        padding: 20
+    },
+    separator: {
+        lineThickness: 1,
+        lineColor: "#EEEEEE"
+    },
+    fontSizes: {
+        small: 12,
+        default: 14,
+        medium: 17,
+        large: 21,
+        extraLarge: 26
+    },
+    fontWeights: {
+        lighter: 200,
+        default: 400,
+        bolder: 600
+    },
+    imageSizes: {
+        small: 40,
+        medium: 80,
+        large: 160
+    },
+    containerStyles: {
+        default: {
+            backgroundColor: "#FFFFFF",
+            foregroundColors: {
+                default: {
+                    default: "#333333",
+                    subtle: "#EE333333"
+                },
+                dark: {
+                    default: "#000000",
+                    subtle: "#66000000"
+                },
+                light: {
+                    default: "#FFFFFF",
+                    subtle: "#33000000"
+                },
+                accent: {
+                    default: "#2E89FC",
+                    subtle: "#882E89FC"
+                },
+                attention: {
+                    default: "#cc3300",
+                    subtle: "#DDcc3300"
+                },
+                good: {
+                    default: "#54a254",
+                    subtle: "#DD54a254"
+                },
+                warning: {
+                    default: "#e69500",
+                    subtle: "#DDe69500"
                 }
             }
         },
-        actions: {
-            maxActions: 5,
-            spacing: Enums.Spacing.Default,
-            buttonSpacing: 10,
-            showCard: {
-                actionMode: Enums.ShowCardActionMode.Inline,
-                inlineTopMargin: 16
-            },
-            actionsOrientation: Enums.Orientation.Horizontal,
-            actionAlignment: Enums.ActionAlignment.Left
-        },
-        adaptiveCard: {
-            allowCustomStyle: false
-        },
-        imageSet: {
-            imageSize: Enums.Size.Medium,
-            maxImageHeight: 100
-        },
-        factSet: {
-            title: {
-                color: Enums.TextColor.Default,
-                size: Enums.TextSize.Default,
-                isSubtle: false,
-                weight: Enums.TextWeight.Bolder,
-                wrap: true,
-                maxWidth: 150,
-            },
-            value: {
-                color: Enums.TextColor.Default,
-                size: Enums.TextSize.Default,
-                isSubtle: false,
-                weight: Enums.TextWeight.Default,
-                wrap: true,
-            },
-            spacing: 10
+        emphasis: {
+            backgroundColor: "#08000000",
+            foregroundColors: {
+                default: {
+                    default: "#333333",
+                    subtle: "#EE333333"
+                },
+                dark: {
+                    default: "#000000",
+                    subtle: "#66000000"
+                },
+                light: {
+                    default: "#FFFFFF",
+                    subtle: "#33000000"
+                },
+                accent: {
+                    default: "#2E89FC",
+                    subtle: "#882E89FC"
+                },
+                attention: {
+                    default: "#cc3300",
+                    subtle: "#DDcc3300"
+                },
+                good: {
+                    default: "#54a254",
+                    subtle: "#DD54a254"
+                },
+                warning: {
+                    default: "#e69500",
+                    subtle: "#DDe69500"
+                }
+            }
         }
-    });
+    },
+    actions: {
+        maxActions: 5,
+        spacing: Enums.Spacing.Default,
+        buttonSpacing: 10,
+        showCard: {
+            actionMode: Enums.ShowCardActionMode.Inline,
+            inlineTopMargin: 16
+        },
+        actionsOrientation: Enums.Orientation.Horizontal,
+        actionAlignment: Enums.ActionAlignment.Left
+    },
+    adaptiveCard: {
+        allowCustomStyle: false
+    },
+    imageSet: {
+        imageSize: Enums.Size.Medium,
+        maxImageHeight: 100
+    },
+    factSet: {
+        title: {
+            color: Enums.TextColor.Default,
+            size: Enums.TextSize.Default,
+            isSubtle: false,
+            weight: Enums.TextWeight.Bolder,
+            wrap: true,
+            maxWidth: 150,
+        },
+        value: {
+            color: Enums.TextColor.Default,
+            size: Enums.TextSize.Default,
+            isSubtle: false,
+            weight: Enums.TextWeight.Default,
+            wrap: true,
+        },
+        spacing: 10
+    }
+}
 
 
 

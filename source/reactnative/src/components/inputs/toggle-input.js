@@ -9,14 +9,15 @@ import { Text, Switch, StyleSheet } from 'react-native';
 import Input from './input';
 import * as Constants from '../../utils/constants';
 import { InputContextConsumer } from '../../utils/context'
-import { gethostConfig } from "../../utils/host-config";
+import { StyleManager } from '../../styles/style-config'
 
-const hostConfig = gethostConfig();
 const TrueString = "true";
 const FalseString = "false";
 const ToggleValueOn = "toggleValueOn;";
 
 export class ToggleInput extends React.Component {
+
+    styleConfig = StyleManager.getManager().styles;
     
     constructor(props) {
         super(props);
@@ -48,7 +49,7 @@ export class ToggleInput extends React.Component {
 
         return (
             <Input json={this.props.json} style={styles.toggleContainer}>
-                <Text style={styles.title}>{this.title}</Text>
+                <Text style={[styles.title,this.styleConfig.fontConfig]}>{this.title}</Text>
                 <InputContextConsumer>
                     {({ addInputItem} ) => (
                         <Switch 
@@ -74,8 +75,6 @@ const styles = StyleSheet.create({
         paddingBottom: 5
     },
     title: {
-        fontSize: hostConfig.fontSizes.default,
-        fontWeight: hostConfig.fontWeights.default.toString(),
         flexShrink: 1,
         marginRight: 10
     }

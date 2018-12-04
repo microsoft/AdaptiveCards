@@ -11,12 +11,14 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
-import { gethostConfig } from "../../utils/host-config";
+import { HostConfigManager } from "../../utils/host-config";
 import * as Constants from '../../utils/constants';
-
-const hostConfig = gethostConfig();
+import { StyleManager } from "../../styles/style-config";
 
 export default class Input extends React.Component {
+
+    hostConfig = HostConfigManager.getHostConfig();
+    styleConfig = StyleManager.getManager().styles;
 
     render() {
         const computedStyles = this.getComputedStyles();
@@ -42,13 +44,13 @@ export default class Input extends React.Component {
             Enums.Spacing,
             payload.spacing,
             Enums.Spacing.Small);
-        const spacing = hostConfig.getEffectiveSpacing(spacingEnumValue);
+        const spacing = this.hostConfig.getEffectiveSpacing(spacingEnumValue);
         computedStyles.push({ marginTop: spacing });
 
         // separator
         const separator = payload.separator || false;
         if (separator) {
-            computedStyles.push(styles.withSeparator);
+            computedStyles.push(this.styleConfig.separatorStyle);
             computedStyles.push({ paddingTop: spacing / 2, marginTop: spacing / 2 });
         }
 
@@ -59,7 +61,7 @@ export default class Input extends React.Component {
                 Enums.Height,
                 payload.height,
                 Enums.Height.Auto);
-            const height = hostConfig.getEffectiveHeight(heightEnumValue);
+            const height = this.hostConfig.getEffectiveHeight(heightEnumValue);
             computedStyles.push({ flex: height});
         }
        
@@ -71,9 +73,5 @@ export default class Input extends React.Component {
 const styles = StyleSheet.create({
     inputContainer: {
         backgroundColor: Constants.WhiteColor
-    },
-    withSeparator: {
-        borderColor: hostConfig.separator.lineColor,
-        borderTopWidth: hostConfig.separator.lineThickness,
     }
 })
