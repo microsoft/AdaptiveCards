@@ -49,6 +49,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     int _numberOfSubscribers;
     NSMutableDictionary *_imageContextMap;
     NSMutableDictionary *_imageViewContextMap;
+    NSMutableSet *_setOfRemovedObservers;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -66,6 +67,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
         _serialNumber = 0;
         _imageContextMap = [[NSMutableDictionary alloc] init];
         _imageViewContextMap = [[NSMutableDictionary alloc] init];
+        _setOfRemovedObservers = [[NSMutableSet alloc] init];
     }
     return self;
 }
@@ -286,7 +288,6 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                             rootView->_imageViewContextMap[key] = contentholdingview;
                             rootView->_imageContextMap[key] = [[ACOBaseCardElement alloc] initWithBaseCardElement:elem];
                         }
-                        //[rootView setImageView:key imageView:view];
                     };
                     [self loadImageAccordingToResourceResolverIF:elem key:nil observerAction:observerAction];
                 }
@@ -567,6 +568,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 
         _numberOfSubscribers--;
         [object removeObserver:self forKeyPath:path];
+        [_setOfRemovedObservers addObject:object];
         [self callDidLoadElementsIfNeeded];
     }
 }
@@ -612,4 +614,17 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
         [self loadImage:[nSUrlStr cStringUsingEncoding:NSUTF8StringEncoding]];
     }
 }
+
+- (void)dealloc
+{
+    for (id key in _imageViewContextMap)
+    {
+        id object = _imageViewContextMap[key];
+        if (![_setOfRemovedObservers containsObject:object])
+        {
+            [object removeObserver:self forKeyPath:@"image"];
+        }
+    }
+}
+
 @end
