@@ -1,6 +1,10 @@
 import * as Enums from "./enums";
 import * as Utils from "./utils";
-import { TextColor } from "./adaptivecards";
+
+export interface IValidationError {
+    error: Enums.ValidationError,
+    message: string;
+}
 
 export class TextColorDefinition {
     default: string = "#000000";
@@ -341,7 +345,7 @@ export class Version {
         this._minor = minor;
     }
 
-    static parse(versionString: string): Version {
+    static parse(versionString: string, errors?: Array<IValidationError>): Version {
         if (!versionString) {
             return null;
         }
@@ -354,43 +358,26 @@ export class Version {
 
         if (matches != null && matches.length == 3) {
             result._major = parseInt(matches[1]);
-
-            let minorVersion = matches[2];
-
-            while (minorVersion.length < 4) {
-                minorVersion += "0";
-            }
-
-            result._minor = Math.min(parseInt(minorVersion), 9999);
+            result._minor = parseInt(matches[2]);
         }
         else {
             result._isValid = false;
+        }
+
+        if (!result._isValid && errors) {
+            errors.push(
+                {
+                    error: Enums.ValidationError.InvalidPropertyValue,
+                    message: "Invalid version string: " + result._versionString
+                }
+            );
         }
 
         return result;
     }
 
     toString(): string {
-        let minorVersionString = this._minor.toString();
-
-        while (minorVersionString.length < 4) {
-            minorVersionString = "0" + minorVersionString;
-        }
-
-        let trailingZeros = 0;
-
-        for (let i = minorVersionString.length - 1; i >= 0; i--) {
-            if (minorVersionString[i] == "0") {
-                trailingZeros++;
-            }
-            else {
-                break;
-            }
-        }
-
-        minorVersionString = minorVersionString.substr(0, minorVersionString.length - trailingZeros);
-
-        return !this._isValid ? this._versionString : this._major + "." + minorVersionString;
+        return !this._isValid ? this._versionString : this._major + "." + this._minor;
     }
 
     compareTo(otherVersion: Version): number {
@@ -427,7 +414,7 @@ export class Version {
     }
 }
 
-export type HostCapabilityVersion = Version | "any";
+export type HostCapabilityVersion = Version | "*";
 export type HostCapabilityMap = { [key: string]: HostCapabilityVersion };
 
 export class HostCapabilities {
@@ -441,17 +428,17 @@ export class HostCapabilities {
 
     capabilities: HostCapabilityMap = null;
 
-    parse(json: any) {
+    parse(json: any, errors?: Array<IValidationError>) {
         if (json) {
             for (let name in json) {
                 let jsonVersion = json[name];
 
                 if (typeof jsonVersion === "string") {
-                    if (jsonVersion == "any") {
-                        this.setCapability(name, "any");
+                    if (jsonVersion == "*") {
+                        this.setCapability(name, "*");
                     }
                     else {
-                        let version = Version.parse(jsonVersion);
+                        let version = Version.parse(jsonVersion, errors);
 
                         if (version.isValid) {
                             this.setCapability(name, version);
@@ -464,7 +451,7 @@ export class HostCapabilities {
 
     hasCapability(name: string, version: HostCapabilityVersion): boolean {
         if (this.capabilities && this.capabilities.hasOwnProperty(name)) {
-            if (version == "any" || this.capabilities[name] == "any") {
+            if (version == "*" || this.capabilities[name] == "*") {
                 return true;
             }
 

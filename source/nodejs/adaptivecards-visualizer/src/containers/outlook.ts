@@ -153,8 +153,8 @@ export class OutlookContainer extends HostContainer {
     public setHostCapabilities(hostConfig: Adaptive.HostConfig) {
         // Uncomment to test "requires" clause
         hostConfig.hostCapabilities.capabilities = {
-            helloWorld: "any",
-            whatNow: new Adaptive.Version(2, 1200)
+            helloWorld: "*",
+            whatNow: new Adaptive.Version(2, 3)
         };
     }
 

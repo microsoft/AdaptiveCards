@@ -30,8 +30,8 @@ function createCardObjectInstance<T extends ICardObject>(
     parent: CardElement,
     json: any,
     createInstanceCallback: (typeName: string) => T,
-    createValidationErrorCallback: (typeName: string) => IValidationError,
-    errors: Array<IValidationError>): T {
+    createValidationErrorCallback: (typeName: string) => HostConfig.IValidationError,
+    errors: Array<HostConfig.IValidationError>): T {
     let result: T = null;
 
     if (json && typeof json === "object") {
@@ -78,7 +78,7 @@ function createCardObjectInstance<T extends ICardObject>(
 export function createActionInstance(
     parent: CardElement,
     json: any,
-    errors: Array<IValidationError>): Action {
+    errors: Array<HostConfig.IValidationError>): Action {
     return createCardObjectInstance<Action>(
         parent,
         json,
@@ -95,7 +95,7 @@ export function createActionInstance(
 export function createElementInstance(
     parent: CardElement,
     json: any,
-    errors: Array<IValidationError>): CardElement {
+    errors: Array<HostConfig.IValidationError>): CardElement {
     return createCardObjectInstance<CardElement>(
         parent,
         json,
@@ -149,11 +149,6 @@ export class PaddingDefinition {
             hostConfig.getEffectiveSpacing(this.bottom),
             hostConfig.getEffectiveSpacing(this.left));
     }
-}
-
-export interface IValidationError {
-    error: Enums.ValidationError,
-    message: string;
 }
 
 export class SizeAndUnit {
@@ -462,10 +457,10 @@ export abstract class CardElement implements ICardObject {
         return null;
     }
 
-    parse(json: any, errors?: Array<IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         raiseParseElementEvent(this, json, errors);
 
-        this.requires.parse(json["requires"]);
+        this.requires.parse(json["requires"], errors);
         this.id = json["id"];
         this.speak = json["speak"];
         this.horizontalAlignment = Utils.getEnumValueOrDefault(Enums.HorizontalAlignment, json["horizontalAlignment"], null);
@@ -513,7 +508,7 @@ export abstract class CardElement implements ICardObject {
         throw new Error("Index out of range.");
     }
 
-    validate(): Array<IValidationError> {
+    validate(): Array<HostConfig.IValidationError> {
         return [];
     }
 
@@ -1117,7 +1112,7 @@ export class TextBlock extends CardElement {
         targetElement.style.fontWeight = fontWeight.toString();
     }
 
-    parse(json: any, errors?: Array<IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
         this.text = json["text"];
@@ -1357,7 +1352,7 @@ export class FactSet extends CardElement {
         return result;
     }
 
-    parse(json: any, errors?: Array<IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
         this.facts = [];
@@ -1406,7 +1401,7 @@ export class FactSet extends CardElement {
 export class Image extends CardElement {
     private _selectAction: Action;
 
-    private parseDimension(name: string, value: any, errors: Array<IValidationError>): number {
+    private parseDimension(name: string, value: any, errors: Array<HostConfig.IValidationError>): number {
         if (value) {
             if (typeof value === "string") {
                 try {
@@ -1612,7 +1607,7 @@ export class Image extends CardElement {
         return result;
     }
 
-    parse(json: any, errors?: Array<IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
         this.url = json["url"];
@@ -1800,7 +1795,7 @@ export class ImageSet extends CardElementContainer {
         return result;
     }
 
-    parse(json: any, errors?: Array<IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
         this.imageSize = Utils.getEnumValueOrDefault(Enums.Size, json["imageSize"], Enums.Size.Medium);
@@ -1862,7 +1857,7 @@ export class MediaSource {
         this.mimeType = mimeType;
     }
 
-    parse(json: any, errors?: Array<IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         this.mimeType = json["mimeType"];
         this.url = json["url"];
     }
@@ -2047,7 +2042,7 @@ export class Media extends CardElement {
     poster: string;
     altText: string;
 
-    parse(json: any, errors?: Array<IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
         this.poster = json["poster"];
@@ -2140,7 +2135,7 @@ export abstract class Input extends CardElement implements Utils.IInput {
         return result;
     }
 
-    validate(): Array<IValidationError> {
+    validate(): Array<HostConfig.IValidationError> {
         if (!this.id) {
             return [{ error: Enums.ValidationError.PropertyCantBeNull, message: "All inputs must have a unique Id" }];
         }
@@ -2149,7 +2144,7 @@ export abstract class Input extends CardElement implements Utils.IInput {
         }
     }
 
-    parse(json: any, errors?: Array<IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
         this.id = json["id"];
@@ -2251,7 +2246,7 @@ export class TextInput extends Input {
         return result;
     }
 
-    parse(json: any, errors?: Array<IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
         this.maxLength = json["maxLength"];
@@ -2337,7 +2332,7 @@ export class ToggleInput extends Input {
         return result;
     }
 
-    parse(json: any, errors?: Array<IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
         this.title = json["title"];
@@ -2575,8 +2570,8 @@ export class ChoiceSetInput extends Input {
         return result;
     }
 
-    validate(): Array<IValidationError> {
-        var result: Array<IValidationError> = [];
+    validate(): Array<HostConfig.IValidationError> {
+        var result: Array<HostConfig.IValidationError> = [];
 
         if (this.choices.length == 0) {
             result = [{ error: Enums.ValidationError.CollectionCantBeEmpty, message: "An Input.ChoiceSet must have at least one choice defined." }];
@@ -2592,7 +2587,7 @@ export class ChoiceSetInput extends Input {
         return result;
     }
 
-    parse(json: any, errors?: Array<IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
         this.isCompact = !(json["style"] === "expanded");
@@ -2700,7 +2695,7 @@ export class NumberInput extends Input {
         return result;
     }
 
-    parse(json: any, errors?: Array<IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
         this.placeholder = json["placeholder"];
@@ -2966,7 +2961,7 @@ export abstract class Action implements ICardObject {
         }
     }
 
-    validate(): Array<IValidationError> {
+    validate(): Array<HostConfig.IValidationError> {
         return [];
     }
 
@@ -2974,10 +2969,10 @@ export abstract class Action implements ICardObject {
         // Do nothing in base implementation
     };
 
-    parse(json: any, errors?: Array<IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         raiseParseActionEvent(this, json, errors);
 
-        this.requires.parse(json["requires"]);
+        this.requires.parse(json["requires"], errors);
         this.id = json["id"];
 
         if (!json["title"] && json["title"] !== "") {
@@ -3070,7 +3065,7 @@ export class SubmitAction extends Action {
         this._isPrepared = true;
     }
 
-    parse(json: any, errors?: Array<IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
         this.data = json["data"];
@@ -3101,7 +3096,7 @@ export class OpenUrlAction extends Action {
         return result;
     }
 
-    validate(): Array<IValidationError> {
+    validate(): Array<HostConfig.IValidationError> {
         if (!this.url) {
             return [{ error: Enums.ValidationError.PropertyCantBeNull, message: "An Action.OpenUrl must have its url property set." }];
         }
@@ -3110,7 +3105,7 @@ export class OpenUrlAction extends Action {
         }
     }
 
-    parse(json: any, errors?: Array<IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
         this.url = json["url"];
@@ -3175,8 +3170,8 @@ export class HttpAction extends Action {
         return result;
     }
 
-    validate(): Array<IValidationError> {
-        var result: Array<IValidationError> = [];
+    validate(): Array<HostConfig.IValidationError> {
+        var result: Array<HostConfig.IValidationError> = [];
 
         if (!this.url) {
             result = [{ error: Enums.ValidationError.PropertyCantBeNull, message: "An Action.Http must have its url property set." }];
@@ -3210,7 +3205,7 @@ export class HttpAction extends Action {
         this._body.substituteInputValues(inputs, contentType);
     };
 
-    parse(json: any, errors?: Array<IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
         this.url = json["url"];
@@ -3281,11 +3276,11 @@ export class ShowCardAction extends Action {
         return result;
     }
 
-    validate(): Array<IValidationError> {
+    validate(): Array<HostConfig.IValidationError> {
         return this.card.validate();
     }
 
-    parse(json: any, errors?: Array<IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
         this.card.parse(json["card"], errors);
@@ -3475,7 +3470,7 @@ class ActionCollection {
         this._owner = owner;
     }
 
-    parse(json: any, errors?: Array<IValidationError>) {        
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {        
         this.clear();
 
         if (json && json instanceof Array) {
@@ -3535,8 +3530,8 @@ class ActionCollection {
         return result;
     }
 
-    validate(): Array<IValidationError> {
-        var result: Array<IValidationError> = [];
+    validate(): Array<HostConfig.IValidationError> {
+        var result: Array<HostConfig.IValidationError> = [];
 
         if (this._owner.hostConfig.actions.maxActions && this.items.length > this._owner.hostConfig.actions.maxActions) {
             result.push(
@@ -3846,11 +3841,11 @@ export class ActionSet extends CardElement {
         }
     }
 
-    validate(): Array<IValidationError> {
+    validate(): Array<HostConfig.IValidationError> {
         return this._actionCollection.validate();
     }
 
-    parse(json: any, errors?: Array<IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
         var jsonOrientation = json["orientation"];
@@ -3890,7 +3885,7 @@ export class BackgroundImage {
     horizontalAlignment: Enums.HorizontalAlignment = Enums.HorizontalAlignment.Left;
     verticalAlignment: Enums.VerticalAlignment = Enums.VerticalAlignment.Top;
 
-    parse(json: any, errors?: Array<IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         this.url = json["url"];
         this.mode = Utils.getEnumValueOrDefault(Enums.BackgroundImageMode, json["mode"], this.mode);
         this.horizontalAlignment = Utils.getEnumValueOrDefault(Enums.HorizontalAlignment, json["horizontalAlignment"], this.horizontalAlignment);
@@ -4384,8 +4379,8 @@ export class Container extends CardElementContainer {
         }
     }
 
-    validate(): Array<IValidationError> {
-        var result: Array<IValidationError> = [];
+    validate(): Array<HostConfig.IValidationError> {
+        var result: Array<HostConfig.IValidationError> = [];
 
         if (this._style) {
             var styleDefinition = this.hostConfig.containerStyles.getStyleByName(this._style);
@@ -4422,7 +4417,7 @@ export class Container extends CardElementContainer {
         return result;
     }
 
-    parse(json: any, errors?: Array<IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
         this.setShouldFallback(false);
@@ -4712,7 +4707,7 @@ export class Column extends Container {
         return result;
     }
 
-    parse(json: any, errors?: Array<IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
         var jsonWidth = json["width"];
@@ -4939,7 +4934,7 @@ export class ColumnSet extends CardElementContainer {
         return "ColumnSet";
     }
 
-    parse(json: any, errors?: Array<IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
         this.selectAction = createActionInstance(
@@ -4962,8 +4957,8 @@ export class ColumnSet extends CardElementContainer {
         }
     }
 
-    validate(): Array<IValidationError> {
-        var result: Array<IValidationError> = [];
+    validate(): Array<HostConfig.IValidationError> {
+        var result: Array<HostConfig.IValidationError> = [];
         var weightedColumns: number = 0;
         var stretchedColumns: number = 0;
 
@@ -5181,7 +5176,7 @@ function raiseElementVisibilityChangedEvent(element: CardElement, shouldUpdateLa
     }
 }
 
-function raiseParseElementEvent(element: CardElement, json: any, errors?: Array<IValidationError>) {
+function raiseParseElementEvent(element: CardElement, json: any, errors?: Array<HostConfig.IValidationError>) {
     let card = element.getRootElement() as AdaptiveCard;
     let onParseElementHandler = (card && card.onParseElement) ? card.onParseElement : AdaptiveCard.onParseElement;
 
@@ -5190,7 +5185,7 @@ function raiseParseElementEvent(element: CardElement, json: any, errors?: Array<
     }
 }
 
-function raiseParseActionEvent(action: Action, json: any, errors?: Array<IValidationError>) {
+function raiseParseActionEvent(action: Action, json: any, errors?: Array<HostConfig.IValidationError>) {
     let card = action.parent ? action.parent.getRootElement() as AdaptiveCard : null;
     let onParseActionHandler = (card && card.onParseAction) ? card.onParseAction : AdaptiveCard.onParseAction;
 
@@ -5199,7 +5194,7 @@ function raiseParseActionEvent(action: Action, json: any, errors?: Array<IValida
     }
 }
 
-function raiseParseError(error: IValidationError, errors: Array<IValidationError>) {
+function raiseParseError(error: HostConfig.IValidationError, errors: Array<HostConfig.IValidationError>) {
     if (errors) {
         errors.push(error);
     }
@@ -5294,13 +5289,13 @@ export abstract class ContainerWithActions extends Container {
         return result ? result : super.getActionById(id);
     }
 
-    parse(json: any, errors?: Array<IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
         this._actionCollection.parse(json["actions"]);
     }
 
-    validate(): Array<IValidationError> {
+    validate(): Array<HostConfig.IValidationError> {
         var result = super.validate();
 
         if (this._actionCollection) {
@@ -5437,7 +5432,7 @@ export interface IMarkdownProcessingResult {
 }
 
 export class AdaptiveCard extends ContainerWithActions {
-    private static currentVersion: HostConfig.Version = new HostConfig.Version(1, 1000);
+    private static currentVersion: HostConfig.Version = new HostConfig.Version(1, 1);
 
     static useAutomaticContainerBleeding: boolean = false;
     static useAdvancedTextBlockTruncation: boolean = true;
@@ -5453,9 +5448,9 @@ export class AdaptiveCard extends ContainerWithActions {
     static onElementVisibilityChanged: (element: CardElement) => void = null;
     static onImageLoaded: (image: Image) => void = null;
     static onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
-    static onParseElement: (element: CardElement, json: any, errors?: Array<IValidationError>) => void = null;
-    static onParseAction: (element: Action, json: any, errors?: Array<IValidationError>) => void = null;
-    static onParseError: (error: IValidationError) => void = null;
+    static onParseElement: (element: CardElement, json: any, errors?: Array<HostConfig.IValidationError>) => void = null;
+    static onParseAction: (element: Action, json: any, errors?: Array<HostConfig.IValidationError>) => void = null;
+    static onParseError: (error: HostConfig.IValidationError) => void = null;
     static onProcessMarkdown: (text: string, result: IMarkdownProcessingResult) => void = null;
 
     static get processMarkdown(): (text: string) => string {
@@ -5493,8 +5488,9 @@ export class AdaptiveCard extends ContainerWithActions {
             return true;
         }
         else {
-            var unsupportedVersion: boolean =
+            let unsupportedVersion: boolean =
                 !this.version ||
+                !this.version.isValid ||
                 (AdaptiveCard.currentVersion.major < this.version.major) ||
                 (AdaptiveCard.currentVersion.major == this.version.major && AdaptiveCard.currentVersion.minor < this.version.minor);
 
@@ -5569,12 +5565,11 @@ export class AdaptiveCard extends ContainerWithActions {
     onElementVisibilityChanged: (element: CardElement) => void = null;
     onImageLoaded: (image: Image) => void = null;
     onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
-    onParseElement: (element: CardElement, json: any, errors?: Array<IValidationError>) => void = null;
-    onParseAction: (element: Action, json: any, errors?: Array<IValidationError>) => void = null;
+    onParseElement: (element: CardElement, json: any, errors?: Array<HostConfig.IValidationError>) => void = null;
+    onParseAction: (element: Action, json: any, errors?: Array<HostConfig.IValidationError>) => void = null;
 
     version?: HostConfig.Version = new HostConfig.Version(1, 0);
     fallbackText: string;
-    fallbackElement: CardElement;
     designMode: boolean = false;
 
     getJsonTypeName(): string {
@@ -5597,8 +5592,8 @@ export class AdaptiveCard extends ContainerWithActions {
         return result;
     }
 
-    validate(): Array<IValidationError> {
-        var result: Array<IValidationError> = [];
+    validate(): Array<HostConfig.IValidationError> {
+        var result: Array<HostConfig.IValidationError> = [];
 
         if (this._cardTypeName != "AdaptiveCard") {
             result.push(
@@ -5608,11 +5603,11 @@ export class AdaptiveCard extends ContainerWithActions {
                 });
         }
 
-        if (!this.bypassVersionCheck && (!this.version || !this.version.isValid)) {
+        if (!this.bypassVersionCheck && !this.version) {
             result.push(
                 {
                     error: Enums.ValidationError.PropertyCantBeNull,
-                    message: !this.version ? "The version property must be specified." : "Invalid version: " + this.version
+                    message: "The version property must be specified."
                 });
         }
         else if (!this.isVersionSupported()) {
@@ -5626,7 +5621,7 @@ export class AdaptiveCard extends ContainerWithActions {
         return result.concat(super.validate());
     }
 
-    parse(json: any, errors?: Array<IValidationError>) {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         this._fallbackCard = null;
 
         this._cardTypeName = json["type"];
@@ -5648,11 +5643,16 @@ export class AdaptiveCard extends ContainerWithActions {
             }
         }
 
-        this.version = HostConfig.Version.parse(json["version"]);
+        this.version = HostConfig.Version.parse(json["version"], errors);
 
         this.fallbackText = json["fallbackText"];
 
-        this.fallbackElement = createElementInstance(this, json["fallback"], errors);
+        let fallbackElement = createElementInstance(null, json["fallback"], errors);
+
+        if (fallbackElement) {
+            this._fallbackCard = new AdaptiveCard();
+            this._fallbackCard.addItem(fallbackElement);
+        }
 
         super.parse(json, errors);
     }
@@ -5662,12 +5662,8 @@ export class AdaptiveCard extends ContainerWithActions {
         let renderedCard: HTMLElement;
 
         if (this.shouldFallback()) {
-            if (this.fallbackElement) {
-                if (!this._fallbackCard) {
-                    this._fallbackCard = new AdaptiveCard();
-                    this._fallbackCard.hostConfig = this.hostConfig;
-                    this._fallbackCard.addItem(this.fallbackElement);
-                }
+            if (this._fallbackCard) {
+                this._fallbackCard.hostConfig = this.hostConfig;
 
                 renderedCard = this._fallbackCard.render();
             }

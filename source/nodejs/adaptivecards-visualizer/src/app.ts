@@ -39,7 +39,7 @@ function renderCard(target: HTMLElement): HTMLElement {
 
     getSelectedHostContainer().setHostCapabilities(adaptiveCard.hostConfig);
 
-    adaptiveCard.parse(json);
+    adaptiveCard.parse(json, lastValidationErrors);
 
     lastValidationErrors = lastValidationErrors.concat(adaptiveCard.validate());
 
@@ -388,10 +388,6 @@ function monacoEditorLoaded() {
 
     // Uncomment to test the onInlineCardExpanded event:
     // Adaptive.AdaptiveCard.onInlineCardExpanded = inlineCardExpanded;
-
-    AdaptiveCards.AdaptiveCard.onParseError = (error: AdaptiveCards.IValidationError) => {
-        lastValidationErrors.push(error);
-    }
 
     setupContainerPicker();
     setContainerAppFromUrl();
