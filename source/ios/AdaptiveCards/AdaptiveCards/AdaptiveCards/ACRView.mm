@@ -620,7 +620,13 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     for (id key in _imageViewContextMap)
     {
         id object = _imageViewContextMap[key];
-        if (![_setOfRemovedObservers containsObject:object])
+        
+        if ([object isKindOfClass:[ACRContentHoldingUIView class]])
+        {
+            object = ((UIView *)object).subviews[0];
+        }
+
+        if (![_setOfRemovedObservers containsObject:object] && [object isKindOfClass:[UIImageView class]])
         {
             [object removeObserver:self forKeyPath:@"image"];
         }
