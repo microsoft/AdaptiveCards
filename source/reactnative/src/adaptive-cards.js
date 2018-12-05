@@ -3,11 +3,12 @@
  */
 
 import React from 'react';
-import { StyleSheet, View, ScrollView, Text, ImageBackground } from 'react-native';
-import { defaultHostConfig, sethostConfig } from './utils/host-config'
+import { StyleSheet, View, ScrollView ,Text} from 'react-native';
 import { Registry } from './components/registration/registry'
 import { InputContextProvider } from './utils/context'
+import { HostConfigManager } from './utils/host-config'
 import * as Utils from './utils/util';
+
 
 
 export default class AdaptiveCards extends React.Component {
@@ -15,9 +16,7 @@ export default class AdaptiveCards extends React.Component {
     super(props);
     this.payload = props.payload;
     if (props.hostConfig) {
-      sethostConfig(this.props.hostConfig);
-    } else {
-      sethostConfig(defaultHostConfig);
+      HostConfigManager.setHostConfig(this.props.hostConfig);
     }
   }
 

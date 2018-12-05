@@ -9,17 +9,20 @@ import {
     StyleSheet,
     Image,
 } from "react-native";
-import { gethostConfig } from "../../utils/host-config";
+import { HostConfigManager } from "../../utils/host-config";
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 import * as Constants from '../../utils/constants';
 import Input from '../inputs/input';
-import { SelectAction } from '../actions'
-
-const hostConfig = gethostConfig();
+import { SelectAction } from '../actions';
+import { StyleManager } from '../../styles/style-config' 
+ 
 const ContainResizeMode = 'contain';
 
 export class Img extends Component {
+
+    hostConfig = HostConfigManager.getHostConfig();
+    styleConfig = StyleManager.getManager().styles;
 
     constructor(props) {
         super(props);
@@ -52,7 +55,7 @@ export class Img extends Component {
             Enums.Spacing,
             this.payload.spacing,
             Enums.Spacing.Small);
-        this.spacing = hostConfig.getEffectiveSpacing(spacingValue);
+        this.spacing = this.hostConfig.getEffectiveSpacing(spacingValue);
         this.separator = this.payload.separator || false;
         this.backgroundColor = this.payload.backgroundColor || Constants.TransparentString;
     }
@@ -134,12 +137,12 @@ export class Img extends Component {
                     }
                 case 2:
                     {
-                        sizeStyle.push({ width: hostConfig.imageSizes.small });
+                        sizeStyle.push({ width: this.hostConfig.imageSizes.small });
                         /**
                          * "width:80px height:not set", "size": "small"
                          */
                         this.isPersonStyle() ?
-                            sizeStyle.push({ height: hostConfig.imageSizes.small }) :
+                            sizeStyle.push({ height: this.hostConfig.imageSizes.small }) :
                             sizeStyle.push({ height: this.state.imageHeight })
 
                         /**
@@ -148,36 +151,36 @@ export class Img extends Component {
                          */
                         this.payload.fromImageSet == true ?
                             sizeStyle.push({ height: this.state.imageHeight }) :
-                            sizeStyle.push({ height: hostConfig.imageSizes.small })
+                            sizeStyle.push({ height: this.hostConfig.imageSizes.small })
                         break;
                     }
                 case 3:
                     {
-                        sizeStyle.push({ width: hostConfig.imageSizes.medium });
+                        sizeStyle.push({ width: this.hostConfig.imageSizes.medium });
 
                         this.isPersonStyle() ?
-                            sizeStyle.push({ height: hostConfig.imageSizes.medium }) :
+                            sizeStyle.push({ height: this.hostConfig.imageSizes.medium }) :
                             sizeStyle.push({ height: this.state.imageHeight })
 
                         this.payload.fromImageSet == true ?
                             sizeStyle.push({ height: this.state.imageHeight }) :
-                            sizeStyle.push({ height: hostConfig.imageSizes.medium })
+                            sizeStyle.push({ height: this.hostConfig.imageSizes.medium })
 
-                        this.width = hostConfig.imageSizes.medium;
+                        this.width = this.hostConfig.imageSizes.medium;
                         break;
                     }
                 case 4:
                     {
-                        sizeStyle.push({ width: hostConfig.imageSizes.large });
+                        sizeStyle.push({ width: this.hostConfig.imageSizes.large });
                         this.isPersonStyle() ?
-                            sizeStyle.push({ height: hostConfig.imageSizes.large }) :
+                            sizeStyle.push({ height: this.hostConfig.imageSizes.large }) :
                             sizeStyle.push({ height: this.state.imageHeight })
 
                         this.payload.fromImageSet == true ?
                             sizeStyle.push({ height: this.state.imageHeight }) :
-                            sizeStyle.push({ height: hostConfig.imageSizes.large })
+                            sizeStyle.push({ height: this.hostConfig.imageSizes.large })
 
-                        this.width = hostConfig.imageSizes.large;
+                        this.width = this.hostConfig.imageSizes.large;
                         break;
                     }
                 default:
@@ -220,11 +223,11 @@ export class Img extends Component {
                  (this.payload.size === Constants.Auto || 
                  this.payload.size === Constants.AlignStretch)) {
                 this.setState({
-                    imageWidth: hostConfig.imageSet.maxImageHeight,
-                    imageHeight: hostConfig.imageSet.maxImageHeight,
+                    imageWidth: this.hostConfig.imageSet.maxImageHeight,
+                    imageHeight: this.hostConfig.imageSet.maxImageHeight,
                 });
-                this.width = this.payload.width || hostConfig.imageSet.maxImageHeight;
-                this.height = this.payload.height || hostConfig.imageSet.maxImageHeight;
+                this.width = this.payload.width || this.hostConfig.imageSet.maxImageHeight;
+                this.height = this.payload.height || this.hostConfig.imageSet.maxImageHeight;
             }
             else {
                 this.setState({
@@ -278,7 +281,7 @@ export class Img extends Component {
                 source={{ uri: url }} />
         </Input>);
 
-        if (this.payload.selectAction === undefined) {
+        if ((this.payload.selectAction === undefined)  || (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
             return containerContent;
         } else {
             return <SelectAction selectActionData={this.payload.selectAction}>
@@ -308,9 +311,5 @@ const styles = StyleSheet.create({
     imageAuto: {
         alignSelf: Constants.CenterString,
         resizeMode: ContainResizeMode,
-    },
-    withSeparator: {
-        borderColor: hostConfig.separator.lineColor,
-        borderTopWidth: hostConfig.separator.lineThickness
     },
 });

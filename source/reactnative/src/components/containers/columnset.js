@@ -10,6 +10,7 @@ import { SelectAction } from '../actions';
 import Input from '../inputs/input';
 import { Column } from "./column";
 import * as Constants from '../../utils/constants';
+import { HostConfigManager } from '../../utils/host-config'
 
 export class ColumnSet extends PureComponent {
     
@@ -64,7 +65,7 @@ export class ColumnSet extends PureComponent {
             </View>
         );
 
-        if (columnSetJson.selectAction === undefined) {
+        if ((columnSetJson.selectAction === undefined) || (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
             return columsetContent;
         } else {
             return <SelectAction selectActionData={columnSetJson.selectAction}>

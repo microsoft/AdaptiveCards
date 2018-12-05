@@ -6,12 +6,10 @@
 
 import React, { PureComponent } from "react";
 import { View, ScrollView, Text, StyleSheet, Button, Platform } from 'react-native';
-import { gethostConfig } from "../../utils/host-config";
 import { Registry } from '../registration/registry'
 import Input from '../inputs/input';
 import * as Constants from '../../utils/constants';
 
-const hostConfig = gethostConfig();
 const FlexWrap = 'wrap';
 const SizeKey = "size";
 const ImageSetKey = "fromImageSet";

@@ -6,18 +6,20 @@
 
 import React from 'react';
 import { StyleSheet, Text, View, Picker, TouchableOpacity, Image } from 'react-native';
-import { gethostConfig } from "../../../utils/host-config";
 import Input from '../input';
 import Checkbox from './check-box';
 import { InputContextConsumer } from '../../../utils/context';
 import * as Utils from '../../../utils/util';
 import * as Constants from '../../../utils/constants';
+import { StyleManager } from '../../../styles/style-config'
+import { HostConfigManager } from '../../../utils/host-config'
 
-const hostConfig = gethostConfig();
 const DropDownImage = './assets/dropdown.png';
 const CompactStyle = "compact";
 
 export class ChoiceSetInput extends React.Component {
+
+    styleConfig = StyleManager.getManager().styles;
 
     constructor(props) {
         super(props);
@@ -119,8 +121,7 @@ export class ChoiceSetInput extends React.Component {
                   onPress={onPress}>
                     <View style={styles.touchView}>
                           <Text
-                          style={[styles.text,
-                          {color: hostConfig.color,}]}
+                          style={[styles.text,this.styleConfig.fontConfig]}
                           >
                           {this.state.selectedPickerValue == undefined ?
                               this.getPickerSelectedValue(this.value, addInputItem) :
@@ -170,7 +171,7 @@ export class ChoiceSetInput extends React.Component {
                         key={index}
                         isRadioButtonType={true}
                         index={index}
-                        labelStyle={styles.labelStyle}
+                        labelStyle={[styles.labelStyle,this.styleConfig.fontConfig]}
                         iconSize={28}
                         checked={this.state.activeIndex == undefined ?
                             index == this.getRadioButtonIndex(this.value,
@@ -226,6 +227,11 @@ export class ChoiceSetInput extends React.Component {
     }
 
     render() {
+
+        if(HostConfigManager.getHostConfig().supportsInteractivity === false){
+            return null;
+        }
+        
         this.parseHostConfig();
 
         let { id,
@@ -278,8 +284,6 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginLeft: 8,
         height: 30,
-        fontSize: hostConfig.fontSizes.default,
-        fontWeight: hostConfig.fontWeights.default.toString()
     },
     button: {
         height: 30,
@@ -288,8 +292,6 @@ const styles = StyleSheet.create({
         marginRight: 8,
     },
     labelStyle: {
-        fontSize: hostConfig.fontSizes.default,
-        fontWeight: hostConfig.fontWeights.default.toString(),
         marginLeft: 8
     }
 });

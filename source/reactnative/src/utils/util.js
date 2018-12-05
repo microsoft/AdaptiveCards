@@ -1,7 +1,6 @@
 import * as Enums from "./enums";
-import { gethostConfig } from "./host-config";
+import { HostConfigManager } from "./host-config";
 
-const hostConfig = gethostConfig();
 
 export function getValueOrDefault(obj, defaultValue) {
     return obj ? obj : defaultValue;
@@ -103,11 +102,11 @@ export function getEffectiveSize(size) {
         case Enums.Size.Stretch:
             return "stretch";
         case Enums.Size.Small:
-            return hostConfig.imageSizes.small;
+            return HostConfigManager.getHostConfig().imageSizes.small;
         case Enums.Size.Medium:
-            return hostConfig.imageSizes.medium;
+            return HostConfigManager.getHostConfig().imageSizes.medium;
         case Enums.Size.Large:
-            return hostConfig.imageSizes.large;
+            return HostConfigManager.getHostConfig().imageSizes.large;
         default:
             return "contain";
     }

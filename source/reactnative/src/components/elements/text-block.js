@@ -6,17 +6,21 @@
 
 import React from 'react';
 import { StyleSheet, Text,Platform } from 'react-native';
-import { gethostConfig } from "../../utils/host-config";
+import { HostConfigManager } from "../../utils/host-config";
 import { TextFormatter } from '../../utils/text-formatters';
 import Input from '../inputs/input';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 import * as Constants from '../../utils/constants';
 import processMDText from '../../utils/formatText';
+import { StyleManager } from '../../styles/style-config'
 
-const hostConfig = gethostConfig();
 
 export class TextBlock extends React.Component {
+
+    hostConfig = HostConfigManager.getHostConfig();
+    styleConfig = StyleManager.getManager().styles;
+
     
     constructor(props) {
         super(props);
@@ -41,12 +45,11 @@ export class TextBlock extends React.Component {
 
     render() {
         this.parseHostConfig();
-
         var formattedText = TextFormatter('en-US', this.text);
         var processedText = processMDText(formattedText);
 
         //TextBlock styles
-        let textBlockComputedStyle = [styles.text];
+        let textBlockComputedStyle = [styles.text,this.styleConfig.fontConfig];
         textBlockComputedStyle.push({
             fontSize: this.fontSize,
             fontWeight: this.fontWeight.toString(),
@@ -84,32 +87,31 @@ export class TextBlock extends React.Component {
             this.payload.spacing,
             Enums.Spacing.Small);
 
-        this.fontSize = hostConfig.getTextFontSize(Utils.parseHostConfigEnum(
+        this.fontSize = this.hostConfig.getTextFontSize(Utils.parseHostConfigEnum(
             Enums.TextSize,
             this.payload.size,
             Enums.TextSize.Default
         ));
 
-        this.fontWeight = hostConfig.getTextFontWeight(Utils.parseHostConfigEnum(
+        this.fontWeight = this.hostConfig.getTextFontWeight(Utils.parseHostConfigEnum(
             Enums.TextWeight,
             this.payload.weight,
             Enums.TextWeight.Default
         ));
 
-        let colorDefinition = hostConfig.getTextColor(Utils.parseHostConfigEnum(
+        let colorDefinition = this.hostConfig.getTextColor(Utils.parseHostConfigEnum(
             Enums.TextColor,
             this.payload.color,
             Enums.TextColor.Default
         ));
-
-        this.horizontalAlignment = hostConfig.getTextAlignment(Utils.parseHostConfigEnum(
+        this.horizontalAlignment = this.hostConfig.getTextAlignment(Utils.parseHostConfigEnum(
             Enums.HorizontalAlignment,
             this.payload.horizontalAlignment,
             Enums.HorizontalAlignment.Left
         ));
 
         this.color = this.isSubtle ? colorDefinition.subtle : colorDefinition.default
-        this.spacing = hostConfig.getEffectiveSpacing(spacingValue);
+        this.spacing = this.hostConfig.getEffectiveSpacing(spacingValue);
     }
 }
 
@@ -121,8 +123,6 @@ const styles = StyleSheet.create({
     },
     text: {
         width: Constants.FullWidth,
-        fontSize: hostConfig.fontSizes.default,
-        fontWeight: hostConfig.fontWeights.default.toString(),
         textAlign: Constants.LeftAlign,
     }
 });
