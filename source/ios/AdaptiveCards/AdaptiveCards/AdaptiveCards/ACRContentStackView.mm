@@ -201,4 +201,30 @@ using namespace AdaptiveCards;
     return self.stackView.axis;
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+
+    if (_isActionSet) {
+        float accumulatedWidth = 0, accumulatedHeight = 0, spacing = self.stackView.spacing, maxWidth = 0, maxHeight = 0;
+
+        for(UIView *view in self.stackView.subviews){
+            accumulatedWidth += [view intrinsicContentSize].width;
+            accumulatedHeight += [view intrinsicContentSize].height;
+            maxWidth = MAX(maxWidth, [view intrinsicContentSize].width);
+            maxHeight = MAX(maxHeight, [view intrinsicContentSize].height);
+        }
+
+        float contentWidth = accumulatedWidth, contentHeight = accumulatedHeight;
+        if(self.stackView.axis == UILayoutConstraintAxisHorizontal) {
+            contentWidth += (self.stackView.subviews.count - 1) * spacing;
+            contentHeight = maxHeight;
+        } else {
+            contentHeight += (self.stackView.subviews.count - 1) * spacing;
+            contentWidth = maxWidth;
+        }
+        self.frame = CGRectMake(0, 0, contentWidth, contentHeight);
+    }
+}
+
 @end

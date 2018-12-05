@@ -88,7 +88,7 @@ using namespace AdaptiveCards;
         ObserverActionBlock observerAction =
         ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &elem, NSURL* url, ACRView* rootView) {
             UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
-            [rootView setImageView:key imageView:view];
+            [rootView setImageView:key view:view];
             if(view) {
                 [view addObserver:rootView forKeyPath:@"image"
                           options:NSKeyValueObservingOptionNew
@@ -104,7 +104,7 @@ using namespace AdaptiveCards;
         ObserverActionBlock observerAction =
         ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &elem, NSURL* url, ACRView* rootView) {
             UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
-            [rootView setImageView:key imageView:view];
+            [rootView setImageView:key view:view];
             if(view) {
                 [view addObserver:rootView forKeyPath:@"image"
                           options:NSKeyValueObservingOptionNew

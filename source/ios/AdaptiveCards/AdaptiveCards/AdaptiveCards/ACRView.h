@@ -28,7 +28,7 @@
 
 - (UIImageView *)getImageView:(NSString *)key;
 
-- (void)setImageView:(NSString *)key imageView:(UIImageView *)imageView;
+- (void)setImageView:(NSString *)key view:(UIView *)view;
 
 - (dispatch_queue_t)getSerialQueue;
 
