@@ -44,10 +44,7 @@ export class ImageSet extends PureComponent {
                 this.renderedElement.push(<Element json={element} 
                     key={`ELEMENT-${this.generateNumber()}`} />);
             } else {
-                this.renderedElement.push(
-                <Text style={styles.highlight} key={`ELEMENT-${this.generateNumber()}`}>
-                    I'm a <Text style={{ fontWeight: Constants.BoldWeight }}>
-                    {element.type}</Text> element</Text>);
+              return null;
             }
         });
         return this.renderedElement;

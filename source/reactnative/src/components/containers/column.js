@@ -37,14 +37,7 @@ export class Column extends Component {
             if (Element) {
                 renderedElement.push(<Element json={element} key={`ELEMENT-${index}`} />);
             } else {
-                renderedElement.push(
-                    <Text style={styles.highlight} key={`ELEMENT-${index}`}>
-                        I'm a 
-                        <Text style={{ fontWeight: Constants.BoldWeight }}>
-                             {element.type}
-                        </Text> 
-                        element
-                    </Text>);
+                 return null;
             }
         });
         return renderedElement;
