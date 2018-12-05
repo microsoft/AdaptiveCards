@@ -35,20 +35,9 @@ export default class AdaptiveCards extends React.Component {
 
     if (!body)
       return renderedElement;
-    const register = new Registry();
 
-    // parse elements
-    body.map((element, index) => {
-      const Element = register.getComponentOfType(element.type);
-
-      if (Element) {
-        renderedElement.push(<Element json={element} key={`ELEMENT-${index}`} />);
-      } else {
-        // This fallback is for dev/t esting purpose. 
-        TODO: // Must be removed on release version.
-        renderedElement.push(<Text style={styles.highlight} key={`ELEMENT-${index}`}>I'm a <Text style={{ fontWeight: 'bold' }}>{element.type}</Text> element</Text>);
-      }
-    });
+    renderedElement.push(Registry.getManager().parseRegistryComponents(body));
+ 
     return renderedElement;
   }
 

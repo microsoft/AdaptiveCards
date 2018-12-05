@@ -5,6 +5,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button, Platform,Alert, Linking } from 'react-native';
 import AdaptiveCards from '../adaptive-cards'
+import { RatingRenderer } from './rating-renderer'
+import { Registry } from '../components/registration/registry'
 
 export default class Renderer extends React.Component {
     constructor(props) {
@@ -48,6 +50,7 @@ export default class Renderer extends React.Component {
     }
 
     render() {
+         Registry.getManager().registerComponent('RatingBlock',RatingRenderer);
         return (
                 <View style={styles.container}>
                     <View style={styles.header}>

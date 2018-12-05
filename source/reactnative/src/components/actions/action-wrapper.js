@@ -22,29 +22,25 @@ export class ActionWrapper extends React.Component {
     screenWidth: 0
   };  
  
+/**
+  * @description Invoked on change in the content size of scrollview
+  */
   onContentSizeChange = (contentWidth, contentHeight) => {
     this.setState({ screenWidth: contentWidth });
   }
 
+/**
+  * @description Parses the actions from the given json
+  */
   parseActions = () => {
     const renderedElement = [];
     const { actions } = this.props;
 
     if (!actions)
       return renderedElement;
-    const register = new Registry();
 
-    // parse actions
-    if (actions) {
-      renderedElement.push(<View key="AC-CONTAINER" style={styles.actionContainer} />);
-      actions.map((action, index) => {
-        const ActionButton = register.getActionOfType(action.type);
-        if (ActionButton) {
-          renderedElement.push(<ActionButton key={`ACTION-${index}`} 
-          json={action} actionHandler={null} />);
-        }
-      });
-    }
+	renderedElement.push(Registry.getManager().parseRegistryComponents(actions));
+
     return renderedElement;
   }
 

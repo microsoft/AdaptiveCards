@@ -29,29 +29,10 @@ export class Container extends React.Component {
     parsePayload = (containerJson) => {
         if (!this.payload)
             return this.renderedElement;
-        const register = new Registry();
         // parse elements
-        containerJson.items.map((element, index) => {
-            const Element = register.getComponentOfType(element.type);
-            if (Element) {
-                this.renderedElement.push(<Element json={element} key={`ELEMENT-${this.generateNumber()}`} />);
-            } else {
-                return null;
-            }
-        });
-
+        this.renderedElement.push(Registry.getManager().parseRegistryComponents(containerJson.items));
         return this.renderedElement;
     }
-    
-    /**
-     * @description Generates a random number
-     */
-    generateNumber = () => {
-        min = 1;
-        max = 100000;
-        const rndNum = Math.floor(Math.random() * (max - min + 1) + min)
-        return rndNum
-    };
 
     internalRenderer(containerJson) {
         let backgroundStyle = containerJson.style == Constants.Emphasis ?
