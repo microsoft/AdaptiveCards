@@ -36,14 +36,7 @@ export class Container extends React.Component {
             if (Element) {
                 this.renderedElement.push(<Element json={element} key={`ELEMENT-${this.generateNumber()}`} />);
             } else {
-                this.renderedElement.push(
-                    <Text style={styles.highlight} key={`ELEMENT-${this.generateNumber()}`}>
-                        I'm a 
-                        <Text style={{ fontWeight: Constants.BoldWeight }}>
-                            {element.type}
-                        </Text>
-                         element
-                    </Text>);
+                return null;
             }
         });
 
@@ -94,7 +87,7 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     defaultBGStyle: {
-        backgroundColor: Constants.WhiteColor,
+        backgroundColor: Constants.TransparentString,
     },
     emphasisStyle: {
         backgroundColor: Constants.EmphasisColor,

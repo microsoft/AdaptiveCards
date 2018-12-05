@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
     textContainer: {
         width: Constants.FullWidth,
         alignItems: Constants.CenterString,
+        backgroundColor:'transparent',
     },
     text: {
         width: Constants.FullWidth,
