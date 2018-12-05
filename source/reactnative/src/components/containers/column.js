@@ -6,13 +6,11 @@
 
 import React, { Component } from "react";
 import { View, Text, StyleSheet } from 'react-native';
-import { gethostConfig } from "../../utils/host-config";
 import { Registry } from '../registration/registry'
 import * as Utils from '../../utils/util';
 import * as Constants from '../../utils/constants';
 import { SelectAction } from '../actions';
-
-const hostConfig = gethostConfig();
+import { HostConfigManager } from '../../utils/host-config'
 
 export class Column extends Component {
 
@@ -107,7 +105,7 @@ export class Column extends Component {
             </View>
         );
 
-        if (this.payload.selectAction === undefined) {
+        if ((this.payload.selectAction === undefined) || (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
             return columnContent;
         } else {
             return  <View style={containerViewStyle}>

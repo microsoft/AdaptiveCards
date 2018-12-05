@@ -6,15 +6,17 @@
 
 import React, { Component } from "react";
 import { Text, View, StyleSheet, Image, Platform, Linking, Modal, Button, WebView, Alert } from "react-native";
-import { gethostConfig } from "../../utils/host-config";
+import { StyleManager } from '../../styles/style-config'
 import * as Utils from '../../utils/util';
 import { InputContextConsumer } from '../../utils/context'
 import AdaptiveCards from '../../adaptive-cards'
 import * as Constants from '../../utils/constants';
+import { HostConfigManager } from '../../utils/host-config'
 
-const hostConfig = gethostConfig();
 
 export class ActionButton extends Component {
+
+    styleConfig = StyleManager.getManager().styles;
 
     constructor(props) {
         super(props);
@@ -36,6 +38,9 @@ export class ActionButton extends Component {
     }
 
     render() {
+        if(HostConfigManager.getHostConfig().supportsInteractivity === false){
+            return null;
+        }
         this.parseHostConfig();
         const ButtonComponent = Platform.select({
             ios: () => require('TouchableOpacity'),
@@ -172,15 +177,15 @@ export class ActionButton extends Component {
         return (
             <View
                 style={[
-                    styles.button]}>
+                    styles.button,this.styleConfig.actionIconFlex]}>
                 {
                     !Utils.isNullOrEmpty(this.iconUrl) ?
                         <Image resizeMode="center"
                             source={{ uri: this.iconUrl }}
-                            style={styles.buttonIcon} />
+                            style={[styles.buttonIcon,this.styleConfig.actionIcon]} />
                         : null
                 }
-                <Text style={styles.buttonTitle}>
+                <Text style={[styles.buttonTitle,this.styleConfig.fontConfig]}>
                     {this.title}
                 </Text>
                 {/* {this.getModalConent()} */}
@@ -191,8 +196,6 @@ export class ActionButton extends Component {
 
 const styles = StyleSheet.create({
     button: {
-        flexDirection: (hostConfig.actions.iconPlacement === 0) ? 
-                        Constants.FlexRow : Constants.FlexColumn,
         flexWrap: 'nowrap',
         alignItems: Constants.CenterString,
         justifyContent: Constants.CenterString,
@@ -202,14 +205,10 @@ const styles = StyleSheet.create({
         borderRadius: 15,
     },
     buttonTitle: {
-        fontSize: hostConfig.fontSizes.default,
-        fontWeight: hostConfig.fontWeights.default.toString(),
         color: Constants.WhiteColor,
     },
     buttonIcon: {
         marginLeft: 5,
-        width: hostConfig.actions.iconSize,
-        height: hostConfig.actions.iconSize,
         marginRight: 10,
     },
     webViewHeader: {

@@ -7,18 +7,20 @@
 import React from "react";
 import { StyleSheet, TextInput } from 'react-native';
 import Input from './input';
-import { gethostConfig } from "../../utils/host-config";
+import { StyleManager } from "../../styles/style-config";
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 import * as Constants from '../../utils/constants';
 import { InputContextConsumer } from '../../utils/context'
+import { HostConfigManager } from '../../utils/host-config'
 
-const hostConfig = gethostConfig();
 const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 const URL_REGEX = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/;
 const TEL_REGEX = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/;
 
 export class InputText extends React.Component {
+
+    styleConfig = StyleManager.getManager().styles;
 
     constructor(props) {
         super(props);
@@ -48,6 +50,11 @@ export class InputText extends React.Component {
     }
 
     render() {
+
+        if(HostConfigManager.getHostConfig().supportsInteractivity === false){
+            return null;
+        }
+
         this.parseHostConfig();
 
         const {
@@ -96,12 +103,12 @@ export class InputText extends React.Component {
     getComputedStyles = () => {
         const { isMultiline } = this;
 
-        let inputComputedStyles = [styles.input];
+        let inputComputedStyles = [styles.input,this.styleConfig.fontConfig];
         isMultiline ?
             inputComputedStyles.push(styles.multiLineHeight) :
             inputComputedStyles.push(styles.singleLineHeight);
         this.state.isError ?
-            inputComputedStyles.push(styles.withBorderColorRed) :
+            inputComputedStyles.push(this.styleConfig.borderAttention) :
             inputComputedStyles.push(styles.withBorderColor);
 
         return inputComputedStyles;
@@ -180,9 +187,6 @@ const styles = StyleSheet.create({
     withBorderColor: {
         borderColor: Constants.LightGreyColor,
     },
-    withBorderColorRed: {
-        borderColor: hostConfig.containerStyles.default.foregroundColors.attention.default,
-    },
     multiLineHeight: {
         height: 88,
     },
@@ -191,8 +195,6 @@ const styles = StyleSheet.create({
     },
     input: {
         width: Constants.FullWidth,
-        fontSize: hostConfig.fontSizes.default,
-        fontWeight: hostConfig.fontWeights.default.toString(),
         padding: 5,
         marginTop: 15,
         borderWidth: 1,

@@ -6,16 +6,19 @@
 
 import React, { Component } from "react";
 import { StyleSheet, TextInput } from 'react-native';
-import { gethostConfig } from "../../utils/host-config";
 import { DismissKeyboardView } from '../containers/dismiss-keyboard';
 import { InputContextConsumer } from '../../utils/context'
 import Input from './input';
 import * as Constants from '../../utils/constants';
+import { StyleManager } from "../../styles/style-config";
+import { HostConfigManager } from '../../utils/host-config'
 
-const hostConfig = gethostConfig();
+
 const NUM_REGEX = /^[0-9][\.\d]*(,\d+)?$/;
 
 export class NumberInput extends Component {
+
+    styleConfig = StyleManager.getManager().styles;
 
     constructor(props) {
         super(props);
@@ -36,6 +39,11 @@ export class NumberInput extends Component {
     }
 
     render() {
+
+        if(HostConfigManager.getHostConfig().supportsInteractivity === false){
+            return null;
+        }
+        
         this.parseHostConfig();
 
         const {
@@ -82,7 +90,7 @@ export class NumberInput extends Component {
     getComputedStyles = () => {
         const { isMultiline } = this;
 
-        let inputComputedStyles = [styles.input];
+        let inputComputedStyles = [styles.input,this.styleConfig.fontConfig];
         isMultiline ?
             inputComputedStyles.push(styles.multiLineHeight) :
             inputComputedStyles.push(styles.singleLineHeight);
@@ -172,8 +180,6 @@ const styles = StyleSheet.create({
     },
     input: {
         width: Constants.FullWidth,
-        fontSize: hostConfig.fontSizes.default,
-        fontWeight: hostConfig.fontWeights.default.toString(),
         padding: 5,
         marginTop: 15,
         borderWidth: 1,
