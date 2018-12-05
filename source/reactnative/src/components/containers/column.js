@@ -45,37 +45,67 @@ export class Column extends Component {
      * @description Calculate the Width percentage of the column to be rendered
      */
     calculateWidthPercentage = (containerStyle) => {
+        var columns = this.props.columns
+        var widthArray = columns.length > 0 ? columns.map((column) => column.width) : [];
+
+        var containsNumber = false
+        var containsString = false
+
+        widthArray.map((value) => {
+            if (typeof(value) == 'number') {
+                containsNumber = true
+            } else if (typeof(value) == 'string') {
+                containsString = true
+            }
+        })
+
+        var columnWidth;
+        if (!containsString) {
+            columnWidth = 0
+            columns.forEach(function(column) {
+                if (!Utils.isNullOrEmpty(column.width)){
+                    columnWidth += column.width
+                }
+            });
+        }
+
         let width = this.payload.width
         if (Utils.isNullOrEmpty(width)) {
             width = 1
         } 
 
         let widthPercentage;
-        switch (typeof(this.props.columnWidth)) {
-            case 'string':
-                if (typeof(width) == 'string'){
-                    let lastIndex = width.lastIndexOf('px')
-                    if (lastIndex != -1) {
-                     widthPercentage = parseInt(width.substring(0, lastIndex))
-                    } else if (width == Constants.AlignStretch ||
-                         width == Constants.Auto) {
-                     containerStyle.push({flex: 1})
+        if (containsString) {
+            if (typeof(width) == 'string'){
+                let lastIndex = width.lastIndexOf('px')
+                if (lastIndex != -1) {
+                    widthPercentage = parseInt(width.substring(0, lastIndex))
+                } 
+                else if (width == Constants.AlignStretch) {
+                    containerStyle.push({flex: 1})
+                } 
+                else if (width == Constants.Auto) {
+                    if (!containsNumber) {
+                        containerStyle.push({alignSelf: 'auto'})
+                    } else {
+                        widthPercentage = (100/columns.length).toString()+'%' 
                     }
-                    else {
-                     widthPercentage = (100/this.props.columns).toString()+'%' 
-                    }
-                } else {
-                    widthPercentage = (100/this.props.columns).toString()+'%' 
                 }
-            break;
-            default:
-                if (isNaN(this.props.columnWidth)) {
-                    widthPercentage = ((width/this.props.columns) * 100).toString()+'%'
-                } else{
-                    widthPercentage = ((this.payload.width/this.props.columnWidth) * 100).toString()+'%'
+                else {
+                    widthPercentage = (100/columns.length).toString()+'%' 
                 }
-
-            break;
+            } 
+            else {
+                widthPercentage = (100/columns.length).toString()+'%' 
+            }
+        }
+        else {
+            if (Utils.isNullOrEmpty(this.payload.width)) {
+                widthPercentage = ((width/columns.length) * 100).toString()+'%'
+            } 
+            else{
+                 widthPercentage = ((this.payload.width/columnWidth) * 100).toString()+'%'
+            }
         }
 
         return widthPercentage

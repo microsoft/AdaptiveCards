@@ -7,8 +7,8 @@ import { StyleSheet, View, ScrollView ,Text} from 'react-native';
 import { Registry } from './components/registration/registry'
 import { InputContextProvider } from './utils/context'
 import { HostConfigManager } from './utils/host-config'
+import { ActionWrapper } from './components/actions/action-wrapper'
 import * as Utils from './utils/util';
-
 
 
 export default class AdaptiveCards extends React.Component {
@@ -31,7 +31,7 @@ export default class AdaptiveCards extends React.Component {
  */
   parsePayload = () => {
     const renderedElement = [];
-    const { body, actions } = this.payload;
+    const { body } = this.payload;
 
     if (!body)
       return renderedElement;
@@ -44,31 +44,24 @@ export default class AdaptiveCards extends React.Component {
       if (Element) {
         renderedElement.push(<Element json={element} key={`ELEMENT-${index}`} />);
       } else {
-       return null;
+        // This fallback is for dev/t esting purpose. 
+        TODO: // Must be removed on release version.
+        renderedElement.push(<Text style={styles.highlight} key={`ELEMENT-${index}`}>I'm a <Text style={{ fontWeight: 'bold' }}>{element.type}</Text> element</Text>);
       }
     });
-
-    // parse actions
-    if (actions) {
-      renderedElement.push(<View key="AC-CONTAINER" style={styles.actionContainer} />);
-      actions.map((action, index) => {
-        const ActionButton = register.getActionOfType(action.type);
-        if (ActionButton) {
-          renderedElement.push(<ActionButton key={`ACTION-${index}`} json={action} actionHandler={null} />);
-        }
-
-      });
-    }
     return renderedElement;
   }
+
   getAdaptiveCardConent() {
     var adaptiveCardContent =
       (
-        <View style={styles.container}>
-          <ScrollView>
-            {this.parsePayload()}
-          </ScrollView>
-        </View>
+		<View style={styles.container}>
+			<ScrollView>
+			{ this.parsePayload() }
+			{ !Utils.isNullOrEmpty(this.payload.actions) && 
+				<ActionWrapper actions={this.payload.actions}/> }
+			</ScrollView>
+	  	</View>
       );
 
     if (!Utils.isNullOrEmpty(this.payload.backgroundImage)) {
@@ -82,6 +75,7 @@ export default class AdaptiveCards extends React.Component {
       return adaptiveCardContent;
     }
   }
+
   render() {
     const { addInputItem } = this;
     const inputArray = this.inputArray;

@@ -27,15 +27,12 @@ export class ColumnSet extends PureComponent {
     parsePayload = (columnSetJson) => {
         if (!this.payload)
             return this.renderedElement;
-
-        const totalWidth = columnSetJson.columns.reduce((prev, next) => prev + next.width, 0);
-
+    
         // parse elements
         columnSetJson.columns.map((element, index) => {
             this.renderedElement.push(
                 <Column json={element}
-                    columns={columnSetJson.columns.length}
-                    columnWidth={totalWidth}
+                    columns={columnSetJson.columns}
                     key={`ELEMENT-${this.generateNumber()}`}
                 />);
         });
