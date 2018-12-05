@@ -33,16 +33,6 @@ export class Container extends React.Component {
         this.renderedElement.push(Registry.getManager().parseRegistryComponents(containerJson.items));
         return this.renderedElement;
     }
-    
-    /**
-     * @description Generates a random number
-     */
-    generateNumber = () => {
-        min = 1;
-        max = 100000;
-        const rndNum = Math.floor(Math.random() * (max - min + 1) + min)
-        return rndNum
-    };
 
     internalRenderer(containerJson) {
         let backgroundStyle = containerJson.style == Constants.Emphasis ?

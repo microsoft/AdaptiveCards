@@ -15,10 +15,19 @@ export class Registry {
         return Registry.registryInstance;
     }
 
+    /**
+     * @description Register a new Component or Override an Existing Component
+     * @param {string} key - Type of the Component to be overridden
+     * @param {Component} component - React Native component to be rendered
+     */
     registerComponent = ( key, component ) => {
         this.ElementRegistry[key] = component;
     }
 
+    /**
+     * @description Remove an Existing Component
+     * @param {string} key - Type of the Component to be removed
+     */
     removeComponent = ( key ) => {
         delete this.ElementRegistry[key];
     }
