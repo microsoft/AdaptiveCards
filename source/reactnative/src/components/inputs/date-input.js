@@ -13,6 +13,7 @@ import Input from './input';
 import { InputContextConsumer } from '../../utils/context'
 import * as Constants from '../../utils/constants';
 import { StyleManager } from '../../styles/style-config'
+import { HostConfigManager } from '../../utils/host-config'
 
 
 export class DateInput extends React.Component {
@@ -122,6 +123,11 @@ export class DateInput extends React.Component {
     }
 
     render() {
+
+        if(HostConfigManager.getHostConfig().supportsInteractivity === false){
+            return null;
+        }
+        
         const {
             id,
             type,

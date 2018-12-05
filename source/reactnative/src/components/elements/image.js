@@ -281,7 +281,7 @@ export class Img extends Component {
                 source={{ uri: url }} />
         </Input>);
 
-        if (this.payload.selectAction === undefined) {
+        if ((this.payload.selectAction === undefined)  || (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
             return containerContent;
         } else {
             return <SelectAction selectActionData={this.payload.selectAction}>

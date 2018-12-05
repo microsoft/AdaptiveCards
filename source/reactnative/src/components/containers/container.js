@@ -10,6 +10,7 @@ import Input from '../inputs/input';
 import { Registry } from '../registration/registry'
 import { SelectAction } from '../actions'
 import * as Constants from '../../utils/constants';
+import { HostConfigManager } from '../../utils/host-config'
 
 
 export class Container extends React.Component {
@@ -72,7 +73,7 @@ export class Container extends React.Component {
             </Input>
         </View>);
 
-        if (containerJson.selectAction === undefined) {
+        if ((containerJson.selectAction === undefined) || (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
             return containerContent;
         } else {
             return <SelectAction selectActionData={containerJson.selectAction}>

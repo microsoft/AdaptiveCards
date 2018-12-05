@@ -10,6 +10,7 @@ import Input from './input';
 import * as Constants from '../../utils/constants';
 import { InputContextConsumer } from '../../utils/context'
 import { StyleManager } from '../../styles/style-config'
+import { HostConfigManager } from '../../utils/host-config'
 
 const TrueString = "true";
 const FalseString = "false";
@@ -45,6 +46,11 @@ export class ToggleInput extends React.Component {
     }
 
     render() {
+
+        if(HostConfigManager.getHostConfig().supportsInteractivity === false){
+            return null;
+        }
+
         const { toggleValue } = this.state;
 
         return (

@@ -12,6 +12,7 @@ import { InputContextConsumer } from '../../../utils/context';
 import * as Utils from '../../../utils/util';
 import * as Constants from '../../../utils/constants';
 import { StyleManager } from '../../../styles/style-config'
+import { HostConfigManager } from '../../../utils/host-config'
 
 const DropDownImage = './assets/dropdown.png';
 const CompactStyle = "compact";
@@ -226,6 +227,11 @@ export class ChoiceSetInput extends React.Component {
     }
 
     render() {
+
+        if(HostConfigManager.getHostConfig().supportsInteractivity === false){
+            return null;
+        }
+        
         this.parseHostConfig();
 
         let { id,

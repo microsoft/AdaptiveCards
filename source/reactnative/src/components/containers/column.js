@@ -10,6 +10,7 @@ import { Registry } from '../registration/registry'
 import * as Utils from '../../utils/util';
 import * as Constants from '../../utils/constants';
 import { SelectAction } from '../actions';
+import { HostConfigManager } from '../../utils/host-config'
 
 export class Column extends Component {
 
@@ -104,7 +105,7 @@ export class Column extends Component {
             </View>
         );
 
-        if (this.payload.selectAction === undefined) {
+        if ((this.payload.selectAction === undefined) || (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
             return columnContent;
         } else {
             return  <View style={containerViewStyle}>

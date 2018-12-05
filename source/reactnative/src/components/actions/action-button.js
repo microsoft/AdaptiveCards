@@ -11,6 +11,7 @@ import * as Utils from '../../utils/util';
 import { InputContextConsumer } from '../../utils/context'
 import AdaptiveCards from '../../adaptive-cards'
 import * as Constants from '../../utils/constants';
+import { HostConfigManager } from '../../utils/host-config'
 
 
 export class ActionButton extends Component {
@@ -37,6 +38,9 @@ export class ActionButton extends Component {
     }
 
     render() {
+        if(HostConfigManager.getHostConfig().supportsInteractivity === false){
+            return null;
+        }
         this.parseHostConfig();
         const ButtonComponent = Platform.select({
             ios: () => require('TouchableOpacity'),

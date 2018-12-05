@@ -13,8 +13,9 @@ export default class Renderer extends React.Component {
         this.onModalClose = props.onModalClose;
     }
 
-    myHostConfig = {
+    customHostConfig = {
         fontFamily:"Helvetica",
+        supportsInteractivity:true,
         fontSizes: {
             small: 12,
             default: 14,
@@ -58,7 +59,7 @@ export default class Renderer extends React.Component {
                     <AdaptiveCards
                         payload={this.payload}
                         onExecuteAction={this.onExecuteAction}
-                        hostConfig = {this.myHostConfig}
+                        hostConfig = {this.customHostConfig}
                     />
                 </View>
         );

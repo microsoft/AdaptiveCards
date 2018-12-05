@@ -13,6 +13,7 @@ import Input from './input';
 import { StyleManager } from '../../styles/style-config';
 import { InputContextConsumer } from '../../utils/context';
 import * as Constants from '../../utils/constants';
+import { HostConfigManager } from '../../utils/host-config'
 
 export class TimeInput extends React.Component {
 
@@ -132,6 +133,10 @@ export class TimeInput extends React.Component {
     }
 
     render() {
+
+        if(HostConfigManager.getHostConfig().supportsInteractivity === false){
+            return null;
+        }
 
         const {
             id,
