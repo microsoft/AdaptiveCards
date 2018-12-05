@@ -35,6 +35,15 @@ Registry.getManager().registerComponent('Rating',RatingComponent);
 Registry.getManager().removeComponent('Input.Date');
 ```
 
+## Visualizer
+There are lot of sample JSON payloads covering all element types with few real case scenarios which are available within this project.   
+
+To see the visualizer,
+* Clone the repo
+* Navigate to source/reactnative/ > Run **`npm install`**
+* Run > `reactnative run-ios` OR `run-android`
+
+
 ##  About Adaptive Card
 * Collection of `elements` and `actions`
 * Element is the basic `building block` of card
