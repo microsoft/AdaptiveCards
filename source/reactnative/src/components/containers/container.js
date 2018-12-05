@@ -29,17 +29,8 @@ export class Container extends React.Component {
     parsePayload = (containerJson) => {
         if (!this.payload)
             return this.renderedElement;
-        const register = new Registry();
         // parse elements
-        containerJson.items.map((element, index) => {
-            const Element = register.getComponentOfType(element.type);
-            if (Element) {
-                this.renderedElement.push(<Element json={element} key={`ELEMENT-${this.generateNumber()}`} />);
-            } else {
-                return null;
-            }
-        });
-
+        this.renderedElement.push(Registry.getManager().parseRegistryComponents(containerJson.items));
         return this.renderedElement;
     }
     

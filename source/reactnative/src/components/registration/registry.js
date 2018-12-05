@@ -2,8 +2,27 @@ import { DateInput, TimeInput, ToggleInput, NumberInput, ChoiceSetInput, InputTe
 import { TextBlock, Media, Img } from '../elements';
 import { Container, ColumnSet, Column, FactSet, ImageSet } from '../containers';
 import  { ActionButton } from '../actions';
+import React from 'react';
 
 export class Registry {
+
+    static registryInstance = null;
+
+    static getManager() {
+        if (!Registry.registryInstance) {
+            Registry.registryInstance = new Registry();
+        }
+        return Registry.registryInstance;
+    }
+
+    registerComponent = ( key, component ) => {
+        this.ElementRegistry[key] = component;
+    }
+
+    removeComponent = ( key ) => {
+        delete this.ElementRegistry[key];
+    }
+
     ElementRegistry = {
         'Container': Container,
         'ColumnSet': ColumnSet,
@@ -20,10 +39,8 @@ export class Registry {
 
         'TextBlock': TextBlock,
         'Media': Media,
-        'Image': Img
-    };
+        'Image': Img,
 
-    ActionRegistry = {
         'Action.ShowCard': ActionButton,
         'Action.Submit': ActionButton,
         'Action.OpenUrl': ActionButton
@@ -38,12 +55,33 @@ export class Registry {
     }
 
     /**
-     * @description Get the component associated for the given action type
-     * @param {string} type - Type of the action
+     * @description Parse an Array of components
+     * @param {Array} componentArray - Json
      */
-    getActionOfType = (type) => {
-        return this.ActionRegistry[type];
+    parseRegistryComponents = ( componentArray ) => {
+        const parsedElement = [];
+        if (!componentArray)
+             return parsedElement;
+        componentArray.map((element, index) => {
+            const Element = this.getComponentOfType(element.type);
+            if (Element) {
+                parsedElement.push(<Element json={element} key={`${element.type}-${index}-${this.generateNumber()}`} />);
+            } else {
+             return null;
+            }
+          });
+          return parsedElement;
     }
+
+    /**
+     * @description Generates a random number
+     */
+    generateNumber = () => {
+        min = 1;
+        max = 100000;
+        const rndNum = Math.floor(Math.random() * (max - min + 1) + min)
+        return rndNum
+    };
 }
 
 
