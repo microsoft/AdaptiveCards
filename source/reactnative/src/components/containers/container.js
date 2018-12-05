@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     defaultBGStyle: {
-        backgroundColor: Constants.WhiteColor,
+        backgroundColor: Constants.TransparentString,
     },
     emphasisStyle: {
         backgroundColor: Constants.EmphasisColor,

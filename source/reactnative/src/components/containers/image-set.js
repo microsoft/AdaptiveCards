@@ -84,6 +84,6 @@ const styles = StyleSheet.create({
         flexWrap: FlexWrap,
     },
     defaultBGStyle: {
-        backgroundColor: Constants.WhiteColor,
+        backgroundColor: Constants.TransparentString,
     },
 });

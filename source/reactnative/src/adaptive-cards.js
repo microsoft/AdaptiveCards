@@ -3,10 +3,12 @@
  */
 
 import React from 'react';
-import { StyleSheet, View, ScrollView ,Text} from 'react-native';
+import { StyleSheet, View, ScrollView, Text, ImageBackground } from 'react-native';
 import { defaultHostConfig, sethostConfig } from './utils/host-config'
 import { Registry } from './components/registration/registry'
 import { InputContextProvider } from './utils/context'
+import * as Utils from './utils/util';
+
 
 export default class AdaptiveCards extends React.Component {
   constructor(props) {
@@ -43,6 +45,8 @@ export default class AdaptiveCards extends React.Component {
       if (Element) {
         renderedElement.push(<Element json={element} key={`ELEMENT-${index}`} />);
       } else {
+        // This fallback is for dev/testing purpose. 
+        TODO: // Must be removed on release version.
         renderedElement.push(<Text style={styles.highlight} key={`ELEMENT-${index}`}>I'm a <Text style={{ fontWeight: 'bold' }}>{element.type}</Text> element</Text>);
       }
     });
@@ -60,19 +64,39 @@ export default class AdaptiveCards extends React.Component {
     }
     return renderedElement;
   }
-
-  render() {
-    const { addInputItem } = this;
-    const inputArray = this.inputArray;
-    const onExecuteAction = this.props.onExecuteAction;
-
-    return (
-      <InputContextProvider value={{ addInputItem, inputArray, onExecuteAction }}>
+  getAdaptiveCardConent() {
+    var adaptiveCardContent =
+      (
         <View style={styles.container}>
           <ScrollView>
             {this.parsePayload()}
           </ScrollView>
         </View>
+      );
+
+    if (!Utils.isNullOrEmpty(this.payload.backgroundImage)) {
+      return (
+        <ImageBackground source={{ uri: this.payload.backgroundImage }} style={styles.backgroundImage}>
+          {adaptiveCardContent}
+        </ImageBackground>
+      );
+    }
+    else {
+      return adaptiveCardContent;
+    }
+  }
+  render() {
+    const { addInputItem } = this;
+    const inputArray = this.inputArray;
+    const onExecuteAction = this.props.onExecuteAction;
+    const isTransparent = this.payload.backgroundImage ? true : false;
+
+    return (
+
+      <InputContextProvider value={{ addInputItem, inputArray, onExecuteAction, isTransparent }}>
+        {
+          this.getAdaptiveCardConent()
+        }
       </InputContextProvider>
     );
   }
@@ -81,6 +105,7 @@ export default class AdaptiveCards extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'transparent',
   },
   highlight: {
     backgroundColor: 'yellow',
@@ -90,6 +115,10 @@ const styles = StyleSheet.create({
   },
   actionContainer: {
     marginVertical: 10
+  },
+  backgroundImage: {
+    width: "100%",
+    flex: 1
   }
 });
 

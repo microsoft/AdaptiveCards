@@ -83,7 +83,7 @@ export class ColumnSet extends PureComponent {
 const styles = StyleSheet.create({
     defaultBGStyle: {
         flex: 1,
-        backgroundColor: Constants.WhiteColor,
+        backgroundColor: Constants.TransparentString,
         flexDirection: Constants.FlexRow,
     },
     emphasisStyle: {

@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
         flexDirection: Constants.FlexColumn
     },
     defaultBGStyle: {
-        backgroundColor: Constants.WhiteColor,
+        backgroundColor: Constants.TransparentString,
     },
     emphasisStyle: {
         backgroundColor: Constants.EmphasisColor,

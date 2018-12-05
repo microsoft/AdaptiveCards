@@ -157,11 +157,13 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 4,
         flexDirection: Constants.FlexColumn,
+        backgroundColor:'transparent',
     },
     textContainer: {
         flex: 1,
         padding: 2,
-        flexDirection: Constants.FlexRow,
+        flexDirection: Constants.FlexRow, 
+        backgroundColor:'transparent',
     },
     keyTextStyle: {
         fontWeight: Constants.BoldWeight,
