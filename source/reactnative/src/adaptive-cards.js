@@ -35,29 +35,12 @@ export default class AdaptiveCards extends React.Component {
 
     if (!body)
       return renderedElement;
-    const register = new Registry();
-
-    // parse elements
-    body.map((element, index) => {
-      const Element = register.getComponentOfType(element.type);
-
-      if (Element) {
-        renderedElement.push(<Element json={element} key={`ELEMENT-${index}`} />);
-      } else {
-       return null;
-      }
-    });
+    renderedElement.push(Registry.getManager().parseRegistryComponents(body));
 
     // parse actions
     if (actions) {
       renderedElement.push(<View key="AC-CONTAINER" style={styles.actionContainer} />);
-      actions.map((action, index) => {
-        const ActionButton = register.getActionOfType(action.type);
-        if (ActionButton) {
-          renderedElement.push(<ActionButton key={`ACTION-${index}`} json={action} actionHandler={null} />);
-        }
-
-      });
+      renderedElement.push(Registry.getManager().parseRegistryComponents(actions));
     }
     return renderedElement;
   }
