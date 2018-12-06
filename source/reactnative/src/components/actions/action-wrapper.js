@@ -8,6 +8,7 @@ import { Registry } from '../registration/registry';
 import * as Constants from '../../utils/constants';
 import { InputContextConsumer } from '../../utils/context'
 import AdaptiveCards from '../../adaptive-cards'
+import * as Utils from '../../utils/util'
 
 const padding = 10;
 
@@ -27,9 +28,10 @@ export class ActionWrapper extends React.Component {
 
   onShowAdaptiveCard = (adaptiveCard) => {
     this.setState(prevState => ({
-      isShowCard: !prevState.isShowCard,
+	  isShowCard: Utils.isNullOrEmpty(this.state.cardJson) ? true : 
+	  			(adaptiveCard === this.state.cardJson ? !prevState.isShowCard : true),
       cardJson: adaptiveCard
-    }));
+	}));
   }
 
 
@@ -37,9 +39,9 @@ export class ActionWrapper extends React.Component {
   * @description Parses the actions from the given json
   */
   parseActions = () => {
-    const renderedElement = [];
-    const { actions } = this.props;
-
+	const renderedElement = [];
+	const { actions } = this.props
+  
     if (!actions)
       return renderedElement;
 
@@ -48,7 +50,12 @@ export class ActionWrapper extends React.Component {
          if (Element) {
           if (element.type==='Action.ShowCard'){
             this.hasShowCard = true;
-            renderedElement.push(<Element json={element} onShowCardTapped={this.onShowAdaptiveCard} key={`${element.type}-${index}`} />);
+            renderedElement.push(
+				<Element 
+					json={element} 
+					onShowCardTapped={this.onShowAdaptiveCard} 
+					key={`${element.type}-${index}`} 
+			    />);
           }
           else{
             renderedElement.push(<Element json={element} key={`${element.type}-${index}`} />);
@@ -65,13 +72,16 @@ export class ActionWrapper extends React.Component {
     return (
       <View>
         <View style={[styles.actionButtonContainer]}>
-                    {this.parseActions()}
-        </View>
-        { this.hasShowCard ? ((this.state.isShowCard) ? 
-          (<InputContextConsumer>
-            {({ onExecuteAction }) => 
-<AdaptiveCards payload={this.state.cardJson} onExecuteAction={onExecuteAction}/>}</InputContextConsumer>):null) : null}
-          </View>
+              {this.parseActions()}
+		</View>
+		{ this.hasShowCard ? ((this.state.isShowCard) ? 
+			(<InputContextConsumer>
+			{({ onExecuteAction }) => 
+				<AdaptiveCards
+					payload={this.state.cardJson} 
+					onExecuteAction={onExecuteAction}/>}
+			</InputContextConsumer>):null) : null}
+       </View>
     );
   }
 }
