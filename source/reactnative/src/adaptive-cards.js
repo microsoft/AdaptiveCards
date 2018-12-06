@@ -37,7 +37,7 @@ export default class AdaptiveCards extends React.Component {
    */
   parsePayload = () => {
     const renderedElement = [];
-    const { body } = this.props.payload;
+    const { body } = this.payload;
 
     if (!body)
       return renderedElement;

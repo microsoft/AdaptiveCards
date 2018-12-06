@@ -24,17 +24,20 @@ export class ActionWrapper extends React.Component {
     cardJson:null,
   }
 
-  showCardJson = null;
-
   onShowAdaptiveCard = (adaptiveCard) => {
+    let isDifferentcard = (Utils.isNullOrEmpty(this.state.cardJson) ? false : 
+    (adaptiveCard === this.state.cardJson ? false : true));
     this.setState(prevState => ({
-	  isShowCard: Utils.isNullOrEmpty(this.state.cardJson) ? true : 
-	  			(adaptiveCard === this.state.cardJson ? !prevState.isShowCard : true),
+	  isShowCard: !prevState.isShowCard,
       cardJson: adaptiveCard
-	}));
+    }));
+     if(isDifferentcard){
+        setTimeout(() => {
+          this.setState({isShowCard: true});
+        }, 50)
+      }
   }
-
-
+  
 /**
   * @description Parses the actions from the given json
   */
