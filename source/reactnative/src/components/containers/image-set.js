@@ -27,7 +27,7 @@ export class ImageSet extends PureComponent {
      * 
      * @description Parse the given payload and render the card accordingly
      */
-    parsePayload = (imageSetJson) => {
+    parsePayload = (imageSetJson,onParseError) => {
         if (!this.payload)
             return this.renderedElement;
 
@@ -42,6 +42,8 @@ export class ImageSet extends PureComponent {
                 this.renderedElement.push(<Element json={element} 
                     key={`ELEMENT-${this.generateNumber()}`} />);
             } else {
+                let error = {"type":"ParseError", "error": "Unknown Type encountered"};        
+                onParseError(error);
               return null;
             }
         });

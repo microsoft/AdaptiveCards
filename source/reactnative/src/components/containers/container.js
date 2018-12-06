@@ -14,10 +14,10 @@ import { HostConfigManager } from '../../utils/host-config'
 
 
 export class Container extends React.Component {
-    
+
     constructor(props) {
         super(props);
-        
+
         this.renderedElement = [];
         this.payload = props.json;
         this.selectionActionData = props.json.selectAction;
@@ -26,7 +26,7 @@ export class Container extends React.Component {
     /**
      * @description Parse the given payload and render the card accordingly
      */
-    parsePayload = (containerJson) => {
+    parsePayload = (containerJson,onParseError) => {
         if (!this.payload)
             return this.renderedElement;
         const register = new Registry();
@@ -36,13 +36,15 @@ export class Container extends React.Component {
             if (Element) {
                 this.renderedElement.push(<Element json={element} key={`ELEMENT-${this.generateNumber()}`} />);
             } else {
+                let error = {"type":"ParseError", "error": "Unknown Type encountered"};        
+                onParseError(error);
                 return null;
             }
         });
 
         return this.renderedElement;
     }
-    
+
     /**
      * @description Generates a random number
      */
@@ -55,16 +57,26 @@ export class Container extends React.Component {
 
     internalRenderer(containerJson) {
         let backgroundStyle = containerJson.style == Constants.Emphasis ?
-         styles.emphasisStyle : styles.defaultBGStyle;
+            styles.emphasisStyle : styles.defaultBGStyle;
 
         // TODO: verticalContentAlignment property is not considered for now as the container size is determined by its content.
-        var containerContent = (<View style={[styles.container, backgroundStyle]}>
-            <Input json={containerJson} style={backgroundStyle}>
-                <ScrollView style={backgroundStyle}>
-                    {this.parsePayload(containerJson)}
-                </ScrollView>
-            </Input>
-        </View>);
+        var containerContent = (
+            <InputContextConsumer>
+                {({ onParseError }) => {
+                    this.onParseError = onParseError;
+                    (
+                        <View style={[styles.container, backgroundStyle]}>
+                            <Input json={containerJson} style={backgroundStyle}>
+                                <ScrollView style={backgroundStyle}>
+                                    {this.parsePayload(containerJson,onParseError)}
+                                </ScrollView>
+                            </Input>
+                        </View>
+                    )
+                }}
+            </InputContextConsumer>
+
+        );
 
         if ((containerJson.selectAction === undefined) || (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
             return containerContent;
@@ -76,7 +88,10 @@ export class Container extends React.Component {
     }
 
     render() {
+       
+
         let containerRender = this.internalRenderer(this.props.json);
+        
         return containerRender;
     }
 };

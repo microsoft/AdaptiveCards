@@ -22,7 +22,7 @@ export class Column extends Component {
     /**
      * @description Parse the given payload and render the card accordingly
      */
-    parsePayload = () => {
+    parsePayload = (onParseError) => {
         const renderedElement = [];
         if (!this.payload)
             return renderedElement;
@@ -35,6 +35,8 @@ export class Column extends Component {
             if (Element) {
                 renderedElement.push(<Element json={element} key={`ELEMENT-${index}`} />);
             } else {
+                let error = {"type":"ParseError", "error": "Unknown Type encountered"};        
+                onParseError(error);
                  return null;
             }
         });

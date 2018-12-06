@@ -44,19 +44,20 @@ export default class AdaptiveCards extends React.Component {
       if (Element) {
         renderedElement.push(<Element json={element} key={`ELEMENT-${index}`} />);
       } else {
+        let error = {"type":"ParseError", "error": "Unknown Type encountered"};        
+        this.props.onParseError(error);
        return null;
       }
     });
-
+      
     // parse actions
     if (actions) {
-      renderedElement.push(<View key="AC-CONTAINER" style={styles.actionContainer} />);
+      renderedElement.push(<View key="AC-CONTAINER" style={styles.actionContainer}/>);
       actions.map((action, index) => {
         const ActionButton = register.getActionOfType(action.type);
         if (ActionButton) {
           renderedElement.push(<ActionButton key={`ACTION-${index}`} json={action} actionHandler={null} />);
         }
-
       });
     }
     return renderedElement;
@@ -87,10 +88,11 @@ export default class AdaptiveCards extends React.Component {
     const inputArray = this.inputArray;
     const onExecuteAction = this.props.onExecuteAction;
     const isTransparent = this.payload.backgroundImage ? true : false;
+    const onParseError = this.props.onParseError;
 
     return (
 
-      <InputContextProvider value={{ addInputItem, inputArray, onExecuteAction, isTransparent }}>
+      <InputContextProvider value={{ addInputItem, inputArray, onExecuteAction, isTransparent, onParseError }}>
         {
           this.getAdaptiveCardConent()
         }
