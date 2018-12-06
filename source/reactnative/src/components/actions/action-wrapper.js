@@ -30,8 +30,6 @@ export class ActionWrapper extends React.Component {
       isShowCard: !prevState.isShowCard,
       cardJson: adaptiveCard
     }));
-
-
   }
 
 

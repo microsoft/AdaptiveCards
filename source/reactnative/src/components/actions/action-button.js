@@ -25,7 +25,7 @@ export class ActionButton extends Component {
         this.type = Constants.EmptyString;
         this.iconUrl = Constants.EmptyString;
         this.data = {};
-        if(props.json.type === 'Action.ShowCard'){
+        if (props.json.type === 'Action.ShowCard') {
             this.showCardHandler = props.onShowCardTapped;
         }
 
@@ -41,7 +41,7 @@ export class ActionButton extends Component {
     }
 
     render() {
-        if(HostConfigManager.getHostConfig().supportsInteractivity === false){
+        if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
             return null;
         }
         this.parseHostConfig();
@@ -49,13 +49,13 @@ export class ActionButton extends Component {
             ios: () => require('TouchableOpacity'),
             android: () => require('TouchableNativeFeedback'),
         })();
-        
+
         if (this.payload.type === Constants.ActionSubmit) {
             return (<InputContextConsumer>
                 {({ inputArray, onExecuteAction }) => (
-                    <ButtonComponent style={{flexGrow: 1}} onPress={() => {
-                        this.onSubmitActionCalled(inputArray,onExecuteAction)
-                     }}>
+                    <ButtonComponent style={{ flexGrow: 1 }} onPress={() => {
+                        this.onSubmitActionCalled(inputArray, onExecuteAction)
+                    }}>
                         {this.buttonContent()}
                     </ButtonComponent>
                 )}
@@ -64,18 +64,15 @@ export class ActionButton extends Component {
         else if (this.payload.type === Constants.ActionOpenUrl) {
 
             return (<InputContextConsumer>
-                {({ onExecuteAction }) => (<ButtonComponent style={{flexGrow: 1}} onPress={() => {
-                        this.onOpenURLCalled(onExecuteAction)
-                     }}>{this.buttonContent()}
-            </ButtonComponent>)}
+                {({ onExecuteAction }) => (<ButtonComponent style={{ flexGrow: 1 }} onPress={() => {
+                    this.onOpenURLCalled(onExecuteAction)
+                }}>{this.buttonContent()}
+                </ButtonComponent>)}
             </InputContextConsumer>);
-        }else if (this.payload.type === Constants.ActionShowCard) {
+        } else if (this.payload.type === Constants.ActionShowCard) {
 
-            return (<InputContextConsumer>
-                {({ onExecuteAction }) => (<View><ButtonComponent style={{flexGrow: 1}} onPress={this.changeShowCardState}>{this.buttonContent()}
-            </ButtonComponent>
-            </View>)}
-            </InputContextConsumer>);
+            return (<ButtonComponent style={{ flexGrow: 1 }} onPress={this.changeShowCardState}>{this.buttonContent()}
+            </ButtonComponent>)
         }
     }
 
@@ -84,86 +81,24 @@ export class ActionButton extends Component {
      */
     onSubmitActionCalled(inputItem, onExecuteAction) {
         let mergedObject = null;
-        if(this.data!==null)
-        {
-            mergedObject = {...this.data,...inputItem};
-        }else{
+        if (this.data !== null) {
+            mergedObject = { ...this.data, ...inputItem };
+        } else {
             mergedObject = inputItem;
         }
-        let actionObject = {"type":this.payload.type,"data":mergedObject};        
+        let actionObject = { "type": this.payload.type, "data": mergedObject };
         onExecuteAction(actionObject);
     }
 
-    onOpenURLCalled = ( onExecuteAction ) => {
-        let actionObject = {"type":this.payload.type,"url":this.payload.url};        
+    onOpenURLCalled = (onExecuteAction) => {
+        let actionObject = { "type": this.payload.type, "url": this.payload.url };
         onExecuteAction(actionObject);
-    }
-
-    /**
-     * @description Invoked for the action type Constants.ActionOpenUrl
-     */
-    onButtonTapped = () => {
-        if (this.payload.type === Constants.ActionOpenUrl) {
-            this.handleOpenUrlAction();
-        }
-    };
-
-    closeModal = () => {
-        this.setState({
-            modalVisible: false
-        })
     }
 
     changeShowCardState = () => {
         this.showCardHandler(this.payload.card);
     }
 
-    /**
-     * @description Shows the Constants.ActionOpenUrl contents in modal view
-     */
-    getModalConent() {
-
-        var modalComponent = null;
-        if (this.payload.type === Constants.ActionOpenUrl) {
-            modalComponent = (<Modal
-                animationType="slide"
-                transparent={false}
-                supportedOrientations={['portrait', 'landscape']}
-                visible={this.state.modalVisible}
-                onRequestClose={() => {
-                    Alert.alert('Modal has been closed.');
-                }}>
-                <View style={styles.webViewHeader}>
-                    <Button 
-                        style={styles.backButton} 
-                        title=" < Back" 
-                        onPress={this.closeModal}/>
-                </View>
-                <WebView
-                    source={{ uri: this.payload.url }}
-                    style={{ flex: 1 }} />
-            </Modal>);
-        }
-        return modalComponent;
-    }
-
-    /**
-     * @description Invoked for the action type Constants.ActionOpenUrl
-     */
-    handleOpenUrlAction() {
-        this.setState({
-            modalVisible: true
-        });
-        /*
-        // For now opening the url in the native browser since navigation is not present.
-        Linking.canOpenURL(this.payload.url).then(supported => {
-            if (supported) {
-              Linking.openURL(this.payload.url);
-            } else {
-              console.log("Don't know how to open URI: " + this.payload.url);
-            }
-          });  */
-    }
 
     parseHostConfig() {
         this.title = this.payload.title;
@@ -176,18 +111,17 @@ export class ActionButton extends Component {
         return (
             <View
                 style={[
-                    styles.button,this.styleConfig.actionIconFlex]}>
+                    styles.button, this.styleConfig.actionIconFlex]}>
                 {
                     !Utils.isNullOrEmpty(this.iconUrl) ?
                         <Image resizeMode="center"
                             source={{ uri: this.iconUrl }}
-                            style={[styles.buttonIcon,this.styleConfig.actionIcon]} />
+                            style={[styles.buttonIcon, this.styleConfig.actionIcon]} />
                         : null
                 }
-                <Text style={[styles.buttonTitle,this.styleConfig.fontConfig]}>
+                <Text style={[styles.buttonTitle, this.styleConfig.fontConfig]}>
                     {this.title}
                 </Text>
-                {/* {this.getModalConent()} */}
             </View>
         );
     };
@@ -198,8 +132,8 @@ const styles = StyleSheet.create({
         alignItems: Constants.CenterString,
         justifyContent: Constants.CenterString,
         padding: 10,
-		marginBottom: 10,
-		marginRight: 10,
+        marginBottom: 10,
+        marginRight: 10,
         backgroundColor: "#1D9BF6",
         borderRadius: 15,
         flexGrow: 1,
@@ -220,7 +154,7 @@ const styles = StyleSheet.create({
                 padding: 10,
             },
             ios: {
-                marginTop: 30 ,
+                marginTop: 30,
                 padding: 5
             }
         }),
