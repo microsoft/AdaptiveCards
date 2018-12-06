@@ -3,7 +3,7 @@
     "version": "1.0",
     "body": [
         {
-            "type": "TextBlock",
+            "type": "Container",
             "text": "Shipment **1 of 2**"
         },
         {
@@ -36,6 +36,10 @@
             "isSubtle": true,
             "text": "We're sorry, but we don't have tracking details for this shipment.  Please see carrier tracking for the most up-to-date information.",
             "wrap": true
+        },
+        {
+            "type": "RatingBlock",
+            "text": "Shipment **1 of 2**"
         }
     ],
     "actions": [

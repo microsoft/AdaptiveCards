@@ -31,7 +31,7 @@ export class ImageSet extends PureComponent {
         if (!this.payload)
             return this.renderedElement;
 
-        const register = new Registry();
+        const register = Registry.getManager();
         // parse elements 
         // TODO: This function is repetitive across containers. Needs to be made Generic.
         imageSetJson.images.map((element, index) => {

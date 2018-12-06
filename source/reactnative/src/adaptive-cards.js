@@ -3,65 +3,58 @@
  */
 
 import React from 'react';
-import { StyleSheet, View, ScrollView ,Text} from 'react-native';
-import { Registry } from './components/registration/registry'
-import { InputContextProvider } from './utils/context'
-import { HostConfigManager } from './utils/host-config'
+import PropTypes from 'prop-types';
+import { StyleSheet, View, ScrollView } from 'react-native';
+
+import { Registry } from './components/registration/registry';
+import { InputContextProvider } from './utils/context';
+import { HostConfigManager } from './utils/host-config';
 import * as Utils from './utils/util';
 
-
-
 export default class AdaptiveCards extends React.Component {
+
+  // Input elements with its identifier and value
+  inputArray = {};
+
   constructor(props) {
     super(props);
+
     this.payload = props.payload;
+
+    // hostconfig
     if (props.hostConfig) {
       HostConfigManager.setHostConfig(this.props.hostConfig);
     }
   }
 
-  inputArray = {};
-
+  /**
+   * @description Input elements present in the cards are added here with its value.
+   */
   addInputItem = (key, value) => {
     this.inputArray[key] = value;
   }
 
   /**
- * @description Parse the given payload and render the card accordingly
- */
+   * @description Parse the given payload and render the card accordingly
+   */
   parsePayload = () => {
+    console.log("came here");
+
     const renderedElement = [];
     const { body, actions } = this.payload;
 
     if (!body)
       return renderedElement;
-    const register = new Registry();
+    renderedElement.push(Registry.getManager().parseRegistryComponents(body));
 
-    // parse elements
-    body.map((element, index) => {
-      const Element = register.getComponentOfType(element.type);
-
-      if (Element) {
-        renderedElement.push(<Element json={element} key={`ELEMENT-${index}`} />);
-      } else {
-        let error = {"type":"ParseError", "error": "Unknown Type encountered"};        
-        this.props.onParseError(error);
-       return null;
-      }
-    });
-      
     // parse actions
     if (actions) {
-      renderedElement.push(<View key="AC-CONTAINER" style={styles.actionContainer}/>);
-      actions.map((action, index) => {
-        const ActionButton = register.getActionOfType(action.type);
-        if (ActionButton) {
-          renderedElement.push(<ActionButton key={`ACTION-${index}`} json={action} actionHandler={null} />);
-        }
-      });
+      renderedElement.push(<View key="AC-CONTAINER" style={styles.actionContainer} />);
+      renderedElement.push(Registry.getManager().parseRegistryComponents(actions));
     }
     return renderedElement;
   }
+
   getAdaptiveCardConent() {
     var adaptiveCardContent =
       (
@@ -83,9 +76,9 @@ export default class AdaptiveCards extends React.Component {
       return adaptiveCardContent;
     }
   }
+
   render() {
-    const { addInputItem } = this;
-    const inputArray = this.inputArray;
+    const { addInputItem, inputArray } = this;
     const onExecuteAction = this.props.onExecuteAction;
     const isTransparent = this.payload.backgroundImage ? true : false;
     const onParseError = this.props.onParseError;
@@ -101,16 +94,18 @@ export default class AdaptiveCards extends React.Component {
   }
 }
 
+// AdaptiveCards.propTypes
+AdaptiveCards.propTypes = {
+  payload: PropTypes.object.isRequired,
+  hostConfig: PropTypes.object,
+  onExecuteAction: PropTypes.func,
+  onParseError: PropTypes.func
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'transparent',
-  },
-  highlight: {
-    backgroundColor: 'yellow',
-    marginVertical: 5,
-    paddingVertical: 5,
-    fontSize: 15
   },
   actionContainer: {
     marginVertical: 10

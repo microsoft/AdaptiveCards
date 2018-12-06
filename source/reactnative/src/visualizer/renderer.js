@@ -5,6 +5,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button, Platform,Alert, Linking } from 'react-native';
 import AdaptiveCards from '../adaptive-cards'
+import { RatingRenderer } from './rating-renderer'
+import { Registry } from '../components/registration/registry'
 
 export default class Renderer extends React.Component {
     constructor(props) {
@@ -47,7 +49,20 @@ export default class Renderer extends React.Component {
         
     }
 
+    onParseError= (errorObject) => {
+            Alert.alert(
+                'Error',
+                JSON.stringify(errorObject.error),
+                [
+                    { text: "Okay", onPress: () => console.log('OK Pressed') },
+                ],
+                { cancelable: false }
+            )
+        
+    }
+
     render() {
+         Registry.getManager().registerComponent('RatingBlock',RatingRenderer);
         return (
                 <View style={styles.container}>
                     <View style={styles.header}>
@@ -60,6 +75,7 @@ export default class Renderer extends React.Component {
                         payload={this.payload}
                         onExecuteAction={this.onExecuteAction}
                         hostConfig = {this.customHostConfig}
+                        onParseError = {this.onParseError}
                     />
                 </View>
         );

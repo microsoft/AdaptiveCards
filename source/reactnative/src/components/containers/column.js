@@ -26,20 +26,10 @@ export class Column extends Component {
         const renderedElement = [];
         if (!this.payload)
             return renderedElement;
-        const register = new Registry();
         // parse elements
-         !Utils.isNullOrEmpty(this.payload.items) && 
-         this.payload.items.map((element, index) => {
-
-            const Element = register.getComponentOfType(element.type);
-            if (Element) {
-                renderedElement.push(<Element json={element} key={`ELEMENT-${index}`} />);
-            } else {
-                let error = {"type":"ParseError", "error": "Unknown Type encountered"};        
-                onParseError(error);
-                 return null;
-            }
-        });
+         if(!Utils.isNullOrEmpty(this.payload.items)){
+            renderedElement.push(Registry.getManager().parseRegistryComponents(this.payload.items));
+         }
         return renderedElement;
     }
 
