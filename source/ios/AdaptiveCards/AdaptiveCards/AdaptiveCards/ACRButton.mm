@@ -70,10 +70,18 @@
         [NSLayoutConstraint constraintWithItem:_iconView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1.0 constant:config.buttonPadding].active = YES;
         [NSLayoutConstraint constraintWithItem:_iconView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
         self.frame = CGRectMake(0, 0, imageSize.width + config.buttonPadding + contentSize.width, MAX(imageSize.height, contentSize.height));
+        UIView *supersuperview = self.superview;
+        UIView *superview = supersuperview.superview;
+        [superview.superview setNeedsLayout];
     }
 }
 
-+ (UIButton* )rootView:(ACRView *)rootView
+- (CGSize)intrinsicContentSize
+{
+    return self.frame.size;
+}
+
++ (UIButton *)rootView:(ACRView *)rootView
      baseActionElement:(ACOBaseActionElement *)acoAction
                  title:(NSString *)title
          andHostConfig:(ACOHostConfig *)config;
@@ -104,7 +112,7 @@
         [button addSubview:iconView];
         button.iconView = iconView;
         [button setImageView:img withConfig:config];
-         
+
     } else if(key.length) {
         NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)action.get()];
         NSString *key = [number stringValue];

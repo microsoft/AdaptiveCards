@@ -38,4 +38,9 @@
     return blankTrailingSpace;
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+}
+
 @end

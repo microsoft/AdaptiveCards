@@ -16,6 +16,8 @@ using namespace AdaptiveCards;
     NSMutableArray* _targets;
     NSMutableArray<ACRShowCardTarget *>* _showcardTargets;
     ACRContainerStyle _style;
+    NSLayoutConstraint *widthconstraint;
+    NSLayoutConstraint *heightconstraint;
 }
 
 - (instancetype)initWithStyle:(ACRContainerStyle)style
@@ -223,7 +225,20 @@ using namespace AdaptiveCards;
             contentHeight += (self.stackView.subviews.count - 1) * spacing;
             contentWidth = maxWidth;
         }
-        self.frame = CGRectMake(0, 0, contentWidth, contentHeight);
+        
+        if(widthconstraint) {
+            [self removeConstraint:widthconstraint];
+        }
+        widthconstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:contentWidth];
+        widthconstraint.active = YES;
+        widthconstraint.priority = UILayoutPriorityDefaultHigh;
+        
+        if(heightconstraint) {
+            [self removeConstraint:heightconstraint];
+        }
+        heightconstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:contentHeight];
+        heightconstraint.active = YES;
+        heightconstraint.priority = UILayoutPriorityDefaultHigh;
     }
 }
 

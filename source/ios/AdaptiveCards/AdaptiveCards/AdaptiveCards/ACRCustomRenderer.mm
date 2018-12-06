@@ -43,6 +43,7 @@
         if(jsonPayload && self.customElementParser &&
             [self.customElementParser respondsToSelector: @selector(deserializeToCustomUIElement:)]){
             UIView *customUIElement = [self.customElementParser deserializeToCustomUIElement:jsonPayload];
+            customUIElement.translatesAutoresizingMaskIntoConstraints = NO;
             ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:customUIElement.frame];
             wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
             [wrappingview addSubview:customUIElement];
