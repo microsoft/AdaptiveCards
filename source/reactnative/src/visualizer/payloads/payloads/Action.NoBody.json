@@ -57,6 +57,33 @@
 			"type": "Action.OpenUrl",
 			"title": "Show Adaptive cards",
 			"url": "http://adaptivecards.io"
+		},
+		{
+			"type": "Action.ShowCard",
+			"title": "Set something else",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "Input.Text",
+						"id": "comment",
+						"isMultiline": true,
+						"placeholder": "Add a comment"
+					},
+		{
+			"type": "Input.Number",
+			"id": "numberComment",
+			"placeholder": "Add a comment"
+		}
+				],
+				"actions": [
+					{
+						"type": "Action.Submit",
+						"title": "OK",
+						"url": "http://adaptivecards.io"
+					}
+				]
+			}
 		}
 	]
 }

@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { StyleSheet, View, ScrollView ,Text} from 'react-native';
+import { StyleSheet, View, ScrollView ,ImageBackground} from 'react-native';
 import { Registry } from './components/registration/registry'
 import { InputContextProvider } from './utils/context'
 import { HostConfigManager } from './utils/host-config'

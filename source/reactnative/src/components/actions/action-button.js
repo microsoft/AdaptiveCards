@@ -9,7 +9,6 @@ import { Text, View, StyleSheet, Image, Platform, Linking, Modal, Button, WebVie
 import { StyleManager } from '../../styles/style-config'
 import * as Utils from '../../utils/util';
 import { InputContextConsumer } from '../../utils/context'
-import AdaptiveCards from '../../adaptive-cards'
 import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config'
 
@@ -26,6 +25,10 @@ export class ActionButton extends Component {
         this.type = Constants.EmptyString;
         this.iconUrl = Constants.EmptyString;
         this.data = {};
+        if(props.json.type === 'Action.ShowCard'){
+            this.showCardHandler = props.onShowCardTapped;
+        }
+
     }
 
     state = {
@@ -50,7 +53,7 @@ export class ActionButton extends Component {
         if (this.payload.type === Constants.ActionSubmit) {
             return (<InputContextConsumer>
                 {({ inputArray, onExecuteAction }) => (
-                    <ButtonComponent onPress={() => {
+                    <ButtonComponent style={{flexGrow: 1}} onPress={() => {
                         this.onSubmitActionCalled(inputArray,onExecuteAction)
                      }}>
                         {this.buttonContent()}
@@ -61,7 +64,7 @@ export class ActionButton extends Component {
         else if (this.payload.type === Constants.ActionOpenUrl) {
 
             return (<InputContextConsumer>
-                {({ onExecuteAction }) => (<ButtonComponent onPress={() => {
+                {({ onExecuteAction }) => (<ButtonComponent style={{flexGrow: 1}} onPress={() => {
                         this.onOpenURLCalled(onExecuteAction)
                      }}>{this.buttonContent()}
             </ButtonComponent>)}
@@ -69,10 +72,8 @@ export class ActionButton extends Component {
         }else if (this.payload.type === Constants.ActionShowCard) {
 
             return (<InputContextConsumer>
-                {({ onExecuteAction }) => (<View><ButtonComponent onPress={this.changeShowCardState}>{this.buttonContent()}
+                {({ onExecuteAction }) => (<View><ButtonComponent style={{flexGrow: 1}} onPress={this.changeShowCardState}>{this.buttonContent()}
             </ButtonComponent>
-            { (this.payload.type === Constants.ActionShowCard) ? (this.state.showCard ? 
-                                    (<AdaptiveCards payload={this.payload.card} onExecuteAction={onExecuteAction}/>):null) : null}
             </View>)}
             </InputContextConsumer>);
         }
@@ -114,9 +115,7 @@ export class ActionButton extends Component {
     }
 
     changeShowCardState = () => {
-        this.setState(prevState => ({
-            showCard: !prevState.showCard
-          }));
+        this.showCardHandler(this.payload.card);
     }
 
     /**
@@ -196,7 +195,6 @@ export class ActionButton extends Component {
 
 const styles = StyleSheet.create({
     button: {
-        flexWrap: 'nowrap',
         alignItems: Constants.CenterString,
         justifyContent: Constants.CenterString,
         padding: 10,
@@ -204,6 +202,7 @@ const styles = StyleSheet.create({
 		marginRight: 10,
         backgroundColor: "#1D9BF6",
         borderRadius: 15,
+        flexGrow: 1,
     },
     buttonTitle: {
         color: Constants.WhiteColor,
