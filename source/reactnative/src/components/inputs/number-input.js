@@ -40,10 +40,15 @@ export class NumberInput extends Component {
 
     render() {
 
-        if(HostConfigManager.getHostConfig().supportsInteractivity === false){
+        if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
+            let error = {
+                "error": Error.ValidationError.InteractivityNotAllowed,
+                "message": `Interactivity is not allowed based on schema`
+            };
+            onParseError(error);
             return null;
         }
-        
+
         this.parseHostConfig();
 
         const {
@@ -90,7 +95,7 @@ export class NumberInput extends Component {
     getComputedStyles = () => {
         const { isMultiline } = this;
 
-        let inputComputedStyles = [styles.input,this.styleConfig.fontConfig];
+        let inputComputedStyles = [styles.input, this.styleConfig.fontConfig];
         isMultiline ?
             inputComputedStyles.push(styles.multiLineHeight) :
             inputComputedStyles.push(styles.singleLineHeight);

@@ -105,19 +105,19 @@ export const ContainerStyle = Object.freeze({
 });
 
 export const ValidationError = Object.freeze({
-    Hint:0,
-    ActionTypeNotAllowed:1,
-    CollectionCantBeEmpty:2,
-    Deprecated:3,
-    ElementTypeNotAllowed:4,
-    InteractivityNotAllowed:5,
-    InvalidPropertyValue:6,
-    MissingCardType:7,
-    PropertyCantBeNull:8,
-    TooManyActions:9,
-    UnknownActionType:10,
-    UnknownElementType:11,
-    UnsupportedCardVersion:12
+    Hint:"Hint",
+    ActionTypeNotAllowed:"ActionTypeNotAllowed",
+    CollectionCantBeEmpty:"CollectionCantBeEmpty",
+    Deprecated:"Deprecated",
+    ElementTypeNotAllowed:"ElementTypeNotAllowed",
+    InteractivityNotAllowed:"InteractivityNotAllowed",
+    InvalidPropertyValue:"InvalidPropertyValue",
+    MissingCardType:"MissingCardType",
+    PropertyCantBeNull:"PropertyCantBeNull",
+    TooManyActions:"TooManyActions",
+    UnknownActionType:"UnknownActionType",
+    UnknownElementType:"UnknownElementType",
+    UnsupportedCardVersion:"UnsupportedCardVersion"
 });
 
 export const ContainerFitStatus = Object.freeze ({

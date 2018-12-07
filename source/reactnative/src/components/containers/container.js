@@ -4,13 +4,15 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#schema-container
  */
 
-import React, { PureComponent } from "react";
-import { View, ScrollView, Text, StyleSheet, Platform, Alert, Linking } from 'react-native';
+import React from "react";
+import { View, ScrollView, Text, StyleSheet } from 'react-native';
 import Input from '../inputs/input';
 import { Registry } from '../registration/registry'
 import { SelectAction } from '../actions'
 import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config'
+import { InputContextConsumer } from '../../utils/context';
+
 
 
 export class Container extends React.Component {
@@ -26,11 +28,12 @@ export class Container extends React.Component {
     /**
      * @description Parse the given payload and render the card accordingly
      */
-    parsePayload = (containerJson,onParseError) => {
+    parsePayload = (containerJson, onParseError) => {
         if (!this.payload)
             return this.renderedElement;
         // parse elements
-        this.renderedElement.push(Registry.getManager().parseRegistryComponents(containerJson.items));
+
+        this.renderedElement.push(Registry.getManager().parseRegistryComponents(containerJson.items, onParseError));
         return this.renderedElement;
     }
 
@@ -41,23 +44,29 @@ export class Container extends React.Component {
         // TODO: verticalContentAlignment property is not considered for now as the container size is determined by its content.
         var containerContent = (
             <InputContextConsumer>
-                {({ onParseError }) => {
-                    this.onParseError = onParseError;
+                {({ onParseError }) =>
                     (
                         <View style={[styles.container, backgroundStyle]}>
                             <Input json={containerJson} style={backgroundStyle}>
                                 <ScrollView style={backgroundStyle}>
-                                    {this.parsePayload(containerJson,onParseError)}
+                                    {this.parsePayload(containerJson, onParseError)}
                                 </ScrollView>
                             </Input>
                         </View>
                     )
-                }}
+                }
             </InputContextConsumer>
 
         );
-
-        if ((containerJson.selectAction === undefined) || (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
+        if ((containerJson.selectAction === undefined)
+            || (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
+            if ((HostConfigManager.getHostConfig().supportsInteractivity === false)) {
+                let error = {
+                    "error": Error.ValidationError.InteractivityNotAllowed,
+                    "message": `Interactivity is not allowed based on schema`
+                };
+                onParseError(error);
+            }
             return containerContent;
         } else {
             return <SelectAction selectActionData={containerJson.selectAction}>
@@ -67,10 +76,10 @@ export class Container extends React.Component {
     }
 
     render() {
-       
+
 
         let containerRender = this.internalRenderer(this.props.json);
-        
+
         return containerRender;
     }
 };

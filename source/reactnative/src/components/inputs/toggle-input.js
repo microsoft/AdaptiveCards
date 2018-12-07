@@ -48,6 +48,12 @@ export class ToggleInput extends React.Component {
     render() {
 
         if(HostConfigManager.getHostConfig().supportsInteractivity === false){
+            let error = {
+                "error": Error.ValidationError.InteractivityNotAllowed,
+                "message": `Interactivity is not allowed based on schema`
+            };
+            onParseError(error);
+            
             return null;
         }
 

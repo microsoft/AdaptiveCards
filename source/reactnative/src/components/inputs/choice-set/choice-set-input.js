@@ -52,14 +52,14 @@ export class ChoiceSetInput extends React.Component {
         this.style = this.payload.style;
         this.choices = this.payload.choices;
     }
-    
+
     /**
      * @description Fetches the value from the selected picker option
      * @param {string} value 
      */
     getPickerSelectedValue = (value, addInputItem) => {
         if (Utils.isNullOrEmpty(value))
-        return Constants.EmptyString
+            return Constants.EmptyString
         let choiceName = this.choices.find(choice => choice.value === value);
         addInputItem(this.id, value);
         return choiceName.title
@@ -71,17 +71,17 @@ export class ChoiceSetInput extends React.Component {
      * @param {array} choiceArray
      */
     getRadioButtonIndex = (value, choiceArray, addInputItem) => {
-            if (Utils.isNullOrEmpty(value)) {
-                return -1
-            }
-            addInputItem(this.id, value);
+        if (Utils.isNullOrEmpty(value)) {
+            return -1
+        }
+        addInputItem(this.id, value);
 
-        for(var i = 0; i < choiceArray.length; i++) {
-            if(choiceArray[i]["value"] === value) {
+        for (var i = 0; i < choiceArray.length; i++) {
+            if (choiceArray[i]["value"] === value) {
                 return i;
             }
         }
-        return -1; 
+        return -1;
     }
 
     /**
@@ -116,23 +116,23 @@ export class ChoiceSetInput extends React.Component {
     renderPickerComponent(addInputItem) {
         return (
             <View style={styles.containerView}>
-                <TouchableOpacity 
-                  activeOpacity={1}
-                  onPress={onPress}>
+                <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={onPress}>
                     <View style={styles.touchView}>
-                          <Text
-                          style={[styles.text,this.styleConfig.fontConfig]}
-                          >
-                          {this.state.selectedPickerValue == undefined ?
-                              this.getPickerSelectedValue(this.value, addInputItem) :
-                              this.getPickerSelectedValue(this.state.selectedPickerValue,
-                                 addInputItem)
-                          }
-                          </Text>
-                          <Image
-                             style={styles.button}
+                        <Text
+                            style={[styles.text, this.styleConfig.fontConfig]}
+                        >
+                            {this.state.selectedPickerValue == undefined ?
+                                this.getPickerSelectedValue(this.value, addInputItem) :
+                                this.getPickerSelectedValue(this.state.selectedPickerValue,
+                                    addInputItem)
+                            }
+                        </Text>
+                        <Image
+                            style={styles.button}
                             source={require(DropDownImage)}
-                          />
+                        />
                     </View>
                 </TouchableOpacity>
                 {this.state.isPickerSelected &&
@@ -141,10 +141,11 @@ export class ChoiceSetInput extends React.Component {
                         selectedValue={this.state.selectedPickerValue}
                         style={styles.pickerContainer}
                         onValueChange={
-                            (itemValue, itemIndex) => { this.setState({
-                                selectedPickerValue: itemValue,
-                            })
-                            addInputItem(this.id, itemValue);
+                            (itemValue, itemIndex) => {
+                                this.setState({
+                                    selectedPickerValue: itemValue,
+                                })
+                                addInputItem(this.id, itemValue);
                             }}>
                         {this.choices.map((item, key) => (
                             <Picker.Item
@@ -155,14 +156,14 @@ export class ChoiceSetInput extends React.Component {
                     </Picker>
                 }
             </View>
-            )
+        )
     }
 
     /**
      * @description Renders Checkboxes component as per the json
      */
     renderCheckBoxComponent(addInputItem) {
-        return  (
+        return (
             <View style={styles.container}>
                 {this.choices.map((item, index) => (
                     <Checkbox
@@ -171,19 +172,19 @@ export class ChoiceSetInput extends React.Component {
                         key={index}
                         isRadioButtonType={true}
                         index={index}
-                        labelStyle={[styles.labelStyle,this.styleConfig.fontConfig]}
+                        labelStyle={[styles.labelStyle, this.styleConfig.fontConfig]}
                         iconSize={28}
                         checked={this.state.activeIndex == undefined ?
                             index == this.getRadioButtonIndex(this.value,
-                                 this.choices, addInputItem) :
+                                this.choices, addInputItem) :
                             index == this.state.activeIndex}
-                        onChange={() =>  {
-                        this.setState({ activeIndex: index })
-                        addInputItem(this.id, item.value);
-                        }} 
+                        onChange={() => {
+                            this.setState({ activeIndex: index })
+                            addInputItem(this.id, item.value);
+                        }}
                     />
                 ))}
-        </View>)
+            </View>)
     }
 
     /**
@@ -203,7 +204,7 @@ export class ChoiceSetInput extends React.Component {
                         iconSize={28}
                         checked={this.state.checkedValues == undefined ?
                             this.setInitialCheckedValues(this.value,
-                                 addInputItem).includes(item.value) :
+                                addInputItem).includes(item.value) :
                             this.getCheckedIndexes(this.state.checkedValues).includes(item.value)}
                         onChange={() => {
                             let checkedArray = (this.state.checkedValues == undefined) ?
@@ -216,10 +217,10 @@ export class ChoiceSetInput extends React.Component {
                                 checkedArray.push(item.value)
                             }
                             let newValue = checkedArray.sort().join()
-                            this.setState({checkedValues: newValue})        
+                            this.setState({ checkedValues: newValue })
                             addInputItem(this.id, newValue);
-                            }
-                        } 
+                        }
+                        }
                     />
                 ))}
             </View>
@@ -228,10 +229,15 @@ export class ChoiceSetInput extends React.Component {
 
     render() {
 
-        if(HostConfigManager.getHostConfig().supportsInteractivity === false){
+        if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
+            let error = {
+                "error": Error.ValidationError.InteractivityNotAllowed,
+                "message": `Interactivity is not allowed based on schema`
+            };
+            onParseError(error);
             return null;
         }
-        
+
         this.parseHostConfig();
 
         let { id,
@@ -247,18 +253,18 @@ export class ChoiceSetInput extends React.Component {
                 isPickerSelected: !this.state.isPickerSelected
             })
         }
-        
+
         return (
             <InputContextConsumer>
-             {({ addInputItem }) => (
-                <Input json={this.payload} style={styles.containerView}>
-                  {!isMultiSelect ?
-                      ((style == CompactStyle || style == undefined) ? 
-                      this.renderPickerComponent(addInputItem) :
-                      this.renderCheckBoxComponent(addInputItem)) :
-                     this.renderRadioButtonComponent(addInputItem)
-                  }
-                </Input>)}
+                {({ addInputItem }) => (
+                    <Input json={this.payload} style={styles.containerView}>
+                        {!isMultiSelect ?
+                            ((style == CompactStyle || style == undefined) ?
+                                this.renderPickerComponent(addInputItem) :
+                                this.renderCheckBoxComponent(addInputItem)) :
+                            this.renderRadioButtonComponent(addInputItem)
+                        }
+                    </Input>)}
             </InputContextConsumer>
         );
     }

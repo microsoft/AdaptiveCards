@@ -4,7 +4,7 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#inputtime
  */
 
- import React from 'react';
+import React from 'react';
 import {
     View, StyleSheet, TouchableOpacity, DatePickerIOS, TimePickerAndroid,
     Platform, TextInput, Modal, Button, ViewPropTypes
@@ -21,7 +21,7 @@ export class TimeInput extends React.Component {
 
     constructor(props) {
         super(props);
-        
+
         this.payload = props.json;
         this.id = Constants.EmptyString;
         this.placeHolder = Constants.EmptyString;
@@ -134,7 +134,13 @@ export class TimeInput extends React.Component {
 
     render() {
 
-        if(HostConfigManager.getHostConfig().supportsInteractivity === false){
+        if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
+            let error = {
+                "error": Error.ValidationError.InteractivityNotAllowed,
+                "message": `Interactivity is not allowed based on schema`
+            };
+            onParseError(error);
+
             return null;
         }
 
@@ -157,47 +163,47 @@ export class TimeInput extends React.Component {
         return (
             <InputContextConsumer>
                 {({ addInputItem }) => (
-                 <Input json={this.payload}>
-                    <TouchableOpacity style={styles.inputWrapper} onPress={this.showTimePicker}>
-                        {/* added extra view to fix touch event in ios . */}
-                        <View pointerEvents='none'>
-                            <TextInput
-                                style={[styles.input,this.styleConfig.fontConfig]}
-                                autoCapitalize={Constants.NoneString}
-                                autoCorrect={false}
-                                placeholder={placeholder}
-                                underlineColorAndroid={Constants.TransparentString}
-                                value={this.state.value}>
-                                {addInputItem(this.id, this.state.value)}
-                            </TextInput>
-                        </View>
-                    </TouchableOpacity>
-                    <Modal
-                        animationType='slide'
-                        transparent
-                        visible={this.state.modalVisible}
-                        onRequestClose={this.handleModalClose}>
-                        <View style={[styles.overlay, modalOverlayStyle]}>
-                            <View style={[styles.modal, modalStyle]}>
-                                <View style={[styles.modalBtnContainer, modalBtnContainer]}>
-                                    <Button
-                                        style={[modalButtonStyle]}
-                                        title={modalButtonText}
-                                        onPress={this.handleModalClose}
+                    <Input json={this.payload}>
+                        <TouchableOpacity style={styles.inputWrapper} onPress={this.showTimePicker}>
+                            {/* added extra view to fix touch event in ios . */}
+                            <View pointerEvents='none'>
+                                <TextInput
+                                    style={[styles.input, this.styleConfig.fontConfig]}
+                                    autoCapitalize={Constants.NoneString}
+                                    autoCorrect={false}
+                                    placeholder={placeholder}
+                                    underlineColorAndroid={Constants.TransparentString}
+                                    value={this.state.value}>
+                                    {addInputItem(this.id, this.state.value)}
+                                </TextInput>
+                            </View>
+                        </TouchableOpacity>
+                        <Modal
+                            animationType='slide'
+                            transparent
+                            visible={this.state.modalVisible}
+                            onRequestClose={this.handleModalClose}>
+                            <View style={[styles.overlay, modalOverlayStyle]}>
+                                <View style={[styles.modal, modalStyle]}>
+                                    <View style={[styles.modalBtnContainer, modalBtnContainer]}>
+                                        <Button
+                                            style={[modalButtonStyle]}
+                                            title={modalButtonText}
+                                            onPress={this.handleModalClose}
+                                        />
+                                    </View>
+                                    <DatePickerIOS
+                                        mode={'time'}
+                                        format={"HH:mm"}
+                                        minDate={this.state.minTime}
+                                        maxDate={this.state.maxTime}
+                                        date={this.state.chosenTime || new Date()}
+                                        onDateChange={this.handleTimeChange}
                                     />
                                 </View>
-                                <DatePickerIOS
-                                    mode={'time'}
-                                    format={"HH:mm"}
-                                    minDate={this.state.minTime}
-                                    maxDate={this.state.maxTime}
-                                    date={this.state.chosenTime || new Date()}
-                                    onDateChange={this.handleTimeChange}
-                                />
                             </View>
-                        </View>
-                    </Modal>
-                 </Input>)}
+                        </Modal>
+                    </Input>)}
             </InputContextConsumer>
         );
     }
@@ -226,10 +232,10 @@ const styles = StyleSheet.create({
         alignItems: Constants.CenterString,
         justifyContent: Constants.FlexEnd
     },
-    modal: { 
-        backgroundColor: Constants.WhiteColor, 
+    modal: {
+        backgroundColor: Constants.WhiteColor,
         height: 260,
-        width: Constants.FullWidth 
+        width: Constants.FullWidth
     },
     modalBtnContainer: {
         width: Constants.FullWidth,

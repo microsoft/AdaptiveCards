@@ -5,7 +5,7 @@
  */
 
 import React, { PureComponent } from "react";
-import { View, ScrollView, Text, StyleSheet, Button, Platform } from 'react-native';
+import {StyleSheet } from 'react-native';
 import { Registry } from '../registration/registry'
 import Input from '../inputs/input';
 import * as Constants from '../../utils/constants';
@@ -42,7 +42,7 @@ export class ImageSet extends PureComponent {
                 this.renderedElement.push(<Element json={element} 
                     key={`ELEMENT-${this.generateNumber()}`} />);
             } else {
-                let error = {"type":"ParseError", "error": "Unknown Type encountered"};        
+                let error = { "error": Error.ValidationError.UnknownElementType, "message": `Unknown Type ${element.type} encountered` };
                 onParseError(error);
               return null;
             }

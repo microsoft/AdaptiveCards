@@ -50,14 +50,7 @@ export default class Renderer extends React.Component {
     }
 
     onParseError= (errorObject) => {
-            Alert.alert(
-                'Error',
-                JSON.stringify(errorObject.error),
-                [
-                    { text: "Okay", onPress: () => console.log('OK Pressed') },
-                ],
-                { cancelable: false }
-            )
+           console.log("Error", JSON.stringify(errorObject.message) );
         
     }
 
