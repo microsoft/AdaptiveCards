@@ -136,7 +136,6 @@ export class Registry {
                  */
                 let isValid = true;
                 for (var key in this.validateSchemaForType(element.type)) {
-                    console.log("TYPE::::::",element.type);
                     if (!element.hasOwnProperty(key)) {
                         let error = { "error": Enums.ValidationError.PropertyCantBeNull, "message": `Required property ${key} for ${element.type} is missing` };
                         onParseError(error);
@@ -144,8 +143,6 @@ export class Registry {
                     }
                 }
                 if (isValid) {
-                    console.log("TYPE PUSHED::::::",element.type);
-
                     parsedElement.push(<Element json={element} key={`${element.type}-${index}-${this.generateNumber()}`} />);
                 }
             } else {
