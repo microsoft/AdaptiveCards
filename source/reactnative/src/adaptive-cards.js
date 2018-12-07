@@ -4,7 +4,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView, Text } from 'react-native';
 
 import { Registry } from './components/registration/registry';
 import { InputContextProvider } from './utils/context';
@@ -15,6 +15,7 @@ export default class AdaptiveCards extends React.Component {
 
   // Input elements with its identifier and value
   inputArray = {};
+  version = "1.0"; // client supported version
 
   constructor(props) {
     super(props);
@@ -80,14 +81,43 @@ export default class AdaptiveCards extends React.Component {
     const onExecuteAction = this.props.onExecuteAction;
     const isTransparent = this.payload.backgroundImage ? true : false;
 
-    return (
+    // version check
+    if (!this.isSupportedVersion()) {
+      const message = this.payload.fallbackText || "We're sorry, this card couldn't be displayed";
+      return (
+        <Text>{message}</Text>
+      )
+    }
 
+    return (
       <InputContextProvider value={{ addInputItem, inputArray, onExecuteAction, isTransparent }}>
         {
           this.getAdaptiveCardConent()
         }
       </InputContextProvider>
     );
+  }
+
+  /**
+   * Check whether the payload schema version is supported by client.
+   * @return {boolean} - version supported or not
+   */
+  isSupportedVersion = () => {
+    if (!this.payload.version)
+      return false;
+
+    const payloadVersion = Utils.parseVersion(this.payload.version);
+    const clientVersion = Utils.parseVersion(this.version);
+
+    if (clientVersion.major != payloadVersion.major) {
+      return payloadVersion.major < clientVersion.major;
+    }
+    else if (clientVersion.minor != payloadVersion.minor) {
+      return payloadVersion.minor < clientVersion.minor;
+    }
+    else {
+      return true;
+    }
   }
 }
 
