@@ -14,10 +14,4 @@
     return self.frame.size;
 }
 
-- (CGSize)contentSize
-{
-    CGSize contentsize = [self.subviews[0] intrinsicContentSize];
-    return contentsize;
-}
-
 @end
