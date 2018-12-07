@@ -102,7 +102,7 @@ function processText(text) {
       if (wordStyle.isHyperLink) {
         console.log("isHyperLink", wordStyle.isHyperLink);
         const link = wordStyle.hyperLink;
-        text = <Text style={wordStyle.style}
+        text = <Text style={wordStyle.style} key={`text_${index}`}
           onPress={() => Linking.openURL(link)}>
           {eachWord + ' '}
         </Text>
