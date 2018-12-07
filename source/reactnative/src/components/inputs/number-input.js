@@ -6,9 +6,11 @@
 
 import React, { Component } from "react";
 import { StyleSheet, TextInput } from 'react-native';
+
 import { DismissKeyboardView } from '../containers/dismiss-keyboard';
 import { InputContextConsumer } from '../../utils/context'
 import Input from './input';
+import * as Enums from '../../utils/enums';
 import * as Constants from '../../utils/constants';
 import { StyleManager } from "../../styles/style-config";
 import { HostConfigManager } from '../../utils/host-config'
@@ -41,11 +43,6 @@ export class NumberInput extends Component {
     render() {
 
         if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
-            let error = {
-                "error": Error.ValidationError.InteractivityNotAllowed,
-                "message": `Interactivity is not allowed based on schema`
-            };
-            onParseError(error);
             return null;
         }
 
@@ -55,7 +52,6 @@ export class NumberInput extends Component {
             id,
             type,
             placeholder,
-            maxLength,
             keyboardType
         } = this;
 

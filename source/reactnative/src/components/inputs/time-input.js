@@ -6,9 +6,18 @@
 
 import React from 'react';
 import {
-    View, StyleSheet, TouchableOpacity, DatePickerIOS, TimePickerAndroid,
-    Platform, TextInput, Modal, Button, ViewPropTypes
+    View,
+    StyleSheet,
+    TouchableOpacity,
+    DatePickerIOS,
+    TimePickerAndroid,
+    Platform,
+    TextInput,
+    Modal,
+    Button,
+    ViewPropTypes
 } from 'react-native';
+
 import Input from './input';
 import { StyleManager } from '../../styles/style-config';
 import { InputContextConsumer } from '../../utils/context';
@@ -135,12 +144,6 @@ export class TimeInput extends React.Component {
     render() {
 
         if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
-            let error = {
-                "error": Error.ValidationError.InteractivityNotAllowed,
-                "message": `Interactivity is not allowed based on schema`
-            };
-            onParseError(error);
-
             return null;
         }
 

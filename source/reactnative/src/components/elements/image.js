@@ -9,6 +9,7 @@ import {
     StyleSheet,
     Image,
 } from "react-native";
+
 import { HostConfigManager } from "../../utils/host-config";
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
@@ -287,13 +288,6 @@ export class Img extends Component {
 
         if ((this.payload.selectAction === undefined)
             || (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
-            if ((HostConfigManager.getHostConfig().supportsInteractivity === false)) {
-                let error = {
-                    "error": Error.ValidationError.InteractivityNotAllowed,
-                    "message": `Interactivity is not allowed based on schema`
-                };
-                onParseError(error);
-            }
             return containerContent;
         } else {
             return <SelectAction selectActionData={this.payload.selectAction}>

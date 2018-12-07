@@ -6,6 +6,7 @@
 
 import React from "react";
 import { StyleSheet, TextInput } from 'react-native';
+
 import Input from './input';
 import { StyleManager } from "../../styles/style-config";
 import * as Utils from '../../utils/util';
@@ -52,12 +53,6 @@ export class InputText extends React.Component {
     render() {
 
         if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
-            let error = {
-                "error": Error.ValidationError.InteractivityNotAllowed,
-                "message": `Interactivity is not allowed based on schema`
-            };
-            onParseError(error);
-
             return null;
         }
 

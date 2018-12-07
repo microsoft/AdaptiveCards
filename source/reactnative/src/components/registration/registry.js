@@ -1,8 +1,16 @@
-import { DateInput, TimeInput, ToggleInput, NumberInput, ChoiceSetInput, InputText, } from '../inputs';
+import React from 'react';
+
+import {
+    DateInput,
+    TimeInput,
+    ToggleInput,
+    NumberInput,
+    ChoiceSetInput,
+    InputText,
+} from '../inputs';
 import { TextBlock, Media, Img } from '../elements';
 import { Container, ColumnSet, Column, FactSet, ImageSet } from '../containers';
 import { ActionButton } from '../actions';
-import React from 'react';
 import * as Enums from '../../utils/enums';
 import * as Utils from '../../utils/util';
 
@@ -66,17 +74,17 @@ export class Registry {
     }
 
     /**
-   * @description Register a required property for custom component
+   * @description Register a required property for custom/overriding components
    * @param {string} key - Type of the Component
    * @param {requiredProps} component - Required properties of the custom component
    */
-    registerRequiredProperty = (key, requiredProps) => {
+    registerRequiredPropertySchema = (key, requiredProps) => {
         if (this.ElementRegistry.hasOwnProperty(key) && !Utils.isNullOrEmpty(requiredProps)) {
-            this.RequiredPropertyRegistry[key] = requiredProps;
+            this.RequiredPropertySchema[key] = requiredProps;
 
-        }
+        } 
     }
-    RequiredPropertyRegistry = {
+    RequiredPropertySchema = {
         'Container': { 'type': 'Container', 'items': 'Array' },
         'ColumnSet': { 'type': 'ColumnSet' },
         'Column': { 'items': 'Array' },
@@ -100,13 +108,17 @@ export class Registry {
         'Action.OpenUrl': { 'type': 'Action.ShowCard', 'url': 'String' }
     };
 
+
+
+
     /**
-        * @description Get then component associated for the given element type
+        * @description validate the schema for the given element type
         * @param {string} type - Type of the element
         */
-       validateSchemaForType = (type) => {
-        return this.RequiredPropertyRegistry[type];
+    validateSchemaForType = (type) => {
+        return this.RequiredPropertySchema[type];
     }
+
 
     /**
      * @description Parse an Array of components
@@ -124,6 +136,7 @@ export class Registry {
                  */
                 let isValid = true;
                 for (var key in this.validateSchemaForType(element.type)) {
+                    console.log("TYPE::::::",element.type);
                     if (!element.hasOwnProperty(key)) {
                         let error = { "error": Enums.ValidationError.PropertyCantBeNull, "message": `Required property ${key} for ${element.type} is missing` };
                         onParseError(error);
@@ -131,10 +144,12 @@ export class Registry {
                     }
                 }
                 if (isValid) {
+                    console.log("TYPE PUSHED::::::",element.type);
+
                     parsedElement.push(<Element json={element} key={`${element.type}-${index}-${this.generateNumber()}`} />);
                 }
             } else {
-                let error = { "error": Error.ValidationError.UnknownElementType, "message": `Unknown Type ${element.type} encountered` };
+                let error = { "error": Enums.ValidationError.UnknownElementType, "message": `Unknown Type ${element.type} encountered` };
                 onParseError(error);
                 return null;
             }

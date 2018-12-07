@@ -5,7 +5,8 @@
  */
 
 import React from "react";
-import { View, ScrollView, Text, StyleSheet } from 'react-native';
+import { View, ScrollView, StyleSheet } from 'react-native';
+
 import Input from '../inputs/input';
 import { Registry } from '../registration/registry'
 import { SelectAction } from '../actions'
@@ -60,13 +61,6 @@ export class Container extends React.Component {
         );
         if ((containerJson.selectAction === undefined)
             || (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
-            if ((HostConfigManager.getHostConfig().supportsInteractivity === false)) {
-                let error = {
-                    "error": Error.ValidationError.InteractivityNotAllowed,
-                    "message": `Interactivity is not allowed based on schema`
-                };
-                onParseError(error);
-            }
             return containerContent;
         } else {
             return <SelectAction selectActionData={containerJson.selectAction}>

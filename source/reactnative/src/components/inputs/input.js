@@ -9,6 +9,7 @@
 
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 import { HostConfigManager } from "../../utils/host-config";
@@ -24,7 +25,7 @@ export default class Input extends React.Component {
         const computedStyles = this.getComputedStyles();
 
         return (
-            <View style={computedStyles} onLayout ={this.props.onPageLayout}>
+            <View style={computedStyles} onLayout={this.props.onPageLayout}>
                 {this.props.children}
             </View>
         )
@@ -62,9 +63,9 @@ export default class Input extends React.Component {
                 payload.height,
                 Enums.Height.Auto);
             const height = this.hostConfig.getEffectiveHeight(heightEnumValue);
-            computedStyles.push({ flex: height});
+            computedStyles.push({ flex: height });
         }
-       
+
         return computedStyles;
     }
 }

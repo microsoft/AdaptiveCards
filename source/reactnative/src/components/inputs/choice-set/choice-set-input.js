@@ -5,7 +5,15 @@
  */
 
 import React from 'react';
-import { StyleSheet, Text, View, Picker, TouchableOpacity, Image } from 'react-native';
+import {
+    StyleSheet,
+    Text,
+    View,
+    Picker,
+    TouchableOpacity,
+    Image
+} from 'react-native';
+
 import Input from '../input';
 import Checkbox from './check-box';
 import { InputContextConsumer } from '../../../utils/context';
@@ -230,11 +238,6 @@ export class ChoiceSetInput extends React.Component {
     render() {
 
         if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
-            let error = {
-                "error": Error.ValidationError.InteractivityNotAllowed,
-                "message": `Interactivity is not allowed based on schema`
-            };
-            onParseError(error);
             return null;
         }
 

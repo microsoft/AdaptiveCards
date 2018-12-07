@@ -5,7 +5,8 @@
  */
 
 import React, { Component } from "react";
-import { Text, View, StyleSheet, Image, Platform, Linking, Modal, Button, WebView, Alert } from "react-native";
+import { Text, View, StyleSheet, Image, Platform, Modal, Button, WebView, Alert } from "react-native";
+
 import { StyleManager } from '../../styles/style-config'
 import * as Utils from '../../utils/util';
 import { InputContextConsumer } from '../../utils/context'
@@ -39,11 +40,6 @@ export class ActionButton extends Component {
 
     render() {
         if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
-            let error = {
-                "error": Error.ValidationError.InteractivityNotAllowed,
-                "message": `Interactivity is not allowed based on schema`
-            };
-            onParseError(error);
             return null;
         }
         this.parseHostConfig();

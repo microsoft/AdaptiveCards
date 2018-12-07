@@ -26,8 +26,8 @@
     {
       "type": "TextBlock",
       "text": "Snooze for",
-      "spacing": "small"
-    },
+      "spacing": "small" 
+    }, 
     {
       "type": "Input.ChoiceSet",
       "id": "snooze",

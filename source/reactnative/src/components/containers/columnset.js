@@ -6,6 +6,7 @@
 
 import React, { PureComponent } from "react";
 import { View, StyleSheet } from 'react-native';
+
 import { SelectAction } from '../actions';
 import Input from '../inputs/input';
 import { Column } from "./column";
@@ -67,13 +68,6 @@ export class ColumnSet extends PureComponent {
 
         if ((columnSetJson.selectAction === undefined) ||
             (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
-            if ((HostConfigManager.getHostConfig().supportsInteractivity === false)) {
-                let error = {
-                    "error": Error.ValidationError.InteractivityNotAllowed,
-                    "message": `Interactivity is not allowed based on schema`
-                };
-                onParseError(error);
-            }
             return columsetContent;
         } else {
             return <SelectAction selectActionData={columnSetJson.selectAction}>

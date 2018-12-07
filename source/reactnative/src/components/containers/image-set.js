@@ -5,7 +5,8 @@
  */
 
 import React, { PureComponent } from "react";
-import {StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
+
 import { Registry } from '../registration/registry'
 import Input from '../inputs/input';
 import * as Constants from '../../utils/constants';
@@ -15,10 +16,10 @@ const SizeKey = "size";
 const ImageSetKey = "fromImageSet";
 
 export class ImageSet extends PureComponent {
-    
+
     constructor(props) {
         super(props);
-        
+
         this.renderedElement = [];
         this.payload = props.json;
     }
@@ -27,7 +28,7 @@ export class ImageSet extends PureComponent {
      * 
      * @description Parse the given payload and render the card accordingly
      */
-    parsePayload = (imageSetJson,onParseError) => {
+    parsePayload = (imageSetJson, onParseError) => {
         if (!this.payload)
             return this.renderedElement;
 
@@ -39,12 +40,12 @@ export class ImageSet extends PureComponent {
             element[ImageSetKey] = true;
             const Element = register.getComponentOfType(element.type);
             if (Element) {
-                this.renderedElement.push(<Element json={element} 
+                this.renderedElement.push(<Element json={element}
                     key={`ELEMENT-${this.generateNumber()}`} />);
             } else {
-                let error = { "error": Error.ValidationError.UnknownElementType, "message": `Unknown Type ${element.type} encountered` };
+                let error = { "error": Enums.ValidationError.UnknownElementType, "message": `Unknown Type ${element.type} encountered` };
                 onParseError(error);
-              return null;
+                return null;
             }
         });
         return this.renderedElement;
@@ -62,9 +63,9 @@ export class ImageSet extends PureComponent {
 
     internalRenderer(imageSetJson) {
         return (
-                <Input json={imageSetJson} style={[styles.container, styles.defaultBGStyle]}>
-                    {this.parsePayload(imageSetJson)}
-                </Input>
+            <Input json={imageSetJson} style={[styles.container, styles.defaultBGStyle]}>
+                {this.parsePayload(imageSetJson)}
+            </Input>
         );
     }
 

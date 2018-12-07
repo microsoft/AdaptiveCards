@@ -5,7 +5,8 @@
  */
 
 import React, { Component } from "react";
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+
 import { Registry } from '../registration/registry'
 import * as Utils from '../../utils/util';
 import * as Constants from '../../utils/constants';
@@ -28,7 +29,7 @@ export class Column extends Component {
             return renderedElement;
         // parse elements
         if (!Utils.isNullOrEmpty(this.payload.items)) {
-            renderedElement.push(Registry.getManager().parseRegistryComponents(this.payload.items));
+            renderedElement.push(Registry.getManager().parseRegistryComponents(this.payload.items, onParseError));
         }
         return renderedElement;
     }
@@ -92,13 +93,6 @@ export class Column extends Component {
 
         if ((this.payload.selectAction === undefined) ||
             (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
-            if ((HostConfigManager.getHostConfig().supportsInteractivity === false)) {
-                let error = {
-                    "error": Error.ValidationError.InteractivityNotAllowed,
-                    "message": `Interactivity is not allowed based on schema`
-                };
-                onParseError(error);
-            }
             return columnContent;
         } else {
             return <View style={containerViewStyle}>

@@ -4,11 +4,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-<<<<<<< HEAD
-import { StyleSheet, View, ScrollView,ImageBackground } from 'react-native';
-=======
-import { StyleSheet, View, ScrollView, Text } from 'react-native';
->>>>>>> b23228a1467bff50ee7acda88bcc9efbc7eb3217
+import { StyleSheet, Text, View, ScrollView,ImageBackground } from 'react-native';
 
 import { Registry } from './components/registration/registry';
 import { InputContextProvider } from './utils/context';
