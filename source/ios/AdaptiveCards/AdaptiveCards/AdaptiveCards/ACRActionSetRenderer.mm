@@ -79,12 +79,6 @@
         contentWidth = maxWidth;
     }
     childview.frame = CGRectMake(0, 0, contentWidth, contentHeight);
-    childview.translatesAutoresizingMaskIntoConstraints = NO;
-
-    
-    [NSLayoutConstraint constraintWithItem:childview attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:contentWidth].active = YES;
-    [NSLayoutConstraint constraintWithItem:childview attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:contentHeight].active = YES;
-    
     containingView.frame = CGRectMake(0, 0, superview.frame.size.width, contentHeight + spacing);
     containingView.translatesAutoresizingMaskIntoConstraints = NO;
     [containingView addSubview:childview];
@@ -92,17 +86,17 @@
     [NSLayoutConstraint constraintWithItem:containingView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:childview attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
     [NSLayoutConstraint constraintWithItem:containingView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:childview attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
     [NSLayoutConstraint constraintWithItem:containingView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:childview attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
-    //NSLayoutConstraint *hConstraint = [NSLayoutConstraint constraintWithItem:childview attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:containingView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0];
-    //NSLayoutConstraint *vConstraint = [NSLayoutConstraint constraintWithItem:childview attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:containingView attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0];
+    NSLayoutConstraint *hConstraint = [NSLayoutConstraint constraintWithItem:childview attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:containingView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0];
+    NSLayoutConstraint *vConstraint = [NSLayoutConstraint constraintWithItem:childview attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:containingView attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0];
 
-    //hConstraint.active = YES;
-    //vConstraint.active = YES;
+    hConstraint.active = YES;
+    vConstraint.active = YES;
 
     if(ActionsOrientation::Horizontal == [config getHostConfig]->GetActions().actionsOrientation){
-        //hConstraint.priority = UILayoutPriorityDefaultLow;
-        //if(contentWidth > superview.frame.size.width){
+        hConstraint.priority = UILayoutPriorityDefaultLow;
+        if(contentWidth > superview.frame.size.width){
             containingView.showsHorizontalScrollIndicator = YES;
-        //} else
+        } else
         {
             if([config getHostConfig]->GetActions().actionAlignment == ActionAlignment::Stretch){
                 [NSLayoutConstraint constraintWithItem:containingView attribute:NSLayoutAttributeWidth
@@ -111,7 +105,7 @@
             }
         }
     } else {
-        //vConstraint.priority = UILayoutPriorityDefaultLow;
+        vConstraint.priority = UILayoutPriorityDefaultLow;
     }
     return containingView;
 }

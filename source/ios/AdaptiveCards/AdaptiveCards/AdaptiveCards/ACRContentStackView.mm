@@ -16,8 +16,7 @@ using namespace AdaptiveCards;
     NSMutableArray* _targets;
     NSMutableArray<ACRShowCardTarget *>* _showcardTargets;
     ACRContainerStyle _style;
-    NSLayoutConstraint *widthconstraint;
-    NSLayoutConstraint *heightconstraint;
+    NSArray<NSLayoutConstraint *>* _widthconstraint;
 }
 
 - (instancetype)initWithStyle:(ACRContainerStyle)style
@@ -186,15 +185,15 @@ using namespace AdaptiveCards;
     NSString *verString = [[NSString alloc] initWithFormat:@"V:|-(%u@%u)-[_stackView]-(%u@%u)-|",
                            padding, priority, padding, priority];
     NSDictionary *dictionary = NSDictionaryOfVariableBindings(_stackView);
-    NSArray *horzConst = [NSLayoutConstraint constraintsWithVisualFormat:horString
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:dictionary];
+    _widthconstraint = [NSLayoutConstraint constraintsWithVisualFormat:horString
+                                                                options:0
+                                                                metrics:nil
+                                                                  views:dictionary];
     NSArray *vertConst = [NSLayoutConstraint constraintsWithVisualFormat:verString
                                                                  options:0
                                                                  metrics:nil
                                                                    views:dictionary];
-    [self addConstraints:horzConst];
+    [self addConstraints:_widthconstraint];
     [self addConstraints:vertConst];
 }
 
@@ -205,7 +204,7 @@ using namespace AdaptiveCards;
 
 - (void)layoutSubviews
 {
-    [super layoutSubviews];
+    [super layoutSubviews];    
 
     if (_isActionSet) {
         float accumulatedWidth = 0, accumulatedHeight = 0, spacing = self.stackView.spacing, maxWidth = 0, maxHeight = 0;
@@ -225,20 +224,12 @@ using namespace AdaptiveCards;
             contentHeight += (self.stackView.subviews.count - 1) * spacing;
             contentWidth = maxWidth;
         }
-        
-        if(widthconstraint) {
-            [self removeConstraint:widthconstraint];
+
+        self.frame = CGRectMake(0, 0, contentWidth, contentHeight);
+        ((UIScrollView *)self.superview).contentSize = self.frame.size;
+        if (self.frame.size.width > self.superview.frame.size.width) {
+            [self removeConstraints:_widthconstraint];
         }
-        widthconstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:contentWidth];
-        widthconstraint.active = YES;
-        widthconstraint.priority = UILayoutPriorityDefaultHigh;
-        
-        if(heightconstraint) {
-            [self removeConstraint:heightconstraint];
-        }
-        heightconstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:contentHeight];
-        heightconstraint.active = YES;
-        heightconstraint.priority = UILayoutPriorityDefaultHigh;
     }
 }
 
