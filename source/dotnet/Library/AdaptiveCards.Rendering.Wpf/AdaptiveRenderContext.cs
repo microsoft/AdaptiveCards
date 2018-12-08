@@ -174,6 +174,11 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 var rendered = renderer.Invoke(element, this);
 
+                if (!String.IsNullOrEmpty(element.Id))
+                {
+                    rendered.Name = element.Id;
+                }
+
                 // Decrement card depth after inner card is rendered
                 if (element is AdaptiveCard)
                 {

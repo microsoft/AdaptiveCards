@@ -49,7 +49,8 @@ namespace AdaptiveCards
                 [AdaptiveSubmitAction.TypeName] = typeof(AdaptiveSubmitAction),
                 [AdaptiveOpenUrlAction.TypeName] = typeof(AdaptiveOpenUrlAction),
                 [AdaptiveShowCardAction.TypeName] = typeof(AdaptiveShowCardAction),
-                [AdaptiveMedia.TypeName] = typeof(AdaptiveMedia)
+                [AdaptiveMedia.TypeName] = typeof(AdaptiveMedia),
+                [AdaptiveToggleVisibilityAction.TypeName] = typeof(AdaptiveToggleVisibilityAction)
             };
             return types;
         });

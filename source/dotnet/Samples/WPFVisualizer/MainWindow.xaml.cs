@@ -153,6 +153,43 @@ namespace WpfVisualizer
 
                 MessageBox.Show(this, JsonConvert.SerializeObject(inputs, Formatting.Indented), "SubmitAction");
             }
+            else if(e.Action is AdaptiveToggleVisibilityAction toggleVisibilityAction)
+            {
+                foreach (object targetElement in toggleVisibilityAction.TargetElements)
+                {
+                    string targetElementId = "";
+                    bool? targetElementIsVisible = null;
+
+                    if (targetElement is string targetElementString)
+                    {
+                        targetElementId = targetElementString;
+                    }
+                    else if (targetElement is AdaptiveTargetElement targetElementObject)
+                    {
+                        targetElementId = targetElementObject.ElementId;
+                        targetElementIsVisible = targetElementObject.IsVisible;
+                    }
+
+                    var element = LogicalTreeHelper.FindLogicalNode(sender.FrameworkElement, targetElementId);
+
+                    if (element != null && element is FrameworkElement elementFrameworkElement)
+                    {
+                        Visibility visibility = elementFrameworkElement.Visibility;
+                        // if we read something with the format {"elementId": <id>", "isVisible": true} or we just read the id and the element is not visible
+                        if( (targetElementIsVisible.HasValue && targetElementIsVisible.Value) || (!targetElementIsVisible.HasValue && visibility != Visibility.Visible))
+                        {
+                            elementFrameworkElement.Visibility = Visibility.Visible;
+                        }
+                        // otherwise if we read something with the format {"elementId": <id>", "isVisible": false} or we just read the id and the element is visible
+                        else if ((targetElementIsVisible.HasValue && !targetElementIsVisible.Value) || (!targetElementIsVisible.HasValue && visibility == Visibility.Visible))
+                        {
+                            elementFrameworkElement.Visibility = Visibility.Collapsed;
+                        }
+
+                    }
+                    
+                }
+            }
         }
 
         private void OnMediaClick(RenderedAdaptiveCard sender, AdaptiveMediaEventArgs e)
