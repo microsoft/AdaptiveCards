@@ -70,10 +70,8 @@
         [NSLayoutConstraint constraintWithItem:_iconView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1.0 constant:config.buttonPadding].active = YES;
         [NSLayoutConstraint constraintWithItem:_iconView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
         self.frame = CGRectMake(0, 0, imageSize.width + config.buttonPadding + contentSize.width, MAX(imageSize.height, contentSize.height));
-        [self setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-        UIView *supersuperview = self.superview;
-        UIView *superview = supersuperview.superview;
-        [superview.superview setNeedsLayout];
+        // update action set view that hold buttons and buttons' layout view
+        [self.superview.superview setNeedsLayout];
     }
 }
 
@@ -130,13 +128,6 @@
 
     return button;
 }
-
-/*
-- (CGSize)intrinsicContentSize
-{
-    return self.frame;
-}
- */
 
 - (void)applySentimentStyling
 {

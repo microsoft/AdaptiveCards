@@ -206,9 +206,7 @@
                 [rootView setImageView:key view:button];
             }
             [NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:view
-                attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;
-            //[NSLayoutConstraint constraintWithItem:_iconView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self
-            //    attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
+                attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;            
 
         } else {
             [button setTitle:title forState:UIControlStateNormal];
