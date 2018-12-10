@@ -5,7 +5,8 @@
  */
 
 import React, { Component } from "react";
-import { Text, View, StyleSheet, Image, Platform, Linking, Modal, Button, WebView, Alert } from "react-native";
+import { Text, View, StyleSheet, Image, Platform, Modal, Button, WebView, Alert } from "react-native";
+
 import { StyleManager } from '../../styles/style-config'
 import * as Utils from '../../utils/util';
 import { InputContextConsumer } from '../../utils/context'
@@ -28,7 +29,6 @@ export class ActionButton extends Component {
         if (props.json.type === 'Action.ShowCard') {
             this.showCardHandler = props.onShowCardTapped;
         }
-
     }
 
     state = {
@@ -62,16 +62,17 @@ export class ActionButton extends Component {
             </InputContextConsumer>);
         }
         else if (this.payload.type === Constants.ActionOpenUrl) {
-
             return (<InputContextConsumer>
-                {({ onExecuteAction }) => (<ButtonComponent style={{ flexGrow: 1 }} onPress={() => {
+			 {({ onExecuteAction }) => (<ButtonComponent style={{ flexGrow: 1 }} onPress={() => {
                     this.onOpenURLCalled(onExecuteAction)
                 }}>{this.buttonContent()}
                 </ButtonComponent>)}
             </InputContextConsumer>);
         } else if (this.payload.type === Constants.ActionShowCard) {
-
-            return (<ButtonComponent style={{ flexGrow: 1 }} onPress={this.changeShowCardState}>{this.buttonContent()}
+			return (<ButtonComponent 
+						style={{ flexGrow: 1 }} 
+						onPress={this.changeShowCardState}>
+					{this.buttonContent()}
             </ButtonComponent>)
         }
     }
@@ -98,7 +99,6 @@ export class ActionButton extends Component {
     changeShowCardState = () => {
         this.showCardHandler(this.payload.card);
     }
-
 
     parseHostConfig() {
         this.title = this.payload.title;

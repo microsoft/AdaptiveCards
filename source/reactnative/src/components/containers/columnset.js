@@ -6,6 +6,7 @@
 
 import React, { PureComponent } from "react";
 import { View, StyleSheet } from 'react-native';
+
 import { SelectAction } from '../actions';
 import Input from '../inputs/input';
 import { Column } from "./column";
@@ -13,10 +14,10 @@ import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config'
 
 export class ColumnSet extends PureComponent {
-    
+
     constructor(props) {
         super(props);
-        
+
         this.renderedElement = [];
         this.payload = props.json;
     }
@@ -51,8 +52,8 @@ export class ColumnSet extends PureComponent {
     };
 
     internalRenderer(columnSetJson) {
-        let backgroundStyle = columnSetJson.style == Constants.Emphasis ? 
-        styles.emphasisStyle : styles.defaultBGStyle;
+        let backgroundStyle = columnSetJson.style == Constants.Emphasis ?
+            styles.emphasisStyle : styles.defaultBGStyle;
 
         var columsetContent = (
             <View style={[backgroundStyle, { flex: this.payload.columns.length }]}>
@@ -62,7 +63,8 @@ export class ColumnSet extends PureComponent {
             </View>
         );
 
-        if ((columnSetJson.selectAction === undefined) || (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
+        if ((columnSetJson.selectAction === undefined) ||
+            (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
             return columsetContent;
         } else {
             return <SelectAction selectActionData={columnSetJson.selectAction}>

@@ -6,9 +6,18 @@
 
 import React from 'react';
 import {
-    View, StyleSheet, TouchableOpacity, DatePickerIOS,
-    DatePickerAndroid, Platform, TextInput, Modal, Button, ViewPropTypes
+    View,
+    StyleSheet,
+    TouchableOpacity,
+    DatePickerIOS,
+    DatePickerAndroid,
+    Platform,
+    TextInput,
+    Modal,
+    Button,
+    ViewPropTypes
 } from 'react-native';
+
 import Input from './input';
 import { InputContextConsumer } from '../../utils/context'
 import * as Constants from '../../utils/constants';
@@ -124,10 +133,10 @@ export class DateInput extends React.Component {
 
     render() {
 
-        if(HostConfigManager.getHostConfig().supportsInteractivity === false){
+        if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
             return null;
         }
-        
+
         const {
             id,
             type,
@@ -140,55 +149,55 @@ export class DateInput extends React.Component {
         }
 
         modalOverlayStyle = ViewPropTypes.style,
-        modalStyle = ViewPropTypes.style,
-        modalButtonStyle = ViewPropTypes.style,
-        modalBtnContainer = ViewPropTypes.style
+            modalStyle = ViewPropTypes.style,
+            modalButtonStyle = ViewPropTypes.style,
+            modalBtnContainer = ViewPropTypes.style
 
         return (
             <InputContextConsumer>
-                {({addInputItem }) => (
-            <Input json={this.payload}>
-           
-                <TouchableOpacity style={styles.inputWrapper}onPress={this.showDatePicker}>
-                    {/* added extra view to fix touch event in ios . */}
-                    <View pointerEvents='none' >
-                        <TextInput
-                            style={[styles.input,this.styleConfig.fontConfig]}
-                            autoCapitalize={Constants.NoneString}
-                            autoCorrect={false}
-                            placeholder={placeholder}
-                            textContentType={Constants.NoneString}
-                            underlineColorAndroid={Constants.TransparentString}
-                            value={this.state.value}>
-                            {addInputItem(this.id, this.state.value)}
-                        </TextInput>
-                    </View>
-                </TouchableOpacity>
-                <Modal
-                    animationType='slide'
-                    transparent
-                    visible={this.state.modalVisible}
-                    onRequestClose={this.handleModalClose}>
-                    <View style={[styles.overlay, modalOverlayStyle]}>
-                        <View style={[styles.modal, modalStyle]}>
-                            <View style={[styles.modalBtnContainer, modalBtnContainer]}>
-                                <Button
-                                    style={[modalButtonStyle]}
-                                    title={modalButtonText}
-                                    onPress={this.handleModalClose}
-                                />
+                {({ addInputItem }) => (
+                    <Input json={this.payload}>
+
+                        <TouchableOpacity style={styles.inputWrapper} onPress={this.showDatePicker}>
+                            {/* added extra view to fix touch event in ios . */}
+                            <View pointerEvents='none' >
+                                <TextInput
+                                    style={[styles.input, this.styleConfig.fontConfig]}
+                                    autoCapitalize={Constants.NoneString}
+                                    autoCorrect={false}
+                                    placeholder={placeholder}
+                                    textContentType={Constants.NoneString}
+                                    underlineColorAndroid={Constants.TransparentString}
+                                    value={this.state.value}>
+                                    {addInputItem(this.id, this.state.value)}
+                                </TextInput>
                             </View>
-                            <DatePickerIOS
-                                mode='date'
-                                date={this.state.chosenDate || new Date()}
-                                minimumDate={this.state.minDate}
-                                maximumDate={this.state.maxDate}
-                                onDateChange={this.handleDateChange} />
-                        </View>
-                    </View>
-                </Modal>
-            </Input>)}
-        </InputContextConsumer>
+                        </TouchableOpacity>
+                        <Modal
+                            animationType='slide'
+                            transparent
+                            visible={this.state.modalVisible}
+                            onRequestClose={this.handleModalClose}>
+                            <View style={[styles.overlay, modalOverlayStyle]}>
+                                <View style={[styles.modal, modalStyle]}>
+                                    <View style={[styles.modalBtnContainer, modalBtnContainer]}>
+                                        <Button
+                                            style={[modalButtonStyle]}
+                                            title={modalButtonText}
+                                            onPress={this.handleModalClose}
+                                        />
+                                    </View>
+                                    <DatePickerIOS
+                                        mode='date'
+                                        date={this.state.chosenDate || new Date()}
+                                        minimumDate={this.state.minDate}
+                                        maximumDate={this.state.maxDate}
+                                        onDateChange={this.handleDateChange} />
+                                </View>
+                            </View>
+                        </Modal>
+                    </Input>)}
+            </InputContextConsumer>
         );
     }
 }
@@ -213,10 +222,10 @@ const styles = StyleSheet.create({
         alignItems: Constants.CenterString,
         justifyContent: Constants.FlexEnd
     },
-    modal: { 
+    modal: {
         backgroundColor: Constants.WhiteColor,
-         height: 260, 
-         width: Constants.FullWidth 
+        height: 260,
+        width: Constants.FullWidth
     },
     modalBtnContainer: {
         width: Constants.FullWidth,

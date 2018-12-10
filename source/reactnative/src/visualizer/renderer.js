@@ -49,6 +49,11 @@ export default class Renderer extends React.Component {
         
     }
 
+    onParseError= (errorObject) => {
+           console.log("Error", JSON.stringify(errorObject.message) );
+        
+    }
+
     render() {
          Registry.getManager().registerComponent('RatingBlock',RatingRenderer);
         return (
@@ -63,6 +68,7 @@ export default class Renderer extends React.Component {
                         payload={this.payload}
                         onExecuteAction={this.onExecuteAction}
                         hostConfig = {this.customHostConfig}
+                        onParseError = {this.onParseError}
                     />
                 </View>
         );

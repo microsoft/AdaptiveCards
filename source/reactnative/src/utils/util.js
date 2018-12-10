@@ -50,8 +50,6 @@ export function parseHostConfigEnum(targetEnum, value, defaultValue) {
     }
 }
 
-
-
 /**
  * Returns the keyboard type that needs to be opened based on the text content type.
  * @param {Enums.InputTextStyle} textContentType  
@@ -92,9 +90,6 @@ export function getEffectiveInputStyle(style) {
     }
 }
 
-
-
-
 export function getEffectiveSize(size) {
     switch (size) {
         case Enums.Size.Auto:
@@ -110,6 +105,33 @@ export function getEffectiveSize(size) {
         default:
             return "contain";
     }
+}
+
+/**
+ * Parse the given version string
+ * @param {string} versionString 
+ * @return {object} Version object with major and minor values
+ */
+export function parseVersion(versionString) {
+    var result = {
+        major: 0,
+        minor: 0
+    };
+
+    if (!versionString)
+        return result;
+
+    var regEx = /([\d]+)(?:\.([\d]+))?/gi;
+    var matches = regEx.exec(versionString);
+    if (matches != null) {
+        // major
+        result.major = parseInt(matches[1]);
+
+        // minor
+        result.minor = parseInt(matches[2]) || result.minor;
+    }
+
+    return result;
 }
 
 
