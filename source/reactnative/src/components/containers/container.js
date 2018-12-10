@@ -4,20 +4,23 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#schema-container
  */
 
-import React, { PureComponent } from "react";
-import { View, ScrollView, Text, StyleSheet, Platform, Alert, Linking } from 'react-native';
+import React from "react";
+import { View, ScrollView, StyleSheet } from 'react-native';
+
 import Input from '../inputs/input';
 import { Registry } from '../registration/registry'
 import { SelectAction } from '../actions'
 import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config'
+import { InputContextConsumer } from '../../utils/context';
+
 
 
 export class Container extends React.Component {
-    
+
     constructor(props) {
         super(props);
-        
+
         this.renderedElement = [];
         this.payload = props.json;
         this.selectionActionData = props.json.selectAction;
@@ -26,28 +29,38 @@ export class Container extends React.Component {
     /**
      * @description Parse the given payload and render the card accordingly
      */
-    parsePayload = (containerJson) => {
+    parsePayload = (containerJson, onParseError) => {
         if (!this.payload)
             return this.renderedElement;
         // parse elements
-        this.renderedElement.push(Registry.getManager().parseRegistryComponents(containerJson.items));
+
+        this.renderedElement.push(Registry.getManager().parseRegistryComponents(containerJson.items, onParseError));
         return this.renderedElement;
     }
 
     internalRenderer(containerJson) {
         let backgroundStyle = containerJson.style == Constants.Emphasis ?
-         styles.emphasisStyle : styles.defaultBGStyle;
+            styles.emphasisStyle : styles.defaultBGStyle;
 
         // TODO: verticalContentAlignment property is not considered for now as the container size is determined by its content.
-        var containerContent = (<View style={[styles.container, backgroundStyle]}>
-            <Input json={containerJson} style={backgroundStyle}>
-                <ScrollView style={backgroundStyle}>
-                    {this.parsePayload(containerJson)}
-                </ScrollView>
-            </Input>
-        </View>);
+        var containerContent = (
+            <InputContextConsumer>
+                {({ onParseError }) =>
+                    (
+                        <View style={[styles.container, backgroundStyle]}>
+                            <Input json={containerJson} style={backgroundStyle}>
+                                <ScrollView style={backgroundStyle}>
+                                    {this.parsePayload(containerJson, onParseError)}
+                                </ScrollView>
+                            </Input>
+                        </View>
+                    )
+                }
+            </InputContextConsumer>
 
-        if ((containerJson.selectAction === undefined) || (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
+        );
+        if ((containerJson.selectAction === undefined)
+            || (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
             return containerContent;
         } else {
             return <SelectAction selectActionData={containerJson.selectAction}>
@@ -57,7 +70,10 @@ export class Container extends React.Component {
     }
 
     render() {
+
+
         let containerRender = this.internalRenderer(this.props.json);
+
         return containerRender;
     }
 };

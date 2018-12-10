@@ -6,6 +6,7 @@
 
 import React from 'react';
 import { Text, Switch, StyleSheet } from 'react-native';
+
 import Input from './input';
 import * as Constants from '../../utils/constants';
 import { InputContextConsumer } from '../../utils/context'
@@ -19,7 +20,7 @@ const ToggleValueOn = "toggleValueOn;";
 export class ToggleInput extends React.Component {
 
     styleConfig = StyleManager.getManager().styles;
-    
+
     constructor(props) {
         super(props);
 
@@ -41,13 +42,13 @@ export class ToggleInput extends React.Component {
      * @param {InputContextConsumer} addInputItem
      */
     toggleValueChanged = (toggleValue, addInputItem) => {
-        this.setState({toggleValue});
+        this.setState({ toggleValue });
         addInputItem(this.id, toggleValue);
     }
 
     render() {
 
-        if(HostConfigManager.getHostConfig().supportsInteractivity === false){
+        if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
             return null;
         }
 
@@ -55,15 +56,15 @@ export class ToggleInput extends React.Component {
 
         return (
             <Input json={this.props.json} style={styles.toggleContainer}>
-                <Text style={[styles.title,this.styleConfig.fontConfig]}>{this.title}</Text>
+                <Text style={[styles.title, this.styleConfig.fontConfig]}>{this.title}</Text>
                 <InputContextConsumer>
-                    {({ addInputItem} ) => (
-                        <Switch 
-                            style={styles.switch} 
-                            value={toggleValue} 
+                    {({ addInputItem }) => (
+                        <Switch
+                            style={styles.switch}
+                            value={toggleValue}
                             onValueChange={toggleValue => {
                                 this.toggleValueChanged(toggleValue, addInputItem)
-                        }}>
+                            }}>
                         </Switch>
                     )}
                 </InputContextConsumer>

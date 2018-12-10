@@ -6,9 +6,11 @@
 
 import React, { Component } from "react";
 import { StyleSheet, TextInput } from 'react-native';
+
 import { DismissKeyboardView } from '../containers/dismiss-keyboard';
 import { InputContextConsumer } from '../../utils/context'
 import Input from './input';
+import * as Enums from '../../utils/enums';
 import * as Constants from '../../utils/constants';
 import { StyleManager } from "../../styles/style-config";
 import { HostConfigManager } from '../../utils/host-config'
@@ -40,17 +42,16 @@ export class NumberInput extends Component {
 
     render() {
 
-        if(HostConfigManager.getHostConfig().supportsInteractivity === false){
+        if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
             return null;
         }
-        
+
         this.parseHostConfig();
 
         const {
             id,
             type,
             placeholder,
-            maxLength,
             keyboardType
         } = this;
 
@@ -90,7 +91,7 @@ export class NumberInput extends Component {
     getComputedStyles = () => {
         const { isMultiline } = this;
 
-        let inputComputedStyles = [styles.input,this.styleConfig.fontConfig];
+        let inputComputedStyles = [styles.input, this.styleConfig.fontConfig];
         isMultiline ?
             inputComputedStyles.push(styles.multiLineHeight) :
             inputComputedStyles.push(styles.singleLineHeight);

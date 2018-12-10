@@ -5,7 +5,8 @@
  */
 
 import React, { Component } from "react";
-import { View, StyleSheet, Text,Dimensions } from 'react-native';
+import { View, StyleSheet, Text, Dimensions } from 'react-native';
+
 import Input from '../inputs/input';
 import * as Constants from '../../utils/constants';
 import { StyleManager } from '../../styles/style-config'
@@ -16,13 +17,13 @@ export class FactSet extends Component {
 
     constructor(props) {
         super(props);
-        
+
         this.payload = props.json;
         // state
         this.state = {
-            isMaximumWidthValueFound:false,
-            keyWidth:0,
-            valueWidth:0
+            isMaximumWidthValueFound: false,
+            keyWidth: 0,
+            valueWidth: 0
         }
         this.viewSize = 0;
         this.maxWidth = 0;
@@ -35,7 +36,7 @@ export class FactSet extends Component {
      */
 
     measureView(event) {
-        if (this.currentWidth === 0 || this.currentWidth !== event.nativeEvent.layout.width){
+        if (this.currentWidth === 0 || this.currentWidth !== event.nativeEvent.layout.width) {
             this.currentWidth = event.nativeEvent.layout.width;
             this.viewSize = event.nativeEvent.layout.width - 2 * styles.container.padding;
             this.checkForMaxWidth();
@@ -55,7 +56,7 @@ export class FactSet extends Component {
 
     checkForMaxWidth() {
         if (this.widthArray.length === this.payload.facts.length) {
-            this.maxWidth = Math.max(...this.widthArray);            
+            this.maxWidth = Math.max(...this.widthArray);
             this.adjustFactWidth();
         }
     }
@@ -67,12 +68,12 @@ export class FactSet extends Component {
         var keyWidthValue = null;
         if (this.maxWidth > this.viewSize / 2) {
             keyWidthValue = this.viewSize / 2;
-        }else{
+        } else {
             keyWidthValue = this.maxWidth;
         }
         let valueWidthPx = this.viewSize - keyWidthValue;
         this.setState({
-            isMaximumWidthValueFound:true,
+            isMaximumWidthValueFound: true,
             keyWidth: keyWidthValue,
             valueWidth: valueWidthPx
         })
@@ -89,11 +90,11 @@ export class FactSet extends Component {
         this.props.json.facts.map((element, index) => {
             checkArray.push(
                 <View style={[styles.textContainer]} key={`FACT--${index}`}>
-                    <Text style={[styles.keyTextStyle,this.styleConfig.fontConfig]} numberOfLines={500}
+                    <Text style={[styles.keyTextStyle, this.styleConfig.fontConfig]} numberOfLines={500}
                         onLayout={(event) => { this.measureKeyText(event) }}>
                         {element.title}
                     </Text>
-                    <Text style={[styles.valueTextStyle,this.styleConfig.fontConfig]} numberOfLines={500}>
+                    <Text style={[styles.valueTextStyle, this.styleConfig.fontConfig]} numberOfLines={500}>
                         {element.value}
                     </Text>
                 </View>
@@ -112,14 +113,14 @@ export class FactSet extends Component {
         factsetJson.facts.map((element, index) => {
             renderedElement.push(
                 <View style={[styles.textContainer]} key={`FACT-${element.title}-${index}`}>
-                    <Text style={[styles.keyTextStyle,this.styleConfig.fontConfig,
-                                { width: this.state.keyWidth }]} 
-                                numberOfLines={500}>
+                    <Text style={[styles.keyTextStyle, this.styleConfig.fontConfig,
+                    { width: this.state.keyWidth }]}
+                        numberOfLines={500}>
                         {element.title}
                     </Text>
-                    <Text style={[styles.valueTextStyle,this.styleConfig.fontConfig, 
-                                { width: this.state.valueWidth }]} 
-                                numberOfLines={500}>
+                    <Text style={[styles.valueTextStyle, this.styleConfig.fontConfig,
+                    { width: this.state.valueWidth }]}
+                        numberOfLines={500}>
                         {element.value}
                     </Text>
                 </View>
@@ -133,13 +134,13 @@ export class FactSet extends Component {
      */
     internalRenderer(containerJson) {
         let factSetObject = null;
-        if (!this.state.isMaximumWidthValueFound){
+        if (!this.state.isMaximumWidthValueFound) {
             factSetObject = this.checkTheMaximumSizeRender();
         }
         else {
             factSetObject = this.parsePayload(containerJson)
         }
-        
+
         return (
             <Input json={containerJson}>
                 <View style={[styles.container]} onLayout={(event) => { this.measureView(event) }}>
@@ -161,13 +162,13 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 4,
         flexDirection: Constants.FlexColumn,
-        backgroundColor:'transparent',
+        backgroundColor: 'transparent',
     },
     textContainer: {
         flex: 1,
         padding: 2,
-        flexDirection: Constants.FlexRow, 
-        backgroundColor:'transparent',
+        flexDirection: Constants.FlexRow,
+        backgroundColor: 'transparent',
     },
     keyTextStyle: {
         fontWeight: Constants.BoldWeight,

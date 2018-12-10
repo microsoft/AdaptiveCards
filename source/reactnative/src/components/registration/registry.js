@@ -1,8 +1,18 @@
-import { DateInput, TimeInput, ToggleInput, NumberInput, ChoiceSetInput, InputText, } from '../inputs';
+import React from 'react';
+
+import {
+    DateInput,
+    TimeInput,
+    ToggleInput,
+    NumberInput,
+    ChoiceSetInput,
+    InputText,
+} from '../inputs';
 import { TextBlock, Media, Img } from '../elements';
 import { Container, ColumnSet, Column, FactSet, ImageSet } from '../containers';
-import  { ActionButton } from '../actions';
-import React from 'react';
+import { ActionButton } from '../actions';
+import * as Enums from '../../utils/enums';
+import * as Utils from '../../utils/util';
 
 export class Registry {
 
@@ -20,7 +30,7 @@ export class Registry {
      * @param {string} key - Type of the Component to be overridden
      * @param {Component} component - React Native component to be rendered
      */
-    registerComponent = ( key, component ) => {
+    registerComponent = (key, component) => {
         this.ElementRegistry[key] = component;
     }
 
@@ -28,7 +38,7 @@ export class Registry {
      * @description Remove an Existing Component
      * @param {string} key - Type of the Component to be removed
      */
-    removeComponent = ( key ) => {
+    removeComponent = (key) => {
         delete this.ElementRegistry[key];
     }
 
@@ -64,23 +74,86 @@ export class Registry {
     }
 
     /**
+   * @description Register a required property for custom/overriding components
+   * @param {string} key - Type of the Component
+   * @param {requiredProps} component - Required properties of the custom component
+   */
+    registerRequiredPropertySchema = (key, requiredProps) => {
+        if (this.ElementRegistry.hasOwnProperty(key) && !Utils.isNullOrEmpty(requiredProps)) {
+            this.RequiredPropertySchema[key] = requiredProps;
+
+        } 
+    }
+    RequiredPropertySchema = {
+        'Container': { 'type': 'Container', 'items': 'Array' },
+        'ColumnSet': { 'type': 'ColumnSet' },
+        'Column': { 'items': 'Array' },
+        'FactSet': { 'type': 'FactSet', 'facts': 'Array' },
+        'ImageSet': { 'type': 'ImageSet', 'images': 'Array' },
+
+        'TextBlock': { 'type': 'TextBlock' },
+        'Image': { 'type': 'Image', 'url': 'String' },
+        'Media': { 'type': 'Media' },
+
+        'Input.Text': { 'type': 'Input.Text', 'id': 'String' },
+        'Input.Number': { 'type': 'Input.Number', 'id': 'String' },
+        'Input.Toggle': { 'type': 'Input.Toggle', 'id': 'String' },
+        'Input.Date': { 'type': 'Input.Date', 'id': 'String' },
+        'Input.Time': { 'type': 'Input.Time', 'id': 'String' },
+        'Input.ChoiceSet': { 'type': 'Input.ChoiceSet', 'id': 'String' },
+
+
+        'Action.ShowCard': { 'type': 'Action.ShowCard', 'card': 'Object' },
+        'Action.Submit': { 'type': 'Action.ShowCard' },
+        'Action.OpenUrl': { 'type': 'Action.ShowCard', 'url': 'String' }
+    };
+
+
+
+
+    /**
+        * @description validate the schema for the given element type
+        * @param {string} type - Type of the element
+        */
+    validateSchemaForType = (type) => {
+        return this.RequiredPropertySchema[type];
+    }
+
+
+    /**
      * @description Parse an Array of components
      * @param {Array} componentArray - Json
      */
-    parseRegistryComponents = ( componentArray ) => {
+    parseRegistryComponents = (componentArray, onParseError) => {
         const parsedElement = [];
         if (!componentArray)
-             return parsedElement;
+            return parsedElement;
         componentArray.map((element, index) => {
             const Element = this.getComponentOfType(element.type);
             if (Element) {
-                parsedElement.push(<Element json={element} key={`${element.type}-${index}-${this.generateNumber()}`} />);
+                /**
+                 * Validate the schema and invoke onParseError handler incase of any error.
+                 */
+                let isValid = true;
+                for (var key in this.validateSchemaForType(element.type)) {
+                    if (!element.hasOwnProperty(key)) {
+                        let error = { "error": Enums.ValidationError.PropertyCantBeNull, "message": `Required property ${key} for ${element.type} is missing` };
+                        onParseError(error);
+                        isValid = false;
+                    }
+                }
+                if (isValid) {
+                    parsedElement.push(<Element json={element} key={`${element.type}-${index}-${this.generateNumber()}`} />);
+                }
             } else {
-             return null;
+                let error = { "error": Enums.ValidationError.UnknownElementType, "message": `Unknown Type ${element.type} encountered` };
+                onParseError(error);
+                return null;
             }
-          });
-          return parsedElement;
+        });
+        return parsedElement;
     }
+
 
     /**
      * @description Generates a random number

@@ -4,10 +4,11 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, View, ScrollView, Text } from 'react-native';
+import { StyleSheet, Text, View, ScrollView,ImageBackground } from 'react-native';
 
 import { Registry } from './components/registration/registry';
 import { InputContextProvider } from './utils/context';
+
 import { HostConfigManager } from './utils/host-config';
 import * as Utils from './utils/util';
 
@@ -39,17 +40,21 @@ export default class AdaptiveCards extends React.Component {
    * @description Parse the given payload and render the card accordingly
    */
   parsePayload = () => {
+
     const renderedElement = [];
     const { body, actions } = this.payload;
 
-    if (!body)
+    if (!body){
       return renderedElement;
-    renderedElement.push(Registry.getManager().parseRegistryComponents(body));
+    }
+    else{
+      renderedElement.push(Registry.getManager().parseRegistryComponents(body,this.props.onParseError));
+    }
 
     // parse actions
     if (actions) {
       renderedElement.push(<View key="AC-CONTAINER" style={styles.actionContainer} />);
-      renderedElement.push(Registry.getManager().parseRegistryComponents(actions));
+      renderedElement.push(Registry.getManager().parseRegistryComponents(actions,this.props.onParseError));
     }
     return renderedElement;
   }
@@ -80,6 +85,7 @@ export default class AdaptiveCards extends React.Component {
     const { addInputItem, inputArray } = this;
     const onExecuteAction = this.props.onExecuteAction;
     const isTransparent = this.payload.backgroundImage ? true : false;
+    const onParseError = this.props.onParseError;
 
     // version check
     if (!this.isSupportedVersion()) {
@@ -88,9 +94,8 @@ export default class AdaptiveCards extends React.Component {
         <Text>{message}</Text>
       )
     }
-
-    return (
-      <InputContextProvider value={{ addInputItem, inputArray, onExecuteAction, isTransparent }}>
+  return ( 
+      <InputContextProvider value={{ addInputItem, inputArray, onExecuteAction, isTransparent, onParseError }}>
         {
           this.getAdaptiveCardConent()
         }

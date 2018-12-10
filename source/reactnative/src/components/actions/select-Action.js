@@ -5,6 +5,7 @@
 
 import React, { Component } from "react";
 import { Linking, Platform, Alert } from 'react-native'
+
 import * as Constants from '../../utils/constants';
 
 export class SelectAction extends Component {

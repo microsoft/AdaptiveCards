@@ -9,14 +9,15 @@ import {
     StyleSheet,
     Image,
 } from "react-native";
+
 import { HostConfigManager } from "../../utils/host-config";
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 import * as Constants from '../../utils/constants';
 import Input from '../inputs/input';
 import { SelectAction } from '../actions';
-import { StyleManager } from '../../styles/style-config' 
- 
+import { StyleManager } from '../../styles/style-config'
+
 const ContainResizeMode = 'contain';
 
 export class Img extends Component {
@@ -26,7 +27,7 @@ export class Img extends Component {
 
     constructor(props) {
         super(props);
-        
+
         this.payload = props.json;
         this.state = {
             imageWidth: 0,
@@ -130,9 +131,11 @@ export class Img extends Component {
             switch (sizeValue) {
                 case 1:
                     {
-                        sizeStyle.push([styles.imageStretch, 
-                                      { width: this.state.imageWidth, 
-                                        height: this.state.imageHeight }]);
+                        sizeStyle.push([styles.imageStretch,
+                        {
+                            width: this.state.imageWidth,
+                            height: this.state.imageHeight
+                        }]);
                         break;
                     }
                 case 2:
@@ -185,8 +188,10 @@ export class Img extends Component {
                     }
                 default:
                     {
-                        sizeStyle.push([styles.imageAuto, { width: this.state.imageWidth,
-                             height: this.state.imageHeight }]);
+                        sizeStyle.push([styles.imageAuto, {
+                            width: this.state.imageWidth,
+                            height: this.state.imageHeight
+                        }]);
                         this.width = this.state.imageWidth;
                         this.height = this.state.imageHeight;
                         break;
@@ -220,8 +225,8 @@ export class Img extends Component {
              */
 
             if (this.payload.fromImageSet == true &&
-                 (this.payload.size === Constants.Auto || 
-                 this.payload.size === Constants.AlignStretch)) {
+                (this.payload.size === Constants.Auto ||
+                    this.payload.size === Constants.AlignStretch)) {
                 this.setState({
                     imageWidth: this.hostConfig.imageSet.maxImageHeight,
                     imageHeight: this.hostConfig.imageSet.maxImageHeight,
@@ -262,7 +267,7 @@ export class Img extends Component {
          * if the payload does not contain explicit width and height, computing the border radius 
          * from the state variable's image width which is determined using Image.getSize()
          */
-        if ((this.payload.size === Constants.Auto || 
+        if ((this.payload.size === Constants.Auto ||
             this.payload.size === Constants.AlignStretch) &&
             !(this.payload.width || this.payload.height)) {
             this.isPersonStyle() ?
@@ -281,7 +286,8 @@ export class Img extends Component {
                 source={{ uri: url }} />
         </Input>);
 
-        if ((this.payload.selectAction === undefined)  || (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
+        if ((this.payload.selectAction === undefined)
+            || (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
             return containerContent;
         } else {
             return <SelectAction selectActionData={this.payload.selectAction}>

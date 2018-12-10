@@ -5,7 +5,8 @@
  */
 
 import React, { Component } from "react";
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+
 import { Registry } from '../registration/registry'
 import * as Utils from '../../utils/util';
 import * as Constants from '../../utils/constants';
@@ -22,14 +23,14 @@ export class Column extends Component {
     /**
      * @description Parse the given payload and render the card accordingly
      */
-    parsePayload = () => {
+    parsePayload = (onParseError) => {
         const renderedElement = [];
         if (!this.payload)
             return renderedElement;
         // parse elements
-         if(!Utils.isNullOrEmpty(this.payload.items)){
-            renderedElement.push(Registry.getManager().parseRegistryComponents(this.payload.items));
-         }
+        if (!Utils.isNullOrEmpty(this.payload.items)) {
+            renderedElement.push(Registry.getManager().parseRegistryComponents(this.payload.items, onParseError));
+        }
         return renderedElement;
     }
 
@@ -40,64 +41,65 @@ export class Column extends Component {
         let width = this.payload.width
         if (Utils.isNullOrEmpty(width)) {
             width = 1
-        } 
+        }
 
         let widthPercentage;
-        switch (typeof(this.props.columnWidth)) {
+        switch (typeof (this.props.columnWidth)) {
             case 'string':
-                if (typeof(width) == 'string'){
+                if (typeof (width) == 'string') {
                     let lastIndex = width.lastIndexOf('px')
                     if (lastIndex != -1) {
-                     widthPercentage = parseInt(width.substring(0, lastIndex))
+                        widthPercentage = parseInt(width.substring(0, lastIndex))
                     } else if (width == Constants.AlignStretch ||
-                         width == Constants.Auto) {
-                     containerStyle.push({flex: 1})
+                        width == Constants.Auto) {
+                        containerStyle.push({ flex: 1 })
                     }
                     else {
-                     widthPercentage = (100/this.props.columns).toString()+'%' 
+                        widthPercentage = (100 / this.props.columns).toString() + '%'
                     }
                 } else {
-                    widthPercentage = (100/this.props.columns).toString()+'%' 
+                    widthPercentage = (100 / this.props.columns).toString() + '%'
                 }
-            break;
+                break;
             default:
                 if (isNaN(this.props.columnWidth)) {
-                    widthPercentage = ((width/this.props.columns) * 100).toString()+'%'
-                } else{
-                    widthPercentage = ((this.payload.width/this.props.columnWidth) * 100).toString()+'%'
+                    widthPercentage = ((width / this.props.columns) * 100).toString() + '%'
+                } else {
+                    widthPercentage = ((this.payload.width / this.props.columnWidth) * 100).toString() + '%'
                 }
 
-            break;
+                break;
         }
 
         return widthPercentage
     }
 
     render() {
-        let backgroundStyle = this.payload.style == Constants.Emphasis ? 
-        styles.emphasisStyle:styles.defaultBGStyle;
+        let backgroundStyle = this.payload.style == Constants.Emphasis ?
+            styles.emphasisStyle : styles.defaultBGStyle;
 
         let containerViewStyle = [styles.container, backgroundStyle];
 
         let widthPercentage = this.calculateWidthPercentage(containerViewStyle);
         if (!Utils.isNullOrEmpty(widthPercentage)) {
-            containerViewStyle.push({width: widthPercentage});
+            containerViewStyle.push({ width: widthPercentage });
         }
 
         var columnContent = (
             <View style={containerViewStyle}>
-                     {this.parsePayload()}
+                {this.parsePayload()}
             </View>
         );
 
-        if ((this.payload.selectAction === undefined) || (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
+        if ((this.payload.selectAction === undefined) ||
+            (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
             return columnContent;
         } else {
-            return  <View style={containerViewStyle}>
-                        <SelectAction selectActionData={this.payload.selectAction}>
-                             {this.parsePayload()}
-                         </SelectAction>
-                     </View>;
+            return <View style={containerViewStyle}>
+                <SelectAction selectActionData={this.payload.selectAction}>
+                    {this.parsePayload()}
+                </SelectAction>
+            </View>;
         }
     }
 };
