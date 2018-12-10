@@ -47,6 +47,32 @@
 					]
 				}
 			]
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"width": "stretch",
+					"verticalContentAlignment": "center",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "In this ColumnSet, left column",
+							"wrap": true
+						}
+					]
+				},
+				{
+					"width": "-1",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "In this ColumnSet, right column.",
+							"wrap": true
+						}
+					]
+				}
+			]
 		}
 	]
 }
