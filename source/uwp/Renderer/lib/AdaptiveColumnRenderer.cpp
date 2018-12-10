@@ -4,6 +4,8 @@
 #include "enums.h"
 #include "Util.h"
 #include "XamlBuilder.h"
+#include "AdaptiveColumn.h"
+#include "AdaptiveElementParserRegistration.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -27,4 +29,14 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    HRESULT AdaptiveColumnRenderer::FromJson(
+        ABI::Windows::Data::Json::IJsonObject* jsonObject,
+        ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
+        ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
+        ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
+        ABI::AdaptiveNamespace::IAdaptiveCardElement** element)
+    {
+        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveColumn, AdaptiveSharedNamespace::Column, AdaptiveSharedNamespace::Column>(
+            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
+    }
 }

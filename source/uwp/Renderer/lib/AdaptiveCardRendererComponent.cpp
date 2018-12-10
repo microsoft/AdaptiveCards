@@ -51,7 +51,7 @@ namespace AdaptiveNamespace
     {
         m_xamlBuilder = std::make_shared<XamlBuilder>();
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveElementRendererRegistration>(&m_elementRendererRegistration));
-        RETURN_IF_FAILED(RegisterDefaultElementRenderers());
+        RETURN_IF_FAILED(RegisterDefaultElementRenderers(m_elementRendererRegistration, m_xamlBuilder));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveHostConfig>(&m_hostConfig));
         InitializeDefaultResourceDictionary();
         UpdateActionSentimentResourceDictionary();
@@ -302,39 +302,6 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(m_mergedResourceDictionary->get_MergedDictionaries(&mergedDictionaries));
             RETURN_IF_FAILED(mergedDictionaries->Append(m_defaultResourceDictionary.Get()));
         }
-        return S_OK;
-    }
-
-    HRESULT AdaptiveCardRenderer::RegisterDefaultElementRenderers()
-    {
-        RETURN_IF_FAILED(
-            m_elementRendererRegistration->Set(HStringReference(L"Column").Get(), Make<AdaptiveColumnRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"ColumnSet").Get(),
-                                                            Make<AdaptiveColumnSetRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Container").Get(),
-                                                            Make<AdaptiveContainerRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"FactSet").Get(),
-                                                            Make<AdaptiveFactSetRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Image").Get(),
-                                                            Make<AdaptiveImageRenderer>(m_xamlBuilder).Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"ImageSet").Get(),
-                                                            Make<AdaptiveImageSetRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.ChoiceSet").Get(),
-                                                            Make<AdaptiveChoiceSetInputRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Date").Get(),
-                                                            Make<AdaptiveDateInputRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Number").Get(),
-                                                            Make<AdaptiveNumberInputRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Text").Get(),
-                                                            Make<AdaptiveTextInputRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Time").Get(),
-                                                            Make<AdaptiveTimeInputRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Toggle").Get(),
-                                                            Make<AdaptiveToggleInputRenderer>().Get()));
-        RETURN_IF_FAILED(
-            m_elementRendererRegistration->Set(HStringReference(L"Media").Get(), Make<AdaptiveMediaRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"TextBlock").Get(),
-                                                            Make<AdaptiveTextBlockRenderer>().Get()));
         return S_OK;
     }
 

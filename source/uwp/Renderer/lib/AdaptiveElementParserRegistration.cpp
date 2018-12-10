@@ -1,6 +1,23 @@
 #include "pch.h"
 #include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveActionParserRegistration.h"
+#include "AdaptiveChoiceSetInputRenderer.h"
+#include "AdaptiveColumnRenderer.h"
+#include "AdaptiveColumnSetRenderer.h"
+#include "AdaptiveContainerRenderer.h"
+#include "AdaptiveDateInputRenderer.h"
+#include "AdaptiveElementRendererRegistration.h"
+#include "AdaptiveFactSetRenderer.h"
+#include "AdaptiveHostConfig.h"
+#include "AdaptiveImageRenderer.h"
+#include "AdaptiveImageSetRenderer.h"
+#include "AdaptiveMediaRenderer.h"
+#include "AdaptiveNumberInputRenderer.h"
+#include "AdaptiveRenderContext.h"
+#include "AdaptiveTextBlockRenderer.h"
+#include "AdaptiveTextInputRenderer.h"
+#include "AdaptiveTimeInputRenderer.h"
+#include "AdaptiveToggleInputRenderer.h"
 #include "CustomElementWrapper.h"
 #include "Util.h"
 #include "Vector.h"
@@ -16,9 +33,8 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveElementParserRegistration::RuntimeClassInitialize() noexcept try
     {
-        m_registration = std::make_shared<RegistrationMap>();
-        m_sharedParserRegistration = std::make_shared<ElementParserRegistration>();
-
+        std::shared_ptr<ElementParserRegistration> sharedParserRegistration = std::make_shared<ElementParserRegistration>();
+        RuntimeClassInitialize(sharedParserRegistration);
         return S_OK;
     }
     CATCH_RETURN;
@@ -29,23 +45,32 @@ namespace AdaptiveNamespace
         m_registration = std::make_shared<RegistrationMap>();
         m_sharedParserRegistration = sharedParserRegistration;
 
+        m_isInitializing = true;
+        RegisterDefaultElementRenderers(this, nullptr);
+        m_isInitializing = false;
         return S_OK;
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveElementParserRegistration::Set(HSTRING type, IAdaptiveElementParser* Parser)
+    _Use_decl_annotations_ HRESULT AdaptiveElementParserRegistration::Set(HSTRING type, IAdaptiveElementParser* Parser) noexcept try
     {
         std::string typeString = HStringToUTF8(type);
 
-        m_sharedParserRegistration->AddParser(typeString, std::make_shared<SharedModelElementParser>(this));
+        // During initialization we will add the known parsers to m_registration. These are already present in the corresponding
+        // shared model registration (m_sharedParserRegistration) which will throw if we attempt to modify them by adding them again.
+        if (!m_isInitializing)
+        {
+            m_sharedParserRegistration->AddParser(typeString, std::make_shared<SharedModelElementParser>(this));
+        }
 
         ComPtr<IAdaptiveElementParser> localParser(Parser);
         (*m_registration)[typeString] = localParser;
 
         return S_OK;
     }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveElementParserRegistration::Get(HSTRING type, IAdaptiveElementParser** result)
+    _Use_decl_annotations_ HRESULT AdaptiveElementParserRegistration::Get(HSTRING type, IAdaptiveElementParser** result) noexcept try
     {
         *result = nullptr;
 
@@ -56,8 +81,9 @@ namespace AdaptiveNamespace
         }
         return S_OK;
     }
+    CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveElementParserRegistration::Remove(HSTRING type)
+    _Use_decl_annotations_ HRESULT AdaptiveElementParserRegistration::Remove(HSTRING type) noexcept try
     {
         std::string typeString = HStringToUTF8(type);
 
@@ -66,6 +92,7 @@ namespace AdaptiveNamespace
 
         return S_OK;
     }
+    CATCH_RETURN;
 
     std::shared_ptr<ElementParserRegistration> AdaptiveElementParserRegistration::GetSharedParserRegistration()
     {

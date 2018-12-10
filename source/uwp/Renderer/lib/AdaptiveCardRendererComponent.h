@@ -72,7 +72,6 @@ namespace AdaptiveNamespace
 
         HRESULT CreateAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson,
                                                  _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** adaptiveCard);
-        HRESULT RegisterDefaultElementRenderers();
         void InitializeDefaultResourceDictionary();
         void UpdateActionSentimentResourceDictionary();
         HRESULT SetMergedDictionary();

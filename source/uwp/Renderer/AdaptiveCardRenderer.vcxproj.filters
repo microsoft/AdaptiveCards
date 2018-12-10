@@ -91,6 +91,9 @@
     <ClCompile Include="lib\AdaptiveRemoteResourceInformation.cpp" />
     <ClCompile Include="lib\AdaptiveFontStyleDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveFontStylesDefinition.cpp" />
+    <ClCompile Include="lib\AdaptiveOpenUrlActionParser.cpp" />
+    <ClCompile Include="lib\AdaptiveShowCardActionParser.cpp" />
+    <ClCompile Include="lib\AdaptiveSubmitActionParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -189,6 +192,9 @@
     <ClInclude Include="lib\AdaptiveRemoteResourceInformation.h" />
     <ClInclude Include="lib\AdaptiveFontStyleDefinition.h" />
     <ClInclude Include="lib\AdaptiveFontStylesDefinition.h" />
+    <ClInclude Include="lib\AdaptiveOpenUrlActionParser.h" />
+    <ClInclude Include="lib\AdaptiveShowCardActionParser.h" />
+    <ClInclude Include="lib\AdaptiveSubmitActionParser.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />
