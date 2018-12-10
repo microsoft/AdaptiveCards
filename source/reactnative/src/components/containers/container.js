@@ -42,7 +42,7 @@ export class Container extends React.Component {
         let backgroundStyle = containerJson.style == Constants.Emphasis ?
             styles.emphasisStyle : styles.defaultBGStyle;
 
-        // TODO: verticalContentAlignment property is not considered for now as the container size is determined by its content.
+        // verticalContentAlignment property is not considered for now as the container size is determined by its content.
         var containerContent = (
             <InputContextConsumer>
                 {({ onParseError }) =>

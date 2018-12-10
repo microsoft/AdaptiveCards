@@ -33,7 +33,7 @@ export class SelectAction extends Component {
             if (supported) {
                 Linking.openURL(this.props.selectActionData.url);
             } else {
-                console.log("Don't know how to open URI: " + this.props.selectionActionData.url);
+                console.log("Can't open URL: " + this.props.selectionActionData.url);
             }
         });
     }

@@ -178,7 +178,7 @@ export class FactSetConfig {
         if (obj) {
             this.title = new FactTitleDefinition(obj["title"]);
             this.value = new FactTextDefinition(obj["value"]);
-            this.spacing = obj.spacing && obj.spacing != null ? obj.spacing && obj.spacing : this.spacing;
+            this.spacing = (obj['spacing'] != null) ? obj['spacing'] : this.spacing;       
         }
     }
 }

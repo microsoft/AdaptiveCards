@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from "react";
-import { Text, View, StyleSheet, Image, Platform, Modal, Button, WebView, Alert } from "react-native";
+import { Text, View, StyleSheet, Image, Platform } from "react-native";
 
 import { StyleManager } from '../../styles/style-config'
 import * as Utils from '../../utils/util';
@@ -29,16 +29,7 @@ export class ActionButton extends Component {
         if (props.json.type === 'Action.ShowCard') {
             this.showCardHandler = props.onShowCardTapped;
         }
-    }
-
-    state = {
-        modalVisible: false,
-        showCard: false,
-    };
-
-    setModalVisible(visible) {
-        this.setState({ modalVisible: visible });
-    }
+    }    
 
     render() {
         if (HostConfigManager.getHostConfig().supportsInteractivity === false) {

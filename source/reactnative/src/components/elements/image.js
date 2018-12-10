@@ -73,7 +73,7 @@ export class Img extends Component {
 
     }
     /**
-     * The function is used for determining the image Alignment horizonatlly
+     * The function is used for determining the horizontal image Alignment
      */
     getImageAlignment() {
         let imageAlignmentStyle = [];
@@ -104,7 +104,7 @@ export class Img extends Component {
         if (this.payload.width || this.payload.height) {
             /**
              * width:80px height:not set 
-             * This condition is handled by assignining either of the
+             * This condition is handled by assigning either of the
              *  value to both height and width
              */
             if (this.payload.width) {
@@ -207,7 +207,7 @@ export class Img extends Component {
 
         const { width: layoutWidth, height: layoutHeight } = event.nativeEvent.layout;
 
-        //This function is implemented to determine the actual dimnesions of the component.
+        //This function is implemented to determine the actual dimensions of the component.
         Image.getSize(this.url, (width, height) => {
 
             /**
@@ -265,7 +265,7 @@ export class Img extends Component {
         /**
          * If the payload size is "auto" or "stretch" and 
          * if the payload does not contain explicit width and height, computing the border radius 
-         * from the state variable's image width which is determined using Image.getSize()
+         * from the state variable "imageWidth" which is determined using Image.getSize()
          */
         if ((this.payload.size === Constants.Auto ||
             this.payload.size === Constants.AlignStretch) &&

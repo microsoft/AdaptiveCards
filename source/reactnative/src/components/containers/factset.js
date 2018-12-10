@@ -106,11 +106,11 @@ export class FactSet extends Component {
     /**
      * @description Renders the Fact key and column value after width values are calculated.
      */
-    parsePayload = (factsetJson) => {
+    parsePayload = (factSetJson) => {
         renderedElement = [];
         if (!this.payload)
             return renderedElement;
-        factsetJson.facts.map((element, index) => {
+        factSetJson.facts.map((element, index) => {
             renderedElement.push(
                 <View style={[styles.textContainer]} key={`FACT-${element.title}-${index}`}>
                     <Text style={[styles.keyTextStyle, this.styleConfig.fontConfig,
@@ -152,8 +152,8 @@ export class FactSet extends Component {
     }
 
     render() {
-        let factsetContainer = this.internalRenderer(this.props.json);
-        return factsetContainer;
+        let factSetContainer = this.internalRenderer(this.props.json);
+        return factSetContainer;
     }
 };
 

@@ -22,6 +22,7 @@
 			"title": "Set due date",
 			"card": {
 				"type": "AdaptiveCard",
+				"version": "1.0",
 				"body": [
 					{
 						"type": "Input.Date",
@@ -63,6 +64,7 @@
 			"title": "Set something else",
 			"card": {
 				"type": "AdaptiveCard",
+				"version": "1.0",
 				"body": [
 					{
 						"type": "Input.Text",

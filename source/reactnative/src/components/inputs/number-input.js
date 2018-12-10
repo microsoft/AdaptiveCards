@@ -10,7 +10,6 @@ import { StyleSheet, TextInput } from 'react-native';
 import { DismissKeyboardView } from '../containers/dismiss-keyboard';
 import { InputContextConsumer } from '../../utils/context'
 import Input from './input';
-import * as Enums from '../../utils/enums';
 import * as Constants from '../../utils/constants';
 import { StyleManager } from "../../styles/style-config";
 import { HostConfigManager } from '../../utils/host-config'
@@ -115,14 +114,14 @@ export class NumberInput extends Component {
     }
 
     /**
-     * @description handle textinput when in focus
+     * @description handle text input when in focus
      */
     handleFocus = () => {
 
     }
 
     /**
-     * @description handle textinput when out of focus
+     * @description handle text input when out of focus
      */
     handleBlur = () => {
         this.validate(this.state.numberValue);

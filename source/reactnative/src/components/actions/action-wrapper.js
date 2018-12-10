@@ -15,14 +15,13 @@ const padding = 10;
 export class ActionWrapper extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isShowCard:false,
+      cardJson:null,
+    }
   }
 
   hasShowCard = false;
-
-  state = {
-    isShowCard:false,
-    cardJson:null,
-  }
 
   onShowAdaptiveCard = (adaptiveCard) => {
     let isDifferentcard = (Utils.isNullOrEmpty(this.state.cardJson) ? false : 
@@ -91,11 +90,11 @@ export class ActionWrapper extends React.Component {
 
 const styles = StyleSheet.create({
   actionButtonContainer: {
-	flex: 1,
+  flex: 1,
 	paddingTop: padding,
-	flexWrap: Constants.flexWrap,
-	flexDirection: Constants.FlexRow,
-	justifyContent: Constants.CenterString
+	flexWrap: Constants.FlexWrap,
+  flexDirection: Constants.FlexRow,
+  justifyContent: Constants.CenterString
   },
   actionContainer: {
     marginVertical: padding

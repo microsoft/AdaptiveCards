@@ -55,7 +55,7 @@ export class ColumnSet extends PureComponent {
         let backgroundStyle = columnSetJson.style == Constants.Emphasis ?
             styles.emphasisStyle : styles.defaultBGStyle;
 
-        var columsetContent = (
+        var columnSetContent = (
             <View style={[backgroundStyle, { flex: this.payload.columns.length }]}>
                 <Input json={columnSetJson} style={backgroundStyle}>
                     {this.parsePayload(columnSetJson)}
@@ -65,10 +65,10 @@ export class ColumnSet extends PureComponent {
 
         if ((columnSetJson.selectAction === undefined) ||
             (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
-            return columsetContent;
+            return columnSetContent;
         } else {
             return <SelectAction selectActionData={columnSetJson.selectAction}>
-                {columsetContent}
+                {columnSetContent}
             </SelectAction>;
         }
     }
