@@ -102,6 +102,10 @@ export default class AdaptiveCards extends React.Component {
    * @return {boolean} - version supported or not
    */
   isSupportedVersion = () => {
+
+    if(this.props.isActionShowCard){
+      return true;
+    }
     if (!this.payload.version)
       return false;
 

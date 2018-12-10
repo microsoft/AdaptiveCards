@@ -4,9 +4,10 @@
  */
 
 import React, { Component } from "react";
-import { Linking, Platform, Alert } from 'react-native'
-
+import { Platform } from 'react-native'
+import { InputContextConsumer } from '../../utils/context'
 import * as Constants from '../../utils/constants';
+import * as Utils from '../../utils/util'
 
 export class SelectAction extends Component {
 
@@ -15,41 +16,16 @@ export class SelectAction extends Component {
     }
 
     /**
-     * @description Invoked on tapping the parent component
+     * @description Invoked on tapping the button component
      */
-    onClickHandle() {
+    onClickHandle(onExecuteAction) {
         if (this.props.selectActionData.type === Constants.ActionSubmit) {
-            this.onSubmitActionCalled();
-        } else if (this.props.selectActionData.type === Constants.ActionOpenUrl) {
-            this.openUrlContent();
+            let actionObject = { "type": Constants.ActionSubmit, "data": this.props.selectActionData.data };
+            onExecuteAction(actionObject);
+        } else if (this.props.selectActionData.type === Constants.ActionOpenUrl && !Utils.isNullOrEmpty(this.props.selectActionData.url)) {
+            let actionObject = { "type": Constants.ActionOpenUrl, "url": this.props.selectActionData.url };
+            onExecuteAction(actionObject);
         }
-    }
-
-    /**
-     * @description Invoked for the action type Constants.ActionOpenUrl
-     */
-    openUrlContent() {
-        Linking.canOpenURL(this.props.selectActionData.url).then(supported => {
-            if (supported) {
-                Linking.openURL(this.props.selectActionData.url);
-            } else {
-                console.log("Can't open URL: " + this.props.selectionActionData.url);
-            }
-        });
-    }
-
-    /**
-     * @description Invoked for the action type Constants.ActionSubmit
-     */
-    onSubmitActionCalled() {
-        Alert.alert(
-            'Submit Action',
-            JSON.stringify(this.props.selectActionData.data),
-            [
-                { text: Constants.OkText, onPress: () => console.log('OK Pressed') },
-            ],
-            { cancelable: false }
-        )
     }
 
     render() {
@@ -58,8 +34,10 @@ export class SelectAction extends Component {
             android: () => require('TouchableNativeFeedback'),
         })();
 
-        return (<ButtonComponent onPress={() => { this.onClickHandle() }}>
-            {this.props.children}
-        </ButtonComponent>);
+        return (<InputContextConsumer>
+            {({ onExecuteAction }) => <ButtonComponent onPress={() => { this.onClickHandle(onExecuteAction) }}>
+                {this.props.children}
+            </ButtonComponent>}
+        </InputContextConsumer>);
     }
 }

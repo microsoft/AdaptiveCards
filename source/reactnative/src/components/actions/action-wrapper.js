@@ -81,7 +81,7 @@ export class ActionWrapper extends React.Component {
 			{({ onExecuteAction }) => 
 				<AdaptiveCards
 					payload={this.state.cardJson} 
-					onExecuteAction={onExecuteAction}/>}
+					onExecuteAction={onExecuteAction} isActionShowCard={true}/>}
 			</InputContextConsumer>):null) : null}
        </View>
     );
