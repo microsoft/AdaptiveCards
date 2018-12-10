@@ -225,10 +225,8 @@ using namespace AdaptiveCards;
             contentWidth = maxWidth;
         }
 
-        self.frame = CGRectMake(0, 0, contentWidth, contentHeight);
-        ((UIScrollView *)self.superview).contentSize = self.frame.size;
-        if (self.frame.size.width > self.superview.frame.size.width) {
-            [self removeConstraints:_widthconstraint];
+        if (contentWidth > self.frame.size.width) {
+            [self removeConstraints:_widthconstraint]; 
         }
     }
 }
