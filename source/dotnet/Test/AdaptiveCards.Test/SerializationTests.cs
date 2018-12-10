@@ -561,5 +561,90 @@ namespace AdaptiveCards.Test
             var deserializedActual = deserializedCard.ToJson();
             Assert.AreEqual(expected: expected, actual: deserializedActual);
         }
+
+        [TestMethod]
+        public void TargetElementSerialization()
+        {
+            string url = "http://adaptivecards.io/content/cats/1.png";
+            var expected = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.2"",
+  ""id"": ""myCard"",
+  ""body"": [
+    {
+      ""type"": ""Image"",
+      ""url"": """ + url + @""",
+      ""selectAction"": {
+        ""type"": ""Action.ToggleVisibility"",
+        ""targetElements"": [
+          ""id1"",
+          {
+            ""elementId"": ""id2"",
+            ""isVisible"": false
+          },
+          {
+            ""elementId"": ""id3"",
+            ""isVisible"": true
+          }
+        ]
+      }
+    }
+  ],
+  ""actions"": [
+    {
+      ""type"": ""Action.ToggleVisibility"",
+      ""targetElements"": [
+        ""id1"",
+        {
+          ""elementId"": ""id2"",
+          ""isVisible"": false
+        },
+        {
+          ""elementId"": ""id3"",
+          ""isVisible"": true
+        }
+      ]
+    }
+  ]
+}";
+
+            var card = new AdaptiveCard("1.2")
+            {
+                Id = "myCard",
+                Body =
+                {
+                    new AdaptiveImage(url)
+                    {
+                        SelectAction = new AdaptiveToggleVisibilityAction()
+                        {
+                            TargetElements =
+                            {
+                                "id1",
+                                new AdaptiveTargetElement("id2", false),
+                                new AdaptiveTargetElement("id3", true)
+                            }
+                        }
+                    }
+                },
+                Actions =
+                {
+                    new AdaptiveToggleVisibilityAction()
+                    {
+                        TargetElements =
+                        {
+                            "id1",
+                            new AdaptiveTargetElement("id2", false),
+                            new AdaptiveTargetElement("id3", true)
+                        }
+                    }
+                }
+            };
+
+            var actual = card.ToJson();
+            Assert.AreEqual(expected: expected, actual: actual);
+            var deserializedCard = AdaptiveCard.FromJson(expected).Card;
+            var deserializedActual = deserializedCard.ToJson();
+            Assert.AreEqual(expected: expected, actual: deserializedActual);
+        }
     }
 }

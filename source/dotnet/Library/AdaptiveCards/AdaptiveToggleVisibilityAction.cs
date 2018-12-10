@@ -34,6 +34,6 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlIgnore]
 #endif
-        public List<object> TargetElements { get; set; }
+        public List<object> TargetElements { get; set; } = new List<object>();
     }
 }
