@@ -4,14 +4,18 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#schema-factset
  */
 
-import React, { Component } from "react";
-import { View, StyleSheet, Text, Dimensions } from 'react-native';
-
+import React from "react";
+import {
+    View,
+    StyleSheet,
+    Text,
+    Dimensions
+} from 'react-native';
 import Input from '../inputs/input';
 import * as Constants from '../../utils/constants';
 import { StyleManager } from '../../styles/style-config'
 
-export class FactSet extends Component {
+export class FactSet extends React.Component {
 
     styleConfig = StyleManager.getManager().styles;
 
@@ -106,11 +110,11 @@ export class FactSet extends Component {
     /**
      * @description Renders the Fact key and column value after width values are calculated.
      */
-    parsePayload = (factsetJson) => {
+    parsePayload = (factSetJson) => {
         renderedElement = [];
         if (!this.payload)
             return renderedElement;
-        factsetJson.facts.map((element, index) => {
+        factSetJson.facts.map((element, index) => {
             renderedElement.push(
                 <View style={[styles.textContainer]} key={`FACT-${element.title}-${index}`}>
                     <Text style={[styles.keyTextStyle, this.styleConfig.fontConfig,
@@ -152,8 +156,8 @@ export class FactSet extends Component {
     }
 
     render() {
-        let factsetContainer = this.internalRenderer(this.props.json);
-        return factsetContainer;
+        let factSetContainer = this.internalRenderer(this.props.json);
+        return factSetContainer;
     }
 };
 

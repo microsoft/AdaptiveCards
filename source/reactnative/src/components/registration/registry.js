@@ -8,8 +8,18 @@ import {
     ChoiceSetInput,
     InputText,
 } from '../inputs';
-import { TextBlock, Media, Img } from '../elements';
-import { Container, ColumnSet, Column, FactSet, ImageSet } from '../containers';
+import {
+    TextBlock,
+    Media,
+    Img
+} from '../elements';
+import {
+    Container,
+    ColumnSet,
+    Column,
+    FactSet,
+    ImageSet
+} from '../containers';
 import { ActionButton } from '../actions';
 import * as Enums from '../../utils/enums';
 import * as Utils from '../../utils/util';
@@ -82,7 +92,7 @@ export class Registry {
         if (this.ElementRegistry.hasOwnProperty(key) && !Utils.isNullOrEmpty(requiredProps)) {
             this.RequiredPropertySchema[key] = requiredProps;
 
-        } 
+        }
     }
     RequiredPropertySchema = {
         'Container': { 'type': 'Container', 'items': 'Array' },
@@ -104,8 +114,8 @@ export class Registry {
 
 
         'Action.ShowCard': { 'type': 'Action.ShowCard', 'card': 'Object' },
-        'Action.Submit': { 'type': 'Action.ShowCard' },
-        'Action.OpenUrl': { 'type': 'Action.ShowCard', 'url': 'String' }
+        'Action.Submit': { 'type': 'Action.Submit' },
+        'Action.OpenUrl': { 'type': 'Action.OpenUrl', 'url': 'String' }
     };
 
 

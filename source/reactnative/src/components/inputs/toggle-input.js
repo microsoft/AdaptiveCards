@@ -5,7 +5,11 @@
  */
 
 import React from 'react';
-import { Text, Switch, StyleSheet } from 'react-native';
+import {
+    Text,
+    Switch,
+    StyleSheet
+} from 'react-native';
 
 import Input from './input';
 import * as Constants from '../../utils/constants';

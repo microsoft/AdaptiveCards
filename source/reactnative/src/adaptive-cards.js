@@ -3,13 +3,18 @@
  */
 
 import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  ImageBackground
+} from 'react-native';
+import { Registry } from './components/registration/registry'
+import { InputContextProvider } from './utils/context'
+import { HostConfigManager } from './utils/host-config'
+import { ActionWrapper } from './components/actions/action-wrapper'
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, ScrollView,ImageBackground } from 'react-native';
-
-import { Registry } from './components/registration/registry';
-import { InputContextProvider } from './utils/context';
-
-import { HostConfigManager } from './utils/host-config';
 import * as Utils from './utils/util';
 
 export default class AdaptiveCards extends React.Component {
@@ -42,20 +47,13 @@ export default class AdaptiveCards extends React.Component {
   parsePayload = () => {
 
     const renderedElement = [];
-    const { body, actions } = this.payload;
+    const { body } = this.payload;
 
-    if (!body){
+    if (!body)
       return renderedElement;
-    }
-    else{
-      renderedElement.push(Registry.getManager().parseRegistryComponents(body,this.props.onParseError));
-    }
 
-    // parse actions
-    if (actions) {
-      renderedElement.push(<View key="AC-CONTAINER" style={styles.actionContainer} />);
-      renderedElement.push(Registry.getManager().parseRegistryComponents(actions,this.props.onParseError));
-    }
+    renderedElement.push(Registry.getManager().parseRegistryComponents(body, this.props.onParseError));
+
     return renderedElement;
   }
 
@@ -65,6 +63,8 @@ export default class AdaptiveCards extends React.Component {
         <View style={styles.container}>
           <ScrollView>
             {this.parsePayload()}
+            {!Utils.isNullOrEmpty(this.payload.actions) &&
+              <ActionWrapper actions={this.payload.actions} />}
           </ScrollView>
         </View>
       );
@@ -94,7 +94,7 @@ export default class AdaptiveCards extends React.Component {
         <Text>{message}</Text>
       )
     }
-  return ( 
+    return (
       <InputContextProvider value={{ addInputItem, inputArray, onExecuteAction, isTransparent, onParseError }}>
         {
           this.getAdaptiveCardConent()
@@ -108,6 +108,11 @@ export default class AdaptiveCards extends React.Component {
    * @return {boolean} - version supported or not
    */
   isSupportedVersion = () => {
+
+  //Ignore the schema version number when AdaptiveCard is used from Action.ShowCard as it is not mandatory
+    if (this.props.isActionShowCard) {
+      return true;
+    }
     if (!this.payload.version)
       return false;
 

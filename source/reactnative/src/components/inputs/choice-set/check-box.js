@@ -3,7 +3,7 @@
  * 
  */
 
-import React, { PureComponent } from 'react'
+import React from 'react'
 import {
     View,
     Text,
@@ -31,7 +31,7 @@ const UncheckedRadioImage = "./assets/uncheckedradio.png";
 const CheckedCheckBoxImage = "./assets/checked.png";
 const UncheckedCheckBoxImage = "./assets/unchecked.png";
 
-class CheckBox extends PureComponent {
+class CheckBox extends React.PureComponent {
 
     static propTypes = {
         style: ViewPropTypes.style,

@@ -4,13 +4,15 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#inputnumber
  */
 
-import React, { Component } from "react";
-import { StyleSheet, TextInput } from 'react-native';
+import React from "react";
+import {
+    StyleSheet,
+    TextInput
+} from 'react-native';
 
 import { DismissKeyboardView } from '../containers/dismiss-keyboard';
 import { InputContextConsumer } from '../../utils/context'
 import Input from './input';
-import * as Enums from '../../utils/enums';
 import * as Constants from '../../utils/constants';
 import { StyleManager } from "../../styles/style-config";
 import { HostConfigManager } from '../../utils/host-config'
@@ -18,7 +20,7 @@ import { HostConfigManager } from '../../utils/host-config'
 
 const NUM_REGEX = /^[0-9][\.\d]*(,\d+)?$/;
 
-export class NumberInput extends Component {
+export class NumberInput extends React.Component {
 
     styleConfig = StyleManager.getManager().styles;
 
@@ -115,14 +117,14 @@ export class NumberInput extends Component {
     }
 
     /**
-     * @description handle textinput when in focus
+     * @description handle text input when in focus
      */
     handleFocus = () => {
 
     }
 
     /**
-     * @description handle textinput when out of focus
+     * @description handle text input when out of focus
      */
     handleBlur = () => {
         this.validate(this.state.numberValue);

@@ -4,16 +4,18 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#schema-columnset
  */
 
-import React, { PureComponent } from "react";
-import { View, StyleSheet } from 'react-native';
-
+import React from "react";
+import {
+    View,
+    StyleSheet
+} from 'react-native';
 import { SelectAction } from '../actions';
 import Input from '../inputs/input';
 import { Column } from "./column";
 import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config'
 
-export class ColumnSet extends PureComponent {
+export class ColumnSet extends React.PureComponent {
 
     constructor(props) {
         super(props);
@@ -29,14 +31,11 @@ export class ColumnSet extends PureComponent {
         if (!this.payload)
             return this.renderedElement;
 
-        const totalWidth = columnSetJson.columns.reduce((prev, next) => prev + next.width, 0);
-
         // parse elements
         columnSetJson.columns.map((element, index) => {
             this.renderedElement.push(
                 <Column json={element}
-                    columns={columnSetJson.columns.length}
-                    columnWidth={totalWidth}
+                    columns={columnSetJson.columns}
                     key={`ELEMENT-${this.generateNumber()}`}
                 />);
         });
@@ -58,7 +57,7 @@ export class ColumnSet extends PureComponent {
         let backgroundStyle = columnSetJson.style == Constants.Emphasis ?
             styles.emphasisStyle : styles.defaultBGStyle;
 
-        var columsetContent = (
+        var columnSetContent = (
             <View style={[backgroundStyle, { flex: this.payload.columns.length }]}>
                 <Input json={columnSetJson} style={backgroundStyle}>
                     {this.parsePayload(columnSetJson)}
@@ -68,10 +67,10 @@ export class ColumnSet extends PureComponent {
 
         if ((columnSetJson.selectAction === undefined) ||
             (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
-            return columsetContent;
+            return columnSetContent;
         } else {
             return <SelectAction selectActionData={columnSetJson.selectAction}>
-                {columsetContent}
+                {columnSetContent}
             </SelectAction>;
         }
     }

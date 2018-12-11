@@ -5,7 +5,10 @@
  */
 
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import {
+    StyleSheet,
+    Text
+} from 'react-native';
 
 import { HostConfigManager } from "../../utils/host-config";
 import { TextFormatter } from '../../utils/text-formatters';
