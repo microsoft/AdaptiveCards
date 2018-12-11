@@ -197,24 +197,6 @@ namespace AdaptiveCards.Rendering.Wpf
             return outerGrid;
         }
 
-        private string GenerateLighterColor(string hexColor)
-        {
-            int color = int.Parse(hexColor.Substring(1), System.Globalization.NumberStyles.HexNumber);
-
-            const double colorIncrement = 0.25;
-            int originalR = (color & 0x00FF0000) >> 16;
-            int originalG = (color & 0x0000FF00) >> 8;
-            int originalB = (color & 0x000000FF);
-
-            int newColorR = originalR + (int)((255 - originalR) * colorIncrement);
-            int newColorG = originalG + (int)((255 - originalG) * colorIncrement);
-            int newColorB = originalB + (int)((255 - originalB) * colorIncrement);
-
-            int newColor = ((newColorR << 16) | (newColorG << 8) | (newColorB));
-
-            return "#" + newColor.ToString("X");
-        }
-
         /// <summary>
         /// Renders an adaptive card.
         /// </summary>
@@ -245,9 +227,9 @@ namespace AdaptiveCards.Rendering.Wpf
             };
 
             string accentColor = HostConfig.ContainerStyles.Default.ForegroundColors.Accent.Default;
-            string lighterAccentColor = GenerateLighterColor(accentColor);
+            string lighterAccentColor = ColorUtil.GenerateLighterColor(accentColor);
             string attentionColor = HostConfig.ContainerStyles.Default.ForegroundColors.Attention.Default;
-            string lighterAttentionColor = GenerateLighterColor(attentionColor);
+            string lighterAttentionColor = ColorUtil.GenerateLighterColor(attentionColor);
 
             Resources["Adaptive.Action.Positive.Button.Static.Background"] = context.GetColorBrush(accentColor);
             Resources["Adaptive.Action.Positive.Button.MouseOver.Background"] = context.GetColorBrush(lighterAccentColor);
