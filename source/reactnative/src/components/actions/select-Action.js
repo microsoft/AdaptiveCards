@@ -3,13 +3,13 @@
  * 
  */
 
-import React, { Component } from "react";
+import React from "react";
 import { Platform } from 'react-native'
 import { InputContextConsumer } from '../../utils/context'
 import * as Constants from '../../utils/constants';
 import * as Utils from '../../utils/util'
 
-export class SelectAction extends Component {
+export class SelectAction extends React.Component {
 
     constructor(props) {
         super(props);

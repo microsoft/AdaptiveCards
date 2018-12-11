@@ -4,8 +4,14 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#schema-action.openurl
  */
 
-import React, { Component } from "react";
-import { Text, View, StyleSheet, Image, Platform } from "react-native";
+import React from "react";
+import {
+    Text,
+    View,
+    StyleSheet,
+    Image,
+    Platform
+} from "react-native";
 
 import { StyleManager } from '../../styles/style-config'
 import * as Utils from '../../utils/util';
@@ -14,7 +20,7 @@ import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config'
 
 
-export class ActionButton extends Component {
+export class ActionButton extends React.Component {
 
     styleConfig = StyleManager.getManager().styles;
 
@@ -29,7 +35,7 @@ export class ActionButton extends Component {
         if (props.json.type === 'Action.ShowCard') {
             this.showCardHandler = props.onShowCardTapped;
         }
-    }    
+    }
 
     render() {
         if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
@@ -54,16 +60,16 @@ export class ActionButton extends Component {
         }
         else if (this.payload.type === Constants.ActionOpenUrl) {
             return (<InputContextConsumer>
-			 {({ onExecuteAction }) => (<ButtonComponent style={{ flexGrow: 1 }} onPress={() => {
+                {({ onExecuteAction }) => (<ButtonComponent style={{ flexGrow: 1 }} onPress={() => {
                     this.onOpenURLCalled(onExecuteAction)
                 }}>{this.buttonContent()}
                 </ButtonComponent>)}
             </InputContextConsumer>);
         } else if (this.payload.type === Constants.ActionShowCard) {
-			return (<ButtonComponent 
-						style={{ flexGrow: 1 }} 
-						onPress={this.changeShowCardState}>
-					{this.buttonContent()}
+            return (<ButtonComponent
+                style={{ flexGrow: 1 }}
+                onPress={this.changeShowCardState}>
+                {this.buttonContent()}
             </ButtonComponent>)
         }
     }
@@ -135,22 +141,6 @@ const styles = StyleSheet.create({
     buttonIcon: {
         marginLeft: 5,
         marginRight: 10,
-    },
-    webViewHeader: {
-        flexDirection: Constants.FlexRow,
-        alignItems: Constants.CenterString,
-        justifyContent: Constants.SpaceBetween,
-        ...Platform.select({
-            android: {
-                padding: 10,
-            },
-            ios: {
-                marginTop: 30,
-                padding: 5
-            }
-        }),
-        marginBottom: 10,
-    },
-    backButton: { alignItems: Constants.FlexStart, marginLeft: 20 }
+    }
 });
 

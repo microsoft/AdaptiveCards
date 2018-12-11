@@ -8,7 +8,10 @@
  */
 
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import {
+    View,
+    StyleSheet
+} from 'react-native';
 
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';

@@ -3,7 +3,13 @@
  */
 
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView ,ImageBackground} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  ImageBackground
+} from 'react-native';
 import { Registry } from './components/registration/registry'
 import { InputContextProvider } from './utils/context'
 import { HostConfigManager } from './utils/host-config'
@@ -44,23 +50,23 @@ export default class AdaptiveCards extends React.Component {
     const { body } = this.payload;
 
     if (!body)
-	  return renderedElement;
+      return renderedElement;
 
-    renderedElement.push(Registry.getManager().parseRegistryComponents(body,this.props.onParseError));
- 
+    renderedElement.push(Registry.getManager().parseRegistryComponents(body, this.props.onParseError));
+
     return renderedElement;
   }
 
   getAdaptiveCardConent() {
     var adaptiveCardContent =
       (
-		<View style={styles.container}>
-			<ScrollView>
-			{ this.parsePayload() }
-			{ !Utils.isNullOrEmpty(this.payload.actions) && 
-				<ActionWrapper actions={this.payload.actions}/> }
-			</ScrollView>
-	  	</View>
+        <View style={styles.container}>
+          <ScrollView>
+            {this.parsePayload()}
+            {!Utils.isNullOrEmpty(this.payload.actions) &&
+              <ActionWrapper actions={this.payload.actions} />}
+          </ScrollView>
+        </View>
       );
 
     if (!Utils.isNullOrEmpty(this.payload.backgroundImage)) {
@@ -88,7 +94,7 @@ export default class AdaptiveCards extends React.Component {
         <Text>{message}</Text>
       )
     }
-  return ( 
+    return (
       <InputContextProvider value={{ addInputItem, inputArray, onExecuteAction, isTransparent, onParseError }}>
         {
           this.getAdaptiveCardConent()
@@ -103,7 +109,8 @@ export default class AdaptiveCards extends React.Component {
    */
   isSupportedVersion = () => {
 
-    if(this.props.isActionShowCard){
+  //Ignore the schema version number when AdaptiveCard is used from Action.ShowCard as it is not mandatory
+    if (this.props.isActionShowCard) {
       return true;
     }
     if (!this.payload.version)

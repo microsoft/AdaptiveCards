@@ -4,9 +4,8 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#schema-imageset
  */
 
-import React, { PureComponent } from "react";
+import React from "react";
 import { StyleSheet } from 'react-native';
-
 import { Registry } from '../registration/registry'
 import Input from '../inputs/input';
 import * as Constants from '../../utils/constants';
@@ -15,7 +14,7 @@ const FlexWrap = 'wrap';
 const SizeKey = "size";
 const ImageSetKey = "fromImageSet";
 
-export class ImageSet extends PureComponent {
+export class ImageSet extends React.PureComponent {
 
     constructor(props) {
         super(props);

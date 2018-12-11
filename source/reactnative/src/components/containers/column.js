@@ -4,16 +4,18 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#schema-column
  */
 
-import React, { Component } from "react";
-import { View, StyleSheet } from 'react-native';
-
+import React from "react";
+import {
+    View,
+    StyleSheet
+} from 'react-native';
 import { Registry } from '../registration/registry'
 import * as Utils from '../../utils/util';
 import * as Constants from '../../utils/constants';
 import { SelectAction } from '../actions';
 import { HostConfigManager } from '../../utils/host-config'
 
-export class Column extends Component {
+export class Column extends React.Component {
 
     constructor(props) {
         super(props);
@@ -45,9 +47,9 @@ export class Column extends Component {
         var containsString = false
 
         widthArray.map((value) => {
-            if (typeof(value) == 'number') {
+            if (typeof (value) == 'number') {
                 containsNumber = true
-            } else if (typeof(value) == 'string') {
+            } else if (typeof (value) == 'string') {
                 containsString = true
             }
         })
@@ -55,8 +57,8 @@ export class Column extends Component {
         var columnWidth;
         if (!containsString) {
             columnWidth = 0
-            columns.forEach(function(column) {
-                if (!Utils.isNullOrEmpty(column.width)){
+            columns.forEach(function (column) {
+                if (!Utils.isNullOrEmpty(column.width)) {
                     columnWidth += column.width
                 }
             });
@@ -69,35 +71,35 @@ export class Column extends Component {
 
         let widthPercentage;
         if (containsString) {
-            if (typeof(width) == 'string'){
+            if (typeof (width) == 'string') {
                 let lastIndex = width.lastIndexOf('px')
                 if (lastIndex != -1) {
                     widthPercentage = parseInt(width.substring(0, lastIndex))
-                } 
+                }
                 else if (width == Constants.AlignStretch) {
-                    containerStyle.push({flex: 1})
-                } 
+                    containerStyle.push({ flex: 1 })
+                }
                 else if (width == Constants.Auto) {
                     if (!containsNumber) {
-                        containerStyle.push({alignSelf: 'auto'})
+                        containerStyle.push({ alignSelf: 'auto' })
                     } else {
-                        widthPercentage = (100/columns.length).toString()+'%' 
+                        widthPercentage = (100 / columns.length).toString() + '%'
                     }
                 }
                 else {
-                    widthPercentage = (100/columns.length).toString()+'%' 
+                    widthPercentage = (100 / columns.length).toString() + '%'
                 }
-            } 
+            }
             else {
-                widthPercentage = (100/columns.length).toString()+'%' 
+                widthPercentage = (100 / columns.length).toString() + '%'
             }
         }
         else {
             if (Utils.isNullOrEmpty(this.payload.width)) {
-                widthPercentage = ((width/columns.length) * 100).toString()+'%'
-            } 
-            else{
-                 widthPercentage = ((this.payload.width/columnWidth) * 100).toString()+'%'
+                widthPercentage = ((width / columns.length) * 100).toString() + '%'
+            }
+            else {
+                widthPercentage = ((this.payload.width / columnWidth) * 100).toString() + '%'
             }
         }
 

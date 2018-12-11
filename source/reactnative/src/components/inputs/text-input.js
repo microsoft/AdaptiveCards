@@ -5,7 +5,10 @@
  */
 
 import React from "react";
-import { StyleSheet, TextInput } from 'react-native';
+import {
+    StyleSheet,
+    TextInput
+} from 'react-native';
 
 import Input from './input';
 import { StyleManager } from "../../styles/style-config";

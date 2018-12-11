@@ -5,8 +5,11 @@
  */
 
 import React from "react";
-import { View, ScrollView, StyleSheet } from 'react-native';
-
+import {
+    View,
+    ScrollView,
+    StyleSheet
+} from 'react-native';
 import Input from '../inputs/input';
 import { Registry } from '../registration/registry'
 import { SelectAction } from '../actions'

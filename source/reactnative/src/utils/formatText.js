@@ -1,5 +1,8 @@
 import React from "react";
-import { Text, Linking } from "react-native";
+import {
+  Text,
+  Linking
+} from "react-native";
 import * as Utils from './util';
 
 BOLD_REGEX = /(?:[*]{2})(.*?)(?:[*]{2})/;
@@ -14,7 +17,7 @@ const KEY_ITALIC = "italic";
 const KEY_HYPERLINK = "hyperlink";
 
 let indexToBeStyled = {};
-let urlIndexToLinkMapping={};
+let urlIndexToLinkMapping = {};
 
 
 
@@ -31,11 +34,11 @@ export const processMDText = text => {
  * @param {String} text 
  */
 function processText(text) {
- 
+
   let input = text;
-    /**
-   * Identify words that are to be hyperlinked
-   */
+  /**
+ * Identify words that are to be hyperlinked
+ */
   let urlLinks = [];
   let urlIndexes = [];
 
@@ -43,28 +46,28 @@ function processText(text) {
     input = input.replace(matches[1], '');
     let urlMatch = matches[1];
     urlLinks.push(matches[1]);
-    if((matches = URL_LINK_REGEX.exec(input)) != null) {
+    if ((matches = URL_LINK_REGEX.exec(input)) != null) {
       let splitArrayURL = input.split(' ');
       let searchText = matches[0].replace(']()', '').replace('[', '');
       let urlMatchArray = matches[0].split(' ');
       let indexOfFirstWord = splitArrayURL.indexOf(urlMatchArray[0])
-      urlMatchArray.forEach((word,index) => {
-        let indexToPush = indexOfFirstWord+index;
-        urlIndexes.push(indexToPush);    
-        urlIndexToLinkMapping[indexToPush]= urlMatch;  
+      urlMatchArray.forEach((word, index) => {
+        let indexToPush = indexOfFirstWord + index;
+        urlIndexes.push(indexToPush);
+        urlIndexToLinkMapping[indexToPush] = urlMatch;
       })
-      input = input.replace(matches[0], searchText);     
+      input = input.replace(matches[0], searchText);
     }
   }
-      indexToBeStyled[KEY_HYPERLINK] = urlIndexes;
+  indexToBeStyled[KEY_HYPERLINK] = urlIndexes;
 
   let boldIndexes = [];
   while ((matches = BOLD_REGEX.exec(input)) != null) {
     let splitArrayBold = input.split(' ');
     let boldArray = matches[0].split(' ');
     let indexOfFirstWord = splitArrayBold.indexOf(boldArray[0])
-    boldArray.forEach((word,index) => {
-        boldIndexes.push(indexOfFirstWord+index);      
+    boldArray.forEach((word, index) => {
+      boldIndexes.push(indexOfFirstWord + index);
     })
     input = input.replace(matches[0], matches[1]);
   }
@@ -80,8 +83,8 @@ function processText(text) {
     let splitArrayItalic = input.split(' ');
     let italicArray = matches[0].split(' ');
     let indexOfFirstWord = splitArrayItalic.indexOf(italicArray[0]);
-    italicArray.forEach((word,index) => {
-      italicIndexes.push(indexOfFirstWord+index);      
+    italicArray.forEach((word, index) => {
+      italicIndexes.push(indexOfFirstWord + index);
     })
     input = input.replace(matches[0], matches[1]);
   }
@@ -92,7 +95,7 @@ function processText(text) {
    * otherwise add appropriate styling to the Text component
    */
   let resultArray = input.split(' ');
-  let combinedIndex = boldIndexes.concat(...italicIndexes,...urlIndexes);
+  let combinedIndex = boldIndexes.concat(...italicIndexes, ...urlIndexes);
   let newResult = resultArray.map((eachWord, index) => {
     if (!combinedIndex.includes(index)) {
       return (<Text key={`text_${index}`}>{eachWord + ' '}</Text>);
@@ -127,18 +130,18 @@ function styleForWordWithIndex(wordIndex) {
   let italicStyle = [{ fontStyle: 'italic' }];
   let hyperLinkStyle = [{ color: 'blue' }];
   let styleForWordWithIndex = {};
-  let styles = [];   
+  let styles = [];
   let isLink;
   let link = ' ';
-  
+
   if (!Utils.isNullOrEmpty(indexToBeStyled[KEY_BOLD]) &&
-    (indexToBeStyled[KEY_BOLD].indexOf(wordIndex) !== -1 )) {
+    (indexToBeStyled[KEY_BOLD].indexOf(wordIndex) !== -1)) {
     styles = styles.concat(boldStyle);
     isLink = false;
   }
 
   if (!Utils.isNullOrEmpty(indexToBeStyled[KEY_ITALIC]) &&
-  indexToBeStyled[KEY_ITALIC].indexOf(wordIndex) !== -1) {
+    indexToBeStyled[KEY_ITALIC].indexOf(wordIndex) !== -1) {
     styles = styles.concat(italicStyle);
     isLink = false;
   }

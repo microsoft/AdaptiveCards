@@ -178,7 +178,7 @@ export class FactSetConfig {
         if (obj) {
             this.title = new FactTitleDefinition(obj["title"]);
             this.value = new FactTextDefinition(obj["value"]);
-            this.spacing = (obj['spacing'] != null) ? obj['spacing'] : this.spacing;       
+            this.spacing = (obj['spacing'] != null) ? obj['spacing'] : this.spacing;
         }
     }
 }
@@ -389,7 +389,7 @@ export class HostConfig {
     fontFamily = "Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif";
 
     spacing = {
-        none:0,
+        none: 0,
         small: 3,
         default: 8,
         medium: 20,
@@ -510,7 +510,7 @@ export class HostConfig {
     getEffectiveSpacing = (spacing) => {
         switch (spacing) {
             case Enums.Spacing.None:
-            return this.spacing.none;
+                return this.spacing.none;
             case Enums.Spacing.Small:
                 return this.spacing.small;
             case Enums.Spacing.Default:
@@ -636,22 +636,22 @@ export class HostConfig {
     }
 
     getEffectiveHeight = (height) => {
-    switch (height) {
-        case Enums.Height.Auto:
-            return this.height.auto;
-        case Enums.Height.Stretch:
-            return this.height.stretch;
-        default:
-            return this.height.auto;
+        switch (height) {
+            case Enums.Height.Auto:
+                return this.height.auto;
+            case Enums.Height.Stretch:
+                return this.height.stretch;
+            default:
+                return this.height.auto;
+        }
     }
-}
 }
 
 export const defaultHostConfig = {
     supportsInteractivity: true,
     fontFamily: "Segoe UI",
     spacing: {
-        none:0,
+        none: 0,
         small: 10,
         default: 20,
         medium: 30,

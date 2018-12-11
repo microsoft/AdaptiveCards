@@ -3,7 +3,10 @@
  */
 
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import {
+  StyleSheet,
+  View
+} from 'react-native';
 import { Registry } from '../registration/registry';
 import * as Constants from '../../utils/constants';
 import { InputContextConsumer } from '../../utils/context'
@@ -107,9 +110,6 @@ const styles = StyleSheet.create({
     flexWrap: Constants.FlexWrap,
     flexDirection: Constants.FlexRow,
     justifyContent: Constants.CenterString
-  },
-  actionContainer: {
-    marginVertical: padding
   }
 });
 

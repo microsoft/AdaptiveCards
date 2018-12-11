@@ -6,9 +6,12 @@
  * @flow
  */
 
-import React, { Component } from 'react';
-import { StyleSheet, View, Platform } from 'react-native';
-import AdaptiveCards from './src/adaptive-cards';
+import React from 'react';
+import {
+    StyleSheet,
+    View,
+    Platform
+} from 'react-native';
 import * as Enums from './src/utils/enums';
 import Visualizer from './src/visualizer/visualizer';
 
@@ -152,7 +155,7 @@ export const myHostConfig =
 };
 
 
-export default class App extends Component {
+export default class App extends React.Component {
     render() {
         return (
             <View style={styles.container}>

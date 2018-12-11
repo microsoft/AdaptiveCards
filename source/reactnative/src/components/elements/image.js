@@ -4,7 +4,7 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#schema-image
  */
 
-import React, { Component } from "react";
+import React from "react";
 import {
     StyleSheet,
     Image,
@@ -20,7 +20,7 @@ import { StyleManager } from '../../styles/style-config'
 
 const ContainResizeMode = 'contain';
 
-export class Img extends Component {
+export class Img extends React.Component {
 
     hostConfig = HostConfigManager.getHostConfig();
     styleConfig = StyleManager.getManager().styles;

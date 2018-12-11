@@ -4,14 +4,18 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#schema-factset
  */
 
-import React, { Component } from "react";
-import { View, StyleSheet, Text, Dimensions } from 'react-native';
-
+import React from "react";
+import {
+    View,
+    StyleSheet,
+    Text,
+    Dimensions
+} from 'react-native';
 import Input from '../inputs/input';
 import * as Constants from '../../utils/constants';
 import { StyleManager } from '../../styles/style-config'
 
-export class FactSet extends Component {
+export class FactSet extends React.Component {
 
     styleConfig = StyleManager.getManager().styles;
 

@@ -5,7 +5,10 @@
  */
 
 import React from 'react';
-import { StyleSheet, Text,Platform } from 'react-native';
+import {
+    StyleSheet,
+    Text
+} from 'react-native';
 import Input from '../components/inputs/input';
 import * as Utils from '../utils/util';
 import * as Enums from '../utils/enums';
@@ -19,7 +22,7 @@ export class RatingRenderer extends React.Component {
     hostConfig = HostConfigManager.getHostConfig();
     styleConfig = StyleManager.getManager().styles;
 
-    
+
     constructor(props) {
         super(props);
 
@@ -46,13 +49,13 @@ export class RatingRenderer extends React.Component {
         var processedText = this.text;
 
         //TextBlock styles
-        let textBlockComputedStyle = [styles.text,this.styleConfig.fontConfig];
+        let textBlockComputedStyle = [styles.text, this.styleConfig.fontConfig];
         textBlockComputedStyle.push({
             fontSize: this.fontSize,
             fontWeight: this.fontWeight.toString(),
             color: this.color,
             textAlign: this.horizontalAlignment,
-            backgroundColor:Constants.EmphasisColor
+            backgroundColor: Constants.EmphasisColor
         });
 
         return (
@@ -117,7 +120,7 @@ const styles = StyleSheet.create({
     textContainer: {
         width: Constants.FullWidth,
         alignItems: Constants.CenterString,
-        backgroundColor:'transparent',
+        backgroundColor: 'transparent',
     },
     text: {
         width: Constants.FullWidth,
