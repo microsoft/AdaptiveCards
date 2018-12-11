@@ -104,8 +104,8 @@ export class Registry {
 
 
         'Action.ShowCard': { 'type': 'Action.ShowCard', 'card': 'Object' },
-        'Action.Submit': { 'type': 'Action.ShowCard' },
-        'Action.OpenUrl': { 'type': 'Action.ShowCard', 'url': 'String' }
+        'Action.Submit': { 'type': 'Action.Submit' },
+        'Action.OpenUrl': { 'type': 'Action.OpenUrl', 'url': 'String' }
     };
 
 
