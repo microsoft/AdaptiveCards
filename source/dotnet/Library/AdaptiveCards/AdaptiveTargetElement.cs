@@ -23,7 +23,7 @@ namespace AdaptiveCards
 
         public string ElementId { get; set; }
 
-        public bool IsVisible { get; set; }
+        public bool? IsVisible { get; set; } = null;
 
     }
 }

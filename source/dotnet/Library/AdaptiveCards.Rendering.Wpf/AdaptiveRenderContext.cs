@@ -166,6 +166,8 @@ namespace AdaptiveCards.Rendering.Wpf
             var renderer = ElementRenderers.Get(element.GetType());
             if (renderer != null)
             {
+                
+
                 // Increment card depth before rendering the inner card
                 if (element is AdaptiveCard)
                 {
@@ -193,5 +195,7 @@ namespace AdaptiveCards.Rendering.Wpf
         }
 
         public string Lang { get; set; }
+
+        public FrameworkElement CardRoot { get; set; }
     }
 }

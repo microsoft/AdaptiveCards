@@ -15,6 +15,12 @@ namespace AdaptiveCards.Rendering.Wpf
             uiToggle.Style = context.GetStyle($"Adaptive.Input.Toggle");
             uiToggle.SetContext(input);
             context.InputBindings.Add(input.Id, () => uiToggle.GetState() == true ? input.ValueOn ?? "true" : input.ValueOff ?? "false");
+
+            if(!input.IsVisible)
+            {
+                uiToggle.Visibility = Visibility.Collapsed;
+            }
+
             return uiToggle;
         }
     }
