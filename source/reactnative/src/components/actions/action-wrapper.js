@@ -78,7 +78,7 @@ export class ActionWrapper extends React.Component {
           }
         }
       } else {
-        let error = { "error": Enums.ValidationError.UnknownElementType, "message": `Unknown Type ${element.type} encountered` };
+        let error = { "error": Enums.ValidationError.UnknownActionType, "message": `Unknown Type ${element.type} encountered` };
         onParseError(error);
         return null;
       }
