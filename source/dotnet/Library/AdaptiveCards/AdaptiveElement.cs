@@ -126,6 +126,6 @@ namespace AdaptiveCards
         [XmlElement]
 #endif
         [DefaultValue(true)]
-        public bool IsVisible { get; set; }
+        public bool IsVisible { get; set; } = true;
     }
 }
