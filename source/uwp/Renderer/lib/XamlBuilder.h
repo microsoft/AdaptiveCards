@@ -141,7 +141,7 @@ namespace AdaptiveNamespace
         void SetAutoSize(T* destination,
                          IInspectable* parentElement,
                          IInspectable* imageContainer,
-                         bool mustHideElement);
+                         bool imageFiresOpenEvent);
 
         template<typename T>
         void SetImageSource(T* destination,

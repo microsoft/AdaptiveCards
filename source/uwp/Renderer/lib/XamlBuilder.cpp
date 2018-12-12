@@ -599,7 +599,7 @@ namespace AdaptiveNamespace
                                 // Here should be the auto resizing, at this time we already have the image and everything set
                                 if (isAutoSize)
                                 {
-                                    SetAutoSize(strongImageControl.Get(), parentElement, imageContainer, false);
+                                    SetAutoSize(strongImageControl.Get(), parentElement, imageContainer, false /* imageFiresOpenEvent */);
                                 }
 
                                 return S_OK;
@@ -676,7 +676,7 @@ namespace AdaptiveNamespace
 
                 if (isAutoSize)
                 {
-                    SetAutoSize(strongImageControl.Get(), parentElement, imageContainer, false);
+                    SetAutoSize(strongImageControl.Get(), parentElement, imageContainer, false /* imageFiresOpenEvent */);
                 }
 
                 return S_OK;
@@ -702,7 +702,7 @@ namespace AdaptiveNamespace
 
             if (isAutoSize)
             {
-                SetAutoSize(uiElement, parentElement, imageContainer, true);
+                SetAutoSize(uiElement, parentElement, imageContainer, true /* imageFiresOpenEvent */);
             }
         }
         else
@@ -1732,7 +1732,7 @@ namespace AdaptiveNamespace
     }
 
     template<>
-    void XamlBuilder::SetAutoSize<IEllipse>(IEllipse* destination, IInspectable* parentElement, IInspectable* imageContainer, bool mustHideElement)
+    void XamlBuilder::SetAutoSize<IEllipse>(IEllipse* destination, IInspectable* parentElement, IInspectable* imageContainer, bool imageFiresOpenEvent)
     {
         // Check if the image source fits in the parent container, if so, set the framework element's size to match the original image.
         if (parentElement != nullptr && m_enableXamlImageHandling)
@@ -1757,7 +1757,7 @@ namespace AdaptiveNamespace
             THROW_IF_FAILED(imageSource.As(&imageSourceAsBitmap));
 
             // If the image hasn't loaded yet
-            if (mustHideElement)
+            if (imageFiresOpenEvent)
             {
                 // Collapse the Ellipse while the image loads, so that resizing is not noticeable
                 THROW_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
@@ -1776,7 +1776,7 @@ namespace AdaptiveNamespace
     }
 
     template<typename T>
-    void XamlBuilder::SetAutoSize(T* destination, IInspectable* parentElement, IInspectable* imageContainer, bool mustHideElement)
+    void XamlBuilder::SetAutoSize(T* destination, IInspectable* parentElement, IInspectable* imageContainer, bool imageFiresOpenEvent)
     {
         if (parentElement != nullptr && m_enableXamlImageHandling)
         {
@@ -1794,7 +1794,7 @@ namespace AdaptiveNamespace
             THROW_IF_FAILED(xamlImage.As(&imageAsUIElement));
 
             // If the image hasn't loaded yet
-            if (mustHideElement)
+            if (imageFiresOpenEvent)
             {
                 // Collapse the Image control while the image loads, so that resizing is not noticeable
                 THROW_IF_FAILED(imageAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
@@ -1803,9 +1803,9 @@ namespace AdaptiveNamespace
                 ComPtr<IInspectable> strongParentElement(parentElement);
                 EventRegistrationToken eventToken;
                 THROW_IF_FAILED(xamlImage->add_ImageOpened(
-                Callback<IRoutedEventHandler>([frameworkElement, strongParentElement, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs *
+                    Callback<IRoutedEventHandler>([frameworkElement, strongParentElement, imageSourceAsBitmap](IInspectable* /*sender*/, IRoutedEventArgs *
                         /*args*/) -> HRESULT {
-                return SetAutoImageSize(frameworkElement.Get(), strongParentElement.Get(), imageSourceAsBitmap.Get());
+                    return SetAutoImageSize(frameworkElement.Get(), strongParentElement.Get(), imageSourceAsBitmap.Get());
                 })
                     .Get(),
                     &eventToken));
