@@ -585,6 +585,9 @@ namespace AdaptiveCards.Test
           {
             ""elementId"": ""id3"",
             ""isVisible"": true
+          },
+          {
+            ""elementId"": ""id4""
           }
         ]
       }
@@ -602,6 +605,9 @@ namespace AdaptiveCards.Test
         {
           ""elementId"": ""id3"",
           ""isVisible"": true
+        },
+        {
+          ""elementId"": ""id4""
         }
       ]
     }
@@ -621,7 +627,8 @@ namespace AdaptiveCards.Test
                             {
                                 "id1",
                                 new AdaptiveTargetElement("id2", false),
-                                new AdaptiveTargetElement("id3", true)
+                                new AdaptiveTargetElement("id3", true),
+                                new AdaptiveTargetElement("id4")
                             }
                         }
                     }
@@ -634,7 +641,8 @@ namespace AdaptiveCards.Test
                         {
                             "id1",
                             new AdaptiveTargetElement("id2", false),
-                            new AdaptiveTargetElement("id3", true)
+                            new AdaptiveTargetElement("id3", true),
+                            new AdaptiveTargetElement("id4")
                         }
                     }
                 }
