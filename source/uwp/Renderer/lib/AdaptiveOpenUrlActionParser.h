@@ -17,7 +17,7 @@ namespace AdaptiveNamespace
                                 ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParsers,
                                 ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParsers,
                                 ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
-                                ABI::AdaptiveNamespace::IAdaptiveActionElement** element) override;
+                                ABI::AdaptiveNamespace::IAdaptiveActionElement** element) noexcept override;
     };
 
     ActivatableClass(AdaptiveOpenUrlActionParser);

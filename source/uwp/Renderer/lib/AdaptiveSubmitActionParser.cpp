@@ -20,10 +20,10 @@ namespace AdaptiveNamespace
         ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
         ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
         ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
-        ABI::AdaptiveNamespace::IAdaptiveActionElement** element)
+        ABI::AdaptiveNamespace::IAdaptiveActionElement** element) noexcept try
     {
         return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveSubmitAction, AdaptiveSharedNamespace::SubmitAction, AdaptiveSharedNamespace::SubmitActionParser>(
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
-
+    CATCH_RETURN;
 }

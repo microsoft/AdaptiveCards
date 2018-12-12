@@ -82,22 +82,6 @@ namespace AdaptiveCardVisualizer.ViewModel
                 {
                     AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(jsonObject);
 
-                    AdaptiveActionParserRegistration actionParserRegistration = new AdaptiveActionParserRegistration();
-                    var submitActionParser = actionParserRegistration.Get("Action.Submit");
-
-                    AdaptiveElementParserRegistration elementParserRegistration = new AdaptiveElementParserRegistration();
-                    var textBlockParser = elementParserRegistration.Get("TextBlock");
-
-                    //AdaptiveElementRendererRegistration elementRendererRegistration = new AdaptiveElementRendererRegistration();
-                    //var textBlockRenderer = elementRendererRegistration.Get("TextBlock");
-
-                    var textBlockRenderFromRenderer = _renderer.ElementRenderers.Get("TextBlock");
-
-                    IAdaptiveElementParser textBlockParserFromNew = new AdaptiveTextBlockRenderer();
-                    IAdaptiveElementRenderer textBlockRendererFromNew = new AdaptiveTextBlockRenderer();
-                    //IAdaptiveElementParser submitActionParserFromNew = new AdaptiveSubmitActionRenderer();
-
-
                     RenderedAdaptiveCard renderResult = _renderer.RenderAdaptiveCard(parseResult.AdaptiveCard);
                     if (renderResult.FrameworkElement != null)
                     {

@@ -23,20 +23,22 @@ namespace AdaptiveNamespace
     _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInputRenderer::Render(IAdaptiveCardElement* cardElement,
                                                                           IAdaptiveRenderContext* renderContext,
                                                                           IAdaptiveRenderArgs* renderArgs,
-                                                                          ABI::Windows::UI::Xaml::IUIElement** result)
+                                                                          ABI::Windows::UI::Xaml::IUIElement** result) noexcept try
     {
         XamlBuilder::BuildChoiceSetInput(cardElement, renderContext, renderArgs, result);
         return S_OK;
     }
+    CATCH_RETURN;
 
     HRESULT AdaptiveChoiceSetInputRenderer::FromJson(
         ABI::Windows::Data::Json::IJsonObject* jsonObject,
         ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
         ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
         ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
-        ABI::AdaptiveNamespace::IAdaptiveCardElement** element)
+        ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept try
     {
         return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveChoiceSetInput, AdaptiveSharedNamespace::ChoiceSetInput, AdaptiveSharedNamespace::ChoiceSetInputParser>(
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
+    CATCH_RETURN;
 }
