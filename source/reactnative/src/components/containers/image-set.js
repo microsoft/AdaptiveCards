@@ -4,8 +4,8 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#schema-imageset
  */
 
-import React, { PureComponent } from "react";
-import { View, ScrollView, Text, StyleSheet, Button, Platform } from 'react-native';
+import React from "react";
+import { StyleSheet } from 'react-native';
 import { Registry } from '../registration/registry'
 import Input from '../inputs/input';
 import * as Constants from '../../utils/constants';
@@ -14,11 +14,11 @@ const FlexWrap = 'wrap';
 const SizeKey = "size";
 const ImageSetKey = "fromImageSet";
 
-export class ImageSet extends PureComponent {
-    
+export class ImageSet extends React.PureComponent {
+
     constructor(props) {
         super(props);
-        
+
         this.renderedElement = [];
         this.payload = props.json;
     }
@@ -27,22 +27,24 @@ export class ImageSet extends PureComponent {
      * 
      * @description Parse the given payload and render the card accordingly
      */
-    parsePayload = (imageSetJson) => {
+    parsePayload = (imageSetJson, onParseError) => {
         if (!this.payload)
             return this.renderedElement;
 
         const register = Registry.getManager();
         // parse elements 
-        // TODO: This function is repetitive across containers. Needs to be made Generic.
+        // This function is repetitive across containers. Needs to be made Generic.
         imageSetJson.images.map((element, index) => {
             element[SizeKey] = this.payload.imageSize;
             element[ImageSetKey] = true;
             const Element = register.getComponentOfType(element.type);
             if (Element) {
-                this.renderedElement.push(<Element json={element} 
+                this.renderedElement.push(<Element json={element}
                     key={`ELEMENT-${this.generateNumber()}`} />);
             } else {
-              return null;
+                let error = { "error": Enums.ValidationError.UnknownElementType, "message": `Unknown Type ${element.type} encountered` };
+                onParseError(error);
+                return null;
             }
         });
         return this.renderedElement;
@@ -60,9 +62,9 @@ export class ImageSet extends PureComponent {
 
     internalRenderer(imageSetJson) {
         return (
-                <Input json={imageSetJson} style={[styles.container, styles.defaultBGStyle]}>
-                    {this.parsePayload(imageSetJson)}
-                </Input>
+            <Input json={imageSetJson} style={[styles.container, styles.defaultBGStyle]}>
+                {this.parsePayload(imageSetJson)}
+            </Input>
         );
     }
 

@@ -1,5 +1,11 @@
 import React from 'react';
-import { TouchableOpacity, View, Text, Image, StyleSheet } from 'react-native';
+import {
+    TouchableOpacity,
+    View,
+    Text,
+    Image,
+    StyleSheet
+} from 'react-native';
 
 export class PayloadItem extends React.Component {
 

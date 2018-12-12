@@ -5,7 +5,11 @@
  */
 
 import React from "react";
-import { StyleSheet, TextInput } from 'react-native';
+import {
+    StyleSheet,
+    TextInput
+} from 'react-native';
+
 import Input from './input';
 import { StyleManager } from "../../styles/style-config";
 import * as Utils from '../../utils/util';
@@ -24,7 +28,7 @@ export class InputText extends React.Component {
 
     constructor(props) {
         super(props);
-        
+
         this.payload = props.json;
         this.id = Constants.EmptyString;
         this.isMultiline = Boolean;
@@ -46,12 +50,12 @@ export class InputText extends React.Component {
      */
     textValueChanged = (text, addInputItem) => {
         this.setState({ text });
-        addInputItem(this.id,text);
+        addInputItem(this.id, text);
     }
 
     render() {
 
-        if(HostConfigManager.getHostConfig().supportsInteractivity === false){
+        if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
             return null;
         }
 
@@ -73,7 +77,7 @@ export class InputText extends React.Component {
 
         return (
             <InputContextConsumer>
-                {({ addInputItem} ) => (
+                {({ addInputItem }) => (
                     <Input json={this.payload}>
                         <TextInput
                             style={this.getComputedStyles()}
@@ -88,11 +92,11 @@ export class InputText extends React.Component {
                             keyboardType={keyboardType}
                             onFocus={this.handleFocus}
                             onBlur={this.handleBlur}
-                            onChangeText={(text) => {this.textValueChanged(text,addInputItem)}}
+                            onChangeText={(text) => { this.textValueChanged(text, addInputItem) }}
                             value={this.state.text}
-                        />         
+                        />
                     </Input>
-            )}
+                )}
             </InputContextConsumer>
         );
     }
@@ -103,7 +107,7 @@ export class InputText extends React.Component {
     getComputedStyles = () => {
         const { isMultiline } = this;
 
-        let inputComputedStyles = [styles.input,this.styleConfig.fontConfig];
+        let inputComputedStyles = [styles.input, this.styleConfig.fontConfig];
         isMultiline ?
             inputComputedStyles.push(styles.multiLineHeight) :
             inputComputedStyles.push(styles.singleLineHeight);
@@ -122,30 +126,30 @@ export class InputText extends React.Component {
         let REGEX;
         let text = this.state.text;
 
-        if (text === Constants.EmptyString){
+        if (text === Constants.EmptyString) {
             isError = false;
         }
-        else{
-        switch (this.style) {
-            case Enums.InputTextStyle.Email: {
-                REGEX = EMAIL_REGEX;
+        else {
+            switch (this.style) {
+                case Enums.InputTextStyle.Email: {
+                    REGEX = EMAIL_REGEX;
+                }
+                    break;
+                case Enums.InputTextStyle.Url: {
+                    REGEX = URL_REGEX;
+                }
+                    break;
+                case Enums.InputTextStyle.Tel: {
+                    REGEX = TEL_REGEX;
+                    text = text.replace(/\D/g, Constants.EmptyString);
+                }
+                    break;
             }
-                break;
-            case Enums.InputTextStyle.Url: {
-                REGEX = URL_REGEX;
-            }
-                break;
-            case Enums.InputTextStyle.Tel: {
-                REGEX = TEL_REGEX;
-                text = text.replace(/\D/g, Constants.EmptyString);
-            }
-                break;
-        }
 
-        if (REGEX) {
-            isError = !REGEX.test(text);
+            if (REGEX) {
+                isError = !REGEX.test(text);
+            }
         }
-    }
         this.setState({ isError });
     };
 

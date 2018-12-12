@@ -3,18 +3,25 @@
  */
 
 import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  ImageBackground
+} from 'react-native';
+import { Registry } from './components/registration/registry'
+import { InputContextProvider } from './utils/context'
+import { HostConfigManager } from './utils/host-config'
+import { ActionWrapper } from './components/actions/action-wrapper'
 import PropTypes from 'prop-types';
-import { StyleSheet, View, ScrollView } from 'react-native';
-
-import { Registry } from './components/registration/registry';
-import { InputContextProvider } from './utils/context';
-import { HostConfigManager } from './utils/host-config';
 import * as Utils from './utils/util';
 
 export default class AdaptiveCards extends React.Component {
 
   // Input elements with its identifier and value
   inputArray = {};
+  version = "1.0"; // client supported version
 
   constructor(props) {
     super(props);
@@ -38,18 +45,15 @@ export default class AdaptiveCards extends React.Component {
    * @description Parse the given payload and render the card accordingly
    */
   parsePayload = () => {
+
     const renderedElement = [];
-    const { body, actions } = this.payload;
+    const { body } = this.payload;
 
     if (!body)
       return renderedElement;
-    renderedElement.push(Registry.getManager().parseRegistryComponents(body));
 
-    // parse actions
-    if (actions) {
-      renderedElement.push(<View key="AC-CONTAINER" style={styles.actionContainer} />);
-      renderedElement.push(Registry.getManager().parseRegistryComponents(actions));
-    }
+    renderedElement.push(Registry.getManager().parseRegistryComponents(body, this.props.onParseError));
+
     return renderedElement;
   }
 
@@ -59,6 +63,8 @@ export default class AdaptiveCards extends React.Component {
         <View style={styles.container}>
           <ScrollView>
             {this.parsePayload()}
+            {!Utils.isNullOrEmpty(this.payload.actions) &&
+              <ActionWrapper actions={this.payload.actions} />}
           </ScrollView>
         </View>
       );
@@ -79,15 +85,49 @@ export default class AdaptiveCards extends React.Component {
     const { addInputItem, inputArray } = this;
     const onExecuteAction = this.props.onExecuteAction;
     const isTransparent = this.payload.backgroundImage ? true : false;
+    const onParseError = this.props.onParseError;
 
+    // version check
+    if (!this.isSupportedVersion()) {
+      const message = this.payload.fallbackText || "We're sorry, this card couldn't be displayed";
+      return (
+        <Text>{message}</Text>
+      )
+    }
     return (
-
-      <InputContextProvider value={{ addInputItem, inputArray, onExecuteAction, isTransparent }}>
+      <InputContextProvider value={{ addInputItem, inputArray, onExecuteAction, isTransparent, onParseError }}>
         {
           this.getAdaptiveCardConent()
         }
       </InputContextProvider>
     );
+  }
+
+  /**
+   * Check whether the payload schema version is supported by client.
+   * @return {boolean} - version supported or not
+   */
+  isSupportedVersion = () => {
+
+  //Ignore the schema version number when AdaptiveCard is used from Action.ShowCard as it is not mandatory
+    if (this.props.isActionShowCard) {
+      return true;
+    }
+    if (!this.payload.version)
+      return false;
+
+    const payloadVersion = Utils.parseVersion(this.payload.version);
+    const clientVersion = Utils.parseVersion(this.version);
+
+    if (clientVersion.major != payloadVersion.major) {
+      return payloadVersion.major < clientVersion.major;
+    }
+    else if (clientVersion.minor != payloadVersion.minor) {
+      return payloadVersion.minor < clientVersion.minor;
+    }
+    else {
+      return true;
+    }
   }
 }
 

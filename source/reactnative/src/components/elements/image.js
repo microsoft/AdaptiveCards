@@ -4,29 +4,30 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#schema-image
  */
 
-import React, { Component } from "react";
+import React from "react";
 import {
     StyleSheet,
     Image,
 } from "react-native";
+
 import { HostConfigManager } from "../../utils/host-config";
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 import * as Constants from '../../utils/constants';
 import Input from '../inputs/input';
 import { SelectAction } from '../actions';
-import { StyleManager } from '../../styles/style-config' 
- 
+import { StyleManager } from '../../styles/style-config'
+
 const ContainResizeMode = 'contain';
 
-export class Img extends Component {
+export class Img extends React.Component {
 
     hostConfig = HostConfigManager.getHostConfig();
     styleConfig = StyleManager.getManager().styles;
 
     constructor(props) {
         super(props);
-        
+
         this.payload = props.json;
         this.state = {
             imageWidth: 0,
@@ -72,7 +73,7 @@ export class Img extends Component {
 
     }
     /**
-     * The function is used for determining the image Alignment horizonatlly
+     * The function is used for determining the horizontal image Alignment
      */
     getImageAlignment() {
         let imageAlignmentStyle = [];
@@ -103,7 +104,7 @@ export class Img extends Component {
         if (this.payload.width || this.payload.height) {
             /**
              * width:80px height:not set 
-             * This condition is handled by assignining either of the
+             * This condition is handled by assigning either of the
              *  value to both height and width
              */
             if (this.payload.width) {
@@ -130,9 +131,11 @@ export class Img extends Component {
             switch (sizeValue) {
                 case 1:
                     {
-                        sizeStyle.push([styles.imageStretch, 
-                                      { width: this.state.imageWidth, 
-                                        height: this.state.imageHeight }]);
+                        sizeStyle.push([styles.imageStretch,
+                        {
+                            width: this.state.imageWidth,
+                            height: this.state.imageHeight
+                        }]);
                         break;
                     }
                 case 2:
@@ -185,8 +188,10 @@ export class Img extends Component {
                     }
                 default:
                     {
-                        sizeStyle.push([styles.imageAuto, { width: this.state.imageWidth,
-                             height: this.state.imageHeight }]);
+                        sizeStyle.push([styles.imageAuto, {
+                            width: this.state.imageWidth,
+                            height: this.state.imageHeight
+                        }]);
                         this.width = this.state.imageWidth;
                         this.height = this.state.imageHeight;
                         break;
@@ -202,7 +207,7 @@ export class Img extends Component {
 
         const { width: layoutWidth, height: layoutHeight } = event.nativeEvent.layout;
 
-        //This function is implemented to determine the actual dimnesions of the component.
+        //This function is implemented to determine the actual dimensions of the component.
         Image.getSize(this.url, (width, height) => {
 
             /**
@@ -220,8 +225,8 @@ export class Img extends Component {
              */
 
             if (this.payload.fromImageSet == true &&
-                 (this.payload.size === Constants.Auto || 
-                 this.payload.size === Constants.AlignStretch)) {
+                (this.payload.size === Constants.Auto ||
+                    this.payload.size === Constants.AlignStretch)) {
                 this.setState({
                     imageWidth: this.hostConfig.imageSet.maxImageHeight,
                     imageHeight: this.hostConfig.imageSet.maxImageHeight,
@@ -260,9 +265,9 @@ export class Img extends Component {
         /**
          * If the payload size is "auto" or "stretch" and 
          * if the payload does not contain explicit width and height, computing the border radius 
-         * from the state variable's image width which is determined using Image.getSize()
+         * from the state variable "imageWidth" which is determined using Image.getSize()
          */
-        if ((this.payload.size === Constants.Auto || 
+        if ((this.payload.size === Constants.Auto ||
             this.payload.size === Constants.AlignStretch) &&
             !(this.payload.width || this.payload.height)) {
             this.isPersonStyle() ?
@@ -281,7 +286,8 @@ export class Img extends Component {
                 source={{ uri: url }} />
         </Input>);
 
-        if ((this.payload.selectAction === undefined)  || (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
+        if ((this.payload.selectAction === undefined)
+            || (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
             return containerContent;
         } else {
             return <SelectAction selectActionData={this.payload.selectAction}>

@@ -5,7 +5,11 @@
  */
 
 import React from 'react';
-import { StyleSheet, Text,Platform } from 'react-native';
+import {
+    StyleSheet,
+    Text
+} from 'react-native';
+
 import { HostConfigManager } from "../../utils/host-config";
 import { TextFormatter } from '../../utils/text-formatters';
 import Input from '../inputs/input';
@@ -21,7 +25,7 @@ export class TextBlock extends React.Component {
     hostConfig = HostConfigManager.getHostConfig();
     styleConfig = StyleManager.getManager().styles;
 
-    
+
     constructor(props) {
         super(props);
 
@@ -49,7 +53,7 @@ export class TextBlock extends React.Component {
         var processedText = processMDText(formattedText);
 
         //TextBlock styles
-        let textBlockComputedStyle = [styles.text,this.styleConfig.fontConfig];
+        let textBlockComputedStyle = [styles.text, this.styleConfig.fontConfig];
         textBlockComputedStyle.push({
             fontSize: this.fontSize,
             fontWeight: this.fontWeight.toString(),
@@ -119,7 +123,7 @@ const styles = StyleSheet.create({
     textContainer: {
         width: Constants.FullWidth,
         alignItems: Constants.CenterString,
-        backgroundColor:'transparent',
+        backgroundColor: 'transparent',
     },
     text: {
         width: Constants.FullWidth,

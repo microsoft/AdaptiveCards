@@ -4,8 +4,12 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#inputnumber
  */
 
-import React, { Component } from "react";
-import { StyleSheet, TextInput } from 'react-native';
+import React from "react";
+import {
+    StyleSheet,
+    TextInput
+} from 'react-native';
+
 import { DismissKeyboardView } from '../containers/dismiss-keyboard';
 import { InputContextConsumer } from '../../utils/context'
 import Input from './input';
@@ -16,7 +20,7 @@ import { HostConfigManager } from '../../utils/host-config'
 
 const NUM_REGEX = /^[0-9][\.\d]*(,\d+)?$/;
 
-export class NumberInput extends Component {
+export class NumberInput extends React.Component {
 
     styleConfig = StyleManager.getManager().styles;
 
@@ -40,17 +44,16 @@ export class NumberInput extends Component {
 
     render() {
 
-        if(HostConfigManager.getHostConfig().supportsInteractivity === false){
+        if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
             return null;
         }
-        
+
         this.parseHostConfig();
 
         const {
             id,
             type,
             placeholder,
-            maxLength,
             keyboardType
         } = this;
 
@@ -90,7 +93,7 @@ export class NumberInput extends Component {
     getComputedStyles = () => {
         const { isMultiline } = this;
 
-        let inputComputedStyles = [styles.input,this.styleConfig.fontConfig];
+        let inputComputedStyles = [styles.input, this.styleConfig.fontConfig];
         isMultiline ?
             inputComputedStyles.push(styles.multiLineHeight) :
             inputComputedStyles.push(styles.singleLineHeight);
@@ -114,14 +117,14 @@ export class NumberInput extends Component {
     }
 
     /**
-     * @description handle textinput when in focus
+     * @description handle text input when in focus
      */
     handleFocus = () => {
 
     }
 
     /**
-     * @description handle textinput when out of focus
+     * @description handle text input when out of focus
      */
     handleBlur = () => {
         this.validate(this.state.numberValue);

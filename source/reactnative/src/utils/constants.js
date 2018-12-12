@@ -6,6 +6,7 @@ export const FullWidth = '100%';
 export const FlexRow = 'row';
 export const FlexColumn = 'column';
 export const FlexEnd = 'flex-end';
+export const FlexWrap = 'wrap';
 export const FlexStart = 'flex-start';
 export const SpaceBetween = 'space-between';
 export const AlignStretch = 'stretch';

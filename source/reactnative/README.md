@@ -68,7 +68,7 @@ Folder | Description
 **`src/components/containers`** | This directory holds the container elements that holds collection of elements and its layout.
 **`src/components/elements`** | This directory holds all the static individual elements
 **`src/components/inputs/`** | This directory holds all the interactable input elements
-**`src/utils`** | This directory takes care of keepin the Configuration out of the Code. This will hold anything that is used in multiple places throughout our app in one place.
+**`src/utils`** | This directory takes care of keeping the Configuration out of the Code. This will hold anything that is used in multiple places throughout our app in one place.
 **`src/styles`** | This directory holds the global styles that will be used and applied across the components and app.The purpose is that we will reuse a lot of the same styling(like Container, Themes,etc....).
 
  

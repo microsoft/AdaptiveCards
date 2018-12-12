@@ -1,5 +1,9 @@
 import React from 'react';
-import { TouchableWithoutFeedback, Keyboard, View } from 'react-native';
+import {
+  TouchableWithoutFeedback,
+  Keyboard,
+  View
+} from 'react-native';
 
 const DismissKeyboardHOC = (Comp) => {
   return ({ children, ...props }) => (
