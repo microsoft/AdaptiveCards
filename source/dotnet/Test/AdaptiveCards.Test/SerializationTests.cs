@@ -20,7 +20,7 @@ namespace AdaptiveCards.Test
             card.Version = "1.0";
             card.FallbackText = "Fallback Text";
             card.Speak = "Speak";
-            card.BackgroundImage = new Uri("http://adaptivecards.io/content/cats/1.png");
+            card.BackgroundImage = new AdaptiveBackgroundImage("http://adaptivecards.io/content/cats/1.png");
             card.Body.Add(new AdaptiveTextBlock { Text = "Hello" });
             card.Actions.Add(new AdaptiveSubmitAction() { Title = "Action 1" });
 

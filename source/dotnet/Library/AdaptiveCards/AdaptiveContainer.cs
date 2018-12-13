@@ -20,6 +20,11 @@ namespace AdaptiveCards
 #endif
         public override string Type { get; set; } = TypeName;
 
+        [JsonConverter(typeof(AdaptiveBackgroundImageConverter))]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [DefaultValue(null)]
+        public AdaptiveBackgroundImage BackgroundImage { get; set; }
+
         /// <summary>
         ///     Elements of the container
         /// </summary>
