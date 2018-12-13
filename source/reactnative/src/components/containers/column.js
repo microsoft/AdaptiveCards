@@ -5,7 +5,11 @@
  */
 
 import React from "react";
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { 
+	View, 
+	StyleSheet, 
+	Dimensions 
+} from 'react-native';
 import { Registry } from '../registration/registry'
 import * as Utils from '../../utils/util';
 import * as Constants from '../../utils/constants';
@@ -159,12 +163,11 @@ export class Column extends React.Component {
 
         var columnContent = (
 			<View style={containerViewStyle}>
-				{ separator && this.renderSeparator() }
-				{ separator ? <View style={[containerViewStyle, 
-											{flexDirection: Constants.FlexColumn, flexGrow: 1}]}>
+				{separator && this.renderSeparator()}
+				{separator ? <View style={[containerViewStyle, styles.separatorStyle]}>
 									{this.parsePayload()}
 							  </View> : 
-							  this.parsePayload() }
+							  this.parsePayload()}
 			</View>
         );
 
@@ -174,13 +177,12 @@ export class Column extends React.Component {
         } else {
             return <View style={containerViewStyle}>
 						<SelectAction selectActionData={this.payload.selectAction}>
-							{ separator && this.renderSeparator() }
-							{ separator ? 
-								<View style={[containerViewStyle, 
-											{flexDirection: Constants.FlexColumn, flexGrow: 1}]}>
-												{this.parsePayload()}
+							{separator && this.renderSeparator()}
+							{separator ? 
+								<View style={[containerViewStyle, styles.separatorStyle]}>
+									{this.parsePayload()}
 								</View> : 
-								this.parsePayload() }
+								this.parsePayload()}
 						</SelectAction>
             </View>;
         }
