@@ -101,7 +101,10 @@ export class Img extends React.Component {
     applySize() {
         let sizeStyle = [];
         let sizeValue = Utils.parseHostConfigEnum(Enums.Size, this.payload.size, Enums.Size.Auto)
-        if (this.payload.width || this.payload.height) {
+        if ((this.payload.width || this.payload.height) 
+                                && 
+            (parseInt(this.payload.width, 10) ||  parseInt(this.payload.height, 10))) {
+            
             /**
              * width:80px height:not set 
              * This condition is handled by assigning either of the
