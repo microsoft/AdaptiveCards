@@ -5,17 +5,22 @@
  */
 
 import React from "react";
-import {
-    View,
-    StyleSheet
-} from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import { Registry } from '../registration/registry'
 import * as Utils from '../../utils/util';
 import * as Constants from '../../utils/constants';
+import * as Enums from '../../utils/enums';
 import { SelectAction } from '../actions';
 import { HostConfigManager } from '../../utils/host-config'
+import { StyleManager } from '../../styles/style-config'
+
+const deviceWidth = Dimensions.get('window').width;
 
 export class Column extends React.Component {
+
+	styleConfig = StyleManager.getManager().styles;
+	hostConfig = HostConfigManager.getHostConfig();
+	spacing = 0;
 
     constructor(props) {
         super(props);
@@ -42,6 +47,7 @@ export class Column extends React.Component {
     calculateWidthPercentage = (containerStyle) => {
         var columns = this.props.columns
         var widthArray = columns.length > 0 ? columns.map((column) => column.width) : [];
+        var spaceArray = columns.length > 0 ? columns.map((column) => column.spacing) : [];
 
         var containsNumber = false
         var containsString = false
@@ -52,7 +58,20 @@ export class Column extends React.Component {
             } else if (typeof (value) == 'string') {
                 containsString = true
             }
-        })
+		})
+		
+		var spacing = 0
+        spaceArray.map((space) => {
+            if (space != undefined) {
+				const spacingEnumValue = Utils.parseHostConfigEnum(
+					Enums.Spacing,
+					space,
+					Enums.Spacing.Small);
+				spacing += this.hostConfig.getEffectiveSpacing(spacingEnumValue);
+            } 
+		})
+		
+		const spacePercentage = (spacing/deviceWidth) * 100
 
         var columnWidth;
         if (!containsString) {
@@ -83,44 +102,70 @@ export class Column extends React.Component {
                     if (!containsNumber) {
                         containerStyle.push({ alignSelf: 'auto' })
                     } else {
-                        widthPercentage = (100 / columns.length).toString() + '%'
+                        widthPercentage = (100-spacePercentage)/columns.length
                     }
                 }
                 else {
-                    widthPercentage = (100 / columns.length).toString() + '%'
+                    widthPercentage = (100-spacePercentage)/columns.length
                 }
             }
             else {
-                widthPercentage = (100 / columns.length).toString() + '%'
+                widthPercentage = (100-spacePercentage)/columns.length
             }
         }
         else {
             if (Utils.isNullOrEmpty(this.payload.width)) {
-                widthPercentage = ((width / columns.length) * 100).toString() + '%'
+                widthPercentage = ((width/columns.length) * 100 - spacePercentage/columns.length)
             }
             else {
-                widthPercentage = ((this.payload.width / columnWidth) * 100).toString() + '%'
+                widthPercentage = ((this.payload.width/columnWidth) * 100 - spacePercentage/columns.length)
             }
         }
 
         return widthPercentage
-    }
+	}
+	
+	renderSeparator = () => {
+		return (
+			<View style={{ 
+					borderLeftWidth: this.hostConfig.separator.lineThickness,
+					borderLeftColor: this.hostConfig.separator.lineColor,
+					marginLeft: (this.spacing - this.hostConfig.separator.lineThickness) /2,
+					marginRight: (this.spacing - this.hostConfig.separator.lineThickness) /2
+			 }}/>
+
+		);
+	}
 
     render() {
+		const separator = this.payload.separator || false
         let backgroundStyle = this.payload.style == Constants.Emphasis ?
-            styles.emphasisStyle : styles.defaultBGStyle;
+			styles.emphasisStyle : styles.defaultBGStyle;
+		let containerViewStyle = [backgroundStyle, { flexDirection: separator ?
+			 Constants.FlexRow: Constants.FlexColumn }];
 
-        let containerViewStyle = [styles.container, backgroundStyle];
+		const spacingEnumValue = Utils.parseHostConfigEnum(
+			Enums.Spacing,
+			this.payload.spacing,
+			Enums.Spacing.Small);
+		this.spacing = Utils.isNullOrEmpty(this.payload.spacing) ? 0 : 
+		this.hostConfig.getEffectiveSpacing(spacingEnumValue);
 
         let widthPercentage = this.calculateWidthPercentage(containerViewStyle);
         if (!Utils.isNullOrEmpty(widthPercentage)) {
-            containerViewStyle.push({ width: widthPercentage });
+			const spacePercentage = (this.spacing/deviceWidth) * 100 + widthPercentage
+            containerViewStyle.push({ width: spacePercentage.toString() + '%' });
         }
 
         var columnContent = (
-            <View style={containerViewStyle}>
-                {this.parsePayload()}
-            </View>
+			<View style={containerViewStyle}>
+				{ separator && this.renderSeparator() }
+				{ separator ? <View style={[containerViewStyle, 
+											{flexDirection: Constants.FlexColumn, flexGrow: 1}]}>
+									{this.parsePayload()}
+							  </View> : 
+							  this.parsePayload() }
+			</View>
         );
 
         if ((this.payload.selectAction === undefined) ||
@@ -128,18 +173,25 @@ export class Column extends React.Component {
             return columnContent;
         } else {
             return <View style={containerViewStyle}>
-                <SelectAction selectActionData={this.payload.selectAction}>
-                    {this.parsePayload()}
-                </SelectAction>
+						<SelectAction selectActionData={this.payload.selectAction}>
+							{ separator && this.renderSeparator() }
+							{ separator ? 
+								<View style={[containerViewStyle, 
+											{flexDirection: Constants.FlexColumn, flexGrow: 1}]}>
+												{this.parsePayload()}
+								</View> : 
+								this.parsePayload() }
+						</SelectAction>
             </View>;
         }
     }
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flexDirection: Constants.FlexColumn
-    },
+	separatorStyle: {
+		flexDirection: Constants.FlexColumn,
+		flexGrow: 1
+	},
     defaultBGStyle: {
         backgroundColor: Constants.TransparentString,
     },
