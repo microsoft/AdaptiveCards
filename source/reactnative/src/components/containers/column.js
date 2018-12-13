@@ -76,6 +76,7 @@ export class Column extends React.Component {
 		})
 		
 		const spacePercentage = (spacing/deviceWidth) * 100
+		const defaultWidthPercentage = (100-spacePercentage)/columns.length
 
         var columnWidth;
         if (!containsString) {
@@ -97,7 +98,8 @@ export class Column extends React.Component {
             if (typeof (width) == 'string') {
                 let lastIndex = width.lastIndexOf('px')
                 if (lastIndex != -1) {
-                    widthPercentage = parseInt(width.substring(0, lastIndex))
+					let pixelWidth = parseInt(width.substring(0, lastIndex))
+					widthPercentage = (pixelWidth/deviceWidth) * 100
                 }
                 else if (width == Constants.AlignStretch) {
                     containerStyle.push({ flex: 1 })
@@ -106,23 +108,23 @@ export class Column extends React.Component {
                     if (!containsNumber) {
                         containerStyle.push({ alignSelf: 'auto' })
                     } else {
-                        widthPercentage = (100-spacePercentage)/columns.length
+                        widthPercentage = defaultWidthPercentage
                     }
                 }
                 else {
-                    widthPercentage = (100-spacePercentage)/columns.length
+                    widthPercentage = defaultWidthPercentage
                 }
             }
             else {
-                widthPercentage = (100-spacePercentage)/columns.length
+                widthPercentage = defaultWidthPercentage
             }
         }
         else {
             if (Utils.isNullOrEmpty(this.payload.width)) {
-                widthPercentage = ((width/columns.length) * 100 - spacePercentage/columns.length)
+                widthPercentage = (((width/columns.length) * 100) - (spacePercentage/columns.length))
             }
             else {
-                widthPercentage = ((this.payload.width/columnWidth) * 100 - spacePercentage/columns.length)
+                widthPercentage = (((this.payload.width/columnWidth) * 100) - (spacePercentage/columns.length))
             }
         }
 
@@ -130,12 +132,14 @@ export class Column extends React.Component {
 	}
 	
 	renderSeparator = () => {
+		const { lineColor, lineThickness } = this.hostConfig.separator
+		const margin = (this.spacing - lineThickness) /2
 		return (
 			<View style={{ 
-					borderLeftWidth: this.hostConfig.separator.lineThickness,
-					borderLeftColor: this.hostConfig.separator.lineColor,
-					marginLeft: (this.spacing - this.hostConfig.separator.lineThickness) /2,
-					marginRight: (this.spacing - this.hostConfig.separator.lineThickness) /2
+					borderLeftWidth: lineThickness,
+					borderLeftColor: lineColor,
+					marginLeft: margin,
+					marginRight: margin
 			 }}/>
 
 		);
@@ -157,7 +161,7 @@ export class Column extends React.Component {
 
         let widthPercentage = this.calculateWidthPercentage(containerViewStyle);
         if (!Utils.isNullOrEmpty(widthPercentage)) {
-			const spacePercentage = (this.spacing/deviceWidth) * 100 + widthPercentage
+			const spacePercentage = ((this.spacing/deviceWidth) * 100 + widthPercentage)
             containerViewStyle.push({ width: spacePercentage.toString() + '%' });
         }
 
