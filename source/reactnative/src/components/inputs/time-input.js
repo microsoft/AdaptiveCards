@@ -6,16 +6,9 @@
 
 import React from 'react';
 import {
-    View,
-    StyleSheet,
-    TouchableOpacity,
     DatePickerIOS,
     TimePickerAndroid,
     Platform,
-    TextInput,
-    Modal,
-    Button,
-    ViewPropTypes
 } from 'react-native';
 
 import Input from './input';
@@ -23,6 +16,7 @@ import { StyleManager } from '../../styles/style-config';
 import { InputContextConsumer } from '../../utils/context';
 import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config'
+import { PickerInput } from './picker-input'
 
 export class TimeInput extends React.Component {
 
@@ -32,10 +26,6 @@ export class TimeInput extends React.Component {
         super(props);
 
         this.payload = props.json;
-        this.id = Constants.EmptyString;
-        this.placeHolder = Constants.EmptyString;
-        this.type = Constants.EmptyString;
-        this.modalButtonText = Constants.DoneString;
         this.parseHostConfig();
     }
 
@@ -43,9 +33,6 @@ export class TimeInput extends React.Component {
     * @description Parse hostconfig specific to this element
     */
     parseHostConfig() {
-        this.id = this.payload.id;
-        this.type = this.payload.type;
-        this.placeholder = this.payload.placeholder;
         this.state = {
             chosenTime: this.payload.value ? this.parseTimeString(this.payload.value) : new Date(),
             minTime: this.payload.min ? this.parseTimeString(this.payload.min) : undefined,
@@ -147,105 +134,26 @@ export class TimeInput extends React.Component {
             return null;
         }
 
-        const {
-            id,
-            type,
-            placeholder,
-            modalButtonText
-        } = this;
-
-        if (!id || !type) {
-            return null;
-        }
-
-        modalOverlayStyle = ViewPropTypes.style,
-            modalStyle = ViewPropTypes.style,
-            modalButtonStyle = ViewPropTypes.style,
-            modalBtnContainer = ViewPropTypes.style
-
         return (
             <InputContextConsumer>
                 {({ addInputItem }) => (
-                    <Input json={this.payload}>
-                        <TouchableOpacity style={styles.inputWrapper} onPress={this.showTimePicker}>
-                            {/* added extra view to fix touch event in ios . */}
-                            <View pointerEvents='none'>
-                                <TextInput
-                                    style={[styles.input, this.styleConfig.fontConfig]}
-                                    autoCapitalize={Constants.NoneString}
-                                    autoCorrect={false}
-                                    placeholder={placeholder}
-                                    underlineColorAndroid={Constants.TransparentString}
-                                    value={this.state.value}>
-                                    {addInputItem(this.id, this.state.value)}
-                                </TextInput>
-                            </View>
-                        </TouchableOpacity>
-                        <Modal
-                            animationType='slide'
-                            transparent
-                            visible={this.state.modalVisible}
-                            onRequestClose={this.handleModalClose}>
-                            <View style={[styles.overlay, modalOverlayStyle]}>
-                                <View style={[styles.modal, modalStyle]}>
-                                    <View style={[styles.modalBtnContainer, modalBtnContainer]}>
-                                        <Button
-                                            style={[modalButtonStyle]}
-                                            title={modalButtonText}
-                                            onPress={this.handleModalClose}
-                                        />
-                                    </View>
-                                    <DatePickerIOS
-                                        mode={'time'}
-                                        format={"HH:mm"}
-                                        minDate={this.state.minTime}
-                                        maxDate={this.state.maxTime}
-                                        date={this.state.chosenTime || new Date()}
-                                        onDateChange={this.handleTimeChange}
-                                    />
-                                </View>
-                            </View>
-                        </Modal>
-                    </Input>)}
+					<PickerInput
+						json={this.payload}
+						value={this.state.value}
+						format={"HH:mm"}
+						showPicker={this.showTimePicker}
+						addInputItem={addInputItem} 
+						modalVisible={this.state.modalVisible}
+						handleModalClose={this.handleModalClose}
+						chosenDate={this.state.chosenTime || new Date()}
+						minDate={this.state.minTime}
+						maxDate={this.state.maxTime}
+						handleDateChange={this.handleTimeChange} 
+						mode='time'
+					/>
+				)}
             </InputContextConsumer>
         );
     }
 }
 
-const styles = StyleSheet.create({
-    inputWrapper: {
-        width: Constants.FullWidth,
-        marginTop: 15,
-    },
-
-    input: {
-        width: Constants.FullWidth,
-        height: 44,
-        padding: 5,
-        marginTop: 15,
-        borderWidth: 1,
-        backgroundColor: Constants.WhiteColor,
-        borderRadius: 5,
-        borderColor: Constants.LightGreyColor,
-
-    },
-    overlay: {
-        flex: 1,
-        backgroundColor: 'rgba(0,0,0,.3)',
-        alignItems: Constants.CenterString,
-        justifyContent: Constants.FlexEnd
-    },
-    modal: {
-        backgroundColor: Constants.WhiteColor,
-        height: 260,
-        width: Constants.FullWidth
-    },
-    modalBtnContainer: {
-        width: Constants.FullWidth,
-        alignItems: Constants.CenterString,
-        flexDirection: Constants.FlexRow,
-        justifyContent: Constants.FlexEnd,
-        paddingHorizontal: 15,
-        marginTop: 15
-    }
-});
