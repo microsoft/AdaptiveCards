@@ -101,12 +101,17 @@ export class Img extends React.Component {
     applySize() {
         let sizeStyle = [];
         let sizeValue = Utils.parseHostConfigEnum(Enums.Size, this.payload.size, Enums.Size.Auto)
-        if (this.payload.width || this.payload.height) {
-            /**
-             * width:80px height:not set 
-             * This condition is handled by assigning either of the
-             *  value to both height and width
-             */
+
+         /**
+          * Scenario 1 : Either height or width has string value (Ex: '80px'),
+          *               use the integer portion.
+          * Scenario 2 : If the height or width has string value (Ex: 'stretch'),
+          *              ignore and use the size property to determine dimensions.
+          * Scenario 3 : If either width or height is missing, apply the given value to the 
+          *              other property.
+          */
+        if (Utils.isaNumber(this.payload.width) || Utils.isaNumber(this.payload.height)) {
+            
             if (this.payload.width) {
                 this.width = parseInt(this.payload.width, 10);
                 sizeStyle.push({ width: this.width })

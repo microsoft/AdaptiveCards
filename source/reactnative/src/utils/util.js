@@ -9,6 +9,18 @@ export function getValueOrDefault(obj, defaultValue) {
 export function isNullOrEmpty(value) {
     return value === undefined || value === null || value === "";
 }
+
+export function isString(value) {
+    return typeof value === 'string' || value instanceof String;
+}
+
+export function isaNumber(value) {
+    var parsedValue = parseInt(value, 10);
+    if (!isNaN(parsedValue)) {
+        return true;
+    }
+    return false;
+}
 /**
  *  This function will return the Enum value for the specified Key if its present or
  *  it will return the defaultValue.
