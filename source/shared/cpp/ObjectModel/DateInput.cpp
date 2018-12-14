@@ -76,10 +76,7 @@ void DateInput::SetValue(const std::string& value)
     m_value = value;
 }
 
-std::shared_ptr<BaseCardElement> DateInputParser::Deserialize(std::shared_ptr<ElementParserRegistration>,
-                                                              std::shared_ptr<ActionParserRegistration>,
-                                                              std::vector<std::shared_ptr<AdaptiveCardParseWarning>>&,
-                                                              const Json::Value& json)
+std::shared_ptr<BaseCardElement> DateInputParser::Deserialize(ParseContext&, const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::DateInput);
 
@@ -93,15 +90,9 @@ std::shared_ptr<BaseCardElement> DateInputParser::Deserialize(std::shared_ptr<El
     return dateInput;
 }
 
-std::shared_ptr<BaseCardElement> DateInputParser::DeserializeFromString(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                                        std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                                                        std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                                                        const std::string& jsonString)
+std::shared_ptr<BaseCardElement> DateInputParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
-    return DateInputParser::Deserialize(elementParserRegistration,
-                                        actionParserRegistration,
-                                        warnings,
-                                        ParseUtil::GetJsonValueFromString(jsonString));
+    return DateInputParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 void DateInput::PopulateKnownPropertiesSet()

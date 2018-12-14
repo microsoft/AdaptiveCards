@@ -150,6 +150,12 @@
     <ClCompile Include="..\..\ObjectModel\SemanticVersion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\ObjectModel\AdaptiveBase64Util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ObjectModel\ParseContext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\ObjectModel\AdaptiveCardParseException.h">
@@ -288,6 +294,12 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\ObjectModel\SemanticVersion.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\AdaptiveBase64Util.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\ParseContext.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

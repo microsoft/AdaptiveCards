@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "Fact.h"
-#include "ActionParserRegistration.h"
+#include "ParseContext.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
@@ -29,15 +29,9 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::string json_data = emptyFact.Serialize();
             Assert::IsTrue(json_data == "{\"title\":\"1 Example Title!\",\"value\":\"1 Example Value!\"}\n");
 
-            std::shared_ptr<ElementParserRegistration> elementParserRegistration;
-            elementParserRegistration.reset(new ElementParserRegistration());
+            ParseContext context{};
 
-            std::shared_ptr<ActionParserRegistration> actionParserRegistration;
-            actionParserRegistration.reset(new ActionParserRegistration());
-
-            std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
-
-            auto parsedFact = Fact::DeserializeFromString(elementParserRegistration, actionParserRegistration, warnings, json_data);
+            auto parsedFact = Fact::DeserializeFromString(context, json_data);
 
             Assert::AreEqual(emptyFact.GetTitle(), parsedFact->GetTitle());
             Assert::AreEqual(emptyFact.GetValue(), parsedFact->GetValue());

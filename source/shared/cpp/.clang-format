@@ -6,7 +6,7 @@ AccessModifierOffset: -4
 AlignAfterOpenBracket: Align
 AlignConsecutiveAssignments: false
 AlignConsecutiveDeclarations: false
-AlignEscapedNewlines: DontAlign
+AlignEscapedNewlines: Left
 AlignOperands: false
 AlignTrailingComments: true
 AllowAllParametersOfDeclarationOnNextLine: false

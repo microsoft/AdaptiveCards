@@ -54,7 +54,7 @@ namespace AdaptiveCards
                         return AdaptiveSeparationStyle.None;
 
                     case AdaptiveSpacing.Large:
-                        return AdaptiveSeparationStyle.Strong;
+                        return Separator ? AdaptiveSeparationStyle.Strong : AdaptiveSeparationStyle.Default;
 
                     default:
                         return AdaptiveSeparationStyle.Default;

@@ -186,7 +186,7 @@
 
         if(img){
             CGSize contentSize = [button.titleLabel intrinsicContentSize];
-            [UIButton setImageView:img inButton:button withConfig:acoConfig contentSize:contentSize inconPlacement:ACRLeftOfTitle];
+            [ACRButton setImageView:img inButton:button withConfig:acoConfig contentSize:contentSize inconPlacement:ACRLeftOfTitle];
         } else {
             [button setTitle:title forState:UIControlStateNormal];
         }

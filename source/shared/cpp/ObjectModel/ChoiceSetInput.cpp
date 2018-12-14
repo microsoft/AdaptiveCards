@@ -77,10 +77,7 @@ void ChoiceSetInput::SetValue(std::string const& value)
     m_value = value;
 }
 
-std::shared_ptr<BaseCardElement> ChoiceSetInputParser::Deserialize(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                                                   std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                                                   std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                                                   const Json::Value& json)
+std::shared_ptr<BaseCardElement> ChoiceSetInputParser::Deserialize(ParseContext& context, const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::ChoiceSetInput);
 
@@ -92,23 +89,16 @@ std::shared_ptr<BaseCardElement> ChoiceSetInputParser::Deserialize(std::shared_p
     choiceSet->SetValue(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value, false));
 
     // Parse Choices
-    auto choices = ParseUtil::GetElementCollectionOfSingleType<ChoiceInput>(
-        elementParserRegistration, actionParserRegistration, warnings, json, AdaptiveCardSchemaKey::Choices, ChoiceInput::Deserialize, true);
+    auto choices = ParseUtil::GetElementCollectionOfSingleType<ChoiceInput>(context, json, AdaptiveCardSchemaKey::Choices, ChoiceInput::Deserialize, true);
     choiceSet->m_choices = std::move(choices);
 
     return choiceSet;
 }
 
 std::shared_ptr<BaseCardElement>
-ChoiceSetInputParser::DeserializeFromString(std::shared_ptr<ElementParserRegistration> elementParserRegistration,
-                                            std::shared_ptr<ActionParserRegistration> actionParserRegistration,
-                                            std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings,
-                                            const std::string& jsonString)
+ChoiceSetInputParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
-    return ChoiceSetInputParser::Deserialize(elementParserRegistration,
-                                             actionParserRegistration,
-                                             warnings,
-                                             ParseUtil::GetJsonValueFromString(jsonString));
+    return ChoiceSetInputParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 void ChoiceSetInput::PopulateKnownPropertiesSet()

@@ -22,6 +22,7 @@ namespace AdaptiveCards.Rendering.Wpf
             }
 
             uiImage.SetSource(image, finalUri, context);
+            
             uiImage.SetHorizontalAlignment(image.HorizontalAlignment);
 
             string style = $"Adaptive.{image.Type}";

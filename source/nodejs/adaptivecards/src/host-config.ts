@@ -1,6 +1,10 @@
 import * as Enums from "./enums";
 import * as Utils from "./utils";
-import { TextColor } from "./adaptivecards";
+
+export interface IValidationError {
+    error: Enums.ValidationError,
+    message: string;
+}
 
 export class TextColorDefinition {
     default: string = "#000000";
@@ -330,7 +334,149 @@ export class ContainerStyleSet {
     }
 }
 
+export class Version {
+    private _versionString: string;
+    private _major: number;
+    private _minor: number;
+    private _isValid: boolean = true;
+
+    constructor(major: number = 1, minor: number = 1) {
+        this._major = major;
+        this._minor = minor;
+    }
+
+    static parse(versionString: string, errors?: Array<IValidationError>): Version {
+        if (!versionString) {
+            return null;
+        }
+
+        var result = new Version();
+        result._versionString = versionString;
+
+        var regEx = /(\d+).(\d+)/gi;
+        var matches = regEx.exec(versionString);
+
+        if (matches != null && matches.length == 3) {
+            result._major = parseInt(matches[1]);
+            result._minor = parseInt(matches[2]);
+        }
+        else {
+            result._isValid = false;
+        }
+
+        if (!result._isValid && errors) {
+            errors.push(
+                {
+                    error: Enums.ValidationError.InvalidPropertyValue,
+                    message: "Invalid version string: " + result._versionString
+                }
+            );
+        }
+
+        return result;
+    }
+
+    toString(): string {
+        return !this._isValid ? this._versionString : this._major + "." + this._minor;
+    }
+
+    compareTo(otherVersion: Version): number {
+        if (!this.isValid || !otherVersion.isValid) {
+            throw new Error("Cannot compare invalid version.");
+        }
+
+        if (this.major > otherVersion.major) {
+            return 1;
+        }
+        else if (this.major < otherVersion.major) {
+            return -1;
+        }
+        else if (this.minor > otherVersion.minor) {
+            return 1; 
+        }
+        else if (this.minor < otherVersion.minor) {
+            return -1;
+        }
+
+        return 0;
+    }
+
+    get major(): number {
+        return this._major;
+    }
+
+    get minor(): number {
+        return this._minor;
+    }
+
+    get isValid(): boolean {
+        return this._isValid;
+    }
+}
+
+export type HostCapabilityVersion = Version | "*";
+export type HostCapabilityMap = { [key: string]: HostCapabilityVersion };
+
+export class HostCapabilities {
+    private setCapability(name: string, version: HostCapabilityVersion) {
+        if (!this.capabilities) {
+            this.capabilities = { };
+        }
+
+        this.capabilities[name] = version;
+    }
+
+    capabilities: HostCapabilityMap = null;
+
+    parse(json: any, errors?: Array<IValidationError>) {
+        if (json) {
+            for (let name in json) {
+                let jsonVersion = json[name];
+
+                if (typeof jsonVersion === "string") {
+                    if (jsonVersion == "*") {
+                        this.setCapability(name, "*");
+                    }
+                    else {
+                        let version = Version.parse(jsonVersion, errors);
+
+                        if (version.isValid) {
+                            this.setCapability(name, version);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    hasCapability(name: string, version: HostCapabilityVersion): boolean {
+        if (this.capabilities && this.capabilities.hasOwnProperty(name)) {
+            if (version == "*" || this.capabilities[name] == "*") {
+                return true;
+            }
+
+            return version.compareTo(<Version>this.capabilities[name]) <= 0;
+        }
+
+        return false;
+    }
+
+    areAllMet(hostCapabilities: HostCapabilities): boolean {
+        if (this.capabilities) {
+            for (let capabilityName in this.capabilities) {
+                if (!hostCapabilities.hasCapability(capabilityName, this.capabilities[capabilityName])) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+}
+
 export class HostConfig {
+    readonly hostCapabilities = new HostCapabilities();
+
     choiceSetInputValueSeparator: string = ",";
     supportsInteractivity: boolean = true;
     lineHeights?: ILineHeightDefinitions;

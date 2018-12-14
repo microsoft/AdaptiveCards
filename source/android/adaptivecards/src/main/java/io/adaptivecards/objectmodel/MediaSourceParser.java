@@ -43,13 +43,13 @@ public class MediaSourceParser {
     this(AdaptiveCardObjectModelJNI.new_MediaSourceParser__SWIG_1(MediaSourceParser.getCPtr(arg0), arg0), true);
   }
 
-  public static MediaSource Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, JsonValue root) {
-    long cPtr = AdaptiveCardObjectModelJNI.MediaSourceParser_Deserialize(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, JsonValue.getCPtr(root), root);
+  public static MediaSource Deserialize(ParseContext context, JsonValue root) {
+    long cPtr = AdaptiveCardObjectModelJNI.MediaSourceParser_Deserialize(ParseContext.getCPtr(context), context, JsonValue.getCPtr(root), root);
     return (cPtr == 0) ? null : new MediaSource(cPtr, true);
   }
 
-  public static MediaSource DeserializeFromString(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, AdaptiveCardParseWarningVector warnings, String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.MediaSourceParser_DeserializeFromString(ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, AdaptiveCardParseWarningVector.getCPtr(warnings), warnings, jsonString);
+  public static MediaSource DeserializeFromString(ParseContext context, String jsonString) {
+    long cPtr = AdaptiveCardObjectModelJNI.MediaSourceParser_DeserializeFromString(ParseContext.getCPtr(context), context, jsonString);
     return (cPtr == 0) ? null : new MediaSource(cPtr, true);
   }
 

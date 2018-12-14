@@ -98,12 +98,10 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardParseResult>(&adaptiveParseResult));
         try
         {
+            ParseContext context(sharedModelElementParserRegistration, sharedModelActionParserRegistration);
             const std::string c_rendererVersion = "1.2";
             std::shared_ptr<AdaptiveSharedNamespace::ParseResult> sharedParseResult =
-                AdaptiveSharedNamespace::AdaptiveCard::DeserializeFromString(jsonString,
-                                                                             c_rendererVersion,
-                                                                             sharedModelElementParserRegistration,
-                                                                             sharedModelActionParserRegistration);
+                AdaptiveSharedNamespace::AdaptiveCard::DeserializeFromString(jsonString, c_rendererVersion, context);
             ComPtr<IAdaptiveCard> adaptiveCard;
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&adaptiveCard, sharedParseResult->GetAdaptiveCard()));
             RETURN_IF_FAILED(adaptiveParseResult->put_AdaptiveCard(adaptiveCard.Get()));
