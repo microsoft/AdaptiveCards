@@ -113,36 +113,29 @@
 
 - (void)applySentimentStyling
 {
-    switch (_sentiment) {
-        case ACRSentimentPositive: {
-            BOOL usePositiveDefault = [_positiveUseDefault boolValue];
-            
-            // By default, positive sentiment must have background accentColor and white text/foreground color
-            if(usePositiveDefault) {
-                [self setBackgroundColor:_defaultPositiveBackgroundColor];
-                [self setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
-            } else {
-                [self setBackgroundColor:_positiveBackgroundColor];
-                [self setTitleColor:_positiveForegroundColor forState:UIControlStateNormal];
-            }
-            break;
-        }
+    if([@"positive" caseInsensitiveCompare:_sentiment] == NSOrderedSame)
+    {
+        BOOL usePositiveDefault = [_positiveUseDefault boolValue];
         
-        case ACRSentimentDestructive: {
-            BOOL useDestructiveDefault = [_destructiveUseDefault boolValue];
-            
-            if(useDestructiveDefault) {
-                [self setTitleColor:_defaultDestructiveForegroundColor forState:UIControlStateNormal];
-            } else {
-                [self setBackgroundColor:_destructiveBackgroundColor];
-                [self setTitleColor:_destructiveForegroundColor forState:UIControlStateNormal];
-            }
-            break;
+        // By default, positive sentiment must have background accentColor and white text/foreground color
+        if(usePositiveDefault) {
+            [self setBackgroundColor:_defaultPositiveBackgroundColor];
+            [self setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+        } else {
+            [self setBackgroundColor:_positiveBackgroundColor];
+            [self setTitleColor:_positiveForegroundColor forState:UIControlStateNormal];
         }
+    }
+    else if([@"destructive" caseInsensitiveCompare:_sentiment] == NSOrderedSame)
+    {
+        BOOL useDestructiveDefault = [_destructiveUseDefault boolValue];
         
-        case ACRSentimentDefault:
-        default:
-            break;
+        if(useDestructiveDefault) {
+            [self setTitleColor:_defaultDestructiveForegroundColor forState:UIControlStateNormal];
+        } else {
+            [self setBackgroundColor:_destructiveBackgroundColor];
+            [self setTitleColor:_destructiveForegroundColor forState:UIControlStateNormal];
+        }
     }
 }
 

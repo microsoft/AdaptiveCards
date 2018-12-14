@@ -302,7 +302,7 @@
         if([button isKindOfClass:[ACRButton class]])
         {
             ACRButton *acrButton = (ACRButton*)button;
-            if(acrButton.sentiment != ACRSentimentDefault)
+            if(acrButton.sentiment && [@"default" caseInsensitiveCompare:acrButton.sentiment] != NSOrderedSame)
             {
                 [acrButton applySentimentStyling];
             }
