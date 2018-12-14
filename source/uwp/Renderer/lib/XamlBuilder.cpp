@@ -1040,13 +1040,10 @@ namespace AdaptiveNamespace
         ComPtr<IVector<IAdaptiveActionElement*>> actions;
         THROW_IF_FAILED(adaptiveActionSet->get_Actions(&actions));
 
-        ABI::AdaptiveNamespace::ActionsOrientation orientation;
-        THROW_IF_FAILED(adaptiveActionSet->get_Orientation(&orientation));
-
         ABI::AdaptiveNamespace::ContainerStyle containerStyle;
         renderArgs->get_ContainerStyle(&containerStyle);
 
-        BuildActionSetHelper(actions.Get(), orientation, renderContext, false, actionSetControl, containerStyle);
+        BuildActionSetHelper(actions.Get(), renderContext, false, actionSetControl, containerStyle);
     }
 
     _Use_decl_annotations_ void XamlBuilder::BuildActions(IVector<IAdaptiveActionElement*>* children,
@@ -1075,13 +1072,12 @@ namespace AdaptiveNamespace
         }
 
         ComPtr<IUIElement> actionSetControl;
-        BuildActionSetHelper(children, ABI::AdaptiveNamespace::ActionsOrientation::None, renderContext, true, &actionSetControl, containerStyle);
+        BuildActionSetHelper(children, renderContext, true, &actionSetControl, containerStyle);
 
         XamlHelpers::AppendXamlElementToPanel(actionSetControl.Get(), bodyPanel);
     }
 
     void XamlBuilder::BuildActionSetHelper(IVector<IAdaptiveActionElement*>* children,
-                                           ABI::AdaptiveNamespace::ActionsOrientation actionsOrientation,
                                            IAdaptiveRenderContext* renderContext,
                                            bool isBottomActionBar,
                                            IUIElement** actionSetControl,
@@ -1096,10 +1092,8 @@ namespace AdaptiveNamespace
         ABI::AdaptiveNamespace::ActionAlignment actionAlignment;
         THROW_IF_FAILED(actionsConfig->get_ActionAlignment(&actionAlignment));
 
-        if (actionsOrientation == ABI::AdaptiveNamespace::ActionsOrientation::None)
-        {
-            THROW_IF_FAILED(actionsConfig->get_ActionsOrientation(&actionsOrientation));
-        }
+        ABI::AdaptiveNamespace::ActionsOrientation actionsOrientation;
+        THROW_IF_FAILED(actionsConfig->get_ActionsOrientation(&actionsOrientation));
 
         // Declare the panel that will host the buttons
         ComPtr<IPanel> actionsPanel;

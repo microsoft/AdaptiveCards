@@ -18,9 +18,6 @@ namespace AdaptiveCards
 
         virtual Json::Value SerializeToJsonValue() const override;
 
-        ActionsOrientation GetOrientation() const;
-        void SetOrientation(const ActionsOrientation value);
-
         std::vector<std::shared_ptr<BaseActionElement>>& GetActions();
 
     private:

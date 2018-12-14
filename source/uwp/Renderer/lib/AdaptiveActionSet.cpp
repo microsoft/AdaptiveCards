@@ -34,8 +34,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         }
 
         RETURN_IF_FAILED(GenerateActionsProjection(sharedActionSet->GetActions(), m_actions.Get()));
-        m_orientation = static_cast<ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation>(sharedActionSet->GetOrientation());
-        
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedActionSet));
         return S_OK;
     } CATCH_RETURN;
@@ -53,26 +51,10 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         return S_OK;
     }
 
-    _Use_decl_annotations_
-    HRESULT AdaptiveActionSet::get_Orientation(ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation* orientation)
-    {
-        *orientation = m_orientation;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_
-    HRESULT AdaptiveActionSet::put_Orientation(ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation orientation)
-    {
-        m_orientation = orientation;
-        return S_OK;
-    }
-
     HRESULT AdaptiveActionSet::GetSharedModel(std::shared_ptr<AdaptiveCards::BaseCardElement>& sharedModel) try
     {
         std::shared_ptr<AdaptiveCards::ActionSet> actionSet = std::make_shared<AdaptiveCards::ActionSet>();
         RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseCardElement>(actionSet)));
-
-        actionSet->SetOrientation(static_cast<AdaptiveCards::ActionsOrientation>(m_orientation));
 
         GenerateSharedActions(m_actions.Get(), actionSet->GetActions());
 

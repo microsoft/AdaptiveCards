@@ -24,9 +24,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
         HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveCards::ActionSet>& sharedActionSet);
 
         // IAdaptiveActionSet
-        IFACEMETHODIMP get_Orientation(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation* orientation);
-        IFACEMETHODIMP put_Orientation(_In_ ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation orientation);
-
         IFACEMETHODIMP get_Actions(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement*>** items);
 
         // IAdaptiveCardElement
@@ -61,7 +58,6 @@ namespace AdaptiveCards { namespace Rendering { namespace Uwp
 
     private:
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement*>> m_actions;
-        ABI::AdaptiveCards::Rendering::Uwp::ActionsOrientation m_orientation;
     };
 
     ActivatableClass(AdaptiveActionSet);

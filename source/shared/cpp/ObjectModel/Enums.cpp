@@ -96,7 +96,6 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Min, "min"},
             {AdaptiveCardSchemaKey::Monospace, "monospace"},
             {AdaptiveCardSchemaKey::NumberInput, "numberInput"},
-            {AdaptiveCardSchemaKey::Orientation, "orientation"},
             {AdaptiveCardSchemaKey::Padding, "padding"},
             {AdaptiveCardSchemaKey::Placeholder, "placeholder"},
             {AdaptiveCardSchemaKey::PlayButton, "playButton"},

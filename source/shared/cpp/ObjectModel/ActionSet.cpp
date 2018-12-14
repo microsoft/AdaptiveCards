@@ -6,7 +6,7 @@
 
 using namespace AdaptiveCards;
 
-ActionSet::ActionSet() : BaseCardElement(CardElementType::ActionSet), m_orientation(ActionsOrientation::None)
+ActionSet::ActionSet() : BaseCardElement(CardElementType::ActionSet)
 {
     PopulateKnownPropertiesSet();
 }
@@ -15,16 +15,6 @@ ActionSet::ActionSet(std::vector<std::shared_ptr<BaseActionElement>>& actions) :
     BaseCardElement(CardElementType::ActionSet), m_actions(actions)
 {
     PopulateKnownPropertiesSet();
-}
-
-ActionsOrientation ActionSet::GetOrientation() const
-{
-    return m_orientation;
-}
-
-void ActionSet::SetOrientation(const ActionsOrientation value)
-{
-    m_orientation = value;
 }
 
 std::vector<std::shared_ptr<BaseActionElement>>& ActionSet::GetActions()
@@ -39,11 +29,6 @@ Json::Value ActionSet::SerializeToJsonValue() const
     std::string actionsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Actions);
     root[actionsPropertyName] = Json::Value(Json::arrayValue);
 
-    if (GetOrientation() != ActionsOrientation::None)
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Orientation)] = ActionsOrientationToString(GetOrientation());
-    }
-
     for (auto actionElement : m_actions)
     {
         root[actionsPropertyName].append(actionElement->SerializeToJsonValue());
@@ -57,9 +42,6 @@ std::shared_ptr<BaseCardElement> ActionSetParser::Deserialize(ParseContext& cont
     ParseUtil::ExpectTypeString(value, CardElementType::ActionSet);
 
     auto actionSet = BaseCardElement::Deserialize<ActionSet>(value);
-
-    actionSet->SetOrientation(ParseUtil::GetEnumValue<ActionsOrientation>(
-        value, AdaptiveCardSchemaKey::Orientation, ActionsOrientation::None, ActionsOrientationFromString));
 
     // Parse Actions
     auto actionElements = ParseUtil::GetActionCollection(context, value, AdaptiveCardSchemaKey::Actions, false);
@@ -76,5 +58,4 @@ std::shared_ptr<BaseCardElement> ActionSetParser::DeserializeFromString(ParseCon
 void ActionSet::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Actions));
-    m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Orientation));
 }

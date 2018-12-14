@@ -175,7 +175,6 @@ namespace AdaptiveNamespace
                                  ABI::AdaptiveNamespace::ContainerStyle containerStyle);
 
         static void BuildActionSetHelper(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* children,
-                                         ABI::AdaptiveNamespace::ActionsOrientation actionsOrientation,
                                          ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                          bool isBottomActionBar,
                                          ABI::Windows::UI::Xaml::IUIElement** actionSetControl,

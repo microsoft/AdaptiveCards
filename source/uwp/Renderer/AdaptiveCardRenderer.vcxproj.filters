@@ -92,7 +92,7 @@
     <ClCompile Include="lib\AdaptiveFontStyleDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveFontStylesDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveActionSet.cpp" />
-    <ClCompile Include="lib\AdaptiveActionSetRenderer.cpp" />    
+    <ClCompile Include="lib\AdaptiveActionSetRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -192,7 +192,7 @@
     <ClInclude Include="lib\AdaptiveFontStyleDefinition.h" />
     <ClInclude Include="lib\AdaptiveFontStylesDefinition.h" />
     <ClInclude Include="lib\AdaptiveActionSet.h" />
-    <ClInclude Include="lib\AdaptiveActionSetRenderer.h" />    
+    <ClInclude Include="lib\AdaptiveActionSetRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />

@@ -98,7 +98,6 @@ namespace AdaptiveSharedNamespace
         Min,
         Monospace,
         NumberInput,
-        Orientation,
         Padding,
         Placeholder,
         PlayButton,
@@ -292,8 +291,7 @@ namespace AdaptiveSharedNamespace
     enum class ActionsOrientation
     {
         Vertical = 0,
-        Horizontal,
-        None,
+        Horizontal
     };
     DECLARE_ADAPTIVECARD_ENUM(ActionsOrientation);
 

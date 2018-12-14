@@ -228,7 +228,7 @@
     <ClCompile Include="lib\AdaptiveRemoteResourceInformation.cpp" />
     <ClCompile Include="lib\MediaHelpers.cpp" />
     <ClCompile Include="lib\AdaptiveActionSet.cpp" />
-    <ClCompile Include="lib\AdaptiveActionSetRenderer.cpp" />    
+    <ClCompile Include="lib\AdaptiveActionSetRenderer.cpp" />
     <ClCompile Include="lib\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
