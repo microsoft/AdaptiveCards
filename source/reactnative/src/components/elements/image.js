@@ -101,6 +101,15 @@ export class Img extends React.Component {
     applySize() {
         let sizeStyle = [];
         let sizeValue = Utils.parseHostConfigEnum(Enums.Size, this.payload.size, Enums.Size.Auto)
+         /**
+          * Condition to check either the height 
+          * or the width of the image is a Number or Number in pixels. 
+          * for eg:) 1.width:80px height:not set, 
+          *          2.width:80 height:80
+          * If the property of the width/height is String('stretch), give the priority to size property. 
+          * for eg:) size:'auto' height:'stretch'
+          * 
+          */
         if ((this.payload.width || this.payload.height) 
                                 && 
             (parseInt(this.payload.width, 10) ||  parseInt(this.payload.height, 10))) {
