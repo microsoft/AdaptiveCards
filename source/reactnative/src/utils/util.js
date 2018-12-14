@@ -11,7 +11,15 @@ export function isNullOrEmpty(value) {
 }
 
 export function isString(value) {
-    return typeof value === 'string' || value instanceof String ;
+    return typeof value === 'string' || value instanceof String;
+}
+
+export function isaNumber(value) {
+    var parsedValue = parseInt(value, 10);
+    if (!isNaN(parsedValue)) {
+        return true;
+    }
+    return false;
 }
 /**
  *  This function will return the Enum value for the specified Key if its present or
