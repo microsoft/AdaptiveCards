@@ -74,6 +74,5 @@ namespace AdaptiveCardsSharedModelUnitTest
         ENUM_TEST_WITH_DEFAULT(ActionAlignment, ActionAlignment::Center, "Center"s, ActionAlignment::Left);
         ENUM_TEST_WITH_DEFAULT(IconPlacement, IconPlacement::LeftOfTitle, "LeftOfTitle"s, IconPlacement::AboveTitle);
         ENUM_TEST_WITH_DEFAULT(VerticalContentAlignment, VerticalContentAlignment::Center, "Center"s, VerticalContentAlignment::Top);
-        ENUM_TEST(Sentiment, Sentiment::Positive, "Positive"s);
     };
 }
