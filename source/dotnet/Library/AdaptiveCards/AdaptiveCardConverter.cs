@@ -54,22 +54,6 @@ namespace AdaptiveCards
             var card = (AdaptiveCard)typedElementConverter.ReadJson(jObject.CreateReader(), objectType, existingValue, serializer);
             card.Lang = ValidateLang(jObject.Value<string>("lang"));
 
-            //JToken backgroundImageJSON;
-            //if (jObject.TryGetValue("backgroundImage", out backgroundImageJSON))
-            //{
-            //    // Handle BackgroundImage as a string (BackCompat)
-            //    if (backgroundImageJSON.Type == JTokenType.String)
-            //    {
-            //        card.BackgroundImage = new AdaptiveBackgroundImage(jObject.Value<string>("backgroundImage"));
-            //    }
-            //    // backgroundImage is an object (Modern)
-            //    else
-            //    {
-            //        card.BackgroundImage = (AdaptiveBackgroundImage)Activator.CreateInstance(typeof(AdaptiveBackgroundImage));
-            //        serializer.Populate(backgroundImageJSON.CreateReader(), card.BackgroundImage);
-            //    }
-            //}
-
             return card;
         }
 
