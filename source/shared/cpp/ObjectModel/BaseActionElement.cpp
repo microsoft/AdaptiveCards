@@ -6,7 +6,7 @@
 using namespace AdaptiveSharedNamespace;
 
 BaseActionElement::BaseActionElement(ActionType type) :
-    m_type(type), m_typeString(ActionTypeToString(type)), m_sentiment(Sentiment::Default)
+    m_type(type), m_typeString(ActionTypeToString(type)), m_sentiment("default")
 {
     PopulateKnownPropertiesSet();
 }
@@ -51,12 +51,12 @@ void BaseActionElement::SetIconUrl(const std::string& value)
     m_iconUrl = value;
 }
 
-Sentiment BaseActionElement::GetSentiment() const
+std::string BaseActionElement::GetSentiment() const
 {
     return m_sentiment;
 }
 
-void BaseActionElement::SetSentiment(const Sentiment& value)
+void BaseActionElement::SetSentiment(const std::string& value)
 {
     m_sentiment = value;
 }
@@ -83,9 +83,9 @@ Json::Value BaseActionElement::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)] = m_title;
     }
 
-    if (m_sentiment != Sentiment::Default)
+    if ((m_sentiment != "default") && !m_sentiment.empty())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Sentiment)] = SentimentToString(m_sentiment);
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Sentiment)] = m_sentiment;
     }
 
     if (!m_iconUrl.empty())

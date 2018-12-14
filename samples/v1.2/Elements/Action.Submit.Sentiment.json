@@ -13,17 +13,22 @@
 		{
 			"type": "Action.Submit",
 			"sentiment": "default",
-			"title": "Action.Default"
+			"title": "Default"
 		},
 		{
 			"type": "Action.Submit",
 			"sentiment": "positive",
-			"title": "Action.Pawsitive"
+			"title": "Pawsitive"
 		},
 		{
 			"type": "Action.Submit",
 			"sentiment": "destructive",
-			"title": "Action.Destructive"
+			"title": "Destructive"
+		},
+		{
+			"type": "Action.Submit",
+			"sentiment": "other",
+			"title": "Other"
 		}
 	]
 }

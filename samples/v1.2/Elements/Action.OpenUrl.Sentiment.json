@@ -14,19 +14,25 @@
 			"type": "Action.OpenUrl",
 			"sentiment": "default",
 			"url": "http://adaptivecards.io",
-			"title": "Action.Default"
+			"title": "Default"
 		},
 		{
 			"type": "Action.OpenUrl",
 			"sentiment": "positive",
 			"url": "http://adaptivecards.io",
-			"title": "Action.Pawsitive"
+			"title": "Pawsitive"
 		},
 		{
 			"type": "Action.OpenUrl",
 			"sentiment": "destructive",
 			"url": "http://adaptivecards.io",
-			"title": "Action.Destructive"
+			"title": "Destructive"
+		},
+		{
+			"type": "Action.OpenUrl",
+			"sentiment": "other",
+			"url": "http://adaptivecards.io",
+			"title": "Other"
 		}
 	]
 }
