@@ -992,16 +992,15 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long MediaParser_Deserialize(long jarg1, MediaParser jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
   public final static native long MediaParser_DeserializeFromString(long jarg1, MediaParser jarg1_, long jarg2, ParseContext jarg2_, String jarg3);
   public final static native long new_ActionSet__SWIG_0();
-  public final static native long new_ActionSet__SWIG_1(int jarg1, boolean jarg2);
-  public final static native long new_ActionSet__SWIG_2(int jarg1, boolean jarg2, long jarg3, BaseActionElementVector jarg3_);
+  public final static native long new_ActionSet__SWIG_1(long jarg1, BaseActionElementVector jarg1_);
   public final static native long ActionSet_SerializeToJsonValue(long jarg1, ActionSet jarg1_);
   public final static native int ActionSet_GetOrientation(long jarg1, ActionSet jarg1_);
   public final static native void ActionSet_SetOrientation(long jarg1, ActionSet jarg1_, int jarg2);
   public final static native long ActionSet_GetActions(long jarg1, ActionSet jarg1_);
   public final static native long ActionSet_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native void delete_ActionSet(long jarg1);
-  public final static native long ActionSetParser_Deserialize(long jarg1, ActionSetParser jarg1_, long jarg2, ElementParserRegistration jarg2_, long jarg3, ActionParserRegistration jarg3_, long jarg4, JsonValue jarg4_);
-  public final static native long ActionSetParser_DeserializeFromString(long jarg1, ActionSetParser jarg1_, long jarg2, ElementParserRegistration jarg2_, long jarg3, ActionParserRegistration jarg3_, String jarg4);
+  public final static native long ActionSetParser_Deserialize(long jarg1, ActionSetParser jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
+  public final static native long ActionSetParser_DeserializeFromString(long jarg1, ActionSetParser jarg1_, long jarg2, ParseContext jarg2_, String jarg3);
   public final static native long new_ActionSetParser();
   public final static native void delete_ActionSetParser(long jarg1);
   public final static native long BaseInputElement_SWIGSmartPtrUpcast(long jarg1);
@@ -1040,7 +1039,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long MediaParser_SWIGSmartPtrUpcast(long jarg1);
   public final static native long ActionSet_SWIGSmartPtrUpcast(long jarg1);
   public final static native long ActionSetParser_SWIGSmartPtrUpcast(long jarg1);
-  
+
   public static String SwigDirector_BaseCardElement_GetElementTypeString(BaseCardElement jself) {
     return jself.GetElementTypeString();
   }

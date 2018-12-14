@@ -37,13 +37,13 @@ public class ActionSetParser extends BaseCardElementParser {
     super.delete();
   }
 
-  public BaseCardElement Deserialize(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, JsonValue root) {
-    long cPtr = AdaptiveCardObjectModelJNI.ActionSetParser_Deserialize(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, JsonValue.getCPtr(root), root);
+  public BaseCardElement Deserialize(ParseContext context, JsonValue root) {
+    long cPtr = AdaptiveCardObjectModelJNI.ActionSetParser_Deserialize(swigCPtr, this, ParseContext.getCPtr(context), context, JsonValue.getCPtr(root), root);
     return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
   }
 
-  public BaseCardElement DeserializeFromString(ElementParserRegistration elementParserRegistration, ActionParserRegistration actionParserRegistration, String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.ActionSetParser_DeserializeFromString(swigCPtr, this, ElementParserRegistration.getCPtr(elementParserRegistration), elementParserRegistration, ActionParserRegistration.getCPtr(actionParserRegistration), actionParserRegistration, jsonString);
+  public BaseCardElement DeserializeFromString(ParseContext contexts, String jsonString) {
+    long cPtr = AdaptiveCardObjectModelJNI.ActionSetParser_DeserializeFromString(swigCPtr, this, ParseContext.getCPtr(contexts), contexts, jsonString);
     return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
   }
 

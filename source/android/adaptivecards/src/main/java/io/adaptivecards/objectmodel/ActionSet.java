@@ -41,12 +41,8 @@ public class ActionSet extends BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_ActionSet__SWIG_0(), true);
   }
 
-  public ActionSet(Spacing spacing, boolean separator) {
-    this(AdaptiveCardObjectModelJNI.new_ActionSet__SWIG_1(spacing.swigValue(), separator), true);
-  }
-
-  public ActionSet(Spacing spacing, boolean separator, BaseActionElementVector actions) {
-    this(AdaptiveCardObjectModelJNI.new_ActionSet__SWIG_2(spacing.swigValue(), separator, BaseActionElementVector.getCPtr(actions), actions), true);
+  public ActionSet(BaseActionElementVector actions) {
+    this(AdaptiveCardObjectModelJNI.new_ActionSet__SWIG_1(BaseActionElementVector.getCPtr(actions), actions), true);
   }
 
   public JsonValue SerializeToJsonValue() {
@@ -65,8 +61,8 @@ public class ActionSet extends BaseCardElement {
     return new BaseActionElementVector(AdaptiveCardObjectModelJNI.ActionSet_GetActions(swigCPtr, this), false);
   }
 
-  public static ActionSet dynamic_cast(BaseCardElement baseActionElement) {
-    long cPtr = AdaptiveCardObjectModelJNI.ActionSet_dynamic_cast(BaseCardElement.getCPtr(baseActionElement), baseActionElement);
+  public static ActionSet dynamic_cast(BaseCardElement baseCardElement) {
+    long cPtr = AdaptiveCardObjectModelJNI.ActionSet_dynamic_cast(BaseCardElement.getCPtr(baseCardElement), baseCardElement);
     return (cPtr == 0) ? null : new ActionSet(cPtr, true);
   }
 
