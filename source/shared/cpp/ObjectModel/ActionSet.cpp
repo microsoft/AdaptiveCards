@@ -22,6 +22,11 @@ std::vector<std::shared_ptr<BaseActionElement>>& ActionSet::GetActions()
     return m_actions;
 }
 
+const std::vector<std::shared_ptr<BaseActionElement>>& ActionSet::GetActions() const
+{
+    return m_actions;
+}
+
 Json::Value ActionSet::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();

@@ -19,6 +19,7 @@ namespace AdaptiveCards
         virtual Json::Value SerializeToJsonValue() const override;
 
         std::vector<std::shared_ptr<BaseActionElement>>& GetActions();
+        const std::vector<std::shared_ptr<BaseActionElement>>& GetActions() const;
 
     private:
         void PopulateKnownPropertiesSet();
