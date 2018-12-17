@@ -16,6 +16,7 @@ import { HostConfigManager } from './utils/host-config'
 import { ActionWrapper } from './components/actions/action-wrapper'
 import PropTypes from 'prop-types';
 import * as Utils from './utils/util';
+import { SelectAction } from './components/actions';
 
 export default class AdaptiveCards extends React.Component {
 
@@ -68,17 +69,24 @@ export default class AdaptiveCards extends React.Component {
           </ScrollView>
         </View>
       );
-
+    //Checks if BackgroundImage option is available for adaptive card
     if (!Utils.isNullOrEmpty(this.payload.backgroundImage)) {
-      return (
+      adaptiveCardContent = (
         <ImageBackground source={{ uri: this.payload.backgroundImage }} style={styles.backgroundImage}>
           {adaptiveCardContent}
         </ImageBackground>
       );
     }
-    else {
-      return adaptiveCardContent;
+
+    //Checks if selectAction option is available for adaptive card
+    if (!Utils.isNullOrEmpty(this.payload.selectAction)) {
+      adaptiveCardContent = (
+        <SelectAction style={styles.container} selectActionData={this.payload.selectAction}>
+          {adaptiveCardContent}
+        </SelectAction>
+      );
     }
+      return adaptiveCardContent;
   }
 
   render() {

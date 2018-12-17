@@ -48,5 +48,10 @@
             "url": "https://tracking.getconvey.com/jet/fdeg?tn=1111111111111113",
             "title": "View Carrier Tracking"
         }
-    ]
+    ],
+    "selectAction": {
+            "type": "Action.OpenUrl",
+            "url": "https://tracking.getconvey.com/jet/fdeg?tn=1111111111111113",
+            "title": "View Carrier Tracking"
+        }
 }
