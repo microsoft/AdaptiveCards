@@ -1,19 +1,19 @@
 {
 	"name": "adaptivecards-visualizer",
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"description": "Adaptive Card Visualizer for HTML renderer",
 	"author": "AdaptiveCards",
 	"license": "MIT",
 	"main": "lib/app.js",
 	"scripts": {
 		"clean": "rimraf lib dist",
-		"build": "webpack --config webpack.prod.js",
-		"watch": "webpack --watch",
-		"start": "webpack-dev-server --open --config webpack.dev.js",
-		"version": "npm run build",
+		"prebuild": "tsc",
 		"prebuild-css": "node-sass ./scss/ -o ./css --output-style expanded",
 		"build-css": "postcss ./css/*.css --use autoprefixer --replace --no-map",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"build": "webpack",
+		"watch": "webpack --watch",
+		"start": "webpack-dev-server --open",
+		"version": "npm run build && webpack --mode=production"
 	},
 	"devDependencies": {
 		"@types/node": "0.0.2",
