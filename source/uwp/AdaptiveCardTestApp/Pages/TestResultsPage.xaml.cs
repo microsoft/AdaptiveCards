@@ -41,7 +41,8 @@ namespace AdaptiveCardTestApp.Pages
                 model.ImageAndJsonFailed,
                 model.FailedButSourceWasChanged,
                 model.PassedButSourceWasChanged,
-                model.New
+                model.Leaked,
+                model.New,
             };
 
             if (model.Failed.Results.Count > 0)
@@ -67,6 +68,11 @@ namespace AdaptiveCardTestApp.Pages
             else if (model.PassedButSourceWasChanged.Results.Count > 0)
             {
                 ListViewCategories.SelectedItem = model.PassedButSourceWasChanged;
+            }
+
+            else if (model.Leaked.Results.Count > 0)
+            {
+                ListViewCategories.SelectedItem = model.Leaked;
             }
 
             else if (model.New.Results.Count > 0)
