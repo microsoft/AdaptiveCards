@@ -28,6 +28,7 @@
 		"dts": "dts-generator --name adaptivecards --project . --out dist/adaptivecards.d.ts",
 		"lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
 		"prepublish": "webpack --mode=production",
+		"prepublishOnly": "npm run clean",
 		"version": "npm run build && npm test && npm run dts"
 	},
 	"repository": {

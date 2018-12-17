@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards-controls",
-	"version": "0.1.0",
+	"version": "0.1.3",
 	"description": "A library of pure JS/HTML controls designed for use with Adaptive Cards.",
 	"author": "Microsoft",
 	"license": "MIT",
@@ -19,7 +19,8 @@
 		"dts": "dts-generator --name adaptivecards-controls --project . --out dist/adaptivecards-controls.d.ts",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"prepublish": "webpack --mode=production",
-		"version": "npm run clean && npm run build && npm run dts"
+		"prepublishOnly": "npm run clean",
+		"version": "npm run build && npm run dts"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.1.2",
