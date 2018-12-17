@@ -153,10 +153,6 @@ namespace WpfVisualizer
 
                 MessageBox.Show(this, JsonConvert.SerializeObject(inputs, Formatting.Indented), "SubmitAction");
             }
-            else if(e.Action is AdaptiveToggleVisibilityAction toggleVisibilityAction)
-            {
-                
-            }
         }
 
         private void OnMediaClick(RenderedAdaptiveCard sender, AdaptiveMediaEventArgs e)

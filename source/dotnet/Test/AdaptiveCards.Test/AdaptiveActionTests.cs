@@ -120,7 +120,7 @@ namespace AdaptiveCards.Test
         ""type"": ""Action.ToggleVisibility"",
         ""targetElements"": [
           ""id1"",
-		  { ""elementId"": ""id2"", ""isVisible"": false },
+          { ""elementId"": ""id2"", ""isVisible"": false },
           { ""elementId"": ""id3"", ""isVisible"": true }
         ]
       }
