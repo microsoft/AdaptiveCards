@@ -11,7 +11,6 @@ import {
     Platform,
 } from 'react-native';
 
-import { InputContextConsumer } from '../../utils/context';
 import { HostConfigManager } from '../../utils/host-config'
 import * as Constants from '../../utils/constants';
 import { PickerInput } from './picker-input'
@@ -131,24 +130,19 @@ export class TimeInput extends React.Component {
         }
 
 		return (
-			<InputContextConsumer>
-				{({ addInputItem }) => (
-					<PickerInput
-						json={this.payload}
-						value={this.state.value}
-						format={"HH:mm"}
-						showPicker={this.showTimePicker}
-						addInputItem={addInputItem} 
-						modalVisible={this.state.modalVisible}
-						handleModalClose={this.handleModalClose}
-						chosenDate={this.state.chosenTime || new Date()}
-						minDate={this.state.minTime}
-						maxDate={this.state.maxTime}
-						handleDateChange={this.handleTimeChange} 
-						mode='time'
-					/>
-				)}
-			</InputContextConsumer>
+			<PickerInput
+				json={this.payload}
+				value={this.state.value}
+				format={"HH:mm"}
+				showPicker={this.showTimePicker}
+				modalVisible={this.state.modalVisible}
+				handleModalClose={this.handleModalClose}
+				chosenDate={this.state.chosenTime || new Date()}
+				minDate={this.state.minTime}
+				maxDate={this.state.maxTime}
+				handleDateChange={this.handleTimeChange} 
+				mode='time'
+			/>
 		);
     }
 }

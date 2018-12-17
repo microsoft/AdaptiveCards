@@ -16,6 +16,7 @@ import {
     ViewPropTypes
 } from 'react-native';
 
+import { InputContextConsumer } from '../../utils/context'
 import ElementWrapper from './element-wrapper';
 import * as Constants from '../../utils/constants';
 import { StyleManager } from '../../styles/style-config'
@@ -68,47 +69,51 @@ export class PickerInput extends React.Component {
 		modalBtnContainer = ViewPropTypes.style
 
         return (
-			<ElementWrapper json={this.payload}>
-				<TouchableOpacity style={styles.inputWrapper} onPress={this.props.showPicker}>
-					{/* added extra view to fix touch event in ios . */}
-					<View pointerEvents='none' >
-						<TextInput
-							style={[styles.input, this.styleConfig.fontConfig]}
-							autoCapitalize={Constants.NoneString}
-							autoCorrect={false}
-							placeholder={placeholder}
-							textContentType={Constants.NoneString}
-							underlineColorAndroid={Constants.TransparentString}
-							value={this.props.value}>
-							{this.props.addInputItem(this.id, this.props.value)}
-						</TextInput>
-					</View>
-				</TouchableOpacity>
-				<Modal
-					animationType='slide'
-					transparent
-					visible={this.props.modalVisible}
-					onRequestClose={this.props.handleModalClose}>
-					<View style={[styles.overlay, modalOverlayStyle]}>
-						<View style={[styles.modal, modalStyle]}>
-							<View style={[styles.modalBtnContainer, modalBtnContainer]}>
-								<Button
-									style={[modalButtonStyle]}
-									title={modalButtonText}
-									onPress={this.props.handleModalClose}
-								/>
-							</View>
-							<DatePickerIOS
-								mode={this.props.mode}
-								format={this.props.format}
-								date={this.props.chosenDate || new Date()}
-								minimumDate={this.props.minDate}
-								maximumDate={this.props.maxDate}
-								onDateChange={this.props.handleDateChange} />
+			<InputContextConsumer>
+			{({ addInputItem }) => (
+				<ElementWrapper json={this.payload}>
+					<TouchableOpacity style={styles.inputWrapper} onPress={this.props.showPicker}>
+						{/* added extra view to fix touch event in ios . */}
+						<View pointerEvents='none' >
+							<TextInput
+								style={[styles.input, this.styleConfig.fontConfig]}
+								autoCapitalize={Constants.NoneString}
+								autoCorrect={false}
+								placeholder={placeholder}
+								textContentType={Constants.NoneString}
+								underlineColorAndroid={Constants.TransparentString}
+								value={this.props.value}>
+								{addInputItem(this.id, this.props.value)}
+							</TextInput>
 						</View>
-					</View>
-				</Modal>
-			</ElementWrapper>
+					</TouchableOpacity>
+					<Modal
+						animationType='slide'
+						transparent
+						visible={this.props.modalVisible}
+						onRequestClose={this.props.handleModalClose}>
+						<View style={[styles.overlay, modalOverlayStyle]}>
+							<View style={[styles.modal, modalStyle]}>
+								<View style={[styles.modalBtnContainer, modalBtnContainer]}>
+									<Button
+										style={[modalButtonStyle]}
+										title={modalButtonText}
+										onPress={this.props.handleModalClose}
+									/>
+								</View>
+								<DatePickerIOS
+									mode={this.props.mode}
+									format={this.props.format}
+									date={this.props.chosenDate || new Date()}
+									minimumDate={this.props.minDate}
+									maximumDate={this.props.maxDate}
+									onDateChange={this.props.handleDateChange} />
+							</View>
+						</View>
+					</Modal>
+				</ElementWrapper>
+			)}
+			</InputContextConsumer>
         );
     }
 }
