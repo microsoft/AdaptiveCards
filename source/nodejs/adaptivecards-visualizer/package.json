@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards-visualizer",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"description": "Adaptive Card Visualizer for HTML renderer",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -40,7 +40,7 @@
 	},
 	"dependencies": {
 		"@types/vkbeautify": "^0.99.2",
-		"adaptivecards": "^1.2.0-alpha1",
+		"adaptivecards": "latest",
 		"babel-core": "^6.26.3",
 		"babel-loader": "^8.0.4",
 		"markdown-it": "^8.4.0",

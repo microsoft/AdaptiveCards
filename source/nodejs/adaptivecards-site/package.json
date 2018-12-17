@@ -13,9 +13,9 @@
     "version": "3.7.1"
   },
   "dependencies": {
-    "adaptivecards": "^1.2.0-alpha1",
-    "adaptivecards-visualizer": "^1.1.0",
-    "adaptivecards-designer": "^0.1.1",
+    "adaptivecards": "latest",
+    "adaptivecards-visualizer": "latest",
+    "adaptivecards-designer": "latest",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.4",
     "change-case": "^3.0.1",

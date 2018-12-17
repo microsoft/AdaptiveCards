@@ -36,7 +36,7 @@
 		"webpack-merge": "^4.1.4"
 	},
 	"dependencies": {
-		"adaptivecards-designer": "^0.1.1",
+		"adaptivecards-designer": "latest",
 		"babel-core": "^6.26.3",
 		"babel-loader": "^8.0.4",
 		"markdown-it": "^8.4.0",
