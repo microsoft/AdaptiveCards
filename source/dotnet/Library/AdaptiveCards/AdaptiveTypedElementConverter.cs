@@ -126,7 +126,14 @@ namespace AdaptiveCards
                 }
 
                 var result = (AdaptiveTypedElement)Activator.CreateInstance(type);
-                serializer.Populate(jObject.CreateReader(), result);
+                try
+                {
+                    serializer.Populate(jObject.CreateReader(), result);
+                }
+                catch (JsonSerializationException)
+                {
+                    return result;
+                }
 
                 HandleAdditionalProperties(result);
                 return result;

@@ -78,7 +78,14 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
 
         public void OnAction(BaseActionElement element, RenderedAdaptiveCard renderedCard)
         {
+        }
 
+        public void OnMediaPlay(BaseCardElement element, RenderedAdaptiveCard renderedCard)
+        {
+        }
+
+        public void OnMediaStop(BaseCardElement element, RenderedAdaptiveCard renderedCard)
+        {
         }
     }
 }
