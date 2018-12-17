@@ -40,7 +40,7 @@
 	},
 	"dependencies": {
 		"@types/vkbeautify": "^0.99.2",
-		"adaptivecards": "latest",
+		"adaptivecards": "^1.2.0-alpha",
 		"babel-core": "^6.26.3",
 		"babel-loader": "^8.0.4",
 		"markdown-it": "^8.4.0",
