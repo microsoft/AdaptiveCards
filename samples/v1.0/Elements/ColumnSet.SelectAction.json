@@ -34,7 +34,7 @@
 							"type": "TextBlock",
 							"text": "Maps",
 							"isSubtle": true,
-							"separation": "none"
+							"spacing": "none"
 						}
 					]
 				}
@@ -72,7 +72,7 @@
 							"type": "TextBlock",
 							"text": "With EMPHASIS",
 							"isSubtle": true,
-							"separation": "none"
+							"spacing": "none"
 						}
 					]
 				}
@@ -109,7 +109,7 @@
 							"type": "TextBlock",
 							"text": "Netflix",
 							"isSubtle": true,
-							"separation": "none"
+							"spacing": "none"
 						}
 					]
 				}
