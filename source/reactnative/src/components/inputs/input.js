@@ -10,6 +10,7 @@ import {
     TextInput
 } from 'react-native';
 
+import { InputContextConsumer } from '../../utils/context'
 import ElementWrapper from './element-wrapper';
 import { StyleManager } from "../../styles/style-config";
 import * as Utils from '../../utils/util';
@@ -61,24 +62,28 @@ export class Input extends React.Component {
         }
 
         return (
-			<ElementWrapper json={this.payload}>
-				<TextInput
-					style={this.getComputedStyles()}
-					autoCapitalize={Constants.NoneString}
-					autoCorrect={false}
-					placeholder={placeholder}
-					multiline={isMultiline}
-					maxLength={maxLength}
-					underlineColorAndroid={Constants.TransparentString}
-					clearButtonMode={Constants.WhileEditingString}
-					textContentType={style}
-					keyboardType={keyboardType}
-					onFocus={this.props.handleFocus}
-					onBlur={this.props.handleBlur}
-					onChangeText={ (text) => this.props.textValueChanged(text) }
-					value={this.props.value}
-				/>
-			</ElementWrapper>
+			<InputContextConsumer>
+			{({ addInputItem }) => (
+				<ElementWrapper json={this.payload}>
+					<TextInput
+						style={this.getComputedStyles()}
+						autoCapitalize={Constants.NoneString}
+						autoCorrect={false}
+						placeholder={placeholder}
+						multiline={isMultiline}
+						maxLength={maxLength}
+						underlineColorAndroid={Constants.TransparentString}
+						clearButtonMode={Constants.WhileEditingString}
+						textContentType={style}
+						keyboardType={keyboardType}
+						onFocus={this.props.handleFocus}
+						onBlur={this.props.handleBlur}
+						onChangeText={ (text) => this.props.textValueChanged(text, addInputItem) }
+						value={this.props.value}
+					/>
+				</ElementWrapper>
+			)}
+			</InputContextConsumer>
         );
     }
 

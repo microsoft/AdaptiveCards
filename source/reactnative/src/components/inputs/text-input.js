@@ -8,7 +8,6 @@ import React from 'react';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 import * as Constants from '../../utils/constants';
-import { InputContextConsumer } from '../../utils/context'
 import { HostConfigManager } from '../../utils/host-config'
 import { Input } from './input'
 
@@ -45,19 +44,15 @@ export class InputText extends React.Component {
         }
 
         return (
-            <InputContextConsumer>
-                {({ addInputItem }) => (
-					<Input 
-						json={this.payload}
-						handleFocus={this.handleFocus}
-						handleBlur={this.handleBlur}
-						textValueChanged={ (text) => 
-							{ this.textValueChanged(text, addInputItem) }}
-						value={this.state.text}    
-						isError={this.state.isError} 
-                    />
-                )}
-            </InputContextConsumer>
+			<Input 
+				json={this.payload}
+				handleFocus={this.handleFocus}
+				handleBlur={this.handleBlur}
+				textValueChanged={ (text, addInputItem) => 
+					{ this.textValueChanged(text, addInputItem) }}
+				value={this.state.text}    
+				isError={this.state.isError} 
+			/>
         );
     }
 

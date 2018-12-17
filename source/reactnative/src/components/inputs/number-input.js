@@ -31,25 +31,20 @@ export class NumberInput extends React.Component {
         if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
             return null;
         }
-
         this.parseHostConfig();
 
         return (
-            <InputContextConsumer>
-                {({ addInputItem }) => (
-                 	<DismissKeyboardView>
-						<Input 
-							json={this.payload}
-							handleFocus={this.handleFocus}
-							handleBlur={this.handleBlur}
-							textValueChanged={ (text) => { this.onTextChanged(text, addInputItem) }}
-							value={this.state.numberValue} 
-							isError={this.state.isError}     
-						/>
-				 	</DismissKeyboardView>
-				)}
-            </InputContextConsumer>
-
+			<DismissKeyboardView>
+				<Input 
+					json={this.payload}
+					handleFocus={this.handleFocus}
+					handleBlur={this.handleBlur}
+					textValueChanged={ (text, addInputItem) => 
+						{ this.onTextChanged(text, addInputItem) }}
+					value={this.state.numberValue} 
+					isError={this.state.isError}     
+				/>
+			</DismissKeyboardView>
         );
     }
 
