@@ -18,9 +18,7 @@
 		"start": "webpack-dev-server --open",
 		"dts": "dts-generator --name adaptivecards-designer --project . --out dist/adaptivecards-designer.d.ts",
 		"lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
-		"prepublish": "webpack --mode=production",
-		"prepublishOnly": "npm run clean",
-		"version": "npm run build && npm test && npm run dts"
+		"prepublishOnly": "npm run clean && npm run build && webpack --mode=production && npm run dts"
 	},
 	"devDependencies": {
 		"@types/jest": "^21.1.8",
