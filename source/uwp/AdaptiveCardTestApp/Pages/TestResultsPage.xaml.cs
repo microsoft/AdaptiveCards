@@ -22,13 +22,17 @@ namespace AdaptiveCardTestApp.Pages
             this.InitializeComponent();
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             var runningTestsViewModel = e.Parameter as RunningTestsViewModel;
             if (runningTestsViewModel == null)
             {
                 throw new InvalidOperationException("Running tests view model not provided");
             }
+
+            // Force a Garbage Collection to make sure that the WeakReferences as invalidated.
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Default, blocking: true);
+            await System.Threading.Tasks.Task.Delay(1000);
 
             var model = new TestResultsViewModel(runningTestsViewModel.Results);
             DataContext = model;

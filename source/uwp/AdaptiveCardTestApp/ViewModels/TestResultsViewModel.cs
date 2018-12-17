@@ -18,16 +18,13 @@ namespace AdaptiveCardTestApp.ViewModels
 
         public TestResultsViewModel(IEnumerable<TestResultViewModel> results)
         {
-            // Force a Garbage Collection to make sure that the WeakReferences as invalidated.
-            GC.Collect();
-
             Passed = new TestResultsCategoryViewModel("Passed", results.Where(i => i.Status == TestStatus.Passed));
             Failed = new TestResultsCategoryViewModel("Image Comparison Failed", results.Where(i => i.Status == TestStatus.Failed));
             JsonFailed = new TestResultsCategoryViewModel("Json Roundtrip Failed", results.Where(i => i.Status == TestStatus.JsonFailed));
             ImageAndJsonFailed = new TestResultsCategoryViewModel("Image Comparison and Json Roundtrip Failed", results.Where(i => i.Status == TestStatus.ImageAndJsonFailed));
             FailedButSourceWasChanged = new TestResultsCategoryViewModel("Failed/source changed", results.Where(i => i.Status == TestStatus.FailedButSourceWasChanged));
             PassedButSourceWasChanged = new TestResultsCategoryViewModel("Passed/source changed", results.Where(i => i.Status == TestStatus.PassedButSourceWasChanged));
-            Leaked = new TestResultsCategoryViewModel("Leaked", results.Where(i => i.TestResult.WeakCard.IsAlive == true));
+            Leaked = new TestResultsCategoryViewModel("Leaked", results.Where(i => i.TestResult.IsLeaked == true));
             New = new TestResultsCategoryViewModel("New", results.Where(i => i.Status == TestStatus.New));
 
             foreach (var r in results)
