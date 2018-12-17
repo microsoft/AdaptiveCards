@@ -1,81 +1,142 @@
 /**
- * Input component that wraps all other specific input element.
+ * InputText Component.
  * 
- * @example
- * <Input json={payload}>
- *  <InputElement json={payload}></InputElement>
- * </Input>
+ * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#inputtext
  */
 
-import React from 'react';
+import React from "react";
 import {
-    View,
-    StyleSheet
+    StyleSheet,
+    TextInput
 } from 'react-native';
 
+import ElementWrapper from './element-wrapper';
+import { StyleManager } from "../../styles/style-config";
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
-import { HostConfigManager } from "../../utils/host-config";
 import * as Constants from '../../utils/constants';
-import { StyleManager } from "../../styles/style-config";
+import { HostConfigManager } from '../../utils/host-config'
 
-export default class Input extends React.Component {
+export class Input extends React.Component {
 
-    hostConfig = HostConfigManager.getHostConfig();
     styleConfig = StyleManager.getManager().styles;
 
+    constructor(props) {
+        super(props);
+
+        this.payload = props.json;
+        this.id = Constants.EmptyString;
+        this.isMultiline = Boolean;
+        this.maxlength = 0;
+        this.placeHolder = Constants.EmptyString;
+        this.style = Constants.EmptyString;
+        this.type = Constants.EmptyString;
+        this.value = Constants.EmptyString;
+        this.keyboardType = Constants.EmptyString;
+        this.state = {
+            isError: false,
+            text: Constants.EmptyString,
+        }
+    }
+
     render() {
-        const computedStyles = this.getComputedStyles();
+
+        if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
+            return null;
+        }
+        this.parseHostConfig();
+
+        const {
+            id,
+            type,
+            isMultiline,
+            placeholder,
+            maxLength,
+            style,
+            keyboardType
+        } = this;
+
+        if (!id || !type) {
+            return null;
+        }
 
         return (
-            <View style={computedStyles} onLayout={this.props.onPageLayout}>
-                {this.props.children}
-            </View>
-        )
+			<ElementWrapper json={this.payload}>
+				<TextInput
+					style={this.getComputedStyles()}
+					autoCapitalize={Constants.NoneString}
+					autoCorrect={false}
+					placeholder={placeholder}
+					multiline={isMultiline}
+					maxLength={maxLength}
+					underlineColorAndroid={Constants.TransparentString}
+					clearButtonMode={Constants.WhileEditingString}
+					textContentType={style}
+					keyboardType={keyboardType}
+					onFocus={this.props.handleFocus}
+					onBlur={this.props.handleBlur}
+					onChangeText={ (text) => this.props.textValueChanged(text) }
+					value={this.props.value}
+				/>
+			</ElementWrapper>
+        );
     }
 
     /**
-     * @description Return the styles applicable based on the given payload
+     * @description Return the input styles applicable based on the given payload
      */
     getComputedStyles = () => {
-        const payload = this.props.json;
-        const receivedStyles = this.props.style;
+        const { isMultiline } = this;
 
-        let computedStyles = [styles.inputContainer, receivedStyles];
+        let inputComputedStyles = [styles.input, this.styleConfig.fontConfig];
+        isMultiline ?
+            inputComputedStyles.push(styles.multiLineHeight) :
+            inputComputedStyles.push(styles.singleLineHeight);
+        this.props.isError ?
+            inputComputedStyles.push(this.styleConfig.borderAttention) :
+            inputComputedStyles.push(styles.withBorderColor);
 
-        // spacing
-        const spacingEnumValue = Utils.parseHostConfigEnum(
-            Enums.Spacing,
-            payload.spacing,
-            Enums.Spacing.Small);
-        const spacing = this.hostConfig.getEffectiveSpacing(spacingEnumValue);
-        computedStyles.push({ marginTop: spacing });
+        return inputComputedStyles;
+    }
 
-        // separator
-        const separator = payload.separator || false;
-        if (separator) {
-            computedStyles.push(this.styleConfig.separatorStyle);
-            computedStyles.push({ paddingTop: spacing / 2, marginTop: spacing / 2 });
-        }
-
-        // height 
-        const height = payload.height || false;
-        if (height) {
-            const heightEnumValue = Utils.parseHostConfigEnum(
-                Enums.Height,
-                payload.height,
-                Enums.Height.Auto);
-            const height = this.hostConfig.getEffectiveHeight(heightEnumValue);
-            computedStyles.push({ flex: height });
-        }
-
-        return computedStyles;
+    /**
+     * @description Parse hostconfig specific to this element
+     */
+    parseHostConfig = () => {
+        this.id = this.payload.id;
+        this.type = this.payload.type;
+        this.isMultiline = this.payload.isMultiline;
+		this.maxLength = (this.payload.maxLength == undefined || 
+			this.payload.maxLength == 0) ? Number.MAX_VALUE : this.payload.maxLength;
+			
+        this.placeholder = this.payload.placeholder;
+        let styleValue = Utils.parseHostConfigEnum(
+            Enums.InputTextStyle,
+            this.payload.style,
+            Enums.InputTextStyle.Text);
+        this.style = Utils.getEffectiveInputStyle(styleValue);
+        this.keyboardType = Utils.getKeyboardType(styleValue);
     }
 }
 
-
 const styles = StyleSheet.create({
-    inputContainer: {
-        backgroundColor: Constants.WhiteColor
-    }
-})
+    withBorderColor: {
+        borderColor: Constants.LightGreyColor,
+    },
+    multiLineHeight: {
+        height: 88,
+    },
+    singleLineHeight: {
+        height: 44,
+    },
+    input: {
+        width: Constants.FullWidth,
+        padding: 5,
+        marginTop: 15,
+        borderWidth: 1,
+        backgroundColor: Constants.WhiteColor,
+        borderRadius: 5,
+    },
+});
+
+

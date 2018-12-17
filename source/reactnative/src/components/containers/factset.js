@@ -4,14 +4,14 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#schema-factset
  */
 
-import React from "react";
+import React from 'react';
 import {
     View,
     StyleSheet,
     Text,
     Dimensions
 } from 'react-native';
-import Input from '../inputs/input';
+import ElementWrapper from '../inputs/element-wrapper';
 import * as Constants from '../../utils/constants';
 import { StyleManager } from '../../styles/style-config'
 
@@ -146,12 +146,11 @@ export class FactSet extends React.Component {
         }
 
         return (
-            <Input json={containerJson}>
+            <ElementWrapper json={containerJson}>
                 <View style={[styles.container]} onLayout={(event) => { this.measureView(event) }}>
                     {factSetObject}
                 </View>
-            </Input>
-
+            </ElementWrapper>
         );
     }
 

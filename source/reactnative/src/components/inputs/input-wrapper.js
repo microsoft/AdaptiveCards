@@ -4,13 +4,13 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#inputtext
  */
 
-import React from "react";
+import React from 'react';
 import {
     StyleSheet,
     TextInput
 } from 'react-native';
 
-import Input from './input';
+import ElementWrapper from './element-wrapper';
 import { StyleManager } from "../../styles/style-config";
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
@@ -35,7 +35,7 @@ export class TextInputWrapper extends React.Component {
         this.keyboardType = Constants.EmptyString;
         this.state = {
             isError: false,
-            text: '',
+            text: Constants.EmptyString,
         }
     }
 
@@ -44,7 +44,6 @@ export class TextInputWrapper extends React.Component {
         if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
             return null;
         }
-
         this.parseHostConfig();
 
         const {
@@ -62,7 +61,7 @@ export class TextInputWrapper extends React.Component {
         }
 
         return (
-			<Input json={this.payload}>
+			<ElementWrapper json={this.payload}>
 				<TextInput
 					style={this.getComputedStyles()}
 					autoCapitalize={Constants.NoneString}
@@ -79,8 +78,7 @@ export class TextInputWrapper extends React.Component {
 					onChangeText={ (text) => this.props.textValueChanged(text) }
 					value={this.props.value}
 				/>
-			</Input>
-
+			</ElementWrapper>
         );
     }
 

@@ -14,7 +14,7 @@ import {
     Image
 } from 'react-native';
 
-import Input from '../input';
+import ElementWrapper from '../element-wrapper';
 import Checkbox from './check-box';
 import { InputContextConsumer } from '../../../utils/context';
 import * as Utils from '../../../utils/util';
@@ -260,14 +260,14 @@ export class ChoiceSetInput extends React.Component {
         return (
             <InputContextConsumer>
                 {({ addInputItem }) => (
-                    <Input json={this.payload} style={styles.containerView}>
+                    <ElementWrapper json={this.payload} style={styles.containerView}>
                         {!isMultiSelect ?
                             ((style == CompactStyle || style == undefined) ?
                                 this.renderPickerComponent(addInputItem) :
                                 this.renderCheckBoxComponent(addInputItem)) :
                             this.renderRadioButtonComponent(addInputItem)
                         }
-                    </Input>)}
+                    </ElementWrapper>)}
             </InputContextConsumer>
         );
     }

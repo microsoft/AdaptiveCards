@@ -4,20 +4,18 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#schema-container
  */
 
-import React from "react";
+import React from 'react';
 import {
     View,
     ScrollView,
     StyleSheet
 } from 'react-native';
-import Input from '../inputs/input';
+import ElementWrapper from '../inputs/element-wrapper';
 import { Registry } from '../registration/registry'
 import { SelectAction } from '../actions'
 import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config'
 import { InputContextConsumer } from '../../utils/context';
-
-
 
 export class Container extends React.Component {
 
@@ -51,11 +49,11 @@ export class Container extends React.Component {
                 {({ onParseError }) =>
                     (
                         <View style={[styles.container, backgroundStyle]}>
-                            <Input json={containerJson} style={backgroundStyle}>
+                            <ElementWrapper json={containerJson} style={backgroundStyle}>
                                 <ScrollView style={backgroundStyle}>
                                     {this.parsePayload(containerJson, onParseError)}
                                 </ScrollView>
-                            </Input>
+                            </ElementWrapper>
                         </View>
                     )
                 }

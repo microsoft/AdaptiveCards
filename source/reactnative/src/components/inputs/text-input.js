@@ -4,13 +4,13 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#inputtext
  */
 
-import React from "react";
+import React from 'react';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 import * as Constants from '../../utils/constants';
 import { InputContextConsumer } from '../../utils/context'
 import { HostConfigManager } from '../../utils/host-config'
-import { TextInputWrapper } from './text-input-wrapper'
+import { Input } from './input'
 
 const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 const URL_REGEX = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/;
@@ -47,7 +47,7 @@ export class InputText extends React.Component {
         return (
             <InputContextConsumer>
                 {({ addInputItem }) => (
-					<TextInputWrapper 
+					<Input 
 						json={this.payload}
 						handleFocus={this.handleFocus}
 						handleBlur={this.handleBlur}

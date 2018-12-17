@@ -4,7 +4,7 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#schema-image
  */
 
-import React from "react";
+import React from 'react';
 import {
     StyleSheet,
     Image,
@@ -14,7 +14,7 @@ import { HostConfigManager } from "../../utils/host-config";
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 import * as Constants from '../../utils/constants';
-import Input from '../inputs/input';
+import ElementWrapper from '../inputs/element-wrapper';
 import { SelectAction } from '../actions';
 import { StyleManager } from '../../styles/style-config'
 
@@ -278,13 +278,13 @@ export class Img extends React.Component {
                 imageComputedStyle.push({ borderRadius: this.width / 2 }) : null;
         }
 
-        var containerContent = (<Input json={this.payload}
+        var containerContent = (<ElementWrapper json={this.payload}
             style={[this.horizontalAlignment, { backgroundColor: this.backgroundColor }]}
             onPageLayout={this.onPageLayoutHandler}>
 
             <Image style={imageComputedStyle}
                 source={{ uri: url }} />
-        </Input>);
+        </ElementWrapper>);
 
         if ((this.payload.selectAction === undefined)
             || (HostConfigManager.getHostConfig().supportsInteractivity === false)) {

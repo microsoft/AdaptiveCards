@@ -12,7 +12,7 @@ import {
 
 import { HostConfigManager } from "../../utils/host-config";
 import { TextFormatter } from '../../utils/text-formatters';
-import Input from '../inputs/input';
+import ElementWrapper from '../inputs/element-wrapper';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 import * as Constants from '../../utils/constants';
@@ -62,14 +62,14 @@ export class TextBlock extends React.Component {
         });
 
         return (
-            <Input json={this.payload} style={styles.textContainer}>
+            <ElementWrapper json={this.payload} style={styles.textContainer}>
                 <Text
                     style={textBlockComputedStyle}
                     numberOfLines={this.wrap ? (this.maxLines != undefined ?
                         this.maxLines : 0) : 1}>
                     {processedText}
                 </Text>
-            </Input>
+            </ElementWrapper>
         );
     }
 

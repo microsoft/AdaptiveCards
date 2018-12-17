@@ -16,7 +16,7 @@ import {
     ViewPropTypes
 } from 'react-native';
 
-import Input from './input';
+import ElementWrapper from './element-wrapper';
 import * as Constants from '../../utils/constants';
 import { StyleManager } from '../../styles/style-config'
 import { HostConfigManager } from '../../utils/host-config'
@@ -68,7 +68,7 @@ export class PickerInput extends React.Component {
 		modalBtnContainer = ViewPropTypes.style
 
         return (
-			<Input json={this.payload}>
+			<ElementWrapper json={this.payload}>
 				<TouchableOpacity style={styles.inputWrapper} onPress={this.props.showPicker}>
 					{/* added extra view to fix touch event in ios . */}
 					<View pointerEvents='none' >
@@ -108,7 +108,7 @@ export class PickerInput extends React.Component {
 						</View>
 					</View>
 				</Modal>
-			</Input>
+			</ElementWrapper>
         );
     }
 }

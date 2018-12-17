@@ -4,7 +4,7 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#schema-column
  */
 
-import React from "react";
+import React from 'react';
 import { 
 	View, 
 	StyleSheet, 

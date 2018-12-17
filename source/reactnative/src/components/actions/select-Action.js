@@ -3,7 +3,7 @@
  * 
  */
 
-import React from "react";
+import React from 'react';
 import { Platform } from 'react-native'
 import { InputContextConsumer } from '../../utils/context'
 import * as Constants from '../../utils/constants';

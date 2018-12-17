@@ -4,13 +4,12 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#inputnumber
  */
 
-import React from "react";
+import React from 'react';
 import { DismissKeyboardView } from '../containers/dismiss-keyboard';
 import { InputContextConsumer } from '../../utils/context'
 import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config'
-import { TextInputWrapper } from './text-input-wrapper'
-
+import { Input } from './input'
 
 const NUM_REGEX = /^[0-9][\.\d]*(,\d+)?$/;
 
@@ -39,7 +38,7 @@ export class NumberInput extends React.Component {
             <InputContextConsumer>
                 {({ addInputItem }) => (
                  	<DismissKeyboardView>
-						<TextInputWrapper 
+						<Input 
 							json={this.payload}
 							handleFocus={this.handleFocus}
 							handleBlur={this.handleBlur}
