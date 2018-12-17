@@ -13,10 +13,11 @@
 		"build": "webpack",
 		"watch": "webpack --watch",
 		"start": "webpack-dev-server --open",
-		"prepublishOnly": "npm run clean && npm run build && webpack --mode=production"
+		"prepack": "npm run clean && npm run build && webpack --mode=production"
 	},
 	"devDependencies": {
 		"@types/node": "0.0.2",
+		"@types/vkbeautify": "^0.99.2",
 		"autoprefixer": "^6.7.7",
 		"awesome-typescript-loader": "^5.2.1",
 		"clean-webpack-plugin": "^0.1.19",
@@ -29,8 +30,10 @@
 		"node-sass": "^4.7.2",
 		"postcss": "^5.2.18",
 		"postcss-cli": "^3.1.1",
+		"rimraf": "^2.6.2",
 		"style-loader": "^0.23.1",
 		"tslint": "^4.4.2",
+		"ts-loader": "^5.2.2",
 		"typescript": "^3.0.3",
 		"typings-for-css-modules-loader": "^1.7.0",
 		"webpack": "^4.21.0",
@@ -39,13 +42,9 @@
 		"webpack-merge": "^4.1.4"
 	},
 	"dependencies": {
-		"@types/vkbeautify": "^0.99.2",
 		"adaptivecards": "^1.2.0-alpha",
-		"babel-core": "^6.26.3",
-		"babel-loader": "^8.0.4",
 		"markdown-it": "^8.4.0",
 		"monaco-editor": "^0.14.3",
-		"ts-loader": "^5.2.2",
 		"vkbeautify": "^0.99.3"
 	}
 }

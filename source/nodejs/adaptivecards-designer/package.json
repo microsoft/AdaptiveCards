@@ -18,7 +18,7 @@
 		"start": "webpack-dev-server --open",
 		"dts": "dts-generator --name adaptivecards-designer --project . --out dist/adaptivecards-designer.d.ts",
 		"lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
-		"prepublishOnly": "npm run clean && npm run build && webpack --mode=production && npm run dts"
+		"prepack": "npm run clean && npm run build && webpack --mode=production && npm run dts"
 	},
 	"devDependencies": {
 		"@types/jest": "^21.1.8",
@@ -35,6 +35,7 @@
 		"mini-css-extract-plugin": "^0.4.4",
 		"monaco-editor-webpack-plugin": "^1.5.4",
 		"regenerator-runtime": "^0.11.0",
+		"rimraf": "^2.6.2",
 		"style-loader": "^0.23.1",
 		"ts-jest": "^21.2.3",
 		"tslint": "^4.4.2",
@@ -48,8 +49,6 @@
 	"dependencies": {
 		"adaptivecards": "1.2.0-alpha1",
 		"adaptivecards-controls": "0.1.3",
-		"babel-core": "^6.26.3",
-		"babel-loader": "^8.0.4",
 		"clipboard": "^2.0.1",
 		"monaco-editor": "^0.14.3"
 	}

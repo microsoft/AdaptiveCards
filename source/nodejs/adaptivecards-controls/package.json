@@ -17,7 +17,7 @@
 		"build": "webpack",
 		"watch": "webpack --watch",
 		"dts": "dts-generator --name adaptivecards-controls --project . --out dist/adaptivecards-controls.d.ts",
-		"prepublishOnly": "npm run clean && npm run build && webpack --mode=production && npm run dts"
+		"prepack": "npm run clean && npm run build && webpack --mode=production && npm run dts"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.1.2",
@@ -31,6 +31,7 @@
 		"dts-generator": "^2.1.0",
 		"json-loader": "0.5.4",
 		"mini-css-extract-plugin": "^0.4.4",
+		"rimraf": "^2.6.2",
 		"style-loader": "^0.23.1",
 		"tslint": "^4.4.2",
 		"typescript": "^3.0.3",
