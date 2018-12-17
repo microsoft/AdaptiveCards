@@ -8,6 +8,16 @@
 
 	<script src="adaptivecards-designer.min.js"></script>
 
+	<style type="text/css">
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+		}
+	</style>
+
 	<script type="text/javascript">
 		window.onload = () => {
 			if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
@@ -23,15 +33,20 @@
 
 			hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
 			hostContainers.push(new ACDesigner.CortanaContainer("Cortana Skills", "containers/cortana-container.css"));
-			hostContainers.push(new ACDesigner.OutlookContainer("Outlook Actionable Messages", "containers/outlook-container.css"));
+			hostContainers.push(new ACDesigner.OutlookContainer("Outlook Actionable Messages",
+				"containers/outlook-container.css"));
 			hostContainers.push(new ACDesigner.TimelineContainer("Windows Timeline", "containers/timeline-container.css"));
-			hostContainers.push(new ACDesigner.DarkTeamsContainer("Microsoft Teams - Dark", "containers/teams-container-dark.css"));
-			hostContainers.push(new ACDesigner.LightTeamsContainer("Microsoft Teams - Light", "containers/teams-container-light.css"));
-			hostContainers.push(new ACDesigner.BotFrameworkContainer("Bot Framework Other Channels (Image render)", "containers/bf-image-container.css"));
-			hostContainers.push(new ACDesigner.ToastContainer("Windows Notifications (Preview)", "containers/toast-container.css"));
+			hostContainers.push(new ACDesigner.DarkTeamsContainer("Microsoft Teams - Dark",
+				"containers/teams-container-dark.css"));
+			hostContainers.push(new ACDesigner.LightTeamsContainer("Microsoft Teams - Light",
+				"containers/teams-container-light.css"));
+			hostContainers.push(new ACDesigner.BotFrameworkContainer("Bot Framework Other Channels (Image render)",
+				"containers/bf-image-container.css"));
+			hostContainers.push(new ACDesigner.ToastContainer("Windows Notifications (Preview)",
+				"containers/toast-container.css"));
 
 			let designer = new ACDesigner.CardDesigner(hostContainers);
-			
+
 			// Change where the designer looks for assets like CSS and container images
 			//designer.assetPath = "http://localhost:8080/";
 
@@ -90,8 +105,7 @@
 </head>
 
 <body>
-	<div style="display: flex; flex-direction: column; height: 100%;">
-
+	<div style="font-family: 'Segoe UI', sans-serif; font-size: 14px; display: flex; flex-direction: column; height: 100vh;">
 		<div id="designerRootHost"></div>
 	</div>
 </body>

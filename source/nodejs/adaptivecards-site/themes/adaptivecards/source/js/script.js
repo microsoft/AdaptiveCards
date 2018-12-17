@@ -1,4 +1,4 @@
-(function ($) {
+$(function() {
 	// Adaptive Cards
 	AdaptiveCards.AdaptiveCard.onExecuteAction = function (action) {
 		var message = "Action executed\n";
@@ -197,4 +197,4 @@
 		});
 	}
 
-})(jQuery);
+});

@@ -29,7 +29,7 @@ var assets = [
 	},
 	{
         // monaco-editor module
-        path: "node_modules/monaco-editor/min/vs/**/*.*",
+        path: "node_modules/monaco-editor/min/vs/**/*",
         dest: function (p) { return p; }
     },
     {
@@ -49,7 +49,7 @@ var assets = [
     },
     {
         // visualizer monaco loader
-        path: "../adaptivecards-visualizer/src/monaco-loader.js",
+        path: "node_modules/adaptivecards-visualizer/src/monaco-loader.js",
         dest: function (p) { return "visualizer/monaco-loader.js" }
 	}
 ];
