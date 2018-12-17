@@ -53,7 +53,13 @@ module.exports = (env, argv) => {
 			new MiniCssExtractPlugin({
 				filename: '[name].css'
 			}),
-			new CopyWebpackPlugin([{
+			new CopyWebpackPlugin([
+				{
+					from: 'src/adaptivecards-designer.css',
+					to: '../lib/',
+					flatten: true
+				},
+				{
 					from: 'src/containers/**/*.css',
 					to: 'containers/',
 					flatten: true

@@ -13,7 +13,7 @@
 		"build": "webpack",
 		"watch": "webpack --watch",
 		"start": "webpack-dev-server --open",
-		"prepack": "npm run clean && npm run build && webpack --mode=production"
+		"version": "npm run clean && npm run build && webpack --mode=production"
 	},
 	"devDependencies": {
 		"@types/node": "0.0.2",

@@ -27,7 +27,7 @@
 		"start": "webpack-dev-server --open",
 		"dts": "dts-generator --name adaptivecards --project . --out dist/adaptivecards.d.ts",
 		"lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
-		"prepack": "npm run clean && npm run build && npm test && webpack --mode=production && npm run dts"
+		"version": "npm run clean && npm run build && npm test && webpack --mode=production && npm run dts"
 	},
 	"repository": {
 		"type": "git",

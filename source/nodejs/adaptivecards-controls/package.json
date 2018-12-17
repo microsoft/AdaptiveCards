@@ -17,7 +17,7 @@
 		"build": "webpack",
 		"watch": "webpack --watch",
 		"dts": "dts-generator --name adaptivecards-controls --project . --out dist/adaptivecards-controls.d.ts",
-		"prepack": "npm run clean && npm run build && webpack --mode=production && npm run dts"
+		"version": "npm run clean && npm run build && webpack --mode=production && npm run dts"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.1.2",
