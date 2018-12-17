@@ -1,6 +1,9 @@
 {
-  "packages": [
-    "*/**"
-  ],
-  "version": "independent"
+	"packages": [
+		"*/**"
+	],
+	"ignoreChanges": [
+		"**/__tests__/**"
+	],
+	"version": "independent"
 }
