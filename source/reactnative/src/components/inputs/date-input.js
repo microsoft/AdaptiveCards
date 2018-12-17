@@ -13,13 +13,10 @@ import {
 
 import { InputContextConsumer } from '../../utils/context'
 import * as Constants from '../../utils/constants';
-import { StyleManager } from '../../styles/style-config'
 import { HostConfigManager } from '../../utils/host-config'
 import { PickerInput } from './picker-input'
 
 export class DateInput extends React.Component {
-
-    styleConfig = StyleManager.getManager().styles;
 
     constructor(props) {
         super(props);

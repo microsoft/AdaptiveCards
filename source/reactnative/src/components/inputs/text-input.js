@@ -5,8 +5,6 @@
  */
 
 import React from "react";
-import Input from './input';
-import { StyleManager } from "../../styles/style-config";
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 import * as Constants from '../../utils/constants';
@@ -19,8 +17,6 @@ const URL_REGEX = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.
 const TEL_REGEX = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/;
 
 export class InputText extends React.Component {
-
-    styleConfig = StyleManager.getManager().styles;
 
     constructor(props) {
         super(props);

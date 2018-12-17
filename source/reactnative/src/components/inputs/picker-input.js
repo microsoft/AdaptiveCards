@@ -109,7 +109,6 @@ export class PickerInput extends React.Component {
 					</View>
 				</Modal>
 			</Input>
-
         );
     }
 }

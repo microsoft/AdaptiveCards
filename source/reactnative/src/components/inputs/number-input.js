@@ -7,9 +7,7 @@
 import React from "react";
 import { DismissKeyboardView } from '../containers/dismiss-keyboard';
 import { InputContextConsumer } from '../../utils/context'
-import Input from './input';
 import * as Constants from '../../utils/constants';
-import { StyleManager } from "../../styles/style-config";
 import { HostConfigManager } from '../../utils/host-config'
 import { TextInputWrapper } from './text-input-wrapper'
 
@@ -17,8 +15,6 @@ import { TextInputWrapper } from './text-input-wrapper'
 const NUM_REGEX = /^[0-9][\.\d]*(,\d+)?$/;
 
 export class NumberInput extends React.Component {
-
-    styleConfig = StyleManager.getManager().styles;
 
     constructor(props) {
         super(props);

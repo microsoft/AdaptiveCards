@@ -11,16 +11,12 @@ import {
     Platform,
 } from 'react-native';
 
-import Input from './input';
-import { StyleManager } from '../../styles/style-config';
 import { InputContextConsumer } from '../../utils/context';
-import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config'
+import * as Constants from '../../utils/constants';
 import { PickerInput } from './picker-input'
 
 export class TimeInput extends React.Component {
-
-    styleConfig = StyleManager.getManager().styles;
 
     constructor(props) {
         super(props);
@@ -134,9 +130,9 @@ export class TimeInput extends React.Component {
             return null;
         }
 
-        return (
-            <InputContextConsumer>
-                {({ addInputItem }) => (
+		return (
+			<InputContextConsumer>
+				{({ addInputItem }) => (
 					<PickerInput
 						json={this.payload}
 						value={this.state.value}
@@ -152,8 +148,8 @@ export class TimeInput extends React.Component {
 						mode='time'
 					/>
 				)}
-            </InputContextConsumer>
-        );
+			</InputContextConsumer>
+		);
     }
 }
 
