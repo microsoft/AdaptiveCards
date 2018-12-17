@@ -10,5 +10,5 @@
 		"sourceMap": true,
 		"declaration": true
 	},
-	"files": ["./src/index.ts"]
+	"files": ["./src/adaptivecards-controls.ts"]
 }

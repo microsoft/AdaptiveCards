@@ -22,11 +22,6 @@
 			console.log("Local storage is not available.");
 		}
 
-		ACDesigner.CardDesigner.onProcessMarkdown = function(text, result) {
-        	result.outputHtml = new markdownit().render(text);
-			result.didProcess = true;
-		};
-
 		let hostContainers = [];
 		hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
 		hostContainers.push(new ACDesigner.CortanaContainer("Cortana Skills", "containers/cortana-container.css"));
@@ -92,13 +87,13 @@
 			designer.attachTo(document.getElementById("designerRootHost"));
 		}
 
-		require.config({ paths: { 'vs': '/node_modules/adaptivecards-designer/dist/monaco-editor/min/vs' } });
+		require.config({ paths: { 'vs': '/node_modules/monaco-editor/min/vs' } });
 		require(['vs/editor/editor.main'], function () {
 		 	designer.monacoModuleLoaded();
 		 }); 
 	};
 </script>
 
-<div style="display: flex; flex-direction: column; height: 100%;">
+<div style="display: flex; flex-direction: column; height: 100%; ">
 	<div id="designerRootHost"></div>
 </div>

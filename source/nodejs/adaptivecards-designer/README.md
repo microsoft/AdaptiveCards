@@ -91,8 +91,6 @@ import "adaptivecards-controls/dist/adaptivecards-controls.css";
 import "adaptivecards-designer/dist/adaptivecards-designer.css";
 
 window.onload = () => {
-	// Use markdown-it for markdown handling
-	Designer.CardDesigner.processMarkdown = (text) => { return markdownit(text) };
 
 	if (!Designer.SettingsManager.isLocalStorageAvailable) {
 		console.log("Local storage is not available.");

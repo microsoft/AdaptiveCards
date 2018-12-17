@@ -11,7 +11,6 @@
 
 <% if(is_current("visualizer")) { %>
 	<%- js('node_modules/adaptivecards/dist/adaptivecards.min.js') %>  
-	<%- js("node_modules/adaptivecards-designer/dist/monaco-editor/min/vs/loader.js") %>
   	<%- js("visualizer/monaco-loader.js") %>
   	<%- js("visualizer/adaptivecards-visualizer.min.js") %>
 <% } else if(is_current("designer")) { %>

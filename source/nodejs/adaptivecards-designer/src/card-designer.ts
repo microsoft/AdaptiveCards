@@ -220,7 +220,14 @@ export class CardDesigner {
         styleSheetLinkElement.rel = "stylesheet";
 		styleSheetLinkElement.type = "text/css";
 		
-        styleSheetLinkElement.href = Utils.joinPaths(this._assetPath, this.activeHostContainer.styleSheet);
+		if(Utils.isAbsoluteUrl(this.activeHostContainer.styleSheet))
+        {
+			styleSheetLinkElement.href = this.activeHostContainer.styleSheet;
+		}
+		else
+		{
+			styleSheetLinkElement.href = Utils.joinPaths(this._assetPath, this.activeHostContainer.styleSheet);
+		}
 
         let designerBackground = document.getElementById("designerBackground");
 

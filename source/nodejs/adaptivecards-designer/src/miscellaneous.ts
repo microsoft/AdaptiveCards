@@ -37,6 +37,11 @@ export class Rect {
 }
 
 export class Utils {
+	public static isAbsoluteUrl(urlString: string): boolean {
+		return urlString.indexOf('http://') === 0 
+		|| urlString.indexOf('https://') === 0;
+	}
+
 	public static joinPaths(...args: string[]) {
 		return args.map(
 			(part, i) => {

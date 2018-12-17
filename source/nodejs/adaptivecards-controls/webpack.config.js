@@ -11,7 +11,7 @@ module.exports = (env, argv) => {
 	return {
 		mode: mode,
 		entry: {
-			"adaptivecards-controls": "./lib/index.js",
+			"adaptivecards-controls": "./lib/adaptivecards-controls.js",
 		},
 		output: {
 			path: path.resolve(__dirname, "./dist"),
@@ -22,7 +22,7 @@ module.exports = (env, argv) => {
 			publicPath: "/dist/",
 			globalObject: "this"
 		},
-		devtool: devMode ? "inline-source-map" : null,
+		devtool: devMode ? "inline-source-map" : "source-map",
 		module: {
 			rules: [
 				// 	test: /\.t|js$/,

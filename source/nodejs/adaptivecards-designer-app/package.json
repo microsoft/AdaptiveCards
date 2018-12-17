@@ -6,7 +6,7 @@
 	"license": "MIT",
 	"private": true,
 	"scripts": {
-		"build": "webpack --config webpack.prod.js",
+		"build": "webpack",
 		"watch": "webpack --watch",
 		"start": "webpack-dev-server --open --config webpack.dev.js",
 		"version": "npm run build"

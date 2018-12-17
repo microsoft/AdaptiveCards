@@ -12,7 +12,16 @@ The simple open card format enables an ecosystem of shared tooling, seamless int
 
 ## Get Started
 
-### Check out the [full documentation](https://docs.microsoft.com/en-us/adaptive-cards/display/libraries/htmlclient) for more
+Check out the [full documentation](https://docs.microsoft.com/en-us/adaptive-cards/display/libraries/htmlclient) for more
+
+## Breaking changes
+
+Please be aware of the following **breaking changes** in particular versions.
+
+| In version | Change description |
+|---|---|
+| **1.1** | Due to a security concern, the `processMarkdown` event handler has been **REMOVED**. Setting it will throw an exception that will halt your code. Please change your code to set the `onProcessMarkdown(text, result)` event handler instead (see example below.) |
+| **1.0** | The standalone `renderCard()` helper function was removed as it was redundant with the class methods. Please use `adaptiveCard.render()` as described below. |
 
 ## Install
 
@@ -27,13 +36,6 @@ npm install adaptivecards --save
 ```html
 <script src="https://unpkg.com/adaptivecards/dist/adaptivecards.js"></script>
 ```
-
-## Breaking changes
-
-|In version|Change description|
-|--|--|
-|Version 1.0|The standalone `renderCard()` helper function was removed as it was redundant with the class methods. Please use `adaptiveCard.render()` as described below.|
-|All versions > 1.1|The `processMarkdown` event handler has been removed. Setting it will throw an exception that will halt your code. This is by design. Please update your code and set the `onProcessMarkdown(text, result)` event handler instead (see example below.)|
 
 ## Usage
 
@@ -98,27 +100,6 @@ adaptiveCard.hostConfig = new AdaptiveCards.HostConfig({
 // whenever an action is clicked in the card
 adaptiveCard.onExecuteAction = function(action) { alert("Ow!"); }
 
-// Markdown is supported via a third-party library. By default, Markdown-It will be used if it is
-// loaded. To load Markdown-It, include this <script> tag in your HTML page:
-//
-//     <script type="text/javascript" src="https://unpkg.com/markdown-it/dist/markdown-it.js"></script>
-//
-// To provide your own Markdown processor and replace the default one, implement the onProcessMarkdown
-// event handler:
-//
-//     AdaptiveCards.onProcessMarkdown = function(text, result) {
-//        result.outputHtml = <your Markdown processing logic>;
-//        result.didProcess = true;
-//     }
-//
-// Do set result.didProcess to true, otherwise the library will consider the input text was not
-// processed and will therefore be treated as plain text.
-//
-// IMPORTANT NOTE: When you provide your own Markdown processing logic, you are responsible for
-// making sure the output HTML is safe. For example, you are responsible for removing <script>;
-// failure to do so will make your application susceptible to script injection attacks. Note that
-// most third-partyt Markdown libraries, such as Markdown-It, have HTML sanitation built-in.
-
 // Parse the card payload
 adaptiveCard.parse(card);
 
@@ -129,7 +110,36 @@ var renderedCard = adaptiveCard.render();
 document.body.appendChild(renderedCard);
 ```
 
-## Webpack
+### Markdown Support
+
+Markdown is a [standard feature of Adaptive Cards](https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/text-features), but to give users flexibility we don't bundle a particular implementation with the library.
+
+#### Option 1: **Markdown-It**
+
+The easiest way to get markdown support is by adding [markdown-it](https://github.com/markdown-it/markdown-it) to your document.
+
+```html
+<script type="text/javascript" src="https://unpkg.com/markdown-it/dist/markdown-it.js"></script>
+```
+
+#### Option 2: Any other 3rd party library
+
+If you want to use another library or handle markdown yourself, use the `AdaptiveCards.onProcessMarkdown` event.
+
+```js
+AdaptiveCards.onProcessMarkdown = function(text, result) {
+	result.outputHtml = <your Markdown processing logic>;
+	result.didProcess = true;
+}
+```
+
+* **DO** set `result.didProcess` to `true`, otherwise the library will consider the input text as not processed and will therefore be treated as plain text.
+* **IMPORTANT SECURITY NOTE**: When you provide your own Markdown processing logic, **you are responsible for making sure the output HTML is safe**. For example, you are responsible for removing `<script>` or other HTML elements that could be injected onto the page.
+	* Failure to do so will make your application susceptible to script injection attacks. 
+	* Note that most third-party Markdown libraries, such as Markdown-It, have HTML sanitation built-in.
+
+
+### Webpack
 
 If you don't want adaptivecards in your bundle, make sure the script is loaded and add the following the your `webpack.config.json`
 

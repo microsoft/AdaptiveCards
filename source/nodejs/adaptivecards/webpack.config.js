@@ -19,7 +19,7 @@ module.exports = (env, argv) => {
 			libraryTarget: "umd",
 			library: "AdaptiveCards"
 		},
-		devtool: devMode ? "inline-source-map" : null,
+		devtool: devMode ? "inline-source-map" : "source-map",
 		devServer: {
 			contentBase: './dist'
 		},

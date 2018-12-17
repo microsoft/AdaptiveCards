@@ -26,6 +26,11 @@ var assets = [
         // designer module
         path: "node_modules/adaptivecards-designer/dist/**/*.*",
         dest: function (p) { return p; }
+	},
+	{
+        // monaco-editor module
+        path: "node_modules/monaco-editor/min/vs/**/*.*",
+        dest: function (p) { return p; }
     },
     {
         // visualizer script
@@ -43,9 +48,7 @@ var assets = [
         dest: function (p) { return "visualizer/assets/" + path.basename(p); }
     },
     {
-        // monaco loader
-        // this is a temp hack until Monaco works with webpack
-        // https://github.com/Microsoft/monaco-editor/issues/18
+        // visualizer monaco loader
         path: "../adaptivecards-visualizer/src/monaco-loader.js",
         dest: function (p) { return "visualizer/monaco-loader.js" }
 	}

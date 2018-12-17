@@ -13,11 +13,12 @@
 	"scripts": {
 		"clean": "rimraf build lib dist",
 		"prebuild": "tsc",
-		"build": "webpack --config webpack.prod.js",
+		"build": "webpack",
 		"watch": "webpack --watch",
-		"start": "webpack-dev-server --open --config webpack.dev.js",
+		"start": "webpack-dev-server --open",
 		"dts": "dts-generator --name adaptivecards-designer --project . --out dist/adaptivecards-designer.d.ts",
 		"lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
+		"prepublish": "webpack --mode=production",
 		"version": "npm run build && npm test && npm run dts"
 	},
 	"devDependencies": {

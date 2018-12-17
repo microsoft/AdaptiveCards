@@ -39,7 +39,17 @@
 	<% } else if(is_current("designer")) { %>
 		<style type="text/css">
 			.content {
-				height: calc(100vh - 96px) !important;
+				height: calc(100vh - 97px) !important;
+			}
+
+			* {
+				box-sizing: border-box;
+			}
+
+			body {
+				font-family: 'Segoe UI', sans-serif;
+				font-size: 14px;
+				font-weight: normal;
 			}
 		</style>
 	<% } else { %>
