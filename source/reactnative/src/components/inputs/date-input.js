@@ -6,7 +6,6 @@
 
 import React from 'react';
 import {
-    DatePickerIOS,
     DatePickerAndroid,
     Platform,
 } from 'react-native';
