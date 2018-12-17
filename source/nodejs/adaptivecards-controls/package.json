@@ -23,8 +23,6 @@
 		"@babel/core": "^7.1.2",
 		"@types/node": "0.0.2",
 		"awesome-typescript-loader": "^5.2.1",
-		"babel-core": "^6.26.3",
-		"babel-loader": "^8.0.4",
 		"clean-webpack-plugin": "^0.1.19",
 		"copy-webpack-plugin": "^4.6.0",
 		"css-loader": "^1.0.0",
