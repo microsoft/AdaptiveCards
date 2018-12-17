@@ -1,6 +1,6 @@
 {
 	"packages": [
-		"*/**"
+		"adaptivecards*/**"
 	],
 	"ignoreChanges": [
 		"**/__tests__/**"

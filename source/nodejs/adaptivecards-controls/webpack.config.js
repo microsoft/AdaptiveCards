@@ -11,7 +11,7 @@ module.exports = (env, argv) => {
 	return {
 		mode: mode,
 		entry: {
-			"adaptivecards-controls": "./lib/adaptivecards-controls.js",
+			"adaptivecards-controls": "./src/adaptivecards-controls.ts",
 		},
 		output: {
 			path: path.resolve(__dirname, "./dist"),
@@ -23,11 +23,11 @@ module.exports = (env, argv) => {
 			globalObject: "this"
 		},
 		devtool: devMode ? "inline-source-map" : "source-map",
+		resolve: {
+			extensions: [".ts", ".tsx", ".js"]
+		},
 		module: {
 			rules: [
-				// 	test: /\.t|js$/,
-				// 	use: 'babel-loader'
-				// },
 				{
 					test: /\.ts$/,
 					loader: "ts-loader",
@@ -45,7 +45,7 @@ module.exports = (env, argv) => {
 		},
 		plugins: [
 			new MiniCssExtractPlugin({
-				filename: '[name].css',
+				filename: 'adaptivecards-controls.css',
 			}),
 			new CopyWebpackPlugin([{
 				from: 'src/adaptivecards-controls.css',
