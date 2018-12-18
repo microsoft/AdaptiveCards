@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards-designer-app",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Adaptive Card designer app",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -28,8 +28,8 @@
 		"postcss-cli": "^3.1.1",
 		"rimraf": "^2.6.2",
 		"style-loader": "^0.23.1",
-		"tslint": "^4.4.2",
 		"ts-loader": "^5.2.2",
+		"tslint": "^4.4.2",
 		"typescript": "^3.0.3",
 		"typings-for-css-modules-loader": "^1.7.0",
 		"webpack": "^4.21.0",
@@ -38,7 +38,7 @@
 		"webpack-merge": "^4.1.4"
 	},
 	"dependencies": {
-		"adaptivecards-designer": "^0.1.2",
+		"adaptivecards-designer": "^0.2.0",
 		"markdown-it": "^8.4.0",
 		"monaco-editor": "^0.14.3"
 	}

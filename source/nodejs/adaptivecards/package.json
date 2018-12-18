@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards",
-	"version": "1.2.0-alpha1",
+	"version": "1.1.1",
 	"description": "Adaptive Cards Javascript library for HTML Clients",
 	"author": "AdaptiveCards <adaptivecardspkg@microsoft.com>",
 	"license": "MIT",
@@ -48,8 +48,8 @@
 		"jest": "^21.2.1",
 		"json-loader": "0.5.4",
 		"mini-css-extract-plugin": "^0.4.4",
-		"rimraf": "^2.6.2",
 		"regenerator-runtime": "^0.11.0",
+		"rimraf": "^2.6.2",
 		"style-loader": "^0.23.1",
 		"ts-jest": "^21.2.3",
 		"ts-loader": "^5.2.2",
