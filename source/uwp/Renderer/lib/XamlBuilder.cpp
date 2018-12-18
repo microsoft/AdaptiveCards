@@ -1262,17 +1262,16 @@ namespace AdaptiveNamespace
 
                 ComPtr<IResourceDictionary> resourceDictionary;
                 THROW_IF_FAILED(renderContext->get_OverrideStyles(&resourceDictionary));
-                ComPtr<IInspectable> subtleOpacityInspectable;
+                ComPtr<IStyle> styleToApply;
 
-                if ((isSentimentPositive == 0))
+                if (isSentimentPositive == 0)
                 {
-                    if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IInspectable>(resourceDictionary.Get(),
+                    // 
+                    if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IStyle>(resourceDictionary.Get(),
                         L"Adaptive.Action.Positive",
-                        &subtleOpacityInspectable)))
+                        &styleToApply)))
                     {
-                        THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext,
-                            L"Adaptive.Action.Positive",
-                            buttonFrameworkElement.Get()));
+                        THROW_IF_FAILED(buttonFrameworkElement->put_Style(styleToApply.Get()));
                     }
                     else
                     {
@@ -1280,24 +1279,21 @@ namespace AdaptiveNamespace
                         ComPtr<IResourceDictionary> actionSentimentDictionary =
                             renderContext->GetDefaultActionSentimentDictionary();
 
-                        ComPtr<IStyle> actionPositiveSentimentStyle;
                         if (SUCCEEDED(TryGetResourceFromResourceDictionaries(actionSentimentDictionary.Get(),
                             L"PositiveActionDefaultStyle",
-                            actionPositiveSentimentStyle.GetAddressOf())))
+                            styleToApply.GetAddressOf())))
                         {
-                            THROW_IF_FAILED(buttonFrameworkElement->put_Style(actionPositiveSentimentStyle.Get()));
+                            THROW_IF_FAILED(buttonFrameworkElement->put_Style(styleToApply.Get()));
                         }
                     }
                 }
-                else if ((isSentimentDestructive == 0))
+                else if (isSentimentDestructive == 0)
                 {
-                    if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IInspectable>(resourceDictionary.Get(),
+                    if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IStyle>(resourceDictionary.Get(),
                         L"Adaptive.Action.Destructive",
-                        &subtleOpacityInspectable)))
+                        &styleToApply)))
                     {
-                        THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext,
-                            L"Adaptive.Action.Destructive",
-                            buttonFrameworkElement.Get()));
+                        THROW_IF_FAILED(buttonFrameworkElement->put_Style(styleToApply.Get()));
                     }
                     else
                     {
@@ -1305,12 +1301,11 @@ namespace AdaptiveNamespace
                         ComPtr<IResourceDictionary> actionSentimentDictionary =
                             renderContext->GetDefaultActionSentimentDictionary();
 
-                        ComPtr<IStyle> actionDestructiveSentimentStyle;
                         if (SUCCEEDED(TryGetResourceFromResourceDictionaries(actionSentimentDictionary.Get(),
                             L"DestructiveActionDefaultStyle",
-                            actionDestructiveSentimentStyle.GetAddressOf())))
+                            styleToApply.GetAddressOf())))
                         {
-                            THROW_IF_FAILED(buttonFrameworkElement->put_Style(actionDestructiveSentimentStyle.Get()));
+                            THROW_IF_FAILED(buttonFrameworkElement->put_Style(styleToApply.Get()));
                         }
                     }
                 }

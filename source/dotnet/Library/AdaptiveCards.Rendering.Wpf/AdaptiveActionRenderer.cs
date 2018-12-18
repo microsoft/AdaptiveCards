@@ -31,7 +31,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 Style = context.GetStyle($"Adaptive.{action.Type}"),
             };
 
-            if(String.IsNullOrWhiteSpace(action.Sentiment))
+            if(!String.IsNullOrWhiteSpace(action.Sentiment))
             {
                 Style sentimentStyle = context.GetStyle($"Adaptive.{action.Type}.{action.Sentiment}");
 

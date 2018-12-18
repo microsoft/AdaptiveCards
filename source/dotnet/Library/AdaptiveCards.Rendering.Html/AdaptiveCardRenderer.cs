@@ -137,10 +137,10 @@ namespace AdaptiveCards.Rendering.Html
                         actionsConfig.ActionAlignment == AdaptiveHorizontalAlignment.Stretch ? "0 1 100%" : "0 1 auto")
                     .Style("display", "flex")
                     .Style("align-items", "center")
-                    .Style("justify-content", "center")
-                    .AddClass("ac-pushButton");
+                    .Style("justify-content", "center");
 
-                if (!String.IsNullOrWhiteSpace(action.Sentiment))
+
+                if (!String.IsNullOrWhiteSpace(action.Sentiment) && !String.Equals(action.Sentiment, "default", StringComparison.OrdinalIgnoreCase))
                 {
                     if (String.Equals(action.Sentiment, "positive", StringComparison.OrdinalIgnoreCase))
                     {
@@ -161,6 +161,14 @@ namespace AdaptiveCards.Rendering.Html
                         buttonElement.Attr("onMouseOut", "this.style.color='" + context.GetRGBColor(attentionColor) + "'");
                         buttonElement.AddClass("ac-action-destructive");
                     }
+                    else
+                    {
+                        buttonElement.AddClass("ac-action-" + action.Sentiment);
+                    }
+                }
+                else
+                {
+                    buttonElement.AddClass("ac-pushButton");
                 }
 
                 var hasTitle = !string.IsNullOrEmpty(action.Title);

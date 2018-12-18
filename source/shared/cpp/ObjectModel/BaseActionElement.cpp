@@ -83,7 +83,7 @@ Json::Value BaseActionElement::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)] = m_title;
     }
 
-    if ((m_sentiment != "default") && !m_sentiment.empty())
+    if ((m_sentiment != defaultSentiment) && !m_sentiment.empty())
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Sentiment)] = m_sentiment;
     }
