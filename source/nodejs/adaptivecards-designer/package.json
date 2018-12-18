@@ -17,10 +17,10 @@
 		"build": "webpack",
 		"watch": "webpack --watch",
 		"start": "webpack-dev-server --open",
+		"dts": "dts-generator --name adaptivecards-designer --project . --out dist/adaptivecards-designer.d.ts",
 		"lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
 		"release": "npm run build && webpack --mode=production && npm run dts",
-		"version": "npm run release",
-		"dts": "dts-generator --name adaptivecards-designer --project . --out dist/adaptivecards-designer.d.ts"
+		"prepublishOnly": "npm run release"
 	},
 	"dependencies": {
 		"adaptivecards": "^1.1.1",

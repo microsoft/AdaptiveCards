@@ -14,8 +14,7 @@
 		"build": "webpack",
 		"watch": "webpack --watch",
 		"start": "webpack-dev-server --open",
-		"release": "npm run clean && npm run build && webpack --mode=production",
-		"version": "npm run release"
+		"release": "npm run clean && npm run build && webpack --mode=production"
 	},
 	"dependencies": {
 		"adaptivecards": "^1.1.1",

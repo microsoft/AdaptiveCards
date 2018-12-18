@@ -9,7 +9,7 @@
 		"build": "webpack",
 		"watch": "webpack --watch",
 		"start": "webpack-dev-server --open",
-		"version": "npm run build"
+		"release": "npm run build"
 	},
 	"dependencies": {
 		"adaptivecards-designer": "^0.2.0",
