@@ -45,10 +45,7 @@ module.exports = (env, argv) => {
 			}),
 			new MiniCssExtractPlugin({
 				filename: '[name].css'
-			}),
-			new MonacoWebpackPlugin({
-				languages: ['json']
-			})
+			 })
 		],
 		externals: {
 			"markdown-it": "markdownit",

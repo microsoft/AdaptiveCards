@@ -56,10 +56,6 @@ module.exports = (env, argv) => {
 			new MonacoWebpackPlugin({
 				languages: ['json']
 			})
-		],
-		externals: {
-			//"markdown-it": "markdownit"
-			//"monaco-editor/esm/vs/editor/editor.api": "monaco"
-		}
+		]
 	}
 }

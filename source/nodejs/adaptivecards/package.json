@@ -35,6 +35,9 @@
 		"type": "git",
 		"url": "git://git@github.com/microsoft/AdaptiveCards.git"
 	},
+	"devDependencies": {
+		"@types/jest": "^23.3.10"
+	},
 	"jest": {
 		"rootDir": "src",
 		"transform": {
