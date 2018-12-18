@@ -34,13 +34,12 @@ using namespace AdaptiveCards;
     if(self && config){
         _config = config;
         _fontFamilyNames = [NSMutableDictionary dictionary];
-        
+
         // check if requested font family name is supported by iOS, if so save it for future uses
         [self importFontFamily: AdaptiveCards::FontStyle::Default];
         [self importFontFamily: AdaptiveCards::FontStyle::Display];
         [self importFontFamily: AdaptiveCards::FontStyle::Monospace];
-        
-        
+
         _allActionsHaveIcons = YES;
         _buttonPadding = 5;
         if(!_config->GetImageBaseUrl().empty()) {
@@ -105,11 +104,12 @@ using namespace AdaptiveCards;
 
 - (NSObject<ACOIResourceResolver> *)getResourceResolverForScheme:(NSString *)scheme
 {
-    if(!scheme) {
-        return nil;
-    }
-
     return [_resolvers getResourceResolverForScheme:scheme];
+}
+
+- (ACOResolverIFType)getResolverIFType:(NSString *)scheme;
+{
+    return [_resolvers getResolverIFType:scheme];
 }
 
 + (UIColor *)getTextBlockColor:(ForegroundColor)txtClr
@@ -292,7 +292,7 @@ using namespace AdaptiveCards;
 }
 // find date and time string, and replace them in NSDateFormatterCompactStyle, NSDateFormatterMediumStyle or
 // NSDateFormatterLongStyle of local language
-+ (std::string) getLocalizedDate:(std::string const) text language:(std::string const) language
++ (std::string)getLocalizedDate:(std::string const &)text language:(std::string const &)language
 {
     std::string dateParsedString;
     std::vector<std::shared_ptr<DateTimePreparsedToken>> DateTimePreparsedTokens =  DateTimePreparser(text).GetTextTokens();

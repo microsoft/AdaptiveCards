@@ -111,6 +111,7 @@
     _resolvers = [[ACOResourceResolvers alloc] init];
     ADCResolver *resolver = [[ADCResolver alloc] init];
     [_resolvers setResourceResolver:resolver scheme:@"http"];
+    [_resolvers setResourceResolver:resolver scheme:@"https"];
     _enableCustomRenderer = NO;
     self.curView = nil;
     self.ACVTabVC = [[ACVTableViewController alloc] init];
@@ -222,13 +223,12 @@
         CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
         [registration setCustomElementParser:progressBarRenderer];
         _config = hostconfigParseResult.config;
-        renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:335];
+        renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:335 delegate:self];
     }
     
     if(renderResult.succeeded)
     {
         ACRView *ad = renderResult.view;
-        ad.acrActionDelegate = self;
         ad.mediaDelegate = self;
         if(self.curView)
             [self.curView removeFromSuperview];
@@ -345,6 +345,7 @@
                                                  name:UIKeyboardWillHideNotification object:nil];
 
 }
+
 // Called when the UIKeyboardDidShowNotification is sent.
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
@@ -367,5 +368,12 @@
     self.scrView.contentInset = contentInsets;
     self.scrView.scrollIndicatorInsets = contentInsets;
 }
+
+- (void)didLoadElements
+{
+    [self.curView setNeedsLayout];
+    NSLog(@"completed loading elements");
+}
+
 
 @end

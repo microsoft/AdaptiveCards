@@ -37,9 +37,11 @@
 
     if(ActionsOrientation::Horizontal == [config getHostConfig]->GetActions().actionsOrientation){
         childview = [[ACRColumnSetView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height) attributes:attributes];
+        ((ACRColumnSetView *)childview).isActionSet = YES;
     }
     else{
         childview = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height) attributes:attributes];
+        ((ACRColumnView *)childview).isActionSet = YES;
     }
 
     ACOBaseActionElement *acoElem = [[ACOBaseActionElement alloc] init];

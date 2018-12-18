@@ -13,6 +13,6 @@
 @property (strong, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet ACRTextView *textView;
 @property (weak, nonatomic) IBOutlet UIView *spacing;
-@property (weak, nonatomic) IBOutlet UIButton *button;
+@property (weak, nonatomic) IBOutlet ACRButton *button;
 
 @end
