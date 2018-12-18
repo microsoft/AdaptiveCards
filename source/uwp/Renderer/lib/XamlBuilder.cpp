@@ -2294,17 +2294,17 @@ namespace AdaptiveNamespace
                     columnWidth.GridUnitType = GridUnitType::GridUnitType_Pixel;
                     columnWidth.Value = pixelWidth;
                 }
-                else if (isAutoResult == 0)
+                else if (isStretchResult == 0 || !adaptiveColumnWidth.IsValid())
                 {
-                    // If auto specified, use auto width
-                    columnWidth.GridUnitType = GridUnitType::GridUnitType_Auto;
-                    columnWidth.Value = 0;
-                }
-                else if (isStretchResult == 0 || !adaptiveColumnWidth.IsValid() || (widthAsDouble <= 0))
-                {
-                    // If stretch specified, or column width invalid or set to non-positive, use stretch with default of 1
+                    // If stretch specified, use stretch with default of 1
                     columnWidth.GridUnitType = GridUnitType::GridUnitType_Star;
                     columnWidth.Value = 1;
+                }
+                else if ((isAutoResult == 0) || (widthAsDouble <= 0))
+                {
+                    // If auto specified or column width invalid or set to non-positive, use auto width
+                    columnWidth.GridUnitType = GridUnitType::GridUnitType_Auto;
+                    columnWidth.Value = 0;
                 }
                 else
                 {
@@ -3199,15 +3199,6 @@ namespace AdaptiveNamespace
 
         THROW_IF_FAILED(textBox->put_InputScope(inputScope.Get()));
 
-        ComPtr<IFrameworkElement> textBoxAsFrameworkElement;
-        THROW_IF_FAILED(textBox.As(&textBoxAsFrameworkElement));
-        THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Text", textBoxAsFrameworkElement.Get()));
-
-        if (!isMultiLine)
-        {
-            THROW_IF_FAILED(textBoxAsFrameworkElement->put_VerticalAlignment(VerticalAlignment::VerticalAlignment_Top));
-        }
-
         ComPtr<IUIElement> textBoxAsUIElement;
         textBox.As(&textBoxAsUIElement);
         AddInputValueToContext(renderContext, adaptiveCardElement, textBoxAsUIElement.Get());
@@ -3215,15 +3206,29 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveActionElement> inlineAction;
         THROW_IF_FAILED(adaptiveTextInput->get_InlineAction(&inlineAction));
 
+        ComPtr<IFrameworkElement> textBoxAsFrameworkElement;
+        THROW_IF_FAILED(textBox.As(&textBoxAsFrameworkElement));
+        THROW_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Text", textBoxAsFrameworkElement.Get()));
+
         if (inlineAction != nullptr)
         {
             ComPtr<IUIElement> textBoxWithInlineAction;
             HandleInlineAcion(renderContext, renderArgs, textBox.Get(), inlineAction.Get(), &textBoxWithInlineAction);
+            if (!isMultiLine)
+            {
+                THROW_IF_FAILED(textBoxWithInlineAction.As(&textBoxAsFrameworkElement));
+                THROW_IF_FAILED(textBoxAsFrameworkElement->put_VerticalAlignment(VerticalAlignment::VerticalAlignment_Top));
+            }
 
             THROW_IF_FAILED(textBoxWithInlineAction.CopyTo(textInputControl));
         }
         else
         {
+            if (!isMultiLine)
+            {
+                THROW_IF_FAILED(textBoxAsFrameworkElement->put_VerticalAlignment(VerticalAlignment::VerticalAlignment_Top));
+            }
+
             THROW_IF_FAILED(textBox.CopyTo(textInputControl));
         }
     }

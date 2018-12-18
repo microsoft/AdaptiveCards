@@ -116,6 +116,19 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
+        public static BitmapImage GetBitmapFromBase64(Uri dataUri)
+        {
+            var encodedData = dataUri.AbsoluteUri.Substring(dataUri.AbsoluteUri.LastIndexOf(',') + 1);
+
+            var decodedDataUri = Convert.FromBase64String(encodedData);
+            BitmapImage bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.StreamSource = new MemoryStream(decodedDataUri);
+            bitmap.EndInit();
+
+            return bitmap;
+        }
+
         public static async void SetBackgroundSource(this Grid grid, Uri uri, AdaptiveRenderContext context)
         {
             // Try to resolve the image URI
@@ -126,6 +139,7 @@ namespace AdaptiveCards.Rendering.Wpf
             }
 
             BitmapImage bi = await context.ResolveImageSource(finalUri);
+
             if (bi != null)
             {
                 grid.Background = new ImageBrush(bi)

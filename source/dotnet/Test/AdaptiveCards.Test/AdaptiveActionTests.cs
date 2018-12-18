@@ -30,6 +30,39 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
+        public void ParseInvalidAction()
+        {
+            string url = "http://adaptivecards.io/content/cats/1.png";
+            var json = @"{
+	""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+	""type"": ""AdaptiveCard"",
+	""version"": ""1.0"",
+	""body"": [
+		{
+			""type"": ""Image"",
+			""url"": """+ url + @""",
+			""selectAction"": {
+				""type"": ""Invalid Action"",
+				""url"": ""https://www.youtube.com/watch?v=dQw4w9WgXcQ""
+			}
+		}
+	]
+}";
+
+            var result = AdaptiveCard.FromJson(json);
+
+            var card = result.Card;
+            Assert.IsNotNull(card);
+
+            Assert.IsTrue(result.Warnings.Count == 1);
+
+            AdaptiveImage image = (AdaptiveImage) card.Body[0];
+            Assert.AreEqual(image.Url, url);
+            Assert.IsNull(image.SelectAction);
+
+        }
+
+        [TestMethod]
         public void ParseSentiment()
         {
             var json = @"{
