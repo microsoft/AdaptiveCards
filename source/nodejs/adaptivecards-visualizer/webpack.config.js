@@ -55,5 +55,5 @@ module.exports = (env, argv) => {
 			"adaptivecards": "AdaptiveCards",
 			"monaco-editor/esm/vs/editor/editor.api": "monaco"
 		}
-	};
+	}
 }

@@ -9,7 +9,8 @@
 	"style": "dist/adaptivecards-controls.css",
 	"files": [
 		"lib",
-		"dist"
+		"dist",
+		"src"
 	],
 	"scripts": {
 		"clean": "rimraf lib dist",
@@ -17,26 +18,7 @@
 		"build": "webpack",
 		"watch": "webpack --watch",
 		"dts": "dts-generator --name adaptivecards-controls --project . --out dist/adaptivecards-controls.d.ts",
-		"version": "npm run clean && npm run build && webpack --mode=production && npm run dts"
-	},
-	"devDependencies": {
-		"@babel/core": "^7.1.2",
-		"@types/node": "0.0.2",
-		"awesome-typescript-loader": "^5.2.1",
-		"clean-webpack-plugin": "^0.1.19",
-		"copy-webpack-plugin": "^4.6.0",
-		"css-loader": "^1.0.0",
-		"dts-generator": "^2.1.0",
-		"json-loader": "0.5.4",
-		"mini-css-extract-plugin": "^0.4.4",
-		"rimraf": "^2.6.2",
-		"style-loader": "^0.23.1",
-		"ts-loader": "^5.2.2",		
-		"tslint": "^4.4.2",
-		"typescript": "^3.0.3",
-		"typings-for-css-modules-loader": "^1.7.0",
-		"webpack": "^4.21.0",
-		"webpack-cli": "^3.1.2",
-		"webpack-dev-server": "^3.1.9"
+		"release": "npm run clean && npm run build && webpack --mode=production && npm run dts",
+		"version": "npm run release"
 	}
 }

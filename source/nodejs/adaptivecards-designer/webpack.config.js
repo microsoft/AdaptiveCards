@@ -31,13 +31,11 @@ module.exports = (env, argv) => {
 			extensions: [".ts", ".tsx", ".js"]
 		},
 		module: {
-			rules: [{
+			rules: [
+				{
 					test: /\.ts$/,
-					loader: "awesome-typescript-loader",
-					exclude: /(node_modules|__tests__)/,
-					query: {
-						declaration: false,
-					}
+					loader: "ts-loader",
+					exclude: /(node_modules|__tests__)/
 				},
 				{
 					test: /\.css$/,
@@ -50,11 +48,14 @@ module.exports = (env, argv) => {
 			]
 		},
 		plugins: [
+			new HtmlWebpackPlugin({
+				title: "Adaptive Cards Designer",
+				template: "./index.html"
+			}),
 			new MiniCssExtractPlugin({
 				filename: '[name].css'
 			}),
-			new CopyWebpackPlugin([
-				{
+			new CopyWebpackPlugin([{
 					from: 'src/adaptivecards-designer.css',
 					to: '../lib/',
 					flatten: true
@@ -73,6 +74,10 @@ module.exports = (env, argv) => {
 					from: 'src/containers/**/*.jpg',
 					to: 'containers/',
 					flatten: true
+				},
+				{
+					from: 'node_modules/monaco-editor/min/vs',
+					to: 'monaco-editor/min/vs'
 				}
 			])
 		],
