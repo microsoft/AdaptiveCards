@@ -110,11 +110,11 @@ var renderedCard = adaptiveCard.render();
 document.body.appendChild(renderedCard);
 ```
 
-### Markdown Support
+### Supporting Markdown
 
 Markdown is a [standard feature of Adaptive Cards](https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/text-features), but to give users flexibility we don't bundle a particular implementation with the library.
 
-#### Option 1: **Markdown-It**
+#### Option 1: Markdown-It
 
 The easiest way to get markdown support is by adding [markdown-it](https://github.com/markdown-it/markdown-it) to your document.
 
@@ -126,6 +126,13 @@ The easiest way to get markdown support is by adding [markdown-it](https://githu
 
 If you want to use another library or handle markdown yourself, use the `AdaptiveCards.onProcessMarkdown` event.
 
+**IMPORTANT SECURITY NOTE: When you process Markdown (yourself or using a library) you are responsible for making sure the output HTML is safe.**
+
+For example, you must remove `<script>` or other HTML elements that could be injected onto the page.
+
+* Failure to do so will make your application susceptible to script injection attacks. 
+* Most Markdown libraries, such as `Markdown-It`, offer HTML sanitation.
+
 ```js
 AdaptiveCards.onProcessMarkdown = function(text, result) {
 	result.outputHtml = <your Markdown processing logic>;
@@ -133,11 +140,7 @@ AdaptiveCards.onProcessMarkdown = function(text, result) {
 }
 ```
 
-* **DO** set `result.didProcess` to `true`, otherwise the library will consider the input text as not processed and will therefore be treated as plain text.
-* **IMPORTANT SECURITY NOTE**: When you provide your own Markdown processing logic, **you are responsible for making sure the output HTML is safe**. For example, you are responsible for removing `<script>` or other HTML elements that could be injected onto the page.
-	* Failure to do so will make your application susceptible to script injection attacks. 
-	* Note that most third-party Markdown libraries, such as Markdown-It, have HTML sanitation built-in.
-
+Make sure to set `result.didProcess` to `true`, otherwise the library will consider the input text as not processed and will be treated as plain text.
 
 ### Webpack
 
@@ -152,9 +155,8 @@ module.exports = {
 };
 ```
 
-
 ## Learn more at http://adaptivecards.io
 * [Documentation](http://adaptivecards.io/documentation/)
 * [Schema Explorer](http://adaptivecards.io/explorer/)
 * [Sample Cards](http://adaptivecards.io/samples/)
-* [Interactive visualizer](http://adaptivecards.io/visualizer/)
+* [Interactive Designer](http://adaptivecards.io/designer/)
