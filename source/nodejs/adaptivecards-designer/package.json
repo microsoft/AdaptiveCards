@@ -26,5 +26,11 @@
 		"adaptivecards-controls": "^0.1.4",
 		"clipboard": "^2.0.1",
 		"monaco-editor": "^0.15.6"
+	},
+	"devDependencies": {
+		"rimraf": "^2.6.2",
+		"typescript": "^3.2.2",
+		"webpack": "^4.27.1",
+		"webpack-cli": "^3.1.2"
 	}
 }

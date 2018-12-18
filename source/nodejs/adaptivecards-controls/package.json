@@ -19,5 +19,11 @@
 		"watch": "webpack --watch",
 		"dts": "dts-generator --name adaptivecards-controls --project . --out dist/adaptivecards-controls.d.ts",
 		"release": "npm run clean && npm run build && webpack --mode=production && npm run dts"
+	},
+	"devDependencies": {
+		"rimraf": "^2.6.2",
+		"typescript": "^3.2.2",
+		"webpack": "^4.27.1",
+		"webpack-cli": "^3.1.2"
 	}
 }

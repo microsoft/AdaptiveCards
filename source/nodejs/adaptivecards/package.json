@@ -35,7 +35,11 @@
 		"url": "git://git@github.com/microsoft/AdaptiveCards.git"
 	},
 	"devDependencies": {
-		"@types/jest": "^23.3.10"
+		"@types/jest": "^23.3.10",
+		"rimraf": "^2.6.2",
+		"typescript": "^3.2.2",
+		"webpack": "^4.27.1",
+		"webpack-cli": "^3.1.2"
 	},
 	"jest": {
 		"rootDir": "src",
