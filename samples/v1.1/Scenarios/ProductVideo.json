@@ -6,7 +6,7 @@
     "body": [
         {
             "type": "Media",
-            "poster": "https://docs.microsoft.com/en-us/adaptive-cards/content/videoposter.png",
+            "poster": "https://adaptivecards.io/content/poster-video.png",
             "sources": [
                 {
                     "mimeType": "video/mp4",
