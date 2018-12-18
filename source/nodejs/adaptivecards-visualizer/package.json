@@ -5,6 +5,7 @@
 	"author": "AdaptiveCards",
 	"license": "MIT",
 	"main": "lib/app.js",
+	"private": true,
 	"scripts": {
 		"clean": "rimraf lib dist",
 		"prebuild": "tsc",
