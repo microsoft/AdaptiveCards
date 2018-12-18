@@ -88,9 +88,7 @@
 
     if(!playIconImage) {
         playIconImageView  = [rootView getImageView:@"playIconImage"];
-    }
-
-    if(playIconImage) {
+    }else {
         playIconImageView = [[UIImageView alloc] initWithImage:playIconImage];
     }
 

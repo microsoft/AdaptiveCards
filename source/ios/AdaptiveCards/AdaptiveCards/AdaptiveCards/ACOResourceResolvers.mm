@@ -29,13 +29,12 @@
 
     _resolversIFMap[scheme] = [NSNumber numberWithInt:ACODefaultIF];
 
-    if([resolver respondsToSelector:@selector(resolveImageResource:)]) {
-        _resolversIFMap[scheme] = [NSNumber numberWithInt:ACOImageIF];
-    }
     // only one IF per scheme is supported and ACRImageViewIF will be chosen
     // when both are implemented
-    if([resolver respondsToSelector:@selector(resolveImageViewResource:)]) {
+    if ([resolver respondsToSelector:@selector(resolveImageViewResource:)]) {
         _resolversIFMap[scheme] = [NSNumber numberWithInt:ACOImageViewIF];
+    } else if ([resolver respondsToSelector:@selector(resolveImageResource:)]) {
+        _resolversIFMap[scheme] = [NSNumber numberWithInt:ACOImageIF];
     }
 }
 

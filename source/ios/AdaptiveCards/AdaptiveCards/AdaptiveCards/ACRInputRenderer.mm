@@ -184,7 +184,7 @@
         NSDictionary *imageViewMap = [rootView getImageMap];
         NSString *key = [NSString stringWithCString:action->GetIconUrl().c_str() encoding:[NSString defaultCStringEncoding]];
         UIImage *img = imageViewMap[key];
-        button.iconPlacement = ACROnTitle;
+        button.iconPlacement = ACRNoTitle;
 
         if(img){
             UIImageView *iconView = [[ACRUIImageView alloc] init];
@@ -206,7 +206,7 @@
                 [rootView setImageView:key view:button];
             }
             [NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:view
-                attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;            
+                attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;
 
         } else {
             [button setTitle:title forState:UIControlStateNormal];

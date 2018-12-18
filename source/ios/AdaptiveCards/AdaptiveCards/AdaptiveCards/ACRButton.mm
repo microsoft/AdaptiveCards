@@ -63,7 +63,7 @@
         [self setContentEdgeInsets:UIEdgeInsetsMake(config.buttonPadding, config.buttonPadding + self.layer.cornerRadius, config.buttonPadding + imageHeight, config.buttonPadding + self.layer.cornerRadius)];
         // configure button frame to correct size; in case translatesAutoresizingMaskIntoConstraints is used
         self.frame = CGRectMake(0, 0, MAX(imageSize.width, contentSize.width), imageSize.height + config.buttonPadding);
-    } else if(_iconPlacement != ACROnTitle) {
+    } else if(_iconPlacement != ACRNoTitle) {
         int iconPadding = [config getHostConfig]->GetSpacing().defaultSpacing;
         [self setTitleEdgeInsets:UIEdgeInsetsMake(config.buttonPadding, (imageSize.width) + iconPadding, config.buttonPadding, -(iconPadding + imageSize.width))];
         [self setContentEdgeInsets:UIEdgeInsetsMake(config.buttonPadding, config.buttonPadding, config.buttonPadding, imageSize.width + iconPadding + self.layer.cornerRadius)];
@@ -111,14 +111,16 @@
         NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)action.get()];
         NSString *key = [number stringValue];
         UIImageView *view = [rootView getImageView:key];
-        if(view && view.image) {
-            button.iconView = view;
-            [button addSubview:view];
-            [button setImageView:view.image withConfig:config];
-        } else {
-            button.iconView = view;
-            [button addSubview:view];
-            [rootView setImageView:key view:button];
+        if (view) {
+            if (view.image) {
+                button.iconView = view;
+                [button addSubview:view];
+                [button setImageView:view.image withConfig:config];
+            } else {
+                button.iconView = view;
+                [button addSubview:view];
+                [rootView setImageView:key view:button];
+            }
         }
     } else {
         // button's intrinsic content size is determined by title size and content edge

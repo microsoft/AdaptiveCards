@@ -372,7 +372,7 @@
 - (void)didLoadElements
 {
     [self.curView setNeedsLayout];
-    NSLog(@"complted loading elements");
+    NSLog(@"completed loading elements");
 }
 
 
