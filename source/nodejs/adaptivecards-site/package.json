@@ -1,13 +1,14 @@
 {
   "name": "adaptivecards-site",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": true,
   "scripts": {
     "build": "hexo generate",
     "build-all": "cd ../adaptivecards-visualizer && npm run build-all",
     "build-and-generate": "npm run build-all && hexo generate",
     "generate-md-ac": "node node_modules/marked-schema/bin/marked-schema ../../../schemas/adaptive-card.json ./schema-explorer-toc.yml -r AdaptiveCard",
-    "generate-md-hc": "node node_modules/marked-schema/bin/marked-schema ../../../schemas/host-config.json ./schema-hostconfig-toc.yml -r AdaptiveCardConfig"
+    "generate-md-hc": "node node_modules/marked-schema/bin/marked-schema ../../../schemas/host-config.json ./schema-hostconfig-toc.yml -r AdaptiveCardConfig",
+    "version": "hexo clean && hexo generate"
   },
   "hexo": {
     "version": "3.7.1"
