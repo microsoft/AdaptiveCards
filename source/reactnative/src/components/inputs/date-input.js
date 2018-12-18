@@ -11,8 +11,8 @@ import {
 } from 'react-native';
 
 import * as Constants from '../../utils/constants';
-import { HostConfigManager } from '../../utils/host-config'
-import { PickerInput } from './picker-input'
+import { HostConfigManager } from '../../utils/host-config';
+import { PickerInput } from '../inputs';
 
 export class DateInput extends React.Component {
 

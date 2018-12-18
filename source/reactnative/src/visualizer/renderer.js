@@ -12,9 +12,10 @@ import {
     Alert,
     Linking
 } from 'react-native';
-import AdaptiveCards from '../adaptive-cards'
-import { RatingRenderer } from './rating-renderer'
-import { Registry } from '../components/registration/registry'
+
+import AdaptiveCards from '../adaptive-cards';
+import { RatingRenderer } from './rating-renderer';
+import { Registry } from '../components/registration/registry';
 
 export default class Renderer extends React.Component {
     constructor(props) {

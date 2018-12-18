@@ -10,9 +10,9 @@ import {
     Platform,
 } from 'react-native';
 
-import { HostConfigManager } from '../../utils/host-config'
+import { HostConfigManager } from '../../utils/host-config';
 import * as Constants from '../../utils/constants';
-import { PickerInput } from './picker-input'
+import { PickerInput } from '../inputs';
 
 export class TimeInput extends React.Component {
 

@@ -14,13 +14,13 @@ import {
     Image
 } from 'react-native';
 
-import ElementWrapper from '../element-wrapper';
+import ElementWrapper from '../../elements/element-wrapper';
 import Checkbox from './check-box';
 import { InputContextConsumer } from '../../../utils/context';
 import * as Utils from '../../../utils/util';
 import * as Constants from '../../../utils/constants';
-import { StyleManager } from '../../../styles/style-config'
-import { HostConfigManager } from '../../../utils/host-config'
+import { StyleManager } from '../../../styles/style-config';
+import { HostConfigManager } from '../../../utils/host-config';
 
 const DropDownImage = './assets/dropdown.png';
 const CompactStyle = "compact";

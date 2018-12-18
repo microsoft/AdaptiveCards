@@ -9,7 +9,7 @@ import {
     StyleSheet,
     Text
 } from 'react-native';
-import ElementWrapper from '../components/inputs/element-wrapper';
+import ElementWrapper from '../components/elements/element-wrapper';
 import * as Utils from '../utils/util';
 import * as Enums from '../utils/enums';
 import * as Constants from '../utils/constants';

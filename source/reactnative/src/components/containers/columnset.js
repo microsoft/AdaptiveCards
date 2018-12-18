@@ -9,11 +9,12 @@ import {
     View,
     StyleSheet
 } from 'react-native';
+
 import { SelectAction } from '../actions';
-import ElementWrapper from '../inputs/element-wrapper';
+import ElementWrapper from '../elements/element-wrapper';
 import { Column } from "./column";
 import * as Constants from '../../utils/constants';
-import { HostConfigManager } from '../../utils/host-config'
+import { HostConfigManager } from '../../utils/host-config';
 
 export class ColumnSet extends React.PureComponent {
 

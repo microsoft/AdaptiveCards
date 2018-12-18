@@ -1,5 +1,5 @@
-import * as Enums from "./enums";
-import * as Utils from "./util";
+import * as Enums from './enums';
+import * as Utils from './util';
 
 export class TextColorDefinition {
     _default = "#000000";

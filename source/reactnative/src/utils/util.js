@@ -1,5 +1,5 @@
-import * as Enums from "./enums";
-import { HostConfigManager } from "./host-config";
+import * as Enums from './enums';
+import { HostConfigManager } from './host-config';
 
 
 export function getValueOrDefault(obj, defaultValue) {

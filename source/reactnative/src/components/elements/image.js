@@ -8,15 +8,15 @@ import React from 'react';
 import {
     StyleSheet,
     Image,
-} from "react-native";
+} from 'react-native';
 
-import { HostConfigManager } from "../../utils/host-config";
+import { HostConfigManager } from '../../utils/host-config';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 import * as Constants from '../../utils/constants';
-import ElementWrapper from '../inputs/element-wrapper';
+import ElementWrapper from '../elements/element-wrapper';
 import { SelectAction } from '../actions';
-import { StyleManager } from '../../styles/style-config'
+import { StyleManager } from '../../styles/style-config';
 
 const ContainResizeMode = 'contain';
 

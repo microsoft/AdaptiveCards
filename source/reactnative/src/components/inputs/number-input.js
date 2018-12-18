@@ -6,10 +6,10 @@
 
 import React from 'react';
 import { DismissKeyboardView } from '../containers/dismiss-keyboard';
-import { InputContextConsumer } from '../../utils/context'
+import { InputContextConsumer } from '../../utils/context';
 import * as Constants from '../../utils/constants';
-import { HostConfigManager } from '../../utils/host-config'
-import { Input } from './input'
+import { HostConfigManager } from '../../utils/host-config';
+import { Input } from './input';
 
 const NUM_REGEX = /^[0-9][\.\d]*(,\d+)?$/;
 

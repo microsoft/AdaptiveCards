@@ -11,9 +11,10 @@ import {
     Text,
     Dimensions
 } from 'react-native';
-import ElementWrapper from '../inputs/element-wrapper';
+
+import ElementWrapper from '../elements/element-wrapper';
 import * as Constants from '../../utils/constants';
-import { StyleManager } from '../../styles/style-config'
+import { StyleManager } from '../../styles/style-config';
 
 export class FactSet extends React.Component {
 

@@ -11,11 +11,11 @@ import {
     StyleSheet
 } from 'react-native';
 
-import ElementWrapper from './element-wrapper';
+import ElementWrapper from '../elements/element-wrapper';
 import * as Constants from '../../utils/constants';
-import { InputContextConsumer } from '../../utils/context'
-import { StyleManager } from '../../styles/style-config'
-import { HostConfigManager } from '../../utils/host-config'
+import { InputContextConsumer } from '../../utils/context';
+import { StyleManager } from '../../styles/style-config';
+import { HostConfigManager } from '../../utils/host-config';
 
 const TrueString = "true";
 const FalseString = "false";

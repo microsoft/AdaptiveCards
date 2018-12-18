@@ -11,13 +11,13 @@ import {
     StyleSheet,
     Image,
     Platform
-} from "react-native";
+} from 'react-native';
 
-import { StyleManager } from '../../styles/style-config'
+import { StyleManager } from '../../styles/style-config';
 import * as Utils from '../../utils/util';
-import { InputContextConsumer } from '../../utils/context'
+import { InputContextConsumer } from '../../utils/context';
 import * as Constants from '../../utils/constants';
-import { HostConfigManager } from '../../utils/host-config'
+import { HostConfigManager } from '../../utils/host-config';
 
 
 export class ActionButton extends React.Component {

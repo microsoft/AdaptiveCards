@@ -10,11 +10,12 @@ import {
     ScrollView,
     StyleSheet
 } from 'react-native';
-import ElementWrapper from '../inputs/element-wrapper';
-import { Registry } from '../registration/registry'
-import { SelectAction } from '../actions'
+
+import ElementWrapper from '../elements/element-wrapper';
+import { Registry } from '../registration/registry';
+import { SelectAction } from '../actions';
 import * as Constants from '../../utils/constants';
-import { HostConfigManager } from '../../utils/host-config'
+import { HostConfigManager } from '../../utils/host-config';
 import { InputContextConsumer } from '../../utils/context';
 
 export class Container extends React.Component {

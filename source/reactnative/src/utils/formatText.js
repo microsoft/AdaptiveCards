@@ -2,7 +2,8 @@ import React from 'react';
 import {
   Text,
   Linking
-} from "react-native";
+} from 'react-native';
+
 import * as Utils from './util';
 
 BOLD_REGEX = /(?:[*]{2})(.*?)(?:[*]{2})/;

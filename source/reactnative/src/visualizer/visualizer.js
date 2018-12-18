@@ -10,6 +10,7 @@ import {
     StyleSheet,
     Modal
 } from 'react-native';
+
 import Renderer from './renderer';
 import { PayloadItem } from './payload-item.js';
 import SegmentedControl from './segmented-control';

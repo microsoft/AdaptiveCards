@@ -4,19 +4,19 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#inputtext
  */
 
-import React from "react";
+import React from 'react';
 import {
     StyleSheet,
     TextInput
 } from 'react-native';
 
-import { InputContextConsumer } from '../../utils/context'
-import ElementWrapper from './element-wrapper';
-import { StyleManager } from "../../styles/style-config";
+import { InputContextConsumer } from '../../utils/context';
+import ElementWrapper from '../elements/element-wrapper';
+import { StyleManager } from '../../styles/style-config';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 import * as Constants from '../../utils/constants';
-import { HostConfigManager } from '../../utils/host-config'
+import { HostConfigManager } from '../../utils/host-config';
 
 export class Input extends React.Component {
 

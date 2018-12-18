@@ -1,7 +1,6 @@
 /**
- * Date component based on the given payload.
+ * PickerInput component that wraps picker input elements.
  * 
- * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#inputdate
  */
 
 import React from 'react';
@@ -16,11 +15,11 @@ import {
     ViewPropTypes
 } from 'react-native';
 
-import { InputContextConsumer } from '../../utils/context'
-import ElementWrapper from './element-wrapper';
+import { InputContextConsumer } from '../../utils/context';
+import ElementWrapper from '../elements/element-wrapper';
 import * as Constants from '../../utils/constants';
-import { StyleManager } from '../../styles/style-config'
-import { HostConfigManager } from '../../utils/host-config'
+import { StyleManager } from '../../styles/style-config';
+import { HostConfigManager } from '../../utils/host-config';
 
 export class PickerInput extends React.Component {
 

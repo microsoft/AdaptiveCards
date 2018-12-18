@@ -1,10 +1,10 @@
 /**
- * Input component that wraps all other specific input element.
+ * ElementWrapper component that wraps all other specific input element.
  * 
  * @example
- * <Input json={payload}>
+ * <ElementWrapper json={payload}>
  *  <InputElement json={payload}></InputElement>
- * </Input>
+ * </ElementWrapper>
  */
 
 import React from 'react';

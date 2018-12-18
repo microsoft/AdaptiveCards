@@ -6,8 +6,8 @@
 
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Registry } from '../registration/registry'
-import ElementWrapper from '../inputs/element-wrapper';
+import { Registry } from '../registration/registry';
+import ElementWrapper from '../elements/element-wrapper';
 import * as Constants from '../../utils/constants';
 
 const FlexWrap = 'wrap';
