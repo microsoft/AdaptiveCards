@@ -102,16 +102,16 @@ export class Img extends React.Component {
         let sizeStyle = [];
         let sizeValue = Utils.parseHostConfigEnum(Enums.Size, this.payload.size, Enums.Size.Auto)
 
-         /**
-          * Scenario 1 : Either height or width has string value (Ex: '80px'),
-          *               use the integer portion.
-          * Scenario 2 : If the height or width has string value (Ex: 'stretch'),
-          *              ignore and use the size property to determine dimensions.
-          * Scenario 3 : If either width or height is missing, apply the given value to the 
-          *              other property.
-          */
+        /**
+         * Scenario 1 : Either height or width has string value (Ex: '80px'),
+         *               use the integer portion.
+         * Scenario 2 : If the height or width has string value (Ex: 'stretch'),
+         *              ignore and use the size property to determine dimensions.
+         * Scenario 3 : If either width or height is missing, apply the given value to the 
+         *              other property.
+         */
         if (Utils.isaNumber(this.payload.width) || Utils.isaNumber(this.payload.height)) {
-            
+
             if (this.payload.width) {
                 this.width = parseInt(this.payload.width, 10);
                 sizeStyle.push({ width: this.width })
@@ -259,6 +259,7 @@ export class Img extends React.Component {
         const {
             type,
             url,
+            spacing,
         } = this;
 
         if (!type) {
@@ -266,6 +267,12 @@ export class Img extends React.Component {
         }
 
         let imageComputedStyle = [this.sizeStyling];
+
+        let wrapperComputedStyle = this.horizontalAlignment;
+            wrapperComputedStyle.push({ backgroundColor: this.backgroundColor})
+        if(this.payload.fromImageSet == true){
+            wrapperComputedStyle.push({ margin: spacing });
+        }
 
         /**
          * If the payload size is "auto" or "stretch" and 
@@ -283,13 +290,16 @@ export class Img extends React.Component {
                 imageComputedStyle.push({ borderRadius: this.width / 2 }) : null;
         }
 
-        var containerContent = (<Input json={this.payload}
-            style={[this.horizontalAlignment, { backgroundColor: this.backgroundColor }]}
-            onPageLayout={this.onPageLayoutHandler}>
+        var containerContent =
+            (
+                <Input json={this.payload}
+                    style={wrapperComputedStyle}
+                    onPageLayout={this.onPageLayoutHandler}>
 
-            <Image style={imageComputedStyle}
-                source={{ uri: url }} />
-        </Input>);
+                    <Image style={imageComputedStyle}
+                        source={{ uri: url }} />
+                </Input>
+            );
 
         if ((this.payload.selectAction === undefined)
             || (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
