@@ -19,17 +19,22 @@ var assets = [
     },
     {
         // adaptive cards module
-        path: "node_modules/adaptivecards/dist/*",
+        path: "node_modules/adaptivecards/dist/*.*",
         dest: function (p) { return p; }
 	},
 	{
         // designer module
-        path: "node_modules/adaptivecards-designer/dist/**/*.*",
+        path: "node_modules/adaptivecards-designer/dist/*.*",
+        dest: function (p) { return p; }
+	},
+	{
+        // designer module (TODO: when monaco-editor is removed from the designer bundle, this can be simplified)
+        path: "node_modules/adaptivecards-designer/dist/containers/*.*",
         dest: function (p) { return p; }
 	},
 	{
         // monaco-editor module
-        path: "node_modules/monaco-editor/min/vs/**/*",
+        path: "node_modules/monaco-editor/min/vs/**/*.*",
         dest: function (p) { return p; }
     },
     {
