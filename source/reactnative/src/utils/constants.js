@@ -36,3 +36,5 @@ export const EmphasisColor = '#dcdcdc';
 export const WhiteColor = 'white';
 
 export const Emphasis= 'emphasis';
+
+export const NumberInput = 'Input.Number';

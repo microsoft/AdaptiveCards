@@ -18,7 +18,6 @@ import { ActionWrapper } from './components/actions/action-wrapper';
 import PropTypes from 'prop-types';
 import * as Utils from './utils/util';
 import { SelectAction } from './components/actions';
-import { DismissKeyboardView } from './components/containers/dismiss-keyboard';
 
 export default class AdaptiveCards extends React.Component {
 
@@ -88,9 +87,6 @@ export default class AdaptiveCards extends React.Component {
         </SelectAction>
       );
     }
-
-    //Handle Keyboard Dismiss when tapping anywhere outside the input item
-    adaptiveCardContent = <DismissKeyboardView style={styles.container}>{adaptiveCardContent}</DismissKeyboardView>;
       return adaptiveCardContent;
   }
 

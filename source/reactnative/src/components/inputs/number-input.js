@@ -5,8 +5,6 @@
  */
 
 import React from 'react';
-import { DismissKeyboardView } from '../containers/dismiss-keyboard';
-import { InputContextConsumer } from '../../utils/context';
 import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config';
 import { Input } from './input';
@@ -34,7 +32,6 @@ export class NumberInput extends React.Component {
         this.parseHostConfig();
 
         return (
-			<DismissKeyboardView>
 				<Input 
 					json={this.payload}
 					handleFocus={this.handleFocus}
@@ -44,7 +41,6 @@ export class NumberInput extends React.Component {
 					value={this.state.numberValue} 
 					isError={this.state.isError}     
 				/>
-			</DismissKeyboardView>
         );
     }
 
