@@ -1,6 +1,7 @@
 package io.adaptivecards.renderer.input;
 
 import android.content.Context;
+import android.nfc.Tag;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,6 +14,7 @@ import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
@@ -73,7 +75,7 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
         final ToggleInputHandler toggleInputHandler = new ToggleInputHandler(toggleInput);
         CheckBox checkBox = new CheckBox(context);
         toggleInputHandler.setView(checkBox);
-        checkBox.setTag(toggleInputHandler);
+        checkBox.setTag(new TagContent(toggleInput, toggleInputHandler));
         checkBox.setText(toggleInput.GetTitle());
         renderedCard.registerInputHandler(toggleInputHandler);
 

@@ -1,6 +1,7 @@
 package io.adaptivecards.renderer.input;
 
 import android.content.Context;
+import android.nfc.Tag;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.CheckBoxSetInputHandler;
 import io.adaptivecards.renderer.inputhandler.ComboBoxInputHandler;
@@ -67,7 +69,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         defaults.addAll(Arrays.asList(value.split(",")));
         final CheckBoxSetInputHandler checkBoxSetInputHandler = new CheckBoxSetInputHandler(choiceSetInput, checkBoxList);
         checkBoxSetInputHandler.setView(layout);
-        layout.setTag(checkBoxSetInputHandler);
+        layout.setTag(new TagContent(choiceSetInput, checkBoxSetInputHandler));
 
         for (int i = 0; i < size; i++)
         {
@@ -102,7 +104,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         RadioGroup radioGroup = new RadioGroup(context);
         final RadioGroupInputHandler radioGroupInputHandler = new RadioGroupInputHandler(choiceSetInput);
         radioGroupInputHandler.setView(radioGroup);
-        radioGroup.setTag(radioGroupInputHandler);
+        radioGroup.setTag(new TagContent(choiceSetInput, radioGroupInputHandler));
 
         radioGroup.setOrientation(RadioGroup.VERTICAL);
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
@@ -156,7 +158,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         final ComboBoxInputHandler comboBoxInputHandler = new ComboBoxInputHandler(choiceSetInput);
         Spinner spinner = new Spinner(context);
         comboBoxInputHandler.setView(spinner);
-        spinner.setTag(comboBoxInputHandler);
+        spinner.setTag(new TagContent(choiceSetInput, comboBoxInputHandler));
         renderedCard.registerInputHandler(comboBoxInputHandler);
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, titleList);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
