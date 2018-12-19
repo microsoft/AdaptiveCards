@@ -13,8 +13,6 @@ import {
 import { InputContextConsumer } from '../../utils/context';
 import ElementWrapper from '../elements/element-wrapper';
 import { StyleManager } from '../../styles/style-config';
-import * as Utils from '../../utils/util';
-import * as Enums from '../../utils/enums';
 import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config';
 
@@ -106,7 +104,7 @@ export class Input extends React.Component {
     parseHostConfig = () => {
         this.id = this.payload.id;
         this.type = this.payload.type;
-        this.isMultiline = this.payload.isMultiline;
+        this.isMultiline = (this.payload.isMultiline !== undefined) ? this.payload.isMultiline : false;
         this.maxLength = (this.payload.maxLength == undefined ||
             this.payload.maxLength == 0) ? Number.MAX_VALUE : this.payload.maxLength;
         this.placeholder = this.payload.placeholder;
