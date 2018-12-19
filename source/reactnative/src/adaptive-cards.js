@@ -98,7 +98,6 @@ export default class AdaptiveCards extends React.Component {
 
     // version check
     if (!this.isSupportedVersion()) {
-      console.log("Why the");
       const message = this.payload.fallbackText || "We're sorry, this card couldn't be displayed";
       return (
         <Text>{message}</Text>
