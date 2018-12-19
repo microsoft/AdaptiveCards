@@ -34,7 +34,8 @@ export const PlatformIOS = 'ios';
 export const LightGreyColor = 'lightgrey';
 export const EmphasisColor = '#dcdcdc';
 export const WhiteColor = 'white';
+export const blackColor = 'black';
 
-export const Emphasis= 'emphasis';
+export const Emphasis = 'emphasis';
 
 export const NumberInput = 'Input.Number';
