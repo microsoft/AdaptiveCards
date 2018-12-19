@@ -43,7 +43,7 @@ export class FactSet extends React.Component {
     measureView(event) {
         if (this.currentWidth === 0 || this.currentWidth !== event.nativeEvent.layout.width) {
             this.currentWidth = event.nativeEvent.layout.width;
-            this.viewSize = event.nativeEvent.layout.width - 2 * styles.container.padding;
+            this.viewSize = event.nativeEvent.layout.width;
             this.checkForMaxWidth();
         }
     }

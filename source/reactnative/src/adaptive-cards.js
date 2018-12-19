@@ -23,7 +23,7 @@ export default class AdaptiveCards extends React.Component {
 
   // Input elements with its identifier and value
   inputArray = {};
-  version = "1.0"; // client supported version
+  version = "1.1"; // client supported version
 
   constructor(props) {
     super(props);
@@ -98,6 +98,7 @@ export default class AdaptiveCards extends React.Component {
 
     // version check
     if (!this.isSupportedVersion()) {
+      console.log("Why the");
       const message = this.payload.fallbackText || "We're sorry, this card couldn't be displayed";
       return (
         <Text>{message}</Text>
