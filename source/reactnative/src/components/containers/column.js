@@ -47,7 +47,8 @@ export class Column extends React.Component {
     }
 
     /**
-     * @description Calculate the Width percentage of the column to be rendered
+     * @description This function calculates the Width percentage of the column to be 
+	 * rendered based on the width property from the payload. 
      */
     calculateWidthPercentage = (containerStyle) => {
         var columns = this.props.columns
@@ -56,7 +57,10 @@ export class Column extends React.Component {
 
         var containsNumber = false
         var containsString = false
-
+       /**
+         * Checks if the width property of the column elements 
+		 * has type of string or a number
+         */
         widthArray.map((value) => {
             if (typeof (value) == 'number') {
                 containsNumber = true
@@ -94,9 +98,29 @@ export class Column extends React.Component {
             width = 1
         }
 
-        let widthPercentage;
+		let widthPercentage;
+		/**
+		 * Scenario 1 : If the column has atleast one element
+		 *  			of width property with type of string
+		 * Scenario 2 : If the column has elements with width
+		 * 				parameter only of type integer
+		 */
         if (containsString) {
+			/**
+			 * Scenario 1 : width property has string value (Ex: '80px', 'stretch', 'auto'),
+			 * Scenario 2 : width property has integer value (Ex: 1) 
+			 */
             if (typeof (width) == 'string') {
+				/**
+				 * Scenario 1 : width property has string value (Ex: '80px'),
+				 *               use the integer portion.
+				 * Scenario 2 : If the width has string 'stretch' value,
+				 *              ignore and use the size property to determine dimensions.
+				 * Scenario 3 : If the width has string 'auto'value,
+				 *              ignore and use the size property to determine dimensions. 
+				 * 				(only if the other elements also has width parameter of type string).
+				 * Scenario 4 : If width is missing, column width is divided equally.
+				 */
                 let lastIndex = width.lastIndexOf('px')
                 if (lastIndex != -1) {
 					let pixelWidth = parseInt(width.substring(0, lastIndex))
@@ -121,6 +145,12 @@ export class Column extends React.Component {
             }
         }
         else {
+			/**
+			 * Scenario 1 : If width parameter is missing, column width is 
+			 * 				divided equally excluding the default spacing ,
+			 * Scenario 2 : width percentage is calculated based 
+			 * 				on the width parameter from the json 
+			 */
             if (Utils.isNullOrEmpty(this.payload.width)) {
                 widthPercentage = (((width/columns.length) * 100) - (spacePercentage/columns.length))
             }
@@ -132,6 +162,10 @@ export class Column extends React.Component {
         return widthPercentage
 	}
 	
+	/**
+     * @description This function renders a separator between the columns 
+	 * based on the separator property from the payload. 
+     */
 	renderSeparator = () => {
 		const { lineColor, lineThickness } = this.hostConfig.separator
 		const margin = (this.spacing - lineThickness) /2
@@ -142,7 +176,6 @@ export class Column extends React.Component {
 					marginLeft: margin,
 					marginRight: margin
 			 }}/>
-
 		);
 	}
 

@@ -30,10 +30,8 @@ export class Input extends React.Component {
         this.isMultiline = Boolean;
         this.maxlength = 0;
         this.placeHolder = Constants.EmptyString;
-        this.style = Constants.EmptyString;
         this.type = Constants.EmptyString;
         this.value = Constants.EmptyString;
-        this.keyboardType = Constants.EmptyString;
         this.state = {
             isError: false,
             text: Constants.EmptyString,
@@ -52,9 +50,7 @@ export class Input extends React.Component {
             type,
             isMultiline,
             placeholder,
-            maxLength,
-            style,
-            keyboardType
+            maxLength
         } = this;
 
         if (!id || !type) {
@@ -74,8 +70,8 @@ export class Input extends React.Component {
                             maxLength={maxLength}
                             underlineColorAndroid={Constants.TransparentString}
                             clearButtonMode={Constants.WhileEditingString}
-                            textContentType={style}
-                            keyboardType={keyboardType}
+                            textContentType={this.props.textStyle}
+                            keyboardType={this.props.keyboardType}
                             onFocus={this.props.handleFocus}
                             onBlur={this.props.handleBlur}
                             onChangeText={(text) => this.props.textValueChanged(text, addInputItem)}
@@ -113,19 +109,7 @@ export class Input extends React.Component {
         this.isMultiline = this.payload.isMultiline;
         this.maxLength = (this.payload.maxLength == undefined ||
             this.payload.maxLength == 0) ? Number.MAX_VALUE : this.payload.maxLength;
-
         this.placeholder = this.payload.placeholder;
-        if (this.type === Constants.NumberInput) {
-            this.keyboardType = Utils.getKeyboardType(Enums.InputTextStyle.Number);
-        }
-        else {
-            let styleValue = Utils.parseHostConfigEnum(
-                Enums.InputTextStyle,
-                this.payload.style,
-                Enums.InputTextStyle.Text);
-            this.style = Utils.getEffectiveInputStyle(styleValue);
-            this.keyboardType = Utils.getKeyboardType(styleValue);
-        }
     }
 }
 
