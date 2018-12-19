@@ -7,12 +7,13 @@ import {
   StyleSheet,
   View
 } from 'react-native';
+
 import { Registry } from '../registration/registry';
 import * as Constants from '../../utils/constants';
-import { InputContextConsumer } from '../../utils/context'
-import AdaptiveCards from '../../adaptive-cards'
-import * as Utils from '../../utils/util'
-import * as Enums from '../../utils/enums'
+import { InputContextConsumer } from '../../utils/context';
+import AdaptiveCards from '../../adaptive-cards';
+import * as Utils from '../../utils/util';
+import * as Enums from '../../utils/enums';
 
 const padding = 10;
 

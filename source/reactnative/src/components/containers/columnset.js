@@ -4,16 +4,17 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#schema-columnset
  */
 
-import React from "react";
+import React from 'react';
 import {
     View,
     StyleSheet
 } from 'react-native';
+
 import { SelectAction } from '../actions';
-import Input from '../inputs/input';
+import ElementWrapper from '../elements/element-wrapper';
 import { Column } from "./column";
 import * as Constants from '../../utils/constants';
-import { HostConfigManager } from '../../utils/host-config'
+import { HostConfigManager } from '../../utils/host-config';
 
 export class ColumnSet extends React.PureComponent {
 
@@ -59,9 +60,9 @@ export class ColumnSet extends React.PureComponent {
 
         var columnSetContent = (
             <View style={[backgroundStyle, { flex: this.payload.columns.length }]}>
-                <Input json={columnSetJson} style={backgroundStyle}>
+                <ElementWrapper json={columnSetJson} style={backgroundStyle}>
                     {this.parsePayload(columnSetJson)}
-                </Input>
+                </ElementWrapper>
             </View>
         );
 

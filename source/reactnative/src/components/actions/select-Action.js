@@ -3,11 +3,11 @@
  * 
  */
 
-import React from "react";
-import { Platform } from 'react-native'
-import { InputContextConsumer } from '../../utils/context'
+import React from 'react';
+import { Platform } from 'react-native';
+import { InputContextConsumer } from '../../utils/context';
 import * as Constants from '../../utils/constants';
-import * as Utils from '../../utils/util'
+import * as Utils from '../../utils/util';
 
 export class SelectAction extends React.Component {
 

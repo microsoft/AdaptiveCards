@@ -4,20 +4,20 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#schema-action.openurl
  */
 
-import React from "react";
+import React from 'react';
 import {
     Text,
     View,
     StyleSheet,
     Image,
     Platform
-} from "react-native";
+} from 'react-native';
 
-import { StyleManager } from '../../styles/style-config'
+import { StyleManager } from '../../styles/style-config';
 import * as Utils from '../../utils/util';
-import { InputContextConsumer } from '../../utils/context'
+import { InputContextConsumer } from '../../utils/context';
 import * as Constants from '../../utils/constants';
-import { HostConfigManager } from '../../utils/host-config'
+import { HostConfigManager } from '../../utils/host-config';
 
 
 export class ActionButton extends React.Component {

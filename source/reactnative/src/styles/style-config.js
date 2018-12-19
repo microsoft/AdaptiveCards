@@ -1,6 +1,6 @@
-import { HostConfigManager } from '../utils/host-config'
-import { StyleSheet } from 'react-native'
-import * as Constants from '../utils/constants'
+import { HostConfigManager } from '../utils/host-config';
+import { StyleSheet } from 'react-native';
+import * as Constants from '../utils/constants';
 
 export class StyleManager {
     static styleManagerInstance = null;

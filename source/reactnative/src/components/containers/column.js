@@ -4,19 +4,20 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#schema-column
  */
 
-import React from "react";
+import React from 'react';
 import { 
 	View, 
 	StyleSheet, 
 	Dimensions 
 } from 'react-native';
+
 import { Registry } from '../registration/registry'
 import * as Utils from '../../utils/util';
 import * as Constants from '../../utils/constants';
 import * as Enums from '../../utils/enums';
 import { SelectAction } from '../actions';
-import { HostConfigManager } from '../../utils/host-config'
-import { StyleManager } from '../../styles/style-config'
+import { HostConfigManager } from '../../utils/host-config';
+import { StyleManager } from '../../styles/style-config';
 
 const deviceWidth = Dimensions.get('window').width;
 

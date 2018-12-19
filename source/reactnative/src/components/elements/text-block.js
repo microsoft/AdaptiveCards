@@ -10,14 +10,14 @@ import {
     Text
 } from 'react-native';
 
-import { HostConfigManager } from "../../utils/host-config";
+import { HostConfigManager } from '../../utils/host-config';
 import { TextFormatter } from '../../utils/text-formatters';
-import Input from '../inputs/input';
+import ElementWrapper from '../elements/element-wrapper';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 import * as Constants from '../../utils/constants';
 import processMDText from '../../utils/formatText';
-import { StyleManager } from '../../styles/style-config'
+import { StyleManager } from '../../styles/style-config';
 
 
 export class TextBlock extends React.Component {
@@ -62,14 +62,14 @@ export class TextBlock extends React.Component {
         });
 
         return (
-            <Input json={this.payload} style={styles.textContainer}>
+            <ElementWrapper json={this.payload} style={styles.textContainer}>
                 <Text
                     style={textBlockComputedStyle}
                     numberOfLines={this.wrap ? (this.maxLines != undefined ?
                         this.maxLines : 0) : 1}>
                     {processedText}
                 </Text>
-            </Input>
+            </ElementWrapper>
         );
     }
 

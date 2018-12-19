@@ -4,19 +4,19 @@
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#schema-image
  */
 
-import React from "react";
+import React from 'react';
 import {
     StyleSheet,
     Image,
-} from "react-native";
+} from 'react-native';
 
-import { HostConfigManager } from "../../utils/host-config";
+import { HostConfigManager } from '../../utils/host-config';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 import * as Constants from '../../utils/constants';
-import Input from '../inputs/input';
+import ElementWrapper from '../elements/element-wrapper';
 import { SelectAction } from '../actions';
-import { StyleManager } from '../../styles/style-config'
+import { StyleManager } from '../../styles/style-config';
 
 const ContainResizeMode = 'contain';
 
@@ -269,8 +269,8 @@ export class Img extends React.Component {
         let imageComputedStyle = [this.sizeStyling];
 
         let wrapperComputedStyle = this.horizontalAlignment;
-            wrapperComputedStyle.push({ backgroundColor: this.backgroundColor})
-        if(this.payload.fromImageSet == true){
+        wrapperComputedStyle.push({ backgroundColor: this.backgroundColor })
+        if (this.payload.fromImageSet == true) {
             wrapperComputedStyle.push({ margin: spacing });
         }
 
@@ -290,16 +290,13 @@ export class Img extends React.Component {
                 imageComputedStyle.push({ borderRadius: this.width / 2 }) : null;
         }
 
-        var containerContent =
-            (
-                <Input json={this.payload}
-                    style={wrapperComputedStyle}
-                    onPageLayout={this.onPageLayoutHandler}>
+        var containerContent = (<ElementWrapper json={this.payload}
+            style={wrapperComputedStyle}
+            onPageLayout={this.onPageLayoutHandler}>
 
-                    <Image style={imageComputedStyle}
-                        source={{ uri: url }} />
-                </Input>
-            );
+            <Image style={imageComputedStyle}
+                source={{ uri: url }} />
+        </ElementWrapper>);
 
         if ((this.payload.selectAction === undefined)
             || (HostConfigManager.getHostConfig().supportsInteractivity === false)) {

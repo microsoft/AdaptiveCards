@@ -3,7 +3,7 @@
  * 
  */
 
-import React from 'react'
+import React from 'react';
 import {
     View,
     Text,
@@ -11,9 +11,9 @@ import {
     StyleSheet,
     ViewPropTypes,
     Image
-} from 'react-native'
-import PropTypes from 'prop-types'
+} from 'react-native';
 
+import PropTypes from 'prop-types';
 import * as Constants from '../../../utils/constants';
 
 const styles = StyleSheet.create({

@@ -10,10 +10,11 @@ import {
   ScrollView,
   ImageBackground
 } from 'react-native';
-import { Registry } from './components/registration/registry'
-import { InputContextProvider } from './utils/context'
-import { HostConfigManager } from './utils/host-config'
-import { ActionWrapper } from './components/actions/action-wrapper'
+
+import { Registry } from './components/registration/registry';
+import { InputContextProvider } from './utils/context';
+import { HostConfigManager } from './utils/host-config';
+import { ActionWrapper } from './components/actions/action-wrapper';
 import PropTypes from 'prop-types';
 import * as Utils from './utils/util';
 import { SelectAction } from './components/actions';

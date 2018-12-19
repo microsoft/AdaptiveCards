@@ -9,7 +9,7 @@ import {
     StyleSheet,
     Text
 } from 'react-native';
-import Input from '../components/inputs/input';
+import ElementWrapper from '../components/elements/element-wrapper';
 import * as Utils from '../utils/util';
 import * as Enums from '../utils/enums';
 import * as Constants from '../utils/constants';
@@ -59,14 +59,14 @@ export class RatingRenderer extends React.Component {
         });
 
         return (
-            <Input json={this.payload} style={styles.textContainer}>
+            <ElementWrapper json={this.payload} style={styles.textContainer}>
                 <Text
                     style={textBlockComputedStyle}
                     numberOfLines={this.wrap ? (this.maxLines != undefined ?
                         this.maxLines : 0) : 1}>
                     {processedText}
                 </Text>
-            </Input>
+            </ElementWrapper>
         );
     }
 
