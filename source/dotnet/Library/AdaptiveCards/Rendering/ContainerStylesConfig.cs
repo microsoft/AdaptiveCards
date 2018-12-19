@@ -11,6 +11,17 @@ namespace AdaptiveCards.Rendering
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ContainerStyleConfig Emphasis { get; set; } = new ContainerStyleConfig() { };
-    }
 
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public ContainerStyleConfig Good { get; set; } = new ContainerStyleConfig() { };
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public ContainerStyleConfig Warning { get; set; } = new ContainerStyleConfig() { };
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public ContainerStyleConfig Attention { get; set; } = new ContainerStyleConfig() { };
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public ContainerStyleConfig Accent { get; set; } = new ContainerStyleConfig() { };
+    }
 }
