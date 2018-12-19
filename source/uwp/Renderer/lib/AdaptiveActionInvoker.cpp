@@ -15,14 +15,18 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveActionInvoker::RuntimeClassInitialize(_In_ RenderedAdaptiveCard* renderResult) noexcept try
     {
-        m_renderResult = renderResult;
-        return S_OK;
-    }
-    CATCH_RETURN;
+        ComPtr<IRenderedAdaptiveCard> strongRenderResult = renderResult;
+        return strongRenderResult.AsWeak(&m_weakRenderResult);
+    } CATCH_RETURN;
 
     HRESULT AdaptiveActionInvoker::SendActionEvent(_In_ IAdaptiveActionElement* actionElement)
     {
-        return m_renderResult->SendActionEvent(actionElement);
+        ComPtr<IRenderedAdaptiveCard> strongRenderResult;
+        RETURN_IF_FAILED(m_weakRenderResult.As(&strongRenderResult));
+        RETURN_IF_FAILED(strongRenderResult == nullptr ? E_FAIL : S_OK);
+        ComPtr<RenderedAdaptiveCard> renderResult = PeekInnards<RenderedAdaptiveCard>(strongRenderResult);
+        RETURN_IF_FAILED(renderResult == nullptr ? E_FAIL : S_OK);
+        RETURN_IF_FAILED(renderResult->SendActionEvent(actionElement));
+        return S_OK;
     }
-
 }

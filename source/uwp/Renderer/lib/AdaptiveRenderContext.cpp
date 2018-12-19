@@ -26,10 +26,12 @@ namespace AdaptiveNamespace
     {
         m_hostConfig = hostConfig;
         m_elementRendererRegistration = elementRendererRegistration;
-        m_renderResult = renderResult;
         m_resourceResolvers = resourceResolvers;
         m_overrideDictionary = overrideDictionary;
         m_actionSentimentDefaultDictionary = defaultActionSentimentStyles;
+
+        ComPtr<IRenderedAdaptiveCard> strongRenderResult = renderResult;
+        RETURN_IF_FAILED(strongRenderResult.AsWeak(&m_weakRenderResult));
 
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionInvoker>(&m_actionInvoker, renderResult));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveMediaEventInvoker>(&m_mediaEventInvoker, renderResult));
@@ -72,8 +74,10 @@ namespace AdaptiveNamespace
     {
         ComPtr<AdaptiveError> error;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveError>(&error, statusCode, message));
-        ComPtr<IVector<ABI::AdaptiveNamespace::AdaptiveError*>> errors;
-        RETURN_IF_FAILED(m_renderResult->get_Errors(&errors));
+        ComPtr<IVector<ABI::AdaptiveNamespace::IAdaptiveError*>> errors;
+        ComPtr<IRenderedAdaptiveCard> renderResult;
+        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
+        RETURN_IF_FAILED(renderResult->get_Errors(&errors));
         return (errors->Append(error.Detach()));
     }
 
@@ -81,8 +85,10 @@ namespace AdaptiveNamespace
     {
         ComPtr<AdaptiveWarning> warning;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveWarning>(&warning, statusCode, message));
-        ComPtr<IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>> warnings;
-        RETURN_IF_FAILED(m_renderResult->get_Warnings(&warnings));
+        ComPtr<IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>> warnings;
+        ComPtr<IRenderedAdaptiveCard> renderResult;
+        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
+        RETURN_IF_FAILED(renderResult->get_Warnings(&warnings));
         return (warnings->Append(warning.Detach()));
     }
 
@@ -99,11 +105,23 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveRenderContext::AddInputValue(_In_ IAdaptiveInputValue* inputValue)
     {
-        return m_renderResult->AddInputValue(inputValue);
+        ComPtr<IRenderedAdaptiveCard> renderResult;
+        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
+        ComPtr<RenderedAdaptiveCard> renderedAdaptiveCard = PeekInnards<RenderedAdaptiveCard>(renderResult);
+        RETURN_IF_FAILED(renderedAdaptiveCard == nullptr ? E_NOINTERFACE : S_OK);
+        return renderedAdaptiveCard->AddInputValue(inputValue);
     }
 
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> AdaptiveRenderContext::GetDefaultActionSentimentDictionary()
     {
         return m_actionSentimentDefaultDictionary;
+    }
+
+    HRESULT AdaptiveRenderContext::GetRenderResult(IRenderedAdaptiveCard** renderResult)
+    {
+        ComPtr<IRenderedAdaptiveCard> strongRenderResult;
+        RETURN_IF_FAILED(m_weakRenderResult.As(&strongRenderResult));
+        RETURN_IF_FAILED(strongRenderResult == nullptr ? E_FAIL : S_OK);
+        return strongRenderResult.CopyTo(renderResult);
     }
 }

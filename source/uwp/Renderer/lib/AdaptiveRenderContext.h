@@ -9,6 +9,7 @@ namespace AdaptiveNamespace
 {
     class DECLSPEC_UUID("F29649FF-C718-4F94-8F39-2415C86BE77E") AdaptiveRenderContext
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
+                                              Microsoft::WRL::Implements<IWeakReferenceSource>,
                                               ABI::AdaptiveNamespace::IAdaptiveRenderContext,
                                               Microsoft::WRL::CloakedIid<ITypePeek>>
     {
@@ -37,6 +38,7 @@ namespace AdaptiveNamespace
 
         HRESULT put_CardFrameworkElement(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* value);
 
+        HRESULT GetRenderResult(_COM_Outptr_ ABI::AdaptiveNamespace::IRenderedAdaptiveCard** renderResult);
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> GetDefaultActionSentimentDictionary();
 
         // ITypePeek method
@@ -45,7 +47,7 @@ namespace AdaptiveNamespace
     private:
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveHostConfig> m_hostConfig;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveElementRendererRegistration> m_elementRendererRegistration;
-        Microsoft::WRL::ComPtr<AdaptiveNamespace::RenderedAdaptiveCard> m_renderResult;
+        Microsoft::WRL::WeakRef m_weakRenderResult;
         Microsoft::WRL::ComPtr<AdaptiveNamespace::AdaptiveActionInvoker> m_actionInvoker;
         Microsoft::WRL::ComPtr<AdaptiveNamespace::AdaptiveMediaEventInvoker> m_mediaEventInvoker;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers> m_resourceResolvers;

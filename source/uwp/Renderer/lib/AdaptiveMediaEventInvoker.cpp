@@ -15,13 +15,19 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveMediaEventInvoker::RuntimeClassInitialize(_In_ RenderedAdaptiveCard* renderResult) noexcept try
     {
-        m_renderResult = renderResult;
-        return S_OK;
+        ComPtr<IRenderedAdaptiveCard> strongRenderResult = renderResult;
+        return strongRenderResult.AsWeak(&m_weakRenderResult);
     }
     CATCH_RETURN;
 
     HRESULT AdaptiveMediaEventInvoker::SendMediaClickedEvent(_In_ IAdaptiveMedia* mediaElement)
     {
-        return m_renderResult->SendMediaClickedEvent(mediaElement);
+        ComPtr<IRenderedAdaptiveCard> strongRenderResult;
+        RETURN_IF_FAILED(m_weakRenderResult.As(&strongRenderResult));
+        RETURN_IF_FAILED(strongRenderResult == nullptr ? E_FAIL : S_OK);
+        ComPtr<RenderedAdaptiveCard> renderResult = PeekInnards<RenderedAdaptiveCard>(strongRenderResult);
+        RETURN_IF_FAILED(renderResult == nullptr ? E_FAIL : S_OK);
+        RETURN_IF_FAILED(renderResult->SendMediaClickedEvent(mediaElement));
+        return S_OK;
     }
 }
