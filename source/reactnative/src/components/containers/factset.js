@@ -164,12 +164,10 @@ export class FactSet extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 4,
         flexDirection: Constants.FlexColumn,
         backgroundColor: 'transparent',
     },
     textContainer: {
-        padding: 2,
         flexDirection: Constants.FlexRow,
         backgroundColor: 'transparent',
     },
