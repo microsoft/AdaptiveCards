@@ -20,8 +20,8 @@ export class NumberInput extends React.Component {
 
         this.payload = props.json;
 		this.id = Constants.EmptyString;
-		this.keyboardType = Constants.EmptyString;
-		this.style = Constants.EmptyString;
+		this.keyboardType = Utils.getKeyboardType(Enums.InputTextStyle.Number);
+		this.style = Utils.getEffectiveInputStyle(Enums.InputTextStyle.Number);
         this.state = {
             isError: false,
             numberValue: Constants.EmptyString,
@@ -56,8 +56,6 @@ export class NumberInput extends React.Component {
     parseHostConfig() {
         this.min = this.payload.min;
 		this.max = this.payload.max;
-		this.keyboardType = Utils.getKeyboardType(Enums.InputTextStyle.Number);
-		this.style = Utils.getEffectiveInputStyle(Enums.InputTextStyle.Number);
     }
 
     /**
