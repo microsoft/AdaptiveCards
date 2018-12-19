@@ -169,7 +169,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     textContainer: {
-        flex: 1,
         padding: 2,
         flexDirection: Constants.FlexRow,
         backgroundColor: 'transparent',

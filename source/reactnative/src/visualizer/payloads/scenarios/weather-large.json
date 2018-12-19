@@ -213,5 +213,12 @@
                 }
             ]
         }
-    ]
+    ],
+    "selectAction": {
+        "type": "Action.Submit",
+        "title": "Action.Submit",
+        "data": {
+            "x": 13
+        }
+    }
 }

@@ -35,7 +35,7 @@ export class SelectAction extends React.Component {
         })();
 
         return (<InputContextConsumer>
-            {({ onExecuteAction }) => <ButtonComponent onPress={() => { this.onClickHandle(onExecuteAction) }}>
+            {({ onExecuteAction }) => <ButtonComponent onPress={() => { this.onClickHandle(onExecuteAction) }} style={this.props.style}>
                 {this.props.children}
             </ButtonComponent>}
         </InputContextConsumer>);

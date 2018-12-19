@@ -62,28 +62,28 @@ export class Input extends React.Component {
         }
 
         return (
-			<InputContextConsumer>
-			{({ addInputItem }) => (
-				<ElementWrapper json={this.payload}>
-					<TextInput
-						style={this.getComputedStyles()}
-						autoCapitalize={Constants.NoneString}
-						autoCorrect={false}
-						placeholder={placeholder}
-						multiline={isMultiline}
-						maxLength={maxLength}
-						underlineColorAndroid={Constants.TransparentString}
-						clearButtonMode={Constants.WhileEditingString}
-						textContentType={style}
-						keyboardType={keyboardType}
-						onFocus={this.props.handleFocus}
-						onBlur={this.props.handleBlur}
-						onChangeText={ (text) => this.props.textValueChanged(text, addInputItem) }
-						value={this.props.value}
-					/>
-				</ElementWrapper>
-			)}
-			</InputContextConsumer>
+            <InputContextConsumer>
+                {({ addInputItem }) => (
+                    <ElementWrapper json={this.payload}>
+                        <TextInput
+                            style={this.getComputedStyles()}
+                            autoCapitalize={Constants.NoneString}
+                            autoCorrect={false}
+                            placeholder={placeholder}
+                            multiline={isMultiline}
+                            maxLength={maxLength}
+                            underlineColorAndroid={Constants.TransparentString}
+                            clearButtonMode={Constants.WhileEditingString}
+                            textContentType={style}
+                            keyboardType={keyboardType}
+                            onFocus={this.props.handleFocus}
+                            onBlur={this.props.handleBlur}
+                            onChangeText={(text) => this.props.textValueChanged(text, addInputItem)}
+                            value={this.props.value}
+                        />
+                    </ElementWrapper>
+                )}
+            </InputContextConsumer>
         );
     }
 
@@ -111,16 +111,21 @@ export class Input extends React.Component {
         this.id = this.payload.id;
         this.type = this.payload.type;
         this.isMultiline = this.payload.isMultiline;
-		this.maxLength = (this.payload.maxLength == undefined || 
-			this.payload.maxLength == 0) ? Number.MAX_VALUE : this.payload.maxLength;
-			
+        this.maxLength = (this.payload.maxLength == undefined ||
+            this.payload.maxLength == 0) ? Number.MAX_VALUE : this.payload.maxLength;
+
         this.placeholder = this.payload.placeholder;
-        let styleValue = Utils.parseHostConfigEnum(
-            Enums.InputTextStyle,
-            this.payload.style,
-            Enums.InputTextStyle.Text);
-        this.style = Utils.getEffectiveInputStyle(styleValue);
-        this.keyboardType = Utils.getKeyboardType(styleValue);
+        if (this.type === Constants.NumberInput) {
+            this.keyboardType = Utils.getKeyboardType(Enums.InputTextStyle.Number);
+        }
+        else {
+            let styleValue = Utils.parseHostConfigEnum(
+                Enums.InputTextStyle,
+                this.payload.style,
+                Enums.InputTextStyle.Text);
+            this.style = Utils.getEffectiveInputStyle(styleValue);
+            this.keyboardType = Utils.getKeyboardType(styleValue);
+        }
     }
 }
 

@@ -5,7 +5,6 @@
  */
 
 import React from 'react';
-import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config';
