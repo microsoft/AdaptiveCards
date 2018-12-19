@@ -51,9 +51,7 @@ export class Container extends React.Component {
                     (
                         <View style={[styles.container, backgroundStyle]}>
                             <ElementWrapper json={containerJson} style={backgroundStyle}>
-                                <ScrollView style={backgroundStyle}>
-                                    {this.parsePayload(containerJson, onParseError)}
-                                </ScrollView>
+                                {this.parsePayload(containerJson, onParseError)}
                             </ElementWrapper>
                         </View>
                     )
@@ -72,10 +70,7 @@ export class Container extends React.Component {
     }
 
     render() {
-
-
         let containerRender = this.internalRenderer(this.props.json);
-
         return containerRender;
     }
 };
