@@ -143,6 +143,10 @@
                                                                   recipientView:columnSetView
                                                                   actionElement:selectAction
                                                                      hostConfig:acoConfig];
+    columnSetView.hidden = !(elem->GetIsVisible());
+    NSString *hashkey = [NSString stringWithCString:elem->GetId().c_str() encoding:NSUTF8StringEncoding];
+    columnSetView.tag = hashkey.hash;
+
     return columnSetView;
 }
 

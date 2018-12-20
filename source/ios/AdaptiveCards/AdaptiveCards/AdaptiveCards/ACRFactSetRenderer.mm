@@ -163,6 +163,9 @@
 
     [viewGroup addArrangedSubview:factSetWrapperView];
 
+    factSetWrapperView.hidden = !(elem->GetIsVisible());
+    NSString *hashkey = [NSString stringWithCString:elem->GetId().c_str() encoding:NSUTF8StringEncoding];
+    factSetWrapperView.tag = hashkey.hash;
     return factSetWrapperView;
 }
 @end

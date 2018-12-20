@@ -234,6 +234,9 @@
         [inputs addObject:inputview];
     }
 
+    inputview.hidden = !(elem->GetIsVisible());
+    NSString *hashkey = [NSString stringWithCString:elem->GetId().c_str() encoding:NSUTF8StringEncoding];
+    inputview.tag = hashkey.hash;
     return inputview;
 }
 

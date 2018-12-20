@@ -76,6 +76,10 @@
                                                                   recipientView:container
                                                                   actionElement:selectAction
                                                                      hostConfig:acoConfig];
+
+    container.hidden = !(elem->GetIsVisible());
+    NSString *hashkey = [NSString stringWithCString:elem->GetId().c_str() encoding:NSUTF8StringEncoding];
+    container.tag = hashkey.hash;
     return viewGroup;
 }
 

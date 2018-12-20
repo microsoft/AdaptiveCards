@@ -77,6 +77,9 @@
                                  attribute:NSLayoutAttributeTrailing
                                 multiplier:1.0
                                   constant:0].active = YES;
+    inputTableView.hidden = !(elem->GetIsVisible());
+    NSString *hashkey = [NSString stringWithCString:elem->GetId().c_str() encoding:NSUTF8StringEncoding];
+    inputTableView.tag = hashkey.hash;
     return inputTableView;
 }
 

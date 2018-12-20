@@ -75,6 +75,9 @@
         [viewGroup addArrangedSubview:choiceSetView];
     }
 
+    choiceSetView.hidden = !(elem->GetIsVisible());
+    NSString *hashkey = [NSString stringWithCString:elem->GetId().c_str() encoding:NSUTF8StringEncoding];
+    choiceSetView.tag = hashkey.hash;
     return choiceSetView;
 }
 

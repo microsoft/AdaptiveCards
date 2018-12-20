@@ -82,6 +82,11 @@
                                     multiplier:1.0
                                       constant:0].active = YES;
     }
+
+    column.hidden = !(elem->GetIsVisible());
+    NSString *hashkey = [NSString stringWithCString:elem->GetId().c_str() encoding:NSUTF8StringEncoding];
+    column.tag = hashkey.hash;
+
     return column;
 }
 

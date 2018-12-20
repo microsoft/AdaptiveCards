@@ -76,6 +76,9 @@
 
     [inputs addObject:numInput];
 
+    numInput.hidden = !(elem->GetIsVisible());
+    NSString *hashkey = [NSString stringWithCString:elem->GetId().c_str() encoding:NSUTF8StringEncoding];
+    numInput.tag = hashkey.hash;
     return numInput;
 }
 
