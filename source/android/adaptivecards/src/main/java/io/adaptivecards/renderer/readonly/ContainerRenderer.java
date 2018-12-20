@@ -2,6 +2,7 @@ package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.nfc.Tag;
 import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.view.View;
@@ -12,6 +13,7 @@ import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -64,6 +66,11 @@ public class ContainerRenderer extends BaseCardElementRenderer
         setSpacingAndSeparator(context, viewGroup, container.GetSpacing(),container.GetSeparator(), hostConfig, true /* horizontal line */);
         ContainerStyle styleForThis = container.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? containerStyle : container.GetStyle();
         LinearLayout containerView = new LinearLayout(context);
+        containerView.setTag(new TagContent(container));
+        if(!baseCardElement.GetIsVisible())
+        {
+            containerView.setVisibility(View.GONE);
+        }
 
         if(container.GetHeight() == HeightType.Stretch)
         {

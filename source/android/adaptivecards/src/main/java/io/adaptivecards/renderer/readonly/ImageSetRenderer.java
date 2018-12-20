@@ -75,6 +75,11 @@ public class ImageSetRenderer extends BaseCardElementRenderer
 
         HorizontalFlowLayout horizFlowLayout = new HorizontalFlowLayout(context);
         horizFlowLayout.setTag(new TagContent(imageSet));
+        if(!baseCardElement.GetIsVisible())
+        {
+            horizFlowLayout.setVisibility(View.GONE);
+        }
+
         ImageSize imageSize = imageSet.GetImageSize();
         ImageVector imageVector = imageSet.GetImages();
         long imageVectorSize = imageVector.size();

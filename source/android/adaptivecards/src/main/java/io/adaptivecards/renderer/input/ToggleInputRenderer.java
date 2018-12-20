@@ -76,6 +76,11 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
         CheckBox checkBox = new CheckBox(context);
         toggleInputHandler.setView(checkBox);
         checkBox.setTag(new TagContent(toggleInput, toggleInputHandler));
+        if(!baseCardElement.GetIsVisible())
+        {
+            checkBox.setVisibility(View.GONE);
+        }
+
         checkBox.setText(toggleInput.GetTitle());
         renderedCard.registerInputHandler(toggleInputHandler);
 

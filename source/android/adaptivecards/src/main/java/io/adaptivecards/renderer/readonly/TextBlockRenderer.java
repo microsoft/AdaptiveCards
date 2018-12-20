@@ -197,6 +197,10 @@ public class TextBlockRenderer extends BaseCardElementRenderer
 
         TextView textView = new TextView(context);
         textView.setTag(new TagContent(textBlock));
+        if(!baseCardElement.GetIsVisible())
+        {
+            textView.setVisibility(View.GONE);
+        }
 
         DateTimeParser parser = new DateTimeParser(textBlock.GetLanguage());
         String textWithFormattedDates = parser.GenerateString(textBlock.GetTextForDateParsing());

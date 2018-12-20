@@ -81,6 +81,11 @@ public class FactSetRenderer extends BaseCardElementRenderer
 
         TableLayout tableLayout = new TableLayout(context);
         tableLayout.setTag(new TagContent(factSet));
+        if(!baseCardElement.GetIsVisible())
+        {
+            tableLayout.setVisibility(View.GONE);
+        }
+
         tableLayout.setColumnShrinkable(1, true);
         HeightType height = factSet.GetHeight();
 

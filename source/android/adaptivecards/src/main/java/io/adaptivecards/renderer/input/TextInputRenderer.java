@@ -156,6 +156,11 @@ public class TextInputRenderer extends BaseCardElementRenderer
         EditText editText = new EditText(context);
         textInputHandler.setView(editText);
         editText.setTag(new TagContent(baseInputElement, textInputHandler));
+        if(!baseInputElement.GetIsVisible())
+        {
+            editText.setVisibility(View.GONE);
+        }
+
         editText.setTextColor(Color.BLACK);
         renderedCard.registerInputHandler(textInputHandler);
 
@@ -189,76 +194,66 @@ public class TextInputRenderer extends BaseCardElementRenderer
             }
         });
 
-        TextInput textInput = (TextInput)baseInputElement;
-        BaseActionElement action = textInput.GetInlineAction();
+        LinearLayout textInputViewGroup = null; //this property should only be filled when it's and TextInput and it contains an Action
+        if(baseInputElement instanceof TextInput) {
+            TextInput textInput = (TextInput) baseInputElement;
+            BaseActionElement action = textInput.GetInlineAction();
 
-        LinearLayout textInputViewGroup = null;
-        if(action != null)
-        {
-            if (hostConfig.GetActions().getShowCard().getActionMode() == ActionMode.Inline &&
-                (action.GetElementType() == ActionType.ShowCard))
-            {
-                renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INTERACTIVITY_DISALLOWED, "Inline ShowCard not supported for InlineAction"));
-            }
-            else
-            {
-                textInputViewGroup = new LinearLayout(context);
-                textInputViewGroup.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                editText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
-                textInputViewGroup.addView(editText);
 
-                Resources.Theme theme = context.getTheme();
-                TypedValue buttonStyle = new TypedValue();
+            if (action != null) {
+                if (hostConfig.GetActions().getShowCard().getActionMode() == ActionMode.Inline &&
+                    (action.GetElementType() == ActionType.ShowCard)) {
+                    renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INTERACTIVITY_DISALLOWED, "Inline ShowCard not supported for InlineAction"));
+                } else {
+                    textInputViewGroup = new LinearLayout(context);
+                    textInputViewGroup.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                    editText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+                    textInputViewGroup.addView(editText);
 
-                String url = action.GetIconUrl();
-                if(url != null && !url.isEmpty())
-                {
-                    ImageButton inlineButton = null;
-                    // check for style from resources
-                    if(theme.resolveAttribute(R.attr.adaptiveInlineActionImage, buttonStyle, true))
-                    {
-                        Context themedContext = new ContextThemeWrapper(context, R.style.adaptiveInlineActionImage);
-                        inlineButton = new ImageButton(themedContext, null, 0);
+                    Resources.Theme theme = context.getTheme();
+                    TypedValue buttonStyle = new TypedValue();
+
+                    String url = action.GetIconUrl();
+                    if (url != null && !url.isEmpty()) {
+                        ImageButton inlineButton = null;
+                        // check for style from resources
+                        if (theme.resolveAttribute(R.attr.adaptiveInlineActionImage, buttonStyle, true)) {
+                            Context themedContext = new ContextThemeWrapper(context, R.style.adaptiveInlineActionImage);
+                            inlineButton = new ImageButton(themedContext, null, 0);
+                        } else {
+                            inlineButton = new ImageButton(context);
+                            inlineButton.setBackgroundColor(Color.TRANSPARENT);
+                            inlineButton.setPadding(16, 0, 0, 8);
+                        }
+
+                        InlineActionIconImageLoaderAsync imageLoader =
+                            new InlineActionIconImageLoaderAsync(
+                                renderedCard,
+                                inlineButton,
+                                url,
+                                editText
+                            );
+
+                        imageLoader.execute(url);
+                        textInputViewGroup.addView(inlineButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
+                    } else {
+                        String title = action.GetTitle();
+                        Button inlineButton = null;
+                        // check for styles from references
+                        if (theme.resolveAttribute(R.attr.adaptiveInlineAction, buttonStyle, true)) {
+                            Context themedContext = new ContextThemeWrapper(context, R.style.adaptiveInlineAction);
+                            inlineButton = new Button(themedContext, null, 0);
+                        } else {
+                            inlineButton = new Button(context);
+                            inlineButton.setBackgroundColor(Color.TRANSPARENT);
+                            inlineButton.setTextColor(Color.BLACK);
+                            inlineButton.setPadding(16, 0, 0, 8);
+                        }
+                        inlineButton.setText(title);
+                        textInputViewGroup.addView(inlineButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
                     }
-                    else
-                    {
-                        inlineButton = new ImageButton(context);
-                        inlineButton.setBackgroundColor(Color.TRANSPARENT);
-                        inlineButton.setPadding(16, 0, 0, 8);
-                    }
-
-                    InlineActionIconImageLoaderAsync imageLoader =
-                        new InlineActionIconImageLoaderAsync(
-                            renderedCard,
-                            inlineButton,
-                            url,
-                            editText
-                        );
-
-                    imageLoader.execute(url);
-                    textInputViewGroup.addView(inlineButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
+                    textInputViewGroup.setGravity(Gravity.CENTER);
                 }
-                else
-                {
-                    String title =  action.GetTitle();
-                    Button inlineButton = null;
-                    // check for styles from references
-                    if(theme.resolveAttribute(R.attr.adaptiveInlineAction, buttonStyle, true))
-                    {
-                        Context themedContext = new ContextThemeWrapper(context, R.style.adaptiveInlineAction);
-                        inlineButton = new Button(themedContext, null, 0);
-                    }
-                    else
-                    {
-                        inlineButton = new Button(context);
-                        inlineButton.setBackgroundColor(Color.TRANSPARENT);
-                        inlineButton.setTextColor(Color.BLACK);
-                        inlineButton.setPadding(16, 0, 0, 8);
-                    }
-                    inlineButton.setText(title);
-                    textInputViewGroup.addView(inlineButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
-                }
-                textInputViewGroup.setGravity(Gravity.CENTER);
             }
         }
 

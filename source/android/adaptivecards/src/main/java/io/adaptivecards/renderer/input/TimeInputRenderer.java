@@ -10,6 +10,7 @@ import android.widget.EditText;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
@@ -110,6 +111,11 @@ public class TimeInputRenderer extends TextInputRenderer
 
             }
         });
+        editText.setTag(new TagContent(timeInput, timeInputHandler));
+        if(!baseCardElement.GetIsVisible())
+        {
+            editText.setVisibility(View.GONE);
+        }
 
         return editText;
     }

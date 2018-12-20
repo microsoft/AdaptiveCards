@@ -78,6 +78,10 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
 
         LinearLayout layout = new LinearLayout(context);
         layout.setTag(new TagContent(columnSet));
+        if(!baseCardElement.GetIsVisible())
+        {
+            layout.setVisibility(View.GONE);
+        }
 
         for (int i = 0; i < columnVectorSize; i++) {
             Column column = columnVector.get(i);
