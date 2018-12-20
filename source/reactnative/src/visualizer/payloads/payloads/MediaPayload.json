@@ -10,8 +10,13 @@
 		},
 		{
 			"type": "Media",
-			"poster": "http://adaptivecards.io/content/cats/1.png",
+			"id": "adaptive-card-video",
+			"poster": "https://baconmockup.com/300/200",
 			"sources": [
+				{
+					"mimeType": "video/mp4",
+					"url": "https://adaptivecards.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4"
+				},
 				{
 					"mimeType": "video/mp4",
 					"url": "https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4"
