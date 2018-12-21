@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, TouchableOpacity, TouchableNativeFeedback } from 'react-native';
 import { InputContextConsumer } from '../../utils/context';
 import * as Constants from '../../utils/constants';
 import * as Utils from '../../utils/util';
@@ -29,10 +29,7 @@ export class SelectAction extends React.Component {
     }
 
     render() {
-        const ButtonComponent = Platform.select({
-            ios: () => require('TouchableOpacity'),
-            android: () => require('TouchableNativeFeedback'),
-        })();
+        const ButtonComponent = Platform.OS === Constants.PlatformIOS ? TouchableOpacity : TouchableNativeFeedback;
 
         return (<InputContextConsumer>
             {({ onExecuteAction }) => <ButtonComponent onPress={() => { this.onClickHandle(onExecuteAction) }} style={this.props.style}>

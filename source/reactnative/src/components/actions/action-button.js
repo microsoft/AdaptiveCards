@@ -10,7 +10,9 @@ import {
     View,
     StyleSheet,
     Image,
-    Platform
+    Platform,
+    TouchableOpacity,
+    TouchableNativeFeedback
 } from 'react-native';
 
 import { StyleManager } from '../../styles/style-config';
@@ -42,10 +44,8 @@ export class ActionButton extends React.Component {
             return null;
         }
         this.parseHostConfig();
-        const ButtonComponent = Platform.select({
-            ios: () => require('TouchableOpacity'),
-            android: () => require('TouchableNativeFeedback'),
-        })();
+
+        const ButtonComponent = Platform.OS === Constants.PlatformIOS ? TouchableOpacity : TouchableNativeFeedback;
 
         if (this.payload.type === Constants.ActionSubmit) {
             return (<InputContextConsumer>
