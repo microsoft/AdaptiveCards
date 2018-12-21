@@ -21,6 +21,7 @@
 #import "ACRAggregateTarget.h"
 #import "ACRShowCardTarget.h"
 #import "ACRActionOpenURLRenderer.h"
+#import "ACRUIImageView.h"
 
 @implementation ACRInputRenderer
 
@@ -48,7 +49,7 @@
     UIView *inputview = nil;
     ACRTextField *txtInput = nil;
     ACRTextView *txtview = nil;
-    UIButton *button = nil;
+    ACRButton *button = nil;
     ACRQuickReplyMultilineView *multilineview = nil;
     ACRQuickReplyView *quickReplyView = nil;
 
@@ -62,7 +63,7 @@
             renderAction = YES;
         }
     }
-    
+
     if(inputBlck->GetIsMultiline()) {
         if(renderAction) {
             // if action is defined, load ACRQuickReplyMultilineView nib for customizable UI
@@ -183,10 +184,30 @@
         NSDictionary *imageViewMap = [rootView getImageMap];
         NSString *key = [NSString stringWithCString:action->GetIconUrl().c_str() encoding:[NSString defaultCStringEncoding]];
         UIImage *img = imageViewMap[key];
+        button.iconPlacement = ACRNoTitle;
 
         if(img){
-            CGSize contentSize = [button.titleLabel intrinsicContentSize];
-            [ACRButton setImageView:img inButton:button withConfig:acoConfig contentSize:contentSize inconPlacement:ACRLeftOfTitle];
+            UIImageView *iconView = [[ACRUIImageView alloc] init];
+            iconView.image = img;
+            [button addSubview:iconView];
+            button.iconView = iconView;
+            [button setImageView:img withConfig:acoConfig];
+        } else if(key.length) {
+            NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)action.get()];
+            NSString *key = [number stringValue];
+            UIImageView *view = [rootView getImageView:key];
+            if(view && view.image) {
+                button.iconView = view;
+                [button addSubview:view];
+                [button setImageView:view.image withConfig:acoConfig];
+            } else {
+                button.iconView = view;
+                [button addSubview:view];
+                [rootView setImageView:key view:button];
+            }
+            [NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:view
+                attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;
+
         } else {
             [button setTitle:title forState:UIControlStateNormal];
         }
