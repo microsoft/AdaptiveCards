@@ -1,7 +1,15 @@
 ![](AdaptiveCards.gif)
 
 ## Usage
-**`<AdaptiveCards/>`** under /src is the main component that renders  the card based on the given prop `payload`.
+- Add package
+``` javascript
+npm install adaptivecards-reactnative  
+```
+- Import the root component
+``` javascript
+import AdaptiveCards from 'adaptivecards-reactnative'
+```
+- Render the component with required props
 
 ``` html
 <AdaptiveCards payload={} 
@@ -10,15 +18,15 @@
                onParseError={} />
 ```
 
-Prop | Type | Description
------------- | ------------- | ------------ |
-**payload** | `{object}` | JSON payload adhering to the [schema](https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema) 
-**hostConfig** | `{object}` | (if any) JSON Host config to override based on [schema](https://docs.microsoft.com/en-us/adaptive-cards/rendering-cards/host-config)
-**onExecuteAction** | `{Event Handler}` | (if any) Method to be executed on card actions
-**onParseError** | `{Event Handler}` | (if any) Method to be executed on JSON parse errors
+Prop | Type | Description | Required
+------------ | ------------- | ------------ | ------------ |
+**payload** | `{object}` | JSON payload adhering to the [schema](https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema) | YES
+**hostConfig** | `{object}` | JSON Host config to override based on [schema](https://docs.microsoft.com/en-us/adaptive-cards/rendering-cards/host-config) | NO
+**onExecuteAction** | `{Event Handler}` | Method to be executed on card actions | NO
+**onParseError** | `{Event Handler}` | Method to be executed on JSON parse errors | NO
 
 ## Extensibility
-In order to override the rendering of built-in components OR to add support a new custom element type, one can simply make use of the functions exposed through Element Registry.
+In order to override the rendering of built-in components OR to add/remove  an element type, one can simply make use of the functions exposed by Element Registry.
 
 **Examples**   
 * To override built-in `TextBlock` element,   
@@ -35,13 +43,13 @@ Registry.getManager().registerComponent('Rating',RatingComponent);
 Registry.getManager().removeComponent('Input.Date');
 ```
 
-## Visualizer
-There are lot of sample JSON payloads covering all element types with few real case scenarios which are available within this project.   
+##  Examples / Visualizer
+There are lot of sample JSON payloads covering all element types with few real case scenarios are available within this project.   
 
 To see the visualizer,
-* Clone the repo
-* Navigate to source/reactnative/ > Run **`npm install`**
-* Run > `reactnative run-ios` OR `run-android`
+* Clone the repo https://github.com/Imaginea/AdaptiveCards
+* Navigate to source/reactnative/ **>** Run **`npm install`**
+* Run **> `react-native run-ios` OR `run-android`**
 
 
 ##  About Adaptive Card
