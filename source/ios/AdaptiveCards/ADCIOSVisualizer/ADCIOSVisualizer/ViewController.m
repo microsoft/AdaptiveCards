@@ -93,7 +93,7 @@
 - (IBAction)applyText:(id)sender
 {
     UITableView *ACVTabView = self.ACVTabVC.tableView;
-    if(![_editView.text isEqualToString:@""]){
+    if(_editView.text != NULL && ![_editView.text isEqualToString:@""]){
         [self update:self.editView.text];
         [self.view addSubview: ACVTabView];
         [self.editView removeFromSuperview];
