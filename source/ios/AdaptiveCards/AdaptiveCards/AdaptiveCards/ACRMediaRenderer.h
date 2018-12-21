@@ -7,7 +7,7 @@
 
 #import "ACRBaseCardElementRenderer.h"
 
-@interface ACRMediaRenderer:ACRBaseCardElementRenderer
+@interface ACRMediaRenderer:ACRBaseCardElementRenderer<ACRIKVONotificationHandler>
 
 + (ACRMediaRenderer *)getInstance;
 

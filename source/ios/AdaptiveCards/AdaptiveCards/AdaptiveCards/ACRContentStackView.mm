@@ -16,6 +16,7 @@ using namespace AdaptiveCards;
     NSMutableArray* _targets;
     NSMutableArray<ACRShowCardTarget *>* _showcardTargets;
     ACRContainerStyle _style;
+    NSArray<NSLayoutConstraint *>* _widthconstraint;
 }
 
 - (instancetype)initWithStyle:(ACRContainerStyle)style
@@ -184,21 +185,50 @@ using namespace AdaptiveCards;
     NSString *verString = [[NSString alloc] initWithFormat:@"V:|-(%u@%u)-[_stackView]-(%u@%u)-|",
                            padding, priority, padding, priority];
     NSDictionary *dictionary = NSDictionaryOfVariableBindings(_stackView);
-    NSArray *horzConst = [NSLayoutConstraint constraintsWithVisualFormat:horString
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:dictionary];
+    _widthconstraint = [NSLayoutConstraint constraintsWithVisualFormat:horString
+                                                                options:0
+                                                                metrics:nil
+                                                                  views:dictionary];
     NSArray *vertConst = [NSLayoutConstraint constraintsWithVisualFormat:verString
                                                                  options:0
                                                                  metrics:nil
                                                                    views:dictionary];
-    [self addConstraints:horzConst];
+    [self addConstraints:_widthconstraint];
     [self addConstraints:vertConst];
 }
 
 - (UILayoutConstraintAxis) getAxis
 {
     return self.stackView.axis;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];    
+
+    if (_isActionSet) {
+        float accumulatedWidth = 0, accumulatedHeight = 0, spacing = self.stackView.spacing, maxWidth = 0, maxHeight = 0;
+
+        for(UIView *view in self.stackView.subviews){
+            accumulatedWidth += [view intrinsicContentSize].width;
+            accumulatedHeight += [view intrinsicContentSize].height;
+            maxWidth = MAX(maxWidth, [view intrinsicContentSize].width);
+            maxHeight = MAX(maxHeight, [view intrinsicContentSize].height);
+        }
+
+        float contentWidth = accumulatedWidth, contentHeight = accumulatedHeight;
+        if(self.stackView.axis == UILayoutConstraintAxisHorizontal) {
+            contentWidth += (self.stackView.subviews.count - 1) * spacing;
+            contentHeight = maxHeight;
+        } else {
+            contentHeight += (self.stackView.subviews.count - 1) * spacing;
+            contentWidth = maxWidth;
+        }
+
+        if (contentWidth > self.frame.size.width) {
+            [self removeConstraints:_widthconstraint]; 
+        }
+    }
 }
 
 @end
