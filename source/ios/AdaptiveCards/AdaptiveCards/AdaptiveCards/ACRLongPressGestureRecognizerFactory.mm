@@ -49,10 +49,10 @@ using namespace AdaptiveCards;
             }
             case ActionType::ToggleVisibility:
             {
-                std::shared_ptr<ToggleVisibilityAction> action = std::dynamic_pointer_cast<ToggleVisibilityAction>(action);
+                std::shared_ptr<ToggleVisibilityAction> toggleAction = std::dynamic_pointer_cast<ToggleVisibilityAction>(action);
                 
                 target = [[ACRToggleVisibilityTarget alloc]
-                             initWithActionElement:action config:config rootView:rootView];
+                             initWithActionElement:toggleAction config:config rootView:rootView];
                 break;
             }
             // everything else is not valid request
