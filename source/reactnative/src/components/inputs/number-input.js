@@ -8,6 +8,8 @@ import React from 'react';
 import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config';
 import { Input } from './input';
+import * as Utils from '../../utils/util';
+import * as Enums from '../../utils/enums';
 
 const NUM_REGEX = /^[0-9][\.\d]*(,\d+)?$/;
 
@@ -17,7 +19,9 @@ export class NumberInput extends React.Component {
         super(props);
 
         this.payload = props.json;
-        this.id = Constants.EmptyString;
+		this.id = Constants.EmptyString;
+		this.keyboardType = Utils.getKeyboardType(Enums.InputTextStyle.Number);
+		this.style = Utils.getEffectiveInputStyle(Enums.InputTextStyle.Number);
         this.state = {
             isError: false,
             numberValue: Constants.EmptyString,
@@ -32,15 +36,17 @@ export class NumberInput extends React.Component {
         this.parseHostConfig();
 
         return (
-				<Input 
-					json={this.payload}
-					handleFocus={this.handleFocus}
-					handleBlur={this.handleBlur}
-					textValueChanged={ (text, addInputItem) => 
-						{ this.onTextChanged(text, addInputItem) }}
-					value={this.state.numberValue} 
-					isError={this.state.isError}     
-				/>
+			<Input 
+				json={this.payload}
+				handleFocus={this.handleFocus}
+				handleBlur={this.handleBlur}
+				textValueChanged={ (text, addInputItem) => 
+					{ this.onTextChanged(text, addInputItem) }}
+				value={this.state.numberValue} 
+				isError={this.state.isError}  
+				keyboardType={this.keyboardType}   
+				textStyle={this.style}
+			/>
         );
     }
 
@@ -49,7 +55,7 @@ export class NumberInput extends React.Component {
      */
     parseHostConfig() {
         this.min = this.payload.min;
-        this.max = this.payload.max;
+		this.max = this.payload.max;
     }
 
     /**

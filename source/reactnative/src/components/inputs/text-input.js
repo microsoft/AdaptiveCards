@@ -9,6 +9,7 @@ import * as Enums from '../../utils/enums';
 import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config';
 import { Input } from './input';
+import * as Utils from '../../utils/util';
 
 const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 const URL_REGEX = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/;
@@ -20,7 +21,9 @@ export class InputText extends React.Component {
         super(props);
 
 		this.payload = props.json;
-		this.id = props.json.id;
+		this.id = Constants.EmptyString;
+		this.style = Constants.EmptyString;
+		this.keyboardType = Constants.EmptyString;
         this.state = {
             isError: false,
             text: Constants.EmptyString,
@@ -34,13 +37,33 @@ export class InputText extends React.Component {
     textValueChanged = (text, addInputItem) => {
         this.setState({ text });
         addInputItem(this.id, text);
+	}
+	
+	/**
+     * @description Parse hostconfig specific to this element
+     */
+    parseHostConfig() {
+        this.id = this.payload.id;
+		let styleValue = Utils.parseHostConfigEnum(
+			Enums.InputTextStyle,
+			this.payload.style,
+			Enums.InputTextStyle.Text);
+		this.style = Utils.getEffectiveInputStyle(styleValue);
+		this.keyboardType = Utils.getKeyboardType(styleValue);
     }
 
     render() {
 
         if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
             return null;
-        }
+		}
+		
+		this.parseHostConfig();
+		let styleValue = Utils.parseHostConfigEnum(
+			Enums.InputTextStyle,
+			this.payload.style,
+			Enums.InputTextStyle.Text);
+		this.keyboardType = Utils.getKeyboardType(styleValue);
 
         return (
 			<Input 
@@ -51,6 +74,8 @@ export class InputText extends React.Component {
 					{ this.textValueChanged(text, addInputItem) }}
 				value={this.state.text}    
 				isError={this.state.isError} 
+				keyboardType={this.keyboardType}
+				textStyle={this.props.style}
 			/>
         );
     }
