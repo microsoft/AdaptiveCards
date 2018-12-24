@@ -8,17 +8,18 @@ import React from 'react';
 import {
     View,
     StyleSheet,
-    Text,
-    Dimensions
 } from 'react-native';
 
 import ElementWrapper from '../elements/element-wrapper';
 import * as Constants from '../../utils/constants';
 import { StyleManager } from '../../styles/style-config';
+import { HostConfigManager } from "../../utils/host-config";
+import { Label } from '../elements';
 
 export class FactSet extends React.Component {
 
     styleConfig = StyleManager.getManager().styles;
+    hostConfig = HostConfigManager.getHostConfig();
 
     constructor(props) {
         super(props);
@@ -91,17 +92,30 @@ export class FactSet extends React.Component {
     checkTheMaximumSizeRender() {
         var checkArray = [];
         this.widthArray = [];
-        var viewWidth = Dimensions.get("window").width;
+
+        // host config
+        let titleConfig = this.hostConfig.factSet.title;
+        let valueConfig = this.hostConfig.factSet.value;
+
         this.props.json.facts.map((element, index) => {
             checkArray.push(
                 <View style={[styles.textContainer]} key={`FACT--${index}`}>
-                    <Text style={[styles.keyTextStyle, this.styleConfig.fontConfig]} numberOfLines={500}
-                        onLayout={(event) => { this.measureKeyText(event) }}>
-                        {element.title}
-                    </Text>
-                    <Text style={[styles.valueTextStyle, this.styleConfig.fontConfig]} numberOfLines={500}>
-                        {element.value}
-                    </Text>
+                    <Label
+                        text={element.title}
+                        size={titleConfig.size}
+                        weight={titleConfig.weight}
+                        color={titleConfig.color}
+                        isSubtle={titleConfig.isSubtle}
+                        wrap={titleConfig.wrap}
+                        onDidLayout={(event) => { this.measureKeyText(event) }} />
+                    <Label
+                        text={element.value}
+                        size={valueConfig.size}
+                        weight={valueConfig.weight}
+                        color={valueConfig.color}
+                        isSubtle={valueConfig.isSubtle}
+                        wrap={valueConfig.wrap}
+                        style={styles.valueTextStyle} />
                 </View>
             );
         });
@@ -115,25 +129,37 @@ export class FactSet extends React.Component {
         renderedElement = [];
         if (!this.payload)
             return renderedElement;
+
+        // host config
+        let titleConfig = this.hostConfig.factSet.title;
+        let valueConfig = this.hostConfig.factSet.value;
+
         factSetJson.facts.map((element, index) => {
             renderedElement.push(
                 <View style={[styles.textContainer]} key={`FACT-${element.title}-${index}`}>
-                    <Text style={[styles.keyTextStyle, this.styleConfig.fontConfig,
-                    { width: this.state.keyWidth }]}
-                        numberOfLines={500}>
-                        {element.title}
-                    </Text>
-                    <Text style={[styles.valueTextStyle, this.styleConfig.fontConfig,
-                    { width: this.state.valueWidth }]}
-                        numberOfLines={500}>
-                        {element.value}
-                    </Text>
+                    <Label
+                        text={element.title}
+                        size={titleConfig.size}
+                        weight={titleConfig.weight}
+                        color={titleConfig.color}
+                        isSubtle={titleConfig.isSubtle}
+                        wrap={titleConfig.wrap}
+                        style={{ width: this.state.keyWidth }} />
+                    <Label
+                        text={element.value}
+                        size={valueConfig.size}
+                        weight={valueConfig.weight}
+                        color={valueConfig.color}
+                        isSubtle={valueConfig.isSubtle}
+                        wrap={valueConfig.wrap}
+                        style={[styles.valueTextStyle, { width: this.state.valueWidth }]} />
                 </View>
             );
         });
 
         return renderedElement;
     }
+
     /**
      * @description conditional render to check if width value is found
      */
@@ -170,9 +196,6 @@ const styles = StyleSheet.create({
     textContainer: {
         flexDirection: Constants.FlexRow,
         backgroundColor: 'transparent',
-    },
-    keyTextStyle: {
-        fontWeight: Constants.BoldWeight,
     },
     valueTextStyle: {
         paddingLeft: 5,

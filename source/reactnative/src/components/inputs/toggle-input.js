@@ -6,20 +6,16 @@
 
 import React from 'react';
 import {
-    Text,
     Switch,
     StyleSheet
 } from 'react-native';
 
-import ElementWrapper from '../elements/element-wrapper';
-import * as Constants from '../../utils/constants';
-import { InputContextConsumer } from '../../utils/context';
 import { StyleManager } from '../../styles/style-config';
 import { HostConfigManager } from '../../utils/host-config';
-
-const TrueString = "true";
-const FalseString = "false";
-const ToggleValueOn = "toggleValueOn;";
+import { InputContextConsumer } from '../../utils/context';
+import { Label } from '../elements';
+import ElementWrapper from '../elements/element-wrapper';
+import * as Constants from '../../utils/constants';
 
 export class ToggleInput extends React.Component {
 
@@ -58,7 +54,10 @@ export class ToggleInput extends React.Component {
 
         return (
             <ElementWrapper json={this.props.json} style={styles.toggleContainer}>
-                <Text style={[styles.title, this.styleConfig.fontConfig]}>{this.title}</Text>
+                <Label
+                    text={this.title}
+                    wrap={true}
+                    style={styles.title} />
                 <InputContextConsumer>
                     {({ addInputItem }) => (
                         <Switch
