@@ -111,6 +111,14 @@ public class BaseCardElement {
     if (getClass() == BaseCardElement.class) AdaptiveCardObjectModelJNI.BaseCardElement_SetId(swigCPtr, this, value); else AdaptiveCardObjectModelJNI.BaseCardElement_SetIdSwigExplicitBaseCardElement(swigCPtr, this, value);
   }
 
+  public boolean GetIsVisible() {
+    return (getClass() == BaseCardElement.class) ? AdaptiveCardObjectModelJNI.BaseCardElement_GetIsVisible(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseCardElement_GetIsVisibleSwigExplicitBaseCardElement(swigCPtr, this);
+  }
+
+  public void SetIsVisible(boolean value) {
+    if (getClass() == BaseCardElement.class) AdaptiveCardObjectModelJNI.BaseCardElement_SetIsVisible(swigCPtr, this, value); else AdaptiveCardObjectModelJNI.BaseCardElement_SetIsVisibleSwigExplicitBaseCardElement(swigCPtr, this, value);
+  }
+
   public CardElementType GetElementType() {
     return CardElementType.swigToEnum((getClass() == BaseCardElement.class) ? AdaptiveCardObjectModelJNI.BaseCardElement_GetElementType(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseCardElement_GetElementTypeSwigExplicitBaseCardElement(swigCPtr, this));
   }
