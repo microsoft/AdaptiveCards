@@ -12,6 +12,7 @@
 #include <Fact.h>
 #include <Image.h>
 #include <MediaSource.h>
+#include <ToggleVisibilityTarget.h>
 #include <windows.foundation.collections.h>
 #include <ParseContext.h>
 #include "AdaptiveCardParseWarning.h"
@@ -109,6 +110,9 @@ HRESULT GenerateSharedChoices(ABI::Windows::Foundation::Collections::IVector<ABI
 HRESULT GenerateSharedMediaSources(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveMediaSource*>* items,
                                    std::vector<std::shared_ptr<AdaptiveSharedNamespace::MediaSource>>& containedElements);
 
+HRESULT GenerateSharedToggleElements(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveToggleVisibilityTarget*>* items,
+                                     std::vector<std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityTarget>>& containedElements);
+
 HRESULT GenerateContainedElementsProjection(
     const std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>* projectedParentContainer) noexcept;
@@ -136,6 +140,10 @@ HRESULT GenerateInputChoicesProjection(
 HRESULT GenerateMediaSourcesProjection(
     const std::vector<std::shared_ptr<AdaptiveSharedNamespace::MediaSource>>& containedElements,
     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveMediaSource*>* projectedParentContainer) noexcept;
+
+HRESULT GenerateToggleTargetProjection(
+    const std::vector<std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityTarget>>& containedElements,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveToggleVisibilityTarget*>* projectedParentContainer) noexcept;
 
 HRESULT GenerateSeparatorProjection(std::shared_ptr<AdaptiveSharedNamespace::Separator> sharedSeparator,
                                     ABI::AdaptiveNamespace::IAdaptiveSeparator** projectedSeparator) noexcept;
