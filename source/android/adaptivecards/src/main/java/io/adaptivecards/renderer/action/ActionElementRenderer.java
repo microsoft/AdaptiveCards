@@ -182,7 +182,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
 
         protected ActionElementRendererIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl, IconPlacement iconPlacement, long iconSize)
         {
-            super(renderedCard, containerView, imageBaseUrl);
+            super(renderedCard, containerView, imageBaseUrl, containerView.getResources().getDisplayMetrics().widthPixels);
             m_iconPlacement = iconPlacement;
             m_iconSize = iconSize;
         }
