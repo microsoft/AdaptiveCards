@@ -33,6 +33,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_OverrideStyles(_COM_Outptr_ ABI::Windows::UI::Xaml::IResourceDictionary** overrideDictionary);
         IFACEMETHODIMP AddError(_In_ ABI::AdaptiveNamespace::ErrorStatusCode statusCode, _In_ HSTRING message);
         IFACEMETHODIMP AddWarning(_In_ ABI::AdaptiveNamespace::WarningStatusCode statusCode, _In_ HSTRING message);
+        IFACEMETHODIMP get_CardFrameworkElement(_COM_Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** value);
+
+        HRESULT put_CardFrameworkElement(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* value);
 
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> GetDefaultActionSentimentDictionary();
 
@@ -47,6 +50,7 @@ namespace AdaptiveNamespace
         Microsoft::WRL::ComPtr<AdaptiveNamespace::AdaptiveMediaEventInvoker> m_mediaEventInvoker;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers> m_resourceResolvers;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_overrideDictionary;
+        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IFrameworkElement> m_cardFrameworkElement;
 
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_actionSentimentDefaultDictionary;
     };

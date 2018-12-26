@@ -99,6 +99,8 @@ struct tm {
 #include "../../../shared/cpp/ObjectModel/ActionSet.h"
 #include "../../../shared/cpp/ObjectModel/MediaSource.h"
 #include "../../../shared/cpp/ObjectModel/Media.h"
+#include "../../../shared/cpp/ObjectModel/ToggleVisibilityAction.h"
+#include "../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.h"
 %}
 
 %shared_ptr(AdaptiveCards::BaseActionElement)
@@ -150,6 +152,9 @@ struct tm {
 %shared_ptr(AdaptiveCards::MediaSource)
 %shared_ptr(AdaptiveCards::Media)
 %shared_ptr(AdaptiveCards::MediaParser)
+%shared_ptr(AdaptiveCards::ToggleVisibilityTarget)
+%shared_ptr(AdaptiveCards::ToggleVisibilityAction)
+%shared_ptr(AdaptiveCards::ToggleVisibilityActionParser)
 %shared_ptr(AdaptiveCards::ActionSet)
 %shared_ptr(AdaptiveCards::ActionSetParser)
 
@@ -306,6 +311,7 @@ namespace Json {
 %template(MediaSourceVector) std::vector<std::shared_ptr<AdaptiveCards::MediaSource> >;
 %template(BaseActionElementVector) std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement> >;
 %template(DateTimePreparsedTokenVector) std::vector<std::shared_ptr<AdaptiveCards::DateTimePreparsedToken> >;
+%template(ToggleVisibilityTargetVector) std::vector<std::shared_ptr<AdaptiveCards::ToggleVisibilityTarget> >;
 %template(StringVector) std::vector<std::string>;
 %template(CharVector) std::vector<char>;
 
@@ -581,6 +587,21 @@ namespace Json {
     }
 };
 
+%exception AdaptiveCards::ToggleVisibilityAction::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::ToggleVisibilityAction {
+    static AdaptiveCards::ToggleVisibilityAction *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::ToggleVisibilityAction *>(baseCardElement);
+    }
+};
+
 %exception AdaptiveCards::ActionSet::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
     $action
     if (!result) {
@@ -635,4 +656,6 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/TextBlock.h"
 %include "../../../shared/cpp/ObjectModel/MediaSource.h"
 %include "../../../shared/cpp/ObjectModel/Media.h"
+%include "../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.h"
+%include "../../../shared/cpp/ObjectModel/ToggleVisibilityAction.h"
 %include "../../../shared/cpp/ObjectModel/ActionSet.h"

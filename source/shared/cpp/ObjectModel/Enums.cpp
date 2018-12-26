@@ -45,6 +45,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Default, "default"},
             {AdaptiveCardSchemaKey::DefaultPoster, "defaultPoster"},
             {AdaptiveCardSchemaKey::Display, "display"},
+            {AdaptiveCardSchemaKey::ElementId, "elementId"},
             {AdaptiveCardSchemaKey::Emphasis, "emphasis"},
             {AdaptiveCardSchemaKey::ExtraLarge, "extraLarge"},
             {AdaptiveCardSchemaKey::Facts, "facts"},
@@ -75,6 +76,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::IsRequired, "isRequired"},
             {AdaptiveCardSchemaKey::IsSelected, "isSelected"},
             {AdaptiveCardSchemaKey::IsSubtle, "isSubtle"},
+            {AdaptiveCardSchemaKey::IsVisible, "isVisible"},
             {AdaptiveCardSchemaKey::Items, "items"},
             {AdaptiveCardSchemaKey::Language, "lang"},
             {AdaptiveCardSchemaKey::Large, "large"},
@@ -118,6 +120,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Style, "style"},
             {AdaptiveCardSchemaKey::Subtle, "subtle"},
             {AdaptiveCardSchemaKey::SupportsInteractivity, "supportsInteractivity"},
+            {AdaptiveCardSchemaKey::TargetElements, "targetElements"},
             {AdaptiveCardSchemaKey::Text, "text"},
             {AdaptiveCardSchemaKey::TextBlock, "textBlock"},
             {AdaptiveCardSchemaKey::TextConfig, "textConfig"},
@@ -167,6 +170,7 @@ namespace AdaptiveSharedNamespace
             {ActionType::OpenUrl, "Action.OpenUrl"},
             {ActionType::ShowCard, "Action.ShowCard"},
             {ActionType::Submit, "Action.Submit"},
+            {ActionType::ToggleVisibility, "Action.ToggleVisibility"},
             {ActionType::Custom, "Custom"}});
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(HeightType, HeightType::Stretch, {

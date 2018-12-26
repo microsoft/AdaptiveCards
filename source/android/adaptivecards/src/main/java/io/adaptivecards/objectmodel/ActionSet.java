@@ -49,16 +49,8 @@ public class ActionSet extends BaseCardElement {
     return new JsonValue(AdaptiveCardObjectModelJNI.ActionSet_SerializeToJsonValue(swigCPtr, this), true);
   }
 
-  public ActionsOrientation GetOrientation() {
-    return ActionsOrientation.swigToEnum(AdaptiveCardObjectModelJNI.ActionSet_GetOrientation(swigCPtr, this));
-  }
-
-  public void SetOrientation(ActionsOrientation value) {
-    AdaptiveCardObjectModelJNI.ActionSet_SetOrientation(swigCPtr, this, value.swigValue());
-  }
-
   public BaseActionElementVector GetActions() {
-    return new BaseActionElementVector(AdaptiveCardObjectModelJNI.ActionSet_GetActions(swigCPtr, this), false);
+    return new BaseActionElementVector(AdaptiveCardObjectModelJNI.ActionSet_GetActions__SWIG_0(swigCPtr, this), false);
   }
 
   public static ActionSet dynamic_cast(BaseCardElement baseCardElement) {

@@ -83,6 +83,10 @@
 		7ECFB641219A3940004727A9 /* ParseContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 7ECFB63F219A3940004727A9 /* ParseContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7EDC0F67213878E800077A13 /* SemanticVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 7EDC0F65213878E800077A13 /* SemanticVersion.h */; };
 		7EDC0F68213878E800077A13 /* SemanticVersion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7EDC0F66213878E800077A13 /* SemanticVersion.cpp */; };
+		CA1218C621C4509400152EA8 /* ToggleVisibilityTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = CA1218C221C4509300152EA8 /* ToggleVisibilityTarget.h */; };
+		CA1218C721C4509400152EA8 /* ToggleVisibilityAction.h in Headers */ = {isa = PBXBuildFile; fileRef = CA1218C321C4509300152EA8 /* ToggleVisibilityAction.h */; };
+		CA1218C821C4509400152EA8 /* ToggleVisibilityTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA1218C421C4509400152EA8 /* ToggleVisibilityTarget.cpp */; };
+		CA1218C921C4509400152EA8 /* ToggleVisibilityAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA1218C521C4509400152EA8 /* ToggleVisibilityAction.cpp */; };
 		F401A8771F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = F401A8751F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F401A8781F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F401A8761F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm */; };
 		F401A87C1F0DCBC8006D7AF2 /* ACRImageSetRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F401A87A1F0DCBC8006D7AF2 /* ACRImageSetRenderer.mm */; };
@@ -368,6 +372,10 @@
 		7ECFB63F219A3940004727A9 /* ParseContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ParseContext.h; path = ../../../../shared/cpp/ObjectModel/ParseContext.h; sourceTree = "<group>"; };
 		7EDC0F65213878E800077A13 /* SemanticVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SemanticVersion.h; path = ../../../../shared/cpp/ObjectModel/SemanticVersion.h; sourceTree = "<group>"; };
 		7EDC0F66213878E800077A13 /* SemanticVersion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SemanticVersion.cpp; path = ../../../../shared/cpp/ObjectModel/SemanticVersion.cpp; sourceTree = "<group>"; };
+		CA1218C221C4509300152EA8 /* ToggleVisibilityTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ToggleVisibilityTarget.h; path = ../../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.h; sourceTree = "<group>"; };
+		CA1218C321C4509300152EA8 /* ToggleVisibilityAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ToggleVisibilityAction.h; path = ../../../../shared/cpp/ObjectModel/ToggleVisibilityAction.h; sourceTree = "<group>"; };
+		CA1218C421C4509400152EA8 /* ToggleVisibilityTarget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ToggleVisibilityTarget.cpp; path = ../../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.cpp; sourceTree = "<group>"; };
+		CA1218C521C4509400152EA8 /* ToggleVisibilityAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ToggleVisibilityAction.cpp; path = ../../../../shared/cpp/ObjectModel/ToggleVisibilityAction.cpp; sourceTree = "<group>"; };
 		F401A8751F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRImageSetUICollectionView.h; sourceTree = "<group>"; };
 		F401A8761F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRImageSetUICollectionView.mm; sourceTree = "<group>"; };
 		F401A8791F0DCBC8006D7AF2 /* ACRImageSetRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRImageSetRenderer.h; sourceTree = "<group>"; };
@@ -812,6 +820,10 @@
 				F44872F01EE2261F00FCAFAE /* TimeInput.h */,
 				F44872F11EE2261F00FCAFAE /* ToggleInput.cpp */,
 				F44872F21EE2261F00FCAFAE /* ToggleInput.h */,
+				CA1218C521C4509400152EA8 /* ToggleVisibilityAction.cpp */,
+				CA1218C321C4509300152EA8 /* ToggleVisibilityAction.h */,
+				CA1218C421C4509400152EA8 /* ToggleVisibilityTarget.cpp */,
+				CA1218C221C4509300152EA8 /* ToggleVisibilityTarget.h */,
 			);
 			name = SharedLib;
 			sourceTree = "<group>";
@@ -984,7 +996,9 @@
 				F448731B1EE2261F00FCAFAE /* OpenUrlAction.h in Headers */,
 				F44873191EE2261F00FCAFAE /* NumberInput.h in Headers */,
 				F44873151EE2261F00FCAFAE /* ImageSet.h in Headers */,
+				CA1218C621C4509400152EA8 /* ToggleVisibilityTarget.h in Headers */,
 				F44873131EE2261F00FCAFAE /* Image.h in Headers */,
+				CA1218C721C4509400152EA8 /* ToggleVisibilityAction.h in Headers */,
 				F448730F1EE2261F00FCAFAE /* HostConfig.h in Headers */,
 				F448730E1EE2261F00FCAFAE /* FactSet.h in Headers */,
 				F448730C1EE2261F00FCAFAE /* Fact.h in Headers */,
@@ -1262,6 +1276,7 @@
 				F42741291EFB374A00399FBB /* ACRColumnSetRenderer.mm in Sources */,
 				F448731C1EE2261F00FCAFAE /* ParseUtil.cpp in Sources */,
 				F44873291EE2261F00FCAFAE /* ToggleInput.cpp in Sources */,
+				CA1218C921C4509400152EA8 /* ToggleVisibilityAction.cpp in Sources */,
 				F401A8781F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm in Sources */,
 				F42979461F322C9000E89914 /* ACRNumericTextField.mm in Sources */,
 				F43A94111F1D60E30001920B /* ACRFactSetRenderer.mm in Sources */,
@@ -1282,6 +1297,7 @@
 				F4F6BA2A204E107F003741B6 /* UnknownElement.cpp in Sources */,
 				F49683531F6CA24600DF0D3A /* ACRRenderer.mm in Sources */,
 				F42741211EF9DB8000399FBB /* ACRContainerRenderer.mm in Sources */,
+				CA1218C821C4509400152EA8 /* ToggleVisibilityTarget.cpp in Sources */,
 				F429793B1F31458800E89914 /* ACRActionSubmitRenderer.mm in Sources */,
 				F4D33EA51F06F41B00941E44 /* ACRSeparator.mm in Sources */,
 				F427411D1EF8A25200399FBB /* ACRRegistration.mm in Sources */,

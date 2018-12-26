@@ -47,6 +47,7 @@ namespace AdaptiveSharedNamespace
         Default,
         DefaultPoster,
         Display,
+        ElementId,
         Emphasis,
         ExtraLarge,
         Facts,
@@ -77,6 +78,7 @@ namespace AdaptiveSharedNamespace
         IsRequired,
         IsSelected,
         IsSubtle,
+        IsVisible,
         Items,
         Language,
         Large,
@@ -119,6 +121,7 @@ namespace AdaptiveSharedNamespace
         Style,
         Subtle,
         SupportsInteractivity,
+        TargetElements,
         Text,
         TextBlock,
         TextConfig,
@@ -249,6 +252,7 @@ namespace AdaptiveSharedNamespace
         ShowCard,
         Submit,
         OpenUrl,
+        ToggleVisibility,
         Custom
     };
     DECLARE_ADAPTIVECARD_ENUM(ActionType);

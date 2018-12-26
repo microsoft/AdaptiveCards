@@ -74,6 +74,8 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ShowCardAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\SubmitAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TextBlock.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ToggleVisibilityAction.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ToggleVisibilityTarget.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\UnknownElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Util.cpp" />
   </ItemGroup>
@@ -126,6 +128,8 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ShowCardAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\SubmitAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TextBlock.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ToggleVisibilityAction.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ToggleVisibilityTarget.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\UnknownElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Util.h" />
   </ItemGroup>
