@@ -65,7 +65,7 @@ namespace AdaptiveNamespace
         RegistrationMap::iterator found = m_registration->find(HStringToUTF8(type));
         if (found != m_registration->end())
         {
-            *result = found->second.Get();
+            RETURN_IF_FAILED(found->second.CopyTo(result));
         }
         return S_OK;
     }
