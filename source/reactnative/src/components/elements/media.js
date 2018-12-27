@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity, Image, Platform} from "react-native";
+import { View, StyleSheet, TouchableOpacity, Image, Platform } from "react-native";
 import MediaControls, { PLAYER_STATES } from 'react-native-media-controls';
 import * as Constants from "../../utils/constants";
 import Video from "react-native-video";
@@ -18,8 +18,8 @@ export class Media extends React.Component {
             duration: 0,
             isFullScreen: false,
             isLoading: true,
-            paused: false,
-            playerState: PLAYER_STATES.PLAYING,
+            paused: true,
+            playerState: PLAYER_STATES.PAUSED,
 
         }
     }
@@ -94,23 +94,22 @@ export class Media extends React.Component {
         return (
             <ElementWrapper json={this.payload}>
                 <View style={styles.container}>
-                    {/* <TouchableOpacity style={styles.fullScreen}> */}
-                         <Video
-                            source={this.sources[this.state.currentSourceIndex ]}
-                            fullscreen={true}
-                            controls={true}
-                            id={this.payload.id ? this.payload.id : "video"}
-                            // paused={true}
-                            onError={this.videoError}
-                            // onLoad={this.videoLoadSuccess}
-                            onEnd={this.onEnd}
-                            onLoad={this.onLoad}
-                            onLoadStart={this.onLoadStart}
-                            onProgress={this.onProgress}
-                            paused={this.state.paused}
-                            ref={videoPlayer => (this.videoPlayer = videoPlayer)}
-                            style={styles.nativeVideoControls}
-                        />
+                    <Video
+                        source={this.sources[this.state.currentSourceIndex]}
+                        fullscreen={true}
+                        controls={true}
+                        id={this.payload.id ? this.payload.id : "video"}
+                        // paused={true}
+                        onError={this.videoError}
+                        // onLoad={this.videoLoadSuccess}
+                        onEnd={this.onEnd}
+                        onLoad={this.onLoad}
+                        onLoadStart={this.onLoadStart}
+                        onProgress={this.onProgress}
+                        paused={this.state.paused}
+                        ref={videoPlayer => (this.videoPlayer = videoPlayer)}
+                        style={styles.nativeVideoControls}
+                    />
                     {Platform.OS !== 'ios' && (
                         <MediaControls
                             duration={this.state.duration}
@@ -121,14 +120,12 @@ export class Media extends React.Component {
                             onReplay={this.onReplay}
                             onSeek={this.onSeek}
                             onSeeking={this.onSeeking}
-                            isFullScreen ={true}
+                            isFullScreen={true}
                             playerState={this.state.playerState}
                             progress={this.state.currentTime}
                         />
                     )}
-
-                    {/* </TouchableOpacity> */}
-                    {(this.state.isLoading && this.payload.poster) && <Image source={{ uri: this.payload.poster }} style={styles.nativeVideoControls}></Image>}
+                    {(this.state.isLoading && this.payload.poster) && <Image source={{ uri: this.payload.poster }} style={styles.fullScreen}></Image>}
                 </View>
             </ElementWrapper>
         );
