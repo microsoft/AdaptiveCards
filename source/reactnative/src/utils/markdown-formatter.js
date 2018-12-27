@@ -1,7 +1,5 @@
 /**
  * Markdown Formatter.
- * 
- * by Ashok Regar
  */
 
 import React from 'react';
