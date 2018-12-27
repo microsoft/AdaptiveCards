@@ -2721,11 +2721,29 @@ export class DateInput extends Input {
             this._dateInputElement.value = this.defaultValue;
         }
 
+        if (!Utils.isNullOrEmpty(this.placeholder)) {
+            this._dateInputElement.placeholder = this.placeholder;
+            this._dateInputElement.setAttribute("aria-label", this.placeholder);
+        }
+
         return this._dateInputElement;
     }
 
+    placeholder: string;
+
     getJsonTypeName(): string {
         return "Input.Date";
+    }
+
+    toJSON() {
+        let result = super.toJSON();
+        Utils.setProperty(result, "placeholder", this.placeholder);
+        return result;
+    }
+
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+        super.parse(json, errors);
+        this.placeholder = json["placeholder"];
     }
 
     get value(): string {

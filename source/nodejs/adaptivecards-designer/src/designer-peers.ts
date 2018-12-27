@@ -1893,6 +1893,18 @@ export class NumberInputPeer extends InputPeer<Adaptive.NumberInput> {
 }
 
 export class DateInputPeer extends InputPeer<Adaptive.DateInput> {
+    internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
+        super.internalAddPropertySheetEntries(card, includeHeader);
+
+        let placeholder = addLabelAndInput(card, "Placeholder:", Adaptive.TextInput);
+        placeholder.input.placeholder = "(not set)";
+        placeholder.input.defaultValue = this.cardElement.placeholder;
+        placeholder.input.onValueChanged = () => {
+            this.cardElement.placeholder = placeholder.input.value;
+
+            this.changed(false);
+        }
+    }
 }
 
 export class TimeInputPeer extends InputPeer<Adaptive.TimeInput> {
