@@ -11,30 +11,30 @@ const TIME_REGEX = /\{{2}TIME\((\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|(?:(?:-|
  */
 function formatDate(lang, input) {
 
-    var result = input;
-    var matches;
-    var localeDateString;
+	var result = input;
+	var matches;
+	var localeDateString;
 
-    while ((matches = DATE_REGEX.exec(input)) != null) {
+	while ((matches = DATE_REGEX.exec(input)) != null) {
 
-        var date = new Date(Date.parse(matches[1]));
-        var format = matches[2] != undefined ? matches[2].toLowerCase() : "compact";
+		var date = new Date(Date.parse(matches[1]));
+		var format = matches[2] != undefined ? matches[2].toLowerCase() : "compact";
 
-        if (format != "compact") {
-            localeDateString = date.toLocaleDateString(lang,
-                {
-                    day: "numeric",
-                    weekday: format,
-                    month: format,
-                    year: "numeric"
-                });
-        }
-        else {
-            localeDateString = date.toLocaleDateString();
-        }
-        result = result.replace(matches[0], localeDateString);
-    };
-    return result;
+		if (format != "compact") {
+			localeDateString = date.toLocaleDateString(lang,
+				{
+					day: "numeric",
+					weekday: format,
+					month: format,
+					year: "numeric"
+				});
+		}
+		else {
+			localeDateString = date.toLocaleDateString();
+		}
+		result = result.replace(matches[0], localeDateString);
+	};
+	return result;
 
 }
 
@@ -47,22 +47,22 @@ function formatDate(lang, input) {
  * @return {string} Text with `TIME` part formatted
  */
 function formatTime(lang, input) {
-    var result = input;
-    var matches;
-    var localeTimeString;
+	var result = input;
+	var matches;
+	var localeTimeString;
 
-    while ((matches = TIME_REGEX.exec(input)) != null) {
+	while ((matches = TIME_REGEX.exec(input)) != null) {
 
-        var date = new Date(Date.parse(matches[1]));
-        localeTimeString = date.toLocaleTimeString(lang,
-            {
-                hour: 'numeric',
-                minute: '2-digit'
-            });
+		var date = new Date(Date.parse(matches[1]));
+		localeTimeString = date.toLocaleTimeString(lang,
+			{
+				hour: 'numeric',
+				minute: '2-digit'
+			});
 
-        result = result.replace(matches[0], localeTimeString);
-    };
-    return result;
+		result = result.replace(matches[0], localeTimeString);
+	};
+	return result;
 }
 
 /**
@@ -72,10 +72,10 @@ function formatTime(lang, input) {
  * @return {string} Text where `DATE` & `TIME` are formatted
  */
 export const TextFormatter = (lang, text) => {
-    if (!text) return undefined;
+	if (!text) return undefined;
 
-    let dateFormattedText = formatDate(lang, text);
-    let formattedText = formatTime(lang, dateFormattedText);
+	let dateFormattedText = formatDate(lang, text);
+	let formattedText = formatTime(lang, dateFormattedText);
 
-    return formattedText;
+	return formattedText;
 }
