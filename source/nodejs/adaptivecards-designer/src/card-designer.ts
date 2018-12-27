@@ -29,7 +29,7 @@ export class CardDesigner {
                 result.outputHtml = window["markdownit"]().render(text);
                 result.didProcess = true;
             }
-        }
+		}
     }
 
     static onProcessMarkdown: (text: string, result: Adaptive.IMarkdownProcessingResult) => void = null;

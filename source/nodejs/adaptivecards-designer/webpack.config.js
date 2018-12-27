@@ -25,7 +25,8 @@ module.exports = (env, argv) => {
 		},
 		devtool: devMode ? "inline-source-map" : "source-map",
 		devServer: {
-			contentBase: './dist'
+			contentBase: './dist',
+			port: 8001
 		},
 		resolve: {
 			extensions: [".ts", ".tsx", ".js"]

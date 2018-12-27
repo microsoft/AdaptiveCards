@@ -33,8 +33,19 @@ npm install adaptivecards --save
 
 ### CDN
 
+The unpkg.com CDN makes it easy to load the script in an  browser. 
+
+The latest release will keep you up to date with features and fixes, but may have breaking changes over time. For maximum stability you should use a specific version.
+
+* `adaptivecards.js` - non-minified, useful for dev
+* `adaptivecards.min.js` - minified version, best for production
+
 ```html
-<script src="https://unpkg.com/adaptivecards/dist/adaptivecards.js"></script>
+<!-- Option 1: always load the latest release -->
+<script src="https://unpkg.com/adaptivecards/dist/adaptivecards.min.js"></script>
+
+<!-- Option 2: load a specific version (e.g, 1.1.1) -->
+<script src="https://unpkg.com/adaptivecards@1.1.1/dist/adaptivecards.min.js"></script>
 ```
 
 ## Usage
@@ -45,12 +56,11 @@ npm install adaptivecards --save
 // Import the module:
 import * as AdaptiveCards from "adaptivecards";
 
-// Or require it:
+// OR require it:
 var AdaptiveCards = require("adaptivecards");
 
-// If you referenced the library from CDN, the global AdaptiveCards variable is already
-// defined and can be used directly:
-var adaptiveCard = new AdaptiveCards.AdaptiveCard();
+// OR if you loaded via CDN, the global "AdaptiveCards" variable
+// is already defined and can be used directly
 ```
 
 ### Render a card
@@ -110,7 +120,7 @@ var renderedCard = adaptiveCard.render();
 document.body.appendChild(renderedCard);
 ```
 
-### Supporting Markdown
+## Supporting Markdown
 
 Markdown is a [standard feature of Adaptive Cards](https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/text-features), but to give users flexibility we don't bundle a particular implementation with the library.
 
@@ -119,7 +129,7 @@ Markdown is a [standard feature of Adaptive Cards](https://docs.microsoft.com/en
 The easiest way to get markdown support is by adding [markdown-it](https://github.com/markdown-it/markdown-it) to your document.
 
 ```html
-<script type="text/javascript" src="https://unpkg.com/markdown-it/dist/markdown-it.js"></script>
+<script type="text/javascript" src="https://unpkg.com/markdown-it/dist/markdown-it.min.js"></script>
 ```
 
 #### Option 2: Any other 3rd party library
@@ -142,7 +152,7 @@ AdaptiveCards.onProcessMarkdown = function(text, result) {
 
 Make sure to set `result.didProcess` to `true`, otherwise the library will consider the input text as not processed and will be treated as plain text.
 
-### Webpack
+## Webpack
 
 If you don't want adaptivecards in your bundle, make sure the script is loaded and add the following the your `webpack.config.json`
 
