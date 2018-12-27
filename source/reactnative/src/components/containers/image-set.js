@@ -24,7 +24,6 @@ export class ImageSet extends React.PureComponent {
 	}
 
     /**
-     * 
      * @description Parse the given payload and render the card accordingly
      */
 	parsePayload = (imageSetJson, onParseError) => {

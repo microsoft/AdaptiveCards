@@ -23,9 +23,9 @@ export class DateInput extends React.Component {
 		this.parseHostConfig();
 	}
 
-    /**
-    * @description Parse hostconfig specific to this element
-    */
+	/**
+	 * @description Parse hostconfig specific to this element
+	 */
 	parseHostConfig() {
 		this.state = {
 			chosenDate: this.payload.value ? this.parseDateString(this.payload.value) : new Date(),

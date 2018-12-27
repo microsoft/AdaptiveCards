@@ -53,7 +53,6 @@ export class InputText extends React.Component {
 	}
 
 	render() {
-
 		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
 			return null;
 		}

@@ -29,7 +29,6 @@ export class NumberInput extends React.Component {
 	}
 
 	render() {
-
 		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
 			return null;
 		}

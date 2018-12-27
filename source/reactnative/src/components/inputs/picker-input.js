@@ -36,9 +36,9 @@ export class PickerInput extends React.Component {
 		this.parseHostConfig();
 	}
 
-    /**
-    * @description Parse hostconfig specific to this element
-    */
+	/**
+	 * @description Parse hostconfig specific to this element
+	 */
 	parseHostConfig() {
 		this.id = this.payload.id;
 		this.type = this.payload.type;
@@ -46,7 +46,6 @@ export class PickerInput extends React.Component {
 	}
 
 	render() {
-
 		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
 			return null;
 		}

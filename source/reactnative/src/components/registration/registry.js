@@ -35,19 +35,19 @@ export class Registry {
 		return Registry.registryInstance;
 	}
 
-    /**
-     * @description Register a new Component or Override an Existing Component
-     * @param {string} key - Type of the Component to be overridden
-     * @param {Component} component - React Native component to be rendered
-     */
+	/**
+	 * @description Register a new Component or Override an Existing Component
+	 * @param {string} key - Type of the Component to be overridden
+	 * @param {Component} component - React Native component to be rendered
+	 */
 	registerComponent = (key, component) => {
 		this.ElementRegistry[key] = component;
 	}
 
-    /**
-     * @description Remove an Existing Component
-     * @param {string} key - Type of the Component to be removed
-     */
+	/**
+	 * @description Remove an Existing Component
+	 * @param {string} key - Type of the Component to be removed
+	 */
 	removeComponent = (key) => {
 		delete this.ElementRegistry[key];
 	}
@@ -75,19 +75,19 @@ export class Registry {
 		'Action.OpenUrl': ActionButton
 	};
 
-    /**
-     * @description Get then component associated for the given element type
-     * @param {string} type - Type of the element
-     */
+	/**
+	 * @description Get then component associated for the given element type
+	 * @param {string} type - Type of the element
+	 */
 	getComponentOfType = (type) => {
 		return this.ElementRegistry[type];
 	}
 
-    /**
-   * @description Register a required property for custom/overriding components
-   * @param {string} key - Type of the Component
-   * @param {requiredProps} component - Required properties of the custom component
-   */
+	/**
+	 * @description Register a required property for custom/overriding components
+	 * @param {string} key - Type of the Component
+	 * @param {requiredProps} component - Required properties of the custom component
+	 */
 	registerRequiredPropertySchema = (key, requiredProps) => {
 		if (this.ElementRegistry.hasOwnProperty(key) && !Utils.isNullOrEmpty(requiredProps)) {
 			this.RequiredPropertySchema[key] = requiredProps;
@@ -118,22 +118,18 @@ export class Registry {
 		'Action.OpenUrl': { 'type': 'Action.OpenUrl', 'url': 'String' }
 	};
 
-
-
-
-    /**
-        * @description validate the schema for the given element type
-        * @param {string} type - Type of the element
-        */
+	/**
+	 * @description validate the schema for the given element type
+	 * @param {string} type - Type of the element
+	 */
 	validateSchemaForType = (type) => {
 		return this.RequiredPropertySchema[type];
 	}
 
-
-    /**
-     * @description Parse an Array of components
-     * @param {Array} componentArray - Json
-     */
+	/**
+	 * @description Parse an Array of components
+	 * @param {Array} componentArray - Json
+	 */
 	parseRegistryComponents = (componentArray, onParseError) => {
 		const parsedElement = [];
 		if (!componentArray)
@@ -164,10 +160,9 @@ export class Registry {
 		return parsedElement;
 	}
 
-
-    /**
-     * @description Generates a random number
-     */
+	/**
+	 * @description Generates a random number
+	 */
 	generateNumber = () => {
 		min = 1;
 		max = 100000;

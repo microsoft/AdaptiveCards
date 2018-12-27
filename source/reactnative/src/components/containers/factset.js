@@ -40,7 +40,6 @@ export class FactSet extends React.Component {
     /**
      * @description Measures the view size for Factset
      */
-
 	measureView(event) {
 		if (this.currentWidth === 0 || this.currentWidth !== event.nativeEvent.layout.width) {
 			this.currentWidth = event.nativeEvent.layout.width;
@@ -69,7 +68,6 @@ export class FactSet extends React.Component {
     /**
      * @description Finds the width for Fact key and column value 
      */
-
 	adjustFactWidth() {
 		var keyWidthValue = null;
 		if (this.maxWidth > this.viewSize / 2) {
@@ -88,7 +86,6 @@ export class FactSet extends React.Component {
     /**
      * @description Temporary renderer to find Fact key and column value before values are knows
      */
-
 	checkTheMaximumSizeRender() {
 		var checkArray = [];
 		this.widthArray = [];

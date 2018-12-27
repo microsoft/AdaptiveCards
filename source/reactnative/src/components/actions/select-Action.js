@@ -1,18 +1,27 @@
 /**
  * SelectAction Component.
- * 
  */
 
 import React from 'react';
-import { Platform, TouchableOpacity, TouchableNativeFeedback } from 'react-native';
+import {
+	Platform,
+	TouchableOpacity,
+	TouchableNativeFeedback
+} from 'react-native';
 import { InputContextConsumer } from '../../utils/context';
 import * as Constants from '../../utils/constants';
 import * as Utils from '../../utils/util';
 
 export class SelectAction extends React.Component {
 
-	constructor(props) {
-		super(props);
+	render() {
+		const ButtonComponent = Platform.OS === Constants.PlatformIOS ? TouchableOpacity : TouchableNativeFeedback;
+
+		return (<InputContextConsumer>
+			{({ onExecuteAction }) => <ButtonComponent onPress={() => { this.onClickHandle(onExecuteAction) }} style={this.props.style}>
+				{this.props.children}
+			</ButtonComponent>}
+		</InputContextConsumer>);
 	}
 
     /**
@@ -26,15 +35,5 @@ export class SelectAction extends React.Component {
 			let actionObject = { "type": Constants.ActionOpenUrl, "url": this.props.selectActionData.url };
 			onExecuteAction(actionObject);
 		}
-	}
-
-	render() {
-		const ButtonComponent = Platform.OS === Constants.PlatformIOS ? TouchableOpacity : TouchableNativeFeedback;
-
-		return (<InputContextConsumer>
-			{({ onExecuteAction }) => <ButtonComponent onPress={() => { this.onClickHandle(onExecuteAction) }} style={this.props.style}>
-				{this.props.children}
-			</ButtonComponent>}
-		</InputContextConsumer>);
 	}
 }

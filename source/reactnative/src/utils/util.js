@@ -1,7 +1,6 @@
 import * as Enums from './enums';
 import { HostConfigManager } from './host-config';
 
-
 export function getValueOrDefault(obj, defaultValue) {
 	return obj ? obj : defaultValue;
 }
@@ -21,10 +20,12 @@ export function isaNumber(value) {
 	}
 	return false;
 }
+
 /**
- *  This function will return the Enum value for the specified Key if its present or
- *  it will return the defaultValue.
- *  for eg.. Utils.parseHostConfigEnum(
+ * @description
+ * This function will return the Enum value for the specified Key if its present or
+ * it will return the defaultValue.
+ * for eg.. Utils.parseHostConfigEnum(
                 Enums.InputTextStyle,
                 payload.style,
                 Enums.InputTextStyle.Text)
@@ -42,12 +43,11 @@ export function getEnumValueOrDefault(targetEnum, keyName, defaultValue) {
 			return value;
 		}
 	}
-
 	return defaultValue;
 }
 
 /**
- *  Returns the corresponding Enum Value from the TargetEnum based on the value.
+ * @description Returns the corresponding Enum Value from the TargetEnum based on the value.
  * @param {Enum} targetEnum 
  * @param {string/number} value 
  * @param {Enum} defaultValue 
@@ -63,8 +63,9 @@ export function parseHostConfigEnum(targetEnum, value, defaultValue) {
 }
 
 /**
- * Returns the keyboard type that needs to be opened based on the text content type.
- * @param {Enums.InputTextStyle} textContentType  
+ * @description Returns the keyboard type that needs to be opened based on the text content type.
+ * @param {Enums.InputTextStyle} textContentType
+ * @return {string} Actual keyboard type value
  */
 export function getKeyboardType(textContentType) {
 	switch (textContentType) {
@@ -84,8 +85,9 @@ export function getKeyboardType(textContentType) {
 }
 
 /**
- *  Returns the effective style that needs to be set to the text input.
+ * @description Returns the effective style that needs to be set to the text input.
  * @param {Enums.InputTextStyle} style 
+ * @return {string} Actual style value
  */
 export function getEffectiveInputStyle(style) {
 	switch (style) {
@@ -102,6 +104,11 @@ export function getEffectiveInputStyle(style) {
 	}
 }
 
+/**
+ * @description Returns the actual size value based on the given enum value.
+ * @param {Enums.Size} size 
+ * @return {number | string} Actual size value
+ */
 export function getEffectiveSize(size) {
 	switch (size) {
 		case Enums.Size.Auto:
@@ -120,7 +127,7 @@ export function getEffectiveSize(size) {
 }
 
 /**
- * Parse the given version string
+ * @description Parse the given version string
  * @param {string} versionString 
  * @return {object} Version object with major and minor values
  */
@@ -142,13 +149,5 @@ export function parseVersion(versionString) {
 		// minor
 		result.minor = parseInt(matches[2]) || result.minor;
 	}
-
 	return result;
 }
-
-
-
-
-
-
-

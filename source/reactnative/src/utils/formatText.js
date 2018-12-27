@@ -3,15 +3,13 @@ import {
 	Text,
 	Linking
 } from 'react-native';
-
 import * as Utils from './util';
 
 BOLD_REGEX = /(?:[*]{2})(.*?)(?:[*]{2})/;
 ITALIC_REGEX = /(?:[_]{1})(.*?)(?:[_]{1})/;
 URL_REGEX = /\]\(((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)\)/;
-PARENTHESIS_REGEX = /(?:[\()]{1})(.*?)(?:[\)]{1})/
+PARENTHESIS_REGEX = /(?:[\()]{1})(.*?)(?:[\)]{1})/;
 URL_LINK_REGEX = /\[[^\]]*\]\(\)/;
-
 
 const KEY_BOLD = "bold";
 const KEY_ITALIC = "italic";
@@ -20,10 +18,7 @@ const KEY_HYPERLINK = "hyperlink";
 let indexToBeStyled = {};
 let urlIndexToLinkMapping = {};
 
-
-
 export const processMDText = text => {
-
 	if (!text) return undefined;
 
 	let processedMDText = processText(text);
@@ -31,15 +26,14 @@ export const processMDText = text => {
 };
 
 /**
- * This function processes the markdown elements and returns the TextComponent
+ * @description This function processes the markdown elements and returns the TextComponent
  * @param {String} text 
  */
 function processText(text) {
-
 	let input = text;
 	/**
-   * Identify words that are to be hyperlinked
-   */
+	 * Identify words that are to be hyperlinked
+	 */
 	let urlLinks = [];
 	let urlIndexes = [];
 
@@ -116,17 +110,15 @@ function processText(text) {
 			}
 			return text;
 		}
-
 	})
 	return newResult;
 }
 
 /**
- *  This function returns the styles to be added for the specific word
- * @param {string} word 
+ * @description This function returns the styles to be added for the specific word
+ * @param {string} word
  */
 function styleForWordWithIndex(wordIndex) {
-
 	let boldStyle = [{ fontWeight: 'bold' }];
 	let italicStyle = [{ fontStyle: 'italic' }];
 	let hyperLinkStyle = [{ color: 'blue' }];
@@ -157,6 +149,5 @@ function styleForWordWithIndex(wordIndex) {
 
 	return styleForWordWithIndex;
 }
-
 
 export default processMDText;

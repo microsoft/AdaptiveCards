@@ -54,9 +54,9 @@ export class HostConfigManager {
 
 	static hostConfig = null;
 
-    /**
-     * @returns {HostConfigManager}
-     */
+	/**
+	 * @returns {HostConfigManager}
+	 */
 	static getHostConfig() {
 		if (HostConfigManager.hostConfig === null) {
 			HostConfigManager.hostConfig = new HostConfig(defaultHostConfig);
@@ -502,11 +502,9 @@ export class HostConfig {
 		}
 	}
 
-
-    /**
-     * 
-     * @param {string} spacing 
-     */
+	/**
+	 * @param {string} spacing 
+	 */
 	getEffectiveSpacing = (spacing) => {
 		switch (spacing) {
 			case Enums.Spacing.None:
@@ -529,11 +527,9 @@ export class HostConfig {
 		}
 	}
 
-    /**
-     * 
-     * @param {string} fontSize 
-     */
-
+	/**
+	 * @param {string} fontSize 
+	 */
 	getTextFontSize = (fontSize) => {
 		switch (fontSize) {
 			case Enums.TextSize.Small:
@@ -552,11 +548,9 @@ export class HostConfig {
 		}
 	}
 
-    /**
-     * 
-     * @param {string} weight
-     */
-
+	/**
+	 * @param {string} weight
+	 */
 	getTextFontWeight = (weight) => {
 		switch (weight) {
 			case Enums.TextWeight.Lighter:
@@ -571,11 +565,9 @@ export class HostConfig {
 		}
 	}
 
-    /**
-    *  
-    * @param {string} color
-    */
-
+	/**
+	 * @param {string} color
+	 */
 	getTextColor = (color) => {
 		switch (color) {
 			case Enums.TextColor.Attention:
@@ -598,11 +590,9 @@ export class HostConfig {
 		}
 	}
 
-    /**
-     * 
-     * @param {string} alignment
-     */
-
+	/**
+	 * @param {string} alignment
+	 */
 	getTextAlignment = (alignment) => {
 		switch (alignment) {
 			case Enums.HorizontalAlignment.Left:

@@ -62,7 +62,7 @@ export class Img extends React.Component {
 	}
 
     /**
-     * This function determines the style of the image. Default value is "Default"
+     * @description This function determines the style of the image. Default value is "Default"
      */
 	isPersonStyle() {
 		let styleValue = Utils.parseHostConfigEnum(
@@ -73,7 +73,7 @@ export class Img extends React.Component {
 
 	}
     /**
-     * The function is used for determining the horizontal image Alignment
+     * @description The function is used for determining the horizontal image Alignment
      */
 	getImageAlignment() {
 		let imageAlignmentStyle = [];
@@ -93,6 +93,7 @@ export class Img extends React.Component {
 	}
 
     /**
+	 * @description
      * This function is to the create styling for the size of the image based  on the size property 
      * from the payload. If the payload consists of explicit width and height property, 
      * give highest priority.  

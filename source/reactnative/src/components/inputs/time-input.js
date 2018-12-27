@@ -23,9 +23,9 @@ export class TimeInput extends React.Component {
 		this.parseHostConfig();
 	}
 
-    /**
-    * @description Parse hostconfig specific to this element
-    */
+	/**
+	 * @description Parse hostconfig specific to this element
+	 */
 	parseHostConfig() {
 		this.state = {
 			chosenTime: this.payload.value ? this.parseTimeString(this.payload.value) : new Date(),
@@ -38,11 +38,10 @@ export class TimeInput extends React.Component {
 		this.state.setTime = this.setTime.bind(this);
 	}
 
-    /**
-     * @description Return Date object from string.
-     * @param {String} timeString 
-     */
-
+	/**
+	 * @description Return Date object from string.
+	 * @param {String} timeString 
+	 */
 	parseTimeString(timeString) {
 		timeArray = timeString.split(':');
 		date = new Date();
@@ -51,10 +50,10 @@ export class TimeInput extends React.Component {
 		return date;
 	}
 
-    /**
-    * @description Binds the selected time
-    * @param {Date} newTime 
-    */
+	/**
+	 * @description Binds the selected time
+	 * @param {Date} newTime 
+     */
 	setTime(newTime) {
 		const updatedTime = ("0" + newTime.getHours()).slice(-2) + ":"
 			+ ("0" + newTime.getMinutes()).slice(-2);
@@ -65,33 +64,29 @@ export class TimeInput extends React.Component {
 		});
 	}
 
-    /**
+	/**
      * @description Toggles the TimePicker model visibility.
      * @param {Boolean} visible 
      */
-
 	setModalVisible(visible) {
 		this.setState({ modalVisible: visible });
 	}
 
-    /**
-     * @description Hides the TimePicker on close event
-     */
-
+	/**
+	 * @description Hides the TimePicker on close event
+	 */
 	handleModalClose = () => {
 		this.setState({ modalVisible: false })
 	}
 
-    /**
-     * @description Updates the selected Time from Time picker model.
-     */
-
+	/**
+	 * @description Updates the selected Time from Time picker model.
+	 */
 	handleTimeChange = time => this.setTime(time)
 
-    /**
-    * @description Displays Android Time Picker
-     */
-
+	/**
+	 * @description Displays Android Time Picker
+	 */
 	async androidPicker() {
 		try {
 			const { action, hour, minute } = await TimePickerAndroid.open({
@@ -110,10 +105,9 @@ export class TimeInput extends React.Component {
 		}
 	}
 
-    /**
-     * @description Displays Time Picker based on the platform.
-     */
-
+	/**
+	 * @description Displays Time Picker based on the platform.
+	 */
 	showTimePicker = () => {
 		if (Platform.OS === Constants.PlatformIOS) {
 			this.setState({ modalVisible: true });
@@ -123,7 +117,6 @@ export class TimeInput extends React.Component {
 	}
 
 	render() {
-
 		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
 			return null;
 		}

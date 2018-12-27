@@ -43,8 +43,8 @@ export class ActionWrapper extends React.Component {
 	}
 
 	/**
-	  * @description Parses the actions from the given json
-	  */
+	 * @description Parses the actions from the given json
+	 */
 	parseActionsArray = (onParseError) => {
 		const renderedElement = [];
 		const { actions } = this.props

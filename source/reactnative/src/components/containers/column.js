@@ -11,7 +11,7 @@ import {
 	Dimensions
 } from 'react-native';
 
-import { Registry } from '../registration/registry'
+import { Registry } from '../registration/registry';
 import * as Utils from '../../utils/util';
 import * as Constants from '../../utils/constants';
 import * as Enums from '../../utils/enums';

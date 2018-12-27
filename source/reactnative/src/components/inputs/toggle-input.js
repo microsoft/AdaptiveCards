@@ -36,11 +36,11 @@ export class ToggleInput extends React.Component {
 		}
 	}
 
-    /**
-     * @description Invoked on every change in Toggle
-     * @param {Boolean} toggleValue
-     * @param {InputContextConsumer} addInputItem
-     */
+	/**
+	 * @description Invoked on every change in Toggle
+	 * @param {Boolean} toggleValue
+	 * @param {InputContextConsumer} addInputItem
+	 */
 	toggleValueChanged = (toggleValue, addInputItem) => {
 		this.setState({ toggleValue });
 		addInputItem(this.id, toggleValue);
