@@ -9,6 +9,7 @@
   "dependencies": {
     "react": "16.6.0-alpha.8af6728",
     "react-native": "0.57.4",
+    "react-native-media-controls": "^1.1.1",
     "react-native-video": "^4.2.0"
   },
   "devDependencies": {
