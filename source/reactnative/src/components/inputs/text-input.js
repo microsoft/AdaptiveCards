@@ -17,47 +17,46 @@ const TEL_REGEX = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/;
 
 export class InputText extends React.Component {
 
-    constructor(props) {
-        super(props);
+	constructor(props) {
+		super(props);
 
 		this.payload = props.json;
 		this.id = Constants.EmptyString;
 		this.style = Constants.EmptyString;
 		this.keyboardType = Constants.EmptyString;
-        this.state = {
-            isError: false,
-            text: Constants.EmptyString,
-        }
-    }
+		this.state = {
+			isError: false,
+			text: Constants.EmptyString,
+		}
+	}
 
     /**
      * @description Invoked on every change in Input field
      * @param {string} text
      */
-    textValueChanged = (text, addInputItem) => {
-        this.setState({ text });
-        addInputItem(this.id, text);
+	textValueChanged = (text, addInputItem) => {
+		this.setState({ text });
+		addInputItem(this.id, text);
 	}
-	
+
 	/**
      * @description Parse hostconfig specific to this element
      */
-    parseHostConfig() {
-        this.id = this.payload.id;
+	parseHostConfig() {
+		this.id = this.payload.id;
 		let styleValue = Utils.parseHostConfigEnum(
 			Enums.InputTextStyle,
 			this.payload.style,
 			Enums.InputTextStyle.Text);
 		this.style = Utils.getEffectiveInputStyle(styleValue);
 		this.keyboardType = Utils.getKeyboardType(styleValue);
-    }
+	}
 
-    render() {
-
-        if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
-            return null;
+	render() {
+		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
+			return null;
 		}
-		
+
 		this.parseHostConfig();
 		let styleValue = Utils.parseHostConfigEnum(
 			Enums.InputTextStyle,
@@ -65,69 +64,68 @@ export class InputText extends React.Component {
 			Enums.InputTextStyle.Text);
 		this.keyboardType = Utils.getKeyboardType(styleValue);
 
-        return (
-			<Input 
+		return (
+			<Input
 				json={this.payload}
 				handleFocus={this.handleFocus}
 				handleBlur={this.handleBlur}
-				textValueChanged={ (text, addInputItem) => 
-					{ this.textValueChanged(text, addInputItem) }}
-				value={this.state.text}    
-				isError={this.state.isError} 
+				textValueChanged={(text, addInputItem) => { this.textValueChanged(text, addInputItem) }}
+				value={this.state.text}
+				isError={this.state.isError}
 				keyboardType={this.keyboardType}
 				textStyle={this.props.style}
 			/>
-        );
-    }
+		);
+	}
 
     /**
      * @description validate the text in the textinput field based on style of the textinput.
      */
-    validate = () => {
-        let isError = true;
-        let REGEX;
-        let text = this.state.text;
+	validate = () => {
+		let isError = true;
+		let REGEX;
+		let text = this.state.text;
 
-        if (text === Constants.EmptyString) {
-            isError = false;
-        }
-        else {
-            switch (this.style) {
-                case Enums.InputTextStyle.Email: {
-                    REGEX = EMAIL_REGEX;
-                }
-                    break;
-                case Enums.InputTextStyle.Url: {
-                    REGEX = URL_REGEX;
-                }
-                    break;
-                case Enums.InputTextStyle.Tel: {
-                    REGEX = TEL_REGEX;
-                    text = text.replace(/\D/g, Constants.EmptyString);
-                }
-                    break;
-            }
+		if (text === Constants.EmptyString) {
+			isError = false;
+		}
+		else {
+			switch (this.style) {
+				case Enums.InputTextStyle.Email: {
+					REGEX = EMAIL_REGEX;
+				}
+					break;
+				case Enums.InputTextStyle.Url: {
+					REGEX = URL_REGEX;
+				}
+					break;
+				case Enums.InputTextStyle.Tel: {
+					REGEX = TEL_REGEX;
+					text = text.replace(/\D/g, Constants.EmptyString);
+				}
+					break;
+			}
 
-            if (REGEX) {
-                isError = !REGEX.test(text);
-            }
-        }
-        this.setState({ isError });
-    };
+			if (REGEX) {
+				isError = !REGEX.test(text);
+			}
+		}
+		this.setState({ isError });
+	};
 
     /**
      * @description handle textinput when in focus
      */
-    handleFocus = () => {
-        this.setState({
-            isError: false
-        });
-    }
+	handleFocus = () => {
+		this.setState({
+			isError: false
+		});
+	}
 
     /**
      * @description handle textinput when out of focus
      */
-    handleBlur = () => {
-        this.validate();
-    }
+	handleBlur = () => {
+		this.validate();
+	}
 }

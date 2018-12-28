@@ -6,7 +6,7 @@
 
 import React from 'react';
 import {
-    StyleSheet
+	StyleSheet
 } from 'react-native';
 
 import { HostConfigManager } from '../../utils/host-config';
@@ -17,37 +17,37 @@ import * as Constants from '../../utils/constants';
 
 export class TextBlock extends React.Component {
 
-    hostConfig = HostConfigManager.getHostConfig();
-    styleConfig = StyleManager.getManager().styles;
+	hostConfig = HostConfigManager.getHostConfig();
+	styleConfig = StyleManager.getManager().styles;
 
-    render() {
-        let payload = this.props.json;
+	render() {
+		let payload = this.props.json;
 
-        return (
-            <ElementWrapper json={payload} style={styles.textContainer}>
-                <Label
-                    text={payload.text}
-                    size={payload.size}
-                    weight={payload.weight}
-                    color={payload.color}
-                    isSubtle={payload.isSubtle}
-                    wrap={payload.wrap}
-                    align={payload.horizontalAlignment}
-                    maxLines={payload.maxLines}
-                    style={styles.text} />
-            </ElementWrapper>
-        );
-    }
+		return (
+			<ElementWrapper json={payload} style={styles.textContainer}>
+				<Label
+					text={payload.text}
+					size={payload.size}
+					weight={payload.weight}
+					color={payload.color}
+					isSubtle={payload.isSubtle}
+					wrap={payload.wrap}
+					align={payload.horizontalAlignment}
+					maxLines={payload.maxLines}
+					style={styles.text} />
+			</ElementWrapper>
+		);
+	}
 }
 
 const styles = StyleSheet.create({
-    textContainer: {
-        width: Constants.FullWidth,
-        alignItems: Constants.CenterString,
-        backgroundColor: 'transparent',
-    },
-    text: {
-        width: Constants.FullWidth
-    }
+	textContainer: {
+		width: Constants.FullWidth,
+		alignItems: Constants.CenterString,
+		backgroundColor: 'transparent',
+	},
+	text: {
+		width: Constants.FullWidth
+	}
 });
 

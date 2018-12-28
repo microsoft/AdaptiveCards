@@ -14,68 +14,68 @@ import * as Enums from '../../utils/enums';
 
 export class Label extends React.Component {
 
-    hostConfig = HostConfigManager.getHostConfig();
+	hostConfig = HostConfigManager.getHostConfig();
 
-    render() {
-        let { text, wrap, maxLines, onDidLayout } = this.props;
+	render() {
+		let { text, wrap, maxLines, onDidLayout } = this.props;
 
-        // parse & format DATE/TIME values
-        let formattedText = TextFormatter('en-US', text);
+		// parse & format DATE/TIME values
+		let formattedText = TextFormatter('en-US', text);
 
-        // received style
-        let receivedStyle = this.props.style;
+		// received style
+		let receivedStyle = this.props.style;
 
-        // compute style from props
-        let computedStyle = this.getComputedStyle();
+		// compute style from props
+		let computedStyle = this.getComputedStyle();
 
-        // number of lines
-        let numberOfLines = wrap ? (maxLines != undefined ? maxLines : 0) : 1;
+		// number of lines
+		let numberOfLines = wrap ? (maxLines != undefined ? maxLines : 0) : 1;
 
-        return (
-            <MarkDownFormatter 
-                defaultStyles={[receivedStyle, computedStyle]}
-                numberOfLines={numberOfLines}
-                text={formattedText} 
-                onDidLayout={onDidLayout}/>
-        )
-    }
+		return (
+			<MarkDownFormatter
+				defaultStyles={[receivedStyle, computedStyle]}
+				numberOfLines={numberOfLines}
+				text={formattedText}
+				onDidLayout={onDidLayout} />
+		)
+	}
 
     /**
      * @description Parse the host config specific props 
      */
-    getComputedStyle = () => {
-        let { size, weight, color, isSubtle, align } = this.props;
+	getComputedStyle = () => {
+		let { size, weight, color, isSubtle, align } = this.props;
 
-        let fontSize = this.hostConfig.getTextFontSize(Utils.parseHostConfigEnum(
-            Enums.TextSize,
-            size,
-            Enums.TextSize.Default
-        ));
+		let fontSize = this.hostConfig.getTextFontSize(Utils.parseHostConfigEnum(
+			Enums.TextSize,
+			size,
+			Enums.TextSize.Default
+		));
 
-        let fontWeight = this.hostConfig.getTextFontWeight(Utils.parseHostConfigEnum(
-            Enums.TextWeight,
-            weight,
-            Enums.TextWeight.Default
-        ));
+		let fontWeight = this.hostConfig.getTextFontWeight(Utils.parseHostConfigEnum(
+			Enums.TextWeight,
+			weight,
+			Enums.TextWeight.Default
+		));
 
-        let colorDefinition = this.hostConfig.getTextColor(Utils.parseHostConfigEnum(
-            Enums.TextColor,
-            color,
-            Enums.TextColor.Default
-        ));
-        let colorValue = isSubtle ? colorDefinition.subtle : colorDefinition.default;
+		let colorDefinition = this.hostConfig.getTextColor(Utils.parseHostConfigEnum(
+			Enums.TextColor,
+			color,
+			Enums.TextColor.Default
+		));
+		let colorValue = isSubtle ? colorDefinition.subtle : colorDefinition.default;
 
-        let textAlign = this.hostConfig.getTextAlignment(Utils.parseHostConfigEnum(
-            Enums.HorizontalAlignment,
-            align,
-            Enums.HorizontalAlignment.Left
-        ));
+		let textAlign = this.hostConfig.getTextAlignment(Utils.parseHostConfigEnum(
+			Enums.HorizontalAlignment,
+			align,
+			Enums.HorizontalAlignment.Left
+		));
 
-        return {
-            fontSize,
-            fontWeight: fontWeight.toString(),
-            color: colorValue,
-            textAlign
-        }
-    }
+		return {
+			fontSize,
+			fontWeight: fontWeight.toString(),
+			color: colorValue,
+			textAlign
+		}
+	}
 }
