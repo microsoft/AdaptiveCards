@@ -26,6 +26,9 @@ namespace AdaptiveSharedNamespace
         std::string GetValueOn() const;
         void SetValueOn(const std::string& value);
 
+        bool GetWrap() const;
+        void SetWrap(bool value);
+
     private:
         void PopulateKnownPropertiesSet() override;
 
@@ -33,6 +36,7 @@ namespace AdaptiveSharedNamespace
         std::string m_value;
         std::string m_valueOff;
         std::string m_valueOn;
+        bool m_wrap;
     };
 
     class ToggleInputParser : public BaseCardElementParser

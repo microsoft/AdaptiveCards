@@ -37,6 +37,11 @@ Json::Value ChoiceSetInput::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = m_value;
     }
 
+    if (m_wrap)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap)] = m_wrap; 
+    }
+
     std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Choices);
     root[propertyName] = Json::Value(Json::arrayValue);
     for (const auto& choice : m_choices)
@@ -77,6 +82,16 @@ void ChoiceSetInput::SetValue(std::string const& value)
     m_value = value;
 }
 
+bool ChoiceSetInput::GetWrap() const
+{
+    return m_wrap;
+}
+
+void ChoiceSetInput::SetWrap(bool value)
+{
+    m_wrap = value;
+}
+
 std::shared_ptr<BaseCardElement> ChoiceSetInputParser::Deserialize(ParseContext& context, const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::ChoiceSetInput);
@@ -87,6 +102,7 @@ std::shared_ptr<BaseCardElement> ChoiceSetInputParser::Deserialize(ParseContext&
         ParseUtil::GetEnumValue<ChoiceSetStyle>(json, AdaptiveCardSchemaKey::Style, ChoiceSetStyle::Compact, ChoiceSetStyleFromString));
     choiceSet->SetIsMultiSelect(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsMultiSelect, false));
     choiceSet->SetValue(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value, false));
+    choiceSet->SetWrap(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Wrap, false, false));
 
     // Parse Choices
     auto choices = ParseUtil::GetElementCollectionOfSingleType<ChoiceInput>(context, json, AdaptiveCardSchemaKey::Choices, ChoiceInput::Deserialize, true);
@@ -106,5 +122,6 @@ void ChoiceSetInput::PopulateKnownPropertiesSet()
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Choices),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsMultiSelect),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)});
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap)});
 }
