@@ -15,10 +15,10 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(ContainerStylesDefinition stylesDefinition) noexcept;
 
-        IFACEMETHODIMP get_Default(_Out_ ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition** value);
+        IFACEMETHODIMP get_Default(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition** value);
         IFACEMETHODIMP put_Default(_In_ ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition* value);
 
-        IFACEMETHODIMP get_Emphasis(_Out_ ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition** value);
+        IFACEMETHODIMP get_Emphasis(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition** value);
         IFACEMETHODIMP put_Emphasis(_In_ ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition* value);
 
     private:

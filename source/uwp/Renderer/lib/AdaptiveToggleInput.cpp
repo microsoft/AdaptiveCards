@@ -21,8 +21,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveToggleInput::RuntimeClassInitialize(
-        const std::shared_ptr<AdaptiveSharedNamespace::ToggleInput>& sharedToggleInput) try
+    HRESULT AdaptiveToggleInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ToggleInput>& sharedToggleInput) try
     {
         if (sharedToggleInput == nullptr)
         {
@@ -39,32 +38,23 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveToggleInput::get_Title(HSTRING* title) { return m_title.CopyTo(title); }
+    HRESULT AdaptiveToggleInput::get_Title(_Outptr_ HSTRING* title) { return m_title.CopyTo(title); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveToggleInput::put_Title(HSTRING title) { return m_title.Set(title); }
+    HRESULT AdaptiveToggleInput::put_Title(_In_ HSTRING title) { return m_title.Set(title); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveToggleInput::get_Value(HSTRING* value) { return m_value.CopyTo(value); }
+    HRESULT AdaptiveToggleInput::get_Value(_Outptr_ HSTRING* value) { return m_value.CopyTo(value); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveToggleInput::put_Value(HSTRING value) { return m_value.Set(value); }
+    HRESULT AdaptiveToggleInput::put_Value(_In_ HSTRING value) { return m_value.Set(value); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveToggleInput::get_ValueOff(HSTRING* valueOff)
-    {
-        return m_valueOff.CopyTo(valueOff);
-    }
+    HRESULT AdaptiveToggleInput::get_ValueOff(_Outptr_ HSTRING* valueOff) { return m_valueOff.CopyTo(valueOff); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveToggleInput::put_ValueOff(HSTRING valueOff)
-    {
-        return m_valueOff.Set(valueOff);
-    }
+    HRESULT AdaptiveToggleInput::put_ValueOff(_In_ HSTRING valueOff) { return m_valueOff.Set(valueOff); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveToggleInput::get_ValueOn(HSTRING* valueOn)
-    {
-        return m_valueOn.CopyTo(valueOn);
-    }
+    HRESULT AdaptiveToggleInput::get_ValueOn(_Outptr_ HSTRING* valueOn) { return m_valueOn.CopyTo(valueOn); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveToggleInput::put_ValueOn(HSTRING valueOn) { return m_valueOn.Set(valueOn); }
+    HRESULT AdaptiveToggleInput::put_ValueOn(_In_ HSTRING valueOn) { return m_valueOn.Set(valueOn); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveToggleInput::get_ElementType(ElementType* elementType)
+    HRESULT AdaptiveToggleInput::get_ElementType(_Out_ ElementType* elementType)
     {
         *elementType = ElementType::ToggleInput;
         return S_OK;

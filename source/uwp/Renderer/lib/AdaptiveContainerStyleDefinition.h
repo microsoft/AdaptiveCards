@@ -16,9 +16,9 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize(ContainerStyleDefinition styleDefinition) noexcept;
 
         IFACEMETHODIMP get_BackgroundColor(_Out_ ABI::Windows::UI::Color* value);
-        IFACEMETHODIMP put_BackgroundColor(_In_ ABI::Windows::UI::Color value);
+        IFACEMETHODIMP put_BackgroundColor(ABI::Windows::UI::Color value);
 
-        IFACEMETHODIMP get_ForegroundColors(_Out_ ABI::AdaptiveNamespace::IAdaptiveColorsConfig** colorsConfig);
+        IFACEMETHODIMP get_ForegroundColors(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveColorsConfig** colorsConfig);
         IFACEMETHODIMP put_ForegroundColors(_In_ ABI::AdaptiveNamespace::IAdaptiveColorsConfig* colorsConfig);
 
     private:

@@ -21,24 +21,24 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveContainerStyleDefinition::get_BackgroundColor(ABI::Windows::UI::Color* value)
+    HRESULT AdaptiveContainerStyleDefinition::get_BackgroundColor(_Out_ ABI::Windows::UI::Color* value)
     {
         *value = m_backgroundColor;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveContainerStyleDefinition::put_BackgroundColor(ABI::Windows::UI::Color color)
+    HRESULT AdaptiveContainerStyleDefinition::put_BackgroundColor(ABI::Windows::UI::Color color)
     {
         m_backgroundColor = color;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveContainerStyleDefinition::get_ForegroundColors(ABI::AdaptiveNamespace::IAdaptiveColorsConfig** colorsConfig)
+    HRESULT AdaptiveContainerStyleDefinition::get_ForegroundColors(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveColorsConfig** colorsConfig)
     {
         return m_foregroundColors.CopyTo(colorsConfig);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveContainerStyleDefinition::put_ForegroundColors(ABI::AdaptiveNamespace::IAdaptiveColorsConfig* colorsConfig)
+    HRESULT AdaptiveContainerStyleDefinition::put_ForegroundColors(_In_ ABI::AdaptiveNamespace::IAdaptiveColorsConfig* colorsConfig)
     {
         m_foregroundColors = colorsConfig;
         return S_OK;

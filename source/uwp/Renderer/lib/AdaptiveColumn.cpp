@@ -23,7 +23,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveColumn::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Column>& sharedColumn) try
+    HRESULT AdaptiveColumn::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Column>& sharedColumn) try
     {
         GenerateContainedElementsProjection(sharedColumn->GetItems(), m_items.Get());
         GenerateActionProjection(sharedColumn->GetSelectAction(), &m_selectAction);
@@ -39,61 +39,55 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveColumn::get_Width(HSTRING* width) { return m_width.CopyTo(width); }
+    HRESULT AdaptiveColumn::get_Width(_Outptr_ HSTRING* width) { return m_width.CopyTo(width); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveColumn::put_Width(HSTRING width) { return m_width.Set(width); }
+    HRESULT AdaptiveColumn::put_Width(_In_ HSTRING width) { return m_width.Set(width); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveColumn::get_PixelWidth(UINT32* pixelWidth)
-    {
-        return *pixelWidth = m_pixelWidth;
-    }
+    HRESULT AdaptiveColumn::get_PixelWidth(_Out_ UINT32* pixelWidth) { return *pixelWidth = m_pixelWidth; }
 
-    _Use_decl_annotations_ HRESULT AdaptiveColumn::put_PixelWidth(UINT32 pixelWidth)
-    {
-        return m_pixelWidth = pixelWidth;
-    }
+    HRESULT AdaptiveColumn::put_PixelWidth(UINT32 pixelWidth) { return m_pixelWidth = pixelWidth; }
 
-    _Use_decl_annotations_ HRESULT AdaptiveColumn::get_Style(ABI::AdaptiveNamespace::ContainerStyle* style)
+    HRESULT AdaptiveColumn::get_Style(_Out_ ABI::AdaptiveNamespace::ContainerStyle* style)
     {
         *style = m_style;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveColumn::put_Style(ABI::AdaptiveNamespace::ContainerStyle style)
+    HRESULT AdaptiveColumn::put_Style(ABI::AdaptiveNamespace::ContainerStyle style)
     {
         m_style = style;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveColumn::get_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment* verticalAlignment)
+    HRESULT AdaptiveColumn::get_VerticalContentAlignment(_Out_ ABI::AdaptiveNamespace::VerticalContentAlignment* verticalAlignment)
     {
         *verticalAlignment = m_verticalAlignment;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveColumn::put_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment verticalAlignment)
+    HRESULT AdaptiveColumn::put_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment verticalAlignment)
     {
         m_verticalAlignment = verticalAlignment;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveColumn::get_Items(IVector<IAdaptiveCardElement*>** items)
+    HRESULT AdaptiveColumn::get_Items(_COM_Outptr_ IVector<IAdaptiveCardElement*>** items)
     {
         return m_items.CopyTo(items);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveColumn::get_SelectAction(IAdaptiveActionElement** action)
+    HRESULT AdaptiveColumn::get_SelectAction(_COM_Outptr_ IAdaptiveActionElement** action)
     {
         return m_selectAction.CopyTo(action);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveColumn::put_SelectAction(IAdaptiveActionElement* action)
+    HRESULT AdaptiveColumn::put_SelectAction(_In_ IAdaptiveActionElement* action)
     {
         m_selectAction = action;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveColumn::get_ElementType(ElementType* elementType)
+    HRESULT AdaptiveColumn::get_ElementType(_Out_ ElementType* elementType)
     {
         *elementType = ElementType::Column;
         return S_OK;

@@ -20,31 +20,24 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveToggleVisibilityTarget::RuntimeClassInitialize(
-        const std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityTarget>& sharedToggleTarget)
+    HRESULT AdaptiveToggleVisibilityTarget::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityTarget>& sharedToggleTarget)
     {
         RETURN_IF_FAILED(UTF8ToHString(sharedToggleTarget->GetElementId(), m_elementId.GetAddressOf()));
         m_visibilityToggle = (ABI::AdaptiveNamespace::IsVisible)sharedToggleTarget->GetIsVisible();
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveToggleVisibilityTarget::get_ElementId(HSTRING* title)
-    {
-        return m_elementId.CopyTo(title);
-    }
+    HRESULT AdaptiveToggleVisibilityTarget::get_ElementId(_Outptr_ HSTRING* title) { return m_elementId.CopyTo(title); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveToggleVisibilityTarget::put_ElementId(HSTRING title)
-    {
-        return m_elementId.Set(title);
-    }
+    HRESULT AdaptiveToggleVisibilityTarget::put_ElementId(_In_ HSTRING title) { return m_elementId.Set(title); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveToggleVisibilityTarget::get_IsVisible(ABI::AdaptiveNamespace::IsVisible* value)
+    HRESULT AdaptiveToggleVisibilityTarget::get_IsVisible(_Out_ ABI::AdaptiveNamespace::IsVisible* value)
     {
         *value = m_visibilityToggle;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveToggleVisibilityTarget::put_IsVisible(ABI::AdaptiveNamespace::IsVisible value)
+    HRESULT AdaptiveToggleVisibilityTarget::put_IsVisible(ABI::AdaptiveNamespace::IsVisible value)
     {
         m_visibilityToggle = value;
         return S_OK;

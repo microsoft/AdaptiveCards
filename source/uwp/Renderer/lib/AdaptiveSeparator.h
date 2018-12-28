@@ -17,10 +17,10 @@ namespace AdaptiveNamespace
 
         // IAdaptiveSeparator
         IFACEMETHODIMP get_Color(_Out_ ABI::AdaptiveNamespace::ForegroundColor* color);
-        IFACEMETHODIMP put_Color(_In_ ABI::AdaptiveNamespace::ForegroundColor color);
+        IFACEMETHODIMP put_Color(ABI::AdaptiveNamespace::ForegroundColor color);
 
         IFACEMETHODIMP get_Thickness(_Out_ ABI::AdaptiveNamespace::SeparatorThickness* thickness);
-        IFACEMETHODIMP put_Thickness(_In_ ABI::AdaptiveNamespace::SeparatorThickness thickness);
+        IFACEMETHODIMP put_Thickness(ABI::AdaptiveNamespace::SeparatorThickness thickness);
 
     private:
         std::shared_ptr<AdaptiveSharedNamespace::Separator> m_sharedSeparator;
