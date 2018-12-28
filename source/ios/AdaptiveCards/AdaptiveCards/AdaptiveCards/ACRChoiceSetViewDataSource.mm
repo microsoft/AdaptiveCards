@@ -53,6 +53,7 @@ const CGFloat accessoryViewWidth = 50.0f;
     NSIndexPath *_currentSelectedIndexPath;
     NSMutableSet *_defaultValuesSet;
     NSArray *_defaultValuesArray;
+    BOOL _shouldWrap;
 }
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const&)choiceSet
@@ -64,6 +65,7 @@ const CGFloat accessoryViewWidth = 50.0f;
                                            encoding:NSUTF8StringEncoding];
         _isMultiChoicesAllowed = choiceSet->GetIsMultiSelect();
         _choiceSetDataSource = choiceSet;
+        _shouldWrap = choiceSet->GetWrap();
         _userSelections = [[NSMutableDictionary alloc] init];
         _currentSelectedIndexPath = nil;
         NSString *defaultValues = [NSString stringWithCString:_choiceSetDataSource->GetValue().c_str()
@@ -122,6 +124,7 @@ const CGFloat accessoryViewWidth = 50.0f;
     NSString *title = [NSString stringWithCString:_choiceSetDataSource->GetChoices()[indexPath.row]->GetTitle().c_str()
                                encoding:NSUTF8StringEncoding];
     cell.textLabel.text = title;
+    cell.textLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
     return cell;
@@ -182,8 +185,15 @@ const CGFloat accessoryViewWidth = 50.0f;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
+    NSString *textString = nil;
+    
+    if(!_shouldWrap) {
+        textString = @"A";
+    } else {
+        textString = cell.textLabel.text;
+    }
     CGSize labelStringSize =
-        [cell.textLabel.text boundingRectWithSize:CGSizeMake(cell.contentView.frame.size.width - accessoryViewWidth, CGFLOAT_MAX)
+        [textString boundingRectWithSize:CGSizeMake(cell.contentView.frame.size.width - accessoryViewWidth, CGFLOAT_MAX)
                                           options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
                                        attributes:@{NSFontAttributeName:cell.textLabel.font}
                                           context:nil].size;
