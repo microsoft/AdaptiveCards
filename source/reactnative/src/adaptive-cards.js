@@ -54,7 +54,7 @@ export default class AdaptiveCards extends React.Component {
 		if (!body)
 			return renderedElement;
 
-		renderedElement.push(Registry.getManager().parseRegistryComponents(body, this.props.onParseError));
+		renderedElement.push(Registry.getManager().parseRegistryComponents(body, this.onParseError));
 
 		return renderedElement;
 	}
@@ -92,9 +92,10 @@ export default class AdaptiveCards extends React.Component {
 
 	render() {
 		const { addInputItem, inputArray } = this;
-		const onExecuteAction = this.props.onExecuteAction;
+		const onExecuteAction = this.onExecuteAction;
 		const isTransparent = this.payload.backgroundImage ? true : false;
-		const onParseError = this.props.onParseError;
+		const onParseError = this.onParseError;
+		const lang = this.payload.lang || 'en';
 
 		// version check
 		if (!this.isSupportedVersion()) {
@@ -104,7 +105,7 @@ export default class AdaptiveCards extends React.Component {
 			)
 		}
 		return (
-			<InputContextProvider value={{ addInputItem, inputArray, onExecuteAction, isTransparent, onParseError }}>
+			<InputContextProvider value={{ lang, addInputItem, inputArray, onExecuteAction, isTransparent, onParseError }}>
 				{
 					this.getAdaptiveCardConent()
 				}
@@ -136,6 +137,20 @@ export default class AdaptiveCards extends React.Component {
 		}
 		else {
 			return true;
+		}
+	}
+
+	// Invoke onParseError if the consumer app provide it via props.
+	onParseError = (error) => {
+		if (this.props.onParseError) {
+			this.props.onParseError(error);
+		}
+	}
+
+	// Invoke onExecuteAction if the consumer app provide it via props.
+	onExecuteAction = (action) => {
+		if (this.props.onExecuteAction) {
+			this.props.onExecuteAction(action);
 		}
 	}
 }

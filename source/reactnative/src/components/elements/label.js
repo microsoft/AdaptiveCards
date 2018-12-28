@@ -9,10 +9,13 @@ import React from 'react';
 import { HostConfigManager } from '../../utils/host-config';
 import MarkDownFormatter from '../../utils/markdown-formatter';
 import { TextFormatter } from '../../utils/text-formatters';
+import { InputContext } from '../../utils/context';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 
 export class Label extends React.Component {
+
+	static contextType = InputContext;
 
 	hostConfig = HostConfigManager.getHostConfig();
 
@@ -20,7 +23,8 @@ export class Label extends React.Component {
 		let { text, wrap, maxLines, onDidLayout } = this.props;
 
 		// parse & format DATE/TIME values
-		let formattedText = TextFormatter('en-US', text);
+		let lang = this.context.lang;
+		let formattedText = TextFormatter(lang, text);
 
 		// received style
 		let receivedStyle = this.props.style;
