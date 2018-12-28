@@ -95,6 +95,7 @@ export default class AdaptiveCards extends React.Component {
 		const onExecuteAction = this.props.onExecuteAction;
 		const isTransparent = this.payload.backgroundImage ? true : false;
 		const onParseError = this.props.onParseError;
+		const lang = this.payload.lang || 'en';
 
 		// version check
 		if (!this.isSupportedVersion()) {
@@ -104,7 +105,7 @@ export default class AdaptiveCards extends React.Component {
 			)
 		}
 		return (
-			<InputContextProvider value={{ addInputItem, inputArray, onExecuteAction, isTransparent, onParseError }}>
+			<InputContextProvider value={{ lang, addInputItem, inputArray, onExecuteAction, isTransparent, onParseError }}>
 				{
 					this.getAdaptiveCardConent()
 				}
