@@ -1039,6 +1039,8 @@ AdaptiveNamespaceStart
         [propput] HRESULT Value([in] HSTRING value);
         [propget] HRESULT IsMultiSelect([out, retval] boolean* value);
         [propput] HRESULT IsMultiSelect([in] boolean value);
+        [propget] HRESULT Wrap([out, retval] boolean* value);
+        [propput] HRESULT Wrap([in] boolean value);
 
         [propget] HRESULT ChoiceSetStyle([out, retval] ChoiceSetStyle* value);
         [propput] HRESULT ChoiceSetStyle([in] ChoiceSetStyle value);
@@ -1251,6 +1253,9 @@ AdaptiveNamespaceStart
     {
         [propget] HRESULT Title([out, retval] HSTRING* value);
         [propput] HRESULT Title([in] HSTRING value);
+
+        [propget] HRESULT Wrap([out, retval] boolean* value);
+        [propput] HRESULT Wrap([in] boolean value);
 
         [propget] HRESULT Value([out, retval] HSTRING* value);
         [propput] HRESULT Value([in] HSTRING value);
