@@ -6,10 +6,10 @@
 		{
 			"type": "TextBlock",
 			"text": "3 results for 3d printer filament",
-            "bold": true,
-            "wrap": true,
-            "size": "large",
-            "horizontalAlignment": "center"
+			"bold": true,
+			"wrap": true,
+			"size": "large",
+			"horizontalAlignment": "center"
         },
 		{
 			"type": "Input.ChoiceSet",
@@ -17,7 +17,7 @@
 			"style": "expanded",
 			"isMultiSelect": false,
 			"value": "1",
-            "wrap": true,
+			"wrap": true,
 			"choices": [
 				{
 					"title": "HATCHBOX 1.75mm White PLA 3D Printer Filament - 1kg Spool (2.2 lbs) - Dimensional Accuracy +/- 0.03mm",
@@ -39,7 +39,7 @@
 			"style": "compact",
 			"isMultiSelect": false,
 			"value": "1",
-            "wrap": true,
+			"wrap": true,
 			"choices": [
 				{
 					"title": "HATCHBOX 1.75mm White PLA 3D Printer Filament - 1kg Spool (2.2 lbs) - Dimensional Accuracy +/- 0.03mm",
@@ -55,21 +55,21 @@
 				}
 			]
 		},
-        {
-            "type": "TextBlock",
-            "text": "Specify Filament Type to ABS",
-            "size": "medium",
-            "bold": true
-        },
-        {
-            "type": "Input.Toggle",
-            "id": "filamenttype",
-            "title": "Get PLA(Poly Lactic Acid) filament by tommorrow if order in next 2 hours",
-            "wrap": true,
-            "value": "true",
-            "valueOn": "true",
-            "valueOff": "false"
-        }
+	{
+		"type": "TextBlock",
+		"text": "Specify Filament Type to ABS",
+		"size": "medium",
+		"bold": true
+	},
+	{
+		"type": "Input.Toggle",
+		"id": "filamenttype",
+		"title": "Get PLA(Poly Lactic Acid) filament by tommorrow if order in next 2 hours",
+		"wrap": true,
+		"value": "true",
+		"valueOn": "true",
+		"valueOff": "false"
+	}
 	],
 	"actions": [
 		{
