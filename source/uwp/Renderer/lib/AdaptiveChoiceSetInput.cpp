@@ -38,6 +38,7 @@ namespace AdaptiveNamespace
         GenerateInputChoicesProjection(sharedChoiceSetInput->GetChoices(), m_choices.Get());
 
         m_isMultiSelect = sharedChoiceSetInput->GetIsMultiSelect();
+        m_wrap = sharedChoiceSetInput->GetWrap();
         m_choiceSetStyle = static_cast<ABI::AdaptiveNamespace::ChoiceSetStyle>(sharedChoiceSetInput->GetChoiceSetStyle());
         RETURN_IF_FAILED(UTF8ToHString(sharedChoiceSetInput->GetValue(), m_value.GetAddressOf()));
 
@@ -49,6 +50,18 @@ namespace AdaptiveNamespace
     _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInput::get_IsMultiSelect(boolean* isMultiSelect)
     {
         *isMultiSelect = m_isMultiSelect;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInput::put_Wrap(boolean wrap)
+    {
+        m_wrap = wrap;
+        return S_OK;
+    }
+
+    _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInput::get_Wrap(boolean* wrap)
+    {
+        *wrap= m_wrap;
         return S_OK;
     }
 

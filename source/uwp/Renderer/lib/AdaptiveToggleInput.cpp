@@ -33,11 +33,16 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(UTF8ToHString(sharedToggleInput->GetValue(), m_value.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedToggleInput->GetValueOn(), m_valueOn.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedToggleInput->GetValueOff(), m_valueOff.GetAddressOf()));
+        m_wrap = sharedToggleInput->GetWrap();
 
         InitializeBaseElement(std::static_pointer_cast<BaseInputElement>(sharedToggleInput));
         return S_OK;
     }
     CATCH_RETURN;
+
+    _Use_decl_annotations_ HRESULT AdaptiveToggleInput::get_Wrap(boolean* wrap) { *wrap= m_wrap; return S_OK; }
+
+    _Use_decl_annotations_ HRESULT AdaptiveToggleInput::put_Wrap(boolean wrap) { m_wrap = wrap; return S_OK; }
 
     _Use_decl_annotations_ HRESULT AdaptiveToggleInput::get_Title(HSTRING* title) { return m_title.CopyTo(title); }
 
