@@ -84,7 +84,7 @@ export class InputText extends React.Component {
 			isError = false;
 		}
 		else {
-			switch (this.style) {
+			switch (this.styleValue) {
 				case Enums.InputTextStyle.Email: {
 					REGEX = EMAIL_REGEX;
 				}
