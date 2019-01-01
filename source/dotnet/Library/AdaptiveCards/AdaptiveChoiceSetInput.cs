@@ -58,6 +58,16 @@ namespace AdaptiveCards
         [JsonRequired]
         public List<AdaptiveChoice> Choices { get; set; } = new List<AdaptiveChoice>();
 
+        /// <summary>
+        ///      when set true, text will wrap
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(false)]
+        public bool Wrap { get; set; }
+
         public override string GetNonInteractiveValue()
         {
             var chosen = Value?.Split(',').Select(p => p.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList() ?? new List<string>();
