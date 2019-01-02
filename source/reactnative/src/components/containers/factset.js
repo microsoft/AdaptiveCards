@@ -46,43 +46,7 @@ export class FactSet extends React.Component {
 			this.currentWidth = event.nativeEvent.layout.width;
 			this.viewSize = event.nativeEvent.layout.width;
 			this.getFactSetWidthFromHostConfig();
-			// this.checkForMaxWidth();
 		}
-	}
-
-    /**
-     * @description Measures the Fact Key size for Factset
-     */
-	measureKeyText(event) {
-		if (event.nativeEvent.layout.width) {
-			currentElementwidth = event.nativeEvent.layout.width;
-			this.widthArray.push(currentElementwidth);
-			this.checkForMaxWidth();
-		}
-	}
-
-	checkForMaxWidth() {
-		if (this.widthArray.length === this.payload.facts.length) {
-			this.maxWidth = Math.max(...this.widthArray);
-			this.adjustFactWidth();
-		}
-	}
-    /**
-     * @description Finds the width for Fact key and column value 
-     */
-	adjustFactWidth() {
-		var keyWidthValue = null;
-		if (this.maxWidth > this.viewSize / 2) {
-			keyWidthValue = this.viewSize / 2;
-		} else {
-			keyWidthValue = this.maxWidth;
-		}
-		let valueWidthPx = this.viewSize - keyWidthValue;
-		this.setState({
-			isMaximumWidthValueFound: true,
-			keyWidth: keyWidthValue,
-			valueWidth: valueWidthPx
-		})
 	}
 
 	/**
@@ -91,8 +55,6 @@ export class FactSet extends React.Component {
 	getFactSetWidthFromHostConfig() {
 		let titleConfig = this.hostConfig.factSet.title;
 		let valueConfig = this.hostConfig.factSet.value;
-		console.log("maxwidth is", titleConfig.maxWidth);
-		console.log(valueConfig);
 		if (!Utils.isNullOrEmpty(titleConfig.maxWidth) && (titleConfig.maxWidth !== 0) && Utils.isaNumber(titleConfig.maxWidth)) {
 			if (titleConfig.maxWidth < (0.8 * this.viewSize)) {
 				let currentValueWidth = this.viewSize - titleConfig.maxWidth;
@@ -121,42 +83,6 @@ export class FactSet extends React.Component {
 			keyWidth: titleWidth,
 			valueWidth: valueWidth
 		})
-	}
-
-    /**
-     * @description Temporary renderer to find Fact key and column value before values are knows
-     */
-	checkTheMaximumSizeRender() {
-		var checkArray = [];
-		this.widthArray = [];
-
-		// host config
-		let titleConfig = this.hostConfig.factSet.title;
-		let valueConfig = this.hostConfig.factSet.value;
-
-		this.props.json.facts.map((element, index) => {
-			checkArray.push(
-				<View style={[styles.textContainer]} key={`FACT--${index}`}>
-					<Label
-						text={element.title}
-						size={titleConfig.size}
-						weight={titleConfig.weight}
-						color={titleConfig.color}
-						isSubtle={titleConfig.isSubtle}
-						wrap={titleConfig.wrap}
-						onDidLayout={(event) => { this.measureKeyText(event) }} />
-					<Label
-						text={element.value}
-						size={valueConfig.size}
-						weight={valueConfig.weight}
-						color={valueConfig.color}
-						isSubtle={valueConfig.isSubtle}
-						wrap={valueConfig.wrap}
-						style={styles.valueTextStyle} />
-				</View>
-			);
-		});
-		return checkArray;
 	}
 
     /**

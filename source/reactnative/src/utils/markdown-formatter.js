@@ -167,9 +167,8 @@ export default class MarkdownFormatter extends React.Component {
 					let lastIdx = this.matchedIndices.indexOf(sortedMatchedIndices[i - 1]);
 					if (i !== 0) {
 						if (idx === lastIdx) {
-							idx = this.nthIndexOf(this.matchedIndices, sortedMatchedIndices[i], 2);
+							idx = this.findNthIndexOfElement(this.matchedIndices, sortedMatchedIndices[i], 2);
 						}
-						// let containsMatch = this.matchesFound[lastIdx][0].indexOf(this.matchesFound[idx][0]);
 						let containsMatch = elementJsxArray[elementJsxArray.length - 1].indexOf(this.matchesFound[idx][0]);
 						let containsStyle = elementStylesArray[elementStylesArray.length - 1].indexOf(this.matchesStyleTypes[idx]);
 						if (containsMatch !== -1 && containsStyle === -1) {
@@ -227,9 +226,6 @@ export default class MarkdownFormatter extends React.Component {
 					}
 
 					let fromIdx = this.matchesFound[idx].index + this.matchesFound[idx][0].length - processedText.length;
-					// if(fromIdx < 0){
-					//     continue;
-					// }
 					remainingText = remainingText.substring(fromIdx, remainingText.length);
 					processedText = processedText + beforeMatchStr + this.matchesFound[idx][0];
 
@@ -284,7 +280,6 @@ export default class MarkdownFormatter extends React.Component {
 				}
 			}).catch(err => console.error('An error occurred', err));
 		}
-		// return (url === null) ? null : Linking.openURL(url).catch(err => console.error('An error occurred', err)); 
 	}
 
 	splitValue(str, index, separator) {
@@ -295,10 +290,13 @@ export default class MarkdownFormatter extends React.Component {
 		}
 	}
 
-	nthIndexOf(arr, e, n) {
+	/**
+     * @description Finds the nth Index for Fact key and column value 
+     */
+	findNthIndexOfElement(arr, element, nthIndex) {
 		var index = -1;
 		for (var i = 0, len = arr.length; i < len; i++) {
-			if (i in arr && e === arr[i] && !--n) {
+			if (i in arr && element === arr[i] && !--nthIndex) {
 				index = i;
 				break;
 			}
