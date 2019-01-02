@@ -67,7 +67,7 @@ export class InputText extends React.Component {
 				value={this.state.text}
 				isError={this.state.isError}
 				styleValue={this.styleValue}
-				textStyle={this.props.style}
+				textStyle={this.style}
 			/>
 		);
 	}
@@ -98,6 +98,10 @@ export class InputText extends React.Component {
 					text = text.replace(/\D/g, Constants.EmptyString);
 				}
 					break;
+				default:{
+					isError = false;
+				}
+				break;
 			}
 
 			if (REGEX) {
