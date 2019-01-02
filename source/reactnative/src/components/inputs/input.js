@@ -15,6 +15,7 @@ import ElementWrapper from '../elements/element-wrapper';
 import { StyleManager } from '../../styles/style-config';
 import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config';
+import * as Utils from '../../utils/util';
 
 export class Input extends React.Component {
 
@@ -30,6 +31,8 @@ export class Input extends React.Component {
 		this.placeHolder = Constants.EmptyString;
 		this.type = Constants.EmptyString;
 		this.value = Constants.EmptyString;
+		this.keyboardType = Constants.EmptyString;
+		this.textStyle = Constants.EmptyString;
 		this.state = {
 			isError: false,
 			text: Constants.EmptyString,
@@ -68,8 +71,8 @@ export class Input extends React.Component {
 							maxLength={maxLength}
 							underlineColorAndroid={Constants.TransparentString}
 							clearButtonMode={Constants.WhileEditingString}
-							textContentType={this.props.textStyle}
-							keyboardType={this.props.keyboardType}
+							textContentType={this.textStyle}
+							keyboardType={this.keyboardType}
 							onFocus={this.props.handleFocus}
 							onBlur={this.props.handleBlur}
 							onChangeText={(text) => this.props.textValueChanged(text, addInputItem)}
@@ -108,6 +111,8 @@ export class Input extends React.Component {
 		this.maxLength = (this.payload.maxLength == undefined ||
 			this.payload.maxLength == 0) ? Number.MAX_VALUE : this.payload.maxLength;
 		this.placeholder = this.payload.placeholder;
+		this.textStyle = Utils.getEffectiveInputStyle(this.props.styleValue);
+		this.keyboardType = Utils.getKeyboardType(this.props.styleValue);
 	}
 }
 

@@ -23,7 +23,7 @@ export class InputText extends React.Component {
 		this.payload = props.json;
 		this.id = Constants.EmptyString;
 		this.style = Constants.EmptyString;
-		this.keyboardType = Constants.EmptyString;
+		this.styleValue = Constants.EmptyString;
 		this.state = {
 			isError: false,
 			text: Constants.EmptyString,
@@ -44,12 +44,11 @@ export class InputText extends React.Component {
      */
 	parseHostConfig() {
 		this.id = this.payload.id;
-		let styleValue = Utils.parseHostConfigEnum(
+		this.styleValue = Utils.parseHostConfigEnum(
 			Enums.InputTextStyle,
 			this.payload.style,
 			Enums.InputTextStyle.Text);
-		this.style = Utils.getEffectiveInputStyle(styleValue);
-		this.keyboardType = Utils.getKeyboardType(styleValue);
+		this.style = Utils.getEffectiveInputStyle(this.styleValue);
 	}
 
 	render() {
@@ -58,11 +57,6 @@ export class InputText extends React.Component {
 		}
 
 		this.parseHostConfig();
-		let styleValue = Utils.parseHostConfigEnum(
-			Enums.InputTextStyle,
-			this.payload.style,
-			Enums.InputTextStyle.Text);
-		this.keyboardType = Utils.getKeyboardType(styleValue);
 
 		return (
 			<Input
@@ -72,8 +66,8 @@ export class InputText extends React.Component {
 				textValueChanged={(text, addInputItem) => { this.textValueChanged(text, addInputItem) }}
 				value={this.state.text}
 				isError={this.state.isError}
-				keyboardType={this.keyboardType}
-				textStyle={this.props.style}
+				styleValue={this.styleValue}
+				textStyle={this.style}
 			/>
 		);
 	}
@@ -90,7 +84,7 @@ export class InputText extends React.Component {
 			isError = false;
 		}
 		else {
-			switch (this.style) {
+			switch (this.styleValue) {
 				case Enums.InputTextStyle.Email: {
 					REGEX = EMAIL_REGEX;
 				}
@@ -104,6 +98,10 @@ export class InputText extends React.Component {
 					text = text.replace(/\D/g, Constants.EmptyString);
 				}
 					break;
+				default:{
+					isError = false;
+				}
+				break;
 			}
 
 			if (REGEX) {
