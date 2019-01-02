@@ -49,11 +49,19 @@ export default class MarkdownFormatter extends React.Component {
 		},
 	];
 
+	componentWillReceiveProps(nextProps) {
+		this.setState({
+			userStyles: nextProps.defaultStyles
+		})
+	}
+
 	constructor(props) {
 		super(props);
 
 		// props
-		this.userStyles = props.defaultStyles;
+		this.state = {
+			userStyles: props.defaultStyles
+		}
 		this.numberOfLines = props.numberOfLines;
 		this.text = props.text;
 
@@ -144,7 +152,7 @@ export default class MarkdownFormatter extends React.Component {
 
 		if (this.matchesFound.length < 1) {
 			jsxArray.push(
-				<Text key={'text'} style={this.userStyles} numberOfLines={this.numberOfLines}>
+				<Text key={'text'} style={this.state.userStyles} numberOfLines={this.numberOfLines}>
 					{text}
 				</Text>
 			);
@@ -154,14 +162,13 @@ export default class MarkdownFormatter extends React.Component {
 				if (this.matchesFound[i]) {
 					console.log("match : " + this.matchesFound[i]);
 					idx = this.matchedIndices.indexOf(sortedMatchedIndices[i]);
-					// if(idx === lastIdx){
-					//     idx = idx + 1;
-					// }
-					// lastIdx = idx;
 
 					//check if previous elementJsxArray is or has the current match
+					let lastIdx = this.matchedIndices.indexOf(sortedMatchedIndices[i - 1]);
 					if (i !== 0) {
-						let lastIdx = this.matchedIndices.indexOf(sortedMatchedIndices[i - 1]);
+						if (idx === lastIdx) {
+							idx = this.nthIndexOf(this.matchedIndices, sortedMatchedIndices[i], 2);
+						}
 						// let containsMatch = this.matchesFound[lastIdx][0].indexOf(this.matchesFound[idx][0]);
 						let containsMatch = elementJsxArray[elementJsxArray.length - 1].indexOf(this.matchesFound[idx][0]);
 						let containsStyle = elementStylesArray[elementStylesArray.length - 1].indexOf(this.matchesStyleTypes[idx]);
@@ -236,7 +243,7 @@ export default class MarkdownFormatter extends React.Component {
 
 			jsxArray.push(this.createJsx(elementJsxArray, elementStylesArray, elementLinksArray));
 		}
-		return <View style={this.userStyles} onLayout={this.props.onDidLayout}>{jsxArray}</View>;
+		return jsxArray;
 	}
 
 	createJsx = function (elementJsxArray, elementStylesArray, elementLinksArray) {
@@ -247,9 +254,9 @@ export default class MarkdownFormatter extends React.Component {
 			let key = 'text_' + index;
 
 			if (elementStylesArray[index].indexOf('bulletText') !== -1) {
-				fullJsx.push(<Text key={key + partialJsx.length} style={this.userStyles} numberOfLines={this.numberOfLines}>{partialJsx}</Text>);
+				fullJsx.push(<Text key={key + partialJsx.length} style={this.state.userStyles} numberOfLines={this.numberOfLines}>{partialJsx}</Text>);
 
-				fullJsx.push(<View key={key} style={this.userStyles}><Text key={'bullet_dot_' + index}>{'\u2022'}</Text><View key={'bullet_view_' + index} style={styles.textBlock}><Text key={'bullet_text_' + index} style={styles.normalText}>{eachWord}</Text></View></View>)
+				fullJsx.push(<View key={key} style={this.state.userStyles}><Text key={'bullet_dot_' + index}>{'\u2022'}</Text><View key={'bullet_view_' + index} style={styles.textBlock}><Text key={'bullet_text_' + index} style={styles.normalText}>{eachWord}</Text></View></View>)
 
 				partialJsx = [];
 			} else {
@@ -257,9 +264,9 @@ export default class MarkdownFormatter extends React.Component {
 			}
 		});
 		if (fullJsx.length === 0) {
-			fullJsx = <Text key={'text_' + fullJsx.length + partialJsx.length} style={this.userStyles} numberOfLines={this.numberOfLines}>{partialJsx}</Text>;
+			fullJsx = <Text key={'text_' + fullJsx.length + partialJsx.length} style={this.state.userStyles} numberOfLines={this.numberOfLines}>{partialJsx}</Text>;
 		} else if (partialJsx.length !== 0) {
-			fullJsx.push(<Text key={'text_' + fullJsx.length + partialJsx.length} style={this.userStyles} numberOfLines={this.numberOfLines}>{partialJsx}</Text>);
+			fullJsx.push(<Text key={'text_' + fullJsx.length + partialJsx.length} style={this.state.userStyles} numberOfLines={this.numberOfLines}>{partialJsx}</Text>);
 		}
 		return fullJsx;
 	}
@@ -287,6 +294,17 @@ export default class MarkdownFormatter extends React.Component {
 			return [str];
 		}
 	}
+
+	nthIndexOf(arr, e, n) {
+		var index = -1;
+		for (var i = 0, len = arr.length; i < len; i++) {
+			if (i in arr && e === arr[i] && !--n) {
+				index = i;
+				break;
+			}
+		}
+		return index;
+	};
 
 };
 

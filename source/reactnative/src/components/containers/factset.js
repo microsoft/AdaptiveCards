@@ -14,6 +14,7 @@ import ElementWrapper from '../elements/element-wrapper';
 import * as Constants from '../../utils/constants';
 import { StyleManager } from '../../styles/style-config';
 import { HostConfigManager } from "../../utils/host-config";
+import * as Utils from '../../utils/util';
 import { Label } from '../elements';
 
 export class FactSet extends React.Component {
@@ -28,8 +29,8 @@ export class FactSet extends React.Component {
 		// state
 		this.state = {
 			isMaximumWidthValueFound: false,
-			keyWidth: 0,
-			valueWidth: 0
+			keyWidth: '50%',
+			valueWidth: '50%'
 		}
 		this.viewSize = 0;
 		this.maxWidth = 0;
@@ -44,7 +45,8 @@ export class FactSet extends React.Component {
 		if (this.currentWidth === 0 || this.currentWidth !== event.nativeEvent.layout.width) {
 			this.currentWidth = event.nativeEvent.layout.width;
 			this.viewSize = event.nativeEvent.layout.width;
-			this.checkForMaxWidth();
+			this.getFactSetWidthFromHostConfig();
+			// this.checkForMaxWidth();
 		}
 	}
 
@@ -80,6 +82,44 @@ export class FactSet extends React.Component {
 			isMaximumWidthValueFound: true,
 			keyWidth: keyWidthValue,
 			valueWidth: valueWidthPx
+		})
+	}
+
+	/**
+     * @description Finds the width for Fact key and column value 
+     */
+	getFactSetWidthFromHostConfig() {
+		let titleConfig = this.hostConfig.factSet.title;
+		let valueConfig = this.hostConfig.factSet.value;
+		console.log("maxwidth is", titleConfig.maxWidth);
+		console.log(valueConfig);
+		if (!Utils.isNullOrEmpty(titleConfig.maxWidth) && (titleConfig.maxWidth !== 0) && Utils.isaNumber(titleConfig.maxWidth)) {
+			if (titleConfig.maxWidth < (0.8 * this.viewSize)) {
+				let currentValueWidth = this.viewSize - titleConfig.maxWidth;
+				this.setFactSetWidthSize(titleConfig.maxWidth, currentValueWidth);
+			} else {
+				let currentTitleWidth = 0.8 * this.viewSize;
+				let currentValueWidth = this.viewSize - currentTitleWidth;
+				this.setFactSetWidthSize(currentTitleWidth, currentValueWidth);
+			}
+		} else if (!Utils.isNullOrEmpty(valueConfig.maxWidth) && (valueConfig.maxWidth !== 0) && Utils.isaNumber(valueConfig.maxWidth)) {
+			if (valueConfig.maxWidth < (0.8 * this.viewSize)) {
+				let currentTitleWidth = this.viewSize - valueConfig.maxWidth;
+				this.setFactSetWidthSize(currentTitleWidth, valueConfig.maxWidth);
+			} else {
+				let currentValueWidth = 0.8 * this.viewSize;
+				let currentTitleWidth = this.viewSize - currentTitleWidth;
+				this.setFactSetWidthSize(currentTitleWidth, currentValueWidth);
+			}
+		} else {
+			this.setFactSetWidthSize('50%', '50%');
+		}
+	}
+
+	setFactSetWidthSize(titleWidth, valueWidth) {
+		this.setState({
+			keyWidth: titleWidth,
+			valueWidth: valueWidth
 		})
 	}
 
@@ -130,7 +170,6 @@ export class FactSet extends React.Component {
 		// host config
 		let titleConfig = this.hostConfig.factSet.title;
 		let valueConfig = this.hostConfig.factSet.value;
-
 		factSetJson.facts.map((element, index) => {
 			renderedElement.push(
 				<View style={[styles.textContainer]} key={`FACT-${element.title}-${index}`}>
@@ -162,13 +201,7 @@ export class FactSet extends React.Component {
      */
 	internalRenderer(containerJson) {
 		let factSetObject = null;
-		if (!this.state.isMaximumWidthValueFound) {
-			factSetObject = this.checkTheMaximumSizeRender();
-		}
-		else {
-			factSetObject = this.parsePayload(containerJson)
-		}
-
+		factSetObject = this.parsePayload(containerJson)
 		return (
 			<ElementWrapper json={containerJson}>
 				<View style={[styles.container]} onLayout={(event) => { this.measureView(event) }}>
