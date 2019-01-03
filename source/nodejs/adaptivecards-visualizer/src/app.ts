@@ -462,6 +462,6 @@ function monacoEditorLoaded() {
     }
 }
 
-window.onload = () => {
+window.onload = function() {
     loadMonacoEditor(adaptiveCardSchema, monacoEditorLoaded);
 };

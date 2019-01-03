@@ -90,7 +90,7 @@ import "adaptivecards/dist/adaptivecards-default.css";
 import "adaptivecards-controls/dist/adaptivecards-controls.css";
 import "adaptivecards-designer/dist/adaptivecards-designer.css";
 
-window.onload = () => {
+window.onload = function() {
 
 	if (!Designer.SettingsManager.isLocalStorageAvailable) {
 		console.log("Local storage is not available.");

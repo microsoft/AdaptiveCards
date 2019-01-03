@@ -4,7 +4,7 @@ import * as ACDesigner from "adaptivecards-designer";
 import "./app.css";
 import "adaptivecards-designer/dist/adaptivecards-designer.css";
 
-window.onload = () => {
+window.onload = function() {
 	ACDesigner.CardDesigner.onProcessMarkdown = (text: string, result: { didProcess: boolean, outputHtml: string }) => {
 		result.outputHtml = new markdownit().render(text);
 		result.didProcess = true;

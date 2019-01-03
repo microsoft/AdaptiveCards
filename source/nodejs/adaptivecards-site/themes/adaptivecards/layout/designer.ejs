@@ -1,5 +1,5 @@
 <script type="text/javascript">
-	window.onload = () => {
+	window.onload = function() {
 
 		function getParameterByName(name, url) {
 			if (!url) {
@@ -39,8 +39,10 @@
 			"hostDocs",
 			"Host App Docs",
 			null,
-			(sender) => { window.open("https://docs.microsoft.com/en-us/adaptive-cards/resources/partners") });
-			hostDocsButton.separator = false;
+			function() { window.open("https://docs.microsoft.com/en-us/adaptive-cards/resources/partners") }
+		);
+	
+		hostDocsButton.separator = false;
 
 		designer.toolbar.insertElementAfter(hostDocsButton, ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker);
 
@@ -48,9 +50,11 @@
 			"visualizerButton",
 			"Classic Visualizer",
 			null,
-			(sender) => { window.location.href = "/visualizer" });
-			visualizerButton.separator = true;
-			visualizerButton.alignment = ACDesigner.ToolbarElementAlignment.Right;
+			function() { window.open("/visualizer") }
+		);
+		
+		visualizerButton.separator = true;
+		visualizerButton.alignment = ACDesigner.ToolbarElementAlignment.Right;
 
 		designer.toolbar.insertElementBefore(visualizerButton, ACDesigner.CardDesigner.ToolbarCommands.FullScreen);
 
