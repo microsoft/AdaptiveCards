@@ -551,7 +551,8 @@
 				}
 			},
 			"required": [
-				"type"
+				"type",
+				"sources"
 			]
 		},
 		"Image": {
