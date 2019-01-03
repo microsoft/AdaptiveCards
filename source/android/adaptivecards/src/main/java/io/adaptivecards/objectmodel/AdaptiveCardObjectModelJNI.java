@@ -152,6 +152,17 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long DateTimePreparsedTokenVector_get(long jarg1, DateTimePreparsedTokenVector jarg1_, int jarg2);
   public final static native void DateTimePreparsedTokenVector_set(long jarg1, DateTimePreparsedTokenVector jarg1_, int jarg2, long jarg3, DateTimePreparsedToken jarg3_);
   public final static native void delete_DateTimePreparsedTokenVector(long jarg1);
+  public final static native long new_ToggleVisibilityTargetVector__SWIG_0();
+  public final static native long new_ToggleVisibilityTargetVector__SWIG_1(long jarg1);
+  public final static native long ToggleVisibilityTargetVector_size(long jarg1, ToggleVisibilityTargetVector jarg1_);
+  public final static native long ToggleVisibilityTargetVector_capacity(long jarg1, ToggleVisibilityTargetVector jarg1_);
+  public final static native void ToggleVisibilityTargetVector_reserve(long jarg1, ToggleVisibilityTargetVector jarg1_, long jarg2);
+  public final static native boolean ToggleVisibilityTargetVector_isEmpty(long jarg1, ToggleVisibilityTargetVector jarg1_);
+  public final static native void ToggleVisibilityTargetVector_clear(long jarg1, ToggleVisibilityTargetVector jarg1_);
+  public final static native void ToggleVisibilityTargetVector_add(long jarg1, ToggleVisibilityTargetVector jarg1_, long jarg2, ToggleVisibilityTarget jarg2_);
+  public final static native long ToggleVisibilityTargetVector_get(long jarg1, ToggleVisibilityTargetVector jarg1_, int jarg2);
+  public final static native void ToggleVisibilityTargetVector_set(long jarg1, ToggleVisibilityTargetVector jarg1_, int jarg2, long jarg3, ToggleVisibilityTarget jarg3_);
+  public final static native void delete_ToggleVisibilityTargetVector(long jarg1);
   public final static native long new_StringVector__SWIG_0();
   public final static native long new_StringVector__SWIG_1(long jarg1);
   public final static native long StringVector_size(long jarg1, StringVector jarg1_);
@@ -280,6 +291,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native String BaseCardElement_GetIdSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_);
   public final static native void BaseCardElement_SetId(long jarg1, BaseCardElement jarg1_, String jarg2);
   public final static native void BaseCardElement_SetIdSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_, String jarg2);
+  public final static native boolean BaseCardElement_GetIsVisible(long jarg1, BaseCardElement jarg1_);
+  public final static native boolean BaseCardElement_GetIsVisibleSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_);
+  public final static native void BaseCardElement_SetIsVisible(long jarg1, BaseCardElement jarg1_, boolean jarg2);
+  public final static native void BaseCardElement_SetIsVisibleSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_, boolean jarg2);
   public final static native int BaseCardElement_GetElementType(long jarg1, BaseCardElement jarg1_);
   public final static native int BaseCardElement_GetElementTypeSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_);
   public final static native String BaseCardElement_Serialize(long jarg1, BaseCardElement jarg1_);
@@ -991,6 +1006,26 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void delete_MediaParser(long jarg1);
   public final static native long MediaParser_Deserialize(long jarg1, MediaParser jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
   public final static native long MediaParser_DeserializeFromString(long jarg1, MediaParser jarg1_, long jarg2, ParseContext jarg2_, String jarg3);
+  public final static native long new_ToggleVisibilityTarget();
+  public final static native String ToggleVisibilityTarget_GetElementId(long jarg1, ToggleVisibilityTarget jarg1_);
+  public final static native void ToggleVisibilityTarget_SetElementId(long jarg1, ToggleVisibilityTarget jarg1_, String jarg2);
+  public final static native int ToggleVisibilityTarget_GetIsVisible(long jarg1, ToggleVisibilityTarget jarg1_);
+  public final static native void ToggleVisibilityTarget_SetIsVisible(long jarg1, ToggleVisibilityTarget jarg1_, int jarg2);
+  public final static native String ToggleVisibilityTarget_Serialize(long jarg1, ToggleVisibilityTarget jarg1_);
+  public final static native long ToggleVisibilityTarget_SerializeToJsonValue(long jarg1, ToggleVisibilityTarget jarg1_);
+  public final static native long ToggleVisibilityTarget_Deserialize(long jarg1, ParseContext jarg1_, long jarg2, JsonValue jarg2_);
+  public final static native long ToggleVisibilityTarget_DeserializeFromString(long jarg1, ParseContext jarg1_, String jarg2);
+  public final static native void delete_ToggleVisibilityTarget(long jarg1);
+  public final static native long new_ToggleVisibilityAction();
+  public final static native long ToggleVisibilityAction_GetTargetElements__SWIG_0(long jarg1, ToggleVisibilityAction jarg1_);
+  public final static native long ToggleVisibilityAction_SerializeToJsonValue(long jarg1, ToggleVisibilityAction jarg1_);
+  public final static native long ToggleVisibilityAction_dynamic_cast(long jarg1, BaseCardElement jarg1_);
+  public final static native void delete_ToggleVisibilityAction(long jarg1);
+  public final static native long new_ToggleVisibilityActionParser__SWIG_0();
+  public final static native long new_ToggleVisibilityActionParser__SWIG_1(long jarg1, ToggleVisibilityActionParser jarg1_);
+  public final static native void delete_ToggleVisibilityActionParser(long jarg1);
+  public final static native long ToggleVisibilityActionParser_Deserialize(long jarg1, ToggleVisibilityActionParser jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
+  public final static native long ToggleVisibilityActionParser_DeserializeFromString(long jarg1, ToggleVisibilityActionParser jarg1_, long jarg2, ParseContext jarg2_, String jarg3);
   public final static native long BaseInputElement_SWIGSmartPtrUpcast(long jarg1);
   public final static native long Container_SWIGSmartPtrUpcast(long jarg1);
   public final static native long ContainerParser_SWIGSmartPtrUpcast(long jarg1);
@@ -1025,6 +1060,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long TextBlockParser_SWIGSmartPtrUpcast(long jarg1);
   public final static native long Media_SWIGSmartPtrUpcast(long jarg1);
   public final static native long MediaParser_SWIGSmartPtrUpcast(long jarg1);
+  public final static native long ToggleVisibilityAction_SWIGSmartPtrUpcast(long jarg1);
+  public final static native long ToggleVisibilityActionParser_SWIGSmartPtrUpcast(long jarg1);
 
   public static String SwigDirector_BaseCardElement_GetElementTypeString(BaseCardElement jself) {
     return jself.GetElementTypeString();
@@ -1049,6 +1086,12 @@ public class AdaptiveCardObjectModelJNI {
   }
   public static void SwigDirector_BaseCardElement_SetId(BaseCardElement jself, String value) {
     jself.SetId(value);
+  }
+  public static boolean SwigDirector_BaseCardElement_GetIsVisible(BaseCardElement jself) {
+    return jself.GetIsVisible();
+  }
+  public static void SwigDirector_BaseCardElement_SetIsVisible(BaseCardElement jself, boolean value) {
+    jself.SetIsVisible(value);
   }
   public static int SwigDirector_BaseCardElement_GetElementType(BaseCardElement jself) {
     return (jself.GetElementType()).swigValue();

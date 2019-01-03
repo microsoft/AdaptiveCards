@@ -5,6 +5,8 @@
 #include "SharedAdaptiveCard.h"
 #include "ShowCardAction.h"
 #include "ParseContext.h"
+#include "ChoiceSetInput.h"
+#include "ToggleInput.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
@@ -333,6 +335,122 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual(roundTrippedShowCard->GetActions().size(), (size_t)1);
             Assert::IsTrue(roundTrippedShowCard->GetActions()[0]->GetElementType() == ActionType::Submit);
             Assert::AreEqual(roundTrippedShowCard->GetActions()[0]->GetTitle(), "Neat!"s);
+        }
+
+        template<typename T>
+        void runWrapTest(const vector<std::shared_ptr<BaseCardElement>> &body, int index, bool expectation)
+        {
+            auto testingElem = dynamic_pointer_cast<T>(body.at(index));
+            if(testingElem)
+            {
+                Assert::AreEqual(testingElem->GetWrap(), expectation);
+            }
+            else
+            {
+                Assert::Fail(L"improper json payload");
+            }
+        }
+
+        TEST_METHOD(ChoiceSetWrapParsingTest)
+        {
+            std::string testjson{ R"(
+                {
+                    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                    "type": "AdaptiveCard",
+                    "version": "1.2",
+                    "body": [
+                        {
+                            "type": "Input.ChoiceSet",
+                            "id": "myColor",
+                            "style": "compact",
+                            "isMultiSelect": true,
+                            "wrap": true,
+                            "value": "1",
+                            "choices": [
+                                {
+                                    "title": "Red",
+                                    "value": "1"
+                                },
+                                {
+                                    "title": "Green",
+                                    "value": "2"
+                                },
+                                {
+                                    "title": "Blue",
+                                    "value": "3"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Input.ChoiceSet",
+                            "id": "myColor2",
+                            "style": "expanded",
+                            "isMultiSelect": false,
+                            "value": "1",
+                            "choices": [
+                                {
+                                    "title": "Red",
+                                    "value": "1"
+                                },
+                                {
+                                    "title": "Green",
+                                    "value": "2"
+                                },
+                                {
+                                    "title": "Blue",
+                                    "value": "3"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            )"};
+
+            auto parseResult = AdaptiveCard::DeserializeFromString(testjson, "1.2");
+            auto card = parseResult->GetAdaptiveCard();
+            auto body = card->GetBody();
+
+            runWrapTest<ChoiceSetInput>(body, 0, true);
+            // default value test
+            runWrapTest<ChoiceSetInput>(body, 1, false);
+        }
+
+        TEST_METHOD(ToggleInputWrapParsingTest)
+        {
+            std::string testjson{ R"(
+                {
+                    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                    "type": "AdaptiveCard",
+                    "version": "1.2",
+                    "body": [
+                        {
+                            "type": "Input.Toggle",
+                            "id": "acceptTerms",
+                            "wrap": true,
+                            "title": "I accept the terms and agreements",
+                            "value": "true",
+                            "valueOn": "true",
+                            "valueOff": "false"
+                        },
+                        {
+                            "type": "Input.Toggle",
+                            "id": "acceptTerms2",
+                            "title": "I accept the terms and agreements",
+                            "value": "true",
+                            "valueOn": "true",
+                            "valueOff": "false"
+                        }
+                    ]
+                }
+            )"};
+
+            auto parseResult = AdaptiveCard::DeserializeFromString(testjson, "1.2");
+            auto card = parseResult->GetAdaptiveCard();
+            auto body = card->GetBody();
+
+            runWrapTest<ToggleInput>(body, 0, true);
+            // default value test
+            runWrapTest<ToggleInput>(body, 1, false);
         }
     };
 }

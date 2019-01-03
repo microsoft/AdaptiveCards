@@ -33,15 +33,22 @@ using namespace AdaptiveCards;
 
 // This interface is exposed to outside, and returns ACRRenderResult object
 // This object contains a viewController instance which defer rendering adaptiveCard until viewDidLoad is called.
-+ (ACRRenderResult *)render:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config widthConstraint:(float)width
++ (ACRRenderResult *)render:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config widthConstraint:(float)width delegate:(id<ACRActionDelegate>)acrActionDelegate
 {
     ACRRenderResult *result = [[ACRRenderResult alloc] init];
     // Initializes ACRView instance with HostConfig and AdaptiveCard
     // ACRViewController does not render adaptiveCard until viewDidLoad calls render
-    ACRView *view = [[ACRView alloc] init:card hostconfig:config widthConstraint:width];
+    ACRView *view = [[ACRView alloc] init:card hostconfig:config widthConstraint:width delegate:acrActionDelegate];
     result.view = view;
     result.succeeded = YES;
     return result;
+}
+
+// This interface is exposed to outside, and returns ACRRenderResult object
+// This object contains a viewController instance which defer rendering adaptiveCard until viewDidLoad is called.
++ (ACRRenderResult *)render:(ACOAdaptiveCard *)card config:(ACOHostConfig *)config widthConstraint:(float)width
+{
+    return [ACRRenderer render:card config:config widthConstraint:width delegate:nil];
 }
 
 // This interface is exposed to outside, and returns ACRRenderResult object
@@ -78,12 +85,36 @@ using namespace AdaptiveCards;
     }
 
     if(!adaptiveCard->GetBackgroundImage().empty()) {
-            [rootView loadImage:adaptiveCard->GetBackgroundImage()];
-        }
+        ObserverActionBlock observerAction =
+        ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &elem, NSURL* url, ACRView* rootView) {
+            UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
+            [rootView setImageView:key view:view];
+            if(view) {
+                [view addObserver:rootView forKeyPath:@"image"
+                          options:NSKeyValueObservingOptionNew
+                          context:nil];
+            }
+        };
+        [rootView
+            loadImageAccordingToResourceResolverIFFromString:adaptiveCard->GetBackgroundImage()
+            key:@"backgroundImage" observerAction:observerAction];
+    }
+
     if(![config getHostConfig]->GetMedia().playButton.empty()) {
-            [rootView loadImage:[config getHostConfig]->GetMedia().playButton];
-        }
-  
+        ObserverActionBlock observerAction =
+        ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &elem, NSURL* url, ACRView* rootView) {
+            UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
+            [rootView setImageView:key view:view];
+            if(view) {
+                [view addObserver:rootView forKeyPath:@"image"
+                          options:NSKeyValueObservingOptionNew
+                          context:nil];
+            }
+        };
+        [rootView
+            loadImageAccordingToResourceResolverIFFromString:[config getHostConfig]->GetMedia().playButton
+            key:@"playIconImage" observerAction:observerAction];
+    }
 
     ACRContainerStyle style = ([config getHostConfig]->GetAdaptiveCard().allowCustomStyle)? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
     style = (style == ACRNone)? ACRDefault : style;

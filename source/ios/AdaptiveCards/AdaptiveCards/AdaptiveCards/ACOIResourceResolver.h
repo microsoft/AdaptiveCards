@@ -9,6 +9,10 @@
 
 @protocol ACOIResourceResolver
 
+// only one IF per scheme is supported
+@optional
 - (UIImage *)resolveImageResource:(NSURL *)url;
+
+- (UIImageView *)resolveImageViewResource:(NSURL *)url;
 
 @end

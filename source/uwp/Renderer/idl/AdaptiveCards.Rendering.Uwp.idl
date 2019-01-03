@@ -48,6 +48,7 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveTimeInput;
     runtimeclass AdaptiveToggleInput;
     runtimeclass AdaptiveSeparator;
+    runtimeclass AdaptiveToggleVisibilityAction;
 
     runtimeclass AdaptiveFontSizesConfig;
     runtimeclass AdaptiveFontWeightsConfig;
@@ -101,6 +102,7 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveTimeInputRenderer;
     runtimeclass AdaptiveToggleInputRenderer;
     runtimeclass AdaptiveRemoteResourceInformation;
+    runtimeclass AdaptiveToggleVisibilityTarget;
 
     runtimeclass WholeItemsPanel;
 
@@ -261,6 +263,7 @@ AdaptiveNamespaceStart
         ShowCard,
         Submit,
         OpenUrl,
+        ToggleVisibility,
         Custom
     } ActionType;
 
@@ -467,6 +470,16 @@ AdaptiveNamespaceStart
         Destructive
     } Sentiment;
 
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)][internal]
+#endif
+    typedef[v1_enum] enum IsVisible {
+        IsVisibleToggle = 0,
+        IsVisibleTrue,
+        IsVisibleFalse
+    } IsVisible;
+
     declare
     {
         interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
@@ -481,6 +494,7 @@ AdaptiveNamespaceStart
         interface Windows.Foundation.IAsyncOperation<RenderedAdaptiveCard*>;
         interface Windows.Foundation.Collections.IVector<AdaptiveMediaSource*>;
         interface Windows.Foundation.Collections.IVector<AdaptiveRemoteResourceInformation*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveToggleVisibilityTarget*>;
     }
 
     [
@@ -509,6 +523,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT Id([out, retval] HSTRING* value);
         [propput] HRESULT Id([in] HSTRING value);
+
+        [propget] HRESULT IsVisible([out, retval] boolean * value);
+        [propput] HRESULT IsVisible([in] boolean value);
 
         [propget] HRESULT AdditionalProperties([out, retval] Windows.Data.Json.JsonObject** json);
         [propput] HRESULT AdditionalProperties([in] Windows.Data.Json.JsonObject* json);
@@ -2535,6 +2552,70 @@ AdaptiveNamespaceStart
         interface IAdaptiveActionElement;
     };
 
+
+    [
+        version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveToggleVisibilityTarget),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(045FA1AE-A5CA-4359-AC35-16FC162F3BF0),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(1F626040-8C2F-4C64-AB3E-A80ECE538E5F)
+#endif
+    ] 
+    interface IAdaptiveToggleVisibilityTarget : IInspectable
+    {
+        [propget] HRESULT ElementId([out, retval] HSTRING * value);
+        [propput] HRESULT ElementId([in] HSTRING value);
+
+        [propget] HRESULT IsVisible([out, retval] IsVisible * value);
+        [propput] HRESULT IsVisible([in] IsVisible value);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+         contract(InternalContract, 1),
+         internal,
+        activatable(InternalContract, 1)
+#endif
+    ] 
+    runtimeclass AdaptiveToggleVisibilityTarget {
+        [default] interface IAdaptiveToggleVisibilityTarget;
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveToggleVisibilityAction),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(7DD38D1D-338A-40D3-9AF8-912FBC61427C),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(DF122310-5768-4111-A155-92F6F34BB37A)
+#endif
+    ] 
+    interface IAdaptiveToggleVisibility : IInspectable
+    {
+        [propget] HRESULT TargetElements([out, retval] Windows.Foundation.Collections.IVector<AdaptiveToggleVisibilityTarget*> * *value);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif
+    ] 
+    runtimeclass AdaptiveToggleVisibilityAction {
+        [default] interface IAdaptiveToggleVisibility;
+        interface IAdaptiveActionElement;
+    };
+
     [
         version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveCardResourceResolvers),
@@ -2942,6 +3023,8 @@ AdaptiveNamespaceStart
         [propget] HRESULT MediaEventInvoker([out, retval] AdaptiveMediaEventInvoker** value);
 
         [propget] HRESULT OverrideStyles([out, retval] Windows.UI.Xaml.ResourceDictionary** overrideDictionary);
+
+        [propget] HRESULT CardFrameworkElement([out, retval] Windows.UI.Xaml.FrameworkElement * *value);
 
         HRESULT AddInputValue([in] IAdaptiveInputValue* inputValue);
         HRESULT AddError([in] ErrorStatusCode statusCode, [in] HSTRING message);

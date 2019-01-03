@@ -691,7 +691,7 @@
 					"$ref": "#/definitions/ChoiceInputStyle"
 				},
 				"type": {
-					"description": "Must be `\"Input.ChoiceInput\"`.",
+					"description": "Must be `\"Input.ChoiceSet\"`.",
 					"enum": [
 						"Input.ChoiceSet"
 					],

@@ -91,6 +91,8 @@
     <ClCompile Include="lib\AdaptiveRemoteResourceInformation.cpp" />
     <ClCompile Include="lib\AdaptiveFontStyleDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveFontStylesDefinition.cpp" />
+    <ClCompile Include="lib\AdaptiveToggleVisibilityAction.cpp" />
+    <ClCompile Include="lib\AdaptiveToggleVisibilityTarget.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -189,6 +191,8 @@
     <ClInclude Include="lib\AdaptiveRemoteResourceInformation.h" />
     <ClInclude Include="lib\AdaptiveFontStyleDefinition.h" />
     <ClInclude Include="lib\AdaptiveFontStylesDefinition.h" />
+    <ClInclude Include="lib\AdaptiveToggleVisibilityAction.h" />
+    <ClInclude Include="lib\AdaptiveToggleVisibilityTarget.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />
