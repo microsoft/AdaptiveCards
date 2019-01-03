@@ -36,7 +36,7 @@ The simplest way to get started it to include 3 script tags in your page.
 <script src="https://unpkg.com/adaptivecards-designer@0.1.1/dist/adaptivecards-designer.min.js"></script>
 
 <script type="text/javascript">
-	window.onload = () => {
+	window.onload = function() {
 
 		let hostContainers = [];
 

@@ -9,7 +9,7 @@
 	<script src="https://unpkg.com/adaptivecards-designer@0.1.1/dist/adaptivecards-designer.min.js"></script>
 
 	<script type="text/javascript">
-		window.onload = () => {
+		window.onload = function() {
 			if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
 				console.log("Local storage is not available.");
 			}

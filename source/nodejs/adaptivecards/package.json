@@ -2,7 +2,7 @@
 	"name": "adaptivecards",
 	"version": "1.1.1",
 	"description": "Adaptive Cards Javascript library for HTML Clients",
-	"author": "AdaptiveCards <adaptivecardspkg@microsoft.com>",
+	"author": "AdaptiveCards",
 	"license": "MIT",
 	"homepage": "http://adaptivecards.io",
 	"keywords": [
