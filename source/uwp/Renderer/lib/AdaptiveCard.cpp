@@ -40,7 +40,7 @@ namespace AdaptiveNamespace
         std::string adaptiveJsonString;
         RETURN_IF_FAILED(HStringToUTF8(adaptiveJson, adaptiveJsonString));
 
-        return FromJsonString(adaptiveJsonString, elementParserRegistration, actionParserRegistration, parseResult);
+        return _FromJsonString(adaptiveJsonString, elementParserRegistration, actionParserRegistration, parseResult);
     }
     CATCH_RETURN;
 
@@ -61,14 +61,14 @@ namespace AdaptiveNamespace
         std::string adaptiveJsonString;
         RETURN_IF_FAILED(JsonObjectToString(adaptiveJson, adaptiveJsonString));
 
-        return FromJsonString(adaptiveJsonString, elementParserRegistration, actionParserRegistration, parseResult);
+        return _FromJsonString(adaptiveJsonString, elementParserRegistration, actionParserRegistration, parseResult);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveCardStaticsImpl::FromJsonString(const std::string jsonString,
-                                                    _In_ IAdaptiveElementParserRegistration* elementParserRegistration,
-                                                    _In_ IAdaptiveActionParserRegistration* actionParserRegistration,
-                                                    _COM_Outptr_ IAdaptiveCardParseResult** parseResult)
+    HRESULT AdaptiveCardStaticsImpl::_FromJsonString(const std::string& jsonString,
+                                                     _In_ IAdaptiveElementParserRegistration* elementParserRegistration,
+                                                     _In_ IAdaptiveActionParserRegistration* actionParserRegistration,
+                                                     _COM_Outptr_ IAdaptiveCardParseResult** parseResult)
     {
         std::shared_ptr<ElementParserRegistration> sharedModelElementParserRegistration;
         if (elementParserRegistration != nullptr)

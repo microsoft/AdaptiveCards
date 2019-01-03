@@ -108,10 +108,10 @@ namespace AdaptiveNamespace
             _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult) noexcept;
 
     private:
-        HRESULT FromJsonString(const std::string jsonString,
-                               _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
-                               _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
-                               _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult);
+        HRESULT _FromJsonString(const std::string& jsonString,
+                                _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
+                                _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
+                                _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult);
     };
 
     ActivatableClassWithFactory(AdaptiveCard, AdaptiveCardStaticsImpl);

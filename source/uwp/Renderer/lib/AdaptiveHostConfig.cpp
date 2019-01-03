@@ -31,7 +31,7 @@ namespace AdaptiveNamespace
 
         std::string adaptiveJsonString;
         RETURN_IF_FAILED(HStringToUTF8(adaptiveJson, adaptiveJsonString));
-        return FromJsonString(adaptiveJsonString, parseResult);
+        return _FromJsonString(adaptiveJsonString, parseResult);
     }
     CATCH_RETURN;
 
@@ -43,12 +43,12 @@ namespace AdaptiveNamespace
         std::string adaptiveJsonString;
         RETURN_IF_FAILED(JsonObjectToString(adaptiveJson, adaptiveJsonString));
 
-        return FromJsonString(adaptiveJsonString, parseResult);
+        return _FromJsonString(adaptiveJsonString, parseResult);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveHostConfigStaticsImpl::FromJsonString(const std::string jsonString,
-                                                          _COM_Outptr_ IAdaptiveHostConfigParseResult** parseResult)
+    HRESULT AdaptiveHostConfigStaticsImpl::_FromJsonString(const std::string& jsonString,
+                                                           _COM_Outptr_ IAdaptiveHostConfigParseResult** parseResult)
     {
         HostConfig sharedHostConfig = HostConfig::DeserializeFromString(jsonString);
 
