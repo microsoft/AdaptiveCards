@@ -9,7 +9,7 @@
 * [Documentation](https://adaptivecards.io/documentation/)
 * [Schema Explorer](https://adaptivecards.io/explorer/)
 * [Sample Cards](https://adaptivecards.io/samples/)
-* [Designer](https://aka.ms/adaptivedesigner)
+* [Designer](https://adaptivecards.io/designer/)
 
 ## Install and Build
 
