@@ -1,19 +1,19 @@
-# Announcing Adaptive Cards 1.1! 
+# Adaptive Cards
 
-Adaptive Cards 1.1 is here! Thank you to all the contributors for filing issues and helping us get the right set of new schema entries and bug fixes into this release.  We hope some of the additions like media element and image buttons can help fulfil some of your top requests and make your lives easier.  For a full list of what's in 1.1, check the [wiki](https://github.com/Microsoft/AdaptiveCards/wiki/1.1-Feature-List).
+![logo](assets/adaptive-card-200.png)
 
-You can find updated packages for all the platforms below and our updated website and new visual designer are available as well.
+[Adaptive Cards](https://adaptivecards.io) are a new way for developers to exchange content in a common and consistent way. Get started today by putting Adaptive Cards into Microsoft Teams, Outlook Actionable Messages, Cortana Skills, or Windows Timeline -- or render cards inside your own apps by using our SDKs.
 
-## Learn more at https://adaptivecards.io
+## Dive in
+
 * [Documentation](https://adaptivecards.io/documentation/)
 * [Schema Explorer](https://adaptivecards.io/explorer/)
 * [Sample Cards](https://adaptivecards.io/samples/)
-* [Interactive visualizer](https://adaptivecards.io/visualizer/)
+* [Designer](https://adaptivecards.io/designer/)
 
-# Install and Build
+## Install and Build
 
 Adaptive Cards are designed to render anywhere that your users are. The following native platform renderers are under development right now.
-
 
 |Platform|Install|Build|Docs|Status|
 |---|---|---|---|---|
