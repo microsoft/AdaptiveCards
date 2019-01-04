@@ -6,11 +6,7 @@
                 <div id="headerUniversalHeader" data-m="{&quot;cN&quot;:&quot;headerUniversalHeader&quot;,&quot;cT&quot;:&quot;Module_coreui-universalheader&quot;,&quot;id&quot;:&quot;m1r1a1&quot;,&quot;sN&quot;:1,&quot;aN&quot;:&quot;r1a1&quot;}"
                     data-module-id="Category|headerRegion|headerRegion|headerUniversalHeader|coreui-universalheader">
 
-
-
-
-
-                    <a id="uhfSkipToMain" class="m-skip-to-main" href="#main" tabindex="0" style="z-index:3000002"
+                  <a id="uhfSkipToMain" class="m-skip-to-main" href="#main" tabindex="0" style="z-index:3000002"
                         data-m="{&quot;cN&quot;:&quot;Skip to content_nonnav&quot;,&quot;id&quot;:&quot;nn1m1r1a1&quot;,&quot;sN&quot;:1,&quot;aN&quot;:&quot;m1r1a1&quot;}">Skip
                         to main content</a>
 
@@ -68,19 +64,15 @@
                                                 Explorer</a>
                                         </li>
                                         <li class="single-link js-nav-menu">
-                                            <a id="Visualizer" class="c-uhf-nav-link" href="<%- url_for('visualizer') %>"
-                                                data-m="{&quot;cN&quot;:&quot;CatNav_Visualizer_nav&quot;,&quot;id&quot;:&quot;n4c8c2m1r1a1&quot;,&quot;sN&quot;:4,&quot;aN&quot;:&quot;c8c2m1r1a1&quot;}">Visualizer</a>
-                                        </li>
-                                        <li class="single-link js-nav-menu">
                                             <a id="c-shellmenu_3" class="c-uhf-nav-link" href="<%- url_for('samples') %>"
                                                 data-m="{&quot;cN&quot;:&quot;CatNav_Samples_nav&quot;,&quot;id&quot;:&quot;n5c8c2m1r1a1&quot;,&quot;sN&quot;:5,&quot;aN&quot;:&quot;c8c2m1r1a1&quot;}">Samples</a>
                                         </li>
                                         <li class="single-link js-nav-menu">
-                                            <a id="c-shellmenu_4" class="c-uhf-nav-link" href="<%- url_for('connect') %>"
-                                                data-m="{&quot;cN&quot;:&quot;CatNav_Connect_nav&quot;,&quot;id&quot;:&quot;n6c8c2m1r1a1&quot;,&quot;sN&quot;:6,&quot;aN&quot;:&quot;c8c2m1r1a1&quot;}">Connect</a>
+                                            <a id="c-shellmenu_4" class="c-uhf-nav-link" href="<%- url_for('blog') %>"
+                                                data-m="{&quot;cN&quot;:&quot;CatNav_Blog_nav&quot;,&quot;id&quot;:&quot;n6c8c2m1r1a1&quot;,&quot;sN&quot;:6,&quot;aN&quot;:&quot;c8c2m1r1a1&quot;}">Blog</a>
                                         </li>
                                         <li class="single-link js-nav-menu">
-                                            <a id="c-shellmenu_5" class="c-uhf-nav-link" href="https://acdesigner-ci.azurewebsites.net/"
+                                            <a id="c-shellmenu_5" class="c-uhf-nav-link" href="<%- url_for('designer') %>"
                                                 data-m="{&quot;cN&quot;:&quot;CatNav_Designer_nav&quot;,&quot;id&quot;:&quot;n6c8c2m1r1a1&quot;,&quot;sN&quot;:6,&quot;aN&quot;:&quot;c8c2m1r1a1&quot;}">Designer</a>
                                         </li>
 
@@ -402,7 +394,7 @@
                                             </ul>
                                         </nav>
                                     </div>
-                               
+
 
                                 </div>
                             </div>
@@ -418,13 +410,21 @@
         </section>
 </div>
 
-    <% if(!is_current('/')) { /* no breadcrumb on home page */ %>
+    <% if(!is_current('/') && !page.hideBreadcrumb) { /* no breadcrumb on home page */ %>
     <div class="content-header uhf-container has-padding" data-bi-name="content-header">
         <ul class="breadcrumbs" data-bi-name="breadcrumb" itemscope="" itemtype="http://schema.org/BreadcrumbList" role="navigation"
             aria-label="Breadcrumb">
-            <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem" class="mobile-breadcrumb"><a
-                    itemprop="item" href="<%- url_for('/') %>">Adaptive Cards</a></li>
-            <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"><span itemprop="name"><%= page.title %></span></li>
+            <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem" class="mobile-breadcrumb">
+               <a itemprop="item" href="<%- url_for('/') %>">Adaptive Cards</a>
+            </li>
+            <% if(page.archive || page.published) { %>
+               <li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem" class="mobile-breadcrumb">
+               <a itemprop="item" href="<%- url_for('/blog') %>">Blog</a>
+            </li>
+			<% } %>
+			<% if(page.title) { %>
+				<li itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"><span itemprop="name"><%= page.title %></span></li>
+			<% } %>
         </ul>
         <div class="content-header-controls exit-focus">
             <button type="button" class="ap-collapse-behavior ap-expanded button-border" data-bi-name="ap-collapse">
@@ -440,12 +440,17 @@
         <div class="action-bar">
             <ul class="action-list">
                 <li>
-                    <a href="#feedback" data-bi-name="comments">
+                    <a href="https://github.com/Microsoft/AdaptiveCards/issues/new" data-bi-name="comments">
                         <span class="docon" aria-hidden="true">💬</span><span class="action-item-text">Feedback</span>
                     </a>
                 </li>
-                
                 <li>
+                    <a href="https://github.com/Microsoft/AdaptiveCards/" data-bi-name="comments">
+                        <span class="docon" aria-hidden="true"><img alt="" style="height: 1em; width: auto;" src="/images/github-mark.png"/></span><span class="action-item-text">GitHub</span>
+                    </a>
+                </li>
+
+                <!--<li>
                     <div class="sharing dropdown has-caret" auto-align="">
                         <a href="#" class="dropdown-trigger" aria-haspopup="true" aria-controls="sharing-menu"
                             aria-expanded="false" title="Share This Document" data-bi-name="share">
@@ -464,7 +469,7 @@
                             </ul>
                         </div>
                     </div>
-                </li>
+                </li>-->
             </ul>
             <button type="button" class="contents-button" aria-label="Contents" data-bi-name="contents-expand-">
                 <span class="docon docon-editor-list-bullet"></span><span>Contents</span>
