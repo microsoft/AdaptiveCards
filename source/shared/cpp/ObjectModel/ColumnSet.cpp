@@ -80,10 +80,12 @@ std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(ParseContext& cont
 {
     ParseUtil::ExpectTypeString(value, CardElementType::ColumnSet);
 
-    auto container = BaseCardElement::Deserialize<ColumnSet>(value);
+    auto container = BaseCardElement::Deserialize<ColumnSet>(context, value);
 
     // Parse Columns
+    context.PushElement({ container->GetId(), container->GetInternalId(), false});
     auto cardElements = ParseUtil::GetElementCollectionOfSingleType<Column>(context, value, AdaptiveCardSchemaKey::Columns, Column::Deserialize, false);
+    context.PopElement();
     container->m_columns = std::move(cardElements);
 
     // Parse optional selectAction
@@ -109,7 +111,7 @@ void ColumnSet::PopulateKnownPropertiesSet()
 void ColumnSet::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
 {
     auto columns = GetColumns();
-    for (auto column : columns)
+    for (const auto& column : columns)
     {
         column->GetResourceInformation(resourceInfo);
     }

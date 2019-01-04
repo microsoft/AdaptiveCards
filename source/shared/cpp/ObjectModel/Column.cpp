@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "ChoiceSetInput.h"
 #include "Column.h"
 #include "ParseContext.h"
+#include "ParseUtil.h"
 #include "Util.h"
 
 using namespace AdaptiveSharedNamespace;
@@ -116,7 +116,8 @@ Json::Value Column::SerializeToJsonValue() const
 
 std::shared_ptr<Column> Column::Deserialize(ParseContext& context, const Json::Value& value)
 {
-    auto column = BaseCardElement::Deserialize<Column>(value);
+    auto column = BaseCardElement::Deserialize<Column>(context, value);
+    context.PushElement({ column->GetId(), column->GetInternalId(), false});
 
     std::string columnWidth = ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Width);
     if (columnWidth == "")
@@ -134,6 +135,7 @@ std::shared_ptr<Column> Column::Deserialize(ParseContext& context, const Json::V
 
     // Parse Items
     auto cardElements = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Items, false);
+    context.PopElement();
     column->m_items = std::move(cardElements);
 
     // Parse optional selectAction

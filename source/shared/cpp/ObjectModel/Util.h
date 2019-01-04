@@ -1,8 +1,7 @@
 #pragma once
-#include <string>
-#include <vector>
-#include <memory>
+
 #include "BaseCardElement.h"
+#include "AdaptiveCardParseWarning.h"
 
 void PropagateLanguage(const std::string& language,
                        const std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>>& m_body);

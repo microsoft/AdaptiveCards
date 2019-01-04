@@ -181,7 +181,9 @@ std::shared_ptr<BaseCardElement> ImageParser::Deserialize(ParseContext& context,
 std::shared_ptr<BaseCardElement>
 ImageParser::DeserializeWithoutCheckingType(ParseContext& context, const Json::Value& json)
 {
-    std::shared_ptr<Image> image = BaseCardElement::Deserialize<Image>(json);
+    std::shared_ptr<Image> image = BaseCardElement::Deserialize<Image>(context, json);
+
+    context.PushElement({ image->GetId(), image->GetInternalId(), false});
 
     image->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, true));
     image->SetBackgroundColor(ValidateColor(ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundColor), context.warnings));
@@ -213,6 +215,8 @@ ImageParser::DeserializeWithoutCheckingType(ParseContext& context, const Json::V
 
     // Parse optional selectAction
     image->SetSelectAction(ParseUtil::GetAction(context, json, AdaptiveCardSchemaKey::SelectAction, false));
+
+    context.PopElement();
 
     return image;
 }

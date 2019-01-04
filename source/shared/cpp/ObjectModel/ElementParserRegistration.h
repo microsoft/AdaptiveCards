@@ -21,7 +21,7 @@ namespace AdaptiveSharedNamespace
 
         void AddParser(std::string const& elementType, std::shared_ptr<AdaptiveSharedNamespace::BaseCardElementParser> parser);
         void RemoveParser(std::string const& elementType);
-        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElementParser> GetParser(std::string const& elementType);
+        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElementParser> GetParser(std::string const& elementType) const;
 
     private:
         std::unordered_set<std::string> m_knownElements;

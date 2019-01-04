@@ -82,7 +82,7 @@ namespace AdaptiveSharedNamespace
         }
     }
 
-    std::shared_ptr<BaseCardElementParser> ElementParserRegistration::GetParser(std::string const& elementType)
+    std::shared_ptr<BaseCardElementParser> ElementParserRegistration::GetParser(std::string const& elementType) const
     {
         auto parser = m_cardElementParsers.find(elementType);
         if (parser != ElementParserRegistration::m_cardElementParsers.end())

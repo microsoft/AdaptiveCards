@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ActionParserRegistration.h"
+#include "AdaptiveCardParseException.h"
 #include "OpenUrlAction.h"
 #include "ShowCardAction.h"
 #include "SubmitAction.h"
@@ -51,7 +52,7 @@ namespace AdaptiveSharedNamespace
         }
     }
 
-    std::shared_ptr<ActionElementParser> ActionParserRegistration::GetParser(std::string const& elementType)
+    std::shared_ptr<ActionElementParser> ActionParserRegistration::GetParser(std::string const& elementType) const
     {
         auto parser = m_cardElementParsers.find(elementType);
         if (parser != ActionParserRegistration::m_cardElementParsers.end())

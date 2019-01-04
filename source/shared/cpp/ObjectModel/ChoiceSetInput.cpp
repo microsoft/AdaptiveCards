@@ -40,7 +40,7 @@ Json::Value ChoiceSetInput::SerializeToJsonValue() const
 
     if (m_wrap)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap)] = m_wrap; 
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap)] = m_wrap;
     }
 
     std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Choices);
@@ -97,7 +97,7 @@ std::shared_ptr<BaseCardElement> ChoiceSetInputParser::Deserialize(ParseContext&
 {
     ParseUtil::ExpectTypeString(json, CardElementType::ChoiceSetInput);
 
-    auto choiceSet = BaseInputElement::Deserialize<ChoiceSetInput>(json);
+    auto choiceSet = BaseInputElement::Deserialize<ChoiceSetInput>(context, json);
 
     choiceSet->SetChoiceSetStyle(
         ParseUtil::GetEnumValue<ChoiceSetStyle>(json, AdaptiveCardSchemaKey::Style, ChoiceSetStyle::Compact, ChoiceSetStyleFromString));
@@ -106,7 +106,9 @@ std::shared_ptr<BaseCardElement> ChoiceSetInputParser::Deserialize(ParseContext&
     choiceSet->SetWrap(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Wrap, false, false));
 
     // Parse Choices
+    context.PushElement({ choiceSet->GetId(), choiceSet->GetInternalId(), false });
     auto choices = ParseUtil::GetElementCollectionOfSingleType<ChoiceInput>(context, json, AdaptiveCardSchemaKey::Choices, ChoiceInput::Deserialize, true);
+    context.PopElement();
     choiceSet->m_choices = std::move(choices);
 
     return choiceSet;

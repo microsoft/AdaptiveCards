@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ActionParserRegistration.h"
+#include "ParseUtil.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
