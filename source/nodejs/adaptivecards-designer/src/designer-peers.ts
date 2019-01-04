@@ -1183,7 +1183,11 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
         style.input.placeholder = "(not set)";
         style.input.choices.push(new Adaptive.Choice("Default", "default"));
         style.input.choices.push(new Adaptive.Choice("Emphasis", "emphasis"));
-        style.input.defaultValue = this.cardElement.style.toString();
+
+        if (this.cardElement.style) {
+            style.input.defaultValue = this.cardElement.style.toString();
+        }
+
         style.input.onValueChanged = () => {
             this.cardElement.style = style.input.value;
 

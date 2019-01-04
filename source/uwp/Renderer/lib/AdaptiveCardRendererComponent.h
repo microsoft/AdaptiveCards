@@ -22,8 +22,8 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP put_OverrideStyles(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary);
         IFACEMETHODIMP get_OverrideStyles(_COM_Outptr_ ABI::Windows::UI::Xaml::IResourceDictionary** overrideDictionary);
         IFACEMETHODIMP put_HostConfig(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig);
-        IFACEMETHODIMP get_HostConfig(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig** hostConfig);
-        IFACEMETHODIMP SetFixedDimensions(_In_ UINT32 desiredWidth, _In_ UINT32 desiredHeight);
+        IFACEMETHODIMP get_HostConfig(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveHostConfig** hostConfig);
+        IFACEMETHODIMP SetFixedDimensions(UINT32 desiredWidth, UINT32 desiredHeight);
         IFACEMETHODIMP ResetFixedDimensions();
 
         IFACEMETHODIMP RenderAdaptiveCard(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,

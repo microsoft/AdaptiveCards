@@ -40,7 +40,7 @@ namespace AdaptiveNamespace
     class SharedModelActionParser : public AdaptiveSharedNamespace::ActionElementParser
     {
     public:
-        SharedModelActionParser(AdaptiveNamespace::AdaptiveActionParserRegistration* parserRegistration) :
+        SharedModelActionParser(_In_ AdaptiveNamespace::AdaptiveActionParserRegistration* parserRegistration) :
             m_parserRegistration(parserRegistration)
         {
         }

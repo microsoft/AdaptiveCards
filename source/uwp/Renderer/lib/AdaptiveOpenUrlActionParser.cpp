@@ -16,11 +16,11 @@ namespace AdaptiveNamespace
     CATCH_RETURN;
 
     HRESULT AdaptiveOpenUrlActionParser::FromJson(
-        ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
-        ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
-        ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
-        ABI::AdaptiveNamespace::IAdaptiveActionElement** element) noexcept try
+        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
+        _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
+        _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
+        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
+        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** element) noexcept try
     {
         return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveOpenUrlAction, AdaptiveSharedNamespace::OpenUrlAction, AdaptiveSharedNamespace::OpenUrlActionParser>(
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);

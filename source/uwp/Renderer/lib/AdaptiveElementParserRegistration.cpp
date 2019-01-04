@@ -52,7 +52,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveElementParserRegistration::Set(HSTRING type, IAdaptiveElementParser* Parser) noexcept try
+    HRESULT AdaptiveElementParserRegistration::Set(_In_ HSTRING type, _In_ IAdaptiveElementParser* Parser) noexcept try
     {
         std::string typeString = HStringToUTF8(type);
 
@@ -70,7 +70,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveElementParserRegistration::Get(HSTRING type, IAdaptiveElementParser** result) noexcept try
+    HRESULT AdaptiveElementParserRegistration::Get(_In_ HSTRING type, _COM_Outptr_ IAdaptiveElementParser** result) noexcept try
     {
         *result = nullptr;
 
@@ -83,7 +83,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveElementParserRegistration::Remove(HSTRING type) noexcept try
+    HRESULT AdaptiveElementParserRegistration::Remove(_In_ HSTRING type) noexcept try
     {
         std::string typeString = HStringToUTF8(type);
 

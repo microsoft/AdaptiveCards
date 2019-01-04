@@ -45,7 +45,7 @@ namespace AdaptiveNamespace
         return jsonCppValue;
     }
 
-    HRESULT CustomActionWrapper::GetWrappedElement(ABI::AdaptiveNamespace::IAdaptiveActionElement** actionElement)
+    HRESULT CustomActionWrapper::GetWrappedElement(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** actionElement)
     {
         return m_actionElement.CopyTo(actionElement);
     }

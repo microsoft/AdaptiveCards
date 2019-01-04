@@ -42,7 +42,7 @@ namespace AdaptiveNamespace
     class SharedModelElementParser : public AdaptiveSharedNamespace::BaseCardElementParser
     {
     public:
-        SharedModelElementParser(AdaptiveNamespace::AdaptiveElementParserRegistration* parserRegistration) :
+        SharedModelElementParser(_In_ AdaptiveNamespace::AdaptiveElementParserRegistration* parserRegistration) :
             m_parserRegistration(parserRegistration)
         {
         }
@@ -56,11 +56,11 @@ namespace AdaptiveNamespace
     };
 
     template<typename TAdaptiveCardElement, typename TSharedModelElement, typename TSharedModelParser, typename TAdaptiveElementInterface>
-    HRESULT FromJson(ABI::Windows::Data::Json::IJsonObject* jsonObject,
-                     ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
-                     ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
-                     ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
-                     TAdaptiveElementInterface** element)
+    HRESULT FromJson(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
+                     _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
+                     _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
+                     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
+                     _COM_Outptr_ TAdaptiveElementInterface** element)
     {
         std::string jsonString;
         JsonObjectToString(jsonObject, jsonString);

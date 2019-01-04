@@ -17,7 +17,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveElementRendererRegistration::Set(HSTRING type, IAdaptiveElementRenderer* renderer)
+    HRESULT AdaptiveElementRendererRegistration::Set(_In_ HSTRING type, _In_ IAdaptiveElementRenderer* renderer)
     {
         ComPtr<IAdaptiveElementRenderer> localRenderer(renderer);
         (*m_registration)[HStringToUTF8(type)] = localRenderer;
@@ -25,7 +25,7 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveElementRendererRegistration::Get(HSTRING type, IAdaptiveElementRenderer** result)
+    HRESULT AdaptiveElementRendererRegistration::Get(_In_ HSTRING type, _COM_Outptr_ IAdaptiveElementRenderer** result)
     {
         *result = nullptr;
         RegistrationMap::iterator found = m_registration->find(HStringToUTF8(type));
@@ -36,7 +36,7 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveElementRendererRegistration::Remove(_In_ HSTRING type)
+    HRESULT AdaptiveElementRendererRegistration::Remove(_In_ HSTRING type)
     {
         m_registration->erase(HStringToUTF8(type));
         return S_OK;

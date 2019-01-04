@@ -62,7 +62,7 @@ namespace AdaptiveNamespace
         }
     }
 
-    HRESULT CustomElementWrapper::GetWrappedElement(ABI::AdaptiveNamespace::IAdaptiveCardElement** cardElement)
+    HRESULT CustomElementWrapper::GetWrappedElement(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** cardElement)
     {
         return m_cardElement.CopyTo(cardElement);
     }

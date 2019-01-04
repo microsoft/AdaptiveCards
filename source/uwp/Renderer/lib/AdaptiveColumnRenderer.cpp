@@ -20,10 +20,10 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveColumnRenderer::Render(IAdaptiveCardElement* cardElement,
-                                                                  IAdaptiveRenderContext* renderContext,
-                                                                  IAdaptiveRenderArgs* renderArgs,
-                                                                  ABI::Windows::UI::Xaml::IUIElement** result) noexcept try
+    HRESULT AdaptiveColumnRenderer::Render(_In_ IAdaptiveCardElement* cardElement,
+                                           _In_ IAdaptiveRenderContext* renderContext,
+                                           _In_ IAdaptiveRenderArgs* renderArgs,
+                                           _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept try
     {
         XamlBuilder::BuildColumn(cardElement, renderContext, renderArgs, result);
         return S_OK;
@@ -31,11 +31,11 @@ namespace AdaptiveNamespace
     CATCH_RETURN;
 
     HRESULT AdaptiveColumnRenderer::FromJson(
-        ABI::Windows::Data::Json::IJsonObject* jsonObject,
-        ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
-        ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
-        ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
-        ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept try
+        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
+        _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
+        _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
+        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
+        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept try
     {
         return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveColumn, AdaptiveSharedNamespace::Column, AdaptiveSharedNamespace::Column>(
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);

@@ -17,7 +17,7 @@
         </div>
         <div class="archives">
     <% } %>
-    <%- partial('archive-post', {post: post, even: i % 2 == 0}) %>
+    <%- partial('article', {post: post, even: i % 2 == 0}) %>
   <% }) %>
   <% if (page.posts.length){ %>
     </div></section>

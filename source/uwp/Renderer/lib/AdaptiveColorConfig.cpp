@@ -22,25 +22,25 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveColorConfig::get_Default(ABI::Windows::UI::Color* value)
+    HRESULT AdaptiveColorConfig::get_Default(_Out_ ABI::Windows::UI::Color* value)
     {
         *value = m_defaultColor;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveColorConfig::put_Default(ABI::Windows::UI::Color color)
+    HRESULT AdaptiveColorConfig::put_Default(ABI::Windows::UI::Color color)
     {
         m_defaultColor = color;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveColorConfig::get_Subtle(ABI::Windows::UI::Color* value)
+    HRESULT AdaptiveColorConfig::get_Subtle(_Out_ ABI::Windows::UI::Color* value)
     {
         *value = m_subtleColor;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveColorConfig::put_Subtle(ABI::Windows::UI::Color color)
+    HRESULT AdaptiveColorConfig::put_Subtle(ABI::Windows::UI::Color color)
     {
         m_subtleColor = color;
         return S_OK;
