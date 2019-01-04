@@ -23,35 +23,35 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFactSetConfig::get_Title(ABI::AdaptiveNamespace::IAdaptiveTextConfig** titleTextConfig)
+    HRESULT AdaptiveFactSetConfig::get_Title(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveTextConfig** titleTextConfig)
     {
         return m_title.CopyTo(titleTextConfig);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFactSetConfig::put_Title(ABI::AdaptiveNamespace::IAdaptiveTextConfig* titleTextConfig)
+    HRESULT AdaptiveFactSetConfig::put_Title(_In_ ABI::AdaptiveNamespace::IAdaptiveTextConfig* titleTextConfig)
     {
         m_title = titleTextConfig;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFactSetConfig::get_Value(ABI::AdaptiveNamespace::IAdaptiveTextConfig** valueTextConfig)
+    HRESULT AdaptiveFactSetConfig::get_Value(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveTextConfig** valueTextConfig)
     {
         return m_value.CopyTo(valueTextConfig);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFactSetConfig::put_Value(ABI::AdaptiveNamespace::IAdaptiveTextConfig* valueTextConfig)
+    HRESULT AdaptiveFactSetConfig::put_Value(_In_ ABI::AdaptiveNamespace::IAdaptiveTextConfig* valueTextConfig)
     {
         m_value = valueTextConfig;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFactSetConfig::get_Spacing(UINT32* value)
+    HRESULT AdaptiveFactSetConfig::get_Spacing(_Out_ UINT32* value)
     {
         *value = m_spacing;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFactSetConfig::put_Spacing(UINT32 value)
+    HRESULT AdaptiveFactSetConfig::put_Spacing(UINT32 value)
     {
         m_spacing = value;
         return S_OK;

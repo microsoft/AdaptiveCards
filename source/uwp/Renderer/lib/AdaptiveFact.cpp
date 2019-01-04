@@ -19,7 +19,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveFact::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Fact>& sharedFact)
+    HRESULT AdaptiveFact::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Fact>& sharedFact)
     {
         RETURN_IF_FAILED(UTF8ToHString(sharedFact->GetTitle(), m_title.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedFact->GetValue(), m_value.GetAddressOf()));
@@ -27,19 +27,19 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFact::get_Title(HSTRING* title) { return m_title.CopyTo(title); }
+    HRESULT AdaptiveFact::get_Title(_Outptr_ HSTRING* title) { return m_title.CopyTo(title); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFact::put_Title(HSTRING title) { return m_title.Set(title); }
+    HRESULT AdaptiveFact::put_Title(_In_ HSTRING title) { return m_title.Set(title); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFact::get_Value(HSTRING* value) { return m_value.CopyTo(value); }
+    HRESULT AdaptiveFact::get_Value(_Outptr_ HSTRING* value) { return m_value.CopyTo(value); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFact::put_Value(HSTRING value) { return m_value.Set(value); }
+    HRESULT AdaptiveFact::put_Value(_In_ HSTRING value) { return m_value.Set(value); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFact::get_Language(HSTRING* language) { return m_language.CopyTo(language); }
+    HRESULT AdaptiveFact::get_Language(_Outptr_ HSTRING* language) { return m_language.CopyTo(language); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFact::put_Language(HSTRING language) { return m_language.Set(language); }
+    HRESULT AdaptiveFact::put_Language(_In_ HSTRING language) { return m_language.Set(language); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFact::get_ElementType(ElementType* elementType)
+    HRESULT AdaptiveFact::get_ElementType(_Out_ ElementType* elementType)
     {
         *elementType = ElementType::Fact;
         return S_OK;

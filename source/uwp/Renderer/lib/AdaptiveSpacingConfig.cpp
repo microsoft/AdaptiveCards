@@ -25,73 +25,73 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveSpacingConfig::get_Small(UINT32* smallSpacing)
+    HRESULT AdaptiveSpacingConfig::get_Small(_Out_ UINT32* smallSpacing)
     {
         *smallSpacing = m_small;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveSpacingConfig::put_Small(UINT32 smallSpacing)
+    HRESULT AdaptiveSpacingConfig::put_Small(UINT32 smallSpacing)
     {
         m_small = smallSpacing;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveSpacingConfig::get_Default(UINT32* defaultSpacing)
+    HRESULT AdaptiveSpacingConfig::get_Default(_Out_ UINT32* defaultSpacing)
     {
         *defaultSpacing = m_default;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveSpacingConfig::put_Default(UINT32 defaultSpacing)
+    HRESULT AdaptiveSpacingConfig::put_Default(UINT32 defaultSpacing)
     {
         m_default = defaultSpacing;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveSpacingConfig::get_Medium(UINT32* mediumSpacing)
+    HRESULT AdaptiveSpacingConfig::get_Medium(_Out_ UINT32* mediumSpacing)
     {
         *mediumSpacing = m_medium;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveSpacingConfig::put_Medium(UINT32 mediumSpacing)
+    HRESULT AdaptiveSpacingConfig::put_Medium(UINT32 mediumSpacing)
     {
         m_medium = mediumSpacing;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveSpacingConfig::get_Large(UINT32* largeSpacing)
+    HRESULT AdaptiveSpacingConfig::get_Large(_Out_ UINT32* largeSpacing)
     {
         *largeSpacing = m_large;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveSpacingConfig::put_Large(UINT32 largeSpacing)
+    HRESULT AdaptiveSpacingConfig::put_Large(UINT32 largeSpacing)
     {
         m_large = largeSpacing;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveSpacingConfig::get_ExtraLarge(UINT32* extraLargeSpacing)
+    HRESULT AdaptiveSpacingConfig::get_ExtraLarge(_Out_ UINT32* extraLargeSpacing)
     {
         *extraLargeSpacing = m_extraLarge;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveSpacingConfig::put_ExtraLarge(UINT32 extraLargeSpacing)
+    HRESULT AdaptiveSpacingConfig::put_ExtraLarge(UINT32 extraLargeSpacing)
     {
         m_extraLarge = extraLargeSpacing;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveSpacingConfig::get_Padding(UINT32* paddingSpacing)
+    HRESULT AdaptiveSpacingConfig::get_Padding(_Out_ UINT32* paddingSpacing)
     {
         *paddingSpacing = m_padding;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveSpacingConfig::put_Padding(UINT32 paddingSpacing)
+    HRESULT AdaptiveSpacingConfig::put_Padding(UINT32 paddingSpacing)
     {
         m_padding = paddingSpacing;
         return S_OK;

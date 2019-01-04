@@ -24,61 +24,61 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFontSizesConfig::get_Small(UINT32* smallFontSize)
+    HRESULT AdaptiveFontSizesConfig::get_Small(_Out_ UINT32* smallFontSize)
     {
         *smallFontSize = m_small;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFontSizesConfig::put_Small(UINT32 smallFontSize)
+    HRESULT AdaptiveFontSizesConfig::put_Small(UINT32 smallFontSize)
     {
         m_small = smallFontSize;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFontSizesConfig::get_Default(UINT32* defaultFontSize)
+    HRESULT AdaptiveFontSizesConfig::get_Default(_Out_ UINT32* defaultFontSize)
     {
         *defaultFontSize = m_default;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFontSizesConfig::put_Default(UINT32 defaultFontSize)
+    HRESULT AdaptiveFontSizesConfig::put_Default(UINT32 defaultFontSize)
     {
         m_default = defaultFontSize;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFontSizesConfig::get_Medium(UINT32* mediumFontSize)
+    HRESULT AdaptiveFontSizesConfig::get_Medium(_Out_ UINT32* mediumFontSize)
     {
         *mediumFontSize = m_medium;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFontSizesConfig::put_Medium(UINT32 mediumFontSize)
+    HRESULT AdaptiveFontSizesConfig::put_Medium(UINT32 mediumFontSize)
     {
         m_medium = mediumFontSize;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFontSizesConfig::get_Large(UINT32* largeFontSize)
+    HRESULT AdaptiveFontSizesConfig::get_Large(_Out_ UINT32* largeFontSize)
     {
         *largeFontSize = m_large;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFontSizesConfig::put_Large(UINT32 largeFontSize)
+    HRESULT AdaptiveFontSizesConfig::put_Large(UINT32 largeFontSize)
     {
         m_large = largeFontSize;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFontSizesConfig::get_ExtraLarge(UINT32* extraLargeFontSize)
+    HRESULT AdaptiveFontSizesConfig::get_ExtraLarge(_Out_ UINT32* extraLargeFontSize)
     {
         *extraLargeFontSize = m_extraLarge;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFontSizesConfig::put_ExtraLarge(UINT32 extraLargeFontSize)
+    HRESULT AdaptiveFontSizesConfig::put_ExtraLarge(UINT32 extraLargeFontSize)
     {
         m_extraLarge = extraLargeFontSize;
         return S_OK;

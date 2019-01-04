@@ -15,13 +15,13 @@ namespace AdaptiveNamespace
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityTarget>& sharedToggleTarget);
+        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityTarget>& sharedToggleTarget);
 
         // IAdaptiveToggleVisibilityTarget
-        IFACEMETHODIMP get_ElementId(_Out_ HSTRING* id);
+        IFACEMETHODIMP get_ElementId(_Outptr_ HSTRING* id);
         IFACEMETHODIMP put_ElementId(_In_ HSTRING id);
 
-        IFACEMETHODIMP get_IsVisible(ABI::AdaptiveNamespace::IsVisible* value);
+        IFACEMETHODIMP get_IsVisible(_Out_ ABI::AdaptiveNamespace::IsVisible* value);
         IFACEMETHODIMP put_IsVisible(ABI::AdaptiveNamespace::IsVisible value);
 
         HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityTarget>& sharedModel);

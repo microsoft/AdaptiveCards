@@ -13,7 +13,7 @@ namespace AdaptiveNamespace
         HRESULT InitializeBaseElement(const std::shared_ptr<AdaptiveSharedNamespace::BaseInputElement>& sharedModel);
 
         IFACEMETHODIMP get_IsRequired(_Out_ boolean* isRequired);
-        IFACEMETHODIMP put_IsRequired(_In_ boolean isRequired);
+        IFACEMETHODIMP put_IsRequired(boolean isRequired);
 
         HRESULT SetSharedElementProperties(std::shared_ptr<AdaptiveSharedNamespace::BaseInputElement> sharedCardElement);
 

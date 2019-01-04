@@ -16,8 +16,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveSubmitAction::RuntimeClassInitialize(
-        const std::shared_ptr<AdaptiveSharedNamespace::SubmitAction>& sharedSubmitAction) try
+    HRESULT AdaptiveSubmitAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::SubmitAction>& sharedSubmitAction) try
     {
         if (sharedSubmitAction == nullptr)
         {
@@ -30,18 +29,15 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveSubmitAction::get_ActionType(ABI::AdaptiveNamespace::ActionType* actionType)
+    HRESULT AdaptiveSubmitAction::get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType)
     {
         *actionType = ABI::AdaptiveNamespace::ActionType::Submit;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveSubmitAction::get_DataJson(IJsonValue** data)
-    {
-        return m_dataJson.CopyTo(data);
-    }
+    HRESULT AdaptiveSubmitAction::get_DataJson(_COM_Outptr_ IJsonValue** data) { return m_dataJson.CopyTo(data); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveSubmitAction::put_DataJson(IJsonValue* data)
+    HRESULT AdaptiveSubmitAction::put_DataJson(_In_ IJsonValue* data)
     {
         m_dataJson = data;
         return S_OK;

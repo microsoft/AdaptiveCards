@@ -18,7 +18,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveToggleVisibilityAction::RuntimeClassInitialize(
+    HRESULT AdaptiveToggleVisibilityAction::RuntimeClassInitialize(
         const std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityAction>& sharedToggleVisibilityAction) try
     {
         if (sharedToggleVisibilityAction == nullptr)
@@ -34,13 +34,13 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveToggleVisibilityAction::get_ActionType(ABI::AdaptiveNamespace::ActionType* actionType)
+    HRESULT AdaptiveToggleVisibilityAction::get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType)
     {
         *actionType = ABI::AdaptiveNamespace::ActionType::ToggleVisibility;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveToggleVisibilityAction::get_TargetElements(IVector<AdaptiveToggleVisibilityTarget*>** targetElements)
+    HRESULT AdaptiveToggleVisibilityAction::get_TargetElements(_COM_Outptr_ IVector<AdaptiveToggleVisibilityTarget*>** targetElements)
     {
         return m_targetElements.CopyTo(targetElements);
     }
@@ -49,7 +49,8 @@ namespace AdaptiveNamespace
     {
         std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityAction> toggleVisibilityAction =
             std::make_shared<AdaptiveSharedNamespace::ToggleVisibilityAction>();
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(toggleVisibilityAction)));
+        RETURN_IF_FAILED(SetSharedElementProperties(
+            std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(toggleVisibilityAction)));
 
         RETURN_IF_FAILED(GenerateSharedToggleElements(m_targetElements.Get(), toggleVisibilityAction->GetTargetElements()));
 

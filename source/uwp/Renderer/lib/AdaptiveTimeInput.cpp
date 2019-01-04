@@ -20,7 +20,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveTimeInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TimeInput>& sharedTimeInput) try
+    HRESULT AdaptiveTimeInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TimeInput>& sharedTimeInput) try
     {
         if (sharedTimeInput == nullptr)
         {
@@ -38,29 +38,26 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveTimeInput::get_Max(HSTRING* max) { return m_max.CopyTo(max); }
+    HRESULT AdaptiveTimeInput::get_Max(_Outptr_ HSTRING* max) { return m_max.CopyTo(max); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTimeInput::put_Max(HSTRING max) { return m_max.Set(max); }
+    HRESULT AdaptiveTimeInput::put_Max(_In_ HSTRING max) { return m_max.Set(max); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTimeInput::get_Min(HSTRING* min) { return m_min.CopyTo(min); }
+    HRESULT AdaptiveTimeInput::get_Min(_Outptr_ HSTRING* min) { return m_min.CopyTo(min); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTimeInput::put_Min(HSTRING min) { return m_min.Set(min); }
+    HRESULT AdaptiveTimeInput::put_Min(_In_ HSTRING min) { return m_min.Set(min); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTimeInput::get_Placeholder(HSTRING* placeholder)
+    HRESULT AdaptiveTimeInput::get_Placeholder(_Outptr_ HSTRING* placeholder)
     {
         return m_placeholder.CopyTo(placeholder);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTimeInput::put_Placeholder(HSTRING placeholder)
-    {
-        return m_placeholder.Set(placeholder);
-    }
+    HRESULT AdaptiveTimeInput::put_Placeholder(_In_ HSTRING placeholder) { return m_placeholder.Set(placeholder); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTimeInput::get_Value(HSTRING* value) { return m_value.CopyTo(value); }
+    HRESULT AdaptiveTimeInput::get_Value(_Outptr_ HSTRING* value) { return m_value.CopyTo(value); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTimeInput::put_Value(HSTRING value) { return m_value.Set(value); }
+    HRESULT AdaptiveTimeInput::put_Value(_In_ HSTRING value) { return m_value.Set(value); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTimeInput::get_ElementType(ElementType* elementType)
+    HRESULT AdaptiveTimeInput::get_ElementType(_Out_ ElementType* elementType)
     {
         *elementType = ElementType::TimeInput;
         return S_OK;
