@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		300ECB72219A53B800371DC5 /* Action.Submit.Sentiment.json in Resources */ = {isa = PBXBuildFile; fileRef = 300ECB6F219A53B800371DC5 /* Action.Submit.Sentiment.json */; };
-		300ECB73219A53B800371DC5 /* Action.OpenUrl.Sentiment.json in Resources */ = {isa = PBXBuildFile; fileRef = 300ECB70219A53B800371DC5 /* Action.OpenUrl.Sentiment.json */; };
-		300ECB74219A53B800371DC5 /* Action.ShowCard.Sentiment.json in Resources */ = {isa = PBXBuildFile; fileRef = 300ECB71219A53B800371DC5 /* Action.ShowCard.Sentiment.json */; };
 		300ECB68219A234D00371DC5 /* Image.DataUri.Style.Person.json in Resources */ = {isa = PBXBuildFile; fileRef = 300ECB65219A234C00371DC5 /* Image.DataUri.Style.Person.json */; };
 		300ECB69219A234D00371DC5 /* Image.DataUri.json in Resources */ = {isa = PBXBuildFile; fileRef = 300ECB66219A234D00371DC5 /* Image.DataUri.json */; };
 		300ECB6A219A234D00371DC5 /* AdaptiveCard.BackgroundImage.DataUri.json in Resources */ = {isa = PBXBuildFile; fileRef = 300ECB67219A234D00371DC5 /* AdaptiveCard.BackgroundImage.DataUri.json */; };
+		300ECB72219A53B800371DC5 /* Action.Submit.Sentiment.json in Resources */ = {isa = PBXBuildFile; fileRef = 300ECB6F219A53B800371DC5 /* Action.Submit.Sentiment.json */; };
+		300ECB73219A53B800371DC5 /* Action.OpenUrl.Sentiment.json in Resources */ = {isa = PBXBuildFile; fileRef = 300ECB70219A53B800371DC5 /* Action.OpenUrl.Sentiment.json */; };
+		300ECB74219A53B800371DC5 /* Action.ShowCard.Sentiment.json in Resources */ = {isa = PBXBuildFile; fileRef = 300ECB71219A53B800371DC5 /* Action.ShowCard.Sentiment.json */; };
 		30860BC220C9B5C9009F9D99 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		30860BC320C9B5C9009F9D99 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 30860BB720C9B5C8009F9D99 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json */; };
 		30860BC420C9B5C9009F9D99 /* (null) in Resources */ = {isa = PBXBuildFile; };
@@ -45,17 +45,19 @@
 		6B980948216573F00024B79B /* Action.IconUrl.TwoActions.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B98093E216573EE0024B79B /* Action.IconUrl.TwoActions.json */; };
 		6B980949216573F00024B79B /* Column.VerticalContentAlignment.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B98093F216573EF0024B79B /* Column.VerticalContentAlignment.json */; };
 		6B98094A216573F00024B79B /* Container.VerticalContentAlignment.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B980940216573EF0024B79B /* Container.VerticalContentAlignment.json */; };
-		6B98094B216573F00024B79B /* MediaAudio.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B980941216573EF0024B79B /* MediaAudio.json */; };
 		6B98094D216573F00024B79B /* VerticalContentAlignment.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B980943216573EF0024B79B /* VerticalContentAlignment.json */; };
 		6B98094E216573F00024B79B /* Action.OpenUrl.IconUrl.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B980944216573EF0024B79B /* Action.OpenUrl.IconUrl.json */; };
 		6B98094F216573F00024B79B /* VerticalContentAlignment_ForcedContainer.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B980945216573EF0024B79B /* VerticalContentAlignment_ForcedContainer.json */; };
 		6B980950216573F00024B79B /* MediaSource.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B980946216573F00024B79B /* MediaSource.json */; };
-		6B980952216574500024B79B /* Media.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B980951216574500024B79B /* Media.json */; };
 		6B9AB30620D9857B005C8E15 /* Image.Explicit.Size.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B9AB30520D9857A005C8E15 /* Image.Explicit.Size.json */; };
 		6B9AB30C20DC4FB3005C8E15 /* IconsInSomeActions.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B9AB30B20DC4FB3005C8E15 /* IconsInSomeActions.json */; };
 		6B9BDF7020E18E5B00F13155 /* CustomImageRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BDF6F20E18E5B00F13155 /* CustomImageRenderer.mm */; };
 		6B9BDF7C20E6E0C200F13155 /* Column.Explicit.Size.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B9BDF7B20E6E0C200F13155 /* Column.Explicit.Size.json */; };
 		6B9BDFCC20F6D11F00F13155 /* ADCResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BDFCB20F6D11F00F13155 /* ADCResolver.m */; };
+		6BC30F6421DFE8CF00B9FAAE /* TextBlock.FontStyles.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BC30F6221DFE8CF00B9FAAE /* TextBlock.FontStyles.json */; };
+		6BC30F6721DFE8EA00B9FAAE /* Media.Sources.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BC30F6521DFE8E900B9FAAE /* Media.Sources.json */; };
+		6BC30F6821DFE8EA00B9FAAE /* Media.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BC30F6621DFE8E900B9FAAE /* Media.json */; };
+		6BC30F6A21DFECB400B9FAAE /* ProductVideo.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BC30F6921DFECB400B9FAAE /* ProductVideo.json */; };
 		6BF339D620A665E600DA5973 /* CustomTextBlockRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */; };
 		6BF339E320A66A3F00DA5973 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; };
 		6BF339E420A66A4D00DA5973 /* AdaptiveCards.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -159,12 +161,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		300ECB6F219A53B800371DC5 /* Action.Submit.Sentiment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.Submit.Sentiment.json; path = ../../../../samples/v1.2/Elements/Action.Submit.Sentiment.json; sourceTree = "<group>"; };
-		300ECB70219A53B800371DC5 /* Action.OpenUrl.Sentiment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.OpenUrl.Sentiment.json; path = ../../../../samples/v1.2/Elements/Action.OpenUrl.Sentiment.json; sourceTree = "<group>"; };
-		300ECB71219A53B800371DC5 /* Action.ShowCard.Sentiment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.ShowCard.Sentiment.json; path = ../../../../samples/v1.2/Elements/Action.ShowCard.Sentiment.json; sourceTree = "<group>"; };
 		300ECB65219A234C00371DC5 /* Image.DataUri.Style.Person.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.DataUri.Style.Person.json; path = ../../../../samples/v1.1/Elements/Image.DataUri.Style.Person.json; sourceTree = "<group>"; };
 		300ECB66219A234D00371DC5 /* Image.DataUri.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.DataUri.json; path = ../../../../samples/v1.1/Elements/Image.DataUri.json; sourceTree = "<group>"; };
 		300ECB67219A234D00371DC5 /* AdaptiveCard.BackgroundImage.DataUri.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdaptiveCard.BackgroundImage.DataUri.json; path = ../../../../samples/v1.1/Elements/AdaptiveCard.BackgroundImage.DataUri.json; sourceTree = "<group>"; };
+		300ECB6F219A53B800371DC5 /* Action.Submit.Sentiment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.Submit.Sentiment.json; path = ../../../../samples/v1.2/Elements/Action.Submit.Sentiment.json; sourceTree = "<group>"; };
+		300ECB70219A53B800371DC5 /* Action.OpenUrl.Sentiment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.OpenUrl.Sentiment.json; path = ../../../../samples/v1.2/Elements/Action.OpenUrl.Sentiment.json; sourceTree = "<group>"; };
+		300ECB71219A53B800371DC5 /* Action.ShowCard.Sentiment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.ShowCard.Sentiment.json; path = ../../../../samples/v1.2/Elements/Action.ShowCard.Sentiment.json; sourceTree = "<group>"; };
 		30860BB720C9B5C8009F9D99 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.Input.ChoiceSet.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet.Input.ChoiceSet.VerticalStretch.json; sourceTree = "<group>"; };
 		30860BBA20C9B5C8009F9D99 /* ColumnSet.Input.Number.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.Input.Number.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet.Input.Number.VerticalStretch.json; sourceTree = "<group>"; };
 		30860BBB20C9B5C8009F9D99 /* ColumnSet.ImageSet.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.ImageSet.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet.ImageSet.VerticalStretch.json; sourceTree = "<group>"; };
@@ -192,12 +194,10 @@
 		6B98093E216573EE0024B79B /* Action.IconUrl.TwoActions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.IconUrl.TwoActions.json; path = ../../../../samples/v1.1/Elements/Action.IconUrl.TwoActions.json; sourceTree = "<group>"; };
 		6B98093F216573EF0024B79B /* Column.VerticalContentAlignment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.VerticalContentAlignment.json; path = ../../../../samples/v1.1/Elements/Column.VerticalContentAlignment.json; sourceTree = "<group>"; };
 		6B980940216573EF0024B79B /* Container.VerticalContentAlignment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Container.VerticalContentAlignment.json; path = ../../../../samples/v1.1/Elements/Container.VerticalContentAlignment.json; sourceTree = "<group>"; };
-		6B980941216573EF0024B79B /* MediaAudio.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = MediaAudio.json; path = ../../../../samples/v1.1/Elements/MediaAudio.json; sourceTree = "<group>"; };
 		6B980943216573EF0024B79B /* VerticalContentAlignment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = VerticalContentAlignment.json; path = ../../../../samples/v1.1/Elements/VerticalContentAlignment.json; sourceTree = "<group>"; };
 		6B980944216573EF0024B79B /* Action.OpenUrl.IconUrl.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.OpenUrl.IconUrl.json; path = ../../../../samples/v1.1/Elements/Action.OpenUrl.IconUrl.json; sourceTree = "<group>"; };
 		6B980945216573EF0024B79B /* VerticalContentAlignment_ForcedContainer.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = VerticalContentAlignment_ForcedContainer.json; path = ../../../../samples/v1.1/Elements/VerticalContentAlignment_ForcedContainer.json; sourceTree = "<group>"; };
 		6B980946216573F00024B79B /* MediaSource.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = MediaSource.json; path = ../../../../samples/v1.1/Elements/MediaSource.json; sourceTree = "<group>"; };
-		6B980951216574500024B79B /* Media.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Media.json; path = ../../../../samples/v1.1/Scenarios/Media.json; sourceTree = "<group>"; };
 		6B9AB30520D9857A005C8E15 /* Image.Explicit.Size.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.Explicit.Size.json; path = ../../../../samples/Tests/Image.Explicit.Size.json; sourceTree = "<group>"; };
 		6B9AB30B20DC4FB3005C8E15 /* IconsInSomeActions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = IconsInSomeActions.json; path = ../../../../samples/Tests/IconsInSomeActions.json; sourceTree = "<group>"; };
 		6B9BDF6E20E18E5B00F13155 /* CustomImageRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomImageRenderer.h; sourceTree = "<group>"; };
@@ -205,6 +205,10 @@
 		6B9BDF7B20E6E0C200F13155 /* Column.Explicit.Size.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.Explicit.Size.json; path = ../../../../samples/Tests/Column.Explicit.Size.json; sourceTree = "<group>"; };
 		6B9BDFCB20F6D11F00F13155 /* ADCResolver.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADCResolver.m; sourceTree = "<group>"; };
 		6B9BDFCD20F6D16E00F13155 /* ADCResolver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADCResolver.h; sourceTree = "<group>"; };
+		6BC30F6221DFE8CF00B9FAAE /* TextBlock.FontStyles.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.FontStyles.json; path = ../../../../samples/v1.2/Elements/TextBlock.FontStyles.json; sourceTree = "<group>"; };
+		6BC30F6521DFE8E900B9FAAE /* Media.Sources.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Media.Sources.json; path = ../../../../samples/v1.1/Elements/Media.Sources.json; sourceTree = "<group>"; };
+		6BC30F6621DFE8E900B9FAAE /* Media.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Media.json; path = ../../../../samples/v1.1/Elements/Media.json; sourceTree = "<group>"; };
+		6BC30F6921DFECB400B9FAAE /* ProductVideo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ProductVideo.json; path = ../../../../samples/v1.1/Scenarios/ProductVideo.json; sourceTree = "<group>"; };
 		6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomTextBlockRenderer.mm; sourceTree = "<group>"; };
 		6BF339D520A665E600DA5973 /* CustomTextBlockRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTextBlockRenderer.h; sourceTree = "<group>"; };
 		6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -422,6 +426,10 @@
 		F4D33E341F045B6E00941E44 /* Jsons */ = {
 			isa = PBXGroup;
 			children = (
+				6BC30F6921DFECB400B9FAAE /* ProductVideo.json */,
+				6BC30F6621DFE8E900B9FAAE /* Media.json */,
+				6BC30F6521DFE8E900B9FAAE /* Media.Sources.json */,
+				6BC30F6221DFE8CF00B9FAAE /* TextBlock.FontStyles.json */,
 				300ECB70219A53B800371DC5 /* Action.OpenUrl.Sentiment.json */,
 				300ECB71219A53B800371DC5 /* Action.ShowCard.Sentiment.json */,
 				300ECB6F219A53B800371DC5 /* Action.Submit.Sentiment.json */,
@@ -429,12 +437,10 @@
 				300ECB66219A234D00371DC5 /* Image.DataUri.json */,
 				300ECB65219A234C00371DC5 /* Image.DataUri.Style.Person.json */,
 				6BF430792190F1140068E432 /* Input.Text.InlineAction.json */,
-				6B980951216574500024B79B /* Media.json */,
 				6B98093E216573EE0024B79B /* Action.IconUrl.TwoActions.json */,
 				6B980944216573EF0024B79B /* Action.OpenUrl.IconUrl.json */,
 				6B98093F216573EF0024B79B /* Column.VerticalContentAlignment.json */,
 				6B980940216573EF0024B79B /* Container.VerticalContentAlignment.json */,
-				6B980941216573EF0024B79B /* MediaAudio.json */,
 				6B980946216573F00024B79B /* MediaSource.json */,
 				6B98093D216573EE0024B79B /* VerticalContentAlignment_ForcedColumn.json */,
 				6B980945216573EF0024B79B /* VerticalContentAlignment_ForcedContainer.json */,
@@ -632,8 +638,8 @@
 				6B98094F216573F00024B79B /* VerticalContentAlignment_ForcedContainer.json in Resources */,
 				F4933CD41F79852C00F6EBFD /* Image.HorizontalAlignment.json in Resources */,
 				F4933CC51F79852C00F6EBFD /* Action.Submit.json in Resources */,
+				6BC30F6721DFE8EA00B9FAAE /* Media.Sources.json in Resources */,
 				6B268FE520CEF89100D99C1B /* (null) in Resources */,
-				6B980952216574500024B79B /* Media.json in Resources */,
 				6B9AB30C20DC4FB3005C8E15 /* IconsInSomeActions.json in Resources */,
 				F4933CED1F79852C00F6EBFD /* TextBlock.Weight.json in Resources */,
 				F4933D061F79853B00F6EBFD /* StockUpdate.json in Resources */,
@@ -655,7 +661,6 @@
 				6B980947216573F00024B79B /* VerticalContentAlignment_ForcedColumn.json in Resources */,
 				300ECB73219A53B800371DC5 /* Action.OpenUrl.Sentiment.json in Resources */,
 				6B5D23F3212393480010EB07 /* Image.BackgroundColor.json in Resources */,
-				6B98094B216573F00024B79B /* MediaAudio.json in Resources */,
 				30860BC720C9B5C9009F9D99 /* ColumnSet.ImageSet.VerticalStretch.json in Resources */,
 				F4933CDD1F79852C00F6EBFD /* Input.Date.json in Resources */,
 				30860BCB20C9B5C9009F9D99 /* ColumnSet.Input.Text.VerticalStretch.json in Resources */,
@@ -696,6 +701,7 @@
 				F4933D071F79853B00F6EBFD /* WeatherCompact.json in Resources */,
 				F4933CE11F79852C00F6EBFD /* Input.Time.json in Resources */,
 				F4933CEB1F79852C00F6EBFD /* TextBlock.Spacing.json in Resources */,
+				6BC30F6A21DFECB400B9FAAE /* ProductVideo.json in Resources */,
 				F4933CE61F79852C00F6EBFD /* TextBlock.HorizontalAlignment.json in Resources */,
 				F4933CEA1F79852C00F6EBFD /* TextBlock.Size.json in Resources */,
 				300ECB69219A234D00371DC5 /* Image.DataUri.json in Resources */,
@@ -715,6 +721,7 @@
 				F4933CD71F79852C00F6EBFD /* Image.Spacing.json in Resources */,
 				6B98094A216573F00024B79B /* Container.VerticalContentAlignment.json in Resources */,
 				30860BC320C9B5C9009F9D99 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json in Resources */,
+				6BC30F6421DFE8CF00B9FAAE /* TextBlock.FontStyles.json in Resources */,
 				30860BC420C9B5C9009F9D99 /* (null) in Resources */,
 				F4933CDF1F79852C00F6EBFD /* Input.Text.json in Resources */,
 				6B2630DD215080FB00ED9207 /* ColumnSet.VerticalStretch.json in Resources */,
@@ -724,6 +731,7 @@
 				6B2630E12151A26100ED9207 /* LongFactSet.json in Resources */,
 				30860BCD20C9B5C9009F9D99 /* ColumnSet.Input.Time.VerticalStretch.json in Resources */,
 				F4933CDC1F79852C00F6EBFD /* Input.ChoiceSet.json in Resources */,
+				6BC30F6821DFE8EA00B9FAAE /* Media.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
