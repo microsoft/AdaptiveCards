@@ -20,7 +20,7 @@ namespace AdaptiveNamespace
     public:
         AdaptiveColumn();
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::Column>& sharedColumn);
+        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Column>& sharedColumn);
 
         // IAdaptiveColumn
         IFACEMETHODIMP get_Width(_Outptr_ HSTRING* width);

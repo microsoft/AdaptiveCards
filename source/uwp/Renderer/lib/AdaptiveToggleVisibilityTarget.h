@@ -15,7 +15,7 @@ namespace AdaptiveNamespace
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityTarget>& sharedToggleTarget);
+        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityTarget>& sharedToggleTarget);
 
         // IAdaptiveToggleVisibilityTarget
         IFACEMETHODIMP get_ElementId(_Outptr_ HSTRING* id);

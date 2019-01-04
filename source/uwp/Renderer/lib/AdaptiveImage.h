@@ -20,7 +20,7 @@ namespace AdaptiveNamespace
     public:
         AdaptiveImage();
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::Image>& sharedImage);
+        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Image>& sharedImage);
 
         // IAdaptiveImage
         IFACEMETHODIMP get_Url(_Outptr_ HSTRING* uri);

@@ -18,7 +18,7 @@ namespace AdaptiveNamespace
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::TextBlock>& sharedTextBlock);
+        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextBlock>& sharedTextBlock);
 
         // IAdaptiveTextBlock
         IFACEMETHODIMP get_Text(_Outptr_ HSTRING* text);

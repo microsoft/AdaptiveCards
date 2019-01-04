@@ -19,7 +19,7 @@ namespace AdaptiveNamespace
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::NumberInput>& sharedNumberInput);
+        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::NumberInput>& sharedNumberInput);
 
         // IAdaptiveNumberInput
         IFACEMETHODIMP get_Placeholder(_Outptr_ HSTRING* placeholder);

@@ -18,7 +18,7 @@ namespace AdaptiveNamespace
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityAction>& sharedToggleVisibilityAction);
+        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityAction>& sharedToggleVisibilityAction);
 
         // IAdaptiveToggleVisibilityAction
         IFACEMETHODIMP get_TargetElements(
@@ -26,7 +26,7 @@ namespace AdaptiveNamespace
 
         // IAdaptiveActionElement
         IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType);
-        IFACEMETHODIMP get_ActionTypeString(_Out_ HSTRING* value)
+        IFACEMETHODIMP get_ActionTypeString(_Outptr_ HSTRING* value)
         {
             return AdaptiveActionElementBase::get_ActionTypeString(value);
         }

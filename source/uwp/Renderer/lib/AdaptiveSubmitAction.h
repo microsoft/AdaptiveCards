@@ -18,7 +18,7 @@ namespace AdaptiveNamespace
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::SubmitAction>& sharedSubmitAction);
+        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::SubmitAction>& sharedSubmitAction);
 
         // IAdaptiveSubmitAction
         IFACEMETHODIMP get_DataJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonValue** data);
@@ -26,7 +26,7 @@ namespace AdaptiveNamespace
 
         // IAdaptiveActionElement
         IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType);
-        IFACEMETHODIMP get_ActionTypeString(_Out_ HSTRING* value)
+        IFACEMETHODIMP get_ActionTypeString(_Outptr_ HSTRING* value)
         {
             return AdaptiveActionElementBase::get_ActionTypeString(value);
         }

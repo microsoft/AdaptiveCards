@@ -19,7 +19,7 @@ namespace AdaptiveNamespace
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::ToggleInput>& sharedToggleInput);
+        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ToggleInput>& sharedToggleInput);
 
         // IAdaptiveToggleInput
         IFACEMETHODIMP get_Title(_Outptr_ HSTRING* title);

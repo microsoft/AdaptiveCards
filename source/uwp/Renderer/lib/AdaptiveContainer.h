@@ -20,7 +20,7 @@ namespace AdaptiveNamespace
     public:
         AdaptiveContainer();
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::Container>& sharedcontainer);
+        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Container>& sharedcontainer);
 
         // IAdaptiveContainer
         IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveNamespace::ContainerStyle* style);

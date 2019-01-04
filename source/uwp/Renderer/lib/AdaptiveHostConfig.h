@@ -13,7 +13,7 @@ namespace AdaptiveNamespace
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const HostConfig& config);
+        HRESULT RuntimeClassInitialize(const HostConfig& config);
 
         // IAdaptiveHostConfig
         IFACEMETHODIMP get_FontFamily(_Outptr_ HSTRING* text);

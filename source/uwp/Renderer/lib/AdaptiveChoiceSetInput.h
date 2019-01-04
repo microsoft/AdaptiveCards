@@ -22,7 +22,7 @@ namespace AdaptiveNamespace
         AdaptiveChoiceSetInput();
 
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::ChoiceSetInput>& sharedChoiceSetInput);
+        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ChoiceSetInput>& sharedChoiceSetInput);
 
         // IAdaptiveChoiceSetInput
 
@@ -73,19 +73,13 @@ namespace AdaptiveNamespace
         {
             return AdaptiveCardElementBase::get_Separator(separator);
         }
-        IFACEMETHODIMP put_Separator(boolean separator)
-        {
-            return AdaptiveCardElementBase::put_Separator(separator);
-        }
+        IFACEMETHODIMP put_Separator(boolean separator) { return AdaptiveCardElementBase::put_Separator(separator); }
 
         IFACEMETHODIMP get_IsVisible(_Out_ boolean* isVisible)
         {
             return AdaptiveCardElementBase::get_IsVisible(isVisible);
         }
-        IFACEMETHODIMP put_IsVisible(boolean isVisible)
-        {
-            return AdaptiveCardElementBase::put_IsVisible(isVisible);
-        }
+        IFACEMETHODIMP put_IsVisible(boolean isVisible) { return AdaptiveCardElementBase::put_IsVisible(isVisible); }
 
         IFACEMETHODIMP get_Id(_Outptr_ HSTRING* id) { return AdaptiveCardElementBase::get_Id(id); }
         IFACEMETHODIMP put_Id(_In_ HSTRING id) { return AdaptiveCardElementBase::put_Id(id); }

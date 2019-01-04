@@ -19,7 +19,7 @@ namespace AdaptiveNamespace
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::DateInput>& sharedDateInput);
+        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::DateInput>& sharedDateInput);
 
         // IAdaptiveDateInput
         IFACEMETHODIMP get_Max(_Outptr_ HSTRING* max);

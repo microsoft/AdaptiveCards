@@ -1593,7 +1593,7 @@ namespace AdaptiveNamespace
     HRESULT SetTextOnXamlTextBlock(_In_ IAdaptiveRenderContext* renderContext,
                                    _In_ HSTRING textIn,
                                    ABI::AdaptiveNamespace::FontStyle fontStyle,
-                                   HSTRING language,
+                                   _In_ HSTRING language,
                                    _In_ ITextBlock* textBlock)
     {
         ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> inlines;

@@ -18,7 +18,7 @@ namespace AdaptiveNamespace
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction>& sharedShowCardAction);
+        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction>& sharedShowCardAction);
 
         // IAdaptiveShowCardAction
         IFACEMETHODIMP get_Card(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCard** card);

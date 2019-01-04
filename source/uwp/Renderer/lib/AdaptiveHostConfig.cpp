@@ -153,7 +153,7 @@ namespace AdaptiveNamespace
         return m_imageSizes.CopyTo(imageSizes);
     }
 
-    HRESULT AdaptiveHostConfig::put_ImageSizes(IAdaptiveImageSizesConfig* imageSizes)
+    HRESULT AdaptiveHostConfig::put_ImageSizes(_In_ IAdaptiveImageSizesConfig* imageSizes)
     {
         m_imageSizes = imageSizes;
         return S_OK;

@@ -22,14 +22,14 @@
 using namespace InternalNamespace;
 #endif
 
-HRESULT WStringToHString(const std::wstring& in, HSTRING* out);
+HRESULT WStringToHString(const std::wstring& in, _Outptr_ HSTRING* out);
 
 std::string WstringToString(const std::wstring& in);
 std::wstring StringToWstring(const std::string& in);
 
 // This function is needed to deal with the fact that non-windows platforms handle Unicode without the need for wchar_t.
 // (which has a platform specific implementation) It converts a std::string to an HSTRING.
-HRESULT UTF8ToHString(const std::string& in, HSTRING* out);
+HRESULT UTF8ToHString(const std::string& in, _Outptr_ HSTRING* out);
 
 // This function is needed to deal with the fact that non-windows platforms handle Unicode without the need for wchar_t.
 // (which has a platform specific implementation) It converts from HSTRING to a standard std::string.
@@ -37,7 +37,10 @@ HRESULT HStringToUTF8(const HSTRING& in, std::string& out);
 
 std::string HStringToUTF8(const HSTRING& in);
 
-bool Boolify(const boolean value);
+inline bool Boolify(const boolean value)
+{
+    return value > 0 ? true : false;
+}
 
 HRESULT GetColorFromString(std::string colorString, _Out_ ABI::Windows::UI::Color* color) noexcept;
 

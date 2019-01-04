@@ -22,7 +22,7 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_IsVisible(_Out_ boolean* separator);
         IFACEMETHODIMP put_IsVisible(boolean separator);
 
-        IFACEMETHODIMP get_ElementTypeString(HSTRING* type);
+        IFACEMETHODIMP get_ElementTypeString(_Outptr_ HSTRING* type);
 
         IFACEMETHODIMP get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
         IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObject);

@@ -40,7 +40,6 @@ using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::Windows::Data::Json;
 using namespace ABI::Windows::UI;
-using namespace std;
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
 using namespace AdaptiveNamespace;
@@ -56,24 +55,24 @@ HRESULT WStringToHString(const std::wstring& in, _Outptr_ HSTRING* out)
     return WindowsCreateString(in.c_str(), static_cast<UINT32>(in.length()), out);
 }
 
-HRESULT UTF8ToHString(const string& in, _Outptr_ HSTRING* out)
+HRESULT UTF8ToHString(const std::string& in, _Outptr_ HSTRING* out)
 {
     if (out == nullptr)
     {
         return E_INVALIDARG;
     }
-    wstring_convert<codecvt_utf8_utf16<wchar_t>> converter;
-    wstring wide = converter.from_bytes(in);
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    std::wstring wide = converter.from_bytes(in);
     return WindowsCreateString(wide.c_str(), static_cast<UINT32>(wide.length()), out);
 }
 
-HRESULT HStringToUTF8(const HSTRING& in, string& out)
+HRESULT HStringToUTF8(const HSTRING& in, std::string& out)
 {
     if (in == nullptr)
     {
         return E_INVALIDARG;
     }
-    wstring_convert<codecvt_utf8_utf16<wchar_t>> converter;
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     out = converter.to_bytes(WindowsGetStringRawBuffer(in, nullptr));
     return S_OK;
 }
@@ -83,11 +82,6 @@ std::string HStringToUTF8(const HSTRING& in)
     std::string typeAsKey;
     HRESULT hr = HStringToUTF8(in, typeAsKey);
     return FAILED(hr) ? "" : typeAsKey;
-}
-
-bool Boolify(const boolean value)
-{
-    return value > 0 ? true : false;
 }
 
 template<typename TSharedBaseType, typename TAdaptiveBaseType, typename TAdaptiveType>
@@ -645,9 +639,9 @@ HRESULT GetColorFromString(std::string colorString, _Out_ ABI::Windows::UI::Colo
     if (colorString._Starts_with("#"))
     {
         // Get the pure hex value (without #)
-        std::string hexColorString = colorString.substr(1, string::npos);
+        std::string hexColorString = colorString.substr(1, std::string::npos);
 
-        regex colorWithAlphaRegex("[0-9a-f]{8}", regex_constants::icase);
+        std::regex colorWithAlphaRegex("[0-9a-f]{8}", std::regex_constants::icase);
         if (regex_match(hexColorString, colorWithAlphaRegex))
         {
             // If color string has alpha channel, extract and set to color
@@ -656,7 +650,7 @@ HRESULT GetColorFromString(std::string colorString, _Out_ ABI::Windows::UI::Colo
 
             color->A = static_cast<BYTE>(alpha);
 
-            hexColorString = hexColorString.substr(2, string::npos);
+            hexColorString = hexColorString.substr(2, std::string::npos);
         }
         else
         {
@@ -667,7 +661,7 @@ HRESULT GetColorFromString(std::string colorString, _Out_ ABI::Windows::UI::Colo
         }
 
         // A valid string at this point should have 6 hex characters (RRGGBB)
-        regex colorWithoutAlphaRegex("[0-9a-f]{6}", regex_constants::icase);
+        std::regex colorWithoutAlphaRegex("[0-9a-f]{6}", std::regex_constants::icase);
         if (regex_match(hexColorString, colorWithoutAlphaRegex))
         {
             // Then set all other Red, Green, and Blue channels
@@ -1047,7 +1041,7 @@ HRESULT GetFontWeight(_In_ ABI::AdaptiveNamespace::IAdaptiveFontWeightsConfig* w
 }
 CATCH_RETURN;
 
-HRESULT StringToJsonObject(const string inputString, _COM_Outptr_ IJsonObject** result)
+HRESULT StringToJsonObject(const std::string inputString, _COM_Outptr_ IJsonObject** result)
 {
     std::wstring asWstring = StringToWstring(inputString);
     return HStringToJsonObject(HStringReference(asWstring.c_str()).Get(), result);
@@ -1067,7 +1061,7 @@ HRESULT HStringToJsonObject(const HSTRING& inputHString, _COM_Outptr_ IJsonObjec
     return S_OK;
 }
 
-HRESULT JsonObjectToString(_In_ IJsonObject* inputJson, string& result)
+HRESULT JsonObjectToString(_In_ IJsonObject* inputJson, std::string& result)
 {
     HString asHstring;
     RETURN_IF_FAILED(JsonObjectToHString(inputJson, asHstring.GetAddressOf()));
@@ -1086,7 +1080,7 @@ HRESULT JsonObjectToHString(_In_ IJsonObject* inputJson, _Outptr_ HSTRING* resul
     return (asJsonValue->Stringify(result));
 }
 
-HRESULT StringToJsonValue(const string inputString, _COM_Outptr_ IJsonValue** result)
+HRESULT StringToJsonValue(const std::string inputString, _COM_Outptr_ IJsonValue** result)
 {
     std::wstring asWstring = StringToWstring(inputString);
     return HStringToJsonValue(HStringReference(asWstring.c_str()).Get(), result);
@@ -1106,7 +1100,7 @@ HRESULT HStringToJsonValue(const HSTRING& inputHString, _COM_Outptr_ IJsonValue*
     return S_OK;
 }
 
-HRESULT JsonValueToString(_In_ IJsonValue* inputValue, string& result)
+HRESULT JsonValueToString(_In_ IJsonValue* inputValue, std::string& result)
 {
     HString asHstring;
     RETURN_IF_FAILED(JsonValueToHString(inputValue, asHstring.GetAddressOf()));

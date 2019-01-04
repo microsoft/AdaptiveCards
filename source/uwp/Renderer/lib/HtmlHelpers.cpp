@@ -11,7 +11,7 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace AdaptiveNamespace;
 using namespace msl::utilities;
 
-HRESULT GetTextFromXmlNode(_In_ ABI::Windows::Data::Xml::Dom::IXmlNode* node, _In_ HSTRING* text)
+static HRESULT GetTextFromXmlNode(_In_ ABI::Windows::Data::Xml::Dom::IXmlNode* node, _In_ HSTRING* text)
 {
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> localNode = node;
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNodeSerializer> textNodeSerializer;
