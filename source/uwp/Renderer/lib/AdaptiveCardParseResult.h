@@ -14,7 +14,7 @@ namespace AdaptiveNamespace
         AdaptiveCardParseResult();
 
         HRESULT RuntimeClassInitialize();
-        HRESULT RuntimeClassInitialize(ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard);
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard);
 
         // IAdaptiveCardParseResult
         IFACEMETHODIMP get_AdaptiveCard(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCard** value);

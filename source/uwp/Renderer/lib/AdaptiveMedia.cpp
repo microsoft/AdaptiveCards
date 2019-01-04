@@ -14,7 +14,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveMedia::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Media>& sharedMedia) try
+    HRESULT AdaptiveMedia::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Media>& sharedMedia) try
     {
         if (sharedMedia == nullptr)
         {
@@ -32,21 +32,21 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveMedia::get_ElementType(ElementType* elementType)
+    HRESULT AdaptiveMedia::get_ElementType(_Out_ ElementType* elementType)
     {
         *elementType = ElementType::Media;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveMedia::get_Poster(HSTRING* value) { return m_poster.CopyTo(value); }
+    HRESULT AdaptiveMedia::get_Poster(_Outptr_ HSTRING* value) { return m_poster.CopyTo(value); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveMedia::put_Poster(HSTRING value) { return m_poster.Set(value); }
+    HRESULT AdaptiveMedia::put_Poster(_In_ HSTRING value) { return m_poster.Set(value); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveMedia::get_AltText(HSTRING* value) { return m_altText.CopyTo(value); }
+    HRESULT AdaptiveMedia::get_AltText(_Outptr_ HSTRING* value) { return m_altText.CopyTo(value); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveMedia::put_AltText(HSTRING value) { return m_altText.Set(value); }
+    HRESULT AdaptiveMedia::put_AltText(_In_ HSTRING value) { return m_altText.Set(value); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveMedia::get_Sources(IVector<AdaptiveMediaSource*>** sources)
+    HRESULT AdaptiveMedia::get_Sources(_COM_Outptr_ IVector<AdaptiveMediaSource*>** sources)
     {
         return m_sources.CopyTo(sources);
     }

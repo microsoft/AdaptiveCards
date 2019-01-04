@@ -9,26 +9,26 @@ namespace AdaptiveNamespace
 {
     HRESULT AdaptiveWarning::RuntimeClassInitialize() { return S_OK; }
 
-    HRESULT AdaptiveWarning::RuntimeClassInitialize(ABI::AdaptiveNamespace::WarningStatusCode statusCode, HSTRING message)
+    HRESULT AdaptiveWarning::RuntimeClassInitialize(ABI::AdaptiveNamespace::WarningStatusCode statusCode, _In_ HSTRING message)
     {
         m_statusCode = statusCode;
         m_message.Set(message);
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveWarning::get_StatusCode(ABI::AdaptiveNamespace::WarningStatusCode* value)
+    HRESULT AdaptiveWarning::get_StatusCode(_Out_ ABI::AdaptiveNamespace::WarningStatusCode* value)
     {
         *value = m_statusCode;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveWarning::put_StatusCode(ABI::AdaptiveNamespace::WarningStatusCode value)
+    HRESULT AdaptiveWarning::put_StatusCode(ABI::AdaptiveNamespace::WarningStatusCode value)
     {
         m_statusCode = value;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveWarning::get_Message(HSTRING* value) { return m_message.CopyTo(value); }
+    HRESULT AdaptiveWarning::get_Message(_Outptr_ HSTRING* value) { return m_message.CopyTo(value); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveWarning::put_Message(HSTRING value) { return m_message.Set(value); }
+    HRESULT AdaptiveWarning::put_Message(_In_ HSTRING value) { return m_message.Set(value); }
 }

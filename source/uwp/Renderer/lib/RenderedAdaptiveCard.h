@@ -28,22 +28,22 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP add_Action(_In_ ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*,
                                                                                     ABI::AdaptiveNamespace::AdaptiveActionEventArgs*>* handler,
                                   _Out_ EventRegistrationToken* token);
-        IFACEMETHODIMP remove_Action(_In_ EventRegistrationToken token);
+        IFACEMETHODIMP remove_Action(EventRegistrationToken token);
 
         IFACEMETHODIMP add_MediaClicked(
             _In_ ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*, ABI::AdaptiveNamespace::AdaptiveMediaEventArgs*>* handler,
             _Out_ EventRegistrationToken* token);
-        IFACEMETHODIMP remove_MediaClicked(_In_ EventRegistrationToken token);
+        IFACEMETHODIMP remove_MediaClicked(EventRegistrationToken token);
 
         IFACEMETHODIMP get_Errors(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveError*>** value);
         IFACEMETHODIMP get_Warnings(
             _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>** value);
 
-        HRESULT AddInputValue(ABI::AdaptiveNamespace::IAdaptiveInputValue* inputValue);
-        void SetFrameworkElement(ABI::Windows::UI::Xaml::IFrameworkElement* value);
-        void SetOriginatingCard(ABI::AdaptiveNamespace::IAdaptiveCard* value);
-        HRESULT SendActionEvent(ABI::AdaptiveNamespace::IAdaptiveActionElement* eventArgs);
-        HRESULT SendMediaClickedEvent(ABI::AdaptiveNamespace::IAdaptiveMedia* eventArgs);
+        HRESULT AddInputValue(_In_ ABI::AdaptiveNamespace::IAdaptiveInputValue* inputValue);
+        void SetFrameworkElement(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* value);
+        void SetOriginatingCard(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* value);
+        HRESULT SendActionEvent(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* eventArgs);
+        HRESULT SendMediaClickedEvent(_In_ ABI::AdaptiveNamespace::IAdaptiveMedia* eventArgs);
 
     private:
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCard> m_originatingCard;

@@ -7,13 +7,13 @@ using namespace ABI::Windows::Foundation;
 
 namespace AdaptiveNamespace
 {
-    _Use_decl_annotations_ HRESULT AdaptiveCardGetResourceStreamArgs::RuntimeClassInitialize(IUriRuntimeClass* url)
+    HRESULT AdaptiveCardGetResourceStreamArgs::RuntimeClassInitialize(_In_ IUriRuntimeClass* url)
     {
         m_url = url;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveCardGetResourceStreamArgs::get_Url(IUriRuntimeClass** url)
+    HRESULT AdaptiveCardGetResourceStreamArgs::get_Url(_COM_Outptr_ IUriRuntimeClass** url)
     {
         ComPtr<IUriRuntimeClass> localUrl(m_url);
         *url = localUrl.Detach();

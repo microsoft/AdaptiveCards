@@ -19,7 +19,7 @@ namespace AdaptiveNamespace
         }
     }
 
-    _Use_decl_annotations_ void ImageLoadTracker::TrackBitmapImage(IBitmapImage* bitmapImage)
+    void ImageLoadTracker::TrackBitmapImage(_In_ IBitmapImage* bitmapImage)
     {
         ComPtr<IBitmapImage> localBitmapImage(bitmapImage);
         TrackedImageDetails trackedImageDetails;
@@ -45,7 +45,7 @@ namespace AdaptiveNamespace
         }
     }
 
-    _Use_decl_annotations_ void ImageLoadTracker::MarkFailedLoadBitmapImage(IBitmapImage* bitmapImage)
+    void ImageLoadTracker::MarkFailedLoadBitmapImage(_In_ IBitmapImage* bitmapImage)
     {
         // Record failure
         m_hasFailure = true;
@@ -67,7 +67,7 @@ namespace AdaptiveNamespace
         m_eventRegistrations.clear();
     }
 
-    _Use_decl_annotations_ HRESULT ImageLoadTracker::AddListener(IImageLoadTrackerListener* listener) try
+    HRESULT ImageLoadTracker::AddListener(_In_ IImageLoadTrackerListener* listener) try
     {
         if (m_listeners.find(listener) == m_listeners.end())
         {
@@ -81,7 +81,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT ImageLoadTracker::RemoveListener(IImageLoadTrackerListener* listener) try
+    HRESULT ImageLoadTracker::RemoveListener(_In_ IImageLoadTrackerListener* listener) try
     {
         if (m_listeners.find(listener) != m_listeners.end())
         {
@@ -97,19 +97,19 @@ namespace AdaptiveNamespace
 
     int ImageLoadTracker::GetTotalImagesTracked() { return m_totalImageCount; }
 
-    _Use_decl_annotations_ HRESULT ImageLoadTracker::trackedImage_ImageLoaded(IInspectable* sender, IRoutedEventArgs* /*eventArgs*/)
+    HRESULT ImageLoadTracker::trackedImage_ImageLoaded(_In_ IInspectable* sender, _In_ IRoutedEventArgs* /*eventArgs*/)
     {
         ImageLoadResultReceived(sender);
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT ImageLoadTracker::trackedImage_ImageFailed(IInspectable* sender, IExceptionRoutedEventArgs* /*eventArgs*/)
+    HRESULT ImageLoadTracker::trackedImage_ImageFailed(_In_ IInspectable* sender, _In_ IExceptionRoutedEventArgs* /*eventArgs*/)
     {
         ImageLoadResultReceived(sender);
         return S_OK;
     }
 
-    _Use_decl_annotations_ void ImageLoadTracker::ImageLoadResultReceived(IInspectable* sender)
+    void ImageLoadTracker::ImageLoadResultReceived(_In_ IInspectable* sender)
     {
         auto exclusiveLock = m_lock.LockExclusive();
         m_trackedImageCount--;
@@ -124,7 +124,7 @@ namespace AdaptiveNamespace
         }
     }
 
-    _Use_decl_annotations_ void ImageLoadTracker::UnsubscribeFromEvents(IInspectable* bitmapImage, TrackedImageDetails& trackedImageDetails)
+    void ImageLoadTracker::UnsubscribeFromEvents(_In_ IInspectable* bitmapImage, TrackedImageDetails& trackedImageDetails)
     {
         ComPtr<IInspectable> inspectableBitmapImage(bitmapImage);
         ComPtr<IBitmapImage> localBitmapImage;

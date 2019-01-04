@@ -105,7 +105,7 @@ std::string InputValue::SerializeToggleInput() const
     return utf8Value;
 }
 
-std::string InputValue::GetChoiceValue(IAdaptiveChoiceSetInput* choiceInput, INT32 selectedIndex) const
+std::string InputValue::GetChoiceValue(_In_ IAdaptiveChoiceSetInput* choiceInput, INT32 selectedIndex) const
 {
     if (selectedIndex != -1)
     {
@@ -206,7 +206,7 @@ std::string InputValue::SerializeChoiceSetInput() const
     }
 }
 
-HRESULT InputValue::get_CurrentValue(HSTRING* result)
+HRESULT InputValue::get_CurrentValue(_Outptr_ HSTRING* result)
 {
     ComPtr<IAdaptiveCardElement> cardElement;
     RETURN_IF_FAILED(m_adaptiveInputElement.As(&cardElement));
@@ -253,7 +253,7 @@ HRESULT InputValue::get_CurrentValue(HSTRING* result)
     return S_OK;
 }
 
-HRESULT InputValue::get_InputElement(IAdaptiveInputElement** inputElement)
+HRESULT InputValue::get_InputElement(_COM_Outptr_ IAdaptiveInputElement** inputElement)
 {
     return m_adaptiveInputElement.CopyTo(inputElement);
 }
