@@ -1,5 +1,4 @@
 import * as Adaptive from "adaptivecards";
-import * as vkbeautify from "vkbeautify";
 
 export abstract class HostContainer {
     private _cardHost: HTMLElement;
@@ -15,40 +14,6 @@ export abstract class HostContainer {
     }
 
     abstract renderTo(hostElement: HTMLElement);
-
-    private static playNextTTS(output: any[], iCurrent: number) {
-        if (iCurrent < output.length) {
-            let current = output[iCurrent];
-            if (typeof current === "number") {
-                setTimeout(() => {
-                    HostContainer.playNextTTS(output, iCurrent + 1);
-                }, current);
-            } else {
-                if (current.indexOf("http") == 0) {
-                    let audio: any = document.getElementById('player');
-                    audio.src = current;
-                    audio.onended = () => {
-                        HostContainer.playNextTTS(output, iCurrent + 1);
-                    };
-                    audio.onerror = () => {
-                        HostContainer.playNextTTS(output, iCurrent + 1);
-                    };
-                    audio.play();
-                } else {
-                    let msg = new SpeechSynthesisUtterance();
-                    msg.text = current;
-                    msg.lang = 'en-US';
-                    msg.onerror = () => {
-                        HostContainer.playNextTTS(output, iCurrent + 1);
-                    };
-                    msg.onend = () => {
-                        HostContainer.playNextTTS(output, iCurrent + 1);
-                    };
-                    (<any>window).speechSynthesis.speak(msg);
-                }
-            }
-        }
-    }
 
     public initialize() {
         Adaptive.AdaptiveCard.elementTypeRegistry.reset();
@@ -71,56 +36,6 @@ export abstract class HostContainer {
     public anchorClicked(element: Adaptive.CardElement, anchor: HTMLAnchorElement): boolean {
         // Not handled by the host container by default
         return false;
-    }
-
-    private processNodes(nodes: NodeList, output: any[]): void {
-        for (let i = 0; i < nodes.length; i++) {
-            let node = nodes[i];
-
-            if (node.nodeName == "p") {
-                this.processNodes(node.childNodes, output);
-                output.push(250);
-            }
-            else if (node.nodeName == "s") {
-                this.processNodes(node.childNodes, output);
-                output.push(100);
-            }
-            else if (node.nodeName == "break" && node instanceof Element) {
-                if (node.attributes["strength"]) {
-                    let strength = node.attributes["strength"].nodeValue;
-
-                    if (strength == "weak") {
-                        // output.push(50);
-                    } else if (strength == "medium") {
-                        output.push(50);
-                    } else if (strength == "strong") {
-                        output.push(100);
-                    } else if (strength == "x-strong") {
-                        output.push(250);
-                    }
-                }
-                else if (node.attributes["time"]) {
-                    output.push(JSON.parse(node.attributes["time"].value));
-                }
-            }
-            else if (node.nodeName == "audio" && node instanceof Element) {
-                if (node.attributes["src"]) {
-                    output.push(node.attributes["src"].value);
-                }
-            }
-            else if (node.nodeName == "say-as") {
-                this.processNodes(node.childNodes, output);
-            }
-            else if (node.nodeName == "w") {
-                this.processNodes(node.childNodes, output);
-            }
-            else if (node.nodeName == "phoneme") {
-                this.processNodes(node.childNodes, output);
-            }
-            else {
-                output.push(node.nodeValue);
-            }
-        }
     }
 
     public getHostConfig(): Adaptive.HostConfig {
@@ -247,61 +162,6 @@ export abstract class HostContainer {
                 spacing: 10
             }
         });
-    }
-
-    protected renderSpeech(speechString: string, showXml: boolean = false): HTMLElement {
-        if (!speechString) {
-            return null;
-        }
-
-        var element = document.createElement("div");
-
-        var button = document.createElement("button");
-        button.className = "button";
-        button.innerText = "Speak this card";
-
-        var t = document.createTextNode("Speak");
-        var output = new Array<any>();
-
-        if (speechString[0] == '<') {
-            if (speechString.indexOf("<speak") != 0) {
-                speechString = '<speak>\n' + speechString + '\n</speak>\n';
-            }
-
-            var parser = new DOMParser();
-            var dom = parser.parseFromString(speechString, "text/xml");
-            var nodes = dom.documentElement.childNodes;
-
-            this.processNodes(nodes, output);
-
-            var serializer = new XMLSerializer();
-
-            speechString = vkbeautify.xml(serializer.serializeToString(dom));;
-        }
-        else {
-            output.push(speechString);
-            speechString = vkbeautify.xml(speechString);
-        }
-
-        button.addEventListener("click", function () {
-            HostContainer.playNextTTS(output, 0);
-        });
-
-        element.appendChild(button);
-
-        if (showXml) {
-            let pre = document.createElement("pre");
-            pre.appendChild(document.createTextNode(speechString));
-            element.appendChild(pre);
-        }
-
-        var audio = document.createElement("audio");
-        audio.id = 'player';
-        audio.autoplay = true;
-
-        element.appendChild(audio);
-
-        return element;
     }
 
     supportsActionBar: boolean = false;

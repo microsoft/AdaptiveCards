@@ -1,0 +1,9 @@
+{
+	"packages": [
+		"adaptivecards*/**"
+	],
+	"ignoreChanges": [
+		"**/__tests__/**"
+	],
+	"version": "independent"
+}
