@@ -52,15 +52,15 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInput::put_Wrap(boolean wrap)
+    HRESULT AdaptiveChoiceSetInput::put_Wrap(boolean wrap)
     {
         m_wrap = wrap;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInput::get_Wrap(boolean* wrap)
+    HRESULT AdaptiveChoiceSetInput::get_Wrap(boolean* wrap)
     {
-        *wrap= m_wrap;
+        *wrap = m_wrap;
         return S_OK;
     }
 

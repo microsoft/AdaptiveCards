@@ -55,6 +55,18 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveToggleInput::put_ValueOn(_In_ HSTRING valueOn) { return m_valueOn.Set(valueOn); }
 
+    HRESULT AdaptiveToggleInput::get_Wrap(boolean* wrap)
+    {
+        *wrap = m_wrap;
+        return S_OK;
+    }
+		
+	HRESULT AdaptiveToggleInput::put_Wrap(boolean wrap)
+    {
+        m_wrap = wrap;
+        return S_OK;
+    }
+
     HRESULT AdaptiveToggleInput::get_ElementType(_Out_ ElementType* elementType)
     {
         *elementType = ElementType::ToggleInput;
