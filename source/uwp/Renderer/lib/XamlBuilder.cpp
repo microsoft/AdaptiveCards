@@ -2812,18 +2812,20 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(adaptiveChoiceSetInput->get_Choices(&choices));
 
         std::vector<std::string> values = GetChoiceSetValueVector(adaptiveChoiceSetInput);
+        boolean wrap;
+        adaptiveChoiceSetInput->get_Wrap(&wrap);
 
         int currentIndex = 0;
         int selectedIndex = -1;
         XamlHelpers::IterateOverVector<IAdaptiveChoiceInput>(
-            choices.Get(), [&currentIndex, &selectedIndex, itemsVector, values](IAdaptiveChoiceInput* adaptiveChoiceInput) {
+            choices.Get(), [&currentIndex, &selectedIndex, itemsVector, values, wrap](IAdaptiveChoiceInput* adaptiveChoiceInput) {
                 HString title;
                 THROW_IF_FAILED(adaptiveChoiceInput->get_Title(title.GetAddressOf()));
 
                 ComPtr<IComboBoxItem> comboBoxItem = XamlHelpers::CreateXamlClass<IComboBoxItem>(
                     HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ComboBoxItem));
 
-                XamlHelpers::SetContent(comboBoxItem.Get(), title.Get());
+                XamlHelpers::SetContent(comboBoxItem.Get(), title.Get(), wrap);
 
                 // If multiple values are specified, no option is selected
                 if (values.size() == 1 && IsChoiceSelected(values, adaptiveChoiceInput))
@@ -2868,7 +2870,10 @@ namespace AdaptiveNamespace
 
         std::vector<std::string> values = GetChoiceSetValueVector(adaptiveChoiceSetInput);
 
-        XamlHelpers::IterateOverVector<IAdaptiveChoiceInput>(choices.Get(), [panel, isMultiSelect, renderContext, values](IAdaptiveChoiceInput* adaptiveChoiceInput) {
+        boolean wrap;
+        adaptiveChoiceSetInput->get_Wrap(&wrap);
+
+        XamlHelpers::IterateOverVector<IAdaptiveChoiceInput>(choices.Get(), [panel, isMultiSelect, renderContext, values, wrap](IAdaptiveChoiceInput* adaptiveChoiceInput) {
             ComPtr<IUIElement> choiceItem;
             if (isMultiSelect)
             {
@@ -2902,7 +2907,7 @@ namespace AdaptiveNamespace
 
             HString title;
             THROW_IF_FAILED(adaptiveChoiceInput->get_Title(title.GetAddressOf()));
-            XamlHelpers::SetContent(choiceItem.Get(), title.Get());
+            XamlHelpers::SetContent(choiceItem.Get(), title.Get(), wrap);
 
             THROW_IF_FAILED(AddHandledTappedEvent(choiceItem.Get()));
 
@@ -3471,7 +3476,10 @@ namespace AdaptiveNamespace
         HString title;
         THROW_IF_FAILED(adaptiveToggleInput->get_Title(title.GetAddressOf()));
 
-        XamlHelpers::SetContent(checkBox.Get(), title.Get());
+        boolean wrap;
+        adaptiveToggleInput->get_Wrap(&wrap);
+
+        XamlHelpers::SetContent(checkBox.Get(), title.Get(), wrap);
 
         HString value;
         THROW_IF_FAILED(adaptiveToggleInput->get_Value(value.GetAddressOf()));

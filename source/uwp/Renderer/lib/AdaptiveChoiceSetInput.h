@@ -32,6 +32,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_IsMultiSelect(_Out_ boolean* isMultiSelect);
         IFACEMETHODIMP put_IsMultiSelect(boolean isMultiSelect);
 
+        IFACEMETHODIMP get_Wrap(_Out_ boolean* wrap);
+        IFACEMETHODIMP put_Wrap(boolean wrap);
+
         IFACEMETHODIMP get_ChoiceSetStyle(_Out_ ABI::AdaptiveNamespace::ChoiceSetStyle* choiceSetStyle);
         IFACEMETHODIMP put_ChoiceSetStyle(ABI::AdaptiveNamespace::ChoiceSetStyle choiceSetStyle);
 
@@ -110,6 +113,7 @@ namespace AdaptiveNamespace
 
     private:
         Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveChoiceInput*>> m_choices;
+        boolean m_wrap;
         boolean m_isMultiSelect;
         ABI::AdaptiveNamespace::ChoiceSetStyle m_choiceSetStyle;
         Microsoft::WRL::Wrappers::HString m_value;

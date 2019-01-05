@@ -25,6 +25,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Title(_Outptr_ HSTRING* title);
         IFACEMETHODIMP put_Title(_In_ HSTRING title);
 
+        IFACEMETHODIMP get_Wrap(_Out_ boolean* wrap);
+        IFACEMETHODIMP put_Wrap(boolean wrap);
+
         IFACEMETHODIMP get_Value(_Outptr_ HSTRING* value);
         IFACEMETHODIMP put_Value(_In_ HSTRING value);
 
@@ -109,6 +112,7 @@ namespace AdaptiveNamespace
         Microsoft::WRL::Wrappers::HString m_value;
         Microsoft::WRL::Wrappers::HString m_valueOn;
         Microsoft::WRL::Wrappers::HString m_valueOff;
+        boolean m_wrap;
     };
 
     ActivatableClass(AdaptiveToggleInput);
