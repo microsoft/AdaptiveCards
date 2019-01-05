@@ -52,21 +52,21 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveChoiceSetInput::put_Wrap(boolean wrap)
+    HRESULT AdaptiveChoiceSetInput::put_IsMultiSelect(boolean isMultiSelect)
     {
-        m_wrap = wrap;
+        m_isMultiSelect = isMultiSelect;
         return S_OK;
     }
 
-    HRESULT AdaptiveChoiceSetInput::get_Wrap(boolean* wrap)
+    HRESULT AdaptiveChoiceSetInput::get_Wrap(_Out_ boolean* wrap)
     {
         *wrap = m_wrap;
         return S_OK;
     }
 
-    HRESULT AdaptiveChoiceSetInput::put_IsMultiSelect(boolean isMultiSelect)
+    HRESULT AdaptiveChoiceSetInput::put_Wrap(boolean wrap)
     {
-        m_isMultiSelect = isMultiSelect;
+        m_wrap = wrap;
         return S_OK;
     }
 
@@ -115,6 +115,7 @@ namespace AdaptiveNamespace
         choiceSet->SetChoiceSetStyle(static_cast<AdaptiveSharedNamespace::ChoiceSetStyle>(m_choiceSetStyle));
         choiceSet->SetIsMultiSelect(m_isMultiSelect);
         choiceSet->SetValue(HStringToUTF8(m_value.Get()));
+        choiceSet->SetWrap(m_wrap);
 
         RETURN_IF_FAILED(GenerateSharedChoices(m_choices.Get(), choiceSet->GetChoices()));
 

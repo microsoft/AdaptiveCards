@@ -32,8 +32,8 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_IsMultiSelect(_Out_ boolean* isMultiSelect);
         IFACEMETHODIMP put_IsMultiSelect(boolean isMultiSelect);
 
-        IFACEMETHODIMP get_Wrap(_Outptr_ boolean* wrap);
-        IFACEMETHODIMP put_Wrap(_In_ boolean wrap);
+        IFACEMETHODIMP get_Wrap(_Out_ boolean* wrap);
+        IFACEMETHODIMP put_Wrap(boolean wrap);
 
         IFACEMETHODIMP get_ChoiceSetStyle(_Out_ ABI::AdaptiveNamespace::ChoiceSetStyle* choiceSetStyle);
         IFACEMETHODIMP put_ChoiceSetStyle(ABI::AdaptiveNamespace::ChoiceSetStyle choiceSetStyle);
