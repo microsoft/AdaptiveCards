@@ -114,7 +114,6 @@ namespace AdaptiveNamespace
 
     void XamlBuilder::BuildXamlTreeFromAdaptiveCard(_In_ IAdaptiveCard* adaptiveCard,
                                                     _Outptr_ IFrameworkElement** xamlTreeRoot,
-                                                    _In_ AdaptiveCardRenderer* renderer,
                                                     _In_ IAdaptiveRenderContext* renderContext,
                                                     std::shared_ptr<XamlBuilder> xamlBuilder,
                                                     boolean isOuterCard,
@@ -859,7 +858,7 @@ namespace AdaptiveNamespace
 
     void XamlBuilder::BuildShowCard(_In_ IAdaptiveShowCardActionConfig* showCardActionConfig,
                                     _In_ IAdaptiveActionElement* action,
-                                    AdaptiveRenderContext* renderContext,
+                                    _In_ IAdaptiveRenderContext* renderContext,
                                     bool isBottomActionBar,
                                     _Outptr_ IUIElement** uiShowCard)
     {
@@ -1139,7 +1138,6 @@ namespace AdaptiveNamespace
     }
 
     void XamlBuilder::BuildActions(_In_ IVector<IAdaptiveActionElement*>* children,
-                                   _In_ IPanel* parentPanel,
                                    _In_ IPanel* bodyPanel,
                                    bool insertSeparator,
                                    _In_ IAdaptiveRenderContext* renderContext,

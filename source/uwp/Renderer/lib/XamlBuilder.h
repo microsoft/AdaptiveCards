@@ -154,11 +154,11 @@ namespace AdaptiveNamespace
         void PopulateImageFromUrlAsync(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl, _In_ T* imageControl);
         void FireAllImagesLoaded();
         void FireImagesLoadingHadError();
-        void BuildShowCard(ABI::AdaptiveNamespace::IAdaptiveShowCardActionConfig* showCardActionConfig,
-                           _In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
-                           _In_ AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                           bool isBottomActionBar,
-                           _Outptr_ ABI::Windows::UI::Xaml::IUIElement** uiShowCard);
+        static void BuildShowCard(ABI::AdaptiveNamespace::IAdaptiveShowCardActionConfig* showCardActionConfig,
+                                  _In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
+                                  _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                  bool isBottomActionBar,
+                                  _Outptr_ ABI::Windows::UI::Xaml::IUIElement** uiShowCard);
 
         static void ArrangeButtonContent(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
                                          _In_ ABI::AdaptiveNamespace::IAdaptiveActionsConfig* actionsConfig,
