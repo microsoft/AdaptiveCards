@@ -117,7 +117,7 @@ namespace AdaptiveNamespace
             }
         }
 
-        template<typename T> static void SetContent(_In_ T* item, _In_ HSTRING contentString)
+        template<typename T> static void SetContent(_In_ T* item, _In_ HSTRING contentString, boolean wrap)
         {
             ComPtr<T> localItem(item);
             ComPtr<IContentControl> contentControl;
@@ -126,7 +126,17 @@ namespace AdaptiveNamespace
             ComPtr<ITextBlock> content =
                 XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
             THROW_IF_FAILED(content->put_Text(contentString));
+
+            if (wrap)
+            {
+                THROW_IF_FAILED(content->put_TextWrapping(TextWrapping::TextWrapping_WrapWholeWords));
+            }
             THROW_IF_FAILED(contentControl->put_Content(content.Get()));
+        }
+
+        template<typename T> static void SetContent(T* item, HSTRING contentString)
+        {
+            SetContent(item, contentString, false);
         }
 
         template<typename T>

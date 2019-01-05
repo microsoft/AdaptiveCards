@@ -4,7 +4,8 @@
 
 using namespace AdaptiveSharedNamespace;
 
-ToggleInput::ToggleInput() : BaseInputElement(CardElementType::ToggleInput), m_valueOff("false"), m_valueOn("true")
+ToggleInput::ToggleInput() :
+    BaseInputElement(CardElementType::ToggleInput), m_valueOff("false"), m_valueOn("true"), m_wrap(false)
 {
     PopulateKnownPropertiesSet();
 }
