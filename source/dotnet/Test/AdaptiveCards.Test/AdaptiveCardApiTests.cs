@@ -12,7 +12,10 @@ namespace AdaptiveCards.Test
         [TestMethod]
         public void TestAssigningVersion()
         {
-            AdaptiveCard card = new AdaptiveCard();
+            AdaptiveCard card = new AdaptiveCard("1.0");
+
+            Assert.AreEqual(1, card.Version.Major);
+            Assert.AreEqual(0, card.Version.Minor);
             card.Version = new AdaptiveSchemaVersion(4, 5);
 
             Assert.AreEqual(4, card.Version.Major);
@@ -22,7 +25,7 @@ namespace AdaptiveCards.Test
         [TestMethod]
         public void TestAssigningVersionAsString()
         {
-            AdaptiveCard card = new AdaptiveCard();
+            AdaptiveCard card = new AdaptiveCard("1.0");
             card.Version = "4.5";
 
             Assert.AreEqual(4, card.Version.Major);
@@ -89,8 +92,7 @@ namespace AdaptiveCards.Test
     }
   ]
 }";
-            // TODO: No longer throwing on this exception to work around bot framework integration issues. Revisit later
-            //Assert.ThrowsException<AdaptiveSerializationException>(() => AdaptiveCard.FromJson(json));
+            Assert.ThrowsException<AdaptiveSerializationException>(() => AdaptiveCard.FromJson(json));
         }
 
         [TestMethod]
