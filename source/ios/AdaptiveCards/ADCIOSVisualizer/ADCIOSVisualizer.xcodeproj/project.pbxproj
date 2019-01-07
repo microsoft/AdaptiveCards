@@ -49,7 +49,6 @@
 		6B98094D216573F00024B79B /* VerticalContentAlignment.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B980943216573EF0024B79B /* VerticalContentAlignment.json */; };
 		6B98094E216573F00024B79B /* Action.OpenUrl.IconUrl.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B980944216573EF0024B79B /* Action.OpenUrl.IconUrl.json */; };
 		6B98094F216573F00024B79B /* VerticalContentAlignment_ForcedContainer.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B980945216573EF0024B79B /* VerticalContentAlignment_ForcedContainer.json */; };
-		6B980950216573F00024B79B /* MediaSource.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B980946216573F00024B79B /* MediaSource.json */; };
 		6B9AB30620D9857B005C8E15 /* Image.Explicit.Size.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B9AB30520D9857A005C8E15 /* Image.Explicit.Size.json */; };
 		6B9AB30C20DC4FB3005C8E15 /* IconsInSomeActions.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B9AB30B20DC4FB3005C8E15 /* IconsInSomeActions.json */; };
 		6B9BDF7020E18E5B00F13155 /* CustomImageRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BDF6F20E18E5B00F13155 /* CustomImageRenderer.mm */; };
@@ -199,7 +198,6 @@
 		6B980943216573EF0024B79B /* VerticalContentAlignment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = VerticalContentAlignment.json; path = ../../../../samples/v1.1/Elements/VerticalContentAlignment.json; sourceTree = "<group>"; };
 		6B980944216573EF0024B79B /* Action.OpenUrl.IconUrl.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.OpenUrl.IconUrl.json; path = ../../../../samples/v1.1/Elements/Action.OpenUrl.IconUrl.json; sourceTree = "<group>"; };
 		6B980945216573EF0024B79B /* VerticalContentAlignment_ForcedContainer.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = VerticalContentAlignment_ForcedContainer.json; path = ../../../../samples/v1.1/Elements/VerticalContentAlignment_ForcedContainer.json; sourceTree = "<group>"; };
-		6B980946216573F00024B79B /* MediaSource.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = MediaSource.json; path = ../../../../samples/v1.1/Elements/MediaSource.json; sourceTree = "<group>"; };
 		6B9AB30520D9857A005C8E15 /* Image.Explicit.Size.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.Explicit.Size.json; path = ../../../../samples/Tests/Image.Explicit.Size.json; sourceTree = "<group>"; };
 		6B9AB30B20DC4FB3005C8E15 /* IconsInSomeActions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = IconsInSomeActions.json; path = ../../../../samples/Tests/IconsInSomeActions.json; sourceTree = "<group>"; };
 		6B9BDF6E20E18E5B00F13155 /* CustomImageRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomImageRenderer.h; sourceTree = "<group>"; };
@@ -444,7 +442,6 @@
 				6B980944216573EF0024B79B /* Action.OpenUrl.IconUrl.json */,
 				6B98093F216573EF0024B79B /* Column.VerticalContentAlignment.json */,
 				6B980940216573EF0024B79B /* Container.VerticalContentAlignment.json */,
-				6B980946216573F00024B79B /* MediaSource.json */,
 				6B98093D216573EE0024B79B /* VerticalContentAlignment_ForcedColumn.json */,
 				6B980945216573EF0024B79B /* VerticalContentAlignment_ForcedContainer.json */,
 				6B980943216573EF0024B79B /* VerticalContentAlignment.json */,
@@ -698,7 +695,6 @@
 				6B98094D216573F00024B79B /* VerticalContentAlignment.json in Resources */,
 				F4933CC91F79852C00F6EBFD /* Column.Width.json in Resources */,
 				F4933CE51F79852C00F6EBFD /* TextBlock.DateTimeFormatting.json in Resources */,
-				6B980950216573F00024B79B /* MediaSource.json in Resources */,
 				6B2630E32152CF1500ED9207 /* ColumnSet.json in Resources */,
 				6B2630DF2151A23000ED9207 /* FactSetWrapping.json in Resources */,
 				F4933CFF1F79853B00F6EBFD /* FlightUpdate.json in Resources */,
