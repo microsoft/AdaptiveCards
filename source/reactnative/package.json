@@ -1,21 +1,45 @@
 {
-  "name": "RNAdaptiveCards",
-  "version": "0.0.1",
-  "private": true,
+  "name": "adaptivecards-reactnative",
+  "description": "AdaptiveCards implementation in ReactNative",
+  "version": "1.0.0",
+  "keywords": [
+    "adaptivecards",
+    "cards",
+    "bot",
+    "microsoft cards",
+    "reactnative cards"
+  ],
+  "author": {
+    "name": "Imaginea",
+    "url": "https://www.imaginea.com/"
+  },
+  "private": false,
+  "license": "MIT",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest"
   },
-  "dependencies": {
+  "repository": {
+    "url": "https://github.com/Imaginea/AdaptiveCards/tree/master/source/reactnative",
+    "type": "git"
+  },
+  "files": [
+    "src/components",
+    "src/styles",
+    "src/utils",
+    "src/adaptive-cards.js"
+  ],
+  "main": "./src/adaptive-cards",
+  "devDependencies": {
     "react": "16.6.0-alpha.8af6728",
     "react-native": "0.57.4",
-    "react-native-video": "^4.2.0"
-  },
-  "devDependencies": {
     "babel-jest": "23.6.0",
     "jest": "23.6.0",
     "metro-react-native-babel-preset": "0.48.1",
     "react-test-renderer": "16.6.0-alpha.8af6728"
+  },
+  "dependencies": {
+    "react-native-video": "^4.2.0"
   },
   "jest": {
     "preset": "react-native"
