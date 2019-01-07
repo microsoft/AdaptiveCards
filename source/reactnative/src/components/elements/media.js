@@ -12,8 +12,10 @@ import {
 } from "react-native";
 
 import * as Constants from "../../utils/constants";
+import * as Enums from '../../utils/enums';
 import Video from "react-native-video";
 import ElementWrapper from './element-wrapper'
+import { InputContextConsumer } from '../../utils/context';
 
 export class Media extends React.Component {
     constructor(props) {
@@ -44,11 +46,14 @@ export class Media extends React.Component {
         return source;
     }
 
-    videoError = () => {
+    videoError = (onParseError) => {
         if (this.state.currentSourceIndex < (this.sources.length - 1)) {
             this.setState({
                 currentSourceIndex: this.state.currentSourceIndex + 1
             })
+        } else {
+            let error = { "error": Enums.ValidationError.InvalidPropertyValue, "message": `Not able to play the source` };
+            onParseError(error);
         }
     }
 
@@ -60,24 +65,30 @@ export class Media extends React.Component {
 
     render() {
         return (
-            <ElementWrapper json={this.payload}>
-                <View style={styles.container}>
-                    {
-                        this.sources &&
-                        <Video
-                            source={this.sources[this.state.currentSourceIndex]}
-                            fullscreen={true}
-                            controls={true}
-                            id={this.payload.id ? this.payload.id : "video"}
-                            paused={false}
-                            onError={this.videoError}
-                            onLoad={this.videoLoadSuccess}
-                            style={styles.nativeVideoControls}
-                        />
-                    }
-                    {(!this.state.onLoad && this.payload.poster) && <Image source={{ uri: this.payload.poster }} style={styles.fullScreen}></Image>}
-                </View>
-            </ElementWrapper>
+            <InputContextConsumer>
+                {({ onParseError }) =>
+                    (
+                        <ElementWrapper json={this.payload}>
+                            <View style={styles.container}>
+                                {
+                                    this.sources &&
+                                    <Video
+                                        source={this.sources[this.state.currentSourceIndex]}
+                                        fullscreen={true}
+                                        controls={true}
+                                        id={this.payload.id ? this.payload.id : "video"}
+                                        paused={false}
+                                        onError={() => { this.videoError(onParseError) }}
+                                        onLoad={this.videoLoadSuccess}
+                                        style={styles.nativeVideoControls}
+                                    />
+                                }
+                                {(!this.state.onLoad && this.payload.poster) && <Image source={{ uri: this.payload.poster }} style={styles.fullScreen}></Image>}
+                            </View>
+                        </ElementWrapper>
+                    )
+                }
+            </InputContextConsumer>
         );
     }
 }
