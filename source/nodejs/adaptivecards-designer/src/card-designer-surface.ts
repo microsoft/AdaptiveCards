@@ -1,6 +1,5 @@
 import * as Adaptive from "adaptivecards";
 import * as Controls from "adaptivecards-controls";
-import * as Outlook from "./containers/outlook-container";
 import { TreeItem } from "./treeitem";
 import { DraggableElement } from "./draggable-element";
 import { Rect, IPoint } from "./miscellaneous";
@@ -127,8 +126,6 @@ export class ActionPeerRegistry extends DesignerPeerRegistry<ActionType, ActionP
         this.registerPeer(Adaptive.SubmitAction, DesignerPeers.SubmitActionPeer, DesignerPeerCategory.Actions, "acd-icon-actionSubmit");
         this.registerPeer(Adaptive.OpenUrlAction, DesignerPeers.OpenUrlActionPeer, DesignerPeerCategory.Actions, "acd-icon-actionOpenUrl");
         this.registerPeer(Adaptive.ShowCardAction, DesignerPeers.ShowCardActionPeer, DesignerPeerCategory.Actions, "acd-icon-actionShowCard");
-
-        this.registerPeer(Outlook.ToggleVisibilityAction, DesignerPeers.ActionPeer, DesignerPeerCategory.Actions, "acd-icon-actionToggleVisibility");
     }
 
     createPeerInstance(designerSurface: CardDesignerSurface, parent: DesignerPeers.DesignerPeer, action: Adaptive.Action): DesignerPeers.ActionPeer {

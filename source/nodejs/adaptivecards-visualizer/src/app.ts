@@ -170,15 +170,16 @@ function hostContainerPickerChanged() {
 function setupContainerPicker() {
     hostContainerPicker = <HTMLSelectElement>document.getElementById("hostContainerPicker");
 
-    hostContainerOptions.push(new HostContainerOption("Bot Framework Other Channels (Image render)", new BotFrameworkImageContainer(400, "css/bf.css")));
     hostContainerOptions.push(new HostContainerOption("Bot Framework WebChat", new WebChatContainer("css/webchat.css")));
     hostContainerOptions.push(new HostContainerOption("Cortana Skills", new CortanaContainer(true, "css/cortana.css")));
     hostContainerOptions.push(new HostContainerOption("Microsoft Teams", new TeamsContainer("css/teams.css")));
     hostContainerOptions.push(new HostContainerOption("Outlook Actionable Messages", new OutlookContainer("css/outlook.css")));
     hostContainerOptions.push(new HostContainerOption("Windows Timeline", new TimelineContainer(320, 176, "css/timeline.css")));
-    hostContainerOptions.push(new HostContainerOption("Skype (Preview)", new SkypeContainer(350, "css/skype.css")));
+    hostContainerOptions.push(new HostContainerOption("Bot Framework Other Channels (Image render)", new BotFrameworkImageContainer(400, "css/bf.css")));
+	hostContainerOptions.push(new HostContainerOption("Skype (Preview)", new SkypeContainer(350, "css/skype.css")));
     hostContainerOptions.push(new HostContainerOption("Windows Notifications (Preview)", new ToastContainer(362, "css/toast.css")));
-    // hostContainerOptions.push(//     new HostContainerOption(//         "All at once", //         new BotFrameworkImageContainer(400, "css/bf.css")));
+
+	// hostContainerOptions.push(//     new HostContainerOption(//         "All at once", //         new BotFrameworkImageContainer(400, "css/bf.css")));
 
     hostContainerPicker.addEventListener("change", hostContainerPickerChanged);
 
@@ -461,6 +462,6 @@ function monacoEditorLoaded() {
     }
 }
 
-window.onload = () => {
+window.onload = function() {
     loadMonacoEditor(adaptiveCardSchema, monacoEditorLoaded);
 };

@@ -13,7 +13,7 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveMedia* media);
 
         // IAdaptiveMediaEventArgs
-        IFACEMETHODIMP get_Media(_Outptr_ ABI::AdaptiveNamespace::IAdaptiveMedia** media);
+        IFACEMETHODIMP get_Media(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveMedia** media);
 
     private:
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveMedia> m_media;

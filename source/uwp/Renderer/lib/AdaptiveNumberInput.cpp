@@ -21,8 +21,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveNumberInput::RuntimeClassInitialize(
-        const std::shared_ptr<AdaptiveSharedNamespace::NumberInput>& sharedNumberInput) try
+    HRESULT AdaptiveNumberInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::NumberInput>& sharedNumberInput) try
     {
         if (sharedNumberInput == nullptr)
         {
@@ -39,53 +38,50 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveNumberInput::get_Placeholder(HSTRING* placeholder)
+    HRESULT AdaptiveNumberInput::get_Placeholder(_Outptr_ HSTRING* placeholder)
     {
         return m_placeholder.CopyTo(placeholder);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveNumberInput::put_Placeholder(HSTRING placeholder)
-    {
-        return m_placeholder.Set(placeholder);
-    }
+    HRESULT AdaptiveNumberInput::put_Placeholder(_In_ HSTRING placeholder) { return m_placeholder.Set(placeholder); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveNumberInput::get_Value(INT32* value)
+    HRESULT AdaptiveNumberInput::get_Value(_Out_ INT32* value)
     {
         *value = m_value;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveNumberInput::put_Value(INT32 value)
+    HRESULT AdaptiveNumberInput::put_Value(INT32 value)
     {
         m_value = value;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveNumberInput::get_Max(INT32* max)
+    HRESULT AdaptiveNumberInput::get_Max(_Out_ INT32* max)
     {
         *max = m_max;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveNumberInput::put_Max(INT32 max)
+    HRESULT AdaptiveNumberInput::put_Max(INT32 max)
     {
         m_max = max;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveNumberInput::get_Min(INT32* min)
+    HRESULT AdaptiveNumberInput::get_Min(_Out_ INT32* min)
     {
         *min = m_min;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveNumberInput::put_Min(INT32 min)
+    HRESULT AdaptiveNumberInput::put_Min(INT32 min)
     {
         m_min = min;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveNumberInput::get_ElementType(ElementType* elementType)
+    HRESULT AdaptiveNumberInput::get_ElementType(_Out_ ElementType* elementType)
     {
         *elementType = ElementType::NumberInput;
         return S_OK;

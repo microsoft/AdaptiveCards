@@ -8,14 +8,15 @@
 using namespace AdaptiveSharedNamespace;
 
 BaseCardElement::BaseCardElement(CardElementType type, Spacing spacing, bool separator, HeightType height) :
-    m_type(type), m_spacing(spacing), m_typeString(CardElementTypeToString(type)), m_separator(separator), m_height(height)
+    m_type(type), m_spacing(spacing), m_typeString(CardElementTypeToString(type)), m_separator(separator),
+    m_height(height), m_isVisible(true)
 {
     PopulateKnownPropertiesSet();
 }
 
 BaseCardElement::BaseCardElement(CardElementType type) :
     m_type(type), m_spacing(Spacing::Default), m_typeString(CardElementTypeToString(type)), m_separator(false),
-    m_height(HeightType::Auto)
+    m_height(HeightType::Auto), m_isVisible(true)
 {
     PopulateKnownPropertiesSet();
 }
@@ -25,7 +26,8 @@ void BaseCardElement::PopulateKnownPropertiesSet()
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Spacing),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Separator),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height)});
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsVisible)});
 }
 
 std::string BaseCardElement::GetElementTypeString() const
@@ -78,6 +80,16 @@ void BaseCardElement::SetId(const std::string& value)
     m_id = value;
 }
 
+bool BaseCardElement::GetIsVisible() const
+{
+    return m_isVisible;
+}
+
+void BaseCardElement::SetIsVisible(const bool value)
+{
+    m_isVisible = value;
+}
+
 const CardElementType BaseCardElement::GetElementType() const
 {
     return m_type;
@@ -112,6 +124,11 @@ Json::Value BaseCardElement::SerializeToJsonValue() const
     if (!m_id.empty())
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id)] = m_id;
+    }
+
+    if (!m_isVisible)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsVisible)] = false;
     }
 
     return root;

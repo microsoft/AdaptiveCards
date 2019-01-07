@@ -19,7 +19,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveDateInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::DateInput>& sharedDateInput) try
+    HRESULT AdaptiveDateInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::DateInput>& sharedDateInput) try
     {
         if (sharedDateInput == nullptr)
         {
@@ -36,29 +36,26 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveDateInput::get_Max(HSTRING* max) { return m_max.CopyTo(max); }
+    HRESULT AdaptiveDateInput::get_Max(_Outptr_ HSTRING* max) { return m_max.CopyTo(max); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveDateInput::put_Max(HSTRING max) { return m_max.Set(max); }
+    HRESULT AdaptiveDateInput::put_Max(_In_ HSTRING max) { return m_max.Set(max); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveDateInput::get_Min(HSTRING* min) { return m_min.CopyTo(min); }
+    HRESULT AdaptiveDateInput::get_Min(_Outptr_ HSTRING* min) { return m_min.CopyTo(min); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveDateInput::put_Min(HSTRING min) { return m_min.Set(min); }
+    HRESULT AdaptiveDateInput::put_Min(_In_ HSTRING min) { return m_min.Set(min); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveDateInput::get_Placeholder(HSTRING* placeholder)
+    HRESULT AdaptiveDateInput::get_Placeholder(_Outptr_ HSTRING* placeholder)
     {
         return m_placeholder.CopyTo(placeholder);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveDateInput::put_Placeholder(HSTRING placeholder)
-    {
-        return m_placeholder.Set(placeholder);
-    }
+    HRESULT AdaptiveDateInput::put_Placeholder(_In_ HSTRING placeholder) { return m_placeholder.Set(placeholder); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveDateInput::get_Value(HSTRING* value) { return m_value.CopyTo(value); }
+    HRESULT AdaptiveDateInput::get_Value(_Outptr_ HSTRING* value) { return m_value.CopyTo(value); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveDateInput::put_Value(HSTRING value) { return m_value.Set(value); }
+    HRESULT AdaptiveDateInput::put_Value(_In_ HSTRING value) { return m_value.Set(value); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveDateInput::get_ElementType(ElementType* elementType)
+    HRESULT AdaptiveDateInput::get_ElementType(_Out_ ElementType* elementType)
     {
         *elementType = ElementType::DateInput;
         return S_OK;

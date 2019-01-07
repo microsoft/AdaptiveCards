@@ -15,10 +15,10 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize() noexcept;
 
         // IAdaptiveInputs
-        IFACEMETHODIMP AsJson(_Out_ ABI::Windows::Data::Json::IJsonObject** value);
+        IFACEMETHODIMP AsJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** value);
         IFACEMETHODIMP AsValueSet(_COM_Outptr_ ABI::Windows::Foundation::Collections::IPropertySet** value);
 
-        HRESULT AddInputValue(ABI::AdaptiveNamespace::IAdaptiveInputValue* inputValue);
+        HRESULT AddInputValue(_In_ ABI::AdaptiveNamespace::IAdaptiveInputValue* inputValue);
 
     private:
         std::string GetInputItemsAsJsonString();

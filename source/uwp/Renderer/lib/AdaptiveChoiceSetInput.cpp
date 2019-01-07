@@ -27,8 +27,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInput::RuntimeClassInitialize(
-        const std::shared_ptr<AdaptiveSharedNamespace::ChoiceSetInput>& sharedChoiceSetInput) try
+    HRESULT AdaptiveChoiceSetInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ChoiceSetInput>& sharedChoiceSetInput) try
     {
         if (sharedChoiceSetInput == nullptr)
         {
@@ -47,60 +46,60 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInput::get_IsMultiSelect(boolean* isMultiSelect)
+    HRESULT AdaptiveChoiceSetInput::get_IsMultiSelect(_Out_ boolean* isMultiSelect)
     {
         *isMultiSelect = m_isMultiSelect;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInput::put_Wrap(boolean wrap)
-    {
-        m_wrap = wrap;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInput::get_Wrap(boolean* wrap)
-    {
-        *wrap= m_wrap;
-        return S_OK;
-    }
-
-    _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInput::put_IsMultiSelect(boolean isMultiSelect)
+    HRESULT AdaptiveChoiceSetInput::put_IsMultiSelect(boolean isMultiSelect)
     {
         m_isMultiSelect = isMultiSelect;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInput::get_ChoiceSetStyle(ABI::AdaptiveNamespace::ChoiceSetStyle* choiceSetStyle)
+    HRESULT AdaptiveChoiceSetInput::get_Wrap(_Out_ boolean* wrap)
+    {
+        *wrap = m_wrap;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveChoiceSetInput::put_Wrap(boolean wrap)
+    {
+        m_wrap = wrap;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveChoiceSetInput::get_ChoiceSetStyle(_Out_ ABI::AdaptiveNamespace::ChoiceSetStyle* choiceSetStyle)
     {
         *choiceSetStyle = m_choiceSetStyle;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInput::put_ChoiceSetStyle(ABI::AdaptiveNamespace::ChoiceSetStyle choiceSetStyle)
+    HRESULT AdaptiveChoiceSetInput::put_ChoiceSetStyle(ABI::AdaptiveNamespace::ChoiceSetStyle choiceSetStyle)
     {
         m_choiceSetStyle = choiceSetStyle;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInput::get_Choices(IVector<IAdaptiveChoiceInput*>** choices)
+    HRESULT AdaptiveChoiceSetInput::get_Choices(_COM_Outptr_ IVector<IAdaptiveChoiceInput*>** choices)
     {
         return m_choices.CopyTo(choices);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInput::get_Value(HSTRING* value)
+    HRESULT AdaptiveChoiceSetInput::get_Value(_Outptr_ HSTRING* value)
     {
         m_value.CopyTo(value);
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInput::put_Value(HSTRING value)
+    HRESULT AdaptiveChoiceSetInput::put_Value(_In_ HSTRING value)
     {
         m_value.Set(value);
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveChoiceSetInput::get_ElementType(ElementType* elementType)
+    HRESULT AdaptiveChoiceSetInput::get_ElementType(_Out_ ElementType* elementType)
     {
         *elementType = ElementType::ChoiceSetInput;
         return S_OK;
@@ -116,6 +115,7 @@ namespace AdaptiveNamespace
         choiceSet->SetChoiceSetStyle(static_cast<AdaptiveSharedNamespace::ChoiceSetStyle>(m_choiceSetStyle));
         choiceSet->SetIsMultiSelect(m_isMultiSelect);
         choiceSet->SetValue(HStringToUTF8(m_value.Get()));
+        choiceSet->SetWrap(m_wrap);
 
         RETURN_IF_FAILED(GenerateSharedChoices(m_choices.Get(), choiceSet->GetChoices()));
 
@@ -123,5 +123,4 @@ namespace AdaptiveNamespace
         return S_OK;
     }
     CATCH_RETURN;
-
 }
