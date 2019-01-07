@@ -32,7 +32,7 @@ export const PlatformIOS = 'ios';
 export const LightGreyColor = 'lightgrey';
 export const EmphasisColor = '#dcdcdc';
 export const WhiteColor = 'white';
-export const blackColor = 'black';
+export const BlackColor = 'black';
 
 export const Emphasis = 'emphasis';
 

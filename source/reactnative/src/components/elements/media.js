@@ -27,10 +27,14 @@ export class Media extends React.Component {
     }
 
     getMediaSources = (sources) => {
-        sources.forEach(source => {
-            this.addUriAttribute(source)
-        })
-        return sources;
+        if (this.payload.sources.length > 0) {
+            sources.forEach(source => {
+                this.addUriAttribute(source)
+            })
+            return sources;
+        } else {
+            return null;
+        }
     }
 
     addUriAttribute = (source) => {
@@ -58,16 +62,19 @@ export class Media extends React.Component {
         return (
             <ElementWrapper json={this.payload}>
                 <View style={styles.container}>
-                    <Video
-                        source={this.sources[this.state.currentSourceIndex]}
-                        fullscreen={true}
-                        controls={true}
-                        id={this.payload.id ? this.payload.id : "video"}
-                        paused={false}
-                        onError={this.videoError}
-                        onLoad={this.videoLoadSuccess}
-                        style={styles.nativeVideoControls}
-                    />
+                    {
+                        this.sources &&
+                        <Video
+                            source={this.sources[this.state.currentSourceIndex]}
+                            fullscreen={true}
+                            controls={true}
+                            id={this.payload.id ? this.payload.id : "video"}
+                            paused={false}
+                            onError={this.videoError}
+                            onLoad={this.videoLoadSuccess}
+                            style={styles.nativeVideoControls}
+                        />
+                    }
                     {(!this.state.onLoad && this.payload.poster) && <Image source={{ uri: this.payload.poster }} style={styles.fullScreen}></Image>}
                 </View>
             </ElementWrapper>
