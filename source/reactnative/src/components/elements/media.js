@@ -27,7 +27,7 @@ export class Media extends React.Component {
     }
 
     getMediaSources = (sources) => {
-        if (this.payload.sources.length > 0) {
+        if (this.payload.sources && this.payload.sources.length > 0) {
             sources.forEach(source => {
                 this.addUriAttribute(source)
             })
