@@ -78,7 +78,6 @@ public class TextInputRenderer extends BaseCardElementRenderer
         EditText editText = new EditText(context);
         textInputHandler.setView(editText);
         editText.setTag(textInputHandler);
-        editText.setTextColor(Color.BLACK);
         renderedCard.registerInputHandler(textInputHandler);
 
         if (!TextUtils.isEmpty(value))
