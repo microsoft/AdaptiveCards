@@ -10,7 +10,7 @@ namespace AdaptiveNamespace
     {
     public:
         DateTimeParser(const std::string& language);
-        std::string GenerateString(DateTimePreparser text);
+        std::string GenerateString(const DateTimePreparser& text);
 
     private:
         std::string m_languageString;
