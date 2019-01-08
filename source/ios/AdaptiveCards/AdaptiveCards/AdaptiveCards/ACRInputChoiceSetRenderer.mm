@@ -12,6 +12,7 @@
 #import "ACRChoiceSetViewDataSourceCompactStyle.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "Util.h"
 
 @implementation ACRInputChoiceSetRenderer
 
@@ -75,9 +76,8 @@
         [viewGroup addArrangedSubview:choiceSetView];
     }
 
-    choiceSetView.hidden = !(elem->GetIsVisible());
-    NSString *hashkey = [NSString stringWithCString:elem->GetId().c_str() encoding:NSUTF8StringEncoding];
-    choiceSetView.tag = hashkey.hash;
+    configVisibility(choiceSetView, elem);
+
     return choiceSetView;
 }
 

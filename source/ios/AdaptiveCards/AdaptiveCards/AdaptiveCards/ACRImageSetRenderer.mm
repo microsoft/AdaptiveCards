@@ -12,6 +12,7 @@
 #import "ACOBaseCardElementPrivate.h"
 #import "ImageSet.h"
 #import "SharedAdaptiveCard.h"
+#import "Util.h"
 
 using namespace AdaptiveCards;
 
@@ -62,9 +63,8 @@ using namespace AdaptiveCards;
                                    constant:0]];
     [view setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
 
-    view.hidden = !(elem->GetIsVisible());
-    NSString *hashkey = [NSString stringWithCString:elem->GetId().c_str() encoding:NSUTF8StringEncoding];
-    view.tag = hashkey.hash;
+    configVisibility(view, elem);
+
     return view;
 }
 

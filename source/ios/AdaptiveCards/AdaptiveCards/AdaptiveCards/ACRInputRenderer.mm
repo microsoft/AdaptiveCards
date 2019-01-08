@@ -22,6 +22,7 @@
 #import "ACRShowCardTarget.h"
 #import "ACRActionOpenURLRenderer.h"
 #import "ACRUIImageView.h"
+#import "Util.h"
 
 @implementation ACRInputRenderer
 
@@ -234,9 +235,8 @@
         [inputs addObject:inputview];
     }
 
-    inputview.hidden = !(elem->GetIsVisible());
-    NSString *hashkey = [NSString stringWithCString:elem->GetId().c_str() encoding:NSUTF8StringEncoding];
-    inputview.tag = hashkey.hash;
+    configVisibility(inputview, elem);
+
     return inputview;
 }
 

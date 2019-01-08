@@ -11,6 +11,7 @@
 #import "NumberInput.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "Util.h"
 
 @implementation ACRInputNumberRenderer
 
@@ -76,9 +77,8 @@
 
     [inputs addObject:numInput];
 
-    numInput.hidden = !(elem->GetIsVisible());
-    NSString *hashkey = [NSString stringWithCString:elem->GetId().c_str() encoding:NSUTF8StringEncoding];
-    numInput.tag = hashkey.hash;
+    configVisibility(numInput, elem);
+
     return numInput;
 }
 

@@ -18,6 +18,7 @@
 #import "Column.h"
 #import "ACRColumnRenderer.h"
 #import "Enums.h"
+#import "Util.h"
 
 @implementation ACRColumnSetRenderer
 
@@ -143,9 +144,7 @@
                                                                   recipientView:columnSetView
                                                                   actionElement:selectAction
                                                                      hostConfig:acoConfig];
-    columnSetView.hidden = !(elem->GetIsVisible());
-    NSString *hashkey = [NSString stringWithCString:elem->GetId().c_str() encoding:NSUTF8StringEncoding];
-    columnSetView.tag = hashkey.hash;
+    configVisibility(columnSetView, elem);
 
     return columnSetView;
 }

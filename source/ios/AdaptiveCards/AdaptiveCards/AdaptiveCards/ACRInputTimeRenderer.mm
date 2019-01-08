@@ -9,6 +9,7 @@
 #import "ACRDateTextField.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "Util.h"
 
 @implementation ACRInputTimeRenderer
 
@@ -54,9 +55,8 @@
 
     [inputs addObject:field];
 
-    renderedview.hidden = !(elem->GetIsVisible());
-    NSString *hashkey = [NSString stringWithCString:elem->GetId().c_str() encoding:NSUTF8StringEncoding];
-    renderedview.tag = hashkey.hash;
+    configVisibility(renderedview, elem);
+
     return renderedview;
 }
 

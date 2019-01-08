@@ -13,6 +13,7 @@
 #import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "Util.h"
 
 @implementation ACRColumnRenderer
 
@@ -83,9 +84,7 @@
                                       constant:0].active = YES;
     }
 
-    column.hidden = !(elem->GetIsVisible());
-    NSString *hashkey = [NSString stringWithCString:elem->GetId().c_str() encoding:NSUTF8StringEncoding];
-    column.tag = hashkey.hash;
+    configVisibility(column, elem);
 
     return column;
 }

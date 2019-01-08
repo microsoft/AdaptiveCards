@@ -16,6 +16,7 @@
 #import "ACRUILabel.h"
 #import "DateTimePreparsedToken.h"
 #import "DateTimePreparser.h"
+#import "Util.h"
 
 @implementation ACRTextBlockRenderer
 
@@ -129,9 +130,7 @@
     [lab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 
-    wrappingview.hidden = !(elem->GetIsVisible());
-    NSString *hashkey = [NSString stringWithCString:elem->GetId().c_str() encoding:NSUTF8StringEncoding];
-    wrappingview.tag = hashkey.hash;
+    configVisibility(wrappingview, elem);
 
     return wrappingview;
 }

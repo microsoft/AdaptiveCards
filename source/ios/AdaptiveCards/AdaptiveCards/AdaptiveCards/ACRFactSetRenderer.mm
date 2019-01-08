@@ -14,6 +14,7 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACRUILabel.h"
+#import "Util.h"
 
 @implementation ACRFactSetRenderer
 
@@ -163,9 +164,8 @@
 
     [viewGroup addArrangedSubview:factSetWrapperView];
 
-    factSetWrapperView.hidden = !(elem->GetIsVisible());
-    NSString *hashkey = [NSString stringWithCString:elem->GetId().c_str() encoding:NSUTF8StringEncoding];
-    factSetWrapperView.tag = hashkey.hash;
+    configVisibility(factSetWrapperView, elem);
+
     return factSetWrapperView;
 }
 @end

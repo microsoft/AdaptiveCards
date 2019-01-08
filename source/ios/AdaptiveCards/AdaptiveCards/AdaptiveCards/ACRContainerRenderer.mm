@@ -13,6 +13,7 @@
 #import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "Util.h"
 
 @implementation ACRContainerRenderer
 
@@ -77,9 +78,8 @@
                                                                   actionElement:selectAction
                                                                      hostConfig:acoConfig];
 
-    container.hidden = !(elem->GetIsVisible());
-    NSString *hashkey = [NSString stringWithCString:elem->GetId().c_str() encoding:NSUTF8StringEncoding];
-    container.tag = hashkey.hash;
+    configVisibility(container, elem);
+
     return viewGroup;
 }
 
