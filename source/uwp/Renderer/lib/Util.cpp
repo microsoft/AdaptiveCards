@@ -730,15 +730,28 @@ HRESULT GetBackgroundColorFromStyle(ABI::AdaptiveNamespace::ContainerStyle style
     RETURN_IF_FAILED(hostConfig->get_ContainerStyles(&containerStyles));
 
     ComPtr<ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition> styleDefinition;
-    if (style == ABI::AdaptiveNamespace::ContainerStyle::Default)
+    switch (style)
     {
-        RETURN_IF_FAILED(containerStyles->get_Default(&styleDefinition));
-    }
-    else
-    {
+    case ABI::AdaptiveNamespace::ContainerStyle::Accent:
+        RETURN_IF_FAILED(containerStyles->get_Accent(&styleDefinition));
+        break;
+    case ABI::AdaptiveNamespace::ContainerStyle::Attention:
+        RETURN_IF_FAILED(containerStyles->get_Attention(&styleDefinition));
+        break;
+    case ABI::AdaptiveNamespace::ContainerStyle::Emphasis:
         RETURN_IF_FAILED(containerStyles->get_Emphasis(&styleDefinition));
+        break;
+    case ABI::AdaptiveNamespace::ContainerStyle::Good:
+        RETURN_IF_FAILED(containerStyles->get_Good(&styleDefinition));
+        break;
+    case ABI::AdaptiveNamespace::ContainerStyle::Warning:
+        RETURN_IF_FAILED(containerStyles->get_Warning(&styleDefinition));
+        break;
+    case ABI::AdaptiveNamespace::ContainerStyle::Default:
+    default:
+        RETURN_IF_FAILED(containerStyles->get_Default(&styleDefinition));
+        break;
     }
-
     RETURN_IF_FAILED(styleDefinition->get_BackgroundColor(backgroundColor));
 
     return S_OK;

@@ -185,6 +185,10 @@ namespace AdaptiveSharedNamespace
                                                         {"#FFFFD700", "#B2FFD700"}, // warning
                                                         {"#FF8B0000", "#B28B0000"}  // attention
                                                     }};
+        ContainerStyleDefinition goodPalette;
+        ContainerStyleDefinition attentionPalette;
+        ContainerStyleDefinition warningPalette;
+        ContainerStyleDefinition accentPalette;
 
         static ContainerStylesDefinition Deserialize(const Json::Value& json, const ContainerStylesDefinition& defaultValue);
     };
