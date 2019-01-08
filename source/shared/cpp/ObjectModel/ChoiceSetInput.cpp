@@ -6,8 +6,8 @@
 using namespace AdaptiveSharedNamespace;
 
 ChoiceSetInput::ChoiceSetInput() :
-    BaseInputElement(CardElementType::ChoiceSetInput), m_isMultiSelect(false),
-    m_choiceSetStyle(ChoiceSetStyle::Compact), m_wrap(false)
+    BaseInputElement(CardElementType::ChoiceSetInput), m_wrap(false), m_isMultiSelect(false),
+    m_choiceSetStyle(ChoiceSetStyle::Compact)
 {
     PopulateKnownPropertiesSet();
 }
