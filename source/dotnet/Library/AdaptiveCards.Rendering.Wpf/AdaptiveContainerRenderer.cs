@@ -15,12 +15,29 @@ namespace AdaptiveCards.Rendering.Wpf
             if (container.Style != null)
             {
                 // Apply background color
-                var containerStyle = context.Config.ContainerStyles.Default;
-                if (container.Style == AdaptiveContainerStyle.Emphasis)
+                ContainerStyleConfig containerStyle;
+                switch (container.Style)
                 {
-                    containerStyle = context.Config.ContainerStyles.Emphasis;
+                    case AdaptiveContainerStyle.Accent:
+                        containerStyle = context.Config.ContainerStyles.Accent;
+                        break;
+                    case AdaptiveContainerStyle.Warning:
+                        containerStyle = context.Config.ContainerStyles.Warning;
+                        break;
+                    case AdaptiveContainerStyle.Attention:
+                        containerStyle = context.Config.ContainerStyles.Attention;
+                        break;
+                    case AdaptiveContainerStyle.Good:
+                        containerStyle = context.Config.ContainerStyles.Good;
+                        break;
+                    case AdaptiveContainerStyle.Emphasis:
+                        containerStyle = context.Config.ContainerStyles.Emphasis;
+                        break;
+                    case AdaptiveContainerStyle.Default:
+                    default:
+                        containerStyle = context.Config.ContainerStyles.Default;
+                        break;
                 }
-
                 uiContainer.SetBackgroundColor(containerStyle.BackgroundColor, context);
             }
 
