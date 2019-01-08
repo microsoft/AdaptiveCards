@@ -1,0 +1,35 @@
+{
+	"name": "root",
+	"private": true,
+	"scripts": {
+		"start:designer": "lerna run start --scope=adaptivecards-designer --stream",
+		"start:visualizer": "lerna run start --scope=adaptivecards-visualizer --stream",
+		"start:designer-app": "lerna run start --scope=adaptivecards-designer-app --stream",
+		"start:all": "lerna run --parallel watch && lerna run --paralel start"
+	},
+	"devDependencies": {
+		"@types/jest": "^23.3.10",
+		"@types/node": "^10.12.15",
+		"clean-webpack-plugin": "^1.0.0",
+		"copy-webpack-plugin": "^4.6.0",
+		"css-loader": "^2.0.1",
+		"dts-generator": "^2.1.0",
+		"html-webpack-plugin": "^3.2.0",
+		"jest": "^23.6.0",
+		"json-loader": "^0.5.7",
+		"lerna": "^3.4.3",
+		"lerna-update-wizard": "^0.11.0",
+		"mini-css-extract-plugin": "^0.5.0",
+		"monaco-editor-webpack-plugin": "^1.7.0",
+		"rimraf": "^2.6.2",
+		"style-loader": "^0.23.1",
+		"ts-jest": "^23.10.5",
+		"ts-loader": "^5.3.1",
+		"tslint": "^5.12.0",
+		"typescript": "^3.2.2",
+		"typings-for-css-modules-loader": "^1.7.0",
+		"webpack": "^4.27.1",
+		"webpack-cli": "^3.1.2",
+		"webpack-dev-server": "^3.1.10"
+	}
+}

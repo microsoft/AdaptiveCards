@@ -8,6 +8,7 @@
 #import "ACRMediaTarget.h"
 #import "ACRAVPlayerViewHoldingUIView.h"
 #import "ACOHostConfigPrivate.h"
+#import "ACRContentHoldingUIView.h"
 
 // tags for easy accessing of subviews
 const int playIconTag = 0x49434F4E;
@@ -92,38 +93,74 @@ const int posterTag = 0x504F5354;
                     [_view.mediaDelegate didFetchMediaViewController:self->_mediaViewController card:nil];
 
                     self->_mediaViewController.videoGravity = AVLayerVideoGravityResizeAspectFill;
-                    CGRect frame = self->_containingview.frame;
                     // TODO AVPlayerViewController has some constraints conflicts internally; need to fix, so the warning will be turned off, but
                     // system is correctly breaking the ties.
                     UIView *mediaView = self->_mediaViewController.view;
-                    mediaView.frame = frame;
                     mediaView.translatesAutoresizingMaskIntoConstraints = NO;
-                    [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:frame.size.width].active = YES;
-                    [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:frame.size.height].active = YES;
 
-                    ACRAVPlayerViewHoldingUIView *poster = [self->_containingview viewWithTag:posterTag];
-                    poster.hidePlayIcon = YES;
-                    [poster setNeedsLayout];
+                    UIImageView* poster = [self->_containingview viewWithTag:posterTag];
 
                     UIView *playIconView = [poster viewWithTag:playIconTag];
                     if(playIconView){
                         [playIconView removeFromSuperview];
                     }
+
+                    ((ACRContentHoldingUIView *)self->_containingview).hidePlayIcon = YES;
+                    [self->_containingview setNeedsLayout];
+                    [self->_containingview addSubview:mediaView];
+
                     // poster and plyaIconView are removed from their superviews
                     [poster removeFromSuperview];
 
-                    [self->_containingview addSubview:mediaView];
                     UIView *overlayview = self->_mediaViewController.contentOverlayView;
-
-                    [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
-                    [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
-
                     overlayview.backgroundColor = UIColor.blackColor;
-                    // overlayview sit between AVPLayverViewController view's control view and content view, and here we add the poster.
                     [overlayview addSubview:poster];
-                    [overlayview bringSubviewToFront:poster];
 
-                    [NSLayoutConstraint activateConstraints:@[[poster.topAnchor constraintEqualToAnchor:overlayview.topAnchor], [poster.bottomAnchor constraintEqualToAnchor:overlayview.bottomAnchor], [poster.leadingAnchor constraintEqualToAnchor:overlayview.leadingAnchor], [poster.trailingAnchor constraintEqualToAnchor:overlayview.trailingAnchor]]];
+                    // overlayview sit between AVPLayverViewController view's control view and content view, and here we add the poster.
+                    CGFloat heightToWidthRatio = 0.0f;
+                    UIImage *image = poster.image;
+
+                    if(!image) {
+                        heightToWidthRatio = .75;
+                    } else {
+                        poster.frame = CGRectMake(0, 0, image.size.width, image.size.height);
+                        if(image.size.width > 0) {
+                            heightToWidthRatio = image.size.height / image.size.width;
+                        }
+                    }
+
+                    _containingview.translatesAutoresizingMaskIntoConstraints = NO;
+
+                    [NSLayoutConstraint constraintWithItem:mediaView
+                                                 attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual
+                                                    toItem:_containingview attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
+
+                    [NSLayoutConstraint constraintWithItem:mediaView
+                                                 attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual
+                                                    toItem:_containingview attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
+
+                    [NSLayoutConstraint constraintWithItem:mediaView
+                        attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual
+                           toItem:_containingview attribute:NSLayoutAttributeWidth
+                       multiplier:1.0 constant:0].active = YES;
+
+                    [NSLayoutConstraint constraintWithItem:mediaView
+                        attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual
+                           toItem:_containingview attribute:NSLayoutAttributeHeight
+                       multiplier:1.0 constant:0].active = YES;
+
+                    [NSLayoutConstraint constraintWithItem:_containingview
+                                                 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual
+                                                    toItem:_containingview attribute:NSLayoutAttributeWidth multiplier:heightToWidthRatio constant:0].active = YES;
+
+                    [NSLayoutConstraint constraintWithItem:poster
+                                                 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationLessThanOrEqual
+                                                    toItem:overlayview attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0].active = YES;
+
+                    [NSLayoutConstraint constraintWithItem:poster
+                                                 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual
+                                                    toItem:overlayview attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0].active = YES;
+                    [_containingview setNeedsLayout];
 
                     [player play];
                     validMediaTypeFound = YES;
@@ -171,8 +208,9 @@ const int posterTag = 0x504F5354;
     [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:frame.size.width].active = YES;
     [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:frame.size.height].active = YES;
 
-    ACRAVPlayerViewHoldingUIView *poster = [self->_containingview viewWithTag:posterTag];
+    UIImageView *poster = [self->_containingview viewWithTag:posterTag];
     poster.hidden = YES;
+    ((ACRContentHoldingUIView *)self->_containingview).hidePlayIcon = YES;
 
     [self->_containingview addSubview:mediaView];
     [NSLayoutConstraint constraintWithItem:mediaView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self->_containingview attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;

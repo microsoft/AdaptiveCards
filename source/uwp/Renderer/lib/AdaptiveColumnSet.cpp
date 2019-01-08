@@ -25,7 +25,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveColumnSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ColumnSet>& sharedColumnSet) try
+    HRESULT AdaptiveColumnSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ColumnSet>& sharedColumnSet) try
     {
         if (sharedColumnSet == nullptr)
         {
@@ -41,23 +41,23 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ IFACEMETHODIMP AdaptiveColumnSet::get_Columns(IVector<IAdaptiveColumn*>** columns)
+    IFACEMETHODIMP AdaptiveColumnSet::get_Columns(_COM_Outptr_ IVector<IAdaptiveColumn*>** columns)
     {
         return m_columns.CopyTo(columns);
     }
 
-    _Use_decl_annotations_ IFACEMETHODIMP AdaptiveColumnSet::get_SelectAction(IAdaptiveActionElement** action)
+    IFACEMETHODIMP AdaptiveColumnSet::get_SelectAction(_COM_Outptr_ IAdaptiveActionElement** action)
     {
         return m_selectAction.CopyTo(action);
     }
 
-    _Use_decl_annotations_ IFACEMETHODIMP AdaptiveColumnSet::put_SelectAction(IAdaptiveActionElement* action)
+    IFACEMETHODIMP AdaptiveColumnSet::put_SelectAction(_In_ IAdaptiveActionElement* action)
     {
         m_selectAction = action;
         return S_OK;
     }
 
-    _Use_decl_annotations_ IFACEMETHODIMP AdaptiveColumnSet::get_ElementType(ElementType* elementType)
+    IFACEMETHODIMP AdaptiveColumnSet::get_ElementType(_Out_ ElementType* elementType)
     {
         *elementType = ElementType::ColumnSet;
         return S_OK;

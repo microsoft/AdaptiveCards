@@ -48,13 +48,14 @@ namespace UWPTestLibrary
                 }
             }
         }
-
-        public static async Task<Tuple<string, string, UIElement, double>> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile, Dictionary<string, IAdaptiveCardResourceResolver> resourceResolvers)
+        
+        public static async Task<RenderedTestResult> RenderCard(FileViewModel cardFile, FileViewModel hostConfigFile, Dictionary<string, IAdaptiveCardResourceResolver> resourceResolvers)
         {
             string error = null;
             string roundTrippedJsonString = null;
             FrameworkElement xaml = null;
             double cardWidth = 400;
+            WeakReference weakRefCard = null;
 
             try
             {
@@ -100,7 +101,10 @@ namespace UWPTestLibrary
                             cardWidth = 310;
                         }
 
-                        xaml = renderer.RenderAdaptiveCard(card).FrameworkElement as FrameworkElement;
+                        RenderedAdaptiveCard renderedCard = renderer.RenderAdaptiveCard(card);
+                        weakRefCard = new WeakReference(renderedCard);
+
+                        xaml = renderedCard.FrameworkElement as FrameworkElement;
 
                         if (xaml == null)
                         {
@@ -134,7 +138,14 @@ namespace UWPTestLibrary
                 error = ex.ToString();
             }
 
-            return new Tuple<string, string, UIElement, double>(error, roundTrippedJsonString, xaml, cardWidth);
+            return new RenderedTestResult
+            {
+                Error = error,
+                RoundTrippedJSON = roundTrippedJsonString,
+                Tree = xaml,
+                CardWidth = cardWidth,
+                WeakCard = weakRefCard
+            };
         }
 
         public static async Task ResultsToFile(

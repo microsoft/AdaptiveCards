@@ -20,7 +20,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextBlock>& sharedTextBlock) try
+    HRESULT AdaptiveTextBlock::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextBlock>& sharedTextBlock) try
     {
         if (sharedTextBlock == nullptr)
         {
@@ -45,117 +45,111 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::get_Text(HSTRING* text) { return m_text.CopyTo(text); }
+    HRESULT AdaptiveTextBlock::get_Text(_Outptr_ HSTRING* text) { return m_text.CopyTo(text); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::put_Text(HSTRING text) { return m_text.Set(text); }
+    HRESULT AdaptiveTextBlock::put_Text(_In_ HSTRING text) { return m_text.Set(text); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::get_Size(ABI::AdaptiveNamespace::TextSize* textSize)
+    HRESULT AdaptiveTextBlock::get_Size(_Out_ ABI::AdaptiveNamespace::TextSize* textSize)
     {
         *textSize = m_textSize;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::put_Size(ABI::AdaptiveNamespace::TextSize textSize)
+    HRESULT AdaptiveTextBlock::put_Size(ABI::AdaptiveNamespace::TextSize textSize)
     {
         m_textSize = textSize;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::get_Weight(ABI::AdaptiveNamespace::TextWeight* textWeight)
+    HRESULT AdaptiveTextBlock::get_Weight(_Out_ ABI::AdaptiveNamespace::TextWeight* textWeight)
     {
         *textWeight = m_textWeight;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::put_Weight(ABI::AdaptiveNamespace::TextWeight textWeight)
+    HRESULT AdaptiveTextBlock::put_Weight(ABI::AdaptiveNamespace::TextWeight textWeight)
     {
         m_textWeight = textWeight;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::get_Color(ABI::AdaptiveNamespace::ForegroundColor* foregroundColor)
+    HRESULT AdaptiveTextBlock::get_Color(_Out_ ABI::AdaptiveNamespace::ForegroundColor* foregroundColor)
     {
         *foregroundColor = m_foregroundColor;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::put_Color(ABI::AdaptiveNamespace::ForegroundColor foregroundColor)
+    HRESULT AdaptiveTextBlock::put_Color(ABI::AdaptiveNamespace::ForegroundColor foregroundColor)
     {
         m_foregroundColor = foregroundColor;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::get_Wrap(boolean* wrap)
+    HRESULT AdaptiveTextBlock::get_Wrap(_Out_ boolean* wrap)
     {
         *wrap = m_wrap;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::put_Wrap(boolean wrap)
+    HRESULT AdaptiveTextBlock::put_Wrap(boolean wrap)
     {
         m_wrap = wrap;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::get_IsSubtle(boolean* isSubtle)
+    HRESULT AdaptiveTextBlock::get_IsSubtle(_Out_ boolean* isSubtle)
     {
         *isSubtle = m_subtle;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::put_IsSubtle(boolean isSubtle)
+    HRESULT AdaptiveTextBlock::put_IsSubtle(boolean isSubtle)
     {
         m_subtle = isSubtle;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::get_MaxLines(UINT32* maxLines)
+    HRESULT AdaptiveTextBlock::get_MaxLines(_Out_ UINT32* maxLines)
     {
         *maxLines = m_maxLines;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::put_MaxLines(UINT32 maxLines)
+    HRESULT AdaptiveTextBlock::put_MaxLines(UINT32 maxLines)
     {
         m_maxLines = maxLines;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::get_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment* alignment)
+    HRESULT AdaptiveTextBlock::get_HorizontalAlignment(_Out_ ABI::AdaptiveNamespace::HAlignment* alignment)
     {
         *alignment = m_horizontalAlignment;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment alignment)
+    HRESULT AdaptiveTextBlock::put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment alignment)
     {
         m_horizontalAlignment = alignment;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::get_Language(HSTRING* language)
-    {
-        return m_language.CopyTo(language);
-    }
+    HRESULT AdaptiveTextBlock::get_Language(_Outptr_ HSTRING* language) { return m_language.CopyTo(language); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::put_Language(HSTRING language)
-    {
-        return m_language.Set(language);
-    }
+    HRESULT AdaptiveTextBlock::put_Language(_In_ HSTRING language) { return m_language.Set(language); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::get_FontStyle(ABI::AdaptiveNamespace::FontStyle* fontStyle)
+    HRESULT AdaptiveTextBlock::get_FontStyle(_Out_ ABI::AdaptiveNamespace::FontStyle* fontStyle)
     {
         *fontStyle = m_fontStyle;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::put_FontStyle(ABI::AdaptiveNamespace::FontStyle fontStyle)
+    HRESULT AdaptiveTextBlock::put_FontStyle(ABI::AdaptiveNamespace::FontStyle fontStyle)
     {
         m_fontStyle = fontStyle;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextBlock::get_ElementType(ElementType* elementType)
+    HRESULT AdaptiveTextBlock::get_ElementType(_Out_ ElementType* elementType)
     {
         *elementType = ElementType::TextBlock;
         return S_OK;

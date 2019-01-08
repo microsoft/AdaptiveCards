@@ -8,7 +8,7 @@ namespace AdaptiveNamespace
     class CustomActionWrapper : public AdaptiveSharedNamespace::BaseActionElement
     {
     public:
-        CustomActionWrapper(ABI::AdaptiveNamespace::IAdaptiveActionElement* actionElement) :
+        CustomActionWrapper(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* actionElement) :
             AdaptiveSharedNamespace::BaseActionElement(AdaptiveSharedNamespace::ActionType::Custom), m_actionElement(actionElement)
         {
         }
@@ -21,7 +21,7 @@ namespace AdaptiveNamespace
 
         virtual Json::Value SerializeToJsonValue() const override;
 
-        HRESULT GetWrappedElement(ABI::AdaptiveNamespace::IAdaptiveActionElement** actionElement);
+        HRESULT GetWrappedElement(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** actionElement);
 
         virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 

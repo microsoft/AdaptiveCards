@@ -33,41 +33,19 @@ function renderCard(target: HTMLElement): HTMLElement {
     document.getElementById("errorContainer").hidden = true;
     lastValidationErrors = [];
 
-    var json = JSON.parse(currentCardPayload);
+    let json = JSON.parse(currentCardPayload);
+    let adaptiveCard = new AdaptiveCards.AdaptiveCard();
+    adaptiveCard.hostConfig = new AdaptiveCards.HostConfig(currentConfigPayload);
 
+    getSelectedHostContainer().setHostCapabilities(adaptiveCard.hostConfig);
 
-    // Show all Host Apps at once, not working yet (to test uncomment the - 1 below)
-    if (hostContainerPicker.selectedIndex === hostContainerPicker.length /* -1 */) {
+    adaptiveCard.parse(json, lastValidationErrors);
 
-        var wrapper = document.createElement("div");
-        hostContainerOptions.forEach(hostContainerOption => {
+    lastValidationErrors = lastValidationErrors.concat(adaptiveCard.validate());
 
-            var label = document.createElement("h4");
-            label.innerText = hostContainerOption.name;
-            wrapper.appendChild(label);
+    showValidationErrors();
 
-            var cardContainer = document.createElement("div");
-
-            var adaptiveCard = new AdaptiveCards.AdaptiveCard();
-            adaptiveCard.hostConfig = new AdaptiveCards.HostConfig(hostContainerOption.hostContainer.getHostConfig());
-            adaptiveCard.parse(json);
-
-            wrapper.appendChild(hostContainerOption.hostContainer.render(adaptiveCard, cardContainer));
-        });
-
-        return target.appendChild(wrapper);
-    } else {
-        var adaptiveCard = new AdaptiveCards.AdaptiveCard();
-        adaptiveCard.hostConfig = new AdaptiveCards.HostConfig(currentConfigPayload);
-
-        adaptiveCard.parse(json);
-
-        lastValidationErrors = lastValidationErrors.concat(adaptiveCard.validate());
-
-        showValidationErrors();
-
-        return getSelectedHostContainer().render(adaptiveCard, target);
-    }
+    return getSelectedHostContainer().render(adaptiveCard, target);
 }
 
 function tryRenderCard() {
@@ -192,15 +170,16 @@ function hostContainerPickerChanged() {
 function setupContainerPicker() {
     hostContainerPicker = <HTMLSelectElement>document.getElementById("hostContainerPicker");
 
-    hostContainerOptions.push(new HostContainerOption("Bot Framework Other Channels (Image render)", new BotFrameworkImageContainer(400, "css/bf.css")));
     hostContainerOptions.push(new HostContainerOption("Bot Framework WebChat", new WebChatContainer("css/webchat.css")));
     hostContainerOptions.push(new HostContainerOption("Cortana Skills", new CortanaContainer(true, "css/cortana.css")));
     hostContainerOptions.push(new HostContainerOption("Microsoft Teams", new TeamsContainer("css/teams.css")));
     hostContainerOptions.push(new HostContainerOption("Outlook Actionable Messages", new OutlookContainer("css/outlook.css")));
     hostContainerOptions.push(new HostContainerOption("Windows Timeline", new TimelineContainer(320, 176, "css/timeline.css")));
-    hostContainerOptions.push(new HostContainerOption("Skype (Preview)", new SkypeContainer(350, "css/skype.css")));
+    hostContainerOptions.push(new HostContainerOption("Bot Framework Other Channels (Image render)", new BotFrameworkImageContainer(400, "css/bf.css")));
+	hostContainerOptions.push(new HostContainerOption("Skype (Preview)", new SkypeContainer(350, "css/skype.css")));
     hostContainerOptions.push(new HostContainerOption("Windows Notifications (Preview)", new ToastContainer(362, "css/toast.css")));
-    // hostContainerOptions.push(//     new HostContainerOption(//         "All at once", //         new BotFrameworkImageContainer(400, "css/bf.css")));
+
+	// hostContainerOptions.push(//     new HostContainerOption(//         "All at once", //         new BotFrameworkImageContainer(400, "css/bf.css")));
 
     hostContainerPicker.addEventListener("change", hostContainerPickerChanged);
 
@@ -411,10 +390,6 @@ function monacoEditorLoaded() {
     // Uncomment to test the onInlineCardExpanded event:
     // Adaptive.AdaptiveCard.onInlineCardExpanded = inlineCardExpanded;
 
-    AdaptiveCards.AdaptiveCard.onParseError = (error: AdaptiveCards.IValidationError) => {
-        lastValidationErrors.push(error);
-    }
-
     setupContainerPicker();
     setContainerAppFromUrl();
     setupFilePicker();
@@ -487,6 +462,6 @@ function monacoEditorLoaded() {
     }
 }
 
-window.onload = () => {
+window.onload = function() {
     loadMonacoEditor(adaptiveCardSchema, monacoEditorLoaded);
 };

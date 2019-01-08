@@ -23,7 +23,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveFactSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::FactSet>& sharedFactSet) try
+    HRESULT AdaptiveFactSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::FactSet>& sharedFactSet) try
     {
         if (sharedFactSet == nullptr)
         {
@@ -37,12 +37,12 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ IFACEMETHODIMP AdaptiveFactSet::get_Facts(IVector<IAdaptiveFact*>** facts)
+    IFACEMETHODIMP AdaptiveFactSet::get_Facts(_COM_Outptr_ IVector<IAdaptiveFact*>** facts)
     {
         return m_facts.CopyTo(facts);
     }
 
-    _Use_decl_annotations_ IFACEMETHODIMP AdaptiveFactSet::get_ElementType(ElementType* elementType)
+    IFACEMETHODIMP AdaptiveFactSet::get_ElementType(_Out_ ElementType* elementType)
     {
         *elementType = ElementType::FactSet;
         return S_OK;

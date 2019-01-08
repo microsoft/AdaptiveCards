@@ -22,7 +22,7 @@ class RenderAsyncBase
 
         public : typedef ABI::Windows::Foundation::IAsyncOperationCompletedHandler<T*> HandlerType;
 
-    RenderAsyncBase(ABI::AdaptiveNamespace::IAdaptiveCard* card, AdaptiveNamespace::AdaptiveCardRenderer* renderer) :
+    RenderAsyncBase(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* card, _In_ AdaptiveNamespace::AdaptiveCardRenderer* renderer) :
         m_card(card), m_renderer(renderer)
     {
         // Get the dispatcher to we can run an async operation to build the xaml tree
@@ -43,12 +43,12 @@ class RenderAsyncBase
     }
 
     // IAsyncOperation
-    virtual auto STDMETHODCALLTYPE put_Completed(HandlerType* handler) -> HRESULT override
+    virtual auto STDMETHODCALLTYPE put_Completed(_In_ HandlerType* handler) -> HRESULT override
     {
         return AsyncBase::PutOnComplete(handler);
     }
 
-    virtual auto STDMETHODCALLTYPE get_Completed(HandlerType** handler) -> HRESULT override
+    virtual auto STDMETHODCALLTYPE get_Completed(_COM_Outptr_ HandlerType** handler) -> HRESULT override
     {
         return AsyncBase::GetOnComplete(handler);
     }
@@ -82,16 +82,18 @@ protected:
                     ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers> resourceResolvers;
                     THROW_IF_FAILED(m_renderer->get_ResourceResolvers(&resourceResolvers));
                     ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> overrideDictionary = m_renderer->GetMergedDictionary();
-                    ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> actionSentimentDefaultDictionary = m_renderer->GetActionSentimentResourceDictionary();
+                    ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> actionSentimentDefaultDictionary =
+                        m_renderer->GetActionSentimentResourceDictionary();
 
                     ComPtr<AdaptiveNamespace::AdaptiveRenderContext> renderContext;
-                    THROW_IF_FAILED(MakeAndInitialize<AdaptiveNamespace::AdaptiveRenderContext>(&renderContext,
-                                                                                                m_renderer->GetHostConfig(),
-                                                                                                elementRenderers.Get(),
-                                                                                                resourceResolvers.Get(),
-                                                                                                overrideDictionary.Get(),
-                                                                                                actionSentimentDefaultDictionary.Get(),
-                                                                                                m_renderResult.Get()));
+                    THROW_IF_FAILED(
+                        MakeAndInitialize<AdaptiveNamespace::AdaptiveRenderContext>(&renderContext,
+                                                                                    m_renderer->GetHostConfig(),
+                                                                                    elementRenderers.Get(),
+                                                                                    resourceResolvers.Get(),
+                                                                                    overrideDictionary.Get(),
+                                                                                    actionSentimentDefaultDictionary.Get(),
+                                                                                    m_renderResult.Get()));
 
                     m_renderer->GetXamlBuilder()->BuildXamlTreeFromAdaptiveCard(m_card.Get(),
                                                                                 &m_rootXamlElement,
@@ -121,7 +123,7 @@ protected:
 
     void OnCancel() override {}
 
-    virtual HRESULT XamlRenderCompleted(ABI::Windows::Foundation::IAsyncAction* action,
+    virtual HRESULT XamlRenderCompleted(_In_ ABI::Windows::Foundation::IAsyncAction* action,
                                         ABI::Windows::Foundation::AsyncStatus status) = 0;
     virtual HRESULT OnXamlImagesLoaded() = 0;
     virtual HRESULT OnXamlImagesHadError() = 0;
@@ -139,13 +141,15 @@ private:
 class RenderCardAsXamlAsyncOperation : public RenderAsyncBase<ABI::AdaptiveNamespace::RenderedAdaptiveCard>
 {
 public:
-    RenderCardAsXamlAsyncOperation(ABI::AdaptiveNamespace::IAdaptiveCard* card, AdaptiveNamespace::AdaptiveCardRenderer* renderer) :
+    RenderCardAsXamlAsyncOperation(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* card,
+                                   _In_ AdaptiveNamespace::AdaptiveCardRenderer* renderer) :
         RenderAsyncBase<ABI::AdaptiveNamespace::RenderedAdaptiveCard>(card, renderer)
     {
         AsyncBase::Start();
     }
 
-    STDMETHODIMP ABI::Windows::Foundation::IAsyncOperation_impl<TResult_complex>::GetResults(ABI::AdaptiveNamespace::IRenderedAdaptiveCard** result)
+    STDMETHODIMP ABI::Windows::Foundation::IAsyncOperation_impl<TResult_complex>::GetResults(
+        _COM_Outptr_ ABI::AdaptiveNamespace::IRenderedAdaptiveCard** result)
     {
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IRenderedAdaptiveCard> renderResultAsInterface;
         m_renderResult->SetFrameworkElement(m_rootXamlElement.Get());
@@ -154,7 +158,8 @@ public:
     }
 
 protected:
-    HRESULT XamlRenderCompleted(ABI::Windows::Foundation::IAsyncAction* /*action*/, ABI::Windows::Foundation::AsyncStatus /*status*/) override
+    HRESULT XamlRenderCompleted(_In_ ABI::Windows::Foundation::IAsyncAction* /*action*/,
+                                _In_ ABI::Windows::Foundation::AsyncStatus /*status*/) override
     {
         return S_OK;
     }

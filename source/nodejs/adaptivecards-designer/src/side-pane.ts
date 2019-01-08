@@ -110,10 +110,15 @@ export class SidePane {
 
         this.attachedTo.insertBefore(this._headerRootElement, this.attachedTo.firstChild);
         
-        let heightSetting = SettingsManager.tryLoadNumberSetting(this.getDimensionSettingName());
+        let dimensionSetting = SettingsManager.tryLoadNumberSetting(this.getDimensionSettingName());
 
-        if (heightSetting.succeeded && heightSetting.value != undefined) {
-            this.attachedTo.style.height = heightSetting.value + "px";
+        if (dimensionSetting.succeeded && dimensionSetting.value != undefined) {
+            if (this.orientation == SidePaneOrientation.Vertical) {
+                this.attachedTo.style.width = dimensionSetting.value + "px";
+            }
+            else {
+                this.attachedTo.style.height = dimensionSetting.value + "px";
+            }
         }
     
         let isExpandedSetting = SettingsManager.tryLoadBooleanSetting(this.id + "IsExpanded", true);

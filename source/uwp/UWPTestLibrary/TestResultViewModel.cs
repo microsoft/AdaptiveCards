@@ -30,11 +30,10 @@ namespace UWPTestLibrary
         public StorageFile ExpectedImageFile { get; set; }
         public StorageFile ExpectedRoundtrippedJsonFile { get; set; }
 
-        public string ActualError { get; set; }
-
         public StorageFile ActualImageFile { get; set; }
         public StorageFile ActualRoundTrippedJsonFile { get; set; }
-        public UIElement XamlCard { get; set; }
+        public RenderedTestResult TestResult { get; set; }
+        public UIElement XamlCard { get { return TestResult?.Tree; } }
 
         public bool DidHostConfigChange => _oldHostConfigHash != null && _oldHostConfigHash != HostConfigFile.Hash;
         public bool DidCardPayloadChange => _oldCardHash != null && _oldCardHash != CardFile.Hash;
@@ -50,22 +49,20 @@ namespace UWPTestLibrary
         public static async Task<TestResultViewModel> CreateAsync(
             FileViewModel cardFile,
             FileViewModel hostConfigFile,
-            string actualError,
+            RenderedTestResult renderedTestResult,
             StorageFile actualImageFile,
             StorageFile actualJsonFile,
             StorageFolder expectedFolder,
             StorageFolder sourceHostConfigsFolder,
-            StorageFolder sourceCardsFolder,
-            UIElement xamlCard)
+            StorageFolder sourceCardsFolder)
         {
             var answer = new TestResultViewModel()
             {
                 CardName = cardFile.Name,
                 CardFile = cardFile,
-                XamlCard = xamlCard,
+                TestResult = renderedTestResult,
                 HostConfigName = hostConfigFile.Name,
                 HostConfigFile = hostConfigFile,
-                ActualError = actualError,
                 ActualImageFile = actualImageFile,
                 ActualRoundTrippedJsonFile = actualJsonFile,
                 _expectedFolder = expectedFolder,
@@ -98,9 +95,9 @@ namespace UWPTestLibrary
                 }
 
                 // If both had error, compare via the error
-                if (answer.ExpectedError != null && answer.ActualError != null)
+                if (answer.ExpectedError != null && answer.TestResult.Error != null)
                 {
-                    if (answer.ExpectedError == answer.ActualError)
+                    if (answer.ExpectedError == answer.TestResult.Error)
                     {
                         answer.Status = TestStatus.Passed;
                     }
@@ -252,7 +249,7 @@ namespace UWPTestLibrary
             try
             {
                 // If actual has error and existing did NOT have error, delete existing image
-                if (ActualError != null && ExpectedImageFile != null)
+                if (TestResult.Error != null && ExpectedImageFile != null)
                 {
                     try
                     {
@@ -266,7 +263,7 @@ namespace UWPTestLibrary
                 {
                     HostConfigHash = HostConfigFile.Hash,
                     CardHash = CardFile.Hash,
-                    Error = ActualError
+                    Error = TestResult.Error
                 }.SaveToFileAsync(_expectedFolder, _expectedFileNameWithoutExtension);
 
                 // Make sure the source files are saved (we use FailIfExists and try/catch since if file already exists no need to update it)
@@ -290,7 +287,7 @@ namespace UWPTestLibrary
                 catch { }
 
                 // If no error, update the image file
-                if (ActualError == null)
+                if (TestResult.Error == null)
                 {
                     var expectedFile = await _expectedFolder.CreateFileAsync(_expectedFileNameWithoutExtension + ".png", CreationCollisionOption.ReplaceExisting);
                     await ActualImageFile.CopyAndReplaceAsync(expectedFile);
@@ -300,7 +297,7 @@ namespace UWPTestLibrary
                 }
 
                 // Update the status
-                ExpectedError = ActualError;
+                ExpectedError = TestResult.Error;
                 ExpectedImageFile = ActualImageFile;
                 _oldHostConfigHash = HostConfigFile.Hash;
                 _oldCardHash = CardFile.Hash;

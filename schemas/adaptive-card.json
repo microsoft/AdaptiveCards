@@ -173,6 +173,7 @@
 				"selectAction": {
 					"description": "An Action that will be invoked when the card is tapped or selected. `Action.ShowCard` is not supported.",
 					"type": "object",
+					"version": "1.1",
 					"oneOf": [
 						{ "$ref": "#/definitions/Action.Submit" },
 						{ "$ref": "#/definitions/Action.OpenUrl" }
@@ -306,6 +307,7 @@
 				"selectAction": {
 					"description": "An Action that will be invoked when the `Column` is tapped or selected. `Action.ShowCard` is not supported.",
 					"type": "object",
+					"version": "1.1",
 					"oneOf": [
 						{ "$ref": "#/definitions/Action.Submit" },
 						{ "$ref": "#/definitions/Action.OpenUrl" }
@@ -358,6 +360,7 @@
 				"selectAction": {
 					"description": "An Action that will be invoked when the `ColumnSet` is tapped or selected. `Action.ShowCard` is not supported.",
 					"type": "object",
+					"version": "1.1",
 					"oneOf": [
 						{ "$ref": "#/definitions/Action.Submit" },
 						{ "$ref": "#/definitions/Action.OpenUrl" }
@@ -399,6 +402,7 @@
 				"selectAction": {
 					"description": "An Action that will be invoked when the `Container` is tapped or selected. `Action.ShowCard` is not supported.",
 					"type": "object",
+					"version": "1.1",
 					"oneOf": [
 						{ "$ref": "#/definitions/Action.Submit" },
 						{ "$ref": "#/definitions/Action.OpenUrl" }
@@ -551,7 +555,8 @@
 				}
 			},
 			"required": [
-				"type"
+				"type",
+				"sources"
 			]
 		},
 		"Image": {
@@ -574,6 +579,7 @@
 				"selectAction": {
 					"description": "An Action that will be invoked when the `Image` is tapped or selected. `Action.ShowCard` is not supported.",
 					"type": "object",
+					"version": "1.1",
 					"oneOf": [
 						{ "$ref": "#/definitions/Action.Submit" },
 						{ "$ref": "#/definitions/Action.OpenUrl" }
@@ -686,7 +692,7 @@
 					"$ref": "#/definitions/ChoiceInputStyle"
 				},
 				"type": {
-					"description": "Must be `\"Input.ChoiceInput\"`.",
+					"description": "Must be `\"Input.ChoiceSet\"`.",
 					"enum": [
 						"Input.ChoiceSet"
 					],

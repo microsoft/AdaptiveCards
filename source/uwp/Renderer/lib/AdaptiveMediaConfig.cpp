@@ -24,36 +24,32 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveMediaConfig::get_DefaultPoster(HSTRING* defaultPoster)
+    HRESULT AdaptiveMediaConfig::get_DefaultPoster(_Outptr_ HSTRING* defaultPoster)
     {
         return m_defaultPoster.CopyTo(defaultPoster);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveMediaConfig::put_DefaultPoster(HSTRING defaultPoster)
+    HRESULT AdaptiveMediaConfig::put_DefaultPoster(_In_ HSTRING defaultPoster)
     {
         return m_defaultPoster.Set(defaultPoster);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveMediaConfig::get_PlayButton(HSTRING* playButton)
+    HRESULT AdaptiveMediaConfig::get_PlayButton(_Outptr_ HSTRING* playButton)
     {
         return m_playButton.CopyTo(playButton);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveMediaConfig::put_PlayButton(HSTRING playButton)
-    {
-        return m_playButton.Set(playButton);
-    }
+    HRESULT AdaptiveMediaConfig::put_PlayButton(_In_ HSTRING playButton) { return m_playButton.Set(playButton); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveMediaConfig::get_AllowInlinePlayback(boolean* allowInlinePlayback)
+    HRESULT AdaptiveMediaConfig::get_AllowInlinePlayback(_Out_ boolean* allowInlinePlayback)
     {
         *allowInlinePlayback = m_allowInlinePlayback;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveMediaConfig::put_AllowInlinePlayback(boolean allowInlinePlayback)
+    HRESULT AdaptiveMediaConfig::put_AllowInlinePlayback(boolean allowInlinePlayback)
     {
         m_allowInlinePlayback = allowInlinePlayback;
         return S_OK;
     }
-
 }

@@ -22,12 +22,12 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveInputs::AsJson(IJsonObject** value)
+    HRESULT AdaptiveInputs::AsJson(_COM_Outptr_ IJsonObject** value)
     {
         return StringToJsonObject(GetInputItemsAsJsonString(), value);
     }
 
-    HRESULT AdaptiveInputs::AddInputValue(IAdaptiveInputValue* inputValue)
+    HRESULT AdaptiveInputs::AddInputValue(_In_ IAdaptiveInputValue* inputValue)
     {
         m_inputValues->push_back(inputValue);
         return S_OK;
@@ -61,7 +61,7 @@ namespace AdaptiveNamespace
         return outStream.str();
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveInputs::AsValueSet(IPropertySet** value)
+    HRESULT AdaptiveInputs::AsValueSet(_COM_Outptr_ IPropertySet** value)
     {
         *value = nullptr;
         ComPtr<IPropertySet> valueSet;
@@ -94,5 +94,4 @@ namespace AdaptiveNamespace
         }
         return valueSet.CopyTo(value);
     }
-
 }

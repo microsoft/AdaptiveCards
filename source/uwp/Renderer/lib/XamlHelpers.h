@@ -9,7 +9,7 @@ namespace AdaptiveNamespace
     {
     public:
         template<typename T>
-        static Microsoft::WRL::ComPtr<T> CreateXamlClass(_In_ Microsoft::WRL::Wrappers::HStringReference className)
+        static Microsoft::WRL::ComPtr<T> CreateXamlClass(Microsoft::WRL::Wrappers::HStringReference className)
         {
             Microsoft::WRL::ComPtr<IInspectable> inspectableClass;
             THROW_IF_FAILED(RoActivateInstance(className.Get(), inspectableClass.ReleaseAndGetAddressOf()));
@@ -20,7 +20,7 @@ namespace AdaptiveNamespace
         }
 
         template<typename T, typename C>
-        static void IterateOverVector(ABI::Windows::Foundation::Collections::IVector<T*>* vector, C iterationCallback)
+        static void IterateOverVector(_In_ ABI::Windows::Foundation::Collections::IVector<T*>* vector, C iterationCallback)
         {
             Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<T*>> localVector(vector);
             ComPtr<IIterable<T*>> vectorIterable;
@@ -49,8 +49,8 @@ namespace AdaptiveNamespace
         }
 
         template<typename T>
-        static void AppendXamlElementToPanel(T* xamlElement,
-                                             ABI::Windows::UI::Xaml::Controls::IPanel* panel,
+        static void AppendXamlElementToPanel(_In_ T* xamlElement,
+                                             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* panel,
                                              ABI::AdaptiveNamespace::HeightType heightType = ABI::AdaptiveNamespace::HeightType::Auto)
         {
             if (!xamlElement)
@@ -80,7 +80,7 @@ namespace AdaptiveNamespace
             }
         }
 
-        template<typename T> static void SetToggleValue(T* item, boolean isChecked)
+        template<typename T> static void SetToggleValue(_In_ T* item, boolean isChecked)
         {
             ComPtr<IPropertyValueStatics> propertyValueStatics;
             ABI::Windows::Foundation::GetActivationFactory(
@@ -98,7 +98,7 @@ namespace AdaptiveNamespace
             THROW_IF_FAILED(toggleButton->put_IsChecked(boolProperty.Get()));
         }
 
-        template<typename T> static void GetToggleValue(T* item, boolean* isChecked)
+        template<typename T> static void GetToggleValue(_In_ T* item, _Out_ boolean* isChecked)
         {
             ComPtr<T> localItem(item);
             ComPtr<IToggleButton> toggleButton;
@@ -117,7 +117,7 @@ namespace AdaptiveNamespace
             }
         }
 
-        template<typename T> static void SetContent(T* item, HSTRING contentString)
+        template<typename T> static void SetContent(_In_ T* item, _In_ HSTRING contentString, boolean wrap)
         {
             ComPtr<T> localItem(item);
             ComPtr<IContentControl> contentControl;
@@ -126,11 +126,21 @@ namespace AdaptiveNamespace
             ComPtr<ITextBlock> content =
                 XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
             THROW_IF_FAILED(content->put_Text(contentString));
+
+            if (wrap)
+            {
+                THROW_IF_FAILED(content->put_TextWrapping(TextWrapping::TextWrapping_WrapWholeWords));
+            }
             THROW_IF_FAILED(contentControl->put_Content(content.Get()));
         }
 
+        template<typename T> static void SetContent(T* item, HSTRING contentString)
+        {
+            SetContent(item, contentString, false);
+        }
+
         template<typename T>
-        static void AddRow(T* item, ABI::Windows::UI::Xaml::Controls::IGrid* grid, ABI::Windows::UI::Xaml::GridLength rowHeight)
+        static void AddRow(_In_ T* item, _In_ ABI::Windows::UI::Xaml::Controls::IGrid* grid, ABI::Windows::UI::Xaml::GridLength rowHeight)
         {
             ComPtr<ABI::Windows::UI::Xaml::Controls::IGrid> localGrid(grid);
 

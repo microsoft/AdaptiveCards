@@ -23,7 +23,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveImageSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ImageSet>& sharedImageSet) try
+    HRESULT AdaptiveImageSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ImageSet>& sharedImageSet) try
     {
         if (sharedImageSet == nullptr)
         {
@@ -39,24 +39,24 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ IFACEMETHODIMP AdaptiveImageSet::get_Images(IVector<IAdaptiveImage*>** images)
+    IFACEMETHODIMP AdaptiveImageSet::get_Images(_COM_Outptr_ IVector<IAdaptiveImage*>** images)
     {
         return m_images.CopyTo(images);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImageSet::get_ImageSize(ABI::AdaptiveNamespace::ImageSize* imageSize)
+    HRESULT AdaptiveImageSet::get_ImageSize(_Out_ ABI::AdaptiveNamespace::ImageSize* imageSize)
     {
         *imageSize = m_imageSize;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImageSet::put_ImageSize(ABI::AdaptiveNamespace::ImageSize imageSize)
+    HRESULT AdaptiveImageSet::put_ImageSize(ABI::AdaptiveNamespace::ImageSize imageSize)
     {
         m_imageSize = imageSize;
         return S_OK;
     }
 
-    _Use_decl_annotations_ IFACEMETHODIMP AdaptiveImageSet::get_ElementType(ElementType* elementType)
+    IFACEMETHODIMP AdaptiveImageSet::get_ElementType(_Out_ ElementType* elementType)
     {
         *elementType = ElementType::ImageSet;
         return S_OK;

@@ -4,25 +4,17 @@
    // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
    "version": "0.2.0",
    "configurations": [
-        {
-            "name": ".NET Core Launch (console)",
-            "type": "coreclr",
-            "request": "launch",
-            "preLaunchTask": "build",
-            // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceRoot}/source/dotnet/Test/AdaptiveCards.Html.Test/bin/Debug/netcoreapp1.1/AdaptiveCards.Html.Test.dll",
-            "args": [],
-            "cwd": "${workspaceRoot}/source/dotnet/Test/AdaptiveCards.Html.Test",
-            // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
-            "console": "internalConsole",
-            "stopAtEntry": false,
-            "internalConsoleOptions": "openOnSessionStart"
-        },
-        {
-            "name": ".NET Core Attach",
-            "type": "coreclr",
-            "request": "attach",
-            "processId": "${command:pickProcess}"
-        }
+	   {
+		   "type": "chrome",
+		   "request": "launch",
+		   "name": "Debug Designer",
+		   "url": "http://localhost:8001",
+		   "webRoot": "${workspaceFolder}/source/nodejs/adaptivecards-designer"
+	   },{
+		   "name": ".NET Core Attach",
+		   "type": "coreclr",
+		   "request": "attach",
+		   "processId": "${command:pickProcess}"
+	   }
     ]
 }
