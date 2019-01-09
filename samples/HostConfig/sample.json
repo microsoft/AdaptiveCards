@@ -111,7 +111,7 @@
 			}
 		},
 		"good": {
-			"backgroundColor": "#FF54a254",
+			"backgroundColor": "#DD54a254",
 			"foregroundColors": {
 				"default": {
 					"default": "#FF333333",
@@ -136,7 +136,7 @@
 			}
 		},
 		"attention": {
-			"backgroundColor": "#FFcc3300",
+			"backgroundColor": "#DDcc3300",
 			"foregroundColors": {
 				"default": {
 					"default": "#FF333333",
@@ -161,7 +161,7 @@
 			}
 		},
 		"warning": {
-			"backgroundColor": "#FFe69500",
+			"backgroundColor": "#DDe69500",
 			"foregroundColors": {
 				"default": {
 					"default": "#FF333333",
@@ -186,7 +186,7 @@
 			}
 		},
 		"accent": {
-			"backgroundColor": "#FF2E89FC",
+			"backgroundColor": "#882E89FC",
 			"foregroundColors": {
 				"default": {
 					"default": "#FF333333",
