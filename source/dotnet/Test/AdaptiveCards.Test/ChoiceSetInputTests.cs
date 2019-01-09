@@ -32,5 +32,30 @@ namespace AdaptiveCards.Test
 
             StringAssert.Contains(card.ToJson(), expected);
         }
+
+        [TestMethod]
+        public void TestChoiceSetWrap()
+        {
+            var card = new AdaptiveCard("1.2")
+            {
+                Body = new List<AdaptiveElement>()
+                {
+                    new AdaptiveTextBlock()
+                    {
+                        Text = "Hello",
+                        Weight = AdaptiveTextWeight.Bolder
+                    },
+                    new AdaptiveChoiceSetInput()
+                    {
+                        Id = "choiceTest",
+                        Wrap = true
+                    }
+                }
+            };
+
+            var expected = @"""wrap"": true";
+
+            StringAssert.Contains(card.ToJson(), expected);
+        }
     }
 }

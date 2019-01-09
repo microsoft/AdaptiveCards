@@ -102,8 +102,8 @@ namespace AdaptiveNamespace
                                 _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveHostConfigParseResult** config) noexcept;
 
     private:
-        HRESULT FromJsonString(const std::string jsonString,
-                               _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveHostConfigParseResult** config);
+        HRESULT _FromJsonString(const std::string& jsonString,
+                                _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveHostConfigParseResult** config);
     };
 
     ActivatableClassWithFactory(AdaptiveHostConfig, AdaptiveHostConfigStaticsImpl);

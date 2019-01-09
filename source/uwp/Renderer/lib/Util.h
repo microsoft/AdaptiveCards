@@ -42,7 +42,7 @@ inline bool Boolify(const boolean value)
     return value > 0 ? true : false;
 }
 
-HRESULT GetColorFromString(std::string colorString, _Out_ ABI::Windows::UI::Color* color) noexcept;
+HRESULT GetColorFromString(const std::string& colorString, _Out_ ABI::Windows::UI::Color* color) noexcept;
 
 HRESULT GetColorFromAdaptiveColor(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
                                   ABI::AdaptiveNamespace::ForegroundColor adaptiveColor,
@@ -155,7 +155,7 @@ HRESULT GenerateSeparatorProjection(std::shared_ptr<AdaptiveSharedNamespace::Sep
 HRESULT GenerateSharedSeparator(_In_ ABI::AdaptiveNamespace::IAdaptiveSeparator* separator,
                                 _Out_ std::shared_ptr<AdaptiveSharedNamespace::Separator>* sharedSeparatorOut) noexcept;
 
-HRESULT StringToJsonObject(const std::string inputString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
+HRESULT StringToJsonObject(const std::string& inputString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
 HRESULT HStringToJsonObject(const HSTRING& inputHString, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
 HRESULT JsonObjectToHString(_In_ ABI::Windows::Data::Json::IJsonObject* inputJson, _Outptr_ HSTRING* result);
 HRESULT JsonObjectToString(_In_ ABI::Windows::Data::Json::IJsonObject* inputJson, std::string& result);
@@ -165,7 +165,7 @@ HRESULT HStringToJsonValue(const HSTRING& inputHString, _COM_Outptr_ ABI::Window
 HRESULT JsonValueToHString(_In_ ABI::Windows::Data::Json::IJsonValue* inputJsonValue, _Outptr_ HSTRING* result);
 HRESULT JsonValueToString(_In_ ABI::Windows::Data::Json::IJsonValue* inputJsonValue, std::string& result);
 
-HRESULT JsonCppToJsonObject(Json::Value jsonCppValue, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
+HRESULT JsonCppToJsonObject(const Json::Value& jsonCppValue, _COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
 HRESULT JsonObjectToJsonCpp(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObject, _Out_ Json::Value* jsonCppValue);
 
 HRESULT ProjectedActionTypeToHString(ABI::AdaptiveNamespace::ActionType projectedActionType, _Outptr_ HSTRING* result);
@@ -210,7 +210,7 @@ HRESULT SharedWarningsToAdaptiveWarnings(
 HRESULT AdaptiveWarningsToSharedWarnings(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
                                          std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>> sharedWarnings);
 
-ABI::Windows::UI::Color GenerateLighterColor(ABI::Windows::UI::Color originalColor);
+ABI::Windows::UI::Color GenerateLighterColor(const ABI::Windows::UI::Color& originalColor);
 
 namespace AdaptiveNamespace
 {
