@@ -13,6 +13,7 @@
 #import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "Util.h"
 
 @implementation ACRContainerRenderer
 
@@ -76,6 +77,9 @@
                                                                   recipientView:container
                                                                   actionElement:selectAction
                                                                      hostConfig:acoConfig];
+
+    configVisibility(container, elem);
+
     return viewGroup;
 }
 

@@ -13,6 +13,7 @@
 #import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "Util.h"
 
 @implementation ACRColumnRenderer
 
@@ -82,6 +83,9 @@
                                     multiplier:1.0
                                       constant:0].active = YES;
     }
+
+    configVisibility(column, elem);
+
     return column;
 }
 
