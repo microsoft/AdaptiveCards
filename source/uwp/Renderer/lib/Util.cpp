@@ -630,24 +630,47 @@ HRESULT GetColorFromString(std::string colorString, ABI::Windows::UI::Color* col
 }
 CATCH_RETURN;
 
+HRESULT GetContainerStyleDefinition(ABI::AdaptiveNamespace::ContainerStyle style,
+                                    _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                                    _Out_ ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition** styleDefinition) noexcept try
+{
+    ComPtr<ABI::AdaptiveNamespace::IAdaptiveContainerStylesDefinition> containerStyles;
+    RETURN_IF_FAILED(hostConfig->get_ContainerStyles(&containerStyles));
+
+    switch (style)
+    {
+    case ABI::AdaptiveNamespace::ContainerStyle::Accent:
+        RETURN_IF_FAILED(containerStyles->get_Accent(styleDefinition));
+        break;
+    case ABI::AdaptiveNamespace::ContainerStyle::Attention:
+        RETURN_IF_FAILED(containerStyles->get_Attention(styleDefinition));
+        break;
+    case ABI::AdaptiveNamespace::ContainerStyle::Emphasis:
+        RETURN_IF_FAILED(containerStyles->get_Emphasis(styleDefinition));
+        break;
+    case ABI::AdaptiveNamespace::ContainerStyle::Good:
+        RETURN_IF_FAILED(containerStyles->get_Good(styleDefinition));
+        break;
+    case ABI::AdaptiveNamespace::ContainerStyle::Warning:
+        RETURN_IF_FAILED(containerStyles->get_Warning(styleDefinition));
+        break;
+    case ABI::AdaptiveNamespace::ContainerStyle::Default:
+    default:
+        RETURN_IF_FAILED(containerStyles->get_Default(styleDefinition));
+        break;
+    }
+    return S_OK;
+}
+CATCH_RETURN;
+
 HRESULT GetColorFromAdaptiveColor(ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
                                   ABI::AdaptiveNamespace::ForegroundColor adaptiveColor,
                                   ABI::AdaptiveNamespace::ContainerStyle containerStyle,
                                   bool isSubtle,
                                   ABI::Windows::UI::Color* uiColor) noexcept try
 {
-    ComPtr<ABI::AdaptiveNamespace::IAdaptiveContainerStylesDefinition> styles;
-    RETURN_IF_FAILED(hostConfig->get_ContainerStyles(&styles));
-
     ComPtr<ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition> styleDefinition;
-    if (containerStyle == ABI::AdaptiveNamespace::ContainerStyle_Default)
-    {
-        RETURN_IF_FAILED(styles->get_Default(&styleDefinition));
-    }
-    else
-    {
-        RETURN_IF_FAILED(styles->get_Emphasis(&styleDefinition));
-    }
+    GetContainerStyleDefinition(containerStyle, hostConfig, &styleDefinition);
 
     ComPtr<ABI::AdaptiveNamespace::IAdaptiveColorsConfig> colorsConfig;
     RETURN_IF_FAILED(styleDefinition->get_ForegroundColors(&colorsConfig));
@@ -726,57 +749,32 @@ HRESULT GetBackgroundColorFromStyle(ABI::AdaptiveNamespace::ContainerStyle style
                                     _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
                                     _Out_ ABI::Windows::UI::Color* backgroundColor) noexcept try
 {
-    ComPtr<ABI::AdaptiveNamespace::IAdaptiveContainerStylesDefinition> containerStyles;
-    RETURN_IF_FAILED(hostConfig->get_ContainerStyles(&containerStyles));
-
     ComPtr<ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition> styleDefinition;
-    switch (style)
-    {
-    case ABI::AdaptiveNamespace::ContainerStyle::Accent:
-        RETURN_IF_FAILED(containerStyles->get_Accent(&styleDefinition));
-        break;
-    case ABI::AdaptiveNamespace::ContainerStyle::Attention:
-        RETURN_IF_FAILED(containerStyles->get_Attention(&styleDefinition));
-        break;
-    case ABI::AdaptiveNamespace::ContainerStyle::Emphasis:
-        RETURN_IF_FAILED(containerStyles->get_Emphasis(&styleDefinition));
-        break;
-    case ABI::AdaptiveNamespace::ContainerStyle::Good:
-        RETURN_IF_FAILED(containerStyles->get_Good(&styleDefinition));
-        break;
-    case ABI::AdaptiveNamespace::ContainerStyle::Warning:
-        RETURN_IF_FAILED(containerStyles->get_Warning(&styleDefinition));
-        break;
-    case ABI::AdaptiveNamespace::ContainerStyle::Default:
-    default:
-        RETURN_IF_FAILED(containerStyles->get_Default(&styleDefinition));
-        break;
-    }
+    RETURN_IF_FAILED(GetContainerStyleDefinition(style, hostConfig, &styleDefinition));
     RETURN_IF_FAILED(styleDefinition->get_BackgroundColor(backgroundColor));
 
     return S_OK;
 }
 CATCH_RETURN;
 
-HRESULT GetFontDataFromStyle(
-    _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-    _In_ ABI::AdaptiveNamespace::FontStyle style,
-    _In_ ABI::AdaptiveNamespace::TextSize desiredSize,
-    _In_ ABI::AdaptiveNamespace::TextWeight desiredWeight,
-    _Out_ HSTRING* resultFontFamilyName,
-    _Out_ UINT32* resultSize,
-    _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept try 
+HRESULT GetFontDataFromStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                             _In_ ABI::AdaptiveNamespace::FontStyle style,
+                             _In_ ABI::AdaptiveNamespace::TextSize desiredSize,
+                             _In_ ABI::AdaptiveNamespace::TextWeight desiredWeight,
+                             _Out_ HSTRING* resultFontFamilyName,
+                             _Out_ UINT32* resultSize,
+                             _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept try
 {
     RETURN_IF_FAILED(GetFontFamilyFromStyle(hostConfig, style, resultFontFamilyName));
     RETURN_IF_FAILED(GetFontSizeFromStyle(hostConfig, style, desiredSize, resultSize));
     RETURN_IF_FAILED(GetFontWeightFromStyle(hostConfig, style, desiredWeight, resultWeight));
     return S_OK;
-} CATCH_RETURN;
+}
+CATCH_RETURN;
 
-HRESULT GetFontFamilyFromStyle(
-    _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-    _In_ ABI::AdaptiveNamespace::FontStyle style,
-    _Out_ HSTRING* resultFontFamilyName) noexcept try 
+HRESULT GetFontFamilyFromStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                               _In_ ABI::AdaptiveNamespace::FontStyle style,
+                               _Out_ HSTRING* resultFontFamilyName) noexcept try
 {
     HString result;
     ABI::AdaptiveNamespace::IAdaptiveFontStyleDefinition* styleDefinition;
@@ -785,20 +783,20 @@ HRESULT GetFontFamilyFromStyle(
     RETURN_IF_FAILED(GetFontStyle(hostConfig, style, &styleDefinition));
     RETURN_IF_FAILED(styleDefinition->get_FontFamily(result.GetAddressOf()));
     if (result == NULL)
-    {   
+    {
         // get FontFamily from Default style
         RETURN_IF_FAILED(GetFontStyle(hostConfig, ABI::AdaptiveNamespace::FontStyle::Default, &styleDefinition));
         RETURN_IF_FAILED(styleDefinition->get_FontFamily(result.GetAddressOf()));
 
-        if (result == NULL) 
+        if (result == NULL)
         {
             // get deprecated FontFamily
             RETURN_IF_FAILED(hostConfig->get_FontFamily(result.GetAddressOf()));
 
-            if (result == NULL) 
+            if (result == NULL)
             {
                 // set system default FontFamily based on desired style
-                switch (style) 
+                switch (style)
                 {
                 case ABI::AdaptiveNamespace::FontStyle::Monospace:
                     RETURN_IF_FAILED(UTF8ToHString("Courier New", result.GetAddressOf()));
@@ -813,13 +811,13 @@ HRESULT GetFontFamilyFromStyle(
         }
     }
     return result.CopyTo(resultFontFamilyName);
-} CATCH_RETURN;
+}
+CATCH_RETURN;
 
-HRESULT GetFontSizeFromStyle(
-    _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-    _In_ ABI::AdaptiveNamespace::FontStyle style,
-    _In_ ABI::AdaptiveNamespace::TextSize desiredSize,
-    _Out_ UINT32* resultSize) noexcept try
+HRESULT GetFontSizeFromStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                             _In_ ABI::AdaptiveNamespace::FontStyle style,
+                             _In_ ABI::AdaptiveNamespace::TextSize desiredSize,
+                             _Out_ UINT32* resultSize) noexcept try
 {
     UINT32 result;
     ABI::AdaptiveNamespace::IAdaptiveFontStyleDefinition* styleDefinition;
@@ -870,13 +868,13 @@ HRESULT GetFontSizeFromStyle(
     }
     *resultSize = result;
     return S_OK;
-} CATCH_RETURN;
+}
+CATCH_RETURN;
 
-HRESULT GetFontWeightFromStyle(
-    _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-    _In_ ABI::AdaptiveNamespace::FontStyle style,
-    _In_ ABI::AdaptiveNamespace::TextWeight desiredWeight,
-    _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept try
+HRESULT GetFontWeightFromStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                               _In_ ABI::AdaptiveNamespace::FontStyle style,
+                               _In_ ABI::AdaptiveNamespace::TextWeight desiredWeight,
+                               _Out_ ABI::Windows::UI::Text::FontWeight* resultWeight) noexcept try
 {
     UINT16 result;
     ABI::AdaptiveNamespace::IAdaptiveFontStyleDefinition* styleDefinition;
@@ -921,16 +919,16 @@ HRESULT GetFontWeightFromStyle(
     }
     resultWeight->Weight = result;
     return S_OK;
-} CATCH_RETURN;
+}
+CATCH_RETURN;
 
-HRESULT GetFontStyle(
-    _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-    _In_ ABI::AdaptiveNamespace::FontStyle style,
-    _Out_ ABI::AdaptiveNamespace::IAdaptiveFontStyleDefinition **styleDefinition) noexcept try
+HRESULT GetFontStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                     _In_ ABI::AdaptiveNamespace::FontStyle style,
+                     _Out_ ABI::AdaptiveNamespace::IAdaptiveFontStyleDefinition** styleDefinition) noexcept try
 {
     ABI::AdaptiveNamespace::IAdaptiveFontStylesDefinition* fontStyles;
     RETURN_IF_FAILED(hostConfig->get_FontStyles(&fontStyles));
-    
+
     switch (style)
     {
     case ABI::AdaptiveNamespace::FontStyle::Display:
@@ -945,12 +943,12 @@ HRESULT GetFontStyle(
         break;
     }
     return S_OK;
-} CATCH_RETURN;
+}
+CATCH_RETURN;
 
-HRESULT GetFontSize(
-    _In_ ABI::AdaptiveNamespace::IAdaptiveFontSizesConfig* sizesConfig,
-    _In_ ABI::AdaptiveNamespace::TextSize desiredSize,
-    _Out_ UINT32* resultSize) noexcept try
+HRESULT GetFontSize(_In_ ABI::AdaptiveNamespace::IAdaptiveFontSizesConfig* sizesConfig,
+                    _In_ ABI::AdaptiveNamespace::TextSize desiredSize,
+                    _Out_ UINT32* resultSize) noexcept try
 {
     switch (desiredSize)
     {
@@ -972,12 +970,12 @@ HRESULT GetFontSize(
         break;
     }
     return S_OK;
-} CATCH_RETURN;
+}
+CATCH_RETURN;
 
-HRESULT GetFontWeight(
-    _In_ ABI::AdaptiveNamespace::IAdaptiveFontWeightsConfig* weightsConfig,
-    _In_ ABI::AdaptiveNamespace::TextWeight desiredWeight,
-    _Out_ UINT16* resultWeight) noexcept try
+HRESULT GetFontWeight(_In_ ABI::AdaptiveNamespace::IAdaptiveFontWeightsConfig* weightsConfig,
+                      _In_ ABI::AdaptiveNamespace::TextWeight desiredWeight,
+                      _Out_ UINT16* resultWeight) noexcept try
 {
     switch (desiredWeight)
     {
@@ -993,7 +991,8 @@ HRESULT GetFontWeight(
         break;
     }
     return S_OK;
-} CATCH_RETURN;
+}
+CATCH_RETURN;
 
 HRESULT StringToJsonObject(const string inputString, IJsonObject** result)
 {
