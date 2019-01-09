@@ -367,26 +367,55 @@ using namespace AdaptiveCards;
 
 - (UIColor *)getBackgroundColorForContainerStyle:(ACRContainerStyle)style
 {
-    const std::string &hexColorCode = (style == ACREmphasis)?
-        _config->GetContainerStyles().emphasisPalette.backgroundColor :
-        _config->GetContainerStyles().defaultPalette.backgroundColor;
+    std::string hexColorCode;
+    switch (style) {
+        case ACRAccent:
+            hexColorCode = _config->GetContainerStyles().accentPalette.backgroundColor;
+            break;
+        case ACRAttention:
+            hexColorCode = _config->GetContainerStyles().attentionPalette.backgroundColor;
+            break;
+        case ACREmphasis:
+            hexColorCode = _config->GetContainerStyles().emphasisPalette.backgroundColor;
+            break;
+        case ACRGood:
+            hexColorCode = _config->GetContainerStyles().goodPalette.backgroundColor;
+            break;
+        case ACRWarning:
+            hexColorCode = _config->GetContainerStyles().warningPalette.backgroundColor;
+            break;
+        case ACRDefault:
+        default:
+            hexColorCode = _config->GetContainerStyles().defaultPalette.backgroundColor;
+            break;
+    }
 
     return [ACOHostConfig convertHexColorCodeToUIColor:hexColorCode];
 }
 
 + (ACRContainerStyle)getPlatformContainerStyle:(ContainerStyle)style
 {
-    ACRContainerStyle containerStyle = ACRDefault;
+    ACRContainerStyle containerStyle;
     switch (style) {
         case ContainerStyle::None:
             containerStyle = ACRNone;
             break;
-        case ContainerStyle::Default:
-            containerStyle = ACRDefault;
+        case ContainerStyle::Accent:
+            containerStyle = ACRAccent;
+            break;
+        case ContainerStyle::Attention:
+            containerStyle = ACRAttention;
             break;
         case ContainerStyle::Emphasis:
             containerStyle = ACREmphasis;
             break;
+        case ContainerStyle::Good:
+            containerStyle = ACRGood;
+            break;
+        case ContainerStyle::Warning:
+            containerStyle = ACRWarning;
+            break;
+        case ContainerStyle::Default:
         default:
             containerStyle = ACRDefault;
             break;
