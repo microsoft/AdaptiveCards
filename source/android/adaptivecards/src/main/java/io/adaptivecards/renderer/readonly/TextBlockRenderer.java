@@ -101,13 +101,27 @@ public class TextBlockRenderer extends BaseCardElementRenderer
 
     static void setTextColor(TextView textView, ForegroundColor foregroundColor, HostConfig hostConfig, boolean isSubtle, ContainerStyle containerStyle)
     {
-        if (containerStyle == ContainerStyle.Emphasis)
+        switch (containerStyle)
         {
-            textView.setTextColor(getColor(foregroundColor, hostConfig.GetContainerStyles().getEmphasisPalette().getForegroundColors(), isSubtle));
-        }
-        else
-        {
-            textView.setTextColor(getColor(foregroundColor, hostConfig.GetContainerStyles().getDefaultPalette().getForegroundColors(), isSubtle));
+            case Accent:
+                textView.setTextColor(getColor(foregroundColor, hostConfig.GetContainerStyles().getAccentPalette().getForegroundColors(), isSubtle));
+                break;
+            case Attention:
+                textView.setTextColor(getColor(foregroundColor, hostConfig.GetContainerStyles().getAttentionPalette().getForegroundColors(), isSubtle));
+                break;
+            case Emphasis:
+                textView.setTextColor(getColor(foregroundColor, hostConfig.GetContainerStyles().getEmphasisPalette().getForegroundColors(), isSubtle));
+                break;
+            case Good:
+                textView.setTextColor(getColor(foregroundColor, hostConfig.GetContainerStyles().getGoodPalette().getForegroundColors(), isSubtle));
+                break;
+            case Warning:
+                textView.setTextColor(getColor(foregroundColor, hostConfig.GetContainerStyles().getWarningPalette().getForegroundColors(), isSubtle));
+                break;
+            case Default:
+            default:
+                textView.setTextColor(getColor(foregroundColor, hostConfig.GetContainerStyles().getDefaultPalette().getForegroundColors(), isSubtle));
+                break;
         }
     }
 
