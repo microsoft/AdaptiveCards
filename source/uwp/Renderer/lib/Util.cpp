@@ -644,9 +644,9 @@ CATCH_RETURN;
 
 // Get a Color object from color string
 // Expected formats are "#AARRGGBB" (with alpha channel) and "#RRGGBB" (without alpha channel)
-HRESULT GetColorFromString(std::string colorString, _Out_ ABI::Windows::UI::Color* color) noexcept try
+HRESULT GetColorFromString(const std::string& colorString, _Out_ ABI::Windows::UI::Color* color) noexcept try
 {
-    if (colorString._Starts_with("#"))
+    if (colorString.front() == '#')
     {
         // Get the pure hex value (without #)
         std::string hexColorString = colorString.substr(1, std::string::npos);
@@ -1051,7 +1051,7 @@ HRESULT GetFontWeight(_In_ ABI::AdaptiveNamespace::IAdaptiveFontWeightsConfig* w
 }
 CATCH_RETURN;
 
-HRESULT StringToJsonObject(const std::string inputString, _COM_Outptr_ IJsonObject** result)
+HRESULT StringToJsonObject(const std::string& inputString, _COM_Outptr_ IJsonObject** result)
 {
     std::wstring asWstring = StringToWstring(inputString);
     return HStringToJsonObject(HStringReference(asWstring.c_str()).Get(), result);
@@ -1127,7 +1127,7 @@ HRESULT JsonValueToHString(_In_ IJsonValue* inputJsonValue, _Outptr_ HSTRING* re
     return (localInputJsonValue->Stringify(result));
 }
 
-HRESULT JsonCppToJsonObject(Json::Value jsonCppValue, _COM_Outptr_ IJsonObject** result)
+HRESULT JsonCppToJsonObject(const Json::Value& jsonCppValue, _COM_Outptr_ IJsonObject** result)
 {
     Json::FastWriter fastWriter;
     std::string jsonString = fastWriter.write(jsonCppValue);
@@ -1287,7 +1287,7 @@ HRESULT AdaptiveWarningsToSharedWarnings(_In_ ABI::Windows::Foundation::Collecti
     return S_OK;
 }
 
-Color GenerateLighterColor(Color originalColor)
+Color GenerateLighterColor(const Color& originalColor)
 {
     const double lightIncrement = 0.25;
 

@@ -6,11 +6,10 @@
 		{
 			"type": "TextBlock",
 			"text": "3 results for 3d printer filament",
-			"bold": true,
+			"weight": "bolder",
 			"wrap": true,
-			"size": "large",
-			"horizontalAlignment": "center"
-        },
+			"size": "large"
+		},
 		{
 			"type": "Input.ChoiceSet",
 			"id": "filament",
@@ -59,7 +58,7 @@
 		"type": "TextBlock",
 		"text": "Specify Filament Type to ABS",
 		"size": "medium",
-		"bold": true
+		"weight": "bolder"
 	},
 	{
 		"type": "Input.Toggle",

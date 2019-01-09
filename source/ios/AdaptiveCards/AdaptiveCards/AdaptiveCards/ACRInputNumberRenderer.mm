@@ -11,6 +11,7 @@
 #import "NumberInput.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "Util.h"
 
 @implementation ACRInputNumberRenderer
 
@@ -75,6 +76,8 @@
     [ACRBaseCardElementRenderer applyLayoutStyle:format viewsMap:viewsMap];
 
     [inputs addObject:numInput];
+
+    configVisibility(numInput, elem);
 
     return numInput;
 }

@@ -1655,11 +1655,11 @@ namespace AdaptiveNamespace
                            hostConfig);
     }
 
-    HRESULT SetTextOnXamlTextBlock(_In_ IAdaptiveRenderContext* renderContext,
-                                   _In_ HSTRING textIn,
-                                   ABI::AdaptiveNamespace::FontStyle fontStyle,
-                                   _In_ HSTRING language,
-                                   _In_ ITextBlock* textBlock)
+    static HRESULT SetTextOnXamlTextBlock(_In_ IAdaptiveRenderContext* renderContext,
+                                          _In_ HSTRING textIn,
+                                          ABI::AdaptiveNamespace::FontStyle fontStyle,
+                                          _In_ HSTRING language,
+                                          _In_ ITextBlock* textBlock)
     {
         ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> inlines;
         RETURN_IF_FAILED(textBlock->get_Inlines(inlines.GetAddressOf()));
@@ -2758,7 +2758,7 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(xamlGrid.CopyTo(imageSetControl));
     }
 
-    std::vector<std::string> GetChoiceSetValueVector(_In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput)
+    static std::vector<std::string> GetChoiceSetValueVector(_In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput)
     {
         HString value;
         THROW_IF_FAILED(adaptiveChoiceSetInput->get_Value(value.GetAddressOf()));
@@ -2777,7 +2777,7 @@ namespace AdaptiveNamespace
         return values;
     }
 
-    bool IsChoiceSelected(std::vector<std::string> selectedValues, _In_ IAdaptiveChoiceInput* choice)
+    static bool IsChoiceSelected(std::vector<std::string> selectedValues, _In_ IAdaptiveChoiceInput* choice)
     {
         HString value;
         THROW_IF_FAILED(choice->get_Value(value.GetAddressOf()));
@@ -2921,9 +2921,9 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(stackPanel.CopyTo(choiceInputSet));
     }
 
-    void AddInputValueToContext(_In_ IAdaptiveRenderContext* renderContext,
-                                _In_ IAdaptiveCardElement* adaptiveCardElement,
-                                _In_ IUIElement* inputUiElement)
+    static void AddInputValueToContext(_In_ IAdaptiveRenderContext* renderContext,
+                                       _In_ IAdaptiveCardElement* adaptiveCardElement,
+                                       _In_ IUIElement* inputUiElement)
     {
         ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
         ComPtr<IAdaptiveInputElement> inputElement;
@@ -3070,9 +3070,9 @@ namespace AdaptiveNamespace
         AddInputValueToContext(renderContext, adaptiveCardElement, *numberInputControl);
     }
 
-    HRESULT HandleKeydownForInlineAction(_In_ IKeyRoutedEventArgs* args,
-                                         _In_ IAdaptiveActionInvoker* actionInvoker,
-                                         _In_ IAdaptiveActionElement* inlineAction)
+    static HRESULT HandleKeydownForInlineAction(_In_ IKeyRoutedEventArgs* args,
+                                                _In_ IAdaptiveActionInvoker* actionInvoker,
+                                                _In_ IAdaptiveActionElement* inlineAction)
     {
         ABI::Windows::System::VirtualKey key;
         RETURN_IF_FAILED(args->get_Key(&key));
@@ -3102,10 +3102,10 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    bool WarnForInlineShowCard(_In_ IAdaptiveRenderContext* renderContext,
-                               _In_ IAdaptiveHostConfig* hostConfig,
-                               _In_ IAdaptiveActionElement* action,
-                               std::wstring warning)
+    static bool WarnForInlineShowCard(_In_ IAdaptiveRenderContext* renderContext,
+                                      _In_ IAdaptiveHostConfig* hostConfig,
+                                      _In_ IAdaptiveActionElement* action,
+                                      const std::wstring& warning)
     {
         if (action != nullptr)
         {

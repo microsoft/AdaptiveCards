@@ -18,6 +18,7 @@
 #import "ACOBaseCardElementPrivate.h"
 #import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRContentHoldingUIView.h"
+#import "Util.h"
 
 @implementation ACRMediaRenderer
 
@@ -136,6 +137,8 @@
         [view addGestureRecognizer:recognizer];
         view.userInteractionEnabled = YES;
     }
+
+    configVisibility(view, elem);
 
     return view;
 }
