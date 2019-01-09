@@ -14,3 +14,7 @@ body {
     margin: 0;
     padding: 0;
 }
+
+#designerRootHost {
+	height: 100vh;
+}

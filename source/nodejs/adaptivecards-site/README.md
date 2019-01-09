@@ -43,11 +43,11 @@ npm install
 ## Generate
 
 ```console
-hexo generate
+npm run build
 ```
 
 ## Run
 
 ```console
-hexo server
+npm start
 ```
