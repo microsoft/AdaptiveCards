@@ -16,6 +16,7 @@ UnknownElement::UnknownElement() : BaseCardElement(CardElementType::Unknown)
 std::shared_ptr<BaseCardElement> UnknownElementParser::Deserialize(ParseContext&, const Json::Value& json)
 {
     std::shared_ptr<UnknownElement> unknown = BaseCardElement::Deserialize<UnknownElement>(json);
+    unknown->SetElementTypeString(std::move(ParseUtil::GetTypeAsString(json)));
     return unknown;
 }
 

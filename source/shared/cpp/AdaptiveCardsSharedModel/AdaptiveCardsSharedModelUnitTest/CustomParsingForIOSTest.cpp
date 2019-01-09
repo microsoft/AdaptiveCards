@@ -33,6 +33,8 @@ namespace AdaptiveCardsSharedModelUnitTest
             }";
             std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
             std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
+            Assert::AreEqual(elem->GetElementTypeString(), std::string("Random"));
+
             std::shared_ptr<UnknownElement> delegate = std::static_pointer_cast<UnknownElement>(elem);
             Json::Value value = delegate->GetAdditionalProperties();
             Json::FastWriter fastWriter;
@@ -104,6 +106,8 @@ namespace AdaptiveCardsSharedModelUnitTest
             }";
             std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
             std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
+            Assert::AreEqual(elem->GetElementTypeString(), std::string("RadioButton"));
+
             std::shared_ptr<UnknownElement> delegate = std::static_pointer_cast<UnknownElement>(elem);
             Json::Value value = delegate->GetAdditionalProperties();
             Json::FastWriter fastWriter;
