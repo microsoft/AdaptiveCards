@@ -109,6 +109,106 @@
 					"subtle": "#DDe69500"
 				}
 			}
+		},
+		"accent": {
+			"backgroundColor": "#882E89FC",
+			"foregroundColors": {
+				"default": {
+					"default": "#FF333333",
+					"subtle": "#EE333333"
+				},
+				"accent": {
+					"default": "#FF2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"attention": {
+					"default": "#FFcc3300",
+					"subtle": "#DDcc3300"
+				},
+				"good": {
+					"default": "#FF54a254",
+					"subtle": "#DD54a254"
+				},
+				"warning": {
+					"default": "#FFe69500",
+					"subtle": "#DDe69500"
+				}
+			}
+		},
+		"attention": {
+			"backgroundColor": "#DDcc3300",
+			"foregroundColors": {
+				"default": {
+					"default": "#FF333333",
+					"subtle": "#EE333333"
+				},
+				"accent": {
+					"default": "#FF2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"attention": {
+					"default": "#FFcc3300",
+					"subtle": "#DDcc3300"
+				},
+				"good": {
+					"default": "#FF54a254",
+					"subtle": "#DD54a254"
+				},
+				"warning": {
+					"default": "#FFe69500",
+					"subtle": "#DDe69500"
+				}
+			}
+		},
+		"good": {
+			"backgroundColor": "#DD54a254",
+			"foregroundColors": {
+				"default": {
+					"default": "#FF333333",
+					"subtle": "#EE333333"
+				},
+				"accent": {
+					"default": "#FF2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"attention": {
+					"default": "#FFcc3300",
+					"subtle": "#DDcc3300"
+				},
+				"good": {
+					"default": "#FF54a254",
+					"subtle": "#DD54a254"
+				},
+				"warning": {
+					"default": "#FFe69500",
+					"subtle": "#DDe69500"
+				}
+			}
+		},
+		"warning": {
+			"backgroundColor": "#DDe69500",
+			"foregroundColors": {
+				"default": {
+					"default": "#FF333333",
+					"subtle": "#EE333333"
+				},
+				"accent": {
+					"default": "#FF2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"attention": {
+					"default": "#FFcc3300",
+					"subtle": "#DDcc3300"
+				},
+				"good": {
+					"default": "#FF54a254",
+					"subtle": "#DD54a254"
+				},
+				"warning": {
+					"default": "#FFe69500",
+					"subtle": "#DDe69500"
+				}
+			}
 		}
 	},
 	"imageSizes": {
