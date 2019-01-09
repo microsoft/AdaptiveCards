@@ -83,7 +83,7 @@ export class Media extends React.Component {
                                         style={styles.nativeVideoControls}
                                     />
                                 }
-                                {(!this.state.onLoad && this.payload.poster) && <Image source={{ uri: this.payload.poster }} style={styles.fullScreen}></Image>}
+                                {(!this.state.onLoad && this.payload.poster) && <Image source={{ uri: this.payload.poster }} style={styles.nativeVideoControls}></Image>}
                             </View>
                         </ElementWrapper>
                     )
@@ -98,17 +98,15 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: Constants.CenterString,
         alignItems: Constants.CenterString,
-        backgroundColor: Constants.blackColor,
+        backgroundColor: Constants.BlackColor,
+        height: 300,
+        width: Constants.FullWidth,
     },
-    fullScreen: {
+    nativeVideoControls: {
         position: 'absolute',
         top: 0,
         left: 0,
         bottom: 0,
         right: 0,
-    },
-    nativeVideoControls: {
-        height: 300,
-        width: Constants.FullWidth,
     }
 });
