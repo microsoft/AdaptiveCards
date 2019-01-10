@@ -24,6 +24,7 @@
 #import "ACRContainerRenderer.h"
 #import "ACRColumnSetRenderer.h"
 #import "ACRColumnRenderer.h"
+#import "ACOBaseActionElement.h"
 #import "ACRActionOpenURLRenderer.h"
 #import "ACRActionShowCardRenderer.h"
 #import "ACRActionSubmitRenderer.h"
@@ -39,6 +40,8 @@ using namespace AdaptiveCards;
 {
     NSDictionary *typeToRendererDict;
     NSDictionary *actionRendererDict;
+    
+    NSMutableDictionary<NSString*, NSObject<ACOIBaseActionElementParser>*> *_actionParserDict;
     id<ACRIBaseActionSetRenderer> _actionSetRenderer;
     NSMutableDictionary *overridenBaseElementRendererList;
     NSMutableDictionary *overridenBaseActionRendererList;
@@ -75,6 +78,9 @@ using namespace AdaptiveCards;
              [ACRActionSubmitRenderer   getInstance], [NSNumber numberWithInt:(int)ActionType::Submit],
              [ACRActionToggleVisibilityRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::ToggleVisibility],
              nil];
+
+        _actionParserDict = [[NSMutableDictionary alloc] init];
+
         _actionSetRenderer = [ACRActionSetRenderer getInstance];
         _defaultActionSetRenderer = _actionSetRenderer;
 
@@ -118,7 +124,7 @@ using namespace AdaptiveCards;
     _actionSetRenderer = actionsetRenderer;
 }
 
-- (void) setActionRenderer:(ACRBaseActionElementRenderer *)renderer cardElementType:(NSNumber *)cardElementType
+- (void)setActionRenderer:(ACRBaseActionElementRenderer *)renderer cardElementType:(NSNumber *)cardElementType
 {
     if(!renderer) {
         [overridenBaseActionRendererList removeObjectForKey:cardElementType];
@@ -127,7 +133,7 @@ using namespace AdaptiveCards;
     }
 }
 
-- (void) setBaseCardElementRenderer:(ACRBaseCardElementRenderer *)renderer cardElementType:(ACRCardElementType)cardElementType
+- (void)setBaseCardElementRenderer:(ACRBaseCardElementRenderer *)renderer cardElementType:(ACRCardElementType)cardElementType
 {
     if(!renderer) {
         [overridenBaseElementRendererList removeObjectForKey:[NSNumber numberWithInteger:cardElementType]];
@@ -136,13 +142,29 @@ using namespace AdaptiveCards;
     }
 }
 
-- (void) setCustomElementParser:(NSObject<ACOIBaseCardElementParser> *)customElementParser
+- (void)setCustomElementParser:(NSObject<ACOIBaseCardElementParser> *)customElementParser
 {
     ACRCustomRenderer *customRenderer = [ACRCustomRenderer getInstance];
     customRenderer.customElementParser = customElementParser;
 }
 
-- (BOOL) isActionRendererOverriden:(NSNumber *)cardElementType
+- (void)setCustomActionElementParser:(NSString *)key parser:(NSObject<ACOIBaseActionElementParser> *)parser
+{
+    _actionParserDict[key] = parser;
+}
+
+- (id<ACOIBaseActionElementParser>)getCustomActionElementParser:(NSString *)key
+{
+    return _actionParserDict[key];
+}
+
+- (BOOL)hasCustomActionElementParser
+{
+    return [_actionParserDict count] != 0;
+}
+
+
+- (BOOL)isActionRendererOverriden:(NSNumber *)cardElementType
 {
     if([overridenBaseActionRendererList objectForKey:cardElementType]){
         return YES;
@@ -150,7 +172,7 @@ using namespace AdaptiveCards;
     return NO;
 }
 
-- (BOOL) isElementRendererOverriden:(ACRCardElementType)cardElementType
+- (BOOL)isElementRendererOverriden:(ACRCardElementType)cardElementType
 {
     if([overridenBaseElementRendererList objectForKey:[NSNumber numberWithInteger:cardElementType]]){
         return YES;
