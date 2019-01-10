@@ -2303,10 +2303,12 @@ export class ToggleInput extends Input {
 			label.hostConfig = this.hostConfig;
 			label.text = Utils.isNullOrEmpty(this.title) ? this.getJsonTypeName() : this.title;
 			label.useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
+			label.wrap = this.wrap;
 
 			let labelElement = label.render();
 			labelElement.style.display = "inline-block";
 			labelElement.style.flex = "1 1 auto";
+			labelElement.style.marginLeft = "6px";
 			labelElement.style.verticalAlign = "middle";
 
 			let spacerElement = document.createElement("div");
@@ -2321,6 +2323,7 @@ export class ToggleInput extends Input {
 
 	valueOn: string = "true";
 	valueOff: string = "false";
+	wrap: boolean = false;
 
 	getJsonTypeName(): string {
 		return "Input.Toggle";
@@ -2331,6 +2334,7 @@ export class ToggleInput extends Input {
 
 		Utils.setProperty(result, "valueOn", this.valueOn, "true");
 		Utils.setProperty(result, "valueOff", this.valueOff, "false");
+		Utils.setProperty(result, "wrap", this.wrap);
 
 		return result;
 	}
@@ -2342,6 +2346,7 @@ export class ToggleInput extends Input {
 
 		this.valueOn = Utils.getValueOrDefault<string>(json["valueOn"], this.valueOn);
 		this.valueOff = Utils.getValueOrDefault<string>(json["valueOff"], this.valueOff);
+		this.wrap = json["wrap"];
 	}
 
 	get value(): string {
@@ -2455,6 +2460,7 @@ export class ChoiceSetInput extends Input {
 					label.hostConfig = this.hostConfig;
 					label.text = Utils.isNullOrEmpty(this.choices[i].title) ? "Choice " + i : this.choices[i].title;
 					label.useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
+					label.wrap = this.wrap;
 
 					let labelElement = label.render();
 					labelElement.style.display = "inline-block";
@@ -2515,11 +2521,12 @@ export class ChoiceSetInput extends Input {
 				label.hostConfig = this.hostConfig;
 				label.text = Utils.isNullOrEmpty(this.choices[i].title) ? "Choice " + i : this.choices[i].title;
 				label.useMarkdown = AdaptiveCard.useMarkdownInRadioButtonAndCheckbox;
+				label.wrap = this.wrap;
 
 				let labelElement = label.render();
 				labelElement.style.display = "inline-block";
 				labelElement.style.flex = "1 1 auto";
-				// labelElement.style.marginLeft = "6px";
+				labelElement.style.marginLeft = "6px";
 				labelElement.style.verticalAlign = "middle";
 
 				let spacerElement = document.createElement("div");
@@ -2544,6 +2551,7 @@ export class ChoiceSetInput extends Input {
 	isCompact: boolean;
 	isMultiSelect: boolean;
 	placeholder: string;
+	wrap: boolean = false;
 
 	getJsonTypeName(): string {
 		return "Input.ChoiceSet";
@@ -2569,6 +2577,7 @@ export class ChoiceSetInput extends Input {
 		}
 
 		Utils.setProperty(result, "isMultiSelect", this.isMultiSelect, false);
+		Utils.setProperty(result, "wrap", this.wrap, false);
 
 		return result;
 	}
@@ -2611,6 +2620,8 @@ export class ChoiceSetInput extends Input {
 				this.choices.push(choice);
 			}
 		}
+
+		this.wrap = json["wrap"];
 	}
 
 	get value(): string {

@@ -1923,6 +1923,14 @@ export class ToggleInputPeer extends InputPeer<Adaptive.ToggleInput> {
 
             this.changed(false);
         }
+
+        let wrap = addLabelAndInput(card, "Wrap:", Adaptive.ToggleInput);
+        wrap.input.defaultValue = String(this.cardElement.wrap);
+        wrap.input.onValueChanged = () => {
+            this.cardElement.wrap = wrap.input.value == "true";
+
+            this.changed(false);
+        }
     }
 }
 
@@ -1952,6 +1960,16 @@ export class ChoiceSetInputPeer extends InputPeer<Adaptive.ChoiceSetInput> {
             isCompact.input.defaultValue = String(this.cardElement.isCompact);
             isCompact.input.onValueChanged = () => {
                 this.cardElement.isCompact = isCompact.input.value == "true";
+
+                this.changed(true);
+            }
+        }
+
+        if (!this.cardElement.isCompact) {
+            let wrap = addLabelAndInput(card, "Wrap:", Adaptive.ToggleInput);
+            wrap.input.defaultValue = String(this.cardElement.wrap);
+            wrap.input.onValueChanged = () => {
+                this.cardElement.wrap = wrap.input.value == "true";
 
                 this.changed(false);
             }
