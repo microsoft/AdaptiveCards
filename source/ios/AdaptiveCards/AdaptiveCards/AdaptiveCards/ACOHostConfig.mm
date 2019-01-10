@@ -150,7 +150,7 @@ using namespace AdaptiveCards;
         }
         default:{
             str = (isSubtle) ?
-                &config.dark.subtleColor: &config.dark.defaultColor;
+                &config.defaultColor.subtleColor: &config.defaultColor.defaultColor;
             break;
         }
     }
@@ -332,7 +332,7 @@ using namespace AdaptiveCards;
 {
     if((hexColorCode.length() < 2) || (hexColorCode.at(0) != '#') || !isxdigit(hexColorCode.at(1)) ||
        ((hexColorCode.length() != 7) && hexColorCode.length() != 9)) {
-        NSLog(@"invalid hexcolor code is given for background color: %@",
+        NSLog(@"invalid hexcolor code is given: %@",
             [NSString stringWithCString:hexColorCode.c_str() encoding:NSUTF8StringEncoding]);
         return UIColor.clearColor;
     }
