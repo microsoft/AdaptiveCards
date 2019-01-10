@@ -83,7 +83,7 @@ export class OutlookContainer extends HostContainer {
         }
 
         if (element instanceof Adaptive.Container && json["rtl"] != undefined) {
-            element.rtl = json["rtl"];
+            //element.rtl = json["rtl"];
         }
 
         if (element instanceof Adaptive.AdaptiveCard) {

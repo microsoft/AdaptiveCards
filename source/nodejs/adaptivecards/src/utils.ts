@@ -7,344 +7,344 @@ import * as Enums from "./enums";
  * @link http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/21963136#21963136
  **/
 export class UUID {
-    private static lut = [];
+	private static lut = [];
 
-    static generate(): string {
-        let d0 = Math.random() * 0xffffffff | 0;
-        let d1 = Math.random() * 0xffffffff | 0;
-        let d2 = Math.random() * 0xffffffff | 0;
-        let d3 = Math.random() * 0xffffffff | 0;
+	static generate(): string {
+		let d0 = Math.random() * 0xffffffff | 0;
+		let d1 = Math.random() * 0xffffffff | 0;
+		let d2 = Math.random() * 0xffffffff | 0;
+		let d3 = Math.random() * 0xffffffff | 0;
 
-        return UUID.lut[d0 & 0xff] + UUID.lut[d0 >> 8 & 0xff] + UUID.lut[d0 >> 16 & 0xff] + UUID.lut[d0 >> 24 & 0xff] + '-' +
-            UUID.lut[d1 & 0xff] + UUID.lut[d1 >> 8 & 0xff] + '-' + UUID.lut[d1 >> 16 & 0x0f | 0x40] + UUID.lut[d1 >> 24 & 0xff] + '-' +
-            UUID.lut[d2 & 0x3f | 0x80] + UUID.lut[d2 >> 8 & 0xff] + '-' + UUID.lut[d2 >> 16 & 0xff] + UUID.lut[d2 >> 24 & 0xff] +
-            UUID.lut[d3 & 0xff] + UUID.lut[d3 >> 8 & 0xff] + UUID.lut[d3 >> 16 & 0xff] + UUID.lut[d3 >> 24 & 0xff];
-    }
+		return UUID.lut[d0 & 0xff] + UUID.lut[d0 >> 8 & 0xff] + UUID.lut[d0 >> 16 & 0xff] + UUID.lut[d0 >> 24 & 0xff] + '-' +
+			UUID.lut[d1 & 0xff] + UUID.lut[d1 >> 8 & 0xff] + '-' + UUID.lut[d1 >> 16 & 0x0f | 0x40] + UUID.lut[d1 >> 24 & 0xff] + '-' +
+			UUID.lut[d2 & 0x3f | 0x80] + UUID.lut[d2 >> 8 & 0xff] + '-' + UUID.lut[d2 >> 16 & 0xff] + UUID.lut[d2 >> 24 & 0xff] +
+			UUID.lut[d3 & 0xff] + UUID.lut[d3 >> 8 & 0xff] + UUID.lut[d3 >> 16 & 0xff] + UUID.lut[d3 >> 24 & 0xff];
+	}
 
-    static initialize() {
-        for (let i = 0; i < 256; i++) {
-            UUID.lut[i] = (i < 16 ? '0' : '') + i.toString(16);
-        }
-    }
+	static initialize() {
+		for (let i = 0; i < 256; i++) {
+			UUID.lut[i] = (i < 16 ? '0' : '') + i.toString(16);
+		}
+	}
 }
 
 UUID.initialize();
 
 export const ContentTypes = {
-    applicationJson : "application/json",
-    applicationXWwwFormUrlencoded : "application/x-www-form-urlencoded"
+	applicationJson: "application/json",
+	applicationXWwwFormUrlencoded: "application/x-www-form-urlencoded"
 }
 
 export interface ISeparationDefinition {
-    spacing: number,
-    lineThickness?: number,
-    lineColor?: string
+	spacing: number,
+	lineThickness?: number,
+	lineColor?: string
 }
 
 export interface IInput {
-    id: string;
-    value: string;
+	id: string;
+	value: string;
 }
 
 export function getValueOrDefault<T>(obj: any, defaultValue: T): T {
-    return obj ? <T>obj : defaultValue;
+	return obj ? <T>obj : defaultValue;
 }
 
 export function isNullOrEmpty(value: string): boolean {
-    return value === undefined || value === null || value === "";
+	return value === undefined || value === null || value === "";
 }
 
 export function appendChild(node: Node, child: Node) {
-    if (child != null && child != undefined) {
-        node.appendChild(child);
-    }
+	if (child != null && child != undefined) {
+		node.appendChild(child);
+	}
 }
 
 export function setProperty(target: any, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
-    if (propertyValue && (!defaultValue || defaultValue !== propertyValue)) {
-        target[propertyName] = propertyValue;
-    }
+	if (propertyValue && (!defaultValue || defaultValue !== propertyValue)) {
+		target[propertyName] = propertyValue;
+	}
 }
 
 export function setEnumProperty(enumType: { [s: number]: string }, target: any, propertyName: string, propertyValue: number, defaultValue?: number) {
-    if (defaultValue === undefined || defaultValue !== propertyValue) {
-        target[propertyName] = enumType[propertyValue];
-    }
+	if (defaultValue === undefined || defaultValue !== propertyValue) {
+		target[propertyName] = enumType[propertyValue];
+	}
 }
 
 export function getEnumValueOrDefault(targetEnum: { [s: number]: string }, name: string, defaultValue: number): number {
-    if (isNullOrEmpty(name)) {
-        return defaultValue;
-    }
+	if (isNullOrEmpty(name)) {
+		return defaultValue;
+	}
 
-    for (var key in targetEnum) {
-        let isValueProperty = parseInt(key, 10) >= 0
+	for (var key in targetEnum) {
+		let isValueProperty = parseInt(key, 10) >= 0
 
-        if (isValueProperty) {
-            let value = targetEnum[key];
+		if (isValueProperty) {
+			let value = targetEnum[key];
 
-            if (value && typeof value === "string") {
-                if (value.toLowerCase() === name.toLowerCase()) {
-                    return parseInt(key, 10);
-                }
-            }
-        }
-    }
+			if (value && typeof value === "string") {
+				if (value.toLowerCase() === name.toLowerCase()) {
+					return parseInt(key, 10);
+				}
+			}
+		}
+	}
 
-    return defaultValue;
+	return defaultValue;
 }
 
 export function parseHostConfigEnum(targetEnum: { [s: number]: string }, value: string | number, defaultValue: any): any {
-    if (typeof value === "string") {
-        return getEnumValueOrDefault(targetEnum, value, defaultValue);
-    } else if (typeof value === "number") {
-        return getValueOrDefault<typeof targetEnum>(value, defaultValue);
-    } else {
-        return defaultValue;
-    }
+	if (typeof value === "string") {
+		return getEnumValueOrDefault(targetEnum, value, defaultValue);
+	} else if (typeof value === "number") {
+		return getValueOrDefault<typeof targetEnum>(value, defaultValue);
+	} else {
+		return defaultValue;
+	}
 }
 
 export function renderSeparation(separationDefinition: ISeparationDefinition, orientation: Enums.Orientation): HTMLElement {
-    if (separationDefinition.spacing > 0 || separationDefinition.lineThickness > 0) {
-        var separator = document.createElement("div");
+	if (separationDefinition.spacing > 0 || separationDefinition.lineThickness > 0) {
+		var separator = document.createElement("div");
 
-        if (orientation == Enums.Orientation.Horizontal) {
-            if (separationDefinition.lineThickness) {
-                separator.style.marginTop = (separationDefinition.spacing / 2) + "px";
-                separator.style.paddingTop = (separationDefinition.spacing / 2) + "px";
-                separator.style.borderTop = separationDefinition.lineThickness + "px solid " + stringToCssColor(separationDefinition.lineColor);
-            }
-            else {
-                separator.style.height = separationDefinition.spacing + "px";
-            }
-        }
-        else {
-            if (separationDefinition.lineThickness) {
-                separator.style.marginLeft = (separationDefinition.spacing / 2) + "px";
-                separator.style.paddingLeft = (separationDefinition.spacing / 2) + "px";
-                separator.style.borderLeft = separationDefinition.lineThickness + "px solid " + stringToCssColor(separationDefinition.lineColor);
-            }
-            else {
-                separator.style.width = separationDefinition.spacing + "px";
-            }
-        }
+		if (orientation == Enums.Orientation.Horizontal) {
+			if (separationDefinition.lineThickness) {
+				separator.style.marginTop = (separationDefinition.spacing / 2) + "px";
+				separator.style.paddingTop = (separationDefinition.spacing / 2) + "px";
+				separator.style.borderTop = separationDefinition.lineThickness + "px solid " + stringToCssColor(separationDefinition.lineColor);
+			}
+			else {
+				separator.style.height = separationDefinition.spacing + "px";
+			}
+		}
+		else {
+			if (separationDefinition.lineThickness) {
+				separator.style.marginLeft = (separationDefinition.spacing / 2) + "px";
+				separator.style.paddingLeft = (separationDefinition.spacing / 2) + "px";
+				separator.style.borderLeft = separationDefinition.lineThickness + "px solid " + stringToCssColor(separationDefinition.lineColor);
+			}
+			else {
+				separator.style.width = separationDefinition.spacing + "px";
+			}
+		}
 
-        separator.style.overflow = "hidden";
+		separator.style.overflow = "hidden";
 
-        return separator;
-    }
-    else {
-        return null;
-    }
+		return separator;
+	}
+	else {
+		return null;
+	}
 }
 
 export function stringToCssColor(color: string): string {
-    var regEx = /#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})?/gi;
+	var regEx = /#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})?/gi;
 
-    var matches = regEx.exec(color);
+	var matches = regEx.exec(color);
 
-    if (matches && matches[4]) {
-        var a = parseInt(matches[1], 16) / 255;
-        var r = parseInt(matches[2], 16);
-        var g = parseInt(matches[3], 16);
-        var b = parseInt(matches[4], 16);
+	if (matches && matches[4]) {
+		var a = parseInt(matches[1], 16) / 255;
+		var r = parseInt(matches[2], 16);
+		var g = parseInt(matches[3], 16);
+		var b = parseInt(matches[4], 16);
 
-        return "rgba(" + r + "," + g + "," + b + "," + a + ")";
-    }
-    else {
-        return color;
-    }
+		return "rgba(" + r + "," + g + "," + b + "," + a + ")";
+	}
+	else {
+		return color;
+	}
 }
 
 export class StringWithSubstitutions {
-    private _isProcessed: boolean = false;
-    private _original: string = null;
-    private _processed: string = null;
+	private _isProcessed: boolean = false;
+	private _original: string = null;
+	private _processed: string = null;
 
-    substituteInputValues(inputs: Array<IInput>, contentType: string) {
-        this._processed = this._original;
+	substituteInputValues(inputs: Array<IInput>, contentType: string) {
+		this._processed = this._original;
 
-        var regEx = /\{{2}([a-z0-9_$@]+).value\}{2}/gi;
-        var matches;
+		var regEx = /\{{2}([a-z0-9_$@]+).value\}{2}/gi;
+		var matches;
 
-        while ((matches = regEx.exec(this._original)) != null) {
-            var matchedInput: IInput = null;
+		while ((matches = regEx.exec(this._original)) != null) {
+			var matchedInput: IInput = null;
 
-            for (var i = 0; i < inputs.length; i++) {
-                if (inputs[i].id.toLowerCase() == matches[1].toLowerCase()) {
-                    matchedInput = inputs[i];
-                    break;
-                }
-            }
+			for (var i = 0; i < inputs.length; i++) {
+				if (inputs[i].id.toLowerCase() == matches[1].toLowerCase()) {
+					matchedInput = inputs[i];
+					break;
+				}
+			}
 
-            if (matchedInput) {
-                var valueForReplace = "";
+			if (matchedInput) {
+				var valueForReplace = "";
 
-                if (matchedInput.value) {
-                    valueForReplace = matchedInput.value;
-                }
+				if (matchedInput.value) {
+					valueForReplace = matchedInput.value;
+				}
 
-                if (contentType === ContentTypes.applicationJson) {
-                    valueForReplace = JSON.stringify(valueForReplace);
-                    valueForReplace = valueForReplace.slice(1, -1);
-                }
-                else if (contentType === ContentTypes.applicationXWwwFormUrlencoded) {
-                    valueForReplace = encodeURIComponent(valueForReplace);
-                }
+				if (contentType === ContentTypes.applicationJson) {
+					valueForReplace = JSON.stringify(valueForReplace);
+					valueForReplace = valueForReplace.slice(1, -1);
+				}
+				else if (contentType === ContentTypes.applicationXWwwFormUrlencoded) {
+					valueForReplace = encodeURIComponent(valueForReplace);
+				}
 
-                this._processed = this._processed.replace(matches[0], valueForReplace);
-            }
-        };
+				this._processed = this._processed.replace(matches[0], valueForReplace);
+			}
+		};
 
-        this._isProcessed = true;
-    }
+		this._isProcessed = true;
+	}
 
-    getOriginal(): string {
-        return this._original;
-    }
+	getOriginal(): string {
+		return this._original;
+	}
 
-    get(): string {
-        if (!this._isProcessed) {
-            return this._original;
-        }
-        else {
-            return this._processed;
-        }
-    }
+	get(): string {
+		if (!this._isProcessed) {
+			return this._original;
+		}
+		else {
+			return this._processed;
+		}
+	}
 
-    set(value: string) {
-        this._original = value;
-        this._isProcessed = false;
-    }
+	set(value: string) {
+		this._original = value;
+		this._isProcessed = false;
+	}
 }
 
 export class SizeAndUnit {
-    physicalSize: number;
-    unit: Enums.SizeUnit;
+	physicalSize: number;
+	unit: Enums.SizeUnit;
 
-    static parse(input: any): SizeAndUnit {
-        let result = new SizeAndUnit(0, Enums.SizeUnit.Weight);
+	static parse(input: any): SizeAndUnit {
+		let result = new SizeAndUnit(0, Enums.SizeUnit.Weight);
 
-        let regExp = /^([0-9]+)(px|\*)?$/g;
-        let matches = regExp.exec(input);
+		let regExp = /^([0-9]+)(px|\*)?$/g;
+		let matches = regExp.exec(input);
 
-        if (matches && matches.length >= 2) {
-            result.physicalSize = parseInt(matches[1]);
+		if (matches && matches.length >= 2) {
+			result.physicalSize = parseInt(matches[1]);
 
-            if (matches.length == 3) {
-                if (matches[2] == "px") {
-                    result.unit = Enums.SizeUnit.Pixel;
-                }
-            }
+			if (matches.length == 3) {
+				if (matches[2] == "px") {
+					result.unit = Enums.SizeUnit.Pixel;
+				}
+			}
 
-            return result;
-        }
+			return result;
+		}
 
-        throw new Error("Invalid size: " + input);
-    }
+		throw new Error("Invalid size: " + input);
+	}
 
-    constructor(physicalSize: number, unit: Enums.SizeUnit) {
-        this.physicalSize = physicalSize;
-        this.unit = unit;
-    }
+	constructor(physicalSize: number, unit: Enums.SizeUnit) {
+		this.physicalSize = physicalSize;
+		this.unit = unit;
+	}
 }
 
 export function truncate(element: HTMLElement,
-                         maxHeight: number,
-                         lineHeight?: number) {
-    var fits = () => {
-        // Allow a one pixel overflow to account for rounding differences
-        // between browsers
-        return maxHeight - element.scrollHeight >= -1.0;
-    };
+	maxHeight: number,
+	lineHeight?: number) {
+	var fits = () => {
+		// Allow a one pixel overflow to account for rounding differences
+		// between browsers
+		return maxHeight - element.scrollHeight >= -1.0;
+	};
 
-    if (fits()) return;
+	if (fits()) return;
 
-    var fullText = element.innerHTML;
-    var truncateAt = (idx) => {
-        element.innerHTML = fullText.substring(0, idx) + '...';
-    }
+	var fullText = element.innerHTML;
+	var truncateAt = (idx) => {
+		element.innerHTML = fullText.substring(0, idx) + '...';
+	}
 
-    var breakableIndices = findBreakableIndices(fullText);
-    var lo = 0;
-    var hi = breakableIndices.length;
-    var bestBreakIdx = 0;
+	var breakableIndices = findBreakableIndices(fullText);
+	var lo = 0;
+	var hi = breakableIndices.length;
+	var bestBreakIdx = 0;
 
-    // Do a binary search for the longest string that fits
-    while (lo < hi) {
-        var mid = Math.floor((lo + hi) / 2);
-        truncateAt(breakableIndices[mid]);
+	// Do a binary search for the longest string that fits
+	while (lo < hi) {
+		var mid = Math.floor((lo + hi) / 2);
+		truncateAt(breakableIndices[mid]);
 
-        if (fits()) {
-            bestBreakIdx = breakableIndices[mid];
-            lo = mid + 1;
-        }
-        else {
-            hi = mid;
-        }
-    }
+		if (fits()) {
+			bestBreakIdx = breakableIndices[mid];
+			lo = mid + 1;
+		}
+		else {
+			hi = mid;
+		}
+	}
 
-    truncateAt(bestBreakIdx);
+	truncateAt(bestBreakIdx);
 
-    // If we have extra room, try to expand the string letter by letter
-    // (covers the case where we have to break in the middle of a long word)
-    if (lineHeight && maxHeight - element.scrollHeight >= lineHeight - 1.0) {
-        let idx = findNextCharacter(fullText, bestBreakIdx);
+	// If we have extra room, try to expand the string letter by letter
+	// (covers the case where we have to break in the middle of a long word)
+	if (lineHeight && maxHeight - element.scrollHeight >= lineHeight - 1.0) {
+		let idx = findNextCharacter(fullText, bestBreakIdx);
 
-        while (idx < fullText.length) {
-            truncateAt(idx);
+		while (idx < fullText.length) {
+			truncateAt(idx);
 
-            if (fits()) {
-                bestBreakIdx = idx;
-                idx = findNextCharacter(fullText, idx);
-            }
-            else {
-                break;
-            }
-        }
+			if (fits()) {
+				bestBreakIdx = idx;
+				idx = findNextCharacter(fullText, idx);
+			}
+			else {
+				break;
+			}
+		}
 
-        truncateAt(bestBreakIdx);
-    }
+		truncateAt(bestBreakIdx);
+	}
 }
 
 function findBreakableIndices(html: string): Array<number> {
-    var results: Array<number> = [];
-    var idx = findNextCharacter(html, -1);
+	var results: Array<number> = [];
+	var idx = findNextCharacter(html, -1);
 
-    while (idx < html.length) {
-        if (html[idx] == ' ') {
-            results.push(idx);
-        }
+	while (idx < html.length) {
+		if (html[idx] == ' ') {
+			results.push(idx);
+		}
 
-        idx = findNextCharacter(html, idx);
-    }
+		idx = findNextCharacter(html, idx);
+	}
 
-    return results;
+	return results;
 }
 
 function findNextCharacter(html: string, currIdx: number): number {
-    currIdx += 1;
+	currIdx += 1;
 
-    // If we found the start of an HTML tag, keep advancing until we get
-    // past it, so we don't end up truncating in the middle of the tag
-    while (currIdx < html.length && html[currIdx] == '<') {
-        while (currIdx < html.length && html[currIdx++] != '>');
-    }
+	// If we found the start of an HTML tag, keep advancing until we get
+	// past it, so we don't end up truncating in the middle of the tag
+	while (currIdx < html.length && html[currIdx] == '<') {
+		while (currIdx < html.length && html[currIdx++] != '>');
+	}
 
-    return currIdx;
+	return currIdx;
 }
 
 export function getFitStatus(element: HTMLElement, containerEnd: number): Enums.ContainerFitStatus {
-    var start = element.offsetTop;
-    var end = start + element.clientHeight;
+	var start = element.offsetTop;
+	var end = start + element.clientHeight;
 
-    if (end <= containerEnd) {
-        return Enums.ContainerFitStatus.FullyInContainer;
-    }
-    else if (start < containerEnd) {
-        return Enums.ContainerFitStatus.Overflowing;
-    }
-    else {
-        return Enums.ContainerFitStatus.FullyOutOfContainer;
-    }
+	if (end <= containerEnd) {
+		return Enums.ContainerFitStatus.FullyInContainer;
+	}
+	else if (start < containerEnd) {
+		return Enums.ContainerFitStatus.Overflowing;
+	}
+	else {
+		return Enums.ContainerFitStatus.FullyOutOfContainer;
+	}
 }

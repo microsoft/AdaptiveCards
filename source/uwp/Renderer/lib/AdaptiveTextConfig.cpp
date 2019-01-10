@@ -26,70 +26,70 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextConfig::get_Size(ABI::AdaptiveNamespace::TextSize* textSize)
+    HRESULT AdaptiveTextConfig::get_Size(_Out_ ABI::AdaptiveNamespace::TextSize* textSize)
     {
         *textSize = m_textSize;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextConfig::put_Size(ABI::AdaptiveNamespace::TextSize textSize)
+    HRESULT AdaptiveTextConfig::put_Size(ABI::AdaptiveNamespace::TextSize textSize)
     {
         m_textSize = textSize;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextConfig::get_Weight(ABI::AdaptiveNamespace::TextWeight* textWeight)
+    HRESULT AdaptiveTextConfig::get_Weight(_Out_ ABI::AdaptiveNamespace::TextWeight* textWeight)
     {
         *textWeight = m_textWeight;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextConfig::put_Weight(ABI::AdaptiveNamespace::TextWeight textWeight)
+    HRESULT AdaptiveTextConfig::put_Weight(ABI::AdaptiveNamespace::TextWeight textWeight)
     {
         m_textWeight = textWeight;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextConfig::get_Color(ABI::AdaptiveNamespace::ForegroundColor* textColor)
+    HRESULT AdaptiveTextConfig::get_Color(_Out_ ABI::AdaptiveNamespace::ForegroundColor* textColor)
     {
         *textColor = m_textColor;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextConfig::put_Color(ABI::AdaptiveNamespace::ForegroundColor textColor)
+    HRESULT AdaptiveTextConfig::put_Color(ABI::AdaptiveNamespace::ForegroundColor textColor)
     {
         m_textColor = textColor;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextConfig::get_IsSubtle(boolean* isSubtle)
+    HRESULT AdaptiveTextConfig::get_IsSubtle(_Out_ boolean* isSubtle)
     {
         *isSubtle = m_isSubtle;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextConfig::put_IsSubtle(boolean isSubtle)
+    HRESULT AdaptiveTextConfig::put_IsSubtle(boolean isSubtle)
     {
         m_isSubtle = isSubtle;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextConfig::get_Wrap(boolean* wrap)
+    HRESULT AdaptiveTextConfig::get_Wrap(_Out_ boolean* wrap)
     {
         *wrap = m_wrap;
         return S_OK;
     }
-    _Use_decl_annotations_ HRESULT AdaptiveTextConfig::put_Wrap(boolean wrap)
+    HRESULT AdaptiveTextConfig::put_Wrap(boolean wrap)
     {
         m_wrap = wrap;
         return S_OK;
     }
-    _Use_decl_annotations_ HRESULT AdaptiveTextConfig::get_MaxWidth(UINT32* maxWidth)
+    HRESULT AdaptiveTextConfig::get_MaxWidth(_Out_ UINT32* maxWidth)
     {
         *maxWidth = m_maxWidth;
         return S_OK;
     }
-    _Use_decl_annotations_ HRESULT AdaptiveTextConfig::put_MaxWidth(UINT32 maxWidth)
+    HRESULT AdaptiveTextConfig::put_MaxWidth(UINT32 maxWidth)
     {
         m_maxWidth = maxWidth;
         return S_OK;

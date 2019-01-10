@@ -74,6 +74,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::IsTrue(HorizontalAlignment::Center == image.GetHorizontalAlignment());
         Assert::IsTrue(ImageSize::Auto == image.GetImageSize());
         Assert::IsTrue(image.GetSeparator());
+        Assert::IsFalse(image.GetIsVisible());
 
         auto imageAction = std::static_pointer_cast<OpenUrlAction>(image.GetSelectAction());
         Assert::IsTrue((bool)imageAction);

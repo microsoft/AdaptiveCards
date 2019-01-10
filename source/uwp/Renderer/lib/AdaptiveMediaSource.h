@@ -11,13 +11,13 @@ namespace AdaptiveNamespace
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(_In_ const std::shared_ptr<AdaptiveSharedNamespace::MediaSource>& sharedMediaSource);
+        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::MediaSource>& sharedMediaSource);
 
         // IAdaptiveMediaSource
-        IFACEMETHODIMP get_MimeType(_Out_ HSTRING* mimeType);
+        IFACEMETHODIMP get_MimeType(_Outptr_ HSTRING* mimeType);
         IFACEMETHODIMP put_MimeType(_In_ HSTRING mimeType);
 
-        IFACEMETHODIMP get_Url(_Out_ HSTRING* url);
+        IFACEMETHODIMP get_Url(_Outptr_ HSTRING* url);
         IFACEMETHODIMP put_Url(_In_ HSTRING url);
 
         virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::MediaSource>& sharedModel);

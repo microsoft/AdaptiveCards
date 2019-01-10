@@ -1,4 +1,10 @@
 import { DropDown, DropDownItem } from "adaptivecards-controls";
+import { Utils } from "./miscellaneous";
+
+export enum ToolbarElementAlignment {
+    Left,
+    Right
+}
 
 export abstract class ToolbarElement {
     private _renderedElement: HTMLElement = undefined;
@@ -7,6 +13,20 @@ export abstract class ToolbarElement {
 
     protected internalUpdateLayout() {
         // Do nothing in base implementation
+    }
+
+    readonly id: string;
+
+    separator: boolean = false;
+    label: string = null;
+    alignment: ToolbarElementAlignment = ToolbarElementAlignment.Left;
+
+    constructor(id: string) {
+        if (!id || id === "") {
+            throw new Error("Toolbar elements must have an Id.");
+        }
+
+        this.id = id;
     }
 
     updateLayout() {
@@ -25,46 +45,6 @@ export abstract class ToolbarElement {
 
     get renderedElement(): HTMLElement {
         return this._renderedElement;
-    }
-}
-
-export class ToolbarSeparator extends ToolbarElement {
-    protected internalRender(): HTMLElement {
-        let element = document.createElement("div");
-        element.className = "acd-toolbar-separator";
-
-        return element;
-    }
-}
-
-export class ToolbarLabel extends ToolbarElement {
-    private _text: string = undefined;
-
-    protected internalUpdateLayout() {
-        this.renderedElement.innerText = this._text;
-    }
-
-    protected internalRender(): HTMLElement {
-        let element = document.createElement("span");
-        element.className = "acd-toolbar-label";
-
-        return element;
-    }
-
-    constructor(text: string) {
-        super();
-
-        this.text = text;
-    }
-
-    get text(): string {
-        return this._text;
-    }
-
-    set text(value: string) {
-        this._text = value;
-
-        this.updateLayout();
     }
 }
 
@@ -113,10 +93,11 @@ export class ToolbarButton extends ToolbarElement {
     onClick: (sender: ToolbarButton) => void;
 
     constructor(
+        id: string,
         caption: string,
         iconClass: string,
         onClick: (sender: ToolbarButton) => void = null) {
-        super();
+        super(id);
 
         this.caption = caption;
         this.iconClass = iconClass;
@@ -200,10 +181,25 @@ export class ToolbarChoicePicker extends ToolbarElement {
 
         let pickerElement = document.createElement("div");
 
+        if (this.width && this.width > 0) {
+            pickerElement.style.width = this.width + "px";
+        }
+
         this._dropDown.attach(pickerElement);
 
         let pickerContainerElement = document.createElement("div");
         pickerContainerElement.className = "acd-toolbar-choicePicker";
+        pickerContainerElement.style.display = "flex";
+        pickerContainerElement.style.alignItems = "center";
+
+        if (this.label) {
+            let labelElement = document.createElement("span");
+            labelElement.className = "acd-toolbar-label";
+            labelElement.innerText = this.label;
+
+            pickerContainerElement.appendChild(labelElement);
+        }
+
         pickerContainerElement.appendChild(pickerElement);
 
         return pickerContainerElement;
@@ -211,7 +207,9 @@ export class ToolbarChoicePicker extends ToolbarElement {
 
     onChanged: (sender: ToolbarChoicePicker) => void;
 
+    label: string = null;
     choices: Array<IChoicePickerItem> = [];
+    width?: number = null;
 
     get value(): string {
         return this._dropDown.value.key;
@@ -222,19 +220,100 @@ export class Toolbar {
     private _elements: Array<ToolbarElement> = [];
     private _attachedTo: HTMLElement;
 
+    private createSeparatorElement(): HTMLElement {
+        let separatorElement = document.createElement("div");
+        separatorElement.className = "acd-toolbar-separator";
+
+        return separatorElement;
+    }
+
+    private renderElementsInto(
+        container: HTMLElement,
+        elements: Array<ToolbarElement>,
+        separatorPosition: ToolbarElementAlignment) {
+
+        for (let i = 0; i < elements.length; i++) {
+            if (elements[i].separator && separatorPosition == ToolbarElementAlignment.Left && i > 0) {
+                container.appendChild(this.createSeparatorElement());
+            }
+
+            container.appendChild(elements[i].render());
+
+            if (elements[i].separator && separatorPosition == ToolbarElementAlignment.Right && i < elements.length - 1) {
+                container.appendChild(this.createSeparatorElement());
+            }
+        }
+    }
+
     attachTo(element: HTMLElement) {
         this._attachedTo = element;
         this._attachedTo.className = "acd-toolbar";
+        this._attachedTo.style.display = "flex";
+        this._attachedTo.style.justifyContent = "space-between";
         this._attachedTo.innerHTML = "";
 
-        for (let toolbarElement of this._elements) {
-            let renderedToolbarElement = toolbarElement.render();
+        let leftElements: Array<ToolbarElement> = [];
+        let rightElements: Array<ToolbarElement> = [];
 
-            this._attachedTo.appendChild(renderedToolbarElement);
+        for (let element of this._elements) {
+            if (element.alignment == ToolbarElementAlignment.Left) {
+                leftElements.push(element);
+            }
+            else {
+                rightElements.push(element);
+            }
         }
+
+        let leftContainer = document.createElement("div");
+        leftContainer.style.display = "flex";
+        leftContainer.style.alignItems = "center";
+
+        let rightContainer = document.createElement("div");
+        rightContainer.style.display = "flex";
+        rightContainer.style.alignItems = "center";
+
+        this.renderElementsInto(
+            leftContainer,
+            leftElements,
+            ToolbarElementAlignment.Left);
+        this.renderElementsInto(
+            rightContainer,
+            rightElements,
+            ToolbarElementAlignment.Right);
+
+        this._attachedTo.appendChild(leftContainer);
+        this._attachedTo.appendChild(rightContainer);
     }
 
     addElement(element: ToolbarElement) {
         this._elements.push(element);
+    }
+
+    insertElementAfter(element: ToolbarElement, afterElementId: string) {
+        for (let i = 0; i < this._elements.length; i++) {
+            if (this._elements[i].id == afterElementId) {
+                this._elements.splice(i + 1, 0, element);
+
+                return;
+            }
+        }
+
+        // Add as the last element if no element was found with the
+        // specified id
+        this._elements.push(element);
+    }
+
+    insertElementBefore(element: ToolbarElement, beforeElementId: string) {
+        for (let i = this._elements.length - 1; i >= 0; i--) {
+            if (this._elements[i].id == beforeElementId) {
+                this._elements.splice(i, 0, element);
+
+                return;
+            }
+        }
+
+        // Insert as first element if no element was found with the
+        // specified id
+        this._elements.splice(0, 0, element);
     }
 }

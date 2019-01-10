@@ -14,6 +14,7 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACRUILabel.h"
+#import "Util.h"
 
 @implementation ACRFactSetRenderer
 
@@ -161,6 +162,8 @@
     }
 
     [viewGroup addArrangedSubview:factSetWrapperView];
+
+    configVisibility(factSetWrapperView, elem);
 
     return factSetWrapperView;
 }

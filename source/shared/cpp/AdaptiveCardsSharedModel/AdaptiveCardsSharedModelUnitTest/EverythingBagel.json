@@ -64,6 +64,7 @@
 			"style": "person",
 			"url": "https://adaptivecards.io/content/cats/1.png",
 			"id": "Image_id",
+			"isVisible": false,
 			"spacing": "none",
 			"separator": true
 		},

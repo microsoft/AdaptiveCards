@@ -8,7 +8,7 @@ namespace AdaptiveNamespace
 {
     DateTimeParser::DateTimeParser(const std::string& language) { m_languageString = language; }
 
-    std::string DateTimeParser::GenerateString(DateTimePreparser text)
+    std::string DateTimeParser::GenerateString(const DateTimePreparser& text)
     {
         std::wostringstream parsedostr;
 

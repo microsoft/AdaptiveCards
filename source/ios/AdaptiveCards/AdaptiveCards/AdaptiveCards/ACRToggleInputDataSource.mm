@@ -20,6 +20,7 @@ const CGFloat padding = 16.0f;
     std::shared_ptr<ToggleInput> _toggleInputDataSource;
     std::shared_ptr<HostConfig> _config;
     NSString *_title;
+    BOOL _shouldWrap;
 }
 
 - (instancetype)initWithInputToggle:(std::shared_ptr<ToggleInput> const&)toggleInput
@@ -35,6 +36,7 @@ const CGFloat padding = 16.0f;
         _config = hostConfig;
         self.id = [[NSString alloc]initWithCString:_toggleInputDataSource->GetId().c_str()
                                      encoding:NSUTF8StringEncoding];
+        _shouldWrap = toggleInput->GetWrap();
         if(_toggleInputDataSource->GetValue() == _toggleInputDataSource->GetValueOn()) {
             _toggleSwitch.on = YES;
         }
@@ -68,6 +70,7 @@ const CGFloat padding = 16.0f;
     cell.textLabel.text = _title;
     cell.textLabel.adjustsFontSizeToFitWidth = NO;
     cell.textLabel.numberOfLines = 0;
+    cell.textLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     cell.accessoryView = _toggleSwitch;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.backgroundColor = UIColor.clearColor;
@@ -98,13 +101,19 @@ const CGFloat padding = 16.0f;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
-    CGFloat toggleHeight = [_toggleSwitch intrinsicContentSize].height;
+    CGSize toggleSize = [_toggleSwitch intrinsicContentSize];
+    NSString *labelString = nil;
+    if(!_shouldWrap) {
+        labelString = @"A";
+    } else {
+        labelString = cell.textLabel.text;
+    }
     CGSize labelStringSize =
-    [cell.textLabel.text boundingRectWithSize:CGSizeMake(cell.contentView.frame.size.width, CGFLOAT_MAX)
+    [labelString boundingRectWithSize:CGSizeMake(cell.contentView.frame.size.width - toggleSize.width, CGFLOAT_MAX)
                                       options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
                                    attributes:@{NSFontAttributeName:cell.textLabel.font}
                                       context:nil].size;
-    CGFloat height = MAX(labelStringSize.height, toggleHeight);
+    CGFloat height = MAX(labelStringSize.height, toggleSize.height);
     return height + padding;
 }
 

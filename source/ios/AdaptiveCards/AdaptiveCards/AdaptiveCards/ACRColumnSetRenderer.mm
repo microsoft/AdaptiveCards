@@ -18,6 +18,7 @@
 #import "Column.h"
 #import "ACRColumnRenderer.h"
 #import "Enums.h"
+#import "Util.h"
 
 @implementation ACRColumnSetRenderer
 
@@ -143,6 +144,8 @@
                                                                   recipientView:columnSetView
                                                                   actionElement:selectAction
                                                                      hostConfig:acoConfig];
+    configVisibility(columnSetView, elem);
+
     return columnSetView;
 }
 

@@ -11,24 +11,24 @@ namespace AdaptiveNamespace
     protected:
         HRESULT InitializeBaseElement(const std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel);
 
-        IFACEMETHODIMP get_ActionTypeString(_Out_ HSTRING* value);
+        IFACEMETHODIMP get_ActionTypeString(_Outptr_ HSTRING* value);
 
-        IFACEMETHODIMP get_Title(_Out_ HSTRING* title);
+        IFACEMETHODIMP get_Title(_Outptr_ HSTRING* title);
         IFACEMETHODIMP put_Title(_In_ HSTRING title);
 
-        IFACEMETHODIMP get_Id(_Out_ HSTRING* id);
+        IFACEMETHODIMP get_Id(_Outptr_ HSTRING* id);
         IFACEMETHODIMP put_Id(_In_ HSTRING id);
 
-        IFACEMETHODIMP get_IconUrl(_Out_ HSTRING* iconUrl);
+        IFACEMETHODIMP get_IconUrl(_Outptr_ HSTRING* iconUrl);
         IFACEMETHODIMP put_IconUrl(_In_ HSTRING iconUrl);
 
         IFACEMETHODIMP get_Sentiment(_Out_ ABI::AdaptiveNamespace::Sentiment *sentiment);
-        IFACEMETHODIMP put_Sentiment(_In_ ABI::AdaptiveNamespace::Sentiment sentiment);
+        IFACEMETHODIMP put_Sentiment(ABI::AdaptiveNamespace::Sentiment sentiment);
 
-        IFACEMETHODIMP get_AdditionalProperties(_Out_ ABI::Windows::Data::Json::IJsonObject** result);
+        IFACEMETHODIMP get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
         IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* value);
 
-        IFACEMETHODIMP ToJson(ABI::Windows::Data::Json::IJsonObject** result);
+        IFACEMETHODIMP ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
 
         HRESULT SetSharedElementProperties(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement> sharedCardElement);
 

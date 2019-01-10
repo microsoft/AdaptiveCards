@@ -20,7 +20,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextInput>& sharedTextInput) try
+    HRESULT AdaptiveTextInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextInput>& sharedTextInput) try
     {
         if (sharedTextInput == nullptr)
         {
@@ -40,45 +40,42 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextInput::get_Placeholder(HSTRING* placeholder)
+    HRESULT AdaptiveTextInput::get_Placeholder(_Outptr_ HSTRING* placeholder)
     {
         return m_placeholder.CopyTo(placeholder);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextInput::put_Placeholder(HSTRING placeholder)
-    {
-        return m_placeholder.Set(placeholder);
-    }
+    HRESULT AdaptiveTextInput::put_Placeholder(_In_ HSTRING placeholder) { return m_placeholder.Set(placeholder); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextInput::get_Value(HSTRING* value) { return m_value.CopyTo(value); }
+    HRESULT AdaptiveTextInput::get_Value(_Outptr_ HSTRING* value) { return m_value.CopyTo(value); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextInput::put_Value(HSTRING value) { return m_value.Set(value); }
+    HRESULT AdaptiveTextInput::put_Value(_In_ HSTRING value) { return m_value.Set(value); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextInput::get_IsMultiline(boolean* isMultiline)
+    HRESULT AdaptiveTextInput::get_IsMultiline(_Out_ boolean* isMultiline)
     {
         *isMultiline = m_isMultiline;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextInput::put_IsMultiline(boolean isMultiline)
+    HRESULT AdaptiveTextInput::put_IsMultiline(boolean isMultiline)
     {
         m_isMultiline = isMultiline;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextInput::get_MaxLength(UINT32* maxLength)
+    HRESULT AdaptiveTextInput::get_MaxLength(_Out_ UINT32* maxLength)
     {
         *maxLength = m_maxLength;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextInput::put_MaxLength(UINT32 maxLength)
+    HRESULT AdaptiveTextInput::put_MaxLength(UINT32 maxLength)
     {
         m_maxLength = maxLength;
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveTextInput::get_TextInputStyle(ABI::AdaptiveNamespace::TextInputStyle* textInputStyle)
+    IFACEMETHODIMP AdaptiveTextInput::get_TextInputStyle(_Out_ ABI::AdaptiveNamespace::TextInputStyle* textInputStyle)
     {
         *textInputStyle = m_textInputStyle;
         return S_OK;
@@ -90,18 +87,18 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_ IFACEMETHODIMP AdaptiveTextInput::get_InlineAction(IAdaptiveActionElement** action)
+    IFACEMETHODIMP AdaptiveTextInput::get_InlineAction(_COM_Outptr_ IAdaptiveActionElement** action)
     {
         return m_inlineAction.CopyTo(action);
     }
 
-    _Use_decl_annotations_ IFACEMETHODIMP AdaptiveTextInput::put_InlineAction(IAdaptiveActionElement* action)
+    IFACEMETHODIMP AdaptiveTextInput::put_InlineAction(_In_ IAdaptiveActionElement* action)
     {
         m_inlineAction = action;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveTextInput::get_ElementType(ElementType* elementType)
+    HRESULT AdaptiveTextInput::get_ElementType(_Out_ ElementType* elementType)
     {
         *elementType = ElementType::TextInput;
         return S_OK;

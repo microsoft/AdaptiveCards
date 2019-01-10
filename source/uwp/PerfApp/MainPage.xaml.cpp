@@ -1,4 +1,4 @@
-﻿//
+//
 // MainPage.xaml.cpp
 // Implementation of the MainPage class.
 //
@@ -10,6 +10,9 @@
 #include <errno.h>
 #include <iostream> 
 #include <sstream> 
+
+// warning C4691: '...': type referenced was expected in unreferenced assembly '...', type defined in current translation unit used instead
+#pragma warning(disable : 4691)
 
 using namespace PerfApp;
 

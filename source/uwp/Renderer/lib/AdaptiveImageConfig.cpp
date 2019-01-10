@@ -19,13 +19,13 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImageConfig::get_ImageSize(ABI::AdaptiveNamespace::ImageSize* imageSize)
+    HRESULT AdaptiveImageConfig::get_ImageSize(_Out_ ABI::AdaptiveNamespace::ImageSize* imageSize)
     {
         *imageSize = m_imageSize;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImageConfig::put_ImageSize(ABI::AdaptiveNamespace::ImageSize imageSize)
+    HRESULT AdaptiveImageConfig::put_ImageSize(ABI::AdaptiveNamespace::ImageSize imageSize)
     {
         m_imageSize = imageSize;
         return S_OK;
