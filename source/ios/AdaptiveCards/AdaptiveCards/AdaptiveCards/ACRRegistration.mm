@@ -33,6 +33,7 @@
 #import "ACRCustomRenderer.h"
 #import "BaseCardElement.h"
 #import "HostConfig.h"
+#import "ACOParseContextPrivate.h"
 
 using namespace AdaptiveCards;
 
@@ -40,12 +41,13 @@ using namespace AdaptiveCards;
 {
     NSDictionary *typeToRendererDict;
     NSDictionary *actionRendererDict;
-    
+
     NSMutableDictionary<NSString*, NSObject<ACOIBaseActionElementParser>*> *_actionParserDict;
     id<ACRIBaseActionSetRenderer> _actionSetRenderer;
     NSMutableDictionary *overridenBaseElementRendererList;
     NSMutableDictionary *overridenBaseActionRendererList;
     id<ACRIBaseActionSetRenderer> _defaultActionSetRenderer;
+    ACOParseContext *_parseContext;
 }
 
 - (instancetype) init
@@ -92,9 +94,7 @@ using namespace AdaptiveCards;
 
 + (ACRRegistration *)getInstance
 {
-    static ACRRegistration *singletonInstance = nil;
-    static dispatch_once_t predicate;
-    dispatch_once(&predicate, ^{singletonInstance = [[self alloc] init];});
+    static ACRRegistration *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 
@@ -150,6 +150,9 @@ using namespace AdaptiveCards;
 
 - (void)setCustomActionElementParser:(NSString *)key parser:(NSObject<ACOIBaseActionElementParser> *)parser
 {
+    if(!_parseContext) {
+        _parseContext = [[ACOParseContext alloc] init];
+    }
     _actionParserDict[key] = parser;
 }
 
@@ -158,9 +161,9 @@ using namespace AdaptiveCards;
     return _actionParserDict[key];
 }
 
-- (BOOL)hasCustomActionElementParser
+- (ACOParseContext *)getParseContext
 {
-    return [_actionParserDict count] != 0;
+    return _parseContext;
 }
 
 

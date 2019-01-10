@@ -36,6 +36,6 @@
 
 - (id<ACOIBaseActionElementParser>)getCustomActionElementParser:(NSString *)key;
 
-- (BOOL)hasCustomActionElementParser;
+- (ACOParseContext *)getParseContext;
 
 @end
