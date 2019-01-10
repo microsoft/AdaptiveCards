@@ -1,9 +1,14 @@
 {
+	"version": "independent",
 	"packages": [
 		"adaptivecards*/**"
 	],
 	"ignoreChanges": [
 		"**/__tests__/**"
 	],
-	"version": "independent"
+	"command": {
+		"publish": {
+			"allowBranch": "master"
+		}
+	}
 }
