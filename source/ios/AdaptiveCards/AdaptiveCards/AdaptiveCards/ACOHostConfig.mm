@@ -365,31 +365,28 @@ using namespace AdaptiveCards;
     return color;
 }
 
-- (UIColor *)getBackgroundColorForContainerStyle:(ACRContainerStyle)style
+- (ContainerStyleDefinition) getColorPalette:(ACRContainerStyle)style
 {
-    std::string hexColorCode;
     switch (style) {
         case ACRAccent:
-            hexColorCode = _config->GetContainerStyles().accentPalette.backgroundColor;
-            break;
+            return _config->GetContainerStyles().accentPalette;
         case ACRAttention:
-            hexColorCode = _config->GetContainerStyles().attentionPalette.backgroundColor;
-            break;
+            return _config->GetContainerStyles().attentionPalette;
         case ACREmphasis:
-            hexColorCode = _config->GetContainerStyles().emphasisPalette.backgroundColor;
-            break;
+            return _config->GetContainerStyles().emphasisPalette;
         case ACRGood:
-            hexColorCode = _config->GetContainerStyles().goodPalette.backgroundColor;
-            break;
+            return _config->GetContainerStyles().goodPalette;
         case ACRWarning:
-            hexColorCode = _config->GetContainerStyles().warningPalette.backgroundColor;
-            break;
+            return _config->GetContainerStyles().warningPalette;
         case ACRDefault:
         default:
-            hexColorCode = _config->GetContainerStyles().defaultPalette.backgroundColor;
-            break;
+            return _config->GetContainerStyles().defaultPalette;
     }
+}
 
+- (UIColor *)getBackgroundColorForContainerStyle:(ACRContainerStyle)style
+{
+    std::string hexColorCode = [self getColorPalette:style].backgroundColor;
     return [ACOHostConfig convertHexColorCodeToUIColor:hexColorCode];
 }
 

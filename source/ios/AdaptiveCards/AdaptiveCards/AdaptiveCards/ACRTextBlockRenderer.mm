@@ -80,29 +80,8 @@
 
         // Obtain text color to apply to the attributed string
         ACRContainerStyle style = lab.style;
-        ColorsConfig colorConfig;
-        switch(style)
-        {
-            case ACRAccent:
-                colorConfig = config->GetContainerStyles().accentPalette.foregroundColors;
-                break;
-            case ACRAttention:
-                colorConfig = config->GetContainerStyles().attentionPalette.foregroundColors;
-                break;
-            case ACREmphasis:
-                colorConfig = config->GetContainerStyles().emphasisPalette.foregroundColors;
-                break;
-            case ACRGood:
-                colorConfig = config->GetContainerStyles().goodPalette.foregroundColors;
-                break;
-            case ACRWarning:
-                colorConfig = config->GetContainerStyles().warningPalette.foregroundColors;
-                break;
-            case ACRDefault:
-            default:
-                colorConfig = config->GetContainerStyles().defaultPalette.foregroundColors;
-                break;
-        }
+        ColorsConfig colorConfig = [acoConfig getColorPalette:style].foregroundColors;
+        
         // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
         [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACOHostConfig getTextBlockColor:txtBlck->GetTextColor() colorsConfig:colorConfig subtleOption:txtBlck->GetIsSubtle()],} range:NSMakeRange(0, content.length)];
 

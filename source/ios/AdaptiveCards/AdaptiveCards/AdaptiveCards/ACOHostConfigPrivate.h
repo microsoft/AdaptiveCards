@@ -44,4 +44,6 @@ using namespace AdaptiveCards;
 + (ACRContainerStyle)getPlatformContainerStyle:(ContainerStyle)style;
 
 - (ACRIconPlacement)getIconPlacement;
+
+- (ContainerStyleDefinition)getColorPalette:(ACRContainerStyle)style;
 @end
