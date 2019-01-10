@@ -30,30 +30,30 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveCardParseResult::RuntimeClassInitialize(IAdaptiveCard* value)
+    HRESULT AdaptiveCardParseResult::RuntimeClassInitialize(_In_ IAdaptiveCard* value)
     {
         m_adaptiveCard = value;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveCardParseResult::get_AdaptiveCard(IAdaptiveCard** value)
+    HRESULT AdaptiveCardParseResult::get_AdaptiveCard(_COM_Outptr_ IAdaptiveCard** value)
     {
         return m_adaptiveCard.CopyTo(value);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveCardParseResult::get_Errors(
-        ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveError*>** value)
+    HRESULT AdaptiveCardParseResult::get_Errors(
+        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveError*>** value)
     {
         return m_errors.CopyTo(value);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveCardParseResult::get_Warnings(
-        ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>** value)
+    HRESULT AdaptiveCardParseResult::get_Warnings(
+        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>** value)
     {
         return m_warnings.CopyTo(value);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveCardParseResult::put_AdaptiveCard(_In_ IAdaptiveCard* value)
+    HRESULT AdaptiveCardParseResult::put_AdaptiveCard(_In_ IAdaptiveCard* value)
     {
         m_adaptiveCard = value;
         return S_OK;

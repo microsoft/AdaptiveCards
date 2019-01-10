@@ -96,7 +96,8 @@
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
     XCTAssertTrue(cardParseResult && cardParseResult.isValid);
     ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card config:_defaultHostConfig widthConstraint:335];
-    ACRTextView *acrTextView = (ACRTextView *)[renderResult.view viewWithTag:kACRTextView];
+    NSString *hashkey = @"FeedbackText";
+    ACRTextView *acrTextView = (ACRTextView *)[renderResult.view viewWithTag:hashkey.hash];
     XCTAssertNotNil(acrTextView);
     XCTAssertTrue([acrTextView.text length] == 0);
 }

@@ -1,17 +1,7 @@
-# Header
-menu:
-  Documentation: https://docs.microsoft.com/en-us/adaptive-cards/
-  Schema Explorer: /explorer
-  Visualizer: /visualizer
-  Samples: /samples
-  Connect: /connect
-  Designer: http://acdesigner-ci.azurewebsites.net/
-  
-#rss: /atom.xml
+rss: /atom.xml
 
 # Content
 excerpt_link: Read More
-fancybox: true
 
 # Sidebar
 #sidebar: right
@@ -24,9 +14,9 @@ widgets:
 
 # display widgets at the bottom of index pages (pagination == 2)
 index_widgets:
-# - category
-# - tagcloud
-# - archive
+ - category
+ - tagcloud
+ - archive
 
 # widget behavior
 archive_type: 'monthly'

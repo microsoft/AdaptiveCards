@@ -1,24 +1,24 @@
 #pragma once
 
-void GetMediaPosterAsImage(ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                           ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
-                           ABI::AdaptiveNamespace::IAdaptiveMedia* adaptiveMedia,
-                           ABI::Windows::UI::Xaml::Controls::IImage** posterImage);
+void GetMediaPosterAsImage(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                           _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+                           _In_ ABI::AdaptiveNamespace::IAdaptiveMedia* adaptiveMedia,
+                           _Outptr_ ABI::Windows::UI::Xaml::Controls::IImage** posterImage);
 
-void CreatePosterContainerWithPlayButton(ABI::Windows::UI::Xaml::Controls::IImage* posterImage,
-                                         ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                         ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
-                                         ABI::Windows::UI::Xaml::IUIElement** posterContainer);
+void CreatePosterContainerWithPlayButton(_In_ ABI::Windows::UI::Xaml::Controls::IImage* posterImage,
+                                         _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                         _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+                                         _Outptr_ ABI::Windows::UI::Xaml::IUIElement** posterContainer);
 
-void GetMediaSource(ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-                    ABI::AdaptiveNamespace::IAdaptiveMedia* adaptiveMedia,
-                    ABI::Windows::Foundation::IUriRuntimeClass** mediaSourceUrl,
-                    HSTRING* mimeType);
+void GetMediaSource(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                    _In_ ABI::AdaptiveNamespace::IAdaptiveMedia* adaptiveMedia,
+                    _Outptr_ ABI::Windows::Foundation::IUriRuntimeClass** mediaSourceUrl,
+                    _Outptr_ HSTRING* mimeType);
 
-HRESULT HandleMediaClick(ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                         ABI::AdaptiveNamespace::IAdaptiveMedia* adaptiveMedia,
-                         ABI::Windows::UI::Xaml::Controls::IMediaElement* mediaElement,
-                         ABI::Windows::UI::Xaml::IUIElement* posterContainer,
-                         ABI::Windows::Foundation::IUriRuntimeClass* mediaSourceUrl,
-                         HSTRING mimeType,
-                         ABI::AdaptiveNamespace::IAdaptiveMediaEventInvoker* mediaInvoker);
+HRESULT HandleMediaClick(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                         _In_ ABI::AdaptiveNamespace::IAdaptiveMedia* adaptiveMedia,
+                         _In_ ABI::Windows::UI::Xaml::Controls::IMediaElement* mediaElement,
+                         _In_ ABI::Windows::UI::Xaml::IUIElement* posterContainer,
+                         _In_ ABI::Windows::Foundation::IUriRuntimeClass* mediaSourceUrl,
+                         _In_ HSTRING mimeType,
+                         _In_ ABI::AdaptiveNamespace::IAdaptiveMediaEventInvoker* mediaInvoker);

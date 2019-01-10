@@ -1,1 +1,42 @@
-<%- partial('_partial/archive', {pagination: config.archive, index: true}) %>
+---
+layout: layout
+---
+<!-- Main Content -->
+<style>
+   img { max-width: 95%; height: auto; }
+</style>
+
+<% page.posts.each(function(post){ %>
+<div class="post-preview">
+  <a href="<%- config.root %><%- post.path %>">
+    <h2 class="post-title">
+      <%- post.title || "Untitled" %>
+    </h2>
+  </a>
+  <h3 class="post-subtitle">
+    <%- post.subtitle || "" %>
+  </h3>
+  <p class="subtitle">
+    Posted <%= post.date.format(config.date_format) %>
+  </p>
+  <div class="post-content-preview">
+    <%- post.content %>
+  </div>
+</div>
+<% }); %>
+
+
+<!-- Pager -->
+
+<ul class="pager">
+    <% if (page.prev){ %>
+        <li class="previous">
+            <a href="<%- config.root %><%- page.prev_link %>">&larr; Newer Posts</a>
+        </li>
+    <% } %>
+    <% if (page.next){ %>
+        <li class="next">
+            <a href="<%- config.root %><%- page.next_link %>">Older Posts &rarr;</a>
+        </li>
+    <% } %>
+</ul>

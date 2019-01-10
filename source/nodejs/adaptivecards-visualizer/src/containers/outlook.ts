@@ -83,7 +83,7 @@ export class OutlookContainer extends HostContainer {
         }
 
         if (element instanceof Adaptive.Container && json["rtl"] != undefined) {
-            element.rtl = json["rtl"];
+            //element.rtl = json["rtl"];
         }
 
         if (element instanceof Adaptive.AdaptiveCard) {
@@ -148,6 +148,14 @@ export class OutlookContainer extends HostContainer {
         }
 
         return false;
+    }
+
+    public setHostCapabilities(hostConfig: Adaptive.HostConfig) {
+        // Uncomment to test "requires" clause
+        hostConfig.hostCapabilities.capabilities = {
+            helloWorld: "*",
+            whatNow: new Adaptive.Version(2, 3)
+        };
     }
 
     public getHostConfig(): Adaptive.HostConfig {

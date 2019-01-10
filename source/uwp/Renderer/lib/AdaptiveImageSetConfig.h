@@ -16,10 +16,10 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize(ImageSetConfig ImageSetConfig) noexcept;
 
         IFACEMETHODIMP get_ImageSize(_Out_ ABI::AdaptiveNamespace::ImageSize* imageSize);
-        IFACEMETHODIMP put_ImageSize(_In_ ABI::AdaptiveNamespace::ImageSize imageSize);
+        IFACEMETHODIMP put_ImageSize(ABI::AdaptiveNamespace::ImageSize imageSize);
 
         IFACEMETHODIMP get_MaxImageHeight(_Out_ UINT32* maxImageHeight);
-        IFACEMETHODIMP put_MaxImageHeight(_In_ UINT32 maxImageHeight);
+        IFACEMETHODIMP put_MaxImageHeight(UINT32 maxImageHeight);
 
     private:
         ABI::AdaptiveNamespace::ImageSize m_imageSize;

@@ -29,13 +29,13 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::put_Spacing(_In_ ABI::AdaptiveNamespace::Spacing spacing)
+    IFACEMETHODIMP AdaptiveCardElementBase::put_Spacing(ABI::AdaptiveNamespace::Spacing spacing)
     {
         m_spacing = spacing;
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::get_Separator(boolean* separator)
+    IFACEMETHODIMP AdaptiveCardElementBase::get_Separator(_Out_ boolean* separator)
     {
         *separator = m_separator;
         return S_OK;
@@ -47,7 +47,7 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::get_IsVisible(boolean* isVisible)
+    IFACEMETHODIMP AdaptiveCardElementBase::get_IsVisible(_Out_ boolean* isVisible)
     {
         *isVisible = m_isVisible;
         return S_OK;
@@ -59,24 +59,27 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::get_Id(HSTRING* id) { return m_id.CopyTo(id); }
+    IFACEMETHODIMP AdaptiveCardElementBase::get_Id(_Outptr_ HSTRING* id) { return m_id.CopyTo(id); }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::put_Id(HSTRING id) { return m_id.Set(id); }
+    IFACEMETHODIMP AdaptiveCardElementBase::put_Id(_In_ HSTRING id) { return m_id.Set(id); }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::get_ElementTypeString(HSTRING* type) { return m_typeString.CopyTo(type); }
+    IFACEMETHODIMP AdaptiveCardElementBase::get_ElementTypeString(_Outptr_ HSTRING* type)
+    {
+        return m_typeString.CopyTo(type);
+    }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::get_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result)
+    IFACEMETHODIMP AdaptiveCardElementBase::get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
     {
         return m_additionalProperties.CopyTo(result);
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::put_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject* jsonObject)
+    IFACEMETHODIMP AdaptiveCardElementBase::put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObject)
     {
         m_additionalProperties = jsonObject;
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::get_Height(ABI::AdaptiveNamespace::HeightType* height)
+    IFACEMETHODIMP AdaptiveCardElementBase::get_Height(_Out_ ABI::AdaptiveNamespace::HeightType* height)
     {
         *height = m_height;
         return S_OK;
@@ -88,7 +91,7 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
+    IFACEMETHODIMP AdaptiveCardElementBase::ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
     {
         std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedModel;
         RETURN_IF_FAILED(GetSharedModel(sharedModel));

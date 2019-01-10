@@ -21,37 +21,37 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImageSizesConfig::get_Small(UINT32* smallSize)
+    HRESULT AdaptiveImageSizesConfig::get_Small(_Out_ UINT32* smallSize)
     {
         *smallSize = m_small;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImageSizesConfig::put_Small(UINT32 smallSize)
+    HRESULT AdaptiveImageSizesConfig::put_Small(UINT32 smallSize)
     {
         m_small = smallSize;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImageSizesConfig::get_Medium(UINT32* mediumSize)
+    HRESULT AdaptiveImageSizesConfig::get_Medium(_Out_ UINT32* mediumSize)
     {
         *mediumSize = m_medium;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImageSizesConfig::put_Medium(UINT32 mediumSize)
+    HRESULT AdaptiveImageSizesConfig::put_Medium(UINT32 mediumSize)
     {
         m_medium = mediumSize;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImageSizesConfig::get_Large(UINT32* largeSize)
+    HRESULT AdaptiveImageSizesConfig::get_Large(_Out_ UINT32* largeSize)
     {
         *largeSize = m_large;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImageSizesConfig::put_Large(UINT32 largeSize)
+    HRESULT AdaptiveImageSizesConfig::put_Large(UINT32 largeSize)
     {
         m_large = largeSize;
         return S_OK;

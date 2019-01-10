@@ -17,8 +17,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize(
-        const std::shared_ptr<AdaptiveSharedNamespace::OpenUrlAction>& sharedOpenUrlAction) try
+    HRESULT AdaptiveOpenUrlAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::OpenUrlAction>& sharedOpenUrlAction) try
     {
         if (sharedOpenUrlAction == nullptr)
         {
@@ -35,16 +34,16 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveOpenUrlAction::get_Url(IUriRuntimeClass** url) { return m_url.CopyTo(url); }
+    HRESULT AdaptiveOpenUrlAction::get_Url(_COM_Outptr_ IUriRuntimeClass** url) { return m_url.CopyTo(url); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveOpenUrlAction::put_Url(IUriRuntimeClass* url) try
+    HRESULT AdaptiveOpenUrlAction::put_Url(_In_ IUriRuntimeClass* url) try
     {
         m_url = url;
         return S_OK;
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveOpenUrlAction::get_ActionType(ABI::AdaptiveNamespace::ActionType* actionType)
+    HRESULT AdaptiveOpenUrlAction::get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType)
     {
         *actionType = ABI::AdaptiveNamespace::ActionType::OpenUrl;
         return S_OK;

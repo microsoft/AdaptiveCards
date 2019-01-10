@@ -92,6 +92,7 @@
     <Compile Include="FileLoadHelpers.cs" />
     <Compile Include="FileViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RenderedTestResult.cs" />
     <Compile Include="RenderTestHelpers.cs" />
     <Compile Include="StoredTestResultInfo.cs" />
     <Compile Include="TestResultViewModel.cs" />

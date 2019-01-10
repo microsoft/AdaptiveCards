@@ -13,14 +13,14 @@ namespace AdaptiveNamespace
 {
     HRESULT AdaptiveActionInvoker::RuntimeClassInitialize() noexcept { return S_OK; }
 
-    HRESULT AdaptiveActionInvoker::RuntimeClassInitialize(RenderedAdaptiveCard* renderResult) noexcept try
+    HRESULT AdaptiveActionInvoker::RuntimeClassInitialize(_In_ RenderedAdaptiveCard* renderResult) noexcept try
     {
         m_renderResult = renderResult;
         return S_OK;
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveActionInvoker::SendActionEvent(IAdaptiveActionElement* actionElement)
+    HRESULT AdaptiveActionInvoker::SendActionEvent(_In_ IAdaptiveActionElement* actionElement)
     {
         return m_renderResult->SendActionEvent(actionElement);
     }

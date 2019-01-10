@@ -125,6 +125,10 @@ export abstract class HostContainer {
         return false;
     }
 
+    public setHostCapabilities(hostConfig: HostConfig) {
+        // Do nothing in base implementation
+    }
+
     public getHostConfig(): HostConfig {
         return new HostConfig({
             preExpandSingleShowCardAction: false,

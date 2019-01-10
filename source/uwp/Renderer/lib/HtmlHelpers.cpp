@@ -11,7 +11,7 @@ using namespace ABI::Windows::Foundation::Collections;
 using namespace AdaptiveNamespace;
 using namespace msl::utilities;
 
-HRESULT GetTextFromXmlNode(ABI::Windows::Data::Xml::Dom::IXmlNode* node, HSTRING* text)
+static HRESULT GetTextFromXmlNode(_In_ ABI::Windows::Data::Xml::Dom::IXmlNode* node, _In_ HSTRING* text)
 {
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> localNode = node;
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNodeSerializer> textNodeSerializer;
@@ -21,11 +21,11 @@ HRESULT GetTextFromXmlNode(ABI::Windows::Data::Xml::Dom::IXmlNode* node, HSTRING
     return S_OK;
 }
 
-HRESULT AddListInlines(IAdaptiveRenderContext* renderContext,
-                       ABI::Windows::Data::Xml::Dom::IXmlNode* node,
+HRESULT AddListInlines(_In_ IAdaptiveRenderContext* renderContext,
+                       _In_ ABI::Windows::Data::Xml::Dom::IXmlNode* node,
                        ABI::AdaptiveNamespace::FontStyle fontStyle,
                        bool isListOrdered,
-                       IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
+                       _In_ IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
 {
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNamedNodeMap> attributeMap;
     RETURN_IF_FAILED(node->get_Attributes(&attributeMap));
@@ -105,12 +105,12 @@ HRESULT AddListInlines(IAdaptiveRenderContext* renderContext,
     return S_OK;
 }
 
-HRESULT AddLinkInline(IAdaptiveRenderContext* renderContext,
-                      ABI::Windows::Data::Xml::Dom::IXmlNode* node,
+HRESULT AddLinkInline(_In_ IAdaptiveRenderContext* renderContext,
+                      _In_ ABI::Windows::Data::Xml::Dom::IXmlNode* node,
                       ABI::AdaptiveNamespace::FontStyle fontStyle,
                       BOOL isBold,
                       BOOL isItalic,
-                      IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
+                      _In_ IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
 {
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNamedNodeMap> attributeMap;
     RETURN_IF_FAILED(node->get_Attributes(&attributeMap));
@@ -152,12 +152,12 @@ HRESULT AddLinkInline(IAdaptiveRenderContext* renderContext,
     return S_OK;
 }
 
-HRESULT AddSingleTextInline(IAdaptiveRenderContext* renderContext,
-                            HSTRING string,
-                            ABI::AdaptiveNamespace::FontStyle fontStyle,
+HRESULT AddSingleTextInline(_In_ IAdaptiveRenderContext* renderContext,
+                            _In_ HSTRING string,
+                            ABI::AdaptiveNamespace::FontStyle,
                             bool isBold,
                             bool isItalic,
-                            IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
+                            _In_ IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
 {
     ComPtr<ABI::Windows::UI::Xaml::Documents::IRun> run = XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IRun>(
         HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
@@ -192,12 +192,12 @@ HRESULT AddSingleTextInline(IAdaptiveRenderContext* renderContext,
     return S_OK;
 }
 
-HRESULT AddTextInlines(IAdaptiveRenderContext* renderContext,
-                       ABI::Windows::Data::Xml::Dom::IXmlNode* node,
+HRESULT AddTextInlines(_In_ IAdaptiveRenderContext* renderContext,
+                       _In_ ABI::Windows::Data::Xml::Dom::IXmlNode* node,
                        ABI::AdaptiveNamespace::FontStyle fontStyle,
                        BOOL isBold,
                        BOOL isItalic,
-                       IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
+                       _In_ IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
 {
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> childNode;
     RETURN_IF_FAILED(node->get_FirstChild(&childNode));
@@ -243,9 +243,9 @@ HRESULT AddTextInlines(IAdaptiveRenderContext* renderContext,
     return S_OK;
 }
 
-HRESULT AddHtmlInlines(IAdaptiveRenderContext* renderContext,
-                       ABI::Windows::Data::Xml::Dom::IXmlNode* node,
-                       IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines,
+HRESULT AddHtmlInlines(_In_ IAdaptiveRenderContext* renderContext,
+                       _In_ ABI::Windows::Data::Xml::Dom::IXmlNode* node,
+                       _In_ IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines,
                        ABI::AdaptiveNamespace::FontStyle fontStyle)
 {
     ComPtr<ABI::Windows::Data::Xml::Dom::IXmlNode> childNode;

@@ -12,6 +12,8 @@
 
 @property (nonnull) UIStackView* stackView;
 
+@property BOOL isActionSet;
+
 - (instancetype _Nonnull)initWithFrame:(CGRect)frame;
 
 - (instancetype _Nonnull)initWithFrame:(CGRect)frame attributes:(nullable NSDictionary<NSString *, id> *)attributes;

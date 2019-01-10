@@ -17,13 +17,13 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveInputElementBase::get_IsRequired(boolean* isRequired)
+    HRESULT AdaptiveInputElementBase::get_IsRequired(_Out_ boolean* isRequired)
     {
         *isRequired = m_isRequired;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveInputElementBase::put_IsRequired(boolean isRequired)
+    HRESULT AdaptiveInputElementBase::put_IsRequired(boolean isRequired)
     {
         m_isRequired = isRequired;
         return S_OK;

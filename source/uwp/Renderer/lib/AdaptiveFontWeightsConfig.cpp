@@ -22,37 +22,37 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFontWeightsConfig::get_Lighter(UINT16* lighter)
+    HRESULT AdaptiveFontWeightsConfig::get_Lighter(_Out_ UINT16* lighter)
     {
         *lighter = m_lighter;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFontWeightsConfig::put_Lighter(UINT16 lighter)
+    HRESULT AdaptiveFontWeightsConfig::put_Lighter(UINT16 lighter)
     {
         m_lighter = lighter;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFontWeightsConfig::get_Default(UINT16* default)
+    HRESULT AdaptiveFontWeightsConfig::get_Default(_Out_ UINT16* default)
     {
         *default = m_default;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFontWeightsConfig::put_Default(UINT16 default)
+    HRESULT AdaptiveFontWeightsConfig::put_Default(UINT16 default)
     {
         m_default = default;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFontWeightsConfig::get_Bolder(UINT16* bolder)
+    HRESULT AdaptiveFontWeightsConfig::get_Bolder(_Out_ UINT16* bolder)
     {
         *bolder = m_bolder;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveFontWeightsConfig::put_Bolder(UINT16 bolder)
+    HRESULT AdaptiveFontWeightsConfig::put_Bolder(UINT16 bolder)
     {
         m_bolder = bolder;
         return S_OK;
