@@ -584,11 +584,7 @@ namespace Json {
     }
 };
 
-<<<<<<< HEAD
 %exception AdaptiveCards::ToggleVisibilityAction::dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
-=======
-%exception AdaptiveCards::ToggleVisibilityAction::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
->>>>>>> master
     $action
     if (!result) {
         jclass excep = jenv->FindClass("java/lang/ClassCastException");
