@@ -35,7 +35,7 @@
     std::shared_ptr<UnknownElement> customElem = std::dynamic_pointer_cast<UnknownElement>([acoElem element]);
     Json::Value blob = customElem->GetAdditionalProperties();
     Json::FastWriter fastWriter;
-
+/*
     NSString *jsonString = [[NSString alloc] initWithCString:fastWriter.write(blob).c_str() encoding:NSUTF8StringEncoding];
     if(jsonString.length > 0){
         NSData *jsonPayload = nil;
@@ -52,6 +52,7 @@
             [viewGroup addArrangedSubview:wrappingview];
         }
     }
+ */
 
     return viewGroup;
 }

@@ -47,7 +47,6 @@ typedef NS_ENUM(NSInteger, ACRContainerStyle) {
 
 @protocol ACOIBaseCardElementParser
 
-@optional
-- (UIView *)deserializeToCustomUIElement:(NSData* )json;
+- (ACOBaseCardElement* )deserialize:(NSData* )json;
 
 @end
