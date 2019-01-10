@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ACOParseContext.h"
 
 @interface ACOBaseActionElement:NSObject
 
@@ -42,6 +43,6 @@ typedef NS_ENUM(NSInteger, ACRSentiment) {
 
 @protocol ACOIBaseActionElementParser
 
-- (ACOBaseActionElement *)deserialize:(NSData *)json parseContext:(ACOParseContext*);
+- (ACOBaseActionElement *)deserialize:(NSData *)json parseContext:(ACOParseContext* )parseContext;
 
 @end

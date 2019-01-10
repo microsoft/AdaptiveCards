@@ -51,7 +51,6 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     NSMutableDictionary *_imageContextMap;
     NSMutableDictionary *_imageViewContextMap;
     NSMutableSet *_setOfRemovedObservers;
-    std::unique_ptr<ParseContext> _parseContext;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -87,10 +86,6 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
             _hostConfig = config;
         }
         self.acrActionDelegate = acrActionDelegate;
-        ACRRegistration *registration = [ACRRegistration getInstance];
-        if([registration hasCustomActionElementParser]){
-            _parseContext = std::make_unique<ParseContext>();
-        }
         [self render];
     }
     return self;
@@ -677,11 +672,6 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
             [object removeObserver:self forKeyPath:@"image"];
         }
     }
-}
-
-- (std::shared_ptr<AdaptiveSharedNamespace::ActionElementParser> const &)getActionParser:(NSString*)elementType
-{
-    return _parseContext->actionParserRegistration->GetParser(std::string([elementType UTF8String]));
 }
 
 @end
