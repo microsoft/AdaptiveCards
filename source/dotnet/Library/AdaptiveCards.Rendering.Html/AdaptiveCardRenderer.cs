@@ -578,29 +578,7 @@ namespace AdaptiveCards.Rendering.Html
             if (container.Style != null)
             {
                 // Apply background color
-                ContainerStyleConfig containerStyle;
-                switch (container.Style)
-                {
-                    case AdaptiveContainerStyle.Accent:
-                        containerStyle = context.Config.ContainerStyles.Accent;
-                        break;
-                    case AdaptiveContainerStyle.Warning:
-                        containerStyle = context.Config.ContainerStyles.Warning;
-                        break;
-                    case AdaptiveContainerStyle.Attention:
-                        containerStyle = context.Config.ContainerStyles.Attention;
-                        break;
-                    case AdaptiveContainerStyle.Good:
-                        containerStyle = context.Config.ContainerStyles.Good;
-                        break;
-                    case AdaptiveContainerStyle.Emphasis:
-                        containerStyle = context.Config.ContainerStyles.Emphasis;
-                        break;
-                    case AdaptiveContainerStyle.Default:
-                    default:
-                        containerStyle = context.Config.ContainerStyles.Default;
-                        break;
-                }
+                ContainerStyleConfig containerStyle = context.Config.ContainerStyles.GetContainerStyleConfig(container.Style);
                 uiContainer.Style("background-color", context.GetRGBColor(containerStyle.BackgroundColor));
             }
 

@@ -23,5 +23,25 @@ namespace AdaptiveCards.Rendering
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ContainerStyleConfig Accent { get; set; } = new ContainerStyleConfig() { };
+
+        public ContainerStyleConfig GetContainerStyleConfig(AdaptiveContainerStyle? style)
+        {
+            switch (style)
+            {
+                case AdaptiveContainerStyle.Accent:
+                    return Accent;
+                case AdaptiveContainerStyle.Warning:
+                    return Warning;
+                case AdaptiveContainerStyle.Attention:
+                    return Attention;
+                case AdaptiveContainerStyle.Good:
+                    return Good;
+                case AdaptiveContainerStyle.Emphasis:
+                    return Emphasis;
+                case AdaptiveContainerStyle.Default:
+                default:
+                    return Default;
+            }
+        }
     }
 }
