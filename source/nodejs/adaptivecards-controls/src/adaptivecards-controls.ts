@@ -11,4 +11,3 @@ export * from "./checkbox";
 export * from "./radiobutton";
 export * from "./textbox";
 export * from "./popupmenu";
-import "./adaptivecards-controls.css";

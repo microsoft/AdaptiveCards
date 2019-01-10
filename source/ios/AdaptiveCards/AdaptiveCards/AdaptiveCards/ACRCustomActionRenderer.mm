@@ -1,11 +1,11 @@
 //
-//  ACRCustomRenderer
-//  ACRCustomRenderer.mm
+//  ACRCustomActionRenderer
+//  ACRCustomActionRenderer.mm
 //
-//  Copyright © 2017 Microsoft. All rights reserved.
+//  Copyright © 2019 Microsoft. All rights reserved.
 //
 
-#import "ACRCustomRenderer.h"
+#import "ACRCustomActionRenderer.h"
 #import "ACRRendererPrivate.h"
 #import "UnknownElement.h"
 #import "SharedAdaptiveCard.h"
@@ -13,28 +13,32 @@
 #import "ACRContentHoldingUIView.h"
 #import "ACOHostConfigPrivate.h"
 
-@implementation ACRCustomRenderer
+@implementation ACRCustomActionRenderer
 
-+ (ACRCustomRenderer *)getInstance
++ (ACRCustomActionRenderer *)getInstance
 {
-    static ACRCustomRenderer *singletonInstance = [[self alloc] init];
+    static ACRCustomActionRenderer *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 
-+ (ACRCardElementType)elemType
++ (ACRActionType)elemType
 {
-    return ACRUnknown;
+    return ACRUnknownAction;
 }
 
-- (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
-          rootView:(ACRView *)rootView
-            inputs:(NSMutableArray *)inputs
-   baseCardElement:(ACOBaseCardElement *)acoElem
-        hostConfig:(ACOHostConfig *)acoConfig;
+- (UIButton* )renderButton:(ACRView *)view
+                    inputs:(NSArray *)inputs
+                 superview:(UIView<ACRIContentHoldingView> *)superview
+         baseActionElement:(ACOBaseActionElement *)acoElem
+                hostConfig:(ACOHostConfig *)acoConfig;
 {
-    std::shared_ptr<UnknownElement> customElem = std::dynamic_pointer_cast<UnknownElement>([acoElem element]);
-    Json::Value blob = customElem->GetAdditionalProperties();
-    Json::FastWriter fastWriter;
+    //std::shared_ptr<UnknownElement> customElem = std::dynamic_pointer_cast<UnknownElement>([acoElem element]);
+    //Json::Value blob = customElem->GetAdditionalProperties();
+    //Json::FastWriter fastWriter;
+    //NSString *key = [[NSString alloc] initWithCString:customElem->GetElementTypeString() encoding:NSUTF8StringEncoding];
+    //customParser = [registration getCustomActionElementParser:key];
+    //customParseer deserialize
+    //[view getParseContext]->actionParserRegistration.GetParser("TextBlock");
 /*
     NSString *jsonString = [[NSString alloc] initWithCString:fastWriter.write(blob).c_str() encoding:NSUTF8StringEncoding];
     if(jsonString.length > 0){
@@ -53,8 +57,7 @@
         }
     }
  */
-
-    return viewGroup;
+    return nil;
 }
 
 @end

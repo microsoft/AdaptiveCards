@@ -20,16 +20,22 @@
 
 - (id<ACRIBaseActionSetRenderer>)getActionSetRenderer;
 
-- (void) setActionRenderer:(ACRBaseActionElementRenderer *)renderer cardElementType:(NSNumber *)cardElementType;
+- (void)setActionRenderer:(ACRBaseActionElementRenderer *)renderer cardElementType:(NSNumber *)cardElementType;
 
-- (void) setBaseCardElementRenderer:(ACRBaseCardElementRenderer *)renderer cardElementType:(ACRCardElementType)cardElementType;
+- (void)setBaseCardElementRenderer:(ACRBaseCardElementRenderer *)renderer cardElementType:(ACRCardElementType)cardElementType;
 
-- (void) setActionSetRenderer:(id<ACRIBaseActionSetRenderer>)actionsetRenderer;
+- (void)setActionSetRenderer:(id<ACRIBaseActionSetRenderer>)actionsetRenderer;
 
-- (void) setCustomElementParser:(NSObject<ACOIBaseCardElementParser> *)customElementParser;
+- (void)setCustomElementParser:(NSObject<ACOIBaseCardElementParser> *)customElementParser;
 
-- (BOOL) isElementRendererOverriden:(ACRCardElementType)cardElementType;
+- (BOOL)isElementRendererOverriden:(ACRCardElementType)cardElementType;
 
-- (BOOL) isActionRendererOverriden:(NSNumber *)cardElementType;
+- (BOOL)isActionRendererOverriden:(NSNumber *)cardElementType;
+
+- (void)setCustomActionElementParser:(NSString *)key parser:(NSObject<ACOIBaseActionElementParser> *)parser;
+
+- (id<ACOIBaseActionElementParser>)getCustomActionElementParser:(NSString *)key;
+
+- (ACOParseContext *)getParseContext;
 
 @end
