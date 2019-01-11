@@ -1,4 +1,5 @@
 ﻿import * as Enums from "./enums";
+import * as Shared from "./shared";
 import * as Utils from "./utils";
 import * as HostConfig from "./host-config";
 import * as TextFormatters from "./text-formatters";
@@ -20,10 +21,6 @@ function isActionAllowed(action: Action, forbiddenActionTypes: Array<string>): b
 	}
 
 	return true;
-}
-
-function generateUniqueId(): string {
-	return "__ac-" + Utils.UUID.generate();
 }
 
 function createCardObjectInstance<T extends ICardObject>(
@@ -109,84 +106,6 @@ export function createElementInstance(
 		errors);
 }
 
-export class SpacingDefinition {
-	left: number = 0;
-	top: number = 0;
-	right: number = 0;
-	bottom: number = 0;
-
-	constructor(top: number = 0,
-		right: number = 0,
-		bottom: number = 0,
-		left: number = 0) {
-		this.top = top;
-		this.right = right;
-		this.bottom = bottom;
-		this.left = left;
-	}
-}
-
-export class PaddingDefinition {
-	top: Enums.Spacing = Enums.Spacing.None;
-	right: Enums.Spacing = Enums.Spacing.None;
-	bottom: Enums.Spacing = Enums.Spacing.None;
-	left: Enums.Spacing = Enums.Spacing.None;
-
-	constructor(top: Enums.Spacing = Enums.Spacing.None,
-		right: Enums.Spacing = Enums.Spacing.None,
-		bottom: Enums.Spacing = Enums.Spacing.None,
-		left: Enums.Spacing = Enums.Spacing.None) {
-		this.top = top;
-		this.right = right;
-		this.bottom = bottom;
-		this.left = left;
-	}
-
-	toSpacingDefinition(hostConfig: HostConfig.HostConfig): SpacingDefinition {
-		return new SpacingDefinition(
-			hostConfig.getEffectiveSpacing(this.top),
-			hostConfig.getEffectiveSpacing(this.right),
-			hostConfig.getEffectiveSpacing(this.bottom),
-			hostConfig.getEffectiveSpacing(this.left));
-	}
-}
-
-export class SizeAndUnit {
-	physicalSize: number;
-	unit: Enums.SizeUnit;
-
-	static parse(input: any): SizeAndUnit {
-		let result = new SizeAndUnit(0, Enums.SizeUnit.Weight);
-
-		let regExp = /^([0-9]+)(px|\*)?$/g;
-		let matches = regExp.exec(input);
-
-		if (matches && matches.length >= 2) {
-			result.physicalSize = parseInt(matches[1]);
-
-			if (matches.length == 3) {
-				if (matches[2] == "px") {
-					result.unit = Enums.SizeUnit.Pixel;
-				}
-			}
-
-			return result;
-		}
-
-		throw new Error("Invalid size: " + input);
-	}
-
-	constructor(physicalSize: number, unit: Enums.SizeUnit) {
-		this.physicalSize = physicalSize;
-		this.unit = unit;
-	}
-}
-
-export interface IResourceInformation {
-	url: string;
-	mimeType: string;
-}
-
 export interface ICardObject {
 	shouldFallback(): boolean;
 	setParent(parent: CardElement);
@@ -197,14 +116,14 @@ export abstract class CardElement implements ICardObject {
 	private _shouldFallback: boolean = false;
 	private _lang: string = undefined;
 	private _hostConfig?: HostConfig.HostConfig = null;
-	private _internalPadding: PaddingDefinition = null;
+	// private _internalPadding: Shared.PaddingDefinition = null;
 	private _parent: CardElement = null;
 	private _renderedElement: HTMLElement = null;
 	private _separatorElement: HTMLElement = null;
 	private _isVisible: boolean = true;
 	private _truncatedDueToOverflow: boolean = false;
 	private _defaultRenderedElementDisplayMode: string = null;
-	private _padding: PaddingDefinition = null;
+	private _padding: Shared.PaddingDefinition = null;
 
 	private internalRenderSeparator(): HTMLElement {
 		return Utils.renderSeparation(
@@ -293,32 +212,29 @@ export abstract class CardElement implements ICardObject {
 		return element;
 	}
 
-	protected internalGetNonZeroPadding(padding: PaddingDefinition,
+	protected internalGetNonZeroPadding(
+		padding: Shared.PaddingDefinition,
 		processTop: boolean = true,
 		processRight: boolean = true,
 		processBottom: boolean = true,
 		processLeft: boolean = true) {
-		if (processTop) {
-			if (padding.top == Enums.Spacing.None) {
-				padding.top = this.internalPadding.top;
-			}
-		}
+		let effectivePadding = this.getEffectivePadding();
 
-		if (processRight) {
-			if (padding.right == Enums.Spacing.None) {
-				padding.right = this.internalPadding.right;
+		if (effectivePadding) {
+			if (processTop && padding.top == Enums.Spacing.None) {
+				padding.top = effectivePadding.top;
 			}
-		}
 
-		if (processBottom) {
-			if (padding.bottom == Enums.Spacing.None) {
-				padding.bottom = this.internalPadding.bottom;
+			if (processRight && padding.right == Enums.Spacing.None) {
+				padding.right = effectivePadding.right;
 			}
-		}
 
-		if (processLeft) {
-			if (padding.left == Enums.Spacing.None) {
-				padding.left = this.internalPadding.left;
+			if (processBottom && padding.bottom == Enums.Spacing.None) {
+				padding.bottom = effectivePadding.bottom;
+			}
+
+			if (processLeft && padding.left == Enums.Spacing.None) {
+				padding.left = effectivePadding.left;
 			}
 		}
 
@@ -366,6 +282,10 @@ export abstract class CardElement implements ICardObject {
 		return rootElement instanceof AdaptiveCard && rootElement.designMode;
 	}
 
+	protected getDefaultPadding(): Shared.PaddingDefinition {
+		return null;
+	}
+
 	protected get useDefaultSizing(): boolean {
 		return true;
 	}
@@ -374,37 +294,16 @@ export abstract class CardElement implements ICardObject {
 		return true;
 	}
 
-	protected get defaultPadding(): PaddingDefinition {
-		return new PaddingDefinition();
-	}
-
-	protected get internalPadding(): PaddingDefinition {
-		if (this._padding) {
-			return this._padding;
-		}
-		else {
-			return (this._internalPadding && this.allowCustomPadding) ? this._internalPadding : this.defaultPadding;
-		}
-	}
-
-	protected set internalPadding(value: PaddingDefinition) {
-		this._internalPadding = value;
-	}
-
 	protected get separatorOrientation(): Enums.Orientation {
 		return Enums.Orientation.Horizontal;
 	}
 
-	protected getPadding(): PaddingDefinition {
+	protected getPadding(): Shared.PaddingDefinition {
 		return this._padding;
 	}
 
-	protected setPadding(value: PaddingDefinition) {
+	protected setPadding(value: Shared.PaddingDefinition) {
 		this._padding = value;
-
-		if (this._padding) {
-			AdaptiveCard.useAutomaticContainerBleeding = false;
-		}
 	}
 
 	readonly requires = new HostConfig.HostCapabilities();
@@ -441,8 +340,8 @@ export abstract class CardElement implements ICardObject {
 		this._parent = value;
 	}
 
-	getNonZeroPadding(): PaddingDefinition {
-		var padding: PaddingDefinition = new PaddingDefinition();
+	getNonZeroPadding(): Shared.PaddingDefinition {
+		var padding: Shared.PaddingDefinition = new Shared.PaddingDefinition();
 
 		this.internalGetNonZeroPadding(padding);
 
@@ -466,7 +365,7 @@ export abstract class CardElement implements ICardObject {
 		this.horizontalAlignment = Utils.getEnumValueOrDefault(Enums.HorizontalAlignment, json["horizontalAlignment"], null);
 
 		this.spacing = Utils.getEnumValueOrDefault(Enums.Spacing, json["spacing"], Enums.Spacing.Default);
-		this.separator = json["separator"];
+		this.separator = Utils.parseBoolProperty(json["separator"], this.separator);
 
 		var jsonSeparation = json["separation"];
 
@@ -574,7 +473,11 @@ export abstract class CardElement implements ICardObject {
 		return this.parent ? this.parent.isLeftMostElement(this) && this.parent.isAtTheVeryLeft() : true;
 	}
 
-	isBleeding(): boolean {
+	isTopBleeding(): boolean {
+		return false;
+	}
+
+	isBottomBleeding(): boolean {
 		return false;
 	}
 
@@ -592,10 +495,6 @@ export abstract class CardElement implements ICardObject {
 
 	isHiddenDueToOverflow(): boolean {
 		return this._renderedElement && this._renderedElement.style.visibility == 'hidden';
-	}
-
-	canContentBleed(): boolean {
-		return this.parent ? this.parent.canContentBleed() : true;
 	}
 
 	getRootElement(): CardElement {
@@ -626,7 +525,7 @@ export abstract class CardElement implements ICardObject {
 		return [];
 	}
 
-	getResourceInformation(): Array<IResourceInformation> {
+	getResourceInformation(): Array<Shared.IResourceInformation> {
 		return [];
 	}
 
@@ -645,6 +544,27 @@ export abstract class CardElement implements ICardObject {
 	setShouldFallback(value: boolean) {
 		this._shouldFallback = value;
 	}
+
+	getEffectivePadding(): Shared.PaddingDefinition {
+		/*
+		if (this._padding) {
+			return this._padding;
+		}
+		else {
+			return (this._internalPadding && this.allowCustomPadding) ? this._internalPadding : this.defaultPadding;
+		}
+		*/
+
+		let padding = this.getPadding();
+
+		return (padding && this.allowCustomPadding) ? padding : this.getDefaultPadding();
+	}
+
+	/*
+	protected set effectivePaddingPadding(value: Shared.PaddingDefinition) {
+		this._internalPadding = value;
+	}
+	*/
 
 	get lang(): string {
 		if (this._lang) {
@@ -1155,8 +1075,8 @@ export class TextBlock extends CardElement {
 		}
 
 		this.color = Utils.getEnumValueOrDefault(Enums.TextColor, json["color"], this.color);
-		this.isSubtle = json["isSubtle"];
-		this.wrap = json["wrap"] === undefined ? false : json["wrap"];
+		this.isSubtle = Utils.parseBoolProperty(json["isSubtle"], this.isSubtle);
+		this.wrap = Utils.parseBoolProperty(json["wrap"], this.wrap);
 
 		if (typeof json["maxLines"] === "number") {
 			this.maxLines = json["maxLines"];
@@ -1408,7 +1328,7 @@ export class Image extends CardElement {
 		if (value) {
 			if (typeof value === "string") {
 				try {
-					let size = Utils.SizeAndUnit.parse(value);
+					let size = Shared.SizeAndUnit.parse(value);
 
 					if (size.unit == Enums.SizeUnit.Pixel) {
 						return size.physicalSize;
@@ -1566,7 +1486,7 @@ export class Image extends CardElement {
 	backgroundColor: string;
 	url: string;
 	size: Enums.Size = Enums.Size.Auto;
-	width: Utils.SizeAndUnit;
+	width: Shared.SizeAndUnit;
 	pixelWidth?: number = null;
 	pixelHeight?: number = null;
 	altText: string = "";
@@ -1680,7 +1600,7 @@ export class Image extends CardElement {
 			errors);
 	}
 
-	getResourceInformation(): Array<IResourceInformation> {
+	getResourceInformation(): Array<Shared.IResourceInformation> {
 		if (!Utils.isNullOrEmpty(this.url)) {
 			return [{ url: this.url, mimeType: "image" }]
 		}
@@ -1748,8 +1668,8 @@ export class ImageSet extends CardElementContainer {
 		return this._images[index];
 	}
 
-	getResourceInformation(): Array<IResourceInformation> {
-		let result: Array<IResourceInformation> = [];
+	getResourceInformation(): Array<Shared.IResourceInformation> {
+		let result: Array<Shared.IResourceInformation> = [];
 
 		for (let image of this._images) {
 			result = result.concat(image.getResourceInformation());
@@ -2088,8 +2008,8 @@ export class Media extends CardElement {
 		return "Media";
 	}
 
-	getResourceInformation(): Array<IResourceInformation> {
-		let result: Array<IResourceInformation> = [];
+	getResourceInformation(): Array<Shared.IResourceInformation> {
+		let result: Array<Shared.IResourceInformation> = [];
 
 		let posterUrl = this.getPosterUrl();
 
@@ -2115,7 +2035,7 @@ export class Media extends CardElement {
 	}
 }
 
-export abstract class Input extends CardElement implements Utils.IInput {
+export abstract class Input extends CardElement implements Shared.IInput {
 	protected valueChanged() {
 		if (this.onValueChanged) {
 			this.onValueChanged(this);
@@ -2230,7 +2150,7 @@ export class TextInput extends Input {
 	}
 
 	maxLength: number;
-	isMultiline: boolean;
+	isMultiline: boolean = false;
 	placeholder: string;
 	style: Enums.InputTextStyle = Enums.InputTextStyle.Text;
 
@@ -2253,7 +2173,7 @@ export class TextInput extends Input {
 		super.parse(json, errors);
 
 		this.maxLength = json["maxLength"];
-		this.isMultiline = json["isMultiline"];
+		this.isMultiline = Utils.parseBoolProperty(json["isMultiline"], this.isMultiline);
 		this.placeholder = json["placeholder"];
 		this.style = Utils.getEnumValueOrDefault(Enums.InputTextStyle, json["style"], this.style);
 	}
@@ -2279,7 +2199,7 @@ export class ToggleInput extends Input {
 		element.style.alignItems = "center";
 
 		this._checkboxInputElement = document.createElement("input");
-		this._checkboxInputElement.id = generateUniqueId();
+		this._checkboxInputElement.id = Utils.generateUniqueId();
 		this._checkboxInputElement.type = "checkbox";
 		this._checkboxInputElement.style.display = "inline-block";
 		this._checkboxInputElement.style.verticalAlign = "middle";
@@ -2346,7 +2266,7 @@ export class ToggleInput extends Input {
 
 		this.valueOn = Utils.getValueOrDefault<string>(json["valueOn"], this.valueOn);
 		this.valueOff = Utils.getValueOrDefault<string>(json["valueOff"], this.valueOff);
-		this.wrap = json["wrap"];
+		this.wrap = Utils.parseBoolProperty(json["wrap"], this.wrap);
 	}
 
 	get value(): string {
@@ -2436,7 +2356,7 @@ export class ChoiceSetInput extends Input {
 
 				for (let i = 0; i < this.choices.length; i++) {
 					let radioInput = document.createElement("input");
-					radioInput.id = generateUniqueId();
+					radioInput.id = Utils.generateUniqueId();
 					radioInput.type = "radio";
 					radioInput.style.margin = "0";
 					radioInput.style.display = "inline-block";
@@ -2496,7 +2416,7 @@ export class ChoiceSetInput extends Input {
 
 			for (let i = 0; i < this.choices.length; i++) {
 				let checkboxInput = document.createElement("input");
-				checkboxInput.id = generateUniqueId();
+				checkboxInput.id = Utils.generateUniqueId();
 				checkboxInput.type = "checkbox";
 				checkboxInput.style.margin = "0";
 				checkboxInput.style.display = "inline-block";
@@ -2548,8 +2468,8 @@ export class ChoiceSetInput extends Input {
 	}
 
 	choices: Array<Choice> = [];
-	isCompact: boolean;
-	isMultiSelect: boolean;
+	isCompact: boolean = false;
+	isMultiSelect: boolean = false;
 	placeholder: string;
 	wrap: boolean = false;
 
@@ -2603,7 +2523,7 @@ export class ChoiceSetInput extends Input {
 		super.parse(json, errors);
 
 		this.isCompact = !(json["style"] === "expanded");
-		this.isMultiSelect = json["isMultiSelect"];
+		this.isMultiSelect = Utils.parseBoolProperty(json["isMultiSelect"], this.isMultiSelect);
 		this.placeholder = json["placeholder"];
 
 		this.choices = [];
@@ -2621,7 +2541,7 @@ export class ChoiceSetInput extends Input {
 			}
 		}
 
-		this.wrap = json["wrap"];
+		this.wrap = Utils.parseBoolProperty(json["wrap"], this.wrap);
 	}
 
 	get value(): string {
@@ -3015,7 +2935,7 @@ export abstract class Action implements ICardObject {
 		return [];
 	}
 
-	getResourceInformation(): Array<IResourceInformation> {
+	getResourceInformation(): Array<Shared.IResourceInformation> {
 		if (!Utils.isNullOrEmpty(this.iconUrl)) {
 			return [{ url: this.iconUrl, mimeType: "image" }]
 		}
@@ -3127,7 +3047,7 @@ export class OpenUrlAction extends Action {
 }
 
 export class HttpHeader {
-	private _value = new Utils.StringWithSubstitutions();
+	private _value = new Shared.StringWithSubstitutions();
 
 	name: string;
 
@@ -3141,7 +3061,7 @@ export class HttpHeader {
 	}
 
 	prepare(inputs: Array<Input>) {
-		this._value.substituteInputValues(inputs, Utils.ContentTypes.applicationXWwwFormUrlencoded);
+		this._value.substituteInputValues(inputs, Shared.ContentTypes.applicationXWwwFormUrlencoded);
 	}
 
 	get value(): string {
@@ -3154,8 +3074,8 @@ export class HttpHeader {
 }
 
 export class HttpAction extends Action {
-	private _url = new Utils.StringWithSubstitutions();
-	private _body = new Utils.StringWithSubstitutions();
+	private _url = new Shared.StringWithSubstitutions();
+	private _body = new Shared.StringWithSubstitutions();
 	private _headers: Array<HttpHeader> = [];
 
 	method: string;
@@ -3204,9 +3124,9 @@ export class HttpAction extends Action {
 	}
 
 	prepare(inputs: Array<Input>) {
-		this._url.substituteInputValues(inputs, Utils.ContentTypes.applicationXWwwFormUrlencoded);
+		this._url.substituteInputValues(inputs, Shared.ContentTypes.applicationXWwwFormUrlencoded);
 
-		let contentType = Utils.ContentTypes.applicationJson;
+		let contentType = Shared.ContentTypes.applicationJson;
 
 		for (var i = 0; i < this._headers.length; i++) {
 			this._headers[i].prepare(inputs);
@@ -3310,7 +3230,7 @@ export class ShowCardAction extends Action {
 		return this.card.getAllInputs();
 	}
 
-	getResourceInformation(): Array<IResourceInformation> {
+	getResourceInformation(): Array<Shared.IResourceInformation> {
 		return super.getResourceInformation().concat(this.card.getResourceInformation());
 	}
 
@@ -3345,7 +3265,7 @@ class ActionCollection {
 
 		this._actionCardContainer.style.marginTop = this._renderedActionCount > 0 ? this._owner.hostConfig.actions.showCard.inlineTopMargin + "px" : "0px";
 
-		var padding = this._owner.getNonZeroPadding().toSpacingDefinition(this._owner.hostConfig);
+		let padding = this._owner.hostConfig.paddingDefinitionToSpacingDefinition(this._owner.getNonZeroPadding());
 
 		if (this._actionCard !== null) {
 			this._actionCard.style.paddingLeft = padding.left + "px";
@@ -3791,8 +3711,8 @@ class ActionCollection {
 		return result;
 	}
 
-	getResourceInformation(): Array<IResourceInformation> {
-		let result: Array<IResourceInformation> = [];
+	getResourceInformation(): Array<Shared.IResourceInformation> {
+		let result: Array<Shared.IResourceInformation> = [];
 
 		for (var i = 0; i < this.items.length; i++) {
 			result = result.concat(this.items[i].getResourceInformation());
@@ -3834,7 +3754,7 @@ export class ActionSet extends CardElement {
 		return result;
 	}
 
-	isBleeding(): boolean {
+	isBottomBleeding(): boolean {
 		return this._actionCollection.expandedAction ? true : false;
 	}
 
@@ -3879,7 +3799,7 @@ export class ActionSet extends CardElement {
 		return this._actionCollection.getAllInputs();
 	}
 
-	getResourceInformation(): Array<IResourceInformation> {
+	getResourceInformation(): Array<Shared.IResourceInformation> {
 		return this._actionCollection.getResourceInformation();
 	}
 
@@ -3994,6 +3914,15 @@ export class Container extends CardElementContainer {
 		}
 	}
 
+	protected getDefaultPadding(): Shared.PaddingDefinition {
+		return this.hasBackground ?
+			new Shared.PaddingDefinition(
+				Enums.Spacing.Padding,
+				Enums.Spacing.Padding,
+				Enums.Spacing.Padding,
+				Enums.Spacing.Padding) : super.getDefaultPadding();
+	}
+
 	private get hasExplicitStyle(): boolean {
 		return this._style != null;
 	}
@@ -4002,8 +3931,12 @@ export class Container extends CardElementContainer {
 		return "items";
 	}
 
+	protected isFirstElementBleeding(): boolean {
+		return this._renderedItems.length > 0 ? this._renderedItems[0].isTopBleeding() : false;
+	}
+
 	protected isLastElementBleeding(): boolean {
-		return this._renderedItems.length > 0 ? this._renderedItems[this._renderedItems.length - 1].isBleeding() : false;
+		return this._renderedItems.length > 0 ? this._renderedItems[this._renderedItems.length - 1].isBottomBleeding() : false;
 	}
 
 	protected applyPadding() {
@@ -4011,138 +3944,39 @@ export class Container extends CardElementContainer {
 			return;
 		}
 
-		if (this.padding) {
-			var physicalPadding = this.padding.toSpacingDefinition(this.hostConfig);
+		let physicalPadding = new Shared.SpacingDefinition();
 
-			this.renderedElement.style.paddingTop = physicalPadding.top + "px";
-			this.renderedElement.style.paddingRight = physicalPadding.right + "px";
-			this.renderedElement.style.paddingBottom = physicalPadding.bottom + "px";
-			this.renderedElement.style.paddingLeft = physicalPadding.left + "px";
+		if (this.getEffectivePadding()) {
+			physicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(this.getEffectivePadding());
 		}
+		/*
 		else if (this.hasBackground) {
-			var physicalMargin: SpacingDefinition = new SpacingDefinition();
-			var physicalPadding: SpacingDefinition = new SpacingDefinition();
-
-			var useAutoPadding = (this.parent ? this.parent.canContentBleed() : false) && AdaptiveCard.useAutomaticContainerBleeding;
-
-			if (useAutoPadding) {
-				var effectivePadding = this.getNonZeroPadding();
-				var effectiveMargin: PaddingDefinition = new PaddingDefinition(
-					effectivePadding.top,
-					effectivePadding.right,
-					effectivePadding.bottom,
-					effectivePadding.left);
-
-				if (!this.isAtTheVeryTop()) {
-					effectivePadding.top = Enums.Spacing.None;
-					effectiveMargin.top = Enums.Spacing.None;
-				}
-
-				if (!this.isAtTheVeryBottom()) {
-					effectivePadding.bottom = Enums.Spacing.None;
-					effectiveMargin.bottom = Enums.Spacing.None;
-				}
-
-				if (!this.isAtTheVeryLeft()) {
-					effectivePadding.left = Enums.Spacing.None;
-					effectiveMargin.left = Enums.Spacing.None;
-				}
-
-				if (!this.isAtTheVeryRight()) {
-					effectivePadding.right = Enums.Spacing.None;
-					effectiveMargin.right = Enums.Spacing.None;
-				}
-
-				if (effectivePadding.left != Enums.Spacing.None || effectivePadding.right != Enums.Spacing.None) {
-					if (effectivePadding.left == Enums.Spacing.None) {
-						effectivePadding.left = effectivePadding.right;
-					}
-
-					if (effectivePadding.right == Enums.Spacing.None) {
-						effectivePadding.right = effectivePadding.left;
-					}
-				}
-
-				if (effectivePadding.top != Enums.Spacing.None || effectivePadding.bottom != Enums.Spacing.None) {
-					if (effectivePadding.top == Enums.Spacing.None) {
-						effectivePadding.top = effectivePadding.bottom;
-					}
-
-					if (effectivePadding.bottom == Enums.Spacing.None) {
-						effectivePadding.bottom = effectivePadding.top;
-					}
-				}
-
-				if (effectivePadding.top != Enums.Spacing.None
-					|| effectivePadding.right != Enums.Spacing.None
-					|| effectivePadding.bottom != Enums.Spacing.None
-					|| effectivePadding.left != Enums.Spacing.None) {
-					if (effectivePadding.top == Enums.Spacing.None) {
-						effectivePadding.top = Enums.Spacing.Default;
-					}
-
-					if (effectivePadding.right == Enums.Spacing.None) {
-						effectivePadding.right = Enums.Spacing.Default;
-					}
-
-					if (effectivePadding.bottom == Enums.Spacing.None) {
-						effectivePadding = Object.assign(
-							{},
-							effectivePadding,
-							{ bottom: Enums.Spacing.Default }
-						);
-					}
-
-					if (effectivePadding.left == Enums.Spacing.None) {
-						effectivePadding = Object.assign(
-							{},
-							effectivePadding,
-							{ left: Enums.Spacing.Default }
-						);
-					}
-				}
-
-				if (effectivePadding.top == Enums.Spacing.None &&
-					effectivePadding.right == Enums.Spacing.None &&
-					effectivePadding.bottom == Enums.Spacing.None &&
-					effectivePadding.left == Enums.Spacing.None) {
-					effectivePadding = new PaddingDefinition(
-						Enums.Spacing.Padding,
-						Enums.Spacing.Padding,
-						Enums.Spacing.Padding,
-						Enums.Spacing.Padding);
-				}
-
-				physicalMargin = effectiveMargin.toSpacingDefinition(this.hostConfig);
-				physicalPadding = effectivePadding.toSpacingDefinition(this.hostConfig);
-			}
-			else {
-				physicalPadding = new PaddingDefinition(
+			physicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(
+				new Shared.PaddingDefinition(
 					Enums.Spacing.Padding,
 					Enums.Spacing.Padding,
 					Enums.Spacing.Padding,
-					Enums.Spacing.Padding
-				).toSpacingDefinition(this.hostConfig);
-			}
+					Enums.Spacing.Padding));
+		}
+		*/
 
-			this.renderedElement.style.marginTop = "-" + physicalMargin.top + "px";
-			this.renderedElement.style.marginRight = "-" + physicalMargin.right + "px";
-			this.renderedElement.style.marginBottom = "-" + physicalMargin.bottom + "px";
-			this.renderedElement.style.marginLeft = "-" + physicalMargin.left + "px";
+		this.renderedElement.style.paddingTop = physicalPadding.top + "px";
+		this.renderedElement.style.paddingRight = physicalPadding.right + "px";
+		this.renderedElement.style.paddingBottom = physicalPadding.bottom + "px";
+		this.renderedElement.style.paddingLeft = physicalPadding.left + "px";
 
-			this.renderedElement.style.paddingTop = physicalPadding.top + "px";
-			this.renderedElement.style.paddingRight = physicalPadding.right + "px";
-			this.renderedElement.style.paddingBottom = physicalPadding.bottom + "px";
-			this.renderedElement.style.paddingLeft = physicalPadding.left + "px";
+		if (this.bleed && this.hasBackground) {
+			let parentContainer = this.getParentContainer();
 
-			if (this.separatorElement) {
-				if (this.separatorOrientation == Enums.Orientation.Horizontal) {
-					this.separatorElement.style.marginLeft = "-" + physicalMargin.left + "px";
-					this.separatorElement.style.marginRight = "-" + physicalMargin.right + "px";
-				}
-				else {
-					this.separatorElement.style.marginTop = "-" + physicalMargin.top + "px";
-					this.separatorElement.style.marginBottom = "-" + physicalMargin.bottom + "px";
+			if (parentContainer && parentContainer.getEffectivePadding()) {
+				let parentPhysicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(parentContainer.getEffectivePadding());
+
+				this.renderedElement.style.marginLeft = "-" + parentPhysicalPadding.left + "px";
+				this.renderedElement.style.marginRight = "-" + parentPhysicalPadding.right + "px";
+
+				if (this.separatorElement) {
+					this.separatorElement.style.marginLeft = "-" + parentPhysicalPadding.left + "px";
+					this.separatorElement.style.marginRight = "-" + parentPhysicalPadding.right + "px";
 				}
 			}
 		}
@@ -4318,6 +4152,7 @@ export class Container extends CardElementContainer {
 	backgroundImage: BackgroundImage;
 	verticalContentAlignment: Enums.VerticalAlignment = Enums.VerticalAlignment.Top;
 	rtl?: boolean = null;
+	bleed: boolean = false;
 
 	toJSON() {
 		let result = super.toJSON();
@@ -4343,6 +4178,8 @@ export class Container extends CardElementContainer {
 			Utils.setProperty(result, this.getItemsCollectionPropertyName(), elements);
 		}
 
+		Utils.setProperty(result, "bleed", this.bleed);
+
 		return result;
 	}
 
@@ -4358,8 +4195,12 @@ export class Container extends CardElementContainer {
 		return "Container";
 	}
 
-	isBleeding(): boolean {
-		return this.isLastElementBleeding();
+	isTopBleeding(): boolean {
+		return this.isFirstElementBleeding() || this.bleed;
+	}
+
+	isBottomBleeding(): boolean {
+		return this.isLastElementBleeding() || this.bleed;
 	}
 
 	isFirstElement(element: CardElement): boolean {
@@ -4476,6 +4317,8 @@ export class Container extends CardElementContainer {
 				}
 			}
 		}
+
+		this.bleed = Utils.parseBoolProperty(json["bleed"], this.bleed);
 	}
 
 	indexOf(cardElement: CardElement): number {
@@ -4514,10 +4357,6 @@ export class Container extends CardElementContainer {
 		this._items = [];
 	}
 
-	canContentBleed(): boolean {
-		return this.hasBackground ? false : super.canContentBleed();
-	}
-
 	getAllInputs(): Array<Input> {
 		var result: Array<Input> = [];
 
@@ -4530,8 +4369,8 @@ export class Container extends CardElementContainer {
 		return result;
 	}
 
-	getResourceInformation(): Array<IResourceInformation> {
-		let result: Array<IResourceInformation> = [];
+	getResourceInformation(): Array<Shared.IResourceInformation> {
+		let result: Array<Shared.IResourceInformation> = [];
 
 		if (this.backgroundImage && !Utils.isNullOrEmpty(this.backgroundImage.url)) {
 			result.push({ url: this.backgroundImage.url, mimeType: "image" });
@@ -4634,11 +4473,11 @@ export class Container extends CardElementContainer {
 		this._style = value;
 	}
 
-	get padding(): PaddingDefinition {
+	get padding(): Shared.PaddingDefinition {
 		return this.getPadding();
 	}
 
-	set padding(value: PaddingDefinition) {
+	set padding(value: Shared.PaddingDefinition) {
 		this.setPadding(value);
 	}
 
@@ -4655,7 +4494,7 @@ export class Container extends CardElementContainer {
 	}
 }
 
-export type ColumnWidth = Utils.SizeAndUnit | "auto" | "stretch";
+export type ColumnWidth = Shared.SizeAndUnit | "auto" | "stretch";
 
 export class Column extends Container {
 	private _computedWeight: number = 0;
@@ -4676,7 +4515,7 @@ export class Column extends Container {
 			renderedElement.style.flex = "1 1 50px";
 		}
 		else {
-			let sizeAndUnit = <Utils.SizeAndUnit>this.width;
+			let sizeAndUnit = <Shared.SizeAndUnit>this.width;
 
 			if (sizeAndUnit.unit == Enums.SizeUnit.Pixel) {
 				renderedElement.style.flex = "0 0 auto";
@@ -4707,7 +4546,7 @@ export class Column extends Container {
 	toJSON() {
 		let result = super.toJSON();
 
-		if (this.width instanceof Utils.SizeAndUnit) {
+		if (this.width instanceof Shared.SizeAndUnit) {
 			if (this.width.unit == Enums.SizeUnit.Pixel) {
 				Utils.setProperty(result, "width", this.width.physicalSize + "px");
 			}
@@ -4744,7 +4583,7 @@ export class Column extends Container {
 		var invalidWidth = false;
 
 		try {
-			this.width = Utils.SizeAndUnit.parse(jsonWidth);
+			this.width = Shared.SizeAndUnit.parse(jsonWidth);
 		}
 		catch (e) {
 			if (typeof jsonWidth === "string" && (jsonWidth === "auto" || jsonWidth === "stretch")) {
@@ -4785,15 +4624,17 @@ export class ColumnSet extends CardElementContainer {
 	private _selectAction: Action;
 
 	protected applyPadding() {
-		if (this.padding) {
-			if (this.renderedElement) {
-				var physicalPadding = this.padding.toSpacingDefinition(this.hostConfig);
+		if (!this.renderedElement) {
+			return;
+		}
 
-				this.renderedElement.style.paddingTop = physicalPadding.top + "px";
-				this.renderedElement.style.paddingRight = physicalPadding.right + "px";
-				this.renderedElement.style.paddingBottom = physicalPadding.bottom + "px";
-				this.renderedElement.style.paddingLeft = physicalPadding.left + "px";
-			}
+		if (this.getEffectivePadding()) {
+			let physicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(this.getEffectivePadding());
+
+			this.renderedElement.style.paddingTop = physicalPadding.top + "px";
+			this.renderedElement.style.paddingRight = physicalPadding.right + "px";
+			this.renderedElement.style.paddingBottom = physicalPadding.bottom + "px";
+			this.renderedElement.style.paddingLeft = physicalPadding.left + "px";
 		}
 	}
 
@@ -4835,7 +4676,7 @@ export class ColumnSet extends CardElementContainer {
 			var totalWeight: number = 0;
 
 			for (let column of this._columns) {
-				if (column.width instanceof Utils.SizeAndUnit && (column.width.unit == Enums.SizeUnit.Weight)) {
+				if (column.width instanceof Shared.SizeAndUnit && (column.width.unit == Enums.SizeUnit.Weight)) {
 					totalWeight += column.width.physicalSize;
 				}
 			}
@@ -4843,7 +4684,7 @@ export class ColumnSet extends CardElementContainer {
 			var renderedColumnCount: number = 0;
 
 			for (let column of this._columns) {
-				if (column.width instanceof Utils.SizeAndUnit && column.width.unit == Enums.SizeUnit.Weight && totalWeight > 0) {
+				if (column.width instanceof Shared.SizeAndUnit && column.width.unit == Enums.SizeUnit.Weight && totalWeight > 0) {
 					var computedWeight = 100 / totalWeight * column.width.physicalSize;
 
 					// Best way to emulate "internal" access I know of
@@ -5049,8 +4890,8 @@ export class ColumnSet extends CardElementContainer {
 		return result;
 	}
 
-	getResourceInformation(): Array<IResourceInformation> {
-		let result: Array<IResourceInformation> = [];
+	getResourceInformation(): Array<Shared.IResourceInformation> {
+		let result: Array<Shared.IResourceInformation> = [];
 
 		for (var i = 0; i < this._columns.length; i++) {
 			result = result.concat(this._columns[i].getResourceInformation());
@@ -5106,11 +4947,11 @@ export class ColumnSet extends CardElementContainer {
 		return speak;
 	}
 
-	get padding(): PaddingDefinition {
+	get padding(): Shared.PaddingDefinition {
 		return this.getPadding();
 	}
 
-	set padding(value: PaddingDefinition) {
+	set padding(value: Shared.PaddingDefinition) {
 		this.setPadding(value);
 	}
 
@@ -5244,6 +5085,10 @@ export abstract class ContainerWithActions extends Container {
 		}
 	}
 
+	protected isFirstElementBleeding(): boolean {
+		return super.isFirstElementBleeding() ? !this.isDesignMode() : false;
+	}
+
 	protected isLastElementBleeding(): boolean {
 		if (this._actionCollection.renderedActionCount == 0) {
 			return super.isLastElementBleeding() ? !this.isDesignMode() : false;
@@ -5325,7 +5170,7 @@ export abstract class ContainerWithActions extends Container {
 		return super.getAllInputs().concat(this._actionCollection.getAllInputs());
 	}
 
-	getResourceInformation(): Array<IResourceInformation> {
+	getResourceInformation(): Array<Shared.IResourceInformation> {
 		return super.getResourceInformation().concat(this._actionCollection.getResourceInformation());
 	}
 
@@ -5436,7 +5281,6 @@ export interface IMarkdownProcessingResult {
 export class AdaptiveCard extends ContainerWithActions {
 	private static currentVersion: HostConfig.Version = new HostConfig.Version(1, 1);
 
-	static useAutomaticContainerBleeding: boolean = false;
 	static useAdvancedTextBlockTruncation: boolean = true;
 	static useAdvancedCardBottomTruncation: boolean = false;
 	static useMarkdownInRadioButtonAndCheckbox: boolean = true;
@@ -5513,12 +5357,18 @@ export class AdaptiveCard extends ContainerWithActions {
 			return;
 		}
 
-		var effectivePadding = this.padding ? this.padding.toSpacingDefinition(this.hostConfig) : this.internalPadding.toSpacingDefinition(this.hostConfig);
+		if (this.getEffectivePadding()) {
+			let physicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(this.getEffectivePadding());
 
-		this.renderedElement.style.paddingTop = effectivePadding.top + "px";
-		this.renderedElement.style.paddingRight = effectivePadding.right + "px";
-		this.renderedElement.style.paddingBottom = effectivePadding.bottom + "px";
-		this.renderedElement.style.paddingLeft = effectivePadding.left + "px";
+			this.renderedElement.style.paddingTop = physicalPadding.top + "px";
+			this.renderedElement.style.paddingRight = physicalPadding.right + "px";
+			this.renderedElement.style.paddingBottom = physicalPadding.bottom + "px";
+			this.renderedElement.style.paddingLeft = physicalPadding.left + "px";
+		}
+
+		if (this.isFirstElementBleeding()) {
+			this.renderedElement.style.paddingTop = "0px";
+		}
 
 		if (this.isLastElementBleeding()) {
 			this.renderedElement.style.paddingBottom = "0px";
@@ -5538,16 +5388,16 @@ export class AdaptiveCard extends ContainerWithActions {
 		return renderedElement;
 	}
 
-	protected get bypassVersionCheck(): boolean {
-		return false;
-	}
-
-	protected get defaultPadding(): PaddingDefinition {
-		return new PaddingDefinition(
+	protected getDefaultPadding(): Shared.PaddingDefinition {
+		return new Shared.PaddingDefinition(
 			Enums.Spacing.Padding,
 			Enums.Spacing.Padding,
 			Enums.Spacing.Padding,
 			Enums.Spacing.Padding);
+	}
+
+	protected get bypassVersionCheck(): boolean {
+		return false;
 	}
 
 	protected get allowCustomPadding(): boolean {
@@ -5728,10 +5578,6 @@ export class AdaptiveCard extends ContainerWithActions {
 		}
 	}
 
-	canContentBleed(): boolean {
-		return true;
-	}
-
 	shouldFallback(): boolean {
 		return super.shouldFallback() || !this.isVersionSupported();
 	}
@@ -5742,16 +5588,16 @@ export class AdaptiveCard extends ContainerWithActions {
 }
 
 class InlineAdaptiveCard extends AdaptiveCard {
-	protected get bypassVersionCheck(): boolean {
-		return true;
-	}
-
-	protected get defaultPadding(): PaddingDefinition {
-		return new PaddingDefinition(
+	protected getDefaultPadding(): Shared.PaddingDefinition {
+		return new Shared.PaddingDefinition(
 			this.suppressStyle ? Enums.Spacing.None : Enums.Spacing.Padding,
 			Enums.Spacing.Padding,
 			this.suppressStyle ? Enums.Spacing.None : Enums.Spacing.Padding,
 			Enums.Spacing.Padding);
+	}
+
+	protected get bypassVersionCheck(): boolean {
+		return true;
 	}
 
 	protected get defaultStyle(): string {

@@ -1339,6 +1339,24 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
+        /*
+        let style = addLabelAndInput(card, "Style:", Adaptive.ChoiceSetInput);
+        style.input.isCompact = true;
+        style.input.placeholder = "(not set)";
+        style.input.choices.push(new Adaptive.Choice("Default", "default"));
+        style.input.choices.push(new Adaptive.Choice("Emphasis", "emphasis"));
+
+        if (this.cardElement.style) {
+            style.input.defaultValue = this.cardElement.style.toString();
+        }
+
+        style.input.onValueChanged = () => {
+            this.cardElement.style = style.input.value;
+
+            this.changed(false);
+        }
+        */
+
         var actionSelector = createActionSelector(card, this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
 
         actionSelector.input.onValueChanged = () => {
@@ -1396,9 +1414,21 @@ export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
         style.input.placeholder = "(not set)";
         style.input.choices.push(new Adaptive.Choice("Default", "default"));
         style.input.choices.push(new Adaptive.Choice("Emphasis", "emphasis"));
-        style.input.defaultValue = this.cardElement.style.toString();
+
+        if (this.cardElement.style) {
+            style.input.defaultValue = this.cardElement.style.toString();
+        }
+
         style.input.onValueChanged = () => {
             this.cardElement.style = style.input.value;
+
+            this.changed(false);
+        }
+
+        let bleed = addLabelAndInput(card, "Bleed:", Adaptive.ToggleInput);
+        bleed.input.defaultValue = String(this.cardElement.bleed);
+        bleed.input.onValueChanged = () => {
+            this.cardElement.bleed = bleed.input.value == "true";
 
             this.changed(false);
         }
