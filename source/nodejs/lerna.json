@@ -3,12 +3,14 @@
 	"packages": [
 		"adaptivecards*/**"
 	],
-	"ignoreChanges": [
-		"**/__tests__/**"
-	],
+
 	"command": {
 		"publish": {
-			"allowBranch": "master"
+			"allowBranch": "master",
+			"ignoreChanges": [
+				"**/__tests__/**",
+				"*.md"
+			]
 		}
 	}
 }
