@@ -473,11 +473,11 @@ export abstract class CardElement implements ICardObject {
 		return this.parent ? this.parent.isLeftMostElement(this) && this.parent.isAtTheVeryLeft() : true;
 	}
 
-	isTopBleeding(): boolean {
+	isStartBleeding(): boolean {
 		return false;
 	}
 
-	isBottomBleeding(): boolean {
+	isEndBleeding(): boolean {
 		return false;
 	}
 
@@ -546,25 +546,10 @@ export abstract class CardElement implements ICardObject {
 	}
 
 	getEffectivePadding(): Shared.PaddingDefinition {
-		/*
-		if (this._padding) {
-			return this._padding;
-		}
-		else {
-			return (this._internalPadding && this.allowCustomPadding) ? this._internalPadding : this.defaultPadding;
-		}
-		*/
-
 		let padding = this.getPadding();
 
 		return (padding && this.allowCustomPadding) ? padding : this.getDefaultPadding();
 	}
-
-	/*
-	protected set effectivePaddingPadding(value: Shared.PaddingDefinition) {
-		this._internalPadding = value;
-	}
-	*/
 
 	get lang(): string {
 		if (this._lang) {
@@ -674,12 +659,6 @@ export abstract class CardElement implements ICardObject {
 	get separatorElement(): HTMLElement {
 		return this._separatorElement;
 	}
-}
-
-export abstract class CardElementContainer extends CardElement {
-	abstract getItemCount(): number;
-	abstract getItemAt(index: number): CardElement;
-	abstract removeItem(item: CardElement): boolean;
 }
 
 export class TextBlock extends CardElement {
@@ -1630,6 +1609,155 @@ export class Image extends CardElement {
 	}
 }
 
+export abstract class CardElementContainer extends CardElement {
+	private _selectAction: Action = null;
+
+	protected applyPadding() {
+		// Do nothing in base implementation
+	}
+
+	protected isFirstElementBleeding() {
+		return false;
+	}
+
+	protected isLastElementBleeding() {
+		return false;
+	}
+
+	protected getSelectAction(): Action {
+		return this._selectAction;
+	}
+
+	protected setSelectAction(value: Action) {
+		this._selectAction = value;
+
+		if (this._selectAction) {
+			this._selectAction.setParent(this);
+		}
+	}
+
+	protected get isSelectable(): boolean {
+		return false;
+	}
+
+	abstract getItemCount(): number;
+	abstract getItemAt(index: number): CardElement;
+	abstract removeItem(item: CardElement): boolean;
+
+	parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+		super.parse(json, errors);
+
+		if (this.isSelectable) {
+			this._selectAction = createActionInstance(
+				this,
+				json["selectAction"],
+				errors);
+		}
+	}
+
+	toJSON() {
+		let result = super.toJSON();
+
+		if (this._selectAction && this.isSelectable) {
+			Utils.setProperty(result, "selectAction", this._selectAction.toJSON());
+		}
+
+		return result;
+	}
+
+	validate(): Array<HostConfig.IValidationError> {
+		var result: Array<HostConfig.IValidationError> = [];
+
+		for (var i = 0; i < this.getItemCount(); i++) {
+			result = result.concat(this.getItemAt(i).validate());
+		}
+
+		if (this._selectAction) {
+			result = result.concat(this._selectAction.validate());
+		}
+
+		return result;
+	}
+
+	render(): HTMLElement {
+		let element = super.render();
+		let hostConfig = this.hostConfig;
+
+		if (this.isSelectable && this._selectAction && hostConfig.supportsInteractivity) {
+			element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
+			element.tabIndex = 0;
+			element.setAttribute("role", "button");
+			element.setAttribute("aria-label", this._selectAction.title);
+
+			element.onclick = (e) => {
+				if (this._selectAction != null) {
+					this._selectAction.execute();
+					e.cancelBubble = true;
+				}
+			}
+
+			element.onkeypress = (e) => {
+				if (this._selectAction != null) {
+					// Enter or space pressed
+					if (e.keyCode == 13 || e.keyCode == 32) {
+						this._selectAction.execute();
+					}
+				}
+			}
+		}
+
+		return element;
+	}
+
+	updateLayout(processChildren: boolean = true) {
+		super.updateLayout(processChildren);
+
+		this.applyPadding();
+
+		if (processChildren) {
+			for (var i = 0; i < this.getItemCount(); i++) {
+				this.getItemAt(i).updateLayout();
+			}
+		}
+	}
+
+	getAllInputs(): Array<Input> {
+		var result: Array<Input> = [];
+
+		for (var i = 0; i < this.getItemCount(); i++) {
+			result = result.concat(this.getItemAt(i).getAllInputs());
+		}
+
+		return result;
+	}
+
+	getResourceInformation(): Array<Shared.IResourceInformation> {
+		let result: Array<Shared.IResourceInformation> = [];
+
+		for (var i = 0; i < this.getItemCount(); i++) {
+			result = result.concat(this.getItemAt(i).getResourceInformation());
+		}
+
+		return result;
+	}
+
+	getElementById(id: string): CardElement {
+		let result = super.getElementById(id);
+
+		if (!result) {
+			for (var i = 0; i < this.getItemCount(); i++) {
+				result = this.getItemAt(i).getElementById(id);
+
+				if (result) {
+					break;
+				}
+			}
+		}
+
+		return result;
+	}
+}
+
 export class ImageSet extends CardElementContainer {
 	private _images: Array<Image> = [];
 
@@ -1666,16 +1794,6 @@ export class ImageSet extends CardElementContainer {
 
 	getItemAt(index: number): CardElement {
 		return this._images[index];
-	}
-
-	getResourceInformation(): Array<Shared.IResourceInformation> {
-		let result: Array<Shared.IResourceInformation> = [];
-
-		for (let image of this._images) {
-			result = result.concat(image.getResourceInformation());
-		}
-
-		return result;
 	}
 
 	removeItem(item: CardElement): boolean {
@@ -3868,11 +3986,161 @@ export class BackgroundImage {
 	}
 }
 
-export class Container extends CardElementContainer {
-	private _selectAction: Action;
+export abstract class StylableCardElementContainer extends CardElementContainer {
+	private _style?: string = null;
+	private _bleed: boolean = false;
+
+	protected applyBackground() {
+		let styleDefinition = this.hostConfig.containerStyles.getStyleByName(this.style, this.hostConfig.containerStyles.getStyleByName(this.defaultStyle));
+
+		if (!Utils.isNullOrEmpty(styleDefinition.backgroundColor)) {
+			this.renderedElement.style.backgroundColor = Utils.stringToCssColor(styleDefinition.backgroundColor);
+		}
+	}
+
+	protected applyPadding() {
+		if (!this.renderedElement) {
+			return;
+		}
+
+		let physicalPadding = new Shared.SpacingDefinition();
+
+		if (this.getEffectivePadding()) {
+			physicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(this.getEffectivePadding());
+		}
+
+		this.renderedElement.style.paddingTop = physicalPadding.top + "px";
+		this.renderedElement.style.paddingRight = physicalPadding.right + "px";
+		this.renderedElement.style.paddingBottom = physicalPadding.bottom + "px";
+		this.renderedElement.style.paddingLeft = physicalPadding.left + "px";
+
+		if (this.getBleed() && this.getHasBackground()) {
+			let parentContainer = this.getParentContainer();
+
+			if (parentContainer && parentContainer.getEffectivePadding()) {
+				let parentPhysicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(parentContainer.getEffectivePadding());
+
+				this.renderedElement.style.marginLeft = "-" + parentPhysicalPadding.left + "px";
+				this.renderedElement.style.marginRight = "-" + parentPhysicalPadding.right + "px";
+
+				if (this.separatorElement) {
+					this.separatorElement.style.marginLeft = "-" + parentPhysicalPadding.left + "px";
+					this.separatorElement.style.marginRight = "-" + parentPhysicalPadding.right + "px";
+				}
+			}
+		}
+
+		if (this.isLastElementBleeding()) {
+			this.renderedElement.style.paddingBottom = "0px";
+		}
+	}
+
+	protected getHasBackground(): boolean {
+		let parentContainer = this.getParentContainer();
+
+		return this.hasExplicitStyle && (parentContainer ? parentContainer.style != this.style : false);
+	}
+
+	protected getDefaultPadding(): Shared.PaddingDefinition {
+		return this.getHasBackground() ?
+			new Shared.PaddingDefinition(
+				Enums.Spacing.Padding,
+				Enums.Spacing.Padding,
+				Enums.Spacing.Padding,
+				Enums.Spacing.Padding) : super.getDefaultPadding();
+	}
+
+	protected get hasExplicitStyle(): boolean {
+		return this._style != null;
+	}
+
+	protected get defaultStyle(): string {
+		return Enums.ContainerStyle.Default;
+	}
+
+	protected get allowCustomStyle(): boolean {
+		return true;
+	}
+
+	protected getBleed(): boolean {
+		return this._bleed;
+	}
+
+	protected setBleed(value: boolean) {
+		this._bleed = value;
+	}
+
+	toJSON() {
+		let result = super.toJSON();
+
+		Utils.setProperty(result, "style", this.style, "default");
+
+		return result;
+	}
+
+	validate(): Array<HostConfig.IValidationError> {
+		let result = super.validate();
+
+		if (this._style) {
+			let styleDefinition = this.hostConfig.containerStyles.getStyleByName(this._style);
+
+			if (!styleDefinition) {
+				result.push(
+					{
+						error: Enums.ValidationError.InvalidPropertyValue,
+						message: "Unknown container style: " + this._style
+					});
+			}
+		}
+
+		return result;
+	}
+
+	parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+		super.parse(json, errors);
+
+		this._style = json["style"];
+	}
+
+	render(): HTMLElement {
+		let renderedElement = super.render();
+
+		if (renderedElement && this.getHasBackground()) {
+			this.applyBackground();
+		}
+
+		return renderedElement;
+	}
+
+	isStartBleeding(): boolean {
+		return this.isFirstElementBleeding() || this.getBleed();
+	}
+
+	isEndBleeding(): boolean {
+		return this.isLastElementBleeding() || this.getBleed();
+	}
+
+	get style(): string {
+		if (this.allowCustomStyle) {
+			if (this._style && this.hostConfig.containerStyles.getStyleByName(this._style)) {
+				return this._style;
+			}
+
+			return null;
+		}
+		else {
+			return this.defaultStyle;
+		}
+	}
+
+	set style(value: string) {
+		this._style = value;
+	}
+}
+
+export class Container extends StylableCardElementContainer {
 	private _items: Array<CardElement> = [];
 	private _renderedItems: Array<CardElement> = [];
-	private _style?: string = null;
 
 	private isElementAllowed(element: CardElement, forbiddenElementTypes: Array<string>) {
 		if (!this.hostConfig.supportsInteractivity && element.isInteractive) {
@@ -3914,76 +4182,24 @@ export class Container extends CardElementContainer {
 		}
 	}
 
-	protected getDefaultPadding(): Shared.PaddingDefinition {
-		return this.hasBackground ?
-			new Shared.PaddingDefinition(
-				Enums.Spacing.Padding,
-				Enums.Spacing.Padding,
-				Enums.Spacing.Padding,
-				Enums.Spacing.Padding) : super.getDefaultPadding();
-	}
-
-	private get hasExplicitStyle(): boolean {
-		return this._style != null;
-	}
-
 	protected getItemsCollectionPropertyName(): string {
 		return "items";
 	}
 
 	protected isFirstElementBleeding(): boolean {
-		return this._renderedItems.length > 0 ? this._renderedItems[0].isTopBleeding() : false;
+		return this._renderedItems.length > 0 ? this._renderedItems[0].isStartBleeding() : false;
 	}
 
 	protected isLastElementBleeding(): boolean {
-		return this._renderedItems.length > 0 ? this._renderedItems[this._renderedItems.length - 1].isBottomBleeding() : false;
+		return this._renderedItems.length > 0 ? this._renderedItems[this._renderedItems.length - 1].isEndBleeding() : false;
 	}
 
-	protected applyPadding() {
-		if (!this.renderedElement) {
-			return;
+	protected applyBackground() {
+		if (this.backgroundImage) {
+			this.backgroundImage.apply(this.renderedElement);
 		}
 
-		let physicalPadding = new Shared.SpacingDefinition();
-
-		if (this.getEffectivePadding()) {
-			physicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(this.getEffectivePadding());
-		}
-		/*
-		else if (this.hasBackground) {
-			physicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(
-				new Shared.PaddingDefinition(
-					Enums.Spacing.Padding,
-					Enums.Spacing.Padding,
-					Enums.Spacing.Padding,
-					Enums.Spacing.Padding));
-		}
-		*/
-
-		this.renderedElement.style.paddingTop = physicalPadding.top + "px";
-		this.renderedElement.style.paddingRight = physicalPadding.right + "px";
-		this.renderedElement.style.paddingBottom = physicalPadding.bottom + "px";
-		this.renderedElement.style.paddingLeft = physicalPadding.left + "px";
-
-		if (this.bleed && this.hasBackground) {
-			let parentContainer = this.getParentContainer();
-
-			if (parentContainer && parentContainer.getEffectivePadding()) {
-				let parentPhysicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(parentContainer.getEffectivePadding());
-
-				this.renderedElement.style.marginLeft = "-" + parentPhysicalPadding.left + "px";
-				this.renderedElement.style.marginRight = "-" + parentPhysicalPadding.right + "px";
-
-				if (this.separatorElement) {
-					this.separatorElement.style.marginLeft = "-" + parentPhysicalPadding.left + "px";
-					this.separatorElement.style.marginRight = "-" + parentPhysicalPadding.right + "px";
-				}
-			}
-		}
-
-		if (this.isLastElementBleeding()) {
-			this.renderedElement.style.paddingBottom = "0px";
-		}
+		super.applyBackground();
 	}
 
 	protected internalRender(): HTMLElement {
@@ -4027,41 +4243,6 @@ export class Container extends CardElementContainer {
 			default:
 				element.style.justifyContent = "flex-start";
 				break;
-		}
-
-		if (this.hasBackground) {
-			if (this.backgroundImage) {
-				this.backgroundImage.apply(element);
-			}
-
-			let styleDefinition = this.hostConfig.containerStyles.getStyleByName(this.style, this.hostConfig.containerStyles.getStyleByName(this.defaultStyle));
-
-			if (!Utils.isNullOrEmpty(styleDefinition.backgroundColor)) {
-				element.style.backgroundColor = Utils.stringToCssColor(styleDefinition.backgroundColor);
-			}
-		}
-
-		if (this.selectAction && hostConfig.supportsInteractivity) {
-			element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
-			element.tabIndex = 0;
-			element.setAttribute("role", "button");
-			element.setAttribute("aria-label", this.selectAction.title);
-
-			element.onclick = (e) => {
-				if (this.selectAction != null) {
-					this.selectAction.execute();
-					e.cancelBubble = true;
-				}
-			}
-
-			element.onkeypress = (e) => {
-				if (this.selectAction != null) {
-					// Enter or space pressed
-					if (e.keyCode == 13 || e.keyCode == 32) {
-						this.selectAction.execute();
-					}
-				}
-			}
 		}
 
 		if (this._items.length > 0) {
@@ -4135,37 +4316,25 @@ export class Container extends CardElementContainer {
 		}
 	}
 
-	protected get hasBackground(): boolean {
-		var parentContainer = this.getParentContainer();
-
-		return this.backgroundImage != undefined || (this.hasExplicitStyle && (parentContainer ? parentContainer.style != this.style : false));
+	protected getHasBackground(): boolean {
+		return this.backgroundImage != undefined || super.getHasBackground();
 	}
 
-	protected get defaultStyle(): string {
-		return Enums.ContainerStyle.Default;
-	}
-
-	protected get allowCustomStyle(): boolean {
+	protected get isSelectable(): boolean {
 		return true;
 	}
 
 	backgroundImage: BackgroundImage;
 	verticalContentAlignment: Enums.VerticalAlignment = Enums.VerticalAlignment.Top;
 	rtl?: boolean = null;
-	bleed: boolean = false;
 
 	toJSON() {
 		let result = super.toJSON();
-
-		if (this._selectAction) {
-			Utils.setProperty(result, "selectAction", this._selectAction.toJSON());
-		}
 
 		if (this.backgroundImage) {
 			Utils.setProperty(result, "backgroundImage", this.backgroundImage.url);
 		}
 
-		Utils.setProperty(result, "style", this.style, "default");
 		Utils.setEnumProperty(Enums.VerticalAlignment, result, "verticalContentAlignment", this.verticalContentAlignment, Enums.VerticalAlignment.Top);
 
 		if (this._items.length > 0) {
@@ -4193,14 +4362,6 @@ export class Container extends CardElementContainer {
 
 	getJsonTypeName(): string {
 		return "Container";
-	}
-
-	isTopBleeding(): boolean {
-		return this.isFirstElementBleeding() || this.bleed;
-	}
-
-	isBottomBleeding(): boolean {
-		return this.isLastElementBleeding() || this.bleed;
 	}
 
 	isFirstElement(element: CardElement): boolean {
@@ -4235,19 +4396,7 @@ export class Container extends CardElementContainer {
 	}
 
 	validate(): Array<HostConfig.IValidationError> {
-		var result: Array<HostConfig.IValidationError> = [];
-
-		if (this._style) {
-			var styleDefinition = this.hostConfig.containerStyles.getStyleByName(this._style);
-
-			if (!styleDefinition) {
-				result.push(
-					{
-						error: Enums.ValidationError.InvalidPropertyValue,
-						message: "Unknown container style: " + this._style
-					});
-			}
-		}
+		let result = super.validate();
 
 		for (var i = 0; i < this._items.length; i++) {
 			if (!this.hostConfig.supportsInteractivity && this._items[i].isInteractive) {
@@ -4296,13 +4445,6 @@ export class Container extends CardElementContainer {
 		}
 
 		this.verticalContentAlignment = Utils.getEnumValueOrDefault(Enums.VerticalAlignment, json["verticalContentAlignment"], this.verticalContentAlignment);
-
-		this._style = json["style"];
-
-		this.selectAction = createActionInstance(
-			this,
-			json["selectAction"],
-			errors);
 
 		if (json[this.getItemsCollectionPropertyName()] != null) {
 			let items = json[this.getItemsCollectionPropertyName()] as Array<any>;
@@ -4357,43 +4499,11 @@ export class Container extends CardElementContainer {
 		this._items = [];
 	}
 
-	getAllInputs(): Array<Input> {
-		var result: Array<Input> = [];
-
-		for (var i = 0; i < this._items.length; i++) {
-			var item: CardElement = this._items[i];
-
-			result = result.concat(item.getAllInputs());
-		}
-
-		return result;
-	}
-
 	getResourceInformation(): Array<Shared.IResourceInformation> {
-		let result: Array<Shared.IResourceInformation> = [];
+		let result = super.getResourceInformation();
 
 		if (this.backgroundImage && !Utils.isNullOrEmpty(this.backgroundImage.url)) {
 			result.push({ url: this.backgroundImage.url, mimeType: "image" });
-		}
-
-		for (var i = 0; i < this.getItemCount(); i++) {
-			result = result.concat(this.getItemAt(i).getResourceInformation());
-		}
-
-		return result;
-	}
-
-	getElementById(id: string): CardElement {
-		var result: CardElement = super.getElementById(id);
-
-		if (!result) {
-			for (var i = 0; i < this._items.length; i++) {
-				result = this._items[i].getElementById(id);
-
-				if (result) {
-					break;
-				}
-			}
 		}
 
 		return result;
@@ -4444,33 +4554,12 @@ export class Container extends CardElementContainer {
 		return speak;
 	}
 
-	updateLayout(processChildren: boolean = true) {
-		super.updateLayout(processChildren);
-
-		this.applyPadding();
-
-		if (processChildren) {
-			for (var i = 0; i < this._items.length; i++) {
-				this._items[i].updateLayout();
-			}
-		}
+	get bleed(): boolean {
+		return this.getBleed();
 	}
 
-	get style(): string {
-		if (this.allowCustomStyle) {
-			if (this._style && this.hostConfig.containerStyles.getStyleByName(this._style)) {
-				return this._style;
-			}
-
-			return null;
-		}
-		else {
-			return this.defaultStyle;
-		}
-	}
-
-	set style(value: string) {
-		this._style = value;
+	set bleed(value: boolean) {
+		this.setBleed(value);
 	}
 
 	get padding(): Shared.PaddingDefinition {
@@ -4482,15 +4571,11 @@ export class Container extends CardElementContainer {
 	}
 
 	get selectAction(): Action {
-		return this._selectAction;
+		return this.getSelectAction();
 	}
 
 	set selectAction(value: Action) {
-		this._selectAction = value;
-
-		if (this._selectAction) {
-			this._selectAction.setParent(this);
-		}
+		this.setSelectAction(value);
 	}
 }
 
@@ -4619,24 +4704,8 @@ export class Column extends Container {
 	}
 }
 
-export class ColumnSet extends CardElementContainer {
+export class ColumnSet extends StylableCardElementContainer {
 	private _columns: Array<Column> = [];
-	private _selectAction: Action;
-
-	protected applyPadding() {
-		if (!this.renderedElement) {
-			return;
-		}
-
-		if (this.getEffectivePadding()) {
-			let physicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(this.getEffectivePadding());
-
-			this.renderedElement.style.paddingTop = physicalPadding.top + "px";
-			this.renderedElement.style.paddingRight = physicalPadding.right + "px";
-			this.renderedElement.style.paddingBottom = physicalPadding.bottom + "px";
-			this.renderedElement.style.paddingLeft = physicalPadding.left + "px";
-		}
-	}
 
 	protected internalRender(): HTMLElement {
 		if (this._columns.length > 0) {
@@ -4650,15 +4719,6 @@ export class ColumnSet extends CardElementContainer {
 			if (AdaptiveCard.useAdvancedCardBottomTruncation) {
 				// See comment in Container.internalRender()
 				element.style.minHeight = '-webkit-min-content';
-			}
-
-			if (this.selectAction && hostConfig.supportsInteractivity) {
-				element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
-
-				element.onclick = (e) => {
-					this.selectAction.execute();
-					e.cancelBubble = true;
-				}
 			}
 
 			switch (this.horizontalAlignment) {
@@ -4727,12 +4787,12 @@ export class ColumnSet extends CardElementContainer {
 		}
 	}
 
+	protected get isSelectable(): boolean {
+		return true;
+	}
+
 	toJSON() {
 		let result = super.toJSON();
-
-		if (this._selectAction) {
-			Utils.setProperty(result, "selectAction", this.selectAction.toJSON());
-		}
 
 		if (this._columns.length > 0) {
 			let columns = [];
@@ -4743,6 +4803,8 @@ export class ColumnSet extends CardElementContainer {
 
 			Utils.setProperty(result, "columns", columns);
 		}
+
+		Utils.setProperty(result, "bleed", this.bleed);
 
 		return result;
 	}
@@ -4780,11 +4842,6 @@ export class ColumnSet extends CardElementContainer {
 	parse(json: any, errors?: Array<HostConfig.IValidationError>) {
 		super.parse(json, errors);
 
-		this.selectAction = createActionInstance(
-			this,
-			json["selectAction"],
-			errors);
-
 		if (json["columns"] != null) {
 			let jsonColumns = json["columns"] as Array<any>;
 
@@ -4798,12 +4855,14 @@ export class ColumnSet extends CardElementContainer {
 				this._columns.push(column);
 			}
 		}
+
+		this.bleed = Utils.parseBoolProperty(json["bleed"], this.bleed);
 	}
 
 	validate(): Array<HostConfig.IValidationError> {
-		var result: Array<HostConfig.IValidationError> = [];
-		var weightedColumns: number = 0;
-		var stretchedColumns: number = 0;
+		let result = super.validate();
+		let weightedColumns: number = 0;
+		let stretchedColumns: number = 0;
 
 		for (var i = 0; i < this._columns.length; i++) {
 			if (typeof this._columns[i].width === "number") {
@@ -4812,8 +4871,6 @@ export class ColumnSet extends CardElementContainer {
 			else if (this._columns[i].width === "stretch") {
 				stretchedColumns++;
 			}
-
-			result = result.concat(this._columns[i].validate());
 		}
 
 		if (weightedColumns > 0 && stretchedColumns > 0) {
@@ -4825,18 +4882,6 @@ export class ColumnSet extends CardElementContainer {
 		}
 
 		return result;
-	}
-
-	updateLayout(processChildren: boolean = true) {
-		super.updateLayout(processChildren);
-
-		this.applyPadding();
-
-		if (processChildren) {
-			for (var i = 0; i < this._columns.length; i++) {
-				this._columns[i].updateLayout();
-			}
-		}
 	}
 
 	addColumn(column: Column) {
@@ -4880,42 +4925,6 @@ export class ColumnSet extends CardElementContainer {
 		return this._columns.indexOf(<Column>element) == this._columns.length - 1;
 	}
 
-	getAllInputs(): Array<Input> {
-		var result: Array<Input> = [];
-
-		for (var i = 0; i < this._columns.length; i++) {
-			result = result.concat(this._columns[i].getAllInputs());
-		}
-
-		return result;
-	}
-
-	getResourceInformation(): Array<Shared.IResourceInformation> {
-		let result: Array<Shared.IResourceInformation> = [];
-
-		for (var i = 0; i < this._columns.length; i++) {
-			result = result.concat(this._columns[i].getResourceInformation());
-		}
-
-		return result;
-	}
-
-	getElementById(id: string): CardElement {
-		var result: CardElement = super.getElementById(id);
-
-		if (!result) {
-			for (var i = 0; i < this._columns.length; i++) {
-				result = this._columns[i].getElementById(id);
-
-				if (result) {
-					break;
-				}
-			}
-		}
-
-		return result;
-	}
-
 	getActionById(id: string): Action {
 		var result: Action = null;
 
@@ -4947,6 +4956,14 @@ export class ColumnSet extends CardElementContainer {
 		return speak;
 	}
 
+	get bleed(): boolean {
+		return this.getBleed();
+	}
+
+	set bleed(value: boolean) {
+		this.setBleed(value);
+	}
+
 	get padding(): Shared.PaddingDefinition {
 		return this.getPadding();
 	}
@@ -4956,15 +4973,11 @@ export class ColumnSet extends CardElementContainer {
 	}
 
 	get selectAction(): Action {
-		return this._selectAction;
+		return this.getSelectAction();
 	}
 
 	set selectAction(value: Action) {
-		this._selectAction = value;
-
-		if (this._selectAction) {
-			this._selectAction.setParent(this);
-		}
+		this.setSelectAction(value);
 	}
 }
 
@@ -5344,10 +5357,6 @@ export class AdaptiveCard extends ContainerWithActions {
 		}
 	}
 
-	protected get renderIfEmpty(): boolean {
-		return true;
-	}
-
 	protected getItemsCollectionPropertyName(): string {
 		return "body";
 	}
@@ -5388,12 +5397,20 @@ export class AdaptiveCard extends ContainerWithActions {
 		return renderedElement;
 	}
 
+	protected getHasBackground(): boolean {
+		return true;
+	}
+
 	protected getDefaultPadding(): Shared.PaddingDefinition {
 		return new Shared.PaddingDefinition(
 			Enums.Spacing.Padding,
 			Enums.Spacing.Padding,
 			Enums.Spacing.Padding,
 			Enums.Spacing.Padding);
+	}
+
+	protected get renderIfEmpty(): boolean {
+		return true;
 	}
 
 	protected get bypassVersionCheck(): boolean {
@@ -5510,8 +5527,9 @@ export class AdaptiveCard extends ContainerWithActions {
 	}
 
 	render(target?: HTMLElement): HTMLElement {
-		let fallback = false;
 		let renderedCard: HTMLElement;
+
+		this.getHasBackground();
 
 		if (this.shouldFallback()) {
 			if (this._fallbackCard) {
