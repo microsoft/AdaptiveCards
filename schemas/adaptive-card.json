@@ -326,7 +326,13 @@
 						"string",
 						"number"
 					],
-					"description": "`\"auto\"`, `\"stretch\"`, or a number representing relative width of the column in the column group."
+					"description": "The width of the column. Can be `\"auto\"`, `\"stretch\"`, a weighted number relative to other columns, or a string specifying pixel width (50px). NOTE: Pixel-sized columns were introduced in version 1.1",
+					"examples": [
+						"auto",
+						"stretch",
+						"2",
+						"50px"
+					]
 				},
 				"type": {
 					"type": "string",
@@ -573,6 +579,18 @@
 					"type": "string",
 					"description": "Alternate text describing the image."
 				},
+				"backgroundColor": {
+					"type": "string",
+					"description": "Applies a background to a transparent image. This property will respect the image style.",
+					"example": "#DDDDDD",
+					"version": "1.1"
+				},
+				"height": {
+					"type": "string",
+					"description": "The desired on-screen height of the image, ending in 'px'. E.g., 50px. This overrides the `size` property.",
+					"examples": ["50px"],
+					"version": "1.1"
+				},
 				"horizontalAlignment": {
 					"$ref": "#/definitions/HorizontalAlignment"
 				},
@@ -602,6 +620,12 @@
 					"type": "string",
 					"format": "uri",
 					"description": "The URL to the image."
+				},
+				"width": {
+					"type": "string",
+					"description": "The desired on-screen width of the image, ending in 'px'. E.g., 50px. This overrides the `size` property.",
+					"examples": ["50px"],
+					"version": "1.1"
 				}
 			},
 			"required": [
