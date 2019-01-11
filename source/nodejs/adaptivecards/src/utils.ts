@@ -85,13 +85,13 @@ export function parseHostConfigEnum(targetEnum: { [s: number]: string }, value: 
 
 export function renderSeparation(separationDefinition: Shared.ISeparationDefinition, orientation: Enums.Orientation): HTMLElement {
 	if (separationDefinition.spacing > 0 || separationDefinition.lineThickness > 0) {
-		var separator = document.createElement("div");
+		let separator = document.createElement("div");
 
 		if (orientation == Enums.Orientation.Horizontal) {
 			if (separationDefinition.lineThickness) {
-				separator.style.marginTop = (separationDefinition.spacing / 2) + "px";
 				separator.style.paddingTop = (separationDefinition.spacing / 2) + "px";
-				separator.style.borderTop = separationDefinition.lineThickness + "px solid " + stringToCssColor(separationDefinition.lineColor);
+				separator.style.marginBottom = (separationDefinition.spacing / 2) + "px";
+				separator.style.borderBottom = separationDefinition.lineThickness + "px solid " + stringToCssColor(separationDefinition.lineColor);
 			}
 			else {
 				separator.style.height = separationDefinition.spacing + "px";
@@ -99,9 +99,9 @@ export function renderSeparation(separationDefinition: Shared.ISeparationDefinit
 		}
 		else {
 			if (separationDefinition.lineThickness) {
-				separator.style.marginLeft = (separationDefinition.spacing / 2) + "px";
 				separator.style.paddingLeft = (separationDefinition.spacing / 2) + "px";
-				separator.style.borderLeft = separationDefinition.lineThickness + "px solid " + stringToCssColor(separationDefinition.lineColor);
+				separator.style.marginRight = (separationDefinition.spacing / 2) + "px";
+				separator.style.borderRight = separationDefinition.lineThickness + "px solid " + stringToCssColor(separationDefinition.lineColor);
 			}
 			else {
 				separator.style.width = separationDefinition.spacing + "px";
