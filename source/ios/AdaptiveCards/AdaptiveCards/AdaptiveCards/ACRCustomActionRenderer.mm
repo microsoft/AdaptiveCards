@@ -6,12 +6,13 @@
 //
 
 #import "ACRCustomActionRenderer.h"
-#import "ACRRendererPrivate.h"
-#import "UnknownElement.h"
+#import "UnknownActionElement.h"
 #import "SharedAdaptiveCard.h"
-#import "ACOBaseCardElementPrivate.h"
+#import "ACOBaseActionElementPrivate.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACOHostConfigPrivate.h"
+
+#import "ACRRegistration.h"
 
 @implementation ACRCustomActionRenderer
 
@@ -27,36 +28,32 @@
 }
 
 - (UIButton* )renderButton:(ACRView *)view
-                    inputs:(NSArray *)inputs
+                    inputs:(NSMutableArray *)inputs
                  superview:(UIView<ACRIContentHoldingView> *)superview
          baseActionElement:(ACOBaseActionElement *)acoElem
                 hostConfig:(ACOHostConfig *)acoConfig;
 {
-    //std::shared_ptr<UnknownElement> customElem = std::dynamic_pointer_cast<UnknownElement>([acoElem element]);
-    //Json::Value blob = customElem->GetAdditionalProperties();
-    //Json::FastWriter fastWriter;
-    //NSString *key = [[NSString alloc] initWithCString:customElem->GetElementTypeString() encoding:NSUTF8StringEncoding];
-    //customParser = [registration getCustomActionElementParser:key];
-    //customParseer deserialize
-    //[view getParseContext]->actionParserRegistration.GetParser("TextBlock");
-/*
-    NSString *jsonString = [[NSString alloc] initWithCString:fastWriter.write(blob).c_str() encoding:NSUTF8StringEncoding];
-    if(jsonString.length > 0){
-        NSData *jsonPayload = nil;
-        jsonPayload = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-        if(jsonPayload && self.customElementParser &&
-            [self.customElementParser respondsToSelector: @selector(deserializeToCustomUIElement:)]){
-            UIView *customUIElement = [self.customElementParser deserializeToCustomUIElement:jsonPayload];
-            ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:customUIElement.frame];
-            wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
-            [wrappingview addSubview:customUIElement];
-            [wrappingview addConstraints:[ACOHostConfig getConstraintsForImageAlignment:HorizontalAlignment::Center
-                                                                          withSuperview:wrappingview
-                                                                                 toView:customUIElement]];
-            [viewGroup addArrangedSubview:wrappingview];
+    std::shared_ptr<UnknownActionElement> customAction = std::dynamic_pointer_cast<UnknownActionElement>([acoElem element]);
+    
+    ACRRegistration *reg = [ACRRegistration getInstance];
+    if(reg) {
+        NSString *type = [NSString stringWithCString:customAction->GetElementTypeString().c_str() encoding:NSUTF8StringEncoding];
+        NSObject<ACOIBaseActionElementParser> *parser = [reg getCustomActionElementParser:type];
+    
+        Json::Value blob = customAction->GetAdditionalProperties();
+        Json::FastWriter fastWriter;
+        NSString *jsonString = [[NSString alloc] initWithCString:fastWriter.write(blob).c_str() encoding:NSUTF8StringEncoding];
+        if(jsonString.length > 0){
+            NSData *jsonPayload = nil;
+            jsonPayload = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+            ACOParseContext *context = [reg getParseContext];
+            ACOBaseActionElement *actionElement = [parser deserialize:jsonPayload parseContext:context];
+            ACRBaseActionElementRenderer *renderer = [reg getActionRenderer:[NSNumber numberWithInt:actionElement.type]];;
+            if(renderer) {
+                return [renderer renderButton:view inputs:inputs superview:superview baseActionElement:acoElem hostConfig:acoConfig];
+            }
         }
     }
- */
     return nil;
 }
 

@@ -34,7 +34,7 @@
 
 - (void)setCustomActionElementParser:(NSString *)key parser:(NSObject<ACOIBaseActionElementParser> *)parser;
 
-- (id<ACOIBaseActionElementParser>)getCustomActionElementParser:(NSString *)key;
+- (NSObject<ACOIBaseActionElementParser> *)getCustomActionElementParser:(NSString *)key;
 
 - (ACOParseContext *)getParseContext;
 
