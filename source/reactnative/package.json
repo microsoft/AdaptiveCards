@@ -38,6 +38,9 @@
     "metro-react-native-babel-preset": "0.48.1",
     "react-test-renderer": "16.6.0-alpha.8af6728"
   },
+  "dependencies": {
+    "react-native-video": "^4.2.0"
+  },
   "jest": {
     "preset": "react-native"
   }
