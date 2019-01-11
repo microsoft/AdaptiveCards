@@ -156,7 +156,7 @@ using namespace AdaptiveCards;
     _actionParserDict[key] = parser;
 }
 
-- (id<ACOIBaseActionElementParser>)getCustomActionElementParser:(NSString *)key
+- (NSObject<ACOIBaseActionElementParser> *)getCustomActionElementParser:(NSString *)key
 {
     return _actionParserDict[key];
 }
