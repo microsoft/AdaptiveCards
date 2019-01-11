@@ -89,7 +89,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                 AdaptiveCardSchemaKey::SelectAction,
                 false);
 
-            Assert::IsTrue(selectAction == nullptr);
+            Assert::IsTrue(selectAction->GetElementType() == ActionType::UnknownAction);
         }
 
         // A card JSON with an OpenUrl selectAction
