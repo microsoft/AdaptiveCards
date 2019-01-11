@@ -418,6 +418,7 @@ AdaptiveNamespaceStart
 #endif
     typedef [v1_enum] enum WarningStatusCode {
         UnknownElementType = 0,
+        UnknownActionElementType,
         UnknownPropertyOnElement,
         UnknownEnumValue,
         NoRendererForType,

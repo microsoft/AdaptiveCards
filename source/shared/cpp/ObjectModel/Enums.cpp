@@ -171,7 +171,8 @@ namespace AdaptiveSharedNamespace
             {ActionType::ShowCard, "Action.ShowCard"},
             {ActionType::Submit, "Action.Submit"},
             {ActionType::ToggleVisibility, "Action.ToggleVisibility"},
-            {ActionType::Custom, "Custom"}});
+            {ActionType::Custom, "Custom"},
+            {ActionType::UnknownAction, "UnknownAction"}});
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(HeightType, HeightType::Stretch, {
             {HeightType::Auto, "Auto"},
