@@ -12,6 +12,7 @@
 #import "CustomProgressBarRenderer.h"
 #import "CustomTextBlockRenderer.h"
 #import "CustomImageRenderer.h"
+#import "CustomActionNewType.h"
 #import "ADCResolver.h"
 #import "AdaptiveCards/ACRButton.h"
 
@@ -75,6 +76,12 @@
         [registration setBaseCardElementRenderer:[CustomTextBlockRenderer getInstance] cardElementType:ACRTextBlock];
         [registration setBaseCardElementRenderer:[CustomInputNumberRenderer getInstance] cardElementType:ACRNumberInput];
         [registration setBaseCardElementRenderer:[CustomImageRenderer getInstance] cardElementType:ACRImage];
+        CustomActionNewType *customParser = [[CustomActionNewType alloc] init];
+        NSString *type = @"NewStyle";
+        [registration setCustomActionElementParser:type parser:customParser];
+        CustomActionNewTypeRenderer *customActionRenderer = [CustomActionNewTypeRenderer getInstance];
+        [registration setCustomActionRenderer:customActionRenderer key:type];
+        
         _enableCustomRendererButton.backgroundColor = UIColor.redColor;
         _defaultRenderer = [registration getActionSetRenderer];
         [registration setActionSetRenderer:self];
