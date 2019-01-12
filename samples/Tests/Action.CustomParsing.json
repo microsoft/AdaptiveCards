@@ -1,0 +1,22 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "This card has a custom action. If renderer can redner the custom type, it will render a button.",
+			"wrap": true
+		}
+	],
+	"actions": [
+		{
+			"type": "NewStyle",
+			"title": "New Style",
+			"Red":200,
+			"Green":100,
+			"Blue":100,
+			"CornerRadius":50
+		}
+	]
+}
