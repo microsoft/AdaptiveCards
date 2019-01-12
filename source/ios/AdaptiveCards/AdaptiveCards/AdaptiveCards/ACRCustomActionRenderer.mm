@@ -48,9 +48,9 @@
             jsonPayload = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
             ACOParseContext *context = [reg getParseContext];
             ACOBaseActionElement *actionElement = [parser deserialize:jsonPayload parseContext:context];
-            ACRBaseActionElementRenderer *renderer = [reg getActionRenderer:[NSNumber numberWithInt:actionElement.type]];;
+            ACRBaseActionElementRenderer *renderer = [reg getActionRenderer:[NSNumber numberWithLong:type.hash]];;
             if(renderer) {
-                return [renderer renderButton:view inputs:inputs superview:superview baseActionElement:acoElem hostConfig:acoConfig];
+                return [renderer renderButton:view inputs:inputs superview:superview baseActionElement:actionElement hostConfig:acoConfig];
             }
         }
     }
