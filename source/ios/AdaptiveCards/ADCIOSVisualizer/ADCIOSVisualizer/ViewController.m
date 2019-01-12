@@ -78,7 +78,7 @@
         [registration setBaseCardElementRenderer:[CustomImageRenderer getInstance] cardElementType:ACRImage];
         CustomActionNewType *customParser = [[CustomActionNewType alloc] init];
         NSString *type = @"NewStyle";
-        [registration setCustomActionElementParser:type parser:customParser];
+        [registration setCustomActionElementParser:customParser key:type];
         CustomActionNewTypeRenderer *customActionRenderer = [CustomActionNewTypeRenderer getInstance];
         [registration setCustomActionRenderer:customActionRenderer key:type];
         

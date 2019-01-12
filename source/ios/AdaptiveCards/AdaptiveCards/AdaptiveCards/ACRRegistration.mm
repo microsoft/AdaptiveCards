@@ -155,12 +155,14 @@ using namespace AdaptiveCards;
     customRenderer.customElementParser = customElementParser;
 }
 
-- (void)setCustomActionElementParser:(NSString *)key parser:(NSObject<ACOIBaseActionElementParser> *)parser
+- (void)setCustomActionElementParser:(NSObject<ACOIBaseActionElementParser> *)parser key:(NSString *)key
 {
     if(!_parseContext) {
         _parseContext = [[ACOParseContext alloc] init];
     }
-    _actionParserDict[key] = parser;
+    if(parser && key) {
+        _actionParserDict[key] = parser;
+    }
 }
 
 - (NSObject<ACOIBaseActionElementParser> *)getCustomActionElementParser:(NSString *)key

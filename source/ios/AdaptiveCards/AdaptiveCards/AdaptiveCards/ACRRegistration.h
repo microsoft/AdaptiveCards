@@ -32,7 +32,7 @@
 
 - (BOOL)isActionRendererOverriden:(NSNumber *)cardElementType;
 
-- (void)setCustomActionElementParser:(NSString *)key parser:(NSObject<ACOIBaseActionElementParser> *)parser;
+- (void)setCustomActionElementParser:(NSObject<ACOIBaseActionElementParser> *)parser key:(NSString *)key;
 
 - (NSObject<ACOIBaseActionElementParser> *)getCustomActionElementParser:(NSString *)key;
 
