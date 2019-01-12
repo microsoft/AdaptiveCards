@@ -25,15 +25,13 @@ module.exports = (env, argv) => {
 		},
 		devtool: devMode ? "inline-source-map" : "source-map",
 		devServer: {
-			contentBase: './dist',
-			// port: 8001
+			contentBase: './dist'
 		},
 		resolve: {
 			extensions: [".ts", ".tsx", ".js"]
 		},
 		module: {
-			rules: [
-				{
+			rules: [{
 					test: /\.ts$/,
 					loader: "ts-loader",
 					exclude: /(node_modules|__tests__)/
@@ -56,6 +54,16 @@ module.exports = (env, argv) => {
 			new MiniCssExtractPlugin({
 				filename: '[name].css'
 			}),
+			new CopyWebpackPlugin([{
+				from: 'src/adaptivecards-designer.css',
+				to: '.',
+				flatten: true
+			}]),
+			new CopyWebpackPlugin([{
+				from: 'node_modules/adaptivecards-controls/dist/adaptivecards-controls.css',
+				to: '.',
+				flatten: true
+			}]),
 			new CopyWebpackPlugin([{
 					from: 'src/adaptivecards-designer.css',
 					to: '../lib/',
