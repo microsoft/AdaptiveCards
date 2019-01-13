@@ -975,11 +975,49 @@ export class CardElementPeer extends DesignerPeer {
             height.input.isCompact = true;
             height.input.choices.push(new Adaptive.Choice("Automatic", "auto"));
             height.input.choices.push(new Adaptive.Choice("Stretch", "stretch"));
-            height.input.defaultValue = this.cardElement.height;
-            height.input.onValueChanged = () => {
-                this.cardElement.height = height.input.value === "auto" ? "auto" : "stretch";
 
-                this.changed(false);
+            if (this.cardElement.supportsExplicitHeight()) {
+                height.input.choices.push(new Adaptive.Choice("Pixels", "pixels"));
+            }
+
+            if (typeof this.cardElement.height === "string") {
+                height.input.defaultValue = this.cardElement.height;
+            }
+            else {
+                height.input.defaultValue = "pixels";
+
+                let pixelHeight = addLabelAndInput(card, "Height in pixels:", Adaptive.NumberInput);
+                pixelHeight.input.defaultValue = this.cardElement.height.toString();
+                pixelHeight.input.placeholder = "(not set)"
+                pixelHeight.input.onValueChanged = () => {
+                    try {
+                        this.cardElement.height = parseInt(pixelHeight.input.value);
+
+                        this.changed(false);
+                    }
+                    catch {
+                        // Do nothing. The specified height is invalid
+                    }
+                }
+            }
+
+            height.input.onValueChanged = () => {
+                switch (height.input.value) {
+                    case "auto":
+                    case "stretch":
+                        this.cardElement.height = height.input.value;
+                        break;
+                    case "pixels":
+                        if (!(typeof this.cardElement.height === "number")) {
+                            this.cardElement.height = 50;
+                        }
+                        break;
+                    default:
+                        this.cardElement.height = "auto";
+                        break;
+                }
+
+                this.changed(true);
             }
         }
     }

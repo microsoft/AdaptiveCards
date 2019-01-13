@@ -116,13 +116,14 @@ export class SizeAndUnit {
 	physicalSize: number;
 	unit: Enums.SizeUnit;
 
-	static parse(input: any): SizeAndUnit {
+	static parse(input: any, requireUnitSpecifier: boolean = false): SizeAndUnit {
 		let result = new SizeAndUnit(0, Enums.SizeUnit.Weight);
 
 		let regExp = /^([0-9]+)(px|\*)?$/g;
 		let matches = regExp.exec(input);
+		let expectedMatchCount = requireUnitSpecifier ? 3 : 2;
 
-		if (matches && matches.length >= 2) {
+		if (matches && matches.length >= expectedMatchCount) {
 			result.physicalSize = parseInt(matches[1]);
 
 			if (matches.length == 3) {

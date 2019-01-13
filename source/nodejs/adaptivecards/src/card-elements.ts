@@ -112,6 +112,8 @@ export interface ICardObject {
 	parse(json: any);
 }
 
+export type CardElementHeight = "auto" | "stretch" | number;
+
 export abstract class CardElement implements ICardObject {
 	private _shouldFallback: boolean = false;
 	private _lang: string = undefined;
@@ -123,6 +125,8 @@ export abstract class CardElement implements ICardObject {
 	private _truncatedDueToOverflow: boolean = false;
 	private _defaultRenderedElementDisplayMode: string = null;
 	private _padding: Shared.PaddingDefinition = null;
+	private _height: CardElementHeight = "auto";
+
 
 	private internalRenderSeparator(): HTMLElement {
 		let renderedSeparator = Utils.renderSeparation(
@@ -261,7 +265,11 @@ export abstract class CardElement implements ICardObject {
 	}
 
 	protected adjustRenderedElementSize(renderedElement: HTMLElement) {
-		if (this.height === "auto") {
+		if (this.supportsExplicitHeight() && typeof this.height === "number") {
+			renderedElement.style.minHeight = this.height + "px";
+			renderedElement.style.flex = "0 0 auto";
+		}
+		else if (this.height === "auto") {
 			renderedElement.style.flex = "0 0 auto";
 		}
 		else {
@@ -325,7 +333,6 @@ export abstract class CardElement implements ICardObject {
 	horizontalAlignment?: Enums.HorizontalAlignment = null;
 	spacing: Enums.Spacing = Enums.Spacing.Default;
 	separator: boolean = false;
-	height: "auto" | "stretch" = "auto";
 	customCssSelector: string = null;
 
 	abstract getJsonTypeName(): string;
@@ -343,7 +350,12 @@ export abstract class CardElement implements ICardObject {
 
 		Utils.setEnumProperty(Enums.Spacing, result, "spacing", this.spacing, Enums.Spacing.Default);
 		Utils.setProperty(result, "separator", this.separator, false);
-		Utils.setProperty(result, "height", this.height, "auto");
+
+		Utils.setProperty(
+			result,
+			"height",
+			typeof this.height === "number" ? this.height + "px" : this.height,
+			"auto");
 
 		return result;
 	}
@@ -379,7 +391,7 @@ export abstract class CardElement implements ICardObject {
 		this.spacing = Utils.getEnumValueOrDefault(Enums.Spacing, json["spacing"], Enums.Spacing.Default);
 		this.separator = Utils.parseBoolProperty(json["separator"], this.separator);
 
-		var jsonSeparation = json["separation"];
+		let jsonSeparation = json["separation"];
 
 		if (jsonSeparation !== undefined) {
 			if (jsonSeparation === "none") {
@@ -404,11 +416,46 @@ export abstract class CardElement implements ICardObject {
 			);
 		}
 
-		var jsonHeight = json["height"];
+		let jsonHeight = json["height"];
 
-		if (jsonHeight === "auto" || jsonHeight === "stretch") {
-			this.height = jsonHeight;
+		if (jsonHeight) {
+			if (jsonHeight === "auto" || jsonHeight === "stretch") {
+				this.height = jsonHeight;
+			}
+			else {
+				let invalidSize: boolean = false;
+
+				try {
+					let size = Shared.SizeAndUnit.parse(jsonHeight, true);
+
+					if (size.unit == Enums.SizeUnit.Pixel && this.supportsExplicitHeight()) {
+						this.height = size.physicalSize;
+					}
+					else {
+						invalidSize = true;
+					}
+				}
+				catch {
+					invalidSize = true;
+				}
+
+				if (invalidSize) {
+					raiseParseError(
+						{
+							error: Enums.ValidationError.InvalidPropertyValue,
+							message: this.supportsExplicitHeight() ?
+								"Invalid height. Supported values are \"autp\", \"stretch\" and \"Npx\" where N is an integer." :
+								"Invalid height. Supported values are \"autp\" and \"stretch\"."
+						},
+						errors
+					);
+				}
+			}
 		}
+	}
+
+	supportsExplicitHeight(): boolean {
+		return false;
 	}
 
 	getActionCount(): number {
@@ -670,6 +717,18 @@ export abstract class CardElement implements ICardObject {
 
 	get separatorElement(): HTMLElement {
 		return this._separatorElement;
+	}
+
+	get height(): CardElementHeight {
+		return this._height;
+	}
+
+	set height(value: CardElementHeight) {
+		if (typeof value === "number" && !this.supportsExplicitHeight()) {
+			throw new Error("This element doesn't support explicit height in pixels.");
+		}
+
+		this._height = value;
 	}
 }
 
@@ -4200,6 +4259,10 @@ export class Container extends StylableCardElementContainer {
 		}
 	}
 
+	protected supportsExcplitiHeight(): boolean {
+		return true;
+	}
+
 	protected getItemsCollectionPropertyName(): string {
 		return "items";
 	}
@@ -4572,6 +4635,10 @@ export class Container extends StylableCardElementContainer {
 		return speak;
 	}
 
+	supportsExplicitHeight(): boolean {
+		return true;
+	}
+
 	get bleed(): boolean {
 		return this.getBleed();
 	}
@@ -4706,6 +4773,10 @@ export class Column extends Container {
 				errors
 			);
 		}
+	}
+
+	supportsExplicitHeight(): boolean {
+		return false;
 	}
 
 	get hasVisibleSeparator(): boolean {
@@ -5086,10 +5157,6 @@ export interface ITypeRegistration<T> {
 export abstract class ContainerWithActions extends Container {
 	private _actionCollection: ActionCollection;
 
-	protected get renderIfEmpty(): boolean {
-		return false;
-	}
-
 	protected internalRender(): HTMLElement {
 		var element = super.internalRender();
 
@@ -5132,6 +5199,10 @@ export abstract class ContainerWithActions extends Container {
 				return this._actionCollection.expandedAction != null;
 			}
 		}
+	}
+
+	protected get renderIfEmpty(): boolean {
+		return false;
 	}
 
 	constructor() {
@@ -5181,6 +5252,10 @@ export abstract class ContainerWithActions extends Container {
 		}
 
 		return result;
+	}
+
+	supportsExplicitHeight(): boolean {
+		return false;
 	}
 
 	isLastElement(element: CardElement): boolean {
