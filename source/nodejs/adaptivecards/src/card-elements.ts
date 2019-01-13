@@ -4002,61 +4002,6 @@ export class ActionSet extends CardElement {
 	}
 }
 
-export class BackgroundImage {
-	url: string;
-	mode: Enums.BackgroundImageMode = Enums.BackgroundImageMode.Stretch;
-	horizontalAlignment: Enums.HorizontalAlignment = Enums.HorizontalAlignment.Left;
-	verticalAlignment: Enums.VerticalAlignment = Enums.VerticalAlignment.Top;
-
-	parse(json: any, errors?: Array<HostConfig.IValidationError>) {
-		this.url = json["url"];
-		this.mode = Utils.getEnumValueOrDefault(Enums.BackgroundImageMode, json["mode"], this.mode);
-		this.horizontalAlignment = Utils.getEnumValueOrDefault(Enums.HorizontalAlignment, json["horizontalAlignment"], this.horizontalAlignment);
-		this.verticalAlignment = Utils.getEnumValueOrDefault(Enums.VerticalAlignment, json["verticalAlignment"], this.verticalAlignment);
-	}
-
-	apply(element: HTMLElement) {
-		if (this.url) {
-			element.style.backgroundImage = "url('" + this.url + "')";
-
-			switch (this.mode) {
-				case Enums.BackgroundImageMode.Repeat:
-					element.style.backgroundRepeat = "repeat";
-					break;
-				case Enums.BackgroundImageMode.RepeatHorizontally:
-					element.style.backgroundRepeat = "repeat-x";
-					break;
-				case Enums.BackgroundImageMode.RepeatVertically:
-					element.style.backgroundRepeat = "repeat-y";
-					break;
-				case Enums.BackgroundImageMode.Stretch:
-				default:
-					element.style.backgroundRepeat = "no-repeat";
-					element.style.backgroundSize = "cover";
-					break;
-			}
-
-			switch (this.horizontalAlignment) {
-				case Enums.HorizontalAlignment.Center:
-					element.style.backgroundPositionX = "center";
-					break;
-				case Enums.HorizontalAlignment.Right:
-					element.style.backgroundPositionX = "right";
-					break;
-			}
-
-			switch (this.verticalAlignment) {
-				case Enums.VerticalAlignment.Center:
-					element.style.backgroundPositionY = "center";
-					break;
-				case Enums.VerticalAlignment.Bottom:
-					element.style.backgroundPositionY = "bottom";
-					break;
-			}
-		}
-	}
-}
-
 export abstract class StylableCardElementContainer extends CardElementContainer {
 	private _style?: string = null;
 	private _bleed: boolean = false;
@@ -4215,6 +4160,98 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 	}
 }
 
+export class BackgroundImage {
+	private static readonly defaultFillMode = Enums.FillMode.Cover;
+	private static readonly defaultHorizontalAlignment = Enums.HorizontalAlignment.Left;
+	private static readonly defaultVerticalAlignment = Enums.VerticalAlignment.Top;
+
+	url: string;
+	fillMode: Enums.FillMode = BackgroundImage.defaultFillMode;
+	horizontalAlignment: Enums.HorizontalAlignment = BackgroundImage.defaultHorizontalAlignment;
+	verticalAlignment: Enums.VerticalAlignment = BackgroundImage.defaultVerticalAlignment;
+
+	reset() {
+		this.url = undefined;
+		this.fillMode = BackgroundImage.defaultFillMode;
+		this.horizontalAlignment = BackgroundImage.defaultHorizontalAlignment;
+		this.verticalAlignment = BackgroundImage.defaultVerticalAlignment;
+	}
+
+	parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+		this.url = json["url"];
+		this.fillMode = Utils.getEnumValueOrDefault(Enums.FillMode, json["fillMode"], this.fillMode);
+		this.horizontalAlignment = Utils.getEnumValueOrDefault(Enums.HorizontalAlignment, json["horizontalAlignment"], this.horizontalAlignment);
+		this.verticalAlignment = Utils.getEnumValueOrDefault(Enums.VerticalAlignment, json["verticalAlignment"], this.verticalAlignment);
+	}
+
+	toJSON() {
+		if (!this.isValid()) {
+			return null;
+		}
+		
+		if (this.fillMode == BackgroundImage.defaultFillMode &&
+			this.horizontalAlignment == BackgroundImage.defaultHorizontalAlignment &&
+			this.verticalAlignment == BackgroundImage.defaultVerticalAlignment) {
+			return this.url;
+		}
+		else {
+			let result = {};
+
+			Utils.setProperty(result, "url", this.url);
+			Utils.setEnumProperty(Enums.FillMode, result, "fillMode", this.fillMode, BackgroundImage.defaultFillMode);
+			Utils.setEnumProperty(Enums.HorizontalAlignment, result, "horizontalAlignment", this.horizontalAlignment, BackgroundImage.defaultHorizontalAlignment);
+			Utils.setEnumProperty(Enums.VerticalAlignment, result, "verticalAlignment", this.verticalAlignment, BackgroundImage.defaultVerticalAlignment);
+
+			return result;
+		}
+	}
+
+	apply(element: HTMLElement) {
+		if (this.url) {
+			element.style.backgroundImage = "url('" + this.url + "')";
+
+			switch (this.fillMode) {
+				case Enums.FillMode.Repeat:
+					element.style.backgroundRepeat = "repeat";
+					break;
+				case Enums.FillMode.RepeatHorizontally:
+					element.style.backgroundRepeat = "repeat-x";
+					break;
+				case Enums.FillMode.RepeatVertically:
+					element.style.backgroundRepeat = "repeat-y";
+					break;
+				case Enums.FillMode.Cover:
+				default:
+					element.style.backgroundRepeat = "no-repeat";
+					element.style.backgroundSize = "cover";
+					break;
+			}
+
+			switch (this.horizontalAlignment) {
+				case Enums.HorizontalAlignment.Center:
+					element.style.backgroundPositionX = "center";
+					break;
+				case Enums.HorizontalAlignment.Right:
+					element.style.backgroundPositionX = "right";
+					break;
+			}
+
+			switch (this.verticalAlignment) {
+				case Enums.VerticalAlignment.Center:
+					element.style.backgroundPositionY = "center";
+					break;
+				case Enums.VerticalAlignment.Bottom:
+					element.style.backgroundPositionY = "bottom";
+					break;
+			}
+		}
+	}
+
+	isValid(): boolean {
+		return !Utils.isNullOrEmpty(this.url);
+	}
+}
+
 export class Container extends StylableCardElementContainer {
 	private _items: Array<CardElement> = [];
 	private _renderedItems: Array<CardElement> = [];
@@ -4276,7 +4313,7 @@ export class Container extends StylableCardElementContainer {
 	}
 
 	protected applyBackground() {
-		if (this.backgroundImage) {
+		if (this.backgroundImage.isValid()) {
 			this.backgroundImage.apply(this.renderedElement);
 		}
 
@@ -4398,23 +4435,22 @@ export class Container extends StylableCardElementContainer {
 	}
 
 	protected getHasBackground(): boolean {
-		return this.backgroundImage != undefined || super.getHasBackground();
+		return this.backgroundImage.isValid() || super.getHasBackground();
 	}
 
 	protected get isSelectable(): boolean {
 		return true;
 	}
 
-	backgroundImage: BackgroundImage;
+	readonly backgroundImage: BackgroundImage = new BackgroundImage();
+
 	verticalContentAlignment: Enums.VerticalAlignment = Enums.VerticalAlignment.Top;
 	rtl?: boolean = null;
 
 	toJSON() {
 		let result = super.toJSON();
 
-		if (this.backgroundImage) {
-			Utils.setProperty(result, "backgroundImage", this.backgroundImage.url);
-		}
+		Utils.setProperty(result, "backgroundImage", this.backgroundImage.toJSON());
 
 		Utils.setEnumProperty(Enums.VerticalAlignment, result, "verticalContentAlignment", this.verticalContentAlignment, Enums.VerticalAlignment.Top);
 
@@ -4513,15 +4549,14 @@ export class Container extends StylableCardElementContainer {
 		let jsonBackgroundImage = json["backgroundImage"];
 
 		if (jsonBackgroundImage) {
-			this.backgroundImage = new BackgroundImage();
+			this.backgroundImage.reset();
 
 			if (typeof jsonBackgroundImage === "string") {
 				this.backgroundImage.url = jsonBackgroundImage;
-				this.backgroundImage.mode = Enums.BackgroundImageMode.Stretch;
+				this.backgroundImage.fillMode = Enums.FillMode.Cover;
 			}
 			else if (typeof jsonBackgroundImage === "object") {
-				this.backgroundImage = new BackgroundImage();
-				this.backgroundImage.parse(json["backgroundImage"], errors);
+				this.backgroundImage.parse(jsonBackgroundImage, errors);
 			}
 		}
 
@@ -4583,7 +4618,7 @@ export class Container extends StylableCardElementContainer {
 	getResourceInformation(): Array<Shared.IResourceInformation> {
 		let result = super.getResourceInformation();
 
-		if (this.backgroundImage && !Utils.isNullOrEmpty(this.backgroundImage.url)) {
+		if (this.backgroundImage.isValid()) {
 			result.push({ url: this.backgroundImage.url, mimeType: "image" });
 		}
 
