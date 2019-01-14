@@ -1350,16 +1350,24 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
 
         let style = addLabelAndInput(card, "Style:", Adaptive.ChoiceSetInput);
         style.input.isCompact = true;
-        style.input.placeholder = "(not set)";
+        style.input.choices.push(new Adaptive.Choice("(not set)", "not_set"));
         style.input.choices.push(new Adaptive.Choice("Default", "default"));
         style.input.choices.push(new Adaptive.Choice("Emphasis", "emphasis"));
 
         if (this.cardElement.style) {
             style.input.defaultValue = this.cardElement.style.toString();
         }
+        else {
+            style.input.defaultValue = "not_set";
+        }
 
         style.input.onValueChanged = () => {
-            this.cardElement.style = style.input.value;
+            if (style.input.value == "not_set") {
+                this.cardElement.style = null;
+            }
+            else {
+                this.cardElement.style = style.input.value;
+            }
 
             this.changed(false);
         }
@@ -1439,16 +1447,24 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
 
         let style = addLabelAndInput(card, "Style:", Adaptive.ChoiceSetInput);
         style.input.isCompact = true;
-        style.input.placeholder = "(not set)";
+        style.input.choices.push(new Adaptive.Choice("(not set)", "not_set"));
         style.input.choices.push(new Adaptive.Choice("Default", "default"));
         style.input.choices.push(new Adaptive.Choice("Emphasis", "emphasis"));
 
         if (this.cardElement.style) {
             style.input.defaultValue = this.cardElement.style.toString();
         }
+        else {
+            style.input.defaultValue = "not_set";
+        }
 
         style.input.onValueChanged = () => {
-            this.cardElement.style = style.input.value;
+            if (style.input.value == "not_set") {
+                this.cardElement.style = null;
+            }
+            else {
+                this.cardElement.style = style.input.value;
+            }
 
             this.changed(false);
         }
@@ -1496,16 +1512,24 @@ export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
 
         let style = addLabelAndInput(card, "Style:", Adaptive.ChoiceSetInput);
         style.input.isCompact = true;
-        style.input.placeholder = "(not set)";
+        style.input.choices.push(new Adaptive.Choice("(not set)", "not_set"));
         style.input.choices.push(new Adaptive.Choice("Default", "default"));
         style.input.choices.push(new Adaptive.Choice("Emphasis", "emphasis"));
 
         if (this.cardElement.style) {
             style.input.defaultValue = this.cardElement.style.toString();
         }
+        else {
+            style.input.defaultValue = "not_set";
+        }
 
         style.input.onValueChanged = () => {
-            this.cardElement.style = style.input.value;
+            if (style.input.value == "not_set") {
+                this.cardElement.style = null;
+            }
+            else {
+                this.cardElement.style = style.input.value;
+            }
 
             this.changed(false);
         }

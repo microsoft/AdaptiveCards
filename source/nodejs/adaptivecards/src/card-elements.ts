@@ -228,39 +228,46 @@ export abstract class CardElement implements ICardObject {
 		return element;
 	}
 
-	protected internalGetNonZeroPadding(
-		padding: Shared.PaddingDefinition,
-		processTop: boolean,
-		processRight: boolean,
-		processBottom: boolean,
-		processLeft: boolean) {
+	getImmediateSurroundingPadding(
+		result: Shared.PaddingDefinition,
+		processTop: boolean = true,
+		processRight: boolean = true,
+		processBottom: boolean = true,
+		processLeft: boolean = true) {
 		if (this.parent) {
+			let doProcessTop = processTop && this.parent.isFirstElement(this);
+			let doProcessRight = processRight && this.parent.isRightMostElement(this);
+			let doProcessBottom = processBottom && this.parent.isLastElement(this);
+			let doProcessLeft = processLeft && this.parent.isLeftMostElement(this);
+
 			let effectivePadding = this.parent.getEffectivePadding();
 
 			if (effectivePadding) {
-				if (processTop && padding.top == Enums.Spacing.None) {
-					padding.top = effectivePadding.top;
+				if (doProcessTop) {
+					result.top = effectivePadding.top;
 				}
 
-				if (processRight && padding.right == Enums.Spacing.None) {
-					padding.right = effectivePadding.right;
+				if (doProcessRight) {
+					result.right = effectivePadding.right;
 				}
 
-				if (processBottom && padding.bottom == Enums.Spacing.None) {
-					padding.bottom = effectivePadding.bottom;
+				if (doProcessBottom) {
+					result.bottom = effectivePadding.bottom;
 				}
 
-				if (processLeft && padding.left == Enums.Spacing.None) {
-					padding.left = effectivePadding.left;
+				if (doProcessLeft) {
+					result.left = effectivePadding.left;
 				}
 			}
 
-			this.parent.internalGetNonZeroPadding(
-				padding,
-				processTop && this.parent.isAtTheVeryTop(),
-				processRight && this.parent.isAtTheVeryRight(),
-				processBottom && this.parent.isAtTheVeryBottom(),
-				processLeft && this.parent.isAtTheVeryLeft());
+			if (doProcessTop || doProcessRight || doProcessBottom || doProcessLeft) {
+				this.parent.getImmediateSurroundingPadding(
+					result,
+					doProcessTop,
+					doProcessRight,
+					doProcessBottom,
+					doProcessLeft);
+			}
 		}
 	}
 
@@ -303,7 +310,11 @@ export abstract class CardElement implements ICardObject {
 	}
 
 	protected getDefaultPadding(): Shared.PaddingDefinition {
-		return null;
+		return new Shared.PaddingDefinition();
+	}
+
+	protected getHasBackground(): boolean {
+		return false;
 	}
 
 	protected get useDefaultSizing(): boolean {
@@ -362,19 +373,6 @@ export abstract class CardElement implements ICardObject {
 
 	setParent(value: CardElement) {
 		this._parent = value;
-	}
-
-	getNonZeroPadding(): Shared.PaddingDefinition {
-		var padding: Shared.PaddingDefinition = new Shared.PaddingDefinition();
-
-		this.internalGetNonZeroPadding(
-			padding,
-			this.isAtTheVeryTop(),
-			this.isAtTheVeryRight(),
-			this.isAtTheVeryBottom(),
-			this.isAtTheVeryLeft());
-
-		return padding;
 	}
 
 	getForbiddenElementTypes(): Array<string> {
@@ -517,16 +515,8 @@ export abstract class CardElement implements ICardObject {
 		return this._renderedElement && this._renderedElement.offsetHeight > 0;
 	}
 
-	isAtTheVeryTop(): boolean {
-		return this.parent ? this.parent.isFirstElement(this) && this.parent.isAtTheVeryTop() : true;
-	}
-
 	isFirstElement(element: CardElement): boolean {
 		return true;
-	}
-
-	isAtTheVeryBottom(): boolean {
-		return this.parent ? this.parent.isLastElement(this) && this.parent.isAtTheVeryBottom() : true;
 	}
 
 	isLastElement(element: CardElement): boolean {
@@ -537,20 +527,20 @@ export abstract class CardElement implements ICardObject {
 		return this.parent ? this.parent.isLeftMostElement(this) && this.parent.isAtTheVeryLeft() : true;
 	}
 
-	isBleedingAtTopOrLeft(): boolean {
+	isAtTheVeryRight(): boolean {
+		return this.parent ? this.parent.isRightMostElement(this) && this.parent.isAtTheVeryRight() : true;
+	}
+
+	isBleedingAtTop(): boolean {
 		return false;
 	}
 
-	isBleedingAtBottomOrRight(): boolean {
+	isBleedingAtBottom(): boolean {
 		return false;
 	}
 
 	isLeftMostElement(element: CardElement): boolean {
 		return true;
-	}
-
-	isAtTheVeryRight(): boolean {
-		return this.parent ? this.parent.isRightMostElement(this) && this.parent.isAtTheVeryRight() : true;
 	}
 
 	isRightMostElement(element: CardElement): boolean {
@@ -1692,14 +1682,6 @@ export abstract class CardElementContainer extends CardElement {
 		// Do nothing in base implementation
 	}
 
-	protected isFirstElementBleeding() {
-		return false;
-	}
-
-	protected isLastElementBleeding() {
-		return false;
-	}
-
 	protected getSelectAction(): Action {
 		return this._selectAction;
 	}
@@ -1718,6 +1700,8 @@ export abstract class CardElementContainer extends CardElement {
 
 	abstract getItemCount(): number;
 	abstract getItemAt(index: number): CardElement;
+	abstract getFirstRenderedItem(): CardElement;
+	abstract getLastRenderedItem(): CardElement;
 	abstract removeItem(item: CardElement): boolean;
 
 	parse(json: any, errors?: Array<HostConfig.IValidationError>) {
@@ -1870,6 +1854,14 @@ export class ImageSet extends CardElementContainer {
 
 	getItemAt(index: number): CardElement {
 		return this._images[index];
+	}
+
+	getFirstRenderedItem(): CardElement {
+		return this._images && this._images.length > 0 ? this._images[0] : null;
+	}
+
+	getLastRenderedItem(): CardElement {
+		return this._images && this._images.length > 0 ? this._images[this._images.length - 1] : null;
 	}
 
 	removeItem(item: CardElement): boolean {
@@ -3459,24 +3451,28 @@ class ActionCollection {
 
 		this._actionCardContainer.style.marginTop = this._renderedActionCount > 0 ? this._owner.hostConfig.actions.showCard.inlineTopMargin + "px" : "0px";
 
-		let padding = this._owner.hostConfig.paddingDefinitionToSpacingDefinition(this._owner.getNonZeroPadding());
+		let padding = this._owner.getEffectivePadding();
+
+		this._owner.getImmediateSurroundingPadding(padding);
+
+		let physicalPadding = this._owner.hostConfig.paddingDefinitionToSpacingDefinition(padding);
 
 		if (this._actionCard !== null) {
-			this._actionCard.style.paddingLeft = padding.left + "px";
-			this._actionCard.style.paddingRight = padding.right + "px";
+			this._actionCard.style.paddingLeft = physicalPadding.left + "px";
+			this._actionCard.style.paddingRight = physicalPadding.right + "px";
 
-			this._actionCard.style.marginLeft = "-" + padding.left + "px";
-			this._actionCard.style.marginRight = "-" + padding.right + "px";
+			this._actionCard.style.marginLeft = "-" + physicalPadding.left + "px";
+			this._actionCard.style.marginRight = "-" + physicalPadding.right + "px";
 
 			Utils.appendChild(this._actionCardContainer, this._actionCard);
 		}
 
 		if (this._statusCard !== null) {
-			this._statusCard.style.paddingLeft = padding.left + "px";
-			this._statusCard.style.paddingRight = padding.right + "px";
+			this._statusCard.style.paddingLeft = physicalPadding.left + "px";
+			this._statusCard.style.paddingRight = physicalPadding.right + "px";
 
-			this._statusCard.style.marginLeft = "-" + padding.left + "px";
-			this._statusCard.style.marginRight = "-" + padding.right + "px";
+			this._statusCard.style.marginLeft = "-" + physicalPadding.left + "px";
+			this._statusCard.style.marginRight = "-" + physicalPadding.right + "px";
 
 			Utils.appendChild(this._actionCardContainer, this._statusCard);
 		}
@@ -3948,8 +3944,18 @@ export class ActionSet extends CardElement {
 		return result;
 	}
 
-	isBottomBleeding(): boolean {
-		return this._actionCollection.expandedAction ? true : false;
+	isBleedingAtBottom(): boolean {
+		if (this._actionCollection.renderedActionCount == 0) {
+			return super.isBleedingAtBottom();
+		}
+		else {
+			if (this._actionCollection.items.length == 1) {
+				return this._actionCollection.expandedAction != null && !this.hostConfig.actions.preExpandSingleShowCardAction;
+			}
+			else {
+				return this._actionCollection.expandedAction != null;
+			}
+		}
 	}
 
 	getJsonTypeName(): string {
@@ -4037,61 +4043,40 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 
 		if (this.isBleeding()) {
 			// Bleed into the first parent that does have padding
-			let physicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(this.getNonZeroPadding());
+			let padding = new Shared.PaddingDefinition();
 
-			this.renderedElement.style.marginTop = "-" + physicalPadding.top + "px";
+			this.getImmediateSurroundingPadding(padding);
+	
+			let physicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(padding);
+
 			this.renderedElement.style.marginRight = "-" + physicalPadding.right + "px";
-			this.renderedElement.style.marginBottom = "-" + physicalPadding.bottom + "px";
 			this.renderedElement.style.marginLeft = "-" + physicalPadding.left + "px";
 
-			if (this.separatorElement) {
-				if (this.separatorOrientation == Enums.Orientation.Horizontal) {
-					this.separatorElement.style.marginLeft = "-" + physicalPadding.left + "px";
-					this.separatorElement.style.marginRight = "-" + physicalPadding.right + "px";
-				}
-				else {
-					this.separatorElement.style.marginTop = "-" + physicalPadding.top + "px";
-					this.separatorElement.style.marginBottom = "-" + physicalPadding.bottom + "px";
-				}
+			if (this.separatorElement && this.separatorOrientation == Enums.Orientation.Horizontal) {
+				this.separatorElement.style.marginLeft = "-" + physicalPadding.left + "px";
+				this.separatorElement.style.marginRight = "-" + physicalPadding.right + "px";
 			}
-
-			/*
-			// Bleed into direct parent only
-			let parentContainer = this.getParentContainer();
-
-			if (parentContainer && parentContainer.getEffectivePadding()) {
-				let parentPhysicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(parentContainer.getEffectivePadding());
-
-				this.renderedElement.style.marginLeft = "-" + parentPhysicalPadding.left + "px";
-				this.renderedElement.style.marginRight = "-" + parentPhysicalPadding.right + "px";
-
-				if (this.separatorElement) {
-					this.separatorElement.style.marginLeft = "-" + parentPhysicalPadding.left + "px";
-					this.separatorElement.style.marginRight = "-" + parentPhysicalPadding.right + "px";
-				}
-			}
-			*/
 		}
 		else {
-			this.renderedElement.style.marginTop = "0";
 			this.renderedElement.style.marginRight = "0";
-			this.renderedElement.style.marginBottom = "0";
 			this.renderedElement.style.marginLeft = "0";
 
 			if (this.separatorElement) {
-				this.separatorElement.style.marginTop = "0";
 				this.separatorElement.style.marginRight = "0";
-				this.separatorElement.style.marginBottom = "0";
 				this.separatorElement.style.marginLeft = "0";
 			}
 		}
 
 		if (!this.isDesignMode()) {
-			if (this.isFirstElementBleeding()) {
+			let item = this.getFirstRenderedItem();
+
+			if (item && item.isBleedingAtTop()) {
 				this.renderedElement.style.paddingTop = "0px";
 			}
 
-			if (this.isLastElementBleeding()) {
+			item = this.getLastRenderedItem();
+
+			if (this.getHasExpandedAction() || (item && item.isBleedingAtBottom())) {
 				this.renderedElement.style.paddingBottom = "0px";
 			}
 		}
@@ -4101,6 +4086,10 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 		let parentContainer = this.getParentContainer();
 
 		return this.hasExplicitStyle && (parentContainer ? parentContainer.style != this.style : false);
+	}
+
+	protected getHasExpandedAction(): boolean {
+		return false;
 	}
 
 	protected getDefaultPadding(): Shared.PaddingDefinition {
@@ -4139,7 +4128,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 	toJSON() {
 		let result = super.toJSON();
 
-		Utils.setProperty(result, "style", this.style, "default");
+		Utils.setProperty(result, "style", this.style);
 
 		return result;
 	}
@@ -4176,14 +4165,6 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 		}
 
 		return renderedElement;
-	}
-
-	isBleedingAtTopOrLeft(): boolean {
-		return this.isFirstElementBleeding() || this.getBleed();
-	}
-
-	isBleedingAtBottomOrRight(): boolean {
-		return this.isLastElementBleeding() || this.getBleed();
 	}
 
 	get style(): string {
@@ -4346,14 +4327,6 @@ export class Container extends StylableCardElementContainer {
 
 	protected getItemsCollectionPropertyName(): string {
 		return "items";
-	}
-
-	protected isFirstElementBleeding(): boolean {
-		return this._renderedItems.length > 0 ? this._renderedItems[0].isBleedingAtTopOrLeft() : false;
-	}
-
-	protected isLastElementBleeding(): boolean {
-		return this._renderedItems.length > 0 ? this._renderedItems[this._renderedItems.length - 1].isBleedingAtBottomOrRight() : false;
 	}
 
 	protected applyBackground() {
@@ -4521,6 +4494,24 @@ export class Container extends StylableCardElementContainer {
 		return this._items[index];
 	}
 
+	getFirstRenderedItem(): CardElement {
+		if (this.renderedElement && this._renderedItems && this._renderedItems.length > 0) {
+			return this._renderedItems[0];
+		}
+		else {
+			return null;
+		}
+	}
+
+	getLastRenderedItem(): CardElement {
+		if (this.renderedElement && this._renderedItems && this._renderedItems.length > 0) {
+			return this._renderedItems[this._renderedItems.length - 1];
+		}
+		else {
+			return null;
+		}
+	}
+
 	getJsonTypeName(): string {
 		return "Container";
 	}
@@ -4554,6 +4545,18 @@ export class Container extends StylableCardElementContainer {
 
 			return parentContainer ? parentContainer.isRtl() : false;
 		}
+	}
+
+	isBleedingAtTop(): boolean {
+		let firstRenderedItem = this.getFirstRenderedItem();
+
+		return this.isBleeding() || (firstRenderedItem ? firstRenderedItem.isBleedingAtTop() : false);
+	}
+
+	isBleedingAtBottom(): boolean {
+		let getLastRenderedItem = this.getLastRenderedItem();
+
+		return this.isBleeding() || (getLastRenderedItem ? getLastRenderedItem.isBleedingAtBottom() : false);
 	}
 
 	validate(): Array<HostConfig.IValidationError> {
@@ -4874,13 +4877,16 @@ export class Column extends Container {
 
 export class ColumnSet extends StylableCardElementContainer {
 	private _columns: Array<Column> = [];
+	private _renderedColumns: Array<Column>;
 
 	protected internalRender(): HTMLElement {
+		this._renderedColumns = [];
+
 		if (this._columns.length > 0) {
 			// Cache hostConfig to avoid walking the parent hierarchy several times
 			let hostConfig = this.hostConfig;
 
-			var element = document.createElement("div");
+			let element = document.createElement("div");
 			element.className = hostConfig.makeCssClassName("ac-columnSet");
 			element.style.display = "flex";
 
@@ -4901,7 +4907,7 @@ export class ColumnSet extends StylableCardElementContainer {
 					break;
 			}
 
-			var totalWeight: number = 0;
+			let totalWeight: number = 0;
 
 			for (let column of this._columns) {
 				if (column.width instanceof Shared.SizeAndUnit && (column.width.unit == Enums.SizeUnit.Weight)) {
@@ -4909,20 +4915,19 @@ export class ColumnSet extends StylableCardElementContainer {
 				}
 			}
 
-			var renderedColumnCount: number = 0;
-
 			for (let column of this._columns) {
 				if (column.width instanceof Shared.SizeAndUnit && column.width.unit == Enums.SizeUnit.Weight && totalWeight > 0) {
-					var computedWeight = 100 / totalWeight * column.width.physicalSize;
+					let computedWeight = 100 / totalWeight * column.width.physicalSize;
 
 					// Best way to emulate "internal" access I know of
 					column["_computedWeight"] = computedWeight;
 				}
 
-				var renderedColumn = column.render();
+				let renderedColumn = column.render();
 
 				if (renderedColumn) {
-					if (renderedColumnCount > 0 && column.separatorElement) {
+					// if (renderedColumnCount > 0 && column.separatorElement) {
+					if (this._renderedColumns.length > 0 && column.separatorElement) {
 						column.separatorElement.style.flex = "0 0 auto";
 
 						Utils.appendChild(element, column.separatorElement);
@@ -4930,11 +4935,11 @@ export class ColumnSet extends StylableCardElementContainer {
 
 					Utils.appendChild(element, renderedColumn);
 
-					renderedColumnCount++;
+					this._renderedColumns.push(column);
 				}
 			}
 
-			return renderedColumnCount > 0 ? element : null;
+			return this._renderedColumns.length > 0 ? element : null;
 		}
 		else {
 			return null;
@@ -4987,12 +4992,66 @@ export class ColumnSet extends StylableCardElementContainer {
 		return false;
 	}
 
+	isBleedingAtTop(): boolean {
+		let result = false;
+
+		if (this._renderedColumns && this._renderedColumns.length > 0) {
+			result = true;
+
+			for (let column of this._columns) {
+				result = result && column.isBleedingAtTop();
+
+				if (!result) {
+					break;
+				}
+			}
+		}
+
+		return this.isBleeding() || result;
+	}
+
+	isBleedingAtBottom(): boolean {
+		let result = false;
+
+		if (this._renderedColumns && this._renderedColumns.length > 0) {
+			result = true;
+
+			for (let column of this._columns) {
+				result = result && column.isBleedingAtBottom();
+
+				if (!result) {
+					break;
+				}
+			}
+		}
+
+		return this.isBleeding() || result;
+	}
+
 	getCount(): number {
 		return this._columns.length;
 	}
 
 	getItemCount(): number {
 		return this.getCount();
+	}
+
+	getFirstRenderedItem(): CardElement {
+		if (this.renderedElement && this._renderedColumns && this._renderedColumns.length > 0) {
+			return this._renderedColumns[0];
+		}
+		else {
+			return null;
+		}
+	}
+
+	getLastRenderedItem(): CardElement {
+		if (this.renderedElement && this._renderedColumns && this._renderedColumns.length > 0) {
+			return this._renderedColumns[this._renderedColumns.length - 1];
+		}
+		else {
+			return null;
+		}
 	}
 
 	getColumnAt(index: number): Column {
@@ -5262,21 +5321,15 @@ export abstract class ContainerWithActions extends Container {
 		}
 	}
 
-	protected isFirstElementBleeding(): boolean {
-		return super.isFirstElementBleeding();
-	}
-
-	protected isLastElementBleeding(): boolean {
+	protected getHasExpandedAction(): boolean {
 		if (this._actionCollection.renderedActionCount == 0) {
-			return super.isLastElementBleeding();
+			return false;
+		}
+		else if (this._actionCollection.items.length == 1) {
+			return this._actionCollection.expandedAction != null && !this.hostConfig.actions.preExpandSingleShowCardAction;
 		}
 		else {
-			if (this._actionCollection.items.length == 1) {
-				return this._actionCollection.expandedAction != null && !this.hostConfig.actions.preExpandSingleShowCardAction;
-			}
-			else {
-				return this._actionCollection.expandedAction != null;
-			}
+			return this._actionCollection.expandedAction != null;
 		}
 	}
 
@@ -5357,6 +5410,20 @@ export abstract class ContainerWithActions extends Container {
 
 	getResourceInformation(): Array<Shared.IResourceInformation> {
 		return super.getResourceInformation().concat(this._actionCollection.getResourceInformation());
+	}
+
+	isBleedingAtBottom(): boolean {
+		if (this._actionCollection.renderedActionCount == 0) {
+			return super.isBleedingAtBottom();
+		}
+		else {
+			if (this._actionCollection.items.length == 1) {
+				return this._actionCollection.expandedAction != null && !this.hostConfig.actions.preExpandSingleShowCardAction;
+			}
+			else {
+				return this._actionCollection.expandedAction != null;
+			}
+		}
 	}
 
 	get isStandalone(): boolean {
