@@ -71,21 +71,6 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
         /* Passing false for separator since we do not have any configuration for separator in actionsConfig */
         BaseCardElementRenderer.setSpacingAndSeparator(context, viewGroup, spacing, false, hostConfig, true /* Horizontal Line */);
 
-        if (viewGroup != null)
-        {
-            if(actionButtonsLayoutOrientation == ActionsOrientation.Horizontal.swigValue())
-            {
-                HorizontalScrollView actionButtonsContainer = new HorizontalScrollView(context);
-                actionButtonsContainer.setHorizontalScrollBarEnabled(false);
-                actionButtonsContainer.addView(actionButtonsLayout);
-                viewGroup.addView(actionButtonsContainer);
-            }
-            else
-            {
-                viewGroup.addView(actionButtonsLayout);
-            }
-        }
-
         int i = 0;
         long maxActions = hostConfig.GetActions().getMaxActions();
 
@@ -113,6 +98,27 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
             IBaseActionElementRenderer actionRenderer = CardRendererRegistration.getInstance().getActionRenderer();
             actionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig);
             hostConfig.GetActions().setIconPlacement(originalIconPlacement);
+        }
+
+        if (viewGroup != null)
+        {
+            int actionButtonsLayoutWidth = actionButtonsLayout.getWidth();
+            int viewGroupWidth = viewGroup.getWidth();
+            // If the width of actionButtonsLayout is smaller than viewGroup, the scroll view is unnecessary.
+            // In addition, the scroll view will leads to actionButtonsLayout's gravity not working.
+            // Adding the width checker to fix this kind of issue.
+            if(actionButtonsLayoutOrientation == ActionsOrientation.Horizontal.swigValue()
+                    && actionButtonsLayoutWidth > viewGroupWidth)
+            {
+                HorizontalScrollView actionButtonsContainer = new HorizontalScrollView(context);
+                actionButtonsContainer.setHorizontalScrollBarEnabled(false);
+                actionButtonsContainer.addView(actionButtonsLayout);
+                viewGroup.addView(actionButtonsContainer);
+            }
+            else
+            {
+                viewGroup.addView(actionButtonsLayout);
+            }
         }
 
         if (i >= maxActions && size != maxActions)
