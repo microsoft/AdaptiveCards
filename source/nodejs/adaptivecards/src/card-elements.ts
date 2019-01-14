@@ -230,37 +230,37 @@ export abstract class CardElement implements ICardObject {
 
 	protected internalGetNonZeroPadding(
 		padding: Shared.PaddingDefinition,
-		processTop: boolean = true,
-		processRight: boolean = true,
-		processBottom: boolean = true,
-		processLeft: boolean = true) {
-		let effectivePadding = this.getEffectivePadding();
-
-		if (effectivePadding) {
-			if (processTop && padding.top == Enums.Spacing.None) {
-				padding.top = effectivePadding.top;
-			}
-
-			if (processRight && padding.right == Enums.Spacing.None) {
-				padding.right = effectivePadding.right;
-			}
-
-			if (processBottom && padding.bottom == Enums.Spacing.None) {
-				padding.bottom = effectivePadding.bottom;
-			}
-
-			if (processLeft && padding.left == Enums.Spacing.None) {
-				padding.left = effectivePadding.left;
-			}
-		}
-
+		processTop: boolean,
+		processRight: boolean,
+		processBottom: boolean,
+		processLeft: boolean) {
 		if (this.parent) {
+			let effectivePadding = this.parent.getEffectivePadding();
+
+			if (effectivePadding) {
+				if (processTop && padding.top == Enums.Spacing.None) {
+					padding.top = effectivePadding.top;
+				}
+
+				if (processRight && padding.right == Enums.Spacing.None) {
+					padding.right = effectivePadding.right;
+				}
+
+				if (processBottom && padding.bottom == Enums.Spacing.None) {
+					padding.bottom = effectivePadding.bottom;
+				}
+
+				if (processLeft && padding.left == Enums.Spacing.None) {
+					padding.left = effectivePadding.left;
+				}
+			}
+
 			this.parent.internalGetNonZeroPadding(
 				padding,
-				processTop && this.isAtTheVeryTop(),
-				processRight && this.isAtTheVeryRight(),
-				processBottom && this.isAtTheVeryBottom(),
-				processLeft && this.isAtTheVeryLeft());
+				processTop && this.parent.isAtTheVeryTop(),
+				processRight && this.parent.isAtTheVeryRight(),
+				processBottom && this.parent.isAtTheVeryBottom(),
+				processLeft && this.parent.isAtTheVeryLeft());
 		}
 	}
 
@@ -367,7 +367,12 @@ export abstract class CardElement implements ICardObject {
 	getNonZeroPadding(): Shared.PaddingDefinition {
 		var padding: Shared.PaddingDefinition = new Shared.PaddingDefinition();
 
-		this.internalGetNonZeroPadding(padding);
+		this.internalGetNonZeroPadding(
+			padding,
+			this.isAtTheVeryTop(),
+			this.isAtTheVeryRight(),
+			this.isAtTheVeryBottom(),
+			this.isAtTheVeryLeft());
 
 		return padding;
 	}
@@ -4034,12 +4039,20 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 			// Bleed into the first parent that does have padding
 			let physicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(this.getNonZeroPadding());
 
-			this.renderedElement.style.marginLeft = "-" + physicalPadding.left + "px";
+			this.renderedElement.style.marginTop = "-" + physicalPadding.top + "px";
 			this.renderedElement.style.marginRight = "-" + physicalPadding.right + "px";
+			this.renderedElement.style.marginBottom = "-" + physicalPadding.bottom + "px";
+			this.renderedElement.style.marginLeft = "-" + physicalPadding.left + "px";
 
 			if (this.separatorElement) {
-				this.separatorElement.style.marginLeft = "-" + physicalPadding.left + "px";
-				this.separatorElement.style.marginRight = "-" + physicalPadding.right + "px";
+				if (this.separatorOrientation == Enums.Orientation.Horizontal) {
+					this.separatorElement.style.marginLeft = "-" + physicalPadding.left + "px";
+					this.separatorElement.style.marginRight = "-" + physicalPadding.right + "px";
+				}
+				else {
+					this.separatorElement.style.marginTop = "-" + physicalPadding.top + "px";
+					this.separatorElement.style.marginBottom = "-" + physicalPadding.bottom + "px";
+				}
 			}
 
 			/*
@@ -4058,6 +4071,19 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 				}
 			}
 			*/
+		}
+		else {
+			this.renderedElement.style.marginTop = "0";
+			this.renderedElement.style.marginRight = "0";
+			this.renderedElement.style.marginBottom = "0";
+			this.renderedElement.style.marginLeft = "0";
+
+			if (this.separatorElement) {
+				this.separatorElement.style.marginTop = "0";
+				this.separatorElement.style.marginRight = "0";
+				this.separatorElement.style.marginBottom = "0";
+				this.separatorElement.style.marginLeft = "0";
+			}
 		}
 
 		if (!this.isDesignMode()) {
