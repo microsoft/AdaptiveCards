@@ -33,6 +33,9 @@ namespace AdaptiveCards
         [DefaultValue(null)]
         public string Id { get; set; }
 
+
+        public Dictionary<string, string> Elements { get; set; } = new Dictionary<string, string>();
+
         /// <summary>
         /// Additional properties not found on the default schema
         /// </summary>

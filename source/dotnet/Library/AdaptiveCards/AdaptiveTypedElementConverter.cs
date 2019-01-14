@@ -139,6 +139,13 @@ namespace AdaptiveCards
                 return result;
             }
 
+            try
+            {
+                var customElement = new AdaptiveCustomElement();
+                serializer.Populate(jObject.CreateReader(), customElement);
+                return customElement;
+            }
+            catch { }
             Warnings.Add(new AdaptiveWarning(-1, $"Unknown element '{typeName}'"));
             return null;
         }

@@ -22,14 +22,10 @@ namespace AdaptiveCards.Rendering
             _dictionary.Remove(typeof(TElement));
         }
 
-        public Func<TElement, TContext, TUIElement> Get<TElement>()
-            where TElement : AdaptiveTypedElement
+        public Func<AdaptiveTypedElement, TContext, TUIElement> Get(Dictionary<string, string> elementDefinitions, AdaptiveTypedElement element)
         {
-            return Get(typeof(TElement));
-        }
+            var type = element.GetType();
 
-        public Func<AdaptiveTypedElement, TContext, TUIElement> Get(Type type)
-        {
             if (_dictionary.ContainsKey(type))
                 return _dictionary[type];
 

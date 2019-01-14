@@ -6,16 +6,19 @@ namespace AdaptiveCards.Rendering.Html
 {
     public class AdaptiveRenderContext
     {
-        public AdaptiveRenderContext(AdaptiveHostConfig hostConfig, AdaptiveElementRenderers<HtmlTag, AdaptiveRenderContext> elementRenderers)
+        public AdaptiveRenderContext(AdaptiveHostConfig hostConfig, AdaptiveElementRenderers<HtmlTag, AdaptiveRenderContext> elementRenderers, Dictionary<string, string> elementDefinitions)
         {
             // clone it
             Config = JsonConvert.DeserializeObject<AdaptiveHostConfig>(JsonConvert.SerializeObject(hostConfig));
             ElementRenderers = elementRenderers;
+            ElementDefinitions = elementDefinitions;
         }
 
         public AdaptiveHostConfig Config { get; set; }
 
         public AdaptiveElementRenderers<HtmlTag, AdaptiveRenderContext> ElementRenderers { get; set; }
+
+        public Dictionary<string, string> ElementDefinitions { get; set; }
 
         public IList<AdaptiveWarning> Warnings { get; } = new List<AdaptiveWarning>();
 
@@ -32,7 +35,7 @@ namespace AdaptiveCards.Rendering.Html
                 return Render(tb);
             }
 
-            var renderer = ElementRenderers.Get(element.GetType());
+            var renderer = ElementRenderers.Get(ElementDefinitions, element);
             if (renderer != null)
             {
                 return renderer.Invoke(element, this);

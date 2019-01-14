@@ -51,6 +51,8 @@ namespace AdaptiveCards.Rendering.Wpf
             ElementRenderers.Set<AdaptiveToggleInput>(AdaptiveToggleInputRenderer.Render);
 
             ElementRenderers.Set<AdaptiveAction>(AdaptiveActionRenderer.Render);
+
+            ElementRenderers.Set<AdaptiveCustomElement>(AdaptiveCustomElementRenderer.Render);
         }
 
 
@@ -216,7 +218,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 renderCard?.InvokeOnMediaClick(args);
             }
 
-            var context = new AdaptiveRenderContext(ActionCallback, null, MediaClickCallback)
+            var context = new AdaptiveRenderContext(ActionCallback, null, MediaClickCallback, card.Elements)
             {
                 ResourceResolvers = ResourceResolvers,
                 ActionHandlers = ActionHandlers,
@@ -270,7 +272,7 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 var cardAssets = await LoadAssetsForCardAsync(card, cancellationToken);
 
-                var context = new AdaptiveRenderContext(null, null, null)
+                var context = new AdaptiveRenderContext(null, null, null, card.Elements)
                 {
                     CardAssets = cardAssets,
                     ResourceResolvers = ResourceResolvers,
