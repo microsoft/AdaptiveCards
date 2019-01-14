@@ -4056,6 +4056,23 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 				this.separatorElement.style.marginLeft = "-" + physicalPadding.left + "px";
 				this.separatorElement.style.marginRight = "-" + physicalPadding.right + "px";
 			}
+
+			/*
+			// Bleed into direct parent only
+			let parentContainer = this.getParentContainer();
+
+			if (parentContainer && parentContainer.getEffectivePadding()) {
+				let parentPhysicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(parentContainer.getEffectivePadding());
+
+				this.renderedElement.style.marginLeft = "-" + parentPhysicalPadding.left + "px";
+				this.renderedElement.style.marginRight = "-" + parentPhysicalPadding.right + "px";
+
+				if (this.separatorElement && this.separatorOrientation == Enums.Orientation.Horizontal) {
+					this.separatorElement.style.marginLeft = "-" + parentPhysicalPadding.left + "px";
+					this.separatorElement.style.marginRight = "-" + parentPhysicalPadding.right + "px";
+				}
+			}
+			*/
 		}
 		else {
 			this.renderedElement.style.marginRight = "0";
