@@ -532,11 +532,11 @@ export abstract class CardElement implements ICardObject {
 		return this.parent ? this.parent.isLeftMostElement(this) && this.parent.isAtTheVeryLeft() : true;
 	}
 
-	isStartBleeding(): boolean {
+	isBleedingAtTopOrLeft(): boolean {
 		return false;
 	}
 
-	isEndBleeding(): boolean {
+	isBleedingAtBottomOrRight(): boolean {
 		return false;
 	}
 
@@ -4030,7 +4030,20 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 		this.renderedElement.style.paddingBottom = physicalPadding.bottom + "px";
 		this.renderedElement.style.paddingLeft = physicalPadding.left + "px";
 
-		if (this.getBleed() && this.getHasBackground()) {
+		if (this.isBleeding()) {
+			// Bleed into the first parent that does have padding
+			let physicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(this.getNonZeroPadding());
+
+			this.renderedElement.style.marginLeft = "-" + physicalPadding.left + "px";
+			this.renderedElement.style.marginRight = "-" + physicalPadding.right + "px";
+
+			if (this.separatorElement) {
+				this.separatorElement.style.marginLeft = "-" + physicalPadding.left + "px";
+				this.separatorElement.style.marginRight = "-" + physicalPadding.right + "px";
+			}
+
+			/*
+			// Bleed into direct parent only
 			let parentContainer = this.getParentContainer();
 
 			if (parentContainer && parentContainer.getEffectivePadding()) {
@@ -4044,9 +4057,10 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 					this.separatorElement.style.marginRight = "-" + parentPhysicalPadding.right + "px";
 				}
 			}
+			*/
 		}
 
-		if (!this.isDesignMode) {
+		if (!this.isDesignMode()) {
 			if (this.isFirstElementBleeding()) {
 				this.renderedElement.style.paddingTop = "0px";
 			}
@@ -4092,6 +4106,10 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 		this._bleed = value;
 	}
 
+	protected isBleeding(): boolean {
+		return this.getHasBackground() && this.getBleed();
+	}
+
 	toJSON() {
 		let result = super.toJSON();
 
@@ -4134,11 +4152,11 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 		return renderedElement;
 	}
 
-	isStartBleeding(): boolean {
+	isBleedingAtTopOrLeft(): boolean {
 		return this.isFirstElementBleeding() || this.getBleed();
 	}
 
-	isEndBleeding(): boolean {
+	isBleedingAtBottomOrRight(): boolean {
 		return this.isLastElementBleeding() || this.getBleed();
 	}
 
@@ -4305,11 +4323,11 @@ export class Container extends StylableCardElementContainer {
 	}
 
 	protected isFirstElementBleeding(): boolean {
-		return this._renderedItems.length > 0 ? this._renderedItems[0].isStartBleeding() : false;
+		return this._renderedItems.length > 0 ? this._renderedItems[0].isBleedingAtTopOrLeft() : false;
 	}
 
 	protected isLastElementBleeding(): boolean {
-		return this._renderedItems.length > 0 ? this._renderedItems[this._renderedItems.length - 1].isEndBleeding() : false;
+		return this._renderedItems.length > 0 ? this._renderedItems[this._renderedItems.length - 1].isBleedingAtBottomOrRight() : false;
 	}
 
 	protected applyBackground() {
@@ -5634,8 +5652,6 @@ export class AdaptiveCard extends ContainerWithActions {
 
 	render(target?: HTMLElement): HTMLElement {
 		let renderedCard: HTMLElement;
-
-		this.getHasBackground();
 
 		if (this.shouldFallback()) {
 			if (this._fallbackCard) {
