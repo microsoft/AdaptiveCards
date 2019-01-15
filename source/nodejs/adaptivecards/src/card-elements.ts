@@ -228,49 +228,6 @@ export abstract class CardElement implements ICardObject {
 		return element;
 	}
 
-	getImmediateSurroundingPadding(
-		result: Shared.PaddingDefinition,
-		processTop: boolean = true,
-		processRight: boolean = true,
-		processBottom: boolean = true,
-		processLeft: boolean = true) {
-		if (this.parent) {
-			let doProcessTop = processTop && this.parent.isFirstElement(this);
-			let doProcessRight = processRight && this.parent.isRightMostElement(this);
-			let doProcessBottom = processBottom && this.parent.isLastElement(this);
-			let doProcessLeft = processLeft && this.parent.isLeftMostElement(this);
-
-			let effectivePadding = this.parent.getEffectivePadding();
-
-			if (effectivePadding) {
-				if (doProcessTop) {
-					result.top = effectivePadding.top;
-				}
-
-				if (doProcessRight) {
-					result.right = effectivePadding.right;
-				}
-
-				if (doProcessBottom) {
-					result.bottom = effectivePadding.bottom;
-				}
-
-				if (doProcessLeft) {
-					result.left = effectivePadding.left;
-				}
-			}
-
-			if (doProcessTop || doProcessRight || doProcessBottom || doProcessLeft) {
-				this.parent.getImmediateSurroundingPadding(
-					result,
-					doProcessTop,
-					doProcessRight,
-					doProcessBottom,
-					doProcessLeft);
-			}
-		}
-	}
-
 	protected adjustRenderedElementSize(renderedElement: HTMLElement) {
 		if (this.supportsExplicitHeight() && typeof this.height === "number") {
 			renderedElement.style.minHeight = this.height + "px";
@@ -381,6 +338,49 @@ export abstract class CardElement implements ICardObject {
 
 	getForbiddenActionTypes(): Array<any> {
 		return null;
+	}
+
+	getImmediateSurroundingPadding(
+		result: Shared.PaddingDefinition,
+		processTop: boolean = true,
+		processRight: boolean = true,
+		processBottom: boolean = true,
+		processLeft: boolean = true) {
+		if (this.parent) {
+			let doProcessTop = processTop && this.parent.isFirstElement(this);
+			let doProcessRight = processRight && this.parent.isRightMostElement(this);
+			let doProcessBottom = processBottom && this.parent.isLastElement(this);
+			let doProcessLeft = processLeft && this.parent.isLeftMostElement(this);
+
+			let effectivePadding = this.parent.getEffectivePadding();
+
+			if (effectivePadding) {
+				if (doProcessTop) {
+					result.top = effectivePadding.top;
+				}
+
+				if (doProcessRight) {
+					result.right = effectivePadding.right;
+				}
+
+				if (doProcessBottom) {
+					result.bottom = effectivePadding.bottom;
+				}
+
+				if (doProcessLeft) {
+					result.left = effectivePadding.left;
+				}
+			}
+
+			if (doProcessTop || doProcessRight || doProcessBottom || doProcessLeft) {
+				this.parent.getImmediateSurroundingPadding(
+					result,
+					doProcessTop,
+					doProcessRight,
+					doProcessBottom,
+					doProcessLeft);
+			}
+		}
 	}
 
 	parse(json: any, errors?: Array<HostConfig.IValidationError>) {
