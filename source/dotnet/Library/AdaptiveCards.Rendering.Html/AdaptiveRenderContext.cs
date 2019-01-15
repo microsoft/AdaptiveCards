@@ -6,7 +6,7 @@ namespace AdaptiveCards.Rendering.Html
 {
     public class AdaptiveRenderContext
     {
-        public AdaptiveRenderContext(AdaptiveHostConfig hostConfig, AdaptiveElementRenderers<HtmlTag, AdaptiveRenderContext> elementRenderers, Dictionary<string, string> elementDefinitions)
+        public AdaptiveRenderContext(AdaptiveHostConfig hostConfig, AdaptiveElementRenderers<HtmlTag, AdaptiveRenderContext> elementRenderers, Dictionary<string, object> elementDefinitions)
         {
             // clone it
             Config = JsonConvert.DeserializeObject<AdaptiveHostConfig>(JsonConvert.SerializeObject(hostConfig));
@@ -18,7 +18,7 @@ namespace AdaptiveCards.Rendering.Html
 
         public AdaptiveElementRenderers<HtmlTag, AdaptiveRenderContext> ElementRenderers { get; set; }
 
-        public Dictionary<string, string> ElementDefinitions { get; set; }
+        public Dictionary<string, object> ElementDefinitions { get; set; }
 
         public IList<AdaptiveWarning> Warnings { get; } = new List<AdaptiveWarning>();
 

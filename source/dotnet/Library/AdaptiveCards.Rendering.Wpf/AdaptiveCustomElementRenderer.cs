@@ -16,12 +16,20 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             try
             {
-                if (context.ElementDefinitions != null && context.ElementDefinitions.TryGetValue(customElement.Type, out string url))
+                if (context.ElementDefinitions != null && context.ElementDefinitions.TryGetValue(customElement.Type, out object defObj))
                 {
-                    HttpClient c = new HttpClient();
-                    var task = c.GetStringAsync(url);
-                    task.Wait();
-                    string definition = task.Result;
+                    string definition;
+                    if (defObj is string url)
+                    {
+                        HttpClient c = new HttpClient();
+                        var task = c.GetStringAsync(url);
+                        task.Wait();
+                        definition = task.Result;
+                    }
+                    else
+                    {
+                        definition = defObj.ToString();
+                    }
 
                     // Super simple data binding
                     foreach (var prop in customElement.AdditionalProperties)

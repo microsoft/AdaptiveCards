@@ -22,7 +22,7 @@ namespace AdaptiveCards.Rendering
             _dictionary.Remove(typeof(TElement));
         }
 
-        public Func<AdaptiveTypedElement, TContext, TUIElement> Get(Dictionary<string, string> elementDefinitions, AdaptiveTypedElement element)
+        public Func<AdaptiveTypedElement, TContext, TUIElement> Get(Dictionary<string, object> elementDefinitions, AdaptiveTypedElement element)
         {
             var type = element.GetType();
 

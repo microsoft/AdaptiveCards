@@ -22,7 +22,7 @@ namespace AdaptiveCards.Rendering.Wpf
         public AdaptiveRenderContext(Action<object, AdaptiveActionEventArgs> actionCallback,
             Action<object, MissingInputEventArgs> missingDataCallback,
             Action<object, AdaptiveMediaEventArgs> mediaClickCallback,
-            Dictionary<string, string> elementDefinitions)
+            Dictionary<string, object> elementDefinitions)
         {
             if (actionCallback != null)
                 OnAction += (obj, args) => actionCallback(obj, args);
@@ -41,7 +41,7 @@ namespace AdaptiveCards.Rendering.Wpf
         public IList<AdaptiveWarning> Warnings { get; } = new List<AdaptiveWarning>();
 
         public AdaptiveElementRenderers<FrameworkElement, AdaptiveRenderContext> ElementRenderers { get; set; }
-        public Dictionary<string, string> ElementDefinitions { get; set; }
+        public Dictionary<string, object> ElementDefinitions { get; set; }
 
         public ResourceDictionary Resources { get; set; }
 
