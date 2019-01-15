@@ -152,6 +152,7 @@ namespace AdaptiveCards
                         return value.Value<string>();
 
                     case JTokenType.Date:
+                        // Temporary hack for date binding. Note that this will modify format of other date-like strings, which could be undesired.
                         return value.Value<DateTime>().ToUniversalTime().ToString("s") + "Z";
                 }
                 return value;
