@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -48,9 +49,16 @@ namespace AdaptiveCards
 
         public object Data { get; set; }
 
+        public object Repeat { get; set; }
+
         public virtual IEnumerable<AdaptiveTypedElement> GetChildren()
         {
             return new AdaptiveTypedElement[0];
+        }
+
+        public virtual IEnumerable<IList> GetChildrenLists()
+        {
+            return new IList[0];
         }
 
         public IEnumerable<AdaptiveTypedElement> GetDescendants()
@@ -68,17 +76,43 @@ namespace AdaptiveCards
 
         public void ResolveData()
         {
+            foreach (var lists in GetChildrenLists())
+            {
+                for (int i = 0; i < lists.Count; i++)
+                {
+                    var childEl = lists[i] as AdaptiveTypedElement;
+                    if (childEl != null)
+                    {
+                        if (childEl.Repeat != null)
+                        {
+                            object repeatData = ResolveChildData(Data, childEl.Repeat);
+                            childEl.Repeat = null;
+                            if (repeatData != null && repeatData is JArray jArray)
+                            {
+                                object originalChildElData = childEl.Data;
+                                childEl.Data = null;
+
+                                var elementRepeater = new ElementRepeater(childEl);
+
+                                lists.RemoveAt(i);
+                                i--;
+
+                                foreach (var item in jArray)
+                                {
+                                    var newEl = elementRepeater.GetNewElement();
+                                    newEl.Data = ResolveChildData(item, originalChildElData);
+                                    lists.Insert(i + 1, newEl);
+                                    i++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             foreach (var child in GetChildren())
             {
-                if (child.Data == null)
-                {
-                    child.Data = Data;
-                }
-
-                else if (child.Data is string scopedDataExpression)
-                {
-                    child.Data = BindingEvaluator.EvaluateBinding(Data as JObject, scopedDataExpression);
-                }
+                child.Data = ResolveChildData(Data, child.Data);
 
                 child.ResolveData();
             }
@@ -96,6 +130,57 @@ namespace AdaptiveCards
                     }
                 }
             }
+        }
+
+        private class ElementRepeater
+        {
+            private string _cardJson;
+            public ElementRepeater(AdaptiveTypedElement sourceElement)
+            {
+                AdaptiveCard card = new AdaptiveCard("1.1");
+                if (sourceElement is AdaptiveElement bodyElement)
+                {
+                    card.Body.Add(bodyElement);
+                }
+                else if (sourceElement is AdaptiveAction action)
+                {
+                    card.Actions.Add(action);
+                }
+                else
+                {
+                    throw new Exception("Unknown type");
+                }
+                _cardJson = card.ToJson();
+            }
+
+            public AdaptiveTypedElement GetNewElement()
+            {
+                AdaptiveCard card = AdaptiveCard.FromJson(_cardJson).Card;
+                if (card.Body.Count > 0)
+                {
+                    return card.Body[0];
+                }
+                if (card.Actions.Count > 0)
+                {
+                    return card.Actions[0];
+                }
+                throw new Exception("Something failed");
+            }
+        }
+
+        private static object ResolveChildData(object parentData, object initialChildData)
+        {
+            if (initialChildData == null)
+            {
+                return parentData;
+            }
+
+            else if (initialChildData is string scopedDataExpression)
+            {
+                return BindingEvaluator.EvaluateBinding(parentData as JObject, scopedDataExpression);
+            }
+
+            return initialChildData;
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -76,6 +77,11 @@ namespace AdaptiveCards
         public override IEnumerable<AdaptiveTypedElement> GetChildren()
         {
             return Items.Union(new AdaptiveTypedElement[] { SelectAction }).Where(i => i != null);
+        }
+
+        public override IEnumerable<IList> GetChildrenLists()
+        {
+            yield return Items;
         }
     }
 }

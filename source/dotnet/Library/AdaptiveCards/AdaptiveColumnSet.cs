@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
@@ -42,6 +43,11 @@ namespace AdaptiveCards
         public override IEnumerable<AdaptiveTypedElement> GetChildren()
         {
             return Columns;
+        }
+
+        public override IEnumerable<IList> GetChildrenLists()
+        {
+            yield return Columns;
         }
     }
 }
