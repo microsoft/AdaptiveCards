@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,23 @@ namespace AdaptiveCards
     public class AdaptiveCustomElement : AdaptiveElement
     {
         public override string Type { get; set; }
+
+        /// <summary>
+        /// Programmatically generated through resolution process
+        /// </summary>
+        public AdaptiveElement ResolvedElement { get; set; }
+
+        public void ResolveElement(ResolveContext context)
+        {
+            if (context.Elements.TryGetElementDefinition(Type, out AdaptiveElementDefinition definition))
+            {
+                ResolvedElement = definition.GetNewElement();
+            }
+        }
+
+        public override IEnumerable<AdaptiveTypedElement> GetChildren()
+        {
+            yield return ResolvedElement;
+        }
     }
 }

@@ -36,7 +36,7 @@ namespace AdaptiveCards
         public string Id { get; set; }
 
 
-        public Dictionary<string, object> Elements { get; set; } = new Dictionary<string, object>();
+        public AdaptiveElementDefinitions Elements { get; set; } = new AdaptiveElementDefinitions();
 
         /// <summary>
         /// Additional properties not found on the default schema
@@ -74,8 +74,48 @@ namespace AdaptiveCards
             }
         }
 
-        public void ResolveData()
+        public void ResolveData(ResolveContext context)
         {
+            context = context.CreateForCurrElement(this);
+
+            // Resolve data binding on this element
+            var thisProperties = this.GetType().GetTypeInfo().DeclaredProperties;
+            foreach (var p in thisProperties.Where(i => i.PropertyType == typeof(string)))
+            {
+                string pVal = p.GetValue(this) as string;
+                if (pVal != null)
+                {
+                    string newPVal = BindingEvaluator.EvaluateBinding<string>(Data as JObject, pVal);
+                    if (pVal != newPVal)
+                    {
+                        p.SetValue(this, newPVal);
+                    }
+                }
+            }
+
+            foreach (var additionalProp in AdditionalProperties.ToArray())
+            {
+                if (additionalProp.Value is string s)
+                {
+                    object newVal = BindingEvaluator.EvaluateBinding(Data as JObject, s);
+                    AdditionalProperties[additionalProp.Key] = newVal;
+                }
+            }
+
+            // If it's a custom element, load it
+            if (this is AdaptiveCustomElement customElement)
+            {
+                // Serialize the element so its properties can be bound to from its child elements
+                JObject customElementData = JObject.FromObject(customElement);
+
+                customElement.ResolveElement(context);
+                if (customElement.ResolvedElement != null)
+                {
+                    customElement.ResolvedElement.Data = ResolveChildData(customElementData, customElement.ResolvedElement.Data);
+                }
+            }
+
+            // Now deal with children
             foreach (var lists in GetChildrenLists())
             {
                 for (int i = 0; i < lists.Count; i++)
@@ -114,57 +154,7 @@ namespace AdaptiveCards
             {
                 child.Data = ResolveChildData(Data, child.Data);
 
-                child.ResolveData();
-            }
-
-            var thisProperties = this.GetType().GetTypeInfo().DeclaredProperties;
-            foreach (var p in thisProperties.Where(i => i.PropertyType == typeof(string)))
-            {
-                string pVal = p.GetValue(this) as string;
-                if (pVal != null)
-                {
-                    string newPVal = BindingEvaluator.EvaluateBinding<string>(Data as JObject, pVal);
-                    if (pVal != newPVal)
-                    {
-                        p.SetValue(this, newPVal);
-                    }
-                }
-            }
-        }
-
-        private class ElementRepeater
-        {
-            private string _cardJson;
-            public ElementRepeater(AdaptiveTypedElement sourceElement)
-            {
-                AdaptiveCard card = new AdaptiveCard("1.1");
-                if (sourceElement is AdaptiveElement bodyElement)
-                {
-                    card.Body.Add(bodyElement);
-                }
-                else if (sourceElement is AdaptiveAction action)
-                {
-                    card.Actions.Add(action);
-                }
-                else
-                {
-                    throw new Exception("Unknown type");
-                }
-                _cardJson = card.ToJson();
-            }
-
-            public AdaptiveTypedElement GetNewElement()
-            {
-                AdaptiveCard card = AdaptiveCard.FromJson(_cardJson).Card;
-                if (card.Body.Count > 0)
-                {
-                    return card.Body[0];
-                }
-                if (card.Actions.Count > 0)
-                {
-                    return card.Actions[0];
-                }
-                throw new Exception("Something failed");
+                child.ResolveData(context);
             }
         }
 

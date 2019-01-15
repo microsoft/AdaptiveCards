@@ -16,6 +16,14 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             try
             {
+                if (customElement.ResolvedElement == null)
+                {
+                    context.Warnings.Add(new AdaptiveWarning(1, "Custom element resolution failed for " + customElement.Type));
+                    return null;
+                }
+
+                return context.Render(customElement.ResolvedElement);
+
                 if (context.ElementDefinitions != null && context.ElementDefinitions.TryGetValue(customElement.Type, out object defObj))
                 {
                     string definition;
