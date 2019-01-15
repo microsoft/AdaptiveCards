@@ -33,12 +33,42 @@ namespace AdaptiveCards
 
         public static object EvaluateBinding(JObject data, string bindingExpression)
         {
+            // If it's all one single expression
+            // (This is a temporary hack for resolving correct data types)
+            if (Regex.IsMatch(bindingExpression, "^" + REGEX_BINDING_EXPRESSION + "$"))
+            {
+                return EvaluateSingleBinding(data, bindingExpression);
+            }
+
             Regex regex = new Regex(REGEX_BINDING_EXPRESSION);
             var evaluator = new MyMatchEvaluator(data);
 
             string replaced = regex.Replace(bindingExpression, evaluator.ReplaceBinding);
 
             return replaced;
+        }
+
+        public static object EvaluateSingleBinding(JObject data, string singleBindingExpression)
+        {
+            var match = Regex.Match(singleBindingExpression, "^" + REGEX_BINDING_EXPRESSION + "$");
+            if (match.Success && match.Groups[1].Success)
+            {
+                string insideBindingBrackets = match.Groups[1].Value;
+                Match firstPropertyMatch = Regex.Match(insideBindingBrackets, "^" + REGEX_PROPERTY_NAME);
+                if (firstPropertyMatch.Success)
+                {
+                    // First property must be data
+                    if (firstPropertyMatch.Value == "data")
+                    {
+                        if (insideBindingBrackets.Length > firstPropertyMatch.Length)
+                        {
+                            return EvalulatePropertyExpression(data, insideBindingBrackets.Substring(firstPropertyMatch.Length));
+                        }
+                    }
+                }
+            }
+
+            return null;
         }
 
         private class MyMatchEvaluator
@@ -51,24 +81,7 @@ namespace AdaptiveCards
 
             public string ReplaceBinding(Match m)
             {
-                if (m.Groups[1].Success)
-                {
-                    string insideBindingBrackets = m.Groups[1].Value;
-                    Match firstPropertyMatch = Regex.Match(insideBindingBrackets, "^" + REGEX_PROPERTY_NAME);
-                    if (firstPropertyMatch.Success)
-                    {
-                        // First property must be data
-                        if (firstPropertyMatch.Value == "data")
-                        {
-                            if (insideBindingBrackets.Length > firstPropertyMatch.Length)
-                            {
-                                return EvalulatePropertyExpression(_data, insideBindingBrackets.Substring(firstPropertyMatch.Length))?.ToString();
-                            }
-                        }
-                    }
-                }
-
-                return "";
+                return EvaluateSingleBinding(_data, m.Value)?.ToString();
             }
         }
 

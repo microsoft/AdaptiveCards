@@ -76,7 +76,7 @@ namespace AdaptiveCards
         public string UrlString
         {
             get { return Url?.ToString(); }
-            set { Url = new Uri(value); }
+            set { Uri.TryCreate(value, UriKind.RelativeOrAbsolute, out Uri result); Url = result; }
         }
 
         /// <summary>

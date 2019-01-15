@@ -46,7 +46,7 @@ namespace AdaptiveCards
 #endif
         public IDictionary<string, object> AdditionalProperties { get; set;  } = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
 
-        public object Data;
+        public object Data { get; set; }
 
         public virtual IEnumerable<AdaptiveTypedElement> GetChildren()
         {
@@ -75,9 +75,9 @@ namespace AdaptiveCards
                     child.Data = Data;
                 }
 
-                else if (child.Data is string queryString)
+                else if (child.Data is string scopedDataExpression)
                 {
-                    // TODO: Scope from parent
+                    child.Data = BindingEvaluator.EvaluateBinding(Data as JObject, scopedDataExpression);
                 }
 
                 child.ResolveData();
