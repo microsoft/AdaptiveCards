@@ -26,7 +26,10 @@ namespace AdaptiveCards
 
         public override IEnumerable<AdaptiveTypedElement> GetChildren()
         {
-            yield return ResolvedElement;
+            if (ResolvedElement != null)
+            {
+                yield return ResolvedElement;
+            }
         }
     }
 }
