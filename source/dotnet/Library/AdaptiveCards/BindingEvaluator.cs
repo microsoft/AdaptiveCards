@@ -150,6 +150,9 @@ namespace AdaptiveCards
                 {
                     case JTokenType.String:
                         return value.Value<string>();
+
+                    case JTokenType.Date:
+                        return value.Value<DateTime>().ToUniversalTime().ToString("s") + "Z";
                 }
                 return value;
             }
