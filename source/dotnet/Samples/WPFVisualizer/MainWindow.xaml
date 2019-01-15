@@ -60,11 +60,22 @@
         <GridSplitter Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>
 
         <Grid Grid.Row="1" Grid.Column="2" Background="LightGray">
-            <Grid Name="cardGrid" MaxWidth="700" VerticalAlignment="Top" Margin="10" Background="WhiteSmoke" >
-                <Grid.Effect>
-                    <DropShadowEffect BlurRadius="15" ShadowDepth="2" RenderingBias="Quality" Direction="-90"/>
-                </Grid.Effect>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Name="cardGrid" MaxWidth="700" VerticalAlignment="Top" Margin="10" Background="WhiteSmoke" >
+                    <Grid.Effect>
+                        <DropShadowEffect BlurRadius="15" ShadowDepth="2" RenderingBias="Quality" Direction="-90"/>
+                    </Grid.Effect>
+                </Grid>
 
+                <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ResizeDirection="Rows"/>
+
+                <avalon:TextEditor Grid.Row="2" Name="textBoxData" SyntaxHighlighting="Json" FontFamily="Consolas" FontSize="10pt"
+                            ShowLineNumbers="true" TextChanged="textBoxData_TextChanged"/>
             </Grid>
         </Grid>
 

@@ -95,6 +95,16 @@ namespace WpfVisualizer
 
                 AdaptiveCard card = parseResult.Card;
 
+                try
+                {
+                    JObject data = JObject.Parse(textBoxData.Text);
+                    if (data != null)
+                    {
+                        card.Data = data;
+                    }
+                }
+                catch { }
+
                 RenderedAdaptiveCard renderedCard = Renderer.RenderCard(card);
                 // TODO: should we have an option to render fallback card instead of exception?
 
@@ -366,6 +376,11 @@ namespace WpfVisualizer
         }
 
         private void HostConfigEditor_OnPropertyValueChanged(object sender, PropertyValueChangedEventArgs e)
+        {
+            _dirty = true;
+        }
+
+        private void textBoxData_TextChanged(object sender, EventArgs e)
         {
             _dirty = true;
         }
