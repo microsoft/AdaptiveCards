@@ -31,6 +31,7 @@
 #import "ACRActionToggleVisibilityRenderer.h"
 #import "ACRActionSetRenderer.h"
 #import "ACRCustomRenderer.h"
+#import "ACRCustomActionRenderer.h"
 #import "BaseCardElement.h"
 #import "HostConfig.h"
 #import "ACOParseContextPrivate.h"
@@ -79,6 +80,7 @@ using namespace AdaptiveCards;
              [ACRActionShowCardRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::ShowCard],
              [ACRActionSubmitRenderer   getInstance], [NSNumber numberWithInt:(int)ActionType::Submit],
              [ACRActionToggleVisibilityRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::ToggleVisibility],
+             [ACRCustomActionRenderer   getInstance], [NSNumber numberWithInt:(int)ActionType::UnknownAction],
              nil];
 
         _actionParserDict = [[NSMutableDictionary alloc] init];
@@ -126,6 +128,11 @@ using namespace AdaptiveCards;
 
 - (void)setActionRenderer:(ACRBaseActionElementRenderer *)renderer cardElementType:(NSNumber *)cardElementType
 {
+    // custom action must be registered through set custom action renderer method
+    if(cardElementType.longValue > ACRUnknownAction) {
+        return;
+    }
+
     if(!renderer) {
         [overridenBaseActionRendererList removeObjectForKey:cardElementType];
     } else {
@@ -148,15 +155,17 @@ using namespace AdaptiveCards;
     customRenderer.customElementParser = customElementParser;
 }
 
-- (void)setCustomActionElementParser:(NSString *)key parser:(NSObject<ACOIBaseActionElementParser> *)parser
+- (void)setCustomActionElementParser:(NSObject<ACOIBaseActionElementParser> *)parser key:(NSString *)key
 {
     if(!_parseContext) {
         _parseContext = [[ACOParseContext alloc] init];
     }
-    _actionParserDict[key] = parser;
+    if(parser && key) {
+        _actionParserDict[key] = parser;
+    }
 }
 
-- (id<ACOIBaseActionElementParser>)getCustomActionElementParser:(NSString *)key
+- (NSObject<ACOIBaseActionElementParser> *)getCustomActionElementParser:(NSString *)key
 {
     return _actionParserDict[key];
 }
@@ -164,6 +173,13 @@ using namespace AdaptiveCards;
 - (ACOParseContext *)getParseContext
 {
     return _parseContext;
+}
+
+- (void)setCustomActionRenderer:(ACRBaseActionElementRenderer *)renderer key:(NSString *)key
+{
+    if(renderer && key) {
+        [overridenBaseActionRendererList setObject:renderer forKey:[NSNumber numberWithLong:key.hash]];
+    }
 }
 
 
