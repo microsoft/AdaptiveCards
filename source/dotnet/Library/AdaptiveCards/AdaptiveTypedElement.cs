@@ -78,6 +78,41 @@ namespace AdaptiveCards
         {
             context = context.CreateForCurrElement(this);
 
+            // First do repeating items
+            foreach (var lists in GetChildrenLists())
+            {
+                for (int i = 0; i < lists.Count; i++)
+                {
+                    var childEl = lists[i] as AdaptiveTypedElement;
+                    if (childEl != null)
+                    {
+                        if (childEl.Repeat != null)
+                        {
+                            object repeatData = ResolveChildData(Data, childEl.Repeat);
+                            childEl.Repeat = null;
+                            if (repeatData != null && repeatData is JArray jArray)
+                            {
+                                object originalChildElData = childEl.Data;
+                                childEl.Data = null;
+
+                                var elementRepeater = new ElementRepeater(childEl);
+
+                                lists.RemoveAt(i);
+                                i--;
+
+                                foreach (var item in jArray)
+                                {
+                                    var newEl = elementRepeater.GetNewElement();
+                                    newEl.Data = ResolveChildData(item, originalChildElData);
+                                    lists.Insert(i + 1, newEl);
+                                    i++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             // Resolve data binding on this element
             var thisProperties = this.GetType().GetTypeInfo().DeclaredProperties;
             foreach (var p in thisProperties.Where(i => i.PropertyType == typeof(string)))
@@ -116,40 +151,6 @@ namespace AdaptiveCards
             }
 
             // Now deal with children
-            foreach (var lists in GetChildrenLists())
-            {
-                for (int i = 0; i < lists.Count; i++)
-                {
-                    var childEl = lists[i] as AdaptiveTypedElement;
-                    if (childEl != null)
-                    {
-                        if (childEl.Repeat != null)
-                        {
-                            object repeatData = ResolveChildData(Data, childEl.Repeat);
-                            childEl.Repeat = null;
-                            if (repeatData != null && repeatData is JArray jArray)
-                            {
-                                object originalChildElData = childEl.Data;
-                                childEl.Data = null;
-
-                                var elementRepeater = new ElementRepeater(childEl);
-
-                                lists.RemoveAt(i);
-                                i--;
-
-                                foreach (var item in jArray)
-                                {
-                                    var newEl = elementRepeater.GetNewElement();
-                                    newEl.Data = ResolveChildData(item, originalChildElData);
-                                    lists.Insert(i + 1, newEl);
-                                    i++;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
             foreach (var child in GetChildren())
             {
                 child.Data = ResolveChildData(Data, child.Data);

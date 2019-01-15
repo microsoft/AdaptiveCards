@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Programmatically generated through resolution process
         /// </summary>
+        [JsonIgnore]
         public AdaptiveElement ResolvedElement { get; set; }
 
         public void ResolveElement(ResolveContext context)
