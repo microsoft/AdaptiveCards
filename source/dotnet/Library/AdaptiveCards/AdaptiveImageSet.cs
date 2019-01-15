@@ -39,5 +39,10 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(typeof(AdaptiveImageSize), "auto")]
         public AdaptiveImageSize ImageSize { get; set; }
+
+        public override IEnumerable<AdaptiveTypedElement> GetChildren()
+        {
+            return Images;
+        }
     }
 }

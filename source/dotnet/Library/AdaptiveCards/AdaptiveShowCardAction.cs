@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace AdaptiveCards
@@ -26,5 +27,10 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveCard), ElementName = AdaptiveCard.TypeName)]
 #endif
         public AdaptiveCard Card { get; set; }
+
+        public override IEnumerable<AdaptiveTypedElement> GetChildren()
+        {
+            return new AdaptiveTypedElement[] { Card };
+        }
     }
 }

@@ -369,5 +369,10 @@ namespace AdaptiveCards
 
             return resourceInformationList;
         }
+
+        public override IEnumerable<AdaptiveTypedElement> GetChildren()
+        {
+            return Body.Union<AdaptiveTypedElement>(Actions).Union<AdaptiveTypedElement>(new AdaptiveTypedElement[] { SelectAction }).Where(i => i != null);
+        }
     }
 }

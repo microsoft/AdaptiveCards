@@ -208,6 +208,8 @@ namespace AdaptiveCards.Rendering.Wpf
             if (card == null) throw new ArgumentNullException(nameof(card));
             RenderedAdaptiveCard renderCard = null;
 
+            card.ResolveData();
+
             void ActionCallback(object sender, AdaptiveActionEventArgs args)
             {
                 renderCard?.InvokeOnAction(args);

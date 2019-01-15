@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards
@@ -44,5 +45,57 @@ namespace AdaptiveCards
         [XmlIgnore]
 #endif
         public IDictionary<string, object> AdditionalProperties { get; set;  } = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+
+        public object Data;
+
+        public virtual IEnumerable<AdaptiveTypedElement> GetChildren()
+        {
+            return new AdaptiveTypedElement[0];
+        }
+
+        public IEnumerable<AdaptiveTypedElement> GetDescendants()
+        {
+            foreach (var c in GetChildren())
+            {
+                yield return c;
+
+                foreach (var d in c.GetDescendants())
+                {
+                    yield return d;
+                }
+            }
+        }
+
+        public void ResolveData()
+        {
+            foreach (var child in GetChildren())
+            {
+                if (child.Data == null)
+                {
+                    child.Data = Data;
+                }
+
+                else if (child.Data is string queryString)
+                {
+                    // TODO: Scope from parent
+                }
+
+                child.ResolveData();
+            }
+
+            var thisProperties = this.GetType().GetTypeInfo().DeclaredProperties;
+            foreach (var p in thisProperties.Where(i => i.PropertyType == typeof(string)))
+            {
+                string pVal = p.GetValue(this) as string;
+                if (pVal != null)
+                {
+                    string newPVal = BindingEvaluator.EvaluateBinding<string>(Data as JObject, pVal);
+                    if (pVal != newPVal)
+                    {
+                        p.SetValue(this, newPVal);
+                    }
+                }
+            }
+        }
     }
 }

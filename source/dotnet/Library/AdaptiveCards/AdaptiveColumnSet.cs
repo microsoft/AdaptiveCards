@@ -38,5 +38,10 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(null)]
         public AdaptiveAction SelectAction { get; set; }
+
+        public override IEnumerable<AdaptiveTypedElement> GetChildren()
+        {
+            return Columns;
+        }
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 
@@ -71,5 +72,10 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(typeof(AdaptiveVerticalContentAlignment), "top")]
         public AdaptiveVerticalContentAlignment VerticalContentAlignment { get; set; }
+
+        public override IEnumerable<AdaptiveTypedElement> GetChildren()
+        {
+            return Items.Union(new AdaptiveTypedElement[] { SelectAction }).Where(i => i != null);
+        }
     }
 }
