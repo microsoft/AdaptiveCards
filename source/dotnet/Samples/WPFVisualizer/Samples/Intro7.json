@@ -1,0 +1,20 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "elements": {
+    "Person": "https://raw.githubusercontent.com/andrewleader/my-adaptive-card-elements/master/elements/Person.json"
+  },
+  "body": [
+    {
+      "type": "Person",
+      "name": "Andrew Leader",
+      "picture": "https://unsplash.it/64?image=883"
+    },
+    {
+      "type": "Person",
+      "name": "Matt Hidinger",
+      "picture": "https://unsplash.it/64?image=669"
+    }
+  ]
+}

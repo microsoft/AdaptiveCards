@@ -1,0 +1,58 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "data": {
+    "people": [
+      {
+        "name": "Andrew"
+      }
+    ]
+  },
+  "elements": {
+    "Person": {
+      "element": {
+        "type": "ColumnSet",
+        "columns": [
+          {
+            "type": "Column",
+            "items": [
+              {
+                "type": "Image",
+                "style": "Person",
+                "url": "{data.picture}",
+                "size": "Small"
+              }
+            ],
+            "width": "auto"
+          },
+          {
+            "type": "Column",
+            "verticalContentAlignment": "Center",
+            "items": [
+              {
+                "type": "TextBlock",
+                "size": "Medium",
+                "weight": "Bolder",
+                "text": "{data.name}"
+              }
+            ],
+            "width": "stretch"
+          }
+        ]
+      }
+    }
+  },
+  "body": [
+    {
+      "type": "Person",
+      "name": "Andrew Leader",
+      "picture": "https://unsplash.it/64?image=883"
+    },
+    {
+      "type": "Person",
+      "name": "Matt Hidinger",
+      "picture": "https://unsplash.it/64?image=669"
+    }
+  ]
+}
