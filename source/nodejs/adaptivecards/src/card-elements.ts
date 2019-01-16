@@ -4146,7 +4146,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 	protected getHasBackground(): boolean {
 		let parentContainer = this.getParentContainer();
 
-		return this.hasExplicitStyle && (parentContainer ? parentContainer.style != this.style : false);
+		return this.hasExplicitStyle && (parentContainer ? parentContainer.getEffectiveStyle() != this.getEffectiveStyle() : false);
 	}
 
 	protected getHasExpandedAction(): boolean {
@@ -4226,6 +4226,18 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 		}
 
 		return renderedElement;
+	}
+
+	getEffectiveStyle(): string {
+		if (!this._style) {
+			let parentContainer = this.getParentContainer();
+
+			if (parentContainer) {
+				return parentContainer.getEffectiveStyle();
+			}
+		}
+
+		return this.style;
 	}
 
 	get style(): string {
