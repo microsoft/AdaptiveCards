@@ -8,6 +8,7 @@
 #include "InputValue.h"
 #include "RenderedAdaptiveCard.h"
 #include "AdaptiveRenderContext.h"
+#include <windows.ui.xaml.shapes.h>
 
 namespace AdaptiveNamespace
 {
@@ -137,15 +138,27 @@ namespace AdaptiveNamespace
                                    _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
 
         template<typename T>
-        void SetImageSource(_In_ T* destination,
-                            _In_ ABI::Windows::UI::Xaml::Media::IImageSource* imageSource,
+        void SetAutoSize(T* destination,
+                         IInspectable* parentElement,
+                         IInspectable* imageContainer,
+                         bool isVisible,
+                         bool imageFiresOpenEvent);
+
+        template<typename T>
+        void SetImageSource(T* destination,
+                            ABI::Windows::UI::Xaml::Media::IImageSource* imageSource,
                             ABI::Windows::UI::Xaml::Media::Stretch stretch = Stretch_UniformToFill);
         template<typename T>
         void SetImageOnUIElement(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl,
-                                 _In_ T* uiElement,
-                                 _In_opt_ ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers* resolvers,
+                                 T* uiElement,
+                                 ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers* resolvers,
+                                 bool isSizeAuto,
+                                 IInspectable* parentElement,
+                                 IInspectable* imageContainer,
+                                 bool isVisible,
                                  _Out_ bool* mustHideElement,
                                  ABI::Windows::UI::Xaml::Media::Stretch stretch = Stretch_UniformToFill);
+
         template<typename T>
         void PopulateImageFromUrlAsync(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl, _In_ T* imageControl);
         void FireAllImagesLoaded();
