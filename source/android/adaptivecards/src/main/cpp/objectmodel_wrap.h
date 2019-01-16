@@ -28,16 +28,18 @@ public:
     virtual void SetSpacing(AdaptiveCards::Spacing const value);
     virtual std::string GetId() const;
     virtual void SetId(std::string const &value);
+    virtual bool GetIsVisible() const;
+    virtual void SetIsVisible(bool const value);
     virtual AdaptiveCards::CardElementType const GetElementType() const;
     virtual std::string Serialize() const;
     virtual Json::Value SerializeToJsonValue() const;
     virtual void GetResourceInformation(std::vector< AdaptiveCards::RemoteResourceInformation > &resourceUris);
 public:
     bool swig_overrides(int n) {
-      return (n < 12 ? swig_override[n] : false);
+      return (n < 14 ? swig_override[n] : false);
     }
 protected:
-    Swig::BoolArray<12> swig_override;
+    Swig::BoolArray<14> swig_override;
 };
 
 class SwigDirector_BaseActionElement : public AdaptiveCards::BaseActionElement, public Swig::Director {

@@ -46,58 +46,55 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT RenderedAdaptiveCard::get_OriginatingCard(IAdaptiveCard** value)
+    HRESULT RenderedAdaptiveCard::get_OriginatingCard(_COM_Outptr_ IAdaptiveCard** value)
     {
         return m_originatingCard.CopyTo(value);
     }
 
-    _Use_decl_annotations_ HRESULT RenderedAdaptiveCard::get_FrameworkElement(IFrameworkElement** value)
+    HRESULT RenderedAdaptiveCard::get_FrameworkElement(_COM_Outptr_ IFrameworkElement** value)
     {
         return m_frameworkElement.CopyTo(value);
     }
 
-    _Use_decl_annotations_ HRESULT RenderedAdaptiveCard::get_UserInputs(ABI::AdaptiveNamespace::IAdaptiveInputs** value)
+    HRESULT RenderedAdaptiveCard::get_UserInputs(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveInputs** value)
     {
         return m_inputs.CopyTo(value);
     }
 
-    _Use_decl_annotations_ HRESULT RenderedAdaptiveCard::add_Action(
-        ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*, ABI::AdaptiveNamespace::AdaptiveActionEventArgs*>* handler,
-        EventRegistrationToken* token)
+    HRESULT RenderedAdaptiveCard::add_Action(
+        _In_ ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*, ABI::AdaptiveNamespace::AdaptiveActionEventArgs*>* handler,
+        _Out_ EventRegistrationToken* token)
     {
         return m_actionEvents->Add(handler, token);
     }
 
-    _Use_decl_annotations_ HRESULT RenderedAdaptiveCard::remove_Action(EventRegistrationToken token)
-    {
-        return m_actionEvents->Remove(token);
-    }
+    HRESULT RenderedAdaptiveCard::remove_Action(EventRegistrationToken token) { return m_actionEvents->Remove(token); }
 
-    _Use_decl_annotations_ HRESULT RenderedAdaptiveCard::add_MediaClicked(
-        ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*, ABI::AdaptiveNamespace::AdaptiveMediaEventArgs*>* handler,
-        EventRegistrationToken* token)
+    HRESULT RenderedAdaptiveCard::add_MediaClicked(
+        _In_ ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*, ABI::AdaptiveNamespace::AdaptiveMediaEventArgs*>* handler,
+        _Out_ EventRegistrationToken* token)
     {
         return m_mediaClickedEvents->Add(handler, token);
     }
 
-    _Use_decl_annotations_ HRESULT RenderedAdaptiveCard::remove_MediaClicked(EventRegistrationToken token)
+    HRESULT RenderedAdaptiveCard::remove_MediaClicked(EventRegistrationToken token)
     {
         return m_mediaClickedEvents->Remove(token);
     }
 
-    _Use_decl_annotations_ HRESULT RenderedAdaptiveCard::get_Errors(
-        ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveError*>** value)
+    HRESULT RenderedAdaptiveCard::get_Errors(
+        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveError*>** value)
     {
         return m_errors.CopyTo(value);
     }
 
-    _Use_decl_annotations_ HRESULT RenderedAdaptiveCard::get_Warnings(
-        ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>** value)
+    HRESULT RenderedAdaptiveCard::get_Warnings(
+        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>** value)
     {
         return m_warnings.CopyTo(value);
     }
 
-    HRESULT RenderedAdaptiveCard::SendActionEvent(IAdaptiveActionElement* actionElement)
+    HRESULT RenderedAdaptiveCard::SendActionEvent(_In_ IAdaptiveActionElement* actionElement)
     {
         // get the inputElements in Json form.
         ComPtr<IAdaptiveInputs> gatheredInputs;
@@ -108,7 +105,7 @@ namespace AdaptiveNamespace
         return m_actionEvents->InvokeAll(this, eventArgs.Get());
     }
 
-    HRESULT RenderedAdaptiveCard::SendMediaClickedEvent(IAdaptiveMedia* mediaElement)
+    HRESULT RenderedAdaptiveCard::SendMediaClickedEvent(_In_ IAdaptiveMedia* mediaElement)
     {
         ComPtr<IAdaptiveMediaEventArgs> eventArgs;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveMediaEventArgs>(&eventArgs, mediaElement));
@@ -116,17 +113,17 @@ namespace AdaptiveNamespace
         return m_mediaClickedEvents->InvokeAll(this, eventArgs.Get());
     }
 
-    void RenderedAdaptiveCard::SetFrameworkElement(ABI::Windows::UI::Xaml::IFrameworkElement* value)
+    void RenderedAdaptiveCard::SetFrameworkElement(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* value)
     {
         m_frameworkElement = value;
     }
 
-    void RenderedAdaptiveCard::SetOriginatingCard(ABI::AdaptiveNamespace::IAdaptiveCard* value)
+    void RenderedAdaptiveCard::SetOriginatingCard(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* value)
     {
         m_originatingCard = value;
     }
 
-    HRESULT RenderedAdaptiveCard::AddInputValue(IAdaptiveInputValue* inputItem)
+    HRESULT RenderedAdaptiveCard::AddInputValue(_In_ IAdaptiveInputValue* inputItem)
     {
         return m_inputs->AddInputValue(inputItem);
     }

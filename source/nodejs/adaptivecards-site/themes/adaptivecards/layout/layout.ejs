@@ -1,13 +1,13 @@
-<%- partial('_partial/head') %>
+<%- partial('_partial/head', null, {cache: false}) %>
 
 <body>
 
 <%- partial('_partial/header', null, {cache: false}) %>
 
-<div id="mainContent" class="main-container uhf-container">
+<div id="mainContent" class="main-container <% if (!page.hideBreadcrumb) { %>uhf-container<% } %>">
   <%- body %>
 </div>
-        
+
 <%- partial('_partial/footer', null, {cache: false}) %>
 
 </body>

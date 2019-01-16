@@ -13,7 +13,7 @@ namespace AdaptiveNamespace
     public:
         HRESULT RuntimeClassInitialize() noexcept;
 
-        HRESULT RuntimeClassInitialize(AdaptiveNamespace::RenderedAdaptiveCard* renderResult) noexcept;
+        HRESULT RuntimeClassInitialize(_In_ AdaptiveNamespace::RenderedAdaptiveCard* renderResult) noexcept;
 
         IFACEMETHODIMP SendMediaClickedEvent(_In_ ABI::AdaptiveNamespace::IAdaptiveMedia* mediaElement);
 

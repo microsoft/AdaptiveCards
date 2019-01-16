@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
+using System.Xml;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -25,10 +27,11 @@ namespace AdaptiveCards.Rendering.Wpf
 
             foreach (var choice in input.Choices)
             {
+
                 if (input.IsMultiSelect == true)
                 {
                     var uiCheckbox = new CheckBox();
-                    uiCheckbox.Content = choice.Title;
+                    SetContent(uiCheckbox, choice.Title, input.Wrap);
                     uiCheckbox.IsChecked = chosen.Contains(choice.Value);
                     uiCheckbox.DataContext = choice;
                     uiCheckbox.Style = context.GetStyle("Adaptive.Input.AdaptiveChoiceSetInput.CheckBox");
@@ -40,7 +43,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     {
                         var uiComboItem = new ComboBoxItem();
                         uiComboItem.Style = context.GetStyle("Adaptive.Input.AdaptiveChoiceSetInput.ComboBoxItem");
-                        uiComboItem.Content = choice.Title;
+                        SetContent(uiComboItem, choice.Title, input.Wrap);
                         uiComboItem.DataContext = choice;
                         uiComboBox.Items.Add(uiComboItem);
 
@@ -53,7 +56,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     else
                     {
                         var uiRadio = new RadioButton();
-                        uiRadio.Content = choice.Title;
+                        SetContent(uiRadio, choice.Title, input.Wrap);
 
                         // When isMultiSelect is false, only 1 specified value is accepted.
                         // Otherwise, don't set any option
@@ -118,6 +121,17 @@ namespace AdaptiveCards.Rendering.Wpf
                 Grid.SetRow(uiChoices, 1);
                 uiGrid.Children.Add(uiChoices);
                 return uiGrid;
+            }
+        }
+        public static void SetContent(ContentControl uiControl, string text, bool wrap)
+        { 
+            if (wrap)
+            {
+                uiControl.Content = new TextBlock { Text = text, TextWrapping = TextWrapping.Wrap };
+            }
+            else
+            {
+                uiControl.Content = text;
             }
         }
     }

@@ -17,10 +17,10 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize(RemoteResourceInformation& uriInformation);
 
         // IAdaptiveRemoteResourceInformation
-        IFACEMETHODIMP get_Url(_Out_ HSTRING* url);
+        IFACEMETHODIMP get_Url(_Outptr_ HSTRING* url);
         IFACEMETHODIMP put_Url(_In_ HSTRING url);
 
-        IFACEMETHODIMP get_MimeType(_Out_ HSTRING* text);
+        IFACEMETHODIMP get_MimeType(_Outptr_ HSTRING* text);
         IFACEMETHODIMP put_MimeType(_In_ HSTRING text);
 
     private:

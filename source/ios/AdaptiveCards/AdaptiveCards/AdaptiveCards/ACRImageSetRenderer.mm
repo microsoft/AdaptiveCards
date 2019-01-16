@@ -12,6 +12,7 @@
 #import "ACOBaseCardElementPrivate.h"
 #import "ImageSet.h"
 #import "SharedAdaptiveCard.h"
+#import "Util.h"
 
 using namespace AdaptiveCards;
 
@@ -61,6 +62,8 @@ using namespace AdaptiveCards;
                                  multiplier:1.0
                                    constant:0]];
     [view setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+
+    configVisibility(view, elem);
 
     return view;
 }

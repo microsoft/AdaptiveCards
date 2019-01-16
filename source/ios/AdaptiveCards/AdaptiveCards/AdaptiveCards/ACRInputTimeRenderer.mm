@@ -9,6 +9,7 @@
 #import "ACRDateTextField.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "Util.h"
 
 @implementation ACRInputTimeRenderer
 
@@ -33,6 +34,7 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<BaseInputElement> timeInput = std::dynamic_pointer_cast<BaseInputElement>(elem);
     ACRDateTextField *field = [[ACRDateTextField alloc] initWithTimeDateInput:timeInput dateStyle:NSDateFormatterNoStyle];
+    UIView *renderedview = field;
 
     if(viewGroup)
     {
@@ -44,8 +46,8 @@
             UIView *blankTrailingSpace = [[UIView alloc] init];
             [inputContainer addArrangedSubview:blankTrailingSpace];
             [inputContainer adjustHuggingForLastElement];
-
             [(UIStackView *)viewGroup addArrangedSubview: inputContainer];
+            renderedview = inputContainer;
         } else {
             [(UIStackView *)viewGroup addArrangedSubview: field];
         }
@@ -53,7 +55,9 @@
 
     [inputs addObject:field];
 
-    return field;
+    configVisibility(renderedview, elem);
+
+    return renderedview;
 }
 
 @end

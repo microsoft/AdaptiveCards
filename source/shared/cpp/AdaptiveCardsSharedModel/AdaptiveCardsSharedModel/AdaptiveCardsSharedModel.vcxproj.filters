@@ -153,6 +153,12 @@
     <ClCompile Include="..\..\ObjectModel\ParseContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\ObjectModel\ToggleVisibilityAction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ObjectModel\ToggleVisibilityTarget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\ObjectModel\AdaptiveCardParseException.h">
@@ -294,6 +300,12 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\ObjectModel\ParseContext.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\ToggleVisibilityAction.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ObjectModel\ToggleVisibilityTarget.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

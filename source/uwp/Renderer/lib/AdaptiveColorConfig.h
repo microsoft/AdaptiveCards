@@ -16,10 +16,10 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize(ColorConfig colorConfig) noexcept;
 
         IFACEMETHODIMP get_Default(_Out_ ABI::Windows::UI::Color* value);
-        IFACEMETHODIMP put_Default(_In_ ABI::Windows::UI::Color value);
+        IFACEMETHODIMP put_Default(ABI::Windows::UI::Color value);
 
         IFACEMETHODIMP get_Subtle(_Out_ ABI::Windows::UI::Color* value);
-        IFACEMETHODIMP put_Subtle(_In_ ABI::Windows::UI::Color value);
+        IFACEMETHODIMP put_Subtle(ABI::Windows::UI::Color value);
 
     private:
         ABI::Windows::UI::Color m_defaultColor;

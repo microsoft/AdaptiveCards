@@ -13,6 +13,7 @@ typedef NS_ENUM(NSInteger, ACRActionType) {
     ACRShowCard = 1,
     ACRSubmit,
     ACROpenUrl,
+    ACRToggleVisibility,
 };
 
 typedef NS_ENUM(NSInteger, ACRIconPlacement) {

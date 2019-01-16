@@ -14,7 +14,7 @@ namespace AdaptiveNamespace
         AdaptiveHostConfigParseResult();
 
         HRESULT RuntimeClassInitialize();
-        HRESULT RuntimeClassInitialize(ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig);
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig);
 
         // IAdaptiveHostConfigParseResult
         IFACEMETHODIMP get_HostConfig(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveHostConfig** value);

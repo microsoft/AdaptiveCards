@@ -16,8 +16,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveShowCardAction::RuntimeClassInitialize(
-        const std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction>& sharedShowCardAction) try
+    HRESULT AdaptiveShowCardAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction>& sharedShowCardAction) try
     {
         if (sharedShowCardAction == nullptr)
         {
@@ -31,18 +30,18 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    IFACEMETHODIMP AdaptiveShowCardAction::get_Card(ABI::AdaptiveNamespace::IAdaptiveCard** card)
+    IFACEMETHODIMP AdaptiveShowCardAction::get_Card(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCard** card)
     {
         return m_card.CopyTo(card);
     }
 
-    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(ABI::AdaptiveNamespace::IAdaptiveCard* card)
+    IFACEMETHODIMP AdaptiveShowCardAction::put_Card(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* card)
     {
         m_card = card;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveShowCardAction::get_ActionType(ABI::AdaptiveNamespace::ActionType* actionType)
+    HRESULT AdaptiveShowCardAction::get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType)
     {
         *actionType = ABI::AdaptiveNamespace::ActionType::ShowCard;
         return S_OK;

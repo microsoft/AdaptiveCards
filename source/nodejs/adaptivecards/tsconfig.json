@@ -1,16 +1,7 @@
 {
+	"extends": "../tsconfig.json",
 	"compilerOptions": {
-		"module": "commonjs",
-		"target": "es5",
-		"lib": [
-			"dom",
-			"es2015"
-		],
-		"outDir": "lib",
-		"moduleResolution": "node",
-		"noImplicitAny": false,
-		"sourceMap": true,
-		"declaration": true
+		"outDir": "./lib"
 	},
 	"files": ["./src/adaptivecards.ts"]
 }

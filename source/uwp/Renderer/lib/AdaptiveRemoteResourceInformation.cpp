@@ -18,7 +18,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveRemoteResourceInformation::RuntimeClassInitialize(RemoteResourceInformation& uriInformation) try
+    HRESULT AdaptiveRemoteResourceInformation::RuntimeClassInitialize(RemoteResourceInformation& uriInformation) try
     {
         RETURN_IF_FAILED(UTF8ToHString(uriInformation.url, m_url.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(uriInformation.mimeType, m_mimeType.GetAddressOf()));
@@ -27,21 +27,14 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveRemoteResourceInformation::get_Url(HSTRING* url)
-    {
-        return m_url.CopyTo(url);
-    }
+    HRESULT AdaptiveRemoteResourceInformation::get_Url(_Outptr_ HSTRING* url) { return m_url.CopyTo(url); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveRemoteResourceInformation::put_Url(HSTRING url) { return m_url.Set(url); }
+    HRESULT AdaptiveRemoteResourceInformation::put_Url(_In_ HSTRING url) { return m_url.Set(url); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveRemoteResourceInformation::get_MimeType(HSTRING* mimeType)
+    HRESULT AdaptiveRemoteResourceInformation::get_MimeType(_Outptr_ HSTRING* mimeType)
     {
         return m_mimeType.CopyTo(mimeType);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveRemoteResourceInformation::put_MimeType(HSTRING mimeType)
-    {
-        return m_mimeType.Set(mimeType);
-    }
-
+    HRESULT AdaptiveRemoteResourceInformation::put_MimeType(_In_ HSTRING mimeType) { return m_mimeType.Set(mimeType); }
 }

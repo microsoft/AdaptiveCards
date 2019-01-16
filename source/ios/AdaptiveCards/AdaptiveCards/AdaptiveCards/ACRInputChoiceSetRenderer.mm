@@ -12,6 +12,7 @@
 #import "ACRChoiceSetViewDataSourceCompactStyle.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "Util.h"
 
 @implementation ACRInputChoiceSetRenderer
 
@@ -74,6 +75,8 @@
     } else {
         [viewGroup addArrangedSubview:choiceSetView];
     }
+
+    configVisibility(choiceSetView, elem);
 
     return choiceSetView;
 }

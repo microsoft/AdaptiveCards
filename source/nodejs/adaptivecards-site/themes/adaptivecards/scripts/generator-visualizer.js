@@ -9,7 +9,8 @@ hexo.extend.generator.register("generator-visualizer", function (locals) {
         path: "visualizer/index.html",
         layout: "visualizer",
         data: {
-            title: "Visualizer"
+			title: "Visualizer",
+			hideBreadcrumb: true
         }
     };
 
