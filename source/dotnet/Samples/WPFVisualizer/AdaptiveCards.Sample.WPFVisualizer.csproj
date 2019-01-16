@@ -157,6 +157,10 @@
     <Content Include="Samples\PersonOrgInfo-remote.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Samples\SportsScore.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Samples\.editorconfig" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

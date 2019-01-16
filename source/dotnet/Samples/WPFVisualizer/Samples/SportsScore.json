@@ -1,0 +1,98 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "data": {
+    "date": "Dec 4",
+    "status": "Final",
+    "homeTeam": {
+      "name": "SHADES",
+      "logo": "http://adaptivecards.io/content/cats/3.png",
+      "score": 7
+    },
+    "awayTeam": {
+      "name": "SKINS",
+      "logo": "http://adaptivecards.io/content/cats/2.png",
+      "score": 40
+    }
+  },
+  "elements": {
+    "Team": {
+      "element": {
+        "type": "Container",
+        "items": [
+          {
+            "type": "Image",
+            "url": "{data.team.logo}",
+            "size": "medium"
+          },
+          {
+            "type": "TextBlock",
+            "text": "{data.team.name}",
+            "horizontalAlignment": "center",
+            "weight": "bolder"
+          }
+        ]
+      }
+    }
+  },
+  "body": [
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "type": "Column",
+              "width": "auto",
+              "items": [
+                {
+                  "type": "Team",
+                  "team": "{data.homeTeam}"
+                }
+              ]
+            },
+            {
+              "type": "Column",
+              "width": "stretch",
+              "separator": true,
+              "spacing": "medium",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "{data.date}",
+                  "horizontalAlignment": "center"
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "{data.status}",
+                  "spacing": "none",
+                  "horizontalAlignment": "center"
+                },
+                {
+                  "type": "TextBlock",
+                  "text": "{data.homeTeam.score} - {data.awayTeam.score}",
+                  "size": "extraLarge",
+                  "horizontalAlignment": "center"
+                }
+              ]
+            },
+            {
+              "type": "Column",
+              "width": "auto",
+              "separator": true,
+              "spacing": "medium",
+              "items": [
+                {
+                  "type": "Team",
+                  "team": "{data.awayTeam}"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
