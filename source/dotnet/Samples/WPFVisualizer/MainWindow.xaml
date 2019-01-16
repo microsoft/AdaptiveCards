@@ -33,6 +33,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="5"/>
             <ColumnDefinition Width="*"/>
@@ -53,13 +54,18 @@
             <Button Name="toggleOptions" Content="Edit" Margin="4" Click="toggleOptions_Click" HorizontalAlignment="Right"/>
         </StackPanel>
 
+        <ListBox
+            x:Name="listBoxSamples"
+            Grid.Row="1"
+            SelectionChanged="listBoxSamples_SelectionChanged"/>
+
         <!--<TextBox Grid.Row="1" AcceptsReturn="True" AcceptsTab="True" Name="textBox" TextChanged="textBox_TextChanged"></TextBox>-->
-        <avalon:TextEditor Grid.Row="1" Name="textBox" SyntaxHighlighting="Json" FontFamily="Consolas" FontSize="10pt"
+        <avalon:TextEditor Grid.Row="1" Grid.Column="1" Name="textBox" SyntaxHighlighting="Json" FontFamily="Consolas" FontSize="10pt"
                             ShowLineNumbers="true" TextChanged="textBox_TextChanged"/>
 
-        <GridSplitter Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>
+        <GridSplitter Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>
 
-        <Grid Grid.Row="1" Grid.Column="2" Background="LightGray">
+        <Grid Grid.Row="1" Grid.Column="3" Background="LightGray">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="2*"/>
@@ -79,19 +85,19 @@
             </Grid>
         </Grid>
 
-        <GridSplitter Grid.Row="1" Grid.Column="3" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>
+        <GridSplitter Grid.Row="1" Grid.Column="4" HorizontalAlignment="Stretch" ResizeDirection="Columns"/>
 
 
-        <GridSplitter Grid.Row="1" Grid.Column="4" VerticalAlignment="Stretch" ResizeDirection="Columns" Name="optionsSplitter" />
+        <GridSplitter Grid.Row="1" Grid.Column="5" VerticalAlignment="Stretch" ResizeDirection="Columns" Name="optionsSplitter" />
 
         <!--<avalon:TextEditor Grid.Row="1" Grid.Column="5" Name="options" SyntaxHighlighting="Json" FontFamily="Consolas" FontSize="10pt"
                             ShowLineNumbers="true" TextChanged="options_TextChanged" Visibility="Collapsed"/>-->
-        <xctk:PropertyGrid Grid.Row="1" Grid.Column="4"  Name="hostConfigEditor" PropertyValueChanged="HostConfigEditor_OnPropertyValueChanged"  Visibility="Visible" >
+        <xctk:PropertyGrid Grid.Row="1" Grid.Column="5"  Name="hostConfigEditor" PropertyValueChanged="HostConfigEditor_OnPropertyValueChanged"  Visibility="Visible" >
         </xctk:PropertyGrid>
 
-        <StackPanel Grid.Row="2" Grid.Column="0" Name="cardError" />
+        <StackPanel Grid.Row="2" Grid.Column="1" Name="cardError" />
 
-        <StackPanel Grid.Row="2" Grid.Column="4" Name="hostConfigerror" />
+        <StackPanel Grid.Row="2" Grid.Column="5" Name="hostConfigerror" />
 
     </Grid>
 </Window>

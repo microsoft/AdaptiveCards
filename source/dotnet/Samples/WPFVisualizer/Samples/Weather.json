@@ -1,0 +1,139 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"data": {
+		"current": {
+			"day": "Monday, April 1",
+			"high": 63,
+			"low": 42,
+			"rain": 20,
+			"wind": {
+				"speed": 5,
+				"direction": "NE"
+			},
+			"icon": "http://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png"
+		},
+		"forecast": [
+			{
+				"dayShort": "Fri",
+				"dayFull": "Friday",
+				"high": 62,
+				"low": 52,
+				"icon": "http://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png"
+			},
+			{
+				"dayShort": "Sat",
+				"dayFull": "Saturday",
+				"high": 60,
+				"low": 48,
+				"icon": "http://messagecardplayground.azurewebsites.net/assets/Drizzle-Square.png"
+			},
+			{
+				"dayShort": "Sun",
+				"dayFull": "Sunday",
+				"high": 59,
+				"low": 49,
+				"icon": "http://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png"
+			},
+			{
+				"dayShort": "Mon",
+				"dayFull": "Monday",
+				"high": 64,
+				"low": 51,
+				"icon": "http://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png"
+			}
+		]
+	},
+	"body": [
+		{
+			"type": "ColumnSet",
+			"data": "{data.current}",
+			"columns": [
+				{
+					"type": "Column",
+					"width": "35",
+					"items": [
+						{
+							"type": "Image",
+							"url": "{data.icon}",
+							"size": "stretch"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": "65",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "{data.day}",
+							"weight": "bolder",
+							"size": "large"
+						},
+						{
+							"type": "TextBlock",
+							"text": "{data.high} / {data.low}",
+							"size": "medium",
+							"spacing": "none"
+						},
+						{
+							"type": "TextBlock",
+							"isSubtle": true,
+							"text": "{data.rain}% chance of rain",
+							"spacing": "none"
+						},
+						{
+							"type": "TextBlock",
+							"isSubtle": true,
+							"text": "Winds {data.wind.speed} mph {data.wind.direction}",
+							"spacing": "none"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"repeat": "{data.forecast}",
+					"width": "20",
+					"items": [
+						{
+							"type": "TextBlock",
+							"horizontalAlignment": "center",
+							"wrap": false,
+							"text": "{data.dayShort}"
+						},
+						{
+							"type": "Image",
+							"size": "auto",
+							"url": "{data.icon}"
+						},
+						{
+							"type": "TextBlock",
+							"horizontalAlignment": "center",
+							"wrap": false,
+							"text": "{data.high}"
+						},
+						{
+							"type": "TextBlock",
+							"horizontalAlignment": "center",
+							"isSubtle": true,
+							"wrap": false,
+							"text": "{data.low}",
+							"spacing": "none"
+						}
+					],
+					"selectAction": {
+						"type": "Action.OpenUrl",
+						"title": "View {data.dayFull}",
+						"url": "http://www.microsoft.com"
+					}
+				}
+			]
+		}
+	]
+}

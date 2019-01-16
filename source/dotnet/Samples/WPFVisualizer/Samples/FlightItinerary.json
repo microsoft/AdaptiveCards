@@ -1,0 +1,191 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.0",
+	"type": "AdaptiveCard",
+	"data": {
+		"passengers": [
+			{
+				"name": "Sarah Hum",
+				"seat": "14A"
+			},
+			{
+				"name": "Jeremy Goldberg",
+				"seat": "14B"
+			},
+			{
+				"name": "Evan Litvak",
+				"seat": "14C"
+			}
+		],
+		"departingFlight": {
+			"stops": 2,
+			"departureTime": "2017-02-14T06:30:00Z",
+			"departureCity": {
+				"name": "San Francisco",
+				"shortName": "SFO"
+			},
+			"arrivalCity": {
+				"name": "Amsterdam",
+				"shortName": "AMS"
+			}
+		},
+		"returningFlight": {
+			"stops": 0,
+			"departureTime": "2017-02-20T02:50:00Z",
+			"departureCity": {
+				"name": "Amsterdam",
+				"shortName": "AMS"
+			},
+			"arrivalCity": {
+				"name": "San Francisco",
+				"shortName": "SFO"
+			}
+		},
+		"totalCost": "$4,032.54"
+	},
+	"elements": {
+		"FlightInfo": {
+			"element": {
+				"type": "Container",
+				"data": "{data.flightInfo}",
+				"items": [
+					{
+						"type": "TextBlock",
+						"text": "{data.stops} Stops",
+						"weight": "bolder",
+						"spacing": "medium"
+					},
+					{
+						"type": "TextBlock",
+						"text": "{{DATE({data.departureTime}, SHORT)}} {{TIME({data.departureTime})}}",
+						"weight": "bolder",
+						"spacing": "none"
+					},
+					{
+						"type": "ColumnSet",
+						"separator": true,
+						"columns": [
+							{
+								"type": "Column",
+								"width": 1,
+								"items": [
+									{
+										"type": "TextBlock",
+										"text": "{data.departureCity.name}",
+										"isSubtle": true
+									},
+									{
+										"type": "TextBlock",
+										"size": "extraLarge",
+										"color": "accent",
+										"text": "{data.departureCity.shortName}",
+										"spacing": "none"
+									}
+								]
+							},
+							{
+								"type": "Column",
+								"width": "auto",
+								"items": [
+									{
+										"type": "TextBlock",
+										"text": " "
+									},
+									{
+										"type": "Image",
+										"url": "http://adaptivecards.io/content/airplane.png",
+										"size": "small",
+										"spacing": "none"
+									}
+								]
+							},
+							{
+								"type": "Column",
+								"width": 1,
+								"items": [
+									{
+										"type": "TextBlock",
+										"horizontalAlignment": "right",
+										"text": "{data.arrivalCity.name}",
+										"isSubtle": true
+									},
+									{
+										"type": "TextBlock",
+										"horizontalAlignment": "right",
+										"size": "extraLarge",
+										"color": "accent",
+										"text": "{data.arrivalCity.shortName}",
+										"spacing": "none"
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		}
+	},
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Passengers",
+			"weight": "bolder",
+			"isSubtle": false
+		},
+		{
+			"type": "Container",
+			"separator": true,
+			"items": [
+				{
+					"type": "TextBlock",
+					"repeat": "{data.passengers}",
+					"text": "{data.name}",
+					"spacing": "none"
+				}
+			]
+		},
+		{
+			"type": "FlightInfo",
+			"flightInfo": "{data.departingFlight}"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Return info"
+		},
+		{
+			"type": "FlightInfo",
+			"flightInfo": "{data.returningFlight}"
+		},
+		{
+			"type": "ColumnSet",
+			"spacing": "medium",
+			"columns": [
+				{
+					"type": "Column",
+					"width": "1",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Total",
+							"size": "medium",
+							"isSubtle": true
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": 1,
+					"items": [
+						{
+							"type": "TextBlock",
+							"horizontalAlignment": "right",
+							"text": "{data.totalCost}",
+							"size": "medium",
+							"weight": "bolder"
+						}
+					]
+				}
+			]
+		}
+	]
+}
