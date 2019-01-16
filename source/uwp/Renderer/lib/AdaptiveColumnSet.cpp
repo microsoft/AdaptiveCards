@@ -16,7 +16,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    AdaptiveColumnSet::AdaptiveColumnSet() { m_columns = Microsoft::WRL::Make<Vector<IAdaptiveColumn*>>(); }
+    AdaptiveColumnSet::AdaptiveColumnSet() { m_columns = Microsoft::WRL::Make<Vector<ABI::AdaptiveNamespace::AdaptiveColumn*>>(); }
 
     HRESULT AdaptiveColumnSet::RuntimeClassInitialize() noexcept try
     {
@@ -41,7 +41,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    IFACEMETHODIMP AdaptiveColumnSet::get_Columns(_COM_Outptr_ IVector<IAdaptiveColumn*>** columns)
+    IFACEMETHODIMP AdaptiveColumnSet::get_Columns(_COM_Outptr_ IVector<ABI::AdaptiveNamespace::AdaptiveColumn*>** columns)
     {
         return m_columns.CopyTo(columns);
     }
@@ -75,7 +75,7 @@ namespace AdaptiveNamespace
             columnSet->SetSelectAction(sharedAction);
         }
 
-        XamlHelpers::IterateOverVector<IAdaptiveColumn>(m_columns.Get(), [&](IAdaptiveColumn* column) {
+        XamlHelpers::IterateOverVector<ABI::AdaptiveNamespace::AdaptiveColumn, IAdaptiveColumn>(m_columns.Get(), [&](IAdaptiveColumn* column) {
             ComPtr<AdaptiveNamespace::AdaptiveColumn> columnImpl = PeekInnards<AdaptiveNamespace::AdaptiveColumn>(column);
 
             std::shared_ptr<BaseCardElement> sharedColumnBaseElement;
