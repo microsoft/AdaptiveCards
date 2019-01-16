@@ -151,7 +151,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Json::FastWriter fastWriter;
             std::string jsonString = fastWriter.write(value);
 
-            std::string expected {R"({"data":{"id":"1234567890"}}
+            std::string expected {R"({"data":{"id":"1234567890"},"title":"Submit","type":"Alert"}
 )"};
             Assert::AreEqual(expected, jsonString);
         }
