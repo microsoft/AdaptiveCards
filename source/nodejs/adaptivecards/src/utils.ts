@@ -32,19 +32,17 @@ export function setEnumProperty(enumType: { [s: number]: string }, target: any, 
 }
 
 export function parseBoolProperty(value: any, defaultValue: boolean): boolean {
-	if (value) {
-		if (typeof value === "boolean") {
-			return value;
-		}
-		else if (typeof value === "string") {
-			switch (value.toLowerCase()) {
-				case "true":
-					return true;
-				case "false":
-					return false;
-				default:
-					return defaultValue;
-			}
+	if (typeof value === "boolean") {
+		return value;
+	}
+	else if (typeof value === "string") {
+		switch (value.toLowerCase()) {
+			case "true":
+				return true;
+			case "false":
+				return false;
+			default:
+				return defaultValue;
 		}
 	}
 

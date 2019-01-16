@@ -387,6 +387,7 @@ export abstract class CardElement implements ICardObject {
 
 		this.requires.parse(json["requires"], errors);
 		this.id = json["id"];
+		this.isVisible = Utils.parseBoolProperty(json["isVisible"], this.isVisible);
 		this.speak = json["speak"];
 		this.horizontalAlignment = Utils.getEnumValueOrDefault(Enums.HorizontalAlignment, json["horizontalAlignment"], null);
 
@@ -1689,8 +1690,8 @@ export abstract class CardElementContainer extends CardElement {
 
 	abstract getItemCount(): number;
 	abstract getItemAt(index: number): CardElement;
-	abstract getFirstRenderedItem(): CardElement;
-	abstract getLastRenderedItem(): CardElement;
+	abstract getFirstVisibleRenderedItem(): CardElement;
+	abstract getLastVisibleRenderedItem(): CardElement;
 	abstract removeItem(item: CardElement): boolean;
 
 	parse(json: any, errors?: Array<HostConfig.IValidationError>) {
@@ -1845,11 +1846,11 @@ export class ImageSet extends CardElementContainer {
 		return this._images[index];
 	}
 
-	getFirstRenderedItem(): CardElement {
+	getFirstVisibleRenderedItem(): CardElement {
 		return this._images && this._images.length > 0 ? this._images[0] : null;
 	}
 
-	getLastRenderedItem(): CardElement {
+	getLastVisibleRenderedItem(): CardElement {
 		return this._images && this._images.length > 0 ? this._images[this._images.length - 1] : null;
 	}
 
@@ -3221,6 +3222,60 @@ export class OpenUrlAction extends Action {
 	}
 }
 
+export class ToggleVisibilityAction extends Action {
+    targetElements = {}
+
+    getJsonTypeName(): string {
+        return "Action.ToggleVisibility";
+    }
+
+    execute() {
+		for (let elementId of Object.keys(this.targetElements)) {
+			let targetElement = this.parent.getRootElement().getElementById(elementId);
+
+			if (targetElement) {
+				if (typeof this.targetElements[elementId] === "boolean") {
+					targetElement.isVisible = this.targetElements[elementId];
+				} 
+				else {
+                    targetElement.isVisible = !targetElement.isVisible;
+				}
+			}
+		}
+    }
+
+    parse(json: any) {
+		super.parse(json);
+		
+		this.targetElements = {};
+
+		let jsonTargetElements = json["targetElements"];
+
+		if (jsonTargetElements && Array.isArray(jsonTargetElements)) {
+			for (let item of jsonTargetElements) {
+				if (typeof item === "string") {
+					this.targetElements[item] = undefined;
+				}
+				else if (typeof item === "object") {
+					let jsonElementId = item["elementId"];
+
+					if (jsonElementId && typeof jsonElementId === "string") {
+						this.targetElements[jsonElementId] = Utils.parseBoolProperty(item["isVisible"], undefined);
+					}
+				}
+			}
+		}
+	}
+	
+	addTargetElement(elementId: string, isVisible: boolean = undefined) {
+		this.targetElements[elementId] = isVisible;
+	}
+
+	removeTargetElement(elementId) {
+		delete this.targetElements[elementId];
+	}
+}
+
 export class HttpHeader {
 	private _value = new Shared.StringWithSubstitutions();
 
@@ -4074,13 +4129,13 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 		}
 
 		if (!this.isDesignMode()) {
-			let item = this.getFirstRenderedItem();
+			let item = this.getFirstVisibleRenderedItem();
 
 			if (item && item.isBleedingAtTop()) {
 				this.renderedElement.style.paddingTop = "0px";
 			}
 
-			item = this.getLastRenderedItem();
+			item = this.getLastVisibleRenderedItem();
 
 			if (this.getHasExpandedAction() || (item && item.isBleedingAtBottom())) {
 				this.renderedElement.style.paddingBottom = "0px";
@@ -4500,22 +4555,28 @@ export class Container extends StylableCardElementContainer {
 		return this._items[index];
 	}
 
-	getFirstRenderedItem(): CardElement {
+	getFirstVisibleRenderedItem(): CardElement {
 		if (this.renderedElement && this._renderedItems && this._renderedItems.length > 0) {
-			return this._renderedItems[0];
+			for (let item of this._renderedItems) {
+				if (item.isVisible) {
+					return item;
+				}
+			};
 		}
-		else {
-			return null;
-		}
+		
+		return null;
 	}
 
-	getLastRenderedItem(): CardElement {
+	getLastVisibleRenderedItem(): CardElement {
 		if (this.renderedElement && this._renderedItems && this._renderedItems.length > 0) {
-			return this._renderedItems[this._renderedItems.length - 1];
+			for (let i = this._renderedItems.length - 1; i >= 0; i--) {
+				if (this._renderedItems[i].isVisible) {
+					return this._renderedItems[i];
+				}
+			}
 		}
-		else {
-			return null;
-		}
+
+		return null;
 	}
 
 	getJsonTypeName(): string {
@@ -4554,13 +4615,13 @@ export class Container extends StylableCardElementContainer {
 	}
 
 	isBleedingAtTop(): boolean {
-		let firstRenderedItem = this.getFirstRenderedItem();
+		let firstRenderedItem = this.getFirstVisibleRenderedItem();
 
 		return this.isBleeding() || (firstRenderedItem ? firstRenderedItem.isBleedingAtTop() : false);
 	}
 
 	isBleedingAtBottom(): boolean {
-		let getLastRenderedItem = this.getLastRenderedItem();
+		let getLastRenderedItem = this.getLastVisibleRenderedItem();
 
 		return this.isBleeding() || (getLastRenderedItem ? getLastRenderedItem.isBleedingAtBottom() : false);
 	}
@@ -5048,7 +5109,7 @@ export class ColumnSet extends StylableCardElementContainer {
 		return this.getCount();
 	}
 
-	getFirstRenderedItem(): CardElement {
+	getFirstVisibleRenderedItem(): CardElement {
 		if (this.renderedElement && this._renderedColumns && this._renderedColumns.length > 0) {
 			return this._renderedColumns[0];
 		}
@@ -5057,7 +5118,7 @@ export class ColumnSet extends StylableCardElementContainer {
 		}
 	}
 
-	getLastRenderedItem(): CardElement {
+	getLastVisibleRenderedItem(): CardElement {
 		if (this.renderedElement && this._renderedColumns && this._renderedColumns.length > 0) {
 			return this._renderedColumns[this._renderedColumns.length - 1];
 		}
@@ -5514,6 +5575,7 @@ export class ElementTypeRegistry extends TypeRegistry<CardElement> {
 		this.registerType("Media", () => { return new Media(); });
 		this.registerType("FactSet", () => { return new FactSet(); });
 		this.registerType("ColumnSet", () => { return new ColumnSet(); });
+		this.registerType("ActionSet", () => { return new ActionSet(); });
 		this.registerType("Input.Text", () => { return new TextInput(); });
 		this.registerType("Input.Date", () => { return new DateInput(); });
 		this.registerType("Input.Time", () => { return new TimeInput(); });
@@ -5530,6 +5592,7 @@ export class ActionTypeRegistry extends TypeRegistry<Action> {
 		this.registerType("Action.OpenUrl", () => { return new OpenUrlAction(); });
 		this.registerType("Action.Submit", () => { return new SubmitAction(); });
 		this.registerType("Action.ShowCard", () => { return new ShowCardAction(); });
+		this.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
 	}
 }
 

@@ -1,32 +1,6 @@
 import * as Adaptive from "adaptivecards";
 import * as Designer from "../../adaptivecards-designer";
 
-export class ToggleVisibilityAction extends Adaptive.Action {
-    targetElementIds: Array<string> = [];
-
-    getJsonTypeName(): string {
-        return "Action.ToggleVisibility";
-    }
-
-    execute() {
-        if (this.targetElementIds) {
-            for (var i = 0; i < this.targetElementIds.length; i++) {
-                var targetElement = this.parent.getRootElement().getElementById(this.targetElementIds[i]);
-
-                if (targetElement) {
-                    targetElement.isVisible = !targetElement.isVisible;
-                }
-            }
-        }
-    }
-
-    parse(json: any) {
-        super.parse(json);
-
-        this.targetElementIds = json["targetElements"] as Array<string>;
-    }
-}
-
 export class OutlookContainer extends Designer.HostContainer {
     public renderTo(hostElement: HTMLElement) {
         hostElement.classList.add("outlook-frame");
@@ -36,11 +10,8 @@ export class OutlookContainer extends Designer.HostContainer {
     public initialize() {
         super.initialize();
 
-        Adaptive.AdaptiveCard.elementTypeRegistry.registerType("ActionSet", () => { return new Adaptive.ActionSet(); });
-
         Adaptive.AdaptiveCard.actionTypeRegistry.unregisterType("Action.Submit");
         Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.Http", () => { return new Adaptive.HttpAction(); });
-        Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.ToggleVisibility", () => { return new ToggleVisibilityAction(); });
 
         Adaptive.AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = false;
     }
@@ -69,10 +40,6 @@ export class OutlookContainer extends Designer.HostContainer {
     }
 
     public parseElement(element: Adaptive.CardElement, json: any) {
-        if (typeof json["isVisible"] === "boolean") {
-            element.isVisible = json["isVisible"];
-        }
-
         if (element instanceof Adaptive.AdaptiveCard) {
             var card = <Adaptive.AdaptiveCard>element;
             var actionArray: Array<Adaptive.Action> = [];
