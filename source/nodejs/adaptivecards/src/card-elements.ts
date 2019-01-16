@@ -524,6 +524,14 @@ export abstract class CardElement implements ICardObject {
 		return this.parent ? this.parent.isRightMostElement(this) && this.parent.isAtTheVeryRight() : true;
 	}
 
+	isAtTheVeryTop(): boolean {
+		return this.parent ? this.parent.isFirstElement(this) && this.parent.isAtTheVeryTop() : true;
+	}
+
+	isAtTheVeryBottom(): boolean {
+		return this.parent ? this.parent.isLastElement(this) && this.parent.isAtTheVeryBottom() : true;
+	}
+
 	isBleedingAtTop(): boolean {
 		return false;
 	}
@@ -4119,7 +4127,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 		this._bleed = value;
 	}
 
-	protected isBleeding(): boolean {
+	isBleeding(): boolean {
 		return this.getHasBackground() && this.getBleed();
 	}
 
@@ -4754,6 +4762,10 @@ export class Column extends Container {
 		}
 		else {
 			renderedElement.style.minWidth = "0";
+
+			if (this.minPixelHeight) {
+				renderedElement.style.minHeight = this.minPixelHeight + "px";
+			}
 		}
 
 		if (this.width === "auto") {
@@ -4773,6 +4785,18 @@ export class Column extends Container {
 				renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : sizeAndUnit.physicalSize) + "%";
 			}
 		}
+	}
+
+	protected getDefaultPadding(): Shared.PaddingDefinition {
+		let columnSet = <ColumnSet>this.parent;
+		let result = super.getDefaultPadding();
+
+		result.top = (result.top == Enums.Spacing.None && columnSet.isBleedingAtTop() && columnSet.isAtTheVeryTop()) ? Enums.Spacing.Padding : result.top;
+		result.right = (result.right == Enums.Spacing.None && columnSet.isBleeding() && columnSet.isAtTheVeryRight()) ? Enums.Spacing.Padding : result.right;
+		result.bottom = (result.bottom == Enums.Spacing.None && columnSet.isBleedingAtBottom() && columnSet.isAtTheVeryBottom()) ? Enums.Spacing.Padding : result.bottom;
+		result.left = (result.left == Enums.Spacing.None && columnSet.isBleeding() && columnSet.isAtTheVeryLeft()) ? Enums.Spacing.Padding : result.left;
+
+		return result;
 	}
 
 	protected get separatorOrientation(): Enums.Orientation {
@@ -4985,39 +5009,35 @@ export class ColumnSet extends StylableCardElementContainer {
 	}
 
 	isBleedingAtTop(): boolean {
-		let result = false;
+		if (this.isBleeding()) {
+			return true;
+		}
 
 		if (this._renderedColumns && this._renderedColumns.length > 0) {
-			result = true;
-
 			for (let column of this._columns) {
-				result = result && column.isBleedingAtTop();
-
-				if (!result) {
-					break;
+				if (column.isBleedingAtTop()) {
+					return true;
 				}
 			}
 		}
 
-		return this.isBleeding() || result;
+		return false;
 	}
 
 	isBleedingAtBottom(): boolean {
-		let result = false;
+		if (this.isBleeding()) {
+			return true;
+		}
 
 		if (this._renderedColumns && this._renderedColumns.length > 0) {
-			result = true;
-
 			for (let column of this._columns) {
-				result = result && column.isBleedingAtBottom();
-
-				if (!result) {
-					break;
+				if (column.isBleedingAtBottom()) {
+					return true;
 				}
 			}
 		}
 
-		return this.isBleeding() || result;
+		return false;
 	}
 
 	getCount(): number {
