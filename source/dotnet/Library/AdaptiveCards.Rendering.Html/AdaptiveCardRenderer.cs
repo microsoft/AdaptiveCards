@@ -1212,12 +1212,22 @@ namespace AdaptiveCards.Rendering.Html
                 }
 
                 var uiLabel = CreateLabel(htmlLabelId, choice.Title, context);
+                uiLabel.Attr("white-space", "nowrap");
+                uiLabel.Attr("text-overflow", "ellipsis");
 
+                var labelDiv = new DivTag().Append(uiLabel);
+                labelDiv.Style("white-space", "nowrap");
+                labelDiv.Style("overflow", "hidden");
+                labelDiv.Style("text-overflow", "ellipsis");
                 var compoundInputElement = new DivTag()
                     .Append(uiInput)
-                    .Append(uiLabel);
+                    .Append(labelDiv);
 
                 uiElement.Append(compoundInputElement);
+                //compoundInputElement.Style("white-space", "nowrap");
+                //compoundInputElement.Style("overflow", "hidden");
+                //compoundInputElement.Style("text-overflow", "ellipsis");
+
             }
 
             return uiElement;
