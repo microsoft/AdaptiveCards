@@ -27,5 +27,15 @@ namespace AdaptiveCards
         [XmlElement(Type = typeof(AdaptiveFact), ElementName = "Fact")]
 #endif
         public List<AdaptiveFact> Facts { get; set; } = new List<AdaptiveFact>();
+
+        public override void ResolveData(ResolveContext context)
+        {
+            base.ResolveData(context);
+
+            foreach (var f in Facts)
+            {
+                ResolveDataBindingOnObject(Data, f);
+            }
+        }
     }
 }

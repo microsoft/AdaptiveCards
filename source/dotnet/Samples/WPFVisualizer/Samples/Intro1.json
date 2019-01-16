@@ -1,0 +1,133 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "data": {
+    "name": "Publish Adaptive Card schema",
+    "owner": {
+      "name": "Matt Hidinger",
+      "picture": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+    },
+    "dateCreated": "2017-02-14T06:08:39Z",
+    "body": "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
+    "board": "Adaptive Card",
+    "list": "Backlog",
+    "assignedTo": {
+      "name": "Matt Hidinger",
+      "picture": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+    },
+    "dueDate": "Not set"
+  },
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "{data.name}",
+      "weight": "bolder",
+      "size": "medium"
+    },
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            {
+              "type": "Image",
+              "url": "{data.owner.picture}",
+              "size": "small",
+              "style": "person"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "{data.owner.name}",
+              "weight": "bolder",
+              "wrap": true
+            },
+            {
+              "type": "TextBlock",
+              "spacing": "none",
+              "text": "Created {{DATE({data.dateCreated}, SHORT)}}",
+              "isSubtle": true,
+              "wrap": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "{data.body}",
+      "wrap": true
+    },
+    {
+      "type": "FactSet",
+      "facts": [
+        {
+          "title": "Board:",
+          "value": "{data.board}"
+        },
+        {
+          "title": "List:",
+          "value": "{data.list}"
+        },
+        {
+          "title": "Assigned to:",
+          "value": "{data.assignedTo.name}"
+        },
+        {
+          "title": "Due date:",
+          "value": "{data.dueDate}"
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.ShowCard",
+      "title": "Set due date",
+      "card": {
+        "type": "AdaptiveCard",
+        "body": [
+          {
+            "type": "Input.Date",
+            "id": "dueDate"
+          }
+        ],
+        "actions": [
+          {
+            "type": "Action.Submit",
+            "title": "OK"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Action.ShowCard",
+      "title": "Comment",
+      "card": {
+        "type": "AdaptiveCard",
+        "body": [
+          {
+            "type": "Input.Text",
+            "id": "comment",
+            "isMultiline": true,
+            "placeholder": "Enter your comment"
+          }
+        ],
+        "actions": [
+          {
+            "type": "Action.Submit",
+            "title": "OK"
+          }
+        ]
+      }
+    }
+  ]
+}

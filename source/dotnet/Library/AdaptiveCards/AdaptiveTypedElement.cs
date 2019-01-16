@@ -74,7 +74,7 @@ namespace AdaptiveCards
             }
         }
 
-        public void ResolveData(ResolveContext context)
+        public virtual void ResolveData(ResolveContext context)
         {
             context = context.CreateForCurrElement(this);
 
@@ -114,20 +114,9 @@ namespace AdaptiveCards
             }
 
             // Resolve data binding on this element
-            var thisProperties = this.GetType().GetTypeInfo().DeclaredProperties;
-            foreach (var p in thisProperties.Where(i => i.PropertyType == typeof(string)))
-            {
-                string pVal = p.GetValue(this) as string;
-                if (pVal != null)
-                {
-                    string newPVal = BindingEvaluator.EvaluateBinding<string>(Data as JObject, pVal);
-                    if (pVal != newPVal)
-                    {
-                        p.SetValue(this, newPVal);
-                    }
-                }
-            }
+            ResolveDataBindingOnObject(Data, this);
 
+            // Also resolve additional properties
             foreach (var additionalProp in AdditionalProperties.ToArray())
             {
                 if (additionalProp.Value is string s)
@@ -156,6 +145,23 @@ namespace AdaptiveCards
                 child.Data = ResolveChildData(Data, child.Data);
 
                 child.ResolveData(context);
+            }
+        }
+
+        internal static void ResolveDataBindingOnObject(object data, object obj)
+        {
+            var thisProperties = obj.GetType().GetTypeInfo().DeclaredProperties;
+            foreach (var p in thisProperties.Where(i => i.PropertyType == typeof(string)))
+            {
+                string pVal = p.GetValue(obj) as string;
+                if (pVal != null)
+                {
+                    string newPVal = BindingEvaluator.EvaluateBinding<string>(data as JObject, pVal);
+                    if (pVal != newPVal)
+                    {
+                        p.SetValue(obj, newPVal);
+                    }
+                }
             }
         }
 
