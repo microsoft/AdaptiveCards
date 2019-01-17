@@ -2876,15 +2876,16 @@ enum ActionButtonState {
 
 class ActionButton {
 	private _parentContainerStyle: string;
-	private _action: Action;
-	private _element: HTMLButtonElement = null;
 	private _state: ActionButtonState = ActionButtonState.Normal;
 
 	private updateCssStyle() {
 		let hostConfig = this.action.parent.hostConfig;
 
 		this.action.renderedElement.className = hostConfig.makeCssClassName("ac-pushButton");
-		this.action.renderedElement.classList.add("style-" + this._parentContainerStyle);
+
+		if (!Utils.isNullOrEmpty(this._parentContainerStyle)) {
+			this.action.renderedElement.classList.add("style-" + this._parentContainerStyle);
+		}
 
 		if (this.action instanceof ShowCardAction) {
 			this.action.renderedElement.classList.add(hostConfig.makeCssClassName("expandable"));
@@ -4237,7 +4238,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 			}
 		}
 
-		return this.style;
+		return this.style ? this.style : this.defaultStyle;
 	}
 
 	get style(): string {
@@ -4245,12 +4246,9 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 			if (this._style && this.hostConfig.containerStyles.getStyleByName(this._style)) {
 				return this._style;
 			}
+		}
 
-			return null;
-		}
-		else {
-			return this.defaultStyle;
-		}
+		return null;
 	}
 
 	set style(value: string) {
