@@ -19,6 +19,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Attention, "attention"},
             {AdaptiveCardSchemaKey::BackgroundColor, "backgroundColor"},
             {AdaptiveCardSchemaKey::BackgroundImage, "backgroundImage"},
+            {AdaptiveCardSchemaKey::BackgroundImageMode, "mode"},
             {AdaptiveCardSchemaKey::BackgroundImageUrl, "backgroundImageUrl"},
             {AdaptiveCardSchemaKey::BaseCardElement, "baseCardElement"},
             {AdaptiveCardSchemaKey::Body, "body"},
