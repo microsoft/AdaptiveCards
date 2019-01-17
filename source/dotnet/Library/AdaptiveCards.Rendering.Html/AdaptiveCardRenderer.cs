@@ -1212,22 +1212,20 @@ namespace AdaptiveCards.Rendering.Html
                 }
 
                 var uiLabel = CreateLabel(htmlLabelId, choice.Title, context);
-                uiLabel.Attr("white-space", "nowrap");
-                uiLabel.Attr("text-overflow", "ellipsis");
 
-                var labelDiv = new DivTag().Append(uiLabel);
-                labelDiv.Style("white-space", "nowrap");
-                labelDiv.Style("overflow", "hidden");
-                labelDiv.Style("text-overflow", "ellipsis");
                 var compoundInputElement = new DivTag()
                     .Append(uiInput)
-                    .Append(labelDiv);
+                    .Append(uiLabel);
+
+                // text-overflow ellipsis does not work when width is not specified in px
+                // when specified relatively such as using %, ellipsis does not work
+                if (!adaptiveChoiceSetInput.Wrap)
+                {
+                    compoundInputElement.Style("white-space", "nowrap");
+                    compoundInputElement.Style("overflow", "hidden");
+                }
 
                 uiElement.Append(compoundInputElement);
-                //compoundInputElement.Style("white-space", "nowrap");
-                //compoundInputElement.Style("overflow", "hidden");
-                //compoundInputElement.Style("text-overflow", "ellipsis");
-
             }
 
             return uiElement;
@@ -1498,7 +1496,15 @@ namespace AdaptiveCards.Rendering.Html
 
             var uiLabel = CreateLabel(htmlLabelId, toggleInput.Title, context);
 
-            return uiElement.Append(uiCheckboxInput).Append(uiLabel);
+            uiElement.Append(uiCheckboxInput).Append(uiLabel);
+
+            if (!toggleInput.Wrap)
+            {
+                uiElement.Style("white-space", "nowrap");
+                uiElement.Style("overflow", "hidden");
+            }
+
+            return uiElement;
         }
 
         protected static string GetFallbackText(AdaptiveElement adaptiveElement)
