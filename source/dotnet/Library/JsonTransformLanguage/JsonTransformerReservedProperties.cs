@@ -7,6 +7,9 @@ using System.Text;
 
 namespace JsonTransformLanguage
 {
+    /// <summary>
+    /// Reserved variables/properties like $data, $rootData, $index are all defined here.
+    /// </summary>
     public class JsonTransformerReservedProperties
     {
         public JsonTransformerReservedProperties() { }
