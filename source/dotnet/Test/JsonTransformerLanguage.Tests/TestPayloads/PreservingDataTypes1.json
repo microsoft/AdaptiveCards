@@ -1,0 +1,25 @@
+{
+  "inputJson": {
+    "string": "{string}",
+    "int": "{int}",
+    "double": "{double}",
+    "bool": "{bool}",
+    "boolFalse": "{boolFalse}"
+  },
+
+  "inputData": {
+    "string": "Sunny",
+    "int": 73,
+    "double": 55.07,
+    "bool": true,
+    "boolFalse": false
+  },
+
+  "expected": {
+    "string": "Sunny",
+    "int": 73,
+    "double": 55.07,
+    "bool": true,
+    "boolFalse": false
+  }
+}

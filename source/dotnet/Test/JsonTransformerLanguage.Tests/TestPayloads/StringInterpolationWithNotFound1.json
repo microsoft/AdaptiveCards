@@ -1,0 +1,17 @@
+{
+  "inputJson": {
+    "type": "TextBlock",
+    "text": "Today will be {noPropertyWithThisName} with a high of {high} and a low of {low}"
+  },
+
+  "inputData": {
+    "condition": "sunny",
+    "high": 73,
+    "low": 55
+  },
+
+  "expected": {
+    "type": "TextBlock",
+    "text": "Today will be  with a high of 73 and a low of 55"
+  }
+}

@@ -55,7 +55,7 @@
           "items": [
             {
               "type": "Image",
-              "url": "{data.current.icon}",
+              "url": "{current.icon}",
               "size": "stretch"
             }
           ]
@@ -66,26 +66,26 @@
           "items": [
             {
               "type": "TextBlock",
-              "text": "{data.current.day}",
+              "text": "{current.day}",
               "weight": "bolder",
               "size": "large"
             },
             {
               "type": "TextBlock",
-              "text": "{data.current.high} / {data.current.low}",
+              "text": "{current.high} / {current.low}",
               "size": "medium",
               "spacing": "none"
             },
             {
               "type": "TextBlock",
               "isSubtle": true,
-              "text": "{data.current.rain}% chance of rain",
+              "text": "{current.rain}% chance of rain",
               "spacing": "none"
             },
             {
               "type": "TextBlock",
               "isSubtle": true,
-              "text": "Winds {data.current.wind.speed} mph {data.current.wind.direction}",
+              "text": "Winds {current.wind.speed} mph {current.wind.direction}",
               "spacing": "none"
             }
           ]
@@ -97,38 +97,38 @@
       "columns": [
         {
           "type": "Column",
-          "repeat": "{data.forecast}",
+          "$data": "{forecast}",
           "width": "20",
           "items": [
             {
               "type": "TextBlock",
               "horizontalAlignment": "center",
               "wrap": false,
-              "text": "{data.dayShort}"
+              "text": "{dayShort}"
             },
             {
               "type": "Image",
               "size": "auto",
-              "url": "{data.icon}"
+              "url": "{icon}"
             },
             {
               "type": "TextBlock",
               "horizontalAlignment": "center",
               "wrap": false,
-              "text": "{data.high}"
+              "text": "{high}"
             },
             {
               "type": "TextBlock",
               "horizontalAlignment": "center",
               "isSubtle": true,
               "wrap": false,
-              "text": "{data.low}",
+              "text": "{low}",
               "spacing": "none"
             }
           ],
           "selectAction": {
             "type": "Action.OpenUrl",
-            "title": "View {data.dayFull}",
+            "title": "View {dayFull}",
             "url": "http://www.microsoft.com"
           }
         }

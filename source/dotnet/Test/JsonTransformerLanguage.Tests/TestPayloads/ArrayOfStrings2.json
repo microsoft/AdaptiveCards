@@ -1,0 +1,27 @@
+{
+  "inputJson": [
+    "{name}",
+    "{age}",
+    "{height}"
+  ],
+
+  "inputData": [
+    {
+      "name": "Andrew",
+      "age": 26,
+      "height": "5' 10\""
+    },
+    {
+      "name": "Thomas",
+      "age": 30,
+      "height": "5' 7\""
+    }
+  ],
+
+  // Only the first item should be used, since repeating only works on objects
+  "expected": [
+    "Andrew",
+    26,
+    "5' 10\""
+  ]
+}

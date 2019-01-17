@@ -1,0 +1,52 @@
+{
+  "inputJson": {
+    "type": "AdaptiveCard",
+    "body": [
+      {
+        "type": "TextBlock",
+        "$data": "{directReports}",
+        "text": "{name}"
+      }
+    ]
+  },
+
+  "inputData": {
+    "name": "Thomas Fennel",
+    "reportsTo": {
+      "name": "Andrew Clinick",
+      "picture": "https://unsplash.it/64?image=1025"
+    },
+    "directReports": [
+      {
+        "name": "Adam Wilson",
+        "picture": "https://unsplash.it/64?image=804"
+      },
+      {
+        "name": "Andrew Leader",
+        "picture": "https://unsplash.it/64?image=883"
+      },
+      {
+        "name": "Mary Anne Noskowski",
+        "picture": "https://unsplash.it/64?image=1027"
+      }
+    ]
+  },
+
+  "expected": {
+    "type": "AdaptiveCard",
+    "body": [
+      {
+        "type": "TextBlock",
+        "text": "Adam Wilson"
+      },
+      {
+        "type": "TextBlock",
+        "text": "Andrew Leader"
+      },
+      {
+        "type": "TextBlock",
+        "text": "Mary Anne Noskowski"
+      }
+    ]
+  }
+}

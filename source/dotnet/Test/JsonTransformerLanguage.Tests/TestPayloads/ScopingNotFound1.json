@@ -1,0 +1,41 @@
+{
+  "inputJson": {
+    "type": "AdaptiveCard",
+    "body": [
+      {
+        "type": "Container",
+        "$data": "{reportsTo}",
+        "items": [
+          {
+            "type": "TextBlock",
+            "text": "{name}"
+          }
+        ]
+      }
+    ]
+  },
+
+  "inputData": {
+    "name": "Thomas Fennel",
+    "directReports": [
+      {
+        "name": "Adam Wilson",
+        "picture": "https://unsplash.it/64?image=804"
+      },
+      {
+        "name": "Andrew Leader",
+        "picture": "https://unsplash.it/64?image=883"
+      },
+      {
+        "name": "Mary Anne Noskowski",
+        "picture": "https://unsplash.it/64?image=1027"
+      }
+    ]
+  },
+
+  // The container should be dropped since data not found
+  "expected": {
+    "type": "AdaptiveCard",
+    "body": [ ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "inputJson": [
+    {
+      "name": "{name}"
+    },
+    {
+      "age": "{age}"
+    }
+  ],
+
+  "inputData": {
+    "name": "Andrew",
+    "age": 26
+  },
+
+  "expected": [
+    {
+      "name": "Andrew"
+    },
+    {
+      "age": 26
+    }
+  ]
+}

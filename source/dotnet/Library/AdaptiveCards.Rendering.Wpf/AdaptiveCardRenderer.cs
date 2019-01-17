@@ -208,10 +208,10 @@ namespace AdaptiveCards.Rendering.Wpf
             if (card == null) throw new ArgumentNullException(nameof(card));
             RenderedAdaptiveCard renderCard = null;
 
-            card.ResolveData(new ResolveContext()
-            {
-                Elements = card.Elements
-            });
+            //card.ResolveData(new ResolveContext()
+            //{
+            //    Elements = card.Elements
+            //});
 
             void ActionCallback(object sender, AdaptiveActionEventArgs args)
             {

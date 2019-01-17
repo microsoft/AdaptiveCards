@@ -56,25 +56,25 @@
       "items": [
         {
           "type": "TextBlock",
-          "repeat": "{data.passengers}",
-          "text": "{data.name}",
+          "$data": "{passengers}",
+          "text": "{name}",
           "spacing": "none"
         }
       ]
     },
     {
       "type": "Container",
-      "data": "{data.departingFlight}",
+      "$data": "{departingFlight}",
       "items": [
         {
           "type": "TextBlock",
-          "text": "{data.stops} Stops",
+          "text": "{stops} Stops",
           "weight": "bolder",
           "spacing": "medium"
         },
         {
           "type": "TextBlock",
-          "text": "{{DATE({data.departureTime}, SHORT)}} {{TIME({data.departureTime})}}",
+          "text": "{{DATE({departureTime}, SHORT)}} {{TIME({departureTime})}}",
           "weight": "bolder",
           "spacing": "none"
         },
@@ -88,14 +88,14 @@
               "items": [
                 {
                   "type": "TextBlock",
-                  "text": "{data.departureCity.name}",
+                  "text": "{departureCity.name}",
                   "isSubtle": true
                 },
                 {
                   "type": "TextBlock",
                   "size": "extraLarge",
                   "color": "accent",
-                  "text": "{data.departureCity.shortName}",
+                  "text": "{departureCity.shortName}",
                   "spacing": "none"
                 }
               ]
@@ -123,7 +123,7 @@
                 {
                   "type": "TextBlock",
                   "horizontalAlignment": "right",
-                  "text": "{data.arrivalCity.name}",
+                  "text": "{arrivalCity.name}",
                   "isSubtle": true
                 },
                 {
@@ -131,7 +131,7 @@
                   "horizontalAlignment": "right",
                   "size": "extraLarge",
                   "color": "accent",
-                  "text": "{data.arrivalCity.shortName}",
+                  "text": "{arrivalCity.shortName}",
                   "spacing": "none"
                 }
               ]
@@ -146,17 +146,17 @@
     },
     {
       "type": "Container",
-      "data": "{data.returningFlight}",
+      "$data": "{returningFlight}",
       "items": [
         {
           "type": "TextBlock",
-          "text": "{data.stops} Stops",
+          "text": "{stops} Stops",
           "weight": "bolder",
           "spacing": "medium"
         },
         {
           "type": "TextBlock",
-          "text": "{{DATE({data.departureTime}, SHORT)}} {{TIME({data.departureTime})}}",
+          "text": "{{DATE({departureTime}, SHORT)}} {{TIME({departureTime})}}",
           "weight": "bolder",
           "spacing": "none"
         },
@@ -170,14 +170,14 @@
               "items": [
                 {
                   "type": "TextBlock",
-                  "text": "{data.departureCity.name}",
+                  "text": "{departureCity.name}",
                   "isSubtle": true
                 },
                 {
                   "type": "TextBlock",
                   "size": "extraLarge",
                   "color": "accent",
-                  "text": "{data.departureCity.shortName}",
+                  "text": "{departureCity.shortName}",
                   "spacing": "none"
                 }
               ]
@@ -205,7 +205,7 @@
                 {
                   "type": "TextBlock",
                   "horizontalAlignment": "right",
-                  "text": "{data.arrivalCity.name}",
+                  "text": "{arrivalCity.name}",
                   "isSubtle": true
                 },
                 {
@@ -213,7 +213,7 @@
                   "horizontalAlignment": "right",
                   "size": "extraLarge",
                   "color": "accent",
-                  "text": "{data.arrivalCity.shortName}",
+                  "text": "{arrivalCity.shortName}",
                   "spacing": "none"
                 }
               ]
@@ -245,7 +245,7 @@
             {
               "type": "TextBlock",
               "horizontalAlignment": "right",
-              "text": "{data.totalCost}",
+              "text": "{totalCost}",
               "size": "medium",
               "weight": "bolder"
             }

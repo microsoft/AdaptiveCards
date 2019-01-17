@@ -20,6 +20,7 @@ using Newtonsoft.Json.Linq;
 using Xceed.Wpf.Toolkit.PropertyGrid;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 using System.Collections.ObjectModel;
+using JsonTransformLanguage;
 
 namespace WpfVisualizer
 {
@@ -99,20 +100,20 @@ namespace WpfVisualizer
 
             try
             {
+                string finalCard = textBox.Text;
+                try
+                {
+                    JObject originalCard = JObject.Parse(textBox.Text);
+                    JToken data = JToken.Parse(textBoxData.Text);
 
-                AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(textBox.Text);
+                    finalCard = JsonTransformer.Transform(originalCard, data, null)?.ToString();
+                }
+                catch { }
+
+                AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(finalCard);
 
                 AdaptiveCard card = parseResult.Card;
 
-                try
-                {
-                    JObject data = JObject.Parse(textBoxData.Text);
-                    if (data != null)
-                    {
-                        card.Data = data;
-                    }
-                }
-                catch { }
 
                 RenderedAdaptiveCard renderedCard = Renderer.RenderCard(card);
                 // TODO: should we have an option to render fallback card instead of exception?

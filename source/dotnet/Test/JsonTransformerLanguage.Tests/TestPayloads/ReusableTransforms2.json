@@ -1,0 +1,83 @@
+{
+  "inputJson": {
+    "$templates": {
+      "Person": {
+        "type": "ColumnSet",
+        "columns": [
+          {
+            "type": "Column",
+            "items": [
+              {
+                "type": "Image",
+                "style": "Person",
+                "url": "{data.picture}",
+                "size": "Small"
+              }
+            ],
+            "width": "auto"
+          },
+          {
+            "type": "Column",
+            "verticalContentAlignment": "Center",
+            "items": [
+              {
+                "type": "TextBlock",
+                "size": "Medium",
+                "weight": "Bolder",
+                "text": "{data.name}"
+              }
+            ],
+            "width": "stretch"
+          }
+        ]
+      }
+    },
+    "reportsTo": "{$templates.Person.transform(reportsTo)}",
+    "directReports": [
+      "{$templates.Person.transform(directReports)}"
+    ]
+  },
+
+  "inputData": {
+    "name": "Thomas Fennel",
+    "reportsTo": {
+      "firstName": "Andrew",
+      "lastName": "Clinick",
+      "picture": "https://unsplash.it/64?image=1025"
+    },
+    "directReports": [
+      {
+        "firstName": "Adam",
+        "lastName": "Wilson",
+        "picture": "https://unsplash.it/64?image=804"
+      },
+      {
+        "firstName": "Andrew",
+        "lastName": "Leader",
+        "picture": "https://unsplash.it/64?image=883"
+      },
+      {
+        "firstName": "Mary Anne",
+        "lastName": "Noskowski",
+        "picture": "https://unsplash.it/64?image=1027"
+      }
+    ]
+  },
+
+  "expected": {
+    "reportsTo": {
+      "name": "Andrew Clinick"
+    },
+    "directReports": [
+      {
+        "name": "Adam Wilson"
+      },
+      {
+        "name": "Andrew Leader"
+      },
+      {
+        "name": "Mary Anne Noskowski"
+      }
+    ]
+  }
+}

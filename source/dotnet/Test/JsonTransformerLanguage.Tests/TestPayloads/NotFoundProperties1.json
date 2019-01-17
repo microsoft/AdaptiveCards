@@ -1,0 +1,18 @@
+{
+  "inputJson": {
+    "conditions": "{conditions}",
+    "icon": "{icon}",
+    "day": "{day}"
+  },
+
+  "inputData": {
+    "conditions": "Sunny",
+    "day": "Monday"
+  },
+
+  // The property should be dropped by default
+  "expected": {
+    "conditions": "Sunny",
+    "day": "Monday"
+  }
+}

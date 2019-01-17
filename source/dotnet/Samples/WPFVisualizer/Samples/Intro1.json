@@ -21,7 +21,7 @@
   "body": [
     {
       "type": "TextBlock",
-      "text": "{data.name}",
+      "text": "{name}",
       "weight": "bolder",
       "size": "medium"
     },
@@ -34,7 +34,7 @@
           "items": [
             {
               "type": "Image",
-              "url": "{data.owner.picture}",
+              "url": "{owner.picture}",
               "size": "small",
               "style": "person"
             }
@@ -46,14 +46,14 @@
           "items": [
             {
               "type": "TextBlock",
-              "text": "{data.owner.name}",
+              "text": "{owner.name}",
               "weight": "bolder",
               "wrap": true
             },
             {
               "type": "TextBlock",
               "spacing": "none",
-              "text": "Created {{DATE({data.dateCreated}, SHORT)}}",
+              "text": "Created {{DATE({dateCreated}, SHORT)}}",
               "isSubtle": true,
               "wrap": true
             }
@@ -63,7 +63,7 @@
     },
     {
       "type": "TextBlock",
-      "text": "{data.body}",
+      "text": "{body}",
       "wrap": true
     },
     {
@@ -71,19 +71,19 @@
       "facts": [
         {
           "title": "Board:",
-          "value": "{data.board}"
+          "value": "{board}"
         },
         {
           "title": "List:",
-          "value": "{data.list}"
+          "value": "{list}"
         },
         {
           "title": "Assigned to:",
-          "value": "{data.assignedTo.name}"
+          "value": "{assignedTo.name}"
         },
         {
           "title": "Due date:",
-          "value": "{data.dueDate}"
+          "value": "{dueDate}"
         }
       ]
     }
