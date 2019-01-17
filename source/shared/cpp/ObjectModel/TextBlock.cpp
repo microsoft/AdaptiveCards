@@ -128,12 +128,12 @@ void TextBlock::SetMaxLines(const unsigned int value)
 
 HorizontalAlignment TextBlock::GetHorizontalAlignment() const
 {
-    return m_hAlignment;
+    return m_HorizontalAlignment;
 }
 
 void TextBlock::SetHorizontalAlignment(const HorizontalAlignment value)
 {
-    m_hAlignment = value;
+    m_HorizontalAlignment = value;
 }
 
 std::string TextBlock::GetLanguage() const
