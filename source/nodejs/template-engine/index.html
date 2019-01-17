@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="template-engine.js"></script>
+    <script type="text/javascript">
+        function tokenizeExpression() {
+            let tokenizer = new Tokenizer();
+            tokenizer.parse(document.getElementById("expression").value);
+
+            alert(JSON.stringify(tokenizer.tokens));
+        }
+    </script>    
+</head>
+
+<body>
+    <input type="text" id="expression" value='{abc.def.ghi(field"this is a string")indexedField[3]'></input>
+    <br>
+    <button onclick="tokenizeExpression()">Tokenize expression</button>
+</body>
+
+</html>
