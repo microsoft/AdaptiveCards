@@ -1,0 +1,63 @@
+{
+  "inputJson": {
+    "firstPerson": {
+      "name": "{people[0].firstName} {people[0].lastName}",
+      "age": "{people[0].age}"
+    },
+    "secondPerson": {
+      "name": "{people[1].firstName} {people[1].lastName}",
+      "age": "{people[1].age}"
+    },
+    "thirdPerson": {
+      "$data": "{people[2]}",
+      "name": "{firstName} {lastName}",
+      "age": "{age}"
+    },
+    "fourthPerson": "{people[3]}"
+  },
+
+  "inputData": {
+    "people": [
+      {
+        "firstName": "Andrew",
+        "lastName": "Leader",
+        "age": 26
+      },
+      {
+        "firstName": "Matt",
+        "lastName": "Hidinger",
+        "age": 32
+      },
+      {
+        "firstName": "Lei",
+        "lastName": "Xu",
+        "age": 29
+      },
+      {
+        "firstName": "Adam",
+        "lastName": "Wilson",
+        "age": 27
+      }
+    ]
+  },
+
+  "expected": {
+    "firstPerson": {
+      "name": "Andrew Leader",
+      "age": 26
+    },
+    "secondPerson": {
+      "name": "Matt Hidinger",
+      "age": 32
+    },
+    "thirdPerson": {
+      "name": "Lei Xu",
+      "age": 29
+    },
+    "fourthPerson": {
+      "firstName": "Adam",
+      "lastName": "Wilson",
+      "age": 27
+    }
+  }
+}

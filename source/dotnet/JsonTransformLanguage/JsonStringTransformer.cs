@@ -1,6 +1,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -19,7 +20,8 @@ namespace JsonTransformLanguage
         private const string REGEX_PROPERTY_NAME = @"[a-zA-Z_$@][0-9a-zA-Z_$@]*";
         private const string REGEX_PROPERTY_ACCESSOR = @"\.(" + REGEX_PROPERTY_NAME + @")";
         private const string REGEX_DICTIONARY_LOOKUP = @"\['(([^']|\\')+)'\]";
-        private const string REGEX_BINDING_EXPRESSION = @"\{(" + REGEX_PROPERTY_NAME + @"((" + REGEX_DICTIONARY_LOOKUP + @")|(" + REGEX_PROPERTY_ACCESSOR + @"))*)\}";
+        private const string REGEX_INDEX_ACCESSOR = @"\[(\d+)\]";
+        private const string REGEX_BINDING_EXPRESSION = @"\{(" + REGEX_PROPERTY_NAME + @"((" + REGEX_DICTIONARY_LOOKUP + @")|(" + REGEX_INDEX_ACCESSOR + @")|(" + REGEX_PROPERTY_ACCESSOR + @"))*)\}";
 
         public static JToken EvaluateBinding(string bindingExpression, JToken parentData, JToken props, int index, JsonTransformerContext context)
         {
@@ -141,6 +143,16 @@ namespace JsonTransformLanguage
                     string dictionaryAccessor = matchDictionary.Groups[1].Value;
                     nextData = GetProperty(parentData, dictionaryAccessor);
                     matchedText = matchDictionary.Value;
+                }
+                else
+                {
+                    regex = new Regex("^" + REGEX_INDEX_ACCESSOR);
+                    var matchIndex = regex.Match(propertyExpression);
+                    if (matchIndex.Success && matchIndex.Groups[1].Success && int.TryParse(matchIndex.Groups[1].Value, out int indexToAccess))
+                    {
+                        nextData = parentData.ElementAtOrDefault(indexToAccess);
+                        matchedText = matchIndex.Value;
+                    }
                 }
             }
 

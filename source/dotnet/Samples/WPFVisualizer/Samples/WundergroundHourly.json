@@ -484,6 +484,46 @@
   "body": [
     {
       "type": "ColumnSet",
+      "$data": "{hourly_forecast[0]}",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "stretch",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Currently it's {condition}",
+              "weight": "bolder"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "{temp.english}",
+              "size": "large",
+              "weight": "bolder"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "auto",
+          "items": [
+            {
+              "type": "Image",
+              "url": "{icon_url}",
+              "size": "small"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ColumnSet",
       "columns": [
         {
           "type": "Column",
@@ -491,8 +531,9 @@
           "items": [
             {
               "type": "TextBlock",
-              "text": "{temp.english}",
+              "text": "{FCTTIME.hour}:00",
               "size": "small",
+              "isSubtle": true,
               "horizontalAlignment": "center"
             },
             {
@@ -503,9 +544,8 @@
             },
             {
               "type": "TextBlock",
-              "text": "{FCTTIME.hour}",
+              "text": "{temp.english}",
               "size": "small",
-              "isSubtle": true,
               "horizontalAlignment": "center",
               "spacing": "none"
             }
