@@ -9,7 +9,8 @@ namespace AdaptiveCards.Rendering
         {
             typeof(AdaptiveOpenUrlAction),
             typeof(AdaptiveSubmitAction),
-            typeof(AdaptiveShowCardAction)
+            typeof(AdaptiveShowCardAction),
+            typeof(AdaptiveToggleVisibilityAction)
         };
 
         /// <summary>
