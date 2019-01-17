@@ -56,7 +56,7 @@ namespace AdaptiveSharedNamespace
         bool m_isSubtle;
         bool m_wrap;
         unsigned int m_maxLines;
-        HorizontalAlignment m_hAlignment;
+        HorizontalAlignment m_HorizontalAlignment;
         void PopulateKnownPropertiesSet() override;
         std::string m_language;
     };

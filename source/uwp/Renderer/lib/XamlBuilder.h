@@ -47,11 +47,11 @@ namespace AdaptiveNamespace
                                    _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                    _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
                                    _Outptr_ ABI::Windows::UI::Xaml::IUIElement** textBlockControl);
-        static void BuildContainer(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* adaptiveCardElement,
+        void BuildContainer(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* adaptiveCardElement,
                                    _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                    _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
                                    _Outptr_ ABI::Windows::UI::Xaml::IUIElement** containerControl);
-        static void BuildColumn(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* adaptiveCardElement,
+        void BuildColumn(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* adaptiveCardElement,
                                 _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                 _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
                                 _Outptr_ ABI::Windows::UI::Xaml::IUIElement** columnControl);
@@ -133,7 +133,7 @@ namespace AdaptiveNamespace
                               _Outptr_ ABI::Windows::UI::Xaml::Controls::IPanel** bodyElementContainer);
 
         void ApplyBackgroundToRoot(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel,
-                                   _In_ HSTRING url,
+                                   _In_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage* backgroundImage,
                                    _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                    _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
 

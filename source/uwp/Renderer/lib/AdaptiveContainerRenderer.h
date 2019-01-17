@@ -3,6 +3,7 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "Enums.h"
 #include "Container.h"
+#include "XamlBuilder.h"
 
 namespace AdaptiveNamespace
 {
@@ -14,6 +15,8 @@ namespace AdaptiveNamespace
         AdaptiveRuntime(AdaptiveContainerRenderer);
 
     public:
+        AdaptiveContainerRenderer();
+        AdaptiveContainerRenderer(std::shared_ptr<AdaptiveNamespace::XamlBuilder> xamlBuilder);
         HRESULT RuntimeClassInitialize() noexcept;
 
         IFACEMETHODIMP Render(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* cardElement,
@@ -26,6 +29,9 @@ namespace AdaptiveNamespace
                                 _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParsers,
                                 _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
                                 _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) override;
+
+        private:
+            std::shared_ptr<AdaptiveNamespace::XamlBuilder> m_xamlBuilder;
     };
 
     ActivatableClass(AdaptiveContainerRenderer);

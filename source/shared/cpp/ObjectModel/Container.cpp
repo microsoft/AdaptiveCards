@@ -58,6 +58,16 @@ void Container::SetVerticalContentAlignment(const VerticalContentAlignment value
     m_verticalContentAlignment = value;
 }
 
+std::shared_ptr<BackgroundImage> Container::GetBackgroundImage() const
+{
+    return m_backgroundImage;
+}
+
+void Container::SetBackgroundImage(const std::shared_ptr<BackgroundImage> value)
+{
+    m_backgroundImage = value;
+}
+
 Json::Value Container::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
@@ -71,6 +81,11 @@ Json::Value Container::SerializeToJsonValue() const
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)] =
             VerticalContentAlignmentToString(m_verticalContentAlignment);
+    }
+
+    if (m_backgroundImage != nullptr)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImage)] = m_backgroundImage->SerializeToJsonValue();
     }
 
     std::string const& itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
@@ -100,6 +115,9 @@ std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(ParseContext& cont
     container->SetVerticalContentAlignment(ParseUtil::GetEnumValue<VerticalContentAlignment>(
         value, AdaptiveCardSchemaKey::VerticalContentAlignment, VerticalContentAlignment::Top, VerticalContentAlignmentFromString));
 
+    auto backgroundImage = ParseUtil::ExtractBackgroundImage(value);
+    container->SetBackgroundImage(backgroundImage);
+
     // Parse Items
     auto cardElements = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Items, false);
     container->m_items = std::move(cardElements);
@@ -125,6 +143,15 @@ void Container::PopulateKnownPropertiesSet()
 
 void Container::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
 {
+    auto backgroundImage = GetBackgroundImage();
+    if (backgroundImage != nullptr)
+    {
+        RemoteResourceInformation backgroundImageInfo;
+        backgroundImageInfo.url = backgroundImage->GetUrl();
+        backgroundImageInfo.mimeType = "image";
+        resourceInfo.push_back(backgroundImageInfo);
+    }
+
     auto items = GetItems();
     for (auto item : items)
     {

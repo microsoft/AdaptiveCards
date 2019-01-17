@@ -18,6 +18,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Attention, "attention"},
             {AdaptiveCardSchemaKey::BackgroundColor, "backgroundColor"},
             {AdaptiveCardSchemaKey::BackgroundImage, "backgroundImage"},
+            {AdaptiveCardSchemaKey::BackgroundImageMode, "mode"},
             {AdaptiveCardSchemaKey::BackgroundImageUrl, "backgroundImageUrl"},
             {AdaptiveCardSchemaKey::BaseCardElement, "baseCardElement"},
             {AdaptiveCardSchemaKey::Body, "body"},
@@ -137,6 +138,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::ValueOff, "valueOff"},
             {AdaptiveCardSchemaKey::ValueOn, "valueOn"},
             {AdaptiveCardSchemaKey::Version, "version"},
+            {AdaptiveCardSchemaKey::VerticalAlignment, "verticalAlignment"},
             {AdaptiveCardSchemaKey::VerticalContentAlignment, "verticalContentAlignment"},
             {AdaptiveCardSchemaKey::Warning, "warning"},
             {AdaptiveCardSchemaKey::Weight, "weight"},
@@ -197,6 +199,17 @@ namespace AdaptiveSharedNamespace
                 {"normal", ImageStyle::Default} // Back compat to support "Normal" for "Default" for pre V1.0 payloads
             }});
 
+    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(VerticalAlignment, VerticalAlignment::Top, {
+        { VerticalAlignment::Top, "top" },
+        { VerticalAlignment::Center, "center" },
+        { VerticalAlignment::Bottom, "bottom" }});
+
+    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(BackgroundImageMode, BackgroundImageMode::Stretch, {
+        { BackgroundImageMode::Stretch, "stretch" },
+        { BackgroundImageMode::RepeatHorizontally, "repeatHorizontally" },
+        { BackgroundImageMode::RepeatVertically, "repeatVertically" },
+        { BackgroundImageMode::Repeat, "repeat" }});
+
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ImageSize, ImageSize::Auto, {
             {ImageSize::Auto, "Auto"},
             {ImageSize::Large, "Large"},
@@ -205,9 +218,9 @@ namespace AdaptiveSharedNamespace
             {ImageSize::Stretch, "Stretch"}});
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(HorizontalAlignment, HorizontalAlignment::Left, {
-            {HorizontalAlignment::Center, "Center"},
-            {HorizontalAlignment::Left, "Left"},
-            {HorizontalAlignment::Right, "Right"}});
+            {HorizontalAlignment::Center, "center"},
+            {HorizontalAlignment::Left, "left"},
+            {HorizontalAlignment::Right, "right"}});
 
     DEFINE_ADAPTIVECARD_ENUM(ForegroundColor, {
             {ForegroundColor::Accent, "Accent"},

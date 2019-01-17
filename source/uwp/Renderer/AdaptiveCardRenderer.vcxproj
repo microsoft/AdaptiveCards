@@ -124,6 +124,7 @@
     <ClInclude Include="lib\AdaptiveActionInvoker.h" />
     <ClInclude Include="lib\AdaptiveActionParserRegistration.h" />
     <ClInclude Include="lib\AdaptiveActionsConfig.h" />
+    <ClInclude Include="lib\AdaptiveBackgroundImage.h" />
     <ClInclude Include="lib\AdaptiveCardElement.h" />
     <ClInclude Include="lib\AdaptiveChoiceSetInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveColumnRenderer.h" />
@@ -213,10 +214,12 @@
     <ClInclude Include="lib\ImageLoadTracker.h" />
     <ClInclude Include="lib\IXamlBuilderListener.h" />
     <ClInclude Include="lib\pch.h" />
+    <ClInclude Include="lib\TileControl.h" />
     <ClInclude Include="lib\Util.h" />
     <ClInclude Include="lib\Vector.h" />
     <ClInclude Include="lib\WholeItemsPanel.h" />
     <ClInclude Include="lib\XamlBuilder.h" />
+    <ClCompile Include="lib\AdaptiveBackgroundImage.cpp" />
     <ClCompile Include="lib\AdaptiveFontStyleDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveFontStylesDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveMedia.cpp" />
@@ -307,6 +310,7 @@
     <ClCompile Include="lib\AdaptiveTextBlock.cpp" />
     <ClCompile Include="lib\AdaptiveTextConfig.cpp" />
     <ClCompile Include="lib\ImageLoadTracker.cpp" />
+    <ClCompile Include="lib\TileControl.cpp" />
     <ClCompile Include="lib\Util.cpp" />
     <ClCompile Include="lib\WholeItemsPanel.cpp" />
     <ClCompile Include="lib\XamlBuilder.cpp" />
@@ -325,6 +329,5 @@
     </Midl>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>

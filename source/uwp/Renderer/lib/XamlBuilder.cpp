@@ -24,6 +24,7 @@
 #include "MediaHelpers.h"
 #include "AdaptiveBase64Util.h"
 #include <robuffer.h>
+#include "TileControl.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -399,11 +400,13 @@ namespace AdaptiveNamespace
             THROW_IF_FAILED(rootAsPanel->put_Background(backgroundColorBrush.Get()));
         }
 
-        HSTRING backgroundImage;
+        HSTRING backgroundImageUrl;
+        ComPtr<IAdaptiveBackgroundImage> backgroundImage;
         THROW_IF_FAILED(adaptiveCard->get_BackgroundImage(&backgroundImage));
-        if (backgroundImage != nullptr)
+        THROW_IF_FAILED(backgroundImage->get_Url(&backgroundImageUrl));
+        if (backgroundImageUrl != nullptr)
         {
-            ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImage, renderContext, renderArgs);
+            ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImage.Get(), renderContext, renderArgs);
         }
 
         // Outer panel that contains the main body and any inline show cards
@@ -446,7 +449,7 @@ namespace AdaptiveNamespace
         {
             ComPtr<IFrameworkElement> rootAsFrameworkElement;
             THROW_IF_FAILED(rootElement.As(&rootAsFrameworkElement));
-            rootAsFrameworkElement->put_VerticalAlignment(VerticalAlignment::VerticalAlignment_Stretch);
+            rootAsFrameworkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment::VerticalAlignment_Stretch);
         }
 
         ComPtr<IUIElement> rootAsUIElement;
@@ -455,35 +458,63 @@ namespace AdaptiveNamespace
     }
 
     void XamlBuilder::ApplyBackgroundToRoot(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel,
-                                            _In_ HSTRING url,
+                                            _In_ IAdaptiveBackgroundImage* backgroundImage,
                                             _In_ IAdaptiveRenderContext* renderContext,
                                             _In_ IAdaptiveRenderArgs* renderArgs)
     {
         // In order to reuse the image creation code paths, we simply create an adaptive card
         // image element and then build that into xaml and apply to the root.
         ComPtr<IAdaptiveImage> adaptiveImage;
+        HSTRING url;
         THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
+        backgroundImage->get_Url(&url);
         adaptiveImage->put_Url(url);
 
         ComPtr<IAdaptiveCardElement> adaptiveCardElement;
         THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
-        ComPtr<IUIElement> backgroundImage;
-        BuildImage(adaptiveCardElement.Get(), renderContext, renderArgs, &backgroundImage);
-        if (backgroundImage == nullptr)
+
+        ComPtr<IUIElement> background;
+        BuildImage(adaptiveCardElement.Get(), renderContext, renderArgs, &background);
+        if (background == nullptr)
         {
             return;
         }
 
-        // All background images should be stretched to fill the whole card.
         ComPtr<IImage> xamlImage;
-        THROW_IF_FAILED(backgroundImage.As(&xamlImage));
-        THROW_IF_FAILED(xamlImage->put_Stretch(Stretch::Stretch_UniformToFill));
+        THROW_IF_FAILED(background.As(&xamlImage));
 
+        ABI::AdaptiveNamespace::BackgroundImageMode mode;
+        backgroundImage->get_Mode(&mode);
+
+        // Apply Background Image Mode
         ComPtr<IFrameworkElement> backgroundAsFrameworkElement;
-        THROW_IF_FAILED(xamlImage.As(&backgroundAsFrameworkElement));
-        THROW_IF_FAILED(backgroundAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Stretch));
+        switch (mode)
+        {
+        case ABI::AdaptiveNamespace::BackgroundImageMode::Stretch:
+            // Ignored: horizontalAlignment, verticalAlignment
+            THROW_IF_FAILED(xamlImage->put_Stretch(Stretch::Stretch_UniformToFill));
 
-        XamlHelpers::AppendXamlElementToPanel(backgroundImage.Get(), rootPanel);
+            THROW_IF_FAILED(xamlImage.As(&backgroundAsFrameworkElement));
+            THROW_IF_FAILED(backgroundAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Stretch));
+            break;
+        default:
+
+            ComPtr<TileControl> tileControl;
+            MakeAndInitialize<TileControl>(&tileControl);
+            tileControl->put_BackgroundImage(backgroundImage);
+
+            ComPtr<IFrameworkElement> rootElement;
+            rootPanel->QueryInterface(rootElement.GetAddressOf());
+            tileControl->put_RootElement(rootElement.Get());
+
+            tileControl->LoadImageBrush(background.Get());
+
+            tileControl.As(&backgroundAsFrameworkElement);
+
+            break;
+        }
+
+        XamlHelpers::AppendXamlElementToPanel(backgroundAsFrameworkElement.Get(), rootPanel);
 
         // The overlay applied to the background image is determined by a resouce, so create
         // the overlay if that resources exists
@@ -969,7 +1000,7 @@ namespace AdaptiveNamespace
             THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
 
             adaptiveImage->put_Url(iconUrl);
-            adaptiveImage->put_HorizontalAlignment(HAlignment_Center);
+            adaptiveImage->put_HorizontalAlignment(ABI::AdaptiveNamespace::HorizontalAlignment::Center);
 
             ComPtr<IAdaptiveCardElement> adaptiveCardElement;
             THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
@@ -1720,19 +1751,19 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(adaptiveTextBlock->get_MaxLines(&maxLines));
         THROW_IF_FAILED(xamlTextBlock2->put_MaxLines(maxLines));
 
-        ABI::AdaptiveNamespace::HAlignment adaptiveHorizontalAlignment;
+        ABI::AdaptiveNamespace::HorizontalAlignment adaptiveHorizontalAlignment;
         THROW_IF_FAILED(adaptiveTextBlock->get_HorizontalAlignment(&adaptiveHorizontalAlignment));
 
         // Set the horizontal alignment of the text
         switch (adaptiveHorizontalAlignment)
         {
-        case ABI::AdaptiveNamespace::HAlignment::Left:
+        case ABI::AdaptiveNamespace::HorizontalAlignment::Left:
             THROW_IF_FAILED(xamlTextBlock->put_TextAlignment(TextAlignment::TextAlignment_Left));
             break;
-        case ABI::AdaptiveNamespace::HAlignment::Right:
+        case ABI::AdaptiveNamespace::HorizontalAlignment::Right:
             THROW_IF_FAILED(xamlTextBlock->put_TextAlignment(TextAlignment::TextAlignment_Right));
             break;
-        case ABI::AdaptiveNamespace::HAlignment::Center:
+        case ABI::AdaptiveNamespace::HorizontalAlignment::Center:
             THROW_IF_FAILED(xamlTextBlock->put_TextAlignment(TextAlignment::TextAlignment_Center));
             break;
         }
@@ -2129,18 +2160,18 @@ namespace AdaptiveNamespace
             }
         }
 
-        ABI::AdaptiveNamespace::HAlignment adaptiveHorizontalAlignment;
+        ABI::AdaptiveNamespace::HorizontalAlignment adaptiveHorizontalAlignment;
         THROW_IF_FAILED(adaptiveImage->get_HorizontalAlignment(&adaptiveHorizontalAlignment));
 
         switch (adaptiveHorizontalAlignment)
         {
-        case ABI::AdaptiveNamespace::HAlignment::Left:
+        case ABI::AdaptiveNamespace::HorizontalAlignment::Left:
             THROW_IF_FAILED(frameworkElement->put_HorizontalAlignment(HorizontalAlignment_Left));
             break;
-        case ABI::AdaptiveNamespace::HAlignment::Right:
+        case ABI::AdaptiveNamespace::HorizontalAlignment::Right:
             THROW_IF_FAILED(frameworkElement->put_HorizontalAlignment(HorizontalAlignment_Right));
             break;
-        case ABI::AdaptiveNamespace::HAlignment::Center:
+        case ABI::AdaptiveNamespace::HorizontalAlignment::Center:
             THROW_IF_FAILED(frameworkElement->put_HorizontalAlignment(HorizontalAlignment_Center));
             break;
         }
@@ -2218,6 +2249,7 @@ namespace AdaptiveNamespace
 
         ComPtr<IPanel> containerPanelAsPanel;
         THROW_IF_FAILED(containerPanel.As(&containerPanelAsPanel));
+
         ComPtr<IVector<IAdaptiveCardElement*>> childItems;
         THROW_IF_FAILED(adaptiveContainer->get_Items(&childItems));
         BuildPanelChildren(childItems.Get(), containerPanelAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {});
@@ -2255,9 +2287,37 @@ namespace AdaptiveNamespace
 
         XamlBuilder::SetVerticalContentAlignmentToChildren(containerPanel.Get(), verticalContentAlignment);
 
-        ComPtr<IUIElement> containerPanelAsUIElement;
-        THROW_IF_FAILED(containerPanel.As(&containerPanelAsUIElement));
-        THROW_IF_FAILED(containerBorder->put_Child(containerPanelAsUIElement.Get()));
+        // Check if backgroundImage defined
+        HSTRING backgroundImageUrl;
+        ComPtr<IAdaptiveBackgroundImage> backgroundImage;
+        THROW_IF_FAILED(adaptiveContainer->get_BackgroundImage(&backgroundImage));
+        THROW_IF_FAILED(backgroundImage->get_Url(&backgroundImageUrl));
+        if (backgroundImageUrl != nullptr)
+        {
+            ComPtr<IGrid> rootElement =
+                XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
+            ComPtr<IPanel> rootAsPanel;
+            THROW_IF_FAILED(rootElement.As(&rootAsPanel));
+
+            ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImage.Get(), renderContext, newRenderArgs.Get());
+
+            // Add rootElement to containerBorder
+            ComPtr<IUIElement> rootAsUIElement;
+            THROW_IF_FAILED(rootElement.As(&rootAsUIElement));
+            THROW_IF_FAILED(containerBorder->put_Child(rootAsUIElement.Get()));
+
+            // Add containerPanel to rootElement
+            ComPtr<IFrameworkElement> containerPanelAsFElement;
+            THROW_IF_FAILED(containerPanel.As(&containerPanelAsFElement));
+            XamlHelpers::AppendXamlElementToPanel(containerPanelAsFElement.Get(), rootAsPanel.Get(), containerHeightType);
+        }
+        else
+        {
+            // instead, directly add containerPanel to containerBorder
+            ComPtr<IUIElement> containerPanelAsUIElement;
+            THROW_IF_FAILED(containerPanel.As(&containerPanelAsUIElement));
+            THROW_IF_FAILED(containerBorder->put_Child(containerPanelAsUIElement.Get()));
+        }
 
         THROW_IF_FAILED(
             SetStyleFromResourceDictionary(renderContext, L"Adaptive.Container", containerPanelAsFrameWorkElement.Get()));
@@ -2305,24 +2365,22 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveRenderArgs> newRenderArgs;
         THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&newRenderArgs, containerStyle, parentElement.Get()));
 
+        ComPtr<IPanel> columnAsPanel;
+        THROW_IF_FAILED(columnPanel.As(&columnAsPanel));
+
         // If container style was explicitly assigned, apply background
         ComPtr<IAdaptiveHostConfig> hostConfig;
         THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
         ABI::Windows::UI::Color backgroundColor;
         if (hasExplicitContainerStyle && SUCCEEDED(GetBackgroundColorFromStyle(containerStyle, hostConfig.Get(), &backgroundColor)))
         {
-            ComPtr<IPanel> columnAsPanel;
-            THROW_IF_FAILED(columnPanel.As(&columnAsPanel));
-
             ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(backgroundColor);
             THROW_IF_FAILED(columnAsPanel->put_Background(backgroundColorBrush.Get()));
         }
 
-        ComPtr<IPanel> columnPanelAsPanel;
-        THROW_IF_FAILED(columnPanel.As(&columnPanelAsPanel));
         ComPtr<IVector<IAdaptiveCardElement*>> childItems;
         THROW_IF_FAILED(adaptiveColumn->get_Items(&childItems));
-        BuildPanelChildren(childItems.Get(), columnPanelAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {});
+        BuildPanelChildren(childItems.Get(), columnAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {});
 
         ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment;
         THROW_IF_FAILED(adaptiveColumn->get_VerticalContentAlignment(&verticalContentAlignment));
@@ -2340,8 +2398,36 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveActionElement> selectAction;
         THROW_IF_FAILED(adaptiveColumn->get_SelectAction(&selectAction));
 
+        // Define columnAsUIElement based on the existence of a backgroundImage
         ComPtr<IUIElement> columnAsUIElement;
-        THROW_IF_FAILED(columnPanel.As(&columnAsUIElement));
+        HSTRING backgroundImageUrl;
+        ComPtr<IAdaptiveBackgroundImage> backgroundImage;
+        THROW_IF_FAILED(adaptiveColumn->get_BackgroundImage(&backgroundImage));
+        THROW_IF_FAILED(backgroundImage->get_Url(&backgroundImageUrl));
+        if (backgroundImageUrl != nullptr)
+        {
+            ComPtr<IGrid> rootElement =
+                XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
+            ComPtr<IPanel> rootAsPanel;
+            THROW_IF_FAILED(rootElement.As(&rootAsPanel));
+
+            ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImage.Get(), renderContext, newRenderArgs.Get());
+
+            // get HeightType for column
+            ABI::AdaptiveNamespace::HeightType columnHeightType{};
+            THROW_IF_FAILED(cardElement->get_Height(&columnHeightType));
+
+            // Add columnPanel to rootElement
+            ComPtr<IFrameworkElement> columnPanelAsFElement;
+            THROW_IF_FAILED(columnPanel.As(&columnPanelAsFElement));
+            XamlHelpers::AppendXamlElementToPanel(columnPanelAsFElement.Get(), rootAsPanel.Get(), columnHeightType);
+
+            THROW_IF_FAILED(rootElement.As(&columnAsUIElement));
+        }
+        else
+        {
+            THROW_IF_FAILED(columnPanel.As(&columnAsUIElement));
+        }
 
         HandleSelectAction(adaptiveCardElement,
                            selectAction.Get(),
@@ -3382,7 +3468,7 @@ namespace AdaptiveNamespace
             if (!isMultiLine)
             {
                 THROW_IF_FAILED(textBoxWithInlineAction.As(&textBoxAsFrameworkElement));
-                THROW_IF_FAILED(textBoxAsFrameworkElement->put_VerticalAlignment(VerticalAlignment::VerticalAlignment_Top));
+                THROW_IF_FAILED(textBoxAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Top));
             }
 
             THROW_IF_FAILED(textBoxWithInlineAction.CopyTo(textInputControl));
@@ -3391,7 +3477,7 @@ namespace AdaptiveNamespace
         {
             if (!isMultiLine)
             {
-                THROW_IF_FAILED(textBoxAsFrameworkElement->put_VerticalAlignment(VerticalAlignment::VerticalAlignment_Top));
+                THROW_IF_FAILED(textBoxAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Top));
             }
 
             THROW_IF_FAILED(textBox.CopyTo(textInputControl));

@@ -31,9 +31,11 @@ namespace AdaptiveNamespace
         m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedColumn->GetStyle());
         m_verticalAlignment =
             static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedColumn->GetVerticalContentAlignment());
+
         RETURN_IF_FAILED(UTF8ToHString(sharedColumn->GetWidth(), m_width.GetAddressOf()));
         m_pixelWidth = sharedColumn->GetPixelWidth();
-
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveBackgroundImage>(m_backgroundImage.GetAddressOf(),
+                                                                    sharedColumn->GetBackgroundImage()));
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedColumn));
         return S_OK;
     }
@@ -71,6 +73,17 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    HRESULT AdaptiveColumn::get_BackgroundImage(IAdaptiveBackgroundImage** backgroundImage)
+    {
+        return m_backgroundImage.CopyTo(backgroundImage);
+    }
+
+    HRESULT AdaptiveColumn::put_BackgroundImage(IAdaptiveBackgroundImage* backgroundImage)
+    {
+        m_backgroundImage = backgroundImage;
+        return S_OK;
+    }
+
     HRESULT AdaptiveColumn::get_Items(_COM_Outptr_ IVector<IAdaptiveCardElement*>** items)
     {
         return m_items.CopyTo(items);
@@ -102,6 +115,11 @@ namespace AdaptiveNamespace
         column->SetVerticalContentAlignment(static_cast<AdaptiveSharedNamespace::VerticalContentAlignment>(m_verticalAlignment));
         column->SetWidth(HStringToUTF8(m_width.Get()));
         column->SetPixelWidth(m_pixelWidth);
+
+        std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage> sharedBackgroundImage;
+        auto backgroundImage = static_cast<AdaptiveNamespace::AdaptiveBackgroundImage*>(m_backgroundImage.Get());
+        RETURN_IF_FAILED(backgroundImage->GetSharedModel(sharedBackgroundImage));
+        column->SetBackgroundImage(sharedBackgroundImage);
 
         if (m_selectAction != nullptr)
         {

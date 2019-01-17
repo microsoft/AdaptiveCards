@@ -35,6 +35,8 @@ namespace AdaptiveNamespace
         m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedContainer->GetStyle());
         m_verticalAlignment =
             static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedContainer->GetVerticalContentAlignment());
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveBackgroundImage>(m_backgroundImage.GetAddressOf(),
+                                                                    sharedContainer->GetBackgroundImage()));
 
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedContainer));
         return S_OK;
@@ -87,6 +89,17 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    _Use_decl_annotations_ HRESULT AdaptiveContainer::get_BackgroundImage(IAdaptiveBackgroundImage** backgroundImage)
+    {
+        return m_backgroundImage.CopyTo(backgroundImage);
+    }
+
+    _Use_decl_annotations_ HRESULT AdaptiveContainer::put_BackgroundImage(IAdaptiveBackgroundImage* backgroundImage)
+    {
+        m_backgroundImage = backgroundImage;
+        return S_OK;
+    }
+
     HRESULT AdaptiveContainer::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     {
         std::shared_ptr<AdaptiveSharedNamespace::Container> container = std::make_shared<AdaptiveSharedNamespace::Container>();
@@ -101,6 +114,11 @@ namespace AdaptiveNamespace
 
         container->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
         container->SetVerticalContentAlignment(static_cast<AdaptiveSharedNamespace::VerticalContentAlignment>(m_verticalAlignment));
+
+        std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage> sharedBackgroundImage;
+        auto backgroundImage = static_cast<AdaptiveNamespace::AdaptiveBackgroundImage*>(m_backgroundImage.Get());
+        RETURN_IF_FAILED(backgroundImage->GetSharedModel(sharedBackgroundImage));
+        container->SetBackgroundImage(sharedBackgroundImage);
 
         GenerateSharedElements(m_items.Get(), container->GetItems());
 

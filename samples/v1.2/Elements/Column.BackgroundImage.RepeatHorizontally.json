@@ -1,0 +1,78 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.2",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Text in body"
+    },
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "auto",
+          "backgroundImage": {
+            "url": "http://icons.iconarchive.com/icons/pixelmixer/basic/48/plus-icon.png",
+            "mode": "repeatHorizontally",
+            "verticalAlignment": "top"
+          },
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Text in Column 1"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "auto",
+          "backgroundImage": {
+            "url": "http://icons.iconarchive.com/icons/pixelmixer/basic/48/plus-icon.png",
+            "mode": "repeatHorizontally",
+            "verticalAlignment": "center"
+          },
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Text in Column 2"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "auto",
+          "backgroundImage": {
+            "url": "http://icons.iconarchive.com/icons/pixelmixer/basic/48/plus-icon.png",
+            "mode": "repeatHorizontally",
+            "verticalAlignment": "bottom"
+          },
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Text in Column 3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "Text 1 in Container"
+        },
+        {
+          "type": "TextBlock",
+          "text": "Text 2 in Container"
+        },
+        {
+          "type": "TextBlock",
+          "text": "Text 3 in Container"
+        }
+      ]
+    }
+  ]
+}

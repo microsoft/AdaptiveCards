@@ -28,6 +28,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveBase64Util.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\BackgroundImage.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Media.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\MediaSource.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ParseContext.cpp" />
@@ -83,6 +84,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseException.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseWarning.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveBase64Util.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\BackgroundImage.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseActionElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseInputElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoiceInput.h" />

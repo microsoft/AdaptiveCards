@@ -20,6 +20,7 @@ namespace AdaptiveSharedNamespace
         Attention,
         BackgroundColor,
         BackgroundImage,
+        BackgroundImageMode,
         BackgroundImageUrl,
         BaseCardElement,
         Body,
@@ -103,6 +104,9 @@ namespace AdaptiveSharedNamespace
         Placeholder,
         PlayButton,
         Poster,
+        Repeat,
+        RepeatHorizontally,
+        RepeatVertically,
         Right,
         SelectAction,
         Sentiment,
@@ -138,6 +142,7 @@ namespace AdaptiveSharedNamespace
         ValueOff,
         ValueOn,
         Version,
+        VerticalAlignment,
         VerticalContentAlignment,
         Warning,
         Weight,
@@ -216,6 +221,23 @@ namespace AdaptiveSharedNamespace
         Right
     };
     DECLARE_ADAPTIVECARD_ENUM(HorizontalAlignment);
+
+    enum class VerticalAlignment
+    {
+        Top = 0,
+        Center,
+        Bottom
+    };
+    DECLARE_ADAPTIVECARD_ENUM(VerticalAlignment);
+
+    enum class BackgroundImageMode
+    {
+        Stretch = 0,
+        RepeatHorizontally,
+        RepeatVertically,
+        Repeat
+    };
+    DECLARE_ADAPTIVECARD_ENUM(BackgroundImageMode);
 
     enum class ImageStyle
     {

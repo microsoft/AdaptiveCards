@@ -5,6 +5,7 @@
 #include "Container.h"
 #include <windows.foundation.h>
 #include "AdaptiveCardElement.h"
+#include "AdaptiveBackgroundImage.h"
 
 namespace AdaptiveNamespace
 {
@@ -34,6 +35,9 @@ namespace AdaptiveNamespace
 
         IFACEMETHODIMP get_VerticalContentAlignment(_Out_ ABI::AdaptiveNamespace::VerticalContentAlignment* verticalAlignment);
         IFACEMETHODIMP put_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment verticalAlignment);
+
+        IFACEMETHODIMP get_BackgroundImage(_Out_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage** backgroundImage);
+        IFACEMETHODIMP put_BackgroundImage(_In_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage* backgroundImage);
 
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
@@ -100,6 +104,7 @@ namespace AdaptiveNamespace
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_selectAction;
         ABI::AdaptiveNamespace::ContainerStyle m_style;
         ABI::AdaptiveNamespace::VerticalContentAlignment m_verticalAlignment;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveBackgroundImage> m_backgroundImage;
     };
 
     ActivatableClass(AdaptiveContainer);
