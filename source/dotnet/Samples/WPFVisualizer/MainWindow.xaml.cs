@@ -20,7 +20,6 @@ using Newtonsoft.Json.Linq;
 using Xceed.Wpf.Toolkit.PropertyGrid;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 using System.Collections.ObjectModel;
-using JsonTransformLanguage;
 
 namespace WpfVisualizer
 {

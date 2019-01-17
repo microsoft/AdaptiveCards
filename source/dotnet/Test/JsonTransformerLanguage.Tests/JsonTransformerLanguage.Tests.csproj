@@ -119,7 +119,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\JsonTransformLanguage\JsonTransformLanguage.csproj">
+    <ProjectReference Include="..\..\Library\JsonTransformLanguage\JsonTransformLanguage.csproj">
       <Project>{9F044123-E586-4C13-80BA-872131BDDA71}</Project>
       <Name>JsonTransformLanguage</Name>
     </ProjectReference>

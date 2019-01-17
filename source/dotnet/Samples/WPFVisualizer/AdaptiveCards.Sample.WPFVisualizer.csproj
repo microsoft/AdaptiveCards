@@ -195,10 +195,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\JsonTransformLanguage\JsonTransformLanguage.csproj">
-      <Project>{9f044123-e586-4c13-80ba-872131bdda71}</Project>
-      <Name>JsonTransformLanguage</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Library\AdaptiveCards.Rendering.Wpf.Xceed\AdaptiveCards.Rendering.Wpf.Xceed.csproj">
       <Project>{4741abec-33b0-424f-b5f1-464ec31aeebd}</Project>
       <Name>AdaptiveCards.Rendering.Wpf.Xceed</Name>

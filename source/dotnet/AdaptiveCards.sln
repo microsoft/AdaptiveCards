@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Sample.ImageR
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageRendererServer", "Samples\ImageRendererServer\ImageRendererServer.csproj", "{03C99D2B-D6FC-4DBE-880C-5B1A4024DD67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonTransformLanguage", "JsonTransformLanguage\JsonTransformLanguage.csproj", "{9F044123-E586-4C13-80BA-872131BDDA71}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonTransformLanguage", "Library\JsonTransformLanguage\JsonTransformLanguage.csproj", "{9F044123-E586-4C13-80BA-872131BDDA71}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonTransformerLanguage.Tests", "Test\JsonTransformerLanguage.Tests\JsonTransformerLanguage.Tests.csproj", "{1596E446-EF8E-4AB1-BED6-9218AD23D5B6}"
 EndProject
