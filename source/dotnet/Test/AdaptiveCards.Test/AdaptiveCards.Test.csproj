@@ -7,6 +7,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="BindingTestPayloads\People-expected.json" />
+    <None Remove="BindingTestPayloads\People.json" />
+    <None Remove="BindingTestPayloads\SportsScore-expected.json" />
+    <None Remove="BindingTestPayloads\SportsScore.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="BindingTestPayloads\People-expected.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="BindingTestPayloads\People.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="BindingTestPayloads\SportsScore-expected.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="BindingTestPayloads\SportsScore.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CompareNETObjects" Version="4.3.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.2.0" />

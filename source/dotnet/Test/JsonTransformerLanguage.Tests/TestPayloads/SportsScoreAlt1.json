@@ -1,0 +1,190 @@
+{
+  "inputJson": {
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "elements": {
+      "Team": {
+        "element": {
+          "type": "Container",
+          "items": [
+            {
+              "type": "Image",
+              "url": "{logo}",
+              "size": "medium"
+            },
+            {
+              "type": "TextBlock",
+              "text": "{name}",
+              "horizontalAlignment": "center",
+              "weight": "bolder"
+            }
+          ]
+        }
+      }
+    },
+    "body": [
+      {
+        "type": "Container",
+        "items": [
+          {
+            "type": "ColumnSet",
+            "columns": [
+              {
+                "type": "Column",
+                "width": "auto",
+                "items": [
+                  {
+                    "$type": "Team",
+                    "$data": "{homeTeam}"
+                  }
+                ]
+              },
+              {
+                "type": "Column",
+                "width": "stretch",
+                "separator": true,
+                "spacing": "medium",
+                "items": [
+                  {
+                    "type": "TextBlock",
+                    "text": "{date}",
+                    "horizontalAlignment": "center"
+                  },
+                  {
+                    "type": "TextBlock",
+                    "text": "{status}",
+                    "spacing": "none",
+                    "horizontalAlignment": "center"
+                  },
+                  {
+                    "type": "TextBlock",
+                    "text": "{homeTeam.score} - {awayTeam.score}",
+                    "size": "extraLarge",
+                    "horizontalAlignment": "center"
+                  }
+                ]
+              },
+              {
+                "type": "Column",
+                "width": "auto",
+                "separator": true,
+                "spacing": "medium",
+                "items": [
+                  {
+                    "$type": "Team",
+                    "$data": "{awayTeam}"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  "inputData": {
+    "date": "Dec 4",
+    "status": "Final",
+    "homeTeam": {
+      "name": "SHADES",
+      "logo": "http://adaptivecards.io/content/cats/3.png",
+      "score": 7
+    },
+    "awayTeam": {
+      "name": "SKINS",
+      "logo": "http://adaptivecards.io/content/cats/2.png",
+      "score": 40
+    }
+  },
+
+  "expected": {
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+      {
+        "type": "Container",
+        "items": [
+          {
+            "type": "ColumnSet",
+            "columns": [
+              {
+                "type": "Column",
+                "width": "auto",
+                "items": [
+                  {
+                    "type": "Container",
+                    "items": [
+                      {
+                        "type": "Image",
+                        "url": "http://adaptivecards.io/content/cats/3.png",
+                        "size": "medium"
+                      },
+                      {
+                        "type": "TextBlock",
+                        "text": "SHADES",
+                        "horizontalAlignment": "center",
+                        "weight": "bolder"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "Column",
+                "width": "stretch",
+                "separator": true,
+                "spacing": "medium",
+                "items": [
+                  {
+                    "type": "TextBlock",
+                    "text": "Dec 4",
+                    "horizontalAlignment": "center"
+                  },
+                  {
+                    "type": "TextBlock",
+                    "text": "Final",
+                    "spacing": "none",
+                    "horizontalAlignment": "center"
+                  },
+                  {
+                    "type": "TextBlock",
+                    "text": "7 - 40",
+                    "size": "extraLarge",
+                    "horizontalAlignment": "center"
+                  }
+                ]
+              },
+              {
+                "type": "Column",
+                "width": "auto",
+                "separator": true,
+                "spacing": "medium",
+                "items": [
+                  {
+                    "type": "Container",
+                    "items": [
+                      {
+                        "type": "Image",
+                        "url": "http://adaptivecards.io/content/cats/2.png",
+                        "size": "medium"
+                      },
+                      {
+                        "type": "TextBlock",
+                        "text": "SKINS",
+                        "horizontalAlignment": "center",
+                        "weight": "bolder"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

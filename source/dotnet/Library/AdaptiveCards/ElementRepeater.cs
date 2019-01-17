@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace AdaptiveCards
             _cardJson = card.ToJson();
         }
 
-        public AdaptiveTypedElement GetNewElement()
+        public AdaptiveTypedElement GetNewElement(JToken data)
         {
             AdaptiveCard card = AdaptiveCard.FromJson(_cardJson).Card;
             if (card.Body.Count > 0)

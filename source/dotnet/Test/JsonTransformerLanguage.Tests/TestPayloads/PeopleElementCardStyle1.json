@@ -59,7 +59,8 @@
       {
         "type": "Person",
         "name": "Matt Hidinger",
-        "picture": "https://unsplash.it/64?image=669"
+        "picture": "https://unsplash.it/64?image=669",
+        "separator": true
       }
     ]
   },
@@ -72,64 +73,72 @@
     "version": "1.0",
     "body": [
       {
-        "type": "ColumnSet",
-        "columns": [
-          {
-            "type": "Column",
-            "items": [
-              {
-                "type": "Image",
-                "style": "Person",
-                "url": "https://unsplash.it/64?image=883",
-                "size": "Small"
-              }
-            ],
-            "width": "auto"
-          },
-          {
-            "type": "Column",
-            "verticalContentAlignment": "Center",
-            "items": [
-              {
-                "type": "TextBlock",
-                "size": "Medium",
-                "weight": "Bolder",
-                "text": "Andrew Leader"
-              }
-            ],
-            "width": "stretch"
-          }
-        ]
+        "type": "Person",
+        "separator": true,
+        "element": {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "type": "Column",
+              "items": [
+                {
+                  "type": "Image",
+                  "style": "Person",
+                  "url": "https://unsplash.it/64?image=883",
+                  "size": "Small"
+                }
+              ],
+              "width": "auto"
+            },
+            {
+              "type": "Column",
+              "verticalContentAlignment": "Center",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "size": "Medium",
+                  "weight": "Bolder",
+                  "text": "Andrew Leader"
+                }
+              ],
+              "width": "stretch"
+            }
+          ]
+        }
       },
       {
-        "type": "ColumnSet",
-        "columns": [
-          {
-            "type": "Column",
-            "items": [
-              {
-                "type": "Image",
-                "style": "Person",
-                "url": "https://unsplash.it/64?image=669",
-                "size": "Small"
-              }
-            ],
-            "width": "auto"
-          },
-          {
-            "type": "Column",
-            "verticalContentAlignment": "Center",
-            "items": [
-              {
-                "type": "TextBlock",
-                "size": "Medium",
-                "weight": "Bolder",
-                "text": "Matt Hidinger"
-              }
-            ],
-            "width": "stretch"
-          }
-        ]
+        "type": "Person",
+        "separator": true,
+        "element": {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "type": "Column",
+              "items": [
+                {
+                  "type": "Image",
+                  "style": "Person",
+                  "url": "https://unsplash.it/64?image=669",
+                  "size": "Small"
+                }
+              ],
+              "width": "auto"
+            },
+            {
+              "type": "Column",
+              "verticalContentAlignment": "Center",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "size": "Medium",
+                  "weight": "Bolder",
+                  "text": "Matt Hidinger"
+                }
+              ],
+              "width": "stretch"
+            }
+          ]
+        }
       }
     ]
   }

@@ -73,6 +73,9 @@ namespace JsonTransformLanguage
             List<JObject> answer = new List<JObject>();
             JToken currData = null;
 
+            // Clone it since we'll be modifying it
+            input = input.DeepClone() as JObject;
+
             // If new custom types are declared
             if (input.TryGetValue(PROP_TYPES, out JToken typesAsToken))
             {
@@ -92,6 +95,9 @@ namespace JsonTransformLanguage
             // If data is specified
             if (input.TryGetValue(PROP_DATA, out JToken dataVal))
             {
+                // Remove the data property
+                input.Remove(PROP_DATA);
+
                 // Transform and use the data
                 currData = Transform(dataVal, parentData, props, index, false, types, context);
 

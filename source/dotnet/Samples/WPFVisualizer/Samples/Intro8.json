@@ -32,7 +32,7 @@
     ]
   },
   "elements": {
-    "Person": "https://raw.githubusercontent.com/andrewleader/my-adaptive-card-elements/master/elements/Person.json"
+    "Person": "https://raw.githubusercontent.com/andrewleader/my-adaptive-card-elements/23f7c7ccd2ee53f675b3fe7b66243f47b503d20c/elements/Person.json"
   },
   "body": [
     {

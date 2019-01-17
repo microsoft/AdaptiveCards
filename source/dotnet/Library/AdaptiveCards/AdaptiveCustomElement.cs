@@ -15,14 +15,21 @@ namespace AdaptiveCards
         /// <summary>
         /// Programmatically generated through resolution process
         /// </summary>
-        [JsonIgnore]
         public AdaptiveElement ResolvedElement { get; set; }
+
+        [JsonIgnore]
+        IDictionary<string, object> OriginalAdditionalProperties { get; set; }
 
         public void ResolveElement(ResolveContext context, JToken data)
         {
             if (context.Elements.TryGetElementDefinition(Type, out AdaptiveElementDefinition definition))
             {
-                ResolvedElement = definition.GetNewElement();
+                ResolvedElement = definition.GetNewElement(data);
+
+                // We store the original additional properties so they don't get re-serialized. This is a temporary hack primarily for unit testing,
+                // so that the data bound properties don't get re-serialized.
+                OriginalAdditionalProperties = AdditionalProperties;
+                AdditionalProperties = null;
             }
         }
 

@@ -100,17 +100,7 @@ namespace WpfVisualizer
 
             try
             {
-                string finalCard = textBox.Text;
-                try
-                {
-                    JObject originalCard = JObject.Parse(textBox.Text);
-                    JToken data = JToken.Parse(textBoxData.Text);
-
-                    finalCard = JsonTransformer.Transform(originalCard, data, null)?.ToString();
-                }
-                catch { }
-
-                AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(finalCard);
+                AdaptiveCardParseResult parseResult = AdaptiveCard.ResolveFromJson(textBox.Text, textBoxData.Text);
 
                 AdaptiveCard card = parseResult.Card;
 

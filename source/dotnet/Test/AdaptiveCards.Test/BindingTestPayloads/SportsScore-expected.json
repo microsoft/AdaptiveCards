@@ -2,40 +2,6 @@
   "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
   "version": "1.0",
-  "data": {
-    "date": "Dec 4",
-    "status": "Final",
-    "homeTeam": {
-      "name": "SHADES",
-      "logo": "http://adaptivecards.io/content/cats/3.png",
-      "score": 7
-    },
-    "awayTeam": {
-      "name": "SKINS",
-      "logo": "http://adaptivecards.io/content/cats/2.png",
-      "score": 40
-    }
-  },
-  "elements": {
-    "Team": {
-      "element": {
-        "type": "Container",
-        "items": [
-          {
-            "type": "Image",
-            "url": "{team.logo}",
-            "size": "medium"
-          },
-          {
-            "type": "TextBlock",
-            "text": "{team.name}",
-            "horizontalAlignment": "center",
-            "weight": "bolder"
-          }
-        ]
-      }
-    }
-  },
   "body": [
     {
       "type": "Container",
@@ -49,7 +15,22 @@
               "items": [
                 {
                   "type": "Team",
-                  "team": "{homeTeam}"
+                  "resolvedElement": {
+                    "type": "Container",
+                    "items": [
+                      {
+                        "type": "Image",
+                        "url": "http://adaptivecards.io/content/cats/3.png",
+                        "size": "medium"
+                      },
+                      {
+                        "type": "TextBlock",
+                        "text": "SHADES",
+                        "horizontalAlignment": "center",
+                        "weight": "bolder"
+                      }
+                    ]
+                  }
                 }
               ]
             },
@@ -61,18 +42,18 @@
               "items": [
                 {
                   "type": "TextBlock",
-                  "text": "{date}",
+                  "text": "Dec 4",
                   "horizontalAlignment": "center"
                 },
                 {
                   "type": "TextBlock",
-                  "text": "{status}",
+                  "text": "Final",
                   "spacing": "none",
                   "horizontalAlignment": "center"
                 },
                 {
                   "type": "TextBlock",
-                  "text": "{homeTeam.score} - {awayTeam.score}",
+                  "text": "7 - 40",
                   "size": "extraLarge",
                   "horizontalAlignment": "center"
                 }
@@ -86,7 +67,22 @@
               "items": [
                 {
                   "type": "Team",
-                  "team": "{awayTeam}"
+                  "resolvedElement": {
+                    "type": "Container",
+                    "items": [
+                      {
+                        "type": "Image",
+                        "url": "http://adaptivecards.io/content/cats/2.png",
+                        "size": "medium"
+                      },
+                      {
+                        "type": "TextBlock",
+                        "text": "SKINS",
+                        "horizontalAlignment": "center",
+                        "weight": "bolder"
+                      }
+                    ]
+                  }
                 }
               ]
             }

@@ -32,12 +32,12 @@
     ]
   },
   "elements": {
-    "Person": "https://raw.githubusercontent.com/andrewleader/my-adaptive-card-elements/master/elements/Person.json"
+    "Person": "https://raw.githubusercontent.com/andrewleader/my-adaptive-card-elements/23f7c7ccd2ee53f675b3fe7b66243f47b503d20c/elements/Person.json"
   },
   "body": [
     {
       "type": "TextBlock",
-      "text": "{data.name}",
+      "text": "{name}",
       "size": "large",
       "weight": "bolder"
     },
@@ -50,8 +50,8 @@
     },
     {
       "type": "Person",
-      "name": "{data.reportsTo.name}",
-      "picture": "{data.reportsTo.picture}"
+      "name": "{reportsTo.name}",
+      "picture": "{reportsTo.picture}"
     },
     {
       "type": "TextBlock",
@@ -62,9 +62,9 @@
     },
     {
       "type": "Person",
-      "repeat": "{data.directReports}",
-      "name": "{data.name}",
-      "picture": "{data.picture}"
+      "$data": "{directReports}",
+      "name": "{name}",
+      "picture": "{picture}"
     }
   ]
 }

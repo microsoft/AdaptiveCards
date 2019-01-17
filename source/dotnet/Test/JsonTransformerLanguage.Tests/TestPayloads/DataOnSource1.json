@@ -1,0 +1,15 @@
+{
+  "inputJson": {
+    "$data": {
+      "firstName": "Andrew",
+      "lastName": "Leader"
+    },
+    "name": "{firstName} {lastName}"
+  },
+
+  "inputData": null,
+
+  "expected": {
+    "name": "Andrew Leader"
+  }
+}

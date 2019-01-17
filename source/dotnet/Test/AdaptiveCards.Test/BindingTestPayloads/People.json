@@ -2,15 +2,21 @@
   "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
   "version": "1.0",
-  "data": {
-    "people": [
-      {
-        "name": "Andrew"
-      }
-    ]
-  },
   "elements": {
     "Person": {
+      "schema": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The full name of the person.",
+            "examples": [ "Andrew Leader" ]
+          },
+          "picture": {
+            "type": "string",
+            "description": "URL to a picture of the person."
+          }
+        }
+      },
       "element": {
         "type": "ColumnSet",
         "columns": [

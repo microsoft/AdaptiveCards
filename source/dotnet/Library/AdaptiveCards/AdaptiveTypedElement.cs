@@ -74,57 +74,9 @@ namespace AdaptiveCards
             }
         }
 
-        public virtual void ResolveElements(ResolveContext context)
+        public virtual void ResolveCustomElements(ResolveContext context)
         {
             context = context.CreateForCurrElement(this);
-
-            // First do repeating items
-            foreach (var lists in GetChildrenLists())
-            {
-                for (int i = 0; i < lists.Count; i++)
-                {
-                    var childEl = lists[i] as AdaptiveTypedElement;
-                    if (childEl != null)
-                    {
-                        if (childEl.Repeat != null)
-                        {
-                            object repeatData = ResolveChildData(Data, childEl.Repeat);
-                            childEl.Repeat = null;
-                            if (repeatData != null && repeatData is JArray jArray)
-                            {
-                                object originalChildElData = childEl.Data;
-                                childEl.Data = null;
-
-                                var elementRepeater = new ElementRepeater(childEl);
-
-                                lists.RemoveAt(i);
-                                i--;
-
-                                foreach (var item in jArray)
-                                {
-                                    var newEl = elementRepeater.GetNewElement();
-                                    newEl.Data = ResolveChildData(item, originalChildElData);
-                                    lists.Insert(i + 1, newEl);
-                                    i++;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Resolve data binding on this element
-            ResolveDataBindingOnObject(Data, this);
-
-            // Also resolve additional properties
-            foreach (var additionalProp in AdditionalProperties.ToArray())
-            {
-                if (additionalProp.Value is string s)
-                {
-                    object newVal = BindingEvaluator.EvaluateBinding(Data as JObject, s);
-                    AdditionalProperties[additionalProp.Key] = newVal;
-                }
-            }
 
             // If it's a custom element, load it
             if (this is AdaptiveCustomElement customElement)
@@ -132,52 +84,14 @@ namespace AdaptiveCards
                 // Serialize the element so its properties can be bound to from its child elements
                 JObject customElementData = JObject.FromObject(customElement);
 
-                customElement.ResolveElement(context);
-                if (customElement.ResolvedElement != null)
-                {
-                    customElement.ResolvedElement.Data = ResolveChildData(customElementData, customElement.ResolvedElement.Data);
-                }
+                customElement.ResolveElement(context, customElementData);
             }
 
             // Now deal with children
             foreach (var child in GetChildren())
             {
-                child.Data = ResolveChildData(Data, child.Data);
-
-                child.ResolveElements(context);
+                child.ResolveCustomElements(context);
             }
-        }
-
-        internal static void ResolveDataBindingOnObject(object data, object obj)
-        {
-            var thisProperties = obj.GetType().GetTypeInfo().DeclaredProperties;
-            foreach (var p in thisProperties.Where(i => i.PropertyType == typeof(string)))
-            {
-                string pVal = p.GetValue(obj) as string;
-                if (pVal != null)
-                {
-                    string newPVal = BindingEvaluator.EvaluateBinding<string>(data as JObject, pVal);
-                    if (pVal != newPVal)
-                    {
-                        p.SetValue(obj, newPVal);
-                    }
-                }
-            }
-        }
-
-        private static object ResolveChildData(object parentData, object initialChildData)
-        {
-            if (initialChildData == null)
-            {
-                return parentData;
-            }
-
-            else if (initialChildData is string scopedDataExpression)
-            {
-                return BindingEvaluator.EvaluateBinding(parentData as JObject, scopedDataExpression);
-            }
-
-            return initialChildData;
         }
     }
 }

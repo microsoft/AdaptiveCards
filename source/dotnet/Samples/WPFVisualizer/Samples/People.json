@@ -33,7 +33,7 @@
               {
                 "type": "Image",
                 "style": "Person",
-                "url": "{data.picture}",
+                "url": "{picture}",
                 "size": "Small"
               }
             ],
@@ -47,7 +47,7 @@
                 "type": "TextBlock",
                 "size": "Medium",
                 "weight": "Bolder",
-                "text": "{data.name}"
+                "text": "{name}"
               }
             ],
             "width": "stretch"

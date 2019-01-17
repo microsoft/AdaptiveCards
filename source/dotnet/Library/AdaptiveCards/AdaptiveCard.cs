@@ -7,7 +7,9 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using JsonTransformLanguage;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace AdaptiveCards
 {
@@ -249,6 +251,55 @@ namespace AdaptiveCards
             return parseResult;
         }
 
+        public static AdaptiveCardParseResult ResolveFromJson(string cardJson, string dataJson)
+        {
+            // First extract and remove the elements (since we don't want these data-bound to the card data)
+            AdaptiveElementDefinitions elementDefinitions = null;
+            try
+            {
+                JObject cardObj = JObject.Parse(cardJson);
+                if (cardObj.TryGetValue("elements", out JToken elementsToken))
+                {
+                    cardObj.Remove("elements");
+                    cardJson = cardObj.ToString();
+                    elementDefinitions = elementsToken.ToObject<AdaptiveElementDefinitions>();
+                }
+            }
+            catch { }
+
+            if (elementDefinitions == null)
+            {
+                elementDefinitions = new AdaptiveElementDefinitions();
+            }
+
+            // Then data-bind the card
+            try
+            {
+                JObject cardObj = JObject.Parse(cardJson);
+                JToken dataToken = null;
+                try
+                {
+                    dataToken = JToken.Parse(dataJson);
+                }
+                catch { }
+                var transformedCardObj = JsonTransformer.Transform(cardObj, dataToken, null);
+                cardJson = transformedCardObj.ToString();
+            }
+            catch { }
+
+            // Then parse like normal
+            var result = FromJson(cardJson);
+
+            if (result.Card != null)
+            {
+                result.Card.ResolveCustomElements(new ResolveContext()
+                {
+                    Elements = elementDefinitions
+                });
+            }
+
+            return result;
+        }
 
         /// <summary>
         ///  Serialize this Adaptive Card to JSON

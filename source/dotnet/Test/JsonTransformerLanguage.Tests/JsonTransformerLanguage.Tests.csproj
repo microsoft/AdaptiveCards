@@ -108,6 +108,12 @@
     <Content Include="TestPayloads\SportsScore1.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestPayloads\SportsScoreAlt1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestPayloads\DataOnSource1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\JsonTransformLanguage\JsonTransformLanguage.csproj">
