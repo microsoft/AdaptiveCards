@@ -8,9 +8,12 @@ namespace JsonTransformLanguage
 {
     internal static class JsonStringTransformer
     {
-        internal static JToken Transform(string input, JToken parentData, int index, JsonTransformerContext context)
+        private const string ID_DATA = "$data";
+        private const string ID_PROPS = "$props";
+
+        internal static JToken Transform(string input, JToken parentData, JToken props, int index, JsonTransformerContext context)
         {
-            return EvaluateBinding(input, parentData, index, context);
+            return EvaluateBinding(input, parentData, props, index, context);
         }
 
         private const string REGEX_PROPERTY_NAME = @"[a-zA-Z_$@][0-9a-zA-Z_$@]*";
@@ -18,24 +21,24 @@ namespace JsonTransformLanguage
         private const string REGEX_DICTIONARY_LOOKUP = @"\['(([^']|\\')+)'\]";
         private const string REGEX_BINDING_EXPRESSION = @"\{(" + REGEX_PROPERTY_NAME + @"((" + REGEX_DICTIONARY_LOOKUP + @")|(" + REGEX_PROPERTY_ACCESSOR + @"))*)\}";
 
-        public static JToken EvaluateBinding(string bindingExpression, JToken parentData, int index, JsonTransformerContext context)
+        public static JToken EvaluateBinding(string bindingExpression, JToken parentData, JToken props, int index, JsonTransformerContext context)
         {
             // If it's all one single expression
             // (This is a temporary hack for resolving correct data types)
             if (Regex.IsMatch(bindingExpression, "^" + REGEX_BINDING_EXPRESSION + "$"))
             {
-                return EvaluateSingleBinding(bindingExpression, parentData, index, context);
+                return EvaluateSingleBinding(bindingExpression, parentData, props, index, context);
             }
 
             Regex regex = new Regex(REGEX_BINDING_EXPRESSION);
-            var evaluator = new MyMatchEvaluator(parentData, index, context);
+            var evaluator = new MyMatchEvaluator(parentData, props, index, context);
 
             string replaced = regex.Replace(bindingExpression, evaluator.ReplaceBinding);
 
             return replaced;
         }
 
-        public static JToken EvaluateSingleBinding(string singleBindingExpression, JToken parentData, int index, JsonTransformerContext context)
+        public static JToken EvaluateSingleBinding(string singleBindingExpression, JToken parentData, JToken props, int index, JsonTransformerContext context)
         {
             var match = Regex.Match(singleBindingExpression, "^" + REGEX_BINDING_EXPRESSION + "$");
             if (match.Success && match.Groups[1].Success)
@@ -48,9 +51,13 @@ namespace JsonTransformLanguage
                     JToken data;
                     if (firstPropertyMatch.Value.StartsWith("$"))
                     {
-                        if (firstPropertyMatch.Value == JsonTransformer.PROP_DATA)
+                        if (firstPropertyMatch.Value == ID_DATA)
                         {
                             data = parentData;
+                        }
+                        else if (firstPropertyMatch.Value == ID_PROPS)
+                        {
+                            data = props;
                         }
                         else if (context.AdditionalReservedProperties.TryGetValue(firstPropertyMatch.Value, out JToken reservedData))
                         {
@@ -71,7 +78,7 @@ namespace JsonTransformLanguage
 
                     if (remainingToParse.Length > 0)
                     {
-                        return EvalulatePropertyExpression(remainingToParse, data, index, context);
+                        return EvalulatePropertyExpression(remainingToParse, data, props, index, context);
                     }
 
                     return data;
@@ -84,18 +91,20 @@ namespace JsonTransformLanguage
         private class MyMatchEvaluator
         {
             private JToken _parentData;
+            private JToken _props;
             private int _index;
             private JsonTransformerContext _context;
-            public MyMatchEvaluator(JToken parentData, int index, JsonTransformerContext context)
+            public MyMatchEvaluator(JToken parentData, JToken props, int index, JsonTransformerContext context)
             {
                 _parentData = parentData;
                 _index = index;
                 _context = context;
+                _props = props;
             }
 
             public string ReplaceBinding(Match m)
             {
-                return EvaluateSingleBinding(m.Value, _parentData, _index, _context)?.ToString();
+                return EvaluateSingleBinding(m.Value, _parentData, _props, _index, _context)?.ToString();
             }
         }
 
@@ -105,7 +114,7 @@ namespace JsonTransformLanguage
         /// <param name="data"></param>
         /// <param name="propertyExpression"></param>
         /// <returns></returns>
-        public static JToken EvalulatePropertyExpression(string propertyExpression, JToken parentData, int index, JsonTransformerContext context)
+        public static JToken EvalulatePropertyExpression(string propertyExpression, JToken parentData, JToken props, int index, JsonTransformerContext context)
         {
             if (parentData == null)
             {
@@ -139,7 +148,7 @@ namespace JsonTransformLanguage
             {
                 if (matchedText.Length < propertyExpression.Length)
                 {
-                    return EvalulatePropertyExpression(propertyExpression.Substring(matchedText.Length), nextData, index, context);
+                    return EvalulatePropertyExpression(propertyExpression.Substring(matchedText.Length), nextData, props, index, context);
                 }
                 else
                 {

@@ -1,0 +1,136 @@
+{
+  "inputJson": {
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "$types": {
+      "Person": {
+        "schema": {
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "The full name of the person.",
+              "examples": [ "Andrew Leader" ]
+            },
+            "picture": {
+              "type": "string",
+              "description": "URL to a picture of the person."
+            }
+          }
+        },
+        "def": {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "type": "Column",
+              "items": [
+                {
+                  "type": "Image",
+                  "style": "Person",
+                  "url": "{$props.picture}",
+                  "size": "Small"
+                }
+              ],
+              "width": "auto"
+            },
+            {
+              "type": "Column",
+              "verticalContentAlignment": "Center",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "size": "Medium",
+                  "weight": "Bolder",
+                  "text": "{$props.name}"
+                }
+              ],
+              "width": "stretch"
+            }
+          ]
+        }
+      }
+    },
+    "body": [
+      {
+        "$type": "Person",
+        "name": "Andrew Leader",
+        "picture": "https://unsplash.it/64?image=883"
+      },
+      {
+        "$type": "Person",
+        "name": "Matt Hidinger",
+        "picture": "https://unsplash.it/64?image=669"
+      }
+    ]
+  },
+
+  "inputData": null,
+
+  "expected": {
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+      {
+        "type": "ColumnSet",
+        "columns": [
+          {
+            "type": "Column",
+            "items": [
+              {
+                "type": "Image",
+                "style": "Person",
+                "url": "https://unsplash.it/64?image=883",
+                "size": "Small"
+              }
+            ],
+            "width": "auto"
+          },
+          {
+            "type": "Column",
+            "verticalContentAlignment": "Center",
+            "items": [
+              {
+                "type": "TextBlock",
+                "size": "Medium",
+                "weight": "Bolder",
+                "text": "Andrew Leader"
+              }
+            ],
+            "width": "stretch"
+          }
+        ]
+      },
+      {
+        "type": "ColumnSet",
+        "columns": [
+          {
+            "type": "Column",
+            "items": [
+              {
+                "type": "Image",
+                "style": "Person",
+                "url": "https://unsplash.it/64?image=669",
+                "size": "Small"
+              }
+            ],
+            "width": "auto"
+          },
+          {
+            "type": "Column",
+            "verticalContentAlignment": "Center",
+            "items": [
+              {
+                "type": "TextBlock",
+                "size": "Medium",
+                "weight": "Bolder",
+                "text": "Matt Hidinger"
+              }
+            ],
+            "width": "stretch"
+          }
+        ]
+      }
+    ]
+  }
+}

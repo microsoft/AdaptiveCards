@@ -18,7 +18,7 @@ namespace AdaptiveCards
         [JsonIgnore]
         public AdaptiveElement ResolvedElement { get; set; }
 
-        public void ResolveElement(ResolveContext context)
+        public void ResolveElement(ResolveContext context, JToken data)
         {
             if (context.Elements.TryGetElementDefinition(Type, out AdaptiveElementDefinition definition))
             {

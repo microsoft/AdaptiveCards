@@ -28,9 +28,9 @@ namespace AdaptiveCards
 #endif
         public List<AdaptiveFact> Facts { get; set; } = new List<AdaptiveFact>();
 
-        public override void ResolveData(ResolveContext context)
+        public override void ResolveElements(ResolveContext context)
         {
-            base.ResolveData(context);
+            base.ResolveElements(context);
 
             foreach (var f in Facts)
             {

@@ -74,7 +74,7 @@ namespace AdaptiveCards
             }
         }
 
-        public virtual void ResolveData(ResolveContext context)
+        public virtual void ResolveElements(ResolveContext context)
         {
             context = context.CreateForCurrElement(this);
 
@@ -144,7 +144,7 @@ namespace AdaptiveCards
             {
                 child.Data = ResolveChildData(Data, child.Data);
 
-                child.ResolveData(context);
+                child.ResolveElements(context);
             }
         }
 

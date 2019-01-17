@@ -7,14 +7,16 @@ namespace JsonTransformLanguage
 {
     public static class JsonTransformer
     {
-        internal const string PROP_DATA = "$data";
+        private const string PROP_DATA = "$data";
+        private const string PROP_TYPE = "$type";
+        private const string PROP_TYPES = "$types";
 
         public static JToken Transform(JToken input, JToken data, Dictionary<string, JToken> additionalReservedProperties)
         {
-            return Transform(input, data, index: -1, parentIsArray: false, context: new JsonTransformerContext(data, additionalReservedProperties));
+            return Transform(input, data, props: null, index: -1, parentIsArray: false, types: new JsonTransformerTypes(), context: new JsonTransformerContext(data, additionalReservedProperties));
         }
 
-        private static JToken Transform(JToken input, JToken parentData, int index, bool parentIsArray, JsonTransformerContext context)
+        private static JToken Transform(JToken input, JToken parentData, JToken props, int index, bool parentIsArray, JsonTransformerTypes types, JsonTransformerContext context)
         {
             if (parentData is JArray parentDataArray)
             {
@@ -29,26 +31,26 @@ namespace JsonTransformLanguage
             switch (input.Type)
             {
                 case JTokenType.Array:
-                    return TransformArray(input as JArray, parentData, index, context);
+                    return TransformArray(input as JArray, parentData, props, index, types, context);
 
                 case JTokenType.String:
-                    return JsonStringTransformer.Transform(input.Value<string>(), parentData, index, context);
+                    return JsonStringTransformer.Transform(input.Value<string>(), parentData, props, index, context);
 
                 case JTokenType.Object:
-                    return TransformObject(input as JObject, parentData, index, false, context).FirstOrDefault();
+                    return TransformObject(input as JObject, parentData, props, index, false, types, context).FirstOrDefault();
             }
 
             return input.DeepClone();
         }
 
-        private static JArray TransformArray(JArray inputArray, JToken parentData, int index, JsonTransformerContext context)
+        private static JArray TransformArray(JArray inputArray, JToken parentData, JToken props, int index, JsonTransformerTypes types, JsonTransformerContext context)
         {
             var newArray = new JArray();
             foreach (var child in inputArray)
             {
                 if (child is JObject childObj)
                 {
-                    var newChildren = TransformObject(childObj, parentData, index, true, context);
+                    var newChildren = TransformObject(childObj, parentData, props, index, true, types, context);
                     foreach (var newChild in newChildren)
                     {
                         newArray.Add(newChild);
@@ -56,7 +58,7 @@ namespace JsonTransformLanguage
                 }
                 else
                 {
-                    var newChild = Transform(child, parentData, index, true, context);
+                    var newChild = Transform(child, parentData, props, index, true, types, context);
                     if (newChild != null)
                     {
                         newArray.Add(newChild);
@@ -66,16 +68,32 @@ namespace JsonTransformLanguage
             return newArray;
         }
 
-        private static List<JObject> TransformObject(JObject input, JToken parentData, int index, bool parentIsArray, JsonTransformerContext context)
+        private static List<JObject> TransformObject(JObject input, JToken parentData, JToken props, int index, bool parentIsArray, JsonTransformerTypes types, JsonTransformerContext context)
         {
             List<JObject> answer = new List<JObject>();
             JToken currData = null;
+
+            // If new custom types are declared
+            if (input.TryGetValue(PROP_TYPES, out JToken typesAsToken))
+            {
+                input.Remove(PROP_TYPES);
+                try
+                {
+                    // We need to obtain them before applying data binding
+                    var newTypes = typesAsToken.ToObject<JsonTransformerTypes>();
+                    if (newTypes != null)
+                    {
+                        types = types.Merge(newTypes);
+                    }
+                }
+                catch { }
+            }
 
             // If data is specified
             if (input.TryGetValue(PROP_DATA, out JToken dataVal))
             {
                 // Transform and use the data
-                currData = Transform(dataVal, parentData, index, false, context);
+                currData = Transform(dataVal, parentData, props, index, false, types, context);
 
                 // If we couldn't find the data, we drop the entire element
                 if (currData == null)
@@ -100,7 +118,11 @@ namespace JsonTransformLanguage
                     {
                         JObject newRepeatedItem = input.DeepClone() as JObject;
                         newRepeatedItem.Remove(PROP_DATA);
-                        answer.AddRange(TransformObject(newRepeatedItem, dataItem, i, true, context));
+
+                        foreach (var transformed in TransformObject(newRepeatedItem, dataItem, props, i, true, types, context))
+                        {
+                            answer.Add(transformed);
+                        }
                         i++;
                     }
                     return answer;
@@ -120,10 +142,24 @@ namespace JsonTransformLanguage
             // Transform each property value
             foreach (var p in input.Properties().ToArray())
             {
-                var transformedPropertyValue = Transform(p.Value, currData, index, false, context);
+                var transformedPropertyValue = Transform(p.Value, currData, props, index, false, types, context);
                 if (transformedPropertyValue != null)
                 {
                     newItem.Add(p.Name, transformedPropertyValue);
+                }
+            }
+
+            // If custom type
+            if (newItem.TryGetValue(PROP_TYPE, out JToken typeToken) && typeToken.Type == JTokenType.String)
+            {
+                var typeString = typeToken.Value<string>();
+                if (types.TryGetDefinition(typeString, out JToken definition) && definition is JObject definitionObj)
+                {
+                    foreach (var newTransformedItem in TransformObject(definitionObj, currData, newItem, index, parentIsArray, types, context))
+                    {
+                        answer.Add(newTransformedItem);
+                    }
+                    return answer;
                 }
             }
 
