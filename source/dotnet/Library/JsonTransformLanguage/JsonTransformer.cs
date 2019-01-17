@@ -18,13 +18,13 @@ namespace JsonTransformLanguage
 
         private static JToken Transform(JToken input,  JsonTransformerContext context)
         {
-            if (context.ParentData is JArray parentDataArray)
+            if (context.ReservedProperties.Data is JArray dataArray)
             {
                 if (!context.ParentIsArray)
                 {
                     // If we can't repeat, we select the first item in the array
                     context.Warnings.AddWarning("Current data is an array, but parent item isn't an array. Selecting the first item for current data.");
-                    context.ParentData = parentDataArray.FirstOrDefault();
+                    context.ReservedProperties.Data = dataArray.FirstOrDefault();
                 }
             }
 
@@ -77,7 +77,6 @@ namespace JsonTransformLanguage
         private static List<JObject> TransformObject(JObject input, JsonTransformerContext context)
         {
             List<JObject> answer = new List<JObject>();
-            JToken currData = null;
 
             // Clone it since we'll be modifying it
             input = input.DeepClone() as JObject;
@@ -105,13 +104,13 @@ namespace JsonTransformLanguage
                 input.Remove(PROP_DATA);
 
                 // Transform and use the data
-                currData = Transform(dataVal, new JsonTransformerContext(context)
+                context.ReservedProperties.Data = Transform(dataVal, new JsonTransformerContext(context)
                 {
                     ParentIsArray = false
                 });
 
                 // If we couldn't find the data, we drop the entire element
-                if (currData == null)
+                if (context.ReservedProperties.Data == null)
                 {
                     return answer;
                 }
@@ -119,11 +118,10 @@ namespace JsonTransformLanguage
             else
             {
                 // Otherwise, inherit parent's data
-                currData = context.ParentData;
             }
 
             // If current data is an array
-            if (currData != null && currData is JArray array)
+            if (context.ReservedProperties.Data != null && context.ReservedProperties.Data is JArray array)
             {
                 // If our parent is an array type, we repeat
                 if (context.ParentIsArray)
@@ -136,8 +134,11 @@ namespace JsonTransformLanguage
 
                         foreach (var transformed in TransformObject(newRepeatedItem, new JsonTransformerContext(context)
                         {
-                            ParentData = dataItem,
-                            Index = i
+                            ReservedProperties = new JsonTransformerReservedProperties(context.ReservedProperties)
+                            {
+                                Data = dataItem,
+                                Index = i
+                            }
                         }))
                         {
                             answer.Add(transformed);
@@ -149,7 +150,7 @@ namespace JsonTransformLanguage
                 else
                 {
                     context.Warnings.AddWarning("Data was an array on item that isn't a child of an array. Selecting first item of data array.");
-                    currData = array.FirstOrDefault();
+                    context.ReservedProperties.Data = array.FirstOrDefault();
                 }
             }
 
@@ -163,7 +164,6 @@ namespace JsonTransformLanguage
             {
                 var transformedPropertyValue = Transform(p.Value, new JsonTransformerContext(context)
                 {
-                    ParentData = currData,
                     ParentIsArray = false
                 });
                 if (transformedPropertyValue != null)
@@ -180,8 +180,10 @@ namespace JsonTransformLanguage
                 {
                     foreach (var newTransformedItem in TransformObject(definitionObj, new JsonTransformerContext(context)
                     {
-                        ParentData = currData,
-                        Props = newItem
+                        ReservedProperties = new JsonTransformerReservedProperties(context.ReservedProperties)
+                        {
+                            Props = newItem
+                        }
                     }))
                     {
                         answer.Add(newTransformedItem);

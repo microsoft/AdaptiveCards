@@ -53,19 +53,8 @@ namespace JsonTransformLanguage
                     JToken data;
                     if (firstPropertyMatch.Value.StartsWith("$"))
                     {
-                        if (firstPropertyMatch.Value == ID_DATA)
-                        {
-                            data = context.ParentData;
-                        }
-                        else if (firstPropertyMatch.Value == ID_PROPS)
-                        {
-                            data = context.Props;
-                        }
-                        else if (context.AdditionalReservedProperties.TryGetValue(firstPropertyMatch.Value, out JToken reservedData))
-                        {
-                            data = reservedData;
-                        }
-                        else
+                        data = context.ReservedProperties.GetValue(firstPropertyMatch.Value.Substring(1));
+                        if (data == null)
                         {
                             return null;
                         }
@@ -75,15 +64,12 @@ namespace JsonTransformLanguage
                     else
                     {
                         remainingToParse = "." + remainingToParse;
-                        data = context.ParentData;
+                        data = context.ReservedProperties.Data;
                     }
 
                     if (remainingToParse.Length > 0)
                     {
-                        return EvalulatePropertyExpression(remainingToParse, new JsonTransformerContext(context)
-                        {
-                            ParentData = data
-                        });
+                        return EvalulatePropertyExpression(remainingToParse, data, context);
                     }
 
                     return data;
@@ -113,9 +99,9 @@ namespace JsonTransformLanguage
         /// <param name="data"></param>
         /// <param name="propertyExpression"></param>
         /// <returns></returns>
-        public static JToken EvalulatePropertyExpression(string propertyExpression, JsonTransformerContext context)
+        public static JToken EvalulatePropertyExpression(string propertyExpression, JToken currData, JsonTransformerContext context)
         {
-            if (context.ParentData == null)
+            if (currData == null)
             {
                 return null;
             }
@@ -128,7 +114,7 @@ namespace JsonTransformLanguage
             if (matchPropertyAccessor.Success && matchPropertyAccessor.Groups[1].Success)
             {
                 string property = matchPropertyAccessor.Groups[1].Value;
-                nextData = GetProperty(context.ParentData, property);
+                nextData = GetProperty(currData, property);
                 matchedText = matchPropertyAccessor.Value;
             }
             else
@@ -138,7 +124,7 @@ namespace JsonTransformLanguage
                 if (matchDictionary.Success && matchDictionary.Groups[1].Success)
                 {
                     string dictionaryAccessor = matchDictionary.Groups[1].Value;
-                    nextData = GetProperty(context.ParentData, dictionaryAccessor);
+                    nextData = GetProperty(currData, dictionaryAccessor);
                     matchedText = matchDictionary.Value;
                 }
                 else
@@ -147,7 +133,7 @@ namespace JsonTransformLanguage
                     var matchIndex = regex.Match(propertyExpression);
                     if (matchIndex.Success && matchIndex.Groups[1].Success && int.TryParse(matchIndex.Groups[1].Value, out int indexToAccess))
                     {
-                        nextData = context.ParentData.ElementAtOrDefault(indexToAccess);
+                        nextData = currData.ElementAtOrDefault(indexToAccess);
                         matchedText = matchIndex.Value;
                     }
                 }
@@ -157,10 +143,7 @@ namespace JsonTransformLanguage
             {
                 if (matchedText.Length < propertyExpression.Length)
                 {
-                    return EvalulatePropertyExpression(propertyExpression.Substring(matchedText.Length), new JsonTransformerContext(context)
-                    {
-                        ParentData = nextData
-                    });
+                    return EvalulatePropertyExpression(propertyExpression.Substring(matchedText.Length), nextData, context);
                 }
                 else
                 {

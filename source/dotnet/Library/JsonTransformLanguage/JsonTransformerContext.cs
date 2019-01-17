@@ -10,33 +10,23 @@ namespace JsonTransformLanguage
     {
         public JsonTransformerContext(JToken rootData, Dictionary<string, JToken> additionalReservedProperties)
         {
-            RootData = rootData;
-            ParentData = rootData;
-            Index = -1;
+            ReservedProperties = new JsonTransformerReservedProperties()
+            {
+                RootData = rootData,
+                Data = rootData,
+                Index = -1,
+                Props = null,
+                AdditionalReservedProperties = additionalReservedProperties ?? new Dictionary<string, JToken>()
+            };
             ParentIsArray = false;
             Types = new JsonTransformerTypes();
-            if (additionalReservedProperties != null)
-            {
-                foreach (var item in additionalReservedProperties)
-                {
-                    AdditionalReservedProperties[item.Key] = item.Value;
-                }
-            }
         }
 
-        public JToken ParentData { get; set; }
-
-        public JToken Props { get; set; }
-
-        public int Index { get; set; }
+        public JsonTransformerReservedProperties ReservedProperties { get; set; }
 
         public bool ParentIsArray { get; set; }
 
-        public JToken RootData { get; private set; }
-
         public JsonTransformerTypes Types { get; set; }
-
-        public Dictionary<string, JToken> AdditionalReservedProperties { get; private set; } = new Dictionary<string, JToken>();
 
         public JsonTransformerWarnings Warnings { get; private set; } = new JsonTransformerWarnings();
 
@@ -50,6 +40,11 @@ namespace JsonTransformLanguage
             if (Types != null)
             {
                 Types = Types.Clone();
+            }
+
+            if (ReservedProperties != null)
+            {
+                ReservedProperties = new JsonTransformerReservedProperties(ReservedProperties);
             }
         }
     }
