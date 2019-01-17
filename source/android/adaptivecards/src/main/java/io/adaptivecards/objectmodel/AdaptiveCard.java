@@ -39,12 +39,20 @@ public class AdaptiveCard {
     this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_0(), true);
   }
 
-  public AdaptiveCard(String version, String fallbackText, String backgroundImage, ContainerStyle style, String speak, String language, VerticalContentAlignment verticalContentAlignment, HeightType height) {
-    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_1(version, fallbackText, backgroundImage, style.swigValue(), speak, language, verticalContentAlignment.swigValue(), height.swigValue()), true);
+  public AdaptiveCard(String version, String fallbackText, String backgroundImageUrl, ContainerStyle style, String speak, String language, VerticalContentAlignment verticalContentAlignment, HeightType height) {
+    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_1(version, fallbackText, backgroundImageUrl, style.swigValue(), speak, language, verticalContentAlignment.swigValue(), height.swigValue()), true);
   }
 
-  public AdaptiveCard(String version, String fallbackText, String backgroundImage, ContainerStyle style, String speak, String language, VerticalContentAlignment verticalContentAlignment, HeightType height, BaseCardElementVector body, BaseActionElementVector actions) {
-    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_2(version, fallbackText, backgroundImage, style.swigValue(), speak, language, verticalContentAlignment.swigValue(), height.swigValue(), BaseCardElementVector.getCPtr(body), body, BaseActionElementVector.getCPtr(actions), actions), true);
+  public AdaptiveCard(String version, String fallbackText, String backgroundImageUrl, ContainerStyle style, String speak, String language, VerticalContentAlignment verticalContentAlignment, HeightType height, BaseCardElementVector body, BaseActionElementVector actions) {
+    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_2(version, fallbackText, backgroundImageUrl, style.swigValue(), speak, language, verticalContentAlignment.swigValue(), height.swigValue(), BaseCardElementVector.getCPtr(body), body, BaseActionElementVector.getCPtr(actions), actions), true);
+  }
+
+  public AdaptiveCard(String version, String fallbackText, SWIGTYPE_p_std__shared_ptrT_AdaptiveCards__BackgroundImage_t backgroundImage, ContainerStyle style, String speak, String language, VerticalContentAlignment verticalContentAlignment, HeightType height) {
+    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_3(version, fallbackText, SWIGTYPE_p_std__shared_ptrT_AdaptiveCards__BackgroundImage_t.getCPtr(backgroundImage), style.swigValue(), speak, language, verticalContentAlignment.swigValue(), height.swigValue()), true);
+  }
+
+  public AdaptiveCard(String version, String fallbackText, SWIGTYPE_p_std__shared_ptrT_AdaptiveCards__BackgroundImage_t backgroundImage, ContainerStyle style, String speak, String language, VerticalContentAlignment verticalContentAlignment, HeightType height, BaseCardElementVector body, BaseActionElementVector actions) {
+    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_4(version, fallbackText, SWIGTYPE_p_std__shared_ptrT_AdaptiveCards__BackgroundImage_t.getCPtr(backgroundImage), style.swigValue(), speak, language, verticalContentAlignment.swigValue(), height.swigValue(), BaseCardElementVector.getCPtr(body), body, BaseActionElementVector.getCPtr(actions), actions), true);
   }
 
   public String GetVersion() {
@@ -63,12 +71,12 @@ public class AdaptiveCard {
     AdaptiveCardObjectModelJNI.AdaptiveCard_SetFallbackText(swigCPtr, this, value);
   }
 
-  public String GetBackgroundImage() {
-    return AdaptiveCardObjectModelJNI.AdaptiveCard_GetBackgroundImage(swigCPtr, this);
+  public SWIGTYPE_p_std__shared_ptrT_AdaptiveCards__BackgroundImage_t GetBackgroundImage() {
+    return new SWIGTYPE_p_std__shared_ptrT_AdaptiveCards__BackgroundImage_t(AdaptiveCardObjectModelJNI.AdaptiveCard_GetBackgroundImage(swigCPtr, this), true);
   }
 
-  public void SetBackgroundImage(String value) {
-    AdaptiveCardObjectModelJNI.AdaptiveCard_SetBackgroundImage(swigCPtr, this, value);
+  public void SetBackgroundImage(SWIGTYPE_p_std__shared_ptrT_AdaptiveCards__BackgroundImage_t value) {
+    AdaptiveCardObjectModelJNI.AdaptiveCard_SetBackgroundImage(swigCPtr, this, SWIGTYPE_p_std__shared_ptrT_AdaptiveCards__BackgroundImage_t.getCPtr(value));
   }
 
   public String GetSpeak() {

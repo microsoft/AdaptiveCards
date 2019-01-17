@@ -93,6 +93,30 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
     return HorizontalAlignment.swigToEnum(AdaptiveCardObjectModelJNI.HorizontalAlignmentFromString(t));
   }
 
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__VerticalAlignment_t getVerticalAlignmentEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__VerticalAlignment_t(AdaptiveCardObjectModelJNI.getVerticalAlignmentEnum(), false);
+  }
+
+  public static String VerticalAlignmentToString(VerticalAlignment t) {
+    return AdaptiveCardObjectModelJNI.VerticalAlignmentToString(t.swigValue());
+  }
+
+  public static VerticalAlignment VerticalAlignmentFromString(String t) {
+    return VerticalAlignment.swigToEnum(AdaptiveCardObjectModelJNI.VerticalAlignmentFromString(t));
+  }
+
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__BackgroundImageMode_t getBackgroundImageModeEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__BackgroundImageMode_t(AdaptiveCardObjectModelJNI.getBackgroundImageModeEnum(), false);
+  }
+
+  public static String BackgroundImageModeToString(BackgroundImageMode t) {
+    return AdaptiveCardObjectModelJNI.BackgroundImageModeToString(t.swigValue());
+  }
+
+  public static BackgroundImageMode BackgroundImageModeFromString(String t) {
+    return BackgroundImageMode.swigToEnum(AdaptiveCardObjectModelJNI.BackgroundImageModeFromString(t));
+  }
+
   public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ImageStyle_t getImageStyleEnum() {
     return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ImageStyle_t(AdaptiveCardObjectModelJNI.getImageStyleEnum(), false);
   }
