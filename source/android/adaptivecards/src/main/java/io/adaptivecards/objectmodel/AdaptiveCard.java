@@ -47,12 +47,12 @@ public class AdaptiveCard {
     this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_2(version, fallbackText, backgroundImageUrl, style.swigValue(), speak, language, verticalContentAlignment.swigValue(), height.swigValue(), BaseCardElementVector.getCPtr(body), body, BaseActionElementVector.getCPtr(actions), actions), true);
   }
 
-  public AdaptiveCard(String version, String fallbackText, SWIGTYPE_p_std__shared_ptrT_AdaptiveCards__BackgroundImage_t backgroundImage, ContainerStyle style, String speak, String language, VerticalContentAlignment verticalContentAlignment, HeightType height) {
-    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_3(version, fallbackText, SWIGTYPE_p_std__shared_ptrT_AdaptiveCards__BackgroundImage_t.getCPtr(backgroundImage), style.swigValue(), speak, language, verticalContentAlignment.swigValue(), height.swigValue()), true);
+  public AdaptiveCard(String version, String fallbackText, BackgroundImage backgroundImage, ContainerStyle style, String speak, String language, VerticalContentAlignment verticalContentAlignment, HeightType height) {
+    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_3(version, fallbackText, BackgroundImage.getCPtr(backgroundImage), backgroundImage, style.swigValue(), speak, language, verticalContentAlignment.swigValue(), height.swigValue()), true);
   }
 
-  public AdaptiveCard(String version, String fallbackText, SWIGTYPE_p_std__shared_ptrT_AdaptiveCards__BackgroundImage_t backgroundImage, ContainerStyle style, String speak, String language, VerticalContentAlignment verticalContentAlignment, HeightType height, BaseCardElementVector body, BaseActionElementVector actions) {
-    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_4(version, fallbackText, SWIGTYPE_p_std__shared_ptrT_AdaptiveCards__BackgroundImage_t.getCPtr(backgroundImage), style.swigValue(), speak, language, verticalContentAlignment.swigValue(), height.swigValue(), BaseCardElementVector.getCPtr(body), body, BaseActionElementVector.getCPtr(actions), actions), true);
+  public AdaptiveCard(String version, String fallbackText, BackgroundImage backgroundImage, ContainerStyle style, String speak, String language, VerticalContentAlignment verticalContentAlignment, HeightType height, BaseCardElementVector body, BaseActionElementVector actions) {
+    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_4(version, fallbackText, BackgroundImage.getCPtr(backgroundImage), backgroundImage, style.swigValue(), speak, language, verticalContentAlignment.swigValue(), height.swigValue(), BaseCardElementVector.getCPtr(body), body, BaseActionElementVector.getCPtr(actions), actions), true);
   }
 
   public String GetVersion() {
@@ -71,12 +71,13 @@ public class AdaptiveCard {
     AdaptiveCardObjectModelJNI.AdaptiveCard_SetFallbackText(swigCPtr, this, value);
   }
 
-  public SWIGTYPE_p_std__shared_ptrT_AdaptiveCards__BackgroundImage_t GetBackgroundImage() {
-    return new SWIGTYPE_p_std__shared_ptrT_AdaptiveCards__BackgroundImage_t(AdaptiveCardObjectModelJNI.AdaptiveCard_GetBackgroundImage(swigCPtr, this), true);
+  public BackgroundImage GetBackgroundImage() {
+    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_GetBackgroundImage(swigCPtr, this);
+    return (cPtr == 0) ? null : new BackgroundImage(cPtr, true);
   }
 
-  public void SetBackgroundImage(SWIGTYPE_p_std__shared_ptrT_AdaptiveCards__BackgroundImage_t value) {
-    AdaptiveCardObjectModelJNI.AdaptiveCard_SetBackgroundImage(swigCPtr, this, SWIGTYPE_p_std__shared_ptrT_AdaptiveCards__BackgroundImage_t.getCPtr(value));
+  public void SetBackgroundImage(BackgroundImage value) {
+    AdaptiveCardObjectModelJNI.AdaptiveCard_SetBackgroundImage(swigCPtr, this, BackgroundImage.getCPtr(value), value);
   }
 
   public String GetSpeak() {

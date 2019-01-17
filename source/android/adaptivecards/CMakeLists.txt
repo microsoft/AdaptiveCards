@@ -27,6 +27,7 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/AdaptiveCardParseException.cpp
              ../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.cpp
              ../../shared/cpp/ObjectModel/BaseActionElement.cpp
+             ../../shared/cpp/ObjectModel/BackgroundImage.cpp
              ../../shared/cpp/ObjectModel/BaseCardElement.cpp
              ../../shared/cpp/ObjectModel/BaseInputElement.cpp
              ../../shared/cpp/ObjectModel/ChoiceInput.cpp

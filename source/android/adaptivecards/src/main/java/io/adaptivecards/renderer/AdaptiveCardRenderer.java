@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import io.adaptivecards.objectmodel.ActionAlignment;
 import io.adaptivecards.objectmodel.ActionsOrientation;
 import io.adaptivecards.objectmodel.AdaptiveCard;
+import io.adaptivecards.objectmodel.BackgroundImage;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseActionElementVector;
 import io.adaptivecards.objectmodel.BaseCardElementVector;
@@ -203,8 +204,8 @@ public class AdaptiveCardRenderer
             renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INTERACTIVITY_DISALLOWED, "Interactivity is not allowed. Actions not rendered."));
         }
 
-        String imageUrl = adaptiveCard.GetBackgroundImage();
-        if (!imageUrl.isEmpty())
+        BackgroundImage backgroundImageProperties = adaptiveCard.GetBackgroundImage();
+        if (backgroundImageProperties != null && !backgroundImageProperties.GetUrl().isEmpty())
         {
             BackgroundImageLoaderAsync loaderAsync = new BackgroundImageLoaderAsync(renderedCard, context, layout, hostConfig.GetImageBaseUrl());
 
@@ -220,7 +221,7 @@ public class AdaptiveCardRenderer
                 loaderAsync.registerCustomDataUriImageLoader(dataUriImageLoader);
             }
 
-            loaderAsync.execute(imageUrl);
+            loaderAsync.execute(backgroundImageProperties.GetUrl());
         }
 
         BaseActionElement selectAction = renderedCard.getAdaptiveCard().GetSelectAction();
