@@ -65,9 +65,14 @@ public class ContainerRenderer extends BaseCardElementRenderer
         ContainerStyle styleForThis = container.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? containerStyle : container.GetStyle();
         LinearLayout containerView = new LinearLayout(context);
 
+        containerView.setOrientation(LinearLayout.VERTICAL);
         if(container.GetHeight() == HeightType.Stretch)
         {
-            containerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+            containerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+        }
+        else
+        {
+            containerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
 
         VerticalContentAlignment contentAlignment = container.GetVerticalContentAlignment();
