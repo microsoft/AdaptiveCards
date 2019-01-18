@@ -12,7 +12,7 @@ using namespace AdaptiveSharedNamespace;
 TextBlock::TextBlock() :
     BaseCardElement(CardElementType::TextBlock), m_textSize(TextSize::Default), m_textWeight(TextWeight::Default),
     m_fontStyle(FontStyle::Default), m_textColor(ForegroundColor::Default), m_isSubtle(false), m_wrap(false),
-    m_maxLines(0), m_HorizontalAlignment(HorizontalAlignment::Left), m_language()
+    m_maxLines(0), m_hAlignment(HorizontalAlignment::Left), m_language()
 {
     PopulateKnownPropertiesSet();
 }
@@ -41,9 +41,9 @@ Json::Value TextBlock::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FontStyle)] = FontStyleToString(m_fontStyle);
     }
 
-    if (m_HorizontalAlignment != HorizontalAlignment::Left)
+    if (m_hAlignment != HorizontalAlignment::Left)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] = HorizontalAlignmentToString(m_HorizontalAlignment);
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] = HorizontalAlignmentToString(m_hAlignment);
     }
 
     if (m_maxLines != 0)
@@ -153,12 +153,12 @@ void TextBlock::SetMaxLines(const unsigned int value)
 
 HorizontalAlignment TextBlock::GetHorizontalAlignment() const
 {
-    return m_HorizontalAlignment;
+    return m_hAlignment;
 }
 
 void TextBlock::SetHorizontalAlignment(const HorizontalAlignment value)
 {
-    m_HorizontalAlignment = value;
+    m_hAlignment = value;
 }
 
 std::string TextBlock::GetLanguage() const
