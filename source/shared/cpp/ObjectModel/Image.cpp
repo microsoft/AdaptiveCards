@@ -8,7 +8,7 @@ using namespace AdaptiveSharedNamespace;
 
 Image::Image() :
     BaseCardElement(CardElementType::Image), m_imageStyle(ImageStyle::Default), m_imageSize(ImageSize::None),
-    m_pixelWidth(0), m_pixelHeight(0), m_HorizontalAlignment(HorizontalAlignment::Left)
+    m_pixelWidth(0), m_pixelHeight(0), m_hAlignment(HorizontalAlignment::Left)
 {
     PopulateKnownPropertiesSet();
 }
@@ -58,9 +58,9 @@ Json::Value Image::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundColor)] = m_backgroundColor;
     }
 
-    if (m_HorizontalAlignment != HorizontalAlignment::Left)
+    if (m_hAlignment != HorizontalAlignment::Left)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] = HorizontalAlignmentToString(m_HorizontalAlignment);
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] = HorizontalAlignmentToString(m_hAlignment);
     }
 
     if (!m_altText.empty())
@@ -129,12 +129,12 @@ void Image::SetAltText(const std::string& value)
 
 HorizontalAlignment Image::GetHorizontalAlignment() const
 {
-    return m_HorizontalAlignment;
+    return m_hAlignment;
 }
 
 void Image::SetHorizontalAlignment(const HorizontalAlignment value)
 {
-    m_HorizontalAlignment = value;
+    m_hAlignment = value;
 }
 
 std::shared_ptr<BaseActionElement> Image::GetSelectAction() const
