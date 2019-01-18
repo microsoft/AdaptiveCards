@@ -6,6 +6,7 @@
 			"dom",
 			"es2015"
 		],
+		"outDir": "./lib",
 		"moduleResolution": "node",
 		"noImplicitAny": false,
 		"sourceMap": true,

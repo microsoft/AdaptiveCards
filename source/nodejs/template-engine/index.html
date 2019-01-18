@@ -2,21 +2,15 @@
 <html>
 
 <head>
-    <script src="template-engine.js"></script>
-    <script type="text/javascript">
-        function tokenizeExpression() {
-            let tokenizer = new Tokenizer();
-            tokenizer.parse(document.getElementById("expression").value);
-
-            alert(JSON.stringify(tokenizer.tokens));
-        }
-    </script>    
+    <script src="./lib/template-engine.js"></script>
+    <script src="./lib/app.js"></script>
 </head>
 
-<body>
-    <input type="text" id="expression" value='{abc.def.ghi(field"this is a string")indexedField[3]'></input>
+<body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+    <input id="expression" type="text" style="width: 100%" value='{abc.def.ghi(field"this is a string")indexedField[3]'></input>
     <br>
-    <button onclick="tokenizeExpression()">Tokenize expression</button>
+    <button id="btnTokenize">Tokenize expression</button>
+    <div id="output"></div>
 </body>
 
 </html>
