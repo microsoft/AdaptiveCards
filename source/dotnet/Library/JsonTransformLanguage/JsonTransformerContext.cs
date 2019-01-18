@@ -14,7 +14,7 @@ namespace JsonTransformLanguage
             {
                 RootData = rootData,
                 Data = rootData,
-                Index = -1,
+                Index = null,
                 Props = null,
                 AdditionalReservedProperties = additionalReservedProperties ?? new Dictionary<string, JToken>()
             };

@@ -1,0 +1,33 @@
+{
+  "inputJson": {
+    "title": "Accessing index {$index} before we ever iterated should return null",
+    "index": "{$index}"
+  },
+
+  "inputData": {
+    "name": "Thomas Fennel",
+    "reportsTo": {
+      "name": "Andrew Clinick",
+      "picture": "https://unsplash.it/64?image=1025"
+    },
+    "directReports": [
+      {
+        "name": "Adam Wilson",
+        "picture": "https://unsplash.it/64?image=804"
+      },
+      {
+        "name": "Andrew Leader",
+        "picture": "https://unsplash.it/64?image=883"
+      },
+      {
+        "name": "Mary Anne Noskowski",
+        "picture": "https://unsplash.it/64?image=1027"
+      }
+    ]
+  },
+
+  // The index property gets dropped since it evaluated to null
+  "expected": {
+    "title": "Accessing index  before we ever iterated should return null"
+  }
+}

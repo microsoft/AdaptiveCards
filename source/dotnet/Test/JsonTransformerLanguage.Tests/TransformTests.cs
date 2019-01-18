@@ -107,6 +107,36 @@ namespace JsonTransformerLanguage.Tests
             TestPayload();
         }
 
+        [TestMethod]
+        public void IndexValueDefaults1()
+        {
+            TestPayload();
+        }
+
+        [TestMethod]
+        public void IndexValues1()
+        {
+            TestPayload();
+        }
+
+        [TestMethod]
+        public void IndexValues2()
+        {
+            TestPayload();
+        }
+
+        [TestMethod]
+        public void RootData1()
+        {
+            TestPayload();
+        }
+
+        [TestMethod]
+        public void RootData2()
+        {
+            TestPayload();
+        }
+
         private void TestPayload([CallerMemberName]string payloadName = null)
         {
             var parsed = JObject.Parse(File.ReadAllText(Directory.GetCurrentDirectory() + "\\TestPayloads\\" + payloadName + ".json"));

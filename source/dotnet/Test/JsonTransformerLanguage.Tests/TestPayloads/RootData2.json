@@ -1,0 +1,63 @@
+{
+  "inputJson": {
+    "people": [
+      {
+        "$data": "{directReports}",
+        "name": "{name}",
+        "rank": "{$index}",
+        "composed": {
+          "title": "{$index}: {name} reports to {$rootData.name}"
+        }
+      }
+    ]
+  },
+
+  "inputData": {
+    "name": "Thomas Fennel",
+    "reportsTo": {
+      "name": "Andrew Clinick",
+      "picture": "https://unsplash.it/64?image=1025"
+    },
+    "directReports": [
+      {
+        "name": "Adam Wilson",
+        "picture": "https://unsplash.it/64?image=804"
+      },
+      {
+        "name": "Andrew Leader",
+        "picture": "https://unsplash.it/64?image=883"
+      },
+      {
+        "name": "Mary Anne Noskowski",
+        "picture": "https://unsplash.it/64?image=1027"
+      }
+    ]
+  },
+
+  // The index property gets dropped since it evaluated to null
+  "expected": {
+    "people": [
+      {
+        "name": "Adam Wilson",
+        "rank": 0,
+        "composed": {
+          "title": "0: Adam Wilson reports to Thomas Fennel"
+        }
+      },
+      {
+        "name": "Andrew Leader",
+        "rank": 1,
+        "composed": {
+          "title": "1: Andrew Leader reports to Thomas Fennel"
+        }
+      },
+      {
+        "name": "Mary Anne Noskowski",
+        "rank": 2,
+        "composed": {
+          "title": "2: Mary Anne Noskowski reports to Thomas Fennel"
+        }
+      }
+    ]
+  }
+}
