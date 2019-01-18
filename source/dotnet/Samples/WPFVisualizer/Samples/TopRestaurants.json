@@ -27,7 +27,8 @@
       "type": "TextBlock",
       "text": "Here are the top restaurants near you...",
       "size": "medium",
-      "weight": "bolder"
+      "weight": "bolder",
+      "wrap": true
     },
     {
       "type": "ColumnSet",
