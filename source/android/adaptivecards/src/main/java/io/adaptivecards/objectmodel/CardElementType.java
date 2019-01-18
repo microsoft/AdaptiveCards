@@ -28,7 +28,8 @@ public enum CardElementType {
   ToggleInput,
   Custom,
   Unknown,
-  Media;
+  Media,
+  ActionSet;
 
   public final int swigValue() {
     return swigValue;

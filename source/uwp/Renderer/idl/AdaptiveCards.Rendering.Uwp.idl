@@ -49,6 +49,7 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveToggleInput;
     runtimeclass AdaptiveSeparator;
     runtimeclass AdaptiveToggleVisibilityAction;
+    runtimeclass AdaptiveActionSet;
 
     runtimeclass AdaptiveFontSizesConfig;
     runtimeclass AdaptiveFontWeightsConfig;
@@ -131,6 +132,7 @@ AdaptiveNamespaceStart
     interface IAdaptiveSeparator;
     interface IAdaptiveError;
     interface IAdaptiveWarning;
+    interface IAdaptiveActionSet;
 
     interface IAdaptiveFontSizesConfig;
     interface IAdaptiveFontWeightsConfig;
@@ -249,7 +251,8 @@ AdaptiveNamespaceStart
         TimeInput,
         ToggleInput,
         Custom,
-        Media
+        Media,
+        ActionSet,
     } ElementType;
 
     [version(NTDDI_WIN10_RS1)]
@@ -1467,6 +1470,37 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveFactSet
     {
         [default] interface IAdaptiveFactSet;
+        interface IAdaptiveCardElement;
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveActionSet),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(EC0102C3-A40D-449D-939B-3AD770CE6DAD),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(F9778A62-1317-486D-9D82-C71101FA01F8)
+#endif
+    ]
+    interface IAdaptiveActionSet : IInspectable
+    {
+        [propget] HRESULT Actions([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveActionElement*>** value);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1)
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif
+    ]
+    runtimeclass AdaptiveActionSet
+    {
+        [default] interface IAdaptiveActionSet;
         interface IAdaptiveCardElement;
     };
 
@@ -3285,6 +3319,21 @@ AdaptiveNamespaceStart
 #endif        
     ]
     runtimeclass AdaptiveMediaRenderer
+    {
+        [default] interface IAdaptiveElementRenderer;
+        interface IAdaptiveElementParser;
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1)
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif
+    ]
+    runtimeclass AdaptiveActionSetRenderer
     {
         [default] interface IAdaptiveElementRenderer;
         interface IAdaptiveElementParser;

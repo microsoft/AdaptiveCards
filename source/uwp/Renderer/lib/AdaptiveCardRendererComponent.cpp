@@ -3,6 +3,7 @@
 
 #include "AdaptiveCard.h"
 #include "AdaptiveCardResourceResolvers.h"
+#include "AdaptiveActionSetRenderer.h"
 #include "AdaptiveChoiceSetInputRenderer.h"
 #include "AdaptiveColumnRenderer.h"
 #include "AdaptiveColumnSetRenderer.h"
@@ -126,7 +127,10 @@ namespace AdaptiveNamespace
             m_xamlBuilder->SetEnableXamlImageHandling(true);
             try
             {
-                m_xamlBuilder->BuildXamlTreeFromAdaptiveCard(adaptiveCard, &xamlTreeRoot, this, renderContext.Get());
+                AdaptiveCards::Rendering::Uwp::XamlBuilder::BuildXamlTreeFromAdaptiveCard(adaptiveCard,
+                                                                                          &xamlTreeRoot,
+                                                                                          renderContext.Get(),
+                                                                                          m_xamlBuilder);
                 renderedCard->SetFrameworkElement(xamlTreeRoot.Get());
             }
             catch (...)
@@ -317,6 +321,8 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveCardRenderer::RegisterDefaultElementRenderers()
     {
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"ActionSet").Get(),
+                                                            Make<AdaptiveActionSetRenderer>().Get()));
         RETURN_IF_FAILED(
             m_elementRendererRegistration->Set(HStringReference(L"Column").Get(), Make<AdaptiveColumnRenderer>().Get()));
         RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"ColumnSet").Get(),
