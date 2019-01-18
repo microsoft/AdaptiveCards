@@ -39,7 +39,7 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP put_ChoiceSetStyle(ABI::AdaptiveNamespace::ChoiceSetStyle choiceSetStyle);
 
         IFACEMETHODIMP get_Choices(
-            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveChoiceInput*>** columns);
+            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveChoiceInput*>** columns);
 
         // IAdaptiveInputElement
         IFACEMETHODIMP get_IsRequired(_Out_ boolean* isRequired)
@@ -112,7 +112,7 @@ namespace AdaptiveNamespace
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveChoiceInput*>> m_choices;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveChoiceInput*>> m_choices;
         boolean m_wrap;
         boolean m_isMultiSelect;
         ABI::AdaptiveNamespace::ChoiceSetStyle m_choiceSetStyle;

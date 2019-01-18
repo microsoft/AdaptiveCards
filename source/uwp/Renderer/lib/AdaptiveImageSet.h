@@ -24,7 +24,7 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ImageSet>& sharedImageSet);
 
         // IAdaptiveImageSet
-        IFACEMETHODIMP get_Images(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveImage*>** columns);
+        IFACEMETHODIMP get_Images(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveImage*>** columns);
 
         IFACEMETHODIMP get_ImageSize(_Out_ ABI::AdaptiveNamespace::ImageSize* imageSize);
         IFACEMETHODIMP put_ImageSize(ABI::AdaptiveNamespace::ImageSize imageSize);
@@ -90,7 +90,7 @@ namespace AdaptiveNamespace
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
-        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveImage*>> m_images;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveImage*>> m_images;
         ABI::AdaptiveNamespace::ImageSize m_imageSize;
     };
 

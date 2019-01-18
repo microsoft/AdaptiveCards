@@ -29,14 +29,15 @@ namespace AdaptiveNamespace
 
     HRESULT RenderedAdaptiveCard::RuntimeClassInitialize()
     {
-        RETURN_IF_FAILED(RenderedAdaptiveCard::RuntimeClassInitialize(Make<Vector<IAdaptiveError*>>().Get(),
-                                                                      Make<Vector<IAdaptiveWarning*>>().Get()));
+        RETURN_IF_FAILED(
+            RenderedAdaptiveCard::RuntimeClassInitialize(Make<Vector<ABI::AdaptiveNamespace::AdaptiveError*>>().Get(),
+                                                         Make<Vector<ABI::AdaptiveNamespace::AdaptiveWarning*>>().Get()));
         return S_OK;
     }
 
     HRESULT RenderedAdaptiveCard::RuntimeClassInitialize(
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveError*>* errors,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* warnings)
+        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveError*>* errors,
+        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* warnings)
     {
         m_errors = errors;
         m_warnings = warnings;
@@ -83,13 +84,13 @@ namespace AdaptiveNamespace
     }
 
     HRESULT RenderedAdaptiveCard::get_Errors(
-        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveError*>** value)
+        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveError*>** value)
     {
         return m_errors.CopyTo(value);
     }
 
     HRESULT RenderedAdaptiveCard::get_Warnings(
-        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>** value)
+        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>** value)
     {
         return m_warnings.CopyTo(value);
     }
