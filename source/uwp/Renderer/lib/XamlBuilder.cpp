@@ -113,6 +113,12 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    void XamlBuilder::HandleFallbackAndRequires(ABI::AdaptiveNamespace::IAdaptiveCardElement* elementToInspect,
+                                                ABI::AdaptiveNamespace::IAdaptiveCardElement** elementToUse)
+    {
+        *elementToUse = elementToInspect;
+    }
+
     void XamlBuilder::BuildXamlTreeFromAdaptiveCard(_In_ IAdaptiveCard* adaptiveCard,
                                                     _Outptr_ IFrameworkElement** xamlTreeRoot,
                                                     _In_ IAdaptiveRenderContext* renderContext,
@@ -844,6 +850,8 @@ namespace AdaptiveNamespace
         int currentElement = 0;
         unsigned int childrenSize;
         THROW_IF_FAILED(children->get_Size(&childrenSize));
+        boolean ancestorHasFallback;
+        THROW_IF_FAILED(renderArgs->get_AncestorHasFallback(&ancestorHasFallback));
         XamlHelpers::IterateOverVector<IAdaptiveCardElement>(children, [&](IAdaptiveCardElement* element) {
             HString elementType;
             THROW_IF_FAILED(element->get_ElementTypeString(elementType.GetAddressOf()));
@@ -851,8 +859,12 @@ namespace AdaptiveNamespace
             THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
             ComPtr<IAdaptiveElementRenderer> elementRenderer;
             THROW_IF_FAILED(elementRenderers->Get(elementType.Get(), &elementRenderer));
+            ABI::AdaptiveNamespace::FallbackType elementFallback;
+            element->get_FallbackType(&elementFallback);
+            const bool elementHasFallback = (elementFallback != FallbackType_None);
             if (elementRenderer != nullptr)
             {
+                renderArgs->put_AncestorHasFallback(elementHasFallback || ancestorHasFallback);
                 ComPtr<IAdaptiveHostConfig> hostConfig;
                 THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
                 // First element does not need a separator added
@@ -899,15 +911,69 @@ namespace AdaptiveNamespace
 
                     childCreatedCallback(newControl.Get());
                 }
+                renderArgs->put_AncestorHasFallback(ancestorHasFallback);
             }
             else
             {
-                std::wstring errorString = L"No Renderer found for type: ";
-                errorString += elementType.GetRawBuffer(nullptr);
-                renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::NoRendererForType,
-                                          HStringReference(errorString.c_str()).Get());
+                // unknown element.
+                if (elementHasFallback)
+                {
+                    if (elementFallback == FallbackType_Content)
+                    {
+                        ComPtr<IAdaptiveCardElement> fallbackElement;
+                        element->get_FallbackContent(&fallbackElement);
+
+                        // perform this element's fallback
+                        ComPtr<IUIElement> newControl;
+                        elementRenderer->Render(fallbackElement.Get(), renderContext, renderArgs, &newControl);
+
+                        if (newControl != nullptr)
+                        {
+                            boolean isVisible;
+                            THROW_IF_FAILED(fallbackElement->get_IsVisible(&isVisible));
+
+                            if (!isVisible)
+                            {
+                                THROW_IF_FAILED(newControl->put_Visibility(Visibility_Collapsed));
+                            }
+
+                            HString id;
+                            THROW_IF_FAILED(fallbackElement->get_Id(id.GetAddressOf()));
+
+                            if (id.IsValid())
+                            {
+                                ComPtr<IFrameworkElement> newControlAsFrameworkElement;
+                                THROW_IF_FAILED(newControl.As(&newControlAsFrameworkElement));
+                                THROW_IF_FAILED(newControlAsFrameworkElement->put_Name(id.Get()));
+                            }
+
+                            ABI::AdaptiveNamespace::HeightType heightType{};
+                            THROW_IF_FAILED(fallbackElement->get_Height(&heightType));
+                            XamlHelpers::AppendXamlElementToPanel(newControl.Get(), parentPanel, heightType);
+
+                            childCreatedCallback(newControl.Get());
+                        }
+                    }
+                    else if (elementFallback == FallbackType_Drop)
+                    {
+                        return;
+                    }
+                }
+                else if (ancestorHasFallback)
+                {
+                    // throw exception so that parent's fallback can be invoked
+                }
+                else
+                {
+                    // standard unknown element handling
+                    std::wstring errorString = L"No Renderer found for type: ";
+                    errorString += elementType.GetRawBuffer(nullptr);
+                    renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::NoRendererForType,
+                                              HStringReference(errorString.c_str()).Get());
+                }
             }
         });
+        renderArgs->put_AncestorHasFallback(ancestorHasFallback);
     }
 
     void XamlBuilder::BuildShowCard(_In_ IAdaptiveShowCardActionConfig* showCardActionConfig,

@@ -510,6 +510,16 @@ AdaptiveNamespaceStart
         IsVisibleFalse
     } IsVisible;
 
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)][internal]
+#endif
+    typedef[v1_enum] enum FallbackType {
+        None = 0,
+        Drop,
+        Content
+    } FallbackType;
+
     declare
     {
         interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
@@ -557,6 +567,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT IsVisible([out, retval] boolean * value);
         [propput] HRESULT IsVisible([in] boolean value);
+
+        [propget] HRESULT FallbackType([out, retval] FallbackType * value);
+        [propget] HRESULT FallbackContent([out, retval] IAdaptiveCardElement ** content);
 
         [propget] HRESULT AdditionalProperties([out, retval] Windows.Data.Json.JsonObject** json);
         [propput] HRESULT AdditionalProperties([in] Windows.Data.Json.JsonObject* json);
@@ -3530,6 +3543,8 @@ AdaptiveNamespaceStart
         [propput] HRESULT ContainerStyle([in] ContainerStyle value);
         [propget] HRESULT ParentElement([out, retval] IInspectable** value);
         [propput] HRESULT ParentElement([in] IInspectable* value);
+        [propget] HRESULT AncestorHasFallback([out, retval] boolean* value);
+        [propput] HRESULT AncestorHasFallback([in] boolean value);
     };
 
     [

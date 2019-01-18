@@ -18,10 +18,13 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP put_ContainerStyle(ABI::AdaptiveNamespace::ContainerStyle value);
         IFACEMETHODIMP get_ParentElement(_COM_Outptr_ IInspectable** value);
         IFACEMETHODIMP put_ParentElement(_In_ IInspectable* value);
+        IFACEMETHODIMP get_AncestorHasFallback(_Out_ boolean* hasFallback);
+        IFACEMETHODIMP put_AncestorHasFallback(boolean hasFallback);
 
     private:
         ABI::AdaptiveNamespace::ContainerStyle m_containerStyle;
         Microsoft::WRL::ComPtr<IInspectable> m_parentElement;
+        boolean m_ancestorHasFallback;
     };
 
     ActivatableClass(AdaptiveRenderArgs);

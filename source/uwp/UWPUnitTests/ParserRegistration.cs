@@ -81,6 +81,9 @@ namespace UWPUnitTests
             public IAdaptiveCardElement InternalTextBlock { get; set; }
             public IAdaptiveActionElement InternalSubmitAction { get; set; }
 
+            public IAdaptiveCardElement FallbackContent { get; }
+            public FallbackType FallbackType { get; }
+
             public JsonObject ToJson()
             {
                 return new JsonObject();

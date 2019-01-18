@@ -71,6 +71,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Id(_Outptr_ HSTRING* id) { return AdaptiveCardElementBase::get_Id(id); }
         IFACEMETHODIMP put_Id(_In_ HSTRING id) { return AdaptiveCardElementBase::put_Id(id); }
 
+        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType * fallback) { return AdaptiveCardElementBase::get_FallbackType(fallback); }
+        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement ** content) { return AdaptiveCardElementBase::get_FallbackContent(content); }
+
         IFACEMETHODIMP get_ElementTypeString(_Outptr_ HSTRING* value)
         {
             return AdaptiveCardElementBase::get_ElementTypeString(value);

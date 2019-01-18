@@ -147,6 +147,9 @@ namespace AdaptiveNamespace
         template<typename T>
         void SetAutoSize(T* destination, IInspectable* parentElement, IInspectable* imageContainer, bool isVisible, bool imageFiresOpenEvent);
 
+        static void HandleFallbackAndRequires(ABI::AdaptiveNamespace::IAdaptiveCardElement* elementToInspect,
+                                              ABI::AdaptiveNamespace::IAdaptiveCardElement** elementToUse);
+
         template<typename T>
         void SetImageSource(T* destination,
                             ABI::Windows::UI::Xaml::Media::IImageSource* imageSource,

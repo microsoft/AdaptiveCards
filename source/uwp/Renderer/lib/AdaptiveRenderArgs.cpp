@@ -43,4 +43,16 @@ namespace AdaptiveNamespace
         m_parentElement = value;
         return S_OK;
     }
+
+    HRESULT AdaptiveRenderArgs::get_AncestorHasFallback(_Out_ boolean* hasFallback)
+    {
+        *hasFallback = m_ancestorHasFallback;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveRenderArgs::put_AncestorHasFallback(boolean hasFallback)
+    {
+        m_ancestorHasFallback = hasFallback;
+        return S_OK;
+    }
 }

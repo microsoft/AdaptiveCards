@@ -22,6 +22,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_IsVisible(_Out_ boolean* separator);
         IFACEMETHODIMP put_IsVisible(boolean separator);
 
+        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType * fallback);
+        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement ** content);
+
         IFACEMETHODIMP get_ElementTypeString(_Outptr_ HSTRING* type);
 
         IFACEMETHODIMP get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
@@ -44,5 +47,6 @@ namespace AdaptiveNamespace
         Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_additionalProperties;
         Microsoft::WRL::Wrappers::HString m_typeString;
         ABI::AdaptiveNamespace::HeightType m_height;
+
     };
 }

@@ -400,6 +400,82 @@ HRESULT GenerateSharedToggleElements(
     return S_OK;
 }
 
+HRESULT GenerateElementProjection(_In_ const std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& baseElement,
+                                  _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** projectedElement) noexcept try
+{
+    *projectedElement = nullptr;
+    switch (baseElement->GetElementType())
+    {
+        case CardElementType::TextBlock:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveTextBlock>(
+                    projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::TextBlock>(baseElement)));
+            break;
+        case CardElementType::Image:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveImage>(
+                    projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::Image>(baseElement)));
+            break;
+        case CardElementType::Container:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveContainer>(
+                    projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::Container>(baseElement)));
+            break;
+        case CardElementType::ColumnSet:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveColumnSet>(
+                    projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::ColumnSet>(baseElement)));
+            break;
+        case CardElementType::FactSet:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveFactSet>(
+                    projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::FactSet>(baseElement)));
+            break;
+        case CardElementType::ImageSet:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveImageSet>(
+                    projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::ImageSet>(baseElement)));
+            break;
+        case CardElementType::ChoiceSetInput:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveChoiceSetInput>(
+                    projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::ChoiceSetInput>(baseElement)));
+            break;
+        case CardElementType::DateInput:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveDateInput>(
+                    projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::DateInput>(baseElement)));
+            break;
+        case CardElementType::Media:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveMedia>(
+                    projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::Media>(baseElement)));
+            break;
+        case CardElementType::NumberInput:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveNumberInput>(
+                    projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::NumberInput>(baseElement)));
+            break;
+        case CardElementType::TextInput:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveTextInput>(
+                    projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::TextInput>(baseElement)));
+            break;
+        case CardElementType::TimeInput:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveTimeInput>(
+                    projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::TimeInput>(baseElement)));
+            break;
+        case CardElementType::ToggleInput:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveToggleInput>(
+                    projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::ToggleInput>(baseElement)));
+            break;
+        case CardElementType::ActionSet:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveActionSet>(
+                projectedElement, std::AdaptivePointerCast<AdaptiveCards::ActionSet>(baseElement)));
+            break;
+        case CardElementType::Custom:
+            RETURN_IF_FAILED(std::AdaptivePointerCast<::AdaptiveNamespace::CustomElementWrapper>(baseElement)->GetWrappedElement(projectedElement));
+            break;
+        case CardElementType::Unknown:
+        default:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveUnsupportedElement>(
+                projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::UnknownElement>(baseElement)));
+            break;
+    }
+
+    return S_OK;
+}
+CATCH_RETURN;
+
 HRESULT GenerateContainedElementsProjection(
     const std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>>& containedElements,
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>* projectedParentContainer) noexcept try
@@ -407,73 +483,7 @@ HRESULT GenerateContainedElementsProjection(
     for (auto& containedElement : containedElements)
     {
         ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardElement> projectedContainedElement;
-        switch (containedElement->GetElementType())
-        {
-        case CardElementType::TextBlock:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveTextBlock>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::TextBlock>(containedElement)));
-            break;
-        case CardElementType::Image:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveImage>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::Image>(containedElement)));
-            break;
-        case CardElementType::Container:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveContainer>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::Container>(containedElement)));
-            break;
-        case CardElementType::ColumnSet:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveColumnSet>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::ColumnSet>(containedElement)));
-            break;
-        case CardElementType::FactSet:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveFactSet>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::FactSet>(containedElement)));
-            break;
-        case CardElementType::ImageSet:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveImageSet>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::ImageSet>(containedElement)));
-            break;
-        case CardElementType::ChoiceSetInput:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveChoiceSetInput>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::ChoiceSetInput>(containedElement)));
-            break;
-        case CardElementType::DateInput:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveDateInput>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::DateInput>(containedElement)));
-            break;
-        case CardElementType::Media:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveMedia>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::Media>(containedElement)));
-            break;
-        case CardElementType::NumberInput:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveNumberInput>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::NumberInput>(containedElement)));
-            break;
-        case CardElementType::TextInput:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveTextInput>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::TextInput>(containedElement)));
-            break;
-        case CardElementType::TimeInput:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveTimeInput>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::TimeInput>(containedElement)));
-            break;
-        case CardElementType::ToggleInput:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveToggleInput>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::ToggleInput>(containedElement)));
-            break;
-        case CardElementType::ActionSet:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveActionSet>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveCards::ActionSet>(containedElement)));
-            break;
-        case CardElementType::Custom:
-            RETURN_IF_FAILED(std::AdaptivePointerCast<CustomElementWrapper>(containedElement)->GetWrappedElement(&projectedContainedElement));
-            break;
-        case CardElementType::Unknown:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveUnsupportedElement>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::UnknownElement>(containedElement)));
-            break;
-        }
-
+        GenerateElementProjection(containedElement, &projectedContainedElement);
         if (projectedContainedElement != nullptr)
         {
             RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));

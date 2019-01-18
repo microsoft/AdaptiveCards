@@ -59,6 +59,47 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    IFACEMETHODIMP AdaptiveCardElementBase::get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType * fallback)
+    {
+        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedModel;
+        RETURN_IF_FAILED(GetSharedModel(sharedModel));
+
+        const auto sharedModelFallback = sharedModel->GetFallbackType();
+        switch (sharedModelFallback)
+        {
+            case FallbackType::Drop:
+            {
+                *fallback = ABI::AdaptiveNamespace::FallbackType::Drop;
+                break;
+            }
+
+            case FallbackType::Content:
+            {
+                *fallback = ABI::AdaptiveNamespace::FallbackType::Content;
+                break;
+            }
+
+            case FallbackType::None:
+            default:
+            {
+                *fallback = ABI::AdaptiveNamespace::FallbackType::None;
+                break;
+            }
+        }
+
+        return S_OK;
+    }
+
+    IFACEMETHODIMP AdaptiveCardElementBase::get_FallbackContent(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement ** content)
+    {
+        *content = nullptr;
+        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedModel;
+        RETURN_IF_FAILED(GetSharedModel(sharedModel));
+        RETURN_IF_FAILED(GenerateElementProjection(sharedModel, content));
+
+        return S_OK;
+    }
+
     IFACEMETHODIMP AdaptiveCardElementBase::get_Id(_Outptr_ HSTRING* id) { return m_id.CopyTo(id); }
 
     IFACEMETHODIMP AdaptiveCardElementBase::put_Id(_In_ HSTRING id) { return m_id.Set(id); }
