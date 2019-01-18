@@ -49,7 +49,7 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveToggleInput;
     runtimeclass AdaptiveSeparator;
     runtimeclass AdaptiveToggleVisibilityAction;
-    runtimeclass AdaptiveActionSet;    
+    runtimeclass AdaptiveActionSet;
 
     runtimeclass AdaptiveFontSizesConfig;
     runtimeclass AdaptiveFontWeightsConfig;
@@ -1482,7 +1482,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(F9778A62-1317-486D-9D82-C71101FA01F8)
-#endif 	
+#endif
     ]
     interface IAdaptiveActionSet : IInspectable
     {
@@ -1496,7 +1496,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif 	
+#endif
     ]
     runtimeclass AdaptiveActionSet
     {
@@ -3331,7 +3331,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif  	
+#endif
     ]
     runtimeclass AdaptiveActionSetRenderer
     {

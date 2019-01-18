@@ -449,7 +449,7 @@ HRESULT GenerateContainedElementsProjection(
             break;
         case CardElementType::ActionSet:
             RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveActionSet>(
-                &projectedContainedElement, std::dynamic_pointer_cast<AdaptiveCards::ActionSet>(containedElement)));
+                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveCards::ActionSet>(containedElement)));
             break;
         case CardElementType::Custom:
             RETURN_IF_FAILED(std::AdaptivePointerCast<CustomElementWrapper>(containedElement)->GetWrappedElement(&projectedContainedElement));
