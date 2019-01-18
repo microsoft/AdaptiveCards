@@ -10,6 +10,7 @@ namespace JsonTransformLanguage
         private const string PROP_DATA = "$data";
         private const string PROP_TYPE = "$type";
         private const string PROP_TYPES = "$types";
+        private const string PROP_WHEN = "$when";
 
         public static JToken Transform(JToken input, JToken data, Dictionary<string, JToken> additionalReservedProperties)
         {
@@ -155,7 +156,26 @@ namespace JsonTransformLanguage
             }
 
             // Evaluate when clause
-            // TODO
+            if (input.TryGetValue(PROP_WHEN, out JToken whenToken))
+            {
+                input.Remove(PROP_WHEN);
+
+                var transformedWhenValue = Transform(whenToken, new JsonTransformerContext(context)
+                {
+                    ParentIsArray = false
+                });
+
+                // If it evaluated to true
+                if (transformedWhenValue != null && transformedWhenValue.Type == JTokenType.Boolean && transformedWhenValue.Value<bool>())
+                {
+                    // Keep it
+                }
+                else
+                {
+                    // Otherwise, drop it
+                    return answer;
+                }
+            }
 
             var newItem = new JObject();
 

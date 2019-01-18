@@ -1,0 +1,57 @@
+{
+  "inputJson": {
+    "sample1": {
+      "$when": "{name}", // Should be dropped since must evaluate to a boolean, not a string
+      "name": "First sample"
+    },
+    "sample2": {
+      "$when": "{reportsTo}", // Should be dropped since must evaluate to a boolean, not an object
+      "name": "Second sample"
+    },
+    "sample3": {
+      "$when": "{reportsTo.height}", // Should be dropped since must evaluate to a boolean, not an integer
+      "name": "Third sample"
+    },
+    "sample4": {
+      "$when": "{name.tacos}", // Should be dropped since evaluates to null (not found)
+      "name": "Fourth sample"
+    },
+    "sample5": {
+      "$when": "{reportsTo.isTall}", // Should be kept!
+      "name": "Fifth sample"
+    }
+  },
+
+  "inputData": {
+    "name": "Thomas Fennel",
+    "reportsTo": {
+      "name": "Andrew Clinick",
+      "picture": "https://unsplash.it/64?image=1025",
+      "isTall": true,
+      "height": 1
+    },
+    "directReports": [
+      {
+        "name": "Andrew Leader",
+        "picture": "https://unsplash.it/64?image=883",
+        "isTall": false
+      },
+      {
+        "name": "Adam Wilson",
+        "picture": "https://unsplash.it/64?image=804",
+        "isTall": true
+      },
+      {
+        "name": "Mary Anne Noskowski",
+        "picture": "https://unsplash.it/64?image=1027",
+        "isTall": false
+      }
+    ]
+  },
+
+  "expected": {
+    "sample5": {
+      "name": "Fifth sample"
+    }
+  }
+}

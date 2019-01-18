@@ -1,0 +1,62 @@
+{
+  "inputJson": {
+    "manager": {
+      "$when": "{reportsTo.isTall}",
+      "name": "{reportsTo.name}"
+    },
+    "managerAlt": {
+      "$data": "{reportsTo}",
+      "$when": "{isTall}",
+      "name": "{name}"
+    },
+    "skipManager": {
+      "$when": "{reportsTo.reportsTo.isTall}",
+      "name": "{reportsTo.reportsTo.name}"
+    },
+    "skipManagerAlt": {
+      "$data": "{reportsTo.reportsTo}",
+      "$when": "{isTall}",
+      "name": "{name}"
+    }
+  },
+
+  "inputData": {
+    "name": "Thomas Fennel",
+    "reportsTo": {
+      "name": "Andrew Clinick",
+      "picture": "https://unsplash.it/64?image=1025",
+      "isTall": false,
+      "reportsTo": {
+        "name": "Kevin Gallo",
+        "picture": "https://unsplash.it/64?image=1026",
+        "isTall": true
+      }
+    },
+    "directReports": [
+      {
+        "name": "Andrew Leader",
+        "picture": "https://unsplash.it/64?image=883",
+        "isTall": false
+      },
+      {
+        "name": "Adam Wilson",
+        "picture": "https://unsplash.it/64?image=804",
+        "isTall": true
+      },
+      {
+        "name": "Mary Anne Noskowski",
+        "picture": "https://unsplash.it/64?image=1027",
+        "isTall": false
+      }
+    ]
+  },
+
+  "expected": {
+    "skipManager": {
+      "name": "Kevin Gallo"
+    },
+    "skipManagerAlt": {
+      "name": "Kevin Gallo"
+    }
+  }
+}
