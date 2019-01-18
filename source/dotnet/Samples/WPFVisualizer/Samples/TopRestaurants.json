@@ -1,0 +1,95 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "data": {
+    "restaurants": [
+      {
+        "name": "The Stone House",
+        "price": "$$$",
+        "category": "American",
+        "open": "Open today 5:00 PM - 9:00 AM",
+        "address": "16244 Cleveland St, Redmond",
+        "picture": "https://bing.com/th?id=AVuQHC0pDjpRCuQ480x360&w=200&h=250&c=7&rs=1&qlt=80&cdv=1&pid=Local"
+      },
+      {
+        "name": "Tipsy Cow Burger Bar",
+        "price": "$$",
+        "category": "Burger, Bar",
+        "open": "Open 11:00 AM - 10:00 PM",
+        "address": "16345 Cleveland St, Redmond",
+        "picture": "https://bing.com/th?id=A3v2%252fXSzQDRiDmA480x360&w=200&h=250&c=7&rs=1&qlt=80&cdv=1&pid=Local"
+      }
+    ]
+  },
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Here are the top restaurants near you...",
+      "size": "medium",
+      "weight": "bolder"
+    },
+    {
+      "type": "ColumnSet",
+      "$data": "{restaurants}",
+      "columns": [
+        {
+          "type": "Column",
+          "width": "10",
+          "items": [
+            {
+              "type": "Container",
+              "style": "emphasis",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "{$index}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "65",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "{name}",
+              "weight": "bolder",
+              "size": "large"
+            },
+            {
+              "type": "TextBlock",
+              "text": "{price} - {category}",
+              "isSubtle": true
+            },
+            {
+              "type": "TextBlock",
+              "text": "{open}",
+              "isSubtle": true,
+              "spacing": "none"
+            },
+            {
+              "type": "TextBlock",
+              "text": "{address}",
+              "isSubtle": true,
+              "spacing": "none"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": "35",
+          "items": [
+            {
+              "type": "Image",
+              "url": "{picture}",
+              "size": "stretch"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
