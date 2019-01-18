@@ -5,6 +5,7 @@
 	<title>Adaptive Cards Designer</title>
 	<script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.min.js"></script>
 	<script src="monaco-editor/min/vs/loader.js"></script>
+	<link rel="stylesheet" href="adaptivecards-controls.css" />
 
 	<style type="text/css">
 		* {
@@ -31,17 +32,12 @@
 
 			hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
 			hostContainers.push(new ACDesigner.CortanaContainer("Cortana Skills", "containers/cortana-container.css"));
-			hostContainers.push(new ACDesigner.OutlookContainer("Outlook Actionable Messages",
-				"containers/outlook-container.css"));
+			hostContainers.push(new ACDesigner.OutlookContainer("Outlook Actionable Messages", "containers/outlook-container.css"));
 			hostContainers.push(new ACDesigner.TimelineContainer("Windows Timeline", "containers/timeline-container.css"));
-			hostContainers.push(new ACDesigner.DarkTeamsContainer("Microsoft Teams - Dark",
-				"containers/teams-container-dark.css"));
-			hostContainers.push(new ACDesigner.LightTeamsContainer("Microsoft Teams - Light",
-				"containers/teams-container-light.css"));
-			hostContainers.push(new ACDesigner.BotFrameworkContainer("Bot Framework Other Channels (Image render)",
-				"containers/bf-image-container.css"));
-			hostContainers.push(new ACDesigner.ToastContainer("Windows Notifications (Preview)",
-				"containers/toast-container.css"));
+			hostContainers.push(new ACDesigner.DarkTeamsContainer("Microsoft Teams - Dark", "containers/teams-container-dark.css"));
+			hostContainers.push(new ACDesigner.LightTeamsContainer("Microsoft Teams - Light", "containers/teams-container-light.css"));
+			hostContainers.push(new ACDesigner.BotFrameworkContainer("Bot Framework Other Channels (Image render)", "containers/bf-image-container.css"));
+			hostContainers.push(new ACDesigner.ToastContainer("Windows Notifications (Preview)", "containers/toast-container.css"));
 
 			let designer = new ACDesigner.CardDesigner(hostContainers);
 
