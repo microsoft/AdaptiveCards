@@ -13,10 +13,17 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveRenderArgs::RuntimeClassInitialize() noexcept { return S_OK; }
 
     HRESULT AdaptiveRenderArgs::RuntimeClassInitialize(ABI::AdaptiveNamespace::ContainerStyle containerStyle,
-                                                       _In_ IInspectable* parentElement) noexcept try
+                                                       _In_opt_ IInspectable* parentElement,
+                                                       _In_opt_ IAdaptiveRenderArgs* renderArgs) noexcept try
     {
         m_containerStyle = containerStyle;
         m_parentElement = parentElement;
+
+        if (renderArgs)
+        {
+            RETURN_IF_FAILED(renderArgs->get_AncestorHasFallback(&m_ancestorHasFallback));
+        }
+
         return S_OK;
     }
     CATCH_RETURN;
@@ -65,6 +72,18 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveRenderArgs::put_AllowAboveTitleIconPlacement(boolean value)
     {
         m_allowAboveTitleIconPlacement = value;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveRenderArgs::get_AncestorHasFallback(_Out_ boolean* hasFallback)
+    {
+        *hasFallback = m_ancestorHasFallback;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveRenderArgs::put_AncestorHasFallback(boolean hasFallback)
+    {
+        m_ancestorHasFallback = hasFallback;
         return S_OK;
     }
 }
