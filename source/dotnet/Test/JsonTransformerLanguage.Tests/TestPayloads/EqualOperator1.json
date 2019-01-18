@@ -1,0 +1,36 @@
+{
+  "inputJson": {
+    "answers": [
+      {
+        "$data": "{names}",
+        "isThomas": "{$data == 'Thomas Fennel'}",
+        "isAndrew": "{'Andrew Leader' == $data}"
+      }
+    ]
+  },
+
+  "inputData": {
+    "names": [
+      "Thomas Fennel",
+      "Mary Anne Noskowski",
+      "Andrew Leader"
+    ]
+  },
+
+  "expected": {
+    "answers": [
+      {
+        "isThomas": true,
+        "isAndrew": false
+      },
+      {
+        "isThomas": false,
+        "isAndrew": false
+      },
+      {
+        "isThomas": false,
+        "isAndrew": true
+      }
+    ]
+  }
+}

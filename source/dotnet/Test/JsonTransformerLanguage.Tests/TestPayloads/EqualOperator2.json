@@ -1,0 +1,37 @@
+{
+  "inputJson": {
+    "answers": [
+      {
+        "$data": "{names}",
+        "firstAndLastNameIsSame": "{first == last}",
+        "firstAndLastNameIsSame2": "{first==last}"
+      }
+    ]
+  },
+
+  "inputData": {
+    "names": [
+      {
+        "first": "Andrew",
+        "last": "Leader"
+      },
+      {
+        "first": "Wilson",
+        "last": "Wilson"
+      }
+    ]
+  },
+
+  "expected": {
+    "answers": [
+      {
+        "firstAndLastNameIsSame": false,
+        "firstAndLastNameIsSame2": false
+      },
+      {
+        "firstAndLastNameIsSame": true,
+        "firstAndLastNameIsSame2": true
+      }
+    ]
+  }
+}

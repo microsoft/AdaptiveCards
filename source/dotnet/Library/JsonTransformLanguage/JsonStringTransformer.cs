@@ -17,11 +17,13 @@ namespace JsonTransformLanguage
             return EvaluateBinding(input, context);
         }
 
+        private const string REGEX_OPERATOR = @"\s*((==)|(!=))\s*";
         private const string REGEX_PROPERTY_NAME = @"[a-zA-Z_$@][0-9a-zA-Z_$@]*";
         private const string REGEX_PROPERTY_ACCESSOR = @"\.(" + REGEX_PROPERTY_NAME + @")";
         private const string REGEX_DICTIONARY_LOOKUP = @"\['(([^']|\\')+)'\]";
         private const string REGEX_INDEX_ACCESSOR = @"\[(\d+)\]";
-        private const string REGEX_BINDING_EXPRESSION = @"\{(" + REGEX_PROPERTY_NAME + @"((" + REGEX_DICTIONARY_LOOKUP + @")|(" + REGEX_INDEX_ACCESSOR + @")|(" + REGEX_PROPERTY_ACCESSOR + @"))*)\}";
+        private const string REGEX_ACCESSOR_EXPRESSION = REGEX_PROPERTY_NAME + @"((" + REGEX_DICTIONARY_LOOKUP + @")|(" + REGEX_INDEX_ACCESSOR + @")|(" + REGEX_PROPERTY_ACCESSOR + @"))*";
+        private const string REGEX_BINDING_EXPRESSION = @"\{(" + REGEX_ACCESSOR_EXPRESSION + @")(" + REGEX_OPERATOR + @"(" + REGEX_ACCESSOR_EXPRESSION + @"))?\}";
 
         public static JToken EvaluateBinding(string bindingExpression, JsonTransformerContext context)
         {
@@ -45,11 +47,11 @@ namespace JsonTransformLanguage
             var match = Regex.Match(singleBindingExpression, "^" + REGEX_BINDING_EXPRESSION + "$");
             if (match.Success && match.Groups[1].Success)
             {
-                string insideBindingBrackets = match.Groups[1].Value;
-                Match firstPropertyMatch = Regex.Match(insideBindingBrackets, "^" + REGEX_PROPERTY_NAME);
+                string objectExpressionTxt = match.Groups[1].Value;
+                Match firstPropertyMatch = Regex.Match(objectExpressionTxt, "^" + REGEX_PROPERTY_NAME);
                 if (firstPropertyMatch.Success)
                 {
-                    string remainingToParse = insideBindingBrackets;
+                    string remainingToParse = objectExpressionTxt;
                     JToken data;
                     if (firstPropertyMatch.Value.StartsWith("$"))
                     {
@@ -69,7 +71,29 @@ namespace JsonTransformLanguage
 
                     if (remainingToParse.Length > 0)
                     {
-                        return EvalulatePropertyExpression(remainingToParse, data, context);
+                        data = EvaluateObjectExpression(remainingToParse, data, context);
+                    }
+
+                    string remainingExpression = singleBindingExpression.Substring(match.Groups[1].Index + match.Groups[1].Length);
+
+                    // See if there's a binary operator following this object
+                    var regexOperator = new Regex("^" + REGEX_OPERATOR);
+                    var matchOperator = regexOperator.Match(remainingExpression);
+                    if (matchOperator.Success && matchOperator.Groups[1].Success)
+                    {
+                        string operatorStr = matchOperator.Groups[1].Value;
+
+                        // Get the second object of the binary operation
+                        // Note this is slightly incorrect, since it'll join chained operations from the end to the front. For example,
+                        // true == 'Andrew' == 'Andrew' would evaluate to true, as (true == ('Andrew' == 'Andrew')), but it should be the other way around
+                        // Plus I'm temporarily hacking this by appending { at the start, need to split this out into different methods better
+                        JToken secondObject = EvaluateSingleBinding("{" + remainingExpression.Substring(matchOperator.Value.Length), context);
+
+                        switch (operatorStr)
+                        {
+                            case "==":
+                                return object.Equals(data, secondObject);
+                        }
                     }
 
                     return data;
@@ -99,7 +123,7 @@ namespace JsonTransformLanguage
         /// <param name="data"></param>
         /// <param name="propertyExpression"></param>
         /// <returns></returns>
-        public static JToken EvalulatePropertyExpression(string propertyExpression, JToken currData, JsonTransformerContext context)
+        public static JToken EvaluateObjectExpression(string propertyExpression, JToken currData, JsonTransformerContext context)
         {
             if (currData == null)
             {
@@ -143,7 +167,7 @@ namespace JsonTransformLanguage
             {
                 if (matchedText.Length < propertyExpression.Length)
                 {
-                    return EvalulatePropertyExpression(propertyExpression.Substring(matchedText.Length), nextData, context);
+                    return EvaluateObjectExpression(propertyExpression.Substring(matchedText.Length), nextData, context);
                 }
                 else
                 {
