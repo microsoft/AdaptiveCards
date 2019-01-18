@@ -708,5 +708,38 @@ namespace UWPUnitTests
             var jsonString = toggleAction.ToJson().ToString();
             Assert.AreEqual("{\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"ToggleVisibilityId\",\"sentiment\":\"Destructive\",\"targetElements\":[\"elementId\",{\"elementId\":\"element2Id\",\"isVisible\":true}],\"title\":\"Title\",\"type\":\"Action.ToggleVisibility\"}", jsonString);
         }
+
+        [TestMethod]
+        public void ActionSet()
+        {
+            AdaptiveActionSet actionSet = new AdaptiveActionSet
+            {
+                Height = HeightType.Stretch,
+                Id = "ActionSetId",
+                IsVisible = false,
+                Separator = true,
+                Spacing = Spacing.ExtraLarge
+            };
+
+            ValidateBaseElementProperties(actionSet, "ActionSetId", false, true, Spacing.ExtraLarge, HeightType.Stretch);
+
+            AdaptiveSubmitAction submitAction = new AdaptiveSubmitAction
+            {
+                Title = "Submit One"
+            };
+            actionSet.Actions.Add(submitAction);
+
+            AdaptiveSubmitAction submitAction2 = new AdaptiveSubmitAction
+            {
+                Title = "Submit Two"
+            };
+            actionSet.Actions.Add(submitAction2);
+
+            Assert.AreEqual("Submit One", actionSet.Actions[0].Title);
+            Assert.AreEqual("Submit Two", actionSet.Actions[1].Title);
+
+            var jsonString = actionSet.ToJson().ToString();
+            Assert.AreEqual("{\"actions\":[{\"data\":\"null\",\"id\":\"\",\"title\":\"Submit One\",\"type\":\"Action.Submit\"},{\"data\":\"null\",\"id\":\"\",\"title\":\"Submit Two\",\"type\":\"Action.Submit\"}],\"height\":\"Stretch\",\"id\":\"ActionSetId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"extraLarge\",\"type\":\"ActionSet\"}", jsonString);
+        }
     }
 }
