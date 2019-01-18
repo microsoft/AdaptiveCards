@@ -58,7 +58,7 @@ namespace AdaptiveSharedNamespace
         unsigned int m_pixelWidth;
         unsigned int m_pixelHeight;
         std::string m_altText;
-        HorizontalAlignment m_HorizontalAlignment;
+        HorizontalAlignment m_hAlignment;
         std::shared_ptr<BaseActionElement> m_selectAction;
     };
 
