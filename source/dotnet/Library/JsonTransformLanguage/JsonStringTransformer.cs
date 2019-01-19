@@ -1,3 +1,5 @@
+using Antlr4.Runtime;
+using JsonTransformLanguage.Grammars;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -22,16 +24,30 @@ namespace JsonTransformLanguage
         private const string REGEX_PROPERTY_ACCESSOR = @"\.(" + REGEX_PROPERTY_NAME + @")";
         private const string REGEX_DICTIONARY_LOOKUP = @"\['(([^']|\\')+)'\]";
         private const string REGEX_INDEX_ACCESSOR = @"\[(\d+)\]";
-        private const string REGEX_ACCESSOR_EXPRESSION = REGEX_PROPERTY_NAME + @"((" + REGEX_DICTIONARY_LOOKUP + @")|(" + REGEX_INDEX_ACCESSOR + @")|(" + REGEX_PROPERTY_ACCESSOR + @"))*";
-        private const string REGEX_BINDING_EXPRESSION = @"\{(" + REGEX_ACCESSOR_EXPRESSION + @")(" + REGEX_OPERATOR + @"(" + REGEX_ACCESSOR_EXPRESSION + @"))?\}";
+        private const string REGEX_ACCESSOR_EXPRESSION = @"((" + REGEX_DICTIONARY_LOOKUP + @")|(" + REGEX_INDEX_ACCESSOR + @")|(" + REGEX_PROPERTY_ACCESSOR + @"))";
+        private const string REGEX_OBJECT_EXPRESSION = REGEX_PROPERTY_NAME + "(" + REGEX_ACCESSOR_EXPRESSION + ")*"; // In future this will also have constants like strings and ints
+        private const string REGEX_BINARY_EXPRESSION = "(" + REGEX_OBJECT_EXPRESSION + ")(" + REGEX_OPERATOR + ")(" + REGEX_OBJECT_EXPRESSION + ")";
+        private const string REGEX_COMPLEX_EXPRESSION = "((" + REGEX_OBJECT_EXPRESSION + ")|(" + REGEX_BINARY_EXPRESSION + "))";
+        private const string REGEX_BINDING_EXPRESSION = @"\{(" + REGEX_COMPLEX_EXPRESSION + @")\}";
 
         public static JToken EvaluateBinding(string bindingExpression, JsonTransformerContext context)
         {
-            // If it's all one single expression
-            // (This is a temporary hack for resolving correct data types)
-            if (Regex.IsMatch(bindingExpression, "^" + REGEX_BINDING_EXPRESSION + "$"))
+            var inputStream = new AntlrInputStream(bindingExpression);
+            var lexer = new BindingExpressionsLexer(inputStream);
+            var tokenStream = new CommonTokenStream(lexer);
+            var parser = new BindingExpressionsParser(tokenStream);
+
+            var foundExpression = parser.expression();
+            var visitor = new BindingExpressionsVisitor(context);
+            JToken result = visitor.Visit(foundExpression);
+            return result;
+            
+
+                // If it's all one single expression, we don't do any string concatenation and we return the actual type
+                var match = Regex.Match(bindingExpression, "^" + REGEX_BINDING_EXPRESSION + "$");
+            if (match.Success && match.Groups[1].Success)
             {
-                return EvaluateSingleBinding(bindingExpression, context);
+                return EvaluateComplexExpression(match.Groups[1].Value, context);
             }
 
             Regex regex = new Regex(REGEX_BINDING_EXPRESSION);
@@ -42,62 +58,109 @@ namespace JsonTransformLanguage
             return replaced;
         }
 
-        public static JToken EvaluateSingleBinding(string singleBindingExpression, JsonTransformerContext context)
+        /// <summary>
+        /// A complex expression, like "person.name", "person['details'].name", "name == 'Andrew'", or even nested complex expressions
+        /// </summary>
+        /// <param name="complexExpression"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static JToken EvaluateComplexExpression(string complexExpression, JsonTransformerContext context)
         {
-            var match = Regex.Match(singleBindingExpression, "^" + REGEX_BINDING_EXPRESSION + "$");
-            if (match.Success && match.Groups[1].Success)
+            var complexMatch = Regex.Match(complexExpression, "^" + REGEX_COMPLEX_EXPRESSION + "$");
+            if (complexMatch.Success)
             {
-                string objectExpressionTxt = match.Groups[1].Value;
-                Match firstPropertyMatch = Regex.Match(objectExpressionTxt, "^" + REGEX_PROPERTY_NAME);
-                if (firstPropertyMatch.Success)
+
+            }
+
+            Match firstPropertyMatch = Regex.Match(complexExpression, "^" + REGEX_PROPERTY_NAME);
+            if (firstPropertyMatch.Success)
+            {
+                string remainingToParse = complexExpression;
+                JToken data;
+                if (firstPropertyMatch.Value.StartsWith("$"))
                 {
-                    string remainingToParse = objectExpressionTxt;
-                    JToken data;
-                    if (firstPropertyMatch.Value.StartsWith("$"))
+                    data = context.ReservedProperties.GetValue(firstPropertyMatch.Value.Substring(1));
+                    if (data == null)
                     {
-                        data = context.ReservedProperties.GetValue(firstPropertyMatch.Value.Substring(1));
-                        if (data == null)
-                        {
-                            return null;
-                        }
-
-                        remainingToParse = remainingToParse.Substring(firstPropertyMatch.Length);
-                    }
-                    else
-                    {
-                        remainingToParse = "." + remainingToParse;
-                        data = context.ReservedProperties.Data;
+                        return null;
                     }
 
-                    if (remainingToParse.Length > 0)
-                    {
-                        data = EvaluateObjectExpression(remainingToParse, data, context);
-                    }
-
-                    string remainingExpression = singleBindingExpression.Substring(match.Groups[1].Index + match.Groups[1].Length);
-
-                    // See if there's a binary operator following this object
-                    var regexOperator = new Regex("^" + REGEX_OPERATOR);
-                    var matchOperator = regexOperator.Match(remainingExpression);
-                    if (matchOperator.Success && matchOperator.Groups[1].Success)
-                    {
-                        string operatorStr = matchOperator.Groups[1].Value;
-
-                        // Get the second object of the binary operation
-                        // Note this is slightly incorrect, since it'll join chained operations from the end to the front. For example,
-                        // true == 'Andrew' == 'Andrew' would evaluate to true, as (true == ('Andrew' == 'Andrew')), but it should be the other way around
-                        // Plus I'm temporarily hacking this by appending { at the start, need to split this out into different methods better
-                        JToken secondObject = EvaluateSingleBinding("{" + remainingExpression.Substring(matchOperator.Value.Length), context);
-
-                        switch (operatorStr)
-                        {
-                            case "==":
-                                return object.Equals(data, secondObject);
-                        }
-                    }
-
-                    return data;
+                    remainingToParse = remainingToParse.Substring(firstPropertyMatch.Length);
                 }
+                else
+                {
+                    remainingToParse = "." + remainingToParse;
+                    data = context.ReservedProperties.Data;
+                }
+
+                if (remainingToParse.Length > 0)
+                {
+                    data = EvaluateAccessorExpression(remainingToParse, data, context);
+                }
+
+                string remainingExpression = complexExpression.Substring(firstPropertyMatch.Value.Length);
+
+                // See if there's a binary operator following this object
+                var regexOperator = new Regex("^" + REGEX_OPERATOR);
+                var matchOperator = regexOperator.Match(remainingExpression);
+                if (matchOperator.Success && matchOperator.Groups[1].Success)
+                {
+                    string operatorStr = matchOperator.Groups[1].Value;
+
+                    // Get the second object of the binary operation
+                    // Note this is slightly incorrect, since it'll join chained operations from the end to the front. For example,
+                    // true == 'Andrew' == 'Andrew' would evaluate to true, as (true == ('Andrew' == 'Andrew')), but it should be the other way around
+                    // Plus I'm temporarily hacking this by appending { at the start, need to split this out into different methods better
+                    JToken secondObject = EvaluateComplexExpression("{" + remainingExpression.Substring(matchOperator.Value.Length), context);
+
+                    switch (operatorStr)
+                    {
+                        case "==":
+                            return object.Equals(data, secondObject);
+                    }
+                }
+
+                return data;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Evaluates a simple object expression, like "reportsTo.name" or "people[0].name" or even "'Andrew'" or "4"
+        /// </summary>
+        /// <param name="objectExpression"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        private static JToken EvaluateObjectExpression(string objectExpression, JsonTransformerContext context)
+        {
+            Match firstPropertyMatch = Regex.Match(objectExpression, "^" + REGEX_PROPERTY_NAME);
+            if (firstPropertyMatch.Success)
+            {
+                string remainingToParse = objectExpression;
+                JToken data;
+                if (firstPropertyMatch.Value.StartsWith("$"))
+                {
+                    data = context.ReservedProperties.GetValue(firstPropertyMatch.Value.Substring(1));
+                    if (data == null)
+                    {
+                        return null;
+                    }
+
+                    remainingToParse = remainingToParse.Substring(firstPropertyMatch.Length);
+                }
+                else
+                {
+                    remainingToParse = "." + remainingToParse;
+                    data = context.ReservedProperties.Data;
+                }
+
+                if (remainingToParse.Length > 0)
+                {
+                    data = EvaluateAccessorExpression(remainingToParse, data, context);
+                }
+
+                return data;
             }
 
             return null;
@@ -113,7 +176,7 @@ namespace JsonTransformLanguage
 
             public string ReplaceBinding(Match m)
             {
-                return EvaluateSingleBinding(m.Value, _context)?.ToString();
+                return EvaluateComplexExpression(m.Value, _context)?.ToString();
             }
         }
 
@@ -123,7 +186,7 @@ namespace JsonTransformLanguage
         /// <param name="data"></param>
         /// <param name="propertyExpression"></param>
         /// <returns></returns>
-        public static JToken EvaluateObjectExpression(string propertyExpression, JToken currData, JsonTransformerContext context)
+        public static JToken EvaluateAccessorExpression(string propertyExpression, JToken currData, JsonTransformerContext context)
         {
             if (currData == null)
             {
@@ -167,7 +230,7 @@ namespace JsonTransformLanguage
             {
                 if (matchedText.Length < propertyExpression.Length)
                 {
-                    return EvaluateObjectExpression(propertyExpression.Substring(matchedText.Length), nextData, context);
+                    return EvaluateAccessorExpression(propertyExpression.Substring(matchedText.Length), nextData, context);
                 }
                 else
                 {
