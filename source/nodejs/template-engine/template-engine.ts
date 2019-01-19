@@ -1,15 +1,26 @@
-type TokenType = 
-    "whiteSpace" |
-    "expressionStart" |
-    "expressionEnd" |
-    "indexerStart" |
-    "indexerEnd" |
-    "identifier" |
-    "openParenthese" |
-    "closeParenthese" |
-    "propertyPathSeparator" |
-    "stringLiteral" |
-    "numberLitteral";
+enum TokenType {
+    WhiteSpace,
+    OpenCurlyBracket,
+    CloseCurlyBracket,
+    OpenSquareBracket,
+    CloseSquareBracket,
+    OpenParenthese,
+    CloseParenthese,
+    Identifier,
+    Period,
+    Comma,
+    PlusSign,
+    MinusSign,
+    StringLiteral,
+    NumberLitteral
+}
+
+type OperatorTokenKind = TokenType.PlusSign | TokenType.MinusSign;
+
+interface TokenTypeInfo {
+    friendlyName: string;
+    matchingEndToken?: TokenType;
+}
 
 interface TokenizerRule {
     regEx: RegExp;
@@ -27,50 +38,20 @@ class Tokenizer {
 
     static initialize() {
         Tokenizer.rules.push(
-            {
-                regEx: /^\s/,
-                tokenType: "whiteSpace"
-            },
-            {
-                regEx: /^{/,
-                tokenType: "expressionStart"
-            },
-            {
-                regEx: /^}/,
-                tokenType: "expressionEnd"
-            },
-            {
-                regEx: /^\[/,
-                tokenType: "indexerStart"
-            },
-            {
-                regEx: /^\]/,
-                tokenType: "indexerEnd"
-            },
-            {
-                regEx: /^\(/,
-                tokenType: "openParenthese"
-            },
-            {
-                regEx: /^\)/,
-                tokenType: "closeParenthese"
-            },
-            {
-                regEx: /^[a-z_]+/i,
-                tokenType: "identifier"
-            },
-            {
-                regEx: /^\./,
-                tokenType: "propertyPathSeparator"
-            },
-            {
-                regEx: /^(?:".*")|^(?:'.*')/,
-                tokenType: "stringLiteral"
-            },
-            {
-                regEx: /^\d*\.?\d+/,
-                tokenType: "numberLitteral"
-            }
+            { tokenType: TokenType.WhiteSpace, regEx: /^\s/ },
+            { tokenType: TokenType.OpenCurlyBracket, regEx: /^{/ },
+            { tokenType: TokenType.CloseCurlyBracket, regEx: /^}/ },
+            { tokenType: TokenType.OpenSquareBracket, regEx: /^\[/ },
+            { tokenType: TokenType.CloseSquareBracket, regEx: /^\]/ },
+            { tokenType: TokenType.OpenParenthese, regEx: /^\(/ },
+            { tokenType: TokenType.CloseParenthese, regEx: /^\)/ },
+            { tokenType: TokenType.Identifier, regEx: /^[a-z_]+/i },
+            { tokenType: TokenType.Period, regEx: /^\./ },
+            { tokenType: TokenType.Comma, regEx: /^,/ },
+            { tokenType: TokenType.PlusSign, regEx: /^\+/ },
+            { tokenType: TokenType.MinusSign, regEx: /^-/ },
+            { tokenType: TokenType.StringLiteral, regEx: /^(?:".*")|^(?:'.*')/ },
+            { tokenType: TokenType.NumberLitteral, regEx: /^\d*\.?\d+/ }
         )
     }
 
@@ -126,51 +107,134 @@ class Tokenizer {
 
 Tokenizer.initialize();
 
-/*
-interface NextTokenDefinition {
-    type: TokenType;
-    canEndExpression: boolean;
+abstract class ExpressionNode {
+    abstract print(): string;
 }
 
-class NextTokenDefinitions {
-    definitions: NextTokenDefinition[];
+class Expression extends ExpressionNode {
+    nodes: Array<ExpressionNode> = [];
 
-    getDefinition(tokenType: TokenType): NextTokenDefinition {
-        if (this.definitions) {
-            for (let definition of this.definitions) {
-                if ()
+    print(): string {
+        let result = "";
+
+        for (let node of this.nodes) {
+            if (result != "") {
+                result += " ";
+            }
+
+            result += node.print();
+        }
+
+        return result;
+    }
+}
+
+type PropertyPathPart = string | Expression;
+
+class PropertyPathNode extends ExpressionNode {
+    properties: Array<PropertyPathPart> = [];
+
+    print(): string {
+        let result = "";
+
+        for (let part of this.properties) {
+            if (typeof part === "string") {
+                if (result != "") {
+                    result += ".";
+                }
+
+                result += part;
+            }
+            else {
+                result += "[" + part.print() + "]";
             }
         }
 
-        return null;
+        return result;
     }
-}
-*/
-
-type ExpectedNextTokens = { [token in TokenType]?: boolean };
-
-abstract class ExpressionNode {
-
-}
-
-class PropertyPathNode extends ExpressionNode {
-    properties: Array<string> = [];
 }
 
 class FunctionCallNode extends ExpressionNode {
     functionName: string;
+    parameters: Array<Expression> = [];
+
+    print(): string {
+        let result = "";
+
+        for (let parameter of this.parameters) {
+            if (result != "") {
+                result += ", ";
+            }
+
+            result += parameter.print();
+        }
+
+        return this.functionName + "(" + result + ")";
+    }
 }
 
-class Expression {
+class StringLiteralNode extends ExpressionNode {
+    constructor(readonly value: string) {
+        super();
+    }
+
+    print(): string {
+        return this.value;
+    }
+}
+
+class NumberLiteralNode extends ExpressionNode {
+    constructor(readonly value: number) {
+        super();
+    }
+
+    print(): string {
+        return this.value.toString();
+    }
+}
+
+class OperatorNode extends ExpressionNode {
+    constructor(readonly operator: OperatorTokenKind) {
+        super();
+    }
+
+    print(): string {
+        return TokenType[this.operator];
+    }
+}
+
+class ExpressionParser {
     private _currentTokenIndex: number = 0;
-    private _parts: ExpressionNode[] = null;
+
+    private unexpectedTokenType() {
+        throw new Error("Unexpected token \"" + this.current.value + "\" at position " + this.current.originalPosition + ".");
+    }
+
+    private unexpectedEndOfExpression() {
+        throw new Error("Unexpected end of expression.");
+    }
+
+    private ensureTokenType(expectedTokenTypes: TokenType[]) {
+        if (this.eof) {
+            this.unexpectedEndOfExpression();
+        }
+        else if (expectedTokenTypes.indexOf(this.current.type) < 0) {
+            this.unexpectedTokenType();
+        }
+    }
 
     private moveNext() {
         this._currentTokenIndex++;
     }
 
+    private moveNextAndEnsureTokenType(expectedTokenTypes: TokenType[]) {
+        this._currentTokenIndex++;
+
+        this.ensureTokenType(expectedTokenTypes);
+    }
+
     private skipWhitespace() {
-        while (!this.eof && this.current.type == "whiteSpace") {
+        while (!this.eof && this.current.type == TokenType.WhiteSpace) {
             this.moveNext();
         }
     }
@@ -192,39 +256,32 @@ class Expression {
         }
     }
 
-    private ensureTokenType(tokenType: TokenType) {
-        if (this.eof) {
-            throw new Error("Unexpected end of expression. A token of type \"" + tokenType + "\" was expected.");
-        }
-        else if (this.current.type != tokenType) {
-            throw new Error("Unexpected token of type \"" + this.current.type + "\" at position " + this.current.originalPosition + "(" + this.current.value + "). A token of type \"" + tokenType + "\" was expected.");
-        }
-    }
-
     constructor(readonly tokens: Token[]) {
-    }
-
-    reset() {
-        this._currentTokenIndex = 0;
-        this._parts = [];
     }
 
     private parsePropertyPath(): PropertyPathNode {
         let result = new PropertyPathNode();
 
-        this.ensureTokenType("identifier");
+        this.ensureTokenType([TokenType.Identifier]);
 
         while (!this.eof) {
             switch (this.current.type) {
-                case "identifier":
+                case TokenType.Identifier:
                     result.properties.push(this.current.value);
+
+                    if (this.nextTokenType != TokenType.Period) {
+                        return;
+                    }
+
                     break;
-                case "propertyPathSeparator":
+                case TokenType.Period:
                     break;
-                case "indexerStart":
+                case TokenType.OpenSquareBracket:
+                    result.properties.push(this.parseExpression(TokenType.OpenSquareBracket, [TokenType.CloseSquareBracket]));
+
                     break;
                 default:
-                    return result;
+                    this.unexpectedTokenType();
             }
 
             this.moveNext();
@@ -233,7 +290,8 @@ class Expression {
         return result;
     }
 
-    private findMatchingEndTokenIndex(startTokenType: TokenType, endTokenType: TokenType) {
+    /*
+    private ensureHasMatchingEndToken(startTokenType: TokenType, endTokenType: TokenType) {
         this.ensureTokenType(startTokenType);
 
         let startTokenCount = 0;
@@ -247,134 +305,129 @@ class Expression {
                 startTokenCount--;
 
                 if (startTokenCount == 0) {
-                    return i;
+                    return true;
                 }
             }
         }
 
-        return -1;
+        return false;
     }
+    */
 
     private parseFunctionCall(): FunctionCallNode {
         let result = new FunctionCallNode();
 
-        this.ensureTokenType("identifier");
+        this.ensureTokenType([TokenType.Identifier]);
 
         result.functionName = this.current.value;
 
-        this.moveNext();
+        this.moveNextAndEnsureTokenType([TokenType.OpenParenthese]);
 
-        this.ensureTokenType("openParenthese");
+        let moreParameters = false;
+        let startTokenType = TokenType.OpenParenthese;
 
-        let index = this.findMatchingEndTokenIndex("openParenthese", "closeParenthese");
+        do {
+            result.parameters.push(this.parseExpression(startTokenType, [TokenType.CloseParenthese, TokenType.Comma]));
 
-        if (index == -1) {
-            throw new Error("Syntax error: missing )");
-        }
+            moreParameters = this.current.type == TokenType.Comma;
 
-        
+            if (moreParameters) {
+                startTokenType = TokenType.Comma;
+            }
+        } while (moreParameters);
 
         return result;
     }
 
-    parse() {
-        this.reset();
+    private isOperator(tokenType: TokenType): boolean {
+        const operators: Array<TokenType> = [ TokenType.PlusSign, TokenType.MinusSign ];
 
-        /*
-        let expectedNextTokens: NextTokenDefinition[] = [
-            { type: "whiteSpace", canEndExpression: false },
-            { type: "identifier", canEndExpression: true },
-            { type: "numberLitteral", canEndExpression: true },
-            { type: "stringLiteral", canEndExpression: true },
-            { type: "expressionStart", canEndExpression: false },
-            { type: "openParenthese", canEndExpression: false }
-        ];
-        */
+        return operators.indexOf(tokenType) >= 0;
+    }
 
-        let expectedNextTokens: ExpectedNextTokens = {
-            "whiteSpace": false,
-            "identifier": true,
-            "numberLitteral": true,
-            "stringLiteral": true,
-            "expressionStart": false,
-            "openParenthese": false
-        };
+    private parseExpression(startTokenType: TokenType, endTokenTypes: TokenType[]): Expression {
+        let result: Expression = new Expression();
+
+        this.skipWhitespace();
+        this.ensureTokenType([startTokenType]);
+        this.moveNext();
+        this.skipWhitespace();
 
         while (!this.eof) {
-            let currentToken = this.current;
+            switch (this.current.type) {
+                case TokenType.Identifier:
+                    result.nodes.push(this.nextTokenType == TokenType.OpenParenthese ? this.parseFunctionCall() : this.parsePropertyPath());
 
-            if (typeof expectedNextTokens[currentToken.type] !== "boolean") {
-                throw new Error("Found unexpected token of type " + currentToken.type + " at position " + currentToken.originalPosition);
-            }
-
-            if (this.eof && !expectedNextTokens[currentToken.type]) {
-                throw new Error("Unexpected end of expression.");
-            }
-
-            switch (currentToken.type) {
-                /*
-                case "expressionStart":
-                case "expressionEnd":
                     this.moveNext();
+                    this.skipWhitespace();
+                    this.ensureTokenType(endTokenTypes);
 
-                    break;
-                case "indexerStart":
-                case "indexerEnd":
-                */
-                case "identifier":
-                    let node: ExpressionNode = null;
+                    return result;
+                case TokenType.StringLiteral:
+                    result.nodes.push(new StringLiteralNode(this.current.value));
 
-                    if (this.nextTokenType == "openParenthese") {
-                        node = this.parseFunctionCall();
+                    this.moveNext();
+                    this.skipWhitespace();
+                    this.ensureTokenType(endTokenTypes);
+
+                    return result;
+                case TokenType.NumberLitteral:
+                    result.nodes.push(new NumberLiteralNode(parseFloat(this.current.value)));
+
+                    this.moveNext();
+                    this.skipWhitespace();
+
+                    if (this.isOperator(this.current.type)) {
+                        result.nodes.push(new OperatorNode(<OperatorTokenKind>this.current.type));
+
+                        this.moveNext();
+                        this.skipWhitespace();
+
+                        break;
                     }
                     else {
-                        node = this.parsePropertyPath();
+                        this.ensureTokenType(endTokenTypes);
+
+                        return result;
                     }
+                case TokenType.PlusSign:
+                case TokenType.MinusSign:
+                    if (result.nodes.length == 0) {
+                        if (this.nextTokenType != TokenType.NumberLitteral) {
+                            this.unexpectedTokenType();
+                        }
 
-                    expectedNextTokens = {
-                        "whiteSpace": true,
-                    };
+                        let isNegative = this.current.type == TokenType.MinusSign;
 
-                    break;
-                /*
-                case "propertyPathSeparator":
-                    expectedNextTokens = {
-                        "identifier": true
-                    };
+                        this.moveNext();
 
-                    this.moveNext();
+                        result.nodes.push(new NumberLiteralNode((isNegative ? -1 : 1) * parseFloat(this.current.value)));
 
-                    break;
-                case "openParenthese":
-                case "closeParenthese":
-                */
-                case "stringLiteral":
-                case "numberLitteral":
-                    expectedNextTokens = {
-                        "whiteSpace": true
-                    };
-
-                    this.moveNext();
-                    
-                    break;
-                case "whiteSpace":
+                        this.moveNext();
+                        this.skipWhitespace();
+                        this.ensureTokenType(endTokenTypes);
+    
+                        return result;
+                    }
+                    else {
+                        // TODO - Operators within expressions
+                        this.unexpectedTokenType();
+                    }
                 default:
-                    this.moveNext();
-                        
-                    break
-            }
-
-            if (currentToken.type != "identifier" && currentToken.type != "propertyPathSeparator") {
-                if (propertyPath) {
-                    console.log("Found property path: " + propertyPath.join("."));
-                }
-
-                propertyPath = null;
+                    this.unexpectedTokenType();
             }
         }
 
-        if (propertyPath) {
-            console.log("Found property path: " + propertyPath.join("."));
-        }
+        this.unexpectedEndOfExpression();
+    }
+
+    reset() {
+        this._currentTokenIndex = 0;
+    }
+
+    parse(): Expression {
+        this.reset();
+
+        return this.parseExpression(TokenType.OpenCurlyBracket, [TokenType.CloseCurlyBracket]);
     }
 }

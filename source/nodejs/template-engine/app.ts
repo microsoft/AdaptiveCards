@@ -11,7 +11,7 @@ function tokenizeExpression() {
         let tr = document.createElement("tr");
 
         let td = document.createElement("td");
-        td.innerText = token.type;
+        td.innerText = TokenType[token.type];
 
         tr.appendChild(td);
 
@@ -25,10 +25,24 @@ function tokenizeExpression() {
 
     outputDiv.appendChild(table);
 
-    let expression = new Expression(tokenizer.tokens);
-    expression.parse();
+    let serializedExpression = document.getElementById("serializedExpression");
+
+    let parser = new ExpressionParser(tokenizer.tokens);
+
+    try {
+        let parsedExpression = parser.parse();
+        
+        serializedExpression.innerText = parsedExpression.print();
+    }
+    catch (e) {
+        serializedExpression.innerText = e.message;
+    }
 }
 
-window.onload = function() {
-    document.getElementById("btnTokenize").onclick = () => { tokenizeExpression() };
+window.onload = function()
+{
+    document.getElementById("btnTokenize").onclick = function(e: MouseEvent)
+    {
+        tokenizeExpression();
+    }
 }

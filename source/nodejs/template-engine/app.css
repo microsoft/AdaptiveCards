@@ -1,0 +1,11 @@
+html { 
+    overflow: auto;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    display: block;
+    overflow: none;
+}
