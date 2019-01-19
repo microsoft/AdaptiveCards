@@ -54,6 +54,12 @@ namespace AdaptiveCards.Rendering.Wpf
                 Grid.SetRow(uiValue, iRow++);
                 uiFactSet.Children.Add(uiValue);
             }
+
+            if(!factSet.IsVisible)
+            {
+                uiFactSet.Visibility = Visibility.Collapsed;
+            }
+
             return uiFactSet;
         }
     }

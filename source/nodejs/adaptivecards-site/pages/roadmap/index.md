@@ -2,16 +2,14 @@
 title: Roadmap
 ---
 
-## Adaptive Cards 1.2
+### Adaptive Cards 1.2
 
-Planned released date 3/1/2019
-Adaptive Cards 1.2 addresses a lot of customer feedback.
+This is the tentative list of 1.2 features.  These items are not guaranteed to ship, but we will do our best to keep this date and status as up to date as possible.
 
-{% adaptivecard http://adaptivecardsblob.blob.core.windows.net/releaseshelper/releasescard.json %}
+Tentative release date: **Q1 2019**
 
-## Adaptive Cards 2.0
+{% adaptivecard https://adaptivecardsblob.blob.core.windows.net/releaseshelper/releasescard.json %}
 
-Lots of exciting stuff!
+### Adaptive Cards 2.0
 
-
-Test
+More info coming soon!

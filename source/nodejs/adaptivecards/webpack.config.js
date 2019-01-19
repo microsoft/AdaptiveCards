@@ -56,6 +56,11 @@ module.exports = (env, argv) => {
 				from: 'src/adaptivecards-default.css',
 				to: '../lib/',
 				flatten: true
+			}]),
+			new CopyWebpackPlugin([{
+				from: 'src/adaptivecards-default.css',
+				to: '../dist/',
+				flatten: true
 			}])
 		]
 	};

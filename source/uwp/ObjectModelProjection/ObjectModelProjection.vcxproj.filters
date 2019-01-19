@@ -51,6 +51,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ParseContext.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ToggleVisibilityAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ToggleVisibilityTarget.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ActionSet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Container.h" />
@@ -108,6 +109,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ParseContext.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ToggleVisibilityAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ToggleVisibilityTarget.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ActionSet.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">

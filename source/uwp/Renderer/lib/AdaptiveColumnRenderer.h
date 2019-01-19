@@ -24,7 +24,7 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP FromJson(ABI::Windows::Data::Json::IJsonObject*,
                                 ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParsers,
                                 ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParsers,
-                                ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
+                                ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
                                 ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept override;
     };
 
