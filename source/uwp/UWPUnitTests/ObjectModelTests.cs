@@ -321,8 +321,8 @@ namespace UWPUnitTests
             columnSet.Columns.Add(column1);
             columnSet.Columns.Add(column2);
 
-            Assert.AreEqual("ColumnId", (columnSet.Columns[0] as AdaptiveColumn).Id);
-            Assert.AreEqual("Column2Id", (columnSet.Columns[1] as AdaptiveColumn).Id);
+            Assert.AreEqual("ColumnId", columnSet.Columns[0].Id);
+            Assert.AreEqual("Column2Id", columnSet.Columns[1].Id);
 
             var jsonString = columnSet.ToJson().ToString();
             Assert.AreEqual("{\"columns\":[{\"height\":\"Stretch\",\"id\":\"ColumnId\",\"isVisible\":false,\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"selectAction\":{\"id\":\"\",\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"separator\":true,\"spacing\":\"small\",\"style\":\"Emphasis\",\"type\":\"Column\",\"verticalContentAlignment\":\"Bottom\",\"width\":\"auto\"},{\"id\":\"Column2Id\",\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"}],\"type\":\"Column\",\"width\":\"auto\"}],\"height\":\"Stretch\",\"id\":\"ColumnSetId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"small\",\"type\":\"ColumnSet\"}", jsonString);
@@ -400,8 +400,8 @@ namespace UWPUnitTests
             imageSet.Images.Add(image1);
             imageSet.Images.Add(image2);
 
-            Assert.AreEqual("Image1Id", (imageSet.Images[0] as AdaptiveImage).Id);
-            Assert.AreEqual("Image2Id", (imageSet.Images[1] as AdaptiveImage).Id);
+            Assert.AreEqual("Image1Id", imageSet.Images[0].Id);
+            Assert.AreEqual("Image2Id", imageSet.Images[1].Id);
 
             var jsonString = imageSet.ToJson().ToString();
             Assert.AreEqual("{\"height\":\"Stretch\",\"id\":\"ImageSetId\",\"imageSize\":\"Small\",\"images\":[{\"id\":\"Image1Id\",\"type\":\"Image\",\"url\":\"https://www.stuff.com/picture.jpg\"},{\"id\":\"Image2Id\",\"type\":\"Image\",\"url\":\"https://www.stuff.com/picture2.jpg\"}],\"isVisible\":false,\"separator\":true,\"spacing\":\"medium\",\"type\":\"ImageSet\"}", jsonString);
