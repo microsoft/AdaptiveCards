@@ -2831,34 +2831,34 @@ export class DateInput extends Input {
 			this._dateInputElement.value = this.defaultValue;
 		}
 
-    if (!Utils.isNullOrEmpty(this.placeholder)) {
-        this._dateInputElement.placeholder = this.placeholder;
-        this._dateInputElement.setAttribute("aria-label", this.placeholder);
-    }
+		if (!Utils.isNullOrEmpty(this.placeholder)) {
+			this._dateInputElement.placeholder = this.placeholder;
+			this._dateInputElement.setAttribute("aria-label", this.placeholder);
+		}
 
-    return this._dateInputElement;
-  }
+		return this._dateInputElement;
+	}
 
-  placeholder: string;
+	placeholder: string;
 
-  getJsonTypeName(): string {
-      return "Input.Date";
-  }
+	getJsonTypeName(): string {
+		return "Input.Date";
+	}
 
-  toJSON() {
-      let result = super.toJSON();
-      Utils.setProperty(result, "placeholder", this.placeholder);
-      return result;
-  }
+	toJSON() {
+		let result = super.toJSON();
+		Utils.setProperty(result, "placeholder", this.placeholder);
+		return result;
+	}
 
-  parse(json: any, errors?: Array<HostConfig.IValidationError>) {
-      super.parse(json, errors);
-      this.placeholder = json["placeholder"];
-  }
+	parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+		super.parse(json, errors);
+		this.placeholder = json["placeholder"];
+	}
 
-  get value(): string {
-      return this._dateInputElement ? this._dateInputElement.value : null;
-  }
+	get value(): string {
+		return this._dateInputElement ? this._dateInputElement.value : null;
+	}
 }
 
 export class TimeInput extends Input {
