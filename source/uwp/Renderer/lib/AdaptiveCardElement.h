@@ -11,23 +11,26 @@ namespace AdaptiveNamespace
         HRESULT InitializeBaseElement(const std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel);
 
         IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveNamespace::Spacing* spacing);
-        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveNamespace::Spacing spacing);
+        IFACEMETHODIMP put_Spacing(ABI::AdaptiveNamespace::Spacing spacing);
 
-        IFACEMETHODIMP get_Separator(boolean* separator);
+        IFACEMETHODIMP get_Separator(_Out_ boolean* separator);
         IFACEMETHODIMP put_Separator(boolean separator);
 
-        IFACEMETHODIMP get_Id(HSTRING* id);
-        IFACEMETHODIMP put_Id(HSTRING id);
+        IFACEMETHODIMP get_Id(_Outptr_ HSTRING* id);
+        IFACEMETHODIMP put_Id(_In_ HSTRING id);
 
-        IFACEMETHODIMP get_ElementTypeString(HSTRING* type);
+        IFACEMETHODIMP get_IsVisible(_Out_ boolean* separator);
+        IFACEMETHODIMP put_IsVisible(boolean separator);
 
-        IFACEMETHODIMP get_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result);
-        IFACEMETHODIMP put_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject* jsonObject);
+        IFACEMETHODIMP get_ElementTypeString(_Outptr_ HSTRING* type);
+
+        IFACEMETHODIMP get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
+        IFACEMETHODIMP put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObject);
 
         IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveNamespace::HeightType* height);
-        IFACEMETHODIMP put_Height(_In_ ABI::AdaptiveNamespace::HeightType height);
+        IFACEMETHODIMP put_Height(ABI::AdaptiveNamespace::HeightType height);
 
-        IFACEMETHODIMP ToJson(ABI::Windows::Data::Json::IJsonObject** result);
+        IFACEMETHODIMP ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
 
         HRESULT SetSharedElementProperties(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedCardElement);
 
@@ -35,6 +38,7 @@ namespace AdaptiveNamespace
 
     private:
         boolean m_separator;
+        boolean m_isVisible;
         Microsoft::WRL::Wrappers::HString m_id;
         ABI::AdaptiveNamespace::Spacing m_spacing;
         Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_additionalProperties;

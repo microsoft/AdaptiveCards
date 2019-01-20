@@ -35,7 +35,7 @@ hexo.extend.helper.register('propertiesDetails', function (properties) {
 
         html += '<div class="w3-container w3-col s12 m5 l4">';
         html += '<div class="adaptivecard">' + exampleContent + '</div>';
-        html += '<a class="w3-btn w3-blue" target="_blank" href="/visualizer/index.html?card=/payloads/' + path.basename(example) + '">Try it Yourself »</a>';
+        html += '<a class="w3-btn w3-blue" target="_blank" href="/designer/index.html?card=/payloads/' + path.basename(example) + '">Try it Yourself »</a>';
         html += '</div>';
 
         html += '</div>'; // w3-cell-row

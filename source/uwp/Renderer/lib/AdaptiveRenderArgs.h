@@ -12,10 +12,10 @@ namespace AdaptiveNamespace
     public:
         HRESULT RuntimeClassInitialize() noexcept;
 
-        HRESULT RuntimeClassInitialize(ABI::AdaptiveNamespace::ContainerStyle containerStyle, IInspectable* parentElement) noexcept;
+        HRESULT RuntimeClassInitialize(ABI::AdaptiveNamespace::ContainerStyle containerStyle, _In_ IInspectable* parentElement) noexcept;
 
         IFACEMETHODIMP get_ContainerStyle(_Out_ ABI::AdaptiveNamespace::ContainerStyle* value);
-        IFACEMETHODIMP put_ContainerStyle(_In_ ABI::AdaptiveNamespace::ContainerStyle value);
+        IFACEMETHODIMP put_ContainerStyle(ABI::AdaptiveNamespace::ContainerStyle value);
         IFACEMETHODIMP get_ParentElement(_COM_Outptr_ IInspectable** value);
         IFACEMETHODIMP put_ParentElement(_In_ IInspectable* value);
 

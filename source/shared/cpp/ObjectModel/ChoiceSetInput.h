@@ -29,11 +29,15 @@ namespace AdaptiveSharedNamespace
         std::string GetValue() const;
         void SetValue(const std::string& value);
 
+        bool GetWrap() const;
+        void SetWrap(bool value);
+
     private:
         void PopulateKnownPropertiesSet() override;
 
-        std::string m_value;
+        bool m_wrap;
         bool m_isMultiSelect;
+        std::string m_value;
         ChoiceSetStyle m_choiceSetStyle;
 
         std::vector<std::shared_ptr<ChoiceInput>> m_choices;

@@ -18,6 +18,13 @@
 
     NSBundle *main = [NSBundle mainBundle];
     pathsToFiles = [main pathsForResourcesOfType:@"json" inDirectory:nil];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"NOT (SELF contains[c] 'sample.json')"];
+    pathsToFiles = [pathsToFiles filteredArrayUsingPredicate:predicate];
+    pathsToFiles = [pathsToFiles sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        NSString *path1 = obj1, *path2 = obj2;
+        NSComparisonResult result = [[[NSFileManager defaultManager] displayNameAtPath:path1] compare:[[NSFileManager defaultManager] displayNameAtPath:path2]];
+        return result;
+    }];
     NSInteger cnt = [pathsToFiles count];
     enum DesiredIdx { eDefaultViewIdx = 2 };
     if(cnt >= eDefaultViewIdx)

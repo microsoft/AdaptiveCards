@@ -105,6 +105,7 @@
     <Compile Include="Pages\StartPage.xaml.cs">
       <DependentUpon>StartPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ResourceResolvers\SampleResourceResolver.cs" />
     <Compile Include="ViewModels\TestResultsViewModel.cs" />
     <Compile Include="ViewModels\TestResultsCategoryViewModel.cs" />
     <Compile Include="ViewModels\RunningTestsViewModel.cs" />

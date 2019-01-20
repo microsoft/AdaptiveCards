@@ -155,6 +155,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\..\ObjectModel\ActionParserRegistration.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ActionSet.cpp" />
     <ClCompile Include="..\..\ObjectModel\AdaptiveCardParseException.cpp" />
     <ClCompile Include="..\..\ObjectModel\AdaptiveCardParseWarning.cpp" />
     <ClCompile Include="..\..\ObjectModel\BaseActionElement.cpp" />
@@ -192,11 +193,14 @@
     <ClCompile Include="..\..\ObjectModel\TextInput.cpp" />
     <ClCompile Include="..\..\ObjectModel\TimeInput.cpp" />
     <ClCompile Include="..\..\ObjectModel\ToggleInput.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ToggleVisibilityAction.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ToggleVisibilityTarget.cpp" />
     <ClCompile Include="..\..\ObjectModel\UnknownElement.cpp" />
     <ClCompile Include="..\..\ObjectModel\Util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\ObjectModel\ActionParserRegistration.h" />
+    <ClInclude Include="..\..\ObjectModel\ActionSet.h" />
     <ClInclude Include="..\..\ObjectModel\AdaptiveBase64Util.h" />
     <ClInclude Include="..\..\ObjectModel\AdaptiveCardParseException.h" />
     <ClInclude Include="..\..\ObjectModel\AdaptiveCardParseWarning.h" />
@@ -240,6 +244,8 @@
     <ClInclude Include="..\..\ObjectModel\TextInput.h" />
     <ClInclude Include="..\..\ObjectModel\TimeInput.h" />
     <ClInclude Include="..\..\ObjectModel\ToggleInput.h" />
+    <ClInclude Include="..\..\ObjectModel\ToggleVisibilityAction.h" />
+    <ClInclude Include="..\..\ObjectModel\ToggleVisibilityTarget.h" />
     <ClInclude Include="..\..\ObjectModel\UnknownElement.h" />
     <ClInclude Include="..\..\ObjectModel\RemoteResourceInformation.h" />
     <ClInclude Include="..\..\ObjectModel\Util.h" />

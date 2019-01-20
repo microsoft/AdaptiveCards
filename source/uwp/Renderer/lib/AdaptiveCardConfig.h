@@ -16,7 +16,7 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize(AdaptiveSharedNamespace::AdaptiveCardConfig adaptiveCardConfig) noexcept;
 
         IFACEMETHODIMP get_AllowCustomStyle(_Out_ boolean* allowCustomStyle);
-        IFACEMETHODIMP put_AllowCustomStyle(_In_ boolean allowCustomStyle);
+        IFACEMETHODIMP put_AllowCustomStyle(boolean allowCustomStyle);
 
     private:
         boolean m_allowCustomStyle;

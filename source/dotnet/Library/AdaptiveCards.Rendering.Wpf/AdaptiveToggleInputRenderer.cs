@@ -8,13 +8,19 @@ namespace AdaptiveCards.Rendering.Wpf
         public static FrameworkElement Render(AdaptiveToggleInput input, AdaptiveRenderContext context)
         {
             var uiToggle = new CheckBox();
-            uiToggle.Content = input.Title;
+            AdaptiveChoiceSetRenderer.SetContent(uiToggle, input.Title, input.Wrap);
             uiToggle.Foreground =
                 context.GetColorBrush(context.Config.ContainerStyles.Default.ForegroundColors.Default.Default);
             uiToggle.SetState(input.Value == (input.ValueOn ?? "true"));
             uiToggle.Style = context.GetStyle($"Adaptive.Input.Toggle");
             uiToggle.SetContext(input);
             context.InputBindings.Add(input.Id, () => uiToggle.GetState() == true ? input.ValueOn ?? "true" : input.ValueOff ?? "false");
+
+            if(!input.IsVisible)
+            {
+                uiToggle.Visibility = Visibility.Collapsed;
+            }
+
             return uiToggle;
         }
     }

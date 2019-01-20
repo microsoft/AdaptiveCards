@@ -1,0 +1,103 @@
+<script type="text/javascript">
+	window.onload = function() {
+
+		function getParameterByName(name, url) {
+			if (!url) {
+				url = window.location.href;
+			}
+
+			name = name.replace(/[\[\]]/g, "\\$&");
+			var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)");
+			var results = regex.exec(url);
+
+			if (results && results[2]) {
+				return decodeURIComponent(results[2].replace(/\+/g, " "));
+			}
+			else {
+				return "";
+			}
+		}
+
+		if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
+			console.log("Local storage is not available.");
+		}
+
+		let hostContainers = [];
+		hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
+		hostContainers.push(new ACDesigner.CortanaContainer("Cortana Skills", "containers/cortana-container.css"));
+		hostContainers.push(new ACDesigner.OutlookContainer("Outlook Actionable Messages", "containers/outlook-container.css"));
+		hostContainers.push(new ACDesigner.TimelineContainer("Windows Timeline", "containers/timeline-container.css"));
+		hostContainers.push(new ACDesigner.DarkTeamsContainer("Microsoft Teams - Dark", "containers/teams-container-dark.css"));
+		hostContainers.push(new ACDesigner.LightTeamsContainer("Microsoft Teams - Light", "containers/teams-container-light.css"));
+		hostContainers.push(new ACDesigner.BotFrameworkContainer("Bot Framework Other Channels (Image render)", "containers/bf-image-container.css"));
+		hostContainers.push(new ACDesigner.ToastContainer("Windows Notifications (Preview)", "containers/toast-container.css"));
+
+		let designer = new ACDesigner.CardDesigner(hostContainers);
+		designer.assetPath = "../node_modules/adaptivecards-designer/dist/";
+
+		let hostDocsButton = new ACDesigner.ToolbarButton(
+			"hostDocs",
+			"Host App Docs",
+			null,
+			function() { window.open("https://docs.microsoft.com/en-us/adaptive-cards/resources/partners") }
+		);
+	
+		hostDocsButton.separator = false;
+
+		designer.toolbar.insertElementAfter(hostDocsButton, ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker);
+
+		let visualizerButton = new ACDesigner.ToolbarButton(
+			"visualizerButton",
+			"Classic Visualizer",
+			null,
+			function() { window.open("/visualizer") }
+		);
+		
+		visualizerButton.separator = true;
+		visualizerButton.alignment = ACDesigner.ToolbarElementAlignment.Right;
+
+		designer.toolbar.insertElementBefore(visualizerButton, ACDesigner.CardDesigner.ToolbarCommands.FullScreen);
+
+
+		var cardUrl = getParameterByName("card", null);
+
+		if (cardUrl) {
+
+			var xhttp = new XMLHttpRequest();
+			xhttp.onload = function () {
+				designer.attachTo(document.getElementById("designerRootHost"));
+
+				if (xhttp.responseText && xhttp.responseText != "") {
+					designer.setCard(JSON.parse(xhttp.responseText));
+				}
+	
+				history.replaceState(null, null, "/designer");
+			};
+
+			// TODO: when the designer has an addError API we should log that we failed to load the requested card
+			// xhttp.onerror = function() {
+			// 	designer.
+			// };
+
+			try {
+				xhttp.open("GET", cardUrl, true);
+				xhttp.send();
+			}
+			catch(e) {
+				designer.attachTo(document.getElementById("designerRootHost"));				
+			}
+		}
+		else {
+			designer.attachTo(document.getElementById("designerRootHost"));
+		}
+
+		require.config({ paths: { 'vs': '/node_modules/monaco-editor/min/vs' } });
+		require(['vs/editor/editor.main'], function () {
+		 	designer.monacoModuleLoaded();
+		 }); 
+	};
+</script>
+
+<div style="display: flex; flex-direction: column; height: 100%; ">
+	<div id="designerRootHost"></div>
+</div>

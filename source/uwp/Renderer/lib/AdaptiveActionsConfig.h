@@ -15,29 +15,29 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(AdaptiveSharedNamespace::ActionsConfig actionsConfig) noexcept;
 
-        IFACEMETHODIMP get_ShowCard(_Out_ ABI::AdaptiveNamespace::IAdaptiveShowCardActionConfig** value);
+        IFACEMETHODIMP get_ShowCard(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveShowCardActionConfig** value);
         IFACEMETHODIMP put_ShowCard(_In_ ABI::AdaptiveNamespace::IAdaptiveShowCardActionConfig* value);
 
         IFACEMETHODIMP get_ActionsOrientation(_Out_ ABI::AdaptiveNamespace::ActionsOrientation* value);
-        IFACEMETHODIMP put_ActionsOrientation(_In_ ABI::AdaptiveNamespace::ActionsOrientation value);
+        IFACEMETHODIMP put_ActionsOrientation(ABI::AdaptiveNamespace::ActionsOrientation value);
 
         IFACEMETHODIMP get_ActionAlignment(_Out_ ABI::AdaptiveNamespace::ActionAlignment* value);
-        IFACEMETHODIMP put_ActionAlignment(_In_ ABI::AdaptiveNamespace::ActionAlignment value);
+        IFACEMETHODIMP put_ActionAlignment(ABI::AdaptiveNamespace::ActionAlignment value);
 
         IFACEMETHODIMP get_ButtonSpacing(_Out_ UINT32* value);
-        IFACEMETHODIMP put_ButtonSpacing(_In_ UINT32 value);
+        IFACEMETHODIMP put_ButtonSpacing(UINT32 value);
 
         IFACEMETHODIMP get_MaxActions(_Out_ UINT32* value);
-        IFACEMETHODIMP put_MaxActions(_In_ UINT32 value);
+        IFACEMETHODIMP put_MaxActions(UINT32 value);
 
         IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveNamespace::Spacing* value);
-        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveNamespace::Spacing value);
+        IFACEMETHODIMP put_Spacing(ABI::AdaptiveNamespace::Spacing value);
 
         IFACEMETHODIMP get_IconPlacement(_Out_ ABI::AdaptiveNamespace::IconPlacement* value);
-        IFACEMETHODIMP put_IconPlacement(_In_ ABI::AdaptiveNamespace::IconPlacement value);
+        IFACEMETHODIMP put_IconPlacement(ABI::AdaptiveNamespace::IconPlacement value);
 
         IFACEMETHODIMP get_IconSize(_Out_ UINT32* value);
-        IFACEMETHODIMP put_IconSize(_In_ UINT32 value);
+        IFACEMETHODIMP put_IconSize(UINT32 value);
 
     private:
         ABI::AdaptiveNamespace::ActionAlignment m_actionAlignment;
