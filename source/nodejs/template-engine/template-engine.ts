@@ -15,7 +15,7 @@ enum TokenType {
     NumberLitteral
 }
 
-type OperatorTokenKind = TokenType.PlusSign | TokenType.MinusSign;
+type ArithmeticOperatorTokenKind = TokenType.PlusSign | TokenType.MinusSign;
 
 interface TokenTypeInfo {
     friendlyName: string;
@@ -194,7 +194,7 @@ class NumberLiteralNode extends ExpressionNode {
 }
 
 class OperatorNode extends ExpressionNode {
-    constructor(readonly operator: OperatorTokenKind) {
+    constructor(readonly operator: ArithmeticOperatorTokenKind) {
         super();
     }
 
@@ -270,7 +270,7 @@ class ExpressionParser {
                     result.properties.push(this.current.value);
 
                     if (this.nextTokenType != TokenType.Period) {
-                        return;
+                        return result;
                     }
 
                     break;
@@ -339,7 +339,7 @@ class ExpressionParser {
         return result;
     }
 
-    private isOperator(tokenType: TokenType): boolean {
+    private isArithmeticOperator(tokenType: TokenType): boolean {
         const operators: Array<TokenType> = [ TokenType.PlusSign, TokenType.MinusSign ];
 
         return operators.indexOf(tokenType) >= 0;
@@ -377,8 +377,8 @@ class ExpressionParser {
                     this.moveNext();
                     this.skipWhitespace();
 
-                    if (this.isOperator(this.current.type)) {
-                        result.nodes.push(new OperatorNode(<OperatorTokenKind>this.current.type));
+                    if (this.isArithmeticOperator(this.current.type)) {
+                        result.nodes.push(new OperatorNode(<ArithmeticOperatorTokenKind>this.current.type));
 
                         this.moveNext();
                         this.skipWhitespace();
