@@ -167,6 +167,42 @@ namespace JsonTransformerLanguage.Tests
             TestPayload();
         }
 
+        [TestMethod]
+        public void StringLiterals1()
+        {
+            TestPayload();
+        }
+
+        [TestMethod]
+        public void StringLiteralEscapeSequence1()
+        {
+            TestPayload();
+        }
+
+        [TestMethod]
+        public void NullLiterals1()
+        {
+            TestPayload();
+        }
+
+        [TestMethod]
+        public void BoolLiterals1()
+        {
+            TestPayload();
+        }
+
+        [TestMethod]
+        public void IntLiterals1()
+        {
+            TestPayload();
+        }
+
+        [TestMethod]
+        public void DoubleLiterals1()
+        {
+            TestPayload();
+        }
+
         private void TestPayload([CallerMemberName]string payloadName = null)
         {
             var parsed = JObject.Parse(File.ReadAllText(Directory.GetCurrentDirectory() + "\\TestPayloads\\" + payloadName + ".json"));

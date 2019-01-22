@@ -1,0 +1,13 @@
+{
+  "inputJson": {
+    "reportsTo": "{null}",
+    "name": "Satya {null} Nadella"
+  },
+
+  "inputData": {},
+
+  // Null property should be dropped
+  "expected": {
+    "name": "Satya Nadella"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "inputJson": {
+    "heightInFeet": "{5.78}",
+    "percent": "{0.75}",
+    "percentAlt": "{.7500}"
+  },
+
+  "inputData": {},
+
+  "expected": {
+    "heightInFeet": 5.78,
+    "percent": 0.75,
+    "percentAlt": 0.75
+  }
+}

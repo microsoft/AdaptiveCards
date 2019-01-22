@@ -9,8 +9,7 @@ bindingExpression: '{' expression '}';
 // Modified from C#'s grammar: https://raw.githubusercontent.com/antlr/grammars-v4/master/csharp/CSharpParser.g4
 // Modified from C's grammar: https://raw.githubusercontent.com/antlr/grammars-v4/master/c/C.g4
 
-//expression: non_assignment_expression;
-  expression: literal;
+expression: non_assignment_expression;
 non_assignment_expression: conditional_expression;
 
 conditional_expression
@@ -102,11 +101,11 @@ generic_dimension_specifier
 identifier: Identifier;
 
 literal
-	: boolean_literal
-	| string_literal
-	| DoubleConstant
-	| DigitSequence
-	| Null
+	: boolean_literal #boolean
+	| string_literal #string
+	| DoubleConstant #double
+	| DigitSequence #int
+	| Null #null
 	;
 
 boolean_literal

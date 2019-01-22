@@ -1,0 +1,13 @@
+{
+  "inputJson": {
+    "wrap": "{true}",
+    "isImportant": "{false}"
+  },
+
+  "inputData": {},
+
+  "expected": {
+    "wrap": true,
+    "isImportant": false
+  }
+}

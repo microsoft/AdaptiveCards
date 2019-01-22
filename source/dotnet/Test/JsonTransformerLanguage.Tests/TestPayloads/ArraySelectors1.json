@@ -1,7 +1,6 @@
 {
   "inputJson": {
     "firstPerson": {
-      "integer": "{4}",
       "name": "{people[0].firstName} {people[0].lastName}",
       "age": "{people[0].age}"
     },

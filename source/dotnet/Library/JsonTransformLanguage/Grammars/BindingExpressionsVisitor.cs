@@ -16,15 +16,32 @@ namespace JsonTransformLanguage.Grammars
             _transformerContext = transformerContext;
         }
 
-        //public override JToken VisitInteger_literal([NotNull] BindingExpressionsParser.Integer_literalContext context)
-        //{
-        //    return int.Parse(context.IntegerConstant().GetText());
-        //}
-
-        public override JToken VisitString_literal([NotNull] BindingExpressionsParser.String_literalContext context)
+        public override JToken VisitString([NotNull] BindingExpressionsParser.StringContext context)
         {
-            string stringConstant = context.StringConstant().GetText();
+            string stringConstant = context.string_literal().StringConstant().GetText();
             return stringConstant.Substring(1, stringConstant.Length - 2);
+        }
+
+        public override JToken VisitBoolean([NotNull] BindingExpressionsParser.BooleanContext context)
+        {
+            string txt = context.boolean_literal().GetText();
+            return bool.Parse(txt);
+        }
+
+        public override JToken VisitInt([NotNull] BindingExpressionsParser.IntContext context)
+        {
+            return int.Parse(context.DigitSequence().GetText());
+        }
+
+        public override JToken VisitDouble([NotNull] BindingExpressionsParser.DoubleContext context)
+        {
+            string txt = context.DoubleConstant().GetText();
+            return double.Parse(txt);
+        }
+
+        public override JToken VisitNull([NotNull] BindingExpressionsParser.NullContext context)
+        {
+            return null;
         }
 
         public override JToken VisitIdentifier([NotNull] BindingExpressionsParser.IdentifierContext context)
@@ -43,11 +60,6 @@ namespace JsonTransformLanguage.Grammars
         public override JToken VisitLiteral([NotNull] BindingExpressionsParser.LiteralContext context)
         {
             return base.VisitLiteral(context);
-        }
-
-        public override JToken VisitMultiplicative_expression([NotNull] BindingExpressionsParser.Multiplicative_expressionContext context)
-        {
-            return base.VisitMultiplicative_expression(context);
         }
 
         public override JToken VisitUnary_expression([NotNull] BindingExpressionsParser.Unary_expressionContext context)
