@@ -14,7 +14,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    AdaptiveFactSet::AdaptiveFactSet() { m_facts = Microsoft::WRL::Make<Vector<IAdaptiveFact*>>(); }
+    AdaptiveFactSet::AdaptiveFactSet() { m_facts = Microsoft::WRL::Make<Vector<AdaptiveFact*>>(); }
 
     HRESULT AdaptiveFactSet::RuntimeClassInitialize() noexcept try
     {
@@ -37,7 +37,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    IFACEMETHODIMP AdaptiveFactSet::get_Facts(_COM_Outptr_ IVector<IAdaptiveFact*>** facts)
+    IFACEMETHODIMP AdaptiveFactSet::get_Facts(_COM_Outptr_ IVector<AdaptiveFact*>** facts)
     {
         return m_facts.CopyTo(facts);
     }

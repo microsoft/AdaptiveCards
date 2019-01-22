@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "EverythingBagel.h"
 #include "SharedAdaptiveCard.h"
+#include "ActionSet.h"
 #include "ChoiceInput.h"
 #include "ChoiceSetInput.h"
 #include "Column.h"
@@ -342,10 +343,22 @@ namespace AdaptiveCardsSharedModelUnitTest
         ValidateInputChoiceSet(*choiceSet);
     }
 
+    void ValidateActionSet(const ActionSet &actionSet)
+    {
+        auto actions = actionSet.GetActions();
+        Assert::AreEqual(size_t{ 2 }, actions.size());
+
+        auto submitAction = actions.at(0);
+        Assert::AreEqual("ActionSet.Action.Submit_id", submitAction->GetId().c_str());
+
+        auto openUrlAction = actions.at(1);
+        Assert::AreEqual("ActionSet.Action.OpenUrl_id", openUrlAction->GetId().c_str());
+    }
+
     void ValidateBody(const AdaptiveCard &everythingBagel)
     {
         auto body = everythingBagel.GetBody();
-        Assert::AreEqual(size_t{ 8 }, body.size());
+        Assert::AreEqual(size_t{ 9 }, body.size());
 
         // validate textblock (no style)
         auto textBlock = std::static_pointer_cast<TextBlock>(body.at(0));
@@ -378,6 +391,10 @@ namespace AdaptiveCardsSharedModelUnitTest
         // validate input container
         auto inputContainer = std::static_pointer_cast<Container>(body.at(7));
         ValidateInputContainer(*inputContainer);
+
+        // validate action set
+        auto actionSet = std::static_pointer_cast<ActionSet>(body.at(8));
+        ValidateActionSet(*actionSet);
     }
 
     void ValidateToplevelActions(const AdaptiveCard &everythingBagel)

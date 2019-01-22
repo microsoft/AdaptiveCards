@@ -111,7 +111,6 @@ export abstract class HostContainer {
     public initialize() {
         AdaptiveCard.elementTypeRegistry.reset();
         AdaptiveCard.actionTypeRegistry.reset();
-        AdaptiveCard.useAutomaticContainerBleeding = false;
         AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = true;
         AdaptiveCard.allowMarkForTextHighlighting = false;
     }

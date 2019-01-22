@@ -1027,6 +1027,16 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void delete_ToggleVisibilityActionParser(long jarg1);
   public final static native long ToggleVisibilityActionParser_Deserialize(long jarg1, ToggleVisibilityActionParser jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
   public final static native long ToggleVisibilityActionParser_DeserializeFromString(long jarg1, ToggleVisibilityActionParser jarg1_, long jarg2, ParseContext jarg2_, String jarg3);
+  public final static native long new_ActionSet__SWIG_0();
+  public final static native long new_ActionSet__SWIG_1(long jarg1, BaseActionElementVector jarg1_);
+  public final static native long ActionSet_SerializeToJsonValue(long jarg1, ActionSet jarg1_);
+  public final static native long ActionSet_GetActions__SWIG_0(long jarg1, ActionSet jarg1_);
+  public final static native long ActionSet_dynamic_cast(long jarg1, BaseCardElement jarg1_);
+  public final static native void delete_ActionSet(long jarg1);
+  public final static native long ActionSetParser_Deserialize(long jarg1, ActionSetParser jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
+  public final static native long ActionSetParser_DeserializeFromString(long jarg1, ActionSetParser jarg1_, long jarg2, ParseContext jarg2_, String jarg3);
+  public final static native long new_ActionSetParser();
+  public final static native void delete_ActionSetParser(long jarg1);
   public final static native long BaseInputElement_SWIGSmartPtrUpcast(long jarg1);
   public final static native long Container_SWIGSmartPtrUpcast(long jarg1);
   public final static native long ContainerParser_SWIGSmartPtrUpcast(long jarg1);
@@ -1063,6 +1073,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long MediaParser_SWIGSmartPtrUpcast(long jarg1);
   public final static native long ToggleVisibilityAction_SWIGSmartPtrUpcast(long jarg1);
   public final static native long ToggleVisibilityActionParser_SWIGSmartPtrUpcast(long jarg1);
+  public final static native long ActionSet_SWIGSmartPtrUpcast(long jarg1);
+  public final static native long ActionSetParser_SWIGSmartPtrUpcast(long jarg1);
 
   public static String SwigDirector_BaseCardElement_GetElementTypeString(BaseCardElement jself) {
     return jself.GetElementTypeString();

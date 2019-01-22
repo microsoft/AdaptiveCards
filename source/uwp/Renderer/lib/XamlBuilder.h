@@ -26,11 +26,11 @@ namespace AdaptiveNamespace
         STDMETHODIMP AllImagesLoaded();
         STDMETHODIMP ImagesLoadingHadError();
 
-        void BuildXamlTreeFromAdaptiveCard(
+        static void BuildXamlTreeFromAdaptiveCard(
             _In_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
             _Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** xamlTreeRoot,
-            _In_ AdaptiveNamespace::AdaptiveCardRenderer* renderer,
-            _In_ AdaptiveNamespace::AdaptiveRenderContext* renderContext,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+            std::shared_ptr<XamlBuilder> xamlBuilder,
             boolean isOuterCard = true,
             ABI::AdaptiveNamespace::ContainerStyle defaultContainerStyle = ABI::AdaptiveNamespace::ContainerStyle::Default);
         HRESULT AddListener(_In_ IXamlBuilderListener* listener) noexcept;
@@ -95,6 +95,10 @@ namespace AdaptiveNamespace
                                _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
                                _Outptr_ ABI::Windows::UI::Xaml::IUIElement** mediaControl);
+        static void BuildActionSet(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* adaptiveCardElement,
+                                   _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                   _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+                                   _Outptr_ ABI::Windows::UI::Xaml::IUIElement** containerControl);
 
         template<typename T>
         static HRESULT TryGetResourceFromResourceDictionaries(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* resourceDictionary,
@@ -125,17 +129,17 @@ namespace AdaptiveNamespace
         bool m_enableXamlImageHandling = false;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers> m_resourceResolvers;
 
-        Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement>
+        static Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement>
         CreateRootCardElement(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
                               _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                               _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
-                              _Outptr_ ABI::Windows::UI::Xaml::Controls::IPanel** outerElementContainer,
+                              std::shared_ptr<XamlBuilder> xamlBuilder,
                               _Outptr_ ABI::Windows::UI::Xaml::Controls::IPanel** bodyElementContainer);
 
-        void ApplyBackgroundToRoot(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel,
-                                   _In_ HSTRING url,
-                                   _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                   _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
+        static void ApplyBackgroundToRoot(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel,
+                                          _In_ HSTRING url,
+                                          _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                          _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
 
         template<typename T>
         void SetAutoSize(T* destination,
@@ -163,26 +167,31 @@ namespace AdaptiveNamespace
         void PopulateImageFromUrlAsync(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl, _In_ T* imageControl);
         void FireAllImagesLoaded();
         void FireImagesLoadingHadError();
-        void BuildShowCard(_In_ AdaptiveNamespace::AdaptiveCardRenderer* renderer,
-                           _In_ ABI::AdaptiveNamespace::IAdaptiveShowCardActionConfig* showCardActionConfig,
-                           _In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
-                           _In_ AdaptiveNamespace::AdaptiveRenderContext* renderContext,
-                           _Outptr_ ABI::Windows::UI::Xaml::IUIElement** uiShowCard);
+        static void BuildShowCard(ABI::AdaptiveNamespace::IAdaptiveShowCardActionConfig* showCardActionConfig,
+                                  _In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
+                                  _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                  bool isBottomActionBar,
+                                  _Outptr_ ABI::Windows::UI::Xaml::IUIElement** uiShowCard);
 
-        void ArrangeButtonContent(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
-                                  _In_ ABI::AdaptiveNamespace::IAdaptiveActionsConfig* actionsConfig,
-                                  _In_ AdaptiveNamespace::AdaptiveRenderContext* renderContext,
-                                  ABI::AdaptiveNamespace::ContainerStyle containerStyle,
-                                  _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-                                  bool allActionsHaveIcons,
-                                  _In_ ABI::Windows::UI::Xaml::Controls::IButton* button);
-        void BuildActions(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* children,
-                          _In_ AdaptiveNamespace::AdaptiveCardRenderer* renderer,
-                          _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
-                          _In_ ABI::Windows::UI::Xaml::Controls::IPanel* bodyPanel,
-                          bool insertSeparator,
-                          _In_ AdaptiveNamespace::AdaptiveRenderContext* renderContext,
-                          ABI::AdaptiveNamespace::ContainerStyle containerStyle);
+        static void ArrangeButtonContent(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
+                                         _In_ ABI::AdaptiveNamespace::IAdaptiveActionsConfig* actionsConfig,
+                                         _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                         ABI::AdaptiveNamespace::ContainerStyle containerStyle,
+                                         _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                                         bool allActionsHaveIcons,
+                                         _In_ ABI::Windows::UI::Xaml::Controls::IButton* button);
+
+        static void BuildActions(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* children,
+                                 _In_ ABI::Windows::UI::Xaml::Controls::IPanel* bodyPanel,
+                                 bool insertSeparator,
+                                 _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                 ABI::AdaptiveNamespace::ContainerStyle containerStyle);
+
+        static void BuildActionSetHelper(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* children,
+                                         ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                         bool isBottomActionBar,
+                                         ABI::Windows::UI::Xaml::IUIElement** actionSetControl,
+                                         ABI::AdaptiveNamespace::ContainerStyle containerStyle);
 
         static void XamlBuilder::HandleInlineAcion(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                                    _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,

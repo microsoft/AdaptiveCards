@@ -70,6 +70,8 @@
 		6BB211FF20FFF9C0009EA1BA /* ACRIMedia.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BB211FE20FFF9C0009EA1BA /* ACRIMedia.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BB2121821001596009EA1BA /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB2121721001596009EA1BA /* AVFoundation.framework */; };
 		6BB21219210015A7009EA1BA /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB2120F210013AA009EA1BA /* AVKit.framework */; };
+		6BC30F5D21DD692800B9FAAE /* ActionSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6BC30F5B21DD692800B9FAAE /* ActionSet.cpp */; };
+		6BC30F5E21DD692800B9FAAE /* ActionSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BC30F5C21DD692800B9FAAE /* ActionSet.h */; };
 		6BC30F6C21E56A6900B9FAAE /* Util.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BC30F6B21E56A6900B9FAAE /* Util.h */; };
 		6BC30F6E21E56CF900B9FAAE /* Util.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BC30F6D21E56CF900B9FAAE /* Util.mm */; };
 		6BC30F7621E5750A00B9FAAE /* EnumMagic.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BC30F7521E5750A00B9FAAE /* EnumMagic.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -365,6 +367,8 @@
 		6BB212082100042B009EA1BA /* ACRMediaRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRMediaRenderer.h; sourceTree = "<group>"; };
 		6BB2120F210013AA009EA1BA /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		6BB2121721001596009EA1BA /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		6BC30F5B21DD692800B9FAAE /* ActionSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ActionSet.cpp; path = ../../../../shared/cpp/ObjectModel/ActionSet.cpp; sourceTree = "<group>"; };
+		6BC30F5C21DD692800B9FAAE /* ActionSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ActionSet.h; path = ../../../../shared/cpp/ObjectModel/ActionSet.h; sourceTree = "<group>"; };
 		6BC30F6B21E56A6900B9FAAE /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
 		6BC30F6D21E56CF900B9FAAE /* Util.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Util.mm; sourceTree = "<group>"; };
 		6BC30F7521E5750A00B9FAAE /* EnumMagic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EnumMagic.h; path = ../../../../shared/cpp/ObjectModel/EnumMagic.h; sourceTree = "<group>"; };
@@ -771,6 +775,8 @@
 				F42E516B1FEC383E008F9642 /* MarkDownParsedResult.h */,
 				F42E51721FEC3840008F9642 /* MarkDownParser.cpp */,
 				F42E51711FEC383F008F9642 /* MarkDownParser.h */,
+				6BC30F5B21DD692800B9FAAE /* ActionSet.cpp */,
+				6BC30F5C21DD692800B9FAAE /* ActionSet.h */,
 				F4071C781FCCBAEF00AF4FEA /* ActionParserRegistration.cpp */,
 				F4071C741FCCBAEF00AF4FEA /* ActionParserRegistration.h */,
 				F4071C791FCCBAEF00AF4FEA /* ElementParserRegistration.cpp */,
@@ -1061,6 +1067,7 @@
 				F4F44B95204A159A00A2F24C /* ACRImageSetRenderer.h in Headers */,
 				F4F44B90204A14EF00A2F24C /* ACRColumnRenderer.h in Headers */,
 				F4F44B92204A153D00A2F24C /* ACRContainerRenderer.h in Headers */,
+				6BC30F5E21DD692800B9FAAE /* ActionSet.h in Headers */,
 				F4F44B91204A152100A2F24C /* ACRColumnSetRenderer.h in Headers */,
 				F43110431F357487001AAE30 /* ACRInputTableView.h in Headers */,
 				F4F44B94204A157B00A2F24C /* ACRImageRenderer.h in Headers */,
@@ -1314,6 +1321,7 @@
 				F43110461F357487001AAE30 /* ACOHostConfig.mm in Sources */,
 				F4F6BA2F204F18D8003741B6 /* ParseResult.cpp in Sources */,
 				F4C1F5F21F2BC6840018CB78 /* ACRButton.mm in Sources */,
+				6BC30F5D21DD692800B9FAAE /* ActionSet.cpp in Sources */,
 				F4F6BA2A204E107F003741B6 /* UnknownElement.cpp in Sources */,
 				F49683531F6CA24600DF0D3A /* ACRRenderer.mm in Sources */,
 				F42741211EF9DB8000399FBB /* ACRContainerRenderer.mm in Sources */,

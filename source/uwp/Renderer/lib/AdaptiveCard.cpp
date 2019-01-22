@@ -104,7 +104,7 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&adaptiveCard, sharedParseResult->GetAdaptiveCard()));
             RETURN_IF_FAILED(adaptiveParseResult->put_AdaptiveCard(adaptiveCard.Get()));
 
-            ComPtr<IVector<IAdaptiveWarning*>> warnings;
+            ComPtr<IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>> warnings;
             RETURN_IF_FAILED(adaptiveParseResult->get_Warnings(&warnings));
 
             RETURN_IF_FAILED(SharedWarningsToAdaptiveWarnings(sharedParseResult->GetWarnings(), warnings.Get()));
@@ -113,7 +113,7 @@ namespace AdaptiveNamespace
         }
         catch (const AdaptiveCardParseException& e)
         {
-            ComPtr<IVector<IAdaptiveError*>> errors;
+            ComPtr<IVector<ABI::AdaptiveNamespace::AdaptiveError*>> errors;
             RETURN_IF_FAILED(adaptiveParseResult->get_Errors(&errors));
             HString errorMessage;
             ABI::AdaptiveNamespace::ErrorStatusCode statusCode =
