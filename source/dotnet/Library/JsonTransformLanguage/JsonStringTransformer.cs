@@ -32,15 +32,67 @@ namespace JsonTransformLanguage
 
         public static JToken EvaluateBinding(string bindingExpression, JsonTransformerContext context)
         {
-            var inputStream = new AntlrInputStream(bindingExpression);
-            var lexer = new BindingExpressionsLexer(inputStream);
-            var tokenStream = new CommonTokenStream(lexer);
-            var parser = new BindingExpressionsParser(tokenStream);
+            string remainingBindingExpression = bindingExpression;
+            string answer = "";
+            bool first = true;
+            bool found = false;
+            while (true)
+            {
+                int startIndex = remainingBindingExpression.IndexOf('{');
+                if (startIndex != -1)
+                {
+                    string substr = remainingBindingExpression.Substring(startIndex);
+                    var inputStream = new AntlrInputStream(substr);
+                    var lexer = new BindingExpressionsLexer(inputStream);
+                    var tokenStream = new CommonTokenStream(lexer);
+                    var parser = new BindingExpressionsParser(tokenStream);
 
-            var foundExpression = parser.expression();
-            var visitor = new BindingExpressionsVisitor(context);
-            JToken result = visitor.Visit(foundExpression);
-            return result;
+                    var foundExpression = parser.expression();
+                    var visitor = new BindingExpressionsVisitor(context);
+                    JToken result = visitor.Visit(foundExpression);
+
+                    answer += remainingBindingExpression.Substring(0, startIndex);
+                    answer += result;
+
+                    remainingBindingExpression = substr;
+                    remainingBindingExpression = remainingBindingExpression.Substring(foundExpression.Stop.StopIndex + 2); // +2 since it includes ending }
+
+                    // If whole expression was the binding expression, don't do any string concatenation
+                    if (first && startIndex == 0 && remainingBindingExpression.Length == 0)
+                    {
+                        return result;
+                    }
+
+                    found = true;
+                }
+                else
+                {
+                    break;
+                }
+
+                first = false;
+            }
+
+            if (found)
+            {
+                return answer;
+            }
+
+            return bindingExpression;
+
+            //var inputStream = new AntlrInputStream(bindingExpression);
+            //var lexer = new BindingExpressionsLexer(inputStream);
+            //var tokenStream = new CommonTokenStream(lexer);
+            //var parser = new BindingExpressionsParser(tokenStream);
+
+            //var foundExpression = parser.input_string();
+            //if (foundExpression.IsEmpty)
+            //{
+            //    //return bindingExpression;
+            //}
+            //var visitor = new BindingExpressionsVisitor(context);
+            //JToken result = visitor.Visit(foundExpression);
+            //return result;
             
 
                 // If it's all one single expression, we don't do any string concatenation and we return the actual type
