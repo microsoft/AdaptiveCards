@@ -71,15 +71,15 @@ namespace AdaptiveCards.Rendering.Wpf
                 Style = context.GetStyle($"Adaptive.{action.Type}"),
             };
 
-            if(!String.IsNullOrWhiteSpace(action.Sentiment))
+            if (!String.IsNullOrWhiteSpace(action.Sentiment))
             {
                 Style sentimentStyle = context.GetStyle($"Adaptive.{action.Type}.{action.Sentiment}");
 
-                if(sentimentStyle == null && String.Equals(action.Sentiment, "positive", StringComparison.OrdinalIgnoreCase))
+                if (sentimentStyle == null && String.Equals(action.Sentiment, "positive", StringComparison.OrdinalIgnoreCase))
                 {
                     sentimentStyle = context.GetStyle("PositiveActionDefaultStyle");
                 }
-                else if(sentimentStyle == null && String.Equals(action.Sentiment, "destructive", StringComparison.OrdinalIgnoreCase))
+                else if (sentimentStyle == null && String.Equals(action.Sentiment, "destructive", StringComparison.OrdinalIgnoreCase))
                 {
                     sentimentStyle = context.GetStyle("DestructiveActionDefaultStyle");
                 }

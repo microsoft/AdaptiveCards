@@ -8,7 +8,7 @@ using namespace AdaptiveSharedNamespace;
 constexpr char BaseActionElement::defaultSentiment[];
 
 BaseActionElement::BaseActionElement(ActionType type) :
-    m_type(type), m_typeString(ActionTypeToString(type)), m_sentiment("default")
+    m_type(type), m_typeString(ActionTypeToString(type)), m_sentiment(BaseActionElement::defaultSentiment)
 {
     PopulateKnownPropertiesSet();
 }

@@ -42,7 +42,7 @@ namespace AdaptiveNamespace
         return m_sentiment.CopyTo(sentiment);
     }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::put_Sentiment(HSTRING sentiment)
+    IFACEMETHODIMP AdaptiveActionElementBase::put_Sentiment(_In_ HSTRING sentiment)
     {
         return m_sentiment.Set(sentiment);
     }

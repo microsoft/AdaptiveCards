@@ -1429,10 +1429,6 @@ namespace AdaptiveNamespace
 
                 INT32 isSentimentPositive{}, isSentimentDestructive{}, isSentimentDefault{};
 
-                THROW_IF_FAILED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"positive").Get(), &isSentimentPositive));
-                THROW_IF_FAILED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"destructive").Get(), &isSentimentDestructive));
-                THROW_IF_FAILED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"default").Get(), &isSentimentDefault));
-
                 ComPtr<AdaptiveNamespace::AdaptiveRenderContext> contextImpl =
                     PeekInnards<AdaptiveNamespace::AdaptiveRenderContext>(renderContext);
 
@@ -1440,9 +1436,9 @@ namespace AdaptiveNamespace
                 THROW_IF_FAILED(renderContext->get_OverrideStyles(&resourceDictionary));
                 ComPtr<IStyle> styleToApply;
 
-                if (isSentimentPositive == 0)
+                if (SUCCEEDED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"positive").Get(), &isSentimentPositive))
+                    && (isSentimentPositive == 0))
                 {
-                    // 
                     if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IStyle>(resourceDictionary.Get(),
                         L"Adaptive.Action.Positive",
                         &styleToApply)))
@@ -1463,7 +1459,8 @@ namespace AdaptiveNamespace
                         }
                     }
                 }
-                else if (isSentimentDestructive == 0)
+                else if (SUCCEEDED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"destructive").Get(), &isSentimentDestructive))
+                         && (isSentimentDestructive == 0))
                 {
                     if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IStyle>(resourceDictionary.Get(),
                         L"Adaptive.Action.Destructive",
@@ -1485,7 +1482,9 @@ namespace AdaptiveNamespace
                         }
                     }
                 }
-                else if ((isSentimentDefault == 0) || WindowsIsStringEmpty(actionSentiment.Get()))
+                else if ((SUCCEEDED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"default").Get(), &isSentimentDefault))
+                         && (isSentimentDefault == 0))
+                         || WindowsIsStringEmpty(actionSentiment.Get()))
                 {
                     THROW_IF_FAILED(
                         SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action", buttonFrameworkElement.Get()));
