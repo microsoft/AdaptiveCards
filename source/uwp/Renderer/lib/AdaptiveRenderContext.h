@@ -38,7 +38,7 @@ namespace AdaptiveNamespace
 
         HRESULT put_CardFrameworkElement(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* value);
 
-        HRESULT GetRenderResult(_COM_Outptr_ ABI::AdaptiveNamespace::IRenderedAdaptiveCard** renderResult);
+        HRESULT GetRenderResult(_COM_Outptr_ AdaptiveNamespace::RenderedAdaptiveCard** renderResult);
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> GetDefaultActionSentimentDictionary();
 
         // ITypePeek method

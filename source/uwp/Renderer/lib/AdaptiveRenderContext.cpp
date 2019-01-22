@@ -30,7 +30,7 @@ namespace AdaptiveNamespace
         m_overrideDictionary = overrideDictionary;
         m_actionSentimentDefaultDictionary = defaultActionSentimentStyles;
 
-        ComPtr<IRenderedAdaptiveCard> strongRenderResult = renderResult;
+        ComPtr<RenderedAdaptiveCard> strongRenderResult = renderResult;
         RETURN_IF_FAILED(strongRenderResult.AsWeak(&m_weakRenderResult));
 
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionInvoker>(&m_actionInvoker, renderResult));
@@ -74,8 +74,8 @@ namespace AdaptiveNamespace
     {
         ComPtr<AdaptiveError> error;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveError>(&error, statusCode, message));
-        ComPtr<IVector<ABI::AdaptiveNamespace::IAdaptiveError*>> errors;
-        ComPtr<IRenderedAdaptiveCard> renderResult;
+        ComPtr<IVector<ABI::AdaptiveNamespace::AdaptiveError*>> errors;
+        ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
         RETURN_IF_FAILED(renderResult->get_Errors(&errors));
         return (errors->Append(error.Detach()));
@@ -85,8 +85,8 @@ namespace AdaptiveNamespace
     {
         ComPtr<AdaptiveWarning> warning;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveWarning>(&warning, statusCode, message));
-        ComPtr<IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>> warnings;
-        ComPtr<IRenderedAdaptiveCard> renderResult;
+        ComPtr<IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>> warnings;
+        ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
         RETURN_IF_FAILED(renderResult->get_Warnings(&warnings));
         return (warnings->Append(warning.Detach()));
@@ -105,11 +105,10 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveRenderContext::AddInputValue(_In_ IAdaptiveInputValue* inputValue)
     {
-        ComPtr<IRenderedAdaptiveCard> renderResult;
+        ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
-        ComPtr<RenderedAdaptiveCard> renderedAdaptiveCard = PeekInnards<RenderedAdaptiveCard>(renderResult);
-        RETURN_IF_FAILED(renderedAdaptiveCard == nullptr ? E_NOINTERFACE : S_OK);
-        return renderedAdaptiveCard->AddInputValue(inputValue);
+        RETURN_IF_FAILED(renderResult == nullptr ? E_NOINTERFACE : S_OK);
+        return renderResult->AddInputValue(inputValue);
     }
 
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> AdaptiveRenderContext::GetDefaultActionSentimentDictionary()
@@ -117,11 +116,13 @@ namespace AdaptiveNamespace
         return m_actionSentimentDefaultDictionary;
     }
 
-    HRESULT AdaptiveRenderContext::GetRenderResult(IRenderedAdaptiveCard** renderResult)
+    HRESULT AdaptiveRenderContext::GetRenderResult(AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard** renderResult)
     {
         ComPtr<IRenderedAdaptiveCard> strongRenderResult;
         RETURN_IF_FAILED(m_weakRenderResult.As(&strongRenderResult));
         RETURN_IF_FAILED(strongRenderResult == nullptr ? E_FAIL : S_OK);
-        return strongRenderResult.CopyTo(renderResult);
+        ComPtr<RenderedAdaptiveCard> renderResultObject = PeekInnards<RenderedAdaptiveCard>(strongRenderResult);
+        RETURN_IF_FAILED(renderResultObject == nullptr ? E_FAIL : S_OK);
+        return renderResultObject.CopyTo(renderResult);
     }
 }
