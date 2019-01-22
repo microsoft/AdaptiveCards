@@ -41,7 +41,7 @@ and_expression
 	;
 
 equality_expression
-	: relational_expression ((OP_EQ | OP_NE)  relational_expression)*
+	: relational_expression (BinaryOperator  relational_expression)*
 	;
 
 relational_expression
@@ -177,7 +177,7 @@ SChar
 Identifier
 	: IdentifierNondigit (IdentifierNondigit | Digit)* ;
 
-BinaryOperator : '==' | '!=' ;
+BinaryOperator : OP_EQ | OP_NE ;
 
 WS
 	:	' ' -> channel(HIDDEN)

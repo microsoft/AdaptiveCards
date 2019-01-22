@@ -44,6 +44,38 @@ namespace JsonTransformLanguage.Grammars
             return null;
         }
 
+        public override JToken VisitEquality_expression([NotNull] BindingExpressionsParser.Equality_expressionContext context)
+        {
+            JToken leftValue = Visit(context.relational_expression()[0]);
+
+            // If there's comparisons
+            if (context.relational_expression().Length > 1)
+            {
+                var binaryOperators = context.BinaryOperator();
+                var remainingRightValues = context.relational_expression().Skip(1).ToArray();
+
+                for (int i = 0; i < binaryOperators.Length; i++)
+                {
+                    var op = binaryOperators[i].GetText();
+                    var rightValExpression = remainingRightValues[i];
+
+                    JToken rightValue = Visit(rightValExpression);
+                    switch (op)
+                    {
+                        case "==":
+                            leftValue = object.Equals(leftValue, rightValue);
+                            break;
+
+                        default:
+                            leftValue = !object.Equals(leftValue, rightValue);
+                            break;
+                    }
+                }
+            }
+
+            return leftValue;
+        }
+
         public override JToken VisitIdentifier([NotNull] BindingExpressionsParser.IdentifierContext context)
         {
             string identifier = context.Identifier().GetText();
