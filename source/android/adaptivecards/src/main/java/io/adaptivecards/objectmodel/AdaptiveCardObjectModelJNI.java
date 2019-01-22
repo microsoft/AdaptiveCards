@@ -490,6 +490,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long ChoiceSetInput_GetChoices__SWIG_0(long jarg1, ChoiceSetInput jarg1_);
   public final static native String ChoiceSetInput_GetValue(long jarg1, ChoiceSetInput jarg1_);
   public final static native void ChoiceSetInput_SetValue(long jarg1, ChoiceSetInput jarg1_, String jarg2);
+  public final static native boolean ChoiceSetInput_GetWrap(long jarg1, ChoiceSetInput jarg1_);
+  public final static native void ChoiceSetInput_SetWrap(long jarg1, ChoiceSetInput jarg1_, boolean jarg2);
   public final static native long ChoiceSetInput_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native void delete_ChoiceSetInput(long jarg1);
   public final static native long new_ChoiceSetInputParser__SWIG_0();
@@ -579,6 +581,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void ToggleInput_SetValueOff(long jarg1, ToggleInput jarg1_, String jarg2);
   public final static native String ToggleInput_GetValueOn(long jarg1, ToggleInput jarg1_);
   public final static native void ToggleInput_SetValueOn(long jarg1, ToggleInput jarg1_, String jarg2);
+  public final static native boolean ToggleInput_GetWrap(long jarg1, ToggleInput jarg1_);
+  public final static native void ToggleInput_SetWrap(long jarg1, ToggleInput jarg1_, boolean jarg2);
   public final static native long ToggleInput_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native void delete_ToggleInput(long jarg1);
   public final static native long new_ToggleInputParser__SWIG_0();
