@@ -95,7 +95,7 @@ protected:
                                                                                     actionSentimentDefaultDictionary.Get(),
                                                                                     m_renderResult.Get()));
 
-                    AdaptiveCards::Rendering::Uwp::XamlBuilder::BuildXamlTreeFromAdaptiveCard(m_card.Get(),
+                    AdaptiveNamespace::XamlBuilder::BuildXamlTreeFromAdaptiveCard(m_card.Get(),
                                                                                               &m_rootXamlElement,
                                                                                               renderContext.Get(),
                                                                                               m_renderer->GetXamlBuilder());
