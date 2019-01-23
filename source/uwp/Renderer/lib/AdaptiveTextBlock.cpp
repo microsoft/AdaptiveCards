@@ -121,7 +121,7 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveTextBlock::get_HorizontalAlignment(ABI::AdaptiveNamespace::HorizontalAlignment* alignment)
+    HRESULT AdaptiveTextBlock::get_HorizontalAlignment(_Out_ ABI::AdaptiveNamespace::HorizontalAlignment* alignment)
     {
         *alignment = m_horizontalAlignment;
         return S_OK;
