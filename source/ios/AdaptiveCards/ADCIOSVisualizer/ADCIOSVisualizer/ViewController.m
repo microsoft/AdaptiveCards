@@ -91,6 +91,8 @@
         [registration setBaseCardElementRenderer:nil cardElementType:ACRTextBlock];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRNumberInput];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRImage];
+        NSString *type = @"NewStyle";
+        [registration setCustomActionRenderer:nil key:type];
         [registration setActionSetRenderer:nil];
         _enableCustomRendererButton.backgroundColor = [UIColor colorWithRed:0/255 green:122.0/255 blue:1 alpha:1];
     }

@@ -177,8 +177,12 @@ using namespace AdaptiveCards;
 
 - (void)setCustomActionRenderer:(ACRBaseActionElementRenderer *)renderer key:(NSString *)key
 {
-    if(renderer && key) {
-        [overridenBaseActionRendererList setObject:renderer forKey:[NSNumber numberWithLong:key.hash]];
+    if(key) {
+        if(renderer) {
+            [overridenBaseActionRendererList setObject:renderer forKey:[NSNumber numberWithLong:key.hash]];
+        } else {
+            [overridenBaseActionRendererList removeObjectForKey:[NSNumber numberWithLong:key.hash]];
+        }
     }
 }
 
