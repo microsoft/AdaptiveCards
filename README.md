@@ -28,7 +28,7 @@ Adaptive Cards are designed to render anywhere that your users are. The followin
 
 ## Contribute
 
-There are many ways to [contribute](https://github.com/Microsoft/AdaptiveCards/blob/master/CONTRIBUTING.md) to Adaptive Cards.
+There are many ways to [contribute](https://github.com/Microsoft/AdaptiveCards/blob/master/.github/CONTRIBUTING.md) to Adaptive Cards.
 * [Submit bugs](https://github.com/Microsoft/AdaptiveCards/issues) and help us verify fixes as they are checked in.
 * Review the [source code changes](https://github.com/Microsoft/AdaptiveCards/pulls).
 * Engage with Adaptive Cards users and developers on [StackOverflow](http://stackoverflow.com/questions/tagged/adaptive-cards). 
