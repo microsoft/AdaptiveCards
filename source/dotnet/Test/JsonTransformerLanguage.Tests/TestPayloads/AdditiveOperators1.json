@@ -1,0 +1,13 @@
+{
+  "inputJson": {
+    "age2": "{23 + 3}",
+    "age3": "{27 - 1}"
+  },
+
+  "inputData": {},
+
+  "expected": {
+    "age2": 26,
+    "age3": 26
+  }
+}

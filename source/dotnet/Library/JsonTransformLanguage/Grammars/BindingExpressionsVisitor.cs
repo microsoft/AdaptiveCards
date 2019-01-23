@@ -30,7 +30,8 @@ namespace JsonTransformLanguage.Grammars
 
         public override JToken VisitInt([NotNull] BindingExpressionsParser.IntContext context)
         {
-            return int.Parse(context.DigitSequence().GetText());
+            string txt = context.DigitSequence().GetText();
+            return int.Parse(txt);
         }
 
         public override JToken VisitDouble([NotNull] BindingExpressionsParser.DoubleContext context)
@@ -49,7 +50,7 @@ namespace JsonTransformLanguage.Grammars
             JToken leftValue = Visit(context.relational_expression()[0]);
 
             // If there's comparisons
-            if (context.relational_expression().Length > 1)
+            if (context.BinaryOperator().Length > 0)
             {
                 var binaryOperators = context.BinaryOperator();
                 var remainingRightValues = context.relational_expression().Skip(1).ToArray();
@@ -166,6 +167,164 @@ namespace JsonTransformLanguage.Grammars
             }
 
             return currValue;
+        }
+
+        public override JToken VisitAdditive_expression([NotNull] BindingExpressionsParser.Additive_expressionContext context)
+        {
+            JToken leftValue = Visit(context.multiplicative_expression()[0]);
+
+            // If there's operations
+            if (context.AdditiveOperator().Length > 0)
+            {
+                var additiveOperators = context.AdditiveOperator();
+                var remainingRightValues = context.multiplicative_expression().Skip(1).ToArray();
+
+                for (int i = 0; i < additiveOperators.Length; i++)
+                {
+                    var op = additiveOperators[i].GetText();
+                    var rightValExpression = remainingRightValues[i];
+
+                    JToken rightValue = Visit(rightValExpression);
+
+                    // If neither are numbers, invalid
+                    if (!IsNumber(leftValue) || !IsNumber(rightValue))
+                    {
+                        return null;
+                    }
+
+                    // If final type should be float
+                    if (leftValue.Type == JTokenType.Float || rightValue.Type == JTokenType.Float)
+                    {
+                        double leftValueDouble = leftValue.Value<double>();
+                        double rightValueDouble = rightValue.Value<double>();
+
+
+                        switch (op)
+                        {
+                            case "+":
+                                leftValue = leftValueDouble + rightValueDouble;
+                                break;
+
+                            case "-":
+                                leftValue = leftValueDouble - rightValueDouble;
+                                break;
+
+                            default:
+                                throw new NotImplementedException();
+                        }
+                    }
+                    else
+                    {
+                        int leftValueInt = leftValue.Value<int>();
+                        int rightValueInt = rightValue.Value<int>();
+
+
+                        switch (op)
+                        {
+                            case "+":
+                                leftValue = leftValueInt + rightValueInt;
+                                break;
+
+                            case "-":
+                                leftValue = leftValueInt - rightValueInt;
+                                break;
+
+                            default:
+                                throw new NotImplementedException();
+                        }
+                    }
+                }
+            }
+
+            return leftValue;
+        }
+
+        public override JToken VisitMultiplicative_expression([NotNull] BindingExpressionsParser.Multiplicative_expressionContext context)
+        {
+            JToken leftValue = Visit(context.unary_expression()[0]);
+
+            // If there's operations
+            if (context.MultiplicativeOperator().Length > 0)
+            {
+                var multiplicativeOperators = context.MultiplicativeOperator();
+                var remainingRightValues = context.unary_expression().Skip(1).ToArray();
+
+                for (int i = 0; i < multiplicativeOperators.Length; i++)
+                {
+                    var op = multiplicativeOperators[i].GetText();
+                    var rightValExpression = remainingRightValues[i];
+
+                    JToken rightValue = Visit(rightValExpression);
+
+                    // If neither are numbers, invalid
+                    if (!IsNumber(leftValue) || !IsNumber(rightValue))
+                    {
+                        return null;
+                    }
+
+                    // If final type should be float
+                    if (leftValue.Type == JTokenType.Float || rightValue.Type == JTokenType.Float)
+                    {
+                        double leftValueDouble = leftValue.Value<double>();
+                        double rightValueDouble = rightValue.Value<double>();
+
+
+                        switch (op)
+                        {
+                            case "*":
+                                leftValue = leftValueDouble * rightValueDouble;
+                                break;
+
+                            case "/":
+                                leftValue = leftValueDouble / rightValueDouble;
+                                break;
+
+                            case "%":
+                                leftValue = leftValueDouble % rightValueDouble;
+                                break;
+
+                            default:
+                                throw new NotImplementedException();
+                        }
+                    }
+                    else
+                    {
+                        int leftValueInt = leftValue.Value<int>();
+                        int rightValueInt = rightValue.Value<int>();
+
+
+                        switch (op)
+                        {
+                            case "*":
+                                leftValue = leftValueInt * rightValueInt;
+                                break;
+
+                            case "/":
+                                leftValue = leftValueInt / rightValueInt;
+                                break;
+
+                            case "%":
+                                leftValue = leftValueInt % rightValueInt;
+                                break;
+
+                            default:
+                                throw new NotImplementedException();
+                        }
+                    }
+                }
+            }
+
+            return leftValue;
+        }
+
+        private static bool IsNumber(JToken token)
+        {
+            if (token == null)
+            {
+                return false;
+            }
+
+            return token.Type == JTokenType.Integer || token.Type == JTokenType.Float;
         }
 
         //public override JToken VisitPostfixExpression([NotNull] BindingExpressionsParser.PostfixExpressionContext context)

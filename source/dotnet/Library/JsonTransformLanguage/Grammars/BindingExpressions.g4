@@ -49,18 +49,18 @@ relational_expression
 	;
 
 additive_expression
-	: multiplicative_expression (('+' | '-')  multiplicative_expression)*
+	: multiplicative_expression (AdditiveOperator  multiplicative_expression)*
 	;
 
 multiplicative_expression
-	: unary_expression (('*' | '/' | '%')  unary_expression)*
+	: unary_expression (MultiplicativeOperator  unary_expression)*
 	;
 
 // https://msdn.microsoft.com/library/6a71f45d(v=vs.110).aspx
 // Removed ones that don't make sense, like address locator, ++ operators (they change the value of the item), etc
 unary_expression
 	: primary_expression
-	| '+' unary_expression
+	| '+' unary_expression // Positive sign
 	| '-' unary_expression // Make number negative
 	| Bang unary_expression // Negate
 	| '&' unary_expression
@@ -178,6 +178,8 @@ Identifier
 	: IdentifierNondigit (IdentifierNondigit | Digit)* ;
 
 BinaryOperator : OP_EQ | OP_NE ;
+AdditiveOperator: '+' | '-';
+MultiplicativeOperator: '*' | '/' | '%';
 
 WS
 	:	' ' -> channel(HIDDEN)
