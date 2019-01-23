@@ -15,6 +15,7 @@ namespace AdaptiveSharedNamespace
         std::string GetDataJson() const;
         Json::Value GetDataJsonAsValue() const;
         void SetDataJson(const Json::Value& value);
+        void SetDataJson(const std::string value);
 
         Json::Value SerializeToJsonValue() const override;
 

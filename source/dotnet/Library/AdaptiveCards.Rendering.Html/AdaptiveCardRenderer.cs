@@ -1221,6 +1221,14 @@ namespace AdaptiveCards.Rendering.Html
                     .Append(uiInput)
                     .Append(uiLabel);
 
+                // text-overflow ellipsis does not work when width is not specified in px
+                // when specified relatively such as using %, ellipsis does not work
+                if (!adaptiveChoiceSetInput.Wrap)
+                {
+                    compoundInputElement.Style("white-space", "nowrap");
+                    compoundInputElement.Style("overflow", "hidden");
+                }
+
                 uiElement.Append(compoundInputElement);
             }
 
@@ -1492,7 +1500,15 @@ namespace AdaptiveCards.Rendering.Html
 
             var uiLabel = CreateLabel(htmlLabelId, toggleInput.Title, context);
 
-            return uiElement.Append(uiCheckboxInput).Append(uiLabel);
+            uiElement.Append(uiCheckboxInput).Append(uiLabel);
+
+            if (!toggleInput.Wrap)
+            {
+                uiElement.Style("white-space", "nowrap");
+                uiElement.Style("overflow", "hidden");
+            }
+
+            return uiElement;
         }
 
         protected static string GetFallbackText(AdaptiveElement adaptiveElement)

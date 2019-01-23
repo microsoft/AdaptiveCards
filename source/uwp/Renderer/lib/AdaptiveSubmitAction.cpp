@@ -23,7 +23,12 @@ namespace AdaptiveNamespace
             return E_INVALIDARG;
         }
 
-        RETURN_IF_FAILED(StringToJsonValue(sharedSubmitAction->GetDataJson(), &m_dataJson));
+        auto sharedJson = sharedSubmitAction->GetDataJson();
+        if (!sharedJson.empty())
+        {
+            RETURN_IF_FAILED(StringToJsonValue(sharedSubmitAction->GetDataJson(), &m_dataJson));
+        }
+
         InitializeBaseElement(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(sharedSubmitAction));
         return S_OK;
     }
@@ -50,8 +55,11 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(submitAction)));
 
         std::string jsonAsString;
-        RETURN_IF_FAILED(JsonValueToString(m_dataJson.Get(), jsonAsString));
-        submitAction->SetDataJson(jsonAsString);
+        if (m_dataJson != nullptr)
+        {
+            RETURN_IF_FAILED(JsonValueToString(m_dataJson.Get(), jsonAsString));
+            submitAction->SetDataJson(jsonAsString);
+        }
 
         sharedModel = submitAction;
         return S_OK;
