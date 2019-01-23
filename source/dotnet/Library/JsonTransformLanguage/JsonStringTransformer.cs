@@ -48,22 +48,34 @@ namespace JsonTransformLanguage
                     var parser = new BindingExpressionsParser(tokenStream);
 
                     var foundExpression = parser.expression();
-                    var visitor = new BindingExpressionsVisitor(context);
-                    JToken result = visitor.Visit(foundExpression);
 
-                    answer += remainingBindingExpression.Substring(0, startIndex);
-                    answer += result;
-
-                    remainingBindingExpression = substr;
-                    remainingBindingExpression = remainingBindingExpression.Substring(foundExpression.Stop.StopIndex + 2); // +2 since it includes ending }
-
-                    // If whole expression was the binding expression, don't do any string concatenation
-                    if (first && startIndex == 0 && remainingBindingExpression.Length == 0)
+                    // If it actually found something
+                    if (foundExpression.Stop.StopIndex + 1 < substr.Length)
                     {
-                        return result;
+                        var visitor = new BindingExpressionsVisitor(context);
+                        JToken result = visitor.Visit(foundExpression);
+
+                        answer += remainingBindingExpression.Substring(0, startIndex);
+                        answer += result;
+
+                        remainingBindingExpression = substr;
+                        remainingBindingExpression = remainingBindingExpression.Substring(foundExpression.Stop.StopIndex + 2); // +2 since it includes ending }
+
+                        // If whole expression was the binding expression, don't do any string concatenation
+                        if (first && startIndex == 0 && remainingBindingExpression.Length == 0)
+                        {
+                            return result;
+                        }
+
+                        found = true;
                     }
 
-                    found = true;
+                    else
+                    {
+                        // Otherwise, increment past there and try again
+                        answer += remainingBindingExpression.Substring(startIndex + 1);
+                        remainingBindingExpression = remainingBindingExpression.Substring(startIndex + 1);
+                    }
                 }
                 else
                 {
