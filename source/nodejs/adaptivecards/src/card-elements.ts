@@ -44,7 +44,7 @@ function createCardObjectInstance<T extends ICardObject>(
 		}
 		else {
 			result.setParent(parent);
-			result.parse(json);
+			result.parse(json, errors);
 
 			tryToFallback = result.shouldFallback();
 		}
@@ -109,7 +109,7 @@ export function createElementInstance(
 export interface ICardObject {
 	shouldFallback(): boolean;
 	setParent(parent: CardElement);
-	parse(json: any);
+	parse(json: any, errors?: Array<HostConfig.IValidationError>);
 }
 
 export type CardElementHeight = "auto" | "stretch";
@@ -3477,7 +3477,20 @@ export class ShowCardAction extends Action {
 	parse(json: any, errors?: Array<HostConfig.IValidationError>) {
 		super.parse(json, errors);
 
-		this.card.parse(json["card"], errors);
+		let jsonCard = json["card"];
+
+		if (jsonCard) {
+			this.card.parse(jsonCard, errors);
+		}
+		else {
+			raiseParseError(
+				{
+					error: Enums.ValidationError.PropertyCantBeNull,
+					message: "An Action.ShowCard must have its \"card\" property set to a valid AdaptiveCard object."
+				},
+				errors
+			);
+		}
 	}
 
 	setParent(value: CardElement) {
@@ -5449,7 +5462,7 @@ export abstract class ContainerWithActions extends Container {
 	parse(json: any, errors?: Array<HostConfig.IValidationError>) {
 		super.parse(json, errors);
 
-		this._actionCollection.parse(json["actions"]);
+		this._actionCollection.parse(json["actions"], errors);
 	}
 
 	validate(): Array<HostConfig.IValidationError> {
