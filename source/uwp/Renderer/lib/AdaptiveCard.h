@@ -24,7 +24,7 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_FallbackText(_Outptr_ HSTRING* fallbackText);
         IFACEMETHODIMP put_FallbackText(_In_ HSTRING fallbackText);
 
-        IFACEMETHODIMP get_BackgroundImage(_Out_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage** backgroundImage);
+        IFACEMETHODIMP get_BackgroundImage(_Outptr_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage** backgroundImage);
         IFACEMETHODIMP put_BackgroundImage(_In_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage* backgroundImage);
 
         IFACEMETHODIMP get_Language(_Outptr_ HSTRING* language);

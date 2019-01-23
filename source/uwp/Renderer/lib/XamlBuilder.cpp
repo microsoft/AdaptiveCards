@@ -467,8 +467,8 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveImage> adaptiveImage;
         HSTRING url;
         THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
-        backgroundImage->get_Url(&url);
-        adaptiveImage->put_Url(url);
+        THROW_IF_FAILED(backgroundImage->get_Url(&url));
+        THROW_IF_FAILED(adaptiveImage->put_Url(url));
 
         ComPtr<IAdaptiveCardElement> adaptiveCardElement;
         THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
@@ -497,8 +497,10 @@ namespace AdaptiveNamespace
             THROW_IF_FAILED(xamlImage.As(&backgroundAsFrameworkElement));
             THROW_IF_FAILED(backgroundAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Stretch));
             break;
+        case ABI::AdaptiveNamespace::BackgroundImageMode::Repeat:
+        case ABI::AdaptiveNamespace::BackgroundImageMode::RepeatHorizontally:
+        case ABI::AdaptiveNamespace::BackgroundImageMode::RepeatVertically:
         default:
-
             ComPtr<TileControl> tileControl;
             MakeAndInitialize<TileControl>(&tileControl);
             tileControl->put_BackgroundImage(backgroundImage);
@@ -510,7 +512,6 @@ namespace AdaptiveNamespace
             tileControl->LoadImageBrush(background.Get());
 
             tileControl.As(&backgroundAsFrameworkElement);
-
             break;
         }
 
@@ -717,9 +718,9 @@ namespace AdaptiveNamespace
                             SetAutoSize(strongImageControl.Get(), parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
                         }
 
-                return S_OK;
-            })
-                .Get()));
+                        return S_OK;
+                    })
+                    .Get()));
 
             m_writeAsyncOperations.push_back(bufferWriteOperation);
             *mustHideElement = false;
@@ -1897,15 +1898,15 @@ namespace AdaptiveNamespace
                 EventRegistrationToken eventToken;
                 THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(
                     Callback<IRoutedEventHandler>([ellipseAsUIElement, isVisible](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
-                    // Don't set the AutoImageSize on the ellipse as it makes the ellipse grow bigger than
-                    // what it would be otherwise, just set the visibility when we get the image
-                    if (isVisible)
-                    {
-                        RETURN_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Visible));
-                    }
-                    return S_OK;
-                })
-                    .Get(),
+                        // Don't set the AutoImageSize on the ellipse as it makes the ellipse grow bigger than
+                        // what it would be otherwise, just set the visibility when we get the image
+                        if (isVisible)
+                        {
+                            RETURN_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Visible));
+                        }
+                        return S_OK;
+                    })
+                        .Get(),
                     &eventToken));
             }
         }
@@ -1939,16 +1940,17 @@ namespace AdaptiveNamespace
                 ComPtr<IInspectable> strongParentElement(parentElement);
                 EventRegistrationToken eventToken;
                 THROW_IF_FAILED(xamlImage->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([frameworkElement, strongParentElement, imageSourceAsBitmap, isVisible](IInspectable* /*sender*/, IRoutedEventArgs *
-                        /*args*/) -> HRESULT {
-                    return SetAutoImageSize(frameworkElement.Get(), strongParentElement.Get(), imageSourceAsBitmap.Get(), isVisible);
-                })
-                    .Get(),
+                    Callback<IRoutedEventHandler>([frameworkElement, strongParentElement, imageSourceAsBitmap, isVisible](
+                                                      IInspectable* /*sender*/, IRoutedEventArgs *
+                                                      /*args*/) -> HRESULT {
+                        return SetAutoImageSize(frameworkElement.Get(), strongParentElement.Get(), imageSourceAsBitmap.Get(), isVisible);
+                    })
+                        .Get(),
                     &eventToken));
             }
             else
             {
-                SetAutoImageSize(frameworkElement.Get() , parentElement, imageSourceAsBitmap.Get(), isVisible);
+                SetAutoImageSize(frameworkElement.Get(), parentElement, imageSourceAsBitmap.Get(), isVisible);
             }
         }
     }
@@ -2027,9 +2029,15 @@ namespace AdaptiveNamespace
             ComPtr<IShape> ellipseAsShape;
             THROW_IF_FAILED(ellipse.As(&ellipseAsShape));
 
-            SetImageOnUIElement(imageUrl.Get(), ellipse.Get(), resourceResolvers.Get(),
-                               (size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize_Auto),
-                               parentElement.Get(), ellipseAsShape.Get(), isVisible, &mustHideElement, stretch);
+            SetImageOnUIElement(imageUrl.Get(),
+                                ellipse.Get(),
+                                resourceResolvers.Get(),
+                                (size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize_Auto),
+                                parentElement.Get(),
+                                ellipseAsShape.Get(),
+                                isVisible,
+                                &mustHideElement,
+                                stretch);
 
             ComPtr<IShape> backgroundEllipseAsShape;
             THROW_IF_FAILED(backgroundEllipse.As(&backgroundEllipseAsShape));
@@ -2041,7 +2049,7 @@ namespace AdaptiveNamespace
                 THROW_IF_FAILED(ellipseAsShape->put_Stretch(stretch));
                 THROW_IF_FAILED(backgroundEllipseAsShape->put_Stretch(stretch));
             }
-            
+
             if (backgroundColor != nullptr)
             {
                 // Fill the background ellipse with solid color brush
@@ -2072,7 +2080,6 @@ namespace AdaptiveNamespace
             ComPtr<IImage> xamlImage =
                 XamlHelpers::CreateXamlClass<IImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Image));
 
-            
             if (backgroundColor != nullptr)
             {
                 // Create a surronding border with solid color background to contain the image
@@ -2104,9 +2111,14 @@ namespace AdaptiveNamespace
             THROW_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
 
             bool mustHideElement{true};
-            SetImageOnUIElement(imageUrl.Get(), xamlImage.Get(), resourceResolvers.Get(),
+            SetImageOnUIElement(imageUrl.Get(),
+                                xamlImage.Get(),
+                                resourceResolvers.Get(),
                                 (size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize_Auto),
-                                parentElement.Get(), frameworkElement.Get(), isVisible, &mustHideElement);
+                                parentElement.Get(),
+                                frameworkElement.Get(),
+                                isVisible,
+                                &mustHideElement);
         }
 
         ComPtr<IAdaptiveImageSizesConfig> sizeOptions;

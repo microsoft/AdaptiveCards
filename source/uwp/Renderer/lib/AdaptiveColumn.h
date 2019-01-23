@@ -42,7 +42,7 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_VerticalContentAlignment(_Out_ ABI::AdaptiveNamespace::VerticalContentAlignment* verticalAlignment);
         IFACEMETHODIMP put_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment verticalAlignment);
 
-        IFACEMETHODIMP get_BackgroundImage(_Out_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage** backgroundImage);
+        IFACEMETHODIMP get_BackgroundImage(_Outptr_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage** backgroundImage);
         IFACEMETHODIMP put_BackgroundImage(_In_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage* backgroundImage);
 
         // IAdaptiveCardElement

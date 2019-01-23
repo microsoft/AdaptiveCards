@@ -242,7 +242,7 @@ Json::Value AdaptiveCard::SerializeToJsonValue() const
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FallbackText)] = m_fallbackText;
     }
-    if (m_backgroundImage != nullptr)
+    if (m_backgroundImage != nullptr && !m_backgroundImage->GetUrl().empty())
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImage)] = m_backgroundImage->SerializeToJsonValue();
     }

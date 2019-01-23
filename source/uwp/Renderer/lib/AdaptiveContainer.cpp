@@ -89,12 +89,12 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveContainer::get_BackgroundImage(IAdaptiveBackgroundImage** backgroundImage)
+    HRESULT AdaptiveContainer::get_BackgroundImage(_Outptr_ IAdaptiveBackgroundImage** backgroundImage)
     {
         return m_backgroundImage.CopyTo(backgroundImage);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveContainer::put_BackgroundImage(IAdaptiveBackgroundImage* backgroundImage)
+    HRESULT AdaptiveContainer::put_BackgroundImage(_In_ IAdaptiveBackgroundImage* backgroundImage)
     {
         m_backgroundImage = backgroundImage;
         return S_OK;

@@ -131,10 +131,10 @@ namespace AdaptiveNamespace
     HRESULT TileControl::OnApplyTemplate()
     {
         // Call OnApplyTemplate() for composable base
-        ComPtr<IFrameworkElementOverrides> base;
-        RETURN_IF_FAILED(GetComposableBase()->QueryInterface(__uuidof(IFrameworkElementOverrides),
-                                                             reinterpret_cast<void**>(base.GetAddressOf())));
-        return base->OnApplyTemplate();
+        ComPtr<IInspectable> composableBase = GetComposableBase();
+        ComPtr<IFrameworkElementOverrides> frameworkOverrides;
+        RETURN_IF_FAILED(composableBase.As(&frameworkOverrides));
+        return frameworkOverrides->OnApplyTemplate();
     }
 
     HRESULT TileControl::MeasureOverride(Size availableSize, Size* pReturnValue)

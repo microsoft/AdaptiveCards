@@ -45,7 +45,7 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP put_AltText(_In_ HSTRING text);
 
         IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveNamespace::HorizontalAlignment* HorizontalAlignment);
-        IFACEMETHODIMP put_HorizontalAlignment(_In_ ABI::AdaptiveNamespace::HorizontalAlignment HorizontalAlignment);
+        IFACEMETHODIMP put_HorizontalAlignment(ABI::AdaptiveNamespace::HorizontalAlignment HorizontalAlignment);
 
         IFACEMETHODIMP get_SelectAction(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** action);
         IFACEMETHODIMP put_SelectAction(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action);

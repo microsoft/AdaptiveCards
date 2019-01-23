@@ -73,12 +73,12 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveColumn::get_BackgroundImage(IAdaptiveBackgroundImage** backgroundImage)
+    HRESULT AdaptiveColumn::get_BackgroundImage(_Outptr_ IAdaptiveBackgroundImage** backgroundImage)
     {
         return m_backgroundImage.CopyTo(backgroundImage);
     }
 
-    HRESULT AdaptiveColumn::put_BackgroundImage(IAdaptiveBackgroundImage* backgroundImage)
+    HRESULT AdaptiveColumn::put_BackgroundImage(_In_ IAdaptiveBackgroundImage* backgroundImage)
     {
         m_backgroundImage = backgroundImage;
         return S_OK;
@@ -116,10 +116,16 @@ namespace AdaptiveNamespace
         column->SetWidth(HStringToUTF8(m_width.Get()));
         column->SetPixelWidth(m_pixelWidth);
 
+        ComPtr<AdaptiveBackgroundImage> adaptiveBackgroundImage = PeekInnards<AdaptiveBackgroundImage>(m_backgroundImage);
         std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage> sharedBackgroundImage;
-        auto backgroundImage = static_cast<AdaptiveNamespace::AdaptiveBackgroundImage*>(m_backgroundImage.Get());
-        RETURN_IF_FAILED(backgroundImage->GetSharedModel(sharedBackgroundImage));
-        column->SetBackgroundImage(sharedBackgroundImage);
+        if (adaptiveBackgroundImage && SUCCEEDED(adaptiveBackgroundImage->GetSharedModel(sharedBackgroundImage)))
+        {
+            column->SetBackgroundImage(sharedBackgroundImage);
+        }
+        else
+        {
+            column->SetBackgroundImage(nullptr);
+        }
 
         if (m_selectAction != nullptr)
         {
