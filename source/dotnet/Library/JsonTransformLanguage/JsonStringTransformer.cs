@@ -67,6 +67,7 @@ namespace JsonTransformLanguage
                 }
                 else
                 {
+                    answer += remainingBindingExpression;
                     break;
                 }
 

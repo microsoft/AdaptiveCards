@@ -8,6 +8,6 @@
 
   // Null property should be dropped
   "expected": {
-    "name": "Satya Nadella"
+    "name": "Satya  Nadella"
   }
 }
