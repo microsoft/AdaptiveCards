@@ -1,0 +1,34 @@
+{
+  "inputJson": {
+    "type": "TextBlock",
+    "spacing": "none",
+    "text": "Created {{DATE({dateCreated}, SHORT)}}",
+    "isSubtle": true,
+    "wrap": true
+  },
+
+  "inputData": {
+    "name": "Publish Adaptive Card schema",
+    "owner": {
+      "name": "Matt Hidinger",
+      "picture": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+    },
+    "dateCreated": "2017-02-14T06:08:39Z",
+    "body": "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
+    "board": "Adaptive Card",
+    "list": "Backlog",
+    "assignedTo": {
+      "name": "Matt Hidinger",
+      "picture": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+    },
+    "dueDate": "Not set"
+  },
+
+  "expected": {
+    "type": "TextBlock",
+    "spacing": "none",
+    "text": "Created {{DATE(2017-02-14T06:08:39Z, SHORT)}}",
+    "isSubtle": true,
+    "wrap": true
+  }
+}

@@ -203,6 +203,12 @@ namespace JsonTransformerLanguage.Tests
             TestPayload();
         }
 
+        [TestMethod]
+        public void CardDateFunctions()
+        {
+            TestPayload();
+        }
+
         private void TestPayload([CallerMemberName]string payloadName = null)
         {
             var parsed = JObject.Parse(File.ReadAllText(Directory.GetCurrentDirectory() + "\\TestPayloads\\" + payloadName + ".json"));

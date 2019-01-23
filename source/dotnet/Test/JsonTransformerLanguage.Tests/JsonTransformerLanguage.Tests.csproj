@@ -168,6 +168,9 @@
     <Content Include="TestPayloads\NullLiterals1.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestPayloads\CardDateFunctions.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Library\JsonTransformLanguage\JsonTransformLanguage.csproj">
