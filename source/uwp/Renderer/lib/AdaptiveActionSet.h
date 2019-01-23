@@ -14,10 +14,10 @@ namespace AdaptiveCards
         {
             class DECLSPEC_UUID("d6031009-7039-4735-bd07-ab6d99b29f03") AdaptiveActionSet
                 : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                                      ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionSet,
-                                                      ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement,
+                                                      ABI::AdaptiveNamespace::IAdaptiveActionSet,
+                                                      ABI::AdaptiveNamespace::IAdaptiveCardElement,
                                                       Microsoft::WRL::CloakedIid<ITypePeek>,
-                                                      Microsoft::WRL::CloakedIid<AdaptiveCards::Rendering::Uwp::AdaptiveCardElementBase>>
+                                                      Microsoft::WRL::CloakedIid<AdaptiveNamespace::AdaptiveCardElementBase>>
             {
                 InspectableClass(RuntimeClass_AdaptiveCards_Rendering_Uwp_AdaptiveActionSet, BaseTrust)
 
@@ -27,16 +27,16 @@ namespace AdaptiveCards
 
                 // IAdaptiveActionSet
                 IFACEMETHODIMP get_Actions(
-                    _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement*>** items);
+                    _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>** items);
 
                 // IAdaptiveCardElement
-                IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveCards::Rendering::Uwp::ElementType* elementType);
+                IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
 
-                IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveCards::Rendering::Uwp::Spacing* spacing)
+                IFACEMETHODIMP get_Spacing(_Out_ ABI::AdaptiveNamespace::Spacing* spacing)
                 {
                     return AdaptiveCardElementBase::get_Spacing(spacing);
                 }
-                IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveCards::Rendering::Uwp::Spacing spacing)
+                IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveNamespace::Spacing spacing)
                 {
                     return AdaptiveCardElementBase::put_Spacing(spacing);
                 }
@@ -96,7 +96,7 @@ namespace AdaptiveCards
                 void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
             private:
-                Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionElement*>> m_actions;
+                Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>> m_actions;
             };
 
             ActivatableClass(AdaptiveActionSet);

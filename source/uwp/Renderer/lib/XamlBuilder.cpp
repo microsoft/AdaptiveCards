@@ -2062,7 +2062,7 @@ namespace AdaptiveNamespace
             THROW_IF_FAILED(ellipse.As(&ellipseAsShape));
 
             SetImageOnUIElement(imageUrl.Get(), ellipse.Get(), resourceResolvers.Get(),
-                               (size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize_Auto),
+                               (size == ABI::AdaptiveNamespace::ImageSize_Auto),
                                parentElement.Get(), ellipseAsShape.Get(), isVisible, &mustHideElement, stretch);
 
             ComPtr<IShape> backgroundEllipseAsShape;
@@ -2139,7 +2139,7 @@ namespace AdaptiveNamespace
 
             bool mustHideElement{true};
             SetImageOnUIElement(imageUrl.Get(), xamlImage.Get(), resourceResolvers.Get(),
-                                (size == ABI::AdaptiveCards::Rendering::Uwp::ImageSize_Auto),
+                                (size == ABI::AdaptiveNamespace::ImageSize_Auto),
                                 parentElement.Get(), frameworkElement.Get(), isVisible, &mustHideElement);
         }
 

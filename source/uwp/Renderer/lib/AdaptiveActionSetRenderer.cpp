@@ -9,7 +9,7 @@
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
-using namespace ABI::AdaptiveCards::Rendering::Uwp;
+using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 
 namespace AdaptiveCards
@@ -36,10 +36,10 @@ namespace AdaptiveCards
 
             HRESULT AdaptiveActionSetRenderer::FromJson(
                 ABI::Windows::Data::Json::IJsonObject* jsonObject,
-                ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveElementParserRegistration* elementParserRegistration,
-                ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveActionParserRegistration* actionParserRegistration,
+                ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
+                ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
                 ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-                ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement** element) noexcept try
+                ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept try
             {
                 return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveActionSet, AdaptiveSharedNamespace::ActionSet, AdaptiveSharedNamespace::ActionSetParser>(
                     jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
