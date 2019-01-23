@@ -617,7 +617,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long new_SubmitAction();
   public final static native String SubmitAction_GetDataJson(long jarg1, SubmitAction jarg1_);
   public final static native long SubmitAction_GetDataJsonAsValue(long jarg1, SubmitAction jarg1_);
-  public final static native void SubmitAction_SetDataJson(long jarg1, SubmitAction jarg1_, long jarg2, JsonValue jarg2_);
+  public final static native void SubmitAction_SetDataJson__SWIG_0(long jarg1, SubmitAction jarg1_, long jarg2, JsonValue jarg2_);
+  public final static native void SubmitAction_SetDataJson__SWIG_1(long jarg1, SubmitAction jarg1_, String jarg2);
   public final static native long SubmitAction_SerializeToJsonValue(long jarg1, SubmitAction jarg1_);
   public final static native long SubmitAction_dynamic_cast(long jarg1, BaseActionElement jarg1_);
   public final static native void delete_SubmitAction(long jarg1);
