@@ -9,8 +9,6 @@
 #import "ACRTextView.h"
 #import "TextInput.h"
 
-const NSInteger kACRTextView = 0x4143525456;
-
 @implementation ACRTextView
 
 - (instancetype)initWithFrame:(CGRect)frame element:(ACOBaseCardElement *)element
@@ -36,7 +34,6 @@ const NSInteger kACRTextView = 0x4143525456;
         self.textColor = [UIColor lightGrayColor];
     }
     self.isRequired  = inputBlck->GetIsRequired();
-    self.tag = kACRTextView;
     self.delegate = self;
     self.id = [NSString stringWithCString:inputBlck->GetId().c_str()
                                  encoding:NSUTF8StringEncoding];

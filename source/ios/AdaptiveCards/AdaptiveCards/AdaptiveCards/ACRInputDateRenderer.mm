@@ -10,6 +10,7 @@
 #import "ACRDateTextField.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "Util.h"
 
 @implementation ACRInputDateRenderer
 
@@ -50,6 +51,8 @@
     }
 
     [inputs addObject:dateField];
+
+    configVisibility(dateField, elem);
 
     return dateField;
 }

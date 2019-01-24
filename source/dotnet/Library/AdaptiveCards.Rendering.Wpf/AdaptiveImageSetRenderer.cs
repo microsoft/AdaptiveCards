@@ -30,6 +30,12 @@ namespace AdaptiveCards.Rendering.Wpf
                 var uiImage = context.Render(image);
                 uiImageSet.Add(uiImage);
             }
+
+            if(!imageSet.IsVisible)
+            {
+                uiImageSet.Visibility = Visibility.Collapsed;
+            }
+
             return uiImageSet;
 
         }

@@ -22,6 +22,7 @@
 #import "ACRShowCardTarget.h"
 #import "ACRActionOpenURLRenderer.h"
 #import "ACRUIImageView.h"
+#import "Util.h"
 
 @implementation ACRInputRenderer
 
@@ -233,6 +234,8 @@
     } else {
         [inputs addObject:inputview];
     }
+
+    configVisibility(inputview, elem);
 
     return inputview;
 }

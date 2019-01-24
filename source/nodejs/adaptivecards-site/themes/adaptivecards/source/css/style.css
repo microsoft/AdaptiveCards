@@ -140,12 +140,24 @@ code {
     word-wrap: break-word;
 }
 
+ul.action-list {
+	padding-left: 0;
+}
+
+.toc-todo ul {
+	padding-left: 0;
+}
+
+.toc-todo ul.toc-tree {
+	margin-left: -30px;
+}
+
 .toc-todo ul ul {
     margin: 0;
 }
 
-.toc-todo ul {
-    padding-left: 0;
+.toc-todo > div > ul > li {
+    padding-left: 30px;
 }
 .toc-todo li {
     padding-left: 30px;

@@ -1,9 +1,11 @@
 package io.adaptivecards.renderer.input;
 
 import android.content.Context;
-import android.nfc.Tag;
 import android.opengl.Visibility;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -14,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import io.adaptivecards.objectmodel.ChoiceInput;
 import io.adaptivecards.objectmodel.ChoiceInputVector;
@@ -35,6 +38,7 @@ import io.adaptivecards.renderer.inputhandler.RadioGroupInputHandler;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -82,6 +86,13 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             ChoiceInput choiceInput = choiceInputVector.get(i);
             CheckBox checkBox = new CheckBox(context);
             checkBox.setText(choiceInput.GetTitle());
+
+            if(!choiceSetInput.GetWrap())
+            {
+                checkBox.setLines(1);
+                checkBox.setEllipsize(TextUtils.TruncateAt.END);
+            }
+
             if (defaults.contains(choiceInput.GetValue()))
             {
                 checkBox.setChecked(true);
@@ -125,6 +136,13 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             ChoiceInput choiceInput = choiceInputVector.get(i);
             RadioButton radioButton = new RadioButton(context);
             radioButton.setId(i);
+
+            if(!choiceSetInput.GetWrap())
+            {
+                radioButton.setLines(1);
+                radioButton.setEllipsize(TextUtils.TruncateAt.END);
+            }
+
             radioButton.setText(choiceInput.GetTitle());
             if (choiceInput.GetValue().equals(value))
             {
@@ -175,7 +193,37 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         }
 
         renderedCard.registerInputHandler(comboBoxInputHandler);
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, titleList);
+
+        class WrappedTextSpinnerAdapter extends ArrayAdapter<String>
+        {
+            WrappedTextSpinnerAdapter(Context context, int resource,
+                               Vector<String>items)
+            {
+                super(context, resource, items);
+            }
+            @NonNull
+            @Override
+            // getView returns the view when spinner is not selected
+            // override method disables single line setting
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
+            {
+                View view = super.getView(position, convertView, parent);
+                TextView txtView = view.findViewById(android.R.id.text1);
+                txtView.setSingleLine(false);
+                return view;
+            }
+        }
+
+        ArrayAdapter<String> spinnerArrayAdapter;
+        if(choiceSetInput.GetWrap())
+        {
+            spinnerArrayAdapter = new WrappedTextSpinnerAdapter(context, android.R.layout.simple_spinner_item, titleList);
+        }
+        else
+        {
+            spinnerArrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, titleList);
+        }
+
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerArrayAdapter);
         spinner.setSelection(selection);

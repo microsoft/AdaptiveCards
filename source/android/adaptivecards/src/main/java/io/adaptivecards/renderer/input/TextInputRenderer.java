@@ -160,8 +160,6 @@ public class TextInputRenderer extends BaseCardElementRenderer
         {
             editText.setVisibility(View.GONE);
         }
-
-        editText.setTextColor(Color.BLACK);
         renderedCard.registerInputHandler(textInputHandler);
 
         if (!TextUtils.isEmpty(value))
@@ -194,17 +192,23 @@ public class TextInputRenderer extends BaseCardElementRenderer
             }
         });
 
-        LinearLayout textInputViewGroup = null; //this property should only be filled when it's and TextInput and it contains an Action
-        if(baseInputElement instanceof TextInput) {
+        LinearLayout textInputViewGroup = null;
+
+        if (baseInputElement instanceof TextInput)
+        {
             TextInput textInput = (TextInput) baseInputElement;
+
             BaseActionElement action = textInput.GetInlineAction();
 
-
-            if (action != null) {
-                if (hostConfig.GetActions().getShowCard().getActionMode() == ActionMode.Inline &&
-                    (action.GetElementType() == ActionType.ShowCard)) {
+            if (action != null) 
+            {
+                if ((hostConfig.GetActions().getShowCard().getActionMode() == ActionMode.Inline) && 
+                    (action.GetElementType() == ActionType.ShowCard)) 
+                {
                     renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INTERACTIVITY_DISALLOWED, "Inline ShowCard not supported for InlineAction"));
-                } else {
+                } 
+                else 
+                {
                     textInputViewGroup = new LinearLayout(context);
                     textInputViewGroup.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                     editText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
@@ -214,36 +218,44 @@ public class TextInputRenderer extends BaseCardElementRenderer
                     TypedValue buttonStyle = new TypedValue();
 
                     String url = action.GetIconUrl();
-                    if (url != null && !url.isEmpty()) {
+                    if (url != null && !url.isEmpty()) 
+                    {
                         ImageButton inlineButton = null;
                         // check for style from resources
-                        if (theme.resolveAttribute(R.attr.adaptiveInlineActionImage, buttonStyle, true)) {
+                        if (theme.resolveAttribute(R.attr.adaptiveInlineActionImage, buttonStyle, true)) 
+                        {
                             Context themedContext = new ContextThemeWrapper(context, R.style.adaptiveInlineActionImage);
                             inlineButton = new ImageButton(themedContext, null, 0);
-                        } else {
+                        } 
+                        else 
+                        {
                             inlineButton = new ImageButton(context);
                             inlineButton.setBackgroundColor(Color.TRANSPARENT);
                             inlineButton.setPadding(16, 0, 0, 8);
                         }
 
                         InlineActionIconImageLoaderAsync imageLoader =
-                            new InlineActionIconImageLoaderAsync(
-                                renderedCard,
-                                inlineButton,
-                                url,
-                                editText
-                            );
+                                new InlineActionIconImageLoaderAsync(
+                                        renderedCard,
+                                        inlineButton,
+                                        url,
+                                        editText);
 
                         imageLoader.execute(url);
                         textInputViewGroup.addView(inlineButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
-                    } else {
+                    } 
+                    else 
+                    {
                         String title = action.GetTitle();
                         Button inlineButton = null;
                         // check for styles from references
-                        if (theme.resolveAttribute(R.attr.adaptiveInlineAction, buttonStyle, true)) {
+                        if (theme.resolveAttribute(R.attr.adaptiveInlineAction, buttonStyle, true)) 
+                        {
                             Context themedContext = new ContextThemeWrapper(context, R.style.adaptiveInlineAction);
                             inlineButton = new Button(themedContext, null, 0);
-                        } else {
+                        } 
+                        else 
+                        {
                             inlineButton = new Button(context);
                             inlineButton.setBackgroundColor(Color.TRANSPARENT);
                             inlineButton.setTextColor(Color.BLACK);

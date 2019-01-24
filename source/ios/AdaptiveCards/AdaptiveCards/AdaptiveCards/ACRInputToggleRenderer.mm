@@ -14,6 +14,7 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACRToggleInputDataSource.h"
+#import "Util.h"
 
 @implementation ACRInputToggleRenderer
 
@@ -77,6 +78,9 @@
                                  attribute:NSLayoutAttributeTrailing
                                 multiplier:1.0
                                   constant:0].active = YES;
+
+    configVisibility(inputTableView, elem);
+
     return inputTableView;
 }
 

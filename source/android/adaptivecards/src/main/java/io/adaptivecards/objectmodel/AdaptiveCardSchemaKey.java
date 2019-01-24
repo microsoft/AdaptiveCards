@@ -14,6 +14,7 @@ public enum AdaptiveCardSchemaKey {
   ActionMode,
   ActionOrientation,
   Actions,
+  ActionSet,
   ActionSetConfig,
   ActionsOrientation,
   AdaptiveCard,

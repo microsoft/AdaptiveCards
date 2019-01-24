@@ -15,13 +15,13 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(FontStyleDefinition styleDefinition) noexcept;
 
-        IFACEMETHODIMP get_FontFamily(_Out_ HSTRING* value);
+        IFACEMETHODIMP get_FontFamily(_Outptr_ HSTRING* value);
         IFACEMETHODIMP put_FontFamily(_In_ HSTRING value);
 
-        IFACEMETHODIMP get_FontWeights(_Out_ ABI::AdaptiveNamespace::IAdaptiveFontWeightsConfig** weightsConfig);
+        IFACEMETHODIMP get_FontWeights(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveFontWeightsConfig** weightsConfig);
         IFACEMETHODIMP put_FontWeights(_In_ ABI::AdaptiveNamespace::IAdaptiveFontWeightsConfig* weightsConfig);
 
-        IFACEMETHODIMP get_FontSizes(_Out_ ABI::AdaptiveNamespace::IAdaptiveFontSizesConfig** sizesConfig);
+        IFACEMETHODIMP get_FontSizes(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveFontSizesConfig** sizesConfig);
         IFACEMETHODIMP put_FontSizes(_In_ ABI::AdaptiveNamespace::IAdaptiveFontSizesConfig* sizesConfig);
 
     private:

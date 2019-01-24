@@ -12,6 +12,12 @@ namespace AdaptiveCards.Rendering.Wpf
             textBox.Style = context.GetStyle("Adaptive.Input.Text.Time");
             textBox.SetContext(input);
             context.InputBindings.Add(input.Id, () => textBox.Text);
+
+            if(!input.IsVisible)
+            {
+                textBox.Visibility = Visibility.Collapsed;
+            }
+
             return textBox;
         }
     }

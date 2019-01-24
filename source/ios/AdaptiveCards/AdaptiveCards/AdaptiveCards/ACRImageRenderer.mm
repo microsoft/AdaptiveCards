@@ -16,6 +16,7 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACRUIImageView.h"
+#import "Util.h"
 
 @implementation ACRImageRenderer
 
@@ -137,6 +138,9 @@
                                                                      hostConfig:acoConfig];
     view.translatesAutoresizingMaskIntoConstraints = NO;
     wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
+
+    configVisibility(wrappingview, elem);
+
     if (imgElem->GetImageStyle() == ImageStyle::Person) {
         wrappingview.isPersonStyle = YES;
     }

@@ -13,7 +13,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveCardResourceResolvers::Set(HSTRING scheme, IAdaptiveCardResourceResolver* resolver)
+    HRESULT AdaptiveCardResourceResolvers::Set(_In_ HSTRING scheme, _In_ IAdaptiveCardResourceResolver* resolver)
     {
         std::string schemeString;
         RETURN_IF_FAILED(HStringToUTF8(scheme, schemeString));
@@ -21,7 +21,7 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveCardResourceResolvers::Get(HSTRING scheme, IAdaptiveCardResourceResolver** resolver)
+    HRESULT AdaptiveCardResourceResolvers::Get(_In_ HSTRING scheme, _COM_Outptr_ IAdaptiveCardResourceResolver** resolver)
     {
         std::string schemeString;
         RETURN_IF_FAILED(HStringToUTF8(scheme, schemeString));
