@@ -11,18 +11,60 @@ enum TokenType {
     Comma,
     PlusSign,
     MinusSign,
+    MultiplySign,
+    DivideSign,
+    EqualOperator,
+    NotEqualOperator,
+    LessThanOperator,
+    LessThanOrEqualOperator,
+    GreaterThanOperator,
+    GreaterThanOrEqualOperator,
     StringLiteral,
-    NumberLitteral
+    NumberLitteral,
+    BooleanLiteral
 }
 
-type ArithmeticOperatorTokenKind = TokenType.PlusSign | TokenType.MinusSign;
+type BinaryOperatorTokenType =
+    TokenType.PlusSign |
+    TokenType.MinusSign |
+    TokenType.MultiplySign |
+    TokenType.DivideSign |
+    TokenType.EqualOperator |
+    TokenType.NotEqualOperator |
+    TokenType.LessThanOperator |
+    TokenType.LessThanOrEqualOperator |
+    TokenType.GreaterThanOperator |
+    TokenType.GreaterThanOrEqualOperator;
 
-/*
-interface TokenTypeInfo {
-    friendlyName: string;
-    matchingEndToken?: TokenType;
-}
-*/
+type LiteralTokenType = 
+    TokenType.StringLiteral |
+    TokenType.NumberLitteral |
+    TokenType.BooleanLiteral;
+
+const arithmeticOperatorTokenTypes = [
+    TokenType.PlusSign,
+    TokenType.MinusSign,
+    TokenType.MultiplySign,
+    TokenType.DivideSign
+];
+
+const comparisonOperatorTokenTypes = [
+    TokenType.EqualOperator,
+    TokenType.NotEqualOperator,
+    TokenType.LessThanOperator,
+    TokenType.LessThanOrEqualOperator,
+    TokenType.GreaterThanOperator,
+    TokenType.GreaterThanOrEqualOperator
+];
+
+const operatorTokenTypes = arithmeticOperatorTokenTypes.concat(comparisonOperatorTokenTypes);
+
+const literalTokenTypes = [
+    TokenType.Identifier,
+    TokenType.StringLiteral,
+    TokenType.NumberLitteral,
+    TokenType.BooleanLiteral
+];
 
 interface TokenizerRule {
     tokenType: TokenType;
@@ -48,11 +90,20 @@ class Tokenizer {
             { tokenType: TokenType.CloseSquareBracket, regEx: /^\]/ },
             { tokenType: TokenType.OpenParenthese, regEx: /^\(/ },
             { tokenType: TokenType.CloseParenthese, regEx: /^\)/ },
+            { tokenType: TokenType.BooleanLiteral, regEx: /^true|^false/ },
             { tokenType: TokenType.Identifier, regEx: /^[a-z_]+/i },
             { tokenType: TokenType.Period, regEx: /^\./ },
             { tokenType: TokenType.Comma, regEx: /^,/ },
             { tokenType: TokenType.PlusSign, regEx: /^\+/ },
             { tokenType: TokenType.MinusSign, regEx: /^-/ },
+            { tokenType: TokenType.MultiplySign, regEx: /^\*/ },
+            { tokenType: TokenType.DivideSign, regEx: /^\// },
+            { tokenType: TokenType.EqualOperator, regEx: /^==/ },
+            { tokenType: TokenType.NotEqualOperator, regEx: /^!=/ },
+            { tokenType: TokenType.LessThanOrEqualOperator, regEx: /^<=/ },
+            { tokenType: TokenType.LessThanOperator, regEx: /^</ },
+            { tokenType: TokenType.GreaterThanOrEqualOperator, regEx: /^>=/ },
+            { tokenType: TokenType.GreaterThanOperator, regEx: /^>/ },
             { tokenType: TokenType.StringLiteral, regEx: /^(?:"[^"]*")|^(?:'[^']*')/ },
             { tokenType: TokenType.NumberLitteral, regEx: /^\d*\.?\d+/ }
         )
@@ -178,18 +229,10 @@ class FunctionCallNode extends ExpressionNode {
     }
 }
 
-class StringLiteralNode extends ExpressionNode {
-    constructor(readonly value: string) {
-        super();
-    }
+type LiteralValue = string | number | boolean;
 
-    print(): string {
-        return this.value;
-    }
-}
-
-class NumberLiteralNode extends ExpressionNode {
-    constructor(readonly value: number) {
+class LiteralNode extends ExpressionNode {
+    constructor(readonly value: LiteralValue) {
         super();
     }
 
@@ -199,7 +242,7 @@ class NumberLiteralNode extends ExpressionNode {
 }
 
 class OperatorNode extends ExpressionNode {
-    constructor(readonly operator: ArithmeticOperatorTokenKind) {
+    constructor(readonly operator: BinaryOperatorTokenType) {
         super();
     }
 
@@ -209,6 +252,22 @@ class OperatorNode extends ExpressionNode {
                 return "+";
             case TokenType.MinusSign:
                 return "-";
+            case TokenType.MultiplySign:
+                return "*";
+            case TokenType.DivideSign:
+                return "/";
+            case TokenType.EqualOperator:
+                return "==";
+            case TokenType.NotEqualOperator:
+                return "!=";
+            case TokenType.LessThanOperator:
+                return "<";
+            case TokenType.LessThanOrEqualOperator:
+                return "<=";
+            case TokenType.GreaterThanOperator:
+                return ">";
+            case TokenType.GreaterThanOrEqualOperator:
+                return ">=";
             default:
                 return TokenType[this.operator];
         }
@@ -219,7 +278,7 @@ class ExpressionParser {
     private _currentTokenIndex: number = 0;
 
     private unexpectedTokenType() {
-        throw new Error("Unexpected token \"" + this.current.value + "\" at position " + this.current.originalPosition + ".");
+        throw new Error("Unexpected token " + this.currentToken.value + " at position " + this.currentToken.originalPosition + ".");
     }
 
     private unexpectedEndOfExpression() {
@@ -227,7 +286,7 @@ class ExpressionParser {
     }
 
     private isTokenType(tokenTypes: TokenType[]): boolean {
-        return tokenTypes.indexOf(this.current.type) >= 0;
+        return tokenTypes.indexOf(this.currentToken.type) >= 0;
     }
 
     private isNextTokenType(tokenTypes: TokenType[]): boolean {
@@ -243,29 +302,19 @@ class ExpressionParser {
         }
     }
 
-    private moveNext() {
-        this._currentTokenIndex++;
-    }
-
-    private moveNextAndEnsureTokenType(expectedTokenTypes: TokenType[]) {
+    private moveToNextToken(expectedTokenTypes?: TokenType[]) {
         this._currentTokenIndex++;
 
-        this.ensureTokenType(expectedTokenTypes);
-    }
-
-    /*
-    private skipWhitespace() {
-        while (!this.eof && this.current.type == TokenType.WhiteSpace) {
-            this.moveNext();
+        if (expectedTokenTypes) {
+            this.ensureTokenType(expectedTokenTypes);    
         }
     }
-    */
 
     private get eof(): boolean {
         return this._currentTokenIndex >= this.tokens.length;
     }
 
-    private get current(): Token {
+    private get currentToken(): Token {
         return this.tokens[this._currentTokenIndex];
     }
 
@@ -281,20 +330,40 @@ class ExpressionParser {
     constructor(readonly tokens: Token[]) {
     }
 
-    private parsePropertyPath(): PropertyPathNode {
+    private parseFunctionParameters(functionCall: FunctionCallNode) {
+        let moreParameters = false;
+        let startTokenType = TokenType.OpenParenthese;
+
+        do {
+            functionCall.parameters.push(this.parseExpression(startTokenType, [TokenType.CloseParenthese, TokenType.Comma]));
+
+            moreParameters = this.currentToken.type == TokenType.Comma;
+
+            if (moreParameters) {
+                startTokenType = TokenType.Comma;
+            }
+        } while (moreParameters);
+    }
+
+    private parsePropertyPathOrFunctionCall(): PropertyPathNode | FunctionCallNode {
         let result = new PropertyPathNode();
 
-        let expectedTokenTypes: Array<TokenType> = [TokenType.Identifier, TokenType.StringLiteral, TokenType.NumberLitteral];
+        let expectedTokenTypes: Array<TokenType> = [TokenType.Identifier];
         let canEndPath = false;
+        let canBeFunctionCall = true;
 
         while (!this.eof) {
             this.ensureTokenType(expectedTokenTypes);
 
-            switch (this.current.type) {
+            switch (this.currentToken.type) {
                 case TokenType.Identifier:
-                    result.properties.push(this.current.value);
+                    result.properties.push(this.currentToken.value);
 
                     expectedTokenTypes = [TokenType.Period, TokenType.OpenSquareBracket];
+
+                    if (canBeFunctionCall) {
+                        expectedTokenTypes.push(TokenType.OpenParenthese);
+                    }
 
                     canEndPath = true;
 
@@ -311,8 +380,16 @@ class ExpressionParser {
                     expectedTokenTypes = [TokenType.Period];
 
                     canEndPath = true;
+                    canBeFunctionCall = false;
 
                     break;
+                case TokenType.OpenParenthese:
+                    let functionCall = new FunctionCallNode();
+                    functionCall.functionName = result.properties.join(".");
+
+                    this.parseFunctionParameters(functionCall);
+            
+                    return functionCall;
                 default:
                     this.unexpectedTokenType();
             }
@@ -321,83 +398,31 @@ class ExpressionParser {
                 return result;
             }
 
-            this.moveNext();
+            this.moveToNextToken();
         }
 
         this.unexpectedTokenType();
-    }
-
-    /*
-    private ensureHasMatchingEndToken(startTokenType: TokenType, endTokenType: TokenType) {
-        this.ensureTokenType(startTokenType);
-
-        let startTokenCount = 0;
-
-        for (let i = this._currentTokenIndex; i < this.tokens.length; i++) {
-            if (this.tokens[i].type == startTokenType) {
-                startTokenCount++;
-            }
-
-            if (this.tokens[i].type == startTokenType) {
-                startTokenCount--;
-
-                if (startTokenCount == 0) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-    */
-
-    private parseFunctionCall(): FunctionCallNode {
-        let result = new FunctionCallNode();
-
-        this.ensureTokenType([TokenType.Identifier]);
-
-        result.functionName = this.current.value;
-
-        this.moveNextAndEnsureTokenType([TokenType.OpenParenthese]);
-
-        let moreParameters = false;
-        let startTokenType = TokenType.OpenParenthese;
-
-        do {
-            result.parameters.push(this.parseExpression(startTokenType, [TokenType.CloseParenthese, TokenType.Comma]));
-
-            moreParameters = this.current.type == TokenType.Comma;
-
-            if (moreParameters) {
-                startTokenType = TokenType.Comma;
-            }
-        } while (moreParameters);
-
-        return result;
-    }
-
-    private isArithmeticOperator(tokenType: TokenType): boolean {
-        const operators: Array<TokenType> = [ TokenType.PlusSign, TokenType.MinusSign ];
-
-        return operators.indexOf(tokenType) >= 0;
     }
 
     private parseExpression(startTokenType: TokenType, endTokenTypes: TokenType[]): Expression {
         let result: Expression = new Expression();
 
         this.ensureTokenType([startTokenType]);
-        this.moveNext();
+        this.moveToNextToken();
 
-        let expectedNextTokenTypes: Array<TokenType> = [TokenType.Identifier, TokenType.StringLiteral, TokenType.NumberLitteral, TokenType.PlusSign, TokenType.MinusSign, TokenType.OpenParenthese];
+        let expectedNextTokenTypes: Array<TokenType> = literalTokenTypes.concat([ TokenType.PlusSign, TokenType.MinusSign ]).concat([TokenType.OpenParenthese]);
+        let hasArithmeticOperator = false;
+        let hasComparisonOperator = false;
+        let allowedLiteralType: LiteralTokenType = null;
 
         while (!this.eof) {
             this.ensureTokenType(expectedNextTokenTypes);
 
-            switch (this.current.type) {
+            switch (this.currentToken.type) {
                 case TokenType.OpenParenthese:
                     result.nodes.push(this.parseExpression(TokenType.OpenParenthese, [TokenType.CloseParenthese]));
 
-                    expectedNextTokenTypes = endTokenTypes;
+                    expectedNextTokenTypes = operatorTokenTypes.concat(endTokenTypes);
 
                     break;
                 case TokenType.CloseSquareBracket:
@@ -412,66 +437,88 @@ class ExpressionParser {
 
                     return result;
                 case TokenType.Identifier:
-                    result.nodes.push(this.nextTokenType == TokenType.OpenParenthese ? this.parseFunctionCall() : this.parsePropertyPath());
+                    result.nodes.push(this.parsePropertyPathOrFunctionCall());
 
-                    expectedNextTokenTypes = [TokenType.PlusSign, TokenType.MinusSign].concat(endTokenTypes);
+                    expectedNextTokenTypes = operatorTokenTypes.concat(endTokenTypes);
 
                     break;
                 case TokenType.StringLiteral:
-                    result.nodes.push(new StringLiteralNode(this.current.value));
-
-                    expectedNextTokenTypes = [TokenType.PlusSign, TokenType.MinusSign].concat(endTokenTypes);
-
-                    break;
                 case TokenType.NumberLitteral:
-                    result.nodes.push(new NumberLiteralNode(parseFloat(this.current.value)));
+                case TokenType.BooleanLiteral:
+                    if (allowedLiteralType && allowedLiteralType != this.currentToken.type) {
+                        this.unexpectedTokenType();
+                    }
 
-                    expectedNextTokenTypes = [TokenType.PlusSign, TokenType.MinusSign].concat(endTokenTypes);
+                    if (this.currentToken.type == TokenType.StringLiteral) {
+                        result.nodes.push(new LiteralNode(this.currentToken.value));
+                    }
+                    else if (this.currentToken.type == TokenType.NumberLitteral) {
+                        result.nodes.push(new LiteralNode(parseFloat(this.currentToken.value)));
+                    }
+                    else {
+                        result.nodes.push(new LiteralNode(this.currentToken.value === "true"));
+                    }
+
+                    expectedNextTokenTypes = operatorTokenTypes.concat(endTokenTypes);
+                    allowedLiteralType = this.currentToken.type;
 
                     break;
-                case TokenType.PlusSign:
-                case TokenType.MinusSign:
-                    result.nodes.push(new OperatorNode(this.current.type));
-
-                    expectedNextTokenTypes = [TokenType.Identifier, TokenType.StringLiteral, TokenType.NumberLitteral, TokenType.OpenParenthese];
-
-                    break;
-                    /*
                 case TokenType.PlusSign:
                 case TokenType.MinusSign:
                     if (result.nodes.length == 0) {
-                        if (this.nextTokenType != TokenType.NumberLitteral) {
-                            this.unexpectedTokenType();
+                        if (this.currentToken.type == TokenType.MinusSign) {
+                            result.nodes.push(new LiteralNode(-1));
+                            result.nodes.push(new OperatorNode(TokenType.MultiplySign));
                         }
-
-                        let isNegative = this.current.type == TokenType.MinusSign;
-
-                        this.moveNext();
-
-                        result.nodes.push(new NumberLiteralNode((isNegative ? -1 : 1) * parseFloat(this.current.value)));
-
-                        this.moveNext();
-                        this.skipWhitespace();
-                        this.ensureTokenType(endTokenTypes);
-    
-                        return result;
                     }
                     else {
-                        // TODO - Operators within expressions
+                        if (hasComparisonOperator) {
+                            this.unexpectedTokenType();
+                        }
+    
+                        result.nodes.push(new OperatorNode(this.currentToken.type));
+
+                        expectedNextTokenTypes = literalTokenTypes.concat([TokenType.OpenParenthese]);
+
+                        hasArithmeticOperator = true;
+                    }
+
+                    break;
+                case TokenType.MultiplySign:
+                case TokenType.DivideSign:
+                    if (result.nodes.length == 0 || hasComparisonOperator) {
                         this.unexpectedTokenType();
                     }
-                */
+
+                    result.nodes.push(new OperatorNode(this.currentToken.type));
+
+                    expectedNextTokenTypes = literalTokenTypes.concat([TokenType.OpenParenthese]);
+
+                    hasArithmeticOperator = true;
+
+                    break;
+                case TokenType.EqualOperator:
+                case TokenType.NotEqualOperator:
+                case TokenType.LessThanOperator:
+                case TokenType.LessThanOrEqualOperator:
+                case TokenType.GreaterThanOperator:
+                case TokenType.GreaterThanOrEqualOperator:
+                    if (result.nodes.length == 0 || hasArithmeticOperator) {
+                        this.unexpectedTokenType();
+                    }
+
+                    result.nodes.push(new OperatorNode(this.currentToken.type));
+
+                    expectedNextTokenTypes = literalTokenTypes.concat([TokenType.OpenParenthese]);
+
+                    hasComparisonOperator = true;
+
+                    break;
                 default:
                     this.unexpectedTokenType();
             }
 
-            /*
-            if (!this.isNextTokenType(expectedNextTokenTypes) && canEndExpression) {
-                return result;
-            }
-            */
-
-            this.moveNext();
+            this.moveToNextToken();
         }
 
         this.unexpectedEndOfExpression();
