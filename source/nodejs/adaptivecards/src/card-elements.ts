@@ -237,10 +237,10 @@ export abstract class CardElement implements ICardObject {
 
 				this.getImmediateSurroundingPadding(padding);
 		
-				let physiaclPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(padding);
+				let physicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(padding);
 	
-				this.separatorElement.style.marginLeft = "-" + physiaclPadding.left + "px";
-				this.separatorElement.style.marginRight = "-" + physiaclPadding.right + "px";
+				this.separatorElement.style.marginLeft = "-" + physicalPadding.left + "px";
+				this.separatorElement.style.marginRight = "-" + physicalPadding.right + "px";
 			}
 			else {
 				this.separatorElement.style.marginRight = "0";
