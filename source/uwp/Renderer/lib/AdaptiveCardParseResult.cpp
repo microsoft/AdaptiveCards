@@ -25,8 +25,8 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveCardParseResult::RuntimeClassInitialize()
     {
-        m_errors = Make<Vector<IAdaptiveError*>>();
-        m_warnings = Make<Vector<IAdaptiveWarning*>>();
+        m_errors = Make<Vector<AdaptiveError*>>();
+        m_warnings = Make<Vector<AdaptiveWarning*>>();
         return S_OK;
     }
 
@@ -42,13 +42,13 @@ namespace AdaptiveNamespace
     }
 
     HRESULT AdaptiveCardParseResult::get_Errors(
-        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveError*>** value)
+        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveError*>** value)
     {
         return m_errors.CopyTo(value);
     }
 
     HRESULT AdaptiveCardParseResult::get_Warnings(
-        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>** value)
+        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>** value)
     {
         return m_warnings.CopyTo(value);
     }

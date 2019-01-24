@@ -32,6 +32,11 @@ namespace AdaptiveCards.Rendering.Wpf
                     break;
             }
 
+            if(!column.IsVisible)
+            {
+                uiContainer.Visibility = Visibility.Collapsed;
+            }
+
             return uiContainer;
         }
     }

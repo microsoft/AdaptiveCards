@@ -72,7 +72,7 @@ namespace AdaptiveNamespace
     {
         ComPtr<AdaptiveError> error;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveError>(&error, statusCode, message));
-        ComPtr<IVector<ABI::AdaptiveNamespace::IAdaptiveError*>> errors;
+        ComPtr<IVector<ABI::AdaptiveNamespace::AdaptiveError*>> errors;
         RETURN_IF_FAILED(m_renderResult->get_Errors(&errors));
         return (errors->Append(error.Detach()));
     }
@@ -81,7 +81,7 @@ namespace AdaptiveNamespace
     {
         ComPtr<AdaptiveWarning> warning;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveWarning>(&warning, statusCode, message));
-        ComPtr<IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>> warnings;
+        ComPtr<IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>> warnings;
         RETURN_IF_FAILED(m_renderResult->get_Warnings(&warnings));
         return (warnings->Append(warning.Detach()));
     }

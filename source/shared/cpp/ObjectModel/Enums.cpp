@@ -9,6 +9,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::ActionAlignment, "actionAlignment"},
             {AdaptiveCardSchemaKey::ActionMode, "actionMode"},
             {AdaptiveCardSchemaKey::Actions, "actions"},
+            {AdaptiveCardSchemaKey::ActionSet, "ActionSet"},
             {AdaptiveCardSchemaKey::ActionSetConfig, "actionSetConfig"},
             {AdaptiveCardSchemaKey::ActionsOrientation, "actionsOrientation"},
             {AdaptiveCardSchemaKey::AdaptiveCard, "adaptiveCard"},
@@ -161,7 +162,8 @@ namespace AdaptiveSharedNamespace
             {CardElementType::TextBlock, "TextBlock"},
             {CardElementType::Custom, "Custom"},
             {CardElementType::Unknown, "Unknown"},
-            {CardElementType::Media, "Media"}});
+            {CardElementType::Media, "Media"},
+            {CardElementType::ActionSet, "ActionSet"}});
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ActionType, ActionType::Unsupported, {
             {ActionType::Unsupported, "Unsupported"},

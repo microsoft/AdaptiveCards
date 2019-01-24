@@ -95,10 +95,10 @@ protected:
                                                                                     actionSentimentDefaultDictionary.Get(),
                                                                                     m_renderResult.Get()));
 
-                    m_renderer->GetXamlBuilder()->BuildXamlTreeFromAdaptiveCard(m_card.Get(),
-                                                                                &m_rootXamlElement,
-                                                                                m_renderer.Get(),
-                                                                                renderContext.Get());
+                    AdaptiveNamespace::XamlBuilder::BuildXamlTreeFromAdaptiveCard(m_card.Get(),
+                                                                                              &m_rootXamlElement,
+                                                                                              renderContext.Get(),
+                                                                                              m_renderer->GetXamlBuilder());
                 }
                 catch (...)
                 {

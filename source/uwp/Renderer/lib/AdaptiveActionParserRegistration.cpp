@@ -93,8 +93,8 @@ namespace AdaptiveNamespace
                                                                                context.actionParserRegistration);
 
         ComPtr<IAdaptiveActionElement> actionElement;
-        ComPtr<ABI::Windows::Foundation::Collections::IVector<IAdaptiveWarning*>> adaptiveWarnings =
-            Make<Vector<IAdaptiveWarning*>>();
+        ComPtr<ABI::Windows::Foundation::Collections::IVector<AdaptiveWarning*>> adaptiveWarnings =
+            Make<Vector<AdaptiveWarning*>>();
         THROW_IF_FAILED(parser->FromJson(jsonObject.Get(),
                                          adaptiveElementParserRegistration.Get(),
                                          adaptiveActionParserRegistration.Get(),

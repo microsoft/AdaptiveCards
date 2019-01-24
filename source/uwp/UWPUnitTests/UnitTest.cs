@@ -111,7 +111,7 @@ namespace UWPUnitTests
 
         async public Task TestCard(FileViewModel hostConfigFile, FileViewModel cardFile)
         {
-            var renderResult = await UWPTestLibrary.RenderTestHelpers.RenderCard(cardFile, hostConfigFile);
+            var renderResult = await UWPTestLibrary.RenderTestHelpers.RenderCard(cardFile, hostConfigFile, new Dictionary<string, AdaptiveCards.Rendering.Uwp.IAdaptiveCardResourceResolver>());
 
             if (renderResult.Tree != null)
             {
