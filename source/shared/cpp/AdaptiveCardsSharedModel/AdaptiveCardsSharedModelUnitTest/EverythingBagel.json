@@ -255,6 +255,22 @@
 					]
 				}
 			]
+		},
+		{
+			"type": "ActionSet",
+			"actions": [
+				{
+					"type": "Action.Submit",
+					"title": "ActionSet.Action.Submit",
+					"id": "ActionSet.Action.Submit_id"
+				},
+				{
+					"type": "Action.OpenUrl",
+					"title": "ActionSet.Action.OpenUrl",
+					"id": "ActionSet.Action.OpenUrl_id",
+					"url": "https://adaptivecards.io/"
+				}
+			]
 		}
 	],
 	"actions": [

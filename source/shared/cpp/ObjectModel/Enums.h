@@ -11,6 +11,7 @@ namespace AdaptiveSharedNamespace
         ActionMode,
         ActionOrientation,
         Actions,
+        ActionSet,
         ActionSetConfig,
         ActionsOrientation,
         AdaptiveCard,
@@ -167,7 +168,8 @@ namespace AdaptiveSharedNamespace
         ToggleInput,
         Custom,
         Unknown,
-        Media
+        Media,
+        ActionSet,
     };
     DECLARE_ADAPTIVECARD_ENUM(CardElementType);
 

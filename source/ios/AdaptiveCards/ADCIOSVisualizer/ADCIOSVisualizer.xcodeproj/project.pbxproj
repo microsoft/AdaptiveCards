@@ -56,6 +56,7 @@
 		6B9BDF7020E18E5B00F13155 /* CustomImageRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BDF6F20E18E5B00F13155 /* CustomImageRenderer.mm */; };
 		6B9BDF7C20E6E0C200F13155 /* Column.Explicit.Size.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B9BDF7B20E6E0C200F13155 /* Column.Explicit.Size.json */; };
 		6B9BDFCC20F6D11F00F13155 /* ADCResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BDFCB20F6D11F00F13155 /* ADCResolver.m */; };
+		6BC30F6021DD69D800B9FAAE /* ActionSet.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BC30F5F21DD69D800B9FAAE /* ActionSet.json */; };
 		6BC30F6421DFE8CF00B9FAAE /* TextBlock.FontStyles.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BC30F6221DFE8CF00B9FAAE /* TextBlock.FontStyles.json */; };
 		6BC30F6721DFE8EA00B9FAAE /* Media.Sources.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BC30F6521DFE8E900B9FAAE /* Media.Sources.json */; };
 		6BC30F6821DFE8EA00B9FAAE /* Media.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BC30F6621DFE8E900B9FAAE /* Media.json */; };
@@ -209,6 +210,7 @@
 		6B9BDF7B20E6E0C200F13155 /* Column.Explicit.Size.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.Explicit.Size.json; path = ../../../../samples/Tests/Column.Explicit.Size.json; sourceTree = "<group>"; };
 		6B9BDFCB20F6D11F00F13155 /* ADCResolver.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADCResolver.m; sourceTree = "<group>"; };
 		6B9BDFCD20F6D16E00F13155 /* ADCResolver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADCResolver.h; sourceTree = "<group>"; };
+		6BC30F5F21DD69D800B9FAAE /* ActionSet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ActionSet.json; path = ../../../../samples/v1.2/Elements/ActionSet.json; sourceTree = "<group>"; };
 		6BC30F6221DFE8CF00B9FAAE /* TextBlock.FontStyles.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TextBlock.FontStyles.json; path = ../../../../samples/v1.2/Elements/TextBlock.FontStyles.json; sourceTree = "<group>"; };
 		6BC30F6521DFE8E900B9FAAE /* Media.Sources.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Media.Sources.json; path = ../../../../samples/v1.1/Elements/Media.Sources.json; sourceTree = "<group>"; };
 		6BC30F6621DFE8E900B9FAAE /* Media.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Media.json; path = ../../../../samples/v1.1/Elements/Media.json; sourceTree = "<group>"; };
@@ -430,6 +432,7 @@
 		F4D33E341F045B6E00941E44 /* Jsons */ = {
 			isa = PBXGroup;
 			children = (
+				6BC30F5F21DD69D800B9FAAE /* ActionSet.json */,			
 				6BC30F6921DFECB400B9FAAE /* ProductVideo.json */,
 				6BC30F6621DFE8E900B9FAAE /* Media.json */,
 				6BC30F6521DFE8E900B9FAAE /* Media.Sources.json */,
@@ -719,6 +722,7 @@
 				F4F44B852048CDB300A2F24C /* AdditionalProperty.json in Resources */,
 				30860BC820C9B5C9009F9D99 /* ColumnSet.Input.Toggle.VerticalStretch.json in Resources */,
 				30860BCC20C9B5C9009F9D99 /* ColumnSet_Container.VerticalStretch.json in Resources */,
+				6BC30F6021DD69D800B9FAAE /* ActionSet.json in Resources */,
 				30860BC920C9B5C9009F9D99 /* ColumnSet.Input.Date.VerticalStretch.json in Resources */,
 				F4933CD61F79852C00F6EBFD /* Image.Size.json in Resources */,
 				F4D402161F7DB0BF00D0356B /* sample.json in Resources */,

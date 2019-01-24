@@ -180,6 +180,10 @@ body {
     content: "\F2A2";
 }
 
+.acd-icon-actionSet::before {
+    content: "\E945";
+}
+
 .acd-icon-image::before {
     content: "\EB9F";
 }

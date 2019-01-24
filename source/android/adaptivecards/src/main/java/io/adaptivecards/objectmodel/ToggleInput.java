@@ -77,6 +77,14 @@ public class ToggleInput extends BaseInputElement {
     AdaptiveCardObjectModelJNI.ToggleInput_SetValueOn(swigCPtr, this, value);
   }
 
+  public boolean GetWrap() {
+    return AdaptiveCardObjectModelJNI.ToggleInput_GetWrap(swigCPtr, this);
+  }
+
+  public void SetWrap(boolean value) {
+    AdaptiveCardObjectModelJNI.ToggleInput_SetWrap(swigCPtr, this, value);
+  }
+
   public static ToggleInput dynamic_cast(BaseCardElement baseCardElement) {
     long cPtr = AdaptiveCardObjectModelJNI.ToggleInput_dynamic_cast(BaseCardElement.getCPtr(baseCardElement), baseCardElement);
     return (cPtr == 0) ? null : new ToggleInput(cPtr, true);

@@ -72,6 +72,11 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
 
         final ToggleInputHandler toggleInputHandler = new ToggleInputHandler(toggleInput);
         CheckBox checkBox = new CheckBox(context);
+        if(!toggleInput.GetWrap())
+        {
+            checkBox.setLines(1);
+            checkBox.setEllipsize(TextUtils.TruncateAt.END);
+        }
         toggleInputHandler.setView(checkBox);
         checkBox.setTag(toggleInputHandler);
         checkBox.setText(toggleInput.GetTitle());
