@@ -244,6 +244,25 @@
 				}
 			],
 			"isVisible": false
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "input9",
+			"style": "compact",
+			"isMultiSelect": false,
+			"value": "1",
+			"wrap": true,
+			"choices": [
+				{
+					"title": "Red",
+					"value": "1"
+				},
+				{
+					"title": "Green",
+					"value": "2"
+				}
+			],
+			"isVisible": false
 		}
 		
     ],
@@ -251,7 +270,7 @@
 		{
 			"type": "Action.ToggleVisibility",
 			"title": "Toggle!",
-			"targetElements": [ "id6", "id7", "id8", "id9", "input1", "input2", "input3", "input4", "input5", "input6", "input7", "input8" ]
+			"targetElements": [ "id6", "id7", "id8", "id9", "input1", "input2", "input3", "input4", "input5", "input6", "input7", "input8", "input9" ]
 		}
 	]
 }
