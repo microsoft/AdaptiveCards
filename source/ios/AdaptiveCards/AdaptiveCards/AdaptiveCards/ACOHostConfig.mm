@@ -365,34 +365,20 @@ using namespace AdaptiveCards;
     return color;
 }
 
-- (ContainerStyleDefinition) getColorPalette:(ACRContainerStyle)style
+- (ColorsConfig)getForegroundColorForContainerStyle:(ACRContainerStyle)style
 {
-    switch (style) {
-        case ACRAccent:
-            return _config->GetContainerStyles().accentPalette;
-        case ACRAttention:
-            return _config->GetContainerStyles().attentionPalette;
-        case ACREmphasis:
-            return _config->GetContainerStyles().emphasisPalette;
-        case ACRGood:
-            return _config->GetContainerStyles().goodPalette;
-        case ACRWarning:
-            return _config->GetContainerStyles().warningPalette;
-        case ACRDefault:
-        default:
-            return _config->GetContainerStyles().defaultPalette;
-    }
+    return _config->GetForegroundColors([ACOHostConfig getSharedContainerStyle:style]);
 }
 
 - (UIColor *)getBackgroundColorForContainerStyle:(ACRContainerStyle)style
 {
-    std::string hexColorCode = [self getColorPalette:style].backgroundColor;
+    std::string hexColorCode = _config->GetBackgroundColor([ACOHostConfig getSharedContainerStyle:style]);
     return [ACOHostConfig convertHexColorCodeToUIColor:hexColorCode];
 }
 
 + (ACRContainerStyle)getPlatformContainerStyle:(ContainerStyle)style
 {
-    ACRContainerStyle containerStyle;
+    ACRContainerStyle containerStyle = ACRDefault;
     switch (style) {
         case ContainerStyle::None:
             containerStyle = ACRNone;
@@ -415,6 +401,36 @@ using namespace AdaptiveCards;
         case ContainerStyle::Default:
         default:
             containerStyle = ACRDefault;
+            break;
+    }
+    return containerStyle;
+}
+
++ (ContainerStyle)getSharedContainerStyle:(ACRContainerStyle)style
+{
+    ContainerStyle containerStyle = ContainerStyle::Default;
+    switch (style) {
+        case ACRContainerStyle::ACRNone:
+            containerStyle = ContainerStyle::None;
+            break;
+        case ACRContainerStyle::ACRAccent:
+            containerStyle = ContainerStyle::Accent;
+            break;
+        case ACRContainerStyle::ACRAttention:
+            containerStyle = ContainerStyle::Attention;
+            break;
+        case ACRContainerStyle::ACREmphasis:
+            containerStyle = ContainerStyle::Emphasis;
+            break;
+        case ACRContainerStyle::ACRGood:
+            containerStyle = ContainerStyle::Good;
+            break;
+        case ACRContainerStyle::ACRWarning:
+            containerStyle = ContainerStyle::Warning;
+            break;
+        case ACRContainerStyle::ACRDefault:
+        default:
+            containerStyle = ContainerStyle::Default;
             break;
     }
     return containerStyle;

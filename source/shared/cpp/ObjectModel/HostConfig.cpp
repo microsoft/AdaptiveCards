@@ -577,6 +577,36 @@ unsigned int HostConfig::GetFontWeight(FontStyle style, TextWeight weight) const
     return result;
 }
 
+ContainerStyleDefinition HostConfig::GetContainerStyle(ContainerStyle style) const
+{
+    switch (style)
+    {
+        case ContainerStyle::Accent:
+            return _containerStyles.accentPalette;
+        case ContainerStyle::Attention:
+            return _containerStyles.attentionPalette;
+        case ContainerStyle::Emphasis:
+            return _containerStyles.emphasisPalette;
+        case ContainerStyle::Good:
+            return _containerStyles.goodPalette;
+        case ContainerStyle::Warning:
+            return _containerStyles.warningPalette;
+        case ContainerStyle::Default:
+        default:
+            return _containerStyles.defaultPalette;
+    }
+}
+
+std::string HostConfig::GetBackgroundColor(ContainerStyle style) const
+{
+    return GetContainerStyle(style).backgroundColor;
+}
+
+ColorsConfig HostConfig::GetForegroundColors(ContainerStyle style) const
+{
+    return GetContainerStyle(style).foregroundColors;
+}
+
 std::string HostConfig::GetFontFamily() const
 {
     return _fontFamily;

@@ -237,6 +237,10 @@ namespace AdaptiveSharedNamespace
         unsigned int GetFontSize(FontStyle style, TextSize size) const;
         unsigned int GetFontWeight(FontStyle style, TextWeight weight) const;
 
+        ContainerStyleDefinition GetContainerStyle(ContainerStyle style) const;
+        std::string GetBackgroundColor(ContainerStyle style) const;
+        ColorsConfig GetForegroundColors(ContainerStyle style) const;
+
         std::string GetFontFamily() const;
         void SetFontFamily(const std::string& value);
 

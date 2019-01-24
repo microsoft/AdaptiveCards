@@ -39,11 +39,13 @@ using namespace AdaptiveCards;
 
 + (UIColor *)convertHexColorCodeToUIColor:(std::string const &)hexColorCode;
 
+- (ColorsConfig)getForegroundColorForContainerStyle:(ACRContainerStyle)style;
+
 - (UIColor *)getBackgroundColorForContainerStyle:(ACRContainerStyle)style;
 
 + (ACRContainerStyle)getPlatformContainerStyle:(ContainerStyle)style;
 
-- (ACRIconPlacement)getIconPlacement;
++ (ContainerStyle)getSharedContainerStyle:(ACRContainerStyle)style;
 
-- (ContainerStyleDefinition)getColorPalette:(ACRContainerStyle)style;
+- (ACRIconPlacement)getIconPlacement;
 @end

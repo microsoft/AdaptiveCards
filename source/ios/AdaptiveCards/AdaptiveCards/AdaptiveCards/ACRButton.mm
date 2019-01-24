@@ -87,8 +87,7 @@
 
     button.sentiment = acoAction.sentiment;
 
-    std::shared_ptr<AdaptiveCards::HostConfig> hostConfig = [config getHostConfig];
-    ColorsConfig colorsConfig = hostConfig->GetContainerStyles().defaultPalette.foregroundColors;
+    ColorsConfig colorsConfig = [config getForegroundColorForContainerStyle:ACRDefault];
 
     button.defaultPositiveBackgroundColor = [ACOHostConfig getTextBlockColor:ForegroundColor::Accent colorsConfig:colorsConfig subtleOption:false];
     button.defaultDestructiveForegroundColor = [ACOHostConfig getTextBlockColor:ForegroundColor::Attention colorsConfig:colorsConfig subtleOption:false];

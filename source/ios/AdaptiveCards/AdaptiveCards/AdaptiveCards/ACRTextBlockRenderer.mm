@@ -81,7 +81,7 @@
 
         // Obtain text color to apply to the attributed string
         ACRContainerStyle style = lab.style;
-        ColorsConfig colorConfig = [acoConfig getColorPalette:style].foregroundColors;
+        ColorsConfig colorConfig = [acoConfig getForegroundColorForContainerStyle:style];
         
         // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
         [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACOHostConfig getTextBlockColor:txtBlck->GetTextColor() colorsConfig:colorConfig subtleOption:txtBlck->GetIsSubtle()],} range:NSMakeRange(0, content.length)];
