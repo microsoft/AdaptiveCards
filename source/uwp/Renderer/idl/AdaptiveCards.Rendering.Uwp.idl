@@ -48,7 +48,11 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveTimeInput;
     runtimeclass AdaptiveToggleInput;
     runtimeclass AdaptiveSeparator;
+    runtimeclass AdaptiveOpenUrlAction;
+    runtimeclass AdaptiveShowCardAction;
+    runtimeclass AdaptiveSubmitAction;
     runtimeclass AdaptiveToggleVisibilityAction;
+    runtimeclass AdaptiveActionSet;
 
     runtimeclass AdaptiveFontSizesConfig;
     runtimeclass AdaptiveFontWeightsConfig;
@@ -131,6 +135,7 @@ AdaptiveNamespaceStart
     interface IAdaptiveSeparator;
     interface IAdaptiveError;
     interface IAdaptiveWarning;
+    interface IAdaptiveActionSet;
 
     interface IAdaptiveFontSizesConfig;
     interface IAdaptiveFontWeightsConfig;
@@ -249,7 +254,8 @@ AdaptiveNamespaceStart
         TimeInput,
         ToggleInput,
         Custom,
-        Media
+        Media,
+        ActionSet,
     } ElementType;
 
     [version(NTDDI_WIN10_RS1)]
@@ -460,18 +466,6 @@ AdaptiveNamespaceStart
 
     [version(NTDDI_WIN10_RS1)]
 #ifdef ADAPTIVE_CARDS_WINDOWS
-    [contract(InternalContract, 1)]
-    [internal]
-#endif
-    typedef [v1_enum] enum Sentiment
-    {
-        Default = 0,
-        Positive,
-        Destructive
-    } Sentiment;
-
-    [version(NTDDI_WIN10_RS1)]
-#ifdef ADAPTIVE_CARDS_WINDOWS
     [contract(InternalContract, 1)][internal]
 #endif
     typedef[v1_enum] enum IsVisible {
@@ -484,17 +478,18 @@ AdaptiveNamespaceStart
     {
         interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
         interface Windows.Foundation.Collections.IVector<IAdaptiveActionElement*>;
-        interface Windows.Foundation.Collections.IVector<IAdaptiveColumn*>;
-        interface Windows.Foundation.Collections.IVector<IAdaptiveFact*>;
-        interface Windows.Foundation.Collections.IVector<IAdaptiveChoiceInput*>;
-        interface Windows.Foundation.Collections.IVector<IAdaptiveError*>;
-        interface Windows.Foundation.Collections.IVector<IAdaptiveWarning*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveColumn*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveFact*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveChoiceInput*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveError*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveWarning*>;
         interface Windows.Foundation.Collections.IObservableVector<IAdaptiveCardElement*>;
-        interface Windows.Foundation.Collections.IObservableVector<IAdaptiveColumn*>;
+        interface Windows.Foundation.Collections.IObservableVector<AdaptiveColumn*>;
         interface Windows.Foundation.IAsyncOperation<RenderedAdaptiveCard*>;
         interface Windows.Foundation.Collections.IVector<AdaptiveMediaSource*>;
         interface Windows.Foundation.Collections.IVector<AdaptiveRemoteResourceInformation*>;
         interface Windows.Foundation.Collections.IVector<AdaptiveToggleVisibilityTarget*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveImage*>;
     }
 
     [
@@ -811,8 +806,8 @@ AdaptiveNamespaceStart
     interface IAdaptiveCardParseResult : IInspectable
     {
         [propget] HRESULT AdaptiveCard([out, retval] AdaptiveCard** value);
-        [propget] HRESULT Errors([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveError*>** value);
-        [propget] HRESULT Warnings([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveWarning*>** value);
+        [propget] HRESULT Errors([out, retval] Windows.Foundation.Collections.IVector<AdaptiveError*>** value);
+        [propget] HRESULT Warnings([out, retval] Windows.Foundation.Collections.IVector<AdaptiveWarning*>** value);
     };
 
     [
@@ -885,6 +880,7 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveImage),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(3b0830aa-a03a-46c4-9204-32c051e34982),
         contract(InternalContract, 1),
@@ -951,7 +947,7 @@ AdaptiveNamespaceStart
     ]
     interface IAdaptiveImageSet : IInspectable
     {
-        [propget] HRESULT Images([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveImage*>** value);
+        [propget] HRESULT Images([out, retval] Windows.Foundation.Collections.IVector<AdaptiveImage*>** value);
 
         [propget] HRESULT ImageSize([out, retval] ImageSize* value);
         [propput] HRESULT ImageSize([in] ImageSize value);
@@ -990,6 +986,7 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveChoiceInput),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(ace5f894-2109-4c57-bde6-7e69069242a9),
         contract(InternalContract, 1),
@@ -1025,6 +1022,7 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveChoiceSetInput),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(9fa2984c-a65e-4886-92b0-379ca242e955),
         contract(InternalContract, 1),
@@ -1045,7 +1043,7 @@ AdaptiveNamespaceStart
         [propget] HRESULT ChoiceSetStyle([out, retval] ChoiceSetStyle* value);
         [propput] HRESULT ChoiceSetStyle([in] ChoiceSetStyle value);
 
-        [propget] HRESULT Choices([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveChoiceInput*>** value);
+        [propget] HRESULT Choices([out, retval] Windows.Foundation.Collections.IVector<AdaptiveChoiceInput*>** value);
     };
 
     [
@@ -1285,6 +1283,7 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveContainer),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(60554c5a-32db-4130-8613-d39737ced7c4),
         contract(InternalContract, 1),
@@ -1324,6 +1323,7 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveColumn),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(fe3a3792-d916-4b9d-b54c-eb1e1b5c23b4),
         contract(InternalContract, 1),
@@ -1379,7 +1379,7 @@ AdaptiveNamespaceStart
     ]
     interface IAdaptiveColumnSet : IInspectable
     {
-        [propget] HRESULT Columns([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveColumn*>** value);
+        [propget] HRESULT Columns([out, retval] Windows.Foundation.Collections.IVector<AdaptiveColumn*>** value);
 
         [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
         [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
@@ -1403,6 +1403,7 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveFact),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(d06f4235-e32a-4bba-9802-49a8e2d2c3b7),
         contract(InternalContract, 1),
@@ -1452,7 +1453,7 @@ AdaptiveNamespaceStart
     ]
     interface IAdaptiveFactSet : IInspectable
     {
-        [propget] HRESULT Facts([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveFact*>** value);
+        [propget] HRESULT Facts([out, retval] Windows.Foundation.Collections.IVector<AdaptiveFact*>** value);
     };
 
     [
@@ -1467,6 +1468,37 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveFactSet
     {
         [default] interface IAdaptiveFactSet;
+        interface IAdaptiveCardElement;
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveActionSet),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(EC0102C3-A40D-449D-939B-3AD770CE6DAD),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(F9778A62-1317-486D-9D82-C71101FA01F8)
+#endif
+    ]
+    interface IAdaptiveActionSet : IInspectable
+    {
+        [propget] HRESULT Actions([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveActionElement*>** value);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1)
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif
+    ]
+    runtimeclass AdaptiveActionSet
+    {
+        [default] interface IAdaptiveActionSet;
         interface IAdaptiveCardElement;
     };
 
@@ -2381,7 +2413,7 @@ AdaptiveNamespaceStart
     interface IAdaptiveHostConfigParseResult : IInspectable
     {
         [propget] HRESULT HostConfig([out, retval] AdaptiveHostConfig** value);
-        [propget] HRESULT Errors([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveError*>** value);
+        [propget] HRESULT Errors([out, retval] Windows.Foundation.Collections.IVector<AdaptiveError*>** value);
     };
 
     [
@@ -2455,8 +2487,8 @@ AdaptiveNamespaceStart
         [propget] HRESULT IconUrl([out, retval] HSTRING* value);
         [propput] HRESULT IconUrl([in] HSTRING value);
 
-        [propget] HRESULT Sentiment([out, retval] Sentiment* value);
-        [propput] HRESULT Sentiment([in] Sentiment value);
+        [propget] HRESULT Sentiment([out, retval] HSTRING* value);
+        [propput] HRESULT Sentiment([in] HSTRING value);
 
         [propget] HRESULT AdditionalProperties([out, retval] Windows.Data.Json.JsonObject** json);
         [propput] HRESULT AdditionalProperties([in] Windows.Data.Json.JsonObject* json);
@@ -2466,6 +2498,7 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveOpenUrlAction),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(8a7f7888-f53b-4fdb-8f3c-968da4352031),
         contract(InternalContract, 1),
@@ -2497,6 +2530,7 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveShowCardAction),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(201859e9-1179-4c2b-91fa-3f561210a7f6),
         contract(InternalContract, 1),
@@ -2528,6 +2562,7 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveSubmitAction),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(c89015c8-1a8e-4819-8e93-d5fed276efc5),
         contract(InternalContract, 1),
@@ -2735,9 +2770,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT UserInputs([out, retval] AdaptiveInputs** value);
 
-        [propget] HRESULT Errors([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveError*>** value);
+        [propget] HRESULT Errors([out, retval] Windows.Foundation.Collections.IVector<AdaptiveError*>** value);
 
-        [propget] HRESULT Warnings([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveWarning*>** value);
+        [propget] HRESULT Warnings([out, retval] Windows.Foundation.Collections.IVector<AdaptiveWarning*>** value);
 
         [eventadd] HRESULT Action([in] Windows.Foundation.TypedEventHandler<RenderedAdaptiveCard*, AdaptiveActionEventArgs*>* pHandler, [out][retval] EventRegistrationToken* pToken);
         [eventremove] HRESULT Action([in] EventRegistrationToken token);
@@ -2807,7 +2842,7 @@ AdaptiveNamespaceStart
             [in] Windows.Data.Json.JsonObject* inputJson,
             [in] AdaptiveElementParserRegistration* elementParsers,
             [in] AdaptiveActionParserRegistration* actionParsers,
-            [in] Windows.Foundation.Collections.IVector<IAdaptiveWarning*>* warnings,
+            [in] Windows.Foundation.Collections.IVector<AdaptiveWarning*>* warnings,
             [out, retval] IAdaptiveCardElement** result);
     };
 
@@ -2891,7 +2926,7 @@ AdaptiveNamespaceStart
             [in] Windows.Data.Json.JsonObject* inputJson,
             [in] AdaptiveElementParserRegistration* elementParsers,
             [in] AdaptiveActionParserRegistration* actionParsers,
-            [in] Windows.Foundation.Collections.IVector<IAdaptiveWarning*>* warnings,
+            [in] Windows.Foundation.Collections.IVector<AdaptiveWarning*>* warnings,
             [out, retval] IAdaptiveActionElement** result);
     };
 
@@ -3292,6 +3327,21 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1)
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif
+    ]
+    runtimeclass AdaptiveActionSetRenderer
+    {
+        [default] interface IAdaptiveElementRenderer;
+        interface IAdaptiveElementParser;
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveRenderArgs),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(e75cbfea-77a6-4562-be66-c86b36ac193a),
@@ -3325,6 +3375,7 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveError),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(f3c95797-25ad-4ee1-a4ad-0fafb986213f),
         contract(InternalContract, 1),
@@ -3356,6 +3407,7 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveWarning),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(d978d794-6585-4e97-b602-9e6a2ffa3948),
         contract(InternalContract, 1),

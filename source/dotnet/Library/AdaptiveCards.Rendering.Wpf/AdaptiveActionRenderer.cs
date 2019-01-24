@@ -14,7 +14,47 @@ namespace AdaptiveCards.Rendering.Wpf
                 var uiButton = CreateActionButton(action, context);
                 uiButton.Click += (sender, e) =>
                 {
-                    context.InvokeAction(uiButton, new AdaptiveActionEventArgs(action));
+                    if (action is AdaptiveToggleVisibilityAction toggleVisibilityAction)
+                    {
+                        foreach (object targetElement in toggleVisibilityAction.TargetElements)
+                        {
+                            string targetElementId = "";
+                            bool? targetElementIsVisible = null;
+
+                            if (targetElement is string targetElementString)
+                            {
+                                targetElementId = targetElementString;
+                            }
+                            else if (targetElement is AdaptiveTargetElement targetElementObject)
+                            {
+                                targetElementId = targetElementObject.ElementId;
+                                targetElementIsVisible = targetElementObject.IsVisible;
+                            }
+
+                            var element = LogicalTreeHelper.FindLogicalNode(context.CardRoot, targetElementId);
+
+                            if (element != null && element is FrameworkElement elementFrameworkElement)
+                            {
+                                Visibility visibility = elementFrameworkElement.Visibility;
+                                // if we read something with the format {"elementId": <id>", "isVisible": true} or we just read the id and the element is not visible
+                                if ((targetElementIsVisible.HasValue && targetElementIsVisible.Value) || (!targetElementIsVisible.HasValue && visibility != Visibility.Visible))
+                                {
+                                    elementFrameworkElement.Visibility = Visibility.Visible;
+                                }
+                                // otherwise if we read something with the format {"elementId": <id>", "isVisible": false} or we just read the id and the element is visible
+                                else if ((targetElementIsVisible.HasValue && !targetElementIsVisible.Value) || (!targetElementIsVisible.HasValue && visibility == Visibility.Visible))
+                                {
+                                    elementFrameworkElement.Visibility = Visibility.Collapsed;
+                                }
+
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        context.InvokeAction(uiButton, new AdaptiveActionEventArgs(action));
+                    }
 
                     // Prevent nested events from triggering
                     e.Handled = true;
@@ -31,20 +71,17 @@ namespace AdaptiveCards.Rendering.Wpf
                 Style = context.GetStyle($"Adaptive.{action.Type}"),
             };
 
-            if(action.Sentiment == AdaptiveSentiment.Positive || action.Sentiment == AdaptiveSentiment.Destructive)
+            if (!String.IsNullOrWhiteSpace(action.Sentiment))
             {
                 Style sentimentStyle = context.GetStyle($"Adaptive.{action.Type}.{action.Sentiment}");
 
-                if (sentimentStyle == null)
+                if (sentimentStyle == null && String.Equals(action.Sentiment, "positive", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (action.Sentiment == AdaptiveSentiment.Positive)
-                    {
-                        sentimentStyle = context.GetStyle("PositiveActionDefaultStyle");
-                    }
-                    else if (action.Sentiment == AdaptiveSentiment.Destructive)
-                    {
-                        sentimentStyle = context.GetStyle("DestructiveActionDefaultStyle");
-                    }
+                    sentimentStyle = context.GetStyle("PositiveActionDefaultStyle");
+                }
+                else if (sentimentStyle == null && String.Equals(action.Sentiment, "destructive", StringComparison.OrdinalIgnoreCase))
+                {
+                    sentimentStyle = context.GetStyle("DestructiveActionDefaultStyle");
                 }
 
                 uiButton.Style = sentimentStyle;

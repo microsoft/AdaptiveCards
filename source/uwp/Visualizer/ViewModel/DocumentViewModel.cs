@@ -235,16 +235,21 @@ namespace AdaptiveCardVisualizer.ViewModel
                 _renderer.ResourceResolvers.Set("symbol", new MySymbolResourceResolver());
 
                 /*
-                 * Example on how to override the Action Positive and Destructive styles
+                 *Example on how to override the Action Positive and Destructive styles
                 Style positiveStyle = new Style(typeof(Button));
                 positiveStyle.Setters.Add(new Setter(Button.BackgroundProperty, new SolidColorBrush(Windows.UI.Colors.LawnGreen)));
                 Style destructiveStyle = new Style(typeof(Button));
                 destructiveStyle.Setters.Add(new Setter(Button.BackgroundProperty, new SolidColorBrush(Windows.UI.Colors.Red)));
+                Style otherStyle = new Style(typeof(Button));
+                otherStyle.Setters.Add(new Setter(Button.BackgroundProperty, new SolidColorBrush(Windows.UI.Colors.Yellow)));
+                otherStyle.Setters.Add(new Setter(Button.ForegroundProperty, new SolidColorBrush(Windows.UI.Colors.DarkRed)));
 
                 _renderer.OverrideStyles = new ResourceDictionary();
                 _renderer.OverrideStyles.Add("Adaptive.Action.Positive", positiveStyle);
                 _renderer.OverrideStyles.Add("Adaptive.Action.Destructive", destructiveStyle);
+                _renderer.OverrideStyles.Add("Adaptive.Action.other", otherStyle);
                 */
+
             }
             catch
             {

@@ -43,11 +43,11 @@ namespace AdaptiveNamespace
         }
         IFACEMETHODIMP put_IconUrl(_In_ HSTRING iconUrl) { return AdaptiveActionElementBase::put_IconUrl(iconUrl); }
 
-        IFACEMETHODIMP get_Sentiment(_Out_ ABI::AdaptiveNamespace::Sentiment* sentiment)
+        IFACEMETHODIMP get_Sentiment(_Outptr_ HSTRING* sentiment)
         {
             return AdaptiveActionElementBase::get_Sentiment(sentiment);
         }
-        IFACEMETHODIMP put_Sentiment(ABI::AdaptiveNamespace::Sentiment sentiment)
+        IFACEMETHODIMP put_Sentiment(_In_ HSTRING sentiment)
         {
             return AdaptiveActionElementBase::put_Sentiment(sentiment);
         }

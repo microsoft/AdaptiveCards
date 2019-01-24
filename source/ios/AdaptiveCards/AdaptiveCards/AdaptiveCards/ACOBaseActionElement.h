@@ -22,14 +22,8 @@ typedef NS_ENUM(NSInteger, ACRIconPlacement) {
     ACRNoTitle,
 };
 
-typedef NS_ENUM(NSInteger, ACRSentiment) {
-    ACRSentimentDefault = 0,
-    ACRSentimentPositive,
-    ACRSentimentDestructive
-};
-
 @property ACRActionType type;
-@property ACRSentiment sentiment;
+@property NSString *sentiment;
 
 - (NSString *)title;
 - (NSString *)elementId;

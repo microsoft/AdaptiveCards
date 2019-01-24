@@ -31,8 +31,8 @@ namespace AdaptiveSharedNamespace
         virtual std::string GetIconUrl() const;
         virtual void SetIconUrl(const std::string& value);
 
-        virtual Sentiment GetSentiment() const;
-        virtual void SetSentiment(const Sentiment& value);
+        virtual std::string GetSentiment() const;
+        virtual void SetSentiment(const std::string& value);
 
         virtual const ActionType GetElementType() const;
 
@@ -54,9 +54,10 @@ namespace AdaptiveSharedNamespace
         std::string m_title;
         std::string m_id;
         std::string m_iconUrl;
-        Sentiment m_sentiment;
+        std::string m_sentiment;
         Json::Value m_additionalProperties;
-
+        static constexpr const char defaultSentiment[] = "default";
+        
     protected:
         std::unordered_set<std::string> m_knownProperties;
     };
@@ -71,7 +72,7 @@ namespace AdaptiveSharedNamespace
         baseActionElement->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title));
         baseActionElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id));
         baseActionElement->SetIconUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::IconUrl));
-        baseActionElement->SetSentiment(ParseUtil::GetEnumValue<Sentiment>(json, AdaptiveCardSchemaKey::Sentiment, Sentiment::Default, SentimentFromString));
+        baseActionElement->SetSentiment(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Sentiment, defaultSentiment, false));
 
         // Walk all properties and put any unknown ones in the additional properties json
         for (auto it = json.begin(); it != json.end(); ++it)

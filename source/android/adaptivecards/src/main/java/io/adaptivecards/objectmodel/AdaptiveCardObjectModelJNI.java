@@ -249,9 +249,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long getIconPlacementEnum();
   public final static native String IconPlacementToString(int jarg1);
   public final static native int IconPlacementFromString(String jarg1);
-  public final static native long getSentimentEnum();
-  public final static native String SentimentToString(int jarg1);
-  public final static native int SentimentFromString(String jarg1);
   public final static native long getVerticalContentAlignmentEnum();
   public final static native String VerticalContentAlignmentToString(int jarg1);
   public final static native int VerticalContentAlignmentFromString(String jarg1);
@@ -327,10 +324,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native String BaseActionElement_GetIconUrlSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
   public final static native void BaseActionElement_SetIconUrl(long jarg1, BaseActionElement jarg1_, String jarg2);
   public final static native void BaseActionElement_SetIconUrlSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_, String jarg2);
-  public final static native int BaseActionElement_GetSentiment(long jarg1, BaseActionElement jarg1_);
-  public final static native int BaseActionElement_GetSentimentSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
-  public final static native void BaseActionElement_SetSentiment(long jarg1, BaseActionElement jarg1_, int jarg2);
-  public final static native void BaseActionElement_SetSentimentSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_, int jarg2);
+  public final static native String BaseActionElement_GetSentiment(long jarg1, BaseActionElement jarg1_);
+  public final static native String BaseActionElement_GetSentimentSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
+  public final static native void BaseActionElement_SetSentiment(long jarg1, BaseActionElement jarg1_, String jarg2);
+  public final static native void BaseActionElement_SetSentimentSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_, String jarg2);
   public final static native int BaseActionElement_GetElementType(long jarg1, BaseActionElement jarg1_);
   public final static native int BaseActionElement_GetElementTypeSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
   public final static native String BaseActionElement_Serialize(long jarg1, BaseActionElement jarg1_);
@@ -490,6 +487,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long ChoiceSetInput_GetChoices__SWIG_0(long jarg1, ChoiceSetInput jarg1_);
   public final static native String ChoiceSetInput_GetValue(long jarg1, ChoiceSetInput jarg1_);
   public final static native void ChoiceSetInput_SetValue(long jarg1, ChoiceSetInput jarg1_, String jarg2);
+  public final static native boolean ChoiceSetInput_GetWrap(long jarg1, ChoiceSetInput jarg1_);
+  public final static native void ChoiceSetInput_SetWrap(long jarg1, ChoiceSetInput jarg1_, boolean jarg2);
   public final static native long ChoiceSetInput_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native void delete_ChoiceSetInput(long jarg1);
   public final static native long new_ChoiceSetInputParser__SWIG_0();
@@ -579,6 +578,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void ToggleInput_SetValueOff(long jarg1, ToggleInput jarg1_, String jarg2);
   public final static native String ToggleInput_GetValueOn(long jarg1, ToggleInput jarg1_);
   public final static native void ToggleInput_SetValueOn(long jarg1, ToggleInput jarg1_, String jarg2);
+  public final static native boolean ToggleInput_GetWrap(long jarg1, ToggleInput jarg1_);
+  public final static native void ToggleInput_SetWrap(long jarg1, ToggleInput jarg1_, boolean jarg2);
   public final static native long ToggleInput_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native void delete_ToggleInput(long jarg1);
   public final static native long new_ToggleInputParser__SWIG_0();
@@ -613,7 +614,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long new_SubmitAction();
   public final static native String SubmitAction_GetDataJson(long jarg1, SubmitAction jarg1_);
   public final static native long SubmitAction_GetDataJsonAsValue(long jarg1, SubmitAction jarg1_);
-  public final static native void SubmitAction_SetDataJson(long jarg1, SubmitAction jarg1_, long jarg2, JsonValue jarg2_);
+  public final static native void SubmitAction_SetDataJson__SWIG_0(long jarg1, SubmitAction jarg1_, long jarg2, JsonValue jarg2_);
+  public final static native void SubmitAction_SetDataJson__SWIG_1(long jarg1, SubmitAction jarg1_, String jarg2);
   public final static native long SubmitAction_SerializeToJsonValue(long jarg1, SubmitAction jarg1_);
   public final static native long SubmitAction_dynamic_cast(long jarg1, BaseActionElement jarg1_);
   public final static native void delete_SubmitAction(long jarg1);
@@ -1026,6 +1028,16 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void delete_ToggleVisibilityActionParser(long jarg1);
   public final static native long ToggleVisibilityActionParser_Deserialize(long jarg1, ToggleVisibilityActionParser jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
   public final static native long ToggleVisibilityActionParser_DeserializeFromString(long jarg1, ToggleVisibilityActionParser jarg1_, long jarg2, ParseContext jarg2_, String jarg3);
+  public final static native long new_ActionSet__SWIG_0();
+  public final static native long new_ActionSet__SWIG_1(long jarg1, BaseActionElementVector jarg1_);
+  public final static native long ActionSet_SerializeToJsonValue(long jarg1, ActionSet jarg1_);
+  public final static native long ActionSet_GetActions__SWIG_0(long jarg1, ActionSet jarg1_);
+  public final static native long ActionSet_dynamic_cast(long jarg1, BaseCardElement jarg1_);
+  public final static native void delete_ActionSet(long jarg1);
+  public final static native long ActionSetParser_Deserialize(long jarg1, ActionSetParser jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
+  public final static native long ActionSetParser_DeserializeFromString(long jarg1, ActionSetParser jarg1_, long jarg2, ParseContext jarg2_, String jarg3);
+  public final static native long new_ActionSetParser();
+  public final static native void delete_ActionSetParser(long jarg1);
   public final static native long BaseInputElement_SWIGSmartPtrUpcast(long jarg1);
   public final static native long Container_SWIGSmartPtrUpcast(long jarg1);
   public final static native long ContainerParser_SWIGSmartPtrUpcast(long jarg1);
@@ -1062,6 +1074,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long MediaParser_SWIGSmartPtrUpcast(long jarg1);
   public final static native long ToggleVisibilityAction_SWIGSmartPtrUpcast(long jarg1);
   public final static native long ToggleVisibilityActionParser_SWIGSmartPtrUpcast(long jarg1);
+  public final static native long ActionSet_SWIGSmartPtrUpcast(long jarg1);
+  public final static native long ActionSetParser_SWIGSmartPtrUpcast(long jarg1);
 
   public static String SwigDirector_BaseCardElement_GetElementTypeString(BaseCardElement jself) {
     return jself.GetElementTypeString();
@@ -1129,11 +1143,11 @@ public class AdaptiveCardObjectModelJNI {
   public static void SwigDirector_BaseActionElement_SetIconUrl(BaseActionElement jself, String value) {
     jself.SetIconUrl(value);
   }
-  public static int SwigDirector_BaseActionElement_GetSentiment(BaseActionElement jself) {
-    return (jself.GetSentiment()).swigValue();
+  public static String SwigDirector_BaseActionElement_GetSentiment(BaseActionElement jself) {
+    return jself.GetSentiment();
   }
-  public static void SwigDirector_BaseActionElement_SetSentiment(BaseActionElement jself, int value) {
-    jself.SetSentiment(Sentiment.swigToEnum(value));
+  public static void SwigDirector_BaseActionElement_SetSentiment(BaseActionElement jself, String value) {
+    jself.SetSentiment(value);
   }
   public static int SwigDirector_BaseActionElement_GetElementType(BaseActionElement jself) {
     return (jself.GetElementType()).swigValue();

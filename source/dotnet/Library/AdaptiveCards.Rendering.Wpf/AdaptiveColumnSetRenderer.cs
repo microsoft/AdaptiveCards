@@ -71,6 +71,12 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 return context.RenderSelectAction(columnSet.SelectAction, uiColumnSet);
             }
+
+            if(!columnSet.IsVisible)
+            {
+                uiColumnSet.Visibility = Visibility.Collapsed;
+            }
+
             return uiColumnSet;
         }
 
