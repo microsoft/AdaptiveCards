@@ -130,6 +130,20 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
+        public void TestLargeSpacing()
+        {
+            AdaptiveCard card = new AdaptiveCard(new AdaptiveSchemaVersion("1.0"));
+            AdaptiveTextBlock block = new AdaptiveTextBlock();
+            block.Text = "Hi this is textblock";
+            block.Spacing = AdaptiveSpacing.Large;
+
+            card.Body.Add(block);
+
+            string s = card.ToJson();
+            Assert.IsFalse(s.Contains("separation"));
+        }
+
+        [TestMethod]
         public void TestSerializingLegacySeparation()
         {
             var inputJson = @"{
