@@ -1,0 +1,18 @@
+{
+  "inputJson": {
+    "title": "Program Manager",
+    "nameAndAge": "{name age}",
+    "description": "This is {name age}"
+  },
+
+  "inputData": {
+    "name": "Andrew",
+    "age": 26
+  },
+
+  // nameAndAge should be dropped since invalid expression evaluates to null
+  "expected": {
+    "title": "Program Manager",
+    "description": "This is "
+  }
+}

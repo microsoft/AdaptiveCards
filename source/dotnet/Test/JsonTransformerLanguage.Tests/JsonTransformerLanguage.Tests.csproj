@@ -177,6 +177,9 @@
     <Content Include="TestPayloads\MultiplicativeOperators1.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestPayloads\InvalidExpressions1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Library\JsonTransformLanguage\JsonTransformLanguage.csproj">

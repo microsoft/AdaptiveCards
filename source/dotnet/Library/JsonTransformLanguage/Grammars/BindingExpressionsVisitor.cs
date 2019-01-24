@@ -16,6 +16,11 @@ namespace JsonTransformLanguage.Grammars
             _transformerContext = transformerContext;
         }
 
+        public override JToken VisitBindingExpression([NotNull] BindingExpressionsParser.BindingExpressionContext context)
+        {
+            return Visit(context.expression());
+        }
+
         public override JToken VisitString([NotNull] BindingExpressionsParser.StringContext context)
         {
             string stringConstant = context.string_literal().StringConstant().GetText();

@@ -1,4 +1,5 @@
 using Antlr4.Runtime;
+using Antlr4.Runtime.Misc;
 using JsonTransformLanguage.Grammars;
 using Newtonsoft.Json.Linq;
 using System;
@@ -30,6 +31,14 @@ namespace JsonTransformLanguage
         private const string REGEX_COMPLEX_EXPRESSION = "((" + REGEX_OBJECT_EXPRESSION + ")|(" + REGEX_BINARY_EXPRESSION + "))";
         private const string REGEX_BINDING_EXPRESSION = @"\{(" + REGEX_COMPLEX_EXPRESSION + @")\}";
 
+        private class ErrorListener : IAntlrErrorListener<IToken>
+        {
+            public void SyntaxError([NotNull] IRecognizer recognizer, [Nullable] IToken offendingSymbol, int line, int charPositionInLine, [NotNull] string msg, [Nullable] RecognitionException e)
+            {
+                System.Diagnostics.Debug.WriteLine(msg);
+            }
+        }
+
         public static JToken EvaluateBinding(string bindingExpression, JsonTransformerContext context)
         {
             string remainingBindingExpression = bindingExpression;
@@ -46,11 +55,12 @@ namespace JsonTransformLanguage
                     var lexer = new BindingExpressionsLexer(inputStream);
                     var tokenStream = new CommonTokenStream(lexer);
                     var parser = new BindingExpressionsParser(tokenStream);
+                    parser.AddErrorListener(new ErrorListener());
 
-                    var foundExpression = parser.expression();
+                    var foundExpression = parser.bindingExpression();
 
                     // If it actually found something
-                    if (foundExpression.Stop.StopIndex + 1 < substr.Length)
+                    if (foundExpression.Stop.StopIndex < substr.Length && parser.NumberOfSyntaxErrors == 0)
                     {
                         var visitor = new BindingExpressionsVisitor(context);
                         JToken result = visitor.Visit(foundExpression);
@@ -59,7 +69,7 @@ namespace JsonTransformLanguage
                         answer += result;
 
                         remainingBindingExpression = substr;
-                        remainingBindingExpression = remainingBindingExpression.Substring(foundExpression.Stop.StopIndex + 2); // +2 since it includes ending }
+                        remainingBindingExpression = remainingBindingExpression.Substring(foundExpression.Stop.StopIndex + 1);
 
                         // If whole expression was the binding expression, don't do any string concatenation
                         if (first && startIndex == 0 && remainingBindingExpression.Length == 0)
