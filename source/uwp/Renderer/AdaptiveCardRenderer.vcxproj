@@ -34,7 +34,7 @@
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <AppContainerApplication>true</AppContainerApplication>
     <ApplicationType>Windows Store</ApplicationType>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.15063.0</WindowsTargetPlatformMinVersion>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
     <TargetName>AdaptiveCards.Rendering.Uwp</TargetName>
@@ -124,6 +124,8 @@
     <ClInclude Include="lib\AdaptiveActionInvoker.h" />
     <ClInclude Include="lib\AdaptiveActionParserRegistration.h" />
     <ClInclude Include="lib\AdaptiveActionsConfig.h" />
+    <ClInclude Include="lib\AdaptiveActionSet.h" />
+    <ClInclude Include="lib\AdaptiveActionSetRenderer.h" />
     <ClInclude Include="lib\AdaptiveCardElement.h" />
     <ClInclude Include="lib\AdaptiveChoiceSetInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveColumnRenderer.h" />
@@ -229,6 +231,8 @@
     <ClCompile Include="lib\AdaptiveToggleVisibilityTarget.cpp" />
     <ClCompile Include="lib\AdaptiveToggleVisibilityAction.cpp" />
     <ClCompile Include="lib\MediaHelpers.cpp" />
+    <ClCompile Include="lib\AdaptiveActionSet.cpp" />
+    <ClCompile Include="lib\AdaptiveActionSetRenderer.cpp" />
     <ClCompile Include="lib\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

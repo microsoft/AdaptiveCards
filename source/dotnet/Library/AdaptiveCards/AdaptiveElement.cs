@@ -67,5 +67,15 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(typeof(AdaptiveHeight), "auto")]
         public AdaptiveHeight Height { get; set; }
+
+        /// <summary>
+        /// Indicates whether the element should be visible when the card has been rendered.
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(true)]
+        public bool IsVisible { get; set; } = true;
     }
 }

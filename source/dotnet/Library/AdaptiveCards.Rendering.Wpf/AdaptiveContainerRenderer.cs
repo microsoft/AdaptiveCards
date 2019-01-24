@@ -43,6 +43,12 @@ namespace AdaptiveCards.Rendering.Wpf
             uiOuterContainer.Children.Add(uiContainer);
             Border border = new Border();
             border.Child = uiOuterContainer;
+
+            if(!container.IsVisible)
+            {
+                border.Visibility = Visibility.Collapsed;
+            }
+
             return border;
         }
 
@@ -56,7 +62,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 {
                     if (cardElement.Separator && uiContainer.Children.Count > 0)
                     {
-                        AddSeperator(context, cardElement, uiContainer);
+                        AddSeparator(context, cardElement, uiContainer);
                     }
                     else if (uiContainer.Children.Count > 0)
                     {
@@ -93,7 +99,7 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
-        public static void AddSeperator(AdaptiveRenderContext context, AdaptiveElement element, Grid uiContainer)
+        public static void AddSeparator(AdaptiveRenderContext context, AdaptiveElement element, Grid uiContainer)
         {
             if (element.Spacing == AdaptiveSpacing.None && !element.Separator)
                 return;

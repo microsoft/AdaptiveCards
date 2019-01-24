@@ -1,5 +1,6 @@
 import * as Enums from "./enums";
 import * as Utils from "./utils";
+import * as Shared from "./shared";
 
 export interface IValidationError {
     error: Enums.ValidationError,
@@ -177,7 +178,7 @@ export class ActionsConfig {
             this.allowTitleToWrap = obj["allowTitleToWrap"] != null ? obj["allowTitleToWrap"] : this.allowTitleToWrap;
 
             try {
-                let sizeAndUnit = Utils.SizeAndUnit.parse(obj["iconSize"]);
+                let sizeAndUnit = Shared.SizeAndUnit.parse(obj["iconSize"]);
 
                 if (sizeAndUnit.unit == Enums.SizeUnit.Pixel) {
                     this.iconSize = sizeAndUnit.physicalSize;
@@ -605,6 +606,14 @@ export class HostConfig {
         }
     }
 
+	paddingDefinitionToSpacingDefinition(paddingDefinition: Shared.PaddingDefinition): Shared.SpacingDefinition {
+		return new Shared.SpacingDefinition(
+			this.getEffectiveSpacing(paddingDefinition.top),
+			this.getEffectiveSpacing(paddingDefinition.right),
+			this.getEffectiveSpacing(paddingDefinition.bottom),
+			this.getEffectiveSpacing(paddingDefinition.left));
+    }
+    
     makeCssClassName(...classNames: string[]): string {
         let result = "";
 

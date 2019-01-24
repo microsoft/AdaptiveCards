@@ -109,7 +109,7 @@ std::string InputValue::GetChoiceValue(_In_ IAdaptiveChoiceSetInput* choiceInput
 {
     if (selectedIndex != -1)
     {
-        ComPtr<IVector<IAdaptiveChoiceInput*>> choices;
+        ComPtr<IVector<AdaptiveChoiceInput*>> choices;
         THROW_IF_FAILED(choiceInput->get_Choices(&choices));
 
         ComPtr<IAdaptiveChoiceInput> choice;

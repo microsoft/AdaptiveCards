@@ -140,9 +140,11 @@ namespace AdaptiveCards.Rendering.Html
                     .Style("justify-content", "center")
                     .AddClass("ac-pushButton");
 
-                switch(action.Sentiment)
+
+                if (!String.IsNullOrWhiteSpace(action.Sentiment) && !String.Equals(action.Sentiment, "default", StringComparison.OrdinalIgnoreCase))
                 {
-                    case AdaptiveSentiment.Positive:
+                    if (String.Equals(action.Sentiment, "positive", StringComparison.OrdinalIgnoreCase))
+                    {
                         string accentColor = context.Config.ContainerStyles.Default.ForegroundColors.Accent.Default;
                         string lighterAccentColor = ColorUtil.GenerateLighterColor(accentColor);
                         buttonElement.Style("background-color", context.GetRGBColor(accentColor));
@@ -150,18 +152,20 @@ namespace AdaptiveCards.Rendering.Html
                         buttonElement.Attr("onMouseOut", "this.style.backgroundColor='" + context.GetRGBColor(accentColor) + "'");
                         buttonElement.Style("color", "#FFFFFF");
                         buttonElement.AddClass("ac-action-positive");
-                        break;
-                    case AdaptiveSentiment.Destructive:
+                    }
+                    else if (String.Equals(action.Sentiment, "destructive", StringComparison.OrdinalIgnoreCase))
+                    {
                         string attentionColor = context.Config.ContainerStyles.Default.ForegroundColors.Attention.Default;
                         string lighterAttentionColor = ColorUtil.GenerateLighterColor(attentionColor);
                         buttonElement.Style("color", context.GetRGBColor(attentionColor));
                         buttonElement.Attr("onMouseOver", "this.style.color='" + context.GetRGBColor(lighterAttentionColor) + "'");
                         buttonElement.Attr("onMouseOut", "this.style.color='" + context.GetRGBColor(attentionColor) + "'");
                         buttonElement.AddClass("ac-action-destructive");
-                        break;
-                    case AdaptiveSentiment.Default:
-                    default:
-                        break;
+                    }
+                    else
+                    {
+                        buttonElement.AddClass("ac-action-" + action.Sentiment);
+                    }
                 }
 
                 var hasTitle = !string.IsNullOrEmpty(action.Title);
@@ -1212,6 +1216,14 @@ namespace AdaptiveCards.Rendering.Html
                     .Append(uiInput)
                     .Append(uiLabel);
 
+                // text-overflow ellipsis does not work when width is not specified in px
+                // when specified relatively such as using %, ellipsis does not work
+                if (!adaptiveChoiceSetInput.Wrap)
+                {
+                    compoundInputElement.Style("white-space", "nowrap");
+                    compoundInputElement.Style("overflow", "hidden");
+                }
+
                 uiElement.Append(compoundInputElement);
             }
 
@@ -1483,7 +1495,15 @@ namespace AdaptiveCards.Rendering.Html
 
             var uiLabel = CreateLabel(htmlLabelId, toggleInput.Title, context);
 
-            return uiElement.Append(uiCheckboxInput).Append(uiLabel);
+            uiElement.Append(uiCheckboxInput).Append(uiLabel);
+
+            if (!toggleInput.Wrap)
+            {
+                uiElement.Style("white-space", "nowrap");
+                uiElement.Style("overflow", "hidden");
+            }
+
+            return uiElement;
         }
 
         protected static string GetFallbackText(AdaptiveElement adaptiveElement)

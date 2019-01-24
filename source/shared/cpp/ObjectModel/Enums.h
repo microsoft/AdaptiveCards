@@ -11,6 +11,7 @@ namespace AdaptiveSharedNamespace
         ActionMode,
         ActionOrientation,
         Actions,
+        ActionSet,
         ActionSetConfig,
         ActionsOrientation,
         AdaptiveCard,
@@ -167,7 +168,8 @@ namespace AdaptiveSharedNamespace
         ToggleInput,
         Custom,
         Unknown,
-        Media
+        Media,
+        ActionSet,
     };
     DECLARE_ADAPTIVECARD_ENUM(CardElementType);
 
@@ -361,14 +363,6 @@ namespace AdaptiveSharedNamespace
         LeftOfTitle
     };
     DECLARE_ADAPTIVECARD_ENUM(IconPlacement);
-
-    enum class Sentiment
-    {
-        Default = 0,
-        Positive,
-        Destructive
-    };
-    DECLARE_ADAPTIVECARD_ENUM(Sentiment);
 
     enum class VerticalContentAlignment
     {

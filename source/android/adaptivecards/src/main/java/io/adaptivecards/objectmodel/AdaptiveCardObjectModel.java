@@ -237,18 +237,6 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
     return IconPlacement.swigToEnum(AdaptiveCardObjectModelJNI.IconPlacementFromString(t));
   }
 
-  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__Sentiment_t getSentimentEnum() {
-    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__Sentiment_t(AdaptiveCardObjectModelJNI.getSentimentEnum(), false);
-  }
-
-  public static String SentimentToString(Sentiment t) {
-    return AdaptiveCardObjectModelJNI.SentimentToString(t.swigValue());
-  }
-
-  public static Sentiment SentimentFromString(String t) {
-    return Sentiment.swigToEnum(AdaptiveCardObjectModelJNI.SentimentFromString(t));
-  }
-
   public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__VerticalContentAlignment_t getVerticalContentAlignmentEnum() {
     return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__VerticalContentAlignment_t(AdaptiveCardObjectModelJNI.getVerticalContentAlignmentEnum(), false);
   }
