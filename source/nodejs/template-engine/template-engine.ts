@@ -139,12 +139,22 @@ class Tokenizer {
 
 Tokenizer.init();
 
+
+
 abstract class ExpressionNode {
     abstract print(): string;
 }
 
-class Expression extends ExpressionNode {
+abstract class EvaluatableNode extends ExpressionNode {
+    abstract evaluate(context: Object): any;
+}
+
+class Expression extends EvaluatableNode {
     nodes: Array<ExpressionNode> = [];
+
+    evaluate(context: Object): any {
+        throw new Error("Not yet implemented.");
+    }
 
     print(): string {
         let result = "";
@@ -163,9 +173,13 @@ class Expression extends ExpressionNode {
 
 type PropertyPathPart = string | Expression;
 
-class PropertyPathNode extends ExpressionNode {
+class PropertyPathNode extends EvaluatableNode {
     properties: Array<PropertyPathPart> = [];
 
+    evaluate(context: Object): any {
+        throw new Error("Not yet implemented.");
+    }
+    
     print(): string {
         let result = "";
 
@@ -186,10 +200,14 @@ class PropertyPathNode extends ExpressionNode {
     }
 }
 
-class FunctionCallNode extends ExpressionNode {
+class FunctionCallNode extends EvaluatableNode {
     functionName: string;
     parameters: Array<Expression> = [];
 
+    evaluate(context: Object): any {
+        throw new Error("Not yet implemented.");
+    }
+    
     print(): string {
         let result = "";
 
@@ -207,11 +225,15 @@ class FunctionCallNode extends ExpressionNode {
 
 type LiteralValue = string | number | boolean;
 
-class LiteralNode extends ExpressionNode {
+class LiteralNode extends EvaluatableNode {
     constructor(readonly value: LiteralValue) {
         super();
     }
 
+    evaluate(context: Object): any {
+        return this.value;
+    }
+    
     print(): string {
         return this.value.toString();
     }
@@ -485,3 +507,13 @@ class ExpressionParser {
         return this.parseExpression(TokenType.OpenCurly, [TokenType.CloseCurly]);
     }
 }
+
+/*
+type ValueType = string | number | boolean;
+
+interface FunctionDeclaration {
+    parameters: Array<ValueType>;
+    returnType: ValueType;
+    invoke: (...params: ValueType[]) => any;
+}
+*/

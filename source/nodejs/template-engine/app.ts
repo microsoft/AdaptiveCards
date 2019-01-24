@@ -39,10 +39,20 @@ function tokenizeExpression() {
     }
 }
 
+function getFunctionDefinition(func: Function): any {
+    return func.name;
+}
+
+function sampleFunction(param1: string, param2: number): number {
+    return 3;
+}
+
 window.onload = function()
 {
     document.getElementById("btnTokenize").onclick = function(e: MouseEvent)
     {
         tokenizeExpression();
+
+        alert(getFunctionDefinition(sampleFunction));
     }
 }
