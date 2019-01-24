@@ -56,6 +56,7 @@ namespace UWPTestLibrary
             FrameworkElement xaml = null;
             double cardWidth = 400;
             WeakReference weakRefCard = null;
+
             try
             {
                 AdaptiveHostConfig hostConfig = AdaptiveHostConfig.FromJsonString(hostConfigFile.Contents).HostConfig;

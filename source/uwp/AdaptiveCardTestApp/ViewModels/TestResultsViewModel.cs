@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using UWPTestLibrary;
 
@@ -13,6 +13,7 @@ namespace AdaptiveCardTestApp.ViewModels
         public TestResultsCategoryViewModel FailedButSourceWasChanged { get; }
         public TestResultsCategoryViewModel PassedButSourceWasChanged { get; }
         public TestResultsCategoryViewModel New { get; }
+        public TestResultsCategoryViewModel Leaked { get; }
 
         public TestResultsViewModel(IEnumerable<TestResultViewModel> results)
         {
@@ -22,6 +23,7 @@ namespace AdaptiveCardTestApp.ViewModels
             ImageAndJsonFailed = new TestResultsCategoryViewModel("Image Comparison and Json Roundtrip Failed", results.Where(i => i.Status == TestStatus.ImageAndJsonFailed));
             FailedButSourceWasChanged = new TestResultsCategoryViewModel("Failed/source changed", results.Where(i => i.Status == TestStatus.FailedButSourceWasChanged));
             PassedButSourceWasChanged = new TestResultsCategoryViewModel("Passed/source changed", results.Where(i => i.Status == TestStatus.PassedButSourceWasChanged));
+            Leaked = new TestResultsCategoryViewModel("Leaked", results.Where(i => i.TestResult.IsLeaked == true));
             New = new TestResultsCategoryViewModel("New", results.Where(i => i.Status == TestStatus.New));
 
             foreach (var r in results)
@@ -43,6 +45,7 @@ namespace AdaptiveCardTestApp.ViewModels
                 FailedButSourceWasChanged.Results.Remove(item);
                 PassedButSourceWasChanged.Results.Remove(item);
                 New.Results.Remove(item);
+                Leaked.Results.Remove(item);
 
                 switch (item.Status)
                 {
