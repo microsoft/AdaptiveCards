@@ -1,0 +1,16 @@
+{
+	"type": "AdaptiveCard",
+	"version": "1.1",
+	"body": [
+		{
+			"type": "Image",
+			"url": "symbol:Adaptive10",
+			"size": "auto"
+		},
+		{
+			"type": "Image",
+			"url": "symbol:Adaptive10",
+			"size": "small"
+		}
+	]
+}
