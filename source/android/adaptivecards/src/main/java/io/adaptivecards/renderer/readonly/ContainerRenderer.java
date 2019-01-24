@@ -93,29 +93,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
         {
             int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
             containerView.setPadding(padding, padding, padding, padding);
-            String color;
-            switch (styleForThis)
-            {
-                case Accent:
-                    color = hostConfig.GetContainerStyles().getAccentPalette().getBackgroundColor();
-                    break;
-                case Attention:
-                    color = hostConfig.GetContainerStyles().getAttentionPalette().getBackgroundColor();
-                    break;
-                case Emphasis:
-                    color = hostConfig.GetContainerStyles().getEmphasisPalette().getBackgroundColor();
-                    break;
-                case Good:
-                    color = hostConfig.GetContainerStyles().getGoodPalette().getBackgroundColor();
-                    break;
-                case Warning:
-                    color = hostConfig.GetContainerStyles().getWarningPalette().getBackgroundColor();
-                    break;
-                case Default:
-                default:
-                    color = hostConfig.GetContainerStyles().getDefaultPalette().getBackgroundColor();
-                    break;
-            }
+            String color = hostConfig.GetBackgroundColor(styleForThis);
             containerView.setBackgroundColor(Color.parseColor(color));
         }
 

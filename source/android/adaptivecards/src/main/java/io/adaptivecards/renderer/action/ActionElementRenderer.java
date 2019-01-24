@@ -26,6 +26,7 @@ import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.ActionsOrientation;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.ColorsConfig;
+import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.ActionsConfig;
@@ -270,7 +271,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
                 else
                 {
                     Button button = new Button(context);
-                    button.getBackground().setColorFilter(getColor(ForegroundColor.Accent, hostConfig.GetContainerStyles().getDefaultPalette().getForegroundColors()), PorterDuff.Mode.MULTIPLY);
+                    button.getBackground().setColorFilter(getColor(ForegroundColor.Accent, hostConfig.GetForegroundColors(ContainerStyle.Default)), PorterDuff.Mode.MULTIPLY);
                     return button;
                 }
             }
@@ -283,7 +284,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
                 else
                 {
                     Button button = new Button(context);
-                    button.setTextColor(getColor(ForegroundColor.Attention, hostConfig.GetContainerStyles().getDefaultPalette().getForegroundColors()));
+                    button.setTextColor(getColor(ForegroundColor.Attention, hostConfig.GetForegroundColors(ContainerStyle.Default)));
                     return button;
                 }
             }
