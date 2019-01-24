@@ -5721,10 +5721,6 @@ export class AdaptiveCard extends ContainerWithActions {
 		return false;
 	}
 
-	protected get allowCustomPadding(): boolean {
-		return false;
-	}
-
 	protected get allowCustomStyle() {
 		return this.hostConfig.adaptiveCard && this.hostConfig.adaptiveCard.allowCustomStyle;
 	}
