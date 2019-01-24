@@ -1436,7 +1436,14 @@ namespace AdaptiveNamespace
                 THROW_IF_FAILED(renderContext->get_OverrideStyles(&resourceDictionary));
                 ComPtr<IStyle> styleToApply;
 
-                if (SUCCEEDED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"positive").Get(), &isSentimentPositive))
+                if ((SUCCEEDED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"default").Get(), &isSentimentDefault))
+                    && (isSentimentDefault == 0))
+                    || WindowsIsStringEmpty(actionSentiment.Get()))
+                {
+                    THROW_IF_FAILED(
+                        SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action", buttonFrameworkElement.Get()));
+                }
+                else if (SUCCEEDED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"positive").Get(), &isSentimentPositive))
                     && (isSentimentPositive == 0))
                 {
                     if (SUCCEEDED(TryGetResourceFromResourceDictionaries<IStyle>(resourceDictionary.Get(),
@@ -1481,13 +1488,6 @@ namespace AdaptiveNamespace
                             THROW_IF_FAILED(buttonFrameworkElement->put_Style(styleToApply.Get()));
                         }
                     }
-                }
-                else if ((SUCCEEDED(WindowsCompareStringOrdinal(actionSentiment.Get(), HStringReference(L"default").Get(), &isSentimentDefault))
-                         && (isSentimentDefault == 0))
-                         || WindowsIsStringEmpty(actionSentiment.Get()))
-                {
-                    THROW_IF_FAILED(
-                        SetStyleFromResourceDictionary(renderContext, L"Adaptive.Action", buttonFrameworkElement.Get()));
                 }
                 else
                 {
