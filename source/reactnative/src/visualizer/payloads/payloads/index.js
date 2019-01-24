@@ -220,6 +220,10 @@ export default payloads = [
     "json": require('./LongFactSet.json')
   },
   {
+    "title": "MediaPayload.json",
+    "json": require("./MediaPayload.json")
+  },
+  {
     "title": "MediaAudioInColumnSet.json",
     "json": require('./MediaAudioInColumnSet.json')
   },
