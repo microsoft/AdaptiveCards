@@ -160,7 +160,7 @@ namespace AdaptiveCards.Rendering.Wpf
                             TileMode = TileMode.FlipY,
                             Stretch = Stretch.Uniform,
                             AlignmentY = (AlignmentY) adaptiveBackgroundImage.VerticalAlignment,
-                            Viewport = new Rect(0, 0, bi.PixelWidth, grid.ActualHeight+1),
+                            Viewport = new Rect(0, 0, bi.PixelWidth, grid.ActualHeight + 1),
                             ViewportUnits = BrushMappingMode.Absolute
                         };
                         break;
@@ -170,7 +170,7 @@ namespace AdaptiveCards.Rendering.Wpf
                             TileMode = TileMode.FlipX,
                             Stretch = Stretch.Uniform,
                             AlignmentX = (AlignmentX)adaptiveBackgroundImage.HorizontalAlignment,
-                            Viewport = new Rect(0, 0, grid.ActualWidth+1, bi.PixelWidth),
+                            Viewport = new Rect(0, 0, grid.ActualWidth + 1, bi.PixelWidth),
                             ViewportUnits = BrushMappingMode.Absolute
                         };
                         break;
