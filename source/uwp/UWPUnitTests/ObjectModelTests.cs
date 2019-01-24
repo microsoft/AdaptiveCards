@@ -605,7 +605,7 @@ namespace UWPUnitTests
             string iconUrl,
             string id,
             string title,
-            Sentiment sentiment)
+            string sentiment)
         {
             Assert.AreEqual(iconUrl, element.IconUrl);
             Assert.AreEqual(id, element.Id);
@@ -622,11 +622,11 @@ namespace UWPUnitTests
                 Url = url,
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "OpenUrlId",
-                Sentiment = Sentiment.Destructive,
+                Sentiment = "Destructive",
                 Title = "Title"
             };
 
-            ValidateBaseActionProperties(openUrlAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", "Title", Sentiment.Destructive);
+            ValidateBaseActionProperties(openUrlAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", "Title", "Destructive");
             Assert.AreEqual(url, openUrlAction.Url);
 
             var jsonString = openUrlAction.ToJson().ToString();
@@ -642,11 +642,11 @@ namespace UWPUnitTests
                 DataJson = dataJson,
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "OpenUrlId",
-                Sentiment = Sentiment.Destructive,
+                Sentiment = "Destructive",
                 Title = "Title"
             };
 
-            ValidateBaseActionProperties(submitAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", "Title", Sentiment.Destructive);
+            ValidateBaseActionProperties(submitAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", "Title", "Destructive");
             Assert.AreEqual(dataJson, submitAction.DataJson);
 
             var jsonString = submitAction.ToJson().ToString();
@@ -660,11 +660,11 @@ namespace UWPUnitTests
             {
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "OpenUrlId",
-                Sentiment = Sentiment.Destructive,
+                Sentiment = "Destructive",
                 Title = "Title"
             };
 
-            ValidateBaseActionProperties(showCardAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", "Title", Sentiment.Destructive);
+            ValidateBaseActionProperties(showCardAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", "Title", "Destructive");
 
             AdaptiveCard card = new AdaptiveCard();
             showCardAction.Card = card;
@@ -696,11 +696,11 @@ namespace UWPUnitTests
             {
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "ToggleVisibilityId",
-                Sentiment = Sentiment.Destructive,
+                Sentiment = "Destructive",
                 Title = "Title"
             };
 
-            ValidateBaseActionProperties(toggleAction, "http://www.stuff.com/icon.jpg", "ToggleVisibilityId", "Title", Sentiment.Destructive);
+            ValidateBaseActionProperties(toggleAction, "http://www.stuff.com/icon.jpg", "ToggleVisibilityId", "Title", "Destructive");
 
             toggleAction.TargetElements.Add(toggleTarget1);
             toggleAction.TargetElements.Add(toggleTarget2);

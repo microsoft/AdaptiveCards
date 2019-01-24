@@ -360,14 +360,6 @@ namespace AdaptiveSharedNamespace
     };
     DECLARE_ADAPTIVECARD_ENUM(IconPlacement);
 
-    enum class Sentiment
-    {
-        Default = 0,
-        Positive,
-        Destructive
-    };
-    DECLARE_ADAPTIVECARD_ENUM(Sentiment);
-
     enum class VerticalContentAlignment
     {
         Top = 0,

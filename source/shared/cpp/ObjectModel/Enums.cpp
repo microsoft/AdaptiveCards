@@ -283,9 +283,4 @@ namespace AdaptiveSharedNamespace
             {VerticalContentAlignment::Top, "Top"},
             {VerticalContentAlignment::Center, "Center"},
             {VerticalContentAlignment::Bottom, "Bottom"}});
-
-    DEFINE_ADAPTIVECARD_ENUM(Sentiment, {
-            {Sentiment::Default, "Default"},
-            {Sentiment::Positive, "Positive"},
-            {Sentiment::Destructive, "Destructive"}});
 }

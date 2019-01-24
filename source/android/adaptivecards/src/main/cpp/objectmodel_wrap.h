@@ -58,8 +58,8 @@ public:
     virtual void SetId(std::string const &value);
     virtual std::string GetIconUrl() const;
     virtual void SetIconUrl(std::string const &value);
-    virtual AdaptiveCards::Sentiment GetSentiment() const;
-    virtual void SetSentiment(AdaptiveCards::Sentiment const &value);
+    virtual std::string GetSentiment() const;
+    virtual void SetSentiment(std::string const &value);
     virtual AdaptiveCards::ActionType const GetElementType() const;
     virtual Json::Value SerializeToJsonValue() const;
     virtual void GetResourceInformation(std::vector< AdaptiveCards::RemoteResourceInformation > &resourceUris);
