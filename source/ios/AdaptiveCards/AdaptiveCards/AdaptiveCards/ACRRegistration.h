@@ -26,7 +26,11 @@
 
 - (void)setActionSetRenderer:(id<ACRIBaseActionSetRenderer>)actionsetRenderer;
 
-- (void)setCustomElementParser:(NSObject<ACOIBaseCardElementParser> *)customElementParser;
+- (void)setCustomElementParser:(NSObject<ACOIBaseCardElementParser> *)customElementParser key:(NSString *)key;;
+
+- (NSObject<ACOIBaseCardElementParser> *)getCustomElementParser:(NSString *)key;
+
+- (void)setCustomElementRenderer:(ACRBaseCardElementRenderer *)renderer key:(NSString *)key;
 
 - (BOOL)isElementRendererOverriden:(ACRCardElementType)cardElementType;
 

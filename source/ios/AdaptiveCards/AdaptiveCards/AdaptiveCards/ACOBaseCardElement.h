@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "ACOParseContext.h"
 
 @interface ACOBaseCardElement:NSObject
 
@@ -47,6 +48,6 @@ typedef NS_ENUM(NSInteger, ACRContainerStyle) {
 
 @protocol ACOIBaseCardElementParser
 
-- (ACOBaseCardElement* )deserialize:(NSData* )json;
+- (ACOBaseCardElement *)deserialize:(NSData *)json parseContext:(ACOParseContext* )parseContext;
 
 @end

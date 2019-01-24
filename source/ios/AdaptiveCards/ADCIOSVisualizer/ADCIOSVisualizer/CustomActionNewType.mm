@@ -33,8 +33,6 @@
         actionElement->SetTitle(std::string([data[@"title"] UTF8String]));
         actionElement->SetElementTypeString([data[@"type"] UTF8String]);
         newTypeAction = [[CustomActionNewType alloc] initWithBaseActionElement:actionElement];
-        // alteranative is `newTypeAction = [[CustomActionNewType alloc] init];`
-        //
 
         newTypeAction.color = [UIColor colorWithRed:red.doubleValue / 255.0 green:green.doubleValue / 255.0 blue:blue.doubleValue / 255.0 alpha:1.0];
         newTypeAction.cornerradius = cornerRadius.integerValue;

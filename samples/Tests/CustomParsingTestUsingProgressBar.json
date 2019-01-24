@@ -15,13 +15,15 @@
 					"horizontalAlignment": "center"
 				},
 				{
-					"type": "CustomIOSDelegate",
+					"type": "ProgressBar",
 					"payload": [
 									{
 									"red":187,
 									"green":160,
 									"blue":209,
-									"alpha":1
+									"alpha":1,
+                                    "progress":0.95,
+                                    "thickness":1
 									}
 					]
 				}

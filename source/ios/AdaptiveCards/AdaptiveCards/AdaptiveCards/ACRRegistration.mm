@@ -43,6 +43,7 @@ using namespace AdaptiveCards;
     NSDictionary *typeToRendererDict;
     NSDictionary *actionRendererDict;
 
+    NSMutableDictionary<NSString*, NSObject<ACOIBaseCardElementParser>*> *_elementParserDict;
     NSMutableDictionary<NSString*, NSObject<ACOIBaseActionElementParser>*> *_actionParserDict;
     id<ACRIBaseActionSetRenderer> _actionSetRenderer;
     NSMutableDictionary *overridenBaseElementRendererList;
@@ -83,6 +84,7 @@ using namespace AdaptiveCards;
              [ACRCustomActionRenderer   getInstance], [NSNumber numberWithInt:(int)ActionType::UnknownAction],
              nil];
 
+        _elementParserDict = [[NSMutableDictionary alloc] init];
         _actionParserDict = [[NSMutableDictionary alloc] init];
 
         _actionSetRenderer = [ACRActionSetRenderer getInstance];
@@ -129,6 +131,7 @@ using namespace AdaptiveCards;
 - (void)setActionRenderer:(ACRBaseActionElementRenderer *)renderer cardElementType:(NSNumber *)cardElementType
 {
     // custom action must be registered through set custom action renderer method
+    // standard actions element enum value must be higher than ACRUnknownAction
     if(cardElementType.longValue > ACRUnknownAction) {
         return;
     }
@@ -153,6 +156,32 @@ using namespace AdaptiveCards;
 {
     ACRCustomRenderer *customRenderer = [ACRCustomRenderer getInstance];
     customRenderer.customElementParser = customElementParser;
+}
+
+- (void)setCustomElementParser:(NSObject<ACOIBaseCardElementParser> *)parser key:(NSString *)key
+{
+    if(!_parseContext) {
+        _parseContext = [[ACOParseContext alloc] init];
+    }
+    if(parser && key) {
+        _elementParserDict[key] = parser;
+    }
+}
+
+- (NSObject<ACOIBaseCardElementParser> *)getCustomElementParser:(NSString *)key
+{
+    return _elementParserDict[key];
+}
+
+- (void)setCustomElementRenderer:(ACRBaseCardElementRenderer *)renderer key:(NSString *)key
+{
+    if(key) {
+        if(renderer) {
+            [overridenBaseElementRendererList setObject:renderer forKey:[NSNumber numberWithLong:key.hash]];
+        } else {
+            [overridenBaseElementRendererList removeObjectForKey:[NSNumber numberWithLong:key.hash]];
+        }
+    }
 }
 
 - (void)setCustomActionElementParser:(NSObject<ACOIBaseActionElementParser> *)parser key:(NSString *)key

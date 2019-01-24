@@ -5,18 +5,18 @@
 	"body": [
 		{
 			"type": "TextBlock",
-			"text": "This card has a custom action. If renderer can redner the custom type, it will render a button. You may need to enable custom rendering",
+			"text": "This card has a custom action. If renderer can render the custom type, it will render a button",
 			"wrap": true
 		}
 	],
 	"actions": [
 		{
 			"type": "NewStyle",
-			"title": "New Style",
-			"Red":200,
+			"title": "New Button Type ",
+			"Red":150,
 			"Green":100,
 			"Blue":100,
-			"CornerRadius":50
+			"CornerRadius":10
 		}
 	]
 }

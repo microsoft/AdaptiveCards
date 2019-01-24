@@ -34,18 +34,17 @@
                 hostConfig:(ACOHostConfig *)acoConfig;
 {
     std::shared_ptr<UnknownActionElement> customAction = std::dynamic_pointer_cast<UnknownActionElement>([acoElem element]);
-    
+
     ACRRegistration *reg = [ACRRegistration getInstance];
     if(reg) {
         NSString *type = [NSString stringWithCString:customAction->GetElementTypeString().c_str() encoding:NSUTF8StringEncoding];
         NSObject<ACOIBaseActionElementParser> *parser = [reg getCustomActionElementParser:type];
-    
+
         Json::Value blob = customAction->GetAdditionalProperties();
         Json::FastWriter fastWriter;
         NSString *jsonString = [[NSString alloc] initWithCString:fastWriter.write(blob).c_str() encoding:NSUTF8StringEncoding];
         if(jsonString.length > 0){
-            NSData *jsonPayload = nil;
-            jsonPayload = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+            NSData *jsonPayload = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
             ACOParseContext *context = [reg getParseContext];
             ACOBaseActionElement *actionElement = [parser deserialize:jsonPayload parseContext:context];
             ACRBaseActionElementRenderer *renderer = [reg getActionRenderer:[NSNumber numberWithLong:type.hash]];;

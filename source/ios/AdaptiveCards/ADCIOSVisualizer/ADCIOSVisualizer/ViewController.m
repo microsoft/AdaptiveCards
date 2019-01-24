@@ -76,11 +76,6 @@
         [registration setBaseCardElementRenderer:[CustomTextBlockRenderer getInstance] cardElementType:ACRTextBlock];
         [registration setBaseCardElementRenderer:[CustomInputNumberRenderer getInstance] cardElementType:ACRNumberInput];
         [registration setBaseCardElementRenderer:[CustomImageRenderer getInstance] cardElementType:ACRImage];
-        CustomActionNewType *customParser = [[CustomActionNewType alloc] init];
-        NSString *type = @"NewStyle";
-        [registration setCustomActionElementParser:customParser key:type];
-        CustomActionNewTypeRenderer *customActionRenderer = [CustomActionNewTypeRenderer getInstance];
-        [registration setCustomActionRenderer:customActionRenderer key:type];
         
         _enableCustomRendererButton.backgroundColor = UIColor.redColor;
         _defaultRenderer = [registration getActionSetRenderer];
@@ -91,8 +86,6 @@
         [registration setBaseCardElementRenderer:nil cardElementType:ACRTextBlock];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRNumberInput];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRImage];
-        NSString *type = @"NewStyle";
-        [registration setCustomActionRenderer:nil key:type];
         [registration setActionSetRenderer:nil];
         _enableCustomRendererButton.backgroundColor = [UIColor colorWithRed:0/255 green:122.0/255 blue:1 alpha:1];
     }
@@ -231,8 +224,20 @@
     if(cardParseResult.isValid){
         ACRRegistration *registration = [ACRRegistration getInstance];
 
+        NSString *type = @"ProgressBar";
+        CACProgressBar *progressBarParser = [[CACProgressBar alloc] init];
+        [registration setCustomElementParser:progressBarParser key:type];
+
         CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
-        [registration setCustomElementParser:progressBarRenderer];
+        [registration setCustomElementRenderer:progressBarRenderer key:type];
+
+        CustomActionNewType *customParser = [[CustomActionNewType alloc] init];
+        NSString *type1 = @"NewStyle";
+        [registration setCustomActionElementParser:customParser key:type1];
+
+        CustomActionNewTypeRenderer *customActionRenderer = [CustomActionNewTypeRenderer getInstance];
+        [registration setCustomActionRenderer:customActionRenderer key:type1];
+
         _config = hostconfigParseResult.config;
         renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:335 delegate:self];
     }
