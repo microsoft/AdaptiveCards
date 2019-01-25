@@ -78,10 +78,10 @@
 
     // Obtain text color to apply to the attributed string
     ACRContainerStyle style = viewGroup.style;
-    const ColorsConfig &colorConfig = [acoConfig getForegroundColorForContainerStyle:style];
+    auto foregroundColor = [acoConfig getTextBlockColor:style textColor:textConfigForBlock.color subtleOption:textConfigForBlock.isSubtle];
     
     // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
-    [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:[ACOHostConfig getTextBlockColor:textConfigForBlock.color colorsConfig:colorConfig subtleOption:textConfigForBlock.isSubtle],} range:NSMakeRange(0, content.length)];
+    [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:foregroundColor,} range:NSMakeRange(0, content.length)];
     lab.attributedText = content;
 
     lab.numberOfLines = int(textBlockElement->GetMaxLines());

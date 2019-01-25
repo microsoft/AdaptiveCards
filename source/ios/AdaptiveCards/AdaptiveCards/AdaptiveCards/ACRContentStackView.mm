@@ -98,7 +98,7 @@ using namespace AdaptiveCards;
 
 - (void)setBorderColorWithHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    auto borderColor = config->GetContainerStyle([ACOHostConfig getSharedContainerStyle:_style]).borderColor;
+    auto borderColor = config->GetBorderColor([ACOHostConfig getSharedContainerStyle:_style]);
     UIColor *color = [ACOHostConfig convertHexColorCodeToUIColor:borderColor];
 
     [[self layer] setBorderColor:[color CGColor]];
@@ -106,7 +106,7 @@ using namespace AdaptiveCards;
 
 - (void)setBorderThicknessWithHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    auto borderThickness = config->GetContainerStyle([ACOHostConfig getSharedContainerStyle:_style]).borderThickness;
+    auto borderThickness = config->GetBorderThickness([ACOHostConfig getSharedContainerStyle:_style]);
     const CGFloat borderWidth = borderThickness;
 
     [[self layer] setBorderWidth:borderWidth];

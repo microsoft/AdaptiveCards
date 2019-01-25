@@ -625,6 +625,16 @@ std::string HostConfig::GetForegroundColor(ContainerStyle style, ForegroundColor
     }
 }
 
+std::string HostConfig::GetBorderColor(ContainerStyle style) const
+{
+    return GetContainerStyle(style).borderColor;
+}
+
+unsigned int HostConfig::GetBorderThickness(ContainerStyle style) const
+{
+    return GetContainerStyle(style).borderThickness;
+}
+
 std::string HostConfig::GetFontFamily() const
 {
     return _fontFamily;

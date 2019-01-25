@@ -112,12 +112,12 @@ using namespace AdaptiveCards;
     return [_resolvers getResolverIFType:scheme];
 }
 
-+ (UIColor *)getTextBlockColor:(ContainerStyle)style
+- (UIColor *)getTextBlockColor:(ACRContainerStyle)style
                      textColor:(ForegroundColor)txtClr
                   subtleOption:(bool)isSubtle
 {
-    const std::string *str = &(_config->GetForegroundColor(style, txtColor, isSubtle));
-    return [ACOHostConfig convertHexColorCodeToUIColor:*str];
+    const std::string str = _config->GetForegroundColor([ACOHostConfig getSharedContainerStyle:style], txtClr, isSubtle);
+    return [ACOHostConfig convertHexColorCodeToUIColor:str];
 }
 
 - (int)getTextBlockTextSize:(FontStyle)style

@@ -25,7 +25,7 @@ using namespace AdaptiveCards;
 - (int)getTextBlockTextSize:(FontStyle) style
                  textSize:(TextSize)txtSz;
 - (NSString *)getFontFamily:(AdaptiveCards::FontStyle)style;
-+ (UIColor *)getTextBlockColor:(ContainerStyle)style
+- (UIColor *)getTextBlockColor:(ACRContainerStyle)style
                      textColor:(ForegroundColor)txtClr
                   subtleOption:(bool)isSubtle;
 + (NSTextAlignment)getTextBlockAlignment:(HorizontalAlignment)alignment;

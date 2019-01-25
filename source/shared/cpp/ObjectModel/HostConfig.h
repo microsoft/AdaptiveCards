@@ -283,6 +283,8 @@ namespace AdaptiveSharedNamespace
 
         std::string GetBackgroundColor(ContainerStyle style) const;
         std::string GetForegroundColor(ContainerStyle style, ForegroundColor color, bool isSubtle) const;
+        std::string GetBorderColor(ContainerStyle style) const;
+        unsigned int GetBorderThickness(ContainerStyle style) const;
 
         std::string GetFontFamily() const;
         void SetFontFamily(const std::string& value);

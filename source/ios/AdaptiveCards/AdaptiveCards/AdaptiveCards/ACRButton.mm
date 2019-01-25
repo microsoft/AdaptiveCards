@@ -87,8 +87,8 @@
 
     button.sentiment = acoAction.sentiment;
 
-    button.defaultPositiveBackgroundColor = [ACOHostConfig getTextBlockColor:(ContainerStyle::Default) textColor:(ForegroundColor::Accent) subtleOption:false];
-    button.defaultDestructiveForegroundColor = [ACOHostConfig getTextBlockColor:(ContainerStyle::Default) textColor:(ForegroundColor::Attention) subtleOption:false];
+    button.defaultPositiveBackgroundColor = [config getTextBlockColor:(ACRContainerStyle::ACRDefault) textColor:(ForegroundColor::Accent) subtleOption:false];
+    button.defaultDestructiveForegroundColor = [config getTextBlockColor:(ACRContainerStyle::ACRDefault) textColor:(ForegroundColor::Attention) subtleOption:false];
     [button applySentimentStyling];
     button.iconPlacement = [config getIconPlacement];
 
