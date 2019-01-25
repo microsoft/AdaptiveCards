@@ -186,49 +186,49 @@ namespace AdaptiveCardsSharedModelUnitTest
         TEST_METHOD(DuplicateIdNestedTest)
         {
             std::string cardWithDuplicateIds = "{\
-               	\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
-               	\"type\": \"AdaptiveCard\",\
-               	\"version\": \"1.0\",\
-               	\"body\": [\
-               		{\
-               			\"type\": \"Input.Text\",\
-               			\"placeholder\": \"Name\",\
-               			\"style\": \"text\",\
-               			\"maxLength\": 0,\
-               			\"id\": \"duplicate\"\
-               		}\
-               	],\
-               	\"actions\": [\
-               		{\
-               			\"type\": \"Action.Submit\",\
-               			\"title\": \"Submit\",\
-               			\"data\": {\
-               				\"id\": \"1234567890\"\
-               			}\
-               		},\
-               		{\
-               			\"type\": \"Action.ShowCard\",\
-               			\"title\": \"Show Card\",\
-               			\"card\": {\
-               				\"type\": \"AdaptiveCard\",\
-               				\"body\": [\
-               					{\
-               						\"type\": \"Input.Text\",\
-               						\"placeholder\": \"enter comment\",\
-               						\"style\": \"text\",\
-               						\"maxLength\": 0,\
-               						\"id\": \"duplicate\"\
-               					}\
-               				],\
-               				\"actions\": [\
-               					{\
-               						\"type\": \"Action.Submit\",\
-               						\"title\": \"OK\"\
-               					}\
-               				]\
-               			}\
-               		}\
-               	]\
+                \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
+                \"type\": \"AdaptiveCard\",\
+                \"version\": \"1.0\",\
+                \"body\": [\
+                    {\
+                        \"type\": \"Input.Text\",\
+                        \"placeholder\": \"Name\",\
+                        \"style\": \"text\",\
+                        \"maxLength\": 0,\
+                        \"id\": \"duplicate\"\
+                    }\
+                ],\
+                \"actions\": [\
+                    {\
+                        \"type\": \"Action.Submit\",\
+                        \"title\": \"Submit\",\
+                        \"data\": {\
+                            \"id\": \"1234567890\"\
+                        }\
+                    },\
+                    {\
+                        \"type\": \"Action.ShowCard\",\
+                        \"title\": \"Show Card\",\
+                        \"card\": {\
+                            \"type\": \"AdaptiveCard\",\
+                            \"body\": [\
+                                {\
+                                    \"type\": \"Input.Text\",\
+                                    \"placeholder\": \"enter comment\",\
+                                    \"style\": \"text\",\
+                                    \"maxLength\": 0,\
+                                    \"id\": \"duplicate\"\
+                                }\
+                            ],\
+                            \"actions\": [\
+                                {\
+                                    \"type\": \"Action.Submit\",\
+                                    \"title\": \"OK\"\
+                                }\
+                            ]\
+                        }\
+                    }\
+                ]\
                }";
             std::shared_ptr<ParseResult> parseResult;
             Assert::ExpectException<AdaptiveCardParseException>([&]() { parseResult = AdaptiveCard::DeserializeFromString(cardWithDuplicateIds, "1.0"); });
