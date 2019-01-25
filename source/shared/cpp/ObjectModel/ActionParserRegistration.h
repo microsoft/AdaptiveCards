@@ -13,7 +13,6 @@ namespace AdaptiveSharedNamespace
     class ActionElementParser
     {
     public:
-        virtual ~ActionElementParser() = default;
         virtual std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) = 0;
     };
 

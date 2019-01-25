@@ -33,7 +33,7 @@ namespace AdaptiveSharedNamespace
         SubmitActionParser(SubmitActionParser&&) = default;
         SubmitActionParser& operator=(const SubmitActionParser&) = default;
         SubmitActionParser& operator=(SubmitActionParser&&) = default;
-        ~SubmitActionParser() = default;
+        virtual ~SubmitActionParser() = default;
 
         std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) override;
         std::shared_ptr<BaseActionElement> DeserializeFromString(ParseContext& context, const std::string& jsonString);

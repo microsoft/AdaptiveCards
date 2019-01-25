@@ -10,7 +10,6 @@
 
 namespace AdaptiveSharedNamespace
 {
-    class Container;
     class BaseCardElement
     {
     public:

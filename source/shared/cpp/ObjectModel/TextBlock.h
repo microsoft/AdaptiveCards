@@ -69,7 +69,7 @@ namespace AdaptiveSharedNamespace
         TextBlockParser(TextBlockParser&&) = default;
         TextBlockParser& operator=(const TextBlockParser&) = default;
         TextBlockParser& operator=(TextBlockParser&&) = default;
-        ~TextBlockParser() = default;
+        virtual ~TextBlockParser() = default;
 
         std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
         std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
