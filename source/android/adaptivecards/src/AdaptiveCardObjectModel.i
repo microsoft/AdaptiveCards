@@ -659,3 +659,5 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.h"
 %include "../../../shared/cpp/ObjectModel/ToggleVisibilityAction.h"
 %include "../../../shared/cpp/ObjectModel/ActionSet.h"
+%include "../../../shared/cpp/ObjectModel/UnknownElement.h"
+%include "../../../shared/cpp/ObjectModel/UnknownActionElement.h"

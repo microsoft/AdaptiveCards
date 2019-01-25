@@ -11,6 +11,7 @@ namespace AdaptiveSharedNamespace
     {
     public:
         UnknownActionElement();
+        Json::Value SerializeToJsonValue() const override;
     };
 
     class UnknownActionElementParser : public ActionElementParser
