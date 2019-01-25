@@ -119,14 +119,8 @@ std::shared_ptr<Column> Column::Deserialize(ParseContext& context, const Json::V
 
     // validate user input; validation only applies to user input for explicit column width
     // the other input checks are remained unchanged
-    column->SetPixelWidth(0);
-    if (ShouldParseForExplicitDimension(columnWidth))
-    {
-        const std::string unit = "px";
-        int parsedDimension = 0;
-        ValidateUserInputForDimensionWithUnit(unit, columnWidth, parsedDimension, context.warnings);
-        column->SetPixelWidth(parsedDimension);
-    }
+    int parsedDimension = ParseSizeForPixelSize(columnWidth, context.warnings);
+    column->SetPixelWidth(parsedDimension);
 
     column->SetWidth(columnWidth);
 
