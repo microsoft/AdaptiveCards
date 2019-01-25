@@ -105,7 +105,6 @@ export default class Visualizer extends React.Component {
                     supportedOrientations={['portrait', 'landscape']}
                     visible={this.state.isModalVisible}
                     onRequestClose={() => {
-                        Alert.alert('Modal has been closed.');
                     }}>
                     <Renderer
                         payload={this.state.selectedPayload}

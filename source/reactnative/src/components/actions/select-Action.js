@@ -4,9 +4,7 @@
 
 import React from 'react';
 import {
-	Platform,
 	TouchableOpacity,
-	TouchableNativeFeedback
 } from 'react-native';
 import { InputContextConsumer } from '../../utils/context';
 import * as Constants from '../../utils/constants';
@@ -15,7 +13,7 @@ import * as Utils from '../../utils/util';
 export class SelectAction extends React.Component {
 
 	render() {
-		const ButtonComponent = Platform.OS === Constants.PlatformIOS ? TouchableOpacity : TouchableNativeFeedback;
+		const ButtonComponent = TouchableOpacity;
 
 		return (<InputContextConsumer>
 			{({ onExecuteAction }) => <ButtonComponent onPress={() => { this.onClickHandle(onExecuteAction) }} style={this.props.style}>
