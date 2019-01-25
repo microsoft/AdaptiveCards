@@ -34,6 +34,10 @@ export const EmphasisColor = '#dcdcdc';
 export const WhiteColor = 'white';
 export const BlackColor = 'black';
 
+export const TrueString = "true";
+export const FalseString = "false";
+export const ToggleValueOn = "toggleValueOn;";
+
 export const Emphasis = 'emphasis';
 
 export const NumberInput = 'Input.Number';

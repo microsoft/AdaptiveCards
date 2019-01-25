@@ -25,10 +25,10 @@ export class ToggleInput extends React.Component {
 		super(props);
 
 		this.title = props.json.title;
-		this.valueOn = props.json.valueOn || TrueString;
-		this.valueOff = props.json.valueOff || FalseString;
+		this.valueOn = props.json.valueOn || Constants.TrueString;
+		this.valueOff = props.json.valueOff || Constants.FalseString;
 		this.value = props.json.value || this.valueOff;
-		this.id = props.json.id || ToggleValueOn
+		this.id = props.json.id || Constants.ToggleValueOn
 
 		// state
 		this.state = {
