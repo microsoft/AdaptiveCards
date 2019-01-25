@@ -10,9 +10,11 @@ package io.adaptivecards.objectmodel;
 
 public class UnknownActionElementParser extends ActionElementParser {
   private transient long swigCPtr;
+  private transient boolean swigCMemOwnDerived;
 
   protected UnknownActionElementParser(long cPtr, boolean cMemoryOwn) {
-    super(AdaptiveCardObjectModelJNI.UnknownActionElementParser_SWIGUpcast(cPtr), cMemoryOwn);
+    super(AdaptiveCardObjectModelJNI.UnknownActionElementParser_SWIGSmartPtrUpcast(cPtr), true);
+    swigCMemOwnDerived = cMemoryOwn;
     swigCPtr = cPtr;
   }
 
@@ -26,8 +28,8 @@ public class UnknownActionElementParser extends ActionElementParser {
 
   public synchronized void delete() {
     if (swigCPtr != 0) {
-      if (swigCMemOwn) {
-        swigCMemOwn = false;
+      if (swigCMemOwnDerived) {
+        swigCMemOwnDerived = false;
         AdaptiveCardObjectModelJNI.delete_UnknownActionElementParser(swigCPtr);
       }
       swigCPtr = 0;

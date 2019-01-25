@@ -10,9 +10,11 @@ package io.adaptivecards.objectmodel;
 
 public class UnknownElement extends BaseCardElement {
   private transient long swigCPtr;
+  private transient boolean swigCMemOwnDerived;
 
   protected UnknownElement(long cPtr, boolean cMemoryOwn) {
-    super(AdaptiveCardObjectModelJNI.UnknownElement_SWIGUpcast(cPtr), cMemoryOwn);
+    super(AdaptiveCardObjectModelJNI.UnknownElement_SWIGSmartPtrUpcast(cPtr), true);
+    swigCMemOwnDerived = cMemoryOwn;
     swigCPtr = cPtr;
   }
 
@@ -26,8 +28,8 @@ public class UnknownElement extends BaseCardElement {
 
   public synchronized void delete() {
     if (swigCPtr != 0) {
-      if (swigCMemOwn) {
-        swigCMemOwn = false;
+      if (swigCMemOwnDerived) {
+        swigCMemOwnDerived = false;
         AdaptiveCardObjectModelJNI.delete_UnknownElement(swigCPtr);
       }
       swigCPtr = 0;

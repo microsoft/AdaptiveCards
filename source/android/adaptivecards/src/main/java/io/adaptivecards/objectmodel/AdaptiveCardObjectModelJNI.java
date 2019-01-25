@@ -1094,10 +1094,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long ToggleVisibilityActionParser_SWIGSmartPtrUpcast(long jarg1);
   public final static native long ActionSet_SWIGSmartPtrUpcast(long jarg1);
   public final static native long ActionSetParser_SWIGSmartPtrUpcast(long jarg1);
-  public final static native long UnknownElement_SWIGUpcast(long jarg1);
-  public final static native long UnknownElementParser_SWIGUpcast(long jarg1);
-  public final static native long UnknownActionElement_SWIGUpcast(long jarg1);
-  public final static native long UnknownActionElementParser_SWIGUpcast(long jarg1);
+  public final static native long UnknownElement_SWIGSmartPtrUpcast(long jarg1);
+  public final static native long UnknownElementParser_SWIGSmartPtrUpcast(long jarg1);
+  public final static native long UnknownActionElement_SWIGSmartPtrUpcast(long jarg1);
+  public final static native long UnknownActionElementParser_SWIGSmartPtrUpcast(long jarg1);
 
   public static String SwigDirector_BaseCardElement_GetElementTypeString(BaseCardElement jself) {
     return jself.GetElementTypeString();
