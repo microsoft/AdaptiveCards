@@ -23,11 +23,11 @@ enum TokenType {
     Boolean
 }
 
-const operators = [
-    TokenType.Plus,
-    TokenType.Minus,
-    TokenType.Multiply,
+const orderedOperators = [
     TokenType.Divide,
+    TokenType.Multiply,
+    TokenType.Minus,
+    TokenType.Plus,
     TokenType.Equal,
     TokenType.NotEqual,
     TokenType.LessThan,
@@ -67,7 +67,7 @@ class Tokenizer {
             { tokenType: TokenType.OpenParen, regEx: /^\(/ },
             { tokenType: TokenType.CloseParen, regEx: /^\)/ },
             { tokenType: TokenType.Boolean, regEx: /^true|^false/ },
-            { tokenType: TokenType.Identifier, regEx: /^[a-z_]+/i },
+            { tokenType: TokenType.Identifier, regEx: /^[$a-z_]+/i },
             { tokenType: TokenType.Period, regEx: /^\./ },
             { tokenType: TokenType.Comma, regEx: /^,/ },
             { tokenType: TokenType.Plus, regEx: /^\+/ },
@@ -80,7 +80,8 @@ class Tokenizer {
             { tokenType: TokenType.LessThan, regEx: /^</ },
             { tokenType: TokenType.GreaterThanOrEqual, regEx: /^>=/ },
             { tokenType: TokenType.GreaterThan, regEx: /^>/ },
-            { tokenType: TokenType.String, regEx: /^(?:"[^"]*")|^(?:'[^']*')/ },
+            { tokenType: TokenType.String, regEx: /^"([^"]*)"/ },
+            { tokenType: TokenType.String, regEx: /^'([^']*)'/ },
             { tokenType: TokenType.Number, regEx: /^\d*\.?\d+/ }
         )
     }
@@ -98,15 +99,15 @@ class Tokenizer {
                 let matches = rule.regEx.exec(subExpression);
 
                 if (matches) {
-                    if (matches.length > 1) {
-                        throw new Error("A tokenizer rule found more than 1 match.");
+                    if (matches.length > 2) {
+                        throw new Error("A tokenizer rule matched more than one group.");
                     }
 
-                    if (rule.tokenType) {
+                    if (rule.tokenType != undefined) {
                         this._tokens.push(
                             {
                                 type: rule.tokenType,
-                                value: matches[0],
+                                value: matches[matches.length == 1 ? 0 : 1],
                                 originalPosition: i
                             }
                         )
@@ -139,21 +140,154 @@ class Tokenizer {
 
 Tokenizer.init();
 
-
+type LiteralValue = string | number | boolean;
 
 abstract class ExpressionNode {
     abstract print(): string;
+    abstract evaluate(context: Object): LiteralValue;
 }
 
-abstract class EvaluatableNode extends ExpressionNode {
-    abstract evaluate(context: Object): any;
+function ensureValueType(value: any): LiteralValue {
+    if (typeof value === "number" || typeof value ==="string" || typeof value === "boolean") {
+        return value;
+    }
+
+    throw new Error("Invalid value type: " + typeof value);
 }
 
-class Expression extends EvaluatableNode {
+
+type FunctionCallback = (params: any[]) => any;
+type FunctionDictionary = { [key: string]: FunctionCallback };
+
+class ExpressionContext {
+    private static _builtInFunctions: FunctionDictionary = {}
+    
+    static init() {
+        ExpressionContext._builtInFunctions["substr"] = (params: any[]) => {
+            return (<string>params[0]).substr(<number>params[1], <number>params[2]);
+        };
+    }
+
+    private _functions = {};
+    private _$data: any;
+
+    $root: any;
+
+    registerFunction(name: string, callback: FunctionCallback) {
+        this._functions[name] = callback;
+    }
+
+    unregisterFunction(name: string) {
+        delete this._functions[name];
+    }
+
+    getFunction(name: string): FunctionCallback {
+        let result = this._functions[name];
+
+        if (result == undefined) {
+            result = ExpressionContext._builtInFunctions[name];
+        }
+
+        return result;
+    }
+
+    get $data(): any {
+        return this._$data != undefined ? this._$data : this.$root;
+    }
+
+    set $data(value: any) {
+        this._$data = value;
+    }
+}
+
+ExpressionContext.init();
+
+class Expression extends ExpressionNode {
     nodes: Array<ExpressionNode> = [];
 
-    evaluate(context: Object): any {
-        throw new Error("Not yet implemented.");
+    evaluate(context: ExpressionContext): any {
+        const operatorPriorityGroups = [
+            [ TokenType.Divide, TokenType.Multiply ],
+            [ TokenType.Minus, TokenType.Plus ],
+            [ TokenType.Equal, TokenType.NotEqual, TokenType.LessThan, TokenType.LessThanOrEqual, TokenType.GreaterThan, TokenType.GreaterThanOrEqual ]
+        ];
+
+        let nodesCopy = this.nodes;
+
+        for (let priorityGroup of operatorPriorityGroups) {
+            let i = 0;
+
+            while (i < nodesCopy.length) {
+                let node = nodesCopy[i];
+
+                if (node instanceof OperatorNode && priorityGroup.indexOf(node.operator) >= 0) {
+                    let left = ensureValueType(nodesCopy[i - 1].evaluate(context));
+                    let right = ensureValueType(nodesCopy[i + 1].evaluate(context));
+
+                    if (typeof left !== typeof right) {
+                        throw new Error("Incompatible operands " + left + " and " + right + " for operator " + TokenType[node.operator]);
+                    }
+
+                    let result: LiteralValue;
+
+                    if (typeof left === "number" && typeof right === "number") {
+                        switch (node.operator) {
+                            case TokenType.Divide:
+                                result = left / right;
+                                break;
+                            case TokenType.Multiply:
+                                result = left * right;
+                                break;
+                            case TokenType.Minus:
+                                result = left - right;
+                                break;
+                            case TokenType.Plus:
+                                result = left + right;
+                                break;
+                        }
+                    }
+
+                    if (typeof left === "string" && typeof right === "string") {
+                        switch (node.operator) {
+                            case TokenType.Plus:
+                                result = left + right;
+                                break;
+                        }
+                    }
+
+                    switch (node.operator) {
+                        case TokenType.Equal:
+                            result = left == right;
+                            break;
+                        case TokenType.NotEqual:
+                            result = left != right;
+                            break;
+                        case TokenType.LessThan:
+                            result = left < right;
+                            break;
+                        case TokenType.LessThanOrEqual:
+                            result = left <= right;
+                            break;
+                        case TokenType.GreaterThan:
+                            result = left > right;
+                            break;
+                        case TokenType.GreaterThanOrEqual:
+                            result = left >= right;
+                            break;
+                        default:
+                            // This should never happen
+                    }
+
+                    nodesCopy.splice(i - 1, 3, new LiteralNode(result));
+
+                    i--;
+                }
+
+                i++;
+            };
+        }
+
+        return nodesCopy[0].evaluate(context);
     }
 
     print(): string {
@@ -173,11 +307,49 @@ class Expression extends EvaluatableNode {
 
 type PropertyPathPart = string | Expression;
 
-class PropertyPathNode extends EvaluatableNode {
+class PropertyPathNode extends ExpressionNode {
     properties: Array<PropertyPathPart> = [];
 
-    evaluate(context: Object): any {
-        throw new Error("Not yet implemented.");
+    evaluate(context: ExpressionContext): LiteralValue {
+        let result: any;
+        let index = 0;
+        
+        switch (<string>this.properties[0]) {
+            case "$root":
+                result = context.$root;
+                index++;
+
+                break;
+            case "$data":
+                result = context.$data;
+                index++;
+
+                break;
+            default:
+                result = context.$data;
+
+                break;
+        }
+
+        while (index < this.properties.length) {
+            let part = this.properties[index];
+
+            try {
+                if (typeof part === "string") {
+                    result = result[part];
+                }
+                else {
+                    result = result[part.evaluate(context)];
+                }
+            }
+            catch {
+                return undefined;
+            }
+
+            index++;
+        }
+
+        return result;
     }
     
     print(): string {
@@ -200,12 +372,22 @@ class PropertyPathNode extends EvaluatableNode {
     }
 }
 
-class FunctionCallNode extends EvaluatableNode {
+class FunctionCallNode extends ExpressionNode {
     functionName: string;
     parameters: Array<Expression> = [];
 
-    evaluate(context: Object): any {
-        throw new Error("Not yet implemented.");
+    evaluate(context: ExpressionContext): LiteralValue {
+        let callback = context.getFunction(this.functionName);
+
+        if (callback != undefined) {
+            let evaluatedParams = [];
+
+            for (let param of this.parameters) {
+                evaluatedParams.push(param.evaluate(context));
+            }
+
+            return callback(evaluatedParams);
+        }
     }
     
     print(): string {
@@ -223,14 +405,12 @@ class FunctionCallNode extends EvaluatableNode {
     }
 }
 
-type LiteralValue = string | number | boolean;
-
-class LiteralNode extends EvaluatableNode {
+class LiteralNode extends ExpressionNode {
     constructor(readonly value: LiteralValue) {
         super();
     }
 
-    evaluate(context: Object): any {
+    evaluate(context: ExpressionContext): LiteralValue {
         return this.value;
     }
     
@@ -244,6 +424,10 @@ class OperatorNode extends ExpressionNode {
         super();
     }
 
+    evaluate(context: ExpressionContext): LiteralValue {
+        throw new Error("An operator cannot be evaluated on its own.");
+    }
+    
     print(): string {
         switch (this.operator) {
             case TokenType.Plus:
@@ -405,7 +589,6 @@ class ExpressionParser {
         this.moveNext();
 
         let expectedNextTokenTypes: Array<TokenType> = literals.concat([ TokenType.Plus, TokenType.Minus ]).concat([TokenType.OpenParen]);
-        let allowedLiteralType: TokenType = null;
 
         while (!this.eoe) {
             this.ensureTokenType(expectedNextTokenTypes);
@@ -414,7 +597,7 @@ class ExpressionParser {
                 case TokenType.OpenParen:
                     result.nodes.push(this.parseExpression(TokenType.OpenParen, [TokenType.CloseParen]));
 
-                    expectedNextTokenTypes = operators.concat(endTokenTypes);
+                    expectedNextTokenTypes = orderedOperators.concat(endTokenTypes);
 
                     break;
                 case TokenType.CloseSquare:
@@ -431,16 +614,12 @@ class ExpressionParser {
                 case TokenType.Identifier:
                     result.nodes.push(this.parsePropertyPathOrFunctionCall());
 
-                    expectedNextTokenTypes = operators.concat(endTokenTypes);
+                    expectedNextTokenTypes = orderedOperators.concat(endTokenTypes);
 
                     break;
                 case TokenType.String:
                 case TokenType.Number:
                 case TokenType.Boolean:
-                    if (allowedLiteralType && allowedLiteralType != this.current.type) {
-                        this.unexpectedToken();
-                    }
-
                     if (this.current.type == TokenType.String) {
                         result.nodes.push(new LiteralNode(this.current.value));
                     }
@@ -451,8 +630,7 @@ class ExpressionParser {
                         result.nodes.push(new LiteralNode(this.current.value === "true"));
                     }
 
-                    expectedNextTokenTypes = operators.concat(endTokenTypes);
-                    allowedLiteralType = this.current.type;
+                    expectedNextTokenTypes = orderedOperators.concat(endTokenTypes);
 
                     break;
                 case TokenType.Minus:
@@ -507,13 +685,3 @@ class ExpressionParser {
         return this.parseExpression(TokenType.OpenCurly, [TokenType.CloseCurly]);
     }
 }
-
-/*
-type ValueType = string | number | boolean;
-
-interface FunctionDeclaration {
-    parameters: Array<ValueType>;
-    returnType: ValueType;
-    invoke: (...params: ValueType[]) => any;
-}
-*/

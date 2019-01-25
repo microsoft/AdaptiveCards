@@ -33,18 +33,33 @@ function tokenizeExpression() {
         let parsedExpression = parser.parse();
         
         serializedExpression.innerText = parsedExpression.print();
+
+        let context = new ExpressionContext();
+        context.$root = {
+            firstName: "David",
+            lastName: "Claux",
+            age: 45,
+            address: {
+                city: "Redmond",
+                state: "WA"
+            },
+            children: [
+                { name: "Alexandre", age: 13 },
+                { name: "Thomas", age: 9 }
+            ]
+        };
+        context.registerFunction(
+            "myFunction",
+            (params: any[]) => {
+                return "Tada";
+            }
+        );
+
+        alert(parsedExpression.evaluate(context));
     }
     catch (e) {
         serializedExpression.innerText = e.message;
     }
-}
-
-function getFunctionDefinition(func: Function): any {
-    return func.name;
-}
-
-function sampleFunction(param1: string, param2: number): number {
-    return 3;
 }
 
 window.onload = function()
@@ -52,7 +67,5 @@ window.onload = function()
     document.getElementById("btnTokenize").onclick = function(e: MouseEvent)
     {
         tokenizeExpression();
-
-        alert(getFunctionDefinition(sampleFunction));
     }
 }
