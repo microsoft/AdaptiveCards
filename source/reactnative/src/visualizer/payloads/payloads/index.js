@@ -1,33 +1,5 @@
 export default payloads = [
   {
-    "title": "Jet-Payload1.json",
-    "json": require('./Jet-Payload1.json')
-  },
-  {
-    "title": "Jet-Payload2.json",
-    "json": require('./Jet-Payload2.json')
-  },
-  {
-    "title": "Jet-Payload3.json",
-    "json": require('./Jet-Payload3.json')
-  },
-  {
-    "title": "Jet-Payload4.json",
-    "json": require('./Jet-Payload4.json')
-  },
-  {
-    "title": "Jet-Payload5.json",
-    "json": require('./Jet-Payload5.json')
-  },
-  {
-    "title": "Jet-Payload6.json",
-    "json": require('./Jet-Payload6.json')
-  },
-  {
-    "title": "Jet-Payload7.json",
-    "json": require('./Jet-Payload7.json')
-  },
-  {
     "title": "TextBlock.Markdown.json",
     "json": require('./TextBlock.Markdown.json')
   },

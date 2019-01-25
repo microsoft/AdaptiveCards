@@ -19,21 +19,21 @@ export class SelectAction extends React.Component {
 
 		return (<InputContextConsumer>
 			{({ onExecuteAction }) => <ButtonComponent onPress={() => { this.onClickHandle(onExecuteAction) }} style={this.props.style}>
-				{this.props.children}
+				<React.Fragment>{this.props.children}</React.Fragment>
 			</ButtonComponent>}
 		</InputContextConsumer>);
-	}
-
-    /**
-     * @description Invoked on tapping the button component
-     */
+			}
+		
+			/**
+			 * @description Invoked on tapping the button component
+			 */
 	onClickHandle(onExecuteAction) {
 		if (this.props.selectActionData.type === Constants.ActionSubmit) {
-			let actionObject = { "type": Constants.ActionSubmit, "data": this.props.selectActionData.data };
-			onExecuteAction(actionObject);
+					let actionObject = {"type": Constants.ActionSubmit, "data": this.props.selectActionData.data };
+				onExecuteAction(actionObject);
 		} else if (this.props.selectActionData.type === Constants.ActionOpenUrl && !Utils.isNullOrEmpty(this.props.selectActionData.url)) {
-			let actionObject = { "type": Constants.ActionOpenUrl, "url": this.props.selectActionData.url };
-			onExecuteAction(actionObject);
+					let actionObject = {"type": Constants.ActionOpenUrl, "url": this.props.selectActionData.url };
+				onExecuteAction(actionObject);
+			}
 		}
 	}
-}
