@@ -87,10 +87,8 @@
 
     button.sentiment = acoAction.sentiment;
 
-    ColorsConfig colorsConfig = [config getForegroundColorForContainerStyle:ACRDefault];
-
-    button.defaultPositiveBackgroundColor = [ACOHostConfig getTextBlockColor:ForegroundColor::Accent colorsConfig:colorsConfig subtleOption:false];
-    button.defaultDestructiveForegroundColor = [ACOHostConfig getTextBlockColor:ForegroundColor::Attention colorsConfig:colorsConfig subtleOption:false];
+    button.defaultPositiveBackgroundColor = [ACOHostConfig getTextBlockColor:(ContainerStyle::Default) textColor:(ForegroundColor::Accent) subtleOption:false];
+    button.defaultDestructiveForegroundColor = [ACOHostConfig getTextBlockColor:(ContainerStyle::Default) textColor:(ForegroundColor::Attention) subtleOption:false];
     [button applySentimentStyling];
     button.iconPlacement = [config getIconPlacement];
 
@@ -135,7 +133,7 @@
     if([@"positive" caseInsensitiveCompare:_sentiment] == NSOrderedSame)
     {
         BOOL usePositiveDefault = [_positiveUseDefault boolValue];
-        
+
         // By default, positive sentiment must have background accentColor and white text/foreground color
         if(usePositiveDefault) {
             [self setBackgroundColor:_defaultPositiveBackgroundColor];
@@ -149,7 +147,7 @@
     else if([@"destructive" caseInsensitiveCompare:_sentiment] == NSOrderedSame)
     {
         BOOL useDestructiveDefault = [_destructiveUseDefault boolValue];
-        
+
         // By default, destructive sentiment must have a attention text/foreground color
         if(useDestructiveDefault) {
             [self setTitleColor:_defaultDestructiveForegroundColor forState:UIControlStateNormal];

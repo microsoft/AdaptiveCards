@@ -17478,23 +17478,6 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1GetContainerStyle(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  jlong jresult = 0 ;
-  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
-  AdaptiveCards::ContainerStyle arg2 ;
-  AdaptiveCards::ContainerStyleDefinition result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
-  arg2 = (AdaptiveCards::ContainerStyle)jarg2; 
-  result = ((AdaptiveCards::HostConfig const *)arg1)->GetContainerStyle(arg2);
-  *(AdaptiveCards::ContainerStyleDefinition **)&jresult = new AdaptiveCards::ContainerStyleDefinition((const AdaptiveCards::ContainerStyleDefinition &)result); 
-  return jresult;
-}
-
-
 SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1GetBackgroundColor(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   jstring jresult = 0 ;
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
@@ -17512,19 +17495,23 @@ SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1GetForegroundColors(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  jlong jresult = 0 ;
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1GetForegroundColor(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3, jboolean jarg4) {
+  jstring jresult = 0 ;
   AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
   AdaptiveCards::ContainerStyle arg2 ;
-  AdaptiveCards::ColorsConfig result;
+  AdaptiveCards::ForegroundColor arg3 ;
+  bool arg4 ;
+  std::string result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
   arg2 = (AdaptiveCards::ContainerStyle)jarg2; 
-  result = ((AdaptiveCards::HostConfig const *)arg1)->GetForegroundColors(arg2);
-  *(AdaptiveCards::ColorsConfig **)&jresult = new AdaptiveCards::ColorsConfig((const AdaptiveCards::ColorsConfig &)result); 
+  arg3 = (AdaptiveCards::ForegroundColor)jarg3; 
+  arg4 = jarg4 ? true : false; 
+  result = ((AdaptiveCards::HostConfig const *)arg1)->GetForegroundColor(arg2,arg3,arg4);
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
   return jresult;
 }
 

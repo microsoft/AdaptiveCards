@@ -112,49 +112,11 @@ using namespace AdaptiveCards;
     return [_resolvers getResolverIFType:scheme];
 }
 
-+ (UIColor *)getTextBlockColor:(ForegroundColor)txtClr
-                  colorsConfig:(ColorsConfig const &)config
++ (UIColor *)getTextBlockColor:(ContainerStyle)style
+                     textColor:(ForegroundColor)txtClr
                   subtleOption:(bool)isSubtle
 {
-    const std::string *str;
-    switch (txtClr) {
-        case ForegroundColor::Dark:{
-            str = (isSubtle) ?
-                &config.dark.subtleColor: &config.dark.defaultColor;
-            break;
-        }
-        case ForegroundColor::Light:{
-            str = (isSubtle) ?
-                &config.light.subtleColor: &config.light.defaultColor;
-            break;
-        }
-        case ForegroundColor::Accent:{
-            str = (isSubtle) ?
-                &config.accent.subtleColor: &config.accent.defaultColor;
-            break;
-        }
-        case ForegroundColor::Good:{
-            str = (isSubtle) ?
-                &config.good.subtleColor: &config.good.defaultColor;
-            break;
-        }
-        case ForegroundColor::Warning:{
-            str = (isSubtle) ?
-                &config.warning.subtleColor: &config.warning.defaultColor;
-            break;
-        }
-        case ForegroundColor::Attention:{
-            str = (isSubtle) ?
-                &config.attention.subtleColor: &config.attention.defaultColor;
-            break;
-        }
-        default:{
-            str = (isSubtle) ?
-                &config.defaultColor.subtleColor: &config.defaultColor.defaultColor;
-            break;
-        }
-    }
-
+    const std::string *str = &(_config->GetForegroundColor(style, txtColor, isSubtle));
     return [ACOHostConfig convertHexColorCodeToUIColor:*str];
 }
 
@@ -363,11 +325,6 @@ using namespace AdaptiveCards;
     }
 
     return color;
-}
-
-- (ColorsConfig)getForegroundColorForContainerStyle:(ACRContainerStyle)style
-{
-    return _config->GetForegroundColors([ACOHostConfig getSharedContainerStyle:style]);
 }
 
 - (UIColor *)getBackgroundColorForContainerStyle:(ACRContainerStyle)style

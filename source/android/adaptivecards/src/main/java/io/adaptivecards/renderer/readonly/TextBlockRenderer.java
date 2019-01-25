@@ -101,7 +101,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
 
     static void setTextColor(TextView textView, ForegroundColor foregroundColor, HostConfig hostConfig, boolean isSubtle, ContainerStyle containerStyle)
     {
-        textView.setTextColor(getColor(foregroundColor, hostConfig.GetForegroundColors(containerStyle), isSubtle));
+        textView.setTextColor(getColor(hostConfig.GetForegroundColor(containerStyle, foregroundColor, isSubtle)));
     }
 
     static class TouchTextView implements View.OnTouchListener

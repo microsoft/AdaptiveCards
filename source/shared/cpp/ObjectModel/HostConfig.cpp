@@ -577,23 +577,23 @@ unsigned int HostConfig::GetFontWeight(FontStyle style, TextWeight weight) const
     return result;
 }
 
-ContainerStyleDefinition HostConfig::GetContainerStyle(ContainerStyle style) const
+const ContainerStyleDefinition& HostConfig::GetContainerStyle(ContainerStyle style) const
 {
     switch (style)
     {
-        case ContainerStyle::Accent:
-            return _containerStyles.accentPalette;
-        case ContainerStyle::Attention:
-            return _containerStyles.attentionPalette;
-        case ContainerStyle::Emphasis:
-            return _containerStyles.emphasisPalette;
-        case ContainerStyle::Good:
-            return _containerStyles.goodPalette;
-        case ContainerStyle::Warning:
-            return _containerStyles.warningPalette;
-        case ContainerStyle::Default:
-        default:
-            return _containerStyles.defaultPalette;
+    case ContainerStyle::Accent:
+        return _containerStyles.accentPalette;
+    case ContainerStyle::Attention:
+        return _containerStyles.attentionPalette;
+    case ContainerStyle::Emphasis:
+        return _containerStyles.emphasisPalette;
+    case ContainerStyle::Good:
+        return _containerStyles.goodPalette;
+    case ContainerStyle::Warning:
+        return _containerStyles.warningPalette;
+    case ContainerStyle::Default:
+    default:
+        return _containerStyles.defaultPalette;
     }
 }
 
@@ -602,9 +602,27 @@ std::string HostConfig::GetBackgroundColor(ContainerStyle style) const
     return GetContainerStyle(style).backgroundColor;
 }
 
-ColorsConfig HostConfig::GetForegroundColors(ContainerStyle style) const
+std::string HostConfig::GetForegroundColor(ContainerStyle style, ForegroundColor color, bool isSubtle) const
 {
-    return GetContainerStyle(style).foregroundColors;
+    auto foregroundColors = GetContainerStyle(style).foregroundColors;
+    switch (color)
+    {
+    case ForegroundColor::Accent:
+        return (isSubtle) ? (foregroundColors.accent.subtleColor) : (foregroundColors.accent.defaultColor);
+    case ForegroundColor::Attention:
+        return (isSubtle) ? (foregroundColors.attention.subtleColor) : (foregroundColors.attention.defaultColor);
+    case ForegroundColor::Dark:
+        return (isSubtle) ? (foregroundColors.dark.subtleColor) : (foregroundColors.dark.defaultColor);
+    case ForegroundColor::Good:
+        return (isSubtle) ? (foregroundColors.good.subtleColor) : (foregroundColors.good.defaultColor);
+    case ForegroundColor::Light:
+        return (isSubtle) ? (foregroundColors.light.subtleColor) : (foregroundColors.light.defaultColor);
+    case ForegroundColor::Warning:
+        return (isSubtle) ? (foregroundColors.warning.subtleColor) : (foregroundColors.warning.defaultColor);
+    case ForegroundColor::Default:
+    default:
+        return (isSubtle) ? (foregroundColors.defaultColor.subtleColor) : (foregroundColors.defaultColor.defaultColor);
+    }
 }
 
 std::string HostConfig::GetFontFamily() const

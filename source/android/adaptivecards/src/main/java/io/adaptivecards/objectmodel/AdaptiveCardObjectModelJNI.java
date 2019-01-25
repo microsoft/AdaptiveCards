@@ -879,9 +879,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native String HostConfig_GetFontFamily__SWIG_0(long jarg1, HostConfig jarg1_, int jarg2);
   public final static native long HostConfig_GetFontSize(long jarg1, HostConfig jarg1_, int jarg2, int jarg3);
   public final static native long HostConfig_GetFontWeight(long jarg1, HostConfig jarg1_, int jarg2, int jarg3);
-  public final static native long HostConfig_GetContainerStyle(long jarg1, HostConfig jarg1_, int jarg2);
   public final static native String HostConfig_GetBackgroundColor(long jarg1, HostConfig jarg1_, int jarg2);
-  public final static native long HostConfig_GetForegroundColors(long jarg1, HostConfig jarg1_, int jarg2);
+  public final static native String HostConfig_GetForegroundColor(long jarg1, HostConfig jarg1_, int jarg2, int jarg3, boolean jarg4);
   public final static native String HostConfig_GetFontFamily__SWIG_1(long jarg1, HostConfig jarg1_);
   public final static native void HostConfig_SetFontFamily(long jarg1, HostConfig jarg1_, String jarg2);
   public final static native long HostConfig_GetFontSizes(long jarg1, HostConfig jarg1_);

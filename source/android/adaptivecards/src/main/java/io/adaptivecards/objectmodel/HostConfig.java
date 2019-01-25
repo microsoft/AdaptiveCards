@@ -63,16 +63,12 @@ public class HostConfig {
     return AdaptiveCardObjectModelJNI.HostConfig_GetFontWeight(swigCPtr, this, style.swigValue(), weight.swigValue());
   }
 
-  public ContainerStyleDefinition GetContainerStyle(ContainerStyle style) {
-    return new ContainerStyleDefinition(AdaptiveCardObjectModelJNI.HostConfig_GetContainerStyle(swigCPtr, this, style.swigValue()), true);
-  }
-
   public String GetBackgroundColor(ContainerStyle style) {
     return AdaptiveCardObjectModelJNI.HostConfig_GetBackgroundColor(swigCPtr, this, style.swigValue());
   }
 
-  public ColorsConfig GetForegroundColors(ContainerStyle style) {
-    return new ColorsConfig(AdaptiveCardObjectModelJNI.HostConfig_GetForegroundColors(swigCPtr, this, style.swigValue()), true);
+  public String GetForegroundColor(ContainerStyle style, ForegroundColor color, boolean isSubtle) {
+    return AdaptiveCardObjectModelJNI.HostConfig_GetForegroundColor(swigCPtr, this, style.swigValue(), color.swigValue(), isSubtle);
   }
 
   public String GetFontFamily() {

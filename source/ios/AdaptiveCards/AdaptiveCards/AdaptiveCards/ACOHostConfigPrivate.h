@@ -25,8 +25,8 @@ using namespace AdaptiveCards;
 - (int)getTextBlockTextSize:(FontStyle) style
                  textSize:(TextSize)txtSz;
 - (NSString *)getFontFamily:(AdaptiveCards::FontStyle)style;
-+ (UIColor *)getTextBlockColor:(ForegroundColor)txtClr
-                  colorsConfig:(ColorsConfig const &)config
++ (UIColor *)getTextBlockColor:(ContainerStyle)style
+                     textColor:(ForegroundColor)txtClr
                   subtleOption:(bool)isSubtle;
 + (NSTextAlignment)getTextBlockAlignment:(HorizontalAlignment)alignment;
 - (CGSize)getImageSize:(ImageSize)imageSize;
@@ -38,8 +38,6 @@ using namespace AdaptiveCards;
 + (std::string)getLocalizedDate:(std::string const &)text language:(std::string const &)language;
 
 + (UIColor *)convertHexColorCodeToUIColor:(std::string const &)hexColorCode;
-
-- (ColorsConfig)getForegroundColorForContainerStyle:(ACRContainerStyle)style;
 
 - (UIColor *)getBackgroundColorForContainerStyle:(ACRContainerStyle)style;
 
