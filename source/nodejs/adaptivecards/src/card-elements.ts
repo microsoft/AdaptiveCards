@@ -1281,12 +1281,13 @@ export class FactSet extends CardElement {
 
 				// Value column
 				tdElement = document.createElement("td");
+				tdElement.style.padding = "0";
 				tdElement.style.verticalAlign = "top";
 				tdElement.classList.add(hostConfig.makeCssClassName("ac-fact-value"));
 
 				textBlock = new TextBlock();
 				textBlock.setParent(this);
-				textBlock.text = Utils.isNullOrEmpty(this.facts[i].value) ? "Value" : this.facts[i].value;
+				textBlock.text = this.facts[i].value;
 				textBlock.size = this.hostConfig.factSet.value.size;
 				textBlock.color = this.hostConfig.factSet.value.color;
 				textBlock.isSubtle = this.hostConfig.factSet.value.isSubtle;
