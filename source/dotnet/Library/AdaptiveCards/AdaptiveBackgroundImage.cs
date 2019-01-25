@@ -2,12 +2,14 @@ using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards
 {
 #if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveBackgroundImage.TypeName)]
 #endif
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class AdaptiveBackgroundImage
     {
         public AdaptiveBackgroundImage() { }
