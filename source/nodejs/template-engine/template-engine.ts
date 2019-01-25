@@ -1,46 +1,45 @@
-enum TokenType {
-    OpenCurly,
-    CloseCurly,
-    OpenSquare,
-    CloseSquare,
-    OpenParen,
-    CloseParen,
-    Identifier,
-    Period,
-    Comma,
-    Plus,
-    Minus,
-    Multiply,
-    Divide,
-    Equal,
-    NotEqual,
-    LessThan,
-    LessThanOrEqual,
-    GreaterThan,
-    GreaterThanOrEqual,
-    String,
-    Number,
-    Boolean
-}
+type TokenType = 
+    "{" |
+    "}" |
+    "[" |
+    "]" |
+    "(" |
+    ")" |
+    "identifier" |
+    "." |
+    "," |
+    "+" |
+    "-" |
+    "*" |
+    "/" |
+    "==" |
+    "!=" |
+    "<" |
+    "<=" |
+    ">" |
+    ">=" |
+    "string" |
+    "number" |
+    "boolean";
 
-const orderedOperators = [
-    TokenType.Divide,
-    TokenType.Multiply,
-    TokenType.Minus,
-    TokenType.Plus,
-    TokenType.Equal,
-    TokenType.NotEqual,
-    TokenType.LessThan,
-    TokenType.LessThanOrEqual,
-    TokenType.GreaterThan,
-    TokenType.GreaterThanOrEqual
+const orderedOperators: Array<TokenType> = [
+    "/",
+    "*",
+    "-",
+    "+",
+    "==",
+    "!=",
+    "<",
+    "<=",
+    ">",
+    ">="
 ];
 
-const literals = [
-    TokenType.Identifier,
-    TokenType.String,
-    TokenType.Number,
-    TokenType.Boolean
+const literals: Array<TokenType> = [
+    "identifier",
+    "string",
+    "number",
+    "boolean"
 ];
 
 interface TokenizerRule {
@@ -60,29 +59,29 @@ class Tokenizer {
     static init() {
         Tokenizer.rules.push(
             { tokenType: undefined, regEx: /^\s/ },
-            { tokenType: TokenType.OpenCurly, regEx: /^{/ },
-            { tokenType: TokenType.CloseCurly, regEx: /^}/ },
-            { tokenType: TokenType.OpenSquare, regEx: /^\[/ },
-            { tokenType: TokenType.CloseSquare, regEx: /^\]/ },
-            { tokenType: TokenType.OpenParen, regEx: /^\(/ },
-            { tokenType: TokenType.CloseParen, regEx: /^\)/ },
-            { tokenType: TokenType.Boolean, regEx: /^true|^false/ },
-            { tokenType: TokenType.Identifier, regEx: /^[$a-z_]+/i },
-            { tokenType: TokenType.Period, regEx: /^\./ },
-            { tokenType: TokenType.Comma, regEx: /^,/ },
-            { tokenType: TokenType.Plus, regEx: /^\+/ },
-            { tokenType: TokenType.Minus, regEx: /^-/ },
-            { tokenType: TokenType.Multiply, regEx: /^\*/ },
-            { tokenType: TokenType.Divide, regEx: /^\// },
-            { tokenType: TokenType.Equal, regEx: /^==/ },
-            { tokenType: TokenType.NotEqual, regEx: /^!=/ },
-            { tokenType: TokenType.LessThanOrEqual, regEx: /^<=/ },
-            { tokenType: TokenType.LessThan, regEx: /^</ },
-            { tokenType: TokenType.GreaterThanOrEqual, regEx: /^>=/ },
-            { tokenType: TokenType.GreaterThan, regEx: /^>/ },
-            { tokenType: TokenType.String, regEx: /^"([^"]*)"/ },
-            { tokenType: TokenType.String, regEx: /^'([^']*)'/ },
-            { tokenType: TokenType.Number, regEx: /^\d*\.?\d+/ }
+            { tokenType: "{", regEx: /^{/ },
+            { tokenType: "}", regEx: /^}/ },
+            { tokenType: "[", regEx: /^\[/ },
+            { tokenType: "]", regEx: /^\]/ },
+            { tokenType: "(", regEx: /^\(/ },
+            { tokenType: ")", regEx: /^\)/ },
+            { tokenType: "boolean", regEx: /^true|^false/ },
+            { tokenType: "identifier", regEx: /^[$a-z_]+/i },
+            { tokenType: ".", regEx: /^\./ },
+            { tokenType: ",", regEx: /^,/ },
+            { tokenType: "+", regEx: /^\+/ },
+            { tokenType: "-", regEx: /^-/ },
+            { tokenType: "*", regEx: /^\*/ },
+            { tokenType: "/", regEx: /^\// },
+            { tokenType: "==", regEx: /^==/ },
+            { tokenType: "!=", regEx: /^!=/ },
+            { tokenType: "<=", regEx: /^<=/ },
+            { tokenType: "<", regEx: /^</ },
+            { tokenType: ">=", regEx: /^>=/ },
+            { tokenType: ">", regEx: /^>/ },
+            { tokenType: "string", regEx: /^"([^"]*)"/ },
+            { tokenType: "string", regEx: /^'([^']*)'/ },
+            { tokenType: "number", regEx: /^\d*\.?\d+/ }
         )
     }
 
@@ -207,9 +206,9 @@ class Expression extends ExpressionNode {
 
     evaluate(context: ExpressionContext): any {
         const operatorPriorityGroups = [
-            [ TokenType.Divide, TokenType.Multiply ],
-            [ TokenType.Minus, TokenType.Plus ],
-            [ TokenType.Equal, TokenType.NotEqual, TokenType.LessThan, TokenType.LessThanOrEqual, TokenType.GreaterThan, TokenType.GreaterThanOrEqual ]
+            [ "/", "*" ],
+            [ "-", "+" ],
+            [ "==", "!=", "<", "<=", ">", ">=" ]
         ];
 
         let nodesCopy = this.nodes;
@@ -225,23 +224,23 @@ class Expression extends ExpressionNode {
                     let right = ensureValueType(nodesCopy[i + 1].evaluate(context));
 
                     if (typeof left !== typeof right) {
-                        throw new Error("Incompatible operands " + left + " and " + right + " for operator " + TokenType[node.operator]);
+                        throw new Error("Incompatible operands " + left + " and " + right + " for operator " + node.operator);
                     }
 
                     let result: LiteralValue;
 
                     if (typeof left === "number" && typeof right === "number") {
                         switch (node.operator) {
-                            case TokenType.Divide:
+                            case "/":
                                 result = left / right;
                                 break;
-                            case TokenType.Multiply:
+                            case "*":
                                 result = left * right;
                                 break;
-                            case TokenType.Minus:
+                            case "-":
                                 result = left - right;
                                 break;
-                            case TokenType.Plus:
+                            case "+":
                                 result = left + right;
                                 break;
                         }
@@ -249,29 +248,29 @@ class Expression extends ExpressionNode {
 
                     if (typeof left === "string" && typeof right === "string") {
                         switch (node.operator) {
-                            case TokenType.Plus:
+                            case "+":
                                 result = left + right;
                                 break;
                         }
                     }
 
                     switch (node.operator) {
-                        case TokenType.Equal:
+                        case "==":
                             result = left == right;
                             break;
-                        case TokenType.NotEqual:
+                        case "!=":
                             result = left != right;
                             break;
-                        case TokenType.LessThan:
+                        case "<":
                             result = left < right;
                             break;
-                        case TokenType.LessThanOrEqual:
+                        case "<=":
                             result = left <= right;
                             break;
-                        case TokenType.GreaterThan:
+                        case ">":
                             result = left > right;
                             break;
-                        case TokenType.GreaterThanOrEqual:
+                        case ">=":
                             result = left >= right;
                             break;
                         default:
@@ -388,6 +387,8 @@ class FunctionCallNode extends ExpressionNode {
 
             return callback(evaluatedParams);
         }
+
+        throw new Error("Undefined function: " + this.functionName);
     }
     
     print(): string {
@@ -429,30 +430,7 @@ class OperatorNode extends ExpressionNode {
     }
     
     print(): string {
-        switch (this.operator) {
-            case TokenType.Plus:
-                return "+";
-            case TokenType.Minus:
-                return "-";
-            case TokenType.Multiply:
-                return "*";
-            case TokenType.Divide:
-                return "/";
-            case TokenType.Equal:
-                return "==";
-            case TokenType.NotEqual:
-                return "!=";
-            case TokenType.LessThan:
-                return "<";
-            case TokenType.LessThanOrEqual:
-                return "<=";
-            case TokenType.GreaterThan:
-                return ">";
-            case TokenType.GreaterThanOrEqual:
-                return ">=";
-            default:
-                return TokenType[this.operator];
-        }
+        return this.operator;
     }
 }
 
@@ -510,15 +488,15 @@ class ExpressionParser {
 
     private parseFunctionParameters(functionCall: FunctionCallNode) {
         let moreParameters = false;
-        let startTokenType = TokenType.OpenParen;
+        let startTokenType: TokenType = "(";
 
         do {
-            functionCall.parameters.push(this.parseExpression(startTokenType, [TokenType.CloseParen, TokenType.Comma]));
+            functionCall.parameters.push(this.parseExpression(startTokenType, [")", ","]));
 
-            moreParameters = this.current.type == TokenType.Comma;
+            moreParameters = this.current.type == ",";
 
             if (moreParameters) {
-                startTokenType = TokenType.Comma;
+                startTokenType = ",";
             }
         } while (moreParameters);
     }
@@ -526,7 +504,7 @@ class ExpressionParser {
     private parsePropertyPathOrFunctionCall(): PropertyPathNode | FunctionCallNode {
         let result = new PropertyPathNode();
 
-        let expectedTokenTypes: Array<TokenType> = [TokenType.Identifier];
+        let expectedTokenTypes: Array<TokenType> = ["identifier"];
         let canEndPath = false;
         let canBeFunctionCall = true;
 
@@ -534,34 +512,34 @@ class ExpressionParser {
             this.ensureTokenType(expectedTokenTypes);
 
             switch (this.current.type) {
-                case TokenType.Identifier:
+                case "identifier":
                     result.properties.push(this.current.value);
 
-                    expectedTokenTypes = [TokenType.Period, TokenType.OpenSquare];
+                    expectedTokenTypes = [".", "["];
 
                     if (canBeFunctionCall) {
-                        expectedTokenTypes.push(TokenType.OpenParen);
+                        expectedTokenTypes.push("(");
                     }
 
                     canEndPath = true;
 
                     break;
-                case TokenType.Period:
-                    expectedTokenTypes = [TokenType.Identifier];
+                case ".":
+                    expectedTokenTypes = ["identifier"];
 
                     canEndPath = false;
 
                     break;
-                case TokenType.OpenSquare:
-                    result.properties.push(this.parseExpression(TokenType.OpenSquare, [TokenType.CloseSquare]));
+                case "[":
+                    result.properties.push(this.parseExpression("[", ["]"]));
 
-                    expectedTokenTypes = [TokenType.Period];
+                    expectedTokenTypes = ["."];
 
                     canEndPath = true;
                     canBeFunctionCall = false;
 
                     break;
-                case TokenType.OpenParen:
+                case "(":
                     let functionCall = new FunctionCallNode();
                     functionCall.functionName = result.properties.join(".");
 
@@ -588,22 +566,22 @@ class ExpressionParser {
         this.ensureTokenType([startTokenType]);
         this.moveNext();
 
-        let expectedNextTokenTypes: Array<TokenType> = literals.concat([ TokenType.Plus, TokenType.Minus ]).concat([TokenType.OpenParen]);
+        let expectedNextTokenTypes: Array<TokenType> = literals.concat(["+", "-"]).concat(["("]);
 
         while (!this.eoe) {
             this.ensureTokenType(expectedNextTokenTypes);
 
             switch (this.current.type) {
-                case TokenType.OpenParen:
-                    result.nodes.push(this.parseExpression(TokenType.OpenParen, [TokenType.CloseParen]));
+                case "(":
+                    result.nodes.push(this.parseExpression("(", [")"]));
 
                     expectedNextTokenTypes = orderedOperators.concat(endTokenTypes);
 
                     break;
-                case TokenType.CloseSquare:
-                case TokenType.CloseParen:
-                case TokenType.CloseCurly:
-                case TokenType.Comma:
+                case "]":
+                case ")":
+                case "}":
+                case ",":
                     if (result.nodes.length == 0) {
                         this.unexpectedToken();
                     }
@@ -611,19 +589,19 @@ class ExpressionParser {
                     this.ensureTokenType(endTokenTypes);
 
                     return result;
-                case TokenType.Identifier:
+                case "identifier":
                     result.nodes.push(this.parsePropertyPathOrFunctionCall());
 
                     expectedNextTokenTypes = orderedOperators.concat(endTokenTypes);
 
                     break;
-                case TokenType.String:
-                case TokenType.Number:
-                case TokenType.Boolean:
-                    if (this.current.type == TokenType.String) {
+                case "string":
+                case "number":
+                case "boolean":
+                    if (this.current.type == "string") {
                         result.nodes.push(new LiteralNode(this.current.value));
                     }
-                    else if (this.current.type == TokenType.Number) {
+                    else if (this.current.type == "number") {
                         result.nodes.push(new LiteralNode(parseFloat(this.current.value)));
                     }
                     else {
@@ -633,36 +611,36 @@ class ExpressionParser {
                     expectedNextTokenTypes = orderedOperators.concat(endTokenTypes);
 
                     break;
-                case TokenType.Minus:
+                case "-":
                     if (result.nodes.length == 0) {
                         result.nodes.push(new LiteralNode(-1));
-                        result.nodes.push(new OperatorNode(TokenType.Multiply));
+                        result.nodes.push(new OperatorNode("*"));
 
-                        expectedNextTokenTypes = [TokenType.Identifier, TokenType.Number, TokenType.OpenParen];
+                        expectedNextTokenTypes = ["identifier", "number", "("];
 
                         break;
                     }
-                case TokenType.Plus:
+                case "+":
                     if (result.nodes.length == 0) {
-                        expectedNextTokenTypes = literals.concat([TokenType.OpenParen]);
+                        expectedNextTokenTypes = literals.concat(["("]);
 
                         break;
                     }
-                case TokenType.Multiply:
-                case TokenType.Divide:
-                case TokenType.Equal:
-                case TokenType.NotEqual:
-                case TokenType.LessThan:
-                case TokenType.LessThanOrEqual:
-                case TokenType.GreaterThan:
-                case TokenType.GreaterThanOrEqual:
+                case "*":
+                case "/":
+                case "==":
+                case "!=":
+                case "<":
+                case "<=":
+                case ">":
+                case ">=":
                     if (result.nodes.length == 0) {
                         this.unexpectedToken();
                     }
 
                     result.nodes.push(new OperatorNode(this.current.type));
 
-                    expectedNextTokenTypes = literals.concat([TokenType.OpenParen]);
+                    expectedNextTokenTypes = literals.concat(["("]);
 
                     break;
                 default:
@@ -682,6 +660,6 @@ class ExpressionParser {
     parse(): Expression {
         this.reset();
 
-        return this.parseExpression(TokenType.OpenCurly, [TokenType.CloseCurly]);
+        return this.parseExpression("{", ["}"]);
     }
 }

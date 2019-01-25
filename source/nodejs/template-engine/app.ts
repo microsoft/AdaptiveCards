@@ -11,7 +11,7 @@ function tokenizeExpression() {
         let tr = document.createElement("tr");
 
         let td = document.createElement("td");
-        td.innerText = TokenType[token.type];
+        td.innerText = token.type;
 
         tr.appendChild(td);
 
@@ -49,7 +49,7 @@ function tokenizeExpression() {
             ]
         };
         context.registerFunction(
-            "myFunction",
+            "my.function",
             (params: any[]) => {
                 return "Tada";
             }
