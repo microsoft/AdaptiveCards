@@ -5,7 +5,7 @@
 	"body": [
 		{
 			"type": "TextBlock",
-			"text": "This card has a custom action. If renderer can render the custom type, it will render a button",
+			"text": "This card has a custom action. If renderer can render the custom type, it will render a button. try clicking the button.",
 			"wrap": true
 		}
 	],
