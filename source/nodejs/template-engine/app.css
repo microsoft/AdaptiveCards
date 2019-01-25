@@ -1,5 +1,9 @@
+* {
+    box-sizing: border-box;
+}
+
 html { 
-    overflow: auto;
+    overflow: hidden;
 }
 
 body {
@@ -7,5 +11,7 @@ body {
     font-size: 14px;
     font-weight: normal;
     display: block;
-    overflow: none;
+    padding: 0;
+    margin: 0;
+    height: 100vh;
 }

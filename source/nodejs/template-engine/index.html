@@ -10,7 +10,8 @@
 </head>
 
 <body>
-    <textarea id="input" style="font-size: 22px; width: 100%; height: 600px;">
+    <div style="display: flex; flex-direction: column; height: 100%; padding: 8px;">
+        <textarea id="input" style="font-size: 22px; width: 100%; flex: 1 1 100%;">
 {
     "type": "AdaptiveCard",
     "body": [
@@ -33,15 +34,29 @@
                 {
                     "type": "TextBlock",
                     "text": "{name} ({age})"
+                },
+                {
+                    "type": "Container",
+                    "$data": "{$root.children}",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "From root: {name} ({age})"
+                        }
+                    ]
                 }
             ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "**Last name:** {lastName}"
         }
     ]
 }
-    </textarea>
-    <br>
-    <textarea id="output" style="font-size: 22px; width: 100%; height: 600px;"></textarea>
-    <button id="btnExpandTemplate">Expand template</button>
+        </textarea>
+        <button id="btnExpandTemplate" style="flex: 0 0 auto; margin: 8px 0; padding: 8px; width: 200px;">Expand template</button>
+        <textarea id="output" style="font-size: 22px; width: 100%; flex: 1 1 100%;"></textarea>
+    </div>
 </body>
 
 </html>

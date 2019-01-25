@@ -103,6 +103,19 @@ class Template {
 
     private _context: ExpressionContext;
 
+    private expandSingleObject(node: object): any {
+        let result = {};
+        let keys = Object.keys(node);
+
+        for (let key of keys) {
+            if (!this._context.isReservedField(key)) {
+                result[key] = this.internalExpand(node[key]);
+            }
+        }
+
+        return result;
+    }
+
     private internalExpand(node: any): any {
         let result: any;
         let previousDataContext = this._context.$data;
@@ -111,40 +124,38 @@ class Template {
             result = [];
 
             for (let item of node) {
-                let dataContext = item["$data"];
-
-                if (dataContext != undefined) {
-                    if (dataContext instanceof TemplatizedString) {
-                        dataContext = dataContext.evaluate(this._context);
-                    }
-
-                    if (Array.isArray(dataContext)) {
-                        for (let itemDataContext of dataContext) {
-                            this._context.$data = itemDataContext;
-
-                            result.push(this.internalExpand(item));
-                        }
-                    }
-                    else {
-                        this._context.$data = dataContext;
-
-                        result.push(this.internalExpand(item));
-                    }
-                }
-                else {
-                    result.push(this.internalExpand(item));
-                }
+                result.push(this.internalExpand(item));
             }
         }
         else if (node instanceof TemplatizedString) {
             result = node.evaluate(this._context);
         }
         else if (typeof node === "object") {
-            let keys = Object.keys(node);
-            result = {};
+            let dataContext = node["$data"];
 
-            for (let key of keys) {
-                result[key] = this.internalExpand(node[key]);
+            if (dataContext != undefined) {
+                if (dataContext instanceof TemplatizedString) {
+                    dataContext = dataContext.evaluate(this._context);
+                }
+
+                if (Array.isArray(dataContext)) {
+                    result = [];
+
+                    for (let i = 0; i < dataContext.length; i++) {
+                        this._context.$data = dataContext[i];
+                        this._context.$index = i;
+
+                        result.push(this.expandSingleObject(node));
+                    }
+                }
+                else {
+                    this._context.$data = dataContext;
+
+                    result = this.expandSingleObject(node);
+                }
+            }
+            else {
+                result = this.expandSingleObject(node);
             }
         }
         else {

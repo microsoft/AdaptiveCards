@@ -150,6 +150,7 @@ type FunctionCallback = (params: any[]) => any;
 type FunctionDictionary = { [key: string]: FunctionCallback };
 
 class ExpressionContext {
+    private static readonly _reservedFields = [ "$data", "$root", "$index" ];
     private static _builtInFunctions: FunctionDictionary = {}
     
     static init() {
@@ -162,6 +163,7 @@ class ExpressionContext {
     private _$data: any;
 
     $root: any;
+    $index: number;
 
     registerFunction(name: string, callback: FunctionCallback) {
         this._functions[name] = callback;
@@ -179,6 +181,10 @@ class ExpressionContext {
         }
 
         return result;
+    }
+
+    isReservedField(name: string): boolean {
+        return ExpressionContext._reservedFields.indexOf(name) >= 0;
     }
 
     get $data(): any {
@@ -312,6 +318,11 @@ class PropertyPathNode extends ExpressionNode {
                 break;
             case "$data":
                 result = context.$data;
+                index++;
+
+                break;
+            case "$index":
+                result = context.$index;
                 index++;
 
                 break;
