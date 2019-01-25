@@ -5,7 +5,7 @@
 
 using namespace AdaptiveSharedNamespace;
 
-constexpr char BaseActionElement::defaultSentiment[];
+constexpr const char* const BaseActionElement::defaultSentiment;
 
 BaseActionElement::BaseActionElement(ActionType type) :
     m_type(type), m_typeString(ActionTypeToString(type)), m_sentiment(BaseActionElement::defaultSentiment)
@@ -85,7 +85,7 @@ Json::Value BaseActionElement::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)] = m_title;
     }
 
-    if (!m_sentiment.empty() && (m_sentiment != defaultSentiment))
+    if (!m_sentiment.empty() && (m_sentiment.compare(defaultSentiment) != 0))
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Sentiment)] = m_sentiment;
     }

@@ -66,7 +66,7 @@ namespace AdaptiveSharedNamespace
         ImageParser(ImageParser&&) = default;
         ImageParser& operator=(const ImageParser&) = default;
         ImageParser& operator=(ImageParser&&) = default;
-        ~ImageParser() = default;
+        virtual ~ImageParser() = default;
 
         std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
         std::shared_ptr<BaseCardElement> DeserializeWithoutCheckingType(ParseContext& context, const Json::Value& root);

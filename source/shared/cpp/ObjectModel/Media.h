@@ -14,6 +14,11 @@ namespace AdaptiveSharedNamespace
 
     public:
         Media();
+        Media(const Media&) = default;
+        Media(Media&&) = default;
+        Media& operator=(const Media&) = default;
+        Media& operator=(Media&&) = default;
+        ~Media() = default;
 
         Json::Value SerializeToJsonValue() const override;
 
@@ -43,7 +48,7 @@ namespace AdaptiveSharedNamespace
         MediaParser(MediaParser&&) = default;
         MediaParser& operator=(const MediaParser&) = default;
         MediaParser& operator=(MediaParser&&) = default;
-        ~MediaParser() = default;
+        virtual ~MediaParser() = default;
 
         std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
         std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;

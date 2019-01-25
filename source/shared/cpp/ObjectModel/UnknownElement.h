@@ -23,7 +23,7 @@ namespace AdaptiveSharedNamespace
         UnknownElementParser(UnknownElementParser&&) = default;
         UnknownElementParser& operator=(const UnknownElementParser&) = default;
         UnknownElementParser& operator=(UnknownElementParser&&) = default;
-        ~UnknownElementParser() = default;
+        virtual ~UnknownElementParser() = default;
 
         std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
         std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;

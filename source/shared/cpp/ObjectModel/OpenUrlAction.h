@@ -31,7 +31,7 @@ namespace AdaptiveSharedNamespace
         OpenUrlActionParser(OpenUrlActionParser&&) = default;
         OpenUrlActionParser& operator=(const OpenUrlActionParser&) = default;
         OpenUrlActionParser& operator=(OpenUrlActionParser&&) = default;
-        ~OpenUrlActionParser() = default;
+        virtual ~OpenUrlActionParser() = default;
 
         std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) override;
         std::shared_ptr<BaseActionElement> DeserializeFromString(ParseContext& context, const std::string& jsonString);

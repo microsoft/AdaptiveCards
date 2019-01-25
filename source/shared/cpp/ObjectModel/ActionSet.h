@@ -16,13 +16,13 @@ namespace AdaptiveCards
         ActionSet();
         ActionSet(std::vector<std::shared_ptr<BaseActionElement>>& actions);
 
-        virtual Json::Value SerializeToJsonValue() const override;
+        Json::Value SerializeToJsonValue() const override;
 
         std::vector<std::shared_ptr<BaseActionElement>>& GetActions();
         const std::vector<std::shared_ptr<BaseActionElement>>& GetActions() const;
 
     private:
-        void PopulateKnownPropertiesSet();
+        void PopulateKnownPropertiesSet() override;
         std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>> m_actions;
         ActionsOrientation m_orientation;
     };
@@ -30,8 +30,14 @@ namespace AdaptiveCards
     class ActionSetParser : public BaseCardElementParser
     {
     public:
-        std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root);
+        ActionSetParser() = default;
+        ActionSetParser(const ActionSetParser&) = default;
+        ActionSetParser(ActionSetParser&&) = default;
+        ActionSetParser& operator=(const ActionSetParser&) = default;
+        ActionSetParser& operator=(ActionSetParser&&) = default;
+        virtual ~ActionSetParser() = default;
 
-        std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& contexts, const std::string& jsonString);
+        std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
+        std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& contexts, const std::string& jsonString) override;
     };
 }
