@@ -27,12 +27,22 @@
             SelectionMode="None"
             ItemContainerStyle="{StaticResource FullWidthListViewItem}">
             <ListView.Header>
-                <Button
-                    x:Name="ButtonAcceptAll"
-                    Content="Accept all"
-                    Style="{ThemeResource AccentButtonStyle}"
-                    HorizontalAlignment="Stretch"
-                    Click="ButtonAcceptAll_Click"/>
+                <RelativePanel HorizontalAlignment="Right">
+                    <Button
+                        x:Name="ButtonStartOver"
+                        Content="Start over"
+                        Margin="2,2,2,2"
+                        HorizontalAlignment="Stretch"
+                        Click="ButtonStartOver_Click"/>
+                    <Button
+                        x:Name="ButtonAcceptAll"
+                        Content="Accept all"
+                        RelativePanel.RightOf="ButtonStartOver"
+                        Style="{ThemeResource AccentButtonStyle}"
+                        Margin="2,2,2,2"
+                        HorizontalAlignment="Stretch"
+                        Click="ButtonAcceptAll_Click"/>
+                </RelativePanel>
             </ListView.Header>
             <ListView.ItemTemplate>
                 <DataTemplate>
