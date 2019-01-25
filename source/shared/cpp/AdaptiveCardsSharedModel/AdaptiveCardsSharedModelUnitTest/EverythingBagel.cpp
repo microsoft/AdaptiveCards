@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "EverythingBagel.h"
-#include "SharedAdaptiveCard.h"
+
 #include "ActionSet.h"
 #include "ChoiceInput.h"
 #include "ChoiceSetInput.h"

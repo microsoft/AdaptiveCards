@@ -1,8 +1,6 @@
 #include "stdafx.h"
-#include "CppUnitTest.h"
 #include "Media.h"
 #include "TextBlock.h"
-#include "SharedAdaptiveCard.h"
 #include "ShowCardAction.h"
 #include "ParseContext.h"
 #include "ChoiceSetInput.h"
@@ -10,7 +8,7 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
-using namespace std;
+using namespace std::string_literals;
 
 namespace AdaptiveCardsSharedModelUnitTest
 {
@@ -338,9 +336,9 @@ namespace AdaptiveCardsSharedModelUnitTest
         }
 
         template<typename T>
-        void runWrapTest(const vector<std::shared_ptr<BaseCardElement>> &body, int index, bool expectation)
+            void runWrapTest(const std::vector<std::shared_ptr<BaseCardElement>> &body, int index, bool expectation)
         {
-            auto testingElem = dynamic_pointer_cast<T>(body.at(index));
+            auto testingElem = std::dynamic_pointer_cast<T>(body.at(index));
             if(testingElem)
             {
                 Assert::AreEqual(testingElem->GetWrap(), expectation);

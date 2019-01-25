@@ -1,8 +1,6 @@
 #pragma once
 
 #include "pch.h"
-#include "Enums.h"
-#include "json/json.h"
 #include "AdaptiveCardParseWarning.h"
 
 namespace AdaptiveSharedNamespace

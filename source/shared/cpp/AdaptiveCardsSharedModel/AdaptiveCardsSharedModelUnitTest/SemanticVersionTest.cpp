@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "CppUnitTest.h"
 #include "SemanticVersion.h"
 #include "AdaptiveCardParseException.h"
 

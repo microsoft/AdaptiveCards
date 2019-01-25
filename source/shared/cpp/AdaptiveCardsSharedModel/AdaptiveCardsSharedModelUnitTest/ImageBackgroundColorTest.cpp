@@ -1,9 +1,4 @@
 #include "stdafx.h"
-#include "CppUnitTest.h"
-#include <Windows.h>
-#include <StrSafe.h>
-#include "SharedAdaptiveCard.h"
-#include "BaseCardElement.h"
 #include "Image.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

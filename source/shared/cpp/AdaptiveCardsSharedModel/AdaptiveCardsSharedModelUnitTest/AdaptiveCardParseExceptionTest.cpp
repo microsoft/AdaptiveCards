@@ -1,16 +1,9 @@
 #include "stdafx.h"
-#include "CppUnitTest.h"
-#include "TextBlock.h"
-#include <time.h>
-#include <Windows.h>
-#include <StrSafe.h>
-#include "SharedAdaptiveCard.h"
-#include "BaseCardElement.h"
-#include "ActionParserRegistration.h"
+#include "AdaptiveCardParseException.h"
+#include "AdaptiveCardParseWarning.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
-using namespace std::string_literals;
 
 namespace AdaptiveCardsSharedModelUnitTest
 {
