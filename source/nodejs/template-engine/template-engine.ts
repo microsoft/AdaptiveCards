@@ -121,11 +121,20 @@ class Template {
         let previousDataContext = this._context.$data;
 
         if (Array.isArray(node)) {
-            result = [];
+            let itemArray: any[] = [];
 
             for (let item of node) {
-                result.push(this.internalExpand(item));
+                let expandedItem = this.internalExpand(item);
+
+                if (Array.isArray(expandedItem)) {
+                    itemArray = itemArray.concat(expandedItem);
+                }
+                else {
+                    itemArray.push(expandedItem);
+                }
             }
+
+            result = itemArray;
         }
         else if (node instanceof TemplatizedString) {
             result = node.evaluate(this._context);
