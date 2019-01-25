@@ -23,18 +23,24 @@
 
             <ListView
                 x:Name="ListViewHostConfigs"
-                Header="Host configs"
                 SelectionMode="Multiple"
                 ItemsSource="{Binding HostConfigs}"
-                DisplayMemberPath="Name"/>
+                DisplayMemberPath="Name">
+                <ListView.Header>
+                    <Button Content="Host configs" Click="HostButton_Click"/>
+                </ListView.Header>
+            </ListView>
 
             <ListView
                 x:Name="ListViewCards"
                 Grid.Column="2"
-                Header="Cards"
                 SelectionMode="Multiple"
                 ItemsSource="{Binding Cards}"
-                DisplayMemberPath="Name"/>
+                DisplayMemberPath="Name">
+                <ListView.Header>
+                    <Button Content="Cards" Click="CardButton_Click"/>
+                </ListView.Header>
+            </ListView>
 
             <CheckBox 
                 x:Name="TimelineCheckBox"
