@@ -11,7 +11,23 @@
 
 <body>
     <div style="display: flex; flex-direction: column; height: 100%; padding: 8px;">
-        <textarea id="input" style="font-size: 22px; width: 100%; flex: 1 1 100%;">
+        <div style="display: flex; flex-direction: row; flex: 1 1 100%;">
+            <textarea id="data" style="font-size: 22px; width: 100%; flex: 1 1 100%;">
+{
+    "firstName": "David",
+    "lastName": "Claux",
+    "age": 45,
+    "address": {
+        "city": "Redmond",
+        "state": "WA"
+    },
+    "children": [
+        { "name": "Alexandre", "age": 13 },
+        { "name": "Thomas", "age": 9 }
+    ]
+}
+            </textarea>
+            <textarea id="input" style="font-size: 22px; width: 100%; flex: 1 1 100%;">
 {
     "type": "AdaptiveCard",
     "body": [
@@ -53,7 +69,8 @@
         }
     ]
 }
-        </textarea>
+            </textarea>
+        </div>
         <button id="btnExpandTemplate" style="flex: 0 0 auto; margin: 8px 0; padding: 8px; width: 200px;">Expand template</button>
         <textarea id="output" style="font-size: 22px; width: 100%; flex: 1 1 100%;"></textarea>
     </div>
