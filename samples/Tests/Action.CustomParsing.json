@@ -16,7 +16,8 @@
 			"Red":150,
 			"Green":100,
 			"Blue":100,
-			"CornerRadius":10
+			"CornerRadius":10,
+			"alertMessage": "Add Custom Message Here"
 		}
 	]
 }

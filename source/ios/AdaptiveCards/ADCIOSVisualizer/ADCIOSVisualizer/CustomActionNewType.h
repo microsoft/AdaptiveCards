@@ -13,6 +13,8 @@
 
 @property UIColor *color;
 @property NSInteger cornerradius;
+@property UIAlertController *alertController;
+@property NSString *alertMessage;
 
 @end
 

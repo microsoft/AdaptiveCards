@@ -66,6 +66,7 @@
                               @"V:|-40-[editView(==200)]-[buttonLayout]", nil];
     [ViewController applyConstraints:formats variables:viewMap];
 }
+
 - (IBAction)toggleCustomRenderer:(id)sender
 {
     _enableCustomRenderer = !_enableCustomRenderer;
@@ -299,6 +300,13 @@
         }
         _userResponseLabel.text = str;
         NSLog(@"user response fetched: %@ with %@", str, [action data]);
+    } else if (action.type == ACRUnknownAction) {
+        if([action isKindOfClass:[CustomActionNewType class]]) {
+            CustomActionNewType *newType = (CustomActionNewType *)action;
+            if(newType.alertController) {
+                [self presentViewController:newType.alertController animated:YES completion:nil];
+            }
+        }
     }
 }
 
