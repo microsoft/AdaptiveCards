@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <script src="./lib/expression-parser.js"></script>
     <script src="./lib/template-engine.js"></script>
     <script src="./lib/app.js"></script>
 
@@ -9,13 +10,38 @@
 </head>
 
 <body>
-    <input id="expression" type="text" style="font-size: 22px; width: 100%" value='{abc.def.ghi(field"this is a string")indexedField[3]'/>
+    <textarea id="input" style="font-size: 22px; width: 100%; height: 600px;">
+{
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "**First name:** {firstName}"
+        },
+        {
+            "type": "TextBlock",
+            "text": "**Last name:** {lastName}"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Children:"
+        },
+        {
+            "type": "Container",
+            "$data": "{children}",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "{name} ({age})"
+                }
+            ]
+        }
+    ]
+}
+    </textarea>
     <br>
-    <button id="btnTokenize">Tokenize expression</button>
-    <div id="output"></div>
-    <br>
-    <br>
-    <div id="serializedExpression"></div>
+    <textarea id="output" style="font-size: 22px; width: 100%; height: 600px;"></textarea>
+    <button id="btnExpandTemplate">Expand template</button>
 </body>
 
 </html>

@@ -1,665 +1,170 @@
-type TokenType = 
-    "{" |
-    "}" |
-    "[" |
-    "]" |
-    "(" |
-    ")" |
-    "identifier" |
-    "." |
-    "," |
-    "+" |
-    "-" |
-    "*" |
-    "/" |
-    "==" |
-    "!=" |
-    "<" |
-    "<=" |
-    ">" |
-    ">=" |
-    "string" |
-    "number" |
-    "boolean";
+class TemplatizedString {
+    private _parts: Array<string | Expression> = [];
 
-const orderedOperators: Array<TokenType> = [
-    "/",
-    "*",
-    "-",
-    "+",
-    "==",
-    "!=",
-    "<",
-    "<=",
-    ">",
-    ">="
-];
-
-const literals: Array<TokenType> = [
-    "identifier",
-    "string",
-    "number",
-    "boolean"
-];
-
-interface TokenizerRule {
-    tokenType: TokenType;
-    regEx: RegExp;
-}
-
-interface Token {
-    type: TokenType;
-    value: string;
-    originalPosition: number;
-}
-
-class Tokenizer {
-    static rules: Array<TokenizerRule> = [];
-
-    static init() {
-        Tokenizer.rules.push(
-            { tokenType: undefined, regEx: /^\s/ },
-            { tokenType: "{", regEx: /^{/ },
-            { tokenType: "}", regEx: /^}/ },
-            { tokenType: "[", regEx: /^\[/ },
-            { tokenType: "]", regEx: /^\]/ },
-            { tokenType: "(", regEx: /^\(/ },
-            { tokenType: ")", regEx: /^\)/ },
-            { tokenType: "boolean", regEx: /^true|^false/ },
-            { tokenType: "identifier", regEx: /^[$a-z_]+/i },
-            { tokenType: ".", regEx: /^\./ },
-            { tokenType: ",", regEx: /^,/ },
-            { tokenType: "+", regEx: /^\+/ },
-            { tokenType: "-", regEx: /^-/ },
-            { tokenType: "*", regEx: /^\*/ },
-            { tokenType: "/", regEx: /^\// },
-            { tokenType: "==", regEx: /^==/ },
-            { tokenType: "!=", regEx: /^!=/ },
-            { tokenType: "<=", regEx: /^<=/ },
-            { tokenType: "<", regEx: /^</ },
-            { tokenType: ">=", regEx: /^>=/ },
-            { tokenType: ">", regEx: /^>/ },
-            { tokenType: "string", regEx: /^"([^"]*)"/ },
-            { tokenType: "string", regEx: /^'([^']*)'/ },
-            { tokenType: "number", regEx: /^\d*\.?\d+/ }
-        )
-    }
-
-    private _tokens: Array<Token>;
-
-    protected internalParse(expression: string) {
+    static parse(s: string): string | TemplatizedString {
+        let result = new TemplatizedString();
+        let parser = new ExpressionParser();
         let i = 0;
 
-        while (i < expression.length) {
-            let subExpression = expression.substring(i);
-            let matchFound = false;
+        do {
+            let expressionFound = false;
+            let start = s.indexOf("{", i);
 
-            for (let rule of Tokenizer.rules) {
-                let matches = rule.regEx.exec(subExpression);
+            if (start >= 0) {
+                let end = s.indexOf("}", start);
 
-                if (matches) {
-                    if (matches.length > 2) {
-                        throw new Error("A tokenizer rule matched more than one group.");
+                if (end >= 0) {
+                    expressionFound = true;
+
+                    if (start > i) {
+                        result._parts.push(s.substring(i, start));
                     }
 
-                    if (rule.tokenType != undefined) {
-                        this._tokens.push(
-                            {
-                                type: rule.tokenType,
-                                value: matches[matches.length == 1 ? 0 : 1],
-                                originalPosition: i
-                            }
-                        )
-                    }
+                    result._parts.push(parser.parse(s.substring(start, end + 1)));
 
-                    i += matches[0].length;
-
-                    matchFound = true;
-
-                    break;
+                    i = end + 1;
                 }
             }
 
-            if (!matchFound) {
-                i++;
-            }
-        }
-    }
-
-    parse(expression: string) {
-        this._tokens = [];
-
-        this.internalParse(expression);
-    }
-
-    get tokens(): Array<Token> {
-        return this._tokens;
-    }
-}
-
-Tokenizer.init();
-
-type LiteralValue = string | number | boolean;
-
-abstract class ExpressionNode {
-    abstract print(): string;
-    abstract evaluate(context: Object): LiteralValue;
-}
-
-function ensureValueType(value: any): LiteralValue {
-    if (typeof value === "number" || typeof value ==="string" || typeof value === "boolean") {
-        return value;
-    }
-
-    throw new Error("Invalid value type: " + typeof value);
-}
-
-
-type FunctionCallback = (params: any[]) => any;
-type FunctionDictionary = { [key: string]: FunctionCallback };
-
-class ExpressionContext {
-    private static _builtInFunctions: FunctionDictionary = {}
-    
-    static init() {
-        ExpressionContext._builtInFunctions["substr"] = (params: any[]) => {
-            return (<string>params[0]).substr(<number>params[1], <number>params[2]);
-        };
-    }
-
-    private _functions = {};
-    private _$data: any;
-
-    $root: any;
-
-    registerFunction(name: string, callback: FunctionCallback) {
-        this._functions[name] = callback;
-    }
-
-    unregisterFunction(name: string) {
-        delete this._functions[name];
-    }
-
-    getFunction(name: string): FunctionCallback {
-        let result = this._functions[name];
-
-        if (result == undefined) {
-            result = ExpressionContext._builtInFunctions[name];
-        }
-
-        return result;
-    }
-
-    get $data(): any {
-        return this._$data != undefined ? this._$data : this.$root;
-    }
-
-    set $data(value: any) {
-        this._$data = value;
-    }
-}
-
-ExpressionContext.init();
-
-class Expression extends ExpressionNode {
-    nodes: Array<ExpressionNode> = [];
-
-    evaluate(context: ExpressionContext): any {
-        const operatorPriorityGroups = [
-            [ "/", "*" ],
-            [ "-", "+" ],
-            [ "==", "!=", "<", "<=", ">", ">=" ]
-        ];
-
-        let nodesCopy = this.nodes;
-
-        for (let priorityGroup of operatorPriorityGroups) {
-            let i = 0;
-
-            while (i < nodesCopy.length) {
-                let node = nodesCopy[i];
-
-                if (node instanceof OperatorNode && priorityGroup.indexOf(node.operator) >= 0) {
-                    let left = ensureValueType(nodesCopy[i - 1].evaluate(context));
-                    let right = ensureValueType(nodesCopy[i + 1].evaluate(context));
-
-                    if (typeof left !== typeof right) {
-                        throw new Error("Incompatible operands " + left + " and " + right + " for operator " + node.operator);
-                    }
-
-                    let result: LiteralValue;
-
-                    if (typeof left === "number" && typeof right === "number") {
-                        switch (node.operator) {
-                            case "/":
-                                result = left / right;
-                                break;
-                            case "*":
-                                result = left * right;
-                                break;
-                            case "-":
-                                result = left - right;
-                                break;
-                            case "+":
-                                result = left + right;
-                                break;
-                        }
-                    }
-
-                    if (typeof left === "string" && typeof right === "string") {
-                        switch (node.operator) {
-                            case "+":
-                                result = left + right;
-                                break;
-                        }
-                    }
-
-                    switch (node.operator) {
-                        case "==":
-                            result = left == right;
-                            break;
-                        case "!=":
-                            result = left != right;
-                            break;
-                        case "<":
-                            result = left < right;
-                            break;
-                        case "<=":
-                            result = left <= right;
-                            break;
-                        case ">":
-                            result = left > right;
-                            break;
-                        case ">=":
-                            result = left >= right;
-                            break;
-                        default:
-                            // This should never happen
-                    }
-
-                    nodesCopy.splice(i - 1, 3, new LiteralNode(result));
-
-                    i--;
-                }
-
-                i++;
-            };
-        }
-
-        return nodesCopy[0].evaluate(context);
-    }
-
-    print(): string {
-        let result = "";
-
-        for (let node of this.nodes) {
-            if (result != "") {
-                result += " ";
-            }
-
-            result += node.print();
-        }
-
-        return "(" + result + ")";
-    }
-}
-
-type PropertyPathPart = string | Expression;
-
-class PropertyPathNode extends ExpressionNode {
-    properties: Array<PropertyPathPart> = [];
-
-    evaluate(context: ExpressionContext): LiteralValue {
-        let result: any;
-        let index = 0;
-        
-        switch (<string>this.properties[0]) {
-            case "$root":
-                result = context.$root;
-                index++;
+            if (!expressionFound) {
+                result._parts.push(s.substr(i));
 
                 break;
-            case "$data":
-                result = context.$data;
-                index++;
-
-                break;
-            default:
-                result = context.$data;
-
-                break;
-        }
-
-        while (index < this.properties.length) {
-            let part = this.properties[index];
-
-            try {
-                if (typeof part === "string") {
-                    result = result[part];
-                }
-                else {
-                    result = result[part.evaluate(context)];
-                }
             }
-            catch {
-                return undefined;
-            }
+        } while (i < s.length);
 
-            index++;
-        }
-
-        return result;
-    }
-    
-    print(): string {
-        let result = "";
-
-        for (let part of this.properties) {
-            if (typeof part === "string") {
-                if (result != "") {
-                    result += ".";
-                }
-
-                result += part;
-            }
-            else {
-                result += "[" + part.print() + "]";
-            }
-        }
-
-        return result;
-    }
-}
-
-class FunctionCallNode extends ExpressionNode {
-    functionName: string;
-    parameters: Array<Expression> = [];
-
-    evaluate(context: ExpressionContext): LiteralValue {
-        let callback = context.getFunction(this.functionName);
-
-        if (callback != undefined) {
-            let evaluatedParams = [];
-
-            for (let param of this.parameters) {
-                evaluatedParams.push(param.evaluate(context));
-            }
-
-            return callback(evaluatedParams);
-        }
-
-        throw new Error("Undefined function: " + this.functionName);
-    }
-    
-    print(): string {
-        let result = "";
-
-        for (let parameter of this.parameters) {
-            if (result != "") {
-                result += ", ";
-            }
-
-            result += parameter.print();
-        }
-
-        return this.functionName + "(" + result + ")";
-    }
-}
-
-class LiteralNode extends ExpressionNode {
-    constructor(readonly value: LiteralValue) {
-        super();
-    }
-
-    evaluate(context: ExpressionContext): LiteralValue {
-        return this.value;
-    }
-    
-    print(): string {
-        return this.value.toString();
-    }
-}
-
-class OperatorNode extends ExpressionNode {
-    constructor(readonly operator: TokenType) {
-        super();
-    }
-
-    evaluate(context: ExpressionContext): LiteralValue {
-        throw new Error("An operator cannot be evaluated on its own.");
-    }
-    
-    print(): string {
-        return this.operator;
-    }
-}
-
-class ExpressionParser {
-    private _index: number = 0;
-
-    private unexpectedToken() {
-        throw new Error("Unexpected token " + this.current.value + " at position " + this.current.originalPosition + ".");
-    }
-
-    private unexpectedEoe() {
-        throw new Error("Unexpected end of expression.");
-    }
-
-    private isNextTokenType(types: TokenType[]): boolean {
-        return types.indexOf(this.nextTokenType) >= 0;
-    }
-
-    private ensureTokenType(types: TokenType[]) {
-        if (this.eoe) {
-            this.unexpectedEoe();
-        }
-        else if (!(types.indexOf(this.current.type) >= 0)) {
-            this.unexpectedToken();
-        }
-    }
-
-    private moveNext(expectedTypes?: TokenType[]) {
-        this._index++;
-
-        if (expectedTypes) {
-            this.ensureTokenType(expectedTypes);    
-        }
-    }
-
-    private get eoe(): boolean {
-        return this._index >= this.tokens.length;
-    }
-
-    private get current(): Token {
-        return this.tokens[this._index];
-    }
-
-    private get nextTokenType(): TokenType {
-        if (this._index < this.tokens.length - 1) {
-            return this.tokens[this._index + 1].type;
+        if (result._parts.length == 1 && typeof result._parts[0] === "string") {
+            return <string>result._parts[0];
         }
         else {
-            return null;
+            return result;
         }
     }
 
-    constructor(readonly tokens: Token[]) {
-    }
-
-    private parseFunctionParameters(functionCall: FunctionCallNode) {
-        let moreParameters = false;
-        let startTokenType: TokenType = "(";
-
-        do {
-            functionCall.parameters.push(this.parseExpression(startTokenType, [")", ","]));
-
-            moreParameters = this.current.type == ",";
-
-            if (moreParameters) {
-                startTokenType = ",";
+    evaluate(context: ExpressionContext): any {
+        if (this._parts.length == 0) {
+            return undefined;
+        }
+        else if (this._parts.length == 1) {
+            if (typeof this._parts[0] === "string") {
+                return this._parts[0];
             }
-        } while (moreParameters);
-    }
+            else {
+                return (<Expression>this._parts[0]).evaluate(context);
+            }
+        }
+        else {
+            let s = "";
 
-    private parsePropertyPathOrFunctionCall(): PropertyPathNode | FunctionCallNode {
-        let result = new PropertyPathNode();
-
-        let expectedTokenTypes: Array<TokenType> = ["identifier"];
-        let canEndPath = false;
-        let canBeFunctionCall = true;
-
-        while (!this.eoe) {
-            this.ensureTokenType(expectedTokenTypes);
-
-            switch (this.current.type) {
-                case "identifier":
-                    result.properties.push(this.current.value);
-
-                    expectedTokenTypes = [".", "["];
-
-                    if (canBeFunctionCall) {
-                        expectedTokenTypes.push("(");
-                    }
-
-                    canEndPath = true;
-
-                    break;
-                case ".":
-                    expectedTokenTypes = ["identifier"];
-
-                    canEndPath = false;
-
-                    break;
-                case "[":
-                    result.properties.push(this.parseExpression("[", ["]"]));
-
-                    expectedTokenTypes = ["."];
-
-                    canEndPath = true;
-                    canBeFunctionCall = false;
-
-                    break;
-                case "(":
-                    let functionCall = new FunctionCallNode();
-                    functionCall.functionName = result.properties.join(".");
-
-                    this.parseFunctionParameters(functionCall);
-            
-                    return functionCall;
-                default:
-                    this.unexpectedToken();
+            for (let part of this._parts) {
+                if (typeof part === "string") {
+                    s += part;
+                }
+                else {
+                    s += (<Expression>part).evaluate(context);
+                }
             }
 
-            if (!this.isNextTokenType(expectedTokenTypes) && canEndPath) {
+            return s;
+        }
+    }
+}
+
+class Template {
+    private static prepare(node: any): any {
+        if (typeof node === "string") {
+            return TemplatizedString.parse(node);
+        }
+        else if (typeof node === "object") {
+            if (Array.isArray(node)) {
+                let result: any[] = [];
+
+                for (let item of node) {
+                    result.push(Template.prepare(item));
+                }
+
                 return result;
             }
+            else {
+                let keys = Object.keys(node);
+                let result = {};
 
-            this.moveNext();
+                for (let key of keys) {
+                    result[key] = Template.prepare(node[key]);
+                }
+
+                return result;
+            }
         }
-
-        this.unexpectedToken();
+        else {
+            return node;
+        }
     }
 
-    private parseExpression(startTokenType: TokenType, endTokenTypes: TokenType[]): Expression {
-        let result: Expression = new Expression();
+    private _context: ExpressionContext;
 
-        this.ensureTokenType([startTokenType]);
-        this.moveNext();
+    private internalExpand(node: any): any {
+        let result: any;
+        let previousDataContext = this._context.$data;
 
-        let expectedNextTokenTypes: Array<TokenType> = literals.concat(["+", "-"]).concat(["("]);
+        if (Array.isArray(node)) {
+            result = [];
 
-        while (!this.eoe) {
-            this.ensureTokenType(expectedNextTokenTypes);
+            for (let item of node) {
+                let dataContext = item["$data"];
 
-            switch (this.current.type) {
-                case "(":
-                    result.nodes.push(this.parseExpression("(", [")"]));
-
-                    expectedNextTokenTypes = orderedOperators.concat(endTokenTypes);
-
-                    break;
-                case "]":
-                case ")":
-                case "}":
-                case ",":
-                    if (result.nodes.length == 0) {
-                        this.unexpectedToken();
+                if (dataContext != undefined) {
+                    if (dataContext instanceof TemplatizedString) {
+                        dataContext = dataContext.evaluate(this._context);
                     }
 
-                    this.ensureTokenType(endTokenTypes);
+                    if (Array.isArray(dataContext)) {
+                        for (let itemDataContext of dataContext) {
+                            this._context.$data = itemDataContext;
 
-                    return result;
-                case "identifier":
-                    result.nodes.push(this.parsePropertyPathOrFunctionCall());
-
-                    expectedNextTokenTypes = orderedOperators.concat(endTokenTypes);
-
-                    break;
-                case "string":
-                case "number":
-                case "boolean":
-                    if (this.current.type == "string") {
-                        result.nodes.push(new LiteralNode(this.current.value));
-                    }
-                    else if (this.current.type == "number") {
-                        result.nodes.push(new LiteralNode(parseFloat(this.current.value)));
+                            result.push(this.internalExpand(item));
+                        }
                     }
                     else {
-                        result.nodes.push(new LiteralNode(this.current.value === "true"));
+                        this._context.$data = dataContext;
+
+                        result.push(this.internalExpand(item));
                     }
-
-                    expectedNextTokenTypes = orderedOperators.concat(endTokenTypes);
-
-                    break;
-                case "-":
-                    if (result.nodes.length == 0) {
-                        result.nodes.push(new LiteralNode(-1));
-                        result.nodes.push(new OperatorNode("*"));
-
-                        expectedNextTokenTypes = ["identifier", "number", "("];
-
-                        break;
-                    }
-                case "+":
-                    if (result.nodes.length == 0) {
-                        expectedNextTokenTypes = literals.concat(["("]);
-
-                        break;
-                    }
-                case "*":
-                case "/":
-                case "==":
-                case "!=":
-                case "<":
-                case "<=":
-                case ">":
-                case ">=":
-                    if (result.nodes.length == 0) {
-                        this.unexpectedToken();
-                    }
-
-                    result.nodes.push(new OperatorNode(this.current.type));
-
-                    expectedNextTokenTypes = literals.concat(["("]);
-
-                    break;
-                default:
-                    this.unexpectedToken();
+                }
+                else {
+                    result.push(this.internalExpand(item));
+                }
             }
+        }
+        else if (node instanceof TemplatizedString) {
+            result = node.evaluate(this._context);
+        }
+        else if (typeof node === "object") {
+            let keys = Object.keys(node);
+            result = {};
 
-            this.moveNext();
+            for (let key of keys) {
+                result[key] = this.internalExpand(node[key]);
+            }
+        }
+        else {
+            result = node;
         }
 
-        this.unexpectedEoe();
+        this._context.$data = previousDataContext;
+
+        return result;
     }
 
-    reset() {
-        this._index = 0;
+    preparedPayload: any;
+
+    constructor(payload: any) {
+        this.preparedPayload = Template.prepare(payload);
     }
 
-    parse(): Expression {
-        this.reset();
+    expand(context: ExpressionContext): any {
+        this._context = context;
 
-        return this.parseExpression("{", ["}"]);
+        return this.internalExpand(this.preparedPayload);
     }
 }
