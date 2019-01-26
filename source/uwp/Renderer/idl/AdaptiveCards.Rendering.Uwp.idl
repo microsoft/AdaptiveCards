@@ -24,7 +24,7 @@ AdaptiveNamespaceStart
     {
     }
 #endif
-    
+
     runtimeclass AdaptiveCardRenderer;
     runtimeclass AdaptiveCardResourceResolvers;
     runtimeclass AdaptiveCardGetResourceStreamArgs;
@@ -52,6 +52,7 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveShowCardAction;
     runtimeclass AdaptiveSubmitAction;
     runtimeclass AdaptiveToggleVisibilityAction;
+    runtimeclass AdaptiveUnsupportedElement;
     runtimeclass AdaptiveActionSet;
 
     runtimeclass AdaptiveFontSizesConfig;
@@ -135,6 +136,7 @@ AdaptiveNamespaceStart
     interface IAdaptiveSeparator;
     interface IAdaptiveError;
     interface IAdaptiveWarning;
+    interface IAdaptiveUnsupportedElement;
     interface IAdaptiveActionSet;
 
     interface IAdaptiveFontSizesConfig;
@@ -500,7 +502,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(74D69C2F-7F1C-47FD-A319-F4B4E7F72EE9)
-#endif        
+#endif
     ]
     interface IAdaptiveCardElement : IInspectable
     {
@@ -555,7 +557,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveRemoteResourceInformation
     {
@@ -586,7 +588,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(a2a0727a-e4aa-423d-b5b0-4b85f7a534c4)
-#endif        
+#endif
     ]
     interface IAdaptiveSeparator : IInspectable
     {
@@ -604,7 +606,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveSeparator
     {
@@ -620,7 +622,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(c4b68276-7cd0-4c3e-8498-3edb9ec6abfb)
-#endif        
+#endif
     ]
     interface IAdaptiveTextBlock : IInspectable
     {
@@ -662,7 +664,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveTextBlock
     {
@@ -679,7 +681,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(5F8A6054-5EC8-4321-988E-3130A977C14C)
-#endif        
+#endif
     ]
     interface IAdaptiveMediaSource : IInspectable
     {
@@ -697,7 +699,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveMediaSource
     {
@@ -713,7 +715,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(161BE390-2927-463C-9A46-21A756F2487B)
-#endif        
+#endif
     ]
     interface IAdaptiveMedia : IInspectable
     {
@@ -733,7 +735,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveMedia
     {
@@ -750,7 +752,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(1fbf16f2-7c70-4b19-9d76-fb107fc33821)
-#endif        
+#endif
     ]
     interface IAdaptiveCard : IInspectable
     {
@@ -801,7 +803,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(b4db0937-025a-4c08-980b-750703e77e37)
-#endif        
+#endif
     ]
     interface IAdaptiveCardParseResult : IInspectable
     {
@@ -817,7 +819,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveCardParseResult
     {
@@ -833,7 +835,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(bace01f2-5642-4366-879a-dec601d8b7e3)
-#endif        
+#endif
     ]
     interface IAdaptiveCardStatics : IInspectable
     {
@@ -871,7 +873,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveCard
     {
@@ -887,7 +889,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(16452a2e-1152-47f3-90bd-6e4148b09669)
-#endif        
+#endif
     ]
     interface IAdaptiveImage : IInspectable
     {
@@ -926,7 +928,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveImage
     {
@@ -943,7 +945,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(f618bd35-8fe3-46bd-8988-cdf5607314d1)
-#endif        
+#endif
     ]
     interface IAdaptiveImageSet : IInspectable
     {
@@ -960,7 +962,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveImageSet
     {
@@ -976,7 +978,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(9b10f5ef-26e8-4d65-ba76-b986b5e90586)
-#endif        
+#endif
     ]
     interface IAdaptiveInputElement : IInspectable
     {
@@ -993,7 +995,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(99797dfe-d39c-43a4-9f2b-d457cc358e1e)
-#endif        
+#endif
     ]
     interface IAdaptiveChoiceInput : IInspectable
     {
@@ -1013,7 +1015,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveChoiceInput
     {
@@ -1029,7 +1031,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(ce0735ef-f983-4a5e-bdad-f5eb7f962faa)
-#endif        
+#endif
     ]
     interface IAdaptiveChoiceSetInput : IInspectable
     {
@@ -1053,7 +1055,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveChoiceSetInput
     {
@@ -1071,7 +1073,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(359e2cc5-9b8d-40bf-bbb2-2d3494d30991)
-#endif        
+#endif
     ]
     interface IAdaptiveDateInput : IInspectable
     {
@@ -1095,7 +1097,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveDateInput
     {
@@ -1113,7 +1115,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(3bd0868c-5fbd-4341-91ff-4b07eb2bd54c)
-#endif        
+#endif
     ]
     interface IAdaptiveNumberInput : IInspectable
     {
@@ -1137,7 +1139,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveNumberInput
     {
@@ -1155,7 +1157,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(ab30772b-172d-4595-bcd2-01001df19d1e)
-#endif        
+#endif
     ]
     interface IAdaptiveTextInput : IInspectable
     {
@@ -1185,7 +1187,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveTextInput
     {
@@ -1203,7 +1205,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(1ee90aff-93e8-4292-ac49-39d4c3289cd9)
-#endif        
+#endif
     ]
     interface IAdaptiveTimeInput : IInspectable
     {
@@ -1227,7 +1229,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveTimeInput
     {
@@ -1245,7 +1247,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(e8af72a5-597c-4a19-b9c2-1a597db1c79a)
-#endif        
+#endif
     ]
     interface IAdaptiveToggleInput : IInspectable
     {
@@ -1272,7 +1274,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveToggleInput
     {
@@ -1290,7 +1292,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(ba90da3f-556c-4e3a-9d01-11f2ce78dcd7)
-#endif        
+#endif
     ]
     interface IAdaptiveContainer : IInspectable
     {
@@ -1313,7 +1315,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveContainer
     {
@@ -1330,7 +1332,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(91e03800-d239-43bc-b5fb-2ccfe0cc7fcb)
-#endif        
+#endif
     ]
     interface IAdaptiveColumn : IInspectable
     {
@@ -1358,7 +1360,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveColumn
     {
@@ -1375,7 +1377,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(4e3e1cd1-906b-4718-96ea-0a6e16bf0199)
-#endif        
+#endif
     ]
     interface IAdaptiveColumnSet : IInspectable
     {
@@ -1392,7 +1394,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveColumnSet
     {
@@ -1410,7 +1412,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(5c19aa31-03aa-4148-a529-75b855ba045b)
-#endif        
+#endif
     ]
     interface IAdaptiveFact : IInspectable
     {
@@ -1433,7 +1435,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveFact
     {
@@ -1449,7 +1451,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(05457b99-8090-4937-a637-b469f8edc74f)
-#endif        
+#endif
     ]
     interface IAdaptiveFactSet : IInspectable
     {
@@ -1463,7 +1465,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveFactSet
     {
@@ -1504,6 +1506,36 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveUnsupportedElement),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(37CB2851-378C-48BE-A38D-59B9A88F62B9),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(BAD9E18F-ACA2-46A7-A16E-31D0B8866ABA)
+#endif
+    ]
+    interface IAdaptiveUnsupportedElement : IInspectable
+    {
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1)
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif
+    ]
+    runtimeclass AdaptiveUnsupportedElement
+    {
+        [default] interface IAdaptiveUnsupportedElement;
+        interface IAdaptiveCardElement;
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveCardRenderer),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(847e632d-328c-4b5e-86b3-685152dca0ce),
@@ -1511,7 +1543,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(b0586bc4-b62a-4520-84b8-6c2afb88d022)
-#endif        
+#endif
     ]
     interface IAdaptiveCardRenderer : IInspectable
     {
@@ -1545,7 +1577,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveCardRenderer
     {
@@ -1561,7 +1593,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(6bc7a30c-6971-474d-8dd3-bb9e1bcde381)
-#endif        
+#endif
     ]
     interface IAdaptiveActionEventArgs : IInspectable
     {
@@ -1574,7 +1606,7 @@ AdaptiveNamespaceStart
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
         internal
-#endif        
+#endif
     ]
     runtimeclass AdaptiveActionEventArgs
     {
@@ -1590,7 +1622,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(D7B0DE38-2ADC-48DC-9168-76E52986A4EE)
-#endif        
+#endif
     ]
     interface IAdaptiveMediaEventArgs : IInspectable
     {
@@ -1602,7 +1634,7 @@ AdaptiveNamespaceStart
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
         internal
-#endif        
+#endif
     ]
     runtimeclass AdaptiveMediaEventArgs
     {
@@ -1619,7 +1651,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(ae687d0f-ce50-483c-8478-a17d017d4c25)
-#endif        
+#endif
     ]
     interface IAdaptiveContainerStyleDefinition : IInspectable
     {
@@ -1637,7 +1669,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveContainerStyleDefinition
     {
@@ -1653,7 +1685,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(7e57fadd-78a6-4501-a769-a8a44bb9f9d2)
-#endif        
+#endif
     ]
     interface IAdaptiveContainerStylesDefinition : IInspectable
     {
@@ -1671,7 +1703,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveContainerStylesDefinition
     {
@@ -1687,7 +1719,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(ebca0eab-b08b-4087-9c42-4667ec6ab0e0)
-#endif        
+#endif
     ]
     interface IAdaptiveFontSizesConfig : IInspectable
     {
@@ -1714,7 +1746,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveFontSizesConfig
     {
@@ -1730,7 +1762,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(23c9d287-afdc-4ca4-87b4-92c551e4c8bc)
-#endif        
+#endif
     ]
     interface IAdaptiveFontWeightsConfig : IInspectable
     {
@@ -1751,7 +1783,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveFontWeightsConfig
     {
@@ -1767,7 +1799,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(9D744C66-DC57-4D4B-9997-D16761FB11D1)
-#endif        
+#endif
     ]
     interface IAdaptiveFontStyleDefinition : IInspectable
     {
@@ -1788,7 +1820,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveFontStyleDefinition
     {
@@ -1804,7 +1836,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(2445D5BF-F0DF-495D-873E-F5B36E53E5D1)
-#endif        
+#endif
     ]
     interface IAdaptiveFontStylesDefinition : IInspectable
     {
@@ -1825,7 +1857,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveFontStylesDefinition
     {
@@ -1841,7 +1873,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(421149d7-65e9-4ec9-b70b-802ba7d6cf98)
-#endif        
+#endif
     ]
     interface IAdaptiveColorConfig : IInspectable
     {
@@ -1859,7 +1891,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveColorConfig
     {
@@ -1875,7 +1907,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(1ade7d94-f0ae-4301-a9e2-b1f9c065916f)
-#endif        
+#endif
     ]
     interface IAdaptiveColorsConfig : IInspectable
     {
@@ -1908,7 +1940,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveColorsConfig
     {
@@ -1924,7 +1956,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(d730ba59-1f48-4dc6-8375-17f364f6086a)
-#endif        
+#endif
     ]
     interface IAdaptiveTextConfig : IInspectable
     {
@@ -1936,7 +1968,7 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT Color([out, retval] ForegroundColor* value);
         [propput] HRESULT Color([in] ForegroundColor value);
- 
+
         [propget] HRESULT IsSubtle([out, retval] boolean* value);
         [propput] HRESULT IsSubtle([in] boolean value);
 
@@ -1954,7 +1986,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveTextConfig
     {
@@ -1970,7 +2002,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(0e21ac82-4838-43cb-b7ef-7b023011061b)
-#endif        
+#endif
     ]
     interface IAdaptiveSpacingConfig : IInspectable
     {
@@ -2000,7 +2032,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveSpacingConfig
     {
@@ -2016,7 +2048,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(c34a155d-6913-4f8b-9b94-f4ab8c578aee)
-#endif        
+#endif
     ]
     interface IAdaptiveSeparatorConfig : IInspectable
     {
@@ -2034,7 +2066,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveSeparatorConfig
     {
@@ -2050,7 +2082,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(ce5cd318-502c-4017-a076-4f8cdbb0316d)
-#endif        
+#endif
     ]
     interface IAdaptiveImageSizesConfig : IInspectable
     {
@@ -2071,13 +2103,13 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveImageSizesConfig
     {
         [default] interface IAdaptiveImageSizesConfig;
     };
-                
+
     [
         version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveImageSetConfig),
@@ -2087,13 +2119,13 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(29685cc3-027f-4da8-9659-6d3a53c34d88)
-#endif        
+#endif
     ]
     interface IAdaptiveImageSetConfig : IInspectable
     {
         [propget] HRESULT ImageSize([out, retval] ImageSize* value);
         [propput] HRESULT ImageSize([in] ImageSize value);
-        
+
         [propget] HRESULT MaxImageHeight([out, retval] UINT32* value);
         [propput] HRESULT MaxImageHeight([in] UINT32 value);
     };
@@ -2105,7 +2137,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveImageSetConfig
     {
@@ -2121,7 +2153,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(ba0d7d84-d708-4919-a2f2-5c322a6f5460)
-#endif        
+#endif
     ]
     interface IAdaptiveImageConfig : IInspectable
     {
@@ -2136,7 +2168,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveImageConfig
     {
@@ -2152,7 +2184,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(9363ea9c-9f73-4e7d-8d6e-0559ac52b314)
-#endif        
+#endif
     ]
     interface IAdaptiveCardConfig : IInspectable
     {
@@ -2167,7 +2199,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveCardConfig
     {
@@ -2183,7 +2215,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(9949ed60-fbc0-49fd-80d4-29fb1184854d)
-#endif        
+#endif
     ]
     interface IAdaptiveFactSetConfig : IInspectable
     {
@@ -2204,7 +2236,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveFactSetConfig
     {
@@ -2220,7 +2252,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(eacabf24-288c-4307-bd5a-5888a00da918)
-#endif        
+#endif
     ]
     interface IAdaptiveShowCardActionConfig : IInspectable
     {
@@ -2241,7 +2273,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveShowCardActionConfig
     {
@@ -2257,7 +2289,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(ce6981d7-8989-42a3-b335-30cbf7108183)
-#endif        
+#endif
     ]
     interface IAdaptiveActionsConfig : IInspectable
     {
@@ -2293,7 +2325,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveActionsConfig
     {
@@ -2309,7 +2341,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(B8C95DEA-0668-4FD3-B1E2-98310610A6C3)
-#endif        
+#endif
     ]
     interface IAdaptiveMediaConfig : IInspectable
     {
@@ -2330,7 +2362,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveMediaConfig
     {
@@ -2346,7 +2378,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(85ef9ddc-4599-4ab6-adf1-1e04238601a5)
-#endif        
+#endif
     ]
     interface IAdaptiveHostConfig : IInspectable
     {
@@ -2408,7 +2440,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(0b1f8963-9d45-4ac0-9af4-cd7923f5206e)
-#endif        
+#endif
     ]
     interface IAdaptiveHostConfigParseResult : IInspectable
     {
@@ -2423,7 +2455,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveHostConfigParseResult
     {
@@ -2439,7 +2471,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(1a09b9b7-d678-495f-949e-3ad677424fdb)
-#endif        
+#endif
     ]
     interface IAdaptiveHostConfigStatics : IInspectable
     {
@@ -2456,7 +2488,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveHostConfig
     {
@@ -2471,7 +2503,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(b9bbff79-17a0-45ae-9a5f-86b9ff31bf88)
-#endif        
+#endif
     ]
     interface IAdaptiveActionElement : IInspectable
     {
@@ -2505,7 +2537,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(d70a58cb-4d51-4f96-bb6b-2698eced32ff)
-#endif        
+#endif
     ]
     interface IAdaptiveOpenUrlAction : IInspectable
     {
@@ -2520,7 +2552,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveOpenUrlAction
     {
@@ -2537,7 +2569,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(435ea974-33c7-43b0-a6ac-8137c1b7bb44)
-#endif        
+#endif
     ]
     interface IAdaptiveShowCardAction : IInspectable
     {
@@ -2552,7 +2584,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveShowCardAction
     {
@@ -2569,7 +2601,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(97b9b3a3-657b-4d38-a136-154cc8da19a9)
-#endif        
+#endif
     ]
     interface IAdaptiveSubmitAction : IInspectable
     {
@@ -2584,7 +2616,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveSubmitAction
     {
@@ -2603,7 +2635,7 @@ AdaptiveNamespaceStart
 #else
         uuid(1F626040-8C2F-4C64-AB3E-A80ECE538E5F)
 #endif
-    ] 
+    ]
     interface IAdaptiveToggleVisibilityTarget : IInspectable
     {
         [propget] HRESULT ElementId([out, retval] HSTRING * value);
@@ -2621,7 +2653,7 @@ AdaptiveNamespaceStart
          internal,
         activatable(InternalContract, 1)
 #endif
-    ] 
+    ]
     runtimeclass AdaptiveToggleVisibilityTarget {
         [default] interface IAdaptiveToggleVisibilityTarget;
     };
@@ -2636,7 +2668,7 @@ AdaptiveNamespaceStart
 #else
         uuid(DF122310-5768-4111-A155-92F6F34BB37A)
 #endif
-    ] 
+    ]
     interface IAdaptiveToggleVisibility : IInspectable
     {
         [propget] HRESULT TargetElements([out, retval] Windows.Foundation.Collections.IVector<AdaptiveToggleVisibilityTarget*> * *value);
@@ -2650,7 +2682,7 @@ AdaptiveNamespaceStart
         internal,
         activatable(InternalContract, 1)
 #endif
-    ] 
+    ]
     runtimeclass AdaptiveToggleVisibilityAction {
         [default] interface IAdaptiveToggleVisibility;
         interface IAdaptiveActionElement;
@@ -2665,7 +2697,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(3b655db6-54d2-47e7-8658-b58ced5fb237)
-#endif        
+#endif
     ]
     interface IAdaptiveCardResourceResolvers : IInspectable
     {
@@ -2680,7 +2712,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveCardResourceResolvers
     {
@@ -2695,7 +2727,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(30f17ba9-133a-4484-8002-a8f4b6764e3f)
-#endif        
+#endif
     ]
     interface IAdaptiveCardResourceResolver : IInspectable
     {
@@ -2711,7 +2743,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(e1d63f44-6550-454f-99f4-d02df5ae9b8c)
-#endif        
+#endif
     ]
     interface IAdaptiveCardGetResourceStreamArgsFactory : IInspectable
     {
@@ -2730,7 +2762,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(0eea761b-5a3e-4f1f-86f6-d511c178e671)
-#endif        
+#endif
     ]
     interface IAdaptiveCardGetResourceStreamArgs : IInspectable
     {
@@ -2744,7 +2776,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveCardGetResourceStreamArgs
     {
@@ -2760,7 +2792,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(7bf9ceac-105c-421a-8b4e-8e5be9ead986)
-#endif        
+#endif
     ]
     interface IRenderedAdaptiveCard : IInspectable
     {
@@ -2788,7 +2820,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass RenderedAdaptiveCard
     {
@@ -2804,7 +2836,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(a172be96-7ab5-4faa-a0fd-99e8160e359e)
-#endif        
+#endif
     ]
     interface IAdaptiveInputs : IInspectable
     {
@@ -2819,7 +2851,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveInputs
     {
@@ -2834,7 +2866,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(c42c7757-8cf0-49dc-8c8e-a341963eaba2)
-#endif        
+#endif
     ]
     interface IAdaptiveElementParser : IInspectable
     {
@@ -2855,7 +2887,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(ae307fdc-6a4e-4e10-a9d4-518ccee99c3b)
-#endif        
+#endif
     ]
     interface IAdaptiveElementParserRegistration : IInspectable
     {
@@ -2871,7 +2903,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveElementParserRegistration
     {
@@ -2887,7 +2919,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(a730c2e9-6ee8-4b03-b706-60138c66a4a8)
-#endif        
+#endif
     ]
     interface IAdaptiveActionParserRegistration : IInspectable
     {
@@ -2903,7 +2935,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveActionParserRegistration
     {
@@ -2918,7 +2950,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(355d37ed-d622-49c0-9b43-75975f1b6dbe)
-#endif        
+#endif
     ]
     interface IAdaptiveActionParser : IInspectable
     {
@@ -2939,7 +2971,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(f5a25e03-4d0e-4f0b-9ef6-3e6c37477e86)
-#endif        
+#endif
     ]
     interface IAdaptiveElementRendererRegistration : IInspectable
     {
@@ -2955,7 +2987,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveElementRendererRegistration
     {
@@ -2971,7 +3003,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(c7435e94-1028-4543-b52e-54126fcb411f)
-#endif        
+#endif
     ]
     interface IAdaptiveActionInvoker : IInspectable
     {
@@ -2985,13 +3017,13 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveActionInvoker
     {
         [default] interface IAdaptiveActionInvoker;
     };
-        
+
     [
         version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveMediaEventInvoker),
@@ -3001,7 +3033,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(DBB394A0-2EDD-4D04-911D-8E1A5CEB88E2)
-#endif        
+#endif
     ]
     interface IAdaptiveMediaEventInvoker : IInspectable
     {
@@ -3015,7 +3047,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveMediaEventInvoker
     {
@@ -3031,7 +3063,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(7855E78D-E217-4D12-9203-0136E79FF869)
-#endif        
+#endif
     ]
     interface IAdaptiveInputValue : IInspectable
     {
@@ -3048,7 +3080,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(d2ad59a2-01aa-4b39-b2a7-5ce1d4028fbb)
-#endif        
+#endif
     ]
     interface IAdaptiveRenderContext : IInspectable
     {
@@ -3078,7 +3110,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveRenderContext
     {
@@ -3093,7 +3125,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(8682c91f-28e3-48fa-8de3-15ba4ec495ca)
-#endif        
+#endif
     ]
     interface IAdaptiveElementRenderer : IInspectable
     {
@@ -3107,7 +3139,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveTextBlockRenderer
     {
@@ -3122,7 +3154,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveImageRenderer
     {
@@ -3137,7 +3169,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveImageSetRenderer
     {
@@ -3152,7 +3184,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveContainerRenderer
     {
@@ -3167,7 +3199,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveColumnRenderer
     {
@@ -3182,7 +3214,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveColumnSetRenderer
     {
@@ -3197,7 +3229,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveFactRenderer
     {
@@ -3212,7 +3244,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveChoiceSetInputRenderer
     {
@@ -3227,7 +3259,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveDateInputRenderer
     {
@@ -3242,7 +3274,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveNumberInputRenderer
     {
@@ -3257,7 +3289,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveTextInputRenderer
     {
@@ -3272,7 +3304,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveTimeInputRenderer
     {
@@ -3287,7 +3319,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveToggleInputRenderer
     {
@@ -3302,7 +3334,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveFactSetRenderer
     {
@@ -3317,7 +3349,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveMediaRenderer
     {
@@ -3349,7 +3381,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(8615baba-2695-46d2-a764-9ab473c65bb9)
-#endif        
+#endif
     ]
     interface IAdaptiveRenderArgs : IInspectable
     {
@@ -3366,7 +3398,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveRenderArgs
     {
@@ -3382,7 +3414,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(c0222295-bbec-4ff6-bdf3-f207ce78df69)
-#endif        
+#endif
     ]
     interface IAdaptiveError : IInspectable
     {
@@ -3398,7 +3430,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveError
     {
@@ -3414,7 +3446,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(4b5b28fe-9645-4e11-89c9-b9d25dd1b777)
-#endif        
+#endif
     ]
     interface IAdaptiveWarning : IInspectable
     {
@@ -3430,7 +3462,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
-#endif        
+#endif
     ]
     runtimeclass AdaptiveWarning
     {
@@ -3446,7 +3478,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(cced6652-8ca5-4841-b650-851770ec6ecf)
-#endif        
+#endif
     ]
     interface IWholeItemsPanel : IInspectable
     {

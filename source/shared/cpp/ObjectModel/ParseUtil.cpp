@@ -26,7 +26,6 @@ namespace AdaptiveSharedNamespace
         }
     }
 
-    // TODO: Remove? This code path might not be desirable going forward depending on how we decide to support forward compat. Task 10893205
     std::string ParseUtil::GetTypeAsString(const Json::Value& json)
     {
         std::string typeKey = "type";
@@ -253,7 +252,7 @@ namespace AdaptiveSharedNamespace
         }
         catch (const AdaptiveCardParseException&)
         {
-            return CardElementType::Unsupported;
+            return CardElementType::Unknown;
         }
     }
 

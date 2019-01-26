@@ -46,7 +46,7 @@ namespace AdaptiveCardsSharedModelUnitTest
     {
     public:
         ENUM_TEST_THROWING(AdaptiveCardSchemaKey, AdaptiveCardSchemaKey::Accent, "accent"s);
-        ENUM_TEST_WITH_DEFAULT(CardElementType, CardElementType::AdaptiveCard, "AdaptiveCard"s, CardElementType::Unsupported);
+        ENUM_TEST_WITH_DEFAULT(CardElementType, CardElementType::AdaptiveCard, "AdaptiveCard"s, CardElementType::Unknown);
         ENUM_TEST_WITH_DEFAULT(ActionType, ActionType::OpenUrl, "Action.OpenUrl"s, ActionType::Unsupported);
         ENUM_TEST_WITH_DEFAULT(HeightType, HeightType::Auto, "Auto"s, HeightType::Stretch);
         ENUM_TEST(Spacing, Spacing::None, "none"s);
