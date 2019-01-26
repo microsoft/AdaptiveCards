@@ -2,7 +2,6 @@
 
 #include "pch.h"
 #include "BaseCardElement.h"
-#include "Enums.h"
 
 namespace AdaptiveSharedNamespace
 {

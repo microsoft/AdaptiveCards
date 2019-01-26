@@ -2,7 +2,6 @@
 
 #include "pch.h"
 #include "BaseInputElement.h"
-#include "Enums.h"
 
 namespace AdaptiveSharedNamespace
 {

@@ -1,13 +1,11 @@
 #pragma once
 
 #include "pch.h"
-#include "Enums.h"
 #include "BaseCardElement.h"
 #include "ElementParserRegistration.h"
 
 namespace AdaptiveSharedNamespace
 {
-    class BaseCardElement;
     class Fact;
 
     class FactSet : public BaseCardElement
