@@ -18,9 +18,14 @@ window.onload = function()
 
     document.getElementById("btnExpandTemplate").onclick = function(e: MouseEvent)
     {
-        let template = new Template(JSON.parse(inputEdit.value));
+        try {
+            let template = new Template(JSON.parse(inputEdit.value));
 
-        context.$root = JSON.parse(dataEdit.value);
-        outputEdit.value = JSON.stringify(template.expand(context), null, 4);
+            context.$root = JSON.parse(dataEdit.value);
+            outputEdit.value = JSON.stringify(template.expand(context), null, 4);
+        }
+        catch (e) {
+            alert(e.message);
+        }
     }
 }

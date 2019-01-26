@@ -41,7 +41,19 @@ class TemplatizedString {
         }
     }
 
-    evaluate(context: ExpressionContext): any {
+    private _shouldDropOwner: boolean = false;
+
+    private evalExpression(expression: Expression, context: ExpressionContext): any {
+        let result = expression.evaluate(context);
+
+        if (result == undefined) {
+            this._shouldDropOwner = this._shouldDropOwner || !expression.allowNull;
+        }
+
+        return result;
+    }
+
+    private internalEvaluate(context: ExpressionContext): any {
         if (this._parts.length == 0) {
             return undefined;
         }
@@ -50,7 +62,7 @@ class TemplatizedString {
                 return this._parts[0];
             }
             else {
-                return (<Expression>this._parts[0]).evaluate(context);
+                return this.evalExpression(<Expression>this._parts[0], context);
             }
         }
         else {
@@ -61,12 +73,22 @@ class TemplatizedString {
                     s += part;
                 }
                 else {
-                    s += (<Expression>part).evaluate(context);
+                    s += this.evalExpression(<Expression>part, context);
                 }
             }
 
             return s;
         }
+    }
+
+    evaluate(context: ExpressionContext): any {
+        this._shouldDropOwner = false;
+
+        return this.internalEvaluate(context);
+    }
+
+    get shouldDropOwner(): boolean {
+        return this._shouldDropOwner;
     }
 }
 
@@ -109,7 +131,14 @@ class Template {
 
         for (let key of keys) {
             if (!this._context.isReservedField(key)) {
-                result[key] = this.internalExpand(node[key]);
+                let value = this.internalExpand(node[key]);
+
+                if (value != null) {
+                    result[key] = value;
+                }
+                else {
+                    return null;
+                }
             }
         }
 
@@ -126,11 +155,13 @@ class Template {
             for (let item of node) {
                 let expandedItem = this.internalExpand(item);
 
-                if (Array.isArray(expandedItem)) {
-                    itemArray = itemArray.concat(expandedItem);
-                }
-                else {
-                    itemArray.push(expandedItem);
+                if (expandedItem != null) {
+                    if (Array.isArray(expandedItem)) {
+                        itemArray = itemArray.concat(expandedItem);
+                    }
+                    else {
+                        itemArray.push(expandedItem);
+                    }
                 }
             }
 
@@ -138,6 +169,10 @@ class Template {
         }
         else if (node instanceof TemplatizedString) {
             result = node.evaluate(this._context);
+
+            if (node.shouldDropOwner) {
+                result = null;
+            }
         }
         else if (typeof node === "object") {
             let dataContext = node["$data"];
@@ -154,7 +189,11 @@ class Template {
                         this._context.$data = dataContext[i];
                         this._context.$index = i;
 
-                        result.push(this.expandSingleObject(node));
+                        let expandedObject = this.expandSingleObject(node);
+
+                        if (expandedObject != null) {
+                            result.push(expandedObject);
+                        }
                     }
                 }
                 else {

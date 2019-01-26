@@ -1,5 +1,6 @@
 type TokenType = 
     "{" |
+    "?#" |
     "}" |
     "[" |
     "]" |
@@ -60,6 +61,7 @@ class Tokenizer {
         Tokenizer.rules.push(
             { tokenType: undefined, regEx: /^\s/ },
             { tokenType: "{", regEx: /^{/ },
+            { tokenType: "?#", regEx: /^\?#/ },
             { tokenType: "}", regEx: /^}/ },
             { tokenType: "[", regEx: /^\[/ },
             { tokenType: "]", regEx: /^\]/ },
@@ -120,7 +122,7 @@ class Tokenizer {
             }
 
             if (!matchFound) {
-                i++;
+                throw new Error("Unexpected character " + subExpression[0] + " at position " + i);
             }
         }
 
@@ -160,9 +162,9 @@ class ExpressionContext {
     }
 
     private _functions = {};
-    private _$data: any;
 
     $root: any;
+    $data: any;
     $index: number;
 
     registerFunction(name: string, callback: FunctionCallback) {
@@ -187,12 +189,8 @@ class ExpressionContext {
         return ExpressionContext._reservedFields.indexOf(name) >= 0;
     }
 
-    get $data(): any {
-        return this._$data != undefined ? this._$data : this.$root;
-    }
-
-    set $data(value: any) {
-        this._$data = value;
+    get currentDataContext(): any {
+        return this.$data != undefined ? this.$data : this.$root;
     }
 }
 
@@ -200,6 +198,7 @@ ExpressionContext.init();
 
 class Expression extends ExpressionNode {
     nodes: Array<ExpressionNode> = [];
+    allowNull: boolean = true;
 
     evaluate(context: ExpressionContext): any {
         const operatorPriorityGroups = [
@@ -317,7 +316,7 @@ class PropertyPathNode extends ExpressionNode {
 
                 break;
             case "$data":
-                result = context.$data;
+                result = context.currentDataContext;
                 index++;
 
                 break;
@@ -327,7 +326,7 @@ class PropertyPathNode extends ExpressionNode {
 
                 break;
             default:
-                result = context.$data;
+                result = context.currentDataContext;
 
                 break;
         }
@@ -551,10 +550,20 @@ class ExpressionParser {
 
         let expectedNextTokenTypes: Array<TokenType> = literals.concat(["+", "-"]).concat(["("]);
 
+        if (startTokenType == "{") {
+            expectedNextTokenTypes.push("?#");
+        }
+
         while (!this.eoe) {
             this.ensureTokenType(expectedNextTokenTypes);
 
             switch (this.current.type) {
+                case "?#":
+                    result.allowNull = false;
+
+                    expectedNextTokenTypes = literals.concat(["+", "-"]).concat(["("]);
+
+                    break;
                 case "(":
                     result.nodes.push(this.parseExpression("(", [")"]));
 
