@@ -1,49 +1,8 @@
 import * as Enums from "./enums";
+import * as Shared from "./shared";
 
-/**
- * Fast UUID generator, RFC4122 version 4 compliant.
- * @author Jeff Ward (jcward.com).
- * @license MIT license
- * @link http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/21963136#21963136
- **/
-export class UUID {
-	private static lut = [];
-
-	static generate(): string {
-		let d0 = Math.random() * 0xffffffff | 0;
-		let d1 = Math.random() * 0xffffffff | 0;
-		let d2 = Math.random() * 0xffffffff | 0;
-		let d3 = Math.random() * 0xffffffff | 0;
-
-		return UUID.lut[d0 & 0xff] + UUID.lut[d0 >> 8 & 0xff] + UUID.lut[d0 >> 16 & 0xff] + UUID.lut[d0 >> 24 & 0xff] + '-' +
-			UUID.lut[d1 & 0xff] + UUID.lut[d1 >> 8 & 0xff] + '-' + UUID.lut[d1 >> 16 & 0x0f | 0x40] + UUID.lut[d1 >> 24 & 0xff] + '-' +
-			UUID.lut[d2 & 0x3f | 0x80] + UUID.lut[d2 >> 8 & 0xff] + '-' + UUID.lut[d2 >> 16 & 0xff] + UUID.lut[d2 >> 24 & 0xff] +
-			UUID.lut[d3 & 0xff] + UUID.lut[d3 >> 8 & 0xff] + UUID.lut[d3 >> 16 & 0xff] + UUID.lut[d3 >> 24 & 0xff];
-	}
-
-	static initialize() {
-		for (let i = 0; i < 256; i++) {
-			UUID.lut[i] = (i < 16 ? '0' : '') + i.toString(16);
-		}
-	}
-}
-
-UUID.initialize();
-
-export const ContentTypes = {
-	applicationJson: "application/json",
-	applicationXWwwFormUrlencoded: "application/x-www-form-urlencoded"
-}
-
-export interface ISeparationDefinition {
-	spacing: number,
-	lineThickness?: number,
-	lineColor?: string
-}
-
-export interface IInput {
-	id: string;
-	value: string;
+export function generateUniqueId(): string {
+	return "__ac-" + Shared.UUID.generate();
 }
 
 export function getValueOrDefault<T>(obj: any, defaultValue: T): T {
@@ -70,6 +29,24 @@ export function setEnumProperty(enumType: { [s: number]: string }, target: any, 
 	if (defaultValue === undefined || defaultValue !== propertyValue) {
 		target[propertyName] = enumType[propertyValue];
 	}
+}
+
+export function parseBoolProperty(value: any, defaultValue: boolean): boolean {
+	if (typeof value === "boolean") {
+		return value;
+	}
+	else if (typeof value === "string") {
+		switch (value.toLowerCase()) {
+			case "true":
+				return true;
+			case "false":
+				return false;
+			default:
+				return defaultValue;
+		}
+	}
+
+	return defaultValue;
 }
 
 export function getEnumValueOrDefault(targetEnum: { [s: number]: string }, name: string, defaultValue: number): number {
@@ -104,15 +81,16 @@ export function parseHostConfigEnum(targetEnum: { [s: number]: string }, value: 
 	}
 }
 
-export function renderSeparation(separationDefinition: ISeparationDefinition, orientation: Enums.Orientation): HTMLElement {
+export function renderSeparation(separationDefinition: Shared.ISeparationDefinition, orientation: Enums.Orientation): HTMLElement {
 	if (separationDefinition.spacing > 0 || separationDefinition.lineThickness > 0) {
-		var separator = document.createElement("div");
+		let separator = document.createElement("div");
+		separator.className = "ac-" + (orientation == Enums.Orientation.Horizontal ? "horizontal" : "vertical") + "-separator";
 
 		if (orientation == Enums.Orientation.Horizontal) {
 			if (separationDefinition.lineThickness) {
-				separator.style.marginTop = (separationDefinition.spacing / 2) + "px";
 				separator.style.paddingTop = (separationDefinition.spacing / 2) + "px";
-				separator.style.borderTop = separationDefinition.lineThickness + "px solid " + stringToCssColor(separationDefinition.lineColor);
+				separator.style.marginBottom = (separationDefinition.spacing / 2) + "px";
+				separator.style.borderBottom = separationDefinition.lineThickness + "px solid " + stringToCssColor(separationDefinition.lineColor);
 			}
 			else {
 				separator.style.height = separationDefinition.spacing + "px";
@@ -120,9 +98,9 @@ export function renderSeparation(separationDefinition: ISeparationDefinition, or
 		}
 		else {
 			if (separationDefinition.lineThickness) {
-				separator.style.marginLeft = (separationDefinition.spacing / 2) + "px";
 				separator.style.paddingLeft = (separationDefinition.spacing / 2) + "px";
-				separator.style.borderLeft = separationDefinition.lineThickness + "px solid " + stringToCssColor(separationDefinition.lineColor);
+				separator.style.marginRight = (separationDefinition.spacing / 2) + "px";
+				separator.style.borderRight = separationDefinition.lineThickness + "px solid " + stringToCssColor(separationDefinition.lineColor);
 			}
 			else {
 				separator.style.width = separationDefinition.spacing + "px";
@@ -153,99 +131,6 @@ export function stringToCssColor(color: string): string {
 	}
 	else {
 		return color;
-	}
-}
-
-export class StringWithSubstitutions {
-	private _isProcessed: boolean = false;
-	private _original: string = null;
-	private _processed: string = null;
-
-	substituteInputValues(inputs: Array<IInput>, contentType: string) {
-		this._processed = this._original;
-
-		var regEx = /\{{2}([a-z0-9_$@]+).value\}{2}/gi;
-		var matches;
-
-		while ((matches = regEx.exec(this._original)) != null) {
-			var matchedInput: IInput = null;
-
-			for (var i = 0; i < inputs.length; i++) {
-				if (inputs[i].id.toLowerCase() == matches[1].toLowerCase()) {
-					matchedInput = inputs[i];
-					break;
-				}
-			}
-
-			if (matchedInput) {
-				var valueForReplace = "";
-
-				if (matchedInput.value) {
-					valueForReplace = matchedInput.value;
-				}
-
-				if (contentType === ContentTypes.applicationJson) {
-					valueForReplace = JSON.stringify(valueForReplace);
-					valueForReplace = valueForReplace.slice(1, -1);
-				}
-				else if (contentType === ContentTypes.applicationXWwwFormUrlencoded) {
-					valueForReplace = encodeURIComponent(valueForReplace);
-				}
-
-				this._processed = this._processed.replace(matches[0], valueForReplace);
-			}
-		};
-
-		this._isProcessed = true;
-	}
-
-	getOriginal(): string {
-		return this._original;
-	}
-
-	get(): string {
-		if (!this._isProcessed) {
-			return this._original;
-		}
-		else {
-			return this._processed;
-		}
-	}
-
-	set(value: string) {
-		this._original = value;
-		this._isProcessed = false;
-	}
-}
-
-export class SizeAndUnit {
-	physicalSize: number;
-	unit: Enums.SizeUnit;
-
-	static parse(input: any): SizeAndUnit {
-		let result = new SizeAndUnit(0, Enums.SizeUnit.Weight);
-
-		let regExp = /^([0-9]+)(px|\*)?$/g;
-		let matches = regExp.exec(input);
-
-		if (matches && matches.length >= 2) {
-			result.physicalSize = parseInt(matches[1]);
-
-			if (matches.length == 3) {
-				if (matches[2] == "px") {
-					result.unit = Enums.SizeUnit.Pixel;
-				}
-			}
-
-			return result;
-		}
-
-		throw new Error("Invalid size: " + input);
-	}
-
-	constructor(physicalSize: number, unit: Enums.SizeUnit) {
-		this.physicalSize = physicalSize;
-		this.unit = unit;
 	}
 }
 

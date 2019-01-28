@@ -97,6 +97,7 @@ struct tm {
 #include "../../../shared/cpp/ObjectModel/Fact.h"
 #include "../../../shared/cpp/ObjectModel/FactSet.h"
 #include "../../../shared/cpp/ObjectModel/TextBlock.h"
+#include "../../../shared/cpp/ObjectModel/ActionSet.h"
 #include "../../../shared/cpp/ObjectModel/MediaSource.h"
 #include "../../../shared/cpp/ObjectModel/Media.h"
 #include "../../../shared/cpp/ObjectModel/ToggleVisibilityAction.h"
@@ -156,6 +157,8 @@ struct tm {
 %shared_ptr(AdaptiveCards::ToggleVisibilityTarget)
 %shared_ptr(AdaptiveCards::ToggleVisibilityAction)
 %shared_ptr(AdaptiveCards::ToggleVisibilityActionParser)
+%shared_ptr(AdaptiveCards::ActionSet)
+%shared_ptr(AdaptiveCards::ActionSetParser)
 
 namespace Json {
     %rename(JsonValue) Value;
@@ -601,6 +604,20 @@ namespace Json {
     }
 };
 
+%exception AdaptiveCards::ActionSet::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::ActionSet {
+    static AdaptiveCards::ActionSet *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::ActionSet *>(baseCardElement);
+    }
+};
 
 %include "../../../shared/cpp/ObjectModel/pch.h"
 %include "../../../shared/cpp/ObjectModel/EnumMagic.h"
@@ -644,3 +661,4 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/Media.h"
 %include "../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.h"
 %include "../../../shared/cpp/ObjectModel/ToggleVisibilityAction.h"
+%include "../../../shared/cpp/ObjectModel/ActionSet.h"

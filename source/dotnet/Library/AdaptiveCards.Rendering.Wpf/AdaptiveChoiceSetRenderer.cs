@@ -110,6 +110,12 @@ namespace AdaptiveCards.Rendering.Wpf
                     }
                 }
             });
+
+            if(!input.IsVisible)
+            {
+                uiGrid.Visibility = Visibility.Collapsed;
+            }
+
             if (!input.IsMultiSelect && input.Style == AdaptiveChoiceInputStyle.Compact)
             {
                 Grid.SetRow(uiComboBox, 1);

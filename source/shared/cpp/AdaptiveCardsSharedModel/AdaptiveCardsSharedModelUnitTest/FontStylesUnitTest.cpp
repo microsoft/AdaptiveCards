@@ -1,6 +1,4 @@
 #include "stdafx.h"
-#include "CppUnitTest.h"
-#include "Enums.h"
 #include "TextBlock.h"
 #include "ParseContext.h"
 

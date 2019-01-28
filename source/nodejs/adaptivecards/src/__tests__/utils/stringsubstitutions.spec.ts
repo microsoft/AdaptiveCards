@@ -1,4 +1,4 @@
-import { StringWithSubstitutions, IInput}  from "../../utils";
+import { StringWithSubstitutions, IInput}  from "../../shared";
 import { TextInput } from "../../card-elements";
 
 test('application/json encoding works', () => {
