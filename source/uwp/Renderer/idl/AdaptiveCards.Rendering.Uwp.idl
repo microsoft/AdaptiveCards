@@ -778,6 +778,7 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveBackgroundImage),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(1545EC36-6154-4F39-A81A-E1CF7B384B31),
         contract(InternalContract, 1),
