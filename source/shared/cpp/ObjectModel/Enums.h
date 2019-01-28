@@ -149,6 +149,7 @@ namespace AdaptiveSharedNamespace
 
     enum class CardElementType
     {
+        // When the order of existing enums are changed, coresponding changes are needed in iOS (ACOBaseCardElement.h)
         ActionSet = 0,
         AdaptiveCard,
         ChoiceInput,
