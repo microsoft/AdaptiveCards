@@ -19,7 +19,6 @@ export abstract class HostContainer {
         Adaptive.AdaptiveCard.elementTypeRegistry.reset();
         Adaptive.AdaptiveCard.actionTypeRegistry.reset();
         
-        Adaptive.AdaptiveCard.useAutomaticContainerBleeding = false;
         Adaptive.AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = true;
         Adaptive.AdaptiveCard.useAdvancedCardBottomTruncation = false;
         Adaptive.AdaptiveCard.useAdvancedTextBlockTruncation = true;

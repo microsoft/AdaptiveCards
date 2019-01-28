@@ -9,6 +9,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::ActionAlignment, "actionAlignment"},
             {AdaptiveCardSchemaKey::ActionMode, "actionMode"},
             {AdaptiveCardSchemaKey::Actions, "actions"},
+            {AdaptiveCardSchemaKey::ActionSet, "ActionSet"},
             {AdaptiveCardSchemaKey::ActionSetConfig, "actionSetConfig"},
             {AdaptiveCardSchemaKey::ActionsOrientation, "actionsOrientation"},
             {AdaptiveCardSchemaKey::AdaptiveCard, "adaptiveCard"},
@@ -143,7 +144,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Width, "width"},
             {AdaptiveCardSchemaKey::Wrap, "wrap"}});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(CardElementType, CardElementType::Unsupported, {
+    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(CardElementType, CardElementType::Unknown, {
             {CardElementType::AdaptiveCard, "AdaptiveCard"},
             {CardElementType::Column, "Column"},
             {CardElementType::ColumnSet, "ColumnSet"},
@@ -161,7 +162,8 @@ namespace AdaptiveSharedNamespace
             {CardElementType::TextBlock, "TextBlock"},
             {CardElementType::Custom, "Custom"},
             {CardElementType::Unknown, "Unknown"},
-            {CardElementType::Media, "Media"}});
+            {CardElementType::Media, "Media"},
+            {CardElementType::ActionSet, "ActionSet"}});
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ActionType, ActionType::Unsupported, {
             {ActionType::Unsupported, "Unsupported"},
@@ -281,9 +283,4 @@ namespace AdaptiveSharedNamespace
             {VerticalContentAlignment::Top, "Top"},
             {VerticalContentAlignment::Center, "Center"},
             {VerticalContentAlignment::Bottom, "Bottom"}});
-
-    DEFINE_ADAPTIVECARD_ENUM(Sentiment, {
-            {Sentiment::Default, "Default"},
-            {Sentiment::Positive, "Positive"},
-            {Sentiment::Destructive, "Destructive"}});
 }

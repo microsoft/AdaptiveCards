@@ -26,6 +26,11 @@ Json::Value SubmitAction::GetDataJsonAsValue() const
     return m_dataJson;
 }
 
+void SubmitAction::SetDataJson(const std::string value)
+{
+    SetDataJson(ParseUtil::GetJsonValueFromString(value));
+}
+
 void SubmitAction::SetDataJson(const Json::Value& value)
 {
     m_dataJson = value;
@@ -52,8 +57,7 @@ std::shared_ptr<BaseActionElement> SubmitActionParser::Deserialize(ParseContext&
     return submitAction;
 }
 
-std::shared_ptr<BaseActionElement>
-SubmitActionParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
+std::shared_ptr<BaseActionElement> SubmitActionParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
     return SubmitActionParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }

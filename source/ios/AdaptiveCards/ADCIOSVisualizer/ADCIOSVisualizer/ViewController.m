@@ -93,16 +93,18 @@
 - (IBAction)applyText:(id)sender
 {
     UITableView *ACVTabView = self.ACVTabVC.tableView;
-    [self update:self.editView.text];
-    [self.view addSubview: ACVTabView];
-    [self.editView removeFromSuperview];
+    if(_editView.text != NULL && ![_editView.text isEqualToString:@""]){
+        [self update:self.editView.text];
+        [self.view addSubview: ACVTabView];
+        [self.editView removeFromSuperview];
 
-    UIStackView *buttonLayout = self.buttonLayout;
-    NSDictionary *viewMap = NSDictionaryOfVariableBindings(ACVTabView, buttonLayout);
-    NSArray<NSString *> *formats = 
-        [NSArray arrayWithObjects:@"H:|-[ACVTabView]-|",   
-                              @"V:|-40-[ACVTabView(==200)]-[buttonLayout]", nil];
-    [ViewController applyConstraints:formats variables:viewMap];
+        UIStackView *buttonLayout = self.buttonLayout;
+        NSDictionary *viewMap = NSDictionaryOfVariableBindings(ACVTabView, buttonLayout);
+        NSArray<NSString *> *formats =
+            [NSArray arrayWithObjects:@"H:|-[ACVTabView]-|",
+                                  @"V:|-40-[ACVTabView(==200)]-[buttonLayout]", nil];
+        [ViewController applyConstraints:formats variables:viewMap];
+    }
 }
 
 - (void)viewDidLoad {
@@ -302,7 +304,7 @@
         if([button isKindOfClass:[ACRButton class]])
         {
             ACRButton *acrButton = (ACRButton*)button;
-            if(acrButton.sentiment != ACRSentimentDefault)
+            if(acrButton.sentiment && [@"default" caseInsensitiveCompare:acrButton.sentiment] != NSOrderedSame)
             {
                 [acrButton applySentimentStyling];
             }

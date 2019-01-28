@@ -19,7 +19,7 @@ namespace AdaptiveNamespace
             return result;
         }
 
-        template<typename T, typename C>
+        template<typename T, typename TInterface, typename C>
         static void IterateOverVector(_In_ ABI::Windows::Foundation::Collections::IVector<T*>* vector, C iterationCallback)
         {
             Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<T*>> localVector(vector);
@@ -36,8 +36,8 @@ namespace AdaptiveNamespace
             HRESULT hr = vectorIterator->get_HasCurrent(&hasCurrent);
             while (SUCCEEDED(hr) && hasCurrent)
             {
-                Microsoft::WRL::ComPtr<T> current = nullptr;
-                hr = vectorIterator->get_Current(&current);
+                Microsoft::WRL::ComPtr<TInterface> current = nullptr;
+                hr = vectorIterator->get_Current(current.GetAddressOf());
                 if (FAILED(hr))
                 {
                     break;
@@ -46,6 +46,12 @@ namespace AdaptiveNamespace
                 iterationCallback(current.Get());
                 hr = vectorIterator->MoveNext(&hasCurrent);
             }
+        }
+
+        template<typename T, typename C>
+        static void IterateOverVector(_In_ ABI::Windows::Foundation::Collections::IVector<T*>* vector, C iterationCallback)
+        {
+            IterateOverVector<T, T, C>(vector, iterationCallback);
         }
 
         template<typename T>

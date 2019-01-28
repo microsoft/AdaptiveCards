@@ -25,7 +25,7 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveHostConfigParseResult::RuntimeClassInitialize()
     {
-        m_errors = Make<Vector<IAdaptiveError*>>();
+        m_errors = Make<Vector<AdaptiveError*>>();
         return S_OK;
     }
 
@@ -41,7 +41,7 @@ namespace AdaptiveNamespace
     }
 
     HRESULT AdaptiveHostConfigParseResult::get_Errors(
-        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveError*>** value)
+        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveError*>** value)
     {
         return m_errors.CopyTo(value);
     }

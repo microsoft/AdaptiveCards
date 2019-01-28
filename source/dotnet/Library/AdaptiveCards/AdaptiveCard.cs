@@ -91,6 +91,7 @@ namespace AdaptiveCards
         [XmlArrayItem(ElementName = "OpenUrl", Type = typeof(AdaptiveOpenUrlAction))]
         [XmlArrayItem(ElementName = "ShowCard", Type = typeof(AdaptiveShowCardAction))]
         [XmlArrayItem(ElementName = "Submit", Type = typeof(AdaptiveSubmitAction))]
+        [XmlArrayItem(ElementName = "ToggleVisibility", Type = typeof(AdaptiveToggleVisibilityAction))]
 #endif
         public List<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
 

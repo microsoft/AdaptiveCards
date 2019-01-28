@@ -79,8 +79,8 @@ export enum Orientation {
     Vertical
 }
 
-export enum BackgroundImageMode {
-    Stretch,
+export enum FillMode {
+    Cover,
     RepeatHorizontally,
     RepeatVertically,
     Repeat

@@ -3,6 +3,7 @@
 
 #include "AdaptiveCard.h"
 #include "AdaptiveCardResourceResolvers.h"
+#include "AdaptiveActionSetRenderer.h"
 #include "AdaptiveChoiceSetInputRenderer.h"
 #include "AdaptiveColumnRenderer.h"
 #include "AdaptiveColumnSetRenderer.h"
@@ -126,7 +127,10 @@ namespace AdaptiveNamespace
             m_xamlBuilder->SetEnableXamlImageHandling(true);
             try
             {
-                m_xamlBuilder->BuildXamlTreeFromAdaptiveCard(adaptiveCard, &xamlTreeRoot, this, renderContext.Get());
+                AdaptiveNamespace::XamlBuilder::BuildXamlTreeFromAdaptiveCard(adaptiveCard,
+                                                                                          &xamlTreeRoot,
+                                                                                          renderContext.Get(),
+                                                                                          m_xamlBuilder);
                 renderedCard->SetFrameworkElement(xamlTreeRoot.Get());
             }
             catch (...)
@@ -160,11 +164,11 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(adaptiveCardParseResult->get_AdaptiveCard(&parsedCard));
         if (parsedCard == nullptr)
         {
-            ComPtr<IVector<IAdaptiveError*>> renderResultErrors;
+            ComPtr<IVector<AdaptiveError*>> renderResultErrors;
             RETURN_IF_FAILED(renderedCard->get_Errors(&renderResultErrors));
-            ComPtr<IVector<IAdaptiveError*>> parseErrors;
+            ComPtr<IVector<AdaptiveError*>> parseErrors;
             RETURN_IF_FAILED(adaptiveCardParseResult->get_Errors(&parseErrors));
-            XamlHelpers::IterateOverVector<IAdaptiveError>(parseErrors.Get(), [&](IAdaptiveError* error) {
+            XamlHelpers::IterateOverVector<AdaptiveError, IAdaptiveError>(parseErrors.Get(), [&](IAdaptiveError* error) {
                 ComPtr<IAdaptiveError> localError(error);
                 return renderResultErrors->Append(localError.Get());
             });
@@ -317,6 +321,8 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveCardRenderer::RegisterDefaultElementRenderers()
     {
+        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"ActionSet").Get(),
+                                                            Make<AdaptiveActionSetRenderer>().Get()));
         RETURN_IF_FAILED(
             m_elementRendererRegistration->Set(HStringReference(L"Column").Get(), Make<AdaptiveColumnRenderer>().Get()));
         RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"ColumnSet").Get(),
