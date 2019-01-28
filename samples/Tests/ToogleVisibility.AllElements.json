@@ -1,28 +1,28 @@
 {
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "type": "AdaptiveCard",
-    "version": "1.0",
-    "body": [
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
 		{
 			"type": "Image",
 			"url": "http://adaptivecards.io/content/cats/1.png",
 			"id": "id1",
 			"selectAction": {
-                "type": "Action.ToggleVisibility",
-                "targetElements": [
-                    "id2"
-                ]
-            }
+				"type": "Action.ToggleVisibility",
+				"targetElements": [
+					"id2"
+				]
+			}
 		},
 		{
 			"type": "Container",
 			"id": "id2",
 			"selectAction": {
-                "type": "Action.ToggleVisibility",
-                "targetElements": [
-                    "id3"
-                ]
-            },
+				"type": "Action.ToggleVisibility",
+				"targetElements": [
+					"id3"
+				]
+			},
 			"items": [
 				{
 					"type": "TextBlock",
@@ -38,11 +38,11 @@
 			"type": "ColumnSet",
 			"id": "id3",
 			"selectAction": {
-                "type": "Action.ToggleVisibility",
-                "targetElements": [
-                    "id1"
-                ]
-            },
+				"type": "Action.ToggleVisibility",
+				"targetElements": [
+					"id1"
+				]
+			},
 			"columns": [
 				{
 					"type": "Column",
@@ -100,8 +100,7 @@
 					]
 				}
 			]
-		},
-		
+		},		
 		{
 			"type": "TextBlock",
 			"text": "This is some text",
@@ -263,9 +262,8 @@
 				}
 			],
 			"isVisible": false
-		}
-		
-    ],
+		}	
+	],
 	"actions": [
 		{
 			"type": "Action.ToggleVisibility",
