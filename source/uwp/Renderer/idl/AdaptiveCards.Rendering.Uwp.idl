@@ -776,6 +776,7 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveBackgroundImage),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(1545EC36-6154-4F39-A81A-E1CF7B384B31),
         contract(InternalContract, 1),
@@ -835,8 +836,8 @@ AdaptiveNamespaceStart
         [propget] HRESULT FallbackText([out, retval] HSTRING* value);
         [propput] HRESULT FallbackText([in] HSTRING value);
 
-        [propget] HRESULT BackgroundImage([out, retval] IAdaptiveBackgroundImage** value);
-        [propput] HRESULT BackgroundImage([in] IAdaptiveBackgroundImage* value);
+        [propget] HRESULT BackgroundImage([out, retval] AdaptiveBackgroundImage** value);
+        [propput] HRESULT BackgroundImage([in] AdaptiveBackgroundImage* value);
 
         [propget] HRESULT Language([out, retval] HSTRING* value);
         [propput] HRESULT Language([in] HSTRING value);
@@ -1374,8 +1375,8 @@ AdaptiveNamespaceStart
         [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
         [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
 
-        [propget] HRESULT BackgroundImage([out, retval] IAdaptiveBackgroundImage * *value);
-        [propput] HRESULT BackgroundImage([in] IAdaptiveBackgroundImage * value);
+        [propget] HRESULT BackgroundImage([out, retval] AdaptiveBackgroundImage * *value);
+        [propput] HRESULT BackgroundImage([in] AdaptiveBackgroundImage * value);
     };
 
     [
@@ -1422,8 +1423,8 @@ AdaptiveNamespaceStart
         [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
         [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
 
-        [propget] HRESULT BackgroundImage([out, retval] IAdaptiveBackgroundImage * *value);
-        [propput] HRESULT BackgroundImage([in] IAdaptiveBackgroundImage * value);
+        [propget] HRESULT BackgroundImage([out, retval] AdaptiveBackgroundImage * *value);
+        [propput] HRESULT BackgroundImage([in] AdaptiveBackgroundImage * value);
     };
 
     [
@@ -3554,8 +3555,8 @@ AdaptiveNamespaceStart
 #endif
     ] interface ITileControl : IInspectable
     {
-        [propget] HRESULT BackgroundImage([out, retval] IAdaptiveBackgroundImage** value);
-        [propput] HRESULT BackgroundImage([in] IAdaptiveBackgroundImage* value);
+        [propget] HRESULT BackgroundImage([out, retval] AdaptiveBackgroundImage** value);
+        [propput] HRESULT BackgroundImage([in] AdaptiveBackgroundImage* value);
 
         [propget] HRESULT RootElement([out, retval] Windows.UI.Xaml.FrameworkElement * *value);
         [propput] HRESULT RootElement([in] Windows.UI.Xaml.FrameworkElement * value);
