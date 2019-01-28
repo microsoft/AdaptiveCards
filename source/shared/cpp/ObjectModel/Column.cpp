@@ -100,7 +100,7 @@ Json::Value Column::SerializeToJsonValue() const
             VerticalContentAlignmentToString(m_verticalContentAlignment);
     }
 
-    if (m_backgroundImage != nullptr)
+    if (m_backgroundImage != nullptr && !m_backgroundImage->GetUrl().empty())
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImage)] = m_backgroundImage->SerializeToJsonValue();
     }
