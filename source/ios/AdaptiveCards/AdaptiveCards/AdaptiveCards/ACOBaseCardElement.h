@@ -13,26 +13,26 @@
 - (NSData *)additionalProperty;
 
 typedef NS_ENUM(NSInteger, ACRCardElementType) {
-    ACRUnsupported = 0,
+    ACRActionSet = 0,
     ACRAdaptiveCard,
-    ACRTextBlock,
-    ACRImage,
-    ACRContainer,
-    ACRColumn,
-    ACRColumnSet,
-    ACRFactSet,
-    ACRFact,
-    ACRImageSet,
     ACRChoiceInput,
     ACRChoiceSetInput,
+    ACRColumn,
+    ACRColumnSet,
+    ACRContainer,
+    ACRCustom,
     ACRDateInput,
+    ACRFact,
+    ACRFactSet,
+    ACRImage,
+    ACRImageSet,
+    ACRMedia,
     ACRNumberInput,
+    ACRTextBlock,
     ACRTextInput,
     ACRTimeInput,
     ACRToggleInput,
-    ACRCustom,
-    ACRUnknown,
-    ACRMedia,
+    ACRUnknown
 };
 
 typedef NS_ENUM(NSInteger, ACRContainerStyle) {
