@@ -8,8 +8,10 @@
 #import "ACRLongPressGestureRecognizerFactory.h"
 #import "OpenUrlAction.h"
 #import "ACRShowCardTarget.h"
+#import "ACRToggleVisibilityTarget.h"
 #import "ShowCardAction.h"
 #import "SubmitAction.h"
+#import "ToggleVisibilityAction.h"
 #import "ACRAggregateTarget.h"
 #import "ACOBaseActionElementPrivate.h"
 
@@ -43,6 +45,14 @@ using namespace AdaptiveCards;
                 std::shared_ptr<ShowCardAction> showCardAction = std::dynamic_pointer_cast<ShowCardAction>(action);
                 // instantiate a ShowCardTarget
                 target = [[ACRShowCardTarget alloc] initWithActionElement:showCardAction config:config superview:viewGroup rootView:rootView button:nil];
+                break;
+            }
+            case ActionType::ToggleVisibility:
+            {
+                std::shared_ptr<ToggleVisibilityAction> toggleAction = std::dynamic_pointer_cast<ToggleVisibilityAction>(action);
+                
+                target = [[ACRToggleVisibilityTarget alloc]
+                             initWithActionElement:toggleAction config:config rootView:rootView];
                 break;
             }
             // everything else is not valid request

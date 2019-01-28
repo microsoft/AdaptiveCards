@@ -14,8 +14,8 @@ namespace AdaptiveNamespace
                                        _In_ ABI::AdaptiveNamespace::IAdaptiveInputs* inputs);
 
         // IAdaptiveActionEventArgs
-        IFACEMETHODIMP get_Action(_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** action);
-        IFACEMETHODIMP get_Inputs(_Outptr_ ABI::AdaptiveNamespace::IAdaptiveInputs** inputs);
+        IFACEMETHODIMP get_Action(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** action);
+        IFACEMETHODIMP get_Inputs(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveInputs** inputs);
 
     private:
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_action;

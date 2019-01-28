@@ -20,56 +20,50 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetElementTypeString(), m_typeString.GetAddressOf()));
 
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetIconUrl(), m_iconUrl.GetAddressOf()));
-        
-        m_sentiment = static_cast<ABI::AdaptiveNamespace::Sentiment>(sharedModel->GetSentiment());
+        RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetSentiment(), m_sentiment.GetAddressOf()));
 
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::get_Title(HSTRING* title) { return m_title.CopyTo(title); }
+    IFACEMETHODIMP AdaptiveActionElementBase::get_Title(_Outptr_ HSTRING* title) { return m_title.CopyTo(title); }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::put_Title(HSTRING title) { return m_title.Set(title); }
+    IFACEMETHODIMP AdaptiveActionElementBase::put_Title(_In_ HSTRING title) { return m_title.Set(title); }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::get_Id(HSTRING* id) { return m_id.CopyTo(id); }
+    IFACEMETHODIMP AdaptiveActionElementBase::get_Id(_Outptr_ HSTRING* id) { return m_id.CopyTo(id); }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::put_Id(HSTRING id) { return m_id.Set(id); }
+    IFACEMETHODIMP AdaptiveActionElementBase::put_Id(_In_ HSTRING id) { return m_id.Set(id); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveActionElementBase::get_IconUrl(HSTRING* iconUrl)
+    HRESULT AdaptiveActionElementBase::get_IconUrl(_Outptr_ HSTRING* iconUrl) { return m_iconUrl.CopyTo(iconUrl); }
+
+    HRESULT AdaptiveActionElementBase::put_IconUrl(_In_ HSTRING iconUrl) { return m_iconUrl.Set(iconUrl); }
+
+    IFACEMETHODIMP AdaptiveActionElementBase::get_Sentiment(_Outptr_ HSTRING* sentiment)
     {
-        return m_iconUrl.CopyTo(iconUrl);
+        return m_sentiment.CopyTo(sentiment);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveActionElementBase::put_IconUrl(HSTRING iconUrl)
+    IFACEMETHODIMP AdaptiveActionElementBase::put_Sentiment(_In_ HSTRING sentiment)
     {
-        return m_iconUrl.Set(iconUrl);
+        return m_sentiment.Set(sentiment);
     }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::get_Sentiment(ABI::AdaptiveNamespace::Sentiment* sentiment)
-    {
-        *sentiment = m_sentiment;
-        return S_OK;
-    }
-
-    IFACEMETHODIMP AdaptiveActionElementBase::put_Sentiment(ABI::AdaptiveNamespace::Sentiment sentiment)
-    {
-        m_sentiment = sentiment;
-        return S_OK;
-    }
-
-    IFACEMETHODIMP AdaptiveActionElementBase::get_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject** result)
+    IFACEMETHODIMP AdaptiveActionElementBase::get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
     {
         return m_additionalProperties.CopyTo(result);
     }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::put_AdditionalProperties(ABI::Windows::Data::Json::IJsonObject* jsonObject)
+    IFACEMETHODIMP AdaptiveActionElementBase::put_AdditionalProperties(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObject)
     {
         m_additionalProperties = jsonObject;
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::get_ActionTypeString(HSTRING* type) { return m_typeString.CopyTo(type); }
+    IFACEMETHODIMP AdaptiveActionElementBase::get_ActionTypeString(_Outptr_ HSTRING* type)
+    {
+        return m_typeString.CopyTo(type);
+    }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::ToJson(ABI::Windows::Data::Json::IJsonObject** result)
+    IFACEMETHODIMP AdaptiveActionElementBase::ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
     {
         std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement> sharedModel;
         RETURN_IF_FAILED(GetSharedModel(sharedModel));
@@ -82,7 +76,7 @@ namespace AdaptiveNamespace
         sharedCardElement->SetId(HStringToUTF8(m_id.Get()));
         sharedCardElement->SetTitle(HStringToUTF8(m_title.Get()));
         sharedCardElement->SetIconUrl(HStringToUTF8(m_iconUrl.Get()));
-        sharedCardElement->SetSentiment(static_cast<AdaptiveSharedNamespace::Sentiment>(m_sentiment));
+        sharedCardElement->SetSentiment(HStringToUTF8(m_sentiment.Get()));
 
         if (m_additionalProperties != nullptr)
         {

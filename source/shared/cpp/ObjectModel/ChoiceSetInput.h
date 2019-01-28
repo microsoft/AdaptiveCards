@@ -2,7 +2,6 @@
 
 #include "pch.h"
 #include "BaseInputElement.h"
-#include "Enums.h"
 
 namespace AdaptiveSharedNamespace
 {
@@ -29,11 +28,15 @@ namespace AdaptiveSharedNamespace
         std::string GetValue() const;
         void SetValue(const std::string& value);
 
+        bool GetWrap() const;
+        void SetWrap(bool value);
+
     private:
         void PopulateKnownPropertiesSet() override;
 
-        std::string m_value;
+        bool m_wrap;
         bool m_isMultiSelect;
+        std::string m_value;
         ChoiceSetStyle m_choiceSetStyle;
 
         std::vector<std::shared_ptr<ChoiceInput>> m_choices;
@@ -47,7 +50,7 @@ namespace AdaptiveSharedNamespace
         ChoiceSetInputParser(ChoiceSetInputParser&&) = default;
         ChoiceSetInputParser& operator=(const ChoiceSetInputParser&) = default;
         ChoiceSetInputParser& operator=(ChoiceSetInputParser&&) = default;
-        ~ChoiceSetInputParser() = default;
+        virtual ~ChoiceSetInputParser() = default;
 
         std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
         std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;

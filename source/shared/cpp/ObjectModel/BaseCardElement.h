@@ -1,8 +1,6 @@
 #pragma once
 
 #include "pch.h"
-#include "Enums.h"
-#include "json/json.h"
 #include "BaseActionElement.h"
 #include "ParseUtil.h"
 #include "Separator.h"
@@ -10,7 +8,6 @@
 
 namespace AdaptiveSharedNamespace
 {
-    class Container;
     class BaseCardElement
     {
     public:
@@ -37,6 +34,9 @@ namespace AdaptiveSharedNamespace
 
         virtual std::string GetId() const;
         virtual void SetId(const std::string& value);
+
+        virtual bool GetIsVisible() const;
+        virtual void SetIsVisible(const bool value);
 
         virtual const CardElementType GetElementType() const;
 
@@ -65,6 +65,7 @@ namespace AdaptiveSharedNamespace
         bool m_separator;
         Json::Value m_additionalProperties;
         HeightType m_height;
+        bool m_isVisible;
     };
 
     template<typename T> std::shared_ptr<T> BaseCardElement::Deserialize(const Json::Value& json)
@@ -77,6 +78,7 @@ namespace AdaptiveSharedNamespace
         baseCardElement->SetSpacing(
             ParseUtil::GetEnumValue<Spacing>(json, AdaptiveCardSchemaKey::Spacing, Spacing::Default, SpacingFromString));
         baseCardElement->SetSeparator(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Separator, false));
+        baseCardElement->SetIsVisible(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsVisible, true));
         baseCardElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id));
         baseCardElement->SetHeight(
             ParseUtil::GetEnumValue<HeightType>(json, AdaptiveCardSchemaKey::Height, HeightType::Auto, HeightTypeFromString));

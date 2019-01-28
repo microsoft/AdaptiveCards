@@ -18,13 +18,12 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveColumnRenderer::Render(IAdaptiveCardElement* cardElement,
-                                                                  IAdaptiveRenderContext* renderContext,
-                                                                  IAdaptiveRenderArgs* renderArgs,
-                                                                  ABI::Windows::UI::Xaml::IUIElement** result)
+    HRESULT AdaptiveColumnRenderer::Render(_In_ IAdaptiveCardElement* cardElement,
+                                           _In_ IAdaptiveRenderContext* renderContext,
+                                           _In_ IAdaptiveRenderArgs* renderArgs,
+                                           _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result)
     {
         XamlBuilder::BuildColumn(cardElement, renderContext, renderArgs, result);
         return S_OK;
     }
-
 }

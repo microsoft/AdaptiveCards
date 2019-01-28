@@ -11,6 +11,7 @@ namespace AdaptiveSharedNamespace
         ActionMode,
         ActionOrientation,
         Actions,
+        ActionSet,
         ActionSetConfig,
         ActionsOrientation,
         AdaptiveCard,
@@ -46,6 +47,7 @@ namespace AdaptiveSharedNamespace
         Default,
         DefaultPoster,
         Display,
+        ElementId,
         Emphasis,
         ExtraLarge,
         Facts,
@@ -76,6 +78,7 @@ namespace AdaptiveSharedNamespace
         IsRequired,
         IsSelected,
         IsSubtle,
+        IsVisible,
         Items,
         Language,
         Large,
@@ -118,6 +121,7 @@ namespace AdaptiveSharedNamespace
         Style,
         Subtle,
         SupportsInteractivity,
+        TargetElements,
         Text,
         TextBlock,
         TextConfig,
@@ -145,26 +149,26 @@ namespace AdaptiveSharedNamespace
 
     enum class CardElementType
     {
-        Unsupported = 0,
+        ActionSet = 0,
         AdaptiveCard,
-        TextBlock,
-        Image,
-        Container,
-        Column,
-        ColumnSet,
-        FactSet,
-        Fact,
-        ImageSet,
         ChoiceInput,
         ChoiceSetInput,
+        Column,
+        ColumnSet,
+        Container,
+        Custom,
         DateInput,
+        Fact,
+        FactSet,
+        Image,
+        ImageSet,
+        Media,
         NumberInput,
+        TextBlock,
         TextInput,
         TimeInput,
         ToggleInput,
-        Custom,
         Unknown,
-        Media
     };
     DECLARE_ADAPTIVECARD_ENUM(CardElementType);
 
@@ -247,6 +251,7 @@ namespace AdaptiveSharedNamespace
         ShowCard,
         Submit,
         OpenUrl,
+        ToggleVisibility,
         Custom
     };
     DECLARE_ADAPTIVECARD_ENUM(ActionType);
@@ -353,14 +358,6 @@ namespace AdaptiveSharedNamespace
         LeftOfTitle
     };
     DECLARE_ADAPTIVECARD_ENUM(IconPlacement);
-
-    enum class Sentiment
-    {
-        Default = 0,
-        Positive,
-        Destructive
-    };
-    DECLARE_ADAPTIVECARD_ENUM(Sentiment);
 
     enum class VerticalContentAlignment
     {

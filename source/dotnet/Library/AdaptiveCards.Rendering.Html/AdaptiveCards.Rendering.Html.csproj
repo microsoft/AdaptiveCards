@@ -12,6 +12,7 @@
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/Microsoft/AdaptiveCards/master/LICENSE</PackageLicenseUrl>
     <DefineConstants>$(DefineConstants);$(AdditionalConstants)</DefineConstants>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <GenerateAssemblyInfo Condition="$(Tfs_PackageVersionNumber) != ''">false</GenerateAssemblyInfo>
   </PropertyGroup>
 

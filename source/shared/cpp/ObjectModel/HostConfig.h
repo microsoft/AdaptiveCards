@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Enums.h"
-#include "json/json.h"
+#include "pch.h"
 
 namespace AdaptiveSharedNamespace
 {

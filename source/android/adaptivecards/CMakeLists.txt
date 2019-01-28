@@ -24,6 +24,7 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/jsoncpp.cpp
              ../../shared/cpp/ObjectModel/ActionParserRegistration.cpp
              ../../shared/cpp/ObjectModel/AdaptiveBase64Util.cpp
+             ../../shared/cpp/ObjectModel/ActionSet.cpp
              ../../shared/cpp/ObjectModel/AdaptiveCardParseException.cpp
              ../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.cpp
              ../../shared/cpp/ObjectModel/BaseActionElement.cpp
@@ -63,6 +64,8 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/TextInput.cpp
              ../../shared/cpp/ObjectModel/TimeInput.cpp
              ../../shared/cpp/ObjectModel/ToggleInput.cpp
+             ../../shared/cpp/ObjectModel/ToggleVisibilityAction.cpp
+             ../../shared/cpp/ObjectModel/ToggleVisibilityTarget.cpp
              ../../shared/cpp/ObjectModel/UnknownElement.cpp
              ../../shared/cpp/ObjectModel/Util.cpp
              src/main/cpp/objectmodel_wrap.cpp

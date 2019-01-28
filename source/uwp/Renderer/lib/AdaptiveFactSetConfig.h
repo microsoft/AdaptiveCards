@@ -15,14 +15,14 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(FactSetConfig factSetConfig) noexcept;
 
-        IFACEMETHODIMP get_Title(_Out_ ABI::AdaptiveNamespace::IAdaptiveTextConfig** titleTextConfig);
+        IFACEMETHODIMP get_Title(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveTextConfig** titleTextConfig);
         IFACEMETHODIMP put_Title(_In_ ABI::AdaptiveNamespace::IAdaptiveTextConfig* titleTextConfig);
 
-        IFACEMETHODIMP get_Value(_Out_ ABI::AdaptiveNamespace::IAdaptiveTextConfig** valueTextConfig);
+        IFACEMETHODIMP get_Value(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveTextConfig** valueTextConfig);
         IFACEMETHODIMP put_Value(_In_ ABI::AdaptiveNamespace::IAdaptiveTextConfig* valueTextConfig);
 
         IFACEMETHODIMP get_Spacing(_Out_ UINT32* value);
-        IFACEMETHODIMP put_Spacing(_In_ UINT32 value);
+        IFACEMETHODIMP put_Spacing(UINT32 value);
 
     private:
         UINT m_spacing;

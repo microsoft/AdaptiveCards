@@ -19,6 +19,7 @@ using System.Windows.Threading;
 using Newtonsoft.Json.Linq;
 using Xceed.Wpf.Toolkit.PropertyGrid;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
+using System.Windows.Media;
 
 namespace WpfVisualizer
 {
@@ -94,6 +95,18 @@ namespace WpfVisualizer
                 AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(textBox.Text);
 
                 AdaptiveCard card = parseResult.Card;
+
+                /*
+                // Example on how to override the Action Positive and Destructive styles
+                Style positiveStyle = new Style(typeof(Button));
+                positiveStyle.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.Green));
+                Style otherStyle = new Style(typeof(Button));
+                otherStyle.Setters.Add(new Setter(Button.BackgroundProperty, Brushes.Yellow));
+                otherStyle.Setters.Add(new Setter(Button.ForegroundProperty, Brushes.Red));
+
+                Renderer.Resources.Add("Adaptive.Action.Submit.positive", positiveStyle);
+                Renderer.Resources.Add("Adaptive.Action.Submit.other", otherStyle);
+                */
 
                 RenderedAdaptiveCard renderedCard = Renderer.RenderCard(card);
                 // TODO: should we have an option to render fallback card instead of exception?

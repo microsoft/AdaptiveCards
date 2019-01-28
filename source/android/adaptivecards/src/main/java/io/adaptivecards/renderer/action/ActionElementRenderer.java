@@ -254,14 +254,17 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         return new Button(themedContext);
     }
 
-    private Button createButton(Context context, Sentiment sentiment, HostConfig hostConfig)
+    private Button createButton(Context context, String sentiment, HostConfig hostConfig)
     {
-        if(sentiment == Sentiment.Positive || sentiment == Sentiment.Destructive)
+        boolean isPositiveSentiment = sentiment.equalsIgnoreCase("Positive");
+        boolean isDestructiveSentiment = sentiment.equalsIgnoreCase("Destructive");
+
+        if(isPositiveSentiment || isDestructiveSentiment)
         {
             Resources.Theme theme = context.getTheme();
             TypedValue buttonStyle = new TypedValue();
 
-            if(sentiment == sentiment.Positive)
+            if(isPositiveSentiment)
             {
                 if(theme.resolveAttribute(R.attr.adaptiveActionPositive, buttonStyle, true))
                 {

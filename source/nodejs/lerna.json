@@ -1,0 +1,16 @@
+{
+	"version": "independent",
+	"packages": [
+		"adaptivecards*/**"
+	],
+
+	"command": {
+		"publish": {
+			"allowBranch": "master",
+			"ignoreChanges": [
+				"**/__tests__/**",
+				"*.md"
+			]
+		}
+	}
+}

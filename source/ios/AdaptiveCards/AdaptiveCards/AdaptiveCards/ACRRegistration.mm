@@ -27,6 +27,7 @@
 #import "ACRActionOpenURLRenderer.h"
 #import "ACRActionShowCardRenderer.h"
 #import "ACRActionSubmitRenderer.h"
+#import "ACRActionToggleVisibilityRenderer.h"
 #import "ACRActionSetRenderer.h"
 #import "ACRCustomRenderer.h"
 #import "BaseCardElement.h"
@@ -72,6 +73,7 @@ using namespace AdaptiveCards;
              [ACRActionOpenURLRenderer  getInstance], [NSNumber numberWithInt:(int)ActionType::OpenUrl],
              [ACRActionShowCardRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::ShowCard],
              [ACRActionSubmitRenderer   getInstance], [NSNumber numberWithInt:(int)ActionType::Submit],
+             [ACRActionToggleVisibilityRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::ToggleVisibility],
              nil];
         _actionSetRenderer = [ACRActionSetRenderer getInstance];
         _defaultActionSetRenderer = _actionSetRenderer;

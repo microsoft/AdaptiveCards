@@ -16,32 +16,33 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveSubmitAction::RuntimeClassInitialize(
-        const std::shared_ptr<AdaptiveSharedNamespace::SubmitAction>& sharedSubmitAction) try
+    HRESULT AdaptiveSubmitAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::SubmitAction>& sharedSubmitAction) try
     {
         if (sharedSubmitAction == nullptr)
         {
             return E_INVALIDARG;
         }
 
-        RETURN_IF_FAILED(StringToJsonValue(sharedSubmitAction->GetDataJson(), &m_dataJson));
+        auto sharedJson = sharedSubmitAction->GetDataJson();
+        if (!sharedJson.empty())
+        {
+            RETURN_IF_FAILED(StringToJsonValue(sharedSubmitAction->GetDataJson(), &m_dataJson));
+        }
+
         InitializeBaseElement(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(sharedSubmitAction));
         return S_OK;
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveSubmitAction::get_ActionType(ABI::AdaptiveNamespace::ActionType* actionType)
+    HRESULT AdaptiveSubmitAction::get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType)
     {
         *actionType = ABI::AdaptiveNamespace::ActionType::Submit;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveSubmitAction::get_DataJson(IJsonValue** data)
-    {
-        return m_dataJson.CopyTo(data);
-    }
+    HRESULT AdaptiveSubmitAction::get_DataJson(_COM_Outptr_ IJsonValue** data) { return m_dataJson.CopyTo(data); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveSubmitAction::put_DataJson(IJsonValue* data)
+    HRESULT AdaptiveSubmitAction::put_DataJson(_In_ IJsonValue* data)
     {
         m_dataJson = data;
         return S_OK;
@@ -54,8 +55,11 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(submitAction)));
 
         std::string jsonAsString;
-        RETURN_IF_FAILED(JsonValueToString(m_dataJson.Get(), jsonAsString));
-        submitAction->SetDataJson(jsonAsString);
+        if (m_dataJson != nullptr)
+        {
+            RETURN_IF_FAILED(JsonValueToString(m_dataJson.Get(), jsonAsString));
+            submitAction->SetDataJson(jsonAsString);
+        }
 
         sharedModel = submitAction;
         return S_OK;

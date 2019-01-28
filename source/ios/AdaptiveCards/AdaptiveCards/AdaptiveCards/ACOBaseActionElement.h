@@ -13,21 +13,17 @@ typedef NS_ENUM(NSInteger, ACRActionType) {
     ACRShowCard = 1,
     ACRSubmit,
     ACROpenUrl,
+    ACRToggleVisibility,
 };
 
 typedef NS_ENUM(NSInteger, ACRIconPlacement) {
     ACRAboveTitle = 0,
-    ACRLeftOfTitle
-};
-
-typedef NS_ENUM(NSInteger, ACRSentiment) {
-    ACRSentimentDefault = 0,
-    ACRSentimentPositive,
-    ACRSentimentDestructive
+    ACRLeftOfTitle,
+    ACRNoTitle,
 };
 
 @property ACRActionType type;
-@property ACRSentiment sentiment;
+@property NSString *sentiment;
 
 - (NSString *)title;
 - (NSString *)elementId;
