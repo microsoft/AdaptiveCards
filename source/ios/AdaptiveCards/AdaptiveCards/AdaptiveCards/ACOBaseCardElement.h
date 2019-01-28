@@ -13,7 +13,7 @@
 - (NSData *)additionalProperty;
 
 typedef NS_ENUM(NSInteger, ACRCardElementType) {
-    ACRActionSet =0,
+    ACRActionSet = 0,
     ACRAdaptiveCard,
     ACRChoiceInput,
     ACRChoiceSetInput,
