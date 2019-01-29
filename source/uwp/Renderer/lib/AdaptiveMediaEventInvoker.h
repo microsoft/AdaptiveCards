@@ -18,7 +18,7 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP SendMediaClickedEvent(_In_ ABI::AdaptiveNamespace::IAdaptiveMedia* mediaElement);
 
     private:
-        Microsoft::WRL::ComPtr<AdaptiveNamespace::RenderedAdaptiveCard> m_renderResult;
+        Microsoft::WRL::WeakRef m_weakRenderResult;
     };
 
     ActivatableClass(AdaptiveMediaEventInvoker);

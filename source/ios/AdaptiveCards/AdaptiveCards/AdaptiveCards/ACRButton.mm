@@ -133,36 +133,32 @@
 
 - (void)applySentimentStyling
 {
-    switch (_sentiment) {
-        case ACRSentimentPositive: {
-            BOOL usePositiveDefault = [_positiveUseDefault boolValue];
-
-            // By default, positive sentiment must have background accentColor and white text/foreground color
-            if(usePositiveDefault) {
-                [self setBackgroundColor:_defaultPositiveBackgroundColor];
-                [self setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
-            } else {
-                [self setBackgroundColor:_positiveBackgroundColor];
-                [self setTitleColor:_positiveForegroundColor forState:UIControlStateNormal];
-            }
-            break;
+    if([@"positive" caseInsensitiveCompare:_sentiment] == NSOrderedSame)
+    {
+        BOOL usePositiveDefault = [_positiveUseDefault boolValue];
+        
+        // By default, positive sentiment must have background accentColor and white text/foreground color
+        if(usePositiveDefault) {
+            [self setBackgroundColor:_defaultPositiveBackgroundColor];
+            [self setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+        } else {
+        // Otherwise use the values defined by the user in the ACRButton.xib
+            [self setBackgroundColor:_positiveBackgroundColor];
+            [self setTitleColor:_positiveForegroundColor forState:UIControlStateNormal];
         }
-
-        case ACRSentimentDestructive: {
-            BOOL useDestructiveDefault = [_destructiveUseDefault boolValue];
-
-            if(useDestructiveDefault) {
-                [self setTitleColor:_defaultDestructiveForegroundColor forState:UIControlStateNormal];
-            } else {
-                [self setBackgroundColor:_destructiveBackgroundColor];
-                [self setTitleColor:_destructiveForegroundColor forState:UIControlStateNormal];
-            }
-            break;
+    }
+    else if([@"destructive" caseInsensitiveCompare:_sentiment] == NSOrderedSame)
+    {
+        BOOL useDestructiveDefault = [_destructiveUseDefault boolValue];
+        
+        // By default, destructive sentiment must have a attention text/foreground color
+        if(useDestructiveDefault) {
+            [self setTitleColor:_defaultDestructiveForegroundColor forState:UIControlStateNormal];
+        } else {
+        // Otherwise use the values defined by the user in the ACRButton.xib
+            [self setBackgroundColor:_destructiveBackgroundColor];
+            [self setTitleColor:_destructiveForegroundColor forState:UIControlStateNormal];
         }
-
-        case ACRSentimentDefault:
-        default:
-            break;
     }
 }
 

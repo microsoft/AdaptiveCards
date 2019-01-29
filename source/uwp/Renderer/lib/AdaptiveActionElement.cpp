@@ -20,8 +20,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetElementTypeString(), m_typeString.GetAddressOf()));
 
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetIconUrl(), m_iconUrl.GetAddressOf()));
-
-        m_sentiment = static_cast<ABI::AdaptiveNamespace::Sentiment>(sharedModel->GetSentiment());
+        RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetSentiment(), m_sentiment.GetAddressOf()));
 
         return S_OK;
     }
@@ -38,16 +37,14 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveActionElementBase::put_IconUrl(_In_ HSTRING iconUrl) { return m_iconUrl.Set(iconUrl); }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::get_Sentiment(_Out_ ABI::AdaptiveNamespace::Sentiment* sentiment)
+    IFACEMETHODIMP AdaptiveActionElementBase::get_Sentiment(_Outptr_ HSTRING* sentiment)
     {
-        *sentiment = m_sentiment;
-        return S_OK;
+        return m_sentiment.CopyTo(sentiment);
     }
 
-    IFACEMETHODIMP AdaptiveActionElementBase::put_Sentiment(ABI::AdaptiveNamespace::Sentiment sentiment)
+    IFACEMETHODIMP AdaptiveActionElementBase::put_Sentiment(_In_ HSTRING sentiment)
     {
-        m_sentiment = sentiment;
-        return S_OK;
+        return m_sentiment.Set(sentiment);
     }
 
     IFACEMETHODIMP AdaptiveActionElementBase::get_AdditionalProperties(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
@@ -79,7 +76,7 @@ namespace AdaptiveNamespace
         sharedCardElement->SetId(HStringToUTF8(m_id.Get()));
         sharedCardElement->SetTitle(HStringToUTF8(m_title.Get()));
         sharedCardElement->SetIconUrl(HStringToUTF8(m_iconUrl.Get()));
-        sharedCardElement->SetSentiment(static_cast<AdaptiveSharedNamespace::Sentiment>(m_sentiment));
+        sharedCardElement->SetSentiment(HStringToUTF8(m_sentiment.Get()));
 
         if (m_additionalProperties != nullptr)
         {
