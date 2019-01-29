@@ -101,8 +101,8 @@ struct tm {
 #include "../../../shared/cpp/ObjectModel/Media.h"
 #include "../../../shared/cpp/ObjectModel/ToggleVisibilityAction.h"
 #include "../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.h"
-%include "../../../shared/cpp/ObjectModel/UnknownElement.h"
-%include "../../../shared/cpp/ObjectModel/UnknownActionElement.h"
+#include "../../../shared/cpp/ObjectModel/UnknownElement.h"
+#include "../../../shared/cpp/ObjectModel/UnknownActionElement.h"
 %}
 
 %shared_ptr(AdaptiveCards::BaseActionElement)
