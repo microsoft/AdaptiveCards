@@ -15,9 +15,12 @@ import * as Constants from "../../utils/constants";
 import * as Enums from '../../utils/enums';
 import Video from "react-native-video";
 import ElementWrapper from './element-wrapper'
-import { InputContextConsumer } from '../../utils/context';
+import { InputContextConsumer, InputContext } from '../../utils/context';
 
 export class Media extends React.Component {
+
+    static contextType = InputContext;
+
     constructor(props) {
         super(props);
         this.payload = props.json;
@@ -28,10 +31,18 @@ export class Media extends React.Component {
         }
     }
 
+    componentDidMount() {
+        if (this.payload.sources && this.payload.sources.length > 0) {
+            this.payload.sources.forEach(source => {
+                this.context.addResourseInformation(source.url, source.mimeType, this.payload.type);
+            })
+        }
+    }
+
     getMediaSources = (sources) => {
         if (this.payload.sources && this.payload.sources.length > 0) {
             sources.forEach(source => {
-                this.addUriAttribute(source)
+                this.addUriAttribute(source);
             })
             return sources;
         } else {
