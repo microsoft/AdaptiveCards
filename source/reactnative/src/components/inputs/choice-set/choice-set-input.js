@@ -11,7 +11,8 @@ import {
 	View,
 	Picker,
 	TouchableOpacity,
-	Image
+	Image,
+	Platform
 } from 'react-native';
 
 import ElementWrapper from '../../elements/element-wrapper';
@@ -124,7 +125,7 @@ export class ChoiceSetInput extends React.Component {
 	renderPickerComponent(addInputItem) {
 		return (
 			<View style={styles.containerView}>
-				<TouchableOpacity
+				{ (Platform.OS === Constants.PlatformIOS) && <TouchableOpacity
 					activeOpacity={1}
 					onPress={onPress}>
 					<View style={styles.touchView}>
@@ -142,26 +143,28 @@ export class ChoiceSetInput extends React.Component {
 							source={require(DropDownImage)}
 						/>
 					</View>
-				</TouchableOpacity>
-				{this.state.isPickerSelected &&
-					<Picker
-						mode={'dropdown'}
-						selectedValue={this.state.selectedPickerValue}
-						style={styles.pickerContainer}
-						onValueChange={
-							(itemValue, itemIndex) => {
-								this.setState({
-									selectedPickerValue: itemValue,
-								})
-								addInputItem(this.id, itemValue);
-							}}>
-						{this.choices.map((item, key) => (
-							<Picker.Item
-								label={item.title}
-								value={item.value} key={key}
-							/>)
-						)}
-					</Picker>
+				</TouchableOpacity> }
+				{ ((Platform.OS === Constants.PlatformIOS) ? this.state.isPickerSelected : true) &&
+					<View style={styles.pickerContainer}>
+						<Picker
+							mode={'dropdown'}
+							selectedValue={this.state.selectedPickerValue}
+							
+							onValueChange={
+								(itemValue, itemIndex) => {
+									this.setState({
+										selectedPickerValue: itemValue,
+									})
+									addInputItem(this.id, itemValue);
+								}}>
+							{this.choices.map((item, key) => (
+								<Picker.Item
+									label={item.title}
+									value={item.value} key={key}
+								/>)
+							)}
+						</Picker>
+					</View>
 				}
 			</View>
 		)
