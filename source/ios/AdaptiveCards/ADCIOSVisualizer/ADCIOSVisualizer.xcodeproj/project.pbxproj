@@ -26,6 +26,7 @@
 		30860BCD20C9B5C9009F9D99 /* ColumnSet.Input.Time.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 30860BC120C9B5C9009F9D99 /* ColumnSet.Input.Time.VerticalStretch.json */; };
 		30A3885E20D315AA00AAEE59 /* NotificationCard.json in Resources */ = {isa = PBXBuildFile; fileRef = 30A3885C20D315AA00AAEE59 /* NotificationCard.json */; };
 		6B14FC5D2113BC2200A11CC5 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		6B22426A21FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22426921FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm */; };
 		6B2630DB2150804500ED9207 /* ColumnSet.Media.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B2630DA2150804500ED9207 /* ColumnSet.Media.VerticalStretch.json */; };
 		6B2630DD215080FB00ED9207 /* ColumnSet.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B2630DC215080FA00ED9207 /* ColumnSet.VerticalStretch.json */; };
 		6B2630DF2151A23000ED9207 /* FactSetWrapping.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B2630DE2151A22F00ED9207 /* FactSetWrapping.json */; };
@@ -37,9 +38,9 @@
 		6B5D23F3212393480010EB07 /* Image.BackgroundColor.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B5D23F2212393480010EB07 /* Image.BackgroundColor.json */; };
 		6B5D23FB2124ADAC0010EB07 /* Image.ImageBaseUrl.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B5D23FA2124ADAB0010EB07 /* Image.ImageBaseUrl.json */; };
 		6B5D2413212E15740010EB07 /* Feedback.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B5D2412212E15740010EB07 /* Feedback.json */; };
-		6B616C4A21D6B8D4003E29CE /* SearchResults.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B616C4921D6B8D4003E29CE /* SearchResults.json */; };
 		6B616C3C21CB0B6D003E29CE /* Action.ToggleVisibility.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B616C3B21CB0B6C003E29CE /* Action.ToggleVisibility.json */; };
 		6B616C4621CB2493003E29CE /* AutoImageSet.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B616C4521CB2493003E29CE /* AutoImageSet.json */; };
+		6B616C4A21D6B8D4003E29CE /* SearchResults.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B616C4921D6B8D4003E29CE /* SearchResults.json */; };
 		6B7B1A9B20C21CA900260731 /* SportingEvent.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B7B1A9920C21CA800260731 /* SportingEvent.json */; };
 		6B980936215AE8780024B79B /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980935215AE8780024B79B /* AdaptiveCards.framework */; };
 		6B980939215AE9A10024B79B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980933215AE6EC0024B79B /* UIKit.framework */; };
@@ -74,7 +75,6 @@
 		F423C0851EE1FB6100905679 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F423C0841EE1FB6100905679 /* Assets.xcassets */; };
 		F423C0881EE1FB6100905679 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F423C0861EE1FB6100905679 /* LaunchScreen.storyboard */; };
 		F423C0931EE1FB6100905679 /* ADCIOSVisualizerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = F423C0921EE1FB6100905679 /* ADCIOSVisualizerTests.mm */; };
-		F423C09E1EE1FB6100905679 /* ADCIOSVisualizerUITests.mm in Sources */ = {isa = PBXBuildFile; fileRef = F423C09D1EE1FB6100905679 /* ADCIOSVisualizerUITests.mm */; };
 		F4933CC31F79852C00F6EBFD /* Action.ShowCard.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C961F79852C00F6EBFD /* Action.ShowCard.json */; };
 		F4933CC41F79852C00F6EBFD /* Action.ShowCard.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C971F79852C00F6EBFD /* Action.ShowCard.Style.json */; };
 		F4933CC51F79852C00F6EBFD /* Action.Submit.json in Resources */ = {isa = PBXBuildFile; fileRef = F4933C981F79852C00F6EBFD /* Action.Submit.json */; };
@@ -180,6 +180,7 @@
 		30860BC020C9B5C9009F9D99 /* ColumnSet_Container.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet_Container.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet_Container.VerticalStretch.json; sourceTree = "<group>"; };
 		30860BC120C9B5C9009F9D99 /* ColumnSet.Input.Time.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.Input.Time.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet.Input.Time.VerticalStretch.json; sourceTree = "<group>"; };
 		30A3885C20D315AA00AAEE59 /* NotificationCard.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = NotificationCard.json; path = ../../../../samples/Tests/NotificationCard.json; sourceTree = "<group>"; };
+		6B22426921FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ADCIOSVisualizerUITests.mm; sourceTree = "<group>"; };
 		6B2630DA2150804500ED9207 /* ColumnSet.Media.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.Media.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet.Media.VerticalStretch.json; sourceTree = "<group>"; };
 		6B2630DC215080FA00ED9207 /* ColumnSet.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet.VerticalStretch.json; sourceTree = "<group>"; };
 		6B2630DE2151A22F00ED9207 /* FactSetWrapping.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = FactSetWrapping.json; path = ../../../../samples/Tests/FactSetWrapping.json; sourceTree = "<group>"; };
@@ -189,9 +190,9 @@
 		6B5D23F2212393480010EB07 /* Image.BackgroundColor.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.BackgroundColor.json; path = ../../../../samples/Tests/Image.BackgroundColor.json; sourceTree = "<group>"; };
 		6B5D23FA2124ADAB0010EB07 /* Image.ImageBaseUrl.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Image.ImageBaseUrl.json; path = ../../../../samples/v1.0/Elements/Image.ImageBaseUrl.json; sourceTree = "<group>"; };
 		6B5D2412212E15740010EB07 /* Feedback.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Feedback.json; path = ../../../../samples/Tests/Feedback.json; sourceTree = "<group>"; };
-		6B616C4921D6B8D4003E29CE /* SearchResults.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = SearchResults.json; path = ../../../../samples/Tests/SearchResults.json; sourceTree = "<group>"; };
 		6B616C3B21CB0B6C003E29CE /* Action.ToggleVisibility.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.ToggleVisibility.json; path = ../../../../samples/v1.2/Elements/Action.ToggleVisibility.json; sourceTree = "<group>"; };
 		6B616C4521CB2493003E29CE /* AutoImageSet.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AutoImageSet.json; path = ../../../../samples/Tests/AutoImageSet.json; sourceTree = "<group>"; };
+		6B616C4921D6B8D4003E29CE /* SearchResults.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = SearchResults.json; path = ../../../../samples/Tests/SearchResults.json; sourceTree = "<group>"; };
 		6B7B1A9920C21CA800260731 /* SportingEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = SportingEvent.json; path = ../../../../samples/v1.0/Scenarios/SportingEvent.json; sourceTree = "<group>"; };
 		6B980930215AE4310024B79B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		6B980933215AE6EC0024B79B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -235,7 +236,6 @@
 		F423C0921EE1FB6100905679 /* ADCIOSVisualizerTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ADCIOSVisualizerTests.mm; sourceTree = "<group>"; };
 		F423C0941EE1FB6100905679 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F423C0991EE1FB6100905679 /* ADCIOSVisualizerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ADCIOSVisualizerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F423C09D1EE1FB6100905679 /* ADCIOSVisualizerUITests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ADCIOSVisualizerUITests.mm; sourceTree = "<group>"; };
 		F423C09F1EE1FB6100905679 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4933C961F79852C00F6EBFD /* Action.ShowCard.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.ShowCard.json; path = ../../../../samples/v1.0/Elements/Action.ShowCard.json; sourceTree = "<group>"; };
 		F4933C971F79852C00F6EBFD /* Action.ShowCard.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.ShowCard.Style.json; path = ../../../../samples/v1.0/Elements/Action.ShowCard.Style.json; sourceTree = "<group>"; };
@@ -423,7 +423,7 @@
 		F423C09C1EE1FB6100905679 /* ADCIOSVisualizerUITests */ = {
 			isa = PBXGroup;
 			children = (
-				F423C09D1EE1FB6100905679 /* ADCIOSVisualizerUITests.mm */,
+				6B22426921FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm */,
 				F423C09F1EE1FB6100905679 /* Info.plist */,
 			);
 			path = ADCIOSVisualizerUITests;
@@ -432,7 +432,7 @@
 		F4D33E341F045B6E00941E44 /* Jsons */ = {
 			isa = PBXGroup;
 			children = (
-				6BC30F5F21DD69D800B9FAAE /* ActionSet.json */,			
+				6BC30F5F21DD69D800B9FAAE /* ActionSet.json */,
 				6BC30F6921DFECB400B9FAAE /* ProductVideo.json */,
 				6BC30F6621DFE8E900B9FAAE /* Media.json */,
 				6BC30F6521DFE8E900B9FAAE /* Media.Sources.json */,
@@ -794,7 +794,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F423C09E1EE1FB6100905679 /* ADCIOSVisualizerUITests.mm in Sources */,
+				6B22426A21FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

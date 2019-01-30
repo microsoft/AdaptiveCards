@@ -47,6 +47,11 @@
                BlueprintName = "ADCIOSVisualizerUITests"
                ReferencedContainer = "container:ADCIOSVisualizer.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "ADCIOSVisualizerUITests">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>

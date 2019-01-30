@@ -28,12 +28,12 @@ Adaptive Cards are designed to render anywhere that your users are. The followin
 
 ## Contribute
 
-There are many ways to [contribute](https://github.com/Microsoft/AdaptiveCards/blob/master/CONTRIBUTING.md) to Adaptive Cards.
+There are many ways to [contribute](https://github.com/Microsoft/AdaptiveCards/blob/master/.github/CONTRIBUTING.md) to Adaptive Cards.
 * [Submit bugs](https://github.com/Microsoft/AdaptiveCards/issues) and help us verify fixes as they are checked in.
 * Review the [source code changes](https://github.com/Microsoft/AdaptiveCards/pulls).
 * Engage with Adaptive Cards users and developers on [StackOverflow](http://stackoverflow.com/questions/tagged/adaptive-cards). 
 * Join the [#adaptivecards](https://twitter.com/hashtag/adaptivecards?f=tweets&vertical=default) discussion on Twitter.
-* [Contribute bug fixes](https://github.com/Microsoft/AdaptiveCards/blob/master/CONTRIBUTING.md).
+* [Contribute bug fixes](https://github.com/Microsoft/AdaptiveCards/blob/master/.github/CONTRIBUTING.md).
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see 
 the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.

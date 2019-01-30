@@ -1,8 +1,6 @@
 #pragma once
 
 #include "pch.h"
-#include "Enums.h"
-#include "json/json.h"
 #include "AdaptiveCardParseWarning.h"
 
 namespace AdaptiveSharedNamespace
@@ -13,7 +11,6 @@ namespace AdaptiveSharedNamespace
     class ActionElementParser
     {
     public:
-        virtual ~ActionElementParser() = default;
         virtual std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) = 0;
     };
 

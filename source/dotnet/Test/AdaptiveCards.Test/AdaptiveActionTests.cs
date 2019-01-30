@@ -99,9 +99,9 @@ namespace AdaptiveCards.Test
             var actions = result.Card.Actions;
 
             Assert.AreEqual(3, actions.Count);
-            Assert.AreEqual(AdaptiveSentiment.Default, actions[0].Sentiment);
-            Assert.AreEqual(AdaptiveSentiment.Positive, actions[1].Sentiment);
-            Assert.AreEqual(AdaptiveSentiment.Destructive, actions[2].Sentiment);
+            Assert.AreEqual("default", actions[0].Sentiment);
+            Assert.AreEqual("positive", actions[1].Sentiment);
+            Assert.AreEqual("destructive", actions[2].Sentiment);
         }
 
         [TestMethod]
