@@ -105,19 +105,28 @@ void ValidateUserInputForDimensionWithUnit(const std::string& unit,
         }
         catch (const std::invalid_argument&)
         {
-            warnings->emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
-                                                                             warningMessage + requestedDimension));
+            if (warnings)
+            {
+                warnings->emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
+                                                                                  warningMessage + requestedDimension));
+            }
         }
         catch (const std::out_of_range&)
         {
-            warnings->emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
-                                                                             "out of range: " + requestedDimension));
+            if (warnings)
+            {
+                warnings->emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
+                                                                                  "out of range: " + requestedDimension));
+            }
         }
     }
     else
     {
-        warnings->emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
-                                                                         warningMessage + requestedDimension));
+        if (warnings)
+        {
+            warnings->emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
+                                                                              warningMessage + requestedDimension));
+        }
     }
 }
 
