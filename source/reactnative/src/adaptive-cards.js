@@ -22,12 +22,10 @@ import { SelectAction } from './components/actions';
 class ResourseInformation {
 		url = "";
 		mimeType = "";
-		cardElementType = "";
 
-		constructor(urlString, mimeTypeString, cardElementType){
+		constructor(urlString, mimeTypeString){
 			this.url = urlString;
 			this.mimeType = mimeTypeString;
-			this.cardElementType = cardElementType;
 		}
 }
 
@@ -67,8 +65,8 @@ export default class AdaptiveCards extends React.Component {
 	/**
 	 * @description Resource information present in the card elements are added here with the url and mimetype.
 	 */
-	addResourseInformation = (urlString, mimeTypeString, cardElementType) => {
-		let newResourceObject = new ResourseInformation(urlString, mimeTypeString, cardElementType);
+	addResourseInformation = (urlString, mimeTypeString) => {
+		let newResourceObject = new ResourseInformation(urlString, mimeTypeString);
 		this.resourceInformationArray.push(newResourceObject);
 	}
 

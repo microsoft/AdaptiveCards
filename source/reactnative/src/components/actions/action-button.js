@@ -42,7 +42,7 @@ export class ActionButton extends React.Component {
 
 	componentDidMount(){
 		if(!Utils.isNullOrEmpty(this.payload.iconUrl)){
-			this.context.addResourseInformation(this.payload.iconUrl,"",this.payload.type);
+			this.context.addResourseInformation(this.payload.iconUrl,"");
 		}
 	}
 
