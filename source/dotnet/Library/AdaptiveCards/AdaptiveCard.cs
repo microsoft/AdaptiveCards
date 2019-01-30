@@ -277,10 +277,10 @@ namespace AdaptiveCards
             List<RemoteResourceInformation> resourceInformationList = new List<RemoteResourceInformation>();
 
             // Get background image
-            if (!String.IsNullOrEmpty(card.BackgroundImage?.BackgroundImageString))
+            if (!String.IsNullOrEmpty(card.BackgroundImage?.UrlString))
             {
                 resourceInformationList.Add(new RemoteResourceInformation(
-                    card.BackgroundImage?.BackgroundImageString,
+                    card.BackgroundImage?.UrlString,
                     "image"
                 ));
             }
