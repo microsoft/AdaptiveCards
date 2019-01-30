@@ -20,7 +20,15 @@ std::string Column::GetWidth() const
 
 void Column::SetWidth(const std::string& value)
 {
+    SetWidth(value, nullptr);
+}
+
+void Column::SetWidth(const std::string& value,
+                      std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>>* warnings)
+{
     m_width = ParseUtil::ToLowercase(value);
+    int parsedDimension = ParseSizeForPixelSize(m_width, warnings);
+    SetPixelWidth(parsedDimension);
 }
 
 // explicit width takes precedence over relative width
@@ -117,12 +125,7 @@ std::shared_ptr<Column> Column::Deserialize(ParseContext& context, const Json::V
         columnWidth = ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Size);
     }
 
-    // validate user input; validation only applies to user input for explicit column width
-    // the other input checks are remained unchanged
-    int parsedDimension = ParseSizeForPixelSize(columnWidth, context.warnings);
-    column->SetPixelWidth(parsedDimension);
-
-    column->SetWidth(columnWidth);
+    column->SetWidth(columnWidth, &context.warnings);
 
     column->SetStyle(ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
 

@@ -45,8 +45,7 @@ namespace AdaptiveNamespace
     {
         RETURN_IF_FAILED(m_width.Set(width));
 
-        std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warningvector;
-        RETURN_IF_FAILED(put_PixelWidth(ParseSizeForPixelSize(HStringToUTF8(width), warningvector)));
+        RETURN_IF_FAILED(put_PixelWidth(ParseSizeForPixelSize(HStringToUTF8(width), nullptr)));
         return S_OK;
     }
 
