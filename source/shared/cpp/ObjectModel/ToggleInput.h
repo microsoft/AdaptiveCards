@@ -2,7 +2,6 @@
 
 #include "pch.h"
 #include "BaseInputElement.h"
-#include "Enums.h"
 #include "ElementParserRegistration.h"
 
 namespace AdaptiveSharedNamespace
@@ -47,7 +46,7 @@ namespace AdaptiveSharedNamespace
         ToggleInputParser(ToggleInputParser&&) = default;
         ToggleInputParser& operator=(const ToggleInputParser&) = default;
         ToggleInputParser& operator=(ToggleInputParser&&) = default;
-        ~ToggleInputParser() = default;
+        virtual ~ToggleInputParser() = default;
 
         std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
         std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;

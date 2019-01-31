@@ -6,13 +6,13 @@
 
 using namespace AdaptiveCards;
 
-ActionSet::ActionSet() : BaseCardElement(CardElementType::ActionSet)
+ActionSet::ActionSet() : BaseCardElement(CardElementType::ActionSet), m_actions{}, m_orientation(ActionsOrientation::Vertical)
 {
     PopulateKnownPropertiesSet();
 }
 
 ActionSet::ActionSet(std::vector<std::shared_ptr<BaseActionElement>>& actions) :
-    BaseCardElement(CardElementType::ActionSet), m_actions(actions)
+    BaseCardElement(CardElementType::ActionSet), m_actions(actions), m_orientation(ActionsOrientation::Vertical)
 {
     PopulateKnownPropertiesSet();
 }

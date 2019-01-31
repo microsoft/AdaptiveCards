@@ -105,5 +105,40 @@ namespace AdaptiveCardTestApp.Pages
         {
             ViewModel.AddToTimeline = (TimelineCheckBox.IsChecked == true);
         }
+
+        private bool lastSelectedAllCards = true;
+
+        private void CardButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (lastSelectedAllCards)
+            {
+                foreach (var range in ListViewCards.SelectedRanges)
+                {
+                    ListViewCards.DeselectRange(range);
+                }
+            }
+            else
+            {
+                ListViewCards.SelectAll();
+            }
+            lastSelectedAllCards = !lastSelectedAllCards;
+        }
+
+        private bool lastSelectedAllHosts = true;
+        private void HostButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (lastSelectedAllHosts)
+            {
+                foreach (var range in ListViewHostConfigs.SelectedRanges)
+                {
+                    ListViewHostConfigs.DeselectRange(range);
+                }
+            }
+            else
+            {
+                ListViewHostConfigs.SelectAll();
+            }
+            lastSelectedAllHosts = !lastSelectedAllHosts;
+        }
     }
 }

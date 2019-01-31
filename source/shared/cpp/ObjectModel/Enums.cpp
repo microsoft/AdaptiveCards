@@ -144,7 +144,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Width, "width"},
             {AdaptiveCardSchemaKey::Wrap, "wrap"}});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(CardElementType, CardElementType::Unsupported, {
+    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(CardElementType, CardElementType::Unknown, {
             {CardElementType::AdaptiveCard, "AdaptiveCard"},
             {CardElementType::Column, "Column"},
             {CardElementType::ColumnSet, "ColumnSet"},
@@ -284,9 +284,4 @@ namespace AdaptiveSharedNamespace
             {VerticalContentAlignment::Top, "Top"},
             {VerticalContentAlignment::Center, "Center"},
             {VerticalContentAlignment::Bottom, "Bottom"}});
-
-    DEFINE_ADAPTIVECARD_ENUM(Sentiment, {
-            {Sentiment::Default, "Default"},
-            {Sentiment::Positive, "Positive"},
-            {Sentiment::Destructive, "Destructive"}});
 }

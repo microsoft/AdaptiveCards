@@ -16,7 +16,7 @@
 @property IBInspectable NSNumber *destructiveUseDefault;
 @property IBInspectable UIColor *destructiveForegroundColor;
 @property IBInspectable UIColor *destructiveBackgroundColor;
-@property ACRSentiment sentiment;
+@property NSString *sentiment;
 @property UIColor *defaultPositiveBackgroundColor;
 @property UIColor *defaultDestructiveForegroundColor;
 @property ACRIconPlacement iconPlacement;

@@ -1,14 +1,8 @@
 #include "stdafx.h"
-#include "CppUnitTest.h"
-#include <Windows.h>
-#include <StrSafe.h>
-#include "SharedAdaptiveCard.h"
-#include "BaseCardElement.h"
 #include "Image.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
-using namespace std;
 
 namespace AdaptiveCardsSharedModelUnitTest
 {
@@ -16,10 +10,10 @@ namespace AdaptiveCardsSharedModelUnitTest
     {
 
     public:
-		TEST_METHOD(NoBackgroundColorTest)
-		{
-			std::string testJsonString =
-				"{\
+        TEST_METHOD(NoBackgroundColorTest)
+        {
+            std::string testJsonString =
+                "{\
                 \"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
                 \"version\": \"1.0\",\
@@ -30,12 +24,12 @@ namespace AdaptiveCardsSharedModelUnitTest
                     }\
                 ]\
             }";
-			std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-			std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
-			std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
-			std::string backgroundColor = image->GetBackgroundColor();
-			Assert::AreEqual(std::string(""), backgroundColor);
-		}
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
+            std::shared_ptr<BaseCardElement> elem = parseResult->GetAdaptiveCard()->GetBody().front();
+            std::shared_ptr<Image> image = std::static_pointer_cast<Image>(elem);
+            std::string backgroundColor = image->GetBackgroundColor();
+            Assert::AreEqual(std::string(""), backgroundColor);
+        }
         TEST_METHOD(AARRGGBBTest)
         {
             std::string testJsonString =

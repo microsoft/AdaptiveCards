@@ -1,20 +1,15 @@
 #pragma once
 
 #include "pch.h"
-#include "Enums.h"
-#include "json/json.h"
 
 namespace AdaptiveSharedNamespace
 {
     class BaseCardElement;
-    class ElementParserRegistration;
-    class ActionParserRegistration;
     class ParseContext;
 
     class BaseCardElementParser
     {
     public:
-        virtual ~BaseCardElementParser() = default;
         virtual std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& value) = 0;
         virtual std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& value) = 0;
     };
