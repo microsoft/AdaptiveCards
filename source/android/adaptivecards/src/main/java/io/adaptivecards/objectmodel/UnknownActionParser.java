@@ -8,17 +8,17 @@
 
 package io.adaptivecards.objectmodel;
 
-public class UnknownActionElementParser extends ActionElementParser {
+public class UnknownActionParser extends ActionElementParser {
   private transient long swigCPtr;
   private transient boolean swigCMemOwnDerived;
 
-  protected UnknownActionElementParser(long cPtr, boolean cMemoryOwn) {
-    super(AdaptiveCardObjectModelJNI.UnknownActionElementParser_SWIGSmartPtrUpcast(cPtr), true);
+  protected UnknownActionParser(long cPtr, boolean cMemoryOwn) {
+    super(AdaptiveCardObjectModelJNI.UnknownActionParser_SWIGSmartPtrUpcast(cPtr), true);
     swigCMemOwnDerived = cMemoryOwn;
     swigCPtr = cPtr;
   }
 
-  protected static long getCPtr(UnknownActionElementParser obj) {
+  protected static long getCPtr(UnknownActionParser obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
@@ -30,23 +30,23 @@ public class UnknownActionElementParser extends ActionElementParser {
     if (swigCPtr != 0) {
       if (swigCMemOwnDerived) {
         swigCMemOwnDerived = false;
-        AdaptiveCardObjectModelJNI.delete_UnknownActionElementParser(swigCPtr);
+        AdaptiveCardObjectModelJNI.delete_UnknownActionParser(swigCPtr);
       }
       swigCPtr = 0;
     }
     super.delete();
   }
 
-  public UnknownActionElementParser() {
-    this(AdaptiveCardObjectModelJNI.new_UnknownActionElementParser__SWIG_0(), true);
+  public UnknownActionParser() {
+    this(AdaptiveCardObjectModelJNI.new_UnknownActionParser__SWIG_0(), true);
   }
 
-  public UnknownActionElementParser(UnknownActionElementParser arg0) {
-    this(AdaptiveCardObjectModelJNI.new_UnknownActionElementParser__SWIG_1(UnknownActionElementParser.getCPtr(arg0), arg0), true);
+  public UnknownActionParser(UnknownActionParser arg0) {
+    this(AdaptiveCardObjectModelJNI.new_UnknownActionParser__SWIG_1(UnknownActionParser.getCPtr(arg0), arg0), true);
   }
 
   public BaseActionElement Deserialize(ParseContext context, JsonValue root) {
-    long cPtr = AdaptiveCardObjectModelJNI.UnknownActionElementParser_Deserialize(swigCPtr, this, ParseContext.getCPtr(context), context, JsonValue.getCPtr(root), root);
+    long cPtr = AdaptiveCardObjectModelJNI.UnknownActionParser_Deserialize(swigCPtr, this, ParseContext.getCPtr(context), context, JsonValue.getCPtr(root), root);
     return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
   }
 

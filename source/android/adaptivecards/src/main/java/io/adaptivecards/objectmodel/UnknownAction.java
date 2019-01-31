@@ -8,17 +8,17 @@
 
 package io.adaptivecards.objectmodel;
 
-public class UnknownActionElement extends BaseActionElement {
+public class UnknownAction extends BaseActionElement {
   private transient long swigCPtr;
   private transient boolean swigCMemOwnDerived;
 
-  protected UnknownActionElement(long cPtr, boolean cMemoryOwn) {
-    super(AdaptiveCardObjectModelJNI.UnknownActionElement_SWIGSmartPtrUpcast(cPtr), true);
+  protected UnknownAction(long cPtr, boolean cMemoryOwn) {
+    super(AdaptiveCardObjectModelJNI.UnknownAction_SWIGSmartPtrUpcast(cPtr), true);
     swigCMemOwnDerived = cMemoryOwn;
     swigCPtr = cPtr;
   }
 
-  protected static long getCPtr(UnknownActionElement obj) {
+  protected static long getCPtr(UnknownAction obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
@@ -30,19 +30,19 @@ public class UnknownActionElement extends BaseActionElement {
     if (swigCPtr != 0) {
       if (swigCMemOwnDerived) {
         swigCMemOwnDerived = false;
-        AdaptiveCardObjectModelJNI.delete_UnknownActionElement(swigCPtr);
+        AdaptiveCardObjectModelJNI.delete_UnknownAction(swigCPtr);
       }
       swigCPtr = 0;
     }
     super.delete();
   }
 
-  public UnknownActionElement() {
-    this(AdaptiveCardObjectModelJNI.new_UnknownActionElement(), true);
+  public UnknownAction() {
+    this(AdaptiveCardObjectModelJNI.new_UnknownAction(), true);
   }
 
   public JsonValue SerializeToJsonValue() {
-    return new JsonValue(AdaptiveCardObjectModelJNI.UnknownActionElement_SerializeToJsonValue(swigCPtr, this), true);
+    return new JsonValue(AdaptiveCardObjectModelJNI.UnknownAction_SerializeToJsonValue(swigCPtr, this), true);
   }
 
 }
