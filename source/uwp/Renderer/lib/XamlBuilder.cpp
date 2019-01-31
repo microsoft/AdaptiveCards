@@ -1949,15 +1949,13 @@ namespace AdaptiveNamespace
     }
 
     template<typename T>
-    void XamlBuilder::SetAutoSize(T* destination, IInspectable* parentElement, IInspectable* imageContainer, bool isVisible, bool imageFiresOpenEvent)
+    void XamlBuilder::SetAutoSize(T* destination, IInspectable* parentElement, IInspectable* /* imageContainer */, bool isVisible, bool imageFiresOpenEvent)
     {
         if (parentElement != nullptr && m_enableXamlImageHandling)
         {
-            ComPtr<IInspectable> container(imageContainer);
-            ComPtr<IFrameworkElement> frameworkElement;
-            THROW_IF_FAILED(container.As(&frameworkElement));
-
             ComPtr<IImage> xamlImage(destination);
+            ComPtr<IFrameworkElement> imageAsFrameworkElement;
+            THROW_IF_FAILED(xamlImage.As(&imageAsFrameworkElement));
             ComPtr<IImageSource> imageSource;
             THROW_IF_FAILED(xamlImage->get_Source(&imageSource));
             ComPtr<IBitmapSource> imageSourceAsBitmap;
@@ -1976,20 +1974,16 @@ namespace AdaptiveNamespace
                 ComPtr<IInspectable> strongParentElement(parentElement);
                 EventRegistrationToken eventToken;
                 THROW_IF_FAILED(xamlImage->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([frameworkElement, strongParentElement, imageSourceAsBitmap, isVisible, xamlImage](IInspectable* /*sender*/, IRoutedEventArgs *
+                    Callback<IRoutedEventHandler>([imageAsFrameworkElement, strongParentElement, imageSourceAsBitmap, isVisible](IInspectable* /*sender*/, IRoutedEventArgs *
                         /*args*/) -> HRESULT {
-
-                    ComPtr<IFrameworkElement> strongXamlImage;
-                    RETURN_IF_FAILED(xamlImage.As(&strongXamlImage));
-
-                    return SetAutoImageSize(strongXamlImage.Get(), strongParentElement.Get(), imageSourceAsBitmap.Get(), isVisible);
+                    return SetAutoImageSize(imageAsFrameworkElement.Get(), strongParentElement.Get(), imageSourceAsBitmap.Get(), isVisible);
                 })
                     .Get(),
                     &eventToken));
             }
             else
             {
-                SetAutoImageSize(frameworkElement.Get() , parentElement, imageSourceAsBitmap.Get(), isVisible);
+                SetAutoImageSize(imageAsFrameworkElement.Get() , parentElement, imageSourceAsBitmap.Get(), isVisible);
             }
         }
     }
