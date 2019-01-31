@@ -36,10 +36,7 @@ export default class Renderer extends React.Component {
         }
     }
 
-    componentDidMount() {
-        console.log(this.refs.adaptiveCardRef.getResourceInformation());
-    }
-
+    
     onExecuteAction = (actionObject) => {
         if (actionObject.type === "Action.Submit") {
             Alert.alert(
