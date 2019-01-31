@@ -43,7 +43,13 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveColumn::get_Width(_Outptr_ HSTRING* width) { return m_width.CopyTo(width); }
 
-    HRESULT AdaptiveColumn::put_Width(_In_ HSTRING width) { return m_width.Set(width); }
+    HRESULT AdaptiveColumn::put_Width(_In_ HSTRING width)
+    {
+        RETURN_IF_FAILED(m_width.Set(width));
+
+        RETURN_IF_FAILED(put_PixelWidth(ParseSizeForPixelSize(HStringToUTF8(width), nullptr)));
+        return S_OK;
+    }
 
     HRESULT AdaptiveColumn::get_PixelWidth(_Out_ UINT32* pixelWidth) { return *pixelWidth = m_pixelWidth; }
 

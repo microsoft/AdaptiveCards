@@ -1980,15 +1980,13 @@ namespace AdaptiveNamespace
     }
 
     template<typename T>
-    void XamlBuilder::SetAutoSize(T* destination, IInspectable* parentElement, IInspectable* imageContainer, bool isVisible, bool imageFiresOpenEvent)
+    void XamlBuilder::SetAutoSize(T* destination, IInspectable* parentElement, IInspectable* /* imageContainer */, bool isVisible, bool imageFiresOpenEvent)
     {
         if (parentElement != nullptr && m_enableXamlImageHandling)
         {
-            ComPtr<IInspectable> container(imageContainer);
-            ComPtr<IFrameworkElement> frameworkElement;
-            THROW_IF_FAILED(container.As(&frameworkElement));
-
             ComPtr<IImage> xamlImage(destination);
+            ComPtr<IFrameworkElement> imageAsFrameworkElement;
+            THROW_IF_FAILED(xamlImage.As(&imageAsFrameworkElement));
             ComPtr<IImageSource> imageSource;
             THROW_IF_FAILED(xamlImage->get_Source(&imageSource));
             ComPtr<IBitmapSource> imageSourceAsBitmap;
@@ -2007,17 +2005,16 @@ namespace AdaptiveNamespace
                 ComPtr<IInspectable> strongParentElement(parentElement);
                 EventRegistrationToken eventToken;
                 THROW_IF_FAILED(xamlImage->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([frameworkElement, strongParentElement, imageSourceAsBitmap, isVisible](
-                                                      IInspectable* /*sender*/, IRoutedEventArgs *
-                                                      /*args*/) -> HRESULT {
-                        return SetAutoImageSize(frameworkElement.Get(), strongParentElement.Get(), imageSourceAsBitmap.Get(), isVisible);
-                    })
-                        .Get(),
+                    Callback<IRoutedEventHandler>([imageAsFrameworkElement, strongParentElement, imageSourceAsBitmap, isVisible](IInspectable* /*sender*/, IRoutedEventArgs *
+                        /*args*/) -> HRESULT {
+                    return SetAutoImageSize(imageAsFrameworkElement.Get(), strongParentElement.Get(), imageSourceAsBitmap.Get(), isVisible);
+                })
+                    .Get(),
                     &eventToken));
             }
             else
             {
-                SetAutoImageSize(frameworkElement.Get(), parentElement, imageSourceAsBitmap.Get(), isVisible);
+                SetAutoImageSize(imageAsFrameworkElement.Get() , parentElement, imageSourceAsBitmap.Get(), isVisible);
             }
         }
     }
@@ -2151,7 +2148,7 @@ namespace AdaptiveNamespace
                 THROW_IF_FAILED(GetColorFromString(HStringToUTF8(backgroundColor), &color));
                 ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(color);
                 THROW_IF_FAILED(border->put_Background(backgroundColorBrush.Get()));
-
+                
                 ComPtr<IUIElement> imageAsUiElement;
                 THROW_IF_FAILED(xamlImage.CopyTo(imageAsUiElement.GetAddressOf()));
                 THROW_IF_FAILED(border->put_Child(imageAsUiElement.Get()));
