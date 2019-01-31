@@ -149,27 +149,27 @@ namespace AdaptiveSharedNamespace
 
     enum class CardElementType
     {
-        Unsupported = 0,
+        // When the order of existing enums are changed, coresponding changes are needed in iOS (ACOBaseCardElement.h)
+        ActionSet = 0,
         AdaptiveCard,
-        TextBlock,
-        Image,
-        Container,
-        Column,
-        ColumnSet,
-        FactSet,
-        Fact,
-        ImageSet,
         ChoiceInput,
         ChoiceSetInput,
+        Column,
+        ColumnSet,
+        Container,
+        Custom,
         DateInput,
+        Fact,
+        FactSet,
+        Image,
+        ImageSet,
+        Media,
         NumberInput,
+        TextBlock,
         TextInput,
         TimeInput,
         ToggleInput,
-        Custom,
         Unknown,
-        Media,
-        ActionSet,
     };
     DECLARE_ADAPTIVECARD_ENUM(CardElementType);
 

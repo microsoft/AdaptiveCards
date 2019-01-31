@@ -1,8 +1,6 @@
 #pragma once
 
 #include "pch.h"
-#include "Enums.h"
-#include "json/json.h"
 #include "ParseUtil.h"
 #include "RemoteResourceInformation.h"
 
@@ -56,8 +54,8 @@ namespace AdaptiveSharedNamespace
         std::string m_iconUrl;
         std::string m_sentiment;
         Json::Value m_additionalProperties;
-        static constexpr const char defaultSentiment[] = "default";
-        
+        static constexpr const char* const defaultSentiment = "default";
+
     protected:
         std::unordered_set<std::string> m_knownProperties;
     };

@@ -1,8 +1,6 @@
 #pragma once
 
 #include "pch.h"
-#include "Enums.h"
-#include "json/json.h"
 #include "BaseActionElement.h"
 #include "ParseUtil.h"
 #include "Separator.h"
@@ -10,7 +8,6 @@
 
 namespace AdaptiveSharedNamespace
 {
-    class Container;
     class BaseCardElement
     {
     public:

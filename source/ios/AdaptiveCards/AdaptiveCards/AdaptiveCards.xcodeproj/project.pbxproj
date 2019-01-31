@@ -751,10 +751,10 @@
 		F423C0D71EE1FF2F00905679 /* SharedLib */ = {
 			isa = PBXGroup;
 			children = (
-				7EF887C821FA3FEF00BAFF02 /* ActionSet.cpp */,
-				7EF887C921FA3FEF00BAFF02 /* ActionSet.h */,
 				F4071C781FCCBAEF00AF4FEA /* ActionParserRegistration.cpp */,
 				F4071C741FCCBAEF00AF4FEA /* ActionParserRegistration.h */,
+				6BC30F5B21DD692800B9FAAE /* ActionSet.cpp */,
+				6BC30F5C21DD692800B9FAAE /* ActionSet.h */,
 				300ECB61219A12D100371DC5 /* AdaptiveBase64Util.cpp */,
 				300ECB62219A12D100371DC5 /* AdaptiveBase64Util.h */,
 				F44872BD1EE2261F00FCAFAE /* AdaptiveCardParseException.cpp */,

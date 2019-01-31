@@ -87,7 +87,7 @@ std::string ValidateColor(const std::string& backgroundColor, std::vector<std::s
 void ValidateUserInputForDimensionWithUnit(const std::string& unit,
                                            const std::string& requestedDimension,
                                            int& parsedDimension,
-                                           std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings)
+                                           std::vector<std::shared_ptr<AdaptiveCardParseWarning>>* warnings)
 {
     const std::string warningMessage = "expected input arugment to be specified as \\d+(\\.\\d+)?px with no spaces, but received ";
     parsedDimension = 0;
@@ -105,19 +105,28 @@ void ValidateUserInputForDimensionWithUnit(const std::string& unit,
         }
         catch (const std::invalid_argument&)
         {
-            warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
-                                                                             warningMessage + requestedDimension));
+            if (warnings)
+            {
+                warnings->emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
+                                                                                  warningMessage + requestedDimension));
+            }
         }
         catch (const std::out_of_range&)
         {
-            warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
-                                                                             "out of range: " + requestedDimension));
+            if (warnings)
+            {
+                warnings->emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
+                                                                                  "out of range: " + requestedDimension));
+            }
         }
     }
     else
     {
-        warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
-                                                                         warningMessage + requestedDimension));
+        if (warnings)
+        {
+            warnings->emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::InvalidDimensionSpecified,
+                                                                              warningMessage + requestedDimension));
+        }
     }
 }
 
@@ -147,6 +156,17 @@ bool ShouldParseForExplicitDimension(const std::string& input)
         }
     }
     return false;
+}
+
+int ParseSizeForPixelSize(std::string& sizeString, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>* warnings)
+{
+    int parsedDimension = 0;
+    if (ShouldParseForExplicitDimension(sizeString))
+    {
+        const std::string unit = "px";
+        ValidateUserInputForDimensionWithUnit(unit, sizeString, parsedDimension, warnings);
+    }
+    return parsedDimension;
 }
 
 void EnsureShowCardVersions(const std::vector<std::shared_ptr<BaseActionElement>>& actions, const std::string& version)

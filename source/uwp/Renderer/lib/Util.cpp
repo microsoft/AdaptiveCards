@@ -28,6 +28,7 @@
 #include "AdaptiveToggleInput.h"
 #include "AdaptiveToggleVisibilityTarget.h"
 #include "AdaptiveToggleVisibilityAction.h"
+#include "AdaptiveUnsupportedElement.h"
 #include "AdaptiveWarning.h"
 #include "CustomActionWrapper.h"
 #include "CustomElementWrapper.h"
@@ -92,9 +93,13 @@ std::shared_ptr<TSharedBaseType> GetSharedModel(_In_ TAdaptiveBaseType* item)
 
     std::shared_ptr<TSharedBaseType> sharedModelElement;
     if (adaptiveElement && SUCCEEDED(adaptiveElement->GetSharedModel(sharedModelElement)))
+    {
         return sharedModelElement;
+    }
     else
+    {
         return nullptr;
+    }
 }
 
 HRESULT GenerateSharedElements(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>* items,
@@ -179,10 +184,16 @@ HRESULT GenerateSharedElements(_In_ ABI::Windows::Foundation::Collections::IVect
                 GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveToggleInput>(
                     item);
             break;
+        case ABI::AdaptiveNamespace::ElementType::Unsupported:
+            baseCardElement =
+                GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveUnsupportedElement>(
+                    item);
+            break;
         case ABI::AdaptiveNamespace::ElementType::Custom:
             baseCardElement = std::make_shared<CustomElementWrapper>(item);
             break;
         }
+
         if (baseCardElement == nullptr)
         {
             return E_INVALIDARG;
@@ -252,19 +263,19 @@ HRESULT GenerateSharedImages(_In_ ABI::Windows::Foundation::Collections::IVector
 {
     containedElements.clear();
 
-    XamlHelpers::IterateOverVector<ABI::AdaptiveNamespace::AdaptiveImage,
-                                   ABI::AdaptiveNamespace::IAdaptiveImage>(images, [&](ABI::AdaptiveNamespace::IAdaptiveImage* image) {
-        ComPtr<ABI::AdaptiveNamespace::IAdaptiveImage> localImage = image;
-        ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardElement> imageAsElement;
-        localImage.As(&imageAsElement);
+    XamlHelpers::IterateOverVector<ABI::AdaptiveNamespace::AdaptiveImage, ABI::AdaptiveNamespace::IAdaptiveImage>(
+        images, [&](ABI::AdaptiveNamespace::IAdaptiveImage* image) {
+            ComPtr<ABI::AdaptiveNamespace::IAdaptiveImage> localImage = image;
+            ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardElement> imageAsElement;
+            localImage.As(&imageAsElement);
 
-        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedImage =
-            GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveImage>(
-                imageAsElement.Get());
-        containedElements.push_back(std::AdaptivePointerCast<AdaptiveSharedNamespace::Image>(sharedImage));
+            std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedImage =
+                GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveImage>(
+                    imageAsElement.Get());
+            containedElements.push_back(std::AdaptivePointerCast<AdaptiveSharedNamespace::Image>(sharedImage));
 
-        return S_OK;
-    });
+            return S_OK;
+        });
 
     return S_OK;
 }
@@ -276,17 +287,17 @@ HRESULT GenerateSharedFacts(_In_ ABI::Windows::Foundation::Collections::IVector<
 
     XamlHelpers::IterateOverVector<ABI::AdaptiveNamespace::AdaptiveFact, ABI::AdaptiveNamespace::IAdaptiveFact>(
         facts, [&](ABI::AdaptiveNamespace::IAdaptiveFact* fact) {
-        ComPtr<AdaptiveNamespace::AdaptiveFact> adaptiveElement = PeekInnards<AdaptiveNamespace::AdaptiveFact>(fact);
-        if (adaptiveElement == nullptr)
-        {
-            return E_INVALIDARG;
-        }
+            ComPtr<AdaptiveNamespace::AdaptiveFact> adaptiveElement = PeekInnards<AdaptiveNamespace::AdaptiveFact>(fact);
+            if (adaptiveElement == nullptr)
+            {
+                return E_INVALIDARG;
+            }
 
-        std::shared_ptr<AdaptiveSharedNamespace::Fact> sharedFact;
-        RETURN_IF_FAILED(adaptiveElement->GetSharedModel(sharedFact));
-        containedElements.push_back(std::AdaptivePointerCast<AdaptiveSharedNamespace::Fact>(sharedFact));
-        return S_OK;
-    });
+            std::shared_ptr<AdaptiveSharedNamespace::Fact> sharedFact;
+            RETURN_IF_FAILED(adaptiveElement->GetSharedModel(sharedFact));
+            containedElements.push_back(std::AdaptivePointerCast<AdaptiveSharedNamespace::Fact>(sharedFact));
+            return S_OK;
+        });
 
     return S_OK;
 }
@@ -296,20 +307,20 @@ HRESULT GenerateSharedChoices(_In_ ABI::Windows::Foundation::Collections::IVecto
 {
     containedElements.clear();
 
-    XamlHelpers::IterateOverVector <ABI::AdaptiveNamespace::AdaptiveChoiceInput, ABI::AdaptiveNamespace::IAdaptiveChoiceInput >
-        (choices, [&](ABI::AdaptiveNamespace::IAdaptiveChoiceInput* choice) {
-        ComPtr<AdaptiveNamespace::AdaptiveChoiceInput> adaptiveElement =
-            PeekInnards<AdaptiveNamespace::AdaptiveChoiceInput>(choice);
-        if (adaptiveElement == nullptr)
-        {
-            return E_INVALIDARG;
-        }
+    XamlHelpers::IterateOverVector<ABI::AdaptiveNamespace::AdaptiveChoiceInput, ABI::AdaptiveNamespace::IAdaptiveChoiceInput>(
+        choices, [&](ABI::AdaptiveNamespace::IAdaptiveChoiceInput* choice) {
+            ComPtr<AdaptiveNamespace::AdaptiveChoiceInput> adaptiveElement =
+                PeekInnards<AdaptiveNamespace::AdaptiveChoiceInput>(choice);
+            if (adaptiveElement == nullptr)
+            {
+                return E_INVALIDARG;
+            }
 
-        std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput> sharedChoice;
-        RETURN_IF_FAILED(adaptiveElement->GetSharedModel(sharedChoice));
-        containedElements.push_back(std::AdaptivePointerCast<AdaptiveSharedNamespace::ChoiceInput>(sharedChoice));
-        return S_OK;
-    });
+            std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput> sharedChoice;
+            RETURN_IF_FAILED(adaptiveElement->GetSharedModel(sharedChoice));
+            containedElements.push_back(std::AdaptivePointerCast<AdaptiveSharedNamespace::ChoiceInput>(sharedChoice));
+            return S_OK;
+        });
 
     return S_OK;
 }
@@ -456,6 +467,10 @@ HRESULT GenerateContainedElementsProjection(
             break;
         case CardElementType::Custom:
             RETURN_IF_FAILED(std::AdaptivePointerCast<CustomElementWrapper>(containedElement)->GetWrappedElement(&projectedContainedElement));
+            break;
+        case CardElementType::Unknown:
+            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveUnsupportedElement>(
+                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::UnknownElement>(containedElement)));
             break;
         }
 
