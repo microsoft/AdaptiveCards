@@ -7,8 +7,10 @@ export class Splitter {
     private _isPointerDown: boolean;
     private _lastClickedOffset: IPoint;
 
-    private processNewSize(newSize: number): string {
-        return this.onProcessNewSize ?  this.onProcessNewSize(this, newSize) : newSize + "px";
+    private resizeEnded() {
+        if (this.onResizeEnded) {
+            this.onResizeEnded(this);
+        }
     }
 
     private pointerDown(e: PointerEvent) {
@@ -37,7 +39,7 @@ export class Splitter {
                 }
 
                 if (newSize >= this.minimum) {
-                    this._sizedELement.style.width = this.processNewSize(newSize);
+                    this._sizedELement.style.width = newSize + "px";
 
                     sizeApplied = true;
                 }
@@ -51,7 +53,7 @@ export class Splitter {
                 }
 
                 if (newSize >= this.minimum) {
-                    this._sizedELement.style.height = this.processNewSize(newSize);
+                    this._sizedELement.style.height = newSize + "px";
 
                     sizeApplied = true;
                 }
@@ -72,10 +74,12 @@ export class Splitter {
 
         this.attachedTo.releasePointerCapture(e.pointerId);
 
+        this.resizeEnded();
+
         this._isPointerDown = false;
     }
 
-    onProcessNewSize: (sender: Splitter, newSize: number) => string;
+    onResizeEnded: (sender: Splitter) => void;
     onResized: (sender: Splitter) => void;
 
     readonly attachedTo: HTMLElement;

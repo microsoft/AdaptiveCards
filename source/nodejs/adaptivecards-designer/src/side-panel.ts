@@ -12,8 +12,10 @@ export enum SidePanelAlignment {
 class ToolboxInfo {
     private _splitter: Splitter;
 
-    private processNewSize(newSize: number): string {
-        return this.onProcessNewSize ? this.onProcessNewSize(this, newSize) : newSize + "px";
+    private resizeEnded() {
+        if (this.onResizeEnded) {
+            this.onResizeEnded(this);
+        }
     }
 
     private resized() {
@@ -23,7 +25,7 @@ class ToolboxInfo {
     }
 
     onToggled: (sender: ToolboxInfo) => void;
-    onProcessNewSize: (sender: ToolboxInfo, newSize: number) => string;
+    onResizeEnded: (sender: ToolboxInfo) => void;
     onResized: (sender: ToolboxInfo) => void;
     
     showSplitter() {
@@ -64,8 +66,8 @@ class ToolboxInfo {
     set splitter(value: Splitter) {
         this._splitter = value;
 
-        this._splitter.onProcessNewSize = (sender: Splitter, newSize: number) => {
-            return this.processNewSize(newSize);
+        this._splitter.onResizeEnded = (sender: Splitter) => {
+            this.resizeEnded();
         }
 
         this._splitter.onResized = (sender: Splitter) => {
@@ -108,14 +110,15 @@ export class SidePanel {
         }
     }
 
-    private computeToolboxSize(toolbox: Toolbox, newSize: number): string {
+    private computeToolboxSize(toolbox: Toolbox) {
         let boundingRect = this._attachedTo.getBoundingClientRect();
+        let toolboxBoundingRect = toolbox.renderedElement.getBoundingClientRect();
 
         if (this.isVertical) {
-            return (100 / boundingRect.height * newSize) + "%";
+            toolbox.renderedElement.style.height = (100 / boundingRect.height * toolboxBoundingRect.height) + "%";
         }
         else {
-            return (100 / boundingRect.width * newSize) + "%";
+            toolbox.renderedElement.style.width = (100 / boundingRect.width * toolboxBoundingRect.width) + "%";
         }
     }
 
@@ -168,8 +171,9 @@ export class SidePanel {
             this.updateLayout();
             this.toolboxExpandedOrCollapsed(toolboxInfo.toolbox);
         }
-        toolboxInfo.onProcessNewSize = (sender: ToolboxInfo, newSize: number) => {
-            return this.computeToolboxSize(sender.toolbox, newSize);
+        toolboxInfo.onResizeEnded = (sender: ToolboxInfo) => {
+            this.computeToolboxSize(sender.toolbox);
+            this.toolboxResized(sender.toolbox);
         }
         toolboxInfo.onResized = (sender: ToolboxInfo) => {
             this.toolboxResized(sender.toolbox);

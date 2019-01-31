@@ -55,10 +55,6 @@ export class Toolbox {
         this._orientation = orientation;
 
         this._renderedElement = document.createElement("div");
-        /*
-        this._renderedElement.style.width = "100%";
-        this._renderedElement.style.height = "100%";
-        */
         this._renderedElement.style.overflow = "auto";
         this._renderedElement.style.display = "flex";
         this._renderedElement.style.flexDirection = "column";
