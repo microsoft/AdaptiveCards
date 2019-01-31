@@ -13,7 +13,7 @@ export abstract class BasePaletteItem extends DraggableElement {
         element.style.display = "flex";
 
         let iconElement = document.createElement("div");
-        iconElement.classList.add("acd-icon", this.getIconClass());
+        iconElement.classList.add("acd-icon", "acd-toolPalette-icon", this.getIconClass());
         iconElement.style.flex = "0 0 auto";
 
         let labelElement = document.createElement("div");

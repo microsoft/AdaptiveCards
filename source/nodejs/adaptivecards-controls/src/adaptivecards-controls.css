@@ -1,7 +1,9 @@
 .ms-ctrl-overlay {
   position: absolute;
   left: 0;
-  top: 0; }
+  top: 0; 
+  z-index: 10000;
+}
 
 @keyframes fadeIn {
   0% {

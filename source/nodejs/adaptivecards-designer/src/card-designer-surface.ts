@@ -431,7 +431,7 @@ export class CardDesignerSurface {
         this._designerSurface.style.width = "100%";
         this._designerSurface.style.height = "100%";
 
-        this._designerSurface.onkeydown = (e: KeyboardEvent) => {
+        this._designerSurface.onkeyup = (e: KeyboardEvent) => {
             if (this._selectedPeer) {
                 switch (e.keyCode) {
                     case Controls.KEY_ESCAPE:

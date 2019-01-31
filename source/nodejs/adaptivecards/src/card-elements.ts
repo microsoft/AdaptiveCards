@@ -2569,6 +2569,7 @@ export class ChoiceSetInput extends Input {
 
 					let compoundInput = document.createElement("div");
 					compoundInput.style.display = "flex";
+					compoundInput.style.alignItems = "center";
 
 					Utils.appendChild(compoundInput, radioInput);
 					Utils.appendChild(compoundInput, spacerElement);

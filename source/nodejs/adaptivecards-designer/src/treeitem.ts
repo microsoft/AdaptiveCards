@@ -55,7 +55,7 @@ export class TreeItem {
         }
 
         let iconElement = document.createElement("div");
-        iconElement.classList.add("acd-icon", this.owner.registration.iconClass);
+        iconElement.classList.add("acd-icon", "acd-treeView-icon", this.owner.registration.iconClass);
 
         textElement.appendChild(iconElement);
 

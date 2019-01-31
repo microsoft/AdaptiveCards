@@ -1,34 +1,34 @@
 import { SettingsManager } from "./settings-manager";
 
-export enum SidePaneOrientation {
+export enum ToolboxOrientation {
     Horizontal,
     Vertical
 }
 
-export class SidePane {
+export class Toolbox {
+    private _renderedElement: HTMLElement;
     private _headerRootElement: HTMLElement;
     private _headerContentElement: HTMLElement;
     private _headerTitleElement: HTMLElement;
     private _headerIconElement: HTMLElement;
     private _headerStatusTextElement: HTMLElement;
+    private _contentHost: HTMLElement;
     private _isExpanded: boolean = true;
     private _content: HTMLElement;
+    private _stretch: boolean = false;
+    private _orientation: ToolboxOrientation;
+    private _isRestoring: boolean = false;
 
     private getDimensionSettingName(): string {
-        return this.id + (this.orientation == SidePaneOrientation.Vertical ? "Height" : "Width");
+        return "Toolbox" + this.id + (this._orientation == ToolboxOrientation.Vertical ? "Height" : "Width");
     }
 
-    private updateLayout() {
-        if (this.orientation == SidePaneOrientation.Vertical) {
-            this._headerRootElement.classList.toggle("rotated90DegreesCounterClockwise", !this._isExpanded);
-            this._headerContentElement.classList.toggle("rotated90DegreesCounterClockwise", !this._isExpanded);
-        }
+    private updateContent() {
+        if (this._contentHost) {
+            this._contentHost.innerHTML = "";
 
-        if (this.targetElementSelector) {
-            let targetNodes = document.getElementsByClassName(this.targetElementSelector);
-
-            for (let i = 0; i < targetNodes.length; i++) {
-                (<HTMLElement>targetNodes[i]).classList.toggle("acd-hidden", !this._isExpanded);
+            if (this._content) {
+                this._contentHost.appendChild(this._content);
             }
         }
     }
@@ -39,30 +39,29 @@ export class SidePane {
         }
     }
     
-    readonly attachedTo: HTMLElement = null;
+    onToggled: (sender: Toolbox) => void;
+
     readonly id: string;
     readonly title: string;
-    readonly targetElementSelector: string;
-    readonly collapsedTabContainer: HTMLElement = null;
-    readonly orientation: SidePaneOrientation = SidePaneOrientation.Vertical;
 
-    onToggled: (sender: SidePane) => void;
+    collapsedTabContainer: HTMLElement;
 
-    constructor(
-        attachedTo: HTMLElement,
-        collapsedTabContainer: HTMLElement,
-        id: string,
-        title: string,
-        targetElementSelector: string,
-        orientation: SidePaneOrientation = SidePaneOrientation.Vertical) {
-        this.attachedTo = attachedTo;
-        this.collapsedTabContainer = collapsedTabContainer;
+    constructor(id: string, title: string) {
         this.id = id;
         this.title = title;
-        this.targetElementSelector = targetElementSelector;
-        this.orientation = orientation;
+    }
 
-        this.attachedTo.classList.add(this.targetElementSelector);
+    render(orientation: ToolboxOrientation) {
+        this._orientation = orientation;
+
+        this._renderedElement = document.createElement("div");
+        /*
+        this._renderedElement.style.width = "100%";
+        this._renderedElement.style.height = "100%";
+        */
+        this._renderedElement.style.overflow = "auto";
+        this._renderedElement.style.display = "flex";
+        this._renderedElement.style.flexDirection = "column";
 
         this._headerRootElement = document.createElement("div");
         this._headerRootElement.innerHTML = "";
@@ -108,59 +107,43 @@ export class SidePane {
         this._headerContentElement.appendChild(expandCollapseElement);
         this._headerRootElement.appendChild(this._headerContentElement);
 
-        this.attachedTo.insertBefore(this._headerRootElement, this.attachedTo.firstChild);
-        
-        let dimensionSetting = SettingsManager.tryLoadNumberSetting(this.getDimensionSettingName());
+        this._contentHost = document.createElement("div");
+        this._contentHost.style.overflow = "auto";
 
-        if (dimensionSetting.succeeded && dimensionSetting.value != undefined) {
-            if (this.orientation == SidePaneOrientation.Vertical) {
-                this.attachedTo.style.width = dimensionSetting.value + "px";
-            }
-            else {
-                this.attachedTo.style.height = dimensionSetting.value + "px";
-            }
-        }
-    
-        let isExpandedSetting = SettingsManager.tryLoadBooleanSetting(this.id + "IsExpanded", true);
-    
-        if (isExpandedSetting.succeeded && !isExpandedSetting.value) {
-            this.toggle();
-        }
+        this._renderedElement.append(this._headerRootElement, this._contentHost);
+
+        this.updateContent();
     }
 
     collapse() {
-        if (this.attachedTo && this._isExpanded) {
+        if (this._isExpanded) {
             this._headerIconElement.classList.add("acd-icon-header-collapsed");
             this._headerIconElement.classList.remove("acd-icon-header-expanded");
             this._headerStatusTextElement.classList.add("acd-hidden");
 
             if (this.collapsedTabContainer) {
-                this.attachedTo.removeChild(this._headerRootElement);
+                this._renderedElement.removeChild(this._headerRootElement);
                 this.collapsedTabContainer.appendChild(this._headerRootElement);
             }
 
             this._isExpanded = false;
-
-            this.updateLayout();
 
             this.toggled();
         }
     }
 
     expand() {
-        if (this.attachedTo && !this._isExpanded) {
+        if (!this._isExpanded) {
             this._headerIconElement.classList.add("acd-icon-header-expanded");
             this._headerIconElement.classList.remove("acd-icon-header-collapsed");
             this._headerStatusTextElement.classList.remove("acd-hidden");
 
             if (this.collapsedTabContainer) {
                 this.collapsedTabContainer.removeChild(this._headerRootElement);
-                this.attachedTo.insertBefore(this._headerRootElement, this.attachedTo.firstChild);
+                this._renderedElement.insertBefore(this._headerRootElement, this._renderedElement.firstChild);
             }
 
             this._isExpanded = true;
-
-            this.updateLayout();
 
             this.toggled();
         }
@@ -180,13 +163,54 @@ export class SidePane {
     }
 
     saveState() {
-        SettingsManager.trySaveSetting(this.id + "IsExpanded", this.isExpanded.toString());
+        if (!this._isRestoring) {
+            SettingsManager.trySaveSetting("Toolbox" + this.id + "IsExpanded", this.isExpanded.toString());
 
-        let boundingRect = this.attachedTo.getBoundingClientRect();
+            SettingsManager.trySaveSetting(
+                this.getDimensionSettingName(),
+                this.orientation == ToolboxOrientation.Vertical ? this.renderedElement.style.height : this.renderedElement.style.width);
+        }
+    }
 
-        SettingsManager.trySaveSetting(
-            this.getDimensionSettingName(),
-            (this.orientation == SidePaneOrientation.Vertical ? boundingRect.width : boundingRect.height).toString());
+    restoreState() {
+        if (this.renderedElement && !this._isRestoring) {
+            this._isRestoring = true;
+
+            try {
+                let dimensionSetting = SettingsManager.tryLoadStringSetting(this.getDimensionSettingName());
+
+                if (dimensionSetting.succeeded && dimensionSetting.value != undefined && dimensionSetting.value != "") {
+                    if (this.orientation == ToolboxOrientation.Vertical) {
+                        this.renderedElement.style.height = dimensionSetting.value;
+                    }
+                    else {
+                        this.renderedElement.style.width = dimensionSetting.value;
+                    }
+                }
+
+                let isExpandedSetting = SettingsManager.tryLoadBooleanSetting("Toolbox" + this.id + "IsExpanded", true);
+        
+                if (isExpandedSetting.succeeded) {
+                    if (isExpandedSetting.value) {
+                        this.expand();
+                    }
+                    else {
+                        this.collapse();
+                    }
+                }
+            }
+            finally {
+                this._isRestoring = false;
+            }
+        }
+    }
+
+    get orientation(): ToolboxOrientation {
+        return this._orientation;
+    }
+
+    get renderedElement(): HTMLElement {
+        return this._renderedElement;
     }
 
     get content(): HTMLElement {
@@ -194,18 +218,27 @@ export class SidePane {
     }
 
     set content(value: HTMLElement) {
-        if (this._content) {
-            this.attachedTo.removeChild(this._content);
-        }
-
         this._content = value;
 
-        if (this._content) {
-            this.attachedTo.appendChild(this._content);
-        }
+        this.updateContent();
     }
 
     get isExpanded(): boolean {
         return this._isExpanded;
+    }
+
+    get stretch(): boolean {
+        return this._stretch;
+    }
+
+    set stretch(value: boolean) {
+        this._stretch = value;
+
+        if (this._stretch) {
+            this.renderedElement.style.flex = "1 1 auto";
+        }
+        else {
+            this.renderedElement.style.flex = "0 0 auto";
+        }
     }
 }
