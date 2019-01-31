@@ -216,7 +216,7 @@ using namespace AdaptiveCards;
 }
 
 
-- (BOOL)isActionRendererOverriden:(NSNumber *)cardElementType
+- (BOOL)isActionRendererOverridden:(NSNumber *)cardElementType
 {
     if([overridenBaseActionRendererList objectForKey:cardElementType]){
         return YES;
@@ -224,7 +224,7 @@ using namespace AdaptiveCards;
     return NO;
 }
 
-- (BOOL)isElementRendererOverriden:(ACRCardElementType)cardElementType
+- (BOOL)isElementRendererOverridden:(ACRCardElementType)cardElementType
 {
     if([overridenBaseElementRendererList objectForKey:[NSNumber numberWithInteger:cardElementType]]){
         return YES;

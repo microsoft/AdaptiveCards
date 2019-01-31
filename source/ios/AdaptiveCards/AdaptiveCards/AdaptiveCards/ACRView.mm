@@ -170,7 +170,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 
     for(auto &elem : body)
     {
-        if([rendererRegistration isElementRendererOverriden:(ACRCardElementType) elem->GetElementType()] == YES){
+        if([rendererRegistration isElementRendererOverridden:(ACRCardElementType) elem->GetElementType()] == YES){
             continue;
         }
         switch (elem->GetElementType())

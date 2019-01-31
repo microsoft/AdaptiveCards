@@ -32,9 +32,9 @@
 
 - (void)setCustomElementRenderer:(ACRBaseCardElementRenderer *)renderer key:(NSString *)key;
 
-- (BOOL)isElementRendererOverriden:(ACRCardElementType)cardElementType;
+- (BOOL)isElementRendererOverridden:(ACRCardElementType)cardElementType;
 
-- (BOOL)isActionRendererOverriden:(NSNumber *)cardElementType;
+- (BOOL)isActionRendererOverridden:(NSNumber *)cardElementType;
 
 - (void)setCustomActionElementParser:(NSObject<ACOIBaseActionElementParser> *)parser key:(NSString *)key;
 

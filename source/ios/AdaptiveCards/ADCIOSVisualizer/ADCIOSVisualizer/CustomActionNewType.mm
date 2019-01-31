@@ -11,12 +11,6 @@
 
 @implementation CustomActionNewType
 
--(instancetype)init
-{
-    self = [super init];
-    return self;
-}
-
 - (ACOBaseActionElement *)deserialize:(NSData *)json parseContext:(ACOParseContext* )parseContext;
 {
     if(json) {
