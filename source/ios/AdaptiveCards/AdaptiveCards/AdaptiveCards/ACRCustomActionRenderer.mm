@@ -6,7 +6,7 @@
 //
 
 #import "ACRCustomActionRenderer.h"
-#import "UnknownActionElement.h"
+#import "UnknownAction.h"
 #import "SharedAdaptiveCard.h"
 #import "ACOBaseActionElementPrivate.h"
 #import "ACRContentHoldingUIView.h"
@@ -33,7 +33,7 @@
          baseActionElement:(ACOBaseActionElement *)acoElem
                 hostConfig:(ACOHostConfig *)acoConfig;
 {
-    std::shared_ptr<UnknownActionElement> customAction = std::dynamic_pointer_cast<UnknownActionElement>([acoElem element]);
+    std::shared_ptr<UnknownAction> customAction = std::dynamic_pointer_cast<UnknownAction>([acoElem element]);
 
     ACRRegistration *reg = [ACRRegistration getInstance];
     if(reg) {
