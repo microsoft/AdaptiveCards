@@ -1976,9 +1976,13 @@ namespace AdaptiveNamespace
                 ComPtr<IInspectable> strongParentElement(parentElement);
                 EventRegistrationToken eventToken;
                 THROW_IF_FAILED(xamlImage->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([frameworkElement, strongParentElement, imageSourceAsBitmap, isVisible](IInspectable* /*sender*/, IRoutedEventArgs *
+                    Callback<IRoutedEventHandler>([frameworkElement, strongParentElement, imageSourceAsBitmap, isVisible, xamlImage](IInspectable* /*sender*/, IRoutedEventArgs *
                         /*args*/) -> HRESULT {
-                    return SetAutoImageSize(frameworkElement.Get(), strongParentElement.Get(), imageSourceAsBitmap.Get(), isVisible);
+
+                    ComPtr<IFrameworkElement> strongXamlImage;
+                    RETURN_IF_FAILED(xamlImage.As(&strongXamlImage));
+
+                    return SetAutoImageSize(strongXamlImage.Get(), strongParentElement.Get(), imageSourceAsBitmap.Get(), isVisible);
                 })
                     .Get(),
                     &eventToken));
@@ -2109,7 +2113,6 @@ namespace AdaptiveNamespace
             ComPtr<IImage> xamlImage =
                 XamlHelpers::CreateXamlClass<IImage>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Image));
 
-            
             if (backgroundColor != nullptr)
             {
                 // Create a surronding border with solid color background to contain the image
@@ -2120,7 +2123,7 @@ namespace AdaptiveNamespace
                 THROW_IF_FAILED(GetColorFromString(HStringToUTF8(backgroundColor), &color));
                 ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(color);
                 THROW_IF_FAILED(border->put_Background(backgroundColorBrush.Get()));
-
+                
                 ComPtr<IUIElement> imageAsUiElement;
                 THROW_IF_FAILED(xamlImage.CopyTo(imageAsUiElement.GetAddressOf()));
                 THROW_IF_FAILED(border->put_Child(imageAsUiElement.Get()));
