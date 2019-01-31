@@ -22,13 +22,17 @@ namespace AdaptiveCardTestApp.Pages
             this.InitializeComponent();
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             var runningTestsViewModel = e.Parameter as RunningTestsViewModel;
             if (runningTestsViewModel == null)
             {
                 throw new InvalidOperationException("Running tests view model not provided");
             }
+
+            // Force a Garbage Collection to make sure that the WeakReferences as invalidated.
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Default, blocking: true);
+            await System.Threading.Tasks.Task.Delay(1000);
 
             var model = new TestResultsViewModel(runningTestsViewModel.Results);
             DataContext = model;
@@ -41,7 +45,8 @@ namespace AdaptiveCardTestApp.Pages
                 model.ImageAndJsonFailed,
                 model.FailedButSourceWasChanged,
                 model.PassedButSourceWasChanged,
-                model.New
+                model.Leaked,
+                model.New,
             };
 
             if (model.Failed.Results.Count > 0)
@@ -67,6 +72,11 @@ namespace AdaptiveCardTestApp.Pages
             else if (model.PassedButSourceWasChanged.Results.Count > 0)
             {
                 ListViewCategories.SelectedItem = model.PassedButSourceWasChanged;
+            }
+
+            else if (model.Leaked.Results.Count > 0)
+            {
+                ListViewCategories.SelectedItem = model.Leaked;
             }
 
             else if (model.New.Results.Count > 0)

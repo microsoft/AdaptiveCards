@@ -31,11 +31,10 @@ namespace UWPTestLibrary
         public StorageFile ExpectedRoundtrippedJsonFile { get; set; }
 
         public string ActualError { get; set; }
-
         public StorageFile ActualImageFile { get; set; }
         public StorageFile ActualRoundTrippedJsonFile { get; set; }
         public RenderedTestResult TestResult { get; set; }
-        public UIElement XamlCard { get; set; }
+        public UIElement XamlCard { get { return TestResult?.Tree; } }
 
         public bool DidHostConfigChange => _oldHostConfigHash != null && _oldHostConfigHash != HostConfigFile.Hash;
         public bool DidCardPayloadChange => _oldCardHash != null && _oldCardHash != CardFile.Hash;

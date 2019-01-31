@@ -28,9 +28,11 @@ AdaptiveNamespaceStart
     {
         m_hostConfig = hostConfig;
         m_elementRendererRegistration = elementRendererRegistration;
-        m_renderResult = renderResult;
         m_resourceResolvers = resourceResolvers;
         m_overrideDictionary = overrideDictionary;
+
+        ComPtr<RenderedAdaptiveCard> strongRenderResult = renderResult;
+        RETURN_IF_FAILED(strongRenderResult.AsWeak(&m_weakRenderResult));
 
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionInvoker>(&m_actionInvoker, renderResult));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveMediaEventInvoker>(&m_mediaEventInvoker, renderResult));
@@ -80,7 +82,9 @@ AdaptiveNamespaceStart
         ComPtr<AdaptiveError> error;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveError>(&error, statusCode, message));
         ComPtr<IVector<ABI::AdaptiveNamespace::IAdaptiveError*>> errors;
-        RETURN_IF_FAILED(m_renderResult->get_Errors(&errors));
+        ComPtr<RenderedAdaptiveCard> renderResult;
+        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
+        RETURN_IF_FAILED(renderResult->get_Errors(&errors));
         return (errors->Append(error.Detach()));
     }
 
@@ -90,13 +94,29 @@ AdaptiveNamespaceStart
         ComPtr<AdaptiveWarning> warning;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveWarning>(&warning, statusCode, message));
         ComPtr<IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>> warnings;
-        RETURN_IF_FAILED(m_renderResult->get_Warnings(&warnings));
+        ComPtr<RenderedAdaptiveCard> renderResult;
+        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
+        RETURN_IF_FAILED(renderResult->get_Warnings(&warnings));
         return (warnings->Append(warning.Detach()));
     }
 
     _Use_decl_annotations_
     HRESULT AdaptiveRenderContext::AddInputValue(IAdaptiveInputValue* inputValue)
     {
-        return m_renderResult->AddInputValue(inputValue);
+        ComPtr<RenderedAdaptiveCard> renderResult;
+        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
+        RETURN_IF_FAILED(renderResult == nullptr ? E_NOINTERFACE : S_OK);
+        return renderResult->AddInputValue(inputValue);
     }
+
+    HRESULT AdaptiveRenderContext::GetRenderResult(AdaptiveCards::Rendering::Uwp::RenderedAdaptiveCard** renderResult)
+    {
+        ComPtr<IRenderedAdaptiveCard> strongRenderResult;
+        RETURN_IF_FAILED(m_weakRenderResult.As(&strongRenderResult));
+        RETURN_IF_FAILED(strongRenderResult == nullptr ? E_FAIL : S_OK);
+        ComPtr<RenderedAdaptiveCard> renderResultObject = PeekInnards<RenderedAdaptiveCard>(strongRenderResult);
+        RETURN_IF_FAILED(renderResultObject == nullptr ? E_FAIL : S_OK);
+        return renderResultObject.CopyTo(renderResult);
+    }
+
 AdaptiveNamespaceEnd
