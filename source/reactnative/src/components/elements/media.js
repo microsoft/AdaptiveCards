@@ -16,6 +16,8 @@ import * as Enums from '../../utils/enums';
 import Video from "react-native-video";
 import ElementWrapper from './element-wrapper'
 import { InputContextConsumer, InputContext } from '../../utils/context';
+import * as Utils from '../../utils/util';
+
 
 export class Media extends React.Component {
 
@@ -36,6 +38,9 @@ export class Media extends React.Component {
             this.payload.sources.forEach(source => {
                 this.context.addResourseInformation(source.url, source.mimeType);
             })
+        }
+        if(!Utils.isNullOrEmpty(this.payload.poster)){
+            this.context.addResourseInformation(this.payload.poster, "");
         }
     }
 
