@@ -1,28 +1,48 @@
 import { DesignerPeer } from "./designer-peers";
+import { DraggableElement } from "./draggable-element";
 
-export class TreeItem {
+export abstract class BaseTreeItem extends DraggableElement {
     private static collapsedIconClass = "acd-icon-chevronRight";
     private static expandedIconClass = "acd-icon-chevronDown";
 
     private _isExpanded: boolean = true;
+    private _isSelected: boolean = false;
     private _treeItemElement: HTMLElement;
     private _expandCollapseElement: HTMLElement;
     private _childContainerElement: HTMLElement;
 
-    readonly owner: DesignerPeer;
+    protected abstract getChildCount(): number;
+    protected abstract getLabelText(): string;
+    protected abstract renderChild(childIndex: number): HTMLElement;
 
-    constructor(owner: DesignerPeer) {
-        this.owner = owner;
+    protected getIconClass(): string {
+        return null;
     }
 
-    render(indentationLevel: number = 0): HTMLElement {
+    protected getAdditionalText(): string {
+        return null;
+    }
+
+    protected getAdditionalTextClass(): string {
+        return "acd-tree-item-additionalText";
+    }
+
+    protected getIndentationLevelIncrement(): number {
+        return 8;
+    }
+
+    protected selected() {
+        // Do nothing in base implementation
+    }
+
+    protected internalRender(): HTMLElement {
         let rootElement = document.createElement("div");
 
         this._treeItemElement = document.createElement("div");
         this._treeItemElement.classList.add("acd-tree-item");
         this._treeItemElement.style.display = "flex";
         this._treeItemElement.style.alignItems = "center";
-        this._treeItemElement.style.paddingLeft = 8 + 8 * indentationLevel + "px";
+        this._treeItemElement.style.paddingLeft = this.getIndentationLevelIncrement() * (1 + this.level) + "px";
         this._treeItemElement.onclick = (e: MouseEvent) => {
             this._isExpanded = !this._isExpanded;
 
@@ -35,7 +55,7 @@ export class TreeItem {
         this._expandCollapseElement = document.createElement("div");
         this._expandCollapseElement.classList.add("acd-tree-item-expandCollapseButton");
         this._expandCollapseElement.style.flex = "0 0 auto";
-        this._expandCollapseElement.style.visibility = this.owner.getChildCount() > 0 ? "visible" : "hidden";
+        this._expandCollapseElement.style.visibility = this.getChildCount() > 0 ? "visible" : "hidden";
 
         this._treeItemElement.appendChild(this._expandCollapseElement);
 
@@ -48,28 +68,30 @@ export class TreeItem {
         textElement.style.textOverflow = "ellipsis";
         textElement.style.overflow = "hidden";
         textElement.onclick = (e: MouseEvent) => {
-            this.owner.isSelected = true;
+            this.selected();
 
             e.cancelBubble = true;
             e.preventDefault();
         }
 
-        let iconElement = document.createElement("div");
-        iconElement.classList.add("acd-icon", "acd-treeView-icon", this.owner.registration.iconClass);
+        if (this.getIconClass()) {
+            let iconElement = document.createElement("div");
+            iconElement.classList.add("acd-icon", "acd-treeView-icon", this.getIconClass());
 
-        textElement.appendChild(iconElement);
+            textElement.appendChild(iconElement);
+        }
 
-        let typeNameSpan = document.createElement("span");
-        typeNameSpan.classList.add("acd-tree-item-typeName");
-        typeNameSpan.innerText = this.owner.getCardObjectTypeName();
+        let labelSpan = document.createElement("span");
+        labelSpan.classList.add("acd-tree-item-typeName");
+        labelSpan.innerText = this.getLabelText();
 
-        textElement.appendChild(typeNameSpan);
+        textElement.appendChild(labelSpan);
 
-        let text = this.owner.getTreeItemText();
+        let text = this.getAdditionalText();
 
         if (text && text != "") {
             let additionalTextSpan = document.createElement("span");
-            additionalTextSpan.classList.add("acd-tree-item-additionalText");
+            additionalTextSpan.classList.add(this.getAdditionalTextClass());
             additionalTextSpan.innerText = " [" + text + "]";
 
             textElement.appendChild(additionalTextSpan);
@@ -81,8 +103,8 @@ export class TreeItem {
 
         this._childContainerElement = document.createElement("div");
 
-        for (let i = 0; i < this.owner.getChildCount(); i++) {
-            let renderedChildItem = this.owner.getChildAt(i).treeItem.render(indentationLevel + 1);
+        for (let i = 0; i < this.getChildCount(); i++) {
+            let renderedChildItem = this.renderChild(i);
 
             this._childContainerElement.appendChild(renderedChildItem);
         }
@@ -94,23 +116,22 @@ export class TreeItem {
         return rootElement;
     }
 
+    protected _level: number = 0;
+    
+    constructor() {
+        super();
+    }
+
     updateLayout() {
         if (this._isExpanded) {
             this._childContainerElement.classList.remove("acd-hidden");
-            this._expandCollapseElement.classList.remove(TreeItem.collapsedIconClass);
-            this._expandCollapseElement.classList.add(TreeItem.expandedIconClass);
+            this._expandCollapseElement.classList.remove(BaseTreeItem.collapsedIconClass);
+            this._expandCollapseElement.classList.add(BaseTreeItem.expandedIconClass);
         }
         else {
             this._childContainerElement.classList.add("acd-hidden");
-            this._expandCollapseElement.classList.add(TreeItem.collapsedIconClass);
-            this._expandCollapseElement.classList.remove(TreeItem.expandedIconClass);
-        }
-
-        if (this.owner.isSelected) {
-            this._treeItemElement.classList.add("selected");
-        }
-        else {
-            this._treeItemElement.classList.remove("selected");
+            this._expandCollapseElement.classList.add(BaseTreeItem.collapsedIconClass);
+            this._expandCollapseElement.classList.remove(BaseTreeItem.expandedIconClass);
         }
     }
 
@@ -118,5 +139,24 @@ export class TreeItem {
         this._isExpanded = true;
 
         this.updateLayout();
+    }
+
+    get level(): number {
+        return this._level;
+    }
+
+    get isSelected(): boolean {
+        return this._isSelected;
+    }
+
+    set isSelected(value: boolean) {
+        this._isSelected = value;
+
+        if (this._isSelected) {
+            this._treeItemElement.classList.add("selected");
+        }
+        else {
+            this._treeItemElement.classList.remove("selected");
+        }
     }
 }

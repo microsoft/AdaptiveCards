@@ -303,6 +303,10 @@ body {
     content: "\EB1C";
 }
 
+.acd-icon-dot::before {
+    content: "\E915";
+}
+
 /*
     Side panes
 */
@@ -524,6 +528,11 @@ body {
 
 .acd-tree-item-additionalText {
     color: gray;
+    margin-left: 8px;
+}
+
+.acd-data-tree-item-additionalText {
+    color: #3a96dd;
     margin-left: 8px;
 }
 

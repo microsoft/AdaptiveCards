@@ -103,7 +103,7 @@ export abstract class DraggableElement {
         this.internalUpdateLayout();
     }
 
-    render() {
+    render(): HTMLElement {
         this._renderedElement = this.internalRender();
 
         this._renderedElement.onmousedown = (e: MouseEvent) => { e.preventDefault(); };
@@ -114,6 +114,8 @@ export abstract class DraggableElement {
         this._renderedElement.onpointerdown = (e: PointerEvent) => { this.pointerDown(e); };
         this._renderedElement.onpointerup = (e: PointerEvent) => { this.pointerUp(e); };
         this._renderedElement.onpointermove = (e: PointerEvent) => { this.pointerMove(e); };
+
+        return this._renderedElement;
     }
 
     get renderedElement(): HTMLElement {

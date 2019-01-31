@@ -3,7 +3,7 @@ import * as Controls  from "adaptivecards-controls";
 import { DraggableElement } from "./draggable-element";
 import { PeerCommand } from "./peer-command";
 import { CardDesignerSurface } from "./card-designer-surface";
-import { TreeItem } from "./treeitem";
+import { DesignerPeerTreeItem } from "./designer-peer-treeitem";
 import { Rect, IPoint } from "./miscellaneous";
 
 interface ILabelAndInput<TInput extends Adaptive.Input> {
@@ -217,6 +217,7 @@ export class DesignerPeerRegistration<TSource, TPeer> extends DesignerPeerRegist
 }
 
 export abstract class DesignerPeer extends DraggableElement {
+    private _parent: DesignerPeer;
     private _children: Array<DesignerPeer> = [];
     private _isSelected: boolean = false;
     private _inplaceEditorOverlay: HTMLElement;
@@ -385,10 +386,9 @@ export abstract class DesignerPeer extends DraggableElement {
 
     readonly registration: DesignerPeerRegistrationBase;
     readonly designerSurface: CardDesignerSurface;
-    readonly treeItem: TreeItem;
+    readonly treeItem: DesignerPeerTreeItem;
 
-    parent: DesignerPeer;
-
+    onParentChanged: (sender: DesignerPeer) => void;
     onSelectedChanged: (sender: DesignerPeer) => void;
     onChanged: (sender: DesignerPeer, updatePropertySheet: boolean) => void;
     onPeerRemoved: (sender: DesignerPeer) => void;
@@ -397,8 +397,10 @@ export abstract class DesignerPeer extends DraggableElement {
     abstract getCardObjectTypeName(): string;
     abstract internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean);
 
-    constructor(designerSurface: CardDesignerSurface, registration: DesignerPeerRegistrationBase) {
+    constructor(parent: DesignerPeer, designerSurface: CardDesignerSurface, registration: DesignerPeerRegistrationBase) {
         super();
+
+        this._parent = parent;
 
         if (!registration) {
             alert((<any>this).constructor.name);
@@ -406,7 +408,7 @@ export abstract class DesignerPeer extends DraggableElement {
 
         this.registration = registration;
         this.designerSurface = designerSurface;
-        this.treeItem = new TreeItem(this);
+        this.treeItem = new DesignerPeerTreeItem(this);
     }
 
     abstract getBoundingRect(): Rect;
@@ -548,6 +550,18 @@ export abstract class DesignerPeer extends DraggableElement {
         return result;
     }
 
+    get parent(): DesignerPeer {
+        return this._parent;
+    }
+
+    set parent(value: DesignerPeer) {
+        this._parent = value;
+
+        if (this.onParentChanged) {
+            this.onParentChanged(this);
+        }
+    }
+
     get isSelected(): boolean {
         return this._isSelected;
     }
@@ -579,8 +593,12 @@ export class ActionPeer extends DesignerPeer {
         return this.action.remove();
     }
 
-    constructor(designerSurface: CardDesignerSurface, registration: DesignerPeerRegistrationBase, action: Adaptive.Action) {
-        super(designerSurface, registration);
+    constructor(
+        parent: DesignerPeer,
+        designerSurface: CardDesignerSurface,
+        registration: DesignerPeerRegistrationBase,
+        action: Adaptive.Action) {
+        super(parent, designerSurface, registration);
 
         this._action = action;
     }
@@ -667,8 +685,12 @@ export class ActionPeer extends DesignerPeer {
 }
 
 export abstract class TypedActionPeer<TAction extends Adaptive.Action> extends ActionPeer {
-    constructor(designerSurface: CardDesignerSurface, registration: DesignerPeerRegistrationBase, action: TAction) {
-        super(designerSurface, registration, action);
+    constructor(
+        parent: DesignerPeer,
+        designerSurface: CardDesignerSurface,
+        registration: DesignerPeerRegistrationBase,
+        action: TAction) {
+        super(parent, designerSurface, registration, action);
     }
 
     get action(): TAction {
@@ -868,8 +890,12 @@ export class CardElementPeer extends DesignerPeer {
         }
     }
 
-    constructor(designerSurface: CardDesignerSurface, registration: DesignerPeerRegistrationBase, cardElement: Adaptive.CardElement) {
-        super(designerSurface, registration);
+    constructor(
+        parent: DesignerPeer,
+        designerSurface: CardDesignerSurface,
+        registration: DesignerPeerRegistrationBase,
+        cardElement: Adaptive.CardElement) {
+        super(parent, designerSurface, registration);
 
         this._cardElement = cardElement;
 
@@ -1103,8 +1129,12 @@ export class CardElementPeer extends DesignerPeer {
 }
 
 export abstract class TypedCardElementPeer<TCardElement extends Adaptive.CardElement> extends CardElementPeer {
-    constructor(designerSurface: CardDesignerSurface, registration: DesignerPeerRegistrationBase, cardElement: TCardElement) {
-        super(designerSurface, registration, cardElement);
+    constructor(
+        parent: DesignerPeer,
+        designerSurface: CardDesignerSurface,
+        registration: DesignerPeerRegistrationBase,
+        cardElement: TCardElement) {
+        super(parent, designerSurface, registration, cardElement);
     }
 
     get cardElement(): TCardElement {

@@ -1,15 +1,27 @@
 import * as Adaptive from "adaptivecards";
 import * as Controls from "adaptivecards-controls";
-import { TreeItem } from "./treeitem";
 import { DraggableElement } from "./draggable-element";
-import { Rect, IPoint } from "./miscellaneous";
-import { PeerCommand } from "./peer-command";
+import { IPoint } from "./miscellaneous";
 import * as DesignerPeers from "./designer-peers";
 
 export type CardElementType = { new(): Adaptive.CardElement };
 export type ActionType = { new(): Adaptive.Action };
-export type CardElementPeerType = { new(designerSurface: CardDesignerSurface, registration: DesignerPeers.DesignerPeerRegistrationBase, cardElement: Adaptive.CardElement): DesignerPeers.CardElementPeer };
-export type ActionPeerType = { new(designerSurface: CardDesignerSurface, registration: DesignerPeers.DesignerPeerRegistrationBase, action: Adaptive.Action): DesignerPeers.ActionPeer };
+export type CardElementPeerType = {
+    new(
+        parent: DesignerPeers.DesignerPeer,
+        designerSurface: CardDesignerSurface,
+        registration: DesignerPeers.DesignerPeerRegistrationBase,
+        cardElement: Adaptive.CardElement
+    ): DesignerPeers.CardElementPeer
+};
+export type ActionPeerType = {
+    new(
+        parent: DesignerPeers.DesignerPeer,
+        designerSurface: CardDesignerSurface,
+        registration: DesignerPeers.DesignerPeerRegistrationBase,
+        action: Adaptive.Action
+    ): DesignerPeers.ActionPeer
+};
 
 class DesignerPeerCategory {
     static Unknown = "Unknown";
@@ -97,22 +109,9 @@ export class CardElementPeerRegistry extends DesignerPeerRegistry<CardElementTyp
     }
 
     createPeerInstance(designerSurface: CardDesignerSurface, parent: DesignerPeers.DesignerPeer, cardElement: Adaptive.CardElement): DesignerPeers.CardElementPeer {
-        /*
-        var registrationInfo: IDesignerPeerRegistration<CardElementType, CardElementPeerType> = undefined;
-
-        for (var i = 0; i < this._items.length; i++) {
-            if (cardElement instanceof this._items[i].sourceType) {
-                registrationInfo = this._items[i];
-
-                break;
-            }
-        }
-        */
-
         var registrationInfo = this.findTypeRegistration((<any>cardElement).constructor);
 
-        var peer = registrationInfo ? new registrationInfo.peerType(designerSurface, registrationInfo, cardElement) : new DesignerPeers.CardElementPeer(designerSurface, this.defaultRegistration, cardElement);
-        peer.parent = parent;
+        var peer = registrationInfo ? new registrationInfo.peerType(parent, designerSurface, registrationInfo, cardElement) : new DesignerPeers.CardElementPeer(parent, designerSurface, this.defaultRegistration, cardElement);
 
         return peer;
     }
@@ -131,8 +130,7 @@ export class ActionPeerRegistry extends DesignerPeerRegistry<ActionType, ActionP
     createPeerInstance(designerSurface: CardDesignerSurface, parent: DesignerPeers.DesignerPeer, action: Adaptive.Action): DesignerPeers.ActionPeer {
         var registrationInfo = this.findTypeRegistration((<any>action).constructor);
 
-        var peer = registrationInfo ? new registrationInfo.peerType(designerSurface, registrationInfo, action) : new DesignerPeers.ActionPeer(designerSurface, this.defaultRegistration, action);
-        peer.parent = parent;
+        var peer = registrationInfo ? new registrationInfo.peerType(parent, designerSurface, registrationInfo, action) : new DesignerPeers.ActionPeer(parent, designerSurface, this.defaultRegistration, action);
 
         return peer;
     }
@@ -366,7 +364,7 @@ export class CardDesignerSurface {
             if (!peer) {
                 let registration = CardDesignerSurface.cardElementPeerRegistry.findTypeRegistration(Adaptive.AdaptiveCard);
 
-                peer = new registration.peerType(this, registration, action.card);
+                peer = new registration.peerType(peer, this, registration, action.card);
 
                 let parentPeer = this.findActionPeer(action);
 

@@ -12,5 +12,7 @@ export * from "./tool-box";
 export * from "./toolbar";
 export * from "./tool-palette";
 export * from "./splitter";
-export * from "./treeitem";
+export * from "./base-tree-item";
+export * from "./designer-peer-treeitem";
+export * from "./data";
 export * from "./containers/index";

@@ -13,6 +13,8 @@ import { BasePaletteItem, ElementPaletteItem } from "./tool-palette";
 import { DefaultContainer } from "./containers/default/default-container";
 import { SidePanel, SidePanelAlignment } from "./side-panel";
 import { Toolbox } from "./tool-box";
+import { DataType, TestData } from "./data";
+import { DataTreeItem } from "./data-treeitem";
 
 export class CardDesigner {
     private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
@@ -57,6 +59,16 @@ export class CardDesigner {
         if (this._treeViewToolbox.content) {
             this._treeViewToolbox.content.innerHTML = "";
             this._treeViewToolbox.content.appendChild(this.designerSurface.rootPeer.treeItem.render());
+        }
+    }
+
+    private buildDataExplorer() {
+        if (this._dataToolbox.content) {
+            this._dataToolbox.content.innerHTML = "";
+
+            let treeItem = new DataTreeItem(DataType.createDataTypeFrom(null, TestData, "$root"));
+
+            this._dataToolbox.content.appendChild(treeItem.render());
         }
     }
 
@@ -279,6 +291,7 @@ export class CardDesigner {
         };
 
         this.buildPalette();
+        this.buildDataExplorer();
         this.buildPropertySheet(null);
 
         if (this._card) {
@@ -861,9 +874,13 @@ export class CardDesigner {
             this.scheduleLayoutUpdate();
         }
 
-        this._dataToolbox = new Toolbox("data", "Data");
-        treeViewPanel.addToolbox(this._dataToolbox);
+        let dataExplorerHost = document.createElement("div");
+        dataExplorerHost.className = "acd-treeView-host";
 
+        this._dataToolbox = new Toolbox("data", "Data Explorer");
+        this._dataToolbox.content = dataExplorerHost;
+
+        treeViewPanel.addToolbox(this._dataToolbox);
         treeViewPanel.attachTo(document.getElementById("treeViewPanel"));
 
         this._designerHostElement = document.getElementById("designerHost")
