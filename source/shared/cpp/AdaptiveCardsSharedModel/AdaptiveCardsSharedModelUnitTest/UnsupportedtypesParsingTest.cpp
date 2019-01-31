@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "UnknownElement.h"
-#include "UnknownActionElement.h"
+#include "UnknownAction.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
@@ -139,7 +139,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::shared_ptr<BaseActionElement> elem = parseResult->GetAdaptiveCard()->GetActions().front(); 
             Assert::AreEqual(elem->GetElementTypeString(), std::string("Alert"));
 
-            std::shared_ptr<UnknownActionElement> delegate = std::static_pointer_cast<UnknownActionElement>(elem);
+            std::shared_ptr<UnknownAction> delegate = std::static_pointer_cast<UnknownAction>(elem);
             Json::Value value = delegate->GetAdditionalProperties();
             Json::FastWriter fastWriter;
             std::string jsonString = fastWriter.write(value);

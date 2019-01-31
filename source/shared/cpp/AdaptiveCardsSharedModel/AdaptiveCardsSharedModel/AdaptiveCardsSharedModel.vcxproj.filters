@@ -162,7 +162,7 @@
     <ClCompile Include="..\..\ObjectModel\ToggleVisibilityTarget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\ObjectModel\UnknownActionElement.cpp">
+    <ClCompile Include="..\..\ObjectModel\UnknownAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -317,7 +317,7 @@
     <ClInclude Include="..\..\ObjectModel\ToggleVisibilityTarget.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\ObjectModel\UnknownActionElement.h">
+    <ClInclude Include="..\..\ObjectModel\UnknownAction.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
