@@ -25,6 +25,4 @@ namespace AdaptiveNamespace
     private:
         std::shared_ptr<RegistrationMap> m_registration;
     };
-
-    ActivatableClass(AdaptiveElementRendererRegistration);
 }
