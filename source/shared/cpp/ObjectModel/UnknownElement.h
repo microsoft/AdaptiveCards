@@ -9,6 +9,7 @@ namespace AdaptiveSharedNamespace
     {
     public:
         UnknownElement();
+        Json::Value SerializeToJsonValue() const override;
     };
 
     class UnknownElementParser : public BaseCardElementParser

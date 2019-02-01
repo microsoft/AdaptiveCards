@@ -76,7 +76,6 @@ class SwigDirector_ActionElementParser : public AdaptiveCards::ActionElementPars
 public:
     void swig_connect_director(JNIEnv *jenv, jobject jself, jclass jcls, bool swig_mem_own, bool weak_global);
     SwigDirector_ActionElementParser(JNIEnv *jenv);
-    virtual ~SwigDirector_ActionElementParser();
     virtual std::shared_ptr< AdaptiveCards::BaseActionElement > Deserialize(AdaptiveCards::ParseContext &context, Json::Value const &value);
 public:
     bool swig_overrides(int n) {
@@ -91,7 +90,6 @@ class SwigDirector_BaseCardElementParser : public AdaptiveCards::BaseCardElement
 public:
     void swig_connect_director(JNIEnv *jenv, jobject jself, jclass jcls, bool swig_mem_own, bool weak_global);
     SwigDirector_BaseCardElementParser(JNIEnv *jenv);
-    virtual ~SwigDirector_BaseCardElementParser();
     virtual std::shared_ptr< AdaptiveCards::BaseCardElement > Deserialize(AdaptiveCards::ParseContext &context, Json::Value const &value);
     virtual std::shared_ptr< AdaptiveCards::BaseCardElement > DeserializeFromString(AdaptiveCards::ParseContext &context, std::string const &value);
 public:

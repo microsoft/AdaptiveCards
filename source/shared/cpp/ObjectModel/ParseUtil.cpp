@@ -388,6 +388,10 @@ namespace AdaptiveSharedNamespace
         std::string typeString = GetTypeAsString(json);
 
         auto parser = context.actionParserRegistration->GetParser(typeString);
+        if (parser == nullptr)
+        {
+            parser = context.actionParserRegistration->GetParser("UnknownAction");
+        }
 
         // Parse it if it's allowed by the current parsers
         if (parser != nullptr)

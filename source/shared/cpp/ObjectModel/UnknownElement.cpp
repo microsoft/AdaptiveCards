@@ -15,8 +15,9 @@ std::shared_ptr<BaseCardElement> UnknownElementParser::Deserialize(ParseContext&
     // "MyCoolElement" when serialized back to json. Here we get the real type string, let
     // BaseCardElement::Deserialize() do its work, then put the real string back with SetElementTypeString (otherwise,
     // the string will be initialized as "Unknown").
-    std::string actualType = ParseUtil::GetTypeAsString(json);
-    std::shared_ptr<UnknownElement> unknown = BaseCardElement::Deserialize<UnknownElement>(json);
+    std::string actualType = ParseUtil::GetTypeAsString(json); 
+    std::shared_ptr<UnknownElement> unknown = std::make_shared<UnknownElement>();
+    unknown->SetAdditionalProperties(json);
     unknown->SetElementTypeString(actualType);
     return unknown;
 }
@@ -25,4 +26,9 @@ std::shared_ptr<BaseCardElement>
 UnknownElementParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
     return UnknownElementParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
+}
+
+Json::Value UnknownElement::SerializeToJsonValue() const
+{
+    return GetAdditionalProperties();
 }

@@ -14,7 +14,8 @@ public enum ActionType {
   Submit,
   OpenUrl,
   ToggleVisibility,
-  Custom;
+  Custom,
+  UnknownAction;
 
   public final int swigValue() {
     return swigValue;
