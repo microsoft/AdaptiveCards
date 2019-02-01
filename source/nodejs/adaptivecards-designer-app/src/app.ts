@@ -31,4 +31,31 @@ window.onload = function() {
 	let designer = new ACDesigner.CardDesigner(hostContainers);
 	designer.attachTo(document.getElementById("designerRootHost"));
 	designer.monacoModuleLoaded(monaco);
+
+	designer.dataStructure = ACDesigner.DataType.createDataTypeFrom(
+		{
+			firstName: "John",
+			lastName: "Doe",
+			age: 45,
+			isMarried: true,
+			address: {
+				street: "1234 555th Ave NE",
+				city: "Redmond",
+				state: "WA",
+				countryOrRegion: "USA"
+			},
+			children: [
+				{
+					firstName: "Jennifer",
+					lastName: "Doe",
+					age: 9
+				},
+				{
+					firstName: "James",
+					lastName: "Doe",
+					age: 13
+				}
+			]
+		}
+	);
 };

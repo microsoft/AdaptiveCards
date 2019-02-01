@@ -164,8 +164,6 @@ export class SidePanel {
     isResizable: boolean = true;
 
     addToolbox(toolbox: Toolbox) {
-        toolbox.collapsedTabContainer = this._collapsedTabContainer;
-
         let toolboxInfo = new ToolboxInfo(toolbox);
         toolboxInfo.onToggled = (sender: ToolboxInfo) => {
             this.updateLayout();
@@ -199,7 +197,9 @@ export class SidePanel {
 
         for (let i = 0; i < this._toolboxes.length; i++) {
             let toolboxInfo = this._toolboxes[i];
-            toolboxInfo.toolbox.render(this.isVertical ? ToolboxOrientation.Vertical : ToolboxOrientation.Horizontal);
+            toolboxInfo.toolbox.render(
+                this.isVertical ? ToolboxOrientation.Vertical : ToolboxOrientation.Horizontal,
+                this._collapsedTabContainer);
 
             if (i > 0) {
                 let splitterElement = document.createElement("div");

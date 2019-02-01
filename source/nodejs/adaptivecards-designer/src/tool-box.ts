@@ -1,5 +1,11 @@
 import { SettingsManager } from "./settings-manager";
 
+export interface IToolboxCommand {
+    title: string;
+    iconClass: string;
+    execute: (sender: IToolboxCommand) => void;
+}
+
 export enum ToolboxOrientation {
     Horizontal,
     Vertical
@@ -8,16 +14,16 @@ export enum ToolboxOrientation {
 export class Toolbox {
     private _renderedElement: HTMLElement;
     private _headerRootElement: HTMLElement;
-    private _headerContentElement: HTMLElement;
-    private _headerTitleElement: HTMLElement;
     private _headerIconElement: HTMLElement;
-    private _headerStatusTextElement: HTMLElement;
+    private _expandCollapseButtonElement: HTMLElement;
+    private _customCommandsHost: HTMLElement;
     private _contentHost: HTMLElement;
     private _isExpanded: boolean = true;
     private _content: HTMLElement;
     private _stretch: boolean = false;
     private _orientation: ToolboxOrientation;
     private _isRestoring: boolean = false;
+    private _collapsedTabContainer: HTMLElement;
 
     private getDimensionSettingName(): string {
         return "Toolbox" + this.id + (this._orientation == ToolboxOrientation.Vertical ? "Height" : "Width");
@@ -44,15 +50,16 @@ export class Toolbox {
     readonly id: string;
     readonly title: string;
 
-    collapsedTabContainer: HTMLElement;
+    commands: Array<IToolboxCommand> = null;
 
     constructor(id: string, title: string) {
         this.id = id;
         this.title = title;
     }
 
-    render(orientation: ToolboxOrientation) {
+    render(orientation: ToolboxOrientation, collapsedTabContainer: HTMLElement) {
         this._orientation = orientation;
+        this._collapsedTabContainer = collapsedTabContainer;
 
         this._renderedElement = document.createElement("div");
         this._renderedElement.style.overflow = "auto";
@@ -61,38 +68,59 @@ export class Toolbox {
 
         this._headerRootElement = document.createElement("div");
         this._headerRootElement.innerHTML = "";
-        this._headerRootElement.className = "acd-sidePane-header";
+        this._headerRootElement.className = "acd-toolbox-header";
 
-        this._headerContentElement = document.createElement("div");
-        this._headerContentElement.className = "acd-sidePane-header-content";
+        let headerContentElement = document.createElement("div");
+        headerContentElement.className = "acd-toolbox-header-content";
 
-        this._headerTitleElement = document.createElement("span");
-        this._headerTitleElement.className = "acd-sidePane-header-title";
-        this._headerTitleElement.innerText = this.title;
+        let headerTitleElement = document.createElement("span");
+        headerTitleElement.className = "acd-toolbox-header-title";
+        headerTitleElement.innerText = this.title;
 
-        this._headerContentElement.appendChild(this._headerTitleElement);
+        headerContentElement.appendChild(headerTitleElement);
 
-        let expandCollapseElement = document.createElement("span");
-        expandCollapseElement.className = "acd-sidePane-header-expandCollapseButton";
+        let headerCommandsHostElement = document.createElement("span");
+        headerCommandsHostElement.className = "acd-toolbox-header-commandsHost";
+
+        this._customCommandsHost = document.createElement("div");
+        this._customCommandsHost.style.display = "flex";
+
+        if (this.commands) {
+            for (let command of this.commands) {
+                let commandButtonElement = document.createElement("div");
+                commandButtonElement.className = "acd-toolbox-header-commandButton";
+                commandButtonElement.title = command.title;
+                commandButtonElement.onclick = (e) => {
+                    command.execute(command);
+                }
+
+                let commandIconElement = document.createElement("div");
+                commandIconElement.classList.add("acd-icon", command.iconClass);
+
+                commandButtonElement.appendChild(commandIconElement);
+
+                this._customCommandsHost.appendChild(commandButtonElement);
+            }
+        }
+
+        headerCommandsHostElement.appendChild(this._customCommandsHost);
+
+        this._expandCollapseButtonElement = document.createElement("span");
+        this._expandCollapseButtonElement.className = "acd-toolbox-header-commandButton";
+        this._expandCollapseButtonElement.title = "Hide";
 
         this._headerIconElement = document.createElement("span")
         this._headerIconElement.classList.add("acd-icon", "acd-icon-header-expanded");
 
-        expandCollapseElement.appendChild(this._headerIconElement);
+        this._expandCollapseButtonElement.appendChild(this._headerIconElement);
 
-        this._headerStatusTextElement = document.createElement("span");
-        this._headerStatusTextElement.className = "acd-sidePane-header-status";
-        this._headerStatusTextElement.innerText = "Hide";
-
-        expandCollapseElement.appendChild(this._headerStatusTextElement);
-
-        expandCollapseElement.onmousedown = (e) => {
+        this._expandCollapseButtonElement.onmousedown = (e) => {
             e.preventDefault();
 
             return true;
         }
 
-        expandCollapseElement.onclick = (e) => {
+        this._expandCollapseButtonElement.onclick = (e) => {
             this.toggle();
 
             e.preventDefault();
@@ -100,8 +128,11 @@ export class Toolbox {
             return true;
         }
 
-        this._headerContentElement.appendChild(expandCollapseElement);
-        this._headerRootElement.appendChild(this._headerContentElement);
+        headerCommandsHostElement.appendChild(this._expandCollapseButtonElement);
+
+        headerContentElement.appendChild(headerCommandsHostElement);
+
+        this._headerRootElement.appendChild(headerContentElement);
 
         this._contentHost = document.createElement("div");
         this._contentHost.style.overflow = "auto";
@@ -115,12 +146,14 @@ export class Toolbox {
         if (this._isExpanded) {
             this._headerIconElement.classList.add("acd-icon-header-collapsed");
             this._headerIconElement.classList.remove("acd-icon-header-expanded");
-            this._headerStatusTextElement.classList.add("acd-hidden");
+            this._customCommandsHost.classList.add("acd-hidden");
 
-            if (this.collapsedTabContainer) {
+            if (this._collapsedTabContainer) {
                 this._renderedElement.removeChild(this._headerRootElement);
-                this.collapsedTabContainer.appendChild(this._headerRootElement);
+                this._collapsedTabContainer.appendChild(this._headerRootElement);
             }
+
+            this._expandCollapseButtonElement.title = "Show";
 
             this._isExpanded = false;
 
@@ -132,12 +165,14 @@ export class Toolbox {
         if (!this._isExpanded) {
             this._headerIconElement.classList.add("acd-icon-header-expanded");
             this._headerIconElement.classList.remove("acd-icon-header-collapsed");
-            this._headerStatusTextElement.classList.remove("acd-hidden");
+            this._customCommandsHost.classList.remove("acd-hidden");
 
-            if (this.collapsedTabContainer) {
-                this.collapsedTabContainer.removeChild(this._headerRootElement);
+            if (this._collapsedTabContainer) {
+                this._collapsedTabContainer.removeChild(this._headerRootElement);
                 this._renderedElement.insertBefore(this._headerRootElement, this._renderedElement.firstChild);
             }
+
+            this._expandCollapseButtonElement.title = "Hide";
 
             this._isExpanded = true;
 

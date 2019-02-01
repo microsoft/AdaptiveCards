@@ -307,6 +307,10 @@ body {
     content: "\E915";
 }
 
+.acd-icon-dataStructure::before {
+    content: "\EC8D";
+}
+
 /*
     Side panes
 */
@@ -321,17 +325,17 @@ body {
     flex: 0 0 auto;
 }
 
-.acd-horizontalCollapsedTabContainer > .acd-sidePane-header {
+.acd-horizontalCollapsedTabContainer > .acd-toolbox-header {
     border-right: 1px solid #D2D2D2;
 }
 
-.acd-verticalCollapsedTabContainer.acd-dockedLeft > .acd-sidePane-header {
+.acd-verticalCollapsedTabContainer.acd-dockedLeft > .acd-toolbox-header {
     width: 32px;
     height: 170px;
     border-bottom: 1px solid #D2D2D2;
 }
 
-.acd-verticalCollapsedTabContainer.acd-dockedLeft .acd-sidePane-header-content {
+.acd-verticalCollapsedTabContainer.acd-dockedLeft .acd-toolbox-header-content {
     width: 170px;
     height: 32px;
     transform-origin: 0 0;
@@ -339,49 +343,59 @@ body {
 }
 
 
-.acd-verticalCollapsedTabContainer.acd-dockedRight > .acd-sidePane-header {
+.acd-verticalCollapsedTabContainer.acd-dockedRight > .acd-toolbox-header {
     width: 32px;
     height: 170px;
     border-bottom: 1px solid #D2D2D2;
 }
 
-.acd-verticalCollapsedTabContainer.acd-dockedRight .acd-sidePane-header-content {
+.acd-verticalCollapsedTabContainer.acd-dockedRight .acd-toolbox-header-content {
     width: 170px;
     height: 32px;
     transform-origin: 0 100%;
     transform: rotate(90deg) translate(-32px, 0px);
 }
 
-.acd-sidePane-header {
+.acd-toolbox-header {
     height: 32px;
     background-color: #EEEEEE;
     cursor: default;
     flex: 0 0 auto;
 }
 
-.acd-sidePane-header-content {
+.acd-toolbox-header-content {
     height: 100%;
-    padding: 4px 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.acd-sidePane-header-title {
+.acd-toolbox-header-title {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    padding: 4px 8px;
 }
 
-.acd-sidePane-header-expandCollapseButton {
+.acd-toolbox-header-commandButton {
     display: flex;
     align-items: center;
     cursor: pointer;
-    margin-left: 4px;
+    height: 100%;
+    padding: 4px 8px;
 }
 
-.acd-sidePane-header-status {
-    margin-left: 4px;
+.acd-toolbox-header-commandButton:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.acd-toolbox-header-commandButton:active {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.acd-toolbox-header-commandsHost {
+    display: flex;
+    height: 100%;
 }
 
 .acd-designersurface.dragging {

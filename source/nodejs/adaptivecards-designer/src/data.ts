@@ -3,7 +3,7 @@ export enum ValueKind { String, Boolean, Number }
 export type PropertyDictionary = { [key: string]: DataType };
 
 export abstract class DataType {
-    static createDataTypeFrom(parent: DataType, input: any, label: string): DataType {
+    private static internalCreateDataTypeFrom(parent: DataType, input: any, label: string): DataType {
         if (typeof input === "string") {
             return new ValueType(parent, label, ValueKind.String);
         }
@@ -17,7 +17,7 @@ export abstract class DataType {
             if (Array.isArray(input)) {
                 let result = new ArrayType(parent, label);
 
-                result.itemDataType = input.length == 0 ? undefined : DataType.createDataTypeFrom(result, input[0], "items");
+                result.itemDataType = input.length == 0 ? undefined : DataType.internalCreateDataTypeFrom(result, input[0], "items");
 
                 return result;
             }
@@ -25,7 +25,7 @@ export abstract class DataType {
                 let result = new ObjectType(parent, label);
     
                 for (let key of Object.keys(input)) {
-                    let dataType = DataType.createDataTypeFrom(result, input[key], key);
+                    let dataType = DataType.internalCreateDataTypeFrom(result, input[key], key);
 
                     if (dataType) {
                         result.properties[key] = dataType;
@@ -38,6 +38,10 @@ export abstract class DataType {
         else {
             throw new Error("Unsupported data type: " + typeof input);
         }
+    }
+
+    static createDataTypeFrom(input: any): DataType {
+        return DataType.internalCreateDataTypeFrom(null, input, "$root");
     }
 
     constructor(readonly parent: DataType, readonly label: string) {}
@@ -124,28 +128,4 @@ export class ObjectType extends DataType {
     getTypeName(): string {
         return "Object";
     }
-}
-
-export var TestData = {
-    firstName: "David",
-    lastName: "Claux",
-    age: 45,
-    isMarried: true,
-    address: {
-        street: "1234 555th Ave NE",
-        city: "Bellevue",
-        state: "WA"
-    },
-    children: [
-        {
-            firstName: "Thomas",
-            lastName: "Claux",
-            age: 9
-        },
-        {
-            firstName: "Alexandre",
-            lastName: "Claux",
-            age: 13
-        }
-    ]
 }

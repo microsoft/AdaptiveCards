@@ -12,8 +12,8 @@ import { IPoint, Utils } from "./miscellaneous";
 import { BasePaletteItem, ElementPaletteItem, DataPaletteItem } from "./tool-palette";
 import { DefaultContainer } from "./containers/default/default-container";
 import { SidePanel, SidePanelAlignment } from "./side-panel";
-import { Toolbox } from "./tool-box";
-import { DataType, TestData } from "./data";
+import { Toolbox, IToolboxCommand } from "./tool-box";
+import { DataType } from "./data";
 import { DataTreeItem } from "./data-treeitem";
 import { BaseTreeItem } from "./base-tree-item";
 
@@ -56,7 +56,8 @@ export class CardDesigner {
     private _cardEditorToolbox: Toolbox;
     private _sampleDataEditorToolbox: Toolbox;
     private _dataToolbox: Toolbox;
-	private _assetPath: string;
+    private _assetPath: string;
+    private _dataStructure: DataType;
 
     private buildTreeView() {
         if (this._treeViewToolbox.content) {
@@ -84,15 +85,17 @@ export class CardDesigner {
         }
     }
 
-    private buildDataExplorer(data: any) {
+    private buildDataExplorer() {
         if (this._dataToolbox.content) {
             this._dataToolbox.content.innerHTML = "";
 
-            let treeItem = new DataTreeItem(DataType.createDataTypeFrom(null, data, "$root"));
+            if (this._dataStructure) {
+                let treeItem = new DataTreeItem(this._dataStructure);
 
-            this._dataToolbox.content.appendChild(treeItem.render());
+                this._dataToolbox.content.appendChild(treeItem.render());
 
-            this.setupDataTreeItemEvents(treeItem);
+                this.setupDataTreeItemEvents(treeItem);
+            }
         }
     }
 
@@ -520,18 +523,6 @@ export class CardDesigner {
         this._sampleDataEditor.layout();
     }
 
-    private loadMonaco(callback: () => void) {
-        // window["require"].config({ paths: { 'vs': './editor/monaco/min/vs' } });
-        // window["require"](
-        //     ['vs/editor/editor.main'],
-        //     function () {
-        //         callback();
-		//     });
-		
-		// If loaded using WebPack this should work, but it's not right now...
-		//callback();
-    }	
-
     public monacoModuleLoaded(monaco: any = null) {
 		if (!monaco) {
             monaco = window["monaco"];
@@ -589,9 +580,10 @@ export class CardDesigner {
         this._sampleDataEditor.onDidChangeModelContent(
             () => {
                 try {
+                    // TODO: What happens when the sample data has changed?
+                    /*
                     let parsedData = JSON.parse(this.getCurrentSampleDataEditorPayload());
-
-                    this.buildDataExplorer(parsedData);
+                    */
                 }
                 catch {
                     // Swallow expression, the payload isn't a valid JSON document
@@ -866,7 +858,7 @@ export class CardDesigner {
         let toolPaletteHost = document.createElement("div");
         toolPaletteHost.className = "acd-dockedPane";
 
-        this._toolPaletteToolbox = new Toolbox("toolPalette", "Tool box");
+        this._toolPaletteToolbox = new Toolbox("toolPalette", "Card Elements");
         this._toolPaletteToolbox.content = toolPaletteHost;
 
         let toolPalettePanel = new SidePanel(
@@ -879,15 +871,24 @@ export class CardDesigner {
         toolPalettePanel.attachTo(document.getElementById("toolPalettePanel"));
 
         // JSON editors panel
-        this._cardEditorToolbox = new Toolbox("cardEditor", "Card payload editor");
+        this._cardEditorToolbox = new Toolbox("cardEditor", "Card Payload Editor");
         this._cardEditorToolbox.content = document.createElement("div");
         this._cardEditorToolbox.content.style.padding = "8px";
         this._cardEditorToolbox.content.innerText = "Loading editor...";
 
-        this._sampleDataEditorToolbox = new Toolbox("sampleDataEditor", "Sample data editor");
+        this._sampleDataEditorToolbox = new Toolbox("sampleDataEditor", "Sample Data Editor");
         this._sampleDataEditorToolbox.content = document.createElement("div");
         this._sampleDataEditorToolbox.content.style.padding = "8px";
         this._sampleDataEditorToolbox.content.innerText = "Loading editor...";
+        this._sampleDataEditorToolbox.commands = [
+            {
+                title: "Copy the structure of this data into the Data Structure toolbox",
+                iconClass: "acd-icon-dataStructure",
+                execute: (sender: IToolboxCommand) => {
+                    this.dataStructure = DataType.createDataTypeFrom(JSON.parse(this.getCurrentSampleDataEditorPayload()));
+                }
+            }
+        ]
 
         this._jsonEditorsPanel = new SidePanel(
             "jsonEditorPanel",
@@ -912,7 +913,7 @@ export class CardDesigner {
         let propertySheetHost = document.createElement("div");
         propertySheetHost.className = "acd-propertySheet-host";
 
-        this._propertySheetToolbox = new Toolbox("propertySheet", "Element properties");
+        this._propertySheetToolbox = new Toolbox("propertySheet", "Element Properties");
         this._propertySheetToolbox.content = propertySheetHost;
 
         let propertySheetPanel = new SidePanel(
@@ -930,7 +931,7 @@ export class CardDesigner {
         let treeViewHost = document.createElement("div");
         treeViewHost.className = "acd-treeView-host";
 
-        this._treeViewToolbox = new Toolbox("treeView", "Visual Tree View");
+        this._treeViewToolbox = new Toolbox("treeView", "Card Structure");
         this._treeViewToolbox.content = treeViewHost;
 
         let treeViewPanel = new SidePanel(
@@ -945,7 +946,7 @@ export class CardDesigner {
         let dataExplorerHost = document.createElement("div");
         dataExplorerHost.className = "acd-treeView-host";
 
-        this._dataToolbox = new Toolbox("data", "Data Explorer");
+        this._dataToolbox = new Toolbox("data", "Data Structure");
         this._dataToolbox.content = dataExplorerHost;
 
         treeViewPanel.addToolbox(this._dataToolbox);
@@ -954,8 +955,6 @@ export class CardDesigner {
         this._designerHostElement = document.getElementById("designerHost")
 
         this.recreateDesignerSurface();
-
-        this.loadMonaco(() => { this.monacoModuleLoaded(); });
 
         window.addEventListener("pointermove", (e: PointerEvent) => { this.handlePointerMove(e); });
         window.addEventListener("resize", () => { this.scheduleLayoutUpdate(); });
@@ -1021,6 +1020,16 @@ export class CardDesigner {
 
     getCard(): object {
         return this.designerSurface.card.toJSON();
+    }
+
+    get dataStructure(): DataType {
+        return this._dataStructure;
+    }
+
+    set dataStructure(value: DataType) {
+        this._dataStructure = value;
+
+        this.buildDataExplorer();
     }
     
     get activeHostContainer(): HostContainer {
