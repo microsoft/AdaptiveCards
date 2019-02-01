@@ -83,7 +83,7 @@ std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(ParseContext& cont
     auto container = BaseCardElement::Deserialize<ColumnSet>(context, value);
 
     // Parse Columns
-    context.PushElement({ container->GetId(), container->GetInternalId(), false});
+    context.PushElement(*container);
     auto cardElements = ParseUtil::GetElementCollectionOfSingleType<Column>(context, value, AdaptiveCardSchemaKey::Columns, Column::Deserialize, false);
     context.PopElement();
     container->m_columns = std::move(cardElements);

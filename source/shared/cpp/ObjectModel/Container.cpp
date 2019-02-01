@@ -95,7 +95,7 @@ std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(ParseContext& cont
     ParseUtil::ExpectTypeString(value, CardElementType::Container);
 
     auto container = BaseCardElement::Deserialize<Container>(context, value);
-    context.PushElement({ container->GetId(), container->GetInternalId(), false});
+    context.PushElement(*container);
 
     container->SetStyle(ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
 

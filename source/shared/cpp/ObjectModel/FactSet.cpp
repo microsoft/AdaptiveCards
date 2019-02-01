@@ -51,7 +51,7 @@ std::shared_ptr<BaseCardElement> FactSetParser::Deserialize(ParseContext& contex
     ParseUtil::ExpectTypeString(value, CardElementType::FactSet);
 
     auto factSet = BaseCardElement::Deserialize<FactSet>(context, value);
-    context.PushElement({ factSet->GetId(), factSet->GetInternalId(), false});
+    context.PushElement(*factSet);
 
     // Parse Facts
     auto facts =

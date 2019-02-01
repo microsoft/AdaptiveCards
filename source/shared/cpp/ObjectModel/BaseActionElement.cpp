@@ -67,8 +67,6 @@ Json::Value BaseActionElement::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Sentiment)] = m_sentiment;
     }
 
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = ActionTypeToString(m_type);
-
     return root;
 }
 

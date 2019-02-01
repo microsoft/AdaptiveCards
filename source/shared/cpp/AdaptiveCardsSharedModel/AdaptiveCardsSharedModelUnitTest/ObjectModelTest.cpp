@@ -508,24 +508,24 @@ namespace AdaptiveCardsSharedModelUnitTest
                         "text" : "test text"
                     }
                 ],
-               	"actions": [
-               		{
-               			"type": "Action.Submit",
-               			"title": "Drop Test",
+                "actions": [
+                    {
+                        "type": "Action.Submit",
+                        "title": "Drop Test",
                         "fallback": "drop"
-               		},
-               		{
-               			"type": "Action.OpenUrl",
-               			"title": "Content Test",
+                    },
+                    {
+                        "type": "Action.OpenUrl",
+                        "title": "Content Test",
                         "url": "http://example.com/",
                         "fallback":
                         {
-               			    "type": "Action.OpenUrl",
-               			    "title": "Fallback content",
+                            "type": "Action.OpenUrl",
+                            "title": "Fallback content",
                             "url": "http://example.com/fallback/"
                         }
-               		}
-               	]
+                    }
+                ]
             })card";
             auto parseResult = AdaptiveCard::DeserializeFromString(cardStr, "1.2");
             auto card = parseResult->GetAdaptiveCard();

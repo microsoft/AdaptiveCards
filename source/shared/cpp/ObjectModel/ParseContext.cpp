@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ParseContext.h"
 #include "AdaptiveCardParseException.h"
+#include "BaseElement.h"
 
 namespace AdaptiveSharedNamespace
 {
@@ -20,6 +21,7 @@ namespace AdaptiveSharedNamespace
     unsigned int ParseContext::GetNearestFallbackId(const unsigned int skipId) const
     {
         // Walk stack looking for first element to be marked fallback, then return its internal ID. If none, return
+        // ParseContext::InvalidFallbackId
         for (auto curElement = m_idStack.crbegin(); curElement != m_idStack.crend(); ++curElement)
         {
             if (std::get<TupleIndex::IsFallback>(*curElement)) // if element is fallback
@@ -34,9 +36,9 @@ namespace AdaptiveSharedNamespace
         return ParseContext::InvalidFallbackId;
     }
 
-    void ParseContext::PushElement(const std::tuple<std::string, unsigned int, bool>& ids)
+    void ParseContext::PushElement(const BaseElement& element, const bool isFallback /*=false*/)
     {
-        m_idStack.push_back(ids);
+        m_idStack.push_back({ element.GetId(), element.GetInternalId(), isFallback});
     }
 
     void ParseContext::PopElement()

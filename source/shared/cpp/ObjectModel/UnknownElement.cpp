@@ -21,7 +21,7 @@ std::shared_ptr<BaseCardElement> UnknownElementParser::Deserialize(ParseContext&
     std::shared_ptr<UnknownElement> unknown = BaseCardElement::Deserialize<UnknownElement>(context, json);
     unknown->SetElementTypeString(actualType);
 
-    context.PushElement({ unknown->GetId(), unknown->GetInternalId(), false});
+    context.PushElement(*unknown);
     context.PopElement();
 
     return unknown;

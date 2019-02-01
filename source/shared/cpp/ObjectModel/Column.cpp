@@ -117,7 +117,7 @@ Json::Value Column::SerializeToJsonValue() const
 std::shared_ptr<Column> Column::Deserialize(ParseContext& context, const Json::Value& value)
 {
     auto column = BaseCardElement::Deserialize<Column>(context, value);
-    context.PushElement({ column->GetId(), column->GetInternalId(), false});
+    context.PushElement(*column);
 
     std::string columnWidth = ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Width);
     if (columnWidth == "")
@@ -135,11 +135,12 @@ std::shared_ptr<Column> Column::Deserialize(ParseContext& context, const Json::V
 
     // Parse Items
     auto cardElements = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Items, false);
-    context.PopElement();
     column->m_items = std::move(cardElements);
 
     // Parse optional selectAction
     column->SetSelectAction(ParseUtil::GetAction(context, value, AdaptiveCardSchemaKey::SelectAction, false));
+
+    context.PopElement();
 
     return column;
 }

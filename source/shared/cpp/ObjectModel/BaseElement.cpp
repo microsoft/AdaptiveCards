@@ -88,6 +88,8 @@ namespace AdaptiveSharedNamespace
     {
         Json::Value root = GetAdditionalProperties();
 
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = GetElementTypeString();
+
         if (!m_id.empty())
         {
             root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id)] = m_id;

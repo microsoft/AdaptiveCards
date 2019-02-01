@@ -82,8 +82,6 @@ Json::Value BaseCardElement::SerializeToJsonValue() const
 {
     Json::Value root = BaseElement::SerializeToJsonValue();
 
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = GetElementTypeString();
-
     if (m_height != HeightType::Auto)
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height)] = HeightTypeToString(GetHeight());

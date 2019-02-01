@@ -113,7 +113,7 @@ std::shared_ptr<BaseCardElement> TextInputParser::Deserialize(ParseContext& cont
     ParseUtil::ExpectTypeString(json, CardElementType::TextInput);
 
     std::shared_ptr<TextInput> textInput = BaseInputElement::Deserialize<TextInput>(context, json);
-    context.PushElement({ textInput->GetId(), textInput->GetInternalId(), false});
+    context.PushElement(*textInput);
 
     textInput->SetPlaceholder(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Placeholder));
     textInput->SetValue(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value));

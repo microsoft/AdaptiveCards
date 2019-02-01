@@ -129,7 +129,6 @@ namespace AdaptiveSharedNamespace
         TextConfig,
         TextInput,
         TextWeight,
-        Thick,
         Thickness,
         TimeInput,
         Title,

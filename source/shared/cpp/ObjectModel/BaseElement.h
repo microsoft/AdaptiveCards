@@ -43,7 +43,6 @@ namespace AdaptiveSharedNamespace
 
         template<typename T> void DeserializeBase(ParseContext& context, const Json::Value& json);
 
-        template<typename T> static std::shared_ptr<T> Deserialize(ParseContext& context, const Json::Value& json);
         virtual std::string Serialize() const;
         virtual Json::Value SerializeToJsonValue() const;
         Json::Value GetAdditionalProperties() const;
@@ -109,7 +108,7 @@ namespace AdaptiveSharedNamespace
             else if (fallbackValue.isObject())
             {
                 // fallback value is a JSON object. parse it and add it as fallback content.
-                context.PushElement({GetId(), GetInternalId(), true});
+                context.PushElement(*this, true /*isFallback*/);
                 std::shared_ptr<BaseElement> fallbackElement;
                 T::ParseJsonObject(context, fallbackValue, fallbackElement);
 
