@@ -32,30 +32,31 @@ window.onload = function() {
 	designer.attachTo(document.getElementById("designerRootHost"));
 	designer.monacoModuleLoaded(monaco);
 
-	designer.dataStructure = ACDesigner.DataType.createDataTypeFrom(
-		{
-			firstName: "John",
-			lastName: "Doe",
-			age: 45,
-			isMarried: true,
-			address: {
-				street: "1234 555th Ave NE",
-				city: "Redmond",
-				state: "WA",
-				countryOrRegion: "USA"
+	let sampleData = {
+		firstName: "John",
+		lastName: "Doe",
+		age: 45,
+		isMarried: true,
+		address: {
+			street: "1234 555th Ave NE",
+			city: "Redmond",
+			state: "WA",
+			countryOrRegion: "USA"
+		},
+		children: [
+			{
+				firstName: "Jennifer",
+				lastName: "Doe",
+				age: 9
 			},
-			children: [
-				{
-					firstName: "Jennifer",
-					lastName: "Doe",
-					age: 9
-				},
-				{
-					firstName: "James",
-					lastName: "Doe",
-					age: 13
-				}
-			]
-		}
-	);
-};
+			{
+				firstName: "James",
+				lastName: "Doe",
+				age: 13
+			}
+		]
+	};
+	
+	designer.dataStructure = ACDesigner.DataType.createDataTypeFrom(sampleData);
+	designer.sampleData = sampleData;
+}

@@ -3,6 +3,8 @@ import * as Controls from "adaptivecards-controls";
 import { DraggableElement } from "./draggable-element";
 import { IPoint } from "./miscellaneous";
 import * as DesignerPeers from "./designer-peers";
+import { Template } from "./template-engine/template-engine";
+import { ExpressionContext } from "./template-engine/expression-parser";
 
 export type CardElementType = { new(): Adaptive.CardElement };
 export type ActionType = { new(): Adaptive.Action };
@@ -167,6 +169,8 @@ export class CardDesignerSurface {
     private _removeCommandElement: HTMLElement;
     private _peerCommandsHostElement: HTMLElement;
     private _lastParseErrors: Array<Adaptive.IValidationError> = [];
+    private _isPreviewMode: boolean = false;
+    private _sampleData: any;
 
     private updatePeerCommandsLayout() {
         if (this._selectedPeer) {
@@ -261,7 +265,34 @@ export class CardDesignerSurface {
                 this.onCardValidated(allErrors);
             }
 
-            this._cardHost.appendChild(this.card.render());
+            let cardToRender: Adaptive.AdaptiveCard;
+
+            if (this.isPreviewMode) {
+                let cardPayload = this.card.toJSON();
+
+                try {
+                    let template = new Template(cardPayload);
+        
+                    let context = new ExpressionContext();
+                    context.$root = this.sampleData;
+
+                    let expandedCardPayload = template.expand(context);
+
+                    cardToRender = new Adaptive.AdaptiveCard();
+                    cardToRender.hostConfig = this.card.hostConfig;
+                    cardToRender.parse(expandedCardPayload);
+                }
+                catch (e) {
+                    cardToRender = this.card;
+                    cardToRender.designMode = false;
+                }
+            }
+            else {
+                cardToRender = this.card;
+                cardToRender.designMode = true;
+            }
+
+            this._cardHost.appendChild(cardToRender.render());
         }
     }
 
@@ -666,6 +697,43 @@ export class CardDesignerSurface {
             }
 
             this.render();
+        }
+    }
+
+    get isPreviewMode(): boolean {
+        return this._isPreviewMode;
+    }
+
+    set isPreviewMode(value: boolean) {
+        if (this._isPreviewMode != value) {
+            this._isPreviewMode = value;
+
+            if (this._isPreviewMode) {
+                this._designerSurface.classList.add("acd-hidden");
+                this._dragHandle.renderedElement.classList.add("acd-hidden");
+                this._removeCommandElement.classList.add("acd-hidden");
+                this._peerCommandsHostElement.classList.add("acd-hidden");
+            }
+            else {
+                this._designerSurface.classList.remove("acd-hidden");
+                this._dragHandle.renderedElement.classList.remove("acd-hidden");
+                this._removeCommandElement.classList.remove("acd-hidden");
+                this._peerCommandsHostElement.classList.remove("acd-hidden");
+            }
+
+            this.renderCard();
+        }
+    }
+
+    get sampleData(): any {
+        return this._sampleData;
+    }
+
+    set sampleData(value: any) {
+        this._sampleData = value;
+
+        if (this.isPreviewMode) {
+            this.renderCard();
         }
     }
 }

@@ -1079,9 +1079,9 @@ export class TextBlock extends CardElement {
 	parse(json: any, errors?: Array<HostConfig.IValidationError>) {
 		super.parse(json, errors);
 
-		this.text = json["text"];
+		this.text = Utils.getStringValueOrDefault(json["text"], undefined);
 
-		var sizeString = json["size"];
+		let sizeString = Utils.getStringValueOrDefault(json["size"], undefined);
 
 		if (sizeString && typeof sizeString === "string" && sizeString.toLowerCase() === "normal") {
 			this.size = Enums.TextSize.Default;
@@ -1098,7 +1098,7 @@ export class TextBlock extends CardElement {
 			this.size = Utils.getEnumValueOrDefault(Enums.TextSize, sizeString, this.size);
 		}
 
-		var weightString = json["weight"];
+		let weightString = Utils.getStringValueOrDefault(json["weight"], undefined);
 
 		if (weightString && typeof weightString === "string" && weightString.toLowerCase() === "normal") {
 			this.weight = Enums.TextWeight.Default;

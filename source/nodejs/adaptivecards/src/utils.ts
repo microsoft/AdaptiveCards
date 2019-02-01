@@ -5,6 +5,10 @@ export function generateUniqueId(): string {
 	return "__ac-" + Shared.UUID.generate();
 }
 
+export function getStringValueOrDefault(obj: any, defaultValue: string): string {
+	return obj ? obj.toString(): defaultValue;
+}
+
 export function getValueOrDefault<T>(obj: any, defaultValue: T): T {
 	return obj ? <T>obj : defaultValue;
 }

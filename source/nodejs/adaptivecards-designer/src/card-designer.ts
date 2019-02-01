@@ -58,11 +58,34 @@ export class CardDesigner {
     private _dataToolbox: Toolbox;
     private _assetPath: string;
     private _dataStructure: DataType;
+    private _sampleData: any;
+
+    private togglePreview() {
+        this._designerSurface.isPreviewMode = !this._designerSurface.isPreviewMode;
+
+        if (this._designerSurface.isPreviewMode) {
+            this._togglePreviewButton.toolTip = "Return to Design mode";
+        }
+        else {
+            this._togglePreviewButton.toolTip = "Switch to Preview mode";
+        }
+
+        this.buildTreeView();
+    }
 
     private buildTreeView() {
         if (this._treeViewToolbox.content) {
             this._treeViewToolbox.content.innerHTML = "";
-            this._treeViewToolbox.content.appendChild(this.designerSurface.rootPeer.treeItem.render());
+
+            if (this.designerSurface.isPreviewMode) {
+                this.treeViewToolbox.content.innerHTML =
+                    '<div style="padding: 8px; display: flex; justify-content: center;">' +
+                        '<div>The Card Structure isn\'t available in Preview mode.</div>' +
+                    '</div>';
+            }
+            else {
+                this._treeViewToolbox.content.appendChild(this.designerSurface.rootPeer.treeItem.render());
+            }
         }
     }
 
@@ -266,16 +289,18 @@ export class CardDesigner {
 			styleSheetLinkElement.href = Utils.joinPaths(this._assetPath, this.activeHostContainer.styleSheet);
 		}
 
-        let designerBackground = document.getElementById("designerBackground");
+        let _cardArea = document.getElementById("cardArea");
 
-        if (designerBackground) {
-            designerBackground.style.backgroundColor = this.activeHostContainer.getBackgroundColor();
+        if (_cardArea) {
+            _cardArea.style.backgroundColor = this.activeHostContainer.getBackgroundColor();
         }
 
         this.activeHostContainer.initialize();
 
         this._designerHostElement.innerHTML = "";
         this.activeHostContainer.renderTo(this._designerHostElement);
+
+        let wasInPreviewMode = this._designerSurface ? this._designerSurface.isPreviewMode : false;
 
         this._designerSurface = new Designer.CardDesignerSurface(this.activeHostContainer.cardHost);
         this._designerSurface.onSelectedPeerChanged = (peer: DesignerPeers.CardElementPeer) => {
@@ -325,6 +350,10 @@ export class CardDesigner {
         }
 
         this._designerSurface.card = this._card;
+
+        this.updateSampleData();
+
+        this._designerSurface.isPreviewMode = wasInPreviewMode;
     }
 
     private activeHostContainerChanged() {
@@ -360,8 +389,16 @@ export class CardDesigner {
     
     private preventCardUpdate: boolean = false;
     
-    private setJsonPayload(payload: object) {
-        this._cardEditor.setValue(JSON.stringify(payload, null, 4));
+    private setCardPayload(payload: object) {
+        if (this._isMonacoEditorLoaded) {
+            this._cardEditor.setValue(JSON.stringify(payload, null, 4));
+        }
+    }
+
+    private setSampleDataPayload(payload: any) {
+        if (this._isMonacoEditorLoaded) {
+            this._sampleDataEditor.setValue(JSON.stringify(payload, null, 4));
+        }
     }
 
     private updateJsonFromCard(addToUndoStack: boolean = true) {
@@ -375,7 +412,7 @@ export class CardDesigner {
                     this.addToUndoStack(cardPayload);
                 }
     
-                this.setJsonPayload(cardPayload);
+                this.setCardPayload(cardPayload);
             }
         }
         finally {
@@ -435,6 +472,7 @@ export class CardDesigner {
     private _redoButton: ToolbarButton;
     private _newCardButton: ToolbarButton;
     private _copyJSONButton: ToolbarButton;
+    private _togglePreviewButton: ToolbarButton;
 
     private prepareToolbar() {
         this._fullScreenButton = new ToolbarButton(
@@ -476,7 +514,7 @@ export class CardDesigner {
             CardDesigner.ToolbarCommands.Undo,
             "Undo",
             "acd-icon-undo",
-            (sender) => { this.undo(); });
+            (sender: ToolbarButton) => { this.undo(); });
         this._undoButton.separator = true;
         this._undoButton.toolTip = "Undo your last change";
         this._undoButton.isEnabled = false;
@@ -488,7 +526,7 @@ export class CardDesigner {
             CardDesigner.ToolbarCommands.Redo,
             "Redo",
             "acd-icon-redo",
-            (sender) => { this.redo(); });
+            (sender: ToolbarButton) => { this.redo(); });
         this._redoButton.toolTip = "Redo your last changes";
         this._redoButton.isEnabled = false;
         this._redoButton.displayCaption = false;
@@ -499,8 +537,8 @@ export class CardDesigner {
             CardDesigner.ToolbarCommands.NewCard,
             "New card",
             "acd-icon-newCard",
-            (sender) => { this.newCard(); });
-            this._newCardButton.separator = true;
+            (sender: ToolbarButton) => { this.newCard(); });
+        this._newCardButton.separator = true;
 
         this.toolbar.addElement(this._newCardButton);
 
@@ -509,6 +547,15 @@ export class CardDesigner {
             "Copy card JSON",
             "acd-icon-copy");
         this.toolbar.addElement(this._copyJSONButton);
+
+        this._togglePreviewButton = new ToolbarButton(
+            CardDesigner.ToolbarCommands.CopyJSON,
+            "Preview mode",
+            "acd-icon-preview",
+            (sender: ToolbarButton) => { this.togglePreview(); });
+        this._togglePreviewButton.separator = true;
+        this._togglePreviewButton.allowToggle = true;
+        this.toolbar.addElement(this._togglePreviewButton);
 
         this._fullScreenHandler = new FullScreenHandler();
         this._fullScreenHandler.onFullScreenChanged = (isFullScreen: boolean) => {
@@ -521,6 +568,16 @@ export class CardDesigner {
     private onResize() {
         this._cardEditor.layout();
         this._sampleDataEditor.layout();
+    }
+
+    private updateSampleData() {
+        try {
+            this._sampleData = JSON.parse(this.getCurrentSampleDataEditorPayload());
+            this.designerSurface.sampleData = this._sampleData;
+        }
+        catch {
+            // Swallow expression, the payload isn't a valid JSON document
+        }
     }
 
     public monacoModuleLoaded(monaco: any = null) {
@@ -579,15 +636,7 @@ export class CardDesigner {
         
         this._sampleDataEditor.onDidChangeModelContent(
             () => {
-                try {
-                    // TODO: What happens when the sample data has changed?
-                    /*
-                    let parsedData = JSON.parse(this.getCurrentSampleDataEditorPayload());
-                    */
-                }
-                catch {
-                    // Swallow expression, the payload isn't a valid JSON document
-                }
+                this.updateSampleData();
             });
 
         window.addEventListener('resize', () => { this.onResize(); });
@@ -830,8 +879,7 @@ export class CardDesigner {
                 '<div id="toolPalettePanel" class="acd-toolPalette-pane"></div>' +
                 '<div style="display: flex; flex-direction: column; flex: 1 1 100%; overflow: hidden;">' +
                     '<div style="display: flex; flex: 1 1 100%; overflow: hidden;">' +
-                        '<div id="testLeftSidePanel"></div>' +
-                        '<div id="designerBackground" style="flex: 1 1 70%; background-color: #F6F6F6; display: flex; flex-direction: column; overflow: auto;">' +
+                        '<div id="cardArea" class="acd-designer-cardArea">' +
                             '<div style="flex: 1 1 100%; overflow: auto;">' +
                                 '<div id="designerHost" style="margin: 20px 40px 20px 20px;"></div>' +
                             '</div>' +
@@ -952,7 +1000,7 @@ export class CardDesigner {
         treeViewPanel.addToolbox(this._dataToolbox);
         treeViewPanel.attachTo(document.getElementById("treeViewPanel"));
 
-        this._designerHostElement = document.getElementById("designerHost")
+        this._designerHostElement = document.getElementById("designerHost");
 
         this.recreateDesignerSurface();
 
@@ -974,7 +1022,7 @@ export class CardDesigner {
 
             let card = this._undoStack[this._undoStackIndex];
 
-            this.setJsonPayload(card);
+            this.setCardPayload(card);
 
             this.updateToolbar();
         }
@@ -986,7 +1034,7 @@ export class CardDesigner {
 
             let card = this._undoStack[this._undoStackIndex];
 
-            this.setJsonPayload(card);
+            this.setCardPayload(card);
 
             this.updateToolbar();
         }
@@ -1000,7 +1048,7 @@ export class CardDesigner {
             ]
         }
 
-        this.setJsonPayload(card);
+        this.setCardPayload(card);
     }
 
     setCard(payload: object) {
@@ -1030,6 +1078,16 @@ export class CardDesigner {
         this._dataStructure = value;
 
         this.buildDataExplorer();
+    }
+
+    get sampleData(): any {
+        return this._sampleData;
+    }
+
+    set sampleData(value: any) {
+        this._sampleData = value;
+
+        this.setSampleDataPayload(value);
     }
     
     get activeHostContainer(): HostContainer {
@@ -1115,5 +1173,6 @@ export module CardDesigner {
         static Redo = "__redoButton";
         static NewCard = "__newCardButton";
         static CopyJSON = "__copyJsonButton";
+        static TogglePreview = "__togglePreviewButton";
     }
 }

@@ -1,29 +1,16 @@
-/* * {
-    box-sizing: border-box;
-}
-
-html {
-    overflow: hidden !important;
-}
-
-body {
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 14px;
-    font-weight: normal;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-} */
-
-/*
-    Miscellaneous
-*/
-
 @font-face {
     font-family: 'FabricMDL2Icons';
     src: url("https://appsforoffice.microsoft.com/fabric/fonts/icons/FabricMDL2Icons.woff") format("woff"), url("https://appsforoffice.microsoft.com/fabric/fonts/icons/FabricMDL2Icons.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
+}
+
+.acd-designer-cardArea {
+    flex: 1 1 70%;
+    background-color: #F6F6F6;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
 }
 
 .acd-designersurface {
@@ -311,6 +298,10 @@ body {
     content: "\EC8D";
 }
 
+.acd-icon-preview::before {
+    content: "\E8A1";
+}
+
 /*
     Side panes
 */
@@ -375,6 +366,7 @@ body {
     text-overflow: ellipsis;
     overflow: hidden;
     padding: 4px 8px;
+    font-weight: 500;
 }
 
 .acd-toolbox-header-commandButton {
@@ -606,6 +598,10 @@ body {
 .acd-toolbar-button:disabled {
     color: lightgray;
     background-color: transparent;
+}
+
+.acd-toolbar-button.acd-toolbar-button-toggled {
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .acd-toolbar-button-iconOnly::before {
