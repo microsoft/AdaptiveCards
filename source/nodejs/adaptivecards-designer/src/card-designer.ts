@@ -503,7 +503,7 @@ export class CardDesigner {
 
         this._copyJSONButton = new ToolbarButton(
             CardDesigner.ToolbarCommands.CopyJSON,
-            "Copy JSON",
+            "Copy card JSON",
             "acd-icon-copy");
         this.toolbar.addElement(this._copyJSONButton);
 
@@ -879,12 +879,12 @@ export class CardDesigner {
         toolPalettePanel.attachTo(document.getElementById("toolPalettePanel"));
 
         // JSON editors panel
-        this._cardEditorToolbox = new Toolbox("cardEditor", "Card JSON");
+        this._cardEditorToolbox = new Toolbox("cardEditor", "Card payload editor");
         this._cardEditorToolbox.content = document.createElement("div");
         this._cardEditorToolbox.content.style.padding = "8px";
         this._cardEditorToolbox.content.innerText = "Loading editor...";
 
-        this._sampleDataEditorToolbox = new Toolbox("sampleDataEditor", "Sample data JSON");
+        this._sampleDataEditorToolbox = new Toolbox("sampleDataEditor", "Sample data editor");
         this._sampleDataEditorToolbox.content = document.createElement("div");
         this._sampleDataEditorToolbox.content.style.padding = "8px";
         this._sampleDataEditorToolbox.content.innerText = "Loading editor...";

@@ -1625,7 +1625,7 @@ export class ActionSetPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
 }
 
 function createActionSelector(card: Adaptive.AdaptiveCard, defaultValue: string): ILabelAndInput<Adaptive.ChoiceSetInput> {
-    let header = addHeader(card, "Select action");
+    let header = addHeader(card, "Selection  action");
     header.separator = true;
 
     let actionSelector = addLabelAndInput(card, "Action type:", Adaptive.ChoiceSetInput);
