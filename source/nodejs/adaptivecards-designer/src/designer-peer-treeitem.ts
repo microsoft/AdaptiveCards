@@ -14,20 +14,12 @@ export class DesignerPeerTreeItem extends BaseTreeItem {
         }
     }
 
-    protected getChildCount(): number {
-        return this.owner.getChildCount();
-    }
-
     protected getIconClass(): string {
         return this.owner.registration.iconClass;
     }
 
     protected getLabelText(): string {
         return this.owner.getCardObjectTypeName();
-    }
-
-    protected renderChild(childIndex: number): HTMLElement {
-        return this.owner.getChildAt(childIndex).treeItem.render();
     }
 
     protected getAdditionalText(): string {
@@ -49,6 +41,14 @@ export class DesignerPeerTreeItem extends BaseTreeItem {
         }
 
         this.computeLevel();
+    }
+
+    getChildCount(): number {
+        return this.owner.getChildCount();
+    }
+
+    getChildAt(index: number): BaseTreeItem {
+        return this.owner.getChildAt(index).treeItem;
     }
 
     updateLayout() {

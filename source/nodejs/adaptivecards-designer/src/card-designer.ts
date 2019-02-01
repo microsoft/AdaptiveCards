@@ -9,12 +9,13 @@ import { adaptiveCardSchema } from "./adaptive-card-schema";
 import { FullScreenHandler } from "./fullscreen-handler";
 import { Toolbar, ToolbarButton, ToolbarChoicePicker, ToolbarElementAlignment } from "./toolbar";
 import { IPoint, Utils } from "./miscellaneous";
-import { BasePaletteItem, ElementPaletteItem } from "./tool-palette";
+import { BasePaletteItem, ElementPaletteItem, DataPaletteItem } from "./tool-palette";
 import { DefaultContainer } from "./containers/default/default-container";
 import { SidePanel, SidePanelAlignment } from "./side-panel";
 import { Toolbox } from "./tool-box";
 import { DataType, TestData } from "./data";
 import { DataTreeItem } from "./data-treeitem";
+import { BaseTreeItem } from "./base-tree-item";
 
 export class CardDesigner {
     private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
@@ -34,7 +35,8 @@ export class CardDesigner {
 
     private static MAX_UNDO_STACK_SIZE = 50;
 
-    private _monacoEditor: monaco.editor.IStandaloneCodeEditor;
+    private _cardEditor: monaco.editor.IStandaloneCodeEditor;
+    private _sampleDataEditor: monaco.editor.IStandaloneCodeEditor;
     private _hostContainers: Array<HostContainer>;
     private _isMonacoEditorLoaded: boolean = false;
     private _designerSurface: Designer.CardDesignerSurface;
@@ -50,8 +52,9 @@ export class CardDesigner {
     private _toolPaletteToolbox: Toolbox;
     private _propertySheetToolbox: Toolbox;
     private _treeViewToolbox: Toolbox;
-    private _jsonEditorPanel: SidePanel;
-    private _jsonEditorToolbox: Toolbox;
+    private _jsonEditorsPanel: SidePanel;
+    private _cardEditorToolbox: Toolbox;
+    private _sampleDataEditorToolbox: Toolbox;
     private _dataToolbox: Toolbox;
 	private _assetPath: string;
 
@@ -62,13 +65,34 @@ export class CardDesigner {
         }
     }
 
-    private buildDataExplorer() {
+    private setupDataTreeItemEvents(treeItem: DataTreeItem) {
+        treeItem.onStartDrag = (sender: BaseTreeItem) => {
+            this._draggedPaletteItem = new DataPaletteItem(treeItem.dataType);
+
+            this._draggedElement = this._draggedPaletteItem.renderDragVisual();
+            this._draggedElement.style.position = "absolute";
+            this._draggedElement.style.left = this._currentMousePosition.x + "px";
+            this._draggedElement.style.top = this._currentMousePosition.y + "px";
+
+            document.body.appendChild(this._draggedElement);
+
+            treeItem.endDrag();
+        }
+
+        for (let i = 0; i < treeItem.getChildCount(); i++) {
+            this.setupDataTreeItemEvents(treeItem.getChildAt(i));
+        }
+    }
+
+    private buildDataExplorer(data: any) {
         if (this._dataToolbox.content) {
             this._dataToolbox.content.innerHTML = "";
 
-            let treeItem = new DataTreeItem(DataType.createDataTypeFrom(null, TestData, "$root"));
+            let treeItem = new DataTreeItem(DataType.createDataTypeFrom(null, data, "$root"));
 
             this._dataToolbox.content.appendChild(treeItem.render());
+
+            this.setupDataTreeItemEvents(treeItem);
         }
     }
 
@@ -121,7 +145,7 @@ export class CardDesigner {
         paletteItem.onStartDrag = (sender: BasePaletteItem) => {
             this._draggedPaletteItem = sender;
 
-            this._draggedElement = sender.cloneElement();
+            this._draggedElement = sender.renderDragVisual();
             this._draggedElement.style.position = "absolute";
             this._draggedElement.style.left = this._currentMousePosition.x + "px";
             this._draggedElement.style.top = this._currentMousePosition.y + "px";
@@ -291,7 +315,6 @@ export class CardDesigner {
         };
 
         this.buildPalette();
-        this.buildDataExplorer();
         this.buildPropertySheet(null);
 
         if (this._card) {
@@ -305,20 +328,27 @@ export class CardDesigner {
         this.recreateDesignerSurface();
     }
 
-    public updateJsonEditorLayout() {
+    private updateToolboxLayout(toolbox: Toolbox, hostPanelRect: ClientRect | DOMRect) {
+        let jsonEditorHeaderRect = toolbox.getHeaderBoundingRect();
+
+        toolbox.content.style.height = (hostPanelRect.height - jsonEditorHeaderRect.height) + "px";
+    }
+
+    public updateJsonEditorsLayout() {
         if (this._isMonacoEditorLoaded) {
-            let jsonEditorPaneRect = this._jsonEditorPanel.contentHost.getBoundingClientRect();
-            let jsonEditorHeaderRect = this._jsonEditorToolbox.getHeaderBoundingRect();
-  
-            this._jsonEditorToolbox.content.style.height = (jsonEditorPaneRect.height - jsonEditorHeaderRect.height) + "px";
-  
-            this._monacoEditor.layout();
+            let jsonEditorsPaneRect = this._jsonEditorsPanel.contentHost.getBoundingClientRect();
+
+            this.updateToolboxLayout(this._cardEditorToolbox, jsonEditorsPaneRect);
+            this.updateToolboxLayout(this._sampleDataEditorToolbox, jsonEditorsPaneRect);
+
+            this._cardEditor.layout();
+            this._sampleDataEditor.layout();
         }
     }
     
     private updateFullLayout() {
         this.scheduleLayoutUpdate();
-        this.updateJsonEditorLayout();
+        this.updateJsonEditorsLayout();
     }
     
     private jsonUpdateTimer: any;
@@ -328,7 +358,7 @@ export class CardDesigner {
     private preventCardUpdate: boolean = false;
     
     private setJsonPayload(payload: object) {
-        this._monacoEditor.setValue(JSON.stringify(payload, null, 4));
+        this._cardEditor.setValue(JSON.stringify(payload, null, 4));
     }
 
     private updateJsonFromCard(addToUndoStack: boolean = true) {
@@ -360,8 +390,12 @@ export class CardDesigner {
     
     private preventJsonUpdate: boolean = false;
     
-    private getCurrentJsonPayload(): string {
-        return this._isMonacoEditorLoaded ? this._monacoEditor.getValue() : Constants.defaultPayload;
+    private getCurrentCardEditorPayload(): string {
+        return this._isMonacoEditorLoaded ? this._cardEditor.getValue() : Constants.defaultPayload;
+    }
+
+    private getCurrentSampleDataEditorPayload(): string {
+        return this._isMonacoEditorLoaded ? this._sampleDataEditor.getValue() : "";
     }
 
     private updateCardFromJson() {
@@ -369,7 +403,7 @@ export class CardDesigner {
             this.preventJsonUpdate = true;
     
             if (!this.preventCardUpdate) {
-                this.designerSurface.setCardPayloadAsString(this.getCurrentJsonPayload());
+                this.designerSurface.setCardPayloadAsString(this.getCurrentCardEditorPayload());
             }
         }
         finally {
@@ -482,7 +516,8 @@ export class CardDesigner {
     }
 
     private onResize() {
-        this._monacoEditor.layout();
+        this._cardEditor.layout();
+        this._sampleDataEditor.layout();
     }
 
     private loadMonaco(callback: () => void) {
@@ -514,19 +549,17 @@ export class CardDesigner {
             allowComments: true
         }
     
-		// this._jsonEditorPane.content = document.createElement("div");
-        this._jsonEditorToolbox.content = document.createElement("div");
-        this._jsonEditorToolbox.content.style.overflow = "hidden";
-		
 		// TODO: set this in our editor instead of defaults
         monaco.languages.json.jsonDefaults.setDiagnosticsOptions(monacoConfiguration);
 
-        this._monacoEditor = monaco.editor.create(
-            // this._jsonEditorPane.content,
-            this._jsonEditorToolbox.content,
+        // Setup card JSON editor
+        this._cardEditorToolbox.content = document.createElement("div");
+        this._cardEditorToolbox.content.style.overflow = "hidden";
+		
+        this._cardEditor = monaco.editor.create(
+            this._cardEditorToolbox.content,
             {
                 folding: true,
-                //validate: false,
                 fontSize: 13.5,
                 language: 'json',
                 minimap: {
@@ -535,13 +568,41 @@ export class CardDesigner {
             }
         );
         
-        this._monacoEditor.onDidChangeModelContent(() => { this.scheduleUpdateCardFromJson(); });
+        this._cardEditor.onDidChangeModelContent(() => { this.scheduleUpdateCardFromJson(); });
+
+        // Setup sample data JSON editor
+        this._sampleDataEditorToolbox.content = document.createElement("div");
+        this._sampleDataEditorToolbox.content.style.overflow = "hidden";
+		
+        this._sampleDataEditor = monaco.editor.create(
+            this._sampleDataEditorToolbox.content,
+            {
+                folding: true,
+                fontSize: 13.5,
+                language: 'json',
+                minimap: {
+                    enabled: false
+                }
+            }
+        );
+        
+        this._sampleDataEditor.onDidChangeModelContent(
+            () => {
+                try {
+                    let parsedData = JSON.parse(this.getCurrentSampleDataEditorPayload());
+
+                    this.buildDataExplorer(parsedData);
+                }
+                catch {
+                    // Swallow expression, the payload isn't a valid JSON document
+                }
+            });
 
         window.addEventListener('resize', () => { this.onResize(); });
 
         this._isMonacoEditorLoaded = true;
 
-        this.updateJsonEditorLayout();
+        this.updateJsonEditorsLayout();
         this.updateJsonFromCard(false);
     }
     
@@ -817,28 +878,35 @@ export class CardDesigner {
 
         toolPalettePanel.attachTo(document.getElementById("toolPalettePanel"));
 
-        // JSON editor panel
-        this._jsonEditorToolbox = new Toolbox("jsonEditor", "JSON Editor");
-        this._jsonEditorToolbox.content = document.createElement("div");
-        this._jsonEditorToolbox.content.style.padding = "8px";
-        this._jsonEditorToolbox.content.innerText = "Loading editor...";
+        // JSON editors panel
+        this._cardEditorToolbox = new Toolbox("cardEditor", "Card JSON");
+        this._cardEditorToolbox.content = document.createElement("div");
+        this._cardEditorToolbox.content.style.padding = "8px";
+        this._cardEditorToolbox.content.innerText = "Loading editor...";
 
-        this._jsonEditorPanel = new SidePanel(
+        this._sampleDataEditorToolbox = new Toolbox("sampleDataEditor", "Sample data JSON");
+        this._sampleDataEditorToolbox.content = document.createElement("div");
+        this._sampleDataEditorToolbox.content.style.padding = "8px";
+        this._sampleDataEditorToolbox.content.innerText = "Loading editor...";
+
+        this._jsonEditorsPanel = new SidePanel(
             "jsonEditorPanel",
             SidePanelAlignment.Bottom,
             document.getElementById("bottomCollapsedPaneTabHost"));
-        this._jsonEditorPanel.addToolbox(this._jsonEditorToolbox);
-        this._jsonEditorPanel.onResized = (sender: SidePanel) => {
-            this.updateJsonEditorLayout();
+        this._jsonEditorsPanel.onResized = (sender: SidePanel) => {
+            this.updateJsonEditorsLayout();
         }
-        this._jsonEditorPanel.onToolboxResized = (sender: SidePanel) => {
-            this.updateJsonEditorLayout();
+        this._jsonEditorsPanel.onToolboxResized = (sender: SidePanel) => {
+            this.updateJsonEditorsLayout();
         }
-        this._jsonEditorPanel.onToolboxExpandedOrCollapsed = (sender: SidePanel) => {
-            this.updateJsonEditorLayout();
+        this._jsonEditorsPanel.onToolboxExpandedOrCollapsed = (sender: SidePanel) => {
+            this.updateJsonEditorsLayout();
         }
 
-        this._jsonEditorPanel.attachTo(document.getElementById("jsonEditorPanel"));
+        this._jsonEditorsPanel.addToolbox(this._cardEditorToolbox);
+        this._jsonEditorsPanel.addToolbox(this._sampleDataEditorToolbox);
+
+        this._jsonEditorsPanel.attachTo(document.getElementById("jsonEditorPanel"));
 
         // Property sheet panel
         let propertySheetHost = document.createElement("div");
@@ -1010,7 +1078,7 @@ export class CardDesigner {
     }
 
     get jsonEditorToolbox(): Toolbox {
-        return this._jsonEditorToolbox;
+        return this._cardEditorToolbox;
     }
 
     get toolPaletteToolbox(): Toolbox {

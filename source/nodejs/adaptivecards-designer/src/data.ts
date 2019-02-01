@@ -44,6 +44,16 @@ export abstract class DataType {
 
     abstract getTypeName(): string;
 
+    getPath(asLeaf: boolean): string {
+        let parentPath: string = "";
+        
+        if (this.parent) {
+            parentPath = this.parent.getPath(false);
+        }
+         
+        return parentPath + this.label;
+    }
+
     getProperties(): PropertyDictionary {
         return null;
     }
@@ -64,6 +74,16 @@ export class ArrayType extends DataType {
 
     constructor(readonly parent: DataType, readonly label: string) {
         super(parent, label);
+    }
+
+    getPath(asLeaf: boolean): string {
+        let result = super.getPath(asLeaf);
+
+        if (!asLeaf) {
+            result += "[0].";
+        }
+
+        return result;
     }
 
     getProperties(): PropertyDictionary {
@@ -87,6 +107,16 @@ export class ObjectType extends DataType {
         super(parent, label);
     }
     
+    getPath(asLeaf: boolean): string {
+        let result = super.getPath(asLeaf);
+
+        if (!asLeaf) {
+            result += ".";
+        }
+
+        return result;
+    }
+
     getProperties(): PropertyDictionary {
         return this.properties;
     }

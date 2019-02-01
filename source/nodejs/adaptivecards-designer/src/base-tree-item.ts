@@ -1,4 +1,3 @@
-import { DesignerPeer } from "./designer-peers";
 import { DraggableElement } from "./draggable-element";
 
 export abstract class BaseTreeItem extends DraggableElement {
@@ -11,9 +10,7 @@ export abstract class BaseTreeItem extends DraggableElement {
     private _expandCollapseElement: HTMLElement;
     private _childContainerElement: HTMLElement;
 
-    protected abstract getChildCount(): number;
     protected abstract getLabelText(): string;
-    protected abstract renderChild(childIndex: number): HTMLElement;
 
     protected getIconClass(): string {
         return null;
@@ -29,6 +26,10 @@ export abstract class BaseTreeItem extends DraggableElement {
 
     protected getIndentationLevelIncrement(): number {
         return 8;
+    }
+
+    protected getDragSourceElement(): HTMLElement {
+        return this._treeItemElement;
     }
 
     protected selected() {
@@ -104,7 +105,7 @@ export abstract class BaseTreeItem extends DraggableElement {
         this._childContainerElement = document.createElement("div");
 
         for (let i = 0; i < this.getChildCount(); i++) {
-            let renderedChildItem = this.renderChild(i);
+            let renderedChildItem = this.getChildAt(i).render();
 
             this._childContainerElement.appendChild(renderedChildItem);
         }
@@ -121,6 +122,9 @@ export abstract class BaseTreeItem extends DraggableElement {
     constructor() {
         super();
     }
+
+    abstract getChildCount(): number;
+    abstract getChildAt(index: number): BaseTreeItem;
 
     updateLayout() {
         if (this._isExpanded) {

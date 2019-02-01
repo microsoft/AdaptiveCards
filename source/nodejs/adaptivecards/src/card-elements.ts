@@ -107,6 +107,7 @@ export function createElementInstance(
 }
 
 export interface ICardObject {
+	$data: any;
 	shouldFallback(): boolean;
 	setParent(parent: CardElement);
 	parse(json: any);
@@ -302,6 +303,7 @@ export abstract class CardElement implements ICardObject {
 	customCssSelector: string = null;
 	height: CardElementHeight = "auto";
 	minPixelHeight?: number = null;
+	$data: any;
 
 	abstract getJsonTypeName(): string;
 	abstract renderSpeech(): string;
@@ -323,6 +325,8 @@ export abstract class CardElement implements ICardObject {
 		if (this.minPixelHeight) {
 			Utils.setProperty(result, "minHeight", this.minPixelHeight + "px");
 		}
+
+		Utils.setProperty(result, "$data", this.$data);
 
 		return result;
 	}
@@ -393,6 +397,8 @@ export abstract class CardElement implements ICardObject {
 
 		this.spacing = Utils.getEnumValueOrDefault(Enums.Spacing, json["spacing"], Enums.Spacing.Default);
 		this.separator = Utils.parseBoolProperty(json["separator"], this.separator);
+
+		this.$data = json["$data"];
 
 		let jsonSeparation = json["separation"];
 
@@ -2966,6 +2972,7 @@ export abstract class Action implements ICardObject {
 	title: string;
 	iconUrl: string;
 	isPrimary: boolean;
+	$data: any;
 
 	onExecute: (sender: Action) => void;
 
@@ -2976,6 +2983,7 @@ export abstract class Action implements ICardObject {
 		Utils.setProperty(result, "id", this.id);
 		Utils.setProperty(result, "title", this.title);
 		Utils.setProperty(result, "iconUrl", this.iconUrl);
+		Utils.setProperty(result, "$data", this.$data);
 
 		return result;
 	}
@@ -3099,6 +3107,7 @@ export abstract class Action implements ICardObject {
 
 		this.title = json["title"];
 		this.iconUrl = json["iconUrl"];
+		this.$data = json["$data"];
 	}
 
 	remove(): boolean {

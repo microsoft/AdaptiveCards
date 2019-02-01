@@ -2,38 +2,26 @@ import { BaseTreeItem } from "./base-tree-item";
 import * as Data from "./data";
 
 export class DataTreeItem extends BaseTreeItem {
-    protected getChildCount(): number {
-        let properties = this.dataType.getProperties();
+    private _children: Array<DataTreeItem> = null;
 
-        if (properties) {
-            return Object.keys(properties).length;
-        }
-        else {
-            return 0;
+    private buildChildList() {
+        if (!this._children) {
+            this._children = [];
+
+            let properties = this.dataType.getProperties();
+
+            if (properties) {
+                let keys = Object.keys(properties);
+
+                for (let key of keys) {
+                    this._children.push(new DataTreeItem(properties[key]));
+                }
+            }
         }
     }
 
     protected getLabelText(): string {
         return this.dataType.label;
-    }
-
-    protected renderChild(childIndex: number): HTMLElement {
-        let properties = this.dataType.getProperties();
-
-        if (properties) {
-            let keys = Object.keys(properties);
-
-            if (childIndex >= 0 && childIndex < keys.length) {
-                let treeItem = new DataTreeItem(properties[keys[childIndex]]);
-
-                return treeItem.render();
-            }
-            else {
-                throw new Error("Index out of range: " + childIndex);
-            }
-        }
-
-        throw new Error("This item has no children.");
     }
 
     protected getAdditionalText(): string {
@@ -60,5 +48,17 @@ export class DataTreeItem extends BaseTreeItem {
 
             currentDataType = currentDataType.parent;
         }
+    }
+
+    getChildCount(): number {
+        this.buildChildList();
+
+        return this._children.length;
+    }
+
+    getChildAt(index: number): DataTreeItem {
+        this.buildChildList();
+        
+        return this._children[index];
     }
 }
