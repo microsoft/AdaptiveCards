@@ -54,7 +54,8 @@ namespace AdaptiveSharedNamespace
         for (const auto &requirement : m_requires)
         {
             // special case for adaptive cards version
-            if (requirement.first == "adaptiveCards")
+            const auto& requirementName = requirement.first;
+            if (requirementName == "adaptiveCards")
             {
                 static const SemanticVersion currentAdaptiveCardsVersion{"1.2"};
                 if (currentAdaptiveCardsVersion > requirement.second)
@@ -64,7 +65,7 @@ namespace AdaptiveSharedNamespace
             }
             else
             {
-                const auto& provides = hostProvides.find(requirement.first);
+                const auto& provides = hostProvides.find(requirementName);
                 if (provides == hostProvides.end())
                 {
                     // host doesn't provide this requirement
