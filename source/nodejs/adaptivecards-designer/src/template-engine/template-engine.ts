@@ -1,7 +1,11 @@
 import { ExpressionParser, Expression, ExpressionContext } from "./expression-parser";
 
+class ExpressionInfo {
+    constructor(readonly expression: Expression, readonly originalString: string) {}
+}
+
 export class TemplatizedString {
-    private _parts: Array<string | Expression> = [];
+    private _parts: Array<string | ExpressionInfo> = [];
 
     static parse(s: string): string | TemplatizedString {
         let result = new TemplatizedString();
@@ -22,7 +26,14 @@ export class TemplatizedString {
                         result._parts.push(s.substring(i, start));
                     }
 
-                    result._parts.push(parser.parse(s.substring(start, end + 1)));
+                    let expressionString = s.substring(start, end + 1);
+
+                    try {
+                        result._parts.push(new ExpressionInfo(parser.parse(expressionString), expressionString));
+                    }
+                    catch {
+                        result._parts.push(expressionString);
+                    }
 
                     i = end + 1;
                 }
@@ -45,11 +56,18 @@ export class TemplatizedString {
 
     private _shouldDropOwner: boolean = false;
 
-    private evalExpression(expression: Expression, context: ExpressionContext): any {
-        let result = expression.evaluate(context);
+    private evalExpression(expressionInfo: ExpressionInfo, context: ExpressionContext): any {
+        let result: any;
+        
+        try {
+            result = expressionInfo.expression.evaluate(context);
+        }
+        catch (e) {
+            result = expressionInfo.originalString;
+        }
 
         if (result == undefined) {
-            this._shouldDropOwner = this._shouldDropOwner || !expression.allowNull;
+            this._shouldDropOwner = this._shouldDropOwner || !expressionInfo.expression.allowNull;
         }
 
         return result;
@@ -64,7 +82,7 @@ export class TemplatizedString {
                 return this._parts[0];
             }
             else {
-                return this.evalExpression(<Expression>this._parts[0], context);
+                return this.evalExpression(<ExpressionInfo>this._parts[0], context);
             }
         }
         else {
@@ -75,7 +93,7 @@ export class TemplatizedString {
                     s += part;
                 }
                 else {
-                    s += this.evalExpression(<Expression>part, context);
+                    s += this.evalExpression(<ExpressionInfo>part, context);
                 }
             }
 
