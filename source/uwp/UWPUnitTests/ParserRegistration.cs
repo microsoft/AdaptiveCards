@@ -227,7 +227,7 @@ namespace UWPUnitTests
                 "           \"type\":\"TestCustomAction\"," +
                 "           \"internalSubmitAction\":" +
                 "           {" +
-                "			    \"type\": \"Action.Submit\"" +
+                "               \"type\": \"Action.Submit\"" +
                 "           }" +
                 "       }" +
                 "   ]" +
