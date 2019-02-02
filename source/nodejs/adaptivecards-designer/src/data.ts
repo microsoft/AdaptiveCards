@@ -17,7 +17,7 @@ export abstract class DataType {
             if (Array.isArray(input)) {
                 let result = new ArrayType(parent, label);
 
-                result.itemDataType = input.length == 0 ? undefined : DataType.internalCreateDataTypeFrom(result, input[0], "items");
+                result.itemDataType = input.length == 0 ? undefined : DataType.internalCreateDataTypeFrom(result, input[0], "");
 
                 return result;
             }
@@ -54,7 +54,7 @@ export abstract class DataType {
         if (this.parent) {
             parentPath = this.parent.getPath(false);
         }
-         
+        
         return parentPath + this.label;
     }
 
@@ -84,7 +84,7 @@ export class ArrayType extends DataType {
         let result = super.getPath(asLeaf);
 
         if (!asLeaf) {
-            result += "[0].";
+            result += "[0]";
         }
 
         return result;

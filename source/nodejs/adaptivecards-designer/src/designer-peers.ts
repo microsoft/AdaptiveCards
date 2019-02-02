@@ -1019,6 +1019,17 @@ export class CardElementPeer extends DesignerPeer {
             addHeader(card, this.cardElement.getJsonTypeName());
         }
 
+        /*
+        let data = addLabelAndInput(card, "Data context:", Adaptive.TextInput);
+        data.input.defaultValue = this.cardElement.$data;
+        data.input.placeholder = "(not set)";
+        data.input.onValueChanged = () => {
+            this.cardElement.$data = data.input.value;
+
+            this.changed(false);
+        }
+        */
+
         let getExcludedProperties = this.getExcludedProperties();
 
         if (getExcludedProperties.indexOf("id") < 0) {

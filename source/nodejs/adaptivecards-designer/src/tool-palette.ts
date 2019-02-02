@@ -2,7 +2,7 @@ import * as DesignerSurface from "./card-designer-surface";
 import * as DesignerPeers from "./designer-peers";
 import * as Adaptive from "adaptivecards";
 import { DraggableElement } from "./draggable-element";
-import { DataType } from "./data";
+import { DataType, ArrayType } from "./data";
 
 export abstract class BasePaletteItem extends DraggableElement {
     protected abstract getText(): string;
@@ -76,10 +76,20 @@ export class DataPaletteItem extends BasePaletteItem {
     }
 
     createPeer(designer: DesignerSurface.CardDesignerSurface): DesignerPeers.CardElementPeer {
-        let textBlock = new Adaptive.TextBlock();
-        textBlock.text = "{" + this.dataType.getPath(true) + "}";
+        let element: Adaptive.CardElement;
 
-        let peer = DesignerSurface.CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(designer, null, textBlock);
+        if (this.dataType instanceof ArrayType) {
+            element = new Adaptive.Container();
+            element.$data = "{" + this.dataType.getPath(true) + "}";
+        }
+        else {
+            let textBlock = new Adaptive.TextBlock();
+            textBlock.text = "{" + this.dataType.getPath(true) + "}";
+
+            element = textBlock;
+        }
+
+        let peer = DesignerSurface.CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(designer, null, element);
         peer.initializeCardElement();
 
         return peer;
