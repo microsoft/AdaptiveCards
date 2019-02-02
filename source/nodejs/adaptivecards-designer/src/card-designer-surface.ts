@@ -4,7 +4,7 @@ import { DraggableElement } from "./draggable-element";
 import { IPoint } from "./miscellaneous";
 import * as DesignerPeers from "./designer-peers";
 import { Template } from "./template-engine/template-engine";
-import { ExpressionContext } from "./template-engine/expression-parser";
+import { EvaluationContext } from "./template-engine/expression-parser";
 
 export type CardElementType = { new(): Adaptive.CardElement };
 export type ActionType = { new(): Adaptive.Action };
@@ -273,7 +273,7 @@ export class CardDesignerSurface {
                 try {
                     let template = new Template(cardPayload);
         
-                    let context = new ExpressionContext();
+                    let context = new EvaluationContext();
                     context.$root = this.sampleData;
 
                     let expandedCardPayload = template.expand(context);

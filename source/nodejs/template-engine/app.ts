@@ -1,4 +1,4 @@
-var context = new ExpressionContext();
+var context = new EvaluationContext();
 context.registerFunction(
     "my.function",
     (params: any[]) => {
@@ -23,9 +23,18 @@ window.onload = function()
 
             context.$root = JSON.parse(dataEdit.value);
             outputEdit.value = JSON.stringify(template.expand(context), null, 4);
+
+            /*
+            let binding = ExpressionParser.parseBinding(inputEdit.value);
+            outputEdit.value = binding.print();
+
+            context.$root = JSON.parse(dataEdit.value);
+
+            outputEdit.value += "\r" + binding.evaluate(context).toString();
+            */
         }
         catch (e) {
-            alert(e.message);
+            outputEdit.value = "ERROR: " + e.message;
         }
     }
 }

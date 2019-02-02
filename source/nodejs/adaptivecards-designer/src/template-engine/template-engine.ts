@@ -1,15 +1,10 @@
-import { ExpressionParser, Expression, ExpressionContext } from "./expression-parser";
+import { Binding, ExpressionParser, EvaluationContext } from "./expression-parser";
 
-class ExpressionInfo {
-    constructor(readonly expression: Expression, readonly originalString: string) {}
-}
-
-export class TemplatizedString {
-    private _parts: Array<string | ExpressionInfo> = [];
+class TemplatizedString {
+    private _parts: Array<string | Binding> = [];
 
     static parse(s: string): string | TemplatizedString {
         let result = new TemplatizedString();
-        let parser = new ExpressionParser();
         let i = 0;
 
         do {
@@ -26,14 +21,7 @@ export class TemplatizedString {
                         result._parts.push(s.substring(i, start));
                     }
 
-                    let expressionString = s.substring(start, end + 1);
-
-                    try {
-                        result._parts.push(new ExpressionInfo(parser.parse(expressionString), expressionString));
-                    }
-                    catch {
-                        result._parts.push(expressionString);
-                    }
+                    result._parts.push(ExpressionParser.parseBinding(s.substring(start, end + 1)));
 
                     i = end + 1;
                 }
@@ -56,24 +44,17 @@ export class TemplatizedString {
 
     private _shouldDropOwner: boolean = false;
 
-    private evalExpression(expressionInfo: ExpressionInfo, context: ExpressionContext): any {
-        let result: any;
-        
-        try {
-            result = expressionInfo.expression.evaluate(context);
-        }
-        catch (e) {
-            result = expressionInfo.originalString;
-        }
+    private evalExpression(bindingExpression: Binding, context: EvaluationContext): any {
+        let result = bindingExpression.evaluate(context);
 
         if (result == undefined) {
-            this._shouldDropOwner = this._shouldDropOwner || !expressionInfo.expression.allowNull;
+            this._shouldDropOwner = this._shouldDropOwner || !bindingExpression.allowNull;
         }
 
         return result;
     }
 
-    private internalEvaluate(context: ExpressionContext): any {
+    private internalEvaluate(context: EvaluationContext): any {
         if (this._parts.length == 0) {
             return undefined;
         }
@@ -82,7 +63,7 @@ export class TemplatizedString {
                 return this._parts[0];
             }
             else {
-                return this.evalExpression(<ExpressionInfo>this._parts[0], context);
+                return this.evalExpression(<Binding>this._parts[0], context);
             }
         }
         else {
@@ -93,7 +74,7 @@ export class TemplatizedString {
                     s += part;
                 }
                 else {
-                    s += this.evalExpression(<ExpressionInfo>part, context);
+                    s += this.evalExpression(<Binding>part, context);
                 }
             }
 
@@ -101,7 +82,7 @@ export class TemplatizedString {
         }
     }
 
-    evaluate(context: ExpressionContext): any {
+    evaluate(context: EvaluationContext): any {
         this._shouldDropOwner = false;
 
         return this.internalEvaluate(context);
@@ -143,7 +124,7 @@ export class Template {
         }
     }
 
-    private _context: ExpressionContext;
+    private _context: EvaluationContext;
 
     private expandSingleObject(node: object): any {
         let result = {};
@@ -167,7 +148,8 @@ export class Template {
 
     private internalExpand(node: any): any {
         let result: any;
-        let previousDataContext = this._context.$data;
+
+        this._context.saveState();
 
         if (Array.isArray(node)) {
             let itemArray: any[] = [];
@@ -230,7 +212,7 @@ export class Template {
             result = node;
         }
 
-        this._context.$data = previousDataContext;
+        this._context.restoreLastState();
 
         return result;
     }
@@ -241,7 +223,7 @@ export class Template {
         this.preparedPayload = Template.prepare(payload);
     }
 
-    expand(context: ExpressionContext): any {
+    expand(context: EvaluationContext): any {
         this._context = context;
 
         return this.internalExpand(this.preparedPayload);

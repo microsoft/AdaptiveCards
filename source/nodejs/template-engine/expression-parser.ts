@@ -1,4 +1,4 @@
-type TokenType = 
+type TokenType =
     "{" |
     "?#" |
     "}" |
@@ -134,34 +134,37 @@ Tokenizer.init();
 
 type LiteralValue = string | number | boolean;
 
-abstract class ExpressionNode {
-    abstract print(): string;
-    abstract evaluate(context: Object): LiteralValue;
-}
-
 function ensureValueType(value: any): LiteralValue {
-    if (typeof value === "number" || typeof value ==="string" || typeof value === "boolean") {
+    if (typeof value === "number" || typeof value === "string" || typeof value === "boolean") {
         return value;
     }
 
     throw new Error("Invalid value type: " + typeof value);
 }
 
-
 type FunctionCallback = (params: any[]) => any;
 type FunctionDictionary = { [key: string]: FunctionCallback };
 
-class ExpressionContext {
-    private static readonly _reservedFields = [ "$data", "$root", "$index" ];
+interface EvaluationContextState {
+    $data: any;
+    $index: any;
+}
+
+class EvaluationContext {
+    private static readonly _reservedFields = ["$data", "$root", "$index"];
     private static _builtInFunctions: FunctionDictionary = {}
-    
+
     static init() {
-        ExpressionContext._builtInFunctions["substr"] = (params: any[]) => {
+        EvaluationContext._builtInFunctions["substr"] = (params: any[]) => {
             return (<string>params[0]).substr(<number>params[1], <number>params[2]);
+        };
+        EvaluationContext._builtInFunctions["JSON.parse"] = (params: any[]) => {
+            return JSON.parse(params[0]);
         };
     }
 
     private _functions = {};
+    private _stateStack: EvaluationContextState[] = [];
 
     $root: any;
     $data: any;
@@ -179,14 +182,29 @@ class ExpressionContext {
         let result = this._functions[name];
 
         if (result == undefined) {
-            result = ExpressionContext._builtInFunctions[name];
+            result = EvaluationContext._builtInFunctions[name];
         }
 
         return result;
     }
 
     isReservedField(name: string): boolean {
-        return ExpressionContext._reservedFields.indexOf(name) >= 0;
+        return EvaluationContext._reservedFields.indexOf(name) >= 0;
+    }
+
+    saveState() {
+        this._stateStack.push({ $data: this.$data, $index: this.$index });
+    }
+
+    restoreLastState() {
+        if (this._stateStack.length == 0) {
+            throw new Error("There is no evaluation context state to restore.");
+        }
+
+        let savedContext = this._stateStack.pop();
+
+        this.$data = savedContext.$data;
+        this.$index = savedContext.$index;
     }
 
     get currentDataContext(): any {
@@ -194,17 +212,22 @@ class ExpressionContext {
     }
 }
 
-ExpressionContext.init();
+EvaluationContext.init();
 
-class Expression extends ExpressionNode {
-    nodes: Array<ExpressionNode> = [];
+abstract class EvaluationNode {
+    abstract print(): string;
+    abstract evaluate(context: EvaluationContext): LiteralValue;
+}
+
+class ExpressionNode extends EvaluationNode {
+    nodes: Array<EvaluationNode> = [];
     allowNull: boolean = true;
 
-    evaluate(context: ExpressionContext): any {
+    evaluate(context: EvaluationContext): any {
         const operatorPriorityGroups = [
-            [ "/", "*" ],
-            [ "-", "+" ],
-            [ "==", "!=", "<", "<=", ">", ">=" ]
+            ["/", "*"],
+            ["-", "+"],
+            ["==", "!=", "<", "<=", ">", ">="]
         ];
 
         let nodesCopy = this.nodes;
@@ -300,83 +323,35 @@ class Expression extends ExpressionNode {
     }
 }
 
-type PropertyPathPart = string | Expression;
+class IdentifierNode extends EvaluationNode {
+    identifier: string;
 
-class PropertyPathNode extends ExpressionNode {
-    properties: Array<PropertyPathPart> = [];
-
-    evaluate(context: ExpressionContext): LiteralValue {
-        let result: any;
-        let index = 0;
-        
-        switch (<string>this.properties[0]) {
-            case "$root":
-                result = context.$root;
-                index++;
-
-                break;
-            case "$data":
-                result = context.currentDataContext;
-                index++;
-
-                break;
-            case "$index":
-                result = context.$index;
-                index++;
-
-                break;
-            default:
-                result = context.currentDataContext;
-
-                break;
-        }
-
-        while (index < this.properties.length) {
-            let part = this.properties[index];
-
-            try {
-                if (typeof part === "string") {
-                    result = result[part];
-                }
-                else {
-                    result = result[part.evaluate(context)];
-                }
-            }
-            catch {
-                return undefined;
-            }
-
-            index++;
-        }
-
-        return result;
-    }
-    
     print(): string {
-        let result = "";
+        return this.identifier;
+    }
 
-        for (let part of this.properties) {
-            if (typeof part === "string") {
-                if (result != "") {
-                    result += ".";
-                }
-
-                result += part;
-            }
-            else {
-                result += "[" + part.print() + "]";
-            }
-        }
-
-        return result;
+    evaluate(context: EvaluationContext): LiteralValue {
+        return this.identifier;
     }
 }
 
-class FunctionCallNode extends ExpressionNode {
-    functionName: string;
-    parameters: Array<Expression> = [];
+class IndexerNode extends EvaluationNode {
+    index: ExpressionNode;
 
-    evaluate(context: ExpressionContext): LiteralValue {
+    print(): string {
+        return "[" + this.index.print() + "]";
+    }
+
+    evaluate(context: EvaluationContext): LiteralValue {
+        return this.index.evaluate(context);
+    }
+}
+
+class FunctionCallNode extends EvaluationNode {
+    functionName: string = null;
+    parameters: Array<ExpressionNode> = [];
+
+    evaluate(context: EvaluationContext): LiteralValue {
         let callback = context.getFunction(this.functionName);
 
         if (callback != undefined) {
@@ -391,7 +366,7 @@ class FunctionCallNode extends ExpressionNode {
 
         throw new Error("Undefined function: " + this.functionName);
     }
-    
+
     print(): string {
         let result = "";
 
@@ -403,35 +378,104 @@ class FunctionCallNode extends ExpressionNode {
             result += parameter.print();
         }
 
-        return this.functionName + "(" + result + ")";
+        return "FUNCTION:" + this.functionName + "{" + result + "}";
     }
 }
 
-class LiteralNode extends ExpressionNode {
+class LiteralNode extends EvaluationNode {
     constructor(readonly value: LiteralValue) {
         super();
     }
 
-    evaluate(context: ExpressionContext): LiteralValue {
+    evaluate(context: EvaluationContext): LiteralValue {
         return this.value;
     }
-    
+
     print(): string {
-        return this.value.toString();
+        return "LITERAL:" + this.value.toString();
     }
 }
 
-class OperatorNode extends ExpressionNode {
+class OperatorNode extends EvaluationNode {
     constructor(readonly operator: TokenType) {
         super();
     }
 
-    evaluate(context: ExpressionContext): LiteralValue {
+    evaluate(context: EvaluationContext): LiteralValue {
         throw new Error("An operator cannot be evaluated on its own.");
     }
-    
+
     print(): string {
         return this.operator;
+    }
+}
+
+type PathPart = ExpressionNode | IdentifierNode | IndexerNode | FunctionCallNode;
+
+class PathNode extends EvaluationNode {
+    parts: PathPart[] = [];
+
+    evaluate(context: EvaluationContext): LiteralValue {
+        let result: any = undefined;
+        let index = 0;
+
+        while (index < this.parts.length) {
+            let part = this.parts[index];
+
+            try {
+                if (part instanceof IdentifierNode && index == 0) {
+                    switch (part.identifier) {
+                        case "$root":
+                            result = context.$root;
+            
+                            break;
+                        case "$data":
+                            result = context.currentDataContext;
+            
+                            break;
+                        case "$index":
+                            result = context.$index;
+            
+                            break;
+                        default:
+                            result = context.currentDataContext[part.identifier];
+            
+                            break;
+                    }            
+                }
+                else {
+                    let partValue = part.evaluate(context);
+
+                    if (index == 0) {
+                        result = partValue;
+                    }
+                    else {
+                        typeof partValue !== "boolean" ? result = result[partValue] : result = result[partValue.toString()];
+                    }
+                }
+            }
+            catch (e) {
+                return undefined;
+            }
+
+            index++;
+        }
+
+        return result;
+    }
+
+    print(): string {
+        let result = "";
+
+        for (let part of this.parts) {
+            if (result != "") {
+                result += ".";
+            }
+
+            result += part.print();
+        }
+
+        return "PATH{" + result + "}";
     }
 }
 
@@ -447,144 +491,178 @@ class ExpressionParser {
         throw new Error("Unexpected end of expression.");
     }
 
-    private isNextTokenType(types: TokenType[]): boolean {
-        return types.indexOf(this.nextTokenType) >= 0;
+    private moveNext() {
+        this._index++;
     }
 
-    private ensureTokenType(types: TokenType[]) {
+    private parseToken(...expectedTokenTypes: TokenType[]): Token {
         if (this.eoe) {
             this.unexpectedEoe();
         }
-        else if (!(types.indexOf(this.current.type) >= 0)) {
+
+        let currentToken = this.current;
+
+        if (expectedTokenTypes.indexOf(this.current.type) < 0) {
             this.unexpectedToken();
         }
+
+        this.moveNext();
+
+        return currentToken;
     }
 
-    private moveNext(expectedTypes?: TokenType[]) {
-        this._index++;
+    private parseOptionalToken(...expectedTokenTypes: TokenType[]): boolean {
+        if (this.eoe) {
+            this.unexpectedEoe();
+        }
+        else if (expectedTokenTypes.indexOf(this.current.type) < 0) {
+            return false;
+        }
+        else {
+            this.moveNext();
 
-        if (expectedTypes) {
-            this.ensureTokenType(expectedTypes);    
+            return true;
         }
     }
 
-    private parseFunctionParameters(functionCall: FunctionCallNode) {
-        let moreParameters = false;
-        let startTokenType: TokenType = "(";
+    private parseFunctionCall(functionName: string): FunctionCallNode {
+        let result = new FunctionCallNode();
+        result.functionName = functionName;
 
-        do {
-            functionCall.parameters.push(this.parseExpression(startTokenType, [")", ","]));
+        this.parseToken("(");
 
-            moreParameters = this.current.type == ",";
+        let firstParameter = this.parseExpression();
+        let moreParameters: boolean = false;
 
-            if (moreParameters) {
-                startTokenType = ",";
-            }
-        } while (moreParameters);
+        if (firstParameter) {
+            result.parameters.push(firstParameter);
+
+            do {
+                moreParameters = this.parseOptionalToken(",");
+
+                if (moreParameters) {
+                    let parameter = this.parseExpression();
+
+                    result.parameters.push(parameter);
+                }
+            } while (moreParameters);
+        }
+
+        this.parseToken(")");
+
+        return result;
     }
 
-    private parsePropertyPathOrFunctionCall(): PropertyPathNode | FunctionCallNode {
-        let result = new PropertyPathNode();
+    private parseIdentifier(): IdentifierNode {
+        let result = new IdentifierNode();
 
-        let expectedTokenTypes: Array<TokenType> = ["identifier"];
-        let canEndPath = false;
-        let canBeFunctionCall = true;
+        result.identifier = this.current.value;
+
+        this.moveNext();
+
+        return result;
+    }
+
+    private parseIndexer(): IndexerNode {
+        let result = new IndexerNode();
+
+        this.parseToken("[");
+
+        result.index = this.parseExpression();
+
+        this.parseToken("]");
+
+        return result;
+    }
+
+    private parsePath(): PathNode {
+        let result = new PathNode();
+
+        let expectedNextTokenTypes: TokenType[] = ["identifier", "("];
 
         while (!this.eoe) {
-            this.ensureTokenType(expectedTokenTypes);
-
-            switch (this.current.type) {
-                case "identifier":
-                    result.properties.push(this.current.value);
-
-                    expectedTokenTypes = [".", "["];
-
-                    if (canBeFunctionCall) {
-                        expectedTokenTypes.push("(");
-                    }
-
-                    canEndPath = true;
-
-                    break;
-                case ".":
-                    expectedTokenTypes = ["identifier"];
-
-                    canEndPath = false;
-
-                    break;
-                case "[":
-                    result.properties.push(this.parseExpression("[", ["]"]));
-
-                    expectedTokenTypes = ["."];
-
-                    canEndPath = true;
-                    canBeFunctionCall = false;
-
-                    break;
-                case "(":
-                    let functionCall = new FunctionCallNode();
-                    functionCall.functionName = result.properties.join(".");
-
-                    this.parseFunctionParameters(functionCall);
-            
-                    return functionCall;
-                default:
-                    this.unexpectedToken();
-            }
-
-            if (!this.isNextTokenType(expectedTokenTypes) && canEndPath) {
+            if (expectedNextTokenTypes.indexOf(this.current.type) < 0) {
                 return result;
             }
 
-            this.moveNext();
-        }
-
-        this.unexpectedToken();
-    }
-
-    private parseExpression(startTokenType: TokenType, endTokenTypes: TokenType[]): Expression {
-        let result: Expression = new Expression();
-
-        this.ensureTokenType([startTokenType]);
-        this.moveNext();
-
-        let expectedNextTokenTypes: Array<TokenType> = literals.concat(["+", "-"]).concat(["("]);
-
-        if (startTokenType == "{") {
-            expectedNextTokenTypes.push("?#");
-        }
-
-        while (!this.eoe) {
-            this.ensureTokenType(expectedNextTokenTypes);
-
             switch (this.current.type) {
-                case "?#":
-                    result.allowNull = false;
-
-                    expectedNextTokenTypes = literals.concat(["+", "-"]).concat(["("]);
-
-                    break;
                 case "(":
-                    result.nodes.push(this.parseExpression("(", [")"]));
+                    if (result.parts.length == 0) {
+                        this.moveNext();
+    
+                        result.parts.push(this.parseExpression());
+    
+                        this.parseToken(")");
+                    }
+                    else {
+                        let functionName: string = "";
 
-                    expectedNextTokenTypes = orderedOperators.concat(endTokenTypes);
+                        for (let part of result.parts) {
+                            if (!(part instanceof IdentifierNode)) {
+                                this.unexpectedToken();
+                            }
 
-                    break;
-                case "]":
-                case ")":
-                case "}":
-                case ",":
-                    if (result.nodes.length == 0) {
-                        this.unexpectedToken();
+                            if (functionName != "") {
+                                functionName += ".";
+                            }
+
+                            functionName += (<IdentifierNode>part).identifier;
+                        }
+
+                        result.parts = [];
+
+                        result.parts.push(this.parseFunctionCall(functionName));
                     }
 
-                    this.ensureTokenType(endTokenTypes);
+                    expectedNextTokenTypes = [".", "["];
 
-                    return result;
+                    break;
+                case "[":
+                    result.parts.push(this.parseIndexer());
+
+                    expectedNextTokenTypes = [".", "(", "["];
+
+                    break;
                 case "identifier":
-                    result.nodes.push(this.parsePropertyPathOrFunctionCall());
+                    result.parts.push(this.parseIdentifier());
 
-                    expectedNextTokenTypes = orderedOperators.concat(endTokenTypes);
+                    expectedNextTokenTypes = [".", "(", "["];
+
+                    break;
+                case ".":
+                    this.moveNext();
+
+                    expectedNextTokenTypes = ["identifier"];
+
+                    break;
+                default:
+                    expectedNextTokenTypes = [];
+
+                    break;
+            }
+        }
+    }
+
+    private parseExpression(): ExpressionNode {
+        let result: ExpressionNode = new ExpressionNode();
+
+        let expectedNextTokenTypes: TokenType[] = literals.concat("(", "+", "-");
+
+        while (!this.eoe) {
+            if (expectedNextTokenTypes.indexOf(this.current.type) < 0) {
+                if (result.nodes.length == 0) {
+                    this.unexpectedToken();
+                }
+
+                return result;
+            }
+
+            switch (this.current.type) {
+                case "(":
+                case "identifier":
+                    result.nodes.push(this.parsePath());
+
+                    expectedNextTokenTypes = orderedOperators;
 
                     break;
                 case "string":
@@ -600,7 +678,9 @@ class ExpressionParser {
                         result.nodes.push(new LiteralNode(this.current.value === "true"));
                     }
 
-                    expectedNextTokenTypes = orderedOperators.concat(endTokenTypes);
+                    this.moveNext();
+
+                    expectedNextTokenTypes = orderedOperators;
 
                     break;
                 case "-":
@@ -609,15 +689,29 @@ class ExpressionParser {
                         result.nodes.push(new OperatorNode("*"));
 
                         expectedNextTokenTypes = ["identifier", "number", "("];
-
-                        break;
                     }
+                    else {
+                        result.nodes.push(new OperatorNode(this.current.type));
+
+                        expectedNextTokenTypes = literals.concat("(");
+                    }
+
+                    this.moveNext();
+
+                    break;
                 case "+":
                     if (result.nodes.length == 0) {
-                        expectedNextTokenTypes = literals.concat(["("]);
-
-                        break;
+                        expectedNextTokenTypes = literals.concat("(");
                     }
+                    else {
+                        result.nodes.push(new OperatorNode(this.current.type));
+
+                        expectedNextTokenTypes = literals.concat("(");
+                    }
+
+                    this.moveNext();
+
+                    break;
                 case "*":
                 case "/":
                 case "==":
@@ -626,27 +720,19 @@ class ExpressionParser {
                 case "<=":
                 case ">":
                 case ">=":
-                    if (result.nodes.length == 0) {
-                        this.unexpectedToken();
-                    }
-
                     result.nodes.push(new OperatorNode(this.current.type));
 
-                    expectedNextTokenTypes = literals.concat(["("]);
+                    this.moveNext();
+
+                    expectedNextTokenTypes = literals.concat("(");
 
                     break;
                 default:
-                    this.unexpectedToken();
+                    expectedNextTokenTypes = [];
+
+                    break;
             }
-
-            this.moveNext();
         }
-
-        this.unexpectedEoe();
-    }
-
-    private reset() {
-        this._index = 0;
     }
 
     private get eoe(): boolean {
@@ -657,20 +743,31 @@ class ExpressionParser {
         return this._tokens[this._index];
     }
 
-    private get nextTokenType(): TokenType {
-        if (this._index < this._tokens.length - 1) {
-            return this._tokens[this._index + 1].type;
-        }
-        else {
-            return null;
-        }
+    static parseBinding(bindingExpression: string): Binding {
+        let parser = new ExpressionParser(Tokenizer.parse(bindingExpression));
+        parser.parseToken("{");
+
+        let allowNull = !parser.parseOptionalToken("?#");
+        let expression = parser.parseExpression();
+
+        parser.parseToken("}");
+
+        return new Binding(expression, allowNull);
     }
 
-    parse(expression: string): Expression {
-        this.reset();
+    constructor(tokens: Token[]) {
+        this._tokens = tokens;
+    }
+}
 
-        this._tokens = Tokenizer.parse(expression);
+class Binding {
+    constructor(private readonly expression: EvaluationNode, readonly allowNull: boolean = true) {}
 
-        return this.parseExpression("{", ["}"]);
+    evaluate(context: EvaluationContext): LiteralValue {
+        return this.expression.evaluate(context);
+    }
+
+    print() {
+        return this.expression.print();
     }
 }
