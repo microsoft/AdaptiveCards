@@ -21,7 +21,17 @@ class TemplatizedString {
                         result._parts.push(s.substring(i, start));
                     }
 
-                    result._parts.push(ExpressionParser.parseBinding(s.substring(start, end + 1)));
+                    let bindngExpression = s.substring(start, end + 1);
+                    let part: string | Binding;
+
+                    try {
+                        part = ExpressionParser.parseBinding(bindngExpression);
+                    }
+                    catch (e) {
+                        part = bindngExpression;
+                    }
+
+                    result._parts.push(part);
 
                     i = end + 1;
                 }
