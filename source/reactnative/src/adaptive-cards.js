@@ -18,16 +18,8 @@ import { ActionWrapper } from './components/actions/action-wrapper';
 import PropTypes from 'prop-types';
 import * as Utils from './utils/util';
 import { SelectAction } from './components/actions';
+import ResourseInformation from './utils/resource-information';
 
-class ResourseInformation {
-		url = "";
-		mimeType = "";
-
-		constructor(urlString, mimeTypeString){
-			this.url = urlString;
-			this.mimeType = mimeTypeString;
-		}
-}
 
 export default class AdaptiveCards extends React.Component {
 
