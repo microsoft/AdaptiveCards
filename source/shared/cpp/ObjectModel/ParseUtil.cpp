@@ -128,7 +128,7 @@ namespace AdaptiveSharedNamespace
         return propertyValue.asString();
     }
 
-    std::shared_ptr<BackgroundImage> ParseUtil::ExtractBackgroundImage(const Json::Value& json)
+    std::shared_ptr<BackgroundImage> ParseUtil::GetBackgroundImage(const Json::Value& json)
     {
         try
         {

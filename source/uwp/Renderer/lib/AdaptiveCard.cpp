@@ -276,10 +276,16 @@ namespace AdaptiveNamespace
         adaptiveCard->SetHeight(static_cast<AdaptiveSharedNamespace::HeightType>(m_height));
         adaptiveCard->SetLanguage(HStringToUTF8(m_language.Get()));
 
+        ComPtr<AdaptiveBackgroundImage> adaptiveBackgroundImage = PeekInnards<AdaptiveBackgroundImage>(m_backgroundImage);
         std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage> sharedBackgroundImage;
-        auto backgroundImage = static_cast<AdaptiveNamespace::AdaptiveBackgroundImage*>(m_backgroundImage.Get());
-        RETURN_IF_FAILED(backgroundImage->GetSharedModel(sharedBackgroundImage));
-        adaptiveCard->SetBackgroundImage(sharedBackgroundImage);
+        if (adaptiveBackgroundImage && SUCCEEDED(adaptiveBackgroundImage->GetSharedModel(sharedBackgroundImage)))
+        {
+            adaptiveCard->SetBackgroundImage(sharedBackgroundImage);
+        }
+        else
+        {
+            adaptiveCard->SetBackgroundImage(nullptr);
+        }
 
         adaptiveCard->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
         adaptiveCard->SetVerticalContentAlignment(static_cast<AdaptiveSharedNamespace::VerticalContentAlignment>(m_verticalAlignment));
