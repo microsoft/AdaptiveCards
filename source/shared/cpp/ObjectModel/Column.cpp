@@ -147,7 +147,7 @@ std::shared_ptr<Column> Column::Deserialize(ParseContext& context, const Json::V
     column->SetVerticalContentAlignment(ParseUtil::GetEnumValue<VerticalContentAlignment>(
         value, AdaptiveCardSchemaKey::VerticalContentAlignment, VerticalContentAlignment::Top, VerticalContentAlignmentFromString));
 
-    auto backgroundImage = ParseUtil::ExtractBackgroundImage(value);
+    auto backgroundImage = ParseUtil::GetBackgroundImage(value);
     column->SetBackgroundImage(backgroundImage);
 
     // Parse Items

@@ -29,7 +29,7 @@ namespace AdaptiveSharedNamespace
 
         std::string GetValueAsString(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
 
-        std::shared_ptr<BackgroundImage> ExtractBackgroundImage(const Json::Value& json);
+        std::shared_ptr<BackgroundImage> GetBackgroundImage(const Json::Value& json);
 
         bool GetBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool defaultValue, bool isRequired = false);
 

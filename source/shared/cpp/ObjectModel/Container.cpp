@@ -115,7 +115,7 @@ std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(ParseContext& cont
     container->SetVerticalContentAlignment(ParseUtil::GetEnumValue<VerticalContentAlignment>(
         value, AdaptiveCardSchemaKey::VerticalContentAlignment, VerticalContentAlignment::Top, VerticalContentAlignmentFromString));
 
-    auto backgroundImage = ParseUtil::ExtractBackgroundImage(value);
+    auto backgroundImage = ParseUtil::GetBackgroundImage(value);
     container->SetBackgroundImage(backgroundImage);
 
     // Parse Items

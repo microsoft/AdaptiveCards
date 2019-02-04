@@ -173,7 +173,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, 
         }
     }
 
-    auto backgroundImage = ParseUtil::ExtractBackgroundImage(json);
+    auto backgroundImage = ParseUtil::GetBackgroundImage(json);
 
     ContainerStyle style =
         ParseUtil::GetEnumValue<ContainerStyle>(json, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString);

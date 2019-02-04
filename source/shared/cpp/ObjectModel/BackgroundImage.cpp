@@ -41,7 +41,7 @@ namespace AdaptiveSharedNamespace
 
             if (m_mode != BackgroundImageMode::Stretch)
             {
-                root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImageMode)] =
+                root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Mode)] =
                     BackgroundImageModeToString(m_mode);
             }
 
@@ -67,7 +67,7 @@ namespace AdaptiveSharedNamespace
         image->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, true));
 
         image->SetMode(ParseUtil::GetEnumValue<BackgroundImageMode>(
-            json, AdaptiveCardSchemaKey::BackgroundImageMode, BackgroundImageMode::Stretch, BackgroundImageModeFromString));
+            json, AdaptiveCardSchemaKey::Mode, BackgroundImageMode::Stretch, BackgroundImageModeFromString));
 
         image->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(
             json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
