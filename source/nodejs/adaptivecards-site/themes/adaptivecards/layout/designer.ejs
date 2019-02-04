@@ -1,5 +1,4 @@
 <script type="text/javascript">
-
 	window.onload = function () {
 
 		function getParameterByName(name, url) {
@@ -16,39 +15,6 @@
 			} else {
 				return "";
 			}
-		}
-
-		function designerLoaded(designer)
-		{
-			designer.attachTo(document.getElementById("designerRootHost"));
-
-			// Add sample data
-			let sampleData = {
-				firstName: "John",
-				lastName: "Doe",
-				age: 45,
-				isMarried: true,
-				address: {
-					street: "1234 555th Ave NE",
-					city: "Redmond",
-					state: "WA",
-					countryOrRegion: "USA"
-				},
-				children: [{
-						firstName: "Jennifer",
-						lastName: "Doe",
-						age: 9
-					},
-					{
-						firstName: "James",
-						lastName: "Doe",
-						age: 13
-					}
-				]
-			};
-
-			designer.dataStructure = ACDesigner.DataType.createDataTypeFrom(sampleData);
-			designer.sampleData = sampleData;
 		}
 
 		if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
@@ -124,10 +90,10 @@
 				xhttp.open("GET", cardUrl, true);
 				xhttp.send();
 			} catch (e) {
-				designerLoaded(designer);
+				designer.attachTo(document.getElementById("designerRootHost"));
 			}
 		} else {
-			designerLoaded(designer);
+			designer.attachTo(document.getElementById("designerRootHost"));
 		}
 
 		require.config({
@@ -137,6 +103,34 @@
 		});
 		require(['vs/editor/editor.main'], function () {
 			designer.monacoModuleLoaded();
+
+			// Add sample data
+			let sampleData = {
+				firstName: "John",
+				lastName: "Doe",
+				age: 45,
+				isMarried: true,
+				address: {
+					street: "1234 555th Ave NE",
+					city: "Redmond",
+					state: "WA",
+					countryOrRegion: "USA"
+				},
+				children: [{
+						firstName: "Jennifer",
+						lastName: "Doe",
+						age: 9
+					},
+					{
+						firstName: "James",
+						lastName: "Doe",
+						age: 13
+					}
+				]
+			};
+
+			designer.dataStructure = ACDesigner.DataType.createDataTypeFrom(sampleData);
+			designer.sampleData = sampleData;
 		});
 	};
 </script>
