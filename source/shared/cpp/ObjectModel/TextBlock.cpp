@@ -177,7 +177,6 @@ std::shared_ptr<BaseCardElement> TextBlockParser::Deserialize(ParseContext& cont
     ParseUtil::ExpectTypeString(json, CardElementType::TextBlock);
 
     std::shared_ptr<TextBlock> textBlock = BaseCardElement::Deserialize<TextBlock>(context, json);
-    context.PushElement(*textBlock);
     textBlock->SetText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Text, true));
     textBlock->SetTextSize(ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, TextSize::Default, TextSizeFromString));
     textBlock->SetTextColor(
@@ -191,8 +190,6 @@ std::shared_ptr<BaseCardElement> TextBlockParser::Deserialize(ParseContext& cont
     textBlock->SetMaxLines(ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::MaxLines, 0));
     textBlock->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(
         json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
-
-    context.PopElement();
 
     return textBlock;
 }

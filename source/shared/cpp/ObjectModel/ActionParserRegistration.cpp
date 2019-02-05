@@ -9,6 +9,22 @@
 
 namespace AdaptiveSharedNamespace
 {
+    ActionElementParserWrapper::ActionElementParserWrapper(std::shared_ptr<ActionElementParser> parserToWrap) :
+        m_parser{parserToWrap}
+    {
+    }
+
+    std::shared_ptr<BaseActionElement> ActionElementParserWrapper::Deserialize(ParseContext& context, const Json::Value& value)
+    {
+        const auto& idProperty = ParseUtil::GetString(value, AdaptiveCardSchemaKey::Id);
+        InternalId internalId = InternalId::Next();
+        context.PushElement(idProperty, internalId);
+        std::shared_ptr<BaseActionElement> element = m_parser->Deserialize(context, value);
+        context.PopElement();
+
+        return element;
+    }
+
     ActionParserRegistration::ActionParserRegistration()
     {
         m_knownElements.insert({
@@ -19,11 +35,12 @@ namespace AdaptiveSharedNamespace
             ActionTypeToString(ActionType::UnknownAction),
         });
 
-        m_cardElementParsers.insert({{ActionTypeToString(ActionType::OpenUrl), std::make_shared<OpenUrlActionParser>()},
-                                     {ActionTypeToString(ActionType::ShowCard), std::make_shared<ShowCardActionParser>()},
-                                     {ActionTypeToString(ActionType::Submit), std::make_shared<SubmitActionParser>()},
-                                     {ActionTypeToString(ActionType::ToggleVisibility), std::make_shared<ToggleVisibilityActionParser>()},
-                                     {ActionTypeToString(ActionType::UnknownAction), std::make_shared<UnknownActionParser>()}});
+        m_cardElementParsers.insert(
+            {{ActionTypeToString(ActionType::OpenUrl), std::make_shared<OpenUrlActionParser>()},
+             {ActionTypeToString(ActionType::ShowCard), std::make_shared<ShowCardActionParser>()},
+             {ActionTypeToString(ActionType::Submit), std::make_shared<SubmitActionParser>()},
+             {ActionTypeToString(ActionType::ToggleVisibility), std::make_shared<ToggleVisibilityActionParser>()},
+             {ActionTypeToString(ActionType::UnknownAction), std::make_shared<UnknownActionParser>()}});
     }
 
     void ActionParserRegistration::AddParser(std::string const& elementType, std::shared_ptr<ActionElementParser> parser)
@@ -57,7 +74,8 @@ namespace AdaptiveSharedNamespace
         auto parser = m_cardElementParsers.find(elementType);
         if (parser != ActionParserRegistration::m_cardElementParsers.end())
         {
-            return parser->second;
+            std::shared_ptr<ActionElementParser> wrappedParser = std::make_shared<ActionElementParserWrapper>(parser->second);
+            return wrappedParser;
         }
         else
         {

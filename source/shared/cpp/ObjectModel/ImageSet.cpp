@@ -54,7 +54,6 @@ std::shared_ptr<BaseCardElement> ImageSetParser::Deserialize(ParseContext& conte
     ParseUtil::ExpectTypeString(value, CardElementType::ImageSet);
 
     auto imageSet = BaseCardElement::Deserialize<ImageSet>(context, value);
-    context.PushElement(*imageSet);
     // Get ImageSize
     imageSet->m_imageSize =
         ParseUtil::GetEnumValue<ImageSize>(value, AdaptiveCardSchemaKey::ImageSize, ImageSize::None, ImageSizeFromString);
@@ -66,7 +65,6 @@ std::shared_ptr<BaseCardElement> ImageSetParser::Deserialize(ParseContext& conte
     {
         imageSet->m_images.push_back(std::static_pointer_cast<Image>(image));
     }
-    context.PopElement();
 
     return imageSet;
 }

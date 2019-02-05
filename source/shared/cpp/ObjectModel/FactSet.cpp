@@ -51,14 +51,12 @@ std::shared_ptr<BaseCardElement> FactSetParser::Deserialize(ParseContext& contex
     ParseUtil::ExpectTypeString(value, CardElementType::FactSet);
 
     auto factSet = BaseCardElement::Deserialize<FactSet>(context, value);
-    context.PushElement(*factSet);
 
     // Parse Facts
     auto facts =
         ParseUtil::GetElementCollectionOfSingleType<Fact>(context, value, AdaptiveCardSchemaKey::Facts, Fact::Deserialize, true);
     factSet->m_facts = std::move(facts);
 
-    context.PopElement();
     return factSet;
 }
 

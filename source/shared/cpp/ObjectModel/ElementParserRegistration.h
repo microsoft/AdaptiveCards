@@ -6,12 +6,27 @@ namespace AdaptiveSharedNamespace
 {
     class BaseCardElement;
     class ParseContext;
+    class InternalId;
 
     class BaseCardElementParser
     {
     public:
         virtual std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& value) = 0;
         virtual std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& value) = 0;
+    };
+
+    class BaseCardElementParserWrapper : public BaseCardElementParser
+    {
+    public:
+        BaseCardElementParserWrapper(std::shared_ptr<BaseCardElementParser> parserToWrap);
+        virtual ~BaseCardElementParserWrapper() = default;
+
+        std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& value) override;
+        std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& value) override;
+        std::shared_ptr<BaseCardElementParser> GetActualParser() const { return m_parser; }
+
+    private:
+        std::shared_ptr<BaseCardElementParser> m_parser;
     };
 
     class ElementParserRegistration

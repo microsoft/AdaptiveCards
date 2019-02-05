@@ -1,6 +1,7 @@
 #pragma once
 
 #include "pch.h"
+
 #include "ElementParserRegistration.h"
 #include "ActionParserRegistration.h"
 #include "AdaptiveCardParseWarning.h"
@@ -8,6 +9,7 @@
 namespace AdaptiveSharedNamespace
 {
     class BaseElement;
+    class InternalId;
 
     class ParseContext
     {
@@ -20,12 +22,13 @@ namespace AdaptiveSharedNamespace
         std::shared_ptr<ActionParserRegistration> actionParserRegistration;
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
 
-        void PushElement(const BaseElement& element, const bool isFallback = false);
+        void PushElement(const std::string& idJsonProperty,
+                         const AdaptiveSharedNamespace::InternalId& internalId,
+                         const bool isFallback = false);
         void PopElement();
 
     private:
-        static constexpr unsigned int InvalidFallbackId = 0U;
-        unsigned int GetNearestFallbackId(const unsigned int skipId) const;
+        const AdaptiveSharedNamespace::InternalId GetNearestFallbackId(const AdaptiveSharedNamespace::InternalId& skipId) const;
 
         // This enum is just a helper to keep track of the position of contents within the std::tuple used in m_idStack
         // below. We don't use enum class here because we don't want typed values for use in std::get
@@ -42,14 +45,14 @@ namespace AdaptiveSharedNamespace
         // which it serves fallback (if any). We use unordered_multimap here as duplicate entries are valid in some
         // circumstances (i.e. where fallback content shares an ID with its parent)
         //
-        //                  map ID         ->         (internal ID,  fallback ID)
-        std::unordered_multimap<std::string, std::pair<unsigned int, unsigned int>> m_elementIds;
+        //                  map ID         -> fallback ID
+        std::unordered_multimap<std::string, AdaptiveSharedNamespace::InternalId> m_elementIds;
 
         // m_idStack is the stack we use during parse time to track the hierarchy of cards as they are encountered. Any
         // time we parse an element we push it on to the stack, parse its children (if any), then pop it off the stack.
         // When we pop off the stack, we perform id collision detection.
         //
         //                             (ID,  internal ID, isFallback)[]
-        std::vector<std::tuple<std::string, unsigned int, bool>> m_idStack;
+        std::vector<std::tuple<std::string, AdaptiveSharedNamespace::InternalId, bool>> m_idStack;
     };
 }

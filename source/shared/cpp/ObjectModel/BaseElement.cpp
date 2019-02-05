@@ -5,6 +5,34 @@
 
 namespace AdaptiveSharedNamespace
 {
+    unsigned int InternalId::s_currentInternalId = 1;
+
+    InternalId InternalId::Current()
+    {
+        InternalId internalId{s_currentInternalId};
+        return internalId;
+    }
+
+    InternalId InternalId::Next()
+    {
+        s_currentInternalId++;
+
+        if (s_currentInternalId == InternalId::Invalid)
+        {
+            s_currentInternalId++;
+        }
+
+        return Current();
+    }
+
+    InternalId::InternalId() : m_internalId{InternalId::Invalid}
+    {
+    }
+
+    InternalId::InternalId(const unsigned int id) : m_internalId{id}
+    {
+    }
+
     std::string BaseElement::Serialize() const
     {
         Json::FastWriter writer;

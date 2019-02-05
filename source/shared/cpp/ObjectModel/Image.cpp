@@ -183,8 +183,6 @@ ImageParser::DeserializeWithoutCheckingType(ParseContext& context, const Json::V
 {
     std::shared_ptr<Image> image = BaseCardElement::Deserialize<Image>(context, json);
 
-    context.PushElement(*image);
-
     image->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, true));
     image->SetBackgroundColor(ValidateColor(ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundColor), context.warnings));
     image->SetImageStyle(ParseUtil::GetEnumValue<ImageStyle>(json, AdaptiveCardSchemaKey::Style, ImageStyle::Default, ImageStyleFromString));
@@ -215,9 +213,6 @@ ImageParser::DeserializeWithoutCheckingType(ParseContext& context, const Json::V
 
     // Parse optional selectAction
     image->SetSelectAction(ParseUtil::GetAction(context, json, AdaptiveCardSchemaKey::SelectAction, false));
-
-    context.PopElement();
-
     return image;
 }
 

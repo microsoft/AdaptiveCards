@@ -18,7 +18,7 @@ namespace AdaptiveSharedNamespace
         actionParserRegistration = (actionRegistration) ? actionRegistration : std::make_shared<ActionParserRegistration>();
     }
 
-    unsigned int ParseContext::GetNearestFallbackId(const unsigned int skipId) const
+    const AdaptiveSharedNamespace::InternalId ParseContext::GetNearestFallbackId(const AdaptiveSharedNamespace::InternalId& skipId) const
     {
         // Walk stack looking for first element to be marked fallback, then return its internal ID. If none, return
         // ParseContext::InvalidFallbackId
@@ -26,19 +26,28 @@ namespace AdaptiveSharedNamespace
         {
             if (std::get<TupleIndex::IsFallback>(*curElement)) // if element is fallback
             {
-                const auto internalId = std::get<TupleIndex::InternalId>(*curElement);
+                const AdaptiveSharedNamespace::InternalId& internalId = std::get<TupleIndex::InternalId>(*curElement);
                 if (internalId != skipId)
                 {
                     return internalId;
                 }
             }
         }
-        return ParseContext::InvalidFallbackId;
+        AdaptiveSharedNamespace::InternalId invalidId;
+        return std::move(invalidId);
     }
 
-    void ParseContext::PushElement(const BaseElement& element, const bool isFallback /*=false*/)
+    void ParseContext::PushElement(const std::string& idJsonProperty,
+                                   const AdaptiveSharedNamespace::InternalId& internalId,
+                                   const bool isFallback /*=false*/)
     {
-        m_idStack.push_back({ element.GetId(), element.GetInternalId(), isFallback});
+        if (internalId == InternalId::Invalid)
+        {
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
+                                             "Attemping to push an element on to the stack with an invalid ID");
+        }
+
+        m_idStack.push_back({idJsonProperty, internalId, isFallback});
     }
 
     void ParseContext::PopElement()
@@ -46,19 +55,18 @@ namespace AdaptiveSharedNamespace
         // about to pop an element off the stack. perform collision list maintenance and detection.
         const auto& idsToPop = m_idStack.back();
         const std::string& elementId{std::get<TupleIndex::Id>(idsToPop)};
-        const unsigned int elementInternalId{std::get<TupleIndex::InternalId>(idsToPop)};
+        const auto& elementInternalId{std::get<TupleIndex::InternalId>(idsToPop)};
         const bool isFallback{std::get<TupleIndex::IsFallback>(idsToPop)};
 
         if (!elementId.empty())
         {
             bool haveCollision = false;
-            const unsigned int nearestFallbackId = GetNearestFallbackId(elementInternalId);
+            const auto& nearestFallbackId = GetNearestFallbackId(elementInternalId);
 
             // Walk through the list of elements we've seen with this ID
             for (auto currentEntry = m_elementIds.find(elementId); currentEntry != m_elementIds.end(); ++currentEntry)
             {
-                const unsigned int entryInternalId = currentEntry->second.first;
-                const unsigned int entryFallbackId = currentEntry->second.second;
+                const AdaptiveSharedNamespace::InternalId& entryFallbackId = currentEntry->second;
 
                 // If the element we're about to pop is the fallback parent for this entry, then there's no collision
                 // (fallback content is allowed to collide with the fallback parent)
@@ -102,7 +110,7 @@ namespace AdaptiveSharedNamespace
             // no need to add an entry for this element if it's fallback (we'll add one when we parse it for non-fallback)
             if (!isFallback)
             {
-                m_elementIds.emplace(std::make_pair(elementId, std::make_pair(elementInternalId, nearestFallbackId)));
+                m_elementIds.emplace(std::make_pair(elementId, nearestFallbackId));
             }
         }
 

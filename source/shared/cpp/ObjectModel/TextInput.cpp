@@ -113,8 +113,6 @@ std::shared_ptr<BaseCardElement> TextInputParser::Deserialize(ParseContext& cont
     ParseUtil::ExpectTypeString(json, CardElementType::TextInput);
 
     std::shared_ptr<TextInput> textInput = BaseInputElement::Deserialize<TextInput>(context, json);
-    context.PushElement(*textInput);
-
     textInput->SetPlaceholder(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Placeholder));
     textInput->SetValue(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value));
     textInput->SetIsMultiline(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsMultiline, false));
@@ -122,7 +120,6 @@ std::shared_ptr<BaseCardElement> TextInputParser::Deserialize(ParseContext& cont
     textInput->SetTextInputStyle(
         ParseUtil::GetEnumValue<TextInputStyle>(json, AdaptiveCardSchemaKey::Style, TextInputStyle::Text, TextInputStyleFromString));
     textInput->SetInlineAction(ParseUtil::GetAction(context, json, AdaptiveCardSchemaKey::InlineAction, false));
-    context.PopElement();
 
     return textInput;
 }

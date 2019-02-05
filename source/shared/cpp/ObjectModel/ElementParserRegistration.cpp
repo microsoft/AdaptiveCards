@@ -18,9 +18,31 @@
 
 namespace AdaptiveSharedNamespace
 {
+    BaseCardElementParserWrapper::BaseCardElementParserWrapper(std::shared_ptr<BaseCardElementParser> parserToWrap) :
+        m_parser{parserToWrap}
+    {
+    }
+
+    std::shared_ptr<BaseCardElement> BaseCardElementParserWrapper::Deserialize(ParseContext& context, const Json::Value& value)
+    {
+        const auto& idProperty = ParseUtil::GetString(value, AdaptiveCardSchemaKey::Id);
+        InternalId internalId = InternalId::Next();
+
+        context.PushElement(idProperty, internalId);
+        std::shared_ptr<BaseCardElement> element = m_parser->Deserialize(context, value);
+        context.PopElement();
+
+        return element;
+    }
+
+    std::shared_ptr<BaseCardElement> BaseCardElementParserWrapper::DeserializeFromString(ParseContext& context, const std::string& value)
+    {
+        return Deserialize(context, ParseUtil::GetJsonValueFromString(value));
+    }
+
     ElementParserRegistration::ElementParserRegistration()
     {
-        m_knownElements.insert({ 
+        m_knownElements.insert({
             CardElementTypeToString(CardElementType::ActionSet),
             CardElementTypeToString(CardElementType::Container),
             CardElementTypeToString(CardElementType::ColumnSet),
@@ -87,7 +109,8 @@ namespace AdaptiveSharedNamespace
         auto parser = m_cardElementParsers.find(elementType);
         if (parser != ElementParserRegistration::m_cardElementParsers.end())
         {
-            return parser->second;
+            std::shared_ptr<BaseCardElementParser> wrappedParser = std::make_shared<BaseCardElementParserWrapper>(parser->second);
+            return wrappedParser;
         }
         else
         {

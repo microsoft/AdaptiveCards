@@ -9,12 +9,37 @@
 
 namespace AdaptiveSharedNamespace
 {
+    class InternalId
+    {
+    public:
+        InternalId();
+
+        static InternalId Next();
+        static InternalId Current();
+        static constexpr unsigned int Invalid = 0U;
+
+        bool operator==(const unsigned int other) const { return m_internalId == other; }
+
+        bool operator!=(const unsigned int other) const { return m_internalId != other; }
+
+        bool operator==(const InternalId& other) const { return m_internalId == other.m_internalId; }
+
+        bool operator!=(const InternalId& other) const { return m_internalId != other.m_internalId; }
+
+    private:
+        static unsigned int s_currentInternalId;
+
+        InternalId(const unsigned int id);
+
+        unsigned int m_internalId;
+    };
+
     class BaseElement
     {
     public:
         BaseElement() :
             m_additionalProperties{}, m_typeString{}, m_requires(0), m_fallbackContent(nullptr),
-            m_fallbackType(FallbackType::None), m_id{}, m_internalId{GetNextInternalId()}
+            m_fallbackType(FallbackType::None), m_id{}, m_internalId{InternalId::Current()}
         {
             PopulateKnownPropertiesSet();
         }
@@ -30,7 +55,8 @@ namespace AdaptiveSharedNamespace
         void SetElementTypeString(const std::string& value);
         virtual std::string GetId() const;
         virtual void SetId(const std::string& value);
-        unsigned int GetInternalId() const { return m_internalId; }
+
+        const InternalId GetInternalId() const { return m_internalId; }
 
         // Element parsing/serialization
         template<typename T>
@@ -65,20 +91,14 @@ namespace AdaptiveSharedNamespace
         Json::Value m_additionalProperties;
 
     private:
-        static unsigned int GetNextInternalId()
-        {
-            static unsigned int nextId = 1;
-            return nextId++;
-        }
-
         template<typename T> void ParseFallback(ParseContext& context, const Json::Value& json);
         void ParseRequires(ParseContext& context, const Json::Value& json);
 
         std::unordered_map<std::string, SemanticVersion> m_requires;
         std::shared_ptr<BaseElement> m_fallbackContent;
+        InternalId m_internalId;
         FallbackType m_fallbackType;
         std::string m_id;
-        const unsigned int m_internalId;
     };
 
     template<typename T> void BaseElement::DeserializeBase(ParseContext& context, const Json::Value& json)
@@ -108,7 +128,7 @@ namespace AdaptiveSharedNamespace
             else if (fallbackValue.isObject())
             {
                 // fallback value is a JSON object. parse it and add it as fallback content.
-                context.PushElement(*this, true /*isFallback*/);
+                context.PushElement(GetId(), GetInternalId(), true /*isFallback*/);
                 std::shared_ptr<BaseElement> fallbackElement;
                 T::ParseJsonObject(context, fallbackValue, fallbackElement);
 
