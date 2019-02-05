@@ -197,7 +197,7 @@ ImageParser::DeserializeWithoutCheckingType(ParseContext& context, const Json::V
 
     for (auto eachDimension : requestedDimensions)
     {
-        int parsedDimension = ParseSizeForPixelSize(eachDimension, &context.warnings);
+        const int parsedDimension = ParseSizeForPixelSize(eachDimension, &context.warnings);
         parsedDimensions.push_back(parsedDimension);
     }
 

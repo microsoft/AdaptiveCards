@@ -19,6 +19,11 @@ namespace AdaptiveSharedNamespace
     {
     public:
         BaseCardElementParserWrapper(std::shared_ptr<BaseCardElementParser> parserToWrap);
+
+        BaseCardElementParserWrapper(const BaseCardElementParserWrapper&) = delete;
+        BaseCardElementParserWrapper(BaseCardElementParserWrapper&&) = delete;
+        BaseCardElementParserWrapper& operator=(const BaseCardElementParserWrapper&) = delete;
+        BaseCardElementParserWrapper& operator=(BaseCardElementParserWrapper&&) = delete;
         virtual ~BaseCardElementParserWrapper() = default;
 
         std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& value) override;

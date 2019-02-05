@@ -18,6 +18,11 @@ namespace AdaptiveSharedNamespace
     {
     public:
         ActionElementParserWrapper(std::shared_ptr<ActionElementParser> parserToWrap);
+
+        ActionElementParserWrapper(const ActionElementParserWrapper&) = delete;
+        ActionElementParserWrapper(ActionElementParserWrapper&&) = delete;
+        ActionElementParserWrapper& operator=(const ActionElementParserWrapper&) = delete;
+        ActionElementParserWrapper& operator=(ActionElementParserWrapper&&) = delete;
         virtual ~ActionElementParserWrapper() = default;
 
         std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) override;

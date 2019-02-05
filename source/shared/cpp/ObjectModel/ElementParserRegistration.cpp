@@ -26,7 +26,7 @@ namespace AdaptiveSharedNamespace
     std::shared_ptr<BaseCardElement> BaseCardElementParserWrapper::Deserialize(ParseContext& context, const Json::Value& value)
     {
         const auto& idProperty = ParseUtil::GetString(value, AdaptiveCardSchemaKey::Id);
-        InternalId internalId = InternalId::Next();
+        const InternalId internalId = InternalId::Next();
 
         context.PushElement(idProperty, internalId);
         std::shared_ptr<BaseCardElement> element = m_parser->Deserialize(context, value);
