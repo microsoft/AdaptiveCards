@@ -47,37 +47,6 @@ public class AdaptiveCardRenderer
         return s_instance;
     }
 
-    private class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
-    {
-        private Context m_context;
-        private LinearLayout m_layout;
-
-        public BackgroundImageLoaderAsync(RenderedAdaptiveCard renderedCard, Context context, LinearLayout layout, String imageBaseUrl)
-        {
-            super(renderedCard, imageBaseUrl);
-
-            m_context = context;
-            m_layout = layout;
-        }
-
-        @Override
-        protected HttpRequestResult<Bitmap> doInBackground(String... args)
-        {
-            if (args.length == 0)
-            {
-                return null;
-            }
-            return loadImage(args[0], m_context);
-        }
-
-        void onSuccessfulPostExecute(Bitmap bitmap)
-        {
-            BitmapDrawable background = new BitmapDrawable(m_context.getResources(), bitmap);
-            m_layout.setBackground(background);
-            m_layout.bringChildToFront(m_layout.getChildAt(0));
-        }
-    }
-
     public RenderedAdaptiveCard render(Context context, FragmentManager fragmentManager, AdaptiveCard adaptiveCard, ICardActionHandler cardActionHandler)
     {
         return render(context, fragmentManager, adaptiveCard, cardActionHandler, defaultHostConfig);
@@ -207,7 +176,7 @@ public class AdaptiveCardRenderer
         BackgroundImage backgroundImageProperties = adaptiveCard.GetBackgroundImage();
         if (backgroundImageProperties != null && !backgroundImageProperties.GetUrl().isEmpty())
         {
-            BackgroundImageLoaderAsync loaderAsync = new BackgroundImageLoaderAsync(renderedCard, context, layout, hostConfig.GetImageBaseUrl());
+            BackgroundImageLoaderAsync loaderAsync = new BackgroundImageLoaderAsync(renderedCard, context, layout, hostConfig.GetImageBaseUrl(), backgroundImageProperties);
 
             IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
             if(onlineImageLoader != null)
