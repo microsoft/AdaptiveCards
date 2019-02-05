@@ -450,7 +450,7 @@ class PathNode extends EvaluationNode {
                         result = partValue;
                     }
                     else {
-                        typeof partValue !== "boolean" ? result = result[partValue] : result = result[partValue.toString()];
+                        result = typeof partValue !== "boolean" ? result[partValue] : result[partValue.toString()];
                     }
                 }
             }

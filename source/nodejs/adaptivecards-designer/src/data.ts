@@ -1,131 +1,170 @@
 export enum ValueKind { String, Boolean, Number }
 
-export type PropertyDictionary = { [key: string]: DataType };
-
 export abstract class DataType {
-    private static internalCreateDataTypeFrom(parent: DataType, input: any, label: string): DataType {
-        if (typeof input === "string") {
-            return new ValueType(parent, label, ValueKind.String);
+    static create(parent: FieldDefinition, value: any): DataType {
+        if (typeof value === "string") {
+            return new ValueData(parent, ValueKind.String);
         }
-        else if (typeof input === "boolean") {
-            return new ValueType(parent, label, ValueKind.Boolean);
+        else if (typeof value === "boolean") {
+            return new ValueData(parent, ValueKind.Boolean);
         }
-        else if (typeof input === "number") {
-            return new ValueType(parent, label, ValueKind.Number);
+        else if (typeof value === "number") {
+            return new ValueData(parent, ValueKind.Number);
         }
-        else if (typeof input === "object") {
-            if (Array.isArray(input)) {
-                let result = new ArrayType(parent, label);
-
-                result.itemDataType = input.length == 0 ? undefined : DataType.internalCreateDataTypeFrom(result, input[0], "");
-
-                return result;
+        else if (typeof value === "object") {
+            if (Array.isArray(value)) {
+                return ArrayData.create(parent, value);
             }
             else {
-                let result = new ObjectType(parent, label);
-    
-                for (let key of Object.keys(input)) {
-                    let dataType = DataType.internalCreateDataTypeFrom(result, input[key], key);
-
-                    if (dataType) {
-                        result.properties[key] = dataType;
-                    }
-                }
-    
-                return result;
+                return ObjectData.create(parent, value);
             }
         }
         else {
-            throw new Error("Unsupported data type: " + typeof input);
+            throw new Error("Unsupported data type: " + typeof value);
         }
     }
 
-    static createDataTypeFrom(input: any): DataType {
-        return DataType.internalCreateDataTypeFrom(null, input, "$root");
-    }
+    constructor(readonly owner: FieldDefinition) {}
 
-    constructor(readonly parent: DataType, readonly label: string) {}
-
-    abstract getTypeName(): string;
-
-    getPath(asLeaf: boolean): string {
-        let parentPath: string = "";
-        
-        if (this.parent) {
-            parentPath = this.parent.getPath(false);
-        }
-        
-        return parentPath + this.label;
-    }
-
-    getProperties(): PropertyDictionary {
+    getChildFields(): FieldDefinition[] {
         return null;
     }
+
+    qualifyFieldName(fieldName: string, fieldIsLeaf: boolean) {
+        return fieldName;
+    }
+
+    abstract get typeName(): string;
+
+    get isCollection(): boolean {
+        return false;
+    }
 }
 
-export class ValueType extends DataType {
-    constructor(readonly parent: DataType, readonly label: string, readonly valueTypeKind: ValueKind) {
-        super(parent, label);
+export class ValueData extends DataType {
+    constructor(readonly owner: FieldDefinition, readonly valueKind: ValueKind) {
+        super(owner);
     }
 
-    getTypeName(): string {
-        return ValueKind[this.valueTypeKind];
+    get typeName(): string {
+        return ValueKind[this.valueKind];
     }
 }
 
-export class ArrayType extends DataType {
-    itemDataType: DataType;
+export class ArrayData extends DataType {
+    static create(parent: FieldDefinition, input: Object): ArrayData {
+        if (!Array.isArray(input)) {
+            throw new Error("Input is not an array.");
+        }
 
-    constructor(readonly parent: DataType, readonly label: string) {
-        super(parent, label);
-    }
+        let result = new ArrayData(parent);
 
-    getPath(asLeaf: boolean): string {
-        let result = super.getPath(asLeaf);
-
-        if (!asLeaf) {
-            result += "[0]";
+        if (input.length > 0) {
+            result.dataType = DataType.create(parent, input[0]);
         }
 
         return result;
     }
 
-    getProperties(): PropertyDictionary {
-        if (this.itemDataType instanceof ObjectType) {
-            return this.itemDataType.properties;
+    dataType: DataType = undefined;
+
+    constructor(readonly owner: FieldDefinition) {
+        super(owner);
+    }
+
+    getChildFields(): FieldDefinition[] {
+        return this.dataType.getChildFields();
+    }
+
+    qualifyFieldName(fieldName: string, fieldIsLeaf: boolean) {
+        if (!fieldIsLeaf) {
+            return fieldName + "[0]";
         }
         else {
-            return null;
+            return super.qualifyFieldName(fieldName, fieldIsLeaf);
         }
     }
 
-    getTypeName(): string {
+    get isCollection(): boolean {
+        return true;
+    }
+
+    get typeName(): string {
         return "Array";
     }
 }
 
-export class ObjectType extends DataType {
-    readonly properties: PropertyDictionary = {};
+export class ObjectData extends DataType {
+    static create(parent: FieldDefinition, input: Object): ObjectData {
+        let result = new ObjectData(parent);
 
-    constructor(readonly parent: DataType, readonly label: string) {
-        super(parent, label);
-    }
-    
-    getPath(asLeaf: boolean): string {
-        let result = super.getPath(asLeaf);
+        for (let key of Object.keys(input)) {
+            let field = new FieldDefinition(parent);
+            field.dataType =  DataType.create(field, input[key]);
+            field.name = key;
 
-        if (!asLeaf) {
-            result += ".";
+            result.fields.push(field);
         }
 
         return result;
     }
 
-    getProperties(): PropertyDictionary {
-        return this.properties;
+    readonly fields: FieldDefinition[] = [];
+
+    constructor(readonly owner: FieldDefinition) {
+        super(owner);
+    }
+    
+    getChildFields(): FieldDefinition[] {
+        return this.fields;
     }
 
-    getTypeName(): string {
+    get typeName(): string {
         return "Object";
+    }
+}
+
+export class FieldDefinition {
+    static create(input: any): FieldDefinition {
+        let field = new FieldDefinition(null);
+        field.name = "$root";
+        field.dataType = DataType.create(field, input);
+
+        return field;
+    }
+
+    name: string;
+    displayName: string;
+    dataType: DataType;
+
+    constructor(readonly parent: FieldDefinition) {}
+
+    getPath(asLeaf: boolean = true): string {
+        let result: string = this.qualifiedName(asLeaf);
+        let currentField = this.parent;
+        
+        while (currentField) {
+            result = currentField.qualifiedName(false) + "." + result;
+            
+            currentField = currentField.parent;
+        }
+        
+        return result;
+    }
+
+    qualifiedName(asLeaf: boolean): string {
+        return this.dataType.qualifyFieldName(this.name, asLeaf);
+    }
+
+    get children(): FieldDefinition[] {
+        return this.dataType.getChildFields();
+    }
+
+    get isCollection(): boolean {
+        return this.dataType.isCollection;
+    }
+
+    get typeName(): string {
+        return this.dataType.typeName;
     }
 }

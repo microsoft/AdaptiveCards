@@ -2,7 +2,7 @@ import * as DesignerSurface from "./card-designer-surface";
 import * as DesignerPeers from "./designer-peers";
 import * as Adaptive from "adaptivecards";
 import { DraggableElement } from "./draggable-element";
-import { DataType, ArrayType } from "./data";
+import { FieldDefinition } from "./data";
 
 export abstract class BasePaletteItem extends DraggableElement {
     protected abstract getText(): string;
@@ -64,27 +64,27 @@ export class ElementPaletteItem extends BasePaletteItem {
 
 export class DataPaletteItem extends BasePaletteItem {
     protected getText(): string {
-        return this.dataType.label;
+        return this.field.name;
     }
 
     protected getIconClass(): string {
         return null;
     }
 
-    constructor(readonly dataType: DataType) {
+    constructor(readonly field: FieldDefinition) {
         super();
     }
 
     createPeer(designer: DesignerSurface.CardDesignerSurface): DesignerPeers.CardElementPeer {
         let element: Adaptive.CardElement;
 
-        if (this.dataType instanceof ArrayType) {
+        if (this.field.isCollection) {
             element = new Adaptive.Container();
-            element.$data = "{" + this.dataType.getPath(true) + "}";
+            element.$data = "{" + this.field.getPath() + "}";
         }
         else {
             let textBlock = new Adaptive.TextBlock();
-            textBlock.text = "{" + this.dataType.getPath(true) + "}";
+            textBlock.text = "{" + this.field.getPath() + "}";
 
             element = textBlock;
         }

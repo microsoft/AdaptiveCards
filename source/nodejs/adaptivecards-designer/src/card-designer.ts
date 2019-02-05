@@ -13,7 +13,7 @@ import { BasePaletteItem, ElementPaletteItem, DataPaletteItem } from "./tool-pal
 import { DefaultContainer } from "./containers/default/default-container";
 import { SidePanel, SidePanelAlignment } from "./side-panel";
 import { Toolbox, IToolboxCommand } from "./tool-box";
-import { DataType } from "./data";
+import { FieldDefinition } from "./data";
 import { DataTreeItem } from "./data-treeitem";
 import { BaseTreeItem } from "./base-tree-item";
 
@@ -57,7 +57,7 @@ export class CardDesigner {
     private _sampleDataEditorToolbox: Toolbox;
     private _dataToolbox: Toolbox;
     private _assetPath: string;
-    private _dataStructure: DataType;
+    private _dataStructure: FieldDefinition;
     private _sampleData: any;
 
     private togglePreview() {
@@ -91,7 +91,7 @@ export class CardDesigner {
 
     private setupDataTreeItemEvents(treeItem: DataTreeItem) {
         treeItem.onStartDrag = (sender: BaseTreeItem) => {
-            this._draggedPaletteItem = new DataPaletteItem(treeItem.dataType);
+            this._draggedPaletteItem = new DataPaletteItem(treeItem.field);
 
             this._draggedElement = this._draggedPaletteItem.renderDragVisual();
             this._draggedElement.style.position = "absolute";
@@ -933,7 +933,7 @@ export class CardDesigner {
                 title: "Copy the structure of this data into the Data Structure toolbox",
                 iconClass: "acd-icon-dataStructure",
                 execute: (sender: IToolboxCommand) => {
-                    this.dataStructure = DataType.createDataTypeFrom(JSON.parse(this.getCurrentSampleDataEditorPayload()));
+                    this.dataStructure = FieldDefinition.create(JSON.parse(this.getCurrentSampleDataEditorPayload()));
                 }
             }
         ]
@@ -1070,11 +1070,11 @@ export class CardDesigner {
         return this.designerSurface.card.toJSON();
     }
 
-    get dataStructure(): DataType {
+    get dataStructure(): FieldDefinition {
         return this._dataStructure;
     }
 
-    set dataStructure(value: DataType) {
+    set dataStructure(value: FieldDefinition) {
         this._dataStructure = value;
 
         this.buildDataExplorer();

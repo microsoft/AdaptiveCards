@@ -8,7 +8,7 @@ export class DataTreeItem extends BaseTreeItem {
         if (!this._children) {
             this._children = [];
 
-            let properties = this.dataType.getProperties();
+            let properties = this.field.children;
 
             if (properties) {
                 let keys = Object.keys(properties);
@@ -21,32 +21,32 @@ export class DataTreeItem extends BaseTreeItem {
     }
 
     protected getLabelText(): string {
-        return this.dataType.label;
+        return this.field.name;
     }
 
     protected getAdditionalText(): string {
-        return this.dataType.getTypeName();
+        return this.field.typeName;
     }
 
     protected getAdditionalTextClass(): string {
         return "acd-data-tree-item-additionalText";
     }
 
-    readonly dataType: Data.DataType;
+    readonly field: Data.FieldDefinition;
 
-    constructor(dataType: Data.DataType) {
+    constructor(field: Data.FieldDefinition) {
         super();
 
-        this.dataType = dataType;
+        this.field = field;
 
         this._level = 0;
 
-        let currentDataType = dataType;
+        let currentField = field;
 
-        while (currentDataType) {
+        while (currentField) {
             this._level++;
 
-            currentDataType = currentDataType.parent;
+            currentField = currentField.parent;
         }
     }
 

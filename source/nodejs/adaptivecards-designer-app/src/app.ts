@@ -57,6 +57,6 @@ window.onload = function() {
 		]
 	};
 	
-	designer.dataStructure = ACDesigner.DataType.createDataTypeFrom(sampleData);
+	designer.dataStructure = ACDesigner.FieldDefinition.create(sampleData);
 	designer.sampleData = sampleData;
 }
