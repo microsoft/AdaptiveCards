@@ -1020,10 +1020,19 @@ export class CardElementPeer extends DesignerPeer {
         }
 
         let data = addLabelAndInput(card, "Data context:", Adaptive.TextInput);
-        data.input.defaultValue = this.cardElement.$data;
+        data.input.defaultValue = this.cardElement.getCustomProperty("$data");
         data.input.placeholder = "(not set)";
         data.input.onValueChanged = () => {
-            this.cardElement.$data = data.input.value;
+            this.cardElement.setCustomProperty("$data", data.input.value);
+
+            this.changed(false);
+        }
+
+        let when = addLabelAndInput(card, "Only show when:", Adaptive.TextInput);
+        when.input.defaultValue = this.cardElement.getCustomProperty("$when");
+        when.input.placeholder = "(not set)";
+        when.input.onValueChanged = () => {
+            this.cardElement.setCustomProperty("$when", when.input.value);
 
             this.changed(false);
         }
@@ -1040,7 +1049,6 @@ export class CardElementPeer extends DesignerPeer {
                 this.changed(false);
             }
         }
-
 
         if (getExcludedProperties.indexOf("spacing") < 0) {
             let spacing = addLabelAndInput(card, "Spacing:", Adaptive.ChoiceSetInput);

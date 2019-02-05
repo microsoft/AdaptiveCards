@@ -187,35 +187,51 @@ export class Template {
             }
         }
         else if (typeof node === "object") {
-            let dataContext = node["$data"];
+            let dropObject = false;
+            let when = node["$when"];
 
-            if (dataContext != undefined) {
-                if (dataContext instanceof TemplatizedString) {
-                    dataContext = dataContext.evaluate(this._context);
+            if (when instanceof TemplatizedString) {
+                let whenValue = when.evaluate(this._context);
+
+                if (typeof whenValue === "boolean") {
+                    dropObject = !whenValue;
                 }
+            }
 
-                if (Array.isArray(dataContext)) {
-                    result = [];
+            if (!dropObject) {
+                let dataContext = node["$data"];
 
-                    for (let i = 0; i < dataContext.length; i++) {
-                        this._context.$data = dataContext[i];
-                        this._context.$index = i;
+                if (dataContext != undefined) {
+                    if (dataContext instanceof TemplatizedString) {
+                        dataContext = dataContext.evaluate(this._context);
+                    }
 
-                        let expandedObject = this.expandSingleObject(node);
+                    if (Array.isArray(dataContext)) {
+                        result = [];
 
-                        if (expandedObject != null) {
-                            result.push(expandedObject);
+                        for (let i = 0; i < dataContext.length; i++) {
+                            this._context.$data = dataContext[i];
+                            this._context.$index = i;
+
+                            let expandedObject = this.expandSingleObject(node);
+
+                            if (expandedObject != null) {
+                                result.push(expandedObject);
+                            }
                         }
+                    }
+                    else {
+                        this._context.$data = dataContext;
+
+                        result = this.expandSingleObject(node);
                     }
                 }
                 else {
-                    this._context.$data = dataContext;
-
                     result = this.expandSingleObject(node);
                 }
             }
             else {
-                result = this.expandSingleObject(node);
+                result = null;
             }
         }
         else {

@@ -80,7 +80,7 @@ export class DataPaletteItem extends BasePaletteItem {
 
         if (this.field.isCollection) {
             element = new Adaptive.Container();
-            element.$data = "{" + this.field.getPath() + "}";
+            element.setCustomProperty("$data", "{" + this.field.getPath() + "}");
         }
         else {
             let textBlock = new Adaptive.TextBlock();

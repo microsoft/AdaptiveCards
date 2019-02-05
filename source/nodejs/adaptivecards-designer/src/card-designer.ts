@@ -132,7 +132,6 @@ export class CardDesigner {
                 card = peer.buildPropertySheetCard();
             }
             else {
-
                 card = new Adaptive.AdaptiveCard();
                 card.parse(
                     {
@@ -712,6 +711,7 @@ export class CardDesigner {
     readonly toolbar: Toolbar = new Toolbar();
 
     constructor(hostContainers: Array<HostContainer> = null) {
+        Adaptive.AdaptiveCard.enableFullJsonRoundTrip = true;
         Adaptive.AdaptiveCard.onProcessMarkdown = (text: string, result: Adaptive.IMarkdownProcessingResult) => {
             CardDesigner.internalProcessMarkdown(text, result);
         }
