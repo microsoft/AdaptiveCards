@@ -215,7 +215,6 @@ export class EvaluationContext {
 EvaluationContext.init();
 
 abstract class EvaluationNode {
-    abstract print(): string;
     abstract evaluate(context: EvaluationContext): LiteralValue;
 }
 
@@ -307,28 +306,10 @@ class ExpressionNode extends EvaluationNode {
 
         return nodesCopy[0].evaluate(context);
     }
-
-    print(): string {
-        let result = "";
-
-        for (let node of this.nodes) {
-            if (result != "") {
-                result += " ";
-            }
-
-            result += node.print();
-        }
-
-        return "(" + result + ")";
-    }
 }
 
 class IdentifierNode extends EvaluationNode {
     identifier: string;
-
-    print(): string {
-        return this.identifier;
-    }
 
     evaluate(context: EvaluationContext): LiteralValue {
         return this.identifier;
@@ -337,10 +318,6 @@ class IdentifierNode extends EvaluationNode {
 
 class IndexerNode extends EvaluationNode {
     index: ExpressionNode;
-
-    print(): string {
-        return "[" + this.index.print() + "]";
-    }
 
     evaluate(context: EvaluationContext): LiteralValue {
         return this.index.evaluate(context);
@@ -366,20 +343,6 @@ class FunctionCallNode extends EvaluationNode {
 
         throw new Error("Undefined function: " + this.functionName);
     }
-
-    print(): string {
-        let result = "";
-
-        for (let parameter of this.parameters) {
-            if (result != "") {
-                result += ", ";
-            }
-
-            result += parameter.print();
-        }
-
-        return "FUNCTION:" + this.functionName + "{" + result + "}";
-    }
 }
 
 class LiteralNode extends EvaluationNode {
@@ -390,10 +353,6 @@ class LiteralNode extends EvaluationNode {
     evaluate(context: EvaluationContext): LiteralValue {
         return this.value;
     }
-
-    print(): string {
-        return "LITERAL:" + this.value.toString();
-    }
 }
 
 class OperatorNode extends EvaluationNode {
@@ -403,10 +362,6 @@ class OperatorNode extends EvaluationNode {
 
     evaluate(context: EvaluationContext): LiteralValue {
         throw new Error("An operator cannot be evaluated on its own.");
-    }
-
-    print(): string {
-        return this.operator;
     }
 }
 
@@ -462,20 +417,6 @@ class PathNode extends EvaluationNode {
         }
 
         return result;
-    }
-
-    print(): string {
-        let result = "";
-
-        for (let part of this.parts) {
-            if (result != "") {
-                result += ".";
-            }
-
-            result += part.print();
-        }
-
-        return "PATH{" + result + "}";
     }
 }
 
@@ -765,9 +706,5 @@ export class Binding {
 
     evaluate(context: EvaluationContext): LiteralValue {
         return this.expression.evaluate(context);
-    }
-
-    print() {
-        return this.expression.print();
     }
 }
