@@ -127,7 +127,7 @@ export abstract class CardObject {
 	toJSON(): any {
 		let result: any;
 		
-		if (AdaptiveCard.enableFullJsonRoundTrip && this._parsedPayload && typeof this._parsedPayload) {
+		if (AdaptiveCard.enableFullJsonRoundTrip && this._parsedPayload && typeof this._parsedPayload === "object") {
 			result = this._parsedPayload;
 		}
 		else {
