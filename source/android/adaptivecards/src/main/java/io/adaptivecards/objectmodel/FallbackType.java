@@ -8,39 +8,38 @@
 
 package io.adaptivecards.objectmodel;
 
-public enum TextInputStyle {
-  Text(0),
-  Tel,
-  Url,
-  Email;
+public enum FallbackType {
+  None,
+  Drop,
+  Content;
 
   public final int swigValue() {
     return swigValue;
   }
 
-  public static TextInputStyle swigToEnum(int swigValue) {
-    TextInputStyle[] swigValues = TextInputStyle.class.getEnumConstants();
+  public static FallbackType swigToEnum(int swigValue) {
+    FallbackType[] swigValues = FallbackType.class.getEnumConstants();
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
-    for (TextInputStyle swigEnum : swigValues)
+    for (FallbackType swigEnum : swigValues)
       if (swigEnum.swigValue == swigValue)
         return swigEnum;
-    throw new IllegalArgumentException("No enum " + TextInputStyle.class + " with value " + swigValue);
+    throw new IllegalArgumentException("No enum " + FallbackType.class + " with value " + swigValue);
   }
 
   @SuppressWarnings("unused")
-  private TextInputStyle() {
+  private FallbackType() {
     this.swigValue = SwigNext.next++;
   }
 
   @SuppressWarnings("unused")
-  private TextInputStyle(int swigValue) {
+  private FallbackType(int swigValue) {
     this.swigValue = swigValue;
     SwigNext.next = swigValue+1;
   }
 
   @SuppressWarnings("unused")
-  private TextInputStyle(TextInputStyle swigEnum) {
+  private FallbackType(FallbackType swigEnum) {
     this.swigValue = swigEnum.swigValue;
     SwigNext.next = this.swigValue+1;
   }

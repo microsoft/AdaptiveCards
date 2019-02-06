@@ -8,18 +8,18 @@
 
 package io.adaptivecards.objectmodel;
 
-public class SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__HeightType_t {
+public class SWIGTYPE_p_std__unordered_mapT_std__string_std__string_t {
   private transient long swigCPtr;
 
-  protected SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__HeightType_t(long cPtr, @SuppressWarnings("unused") boolean futureUse) {
+  protected SWIGTYPE_p_std__unordered_mapT_std__string_std__string_t(long cPtr, @SuppressWarnings("unused") boolean futureUse) {
     swigCPtr = cPtr;
   }
 
-  protected SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__HeightType_t() {
+  protected SWIGTYPE_p_std__unordered_mapT_std__string_std__string_t() {
     swigCPtr = 0;
   }
 
-  protected static long getCPtr(SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__HeightType_t obj) {
+  protected static long getCPtr(SWIGTYPE_p_std__unordered_mapT_std__string_std__string_t obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 }

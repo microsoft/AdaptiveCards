@@ -8,17 +8,17 @@
 
 package io.adaptivecards.objectmodel;
 
-public class OpenUrlActionParser extends ActionElementParser {
+public class ActionElementParserWrapper extends ActionElementParser {
   private transient long swigCPtr;
   private transient boolean swigCMemOwnDerived;
 
-  protected OpenUrlActionParser(long cPtr, boolean cMemoryOwn) {
-    super(AdaptiveCardObjectModelJNI.OpenUrlActionParser_SWIGSmartPtrUpcast(cPtr), true);
+  protected ActionElementParserWrapper(long cPtr, boolean cMemoryOwn) {
+    super(AdaptiveCardObjectModelJNI.ActionElementParserWrapper_SWIGSmartPtrUpcast(cPtr), true);
     swigCMemOwnDerived = cMemoryOwn;
     swigCPtr = cPtr;
   }
 
-  protected static long getCPtr(OpenUrlActionParser obj) {
+  protected static long getCPtr(ActionElementParserWrapper obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
@@ -35,29 +35,25 @@ public class OpenUrlActionParser extends ActionElementParser {
     if (swigCPtr != 0) {
       if (swigCMemOwnDerived) {
         swigCMemOwnDerived = false;
-        AdaptiveCardObjectModelJNI.delete_OpenUrlActionParser(swigCPtr);
+        AdaptiveCardObjectModelJNI.delete_ActionElementParserWrapper(swigCPtr);
       }
       swigCPtr = 0;
     }
     super.delete();
   }
 
-  public OpenUrlActionParser() {
-    this(AdaptiveCardObjectModelJNI.new_OpenUrlActionParser__SWIG_0(), true);
-  }
-
-  public OpenUrlActionParser(OpenUrlActionParser arg0) {
-    this(AdaptiveCardObjectModelJNI.new_OpenUrlActionParser__SWIG_1(OpenUrlActionParser.getCPtr(arg0), arg0), true);
+  public ActionElementParserWrapper(ActionElementParser parserToWrap) {
+    this(AdaptiveCardObjectModelJNI.new_ActionElementParserWrapper(ActionElementParser.getCPtr(parserToWrap), parserToWrap), true);
   }
 
   public BaseActionElement Deserialize(ParseContext context, JsonValue value) {
-    long cPtr = AdaptiveCardObjectModelJNI.OpenUrlActionParser_Deserialize(swigCPtr, this, ParseContext.getCPtr(context), context, JsonValue.getCPtr(value), value);
+    long cPtr = AdaptiveCardObjectModelJNI.ActionElementParserWrapper_Deserialize(swigCPtr, this, ParseContext.getCPtr(context), context, JsonValue.getCPtr(value), value);
     return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
   }
 
-  public BaseActionElement DeserializeFromString(ParseContext context, String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.OpenUrlActionParser_DeserializeFromString(swigCPtr, this, ParseContext.getCPtr(context), context, jsonString);
-    return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
+  public ActionElementParser GetActualParser() {
+    long cPtr = AdaptiveCardObjectModelJNI.ActionElementParserWrapper_GetActualParser(swigCPtr, this);
+    return (cPtr == 0) ? null : new ActionElementParser(cPtr, true);
   }
 
 }

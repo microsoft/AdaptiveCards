@@ -8,16 +8,16 @@
 
 package io.adaptivecards.objectmodel;
 
-public class MarkDownParser {
+public class InternalId {
   private transient long swigCPtr;
   protected transient boolean swigCMemOwn;
 
-  protected MarkDownParser(long cPtr, boolean cMemoryOwn) {
+  protected InternalId(long cPtr, boolean cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = cPtr;
   }
 
-  protected static long getCPtr(MarkDownParser obj) {
+  protected static long getCPtr(InternalId obj) {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
@@ -29,26 +29,23 @@ public class MarkDownParser {
     if (swigCPtr != 0) {
       if (swigCMemOwn) {
         swigCMemOwn = false;
-        AdaptiveCardObjectModelJNI.delete_MarkDownParser(swigCPtr);
+        AdaptiveCardObjectModelJNI.delete_InternalId(swigCPtr);
       }
       swigCPtr = 0;
     }
   }
 
-  public MarkDownParser(String txt) {
-    this(AdaptiveCardObjectModelJNI.new_MarkDownParser(txt), true);
+  public InternalId() {
+    this(AdaptiveCardObjectModelJNI.new_InternalId(), true);
   }
 
-  public String TransformToHtml() {
-    return AdaptiveCardObjectModelJNI.MarkDownParser_TransformToHtml(swigCPtr, this);
+  public static InternalId Next() {
+    return new InternalId(AdaptiveCardObjectModelJNI.InternalId_Next(), true);
   }
 
-  public boolean HasHtmlTags() {
-    return AdaptiveCardObjectModelJNI.MarkDownParser_HasHtmlTags(swigCPtr, this);
+  public static InternalId Current() {
+    return new InternalId(AdaptiveCardObjectModelJNI.InternalId_Current(), true);
   }
 
-  public boolean IsEscaped() {
-    return AdaptiveCardObjectModelJNI.MarkDownParser_IsEscaped(swigCPtr, this);
-  }
-
+  public final static long Invalid = 0;
 }
