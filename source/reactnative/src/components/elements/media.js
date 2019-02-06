@@ -36,11 +36,11 @@ export class Media extends React.Component {
     componentDidMount() {
         if (this.payload.sources && this.payload.sources.length > 0) {
             this.payload.sources.forEach(source => {
-                this.context.addResourseInformation(source.url, source.mimeType);
+                this.context.addResourceInformation(source.url, source.mimeType);
             })
         }
         if(!Utils.isNullOrEmpty(this.payload.poster)){
-            this.context.addResourseInformation(this.payload.poster, "");
+            this.context.addResourceInformation(this.payload.poster, "");
         }
     }
 

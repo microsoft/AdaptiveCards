@@ -39,7 +39,7 @@ export class Img extends React.Component {
 	}
 
 	componentDidMount(){
-		this.context.addResourseInformation(this.payload.url,"");
+		this.context.addResourceInformation(this.payload.url,"");
 	}
 
     /**
