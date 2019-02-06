@@ -19,6 +19,7 @@ std::shared_ptr<BaseCardElement> UnknownElementParser::Deserialize(ParseContext&
     // the string will be initialized as "Unknown").
     std::string actualType = ParseUtil::GetTypeAsString(json);
     std::shared_ptr<UnknownElement> unknown = BaseCardElement::Deserialize<UnknownElement>(context, json);
+    unknown->SetAdditionalProperties(json);
     unknown->SetElementTypeString(actualType);
 
     return unknown;

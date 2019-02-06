@@ -43,11 +43,11 @@ public class UnknownElement extends BaseCardElement {
   }
 
   public UnknownElement() {
-    this(AdaptiveCardObjectModelJNI.new_UnknownElement__SWIG_0(), true);
+    this(AdaptiveCardObjectModelJNI.new_UnknownElement(), true);
   }
 
-  public UnknownElement(UnknownElement arg0) {
-    this(AdaptiveCardObjectModelJNI.new_UnknownElement__SWIG_1(UnknownElement.getCPtr(arg0), arg0), true);
+  public JsonValue SerializeToJsonValue() {
+    return new JsonValue(AdaptiveCardObjectModelJNI.UnknownElement_SerializeToJsonValue(swigCPtr, this), true);
   }
 
 }

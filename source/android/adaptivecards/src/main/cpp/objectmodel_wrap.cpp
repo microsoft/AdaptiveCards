@@ -23717,7 +23717,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1UnknownElement_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1UnknownElement(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::UnknownElement *result = 0 ;
   
@@ -23731,24 +23731,20 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1UnknownElement_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_UnknownElement_1SerializeToJsonValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::UnknownElement *arg1 = 0 ;
-  AdaptiveCards::UnknownElement *result = 0 ;
+  AdaptiveCards::UnknownElement *arg1 = (AdaptiveCards::UnknownElement *) 0 ;
+  std::shared_ptr< AdaptiveCards::UnknownElement const > *smartarg1 = 0 ;
+  Json::Value result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   
-  arg1 = (AdaptiveCards::UnknownElement *)((*(std::shared_ptr< const AdaptiveCards::UnknownElement > **)&jarg1) ? (*(std::shared_ptr< const AdaptiveCards::UnknownElement > **)&jarg1)->get() : 0);
-  if (!arg1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::UnknownElement const & reference is null");
-    return 0;
-  } 
-  result = (AdaptiveCards::UnknownElement *)new AdaptiveCards::UnknownElement((AdaptiveCards::UnknownElement const &)*arg1);
-  
-  *(std::shared_ptr<  AdaptiveCards::UnknownElement > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::UnknownElement >(result SWIG_NO_NULL_DELETER_1) : 0;
-  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::UnknownElement > **)&jarg1;
+  arg1 = (AdaptiveCards::UnknownElement *)(smartarg1 ? smartarg1->get() : 0); 
+  result = ((AdaptiveCards::UnknownElement const *)arg1)->SerializeToJsonValue();
+  *(Json::Value **)&jresult = new Json::Value((const Json::Value &)result); 
   return jresult;
 }
 
