@@ -36,6 +36,7 @@ export default class Renderer extends React.Component {
         }
     }
 
+    
     onExecuteAction = (actionObject) => {
         if (actionObject.type === "Action.Submit") {
             Alert.alert(
@@ -72,13 +73,12 @@ export default class Renderer extends React.Component {
                     <Text style={styles.title}>Adaptive Card</Text>
                     <Button title="Close" onPress={this.onModalClose} />
                 </View>
-
                 <AdaptiveCards
                     payload={this.payload}
                     onExecuteAction={this.onExecuteAction}
                     hostConfig={this.customHostConfig}
                     onParseError={this.onParseError}
-                />
+                    ref="adaptiveCardRef" />
             </View>
         );
     }

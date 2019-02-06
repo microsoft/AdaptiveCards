@@ -17,7 +17,7 @@ import {
 
 import { StyleManager } from '../../styles/style-config';
 import * as Utils from '../../utils/util';
-import { InputContextConsumer } from '../../utils/context';
+import { InputContextConsumer, InputContext } from '../../utils/context';
 import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config';
 
@@ -25,6 +25,7 @@ import { HostConfigManager } from '../../utils/host-config';
 export class ActionButton extends React.Component {
 
 	styleConfig = StyleManager.getManager().styles;
+	static contextType = InputContext;
 
 	constructor(props) {
 		super(props);
@@ -36,6 +37,12 @@ export class ActionButton extends React.Component {
 		this.data = {};
 		if (props.json.type === 'Action.ShowCard') {
 			this.showCardHandler = props.onShowCardTapped;
+		}
+	}
+
+	componentDidMount(){
+		if(!Utils.isNullOrEmpty(this.payload.iconUrl)){
+			this.context.addResourceInformation(this.payload.iconUrl,"");
 		}
 	}
 

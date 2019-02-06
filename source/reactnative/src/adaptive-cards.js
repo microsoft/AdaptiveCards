@@ -18,12 +18,16 @@ import { ActionWrapper } from './components/actions/action-wrapper';
 import PropTypes from 'prop-types';
 import * as Utils from './utils/util';
 import { SelectAction } from './components/actions';
+import ResourceInformation from './utils/resource-information';
+
 
 export default class AdaptiveCards extends React.Component {
 
 	// Input elements with its identifier and value
 	inputArray = {};
 	version = "1.1"; // client supported version
+	resourceInformationArray = [];
+	
 
 	constructor(props) {
 		super(props);
@@ -37,10 +41,28 @@ export default class AdaptiveCards extends React.Component {
 	}
 
 	/**
+	 * @description Returns the resource information in the card elements as an array
+	 * @returns {Array} - Array of items of type ResourceInformation
+	 */
+	getResourceInformation = () => {
+		return this.resourceInformationArray;
+	}
+
+	/**
 	 * @description Input elements present in the cards are added here with its value.
 	 */
 	addInputItem = (key, value) => {
 		this.inputArray[key] = value;
+	}
+
+	/**
+	 * @description Resource information present in the card elements are added here with the url and mimetype.
+	 * @param {string} urlString - URL of the resource (Ex: URL of the Image element)
+	 * @param {string} mimeTypeString - MIME type of the resource if the same is available in the element's payload
+	 */
+	addResourceInformation = (urlString, mimeTypeString) => {
+		let newResourceObject = new ResourceInformation(urlString, mimeTypeString);
+		this.resourceInformationArray.push(newResourceObject);
 	}
 
 	/**
@@ -91,7 +113,7 @@ export default class AdaptiveCards extends React.Component {
 	}
 
 	render() {
-		const { addInputItem, inputArray } = this;
+		const { addInputItem, inputArray, addResourceInformation } = this;
 		const onExecuteAction = this.onExecuteAction;
 		const isTransparent = this.payload.backgroundImage ? true : false;
 		const onParseError = this.onParseError;
@@ -105,7 +127,7 @@ export default class AdaptiveCards extends React.Component {
 			)
 		}
 		return (
-			<InputContextProvider value={{ lang, addInputItem, inputArray, onExecuteAction, isTransparent, onParseError }}>
+			<InputContextProvider value={{ lang, addInputItem, inputArray, onExecuteAction, isTransparent, onParseError, addResourceInformation }}>
 				{
 					this.getAdaptiveCardConent()
 				}

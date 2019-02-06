@@ -15,7 +15,8 @@ import AdaptiveCards from 'adaptivecards-reactnative'
 <AdaptiveCards payload={} 
                hostConfig={}
                onExecuteAction={} 
-               onParseError={} />
+               onParseError={} 
+               ref="referenceVariable"/>
 ```
 
 Prop | Type | Description | Required
@@ -24,6 +25,7 @@ Prop | Type | Description | Required
 **hostConfig** | `{object}` | JSON Host config to override based on [schema](https://docs.microsoft.com/en-us/adaptive-cards/rendering-cards/host-config) | NO
 **onExecuteAction** | `{Event Handler}` | Method to be executed on card actions | NO
 **onParseError** | `{Event Handler}` | Method to be executed on JSON parse errors | NO
+**ref** | `React.createRef()` |  Reference variable used to invoke the methods exposed by AdaptiveCards.(Example: In order to fetch the image & media URLs across the payload, one can use like this this.refs.referenceVariable.getResourceInformation())  | NO
 
 ## Extensibility
 In order to override the rendering of built-in components OR to add/remove  an element type, one can simply make use of the functions exposed by Element Registry.

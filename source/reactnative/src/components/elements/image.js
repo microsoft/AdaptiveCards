@@ -17,6 +17,7 @@ import * as Constants from '../../utils/constants';
 import ElementWrapper from '../elements/element-wrapper';
 import { SelectAction } from '../actions';
 import { StyleManager } from '../../styles/style-config';
+import { InputContext } from '../../utils/context';
 
 const ContainResizeMode = 'contain';
 
@@ -24,6 +25,8 @@ export class Img extends React.Component {
 
 	hostConfig = HostConfigManager.getHostConfig();
 	styleConfig = StyleManager.getManager().styles;
+	static contextType = InputContext;
+
 
 	constructor(props) {
 		super(props);
@@ -35,6 +38,10 @@ export class Img extends React.Component {
 		}
 	}
 
+	componentDidMount(){
+		this.context.addResourceInformation(this.payload.url,"");
+	}
+
     /**
      * @description Parse hostconfig specific to this element
      */
@@ -43,7 +50,6 @@ export class Img extends React.Component {
 		this.altText = this.payload.altText || Constants.EmptyString;
 		this.horizontalAlignment = this.getImageAlignment();
 		this.selectAction = this.payload.selectAction || null;
-
 		if (Utils.isNullOrEmpty(this.payload.size)) {
 			this.payload.size = Constants.Auto;
 		}
