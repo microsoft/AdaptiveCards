@@ -4,6 +4,7 @@
 #include "ShowCardAction.h"
 #include "SubmitAction.h"
 #include "ToggleVisibilityAction.h"
+#include "UnknownAction.h"
 
 namespace AdaptiveSharedNamespace
 {
@@ -14,12 +15,14 @@ namespace AdaptiveSharedNamespace
             ActionTypeToString(ActionType::ShowCard),
             ActionTypeToString(ActionType::Submit),
             ActionTypeToString(ActionType::ToggleVisibility),
+            ActionTypeToString(ActionType::UnknownAction),
         });
 
         m_cardElementParsers.insert({{ActionTypeToString(ActionType::OpenUrl), std::make_shared<OpenUrlActionParser>()},
                                      {ActionTypeToString(ActionType::ShowCard), std::make_shared<ShowCardActionParser>()},
                                      {ActionTypeToString(ActionType::Submit), std::make_shared<SubmitActionParser>()},
-                                     {ActionTypeToString(ActionType::ToggleVisibility), std::make_shared<ToggleVisibilityActionParser>()}});
+                                     {ActionTypeToString(ActionType::ToggleVisibility), std::make_shared<ToggleVisibilityActionParser>()},
+                                     {ActionTypeToString(ActionType::UnknownAction), std::make_shared<UnknownActionParser>()}});
     }
 
     void ActionParserRegistration::AddParser(std::string const& elementType, std::shared_ptr<ActionElementParser> parser)

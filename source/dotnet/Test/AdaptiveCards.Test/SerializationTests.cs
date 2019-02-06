@@ -20,7 +20,7 @@ namespace AdaptiveCards.Test
             card.Version = "1.0";
             card.FallbackText = "Fallback Text";
             card.Speak = "Speak";
-            card.BackgroundImage = new Uri("http://adaptivecards.io/content/cats/1.png");
+            card.BackgroundImage = new AdaptiveBackgroundImage("http://adaptivecards.io/content/cats/1.png");
             card.Body.Add(new AdaptiveTextBlock { Text = "Hello" });
             card.Actions.Add(new AdaptiveSubmitAction() { Title = "Action 1" });
 
@@ -419,6 +419,81 @@ namespace AdaptiveCards.Test
 
             var containerNonStyle = card.Body[2] as AdaptiveContainer;
             Assert.AreEqual(null, containerNonStyle.Style);
+        }
+
+        [TestMethod]
+        public void BackgroundImage()
+        {
+            var card = new AdaptiveCard("1.2");
+            card.BackgroundImage = new AdaptiveBackgroundImage("http://adaptivecards.io/content/cats/1.png", AdaptiveBackgroundImageMode.Repeat, AdaptiveHorizontalAlignment.Right, AdaptiveVerticalAlignment.Bottom);
+
+            var columnSet = new AdaptiveColumnSet();
+            var column1 = new AdaptiveColumn();
+            column1.BackgroundImage = new AdaptiveBackgroundImage("http://adaptivecards.io/content/cats/1.png", AdaptiveBackgroundImageMode.RepeatVertically, AdaptiveHorizontalAlignment.Center, AdaptiveVerticalAlignment.Top);
+            columnSet.Columns.Add(column1);
+            var column2 = new AdaptiveColumn();
+            column2.BackgroundImage = new AdaptiveBackgroundImage("http://adaptivecards.io/content/cats/2.png", AdaptiveBackgroundImageMode.Stretch, AdaptiveHorizontalAlignment.Right, AdaptiveVerticalAlignment.Bottom);
+            columnSet.Columns.Add(column2);
+            card.Body.Add(columnSet);
+
+            var container1 = new AdaptiveContainer();
+            container1.BackgroundImage = new AdaptiveBackgroundImage("http://adaptivecards.io/content/cats/2.png", AdaptiveBackgroundImageMode.RepeatHorizontally, AdaptiveHorizontalAlignment.Left, AdaptiveVerticalAlignment.Center);
+            card.Body.Add(container1);
+
+            var container2 = new AdaptiveContainer();
+            container2.BackgroundImage = new AdaptiveBackgroundImage("http://adaptivecards.io/content/cats/3.png");
+            card.Body.Add(container2);
+
+            var expected = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.2"",
+  ""backgroundImage"": {
+    ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+    ""mode"": ""repeat"",
+    ""horizontalAlignment"": ""right"",
+    ""verticalAlignment"": ""bottom""
+  },
+  ""body"": [
+    {
+      ""type"": ""ColumnSet"",
+      ""columns"": [
+        {
+          ""type"": ""Column"",
+          ""backgroundImage"": {
+            ""url"": ""http://adaptivecards.io/content/cats/1.png"",
+            ""mode"": ""repeatVertically"",
+            ""horizontalAlignment"": ""center""
+          },
+          ""items"": []
+        },
+        {
+          ""type"": ""Column"",
+          ""backgroundImage"": {
+            ""url"": ""http://adaptivecards.io/content/cats/2.png"",
+            ""horizontalAlignment"": ""right"",
+            ""verticalAlignment"": ""bottom""
+          },
+          ""items"": []
+        }
+      ]
+    },
+    {
+      ""type"": ""Container"",
+      ""backgroundImage"": {
+        ""url"": ""http://adaptivecards.io/content/cats/2.png"",
+        ""mode"": ""repeatHorizontally"",
+        ""verticalAlignment"": ""center""
+      },
+      ""items"": []
+    },
+    {
+      ""type"": ""Container"",
+      ""backgroundImage"": ""http://adaptivecards.io/content/cats/3.png"",
+      ""items"": []
+    }
+  ]
+}";
+            Assert.AreEqual(expected, card.ToJson());
         }
 
         [TestMethod]

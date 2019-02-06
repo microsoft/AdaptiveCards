@@ -11,6 +11,7 @@ namespace AdaptiveCards.Rendering.Wpf
             var uiContainer = new Grid();
             //uiContainer.Margin = new Thickness(context.Config.Spacing.Padding);
             uiContainer.Style = context.GetStyle("Adaptive.Container");
+            uiContainer.SetBackgroundSource(container.BackgroundImage, context);
 
             if (container.Style != null)
             {

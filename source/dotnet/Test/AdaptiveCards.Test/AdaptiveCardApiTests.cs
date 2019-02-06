@@ -802,5 +802,17 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(1, image.AdditionalProperties.Count);
             Assert.AreEqual("cheetah", image.AdditionalProperties["test-image-prop"]);
         }
+
+        [TestMethod]
+        public void BackgroundImageBackCompatWithLegacyUriType()
+        {
+            var testUrl = new Uri("https://bing.com");
+
+            var card = new AdaptiveCard("1.0");
+            card.BackgroundImage = testUrl;
+
+            Assert.AreEqual(card.BackgroundImage.UrlString, testUrl.ToString());
+            Assert.AreEqual(card.BackgroundImage.Url, testUrl);
+        }
     }
 }

@@ -37,6 +37,14 @@ public class ActionSetParser extends BaseCardElementParser {
     super.delete();
   }
 
+  public ActionSetParser() {
+    this(AdaptiveCardObjectModelJNI.new_ActionSetParser__SWIG_0(), true);
+  }
+
+  public ActionSetParser(ActionSetParser arg0) {
+    this(AdaptiveCardObjectModelJNI.new_ActionSetParser__SWIG_1(ActionSetParser.getCPtr(arg0), arg0), true);
+  }
+
   public BaseCardElement Deserialize(ParseContext context, JsonValue root) {
     long cPtr = AdaptiveCardObjectModelJNI.ActionSetParser_Deserialize(swigCPtr, this, ParseContext.getCPtr(context), context, JsonValue.getCPtr(root), root);
     return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
@@ -45,10 +53,6 @@ public class ActionSetParser extends BaseCardElementParser {
   public BaseCardElement DeserializeFromString(ParseContext contexts, String jsonString) {
     long cPtr = AdaptiveCardObjectModelJNI.ActionSetParser_DeserializeFromString(swigCPtr, this, ParseContext.getCPtr(contexts), contexts, jsonString);
     return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
-  }
-
-  public ActionSetParser() {
-    this(AdaptiveCardObjectModelJNI.new_ActionSetParser(), true);
   }
 
 }

@@ -38,9 +38,6 @@
     <ClCompile Include="AdditionalPropertiesTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CustomParsingForIOSTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ObjectModelTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -78,6 +75,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EnumTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UnsupportedtypesParsingTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

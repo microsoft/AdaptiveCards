@@ -38,7 +38,11 @@ public class Media extends BaseCardElement {
   }
 
   public Media() {
-    this(AdaptiveCardObjectModelJNI.new_Media(), true);
+    this(AdaptiveCardObjectModelJNI.new_Media__SWIG_0(), true);
+  }
+
+  public Media(Media arg0) {
+    this(AdaptiveCardObjectModelJNI.new_Media__SWIG_1(Media.getCPtr(arg0), arg0), true);
   }
 
   public JsonValue SerializeToJsonValue() {
