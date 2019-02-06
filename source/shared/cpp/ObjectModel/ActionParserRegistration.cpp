@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "ActionParserRegistration.h"
+
 #include "AdaptiveCardParseException.h"
+#include "BaseElement.h"
 #include "OpenUrlAction.h"
 #include "ShowCardAction.h"
 #include "SubmitAction.h"
@@ -17,7 +19,7 @@ namespace AdaptiveSharedNamespace
     std::shared_ptr<BaseActionElement> ActionElementParserWrapper::Deserialize(ParseContext& context, const Json::Value& value)
     {
         const auto& idProperty = ParseUtil::GetString(value, AdaptiveCardSchemaKey::Id);
-        const InternalId internalId = InternalId::Next();
+        const AdaptiveSharedNamespace::InternalId internalId = AdaptiveSharedNamespace::InternalId::Next();
         context.PushElement(idProperty, internalId);
         std::shared_ptr<BaseActionElement> element = m_parser->Deserialize(context, value);
         context.PopElement();

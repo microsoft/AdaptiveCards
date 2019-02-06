@@ -16,7 +16,7 @@ namespace AdaptiveSharedNamespace
 
         static InternalId Next();
         static InternalId Current();
-        static constexpr unsigned int Invalid = 0U;
+        static constexpr unsigned int Invalid = 0;
 
         bool operator==(const unsigned int other) const { return m_internalId == other; }
 
