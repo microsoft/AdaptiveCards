@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveActionParserRegistration.h"
+#include "AdaptiveActionSetRenderer.h"
 #include "AdaptiveChoiceSetInputRenderer.h"
 #include "AdaptiveColumnRenderer.h"
 #include "AdaptiveColumnSetRenderer.h"
