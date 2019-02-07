@@ -3427,6 +3427,15 @@ AdaptiveNamespaceStart
         [default] interface IAdaptiveActionParser;
     };
 
+    [version(NTDDI_WIN10_RS1),
+     activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+     contract(InternalContract, 1),
+     internal,
+     activatable(InternalContract, 1)
+#endif
+    ] runtimeclass AdaptiveToggleVisibilityActionParser { [default] interface IAdaptiveActionParser; };
+
     [
         version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveRenderArgs),

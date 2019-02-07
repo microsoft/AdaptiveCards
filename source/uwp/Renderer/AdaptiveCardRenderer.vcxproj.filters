@@ -99,6 +99,7 @@
     <ClCompile Include="lib\AdaptiveShowCardActionParser.cpp" />
     <ClCompile Include="lib\AdaptiveSubmitActionParser.cpp" />
     <ClCompile Include="lib\AdaptiveUnsupportedElement.cpp" />
+    <ClCompile Include="lib\AdaptiveToggleVisibilityActionParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -205,6 +206,7 @@
     <ClInclude Include="lib\AdaptiveShowCardActionParser.h" />
     <ClInclude Include="lib\AdaptiveSubmitActionParser.h" />
     <ClInclude Include="lib\AdaptiveUnsupportedElement.h" />
+    <ClInclude Include="lib\AdaptiveToggleVisibilityActionParser.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />

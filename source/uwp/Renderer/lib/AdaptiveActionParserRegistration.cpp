@@ -7,6 +7,7 @@
 #include "AdaptiveShowCardActionParser.h"
 #include "AdaptiveSubmitActionParser.h"
 #include "AdaptiveOpenUrlActionParser.h"
+#include "AdaptiveToggleVisibilityActionParser.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
