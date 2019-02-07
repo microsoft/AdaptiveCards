@@ -30,7 +30,7 @@ namespace AdaptiveNamespace
             _In_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
             _Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** xamlTreeRoot,
             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-            std::shared_ptr<XamlBuilder> xamlBuilder,
+            Microsoft::WRL::ComPtr<XamlBuilder> xamlBuilder,
             boolean isOuterCard = true,
             ABI::AdaptiveNamespace::ContainerStyle defaultContainerStyle = ABI::AdaptiveNamespace::ContainerStyle::Default);
         HRESULT AddListener(_In_ IXamlBuilderListener* listener) noexcept;
@@ -133,7 +133,7 @@ namespace AdaptiveNamespace
         CreateRootCardElement(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
                               _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                               _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
-                              std::shared_ptr<XamlBuilder> xamlBuilder,
+                              Microsoft::WRL::ComPtr<XamlBuilder> xamlBuilder,
                               _Outptr_ ABI::Windows::UI::Xaml::Controls::IPanel** bodyElementContainer);
 
         static void ApplyBackgroundToRoot(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel,
