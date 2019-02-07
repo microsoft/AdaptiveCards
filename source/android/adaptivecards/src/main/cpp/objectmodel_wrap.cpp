@@ -20246,28 +20246,6 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1Media_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  AdaptiveCards::Media *arg1 = 0 ;
-  AdaptiveCards::Media *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  arg1 = (AdaptiveCards::Media *)((*(std::shared_ptr< const AdaptiveCards::Media > **)&jarg1) ? (*(std::shared_ptr< const AdaptiveCards::Media > **)&jarg1)->get() : 0);
-  if (!arg1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::Media const & reference is null");
-    return 0;
-  } 
-  result = (AdaptiveCards::Media *)new AdaptiveCards::Media((AdaptiveCards::Media const &)*arg1);
-  
-  *(std::shared_ptr<  AdaptiveCards::Media > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::Media >(result SWIG_NO_NULL_DELETER_1) : 0;
-  
-  return jresult;
-}
-
-
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1Media(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::Media *arg1 = (AdaptiveCards::Media *) 0 ;
   std::shared_ptr< AdaptiveCards::Media > *smartarg1 = 0 ;
