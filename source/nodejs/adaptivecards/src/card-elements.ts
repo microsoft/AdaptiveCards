@@ -1235,6 +1235,12 @@ export class Fact {
 		this.value = value;
 	}
 
+	parse(json: any) {
+		this.name = json["title"];
+		this.value = json["value"];
+		this.speak = json["speak"];
+	}
+
 	toJSON(): any {
 		return { title: this.name, value: this.value };
 	}
@@ -1337,13 +1343,15 @@ export class FactSet extends CardElement {
 	toJSON(): any {
 		let result = super.toJSON();
 
-		let facts = []
+		if (this.facts.length > 0) {
+			let facts = []
 
-		for (let fact of this.facts) {
-			facts.push(fact.toJSON());
+			for (let fact of this.facts) {
+				facts.push(fact.toJSON());
+			}
+
+			Utils.setProperty(result, "facts", facts);
 		}
-
-		Utils.setProperty(result, "facts", facts);
 
 		return result;
 	}
@@ -1353,17 +1361,12 @@ export class FactSet extends CardElement {
 
 		this.facts = [];
 
-		if (json["facts"] != null) {
-			var jsonFacts = json["facts"] as Array<any>;
+		let jsonFacts = json["facts"];
 
-			this.facts = [];
-
-			for (var i = 0; i < jsonFacts.length; i++) {
+		if (Array.isArray(jsonFacts)) {
+			for (let jsonFact of jsonFacts) {
 				let fact = new Fact();
-
-				fact.name = jsonFacts[i]["title"];
-				fact.value = jsonFacts[i]["value"];
-				fact.speak = jsonFacts[i]["speak"];
+				fact.parse(jsonFact);
 
 				this.facts.push(fact);
 			}
@@ -1378,7 +1381,7 @@ export class FactSet extends CardElement {
 		// render each fact
 		let speak = null;
 
-		if (this.facts.length > 0) {
+		if (this.facts && this.facts.length > 0) {
 			speak = '';
 
 			for (var i = 0; i < this.facts.length; i++) {
