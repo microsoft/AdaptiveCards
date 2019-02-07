@@ -22,6 +22,7 @@ namespace AdaptiveSharedNamespace
         std::shared_ptr<ActionParserRegistration> actionParserRegistration;
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
 
+        // Push/PopElement are used during parsing to track the tree structure of a card.
         void PushElement(const std::string& idJsonProperty,
                          const AdaptiveSharedNamespace::InternalId& internalId,
                          const bool isFallback = false);
@@ -39,13 +40,12 @@ namespace AdaptiveSharedNamespace
             IsFallback
         };
 
-        // m_elementIds keeps track of which elements we've seen during a parse. This is used to detect collisions on
-        // id within an Adaptive Card json file. Specifically, we track which non-empty ids we've seen and correllate
-        // them to the internal ID of the element where it was encountered as well as the internal ID of the element for
-        // which it serves fallback (if any). We use unordered_multimap here as duplicate entries are valid in some
-        // circumstances (i.e. where fallback content shares an ID with its parent)
+        // m_elementIds keeps track of which elements we've seen during a parse. This is used to detect collisions on id
+        // within an Adaptive Card json file. Specifically, we track which non-empty ids we've seen and correllate them
+        // to the internal ID of the element for which it serves fallback (if any). We use unordered_multimap here as
+        // duplicate entries are valid in some circumstances (i.e. where fallback content shares an ID with its parent)
         //
-        //                  map ID         -> fallback ID
+        //             map ID json property           ->             fallback ID
         std::unordered_multimap<std::string, AdaptiveSharedNamespace::InternalId> m_elementIds;
 
         // m_idStack is the stack we use during parse time to track the hierarchy of cards as they are encountered. Any

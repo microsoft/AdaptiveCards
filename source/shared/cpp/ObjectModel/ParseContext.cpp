@@ -20,12 +20,13 @@ namespace AdaptiveSharedNamespace
 
     const AdaptiveSharedNamespace::InternalId ParseContext::GetNearestFallbackId(const AdaptiveSharedNamespace::InternalId& skipId) const
     {
-        // Walk stack looking for first element to be marked fallback, then return its internal ID. If none, return
-        // ParseContext::InvalidFallbackId
+        // Walk stack looking for first element to be marked fallback (which isn't the ID we're supposed to skip), then
+        // return its internal ID. If none, return an invalid ID.
         for (auto curElement = m_idStack.crbegin(); curElement != m_idStack.crend(); ++curElement)
         {
             if (std::get<TupleIndex::IsFallback>(*curElement)) // if element is fallback
             {
+                // retrieve the internal ID
                 const AdaptiveSharedNamespace::InternalId& internalId = std::get<TupleIndex::InternalId>(*curElement);
                 if (internalId != skipId)
                 {
@@ -37,6 +38,7 @@ namespace AdaptiveSharedNamespace
         return std::move(invalidId);
     }
 
+    // Push the provided state on to our ID stack
     void ParseContext::PushElement(const std::string& idJsonProperty,
                                    const AdaptiveSharedNamespace::InternalId& internalId,
                                    const bool isFallback /*=false*/)
@@ -50,6 +52,7 @@ namespace AdaptiveSharedNamespace
         m_idStack.push_back({idJsonProperty, internalId, isFallback});
     }
 
+    // Pop the last id off our stack and perform validation
     void ParseContext::PopElement()
     {
         // about to pop an element off the stack. perform collision list maintenance and detection.
@@ -69,17 +72,19 @@ namespace AdaptiveSharedNamespace
                 const AdaptiveSharedNamespace::InternalId& entryFallbackId = currentEntry->second;
 
                 // If the element we're about to pop is the fallback parent for this entry, then there's no collision
-                // (fallback content is allowed to collide with the fallback parent)
+                // (fallback content is allowed to have the same ID as its parent)
                 if (entryFallbackId == elementInternalId)
                 {
                     haveCollision = false;
                     break;
                 }
 
-                // The inverse of the above -- if this element's fallback parent (if available) is the entry we're
-                // looking at, there's no collision.
+                // The inverse of the above -- if this element's fallback parent is the entry we're looking at, there's
+                // no collision.
                 try
                 {
+                    // -1 is the last item on the stack (the one we're about to pop)
+                    // -2 is the parent of the last item on the stack
                     const auto& previousInStack = m_idStack.at(m_idStack.size() - 2);
                     if (std::get<TupleIndex::InternalId>(previousInStack) == entryFallbackId)
                     {

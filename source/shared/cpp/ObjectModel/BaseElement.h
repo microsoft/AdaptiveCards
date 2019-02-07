@@ -9,6 +9,7 @@
 
 namespace AdaptiveSharedNamespace
 {
+    // Used to uniquely identify a single BaseElement-derived object through the course of deserializing.
     class InternalId
     {
     public:
@@ -19,18 +20,13 @@ namespace AdaptiveSharedNamespace
         static constexpr unsigned int Invalid = 0;
 
         bool operator==(const unsigned int other) const { return m_internalId == other; }
-
         bool operator!=(const unsigned int other) const { return m_internalId != other; }
-
         bool operator==(const InternalId& other) const { return m_internalId == other.m_internalId; }
-
         bool operator!=(const InternalId& other) const { return m_internalId != other.m_internalId; }
 
     private:
         static unsigned int s_currentInternalId;
-
         InternalId(const unsigned int id);
-
         unsigned int m_internalId;
     };
 
@@ -58,7 +54,10 @@ namespace AdaptiveSharedNamespace
 
         const InternalId GetInternalId() const { return m_internalId; }
 
-        // Element parsing/serialization
+        // Element [de]serialization
+
+        // A little template jiu-jitsu here -- given the provided parameters, we need BaseElement::ParseJsonObject to
+        // call either BaseCardElement::ParseJsonObject or BaseActionElement::ParseJsonObject.
         template<typename T>
         static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context,
                                     const Json::Value& json,
@@ -74,16 +73,16 @@ namespace AdaptiveSharedNamespace
         Json::Value GetAdditionalProperties() const;
         void SetAdditionalProperties(const Json::Value& additionalProperties);
 
+        // Fallback and Requires support
         FallbackType GetFallbackType() const { return m_fallbackType; }
         std::shared_ptr<BaseElement> GetFallbackContent() const { return m_fallbackContent; }
 
         bool MeetsRequirements(const std::unordered_map<std::string, std::string>& hostProvides) const;
 
-        // misc
+        // Misc.
         virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris);
 
     protected:
-        // Element parsing/serialization
         virtual void PopulateKnownPropertiesSet();
         void SetTypeString(const std::string& type) { m_typeString = type; }
         std::string m_typeString;
@@ -104,6 +103,9 @@ namespace AdaptiveSharedNamespace
     template<typename T> void BaseElement::DeserializeBase(ParseContext& context, const Json::Value& json)
     {
         ParseUtil::ThrowIfNotJsonObject(json);
+
+        // Order matters here -- we need to set the id property *prior* to parsing fallback so that we can detect id
+        // collisions.
         SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id));
         ParseFallback<T>(context, json);
         ParseRequires(context, json);
@@ -114,6 +116,8 @@ namespace AdaptiveSharedNamespace
         const auto fallbackValue = ParseUtil::ExtractJsonValue(json, AdaptiveCardSchemaKey::Fallback, false);
         if (!fallbackValue.empty())
         {
+            // Two possible valid json values for fallback -- either the string "drop", or a valid Adaptive Card
+            // element.
             if (fallbackValue.isString())
             {
                 auto fallbackStringValue = ParseUtil::ToLowercase(fallbackValue.asString());
@@ -131,12 +135,12 @@ namespace AdaptiveSharedNamespace
                 context.PushElement(GetId(), GetInternalId(), true /*isFallback*/);
                 std::shared_ptr<BaseElement> fallbackElement;
                 T::ParseJsonObject(context, fallbackValue, fallbackElement);
+                context.PopElement();
 
                 if (fallbackElement)
                 {
                     m_fallbackType = FallbackType::Content;
                     m_fallbackContent = fallbackElement;
-                    context.PopElement();
                     return;
                 }
                 throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Fallback content did not parse correctly.");

@@ -1049,5 +1049,90 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual("{\"actions\":[],\"body\":[{\"fallback\":{\"fallback\":{\"text\":\"No `Graph` support?\",\"type\":\"TextBlock\"},\"type\":\"Graph\"},\"type\":\"GraphV2\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.2\"}\n",
                 serializedCard.c_str());
         }
+
+        TEST_METHOD(InvalidFallbackStringBody)
+        {
+            std::string cardStr = R"card({
+              "type": "AdaptiveCard",
+              "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+              "version": "1.2",
+              "body": [
+                {
+                  "type": "TextBlock",
+                  "text": "textblock",
+                  "fallback": "steve"
+                }
+              ]
+            })card";
+            try
+            {
+                AdaptiveCard::DeserializeFromString(cardStr, "1.2");
+                Assert::IsTrue(false, L"Deserializing should throw an exception");
+            }
+            catch (const AdaptiveCardParseException& e)
+            {
+                Assert::IsTrue(ErrorStatusCode::InvalidPropertyValue == e.GetStatusCode(), L"ErrorStatusCode incorrect");
+                Assert::AreEqual("The only valid string value for the fallback property is 'drop'.", e.GetReason().c_str(), L"GetReason incorrect");
+            }
+        }
+
+        TEST_METHOD(InvalidFallbackStringAction)
+        {
+            std::string cardStr = R"card({
+              "type": "AdaptiveCard",
+              "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+              "version": "1.2",
+              "body": [
+                {
+                  "type": "TextBlock",
+                  "text": "textblock"
+                }
+              ],
+              "actions": [
+                {
+                  "type": "Blahblah",
+                  "fallback": "steve"
+                }
+              ]
+            })card";
+            try
+            {
+                AdaptiveCard::DeserializeFromString(cardStr, "1.2");
+                Assert::IsTrue(false, L"Deserializing should throw an exception");
+            }
+            catch (const AdaptiveCardParseException& e)
+            {
+                Assert::IsTrue(ErrorStatusCode::InvalidPropertyValue == e.GetStatusCode(), L"ErrorStatusCode incorrect");
+                Assert::AreEqual("The only valid string value for the fallback property is 'drop'.", e.GetReason().c_str(), L"GetReason incorrect");
+            }
+        }
+
+        TEST_METHOD(InvalidFallbackArray)
+        {
+            std::string cardStr = R"card({
+              "type": "AdaptiveCard",
+              "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+              "version": "1.2",
+              "body": [
+                {
+                  "type": "TextBlock",
+                  "text": "textblock",
+                  "fallback": [ { "blah": "2" } ]
+                }
+              ]
+            })card";
+            try
+            {
+                AdaptiveCard::DeserializeFromString(cardStr, "1.2");
+                Assert::IsTrue(false, L"Deserializing should throw an exception");
+            }
+            catch (const AdaptiveCardParseException& e)
+            {
+                Assert::IsTrue(ErrorStatusCode::InvalidPropertyValue == e.GetStatusCode(), L"ErrorStatusCode incorrect");
+                Assert::AreEqual("Invalid value for fallback", e.GetReason().c_str(), L"GetReason incorrect");
+            }
+        }
+
+
     };
 }

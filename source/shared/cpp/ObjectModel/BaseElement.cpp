@@ -17,6 +17,7 @@ namespace AdaptiveSharedNamespace
     {
         s_currentInternalId++;
 
+        // handle overflow case
         if (s_currentInternalId == InternalId::Invalid)
         {
             s_currentInternalId++;
@@ -77,16 +78,18 @@ namespace AdaptiveSharedNamespace
         m_additionalProperties = value;
     }
 
+    // Given a map of what our host provides, determine if this element's requirements are satisfied.
     bool BaseElement::MeetsRequirements(const std::unordered_map<std::string, std::string>& hostProvides) const
     {
         for (const auto &requirement : m_requires)
         {
             // special case for adaptive cards version
             const auto& requirementName = requirement.first;
+            const auto& requirementVersion = requirement.second;
             if (requirementName == "adaptiveCards")
             {
                 static const SemanticVersion currentAdaptiveCardsVersion{"1.2"};
-                if (currentAdaptiveCardsVersion > requirement.second)
+                if (currentAdaptiveCardsVersion > requirementVersion)
                 {
                     return false;
                 }
@@ -101,8 +104,9 @@ namespace AdaptiveSharedNamespace
                 }
                 else
                 {
+                    // host provides this requirement, but does it provide an acceptible version?
                     const SemanticVersion providesVersion{provides->second};
-                    if (providesVersion < requirement.second)
+                    if (providesVersion < requirementVersion)
                     {
                         // host's provided version is too low
                         return false;
@@ -117,6 +121,8 @@ namespace AdaptiveSharedNamespace
     {
         Json::Value root = GetAdditionalProperties();
 
+        // Important -- we're explicitly getting the type as a string here because that's where we store the type that
+        // was specified by the card author.
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = GetElementTypeString();
 
         if (!m_id.empty())
@@ -149,6 +155,8 @@ namespace AdaptiveSharedNamespace
         return root;
     }
 
+
+    // Base implementation for elements that have no resource information
     void BaseElement::GetResourceInformation(std::vector<RemoteResourceInformation>& /*resourceInfo*/)
     {
         return;
