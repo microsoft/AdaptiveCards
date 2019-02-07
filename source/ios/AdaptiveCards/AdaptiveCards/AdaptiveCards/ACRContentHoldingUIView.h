@@ -6,11 +6,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SharedAdaptiveCard.h"
 
-const NSInteger eACRUILabelTag = 0x1234;
-const NSInteger eACRUIFactSetTag = 0x1235;
-const NSInteger eACRUIImageTag = 0x1236;
+const extern NSInteger eACRUILabelTag;
+const extern NSInteger eACRUIFactSetTag;
+const extern NSInteger eACRUIImageTag;
 
 @interface ACRContentHoldingUIView: UIView
 

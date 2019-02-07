@@ -10,6 +10,7 @@ package io.adaptivecards.objectmodel;
 
 public enum WarningStatusCode {
   UnknownElementType(0),
+  UnknownActionElementType,
   UnknownPropertyOnElement,
   UnknownEnumValue,
   NoRendererForType,

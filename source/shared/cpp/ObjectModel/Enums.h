@@ -275,7 +275,8 @@ namespace AdaptiveSharedNamespace
         Submit,
         OpenUrl,
         ToggleVisibility,
-        Custom
+        Custom,
+        UnknownAction,
     };
     DECLARE_ADAPTIVECARD_ENUM(ActionType);
 
@@ -350,6 +351,7 @@ namespace AdaptiveSharedNamespace
     enum class WarningStatusCode
     {
         UnknownElementType = 0,
+        UnknownActionElementType,
         UnknownPropertyOnElement,
         UnknownEnumValue,
         NoRendererForType,

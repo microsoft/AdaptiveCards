@@ -167,9 +167,7 @@ AdaptiveNamespaceStart
     interface IAdaptiveActionEventArgs;
 
     interface IAdaptiveElementParserRegistration;
-    interface IAdaptiveElementParserRegistrationStatics;
     interface IAdaptiveActionParserRegistration;
-    interface IAdaptiveActionParserRegistrationStatics;
     interface IAdaptiveElementParser;
     interface IAdaptiveActionParser;
 
@@ -451,6 +449,7 @@ AdaptiveNamespaceStart
 #endif
     typedef [v1_enum] enum WarningStatusCode {
         UnknownElementType = 0,
+        UnknownActionElementType,
         UnknownPropertyOnElement,
         UnknownEnumValue,
         NoRendererForType,
@@ -3056,11 +3055,9 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
-        activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
         internal,
-        activatable(InternalContract, 1)
 #endif
     ]
     runtimeclass AdaptiveElementRendererRegistration
@@ -3445,6 +3442,57 @@ AdaptiveNamespaceStart
         [default] interface IAdaptiveElementRenderer;
         interface IAdaptiveElementParser;
     };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif
+    ] 
+    runtimeclass AdaptiveOpenUrlActionParser 
+    { 
+        [default] interface IAdaptiveActionParser; 
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+         contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif
+    ] 
+    runtimeclass AdaptiveShowCardActionParser 
+    { 
+        [default] interface IAdaptiveActionParser; 
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif
+    ] 
+    runtimeclass AdaptiveSubmitActionParser 
+    {
+        [default] interface IAdaptiveActionParser;
+    };
+
+    [version(NTDDI_WIN10_RS1),
+     activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+     contract(InternalContract, 1),
+     internal,
+     activatable(InternalContract, 1)
+#endif
+    ] runtimeclass AdaptiveToggleVisibilityActionParser { [default] interface IAdaptiveActionParser; };
 
     [
         version(NTDDI_WIN10_RS1),

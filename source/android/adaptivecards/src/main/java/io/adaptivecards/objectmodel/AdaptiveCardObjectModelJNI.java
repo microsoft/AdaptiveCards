@@ -1066,6 +1066,21 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void delete_ActionSetParser(long jarg1);
   public final static native long ActionSetParser_Deserialize(long jarg1, ActionSetParser jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
   public final static native long ActionSetParser_DeserializeFromString(long jarg1, ActionSetParser jarg1_, long jarg2, ParseContext jarg2_, String jarg3);
+  public final static native long new_UnknownElement();
+  public final static native long UnknownElement_SerializeToJsonValue(long jarg1, UnknownElement jarg1_);
+  public final static native void delete_UnknownElement(long jarg1);
+  public final static native long new_UnknownElementParser__SWIG_0();
+  public final static native long new_UnknownElementParser__SWIG_1(long jarg1, UnknownElementParser jarg1_);
+  public final static native void delete_UnknownElementParser(long jarg1);
+  public final static native long UnknownElementParser_Deserialize(long jarg1, UnknownElementParser jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
+  public final static native long UnknownElementParser_DeserializeFromString(long jarg1, UnknownElementParser jarg1_, long jarg2, ParseContext jarg2_, String jarg3);
+  public final static native long new_UnknownAction();
+  public final static native long UnknownAction_SerializeToJsonValue(long jarg1, UnknownAction jarg1_);
+  public final static native void delete_UnknownAction(long jarg1);
+  public final static native long new_UnknownActionParser__SWIG_0();
+  public final static native long new_UnknownActionParser__SWIG_1(long jarg1, UnknownActionParser jarg1_);
+  public final static native void delete_UnknownActionParser(long jarg1);
+  public final static native long UnknownActionParser_Deserialize(long jarg1, UnknownActionParser jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
   public final static native long BaseInputElement_SWIGSmartPtrUpcast(long jarg1);
   public final static native long Container_SWIGSmartPtrUpcast(long jarg1);
   public final static native long ContainerParser_SWIGSmartPtrUpcast(long jarg1);
@@ -1104,6 +1119,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long ToggleVisibilityActionParser_SWIGSmartPtrUpcast(long jarg1);
   public final static native long ActionSet_SWIGSmartPtrUpcast(long jarg1);
   public final static native long ActionSetParser_SWIGSmartPtrUpcast(long jarg1);
+  public final static native long UnknownElement_SWIGSmartPtrUpcast(long jarg1);
+  public final static native long UnknownElementParser_SWIGSmartPtrUpcast(long jarg1);
+  public final static native long UnknownAction_SWIGSmartPtrUpcast(long jarg1);
+  public final static native long UnknownActionParser_SWIGSmartPtrUpcast(long jarg1);
 
   public static String SwigDirector_BaseCardElement_GetElementTypeString(BaseCardElement jself) {
     return jself.GetElementTypeString();
