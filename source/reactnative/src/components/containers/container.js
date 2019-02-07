@@ -15,10 +15,12 @@ import { Registry } from '../registration/registry';
 import { SelectAction } from '../actions';
 import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config';
+import * as Utils from '../../utils/util';
+import * as Enums from '../../utils/enums';
 import { InputContextConsumer } from '../../utils/context';
 
 export class Container extends React.Component {
-
+	hostConfig = HostConfigManager.getHostConfig();
 	constructor(props) {
 		super(props);
 
@@ -40,9 +42,16 @@ export class Container extends React.Component {
 	}
 
 	internalRenderer(containerJson) {
-		let backgroundStyle = containerJson.style == Constants.Emphasis ?
-			styles.emphasisStyle : styles.defaultBGStyle;
-
+		let backgroundStyle;
+		if (containerJson.style == Constants.Emphasis){
+			backgroundStyle = styles.emphasisStyle;
+		}else{
+			let colorDefinition = this.hostConfig.getBackgroundColor(Utils.parseHostConfigEnum(Enums.TextColor, containerJson["color"],
+				Enums.TextColor.Default));
+			backgroundStyle = {
+				backgroundColor: colorDefinition.default
+			}
+		}
 		// verticalContentAlignment property is not considered for now as the container size is determined by its content.
 		var containerContent = (
 			<InputContextConsumer>

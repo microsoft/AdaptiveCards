@@ -1,6 +1,26 @@
 import * as Enums from './enums';
 import * as Utils from './util';
 
+/**
+	* argb in hex to css rgba
+	*/
+export function hexTorgb(color) {
+	var regEx = /#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})?/gi;
+
+	var matches = regEx.exec(color);
+
+	if (matches && matches[4]) {
+		var a = parseInt(matches[1], 16) / 255;
+		var r = parseInt(matches[2], 16);
+		var g = parseInt(matches[3], 16);
+		var b = parseInt(matches[4], 16);
+
+		return "rgba(" + r + "," + g + "," + b + "," + a + ")";
+	}
+	else {
+		return color;
+	}
+}
 export class TextColorDefinition {
 	_default = "#000000";
 	_subtle = "#666666";
@@ -13,7 +33,7 @@ export class TextColorDefinition {
 	}
 
 	get subtle() {
-		return this.hexTorgb(this._subtle);
+		return hexTorgb(this._subtle);
 	}
 
 	set subtle(color) {
@@ -21,35 +41,31 @@ export class TextColorDefinition {
 	}
 
 	get default() {
-		return this.hexTorgb(this._default);
+		return hexTorgb(this._default);
 	}
 
 	set default(color) {
 		this._default = color;
 	}
-
-    /**
-     * argb in hex to css rgba
-     */
-	hexTorgb(color) {
-		var regEx = /#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})?/gi;
-
-		var matches = regEx.exec(color);
-
-		if (matches && matches[4]) {
-			var a = parseInt(matches[1], 16) / 255;
-			var r = parseInt(matches[2], 16);
-			var g = parseInt(matches[3], 16);
-			var b = parseInt(matches[4], 16);
-
-			return "rgba(" + r + "," + g + "," + b + "," + a + ")";
-		}
-		else {
-			return color;
-		}
-	}
 }
 
+export class BackGroundColorDefinition {
+	_default = "#000000";
+
+	constructor(obj) {
+		if (obj) {
+			this._default = obj["default"] || this._default;
+		}
+	}
+
+	get default() {
+		return hexTorgb(this._default);
+	}
+
+	set default(color) {
+		this._default = color;
+	}
+}
 export class HostConfigManager {
 
 	static hostConfig = null;
@@ -260,7 +276,19 @@ export class ContainerStyleDefinition {
 		return new TextColorDefinition(obj ? obj : defaultValue);
 	}
 
-	backgroundColor;
+	getBackgroundColorDefinitionOrDefault(obj, defaultValue) {
+		return new BackGroundColorDefinition(obj ? obj : defaultValue);
+	}
+
+	backgroundColors = {
+		default: new BackGroundColorDefinition(),
+		dark: new BackGroundColorDefinition(),
+		light: new BackGroundColorDefinition(),
+		accent: new BackGroundColorDefinition(),
+		good: new BackGroundColorDefinition(),
+		warning: new BackGroundColorDefinition(),
+		attention: new BackGroundColorDefinition()
+		};
 
 	foregroundColors = {
 		default: new TextColorDefinition(),
@@ -274,7 +302,17 @@ export class ContainerStyleDefinition {
 
 	parse(obj) {
 		if (obj) {
-			this.backgroundColor = obj["backgroundColor"];
+			// this.backgroundColor = obj["backgroundColor"];
+
+			if (obj.backgroundColors) {
+				this.backgroundColors.default = this.getBackgroundColorDefinitionOrDefault(obj.backgroundColors["default"], { default: "#333333"});
+				this.backgroundColors.dark = this.getBackgroundColorDefinitionOrDefault(obj.backgroundColors["dark"], { default: "#000000" });
+				this.backgroundColors.light = this.getBackgroundColorDefinitionOrDefault(obj.backgroundColors["light"], { default: "#FFFFFF"});
+				this.backgroundColors.accent = this.getBackgroundColorDefinitionOrDefault(obj.backgroundColors["accent"], { default: "#2E89FC"});
+				this.backgroundColors.good = this.getBackgroundColorDefinitionOrDefault(obj.backgroundColors["good"], { default: "#54A254" });
+				this.backgroundColors.warning = this.getBackgroundColorDefinitionOrDefault(obj.backgroundColors["warning"], { default: "#E69500"});
+				this.backgroundColors.attention = this.getBackgroundColorDefinitionOrDefault(obj.backgroundColors["attention"], { default: "#CC3300"});
+			}
 
 			if (obj.foregroundColors) {
 				this.foregroundColors.default = this.getTextColorDefinitionOrDefault(obj.foregroundColors["default"], { default: "#333333", subtle: "#EE333333" });
@@ -591,6 +629,30 @@ export class HostConfig {
 	}
 
 	/**
+	 * @param {string} color
+	 */
+	getBackgroundColor = (color) => {
+		switch (color) {
+			case Enums.TextColor.Attention:
+				return this.containerStyles.default.backgroundColors.attention;
+			case Enums.TextColor.Dark:
+				return this.containerStyles.default.backgroundColors.dark;
+			case Enums.TextColor.Light:
+				return this.containerStyles.default.backgroundColors.light;
+			case Enums.TextColor.Accent:
+				return this.containerStyles.default.backgroundColors.accent;
+			case Enums.TextColor.Good:
+				return this.containerStyles.default.backgroundColors.good;
+			case Enums.TextColor.Warning:
+				return this.containerStyles.default.backgroundColors.warning;
+			case Enums.TextColor.Default:
+				return this.containerStyles.default.backgroundColors.default;
+
+			default:
+				return this.containerStyles.default.backgroundColors.default;
+		}
+	}
+	/**
 	 * @param {string} alignment
 	 */
 	getTextAlignment = (alignment) => {
@@ -672,7 +734,36 @@ export const defaultHostConfig = {
 	},
 	containerStyles: {
 		default: {
-			backgroundColor: "#FFFFFF",
+			backgroundColors: {
+				default: {
+					default: "#333333",
+					subtle: "#EE333333"
+				},
+				dark: {
+					default: "#000000",
+					subtle: "#66000000"
+				},
+				light: {
+					default: "#FFFFFF",
+					subtle: "#33000000"
+				},
+				accent: {
+					default: "#2E89FC",
+					subtle: "#882E89FC"
+				},
+				attention: {
+					default: "#cc3300",
+					subtle: "#DDcc3300"
+				},
+				good: {
+					default: "#54a254",
+					subtle: "#DD54a254"
+				},
+				warning: {
+					default: "#e69500",
+					subtle: "#DDe69500"
+				}
+			},
 			foregroundColors: {
 				default: {
 					default: "#333333",

@@ -30,6 +30,7 @@
 						{
 							"type": "Container",
 							"height": "stretch",
+							"color": "accent",
 							"items": [
 								{
 									"type": "TextBlock",
