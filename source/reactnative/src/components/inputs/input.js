@@ -7,7 +7,10 @@
 import React from 'react';
 import {
 	StyleSheet,
-	TextInput
+	TextInput,
+	Image,
+	Text,
+	TouchableOpacity,
 } from 'react-native';
 
 import { InputContextConsumer } from '../../utils/context';
@@ -33,6 +36,7 @@ export class Input extends React.Component {
 		this.value = Constants.EmptyString;
 		this.keyboardType = Constants.EmptyString;
 		this.textStyle = Constants.EmptyString;
+		this.inlineAction = {};
 		this.state = {
 			isError: false,
 			text: Constants.EmptyString,
@@ -58,29 +62,44 @@ export class Input extends React.Component {
 			return null;
 		}
 
+		if (!Utils.isNullOrEmpty(this.inlineAction)) {
+			if (this.inlineAction.type === "Action.ShowCard") {
+				let error = { "error": Enums.ValidationError.ActionTypeNotAllowed, "message": `Inline ShowCard is not supported as of now` };
+				onParseError(error);
+				return null;
+			}
+			TextBox = this.inlineActionComponent();
+		}
+		else {
+			TextBox = (
+				<InputContextConsumer>
+					{({ addInputItem }) => (
+						<ElementWrapper json={this.payload} style={this.receivedStyle}>
+							<TextInput
+								style={[this.getComputedStyles(), this.receivedStyle]}
+								autoCapitalize={Constants.NoneString}
+								autoCorrect={false}
+								placeholder={placeholder}
+								multiline={isMultiline}
+								maxLength={maxLength}
+								underlineColorAndroid={Constants.TransparentString}
+								clearButtonMode={Constants.WhileEditingString}
+								textContentType={this.textStyle}
+								keyboardType={this.keyboardType}
+								onFocus={this.props.handleFocus}
+								onBlur={this.props.handleBlur}
+								onChangeText={(text) => {
+									this.props.textValueChanged(text, addInputItem);
+								}}
+								value={this.props.value}
+							/>
+						</ElementWrapper>
+					)}
+				</InputContextConsumer>
+			)
+		}
 		return (
-			<InputContextConsumer>
-				{({ addInputItem }) => (
-					<ElementWrapper json={this.payload}>
-						<TextInput
-							style={this.getComputedStyles()}
-							autoCapitalize={Constants.NoneString}
-							autoCorrect={false}
-							placeholder={placeholder}
-							multiline={isMultiline}
-							maxLength={maxLength}
-							underlineColorAndroid={Constants.TransparentString}
-							clearButtonMode={Constants.WhileEditingString}
-							textContentType={this.textStyle}
-							keyboardType={this.keyboardType}
-							onFocus={this.props.handleFocus}
-							onBlur={this.props.handleBlur}
-							onChangeText={(text) => this.props.textValueChanged(text, addInputItem)}
-							value={this.props.value}
-						/>
-					</ElementWrapper>
-				)}
-			</InputContextConsumer>
+			TextBox
 		);
 	}
 
@@ -113,10 +132,93 @@ export class Input extends React.Component {
 		this.placeholder = this.payload.placeholder;
 		this.textStyle = Utils.getEffectiveInputStyle(this.props.styleValue);
 		this.keyboardType = Utils.getKeyboardType(this.props.styleValue);
+		this.inlineAction = this.payload.inlineAction;
+	}
+
+    /**
+     * @description Invoked on every change in Input field
+     * @param {string} text
+     */
+	textValueChanged = (text) => {
+		this.setState({ text });
+	}
+	/**
+     * @description Invoked when json payload contains inlineAction prop
+     */
+	inlineActionComponent = () => {
+		const {
+			id,
+			type,
+			isMultiline,
+			placeholder,
+			maxLength
+		} = this;
+
+		if (!id || !type) {
+			return null;
+		}
+		var returnKeyType = "done"
+		if (isMultiline) {
+			returnKeyType = "default";
+		}
+		return (
+			<InputContextConsumer>
+				{({ addInputItem, onExecuteAction }) => (
+					<ElementWrapper json={this.payload} style={styles.inlineActionWrapper}>
+						<TextInput
+							style={[this.getComputedStyles(), styles.inlineActionTextInput]}
+							autoCapitalize={Constants.NoneString}
+							autoCorrect={false}
+							placeholder={placeholder}
+							placeholderTextColor='white'
+							multiline={isMultiline}
+							maxLength={maxLength}
+							returnKeyLabel={'submit'}
+							returnKeyType={returnKeyType}
+							onSubmitEditing={() => this.onClickHandle(onExecuteAction)}
+							underlineColorAndroid={Constants.TransparentString}
+							clearButtonMode={Constants.WhileEditingString}
+							textContentType={this.textStyle}
+							keyboardType={this.keyboardType}
+							onFocus={this.props.handleFocus}
+							onBlur={this.props.handleBlur}
+							onChangeText={(text) => {
+								this.props.textValueChanged(text, addInputItem);
+								this.textValueChanged(text);
+							}}
+							value={this.props.value}
+						/>
+						<TouchableOpacity onPress={() => { this.onClickHandle(onExecuteAction) }}>
+							{Utils.isNullOrEmpty(this.inlineAction.iconUrl) ?
+								<Text style={styles.inlineActionText}>{this.inlineAction.title}</Text> :
+								<Image
+									style={styles.inlineActionImage}
+									source=
+									{{ uri: this.inlineAction.iconUrl }} />
+							}
+						</TouchableOpacity>
+					</ElementWrapper>
+				)}
+			</InputContextConsumer>
+		);
+
+	}
+
+	/**
+ 	* @description Invoked on tapping the image component
+	*/
+	onClickHandle(onExecuteAction) {
+		if (this.payload.inlineAction.type === Constants.ActionSubmit && !this.isMultiline) {
+			let actionObject = { "type": Constants.ActionSubmit, "data": this.state.text };
+			onExecuteAction(actionObject);
+		}
 	}
 }
 
 const styles = StyleSheet.create({
+	inlineActionText: {
+		color: 'white',
+	},
 	withBorderColor: {
 		borderColor: Constants.LightGreyColor,
 	},
@@ -129,10 +231,27 @@ const styles = StyleSheet.create({
 	input: {
 		width: Constants.FullWidth,
 		padding: 5,
-		marginTop: 15,
 		borderWidth: 1,
 		backgroundColor: Constants.WhiteColor,
 		borderRadius: 5,
+	},
+	inlineActionWrapper: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		backgroundColor: "#9E9E9E",
+		borderRadius: 5,
+	},
+	inlineActionTextInput: {
+		padding: 5,
+		width: '85%',
+		backgroundColor: 'transparent',
+		color: 'white',
+		borderWidth: 0,
+	},
+	inlineActionImage: {
+		width: 30,
+		height: 30,
+		backgroundColor: 'transparent',
 	},
 });
 
