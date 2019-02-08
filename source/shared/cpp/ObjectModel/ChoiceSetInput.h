@@ -2,7 +2,6 @@
 
 #include "pch.h"
 #include "BaseInputElement.h"
-#include "Enums.h"
 
 namespace AdaptiveSharedNamespace
 {
@@ -51,7 +50,7 @@ namespace AdaptiveSharedNamespace
         ChoiceSetInputParser(ChoiceSetInputParser&&) = default;
         ChoiceSetInputParser& operator=(const ChoiceSetInputParser&) = default;
         ChoiceSetInputParser& operator=(ChoiceSetInputParser&&) = default;
-        ~ChoiceSetInputParser() = default;
+        virtual ~ChoiceSetInputParser() = default;
 
         std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
         std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;

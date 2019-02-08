@@ -196,6 +196,7 @@
     <ClCompile Include="..\..\ObjectModel\ToggleInput.cpp" />
     <ClCompile Include="..\..\ObjectModel\ToggleVisibilityAction.cpp" />
     <ClCompile Include="..\..\ObjectModel\ToggleVisibilityTarget.cpp" />
+    <ClCompile Include="..\..\ObjectModel\UnknownAction.cpp" />
     <ClCompile Include="..\..\ObjectModel\UnknownElement.cpp" />
     <ClCompile Include="..\..\ObjectModel\Util.cpp" />
   </ItemGroup>
@@ -247,6 +248,7 @@
     <ClInclude Include="..\..\ObjectModel\ToggleInput.h" />
     <ClInclude Include="..\..\ObjectModel\ToggleVisibilityAction.h" />
     <ClInclude Include="..\..\ObjectModel\ToggleVisibilityTarget.h" />
+    <ClInclude Include="..\..\ObjectModel\UnknownAction.h" />
     <ClInclude Include="..\..\ObjectModel\UnknownElement.h" />
     <ClInclude Include="..\..\ObjectModel\RemoteResourceInformation.h" />
     <ClInclude Include="..\..\ObjectModel\Util.h" />

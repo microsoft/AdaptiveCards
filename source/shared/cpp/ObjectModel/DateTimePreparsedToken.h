@@ -1,7 +1,5 @@
 #pragma once
-#include <string>
-#include <vector>
-#include "Enums.h"
+#include "pch.h"
 
 namespace AdaptiveSharedNamespace
 {

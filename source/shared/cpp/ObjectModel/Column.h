@@ -1,7 +1,6 @@
 #pragma once
 
 #include "pch.h"
-#include "Enums.h"
 #include "BaseCardElement.h"
 
 namespace AdaptiveSharedNamespace
@@ -45,6 +44,8 @@ namespace AdaptiveSharedNamespace
 
     private:
         void PopulateKnownPropertiesSet() override;
+        void SetWidth(const std::string& value,
+                      std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>>* warnings);
 
         std::string m_width;
         unsigned int m_pixelWidth;

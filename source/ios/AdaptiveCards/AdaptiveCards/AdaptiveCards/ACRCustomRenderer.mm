@@ -12,6 +12,7 @@
 #import "ACOBaseCardElementPrivate.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACOHostConfigPrivate.h"
+#import "ACRRegistration.h"
 
 @implementation ACRCustomRenderer
 
@@ -33,27 +34,31 @@
         hostConfig:(ACOHostConfig *)acoConfig;
 {
     std::shared_ptr<UnknownElement> customElem = std::dynamic_pointer_cast<UnknownElement>([acoElem element]);
-    Json::Value blob = customElem->GetAdditionalProperties();
-    Json::FastWriter fastWriter;
 
-    NSString *jsonString = [[NSString alloc] initWithCString:fastWriter.write(blob).c_str() encoding:NSUTF8StringEncoding];
-    if(jsonString.length > 0){
-        NSData *jsonPayload = nil;
-        jsonPayload = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-        if(jsonPayload && self.customElementParser &&
-            [self.customElementParser respondsToSelector: @selector(deserializeToCustomUIElement:)]){
-            UIView *customUIElement = [self.customElementParser deserializeToCustomUIElement:jsonPayload];
-            ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:customUIElement.frame];
-            wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
-            [wrappingview addSubview:customUIElement];
-            [wrappingview addConstraints:[ACOHostConfig getConstraintsForImageAlignment:HorizontalAlignment::Center
-                                                                          withSuperview:wrappingview
-                                                                                 toView:customUIElement]];
-            [viewGroup addArrangedSubview:wrappingview];
+    ACRRegistration *reg = [ACRRegistration getInstance];
+    if(reg) {
+        NSString *type = [NSString stringWithCString:customElem->GetElementTypeString().c_str() encoding:NSUTF8StringEncoding];
+        Json::Value blob = customElem->GetAdditionalProperties();
+        Json::FastWriter fastWriter;
+        NSString *jsonString = [[NSString alloc] initWithCString:fastWriter.write(blob).c_str() encoding:NSUTF8StringEncoding];
+
+        if(jsonString.length > 0){
+            NSData *jsonPayload = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+            ACOParseContext *context = [reg getParseContext];
+            NSObject<ACOIBaseCardElementParser> *parser = [reg getCustomElementParser:type];
+            ACOBaseCardElement *element = [parser deserialize:jsonPayload parseContext:context];
+            ACRBaseCardElementRenderer *renderer = [reg getRenderer:[NSNumber numberWithLong:type.hash]];;
+            if(renderer) {
+                return [renderer render:viewGroup
+                               rootView:rootView
+                                 inputs:inputs
+                        baseCardElement:element
+                             hostConfig:acoConfig];
+            }
         }
     }
 
-    return viewGroup;
+    return nil;
 }
 
 @end
