@@ -753,6 +753,7 @@ namespace AdaptiveCards.Rendering.Html
 
             var uiTextBlock = new HtmlTag("div", false)
                 .AddClass($"ac-{textBlock.Type.Replace(".", "").ToLower()}")
+                .Attr("name", textBlock.Id)
                 .Style("box-sizing", "border-box")
                 .Style("text-align", textBlock.HorizontalAlignment.ToString().ToLower())
                 .Style("color", context.GetColor(textBlock.Color, textBlock.IsSubtle))
@@ -827,6 +828,7 @@ namespace AdaptiveCards.Rendering.Html
         {
             var uiDiv = new DivTag()
                 .AddClass($"ac-{image.Type.Replace(".", "").ToLower()}")
+                .Attr("name", image.Id)
                 .Style("display", "block");
 
             if (image.Height == AdaptiveHeight.Auto)

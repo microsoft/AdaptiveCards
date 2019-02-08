@@ -220,41 +220,36 @@ namespace AdaptiveCards.Sample.Html
 		const toggleVisibilityActions = document.getElementsByClassName('ac-action-toggleVisibility');
 		for (var i = 0; i < toggleVisibilityActions.length; i++) {{
 			const toggleVisibilityAction = toggleVisibilityActions[i];
-			// Read list of targets with defined behaviour
-			// List will be in format id-targets='id1:True,id2:Toggle,id3:False'
-			const targetElementsString = toggleVisibilityAction.dataset.acTargetelements;
-			// Do a split for commas and for each element, find the : to divide both strings
-			var targetElements = targetElementsString.split(',');
-			var targetElementIds = [];
-			var targetElementActions = [];
-			for(var j = 0; j < targetElements.length; j++) {{
-				var targetElementWithAction = targetElements[j].split(':');
-				targetElementIds.push(targetElementWithAction[0]);
-				targetElementActions.push(targetElementWithAction[1]);
-			}}
-			
+						
             toggleVisibilityAction.addEventListener('click', function() {{
                 if (true) {{
+					// Read list of targets with defined behaviour
+					// List will be in format id-targets='id1:True,id2:Toggle,id3:False'
+					const targetElementsString = toggleVisibilityAction.dataset.acTargetelements;
+					var targetElements = targetElementsString.split(',');
+					
 					// For each target in list of targets
-					for(var j = 0; j < targetElementIds.length; j++) {{
-						// get element for target id
-						const targetElement = document.getElementById(targetElementIds[j]);
+					for(var j = 0; j < targetElements.length; j++) {{
+						/// Do a split for commas and for each element, find the : to divide both strings
+						const targetElementIdWithAction = targetElements[j].split(':');
+						const targetElementId = targetElementIdWithAction[0];
+						const targetElementAction = targetElementIdWithAction[1];
 						
-						if(targetElementActions[j] == 'True' || (targetElementActions[j] == 'Toggle' && targetElement.style.display == 'none')) {{
+						var targetElementsInDocument = document.getElementsByName(targetElementId);
+						// There is no singular version of getElementByName so just take the first element
+						var targetElement = targetElementsInDocument[0];
+						
+						if(targetElementAction == 'True' || (targetElementAction == 'Toggle' && targetElement.style.display == 'none')) {{
 							targetElement.style.display = 'flex';
 						}}
-						else if(targetElementActions[j] == 'False' || (targetElementActions[j] == 'Toggle' && targetElement.style.display != 'none')) {{
+						else if(targetElementAction == 'False' || (targetElementAction == 'Toggle' && targetElement.style.display != 'none')) {{
 							targetElement.style.display = 'none';
 						}}
-						// if targetAction = true or (targetAction = toggle and targetElement.style.display = none)
-							// targetElement.style.display = flex
-						// else if targetAction = false or (targetAction = toggle and targetElement.style.display != none)
-							// targetElement.style.diplay = none
 					}}
 					
                 }} else {{
-                    // const mediaSources = button.dataset.acMediaSources;
-                    // alert(mediaSources);
+                    const targetElementsString = toggleVisibilityAction.dataset.acTargetelements;
+                    alert(targetElementsString);
                 }}
             }});
 		}}
