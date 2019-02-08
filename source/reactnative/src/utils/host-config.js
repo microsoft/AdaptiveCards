@@ -13,7 +13,8 @@ export class TextColorDefinition {
 	}
 
 	get subtle() {
-		return this.hexTorgb(this._subtle);
+		//[ST]- Fix for the image background color issue
+		return Utils.hexToRGB(this._subtle);
 	}
 
 	set subtle(color) {
@@ -21,33 +22,15 @@ export class TextColorDefinition {
 	}
 
 	get default() {
-		return this.hexTorgb(this._default);
+		//[ST]- Fix for the image background color issue
+		return Utils.hexToRGB(this._default);
 	}
 
 	set default(color) {
 		this._default = color;
 	}
 
-    /**
-     * argb in hex to css rgba
-     */
-	hexTorgb(color) {
-		var regEx = /#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})?/gi;
 
-		var matches = regEx.exec(color);
-
-		if (matches && matches[4]) {
-			var a = parseInt(matches[1], 16) / 255;
-			var r = parseInt(matches[2], 16);
-			var g = parseInt(matches[3], 16);
-			var b = parseInt(matches[4], 16);
-
-			return "rgba(" + r + "," + g + "," + b + "," + a + ")";
-		}
-		else {
-			return color;
-		}
-	}
 }
 
 export class HostConfigManager {

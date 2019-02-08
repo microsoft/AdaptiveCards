@@ -64,7 +64,8 @@ export class Img extends React.Component {
 			Enums.Spacing.Small);
 		this.spacing = this.hostConfig.getEffectiveSpacing(spacingValue);
 		this.separator = this.payload.separator || false;
-		this.backgroundColor = this.payload.backgroundColor || Constants.TransparentString;
+		//[ST]- Fix for the image background color issue
+		this.backgroundColor = Utils.hexToRGB(this.payload.backgroundColor) || Constants.TransparentString;
 	}
 
     /**
@@ -274,9 +275,10 @@ export class Img extends React.Component {
 		}
 
 		let imageComputedStyle = [this.sizeStyling];
+		//[ST]- Fix for the image background color issue
+		imageComputedStyle.push({ backgroundColor: this.backgroundColor })
 
 		let wrapperComputedStyle = this.horizontalAlignment;
-		wrapperComputedStyle.push({ backgroundColor: this.backgroundColor })
 		if (this.payload.fromImageSet == true) {
 			wrapperComputedStyle.push({ margin: spacing });
 		}
