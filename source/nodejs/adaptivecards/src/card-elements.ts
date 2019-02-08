@@ -4166,7 +4166,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 			if (this.getHasExpandedAction() || (item && item.isBleedingAtBottom())) {
 				this.renderedElement.style.paddingBottom = "0px";
 			}
-		}
+        }
 	}
 
 	protected getHasBackground(): boolean {
@@ -4881,18 +4881,6 @@ export class Column extends Container {
 				renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : sizeAndUnit.physicalSize) + "%";
 			}
 		}
-	}
-
-	protected getDefaultPadding(): Shared.PaddingDefinition {
-		let columnSet = <ColumnSet>this.parent;
-		let result = super.getDefaultPadding();
-
-		result.top = (result.top == Enums.Spacing.None && columnSet.isBleedingAtTop() && columnSet.isAtTheVeryTop()) ? Enums.Spacing.Padding : result.top;
-		result.right = (result.right == Enums.Spacing.None && columnSet.isBleeding() && columnSet.isAtTheVeryRight()) ? Enums.Spacing.Padding : result.right;
-		result.bottom = (result.bottom == Enums.Spacing.None && columnSet.isBleedingAtBottom() && columnSet.isAtTheVeryBottom()) ? Enums.Spacing.Padding : result.bottom;
-		result.left = (result.left == Enums.Spacing.None && columnSet.isBleeding() && columnSet.isAtTheVeryLeft()) ? Enums.Spacing.Padding : result.left;
-
-		return result;
 	}
 
 	protected get separatorOrientation(): Enums.Orientation {
