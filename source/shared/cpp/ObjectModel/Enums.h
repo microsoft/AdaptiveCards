@@ -149,27 +149,27 @@ namespace AdaptiveSharedNamespace
 
     enum class CardElementType
     {
-        // When the order of existing enums are changed, coresponding changes are needed in iOS (ACOBaseCardElement.h)
-        ActionSet = 0,
+        Unsupported = 0,
         AdaptiveCard,
-        ChoiceInput,
-        ChoiceSetInput,
+        TextBlock,
+        Image,
+        Container,
         Column,
         ColumnSet,
-        Container,
-        Custom,
-        DateInput,
-        Fact,
         FactSet,
-        Image,
+        Fact,
         ImageSet,
-        Media,
+        ChoiceInput,
+        ChoiceSetInput,
+        DateInput,
         NumberInput,
-        TextBlock,
         TextInput,
         TimeInput,
         ToggleInput,
+        Custom,
         Unknown,
+        Media,
+        ActionSet,
     };
     DECLARE_ADAPTIVECARD_ENUM(CardElementType);
 
@@ -253,8 +253,7 @@ namespace AdaptiveSharedNamespace
         Submit,
         OpenUrl,
         ToggleVisibility,
-        Custom,
-        UnknownAction,
+        Custom
     };
     DECLARE_ADAPTIVECARD_ENUM(ActionType);
 
@@ -329,7 +328,6 @@ namespace AdaptiveSharedNamespace
     enum class WarningStatusCode
     {
         UnknownElementType = 0,
-        UnknownActionElementType,
         UnknownPropertyOnElement,
         UnknownEnumValue,
         NoRendererForType,

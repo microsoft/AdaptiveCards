@@ -44,7 +44,7 @@ function createCardObjectInstance<T extends CardObject>(
 		}
 		else {
 			result.setParent(parent);
-			result.parse(json, errors);
+			result.parse(json);
 
 			tryToFallback = result.shouldFallback();
 		}
@@ -176,6 +176,17 @@ export abstract class CardElement extends CardObject {
 			},
 			this.separatorOrientation);
 
+		if (AdaptiveCard.alwaysBleedSeparators && renderedSeparator && this.separatorOrientation == Enums.Orientation.Horizontal) {
+			let parentContainer = this.getParentContainer();
+
+			if (parentContainer && parentContainer.getEffectivePadding()) {
+				let parentPhysicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(parentContainer.getEffectivePadding());
+
+				renderedSeparator.style.marginLeft = "-" + parentPhysicalPadding.left + "px";
+				renderedSeparator.style.marginRight = "-" + parentPhysicalPadding.right + "px";
+			}
+		}
+
 		return renderedSeparator;
 	}
 
@@ -270,25 +281,6 @@ export abstract class CardElement extends CardObject {
 	}
 
 	protected abstract internalRender(): HTMLElement;
-
-	protected applyPadding() {
-		if (this.separatorElement) {
-			if (AdaptiveCard.alwaysBleedSeparators && this.separatorOrientation == Enums.Orientation.Horizontal && !this.isBleeding()) {
-				let padding = new Shared.PaddingDefinition();
-
-				this.getImmediateSurroundingPadding(padding);
-		
-				let physicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(padding);
-	
-				this.separatorElement.style.marginLeft = "-" + physicalPadding.left + "px";
-				this.separatorElement.style.marginRight = "-" + physicalPadding.right + "px";
-			}
-			else {
-				this.separatorElement.style.marginRight = "0";
-				this.separatorElement.style.marginLeft = "0";
-			}
-		}
-	}
 
     /*
      * Called when this element overflows the bottom of the card.
@@ -545,7 +537,6 @@ export abstract class CardElement extends CardObject {
 
 	updateLayout(processChildren: boolean = true) {
 		this.updateRenderedElementVisibility();
-		this.applyPadding();
 	}
 
 	indexOf(cardElement: CardElement): number {
@@ -1321,13 +1312,12 @@ export class FactSet extends CardElement {
 
 				// Value column
 				tdElement = document.createElement("td");
-				tdElement.style.padding = "0";
 				tdElement.style.verticalAlign = "top";
 				tdElement.classList.add(hostConfig.makeCssClassName("ac-fact-value"));
 
 				textBlock = new TextBlock();
 				textBlock.setParent(this);
-				textBlock.text = this.facts[i].value;
+				textBlock.text = Utils.isNullOrEmpty(this.facts[i].value) ? "Value" : this.facts[i].value;
 				textBlock.size = this.hostConfig.factSet.value.size;
 				textBlock.color = this.hostConfig.factSet.value.color;
 				textBlock.isSubtle = this.hostConfig.factSet.value.isSubtle;
@@ -1720,25 +1710,7 @@ export abstract class CardElementContainer extends CardElement {
 	private _selectAction: Action = null;
 
 	protected applyPadding() {
-		super.applyPadding();
-
-		if (!this.renderedElement) {
-			return;
-		}
-
-		let physicalPadding = new Shared.SpacingDefinition();
-
-		if (this.getEffectivePadding()) {
-			physicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(this.getEffectivePadding());
-		}
-
-		this.renderedElement.style.paddingTop = physicalPadding.top + "px";
-		this.renderedElement.style.paddingRight = physicalPadding.right + "px";
-		this.renderedElement.style.paddingBottom = physicalPadding.bottom + "px";
-		this.renderedElement.style.paddingLeft = physicalPadding.left + "px";
-
-		this.renderedElement.style.marginRight = "0";
-		this.renderedElement.style.marginLeft = "0";
+		// Do nothing in base implementation
 	}
 
 	protected getSelectAction(): Action {
@@ -1830,6 +1802,8 @@ export abstract class CardElementContainer extends CardElement {
 
 	updateLayout(processChildren: boolean = true) {
 		super.updateLayout(processChildren);
+
+		this.applyPadding();
 
 		if (processChildren) {
 			for (var i = 0; i < this.getItemCount(); i++) {
@@ -3516,20 +3490,7 @@ export class ShowCardAction extends Action {
 	parse(json: any, errors?: Array<HostConfig.IValidationError>) {
 		super.parse(json, errors);
 
-		let jsonCard = json["card"];
-
-		if (jsonCard) {
-			this.card.parse(jsonCard, errors);
-		}
-		else {
-			raiseParseError(
-				{
-					error: Enums.ValidationError.PropertyCantBeNull,
-					message: "An Action.ShowCard must have its \"card\" property set to a valid AdaptiveCard object."
-				},
-				errors
-			);
-		}
+		this.card.parse(json["card"], errors);
 	}
 
 	setParent(value: CardElement) {
@@ -4152,11 +4113,20 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 	}
 
 	protected applyPadding() {
-		super.applyPadding();
-
 		if (!this.renderedElement) {
 			return;
 		}
+
+		let physicalPadding = new Shared.SpacingDefinition();
+
+		if (this.getEffectivePadding()) {
+			physicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(this.getEffectivePadding());
+		}
+
+		this.renderedElement.style.paddingTop = physicalPadding.top + "px";
+		this.renderedElement.style.paddingRight = physicalPadding.right + "px";
+		this.renderedElement.style.paddingBottom = physicalPadding.bottom + "px";
+		this.renderedElement.style.paddingLeft = physicalPadding.left + "px";
 
 		if (this.isBleeding()) {
 			// Bleed into the first parent that does have padding
@@ -4172,6 +4142,15 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 			if (this.separatorElement && this.separatorOrientation == Enums.Orientation.Horizontal) {
 				this.separatorElement.style.marginLeft = "-" + physicalPadding.left + "px";
 				this.separatorElement.style.marginRight = "-" + physicalPadding.right + "px";
+			}
+		}
+		else {
+			this.renderedElement.style.marginRight = "0";
+			this.renderedElement.style.marginLeft = "0";
+
+			if (this.separatorElement) {
+				this.separatorElement.style.marginRight = "0";
+				this.separatorElement.style.marginLeft = "0";
 			}
 		}
 
@@ -5489,7 +5468,7 @@ export abstract class ContainerWithActions extends Container {
 	parse(json: any, errors?: Array<HostConfig.IValidationError>) {
 		super.parse(json, errors);
 
-		this._actionCollection.parse(json["actions"], errors);
+		this._actionCollection.parse(json["actions"]);
 	}
 
 	validate(): Array<HostConfig.IValidationError> {
@@ -5746,6 +5725,10 @@ export class AdaptiveCard extends ContainerWithActions {
 	}
 
 	protected get bypassVersionCheck(): boolean {
+		return false;
+	}
+
+	protected get allowCustomPadding(): boolean {
 		return false;
 	}
 

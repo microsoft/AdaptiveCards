@@ -9,7 +9,6 @@
 #import "ACRView.h"
 #import "Image.h"
 #import "SharedAdaptiveCard.h"
-#include "ActionParserRegistration.h"
 
 using namespace AdaptiveCards;
 
@@ -34,6 +33,4 @@ typedef void (^ObserverActionBlockForBaseAction)(NSObject<ACOIResourceResolver> 
 
 - (void)loadImageAccordingToResourceResolverIF:(std::shared_ptr<BaseCardElement> const &)elem
     key:(NSString *)key observerAction:(ObserverActionBlock)observerAction;
-
-- (std::shared_ptr<AdaptiveSharedNamespace::ActionElementParser> const &)getActionParser:(NSString*)elementType;
 @end

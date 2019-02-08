@@ -110,10 +110,5 @@ namespace AdaptiveCardTestApp.Pages
                 await item.SaveAsNewExpectedAsync();
             }
         }
-
-        private void ButtonStartOver_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(StartPage));
-        }
     }
 }

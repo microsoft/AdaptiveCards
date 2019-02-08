@@ -104,8 +104,7 @@ std::string BaseCardElement::Serialize() const
 Json::Value BaseCardElement::SerializeToJsonValue() const
 {
     Json::Value root = GetAdditionalProperties();
-
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = GetElementTypeString();
+    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = CardElementTypeToString(GetElementType());
 
     if (m_height != HeightType::Auto)
     {

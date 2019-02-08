@@ -10,9 +10,6 @@
 // Headers for CppUnitTest
 #include "CppUnitTest.h"
 
+// TODO: reference additional headers your program requires here
 #include <CodeCoverage\CodeCoverage.h>
 #include "Enums.h"
-#include "json/json.h"
-
-#include "SharedAdaptiveCard.h"
-#include "BaseCardElement.h"

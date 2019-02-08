@@ -144,7 +144,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Width, "width"},
             {AdaptiveCardSchemaKey::Wrap, "wrap"}});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(CardElementType, CardElementType::Unknown, {
+    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(CardElementType, CardElementType::Unsupported, {
             {CardElementType::AdaptiveCard, "AdaptiveCard"},
             {CardElementType::Column, "Column"},
             {CardElementType::ColumnSet, "ColumnSet"},
@@ -171,8 +171,7 @@ namespace AdaptiveSharedNamespace
             {ActionType::ShowCard, "Action.ShowCard"},
             {ActionType::Submit, "Action.Submit"},
             {ActionType::ToggleVisibility, "Action.ToggleVisibility"},
-            {ActionType::Custom, "Custom"},
-            {ActionType::UnknownAction, "UnknownAction"}});
+            {ActionType::Custom, "Custom"}});
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(HeightType, HeightType::Stretch, {
             {HeightType::Auto, "Auto"},

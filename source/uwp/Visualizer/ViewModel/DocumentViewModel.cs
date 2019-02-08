@@ -26,7 +26,6 @@ namespace AdaptiveCardVisualizer.ViewModel
 
         private DocumentViewModel(MainPageViewModel mainPageViewModel) : base(mainPageViewModel) { }
 
-        private RenderedAdaptiveCard _renderedAdaptiveCard;
         private UIElement _renderedCard;
         public UIElement RenderedCard
         {
@@ -83,11 +82,11 @@ namespace AdaptiveCardVisualizer.ViewModel
                 {
                     AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(jsonObject);
 
-                    _renderedAdaptiveCard = _renderer.RenderAdaptiveCard(parseResult.AdaptiveCard);
-                    if (_renderedAdaptiveCard.FrameworkElement != null)
+                    RenderedAdaptiveCard renderResult = _renderer.RenderAdaptiveCard(parseResult.AdaptiveCard);
+                    if (renderResult.FrameworkElement != null)
                     {
-                        RenderedCard = _renderedAdaptiveCard.FrameworkElement;
-                        _renderedAdaptiveCard.Action += async (sender, e) =>
+                        RenderedCard = renderResult.FrameworkElement;
+                        renderResult.Action += async (sender, e) =>
                         {
                             var m_actionDialog = new ContentDialog();
 
@@ -112,7 +111,7 @@ namespace AdaptiveCardVisualizer.ViewModel
 
                         if (!MainPageViewModel.HostConfigEditor.HostConfig.Media.AllowInlinePlayback)
                         {
-                            _renderedAdaptiveCard.MediaClicked += async (sender, e) =>
+                            renderResult.MediaClicked += async (sender, e) =>
                             {
                                 var onPlayDialog = new ContentDialog();
                                 onPlayDialog.Content = "MediaClickedEvent:";
@@ -144,7 +143,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                             Type = ErrorViewModelType.Error
                         });
                     }
-                    foreach (var error in _renderedAdaptiveCard.Errors)
+                    foreach (var error in renderResult.Errors)
                     {
                         newErrors.Add(new ErrorViewModel()
                         {
@@ -161,7 +160,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                         });
                     }
 
-                    foreach (var error in _renderedAdaptiveCard.Warnings)
+                    foreach (var error in renderResult.Warnings)
                     {
                         newErrors.Add(new ErrorViewModel()
                         {
@@ -205,7 +204,7 @@ namespace AdaptiveCardVisualizer.ViewModel
 
             if (args.Action is AdaptiveSubmitAction)
             {
-                answer += "\nData: " + (args.Action as AdaptiveSubmitAction).DataJson?.Stringify();
+                answer += "\nData: " + (args.Action as AdaptiveSubmitAction).DataJson.Stringify();
             }
             else if (args.Action is AdaptiveOpenUrlAction)
             {

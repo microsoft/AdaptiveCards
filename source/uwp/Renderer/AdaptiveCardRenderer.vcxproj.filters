@@ -94,12 +94,7 @@
     <ClCompile Include="lib\AdaptiveToggleVisibilityAction.cpp" />
     <ClCompile Include="lib\AdaptiveToggleVisibilityTarget.cpp" />
     <ClCompile Include="lib\AdaptiveActionSet.cpp" />
-    <ClCompile Include="lib\AdaptiveActionSetRenderer.cpp" />
-    <ClCompile Include="lib\AdaptiveOpenUrlActionParser.cpp" />
-    <ClCompile Include="lib\AdaptiveShowCardActionParser.cpp" />
-    <ClCompile Include="lib\AdaptiveSubmitActionParser.cpp" />
-    <ClCompile Include="lib\AdaptiveUnsupportedElement.cpp" />
-    <ClCompile Include="lib\AdaptiveToggleVisibilityActionParser.cpp" />
+    <ClCompile Include="lib\AdaptiveActionSetRenderer.cpp" />    
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -201,12 +196,7 @@
     <ClInclude Include="lib\AdaptiveToggleVisibilityAction.h" />
     <ClInclude Include="lib\AdaptiveToggleVisibilityTarget.h" />
     <ClInclude Include="lib\AdaptiveActionSet.h" />
-    <ClInclude Include="lib\AdaptiveActionSetRenderer.h" />
-    <ClInclude Include="lib\AdaptiveOpenUrlActionParser.h" />
-    <ClInclude Include="lib\AdaptiveShowCardActionParser.h" />
-    <ClInclude Include="lib\AdaptiveSubmitActionParser.h" />
-    <ClInclude Include="lib\AdaptiveUnsupportedElement.h" />
-    <ClInclude Include="lib\AdaptiveToggleVisibilityActionParser.h" />
+    <ClInclude Include="lib\AdaptiveActionSetRenderer.h" />    
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />

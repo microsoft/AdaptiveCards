@@ -197,7 +197,13 @@ ImageParser::DeserializeWithoutCheckingType(ParseContext& context, const Json::V
 
     for (auto eachDimension : requestedDimensions)
     {
-        int parsedDimension = ParseSizeForPixelSize(eachDimension, &context.warnings);
+        int parsedDimension = 0;
+        if (ShouldParseForExplicitDimension(eachDimension))
+        {
+            const std::string unit = "px";
+            // validate user inputs
+            ValidateUserInputForDimensionWithUnit(unit, eachDimension, parsedDimension, context.warnings);
+        }
         parsedDimensions.push_back(parsedDimension);
     }
 

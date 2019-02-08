@@ -51,7 +51,7 @@ namespace AdaptiveNamespace
         ABI::AdaptiveNamespace::IAdaptiveHostConfig* GetHostConfig();
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> GetMergedDictionary();
         bool GetFixedDimensions(_Out_ UINT32* width, _Out_ UINT32* height);
-        Microsoft::WRL::ComPtr<AdaptiveNamespace::XamlBuilder> GetXamlBuilder();
+        std::shared_ptr<AdaptiveNamespace::XamlBuilder> GetXamlBuilder();
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> GetActionSentimentResourceDictionary();
 
         IFACEMETHODIMP get_ResourceResolvers(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers** value);
@@ -65,13 +65,14 @@ namespace AdaptiveNamespace
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers> m_resourceResolvers;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveElementRendererRegistration> m_elementRendererRegistration;
 
-        Microsoft::WRL::ComPtr<AdaptiveNamespace::XamlBuilder> m_xamlBuilder;
+        std::shared_ptr<AdaptiveNamespace::XamlBuilder> m_xamlBuilder;
         bool m_explicitDimensions = false;
         UINT32 m_desiredWidth = 0;
         UINT32 m_desiredHeight = 0;
 
         HRESULT CreateAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson,
                                                  _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** adaptiveCard);
+        HRESULT RegisterDefaultElementRenderers();
         void InitializeDefaultResourceDictionary();
         void UpdateActionSentimentResourceDictionary();
         HRESULT SetMergedDictionary();

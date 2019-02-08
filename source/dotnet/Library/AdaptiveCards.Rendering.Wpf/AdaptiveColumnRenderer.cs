@@ -11,7 +11,6 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             var uiContainer = new Grid();
             uiContainer.Style = context.GetStyle("Adaptive.Column");
-            uiContainer.SetBackgroundSource(column.BackgroundImage, context);
 
             AdaptiveContainerRenderer.AddContainerElements(uiContainer, column.Items, context);
 

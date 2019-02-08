@@ -2,6 +2,8 @@
 
 #include "pch.h"
 #include "AdaptiveCardParseException.h"
+#include "Enums.h"
+#include "json/json.h"
 #include "ParseContext.h"
 
 namespace AdaptiveSharedNamespace

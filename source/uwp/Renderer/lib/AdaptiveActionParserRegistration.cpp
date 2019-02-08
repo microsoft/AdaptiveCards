@@ -4,10 +4,6 @@
 #include "CustomActionWrapper.h"
 #include "Util.h"
 #include "Vector.h"
-#include "AdaptiveShowCardActionParser.h"
-#include "AdaptiveSubmitActionParser.h"
-#include "AdaptiveOpenUrlActionParser.h"
-#include "AdaptiveToggleVisibilityActionParser.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -20,8 +16,8 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveActionParserRegistration::RuntimeClassInitialize() noexcept try
     {
-        std::shared_ptr<ActionParserRegistration> sharedParserRegistration = std::make_shared<ActionParserRegistration>();
-        RuntimeClassInitialize(sharedParserRegistration);
+        m_sharedParserRegistration = std::make_shared<ActionParserRegistration>();
+        m_registration = std::make_shared<RegistrationMap>();
 
         return S_OK;
     }
@@ -33,54 +29,42 @@ namespace AdaptiveNamespace
         m_registration = std::make_shared<RegistrationMap>();
         m_sharedParserRegistration = sharedParserRegistration;
 
-        m_isInitializing = true;
-        RegisterDefaultActionRenderers(this);
-        m_isInitializing = false;
-
         return S_OK;
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveActionParserRegistration::Set(_In_ HSTRING type, _In_ IAdaptiveActionParser* Parser) noexcept try
+    HRESULT AdaptiveActionParserRegistration::Set(_In_ HSTRING type, _In_ IAdaptiveActionParser* Parser)
     {
         std::string typeString = HStringToUTF8(type);
 
         ComPtr<IAdaptiveActionParser> localParser(Parser);
         (*m_registration)[typeString] = localParser;
 
-        // During initialization we will add the known parsers to m_registration. These are already present in the corresponding
-        // shared model registration (m_sharedParserRegistration) which will throw if we attempt to modify them by adding them again.
-        if (!m_isInitializing)
-        {
-            m_sharedParserRegistration->AddParser(typeString, std::make_shared<SharedModelActionParser>(this));
-        }
+        m_sharedParserRegistration->AddParser(typeString, std::make_shared<SharedModelActionParser>(this));
 
         return S_OK;
     }
-    CATCH_RETURN;
 
-    HRESULT AdaptiveActionParserRegistration::Get(_In_ HSTRING type, _COM_Outptr_ IAdaptiveActionParser** result) noexcept try
+    HRESULT AdaptiveActionParserRegistration::Get(_In_ HSTRING type, _COM_Outptr_ IAdaptiveActionParser** result)
     {
         *result = nullptr;
 
         RegistrationMap::iterator found = m_registration->find(HStringToUTF8(type));
         if (found != m_registration->end())
         {
-            RETURN_IF_FAILED(found->second.CopyTo(result));
+            *result = found->second.Get();
         }
         return S_OK;
     }
-    CATCH_RETURN;
 
-    HRESULT AdaptiveActionParserRegistration::Remove(_In_ HSTRING type) noexcept try
+    HRESULT AdaptiveActionParserRegistration::Remove(_In_ HSTRING type)
     {
         std::string typeString = HStringToUTF8(type);
 
-        m_sharedParserRegistration->RemoveParser(typeString);
         m_registration->erase(typeString);
+        m_sharedParserRegistration->RemoveParser(typeString);
         return S_OK;
     }
-    CATCH_RETURN;
 
     std::shared_ptr<ActionParserRegistration> AdaptiveActionParserRegistration::GetSharedParserRegistration()
     {

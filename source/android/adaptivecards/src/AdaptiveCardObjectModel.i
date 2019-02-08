@@ -101,8 +101,6 @@ struct tm {
 #include "../../../shared/cpp/ObjectModel/Media.h"
 #include "../../../shared/cpp/ObjectModel/ToggleVisibilityAction.h"
 #include "../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.h"
-#include "../../../shared/cpp/ObjectModel/UnknownElement.h"
-#include "../../../shared/cpp/ObjectModel/UnknownAction.h"
 %}
 
 %shared_ptr(AdaptiveCards::BaseActionElement)
@@ -159,10 +157,6 @@ struct tm {
 %shared_ptr(AdaptiveCards::ToggleVisibilityActionParser)
 %shared_ptr(AdaptiveCards::ActionSet)
 %shared_ptr(AdaptiveCards::ActionSetParser)
-%shared_ptr(AdaptiveCards::UnknownElement)
-%shared_ptr(AdaptiveCards::UnknownElementParser)
-%shared_ptr(AdaptiveCards::UnknownAction)
-%shared_ptr(AdaptiveCards::UnknownActionParser)
 
 namespace Json {
     %rename(JsonValue) Value;
@@ -665,5 +659,3 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.h"
 %include "../../../shared/cpp/ObjectModel/ToggleVisibilityAction.h"
 %include "../../../shared/cpp/ObjectModel/ActionSet.h"
-%include "../../../shared/cpp/ObjectModel/UnknownElement.h"
-%include "../../../shared/cpp/ObjectModel/UnknownAction.h"

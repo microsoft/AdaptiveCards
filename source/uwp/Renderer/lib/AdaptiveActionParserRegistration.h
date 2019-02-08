@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AdaptiveCards.Rendering.Uwp.h"
+#include "Util.h"
 
 namespace AdaptiveNamespace
 {
@@ -20,9 +21,9 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize(std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> sharedParserRegistration) noexcept;
 
         // IAdaptiveActionParserRegistration
-        IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveNamespace::IAdaptiveActionParser* Parser) noexcept;
-        IFACEMETHODIMP Get(_In_ HSTRING type, _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionParser** result) noexcept;
-        IFACEMETHODIMP Remove(_In_ HSTRING type) noexcept;
+        IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveNamespace::IAdaptiveActionParser* Parser);
+        IFACEMETHODIMP Get(_In_ HSTRING type, _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionParser** result);
+        IFACEMETHODIMP Remove(_In_ HSTRING type);
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
@@ -30,7 +31,6 @@ namespace AdaptiveNamespace
         std::shared_ptr<ActionParserRegistration> GetSharedParserRegistration();
 
     private:
-        bool m_isInitializing;
         std::shared_ptr<RegistrationMap> m_registration;
         std::shared_ptr<ActionParserRegistration> m_sharedParserRegistration;
     };
@@ -45,7 +45,7 @@ namespace AdaptiveNamespace
         {
         }
 
-        // AdaptiveSharedNamespace::ActionElementParser
+        // IBaseCardActionParser
         std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) override;
 
     private:

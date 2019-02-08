@@ -9,4 +9,3 @@
 #import "BaseCardElement.h"
 
 void configVisibility(UIView *view, const std::shared_ptr<AdaptiveCards::BaseCardElement>visibilityInfo);
-

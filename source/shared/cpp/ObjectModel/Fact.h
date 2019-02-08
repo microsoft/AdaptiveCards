@@ -1,6 +1,8 @@
 #pragma once
 
 #include "pch.h"
+#include "Enums.h"
+#include "json/json.h"
 #include "ElementParserRegistration.h"
 #include "DateTimePreparser.h"
 

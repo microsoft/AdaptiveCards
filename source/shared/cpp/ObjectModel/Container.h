@@ -1,6 +1,7 @@
 #pragma once
 
 #include "pch.h"
+#include "Enums.h"
 #include "BaseCardElement.h"
 
 namespace AdaptiveSharedNamespace
@@ -49,7 +50,7 @@ namespace AdaptiveSharedNamespace
         ContainerParser(ContainerParser&&) = default;
         ContainerParser& operator=(const ContainerParser&) = default;
         ContainerParser& operator=(ContainerParser&&) = default;
-        virtual ~ContainerParser() = default;
+        ~ContainerParser() = default;
 
         std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
         std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;

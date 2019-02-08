@@ -2,6 +2,7 @@
 
 #include "pch.h"
 #include "BaseCardElement.h"
+#include "Enums.h"
 
 namespace AdaptiveSharedNamespace
 {
@@ -41,7 +42,7 @@ namespace AdaptiveSharedNamespace
         ColumnSetParser(ColumnSetParser&&) = default;
         ColumnSetParser& operator=(const ColumnSetParser&) = default;
         ColumnSetParser& operator=(ColumnSetParser&&) = default;
-        virtual ~ColumnSetParser() = default;
+        ~ColumnSetParser() = default;
 
         std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
         std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;

@@ -7,34 +7,32 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "ACOParseContext.h"
 
 @interface ACOBaseCardElement:NSObject
 
 - (NSData *)additionalProperty;
 
 typedef NS_ENUM(NSInteger, ACRCardElementType) {
-    // The order of enums must match with ones in enums.h
-    ACRActionSet = 0,
+    ACRUnsupported = 0,
     ACRAdaptiveCard,
-    ACRChoiceInput,
-    ACRChoiceSetInput,
+    ACRTextBlock,
+    ACRImage,
+    ACRContainer,
     ACRColumn,
     ACRColumnSet,
-    ACRContainer,
-    ACRCustom,
-    ACRDateInput,
-    ACRFact,
     ACRFactSet,
-    ACRImage,
+    ACRFact,
     ACRImageSet,
-    ACRMedia,
+    ACRChoiceInput,
+    ACRChoiceSetInput,
+    ACRDateInput,
     ACRNumberInput,
-    ACRTextBlock,
     ACRTextInput,
     ACRTimeInput,
     ACRToggleInput,
-    ACRUnknown
+    ACRCustom,
+    ACRUnknown,
+    ACRMedia,
 };
 
 typedef NS_ENUM(NSInteger, ACRContainerStyle) {
@@ -49,6 +47,7 @@ typedef NS_ENUM(NSInteger, ACRContainerStyle) {
 
 @protocol ACOIBaseCardElementParser
 
-- (ACOBaseCardElement *)deserialize:(NSData *)json parseContext:(ACOParseContext* )parseContext;
+@optional
+- (UIView *)deserializeToCustomUIElement:(NSData* )json;
 
 @end

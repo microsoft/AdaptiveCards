@@ -3,6 +3,7 @@
 #include "pch.h"
 #include "SharedAdaptiveCard.h"
 #include "BaseActionElement.h"
+#include "Enums.h"
 #include "ActionParserRegistration.h"
 
 namespace AdaptiveSharedNamespace
@@ -35,7 +36,7 @@ namespace AdaptiveSharedNamespace
         ShowCardActionParser(ShowCardActionParser&&) = default;
         ShowCardActionParser& operator=(const ShowCardActionParser&) = default;
         ShowCardActionParser& operator=(ShowCardActionParser&&) = default;
-        virtual ~ShowCardActionParser() = default;
+        ~ShowCardActionParser() = default;
 
         std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) override;
         std::shared_ptr<BaseActionElement> DeserializeFromString(ParseContext& context, const std::string& jsonString);

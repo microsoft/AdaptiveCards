@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "CppUnitTest.h"
 #include "Fact.h"
 #include "ParseContext.h"
 
