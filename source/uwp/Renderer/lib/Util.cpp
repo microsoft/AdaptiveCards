@@ -719,7 +719,7 @@ CATCH_RETURN;
 
 HRESULT GetContainerStyleDefinition(ABI::AdaptiveNamespace::ContainerStyle style,
                                     _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
-                                    _Out_ ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition** styleDefinition) noexcept try
+                                    _Outptr_ ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition** styleDefinition) noexcept try
 {
     ComPtr<ABI::AdaptiveNamespace::IAdaptiveContainerStylesDefinition> containerStyles;
     RETURN_IF_FAILED(hostConfig->get_ContainerStyles(&containerStyles));
@@ -750,7 +750,7 @@ HRESULT GetContainerStyleDefinition(ABI::AdaptiveNamespace::ContainerStyle style
 }
 CATCH_RETURN;
 
-HRESULT GetColorFromAdaptiveColor(ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+HRESULT GetColorFromAdaptiveColor(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
                                   ABI::AdaptiveNamespace::ForegroundColor adaptiveColor,
                                   ABI::AdaptiveNamespace::ContainerStyle containerStyle,
                                   bool isSubtle,
