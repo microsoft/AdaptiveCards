@@ -13,14 +13,15 @@ using namespace ABI::Windows::Foundation;
 
 namespace AdaptiveNamespace
 {
-    AdaptiveImageRenderer::AdaptiveImageRenderer() { m_xamlBuilder = std::make_shared<XamlBuilder>(); }
+    AdaptiveImageRenderer::AdaptiveImageRenderer() {}
 
-    AdaptiveImageRenderer::AdaptiveImageRenderer(std::shared_ptr<XamlBuilder> xamlBuilder) : m_xamlBuilder(xamlBuilder)
+    AdaptiveImageRenderer::AdaptiveImageRenderer(ComPtr<XamlBuilder> xamlBuilder) : m_xamlBuilder(xamlBuilder)
     {
     }
 
     HRESULT AdaptiveImageRenderer::RuntimeClassInitialize() noexcept try
     {
+        RETURN_IF_FAILED(MakeAndInitialize<XamlBuilder>(&m_xamlBuilder));
         return S_OK;
     }
     CATCH_RETURN;

@@ -17,11 +17,12 @@ namespace AdaptiveNamespace
     class XamlBuilder
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, Microsoft::WRL::FtmBase, AdaptiveNamespace::IImageLoadTrackerListener>
     {
+        friend HRESULT Microsoft::WRL::Details::MakeAndInitialize<AdaptiveNamespace::XamlBuilder, AdaptiveNamespace::XamlBuilder>(
+            AdaptiveNamespace::XamlBuilder**);
+
         AdaptiveRuntimeStringClass(XamlBuilder);
 
     public:
-        XamlBuilder();
-
         // IImageLoadTrackerListener
         STDMETHODIMP AllImagesLoaded();
         STDMETHODIMP ImagesLoadingHadError();
@@ -30,7 +31,7 @@ namespace AdaptiveNamespace
             _In_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
             _Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** xamlTreeRoot,
             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-            std::shared_ptr<XamlBuilder> xamlBuilder,
+            Microsoft::WRL::ComPtr<XamlBuilder> xamlBuilder,
             boolean isOuterCard = true,
             ABI::AdaptiveNamespace::ContainerStyle defaultContainerStyle = ABI::AdaptiveNamespace::ContainerStyle::Default);
         HRESULT AddListener(_In_ IXamlBuilderListener* listener) noexcept;
@@ -116,6 +117,8 @@ namespace AdaptiveNamespace
         static Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::IBrush> GetSolidColorBrush(_In_ ABI::Windows::UI::Color color);
 
     private:
+        XamlBuilder();
+
         ImageLoadTracker m_imageLoadTracker;
         std::set<Microsoft::WRL::ComPtr<IXamlBuilderListener>> m_listeners;
         Microsoft::WRL::ComPtr<ABI::Windows::Storage::Streams::IRandomAccessStreamStatics> m_randomAccessStreamStatics;
@@ -133,7 +136,7 @@ namespace AdaptiveNamespace
         CreateRootCardElement(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
                               _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                               _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
-                              std::shared_ptr<XamlBuilder> xamlBuilder,
+                              Microsoft::WRL::ComPtr<XamlBuilder> xamlBuilder,
                               _Outptr_ ABI::Windows::UI::Xaml::Controls::IPanel** bodyElementContainer);
 
         static void ApplyBackgroundToRoot(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel,
@@ -142,11 +145,7 @@ namespace AdaptiveNamespace
                                           _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
 
         template<typename T>
-        void SetAutoSize(T* destination,
-                         IInspectable* parentElement,
-                         IInspectable* imageContainer,
-                         bool isVisible,
-                         bool imageFiresOpenEvent);
+        void SetAutoSize(T* destination, IInspectable* parentElement, IInspectable* imageContainer, bool isVisible, bool imageFiresOpenEvent);
 
         template<typename T>
         void SetImageSource(T* destination,

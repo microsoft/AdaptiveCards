@@ -115,7 +115,7 @@ namespace AdaptiveNamespace
     void XamlBuilder::BuildXamlTreeFromAdaptiveCard(_In_ IAdaptiveCard* adaptiveCard,
                                                     _Outptr_ IFrameworkElement** xamlTreeRoot,
                                                     _In_ IAdaptiveRenderContext* renderContext,
-                                                    std::shared_ptr<XamlBuilder> xamlBuilder,
+                                                    ComPtr<XamlBuilder> xamlBuilder,
                                                     boolean isOuterCard,
                                                     ABI::AdaptiveNamespace::ContainerStyle defaultContainerStyle)
     {
@@ -370,7 +370,7 @@ namespace AdaptiveNamespace
     ComPtr<IUIElement> XamlBuilder::CreateRootCardElement(_In_ IAdaptiveCard* adaptiveCard,
                                                           _In_ IAdaptiveRenderContext* renderContext,
                                                           _In_ IAdaptiveRenderArgs* renderArgs,
-                                                          std::shared_ptr<XamlBuilder> xamlBuilder,
+                                                          ComPtr<XamlBuilder> xamlBuilder,
                                                           _Outptr_ IPanel** bodyElementContainer)
     {
         // The root of an adaptive card is a composite of several elements, depending on the card
