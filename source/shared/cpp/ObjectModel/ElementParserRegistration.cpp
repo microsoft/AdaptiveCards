@@ -109,6 +109,10 @@ namespace AdaptiveSharedNamespace
         auto parser = m_cardElementParsers.find(elementType);
         if (parser != ElementParserRegistration::m_cardElementParsers.end())
         {
+            // Why do we wrap the parser? As we parse elements, we need to push and pop state from the stack for ID
+            // collision detection. We *could* do this within the implementation of parsers themselves, but that would
+            // mean having to explain all of this to custom element parser implementors. Instead, we wrap every parser
+            // we hand out with a helper class that performs the push/pop on behalf of the element parser.
             std::shared_ptr<BaseCardElementParser> wrappedParser = std::make_shared<BaseCardElementParserWrapper>(parser->second);
             return wrappedParser;
         }
