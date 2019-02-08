@@ -49,7 +49,7 @@ AdaptiveNamespaceStart
 
     HRESULT AdaptiveCardRenderer::RuntimeClassInitialize()
     {
-        m_xamlBuilder = std::make_shared<XamlBuilder>();
+        RETURN_IF_FAILED(MakeAndInitialize<XamlBuilder>(&m_xamlBuilder));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveElementRendererRegistration>(&m_elementRendererRegistration));
         RETURN_IF_FAILED(RegisterDefaultElementRenderers());
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveHostConfig>(&m_hostConfig));
@@ -303,8 +303,5 @@ AdaptiveNamespaceStart
         return S_OK;
     }
 
-    std::shared_ptr<XamlBuilder> AdaptiveCardRenderer::GetXamlBuilder()
-    {
-        return m_xamlBuilder;
-    }
+    ComPtr<XamlBuilder> AdaptiveCardRenderer::GetXamlBuilder() { return m_xamlBuilder; }
 AdaptiveNamespaceEnd
