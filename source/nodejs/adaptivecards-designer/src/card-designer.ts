@@ -302,6 +302,7 @@ export class CardDesigner {
         let wasInPreviewMode = this._designerSurface ? this._designerSurface.isPreviewMode : false;
 
         this._designerSurface = new Designer.CardDesignerSurface(this.activeHostContainer.cardHost);
+        this._designerSurface.fixedHeightCard = this.activeHostContainer.isFixedHeight;
         this._designerSurface.onSelectedPeerChanged = (peer: DesignerPeers.CardElementPeer) => {
             this.buildPropertySheet(peer);
         };

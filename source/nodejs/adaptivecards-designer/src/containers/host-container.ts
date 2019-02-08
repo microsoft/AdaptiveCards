@@ -11,6 +11,7 @@ export abstract class HostContainer {
         this.styleSheet = styleSheet;
 
         this._cardHost = document.createElement("div");
+        this._cardHost.className = "cardHost";
     }
 
     abstract renderTo(hostElement: HTMLElement);
@@ -167,5 +168,9 @@ export abstract class HostContainer {
 
     get cardHost(): HTMLElement {
         return this._cardHost;
+    }
+
+    get isFixedHeight(): boolean {
+        return false;
     }
 }

@@ -1246,6 +1246,19 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
             this.changed(false);
         }
 
+        let verticalContentAlignment = addLabelAndInput(card, "Vertical content alignment:", Adaptive.ChoiceSetInput);
+        verticalContentAlignment.input.isCompact = true;
+        verticalContentAlignment.input.choices.push(new Adaptive.Choice("Top", Adaptive.VerticalAlignment.Top.toString()));
+        verticalContentAlignment.input.choices.push(new Adaptive.Choice("Center", Adaptive.VerticalAlignment.Center.toString()));
+        verticalContentAlignment.input.choices.push(new Adaptive.Choice("Bottom", Adaptive.VerticalAlignment.Bottom.toString()));
+        verticalContentAlignment.input.defaultValue = this.cardElement.verticalContentAlignment.toString();
+        verticalContentAlignment.input.placeholder = "(not set)";
+        verticalContentAlignment.input.onValueChanged = () => {
+            this.cardElement.verticalContentAlignment = <Adaptive.VerticalAlignment>parseInt(verticalContentAlignment.input.value);
+
+            this.changed(false);
+        }
+
         this.internalAddBackgroundImageProperties(card, this.cardElement.backgroundImage);
         
         let actionSelector = createActionSelector(card, this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
@@ -1376,7 +1389,7 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
         verticalContentAlignment.input.choices.push(new Adaptive.Choice("Top", Adaptive.VerticalAlignment.Top.toString()));
         verticalContentAlignment.input.choices.push(new Adaptive.Choice("Center", Adaptive.VerticalAlignment.Center.toString()));
         verticalContentAlignment.input.choices.push(new Adaptive.Choice("Bottom", Adaptive.VerticalAlignment.Bottom.toString()));
-        verticalContentAlignment.input.defaultValue = this.cardElement.spacing.toString();
+        verticalContentAlignment.input.defaultValue = this.cardElement.verticalContentAlignment.toString();
         verticalContentAlignment.input.placeholder = "(not set)";
         verticalContentAlignment.input.onValueChanged = () => {
             this.cardElement.verticalContentAlignment = <Adaptive.VerticalAlignment>parseInt(verticalContentAlignment.input.value);
@@ -1545,6 +1558,19 @@ export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
 
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
+
+        let verticalContentAlignment = addLabelAndInput(card, "Vertical content alignment:", Adaptive.ChoiceSetInput);
+        verticalContentAlignment.input.isCompact = true;
+        verticalContentAlignment.input.choices.push(new Adaptive.Choice("Top", Adaptive.VerticalAlignment.Top.toString()));
+        verticalContentAlignment.input.choices.push(new Adaptive.Choice("Center", Adaptive.VerticalAlignment.Center.toString()));
+        verticalContentAlignment.input.choices.push(new Adaptive.Choice("Bottom", Adaptive.VerticalAlignment.Bottom.toString()));
+        verticalContentAlignment.input.defaultValue = this.cardElement.verticalContentAlignment.toString();
+        verticalContentAlignment.input.placeholder = "(not set)";
+        verticalContentAlignment.input.onValueChanged = () => {
+            this.cardElement.verticalContentAlignment = <Adaptive.VerticalAlignment>parseInt(verticalContentAlignment.input.value);
+
+            this.changed(false);
+        }
 
         let style = addLabelAndInput(card, "Style:", Adaptive.ChoiceSetInput);
         style.input.isCompact = true;
