@@ -619,18 +619,19 @@ export class HostConfig {
 		}
 	}
 }
+//[ST]- Fix for the imageSet issues, when the size is undefined
 
 export const defaultHostConfig = {
 	supportsInteractivity: true,
 	fontFamily: "Segoe UI",
 	spacing: {
 		none: 0,
-		small: 10,
-		default: 20,
-		medium: 30,
-		large: 40,
-		extraLarge: 50,
-		padding: 20
+		small: 3,
+		default: 8,
+		medium: 20,
+		large: 30,
+		extraLarge: 40,
+		padding: 15
 	},
 	separator: {
 		lineThickness: 1,

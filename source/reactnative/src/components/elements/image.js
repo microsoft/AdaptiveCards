@@ -51,6 +51,8 @@ export class Img extends React.Component {
 		this.horizontalAlignment = this.getImageAlignment();
 		this.selectAction = this.payload.selectAction || null;
 		if (Utils.isNullOrEmpty(this.payload.size)) {
+			//[ST]- Fix for the imageSet issues, when the size is undefined
+			this.isSizeUndefined = true;
 			this.payload.size = Constants.Auto;
 		}
 		this.sizeStyling = this.applySize();
@@ -201,12 +203,29 @@ export class Img extends React.Component {
 					}
 				default:
 					{
-						sizeStyle.push([styles.imageAuto, {
-							width: this.state.imageWidth,
-							height: this.state.imageHeight
-						}]);
-						this.width = this.state.imageWidth;
-						this.height = this.state.imageHeight;
+									//[ST]- Fix for the imageSet issues, when the size is undefined
+						if ((this.isSizeUndefined && this.payload.fromImageSet == true) ||
+							(this.payload.fromImageSet == true)) {
+							sizeStyle.push([styles.imageAuto, { width: this.hostConfig.imageSizes.medium }]);
+							this.isPersonStyle() ?
+								sizeStyle.push({ height: this.hostConfig.imageSizes.medium }) :
+								sizeStyle.push({ height: this.state.imageHeight })
+
+							this.payload.fromImageSet == true ?
+								sizeStyle.push({ height: this.state.imageHeight }) :
+								sizeStyle.push({ height: this.hostConfig.imageSizes.medium })
+
+							this.width = this.hostConfig.imageSizes.medium;
+						}
+						else {
+							sizeStyle.push([styles.imageAuto, {
+								width: this.state.imageWidth,
+								height: this.state.imageHeight
+							}]);
+
+							this.width = this.state.imageWidth;
+							this.height = this.state.imageHeight;
+						}
 						break;
 					}
 			}
