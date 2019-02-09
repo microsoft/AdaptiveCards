@@ -18,10 +18,12 @@ AdaptiveNamespaceStart
         Microsoft::WRL::FtmBase,
         AdaptiveNamespace::IImageLoadTrackerListener>
     {
-        AdaptiveRuntimeStringClass(XamlBuilder)
-    public:
-        XamlBuilder();
+        friend HRESULT Microsoft::WRL::Details::MakeAndInitialize<AdaptiveNamespace::XamlBuilder, AdaptiveNamespace::XamlBuilder>(
+            AdaptiveNamespace::XamlBuilder**);
 
+        AdaptiveRuntimeStringClass(XamlBuilder);
+
+    public:
         // IImageLoadTrackerListener
         STDMETHODIMP AllImagesLoaded();
         STDMETHODIMP ImagesLoadingHadError();
@@ -123,6 +125,8 @@ AdaptiveNamespaceStart
         static Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::IBrush> GetSolidColorBrush(_In_ ABI::Windows::UI::Color color);
 
     private:
+        XamlBuilder();
+
         ImageLoadTracker m_imageLoadTracker;
         std::set<Microsoft::WRL::ComPtr<IXamlBuilderListener>> m_listeners;
         Microsoft::WRL::ComPtr<ABI::Windows::Storage::Streams::IRandomAccessStreamStatics> m_randomAccessStreamStatics;

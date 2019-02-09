@@ -50,7 +50,7 @@ AdaptiveNamespaceStart
         ABI::AdaptiveNamespace::IAdaptiveHostConfig* GetHostConfig();
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> GetMergedDictionary();
         bool GetFixedDimensions(_Out_ UINT32* width, _Out_ UINT32* height);
-        std::shared_ptr<AdaptiveNamespace::XamlBuilder> GetXamlBuilder();
+        Microsoft::WRL::ComPtr<AdaptiveNamespace::XamlBuilder> GetXamlBuilder();
 
         IFACEMETHODIMP get_ResourceResolvers(
             _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers** value);
@@ -63,7 +63,7 @@ AdaptiveNamespaceStart
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers> m_resourceResolvers;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveElementRendererRegistration> m_elementRendererRegistration;
 
-        std::shared_ptr<AdaptiveNamespace::XamlBuilder> m_xamlBuilder;
+        Microsoft::WRL::ComPtr<AdaptiveNamespace::XamlBuilder> m_xamlBuilder;
         bool m_explicitDimensions = false;
         UINT32 m_desiredWidth = 0;
         UINT32 m_desiredHeight = 0;
