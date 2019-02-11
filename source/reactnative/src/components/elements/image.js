@@ -68,6 +68,7 @@ export class Img extends React.Component {
 		this.separator = this.payload.separator || false;
 		//[ST]- Fix for the image background color issue
 		this.backgroundColor = Utils.hexToRGB(this.payload.backgroundColor) || Constants.TransparentString;
+		console.log("BG Color:",this.backgroundColor);
 	}
 
     /**
@@ -296,8 +297,9 @@ export class Img extends React.Component {
 		let imageComputedStyle = [this.sizeStyling];
 		//[ST]- Fix for the image background color issue
 		imageComputedStyle.push({ backgroundColor: this.backgroundColor })
-
 		let wrapperComputedStyle = this.horizontalAlignment;
+		wrapperComputedStyle.push({backgroundColor:'transparent'});
+
 		if (this.payload.fromImageSet == true) {
 			wrapperComputedStyle.push({ margin: spacing });
 		}
