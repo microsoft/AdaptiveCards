@@ -506,6 +506,18 @@ namespace AdaptiveCards.Rendering.Html
 
             AddSelectAction(uiColumnSet, columnSet.SelectAction, context);
 
+            if (columnSet.Style != null)
+            {
+                // Apply background color
+                var columnSetStyle = context.Config.ContainerStyles.Default;
+                if (columnSet.Style == AdaptiveContainerStyle.Emphasis)
+                {
+                    columnSetStyle = context.Config.ContainerStyles.Emphasis;
+                }
+
+                uiColumnSet.Style("background-color", context.GetRGBColor(columnSetStyle.BackgroundColor));
+            }
+
             var max = Math.Max(1.0, columnSet.Columns.Select(col =>
             {
                 if (col.Width != null && double.TryParse(col.Width, out double widthVal))
