@@ -158,19 +158,23 @@ export class Input extends React.Component {
 			return null;
 		}
 		var returnKeyType = "done"
+		let wrapperStyle = [styles.inlineActionWrapper];
+		wrapperStyle.push({ alignItems: 'center' })
+
 		if (isMultiline) {
+			wrapperStyle.push({ alignItems: 'flex-end' })
 			returnKeyType = "default";
 		}
 		return (
 			<InputContextConsumer>
 				{({ addInputItem, onExecuteAction }) => (
-					<ElementWrapper json={this.payload} style={styles.inlineActionWrapper}>
+					<ElementWrapper json={this.payload} style={wrapperStyle}>
 						<TextInput
 							style={[this.getComputedStyles(), styles.inlineActionTextInput]}
 							autoCapitalize={Constants.NoneString}
 							autoCorrect={false}
 							placeholder={placeholder}
-							placeholderTextColor='white'
+							placeholderTextColor='#3a3a3a'
 							multiline={isMultiline}
 							maxLength={maxLength}
 							returnKeyLabel={'submit'}
@@ -217,7 +221,8 @@ export class Input extends React.Component {
 
 const styles = StyleSheet.create({
 	inlineActionText: {
-		color: 'white',
+		marginLeft: 5,
+		color: '#3a3a3a',
 	},
 	withBorderColor: {
 		borderColor: Constants.LightGreyColor,
@@ -237,20 +242,21 @@ const styles = StyleSheet.create({
 	},
 	inlineActionWrapper: {
 		flexDirection: 'row',
-		alignItems: 'center',
-		backgroundColor: "#9E9E9E",
+		backgroundColor: "transparent",
 		borderRadius: 5,
 	},
 	inlineActionTextInput: {
 		padding: 5,
 		width: '85%',
 		backgroundColor: 'transparent',
-		color: 'white',
-		borderWidth: 0,
+		color: '#3a3a3a',
+		borderColor:"#9E9E9E",
+		borderWidth: 1,
 	},
 	inlineActionImage: {
-		width: 30,
-		height: 30,
+		marginLeft: 10,
+		width: 20,
+		height: 20,
 		backgroundColor: 'transparent',
 	},
 });
