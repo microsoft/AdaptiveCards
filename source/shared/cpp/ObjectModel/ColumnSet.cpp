@@ -32,6 +32,16 @@ void ColumnSet::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
     m_selectAction = action;
 }
 
+ContainerStyle ColumnSet::GetStyle() const
+{
+    return m_style;
+}
+
+void ColumnSet::SetStyle(const ContainerStyle value)
+{
+    m_style = value;
+}
+
 void ColumnSet::SetLanguage(const std::string& language)
 {
     for (auto& column : m_columns)
@@ -57,6 +67,11 @@ Json::Value ColumnSet::SerializeToJsonValue() const
             BaseCardElement::SerializeSelectAction(m_selectAction);
     }
 
+    if (m_style != ContainerStyle::None)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(m_style);
+    }
+
     return root;
 }
 
@@ -73,6 +88,8 @@ std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(ParseContext& cont
     // Parse optional selectAction
     container->SetSelectAction(ParseUtil::GetAction(context, value, AdaptiveCardSchemaKey::SelectAction, false));
 
+    container->SetStyle(ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
+
     return container;
 }
 
@@ -84,7 +101,8 @@ std::shared_ptr<BaseCardElement> ColumnSetParser::DeserializeFromString(ParseCon
 void ColumnSet::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Columns),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)});
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)});
 }
 
 void ColumnSet::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
