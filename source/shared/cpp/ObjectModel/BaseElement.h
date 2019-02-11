@@ -9,7 +9,8 @@
 
 namespace AdaptiveSharedNamespace
 {
-    // Used to uniquely identify a single BaseElement-derived object through the course of deserializing.
+    // Used to uniquely identify a single BaseElement-derived object through the course of deserializing. For more
+    // details, refer to the giant comment on ID collision detection in ParseContext.cpp.
     class InternalId
     {
     public:
@@ -131,7 +132,8 @@ namespace AdaptiveSharedNamespace
             }
             else if (fallbackValue.isObject())
             {
-                // fallback value is a JSON object. parse it and add it as fallback content.
+                // fallback value is a JSON object. parse it and add it as fallback content. For more details, refer to
+                // the giant comment on ID collision detection in ParseContext.cpp.
                 context.PushElement(GetId(), GetInternalId(), true /*isFallback*/);
                 std::shared_ptr<BaseElement> fallbackElement;
                 T::ParseJsonObject(context, fallbackValue, fallbackElement);
