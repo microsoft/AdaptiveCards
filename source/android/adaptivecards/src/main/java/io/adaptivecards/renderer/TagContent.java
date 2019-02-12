@@ -5,33 +5,20 @@ import io.adaptivecards.renderer.inputhandler.IInputHandler;
 
 public class TagContent
 {
-
-    public TagContent(String id)
-    {
-        m_id = id;
-    }
-
     public TagContent(BaseCardElement baseCardElement)
     {
-        m_id = baseCardElement.GetId();
         m_baseElement = baseCardElement;
     }
 
     public TagContent(BaseCardElement baseCardElement, IInputHandler inputHandler)
     {
-        m_id = baseCardElement.GetId();;
         m_baseElement = baseCardElement;
         m_inputHandler = inputHandler;
     }
 
     public String GetId()
     {
-        return m_id;
-    }
-
-    public void SetId(String id)
-    {
-        m_id = id;
+        return m_baseElement.GetId();
     }
 
     public BaseCardElement GetBaseElement()
@@ -39,19 +26,9 @@ public class TagContent
         return m_baseElement;
     }
 
-    public void SetBaseElement(BaseCardElement baseCardElement)
-    {
-        m_baseElement = baseCardElement;
-    }
-
     public IInputHandler GetInputHandler()
     {
         return m_inputHandler;
-    }
-
-    public void SetInputHandler(IInputHandler inputHandler)
-    {
-        m_inputHandler = inputHandler;
     }
 
     @Override
@@ -63,10 +40,12 @@ public class TagContent
             if(o instanceof TagContent)
             {
                 TagContent tagContentCmp = (TagContent)o;
+
+                String id = GetId();
                 // If there's no id there's no way to compare
-                if(m_id != null && !m_id.isEmpty())
+                if(id != null && !id.isEmpty())
                 {
-                    return m_id.equals(tagContentCmp.GetId());
+                    return id.equals(tagContentCmp.GetId());
                 }
 
                 return false;
@@ -80,7 +59,6 @@ public class TagContent
         return false;
     }
 
-    private String m_id = null;
     private BaseCardElement m_baseElement = null;
-    private IInputHandler m_inputHandler;
+    private IInputHandler m_inputHandler = null;
 }
