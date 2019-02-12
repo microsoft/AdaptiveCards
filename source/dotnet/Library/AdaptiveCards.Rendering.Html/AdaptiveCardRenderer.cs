@@ -1393,7 +1393,7 @@ namespace AdaptiveCards.Rendering.Html
                 uiTextInput.Style("flex", "1 1 100%");
             }
 
-            if (context.Config.SupportsInteractivity)
+            if (context.Config.SupportsInteractivity && input.InlineAction != null)
             {
                 // ShowCard Inline Action Mode is not supported
                 if (input.InlineAction.Type == AdaptiveShowCardAction.TypeName &&
