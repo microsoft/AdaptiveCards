@@ -8,6 +8,7 @@
 #import "ACRContainerRenderer.h"
 #import "ACRColumnView.h"
 #import "ACRRendererPrivate.h"
+#import "ACRViewPrivate.h"
 #import "Container.h"
 #import "SharedAdaptiveCard.h"
 #import "ACRLongPressGestureRecognizerFactory.h"
@@ -44,6 +45,8 @@
 
     configBleed(rootView, elem, container, acoConfig);
 
+    [ACRView renderBackgroundImageView:containerElem->GetBackgroundImage().get() containerView:container rootView:rootView];
+    
     UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
     if(containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom){
         leadingBlankSpace = [container addPaddingSpace];

@@ -8,6 +8,7 @@
 
 #import "ACRView.h"
 #import "Image.h"
+#import "BackgroundImage.h"
 #import "SharedAdaptiveCard.h"
 #import "CollectionTypeElement.h"
 #include "ActionParserRegistration.h"
@@ -30,6 +31,8 @@ typedef void (^ObserverActionBlockForBaseAction)(NSObject<ACOIResourceResolver> 
 
 - (void)loadImage:(std::string const &)urlStr;
 
+- (void)loadBackgroundImageAccordingToResourceResolverIF:(std::shared_ptr<BackgroundImage> const &)backgroundImage key:(NSString *)key observerAction:(ObserverActionBlock)observerAction;
+
 - (void)loadImageAccordingToResourceResolverIFFromString:(std::string const &)url
     key:(NSString *)key observerAction:(ObserverActionBlock)observerAction;
 
@@ -39,4 +42,9 @@ typedef void (^ObserverActionBlockForBaseAction)(NSObject<ACOIResourceResolver> 
 - (void)updatePaddingMap:(std::shared_ptr<CollectionTypeElement> const &)collection view:(UIView *)view;
 
 - (UIView *)getBleedTarget:(InternalId const &)internalId;
+
++ (void)renderBackgroundImageView:(const AdaptiveCards::BackgroundImage *)backgroundImageProperties containerView:(UIView *)containerView rootView:(UIView *)rootView;
+
++ (void)applyBackgroundImageConstraints:(const AdaptiveCards::BackgroundImage *)backgroundImageProperties imageView:(UIView *)imageView;
+
 @end

@@ -8,6 +8,7 @@
 #import "ACRColumnRenderer.h"
 #import "ACRColumnView.h"
 #import "ACRRendererPrivate.h"
+#import "ACRViewPrivate.h"
 #import "Column.h"
 #import "SharedAdaptiveCard.h"
 #import "ACRLongPressGestureRecognizerFactory.h"
@@ -41,9 +42,8 @@
                                                      parentStyle:[viewGroup style] hostConfig:acoConfig superview:viewGroup];
 
     [viewGroup addArrangedSubview:column];
-
+    [ACRView renderBackgroundImageView:columnElem->GetBackgroundImage().get() containerView:column rootView:rootView];
     configBleed(rootView, elem, column, acoConfig);
-
     column.pixelWidth = columnElem->GetPixelWidth();
     if(columnElem->GetWidth() == "stretch" || columnElem->GetWidth() == "") {
         column.columnWidth = @"stretch";
