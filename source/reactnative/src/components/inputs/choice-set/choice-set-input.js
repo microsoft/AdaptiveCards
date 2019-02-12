@@ -41,7 +41,8 @@ export class ChoiceSetInput extends React.Component {
 		this.choices = [];
 		this.payload = props.json
 		this.state = {
-			selectedPickerValue: undefined,
+			selectedPickerValue:  Utils.isNullOrEmpty(props.json.value) ? 
+			props.json.choices[0].value : props.json.value,
 			isPickerSelected: false,
 			radioButtonIndex: undefined,
 			activeIndex: undefined,
@@ -132,9 +133,7 @@ export class ChoiceSetInput extends React.Component {
 						<Text
 							style={[styles.text, this.styleConfig.fontConfig]}
 						>
-							{this.state.selectedPickerValue == undefined ?
-								this.getPickerSelectedValue(this.value, addInputItem) :
-								this.getPickerSelectedValue(this.state.selectedPickerValue,
+							{this.getPickerSelectedValue(this.state.selectedPickerValue,
 									addInputItem)
 							}
 						</Text>
@@ -149,7 +148,6 @@ export class ChoiceSetInput extends React.Component {
 						<Picker
 							mode={'dropdown'}
 							selectedValue={this.state.selectedPickerValue}
-							
 							onValueChange={
 								(itemValue, itemIndex) => {
 									this.setState({
