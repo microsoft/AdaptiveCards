@@ -9,18 +9,17 @@ class TemplatizedString {
 
         do {
             let expressionFound = false;
-            let start: number;
+            let start = i;
             let loop;
-            let j = i;
             
             do {
                 loop = false;
 
-                start = s.indexOf("{", j);
+                start = s.indexOf("{", start);
 
                 if (start >= 0) {
                     if (start + 1 < s.length && s[start + 1] == "{") {
-                        j += 2;
+                        start += 2;
 
                         loop = true;
                     }
