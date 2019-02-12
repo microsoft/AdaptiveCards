@@ -75,6 +75,9 @@ export class ChoiceSetInput extends React.Component {
 		return choiceName.title
 	}
 
+    /**
+     * @description Fetches the initial value for the picker component
+     */
 	getPickerInitialValue = (addInputItem) => {
 		addInputItem(this.id, this.state.selectedPickerValue)
 		return this.state.selectedPickerValue
@@ -100,7 +103,7 @@ export class ChoiceSetInput extends React.Component {
 	}
 
     /**
-     * @description Selects the checboxes for the initial set of values from json
+     * @description Selects the checkboxes for the initial set of values from json
      * @param {string} value 
      */
 	setInitialCheckedValues = (value, addInputItem) => {
