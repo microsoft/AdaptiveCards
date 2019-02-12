@@ -112,7 +112,8 @@ namespace AdaptiveCards.Rendering.Html
         {
             tag.AddClass(GetActionCssClass(action))
                 .Attr("role", "button")
-                .Attr("aria-label", action.Title ?? "");
+                .Attr("aria-label", action.Title ?? "")
+                .Attr("tabindex","0");
 
             ActionTransformers.Apply(action, tag, context);
 
