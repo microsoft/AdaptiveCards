@@ -8,8 +8,7 @@
 using namespace AdaptiveSharedNamespace;
 
 Container::Container() :
-    BaseCardElement(CardElementType::Container), m_style(ContainerStyle::None),
-    m_verticalContentAlignment(VerticalContentAlignment::Top)
+    BaseCardElement(CardElementType::Container), CollectionTypeElement()
 {
     PopulateKnownPropertiesSet();
 }
@@ -22,16 +21,6 @@ const std::vector<std::shared_ptr<BaseCardElement>>& Container::GetItems() const
 std::vector<std::shared_ptr<BaseCardElement>>& Container::GetItems()
 {
     return m_items;
-}
-
-ContainerStyle Container::GetStyle() const
-{
-    return m_style;
-}
-
-void Container::SetStyle(const ContainerStyle value)
-{
-    m_style = value;
 }
 
 std::shared_ptr<BaseActionElement> Container::GetSelectAction() const
@@ -49,29 +38,19 @@ void Container::SetLanguage(const std::string& value)
     PropagateLanguage(value, m_items);
 }
 
-VerticalContentAlignment Container::GetVerticalContentAlignment() const
-{
-    return m_verticalContentAlignment;
-}
-
-void Container::SetVerticalContentAlignment(const VerticalContentAlignment value)
-{
-    m_verticalContentAlignment = value;
-}
-
 Json::Value Container::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
-    if (m_style != ContainerStyle::None)
+    if (GetStyle() != ContainerStyle::None)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(m_style);
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(GetStyle());
     }
 
-    if (m_verticalContentAlignment != VerticalContentAlignment::Top)
+    if (GetVerticalContentAlignment() != VerticalContentAlignment::Top)
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)] =
-            VerticalContentAlignmentToString(m_verticalContentAlignment);
+            VerticalContentAlignmentToString(GetVerticalContentAlignment());
     }
 
     std::string const& itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
@@ -100,9 +79,20 @@ std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(ParseContext& cont
     container->SetVerticalContentAlignment(ParseUtil::GetEnumValue<VerticalContentAlignment>(
         value, AdaptiveCardSchemaKey::VerticalContentAlignment, VerticalContentAlignment::Top, VerticalContentAlignmentFromString));
 
+    // we walk parse tree using dfs, so we need to save current style,
+    // before we walk back up to a parent.
+    auto style = context.GetParentalContainerStyle();
+    context.SetParentalContainerStyle(container->GetStyle());
+
+    // we set padding when parental style is different from child's
+    container->SetPadding(style != container->GetStyle());
+
     // Parse Items
     auto cardElements = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Items, false);
     container->m_items = std::move(cardElements);
+
+    // since we are doing dfs, we have to restore the style before we back up
+    context.SetParentalContainerStyle(style);
 
     // Parse optional selectAction
     container->SetSelectAction(ParseUtil::GetAction(context, value, AdaptiveCardSchemaKey::SelectAction, false));

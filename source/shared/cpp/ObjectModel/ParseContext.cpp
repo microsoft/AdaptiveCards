@@ -241,4 +241,14 @@ namespace AdaptiveSharedNamespace
         AdaptiveSharedNamespace::InternalId invalidId;
         return std::move(invalidId);
     }
+
+    ContainerStyle ParseContext::GetParentalContainerStyle() const
+    {
+        return m_parentalContainerStyle;
+    }
+
+    void ParseContext::SetParentalContainerStyle(const ContainerStyle value)
+    {
+        m_parentalContainerStyle = value;
+    }
 }

@@ -165,6 +165,7 @@
     <ClCompile Include="AdaptiveCardParseExceptionTest.cpp" />
     <ClCompile Include="AdditionalPropertiesTest.cpp" />
     <ClCompile Include="Base64Test.cpp" />
+    <ClCompile Include="ContainerStyleTest.cpp" />
     <ClCompile Include="UnsupportedtypesParsingTest.cpp" />
     <ClCompile Include="EnumTest.cpp" />
     <ClCompile Include="EverythingBagel.cpp" />

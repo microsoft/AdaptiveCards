@@ -2,12 +2,13 @@
 
 #include "pch.h"
 #include "BaseCardElement.h"
+#include "CollectionTypeElement.h"
 
 namespace AdaptiveSharedNamespace
 {
     class BaseActionElement;
 
-    class Container : public BaseCardElement
+    class Container : public BaseCardElement, public CollectionTypeElement
     {
         friend class ContainerParser;
 
@@ -24,24 +25,16 @@ namespace AdaptiveSharedNamespace
         std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
         const std::vector<std::shared_ptr<BaseCardElement>>& GetItems() const;
 
-        ContainerStyle GetStyle() const;
-        void SetStyle(const ContainerStyle value);
-
         std::shared_ptr<BaseActionElement> GetSelectAction() const;
         void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
         void SetLanguage(const std::string& value);
-
-        VerticalContentAlignment GetVerticalContentAlignment() const;
-        void SetVerticalContentAlignment(const VerticalContentAlignment value);
 
         void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
     private:
         void PopulateKnownPropertiesSet() override;
 
-        ContainerStyle m_style;
-        VerticalContentAlignment m_verticalContentAlignment;
         std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>> m_items;
         std::shared_ptr<BaseActionElement> m_selectAction;
     };
