@@ -126,7 +126,6 @@ namespace AdaptiveCards.Test
                     "FlightItinerary_es_fail",
                     "Action.DuplicateIds",
                     "Action.NestedDuplicateIds",
-                    "ToogleVisibility.AllElements",
 
                     // These are cards that features haven't been implemented yet
                 });
