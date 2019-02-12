@@ -8,6 +8,7 @@
 #import "ACRContainerRenderer.h"
 #import "ACRColumnView.h"
 #import "ACRRendererPrivate.h"
+#import "ACRViewPrivate.h"
 #import "Container.h"
 #import "SharedAdaptiveCard.h"
 #import "ACRLongPressGestureRecognizerFactory.h"
@@ -40,6 +41,8 @@
     ACRColumnView *container = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)containerElem->GetStyle()
                                                         parentStyle:[viewGroup style] hostConfig:acoConfig superview:viewGroup];
 
+    [ACRView renderBackgroundImageView:containerElem->GetBackgroundImage().get() containerView:container rootView:rootView];
+    
     UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
     if(containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom){
         leadingBlankSpace = [container addPaddingSpace];

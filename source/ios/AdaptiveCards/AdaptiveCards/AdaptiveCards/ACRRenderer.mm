@@ -20,6 +20,7 @@
 #import "ACRViewController.h"
 #import "ACRContentHoldingUIScrollView.h"
 #import "ACRLongPressGestureRecognizerFactory.h"
+#import "ACRUIImageView.h"
 
 using namespace AdaptiveCards;
 
@@ -88,7 +89,7 @@ using namespace AdaptiveCards;
     if((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
         ObserverActionBlock observerAction =
         ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &elem, NSURL* url, ACRView* rootView) {
-            UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
+            UIImageView *view = [imageResourceResolver resolveBackgroundImageViewResource:url hasStretch:(backgroundImageProperties->GetMode() == BackgroundImageMode::Stretch)];
             [rootView setImageView:key view:view];
             if(view) {
                 [view addObserver:rootView forKeyPath:@"image"
@@ -97,8 +98,8 @@ using namespace AdaptiveCards;
             }
         };
         [rootView
-            loadImageAccordingToResourceResolverIFFromString:adaptiveCard->GetBackgroundImage()->GetUrl()
-            key:@"backgroundImage" observerAction:observerAction];
+            loadBackgroundImageAccordingToResourceResolverIF:adaptiveCard->GetBackgroundImage()
+            key:nil observerAction:observerAction];
     }
 
     if(![config getHostConfig]->GetMedia().playButton.empty()) {

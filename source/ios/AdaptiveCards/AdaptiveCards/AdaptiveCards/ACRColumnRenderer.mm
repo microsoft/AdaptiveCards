@@ -8,6 +8,7 @@
 #import "ACRColumnRenderer.h"
 #import "ACRColumnView.h"
 #import "ACRRendererPrivate.h"
+#import "ACRViewPrivate.h"
 #import "Column.h"
 #import "SharedAdaptiveCard.h"
 #import "ACRLongPressGestureRecognizerFactory.h"
@@ -40,6 +41,8 @@
     ACRColumnView* column = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)columnElem->GetStyle()
                                                      parentStyle:[viewGroup style] hostConfig:acoConfig superview:viewGroup];
 
+    [ACRView renderBackgroundImageView:columnElem->GetBackgroundImage().get() containerView:column rootView:rootView];
+    
     column.pixelWidth = columnElem->GetPixelWidth();
     if(columnElem->GetWidth() == "stretch" || columnElem->GetWidth() == "") {
         column.columnWidth = @"stretch";

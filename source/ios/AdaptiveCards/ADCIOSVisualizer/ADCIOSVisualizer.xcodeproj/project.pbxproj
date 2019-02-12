@@ -69,6 +69,11 @@
 		6BF339E320A66A3F00DA5973 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; };
 		6BF339E420A66A4D00DA5973 /* AdaptiveCards.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6BF4307A2190F1140068E432 /* Input.Text.InlineAction.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BF430792190F1140068E432 /* Input.Text.InlineAction.json */; };
+		C8D7215E220CFBAF00E903B3 /* AdaptiveCard.BackgroundImage.Mode.RepeatVertically.json in Resources */ = {isa = PBXBuildFile; fileRef = C8D72159220CFBAE00E903B3 /* AdaptiveCard.BackgroundImage.Mode.RepeatVertically.json */; };
+		C8D7215F220CFBAF00E903B3 /* AdaptiveCard.BackgroundImage.Mode.Repeat.json in Resources */ = {isa = PBXBuildFile; fileRef = C8D7215A220CFBAE00E903B3 /* AdaptiveCard.BackgroundImage.Mode.Repeat.json */; };
+		C8D72160220CFBAF00E903B3 /* Column.BackgroundImage.json in Resources */ = {isa = PBXBuildFile; fileRef = C8D7215B220CFBAE00E903B3 /* Column.BackgroundImage.json */; };
+		C8D72161220CFBAF00E903B3 /* Container.BackgroundImage.json in Resources */ = {isa = PBXBuildFile; fileRef = C8D7215C220CFBAF00E903B3 /* Container.BackgroundImage.json */; };
+		C8D72162220CFBAF00E903B3 /* AdaptiveCard.BackgroundImage.Mode.RepeatHorizontally.json in Resources */ = {isa = PBXBuildFile; fileRef = C8D7215D220CFBAF00E903B3 /* AdaptiveCard.BackgroundImage.Mode.RepeatHorizontally.json */; };
 		7EF887CD21FBCEF900BAFF02 /* Container.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = 7EF887CC21FBCEF900BAFF02 /* Container.Style.json */; };
 		F4071C831FD63D5400AF4FEA /* Solitaire.json in Resources */ = {isa = PBXBuildFile; fileRef = F4071C821FD63D5300AF4FEA /* Solitaire.json */; };
 		F423C0771EE1FB6100905679 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C0761EE1FB6100905679 /* main.m */; };
@@ -228,6 +233,11 @@
 		6BF339D520A665E600DA5973 /* CustomTextBlockRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTextBlockRenderer.h; sourceTree = "<group>"; };
 		6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BF430792190F1140068E432 /* Input.Text.InlineAction.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Input.Text.InlineAction.json; path = ../../../../samples/v1.2/Elements/Input.Text.InlineAction.json; sourceTree = "<group>"; };
+		C8D72159220CFBAE00E903B3 /* AdaptiveCard.BackgroundImage.Mode.RepeatVertically.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdaptiveCard.BackgroundImage.Mode.RepeatVertically.json; path = ../../../../samples/v1.2/Elements/AdaptiveCard.BackgroundImage.Mode.RepeatVertically.json; sourceTree = "<group>"; };
+		C8D7215A220CFBAE00E903B3 /* AdaptiveCard.BackgroundImage.Mode.Repeat.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdaptiveCard.BackgroundImage.Mode.Repeat.json; path = ../../../../samples/v1.2/Elements/AdaptiveCard.BackgroundImage.Mode.Repeat.json; sourceTree = "<group>"; };
+		C8D7215B220CFBAE00E903B3 /* Column.BackgroundImage.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.BackgroundImage.json; path = ../../../../samples/v1.2/Elements/Column.BackgroundImage.json; sourceTree = "<group>"; };
+		C8D7215C220CFBAF00E903B3 /* Container.BackgroundImage.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Container.BackgroundImage.json; path = ../../../../samples/v1.2/Elements/Container.BackgroundImage.json; sourceTree = "<group>"; };
+		C8D7215D220CFBAF00E903B3 /* AdaptiveCard.BackgroundImage.Mode.RepeatHorizontally.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdaptiveCard.BackgroundImage.Mode.RepeatHorizontally.json; path = ../../../../samples/v1.2/Elements/AdaptiveCard.BackgroundImage.Mode.RepeatHorizontally.json; sourceTree = "<group>"; };
 		7EF887CC21FBCEF900BAFF02 /* Container.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Container.Style.json; path = ../../../../samples/v1.2/Elements/Container.Style.json; sourceTree = "<group>"; };
 		F4071C821FD63D5300AF4FEA /* Solitaire.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Solitaire.json; path = ../../../../samples/v1.0/Scenarios/Solitaire.json; sourceTree = "<group>"; };
 		F423C0721EE1FB6100905679 /* ADCIOSVisualizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ADCIOSVisualizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -437,6 +447,11 @@
 			children = (
 				30C340E32214D50F009A785D /* ColumnSet.Style.json */,
 				6B22426721E94AD0000ACDA1 /* Action.CustomParsing.json */,
+				C8D7215A220CFBAE00E903B3 /* AdaptiveCard.BackgroundImage.Mode.Repeat.json */,
+				C8D7215D220CFBAF00E903B3 /* AdaptiveCard.BackgroundImage.Mode.RepeatHorizontally.json */,
+				C8D72159220CFBAE00E903B3 /* AdaptiveCard.BackgroundImage.Mode.RepeatVertically.json */,
+				C8D7215B220CFBAE00E903B3 /* Column.BackgroundImage.json */,
+				C8D7215C220CFBAF00E903B3 /* Container.BackgroundImage.json */,
 				6B98093E216573EE0024B79B /* Action.IconUrl.TwoActions.json */,
 				6B980944216573EF0024B79B /* Action.OpenUrl.IconUrl.json */,
 				300ECB70219A53B800371DC5 /* Action.OpenUrl.Sentiment.json */,
@@ -689,8 +704,10 @@
 				F4933CE81F79852C00F6EBFD /* TextBlock.Markdown.json in Resources */,
 				6B616C3C21CB0B6D003E29CE /* Action.ToggleVisibility.json in Resources */,
 				F4933D021F79853B00F6EBFD /* InputForm.json in Resources */,
+				C8D7215E220CFBAF00E903B3 /* AdaptiveCard.BackgroundImage.Mode.RepeatVertically.json in Resources */,
 				6B9AB30620D9857B005C8E15 /* Image.Explicit.Size.json in Resources */,
 				30860BCA20C9B5C9009F9D99 /* ColumnSet.FactSet.VerticalStretch.json in Resources */,
+				C8D7215F220CFBAF00E903B3 /* AdaptiveCard.BackgroundImage.Mode.Repeat.json in Resources */,
 				6B980948216573F00024B79B /* Action.IconUrl.TwoActions.json in Resources */,
 				F4933CD81F79852C00F6EBFD /* Image.Style.json in Resources */,
 				6B980947216573F00024B79B /* VerticalContentAlignment_ForcedColumn.json in Resources */,
@@ -710,6 +727,7 @@
 				F4933CE31F79852C00F6EBFD /* Stylesheet.json in Resources */,
 				F4933D011F79853B00F6EBFD /* ImageGallery.json in Resources */,
 				F4933D001F79853B00F6EBFD /* FoodOrder.json in Resources */,
+				C8D72162220CFBAF00E903B3 /* AdaptiveCard.BackgroundImage.Mode.RepeatHorizontally.json in Resources */,
 				F4933CE21F79852C00F6EBFD /* Input.Toggle.json in Resources */,
 				6B268FE320CEF19400D99C1B /* (null) in Resources */,
 				6BF4307A2190F1140068E432 /* Input.Text.InlineAction.json in Resources */,
@@ -725,6 +743,7 @@
 				F423C0881EE1FB6100905679 /* LaunchScreen.storyboard in Resources */,
 				F423C0851EE1FB6100905679 /* Assets.xcassets in Resources */,
 				F4933CE01F79852C00F6EBFD /* Input.Text.Style.json in Resources */,
+				C8D72160220CFBAF00E903B3 /* Column.BackgroundImage.json in Resources */,
 				6B9BDF7C20E6E0C200F13155 /* Column.Explicit.Size.json in Resources */,
 				F4933CC71F79852C00F6EBFD /* Column.Spacing.json in Resources */,
 				F4933CC31F79852C00F6EBFD /* Action.ShowCard.json in Resources */,
@@ -755,6 +774,7 @@
 				F4D402161F7DB0BF00D0356B /* sample.json in Resources */,
 				6B980949216573F00024B79B /* Column.VerticalContentAlignment.json in Resources */,
 				F423C0801EE1FB6100905679 /* Main.storyboard in Resources */,
+				C8D72161220CFBAF00E903B3 /* Container.BackgroundImage.json in Resources */,
 				300ECB74219A53B800371DC5 /* Action.ShowCard.Sentiment.json in Resources */,
 				6B5D23FB2124ADAC0010EB07 /* Image.ImageBaseUrl.json in Resources */,
 				F4933CD71F79852C00F6EBFD /* Image.Spacing.json in Resources */,

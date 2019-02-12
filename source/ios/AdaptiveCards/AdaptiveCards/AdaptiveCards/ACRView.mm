@@ -32,6 +32,7 @@
 #import "FactSet.h"
 #import "AdaptiveBase64Util.h"
 #import "ACRButton.h"
+#import "BackgroundImage.h"
 
 using namespace AdaptiveCards;
 typedef UIImage* (^ImageLoadBlock)(NSURL *url);
@@ -115,7 +116,14 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     newView.backgroundColor = [_hostConfig getBackgroundColorForContainerStyle:
         [ACOHostConfig getPlatformContainerStyle:style]];
 
-    auto backgroundImageProperties = [_adaptiveCard card]->GetBackgroundImage();
+    [ACRView renderBackgroundImageView:[_adaptiveCard card]->GetBackgroundImage().get() containerView:newView rootView:self];
+    
+    [self callDidLoadElementsIfNeeded];
+    return newView;
+}
+
++ (void)renderBackgroundImageView:(const AdaptiveCards::BackgroundImage *)backgroundImageProperties containerView:(UIView *)containerView rootView:(ACRView *)rootView
+{
     std::string imageUrl = "";
     if((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
         imageUrl = backgroundImageProperties->GetUrl();
@@ -123,35 +131,109 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     
     NSString *key = [NSString stringWithCString:imageUrl.c_str() encoding:[NSString defaultCStringEncoding]];
     if ([key length]) {
-        UIView *imgView = nil;
+        UIImageView *imgView = nil;
         UIImage *img = nil;
-        img = _imageViewMap[key];
+        img = [rootView getImageMap][key];
         if (img) {
-            imgView = [[ACRUIImageView alloc] initWithImage:img];
+            if (backgroundImageProperties->GetMode() == BackgroundImageMode::Stretch) {
+                imgView = [[ACRUIImageView alloc] initWithImage:img];
+            } else {
+                imgView = [[ACRUIImageView alloc] init];
+                imgView.backgroundColor = [UIColor colorWithPatternImage:img];
+            }
         } else {
-            imgView = [self getImageView:@"backgroundImage"];
+            NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)backgroundImageProperties];
+            NSString * imageViewKey = [number stringValue];
+            imgView = [rootView getImageView:imageViewKey];
         }
-
+        
         if (imgView) {
             imgView.translatesAutoresizingMaskIntoConstraints = NO;
-            imgView.contentMode = UIViewContentModeScaleAspectFill;
-            [newView addSubview:imgView];
-            [newView sendSubviewToBack:imgView];
-            [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
-            [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
-            [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
-            [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
-            [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
-            [NSLayoutConstraint constraintWithItem:imgView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:newView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
-
+            [containerView addSubview:imgView];
+            [containerView sendSubviewToBack:imgView];
+            
+            [ACRView applyBackgroundImageConstraints:backgroundImageProperties imageView:imgView];
+            
             [imgView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
             [imgView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
             [imgView setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
             [imgView setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
         }
     }
-    [self callDidLoadElementsIfNeeded];
-    return newView;
+}
+
++ (void) applyBackgroundImageConstraints:(const AdaptiveCards::BackgroundImage *)backgroundImageProperties imageView:(UIImageView *)imageView
+{
+    UIView *parentView = [imageView superview];
+    UIImage *image = [imageView image];
+    switch (backgroundImageProperties->GetMode()) {
+        case AdaptiveCards::BackgroundImageMode::Repeat:
+        {
+            [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:parentView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:parentView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:parentView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:parentView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:parentView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:parentView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
+            
+            imageView.contentMode = UIViewContentModeScaleAspectFill;
+            break;
+        }
+        case AdaptiveCards::BackgroundImageMode::RepeatHorizontally:
+        {
+            [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:image.size.height].active = YES;
+            [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:parentView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:parentView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
+            
+            switch (backgroundImageProperties->GetVerticalAlignment())
+            {
+                case AdaptiveCards::VerticalAlignment::Bottom:
+                    [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:parentView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
+                    break;
+                case AdaptiveCards::VerticalAlignment::Center:
+                    [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:parentView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
+                    break;
+                case AdaptiveCards::VerticalAlignment::Top:
+                default:
+                    [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:parentView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
+                    break;
+            }
+            break;
+        }
+        case AdaptiveCards::BackgroundImageMode::RepeatVertically:
+        {
+            [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:image.size.width].active = YES;
+            [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:parentView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:parentView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
+            switch (backgroundImageProperties->GetHorizontalAlignment())
+            {
+                case AdaptiveCards::HorizontalAlignment::Right:
+                    [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:parentView attribute:NSLayoutAttributeRight multiplier:1.0 constant:0].active = YES;
+                    break;
+                case AdaptiveCards::HorizontalAlignment::Center:
+                    [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:parentView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
+                    break;
+                case AdaptiveCards::HorizontalAlignment::Left:
+                default:
+                    [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:parentView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0].active = YES;
+                    break;
+            }
+            break;
+        }
+        case AdaptiveCards::BackgroundImageMode::Stretch:
+        default:
+        {
+            [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:parentView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:parentView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:parentView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:parentView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:parentView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0].active = YES;
+            [NSLayoutConstraint constraintWithItem:imageView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:parentView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
+            
+            imageView.contentMode = UIViewContentModeScaleAspectFill;
+            break;
+        }
+    }
 }
 
 - (void)waitForAsyncTasksToFinish
@@ -241,7 +323,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                             [view addObserver:self forKeyPath:@"image"
                                       options:NSKeyValueObservingOptionNew
                                       context:elem.get()];
-                            rootView->_imageViewContextMap[key] = view;
+                            [rootView setImageView:key view:view];
                             rootView->_imageContextMap[key] = [[ACOBaseCardElement alloc] initWithBaseCardElement:elem];
                         }
                 };
@@ -263,7 +345,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                             [view addObserver:self forKeyPath:@"image"
                                       options:NSKeyValueObservingOptionNew
                                       context:elem.get()];
-                            rootView->_imageViewContextMap[key] = view;
+                            [rootView setImageView:key view:view];
                             rootView->_imageContextMap[key] = [[ACOBaseCardElement alloc] initWithBaseCardElement:elem];
                         }
                     };
@@ -292,7 +374,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                             [view addObserver:self forKeyPath:@"image"
                                       options:NSKeyValueObservingOptionNew
                                       context:elem.get()];
-                            rootView->_imageViewContextMap[key] = contentholdingview;
+                            [rootView setImageView:key view:contentholdingview];
                             rootView->_imageContextMap[key] = [[ACOBaseCardElement alloc] initWithBaseCardElement:elem];
                         }
                     };
@@ -313,7 +395,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                             [view addObserver:self forKeyPath:@"image"
                                       options:NSKeyValueObservingOptionNew
                                       context:elem.get()];
-                            rootView->_imageViewContextMap[key] = view;
+                            [rootView setImageView:key view:view];
                         }
                     };
                     [self loadImageAccordingToResourceResolverIFForBaseAction:action key:nil observerAction:observerAction];
@@ -324,15 +406,25 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
             case CardElementType::Container:
             {
                 std::shared_ptr<Container> container = std::static_pointer_cast<Container>(elem);
+                
+                auto backgroundImageProperties = container->GetBackgroundImage();
+                if((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
+                    ObserverActionBlock observerAction =
+                    ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &elem, NSURL* url, ACRView* rootView) {
+                        UIImageView *view = [imageResourceResolver resolveBackgroundImageViewResource:url hasStretch:(backgroundImageProperties->GetMode() == BackgroundImageMode::Stretch)];
+                        [rootView setImageView:key view:view];
+                        if(view) {
+                            [view addObserver:rootView forKeyPath:@"image"
+                                      options:NSKeyValueObservingOptionNew
+                                      context:backgroundImageProperties.get()];
+                        }
+                    };
+                    [self
+                     loadBackgroundImageAccordingToResourceResolverIF:container->GetBackgroundImage()
+                     key:nil observerAction:observerAction];
+                }
+                
                 std::vector<std::shared_ptr<BaseCardElement>> &new_body = container->GetItems();
-                [self addTasksToConcurrentQueue: new_body];
-                break;
-            }
-            // continue on search
-            case CardElementType::Column:
-            {
-                std::shared_ptr<Column> colum = std::static_pointer_cast<Column>(elem);
-                std::vector<std::shared_ptr<BaseCardElement>> &new_body = colum->GetItems();
                 [self addTasksToConcurrentQueue: new_body];
                 break;
             }
@@ -342,8 +434,26 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                 std::shared_ptr<ColumnSet> columSet = std::static_pointer_cast<ColumnSet>(elem);
                 std::vector<std::shared_ptr<Column>> &columns = columSet->GetColumns();
                 // ColumnSet is vector of Column, instead of vector of BaseCardElement
-                for(auto &colum : columns) { // update serial number that is used for generating unique key for image_map
-                    [self addTasksToConcurrentQueue: colum->GetItems()];
+                for(auto &column : columns) { // update serial number that is used for generating unique key for image_map
+                    // Handle background image (if necessary)
+                    auto backgroundImageProperties = column->GetBackgroundImage();
+                    if((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
+                        ObserverActionBlock observerAction =
+                        ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &elem, NSURL* url, ACRView* rootView) {
+                            UIImageView *view = [imageResourceResolver resolveBackgroundImageViewResource:url hasStretch:(backgroundImageProperties->GetMode() == BackgroundImageMode::Stretch)];
+                            [rootView setImageView:key view:view];
+                            if(view) {
+                                [view addObserver:rootView forKeyPath:@"image"
+                                          options:NSKeyValueObservingOptionNew
+                                          context:backgroundImageProperties.get()];
+                            }
+                        };
+                        [self
+                         loadBackgroundImageAccordingToResourceResolverIF:column->GetBackgroundImage()
+                         key:nil observerAction:observerAction];
+                    }
+                    
+                    [self addTasksToConcurrentQueue: column->GetItems()];
                 }
                 break;
             }
@@ -368,7 +478,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                     [view addObserver:self forKeyPath:@"image"
                               options:NSKeyValueObservingOptionNew
                               context:elem.get()];
-                    rootView->_imageViewContextMap[key] = view;
+                    [rootView setImageView:key view:view];
                 }
             };
             [self loadImageAccordingToResourceResolverIFForBaseAction:action key:nil observerAction:observerAction];
@@ -561,11 +671,10 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     return _adaptiveCard;
 }
 
-// notifcation is delivered from main (serial) queue, thus run in the main thread context
+// notification is delivered from main (serial) queue, thus run in the main thread context
 - (void)observeValueForKeyPath:(NSString *)path ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if ([path isEqualToString:@"image"])
-    {
+    if ([path isEqualToString:@"image"]) {
         if(context) {
             UIImage *image = [change objectForKey:NSKeyValueChangeNewKey];
             NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)(context)];
@@ -590,6 +699,28 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
         [object removeObserver:self forKeyPath:path];
         [_setOfRemovedObservers addObject:object];
         [self callDidLoadElementsIfNeeded];
+    }
+}
+
+- (void)loadBackgroundImageAccordingToResourceResolverIF:(std::shared_ptr<BackgroundImage> const &)backgroundImage key:(NSString *)key observerAction:(ObserverActionBlock)observerAction
+{
+    NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)backgroundImage.get()];
+    NSString *nSUrlStr = [NSString stringWithCString:backgroundImage->GetUrl().c_str() encoding:[NSString defaultCStringEncoding]];
+    
+    _numberOfSubscribers++;
+    
+    if(!key) {
+        key = [number stringValue];
+    }
+    
+    NSURL *url = [NSURL URLWithString:nSUrlStr];
+    NSObject<ACOIResourceResolver> *imageResourceResolver = [_hostConfig getResourceResolverForScheme:[url scheme]];
+    if(imageResourceResolver && ACOImageViewIF == [_hostConfig getResolverIFType:[url scheme]]) {
+        if(observerAction) {
+            observerAction(imageResourceResolver, key, nil, url, self);
+        }
+    } else {
+        [self loadImage:[nSUrlStr cStringUsingEncoding:NSUTF8StringEncoding]];
     }
 }
 
