@@ -11,6 +11,10 @@
   <attr path="/api/package[@name='io.adaptivecards.renderer.readonly']" name="managedName">AdaptiveCards.Rendering.Xamarin.Android.Renderer.Readonly</attr>
   <attr path="/api/package[@name='io.adaptivecards.renderer.registration']" name="managedName">AdaptiveCards.Rendering.Xamarin.Android.Renderer.Registration</attr>
 
-  <!-- Remove these members because they are causing issues-->
+  <!-- Remove these members because they are causing issues
   <remove-node path="/api/package[@name='io.adaptivecards.renderer']/class[@name='MediaLoaderAsync']" />
+  -->
+  <add-node path="/api/package[@name='io.adaptivecards.renderer']">
+    <class abstract="false" deprecated="not deprecated" final="false" name="MediaLoaderAsync" static="true" visibility="public" extends="java.lang.Object"/>
+  </add-node>
 </metadata>
