@@ -5,6 +5,14 @@ import io.adaptivecards.renderer.inputhandler.IInputHandler;
 
 public class TagContent
 {
+    // This constructor is necessary as using visualTree.findViewWithTag(param) for searching make
+    // the match comparison as param.equals(visualTreeNode) which means that the Equals method for
+    // param type is called, so in this case we must convert the string into a tag object for the lookup
+    public TagContent(String id)
+    {
+        m_id = id;
+    }
+
     public TagContent(BaseCardElement baseCardElement)
     {
         m_baseElement = baseCardElement;
@@ -18,7 +26,16 @@ public class TagContent
 
     public String GetId()
     {
-        return m_baseElement.GetId();
+        // baseElement should only be empty when the object was built for lookup, so m_id is not
+        // always filled, it will only be filled for lookup and so we can save some memory
+        if(m_baseElement != null)
+        {
+            return m_baseElement.GetId();
+        }
+        else
+        {
+            return m_id;
+        }
     }
 
     public BaseCardElement GetBaseElement()
@@ -59,6 +76,7 @@ public class TagContent
         return false;
     }
 
+    private String m_id = null;
     private BaseCardElement m_baseElement = null;
     private IInputHandler m_inputHandler = null;
 }
