@@ -79,20 +79,19 @@ std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(ParseContext& cont
     container->SetVerticalContentAlignment(ParseUtil::GetEnumValue<VerticalContentAlignment>(
         value, AdaptiveCardSchemaKey::VerticalContentAlignment, VerticalContentAlignment::Top, VerticalContentAlignmentFromString));
 
-    // we walk parse tree using dfs, so we need to save current style,
-    // before we walk back up to a parent.
-    auto style = context.GetParentalContainerStyle();
-    context.SetParentalContainerStyle(container->GetStyle());
+    // find and update padding 
+    container->ConfigPadding(context);
 
-    // we set padding when parental style is different from child's
-    container->SetPadding(style != container->GetStyle());
+    // we walk parse tree dfs post-order, so we need to save current style,
+    // before we walk back up to a parent.
+    context.PushParentalContainerStyle(container->GetStyle()); 
 
     // Parse Items
     auto cardElements = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Items, false);
     container->m_items = std::move(cardElements);
 
-    // since we are doing dfs, we have to restore the style before we back up
-    context.SetParentalContainerStyle(style);
+    // since we are walking dfs, we have to restore the style before we back up
+    context.PopParentalContainerStyle();
 
     // Parse optional selectAction
     container->SetSelectAction(ParseUtil::GetAction(context, value, AdaptiveCardSchemaKey::SelectAction, false));

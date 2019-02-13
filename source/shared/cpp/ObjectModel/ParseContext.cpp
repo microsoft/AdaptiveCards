@@ -7,12 +7,12 @@ namespace AdaptiveSharedNamespace
 {
     ParseContext::ParseContext() :
         elementParserRegistration{std::make_shared<ElementParserRegistration>()},
-        actionParserRegistration{std::make_shared<ActionParserRegistration>()}, warnings{}, m_idStack{}, m_elementIds{}
+        actionParserRegistration{std::make_shared<ActionParserRegistration>()}, warnings{}, m_idStack{}, m_elementIds{}, m_parentalContainerStyles{}
     {
     }
 
     ParseContext::ParseContext(std::shared_ptr<ElementParserRegistration> elementRegistration, std::shared_ptr<ActionParserRegistration> actionRegistration) :
-        warnings{}, m_idStack{}, m_elementIds{}
+        warnings{}, m_idStack{}, m_elementIds{}, m_parentalContainerStyles{}
     {
         elementParserRegistration = (elementRegistration) ? elementRegistration : std::make_shared<ElementParserRegistration>();
         actionParserRegistration = (actionRegistration) ? actionRegistration : std::make_shared<ActionParserRegistration>();
@@ -244,11 +244,19 @@ namespace AdaptiveSharedNamespace
 
     ContainerStyle ParseContext::GetParentalContainerStyle() const
     {
-        return m_parentalContainerStyle;
+        return (m_parentalContainerStyles.size())? m_parentalContainerStyles.back() : ContainerStyle::None;
     }
 
-    void ParseContext::SetParentalContainerStyle(const ContainerStyle value)
+    void ParseContext::PushParentalContainerStyle(const ContainerStyle value)
     {
-        m_parentalContainerStyle = value;
+        m_parentalContainerStyles.push_back(value);
+    }
+
+    void ParseContext::PopParentalContainerStyle(void)
+    {
+        if(m_parentalContainerStyles.size())
+        {
+            m_parentalContainerStyles.pop_back();
+        }
     }
 }

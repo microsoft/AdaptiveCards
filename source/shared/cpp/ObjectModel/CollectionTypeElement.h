@@ -19,6 +19,7 @@ namespace AdaptiveSharedNamespace
 
         bool GetPadding() const;
         void SetPadding(const bool value);
+        void ConfigPadding(ParseContext& context);
 
     private:
         ContainerStyle m_style;

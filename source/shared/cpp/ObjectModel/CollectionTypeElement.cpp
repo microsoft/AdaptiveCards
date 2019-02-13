@@ -39,3 +39,10 @@ void CollectionTypeElement::SetPadding(const bool value)
 {
     m_hasPadding = value;
 }
+
+// Applies Padding Flag When appropriate
+void CollectionTypeElement::ConfigPadding(ParseContext& context)
+{
+    // we set padding when parental style is different from child's, and its style should not be None
+    SetPadding(GetStyle() != ContainerStyle::None && context.GetParentalContainerStyle() != GetStyle());
+}

@@ -28,6 +28,8 @@ namespace AdaptiveSharedNamespace
         void PopElement();
         ContainerStyle GetParentalContainerStyle() const;
         void SetParentalContainerStyle(const ContainerStyle value);
+        void PushParentalContainerStyle(const ContainerStyle value);
+        void PopParentalContainerStyle(void);
     private:
         const AdaptiveSharedNamespace::InternalId GetNearestFallbackId(const AdaptiveSharedNamespace::InternalId& skipId) const;
         // This enum is just a helper to keep track of the position of contents within the std::tuple used in m_idStack
@@ -54,5 +56,6 @@ namespace AdaptiveSharedNamespace
         //                             (ID,  internal ID, isFallback)[]
         std::vector<std::tuple<std::string, AdaptiveSharedNamespace::InternalId, bool>> m_idStack;
         ContainerStyle m_parentalContainerStyle;
+        std::vector<ContainerStyle> m_parentalContainerStyles;
     };
 }
