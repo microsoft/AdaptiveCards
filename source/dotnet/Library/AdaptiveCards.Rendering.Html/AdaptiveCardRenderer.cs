@@ -686,6 +686,7 @@ namespace AdaptiveCards.Rendering.Html
         {
             var uiFactSet = (TableTag)new TableTag()
                 .AddClass($"ac-{factSet.Type.Replace(".", "").ToLower()}")
+                .Attr("name", factSet.Id)
                 .Style("overflow", "hidden");
 
             if (factSet.Height == AdaptiveHeight.Stretch)
@@ -1195,6 +1196,7 @@ namespace AdaptiveCards.Rendering.Html
         protected static HtmlTag ImageSetRender(AdaptiveImageSet imageSet, AdaptiveRenderContext context)
         {
             var uiImageSet = new DivTag()
+                .Attr("name", imageSet.Id)
                 .AddClass(imageSet.Type.ToLower());
 
             if (imageSet.Height == AdaptiveHeight.Stretch)
@@ -1295,7 +1297,8 @@ namespace AdaptiveCards.Rendering.Html
             var uiElement = new DivTag()
                 .AddClass("ac-input")
                 .Style("width", "100%")
-                .Style("flex", "1 1 100%");
+                .Style("flex", "1 1 100%")
+                .Attr("name", adaptiveChoiceSetInput.Id);
 
             foreach (var choice in adaptiveChoiceSetInput.Choices)
             {
@@ -1492,8 +1495,8 @@ namespace AdaptiveCards.Rendering.Html
             {
                 uiTextInput.Style("display", "none");
             }
-
-            if (context.Config.SupportsInteractivity)
+            
+            if (context.Config.SupportsInteractivity && input.InlineAction != null)
             {
                 // ShowCard Inline Action Mode is not supported
                 if (input.InlineAction.Type == AdaptiveShowCardAction.TypeName &&
@@ -1508,7 +1511,13 @@ namespace AdaptiveCards.Rendering.Html
                         .AddClass("ac-textinput-inlineaction")
                         .Attr("data-ac-textinput-id", textInputWithInlineActionId)
                         .Style("overflow", "hidden")
-                        .Style("display", "flex");
+                        .Style("display", "flex")
+                        .Attr("name", input.Id);
+
+                    if(input.Height == AdaptiveHeight.Stretch)
+                    {
+                        uiContainer.Style("flex", "1 1 100%");
+                    }
 
                     uiTextInput.Attr("id", textInputWithInlineActionId);
 
@@ -1552,6 +1561,7 @@ namespace AdaptiveCards.Rendering.Html
                     return uiContainer;
                 }
             }
+           
             return uiTextInput;
         }
 
@@ -1598,7 +1608,8 @@ namespace AdaptiveCards.Rendering.Html
 
             var uiElement = new DivTag()
                 .AddClass("ac-input")
-                .Style("width", "100%");
+                .Style("width", "100%")
+                .Attr("name", toggleInput.Id);
 
             if (toggleInput.Height == AdaptiveHeight.Stretch)
             {
