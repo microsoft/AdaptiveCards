@@ -152,7 +152,6 @@ export function parseVersion(versionString) {
 	return result;
 }
 
-//[ST]- Fix for the image background color issue
 /**
  * @description Convert the color in aRGB hex format to RGBa CSS format
  * @param {string} color 

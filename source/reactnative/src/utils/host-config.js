@@ -13,7 +13,6 @@ export class TextColorDefinition {
 	}
 
 	get subtle() {
-		//[ST]- Fix for the image background color issue
 		return Utils.hexToRGB(this._subtle);
 	}
 
@@ -22,7 +21,6 @@ export class TextColorDefinition {
 	}
 
 	get default() {
-		//[ST]- Fix for the image background color issue
 		return Utils.hexToRGB(this._default);
 	}
 
@@ -378,7 +376,7 @@ export class HostConfig {
 		medium: 20,
 		large: 30,
 		extraLarge: 40,
-		padding: 15
+		padding: 5
 	};
 
 	separator = {
@@ -619,7 +617,6 @@ export class HostConfig {
 		}
 	}
 }
-//[ST]- Fix for the imageSet issues, when the size is undefined
 
 export const defaultHostConfig = {
 	supportsInteractivity: true,
@@ -631,7 +628,7 @@ export const defaultHostConfig = {
 		medium: 20,
 		large: 30,
 		extraLarge: 40,
-		padding: 15
+		padding: 5
 	},
 	separator: {
 		lineThickness: 1,

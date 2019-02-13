@@ -38,8 +38,8 @@ export class Img extends React.Component {
 		}
 	}
 
-	componentDidMount(){
-		this.context.addResourceInformation(this.payload.url,"");
+	componentDidMount() {
+		this.context.addResourceInformation(this.payload.url, "");
 	}
 
     /**
@@ -51,12 +51,10 @@ export class Img extends React.Component {
 		this.horizontalAlignment = this.getImageAlignment();
 		this.selectAction = this.payload.selectAction || null;
 		if (Utils.isNullOrEmpty(this.payload.size)) {
-			//[ST]- Fix for the imageSet issues, when the size is undefined
 			this.isSizeUndefined = true;
 			this.payload.size = Constants.Auto;
 		}
 		this.sizeStyling = this.applySize();
-
 		this.type = this.payload.type || Constants.EmptyString;
 		this.url = this.payload.url || Constants.EmptyString;
 		this.id = this.payload.id || Constants.EmptyString;
@@ -66,9 +64,7 @@ export class Img extends React.Component {
 			Enums.Spacing.Small);
 		this.spacing = this.hostConfig.getEffectiveSpacing(spacingValue);
 		this.separator = this.payload.separator || false;
-		//[ST]- Fix for the image background color issue
 		this.backgroundColor = Utils.hexToRGB(this.payload.backgroundColor) || Constants.TransparentString;
-		console.log("BG Color:",this.backgroundColor);
 	}
 
     /**
@@ -80,7 +76,6 @@ export class Img extends React.Component {
 			this.payload.style,
 			Enums.ImageStyle.Default);
 		return parseInt(styleValue, 10) === 0 ? false : true;
-
 	}
     /**
      * @description The function is used for determining the horizontal image Alignment
@@ -171,6 +166,8 @@ export class Img extends React.Component {
 						this.payload.fromImageSet == true ?
 							sizeStyle.push({ height: this.state.imageHeight }) :
 							sizeStyle.push({ height: this.hostConfig.imageSizes.small })
+
+						this.width = this.hostConfig.imageSizes.small;
 						break;
 					}
 				case 3:
@@ -204,7 +201,10 @@ export class Img extends React.Component {
 					}
 				default:
 					{
-									//[ST]- Fix for the imageSet issues, when the size is undefined
+						/**
+						 * When the images are rendered via imageset and if the size is undefined or Auto, 
+						 * the size of the image is taken as medium as default as per native iOS renderer.
+						 */
 						if ((this.isSizeUndefined && this.payload.fromImageSet == true) ||
 							(this.payload.fromImageSet == true)) {
 							sizeStyle.push([styles.imageAuto, { width: this.hostConfig.imageSizes.medium }]);
@@ -231,7 +231,6 @@ export class Img extends React.Component {
 					}
 			}
 		}
-
 		return sizeStyle;
 	}
 
@@ -295,10 +294,9 @@ export class Img extends React.Component {
 		}
 
 		let imageComputedStyle = [this.sizeStyling];
-		//[ST]- Fix for the image background color issue
 		imageComputedStyle.push({ backgroundColor: this.backgroundColor })
 		let wrapperComputedStyle = this.horizontalAlignment;
-		wrapperComputedStyle.push({backgroundColor:'transparent'});
+		wrapperComputedStyle.push({ backgroundColor: 'transparent' });
 
 		if (this.payload.fromImageSet == true) {
 			wrapperComputedStyle.push({ margin: spacing });
