@@ -58,6 +58,14 @@ public class ColumnSet extends BaseCardElement {
     AdaptiveCardObjectModelJNI.ColumnSet_SetSelectAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
   }
 
+  public ContainerStyle GetStyle() {
+    return ContainerStyle.swigToEnum(AdaptiveCardObjectModelJNI.ColumnSet_GetStyle(swigCPtr, this));
+  }
+
+  public void SetStyle(ContainerStyle value) {
+    AdaptiveCardObjectModelJNI.ColumnSet_SetStyle(swigCPtr, this, value.swigValue());
+  }
+
   public void SetLanguage(String language) {
     AdaptiveCardObjectModelJNI.ColumnSet_SetLanguage(swigCPtr, this, language);
   }
