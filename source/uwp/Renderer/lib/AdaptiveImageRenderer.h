@@ -16,7 +16,7 @@ namespace AdaptiveNamespace
 
     public:
         AdaptiveImageRenderer();
-        AdaptiveImageRenderer(std::shared_ptr<AdaptiveNamespace::XamlBuilder> xamlBuilder);
+        AdaptiveImageRenderer(Microsoft::WRL::ComPtr<AdaptiveNamespace::XamlBuilder> xamlBuilder);
         HRESULT RuntimeClassInitialize() noexcept;
 
         IFACEMETHODIMP Render(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* cardElement,
@@ -31,7 +31,7 @@ namespace AdaptiveNamespace
                                 _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept override;
 
     private:
-        std::shared_ptr<AdaptiveNamespace::XamlBuilder> m_xamlBuilder;
+        Microsoft::WRL::ComPtr<AdaptiveNamespace::XamlBuilder> m_xamlBuilder;
     };
 
     ActivatableClass(AdaptiveImageRenderer);

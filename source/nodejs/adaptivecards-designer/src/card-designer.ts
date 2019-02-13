@@ -237,6 +237,7 @@ export class CardDesigner {
         this.activeHostContainer.renderTo(this._designerHostElement);
 
         this._designerSurface = new Designer.CardDesignerSurface(this.activeHostContainer.cardHost);
+        this._designerSurface.fixedHeightCard = this.activeHostContainer.isFixedHeight;
         this._designerSurface.onSelectedPeerChanged = (peer: DesignerPeers.CardElementPeer) => {
             this.buildPropertySheet(peer);
         };

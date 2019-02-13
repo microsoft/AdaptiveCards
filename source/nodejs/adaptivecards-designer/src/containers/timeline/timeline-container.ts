@@ -152,4 +152,8 @@ export class TimelineContainer extends Designer.HostContainer {
             }
         });
     }
+
+    get isFixedHeight(): boolean {
+        return true;
+    }
 }
