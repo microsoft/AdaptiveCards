@@ -596,11 +596,13 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("flex", "1 1 100%");
             }
 
+            var outerStyle = context.ForegroundColors;
             if (container.Style != null)
             {
                 // Apply background color
                 ContainerStyleConfig containerStyle = context.Config.ContainerStyles.GetContainerStyleConfig(container.Style);
                 uiContainer.Style("background-color", context.GetRGBColor(containerStyle.BackgroundColor));
+                context.ForegroundColors = containerStyle.ForegroundColors;
             }
 
             switch (container.VerticalContentAlignment)
@@ -621,6 +623,7 @@ namespace AdaptiveCards.Rendering.Html
 
             AddSelectAction(uiContainer, container.SelectAction, context);
 
+            context.ForegroundColors = outerStyle;
             return uiContainer;
         }
 
