@@ -217,7 +217,7 @@ namespace AdaptiveNamespace
     class XamlBuilder;
 
     template<class TRegistration>
-    HRESULT RegisterDefaultElementRenderers(TRegistration registration, std::shared_ptr<XamlBuilder> xamlBuilder)
+    HRESULT RegisterDefaultElementRenderers(TRegistration registration, Microsoft::WRL::ComPtr<XamlBuilder> xamlBuilder)
     {
         RETURN_IF_FAILED(registration->Set(HStringReference(L"ActionSet").Get(),
                                            Make<AdaptiveNamespace::AdaptiveActionSetRenderer>().Get()));
