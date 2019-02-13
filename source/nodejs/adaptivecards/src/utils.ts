@@ -27,17 +27,11 @@ export function setProperty(target: any, propertyName: string, propertyValue: an
 	if (propertyValue && (!defaultValue || defaultValue !== propertyValue)) {
 		target[propertyName] = propertyValue;
     }
-    else {
-        delete target[propertyName];
-    }
 }
 
 export function setEnumProperty(enumType: { [s: number]: string }, target: any, propertyName: string, propertyValue: number, defaultValue?: number) {
 	if (defaultValue === undefined || defaultValue !== propertyValue) {
 		target[propertyName] = enumType[propertyValue];
-	}
-    else {
-        delete target[propertyName];
     }
 }
 
