@@ -217,8 +217,10 @@ namespace AdaptiveNamespace
     class XamlBuilder;
 
     template<class TRegistration>
-    HRESULT RegisterDefaultElementRenderers(TRegistration registration, std::shared_ptr<XamlBuilder> xamlBuilder)
+    HRESULT RegisterDefaultElementRenderers(TRegistration registration, Microsoft::WRL::ComPtr<XamlBuilder> xamlBuilder)
     {
+        RETURN_IF_FAILED(registration->Set(HStringReference(L"ActionSet").Get(),
+                                           Make<AdaptiveNamespace::AdaptiveActionSetRenderer>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Column").Get(),
                                            Make<AdaptiveNamespace::AdaptiveColumnRenderer>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"ColumnSet").Get(),
@@ -259,6 +261,8 @@ namespace AdaptiveNamespace
                                            Make<AdaptiveNamespace::AdaptiveShowCardActionParser>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.Submit").Get(),
                                            Make<AdaptiveNamespace::AdaptiveSubmitActionParser>().Get()));
+        RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.ToggleVisibility").Get(),
+                                           Make<AdaptiveNamespace::AdaptiveToggleVisibilityActionParser>().Get()));
         return S_OK;
     }
 }

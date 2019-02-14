@@ -168,4 +168,8 @@ export abstract class HostContainer {
     get cardHost(): HTMLElement {
         return this._cardHost;
     }
+
+    get isFixedHeight(): boolean {
+        return false;
+    }
 }

@@ -28,6 +28,9 @@ namespace UWPUnitTests
 
             JsonObject jsonObject;
 
+            Assert.IsTrue(JsonObject.TryParse("{\"type\":\"ActionSet\",\"id\":\"ActionSetId\"}", out jsonObject));
+            Assert.AreEqual(ElementType.ActionSet, elementParserRegistration.Get("ActionSet").FromJson(jsonObject, elementParserRegistration, actionParserRegistration, warnings).ElementType);
+
             Assert.IsTrue(JsonObject.TryParse("{\"type\":\"Input.ChoiceSet\",\"id\":\"ChoiceSetId\", \"choices\":[{\"type\":\"Input.Choice\",\"title\":\"title\",\"value\":\"value\"}]}", out jsonObject));
             Assert.AreEqual(ElementType.ChoiceSetInput, elementParserRegistration.Get("Input.ChoiceSet").FromJson(jsonObject, elementParserRegistration, actionParserRegistration, warnings).ElementType);
 
@@ -166,6 +169,9 @@ namespace UWPUnitTests
 
             Assert.IsTrue(JsonObject.TryParse("{\"type\":\"Action.Submit\"}", out jsonObject));
             Assert.AreEqual(ActionType.Submit, actionParserRegistration.Get("Action.Submit").FromJson(jsonObject, elementParserRegistration, actionParserRegistration, warnings).ActionType);
+
+            Assert.IsTrue(JsonObject.TryParse("{\"type\":\"Action.ToggleVisibility\",\"targetElements\": [{\"elementId\":\"idToggle\"}]}", out jsonObject));
+            Assert.AreEqual(ActionType.ToggleVisibility, actionParserRegistration.Get("Action.ToggleVisibility").FromJson(jsonObject, elementParserRegistration, actionParserRegistration, warnings).ActionType);
         }
 
         class TestCustomAction : IAdaptiveActionElement

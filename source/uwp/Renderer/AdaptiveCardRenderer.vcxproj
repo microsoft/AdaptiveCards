@@ -171,6 +171,7 @@
     <ClInclude Include="lib\AdaptiveTextInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveTimeInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveToggleInputRenderer.h" />
+    <ClInclude Include="lib\AdaptiveToggleVisibilityActionParser.h" />
     <ClInclude Include="lib\AdaptiveToggleVisibilityTarget.h" />
     <ClInclude Include="lib\AdaptiveToggleVisibilityAction.h" />
     <ClInclude Include="lib\AdaptiveUnsupportedElement.h" />
@@ -233,6 +234,7 @@
     <ClCompile Include="lib\AdaptiveMediaEventArgs.cpp" />
     <ClCompile Include="lib\AdaptiveOpenUrlActionParser.cpp" />
     <ClCompile Include="lib\AdaptiveRemoteResourceInformation.cpp" />
+    <ClCompile Include="lib\AdaptiveToggleVisibilityActionParser.cpp" />
     <ClCompile Include="lib\AdaptiveToggleVisibilityTarget.cpp" />
     <ClCompile Include="lib\AdaptiveToggleVisibilityAction.cpp" />
     <ClCompile Include="lib\AdaptiveShowCardActionParser.cpp" />
