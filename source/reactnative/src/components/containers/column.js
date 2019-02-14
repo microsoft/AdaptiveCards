@@ -32,9 +32,9 @@ export class Column extends React.Component {
 		this.payload = props.json;
 	}
 
-    /**
-     * @description Parse the given payload and render the card accordingly
-     */
+	/**
+	 * @description Parse the given payload and render the card accordingly
+	 */
 	parsePayload = (onParseError) => {
 		const renderedElement = [];
 		if (!this.payload)
@@ -46,10 +46,10 @@ export class Column extends React.Component {
 		return renderedElement;
 	}
 
-    /**
-     * @description This function calculates the Width percentage of the column to be 
-	 * rendered based on the width property from the payload. 
-     */
+	/**
+	 * @description This function calculates the Width percentage of the column to be 
+ * rendered based on the width property from the payload. 
+	 */
 	calculateWidthPercentage = (containerStyle) => {
 		var columns = this.props.columns
 		var widthArray = columns.length > 0 ? columns.map((column) => column.width) : [];
@@ -71,13 +71,11 @@ export class Column extends React.Component {
 
 		var spacing = 0
 		spaceArray.map((space) => {
-			if (space != undefined) {
-				const spacingEnumValue = Utils.parseHostConfigEnum(
-					Enums.Spacing,
-					space,
-					Enums.Spacing.Small);
-				spacing += this.hostConfig.getEffectiveSpacing(spacingEnumValue);
-			}
+			const spacingEnumValue = Utils.parseHostConfigEnum(
+				Enums.Spacing,
+				space,
+				Enums.Spacing.Small);
+			spacing += this.hostConfig.getEffectiveSpacing(spacingEnumValue);
 		})
 
 		const spacePercentage = (spacing / deviceWidth) * 100
@@ -192,8 +190,7 @@ export class Column extends React.Component {
 			Enums.Spacing,
 			this.payload.spacing,
 			Enums.Spacing.Small);
-		this.spacing = Utils.isNullOrEmpty(this.payload.spacing) ? 0 :
-			this.hostConfig.getEffectiveSpacing(spacingEnumValue);
+		this.spacing = this.hostConfig.getEffectiveSpacing(spacingEnumValue);
 
 		let widthPercentage = this.calculateWidthPercentage(containerViewStyle);
 		if (!Utils.isNullOrEmpty(widthPercentage)) {
