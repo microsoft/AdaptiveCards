@@ -149,7 +149,6 @@ export class ChoiceSetInput extends React.Component {
 						<Picker
 							mode={'dropdown'}
 							selectedValue={this.state.selectedPickerValue}
-							
 							onValueChange={
 								(itemValue, itemIndex) => {
 									this.setState({
@@ -211,7 +210,7 @@ export class ChoiceSetInput extends React.Component {
 						key={index}
 						isRadioButtonType={false}
 						index={index}
-						labelStyle={styles.labelStyle}
+						labelStyle={[styles.labelStyle, this.styleConfig.fontConfig]}
 						iconSize={28}
 						checked={this.state.checkedValues == undefined ?
 							this.setInitialCheckedValues(this.value,

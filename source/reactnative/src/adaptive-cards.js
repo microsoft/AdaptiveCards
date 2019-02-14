@@ -14,6 +14,7 @@ import {
 import { Registry } from './components/registration/registry';
 import { InputContextProvider } from './utils/context';
 import { HostConfigManager } from './utils/host-config';
+import { StyleManager } from './styles/style-config';
 import { ActionWrapper } from './components/actions/action-wrapper';
 import PropTypes from 'prop-types';
 import * as Utils from './utils/util';
@@ -38,6 +39,7 @@ export default class AdaptiveCards extends React.Component {
 		if (props.hostConfig) {
 			HostConfigManager.setHostConfig(this.props.hostConfig);
 		}
+		this.styleConfig = StyleManager.getManager().styles;
 	}
 
 	/**
@@ -123,7 +125,7 @@ export default class AdaptiveCards extends React.Component {
 		if (!this.isSupportedVersion()) {
 			const message = this.payload.fallbackText || "We're sorry, this card couldn't be displayed";
 			return (
-				<Text>{message}</Text>
+				<Text style={this.styleConfig.fontConfig}>{message}</Text>
 			)
 		}
 		return (
