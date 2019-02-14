@@ -1,18 +1,13 @@
 package io.adaptivecards.renderer;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
-import io.adaptivecards.objectmodel.ActionAlignment;
-import io.adaptivecards.objectmodel.ActionsOrientation;
 import io.adaptivecards.objectmodel.AdaptiveCard;
 import io.adaptivecards.objectmodel.BackgroundImage;
 import io.adaptivecards.objectmodel.BaseActionElement;
@@ -21,12 +16,9 @@ import io.adaptivecards.objectmodel.BaseCardElementVector;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HostConfig;
-import io.adaptivecards.objectmodel.IconPlacement;
-import io.adaptivecards.objectmodel.Spacing;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.http.HttpRequestResult;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public class AdaptiveCardRenderer

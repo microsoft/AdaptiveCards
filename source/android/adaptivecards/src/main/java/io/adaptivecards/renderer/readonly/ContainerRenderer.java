@@ -19,14 +19,11 @@ import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
-
-import java.util.Vector;
 
 public class ContainerRenderer extends BaseCardElementRenderer
 {
@@ -70,7 +67,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
         LinearLayout containerView = new LinearLayout(context);
 
         containerView.setOrientation(LinearLayout.VERTICAL);
-        if(container.GetHeight() == HeightType.Stretch)
+        if (container.GetHeight() == HeightType.Stretch)
         {
             containerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
         }
@@ -80,7 +77,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
         }
 
         VerticalContentAlignment contentAlignment = container.GetVerticalContentAlignment();
-        switch(contentAlignment)
+        switch (contentAlignment)
         {
             case Center:
                 containerView.setGravity(Gravity.CENTER_VERTICAL);
@@ -114,13 +111,13 @@ public class ContainerRenderer extends BaseCardElementRenderer
             BackgroundImageLoaderAsync loaderAsync = new BackgroundImageLoaderAsync(renderedCard, context, containerView, hostConfig.GetImageBaseUrl(), backgroundImageProperties);
 
             IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
-            if(onlineImageLoader != null)
+            if (onlineImageLoader != null)
             {
                 loaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
             }
 
             IDataUriImageLoader dataUriImageLoader = CardRendererRegistration.getInstance().getDataUriImageLoader();
-            if(dataUriImageLoader != null)
+            if (dataUriImageLoader != null)
             {
                 loaderAsync.registerCustomDataUriImageLoader(dataUriImageLoader);
             }
