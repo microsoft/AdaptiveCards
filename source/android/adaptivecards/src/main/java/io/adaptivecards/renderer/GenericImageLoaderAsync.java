@@ -24,11 +24,18 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
     String m_imageBaseUrl;
     IOnlineImageLoader m_onlineImageLoader = null;
     IDataUriImageLoader m_dataUriImageLoader = null;
+    int m_maxWidth;
 
     GenericImageLoaderAsync(RenderedAdaptiveCard renderedCard, String imageBaseUrl)
     {
+        this(renderedCard, imageBaseUrl, -1);
+    }
+
+    GenericImageLoaderAsync(RenderedAdaptiveCard renderedCard, String imageBaseUrl, int maxWidth)
+    {
         m_renderedCard = renderedCard;
         m_imageBaseUrl = imageBaseUrl;
+        m_maxWidth = maxWidth;
     }
 
     // Main function to try different ways to load an image
@@ -43,7 +50,15 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
             {
                 if( m_dataUriImageLoader != null )
                 {
-                    return m_dataUriImageLoader.loadDataUriImage(path, this);
+                    if (m_maxWidth != -1)
+                    {
+                        return m_dataUriImageLoader.loadDataUriImage(path, this, m_maxWidth);
+                    }
+                    else
+                    {
+                        return m_dataUriImageLoader.loadDataUriImage(path, this);
+                    }
+
                 }
                 else
                 {
