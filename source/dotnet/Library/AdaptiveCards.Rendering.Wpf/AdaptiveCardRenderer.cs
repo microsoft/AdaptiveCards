@@ -229,7 +229,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 Resources = Resources,
                 ElementRenderers = ElementRenderers,
                 Lang = card.Lang,
-                ForegroundColors = (HostConfig == null) ? HostConfig.ContainerStyles.Default.ForegroundColors : new ContainerStylesConfig().Default.ForegroundColors
+                ForegroundColors = (HostConfig != null) ? HostConfig.ContainerStyles.Default.ForegroundColors : new ContainerStylesConfig().Default.ForegroundColors
             };
 
             string accentColor = HostConfig.ContainerStyles.Default.ForegroundColors.Accent.Default;
@@ -285,7 +285,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     Resources = Resources,
                     ElementRenderers = ElementRenderers,
                     Lang = card.Lang,
-                    ForegroundColors = (HostConfig == null) ? HostConfig.ContainerStyles.Default.ForegroundColors : new ContainerStylesConfig().Default.ForegroundColors
+                    ForegroundColors = (HostConfig != null) ? HostConfig.ContainerStyles.Default.ForegroundColors : new ContainerStylesConfig().Default.ForegroundColors
                 };
 
                 var stream = context.Render(card).RenderToImage(width);
