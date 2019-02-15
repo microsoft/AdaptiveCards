@@ -458,6 +458,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long ColumnSet_GetColumns__SWIG_0(long jarg1, ColumnSet jarg1_);
   public final static native long ColumnSet_GetSelectAction(long jarg1, ColumnSet jarg1_);
   public final static native void ColumnSet_SetSelectAction(long jarg1, ColumnSet jarg1_, long jarg2, BaseActionElement jarg2_);
+  public final static native int ColumnSet_GetStyle(long jarg1, ColumnSet jarg1_);
+  public final static native void ColumnSet_SetStyle(long jarg1, ColumnSet jarg1_, int jarg2);
   public final static native void ColumnSet_SetLanguage(long jarg1, ColumnSet jarg1_, String jarg2);
   public final static native void ColumnSet_GetResourceInformation(long jarg1, ColumnSet jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native long ColumnSet_dynamic_cast(long jarg1, BaseCardElement jarg1_);
