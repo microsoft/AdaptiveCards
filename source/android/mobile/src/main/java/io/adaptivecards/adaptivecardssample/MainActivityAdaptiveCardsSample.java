@@ -1,6 +1,8 @@
 package io.adaptivecards.adaptivecardssample;
 
-import android.media.MediaPlayer;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.app.FragmentManager;
@@ -21,15 +23,18 @@ import android.view.Menu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+import io.adaptivecards.renderer.GenericImageLoaderAsync;
+import io.adaptivecards.renderer.IDataUriImageLoader;
 import io.adaptivecards.renderer.IMediaDataSourceOnPreparedListener;
 import io.adaptivecards.renderer.IOnlineMediaLoader;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.*;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
 import io.adaptivecards.renderer.http.HttpRequestHelper;
+import io.adaptivecards.renderer.http.HttpRequestResult;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import org.json.JSONException;
@@ -42,8 +47,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -51,6 +56,8 @@ import java.util.TimerTask;
 
 import android.media.MediaDataSource;
 import android.support.annotation.RequiresApi;
+
+import com.pixplicity.sharp.Sharp;
 
 public class MainActivityAdaptiveCardsSample extends FragmentActivity
         implements ICardActionHandler
@@ -68,6 +75,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_adaptive_cards_sample);
         setupTabs();
+        setupImageLoader();
 
         // Add text change handler
         final EditText jsonEditText = (EditText) findViewById(R.id.jsonAdaptiveCard);
@@ -638,4 +646,42 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         this.runOnUiThread(new RunnableExtended(this, text, duration));
     }
 
+    private void setupImageLoader()
+    {
+        CardRendererRegistration.getInstance().registerDataUriImageLoader(new IDataUriImageLoader()
+        {
+            @Override
+            public HttpRequestResult<Bitmap> loadDataUriImage(String uri, GenericImageLoaderAsync genericImageLoaderAsync) throws Exception
+            {
+                Bitmap bitmap;
+                String dataUri = AdaptiveBase64Util.ExtractDataFromUri(uri);
+                CharVector decodedDataUri = AdaptiveBase64Util.Decode(dataUri);
+                byte[] decodedByteArray = Util.getBytes(decodedDataUri);
+                bitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+
+                return new HttpRequestResult<>(bitmap);
+            }
+
+            @Override
+            public HttpRequestResult<Bitmap> loadDataUriImage(String uri, GenericImageLoaderAsync genericImageLoaderAsync, int maxWidth) throws Exception
+            {
+                Bitmap bitmap;
+                String dataUri = AdaptiveBase64Util.ExtractDataFromUri(uri);
+                CharVector decodedDataUri = AdaptiveBase64Util.Decode(dataUri);
+
+                if (uri.startsWith("data:image/svg")) {
+                    String svgString = AdaptiveBase64Util.ExtractDataFromUri(uri);
+                    String decodedSvgString = URLDecoder.decode(svgString, "UTF-8");
+                    Sharp sharp = Sharp.loadString(decodedSvgString);
+                    Drawable drawable = sharp.getDrawable();
+                    bitmap = ImageUtil.drawableToBitmap(drawable, maxWidth);
+                } else {
+                    byte[] decodedByteArray = Util.getBytes(decodedDataUri);
+                    bitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+                }
+
+                return new HttpRequestResult<>(bitmap);
+            }
+        });
+    }
 }

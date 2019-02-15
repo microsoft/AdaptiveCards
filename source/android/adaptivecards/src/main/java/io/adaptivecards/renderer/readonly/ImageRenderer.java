@@ -58,9 +58,25 @@ public class ImageRenderer extends BaseCardElementRenderer
 
     private class ImageRendererImageLoaderAsync extends InnerImageLoaderAsync
     {
-        ImageRendererImageLoaderAsync(RenderedAdaptiveCard renderedCard, ImageView imageView, String imageBaseUrl, ImageStyle imageStyle, int backgroundColor)
+        ImageRendererImageLoaderAsync(
+            RenderedAdaptiveCard renderedCard,
+            ImageView imageView,
+            String imageBaseUrl,
+            ImageStyle imageStyle,
+            int backgroundColor)
         {
-            super(renderedCard, imageView, imageBaseUrl);
+            this(renderedCard, imageView, imageBaseUrl, imageStyle, backgroundColor, -1);
+        }
+
+        ImageRendererImageLoaderAsync(
+            RenderedAdaptiveCard renderedCard,
+            ImageView imageView,
+            String imageBaseUrl,
+            ImageStyle imageStyle,
+            int backgroundColor,
+            int maxWidth)
+        {
+            super(renderedCard, imageView, imageBaseUrl, maxWidth);
             m_imageStyle = imageStyle;
             m_backgroundColor = backgroundColor;
         }
@@ -96,6 +112,20 @@ public class ImageRenderer extends BaseCardElementRenderer
 
         private ImageStyle m_imageStyle;
         private int m_backgroundColor;
+    }
+
+    private static int getImageSizeLimit(Context context, ImageSize imageSize, ImageSizesConfig imageSizesConfig) {
+        int imageSizeLimit = context.getResources().getDisplayMetrics().widthPixels;
+
+        if (imageSize == ImageSize.Small) {
+            imageSizeLimit = Util.dpToPixels(context, imageSizesConfig.getSmallSize());
+        } else if (imageSize == ImageSize.Medium) {
+            imageSizeLimit = Util.dpToPixels(context, imageSizesConfig.getMediumSize());
+        } else if (imageSize == ImageSize.Large) {
+            imageSizeLimit = Util.dpToPixels(context, imageSizesConfig.getLargeSize());
+        }
+
+        return imageSizeLimit;
     }
 
     private static void setImageSize(Context context, ImageView imageView, ImageSize imageSize, ImageSizesConfig imageSizesConfig) {
@@ -169,7 +199,14 @@ public class ImageRenderer extends BaseCardElementRenderer
             imageView.setBackgroundColor(backgroundColor);
         }
 
-        ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(renderedCard, imageView, hostConfig.GetImageBaseUrl(), image.GetImageStyle(), backgroundColor);
+        int imageSizeLimit = getImageSizeLimit(context, image.GetImageSize(), hostConfig.GetImageSizes());
+        ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(
+            renderedCard,
+            imageView,
+            hostConfig.GetImageBaseUrl(),
+            image.GetImageStyle(),
+            backgroundColor,
+            imageSizeLimit);
 
         IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
         if (onlineImageLoader != null)
