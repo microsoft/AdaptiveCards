@@ -19,7 +19,7 @@ import PropTypes from 'prop-types';
 import * as Utils from './utils/util';
 import { SelectAction } from './components/actions';
 import ResourceInformation from './utils/resource-information';
-
+import { ContainerWrapper } from './components/containers/';
 
 export default class AdaptiveCards extends React.Component {
 
@@ -84,15 +84,16 @@ export default class AdaptiveCards extends React.Component {
 	getAdaptiveCardConent() {
 		var adaptiveCardContent =
 			(
-				<View style={styles.container}>
-					<ScrollView>
+				<ContainerWrapper style={styles.container} json={this.payload}>
+					<ScrollView alwaysBounceVertical={false} style={{flexGrow: 0}}>
 						{this.parsePayload()}
 						{!Utils.isNullOrEmpty(this.payload.actions) &&
 							<ActionWrapper actions={this.payload.actions} />}
 					</ScrollView>
-				</View>
+				</ContainerWrapper>
 			);
-		//Checks if BackgroundImage option is available for adaptive card
+
+		// checks if BackgroundImage option is available for adaptive card
 		if (!Utils.isNullOrEmpty(this.payload.backgroundImage)) {
 			adaptiveCardContent = (
 				<ImageBackground source={{ uri: this.payload.backgroundImage }} style={styles.backgroundImage}>
@@ -101,7 +102,7 @@ export default class AdaptiveCards extends React.Component {
 			);
 		}
 
-		//Checks if selectAction option is available for adaptive card
+		// checks if selectAction option is available for adaptive card
 		if (!Utils.isNullOrEmpty(this.payload.selectAction)) {
 			adaptiveCardContent = (
 				<SelectAction style={styles.container} selectActionData={this.payload.selectAction}>

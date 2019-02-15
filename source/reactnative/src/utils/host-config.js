@@ -27,8 +27,6 @@ export class TextColorDefinition {
 	set default(color) {
 		this._default = color;
 	}
-
-
 }
 
 export class HostConfigManager {
@@ -49,6 +47,14 @@ export class HostConfigManager {
 	static setHostConfig(value) {
 		newHostConfig = { ...defaultHostConfig, ...value }
 		this.hostConfig = new HostConfig(newHostConfig);
+	}
+
+	/**
+	 * @description Return whether supports interactivity is enabled or not in the host config
+	 * @returns {boolean} - true|false based on the hostconfig supportsInteractivity value
+	 */
+	static supportsInteractivity() {
+		return this.getHostConfig().supportsInteractivity;
 	}
 }
 
