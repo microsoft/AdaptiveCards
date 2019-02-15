@@ -53,6 +53,11 @@ Json::Value Container::SerializeToJsonValue() const
             VerticalContentAlignmentToString(GetVerticalContentAlignment());
     }
 
+    if(GetBleed())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Bleed)] = true;
+    }
+
     std::string const& itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
     root[itemsPropertyName] = Json::Value(Json::arrayValue);
     for (const auto& cardElement : m_items)
@@ -79,12 +84,16 @@ std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(ParseContext& cont
     container->SetVerticalContentAlignment(ParseUtil::GetEnumValue<VerticalContentAlignment>(
         value, AdaptiveCardSchemaKey::VerticalContentAlignment, VerticalContentAlignment::Top, VerticalContentAlignmentFromString));
 
+    container->SetBleed(ParseUtil::GetBool(value, AdaptiveCardSchemaKey::Bleed, false));
+
     // find and update padding 
     container->ConfigPadding(context);
+    container->ConfigBleed(context);
 
-    // we walk parse tree dfs post-order, so we need to save current style,
+    // we walk parse tree dfs inorder, so we need to save current style,
     // before we walk back up to a parent.
     context.PushParentalContainerStyle(container->GetStyle()); 
+    context.PushParentalPadding(container, container->GetId()); 
 
     // Parse Items
     auto cardElements = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Items, false);
@@ -92,6 +101,7 @@ std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(ParseContext& cont
 
     // since we are walking dfs, we have to restore the style before we back up
     context.PopParentalContainerStyle();
+    context.PopParentalPadding();
 
     // Parse optional selectAction
     container->SetSelectAction(ParseUtil::GetAction(context, value, AdaptiveCardSchemaKey::SelectAction, false));

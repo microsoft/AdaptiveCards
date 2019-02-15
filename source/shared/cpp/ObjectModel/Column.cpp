@@ -113,10 +113,12 @@ std::shared_ptr<Column> Column::Deserialize(ParseContext& context, const Json::V
 
     // find and update padding 
     column->ConfigPadding(context);
+    column->ConfigBleed(context);
 
     // we walk parse tree dfs post-order, so we need to save current style,
     // before we walk back up to a parent.
     context.PushParentalContainerStyle(column->GetStyle());
+    context.PushParentalPadding(column, column->GetId()); 
 
     // Parse Items
     auto cardElements = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Items, false);
@@ -124,6 +126,7 @@ std::shared_ptr<Column> Column::Deserialize(ParseContext& context, const Json::V
 
     // since we are walking dfs, we have to restore the style before we back up
     context.PopParentalContainerStyle();
+    context.PopParentalPadding();
 
     // Parse optional selectAction
     column->SetSelectAction(ParseUtil::GetAction(context, value, AdaptiveCardSchemaKey::SelectAction, false));

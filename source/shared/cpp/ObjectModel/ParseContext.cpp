@@ -2,6 +2,7 @@
 #include "ParseContext.h"
 #include "AdaptiveCardParseException.h"
 #include "BaseElement.h"
+#include "CollectionTypeElement.h"
 
 namespace AdaptiveSharedNamespace
 {
@@ -258,5 +259,30 @@ namespace AdaptiveSharedNamespace
         {
             m_parentalContainerStyles.pop_back();
         }
+    }
+
+    void ParseContext::PushParentalPadding(const std::shared_ptr<CollectionTypeElement> &parent, const std::string &id)
+    {
+        if(parent && parent->GetPadding()) 
+        {
+            m_parentalPadding.push_back(id);
+        }
+    }
+
+    void ParseContext::PopParentalPadding(void)
+    {
+        if(m_parentalPadding.size())
+        {
+            m_parentalPadding.pop_back();
+        }
+    }
+
+    std::string ParseContext::GetIDOfParentWithPadding(void) const
+    {
+        if(m_parentalPadding.size())
+        {
+            return m_parentalPadding.back();
+        }
+        return "";
     }
 }

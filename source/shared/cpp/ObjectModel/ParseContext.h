@@ -10,7 +10,7 @@ namespace AdaptiveSharedNamespace
 {
     class BaseElement;
     class InternalId;
-
+    class CollectionTypeElement;
     class ParseContext
     {
     public:
@@ -30,6 +30,10 @@ namespace AdaptiveSharedNamespace
         void SetParentalContainerStyle(const ContainerStyle value);
         void PushParentalContainerStyle(const ContainerStyle value);
         void PopParentalContainerStyle(void);
+        void PushParentalPadding(const std::shared_ptr<CollectionTypeElement>& parent, const std::string& id);
+        void PopParentalPadding(void);
+        std::string GetIDOfParentWithPadding(void)const;
+
     private:
         const AdaptiveSharedNamespace::InternalId GetNearestFallbackId(const AdaptiveSharedNamespace::InternalId& skipId) const;
         // This enum is just a helper to keep track of the position of contents within the std::tuple used in m_idStack
@@ -57,5 +61,6 @@ namespace AdaptiveSharedNamespace
         std::vector<std::tuple<std::string, AdaptiveSharedNamespace::InternalId, bool>> m_idStack;
         ContainerStyle m_parentalContainerStyle;
         std::vector<ContainerStyle> m_parentalContainerStyles;
+        std::vector<std::string> m_parentalPadding;
     };
 }
