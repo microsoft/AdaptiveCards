@@ -25,6 +25,7 @@ dependencies {
     })
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support:design:26.1.0'
+    implementation 'com.pixplicity.sharp:library:1.1.0'
     testImplementation 'junit:junit:4.12'
     implementation project(':adaptivecards')
 }
