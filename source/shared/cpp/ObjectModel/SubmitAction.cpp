@@ -26,6 +26,11 @@ Json::Value SubmitAction::GetDataJsonAsValue() const
     return m_dataJson;
 }
 
+void SubmitAction::SetDataJson(const std::string value)
+{
+    SetDataJson(ParseUtil::GetJsonValueFromString(value));
+}
+
 void SubmitAction::SetDataJson(const Json::Value &value)
 {
     m_dataJson = value;
