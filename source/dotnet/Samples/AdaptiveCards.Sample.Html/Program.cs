@@ -161,29 +161,44 @@ namespace AdaptiveCards.Sample.Html
         // Sample JavaScript code to make media elements work
         const mediaPosterButtons = document.getElementsByClassName('ac-media-poster');
         const allowInlinePlayback = false;
+
+        function activateMedia(button) {{
+            const mediaId = button.dataset.acMediaid;
+            const mediaPlayerContainer = document.getElementById(mediaId);
+
+            if (mediaPlayerContainer)
+            {{
+                // Hide the poster
+                button.style.display = 'none';
+
+                // Show the media player container
+                mediaPlayerContainer.style.display = '';
+
+                // Play the media
+                const mediaPlayer = document.getElementById(`${{mediaId}}-player`);
+                mediaPlayer.play();
+            }}
+        }}
+
         for (var i = 0; i < mediaPosterButtons.length; i++)
         {{
             const button = mediaPosterButtons[i];
             button.addEventListener('click', function() {{
                 if ({jsAllowInlinePlayback}) {{
-                    const mediaId = button.dataset.acMediaid;
-                    const mediaPlayerContainer = document.getElementById(mediaId);
-
-                    if (mediaPlayerContainer)
-                    {{
-                        // Hide the poster
-                        button.style.display = 'none';
-
-                        // Show the media player container
-                        mediaPlayerContainer.style.display = '';
-
-                        // Play the media
-                        const mediaPlayer = document.getElementById(`${{mediaId}}-player`);
-                        mediaPlayer.play();
-                    }}
+                    activateMedia(button);
                 }} else {{
                     const mediaSources = button.dataset.acMediaSources;
                     alert(mediaSources);
+                }}
+            }});
+            button.addEventListener('keydown', function(e) {{
+                if (e.key == "" "") {{
+                    if ({jsAllowInlinePlayback}) {{
+                        activateMedia(button);
+                    }} else {{
+                        const mediaSources = button.dataset.acMediaSources;
+                        alert(mediaSources);
+                    }}
                 }}
             }});
         }}
@@ -196,7 +211,7 @@ namespace AdaptiveCards.Sample.Html
             const textinputId = container.dataset.acTextinputId;
             const textinput = document.getElementById(textinputId);
             textinput.addEventListener('keydown', function (e) {{
-                if (e.keyCode == 13) {{
+                if (e.key == ""Enter"") {{
                     const inlineactionId = container.dataset.acInlineactionId;
                     const inlineaction = document.getElementById(inlineactionId);
 
