@@ -1,8 +1,8 @@
 using DiffPlex;
 using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
+using Newtonsoft.Json;
 using System.Linq;
-using System.Text;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -19,101 +19,10 @@ namespace AdaptiveCardTestApp.Views
             this.InitializeComponent();
         }
 
-        // a simplistic JSON formatter for use in displaying for diffview
         private string FormatJson(string json)
         {
-            StringBuilder sbOut = new StringBuilder(json.Length);
-            uint indent = 0; // current indent level
-
-            // tracks which character represents the string literal we're visiting.
-            // ', ", or 0 if we're not in a literal
-            char inStringLiteral = (char)0;
-
-            bool ignoreNextChar = false; // ignore next character (\ escaping)
-            foreach (char c in json)
-            {
-                bool newlineBefore = false;
-                bool newlineAfter = false;
-                if (ignoreNextChar)
-                {
-                    ignoreNextChar = false;
-                }
-                else
-                {
-                    switch (c)
-                    {
-                        case '"':
-                        case '\'':
-                            {
-                                if (inStringLiteral == (char)0)
-                                {
-                                    inStringLiteral = c;
-                                }
-                                else if (inStringLiteral == c)
-                                {
-                                    inStringLiteral = (char)0;
-                                }
-                                break;
-                            }
-
-                        case '\\':
-                            {
-                                ignoreNextChar = (inStringLiteral != (char)0);
-                                break;
-                            }
-
-                        case '{':
-                        case '[':
-                            {
-                                if (inStringLiteral == (char)0)
-                                {
-                                    indent++;
-                                    newlineAfter = true;
-                                }
-                                break;
-                            }
-                        case '}':
-                        case ']':
-                            {
-                                if (inStringLiteral == (char)0)
-                                {
-                                    indent--;
-                                    newlineBefore = true;
-                                }
-                                break;
-                            }
-                        case ',':
-                            {
-                                if (inStringLiteral == (char)0)
-                                {
-                                    newlineAfter = true;
-                                }
-                                break;
-                            }
-                    }
-                }
-
-                if (newlineBefore)
-                {
-                    sbOut.Append('\n');
-                    for (uint i = 0; i < indent; i++)
-                    {
-                        sbOut.Append(' ');
-                    }
-                }
-
-                sbOut.Append(c);
-
-                if (newlineAfter)
-                {
-                    sbOut.Append('\n');
-                    for (uint i = 0; i < indent; i++)
-                    {
-                        sbOut.Append(' ');
-                    }
-                }
-            }
-            return sbOut.ToString();
+            var parsedJson = JsonConvert.DeserializeObject(json);
+            return JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
         }
 
         public void ShowDiff(string previous, string newContent)
