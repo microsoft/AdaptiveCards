@@ -1384,6 +1384,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
         [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
+
+        [propget] HRESULT Style([out, retval] ContainerStyle* value);
+        [propput] HRESULT Style([in] ContainerStyle value);
     };
 
     [

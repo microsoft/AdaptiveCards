@@ -2429,6 +2429,35 @@ namespace AdaptiveNamespace
         ComPtr<WholeItemsPanel> gridContainer;
         THROW_IF_FAILED(MakeAndInitialize<WholeItemsPanel>(&gridContainer));
 
+        ABI::AdaptiveNamespace::ContainerStyle containerStyle;
+        THROW_IF_FAILED(adaptiveColumnSet->get_Style(&containerStyle));
+        bool hasExplicitContainerStyle{ true };
+        if (containerStyle == ABI::AdaptiveNamespace::ContainerStyle::None)
+        {
+            hasExplicitContainerStyle = false;
+            ABI::AdaptiveNamespace::ContainerStyle parentContainerStyle;
+            THROW_IF_FAILED(renderArgs->get_ContainerStyle(&parentContainerStyle));
+            containerStyle = parentContainerStyle;
+        }
+
+        ComPtr<IFrameworkElement> parentElement;
+        THROW_IF_FAILED(renderArgs->get_ParentElement(&parentElement));
+        ComPtr<IAdaptiveRenderArgs> newRenderArgs;
+        THROW_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&newRenderArgs, containerStyle, parentElement.Get()));
+
+        // If container style was explicitly assigned, apply background
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+        ABI::Windows::UI::Color backgroundColor;
+        if (hasExplicitContainerStyle && SUCCEEDED(GetBackgroundColorFromStyle(containerStyle, hostConfig.Get(), &backgroundColor)))
+        {
+            ComPtr<IPanel> columnSetAsPanel;
+            THROW_IF_FAILED(gridContainer.As(&columnSetAsPanel));
+
+            ComPtr<IBrush> backgroundColorBrush = GetSolidColorBrush(backgroundColor);
+            THROW_IF_FAILED(columnSetAsPanel->put_Background(backgroundColorBrush.Get()));
+        }
+
         ComPtr<IGrid> xamlGrid =
             XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
         ComPtr<IGridStatics> gridStatics;
@@ -2449,10 +2478,7 @@ namespace AdaptiveNamespace
             *columnSetControl = nullptr;
             return;
         }
-
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-
+        
         XamlHelpers::IterateOverVector<AdaptiveColumn, IAdaptiveColumn>(
             columns.Get(),
             [xamlGrid, gridStatics, &currentColumn, renderContext, renderArgs, columnRenderer, hostConfig](IAdaptiveColumn* column) {
