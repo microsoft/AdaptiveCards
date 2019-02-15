@@ -7,7 +7,8 @@
 
 using namespace AdaptiveSharedNamespace;
 
-ColumnSet::ColumnSet() : BaseCardElement(CardElementType::ColumnSet)
+ColumnSet::ColumnSet() :
+    BaseCardElement(CardElementType::ColumnSet), m_style(ContainerStyle::None)
 {
     PopulateKnownPropertiesSet();
 }

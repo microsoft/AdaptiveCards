@@ -315,6 +315,7 @@ namespace UWPUnitTests
                 IsVisible = false,
                 Separator = true,
                 Spacing = Spacing.Small,
+                Style = ContainerStyle.Emphasis,
             };
 
             ValidateBaseElementProperties(columnSet, "ColumnSetId", false, true, Spacing.Small, HeightType.Stretch);
@@ -326,7 +327,7 @@ namespace UWPUnitTests
             Assert.AreEqual("Column2Id", columnSet.Columns[1].Id);
 
             var jsonString = columnSet.ToJson().ToString();
-            Assert.AreEqual("{\"columns\":[{\"height\":\"Stretch\",\"id\":\"ColumnId\",\"isVisible\":false,\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"selectAction\":{\"id\":\"\",\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"separator\":true,\"spacing\":\"small\",\"style\":\"Emphasis\",\"type\":\"Column\",\"verticalContentAlignment\":\"Bottom\",\"width\":\"50px\"},{\"id\":\"Column2Id\",\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"}],\"type\":\"Column\",\"width\":\"auto\"}],\"height\":\"Stretch\",\"id\":\"ColumnSetId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"small\",\"type\":\"ColumnSet\"}", jsonString);
+            Assert.AreEqual("{\"columns\":[{\"height\":\"Stretch\",\"id\":\"ColumnId\",\"isVisible\":false,\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"selectAction\":{\"id\":\"\",\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"separator\":true,\"spacing\":\"small\",\"style\":\"Emphasis\",\"type\":\"Column\",\"verticalContentAlignment\":\"Bottom\",\"width\":\"50px\"},{\"id\":\"Column2Id\",\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"}],\"type\":\"Column\",\"width\":\"auto\"}],\"height\":\"Stretch\",\"id\":\"ColumnSetId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"small\",\"style\":\"Emphasis\",\"type\":\"ColumnSet\"}", jsonString);
         }
 
         [TestMethod]
