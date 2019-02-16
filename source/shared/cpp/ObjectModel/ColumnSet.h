@@ -13,6 +13,11 @@ namespace AdaptiveSharedNamespace
 
     public:
         ColumnSet();
+        ColumnSet(const ColumnSet&) = default;
+        ColumnSet(ColumnSet&&) = default;
+        ColumnSet& operator=(const ColumnSet&) = default;
+        ColumnSet& operator=(ColumnSet&&) = default;
+        ~ColumnSet() = default;
 
         Json::Value SerializeToJsonValue() const override;
 

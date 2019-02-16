@@ -129,6 +129,7 @@ namespace AdaptiveCards.Test
                     "Action.CustomParsing",
 
                     // These are cards that features haven't been implemented yet
+                    "FallbackParsing",
                 });
         }
     }

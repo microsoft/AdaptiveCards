@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "ChoiceSetInput.h"
 #include "Column.h"
 #include "ParseContext.h"
+#include "ParseUtil.h"
 #include "Util.h"
 
 using namespace AdaptiveSharedNamespace;
@@ -27,7 +27,7 @@ void Column::SetWidth(const std::string& value,
                       std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>>* warnings)
 {
     m_width = ParseUtil::ToLowercase(value);
-    int parsedDimension = ParseSizeForPixelSize(m_width, warnings);
+    const int parsedDimension = ParseSizeForPixelSize(m_width, warnings);
     SetPixelWidth(parsedDimension);
 }
 
@@ -116,7 +116,7 @@ Json::Value Column::SerializeToJsonValue() const
 
 std::shared_ptr<Column> Column::Deserialize(ParseContext& context, const Json::Value& value)
 {
-    auto column = BaseCardElement::Deserialize<Column>(value);
+    auto column = BaseCardElement::Deserialize<Column>(context, value);
 
     std::string columnWidth = ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Width);
     if (columnWidth == "")

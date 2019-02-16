@@ -13,6 +13,11 @@ namespace AdaptiveSharedNamespace
 
     public:
         ImageSet();
+        ImageSet(const ImageSet&) = default;
+        ImageSet(ImageSet&&) = default;
+        ImageSet& operator=(const ImageSet&) = default;
+        ImageSet& operator=(ImageSet&&) = default;
+        ~ImageSet() = default;
 
         Json::Value SerializeToJsonValue() const override;
 

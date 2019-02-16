@@ -18,7 +18,7 @@ Json::Value ToggleInput::SerializeToJsonValue() const
 
     if (m_wrap)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap)] = m_wrap; 
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap)] = m_wrap;
     }
 
     if (!m_value.empty())
@@ -88,11 +88,11 @@ void ToggleInput::SetWrap(bool value)
     m_wrap = value;
 }
 
-std::shared_ptr<BaseCardElement> ToggleInputParser::Deserialize(ParseContext&, const Json::Value& json)
+std::shared_ptr<BaseCardElement> ToggleInputParser::Deserialize(ParseContext& context, const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::ToggleInput);
 
-    std::shared_ptr<ToggleInput> toggleInput = BaseInputElement::Deserialize<ToggleInput>(json);
+    std::shared_ptr<ToggleInput> toggleInput = BaseInputElement::Deserialize<ToggleInput>(context, json);
 
     toggleInput->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title, true));
     toggleInput->SetValue(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Value));
