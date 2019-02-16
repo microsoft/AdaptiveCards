@@ -11,6 +11,18 @@ namespace AdaptiveCards.Rendering.Wpf
             var uiColumnSet = new Grid();
             uiColumnSet.Style = context.GetStyle($"Adaptive.{columnSet.Type}");
 
+            if (columnSet.Style != null)
+            {
+                // Apply background color
+                var columnSetStyle = context.Config.ContainerStyles.Default;
+                if (columnSet.Style == AdaptiveContainerStyle.Emphasis)
+                {
+                    columnSetStyle = context.Config.ContainerStyles.Emphasis;
+                }
+
+                uiColumnSet.SetBackgroundColor(columnSetStyle.BackgroundColor, context);
+            }
+
             foreach (var column in columnSet.Columns)
             {
                 FrameworkElement uiContainer = context.Render(column);
