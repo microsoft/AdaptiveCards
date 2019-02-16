@@ -71,20 +71,17 @@ namespace AdaptiveCards.Rendering.Wpf
                 Style = context.GetStyle($"Adaptive.{action.Type}"),
             };
 
-            if(action.Sentiment == AdaptiveSentiment.Positive || action.Sentiment == AdaptiveSentiment.Destructive)
+            if (!String.IsNullOrWhiteSpace(action.Sentiment))
             {
                 Style sentimentStyle = context.GetStyle($"Adaptive.{action.Type}.{action.Sentiment}");
 
-                if (sentimentStyle == null)
+                if (sentimentStyle == null && String.Equals(action.Sentiment, "positive", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (action.Sentiment == AdaptiveSentiment.Positive)
-                    {
-                        sentimentStyle = context.GetStyle("PositiveActionDefaultStyle");
-                    }
-                    else if (action.Sentiment == AdaptiveSentiment.Destructive)
-                    {
-                        sentimentStyle = context.GetStyle("DestructiveActionDefaultStyle");
-                    }
+                    sentimentStyle = context.GetStyle("PositiveActionDefaultStyle");
+                }
+                else if (sentimentStyle == null && String.Equals(action.Sentiment, "destructive", StringComparison.OrdinalIgnoreCase))
+                {
+                    sentimentStyle = context.GetStyle("DestructiveActionDefaultStyle");
                 }
 
                 uiButton.Style = sentimentStyle;

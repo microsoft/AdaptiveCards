@@ -31,7 +31,6 @@ import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.ActionsConfig;
 import io.adaptivecards.objectmodel.IconPlacement;
 import io.adaptivecards.objectmodel.IsVisible;
-import io.adaptivecards.objectmodel.Sentiment;
 import io.adaptivecards.objectmodel.ShowCardAction;
 import io.adaptivecards.objectmodel.ToggleInput;
 import io.adaptivecards.objectmodel.ToggleVisibilityAction;
@@ -235,7 +234,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
 
         protected ActionElementRendererIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl, IconPlacement iconPlacement, long iconSize)
         {
-            super(renderedCard, containerView, imageBaseUrl);
+            super(renderedCard, containerView, imageBaseUrl, containerView.getResources().getDisplayMetrics().widthPixels);
             m_iconPlacement = iconPlacement;
             m_iconSize = iconSize;
         }
@@ -307,14 +306,17 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         return new Button(themedContext);
     }
 
-    private Button createButton(Context context, Sentiment sentiment, HostConfig hostConfig)
+    private Button createButton(Context context, String sentiment, HostConfig hostConfig)
     {
-        if(sentiment == Sentiment.Positive || sentiment == Sentiment.Destructive)
+        boolean isPositiveSentiment = sentiment.equalsIgnoreCase("Positive");
+        boolean isDestructiveSentiment = sentiment.equalsIgnoreCase("Destructive");
+
+        if(isPositiveSentiment || isDestructiveSentiment)
         {
             Resources.Theme theme = context.getTheme();
             TypedValue buttonStyle = new TypedValue();
 
-            if(sentiment == sentiment.Positive)
+            if(isPositiveSentiment)
             {
                 if(theme.resolveAttribute(R.attr.adaptiveActionPositive, buttonStyle, true))
                 {

@@ -72,9 +72,14 @@ public class ContainerRenderer extends BaseCardElementRenderer
             containerView.setVisibility(View.GONE);
         }
 
+        containerView.setOrientation(LinearLayout.VERTICAL);
         if(container.GetHeight() == HeightType.Stretch)
         {
-            containerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+            containerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+        }
+        else
+        {
+            containerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
 
         VerticalContentAlignment contentAlignment = container.GetVerticalContentAlignment();
@@ -96,6 +101,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
         {
             CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, containerView, container, container.GetItems(), cardActionHandler, hostConfig, styleForThis);
         }
+
         if (styleForThis != containerStyle)
         {
             int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());

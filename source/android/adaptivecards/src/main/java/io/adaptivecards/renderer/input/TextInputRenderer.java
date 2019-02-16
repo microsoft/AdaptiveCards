@@ -385,7 +385,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
         protected InlineActionIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String url, EditText editText)
         {
-            super(renderedCard, containerView, url);
+            super(renderedCard, containerView, url, containerView.getResources().getDisplayMetrics().widthPixels);
             m_editText = editText;
         }
 

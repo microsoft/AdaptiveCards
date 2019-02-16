@@ -64,6 +64,7 @@ struct tm {
 #include "../../../shared/cpp/ObjectModel/Enums.h"
 #include "../../../shared/cpp/ObjectModel/AdaptiveBase64Util.h"
 #include "../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
+#include "../../../shared/cpp/ObjectModel/BaseElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
 #include "../../../shared/cpp/ObjectModel/BaseInputElement.h"
@@ -101,13 +102,18 @@ struct tm {
 #include "../../../shared/cpp/ObjectModel/Media.h"
 #include "../../../shared/cpp/ObjectModel/ToggleVisibilityAction.h"
 #include "../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.h"
+#include "../../../shared/cpp/ObjectModel/UnknownElement.h"
+#include "../../../shared/cpp/ObjectModel/UnknownAction.h"
 %}
 
+%shared_ptr(AdaptiveCards::BaseElement)
 %shared_ptr(AdaptiveCards::BaseActionElement)
 %shared_ptr(AdaptiveCards::BaseCardElement)
 %shared_ptr(AdaptiveCards::BaseInputElement)
 %shared_ptr(AdaptiveCards::ActionElementParser)
 %shared_ptr(AdaptiveCards::BaseCardElementParser)
+%shared_ptr(AdaptiveCards::ActionElementParserWrapper)
+%shared_ptr(AdaptiveCards::BaseCardElementParserWrapper)
 %shared_ptr(AdaptiveCards::ElementParserRegistration)
 %shared_ptr(AdaptiveCards::ActionParserRegistration)
 %shared_ptr(AdaptiveCards::Container)
@@ -157,6 +163,10 @@ struct tm {
 %shared_ptr(AdaptiveCards::ToggleVisibilityActionParser)
 %shared_ptr(AdaptiveCards::ActionSet)
 %shared_ptr(AdaptiveCards::ActionSetParser)
+%shared_ptr(AdaptiveCards::UnknownElement)
+%shared_ptr(AdaptiveCards::UnknownElementParser)
+%shared_ptr(AdaptiveCards::UnknownAction)
+%shared_ptr(AdaptiveCards::UnknownActionParser)
 
 namespace Json {
     %rename(JsonValue) Value;
@@ -173,6 +183,8 @@ namespace Json {
 
 %feature("director", assumeoverride=1) AdaptiveCards::BaseCardElementParser;
 %feature("director", assumeoverride=1) AdaptiveCards::ActionElementParser;
+
+%feature("director", assumeoverride=1) AdaptiveCards::BaseElement;
 
 %typemap(in,numinputs=0) JNIEnv *jenv "$1 = jenv;"
 %extend AdaptiveCards::BaseCardElement {
@@ -622,6 +634,7 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/Enums.h"
 %include "../../../shared/cpp/ObjectModel/AdaptiveBase64Util.h"
 %include "../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
+%include "../../../shared/cpp/ObjectModel/BaseElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseInputElement.h"
@@ -659,3 +672,5 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.h"
 %include "../../../shared/cpp/ObjectModel/ToggleVisibilityAction.h"
 %include "../../../shared/cpp/ObjectModel/ActionSet.h"
+%include "../../../shared/cpp/ObjectModel/UnknownElement.h"
+%include "../../../shared/cpp/ObjectModel/UnknownAction.h"

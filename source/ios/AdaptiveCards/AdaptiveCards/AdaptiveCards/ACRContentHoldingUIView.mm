@@ -6,7 +6,12 @@
 //
 
 #import "ACRContentHoldingUIView.h"
+#import "SharedAdaptiveCard.h"
 #import "ACRUILabel.h"
+
+const NSInteger eACRUILabelTag = 0x1234;
+const NSInteger eACRUIFactSetTag = 0x1235;
+const NSInteger eACRUIImageTag = 0x1236;
 
 using namespace AdaptiveCards;
 

@@ -1,6 +1,7 @@
 using DiffPlex;
 using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
+using Newtonsoft.Json;
 using System.Linq;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -18,8 +19,16 @@ namespace AdaptiveCardTestApp.Views
             this.InitializeComponent();
         }
 
+        private string FormatJson(string json)
+        {
+            var parsedJson = JsonConvert.DeserializeObject(json);
+            return JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
+        }
+
         public void ShowDiff(string previous, string newContent)
         {
+            previous = FormatJson(previous);
+            newContent = FormatJson(newContent);
             SideBySideDiffModel model = new SideBySideDiffBuilder(new Differ()).BuildDiffModel(previous, newContent);
 
             DisplayInto(StackPanelOldLines, model.OldText);

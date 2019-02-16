@@ -7,8 +7,10 @@
 
 namespace AdaptiveNamespace
 {
-    class RenderedAdaptiveCard
+    class DECLSPEC_UUID("F25E0D36-0B5B-4398-AFC8-F84105EC46A2") RenderedAdaptiveCard
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
+                                              Microsoft::WRL::Implements<IWeakReferenceSource>,
+                                              Microsoft::WRL::CloakedIid<ITypePeek>,
                                               Microsoft::WRL::Implements<ABI::AdaptiveNamespace::IRenderedAdaptiveCard>>
     {
         AdaptiveRuntime(RenderedAdaptiveCard);
@@ -39,11 +41,17 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Warnings(
             _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>** value);
 
-        HRESULT AddInputValue(_In_ ABI::AdaptiveNamespace::IAdaptiveInputValue* inputValue);
-        void SetFrameworkElement(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* value);
-        void SetOriginatingCard(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* value);
-        HRESULT SendActionEvent(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* eventArgs);
-        HRESULT SendMediaClickedEvent(_In_ ABI::AdaptiveNamespace::IAdaptiveMedia* eventArgs);
+        // ITypePeek method
+        void *PeekAt(REFIID riid) override
+        {
+            return PeekHelper(riid, this);
+        }
+
+        HRESULT AddInputValue(ABI::AdaptiveNamespace::IAdaptiveInputValue* inputValue);
+        void SetFrameworkElement(ABI::Windows::UI::Xaml::IFrameworkElement* value);
+        void SetOriginatingCard(ABI::AdaptiveNamespace::IAdaptiveCard* value);
+        HRESULT SendActionEvent(ABI::AdaptiveNamespace::IAdaptiveActionElement* eventArgs);
+        HRESULT SendMediaClickedEvent(ABI::AdaptiveNamespace::IAdaptiveMedia* eventArgs);
 
     private:
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCard> m_originatingCard;

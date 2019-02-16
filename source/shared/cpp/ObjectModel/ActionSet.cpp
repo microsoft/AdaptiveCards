@@ -6,13 +6,13 @@
 
 using namespace AdaptiveCards;
 
-ActionSet::ActionSet() : BaseCardElement(CardElementType::ActionSet)
+ActionSet::ActionSet() : BaseCardElement(CardElementType::ActionSet), m_actions{}, m_orientation(ActionsOrientation::Vertical)
 {
     PopulateKnownPropertiesSet();
 }
 
 ActionSet::ActionSet(std::vector<std::shared_ptr<BaseActionElement>>& actions) :
-    BaseCardElement(CardElementType::ActionSet), m_actions(actions)
+    BaseCardElement(CardElementType::ActionSet), m_actions(actions), m_orientation(ActionsOrientation::Vertical)
 {
     PopulateKnownPropertiesSet();
 }
@@ -34,7 +34,7 @@ Json::Value ActionSet::SerializeToJsonValue() const
     std::string actionsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Actions);
     root[actionsPropertyName] = Json::Value(Json::arrayValue);
 
-    for (auto actionElement : m_actions)
+    for (const auto& actionElement : m_actions)
     {
         root[actionsPropertyName].append(actionElement->SerializeToJsonValue());
     }
@@ -46,7 +46,7 @@ std::shared_ptr<BaseCardElement> ActionSetParser::Deserialize(ParseContext& cont
 {
     ParseUtil::ExpectTypeString(value, CardElementType::ActionSet);
 
-    auto actionSet = BaseCardElement::Deserialize<ActionSet>(value);
+    auto actionSet = BaseCardElement::Deserialize<ActionSet>(context, value);
 
     // Parse Actions
     auto actionElements = ParseUtil::GetActionCollection(context, value, AdaptiveCardSchemaKey::Actions, false);

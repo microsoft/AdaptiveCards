@@ -51,9 +51,9 @@ public class AdaptiveCardRenderer
         private Context m_context;
         private LinearLayout m_layout;
 
-        public BackgroundImageLoaderAsync(RenderedAdaptiveCard renderedCard, Context context, LinearLayout layout, String imageBaseUrl)
+        public BackgroundImageLoaderAsync(RenderedAdaptiveCard renderedCard, Context context, LinearLayout layout, String imageBaseUrl, int maxWidth)
         {
-            super(renderedCard, imageBaseUrl);
+            super(renderedCard, imageBaseUrl, maxWidth);
 
             m_context = context;
             m_layout = layout;
@@ -206,7 +206,12 @@ public class AdaptiveCardRenderer
         String imageUrl = adaptiveCard.GetBackgroundImage();
         if (!imageUrl.isEmpty())
         {
-            BackgroundImageLoaderAsync loaderAsync = new BackgroundImageLoaderAsync(renderedCard, context, layout, hostConfig.GetImageBaseUrl());
+            BackgroundImageLoaderAsync loaderAsync = new BackgroundImageLoaderAsync(
+                    renderedCard,
+                    context,
+                    layout,
+                    hostConfig.GetImageBaseUrl(),
+                    context.getResources().getDisplayMetrics().widthPixels);
 
             IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
             if(onlineImageLoader != null)

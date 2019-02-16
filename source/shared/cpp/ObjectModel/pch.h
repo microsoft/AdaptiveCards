@@ -17,6 +17,7 @@
 #include <memory>
 #include <numeric>
 #include <regex>
+#include <sstream>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -44,3 +45,4 @@
 #endif
 
 #include "Enums.h"
+#include "json/json.h"

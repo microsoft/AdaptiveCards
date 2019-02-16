@@ -23,7 +23,8 @@
     <ProjectGuid>{7A653D45-32AA-4020-9D23-96C0A7D60EAA}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>AdaptiveCardsSharedModelUnitTest</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.15063.0</WindowsTargetPlatformMinVersion>
     <ProjectSubType>NativeUnitTestProject</ProjectSubType>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -164,7 +165,7 @@
     <ClCompile Include="AdaptiveCardParseExceptionTest.cpp" />
     <ClCompile Include="AdditionalPropertiesTest.cpp" />
     <ClCompile Include="Base64Test.cpp" />
-    <ClCompile Include="CustomParsingForIOSTest.cpp" />
+    <ClCompile Include="UnsupportedtypesParsingTest.cpp" />
     <ClCompile Include="EnumTest.cpp" />
     <ClCompile Include="EverythingBagel.cpp" />
     <ClCompile Include="ExplicitDimensionTest.cpp" />

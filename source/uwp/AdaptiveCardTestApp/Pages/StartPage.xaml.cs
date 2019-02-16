@@ -47,8 +47,17 @@ namespace AdaptiveCardTestApp.Pages
         {
             if (DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel != 1)
             {
-                var dontWait = new MessageDialog($"You must run these tests on a monitor that is using 100% scale factor (yours appears to be {DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel * 100}%). Otherwise the XAML and images are rendered at a higher resolution and will not match the current Expected image results.").ShowAsync();
-                return;
+                var dontWait = new MessageDialog($"You must run these tests on a monitor that is using 100% scale factor (yours appears to be {DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel * 100}%). Otherwise the XAML and images are rendered at a higher resolution and will not match the current Expected image results.");
+                dontWait.Commands.Clear();
+                dontWait.Commands.Add(new UICommand($"Run anyway"));
+                dontWait.Commands.Add(new UICommand($"Cancel"));
+                dontWait.CancelCommandIndex = 1;
+                dontWait.DefaultCommandIndex = 1;
+                var result = await dontWait.ShowAsync();
+                if (result.Label == $"Cancel")
+                {
+                    return;
+                }
             }
 
             MakeSelectedLike(ViewModel.SelectedCards, ListViewCards);
@@ -104,6 +113,41 @@ namespace AdaptiveCardTestApp.Pages
         private void TimelineCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             ViewModel.AddToTimeline = (TimelineCheckBox.IsChecked == true);
+        }
+
+        private bool lastSelectedAllCards = true;
+
+        private void CardButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (lastSelectedAllCards)
+            {
+                foreach (var range in ListViewCards.SelectedRanges)
+                {
+                    ListViewCards.DeselectRange(range);
+                }
+            }
+            else
+            {
+                ListViewCards.SelectAll();
+            }
+            lastSelectedAllCards = !lastSelectedAllCards;
+        }
+
+        private bool lastSelectedAllHosts = true;
+        private void HostButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (lastSelectedAllHosts)
+            {
+                foreach (var range in ListViewHostConfigs.SelectedRanges)
+                {
+                    ListViewHostConfigs.DeselectRange(range);
+                }
+            }
+            else
+            {
+                ListViewHostConfigs.SelectAll();
+            }
+            lastSelectedAllHosts = !lastSelectedAllHosts;
         }
     }
 }

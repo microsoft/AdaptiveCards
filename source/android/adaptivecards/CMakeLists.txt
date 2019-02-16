@@ -29,6 +29,7 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.cpp
              ../../shared/cpp/ObjectModel/BaseActionElement.cpp
              ../../shared/cpp/ObjectModel/BaseCardElement.cpp
+             ../../shared/cpp/ObjectModel/BaseElement.cpp
              ../../shared/cpp/ObjectModel/BaseInputElement.cpp
              ../../shared/cpp/ObjectModel/ChoiceInput.cpp
              ../../shared/cpp/ObjectModel/ChoiceSetInput.cpp
@@ -67,6 +68,7 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/ToggleVisibilityAction.cpp
              ../../shared/cpp/ObjectModel/ToggleVisibilityTarget.cpp
              ../../shared/cpp/ObjectModel/UnknownElement.cpp
+             ../../shared/cpp/ObjectModel/UnknownAction.cpp
              ../../shared/cpp/ObjectModel/Util.cpp
              src/main/cpp/objectmodel_wrap.cpp
              )

@@ -41,7 +41,7 @@ void ShowCardAction::SetLanguage(const std::string& value)
 
 std::shared_ptr<BaseActionElement> ShowCardActionParser::Deserialize(ParseContext& context, const Json::Value& json)
 {
-    std::shared_ptr<ShowCardAction> showCardAction = BaseActionElement::Deserialize<ShowCardAction>(json);
+    std::shared_ptr<ShowCardAction> showCardAction = BaseActionElement::Deserialize<ShowCardAction>(context, json);
 
     std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Card);
 

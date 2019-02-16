@@ -78,11 +78,11 @@ void NumberInput::SetMin(const int value)
     m_min = value;
 }
 
-std::shared_ptr<BaseCardElement> NumberInputParser::Deserialize(ParseContext&, const Json::Value& json)
+std::shared_ptr<BaseCardElement> NumberInputParser::Deserialize(ParseContext& context, const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::NumberInput);
 
-    std::shared_ptr<NumberInput> numberInput = BaseInputElement::Deserialize<NumberInput>(json);
+    std::shared_ptr<NumberInput> numberInput = BaseInputElement::Deserialize<NumberInput>(context, json);
 
     numberInput->SetPlaceholder(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Placeholder));
     numberInput->SetValue(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Value, 0));

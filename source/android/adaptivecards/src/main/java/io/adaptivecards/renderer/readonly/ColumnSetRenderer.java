@@ -12,6 +12,7 @@ import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
@@ -72,6 +73,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         }
 
         setSpacingAndSeparator(context, viewGroup, columnSet.GetSpacing(), columnSet.GetSeparator(), hostConfig, true);
+        ContainerStyle styleForThis = columnSet.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? containerStyle : columnSet.GetStyle();
 
         ColumnVector columnVector = columnSet.GetColumns();
         long columnVectorSize = columnVector.size();
@@ -108,6 +110,16 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         {
             layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             viewGroup.addView(layout);
+        }
+
+        if (styleForThis != containerStyle)
+        {
+            int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
+            layout.setPadding(padding, padding, padding, padding);
+            String color = styleForThis == containerStyle.Emphasis ?
+                hostConfig.GetContainerStyles().getEmphasisPalette().getBackgroundColor() :
+                hostConfig.GetContainerStyles().getDefaultPalette().getBackgroundColor();
+            layout.setBackgroundColor(Color.parseColor(color));
         }
 
         return layout;

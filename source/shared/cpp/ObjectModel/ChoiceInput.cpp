@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ChoiceInput.h"
+#include "ParseContext.h"
 #include "ParseUtil.h"
-#include "Enums.h"
 
 using namespace AdaptiveSharedNamespace;
 
@@ -9,7 +9,7 @@ ChoiceInput::ChoiceInput()
 {
 }
 
-std::shared_ptr<ChoiceInput> ChoiceInput::Deserialize(ParseContext&, const Json::Value& json)
+std::shared_ptr<ChoiceInput> ChoiceInput::Deserialize(ParseContext &/*context*/, const Json::Value& json)
 {
     auto choice = std::make_shared<ChoiceInput>();
 

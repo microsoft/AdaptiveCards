@@ -70,7 +70,7 @@ namespace UWPUnitTests
             Assert.AreEqual("Submit Two", card.Actions[1].Title);
 
             var jsonString = card.ToJson().ToString();
-            Assert.AreEqual("{\"actions\":[{\"id\":\"\",\"title\":\"Submit One\",\"type\":\"Action.Submit\"},{\"id\":\"\",\"title\":\"Submit Two\",\"type\":\"Action.Submit\"}],\"backgroundImage\":\"https://www.stuff.com/background.jpg\",\"body\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"fallbackText\":\"Fallback Text\",\"height\":\"Stretch\",\"lang\":\"en\",\"speak\":\"This is a card\",\"style\":\"Emphasis\",\"type\":\"AdaptiveCard\",\"version\":\"1.3\",\"verticalContentAlignment\":\"Center\"}", jsonString);
+            Assert.AreEqual("{\"actions\":[{\"title\":\"Submit One\",\"type\":\"Action.Submit\"},{\"title\":\"Submit Two\",\"type\":\"Action.Submit\"}],\"backgroundImage\":\"https://www.stuff.com/background.jpg\",\"body\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"fallbackText\":\"Fallback Text\",\"height\":\"Stretch\",\"lang\":\"en\",\"speak\":\"This is a card\",\"style\":\"Emphasis\",\"type\":\"AdaptiveCard\",\"version\":\"1.3\",\"verticalContentAlignment\":\"Center\"}", jsonString);
         }
 
         public void ValidateBaseElementProperties(
@@ -251,7 +251,7 @@ namespace UWPUnitTests
             Assert.AreEqual("This is another text block", (container.Items[1] as AdaptiveTextBlock).Text);
 
             var jsonString = container.ToJson().ToString();
-            Assert.AreEqual("{\"height\":\"Stretch\",\"id\":\"ContainerId\",\"isVisible\":false,\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"selectAction\":{\"id\":\"\",\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"separator\":true,\"spacing\":\"extraLarge\",\"style\":\"Emphasis\",\"type\":\"Container\",\"verticalContentAlignment\":\"Bottom\"}", jsonString);
+            Assert.AreEqual("{\"height\":\"Stretch\",\"id\":\"ContainerId\",\"isVisible\":false,\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"separator\":true,\"spacing\":\"extraLarge\",\"style\":\"Emphasis\",\"type\":\"Container\",\"verticalContentAlignment\":\"Bottom\"}", jsonString);
         }
 
         [TestMethod]
@@ -262,7 +262,7 @@ namespace UWPUnitTests
                 Height = HeightType.Stretch,
                 Id = "ColumnId",
                 IsVisible = false,
-                PixelWidth = 50,
+                Width = "50px",
                 Separator = true,
                 Spacing = Spacing.Small,
                 Style = ContainerStyle.Emphasis,
@@ -271,6 +271,7 @@ namespace UWPUnitTests
 
             ValidateBaseElementProperties(column1, "ColumnId", false, true, Spacing.Small, HeightType.Stretch);
 
+            Assert.AreEqual("50px", column1.Width);
             Assert.AreEqual<uint>(50, column1.PixelWidth);
             Assert.AreEqual(ContainerStyle.Emphasis, column1.Style);
             Assert.AreEqual(VerticalContentAlignment.Bottom, column1.VerticalContentAlignment);
@@ -314,6 +315,7 @@ namespace UWPUnitTests
                 IsVisible = false,
                 Separator = true,
                 Spacing = Spacing.Small,
+                Style = ContainerStyle.Emphasis,
             };
 
             ValidateBaseElementProperties(columnSet, "ColumnSetId", false, true, Spacing.Small, HeightType.Stretch);
@@ -325,7 +327,7 @@ namespace UWPUnitTests
             Assert.AreEqual("Column2Id", columnSet.Columns[1].Id);
 
             var jsonString = columnSet.ToJson().ToString();
-            Assert.AreEqual("{\"columns\":[{\"height\":\"Stretch\",\"id\":\"ColumnId\",\"isVisible\":false,\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"selectAction\":{\"id\":\"\",\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"separator\":true,\"spacing\":\"small\",\"style\":\"Emphasis\",\"type\":\"Column\",\"verticalContentAlignment\":\"Bottom\",\"width\":\"auto\"},{\"id\":\"Column2Id\",\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"}],\"type\":\"Column\",\"width\":\"auto\"}],\"height\":\"Stretch\",\"id\":\"ColumnSetId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"small\",\"type\":\"ColumnSet\"}", jsonString);
+            Assert.AreEqual("{\"columns\":[{\"height\":\"Stretch\",\"id\":\"ColumnId\",\"isVisible\":false,\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"selectAction\":{\"id\":\"\",\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"separator\":true,\"spacing\":\"small\",\"style\":\"Emphasis\",\"type\":\"Column\",\"verticalContentAlignment\":\"Bottom\",\"width\":\"50px\"},{\"id\":\"Column2Id\",\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"}],\"type\":\"Column\",\"width\":\"auto\"}],\"height\":\"Stretch\",\"id\":\"ColumnSetId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"small\",\"style\":\"Emphasis\",\"type\":\"ColumnSet\"}", jsonString);
         }
 
         [TestMethod]
@@ -440,7 +442,7 @@ namespace UWPUnitTests
             Assert.AreEqual("Inline Action", textInput.InlineAction.Title);
 
             var jsonString = textInput.ToJson().ToString();
-            Assert.AreEqual("{\"height\":\"Stretch\",\"id\":\"TextInputId\",\"inlineAction\":{\"id\":\"\",\"title\":\"Inline Action\",\"type\":\"Action.Submit\"},\"isMultiline\":true,\"isRequired\":false,\"isVisible\":false,\"maxLength\":5,\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"style\":\"Email\",\"type\":\"Input.Text\",\"value\":\"Value\"}", jsonString);
+            Assert.AreEqual("{\"height\":\"Stretch\",\"id\":\"TextInputId\",\"inlineAction\":{\"title\":\"Inline Action\",\"type\":\"Action.Submit\"},\"isMultiline\":true,\"isRequired\":false,\"isVisible\":false,\"maxLength\":5,\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"style\":\"Email\",\"type\":\"Input.Text\",\"value\":\"Value\"}", jsonString);
         }
 
         [TestMethod]
@@ -605,7 +607,7 @@ namespace UWPUnitTests
             string iconUrl,
             string id,
             string title,
-            Sentiment sentiment)
+            string sentiment)
         {
             Assert.AreEqual(iconUrl, element.IconUrl);
             Assert.AreEqual(id, element.Id);
@@ -622,11 +624,11 @@ namespace UWPUnitTests
                 Url = url,
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "OpenUrlId",
-                Sentiment = Sentiment.Destructive,
+                Sentiment = "Destructive",
                 Title = "Title"
             };
 
-            ValidateBaseActionProperties(openUrlAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", "Title", Sentiment.Destructive);
+            ValidateBaseActionProperties(openUrlAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", "Title", "Destructive");
             Assert.AreEqual(url, openUrlAction.Url);
 
             var jsonString = openUrlAction.ToJson().ToString();
@@ -642,11 +644,11 @@ namespace UWPUnitTests
                 DataJson = dataJson,
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "OpenUrlId",
-                Sentiment = Sentiment.Destructive,
+                Sentiment = "Destructive",
                 Title = "Title"
             };
 
-            ValidateBaseActionProperties(submitAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", "Title", Sentiment.Destructive);
+            ValidateBaseActionProperties(submitAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", "Title", "Destructive");
             Assert.AreEqual(dataJson, submitAction.DataJson);
 
             var jsonString = submitAction.ToJson().ToString();
@@ -660,11 +662,11 @@ namespace UWPUnitTests
             {
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "OpenUrlId",
-                Sentiment = Sentiment.Destructive,
+                Sentiment = "Destructive",
                 Title = "Title"
             };
 
-            ValidateBaseActionProperties(showCardAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", "Title", Sentiment.Destructive);
+            ValidateBaseActionProperties(showCardAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", "Title", "Destructive");
 
             AdaptiveCard card = new AdaptiveCard();
             showCardAction.Card = card;
@@ -696,11 +698,11 @@ namespace UWPUnitTests
             {
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "ToggleVisibilityId",
-                Sentiment = Sentiment.Destructive,
+                Sentiment = "Destructive",
                 Title = "Title"
             };
 
-            ValidateBaseActionProperties(toggleAction, "http://www.stuff.com/icon.jpg", "ToggleVisibilityId", "Title", Sentiment.Destructive);
+            ValidateBaseActionProperties(toggleAction, "http://www.stuff.com/icon.jpg", "ToggleVisibilityId", "Title", "Destructive");
 
             toggleAction.TargetElements.Add(toggleTarget1);
             toggleAction.TargetElements.Add(toggleTarget2);
@@ -742,7 +744,7 @@ namespace UWPUnitTests
             Assert.AreEqual("Submit Two", actionSet.Actions[1].Title);
 
             var jsonString = actionSet.ToJson().ToString();
-            Assert.AreEqual("{\"actions\":[{\"id\":\"\",\"title\":\"Submit One\",\"type\":\"Action.Submit\"},{\"id\":\"\",\"title\":\"Submit Two\",\"type\":\"Action.Submit\"}],\"height\":\"Stretch\",\"id\":\"ActionSetId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"extraLarge\",\"type\":\"ActionSet\"}", jsonString);
+            Assert.AreEqual("{\"actions\":[{\"title\":\"Submit One\",\"type\":\"Action.Submit\"},{\"title\":\"Submit Two\",\"type\":\"Action.Submit\"}],\"height\":\"Stretch\",\"id\":\"ActionSetId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"extraLarge\",\"type\":\"ActionSet\"}", jsonString);
         }
     }
 }
