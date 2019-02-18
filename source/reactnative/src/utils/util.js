@@ -151,3 +151,23 @@ export function parseVersion(versionString) {
 	}
 	return result;
 }
+
+/**
+ * @description Parse the given url
+ * @param {url} url of the image 
+ * @return {boolean} If url is absolute or not
+ */
+export function validateUrl(url) {
+	let urlRegEx = /^(?:[a-z]+:)?\/\//i;
+	let dataregex = /^\s*data:([a-z]+\/[a-z]+(;[a-z\-]+\=[a-z\-]+)?)?(;base64)?,[a-z0-9\!\$\&\'\,\(\)\*\+\,\;\=\-\.\_\~\:\@\/\?\%\s]*\s*$/i;
+
+	return urlRegEx.test(url) || dataregex.test(url);
+}
+
+export function getImageUrl(url) {
+	if (isNullOrEmpty(url)) {
+		return url
+	}
+	return validateUrl(url) ? url :
+	url.split('/').pop().split('.')[0];
+}

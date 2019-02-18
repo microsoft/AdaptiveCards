@@ -56,7 +56,9 @@ export class Img extends React.Component {
 		this.sizeStyling = this.applySize();
 
 		this.type = this.payload.type || Constants.EmptyString;
-		this.url = this.payload.url || Constants.EmptyString;
+		let imageUrl = this.payload.url || Constants.EmptyString
+
+		this.url = Utils.getImageUrl(imageUrl)
 		this.id = this.payload.id || Constants.EmptyString;
 		let spacingValue = Utils.parseHostConfigEnum(
 			Enums.Spacing,
@@ -218,46 +220,54 @@ export class Img extends React.Component {
 	onPageLayoutHandler = (event) => {
 
 		const { width: layoutWidth, height: layoutHeight } = event.nativeEvent.layout;
+		if (Utils.validateUrl(this.url)) {
+			//This function is implemented to determine the actual dimensions of the component.
+			Image.getSize(this.url, (width, height) => {
 
-		//This function is implemented to determine the actual dimensions of the component.
-		Image.getSize(this.url, (width, height) => {
+				/**
+				 * Calculating the width to height ratio based on layoutWidth and actual image width.
+				 */
+				const w2hratio = layoutWidth / width
+				/**
+					* The image-width and height are set in state to 
+					* re-render the element once we get the determine of the image.
+					*/
 
-            /**
-             * Calculating the width to height ratio based on layoutWidth and actual image width.
-             */
-			const w2hratio = layoutWidth / width
-            /**
-                * The image-width and height are set in state to 
-                * re-render the element once we get the determine of the image.
-                */
+				/**
+				 * If the payload contains "fromImageset" i.e(if the image is rendered via ImageSet),
+				 * the height and width of the image is set to maxImageHeight for sizes "auto" and "stretch"
+				 */
 
-            /**
-             * If the payload contains "fromImageset" i.e(if the image is rendered via ImageSet),
-             * the height and width of the image is set to maxImageHeight for sizes "auto" and "stretch"
-             */
+				if (this.payload.fromImageSet == true &&
+					(this.payload.size === Constants.Auto ||
+						this.payload.size === Constants.AlignStretch)) {
+					this.setState({
+						imageWidth: this.hostConfig.imageSet.maxImageHeight,
+						imageHeight: this.hostConfig.imageSet.maxImageHeight,
+					});
+					this.width = this.payload.width || this.hostConfig.imageSet.maxImageHeight;
+					this.height = this.payload.height || this.hostConfig.imageSet.maxImageHeight;
+				}
+				else {
+					this.setState({
+						imageWidth: layoutWidth,
+						imageHeight: w2hratio * height,
+					});
+					this.width = this.payload.width || layoutWidth;
+					this.height = this.payload.height || w2hratio * height;
+				}
 
-			if (this.payload.fromImageSet == true &&
-				(this.payload.size === Constants.Auto ||
-					this.payload.size === Constants.AlignStretch)) {
-				this.setState({
-					imageWidth: this.hostConfig.imageSet.maxImageHeight,
-					imageHeight: this.hostConfig.imageSet.maxImageHeight,
-				});
-				this.width = this.payload.width || this.hostConfig.imageSet.maxImageHeight;
-				this.height = this.payload.height || this.hostConfig.imageSet.maxImageHeight;
-			}
-			else {
-				this.setState({
-					imageWidth: layoutWidth,
-					imageHeight: w2hratio * height,
-				});
-				this.width = this.payload.width || layoutWidth;
-				this.height = this.payload.height || w2hratio * height;
-			}
-
-		}, (error) => {
-			console.log(`Couldn't get the image size: ${error.message}`);
-		});
+			}, (error) => {
+				console.log(`Couldn't get the image size: ${error.message}`);
+			});
+		} else {
+			this.setState({
+				imageWidth: this.hostConfig.imageSet.maxImageHeight,
+				imageHeight: this.hostConfig.imageSet.maxImageHeight,
+			});
+			this.width = this.payload.width || this.hostConfig.imageSet.maxImageHeight;
+			this.height = this.payload.height || this.hostConfig.imageSet.maxImageHeight;
+		}
 	}
 
 	render() {
@@ -296,15 +306,17 @@ export class Img extends React.Component {
 			this.isPersonStyle() ?
 				imageComputedStyle.push({ borderRadius: this.width / 2 }) : null;
 		}
+		
+		let imageUrl = Utils.getImageUrl(url);
 
 		var containerContent = (<ElementWrapper json={this.payload}
 			style={wrapperComputedStyle}
 			onPageLayout={this.onPageLayoutHandler}>
-
-			<Image style={imageComputedStyle}
-				source={{ uri: url }} />
+        
+			<Image style={this.sizeStyling}
+				source={{ uri: imageUrl }} />
 		</ElementWrapper>);
-
+		
 		if ((this.payload.selectAction === undefined)
 			|| (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
 			return containerContent;
