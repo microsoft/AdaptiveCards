@@ -41,7 +41,8 @@ export class ChoiceSetInput extends React.Component {
 		this.choices = [];
 		this.payload = props.json
 		this.state = {
-			selectedPickerValue: undefined,
+			selectedPickerValue: Utils.isNullOrEmpty(props.json.value) ? 
+			props.json.choices[0].value : props.json.value,
 			isPickerSelected: false,
 			radioButtonIndex: undefined,
 			activeIndex: undefined,
@@ -75,6 +76,14 @@ export class ChoiceSetInput extends React.Component {
 	}
 
     /**
+     * @description Fetches the initial value for the picker component
+     */
+	getPickerInitialValue = (addInputItem) => {
+		addInputItem(this.id, this.state.selectedPickerValue)
+		return this.state.selectedPickerValue
+	}
+
+    /**
      * @description Fetches the index of the selected radio button choice
      * @param {string} value 
      * @param {array} choiceArray
@@ -94,7 +103,7 @@ export class ChoiceSetInput extends React.Component {
 	}
 
     /**
-     * @description Selects the checboxes for the initial set of values from json
+     * @description Selects the checkboxes for the initial set of values from json
      * @param {string} value 
      */
 	setInitialCheckedValues = (value, addInputItem) => {
@@ -132,9 +141,7 @@ export class ChoiceSetInput extends React.Component {
 						<Text
 							style={[styles.text, this.styleConfig.fontConfig]}
 						>
-							{this.state.selectedPickerValue == undefined ?
-								this.getPickerSelectedValue(this.value, addInputItem) :
-								this.getPickerSelectedValue(this.state.selectedPickerValue,
+							{this.getPickerSelectedValue(this.state.selectedPickerValue,
 									addInputItem)
 							}
 						</Text>
@@ -148,10 +155,9 @@ export class ChoiceSetInput extends React.Component {
 					<View style={styles.pickerContainer}>
 						<Picker
 							mode={'dropdown'}
-							selectedValue={this.state.selectedPickerValue}
-							
+							selectedValue={this.getPickerInitialValue(addInputItem)}
 							onValueChange={
-								(itemValue, itemIndex) => {
+								(itemValue) => {
 									this.setState({
 										selectedPickerValue: itemValue,
 									})
