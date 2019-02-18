@@ -14,6 +14,11 @@ namespace AdaptiveSharedNamespace
 
     public:
         ChoiceSetInput();
+        ChoiceSetInput(const ChoiceSetInput&) = default;
+        ChoiceSetInput(ChoiceSetInput&&) = default;
+        ChoiceSetInput& operator=(const ChoiceSetInput&) = default;
+        ChoiceSetInput& operator=(ChoiceSetInput&&) = default;
+        ~ChoiceSetInput() = default;
 
         Json::Value SerializeToJsonValue() const override;
 

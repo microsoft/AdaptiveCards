@@ -1,3 +1,4 @@
+
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "TextBlock.h"
@@ -7,6 +8,7 @@
 #include "SharedAdaptiveCard.h"
 #include "BaseCardElement.h"
 #include "ActionParserRegistration.h"
+#include "ParseUtil.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
@@ -70,19 +72,33 @@ namespace AdaptiveCardsSharedModelUnitTest
 			Assert::ExpectException<AdaptiveCardParseException>([&]() { actionParser.AddParser(ActionTypeToString(ActionType::OpenUrl), customActionParser); });
 			Assert::ExpectException<AdaptiveCardParseException>([&]() { elementParser.AddParser(CardElementTypeToString(CardElementType::Container), customElementParser); });
 
-			// add our new parser
-			actionParser.AddParser(elemType, customActionParser);
-			Assert::IsTrue(customActionParser == actionParser.GetParser(elemType));
-			elementParser.AddParser(elemType, customElementParser);
-			Assert::IsTrue(customElementParser == elementParser.GetParser(elemType));
+            // add our new parser
+            actionParser.AddParser(elemType, customActionParser);
+            {
+                auto actionParserWrapper = std::static_pointer_cast<ActionElementParserWrapper>(actionParser.GetParser(elemType));
+                Assert::IsTrue(customActionParser == actionParserWrapper->GetActualParser());
+            }
 
-			// overwrite our new parser
-			auto customActionParser2 = std::make_shared<TestCustomActionParser>();
-			actionParser.AddParser(elemType, customActionParser2);
-			Assert::IsTrue(customActionParser2 == actionParser.GetParser(elemType));
-			auto customElementParser2 = std::make_shared<TestCustomElementParser>();
-			elementParser.AddParser(elemType, customElementParser2);
-			Assert::IsTrue(customElementParser2 == elementParser.GetParser(elemType));
+            elementParser.AddParser(elemType, customElementParser);
+            {
+                auto cardParserWrapper = std::static_pointer_cast<BaseCardElementParserWrapper>(elementParser.GetParser(elemType));
+                Assert::IsTrue(customElementParser == cardParserWrapper->GetActualParser());
+            }
+
+            // overwrite our new parser
+            auto customActionParser2 = std::make_shared<TestCustomActionParser>();
+            actionParser.AddParser(elemType, customActionParser2);
+            {
+                auto actionParserWrapper = std::static_pointer_cast<ActionElementParserWrapper>(actionParser.GetParser(elemType));
+                Assert::IsTrue(customActionParser2 == actionParserWrapper->GetActualParser());
+            }
+
+            auto customElementParser2 = std::make_shared<TestCustomElementParser>();
+            elementParser.AddParser(elemType, customElementParser2);
+            {
+                auto cardParserWrapper = std::static_pointer_cast<BaseCardElementParserWrapper>(elementParser.GetParser(elemType));
+                Assert::IsTrue(customElementParser2 == cardParserWrapper->GetActualParser());
+            }
 
 			// remove custom parser twice. shouldn't throw
 			actionParser.RemoveParser(elemType);

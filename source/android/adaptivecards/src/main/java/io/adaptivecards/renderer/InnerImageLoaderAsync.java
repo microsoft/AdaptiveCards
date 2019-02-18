@@ -11,7 +11,12 @@ public abstract class InnerImageLoaderAsync extends GenericImageLoaderAsync
 
     public InnerImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl)
     {
-        super(renderedCard, imageBaseUrl);
+        this(renderedCard, containerView, imageBaseUrl, -1);
+    }
+
+    public InnerImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl, int maxWidth)
+    {
+        super(renderedCard, imageBaseUrl, maxWidth);
 
         m_view = containerView;
     }

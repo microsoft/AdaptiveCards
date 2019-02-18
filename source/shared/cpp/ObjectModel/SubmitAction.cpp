@@ -48,9 +48,9 @@ Json::Value SubmitAction::SerializeToJsonValue() const
     return root;
 }
 
-std::shared_ptr<BaseActionElement> SubmitActionParser::Deserialize(ParseContext&, const Json::Value& json)
+std::shared_ptr<BaseActionElement> SubmitActionParser::Deserialize(ParseContext& context, const Json::Value& json)
 {
-    std::shared_ptr<SubmitAction> submitAction = BaseActionElement::Deserialize<SubmitAction>(json);
+    std::shared_ptr<SubmitAction> submitAction = BaseActionElement::Deserialize<SubmitAction>(context, json);
 
     submitAction->SetDataJson(ParseUtil::ExtractJsonValue(json, AdaptiveCardSchemaKey::Data));
 

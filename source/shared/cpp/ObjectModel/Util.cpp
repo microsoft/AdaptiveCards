@@ -1,4 +1,5 @@
 #include "pch.h"
+
 #include "Util.h"
 #include "ColumnSet.h"
 #include "Container.h"
@@ -147,6 +148,17 @@ bool ShouldParseForExplicitDimension(const std::string& input)
         }
     }
     return false;
+}
+
+int ParseSizeForPixelSize(const std::string& sizeString, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>* warnings)
+{
+    int parsedDimension = 0;
+    if (ShouldParseForExplicitDimension(sizeString))
+    {
+        const std::string unit = "px";
+        ValidateUserInputForDimensionWithUnit(unit, sizeString, parsedDimension, warnings);
+    }
+    return parsedDimension;
 }
 
 void EnsureShowCardVersions(const std::vector<std::shared_ptr<BaseActionElement>>& actions, const std::string& version)

@@ -14,6 +14,11 @@ namespace AdaptiveSharedNamespace
 
     public:
         Container();
+        Container(const Container&) = default;
+        Container(Container&&) = default;
+        Container& operator=(const Container&) = default;
+        Container& operator=(Container&&) = default;
+        ~Container() = default;
 
         Json::Value SerializeToJsonValue() const override;
 

@@ -21,6 +21,16 @@ namespace AdaptiveCards
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
+        ///     The style for the columnset.
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore, NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(typeof(AdaptiveContainerStyle), "default")]
+        public AdaptiveContainerStyle? Style { get; set; }
+
+        /// <summary>
         ///     Columns that are part of this group
         /// </summary>
         [JsonRequired]

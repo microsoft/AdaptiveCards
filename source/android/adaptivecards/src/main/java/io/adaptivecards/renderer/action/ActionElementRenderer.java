@@ -30,7 +30,6 @@ import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.ActionsConfig;
 import io.adaptivecards.objectmodel.IconPlacement;
-import io.adaptivecards.objectmodel.Sentiment;
 import io.adaptivecards.objectmodel.ShowCardAction;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
 import io.adaptivecards.renderer.IBaseActionElementRenderer;
@@ -182,7 +181,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
 
         protected ActionElementRendererIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl, IconPlacement iconPlacement, long iconSize)
         {
-            super(renderedCard, containerView, imageBaseUrl);
+            super(renderedCard, containerView, imageBaseUrl, containerView.getResources().getDisplayMetrics().widthPixels);
             m_iconPlacement = iconPlacement;
             m_iconSize = iconSize;
         }

@@ -13,6 +13,11 @@ namespace AdaptiveSharedNamespace
     {
     public:
         TextBlock();
+        TextBlock(const TextBlock&) = default;
+        TextBlock(TextBlock&&) = default;
+        TextBlock& operator=(const TextBlock&) = default;
+        TextBlock& operator=(TextBlock&&) = default;
+        ~TextBlock() = default;
 
         Json::Value SerializeToJsonValue() const override;
 

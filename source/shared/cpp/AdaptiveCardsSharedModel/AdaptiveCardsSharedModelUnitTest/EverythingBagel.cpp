@@ -493,8 +493,11 @@ namespace AdaptiveCardsSharedModelUnitTest
             // re-serialize the card and verify
 
             // uncomment the following line to output the serialized json
-            //Logger::WriteMessage("Submit Data: '"s.append(everythingBagel->Serialize()).append("'").c_str());
-            Assert::AreEqual(std::string(EVERYTHING_JSON), everythingBagel->Serialize());
+            Logger::WriteMessage("Expected: '"s.append(EVERYTHING_JSON).append("'").c_str());
+            Logger::WriteMessage("Actual: '"s.append(everythingBagel->Serialize()).append("'").c_str());
+            const std::string expectedJson {EVERYTHING_JSON};
+            const std::string actualJson {everythingBagel->Serialize()};
+            Assert::AreEqual(expectedJson, actualJson);
         }
     };
 }

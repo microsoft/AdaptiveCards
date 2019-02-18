@@ -11,6 +11,11 @@ namespace AdaptiveSharedNamespace
     {
     public:
         OpenUrlAction();
+        OpenUrlAction(const OpenUrlAction&) = default;
+        OpenUrlAction(OpenUrlAction&&) = default;
+        OpenUrlAction& operator=(const OpenUrlAction&) = default;
+        OpenUrlAction& operator=(OpenUrlAction&&) = default;
+        ~OpenUrlAction() = default;
 
         Json::Value SerializeToJsonValue() const override;
 

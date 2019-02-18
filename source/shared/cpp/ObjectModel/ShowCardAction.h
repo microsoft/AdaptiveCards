@@ -12,6 +12,11 @@ namespace AdaptiveSharedNamespace
     {
     public:
         ShowCardAction();
+        ShowCardAction(const ShowCardAction&) = default;
+        ShowCardAction(ShowCardAction&&) = default;
+        ShowCardAction& operator=(const ShowCardAction&) = default;
+        ShowCardAction& operator=(ShowCardAction&&) = default;
+        ~ShowCardAction() = default;
 
         Json::Value SerializeToJsonValue() const override;
 

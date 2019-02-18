@@ -10,6 +10,11 @@ namespace AdaptiveSharedNamespace
     {
     public:
         DateInput();
+        DateInput(const DateInput&) = default;
+        DateInput(DateInput&&) = default;
+        DateInput& operator=(const DateInput&) = default;
+        DateInput& operator=(DateInput&&) = default;
+        ~DateInput() = default;
 
         Json::Value SerializeToJsonValue() const override;
 

@@ -11,6 +11,11 @@ namespace AdaptiveSharedNamespace
     {
     public:
         TextInput();
+        TextInput(const TextInput&) = default;
+        TextInput(TextInput&&) = default;
+        TextInput& operator=(const TextInput&) = default;
+        TextInput& operator=(TextInput&&) = default;
+        ~TextInput() = default;
 
         Json::Value SerializeToJsonValue() const override;
 

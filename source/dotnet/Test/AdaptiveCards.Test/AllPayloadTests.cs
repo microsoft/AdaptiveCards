@@ -128,6 +128,7 @@ namespace AdaptiveCards.Test
                     "Action.NestedDuplicateIds",
 
                     // These are cards that features haven't been implemented yet
+                    "FallbackParsing",
                 });
         }
     }

@@ -10,6 +10,7 @@ namespace AdaptiveSharedNamespace
     class ElementParserRegistration;
     class ActionParserRegistration;
     class ParseContext;
+    class InternalId;
 
     class BaseCardElementParser
     {
@@ -19,6 +20,25 @@ namespace AdaptiveSharedNamespace
         virtual std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& value) = 0;
     };
 
+    class BaseCardElementParserWrapper : public BaseCardElementParser
+    {
+    public:
+        BaseCardElementParserWrapper(std::shared_ptr<BaseCardElementParser> parserToWrap);
+
+        BaseCardElementParserWrapper(const BaseCardElementParserWrapper&) = delete;
+        BaseCardElementParserWrapper(BaseCardElementParserWrapper&&) = delete;
+        BaseCardElementParserWrapper& operator=(const BaseCardElementParserWrapper&) = delete;
+        BaseCardElementParserWrapper& operator=(BaseCardElementParserWrapper&&) = delete;
+        virtual ~BaseCardElementParserWrapper() = default;
+
+        std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& value) override;
+        std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& value) override;
+        std::shared_ptr<BaseCardElementParser> GetActualParser() const { return m_parser; }
+
+    private:
+        std::shared_ptr<BaseCardElementParser> m_parser;
+    };
+
     class ElementParserRegistration
     {
     public:
@@ -26,7 +46,7 @@ namespace AdaptiveSharedNamespace
 
         void AddParser(std::string const& elementType, std::shared_ptr<AdaptiveSharedNamespace::BaseCardElementParser> parser);
         void RemoveParser(std::string const& elementType);
-        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElementParser> GetParser(std::string const& elementType);
+        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElementParser> GetParser(std::string const& elementType) const;
 
     private:
         std::unordered_set<std::string> m_knownElements;

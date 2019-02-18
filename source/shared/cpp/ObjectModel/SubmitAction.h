@@ -11,6 +11,11 @@ namespace AdaptiveSharedNamespace
     {
     public:
         SubmitAction();
+        SubmitAction(const SubmitAction&) = default;
+        SubmitAction(SubmitAction&&) = default;
+        SubmitAction& operator=(const SubmitAction&) = default;
+        SubmitAction& operator=(SubmitAction&&) = default;
+        ~SubmitAction() = default;
 
         std::string GetDataJson() const;
         Json::Value GetDataJsonAsValue() const;

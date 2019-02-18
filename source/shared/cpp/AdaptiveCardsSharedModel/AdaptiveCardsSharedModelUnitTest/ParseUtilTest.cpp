@@ -56,8 +56,6 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::ExpectException<AdaptiveCardParseException>([]() { ParseUtil::GetJsonValueFromString("definitely not json"); });
             auto jsonValue = ParseUtil::GetJsonValueFromString("{ \"foo\": \"bar\" }");
             Assert::AreEqual(jsonValue["foo"].asCString(), "bar", false);
-            ParseUtil::ExpectString(jsonValue["foo"]);
-            Assert::ExpectException<AdaptiveCardParseException>([&]() { ParseUtil::ExpectString(jsonValue); });
         }
 
         TEST_METHOD(ThrowIfNotJsonObjectTests)

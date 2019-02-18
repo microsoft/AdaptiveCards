@@ -11,6 +11,11 @@ namespace AdaptiveSharedNamespace
     {
     public:
         TimeInput();
+        TimeInput(const TimeInput&) = default;
+        TimeInput(TimeInput&&) = default;
+        TimeInput& operator=(const TimeInput&) = default;
+        TimeInput& operator=(TimeInput&&) = default;
+        ~TimeInput() = default;
 
         Json::Value SerializeToJsonValue() const override;
 

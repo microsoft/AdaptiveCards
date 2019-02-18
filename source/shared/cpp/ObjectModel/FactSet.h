@@ -16,6 +16,11 @@ namespace AdaptiveSharedNamespace
 
     public:
         FactSet();
+        FactSet(const FactSet&) = default;
+        FactSet(FactSet&&) = default;
+        FactSet& operator=(const FactSet&) = default;
+        FactSet& operator=(FactSet&&) = default;
+        ~FactSet() = default;
 
         Json::Value SerializeToJsonValue() const override;
 

@@ -122,7 +122,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
             m_renderedAdaptiveCard = renderedCard;
             m_action = action;
         }
-        
+
         @Override
         public boolean onKey(View view, int i, KeyEvent keyEvent) {
             if(view.getTag() == m_tag) {
@@ -380,7 +380,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
         protected InlineActionIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String url, EditText editText)
         {
-            super(renderedCard, containerView, url);
+            super(renderedCard, containerView, url, containerView.getResources().getDisplayMetrics().widthPixels);
             m_editText = editText;
         }
 

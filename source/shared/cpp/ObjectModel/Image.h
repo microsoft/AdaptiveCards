@@ -12,6 +12,11 @@ namespace AdaptiveSharedNamespace
     {
     public:
         Image();
+        Image(const Image&) = default;
+        Image(Image&&) = default;
+        Image& operator=(const Image&) = default;
+        Image& operator=(Image&&) = default;
+        ~Image() = default;
 
         Json::Value SerializeToJsonValue() const override;
 

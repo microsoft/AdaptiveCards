@@ -654,5 +654,48 @@ namespace AdaptiveCards.Test
             var deserializedActual = deserializedCard.ToJson();
             Assert.AreEqual(expected: expected, actual: deserializedActual);
         }
+
+        [TestMethod]
+        public void ColumnSetStyleSerialization()
+        {
+            var expected = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.2"",
+  ""id"": ""myCard"",
+  ""body"": [
+    {
+      ""type"": ""ColumnSet"",
+      ""columns"": []
+    },
+    {
+      ""type"": ""ColumnSet"",
+      ""style"": ""emphasis"",
+      ""columns"": []
+    }
+  ]
+}";
+
+            var card = new AdaptiveCard("1.2")
+            {
+                Id = "myCard",
+                Body =
+                {
+                    new AdaptiveColumnSet()
+                    {
+                        Style = AdaptiveContainerStyle.Default
+                    },
+                    new AdaptiveColumnSet()
+                    {
+                        Style = AdaptiveContainerStyle.Emphasis
+                    }
+                }
+            };
+
+            var actual = card.ToJson();
+            Assert.AreEqual(expected: expected, actual: actual);
+            var deserializedCard = AdaptiveCard.FromJson(expected).Card;
+            var deserializedActual = deserializedCard.ToJson();
+            Assert.AreEqual(expected: expected, actual: deserializedActual);
+        }
     }
 }
