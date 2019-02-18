@@ -151,3 +151,29 @@ export function parseVersion(versionString) {
 	}
 	return result;
 }
+
+/**
+ * @description Convert the color in aRGB hex format to RGBa CSS format
+ * @param {string} color 
+ * @return {object} RGBa CSS format
+ */
+    /**
+     * argb in hex to css rgba
+     */
+	export function hexToRGB(color) {
+		var regEx = /#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})?/gi;
+
+		var matches = regEx.exec(color);
+
+		if (matches && matches[4]) {
+			var a = parseInt(matches[1], 16) / 255;
+			var r = parseInt(matches[2], 16);
+			var g = parseInt(matches[3], 16);
+			var b = parseInt(matches[4], 16);
+
+			return "rgba(" + r + "," + g + "," + b + "," + a + ")";
+		}
+		else {
+			return color;
+		}
+	}
