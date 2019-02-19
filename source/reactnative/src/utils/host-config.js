@@ -372,7 +372,7 @@ export class HostConfig {
 	supportsInteractivity = true;
 	lineHeights;
 
-	fontFamily = "Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif";
+	fontFamily = "Helvetica";
 
 	spacing = {
 		none: 0,
@@ -625,7 +625,7 @@ export class HostConfig {
 
 export const defaultHostConfig = {
 	supportsInteractivity: true,
-	fontFamily: "Segoe UI",
+	fontFamily: "Helvetica",
 	spacing: {
 		none: 0,
 		small: 3,
