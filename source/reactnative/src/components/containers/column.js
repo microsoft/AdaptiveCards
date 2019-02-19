@@ -201,10 +201,13 @@ export class Column extends React.Component {
 		var columnContent = (
 			<View style={containerViewStyle}>
 				{separator && this.renderSeparator()}
-				{separator ? <View style={[containerViewStyle, styles.separatorStyle]}>
-					{this.parsePayload()}
-				</View> :
-					this.parsePayload()}
+				{separator ?
+					<View style={[containerViewStyle, styles.separatorStyle]}>
+						{this.parsePayload()}
+					</View> :
+					<View style={{marginRight: this.spacing}}>
+						{this.parsePayload()}
+					</View>}
 			</View>
 		);
 
@@ -219,7 +222,9 @@ export class Column extends React.Component {
 						<View style={[containerViewStyle, styles.separatorStyle]}>
 							{this.parsePayload()}
 						</View> :
-						this.parsePayload()}
+						<View style={{marginRight: this.spacing}}>
+							{this.parsePayload()}
+						</View>}
 				</SelectAction>
 			</View>;
 		}
