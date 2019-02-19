@@ -71,6 +71,14 @@ public class HostConfig {
     return AdaptiveCardObjectModelJNI.HostConfig_GetForegroundColor(swigCPtr, this, style.swigValue(), color.swigValue(), isSubtle);
   }
 
+  public String GetBorderColor(ContainerStyle style) {
+    return AdaptiveCardObjectModelJNI.HostConfig_GetBorderColor(swigCPtr, this, style.swigValue());
+  }
+
+  public long GetBorderThickness(ContainerStyle style) {
+    return AdaptiveCardObjectModelJNI.HostConfig_GetBorderThickness(swigCPtr, this, style.swigValue());
+  }
+
   public String GetFontFamily() {
     return AdaptiveCardObjectModelJNI.HostConfig_GetFontFamily__SWIG_1(swigCPtr, this);
   }
