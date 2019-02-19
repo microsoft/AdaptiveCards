@@ -37,6 +37,7 @@
 								{
 									"type": "Column",
 									"id": "D",
+									"width": "auto",
 									"items": [
 										{
 											"type": "Graph",
