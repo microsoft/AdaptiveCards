@@ -18,6 +18,7 @@ import * as Enums from '../../utils/enums';
 import { SelectAction } from '../actions';
 import { HostConfigManager } from '../../utils/host-config';
 import { StyleManager } from '../../styles/style-config';
+import { ContainerWrapper } from './';
 
 const deviceWidth = Dimensions.get('window').width;
 
@@ -57,10 +58,8 @@ export class Column extends React.Component {
 
 		var containsNumber = false
 		var containsString = false
-		/**
-		  * Checks if the width property of the column elements 
-		  * has type of string or a number
-		  */
+
+		// checks if the width property of the column elements has type of string or a number
 		widthArray.map((value) => {
 			if (typeof (value) == 'number') {
 				containsNumber = true
@@ -180,7 +179,7 @@ export class Column extends React.Component {
 	}
 
 	render() {
-		const separator = this.payload.separator || false
+		const separator = this.payload.separator || false;
 		let backgroundStyle = this.payload.style == Constants.Emphasis ?
 			styles.emphasisStyle : styles.defaultBGStyle;
 		let containerViewStyle = [backgroundStyle, {
@@ -201,38 +200,32 @@ export class Column extends React.Component {
 			containerViewStyle.push({ width: spacePercentage.toString() + '%' });
 		}
 
-		var columnContent = (
-			<View style={containerViewStyle}>
-				{separator && this.renderSeparator()}
-				{separator ? <View style={[containerViewStyle, styles.separatorStyle]}>
-					{this.parsePayload()}
-				</View> :
-					this.parsePayload()}
-			</View>
-		);
+		let ActionComponent = React.Fragment;
+		let actionComponentProps = {};
 
-		if ((this.payload.selectAction === undefined) ||
-			(HostConfigManager.getHostConfig().supportsInteractivity === false)) {
-			return columnContent;
-		} else {
-			return <View style={containerViewStyle}>
-				<SelectAction selectActionData={this.payload.selectAction}>
-					{separator && this.renderSeparator()}
-					{separator ?
-						<View style={[containerViewStyle, styles.separatorStyle]}>
-							{this.parsePayload()}
-						</View> :
-						this.parsePayload()}
-				</SelectAction>
-			</View>;
+		// select action
+		if (this.payload.selectAction && HostConfigManager.supportsInteractivity()) {
+			ActionComponent = SelectAction;
+			actionComponentProps = this.payload.selectAction;
 		}
+
+		return <ContainerWrapper json={this.payload} style={[containerViewStyle]}>
+			<ActionComponent {...actionComponentProps}>
+				{separator && this.renderSeparator()}
+				{separator ?
+					<View style={[containerViewStyle, styles.separatorStyle]}>
+						{this.parsePayload()}
+					</View> :
+					this.parsePayload()}
+			</ActionComponent>
+		</ContainerWrapper>;
 	}
 };
 
 const styles = StyleSheet.create({
 	separatorStyle: {
 		flexDirection: Constants.FlexColumn,
-		flexGrow: 1
+		flexGrow: 1,
 	},
 	defaultBGStyle: {
 		backgroundColor: Constants.TransparentString,
