@@ -258,5 +258,17 @@ export default payloads = [
   {
     "title": "VerticalStretch.json",
     "json": require('./VerticalStretch.json')
+  },
+  {
+    "title": "VerticalContentAlignment.json",
+    "json": require('./VerticalContentAlignment.json')
+  },
+  {
+    "title": "VerticalContentAlignment_ForcedColumn.json",
+    "json": require('./VerticalContentAlignment_ForcedColumn.json')
+  },
+  {
+    "title": "VerticalContentAlignment_ForcedContainer.json",
+    "json": require('./VerticalContentAlignment_ForcedContainer.json')
   }
 ]
