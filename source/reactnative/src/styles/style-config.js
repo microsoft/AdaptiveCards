@@ -23,7 +23,8 @@ export class StyleManager {
 		},
 		fontConfig: {
 			fontSize: this.hostConfig.fontSizes.default,
-			fontWeight: this.hostConfig.fontWeights.default.toString()
+			fontWeight: this.hostConfig.fontWeights.default.toString(),
+			fontFamily: this.hostConfig.fontFamily
 		},
 		actionIconFlex: {
 			flexDirection: (this.hostConfig.actions.iconPlacement === 0) ?
