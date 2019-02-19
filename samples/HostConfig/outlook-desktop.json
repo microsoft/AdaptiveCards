@@ -72,16 +72,16 @@
 					"subtle": "#882E89FC"
 				},
 				"attention": {
-					"default": "#FFcc3300",
-					"subtle": "#DDcc3300"
+					"default": "#FFCC3300",
+					"subtle": "#DDCC3300"
 				},
 				"good": {
-					"default": "#FF54a254",
-					"subtle": "#DD54a254"
+					"default": "#FF54A254",
+					"subtle": "#DD54A254"
 				},
 				"warning": {
-					"default": "#FFe69500",
-					"subtle": "#DDe69500"
+					"default": "#FFE69500",
+					"subtle": "#DDE69500"
 				}
 			}
 		},
@@ -97,16 +97,16 @@
 					"subtle": "#882E89FC"
 				},
 				"attention": {
-					"default": "#FFcc3300",
-					"subtle": "#DDcc3300"
+					"default": "#FFCC3300",
+					"subtle": "#DDCC3300"
 				},
 				"good": {
-					"default": "#FF54a254",
-					"subtle": "#DD54a254"
+					"default": "#FF54A254",
+					"subtle": "#DD54A254"
 				},
 				"warning": {
-					"default": "#FFe69500",
-					"subtle": "#DDe69500"
+					"default": "#FFE69500",
+					"subtle": "#DDE69500"
 				}
 			}
 		},
@@ -122,21 +122,21 @@
 					"subtle": "#882E89FC"
 				},
 				"attention": {
-					"default": "#FFcc3300",
-					"subtle": "#DDcc3300"
+					"default": "#FFCC3300",
+					"subtle": "#DDCC3300"
 				},
 				"good": {
-					"default": "#FF54a254",
-					"subtle": "#DD54a254"
+					"default": "#FF54A254",
+					"subtle": "#DD54A254"
 				},
 				"warning": {
-					"default": "#FFe69500",
-					"subtle": "#DDe69500"
+					"default": "#FFE69500",
+					"subtle": "#DDE69500"
 				}
 			}
 		},
 		"attention": {
-			"backgroundColor": "#DDcc3300",
+			"backgroundColor": "#DDCC3300",
 			"foregroundColors": {
 				"default": {
 					"default": "#FF333333",
@@ -147,21 +147,21 @@
 					"subtle": "#882E89FC"
 				},
 				"attention": {
-					"default": "#FFcc3300",
-					"subtle": "#DDcc3300"
+					"default": "#FFCC3300",
+					"subtle": "#DDCC3300"
 				},
 				"good": {
-					"default": "#FF54a254",
-					"subtle": "#DD54a254"
+					"default": "#FF54A254",
+					"subtle": "#DD54A254"
 				},
 				"warning": {
-					"default": "#FFe69500",
-					"subtle": "#DDe69500"
+					"default": "#FFE69500",
+					"subtle": "#DDE69500"
 				}
 			}
 		},
 		"good": {
-			"backgroundColor": "#DD54a254",
+			"backgroundColor": "#DD54A254",
 			"foregroundColors": {
 				"default": {
 					"default": "#FF333333",
@@ -172,21 +172,21 @@
 					"subtle": "#882E89FC"
 				},
 				"attention": {
-					"default": "#FFcc3300",
-					"subtle": "#DDcc3300"
+					"default": "#FFCC3300",
+					"subtle": "#DDCC3300"
 				},
 				"good": {
-					"default": "#FF54a254",
-					"subtle": "#DD54a254"
+					"default": "#FF54A254",
+					"subtle": "#DD54A254"
 				},
 				"warning": {
-					"default": "#FFe69500",
-					"subtle": "#DDe69500"
+					"default": "#FFE69500",
+					"subtle": "#DDE69500"
 				}
 			}
 		},
 		"warning": {
-			"backgroundColor": "#DDe69500",
+			"backgroundColor": "#DDE69500",
 			"foregroundColors": {
 				"default": {
 					"default": "#FF333333",
@@ -197,16 +197,16 @@
 					"subtle": "#882E89FC"
 				},
 				"attention": {
-					"default": "#FFcc3300",
-					"subtle": "#DDcc3300"
+					"default": "#FFCC3300",
+					"subtle": "#DDCC3300"
 				},
 				"good": {
-					"default": "#FF54a254",
-					"subtle": "#DD54a254"
+					"default": "#FF54A254",
+					"subtle": "#DD54A254"
 				},
 				"warning": {
-					"default": "#FFe69500",
-					"subtle": "#DDe69500"
+					"default": "#FFE69500",
+					"subtle": "#DDE69500"
 				}
 			}
 		}

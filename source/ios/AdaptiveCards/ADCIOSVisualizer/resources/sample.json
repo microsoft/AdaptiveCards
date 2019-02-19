@@ -65,12 +65,12 @@
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54a254",
-					"subtle": "#DD54a254"
+					"default": "#54A254",
+					"subtle": "#DD54A254"
 				},
 				"warning": {
-					"default": "#c3ab23",
-					"subtle": "#DDc3ab23"
+					"default": "#C3AB23",
+					"subtle": "#DDC3AB23"
 				},
 				"attention": {
 					"default": "#FF0000",
@@ -90,12 +90,12 @@
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54a254",
-					"subtle": "#DD54a254"
+					"default": "#54A254",
+					"subtle": "#DD54A254"
 				},
 				"warning": {
-					"default": "#c3ab23",
-					"subtle": "#DDc3ab23"
+					"default": "#C3AB23",
+					"subtle": "#DDC3AB23"
 				},
 				"attention": {
 					"default": "#FF0000",
@@ -117,19 +117,19 @@
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54a254",
-					"subtle": "#DD54a254"
+					"default": "#54A254",
+					"subtle": "#DD54A254"
 				},
 				"warning": {
-					"default": "#c3ab23",
-					"subtle": "#DDc3ab23"
+					"default": "#C3AB23",
+					"subtle": "#DDC3AB23"
 				},
 				"attention": {
 					"default": "#FF0000",
 					"subtle": "#DDFF0000"
 				}
 			},
-			"backgroundColor": "#DD54a254"
+			"backgroundColor": "#DD54A254"
 		},
 		"warning": {
 			"foregroundColors": {
@@ -142,19 +142,19 @@
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54a254",
-					"subtle": "#DD54a254"
+					"default": "#54A254",
+					"subtle": "#DD54A254"
 				},
 				"warning": {
-					"default": "#c3ab23",
-					"subtle": "#DDc3ab23"
+					"default": "#C3AB23",
+					"subtle": "#DDC3AB23"
 				},
 				"attention": {
 					"default": "#FF0000",
 					"subtle": "#DDFF0000"
 				}
 			},
-			"backgroundColor": "#DDc3ab23"
+			"backgroundColor": "#DDC3AB23"
 		},
 		"attention": {
 			"foregroundColors": {
@@ -167,12 +167,12 @@
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54a254",
-					"subtle": "#DD54a254"
+					"default": "#54A254",
+					"subtle": "#DD54A254"
 				},
 				"warning": {
-					"default": "#c3ab23",
-					"subtle": "#DDc3ab23"
+					"default": "#C3AB23",
+					"subtle": "#DDC3AB23"
 				},
 				"attention": {
 					"default": "#FF0000",
@@ -194,12 +194,12 @@
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54a254",
-					"subtle": "#DD54a254"
+					"default": "#54A254",
+					"subtle": "#DD54A254"
 				},
 				"warning": {
-					"default": "#c3ab23",
-					"subtle": "#DDc3ab23"
+					"default": "#C3AB23",
+					"subtle": "#DDC3AB23"
 				},
 				"attention": {
 					"default": "#FF0000",

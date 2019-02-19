@@ -23,11 +23,8 @@ namespace AdaptiveCards
         Emphasis = 1,
 
         Good = 2,
-
         Attention = 3,
-
         Warning = 4,
-
         Accent = 5
     }
 }
