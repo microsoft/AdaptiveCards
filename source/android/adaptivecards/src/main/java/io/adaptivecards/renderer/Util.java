@@ -21,7 +21,7 @@ public final class Util {
         byte[] byteArray = new byte[(int)vectorSize];
         for(int i = 0; i < vectorSize; ++i)
         {
-            byteArray[i] = (byte)charVector.get(i);
+            byteArray[i] = (byte)charVector.get(i).charValue();
         }
 
         return byteArray;

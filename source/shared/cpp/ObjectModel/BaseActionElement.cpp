@@ -1,26 +1,16 @@
-
 #include "pch.h"
 #include "BaseActionElement.h"
+#include "BaseElement.h"
 #include "ParseUtil.h"
 
 using namespace AdaptiveSharedNamespace;
 
 constexpr const char* const BaseActionElement::defaultSentiment;
 
-BaseActionElement::BaseActionElement(ActionType type) :
-    m_type(type), m_typeString(ActionTypeToString(type)), m_sentiment(BaseActionElement::defaultSentiment)
+BaseActionElement::BaseActionElement(ActionType type) : m_sentiment(BaseActionElement::defaultSentiment), m_type(type)
 {
+    SetTypeString(ActionTypeToString(type));
     PopulateKnownPropertiesSet();
-}
-
-std::string BaseActionElement::GetElementTypeString() const
-{
-    return m_typeString;
-}
-
-void BaseActionElement::SetElementTypeString(const std::string& value)
-{
-    m_typeString = value;
 }
 
 std::string BaseActionElement::GetTitle() const
@@ -31,16 +21,6 @@ std::string BaseActionElement::GetTitle() const
 void BaseActionElement::SetTitle(const std::string& value)
 {
     m_title = value;
-}
-
-std::string BaseActionElement::GetId() const
-{
-    return m_id;
-}
-
-void BaseActionElement::SetId(const std::string& value)
-{
-    m_id = value;
 }
 
 std::string BaseActionElement::GetIconUrl() const
@@ -68,17 +48,14 @@ const ActionType BaseActionElement::GetElementType() const
     return m_type;
 }
 
-std::string BaseActionElement::Serialize() const
-{
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
-}
-
 Json::Value BaseActionElement::SerializeToJsonValue() const
 {
-    Json::Value root = GetAdditionalProperties();
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = ActionTypeToString(m_type);
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id)] = m_id;
+    Json::Value root = BaseElement::SerializeToJsonValue();
+
+    if (!m_iconUrl.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IconUrl)] = m_iconUrl;
+    }
 
     if (!m_title.empty())
     {
@@ -90,31 +67,14 @@ Json::Value BaseActionElement::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Sentiment)] = m_sentiment;
     }
 
-    if (!m_iconUrl.empty())
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IconUrl)] = m_iconUrl;
-    }
-
     return root;
-}
-
-Json::Value BaseActionElement::GetAdditionalProperties() const
-{
-    return m_additionalProperties;
-}
-
-void BaseActionElement::SetAdditionalProperties(Json::Value const& value)
-{
-    m_additionalProperties = value;
 }
 
 void BaseActionElement::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IconUrl),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Sentiment)});
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IconUrl),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Sentiment),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)});
 }
 
 void BaseActionElement::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
@@ -126,4 +86,9 @@ void BaseActionElement::GetResourceInformation(std::vector<RemoteResourceInforma
         imageResourceInfo.mimeType = "image";
         resourceInfo.push_back(imageResourceInfo);
     }
+}
+
+void BaseActionElement::ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& baseElement)
+{
+    baseElement = ParseUtil::GetActionFromJsonValue(context, json);
 }

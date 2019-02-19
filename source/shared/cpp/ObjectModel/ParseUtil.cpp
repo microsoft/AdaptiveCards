@@ -17,15 +17,6 @@ namespace AdaptiveSharedNamespace
         }
     }
 
-    void ParseUtil::ExpectString(const Json::Value& json)
-    {
-        if (!json.isString())
-        {
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
-                                             "The JSON element did not have the expected type 'string'");
-        }
-    }
-
     std::string ParseUtil::GetTypeAsString(const Json::Value& json)
     {
         std::string typeKey = "type";
@@ -321,23 +312,6 @@ namespace AdaptiveSharedNamespace
         return new_value;
     }
 
-    template<typename T> static void AddId(const T& element, std::unordered_set<std::string>& ids)
-    {
-        auto id = element.GetId();
-        if (!id.empty())
-        {
-            auto search = ids.find(id);
-            if (search == ids.end())
-            {
-                ids.emplace(id);
-            }
-            else
-            {
-                throw AdaptiveCardParseException(ErrorStatusCode::IdCollision, "Duplicate identifier encountered: id = '" + id + "'");
-            }
-        }
-    }
-
     std::vector<std::shared_ptr<BaseCardElement>> ParseUtil::GetElementCollection(ParseContext& context,
                                                                                   const Json::Value& json,
                                                                                   AdaptiveCardSchemaKey key,
@@ -355,23 +329,9 @@ namespace AdaptiveSharedNamespace
 
         for (const auto& curJsonValue : elementArray)
         {
-            // Get the element's type
-            std::string typeString = GetTypeAsString(curJsonValue);
-
-            // Use the parser that maps to the type
-            std::shared_ptr<BaseCardElementParser> parser = context.elementParserRegistration->GetParser(typeString);
-
-            if (parser == nullptr)
-            {
-                parser = context.elementParserRegistration->GetParser("Unknown");
-            }
-
-            auto element = parser->Deserialize(context, curJsonValue);
-            if (element != nullptr)
-            {
-                AddId(*element, *(context.elementIds));
-                elements.push_back(element);
-            }
+            std::shared_ptr<BaseElement> curElement;
+            BaseElement::ParseJsonObject<BaseCardElement>(context, curJsonValue, curElement);
+            elements.push_back(std::static_pointer_cast<BaseCardElement>(curElement));
         }
 
         return std::move(elements);
@@ -424,7 +384,6 @@ namespace AdaptiveSharedNamespace
             auto action = ParseUtil::GetActionFromJsonValue(context, curJsonValue);
             if (action != nullptr)
             {
-                AddId(*action, *(context.elementIds));
                 elements.push_back(action);
             }
         }
@@ -432,8 +391,7 @@ namespace AdaptiveSharedNamespace
         return elements;
     }
 
-    std::shared_ptr<BaseActionElement>
-    ParseUtil::GetAction(ParseContext& context, const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired)
+    std::shared_ptr<BaseActionElement> ParseUtil::GetAction(ParseContext& context, const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired)
     {
         auto selectAction = ParseUtil::ExtractJsonValue(json, key, isRequired);
 

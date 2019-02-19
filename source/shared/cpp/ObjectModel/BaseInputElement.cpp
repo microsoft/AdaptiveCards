@@ -13,16 +13,6 @@ BaseInputElement::BaseInputElement(CardElementType elementType, Spacing spacing,
 {
 }
 
-std::string BaseInputElement::GetId() const
-{
-    return m_id;
-}
-
-void BaseInputElement::SetId(const std::string& value)
-{
-    m_id = value;
-}
-
 bool BaseInputElement::GetIsRequired() const
 {
     return m_isRequired;
@@ -37,7 +27,6 @@ Json::Value BaseInputElement::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id)] = m_id;
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsRequired)] = m_isRequired;
 
     return root;

@@ -94,6 +94,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
         {
             CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, containerView, container, container.GetItems(), cardActionHandler, hostConfig, styleForThis);
         }
+
         if (styleForThis != containerStyle)
         {
             int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());

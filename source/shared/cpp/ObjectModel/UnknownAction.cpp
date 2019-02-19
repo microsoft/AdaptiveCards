@@ -12,10 +12,11 @@ Json::Value AdaptiveSharedNamespace::UnknownAction::SerializeToJsonValue() const
     return GetAdditionalProperties();
 }
 
-std::shared_ptr<BaseActionElement> UnknownActionParser::Deserialize(ParseContext&, const Json::Value& json)
+std::shared_ptr<BaseActionElement> UnknownActionParser::Deserialize(ParseContext& context, const Json::Value& json)
 {
-    std::shared_ptr<UnknownAction> unknown = std::make_shared<UnknownAction>();
+    std::string actualType = ParseUtil::GetTypeAsString(json);
+    std::shared_ptr<UnknownAction> unknown = BaseActionElement::Deserialize<UnknownAction>(context, json);
     unknown->SetAdditionalProperties(json);
-    unknown->SetElementTypeString(std::move(ParseUtil::GetTypeAsString(json)));
+    unknown->SetElementTypeString(actualType);
     return unknown;
 }
