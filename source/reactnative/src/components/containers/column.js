@@ -49,7 +49,7 @@ export class Column extends React.Component {
 
 	/**
 	 * @description This function calculates the Width percentage of the column to be 
- * rendered based on the width property from the payload. 
+ 	 * rendered based on the width property from the payload. 
 	 */
 	calculateWidthPercentage = (containerStyle) => {
 		var columns = this.props.columns
@@ -213,9 +213,9 @@ export class Column extends React.Component {
 					<View style={[containerViewStyle, styles.separatorStyle]}>
 						{this.parsePayload()}
 					</View> :
-					<View style={{marginRight: this.spacing}}>
-					{this.parsePayload()}
-				</View>}
+					<View style={{ marginLeft: this.spacing }}>
+						{this.parsePayload()}
+					</View>}
 			</ActionComponent>
 		</ContainerWrapper>;
 	}
