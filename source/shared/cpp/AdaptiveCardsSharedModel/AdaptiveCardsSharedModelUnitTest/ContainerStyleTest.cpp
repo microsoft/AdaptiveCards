@@ -370,7 +370,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::IsTrue(container3->GetStyle() == ContainerStyle::Emphasis);
             Assert::IsTrue(container3->GetCanBleed());
             // check that the container can return the correct parent's ID to which it can expand
-            Assert::AreEqual<std::string>("2", container3->GetParentalId());
+            Assert::IsTrue(container1->GetInternalId() == container3->GetParentalId());
         }
     };
 }

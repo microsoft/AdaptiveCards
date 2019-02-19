@@ -32,8 +32,8 @@ namespace AdaptiveSharedNamespace
         // such as style, padding and bleed
         void ConfigForContainerStyle(const ParseContext& context);
 
-        void SetParentalId(std::string &id);
-        std::string GetParentalId(void) const;
+        void SetParentalId(const AdaptiveSharedNamespace::InternalId &id);
+        AdaptiveSharedNamespace::InternalId GetParentalId(void) const;
 
     private:
         void SetCanBleed(const bool value);
@@ -49,6 +49,6 @@ namespace AdaptiveSharedNamespace
         bool m_hasBleed;
         bool m_canBleed;
         // id refers to parent to where bleed property should target
-        std::string m_parentalId;
+        AdaptiveSharedNamespace::InternalId m_parentalId;
     };
 }

@@ -6,7 +6,7 @@ using namespace AdaptiveSharedNamespace;
 
 CollectionTypeElement::CollectionTypeElement(ContainerStyle style, 
     VerticalContentAlignment alignment) : m_style(style), 
-    m_verticalContentAlignment(alignment), m_hasPadding(false), m_hasBleed(false), m_parentalId("")
+    m_verticalContentAlignment(alignment), m_hasPadding(false), m_hasBleed(false), m_parentalId()
 {
 }
 
@@ -44,7 +44,23 @@ void CollectionTypeElement::SetPadding(const bool value)
 void CollectionTypeElement::ConfigPadding(const ParseContext& context)
 {
     // we set padding when parental style is different from child's, and its style should not be None
-    SetPadding(GetStyle() != ContainerStyle::None && context.GetParentalContainerStyle() != GetStyle());
+    if(GetStyle() != ContainerStyle::None) 
+    {
+        if(context.GetParentalContainerStyle() != GetStyle())
+        {
+            if(context.GetParentalContainerStyle() == ContainerStyle::None &&
+                GetStyle() == ContainerStyle::Default)
+            {
+                SetPadding(false);
+                return;
+            }
+
+            SetPadding(true);
+            return;
+        }
+    }
+
+    SetPadding(false);
 }
 
 bool CollectionTypeElement::GetBleed(void) const
@@ -61,8 +77,8 @@ void CollectionTypeElement::SetBleed(const bool value)
 void CollectionTypeElement::ConfigBleed(const ParseContext& context)
 {
     // we allows bleed when self has padding and at least one parent has padding
-    std::string id(context.GetIDOfParentWithPadding());
-    bool canBleed = GetBleed() && id.size();
+    AdaptiveSharedNamespace::InternalId id = context.GetIDOfParentWithPadding();
+    bool canBleed = GetBleed() && (id != AdaptiveSharedNamespace::InternalId::Invalid);
     if(canBleed)
     {
         SetParentalId(id);
@@ -80,12 +96,12 @@ bool CollectionTypeElement::GetCanBleed() const
     return m_canBleed;
 }
 
-void CollectionTypeElement::SetParentalId(std::string &id)
+void CollectionTypeElement::SetParentalId(const AdaptiveSharedNamespace::InternalId &id)
 {
     m_parentalId = id;
 }
 
-std::string CollectionTypeElement::GetParentalId(void) const
+AdaptiveSharedNamespace::InternalId CollectionTypeElement::GetParentalId(void) const
 {
     return m_parentalId;
 }

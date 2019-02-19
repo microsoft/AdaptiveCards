@@ -71,6 +71,11 @@ Json::Value Column::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(GetStyle());
     }
 
+    if (GetBleed())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Bleed)] = true;
+    }
+
     if (GetVerticalContentAlignment() != VerticalContentAlignment::Top)
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)] =
@@ -116,7 +121,7 @@ std::shared_ptr<Column> Column::Deserialize(ParseContext& context, const Json::V
 
     // we walk parse tree dfs in-order, so we need to save current style,
     // before we walk back up to a parent.
-    context.SaveContextForCollectionTypeElement(column, column->GetId()); 
+    context.SaveContextForCollectionTypeElement(column, column->GetInternalId()); 
 
     // Parse Items
     auto cardElements = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Items, false);

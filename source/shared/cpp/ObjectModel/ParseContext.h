@@ -27,9 +27,9 @@ namespace AdaptiveSharedNamespace
                          const bool isFallback = false);
         void PopElement();
         ContainerStyle GetParentalContainerStyle() const;
-        std::string GetIDOfParentWithPadding(void)const;
+        AdaptiveSharedNamespace::InternalId GetIDOfParentWithPadding(void)const;
         void SaveContextForCollectionTypeElement(
-            const std::shared_ptr<CollectionTypeElement>& current, const std::string& id);
+            const std::shared_ptr<CollectionTypeElement>& current, const AdaptiveSharedNamespace::InternalId& id);
         void RestoreContextForCollectionTypeElement(
             const std::shared_ptr<CollectionTypeElement>& current);
 
@@ -60,6 +60,6 @@ namespace AdaptiveSharedNamespace
         std::vector<std::tuple<std::string, AdaptiveSharedNamespace::InternalId, bool>> m_idStack;
         ContainerStyle m_parentalContainerStyle;
         std::vector<ContainerStyle> m_parentalContainerStyles;
-        std::vector<std::string> m_parentalPadding;
+        std::vector<AdaptiveSharedNamespace::InternalId> m_parentalPadding;
     };
 }

@@ -248,17 +248,18 @@ namespace AdaptiveSharedNamespace
         return (m_parentalContainerStyles.size())? m_parentalContainerStyles.back() : ContainerStyle::None;
     }
 
-    std::string ParseContext::GetIDOfParentWithPadding(void) const
+    AdaptiveSharedNamespace::InternalId ParseContext::GetIDOfParentWithPadding(void) const
     {
         if(m_parentalPadding.size())
         {
             return m_parentalPadding.back();
         }
-        return "";
+        AdaptiveSharedNamespace::InternalId invalidId;
+        return std::move(invalidId);
     }
 
-    void ParseContext::SaveContextForCollectionTypeElement(
-        const std::shared_ptr<CollectionTypeElement>& current, const std::string& id)
+    void ParseContext::SaveContextForCollectionTypeElement(const std::shared_ptr<CollectionTypeElement>& current,
+                                                           const AdaptiveSharedNamespace::InternalId& id)
     {
         // save current style value
         m_parentalContainerStyles.push_back(current->GetStyle());

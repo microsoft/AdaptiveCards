@@ -2,12 +2,13 @@
 
 #include "pch.h"
 #include "BaseCardElement.h"
+#include "CollectionTypeElement.h"
 
 namespace AdaptiveSharedNamespace
 {
     class Column;
 
-    class ColumnSet : public BaseCardElement
+    class ColumnSet : public BaseCardElement, public CollectionTypeElement
     {
         friend class ColumnSetParser;
 
@@ -27,9 +28,6 @@ namespace AdaptiveSharedNamespace
         std::shared_ptr<BaseActionElement> GetSelectAction() const;
         void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
-        ContainerStyle GetStyle() const;
-        void SetStyle(const ContainerStyle value);
-
         void SetLanguage(const std::string& language);
 
         void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
@@ -37,7 +35,6 @@ namespace AdaptiveSharedNamespace
     private:
         void PopulateKnownPropertiesSet() override;
 
-        ContainerStyle m_style;
         std::vector<std::shared_ptr<Column>> m_columns;
         std::shared_ptr<BaseActionElement> m_selectAction;
     };

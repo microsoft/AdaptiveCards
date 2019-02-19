@@ -8,7 +8,7 @@
 using namespace AdaptiveSharedNamespace;
 
 ColumnSet::ColumnSet() :
-    BaseCardElement(CardElementType::ColumnSet), m_style(ContainerStyle::None)
+    BaseCardElement(CardElementType::ColumnSet)
 {
     PopulateKnownPropertiesSet();
 }
@@ -31,16 +31,6 @@ std::shared_ptr<BaseActionElement> ColumnSet::GetSelectAction() const
 void ColumnSet::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
 {
     m_selectAction = action;
-}
-
-ContainerStyle ColumnSet::GetStyle() const
-{
-    return m_style;
-}
-
-void ColumnSet::SetStyle(const ContainerStyle value)
-{
-    m_style = value;
 }
 
 void ColumnSet::SetLanguage(const std::string& language)
@@ -68,9 +58,14 @@ Json::Value ColumnSet::SerializeToJsonValue() const
             BaseCardElement::SerializeSelectAction(m_selectAction);
     }
 
-    if (m_style != ContainerStyle::None)
+    if (GetStyle() != ContainerStyle::None)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(m_style);
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(GetStyle());
+    }
+
+    if (GetBleed())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Bleed)] = true;
     }
 
     return root;
@@ -82,14 +77,24 @@ std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(ParseContext& cont
 
     auto container = BaseCardElement::Deserialize<ColumnSet>(context, value);
 
+    container->SetStyle(ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
+
+    // configures for container style
+    container->ConfigForContainerStyle(context);
+
+    // we walk parse tree dfs in-order, so we need to save current style,
+    // before we walk back up to a parent.
+    context.SaveContextForCollectionTypeElement(container, container->GetInternalId()); 
+
     // Parse Columns
     auto cardElements = ParseUtil::GetElementCollectionOfSingleType<Column>(context, value, AdaptiveCardSchemaKey::Columns, Column::Deserialize, false);
     container->m_columns = std::move(cardElements);
 
+    // since we are walking dfs, we have to restore the style before we back up
+    context.RestoreContextForCollectionTypeElement(container);
+
     // Parse optional selectAction
     container->SetSelectAction(ParseUtil::GetAction(context, value, AdaptiveCardSchemaKey::SelectAction, false));
-
-    container->SetStyle(ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
 
     return container;
 }
