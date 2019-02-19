@@ -13,7 +13,7 @@ import { View } from 'react-native';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 
-export class ContainerWrapper extends React.Component {
+export class ContainerWrapper extends React.PureComponent {
 
     render() {
         const receivedStyles = this.props.style;
