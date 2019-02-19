@@ -53,6 +53,42 @@ public class ContainerStylesDefinition {
     return (cPtr == 0) ? null : new ContainerStyleDefinition(cPtr, false);
   }
 
+  public void setGoodPalette(ContainerStyleDefinition value) {
+    AdaptiveCardObjectModelJNI.ContainerStylesDefinition_goodPalette_set(swigCPtr, this, ContainerStyleDefinition.getCPtr(value), value);
+  }
+
+  public ContainerStyleDefinition getGoodPalette() {
+    long cPtr = AdaptiveCardObjectModelJNI.ContainerStylesDefinition_goodPalette_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new ContainerStyleDefinition(cPtr, false);
+  }
+
+  public void setAttentionPalette(ContainerStyleDefinition value) {
+    AdaptiveCardObjectModelJNI.ContainerStylesDefinition_attentionPalette_set(swigCPtr, this, ContainerStyleDefinition.getCPtr(value), value);
+  }
+
+  public ContainerStyleDefinition getAttentionPalette() {
+    long cPtr = AdaptiveCardObjectModelJNI.ContainerStylesDefinition_attentionPalette_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new ContainerStyleDefinition(cPtr, false);
+  }
+
+  public void setWarningPalette(ContainerStyleDefinition value) {
+    AdaptiveCardObjectModelJNI.ContainerStylesDefinition_warningPalette_set(swigCPtr, this, ContainerStyleDefinition.getCPtr(value), value);
+  }
+
+  public ContainerStyleDefinition getWarningPalette() {
+    long cPtr = AdaptiveCardObjectModelJNI.ContainerStylesDefinition_warningPalette_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new ContainerStyleDefinition(cPtr, false);
+  }
+
+  public void setAccentPalette(ContainerStyleDefinition value) {
+    AdaptiveCardObjectModelJNI.ContainerStylesDefinition_accentPalette_set(swigCPtr, this, ContainerStyleDefinition.getCPtr(value), value);
+  }
+
+  public ContainerStyleDefinition getAccentPalette() {
+    long cPtr = AdaptiveCardObjectModelJNI.ContainerStylesDefinition_accentPalette_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new ContainerStyleDefinition(cPtr, false);
+  }
+
   public static ContainerStylesDefinition Deserialize(JsonValue json, ContainerStylesDefinition defaultValue) {
     return new ContainerStylesDefinition(AdaptiveCardObjectModelJNI.ContainerStylesDefinition_Deserialize(JsonValue.getCPtr(json), json, ContainerStylesDefinition.getCPtr(defaultValue), defaultValue), true);
   }

@@ -98,9 +98,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
         {
             int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
             returnedView.setPadding(padding, padding, padding, padding);
-            String color = styleForThis == containerStyle.Emphasis ?
-                    hostConfig.GetContainerStyles().getEmphasisPalette().getBackgroundColor() :
-                    hostConfig.GetContainerStyles().getDefaultPalette().getBackgroundColor();
+            String color = hostConfig.GetBackgroundColor(styleForThis);
             returnedView.setBackgroundColor(Color.parseColor(color));
         }
 

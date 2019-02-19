@@ -268,7 +268,11 @@ namespace AdaptiveSharedNamespace
 
     DEFINE_ADAPTIVECARD_ENUM(ContainerStyle, {
             {ContainerStyle::Default, "Default"},
-            {ContainerStyle::Emphasis, "Emphasis"}});
+            {ContainerStyle::Emphasis, "Emphasis"},
+            {ContainerStyle::Good, "Good"},
+            {ContainerStyle::Attention, "Attention"},
+            {ContainerStyle::Warning, "Warning"},
+            {ContainerStyle::Accent, "Accent"}});
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ActionAlignment, ActionAlignment::Left, {
             {ActionAlignment::Left, "Left"},

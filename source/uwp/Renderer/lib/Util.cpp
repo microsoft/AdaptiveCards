@@ -717,24 +717,47 @@ HRESULT GetColorFromString(const std::string& colorString, _Out_ ABI::Windows::U
 }
 CATCH_RETURN;
 
+HRESULT GetContainerStyleDefinition(ABI::AdaptiveNamespace::ContainerStyle style,
+                                    _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                                    _Outptr_ ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition** styleDefinition) noexcept try
+{
+    ComPtr<ABI::AdaptiveNamespace::IAdaptiveContainerStylesDefinition> containerStyles;
+    RETURN_IF_FAILED(hostConfig->get_ContainerStyles(&containerStyles));
+
+    switch (style)
+    {
+    case ABI::AdaptiveNamespace::ContainerStyle::Accent:
+        RETURN_IF_FAILED(containerStyles->get_Accent(styleDefinition));
+        break;
+    case ABI::AdaptiveNamespace::ContainerStyle::Attention:
+        RETURN_IF_FAILED(containerStyles->get_Attention(styleDefinition));
+        break;
+    case ABI::AdaptiveNamespace::ContainerStyle::Emphasis:
+        RETURN_IF_FAILED(containerStyles->get_Emphasis(styleDefinition));
+        break;
+    case ABI::AdaptiveNamespace::ContainerStyle::Good:
+        RETURN_IF_FAILED(containerStyles->get_Good(styleDefinition));
+        break;
+    case ABI::AdaptiveNamespace::ContainerStyle::Warning:
+        RETURN_IF_FAILED(containerStyles->get_Warning(styleDefinition));
+        break;
+    case ABI::AdaptiveNamespace::ContainerStyle::Default:
+    default:
+        RETURN_IF_FAILED(containerStyles->get_Default(styleDefinition));
+        break;
+    }
+    return S_OK;
+}
+CATCH_RETURN;
+
 HRESULT GetColorFromAdaptiveColor(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
                                   ABI::AdaptiveNamespace::ForegroundColor adaptiveColor,
                                   ABI::AdaptiveNamespace::ContainerStyle containerStyle,
                                   bool isSubtle,
                                   _Out_ ABI::Windows::UI::Color* uiColor) noexcept try
 {
-    ComPtr<ABI::AdaptiveNamespace::IAdaptiveContainerStylesDefinition> styles;
-    RETURN_IF_FAILED(hostConfig->get_ContainerStyles(&styles));
-
     ComPtr<ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition> styleDefinition;
-    if (containerStyle == ABI::AdaptiveNamespace::ContainerStyle_Default)
-    {
-        RETURN_IF_FAILED(styles->get_Default(&styleDefinition));
-    }
-    else
-    {
-        RETURN_IF_FAILED(styles->get_Emphasis(&styleDefinition));
-    }
+    GetContainerStyleDefinition(containerStyle, hostConfig, &styleDefinition);
 
     ComPtr<ABI::AdaptiveNamespace::IAdaptiveColorsConfig> colorsConfig;
     RETURN_IF_FAILED(styleDefinition->get_ForegroundColors(&colorsConfig));
@@ -813,19 +836,8 @@ HRESULT GetBackgroundColorFromStyle(ABI::AdaptiveNamespace::ContainerStyle style
                                     _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
                                     _Out_ ABI::Windows::UI::Color* backgroundColor) noexcept try
 {
-    ComPtr<ABI::AdaptiveNamespace::IAdaptiveContainerStylesDefinition> containerStyles;
-    RETURN_IF_FAILED(hostConfig->get_ContainerStyles(&containerStyles));
-
     ComPtr<ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition> styleDefinition;
-    if (style == ABI::AdaptiveNamespace::ContainerStyle::Default)
-    {
-        RETURN_IF_FAILED(containerStyles->get_Default(&styleDefinition));
-    }
-    else
-    {
-        RETURN_IF_FAILED(containerStyles->get_Emphasis(&styleDefinition));
-    }
-
+    RETURN_IF_FAILED(GetContainerStyleDefinition(style, hostConfig, &styleDefinition));
     RETURN_IF_FAILED(styleDefinition->get_BackgroundColor(backgroundColor));
 
     return S_OK;

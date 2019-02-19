@@ -312,7 +312,11 @@ namespace AdaptiveSharedNamespace
     {
         None,
         Default,
-        Emphasis
+        Emphasis,
+        Good,
+        Attention,
+        Warning,
+        Accent
     };
     DECLARE_ADAPTIVECARD_ENUM(ContainerStyle);
 

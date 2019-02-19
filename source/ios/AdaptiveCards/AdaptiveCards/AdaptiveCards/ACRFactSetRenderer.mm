@@ -75,16 +75,12 @@
 
         // Obtain text color to apply to the attributed string
         ACRContainerStyle style = lab.style;
-        const ColorsConfig &colorConfig = (style == ACREmphasis) ? config->GetContainerStyles().emphasisPalette.foregroundColors :
-                                                             config->GetContainerStyles().defaultPalette.foregroundColors;
+        auto foregroundColor = [acoConfig getTextBlockColor:style textColor:textConfig.color subtleOption:textConfig.isSubtle];
 
         // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
-        [content addAttributes:@{NSForegroundColorAttributeName:
-                                   [ACOHostConfig getTextBlockColor:textConfig.color colorsConfig:colorConfig
-                                       subtleOption:textConfig.isSubtle],
-                                 NSStrokeWidthAttributeName:
-                                   [ACOHostConfig getTextStrokeWidthForWeight:textConfig.weight]}
-                         range:NSMakeRange(0, content.length)];
+        [content addAttributes:@{NSForegroundColorAttributeName: foregroundColor,
+                                     NSStrokeWidthAttributeName:[ACOHostConfig getTextStrokeWidthForWeight:textConfig.weight]}
+                                                          range:NSMakeRange(0, content.length)];
         lab.attributedText = content;
         std::string ID = element->GetId();
         std::size_t idx = ID.find_last_of('_');

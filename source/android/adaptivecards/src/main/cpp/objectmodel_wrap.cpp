@@ -19698,6 +19698,122 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 }
 
 
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStylesDefinition_1goodPalette_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::ContainerStylesDefinition *arg1 = (AdaptiveCards::ContainerStylesDefinition *) 0 ;
+  AdaptiveCards::ContainerStyleDefinition *arg2 = (AdaptiveCards::ContainerStyleDefinition *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(AdaptiveCards::ContainerStylesDefinition **)&jarg1; 
+  arg2 = *(AdaptiveCards::ContainerStyleDefinition **)&jarg2; 
+  if (arg1) (arg1)->goodPalette = *arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStylesDefinition_1goodPalette_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  AdaptiveCards::ContainerStylesDefinition *arg1 = (AdaptiveCards::ContainerStylesDefinition *) 0 ;
+  AdaptiveCards::ContainerStyleDefinition *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::ContainerStylesDefinition **)&jarg1; 
+  result = (AdaptiveCards::ContainerStyleDefinition *)& ((arg1)->goodPalette);
+  *(AdaptiveCards::ContainerStyleDefinition **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStylesDefinition_1attentionPalette_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::ContainerStylesDefinition *arg1 = (AdaptiveCards::ContainerStylesDefinition *) 0 ;
+  AdaptiveCards::ContainerStyleDefinition *arg2 = (AdaptiveCards::ContainerStyleDefinition *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(AdaptiveCards::ContainerStylesDefinition **)&jarg1; 
+  arg2 = *(AdaptiveCards::ContainerStyleDefinition **)&jarg2; 
+  if (arg1) (arg1)->attentionPalette = *arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStylesDefinition_1attentionPalette_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  AdaptiveCards::ContainerStylesDefinition *arg1 = (AdaptiveCards::ContainerStylesDefinition *) 0 ;
+  AdaptiveCards::ContainerStyleDefinition *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::ContainerStylesDefinition **)&jarg1; 
+  result = (AdaptiveCards::ContainerStyleDefinition *)& ((arg1)->attentionPalette);
+  *(AdaptiveCards::ContainerStyleDefinition **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStylesDefinition_1warningPalette_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::ContainerStylesDefinition *arg1 = (AdaptiveCards::ContainerStylesDefinition *) 0 ;
+  AdaptiveCards::ContainerStyleDefinition *arg2 = (AdaptiveCards::ContainerStyleDefinition *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(AdaptiveCards::ContainerStylesDefinition **)&jarg1; 
+  arg2 = *(AdaptiveCards::ContainerStyleDefinition **)&jarg2; 
+  if (arg1) (arg1)->warningPalette = *arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStylesDefinition_1warningPalette_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  AdaptiveCards::ContainerStylesDefinition *arg1 = (AdaptiveCards::ContainerStylesDefinition *) 0 ;
+  AdaptiveCards::ContainerStyleDefinition *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::ContainerStylesDefinition **)&jarg1; 
+  result = (AdaptiveCards::ContainerStyleDefinition *)& ((arg1)->warningPalette);
+  *(AdaptiveCards::ContainerStyleDefinition **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStylesDefinition_1accentPalette_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::ContainerStylesDefinition *arg1 = (AdaptiveCards::ContainerStylesDefinition *) 0 ;
+  AdaptiveCards::ContainerStyleDefinition *arg2 = (AdaptiveCards::ContainerStyleDefinition *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(AdaptiveCards::ContainerStylesDefinition **)&jarg1; 
+  arg2 = *(AdaptiveCards::ContainerStyleDefinition **)&jarg2; 
+  if (arg1) (arg1)->accentPalette = *arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStylesDefinition_1accentPalette_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  AdaptiveCards::ContainerStylesDefinition *arg1 = (AdaptiveCards::ContainerStylesDefinition *) 0 ;
+  AdaptiveCards::ContainerStyleDefinition *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::ContainerStylesDefinition **)&jarg1; 
+  result = (AdaptiveCards::ContainerStyleDefinition *)& ((arg1)->accentPalette);
+  *(AdaptiveCards::ContainerStyleDefinition **)&jresult = result; 
+  return jresult;
+}
+
+
 SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ContainerStylesDefinition_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   Json::Value *arg1 = 0 ;
@@ -20419,6 +20535,78 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg2 = (AdaptiveCards::FontStyle)jarg2; 
   arg3 = (AdaptiveCards::TextWeight)jarg3; 
   result = (unsigned int)((AdaptiveCards::HostConfig const *)arg1)->GetFontWeight(arg2,arg3);
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1GetBackgroundColor(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  jstring jresult = 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::ContainerStyle arg2 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  arg2 = (AdaptiveCards::ContainerStyle)jarg2; 
+  result = ((AdaptiveCards::HostConfig const *)arg1)->GetBackgroundColor(arg2);
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1GetForegroundColor(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3, jboolean jarg4) {
+  jstring jresult = 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::ContainerStyle arg2 ;
+  AdaptiveCards::ForegroundColor arg3 ;
+  bool arg4 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  arg2 = (AdaptiveCards::ContainerStyle)jarg2; 
+  arg3 = (AdaptiveCards::ForegroundColor)jarg3; 
+  arg4 = jarg4 ? true : false; 
+  result = ((AdaptiveCards::HostConfig const *)arg1)->GetForegroundColor(arg2,arg3,arg4);
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1GetBorderColor(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  jstring jresult = 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::ContainerStyle arg2 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  arg2 = (AdaptiveCards::ContainerStyle)jarg2; 
+  result = ((AdaptiveCards::HostConfig const *)arg1)->GetBorderColor(arg2);
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1GetBorderThickness(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  jlong jresult = 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::ContainerStyle arg2 ;
+  unsigned int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  arg2 = (AdaptiveCards::ContainerStyle)jarg2; 
+  result = (unsigned int)((AdaptiveCards::HostConfig const *)arg1)->GetBorderThickness(arg2);
   jresult = (jlong)result; 
   return jresult;
 }

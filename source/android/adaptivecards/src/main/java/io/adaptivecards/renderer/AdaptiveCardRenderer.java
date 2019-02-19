@@ -167,15 +167,7 @@ public class AdaptiveCardRenderer
             style = adaptiveCard.GetStyle();
         }
 
-        String color;
-        if (style == ContainerStyle.Default)
-        {
-            color = hostConfig.GetContainerStyles().getDefaultPalette().getBackgroundColor();
-        }
-        else
-        {
-            color = hostConfig.GetContainerStyles().getEmphasisPalette().getBackgroundColor();
-        }
+        String color = hostConfig.GetBackgroundColor(style);
 
         layout.setBackgroundColor(Color.parseColor(color));
 
