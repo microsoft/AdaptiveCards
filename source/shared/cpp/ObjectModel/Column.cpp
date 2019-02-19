@@ -111,22 +111,19 @@ std::shared_ptr<Column> Column::Deserialize(ParseContext& context, const Json::V
     column->SetVerticalContentAlignment(ParseUtil::GetEnumValue<VerticalContentAlignment>(
         value, AdaptiveCardSchemaKey::VerticalContentAlignment, VerticalContentAlignment::Top, VerticalContentAlignmentFromString));
 
-    // find and update padding 
-    column->ConfigPadding(context);
-    column->ConfigBleed(context);
+    // configures for container style
+    column->ConfigForContainerStyle(context);
 
-    // we walk parse tree dfs post-order, so we need to save current style,
+    // we walk parse tree dfs in-order, so we need to save current style,
     // before we walk back up to a parent.
-    context.PushParentalContainerStyle(column->GetStyle());
-    context.PushParentalPadding(column, column->GetId()); 
+    context.SaveContextForCollectionTypeElement(column, column->GetId()); 
 
     // Parse Items
     auto cardElements = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Items, false);
     column->m_items = std::move(cardElements);
 
     // since we are walking dfs, we have to restore the style before we back up
-    context.PopParentalContainerStyle();
-    context.PopParentalPadding();
+    context.RestoreContextForCollectionTypeElement(column);
 
     // Parse optional selectAction
     column->SetSelectAction(ParseUtil::GetAction(context, value, AdaptiveCardSchemaKey::SelectAction, false));

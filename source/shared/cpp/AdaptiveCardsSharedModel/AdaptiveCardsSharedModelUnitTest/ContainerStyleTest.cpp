@@ -360,16 +360,17 @@ namespace AdaptiveCardsSharedModelUnitTest
 
             auto items1 = container1->GetItems();
             std::shared_ptr<Container> container2 = std::static_pointer_cast<Container>(items1.back());
+            Assert::AreEqual<std::string>("4", container2->GetId());
             Assert::IsTrue(container2->GetStyle() == ContainerStyle::Default);
             Assert::IsFalse(container2->GetCanBleed());
 
-            std::shared_ptr<Container> container3 = std::static_pointer_cast<Container>(items1.back());
+            auto items2 = container2->GetItems();
+            std::shared_ptr<Container> container3 = std::static_pointer_cast<Container>(items2.back());
+            Assert::AreEqual<std::string>("5", container3->GetId());
             Assert::IsTrue(container3->GetStyle() == ContainerStyle::Emphasis);
             Assert::IsTrue(container3->GetCanBleed());
-
-            //std::shared_ptr<Container> container1 = std::static_pointer_cast<Container>(items.at(1));
-            //Assert::IsTrue(container1->GetStyle() == ContainerStyle::None);
-            //Assert::IsFalse(container1->CanBleed());
+            // check that the container can return the correct parent's ID to which it can expand
+            Assert::AreEqual<std::string>("2", container3->GetParentalId());
         }
     };
 }

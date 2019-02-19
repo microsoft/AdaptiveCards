@@ -41,7 +41,7 @@ void CollectionTypeElement::SetPadding(const bool value)
 }
 
 // Applies Padding Flag When appropriate
-void CollectionTypeElement::ConfigPadding(ParseContext& context)
+void CollectionTypeElement::ConfigPadding(const ParseContext& context)
 {
     // we set padding when parental style is different from child's, and its style should not be None
     SetPadding(GetStyle() != ContainerStyle::None && context.GetParentalContainerStyle() != GetStyle());
@@ -58,8 +58,9 @@ void CollectionTypeElement::SetBleed(const bool value)
 }
 
 // Applies Padding Flag When appropriate
-void CollectionTypeElement::ConfigBleed(ParseContext& context)
+void CollectionTypeElement::ConfigBleed(const ParseContext& context)
 {
+    // we allows bleed when self has padding and at least one parent has padding
     std::string id(context.GetIDOfParentWithPadding());
     bool canBleed = GetBleed() && id.size();
     if(canBleed)
@@ -67,7 +68,6 @@ void CollectionTypeElement::ConfigBleed(ParseContext& context)
         SetParentalId(id);
     }
     SetCanBleed(canBleed);
-    // we allows bleed when self has padding and at least one parent has padding
 }
 
 void CollectionTypeElement::SetCanBleed(const bool value)
@@ -88,4 +88,11 @@ void CollectionTypeElement::SetParentalId(std::string &id)
 std::string CollectionTypeElement::GetParentalId(void) const
 {
     return m_parentalId;
+}
+
+// convinience method for configuring for container style
+void CollectionTypeElement::ConfigForContainerStyle(const ParseContext& context)
+{
+    ConfigPadding(context);
+    ConfigBleed(context);
 }

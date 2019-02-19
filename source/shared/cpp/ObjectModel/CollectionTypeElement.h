@@ -19,18 +19,30 @@ namespace AdaptiveSharedNamespace
 
         bool GetPadding() const;
         void SetPadding(const bool value);
-        void ConfigPadding(ParseContext& context);
 
         bool GetBleed() const;
         void SetBleed(const bool value);
+        // tells if current element can bleed 
+        // when GetCanBleed() return false and GetBleed() returns true 
+        // the user must also check if HostConfig has
+        // padding for card, the root, if the padding is allowed,
+        // the user has to interpret the returned value correctly
         bool GetCanBleed() const;
-        void SetCanBleed(const bool value);
-        void ConfigBleed(ParseContext& context);
+        // configures container style related attributes
+        // such as style, padding and bleed
+        void ConfigForContainerStyle(const ParseContext& context);
 
         void SetParentalId(std::string &id);
         std::string GetParentalId(void) const;
 
     private:
+        void SetCanBleed(const bool value);
+
+        // Applies padding flag When appropriate
+        void ConfigPadding(const ParseContext& context);
+        // Applies bleed flag when appropriate
+        void ConfigBleed(const ParseContext& context);
+
         ContainerStyle m_style;
         VerticalContentAlignment m_verticalContentAlignment;
         bool m_hasPadding;

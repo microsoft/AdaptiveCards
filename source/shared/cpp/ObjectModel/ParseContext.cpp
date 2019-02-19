@@ -248,35 +248,6 @@ namespace AdaptiveSharedNamespace
         return (m_parentalContainerStyles.size())? m_parentalContainerStyles.back() : ContainerStyle::None;
     }
 
-    void ParseContext::PushParentalContainerStyle(const ContainerStyle value)
-    {
-        m_parentalContainerStyles.push_back(value);
-    }
-
-    void ParseContext::PopParentalContainerStyle(void)
-    {
-        if(m_parentalContainerStyles.size())
-        {
-            m_parentalContainerStyles.pop_back();
-        }
-    }
-
-    void ParseContext::PushParentalPadding(const std::shared_ptr<CollectionTypeElement> &parent, const std::string &id)
-    {
-        if(parent && parent->GetPadding()) 
-        {
-            m_parentalPadding.push_back(id);
-        }
-    }
-
-    void ParseContext::PopParentalPadding(void)
-    {
-        if(m_parentalPadding.size())
-        {
-            m_parentalPadding.pop_back();
-        }
-    }
-
     std::string ParseContext::GetIDOfParentWithPadding(void) const
     {
         if(m_parentalPadding.size())
@@ -284,5 +255,35 @@ namespace AdaptiveSharedNamespace
             return m_parentalPadding.back();
         }
         return "";
+    }
+
+    void ParseContext::SaveContextForCollectionTypeElement(
+        const std::shared_ptr<CollectionTypeElement>& current, const std::string& id)
+    {
+        // save current style value
+        m_parentalContainerStyles.push_back(current->GetStyle());
+
+        // save id of the current if the current has the padding
+        // it will be the new parent id for children, when parsing is continued dfs 
+        if(current && current->GetPadding()) 
+        {
+            m_parentalPadding.push_back(id);
+        }
+    }
+
+    void ParseContext::RestoreContextForCollectionTypeElement(
+        const std::shared_ptr<CollectionTypeElement>& current)
+    {
+        // pop container style
+        if(m_parentalContainerStyles.size())
+        {
+            m_parentalContainerStyles.pop_back();
+        }
+
+        // restore to previous parental id for further parsing of remaining items
+        if(current && current->GetPadding())
+        {
+            m_parentalPadding.pop_back();
+        }
     }
 }

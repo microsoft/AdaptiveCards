@@ -27,12 +27,11 @@ namespace AdaptiveSharedNamespace
                          const bool isFallback = false);
         void PopElement();
         ContainerStyle GetParentalContainerStyle() const;
-        void SetParentalContainerStyle(const ContainerStyle value);
-        void PushParentalContainerStyle(const ContainerStyle value);
-        void PopParentalContainerStyle(void);
-        void PushParentalPadding(const std::shared_ptr<CollectionTypeElement>& parent, const std::string& id);
-        void PopParentalPadding(void);
         std::string GetIDOfParentWithPadding(void)const;
+        void SaveContextForCollectionTypeElement(
+            const std::shared_ptr<CollectionTypeElement>& current, const std::string& id);
+        void RestoreContextForCollectionTypeElement(
+            const std::shared_ptr<CollectionTypeElement>& current);
 
     private:
         const AdaptiveSharedNamespace::InternalId GetNearestFallbackId(const AdaptiveSharedNamespace::InternalId& skipId) const;
