@@ -175,6 +175,7 @@
     <ClInclude Include="lib\AdaptiveToggleVisibilityActionParser.h" />
     <ClInclude Include="lib\AdaptiveToggleVisibilityTarget.h" />
     <ClInclude Include="lib\AdaptiveToggleVisibilityAction.h" />
+    <ClInclude Include="lib\AdaptiveUnsupportedAction.h" />
     <ClInclude Include="lib\AdaptiveUnsupportedElement.h" />
     <ClInclude Include="lib\AdaptiveWarning.h" />
     <ClInclude Include="lib\CustomActionWrapper.h" />
@@ -242,6 +243,7 @@
     <ClCompile Include="lib\AdaptiveToggleVisibilityAction.cpp" />
     <ClCompile Include="lib\AdaptiveShowCardActionParser.cpp" />
     <ClCompile Include="lib\AdaptiveSubmitActionParser.cpp" />
+    <ClCompile Include="lib\AdaptiveUnsupportedAction.cpp" />
     <ClCompile Include="lib\AdaptiveUnsupportedElement.cpp" />
     <ClCompile Include="lib\MediaHelpers.cpp" />
     <ClCompile Include="lib\AdaptiveActionSet.cpp" />

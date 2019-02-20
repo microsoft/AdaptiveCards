@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AdaptiveCardElement.h"
+#include "Util.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -10,6 +11,50 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
+    static ABI::AdaptiveNamespace::FallbackType MapSharedFallbackTypeToUwp(const AdaptiveSharedNamespace::FallbackType type)
+    {
+        switch (type)
+        {
+            case FallbackType::Drop:
+            {
+                return ABI::AdaptiveNamespace::FallbackType::Drop;
+            }
+
+            case FallbackType::Content:
+            {
+                return ABI::AdaptiveNamespace::FallbackType::Content;
+            }
+
+            case FallbackType::None:
+            default:
+            {
+                return ABI::AdaptiveNamespace::FallbackType::None;
+            }
+        }
+    }
+
+    static AdaptiveSharedNamespace::FallbackType MapUwpFallbackTypeToShared(const ABI::AdaptiveNamespace::FallbackType type)
+    {
+        switch (type)
+        {
+            case ABI::AdaptiveNamespace::FallbackType::Drop:
+            {
+                return FallbackType::Drop;
+            }
+
+            case ABI::AdaptiveNamespace::FallbackType::Content:
+            {
+                return FallbackType::Content;
+            }
+
+            case ABI::AdaptiveNamespace::FallbackType::None:
+            default:
+            {
+                return FallbackType::None;
+            }
+        }
+    }
+
     HRESULT AdaptiveCardElementBase::InitializeBaseElement(const std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel)
     {
         m_spacing = static_cast<ABI::AdaptiveNamespace::Spacing>(sharedModel->GetSpacing());
@@ -19,6 +64,15 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedModel->GetAdditionalProperties(), &m_additionalProperties));
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetElementTypeString(), m_typeString.GetAddressOf()));
         m_height = static_cast<ABI::AdaptiveNamespace::HeightType>(sharedModel->GetHeight());
+        m_fallbackType = MapSharedFallbackTypeToUwp(sharedModel->GetFallbackType());
+        if (m_fallbackType == ABI::AdaptiveNamespace::FallbackType::Content)
+        {
+            const auto fallbackObject = std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(sharedModel->GetFallbackContent());
+            if (fallbackObject)
+            {
+                RETURN_IF_FAILED(GenerateElementProjection(fallbackObject, m_fallbackContent.GetAddressOf()));
+            }
+        }
 
         return S_OK;
     }
@@ -61,43 +115,13 @@ namespace AdaptiveNamespace
 
     IFACEMETHODIMP AdaptiveCardElementBase::get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType * fallback)
     {
-        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedModel;
-        RETURN_IF_FAILED(GetSharedModel(sharedModel));
-
-        const auto sharedModelFallback = sharedModel->GetFallbackType();
-        switch (sharedModelFallback)
-        {
-            case FallbackType::Drop:
-            {
-                *fallback = ABI::AdaptiveNamespace::FallbackType::Drop;
-                break;
-            }
-
-            case FallbackType::Content:
-            {
-                *fallback = ABI::AdaptiveNamespace::FallbackType::Content;
-                break;
-            }
-
-            case FallbackType::None:
-            default:
-            {
-                *fallback = ABI::AdaptiveNamespace::FallbackType::None;
-                break;
-            }
-        }
-
+        *fallback = m_fallbackType;
         return S_OK;
     }
 
     IFACEMETHODIMP AdaptiveCardElementBase::get_FallbackContent(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement ** content)
     {
-        *content = nullptr;
-        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedModel;
-        RETURN_IF_FAILED(GetSharedModel(sharedModel));
-        RETURN_IF_FAILED(GenerateElementProjection(sharedModel, content));
-
-        return S_OK;
+        return m_fallbackContent.CopyTo(content);
     }
 
     IFACEMETHODIMP AdaptiveCardElementBase::get_Id(_Outptr_ HSTRING* id) { return m_id.CopyTo(id); }
@@ -147,6 +171,15 @@ namespace AdaptiveNamespace
         sharedCardElement->SetIsVisible(m_isVisible);
         sharedCardElement->SetSpacing(static_cast<AdaptiveSharedNamespace::Spacing>(m_spacing));
         sharedCardElement->SetHeight(static_cast<AdaptiveSharedNamespace::HeightType>(m_height));
+        sharedCardElement->SetFallbackType(MapUwpFallbackTypeToShared(m_fallbackType));
+
+        if (m_fallbackType == ABI::AdaptiveNamespace::FallbackType::Content)
+        {
+            ComPtr<AdaptiveNamespace::AdaptiveCardElementBase> fallbackElement = PeekInnards<AdaptiveNamespace::AdaptiveCardElementBase>(m_fallbackContent);
+            std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> fallbackSharedModel;
+            RETURN_IF_FAILED(fallbackElement->GetSharedModel(fallbackSharedModel));
+            sharedCardElement->SetFallbackContent(std::static_pointer_cast<AdaptiveSharedNamespace::BaseElement>(fallbackSharedModel));
+        }
 
         if (m_additionalProperties != nullptr)
         {

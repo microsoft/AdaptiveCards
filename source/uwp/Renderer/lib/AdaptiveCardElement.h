@@ -47,6 +47,7 @@ namespace AdaptiveNamespace
         Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_additionalProperties;
         Microsoft::WRL::Wrappers::HString m_typeString;
         ABI::AdaptiveNamespace::HeightType m_height;
-
+        ABI::AdaptiveNamespace::FallbackType m_fallbackType;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardElement> m_fallbackContent;
     };
 }

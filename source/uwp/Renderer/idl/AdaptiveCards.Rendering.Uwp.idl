@@ -53,6 +53,7 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveShowCardAction;
     runtimeclass AdaptiveSubmitAction;
     runtimeclass AdaptiveToggleVisibilityAction;
+    runtimeclass AdaptiveUnsupportedAction;
     runtimeclass AdaptiveUnsupportedElement;
     runtimeclass AdaptiveActionSet;
 
@@ -140,6 +141,7 @@ AdaptiveNamespaceStart
     interface IAdaptiveSeparator;
     interface IAdaptiveError;
     interface IAdaptiveWarning;
+    interface IAdaptiveUnsupportedAction;
     interface IAdaptiveUnsupportedElement;
     interface IAdaptiveActionSet;
 
@@ -1595,6 +1597,36 @@ AdaptiveNamespaceStart
     {
         [default] interface IAdaptiveActionSet;
         interface IAdaptiveCardElement;
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveUnsupportedAction),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(2F3B9EAD-294D-4EC9-AC96-47A34E5C59B8),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(884C1DB2-E935-4678-8BAD-78E8DAEB73D2)
+#endif
+    ]
+    interface IAdaptiveUnsupportedAction : IInspectable
+    {
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1)
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif
+    ]
+    runtimeclass AdaptiveUnsupportedAction
+    {
+        [default] interface IAdaptiveUnsupportedAction;
+        interface IAdaptiveActionElement;
     };
 
     [
@@ -3483,10 +3515,10 @@ AdaptiveNamespaceStart
         internal,
         activatable(InternalContract, 1)
 #endif
-    ] 
-    runtimeclass AdaptiveOpenUrlActionParser 
-    { 
-        [default] interface IAdaptiveActionParser; 
+    ]
+    runtimeclass AdaptiveOpenUrlActionParser
+    {
+        [default] interface IAdaptiveActionParser;
     };
 
     [
@@ -3497,10 +3529,10 @@ AdaptiveNamespaceStart
         internal,
         activatable(InternalContract, 1)
 #endif
-    ] 
-    runtimeclass AdaptiveShowCardActionParser 
-    { 
-        [default] interface IAdaptiveActionParser; 
+    ]
+    runtimeclass AdaptiveShowCardActionParser
+    {
+        [default] interface IAdaptiveActionParser;
     };
 
     [
@@ -3511,8 +3543,8 @@ AdaptiveNamespaceStart
         internal,
         activatable(InternalContract, 1)
 #endif
-    ] 
-    runtimeclass AdaptiveSubmitActionParser 
+    ]
+    runtimeclass AdaptiveSubmitActionParser
     {
         [default] interface IAdaptiveActionParser;
     };

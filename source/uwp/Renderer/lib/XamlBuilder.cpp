@@ -923,9 +923,15 @@ namespace AdaptiveNamespace
                         ComPtr<IAdaptiveCardElement> fallbackElement;
                         element->get_FallbackContent(&fallbackElement);
 
+                        HString fallbackElementType;
+                        THROW_IF_FAILED(fallbackElement->get_ElementTypeString(fallbackElementType.GetAddressOf()));
+
+                        ComPtr<IAdaptiveElementRenderer> fallbackElementRenderer;
+                        THROW_IF_FAILED(elementRenderers->Get(fallbackElementType.Get(), &fallbackElementRenderer));
+
                         // perform this element's fallback
                         ComPtr<IUIElement> newControl;
-                        elementRenderer->Render(fallbackElement.Get(), renderContext, renderArgs, &newControl);
+                        fallbackElementRenderer->Render(fallbackElement.Get(), renderContext, renderArgs, &newControl);
 
                         if (newControl != nullptr)
                         {
