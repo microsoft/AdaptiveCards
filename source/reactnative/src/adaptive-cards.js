@@ -7,8 +7,7 @@ import {
 	StyleSheet,
 	Text,
 	View,
-	ScrollView,
-	ImageBackground
+	ScrollView
 } from 'react-native';
 
 import { Registry } from './components/registration/registry';
@@ -21,6 +20,7 @@ import * as Utils from './utils/util';
 import { SelectAction } from './components/actions';
 import ResourceInformation from './utils/resource-information';
 import { ContainerWrapper } from './components/containers/';
+import { BackgroundImage } from './utils/backgroung-image';
 
 export default class AdaptiveCards extends React.Component {
 
@@ -28,7 +28,6 @@ export default class AdaptiveCards extends React.Component {
 	inputArray = {};
 	version = "1.1"; // client supported version
 	resourceInformationArray = [];
-	
 
 	constructor(props) {
 		super(props);
@@ -98,9 +97,10 @@ export default class AdaptiveCards extends React.Component {
 		// checks if BackgroundImage option is available for adaptive card
 		if (!Utils.isNullOrEmpty(this.payload.backgroundImage)) {
 			adaptiveCardContent = (
-				<ImageBackground source={{ uri: this.payload.backgroundImage }} style={styles.backgroundImage}>
+				<View style={styles.backgroundImage}>
+					<BackgroundImage backgroundImage={this.payload.backgroundImage} />
 					{adaptiveCardContent}
-				</ImageBackground>
+				</View >
 			);
 		}
 
