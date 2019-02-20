@@ -29,7 +29,7 @@ namespace AdaptiveSharedNamespace
         ContainerStyle GetParentalContainerStyle() const;
         AdaptiveSharedNamespace::InternalId GetIDOfParentWithPadding(void)const;
         void SaveContextForCollectionTypeElement(
-            const std::shared_ptr<CollectionTypeElement>& current, const AdaptiveSharedNamespace::InternalId& id);
+            const std::shared_ptr<CollectionTypeElement>& current);
         void RestoreContextForCollectionTypeElement(
             const std::shared_ptr<CollectionTypeElement>& current);
 

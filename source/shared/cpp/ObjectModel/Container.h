@@ -1,14 +1,13 @@
 #pragma once
 
 #include "pch.h"
-#include "BaseCardElement.h"
 #include "CollectionTypeElement.h"
 
 namespace AdaptiveSharedNamespace
 {
     class BaseActionElement;
 
-    class Container : public BaseCardElement, public CollectionTypeElement
+    class Container : public CollectionTypeElement
     {
         friend class ContainerParser;
 

@@ -8,7 +8,7 @@
 using namespace AdaptiveSharedNamespace;
 
 ColumnSet::ColumnSet() :
-    BaseCardElement(CardElementType::ColumnSet)
+    CollectionTypeElement(CardElementType::ColumnSet)
 {
     PopulateKnownPropertiesSet();
 }
@@ -84,7 +84,7 @@ std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(ParseContext& cont
 
     // we walk parse tree dfs in-order, so we need to save current style,
     // before we walk back up to a parent.
-    context.SaveContextForCollectionTypeElement(container, container->GetInternalId()); 
+    context.SaveContextForCollectionTypeElement(container); 
 
     // Parse Columns
     auto cardElements = ParseUtil::GetElementCollectionOfSingleType<Column>(context, value, AdaptiveCardSchemaKey::Columns, Column::Deserialize, false);

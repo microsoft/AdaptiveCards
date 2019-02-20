@@ -4,8 +4,8 @@
 
 using namespace AdaptiveSharedNamespace;
 
-CollectionTypeElement::CollectionTypeElement(ContainerStyle style, 
-    VerticalContentAlignment alignment) : m_style(style), 
+CollectionTypeElement::CollectionTypeElement(CardElementType type, ContainerStyle style, 
+    VerticalContentAlignment alignment) : BaseCardElement(type), m_style(style), 
     m_verticalContentAlignment(alignment), m_hasPadding(false), m_hasBleed(false), m_parentalId()
 {
 }

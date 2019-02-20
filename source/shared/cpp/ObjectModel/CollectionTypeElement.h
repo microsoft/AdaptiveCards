@@ -5,10 +5,10 @@
 
 namespace AdaptiveSharedNamespace
 {
-    class CollectionTypeElement
+    class CollectionTypeElement : public BaseCardElement
     {
     public:
-        CollectionTypeElement(ContainerStyle style = ContainerStyle::None,
+        CollectionTypeElement(CardElementType type, ContainerStyle style = ContainerStyle::None,
             VerticalContentAlignment alignment = VerticalContentAlignment::Top);
 
         ContainerStyle GetStyle() const;

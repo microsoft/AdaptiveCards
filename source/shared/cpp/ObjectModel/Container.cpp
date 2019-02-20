@@ -7,8 +7,7 @@
 
 using namespace AdaptiveSharedNamespace;
 
-Container::Container() :
-    BaseCardElement(CardElementType::Container), CollectionTypeElement()
+Container::Container() : CollectionTypeElement(CardElementType::Container)
 {
     PopulateKnownPropertiesSet();
 }
@@ -91,7 +90,7 @@ std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(ParseContext& cont
 
     // we walk parse tree dfs inorder, so we need to save current style,
     // before we walk back up to a parent.
-    context.SaveContextForCollectionTypeElement(container, container->GetInternalId()); 
+    context.SaveContextForCollectionTypeElement(container); 
 
     // Parse Items
     auto cardElements = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Items, false);

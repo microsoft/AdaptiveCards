@@ -258,8 +258,7 @@ namespace AdaptiveSharedNamespace
         return std::move(invalidId);
     }
 
-    void ParseContext::SaveContextForCollectionTypeElement(const std::shared_ptr<CollectionTypeElement>& current,
-                                                           const AdaptiveSharedNamespace::InternalId& id)
+    void ParseContext::SaveContextForCollectionTypeElement(const std::shared_ptr<CollectionTypeElement>& current)
     {
         // save current style value
         m_parentalContainerStyles.push_back(current->GetStyle());
@@ -268,7 +267,7 @@ namespace AdaptiveSharedNamespace
         // it will be the new parent id for children, when parsing is continued dfs 
         if(current && current->GetPadding()) 
         {
-            m_parentalPadding.push_back(id);
+            m_parentalPadding.push_back(current->GetInternalId());
         }
     }
 

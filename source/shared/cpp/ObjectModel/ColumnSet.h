@@ -1,14 +1,13 @@
 #pragma once
 
 #include "pch.h"
-#include "BaseCardElement.h"
 #include "CollectionTypeElement.h"
 
 namespace AdaptiveSharedNamespace
 {
     class Column;
 
-    class ColumnSet : public BaseCardElement, public CollectionTypeElement
+    class ColumnSet : public CollectionTypeElement
     {
         friend class ColumnSetParser;
 
