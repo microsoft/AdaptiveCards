@@ -227,24 +227,24 @@ AdaptiveNamespaceStart
     [contract(InternalContract, 1)]
     [internal]
 #endif
-    typedef [v1_enum] enum _HorizontalAlignment
+    typedef [v1_enum] enum HAlignment
     {
         Left = 0,
         Center,
         Right
-    } HorizontalAlignment;
+    } HAlignment;
 
     [version(NTDDI_WIN10_RS1)]
 #ifdef ADAPTIVE_CARDS_WINDOWS
         [contract(InternalContract, 1)]
         [internal]
 #endif
-        typedef [v1_enum] enum _VerticalAlignment
+        typedef [v1_enum] enum VAlignment
         {
             Top = 0,
             Center,
             Bottom
-        } VerticalAlignment;
+        } VAlignment;
 
         [version(NTDDI_WIN10_RS1)]
 #ifdef ADAPTIVE_CARDS_WINDOWS
@@ -674,8 +674,8 @@ AdaptiveNamespaceStart
         [propget] HRESULT Wrap([out, retval] boolean* value);
         [propput] HRESULT Wrap([in] boolean value);
 
-        [propget] HRESULT HorizontalAlignment([out, retval] HorizontalAlignment* value);
-        [propput] HRESULT HorizontalAlignment([in] HorizontalAlignment value);
+        [propget] HRESULT HorizontalAlignment([out, retval] HAlignment* value);
+        [propput] HRESULT HorizontalAlignment([in] HAlignment value);
 
         [propget] HRESULT MaxLines([out, retval] UINT32* value);
         [propput] HRESULT MaxLines([in] UINT32 value);
@@ -791,11 +791,11 @@ AdaptiveNamespaceStart
         [propget] HRESULT Mode([out, retval] BackgroundImageMode * value);
         [propput] HRESULT Mode([in] BackgroundImageMode value);
 
-        [propget] HRESULT HorizontalAlignment([out, retval] HorizontalAlignment * value);
-        [propput] HRESULT HorizontalAlignment([in] HorizontalAlignment value);
+        [propget] HRESULT HorizontalAlignment([out, retval] HAlignment * value);
+        [propput] HRESULT HorizontalAlignment([in] HAlignment value);
 
-        [propget] HRESULT VerticalAlignment([out, retval] VerticalAlignment * value);
-        [propput] HRESULT VerticalAlignment([in] VerticalAlignment value);
+        [propget] HRESULT VerticalAlignment([out, retval] VAlignment * value);
+        [propput] HRESULT VerticalAlignment([in] VAlignment value);
 
     };
 
@@ -978,8 +978,8 @@ AdaptiveNamespaceStart
         [propget] HRESULT PixelHeight([out, retval] UINT32* value);
         [propput] HRESULT PixelHeight([in] UINT32 value);
 
-        [propget] HRESULT HorizontalAlignment([out, retval] HorizontalAlignment * value);
-        [propput] HRESULT HorizontalAlignment([in] HorizontalAlignment value);
+        [propget] HRESULT HorizontalAlignment([out, retval] HAlignment * value);
+        [propput] HRESULT HorizontalAlignment([in] HAlignment value);
 
         [propget] HRESULT AltText([out, retval] HSTRING* value);
         [propput] HRESULT AltText([in] HSTRING value);

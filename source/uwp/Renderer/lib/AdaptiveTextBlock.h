@@ -42,8 +42,8 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_MaxLines(_Out_ UINT32* value);
         IFACEMETHODIMP put_MaxLines(UINT32 value);
 
-        IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveNamespace::HorizontalAlignment* HorizontalAlignment);
-        IFACEMETHODIMP put_HorizontalAlignment(ABI::AdaptiveNamespace::HorizontalAlignment HorizontalAlignment);
+        IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveNamespace::HAlignment* HorizontalAlignment);
+        IFACEMETHODIMP put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment HorizontalAlignment);
 
         IFACEMETHODIMP get_Language(_Outptr_ HSTRING* language);
         IFACEMETHODIMP put_Language(_In_ HSTRING language);
@@ -121,7 +121,7 @@ namespace AdaptiveNamespace
         ABI::AdaptiveNamespace::TextSize m_textSize;
         ABI::AdaptiveNamespace::TextWeight m_textWeight;
         ABI::AdaptiveNamespace::ForegroundColor m_foregroundColor;
-        ABI::AdaptiveNamespace::HorizontalAlignment m_horizontalAlignment;
+        ABI::AdaptiveNamespace::HAlignment m_horizontalAlignment;
     };
 
     ActivatableClass(AdaptiveTextBlock);

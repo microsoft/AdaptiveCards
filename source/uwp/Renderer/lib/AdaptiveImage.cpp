@@ -36,7 +36,7 @@ namespace AdaptiveNamespace
         m_imageSize = static_cast<ABI::AdaptiveNamespace::ImageSize>(sharedImage->GetImageSize());
         m_pixelWidth = sharedImage->GetPixelWidth();
         m_pixelHeight = sharedImage->GetPixelHeight();
-        m_horizontalAlignment = static_cast<ABI::AdaptiveNamespace::HorizontalAlignment>(sharedImage->GetHorizontalAlignment());
+        m_horizontalAlignment = static_cast<ABI::AdaptiveNamespace::HAlignment>(sharedImage->GetHorizontalAlignment());
         RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetAltText(), m_altText.GetAddressOf()));
         GenerateActionProjection(sharedImage->GetSelectAction(), &m_selectAction);
 
@@ -111,13 +111,13 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveImage::put_AltText(_In_ HSTRING text) { return m_altText.Set(text); }
 
-    HRESULT AdaptiveImage::get_HorizontalAlignment(ABI::AdaptiveNamespace::HorizontalAlignment* alignment)
+    HRESULT AdaptiveImage::get_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment* alignment)
     {
         *alignment = m_horizontalAlignment;
         return S_OK;
     }
 
-    HRESULT AdaptiveImage::put_HorizontalAlignment(ABI::AdaptiveNamespace::HorizontalAlignment alignment)
+    HRESULT AdaptiveImage::put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment alignment)
     {
         m_horizontalAlignment = alignment;
         return S_OK;

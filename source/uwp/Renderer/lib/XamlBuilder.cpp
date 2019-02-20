@@ -1003,7 +1003,7 @@ namespace AdaptiveNamespace
             THROW_IF_FAILED(MakeAndInitialize<AdaptiveImage>(&adaptiveImage));
 
             adaptiveImage->put_Url(iconUrl);
-            adaptiveImage->put_HorizontalAlignment(ABI::AdaptiveNamespace::HorizontalAlignment::Center);
+            adaptiveImage->put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment::Center);
 
             ComPtr<IAdaptiveCardElement> adaptiveCardElement;
             THROW_IF_FAILED(adaptiveImage.As(&adaptiveCardElement));
@@ -1820,19 +1820,19 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(adaptiveTextBlock->get_MaxLines(&maxLines));
         THROW_IF_FAILED(xamlTextBlock2->put_MaxLines(maxLines));
 
-        ABI::AdaptiveNamespace::HorizontalAlignment adaptiveHorizontalAlignment;
+        ABI::AdaptiveNamespace::HAlignment adaptiveHorizontalAlignment;
         THROW_IF_FAILED(adaptiveTextBlock->get_HorizontalAlignment(&adaptiveHorizontalAlignment));
 
         // Set the horizontal alignment of the text
         switch (adaptiveHorizontalAlignment)
         {
-        case ABI::AdaptiveNamespace::HorizontalAlignment::Left:
+        case ABI::AdaptiveNamespace::HAlignment::Left:
             THROW_IF_FAILED(xamlTextBlock->put_TextAlignment(TextAlignment::TextAlignment_Left));
             break;
-        case ABI::AdaptiveNamespace::HorizontalAlignment::Right:
+        case ABI::AdaptiveNamespace::HAlignment::Right:
             THROW_IF_FAILED(xamlTextBlock->put_TextAlignment(TextAlignment::TextAlignment_Right));
             break;
-        case ABI::AdaptiveNamespace::HorizontalAlignment::Center:
+        case ABI::AdaptiveNamespace::HAlignment::Center:
             THROW_IF_FAILED(xamlTextBlock->put_TextAlignment(TextAlignment::TextAlignment_Center));
             break;
         }
@@ -2241,18 +2241,18 @@ namespace AdaptiveNamespace
             }
         }
 
-        ABI::AdaptiveNamespace::HorizontalAlignment adaptiveHorizontalAlignment;
+        ABI::AdaptiveNamespace::HAlignment adaptiveHorizontalAlignment;
         THROW_IF_FAILED(adaptiveImage->get_HorizontalAlignment(&adaptiveHorizontalAlignment));
 
         switch (adaptiveHorizontalAlignment)
         {
-        case ABI::AdaptiveNamespace::HorizontalAlignment::Left:
+        case ABI::AdaptiveNamespace::HAlignment::Left:
             THROW_IF_FAILED(frameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Left));
             break;
-        case ABI::AdaptiveNamespace::HorizontalAlignment::Right:
+        case ABI::AdaptiveNamespace::HAlignment::Right:
             THROW_IF_FAILED(frameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Right));
             break;
-        case ABI::AdaptiveNamespace::HorizontalAlignment::Center:
+        case ABI::AdaptiveNamespace::HAlignment::Center:
             THROW_IF_FAILED(frameworkElement->put_HorizontalAlignment(ABI::Windows::UI::Xaml::HorizontalAlignment_Center));
             break;
         }

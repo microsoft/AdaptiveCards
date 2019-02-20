@@ -179,8 +179,8 @@ namespace AdaptiveNamespace
     void TileControl::RefreshContainerTile()
     {
         ABI::AdaptiveNamespace::BackgroundImageMode mode;
-        ABI::AdaptiveNamespace::HorizontalAlignment hAlignment;
-        ABI::AdaptiveNamespace::VerticalAlignment vAlignment;
+        ABI::AdaptiveNamespace::HAlignment hAlignment;
+        ABI::AdaptiveNamespace::VAlignment vAlignment;
         THROW_IF_FAILED(ExtractBackgroundImageData(&mode, &hAlignment, &vAlignment));
 
         INT numberSpriteToInstanciate = 1;
@@ -202,13 +202,13 @@ namespace AdaptiveNamespace
 
                 switch (vAlignment)
                 {
-                case ABI::AdaptiveNamespace::VerticalAlignment::Bottom:
+                case ABI::AdaptiveNamespace::VAlignment::Bottom:
                     offsetVerticalAlignment = m_containerSize.Height - m_imageSize.Height;
                     break;
-                case ABI::AdaptiveNamespace::VerticalAlignment::Center:
+                case ABI::AdaptiveNamespace::VAlignment::Center:
                     offsetVerticalAlignment = (m_containerSize.Height - m_imageSize.Height) / FLOAT(2);
                     break;
-                case ABI::AdaptiveNamespace::VerticalAlignment::Top:
+                case ABI::AdaptiveNamespace::VAlignment::Top:
                 default:
                     break;
                 }
@@ -220,13 +220,13 @@ namespace AdaptiveNamespace
 
                 switch (hAlignment)
                 {
-                case ABI::AdaptiveNamespace::HorizontalAlignment::Right:
+                case ABI::AdaptiveNamespace::HAlignment::Right:
                     offsetHorizontalAlignment = m_containerSize.Width - m_imageSize.Width;
                     break;
-                case ABI::AdaptiveNamespace::HorizontalAlignment::Center:
+                case ABI::AdaptiveNamespace::HAlignment::Center:
                     offsetHorizontalAlignment = (m_containerSize.Width - m_imageSize.Width) / FLOAT(2);
                     break;
-                case ABI::AdaptiveNamespace::HorizontalAlignment::Left:
+                case ABI::AdaptiveNamespace::HAlignment::Left:
                 default:
                     break;
                 }
@@ -308,8 +308,8 @@ namespace AdaptiveNamespace
     }
 
     HRESULT TileControl::ExtractBackgroundImageData(ABI::AdaptiveNamespace::BackgroundImageMode* mode,
-                                                    ABI::AdaptiveNamespace::HorizontalAlignment* hAlignment,
-                                                    ABI::AdaptiveNamespace::VerticalAlignment* vAlignment)
+                                                    ABI::AdaptiveNamespace::HAlignment* hAlignment,
+                                                    ABI::AdaptiveNamespace::VAlignment* vAlignment)
     {
         THROW_IF_FAILED(m_adaptiveBackgroundImage->get_Mode(mode));
         THROW_IF_FAILED(m_adaptiveBackgroundImage->get_HorizontalAlignment(hAlignment));

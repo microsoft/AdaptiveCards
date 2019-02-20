@@ -44,8 +44,8 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_AltText(_Outptr_ HSTRING* text);
         IFACEMETHODIMP put_AltText(_In_ HSTRING text);
 
-        IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveNamespace::HorizontalAlignment* HorizontalAlignment);
-        IFACEMETHODIMP put_HorizontalAlignment(ABI::AdaptiveNamespace::HorizontalAlignment HorizontalAlignment);
+        IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveNamespace::HAlignment* HorizontalAlignment);
+        IFACEMETHODIMP put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment HorizontalAlignment);
 
         IFACEMETHODIMP get_SelectAction(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** action);
         IFACEMETHODIMP put_SelectAction(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action);
@@ -116,7 +116,7 @@ namespace AdaptiveNamespace
         ABI::AdaptiveNamespace::ImageStyle m_imageStyle;
         ABI::AdaptiveNamespace::ImageSize m_imageSize;
         Microsoft::WRL::Wrappers::HString m_altText;
-        ABI::AdaptiveNamespace::HorizontalAlignment m_horizontalAlignment;
+        ABI::AdaptiveNamespace::HAlignment m_horizontalAlignment;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_selectAction;
         UINT32 m_pixelWidth;
         UINT32 m_pixelHeight;

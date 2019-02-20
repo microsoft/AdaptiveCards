@@ -99,7 +99,7 @@ namespace UWPUnitTests
                 Color = ForegroundColor.Accent,
                 FontStyle = FontStyle.Monospace,
                 Height = HeightType.Stretch,
-                HorizontalAlignment = _HorizontalAlignment.Center,
+                HorizontalAlignment = HAlignment.Center,
                 Id = "TextBlockId",
                 IsSubtle = true,
                 IsVisible = false,
@@ -117,7 +117,7 @@ namespace UWPUnitTests
 
             Assert.AreEqual(ForegroundColor.Accent, textBlock.Color);
             Assert.AreEqual(FontStyle.Monospace, textBlock.FontStyle);
-            Assert.AreEqual(_HorizontalAlignment.Center, textBlock.HorizontalAlignment);
+            Assert.AreEqual(HAlignment.Center, textBlock.HorizontalAlignment);
             Assert.AreEqual(true, textBlock.IsSubtle);
             Assert.AreEqual("en", textBlock.Language);
             Assert.AreEqual<uint>(3, textBlock.MaxLines);
@@ -138,7 +138,7 @@ namespace UWPUnitTests
                 AltText = "This is a picture",
                 BackgroundColor = "0xffffffff",
                 Height = HeightType.Stretch,
-                HorizontalAlignment = _HorizontalAlignment.Center,
+                HorizontalAlignment = HAlignment.Center,
                 Id = "ImageId",
                 IsVisible = false,
                 PixelHeight = 50,
@@ -154,7 +154,7 @@ namespace UWPUnitTests
 
             Assert.AreEqual("This is a picture", image.AltText);
             Assert.AreEqual("0xffffffff", image.BackgroundColor);
-            Assert.AreEqual(_HorizontalAlignment.Center, image.HorizontalAlignment);
+            Assert.AreEqual(HAlignment.Center, image.HorizontalAlignment);
             Assert.AreEqual<uint>(50, image.PixelHeight);
             Assert.AreEqual<uint>(40, image.PixelWidth);
             Assert.AreEqual(ImageSize.Medium, image.Size);

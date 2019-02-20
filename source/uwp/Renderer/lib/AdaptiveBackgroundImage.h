@@ -25,11 +25,11 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Mode(_Out_ ABI::AdaptiveNamespace::BackgroundImageMode* mode);
         IFACEMETHODIMP put_Mode(_In_ ABI::AdaptiveNamespace::BackgroundImageMode mode);
 
-        IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveNamespace::HorizontalAlignment* HorizontalAlignment);
-        IFACEMETHODIMP put_HorizontalAlignment(_In_ ABI::AdaptiveNamespace::HorizontalAlignment HorizontalAlignment);
+        IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveNamespace::HAlignment* HorizontalAlignment);
+        IFACEMETHODIMP put_HorizontalAlignment(_In_ ABI::AdaptiveNamespace::HAlignment HorizontalAlignment);
 
-        IFACEMETHODIMP get_VerticalAlignment(_Out_ ABI::AdaptiveNamespace::VerticalAlignment* VerticalAlignment);
-        IFACEMETHODIMP put_VerticalAlignment(_In_ ABI::AdaptiveNamespace::VerticalAlignment VerticalAlignment);
+        IFACEMETHODIMP get_VerticalAlignment(_Out_ ABI::AdaptiveNamespace::VAlignment* VerticalAlignment);
+        IFACEMETHODIMP put_VerticalAlignment(_In_ ABI::AdaptiveNamespace::VAlignment VerticalAlignment);
 
         HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage>& sharedModel);
 
@@ -39,8 +39,8 @@ namespace AdaptiveNamespace
     private:
         Microsoft::WRL::Wrappers::HString m_url;
         ABI::AdaptiveNamespace::BackgroundImageMode m_mode;
-        ABI::AdaptiveNamespace::HorizontalAlignment m_horizontalAlignment;
-        ABI::AdaptiveNamespace::VerticalAlignment m_verticalAlignment;
+        ABI::AdaptiveNamespace::HAlignment m_horizontalAlignment;
+        ABI::AdaptiveNamespace::VAlignment m_verticalAlignment;
     };
     ActivatableClass(AdaptiveBackgroundImage);
 }

@@ -35,7 +35,7 @@ namespace AdaptiveNamespace
         m_textSize = static_cast<ABI::AdaptiveNamespace::TextSize>(sharedTextBlock->GetTextSize());
         m_textWeight = static_cast<ABI::AdaptiveNamespace::TextWeight>(sharedTextBlock->GetTextWeight());
         m_foregroundColor = static_cast<ABI::AdaptiveNamespace::ForegroundColor>(sharedTextBlock->GetTextColor());
-        m_horizontalAlignment = static_cast<ABI::AdaptiveNamespace::HorizontalAlignment>(sharedTextBlock->GetHorizontalAlignment());
+        m_horizontalAlignment = static_cast<ABI::AdaptiveNamespace::HAlignment>(sharedTextBlock->GetHorizontalAlignment());
 
         RETURN_IF_FAILED(UTF8ToHString(sharedTextBlock->GetText(), m_text.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedTextBlock->GetLanguage(), m_language.GetAddressOf()));
@@ -121,13 +121,13 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveTextBlock::get_HorizontalAlignment(_Out_ ABI::AdaptiveNamespace::HorizontalAlignment* alignment)
+    HRESULT AdaptiveTextBlock::get_HorizontalAlignment(_Out_ ABI::AdaptiveNamespace::HAlignment* alignment)
     {
         *alignment = m_horizontalAlignment;
         return S_OK;
     }
 
-    HRESULT AdaptiveTextBlock::put_HorizontalAlignment(ABI::AdaptiveNamespace::HorizontalAlignment alignment)
+    HRESULT AdaptiveTextBlock::put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment alignment)
     {
         m_horizontalAlignment = alignment;
         return S_OK;
