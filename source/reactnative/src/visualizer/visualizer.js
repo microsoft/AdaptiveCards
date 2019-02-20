@@ -23,6 +23,11 @@ const restaturantPayload = require('./payloads/scenarios/restaurant.json');
 const containerPayload = require('./payloads/scenarios/container-item.json');
 const weatherPayload = require('./payloads/scenarios/weather-large.json');
 const activityUpdatePayload = require('./payloads/scenarios/activity-update.json');
+const foodOrderPayload = require('./payloads/scenarios/food-order.json');
+const imageGalleryPayload = require('./payloads/scenarios/image-gallery.json');
+const sportingEventPayload = require('./payloads/scenarios/sporting-event.json');
+const mediaPayload = require('./payloads/scenarios/media.json');
+const markdownPayload = require('./payloads/scenarios/markdown.json');
 
 import payloads from '../visualizer/payloads/payloads/';
 
@@ -71,7 +76,36 @@ export default class Visualizer extends React.Component {
             title: 'Container type',
             json: containerPayload,
             tags: this.getTags(containerPayload),
-            icon: require('./assets/restaurant.png')
+            icon: require('./assets/square.png')
+        },
+        {
+            title: 'Food order',
+            tags: this.getTags(foodOrderPayload),
+            icon: require('./assets/fastfood.png')
+        },
+        {
+            title: 'Image gallery',
+            json: imageGalleryPayload,
+            tags: this.getTags(imageGalleryPayload),
+            icon: require('./assets/photo_library.png')
+        },
+        {
+            title: 'Sporting event',
+            json: sportingEventPayload,
+            tags: this.getTags(sportingEventPayload),
+            icon: require('./assets/run.png')
+        },
+        {
+            title: 'Media',
+            json: mediaPayload,
+            tags: this.getTags(mediaPayload),
+            icon: require('./assets/video_library.png')
+        },
+        {
+            title: 'Markdown',
+            json: markdownPayload,
+            tags: this.getTags(markdownPayload),
+            icon: require('./assets/code.png')
         }];
     }
 
