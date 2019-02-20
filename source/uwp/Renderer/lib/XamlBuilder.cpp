@@ -399,11 +399,11 @@ namespace AdaptiveNamespace
             THROW_IF_FAILED(rootAsPanel->put_Background(backgroundColorBrush.Get()));
         }
 
-        HSTRING backgroundImageUrl;
         ComPtr<IAdaptiveBackgroundImage> backgroundImage;
+        BOOL backgroundImageIsValid;
         THROW_IF_FAILED(adaptiveCard->get_BackgroundImage(&backgroundImage));
-        THROW_IF_FAILED(backgroundImage->get_Url(&backgroundImageUrl));
-        if (backgroundImageUrl != nullptr)
+        THROW_IF_FAILED(IsBackgroundImageValid(backgroundImage.Get(), &backgroundImageIsValid));
+        if (backgroundImageIsValid)
         {
             ApplyBackgroundToRoot(rootAsPanel.Get(), backgroundImage.Get(), renderContext, renderArgs);
         }
@@ -2369,11 +2369,11 @@ namespace AdaptiveNamespace
         XamlBuilder::SetVerticalContentAlignmentToChildren(containerPanel.Get(), verticalContentAlignment);
 
         // Check if backgroundImage defined
-        HSTRING backgroundImageUrl;
         ComPtr<IAdaptiveBackgroundImage> backgroundImage;
+        BOOL backgroundImageIsValid;
         THROW_IF_FAILED(adaptiveContainer->get_BackgroundImage(&backgroundImage));
-        THROW_IF_FAILED(backgroundImage->get_Url(&backgroundImageUrl));
-        if (backgroundImageUrl != nullptr)
+        THROW_IF_FAILED(IsBackgroundImageValid(backgroundImage.Get(), &backgroundImageIsValid));
+        if (backgroundImageIsValid)
         {
             ComPtr<IGrid> rootElement =
                 XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
@@ -2481,11 +2481,11 @@ namespace AdaptiveNamespace
 
         // Define columnAsUIElement based on the existence of a backgroundImage
         ComPtr<IUIElement> columnAsUIElement;
-        HSTRING backgroundImageUrl;
         ComPtr<IAdaptiveBackgroundImage> backgroundImage;
+        BOOL backgroundImageIsValid;
         THROW_IF_FAILED(adaptiveColumn->get_BackgroundImage(&backgroundImage));
-        THROW_IF_FAILED(backgroundImage->get_Url(&backgroundImageUrl));
-        if (backgroundImageUrl != nullptr)
+        THROW_IF_FAILED(IsBackgroundImageValid(backgroundImage.Get(), &backgroundImageIsValid));
+        if (backgroundImageIsValid)
         {
             ComPtr<IGrid> rootElement =
                 XamlHelpers::CreateXamlClass<IGrid>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid));
