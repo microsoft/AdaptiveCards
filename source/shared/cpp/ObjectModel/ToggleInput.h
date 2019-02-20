@@ -10,6 +10,11 @@ namespace AdaptiveSharedNamespace
     {
     public:
         ToggleInput();
+        ToggleInput(const ToggleInput&) = default;
+        ToggleInput(ToggleInput&&) = default;
+        ToggleInput& operator=(const ToggleInput&) = default;
+        ToggleInput& operator=(ToggleInput&&) = default;
+        ~ToggleInput() = default;
 
         Json::Value SerializeToJsonValue() const override;
 

@@ -20,6 +20,11 @@ namespace AdaptiveCards
         /// <summary>
         /// The container should be emphasized as a grouping of elements
         /// </summary>
-        Emphasis = 1
+        Emphasis = 1,
+
+        Good = 2,
+        Attention = 3,
+        Warning = 4,
+        Accent = 5
     }
 }

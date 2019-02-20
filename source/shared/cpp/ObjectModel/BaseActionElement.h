@@ -3,28 +3,24 @@
 #include "pch.h"
 #include "ParseUtil.h"
 #include "RemoteResourceInformation.h"
+#include "BaseElement.h"
 
 namespace AdaptiveSharedNamespace
 {
-    class BaseActionElement
+    class BaseActionElement : public BaseElement
     {
     public:
         BaseActionElement(ActionType type);
 
+        BaseActionElement() = default;
         BaseActionElement(const BaseActionElement&) = default;
         BaseActionElement(BaseActionElement&&) = default;
         BaseActionElement& operator=(const BaseActionElement&) = default;
         BaseActionElement& operator=(BaseActionElement&&) = default;
-        virtual ~BaseActionElement() = default;
-
-        virtual std::string GetElementTypeString() const;
-        virtual void SetElementTypeString(const std::string& value);
+        ~BaseActionElement() = default;
 
         virtual std::string GetTitle() const;
         virtual void SetTitle(const std::string& value);
-
-        virtual std::string GetId() const;
-        virtual void SetId(const std::string& value);
 
         virtual std::string GetIconUrl() const;
         virtual void SetIconUrl(const std::string& value);
@@ -34,41 +30,35 @@ namespace AdaptiveSharedNamespace
 
         virtual const ActionType GetElementType() const;
 
-        std::string Serialize() const;
-        virtual Json::Value SerializeToJsonValue() const;
+        void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris) override;
+        Json::Value SerializeToJsonValue() const override;
 
-        template<typename T> static std::shared_ptr<T> Deserialize(const Json::Value& json);
+        template <typename T>
+        static std::shared_ptr<T> Deserialize(ParseContext& context, const Json::Value& json);
 
-        Json::Value GetAdditionalProperties() const;
-        void SetAdditionalProperties(Json::Value const& additionalProperties);
-
-        virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris);
-
-    private:
-        virtual void PopulateKnownPropertiesSet();
-
-        ActionType m_type;
-        std::string m_typeString;
-        std::string m_title;
-        std::string m_id;
-        std::string m_iconUrl;
-        std::string m_sentiment;
-        Json::Value m_additionalProperties;
-        static constexpr const char* const defaultSentiment = "default";
+        static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& element);
 
     protected:
-        std::unordered_set<std::string> m_knownProperties;
+        void PopulateKnownPropertiesSet() override;
+
+    private:
+        std::string m_title;
+        std::string m_iconUrl;
+        std::string m_sentiment;
+        static constexpr const char* const defaultSentiment = "default";
+        ActionType m_type;
     };
 
-    template<typename T> std::shared_ptr<T> BaseActionElement::Deserialize(const Json::Value& json)
+    template <typename T>
+    std::shared_ptr<T> BaseActionElement::Deserialize(ParseContext& context, const Json::Value& json)
     {
         std::shared_ptr<T> cardElement = std::make_shared<T>();
-        std::shared_ptr<BaseActionElement> baseActionElement = cardElement;
+        std::shared_ptr<BaseActionElement> baseActionElement = std::static_pointer_cast<BaseActionElement>(cardElement);
 
         ParseUtil::ThrowIfNotJsonObject(json);
 
+        baseActionElement->DeserializeBase<BaseActionElement>(context, json);
         baseActionElement->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title));
-        baseActionElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id));
         baseActionElement->SetIconUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::IconUrl));
         baseActionElement->SetSentiment(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Sentiment, defaultSentiment, false));
 

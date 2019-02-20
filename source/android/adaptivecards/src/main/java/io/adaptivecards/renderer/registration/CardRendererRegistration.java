@@ -87,7 +87,7 @@ public class CardRendererRegistration
 
     public void registerRenderer(String cardElementType, IBaseCardElementRenderer renderer)
     {
-        if (TextUtils.isEmpty(cardElementType)) 
+        if (TextUtils.isEmpty(cardElementType))
         {
             throw new IllegalArgumentException("cardElementType is null");
         }

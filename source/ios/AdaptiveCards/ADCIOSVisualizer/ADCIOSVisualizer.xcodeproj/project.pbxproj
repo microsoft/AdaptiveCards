@@ -25,6 +25,7 @@
 		30860BCC20C9B5C9009F9D99 /* ColumnSet_Container.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 30860BC020C9B5C9009F9D99 /* ColumnSet_Container.VerticalStretch.json */; };
 		30860BCD20C9B5C9009F9D99 /* ColumnSet.Input.Time.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 30860BC120C9B5C9009F9D99 /* ColumnSet.Input.Time.VerticalStretch.json */; };
 		30A3885E20D315AA00AAEE59 /* NotificationCard.json in Resources */ = {isa = PBXBuildFile; fileRef = 30A3885C20D315AA00AAEE59 /* NotificationCard.json */; };
+		30C340E42214D50F009A785D /* ColumnSet.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = 30C340E32214D50F009A785D /* ColumnSet.Style.json */; };
 		6B14FC5D2113BC2200A11CC5 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B22426621E92AF9000ACDA1 /* CustomActionNewType.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22426521E92AF9000ACDA1 /* CustomActionNewType.mm */; };
 		6B22426821E94AD0000ACDA1 /* Action.CustomParsing.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B22426721E94AD0000ACDA1 /* Action.CustomParsing.json */; };
@@ -68,6 +69,7 @@
 		6BF339E320A66A3F00DA5973 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; };
 		6BF339E420A66A4D00DA5973 /* AdaptiveCards.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6BF4307A2190F1140068E432 /* Input.Text.InlineAction.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BF430792190F1140068E432 /* Input.Text.InlineAction.json */; };
+		7EF887CD21FBCEF900BAFF02 /* Container.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = 7EF887CC21FBCEF900BAFF02 /* Container.Style.json */; };
 		F4071C831FD63D5400AF4FEA /* Solitaire.json in Resources */ = {isa = PBXBuildFile; fileRef = F4071C821FD63D5300AF4FEA /* Solitaire.json */; };
 		F423C0771EE1FB6100905679 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C0761EE1FB6100905679 /* main.m */; };
 		F423C07A1EE1FB6100905679 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C0791EE1FB6100905679 /* AppDelegate.m */; };
@@ -182,6 +184,7 @@
 		30860BC020C9B5C9009F9D99 /* ColumnSet_Container.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet_Container.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet_Container.VerticalStretch.json; sourceTree = "<group>"; };
 		30860BC120C9B5C9009F9D99 /* ColumnSet.Input.Time.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.Input.Time.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet.Input.Time.VerticalStretch.json; sourceTree = "<group>"; };
 		30A3885C20D315AA00AAEE59 /* NotificationCard.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = NotificationCard.json; path = ../../../../samples/Tests/NotificationCard.json; sourceTree = "<group>"; };
+		30C340E32214D50F009A785D /* ColumnSet.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.Style.json; path = ../../../../samples/v1.2/Elements/ColumnSet.Style.json; sourceTree = "<group>"; };
 		6B22426421E92AF9000ACDA1 /* CustomActionNewType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomActionNewType.h; sourceTree = "<group>"; };
 		6B22426521E92AF9000ACDA1 /* CustomActionNewType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomActionNewType.mm; sourceTree = "<group>"; };
 		6B22426721E94AD0000ACDA1 /* Action.CustomParsing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.CustomParsing.json; path = ../../../../samples/Tests/Action.CustomParsing.json; sourceTree = "<group>"; };
@@ -225,6 +228,7 @@
 		6BF339D520A665E600DA5973 /* CustomTextBlockRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTextBlockRenderer.h; sourceTree = "<group>"; };
 		6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BF430792190F1140068E432 /* Input.Text.InlineAction.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Input.Text.InlineAction.json; path = ../../../../samples/v1.2/Elements/Input.Text.InlineAction.json; sourceTree = "<group>"; };
+		7EF887CC21FBCEF900BAFF02 /* Container.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Container.Style.json; path = ../../../../samples/v1.2/Elements/Container.Style.json; sourceTree = "<group>"; };
 		F4071C821FD63D5300AF4FEA /* Solitaire.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Solitaire.json; path = ../../../../samples/v1.0/Scenarios/Solitaire.json; sourceTree = "<group>"; };
 		F423C0721EE1FB6100905679 /* ADCIOSVisualizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ADCIOSVisualizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F423C0761EE1FB6100905679 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -431,6 +435,7 @@
 		F4D33E341F045B6E00941E44 /* Jsons */ = {
 			isa = PBXGroup;
 			children = (
+				30C340E32214D50F009A785D /* ColumnSet.Style.json */,
 				6B22426721E94AD0000ACDA1 /* Action.CustomParsing.json */,
 				6B98093E216573EE0024B79B /* Action.IconUrl.TwoActions.json */,
 				6B980944216573EF0024B79B /* Action.OpenUrl.IconUrl.json */,
@@ -444,6 +449,25 @@
 				6BC30F5F21DD69D800B9FAAE /* ActionSet.json */,
 				F4933CEF1F79853B00F6EBFD /* ActivityUpdate.json */,
 				300ECB67219A234D00371DC5 /* AdaptiveCard.BackgroundImage.DataUri.json */,
+				300ECB66219A234D00371DC5 /* Image.DataUri.json */,
+				300ECB65219A234C00371DC5 /* Image.DataUri.Style.Person.json */,
+				6BF430792190F1140068E432 /* Input.Text.InlineAction.json */,
+				6B98093E216573EE0024B79B /* Action.IconUrl.TwoActions.json */,
+				6B980944216573EF0024B79B /* Action.OpenUrl.IconUrl.json */,
+				6B98093F216573EF0024B79B /* Column.VerticalContentAlignment.json */,
+				6B980940216573EF0024B79B /* Container.VerticalContentAlignment.json */,
+				6B98093D216573EE0024B79B /* VerticalContentAlignment_ForcedColumn.json */,
+				6B980945216573EF0024B79B /* VerticalContentAlignment_ForcedContainer.json */,
+				6B980943216573EF0024B79B /* VerticalContentAlignment.json */,
+				6B2630E22152CF1500ED9207 /* ColumnSet.json */,
+				7EF887CC21FBCEF900BAFF02 /* Container.Style.json */,
+				6B2630E02151A26100ED9207 /* LongFactSet.json */,
+				6B2630DE2151A22F00ED9207 /* FactSetWrapping.json */,
+				6B2630DC215080FA00ED9207 /* ColumnSet.VerticalStretch.json */,
+				6B2630DA2150804500ED9207 /* ColumnSet.Media.VerticalStretch.json */,
+				6B5D2412212E15740010EB07 /* Feedback.json */,
+				6B5D23FA2124ADAB0010EB07 /* Image.ImageBaseUrl.json */,
+				6B5D23F2212393480010EB07 /* Image.BackgroundColor.json */,
 				F4F44B842048CDB300A2F24C /* AdditionalProperty.json */,
 				6B616C4521CB2493003E29CE /* AutoImageSet.json */,
 				F4933CF01F79853B00F6EBFD /* CalendarReminder.json */,
@@ -677,6 +701,7 @@
 				F4933CDD1F79852C00F6EBFD /* Input.Date.json in Resources */,
 				30860BCB20C9B5C9009F9D99 /* ColumnSet.Input.Text.VerticalStretch.json in Resources */,
 				F4933CE91F79852C00F6EBFD /* TextBlock.MaxLines.json in Resources */,
+				30C340E42214D50F009A785D /* ColumnSet.Style.json in Resources */,
 				F4933CDA1F79852C00F6EBFD /* ImageSet.ImageSize.json in Resources */,
 				6B2630DB2150804500ED9207 /* ColumnSet.Media.VerticalStretch.json in Resources */,
 				F4933CFD1F79853B00F6EBFD /* CalendarReminder.json in Resources */,
@@ -717,6 +742,7 @@
 				F4933CE61F79852C00F6EBFD /* TextBlock.HorizontalAlignment.json in Resources */,
 				F4933CEA1F79852C00F6EBFD /* TextBlock.Size.json in Resources */,
 				300ECB69219A234D00371DC5 /* Image.DataUri.json in Resources */,
+				7EF887CD21FBCEF900BAFF02 /* Container.Style.json in Resources */,
 				F4933CEE1F79852C00F6EBFD /* TextBlock.Wrap.json in Resources */,
 				F4933CE71F79852C00F6EBFD /* TextBlock.IsSubtle.json in Resources */,
 				F4933CC41F79852C00F6EBFD /* Action.ShowCard.Style.json in Resources */,

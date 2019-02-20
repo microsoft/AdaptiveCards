@@ -184,6 +184,54 @@ namespace AdaptiveSharedNamespace
                                                         {"#FFFFD700", "#B2FFD700"}, // warning
                                                         {"#FF8B0000", "#B28B0000"}  // attention
                                                     }};
+        ContainerStyleDefinition goodPalette = {"#FFD5F0DD",
+                                                "#FF7F7F7F7F",
+                                                0,
+                                                {
+                                                    {"#FF000000", "#B2000000"}, // defaultColor
+                                                    {"#FF0000FF", "#B20000FF"}, // accent
+                                                    {"#FF101010", "#B2101010"}, // dark
+                                                    {"#FFFFFFFF", "#B2FFFFFF"}, // light
+                                                    {"#FF008000", "#B2008000"}, // good
+                                                    {"#FFA60000", "#B2FFA600"}, // warning
+                                                    {"#FF8B0000", "#B28B0000"}  // attention
+                                                }};
+        ContainerStyleDefinition attentionPalette = {"#F7E9E9",
+                                                     "#FF7F7F7F7F",
+                                                     0,
+                                                     {
+                                                         {"#FF000000", "#B2000000"}, // defaultColor
+                                                         {"#FF0000FF", "#B20000FF"}, // accent
+                                                         {"#FF101010", "#B2101010"}, // dark
+                                                         {"#FFFFFFFF", "#B2FFFFFF"}, // light
+                                                         {"#FF008000", "#B2008000"}, // good
+                                                         {"#FFA60000", "#B2FFA600"}, // warning
+                                                         {"#FF8B0000", "#B28B0000"}  // attention
+                                                     }};
+        ContainerStyleDefinition warningPalette = {"#F7F7DF",
+                                                   "#FF7F7F7F7F",
+                                                   0,
+                                                   {
+                                                       {"#FF000000", "#B2000000"}, // defaultColor
+                                                       {"#FF0000FF", "#B20000FF"}, // accent
+                                                       {"#FF101010", "#B2101010"}, // dark
+                                                       {"#FFFFFFFF", "#B2FFFFFF"}, // light
+                                                       {"#FF008000", "#B2008000"}, // good
+                                                       {"#FFA60000", "#B2FFA600"}, // warning
+                                                       {"#FF8B0000", "#B28B0000"}  // attention
+                                                   }};
+        ContainerStyleDefinition accentPalette = {"#DCE5F7",
+                                                  "#FF7F7F7F7F",
+                                                  0,
+                                                  {
+                                                      {"#FF000000", "#B2000000"}, // defaultColor
+                                                      {"#FF0000FF", "#B20000FF"}, // accent
+                                                      {"#FF101010", "#B2101010"}, // dark
+                                                      {"#FFFFFFFF", "#B2FFFFFF"}, // light
+                                                      {"#FF008000", "#B2008000"}, // good
+                                                      {"#FFA60000", "#B2FFA600"}, // warning
+                                                      {"#FF8B0000", "#B28B0000"}  // attention
+                                                  }};
 
         static ContainerStylesDefinition Deserialize(const Json::Value& json, const ContainerStylesDefinition& defaultValue);
     };
@@ -231,6 +279,11 @@ namespace AdaptiveSharedNamespace
         std::string GetFontFamily(FontStyle style) const;
         unsigned int GetFontSize(FontStyle style, TextSize size) const;
         unsigned int GetFontWeight(FontStyle style, TextWeight weight) const;
+
+        std::string GetBackgroundColor(ContainerStyle style) const;
+        std::string GetForegroundColor(ContainerStyle style, ForegroundColor color, bool isSubtle) const;
+        std::string GetBorderColor(ContainerStyle style) const;
+        unsigned int GetBorderThickness(ContainerStyle style) const;
 
         std::string GetFontFamily() const;
         void SetFontFamily(const std::string& value);
@@ -281,6 +334,8 @@ namespace AdaptiveSharedNamespace
         void SetMedia(const MediaConfig value);
 
     private:
+        const ContainerStyleDefinition& GetContainerStyle(ContainerStyle style) const;
+
         std::string _fontFamily;
         FontSizesConfig _fontSizes;
         FontWeightsConfig _fontWeights;

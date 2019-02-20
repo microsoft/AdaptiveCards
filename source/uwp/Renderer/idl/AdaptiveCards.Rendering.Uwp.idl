@@ -415,7 +415,11 @@ AdaptiveNamespaceStart
     typedef [v1_enum] enum ContainerStyle {
         None = 0,
         Default,
-        Emphasis
+        Emphasis,
+        Good,
+        Attention,
+        Warning,
+        Accent
     } ContainerStyle;
 
     [version(NTDDI_WIN10_RS1)]
@@ -1458,6 +1462,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
         [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
+
+        [propget] HRESULT Style([out, retval] ContainerStyle* value);
+        [propput] HRESULT Style([in] ContainerStyle value);
     };
 
     [
@@ -1753,12 +1760,12 @@ AdaptiveNamespaceStart
         version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveContainerStylesDefinition),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(40c9338b-b831-402e-b646-fd5038e09516),
+        uuid(7A0E0585-AE45-402F-B2C4-8B14721D1733),
         contract(InternalContract, 1),
         internal
 #else
-        uuid(7e57fadd-78a6-4501-a769-a8a44bb9f9d2)
-#endif
+        uuid(AB0F1B0A-3B6E-4F43-8E0A-47EAB9903C0B)
+#endif        
     ]
     interface IAdaptiveContainerStylesDefinition : IInspectable
     {
@@ -1767,6 +1774,18 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT Emphasis([out, retval] AdaptiveContainerStyleDefinition** value);
         [propput] HRESULT Emphasis([in] AdaptiveContainerStyleDefinition* value);
+
+        [propget] HRESULT Good([out, retval] AdaptiveContainerStyleDefinition * *value);
+        [propput] HRESULT Good([in] AdaptiveContainerStyleDefinition * value);
+
+        [propget] HRESULT Attention([out, retval] AdaptiveContainerStyleDefinition * *value);
+        [propput] HRESULT Attention([in] AdaptiveContainerStyleDefinition * value);
+
+        [propget] HRESULT Warning([out, retval] AdaptiveContainerStyleDefinition * *value);
+        [propput] HRESULT Warning([in] AdaptiveContainerStyleDefinition * value);
+
+        [propget] HRESULT Accent([out, retval] AdaptiveContainerStyleDefinition * *value);
+        [propput] HRESULT Accent([in] AdaptiveContainerStyleDefinition * value);
     };
 
     [

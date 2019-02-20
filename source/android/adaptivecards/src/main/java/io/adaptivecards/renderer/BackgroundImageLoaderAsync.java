@@ -17,9 +17,9 @@ public class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
     private LinearLayout m_layout;
     private BackgroundImage m_backgroundImageProperties;
 
-    public BackgroundImageLoaderAsync(RenderedAdaptiveCard renderedCard, Context context, LinearLayout layout, String imageBaseUrl, BackgroundImage backgroundImageProperties)
+    public BackgroundImageLoaderAsync(RenderedAdaptiveCard renderedCard, Context context, LinearLayout layout, String imageBaseUrl, int maxWidth, BackgroundImage backgroundImageProperties)
     {
-        super(renderedCard, imageBaseUrl);
+        super(renderedCard, imageBaseUrl, maxWidth);
 
         m_context = context;
         m_layout = layout;
@@ -40,6 +40,7 @@ public class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
     {
         BitmapDrawable background = new BackgroundImageDrawable(m_context.getResources(), bitmap, m_backgroundImageProperties);
         m_layout.setBackground(background);
+        m_layout.bringChildToFront(m_layout.getChildAt(0));
     }
 
     private class BackgroundImageDrawable extends BitmapDrawable

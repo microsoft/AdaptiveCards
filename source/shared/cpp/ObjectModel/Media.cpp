@@ -85,8 +85,7 @@ std::shared_ptr<BaseCardElement> MediaParser::Deserialize(ParseContext& context,
 {
     ParseUtil::ExpectTypeString(json, CardElementType::Media);
 
-    std::shared_ptr<Media> media = BaseCardElement::Deserialize<Media>(json);
-
+    std::shared_ptr<Media> media = BaseCardElement::Deserialize<Media>(context, json);
     media->SetPoster(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Poster, false));
     media->SetAltText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::AltText, false));
 

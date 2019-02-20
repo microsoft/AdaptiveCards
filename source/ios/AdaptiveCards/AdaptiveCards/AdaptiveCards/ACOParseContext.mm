@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "BaseElement.h"
 #import "ParseContext.h"
 #import "ACOParseContext.h"
 #import "ACOParseContextPrivate.h"

@@ -43,9 +43,11 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<ColumnSet> columnSetElem = std::dynamic_pointer_cast<ColumnSet>(elem);
 
-    ACRColumnSetView *columnSetView = [[ACRColumnSetView alloc] initWithFrame:viewGroup.frame];
+    ACRColumnSetView *columnSetView = [[ACRColumnSetView alloc] initWithStyle:(ACRContainerStyle)columnSetElem->GetStyle()
+                                                                  parentStyle:[viewGroup style]
+                                                                   hostConfig:acoConfig
+                                                                    superview:viewGroup];
     [columnSetView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-    [columnSetView setStyle:[viewGroup style]];
 
     ACRBaseCardElementRenderer *columnRenderer =
         [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInt:(int)CardElementType::Column]] ;

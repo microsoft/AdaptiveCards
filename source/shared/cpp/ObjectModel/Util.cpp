@@ -1,4 +1,5 @@
 #include "pch.h"
+
 #include "Util.h"
 #include "ColumnSet.h"
 #include "Container.h"
@@ -158,7 +159,7 @@ bool ShouldParseForExplicitDimension(const std::string& input)
     return false;
 }
 
-int ParseSizeForPixelSize(std::string& sizeString, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>* warnings)
+int ParseSizeForPixelSize(const std::string& sizeString, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>* warnings)
 {
     int parsedDimension = 0;
     if (ShouldParseForExplicitDimension(sizeString))

@@ -92,6 +92,7 @@ namespace AdaptiveCardTestApp.Views
         private void ShowComparison(string oldText, string newText)
         {
             var diffView = new DiffView();
+            diffView.FontFamily = new Windows.UI.Xaml.Media.FontFamily("Consolas");
             diffView.ShowDiff(oldText, newText);
 
             var dontWait = new ContentDialog()

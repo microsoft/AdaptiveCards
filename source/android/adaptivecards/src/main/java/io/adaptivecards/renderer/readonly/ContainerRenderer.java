@@ -95,20 +95,25 @@ public class ContainerRenderer extends BaseCardElementRenderer
         {
             CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, containerView, container, container.GetItems(), cardActionHandler, hostConfig, styleForThis);
         }
+
         if (styleForThis != containerStyle)
         {
             int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
             containerView.setPadding(padding, padding, padding, padding);
-            String color = styleForThis == containerStyle.Emphasis ?
-                    hostConfig.GetContainerStyles().getEmphasisPalette().getBackgroundColor() :
-                    hostConfig.GetContainerStyles().getDefaultPalette().getBackgroundColor();
+            String color = hostConfig.GetBackgroundColor(styleForThis);
             containerView.setBackgroundColor(Color.parseColor(color));
         }
 
         BackgroundImage backgroundImageProperties = container.GetBackgroundImage();
         if (backgroundImageProperties != null && !backgroundImageProperties.GetUrl().isEmpty())
         {
-            BackgroundImageLoaderAsync loaderAsync = new BackgroundImageLoaderAsync(renderedCard, context, containerView, hostConfig.GetImageBaseUrl(), backgroundImageProperties);
+            BackgroundImageLoaderAsync loaderAsync = new BackgroundImageLoaderAsync(
+                    renderedCard,
+                    context,
+                    containerView,
+                    hostConfig.GetImageBaseUrl(),
+                    context.getResources().getDisplayMetrics().widthPixels,
+					backgroundImageProperties);
 
             IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
             if (onlineImageLoader != null)

@@ -148,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\ObjectModel\AdaptiveBase64Util.cpp" />
+    <ClCompile Include="..\..\ObjectModel\BaseElement.cpp" />
     <ClCompile Include="..\..\ObjectModel\ParseContext.cpp" />
     <ClCompile Include="..\..\ObjectModel\BackgroundImage.cpp" />
     <ClCompile Include="..\..\ObjectModel\SemanticVersion.cpp" />
@@ -207,6 +208,7 @@
     <ClInclude Include="..\..\ObjectModel\AdaptiveBase64Util.h" />
     <ClInclude Include="..\..\ObjectModel\AdaptiveCardParseException.h" />
     <ClInclude Include="..\..\ObjectModel\AdaptiveCardParseWarning.h" />
+    <ClInclude Include="..\..\ObjectModel\BaseElement.h" />
     <ClInclude Include="..\..\ObjectModel\ParseContext.h" />
     <ClInclude Include="..\..\ObjectModel\BackgroundImage.h" />
     <ClInclude Include="..\..\ObjectModel\SemanticVersion.h" />
@@ -228,7 +230,6 @@
     <ClInclude Include="..\..\ObjectModel\HostConfig.h" />
     <ClInclude Include="..\..\ObjectModel\Image.h" />
     <ClInclude Include="..\..\ObjectModel\ImageSet.h" />
-    <ClInclude Include="..\..\ObjectModel\LinkState.h" />
     <ClInclude Include="..\..\ObjectModel\MarkDownBlockParser.h" />
     <ClInclude Include="..\..\ObjectModel\MarkDownHtmlGenerator.h" />
     <ClInclude Include="..\..\ObjectModel\MarkDownParsedResult.h" />

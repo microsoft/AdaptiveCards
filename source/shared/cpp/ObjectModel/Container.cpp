@@ -2,6 +2,7 @@
 #include "Container.h"
 #include "TextBlock.h"
 #include "ColumnSet.h"
+#include "ParseUtil.h"
 #include "Util.h"
 
 using namespace AdaptiveSharedNamespace;
@@ -108,8 +109,7 @@ std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(ParseContext& cont
 {
     ParseUtil::ExpectTypeString(value, CardElementType::Container);
 
-    auto container = BaseCardElement::Deserialize<Container>(value);
-
+    auto container = BaseCardElement::Deserialize<Container>(context, value);
     container->SetStyle(ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
 
     container->SetVerticalContentAlignment(ParseUtil::GetEnumValue<VerticalContentAlignment>(
@@ -153,7 +153,7 @@ void Container::GetResourceInformation(std::vector<RemoteResourceInformation>& r
     }
 
     auto items = GetItems();
-    for (auto item : items)
+    for (const auto& item : items)
     {
         item->GetResourceInformation(resourceInfo);
     }

@@ -99,16 +99,20 @@ public class ColumnRenderer extends BaseCardElementRenderer
         {
             int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
             returnedView.setPadding(padding, padding, padding, padding);
-            String color = styleForThis == containerStyle.Emphasis ?
-                    hostConfig.GetContainerStyles().getEmphasisPalette().getBackgroundColor() :
-                    hostConfig.GetContainerStyles().getDefaultPalette().getBackgroundColor();
+            String color = hostConfig.GetBackgroundColor(styleForThis);
             returnedView.setBackgroundColor(Color.parseColor(color));
         }
 
         BackgroundImage backgroundImageProperties = column.GetBackgroundImage();
         if (backgroundImageProperties != null && !backgroundImageProperties.GetUrl().isEmpty())
         {
-            BackgroundImageLoaderAsync loaderAsync = new BackgroundImageLoaderAsync(renderedCard, context, returnedView, hostConfig.GetImageBaseUrl(), backgroundImageProperties);
+            BackgroundImageLoaderAsync loaderAsync = new BackgroundImageLoaderAsync(
+                    renderedCard,
+                    context,
+                    returnedView,
+                    hostConfig.GetImageBaseUrl(),
+                    context.getResources().getDisplayMetrics().widthPixels,
+					backgroundImageProperties);
 
             IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
             if (onlineImageLoader != null)

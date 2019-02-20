@@ -129,15 +129,7 @@ public class AdaptiveCardRenderer
             style = adaptiveCard.GetStyle();
         }
 
-        String color;
-        if (style == ContainerStyle.Default)
-        {
-            color = hostConfig.GetContainerStyles().getDefaultPalette().getBackgroundColor();
-        }
-        else
-        {
-            color = hostConfig.GetContainerStyles().getEmphasisPalette().getBackgroundColor();
-        }
+        String color = hostConfig.GetBackgroundColor(style);
 
         layout.setBackgroundColor(Color.parseColor(color));
 
@@ -168,7 +160,13 @@ public class AdaptiveCardRenderer
         BackgroundImage backgroundImageProperties = adaptiveCard.GetBackgroundImage();
         if (backgroundImageProperties != null && !backgroundImageProperties.GetUrl().isEmpty())
         {
-            BackgroundImageLoaderAsync loaderAsync = new BackgroundImageLoaderAsync(renderedCard, context, layout, hostConfig.GetImageBaseUrl(), backgroundImageProperties);
+            BackgroundImageLoaderAsync loaderAsync = new BackgroundImageLoaderAsync(
+                    renderedCard,
+                    context,
+                    layout,
+                    hostConfig.GetImageBaseUrl(),
+                    context.getResources().getDisplayMetrics().widthPixels,
+					backgroundImageProperties);
 
             IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
             if(onlineImageLoader != null)
