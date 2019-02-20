@@ -8,7 +8,7 @@
 
 package io.adaptivecards.objectmodel;
 
-public class ColumnSet extends BaseCardElement {
+public class ColumnSet extends CollectionTypeElement {
   private transient long swigCPtr;
   private transient boolean swigCMemOwnDerived;
 
@@ -65,14 +65,6 @@ public class ColumnSet extends BaseCardElement {
 
   public void SetSelectAction(BaseActionElement action) {
     AdaptiveCardObjectModelJNI.ColumnSet_SetSelectAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
-  }
-
-  public ContainerStyle GetStyle() {
-    return ContainerStyle.swigToEnum(AdaptiveCardObjectModelJNI.ColumnSet_GetStyle(swigCPtr, this));
-  }
-
-  public void SetStyle(ContainerStyle value) {
-    AdaptiveCardObjectModelJNI.ColumnSet_SetStyle(swigCPtr, this, value.swigValue());
   }
 
   public void SetLanguage(String language) {
