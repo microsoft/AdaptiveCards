@@ -160,7 +160,6 @@ export default class MarkdownFormatter extends React.Component {
 			// let lastIdx = -1;
 			for (var i = 0; i <= this.matchedIndices.length - 1; i++) {
 				if (this.matchesFound[i]) {
-					console.log("match : " + this.matchesFound[i]);
 					idx = this.matchedIndices.indexOf(sortedMatchedIndices[i]);
 
 					//check if previous elementJsxArray is or has the current match
