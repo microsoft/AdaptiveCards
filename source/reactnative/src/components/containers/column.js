@@ -30,27 +30,39 @@ export class Column extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.payload = props.json;
+		this.column = props.json;
 	}
 
-    /**
-     * @description Parse the given payload and render the card accordingly
-     */
+	/**
+	 * @description Parse the given payload and render the card accordingly
+	 * @param {func} onParseError - Function reference to be invoked on parse errors (if any)
+	 */
 	parsePayload = (onParseError) => {
 		const renderedElement = [];
-		if (!this.payload)
+		if (!this.column)
 			return renderedElement;
+
 		// parse elements
-		if (!Utils.isNullOrEmpty(this.payload.items)) {
-			renderedElement.push(Registry.getManager().parseRegistryComponents(this.payload.items, onParseError));
+		if (!Utils.isNullOrEmpty(this.column.items)) {
+			renderedElement.push(Registry.getManager().parseRegistryComponents(this.column.items, onParseError));
 		}
 		return renderedElement;
 	}
 
-    /**
-     * @description This function calculates the Width percentage of the column to be 
-	 * rendered based on the width property from the payload. 
-     */
+	/**
+	 * @description This function determines whether the current column element(this.column) 
+	 * 				is the first element of the columns(this.props.columns) array. 
+	 * @returns {boolean} true|false
+	 */
+	isForemostElement = () => {
+		return this.props.columns[0] === this.column ? true : false;
+	}
+
+	/**
+	 * @description This function calculates the Width percentage of the column to be 
+ 	 * 				rendered based on the width property from the payload. 
+	 * @param {object} containerStyle - Computed style object
+	 */
 	calculateWidthPercentage = (containerStyle) => {
 		var columns = this.props.columns
 		var widthArray = columns.length > 0 ? columns.map((column) => column.width) : [];
@@ -70,13 +82,11 @@ export class Column extends React.Component {
 
 		var spacing = 0
 		spaceArray.map((space) => {
-			if (space != undefined) {
-				const spacingEnumValue = Utils.parseHostConfigEnum(
-					Enums.Spacing,
-					space,
-					Enums.Spacing.Small);
-				spacing += this.hostConfig.getEffectiveSpacing(spacingEnumValue);
-			}
+			const spacingEnumValue = Utils.parseHostConfigEnum(
+				Enums.Spacing,
+				space,
+				Enums.Spacing.Default);
+			spacing += this.hostConfig.getEffectiveSpacing(spacingEnumValue);
 		})
 
 		const spacePercentage = (spacing / deviceWidth) * 100
@@ -92,7 +102,7 @@ export class Column extends React.Component {
 			});
 		}
 
-		let width = this.payload.width
+		let width = this.column.width
 		if (Utils.isNullOrEmpty(width)) {
 			width = 1
 		}
@@ -150,11 +160,11 @@ export class Column extends React.Component {
 			 * Scenario 2 : width percentage is calculated based 
 			 * 				on the width parameter from the json 
 			 */
-			if (Utils.isNullOrEmpty(this.payload.width)) {
+			if (Utils.isNullOrEmpty(this.column.width)) {
 				widthPercentage = (((width / columns.length) * 100) - (spacePercentage / columns.length))
 			}
 			else {
-				widthPercentage = (((this.payload.width / columnWidth) * 100) - (spacePercentage / columns.length))
+				widthPercentage = (((this.column.width / columnWidth) * 100) - (spacePercentage / columns.length))
 			}
 		}
 
@@ -163,24 +173,29 @@ export class Column extends React.Component {
 
 	/**
      * @description This function renders a separator between the columns 
-	 * based on the separator property from the payload. 
+	 * 				based on the separator property from the payload. 
+	 * @returns {Component|null}
      */
 	renderSeparator = () => {
 		const { lineColor, lineThickness } = this.hostConfig.separator
 		const margin = (this.spacing - lineThickness) / 2
-		return (
-			<View style={{
-				borderLeftWidth: lineThickness,
-				borderLeftColor: lineColor,
-				marginLeft: margin,
-				marginRight: margin
-			}} />
-		);
+		if (!this.isForemostElement()) {
+			return (
+				<View style={{
+					borderLeftWidth: lineThickness,
+					borderLeftColor: lineColor,
+					marginLeft: margin,
+					marginRight: margin
+				}} />
+			);
+		} else {
+			return null;
+		}
 	}
 
 	render() {
-		const separator = this.payload.separator || false;
-		let backgroundStyle = this.payload.style == Constants.Emphasis ?
+		const separator = this.column.separator || false;
+		let backgroundStyle = this.column.style == Constants.Emphasis ?
 			styles.emphasisStyle : styles.defaultBGStyle;
 		let containerViewStyle = [backgroundStyle, {
 			flexDirection: separator ?
@@ -189,10 +204,15 @@ export class Column extends React.Component {
 
 		const spacingEnumValue = Utils.parseHostConfigEnum(
 			Enums.Spacing,
-			this.payload.spacing,
-			Enums.Spacing.Small);
-		this.spacing = Utils.isNullOrEmpty(this.payload.spacing) ? 0 :
-			this.hostConfig.getEffectiveSpacing(spacingEnumValue);
+			this.column.spacing,
+			Enums.Spacing.Default);
+		this.spacing = this.hostConfig.getEffectiveSpacing(spacingEnumValue);
+
+		let spacingStyle = [];
+		if (!this.isForemostElement()) {
+			spacingStyle.push({ marginLeft: this.spacing })
+		}
+		spacingStyle.push({ flexGrow: 1 });
 
 		let widthPercentage = this.calculateWidthPercentage(containerViewStyle);
 		if (!Utils.isNullOrEmpty(widthPercentage)) {
@@ -204,19 +224,21 @@ export class Column extends React.Component {
 		let actionComponentProps = {};
 
 		// select action
-		if (this.payload.selectAction && HostConfigManager.supportsInteractivity()) {
+		if (this.column.selectAction && HostConfigManager.supportsInteractivity()) {
 			ActionComponent = SelectAction;
-			actionComponentProps = this.payload.selectAction;
+			actionComponentProps = this.column.selectAction;
 		}
 
-		return <ContainerWrapper json={this.payload} style={[containerViewStyle]}>
+		return <ContainerWrapper json={this.column} style={[containerViewStyle]}>
 			<ActionComponent {...actionComponentProps}>
 				{separator && this.renderSeparator()}
 				{separator ?
 					<View style={[containerViewStyle, styles.separatorStyle]}>
 						{this.parsePayload()}
 					</View> :
-					this.parsePayload()}
+					<View style={spacingStyle}>
+						{this.parsePayload()}
+					</View>}
 			</ActionComponent>
 		</ContainerWrapper>;
 	}

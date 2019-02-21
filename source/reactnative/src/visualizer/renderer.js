@@ -10,7 +10,8 @@ import {
     Button,
     Platform,
     Alert,
-    Linking
+    Linking,
+    ScrollView
 } from 'react-native';
 
 import AdaptiveCards from '../adaptive-cards';
@@ -18,10 +19,9 @@ import { RatingRenderer } from './rating-renderer';
 import { Registry } from '../components/registration/registry';
 
 export default class Renderer extends React.Component {
-    constructor(props) {
-        super(props);
-        this.payload = props.payload;
-        this.onModalClose = props.onModalClose;
+
+    state = {
+        isJSONVisible: false
     }
 
     customHostConfig = {
@@ -36,7 +36,46 @@ export default class Renderer extends React.Component {
         }
     }
 
-    
+    constructor(props) {
+        super(props);
+        this.payload = props.payload;
+        this.onModalClose = props.onModalClose;
+    }
+
+    render() {
+        Registry.getManager().registerComponent('RatingBlock', RatingRenderer);
+
+        let { isJSONVisible } = this.state;
+
+        return (
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <Button title="Close" onPress={this.onModalClose} />
+                    <Text style={styles.title}>Adaptive Card</Text>
+                    <Button title={isJSONVisible ? 'Card' : 'Json'} onPress={this.toggleJSONView} />
+                </View>
+                {isJSONVisible ?
+                    <ScrollView contentContainerStyle={styles.jsonContainer}>
+                        <Text style={{ fontFamily: 'Courier New' }}>
+                            {JSON.stringify(this.payload, null, '  ')}
+                        </Text>
+                    </ScrollView>
+                    :
+                    <AdaptiveCards
+                        payload={this.payload}
+                        onExecuteAction={this.onExecuteAction}
+                        hostConfig={this.customHostConfig}
+                        onParseError={this.onParseError}
+                        ref="adaptiveCardRef" />
+                }
+            </View>
+        );
+    }
+
+    /**
+     * @description Handler for the payload actions.
+     * @param {object} actionObject - Details and data about the action.
+     */
     onExecuteAction = (actionObject) => {
         if (actionObject.type === "Action.Submit") {
             Alert.alert(
@@ -59,30 +98,22 @@ export default class Renderer extends React.Component {
 
     }
 
+    /**
+     * @description Handler for payload parsing errors(if any)
+     * @param {object} errorObject - Details about the error.
+     */
     onParseError = (errorObject) => {
         console.log("Error", JSON.stringify(errorObject.message));
-
     }
 
-    render() {
-        Registry.getManager().registerComponent('RatingBlock', RatingRenderer);
-        return (
-            <View style={styles.container}>
-                <View style={styles.header}>
-                    <Button title="Close" onPress={this.onModalClose} />
-                    <Text style={styles.title}>Adaptive Card</Text>
-                    <Button title="Close" onPress={this.onModalClose} />
-                </View>
-                <AdaptiveCards
-                    payload={this.payload}
-                    onExecuteAction={this.onExecuteAction}
-                    hostConfig={this.customHostConfig}
-                    onParseError={this.onParseError}
-                    ref="adaptiveCardRef" />
-            </View>
-        );
+    /**
+     * @description Toggle the view state between card and its payload.
+     */
+    toggleJSONView = () => {
+        this.setState({
+            isJSONVisible: !this.state.isJSONVisible
+        })
     }
-
 }
 
 const styles = StyleSheet.create({
@@ -102,6 +133,11 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     title: {
-        fontSize: 20
+        fontSize: 20,
+        flexGrow: 1,
+        textAlign: 'center'
     },
+    jsonContainer: {
+        backgroundColor: '#f7f7f7',
+    }
 });
