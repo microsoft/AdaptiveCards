@@ -35,7 +35,7 @@ namespace AdaptiveSharedNamespace
         bool GetCanBleed() const;
         // configures container style related attributes
         // such as style, padding and bleed
-        void ConfigForContainerStyle(const ParseContext& context);
+        void ConfigForContainerStyle(const AdaptiveCards::ParseContext& context);
 
         void SetParentalId(const AdaptiveSharedNamespace::InternalId &id);
         AdaptiveSharedNamespace::InternalId GetParentalId(void) const;
@@ -49,9 +49,9 @@ namespace AdaptiveSharedNamespace
         void SetCanBleed(const bool value);
 
         // Applies padding flag When appropriate
-        void ConfigPadding(const ParseContext& context);
+        void ConfigPadding(const AdaptiveCards::ParseContext& context);
         // Applies bleed flag when appropriate
-        void ConfigBleed(const ParseContext& context);
+        void ConfigBleed(const AdaptiveCards::ParseContext& context);
 
         ContainerStyle m_style;
         VerticalContentAlignment m_verticalContentAlignment;

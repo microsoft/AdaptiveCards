@@ -74,7 +74,7 @@ void CollectionTypeElement::SetBleed(const bool value)
 }
 
 // Applies Padding Flag When appropriate
-void CollectionTypeElement::ConfigBleed(const ParseContext& context)
+void CollectionTypeElement::ConfigBleed(const AdaptiveCards::ParseContext& context)
 {
     // we allows bleed when self has padding and at least one parent has padding
     AdaptiveSharedNamespace::InternalId id = context.GetIDOfParentWithPadding();

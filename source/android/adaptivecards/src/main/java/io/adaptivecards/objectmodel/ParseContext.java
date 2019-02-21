@@ -86,4 +86,20 @@ public class ParseContext {
     AdaptiveCardObjectModelJNI.ParseContext_PopElement(swigCPtr, this);
   }
 
+  public ContainerStyle GetParentalContainerStyle() {
+    return ContainerStyle.swigToEnum(AdaptiveCardObjectModelJNI.ParseContext_GetParentalContainerStyle(swigCPtr, this));
+  }
+
+  public InternalId GetIDOfParentWithPadding() {
+    return new InternalId(AdaptiveCardObjectModelJNI.ParseContext_GetIDOfParentWithPadding(swigCPtr, this), true);
+  }
+
+  public void SaveContextForCollectionTypeElement(CollectionTypeElement current) {
+    AdaptiveCardObjectModelJNI.ParseContext_SaveContextForCollectionTypeElement(swigCPtr, this, CollectionTypeElement.getCPtr(current), current);
+  }
+
+  public void RestoreContextForCollectionTypeElement(CollectionTypeElement current) {
+    AdaptiveCardObjectModelJNI.ParseContext_RestoreContextForCollectionTypeElement(swigCPtr, this, CollectionTypeElement.getCPtr(current), current);
+  }
+
 }
