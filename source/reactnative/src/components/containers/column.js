@@ -35,11 +35,13 @@ export class Column extends React.Component {
 
 	/**
 	 * @description Parse the given payload and render the card accordingly
+	 * @param {func} onParseError - Function reference to be invoked on parse errors (if any)
 	 */
 	parsePayload = (onParseError) => {
 		const renderedElement = [];
 		if (!this.column)
 			return renderedElement;
+
 		// parse elements
 		if (!Utils.isNullOrEmpty(this.column.items)) {
 			renderedElement.push(Registry.getManager().parseRegistryComponents(this.column.items, onParseError));
@@ -49,7 +51,8 @@ export class Column extends React.Component {
 
 	/**
 	 * @description This function determines whether the current column element(this.column) 
-	 * is the first element of the columns(this.props.columns) array. 
+	 * 				is the first element of the columns(this.props.columns) array. 
+	 * @returns {boolean} true|false
 	 */
 	isForemostElement = () => {
 		return this.props.columns[0] === this.column ? true : false;
@@ -57,7 +60,8 @@ export class Column extends React.Component {
 
 	/**
 	 * @description This function calculates the Width percentage of the column to be 
- 	 * rendered based on the width property from the payload. 
+ 	 * 				rendered based on the width property from the payload. 
+	 * @param {object} containerStyle - Computed style object
 	 */
 	calculateWidthPercentage = (containerStyle) => {
 		var columns = this.props.columns
@@ -169,7 +173,8 @@ export class Column extends React.Component {
 
 	/**
      * @description This function renders a separator between the columns 
-	 * based on the separator property from the payload. 
+	 * 				based on the separator property from the payload. 
+	 * @returns {Component|null}
      */
 	renderSeparator = () => {
 		const { lineColor, lineThickness } = this.hostConfig.separator
@@ -186,7 +191,6 @@ export class Column extends React.Component {
 		} else {
 			return null;
 		}
-
 	}
 
 	render() {
