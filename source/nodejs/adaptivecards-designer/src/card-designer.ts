@@ -4,11 +4,12 @@ import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import * as Constants from "./constants";
 import * as Designer from "./card-designer-surface";
 import * as DesignerPeers from "./designer-peers";
+import { SamplePickerDialog } from "./sample-picker-dialog";
 import { HostContainer } from "./containers/host-container";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
 import { FullScreenHandler } from "./fullscreen-handler";
 import { Toolbar, ToolbarButton, ToolbarChoicePicker, ToolbarElementAlignment } from "./toolbar";
-import { IPoint, Utils } from "./miscellaneous";
+import { IPoint, Utils, defaultHostConfig } from "./miscellaneous";
 import { BasePaletteItem, ElementPaletteItem, DataPaletteItem } from "./tool-palette";
 import { DefaultContainer } from "./containers/default/default-container";
 import { SidePanel, SidePanelAlignment } from "./side-panel";
@@ -40,7 +41,7 @@ export class CardDesigner {
     private _hostContainers: Array<HostContainer>;
     private _isMonacoEditorLoaded: boolean = false;
     private _designerSurface: Designer.CardDesignerSurface;
-    private _propertySheetHostConfig: Adaptive.HostConfig;
+    // private _propertySheetHostConfig: Adaptive.HostConfig;
     private _designerHostElement: HTMLElement;
     private _draggedPaletteItem: BasePaletteItem;
     private _draggedElement: HTMLElement;
@@ -159,7 +160,8 @@ export class CardDesigner {
                 )
             }
 
-            card.hostConfig = this._propertySheetHostConfig;
+            // card.hostConfig = this._propertySheetHostConfig;
+            card.hostConfig = defaultHostConfig;
 
             this._propertySheetToolbox.content.appendChild(card.render());
         }
@@ -486,6 +488,49 @@ export class CardDesigner {
 
         this.toolbar.addElement(this._fullScreenButton);
 
+        let openSampleButton = new ToolbarButton(
+            CardDesigner.ToolbarCommands.OpenPayload,
+            "Open Sample",
+            "acd-icon-open",
+            (sender: ToolbarButton) => {
+                let dialog = new SamplePickerDialog();
+                dialog.title = "Pick a sample";
+                dialog.width = "30%";
+                dialog.height = "60%";
+                dialog.catalogueUrl = this.sampleCatalogueUrl;
+                dialog.onClose = (d) => {
+                    if (dialog.selectedSample) {
+                        dialog.selectedSample.onDownloaded = () => {
+                            try {
+                                let cardPayload = JSON.parse(dialog.selectedSample.cardPayload);
+
+                                this.setCardPayload(cardPayload);
+                            }
+                            catch {
+                                alert("The sample could not be loaded.")
+                            }
+
+                            if (!Adaptive.isNullOrEmpty(dialog.selectedSample.sampleData)) {
+                                try {
+                                    let sampleDataPayload = JSON.parse(dialog.selectedSample.sampleData);
+    
+                                    this.setSampleDataPayload(sampleDataPayload);
+                                    this.dataStructure = FieldDefinition.create(sampleDataPayload);
+                                }
+                                catch {
+                                    alert("The sample could not be loaded.")
+                                }
+                            }
+                        };
+                        dialog.selectedSample.download();
+                    }
+                };
+                dialog.open();
+            }
+        )
+
+        this.toolbar.addElement(openSampleButton);
+
         if (this._hostContainers && this._hostContainers.length > 0) {
             this._hostContainerChoicePicker = new ToolbarChoicePicker(CardDesigner.ToolbarCommands.HostAppPicker);
             this._hostContainerChoicePicker.separator = true;
@@ -711,6 +756,8 @@ export class CardDesigner {
 
     readonly toolbar: Toolbar = new Toolbar();
 
+    sampleCatalogueUrl: string = undefined;
+
     constructor(hostContainers: Array<HostContainer> = null) {
         Adaptive.AdaptiveCard.enableFullJsonRoundTrip = true;
         Adaptive.AdaptiveCard.onProcessMarkdown = (text: string, result: Adaptive.IMarkdownProcessingResult) => {
@@ -720,136 +767,6 @@ export class CardDesigner {
         this._hostContainers = hostContainers ? hostContainers : [];
 
         this.prepareToolbar();
-
-        this._propertySheetHostConfig = new Adaptive.HostConfig(
-            {
-                preExpandSingleShowCardAction: true,
-                supportsInteractivity: true,
-                fontFamily: "Segoe UI",
-                spacing: {
-                    small: 10,
-                    default: 20,
-                    medium: 30,
-                    large: 40,
-                    extraLarge: 50,
-                    padding: 20
-                },
-                separator: {
-                    lineThickness: 1,
-                    lineColor: "#EEEEEE"
-                },
-                textAlign: {
-                    right: "right"
-                },
-                fontSizes: {
-                    small: 12,
-                    default: 14,
-                    medium: 17,
-                    large: 21,
-                    extraLarge: 26
-                },
-                fontWeights: {
-                    lighter: 200,
-                    default: 400,
-                    bolder: 600
-                },
-                imageSizes: {
-                    small: 40,
-                    medium: 80,
-                    large: 160
-                },
-                containerStyles: {
-                    default: {
-                        backgroundColor: "#f9f9f9",
-                        foregroundColors: {
-                            default: {
-                                default: "#333333",
-                                subtle: "#EE333333"
-                            },
-                            accent: {
-                                default: "#2E89FC",
-                                subtle: "#882E89FC"
-                            },
-                            attention: {
-                                default: "#cc3300",
-                                subtle: "#DDcc3300"
-                            },
-                            good: {
-                                default: "#54a254",
-                                subtle: "#DD54a254"
-                            },
-                            warning: {
-                                default: "#e69500",
-                                subtle: "#DDe69500"
-                            }
-                        }
-                    },
-                    emphasis: {
-                        backgroundColor: "#08000000",
-                        foregroundColors: {
-                            default: {
-                                default: "#333333",
-                                subtle: "#EE333333"
-                            },
-                            accent: {
-                                default: "#2E89FC",
-                                subtle: "#882E89FC"
-                            },
-                            attention: {
-                                default: "#cc3300",
-                                subtle: "#DDcc3300"
-                            },
-                            good: {
-                                default: "#54a254",
-                                subtle: "#DD54a254"
-                            },
-                            warning: {
-                                default: "#e69500",
-                                subtle: "#DDe69500"
-                            }
-                        }
-                    }
-                },
-                actions: {
-                    maxActions: 5,
-                    spacing: Adaptive.Spacing.Default,
-                    buttonSpacing: 10,
-                    showCard: {
-                        actionMode: Adaptive.ShowCardActionMode.Inline,
-                        inlineTopMargin: 16
-                    },
-                    actionsOrientation: Adaptive.Orientation.Horizontal,
-                    actionAlignment: Adaptive.ActionAlignment.Left
-                },
-                adaptiveCard: {
-                    allowCustomStyle: true
-                },
-                imageSet: {
-                    imageSize: Adaptive.Size.Medium,
-                    maxImageHeight: 100
-                },
-                factSet: {
-                    title: {
-                        color: Adaptive.TextColor.Default,
-                        size: Adaptive.TextSize.Default,
-                        isSubtle: false,
-                        weight: Adaptive.TextWeight.Bolder,
-                        wrap: true,
-                        maxWidth: 150,
-                    },
-                    value: {
-                        color: Adaptive.TextColor.Default,
-                        size: Adaptive.TextSize.Default,
-                        isSubtle: false,
-                        weight: Adaptive.TextWeight.Default,
-                        wrap: true,
-                    },
-                    spacing: 10
-                }
-            }
-        );
-
-        this._propertySheetHostConfig.cssClassNamePrefix = "default";
     }
 
     attachTo(root: HTMLElement)  {
@@ -1169,6 +1086,7 @@ export class CardDesigner {
 export module CardDesigner {
     export class ToolbarCommands {
         static FullScreen = "__fullScreenButton";
+        static OpenPayload = "__openPayload";
         static HostAppPicker = "__hostAppPicker";
         static Undo = "__undoButton";
         static Redo = "__redoButton";

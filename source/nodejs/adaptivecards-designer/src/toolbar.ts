@@ -1,5 +1,4 @@
 import { DropDown, DropDownItem } from "adaptivecards-controls";
-import { Utils } from "./miscellaneous";
 
 export enum ToolbarElementAlignment {
     Left,
@@ -17,6 +16,7 @@ export abstract class ToolbarElement {
 
     readonly id: string;
 
+    isVisible: boolean = true;
     separator: boolean = false;
     label: string = null;
     alignment: ToolbarElementAlignment = ToolbarElementAlignment.Left;
@@ -266,7 +266,6 @@ export class Toolbar {
         container: HTMLElement,
         elements: Array<ToolbarElement>,
         separatorPosition: ToolbarElementAlignment) {
-
         for (let i = 0; i < elements.length; i++) {
             if (elements[i].separator && separatorPosition == ToolbarElementAlignment.Left && i > 0) {
                 container.appendChild(this.createSeparatorElement());
@@ -291,11 +290,13 @@ export class Toolbar {
         let rightElements: Array<ToolbarElement> = [];
 
         for (let element of this._elements) {
-            if (element.alignment == ToolbarElementAlignment.Left) {
-                leftElements.push(element);
-            }
-            else {
-                rightElements.push(element);
+            if (element.isVisible) {
+                if (element.alignment == ToolbarElementAlignment.Left) {
+                    leftElements.push(element);
+                }
+                else {
+                    rightElements.push(element);
+                }
             }
         }
 
@@ -322,6 +323,16 @@ export class Toolbar {
 
     addElement(element: ToolbarElement) {
         this._elements.push(element);
+    }
+
+    getElementById(elementId: string): ToolbarElement {
+        for (let element of this._elements) {
+            if (element.id == elementId) {
+                return element;
+            }
+        }
+
+        return null;
     }
 
     insertElementAfter(element: ToolbarElement, afterElementId: string) {

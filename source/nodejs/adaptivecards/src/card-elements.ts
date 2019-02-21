@@ -317,10 +317,6 @@ export abstract class CardElement extends CardObject {
 		return true;
 	}
 
-	protected get allowCustomPadding(): boolean {
-		return true;
-	}
-
 	protected get separatorOrientation(): Enums.Orientation {
 		return Enums.Orientation.Horizontal;
 	}
@@ -642,7 +638,7 @@ export abstract class CardElement extends CardObject {
 	getEffectivePadding(): Shared.PaddingDefinition {
 		let padding = this.getPadding();
 
-		return (padding && this.allowCustomPadding) ? padding : this.getDefaultPadding();
+		return padding ? padding : this.getDefaultPadding();
 	}
 
 	get lang(): string {
@@ -1733,7 +1729,9 @@ export abstract class CardElementContainer extends CardElement {
 	abstract getItemAt(index: number): CardElement;
 	abstract getFirstVisibleRenderedItem(): CardElement;
 	abstract getLastVisibleRenderedItem(): CardElement;
-	abstract removeItem(item: CardElement): boolean;
+    abstract removeItem(item: CardElement): boolean;
+    
+    allowVerticalOverflow: boolean = false;
 
 	parse(json: any, errors?: Array<HostConfig.IValidationError>) {
 		super.parse(json, errors);
@@ -1772,7 +1770,12 @@ export abstract class CardElementContainer extends CardElement {
 
 	render(): HTMLElement {
 		let element = super.render();
-		let hostConfig = this.hostConfig;
+        let hostConfig = this.hostConfig;
+        
+        if (this.allowVerticalOverflow) {
+            element.style.overflowX = "hidden";
+            element.style.overflowY = "auto";
+        }
 
 		if (this.isSelectable && this._selectAction && hostConfig.supportsInteractivity) {
 			element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
@@ -4133,14 +4136,22 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 
 			this.getImmediateSurroundingPadding(padding);
 	
-			let physicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(padding);
+			let surroundingPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(padding);
 
-			this.renderedElement.style.marginRight = "-" + physicalPadding.right + "px";
-			this.renderedElement.style.marginLeft = "-" + physicalPadding.left + "px";
+			this.renderedElement.style.marginRight = "-" + surroundingPadding.right + "px";
+            this.renderedElement.style.marginLeft = "-" + surroundingPadding.left + "px";
 
+            if (physicalPadding.left == 0) {
+                this.renderedElement.style.paddingLeft = surroundingPadding.left + "px";
+            }
+
+            if (physicalPadding.right == 0) {
+                this.renderedElement.style.paddingRight = surroundingPadding.right + "px";
+            }
+    
 			if (this.separatorElement && this.separatorOrientation == Enums.Orientation.Horizontal) {
-				this.separatorElement.style.marginLeft = "-" + physicalPadding.left + "px";
-				this.separatorElement.style.marginRight = "-" + physicalPadding.right + "px";
+				this.separatorElement.style.marginLeft = "-" + surroundingPadding.left + "px";
+				this.separatorElement.style.marginRight = "-" + surroundingPadding.right + "px";
 			}
 		}
 		else {
@@ -4208,7 +4219,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 	}
 
 	isBleeding(): boolean {
-		return this.getHasBackground() && this.getBleed();
+		return (this.getHasBackground() || this.hostConfig.alwaysAllowBleed) && this.getBleed();
 	}
 
 	toJSON(): any {
@@ -5630,7 +5641,7 @@ export class AdaptiveCard extends ContainerWithActions {
 	static useMarkdownInRadioButtonAndCheckbox: boolean = true;
 	static allowMarkForTextHighlighting: boolean = false;
 	static alwaysBleedSeparators: boolean = false;
-	static enableFullJsonRoundTrip: boolean = false;
+    static enableFullJsonRoundTrip: boolean = false;
 
 	static readonly elementTypeRegistry = new ElementTypeRegistry();
 	static readonly actionTypeRegistry = new ActionTypeRegistry();
@@ -5724,10 +5735,6 @@ export class AdaptiveCard extends ContainerWithActions {
 	}
 
 	protected get bypassVersionCheck(): boolean {
-		return false;
-	}
-
-	protected get allowCustomPadding(): boolean {
 		return false;
 	}
 

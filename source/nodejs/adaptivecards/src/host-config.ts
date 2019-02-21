@@ -525,6 +525,7 @@ export class HostConfig {
     readonly factSet: FactSetConfig = new FactSetConfig();
 
     cssClassNamePrefix: string = null;
+    alwaysAllowBleed: boolean = false;
 
     constructor(obj?: any) {
         if (obj) {

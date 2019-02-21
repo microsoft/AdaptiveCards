@@ -7,6 +7,7 @@ import "./app.css";
 import "adaptivecards-designer/lib/adaptivecards-designer.css";
 import "adaptivecards-designer/node_modules/adaptivecards-controls/lib/adaptivecards-controls.css";
 import "adaptivecards-designer/node_modules/adaptivecards/lib/adaptivecards-default.css";
+import { CatalogueEntry } from "adaptivecards-designer";
 
 window.onload = function() {
 	ACDesigner.CardDesigner.onProcessMarkdown = (text: string, result: { didProcess: boolean, outputHtml: string }) => {
@@ -28,7 +29,8 @@ window.onload = function() {
 	hostContainers.push(new ACDesigner.BotFrameworkContainer("Bot Framework Other Channels (Image render)", "containers/bf-image-container.css"));
 	hostContainers.push(new ACDesigner.ToastContainer("Windows Notifications (Preview)", "containers/toast-container.css"));
 
-	let designer = new ACDesigner.CardDesigner(hostContainers);
+    let designer = new ACDesigner.CardDesigner(hostContainers);
+    designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
 	designer.attachTo(document.getElementById("designerRootHost"));
 	designer.monacoModuleLoaded(monaco);
 

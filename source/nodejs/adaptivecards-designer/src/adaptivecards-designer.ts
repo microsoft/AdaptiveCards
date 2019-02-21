@@ -16,3 +16,4 @@ export * from "./base-tree-item";
 export * from "./designer-peer-treeitem";
 export * from "./data";
 export * from "./containers/index";
+export * from "./catalogue";
