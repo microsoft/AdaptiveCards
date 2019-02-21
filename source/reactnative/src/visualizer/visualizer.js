@@ -63,23 +63,8 @@ export default class Visualizer extends React.Component {
             icon: require('./assets/done.png')
         },
         {
-            title: 'Input form',
-            json: inputFormPayload,
-            tags: this.getTags(inputFormPayload),
-            icon: require('./assets/form.png')
-        }, {
-            title: 'Restaurant',
-            json: restaturantPayload,
-            tags: this.getTags(restaturantPayload),
-            icon: require('./assets/restaurant.png')
-        }, {
-            title: 'Container type',
-            json: containerPayload,
-            tags: this.getTags(containerPayload),
-            icon: require('./assets/square.png')
-        },
-        {
             title: 'Food order',
+            json: foodOrderPayload,
             tags: this.getTags(foodOrderPayload),
             icon: require('./assets/fastfood.png')
         },
@@ -94,12 +79,29 @@ export default class Visualizer extends React.Component {
             json: sportingEventPayload,
             tags: this.getTags(sportingEventPayload),
             icon: require('./assets/run.png')
+        }, {
+            title: 'Restaurant',
+            json: restaturantPayload,
+            tags: this.getTags(restaturantPayload),
+            icon: require('./assets/restaurant.png')
+        },
+        {
+            title: 'Input form',
+            json: inputFormPayload,
+            tags: this.getTags(inputFormPayload),
+            icon: require('./assets/form.png')
         },
         {
             title: 'Media',
             json: mediaPayload,
             tags: this.getTags(mediaPayload),
             icon: require('./assets/video_library.png')
+        },
+        {
+            title: 'Stock Update',
+            json: containerPayload,
+            tags: this.getTags(containerPayload),
+            icon: require('./assets/square.png')
         },
         {
             title: 'Markdown',

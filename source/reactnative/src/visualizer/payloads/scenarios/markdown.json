@@ -1,39 +1,109 @@
 {
-	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-	"type": "AdaptiveCard",
-	"version": "1.1",
-	"lang": "en",
-	"body": [
-		{
-			"type": "TextBlock",
-			"text": "**italic text** with date of {{DATE(2017-02-14T06:08:39Z,LONG)}} {{TIME(2017-02-14T06:08:39Z)}}",
-			"wrap": true
-		},
-		{
-				"type": "TextBlock",
-				"text": "Normal text with date of {{DATE(2017-02-14T06:08:39Z,LONG)}} {{TIME(2017-02-14T06:08:39Z)}}",
-				"wrap": true
-		},
-		{
-			"type": "FactSet",
-			"facts": [
-		{
-			"title": "Title 1",
-			"value": "Value 1"
-		},
-		{
-			"title": "*Italic Title 2* with date of {{DATE(2017-02-14T06:08:39Z,LONG)}} {{TIME(2017-02-14T06:08:39Z)}}",
-			"value": "Value 2"
-		},
-		{
-			"title": "Fact 3",
-			"value": "*Italic Value 3* with date of {{DATE(2017-02-14T06:08:39Z,LONG)}} {{TIME(2017-02-14T06:08:39Z)}}"
-		},
-		{
-			"title": "*Italic Title 4* with date of {{DATE(2017-02-14T06:08:39Z,LONG)}} {{TIME(2017-02-14T06:08:39Z)}}",
-			"value": "*Italic Value 4* with date of {{DATE(2017-02-14T06:08:39Z,LONG)}} {{TIME(2017-02-14T06:08:39Z)}}"
-		}
-		]
-	}
-	]
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "AdaptiveCard - Elements",
+                    "size": "medium",
+                    "color": "good",
+                    "separator": true,
+                    "spacing": "medium"
+                },
+                {
+                    "type": "ColumnSet",
+                    "spacing": "medium",
+                    "separator": true,
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "_Elements_",
+                                    "color": "attention",
+                                    "weight": "bolder"
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": "- TextBlock \r- Image \r- Media",
+                                    "spacing": "medium"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "_Inputs_",
+                                    "color": "attention",
+                                    "weight": "bolder"
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": "- Input \r- Toggle \r- ChoiceSet \r- Date/Time/Number",
+                                    "spacing": "medium"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "ColumnSet",
+                    "spacing": "medium",
+                    "separator": true,
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Containers",
+                                    "color": "attention",
+                                    "weight": "bolder"
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": "- Container \r- ColumnSet \r- FactSet \r- ImageSet",
+                                    "spacing": "medium"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Actions",
+                                    "color": "attention",
+                                    "weight": "bolder"
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": "- Action-ShowCard \r- Action-OpenURL \r- Action-Submit",
+                                    "spacing": "medium"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "For More details  [AdaptiveCards](https://adaptivecards.io/)",
+                    "size": "medium",
+                    "separator": true,
+                    "spacing": "medium"
+                }
+            ]
+        }
+    ]
 }

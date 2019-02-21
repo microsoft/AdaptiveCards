@@ -637,7 +637,7 @@ export const defaultHostConfig = {
 	},
 	separator: {
 		lineThickness: 1,
-		lineColor: "#EEEEEE"
+		lineColor: "#D9D9D9"
 	},
 	fontSizes: {
 		small: 12,

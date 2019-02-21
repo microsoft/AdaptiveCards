@@ -17,20 +17,6 @@
 					"url": "https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4"
 				}
 			]
-		},
-		{
-			"type": "TextBlock",
-			"text": "This is a media element which doesn't specify a poster. It will use the poster from the host config if present:",
-			"wrap": true
-		},
-		{
-			"type": "Media",
-			"sources": [
-				{
-					"mimeType": "video/mp4",
-					"url": "https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4"
-				}
-			]
 		}
 	]
 }
