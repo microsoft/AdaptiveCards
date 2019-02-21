@@ -1,5 +1,9 @@
 [
     {
+        "displayName": "Social update",
+        "cardPayloadUrl": "samples/Default.json"
+    },
+    {
         "displayName": "Flight update",
         "cardPayloadUrl": "samples/FlightUpdate.json",
         "dataSampleUrl": "samples/FlightUpdate.data.json"
