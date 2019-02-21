@@ -8,7 +8,7 @@
     "change": "1.45",
     "difference": "1.37",
     "changeFormatted": "▲ USD 1.45 (1.37%) ",
-    "changeColor": "attention",
+    "changeColor": "good",
     "stages": [
         {
             "title": "Open",
