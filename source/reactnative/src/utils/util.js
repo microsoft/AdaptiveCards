@@ -153,27 +153,52 @@ export function parseVersion(versionString) {
 }
 
 /**
+ * @description Validate the given url
+ * @param {url} url of the image 
+ * @return {boolean} If url is absolute or not
+ */
+export function validateUrl(url) {
+	let urlRegEx = /^(?:[a-z]+:)?\/\//i;
+	let dataregex = /^\s*data:([a-z]+\/[a-z]+(;[a-z\-]+\=[a-z\-]+)?)?(;base64)?,[a-z0-9\!\$\&\'\,\(\)\*\+\,\;\=\-\.\_\~\:\@\/\?\%\s]*\s*$/i;
+
+	return urlRegEx.test(url) || dataregex.test(url);
+}
+
+/**
+ * @description Return the image url based on its validation (Base64, Absolute)
+ * @param {url} url of the image 
+ * @return {boolean}  url of the image
+ */
+export function getImageUrl(url) {
+	if (isNullOrEmpty(url)) {
+		return url
+	}
+	return validateUrl(url) ? url :
+	url.split('/').pop().split('.')[0];
+}
+
+/**
  * @description Convert the color in aRGB hex format to RGBa CSS format
  * @param {string} color 
  * @return {object} RGBa CSS format
  */
-    /**
-     * argb in hex to css rgba
-     */
-	export function hexToRGB(color) {
-		var regEx = /#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})?/gi;
+/**
+ * argb in hex to css rgba
+ */
+export function hexToRGB(color) {
+	var regEx = /#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})?/gi;
 
-		var matches = regEx.exec(color);
+	var matches = regEx.exec(color);
 
-		if (matches && matches[4]) {
-			var a = parseInt(matches[1], 16) / 255;
-			var r = parseInt(matches[2], 16);
-			var g = parseInt(matches[3], 16);
-			var b = parseInt(matches[4], 16);
+	if (matches && matches[4]) {
+		var a = parseInt(matches[1], 16) / 255;
+		var r = parseInt(matches[2], 16);
+		var g = parseInt(matches[3], 16);
+		var b = parseInt(matches[4], 16);
 
-			return "rgba(" + r + "," + g + "," + b + "," + a + ")";
-		}
-		else {
-			return color;
-		}
+		return "rgba(" + r + "," + g + "," + b + "," + a + ")";
 	}
+	else {
+		return color;
+	}
+}

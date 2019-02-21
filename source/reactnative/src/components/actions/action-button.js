@@ -107,7 +107,8 @@ export class ActionButton extends React.Component {
 	parseHostConfig() {
 		this.title = this.payload.title;
 		this.type = this.payload.type;
-		this.iconUrl = this.payload.iconUrl;
+		let imageUrl = this.payload.iconUrl
+		this.iconUrl = Utils.getImageUrl(imageUrl)
 		this.data = this.payload.data;
 	}
 
