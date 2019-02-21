@@ -61,7 +61,7 @@ export class BackgroundImage extends React.Component {
      * This function will return the vertical alignment of the image
      * 
      */
-    getImageVerticalyAlignment = () => {
+    getImageVerticalAlignment = () => {
         switch (this.verticalAlignmentEnumValue) {
             case Enums.VerticalAlignment.Bottom:
                 return { justifyContent: Constants.FlexEnd }
@@ -102,7 +102,7 @@ export class BackgroundImage extends React.Component {
         switch (this.backgroundImageModeEnumValue) {
             case Enums.BackgroundImageMode.Repeat:
                 imageContainerStyle.push(this.getImageHorizontalAlignment());
-                imageContainerStyle.push(this.getImageVerticalyAlignment());
+                imageContainerStyle.push(this.getImageVerticalAlignment());
                 backgroundImage.push(
                     <Image
                         key="image-repeat-horizontal"
@@ -125,7 +125,7 @@ export class BackgroundImage extends React.Component {
                 );
                 break;
             case Enums.BackgroundImageMode.RepeatHorizontally:
-                imageContainerStyle.push(this.getImageVerticalyAlignment());
+                imageContainerStyle.push(this.getImageVerticalAlignment());
                 backgroundImage.push(
                     <Image
                         key="image-repeat-horizontal"
