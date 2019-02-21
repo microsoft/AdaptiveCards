@@ -58,19 +58,6 @@ public class Container extends CollectionTypeElement {
     return new BaseCardElementVector(AdaptiveCardObjectModelJNI.Container_GetItems__SWIG_0(swigCPtr, this), false);
   }
 
-  public BaseActionElement GetSelectAction() {
-    long cPtr = AdaptiveCardObjectModelJNI.Container_GetSelectAction(swigCPtr, this);
-    return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
-  }
-
-  public void SetSelectAction(BaseActionElement action) {
-    AdaptiveCardObjectModelJNI.Container_SetSelectAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
-  }
-
-  public void SetLanguage(String value) {
-    AdaptiveCardObjectModelJNI.Container_SetLanguage(swigCPtr, this, value);
-  }
-
   public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {
     AdaptiveCardObjectModelJNI.Container_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceInfo), resourceInfo);
   }

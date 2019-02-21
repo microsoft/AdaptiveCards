@@ -423,9 +423,11 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void BaseInputElement_SetIsRequired(long jarg1, BaseInputElement jarg1_, boolean jarg2);
   public final static native long BaseInputElement_SerializeToJsonValue(long jarg1, BaseInputElement jarg1_);
   public final static native void delete_BaseInputElement(long jarg1);
-  public final static native long new_CollectionTypeElement__SWIG_0(int jarg1, int jarg2, int jarg3);
-  public final static native long new_CollectionTypeElement__SWIG_1(int jarg1, int jarg2);
-  public final static native long new_CollectionTypeElement__SWIG_2(int jarg1);
+  public final static native long new_CollectionTypeElement__SWIG_0(long jarg1, CollectionTypeElement jarg1_);
+  public final static native void delete_CollectionTypeElement(long jarg1);
+  public final static native long new_CollectionTypeElement__SWIG_2(int jarg1, int jarg2, int jarg3);
+  public final static native long new_CollectionTypeElement__SWIG_3(int jarg1, int jarg2);
+  public final static native long new_CollectionTypeElement__SWIG_4(int jarg1);
   public final static native int CollectionTypeElement_GetStyle(long jarg1, CollectionTypeElement jarg1_);
   public final static native void CollectionTypeElement_SetStyle(long jarg1, CollectionTypeElement jarg1_, int jarg2);
   public final static native int CollectionTypeElement_GetVerticalContentAlignment(long jarg1, CollectionTypeElement jarg1_);
@@ -438,7 +440,9 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void CollectionTypeElement_ConfigForContainerStyle(long jarg1, CollectionTypeElement jarg1_, long jarg2, ParseContext jarg2_);
   public final static native void CollectionTypeElement_SetParentalId(long jarg1, CollectionTypeElement jarg1_, long jarg2, InternalId jarg2_);
   public final static native long CollectionTypeElement_GetParentalId(long jarg1, CollectionTypeElement jarg1_);
-  public final static native void delete_CollectionTypeElement(long jarg1);
+  public final static native long CollectionTypeElement_GetSelectAction(long jarg1, CollectionTypeElement jarg1_);
+  public final static native void CollectionTypeElement_SetSelectAction(long jarg1, CollectionTypeElement jarg1_, long jarg2, BaseActionElement jarg2_);
+  public final static native long CollectionTypeElement_SerializeToJsonValue(long jarg1, CollectionTypeElement jarg1_);
   public final static native long new_AdaptiveCardParseWarning(int jarg1, String jarg2);
   public final static native int AdaptiveCardParseWarning_GetStatusCode(long jarg1, AdaptiveCardParseWarning jarg1_);
   public final static native String AdaptiveCardParseWarning_GetReason(long jarg1, AdaptiveCardParseWarning jarg1_);
@@ -478,9 +482,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void delete_Container(long jarg1);
   public final static native long Container_SerializeToJsonValue(long jarg1, Container jarg1_);
   public final static native long Container_GetItems__SWIG_0(long jarg1, Container jarg1_);
-  public final static native long Container_GetSelectAction(long jarg1, Container jarg1_);
-  public final static native void Container_SetSelectAction(long jarg1, Container jarg1_, long jarg2, BaseActionElement jarg2_);
-  public final static native void Container_SetLanguage(long jarg1, Container jarg1_, String jarg2);
   public final static native void Container_GetResourceInformation(long jarg1, Container jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native long Container_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native long new_ContainerParser__SWIG_0();
@@ -544,7 +545,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long Column_GetItems__SWIG_0(long jarg1, Column jarg1_);
   public final static native long Column_GetSelectAction(long jarg1, Column jarg1_);
   public final static native void Column_SetSelectAction(long jarg1, Column jarg1_, long jarg2, BaseActionElement jarg2_);
-  public final static native void Column_SetLanguage(long jarg1, Column jarg1_, String jarg2);
   public final static native void Column_GetResourceInformation(long jarg1, Column jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native long Column_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native void delete_Column(long jarg1);
@@ -555,7 +555,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long ColumnSet_GetColumns__SWIG_0(long jarg1, ColumnSet jarg1_);
   public final static native long ColumnSet_GetSelectAction(long jarg1, ColumnSet jarg1_);
   public final static native void ColumnSet_SetSelectAction(long jarg1, ColumnSet jarg1_, long jarg2, BaseActionElement jarg2_);
-  public final static native void ColumnSet_SetLanguage(long jarg1, ColumnSet jarg1_, String jarg2);
   public final static native void ColumnSet_GetResourceInformation(long jarg1, ColumnSet jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native long ColumnSet_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native long new_ColumnSetParser__SWIG_0();
@@ -740,6 +739,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void ParseContext_PushElement__SWIG_0(long jarg1, ParseContext jarg1_, String jarg2, long jarg3, InternalId jarg3_, boolean jarg4);
   public final static native void ParseContext_PushElement__SWIG_1(long jarg1, ParseContext jarg1_, String jarg2, long jarg3, InternalId jarg3_);
   public final static native void ParseContext_PopElement(long jarg1, ParseContext jarg1_);
+  public final static native void ParseContext_SetLanguage(long jarg1, ParseContext jarg1_, String jarg2);
+  public final static native String ParseContext_GetLanguage(long jarg1, ParseContext jarg1_);
   public final static native int ParseContext_GetParentalContainerStyle(long jarg1, ParseContext jarg1_);
   public final static native long ParseContext_GetIDOfParentWithPadding(long jarg1, ParseContext jarg1_);
   public final static native void ParseContext_SaveContextForCollectionTypeElement(long jarg1, ParseContext jarg1_, long jarg2, CollectionTypeElement jarg2_);
@@ -1064,7 +1065,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void delete_FactSet(long jarg1);
   public final static native long FactSet_SerializeToJsonValue(long jarg1, FactSet jarg1_);
   public final static native long FactSet_GetFacts__SWIG_0(long jarg1, FactSet jarg1_);
-  public final static native void FactSet_SetLanguage(long jarg1, FactSet jarg1_, String jarg2);
   public final static native long FactSet_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native long new_FactSetParser__SWIG_0();
   public final static native long new_FactSetParser__SWIG_1(long jarg1, FactSetParser jarg1_);

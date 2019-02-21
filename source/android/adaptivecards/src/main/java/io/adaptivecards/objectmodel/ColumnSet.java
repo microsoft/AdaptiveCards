@@ -67,10 +67,6 @@ public class ColumnSet extends CollectionTypeElement {
     AdaptiveCardObjectModelJNI.ColumnSet_SetSelectAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
   }
 
-  public void SetLanguage(String language) {
-    AdaptiveCardObjectModelJNI.ColumnSet_SetLanguage(swigCPtr, this, language);
-  }
-
   public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {
     AdaptiveCardObjectModelJNI.ColumnSet_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceInfo), resourceInfo);
   }

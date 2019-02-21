@@ -93,10 +93,6 @@ public class Column extends CollectionTypeElement {
     AdaptiveCardObjectModelJNI.Column_SetSelectAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
   }
 
-  public void SetLanguage(String language) {
-    AdaptiveCardObjectModelJNI.Column_SetLanguage(swigCPtr, this, language);
-  }
-
   public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {
     AdaptiveCardObjectModelJNI.Column_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceInfo), resourceInfo);
   }
