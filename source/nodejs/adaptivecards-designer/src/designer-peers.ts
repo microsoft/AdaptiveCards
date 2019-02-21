@@ -1613,7 +1613,7 @@ export class ActionSetPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
                             popupMenu.items.add(menuItem);
                         }
 
-                        popupMenu.popup(command.renderedElement);
+                        popupMenu.popup(clickedElement);
                     }
                 })
         );
