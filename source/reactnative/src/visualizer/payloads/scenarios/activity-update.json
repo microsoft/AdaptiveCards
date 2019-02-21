@@ -11,6 +11,7 @@
         },
         {
             "type": "ColumnSet",
+            "spacing": "medium",
             "columns": [
                 {
                     "type": "Column",
@@ -28,6 +29,7 @@
                     "type": "Column",
                     "width": "stretch",
                     "verticalContentAlignment": "center",
+                    "spacing": "medium",
                     "items": [
                         {
                             "type": "TextBlock",
@@ -49,7 +51,8 @@
         {
             "type": "TextBlock",
             "text": "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
-            "wrap": true
+            "wrap": true,
+            "spacing": "default"
         },
         {
             "type": "FactSet",
