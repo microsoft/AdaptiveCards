@@ -112,3 +112,36 @@ void CollectionTypeElement::ConfigForContainerStyle(const ParseContext& context)
     ConfigPadding(context);
     ConfigBleed(context);
 }
+
+std::shared_ptr<BaseActionElement> CollectionTypeElement::GetSelectAction() const
+{
+    return m_selectAction;
+}
+
+void CollectionTypeElement::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
+{
+    m_selectAction = action;
+}
+
+Json::Value CollectionTypeElement::SerializeToJsonValue() const
+{
+    Json::Value root = BaseCardElement::SerializeToJsonValue();
+
+    if (m_selectAction != nullptr)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] =
+            BaseCardElement::SerializeSelectAction(m_selectAction);
+    }
+
+    if (GetStyle() != ContainerStyle::None)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(GetStyle());
+    }
+
+    if (GetBleed())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Bleed)] = true;
+    }
+
+    return root;
+}

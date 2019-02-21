@@ -59,27 +59,11 @@ std::string Column::Serialize() const
 
 Json::Value Column::SerializeToJsonValue() const
 {
-    Json::Value root = BaseCardElement::SerializeToJsonValue();
+    Json::Value root = CollectionTypeElement::SerializeToJsonValue();
 
     if (!m_width.empty())
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width)] = m_width;
-    }
-
-    if (GetStyle() != ContainerStyle::None)
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(GetStyle());
-    }
-
-    if (GetBleed())
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Bleed)] = true;
-    }
-
-    if (GetVerticalContentAlignment() != VerticalContentAlignment::Top)
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)] =
-            VerticalContentAlignmentToString(GetVerticalContentAlignment());
     }
 
     std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
@@ -87,12 +71,6 @@ Json::Value Column::SerializeToJsonValue() const
     for (const auto& cardElement : m_items)
     {
         root[propertyName].append(cardElement->SerializeToJsonValue());
-    }
-
-    if (m_selectAction != nullptr)
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] =
-            BaseCardElement::SerializeSelectAction(m_selectAction);
     }
 
     return root;
@@ -158,11 +136,6 @@ void Column::PopulateKnownPropertiesSet()
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)});
-}
-
-void Column::SetLanguage(const std::string& language)
-{
-    PropagateLanguage(language, m_items);
 }
 
 void Column::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)

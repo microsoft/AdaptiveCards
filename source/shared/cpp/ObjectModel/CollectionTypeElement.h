@@ -8,6 +8,11 @@ namespace AdaptiveSharedNamespace
     class CollectionTypeElement : public BaseCardElement
     {
     public:
+        CollectionTypeElement(const CollectionTypeElement&) = default;
+        CollectionTypeElement(CollectionTypeElement&&) = default;
+        CollectionTypeElement& operator=(const CollectionTypeElement&) = default;
+        CollectionTypeElement& operator=(CollectionTypeElement&&) = default;
+        ~CollectionTypeElement() = default;
         CollectionTypeElement(CardElementType type, ContainerStyle style = ContainerStyle::None,
             VerticalContentAlignment alignment = VerticalContentAlignment::Top);
 
@@ -35,6 +40,11 @@ namespace AdaptiveSharedNamespace
         void SetParentalId(const AdaptiveSharedNamespace::InternalId &id);
         AdaptiveSharedNamespace::InternalId GetParentalId(void) const;
 
+        std::shared_ptr<BaseActionElement> GetSelectAction() const;
+        void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
+
+        Json::Value SerializeToJsonValue() const override;
+
     private:
         void SetCanBleed(const bool value);
 
@@ -50,5 +60,7 @@ namespace AdaptiveSharedNamespace
         bool m_canBleed;
         // id refers to parent to where bleed property should target
         AdaptiveSharedNamespace::InternalId m_parentalId;
+
+        std::shared_ptr<BaseActionElement> m_selectAction;
     };
 }

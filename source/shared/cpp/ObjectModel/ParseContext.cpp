@@ -286,4 +286,14 @@ namespace AdaptiveSharedNamespace
             m_parentalPadding.pop_back();
         }
     }
+
+    void ParseContext::SetLanguage(const std::string& value)
+    {
+        m_language = value;
+    }
+
+    std::string ParseContext::GetLanguage() const
+    {
+        return m_language;
+    }
 }

@@ -24,18 +24,12 @@ namespace AdaptiveSharedNamespace
         std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
         const std::vector<std::shared_ptr<BaseCardElement>>& GetItems() const;
 
-        std::shared_ptr<BaseActionElement> GetSelectAction() const;
-        void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
-
-        void SetLanguage(const std::string& value);
-
         void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
     private:
         void PopulateKnownPropertiesSet() override;
 
         std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>> m_items;
-        std::shared_ptr<BaseActionElement> m_selectAction;
     };
 
     class ContainerParser : public BaseCardElementParser

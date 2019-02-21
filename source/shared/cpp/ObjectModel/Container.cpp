@@ -22,52 +22,15 @@ std::vector<std::shared_ptr<BaseCardElement>>& Container::GetItems()
     return m_items;
 }
 
-std::shared_ptr<BaseActionElement> Container::GetSelectAction() const
-{
-    return m_selectAction;
-}
-
-void Container::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
-{
-    m_selectAction = action;
-}
-
-void Container::SetLanguage(const std::string& value)
-{
-    PropagateLanguage(value, m_items);
-}
-
 Json::Value Container::SerializeToJsonValue() const
 {
-    Json::Value root = BaseCardElement::SerializeToJsonValue();
-
-    if (GetStyle() != ContainerStyle::None)
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(GetStyle());
-    }
-
-    if (GetVerticalContentAlignment() != VerticalContentAlignment::Top)
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)] =
-            VerticalContentAlignmentToString(GetVerticalContentAlignment());
-    }
-
-    if(GetBleed())
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Bleed)] = true;
-    }
+    Json::Value root = CollectionTypeElement::SerializeToJsonValue();
 
     std::string const& itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
     root[itemsPropertyName] = Json::Value(Json::arrayValue);
     for (const auto& cardElement : m_items)
     {
         root[itemsPropertyName].append(cardElement->SerializeToJsonValue());
-    }
-
-    if (m_selectAction != nullptr)
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] =
-            BaseCardElement::SerializeSelectAction(m_selectAction);
     }
 
     return root;

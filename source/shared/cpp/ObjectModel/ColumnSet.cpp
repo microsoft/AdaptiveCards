@@ -33,39 +33,15 @@ void ColumnSet::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
     m_selectAction = action;
 }
 
-void ColumnSet::SetLanguage(const std::string& language)
-{
-    for (auto& column : m_columns)
-    {
-        column->SetLanguage(language);
-    }
-}
-
 Json::Value ColumnSet::SerializeToJsonValue() const
 {
-    Json::Value root = BaseCardElement::SerializeToJsonValue();
+    Json::Value root = CollectionTypeElement::SerializeToJsonValue();
 
     std::string const& propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Columns);
     root[propertyName] = Json::Value(Json::arrayValue);
     for (const auto& column : m_columns)
     {
         root[propertyName].append(column->SerializeToJsonValue());
-    }
-
-    if (m_selectAction != nullptr)
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] =
-            BaseCardElement::SerializeSelectAction(m_selectAction);
-    }
-
-    if (GetStyle() != ContainerStyle::None)
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(GetStyle());
-    }
-
-    if (GetBleed())
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Bleed)] = true;
     }
 
     return root;

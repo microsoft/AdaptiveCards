@@ -26,6 +26,10 @@ namespace AdaptiveSharedNamespace
                          const AdaptiveSharedNamespace::InternalId& internalId,
                          const bool isFallback = false);
         void PopElement();
+
+        void SetLanguage(const std::string& value);
+        std::string GetLanguage() const;
+
         ContainerStyle GetParentalContainerStyle() const;
         AdaptiveSharedNamespace::InternalId GetIDOfParentWithPadding(void)const;
         void SaveContextForCollectionTypeElement(
@@ -61,5 +65,7 @@ namespace AdaptiveSharedNamespace
         ContainerStyle m_parentalContainerStyle;
         std::vector<ContainerStyle> m_parentalContainerStyles;
         std::vector<AdaptiveSharedNamespace::InternalId> m_parentalPadding;
+
+        std::string m_language;
     };
 }

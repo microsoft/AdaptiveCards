@@ -21,17 +21,6 @@ std::vector<std::shared_ptr<Fact>>& FactSet::GetFacts()
     return m_facts;
 }
 
-void FactSet::SetLanguage(const std::string& language)
-{
-    for (const std::shared_ptr<Fact>& fact : m_facts)
-    {
-        if (fact != nullptr)
-        {
-            fact->SetLanguage(language);
-        }
-    }
-}
-
 Json::Value FactSet::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
