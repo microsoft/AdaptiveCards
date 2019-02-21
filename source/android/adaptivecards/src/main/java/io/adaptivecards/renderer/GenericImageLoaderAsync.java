@@ -39,14 +39,39 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
         m_maxWidth = maxWidth;
     }
 
+    protected String getUriScheme(String path) throws URISyntaxException
+    {
+        try
+        {
+            // Try to get the uri scheme using java URI class
+            URI uri = new URI(path);
+            return uri.getScheme();
+        }
+        catch (URISyntaxException uriSyntaxException)
+        {
+            // If the path couldn't be converted with the java URI then try to follow
+            // https://tools.ietf.org/html/rfc7595 finding the first ':' and consider that
+            // as the scheme. This is made to support the working svg support for android
+            int schemeEndIndex = path.indexOf(':');
+            if(schemeEndIndex > 0)
+            {
+                return path.substring(0, schemeEndIndex);
+            }
+            else
+            {
+                // If the path doesn't contain a scheme then throw the URISyntaxException
+                throw uriSyntaxException;
+            }
+        }
+    }
+
     // Main function to try different ways to load an image
     HttpRequestResult<Bitmap> loadImage(String path, Context context)
     {
         try
         {
             // Step 1: Check if user specified the scheme name as a Resource Resolver
-            URI uri = new URI(URLDecoder.decode(path, "UTF-8"));
-            String uriScheme = uri.getScheme();
+            String uriScheme = getUriScheme(path);
             IResourceResolver resourceResolver = CardRendererRegistration.getInstance().getResourceResolver(uriScheme);
 
             if(resourceResolver != null)
