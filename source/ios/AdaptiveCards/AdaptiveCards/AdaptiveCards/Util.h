@@ -8,5 +8,10 @@
 #import<UIKit/UIKit.h>
 #import "BaseCardElement.h"
 
+using namespace AdaptiveCards;
+
 void configVisibility(UIView *view, const std::shared_ptr<AdaptiveCards::BaseCardElement>visibilityInfo);
 
+void renderBackgroundImageView(const BackgroundImage *backgroundImageProperties, UIView *containerView, ACRView *rootView);
+
+void applyBackgroundImageConstraints(const BackgroundImage *backgroundImageProperties, UIImageView *imageView);

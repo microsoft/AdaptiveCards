@@ -39,8 +39,4 @@ typedef void (^ObserverActionBlockForBaseAction)(NSObject<ACOIResourceResolver> 
     key:(NSString *)key observerAction:(ObserverActionBlock)observerAction;
 
 - (std::shared_ptr<AdaptiveSharedNamespace::ActionElementParser> const &)getActionParser:(NSString*)elementType;
-
-+ (void)renderBackgroundImageView:(const AdaptiveCards::BackgroundImage *)backgroundImageProperties containerView:(UIView *)containerView rootView:(UIView *)rootView;
-
-+ (void)applyBackgroundImageConstraints:(const AdaptiveCards::BackgroundImage *)backgroundImageProperties imageView:(UIView *)imageView;
 @end

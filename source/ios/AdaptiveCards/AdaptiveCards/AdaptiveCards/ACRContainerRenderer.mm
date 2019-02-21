@@ -41,7 +41,7 @@
     ACRColumnView *container = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)containerElem->GetStyle()
                                                         parentStyle:[viewGroup style] hostConfig:acoConfig superview:viewGroup];
 
-    [ACRView renderBackgroundImageView:containerElem->GetBackgroundImage().get() containerView:container rootView:rootView];
+    renderBackgroundImageView(containerElem->GetBackgroundImage().get(), container, rootView);
     
     UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
     if(containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom){

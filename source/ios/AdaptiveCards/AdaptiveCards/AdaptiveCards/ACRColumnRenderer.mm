@@ -41,7 +41,7 @@
     ACRColumnView* column = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)columnElem->GetStyle()
                                                      parentStyle:[viewGroup style] hostConfig:acoConfig superview:viewGroup];
 
-    [ACRView renderBackgroundImageView:columnElem->GetBackgroundImage().get() containerView:column rootView:rootView];
+    renderBackgroundImageView(columnElem->GetBackgroundImage().get(), column, rootView);
     
     column.pixelWidth = columnElem->GetPixelWidth();
     if(columnElem->GetWidth() == "stretch" || columnElem->GetWidth() == "") {
