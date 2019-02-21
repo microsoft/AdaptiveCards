@@ -11,12 +11,67 @@ export class SamplePickerDialog extends Dialog {
     private _selectedSample: CatalogueEntry;
 
     private renderMessage(message: string) {
-        let messageElement = document.createElement("div");
-        messageElement.className = "acd-sample-picker-message";
-        messageElement.innerText = message;
+        let templatePayload = {
+            type: "AdaptiveCard",
+            version: "1.0",
+            body: [
+                {
+                    type: "TextBlock",
+                    text: "**{title}**",
+                    size: "large"
+                },
+                {
+                    type: "Container",
+                    verticalContentAlignment: "center",
+                    height: "stretch",
+                    items: [
+                        {
+                            type: "TextBlock",
+                            text: "{message}",
+                            horizontalAlignment: "center",
+                            wrap: true
+                        }
+                    ]
+                },
+                {
+                    type: "ActionSet",
+                    horizontalAlignment: "right",
+                    actions: [
+                        {
+                            type: "Action.Submit",
+                            id: "cancel",
+                            title: "Cancel"
+                        }
+                    ]
+                }
+            ]
+        };
+
+        let template = new Template(templatePayload);
+        
+        let context = new EvaluationContext();
+        context.$root = {
+            title: this.title,
+            message: message
+        };
+
+        let expandedCardPayload = template.expand(context);
+
+        let card = new Adaptive.AdaptiveCard();
+        card.hostConfig = defaultHostConfig;
+        card.onExecuteAction = (action: Adaptive.Action) => {
+            if (action.id == "cancel") {
+                this.close();
+            }
+        }
+
+        card.parse(expandedCardPayload);
+
+        let renderedCard = card.render();
+        renderedCard.style.height = "100%";
 
         this._renderedElement.innerHTML = "";
-        this._renderedElement.appendChild(messageElement);
+        this._renderedElement.appendChild(renderedCard);
     }
 
     private renderCatalogue(catalogue: CatalogueEntry[]) {
@@ -82,7 +137,6 @@ export class SamplePickerDialog extends Dialog {
 
         let card = new Adaptive.AdaptiveCard();
         card.hostConfig = defaultHostConfig;
-        card.hostConfig.alwaysAllowBleed = true;
         card.onExecuteAction = (action: Adaptive.Action) => {
             if (action.id == "cancel") {
                 this.close();
@@ -112,33 +166,6 @@ export class SamplePickerDialog extends Dialog {
         this._renderedElement.style.overflow = "auto";
 
         this.renderMessage("Loading sample catalogue...");
-
-        /*
-        let request = new XMLHttpRequest();
-        request.onerror = () => {
-            this.renderMessage("The catalogue couldn't be loaded. Please try again later.");
-        }
-        request.onload = () => {
-            if (request.responseText && request.responseText != "") {
-                try {
-                    let catalogue = parseCatalogue(JSON.parse(request.responseText));
-
-                    this.renderCatalogue(catalogue);
-                }
-                catch (e) {
-                    this.renderMessage("The catalogue couldn't be loaded. Please try again later.");
-                }
-            }
-        };
-
-        try {
-            request.open("GET", this.catalogueUrl, true);
-            request.send();
-        }
-        catch (e) {
-            this.renderMessage("The catalogue couldn't be loaded. Please try again later.");
-        }
-        */
 
         let downloader = new Downloader(this.catalogueUrl);
         downloader.onError = () => { this.renderMessage("The catalogue couldn't be loaded. Please try again later."); };

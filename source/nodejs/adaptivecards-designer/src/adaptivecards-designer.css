@@ -140,7 +140,7 @@
     background-color: white;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 0 15px -5px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 50px -5px rgba(0, 0, 0, 0.4);
 }
 
 .acd-sample-picker-message {
