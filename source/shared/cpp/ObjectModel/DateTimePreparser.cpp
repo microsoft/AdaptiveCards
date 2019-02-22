@@ -264,7 +264,7 @@ void DateTimePreparser::ParseDateTime(std::string const& in)
 }
 
 // Parses a time of the form HH:MM
-bool DateTimePreparser::TryParseSimpleTime(std::string string, _Out_ unsigned int* hours, _Out_ unsigned int* minutes)
+bool DateTimePreparser::TryParseSimpleTime(std::string string, unsigned int* hours, unsigned int* minutes)
 {
     std::smatch subMatches;
     static const std::regex timeMatch(R"regex(^(\d{2}):(\d{2})$)regex");
@@ -287,7 +287,7 @@ bool DateTimePreparser::TryParseSimpleTime(std::string string, _Out_ unsigned in
 }
 
 // Parses a date of the form YYYY-MM-DD
-bool DateTimePreparser::TryParseSimpleDate(std::string string, _Out_ unsigned int* year, _Out_ unsigned int* month, _Out_ unsigned int* day)
+bool DateTimePreparser::TryParseSimpleDate(std::string string, unsigned int* year, unsigned int* month, unsigned int* day)
 {
     std::smatch subMatches;
     static const std::regex dateMatch(R"regex(^(\d{4})-(\d{2})-(\d{2})$)regex");

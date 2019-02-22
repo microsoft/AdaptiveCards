@@ -12,8 +12,8 @@ namespace AdaptiveSharedNamespace
         DateTimePreparser(std::string const& in);
         std::vector<std::shared_ptr<DateTimePreparsedToken>> GetTextTokens() const;
         bool HasDateTokens() const;
-        static bool TryParseSimpleTime(std::string string, _Out_ unsigned int* hours, _Out_ unsigned int* minutes);
-        static bool TryParseSimpleDate(std::string string, _Out_ unsigned int* year, _Out_ unsigned int* month, _Out_ unsigned int* day);
+        static bool TryParseSimpleTime(std::string string, unsigned int* hours, unsigned int* minutes);
+        static bool TryParseSimpleDate(std::string string, unsigned int* year, unsigned int* month, unsigned int* day);
 
     private:
         void AddTextToken(std::string const& text, DateTimePreparsedTokenFormat format);
