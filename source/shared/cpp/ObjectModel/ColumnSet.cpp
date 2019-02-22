@@ -51,28 +51,17 @@ std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(ParseContext& cont
 {
     ParseUtil::ExpectTypeString(value, CardElementType::ColumnSet);
 
-    auto container = BaseCardElement::Deserialize<ColumnSet>(context, value);
-
-    container->SetStyle(ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
-
-    // configures for container style
-    container->ConfigForContainerStyle(context);
-
-    // we walk parse tree dfs, so we need to save current style,
-    // before we walk back up to a parent.
-    context.SaveContextForCollectionTypeElement(container); 
-
-    // Parse Columns
-    auto cardElements = ParseUtil::GetElementCollectionOfSingleType<Column>(context, value, AdaptiveCardSchemaKey::Columns, Column::Deserialize, false);
-    container->m_columns = std::move(cardElements);
-
-    // since we are walking dfs, we have to restore the style before we back up
-    context.RestoreContextForCollectionTypeElement(container);
-
-    // Parse optional selectAction
-    container->SetSelectAction(ParseUtil::GetAction(context, value, AdaptiveCardSchemaKey::SelectAction, false));
+    auto container = CollectionTypeElement::Deserialize<ColumnSet>(context, value);
 
     return container;
+}
+
+void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& value)
+{
+    // Parse Columns
+    auto cardElements =
+        ParseUtil::GetElementCollectionOfSingleType<Column>(context, value, AdaptiveCardSchemaKey::Columns, Column::Deserialize, false);
+    m_columns = std::move(cardElements);
 }
 
 std::shared_ptr<BaseCardElement> ColumnSetParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)

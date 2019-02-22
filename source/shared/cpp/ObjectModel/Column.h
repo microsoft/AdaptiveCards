@@ -19,6 +19,8 @@ namespace AdaptiveSharedNamespace
 
         static std::shared_ptr<Column> DeserializeFromString(ParseContext& context, const std::string& jsonString);
 
+        void DeserializeChildren(ParseContext& context, const Json::Value& value) override;
+
         std::string GetWidth() const;
         void SetWidth(const std::string& value);
 

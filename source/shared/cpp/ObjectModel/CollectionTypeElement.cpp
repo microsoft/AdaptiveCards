@@ -69,7 +69,7 @@ void CollectionTypeElement::SetBleed(const bool value)
 void CollectionTypeElement::ConfigBleed(const AdaptiveCards::ParseContext& context)
 {
     // we allows bleed when self has padding and at least one parent has padding
-    const AdaptiveSharedNamespace::InternalId id = context.GetIDOfParentWithPadding();
+    const AdaptiveSharedNamespace::InternalId id = context.PaddingParentInternalId();
     const bool canBleed = GetBleed() && (id != AdaptiveSharedNamespace::InternalId::Invalid);
     if (canBleed)
     {

@@ -248,7 +248,7 @@ namespace AdaptiveSharedNamespace
         return m_parentalContainerStyles.size()? m_parentalContainerStyles.back() : ContainerStyle::None;
     }
 
-    AdaptiveSharedNamespace::InternalId ParseContext::GetIDOfParentWithPadding(void) const
+    AdaptiveSharedNamespace::InternalId ParseContext::PaddingParentInternalId(void) const
     {
         if(m_parentalPadding.size())
         {

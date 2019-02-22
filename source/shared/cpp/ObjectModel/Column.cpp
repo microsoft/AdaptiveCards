@@ -78,7 +78,7 @@ Json::Value Column::SerializeToJsonValue() const
 
 std::shared_ptr<Column> Column::Deserialize(ParseContext& context, const Json::Value& value)
 {
-    auto column = BaseCardElement::Deserialize<Column>(context, value);
+    auto column = CollectionTypeElement::Deserialize<Column>(context, value);
 
     std::string columnWidth = ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Width);
     if (columnWidth == "")
@@ -89,29 +89,15 @@ std::shared_ptr<Column> Column::Deserialize(ParseContext& context, const Json::V
 
     column->SetWidth(columnWidth, &context.warnings);
 
-    column->SetStyle(ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
-
-    column->SetVerticalContentAlignment(ParseUtil::GetEnumValue<VerticalContentAlignment>(
-        value, AdaptiveCardSchemaKey::VerticalContentAlignment, VerticalContentAlignment::Top, VerticalContentAlignmentFromString));
-
-    // configures for container style
-    column->ConfigForContainerStyle(context);
-
-    // we walk parse tree dfs, so we need to save current style,
-    // before we walk back up to a parent.
-    context.SaveContextForCollectionTypeElement(column); 
-
-    // Parse Items
-    auto cardElements = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Items, false);
-    column->m_items = std::move(cardElements);
-
-    // since we are walking dfs, we have to restore the style before we back up
-    context.RestoreContextForCollectionTypeElement(column);
-
-    // Parse optional selectAction
-    column->SetSelectAction(ParseUtil::GetAction(context, value, AdaptiveCardSchemaKey::SelectAction, false));
 
     return column;
+}
+
+void Column::DeserializeChildren(ParseContext& context, const Json::Value& value)
+{
+    // Parse Items
+    auto cardElements = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Items, false);
+    m_items = std::move(cardElements);
 }
 
 std::shared_ptr<Column> Column::DeserializeFromString(ParseContext& context, const std::string& jsonString)

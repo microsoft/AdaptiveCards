@@ -20,6 +20,7 @@ namespace AdaptiveSharedNamespace
         ~ColumnSet() = default;
 
         Json::Value SerializeToJsonValue() const override;
+        void DeserializeChildren(ParseContext& context, const Json::Value& value) override;
 
         std::vector<std::shared_ptr<Column>>& GetColumns();
         const std::vector<std::shared_ptr<Column>>& GetColumns() const;
