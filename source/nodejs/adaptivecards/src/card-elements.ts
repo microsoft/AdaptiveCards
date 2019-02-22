@@ -343,6 +343,14 @@ export abstract class CardElement implements ICardObject {
 		this._parent = value;
 	}
 
+	getEffectiveStyle(): string {
+        if (this.parent) {
+            return this.parent.getEffectiveStyle();
+        }
+
+		return this.defaultStyle;
+	}
+
 	getForbiddenElementTypes(): Array<string> {
 		return null;
 	}
@@ -620,6 +628,10 @@ export abstract class CardElement implements ICardObject {
 		return (padding && this.allowCustomPadding) ? padding : this.getDefaultPadding();
 	}
 
+	protected get defaultStyle(): string {
+		return Enums.ContainerStyle.Default;
+	}
+
 	get lang(): string {
 		if (this._lang) {
 			return this._lang;
@@ -737,7 +749,7 @@ export class TextBlock extends CardElement {
 	private _processedText: string = null;
 	private _treatAsPlainText: boolean = true;
 	private _selectAction: Action = null;
-	private _effectiveStyleDefinition: HostConfig.ContainerStyleDefinition = null;
+	// private _effectiveStyleDefinition: HostConfig.ContainerStyleDefinition = null;
 
 	private restoreOriginalContent() {
 		var maxHeight = this.maxLines
@@ -771,23 +783,7 @@ export class TextBlock extends CardElement {
 	}
 
 	private getEffectiveStyleDefinition() {
-		if (!this._effectiveStyleDefinition) {
-			this._effectiveStyleDefinition = this.hostConfig.containerStyles.default;
-
-			let parentContainer = this.getParentContainer();
-
-			while (parentContainer) {
-				if (parentContainer.style) {
-					this._effectiveStyleDefinition = this.hostConfig.containerStyles.getStyleByName(parentContainer.style);
-
-					break;
-				}
-
-				parentContainer = parentContainer.getParentContainer();
-			}
-		}
-
-		return this._effectiveStyleDefinition;
+        return this.hostConfig.containerStyles.getStyleByName(this.getEffectiveStyle());
 	}
 
 	protected getRenderedDomElementType(): string {
@@ -795,7 +791,6 @@ export class TextBlock extends CardElement {
 	}
 
 	protected internalRender(): HTMLElement {
-		this._effectiveStyleDefinition = null;
 		this._processedText = null;
 
 		if (!Utils.isNullOrEmpty(this.text)) {
@@ -4175,10 +4170,6 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 		return this._style != null;
 	}
 
-	protected get defaultStyle(): string {
-		return Enums.ContainerStyle.Default;
-	}
-
 	protected get allowCustomStyle(): boolean {
 		return true;
 	}
@@ -4238,15 +4229,9 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 	}
 
 	getEffectiveStyle(): string {
-		if (!this._style) {
-			let parentContainer = this.getParentContainer();
+        let effectiveStyle = this.style;
 
-			if (parentContainer) {
-				return parentContainer.getEffectiveStyle();
-			}
-		}
-
-		return this.style ? this.style : this.defaultStyle;
+        return effectiveStyle ? effectiveStyle : super.getEffectiveStyle();
 	}
 
 	get style(): string {
@@ -6010,6 +5995,138 @@ const defaultHostConfig: HostConfig.HostConfig = new HostConfig.HostConfig(
 			},
 			emphasis: {
 				backgroundColor: "#08000000",
+				foregroundColors: {
+					default: {
+						default: "#333333",
+						subtle: "#EE333333"
+					},
+					dark: {
+						default: "#000000",
+						subtle: "#66000000"
+					},
+					light: {
+						default: "#FFFFFF",
+						subtle: "#33000000"
+					},
+					accent: {
+						default: "#2E89FC",
+						subtle: "#882E89FC"
+					},
+					attention: {
+						default: "#cc3300",
+						subtle: "#DDcc3300"
+					},
+					good: {
+						default: "#54a254",
+						subtle: "#DD54a254"
+					},
+					warning: {
+						default: "#e69500",
+						subtle: "#DDe69500"
+					}
+				}
+			},
+			accent: {
+				backgroundColor: "#C7DEF9",
+				foregroundColors: {
+					default: {
+						default: "#333333",
+						subtle: "#EE333333"
+					},
+					dark: {
+						default: "#000000",
+						subtle: "#66000000"
+					},
+					light: {
+						default: "#FFFFFF",
+						subtle: "#33000000"
+					},
+					accent: {
+						default: "#2E89FC",
+						subtle: "#882E89FC"
+					},
+					attention: {
+						default: "#cc3300",
+						subtle: "#DDcc3300"
+					},
+					good: {
+						default: "#54a254",
+						subtle: "#DD54a254"
+					},
+					warning: {
+						default: "#e69500",
+						subtle: "#DDe69500"
+					}
+				}
+			},
+			good: {
+				backgroundColor: "#CCFFCC",
+				foregroundColors: {
+					default: {
+						default: "#333333",
+						subtle: "#EE333333"
+					},
+					dark: {
+						default: "#000000",
+						subtle: "#66000000"
+					},
+					light: {
+						default: "#FFFFFF",
+						subtle: "#33000000"
+					},
+					accent: {
+						default: "#2E89FC",
+						subtle: "#882E89FC"
+					},
+					attention: {
+						default: "#cc3300",
+						subtle: "#DDcc3300"
+					},
+					good: {
+						default: "#54a254",
+						subtle: "#DD54a254"
+					},
+					warning: {
+						default: "#e69500",
+						subtle: "#DDe69500"
+					}
+				}
+			},
+			attention: {
+				backgroundColor: "#FFC5B2",
+				foregroundColors: {
+					default: {
+						default: "#333333",
+						subtle: "#EE333333"
+					},
+					dark: {
+						default: "#000000",
+						subtle: "#66000000"
+					},
+					light: {
+						default: "#FFFFFF",
+						subtle: "#33000000"
+					},
+					accent: {
+						default: "#2E89FC",
+						subtle: "#882E89FC"
+					},
+					attention: {
+						default: "#cc3300",
+						subtle: "#DDcc3300"
+					},
+					good: {
+						default: "#54a254",
+						subtle: "#DD54a254"
+					},
+					warning: {
+						default: "#e69500",
+						subtle: "#DDe69500"
+					}
+				}
+			},
+			warning: {
+				backgroundColor: "#FFE2B2",
 				foregroundColors: {
 					default: {
 						default: "#333333",

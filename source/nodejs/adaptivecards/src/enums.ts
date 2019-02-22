@@ -114,6 +114,10 @@ export enum InputTextStyle {
 export class ContainerStyle {
     static readonly Default = "default";
     static readonly Emphasis = "emphasis";
+    static readonly Accent = "accent";
+    static readonly Good = "good";
+    static readonly Attention = "attention";
+    static readonly Warning = "warning";
 }
 
 export enum ValidationError {

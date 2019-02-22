@@ -151,6 +151,138 @@ export class CortanaContainer extends Designer.HostContainer {
                             subtle: "#99FF9800"
                         }
                     }
+                },
+                accent: {
+                    backgroundColor: "#C7DEF9",
+                    foregroundColors: {
+                        default: {
+                            default: "#FFFFFFFF",
+                            subtle: "#99FFFFFF"
+                        },
+                        accent: {
+                            default: "#FF2E89FC",
+                            subtle: "#CC2E89FC"
+                        },
+                        dark: {
+                            default: "#FF999999",
+                            subtle: "#99999999"
+                        },
+                        light: {
+                            default: "#FFFFFFFF",
+                            subtle: "#99FFFFFF"
+                        },
+                        attention: {
+                            default: "#CCFF0000",
+                            subtle: "#99FF0000"
+                        },
+                        good: {
+                            default: "#CC00FF00",
+                            subtle: "#9900FF00"
+                        },
+                        warning: {
+                            default: "#CCFF9800",
+                            subtle: "#99FF9800"
+                        }
+                    }
+                },
+                good: {
+                    backgroundColor: "#CCFFCC",
+                    foregroundColors: {
+                        default: {
+                            default: "#FFFFFFFF",
+                            subtle: "#99FFFFFF"
+                        },
+                        accent: {
+                            default: "#FF2E89FC",
+                            subtle: "#CC2E89FC"
+                        },
+                        dark: {
+                            default: "#FF999999",
+                            subtle: "#99999999"
+                        },
+                        light: {
+                            default: "#FFFFFFFF",
+                            subtle: "#99FFFFFF"
+                        },
+                        attention: {
+                            default: "#CCFF0000",
+                            subtle: "#99FF0000"
+                        },
+                        good: {
+                            default: "#CC00FF00",
+                            subtle: "#9900FF00"
+                        },
+                        warning: {
+                            default: "#CCFF9800",
+                            subtle: "#99FF9800"
+                        }
+                    }
+                },
+                attention: {
+                    backgroundColor: "#FFC5B2",
+                    foregroundColors: {
+                        default: {
+                            default: "#FFFFFFFF",
+                            subtle: "#99FFFFFF"
+                        },
+                        accent: {
+                            default: "#FF2E89FC",
+                            subtle: "#CC2E89FC"
+                        },
+                        dark: {
+                            default: "#FF999999",
+                            subtle: "#99999999"
+                        },
+                        light: {
+                            default: "#FFFFFFFF",
+                            subtle: "#99FFFFFF"
+                        },
+                        attention: {
+                            default: "#CCFF0000",
+                            subtle: "#99FF0000"
+                        },
+                        good: {
+                            default: "#CC00FF00",
+                            subtle: "#9900FF00"
+                        },
+                        warning: {
+                            default: "#CCFF9800",
+                            subtle: "#99FF9800"
+                        }
+                    }
+                },
+                warning: {
+                    backgroundColor: "#FFE2B2",
+                    foregroundColors: {
+                        default: {
+                            default: "#FFFFFFFF",
+                            subtle: "#99FFFFFF"
+                        },
+                        accent: {
+                            default: "#FF2E89FC",
+                            subtle: "#CC2E89FC"
+                        },
+                        dark: {
+                            default: "#FF999999",
+                            subtle: "#99999999"
+                        },
+                        light: {
+                            default: "#FFFFFFFF",
+                            subtle: "#99FFFFFF"
+                        },
+                        attention: {
+                            default: "#CCFF0000",
+                            subtle: "#99FF0000"
+                        },
+                        good: {
+                            default: "#CC00FF00",
+                            subtle: "#9900FF00"
+                        },
+                        warning: {
+                            default: "#CCFF9800",
+                            subtle: "#99FF9800"
+                        }
+                    }
                 }
             },
             imageSizes: {

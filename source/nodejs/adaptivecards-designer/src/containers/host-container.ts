@@ -116,6 +116,138 @@ export abstract class HostContainer {
                             subtle: "#DDFF0000"
                         }
                     }
+                },
+                accent: {
+                    backgroundColor: "#C7DEF9",
+                    foregroundColors: {
+                        default: {
+                            default: "#333333",
+                            subtle: "#EE333333"
+                        },
+                        dark: {
+                            default: "#000000",
+                            subtle: "#66000000"
+                        },
+                        light: {
+                            default: "#FFFFFF",
+                            subtle: "#33000000"
+                        },
+                        accent: {
+                            default: "#2E89FC",
+                            subtle: "#882E89FC"
+                        },
+                        attention: {
+                            default: "#cc3300",
+                            subtle: "#DDcc3300"
+                        },
+                        good: {
+                            default: "#54a254",
+                            subtle: "#DD54a254"
+                        },
+                        warning: {
+                            default: "#e69500",
+                            subtle: "#DDe69500"
+                        }
+                    }
+                },
+                good: {
+                    backgroundColor: "#CCFFCC",
+                    foregroundColors: {
+                        default: {
+                            default: "#333333",
+                            subtle: "#EE333333"
+                        },
+                        dark: {
+                            default: "#000000",
+                            subtle: "#66000000"
+                        },
+                        light: {
+                            default: "#FFFFFF",
+                            subtle: "#33000000"
+                        },
+                        accent: {
+                            default: "#2E89FC",
+                            subtle: "#882E89FC"
+                        },
+                        attention: {
+                            default: "#cc3300",
+                            subtle: "#DDcc3300"
+                        },
+                        good: {
+                            default: "#54a254",
+                            subtle: "#DD54a254"
+                        },
+                        warning: {
+                            default: "#e69500",
+                            subtle: "#DDe69500"
+                        }
+                    }
+                },
+                attention: {
+                    backgroundColor: "#FFC5B2",
+                    foregroundColors: {
+                        default: {
+                            default: "#333333",
+                            subtle: "#EE333333"
+                        },
+                        dark: {
+                            default: "#000000",
+                            subtle: "#66000000"
+                        },
+                        light: {
+                            default: "#FFFFFF",
+                            subtle: "#33000000"
+                        },
+                        accent: {
+                            default: "#2E89FC",
+                            subtle: "#882E89FC"
+                        },
+                        attention: {
+                            default: "#cc3300",
+                            subtle: "#DDcc3300"
+                        },
+                        good: {
+                            default: "#54a254",
+                            subtle: "#DD54a254"
+                        },
+                        warning: {
+                            default: "#e69500",
+                            subtle: "#DDe69500"
+                        }
+                    }
+                },
+                warning: {
+                    backgroundColor: "#FFE2B2",
+                    foregroundColors: {
+                        default: {
+                            default: "#333333",
+                            subtle: "#EE333333"
+                        },
+                        dark: {
+                            default: "#000000",
+                            subtle: "#66000000"
+                        },
+                        light: {
+                            default: "#FFFFFF",
+                            subtle: "#33000000"
+                        },
+                        accent: {
+                            default: "#2E89FC",
+                            subtle: "#882E89FC"
+                        },
+                        attention: {
+                            default: "#cc3300",
+                            subtle: "#DDcc3300"
+                        },
+                        good: {
+                            default: "#54a254",
+                            subtle: "#DD54a254"
+                        },
+                        warning: {
+                            default: "#e69500",
+                            subtle: "#DDe69500"
+                        }
+                    }
                 }
             },
             imageSizes: {

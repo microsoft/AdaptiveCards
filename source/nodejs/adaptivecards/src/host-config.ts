@@ -271,10 +271,18 @@ export class ContainerStyleSet {
     constructor(obj?: any) {
         this._allStyles[Enums.ContainerStyle.Default] = new BuiltInContainerStyleDefinition();
         this._allStyles[Enums.ContainerStyle.Emphasis] = new BuiltInContainerStyleDefinition();
+        this._allStyles[Enums.ContainerStyle.Accent] = new BuiltInContainerStyleDefinition();
+        this._allStyles[Enums.ContainerStyle.Good] = new BuiltInContainerStyleDefinition();
+        this._allStyles[Enums.ContainerStyle.Attention] = new BuiltInContainerStyleDefinition();
+        this._allStyles[Enums.ContainerStyle.Warning] = new BuiltInContainerStyleDefinition();
 
         if (obj) {
             this._allStyles[Enums.ContainerStyle.Default].parse(obj[Enums.ContainerStyle.Default]);
             this._allStyles[Enums.ContainerStyle.Emphasis].parse(obj[Enums.ContainerStyle.Emphasis]);
+            this._allStyles[Enums.ContainerStyle.Accent].parse(obj[Enums.ContainerStyle.Accent]);
+            this._allStyles[Enums.ContainerStyle.Good].parse(obj[Enums.ContainerStyle.Good]);
+            this._allStyles[Enums.ContainerStyle.Attention].parse(obj[Enums.ContainerStyle.Attention]);
+            this._allStyles[Enums.ContainerStyle.Warning].parse(obj[Enums.ContainerStyle.Warning]);
 
             const customStyleArray = obj["customStyles"];
 
