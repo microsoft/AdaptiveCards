@@ -9,21 +9,22 @@ import android.os.AsyncTask;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLDecoder;
 
 import io.adaptivecards.renderer.http.HttpRequestHelper;
 import io.adaptivecards.renderer.http.HttpRequestResult;
 import io.adaptivecards.objectmodel.CharVector;
 import io.adaptivecards.objectmodel.AdaptiveBase64Util;
+import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 /** Abstract class that specifies image loading mechanism */
 public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, HttpRequestResult<Bitmap>>
 {
     RenderedAdaptiveCard m_renderedCard;
     String m_imageBaseUrl;
-    IOnlineImageLoader m_onlineImageLoader = null;
-    IDataUriImageLoader m_dataUriImageLoader = null;
     int m_maxWidth;
 
     GenericImageLoaderAsync(RenderedAdaptiveCard renderedCard, String imageBaseUrl)
@@ -38,46 +39,66 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
         m_maxWidth = maxWidth;
     }
 
+    protected String getUriScheme(String path) throws URISyntaxException
+    {
+        try
+        {
+            // Try to get the uri scheme using java URI class
+            URI uri = new URI(path);
+            return uri.getScheme();
+        }
+        catch (URISyntaxException uriSyntaxException)
+        {
+            // If the path couldn't be converted with the java URI then try to follow
+            // https://tools.ietf.org/html/rfc7595 finding the first ':' and consider that
+            // as the scheme. This is made to support the working svg support for android
+            int schemeEndIndex = path.indexOf(':');
+            if(schemeEndIndex > 0)
+            {
+                return path.substring(0, schemeEndIndex);
+            }
+            else
+            {
+                // If the path doesn't contain a scheme then throw the URISyntaxException
+                throw uriSyntaxException;
+            }
+        }
+    }
+
     // Main function to try different ways to load an image
     HttpRequestResult<Bitmap> loadImage(String path, Context context)
     {
         try
         {
-            // Let's try to see if we got the image in the card as a base64 encoded string
-            // The syntax of data URIs as in RFX 2397 is  data:[<media type>][;base64],<data>
-            path = path.trim();
-            if(path.startsWith("data:"))
-            {
-                if( m_dataUriImageLoader != null )
-                {
-                    if (m_maxWidth != -1)
-                    {
-                        return m_dataUriImageLoader.loadDataUriImage(path, this, m_maxWidth);
-                    }
-                    else
-                    {
-                        return m_dataUriImageLoader.loadDataUriImage(path, this);
-                    }
+            // Step 1: Check if user specified the scheme name as a Resource Resolver
+            String uriScheme = getUriScheme(path);
+            IResourceResolver resourceResolver = CardRendererRegistration.getInstance().getResourceResolver(uriScheme);
 
+            if(resourceResolver != null)
+            {
+                if (m_maxWidth != -1)
+                {
+                    return resourceResolver.resolveImageResource(path, this, m_maxWidth);
                 }
                 else
                 {
-                    return loadDataUriImage(path);
+                    return resourceResolver.resolveImageResource(path, this);
                 }
             }
 
+            //Step 2: If resource resolver doesn't exist, then try with treating it as a dataUri
+            // Let's try to see if we got the image in the card as a base64 encoded string
+            // The syntax of data URIs as in RFX 2397 is  data:[<media type>][;base64],<data>
+            if(uriScheme.equals("data"))
+            {
+                return loadDataUriImage(path);
+            }
+
+            // Step 3: Try to load the image from an online source, if the URL is not valid, try using the imageBaseURL, else try a local resource
             // Try loading online using only the path first
             try
             {
-                if(m_onlineImageLoader != null)
-                {
-                    return m_onlineImageLoader.loadOnlineImage(path, this);
-                }
-                else
-                {
-                    return loadOnlineImage(path);
-                }
-
+                return loadOnlineImage(path);
             }
             catch (MalformedURLException e1) {
                 // Then try using image base URL to load online
@@ -92,15 +113,7 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
                     URL urlContext = new URL(m_imageBaseUrl);
                     URL url = new URL(urlContext, path);
 
-                    if(m_onlineImageLoader != null)
-                    {
-                        return m_onlineImageLoader.loadOnlineImage(url.toString(), this);
-                    }
-                    else
-                    {
-                        return loadOnlineImage(url.toString());
-                    }
-
+                    return loadOnlineImage(url.toString());
                 }
                 catch (MalformedURLException e2)
                 {
@@ -135,7 +148,7 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
     }
 
     // Helper function to load local image URL from res/
-    private HttpRequestResult<Bitmap> loadLocalImage(String imageBaseUrl, Context context, String url) throws IOException
+    public HttpRequestResult<Bitmap> loadLocalImage(String imageBaseUrl, Context context, String url) throws IOException
     {
         String authority = context.getPackageName();
 
@@ -158,7 +171,7 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
         return new HttpRequestResult<>(bitmap);
     }
 
-    private HttpRequestResult<Bitmap> loadDataUriImage(String uri) throws Exception
+    public HttpRequestResult<Bitmap> loadDataUriImage(String uri) throws Exception
     {
         String dataUri = AdaptiveBase64Util.ExtractDataFromUri(uri);
         CharVector decodedDataUri = AdaptiveBase64Util.Decode(dataUri);
@@ -186,16 +199,6 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
         {
             m_renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.UNABLE_TO_LOAD_IMAGE, result.getException().getMessage()));
         }
-    }
-
-    public void registerCustomOnlineImageLoader(IOnlineImageLoader onlineImageLoader)
-    {
-        m_onlineImageLoader = onlineImageLoader;
-    }
-
-    public void registerCustomDataUriImageLoader(IDataUriImageLoader dataUriImageLoader)
-    {
-        m_dataUriImageLoader = dataUriImageLoader;
     }
 
     abstract void onSuccessfulPostExecute(Bitmap result);

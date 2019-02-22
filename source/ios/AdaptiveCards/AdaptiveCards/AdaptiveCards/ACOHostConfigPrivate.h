@@ -25,8 +25,8 @@ using namespace AdaptiveCards;
 - (int)getTextBlockTextSize:(FontStyle) style
                  textSize:(TextSize)txtSz;
 - (NSString *)getFontFamily:(AdaptiveCards::FontStyle)style;
-+ (UIColor *)getTextBlockColor:(ForegroundColor)txtClr
-                  colorsConfig:(ColorsConfig const &)config
+- (UIColor *)getTextBlockColor:(ACRContainerStyle)style
+                     textColor:(ForegroundColor)txtClr
                   subtleOption:(bool)isSubtle;
 + (NSTextAlignment)getTextBlockAlignment:(HorizontalAlignment)alignment;
 - (CGSize)getImageSize:(ImageSize)imageSize;
@@ -42,6 +42,8 @@ using namespace AdaptiveCards;
 - (UIColor *)getBackgroundColorForContainerStyle:(ACRContainerStyle)style;
 
 + (ACRContainerStyle)getPlatformContainerStyle:(ContainerStyle)style;
+
++ (ContainerStyle)getSharedContainerStyle:(ACRContainerStyle)style;
 
 - (ACRIconPlacement)getIconPlacement;
 @end

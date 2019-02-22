@@ -88,28 +88,26 @@ using namespace AdaptiveCards;
                     alpha:((num & 0xFF000000) >> 24) / 255.0];
 }
 
-- (const ContainerStyleDefinition &)paletteForHostConfig:(std::shared_ptr<HostConfig> const &)config
-{
-    return (_style == ACREmphasis)? config->GetContainerStyles().emphasisPalette : config->GetContainerStyles().defaultPalette;
-}
-
 - (void)setBackgroundColorWithHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    UIColor *color = [ACOHostConfig convertHexColorCodeToUIColor:[self paletteForHostConfig:config].backgroundColor];
+    auto backgroundColor = config->GetBackgroundColor([ACOHostConfig getSharedContainerStyle:_style]);
+    UIColor *color = [ACOHostConfig convertHexColorCodeToUIColor:backgroundColor];
 
     self.backgroundColor = color;
 }
 
 - (void)setBorderColorWithHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    UIColor *color = [ACOHostConfig convertHexColorCodeToUIColor:[self paletteForHostConfig:config].borderColor];
+    auto borderColor = config->GetBorderColor([ACOHostConfig getSharedContainerStyle:_style]);
+    UIColor *color = [ACOHostConfig convertHexColorCodeToUIColor:borderColor];
 
     [[self layer] setBorderColor:[color CGColor]];
 }
 
 - (void)setBorderThicknessWithHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    const CGFloat borderWidth = [self paletteForHostConfig:config].borderThickness;
+    auto borderThickness = config->GetBorderThickness([ACOHostConfig getSharedContainerStyle:_style]);
+    const CGFloat borderWidth = borderThickness;
 
     [[self layer] setBorderWidth:borderWidth];
 }

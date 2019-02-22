@@ -167,15 +167,7 @@ public class AdaptiveCardRenderer
             style = adaptiveCard.GetStyle();
         }
 
-        String color;
-        if (style == ContainerStyle.Default)
-        {
-            color = hostConfig.GetContainerStyles().getDefaultPalette().getBackgroundColor();
-        }
-        else
-        {
-            color = hostConfig.GetContainerStyles().getEmphasisPalette().getBackgroundColor();
-        }
+        String color = hostConfig.GetBackgroundColor(style);
 
         layout.setBackgroundColor(Color.parseColor(color));
 
@@ -213,18 +205,6 @@ public class AdaptiveCardRenderer
                     hostConfig.GetImageBaseUrl(),
                     context.getResources().getDisplayMetrics().widthPixels);
 
-            IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
-            if(onlineImageLoader != null)
-            {
-                loaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
-            }
-
-            IDataUriImageLoader dataUriImageLoader = CardRendererRegistration.getInstance().getDataUriImageLoader();
-            if(dataUriImageLoader != null)
-            {
-                loaderAsync.registerCustomDataUriImageLoader(dataUriImageLoader);
-            }
-
             loaderAsync.execute(imageUrl);
         }
 
@@ -239,8 +219,5 @@ public class AdaptiveCardRenderer
     }
 
     private static AdaptiveCardRenderer s_instance = null;
-
-    private IOnlineImageLoader m_onlineImageLoader = null;
-
     private HostConfig defaultHostConfig = new HostConfig();
 }

@@ -923,6 +923,14 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long ContainerStylesDefinition_defaultPalette_get(long jarg1, ContainerStylesDefinition jarg1_);
   public final static native void ContainerStylesDefinition_emphasisPalette_set(long jarg1, ContainerStylesDefinition jarg1_, long jarg2, ContainerStyleDefinition jarg2_);
   public final static native long ContainerStylesDefinition_emphasisPalette_get(long jarg1, ContainerStylesDefinition jarg1_);
+  public final static native void ContainerStylesDefinition_goodPalette_set(long jarg1, ContainerStylesDefinition jarg1_, long jarg2, ContainerStyleDefinition jarg2_);
+  public final static native long ContainerStylesDefinition_goodPalette_get(long jarg1, ContainerStylesDefinition jarg1_);
+  public final static native void ContainerStylesDefinition_attentionPalette_set(long jarg1, ContainerStylesDefinition jarg1_, long jarg2, ContainerStyleDefinition jarg2_);
+  public final static native long ContainerStylesDefinition_attentionPalette_get(long jarg1, ContainerStylesDefinition jarg1_);
+  public final static native void ContainerStylesDefinition_warningPalette_set(long jarg1, ContainerStylesDefinition jarg1_, long jarg2, ContainerStyleDefinition jarg2_);
+  public final static native long ContainerStylesDefinition_warningPalette_get(long jarg1, ContainerStylesDefinition jarg1_);
+  public final static native void ContainerStylesDefinition_accentPalette_set(long jarg1, ContainerStylesDefinition jarg1_, long jarg2, ContainerStyleDefinition jarg2_);
+  public final static native long ContainerStylesDefinition_accentPalette_get(long jarg1, ContainerStylesDefinition jarg1_);
   public final static native long ContainerStylesDefinition_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, ContainerStylesDefinition jarg2_);
   public final static native long new_ContainerStylesDefinition();
   public final static native void delete_ContainerStylesDefinition(long jarg1);
@@ -970,6 +978,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native String HostConfig_GetFontFamily__SWIG_0(long jarg1, HostConfig jarg1_, int jarg2);
   public final static native long HostConfig_GetFontSize(long jarg1, HostConfig jarg1_, int jarg2, int jarg3);
   public final static native long HostConfig_GetFontWeight(long jarg1, HostConfig jarg1_, int jarg2, int jarg3);
+  public final static native String HostConfig_GetBackgroundColor(long jarg1, HostConfig jarg1_, int jarg2);
+  public final static native String HostConfig_GetForegroundColor(long jarg1, HostConfig jarg1_, int jarg2, int jarg3, boolean jarg4);
+  public final static native String HostConfig_GetBorderColor(long jarg1, HostConfig jarg1_, int jarg2);
+  public final static native long HostConfig_GetBorderThickness(long jarg1, HostConfig jarg1_, int jarg2);
   public final static native String HostConfig_GetFontFamily__SWIG_1(long jarg1, HostConfig jarg1_);
   public final static native void HostConfig_SetFontFamily(long jarg1, HostConfig jarg1_, String jarg2);
   public final static native long HostConfig_GetFontSizes(long jarg1, HostConfig jarg1_);

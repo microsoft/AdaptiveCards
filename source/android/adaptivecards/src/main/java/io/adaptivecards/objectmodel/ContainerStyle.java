@@ -11,7 +11,11 @@ package io.adaptivecards.objectmodel;
 public enum ContainerStyle {
   None,
   Default,
-  Emphasis;
+  Emphasis,
+  Good,
+  Attention,
+  Warning,
+  Accent;
 
   public final int swigValue() {
     return swigValue;
