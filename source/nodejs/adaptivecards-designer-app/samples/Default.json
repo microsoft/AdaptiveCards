@@ -3,8 +3,8 @@
     "body": [
         {
             "type": "TextBlock",
-            "size": "Medium",
-            "weight": "Bolder",
+            "size": "medium",
+            "weight": "bolder",
             "text": "Publish Adaptive Card schema"
         },
         {
