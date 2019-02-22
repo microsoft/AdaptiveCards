@@ -398,7 +398,6 @@ AdaptiveNamespaceStart
 #endif
     typedef [v1_enum] enum FontStyle {
         Default = 0,
-        Display,
         Monospace
     } FontStyle;
 
@@ -1860,9 +1859,6 @@ AdaptiveNamespaceStart
     {
         [propget] HRESULT Default([out, retval] AdaptiveFontStyleDefinition** value);
         [propput] HRESULT Default([in] AdaptiveFontStyleDefinition* value);
-
-        [propget] HRESULT Display([out, retval] AdaptiveFontStyleDefinition** value);
-        [propput] HRESULT Display([in] AdaptiveFontStyleDefinition* value);
 
         [propget] HRESULT Monospace([out, retval] AdaptiveFontStyleDefinition** value);
         [propput] HRESULT Monospace([in] AdaptiveFontStyleDefinition* value);
