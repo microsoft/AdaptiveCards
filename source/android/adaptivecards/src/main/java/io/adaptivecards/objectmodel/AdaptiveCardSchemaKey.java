@@ -26,6 +26,7 @@ public enum AdaptiveCardSchemaKey {
   BackgroundImage,
   BackgroundImageUrl,
   BaseCardElement,
+  Bleed,
   Body,
   Bolder,
   BorderColor,

@@ -8,7 +8,7 @@
 
 package io.adaptivecards.objectmodel;
 
-public class Column extends BaseCardElement {
+public class Column extends CollectionTypeElement {
   private transient long swigCPtr;
   private transient boolean swigCMemOwnDerived;
 
@@ -80,14 +80,6 @@ public class Column extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Column_SetPixelWidth(swigCPtr, this, value);
   }
 
-  public ContainerStyle GetStyle() {
-    return ContainerStyle.swigToEnum(AdaptiveCardObjectModelJNI.Column_GetStyle(swigCPtr, this));
-  }
-
-  public void SetStyle(ContainerStyle value) {
-    AdaptiveCardObjectModelJNI.Column_SetStyle(swigCPtr, this, value.swigValue());
-  }
-
   public BaseCardElementVector GetItems() {
     return new BaseCardElementVector(AdaptiveCardObjectModelJNI.Column_GetItems__SWIG_0(swigCPtr, this), false);
   }
@@ -99,18 +91,6 @@ public class Column extends BaseCardElement {
 
   public void SetSelectAction(BaseActionElement action) {
     AdaptiveCardObjectModelJNI.Column_SetSelectAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
-  }
-
-  public void SetLanguage(String language) {
-    AdaptiveCardObjectModelJNI.Column_SetLanguage(swigCPtr, this, language);
-  }
-
-  public VerticalContentAlignment GetVerticalContentAlignment() {
-    return VerticalContentAlignment.swigToEnum(AdaptiveCardObjectModelJNI.Column_GetVerticalContentAlignment(swigCPtr, this));
-  }
-
-  public void SetVerticalContentAlignment(VerticalContentAlignment value) {
-    AdaptiveCardObjectModelJNI.Column_SetVerticalContentAlignment(swigCPtr, this, value.swigValue());
   }
 
   public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {

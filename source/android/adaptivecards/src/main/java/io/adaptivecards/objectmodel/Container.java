@@ -8,7 +8,7 @@
 
 package io.adaptivecards.objectmodel;
 
-public class Container extends BaseCardElement {
+public class Container extends CollectionTypeElement {
   private transient long swigCPtr;
   private transient boolean swigCMemOwnDerived;
 
@@ -56,35 +56,6 @@ public class Container extends BaseCardElement {
 
   public BaseCardElementVector GetItems() {
     return new BaseCardElementVector(AdaptiveCardObjectModelJNI.Container_GetItems__SWIG_0(swigCPtr, this), false);
-  }
-
-  public ContainerStyle GetStyle() {
-    return ContainerStyle.swigToEnum(AdaptiveCardObjectModelJNI.Container_GetStyle(swigCPtr, this));
-  }
-
-  public void SetStyle(ContainerStyle value) {
-    AdaptiveCardObjectModelJNI.Container_SetStyle(swigCPtr, this, value.swigValue());
-  }
-
-  public BaseActionElement GetSelectAction() {
-    long cPtr = AdaptiveCardObjectModelJNI.Container_GetSelectAction(swigCPtr, this);
-    return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
-  }
-
-  public void SetSelectAction(BaseActionElement action) {
-    AdaptiveCardObjectModelJNI.Container_SetSelectAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
-  }
-
-  public void SetLanguage(String value) {
-    AdaptiveCardObjectModelJNI.Container_SetLanguage(swigCPtr, this, value);
-  }
-
-  public VerticalContentAlignment GetVerticalContentAlignment() {
-    return VerticalContentAlignment.swigToEnum(AdaptiveCardObjectModelJNI.Container_GetVerticalContentAlignment(swigCPtr, this));
-  }
-
-  public void SetVerticalContentAlignment(VerticalContentAlignment value) {
-    AdaptiveCardObjectModelJNI.Container_SetVerticalContentAlignment(swigCPtr, this, value.swigValue());
   }
 
   public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {
