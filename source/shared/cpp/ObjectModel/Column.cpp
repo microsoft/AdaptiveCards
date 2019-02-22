@@ -97,7 +97,7 @@ std::shared_ptr<Column> Column::Deserialize(ParseContext& context, const Json::V
     // configures for container style
     column->ConfigForContainerStyle(context);
 
-    // we walk parse tree dfs in-order, so we need to save current style,
+    // we walk parse tree dfs, so we need to save current style,
     // before we walk back up to a parent.
     context.SaveContextForCollectionTypeElement(column); 
 

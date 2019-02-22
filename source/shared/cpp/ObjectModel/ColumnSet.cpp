@@ -58,7 +58,7 @@ std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(ParseContext& cont
     // configures for container style
     container->ConfigForContainerStyle(context);
 
-    // we walk parse tree dfs in-order, so we need to save current style,
+    // we walk parse tree dfs, so we need to save current style,
     // before we walk back up to a parent.
     context.SaveContextForCollectionTypeElement(container); 
 
