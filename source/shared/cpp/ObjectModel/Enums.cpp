@@ -43,7 +43,6 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::DateInput, "dateInput"},
             {AdaptiveCardSchemaKey::Default, "default"},
             {AdaptiveCardSchemaKey::DefaultPoster, "defaultPoster"},
-            {AdaptiveCardSchemaKey::Display, "display"},
             {AdaptiveCardSchemaKey::ElementId, "elementId"},
             {AdaptiveCardSchemaKey::Emphasis, "emphasis"},
             {AdaptiveCardSchemaKey::ExtraLarge, "extraLarge"},
@@ -245,7 +244,6 @@ namespace AdaptiveSharedNamespace
 
     DEFINE_ADAPTIVECARD_ENUM(FontStyle, {
             {FontStyle::Default, "Default"},
-            {FontStyle::Display, "Display"},
             {FontStyle::Monospace, "Monospace"}});
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ActionsOrientation, ActionsOrientation::Horizontal, {

@@ -45,7 +45,6 @@ namespace AdaptiveSharedNamespace
         DateInput,
         Default,
         DefaultPoster,
-        Display,
         ElementId,
         Emphasis,
         ExtraLarge,
@@ -195,7 +194,6 @@ namespace AdaptiveSharedNamespace
     enum class FontStyle
     {
         Default = 0,
-        Display,
         Monospace
     };
     DECLARE_ADAPTIVECARD_ENUM(FontStyle);
