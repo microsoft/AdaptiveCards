@@ -285,10 +285,6 @@ namespace AdaptiveNamespace
         {
             adaptiveCard->SetBackgroundImage(sharedBackgroundImage);
         }
-        else
-        {
-            adaptiveCard->SetBackgroundImage(nullptr);
-        }
 
         adaptiveCard->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
         adaptiveCard->SetVerticalContentAlignment(static_cast<AdaptiveSharedNamespace::VerticalContentAlignment>(m_verticalAlignment));

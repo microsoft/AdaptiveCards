@@ -133,10 +133,6 @@ namespace AdaptiveNamespace
         {
             column->SetBackgroundImage(sharedBackgroundImage);
         }
-        else
-        {
-            column->SetBackgroundImage(nullptr);
-        }
 
         if (m_selectAction != nullptr)
         {

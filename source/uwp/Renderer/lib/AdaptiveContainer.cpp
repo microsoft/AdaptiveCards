@@ -125,10 +125,6 @@ namespace AdaptiveNamespace
         {
             container->SetBackgroundImage(sharedBackgroundImage);
         }
-        else
-        {
-            container->SetBackgroundImage(nullptr);
-        }
 
         GenerateSharedElements(m_items.Get(), container->GetItems());
 
