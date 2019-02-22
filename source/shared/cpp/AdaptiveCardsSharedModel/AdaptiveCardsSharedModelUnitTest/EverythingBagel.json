@@ -288,6 +288,12 @@
 			"id": "Action.ShowCard_id",
 			"card": {
 				"type": "AdaptiveCard",
+				"backgroundImage": {
+					"url": "https://adaptivecards.io/content/cats/1.png",
+					"mode": "repeat",
+					"verticalAlignment": "center",
+					"horizontalAlignment": "right"
+				},
 				"body": [
 					{
 						"type": "TextBlock",

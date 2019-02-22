@@ -1187,6 +1187,23 @@ HRESULT ProjectedElementTypeToHString(ABI::AdaptiveNamespace::ElementType projec
     return UTF8ToHString(CardElementTypeToString(sharedElementType), result);
 }
 
+HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage* backgroundImageElement, _Out_ BOOL* isValid)
+{
+    ComPtr<ABI::AdaptiveNamespace::IAdaptiveBackgroundImage> backgroundImage(backgroundImageElement);
+    if (backgroundImage != NULL)
+    {
+        HSTRING url;
+        THROW_IF_FAILED(backgroundImage->get_Url(&url));
+        if (url != NULL)
+        {
+            *isValid = TRUE;
+			return S_OK;
+        }
+    }
+    *isValid = FALSE;
+    return S_OK;
+}
+
 std::wstring StringToWstring(const std::string& in)
 {
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;

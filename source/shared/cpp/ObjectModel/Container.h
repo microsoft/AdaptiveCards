@@ -1,6 +1,9 @@
 #pragma once
 
 #include "pch.h"
+#include "BackgroundImage.h"
+#include "BaseActionElement.h"
+#include "Enums.h"
 #include "BaseCardElement.h"
 
 namespace AdaptiveSharedNamespace
@@ -35,12 +38,16 @@ namespace AdaptiveSharedNamespace
         VerticalContentAlignment GetVerticalContentAlignment() const;
         void SetVerticalContentAlignment(const VerticalContentAlignment value);
 
+        std::shared_ptr<BackgroundImage> GetBackgroundImage() const;
+        void SetBackgroundImage(const std::shared_ptr<BackgroundImage> value);
+
         void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
     private:
         void PopulateKnownPropertiesSet() override;
 
         ContainerStyle m_style;
+        std::shared_ptr<BackgroundImage> m_backgroundImage;
         VerticalContentAlignment m_verticalContentAlignment;
         std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>> m_items;
         std::shared_ptr<BaseActionElement> m_selectAction;
