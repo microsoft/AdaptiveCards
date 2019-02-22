@@ -166,7 +166,7 @@ public class AdaptiveCardRenderer
                     layout,
                     hostConfig.GetImageBaseUrl(),
                     context.getResources().getDisplayMetrics().widthPixels,
-					backgroundImageProperties);
+					          backgroundImageProperties);
 
             IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
             if(onlineImageLoader != null)
@@ -194,8 +194,5 @@ public class AdaptiveCardRenderer
     }
 
     private static AdaptiveCardRenderer s_instance = null;
-
-    private IOnlineImageLoader m_onlineImageLoader = null;
-
     private HostConfig defaultHostConfig = new HostConfig();
 }

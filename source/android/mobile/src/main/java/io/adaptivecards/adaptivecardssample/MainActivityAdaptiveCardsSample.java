@@ -1,5 +1,6 @@
 package io.adaptivecards.adaptivecardssample;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -24,7 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import io.adaptivecards.renderer.GenericImageLoaderAsync;
-import io.adaptivecards.renderer.IDataUriImageLoader;
+import io.adaptivecards.renderer.IResourceResolver;
 import io.adaptivecards.renderer.IMediaDataSourceOnPreparedListener;
 import io.adaptivecards.renderer.IOnlineMediaLoader;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
@@ -47,6 +48,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.List;
@@ -648,10 +650,49 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
     private void setupImageLoader()
     {
-        CardRendererRegistration.getInstance().registerDataUriImageLoader(new IDataUriImageLoader()
+        CardRendererRegistration.getInstance().registerResourceResolver("package", new IResourceResolver()
         {
             @Override
-            public HttpRequestResult<Bitmap> loadDataUriImage(String uri, GenericImageLoaderAsync genericImageLoaderAsync) throws Exception
+            public HttpRequestResult<Bitmap> resolveImageResource(String url, GenericImageLoaderAsync loader) throws IOException, URISyntaxException
+            {
+                // Get image identifier
+                String authority = getPackageName();
+                Resources resources = getResources();
+
+                // For host app only provides image file name as url, host app can pass "package:[IMAGE NAME]" as replacement for
+                // meeting the valid URL format checking. Here we will remove this prefix to get file name.
+                if (url.startsWith("package:"))
+                {
+                    url = url.replace("package:", "drawable/");
+                }
+
+                int identifier = resources.getIdentifier(url, "", authority);
+                if (identifier == 0)
+                {
+                    throw new IOException("Image not found: " + url);
+                }
+
+                InputStream ins = resources.openRawResource(identifier);
+                Bitmap bitmap = BitmapFactory.decodeStream(ins);
+                if (bitmap == null)
+                {
+                    throw new IOException("Failed to convert local content to bitmap: " + url);
+                }
+
+                return new HttpRequestResult<>(bitmap);
+            }
+
+            @Override
+            public HttpRequestResult<Bitmap> resolveImageResource(String url, GenericImageLoaderAsync loader, int maxWidth) throws IOException, URISyntaxException
+            {
+                return resolveImageResource(url, loader);
+            }
+        });
+
+        CardRendererRegistration.getInstance().registerResourceResolver("data", new IResourceResolver()
+        {
+            @Override
+            public HttpRequestResult<Bitmap> resolveImageResource(String uri, GenericImageLoaderAsync genericImageLoaderAsync) throws IOException, URISyntaxException
             {
                 Bitmap bitmap;
                 String dataUri = AdaptiveBase64Util.ExtractDataFromUri(uri);
@@ -663,7 +704,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             }
 
             @Override
-            public HttpRequestResult<Bitmap> loadDataUriImage(String uri, GenericImageLoaderAsync genericImageLoaderAsync, int maxWidth) throws Exception
+            public HttpRequestResult<Bitmap> resolveImageResource(String uri, GenericImageLoaderAsync genericImageLoaderAsync, int maxWidth) throws IOException, URISyntaxException
             {
                 Bitmap bitmap;
                 String dataUri = AdaptiveBase64Util.ExtractDataFromUri(uri);
@@ -675,9 +716,17 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                     Sharp sharp = Sharp.loadString(decodedSvgString);
                     Drawable drawable = sharp.getDrawable();
                     bitmap = ImageUtil.drawableToBitmap(drawable, maxWidth);
-                } else {
-                    byte[] decodedByteArray = Util.getBytes(decodedDataUri);
-                    bitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+                }
+                else
+                {
+                    try
+                    {
+                        return genericImageLoaderAsync.loadDataUriImage(uri);
+                    }
+                    catch (Exception e)
+                    {
+                        return new HttpRequestResult<>(e);
+                    }
                 }
 
                 return new HttpRequestResult<>(bitmap);
