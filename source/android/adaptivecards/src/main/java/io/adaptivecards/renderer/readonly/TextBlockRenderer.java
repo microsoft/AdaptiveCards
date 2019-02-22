@@ -23,7 +23,6 @@ import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
-import io.adaptivecards.objectmodel.FontSizesConfig;
 import io.adaptivecards.objectmodel.HorizontalAlignment;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.TextBlock;
