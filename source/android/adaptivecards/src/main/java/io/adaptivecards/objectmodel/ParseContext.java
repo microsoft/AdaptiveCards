@@ -86,6 +86,14 @@ public class ParseContext {
     AdaptiveCardObjectModelJNI.ParseContext_PopElement(swigCPtr, this);
   }
 
+  public void SetLanguage(String value) {
+    AdaptiveCardObjectModelJNI.ParseContext_SetLanguage(swigCPtr, this, value);
+  }
+
+  public String GetLanguage() {
+    return AdaptiveCardObjectModelJNI.ParseContext_GetLanguage(swigCPtr, this);
+  }
+
   public ContainerStyle GetParentalContainerStyle() {
     return ContainerStyle.swigToEnum(AdaptiveCardObjectModelJNI.ParseContext_GetParentalContainerStyle(swigCPtr, this));
   }
