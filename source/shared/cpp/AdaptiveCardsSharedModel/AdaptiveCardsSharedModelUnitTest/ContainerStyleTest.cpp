@@ -67,7 +67,6 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::shared_ptr<Container> container2 = std::static_pointer_cast<Container>(items.back());
             // When container style is differrent from parent and child, child should get padding
             Assert::IsTrue(container2->GetPadding());
-            //Assert::IsFalse(container->GetPadding());
         }
 
         TEST_METHOD(ColunmContainerStyleTest)

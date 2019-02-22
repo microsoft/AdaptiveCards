@@ -29,9 +29,9 @@ namespace AdaptiveSharedNamespace
         void SetBleed(const bool value);
         // tells if current element can bleed 
         // when GetCanBleed() return false and GetBleed() returns true 
-        // the user must also check if HostConfig has
+        // the renderer must also check if HostConfig has
         // padding for card, the root, if the padding is allowed,
-        // the user has to interpret the returned value correctly
+        // then the element can bleed to the card
         bool GetCanBleed() const;
         // configures container style related attributes
         // such as style, padding and bleed

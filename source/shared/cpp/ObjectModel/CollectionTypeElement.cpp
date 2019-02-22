@@ -44,26 +44,18 @@ void CollectionTypeElement::SetPadding(const bool value)
 void CollectionTypeElement::ConfigPadding(const ParseContext& context)
 {
     // we set padding when parental style is different from child's, and its style should not be None
-    if(GetStyle() != ContainerStyle::None) 
+    if ((GetStyle() != ContainerStyle::None) && (context.GetParentalContainerStyle() != GetStyle()))
     {
-        if(context.GetParentalContainerStyle() != GetStyle())
-        {
-            if(context.GetParentalContainerStyle() == ContainerStyle::None &&
-                GetStyle() == ContainerStyle::Default)
-            {
-                SetPadding(false);
-                return;
-            }
-
-            SetPadding(true);
-            return;
-        }
+        SetPadding(!(context.GetParentalContainerStyle() == ContainerStyle::None &&
+            GetStyle() == ContainerStyle::Default));
+    } 
+    else 
+    {
+        SetPadding(false);
     }
-
-    SetPadding(false);
 }
 
-bool CollectionTypeElement::GetBleed(void) const
+bool CollectionTypeElement::GetBleed() const
 {
     return m_hasBleed;
 }
@@ -73,13 +65,13 @@ void CollectionTypeElement::SetBleed(const bool value)
     m_hasBleed = value;
 }
 
-// Applies Padding Flag When appropriate
+// Applies Bleed Flag When appropriate
 void CollectionTypeElement::ConfigBleed(const AdaptiveCards::ParseContext& context)
 {
     // we allows bleed when self has padding and at least one parent has padding
     AdaptiveSharedNamespace::InternalId id = context.GetIDOfParentWithPadding();
     bool canBleed = GetBleed() && (id != AdaptiveSharedNamespace::InternalId::Invalid);
-    if(canBleed)
+    if (canBleed)
     {
         SetParentalId(id);
     }

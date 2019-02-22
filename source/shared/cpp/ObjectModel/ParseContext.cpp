@@ -245,7 +245,7 @@ namespace AdaptiveSharedNamespace
 
     ContainerStyle ParseContext::GetParentalContainerStyle() const
     {
-        return (m_parentalContainerStyles.size())? m_parentalContainerStyles.back() : ContainerStyle::None;
+        return m_parentalContainerStyles.size()? m_parentalContainerStyles.back() : ContainerStyle::None;
     }
 
     AdaptiveSharedNamespace::InternalId ParseContext::GetIDOfParentWithPadding(void) const
@@ -292,8 +292,5 @@ namespace AdaptiveSharedNamespace
         m_language = value;
     }
 
-    std::string ParseContext::GetLanguage() const
-    {
-        return m_language;
-    }
+    std::string ParseContext::GetLanguage() const { return m_language; }
 }
