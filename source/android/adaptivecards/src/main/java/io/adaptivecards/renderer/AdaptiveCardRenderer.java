@@ -166,19 +166,7 @@ public class AdaptiveCardRenderer
                     layout,
                     hostConfig.GetImageBaseUrl(),
                     context.getResources().getDisplayMetrics().widthPixels,
-					          backgroundImageProperties);
-
-            IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
-            if(onlineImageLoader != null)
-            {
-                loaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
-            }
-
-            IDataUriImageLoader dataUriImageLoader = CardRendererRegistration.getInstance().getDataUriImageLoader();
-            if(dataUriImageLoader != null)
-            {
-                loaderAsync.registerCustomDataUriImageLoader(dataUriImageLoader);
-            }
+                    backgroundImageProperties);
 
             loaderAsync.execute(backgroundImageProperties.GetUrl());
         }
