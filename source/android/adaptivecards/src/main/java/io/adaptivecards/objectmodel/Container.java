@@ -58,6 +58,15 @@ public class Container extends CollectionTypeElement {
     return new BaseCardElementVector(AdaptiveCardObjectModelJNI.Container_GetItems__SWIG_0(swigCPtr, this), false);
   }
 
+  public BackgroundImage GetBackgroundImage() {
+    long cPtr = AdaptiveCardObjectModelJNI.Container_GetBackgroundImage(swigCPtr, this);
+    return (cPtr == 0) ? null : new BackgroundImage(cPtr, true);
+  }
+
+  public void SetBackgroundImage(BackgroundImage value) {
+    AdaptiveCardObjectModelJNI.Container_SetBackgroundImage(swigCPtr, this, BackgroundImage.getCPtr(value), value);
+  }
+
   public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {
     AdaptiveCardObjectModelJNI.Container_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceInfo), resourceInfo);
   }

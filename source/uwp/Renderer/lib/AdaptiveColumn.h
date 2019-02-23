@@ -2,6 +2,7 @@
 
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "AdaptiveCardElement.h"
+#include "AdaptiveBackgroundImage.h"
 #include "Enums.h"
 #include "Column.h"
 #include <windows.foundation.h>
@@ -40,6 +41,9 @@ namespace AdaptiveNamespace
 
         IFACEMETHODIMP get_VerticalContentAlignment(_Out_ ABI::AdaptiveNamespace::VerticalContentAlignment* verticalAlignment);
         IFACEMETHODIMP put_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment verticalAlignment);
+
+        IFACEMETHODIMP get_BackgroundImage(_Outptr_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage** backgroundImage);
+        IFACEMETHODIMP put_BackgroundImage(_In_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage* backgroundImage);
 
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
@@ -109,6 +113,7 @@ namespace AdaptiveNamespace
         UINT32 m_pixelWidth;
         ABI::AdaptiveNamespace::ContainerStyle m_style;
         ABI::AdaptiveNamespace::VerticalContentAlignment m_verticalAlignment;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveBackgroundImage> m_backgroundImage;
     };
 
     ActivatableClass(AdaptiveColumn);

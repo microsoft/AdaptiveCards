@@ -100,12 +100,16 @@ namespace AdaptiveSharedNamespace
         Method,
         MimeType,
         Min,
+        Mode,
         Monospace,
         NumberInput,
         Padding,
         Placeholder,
         PlayButton,
         Poster,
+        Repeat,
+        RepeatHorizontally,
+        RepeatVertically,
         Requires,
         Right,
         SelectAction,
@@ -141,6 +145,7 @@ namespace AdaptiveSharedNamespace
         ValueOff,
         ValueOn,
         Version,
+        VerticalAlignment,
         VerticalContentAlignment,
         Warning,
         Weight,
@@ -220,6 +225,23 @@ namespace AdaptiveSharedNamespace
         Right
     };
     DECLARE_ADAPTIVECARD_ENUM(HorizontalAlignment);
+
+    enum class VerticalAlignment
+    {
+        Top = 0,
+        Center,
+        Bottom
+    };
+    DECLARE_ADAPTIVECARD_ENUM(VerticalAlignment);
+
+    enum class BackgroundImageMode
+    {
+        Stretch = 0,
+        RepeatHorizontally,
+        RepeatVertically,
+        Repeat
+    };
+    DECLARE_ADAPTIVECARD_ENUM(BackgroundImageMode);
 
     enum class ImageStyle
     {

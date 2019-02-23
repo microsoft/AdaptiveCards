@@ -22,10 +22,25 @@ std::vector<std::shared_ptr<BaseCardElement>>& Container::GetItems()
     return m_items;
 }
 
+std::shared_ptr<BackgroundImage> Container::GetBackgroundImage() const
+{
+    return m_backgroundImage;
+}
+
+void Container::SetBackgroundImage(const std::shared_ptr<BackgroundImage> value)
+{
+    m_backgroundImage = value;
+}
+
 Json::Value Container::SerializeToJsonValue() const
 {
     Json::Value root = CollectionTypeElement::SerializeToJsonValue();
 
+    }
+
+    if (m_backgroundImage != nullptr && !m_backgroundImage->GetUrl().empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImage)] = m_backgroundImage->SerializeToJsonValue();
     std::string const& itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
     root[itemsPropertyName] = Json::Value(Json::arrayValue);
     for (const auto& cardElement : m_items)
@@ -47,6 +62,9 @@ std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(ParseContext& cont
 
 void Container::DeserializeChildren(ParseContext& context, const Json::Value& value)
 {
+    auto backgroundImage = ParseUtil::GetBackgroundImage(value);
+    container->SetBackgroundImage(backgroundImage);
+
     // Parse items
     auto cardElements = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Items, false);
     m_items = std::move(cardElements);
@@ -67,6 +85,15 @@ void Container::PopulateKnownPropertiesSet()
 
 void Container::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
 {
+    auto backgroundImage = GetBackgroundImage();
+    if (backgroundImage != nullptr)
+    {
+        RemoteResourceInformation backgroundImageInfo;
+        backgroundImageInfo.url = backgroundImage->GetUrl();
+        backgroundImageInfo.mimeType = "image";
+        resourceInfo.push_back(backgroundImageInfo);
+    }
+
     auto items = GetItems();
     for (const auto& item : items)
     {

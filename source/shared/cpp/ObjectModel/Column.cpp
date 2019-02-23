@@ -51,6 +51,16 @@ std::vector<std::shared_ptr<BaseCardElement>>& Column::GetItems()
     return m_items;
 }
 
+std::shared_ptr<BackgroundImage> Column::GetBackgroundImage() const
+{
+    return m_backgroundImage;
+}
+
+void Column::SetBackgroundImage(const std::shared_ptr<BackgroundImage> value)
+{
+    m_backgroundImage = value;
+}
+
 std::string Column::Serialize() const
 {
     Json::FastWriter writer;
@@ -66,6 +76,11 @@ Json::Value Column::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width)] = m_width;
     }
 
+    }
+
+    if (m_backgroundImage != nullptr && !m_backgroundImage->GetUrl().empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImage)] = m_backgroundImage->SerializeToJsonValue();
     std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
     root[propertyName] = Json::Value(Json::arrayValue);
     for (const auto& cardElement : m_items)
@@ -93,6 +108,9 @@ std::shared_ptr<Column> Column::Deserialize(ParseContext& context, const Json::V
     return column;
 }
 
+
+    auto backgroundImage = ParseUtil::GetBackgroundImage(value);
+    column->SetBackgroundImage(backgroundImage);
 void Column::DeserializeChildren(ParseContext& context, const Json::Value& value)
 {
     // Parse Items
@@ -126,6 +144,15 @@ void Column::PopulateKnownPropertiesSet()
 
 void Column::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
 {
+    auto backgroundImage = GetBackgroundImage();
+    if (backgroundImage != nullptr)
+    {
+        RemoteResourceInformation backgroundImageInfo;
+        backgroundImageInfo.url = backgroundImage->GetUrl();
+        backgroundImageInfo.mimeType = "image";
+        resourceInfo.push_back(backgroundImageInfo);
+    }
+
     auto columnItems = GetItems();
     for (auto item : columnItems)
     {

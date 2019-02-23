@@ -1,6 +1,9 @@
 #pragma once
 
 #include "pch.h"
+#include "BackgroundImage.h"
+#include "BaseActionElement.h"
+#include "Enums.h"
 #include "CollectionTypeElement.h"
 
 namespace AdaptiveSharedNamespace
@@ -25,11 +28,15 @@ namespace AdaptiveSharedNamespace
         std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
         const std::vector<std::shared_ptr<BaseCardElement>>& GetItems() const;
 
+        std::shared_ptr<BackgroundImage> GetBackgroundImage() const;
+        void SetBackgroundImage(const std::shared_ptr<BackgroundImage> value);
+
         void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
     private:
         void PopulateKnownPropertiesSet() override;
 
+        std::shared_ptr<BackgroundImage> m_backgroundImage;
         std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>> m_items;
     };
 
