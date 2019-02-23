@@ -5,9 +5,7 @@ using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
-    /// <summary>
-    ///     Base class for all elements in a container
-    /// </summary>
+     
     public abstract class AdaptiveElement : AdaptiveTypedElement
     {
         /// <summary>
