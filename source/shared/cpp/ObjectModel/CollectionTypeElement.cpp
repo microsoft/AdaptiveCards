@@ -152,3 +152,8 @@ Json::Value CollectionTypeElement::SerializeToJsonValue() const
 
     return root;
 }
+
+void CollectionTypeElement::DeserializeChildren(ParseContext& context, const Json::Value& value)
+{
+    return;
+}

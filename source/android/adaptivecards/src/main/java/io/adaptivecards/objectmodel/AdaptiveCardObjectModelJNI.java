@@ -443,7 +443,11 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void BaseInputElement_SetIsRequired(long jarg1, BaseInputElement jarg1_, boolean jarg2);
   public final static native long BaseInputElement_SerializeToJsonValue(long jarg1, BaseInputElement jarg1_);
   public final static native void delete_BaseInputElement(long jarg1);
+  public final static native long new_CollectionTypeElement__SWIG_0(long jarg1, CollectionTypeElement jarg1_);
   public final static native void delete_CollectionTypeElement(long jarg1);
+  public final static native long new_CollectionTypeElement__SWIG_2(int jarg1, int jarg2, int jarg3);
+  public final static native long new_CollectionTypeElement__SWIG_3(int jarg1, int jarg2);
+  public final static native long new_CollectionTypeElement__SWIG_4(int jarg1);
   public final static native int CollectionTypeElement_GetStyle(long jarg1, CollectionTypeElement jarg1_);
   public final static native void CollectionTypeElement_SetStyle(long jarg1, CollectionTypeElement jarg1_, int jarg2);
   public final static native int CollectionTypeElement_GetVerticalContentAlignment(long jarg1, CollectionTypeElement jarg1_);
@@ -460,7 +464,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void CollectionTypeElement_SetSelectAction(long jarg1, CollectionTypeElement jarg1_, long jarg2, BaseActionElement jarg2_);
   public final static native long CollectionTypeElement_GetBackgroundImage(long jarg1, CollectionTypeElement jarg1_);
   public final static native void CollectionTypeElement_SetBackgroundImage(long jarg1, CollectionTypeElement jarg1_, long jarg2, BackgroundImage jarg2_);
-  public final static native void CollectionTypeElement_DeserializeChildren(long jarg1, CollectionTypeElement jarg1_, long jarg2, long jarg3, JsonValue jarg3_);
+  public final static native void CollectionTypeElement_DeserializeChildren(long jarg1, CollectionTypeElement jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
   public final static native long CollectionTypeElement_SerializeToJsonValue(long jarg1, CollectionTypeElement jarg1_);
   public final static native long new_AdaptiveCardParseWarning(int jarg1, String jarg2);
   public final static native int AdaptiveCardParseWarning_GetStatusCode(long jarg1, AdaptiveCardParseWarning jarg1_);
@@ -496,6 +500,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void ElementParserRegistration_RemoveParser(long jarg1, ElementParserRegistration jarg1_, String jarg2);
   public final static native long ElementParserRegistration_GetParser(long jarg1, ElementParserRegistration jarg1_, String jarg2);
   public final static native void delete_ElementParserRegistration(long jarg1);
+  public final static native long new_Container__SWIG_0();
+  public final static native long new_Container__SWIG_1(long jarg1, Container jarg1_);
   public final static native void delete_Container(long jarg1);
   public final static native long Container_SerializeToJsonValue(long jarg1, Container jarg1_);
   public final static native void Container_DeserializeChildren(long jarg1, Container jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
@@ -551,6 +557,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void delete_ImageSetParser(long jarg1);
   public final static native long ImageSetParser_Deserialize(long jarg1, ImageSetParser jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
   public final static native long ImageSetParser_DeserializeFromString(long jarg1, ImageSetParser jarg1_, long jarg2, ParseContext jarg2_, String jarg3);
+  public final static native long new_Column();
   public final static native String Column_Serialize(long jarg1, Column jarg1_);
   public final static native long Column_SerializeToJsonValue(long jarg1, Column jarg1_);
   public final static native long Column_Deserialize(long jarg1, ParseContext jarg1_, long jarg2, JsonValue jarg2_);
@@ -564,6 +571,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void Column_GetResourceInformation(long jarg1, Column jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native long Column_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native void delete_Column(long jarg1);
+  public final static native long new_ColumnSet__SWIG_0();
+  public final static native long new_ColumnSet__SWIG_1(long jarg1, ColumnSet jarg1_);
   public final static native void delete_ColumnSet(long jarg1);
   public final static native long ColumnSet_SerializeToJsonValue(long jarg1, ColumnSet jarg1_);
   public final static native void ColumnSet_DeserializeChildren(long jarg1, ColumnSet jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);

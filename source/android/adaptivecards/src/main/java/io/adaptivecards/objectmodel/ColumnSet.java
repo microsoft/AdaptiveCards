@@ -42,6 +42,14 @@ public class ColumnSet extends CollectionTypeElement {
     super.delete();
   }
 
+  public ColumnSet() {
+    this(AdaptiveCardObjectModelJNI.new_ColumnSet__SWIG_0(), true);
+  }
+
+  public ColumnSet(ColumnSet arg0) {
+    this(AdaptiveCardObjectModelJNI.new_ColumnSet__SWIG_1(ColumnSet.getCPtr(arg0), arg0), true);
+  }
+
   public JsonValue SerializeToJsonValue() {
     return new JsonValue(AdaptiveCardObjectModelJNI.ColumnSet_SerializeToJsonValue(swigCPtr, this), true);
   }

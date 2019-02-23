@@ -47,7 +47,7 @@ namespace AdaptiveSharedNamespace
         std::shared_ptr<BackgroundImage> GetBackgroundImage() const;
         void SetBackgroundImage(const std::shared_ptr<BackgroundImage> value);
 
-        virtual void DeserializeChildren(ParseContext& context, const Json::Value& value) = 0;
+        virtual void DeserializeChildren(AdaptiveCards::ParseContext& context, const Json::Value& value);
 
         Json::Value SerializeToJsonValue() const override;
         template<typename T> static std::shared_ptr<T> Deserialize(ParseContext& context, const Json::Value& value);

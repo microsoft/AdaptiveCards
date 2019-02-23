@@ -42,6 +42,10 @@ public class Column extends CollectionTypeElement {
     super.delete();
   }
 
+  public Column() {
+    this(AdaptiveCardObjectModelJNI.new_Column(), true);
+  }
+
   public String Serialize() {
     return AdaptiveCardObjectModelJNI.Column_Serialize(swigCPtr, this);
   }
