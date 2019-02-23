@@ -153,7 +153,7 @@ Json::Value CollectionTypeElement::SerializeToJsonValue() const
     return root;
 }
 
-void CollectionTypeElement::DeserializeChildren(ParseContext& context, const Json::Value& value)
+void CollectionTypeElement::DeserializeChildren(ParseContext&, const Json::Value&)
 {
     return;
 }
