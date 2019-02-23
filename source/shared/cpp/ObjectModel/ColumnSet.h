@@ -25,9 +25,6 @@ namespace AdaptiveSharedNamespace
         std::vector<std::shared_ptr<Column>>& GetColumns();
         const std::vector<std::shared_ptr<Column>>& GetColumns() const;
 
-        std::shared_ptr<BaseActionElement> GetSelectAction() const;
-        void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
-
         void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
     private:

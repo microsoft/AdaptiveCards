@@ -23,16 +23,6 @@ std::vector<std::shared_ptr<Column>>& ColumnSet::GetColumns()
     return m_columns;
 }
 
-std::shared_ptr<BaseActionElement> ColumnSet::GetSelectAction() const
-{
-    return m_selectAction;
-}
-
-void ColumnSet::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
-{
-    m_selectAction = action;
-}
-
 Json::Value ColumnSet::SerializeToJsonValue() const
 {
     Json::Value root = CollectionTypeElement::SerializeToJsonValue();

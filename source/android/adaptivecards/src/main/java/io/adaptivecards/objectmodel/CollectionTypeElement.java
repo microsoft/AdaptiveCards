@@ -42,22 +42,6 @@ public class CollectionTypeElement extends BaseCardElement {
     super.delete();
   }
 
-  public CollectionTypeElement(CollectionTypeElement arg0) {
-    this(AdaptiveCardObjectModelJNI.new_CollectionTypeElement__SWIG_0(CollectionTypeElement.getCPtr(arg0), arg0), true);
-  }
-
-  public CollectionTypeElement(CardElementType type, ContainerStyle style, VerticalContentAlignment alignment) {
-    this(AdaptiveCardObjectModelJNI.new_CollectionTypeElement__SWIG_2(type.swigValue(), style.swigValue(), alignment.swigValue()), true);
-  }
-
-  public CollectionTypeElement(CardElementType type, ContainerStyle style) {
-    this(AdaptiveCardObjectModelJNI.new_CollectionTypeElement__SWIG_3(type.swigValue(), style.swigValue()), true);
-  }
-
-  public CollectionTypeElement(CardElementType type) {
-    this(AdaptiveCardObjectModelJNI.new_CollectionTypeElement__SWIG_4(type.swigValue()), true);
-  }
-
   public ContainerStyle GetStyle() {
     return ContainerStyle.swigToEnum(AdaptiveCardObjectModelJNI.CollectionTypeElement_GetStyle(swigCPtr, this));
   }
@@ -113,6 +97,19 @@ public class CollectionTypeElement extends BaseCardElement {
 
   public void SetSelectAction(BaseActionElement action) {
     AdaptiveCardObjectModelJNI.CollectionTypeElement_SetSelectAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
+  }
+
+  public BackgroundImage GetBackgroundImage() {
+    long cPtr = AdaptiveCardObjectModelJNI.CollectionTypeElement_GetBackgroundImage(swigCPtr, this);
+    return (cPtr == 0) ? null : new BackgroundImage(cPtr, true);
+  }
+
+  public void SetBackgroundImage(BackgroundImage value) {
+    AdaptiveCardObjectModelJNI.CollectionTypeElement_SetBackgroundImage(swigCPtr, this, BackgroundImage.getCPtr(value), value);
+  }
+
+  public void DeserializeChildren(SWIGTYPE_p_ParseContext context, JsonValue value) {
+    AdaptiveCardObjectModelJNI.CollectionTypeElement_DeserializeChildren(swigCPtr, this, SWIGTYPE_p_ParseContext.getCPtr(context), JsonValue.getCPtr(value), value);
   }
 
   public JsonValue SerializeToJsonValue() {

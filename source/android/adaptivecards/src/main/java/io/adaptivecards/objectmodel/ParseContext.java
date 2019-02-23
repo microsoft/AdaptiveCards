@@ -98,8 +98,8 @@ public class ParseContext {
     return ContainerStyle.swigToEnum(AdaptiveCardObjectModelJNI.ParseContext_GetParentalContainerStyle(swigCPtr, this));
   }
 
-  public InternalId GetIDOfParentWithPadding() {
-    return new InternalId(AdaptiveCardObjectModelJNI.ParseContext_GetIDOfParentWithPadding(swigCPtr, this), true);
+  public InternalId PaddingParentInternalId() {
+    return new InternalId(AdaptiveCardObjectModelJNI.ParseContext_PaddingParentInternalId(swigCPtr, this), true);
   }
 
   public void SaveContextForCollectionTypeElement(CollectionTypeElement current) {

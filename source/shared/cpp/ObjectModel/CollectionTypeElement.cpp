@@ -105,6 +105,16 @@ void CollectionTypeElement::ConfigForContainerStyle(const ParseContext& context)
     ConfigBleed(context);
 }
 
+std::shared_ptr<BackgroundImage> CollectionTypeElement::GetBackgroundImage() const
+{
+    return m_backgroundImage;
+}
+
+void CollectionTypeElement::SetBackgroundImage(const std::shared_ptr<BackgroundImage> value)
+{
+    m_backgroundImage = value;
+}
+
 std::shared_ptr<BaseActionElement> CollectionTypeElement::GetSelectAction() const
 {
     return m_selectAction;
@@ -123,6 +133,11 @@ Json::Value CollectionTypeElement::SerializeToJsonValue() const
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] =
             BaseCardElement::SerializeSelectAction(m_selectAction);
+    }
+
+    if (m_backgroundImage != nullptr && !m_backgroundImage->GetUrl().empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImage)] = m_backgroundImage->SerializeToJsonValue();
     }
 
     if (GetStyle() != ContainerStyle::None)

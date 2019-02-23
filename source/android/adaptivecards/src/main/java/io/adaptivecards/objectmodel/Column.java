@@ -42,10 +42,6 @@ public class Column extends CollectionTypeElement {
     super.delete();
   }
 
-  public Column() {
-    this(AdaptiveCardObjectModelJNI.new_Column(), true);
-  }
-
   public String Serialize() {
     return AdaptiveCardObjectModelJNI.Column_Serialize(swigCPtr, this);
   }
@@ -62,6 +58,10 @@ public class Column extends CollectionTypeElement {
   public static Column DeserializeFromString(ParseContext context, String jsonString) {
     long cPtr = AdaptiveCardObjectModelJNI.Column_DeserializeFromString(ParseContext.getCPtr(context), context, jsonString);
     return (cPtr == 0) ? null : new Column(cPtr, true);
+  }
+
+  public void DeserializeChildren(ParseContext context, JsonValue value) {
+    AdaptiveCardObjectModelJNI.Column_DeserializeChildren(swigCPtr, this, ParseContext.getCPtr(context), context, JsonValue.getCPtr(value), value);
   }
 
   public String GetWidth() {
@@ -82,24 +82,6 @@ public class Column extends CollectionTypeElement {
 
   public BaseCardElementVector GetItems() {
     return new BaseCardElementVector(AdaptiveCardObjectModelJNI.Column_GetItems__SWIG_0(swigCPtr, this), false);
-  }
-
-  public BaseActionElement GetSelectAction() {
-    long cPtr = AdaptiveCardObjectModelJNI.Column_GetSelectAction(swigCPtr, this);
-    return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
-  }
-
-  public void SetSelectAction(BaseActionElement action) {
-    AdaptiveCardObjectModelJNI.Column_SetSelectAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
-  }
-
-  public BackgroundImage GetBackgroundImage() {
-    long cPtr = AdaptiveCardObjectModelJNI.Column_GetBackgroundImage(swigCPtr, this);
-    return (cPtr == 0) ? null : new BackgroundImage(cPtr, true);
-  }
-
-  public void SetBackgroundImage(BackgroundImage value) {
-    AdaptiveCardObjectModelJNI.Column_SetBackgroundImage(swigCPtr, this, BackgroundImage.getCPtr(value), value);
   }
 
   public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {

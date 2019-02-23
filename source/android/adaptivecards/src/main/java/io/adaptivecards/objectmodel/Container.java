@@ -42,29 +42,16 @@ public class Container extends CollectionTypeElement {
     super.delete();
   }
 
-  public Container() {
-    this(AdaptiveCardObjectModelJNI.new_Container__SWIG_0(), true);
-  }
-
-  public Container(Container arg0) {
-    this(AdaptiveCardObjectModelJNI.new_Container__SWIG_1(Container.getCPtr(arg0), arg0), true);
-  }
-
   public JsonValue SerializeToJsonValue() {
     return new JsonValue(AdaptiveCardObjectModelJNI.Container_SerializeToJsonValue(swigCPtr, this), true);
   }
 
+  public void DeserializeChildren(ParseContext context, JsonValue value) {
+    AdaptiveCardObjectModelJNI.Container_DeserializeChildren(swigCPtr, this, ParseContext.getCPtr(context), context, JsonValue.getCPtr(value), value);
+  }
+
   public BaseCardElementVector GetItems() {
     return new BaseCardElementVector(AdaptiveCardObjectModelJNI.Container_GetItems__SWIG_0(swigCPtr, this), false);
-  }
-
-  public BackgroundImage GetBackgroundImage() {
-    long cPtr = AdaptiveCardObjectModelJNI.Container_GetBackgroundImage(swigCPtr, this);
-    return (cPtr == 0) ? null : new BackgroundImage(cPtr, true);
-  }
-
-  public void SetBackgroundImage(BackgroundImage value) {
-    AdaptiveCardObjectModelJNI.Container_SetBackgroundImage(swigCPtr, this, BackgroundImage.getCPtr(value), value);
   }
 
   public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {

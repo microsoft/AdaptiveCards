@@ -1,6 +1,7 @@
 #pragma once
 
 #include "pch.h"
+#include "BackgroundImage.h"
 #include "BaseCardElement.h"
 
 namespace AdaptiveSharedNamespace
@@ -43,6 +44,9 @@ namespace AdaptiveSharedNamespace
         std::shared_ptr<BaseActionElement> GetSelectAction() const;
         void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
+        std::shared_ptr<BackgroundImage> GetBackgroundImage() const;
+        void SetBackgroundImage(const std::shared_ptr<BackgroundImage> value);
+
         virtual void DeserializeChildren(ParseContext& context, const Json::Value& value) = 0;
 
         Json::Value SerializeToJsonValue() const override;
@@ -64,6 +68,7 @@ namespace AdaptiveSharedNamespace
         // id refers to parent to where bleed property should target
         AdaptiveSharedNamespace::InternalId m_parentalId;
 
+        std::shared_ptr<BackgroundImage> m_backgroundImage;
         std::shared_ptr<BaseActionElement> m_selectAction;
     };
 
@@ -71,6 +76,10 @@ namespace AdaptiveSharedNamespace
     std::shared_ptr<T> CollectionTypeElement::Deserialize(ParseContext& context, const Json::Value& value)
     {
         auto collection = BaseCardElement::Deserialize<T>(context, value);
+
+        auto backgroundImage = ParseUtil::GetBackgroundImage(value);
+        collection->SetBackgroundImage(backgroundImage);
+
         collection->SetStyle(
             ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
 
