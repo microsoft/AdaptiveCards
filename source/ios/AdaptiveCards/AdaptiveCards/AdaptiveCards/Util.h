@@ -12,6 +12,6 @@ using namespace AdaptiveCards;
 
 void configVisibility(UIView *view, const std::shared_ptr<AdaptiveCards::BaseCardElement>visibilityInfo);
 
-void renderBackgroundImageView(const BackgroundImage *backgroundImageProperties, UIView *containerView, ACRView *rootView);
+void renderBackgroundImage(const BackgroundImage *backgroundImageProperties, UIView *containerView, ACRView *rootView);
 
-void applyBackgroundImageConstraints(const BackgroundImage *backgroundImageProperties, UIImageView *imageView);
+void applyBackgroundImageConstraints(const BackgroundImage *backgroundImageProperties, UIImageView *imageView, UIImage *img);

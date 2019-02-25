@@ -16,6 +16,7 @@
 #import "ACRRegistration.h"
 #import "ACRRendererPrivate.h"
 #import "ACRSeparator.h"
+#import "ACRView.h"
 #import "ACRViewPrivate.h"
 #import "ACRViewController.h"
 #import "ACRContentHoldingUIScrollView.h"
@@ -89,28 +90,31 @@ using namespace AdaptiveCards;
     if((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
         ObserverActionBlock observerAction =
         ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &elem, NSURL* url, ACRView* rootView) {
-            UIImageView *view = [imageResourceResolver resolveBackgroundImageViewResource:url hasStretch:(backgroundImageProperties->GetMode() == BackgroundImageMode::Stretch)];
-            [rootView setImageView:key view:view];
+            UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
             if(view) {
                 [view addObserver:rootView forKeyPath:@"image"
                           options:NSKeyValueObservingOptionNew
-                          context:nil];
+                          context:backgroundImageProperties.get()];
+                
+                // store the image view and card for easy retrieval in ACRView::observeValueForKeyPath
+                [rootView setImageView:key view:view];
+                [rootView setCardContext:key context:adaptiveCard];
             }
         };
-        [rootView
-            loadBackgroundImageAccordingToResourceResolverIF:adaptiveCard->GetBackgroundImage()
-            key:nil observerAction:observerAction];
+        [rootView loadBackgroundImageAccordingToResourceResolverIF:backgroundImageProperties observerAction:observerAction];
     }
 
     if(![config getHostConfig]->GetMedia().playButton.empty()) {
         ObserverActionBlock observerAction =
         ^(NSObject<ACOIResourceResolver>* imageResourceResolver, NSString* key, std::shared_ptr<BaseCardElement> const &elem, NSURL* url, ACRView* rootView) {
             UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
-            [rootView setImageView:key view:view];
             if(view) {
                 [view addObserver:rootView forKeyPath:@"image"
                           options:NSKeyValueObservingOptionNew
                           context:nil];
+                
+                // store the image view for easy retrieval in ACRView::observeValueForKeyPath
+                [rootView setImageView:key view:view];
             }
         };
         [rootView

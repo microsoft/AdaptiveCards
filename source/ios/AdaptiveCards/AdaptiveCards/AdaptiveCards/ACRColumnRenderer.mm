@@ -41,7 +41,10 @@
     ACRColumnView* column = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)columnElem->GetStyle()
                                                      parentStyle:[viewGroup style] hostConfig:acoConfig superview:viewGroup];
 
-    renderBackgroundImageView(columnElem->GetBackgroundImage().get(), column, rootView);
+    auto backgroundImage = columnElem->GetBackgroundImage();
+    if(backgroundImage != nullptr && !(backgroundImage->GetUrl().empty())){
+        renderBackgroundImage(backgroundImage.get(), column, rootView);
+    }
     
     column.pixelWidth = columnElem->GetPixelWidth();
     if(columnElem->GetWidth() == "stretch" || columnElem->GetWidth() == "") {
@@ -90,6 +93,15 @@
     configVisibility(column, elem);
 
     return column;
+}
+
+- (void)configUpdateForUIImageView:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
+{
+    std::shared_ptr<BaseCardElement> elem = [acoElem element];
+    std::shared_ptr<Column> columnElem = std::dynamic_pointer_cast<Column>(elem);
+    
+    auto backgroundImageProperties = columnElem->GetBackgroundImage();
+    applyBackgroundImageConstraints(backgroundImageProperties.get(), imageView, image);
 }
 
 @end

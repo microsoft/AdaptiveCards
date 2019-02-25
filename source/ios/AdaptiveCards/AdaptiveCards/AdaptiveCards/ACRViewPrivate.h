@@ -22,6 +22,10 @@ typedef void (^ObserverActionBlock)(NSObject<ACOIResourceResolver> *resolver,
 typedef void (^ObserverActionBlockForBaseAction)(NSObject<ACOIResourceResolver> *resolver,
                                     NSString *key, std::shared_ptr<BaseActionElement> const &elem, NSURL *url, ACRView *rootView);
 
+- (void)setImageContext:(NSString *)key context:(std::shared_ptr<BaseCardElement> const &)elem;
+
+- (void)setCardContext:(NSString *)key context:(std::shared_ptr<AdaptiveCard> const &)card;
+
 // Walk through adaptive cards elements and if images are found, download and process images concurrently and on different thread
 // from main thread, so images process won't block UI thread.
 - (void)addTasksToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &) body;
@@ -30,7 +34,7 @@ typedef void (^ObserverActionBlockForBaseAction)(NSObject<ACOIResourceResolver> 
 
 - (void)loadImage:(std::string const &)urlStr;
 
-- (void)loadBackgroundImageAccordingToResourceResolverIF:(std::shared_ptr<BackgroundImage> const &)backgroundImage key:(NSString *)key observerAction:(ObserverActionBlock)observerAction;
+- (void)loadBackgroundImageAccordingToResourceResolverIF:(std::shared_ptr<BackgroundImage> const &)backgroundImage observerAction:(ObserverActionBlock)observerAction;
 
 - (void)loadImageAccordingToResourceResolverIFFromString:(std::string const &)url
     key:(NSString *)key observerAction:(ObserverActionBlock)observerAction;

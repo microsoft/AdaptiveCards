@@ -41,7 +41,10 @@
     ACRColumnView *container = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)containerElem->GetStyle()
                                                         parentStyle:[viewGroup style] hostConfig:acoConfig superview:viewGroup];
 
-    renderBackgroundImageView(containerElem->GetBackgroundImage().get(), container, rootView);
+    auto backgroundImage = containerElem->GetBackgroundImage();
+    if(backgroundImage != nullptr && !(backgroundImage->GetUrl().empty())){
+        renderBackgroundImage(backgroundImage.get(), container, rootView);
+    }
     
     UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
     if(containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom){
@@ -84,6 +87,15 @@
     configVisibility(container, elem);
 
     return viewGroup;
+}
+
+- (void)configUpdateForUIImageView:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
+{
+    std::shared_ptr<BaseCardElement> elem = [acoElem element];
+    std::shared_ptr<Container> containerElem = std::dynamic_pointer_cast<Container>(elem);
+    
+    auto backgroundImageProperties = containerElem->GetBackgroundImage();
+    applyBackgroundImageConstraints(backgroundImageProperties.get(), imageView, image);
 }
 
 @end
