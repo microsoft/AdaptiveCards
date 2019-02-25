@@ -13,6 +13,7 @@
 #import "SharedAdaptiveCard.h"
 #import "HostConfig.h"
 #import "ACRRenderer.h"
+#import "BackgroundImage.h"
 
 using namespace AdaptiveCards;
 

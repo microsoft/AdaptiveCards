@@ -338,13 +338,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		30184A9520D19204001C5A68 /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Recovered References";
-			sourceTree = "<group>";
-		};
 		6BF339E120A66A3F00DA5973 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -367,7 +360,6 @@
 				F423C09C1EE1FB6100905679 /* ADCIOSVisualizerUITests */,
 				F423C0731EE1FB6100905679 /* Products */,
 				6BF339E120A66A3F00DA5973 /* Frameworks */,
-				30184A9520D19204001C5A68 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};

@@ -140,7 +140,7 @@ namespace AdaptiveNamespace
                               _Outptr_ ABI::Windows::UI::Xaml::Controls::IPanel** bodyElementContainer);
 
         static void ApplyBackgroundToRoot(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel,
-                                          _In_ HSTRING url,
+                                          _In_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage* backgroundImage,
                                           _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                           _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
 
