@@ -1,0 +1,108 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "Container",
+            "selectAction": {
+                "type": "Action.ToggleVisibility",
+                "targetElements": [
+                    "leg1Details",
+					{"elementId": "AnotherId", "isVisible": false}
+                ]
+            },
+            "items": [
+                {
+                    "type": "TextBlock",
+					"text": "Click this and a new textblock will appear"
+                }
+			]
+        },
+        {
+            "type": "Container",
+            "id": "leg1Details",			
+            "items": [
+                {
+                    "type": "TextBlock",
+					"text": "You expected this to be a cool message, bit it was me Dio!!"
+                }
+			]
+		},
+        {
+            "type": "ColumnSet",
+            "id": "AnotherId",
+            "columns": [
+                {
+                    "width": "24px",
+                    "items": [
+                        {
+                            "type": "Image",
+                            "height": "20px",
+                            "width": "1px",
+                            "horizontalAlignment": "center",
+                            "url": "http://messagecardplayground.azurewebsites.net/assets/palebluedot1x1.png"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ColumnSet",
+            "spacing": "none",
+            "columns": [
+                {
+                    "width": "24px",
+                    "items": [
+                        {
+                            "type": "Image",
+                            "style": "person",
+                            "backgroundColor": "#0078D7",
+                            "url": "http://messagecardplayground.azurewebsites.net/assets/smallairplane_white.png"
+                        }
+                    ]
+                },
+                {
+                    "width": "stretch",
+                    "spacing": "small",
+                    "verticalContentAlignment": "center",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "**Depart:** Delta Air Lines flight 8471 to Paris"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ColumnSet",
+            "spacing": "none",
+            "columns": [
+                {
+                    "width": "24px",
+                    "items": [
+                        {
+                            "type": "Image",
+                            "horizontalAlignment": "center",
+                            "width": "1px",
+                            "height": "20px",
+                            "url": "http://messagecardplayground.azurewebsites.net/assets/palebluedot1x1.png"
+                        }
+                    ]
+                },
+                {
+                    "width": "stretch",
+                    "spacing": "small",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Bengaluru, Sun 11/12/2017 1:55 AM, 10 hours 41 minutes",
+                            "isSubtle": true
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

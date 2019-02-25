@@ -100,8 +100,7 @@
 					]
 				}
 			]
-		},
-		
+		},		
 		{
 			"type": "TextBlock",
 			"text": "This is some text",
@@ -263,8 +262,7 @@
 				}
 			],
 			"isVisible": false
-		}
-		
+		}	
 	],
 	"actions": [
 		{
