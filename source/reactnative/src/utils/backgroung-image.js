@@ -106,6 +106,7 @@ export class BackgroundImage extends React.Component {
                 backgroundImage.push(
                     <Image
                         key="image-repeat-horizontal"
+                        resizeMethod={Constants.Resize}
                         source={{ uri: this.backgroundImage.url }}
                         onError={() => { this.onError(onParseError) }}
                         /**
@@ -118,6 +119,7 @@ export class BackgroundImage extends React.Component {
                 backgroundImage.push(
                     <Image
                         key="image-repeat-vertical"
+                        resizeMethod={Constants.Resize}
                         source={{ uri: this.backgroundImage.url }}
                         onError={() => { this.onError(onParseError) }}
                         style={{ width: this.state.backgroundImageWidth, height: Constants.FullWidth, resizeMode: Constants.Repeat }}
@@ -129,6 +131,7 @@ export class BackgroundImage extends React.Component {
                 backgroundImage.push(
                     <Image
                         key="image-repeat-horizontal"
+                        resizeMethod={Constants.Resize}
                         source={{ uri: this.backgroundImage.url }}
                         onError={() => { this.onError(onParseError) }}
                         style={{ width: Constants.FullWidth, height: this.state.backgroundImageHeight / 3, resizeMode: Constants.Repeat }}
@@ -140,6 +143,7 @@ export class BackgroundImage extends React.Component {
                 backgroundImage.push(
                     <Image
                         key="image-repeat-vertical"
+                        resizeMethod={Constants.Resize}
                         source={{ uri: this.backgroundImage.url }}
                         onError={() => { this.onError(onParseError) }}
                         style={{ width: this.state.backgroundImageWidth, height: Constants.FullWidth, resizeMode: Constants.Repeat }}

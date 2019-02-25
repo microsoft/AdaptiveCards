@@ -11,7 +11,8 @@ export const SpaceBetween = 'space-between';
 export const AlignStretch = 'stretch';
 export const Auto = 'auto';
 export const Repeat = 'repeat';
-export const Absolute = "absolute"
+export const Absolute = "absolute";
+export const Resize = "resize";
 
 export const NoneString = "none";
 export const DoneString = 'Done';
