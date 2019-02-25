@@ -13,8 +13,6 @@ import io.adaptivecards.objectmodel.BackgroundImage;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.BackgroundImageLoaderAsync;
-import io.adaptivecards.renderer.IDataUriImageLoader;
-import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
@@ -112,19 +110,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
                     returnedView,
                     hostConfig.GetImageBaseUrl(),
                     context.getResources().getDisplayMetrics().widthPixels,
-					backgroundImageProperties);
-
-            IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
-            if (onlineImageLoader != null)
-            {
-                loaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
-            }
-
-            IDataUriImageLoader dataUriImageLoader = CardRendererRegistration.getInstance().getDataUriImageLoader();
-            if (dataUriImageLoader != null)
-            {
-                loaderAsync.registerCustomDataUriImageLoader(dataUriImageLoader);
-            }
+                    backgroundImageProperties);
 
             loaderAsync.execute(backgroundImageProperties.GetUrl());
         }
