@@ -19,6 +19,47 @@ namespace AdaptiveNamespace
             return result;
         }
 
+       template<typename T, typename TInterface, typename C>
+       static HRESULT IterateOverVector(_In_ ABI::Windows::Foundation::Collections::IVector<T*>* vector, const boolean stopOnFailure, C iterationCallback)
+        {
+            Microsoft::WRL::ComPtr<ABI::Windows::Foundation::Collections::IVector<T*>> localVector(vector);
+            ComPtr<IIterable<T*>> vectorIterable;
+            HRESULT hr = localVector.As<IIterable<T*>>(&vectorIterable);
+
+            if (SUCCEEDED(hr))
+            {
+                Microsoft::WRL::ComPtr<IIterator<T*>> vectorIterator;
+                vectorIterable->First(&vectorIterator);
+
+                boolean hasCurrent = false;
+                hr = vectorIterator->get_HasCurrent(&hasCurrent);
+                while (SUCCEEDED(hr) && hasCurrent)
+                {
+                    Microsoft::WRL::ComPtr<TInterface> current = nullptr;
+                    if (FAILED(vectorIterator->get_Current(current.GetAddressOf())))
+                    {
+                        return S_OK;
+                    }
+
+                    hr = iterationCallback(current.Get());
+                    if (stopOnFailure && FAILED(hr))
+                    {
+                        return hr;
+                    }
+
+                    hr = vectorIterator->MoveNext(&hasCurrent);
+                }
+            }
+
+            return hr;
+        }
+
+        template<typename T, typename C>
+        static HRESULT IterateOverVector(_In_ ABI::Windows::Foundation::Collections::IVector<T*>* vector, const boolean stopOnFailure, C iterationCallback)
+        {
+            return IterateOverVector<T, T, C>(vector, stopOnFailure, iterationCallback);
+        }
+
         template<typename T, typename TInterface, typename C>
         static void IterateOverVector(_In_ ABI::Windows::Foundation::Collections::IVector<T*>* vector, C iterationCallback)
         {
