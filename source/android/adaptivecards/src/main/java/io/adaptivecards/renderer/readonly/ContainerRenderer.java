@@ -111,7 +111,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
                     containerView,
                     hostConfig.GetImageBaseUrl(),
                     context.getResources().getDisplayMetrics().widthPixels,
-					backgroundImageProperties);
+                    backgroundImageProperties);
 
             loaderAsync.execute(backgroundImageProperties.GetUrl());
         }
