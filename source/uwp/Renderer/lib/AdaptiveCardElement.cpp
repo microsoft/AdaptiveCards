@@ -19,6 +19,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(JsonCppToJsonObject(sharedModel->GetAdditionalProperties(), &m_additionalProperties));
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetElementTypeString(), m_typeString.GetAddressOf()));
         m_height = static_cast<ABI::AdaptiveNamespace::HeightType>(sharedModel->GetHeight());
+        m_internalId = sharedModel->GetInternalId();
 
         return S_OK;
     }

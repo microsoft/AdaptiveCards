@@ -43,4 +43,28 @@ namespace AdaptiveNamespace
         m_parentElement = value;
         return S_OK;
     }
+
+    HRESULT AdaptiveRenderArgs::get_IsInShowCard(_Out_ boolean* isInShowCard)
+    {
+        *isInShowCard = m_isInShowCard;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveRenderArgs::put_IsInShowCard(boolean isInShowCard)
+    {
+        m_isInShowCard = isInShowCard;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveRenderArgs::get_AllowAboveTitleIconPlacement(_Out_ boolean* value)
+    {
+        *value = m_allowAboveTitleIconPlacement;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveRenderArgs::put_AllowAboveTitleIconPlacement(boolean value)
+    {
+        m_allowAboveTitleIconPlacement = value;
+        return S_OK;
+    }
 }

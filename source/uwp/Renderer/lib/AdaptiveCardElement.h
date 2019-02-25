@@ -7,6 +7,9 @@ namespace AdaptiveNamespace
 {
     class DECLSPEC_UUID("49496982-18E7-48A8-9D16-99E389BE9133") AdaptiveCardElementBase : public IUnknown
     {
+    public:
+        InternalId GetInternalId() { return m_internalId; }
+
     protected:
         HRESULT InitializeBaseElement(const std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel);
 
@@ -44,5 +47,6 @@ namespace AdaptiveNamespace
         Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_additionalProperties;
         Microsoft::WRL::Wrappers::HString m_typeString;
         ABI::AdaptiveNamespace::HeightType m_height;
+        InternalId m_internalId;
     };
 }
