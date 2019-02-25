@@ -63,6 +63,22 @@ public class HostConfig {
     return AdaptiveCardObjectModelJNI.HostConfig_GetFontWeight(swigCPtr, this, style.swigValue(), weight.swigValue());
   }
 
+  public String GetBackgroundColor(ContainerStyle style) {
+    return AdaptiveCardObjectModelJNI.HostConfig_GetBackgroundColor(swigCPtr, this, style.swigValue());
+  }
+
+  public String GetForegroundColor(ContainerStyle style, ForegroundColor color, boolean isSubtle) {
+    return AdaptiveCardObjectModelJNI.HostConfig_GetForegroundColor(swigCPtr, this, style.swigValue(), color.swigValue(), isSubtle);
+  }
+
+  public String GetBorderColor(ContainerStyle style) {
+    return AdaptiveCardObjectModelJNI.HostConfig_GetBorderColor(swigCPtr, this, style.swigValue());
+  }
+
+  public long GetBorderThickness(ContainerStyle style) {
+    return AdaptiveCardObjectModelJNI.HostConfig_GetBorderThickness(swigCPtr, this, style.swigValue());
+  }
+
   public String GetFontFamily() {
     return AdaptiveCardObjectModelJNI.HostConfig_GetFontFamily__SWIG_1(swigCPtr, this);
   }

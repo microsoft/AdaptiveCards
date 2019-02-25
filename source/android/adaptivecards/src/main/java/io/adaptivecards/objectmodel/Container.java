@@ -87,6 +87,15 @@ public class Container extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Container_SetVerticalContentAlignment(swigCPtr, this, value.swigValue());
   }
 
+  public BackgroundImage GetBackgroundImage() {
+    long cPtr = AdaptiveCardObjectModelJNI.Container_GetBackgroundImage(swigCPtr, this);
+    return (cPtr == 0) ? null : new BackgroundImage(cPtr, true);
+  }
+
+  public void SetBackgroundImage(BackgroundImage value) {
+    AdaptiveCardObjectModelJNI.Container_SetBackgroundImage(swigCPtr, this, BackgroundImage.getCPtr(value), value);
+  }
+
   public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {
     AdaptiveCardObjectModelJNI.Container_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceInfo), resourceInfo);
   }

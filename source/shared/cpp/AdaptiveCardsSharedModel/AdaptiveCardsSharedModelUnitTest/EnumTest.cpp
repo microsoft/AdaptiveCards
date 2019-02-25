@@ -53,7 +53,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         ENUM_TEST(SeparatorThickness, SeparatorThickness::Thick, "thick"s);
         ENUM_TEST_WITH_REVERSE_MAP(ImageStyle, ImageStyle::Person, "person"s, {{"normal", ImageStyle::Default}});
         ENUM_TEST_WITH_DEFAULT(ImageSize, ImageSize::Large, "Large"s, ImageSize::Auto);
-        ENUM_TEST_WITH_DEFAULT(HorizontalAlignment, HorizontalAlignment::Center, "Center"s, HorizontalAlignment::Left);
+        ENUM_TEST_WITH_DEFAULT(HorizontalAlignment, HorizontalAlignment::Center, "center"s, HorizontalAlignment::Left);
         ENUM_TEST(ForegroundColor, ForegroundColor::Accent, "Accent"s);
         ENUM_TEST_WITH_REVERSE_MAP(TextWeight, TextWeight::Bolder, "Bolder"s, {{"Normal", TextWeight::Default}});
         ENUM_TEST_WITH_REVERSE_MAP(TextSize, TextSize::Large, "Large"s, {{"Normal", TextSize::Default}});

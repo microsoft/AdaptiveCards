@@ -27,7 +27,61 @@ namespace AdaptiveCards.Rendering.Html.Test
                 generatedHtml);
         }
 
+        [TestMethod]
+        public void ContainerStyleForegroundColors()
+        {
+            var hostConfig = new AdaptiveHostConfig();
+            hostConfig.ContainerStyles.Emphasis.ForegroundColors = new ForegroundColorsConfig()
+            {
+                Default = new FontColorConfig("#FFcc3300")
+            };
 
+            var card = new AdaptiveCard("1.2")
+            {
+                Body = new System.Collections.Generic.List<AdaptiveElement>()
+                {
+                    new AdaptiveContainer()
+                    {
+                        Style = AdaptiveContainerStyle.Emphasis,
+                        Items = new System.Collections.Generic.List<AdaptiveElement>()
+                        {
+                            new AdaptiveTextBlock()
+                            {
+                                Text = "container 1 -- emphasis style text"
+                            },
+                            new AdaptiveContainer()
+                            {
+                                Style = AdaptiveContainerStyle.Accent,
+                                Items = new System.Collections.Generic.List<AdaptiveElement>()
+                                {
+                                    new AdaptiveTextBlock()
+                                    {
+                                        Text = "container 1.1 -- accent style text"
+                                    }
+                                }
+                            },
+                            new AdaptiveTextBlock()
+                            {
+                                Text = "container 1 -- emphasis style text"
+                            }
+                        }
+                    },
+                    new AdaptiveTextBlock()
+                    {
+                        Text = "default style text"
+                    }
+                }
+            };
+
+            var renderer = new AdaptiveCardRenderer(hostConfig);
+            var result = renderer.RenderCard(card);
+            var generatedHtml = result.Html.ToString();
+
+            // Generated HTML should have two <p> tags, with appropriate styles set.
+            Assert.AreEqual(
+                "<div class='ac-adaptivecard' style='width: 100%;background-color: rgba(255, 255, 255, 1.00);padding: 15px;box-sizing: border-box;justify-content: flex-start;'><div class='ac-container' style='background-color: rgba(0, 0, 0, 0.03);justify-content: flex-start;'><div class='ac-textblock' style='box-sizing: border-box;text-align: left;color: rgba(204, 51, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;white-space: nowrap;'><p style='margin-top: 0px;margin-bottom: 0px;width: 100%;text-overflow: ellipsis;overflow: hidden;'>container 1 -- emphasis style text</p></div><div class='ac-separator' style='height: 8px;'></div><div class='ac-container' style='background-color: #dce5f7;justify-content: flex-start;'><div class='ac-textblock' style='box-sizing: border-box;text-align: left;color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;white-space: nowrap;'><p style='margin-top: 0px;margin-bottom: 0px;width: 100%;text-overflow: ellipsis;overflow: hidden;'>container 1.1 -- accent style text</p></div></div><div class='ac-separator' style='height: 8px;'></div><div class='ac-textblock' style='box-sizing: border-box;text-align: left;color: rgba(204, 51, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;white-space: nowrap;'><p style='margin-top: 0px;margin-bottom: 0px;width: 100%;text-overflow: ellipsis;overflow: hidden;'>container 1 -- emphasis style text</p></div></div><div class='ac-separator' style='height: 8px;'></div><div class='ac-textblock' style='box-sizing: border-box;text-align: left;color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;white-space: nowrap;'><p style='margin-top: 0px;margin-bottom: 0px;width: 100%;text-overflow: ellipsis;overflow: hidden;'>default style text</p></div></div>",
+                generatedHtml);
+        }
 
         private class TestHtmlRenderer : AdaptiveCardRenderer
         {

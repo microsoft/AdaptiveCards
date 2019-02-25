@@ -334,6 +334,18 @@ ContainerStylesDefinition ContainerStylesDefinition::Deserialize(const Json::Val
     result.emphasisPalette = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStyleDefinition>(
         json, AdaptiveCardSchemaKey::Emphasis, defaultValue.emphasisPalette, ContainerStyleDefinition::Deserialize);
 
+    result.goodPalette = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStyleDefinition>(
+        json, AdaptiveCardSchemaKey::Good, defaultValue.goodPalette, ContainerStyleDefinition::Deserialize);
+
+    result.attentionPalette = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStyleDefinition>(
+        json, AdaptiveCardSchemaKey::Attention, defaultValue.attentionPalette, ContainerStyleDefinition::Deserialize);
+
+    result.warningPalette = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStyleDefinition>(
+        json, AdaptiveCardSchemaKey::Warning, defaultValue.warningPalette, ContainerStyleDefinition::Deserialize);
+
+    result.accentPalette = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStyleDefinition>(
+        json, AdaptiveCardSchemaKey::Accent, defaultValue.accentPalette, ContainerStyleDefinition::Deserialize);
+
     return result;
 }
 
@@ -563,6 +575,64 @@ unsigned int HostConfig::GetFontWeight(FontStyle style, TextWeight weight) const
         }
     }
     return result;
+}
+
+const ContainerStyleDefinition& HostConfig::GetContainerStyle(ContainerStyle style) const
+{
+    switch (style)
+    {
+    case ContainerStyle::Accent:
+        return _containerStyles.accentPalette;
+    case ContainerStyle::Attention:
+        return _containerStyles.attentionPalette;
+    case ContainerStyle::Emphasis:
+        return _containerStyles.emphasisPalette;
+    case ContainerStyle::Good:
+        return _containerStyles.goodPalette;
+    case ContainerStyle::Warning:
+        return _containerStyles.warningPalette;
+    case ContainerStyle::Default:
+    default:
+        return _containerStyles.defaultPalette;
+    }
+}
+
+std::string HostConfig::GetBackgroundColor(ContainerStyle style) const
+{
+    return GetContainerStyle(style).backgroundColor;
+}
+
+std::string HostConfig::GetForegroundColor(ContainerStyle style, ForegroundColor color, bool isSubtle) const
+{
+    auto foregroundColors = GetContainerStyle(style).foregroundColors;
+    switch (color)
+    {
+    case ForegroundColor::Accent:
+        return (isSubtle) ? (foregroundColors.accent.subtleColor) : (foregroundColors.accent.defaultColor);
+    case ForegroundColor::Attention:
+        return (isSubtle) ? (foregroundColors.attention.subtleColor) : (foregroundColors.attention.defaultColor);
+    case ForegroundColor::Dark:
+        return (isSubtle) ? (foregroundColors.dark.subtleColor) : (foregroundColors.dark.defaultColor);
+    case ForegroundColor::Good:
+        return (isSubtle) ? (foregroundColors.good.subtleColor) : (foregroundColors.good.defaultColor);
+    case ForegroundColor::Light:
+        return (isSubtle) ? (foregroundColors.light.subtleColor) : (foregroundColors.light.defaultColor);
+    case ForegroundColor::Warning:
+        return (isSubtle) ? (foregroundColors.warning.subtleColor) : (foregroundColors.warning.defaultColor);
+    case ForegroundColor::Default:
+    default:
+        return (isSubtle) ? (foregroundColors.defaultColor.subtleColor) : (foregroundColors.defaultColor.defaultColor);
+    }
+}
+
+std::string HostConfig::GetBorderColor(ContainerStyle style) const
+{
+    return GetContainerStyle(style).borderColor;
+}
+
+unsigned int HostConfig::GetBorderThickness(ContainerStyle style) const
+{
+    return GetContainerStyle(style).borderThickness;
 }
 
 std::string HostConfig::GetFontFamily() const

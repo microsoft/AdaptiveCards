@@ -40,7 +40,11 @@ typedef NS_ENUM(NSInteger, ACRCardElementType) {
 typedef NS_ENUM(NSInteger, ACRContainerStyle) {
     ACRNone,
     ACRDefault,
-    ACREmphasis
+    ACREmphasis,
+    ACRGood,
+    ACRWarning,
+    ACRAttention,
+    ACRAccent
 };
 
 @property ACRCardElementType type;

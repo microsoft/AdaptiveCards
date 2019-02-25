@@ -13,16 +13,15 @@ namespace AdaptiveCards.Rendering.Wpf
             uiContainer.Style = context.GetStyle("Adaptive.Container");
             uiContainer.SetBackgroundSource(container.BackgroundImage, context);
 
+            // Keep track of ContainerStyle.ForegroundColors before Container is rendered
+            var outerStyle = context.ForegroundColors;
             if (container.Style != null)
             {
                 // Apply background color
-                var containerStyle = context.Config.ContainerStyles.Default;
-                if (container.Style == AdaptiveContainerStyle.Emphasis)
-                {
-                    containerStyle = context.Config.ContainerStyles.Emphasis;
-                }
-
+                ContainerStyleConfig containerStyle = context.Config.ContainerStyles.GetContainerStyleConfig(container.Style);
                 uiContainer.SetBackgroundColor(containerStyle.BackgroundColor, context);
+
+                context.ForegroundColors = containerStyle.ForegroundColors;
             }
 
             switch (container.VerticalContentAlignment)
@@ -55,6 +54,8 @@ namespace AdaptiveCards.Rendering.Wpf
                 border.Visibility = Visibility.Collapsed;
             }
 
+            // Revert context's value to that of outside the Container
+            context.ForegroundColors = outerStyle;
             return border;
         }
 
