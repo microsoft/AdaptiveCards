@@ -45,7 +45,6 @@ export class LightTeamsContainer extends BaseTeamsContainer {
             {
                 choiceSetInputValueSeparator: ",",
                 supportsInteractivity: true,
-                fontFamily: "Segoe UI",
                 spacing: {
                     small: 8,
                     default: 12,
@@ -58,22 +57,42 @@ export class LightTeamsContainer extends BaseTeamsContainer {
                     lineThickness: 1,
                     lineColor: "#EEEEEE"
                 },
-                fontSizes: {
-                    small: 12,
-                    default: 14,
-                    medium: 14,
-                    large: 18,
-                    extraLarge: 24
-                },
-                fontWeights: {
-                    lighter: 300,
-                    default: 400,
-                    bolder: 600
-                },
                 imageSizes: {
                     small: 32,
                     medium: 52,
                     large: 100
+                },
+                fontStyles: {
+                    default: {
+                        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                        fontSizes: {
+                            small: 12,
+                            default: 14,
+                            medium: 14,
+                            large: 18,
+                            extraLarge: 24
+                        },
+                        fontWeights: {
+                            lighter: 200,
+                            default: 400,
+                            bolder: 600
+                        }
+                    },
+                    monospace: {
+                        fontFamily: "'Courier New', Courier, monospace",
+                        fontSizes: {
+                            small: 12,
+                            default: 14,
+                            medium: 14,
+                            large: 18,
+                            extraLarge: 24
+                        },
+                        fontWeights: {
+                            lighter: 200,
+                            default: 400,
+                            bolder: 600
+                        }
+                    }
                 },
                 containerStyles: {
                     default: {
@@ -328,7 +347,7 @@ export class DarkTeamsContainer extends BaseTeamsContainer {
             {
                 choiceSetInputValueSeparator: ",",
                 supportsInteractivity: true,
-                fontFamily: "Segoe UI",
+                // fontFamily: "Segoe UI",
                 spacing: {
                     small: 8,
                     default: 12,
@@ -341,6 +360,7 @@ export class DarkTeamsContainer extends BaseTeamsContainer {
                     lineThickness: 1,
                     lineColor: "#EEEEEE"
                 },
+                /*
                 fontSizes: {
                     small: 12,
                     default: 14,
@@ -352,6 +372,39 @@ export class DarkTeamsContainer extends BaseTeamsContainer {
                     lighter: 300,
                     default: 400,
                     bolder: 600
+                },
+                */
+                fontStyles: {
+                    default: {
+                        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                        fontSizes: {
+                            small: 12,
+                            default: 14,
+                            medium: 14,
+                            large: 18,
+                            extraLarge: 24
+                        },
+                        fontWeights: {
+                            lighter: 200,
+                            default: 400,
+                            bolder: 600
+                        }
+                    },
+                    monospace: {
+                        fontFamily: "'Courier New', Courier, monospace",
+                        fontSizes: {
+                            small: 12,
+                            default: 14,
+                            medium: 14,
+                            large: 18,
+                            extraLarge: 24
+                        },
+                        fontWeights: {
+                            lighter: 200,
+                            default: 400,
+                            bolder: 600
+                        }
+                    }
                 },
                 imageSizes: {
                     small: 32,

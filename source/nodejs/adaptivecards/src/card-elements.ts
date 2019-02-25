@@ -749,7 +749,6 @@ export class TextBlock extends CardElement {
 	private _processedText: string = null;
 	private _treatAsPlainText: boolean = true;
 	private _selectAction: Action = null;
-	// private _effectiveStyleDefinition: HostConfig.ContainerStyleDefinition = null;
 
 	private restoreOriginalContent() {
 		var maxHeight = this.maxLines
@@ -946,7 +945,8 @@ export class TextBlock extends CardElement {
 	isSubtle: boolean = false;
 	wrap: boolean = false;
 	maxLines: number;
-	useMarkdown: boolean = true;
+    useMarkdown: boolean = true;
+    style?: Enums.FontStyle = null;
 
 	toJSON() {
 		let result = super.toJSON();
@@ -957,14 +957,17 @@ export class TextBlock extends CardElement {
 		Utils.setProperty(result, "text", this.text);
 		Utils.setProperty(result, "isSubtle", this.isSubtle, false);
 		Utils.setProperty(result, "wrap", this.wrap, false);
-		Utils.setProperty(result, "maxLines", this.maxLines, 0);
+        Utils.setProperty(result, "maxLines", this.maxLines, 0);
+        Utils.setEnumProperty(Enums.FontStyle, result, "style", this.style, Enums.FontStyle.Default);
 
 		return result;
 	}
 
 	applyStylesTo(targetElement: HTMLElement) {
-		if (this.hostConfig.fontFamily) {
-			targetElement.style.fontFamily = this.hostConfig.fontFamily;
+        let fontStyle = this.hostConfig.getFontStyleDefinition(this.style);
+
+		if (fontStyle.fontFamily) {
+			targetElement.style.fontFamily = fontStyle.fontFamily;
 		}
 
 		let parentContainer = this.getParentContainer();
@@ -986,19 +989,19 @@ export class TextBlock extends CardElement {
 
 		switch (this.size) {
 			case Enums.TextSize.Small:
-				fontSize = this.hostConfig.fontSizes.small;
+				fontSize = fontStyle.fontSizes.small;
 				break;
 			case Enums.TextSize.Medium:
-				fontSize = this.hostConfig.fontSizes.medium;
+				fontSize = fontStyle.fontSizes.medium;
 				break;
 			case Enums.TextSize.Large:
-				fontSize = this.hostConfig.fontSizes.large;
+				fontSize = fontStyle.fontSizes.large;
 				break;
 			case Enums.TextSize.ExtraLarge:
-				fontSize = this.hostConfig.fontSizes.extraLarge;
+				fontSize = fontStyle.fontSizes.extraLarge;
 				break;
 			default:
-				fontSize = this.hostConfig.fontSizes.default;
+				fontSize = fontStyle.fontSizes.default;
 				break;
 		}
 
@@ -1065,13 +1068,13 @@ export class TextBlock extends CardElement {
 
 		switch (this.weight) {
 			case Enums.TextWeight.Lighter:
-				fontWeight = this.hostConfig.fontWeights.lighter;
+				fontWeight = fontStyle.fontWeights.lighter;
 				break;
 			case Enums.TextWeight.Bolder:
-				fontWeight = this.hostConfig.fontWeights.bolder;
+				fontWeight = fontStyle.fontWeights.bolder;
 				break;
 			default:
-				fontWeight = this.hostConfig.fontWeights.default;
+				fontWeight = fontStyle.fontWeights.default;
 				break;
 		}
 
@@ -1083,7 +1086,7 @@ export class TextBlock extends CardElement {
 
 		this.text = json["text"];
 
-		var sizeString = json["size"];
+		let sizeString = json["size"];
 
 		if (sizeString && typeof sizeString === "string" && sizeString.toLowerCase() === "normal") {
 			this.size = Enums.TextSize.Default;
@@ -1100,7 +1103,7 @@ export class TextBlock extends CardElement {
 			this.size = Utils.getEnumValueOrDefault(Enums.TextSize, sizeString, this.size);
 		}
 
-		var weightString = json["weight"];
+		let weightString = json["weight"];
 
 		if (weightString && typeof weightString === "string" && weightString.toLowerCase() === "normal") {
 			this.weight = Enums.TextWeight.Default;
@@ -1119,7 +1122,8 @@ export class TextBlock extends CardElement {
 
 		this.color = Utils.getEnumValueOrDefault(Enums.TextColor, json["color"], this.color);
 		this.isSubtle = Utils.parseBoolProperty(json["isSubtle"], this.isSubtle);
-		this.wrap = Utils.parseBoolProperty(json["wrap"], this.wrap);
+        this.wrap = Utils.parseBoolProperty(json["wrap"], this.wrap);
+        this.style = Utils.getEnumValueOrDefault(Enums.FontStyle, json["style"], this.style);
 
 		if (typeof json["maxLines"] === "number") {
 			this.maxLines = json["maxLines"];
@@ -5929,7 +5933,6 @@ class InlineAdaptiveCard extends AdaptiveCard {
 const defaultHostConfig: HostConfig.HostConfig = new HostConfig.HostConfig(
 	{
 		supportsInteractivity: true,
-		fontFamily: "Segoe UI",
 		spacing: {
 			small: 10,
 			default: 20,
@@ -5941,25 +5944,45 @@ const defaultHostConfig: HostConfig.HostConfig = new HostConfig.HostConfig(
 		separator: {
 			lineThickness: 1,
 			lineColor: "#EEEEEE"
-		},
-		fontSizes: {
-			small: 12,
-			default: 14,
-			medium: 17,
-			large: 21,
-			extraLarge: 26
-		},
-		fontWeights: {
-			lighter: 200,
-			default: 400,
-			bolder: 600
-		},
-		imageSizes: {
-			small: 40,
-			medium: 80,
-			large: 160
-		},
-		containerStyles: {
+        },
+        fontStyles: {
+            default: {
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                fontSizes: {
+                    small: 12,
+                    default: 14,
+                    medium: 17,
+                    large: 21,
+                    extraLarge: 26
+                },
+                fontWeights: {
+                    lighter: 200,
+                    default: 400,
+                    bolder: 600
+                }
+            },
+            monospace: {
+                fontFamily: "'Courier New', Courier, monospace",
+                fontSizes: {
+                    small: 12,
+                    default: 14,
+                    medium: 17,
+                    large: 21,
+                    extraLarge: 26
+                },
+                fontWeights: {
+                    lighter: 200,
+                    default: 400,
+                    bolder: 600
+                }
+            }
+        },
+        imageSizes: {
+            small: 40,
+            medium: 80,
+            large: 160
+        },
+        containerStyles: {
 			default: {
 				backgroundColor: "#FFFFFF",
 				foregroundColors: {

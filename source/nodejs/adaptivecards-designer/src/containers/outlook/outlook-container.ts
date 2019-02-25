@@ -111,7 +111,6 @@ export class OutlookContainer extends Designer.HostContainer {
         return new Adaptive.HostConfig({
             preExpandSingleShowCardAction: true,
             supportsInteractivity: true,
-            fontFamily: "Segoe UI",
             spacing: {
                 small: 10,
                 default: 20,
@@ -124,22 +123,42 @@ export class OutlookContainer extends Designer.HostContainer {
                 lineThickness: 1,
                 lineColor: "#EEEEEE"
             },
-            fontSizes: {
-                small: 12,
-                default: 14,
-                medium: 17,
-                large: 21,
-                extraLarge: 26
-            },
-            fontWeights: {
-                lighter: 200,
-                default: 400,
-                bolder: 600
-            },
             imageSizes: {
                 small: 40,
                 medium: 80,
                 large: 160
+            },
+            fontStyles: {
+                default: {
+                    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                    fontSizes: {
+                        small: 12,
+                        default: 14,
+                        medium: 17,
+                        large: 21,
+                        extraLarge: 26
+                    },
+                    fontWeights: {
+                        lighter: 200,
+                        default: 400,
+                        bolder: 600
+                    }
+                },
+                monospace: {
+                    fontFamily: "'Courier New', Courier, monospace",
+                    fontSizes: {
+                        small: 12,
+                        default: 14,
+                        medium: 17,
+                        large: 21,
+                        extraLarge: 26
+                    },
+                    fontWeights: {
+                        lighter: 200,
+                        default: 400,
+                        bolder: 600
+                    }
+                }
             },
             containerStyles: {
                 default: {

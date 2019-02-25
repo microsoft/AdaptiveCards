@@ -72,18 +72,37 @@ export class CortanaContainer extends Designer.HostContainer {
                 lineColor: "#FF999999"
             },
             supportsInteractivity: true,
-            fontFamily: "Segoe UI",
-            fontSizes: {
-                small: 13,
-                default: 15,
-                medium: 18,
-                large: 20,
-                extraLarge: 24
-            },
-            fontWeights: {
-                lighter: 200,
-                default: 400,
-                bolder: 600
+            fontStyles: {
+                default: {
+                    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                    fontSizes: {
+                        small: 13,
+                        default: 15,
+                        medium: 18,
+                        large: 20,
+                        extraLarge: 24
+                    },
+                    fontWeights: {
+                        lighter: 200,
+                        default: 400,
+                        bolder: 600
+                    }
+                },
+                monospace: {
+                    fontFamily: "'Courier New', Courier, monospace",
+                    fontSizes: {
+                        small: 13,
+                        default: 15,
+                        medium: 18,
+                        large: 20,
+                        extraLarge: 24
+                    },
+                    fontWeights: {
+                        lighter: 200,
+                        default: 400,
+                        bolder: 600
+                    }
+                }
             },
             containerStyles: {
                 default: {
