@@ -460,7 +460,7 @@ namespace AdaptiveNamespace
     _Check_return_ HRESULT WholeItemsPanel::LayoutCroppedImage(_In_ IShape* pShape, _In_ double availableWidth, _In_ double availableHeight)
     {
         ComPtr<IFrameworkElement> spFrameworkElement;
-        VerticalAlignment valign;
+        ABI::Windows::UI::Xaml::VerticalAlignment valign;
         ABI::Windows::UI::Xaml::HorizontalAlignment halign;
         Thickness margins;
         RETURN_IF_FAILED(pShape->QueryInterface(spFrameworkElement.GetAddressOf()));

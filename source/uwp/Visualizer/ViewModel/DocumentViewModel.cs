@@ -180,7 +180,7 @@ namespace AdaptiveCardVisualizer.ViewModel
 
                 if (RenderedCard is FrameworkElement)
                 {
-                    (RenderedCard as FrameworkElement).VerticalAlignment = VerticalAlignment.Top;
+                    (RenderedCard as FrameworkElement).VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Top;
                 }
                 MakeErrorsLike(newErrors);
             }

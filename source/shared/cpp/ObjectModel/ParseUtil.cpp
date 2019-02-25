@@ -119,6 +119,33 @@ namespace AdaptiveSharedNamespace
         return propertyValue.asString();
     }
 
+    std::shared_ptr<BackgroundImage> ParseUtil::GetBackgroundImage(const Json::Value& json)
+    {
+        try
+        {
+            // handle "backgroundImage": <string>
+            std::string backgroundImageUrl = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundImage, false);
+            if (backgroundImageUrl != "")
+            {
+                return std::shared_ptr<BackgroundImage>(new BackgroundImage(backgroundImageUrl));
+            }
+
+            // handle "backgroundImageUrl": <string>
+            backgroundImageUrl = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundImageUrl, false);
+            if (backgroundImageUrl != "")
+            {
+                return std::shared_ptr<BackgroundImage>(new BackgroundImage(backgroundImageUrl));
+            }
+            return nullptr;
+        }
+        catch (AdaptiveCardParseException)
+        {
+            // handle "backgroundImage": { <content> }
+            auto jsonValue = ParseUtil::ExtractJsonValue(json, AdaptiveCardSchemaKey::BackgroundImage, false);
+            return BackgroundImage::Deserialize(jsonValue);
+        }
+    }
+
     bool ParseUtil::GetBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool defaultValue, bool isRequired)
     {
         std::string propertyName = AdaptiveCardSchemaKeyToString(key);

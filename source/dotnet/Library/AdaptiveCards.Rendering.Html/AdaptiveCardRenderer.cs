@@ -1044,6 +1044,7 @@ namespace AdaptiveCards.Rendering.Html
             var thumbnailButton = new DivTag()
                 .AddClass("ac-media-poster")
                 .Attr("role", "button")
+                .Attr("tabindex", "0")
                 .Attr("aria-label", "Play media")
                 .Attr("role", "contentinfo")
                 .Style("position", "relative")
