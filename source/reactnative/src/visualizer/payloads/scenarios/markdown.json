@@ -12,7 +12,8 @@
                     "size": "medium",
                     "color": "good",
                     "separator": true,
-                    "spacing": "medium"
+                    "spacing": "medium",
+                    "horizontalAlignment": "center"
                 },
                 {
                     "type": "ColumnSet",
@@ -66,14 +67,15 @@
                             "items": [
                                 {
                                     "type": "TextBlock",
-                                    "text": "Containers",
+                                    "text": "_Containers_",
                                     "color": "attention",
                                     "weight": "bolder"
                                 },
                                 {
                                     "type": "TextBlock",
-                                    "text": "- Container \r- ColumnSet \r- FactSet \r- ImageSet",
-                                    "spacing": "medium"
+                                    "text": "1. Container \r2. ColumnSet \r3. FactSet \r4. ImageSet",
+                                    "spacing": "medium",
+                                    "wrap": true
                                 }
                             ]
                         },
@@ -83,14 +85,15 @@
                             "items": [
                                 {
                                     "type": "TextBlock",
-                                    "text": "Actions",
+                                    "text": "_Actions_",
                                     "color": "attention",
                                     "weight": "bolder"
                                 },
                                 {
                                     "type": "TextBlock",
-                                    "text": "- Action-ShowCard \r- Action-OpenURL \r- Action-Submit",
-                                    "spacing": "medium"
+                                    "text": "1. Action-ShowCard \r2. Action-OpenURL \r3. Action-Submit",
+                                    "spacing": "medium",
+                                    "wrap": true
                                 }
                             ]
                         }
