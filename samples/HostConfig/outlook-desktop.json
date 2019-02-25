@@ -1,20 +1,21 @@
 {
+	"preExpandSingleShowCardAction": true,
+	"supportsInteractivity": true,
 	"spacing": {
-		"small": 3,
-		"default": 8,
-		"medium": 20,
-		"large": 30,
-		"extraLarge": 40,
+		"small": 10,
+		"default": 20,
+		"medium": 30,
+		"large": 40,
+		"extraLarge": 50,
 		"padding": 20
 	},
 	"separator": {
 		"lineThickness": 1,
-		"lineColor": "#FFEEEEEE"
+		"lineColor": "#EEEEEE"
 	},
-	"supportsInteractivity": true,
 	"fontStyles": {
 		"default": {
-			"fontFamily": "Segoe UI",
+			"fontFamily": "Segoe UI, Helvetica Neue, Helvetica, sans-serif",
 			"fontSizes": {
 				"small": 12,
 				"default": 14,
@@ -228,7 +229,7 @@
 		"actionAlignment": "left"
 	},
 	"adaptiveCard": {
-		"allowCustomStyle": false
+		"allowCustomStyle": true
 	},
 	"imageSet": {
 		"imageSize": "medium",

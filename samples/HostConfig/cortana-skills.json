@@ -1,5 +1,4 @@
 {
-	"supportsInteractivity": true,
 	"spacing": {
 		"small": 3,
 		"default": 8,
@@ -8,17 +7,32 @@
 		"extraLarge": 40,
 		"padding": 10
 	},
-	"imageBaseUrl": "ms-appx:///",
 	"separator": {
 		"lineThickness": 1,
-		"lineColor": "#66FFFFFF"
+		"lineColor": "#FF999999"
 	},
+	"supportsInteractivity": true,
 	"fontStyles": {
 		"default": {
 			"fontFamily": "Segoe UI, Helvetica Neue, Helvetica, sans-serif",
 			"fontSizes": {
-				"small": 12,
+				"small": 13,
 				"default": 15,
+				"medium": 18,
+				"large": 20,
+				"extraLarge": 24
+			},
+			"fontWeights": {
+				"lighter": 200,
+				"default": 400,
+				"bolder": 600
+			}
+		},
+		"display": {
+			"fontFamily": "Times New Roman",
+			"fontSizes": {
+				"small": 12,
+				"default": 14,
 				"medium": 17,
 				"large": 21,
 				"extraLarge": 26
@@ -32,11 +46,11 @@
 		"monospace": {
 			"fontFamily": "Segoe UI Mono",
 			"fontSizes": {
-				"small": 12,
-				"default": 14,
-				"medium": 17,
-				"large": 21,
-				"extraLarge": 26
+				"small": 13,
+				"default": 15,
+				"medium": 18,
+				"large": 20,
+				"extraLarge": 24
 			},
 			"fontWeights": {
 				"lighter": 200,
@@ -47,96 +61,97 @@
 	},
 	"containerStyles": {
 		"default": {
-			"backgroundColor": "#FF1F1F1F",
+			"backgroundColor": "#00000000",
 			"foregroundColors": {
 				"default": {
 					"default": "#FFFFFFFF",
-					"subtle": "#88FFFFFF"
+					"subtle": "#99FFFFFF"
+				},
+				"accent": {
+					"default": "#FF2E89FC",
+					"subtle": "#CC2E89FC"
+				},
+				"dark": {
+					"default": "#FF999999",
+					"subtle": "#99999999"
 				},
 				"light": {
 					"default": "#FFFFFFFF",
 					"subtle": "#99FFFFFF"
 				},
-				"dark": {
-					"default": "#FF000000",
-					"subtle": "#99000000"
-				},
-				"accent": {
-					"default": "#FF2E89FC",
-					"subtle": "#882E89FC"
-				},
 				"attention": {
-					"default": "#FFFF0000",
-					"subtle": "#DDFF0000"
+					"default": "#CCFF0000",
+					"subtle": "#99FF0000"
 				},
 				"good": {
-					"default": "#FF00FF00",
-					"subtle": "#DD00FF00"
+					"default": "#CC00FF00",
+					"subtle": "#9900FF00"
 				},
 				"warning": {
-					"default": "#FFFFD800",
-					"subtle": "#DDFFD800"
+					"default": "#CCFF9800",
+					"subtle": "#99FF9800"
 				}
 			}
 		},
 		"emphasis": {
-			"backgroundColor": "#19FFFFFF",
+			"backgroundColor": "#33FFFFFF",
 			"foregroundColors": {
 				"default": {
 					"default": "#FFFFFFFF",
-					"subtle": "#88FFFFFF"
+					"subtle": "#99FFFFFF"
+				},
+				"accent": {
+					"default": "#FF2E89FC",
+					"subtle": "#CC2E89FC"
+				},
+				"dark": {
+					"default": "#FF999999",
+					"subtle": "#99999999"
 				},
 				"light": {
 					"default": "#FFFFFFFF",
 					"subtle": "#99FFFFFF"
 				},
-				"dark": {
-					"default": "#FF000000",
-					"subtle": "#99000000"
-				},
-				"accent": {
-					"default": "#FF2E89FC",
-					"subtle": "#882E89FC"
-				},
 				"attention": {
-					"default": "#FFFFD800",
-					"subtle": "#DDFFD800"
+					"default": "#CCFF0000",
+					"subtle": "#99FF0000"
 				},
 				"good": {
-					"default": "#FF00FF00",
-					"subtle": "#DD00FF00"
+					"default": "#CC00FF00",
+					"subtle": "#9900FF00"
 				},
 				"warning": {
-					"default": "#FFFF0000",
-					"subtle": "#DDFF0000"
+					"default": "#CCFF9800",
+					"subtle": "#99FF9800"
 				}
 			}
 		}
 	},
 	"imageSizes": {
 		"small": 40,
-		"medium": 80,
-		"large": 160
+		"medium": 58,
+		"large": 320
 	},
 	"actions": {
 		"maxActions": 5,
 		"spacing": "default",
-		"buttonSpacing": 10,
+		"buttonSpacing": 5,
 		"showCard": {
 			"actionMode": "inline",
-			"inlineTopMargin": 16
+			"inlineTopMargin": 20
 		},
 		"actionsOrientation": "horizontal",
-		"actionAlignment": "stretch"
+		"actionAlignment": "stretch",
+		"iconSize": 50
 	},
 	"imageSet": {
-		"imageSize": "medium",
+		"imageSize": "small",
 		"maxImageHeight": 100
 	},
 	"factSet": {
 		"title": {
 			"color": "default",
-			"size": "normal",
+			"size": "default",
 			"isSubtle": false,
 			"weight": "bolder",
 			"wrap": true,
@@ -144,11 +159,11 @@
 		},
 		"value": {
 			"color": "default",
-			"size": "normal",
+			"size": "default",
 			"isSubtle": false,
 			"weight": "default",
 			"wrap": true
 		},
-		"spacing": 10
+		"spacing": 12
 	}
 }

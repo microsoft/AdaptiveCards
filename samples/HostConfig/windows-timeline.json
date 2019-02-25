@@ -14,7 +14,7 @@
 	"supportsInteractivity": false,
 	"fontStyles": {
 		"default": {
-			"fontFamily": "Segoe UI",
+			"fontFamily": "Segoe UI, Helvetica Neue, Helvetica, sans-serif",
 			"fontSizes": {
 				"small": 12,
 				"default": 14,
@@ -215,18 +215,6 @@
 		"small": 40,
 		"medium": 80,
 		"large": 120
-	},
-	"actions": {
-		"maxActions": 5,
-		"spacing": "default",
-		"buttonSpacing": 20,
-		"showCard": {
-			"actionMode": "inline",
-			"inlineTopMargin": 16
-		}
-	},
-	"adaptiveCard": {
-		"allowCustomStyle": false
 	},
 	"imageSet": {
 		"imageSize": "medium",

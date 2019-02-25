@@ -349,7 +349,7 @@ export class CardDesigner {
     private preventJsonUpdate: boolean = false;
     
     private getCurrentJsonPayload(): string {
-        return this._isMonacoEditorLoaded ? this._monacoEditor.getValue() : Constants.defaultPayload;
+        return this._isMonacoEditorLoaded ? this._monacoEditor.getValue() : JSON.stringify(Constants.defaultPayload);
     }
 
     private updateCardFromJson() {

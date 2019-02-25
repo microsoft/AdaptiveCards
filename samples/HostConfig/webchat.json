@@ -1,20 +1,20 @@
 {
+	"supportsInteractivity": true,
 	"spacing": {
 		"small": 3,
 		"default": 8,
 		"medium": 20,
 		"large": 30,
 		"extraLarge": 40,
-		"padding": 20
+		"padding": 10
 	},
 	"separator": {
 		"lineThickness": 1,
-		"lineColor": "#FFEEEEEE"
+		"lineColor": "#EEEEEE"
 	},
-	"supportsInteractivity": true,
 	"fontStyles": {
 		"default": {
-			"fontFamily": "Segoe UI",
+			"fontFamily": "Segoe UI, Helvetica Neue, Helvetica, sans-serif",
 			"fontSizes": {
 				"small": 12,
 				"default": 14,
@@ -44,7 +44,7 @@
 			}
 		},
 		"monospace": {
-			"fontFamily": "Segoe UI Mono",
+			"fontFamily": "Courier New",
 			"fontSizes": {
 				"small": 12,
 				"default": 14,
@@ -61,7 +61,7 @@
 	},
 	"containerStyles": {
 		"default": {
-			"backgroundColor": "#00000000",
+			"backgroundColor": "#FFFFFFFF",
 			"foregroundColors": {
 				"default": {
 					"default": "#FF333333",
@@ -102,7 +102,7 @@
 				},
 				"good": {
 					"default": "#FF54A254",
-					"subtle": "#DD54a254"
+					"subtle": "#DD54A254"
 				},
 				"warning": {
 					"default": "#FFE69500",
@@ -224,11 +224,8 @@
 			"actionMode": "inline",
 			"inlineTopMargin": 16
 		},
-		"actionsOrientation": "horizontal",
+		"actionsOrientation": "vertical",
 		"actionAlignment": "stretch"
-	},
-	"adaptiveCard": {
-		"allowCustomStyle": false
 	},
 	"imageSet": {
 		"imageSize": "medium",
