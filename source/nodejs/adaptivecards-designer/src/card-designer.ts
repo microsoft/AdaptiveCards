@@ -788,11 +788,11 @@ export class CardDesigner {
 
         this.toolbar.attachTo(document.getElementById("toolbarHost"));
 
-        new Clipboard(
-            this._copyJSONButton.renderedElement,
-            {
-                text: (trigger) => { return JSON.stringify(this.card.toJSON(), null, 4); }
-            });
+        // new Clipboard(
+        //     this._copyJSONButton.renderedElement,
+        //     {
+        //         text: (trigger) => { return JSON.stringify(this.card.toJSON(), null, 4); }
+        //     });
         
         // Tool palette pane
         this._toolPalettePane = new SidePane(
