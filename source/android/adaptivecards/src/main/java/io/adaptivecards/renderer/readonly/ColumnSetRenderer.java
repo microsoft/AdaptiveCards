@@ -2,6 +2,7 @@ package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.nfc.Tag;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -77,7 +79,11 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         long columnVectorSize = columnVector.size();
 
         LinearLayout layout = new LinearLayout(context);
-        layout.setTag(columnSet);
+        layout.setTag(new TagContent(columnSet));
+        if(!baseCardElement.GetIsVisible())
+        {
+            layout.setVisibility(View.GONE);
+        }
 
         for (int i = 0; i < columnVectorSize; i++) {
             Column column = columnVector.get(i);

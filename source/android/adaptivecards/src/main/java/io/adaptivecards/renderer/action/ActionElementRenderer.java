@@ -29,11 +29,17 @@ import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.IconPlacement;
+import io.adaptivecards.objectmodel.IsVisible;
 import io.adaptivecards.objectmodel.ShowCardAction;
+import io.adaptivecards.objectmodel.ToggleInput;
+import io.adaptivecards.objectmodel.ToggleVisibilityAction;
+import io.adaptivecards.objectmodel.ToggleVisibilityTarget;
+import io.adaptivecards.objectmodel.ToggleVisibilityTargetVector;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
 import io.adaptivecards.renderer.IBaseActionElementRenderer;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
@@ -66,7 +72,54 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         @Override
         public void onClick(View v)
         {
-            m_cardActionHandler.onAction(m_action, m_renderedAdaptiveCard);
+            if(m_action.GetElementType() == ActionType.ToggleVisibility)
+            {
+                ToggleVisibilityAction toggleVisibilityAction = null;
+                if (m_action instanceof ToggleVisibilityAction)
+                {
+                    toggleVisibilityAction = (ToggleVisibilityAction) m_action;
+                }
+                else if ((toggleVisibilityAction = ToggleVisibilityAction.dynamic_cast(m_action)) == null)
+                {
+                    throw new InternalError("Unable to convert BaseActionElement to ToggleVisibilityAction object model.");
+                }
+
+                ToggleVisibilityTargetVector toggleVisibilityTargetVector = toggleVisibilityAction.GetTargetElements();
+                View rootView = m_renderedAdaptiveCard.getView();
+                for (int i = 0; i < toggleVisibilityTargetVector.size(); ++i)
+                {
+                    ToggleVisibilityTarget target = toggleVisibilityTargetVector.get(i);
+                    View foundView = rootView.findViewWithTag(new TagContent(target.GetElementId()));
+                    if(foundView != null)
+                    {
+                        IsVisible isVisible = target.GetIsVisible();
+                        if(isVisible == IsVisible.IsVisibleFalse)
+                        {
+                            foundView.setVisibility(View.GONE);
+                        }
+                        else if(isVisible == IsVisible.IsVisibleTrue)
+                        {
+                            foundView.setVisibility(View.VISIBLE);
+                        }
+                        else
+                        {
+                            if(foundView.getVisibility() == View.GONE)
+                            {
+                                foundView.setVisibility(View.VISIBLE);
+                            }
+                            else
+                            {
+                                foundView.setVisibility(View.GONE);
+                            }
+                        }
+                    }
+                }
+
+            }
+            else
+            {
+                m_cardActionHandler.onAction(m_action, m_renderedAdaptiveCard);
+            }
         }
 
         private BaseActionElement m_action;

@@ -1159,7 +1159,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long new_ToggleVisibilityAction();
   public final static native long ToggleVisibilityAction_GetTargetElements__SWIG_0(long jarg1, ToggleVisibilityAction jarg1_);
   public final static native long ToggleVisibilityAction_SerializeToJsonValue(long jarg1, ToggleVisibilityAction jarg1_);
-  public final static native long ToggleVisibilityAction_dynamic_cast(long jarg1, BaseCardElement jarg1_);
+  public final static native long ToggleVisibilityAction_dynamic_cast(long jarg1, BaseActionElement jarg1_);
   public final static native void delete_ToggleVisibilityAction(long jarg1);
   public final static native long new_ToggleVisibilityActionParser__SWIG_0();
   public final static native long new_ToggleVisibilityActionParser__SWIG_1(long jarg1, ToggleVisibilityActionParser jarg1_);

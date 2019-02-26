@@ -20,6 +20,7 @@ import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -162,7 +163,11 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
 
         ImageView imageView = new ImageView(context);
-        imageView.setTag(image);
+        imageView.setTag(new TagContent(image));
+        if(!baseCardElement.GetIsVisible())
+        {
+            imageView.setVisibility(View.GONE);
+        }
 
         String imageBackgroundColor = image.GetBackgroundColor();
         int backgroundColor = 0;
