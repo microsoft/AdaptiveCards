@@ -13,7 +13,15 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "ColumnSet 1\rColumn 1\rStretch"
+							"text": "ColumnSet 1"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Column 1"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Stretch"
 						}
 					]
 				},
@@ -23,7 +31,15 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "ColumnSet 1\rColumn 2\rStretch"
+							"text": "ColumnSet 1"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Column 2"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Stretch"
 						}
 					]
 				}
@@ -43,7 +59,15 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "ColumnSet 2\rColumn 1\rRepeat"
+							"text": "ColumnSet 2"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Column 1"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Repeat"
 						}
 					]
 				},
@@ -53,7 +77,15 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "ColumnSet 2\rColumn 2\rRepeat"
+							"text": "ColumnSet 2"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Column 2"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Repeat"
 						}
 					]
 				}
@@ -72,7 +104,15 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "ColumnSet 3\rColumn 1\rRepeatHorizontally"
+							"text": "ColumnSet 3"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Column 1"
+						},
+						{
+							"type": "TextBlock",
+							"text": "RepeatHorizontally"
 						}
 					]
 				},
@@ -87,7 +127,15 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "ColumnSet 3\rColumn 2\rRepeatHorizontally"
+							"text": "ColumnSet 3"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Column 2"
+						},
+						{
+							"type": "TextBlock",
+							"text": "RepeatHorizontally"
 						}
 					]
 				},
@@ -102,7 +150,15 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "ColumnSet 3\rColumn 2\rRepeatHorizontally"
+							"text": "ColumnSet 3"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Column 2"
+						},
+						{
+							"type": "TextBlock",
+							"text": "RepeatHorizontally"
 						}
 					]
 				}
@@ -121,7 +177,15 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "ColumnSet 4\rColumn 1\rRepeatVertically"
+							"text": "ColumnSet 4"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Column 1"
+						},
+						{
+							"type": "TextBlock",
+							"text": "RepeatVertically"
 						}
 					]
 				},
@@ -136,7 +200,15 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "ColumnSet 4\rColumn 2\rRepeatVertically"
+							"text": "ColumnSet 4"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Column 2"
+						},
+						{
+							"type": "TextBlock",
+							"text": "RepeatVertically"
 						}
 					]
 				},
@@ -151,7 +223,15 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "ColumnSet 4\rColumn 2\rRepeatVertically"
+							"text": "ColumnSet 4"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Column 2"
+						},
+						{
+							"type": "TextBlock",
+							"text": "RepeatVertically"
 						}
 					]
 				}
