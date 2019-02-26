@@ -1,0 +1,13 @@
+{
+  "inputJson": {
+    "name": "{'Andrew'} {'Leader'}",
+    "rawInfo": "{'{}'}"
+  },
+
+  "inputData": {},
+
+  "expected": {
+    "name": "Andrew Leader",
+    "rawInfo": "{}"
+  }
+}

@@ -11,6 +11,8 @@ namespace JsonTransformLanguage.Grammars
     {
         JsonTransformerContext _transformerContext;
 
+        public List<string> Dependencies { get; private set; } = new List<string>();
+
         public BindingExpressionsVisitor(JsonTransformerContext transformerContext)
         {
             _transformerContext = transformerContext;
@@ -85,6 +87,8 @@ namespace JsonTransformLanguage.Grammars
         public override JToken VisitIdentifier([NotNull] BindingExpressionsParser.IdentifierContext context)
         {
             string identifier = context.Identifier().GetText();
+            Dependencies.Add(identifier);
+
             if (identifier.StartsWith("$"))
             {
                 return _transformerContext.ReservedProperties.GetValue(identifier.Substring(1));

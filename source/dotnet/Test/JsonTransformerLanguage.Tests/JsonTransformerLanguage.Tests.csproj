@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TransformerWithBindingTests.cs" />
     <Compile Include="TransformTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -180,7 +181,10 @@
     <Content Include="TestPayloads\InvalidExpressions1.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestPayloads\StringInterpolation1_Binding.json">
+    <Content Include="TestBindingPayloads\StringInterpolation1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestBindingPayloads\StringLiterals1.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

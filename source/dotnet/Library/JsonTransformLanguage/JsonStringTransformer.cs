@@ -63,10 +63,9 @@ namespace JsonTransformLanguage
                     // If it actually found something
                     if (foundExpression.Stop.StopIndex < substr.Length && parser.NumberOfSyntaxErrors == 0)
                     {
-                        dependencies.Add(foundExpression.GetText().Trim('{', '}'));
-
                         var visitor = new BindingExpressionsVisitor(context);
                         JToken result = visitor.Visit(foundExpression);
+                        dependencies.AddRange(visitor.Dependencies);
 
                         answer += remainingBindingExpression.Substring(0, startIndex);
                         answer += result;
