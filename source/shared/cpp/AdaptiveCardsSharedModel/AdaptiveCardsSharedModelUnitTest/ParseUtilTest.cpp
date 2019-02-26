@@ -56,8 +56,6 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::ExpectException<AdaptiveCardParseException>([]() { ParseUtil::GetJsonValueFromString("definitely not json"); });
             auto jsonValue = ParseUtil::GetJsonValueFromString("{ \"foo\": \"bar\" }");
             Assert::AreEqual(jsonValue["foo"].asCString(), "bar", false);
-            ParseUtil::ExpectString(jsonValue["foo"]);
-            Assert::ExpectException<AdaptiveCardParseException>([&]() { ParseUtil::ExpectString(jsonValue); });
         }
 
         TEST_METHOD(ThrowIfNotJsonObjectTests)
@@ -167,11 +165,11 @@ namespace AdaptiveCardsSharedModelUnitTest
         {
             auto jsonObj = s_GetValidJsonObject();
             Assert::ExpectException<AdaptiveCardParseException>([&]() { ParseUtil::GetCardElementType(jsonObj); });
-            Assert::IsTrue(ParseUtil::TryGetCardElementType(jsonObj) == CardElementType::Unsupported);
+            Assert::IsTrue(ParseUtil::TryGetCardElementType(jsonObj) == CardElementType::Unknown);
 
             auto jsonObjWithInvalidType = s_GetJsonObjectWithType("Invalid"s);
-            Assert::IsTrue(ParseUtil::GetCardElementType(jsonObjWithInvalidType) == CardElementType::Unsupported);
-            Assert::IsTrue(ParseUtil::TryGetCardElementType(jsonObjWithInvalidType) == CardElementType::Unsupported);
+            Assert::IsTrue(ParseUtil::GetCardElementType(jsonObjWithInvalidType) == CardElementType::Unknown);
+            Assert::IsTrue(ParseUtil::TryGetCardElementType(jsonObjWithInvalidType) == CardElementType::Unknown);
 
             auto jsonObjWithValidType = s_GetJsonObjectWithType("AdaptiveCard"s);
             Assert::IsTrue(ParseUtil::GetCardElementType(jsonObjWithValidType) == CardElementType::AdaptiveCard);

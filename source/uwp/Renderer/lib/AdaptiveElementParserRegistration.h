@@ -22,9 +22,9 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize(std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> sharedParserRegistration) noexcept;
 
         // IAdaptiveElementParserRegistration
-        IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveNamespace::IAdaptiveElementParser* Parser);
-        IFACEMETHODIMP Get(_In_ HSTRING type, _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveElementParser** result);
-        IFACEMETHODIMP Remove(_In_ HSTRING type);
+        IFACEMETHODIMP Set(_In_ HSTRING type, _In_ ABI::AdaptiveNamespace::IAdaptiveElementParser* Parser) noexcept;
+        IFACEMETHODIMP Get(_In_ HSTRING type, _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveElementParser** result) noexcept;
+        IFACEMETHODIMP Remove(_In_ HSTRING type) noexcept;
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
@@ -32,6 +32,7 @@ namespace AdaptiveNamespace
         std::shared_ptr<ElementParserRegistration> GetSharedParserRegistration();
 
     private:
+        bool m_isInitializing;
         std::shared_ptr<RegistrationMap> m_registration;
         std::shared_ptr<ElementParserRegistration> m_sharedParserRegistration;
     };
@@ -46,7 +47,7 @@ namespace AdaptiveNamespace
         {
         }
 
-        // IBaseCardElementParser
+        // AdaptiveSharedNamespace::BaseCardElementParser
         std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& value) override;
         std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
 
@@ -54,20 +55,19 @@ namespace AdaptiveNamespace
         Microsoft::WRL::ComPtr<AdaptiveNamespace::AdaptiveElementParserRegistration> m_parserRegistration;
     };
 
-    template<typename TAdaptiveCardElement, typename TSharedModelElement, typename TSharedModelParser>
+    template<typename TAdaptiveCardElement, typename TSharedModelElement, typename TSharedModelParser, typename TAdaptiveElementInterface>
     HRESULT FromJson(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
                      _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
                      _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
-                     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
-                     _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element)
+                     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
+                     _COM_Outptr_ TAdaptiveElementInterface** element)
     {
         std::string jsonString;
         JsonObjectToString(jsonObject, jsonString);
 
-        std::shared_ptr<AdaptiveSharedNamespace::ElementParserRegistration> sharedModelElementParserRegistration;
         ComPtr<AdaptiveElementParserRegistration> elementParserRegistrationImpl =
             PeekInnards<AdaptiveElementParserRegistration>(elementParserRegistration);
-        std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> sharedModelActionParserRegistration;
+
         ComPtr<AdaptiveActionParserRegistration> actionParserRegistrationImpl =
             PeekInnards<AdaptiveActionParserRegistration>(actionParserRegistration);
 
@@ -76,7 +76,7 @@ namespace AdaptiveNamespace
 
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
         std::shared_ptr<TSharedModelParser> parser = std::make_shared<TSharedModelParser>();
-        std::shared_ptr<BaseCardElement> baseCardElement = parser->DeserializeFromString(context, jsonString);
+        auto baseCardElement = parser->DeserializeFromString(context, jsonString);
 
         RETURN_IF_FAILED(SharedWarningsToAdaptiveWarnings(context.warnings, adaptiveWarnings));
 

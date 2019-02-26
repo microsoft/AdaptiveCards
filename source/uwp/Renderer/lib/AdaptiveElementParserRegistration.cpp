@@ -1,6 +1,24 @@
 #include "pch.h"
 #include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveActionParserRegistration.h"
+#include "AdaptiveActionSetRenderer.h"
+#include "AdaptiveChoiceSetInputRenderer.h"
+#include "AdaptiveColumnRenderer.h"
+#include "AdaptiveColumnSetRenderer.h"
+#include "AdaptiveContainerRenderer.h"
+#include "AdaptiveDateInputRenderer.h"
+#include "AdaptiveElementRendererRegistration.h"
+#include "AdaptiveFactSetRenderer.h"
+#include "AdaptiveHostConfig.h"
+#include "AdaptiveImageRenderer.h"
+#include "AdaptiveImageSetRenderer.h"
+#include "AdaptiveMediaRenderer.h"
+#include "AdaptiveNumberInputRenderer.h"
+#include "AdaptiveRenderContext.h"
+#include "AdaptiveTextBlockRenderer.h"
+#include "AdaptiveTextInputRenderer.h"
+#include "AdaptiveTimeInputRenderer.h"
+#include "AdaptiveToggleInputRenderer.h"
 #include "CustomElementWrapper.h"
 #include "Util.h"
 #include "Vector.h"
@@ -16,9 +34,8 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveElementParserRegistration::RuntimeClassInitialize() noexcept try
     {
-        m_registration = std::make_shared<RegistrationMap>();
-        m_sharedParserRegistration = std::make_shared<ElementParserRegistration>();
-
+        std::shared_ptr<ElementParserRegistration> sharedParserRegistration = std::make_shared<ElementParserRegistration>();
+        RuntimeClassInitialize(sharedParserRegistration);
         return S_OK;
     }
     CATCH_RETURN;
@@ -29,35 +46,45 @@ namespace AdaptiveNamespace
         m_registration = std::make_shared<RegistrationMap>();
         m_sharedParserRegistration = sharedParserRegistration;
 
+        m_isInitializing = true;
+        RegisterDefaultElementRenderers(this, nullptr);
+        m_isInitializing = false;
         return S_OK;
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveElementParserRegistration::Set(_In_ HSTRING type, _In_ IAdaptiveElementParser* Parser)
+    HRESULT AdaptiveElementParserRegistration::Set(_In_ HSTRING type, _In_ IAdaptiveElementParser* Parser) noexcept try
     {
         std::string typeString = HStringToUTF8(type);
 
-        m_sharedParserRegistration->AddParser(typeString, std::make_shared<SharedModelElementParser>(this));
+        // During initialization we will add the known parsers to m_registration. These are already present in the corresponding
+        // shared model registration (m_sharedParserRegistration) which will throw if we attempt to modify them by adding them again.
+        if (!m_isInitializing)
+        {
+            m_sharedParserRegistration->AddParser(typeString, std::make_shared<SharedModelElementParser>(this));
+        }
 
         ComPtr<IAdaptiveElementParser> localParser(Parser);
         (*m_registration)[typeString] = localParser;
 
         return S_OK;
     }
+    CATCH_RETURN;
 
-    HRESULT AdaptiveElementParserRegistration::Get(_In_ HSTRING type, _COM_Outptr_ IAdaptiveElementParser** result)
+    HRESULT AdaptiveElementParserRegistration::Get(_In_ HSTRING type, _COM_Outptr_ IAdaptiveElementParser** result) noexcept try
     {
         *result = nullptr;
 
         RegistrationMap::iterator found = m_registration->find(HStringToUTF8(type));
         if (found != m_registration->end())
         {
-            *result = found->second.Get();
+            RETURN_IF_FAILED(found->second.CopyTo(result));
         }
         return S_OK;
     }
+    CATCH_RETURN;
 
-    HRESULT AdaptiveElementParserRegistration::Remove(_In_ HSTRING type)
+    HRESULT AdaptiveElementParserRegistration::Remove(_In_ HSTRING type) noexcept try
     {
         std::string typeString = HStringToUTF8(type);
 
@@ -66,6 +93,7 @@ namespace AdaptiveNamespace
 
         return S_OK;
     }
+    CATCH_RETURN;
 
     std::shared_ptr<ElementParserRegistration> AdaptiveElementParserRegistration::GetSharedParserRegistration()
     {
@@ -99,8 +127,8 @@ namespace AdaptiveNamespace
                                                                                context.actionParserRegistration);
 
         ComPtr<IAdaptiveCardElement> cardElement;
-        ComPtr<ABI::Windows::Foundation::Collections::IVector<IAdaptiveWarning*>> adaptiveWarnings =
-            Make<Vector<IAdaptiveWarning*>>();
+        ComPtr<ABI::Windows::Foundation::Collections::IVector<AdaptiveWarning*>> adaptiveWarnings =
+            Make<Vector<AdaptiveWarning*>>();
         THROW_IF_FAILED(parser->FromJson(jsonObject.Get(),
                                          adaptiveElementParserRegistration.Get(),
                                          adaptiveActionParserRegistration.Get(),

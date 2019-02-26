@@ -45,7 +45,7 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
-        [DefaultValue(typeof(AdaptiveSentiment), "default")]
-        public AdaptiveSentiment Sentiment { get; set; }
+        [DefaultValue("default")]
+        public string Sentiment { get; set; } = "default";
     }
 }

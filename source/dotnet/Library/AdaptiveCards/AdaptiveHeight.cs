@@ -5,6 +5,8 @@ namespace AdaptiveCards
     /// <summary>
     ///     Controls the vertical size (height) of element.
     /// </summary>
+    [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveHeightType>), true)]
+
     public enum AdaptiveHeightType
     {
         /// <summary>

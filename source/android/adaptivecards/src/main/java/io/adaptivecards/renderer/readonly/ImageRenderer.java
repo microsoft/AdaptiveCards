@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
-import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -17,13 +16,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import io.adaptivecards.objectmodel.AdaptiveCardParseWarning;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
-import io.adaptivecards.objectmodel.ParseResult;
-import io.adaptivecards.renderer.AdaptiveCardRenderer;
-import io.adaptivecards.renderer.IDataUriImageLoader;
-import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
@@ -38,7 +32,6 @@ import io.adaptivecards.objectmodel.ImageSizesConfig;
 import io.adaptivecards.objectmodel.ImageStyle;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.layout.HorizontalFlowLayout;
-import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public class ImageRenderer extends BaseCardElementRenderer
 {
@@ -58,9 +51,25 @@ public class ImageRenderer extends BaseCardElementRenderer
 
     private class ImageRendererImageLoaderAsync extends InnerImageLoaderAsync
     {
-        ImageRendererImageLoaderAsync(RenderedAdaptiveCard renderedCard, ImageView imageView, String imageBaseUrl, ImageStyle imageStyle, int backgroundColor)
+        ImageRendererImageLoaderAsync(
+            RenderedAdaptiveCard renderedCard,
+            ImageView imageView,
+            String imageBaseUrl,
+            ImageStyle imageStyle,
+            int backgroundColor)
         {
-            super(renderedCard, imageView, imageBaseUrl);
+            this(renderedCard, imageView, imageBaseUrl, imageStyle, backgroundColor, -1);
+        }
+
+        ImageRendererImageLoaderAsync(
+            RenderedAdaptiveCard renderedCard,
+            ImageView imageView,
+            String imageBaseUrl,
+            ImageStyle imageStyle,
+            int backgroundColor,
+            int maxWidth)
+        {
+            super(renderedCard, imageView, imageBaseUrl, maxWidth);
             m_imageStyle = imageStyle;
             m_backgroundColor = backgroundColor;
         }
@@ -96,6 +105,20 @@ public class ImageRenderer extends BaseCardElementRenderer
 
         private ImageStyle m_imageStyle;
         private int m_backgroundColor;
+    }
+
+    private static int getImageSizeLimit(Context context, ImageSize imageSize, ImageSizesConfig imageSizesConfig) {
+        int imageSizeLimit = context.getResources().getDisplayMetrics().widthPixels;
+
+        if (imageSize == ImageSize.Small) {
+            imageSizeLimit = Util.dpToPixels(context, imageSizesConfig.getSmallSize());
+        } else if (imageSize == ImageSize.Medium) {
+            imageSizeLimit = Util.dpToPixels(context, imageSizesConfig.getMediumSize());
+        } else if (imageSize == ImageSize.Large) {
+            imageSizeLimit = Util.dpToPixels(context, imageSizesConfig.getLargeSize());
+        }
+
+        return imageSizeLimit;
     }
 
     private static void setImageSize(Context context, ImageView imageView, ImageSize imageSize, ImageSizesConfig imageSizesConfig) {
@@ -169,19 +192,14 @@ public class ImageRenderer extends BaseCardElementRenderer
             imageView.setBackgroundColor(backgroundColor);
         }
 
-        ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(renderedCard, imageView, hostConfig.GetImageBaseUrl(), image.GetImageStyle(), backgroundColor);
-
-        IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
-        if (onlineImageLoader != null)
-        {
-            imageLoaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
-        }
-
-        IDataUriImageLoader dataUriImageLoader = CardRendererRegistration.getInstance().getDataUriImageLoader();
-        if(dataUriImageLoader != null)
-        {
-            imageLoaderAsync.registerCustomDataUriImageLoader(dataUriImageLoader);
-        }
+        int imageSizeLimit = getImageSizeLimit(context, image.GetImageSize(), hostConfig.GetImageSizes());
+        ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(
+            renderedCard,
+            imageView,
+            hostConfig.GetImageBaseUrl(),
+            image.GetImageStyle(),
+            backgroundColor,
+            imageSizeLimit);
 
         imageLoaderAsync.execute(image.GetUrl());
 

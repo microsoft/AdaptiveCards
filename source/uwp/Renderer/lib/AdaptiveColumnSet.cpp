@@ -16,7 +16,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    AdaptiveColumnSet::AdaptiveColumnSet() { m_columns = Microsoft::WRL::Make<Vector<IAdaptiveColumn*>>(); }
+    AdaptiveColumnSet::AdaptiveColumnSet() { m_columns = Microsoft::WRL::Make<Vector<ABI::AdaptiveNamespace::AdaptiveColumn*>>(); }
 
     HRESULT AdaptiveColumnSet::RuntimeClassInitialize() noexcept try
     {
@@ -35,13 +35,15 @@ namespace AdaptiveNamespace
         GenerateColumnsProjection(sharedColumnSet->GetColumns(), m_columns.Get());
         GenerateActionProjection(sharedColumnSet->GetSelectAction(), &m_selectAction);
 
+        m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedColumnSet->GetStyle());
+
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedColumnSet));
 
         return S_OK;
     }
     CATCH_RETURN;
 
-    IFACEMETHODIMP AdaptiveColumnSet::get_Columns(_COM_Outptr_ IVector<IAdaptiveColumn*>** columns)
+    IFACEMETHODIMP AdaptiveColumnSet::get_Columns(_COM_Outptr_ IVector<ABI::AdaptiveNamespace::AdaptiveColumn*>** columns)
     {
         return m_columns.CopyTo(columns);
     }
@@ -54,6 +56,18 @@ namespace AdaptiveNamespace
     IFACEMETHODIMP AdaptiveColumnSet::put_SelectAction(_In_ IAdaptiveActionElement* action)
     {
         m_selectAction = action;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveColumnSet::get_Style(_Out_ ABI::AdaptiveNamespace::ContainerStyle* style)
+    {
+        *style = m_style;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveColumnSet::put_Style(ABI::AdaptiveNamespace::ContainerStyle style)
+    {
+        m_style = style;
         return S_OK;
     }
 
@@ -75,7 +89,7 @@ namespace AdaptiveNamespace
             columnSet->SetSelectAction(sharedAction);
         }
 
-        XamlHelpers::IterateOverVector<IAdaptiveColumn>(m_columns.Get(), [&](IAdaptiveColumn* column) {
+        XamlHelpers::IterateOverVector<ABI::AdaptiveNamespace::AdaptiveColumn, IAdaptiveColumn>(m_columns.Get(), [&](IAdaptiveColumn* column) {
             ComPtr<AdaptiveNamespace::AdaptiveColumn> columnImpl = PeekInnards<AdaptiveNamespace::AdaptiveColumn>(column);
 
             std::shared_ptr<BaseCardElement> sharedColumnBaseElement;
@@ -92,6 +106,8 @@ namespace AdaptiveNamespace
 
             return S_OK;
         });
+
+        columnSet->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
 
         sharedModel = columnSet;
         return S_OK;

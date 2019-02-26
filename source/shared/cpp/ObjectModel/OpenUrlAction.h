@@ -2,7 +2,6 @@
 
 #include "pch.h"
 #include "BaseActionElement.h"
-#include "Enums.h"
 #include "ActionParserRegistration.h"
 
 namespace AdaptiveSharedNamespace
@@ -11,6 +10,11 @@ namespace AdaptiveSharedNamespace
     {
     public:
         OpenUrlAction();
+        OpenUrlAction(const OpenUrlAction&) = default;
+        OpenUrlAction(OpenUrlAction&&) = default;
+        OpenUrlAction& operator=(const OpenUrlAction&) = default;
+        OpenUrlAction& operator=(OpenUrlAction&&) = default;
+        ~OpenUrlAction() = default;
 
         Json::Value SerializeToJsonValue() const override;
 
@@ -31,7 +35,7 @@ namespace AdaptiveSharedNamespace
         OpenUrlActionParser(OpenUrlActionParser&&) = default;
         OpenUrlActionParser& operator=(const OpenUrlActionParser&) = default;
         OpenUrlActionParser& operator=(OpenUrlActionParser&&) = default;
-        ~OpenUrlActionParser() = default;
+        virtual ~OpenUrlActionParser() = default;
 
         std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& value) override;
         std::shared_ptr<BaseActionElement> DeserializeFromString(ParseContext& context, const std::string& jsonString);

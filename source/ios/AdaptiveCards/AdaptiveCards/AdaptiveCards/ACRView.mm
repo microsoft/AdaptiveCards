@@ -115,7 +115,13 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     newView.backgroundColor = [_hostConfig getBackgroundColorForContainerStyle:
         [ACOHostConfig getPlatformContainerStyle:style]];
 
-    NSString *key = [NSString stringWithCString:[_adaptiveCard card]->GetBackgroundImage().c_str() encoding:[NSString defaultCStringEncoding]];
+    auto backgroundImageProperties = [_adaptiveCard card]->GetBackgroundImage();
+    std::string imageUrl = "";
+    if((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
+        imageUrl = backgroundImageProperties->GetUrl();
+    }
+    
+    NSString *key = [NSString stringWithCString:imageUrl.c_str() encoding:[NSString defaultCStringEncoding]];
     if ([key length]) {
         UIView *imgView = nil;
         UIImage *img = nil;
@@ -170,7 +176,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 
     for(auto &elem : body)
     {
-        if([rendererRegistration isElementRendererOverriden:(ACRCardElementType) elem->GetElementType()] == YES){
+        if([rendererRegistration isElementRendererOverridden:(ACRCardElementType) elem->GetElementType()] == YES){
             continue;
         }
         switch (elem->GetElementType())

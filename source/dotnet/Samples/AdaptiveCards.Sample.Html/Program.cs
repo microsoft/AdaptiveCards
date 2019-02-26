@@ -161,29 +161,44 @@ namespace AdaptiveCards.Sample.Html
         // Sample JavaScript code to make media elements work
         const mediaPosterButtons = document.getElementsByClassName('ac-media-poster');
         const allowInlinePlayback = false;
+
+        function activateMedia(button) {{
+            const mediaId = button.dataset.acMediaid;
+            const mediaPlayerContainer = document.getElementById(mediaId);
+
+            if (mediaPlayerContainer)
+            {{
+                // Hide the poster
+                button.style.display = 'none';
+
+                // Show the media player container
+                mediaPlayerContainer.style.display = '';
+
+                // Play the media
+                const mediaPlayer = document.getElementById(`${{mediaId}}-player`);
+                mediaPlayer.play();
+            }}
+        }}
+
         for (var i = 0; i < mediaPosterButtons.length; i++)
         {{
             const button = mediaPosterButtons[i];
             button.addEventListener('click', function() {{
                 if ({jsAllowInlinePlayback}) {{
-                    const mediaId = button.dataset.acMediaid;
-                    const mediaPlayerContainer = document.getElementById(mediaId);
-
-                    if (mediaPlayerContainer)
-                    {{
-                        // Hide the poster
-                        button.style.display = 'none';
-
-                        // Show the media player container
-                        mediaPlayerContainer.style.display = '';
-
-                        // Play the media
-                        const mediaPlayer = document.getElementById(`${{mediaId}}-player`);
-                        mediaPlayer.play();
-                    }}
+                    activateMedia(button);
                 }} else {{
                     const mediaSources = button.dataset.acMediaSources;
                     alert(mediaSources);
+                }}
+            }});
+            button.addEventListener('keydown', function(e) {{
+                if (e.key == "" "") {{
+                    if ({jsAllowInlinePlayback}) {{
+                        activateMedia(button);
+                    }} else {{
+                        const mediaSources = button.dataset.acMediaSources;
+                        alert(mediaSources);
+                    }}
                 }}
             }});
         }}
@@ -196,7 +211,7 @@ namespace AdaptiveCards.Sample.Html
             const textinputId = container.dataset.acTextinputId;
             const textinput = document.getElementById(textinputId);
             textinput.addEventListener('keydown', function (e) {{
-                if (e.keyCode == 13) {{
+                if (e.key == ""Enter"") {{
                     const inlineactionId = container.dataset.acInlineactionId;
                     const inlineaction = document.getElementById(inlineactionId);
 
@@ -215,6 +230,52 @@ namespace AdaptiveCards.Sample.Html
                 }} 
             }});
         }}
+
+        // Sample JavaScript code to test toggleVisibility action
+        const toggleVisibilityActions = document.getElementsByClassName('ac-action-toggleVisibility');
+        for (var i = 0; i < toggleVisibilityActions.length; i++) {{
+            const toggleVisibilityAction = toggleVisibilityActions[i];
+
+            toggleVisibilityAction.addEventListener('click', function() {{
+                if (true) {{
+                    // Read list of targets with defined behaviour
+                    // List will be in format id-targets='id1:True,id2:Toggle,id3:False'
+                    const targetElementsString = toggleVisibilityAction.dataset.acTargetelements;
+                    var targetElements = targetElementsString.split(',');
+
+                    // For each target in list of targets
+                    for(var j = 0; j < targetElements.length; j++) {{
+                        /// Do a split for commas and for each element, find the : to divide both strings
+                        const targetElementIdWithAction = targetElements[j].split(':');
+                        const targetElementId = targetElementIdWithAction[0];
+                        const targetElementAction = targetElementIdWithAction[1];
+
+                        var targetElementsInDocument = document.getElementsByName(targetElementId);
+                        // There is no singular version of getElementByName so just take the first element
+                        var targetElement = targetElementsInDocument[0];
+                        // The way to discern between checkbox elements and inline-actions is that inline-actions contain a textinput
+                        var isCheckBoxElement = ((targetElementsInDocument.length > 1) && !(targetElement.className.includes('ac-textinput')));
+
+                        if(targetElementAction == 'True' || (targetElementAction == 'Toggle' && targetElement.style.display == 'none')) {{
+                            if( isCheckBoxElement ) {{
+                                targetElement.style.display = 'inline-block';
+                            }}
+                            else {{
+                                targetElement.style.display = 'flex';
+                            }}
+                        }}
+                        else if(targetElementAction == 'False' || (targetElementAction == 'Toggle' && targetElement.style.display != 'none')) {{
+                            targetElement.style.display = 'none';
+                        }}
+                    }}
+
+                }} else {{
+                    const targetElementsString = toggleVisibilityAction.dataset.acTargetelements;
+                    alert(targetElementsString);
+                }}
+            }});
+        }}
+
     </script>");
                 writer.WriteLine("</html>");
 

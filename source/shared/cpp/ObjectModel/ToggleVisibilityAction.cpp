@@ -34,7 +34,7 @@ Json::Value ToggleVisibilityAction::SerializeToJsonValue() const
 
 std::shared_ptr<BaseActionElement> ToggleVisibilityActionParser::Deserialize(ParseContext& context, const Json::Value& json)
 {
-    std::shared_ptr<ToggleVisibilityAction> toggleVisibilityAction = BaseActionElement::Deserialize<ToggleVisibilityAction>(json);
+    std::shared_ptr<ToggleVisibilityAction> toggleVisibilityAction = BaseActionElement::Deserialize<ToggleVisibilityAction>(context, json);
 
     auto targetElements = ParseUtil::GetElementCollectionOfSingleType<ToggleVisibilityTarget>(
         context, json, AdaptiveCardSchemaKey::TargetElements, ToggleVisibilityTarget::Deserialize, true);

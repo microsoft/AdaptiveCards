@@ -18,7 +18,7 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP SendActionEvent(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* actionElement);
 
     private:
-        Microsoft::WRL::ComPtr<AdaptiveNamespace::RenderedAdaptiveCard> m_renderResult;
+        Microsoft::WRL::WeakRef m_weakRenderResult;
     };
 
     ActivatableClass(AdaptiveActionInvoker);

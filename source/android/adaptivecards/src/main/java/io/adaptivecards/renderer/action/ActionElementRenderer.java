@@ -25,12 +25,10 @@ import io.adaptivecards.objectmodel.ActionMode;
 import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.ActionsOrientation;
 import io.adaptivecards.objectmodel.BaseActionElement;
-import io.adaptivecards.objectmodel.ColorsConfig;
+import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HostConfig;
-import io.adaptivecards.objectmodel.ActionsConfig;
 import io.adaptivecards.objectmodel.IconPlacement;
-import io.adaptivecards.objectmodel.Sentiment;
 import io.adaptivecards.objectmodel.ShowCardAction;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
 import io.adaptivecards.renderer.IBaseActionElementRenderer;
@@ -182,7 +180,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
 
         protected ActionElementRendererIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl, IconPlacement iconPlacement, long iconSize)
         {
-            super(renderedCard, containerView, imageBaseUrl);
+            super(renderedCard, containerView, imageBaseUrl, containerView.getResources().getDisplayMetrics().widthPixels);
             m_iconPlacement = iconPlacement;
             m_iconSize = iconSize;
         }
@@ -229,23 +227,9 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         }
     }
 
-    private int getColor(ForegroundColor color, ColorsConfig colorsConfig)
+    private int getColor(String colorCode)
     {
-        io.adaptivecards.objectmodel.ColorConfig colorConfig;
-        if (color == ForegroundColor.Accent)
-        {
-            colorConfig = colorsConfig.getAccent();
-        }
-        else if (color == ForegroundColor.Attention)
-        {
-            colorConfig = colorsConfig.getAttention();
-        }
-        else
-        {
-            throw new IllegalArgumentException("Unknown color: " + color.toString());
-        }
-
-        return android.graphics.Color.parseColor(colorConfig.getDefaultColor());
+        return android.graphics.Color.parseColor(colorCode);
     }
 
     private Button createButtonWithTheme(Context context, int theme)
@@ -254,14 +238,17 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         return new Button(themedContext);
     }
 
-    private Button createButton(Context context, Sentiment sentiment, HostConfig hostConfig)
+    private Button createButton(Context context, String sentiment, HostConfig hostConfig)
     {
-        if(sentiment == Sentiment.Positive || sentiment == Sentiment.Destructive)
+        boolean isPositiveSentiment = sentiment.equalsIgnoreCase("Positive");
+        boolean isDestructiveSentiment = sentiment.equalsIgnoreCase("Destructive");
+
+        if(isPositiveSentiment || isDestructiveSentiment)
         {
             Resources.Theme theme = context.getTheme();
             TypedValue buttonStyle = new TypedValue();
 
-            if(sentiment == sentiment.Positive)
+            if(isPositiveSentiment)
             {
                 if(theme.resolveAttribute(R.attr.adaptiveActionPositive, buttonStyle, true))
                 {
@@ -270,7 +257,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
                 else
                 {
                     Button button = new Button(context);
-                    button.getBackground().setColorFilter(getColor(ForegroundColor.Accent, hostConfig.GetContainerStyles().getDefaultPalette().getForegroundColors()), PorterDuff.Mode.MULTIPLY);
+                    button.getBackground().setColorFilter(getColor(hostConfig.GetForegroundColor(ContainerStyle.Default, ForegroundColor.Accent, false)), PorterDuff.Mode.MULTIPLY);
                     return button;
                 }
             }
@@ -283,7 +270,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
                 else
                 {
                     Button button = new Button(context);
-                    button.setTextColor(getColor(ForegroundColor.Attention, hostConfig.GetContainerStyles().getDefaultPalette().getForegroundColors()));
+                    button.setTextColor(getColor(hostConfig.GetForegroundColor(ContainerStyle.Default, ForegroundColor.Attention, false)));
                     return button;
                 }
             }

@@ -101,13 +101,13 @@ HRESULT GenerateSharedAction(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement
 HRESULT GenerateSharedActions(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* items,
                               std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>>& containedElements);
 
-HRESULT GenerateSharedImages(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveImage*>* items,
+HRESULT GenerateSharedImages(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveImage*>* items,
                              std::vector<std::shared_ptr<AdaptiveSharedNamespace::Image>>& containedElements);
 
-HRESULT GenerateSharedFacts(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveFact*>* items,
+HRESULT GenerateSharedFacts(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveFact*>* items,
                             std::vector<std::shared_ptr<AdaptiveSharedNamespace::Fact>>& containedElements);
 
-HRESULT GenerateSharedChoices(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveChoiceInput*>* items,
+HRESULT GenerateSharedChoices(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveChoiceInput*>* items,
                               std::vector<std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput>>& containedElements);
 
 HRESULT GenerateSharedMediaSources(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveMediaSource*>* items,
@@ -129,17 +129,17 @@ HRESULT GenerateActionProjection(const std::shared_ptr<AdaptiveSharedNamespace::
                                  _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** projectedAction) noexcept;
 
 HRESULT GenerateColumnsProjection(const std::vector<std::shared_ptr<AdaptiveSharedNamespace::Column>>& containedElements,
-                                  _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveColumn*>* projectedParentContainer) noexcept;
+                                  _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveColumn*>* projectedParentContainer) noexcept;
 
 HRESULT GenerateFactsProjection(const std::vector<std::shared_ptr<AdaptiveSharedNamespace::Fact>>& containedElements,
-                                _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveFact*>* projectedParentContainer) noexcept;
+                                _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveFact*>* projectedParentContainer) noexcept;
 
 HRESULT GenerateImagesProjection(const std::vector<std::shared_ptr<AdaptiveSharedNamespace::Image>>& containedElements,
-                                 _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveImage*>* projectedParentContainer) noexcept;
+                                 _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveImage*>* projectedParentContainer) noexcept;
 
 HRESULT GenerateInputChoicesProjection(
     const std::vector<std::shared_ptr<AdaptiveSharedNamespace::ChoiceInput>>& containedElements,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveChoiceInput*>* projectedParentContainer) noexcept;
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveChoiceInput*>* projectedParentContainer) noexcept;
 
 HRESULT GenerateMediaSourcesProjection(
     const std::vector<std::shared_ptr<AdaptiveSharedNamespace::MediaSource>>& containedElements,
@@ -170,6 +170,8 @@ HRESULT JsonObjectToJsonCpp(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObje
 
 HRESULT ProjectedActionTypeToHString(ABI::AdaptiveNamespace::ActionType projectedActionType, _Outptr_ HSTRING* result);
 HRESULT ProjectedElementTypeToHString(ABI::AdaptiveNamespace::ElementType projectedElementType, _Outptr_ HSTRING* result);
+
+HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage* backgroundImageElement, _Out_ BOOL* isValid);
 
 typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*, ABI::AdaptiveNamespace::AdaptiveActionEventArgs*>> ActionEventSource;
 typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*, ABI::AdaptiveNamespace::AdaptiveMediaEventArgs*>> MediaEventSource;
@@ -205,9 +207,65 @@ void GetUrlFromString(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConf
 
 HRESULT SharedWarningsToAdaptiveWarnings(
     std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>> sharedWarnings,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings);
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings);
 
-HRESULT AdaptiveWarningsToSharedWarnings(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveWarning*>* adaptiveWarnings,
-                                         std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>> sharedWarnings);
+HRESULT AdaptiveWarningsToSharedWarnings(
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
+    std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>> sharedWarnings);
 
 ABI::Windows::UI::Color GenerateLighterColor(const ABI::Windows::UI::Color& originalColor);
+
+namespace AdaptiveNamespace
+{
+    class XamlBuilder;
+
+    template<class TRegistration>
+    HRESULT RegisterDefaultElementRenderers(TRegistration registration, Microsoft::WRL::ComPtr<XamlBuilder> xamlBuilder)
+    {
+        RETURN_IF_FAILED(registration->Set(HStringReference(L"ActionSet").Get(),
+                                           Make<AdaptiveNamespace::AdaptiveActionSetRenderer>().Get()));
+        RETURN_IF_FAILED(registration->Set(HStringReference(L"Column").Get(),
+                                           Make<AdaptiveNamespace::AdaptiveColumnRenderer>().Get()));
+        RETURN_IF_FAILED(registration->Set(HStringReference(L"ColumnSet").Get(),
+                                           Make<AdaptiveNamespace::AdaptiveColumnSetRenderer>().Get()));
+        RETURN_IF_FAILED(registration->Set(HStringReference(L"Container").Get(),
+                                           Make<AdaptiveNamespace::AdaptiveContainerRenderer>().Get()));
+        RETURN_IF_FAILED(registration->Set(HStringReference(L"FactSet").Get(),
+                                           Make<AdaptiveNamespace::AdaptiveFactSetRenderer>().Get()));
+        RETURN_IF_FAILED(registration->Set(HStringReference(L"Image").Get(),
+                                           Make<AdaptiveNamespace::AdaptiveImageRenderer>(xamlBuilder).Get()));
+        RETURN_IF_FAILED(registration->Set(HStringReference(L"ImageSet").Get(),
+                                           Make<AdaptiveNamespace::AdaptiveImageSetRenderer>().Get()));
+        RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.ChoiceSet").Get(),
+                                           Make<AdaptiveNamespace::AdaptiveChoiceSetInputRenderer>().Get()));
+        RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Date").Get(),
+                                           Make<AdaptiveNamespace::AdaptiveDateInputRenderer>().Get()));
+        RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Number").Get(),
+                                           Make<AdaptiveNamespace::AdaptiveNumberInputRenderer>().Get()));
+        RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Text").Get(),
+                                           Make<AdaptiveNamespace::AdaptiveTextInputRenderer>().Get()));
+        RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Time").Get(),
+                                           Make<AdaptiveNamespace::AdaptiveTimeInputRenderer>().Get()));
+        RETURN_IF_FAILED(registration->Set(HStringReference(L"Input.Toggle").Get(),
+                                           Make<AdaptiveNamespace::AdaptiveToggleInputRenderer>().Get()));
+        RETURN_IF_FAILED(
+            registration->Set(HStringReference(L"Media").Get(), Make<AdaptiveNamespace::AdaptiveMediaRenderer>().Get()));
+        RETURN_IF_FAILED(registration->Set(HStringReference(L"TextBlock").Get(),
+                                           Make<AdaptiveNamespace::AdaptiveTextBlockRenderer>().Get()));
+
+        return S_OK;
+    }
+
+    template<class TRegistration> HRESULT RegisterDefaultActionRenderers(TRegistration registration)
+    {
+        RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.OpenUrl").Get(),
+                                           Make<AdaptiveNamespace::AdaptiveOpenUrlActionParser>().Get()));
+        RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.ShowCard").Get(),
+                                           Make<AdaptiveNamespace::AdaptiveShowCardActionParser>().Get()));
+        RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.Submit").Get(),
+                                           Make<AdaptiveNamespace::AdaptiveSubmitActionParser>().Get()));
+        RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.ToggleVisibility").Get(),
+                                           Make<AdaptiveNamespace::AdaptiveToggleVisibilityActionParser>().Get()));
+        return S_OK;
+    }
+}

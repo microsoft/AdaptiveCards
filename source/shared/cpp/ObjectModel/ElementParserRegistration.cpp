@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ElementParserRegistration.h"
+#include "ActionSet.h"
 #include "ChoiceSetInput.h"
 #include "ColumnSet.h"
 #include "Container.h"
@@ -17,9 +18,32 @@
 
 namespace AdaptiveSharedNamespace
 {
+    BaseCardElementParserWrapper::BaseCardElementParserWrapper(std::shared_ptr<BaseCardElementParser> parserToWrap) :
+        m_parser{parserToWrap}
+    {
+    }
+
+    std::shared_ptr<BaseCardElement> BaseCardElementParserWrapper::Deserialize(ParseContext& context, const Json::Value& value)
+    {
+        const auto& idProperty = ParseUtil::GetString(value, AdaptiveCardSchemaKey::Id);
+        const InternalId internalId = InternalId::Next();
+
+        context.PushElement(idProperty, internalId);
+        std::shared_ptr<BaseCardElement> element = m_parser->Deserialize(context, value);
+        context.PopElement();
+
+        return element;
+    }
+
+    std::shared_ptr<BaseCardElement> BaseCardElementParserWrapper::DeserializeFromString(ParseContext& context, const std::string& value)
+    {
+        return Deserialize(context, ParseUtil::GetJsonValueFromString(value));
+    }
+
     ElementParserRegistration::ElementParserRegistration()
     {
         m_knownElements.insert({
+            CardElementTypeToString(CardElementType::ActionSet),
             CardElementTypeToString(CardElementType::Container),
             CardElementTypeToString(CardElementType::ColumnSet),
             CardElementTypeToString(CardElementType::FactSet),
@@ -37,7 +61,8 @@ namespace AdaptiveSharedNamespace
         });
 
         m_cardElementParsers.insert(
-            {{CardElementTypeToString(CardElementType::Container), std::make_shared<ContainerParser>()},
+            {{CardElementTypeToString(CardElementType::ActionSet), std::make_shared<ActionSetParser>()},
+             {CardElementTypeToString(CardElementType::Container), std::make_shared<ContainerParser>()},
              {CardElementTypeToString(CardElementType::ColumnSet), std::make_shared<ColumnSetParser>()},
              {CardElementTypeToString(CardElementType::FactSet), std::make_shared<FactSetParser>()},
              {CardElementTypeToString(CardElementType::Image), std::make_shared<ImageParser>()},
@@ -79,12 +104,18 @@ namespace AdaptiveSharedNamespace
         }
     }
 
-    std::shared_ptr<BaseCardElementParser> ElementParserRegistration::GetParser(std::string const& elementType)
+    std::shared_ptr<BaseCardElementParser> ElementParserRegistration::GetParser(std::string const& elementType) const
     {
         auto parser = m_cardElementParsers.find(elementType);
         if (parser != ElementParserRegistration::m_cardElementParsers.end())
         {
-            return parser->second;
+            // Why do we wrap the parser? As we parse elements, we need to push and pop state from the stack for ID
+            // collision detection. We *could* do this within the implementation of parsers themselves, but that would
+            // mean having to explain all of this to custom element parser implementors. Instead, we wrap every parser
+            // we hand out with a helper class that performs the push/pop on behalf of the element parser. For more
+            // details, refer to the giant comment on ID collision detection in ParseContext.cpp.
+            std::shared_ptr<BaseCardElementParser> wrappedParser = std::make_shared<BaseCardElementParserWrapper>(parser->second);
+            return wrappedParser;
         }
         else
         {

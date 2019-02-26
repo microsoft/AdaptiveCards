@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ACOParseContext.h"
 
 @interface ACOBaseActionElement:NSObject
 
@@ -14,6 +15,7 @@ typedef NS_ENUM(NSInteger, ACRActionType) {
     ACRSubmit,
     ACROpenUrl,
     ACRToggleVisibility,
+    ACRUnknownAction,
 };
 
 typedef NS_ENUM(NSInteger, ACRIconPlacement) {
@@ -22,19 +24,19 @@ typedef NS_ENUM(NSInteger, ACRIconPlacement) {
     ACRNoTitle,
 };
 
-typedef NS_ENUM(NSInteger, ACRSentiment) {
-    ACRSentimentDefault = 0,
-    ACRSentimentPositive,
-    ACRSentimentDestructive
-};
-
 @property ACRActionType type;
-@property ACRSentiment sentiment;
+@property NSString *sentiment;
 
 - (NSString *)title;
 - (NSString *)elementId;
 - (NSString *)url;
 - (NSString *)data;
 - (NSData *)additionalProperty;
+
+@end
+
+@protocol ACOIBaseActionElementParser
+
+- (ACOBaseActionElement *)deserialize:(NSData *)json parseContext:(ACOParseContext* )parseContext;
 
 @end

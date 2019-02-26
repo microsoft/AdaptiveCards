@@ -50,7 +50,7 @@ std::shared_ptr<BaseCardElement> FactSetParser::Deserialize(ParseContext& contex
 {
     ParseUtil::ExpectTypeString(value, CardElementType::FactSet);
 
-    auto factSet = BaseCardElement::Deserialize<FactSet>(value);
+    auto factSet = BaseCardElement::Deserialize<FactSet>(context, value);
 
     // Parse Facts
     auto facts =

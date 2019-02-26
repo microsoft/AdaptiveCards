@@ -42,8 +42,8 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_MaxLines(_Out_ UINT32* value);
         IFACEMETHODIMP put_MaxLines(UINT32 value);
 
-        IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveNamespace::HAlignment* hAlignment);
-        IFACEMETHODIMP put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment hAlignment);
+        IFACEMETHODIMP get_HorizontalAlignment(_Out_ ABI::AdaptiveNamespace::HAlignment* HorizontalAlignment);
+        IFACEMETHODIMP put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment HorizontalAlignment);
 
         IFACEMETHODIMP get_Language(_Outptr_ HSTRING* language);
         IFACEMETHODIMP put_Language(_In_ HSTRING language);

@@ -8,21 +8,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import io.adaptivecards.objectmodel.BackgroundImage;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
+import io.adaptivecards.renderer.BackgroundImageLoaderAsync;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
-
-import java.util.Vector;
 
 public class ContainerRenderer extends BaseCardElementRenderer
 {
@@ -65,13 +64,18 @@ public class ContainerRenderer extends BaseCardElementRenderer
         ContainerStyle styleForThis = container.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? containerStyle : container.GetStyle();
         LinearLayout containerView = new LinearLayout(context);
 
-        if(container.GetHeight() == HeightType.Stretch)
+        containerView.setOrientation(LinearLayout.VERTICAL);
+        if (container.GetHeight() == HeightType.Stretch)
         {
-            containerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+            containerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+        }
+        else
+        {
+            containerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
 
         VerticalContentAlignment contentAlignment = container.GetVerticalContentAlignment();
-        switch(contentAlignment)
+        switch (contentAlignment)
         {
             case Center:
                 containerView.setGravity(Gravity.CENTER_VERTICAL);
@@ -89,14 +93,27 @@ public class ContainerRenderer extends BaseCardElementRenderer
         {
             CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, containerView, container, container.GetItems(), cardActionHandler, hostConfig, styleForThis);
         }
+
         if (styleForThis != containerStyle)
         {
             int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
             containerView.setPadding(padding, padding, padding, padding);
-            String color = styleForThis == containerStyle.Emphasis ?
-                    hostConfig.GetContainerStyles().getEmphasisPalette().getBackgroundColor() :
-                    hostConfig.GetContainerStyles().getDefaultPalette().getBackgroundColor();
+            String color = hostConfig.GetBackgroundColor(styleForThis);
             containerView.setBackgroundColor(Color.parseColor(color));
+        }
+
+        BackgroundImage backgroundImageProperties = container.GetBackgroundImage();
+        if (backgroundImageProperties != null && !backgroundImageProperties.GetUrl().isEmpty())
+        {
+            BackgroundImageLoaderAsync loaderAsync = new BackgroundImageLoaderAsync(
+                    renderedCard,
+                    context,
+                    containerView,
+                    hostConfig.GetImageBaseUrl(),
+                    context.getResources().getDisplayMetrics().widthPixels,
+                    backgroundImageProperties);
+
+            loaderAsync.execute(backgroundImageProperties.GetUrl());
         }
 
         if (container.GetSelectAction() != null)

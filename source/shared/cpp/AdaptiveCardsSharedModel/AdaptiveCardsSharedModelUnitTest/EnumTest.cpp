@@ -1,12 +1,4 @@
 #include "stdafx.h"
-#include "CppUnitTest.h"
-#include "TextBlock.h"
-#include <time.h>
-#include <Windows.h>
-#include <StrSafe.h>
-#include "SharedAdaptiveCard.h"
-#include "BaseCardElement.h"
-#include "ActionParserRegistration.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
@@ -50,18 +42,18 @@ using namespace std::string_literals;
 
 namespace AdaptiveCardsSharedModelUnitTest
 {
-	TEST_CLASS(EnumTests)
-	{
-	public:
+    TEST_CLASS(EnumTests)
+    {
+    public:
         ENUM_TEST_THROWING(AdaptiveCardSchemaKey, AdaptiveCardSchemaKey::Accent, "accent"s);
-        ENUM_TEST_WITH_DEFAULT(CardElementType, CardElementType::AdaptiveCard, "AdaptiveCard"s, CardElementType::Unsupported);
+        ENUM_TEST_WITH_DEFAULT(CardElementType, CardElementType::AdaptiveCard, "AdaptiveCard"s, CardElementType::Unknown);
         ENUM_TEST_WITH_DEFAULT(ActionType, ActionType::OpenUrl, "Action.OpenUrl"s, ActionType::Unsupported);
         ENUM_TEST_WITH_DEFAULT(HeightType, HeightType::Auto, "Auto"s, HeightType::Stretch);
         ENUM_TEST(Spacing, Spacing::None, "none"s);
         ENUM_TEST(SeparatorThickness, SeparatorThickness::Thick, "thick"s);
         ENUM_TEST_WITH_REVERSE_MAP(ImageStyle, ImageStyle::Person, "person"s, {{"normal", ImageStyle::Default}});
         ENUM_TEST_WITH_DEFAULT(ImageSize, ImageSize::Large, "Large"s, ImageSize::Auto);
-        ENUM_TEST_WITH_DEFAULT(HorizontalAlignment, HorizontalAlignment::Center, "Center"s, HorizontalAlignment::Left);
+        ENUM_TEST_WITH_DEFAULT(HorizontalAlignment, HorizontalAlignment::Center, "center"s, HorizontalAlignment::Left);
         ENUM_TEST(ForegroundColor, ForegroundColor::Accent, "Accent"s);
         ENUM_TEST_WITH_REVERSE_MAP(TextWeight, TextWeight::Bolder, "Bolder"s, {{"Normal", TextWeight::Default}});
         ENUM_TEST_WITH_REVERSE_MAP(TextSize, TextSize::Large, "Large"s, {{"Normal", TextSize::Default}});
@@ -74,6 +66,5 @@ namespace AdaptiveCardsSharedModelUnitTest
         ENUM_TEST_WITH_DEFAULT(ActionAlignment, ActionAlignment::Center, "Center"s, ActionAlignment::Left);
         ENUM_TEST_WITH_DEFAULT(IconPlacement, IconPlacement::LeftOfTitle, "LeftOfTitle"s, IconPlacement::AboveTitle);
         ENUM_TEST_WITH_DEFAULT(VerticalContentAlignment, VerticalContentAlignment::Center, "Center"s, VerticalContentAlignment::Top);
-        ENUM_TEST(Sentiment, Sentiment::Positive, "Positive"s);
     };
 }

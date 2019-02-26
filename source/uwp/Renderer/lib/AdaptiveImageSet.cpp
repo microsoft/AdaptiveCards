@@ -14,7 +14,7 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    AdaptiveImageSet::AdaptiveImageSet() { m_images = Microsoft::WRL::Make<Vector<IAdaptiveImage*>>(); }
+    AdaptiveImageSet::AdaptiveImageSet() { m_images = Microsoft::WRL::Make<Vector<AdaptiveImage*>>(); }
 
     HRESULT AdaptiveImageSet::RuntimeClassInitialize() noexcept try
     {
@@ -39,7 +39,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    IFACEMETHODIMP AdaptiveImageSet::get_Images(_COM_Outptr_ IVector<IAdaptiveImage*>** images)
+    IFACEMETHODIMP AdaptiveImageSet::get_Images(_COM_Outptr_ IVector<AdaptiveImage*>** images)
     {
         return m_images.CopyTo(images);
     }

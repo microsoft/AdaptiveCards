@@ -1,6 +1,9 @@
 package io.adaptivecards.adaptivecardssample;
 
-import android.media.MediaPlayer;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.app.FragmentManager;
@@ -21,15 +24,18 @@ import android.view.Menu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+import io.adaptivecards.renderer.GenericImageLoaderAsync;
+import io.adaptivecards.renderer.IResourceResolver;
 import io.adaptivecards.renderer.IMediaDataSourceOnPreparedListener;
 import io.adaptivecards.renderer.IOnlineMediaLoader;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.*;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
 import io.adaptivecards.renderer.http.HttpRequestHelper;
+import io.adaptivecards.renderer.http.HttpRequestResult;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import org.json.JSONException;
@@ -44,6 +50,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -51,6 +58,8 @@ import java.util.TimerTask;
 
 import android.media.MediaDataSource;
 import android.support.annotation.RequiresApi;
+
+import com.pixplicity.sharp.Sharp;
 
 public class MainActivityAdaptiveCardsSample extends FragmentActivity
         implements ICardActionHandler
@@ -68,6 +77,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_adaptive_cards_sample);
         setupTabs();
+        setupImageLoader();
 
         // Add text change handler
         final EditText jsonEditText = (EditText) findViewById(R.id.jsonAdaptiveCard);
@@ -638,4 +648,89 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         this.runOnUiThread(new RunnableExtended(this, text, duration));
     }
 
+    private void setupImageLoader()
+    {
+        CardRendererRegistration.getInstance().registerResourceResolver("package", new IResourceResolver()
+        {
+            @Override
+            public HttpRequestResult<Bitmap> resolveImageResource(String url, GenericImageLoaderAsync loader) throws IOException, URISyntaxException
+            {
+                // Get image identifier
+                String authority = getPackageName();
+                Resources resources = getResources();
+
+                // For host app only provides image file name as url, host app can pass "package:[IMAGE NAME]" as replacement for
+                // meeting the valid URL format checking. Here we will remove this prefix to get file name.
+                if (url.startsWith("package:"))
+                {
+                    url = url.replace("package:", "drawable/");
+                }
+
+                int identifier = resources.getIdentifier(url, "", authority);
+                if (identifier == 0)
+                {
+                    throw new IOException("Image not found: " + url);
+                }
+
+                InputStream ins = resources.openRawResource(identifier);
+                Bitmap bitmap = BitmapFactory.decodeStream(ins);
+                if (bitmap == null)
+                {
+                    throw new IOException("Failed to convert local content to bitmap: " + url);
+                }
+
+                return new HttpRequestResult<>(bitmap);
+            }
+
+            @Override
+            public HttpRequestResult<Bitmap> resolveImageResource(String url, GenericImageLoaderAsync loader, int maxWidth) throws IOException, URISyntaxException
+            {
+                return resolveImageResource(url, loader);
+            }
+        });
+
+        CardRendererRegistration.getInstance().registerResourceResolver("data", new IResourceResolver()
+        {
+            @Override
+            public HttpRequestResult<Bitmap> resolveImageResource(String uri, GenericImageLoaderAsync genericImageLoaderAsync) throws IOException, URISyntaxException
+            {
+                Bitmap bitmap;
+                String dataUri = AdaptiveBase64Util.ExtractDataFromUri(uri);
+                CharVector decodedDataUri = AdaptiveBase64Util.Decode(dataUri);
+                byte[] decodedByteArray = Util.getBytes(decodedDataUri);
+                bitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+
+                return new HttpRequestResult<>(bitmap);
+            }
+
+            @Override
+            public HttpRequestResult<Bitmap> resolveImageResource(String uri, GenericImageLoaderAsync genericImageLoaderAsync, int maxWidth) throws IOException, URISyntaxException
+            {
+                Bitmap bitmap;
+                String dataUri = AdaptiveBase64Util.ExtractDataFromUri(uri);
+                CharVector decodedDataUri = AdaptiveBase64Util.Decode(dataUri);
+
+                if (uri.startsWith("data:image/svg")) {
+                    String svgString = AdaptiveBase64Util.ExtractDataFromUri(uri);
+                    String decodedSvgString = URLDecoder.decode(svgString, "UTF-8");
+                    Sharp sharp = Sharp.loadString(decodedSvgString);
+                    Drawable drawable = sharp.getDrawable();
+                    bitmap = ImageUtil.drawableToBitmap(drawable, maxWidth);
+                }
+                else
+                {
+                    try
+                    {
+                        return genericImageLoaderAsync.loadDataUriImage(uri);
+                    }
+                    catch (Exception e)
+                    {
+                        return new HttpRequestResult<>(e);
+                    }
+                }
+
+                return new HttpRequestResult<>(bitmap);
+            }
+        });
+    }
 }

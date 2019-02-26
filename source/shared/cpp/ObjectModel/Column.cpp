@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "ChoiceSetInput.h"
 #include "Column.h"
 #include "ParseContext.h"
+#include "ParseUtil.h"
 #include "Util.h"
 
 using namespace AdaptiveSharedNamespace;
@@ -20,7 +20,15 @@ std::string Column::GetWidth() const
 
 void Column::SetWidth(const std::string& value)
 {
+    SetWidth(value, nullptr);
+}
+
+void Column::SetWidth(const std::string& value,
+                      std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>>* warnings)
+{
     m_width = ParseUtil::ToLowercase(value);
+    const int parsedDimension = ParseSizeForPixelSize(m_width, warnings);
+    SetPixelWidth(parsedDimension);
 }
 
 // explicit width takes precedence over relative width
@@ -64,6 +72,16 @@ void Column::SetVerticalContentAlignment(const VerticalContentAlignment value)
     m_verticalContentAlignment = value;
 }
 
+std::shared_ptr<BackgroundImage> Column::GetBackgroundImage() const
+{
+    return m_backgroundImage;
+}
+
+void Column::SetBackgroundImage(const std::shared_ptr<BackgroundImage> value)
+{
+    m_backgroundImage = value;
+}
+
 std::string Column::Serialize() const
 {
     Json::FastWriter writer;
@@ -90,6 +108,11 @@ Json::Value Column::SerializeToJsonValue() const
             VerticalContentAlignmentToString(m_verticalContentAlignment);
     }
 
+    if (m_backgroundImage != nullptr && !m_backgroundImage->GetUrl().empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImage)] = m_backgroundImage->SerializeToJsonValue();
+    }
+
     std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
     root[propertyName] = Json::Value(Json::arrayValue);
     for (const auto& cardElement : m_items)
@@ -108,7 +131,7 @@ Json::Value Column::SerializeToJsonValue() const
 
 std::shared_ptr<Column> Column::Deserialize(ParseContext& context, const Json::Value& value)
 {
-    auto column = BaseCardElement::Deserialize<Column>(value);
+    auto column = BaseCardElement::Deserialize<Column>(context, value);
 
     std::string columnWidth = ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Width);
     if (columnWidth == "")
@@ -117,23 +140,15 @@ std::shared_ptr<Column> Column::Deserialize(ParseContext& context, const Json::V
         columnWidth = ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Size);
     }
 
-    // validate user input; validation only applies to user input for explicit column width
-    // the other input checks are remained unchanged
-    column->SetPixelWidth(0);
-    if (ShouldParseForExplicitDimension(columnWidth))
-    {
-        const std::string unit = "px";
-        int parsedDimension = 0;
-        ValidateUserInputForDimensionWithUnit(unit, columnWidth, parsedDimension, context.warnings);
-        column->SetPixelWidth(parsedDimension);
-    }
-
-    column->SetWidth(columnWidth);
+    column->SetWidth(columnWidth, &context.warnings);
 
     column->SetStyle(ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
 
     column->SetVerticalContentAlignment(ParseUtil::GetEnumValue<VerticalContentAlignment>(
         value, AdaptiveCardSchemaKey::VerticalContentAlignment, VerticalContentAlignment::Top, VerticalContentAlignmentFromString));
+
+    auto backgroundImage = ParseUtil::GetBackgroundImage(value);
+    column->SetBackgroundImage(backgroundImage);
 
     // Parse Items
     auto cardElements = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Items, false);
@@ -176,6 +191,15 @@ void Column::SetLanguage(const std::string& language)
 
 void Column::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
 {
+    auto backgroundImage = GetBackgroundImage();
+    if (backgroundImage != nullptr)
+    {
+        RemoteResourceInformation backgroundImageInfo;
+        backgroundImageInfo.url = backgroundImage->GetUrl();
+        backgroundImageInfo.mimeType = "image";
+        resourceInfo.push_back(backgroundImageInfo);
+    }
+
     auto columnItems = GetItems();
     for (auto item : columnItems)
     {

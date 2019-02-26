@@ -2,7 +2,6 @@
 
 #include "pch.h"
 #include "BaseCardElement.h"
-#include "Enums.h"
 
 namespace AdaptiveSharedNamespace
 {
@@ -14,6 +13,11 @@ namespace AdaptiveSharedNamespace
 
     public:
         ColumnSet();
+        ColumnSet(const ColumnSet&) = default;
+        ColumnSet(ColumnSet&&) = default;
+        ColumnSet& operator=(const ColumnSet&) = default;
+        ColumnSet& operator=(ColumnSet&&) = default;
+        ~ColumnSet() = default;
 
         Json::Value SerializeToJsonValue() const override;
 
@@ -23,6 +27,9 @@ namespace AdaptiveSharedNamespace
         std::shared_ptr<BaseActionElement> GetSelectAction() const;
         void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
 
+        ContainerStyle GetStyle() const;
+        void SetStyle(const ContainerStyle value);
+
         void SetLanguage(const std::string& language);
 
         void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
@@ -30,6 +37,7 @@ namespace AdaptiveSharedNamespace
     private:
         void PopulateKnownPropertiesSet() override;
 
+        ContainerStyle m_style;
         std::vector<std::shared_ptr<Column>> m_columns;
         std::shared_ptr<BaseActionElement> m_selectAction;
     };
@@ -42,7 +50,7 @@ namespace AdaptiveSharedNamespace
         ColumnSetParser(ColumnSetParser&&) = default;
         ColumnSetParser& operator=(const ColumnSetParser&) = default;
         ColumnSetParser& operator=(ColumnSetParser&&) = default;
-        ~ColumnSetParser() = default;
+        virtual ~ColumnSetParser() = default;
 
         std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
         std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
