@@ -13,7 +13,10 @@ namespace UWPUnitTests
         {
             AdaptiveCard card = new AdaptiveCard
             {
-                BackgroundImage = "https://www.stuff.com/background.jpg",
+                BackgroundImage = new AdaptiveBackgroundImage
+                {
+                    Url = "https://www.stuff.com/background.jpg"
+                },
                 FallbackText = "Fallback Text",
                 Height = HeightType.Stretch,
                 Language = "en",

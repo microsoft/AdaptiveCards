@@ -150,6 +150,7 @@
     <ClCompile Include="..\..\ObjectModel\AdaptiveBase64Util.cpp" />
     <ClCompile Include="..\..\ObjectModel\BaseElement.cpp" />
     <ClCompile Include="..\..\ObjectModel\ParseContext.cpp" />
+    <ClCompile Include="..\..\ObjectModel\BackgroundImage.cpp" />
     <ClCompile Include="..\..\ObjectModel\SemanticVersion.cpp" />
     <ClCompile Include="..\..\ObjectModel\Media.cpp" />
     <ClCompile Include="..\..\ObjectModel\MediaSource.cpp" />
@@ -209,6 +210,7 @@
     <ClInclude Include="..\..\ObjectModel\AdaptiveCardParseWarning.h" />
     <ClInclude Include="..\..\ObjectModel\BaseElement.h" />
     <ClInclude Include="..\..\ObjectModel\ParseContext.h" />
+    <ClInclude Include="..\..\ObjectModel\BackgroundImage.h" />
     <ClInclude Include="..\..\ObjectModel\SemanticVersion.h" />
     <ClInclude Include="..\..\ObjectModel\BaseActionElement.h" />
     <ClInclude Include="..\..\ObjectModel\BaseCardElement.h" />

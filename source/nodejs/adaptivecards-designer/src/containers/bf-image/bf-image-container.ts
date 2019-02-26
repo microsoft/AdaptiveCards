@@ -27,18 +27,37 @@ export class BotFrameworkContainer extends Designer.HostContainer {
                 lineColor: "#EEEEEE"
             },
             supportsInteractivity: false,
-            fontFamily: "'Segoe UI', Calibri, Candara, Segoe, Optima, Arial, sans-serif;",
-            fontSizes: {
-                small: 12,
-                default: 14,
-                medium: 16,
-                large: 19,
-                extraLarge: 22
-            },
-            fontWeights: {
-                lighter: 200,
-                default: 400,
-                bolder: 600
+            fontStyles: {
+                default: {
+                    fontFamily: "'Segoe UI', Calibri, Candara, Segoe, Optima, Arial, sans-serif;",
+                    fontSizes: {
+                        small: 12,
+                        default: 14,
+                        medium: 16,
+                        large: 19,
+                        extraLarge: 22
+                    },
+                    fontWeights: {
+                        lighter: 200,
+                        default: 400,
+                        bolder: 600
+                    }
+                },
+                monospace: {
+                    fontFamily: "'Courier New', Courier, monospace",
+                    fontSizes: {
+                        small: 12,
+                        default: 14,
+                        medium: 16,
+                        large: 19,
+                        extraLarge: 22
+                    },
+                    fontWeights: {
+                        lighter: 200,
+                        default: 400,
+                        bolder: 600
+                    }
+                }
             },
             containerStyles: {
                 default: {

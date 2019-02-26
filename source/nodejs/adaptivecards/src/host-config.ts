@@ -271,10 +271,18 @@ export class ContainerStyleSet {
     constructor(obj?: any) {
         this._allStyles[Enums.ContainerStyle.Default] = new BuiltInContainerStyleDefinition();
         this._allStyles[Enums.ContainerStyle.Emphasis] = new BuiltInContainerStyleDefinition();
+        this._allStyles[Enums.ContainerStyle.Accent] = new BuiltInContainerStyleDefinition();
+        this._allStyles[Enums.ContainerStyle.Good] = new BuiltInContainerStyleDefinition();
+        this._allStyles[Enums.ContainerStyle.Attention] = new BuiltInContainerStyleDefinition();
+        this._allStyles[Enums.ContainerStyle.Warning] = new BuiltInContainerStyleDefinition();
 
         if (obj) {
             this._allStyles[Enums.ContainerStyle.Default].parse(obj[Enums.ContainerStyle.Default]);
             this._allStyles[Enums.ContainerStyle.Emphasis].parse(obj[Enums.ContainerStyle.Emphasis]);
+            this._allStyles[Enums.ContainerStyle.Accent].parse(obj[Enums.ContainerStyle.Accent]);
+            this._allStyles[Enums.ContainerStyle.Good].parse(obj[Enums.ContainerStyle.Good]);
+            this._allStyles[Enums.ContainerStyle.Attention].parse(obj[Enums.ContainerStyle.Attention]);
+            this._allStyles[Enums.ContainerStyle.Warning].parse(obj[Enums.ContainerStyle.Warning]);
 
             const customStyleArray = obj["customStyles"];
 
@@ -475,14 +483,96 @@ export class HostCapabilities {
     }
 }
 
+export interface IFontSizeDefinitions {
+    small: number;
+    default: number;
+    medium: number;
+    large: number;
+    extraLarge: number;
+}
+
+export interface IFontWeightDefinitions {
+    lighter: number;
+    default: number;
+    bolder: number;
+}
+
+export class FontStyleDefinition {
+    static readonly monospace =  new FontStyleDefinition("'Courier New', Courier, monospace");
+
+    fontFamily?: string = "Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif";
+
+    fontSizes: IFontSizeDefinitions = {
+        small: 12,
+        default: 14,
+        medium: 17,
+        large: 21,
+        extraLarge: 26
+    };
+
+    fontWeights: IFontWeightDefinitions = {
+        lighter: 200,
+        default: 400,
+        bolder: 600
+    };
+    
+    constructor(fontFamily?: string) {
+        if (fontFamily) {
+            this.fontFamily = fontFamily;
+        }
+    }
+
+    parse(obj?: any) {
+        this.fontFamily = obj["fontFamily"] || this.fontFamily;
+        this.fontSizes = {
+            small: obj.fontSizes && obj.fontSizes["small"] || this.fontSizes.small,
+            default: obj.fontSizes && obj.fontSizes["default"] || this.fontSizes.default,
+            medium: obj.fontSizes && obj.fontSizes["medium"] || this.fontSizes.medium,
+            large: obj.fontSizes && obj.fontSizes["large"] || this.fontSizes.large,
+            extraLarge: obj.fontSizes && obj.fontSizes["extraLarge"] || this.fontSizes.extraLarge
+        };
+        this.fontWeights = {
+            lighter: obj.fontWeights && obj.fontWeights["lighter"] || this.fontWeights.lighter,
+            default: obj.fontWeights && obj.fontWeights["default"] || this.fontWeights.default,
+            bolder: obj.fontWeights && obj.fontWeights["bolder"] || this.fontWeights.bolder
+        };
+    }
+}
+
+export class FontStyleSet {
+    default: FontStyleDefinition;
+    monospace: FontStyleDefinition;
+
+    constructor(obj?: any) {
+        this.default = new FontStyleDefinition();
+        this.monospace = new FontStyleDefinition("'Courier New', Courier, monospace");
+
+        if (obj) {
+            this.default.parse(obj["default"]);
+            this.monospace.parse(obj["monospace"]);
+        }
+    }
+
+    getStyleDefinition(style: Enums.FontStyle): FontStyleDefinition {
+        switch (style) {
+            case Enums.FontStyle.Monospace:
+                return this.monospace;
+            case Enums.FontStyle.Default:
+            default:
+                return this.default;
+        }
+    }
+}
+
 export class HostConfig {
     readonly hostCapabilities = new HostCapabilities();
+
+    private _legacyFontStyle: FontStyleDefinition;
 
     choiceSetInputValueSeparator: string = ",";
     supportsInteractivity: boolean = true;
     lineHeights?: ILineHeightDefinitions;
-
-    fontFamily?: string = "Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif";
+    fontStyles: FontStyleSet = null;
 
     readonly spacing = {
         small: 3,
@@ -498,19 +588,6 @@ export class HostConfig {
         lineColor: "#EEEEEE"
     };
 
-    readonly fontSizes = {
-        small: 12,
-        default: 14,
-        medium: 17,
-        large: 21,
-        extraLarge: 26
-    };
-
-    readonly fontWeights = {
-        lighter: 200,
-        default: 400,
-        bolder: 600
-    };
     readonly imageSizes = {
         small: 40,
         medium: 80,
@@ -534,14 +611,13 @@ export class HostConfig {
 
             this.choiceSetInputValueSeparator = (obj && typeof obj["choiceSetInputValueSeparator"] === "string") ? obj["choiceSetInputValueSeparator"] : this.choiceSetInputValueSeparator;
             this.supportsInteractivity = (obj && typeof obj["supportsInteractivity"] === "boolean") ? obj["supportsInteractivity"] : this.supportsInteractivity;
-            this.fontFamily = obj["fontFamily"] || this.fontFamily;
-            this.fontSizes = {
-                small: obj.fontSizes && obj.fontSizes["small"] || this.fontSizes.small,
-                default: obj.fontSizes && obj.fontSizes["default"] || this.fontSizes.default,
-                medium: obj.fontSizes && obj.fontSizes["medium"] || this.fontSizes.medium,
-                large: obj.fontSizes && obj.fontSizes["large"] || this.fontSizes.large,
-                extraLarge: obj.fontSizes && obj.fontSizes["extraLarge"] || this.fontSizes.extraLarge
-            };
+
+            this._legacyFontStyle = new FontStyleDefinition();
+            this._legacyFontStyle.parse(obj);
+
+            if (obj.fontStyles) {
+                this.fontStyles = new FontStyleSet(obj.fontStyles);
+            }
 
             if (obj.lineHeights) {
                 this.lineHeights = {
@@ -551,12 +627,6 @@ export class HostConfig {
                     large: obj.lineHeights["large"],
                     extraLarge: obj.lineHeights["extraLarge"]
                 };
-            };
-
-            this.fontWeights = {
-                lighter: obj.fontWeights && obj.fontWeights["lighter"] || this.fontWeights.lighter,
-                default: obj.fontWeights && obj.fontWeights["default"] || this.fontWeights.default,
-                bolder: obj.fontWeights && obj.fontWeights["bolder"] || this.fontWeights.bolder
             };
 
             this.imageSizes = {
@@ -584,6 +654,15 @@ export class HostConfig {
             this.adaptiveCard = new AdaptiveCardConfig(obj.adaptiveCard || this.adaptiveCard);
             this.imageSet = new ImageSetConfig(obj["imageSet"]);
             this.factSet = new FactSetConfig(obj["factSet"])
+        }
+    }
+
+    getFontStyleDefinition(style?: Enums.FontStyle): FontStyleDefinition {
+        if (this.fontStyles) {
+            return this.fontStyles.getStyleDefinition(style);
+        }
+        else {
+            return style == Enums.FontStyle.Monospace ? FontStyleDefinition.monospace : this._legacyFontStyle;
         }
     }
 
@@ -630,5 +709,21 @@ export class HostConfig {
         }
 
         return result;
+    }
+
+    get fontFamily(): string {
+        return this._legacyFontStyle.fontFamily;
+    }
+
+    set fontFamily(value: string) {
+        this._legacyFontStyle.fontFamily = value;
+    }
+
+    get fontSizes(): IFontSizeDefinitions {
+        return this._legacyFontStyle.fontSizes;
+    }
+
+    get fontWeights(): IFontWeightDefinitions {
+        return this._legacyFontStyle.fontWeights;
     }
 }
