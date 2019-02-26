@@ -33,7 +33,7 @@ namespace AdaptiveCards
 
         /// <summary>
         ///     The initial value for the field
-        /// </summary>'
+        /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
