@@ -42,12 +42,12 @@
                                                         parentStyle:[viewGroup style] hostConfig:acoConfig superview:viewGroup];
 
     auto backgroundImage = containerElem->GetBackgroundImage();
-    if(backgroundImage != nullptr && !(backgroundImage->GetUrl().empty())){
+    if (backgroundImage != nullptr && !(backgroundImage->GetUrl().empty())) {
         renderBackgroundImage(backgroundImage.get(), container, rootView);
     }
     
     UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
-    if(containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom){
+    if (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom) {
         leadingBlankSpace = [container addPaddingSpace];
     }
 
@@ -60,13 +60,15 @@
           andHostConfig:acoConfig];
 
     // Dont add the trailing space if the vertical content alignment is top/default
-    if(containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && !(container.hasStretchableView))){
+    if (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && !(container.hasStretchableView))) {
         trailingBlankSpace = [container addPaddingSpace];
     }
 
     [viewGroup addArrangedSubview:container];
+    
+    [container setClipsToBounds:TRUE];
 
-    if(leadingBlankSpace != nil && trailingBlankSpace != nil){
+    if (leadingBlankSpace != nil && trailingBlankSpace != nil) {
         [NSLayoutConstraint constraintWithItem:leadingBlankSpace
                                      attribute:NSLayoutAttributeHeight
                                      relatedBy:NSLayoutRelationEqual
