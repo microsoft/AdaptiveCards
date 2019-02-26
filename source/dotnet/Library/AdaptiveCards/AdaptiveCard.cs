@@ -273,16 +273,16 @@ namespace AdaptiveCards
             }
 
             // Then data-bind the card
+            JToken dataToken = null;
             try
             {
                 JObject cardObj = JObject.Parse(cardJson);
-                JToken dataToken = null;
                 try
                 {
                     dataToken = JToken.Parse(dataJson);
                 }
                 catch { }
-                var transformedCardObj = JsonTransformer.Transform(cardObj, dataToken, null);
+                var transformedCardObj = JsonTransformer.Transform(cardObj, dataToken, null, outputBindings: true);
                 cardJson = transformedCardObj.ToString();
             }
             catch { }
@@ -296,6 +296,8 @@ namespace AdaptiveCards
                 {
                     Elements = elementDefinitions
                 });
+
+                result.Card.CurrentData = dataToken;
             }
 
             return result;
@@ -318,6 +320,7 @@ namespace AdaptiveCards
         [XmlIgnore]
 #endif
         internal string JsonSchema { get; set; }
+        public JToken CurrentData { get; private set; }
 
         public bool ShouldSerializeJsonSchema()
         {

@@ -92,6 +92,7 @@ namespace WpfVisualizer
             }
         }
 
+        private RenderedAdaptiveCard _currRenderedCard;
         private void RenderCard()
         {
             cardError.Children.Clear();
@@ -120,6 +121,8 @@ namespace WpfVisualizer
                 {
                     ShowWarning(warning.Message);
                 }
+
+                _currRenderedCard = renderedCard;
             }
             catch (AdaptiveRenderException ex)
             {
@@ -405,6 +408,28 @@ namespace WpfVisualizer
                 _dirty = true;
             }
             catch { }
+        }
+
+        private void ButtonSendDataUpdates_Click(object sender, RoutedEventArgs e)
+        {
+            JObject newData;
+            try
+            {
+                newData = JObject.Parse(textBoxDataUpdates.Text);
+            }
+            catch
+            {
+                MessageBox.Show("Data updates were invalid. Must be a valid JSON object (object, not a string or literal)");
+                return;
+            }
+            try
+            {
+                _currRenderedCard?.DataUpdater?.UpdateData(_currRenderedCard.OriginatingCard.CurrentData, newData);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
     }
 }

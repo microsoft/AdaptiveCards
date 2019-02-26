@@ -1,3 +1,4 @@
+using JsonTransformLanguage;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -48,6 +49,8 @@ namespace AdaptiveCards.Rendering.Wpf
         public AdaptiveActionHandlers ActionHandlers { get; set; }
 
         public ResourceResolver ResourceResolvers { get; set; }
+
+        public JsonTransformerDataUpdater DataUpdater { get; set; }
 
         public bool IsRenderingSelectAction { get; set; }
 

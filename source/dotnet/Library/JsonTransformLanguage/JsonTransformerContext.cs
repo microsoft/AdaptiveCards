@@ -8,7 +8,7 @@ namespace JsonTransformLanguage
 {
     public class JsonTransformerContext
     {
-        public JsonTransformerContext(JToken rootData, Dictionary<string, JToken> additionalReservedProperties)
+        public JsonTransformerContext(JToken rootData, Dictionary<string, JToken> additionalReservedProperties, bool outputBindings)
         {
             ReservedProperties = new JsonTransformerReservedProperties()
             {
@@ -20,6 +20,7 @@ namespace JsonTransformLanguage
             };
             ParentIsArray = false;
             Types = new JsonTransformerTypes();
+            OutputBindings = outputBindings;
         }
 
         public JsonTransformerReservedProperties ReservedProperties { get; set; }
@@ -29,6 +30,8 @@ namespace JsonTransformLanguage
         public JsonTransformerTypes Types { get; set; }
 
         public JsonTransformerWarnings Warnings { get; private set; } = new JsonTransformerWarnings();
+
+        public bool OutputBindings { get; private set; }
 
         public JsonTransformerContext(JsonTransformerContext existingContext)
         {

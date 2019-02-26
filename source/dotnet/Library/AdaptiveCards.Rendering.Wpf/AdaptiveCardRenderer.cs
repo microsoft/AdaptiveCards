@@ -230,7 +230,8 @@ namespace AdaptiveCards.Rendering.Wpf
                 Config = HostConfig ?? new AdaptiveHostConfig(),
                 Resources = Resources,
                 ElementRenderers = ElementRenderers,
-                Lang = card.Lang
+                Lang = card.Lang,
+                DataUpdater = new JsonTransformLanguage.JsonTransformerDataUpdater()
             };
 
             string accentColor = HostConfig.ContainerStyles.Default.ForegroundColors.Accent.Default;
@@ -245,7 +246,10 @@ namespace AdaptiveCards.Rendering.Wpf
 
             var element = context.Render(card);
 
-            renderCard = new RenderedAdaptiveCard(element, card, context.Warnings, context.InputBindings);
+            renderCard = new RenderedAdaptiveCard(element, card, context.Warnings, context.InputBindings)
+            {
+                DataUpdater = context.DataUpdater
+            };
 
 
             return renderCard;

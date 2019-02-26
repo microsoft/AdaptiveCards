@@ -1,3 +1,4 @@
+using JsonTransformLanguage;
 using Newtonsoft.Json;
 using System.ComponentModel;
 using System.Xml.Serialization;
@@ -128,5 +129,13 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(typeof(AdaptiveFontStyle), "default")]
         public AdaptiveFontStyle FontStyle { get; set; }
+
+        [JsonProperty(PropertyName = "$bindings")]
+        public AdaptiveTextBlockBindings Bindings { get; set; }
+    }
+
+    public class AdaptiveTextBlockBindings
+    {
+        public JsonTransformerBinding Text { get; set; }
     }
 }

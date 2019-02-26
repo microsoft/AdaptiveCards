@@ -15,9 +15,9 @@ namespace JsonTransformLanguage
         private const string ID_DATA = "$data";
         private const string ID_PROPS = "$props";
 
-        internal static JToken Transform(string input, JsonTransformerContext context)
+        internal static JToken Transform(string input, JsonTransformerContext context, out List<string> dependencies)
         {
-            return EvaluateBinding(input, context);
+            return EvaluateBinding(input, context, out dependencies);
         }
 
         private const string REGEX_OPERATOR = @"\s*((==)|(!=))\s*";
@@ -39,8 +39,9 @@ namespace JsonTransformLanguage
             }
         }
 
-        public static JToken EvaluateBinding(string bindingExpression, JsonTransformerContext context)
+        public static JToken EvaluateBinding(string bindingExpression, JsonTransformerContext context, out List<string> dependencies)
         {
+            dependencies = new List<string>();
             string remainingBindingExpression = bindingExpression;
             string answer = "";
             bool first = true;
@@ -62,6 +63,8 @@ namespace JsonTransformLanguage
                     // If it actually found something
                     if (foundExpression.Stop.StopIndex < substr.Length && parser.NumberOfSyntaxErrors == 0)
                     {
+                        dependencies.Add(foundExpression.GetText().Trim('{', '}'));
+
                         var visitor = new BindingExpressionsVisitor(context);
                         JToken result = visitor.Visit(foundExpression);
 

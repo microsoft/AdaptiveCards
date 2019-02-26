@@ -7,6 +7,7 @@ using System.Windows.Data;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Xml;
+using JsonTransformLanguage;
 using Microsoft.MarkedNet;
 
 namespace AdaptiveCards.Rendering.Wpf
@@ -103,13 +104,29 @@ namespace AdaptiveCards.Rendering.Wpf
             marked.Options.Mangle = false;
             marked.Options.Sanitize = true;
 
-            string text = RendererUtilities.ApplyTextFunctions(textBlock.Text, context.Lang);
-            // uiTextBlock.Text = textBlock.Text;
-            string xaml = $"<TextBlock  xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">{marked.Parse(text)}</TextBlock>";
-            StringReader stringReader = new StringReader(xaml);
+            TextBlock uiTextBlock;
+            if (textBlock.Bindings?.Text != null)
+            {
+                textBlock.Bindings.Text.Value = textBlock.Text;
+                context.DataUpdater.EnableBinding(textBlock.Bindings.Text);
+                uiTextBlock = new TextBlock();
+                uiTextBlock.SetBinding(TextBlock.TextProperty, new Binding()
+                {
+                    Path = new PropertyPath(nameof(JsonTransformerBinding.Value)),
+                    Source = textBlock.Bindings.Text
+                });
+            }
+            else
+            {
+                string text = RendererUtilities.ApplyTextFunctions(textBlock.Text, context.Lang);
+                // uiTextBlock.Text = textBlock.Text;
+                string xaml = $"<TextBlock  xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">{marked.Parse(text)}</TextBlock>";
+                StringReader stringReader = new StringReader(xaml);
 
-            XmlReader xmlReader = XmlReader.Create(stringReader);
-            var uiTextBlock = (System.Windows.Controls.TextBlock)XamlReader.Load(xmlReader);
+                XmlReader xmlReader = XmlReader.Create(stringReader);
+                uiTextBlock = (System.Windows.Controls.TextBlock)XamlReader.Load(xmlReader);
+            }
+
             uiTextBlock.Style = context.GetStyle($"Adaptive.{textBlock.Type}");
 
             uiTextBlock.TextWrapping = TextWrapping.NoWrap;

@@ -1,0 +1,27 @@
+{
+  "inputJson": {
+    "type": "TextBlock",
+    "text": "Today will be {condition} with a high of {high} and a low of {low}"
+  },
+
+  "inputData": {
+    "condition": "sunny",
+    "high": 73,
+    "low": 55
+  },
+
+  "expected": {
+    "type": "TextBlock",
+    "text": "Today will be sunny with a high of 73 and a low of 55",
+    "$bindings": {
+      "text": {
+        "expression": "Today will be {condition} with a high of {high} and a low of {low}",
+        "dependencies": [
+          "condition",
+          "high",
+          "low"
+        ]
+      }
+    }
+  }
+}

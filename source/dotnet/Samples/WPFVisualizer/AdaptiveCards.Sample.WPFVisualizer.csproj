@@ -210,6 +210,10 @@
       <Project>{fc4a3527-05a2-4297-98d3-cb1cb512ffda}</Project>
       <Name>AdaptiveCards</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Library\JsonTransformLanguage\JsonTransformLanguage.csproj">
+      <Project>{9F044123-E586-4C13-80BA-872131BDDA71}</Project>
+      <Name>JsonTransformLanguage</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">

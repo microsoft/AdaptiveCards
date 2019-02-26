@@ -1,3 +1,4 @@
+using JsonTransformLanguage;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -22,6 +23,8 @@ namespace AdaptiveCards.Rendering.Wpf
         /// </summary>
         public FrameworkElement FrameworkElement { get; }
 
+        public JsonTransformerDataUpdater DataUpdater { get; internal set; }
+
         /// <summary>
         /// Event handler for when user invokes an action.
         /// </summary>
@@ -40,6 +43,10 @@ namespace AdaptiveCards.Rendering.Wpf
         internal void InvokeOnMediaClick(AdaptiveMediaEventArgs args)
         {
             OnMediaClicked?.Invoke(this, args);
+        }
+
+        public void UpdateData(string jsonDataUpdatesString)
+        {
         }
     }
 }

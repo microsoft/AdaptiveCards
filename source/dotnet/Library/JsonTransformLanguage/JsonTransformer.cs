@@ -12,12 +12,12 @@ namespace JsonTransformLanguage
         private const string PROP_TYPES = "$types";
         private const string PROP_WHEN = "$when";
 
-        public static JToken Transform(JToken input, JToken data, Dictionary<string, JToken> additionalReservedProperties)
+        public static JToken Transform(JToken input, JToken data, Dictionary<string, JToken> additionalReservedProperties, bool outputBindings = false)
         {
-            return Transform(input, new JsonTransformerContext(data, additionalReservedProperties));
+            return Transform(input, new JsonTransformerContext(data, additionalReservedProperties, outputBindings), out List<string> dependencies);
         }
 
-        private static JToken Transform(JToken input,  JsonTransformerContext context)
+        private static JToken Transform(JToken input,  JsonTransformerContext context, out List<string> dependencies)
         {
             if (context.ReservedProperties.Data is JArray dataArray)
             {
@@ -32,15 +32,18 @@ namespace JsonTransformLanguage
             switch (input.Type)
             {
                 case JTokenType.Array:
+                    dependencies = null;
                     return TransformArray(input as JArray, new JsonTransformerContext(context));
 
                 case JTokenType.String:
-                    return JsonStringTransformer.Transform(input.Value<string>(), new JsonTransformerContext(context));
+                    return JsonStringTransformer.Transform(input.Value<string>(), new JsonTransformerContext(context), out dependencies);
 
                 case JTokenType.Object:
+                    dependencies = null;
                     return TransformObject(input as JObject, new JsonTransformerContext(context)).FirstOrDefault();
             }
 
+            dependencies = null;
             return input.DeepClone();
         }
 
@@ -65,7 +68,7 @@ namespace JsonTransformLanguage
                     var newChild = Transform(child, new JsonTransformerContext(context)
                     {
                         ParentIsArray = true
-                    });
+                    }, out List<string> dependencies);
                     if (newChild != null)
                     {
                         newArray.Add(newChild);
@@ -108,7 +111,7 @@ namespace JsonTransformLanguage
                 context.ReservedProperties.Data = Transform(dataVal, new JsonTransformerContext(context)
                 {
                     ParentIsArray = false
-                });
+                }, out List<string> dependencies);
 
                 // If we couldn't find the data, we drop the entire element
                 if (context.ReservedProperties.Data == null)
@@ -163,7 +166,7 @@ namespace JsonTransformLanguage
                 var transformedWhenValue = Transform(whenToken, new JsonTransformerContext(context)
                 {
                     ParentIsArray = false
-                });
+                }, out List<string> dependencies);
 
                 // If it evaluated to true
                 if (transformedWhenValue != null && transformedWhenValue.Type == JTokenType.Boolean && transformedWhenValue.Value<bool>())
@@ -178,6 +181,7 @@ namespace JsonTransformLanguage
             }
 
             var newItem = new JObject();
+            JObject bindings = null;
 
             // Transform each property value
             foreach (var p in input.Properties().ToArray())
@@ -185,10 +189,24 @@ namespace JsonTransformLanguage
                 var transformedPropertyValue = Transform(p.Value, new JsonTransformerContext(context)
                 {
                     ParentIsArray = false
-                });
+                }, out List<string> dependencies);
                 if (transformedPropertyValue != null)
                 {
                     newItem.Add(p.Name, transformedPropertyValue);
+                }
+                if (dependencies != null && dependencies.Count > 0)
+                {
+                    if (bindings == null)
+                    {
+                        bindings = new JObject();
+                        newItem.Add("$bindings", bindings);
+                    }
+
+                    bindings.Add(p.Name, JObject.FromObject(new JsonTransformerBinding()
+                    {
+                        Expression = p.Value.Value<string>(),
+                        Dependencies = dependencies.ToArray()
+                    }));
                 }
             }
 

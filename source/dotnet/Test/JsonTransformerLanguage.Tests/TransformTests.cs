@@ -227,6 +227,12 @@ namespace JsonTransformerLanguage.Tests
             TestPayload();
         }
 
+        [TestMethod]
+        public void StringInterpolation1_Binding()
+        {
+            TestPayload();
+        }
+
         private void TestPayload([CallerMemberName]string payloadName = null)
         {
             var parsed = JObject.Parse(File.ReadAllText(Directory.GetCurrentDirectory() + "\\TestPayloads\\" + payloadName + ".json"));
@@ -236,7 +242,7 @@ namespace JsonTransformerLanguage.Tests
 
         private void AssertTransform(JToken inputJson, JToken inputData, JToken expected, string testCaseName)
         {
-            JToken actual = JsonTransformer.Transform(inputJson, inputData, new Dictionary<string, JToken>());
+            JToken actual = JsonTransformer.Transform(inputJson, inputData, new Dictionary<string, JToken>(), outputBindings: testCaseName.EndsWith("_Binding"));
 
             Assert.AreEqual(expected.ToString(), actual?.ToString());
         }

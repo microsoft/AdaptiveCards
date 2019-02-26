@@ -187,6 +187,11 @@ namespace AdaptiveCards
 
             foreach (var prop in te.AdditionalProperties)
             {
+                if (prop.Key == "$bindings")
+                {
+                    // Ignore
+                    continue;
+                }
                 Warnings.Add(new AdaptiveWarning(-1, $"Unknown property '{prop.Key}' on '{te.Type}'"));
             }
         }

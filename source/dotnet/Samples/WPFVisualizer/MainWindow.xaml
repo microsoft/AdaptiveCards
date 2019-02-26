@@ -71,6 +71,8 @@
                     <RowDefinition Height="2*"/>
                     <RowDefinition Height="5"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="0.5*"/>
                 </Grid.RowDefinitions>
                 <Grid Name="cardGrid" MaxWidth="700" VerticalAlignment="Top" Margin="10" Background="WhiteSmoke" >
                     <Grid.Effect>
@@ -82,6 +84,23 @@
 
                 <avalon:TextEditor Grid.Row="2" Name="textBoxData" SyntaxHighlighting="Json" FontFamily="Consolas" FontSize="10pt"
                             ShowLineNumbers="true" TextChanged="textBoxData_TextChanged"/>
+
+                <GridSplitter Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ResizeDirection="Rows"/>
+
+                <Grid Grid.Row="4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <avalon:TextEditor Name="textBoxDataUpdates" SyntaxHighlighting="Json" FontFamily="Consolas" FontSize="10pt"
+                            ShowLineNumbers="true"/>
+                    <Button
+                        Grid.Row="1"
+                        x:Name="ButtonSendDataUpdates"
+                        Content="Send data updates"
+                        Click="ButtonSendDataUpdates_Click"
+                        HorizontalAlignment="Stretch"/>
+                </Grid>
             </Grid>
         </Grid>
 
