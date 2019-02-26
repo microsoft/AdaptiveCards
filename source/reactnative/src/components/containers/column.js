@@ -11,6 +11,7 @@ import {
 	Dimensions
 } from 'react-native';
 
+import { InputContextConsumer } from '../../utils/context';
 import { Registry } from '../registration/registry';
 import * as Utils from '../../utils/util';
 import * as Constants from '../../utils/constants';
@@ -229,18 +230,20 @@ export class Column extends React.Component {
 			actionComponentProps = this.column.selectAction;
 		}
 
-		return <ContainerWrapper json={this.column} style={[containerViewStyle]}>
-			<ActionComponent {...actionComponentProps}>
-				{separator && this.renderSeparator()}
-				{separator ?
-					<View style={[containerViewStyle, styles.separatorStyle]}>
-						{this.parsePayload()}
-					</View> :
-					<View style={spacingStyle}>
-						{this.parsePayload()}
-					</View>}
-			</ActionComponent>
-		</ContainerWrapper>;
+		return (<InputContextConsumer>
+			{({ onParseError }) => <ContainerWrapper json={this.column} style={[containerViewStyle]}>
+				<ActionComponent {...actionComponentProps}>
+					{separator && this.renderSeparator()}
+					{separator ?
+						<View style={[containerViewStyle, styles.separatorStyle]}>
+							{this.parsePayload(onParseError)}
+						</View> :
+						<View style={spacingStyle}>
+							{this.parsePayload(onParseError)}
+						</View>}
+				</ActionComponent>
+			</ContainerWrapper>}
+		</InputContextConsumer>);
 	}
 };
 

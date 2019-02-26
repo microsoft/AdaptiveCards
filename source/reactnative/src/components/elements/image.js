@@ -18,6 +18,7 @@ import ElementWrapper from '../elements/element-wrapper';
 import { SelectAction } from '../actions';
 import { StyleManager } from '../../styles/style-config';
 import { InputContext } from '../../utils/context';
+import { InputContextConsumer } from '../../utils/context';
 
 const ContainResizeMode = 'contain';
 
@@ -334,7 +335,7 @@ export class Img extends React.Component {
 			style={wrapperComputedStyle}
 			onPageLayout={this.onPageLayoutHandler}>
         
-			<Image style={this.sizeStyling}
+			<Image style={imageComputedStyle}
 				source={{ uri: imageUrl }} />
 		</ElementWrapper>);
 		
