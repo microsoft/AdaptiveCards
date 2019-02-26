@@ -159,11 +159,8 @@ export class Template {
             if (!this._context.isReservedField(key)) {
                 let value = this.internalExpand(node[key]);
 
-                if (value != null) {
+                if (value != undefined) {
                     result[key] = value;
-                }
-                else {
-                    return null;
                 }
             }
         }
