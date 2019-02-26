@@ -193,6 +193,8 @@ namespace UWPUnitTests
             public JsonObject AdditionalProperties { get; set; }
             public string Id { get { return "TestID"; } set { } }
             public ActionType ActionType { get { return ActionType.Custom; } }
+            public IAdaptiveActionElement FallbackContent { get; }
+            public FallbackType FallbackType { get; }
             public string ActionTypeString { get { return "TestCustomAction"; } }
             public string IconUrl { get; set; }
             public string Sentiment { get; set; }

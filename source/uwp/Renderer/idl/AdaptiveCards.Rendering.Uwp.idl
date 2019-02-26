@@ -1810,7 +1810,7 @@ AdaptiveNamespaceStart
         internal
 #else
         uuid(AB0F1B0A-3B6E-4F43-8E0A-47EAB9903C0B)
-#endif        
+#endif
     ]
     interface IAdaptiveContainerStylesDefinition : IInspectable
     {
@@ -2652,6 +2652,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT Id([out, retval] HSTRING* value);
         [propput] HRESULT Id([in] HSTRING value);
+
+        [propget] HRESULT FallbackType([out, retval] FallbackType * value);
+        [propget] HRESULT FallbackContent([out, retval] IAdaptiveActionElement ** content);
 
         [propget] HRESULT IconUrl([out, retval] HSTRING* value);
         [propput] HRESULT IconUrl([in] HSTRING value);

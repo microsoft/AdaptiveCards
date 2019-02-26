@@ -2,6 +2,27 @@
 	"type": "AdaptiveCard",
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"version": "1.2",
+	"actions": [
+		{
+			"type": "MyCoolAction2",
+			"coolness": "to the max",
+			"title": "Be Cool",
+			"fallback": {
+				"type": "MyCoolAction",
+				"coolness": "pretty cool",
+				"title": "Pretty cool",
+				"fallback": {
+					"type": "Action.Submit",
+					"title": "Correct"
+				}
+			}
+		},
+		{
+			"type": "Unnecessary",
+			"title": "This is a bug!",
+			"fallback": "drop"
+		}
+	],
 	"body": [
 		{
 			"type": "Container",
@@ -19,7 +40,9 @@
 									"items": [
 										{
 											"type": "TextBlock",
-											"text": "You should never see this (fallback: drop)!"
+											"text": "You should never see this (fallback: drop)!",
+											"color": "attention",
+											"weight": "bolder"
 										},
 										{
 											"type": "Graph",

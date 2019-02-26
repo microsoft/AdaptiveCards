@@ -176,7 +176,8 @@ namespace AdaptiveNamespace
             ComPtr<IAdaptiveRenderArgs> bodyRenderArgs;
             RETURN_IF_FAILED(
                 MakeAndInitialize<AdaptiveRenderArgs>(&bodyRenderArgs, containerStyle, rootAsFrameworkElement.Get()));
-            BuildPanelChildren(body.Get(), bodyElementContainer.Get(), renderContext, bodyRenderArgs.Get(), [](IUIElement*) {});
+            RETURN_IF_FAILED(
+                BuildPanelChildren(body.Get(), bodyElementContainer.Get(), renderContext, bodyRenderArgs.Get(), [](IUIElement*) {}));
 
             ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment;
             RETURN_IF_FAILED(adaptiveCard->get_VerticalContentAlignment(&verticalContentAlignment));
@@ -1356,7 +1357,6 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(actionsGrid->get_ColumnDefinitions(&columnDefinitions));
             RETURN_IF_FAILED(actionsGrid.As(&actionsPanel));
         }
-
         else
         {
             // Create a stack panel for the action buttons
@@ -1452,6 +1452,46 @@ namespace AdaptiveNamespace
             {
                 // Render a button for each action
                 ComPtr<IAdaptiveActionElement> action(child);
+
+                // Time to deal with fallback:
+                // If we get an Unsupported action, check fallback
+                // "Drop" -> don't add to list
+                // {content} -> use this content instead (warning: might itself be Unsupported)
+                ABI::AdaptiveNamespace::ActionType actionType;
+                do
+                {
+                    RETURN_IF_FAILED(action->get_ActionType(&actionType));
+
+                    if (actionType == ABI::AdaptiveNamespace::ActionType::Unsupported)
+                    {
+                        // check for fallback
+                        ABI::AdaptiveNamespace::FallbackType actionFallback;
+                        action->get_FallbackType(&actionFallback);
+                        const bool actionHasFallback = (actionFallback != FallbackType_None);
+                        if (actionHasFallback)
+                        {
+                            if (actionFallback == FallbackType_Content)
+                            {
+                                ComPtr<IAdaptiveActionElement> fallbackAction;
+                                RETURN_IF_FAILED(action->get_FallbackContent(fallbackAction.GetAddressOf()));
+                                action = fallbackAction;
+                                // loop back around to perform type check
+                                continue;
+                            }
+                            else if (actionFallback == FallbackType_Drop)
+                            {
+                                // Card specified drop, so stop here
+                                return S_OK;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // known action type -- continue processing
+                        break;
+                    }
+                } while (true);
+
                 ComPtr<IButton> button =
                     XamlHelpers::CreateXamlClass<IButton>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Button));
 
@@ -1492,9 +1532,6 @@ namespace AdaptiveNamespace
                                      hostConfig.Get(),
                                      allActionsHaveIcons,
                                      button.Get());
-
-                ABI::AdaptiveNamespace::ActionType actionType;
-                RETURN_IF_FAILED(action->get_ActionType(&actionType));
 
                 // If this is a show card action and we're rendering the actions inline, render the card that will be shown
                 ComPtr<IUIElement> uiShowCard;
@@ -2566,7 +2603,8 @@ namespace AdaptiveNamespace
 
         ComPtr<IVector<IAdaptiveCardElement*>> childItems;
         RETURN_IF_FAILED(adaptiveColumn->get_Items(&childItems));
-        BuildPanelChildren(childItems.Get(), columnAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {});
+        RETURN_IF_FAILED(
+            BuildPanelChildren(childItems.Get(), columnAsPanel.Get(), renderContext, newRenderArgs.Get(), [](IUIElement*) {}));
 
         ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment;
         RETURN_IF_FAILED(adaptiveColumn->get_VerticalContentAlignment(&verticalContentAlignment));
@@ -3205,6 +3243,7 @@ namespace AdaptiveNamespace
                 RETURN_IF_FAILED(AddHandledTappedEvent(choiceItem.Get()));
 
                 XamlHelpers::AppendXamlElementToPanel(choiceItem.Get(), panel.Get());
+                return S_OK;
             });
 
         ComPtr<IFrameworkElement> choiceSetAsFrameworkElement;

@@ -19,6 +19,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Id(_Outptr_ HSTRING* id);
         IFACEMETHODIMP put_Id(_In_ HSTRING id);
 
+        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType * fallback);
+        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement ** content);
+
         IFACEMETHODIMP get_IconUrl(_Outptr_ HSTRING* iconUrl);
         IFACEMETHODIMP put_IconUrl(_In_ HSTRING iconUrl);
 
@@ -41,5 +44,7 @@ namespace AdaptiveNamespace
         Microsoft::WRL::Wrappers::HString m_sentiment;
         Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_additionalProperties;
         Microsoft::WRL::Wrappers::HString m_typeString;
+        ABI::AdaptiveNamespace::FallbackType m_fallbackType;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_fallbackContent;
     };
 }

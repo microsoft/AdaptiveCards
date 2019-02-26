@@ -11,50 +11,6 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    static ABI::AdaptiveNamespace::FallbackType MapSharedFallbackTypeToUwp(const AdaptiveSharedNamespace::FallbackType type)
-    {
-        switch (type)
-        {
-            case FallbackType::Drop:
-            {
-                return ABI::AdaptiveNamespace::FallbackType::Drop;
-            }
-
-            case FallbackType::Content:
-            {
-                return ABI::AdaptiveNamespace::FallbackType::Content;
-            }
-
-            case FallbackType::None:
-            default:
-            {
-                return ABI::AdaptiveNamespace::FallbackType::None;
-            }
-        }
-    }
-
-    static AdaptiveSharedNamespace::FallbackType MapUwpFallbackTypeToShared(const ABI::AdaptiveNamespace::FallbackType type)
-    {
-        switch (type)
-        {
-            case ABI::AdaptiveNamespace::FallbackType::Drop:
-            {
-                return FallbackType::Drop;
-            }
-
-            case ABI::AdaptiveNamespace::FallbackType::Content:
-            {
-                return FallbackType::Content;
-            }
-
-            case ABI::AdaptiveNamespace::FallbackType::None:
-            default:
-            {
-                return FallbackType::None;
-            }
-        }
-    }
-
     HRESULT AdaptiveCardElementBase::InitializeBaseElement(const std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel)
     {
         m_spacing = static_cast<ABI::AdaptiveNamespace::Spacing>(sharedModel->GetSpacing());

@@ -218,6 +218,9 @@ HRESULT AdaptiveWarningsToSharedWarnings(
 
 ABI::Windows::UI::Color GenerateLighterColor(const ABI::Windows::UI::Color& originalColor);
 
+ABI::AdaptiveNamespace::FallbackType MapSharedFallbackTypeToUwp(const AdaptiveSharedNamespace::FallbackType type);
+AdaptiveSharedNamespace::FallbackType MapUwpFallbackTypeToShared(const ABI::AdaptiveNamespace::FallbackType type);
+
 namespace AdaptiveNamespace
 {
     class XamlBuilder;
