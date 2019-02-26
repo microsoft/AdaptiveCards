@@ -19,7 +19,7 @@ import * as Utils from '../../utils/util';
 
 export class Input extends React.Component {
 
-	styleConfig = StyleManager.getManager().styles;
+	 styleConfig = StyleManager.getManager().styles;
 
 	constructor(props) {
 		super(props);
@@ -90,13 +90,16 @@ export class Input extends React.Component {
 	getComputedStyles = () => {
 		const { isMultiline } = this;
 
-		let inputComputedStyles = [styles.input, this.styleConfig.fontConfig];
+		let inputComputedStyles = [this.styleConfig.inputBorderWidth,
+									this.styleConfig.inputBackgroundColor,
+									this.styleConfig.inputBorderRadius,
+									this.styleConfig.fontConfig];
 		isMultiline ?
 			inputComputedStyles.push(styles.multiLineHeight) :
 			inputComputedStyles.push(styles.singleLineHeight);
 		this.props.isError ?
 			inputComputedStyles.push(this.styleConfig.borderAttention) :
-			inputComputedStyles.push(styles.withBorderColor);
+			inputComputedStyles.push(this.styleConfig.inputBorderColor);
 
 		return inputComputedStyles;
 	}
@@ -117,9 +120,6 @@ export class Input extends React.Component {
 }
 
 const styles = StyleSheet.create({
-	withBorderColor: {
-		borderColor: Constants.LightGreyColor,
-	},
 	multiLineHeight: {
 		height: 88,
 	},
@@ -130,9 +130,6 @@ const styles = StyleSheet.create({
 		width: Constants.FullWidth,
 		padding: 5,
 		marginTop: 15,
-		borderWidth: 1,
-		backgroundColor: Constants.WhiteColor,
-		borderRadius: 5,
 	},
 });
 

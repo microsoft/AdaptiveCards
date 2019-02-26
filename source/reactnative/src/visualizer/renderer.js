@@ -35,6 +35,14 @@ export default class Renderer extends React.Component {
             extraLarge: 26
         }
     }
+    customThemeConfig = {
+        input: {
+            borderColor: "black",
+            backgroundColor: "yellow",
+            borderRadius: 25,
+            borderWidth: 10,
+        }
+    }
 
     constructor(props) {
         super(props);
@@ -65,6 +73,7 @@ export default class Renderer extends React.Component {
                         payload={this.payload}
                         onExecuteAction={this.onExecuteAction}
                         hostConfig={this.customHostConfig}
+                        themeConfig={this.customThemeConfig}
                         onParseError={this.onParseError}
                         ref="adaptiveCardRef" />
                 }

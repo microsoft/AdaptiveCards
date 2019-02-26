@@ -51,7 +51,7 @@ export class ActionButton extends React.Component {
 			return null;
 		}
 		this.parseHostConfig();
-
+		
 		const ButtonComponent = Platform.OS === Constants.PlatformIOS ? TouchableOpacity : TouchableNativeFeedback;
 
 		if (this.payload.type === Constants.ActionSubmit) {
@@ -111,12 +111,23 @@ export class ActionButton extends React.Component {
 		this.iconUrl = Utils.getImageUrl(imageUrl)
 		this.data = this.payload.data;
 	}
+	
+    /**
+     * @description Return the button styles applicable
+     */
+	getButtonStyles = () => {
+		let computedStyles = [this.styleConfig.buttonBackgroundColor,
+								this.styleConfig.buttonBorderRadius,
+								this.styleConfig.actionIconFlex,
+								styles.button];
 
-	buttonContent = () => {
+		return computedStyles;
+	}
+
+	buttonContent = () => {		
 		return (
 			<View
-				style={[
-					styles.button, this.styleConfig.actionIconFlex]}>
+				style={this.getButtonStyles()}>
 				{
 					!Utils.isNullOrEmpty(this.iconUrl) ?
 						<Image resizeMode="center"
@@ -124,7 +135,7 @@ export class ActionButton extends React.Component {
 							style={[styles.buttonIcon, this.styleConfig.actionIcon]} />
 						: null
 				}
-				<Text style={[styles.buttonTitle, this.styleConfig.fontConfig]}>
+				<Text style={[this.styleConfig.fontConfig, this.styleConfig.buttonTitleColor]}>
 					{this.title}
 				</Text>
 			</View>
@@ -139,12 +150,7 @@ const styles = StyleSheet.create({
 		padding: 10,
 		marginBottom: 10,
 		marginRight: 10,
-		backgroundColor: "#1D9BF6",
-		borderRadius: 15,
 		flexGrow: 1,
-	},
-	buttonTitle: {
-		color: Constants.WhiteColor,
 	},
 	buttonIcon: {
 		marginLeft: 5,
