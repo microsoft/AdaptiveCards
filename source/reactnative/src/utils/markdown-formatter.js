@@ -128,9 +128,10 @@ export default class MarkdownFormatter extends React.PureComponent {
 					let regex = "";
 					for (var j = 0; j < groups; j++) {
 						let group = regexForm.substring(part * j, part * (j + 1));
-						let firstHalf = group.substring(0, group.length / 2);
-						let secondHalf = group.substring(group.length / 2, group.length);
-						let middle = (j < groups / 2) ? group.substring(0, group.length / 2) : group.substring(group.length / 2, group.length);
+						let middleIndex = group.length / 2;
+						let firstHalf = group.substring(0, middleIndex);
+						let secondHalf = group.substring(middleIndex, group.length);
+						let middle = (j < middleIndex) ? group.substring(0, middleIndex) : group.substring(middleIndex, group.length);
 						regex = regex + firstHalf + '([^' + middle + ']+)' + secondHalf;
 					}
 					pattern = regex;
