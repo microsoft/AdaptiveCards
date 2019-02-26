@@ -1402,6 +1402,10 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
         style.input.choices.push(new Adaptive.Choice("(not set)", "not_set"));
         style.input.choices.push(new Adaptive.Choice("Default", "default"));
         style.input.choices.push(new Adaptive.Choice("Emphasis", "emphasis"));
+        style.input.choices.push(new Adaptive.Choice("Accent", "accent"));
+        style.input.choices.push(new Adaptive.Choice("Good", "good"));
+        style.input.choices.push(new Adaptive.Choice("Attention", "attention"));
+        style.input.choices.push(new Adaptive.Choice("Warning", "warning"));
 
         if (this.cardElement.style) {
             style.input.defaultValue = this.cardElement.style.toString();
@@ -1499,6 +1503,10 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
         style.input.choices.push(new Adaptive.Choice("(not set)", "not_set"));
         style.input.choices.push(new Adaptive.Choice("Default", "default"));
         style.input.choices.push(new Adaptive.Choice("Emphasis", "emphasis"));
+        style.input.choices.push(new Adaptive.Choice("Accent", "accent"));
+        style.input.choices.push(new Adaptive.Choice("Good", "good"));
+        style.input.choices.push(new Adaptive.Choice("Attention", "attention"));
+        style.input.choices.push(new Adaptive.Choice("Warning", "warning"));
 
         if (this.cardElement.style) {
             style.input.defaultValue = this.cardElement.style.toString();
@@ -1577,6 +1585,10 @@ export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
         style.input.choices.push(new Adaptive.Choice("(not set)", "not_set"));
         style.input.choices.push(new Adaptive.Choice("Default", "default"));
         style.input.choices.push(new Adaptive.Choice("Emphasis", "emphasis"));
+        style.input.choices.push(new Adaptive.Choice("Accent", "accent"));
+        style.input.choices.push(new Adaptive.Choice("Good", "good"));
+        style.input.choices.push(new Adaptive.Choice("Attention", "attention"));
+        style.input.choices.push(new Adaptive.Choice("Warning", "warning"));
 
         if (this.cardElement.style) {
             style.input.defaultValue = this.cardElement.style.toString();
@@ -2300,6 +2312,18 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
             catch (ex) {
                 // Do nothing
             }
+        }
+
+        var style = addLabelAndInput(card, "Style:", Adaptive.ChoiceSetInput);
+        style.input.placeholder = "Default";
+        style.input.isCompact = true;
+        style.input.choices.push(new Adaptive.Choice("Default", Adaptive.FontStyle.Default.toString()));
+        style.input.choices.push(new Adaptive.Choice("Monospace", Adaptive.FontStyle.Monospace.toString()));
+        style.input.defaultValue = this.cardElement.style ? this.cardElement.style.toString() : "Default";
+        style.input.onValueChanged = () => {
+            this.cardElement.style = <Adaptive.FontStyle>parseInt(style.input.value);
+
+            this.changed(false);
         }
 
         var size = addLabelAndInput(card, "Size:", Adaptive.ChoiceSetInput);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 
 import java.io.IOException;
@@ -84,6 +85,10 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
                 {
                     return resourceResolver.resolveImageResource(path, this);
                 }
+            }
+            else if (path.startsWith("content:"))
+            {
+                return loadLocalContentImage(context, path);
             }
 
             //Step 2: If resource resolver doesn't exist, then try with treating it as a dataUri
@@ -169,6 +174,21 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
         }
 
         return new HttpRequestResult<>(bitmap);
+    }
+
+    // Helper function to load local image from content://com.android.*, like
+    // content://com.android.contacts/contacts/9/photo
+    private HttpRequestResult<Bitmap> loadLocalContentImage(Context context, String url) throws IOException
+    {
+        Uri uri = Uri.parse(url);
+        Bitmap bm = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri));
+        bm = styleBitmap(bm);
+        if (bm == null)
+        {
+            throw  new IOException("Failed to convert local content image to bitmap: " + url);
+        }
+
+        return new HttpRequestResult<>(bm);
     }
 
     public HttpRequestResult<Bitmap> loadDataUriImage(String uri) throws Exception
