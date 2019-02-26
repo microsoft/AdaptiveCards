@@ -42,19 +42,19 @@
                                                      parentStyle:[viewGroup style] hostConfig:acoConfig superview:viewGroup];
 
     auto backgroundImage = columnElem->GetBackgroundImage();
-    if(backgroundImage != nullptr && !(backgroundImage->GetUrl().empty())){
+    if (backgroundImage != nullptr && !(backgroundImage->GetUrl().empty())) {
         renderBackgroundImage(backgroundImage.get(), column, rootView);
     }
     
     column.pixelWidth = columnElem->GetPixelWidth();
-    if(columnElem->GetWidth() == "stretch" || columnElem->GetWidth() == "") {
+    if (columnElem->GetWidth() == "stretch" || columnElem->GetWidth() == "") {
         column.columnWidth = @"stretch";
-    } else if(columnElem->GetWidth() == "auto"){
+    } else if (columnElem->GetWidth() == "auto"){
         column.columnWidth = @"auto";
     }
 
     UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
-    if(columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom){
+    if (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom) {
         leadingBlankSpace = [column addPaddingSpace];
     }
 
@@ -64,7 +64,7 @@
           withCardElems:columnElem->GetItems()
           andHostConfig:acoConfig];
 
-    if(columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && _fillAlignment)){
+    if (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && _fillAlignment)) {
         trailingBlankSpace = [column addPaddingSpace];
     }
 
@@ -80,7 +80,7 @@
                                                                   actionElement:selectAction
                                                                      hostConfig:acoConfig];
 
-    if(leadingBlankSpace != nil && trailingBlankSpace != nil){
+    if (leadingBlankSpace != nil && trailingBlankSpace != nil) {
         [NSLayoutConstraint constraintWithItem:leadingBlankSpace
                                      attribute:NSLayoutAttributeHeight
                                      relatedBy:NSLayoutRelationEqual
