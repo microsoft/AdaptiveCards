@@ -172,22 +172,17 @@ namespace AdaptiveCards.Rendering
             {
                 if (fontStyle == AdaptiveFontStyle.Monospace)
                 {
-                  fontFamilyValue = GetDefaultFontFamily(fontStyle);
+                    fontFamilyValue = GetDefaultFontFamily(fontStyle);
                 }
                 else
                 {
-                  // Fallback to default fontStyle value
-                  fontFamilyValue = FontStyles.Default.FontFamily;
-                  if (string.IsNullOrEmpty(fontFamilyValue))
-                  {
-                      // Fallback to deprecated fontFamily value
-                      fontFamilyValue = FontFamily;
-                      if (string.IsNullOrEmpty(fontFamilyValue))
-                      {
-                          // Fallback to predefined system default value
-                          fontFamilyValue = GetDefaultFontFamily(fontStyle);
-                      }
-                  }
+                    // Fallback to deprecated fontFamily value
+                    fontFamilyValue = FontFamily;
+                    if (string.IsNullOrEmpty(fontFamilyValue))
+                    {
+                        // Fallback to predefined system default value
+                        fontFamilyValue = GetDefaultFontFamily(fontStyle);
+                    }
                 }
             }
             return fontFamilyValue;
@@ -215,7 +210,6 @@ namespace AdaptiveCards.Rendering
             {
                 case AdaptiveFontStyle.Monospace:
                     return "Courier New";
-                case AdaptiveFontStyle.Display:
                 case AdaptiveFontStyle.Default:
                 default:
                     // Leave it up to the platform.

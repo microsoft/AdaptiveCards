@@ -19,10 +19,6 @@ namespace AdaptiveCardsSharedModelUnitTest
             emptyTB.SetFontStyle(AdaptiveCards::FontStyle::Default);
             Assert::IsTrue(emptyTB.GetFontStyle() == AdaptiveCards::FontStyle::Default);
 
-            // Set FontStyle to Display
-            emptyTB.SetFontStyle(AdaptiveCards::FontStyle::Display);
-            Assert::IsTrue(emptyTB.GetFontStyle() == AdaptiveCards::FontStyle::Display);
-
             // Set FontStyle to Monospace
             emptyTB.SetFontStyle(AdaptiveCards::FontStyle::Monospace);
             Assert::IsTrue(emptyTB.GetFontStyle() == AdaptiveCards::FontStyle::Monospace);

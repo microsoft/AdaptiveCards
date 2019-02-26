@@ -59,7 +59,6 @@ namespace AdaptiveSharedNamespace
     struct FontStylesDefinition
     {
         FontStyleDefinition defaultStyle;
-        FontStyleDefinition displayStyle;
         FontStyleDefinition monospaceStyle;
 
         static FontStylesDefinition Deserialize(const Json::Value& json, const FontStylesDefinition& defaultValue);

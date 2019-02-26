@@ -829,8 +829,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void delete_FontStyleDefinition(long jarg1);
   public final static native void FontStylesDefinition_defaultStyle_set(long jarg1, FontStylesDefinition jarg1_, long jarg2, FontStyleDefinition jarg2_);
   public final static native long FontStylesDefinition_defaultStyle_get(long jarg1, FontStylesDefinition jarg1_);
-  public final static native void FontStylesDefinition_displayStyle_set(long jarg1, FontStylesDefinition jarg1_, long jarg2, FontStyleDefinition jarg2_);
-  public final static native long FontStylesDefinition_displayStyle_get(long jarg1, FontStylesDefinition jarg1_);
   public final static native void FontStylesDefinition_monospaceStyle_set(long jarg1, FontStylesDefinition jarg1_, long jarg2, FontStyleDefinition jarg2_);
   public final static native long FontStylesDefinition_monospaceStyle_get(long jarg1, FontStylesDefinition jarg1_);
   public final static native long FontStylesDefinition_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, FontStylesDefinition jarg2_);

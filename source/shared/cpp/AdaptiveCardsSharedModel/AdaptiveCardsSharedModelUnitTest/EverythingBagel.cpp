@@ -150,7 +150,6 @@ namespace AdaptiveCardsSharedModelUnitTest
             auto textBlockItem = std::static_pointer_cast<TextBlock>(items.at(1));
             Assert::AreEqual("Column3_TextBlock_text"s, textBlockItem->GetText());
             Assert::AreEqual("Column3_TextBlock_id"s, textBlockItem->GetId());
-            Assert::IsTrue(FontStyle::Display == textBlockItem->GetFontStyle());
         }
     }
 

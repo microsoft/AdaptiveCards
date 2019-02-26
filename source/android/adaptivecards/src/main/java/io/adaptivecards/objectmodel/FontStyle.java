@@ -10,7 +10,6 @@ package io.adaptivecards.objectmodel;
 
 public enum FontStyle {
   Default(0),
-  Display,
   Monospace;
 
   public final int swigValue() {

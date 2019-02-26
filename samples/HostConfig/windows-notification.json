@@ -29,21 +29,6 @@
 				"bolder": 700
 			}
 		},
-		"display": {
-			"fontFamily": "Times New Roman",
-			"fontSizes": {
-				"small": 12,
-				"default": 15,
-				"medium": 20,
-				"large": 24,
-				"extraLarge": 34
-			},
-			"fontWeights": {
-				"lighter": 400,
-				"default": 500,
-				"bolder": 700
-			}
-		},
 		"monospace": {
 			"fontFamily": "Segoe UI Mono",
 			"fontSizes": {
