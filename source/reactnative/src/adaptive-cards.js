@@ -6,7 +6,6 @@ import React from 'react';
 import {
 	StyleSheet,
 	Text,
-	View,
 	ScrollView,
 	ImageBackground
 } from 'react-native';
@@ -21,6 +20,7 @@ import * as Utils from './utils/util';
 import { SelectAction } from './components/actions';
 import ResourceInformation from './utils/resource-information';
 import { ContainerWrapper } from './components/containers/';
+import { ThemeConfigManager } from './utils/theme-config';
 
 export default class AdaptiveCards extends React.Component {
 
@@ -29,7 +29,6 @@ export default class AdaptiveCards extends React.Component {
 	version = "1.1"; // client supported version
 	resourceInformationArray = [];
 	
-
 	constructor(props) {
 		super(props);
 
@@ -37,8 +36,15 @@ export default class AdaptiveCards extends React.Component {
 
 		// hostconfig
 		if (props.hostConfig) {
-			HostConfigManager.setHostConfig(this.props.hostConfig);
+			HostConfigManager.setHostConfig(props.hostConfig);
 		}
+		
+		// themeConfig
+		if(props.themeConfig){
+			ThemeConfigManager.setThemeConfig(props.themeConfig);
+		}
+
+		// commonly used styles
 		this.styleConfig = StyleManager.getManager().styles;
 	}
 
@@ -185,6 +191,7 @@ export default class AdaptiveCards extends React.Component {
 AdaptiveCards.propTypes = {
 	payload: PropTypes.object.isRequired,
 	hostConfig: PropTypes.object,
+	themeConfig: PropTypes.object,
 	onExecuteAction: PropTypes.func,
 	onParseError: PropTypes.func
 };

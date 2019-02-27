@@ -35,6 +35,11 @@ export default class Renderer extends React.Component {
             extraLarge: 26
         }
     }
+    customThemeConfig = {
+        button: {
+            backgroundColor: '#66BB6A'
+        }    
+    }
 
     constructor(props) {
         super(props);
@@ -65,6 +70,7 @@ export default class Renderer extends React.Component {
                         payload={this.payload}
                         onExecuteAction={this.onExecuteAction}
                         hostConfig={this.customHostConfig}
+                        themeConfig={this.customThemeConfig}
                         onParseError={this.onParseError}
                         ref="adaptiveCardRef" />
                 }
