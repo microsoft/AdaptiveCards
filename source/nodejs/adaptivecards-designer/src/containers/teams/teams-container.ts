@@ -3,6 +3,9 @@ import * as Designer from "../../adaptivecards-designer";
 import * as teamsDarkConfiguration from "../../../../../../samples/HostConfig/microsoft-teams-dark.json"
 import * as teamsLightConfiguration from "../../../../../../samples/HostConfig/microsoft-teams-light.json"
 
+var teamsDarkConfiguration = require("../../../../../../samples/HostConfig/microsoft-teams-dark.json");
+var teamsLightConfiguration = require("../../../../../../samples/HostConfig/microsoft-teams-light.json");
+
 export abstract class BaseTeamsContainer extends Designer.HostContainer {
     public renderTo(hostElement: HTMLElement) {
         var outerFrame = document.createElement("div");

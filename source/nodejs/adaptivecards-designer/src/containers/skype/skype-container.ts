@@ -2,6 +2,8 @@ import * as Adaptive from "adaptivecards";
 import * as Designer from "../../adaptivecards-designer";
 import * as skypeConfiguration from "../../../../../../samples/HostConfig/skype.json"
 
+var skypeConfiguration = require("../../../../../../samples/HostConfig/skype.json");
+
 export class SkypeContainer extends Designer.HostContainer {
     public renderTo(hostElement: HTMLElement) {
         this.cardHost.classList.add("skype-card");

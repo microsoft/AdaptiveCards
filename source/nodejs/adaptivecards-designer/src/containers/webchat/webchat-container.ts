@@ -2,6 +2,8 @@ import * as Adaptive from "adaptivecards";
 import * as Designer from "../../adaptivecards-designer";
 import * as webChatConfiguration from "../../../../../../samples/HostConfig/webchat.json"
 
+var webChatConfiguration = require("../../../../../../samples/HostConfig/webchat.json");
+
 export class WebChatContainer extends Designer.HostContainer {
     public renderTo(hostElement: HTMLElement) {
         this.cardHost.classList.add("webChatOuterContainer");

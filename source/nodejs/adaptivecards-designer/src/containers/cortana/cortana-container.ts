@@ -2,6 +2,8 @@ import * as Adaptive from "adaptivecards";
 import * as Designer from "../../adaptivecards-designer";
 import * as cortanaSkillsConfiguration from "../../../../../../samples/HostConfig/cortana-skills.json"
 
+var cortanaSkillsConfiguration = require("../../../../../../samples/HostConfig/cortana-skills.json");
+
 export class CortanaContainer extends Designer.HostContainer {
     public renderTo(hostElement: HTMLElement) {
         this.cardHost.classList.add("cortana-card");

@@ -2,6 +2,8 @@ import * as Adaptive from "adaptivecards";
 import * as Designer from "../../adaptivecards-designer";
 import * as windowsTimelineConfiguration from "../../../../../../samples/HostConfig/windows-timeline.json"
 
+var windowsTimelineConfiguration = require("../../../../../../samples/HostConfig/windows-timeline.json");
+
 export class TimelineContainer extends Designer.HostContainer {
     public initialize() {
         Adaptive.AdaptiveCard.elementTypeRegistry.reset();
