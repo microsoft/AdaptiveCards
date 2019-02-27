@@ -61,6 +61,7 @@ export class ChoiceSetInput extends React.Component {
 		this.value = this.payload.value;
 		this.style = this.payload.style;
 		this.choices = this.payload.choices;
+		this.wrapText = this.payload.wrap || false
 	}
 
     /**
@@ -190,6 +191,7 @@ export class ChoiceSetInput extends React.Component {
 						isRadioButtonType={true}
 						index={index}
 						labelStyle={[styles.labelStyle, this.styleConfig.fontConfig]}
+						wrapText={this.wrapText}
 						iconSize={28}
 						checked={this.state.activeIndex == undefined ?
 							index == this.getRadioButtonIndex(this.value,
@@ -218,6 +220,7 @@ export class ChoiceSetInput extends React.Component {
 						isRadioButtonType={false}
 						index={index}
 						labelStyle={[styles.labelStyle, this.styleConfig.fontConfig]}
+						wrapText={this.wrapText}
 						iconSize={28}
 						checked={this.state.checkedValues == undefined ?
 							this.setInitialCheckedValues(this.value,

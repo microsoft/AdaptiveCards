@@ -12,6 +12,7 @@ import {
 	ViewPropTypes,
 	Image
 } from 'react-native';
+import { Label } from '../../elements'
 
 import PropTypes from 'prop-types';
 import * as Constants from '../../../utils/constants';
@@ -37,6 +38,7 @@ class CheckBox extends React.PureComponent {
 		style: ViewPropTypes.style,
 		onChange: PropTypes.func.isRequired,
 		checked: PropTypes.bool,
+		wrapText: PropTypes.bool,
 		isRadioButtonType: PropTypes.bool,
 		labelStyle: Text.propTypes.style,
 		iconSize: PropTypes.number,
@@ -47,6 +49,7 @@ class CheckBox extends React.PureComponent {
 		checked: false,
 		labelStyle: styles.labelStyle,
 		iconSize: 28,
+		wrapText: false,
 	};
 
 	componentWillMount() {
@@ -90,7 +93,7 @@ class CheckBox extends React.PureComponent {
 			<View style={[styles.contentStyle, { flexDirection }]}>
 				{this.renderCheckBoxIcon.call(this)}
 				{
-					label ? <Text style={labelStyle}>{label}</Text> : null
+					label ? <Label text={label}style={labelStyle} wrap={this.props.wrapText} /> : null
 				}
 			</View>
 		)
