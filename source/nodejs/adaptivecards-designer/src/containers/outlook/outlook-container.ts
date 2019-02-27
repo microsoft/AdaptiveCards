@@ -1,5 +1,6 @@
 import * as Adaptive from "adaptivecards";
 import * as Designer from "../../adaptivecards-designer";
+import * as outlookConfiguration from "../../../../../../samples/HostConfig/outlook-desktop.json"
 
 export class OutlookContainer extends Designer.HostContainer {
     public renderTo(hostElement: HTMLElement) {
@@ -108,6 +109,8 @@ export class OutlookContainer extends Designer.HostContainer {
     }
 
     public getHostConfig(): Adaptive.HostConfig {
+        return new Adaptive.HostConfig(outlookConfiguration);
+        /*
         return new Adaptive.HostConfig({
             preExpandSingleShowCardAction: true,
             supportsInteractivity: true,
@@ -397,5 +400,6 @@ export class OutlookContainer extends Designer.HostContainer {
                 spacing: 10
             }
         });
+        */
     }
 }
