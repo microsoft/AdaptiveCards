@@ -829,8 +829,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void delete_FontStyleDefinition(long jarg1);
   public final static native void FontStylesDefinition_defaultStyle_set(long jarg1, FontStylesDefinition jarg1_, long jarg2, FontStyleDefinition jarg2_);
   public final static native long FontStylesDefinition_defaultStyle_get(long jarg1, FontStylesDefinition jarg1_);
-  public final static native void FontStylesDefinition_displayStyle_set(long jarg1, FontStylesDefinition jarg1_, long jarg2, FontStyleDefinition jarg2_);
-  public final static native long FontStylesDefinition_displayStyle_get(long jarg1, FontStylesDefinition jarg1_);
   public final static native void FontStylesDefinition_monospaceStyle_set(long jarg1, FontStylesDefinition jarg1_, long jarg2, FontStyleDefinition jarg2_);
   public final static native long FontStylesDefinition_monospaceStyle_get(long jarg1, FontStylesDefinition jarg1_);
   public final static native long FontStylesDefinition_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, FontStylesDefinition jarg2_);
@@ -1161,7 +1159,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long new_ToggleVisibilityAction();
   public final static native long ToggleVisibilityAction_GetTargetElements__SWIG_0(long jarg1, ToggleVisibilityAction jarg1_);
   public final static native long ToggleVisibilityAction_SerializeToJsonValue(long jarg1, ToggleVisibilityAction jarg1_);
-  public final static native long ToggleVisibilityAction_dynamic_cast(long jarg1, BaseCardElement jarg1_);
+  public final static native long ToggleVisibilityAction_dynamic_cast(long jarg1, BaseActionElement jarg1_);
   public final static native void delete_ToggleVisibilityAction(long jarg1);
   public final static native long new_ToggleVisibilityActionParser__SWIG_0();
   public final static native long new_ToggleVisibilityActionParser__SWIG_1(long jarg1, ToggleVisibilityActionParser jarg1_);

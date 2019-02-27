@@ -13,9 +13,8 @@ import io.adaptivecards.objectmodel.BackgroundImage;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.BackgroundImageLoaderAsync;
-import io.adaptivecards.renderer.IDataUriImageLoader;
-import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -70,6 +69,11 @@ public class ColumnRenderer extends BaseCardElementRenderer
         ContainerStyle styleForThis = column.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? containerStyle : column.GetStyle();
         LinearLayout returnedView = new LinearLayout(context);
         returnedView.setOrientation(LinearLayout.VERTICAL);
+        returnedView.setTag(new TagContent(column));
+        if(!baseCardElement.GetIsVisible())
+        {
+            returnedView.setVisibility(View.GONE);
+        }
 
         LinearLayout verticalContentAlignmentLayout = new LinearLayout(context);
         verticalContentAlignmentLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -112,19 +116,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
                     returnedView,
                     hostConfig.GetImageBaseUrl(),
                     context.getResources().getDisplayMetrics().widthPixels,
-					backgroundImageProperties);
-
-            IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
-            if (onlineImageLoader != null)
-            {
-                loaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
-            }
-
-            IDataUriImageLoader dataUriImageLoader = CardRendererRegistration.getInstance().getDataUriImageLoader();
-            if (dataUriImageLoader != null)
-            {
-                loaderAsync.registerCustomDataUriImageLoader(dataUriImageLoader);
-            }
+                    backgroundImageProperties);
 
             loaderAsync.execute(backgroundImageProperties.GetUrl());
         }

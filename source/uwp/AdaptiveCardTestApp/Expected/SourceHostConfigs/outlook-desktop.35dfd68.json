@@ -5,11 +5,11 @@
 		"medium": 20,
 		"large": 30,
 		"extraLarge": 40,
-		"padding": 10
+		"padding": 20
 	},
 	"separator": {
 		"lineThickness": 1,
-		"lineColor": "#FF444444"
+		"lineColor": "#FFEEEEEE"
 	},
 	"supportsInteractivity": true,
 	"fontStyles": {
@@ -28,23 +28,8 @@
 				"bolder": 600
 			}
 		},
-		"display": {
-			"fontFamily": "Times New Roman",
-			"fontSizes": {
-				"small": 12,
-				"default": 14,
-				"medium": 17,
-				"large": 21,
-				"extraLarge": 26
-			},
-			"fontWeights": {
-				"lighter": 200,
-				"default": 400,
-				"bolder": 600
-			}
-		},
 		"monospace": {
-			"fontFamily": "Segoe UI Mono",
+			"fontFamily": "Courier New",
 			"fontSizes": {
 				"small": 12,
 				"default": 14,
@@ -61,7 +46,7 @@
 	},
 	"containerStyles": {
 		"default": {
-			"backgroundColor": "#FFEAEAEA",
+			"backgroundColor": "#FFFFFFFF",
 			"foregroundColors": {
 				"default": {
 					"default": "#FF333333",
@@ -72,16 +57,16 @@
 					"subtle": "#882E89FC"
 				},
 				"attention": {
-					"default": "#FFFF0000",
-					"subtle": "#DDFF0000"
+					"default": "#FFCC3300",
+					"subtle": "#DDCC3300"
 				},
 				"good": {
 					"default": "#FF54A254",
 					"subtle": "#DD54A254"
 				},
 				"warning": {
-					"default": "#FFC3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#FFE69500",
+					"subtle": "#DDE69500"
 				}
 			}
 		},
@@ -97,16 +82,16 @@
 					"subtle": "#882E89FC"
 				},
 				"attention": {
-					"default": "#FFFF0000",
-					"subtle": "#DDFF0000"
+					"default": "#FFCC3300",
+					"subtle": "#DDCC3300"
 				},
 				"good": {
 					"default": "#FF54A254",
 					"subtle": "#DD54A254"
 				},
 				"warning": {
-					"default": "#FFC3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#FFE69500",
+					"subtle": "#DDE69500"
 				}
 			}
 		},
@@ -122,21 +107,21 @@
 					"subtle": "#882E89FC"
 				},
 				"attention": {
-					"default": "#FFFF0000",
-					"subtle": "#DDFF0000"
+					"default": "#FFCC3300",
+					"subtle": "#DDCC3300"
 				},
 				"good": {
 					"default": "#FF54A254",
 					"subtle": "#DD54A254"
 				},
 				"warning": {
-					"default": "#FFC3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#FFE69500",
+					"subtle": "#DDE69500"
 				}
 			}
 		},
 		"attention": {
-			"backgroundColor": "#DDFF0000",
+			"backgroundColor": "#DDCC3300",
 			"foregroundColors": {
 				"default": {
 					"default": "#FF333333",
@@ -147,16 +132,16 @@
 					"subtle": "#882E89FC"
 				},
 				"attention": {
-					"default": "#FFFF0000",
-					"subtle": "#DDFF0000"
+					"default": "#FFCC3300",
+					"subtle": "#DDCC3300"
 				},
 				"good": {
 					"default": "#FF54A254",
 					"subtle": "#DD54A254"
 				},
 				"warning": {
-					"default": "#FFC3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#FFE69500",
+					"subtle": "#DDE69500"
 				}
 			}
 		},
@@ -172,21 +157,21 @@
 					"subtle": "#882E89FC"
 				},
 				"attention": {
-					"default": "#FFFF0000",
-					"subtle": "#DDFF0000"
+					"default": "#FFCC3300",
+					"subtle": "#DDCC3300"
 				},
 				"good": {
 					"default": "#FF54A254",
 					"subtle": "#DD54A254"
 				},
 				"warning": {
-					"default": "#FFC3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#FFE69500",
+					"subtle": "#DDE69500"
 				}
 			}
 		},
 		"warning": {
-			"backgroundColor": "#DDC3AB23",
+			"backgroundColor": "#DDE69500",
 			"foregroundColors": {
 				"default": {
 					"default": "#FF333333",
@@ -197,16 +182,16 @@
 					"subtle": "#882E89FC"
 				},
 				"attention": {
-					"default": "#FFFF0000",
-					"subtle": "#DDFF0000"
+					"default": "#FFCC3300",
+					"subtle": "#DDCC3300"
 				},
 				"good": {
 					"default": "#FF54A254",
 					"subtle": "#DD54A254"
 				},
 				"warning": {
-					"default": "#FFC3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#FFE69500",
+					"subtle": "#DDE69500"
 				}
 			}
 		}
@@ -221,13 +206,11 @@
 		"spacing": "default",
 		"buttonSpacing": 10,
 		"showCard": {
-			"actionMode": "popup",
+			"actionMode": "inline",
 			"inlineTopMargin": 16
 		},
-		"actionsOrientation": "vertical",
-		"actionAlignment": "stretch",
-		"iconPlacement": "LeftOfTitle",
-		"iconSize": 100
+		"actionsOrientation": "horizontal",
+		"actionAlignment": "left"
 	},
 	"adaptiveCard": {
 		"allowCustomStyle": false
@@ -252,6 +235,6 @@
 			"weight": "default",
 			"wrap": true
 		},
-		"spacing": 5
+		"spacing": 10
 	}
 }

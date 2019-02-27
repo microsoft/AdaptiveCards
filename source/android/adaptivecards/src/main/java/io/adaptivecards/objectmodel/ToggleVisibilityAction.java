@@ -54,8 +54,8 @@ public class ToggleVisibilityAction extends BaseActionElement {
     return new JsonValue(AdaptiveCardObjectModelJNI.ToggleVisibilityAction_SerializeToJsonValue(swigCPtr, this), true);
   }
 
-  public static ToggleVisibilityAction dynamic_cast(BaseCardElement baseCardElement) {
-    long cPtr = AdaptiveCardObjectModelJNI.ToggleVisibilityAction_dynamic_cast(BaseCardElement.getCPtr(baseCardElement), baseCardElement);
+  public static ToggleVisibilityAction dynamic_cast(BaseActionElement baseActionElement) {
+    long cPtr = AdaptiveCardObjectModelJNI.ToggleVisibilityAction_dynamic_cast(BaseActionElement.getCPtr(baseActionElement), baseActionElement);
     return (cPtr == 0) ? null : new ToggleVisibilityAction(cPtr, true);
   }
 
