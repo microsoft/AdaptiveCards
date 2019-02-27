@@ -5,31 +5,16 @@
 		"medium": 20,
 		"large": 30,
 		"extraLarge": 40,
-		"padding": 15
+		"padding": 10
 	},
 	"separator": {
 		"lineThickness": 1,
-		"lineColor": "#EEEEEE"
+		"lineColor": "#FF444444"
 	},
 	"supportsInteractivity": true,
 	"fontStyles": {
 		"default": {
-			"fontFamily": "Times New Roman",
-			"fontSizes": {
-				"small": 12,
-				"default": 14,
-				"medium": 17,
-				"large": 21,
-				"extraLarge": 26
-			},
-			"fontWeights": {
-				"lighter": 200,
-				"default": 400,
-				"bolder": 600
-			}
-		},
-		"display": {
-			"fontFamily": "Comic Sans",
+			"fontFamily": "Segoe UI",
 			"fontSizes": {
 				"small": 12,
 				"default": 14,
@@ -44,7 +29,7 @@
 			}
 		},
 		"monospace": {
-			"fontFamily": "Courier New",
+			"fontFamily": "Segoe UI Mono",
 			"fontSizes": {
 				"small": 12,
 				"default": 14,
@@ -61,7 +46,7 @@
 	},
 	"containerStyles": {
 		"default": {
-			"backgroundColor": "#00000000",
+			"backgroundColor": "#FFEAEAEA",
 			"foregroundColors": {
 				"default": {
 					"default": "#FF333333",
@@ -72,16 +57,16 @@
 					"subtle": "#882E89FC"
 				},
 				"attention": {
-					"default": "#FFCC3300",
-					"subtle": "#DDCC3300"
+					"default": "#FFFF0000",
+					"subtle": "#DDFF0000"
 				},
 				"good": {
 					"default": "#FF54A254",
 					"subtle": "#DD54A254"
 				},
 				"warning": {
-					"default": "#FFE69500",
-					"subtle": "#DDE69500"
+					"default": "#FFC3AB23",
+					"subtle": "#DDC3AB23"
 				}
 			}
 		},
@@ -97,16 +82,16 @@
 					"subtle": "#882E89FC"
 				},
 				"attention": {
-					"default": "#FFCC3300",
-					"subtle": "#DDCC3300"
+					"default": "#FFFF0000",
+					"subtle": "#DDFF0000"
 				},
 				"good": {
 					"default": "#FF54A254",
 					"subtle": "#DD54A254"
 				},
 				"warning": {
-					"default": "#FFE69500",
-					"subtle": "#DDE69500"
+					"default": "#FFC3AB23",
+					"subtle": "#DDC3AB23"
 				}
 			}
 		},
@@ -122,21 +107,21 @@
 					"subtle": "#882E89FC"
 				},
 				"attention": {
-					"default": "#FFCC3300",
-					"subtle": "#DDCC3300"
+					"default": "#FFFF0000",
+					"subtle": "#DDFF0000"
 				},
 				"good": {
 					"default": "#FF54A254",
 					"subtle": "#DD54A254"
 				},
 				"warning": {
-					"default": "#FFE69500",
-					"subtle": "#DDE69500"
+					"default": "#FFC3AB23",
+					"subtle": "#DDC3AB23"
 				}
 			}
 		},
 		"attention": {
-			"backgroundColor": "#DDCC3300",
+			"backgroundColor": "#DDFF0000",
 			"foregroundColors": {
 				"default": {
 					"default": "#FF333333",
@@ -147,16 +132,16 @@
 					"subtle": "#882E89FC"
 				},
 				"attention": {
-					"default": "#FFcc3300",
-					"subtle": "#DDCC3300"
+					"default": "#FFFF0000",
+					"subtle": "#DDFF0000"
 				},
 				"good": {
 					"default": "#FF54A254",
 					"subtle": "#DD54A254"
 				},
 				"warning": {
-					"default": "#FFE69500",
-					"subtle": "#DDE69500"
+					"default": "#FFC3AB23",
+					"subtle": "#DDC3AB23"
 				}
 			}
 		},
@@ -172,21 +157,21 @@
 					"subtle": "#882E89FC"
 				},
 				"attention": {
-					"default": "#FFCC3300",
-					"subtle": "#DDCC3300"
+					"default": "#FFFF0000",
+					"subtle": "#DDFF0000"
 				},
 				"good": {
 					"default": "#FF54A254",
 					"subtle": "#DD54A254"
 				},
 				"warning": {
-					"default": "#FFE69500",
-					"subtle": "#DDE69500"
+					"default": "#FFC3AB23",
+					"subtle": "#DDC3AB23"
 				}
 			}
 		},
 		"warning": {
-			"backgroundColor": "#DDE69500",
+			"backgroundColor": "#DDC3AB23",
 			"foregroundColors": {
 				"default": {
 					"default": "#FF333333",
@@ -197,16 +182,16 @@
 					"subtle": "#882E89FC"
 				},
 				"attention": {
-					"default": "#FFCC3300",
-					"subtle": "#DDCC3300"
+					"default": "#FFFF0000",
+					"subtle": "#DDFF0000"
 				},
 				"good": {
 					"default": "#FF54A254",
 					"subtle": "#DD54A254"
 				},
 				"warning": {
-					"default": "#FFE69500",
-					"subtle": "#DDE69500"
+					"default": "#FFC3AB23",
+					"subtle": "#DDC3AB23"
 				}
 			}
 		}
@@ -221,11 +206,13 @@
 		"spacing": "default",
 		"buttonSpacing": 10,
 		"showCard": {
-			"actionMode": "inline",
+			"actionMode": "popup",
 			"inlineTopMargin": 16
 		},
-		"actionsOrientation": "horizontal",
-		"actionAlignment": "stretch"
+		"actionsOrientation": "vertical",
+		"actionAlignment": "stretch",
+		"iconPlacement": "LeftOfTitle",
+		"iconSize": 100
 	},
 	"adaptiveCard": {
 		"allowCustomStyle": false
@@ -250,6 +237,6 @@
 			"weight": "default",
 			"wrap": true
 		},
-		"spacing": 10
+		"spacing": 5
 	}
 }

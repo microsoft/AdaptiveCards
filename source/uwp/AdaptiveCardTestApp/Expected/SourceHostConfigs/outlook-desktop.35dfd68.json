@@ -5,11 +5,11 @@
 		"medium": 20,
 		"large": 30,
 		"extraLarge": 40,
-		"padding": 15
+		"padding": 20
 	},
 	"separator": {
 		"lineThickness": 1,
-		"lineColor": "#EEEEEE"
+		"lineColor": "#FFEEEEEE"
 	},
 	"supportsInteractivity": true,
 	"fontStyles": {
@@ -28,23 +28,8 @@
 				"bolder": 600
 			}
 		},
-		"display": {
-			"fontFamily": "Times New Roman",
-			"fontSizes": {
-				"small": 12,
-				"default": 14,
-				"medium": 17,
-				"large": 21,
-				"extraLarge": 26
-			},
-			"fontWeights": {
-				"lighter": 200,
-				"default": 400,
-				"bolder": 600
-			}
-		},
 		"monospace": {
-			"fontFamily": "Segoe UI Mono",
+			"fontFamily": "Courier New",
 			"fontSizes": {
 				"small": 12,
 				"default": 14,
@@ -61,7 +46,7 @@
 	},
 	"containerStyles": {
 		"default": {
-			"backgroundColor": "#00000000",
+			"backgroundColor": "#FFFFFFFF",
 			"foregroundColors": {
 				"default": {
 					"default": "#FF333333",
@@ -110,8 +95,8 @@
 				}
 			}
 		},
-		"good": {
-			"backgroundColor": "#DD54A254",
+		"accent": {
+			"backgroundColor": "#882E89FC",
 			"foregroundColors": {
 				"default": {
 					"default": "#FF333333",
@@ -160,8 +145,8 @@
 				}
 			}
 		},
-		"warning": {
-			"backgroundColor": "#DDE69500",
+		"good": {
+			"backgroundColor": "#DD54A254",
 			"foregroundColors": {
 				"default": {
 					"default": "#FF333333",
@@ -185,8 +170,8 @@
 				}
 			}
 		},
-		"accent": {
-			"backgroundColor": "#882E89FC",
+		"warning": {
+			"backgroundColor": "#DDE69500",
 			"foregroundColors": {
 				"default": {
 					"default": "#FF333333",
@@ -225,8 +210,7 @@
 			"inlineTopMargin": 16
 		},
 		"actionsOrientation": "horizontal",
-		"actionAlignment": "stretch",
-		"iconSize": 50
+		"actionAlignment": "left"
 	},
 	"adaptiveCard": {
 		"allowCustomStyle": false
@@ -252,9 +236,5 @@
 			"wrap": true
 		},
 		"spacing": 10
-	},
-	"media": {
-		"defaultPoster": "http://adaptivecards.io/content/cats/2.png",
-		"playButton": "http://adaptivecards.io/content/cats/3.png"
 	}
 }

@@ -28,23 +28,8 @@
 				"bolder": 600
 			}
 		},
-		"display": {
-			"fontFamily": "Times New Roman",
-			"fontSizes": {
-				"small": 12,
-				"default": 14,
-				"medium": 17,
-				"large": 21,
-				"extraLarge": 26
-			},
-			"fontWeights": {
-				"lighter": 200,
-				"default": 400,
-				"bolder": 600
-			}
-		},
 		"monospace": {
-			"fontFamily": "Courier New",
+			"fontFamily": "Segoe UI Mono",
 			"fontSizes": {
 				"small": 12,
 				"default": 14,
@@ -61,7 +46,7 @@
 	},
 	"containerStyles": {
 		"default": {
-			"backgroundColor": "#FFFFFFFF",
+			"backgroundColor": "#00000000",
 			"foregroundColors": {
 				"default": {
 					"default": "#FF333333",
@@ -102,7 +87,7 @@
 				},
 				"good": {
 					"default": "#FF54A254",
-					"subtle": "#DD54A254"
+					"subtle": "#DD54a254"
 				},
 				"warning": {
 					"default": "#FFE69500",
@@ -225,7 +210,7 @@
 			"inlineTopMargin": 16
 		},
 		"actionsOrientation": "horizontal",
-		"actionAlignment": "left"
+		"actionAlignment": "stretch"
 	},
 	"adaptiveCard": {
 		"allowCustomStyle": false

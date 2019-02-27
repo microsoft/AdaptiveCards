@@ -21,9 +21,9 @@ import io.adaptivecards.objectmodel.FontStyle;
 import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
-import io.adaptivecards.objectmodel.FontSizesConfig;
 import io.adaptivecards.objectmodel.HorizontalAlignment;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.TextBlock;
@@ -188,7 +188,11 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         }
 
         TextView textView = new TextView(context);
-        textView.setTag(baseCardElement);
+        textView.setTag(new TagContent(textBlock));
+        if(!baseCardElement.GetIsVisible())
+        {
+            textView.setVisibility(View.GONE);
+        }
 
         DateTimeParser parser = new DateTimeParser(textBlock.GetLanguage());
         String textWithFormattedDates = parser.GenerateString(textBlock.GetTextForDateParsing());

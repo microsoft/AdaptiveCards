@@ -48,14 +48,17 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
         LinearLayout actionButtonsLayout = new LinearLayout(context);
         actionButtonsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         int alignment = hostConfig.GetActions().getActionAlignment().swigValue();
+
+        int actionButtonsAlignment = Gravity.START | Gravity.TOP; // default gravity
         if (alignment == ActionAlignment.Right.swigValue())
         {
-            actionButtonsLayout.setGravity(Gravity.RIGHT);
+            actionButtonsAlignment = Gravity.RIGHT;
         }
         else if (alignment == ActionAlignment.Center.swigValue())
         {
-            actionButtonsLayout.setGravity(Gravity.CENTER_HORIZONTAL);
+            actionButtonsAlignment = Gravity.CENTER_HORIZONTAL;
         }
+        actionButtonsLayout.setGravity(actionButtonsAlignment);
 
         int actionButtonsLayoutOrientation = hostConfig.GetActions().getActionsOrientation().swigValue();
         if (actionButtonsLayoutOrientation == ActionsOrientation.Vertical.swigValue())
@@ -76,6 +79,11 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
             if(actionButtonsLayoutOrientation == ActionsOrientation.Horizontal.swigValue())
             {
                 HorizontalScrollView actionButtonsContainer = new HorizontalScrollView(context);
+                // Make elements alignment works when not enough space to make them scroll
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutParams.gravity = actionButtonsAlignment;
+                actionButtonsContainer.setLayoutParams(layoutParams);
+
                 actionButtonsContainer.setHorizontalScrollBarEnabled(false);
                 actionButtonsContainer.addView(actionButtonsLayout);
                 viewGroup.addView(actionButtonsContainer);

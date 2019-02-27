@@ -1671,8 +1671,8 @@ SWIGINTERN AdaptiveCards::TextBlock *AdaptiveCards_TextBlock_dynamic_cast(Adapti
 SWIGINTERN AdaptiveCards::Media *AdaptiveCards_Media_dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement){
         return dynamic_cast<AdaptiveCards::Media *>(baseCardElement);
     }
-SWIGINTERN AdaptiveCards::ToggleVisibilityAction *AdaptiveCards_ToggleVisibilityAction_dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement){
-        return dynamic_cast<AdaptiveCards::ToggleVisibilityAction *>(baseCardElement);
+SWIGINTERN AdaptiveCards::ToggleVisibilityAction *AdaptiveCards_ToggleVisibilityAction_dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement){
+        return dynamic_cast<AdaptiveCards::ToggleVisibilityAction *>(baseActionElement);
     }
 SWIGINTERN AdaptiveCards::ActionSet *AdaptiveCards_ActionSet_dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement){
         return dynamic_cast<AdaptiveCards::ActionSet *>(baseCardElement);
@@ -18478,35 +18478,6 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 }
 
 
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontStylesDefinition_1displayStyle_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  AdaptiveCards::FontStylesDefinition *arg1 = (AdaptiveCards::FontStylesDefinition *) 0 ;
-  AdaptiveCards::FontStyleDefinition *arg2 = (AdaptiveCards::FontStyleDefinition *) 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg2_;
-  arg1 = *(AdaptiveCards::FontStylesDefinition **)&jarg1; 
-  arg2 = *(AdaptiveCards::FontStyleDefinition **)&jarg2; 
-  if (arg1) (arg1)->displayStyle = *arg2;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontStylesDefinition_1displayStyle_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  AdaptiveCards::FontStylesDefinition *arg1 = (AdaptiveCards::FontStylesDefinition *) 0 ;
-  AdaptiveCards::FontStyleDefinition *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(AdaptiveCards::FontStylesDefinition **)&jarg1; 
-  result = (AdaptiveCards::FontStyleDefinition *)& ((arg1)->displayStyle);
-  *(AdaptiveCards::FontStyleDefinition **)&jresult = result; 
-  return jresult;
-}
-
-
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_FontStylesDefinition_1monospaceStyle_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::FontStylesDefinition *arg1 = (AdaptiveCards::FontStylesDefinition *) 0 ;
   AdaptiveCards::FontStyleDefinition *arg2 = (AdaptiveCards::FontStyleDefinition *) 0 ;
@@ -24082,16 +24053,16 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 
 SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ToggleVisibilityAction_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
-  std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
+  AdaptiveCards::BaseActionElement *arg1 = (AdaptiveCards::BaseActionElement *) 0 ;
+  std::shared_ptr< AdaptiveCards::BaseActionElement > *smartarg1 = 0 ;
   AdaptiveCards::ToggleVisibilityAction *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseCardElement > **)&jarg1;
-  arg1 = (AdaptiveCards::BaseCardElement *)(smartarg1 ? smartarg1->get() : 0); 
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseActionElement > **)&jarg1;
+  arg1 = (AdaptiveCards::BaseActionElement *)(smartarg1 ? smartarg1->get() : 0); 
   {
     result = (AdaptiveCards::ToggleVisibilityAction *)AdaptiveCards_ToggleVisibilityAction_dynamic_cast(arg1);
     if (!result) {

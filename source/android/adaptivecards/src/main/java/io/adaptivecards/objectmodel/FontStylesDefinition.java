@@ -44,15 +44,6 @@ public class FontStylesDefinition {
     return (cPtr == 0) ? null : new FontStyleDefinition(cPtr, false);
   }
 
-  public void setDisplayStyle(FontStyleDefinition value) {
-    AdaptiveCardObjectModelJNI.FontStylesDefinition_displayStyle_set(swigCPtr, this, FontStyleDefinition.getCPtr(value), value);
-  }
-
-  public FontStyleDefinition getDisplayStyle() {
-    long cPtr = AdaptiveCardObjectModelJNI.FontStylesDefinition_displayStyle_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new FontStyleDefinition(cPtr, false);
-  }
-
   public void setMonospaceStyle(FontStyleDefinition value) {
     AdaptiveCardObjectModelJNI.FontStylesDefinition_monospaceStyle_set(swigCPtr, this, FontStyleDefinition.getCPtr(value), value);
   }

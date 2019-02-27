@@ -595,7 +595,7 @@ namespace Json {
     }
 };
 
-%exception AdaptiveCards::ToggleVisibilityAction::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+%exception AdaptiveCards::ToggleVisibilityAction::dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
     $action
     if (!result) {
         jclass excep = jenv->FindClass("java/lang/ClassCastException");
@@ -605,8 +605,8 @@ namespace Json {
     }
 }
 %extend AdaptiveCards::ToggleVisibilityAction {
-    static AdaptiveCards::ToggleVisibilityAction *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
-        return dynamic_cast<AdaptiveCards::ToggleVisibilityAction *>(baseCardElement);
+    static AdaptiveCards::ToggleVisibilityAction *dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
+        return dynamic_cast<AdaptiveCards::ToggleVisibilityAction *>(baseActionElement);
     }
 };
 
