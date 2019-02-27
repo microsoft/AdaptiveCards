@@ -86,7 +86,6 @@ import * as markdownit from "markdown-it";
 import * as Designer from "adaptivecards-designer";
 
 // if you want to bundle the designer CSS using mini-css-loader:
-import "adaptivecards/dist/adaptivecards-default.css";
 import "adaptivecards-controls/dist/adaptivecards-controls.css";
 import "adaptivecards-designer/dist/adaptivecards-designer.css";
 
