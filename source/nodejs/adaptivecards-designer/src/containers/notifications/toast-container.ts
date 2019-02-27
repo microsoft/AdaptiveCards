@@ -1,6 +1,5 @@
 import * as Adaptive from "adaptivecards";
 import * as Designer from "../../adaptivecards-designer";
-import * as windowsNotificationConfiguration from "../../../../../../samples/HostConfig/windows-notification.json"
 
 var windowsNotificationConfiguration = require("../../../../../../samples/HostConfig/windows-notification.json");
 

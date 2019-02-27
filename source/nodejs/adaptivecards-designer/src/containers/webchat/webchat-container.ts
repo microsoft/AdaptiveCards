@@ -1,6 +1,5 @@
 import * as Adaptive from "adaptivecards";
 import * as Designer from "../../adaptivecards-designer";
-import * as webChatConfiguration from "../../../../../../samples/HostConfig/webchat.json"
 
 var webChatConfiguration = require("../../../../../../samples/HostConfig/webchat.json");
 

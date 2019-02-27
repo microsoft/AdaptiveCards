@@ -1,6 +1,5 @@
 import * as Adaptive from "adaptivecards";
 import * as Designer from "../../adaptivecards-designer";
-import * as cortanaSkillsConfiguration from "../../../../../../samples/HostConfig/cortana-skills.json"
 
 var cortanaSkillsConfiguration = require("../../../../../../samples/HostConfig/cortana-skills.json");
 
