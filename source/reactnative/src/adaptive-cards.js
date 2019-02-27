@@ -35,13 +35,13 @@ export default class AdaptiveCards extends React.Component {
 		this.payload = props.payload;
 
 		// hostconfig
-		if (this.props.hostConfig) {
-			HostConfigManager.setHostConfig(this.props.hostConfig);
+		if (props.hostConfig) {
+			HostConfigManager.setHostConfig(props.hostConfig);
 		}
 		
 		// themeConfig
-		if(this.props.themeConfig){
-			ThemeConfigManager.setThemeConfig(this.props.themeConfig);
+		if(props.themeConfig){
+			ThemeConfigManager.setThemeConfig(props.themeConfig);
 		}
 
 		// commonly used styles

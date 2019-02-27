@@ -24,9 +24,6 @@ export class ThemeConfigManager {
 }
 
 class ThemeConfig {
-    input;
-    button;
-
     constructor(obj = {}) {
         this.button = new Config("button", obj);
         this.input = new Config("input", obj);
@@ -35,10 +32,6 @@ class ThemeConfig {
 
 // Each instance of this class holds config of specific element type 
 class Config {
-    type;
-    ios;
-    android;
-
     constructor(type, customConfig = {}) {
         this.type = type;
         this.ios = defaultThemeConfig[type].ios;
