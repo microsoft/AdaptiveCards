@@ -2,9 +2,9 @@
 
 This directory contains sample payloads that validate and showcase the schema.
 
-## Interactive Visualizer
+## Interactive Designer
 
-These samples can be pasted into the [Interactive Visualizer](http://adaptivecards.io/visualizer) to see how they look in various apps
+These samples can be pasted into the [Interactive Designer](http://adaptivecards.io/designer) to see how they look in various apps
 
 ## Sample Browser
 
@@ -13,7 +13,3 @@ Take a look at the [Sample Browser](http://adaptivecards.io/samples/) for a quic
 ## Schema Explorer
 
 If you'd like to browse the current schema please our [Schema Explorer](http://adaptivecards.io/explorer/)
-
-## Integration with apps
-
-The `Integrated` folder demonstrates how cards are integrated into various host apps.
