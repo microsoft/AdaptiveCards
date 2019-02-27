@@ -1,5 +1,4 @@
 import * as Adaptive from "adaptivecards";
-import * as sampleConfiguration from "../../../../../samples/HostConfig/sample.json"
 
 var sampleConfiguration = require("../../../../../samples/HostConfig/sample.json");
 
