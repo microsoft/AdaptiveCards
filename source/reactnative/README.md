@@ -14,6 +14,7 @@ import AdaptiveCards from 'adaptivecards-reactnative'
 ``` html
 <AdaptiveCards payload={} 
                hostConfig={}
+               themeConfig={}
                onExecuteAction={} 
                onParseError={} 
                ref="referenceVariable"/>
