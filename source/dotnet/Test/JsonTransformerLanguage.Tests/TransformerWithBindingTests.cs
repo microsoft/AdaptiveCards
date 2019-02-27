@@ -26,6 +26,12 @@ namespace JsonTransformerLanguage.Tests
             TestPayload();
         }
 
+        [TestMethod]
+        public void ObjectAccessors1()
+        {
+            TestPayload();
+        }
+
         private void TestPayload([CallerMemberName]string payloadName = null)
         {
             var parsed = JObject.Parse(File.ReadAllText(Directory.GetCurrentDirectory() + "\\TestBindingPayloads\\" + payloadName + ".json"));

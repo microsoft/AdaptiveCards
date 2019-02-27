@@ -187,6 +187,9 @@
     <Content Include="TestBindingPayloads\StringLiterals1.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestBindingPayloads\ObjectAccessors1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Library\JsonTransformLanguage\JsonTransformLanguage.csproj">

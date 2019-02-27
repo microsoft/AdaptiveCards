@@ -115,7 +115,9 @@ namespace JsonTransformLanguage.Grammars
 
         public override JToken VisitPrimary_expression([NotNull] BindingExpressionsParser.Primary_expressionContext context)
         {
+            int dependenciesCountBefore = Dependencies.Count;
             JToken currValue = Visit(context.primary_expression_start());
+            string startingIdentifier = Dependencies.Count > dependenciesCountBefore ? Dependencies.Last() : null;
             if (currValue == null)
             {
                 return null;
@@ -172,6 +174,11 @@ namespace JsonTransformLanguage.Grammars
                 if (currValue == null)
                 {
                     return null;
+                }
+
+                if (startingIdentifier != null)
+                {
+                    Dependencies[Dependencies.Count - 1] = Dependencies.Last() + memberOrBracket.GetText();
                 }
             }
 

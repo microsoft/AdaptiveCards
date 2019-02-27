@@ -1,0 +1,75 @@
+{
+  "inputJson": {
+    "type": "AdaptiveCard",
+    "body": [
+      {
+        "type": "TextBlock",
+        "text": "{reportsTo.name}"
+      },
+      {
+        "type": "TextBlock",
+        "text": "Reports to: {reportsTo.manager.name}"
+      },
+      {
+        "type": "TextBlock",
+        "text": "{name} reports to {reportsTo.name}, who reports to {reportsTo.manager.name}"
+      }
+    ]
+  },
+
+  "inputData": {
+    "name": "Thomas Fennel",
+    "reportsTo": {
+      "name": "Andrew Clinick",
+      "picture": "https://unsplash.it/64?image=1025",
+      "manager": {
+        "name": "Kevin Gallo",
+        "picture": "https://unsplash.it/64?image=1026"
+      }
+    }
+  },
+
+  "expected": {
+    "type": "AdaptiveCard",
+    "body": [
+      {
+        "type": "TextBlock",
+        "text": "Andrew Clinick",
+        "$bindings": {
+          "text": {
+            "expression": "{reportsTo.name}",
+            "dependencies": [
+              "reportsTo.name"
+            ]
+          }
+        }
+      },
+      {
+        "type": "TextBlock",
+        "text": "Reports to: Kevin Gallo",
+        "$bindings": {
+          "text": {
+            "expression": "Reports to: {reportsTo.manager.name}",
+            "dependencies": [
+              "reportsTo.manager.name"
+            ]
+          }
+        }
+      },
+      {
+        "type": "TextBlock",
+        "text": "Thomas Fennel reports to Andrew Clinick, who reports to Kevin Gallo",
+        "$bindings": {
+          "text": {
+            "expression": "{name} reports to {reportsTo.name}, who reports to {reportsTo.manager.name}",
+            "dependencies": [
+              "name",
+              "reportsTo.name",
+              "reportsTo.manager.name"
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

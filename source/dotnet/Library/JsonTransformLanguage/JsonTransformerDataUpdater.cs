@@ -50,9 +50,30 @@ namespace JsonTransformLanguage
 
         private bool ContainsDependency(string dependency, JObject updatedObj)
         {
-            if (updatedObj.TryGetValue(dependency, out JToken val))
+            JObject currObj = updatedObj;
+            string[] paths = dependency.Split('.');
+            for (int i = 0; i < paths.Length; i++)
             {
-                return true;
+                string currPath = paths[i];
+                if (currObj.TryGetValue(currPath, out JToken value))
+                {
+                    if (i + 1 == paths.Length)
+                    {
+                        return true;
+                    }
+
+                    if (value is JObject obj)
+                    {
+                        currObj = obj;
+                        continue;
+                    }
+
+                    return false;
+                }
+                else
+                {
+                    return false;
+                }
             }
 
             return false;
