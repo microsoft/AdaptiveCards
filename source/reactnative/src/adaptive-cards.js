@@ -6,7 +6,6 @@ import React from 'react';
 import {
 	StyleSheet,
 	Text,
-	View,
 	ScrollView,
 	ImageBackground
 } from 'react-native';
@@ -30,7 +29,6 @@ export default class AdaptiveCards extends React.Component {
 	version = "1.1"; // client supported version
 	resourceInformationArray = [];
 	
-
 	constructor(props) {
 		super(props);
 
@@ -45,6 +43,8 @@ export default class AdaptiveCards extends React.Component {
 		if(this.props.themeConfig){
 			ThemeConfigManager.setThemeConfig(this.props.themeConfig);
 		}
+
+		// commonly used styles
 		this.styleConfig = StyleManager.getManager().styles;
 	}
 

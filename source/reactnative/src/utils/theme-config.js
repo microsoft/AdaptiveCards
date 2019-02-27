@@ -1,6 +1,3 @@
-
-import * as Constants from '../utils/constants';
-
 export class ThemeConfigManager {
 
     static themeConfig = null;
@@ -23,75 +20,69 @@ export class ThemeConfigManager {
     static setThemeConfig(value) {
         let newThemeConfig = { ...defaultThemeConfig, ...value }
         this.themeConfig = new ThemeConfig(newThemeConfig);
-        console.log("came here:",this.themeConfig);
     }
 }
 
 class ThemeConfig {
+    input;
+    button;
 
-    input = inputConfig;
-    button = new ButtonConfig();
-
-    constructor(obj) {
-        if (obj) {
-            this.button = new ButtonConfig(obj.button || this.button);
-            this.input = obj["input"] != null ? { ...this.input, ...obj["input"] } : this.input;
-        }
+    constructor(obj = {}) {
+        this.button = new Config("button", obj);
+        this.input = new Config("input", obj);
     }
 }
 
-let inputConfig = {
-    borderColor: Constants.LightGreyColor,
-    backgroundColor: Constants.WhiteColor,
-    borderWidth: 1,
-    borderRadius: 5
-};
+// Each instance of this class holds config of specific element type 
+class Config {
+    type;
+    ios;
+    android;
 
-let iosButtonConfig  = {
-    borderRadius: 15,
-    backgroundColor: "#1D9BF6",
-    titleColor: "#FFFFFF"
-}
+    constructor(type, customConfig = {}) {
+        this.type = type;
+        this.ios = defaultThemeConfig[type].ios;
+        this.android = defaultThemeConfig[type].android;
 
-let androidButtonConfig  = {
-    borderRadius: 15,
-    backgroundColor: "#1D9BF6",
-    titleColor: "#FFFFFF"
-}
+        if (customConfig[type]) { // any custom config ?
+            let config = customConfig[type];
 
-class ButtonConfig {
-    ios = iosButtonConfig;
-    android = androidButtonConfig;
-
-    constructor(obj) {
-        if (obj) {
-            this.ios = obj["ios"] != null ? {...this.ios, ...obj["ios"]} : {...this.ios, ...obj};
-            this.android = obj["android"] != null ? {...this.android, ...obj["android"]} : {...this.android, ...obj};
+            this.ios = config["ios"] ? { ...this.ios, ...config["ios"] } : { ...this.ios, ...config };
+            this.android = config["android"] ? { ...this.android, ...config["android"] } : { ...this.android, ...config };
         }
     }
-
 }
 
 /**
  * @description Default Theme config JSON. This can be overriden by invoking setThemeConfig method.
  */
-export const defaultThemeConfig = {
+const defaultThemeConfig = {
     button: {
         ios: {
             borderRadius: 15,
             backgroundColor: "#1D9BF6",
-            titleColor: "white",
+            titleColor: "#FFFFFF",
+            titleTransform: 'none'
         },
         android: {
             borderRadius: 15,
             backgroundColor: "#1D9BF6",
-            titleColor: "white",
+            titleColor: "#FFFFFF",
+            titleTransform: 'none'
         }
     },
     input: {
-        borderColor: "#dcdcdc",
-        backgroundColor: "white",
-        borderRadius: 5,
-        borderWidth: 1,
+        ios: {
+            borderColor: "#dcdcdc",
+            backgroundColor: "#FFFFFF",
+            borderRadius: 5,
+            borderWidth: 1
+        },
+        android: {
+            borderColor: "#dcdcdc",
+            backgroundColor: "#FFFFFF",
+            borderRadius: 5,
+            borderWidth: 1
+        }
     }
 }

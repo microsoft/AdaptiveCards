@@ -36,12 +36,9 @@ export default class Renderer extends React.Component {
         }
     }
     customThemeConfig = {
-        input: {
-            borderColor: "black",
-            backgroundColor: "yellow",
-            borderRadius: 25,
-            borderWidth: 10,
-        }
+        button: {
+            backgroundColor: '#66BB6A'
+        }    
     }
 
     constructor(props) {

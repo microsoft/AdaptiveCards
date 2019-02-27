@@ -55,17 +55,20 @@ export class StyleManager {
 		buttonBorderRadius:{
 			borderRadius: Platform.OS === Constants.PlatformIOS ? this.themeConfig.button.ios.borderRadius : this.themeConfig.button.android.borderRadius,
 		},
+		buttonTitleTransform:{
+			textTransform: Platform.OS === Constants.PlatformIOS ? this.themeConfig.button.ios.titleTransform : this.themeConfig.button.android.titleTransform,
+		},
 		inputBorderColor:{
-			borderColor: this.themeConfig.input.borderColor,
+			borderColor: Platform.OS === Constants.PlatformIOS ? this.themeConfig.input.ios.borderColor : this.themeConfig.input.android.borderColor,
 		},
 		inputBackgroundColor:{
-			backgroundColor: this.themeConfig.input.backgroundColor,
+			backgroundColor: Platform.OS === Constants.PlatformIOS ? this.themeConfig.input.ios.backgroundColor : this.themeConfig.input.android.backgroundColor,
 		},
 		inputBorderRadius:{
-			borderRadius: this.themeConfig.input.borderRadius,
+			borderRadius: Platform.OS === Constants.PlatformIOS ? this.themeConfig.input.ios.borderRadius : this.themeConfig.input.android.borderRadius,
 		},
 		inputBorderWidth:{
-			borderWidth: this.themeConfig.input.borderWidth,
+			borderWidth: Platform.OS === Constants.PlatformIOS ? this.themeConfig.input.ios.borderWidth : this.themeConfig.input.android.borderWidth,
 		},
 		defaultDestructiveForegroundColor:{
 			color: this.hostConfig.containerStyles.default.foregroundColors.attention.default,

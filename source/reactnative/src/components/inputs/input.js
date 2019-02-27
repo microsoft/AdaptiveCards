@@ -19,7 +19,7 @@ import * as Utils from '../../utils/util';
 
 export class Input extends React.Component {
 
-	 styleConfig = StyleManager.getManager().styles;
+	styleConfig = StyleManager.getManager().styles;
 
 	constructor(props) {
 		super(props);
@@ -40,7 +40,6 @@ export class Input extends React.Component {
 	}
 
 	render() {
-
 		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
 			return null;
 		}
@@ -86,6 +85,7 @@ export class Input extends React.Component {
 
     /**
      * @description Return the input styles applicable based on the given payload
+	 * @returns {Array} - Computed styles based on the config 
      */
 	getComputedStyles = () => {
 		const { isMultiline } = this;
@@ -93,7 +93,8 @@ export class Input extends React.Component {
 		let inputComputedStyles = [this.styleConfig.inputBorderWidth,
 									this.styleConfig.inputBackgroundColor,
 									this.styleConfig.inputBorderRadius,
-									this.styleConfig.fontConfig];
+									this.styleConfig.fontConfig,
+									styles.input];
 		isMultiline ?
 			inputComputedStyles.push(styles.multiLineHeight) :
 			inputComputedStyles.push(styles.singleLineHeight);

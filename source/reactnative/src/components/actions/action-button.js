@@ -114,6 +114,7 @@ export class ActionButton extends React.Component {
 	
     /**
      * @description Return the button styles applicable
+	 * @returns {Array} computedStyles - Styles based on the config
      */
 	getButtonStyles = () => {
 		let computedStyles = [this.styleConfig.buttonBackgroundColor,
@@ -124,7 +125,11 @@ export class ActionButton extends React.Component {
 		return computedStyles;
 	}
 
-	buttonContent = () => {		
+	buttonContent = () => {
+		let titleStyles = [this.styleConfig.fontConfig, 
+							this.styleConfig.buttonTitleColor, 
+							this.styleConfig.buttonTitleTransform];
+
 		return (
 			<View
 				style={this.getButtonStyles()}>
@@ -135,7 +140,7 @@ export class ActionButton extends React.Component {
 							style={[styles.buttonIcon, this.styleConfig.actionIcon]} />
 						: null
 				}
-				<Text style={[this.styleConfig.fontConfig, this.styleConfig.buttonTitleColor]}>
+				<Text style={titleStyles}>
 					{this.title}
 				</Text>
 			</View>
