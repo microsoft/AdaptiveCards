@@ -4119,22 +4119,50 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
             return;
         }
 
+		let physicalPadding = new Shared.SpacingDefinition();
+
+		if (this.getEffectivePadding()) {
+			physicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(this.getEffectivePadding());
+		}
+
+		this.renderedElement.style.paddingTop = physicalPadding.top + "px";
+		this.renderedElement.style.paddingRight = physicalPadding.right + "px";
+		this.renderedElement.style.paddingBottom = physicalPadding.bottom + "px";
+		this.renderedElement.style.paddingLeft = physicalPadding.left + "px";
+
         if (this.isBleeding()) {
             // Bleed into the first parent that does have padding
             let padding = new Shared.PaddingDefinition();
 
             this.getImmediateSurroundingPadding(padding);
 
-            let physicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(padding);
+			let surroundingPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(padding);
 
-            this.renderedElement.style.marginRight = "-" + physicalPadding.right + "px";
-            this.renderedElement.style.marginLeft = "-" + physicalPadding.left + "px";
+			this.renderedElement.style.marginRight = "-" + surroundingPadding.right + "px";
+            this.renderedElement.style.marginLeft = "-" + surroundingPadding.left + "px";
 
-            if (this.separatorElement && this.separatorOrientation == Enums.Orientation.Horizontal) {
-                this.separatorElement.style.marginLeft = "-" + physicalPadding.left + "px";
-                this.separatorElement.style.marginRight = "-" + physicalPadding.right + "px";
+            if (physicalPadding.left == 0) {
+                this.renderedElement.style.paddingLeft = surroundingPadding.left + "px";
             }
-        }
+
+            if (physicalPadding.right == 0) {
+                this.renderedElement.style.paddingRight = surroundingPadding.right + "px";
+            }
+    
+			if (this.separatorElement && this.separatorOrientation == Enums.Orientation.Horizontal) {
+				this.separatorElement.style.marginLeft = "-" + surroundingPadding.left + "px";
+				this.separatorElement.style.marginRight = "-" + surroundingPadding.right + "px";
+			}
+		}
+		else {
+			this.renderedElement.style.marginRight = "0";
+			this.renderedElement.style.marginLeft = "0";
+
+			if (this.separatorElement) {
+				this.separatorElement.style.marginRight = "0";
+				this.separatorElement.style.marginLeft = "0";
+			}
+		}
 
         if (!this.isDesignMode()) {
             let item = this.getFirstVisibleRenderedItem();
@@ -4853,18 +4881,6 @@ export class Column extends Container {
                 renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : sizeAndUnit.physicalSize) + "%";
             }
         }
-    }
-
-    protected getDefaultPadding(): Shared.PaddingDefinition {
-        let columnSet = <ColumnSet>this.parent;
-        let result = super.getDefaultPadding();
-
-        result.top = (result.top == Enums.Spacing.None && columnSet.isBleedingAtTop() && columnSet.isAtTheVeryTop()) ? Enums.Spacing.Padding : result.top;
-        result.right = (result.right == Enums.Spacing.None && columnSet.isBleeding() && columnSet.isAtTheVeryRight()) ? Enums.Spacing.Padding : result.right;
-        result.bottom = (result.bottom == Enums.Spacing.None && columnSet.isBleedingAtBottom() && columnSet.isAtTheVeryBottom()) ? Enums.Spacing.Padding : result.bottom;
-        result.left = (result.left == Enums.Spacing.None && columnSet.isBleeding() && columnSet.isAtTheVeryLeft()) ? Enums.Spacing.Padding : result.left;
-
-        return result;
     }
 
     protected get separatorOrientation(): Enums.Orientation {
