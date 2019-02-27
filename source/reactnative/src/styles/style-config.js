@@ -47,28 +47,28 @@ export class StyleManager {
 			borderColor: this.hostConfig.containerStyles.default.foregroundColors.attention.default,
 		},
 		buttonBackgroundColor:{
-			backgroundColor: Platform.OS === Constants.PlatformIOS ? this.themeConfig.button.ios.backgroundColor : this.themeConfig.button.android.backgroundColor,
+			backgroundColor: this.themeConfig.button[Platform.OS].backgroundColor,
 		},
 		buttonTitleColor:{
-			color: Platform.OS === Constants.PlatformIOS ? this.themeConfig.button.ios.titleColor : this.themeConfig.button.android.titleColor,
+			color: this.themeConfig.button[Platform.OS].titleColor,
 		},
 		buttonBorderRadius:{
-			borderRadius: Platform.OS === Constants.PlatformIOS ? this.themeConfig.button.ios.borderRadius : this.themeConfig.button.android.borderRadius,
+			borderRadius: this.themeConfig.button[Platform.OS].borderRadius,
 		},
 		buttonTitleTransform:{
-			textTransform: Platform.OS === Constants.PlatformIOS ? this.themeConfig.button.ios.titleTransform : this.themeConfig.button.android.titleTransform,
+			textTransform: this.themeConfig.button[Platform.OS].titleTransform,
 		},
 		inputBorderColor:{
-			borderColor: Platform.OS === Constants.PlatformIOS ? this.themeConfig.input.ios.borderColor : this.themeConfig.input.android.borderColor,
+			borderColor: this.themeConfig.input[Platform.OS].borderColor,
 		},
 		inputBackgroundColor:{
-			backgroundColor: Platform.OS === Constants.PlatformIOS ? this.themeConfig.input.ios.backgroundColor : this.themeConfig.input.android.backgroundColor,
+			backgroundColor: this.themeConfig.input[Platform.OS].backgroundColor,
 		},
 		inputBorderRadius:{
-			borderRadius: Platform.OS === Constants.PlatformIOS ? this.themeConfig.input.ios.borderRadius : this.themeConfig.input.android.borderRadius,
+			borderRadius: this.themeConfig.input[Platform.OS].borderRadius,
 		},
 		inputBorderWidth:{
-			borderWidth: Platform.OS === Constants.PlatformIOS ? this.themeConfig.input.ios.borderWidth : this.themeConfig.input.android.borderWidth,
+			borderWidth:this.themeConfig.input[Platform.OS].borderWidth,
 		},
 		defaultDestructiveForegroundColor:{
 			color: this.hostConfig.containerStyles.default.foregroundColors.attention.default,
