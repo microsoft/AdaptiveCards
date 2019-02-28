@@ -11,29 +11,18 @@ import {
     Image
 } from "react-native";
 
-import * as Constants from "./constants";
-import * as Enums from './enums';
-import * as Utils from './util';
+import * as Constants from "../../utils/constants";
+import * as Enums from '../../utils/enums';
+import * as Utils from '../../utils/util';
 import PropTypes from 'prop-types';
-import { InputContextConsumer } from './context';
+import { InputContextConsumer } from '../../utils/context';
 
 export class BackgroundImage extends React.Component {
 
     constructor(props) {
         super(props);
         this.backgroundImage = props.backgroundImage;
-        this.backgroundImageModeEnumValue = Utils.parseHostConfigEnum(
-            Enums.BackgroundImageMode,
-            this.backgroundImage.mode,
-            Constants.AlignStretch);
-        this.verticalAlignmentEnumValue = Utils.parseHostConfigEnum(
-            Enums.VerticalAlignment,
-            this.backgroundImage.verticalAlignment,
-            Constants.Top);
-        this.horizontalAlignmentEnumValue = Utils.parseHostConfigEnum(
-            Enums.HorizontalAlignment,
-            this.backgroundImage.horizontalAlignment,
-            Constants.LeftAlign);
+        this.parseHostConfig();
         this.state = {
             backgroundImageHeight: 0,
             backgroundImageWidth: 0
@@ -47,7 +36,25 @@ export class BackgroundImage extends React.Component {
     }
 
     /**
-	 * @description
+     * @description Parse hostconfig specific to this element
+     */
+    parseHostConfig = () => {
+        this.backgroundImageModeEnumValue = Utils.parseHostConfigEnum(
+            Enums.BackgroundImageMode,
+            this.backgroundImage.mode,
+            Constants.AlignStretch);
+        this.verticalAlignmentEnumValue = Utils.parseHostConfigEnum(
+            Enums.VerticalAlignment,
+            this.backgroundImage.verticalAlignment,
+            Constants.Top);
+        this.horizontalAlignmentEnumValue = Utils.parseHostConfigEnum(
+            Enums.HorizontalAlignment,
+            this.backgroundImage.horizontalAlignment,
+            Constants.LeftAlign);
+    }
+
+    /**
+     * @description
      * This function is to handle the error occurred loading the image 
      * 
      */
@@ -57,7 +64,7 @@ export class BackgroundImage extends React.Component {
     }
 
     /**
-	 * @description
+     * @description
      * This function will return the vertical alignment of the image
      * 
      */
@@ -74,7 +81,7 @@ export class BackgroundImage extends React.Component {
     }
 
     /**
-	 * @description
+     * @description
      * This function will return the horizontal alignment of the image
      * 
      */
@@ -91,7 +98,7 @@ export class BackgroundImage extends React.Component {
     }
 
     /**
-	 * @description
+     * @description
      * This function will return the background image based on the mode.
      * 
      */
