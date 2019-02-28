@@ -7,8 +7,7 @@ import {
 	StyleSheet,
 	Text,
 	View,
-	ScrollView,
-	ImageBackground
+	ScrollView
 } from 'react-native';
 
 import { Registry } from './components/registration/registry';
