@@ -23,6 +23,7 @@ export class BackgroundImage extends React.Component {
         super(props);
         this.backgroundImage = props.backgroundImage;
         this.parseHostConfig();
+        this.backgroundImage.url = Utils.getImageUrl(this.backgroundImage.url)
         this.state = {
             backgroundImageHeight: 0,
             backgroundImageWidth: 0

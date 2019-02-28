@@ -170,10 +170,10 @@ export function validateUrl(url) {
  * @return {string}  url of the image
  */
 export function getImageUrl(image) {
-	image = this.isString(image) ? image : image.url
 	if (isNullOrEmpty(image)) {
 		return image
 	}
+	image = this.isString(image) ? image : image.url
 	return validateUrl(image) ? image : image.split('/').pop().split('.')[0];
 }
 
