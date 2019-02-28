@@ -44,7 +44,6 @@ export class Input extends React.Component {
 	}
 
 	render() {
-
 		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
 			return null;
 		}
@@ -105,17 +104,22 @@ export class Input extends React.Component {
 
     /**
      * @description Return the input styles applicable based on the given payload
+	 * @returns {Array} - Computed styles based on the config 
      */
 	getComputedStyles = () => {
 		const { isMultiline } = this;
 
-		let inputComputedStyles = [styles.input, this.styleConfig.fontConfig];
+		let inputComputedStyles = [this.styleConfig.inputBorderWidth,
+									this.styleConfig.inputBackgroundColor,
+									this.styleConfig.inputBorderRadius,
+									this.styleConfig.fontConfig,
+									styles.input];
 		isMultiline ?
 			inputComputedStyles.push(styles.multiLineHeight) :
 			inputComputedStyles.push(styles.singleLineHeight);
 		this.props.isError ?
 			inputComputedStyles.push(this.styleConfig.borderAttention) :
-			inputComputedStyles.push(styles.withBorderColor);
+			inputComputedStyles.push(this.styleConfig.inputBorderColor);
 
 		return inputComputedStyles;
 	}
@@ -209,7 +213,7 @@ export class Input extends React.Component {
 	}
 
 	/**
- 	* @description Invoked on tapping the image component
+ 	* @description Invoked on tapping the inline-action image component
 	*/
 	onClickHandle(onExecuteAction) {
 		if (this.payload.inlineAction.type === Constants.ActionSubmit && !this.isMultiline) {
@@ -224,9 +228,6 @@ const styles = StyleSheet.create({
 		marginLeft: 5,
 		color: '#3a3a3a',
 	},
-	withBorderColor: {
-		borderColor: Constants.LightGreyColor,
-	},
 	multiLineHeight: {
 		height: 88,
 	},
@@ -236,9 +237,7 @@ const styles = StyleSheet.create({
 	input: {
 		width: Constants.FullWidth,
 		padding: 5,
-		borderWidth: 1,
-		backgroundColor: Constants.WhiteColor,
-		borderRadius: 5,
+		marginTop: 15,
 	},
 	inlineActionWrapper: {
 		flexDirection: 'row',
@@ -247,7 +246,7 @@ const styles = StyleSheet.create({
 	},
 	inlineActionTextInput: {
 		padding: 5,
-		width: '85%',
+		flex:1,
 		backgroundColor: 'transparent',
 		color: '#3a3a3a',
 		borderColor:"#9E9E9E",
@@ -255,9 +254,11 @@ const styles = StyleSheet.create({
 	},
 	inlineActionImage: {
 		marginLeft: 10,
-		width: 20,
-		height: 20,
+		width: 40,
+		height: 40,
+		marginTop: 15,
 		backgroundColor: 'transparent',
+		flexShrink:0,
 	},
 });
 

@@ -7,7 +7,7 @@
     {
       "type": "ColumnSet",
       "separator": true,
-      "spacing": "small",
+      "spacing": "medium",
       "columns": [
         {
           "type": "Column",
@@ -45,7 +45,7 @@
     {
       "type": "ColumnSet",
       "separator": true,
-      "spacing": "small",
+      "spacing": "medium",
       "columns": [
         {
           "type": "Column",
@@ -109,7 +109,7 @@
     },
     {
       "type": "ColumnSet",
-      "spacing": "small",
+      "spacing": "medium",
       "separator": true,
       "columns": [
         {
@@ -175,7 +175,7 @@
     },
     {
       "type": "ColumnSet",
-      "spacing": "small",
+      "spacing": "medium",
       "separator": true,
       "columns": [
         {
@@ -200,10 +200,6 @@
           "type": "Column",
           "width": "auto",
           "items": [
-            {
-              "type": "TextBlock",
-              "text": " "
-            },
             {
               "type": "Image",
               "url": "http://adaptivecards.io/content/airplane.png",

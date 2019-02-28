@@ -78,6 +78,7 @@ export class Label extends React.Component {
 		return {
 			fontSize,
 			fontWeight: fontWeight.toString(),
+			fontFamily: this.hostConfig.fontFamily,
 			color: colorValue,
 			textAlign
 		}

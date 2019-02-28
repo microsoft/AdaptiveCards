@@ -9,19 +9,23 @@
       "text": "Adaptive Card design session",
       "size": "large",
       "weight": "bolder",
-      "spacing": "small"
+      "spacing": "medium",
+      "color": "accent"
     },
     {
       "type": "TextBlock",
       "text": "Conf Room 112/3377 (10)",
       "isSubtle": true,
-      "spacing": "small"
+      "spacing": "medium",
+      "separator": true
     },
     {
       "type": "TextBlock",
       "text": "12:30 PM - 1:30 PM",
       "isSubtle": true,
-      "spacing": "none"
+      "spacing": "none",
+      "color": "good",
+      "weight": "bolder"
     },
     {
       "type": "TextBlock",

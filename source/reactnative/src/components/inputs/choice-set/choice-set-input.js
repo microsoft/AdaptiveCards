@@ -41,7 +41,8 @@ export class ChoiceSetInput extends React.Component {
 		this.choices = [];
 		this.payload = props.json
 		this.state = {
-			selectedPickerValue: undefined,
+			selectedPickerValue: Utils.isNullOrEmpty(props.json.value) ? 
+			props.json.choices[0].value : props.json.value,
 			isPickerSelected: false,
 			radioButtonIndex: undefined,
 			activeIndex: undefined,
@@ -60,6 +61,7 @@ export class ChoiceSetInput extends React.Component {
 		this.value = this.payload.value;
 		this.style = this.payload.style;
 		this.choices = this.payload.choices;
+		this.wrapText = this.payload.wrap || false
 	}
 
     /**
@@ -72,6 +74,14 @@ export class ChoiceSetInput extends React.Component {
 		let choiceName = this.choices.find(choice => choice.value === value);
 		addInputItem(this.id, value);
 		return choiceName.title
+	}
+
+    /**
+     * @description Fetches the initial value for the picker component
+     */
+	getPickerInitialValue = (addInputItem) => {
+		addInputItem(this.id, this.state.selectedPickerValue)
+		return this.state.selectedPickerValue
 	}
 
     /**
@@ -94,7 +104,7 @@ export class ChoiceSetInput extends React.Component {
 	}
 
     /**
-     * @description Selects the checboxes for the initial set of values from json
+     * @description Selects the checkboxes for the initial set of values from json
      * @param {string} value 
      */
 	setInitialCheckedValues = (value, addInputItem) => {
@@ -132,9 +142,7 @@ export class ChoiceSetInput extends React.Component {
 						<Text
 							style={[styles.text, this.styleConfig.fontConfig]}
 						>
-							{this.state.selectedPickerValue == undefined ?
-								this.getPickerSelectedValue(this.value, addInputItem) :
-								this.getPickerSelectedValue(this.state.selectedPickerValue,
+							{this.getPickerSelectedValue(this.state.selectedPickerValue,
 									addInputItem)
 							}
 						</Text>
@@ -148,10 +156,9 @@ export class ChoiceSetInput extends React.Component {
 					<View style={styles.pickerContainer}>
 						<Picker
 							mode={'dropdown'}
-							selectedValue={this.state.selectedPickerValue}
-							
+							selectedValue={this.getPickerInitialValue(addInputItem)}
 							onValueChange={
-								(itemValue, itemIndex) => {
+								(itemValue) => {
 									this.setState({
 										selectedPickerValue: itemValue,
 									})
@@ -184,6 +191,7 @@ export class ChoiceSetInput extends React.Component {
 						isRadioButtonType={true}
 						index={index}
 						labelStyle={[styles.labelStyle, this.styleConfig.fontConfig]}
+						wrapText={this.wrapText}
 						iconSize={28}
 						checked={this.state.activeIndex == undefined ?
 							index == this.getRadioButtonIndex(this.value,
@@ -211,7 +219,8 @@ export class ChoiceSetInput extends React.Component {
 						key={index}
 						isRadioButtonType={false}
 						index={index}
-						labelStyle={styles.labelStyle}
+						labelStyle={[styles.labelStyle, this.styleConfig.fontConfig]}
+						wrapText={this.wrapText}
 						iconSize={28}
 						checked={this.state.checkedValues == undefined ?
 							this.setInitialCheckedValues(this.value,
@@ -240,18 +249,15 @@ export class ChoiceSetInput extends React.Component {
 
 	render() {
 
-		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
+		if (HostConfigManager.supportsInteractivity() === false) {
 			return null;
 		}
 
 		this.parseHostConfig();
 
-		let { id,
+		let {
 			isMultiSelect,
 			style,
-			choices,
-			type,
-			value,
 		} = this
 
 		onPress = () => {
@@ -304,6 +310,7 @@ const styles = StyleSheet.create({
 		marginRight: 8,
 	},
 	labelStyle: {
-		marginLeft: 8
+		marginLeft: 8,
+		flexShrink: 1,
 	}
 });
