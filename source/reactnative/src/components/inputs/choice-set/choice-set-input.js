@@ -249,18 +249,15 @@ export class ChoiceSetInput extends React.Component {
 
 	render() {
 
-		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
+		if (HostConfigManager.supportsInteractivity() === false) {
 			return null;
 		}
 
 		this.parseHostConfig();
 
-		let { id,
+		let {
 			isMultiSelect,
 			style,
-			choices,
-			type,
-			value,
 		} = this
 
 		onPress = () => {
@@ -313,6 +310,7 @@ const styles = StyleSheet.create({
 		marginRight: 8,
 	},
 	labelStyle: {
-		marginLeft: 8
+		marginLeft: 8,
+		flexShrink: 1,
 	}
 });
