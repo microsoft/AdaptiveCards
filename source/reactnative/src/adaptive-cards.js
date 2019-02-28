@@ -6,7 +6,6 @@ import React from 'react';
 import {
 	StyleSheet,
 	Text,
-	View,
 	ScrollView,
 	ImageBackground
 } from 'react-native';
@@ -14,17 +13,22 @@ import {
 import { Registry } from './components/registration/registry';
 import { InputContextProvider } from './utils/context';
 import { HostConfigManager } from './utils/host-config';
+import { StyleManager } from './styles/style-config';
 import { ActionWrapper } from './components/actions/action-wrapper';
 import PropTypes from 'prop-types';
 import * as Utils from './utils/util';
 import { SelectAction } from './components/actions';
+import ResourceInformation from './utils/resource-information';
+import { ContainerWrapper } from './components/containers/';
+import { ThemeConfigManager } from './utils/theme-config';
 
 export default class AdaptiveCards extends React.Component {
 
 	// Input elements with its identifier and value
 	inputArray = {};
 	version = "1.1"; // client supported version
-
+	resourceInformationArray = [];
+	
 	constructor(props) {
 		super(props);
 
@@ -32,8 +36,24 @@ export default class AdaptiveCards extends React.Component {
 
 		// hostconfig
 		if (props.hostConfig) {
-			HostConfigManager.setHostConfig(this.props.hostConfig);
+			HostConfigManager.setHostConfig(props.hostConfig);
 		}
+		
+		// themeConfig
+		if(props.themeConfig){
+			ThemeConfigManager.setThemeConfig(props.themeConfig);
+		}
+
+		// commonly used styles
+		this.styleConfig = StyleManager.getManager().styles;
+	}
+
+	/**
+	 * @description Returns the resource information in the card elements as an array
+	 * @returns {Array} - Array of items of type ResourceInformation
+	 */
+	getResourceInformation = () => {
+		return this.resourceInformationArray;
 	}
 
 	/**
@@ -41,6 +61,16 @@ export default class AdaptiveCards extends React.Component {
 	 */
 	addInputItem = (key, value) => {
 		this.inputArray[key] = value;
+	}
+
+	/**
+	 * @description Resource information present in the card elements are added here with the url and mimetype.
+	 * @param {string} urlString - URL of the resource (Ex: URL of the Image element)
+	 * @param {string} mimeTypeString - MIME type of the resource if the same is available in the element's payload
+	 */
+	addResourceInformation = (urlString, mimeTypeString) => {
+		let newResourceObject = new ResourceInformation(urlString, mimeTypeString);
+		this.resourceInformationArray.push(newResourceObject);
 	}
 
 	/**
@@ -62,24 +92,26 @@ export default class AdaptiveCards extends React.Component {
 	getAdaptiveCardConent() {
 		var adaptiveCardContent =
 			(
-				<View style={styles.container}>
-					<ScrollView>
+				<ContainerWrapper style={styles.container} json={this.payload}>
+					<ScrollView alwaysBounceVertical={false} style={{flexGrow: 0}}>
 						{this.parsePayload()}
 						{!Utils.isNullOrEmpty(this.payload.actions) &&
 							<ActionWrapper actions={this.payload.actions} />}
 					</ScrollView>
-				</View>
+				</ContainerWrapper>
 			);
-		//Checks if BackgroundImage option is available for adaptive card
+
+		// checks if BackgroundImage option is available for adaptive card
 		if (!Utils.isNullOrEmpty(this.payload.backgroundImage)) {
+			let backgroundImage = Utils.getImageUrl(this.payload.backgroundImage)
 			adaptiveCardContent = (
-				<ImageBackground source={{ uri: this.payload.backgroundImage }} style={styles.backgroundImage}>
+				<ImageBackground source={{ uri: backgroundImage }} style={styles.backgroundImage}>
 					{adaptiveCardContent}
 				</ImageBackground>
 			);
 		}
 
-		//Checks if selectAction option is available for adaptive card
+		// checks if selectAction option is available for adaptive card
 		if (!Utils.isNullOrEmpty(this.payload.selectAction)) {
 			adaptiveCardContent = (
 				<SelectAction style={styles.container} selectActionData={this.payload.selectAction}>
@@ -91,7 +123,7 @@ export default class AdaptiveCards extends React.Component {
 	}
 
 	render() {
-		const { addInputItem, inputArray } = this;
+		const { addInputItem, inputArray, addResourceInformation } = this;
 		const onExecuteAction = this.onExecuteAction;
 		const isTransparent = this.payload.backgroundImage ? true : false;
 		const onParseError = this.onParseError;
@@ -101,11 +133,11 @@ export default class AdaptiveCards extends React.Component {
 		if (!this.isSupportedVersion()) {
 			const message = this.payload.fallbackText || "We're sorry, this card couldn't be displayed";
 			return (
-				<Text>{message}</Text>
+				<Text style={this.styleConfig.fontConfig}>{message}</Text>
 			)
 		}
 		return (
-			<InputContextProvider value={{ lang, addInputItem, inputArray, onExecuteAction, isTransparent, onParseError }}>
+			<InputContextProvider value={{ lang, addInputItem, inputArray, onExecuteAction, isTransparent, onParseError, addResourceInformation }}>
 				{
 					this.getAdaptiveCardConent()
 				}
@@ -159,6 +191,7 @@ export default class AdaptiveCards extends React.Component {
 AdaptiveCards.propTypes = {
 	payload: PropTypes.object.isRequired,
 	hostConfig: PropTypes.object,
+	themeConfig: PropTypes.object,
 	onExecuteAction: PropTypes.func,
 	onParseError: PropTypes.func
 };

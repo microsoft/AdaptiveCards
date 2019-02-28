@@ -11,7 +11,8 @@ import {
 	View,
 	Picker,
 	TouchableOpacity,
-	Image
+	Image,
+	Platform
 } from 'react-native';
 
 import ElementWrapper from '../../elements/element-wrapper';
@@ -40,7 +41,8 @@ export class ChoiceSetInput extends React.Component {
 		this.choices = [];
 		this.payload = props.json
 		this.state = {
-			selectedPickerValue: undefined,
+			selectedPickerValue: Utils.isNullOrEmpty(props.json.value) ? 
+			props.json.choices[0].value : props.json.value,
 			isPickerSelected: false,
 			radioButtonIndex: undefined,
 			activeIndex: undefined,
@@ -74,6 +76,14 @@ export class ChoiceSetInput extends React.Component {
 	}
 
     /**
+     * @description Fetches the initial value for the picker component
+     */
+	getPickerInitialValue = (addInputItem) => {
+		addInputItem(this.id, this.state.selectedPickerValue)
+		return this.state.selectedPickerValue
+	}
+
+    /**
      * @description Fetches the index of the selected radio button choice
      * @param {string} value 
      * @param {array} choiceArray
@@ -93,7 +103,7 @@ export class ChoiceSetInput extends React.Component {
 	}
 
     /**
-     * @description Selects the checboxes for the initial set of values from json
+     * @description Selects the checkboxes for the initial set of values from json
      * @param {string} value 
      */
 	setInitialCheckedValues = (value, addInputItem) => {
@@ -124,16 +134,14 @@ export class ChoiceSetInput extends React.Component {
 	renderPickerComponent(addInputItem) {
 		return (
 			<View style={styles.containerView}>
-				<TouchableOpacity
+				{ (Platform.OS === Constants.PlatformIOS) && <TouchableOpacity
 					activeOpacity={1}
 					onPress={onPress}>
 					<View style={styles.touchView}>
 						<Text
 							style={[styles.text, this.styleConfig.fontConfig]}
 						>
-							{this.state.selectedPickerValue == undefined ?
-								this.getPickerSelectedValue(this.value, addInputItem) :
-								this.getPickerSelectedValue(this.state.selectedPickerValue,
+							{this.getPickerSelectedValue(this.state.selectedPickerValue,
 									addInputItem)
 							}
 						</Text>
@@ -142,26 +150,27 @@ export class ChoiceSetInput extends React.Component {
 							source={require(DropDownImage)}
 						/>
 					</View>
-				</TouchableOpacity>
-				{this.state.isPickerSelected &&
-					<Picker
-						mode={'dropdown'}
-						selectedValue={this.state.selectedPickerValue}
-						style={styles.pickerContainer}
-						onValueChange={
-							(itemValue, itemIndex) => {
-								this.setState({
-									selectedPickerValue: itemValue,
-								})
-								addInputItem(this.id, itemValue);
-							}}>
-						{this.choices.map((item, key) => (
-							<Picker.Item
-								label={item.title}
-								value={item.value} key={key}
-							/>)
-						)}
-					</Picker>
+				</TouchableOpacity> }
+				{ ((Platform.OS === Constants.PlatformIOS) ? this.state.isPickerSelected : true) &&
+					<View style={styles.pickerContainer}>
+						<Picker
+							mode={'dropdown'}
+							selectedValue={this.getPickerInitialValue(addInputItem)}
+							onValueChange={
+								(itemValue) => {
+									this.setState({
+										selectedPickerValue: itemValue,
+									})
+									addInputItem(this.id, itemValue);
+								}}>
+							{this.choices.map((item, key) => (
+								<Picker.Item
+									label={item.title}
+									value={item.value} key={key}
+								/>)
+							)}
+						</Picker>
+					</View>
 				}
 			</View>
 		)
@@ -208,7 +217,7 @@ export class ChoiceSetInput extends React.Component {
 						key={index}
 						isRadioButtonType={false}
 						index={index}
-						labelStyle={styles.labelStyle}
+						labelStyle={[styles.labelStyle, this.styleConfig.fontConfig]}
 						iconSize={28}
 						checked={this.state.checkedValues == undefined ?
 							this.setInitialCheckedValues(this.value,

@@ -13,7 +13,7 @@ export class TextColorDefinition {
 	}
 
 	get subtle() {
-		return this.hexTorgb(this._subtle);
+		return Utils.hexToRGB(this._subtle);
 	}
 
 	set subtle(color) {
@@ -21,32 +21,11 @@ export class TextColorDefinition {
 	}
 
 	get default() {
-		return this.hexTorgb(this._default);
+		return Utils.hexToRGB(this._default);
 	}
 
 	set default(color) {
 		this._default = color;
-	}
-
-    /**
-     * argb in hex to css rgba
-     */
-	hexTorgb(color) {
-		var regEx = /#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})?/gi;
-
-		var matches = regEx.exec(color);
-
-		if (matches && matches[4]) {
-			var a = parseInt(matches[1], 16) / 255;
-			var r = parseInt(matches[2], 16);
-			var g = parseInt(matches[3], 16);
-			var b = parseInt(matches[4], 16);
-
-			return "rgba(" + r + "," + g + "," + b + "," + a + ")";
-		}
-		else {
-			return color;
-		}
 	}
 }
 
@@ -68,6 +47,14 @@ export class HostConfigManager {
 	static setHostConfig(value) {
 		newHostConfig = { ...defaultHostConfig, ...value }
 		this.hostConfig = new HostConfig(newHostConfig);
+	}
+
+	/**
+	 * @description Return whether supports interactivity is enabled or not in the host config
+	 * @returns {boolean} - true|false based on the hostconfig supportsInteractivity value
+	 */
+	static supportsInteractivity() {
+		return this.getHostConfig().supportsInteractivity;
 	}
 }
 
@@ -152,7 +139,6 @@ export class FactTextDefinition {
 }
 
 export class FactTitleDefinition extends FactTextDefinition {
-	maxWidth = 150;
 	weight = Enums.TextWeight.Bolder;
 
 	constructor(obj) {
@@ -386,7 +372,7 @@ export class HostConfig {
 	supportsInteractivity = true;
 	lineHeights;
 
-	fontFamily = "Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif";
+	fontFamily = "Helvetica";
 
 	spacing = {
 		none: 0,
@@ -395,7 +381,7 @@ export class HostConfig {
 		medium: 20,
 		large: 30,
 		extraLarge: 40,
-		padding: 15
+		padding: 5
 	};
 
 	separator = {
@@ -639,19 +625,19 @@ export class HostConfig {
 
 export const defaultHostConfig = {
 	supportsInteractivity: true,
-	fontFamily: "Segoe UI",
+	fontFamily: "Helvetica",
 	spacing: {
 		none: 0,
-		small: 10,
-		default: 20,
-		medium: 30,
-		large: 40,
-		extraLarge: 50,
-		padding: 20
+		small: 3,
+		default: 8,
+		medium: 20,
+		large: 30,
+		extraLarge: 40,
+		padding: 5
 	},
 	separator: {
 		lineThickness: 1,
-		lineColor: "#EEEEEE"
+		lineColor: "#D9D9D9"
 	},
 	fontSizes: {
 		small: 12,
@@ -763,7 +749,6 @@ export const defaultHostConfig = {
 			isSubtle: false,
 			weight: Enums.TextWeight.Bolder,
 			wrap: true,
-			maxWidth: 150,
 		},
 		value: {
 			color: Enums.TextColor.Default,
