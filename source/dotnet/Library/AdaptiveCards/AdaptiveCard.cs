@@ -358,5 +358,30 @@ namespace AdaptiveCards
 
             return resourceInformationList;
         }
+
+        public override void PropagateBleedProperty(AdaptiveTypedElement adaptiveTypedElement)
+        {
+            foreach(AdaptiveElement adaptiveElement in Body)
+            {
+                if(adaptiveElement is AdaptiveCollectionElement)
+                {
+                    AdaptiveCollectionElement adaptiveCollectionElement = adaptiveElement as AdaptiveCollectionElement;
+
+                    adaptiveCollectionElement.PropagateBleedProperty(this);
+                }
+            }
+
+            foreach(AdaptiveAction adaptiveAction in Actions)
+            {
+                if(adaptiveAction is AdaptiveShowCardAction)
+                {
+                    AdaptiveShowCardAction adaptiveShowCardAction = adaptiveAction as AdaptiveShowCardAction;
+
+                    AdaptiveCard card = adaptiveShowCardAction.Card;
+                    card.PropagateBleedProperty(null);
+                }
+            }
+        }
+
     }
 }

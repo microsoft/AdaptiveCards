@@ -23,6 +23,11 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiColumnSet.SetBackgroundColor(columnSetStyle.BackgroundColor, context);
             }
 
+            if (columnSet.Bleed && columnSet.CanBleed)
+            {
+                uiColumnSet.Margin = new Thickness(-10, 0, -10, 0);
+            }
+
             foreach (var column in columnSet.Columns)
             {
                 FrameworkElement uiContainer = context.Render(column);

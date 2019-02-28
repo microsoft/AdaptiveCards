@@ -53,29 +53,73 @@ namespace AdaptiveCards
         [XmlElement]
 #endif
         [DefaultValue(false)]
-        public int Bleed { get; set; }
+        public bool Bleed { get; set; }
 
         /// <summary>
         ///     Action for this container (this allows a default action at the container level)
         /// </summary>
         public bool Padding { get; set; }
 
+        public bool CanBleed { get; set; }
+
+        internal AdaptiveTypedElement ParentToBleed { get; set; }
+
         public void ConfigPadding()
         {
-            if(Style != AdaptiveContainerStyle.Default && ParentalContainerStyle != Style)
+            if (ParentToBleed is AdaptiveCollectionElement)
             {
-                Padding = !((ParentalContainerStyle == AdaptiveContainerStyle.Default) &&
-                            (Style == AdaptiveContainerStyle.Default));
+                AdaptiveCollectionElement parentContainer = ParentToBleed as AdaptiveCollectionElement;
+                if (Style != AdaptiveContainerStyle.Default && parentContainer.Style != Style)
+                {
+                    Padding = (parentContainer.Style != AdaptiveContainerStyle.Default);
+                }
+                else
+                {
+                    Padding = false;
+                }
             }
-            else
+            else if(ParentToBleed is AdaptiveCard)
             {
-                Padding = false;
+                Padding = true; // Cards have no styles, we must set this to true
             }
         }
 
         public void ConfigBleed()
         {
-            // if(Bleed && )
+            if (ParentToBleed is AdaptiveCollectionElement)
+            {
+                AdaptiveCollectionElement parentContainer = ParentToBleed as AdaptiveCollectionElement;
+                CanBleed = (Bleed && parentContainer.Padding);
+            }
+            else
+            {
+                CanBleed = true; // Set to true, otherwise no element will be able to bleed
+            }
         }
+
+        private void ConfigForContainerStyle()
+        {
+            ConfigPadding();
+            ConfigBleed();
+        }
+
+        public override void PropagateBleedProperty(AdaptiveTypedElement parentContainer)
+        {
+            ParentToBleed = parentContainer;
+            ConfigForContainerStyle();
+
+            AdaptiveCollectionElement parentCollectionElement = parentContainer as AdaptiveCollectionElement;
+
+            if (Padding)
+            {
+                PropagateBleedPropertyToChildren(this);
+            }
+            else
+            {
+                PropagateBleedPropertyToChildren(parentContainer);
+            }
+        }
+
+        protected abstract void PropagateBleedPropertyToChildren(AdaptiveTypedElement parent);
     }
 }

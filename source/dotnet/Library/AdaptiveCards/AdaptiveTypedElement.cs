@@ -41,5 +41,10 @@ namespace AdaptiveCards
         [XmlIgnore]
 #endif
         public IDictionary<string, object> AdditionalProperties { get; set;  } = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+
+        public virtual void PropagateBleedProperty(AdaptiveTypedElement parentContainer)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

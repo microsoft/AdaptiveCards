@@ -24,6 +24,11 @@ namespace AdaptiveCards.Rendering.Wpf
                 context.ForegroundColors = containerStyle.ForegroundColors;
             }
 
+            if (container.Bleed && container.CanBleed)
+            {
+                uiContainer.Margin = new Thickness(-10, 0, -10, 0);
+            }
+
             switch (container.VerticalContentAlignment)
             {
                 case AdaptiveVerticalContentAlignment.Center:

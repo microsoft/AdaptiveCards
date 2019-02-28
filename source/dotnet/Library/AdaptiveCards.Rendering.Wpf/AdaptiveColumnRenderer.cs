@@ -20,6 +20,11 @@ namespace AdaptiveCards.Rendering.Wpf
                 return context.RenderSelectAction(column.SelectAction, uiContainer);
             }
 
+            if (column.Bleed && column.CanBleed)
+            {
+                uiContainer.Margin = new Thickness(-10, 0, -10, 0);
+            }
+
             switch(column.VerticalContentAlignment)
             {
                 case AdaptiveVerticalContentAlignment.Center:

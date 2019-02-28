@@ -242,6 +242,8 @@ namespace AdaptiveCards.Rendering.Wpf
             Resources["Adaptive.Action.Destructive.Button.Foreground"] = context.GetColorBrush(attentionColor);
             Resources["Adaptive.Action.Destructive.Button.MouseOver.Foreground"] = context.GetColorBrush(lighterAttentionColor);
 
+            card.PropagateBleedProperty(null);
+
             var element = context.Render(card);
 
             renderCard = new RenderedAdaptiveCard(element, card, context.Warnings, context.InputBindings);
