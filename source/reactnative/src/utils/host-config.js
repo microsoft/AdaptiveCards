@@ -139,7 +139,6 @@ export class FactTextDefinition {
 }
 
 export class FactTitleDefinition extends FactTextDefinition {
-	maxWidth = 150;
 	weight = Enums.TextWeight.Bolder;
 
 	constructor(obj) {
@@ -638,7 +637,7 @@ export const defaultHostConfig = {
 	},
 	separator: {
 		lineThickness: 1,
-		lineColor: "#EEEEEE"
+		lineColor: "#D9D9D9"
 	},
 	fontSizes: {
 		small: 12,
@@ -750,7 +749,6 @@ export const defaultHostConfig = {
 			isSubtle: false,
 			weight: Enums.TextWeight.Bolder,
 			wrap: true,
-			maxWidth: 150,
 		},
 		value: {
 			color: Enums.TextColor.Default,

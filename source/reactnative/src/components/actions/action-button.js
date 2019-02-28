@@ -51,7 +51,7 @@ export class ActionButton extends React.Component {
 			return null;
 		}
 		this.parseHostConfig();
-
+		
 		const ButtonComponent = Platform.OS === Constants.PlatformIOS ? TouchableOpacity : TouchableNativeFeedback;
 
 		if (this.payload.type === Constants.ActionSubmit) {
@@ -107,15 +107,32 @@ export class ActionButton extends React.Component {
 	parseHostConfig() {
 		this.title = this.payload.title;
 		this.type = this.payload.type;
-		this.iconUrl = this.payload.iconUrl;
+		let imageUrl = this.payload.iconUrl
+		this.iconUrl = Utils.getImageUrl(imageUrl)
 		this.data = this.payload.data;
+	}
+	
+    /**
+     * @description Return the button styles applicable
+	 * @returns {Array} computedStyles - Styles based on the config
+     */
+	getButtonStyles = () => {
+		let computedStyles = [this.styleConfig.buttonBackgroundColor,
+								this.styleConfig.buttonBorderRadius,
+								this.styleConfig.actionIconFlex,
+								styles.button];
+
+		return computedStyles;
 	}
 
 	buttonContent = () => {
+		let titleStyles = [this.styleConfig.fontConfig, 
+							this.styleConfig.buttonTitleColor, 
+							this.styleConfig.buttonTitleTransform];
+
 		return (
 			<View
-				style={[
-					styles.button, this.styleConfig.actionIconFlex]}>
+				style={this.getButtonStyles()}>
 				{
 					!Utils.isNullOrEmpty(this.iconUrl) ?
 						<Image resizeMode="center"
@@ -123,7 +140,7 @@ export class ActionButton extends React.Component {
 							style={[styles.buttonIcon, this.styleConfig.actionIcon]} />
 						: null
 				}
-				<Text style={[styles.buttonTitle, this.styleConfig.fontConfig]}>
+				<Text style={titleStyles}>
 					{this.title}
 				</Text>
 			</View>
@@ -138,12 +155,7 @@ const styles = StyleSheet.create({
 		padding: 10,
 		marginBottom: 10,
 		marginRight: 10,
-		backgroundColor: "#1D9BF6",
-		borderRadius: 15,
 		flexGrow: 1,
-	},
-	buttonTitle: {
-		color: Constants.WhiteColor,
 	},
 	buttonIcon: {
 		marginLeft: 5,

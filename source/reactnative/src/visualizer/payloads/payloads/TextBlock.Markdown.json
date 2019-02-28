@@ -5,13 +5,29 @@
 	"body": [
 		{
 			"type": "TextBlock",
-			"text": "This is some **_bold italic_** and **bold** and _italic only_ and **bold** text with _ITaly_",
-			"wrap": true
+			"text": "This is some **bold** text"
 		},
-				{
+		{
 			"type": "TextBlock",
-			"text": "Check [Mail]out [**FaceBook Cards**](http://facebook.com) and [Phone] [_Amazon_](https://google.com) and http://amazon.com",
-			"wrap": true
+			"text": "This is some _italic_ text",
+			"spacing": "medium"
+		},
+		{
+			"type": "TextBlock",
+			"text": "- Bullet \r- List \r",
+			"wrap": true,
+			"spacing": "medium"
+		},
+		{
+			"type": "TextBlock",
+			"text": "1. Numbered\r2. List\r",
+			"wrap": true,
+			"spacing": "medium"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Check out [Adaptive Cards](http://adaptivecards.io)",
+			"spacing": "medium"
 		}
 	]
 }

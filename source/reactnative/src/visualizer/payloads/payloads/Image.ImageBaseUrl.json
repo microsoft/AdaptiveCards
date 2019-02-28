@@ -6,14 +6,14 @@
 	"body": [
 		{
 			"type": "Image",
-			"url": "Assets/Adaptive10.png"
+			"url": "Assets/adaptive10.png"
 		}
 	],
 	"actions": [
 		{
 			"type": "Action.ShowCard",
 			"title": "Open Card",
-			"iconUrl": "Assets/Adaptive10.png",
+			"iconUrl": "Assets/button.png",
 			"card": {
 				"type": "AdaptiveCard",
 				"body": [
@@ -27,7 +27,7 @@
 				"actions": [
 					{
 						"type": "Action.Submit",
-						"iconUrl": "Assets/Adaptive10.png",
+						"iconUrl": "Assets/button.png",
 						"title": "OK"
 					}
 				]

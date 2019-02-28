@@ -7,7 +7,8 @@ import {
 	StyleSheet,
 	Text,
 	View,
-	ScrollView
+	ScrollView,
+	ImageBackground
 } from 'react-native';
 
 import { Registry } from './components/registration/registry';
@@ -21,6 +22,7 @@ import { SelectAction } from './components/actions';
 import ResourceInformation from './utils/resource-information';
 import { ContainerWrapper } from './components/containers/';
 import { BackgroundImage } from './utils/backgroung-image';
+import { ThemeConfigManager } from './utils/theme-config';
 
 export default class AdaptiveCards extends React.Component {
 
@@ -28,7 +30,6 @@ export default class AdaptiveCards extends React.Component {
 	inputArray = {};
 	version = "1.1"; // client supported version
 	resourceInformationArray = [];
-
 	constructor(props) {
 		super(props);
 
@@ -36,8 +37,15 @@ export default class AdaptiveCards extends React.Component {
 
 		// hostconfig
 		if (props.hostConfig) {
-			HostConfigManager.setHostConfig(this.props.hostConfig);
+			HostConfigManager.setHostConfig(props.hostConfig);
 		}
+		
+		// themeConfig
+		if(props.themeConfig){
+			ThemeConfigManager.setThemeConfig(props.themeConfig);
+		}
+
+		// commonly used styles
 		this.styleConfig = StyleManager.getManager().styles;
 	}
 
@@ -96,6 +104,7 @@ export default class AdaptiveCards extends React.Component {
 
 		// checks if BackgroundImage option is available for adaptive card
 		if (!Utils.isNullOrEmpty(this.payload.backgroundImage)) {
+			let backgroundImage = Utils.getImageUrl(this.payload.backgroundImage)
 			adaptiveCardContent = (
 				<View style={styles.backgroundImage}>
 					<BackgroundImage backgroundImage={this.payload.backgroundImage} />
@@ -184,6 +193,7 @@ export default class AdaptiveCards extends React.Component {
 AdaptiveCards.propTypes = {
 	payload: PropTypes.object.isRequired,
 	hostConfig: PropTypes.object,
+	themeConfig: PropTypes.object,
 	onExecuteAction: PropTypes.func,
 	onParseError: PropTypes.func
 };

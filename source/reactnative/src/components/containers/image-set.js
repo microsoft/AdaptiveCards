@@ -5,9 +5,11 @@
  */
 
 import React from 'react';
+
 import { StyleSheet } from 'react-native';
 import { Registry } from '../registration/registry';
 import ElementWrapper from '../elements/element-wrapper';
+import { InputContextConsumer } from '../../utils/context';
 import * as Constants from '../../utils/constants';
 
 const FlexWrap = 'wrap';
@@ -61,9 +63,11 @@ export class ImageSet extends React.PureComponent {
 
 	internalRenderer(imageSetJson) {
 		return (
-			<ElementWrapper json={imageSetJson} style={[styles.container, styles.defaultBGStyle]}>
-				{this.parsePayload(imageSetJson)}
-			</ElementWrapper>
+			(<InputContextConsumer>
+				{({ onParseError }) => <ElementWrapper json={imageSetJson} style={[styles.container, styles.defaultBGStyle]}>
+					{this.parsePayload(imageSetJson, onParseError)}
+				</ElementWrapper>}
+			</InputContextConsumer>)
 		);
 	}
 

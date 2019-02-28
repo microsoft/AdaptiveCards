@@ -164,6 +164,7 @@
         "title": "I accept the terms and conditions (True/False)",
         "valueOn": "true",
         "valueOff": "false",
+        "value": "true",
         "id": "AcceptsTerms"
       },
       {
