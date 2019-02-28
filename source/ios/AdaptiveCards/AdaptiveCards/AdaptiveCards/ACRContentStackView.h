@@ -8,9 +8,9 @@
 #import <UIKit/UIKit.h>
 #import "ACRIContentHoldingView.h"
 
-@interface ACRContentStackView:UIView<ACRIContentHoldingView>
+@interface ACRContentStackView:UIStackView<ACRIContentHoldingView>
 
-@property (nonnull) UIStackView* stackView;
+//@property (nonnull) UIStackView* stackView;
 
 @property BOOL isActionSet;
 

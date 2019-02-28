@@ -141,7 +141,7 @@ using namespace AdaptiveCards;
             superview = (UIStackView *) view;
         } else
         {
-            superview = ((ACRContentStackView *) view).stackView;
+            superview = (ACRContentStackView *) view;
         }
         unsigned int spacing = [ACRSeparator getSpacing:requestedSpacing hostConfig:config];
         separator = [[ACRSeparator alloc] initWithFrame:CGRectMake(0, 0, spacing, spacing)];

@@ -9,6 +9,10 @@
 #import "ACRContentHoldingUIView.h"
 
 @implementation ACRUILabel
+{
+    NSLayoutConstraint *widthConstraint;
+    NSLayoutConstraint *heightConstraint;
+}
 
 -(instancetype)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
@@ -31,30 +35,65 @@
     CGSize size = self.frame.size;
     self.scrollEnabled = YES;
 
-    if(size.height != self.contentSize.height || size.width != self.contentSize.width) {
+    //if(size.height != self.contentSize.height || size.width != self.contentSize.width) {
         [self sizeToFit];
-    }
-    size = self.frame.size;
+        /*
+        NSLayoutConstraint *wconst = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.frame.size.width];
+        NSLayoutConstraint *hconst = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.frame.size.height];
+        if(!widthConstraint) {
+            widthConstraint = wconst;
+        } else {
+            [self removeConstraint:widthConstraint];
+            widthConstraint = wconst;
+        }
+        [self addConstraint:widthConstraint];
+        if(!heightConstraint) {
+            heightConstraint = hconst;
+        } else {
+            [self removeConstraint:heightConstraint];
+            heightConstraint = hconst;
+        }
+        [self addConstraint:heightConstraint];
+         
+        [self layoutIfNeeded];
+         */
+    //}
+    //size = self.frame.size;
 
     self.scrollEnabled = NO;
-    return size;
+    
+    //NSLog(@"%@ text view h = %f, w = %f", self.attributedText, self.frame.size.height, self.frame.size.width);
+    //return size;
+    size = self.contentSize;
+    _area = self.frame.size.width * self.frame.size.height;
+    //size.width *= 2;
+    return self.contentSize;
 }
 
 - (void)layoutSubviews
 {
-    [super layoutSubviews];
+    NSLog(@"TextView size w = %f, h = %f", self.frame.size.width, self.frame.size.height);
     CGSize size = self.frame.size;
     CGFloat area = size.width * size.height;
-    if(self.tag == eACRUILabelTag) {
+    //if(self.tag == eACRUILabelTag) {
         if(area != _area){
+            _area = area;
+            [self sizeToFit];
+            _area = self.frame.size.width * self.frame.size.height;
+            //NSLog(@"intrinsic ContentSize changed");
             [self.superview invalidateIntrinsicContentSize];
+            //[self.superview sizeToFit];
+            //[self.rootView.acrActionDelegate didChangeViewLayout:CGRectZero newFrame:CGRectZero];
+
         }
-    } else if(self.tag == eACRUIFactSetTag) {
+    /*} else if(self.tag == eACRUIFactSetTag) {
         if(area != _area){
-            [self invalidateIntrinsicContentSize];
+            _area = area;
+            //[self invalidateIntrinsicContentSize];
+            //[self.rootView.acrActionDelegate didChangeViewLayout:CGRectZero newFrame:CGRectZero];
         }
-    }
-    _area = area;
+    }*/	
+    [super layoutSubviews];
 }
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event

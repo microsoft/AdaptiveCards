@@ -11,7 +11,8 @@
 
 - (void)config:(nullable NSDictionary<NSString *, id> *)attributes
 {
-    self.stackView.axis = UILayoutConstraintAxisVertical;
+    //self.stackView.axis = UILayoutConstraintAxisVertical;
+    self.axis = UILayoutConstraintAxisVertical;
     [super config:attributes];
 }
 
@@ -27,14 +28,15 @@
         [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     }
 
-    [self.stackView addArrangedSubview:view];
+//    [self.stackView addArrangedSubview:view];
+    [super addArrangedSubview:view];
 }
 
 - (UIView *)addPaddingSpace
 {
     UIView *blankTrailingSpace = [[UIView alloc] init];
     [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-    [self addArrangedSubview:blankTrailingSpace];
+    [super addArrangedSubview:blankTrailingSpace];
     return blankTrailingSpace;
 }
 

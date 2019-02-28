@@ -19,15 +19,20 @@ using namespace AdaptiveCards;
 
 - (CGSize)intrinsicContentSize
 {
+    CGSize size = [super intrinsicContentSize];
     if(self.subviews.count) {
         NSInteger tag = self.subviews.firstObject.tag;
         if((tag == eACRUILabelTag) || (tag == eACRUIImageTag)) {
             UIView *view = [self viewWithTag:tag];
             if(view) {
-                return [view intrinsicContentSize];
+                //CGSize sz = [view intrinsicContentSize];
+                //NSLog(@"content holding view tag: %ld, h = %f, w = %f", tag, sz.height, sz.width);
+                view.frame.size = [view intrinsicContentSize];
+                return view.frame.size;
             }
         }
     }
+    //NSLog(@" content holding view h = %f, w = %f", self.frame.size.height, self.frame.size.width);
     return self.frame.size;
 }
 
