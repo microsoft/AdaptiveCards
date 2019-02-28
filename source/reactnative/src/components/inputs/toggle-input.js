@@ -29,6 +29,7 @@ export class ToggleInput extends React.Component {
 		this.valueOff = props.json.valueOff || Constants.FalseString;
 		this.value = props.json.value || this.valueOff;
 		this.id = props.json.id || Constants.ToggleValueOn
+		this.wrapText = props.json.wrap || false
 
 		// state
 		this.state = {
@@ -56,7 +57,7 @@ export class ToggleInput extends React.Component {
 			<ElementWrapper json={this.props.json} style={styles.toggleContainer}>
 				<Label
 					text={this.title}
-					wrap={true}
+					wrap={this.wrapText}
 					style={styles.title} />
 				<InputContextConsumer>
 					{({ addInputItem }) => (
