@@ -11,7 +11,7 @@
         "lineThickness": 1,
         "lineColor": "#EEEEEE"
     },
-    "supportsInteractivity": true,
+    "supportsInteractivity": false,
     "fontStyles": {
         "default": {
             "fontFamily": "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
@@ -232,20 +232,6 @@
         "small": 40,
         "medium": 80,
         "large": 160
-    },
-    "actions": {
-        "maxActions": 5,
-        "spacing": "default",
-        "buttonSpacing": 10,
-        "showCard": {
-            "actionMode": "inline",
-            "inlineTopMargin": 16
-        },
-        "actionsOrientation": "horizontal",
-        "actionAlignment": "left"
-    },
-    "adaptiveCard": {
-        "allowCustomStyle": false
     },
     "imageSet": {
         "imageSize": "medium",
