@@ -2932,8 +2932,13 @@ class ActionButton {
                 break;
         }
 
-        if (this.action.isPrimary) {
-            this.action.renderedElement.classList.add(hostConfig.makeCssClassName("primary"));
+        switch (this.action.sentiment) {
+            case Enums.ActionSentiment.Positive:
+                this.action.renderedElement.classList.add(...hostConfig.makeCssClassNames("primary", "sentiment-positive"));
+                break;
+            case Enums.ActionSentiment.Destructive:
+                this.action.renderedElement.classList.add(...hostConfig.makeCssClassNames("sentiment-destructive"));
+                break;
         }
 
     }
@@ -2993,7 +2998,7 @@ export abstract class Action implements ICardObject {
     id: string;
     title: string;
     iconUrl: string;
-    isPrimary: boolean;
+    sentiment: Enums.ActionSentiment = Enums.ActionSentiment.Default;
 
     onExecute: (sender: Action) => void;
 
@@ -3004,6 +3009,7 @@ export abstract class Action implements ICardObject {
         Utils.setProperty(result, "id", this.id);
         Utils.setProperty(result, "title", this.title);
         Utils.setProperty(result, "iconUrl", this.iconUrl);
+        Utils.setEnumProperty(Enums.ActionSentiment, result, "sentiment", this.sentiment, Enums.ActionSentiment.Default);
 
         return result;
     }
@@ -3127,6 +3133,7 @@ export abstract class Action implements ICardObject {
 
         this.title = json["title"];
         this.iconUrl = json["iconUrl"];
+        this.sentiment = Utils.getEnumValueOrDefault(Enums.ActionSentiment, json["sentiment"], this.sentiment);
     }
 
     remove(): boolean {
@@ -3153,6 +3160,21 @@ export abstract class Action implements ICardObject {
     getActionById(id: string): Action {
         if (this.id == id) {
             return this;
+        }
+    }
+
+    get isPrimary(): boolean {
+        return this.sentiment == Enums.ActionSentiment.Positive;
+    }
+
+    set isPrimary(value: boolean) {
+        if (value) {
+            this.sentiment = Enums.ActionSentiment.Positive;
+        }
+        else {
+            if (this.sentiment == Enums.ActionSentiment.Positive) {
+                this.sentiment = Enums.ActionSentiment.Default;
+            }
         }
     }
 

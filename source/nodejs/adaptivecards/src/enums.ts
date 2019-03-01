@@ -1,3 +1,9 @@
+export enum ActionSentiment {
+    Default,
+    Positive,
+    Destructive
+}
+
 export enum Size {
     Auto,
     Stretch,
