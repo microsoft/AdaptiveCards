@@ -651,7 +651,7 @@ export class ActionPeer extends DesignerPeer {
             card.addItem(actionType);
         }
 
-        var id = addLabelAndInput(card, "Id:", Adaptive.TextInput);
+        let id = addLabelAndInput(card, "Id:", Adaptive.TextInput);
         id.input.defaultValue = this.action.id;
         id.input.placeholder = "(not set)";
         id.input.onValueChanged = () => {
@@ -660,7 +660,7 @@ export class ActionPeer extends DesignerPeer {
             this.changed(false);
         }
 
-        var title = addLabelAndInput(card, "Title:", Adaptive.TextInput);
+        let title = addLabelAndInput(card, "Title:", Adaptive.TextInput);
         title.input.defaultValue = this.action.title;
         title.input.placeholder = "(not set)";
         title.input.onValueChanged = () => {
@@ -669,7 +669,19 @@ export class ActionPeer extends DesignerPeer {
             this.changed(false);
         }
 
-        var iconUrl = addLabelAndInput(card, "Icon URL:", Adaptive.TextInput);
+        let sentiment = addLabelAndInput(card, "Sentiment:", Adaptive.ChoiceSetInput);
+        sentiment.input.isCompact = true;
+        sentiment.input.choices.push(new Adaptive.Choice("Default", Adaptive.ActionSentiment.Default.toString()));
+        sentiment.input.choices.push(new Adaptive.Choice("Positive", Adaptive.ActionSentiment.Positive.toString()));
+        sentiment.input.choices.push(new Adaptive.Choice("Destructive", Adaptive.ActionSentiment.Destructive.toString()));
+        sentiment.input.defaultValue = this.action.sentiment.toString();
+        sentiment.input.onValueChanged = () => {
+            this.action.sentiment = <Adaptive.ActionSentiment>parseInt(sentiment.input.value);
+
+            this.changed(false);
+        }
+
+        let iconUrl = addLabelAndInput(card, "Icon URL:", Adaptive.TextInput);
         iconUrl.input.defaultValue = this.action.iconUrl;
         iconUrl.input.placeholder = "(not set)";
         iconUrl.input.onValueChanged = () => {

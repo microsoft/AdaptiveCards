@@ -694,22 +694,20 @@ export class HostConfig {
 			this.getEffectiveSpacing(paddingDefinition.left));
     }
     
-    makeCssClassName(...classNames: string[]): string {
-        let result = "";
+    makeCssClassNames(...classNames: string[]): string[] {
+        let result: string[] = [];
 
-        for (let i = 0; i < classNames.length; i++) {
-            if (i > 0) {
-                result += " ";
-            }
-
-            if (this.cssClassNamePrefix) {
-                result += this.cssClassNamePrefix + "-";
-            }
-
-            result += classNames[i];
+        for (let className of classNames) {
+            result.push((this.cssClassNamePrefix ? this.cssClassNamePrefix + "-" : "") + className);
         }
 
         return result;
+    }
+
+    makeCssClassName(...classNames: string[]): string {
+        let result = this.makeCssClassNames(...classNames).join(" ");
+
+        return result ? result : "";
     }
 
     get fontFamily(): string {
