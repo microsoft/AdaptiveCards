@@ -22045,6 +22045,58 @@ SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObject
 }
 
 
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparser_1TryParseSimpleTime(JNIEnv *jenv, jclass jcls, jstring jarg1, jlong jarg2, jlong jarg3) {
+  jboolean jresult = 0 ;
+  std::string arg1 ;
+  unsigned int *arg2 = (unsigned int *) 0 ;
+  unsigned int *arg3 = (unsigned int *) 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  if(!jarg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  } 
+  const char *arg1_pstr = (const char *)jenv->GetStringUTFChars(jarg1, 0); 
+  if (!arg1_pstr) return 0;
+  (&arg1)->assign(arg1_pstr);
+  jenv->ReleaseStringUTFChars(jarg1, arg1_pstr); 
+  arg2 = *(unsigned int **)&jarg2; 
+  arg3 = *(unsigned int **)&jarg3; 
+  result = (bool)AdaptiveCards::DateTimePreparser::TryParseSimpleTime(arg1,arg2,arg3);
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_DateTimePreparser_1TryParseSimpleDate(JNIEnv *jenv, jclass jcls, jstring jarg1, jlong jarg2, jlong jarg3, jlong jarg4) {
+  jboolean jresult = 0 ;
+  std::string arg1 ;
+  unsigned int *arg2 = (unsigned int *) 0 ;
+  unsigned int *arg3 = (unsigned int *) 0 ;
+  unsigned int *arg4 = (unsigned int *) 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  if(!jarg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  } 
+  const char *arg1_pstr = (const char *)jenv->GetStringUTFChars(jarg1, 0); 
+  if (!arg1_pstr) return 0;
+  (&arg1)->assign(arg1_pstr);
+  jenv->ReleaseStringUTFChars(jarg1, arg1_pstr); 
+  arg2 = *(unsigned int **)&jarg2; 
+  arg3 = *(unsigned int **)&jarg3; 
+  arg4 = *(unsigned int **)&jarg4; 
+  result = (bool)AdaptiveCards::DateTimePreparser::TryParseSimpleDate(arg1,arg2,arg3,arg4);
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1DateTimePreparser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::DateTimePreparser *arg1 = (AdaptiveCards::DateTimePreparser *) 0 ;
   

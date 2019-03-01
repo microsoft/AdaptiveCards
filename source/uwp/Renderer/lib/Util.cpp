@@ -1332,3 +1332,38 @@ Color GenerateLighterColor(const Color& originalColor)
     lighterColor.B = originalColor.B + static_cast<int>((255 - originalColor.B) * lightIncrement);
     return lighterColor;
 }
+
+DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int day)
+{
+    SYSTEMTIME systemTime = {(WORD)year, (WORD)month, 0, (WORD)day};
+
+    // Convert to UTC
+    TIME_ZONE_INFORMATION timeZone;
+    GetTimeZoneInformation(&timeZone);
+    TzSpecificLocalTimeToSystemTime(&timeZone, &systemTime, &systemTime);
+
+    // Convert to ticks
+    FILETIME fileTime;
+    SystemTimeToFileTime(&systemTime, &fileTime);
+    DateTime dateTime{(INT64)fileTime.dwLowDateTime + (((INT64)fileTime.dwHighDateTime) << 32)};
+
+    return dateTime;
+}
+
+HRESULT GetDateTimeReference(unsigned int year, unsigned int month, unsigned int day, _COM_Outptr_ IReference<DateTime>** dateTimeReference)
+{
+    DateTime dateTime = GetDateTime(year, month, day);
+
+    ComPtr<IPropertyValueStatics> factory;
+    RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &factory));
+
+    ComPtr<IInspectable> inspectable;
+    RETURN_IF_FAILED(factory->CreateDateTime(dateTime, &inspectable));
+
+    ComPtr<IReference<DateTime>> localDateTimeReference;
+    RETURN_IF_FAILED(inspectable.As(&localDateTimeReference));
+
+    *dateTimeReference = localDateTimeReference.Detach();
+
+    return S_OK;
+}

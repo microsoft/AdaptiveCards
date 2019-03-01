@@ -2533,7 +2533,7 @@ namespace AdaptiveNamespace
 
         ABI::AdaptiveNamespace::ContainerStyle containerStyle;
         THROW_IF_FAILED(adaptiveColumnSet->get_Style(&containerStyle));
-        bool hasExplicitContainerStyle{ true };
+        bool hasExplicitContainerStyle{true};
         if (containerStyle == ABI::AdaptiveNamespace::ContainerStyle::None)
         {
             hasExplicitContainerStyle = false;
@@ -2580,7 +2580,7 @@ namespace AdaptiveNamespace
             *columnSetControl = nullptr;
             return;
         }
-        
+
         XamlHelpers::IterateOverVector<AdaptiveColumn, IAdaptiveColumn>(
             columns.Get(),
             [xamlGrid, gridStatics, &currentColumn, renderContext, renderArgs, columnRenderer, hostConfig](IAdaptiveColumn* column) {
@@ -3183,12 +3183,43 @@ namespace AdaptiveNamespace
 
         THROW_IF_FAILED(datePicker.CopyTo(dateInputControl));
 
+
+        // Value
+        HString hstringValue;
+        THROW_IF_FAILED(adaptiveDateInput->get_Value(hstringValue.GetAddressOf()));
+        std::string value = HStringToUTF8(hstringValue.Get());
+        unsigned int year, month, day;
+        if (DateTimePreparser::TryParseSimpleDate(value, &year, &month, &day))
+        {
+            ComPtr<IReference<DateTime>> initialDateTimeReference;
+            THROW_IF_FAILED(GetDateTimeReference(year, month, day, &initialDateTimeReference));
+            THROW_IF_FAILED(datePicker->put_Date(initialDateTimeReference.Get()));
+        }
+
+        // Min date
+        HString hstringMin;
+        THROW_IF_FAILED(adaptiveDateInput->get_Min(hstringMin.GetAddressOf()));
+        std::string min = HStringToUTF8(hstringMin.Get());
+        if (DateTimePreparser::TryParseSimpleDate(min, &year, &month, &day))
+        {
+            DateTime minDate = GetDateTime(year, month, day);
+            THROW_IF_FAILED(datePicker->put_MinDate(minDate));
+        }
+
+        // Max date
+        HString hstringMax;
+        THROW_IF_FAILED(adaptiveDateInput->get_Max(hstringMax.GetAddressOf()));
+        std::string max = HStringToUTF8(hstringMax.Get());
+        if (DateTimePreparser::TryParseSimpleDate(max, &year, &month, &day))
+        {
+            DateTime maxDate = GetDateTime(year, month, day);
+            THROW_IF_FAILED(datePicker->put_MaxDate(maxDate));
+        }
+
         THROW_IF_FAILED(
             SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Date", datePickerAsFrameworkElement.Get()));
 
         AddInputValueToContext(renderContext, adaptiveCardElement, *dateInputControl);
-
-        // TODO: Handle parsing dates for min/max and value
     }
 
     void XamlBuilder::BuildNumberInput(_In_ IAdaptiveCardElement* adaptiveCardElement,
@@ -3621,7 +3652,22 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(
             SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Time", timePickerAsFrameworkElement.Get()));
 
-        // TODO: Handle placeholder text and parsing times for min/max and value
+        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
+        ComPtr<IAdaptiveTimeInput> adaptiveTimeInput;
+        THROW_IF_FAILED(cardElement.As(&adaptiveTimeInput));
+
+        // Set initial value
+        HString hstringValue;
+        THROW_IF_FAILED(adaptiveTimeInput->get_Value(hstringValue.GetAddressOf()));
+        std::string value = HStringToUTF8(hstringValue.Get());
+        unsigned int hours, minutes;
+        if (DateTimePreparser::TryParseSimpleTime(value, &hours, &minutes))
+        {
+            TimeSpan initialTime{(INT64)(hours * 60 + minutes) * 10000000 * 60};
+            THROW_IF_FAILED(timePicker->put_Time(initialTime));
+        }
+
+        // Note: Placeholder text and min/max are not supported by ITimePicker
 
         THROW_IF_FAILED(timePicker.CopyTo(timeInputControl));
         AddInputValueToContext(renderContext, adaptiveCardElement, *timeInputControl);

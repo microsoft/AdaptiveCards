@@ -215,6 +215,13 @@ HRESULT AdaptiveWarningsToSharedWarnings(
 
 ABI::Windows::UI::Color GenerateLighterColor(const ABI::Windows::UI::Color& originalColor);
 
+ABI::Windows::Foundation::DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int day);
+
+HRESULT GetDateTimeReference(unsigned int year,
+                             unsigned int month,
+                             unsigned int day,
+                             _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::Windows::Foundation::DateTime>** dateTimeReference);
+
 namespace AdaptiveNamespace
 {
     class XamlBuilder;
