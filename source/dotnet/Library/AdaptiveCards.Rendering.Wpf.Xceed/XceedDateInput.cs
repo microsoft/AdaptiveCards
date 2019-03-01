@@ -8,12 +8,17 @@ namespace AdaptiveCards.Rendering.Wpf
 
     public static class XceedDateInput
     {
+        static Regex textFunctionRegex;
+        static XceedDateInput()
+        {
+            textFunctionRegex = new Regex(@"^(\d{4})-(\d{2})-(\d{2})$", RegexOptions.Compiled);
+        }
+
         // Validate times are of the format YYYY-MM-DD. This allows us to check the string against a regular expression for
         // this format before passing to DateTime.TryParse to ensure we support only this single format.
         private static bool IsSupportedDateFormat(string dateString)
         {
-            Regex TextFunctionRegex = new Regex(@"^(\d{4})-(\d{2})-(\d{2})$");
-            return (dateString != null) && TextFunctionRegex.IsMatch(dateString);
+            return (dateString != null) && textFunctionRegex.IsMatch(dateString);
         }
 
         public static FrameworkElement Render(AdaptiveDateInput input, AdaptiveRenderContext context)

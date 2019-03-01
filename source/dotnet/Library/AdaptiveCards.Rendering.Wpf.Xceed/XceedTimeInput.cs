@@ -7,11 +7,16 @@ namespace AdaptiveCards.Rendering.Wpf
 {
     public static class XceedTimeInput
     {
+        static Regex TextFunctionRegex;
+        static XceedTimeInput()
+        {
+            TextFunctionRegex = new Regex(@"^(\d{2}):(\d{2})$", RegexOptions.Compiled);
+        }
+
         // Validate times are of the format HH:MM. This allows us to check the string against a regular expression for
         // this format before passing to DateTime.TryParse or TimeSpan.TryParse to ensure we support only this single format.
         private static bool IsSupportedTimeFormat(string timeString)
         {
-            Regex TextFunctionRegex = new Regex(@"^(\d{2}):(\d{2})$");
             return (timeString != null) && TextFunctionRegex.IsMatch(timeString);
         }
 
