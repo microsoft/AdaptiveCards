@@ -17,6 +17,7 @@ using namespace AdaptiveCards;
     NSMutableArray<ACRShowCardTarget *>* _showcardTargets;
     ACRContainerStyle _style;
     NSArray<NSLayoutConstraint *>* _widthconstraint;
+    CGFloat _area;
 }
 
 - (instancetype)initWithStyle:(ACRContainerStyle)style
@@ -52,6 +53,7 @@ using namespace AdaptiveCards;
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [self initWithFrame:CGRectMake(0,0,frame.size.width, frame.size.height) attributes:nil];
+    self.autoresizesSubviews = YES;
     return self;
 }
 
@@ -146,12 +148,12 @@ using namespace AdaptiveCards;
     }
 }
 
-- (CGSize)intrinsicContentSize
-{
+//- (CGSize)intrinsicContentSize
+//{
 /*
     NSLog(@"ACRContentStackView: dimension: w = %f, h = %f", self.frame.size.width, self.frame.size.height);
 */
-    
+    /*
     CGSize size = CGSizeZero;
     //if(self.stackView.axis == UILayoutConstraintAxisHorizontal) {
     if(self.axis == UILayoutConstraintAxisHorizontal) {
@@ -169,6 +171,8 @@ using namespace AdaptiveCards;
             size.width = MAX(size.width, sizeOfSubView.width);
         }
     }
+    _area = size.width * size.height;
+     */
     /*
     if(size.width != self.frame.size.width || size.height != self.frame.size.height) {
         self.frame.size = size;
@@ -185,8 +189,9 @@ using namespace AdaptiveCards;
     size.height = 100;
     size.width = 180;
     */
-    return size;
-}
+//    CGSize size = [self systemLayoutSizeFittingSize:(UILayoutFittingCompressedSize)];
+//    return size;
+//}
 
 - (void)addArrangedSubview:(UIView *)view
 {
@@ -255,9 +260,11 @@ using namespace AdaptiveCards;
 
 - (void)layoutSubviews
 {
-    NSLog(@"layout subviews size w = %f, h = %f", self.frame.size.width, self.frame.size.height);
+    NSLog(@"layout subviews before size w = %f, h = %f", self.frame.size.width, self.frame.size.height);
+    
     [super layoutSubviews];
     
+    NSLog(@"layout subviews after size w = %f, h = %f", self.frame.size.width, self.frame.size.height);
     if (_isActionSet) {
 //        float accumulatedWidth = 0, accumulatedHeight = 0, spacing = self.stackView.spacing, maxWidth = 0, maxHeight = 0;
         float accumulatedWidth = 0, accumulatedHeight = 0, spacing = self.spacing, maxWidth = 0, maxHeight = 0;

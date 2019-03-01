@@ -32,11 +32,15 @@
 
 - (CGSize)intrinsicContentSize
 {
+    /*
     CGSize size = self.frame.size;
     self.scrollEnabled = YES;
-
+    NSLog(@"superview w = %f, h = %f", self.superview.frame.size.width,
+          self.superview.frame.size.height);
+    
     //if(size.height != self.contentSize.height || size.width != self.contentSize.width) {
         [self sizeToFit];
+     */
         /*
         NSLayoutConstraint *wconst = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.frame.size.width];
         NSLayoutConstraint *hconst = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.frame.size.height];
@@ -59,7 +63,7 @@
          */
     //}
     //size = self.frame.size;
-
+/*
     self.scrollEnabled = NO;
     
     //NSLog(@"%@ text view h = %f, w = %f", self.attributedText, self.frame.size.height, self.frame.size.width);
@@ -67,7 +71,8 @@
     size = self.contentSize;
     _area = self.frame.size.width * self.frame.size.height;
     //size.width *= 2;
-    return self.contentSize;
+ */
+    return self.frame.size;
 }
 
 - (void)layoutSubviews
@@ -80,8 +85,10 @@
             _area = area;
             [self sizeToFit];
             _area = self.frame.size.width * self.frame.size.height;
+            [self invalidateIntrinsicContentSize];
             //NSLog(@"intrinsic ContentSize changed");
-            [self.superview invalidateIntrinsicContentSize];
+            NSLog(@"text view calling invalidate intrinsic content size");
+            //[self.superview invalidateIntrinsicContentSize];
             //[self.superview sizeToFit];
             //[self.rootView.acrActionDelegate didChangeViewLayout:CGRectZero newFrame:CGRectZero];
 

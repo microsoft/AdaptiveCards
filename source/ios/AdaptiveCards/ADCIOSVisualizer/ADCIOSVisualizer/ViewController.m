@@ -419,12 +419,12 @@
     UIView * v = [self.scrViewA objectAtIndex:indexPath.row];
     v.translatesAutoresizingMaskIntoConstraints = NO;
     [cell.contentView addSubview:v];
-    //[v setNeedsUpdateConstraints];
-    //[v updateConstraints];
+    [v setNeedsUpdateConstraints];
+    [v updateConstraints];
     [v.topAnchor constraintEqualToAnchor:cell.contentView.topAnchor constant:0].active = YES;
     [v.leadingAnchor constraintEqualToAnchor:cell.contentView.leadingAnchor constant:0].active = YES;
     //[v.trailingAnchor constraintEqualToAnchor:cell.contentView.trailingAnchor constant:0].active = YES;
-    //[cell.contentView.bottomAnchor constraintGreaterThanOrEqualToAnchor:v.bottomAnchor constant:0].active = YES;
+    [cell.contentView.bottomAnchor constraintGreaterThanOrEqualToAnchor:v.bottomAnchor constant:0].active = YES;
      
     return cell;
 }
@@ -435,7 +435,7 @@
     if(v.frame.size.height) {
         return v.frame.size.height + 50;
     } else {
-        return UITableViewAutomaticDimension;
+        return 1000;
     }
 }
 

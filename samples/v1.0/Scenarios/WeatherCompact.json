@@ -52,24 +52,7 @@
 							"spacing": "small"
 						}
 					]
-				},
-				{
-					"type": "Column",
-					"width": "stretch",
-					"items": [
-						{
-							"type": "TextBlock",
-							"text": "Hi 51",
-							"horizontalAlignment": "left"
-						},
-						{
-							"type": "TextBlock",
-							"text": "Lo 40",
-							"horizontalAlignment": "left",
-							"spacing": "none"
-						}
-					]
-				}
+				}				
 			]
 		}
 	]
