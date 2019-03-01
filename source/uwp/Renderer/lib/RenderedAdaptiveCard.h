@@ -57,7 +57,7 @@ namespace AdaptiveNamespace
         HRESULT SendMediaClickedEvent(_In_ ABI::AdaptiveNamespace::IAdaptiveMedia* eventArgs);
 
     private:
-        HRESULT RenderedAdaptiveCard::HandleInlineShowCardEvent(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* actionElement);
+        HRESULT HandleInlineShowCardEvent(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* actionElement);
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCard> m_originatingCard;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveHostConfig> m_originatingHostConfig;

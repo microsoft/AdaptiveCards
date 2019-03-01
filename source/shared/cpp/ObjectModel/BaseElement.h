@@ -20,7 +20,7 @@ namespace AdaptiveSharedNamespace
         static InternalId Current();
         static constexpr unsigned int Invalid = 0;
 
-        std::size_t const Hash() const { return std::hash<int>()(m_internalId); }
+        std::size_t const Hash() const { return std::hash<unsigned int>()(m_internalId); }
 
         bool operator==(const unsigned int other) const { return m_internalId == other; }
         bool operator!=(const unsigned int other) const { return m_internalId != other; }

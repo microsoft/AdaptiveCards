@@ -226,7 +226,7 @@ namespace AdaptiveNamespace
         InternalId actionSetId;
         if (actionSet != nullptr)
         {
-            // If this action in in an actionset, store the action set id
+            // If this action is in an actionset, store the action set id
             ComPtr<AdaptiveNamespace::AdaptiveActionSet> actionSetImpl =
                 PeekInnards<AdaptiveNamespace::AdaptiveActionSet>(actionSet);
             actionSetId = actionSetImpl->GetInternalId();

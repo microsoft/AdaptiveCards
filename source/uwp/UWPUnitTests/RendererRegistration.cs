@@ -134,6 +134,10 @@ namespace UWPUnitTests
                 }
 
                 Assert.IsTrue(customFound && submitFound);
+
+                renderer.ActionRenderers.Remove("TestCustomAction");
+                renderer.ActionRenderers.Remove("Action.Submit");
+                renderer.ActionRenderers.Remove("TestCustomActionThatDoesntExist");
             });
         }
     }
