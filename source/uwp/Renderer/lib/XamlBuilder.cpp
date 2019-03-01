@@ -3106,7 +3106,7 @@ namespace AdaptiveNamespace
         if (DateTimePreparser::TryParseSimpleDate(value, &year, &month, &day))
         {
             ComPtr<IReference<DateTime>> initialDateTimeReference;
-            GetDateTimeReference(year, month, day, &initialDateTimeReference);
+            THROW_IF_FAILED(GetDateTimeReference(year, month, day, &initialDateTimeReference));
             THROW_IF_FAILED(datePicker->put_Date(initialDateTimeReference.Get()));
         }
 
