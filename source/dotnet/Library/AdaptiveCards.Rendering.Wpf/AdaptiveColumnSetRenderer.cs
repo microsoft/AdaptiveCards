@@ -11,18 +11,28 @@ namespace AdaptiveCards.Rendering.Wpf
             var uiColumnSet = new Grid();
             uiColumnSet.Style = context.GetStyle($"Adaptive.{columnSet.Type}");
 
+            // Keep track of ContainerStyle.ForegroundColors before Container is rendered
+            var outerStyle = context.ForegroundColors;
+            var parentContainerStyle = context.ParentStyle;
+
             if (columnSet.Style != null)
             {
+                AdaptiveContainerRenderer.ApplyPadding(uiColumnSet, columnSet, parentContainerStyle, context);
+
                 // Apply background color
-                var columnSetStyle = context.Config.ContainerStyles.Default;
-                if (columnSet.Style == AdaptiveContainerStyle.Emphasis)
-                {
-                    columnSetStyle = context.Config.ContainerStyles.Emphasis;
-                }
+                var columnSetStyle = context.Config.ContainerStyles.GetContainerStyleConfig(columnSet.Style);
 
                 uiColumnSet.SetBackgroundColor(columnSetStyle.BackgroundColor, context);
+                context.ForegroundColors = columnSetStyle.ForegroundColors;
             }
 
+            AdaptiveContainerStyle columnSetContainerStyle = columnSet.Style ?? parentContainerStyle;
+            if (columnSetContainerStyle == AdaptiveContainerStyle.None)
+            {
+                columnSetContainerStyle = parentContainerStyle;
+            }
+            context.ParentStyle = columnSetContainerStyle;
+            
             foreach (var column in columnSet.Columns)
             {
                 FrameworkElement uiContainer = context.Render(column);
@@ -51,7 +61,6 @@ namespace AdaptiveCards.Rendering.Wpf
                     }
 
                 }
-
 
                 // do some sizing magic using the magic GridUnitType.Star
                 var width = column.Width?.ToLower();
@@ -88,6 +97,10 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 uiColumnSet.Visibility = Visibility.Collapsed;
             }
+
+            // Revert context's value to that of outside the Container
+            context.ForegroundColors = outerStyle;
+            context.ParentStyle = parentContainerStyle;
 
             return uiColumnSet;
         }
