@@ -95,13 +95,14 @@
     <ClCompile Include="lib\AdaptiveToggleVisibilityTarget.cpp" />
     <ClCompile Include="lib\AdaptiveActionSet.cpp" />
     <ClCompile Include="lib\AdaptiveActionSetRenderer.cpp" />
-    <ClCompile Include="lib\AdaptiveOpenUrlActionParser.cpp" />
-    <ClCompile Include="lib\AdaptiveShowCardActionParser.cpp" />
-    <ClCompile Include="lib\AdaptiveSubmitActionParser.cpp" />
     <ClCompile Include="lib\AdaptiveUnsupportedElement.cpp" />
     <ClCompile Include="lib\AdaptiveBackgroundImage.cpp" />
     <ClCompile Include="lib\TileControl.cpp" />
-    <ClCompile Include="lib\AdaptiveToggleVisibilityActionParser.cpp" />
+    <ClCompile Include="lib\AdaptiveActionRendererRegistration.cpp" />
+    <ClCompile Include="lib\AdaptiveOpenUrlActionRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveShowCardActionRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveSubmitActionRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveToggleVisibilityActionRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -204,13 +205,14 @@
     <ClInclude Include="lib\AdaptiveToggleVisibilityTarget.h" />
     <ClInclude Include="lib\AdaptiveActionSet.h" />
     <ClInclude Include="lib\AdaptiveActionSetRenderer.h" />
-    <ClInclude Include="lib\AdaptiveOpenUrlActionParser.h" />
-    <ClInclude Include="lib\AdaptiveShowCardActionParser.h" />
-    <ClInclude Include="lib\AdaptiveSubmitActionParser.h" />
     <ClInclude Include="lib\AdaptiveUnsupportedElement.h" />
     <ClInclude Include="lib\AdaptiveBackgroundImage.h" />
     <ClInclude Include="lib\TileControl.h" />
-    <ClInclude Include="lib\AdaptiveToggleVisibilityActionParser.h" />
+    <ClInclude Include="lib\AdaptiveActionRendererRegistration.h" />
+    <ClInclude Include="lib\AdaptiveOpenUrlActionRenderer.h" />
+    <ClInclude Include="lib\AdaptiveShowCardActionRenderer.h" />
+    <ClInclude Include="lib\AdaptiveSubmitActionRenderer.h" />
+    <ClInclude Include="lib\AdaptiveToggleVisibilityActionRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />

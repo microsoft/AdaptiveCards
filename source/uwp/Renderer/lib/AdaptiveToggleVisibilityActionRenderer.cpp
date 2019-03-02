@@ -1,21 +1,32 @@
 #include "pch.h"
 
 #include "AdaptiveToggleVisibilityAction.h"
-#include "AdaptiveToggleVisibilityActionParser.h"
+#include "AdaptiveToggleVisibilityActionRenderer.h"
 #include "Util.h"
 #include "AdaptiveElementParserRegistration.h"
+#include "XamlBuilder.h"
 
+using namespace ABI::AdaptiveNamespace;
 using namespace Microsoft::WRL;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveToggleVisibilityActionParser::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveToggleVisibilityActionRenderer::RuntimeClassInitialize() noexcept try
     {
         return S_OK;
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveToggleVisibilityActionParser::FromJson(
+    HRESULT AdaptiveToggleVisibilityActionRenderer::Render(_In_ IAdaptiveActionElement* action,
+                                                           _In_ IAdaptiveRenderContext* renderContext,
+                                                           _In_ IAdaptiveRenderArgs* renderArgs,
+                                                           _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept try
+    {
+        return XamlBuilder::BuildAction(action, renderContext, renderArgs, result);
+    }
+    CATCH_RETURN;
+
+    HRESULT AdaptiveToggleVisibilityActionRenderer::FromJson(
         _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
         _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
         _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
