@@ -260,11 +260,11 @@ using namespace AdaptiveCards;
 
 - (void)layoutSubviews
 {
-    NSLog(@"layout subviews before size w = %f, h = %f", self.frame.size.width, self.frame.size.height);
+    //NSLog(@"layout subviews before size w = %f, h = %f", self.frame.size.width, self.frame.size.height);
     
     [super layoutSubviews];
     
-    NSLog(@"layout subviews after size w = %f, h = %f", self.frame.size.width, self.frame.size.height);
+    //NSLog(@"layout subviews after size w = %f, h = %f", self.frame.size.width, self.frame.size.height);
     if (_isActionSet) {
 //        float accumulatedWidth = 0, accumulatedHeight = 0, spacing = self.stackView.spacing, maxWidth = 0, maxHeight = 0;
         float accumulatedWidth = 0, accumulatedHeight = 0, spacing = self.spacing, maxWidth = 0, maxHeight = 0;

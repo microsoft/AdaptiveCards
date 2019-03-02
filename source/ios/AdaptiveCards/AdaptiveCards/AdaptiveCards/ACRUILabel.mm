@@ -77,7 +77,7 @@
 
 - (void)layoutSubviews
 {
-    NSLog(@"TextView size w = %f, h = %f", self.frame.size.width, self.frame.size.height);
+    //NSLog(@"TextView size w = %f, h = %f", self.frame.size.width, self.frame.size.height);
     CGSize size = self.frame.size;
     CGFloat area = size.width * size.height;
     //if(self.tag == eACRUILabelTag) {
@@ -87,7 +87,7 @@
             _area = self.frame.size.width * self.frame.size.height;
             [self invalidateIntrinsicContentSize];
             //NSLog(@"intrinsic ContentSize changed");
-            NSLog(@"text view calling invalidate intrinsic content size");
+            //NSLog(@"text view calling invalidate intrinsic content size");
             //[self.superview invalidateIntrinsicContentSize];
             //[self.superview sizeToFit];
             //[self.rootView.acrActionDelegate didChangeViewLayout:CGRectZero newFrame:CGRectZero];
