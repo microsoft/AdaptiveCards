@@ -19,7 +19,7 @@ using namespace AdaptiveCards;
 
 - (CGSize)intrinsicContentSize
 {
-    CGSize size = [super intrinsicContentSize];
+//    CGSize size = [super intrinsicContentSize];
     if(self.subviews.count) {
         NSInteger tag = self.subviews.firstObject.tag;
         if((tag == eACRUILabelTag) || (tag == eACRUIImageTag)) {
