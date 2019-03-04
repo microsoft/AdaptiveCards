@@ -24,6 +24,16 @@ namespace AdaptiveCards
         }
 
         /// <summary>
+        ///     Horizontal alignment for element
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(typeof(AdaptiveHorizontalAlignment), "left")]
+        public AdaptiveHorizontalAlignment HorizontalAlignment { get; set; }
+
+        /// <summary>
         ///     Is it allowed for the text to wrap
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
