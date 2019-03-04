@@ -8,7 +8,7 @@
 
 package io.adaptivecards.objectmodel;
 
-public class ColumnSet extends BaseCardElement {
+public class ColumnSet extends CollectionTypeElement {
   private transient long swigCPtr;
   private transient boolean swigCMemOwnDerived;
 
@@ -54,29 +54,12 @@ public class ColumnSet extends BaseCardElement {
     return new JsonValue(AdaptiveCardObjectModelJNI.ColumnSet_SerializeToJsonValue(swigCPtr, this), true);
   }
 
+  public void DeserializeChildren(ParseContext context, JsonValue value) {
+    AdaptiveCardObjectModelJNI.ColumnSet_DeserializeChildren(swigCPtr, this, ParseContext.getCPtr(context), context, JsonValue.getCPtr(value), value);
+  }
+
   public ColumnVector GetColumns() {
     return new ColumnVector(AdaptiveCardObjectModelJNI.ColumnSet_GetColumns__SWIG_0(swigCPtr, this), false);
-  }
-
-  public BaseActionElement GetSelectAction() {
-    long cPtr = AdaptiveCardObjectModelJNI.ColumnSet_GetSelectAction(swigCPtr, this);
-    return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
-  }
-
-  public void SetSelectAction(BaseActionElement action) {
-    AdaptiveCardObjectModelJNI.ColumnSet_SetSelectAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
-  }
-
-  public ContainerStyle GetStyle() {
-    return ContainerStyle.swigToEnum(AdaptiveCardObjectModelJNI.ColumnSet_GetStyle(swigCPtr, this));
-  }
-
-  public void SetStyle(ContainerStyle value) {
-    AdaptiveCardObjectModelJNI.ColumnSet_SetStyle(swigCPtr, this, value.swigValue());
-  }
-
-  public void SetLanguage(String language) {
-    AdaptiveCardObjectModelJNI.ColumnSet_SetLanguage(swigCPtr, this, language);
   }
 
   public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {

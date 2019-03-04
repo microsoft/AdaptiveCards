@@ -1,13 +1,13 @@
 #pragma once
 
 #include "pch.h"
-#include "BaseCardElement.h"
+#include "CollectionTypeElement.h"
 
 namespace AdaptiveSharedNamespace
 {
     class Column;
 
-    class ColumnSet : public BaseCardElement
+    class ColumnSet : public CollectionTypeElement
     {
         friend class ColumnSetParser;
 
@@ -20,24 +20,16 @@ namespace AdaptiveSharedNamespace
         ~ColumnSet() = default;
 
         Json::Value SerializeToJsonValue() const override;
+        void DeserializeChildren(ParseContext& context, const Json::Value& value) override;
 
         std::vector<std::shared_ptr<Column>>& GetColumns();
         const std::vector<std::shared_ptr<Column>>& GetColumns() const;
-
-        std::shared_ptr<BaseActionElement> GetSelectAction() const;
-        void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
-
-        ContainerStyle GetStyle() const;
-        void SetStyle(const ContainerStyle value);
-
-        void SetLanguage(const std::string& language);
 
         void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
     private:
         void PopulateKnownPropertiesSet() override;
 
-        ContainerStyle m_style;
         std::vector<std::shared_ptr<Column>> m_columns;
         std::shared_ptr<BaseActionElement> m_selectAction;
     };

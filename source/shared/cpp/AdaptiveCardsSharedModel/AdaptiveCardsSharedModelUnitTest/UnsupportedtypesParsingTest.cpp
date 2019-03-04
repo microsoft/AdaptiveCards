@@ -176,7 +176,8 @@ namespace AdaptiveCardsSharedModelUnitTest
             Json::FastWriter writer;
             auto expectedAsString = writer.write(ParseUtil::GetJsonValueFromString(testJsonString));
             auto serializedCardAsString = writer.write(parseResult->GetAdaptiveCard()->SerializeToJsonValue());
-            Assert::AreEqual(expectedAsString, serializedCardAsString);
+            Assert::AreEqual(expectedAsString.substr(0, expectedAsString.size() - 1),
+                serializedCardAsString.substr(0, serializedCardAsString.size() - 1));
         }
     };
 }

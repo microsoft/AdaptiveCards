@@ -9,47 +9,6 @@
 
 using namespace AdaptiveSharedNamespace;
 
-void PropagateLanguage(const std::string& language, const std::vector<std::shared_ptr<BaseCardElement>>& m_body)
-{
-    for (auto& bodyElement : m_body)
-    {
-        const CardElementType elementType = bodyElement->GetElementType();
-
-        if (elementType == CardElementType::ColumnSet)
-        {
-            auto columnSet = std::static_pointer_cast<ColumnSet>(bodyElement);
-            if (columnSet != nullptr)
-            {
-                columnSet->SetLanguage(language);
-            }
-        }
-        else if (elementType == CardElementType::Container)
-        {
-            auto container = std::static_pointer_cast<Container>(bodyElement);
-            if (container != nullptr)
-            {
-                container->SetLanguage(language);
-            }
-        }
-        else if (bodyElement->GetElementType() == CardElementType::TextBlock)
-        {
-            auto textBlock = std::static_pointer_cast<TextBlock>(bodyElement);
-            if (textBlock != nullptr)
-            {
-                textBlock->SetLanguage(language);
-            }
-        }
-        else if (bodyElement->GetElementType() == CardElementType::FactSet)
-        {
-            auto factset = std::static_pointer_cast<FactSet>(bodyElement);
-            if (factset != nullptr)
-            {
-                factset->SetLanguage(language);
-            }
-        }
-    }
-}
-
 std::string ValidateColor(const std::string& backgroundColor, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings)
 {
     if (backgroundColor.empty())

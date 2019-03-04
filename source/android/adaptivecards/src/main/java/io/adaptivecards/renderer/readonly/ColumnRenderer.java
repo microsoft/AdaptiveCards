@@ -117,7 +117,6 @@ public class ColumnRenderer extends BaseCardElementRenderer
                     hostConfig.GetImageBaseUrl(),
                     context.getResources().getDisplayMetrics().widthPixels,
                     backgroundImageProperties);
-
             loaderAsync.execute(backgroundImageProperties.GetUrl());
         }
 
