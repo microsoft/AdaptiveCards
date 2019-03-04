@@ -340,7 +340,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long new_InternalId();
   public final static native long InternalId_Next();
   public final static native long InternalId_Current();
+  public final static native long InternalId_Hash(long jarg1, InternalId jarg1_);
   public final static native void delete_InternalId(long jarg1);
+  public final static native long new_InternalIdKeyHash();
+  public final static native void delete_InternalIdKeyHash(long jarg1);
   public final static native long new_BaseElement__SWIG_0();
   public final static native long new_BaseElement__SWIG_1(long jarg1, BaseElement jarg1_);
   public final static native void delete_BaseElement(long jarg1);
@@ -443,11 +446,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void BaseInputElement_SetIsRequired(long jarg1, BaseInputElement jarg1_, boolean jarg2);
   public final static native long BaseInputElement_SerializeToJsonValue(long jarg1, BaseInputElement jarg1_);
   public final static native void delete_BaseInputElement(long jarg1);
-  public final static native long new_CollectionTypeElement__SWIG_0(long jarg1, CollectionTypeElement jarg1_);
   public final static native void delete_CollectionTypeElement(long jarg1);
-  public final static native long new_CollectionTypeElement__SWIG_2(int jarg1, int jarg2, int jarg3);
-  public final static native long new_CollectionTypeElement__SWIG_3(int jarg1, int jarg2);
-  public final static native long new_CollectionTypeElement__SWIG_4(int jarg1);
   public final static native int CollectionTypeElement_GetStyle(long jarg1, CollectionTypeElement jarg1_);
   public final static native void CollectionTypeElement_SetStyle(long jarg1, CollectionTypeElement jarg1_, int jarg2);
   public final static native int CollectionTypeElement_GetVerticalContentAlignment(long jarg1, CollectionTypeElement jarg1_);

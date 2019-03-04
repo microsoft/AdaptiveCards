@@ -42,22 +42,6 @@ public class CollectionTypeElement extends BaseCardElement {
     super.delete();
   }
 
-  public CollectionTypeElement(CollectionTypeElement arg0) {
-    this(AdaptiveCardObjectModelJNI.new_CollectionTypeElement__SWIG_0(CollectionTypeElement.getCPtr(arg0), arg0), true);
-  }
-
-  public CollectionTypeElement(CardElementType type, ContainerStyle style, VerticalContentAlignment alignment) {
-    this(AdaptiveCardObjectModelJNI.new_CollectionTypeElement__SWIG_2(type.swigValue(), style.swigValue(), alignment.swigValue()), true);
-  }
-
-  public CollectionTypeElement(CardElementType type, ContainerStyle style) {
-    this(AdaptiveCardObjectModelJNI.new_CollectionTypeElement__SWIG_3(type.swigValue(), style.swigValue()), true);
-  }
-
-  public CollectionTypeElement(CardElementType type) {
-    this(AdaptiveCardObjectModelJNI.new_CollectionTypeElement__SWIG_4(type.swigValue()), true);
-  }
-
   public ContainerStyle GetStyle() {
     return ContainerStyle.swigToEnum(AdaptiveCardObjectModelJNI.CollectionTypeElement_GetStyle(swigCPtr, this));
   }
