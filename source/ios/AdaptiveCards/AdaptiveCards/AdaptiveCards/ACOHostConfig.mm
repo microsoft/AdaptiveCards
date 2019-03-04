@@ -37,7 +37,6 @@ using namespace AdaptiveCards;
 
         // check if requested font family name is supported by iOS, if so save it for future uses
         [self importFontFamily: AdaptiveCards::FontStyle::Default];
-        [self importFontFamily: AdaptiveCards::FontStyle::Display];
         [self importFontFamily: AdaptiveCards::FontStyle::Monospace];
 
         _allActionsHaveIcons = YES;

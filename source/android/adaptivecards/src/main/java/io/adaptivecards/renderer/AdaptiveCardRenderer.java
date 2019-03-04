@@ -166,7 +166,7 @@ public class AdaptiveCardRenderer
                     layout,
                     hostConfig.GetImageBaseUrl(),
                     context.getResources().getDisplayMetrics().widthPixels,
-					          backgroundImageProperties);
+                    backgroundImageProperties);
 
             loaderAsync.execute(backgroundImageProperties.GetUrl());
         }

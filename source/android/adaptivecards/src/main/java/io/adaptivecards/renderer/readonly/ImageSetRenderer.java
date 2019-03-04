@@ -12,6 +12,7 @@ import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.IBaseCardElementRenderer;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
@@ -73,7 +74,12 @@ public class ImageSetRenderer extends BaseCardElementRenderer
         }
 
         HorizontalFlowLayout horizFlowLayout = new HorizontalFlowLayout(context);
-        horizFlowLayout.setTag(imageSet);
+        horizFlowLayout.setTag(new TagContent(imageSet));
+        if(!baseCardElement.GetIsVisible())
+        {
+            horizFlowLayout.setVisibility(View.GONE);
+        }
+
         ImageSize imageSize = imageSet.GetImageSize();
         ImageVector imageVector = imageSet.GetImages();
         long imageVectorSize = imageVector.size();

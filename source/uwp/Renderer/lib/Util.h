@@ -215,6 +215,13 @@ HRESULT AdaptiveWarningsToSharedWarnings(
 
 ABI::Windows::UI::Color GenerateLighterColor(const ABI::Windows::UI::Color& originalColor);
 
+ABI::Windows::Foundation::DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int day);
+
+HRESULT GetDateTimeReference(unsigned int year,
+                             unsigned int month,
+                             unsigned int day,
+                             _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::Windows::Foundation::DateTime>** dateTimeReference);
+
 namespace AdaptiveNamespace
 {
     class XamlBuilder;
@@ -259,13 +266,13 @@ namespace AdaptiveNamespace
     template<class TRegistration> HRESULT RegisterDefaultActionRenderers(TRegistration registration)
     {
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.OpenUrl").Get(),
-                                           Make<AdaptiveNamespace::AdaptiveOpenUrlActionParser>().Get()));
+                                           Make<AdaptiveNamespace::AdaptiveOpenUrlActionRenderer>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.ShowCard").Get(),
-                                           Make<AdaptiveNamespace::AdaptiveShowCardActionParser>().Get()));
+                                           Make<AdaptiveNamespace::AdaptiveShowCardActionRenderer>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.Submit").Get(),
-                                           Make<AdaptiveNamespace::AdaptiveSubmitActionParser>().Get()));
+                                           Make<AdaptiveNamespace::AdaptiveSubmitActionRenderer>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.ToggleVisibility").Get(),
-                                           Make<AdaptiveNamespace::AdaptiveToggleVisibilityActionParser>().Get()));
+                                           Make<AdaptiveNamespace::AdaptiveToggleVisibilityActionRenderer>().Get()));
         return S_OK;
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Newtonsoft.Json;
 
 namespace AdaptiveCards
@@ -13,11 +13,6 @@ namespace AdaptiveCards
         ///     The default font style for general use
         /// </summary>
         Default,
-
-        /// <summary>
-        ///     An alternative font style for text
-        /// </summary>
-        Display,
 
         /// <summary>
         ///     The monospace font style

@@ -49,7 +49,6 @@ public enum AdaptiveCardSchemaKey {
   DateInput,
   Default,
   DefaultPoster,
-  Display,
   ElementId,
   Emphasis,
   ExtraLarge,

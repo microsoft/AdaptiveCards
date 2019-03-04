@@ -48,20 +48,7 @@ module.exports = (env, argv) => {
 			new HtmlWebpackPlugin({
 				title: "Adaptive Cards Example",
 				template: "./example.html"
-			}),
-			new MiniCssExtractPlugin({
-				filename: 'adaptivecards-default.css'
-			}),
-			new CopyWebpackPlugin([{
-				from: 'src/adaptivecards-default.css',
-				to: '../lib/',
-				flatten: true
-			}]),
-			new CopyWebpackPlugin([{
-				from: 'src/adaptivecards-default.css',
-				to: '../dist/',
-				flatten: true
-			}])
+			})
 		]
 	};
 }
