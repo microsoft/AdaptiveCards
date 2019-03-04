@@ -73,6 +73,7 @@ namespace AdaptiveSharedNamespace
         ImageSizes,
         Images,
         InlineAction,
+        Inlines,
         InlineTopMargin,
         IsMultiSelect,
         IsMultiline,
@@ -103,6 +104,7 @@ namespace AdaptiveSharedNamespace
         Monospace,
         NumberInput,
         Padding,
+        Paragraphs,
         Placeholder,
         PlayButton,
         Poster,
@@ -110,6 +112,7 @@ namespace AdaptiveSharedNamespace
         RepeatHorizontally,
         RepeatVertically,
         Requires,
+        RichTextBlock,
         Right,
         SelectAction,
         Sentiment,
@@ -171,6 +174,7 @@ namespace AdaptiveSharedNamespace
         ImageSet,
         Media,
         NumberInput,
+        RichTextBlock,
         TextBlock,
         TextInput,
         TimeInput,
@@ -178,6 +182,12 @@ namespace AdaptiveSharedNamespace
         Unknown,
     };
     DECLARE_ADAPTIVECARD_ENUM(CardElementType);
+
+    enum class InlineElementType
+    {
+        TextRun = 0
+    };
+    DECLARE_ADAPTIVECARD_ENUM(InlineElementType);
 
     enum class TextSize
     {

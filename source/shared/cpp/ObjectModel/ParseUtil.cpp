@@ -224,10 +224,9 @@ namespace AdaptiveSharedNamespace
         return propertyValue.asInt();
     }
 
-    void ParseUtil::ExpectTypeString(const Json::Value& json, CardElementType bodyType)
+    void ParseUtil::ExpectTypeString(const Json::Value& json, const std::string& expectedTypeStr)
     {
         std::string actualType = GetTypeAsString(json);
-        std::string expectedTypeStr = CardElementTypeToString(bodyType);
         const bool isTypeCorrect = expectedTypeStr.compare(actualType) == 0;
         if (!isTypeCorrect)
         {
@@ -235,6 +234,11 @@ namespace AdaptiveSharedNamespace
                                              "The JSON element did not have the correct type. Expected: " + expectedTypeStr +
                                                  ", Actual: " + actualType);
         }
+    }
+
+    void ParseUtil::ExpectTypeString(const Json::Value& json, CardElementType bodyType)
+    {
+        return ExpectTypeString(json, CardElementTypeToString(bodyType));
     }
 
     // throws if the key is missing or the value mapped to the key is the wrong type
