@@ -502,6 +502,9 @@ namespace AdaptiveCards.Test
             var card = new AdaptiveCard("1.2");
 
             var richTB = new AdaptiveRichTextBlock();
+            richTB.Wrap = true;
+            richTB.MaxLines = 3;
+            richTB.HorizontalAlignment = AdaptiveHorizontalAlignment.Center;
 
             // Build First Paragraph
             var paragraph1 = new AdaptiveRichTextBlock.AdaptiveParagraph();
@@ -531,6 +534,9 @@ namespace AdaptiveCards.Test
   ""body"": [
     {
       ""type"": ""RichTextBlock"",
+      ""horizontalAlignment"": ""center"",
+      ""wrap"": true,
+      ""maxLines"": 3,
       ""paragraphs"": [
         {
           ""inlines"": [
