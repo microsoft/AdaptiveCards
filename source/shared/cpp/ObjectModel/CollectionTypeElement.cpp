@@ -145,15 +145,16 @@ Json::Value CollectionTypeElement::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(GetStyle());
     }
 
+    if (GetVerticalContentAlignment() != VerticalContentAlignment::Top)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)] =
+            VerticalContentAlignmentToString(GetVerticalContentAlignment());
+    }
+
     if (GetBleed())
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Bleed)] = true;
     }
 
     return root;
-}
-
-void CollectionTypeElement::DeserializeChildren(ParseContext&, const Json::Value&)
-{
-    return;
 }

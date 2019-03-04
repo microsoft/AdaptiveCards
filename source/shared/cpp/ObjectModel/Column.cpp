@@ -116,19 +116,7 @@ void Column::PopulateKnownPropertiesSet()
 
 void Column::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
 {
-    auto backgroundImage = GetBackgroundImage();
-    if (backgroundImage != nullptr)
-    {
-        RemoteResourceInformation backgroundImageInfo;
-        backgroundImageInfo.url = backgroundImage->GetUrl();
-        backgroundImageInfo.mimeType = "image";
-        resourceInfo.push_back(backgroundImageInfo);
-    }
-
     auto columnItems = GetItems();
-    for (auto item : columnItems)
-    {
-        item->GetResourceInformation(resourceInfo);
-    }
+    CollectionTypeElement::GetResourceInformation<BaseCardElement>(resourceInfo, columnItems);
     return;
 }

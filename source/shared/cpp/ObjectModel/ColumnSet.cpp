@@ -69,9 +69,6 @@ void ColumnSet::PopulateKnownPropertiesSet()
 void ColumnSet::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
 {
     auto columns = GetColumns();
-    for (const auto& column : columns)
-    {
-        column->GetResourceInformation(resourceInfo);
-    }
+    CollectionTypeElement::GetResourceInformation<Column>(resourceInfo, columns);
     return;
 }

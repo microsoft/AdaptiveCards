@@ -47,7 +47,11 @@ namespace AdaptiveSharedNamespace
         std::shared_ptr<BackgroundImage> GetBackgroundImage() const;
         void SetBackgroundImage(const std::shared_ptr<BackgroundImage> value);
 
-        virtual void DeserializeChildren(AdaptiveCards::ParseContext& context, const Json::Value& value);
+        template<typename T>
+        void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo,
+                                    const std::vector<std::shared_ptr<T>>& elements);
+
+        virtual void DeserializeChildren(AdaptiveCards::ParseContext& context, const Json::Value& value) = 0;
 
         Json::Value SerializeToJsonValue() const override;
         template<typename T> static std::shared_ptr<T> Deserialize(ParseContext& context, const Json::Value& value);
@@ -105,5 +109,23 @@ namespace AdaptiveSharedNamespace
         collection->SetSelectAction(ParseUtil::GetAction(context, value, AdaptiveCardSchemaKey::SelectAction, false));
 
         return collection;
+    }
+
+    template<typename T>
+    void CollectionTypeElement::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo,
+                                                       const std::vector<std::shared_ptr<T>>& elements)
+    {
+        if (m_backgroundImage != nullptr)
+        {
+            RemoteResourceInformation backgroundImageInfo;
+            backgroundImageInfo.url = m_backgroundImage->GetUrl();
+            backgroundImageInfo.mimeType = "image";
+            resourceInfo.push_back(backgroundImageInfo);
+        }
+
+        for (const auto& elem : elements)
+        {
+            elem->GetResourceInformation(resourceInfo);
+        }
     }
 }
