@@ -66,16 +66,5 @@ namespace AdaptiveCards
 #endif
         public List<AdaptiveElement> Items { get; set; } = new List<AdaptiveElement>();
 
-        protected override void PropagateBleedPropertyToChildren(AdaptiveTypedElement parent)
-        {
-            foreach (AdaptiveElement adaptiveElement in Items)
-            {
-                if (adaptiveElement is AdaptiveCollectionElement)
-                {
-                    AdaptiveCollectionElement adaptiveCollectionElement = adaptiveElement as AdaptiveCollectionElement;
-                    adaptiveCollectionElement.PropagateBleedProperty(parent);
-                }
-            }
-        }
     }
 }

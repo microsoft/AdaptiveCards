@@ -29,12 +29,5 @@ namespace AdaptiveCards
 #endif
         public List<AdaptiveColumn> Columns { get; set; } = new List<AdaptiveColumn>();
 
-        protected override void PropagateBleedPropertyToChildren(AdaptiveTypedElement parent)
-        {
-            foreach (AdaptiveColumn adaptiveColumn in Columns)
-            {
-                adaptiveColumn.PropagateBleedProperty(parent);
-            }
-        }
     }
 }

@@ -16,14 +16,18 @@ namespace AdaptiveCards.Rendering.Wpf
             // Keep track of ContainerStyle.ForegroundColors before Container is rendered
             var outerStyle = context.ForegroundColors;
             var parentContainerStyle = context.ParentStyle;
-           
+
+            Border border = new Border();
+            border.Child = uiContainer;
+            
             if (column.Style != null)
             {
-                AdaptiveContainerRenderer.ApplyPadding(uiContainer, column, parentContainerStyle, context);
+                AdaptiveContainerRenderer.ApplyPadding(border, uiContainer, column, parentContainerStyle, context);
 
                 // Apply background color
                 ContainerStyleConfig containerStyle = context.Config.ContainerStyles.GetContainerStyleConfig(column.Style);
-                uiContainer.SetBackgroundColor(containerStyle.BackgroundColor, context);
+                border.Background = context.GetColorBrush(containerStyle.BackgroundColor);
+                // uiContainer.SetBackgroundColor(containerStyle.BackgroundColor, context);
 
                 context.ForegroundColors = containerStyle.ForegroundColors;
             }
@@ -41,12 +45,7 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 return context.RenderSelectAction(column.SelectAction, uiContainer);
             }
-
-            if (column.Bleed && column.CanBleed)
-            {
-                uiContainer.Margin = new Thickness(-10, 0, -10, 0);
-            }
-
+            
             switch(column.VerticalContentAlignment)
             {
                 case AdaptiveVerticalContentAlignment.Center:
@@ -64,12 +63,12 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 uiContainer.Visibility = Visibility.Collapsed;
             }
-
+            
             // Revert context's value to that of outside the Column
             context.ForegroundColors = outerStyle;
             context.ParentStyle = parentContainerStyle;
 
-            return uiContainer;
+            return border;
         }
     }
 }

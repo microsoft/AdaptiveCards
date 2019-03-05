@@ -15,21 +15,28 @@ namespace AdaptiveCards.Rendering.Wpf
             // Keep track of ContainerStyle.ForegroundColors before Container is rendered
             var outerStyle = context.ForegroundColors;
             var parentContainerStyle = context.ParentStyle;
+            
+            Grid uiOuterContainer = new Grid();
+            
+            uiOuterContainer.Children.Add(uiContainer);
+            Border border = new Border();
+            border.Child = uiOuterContainer;
+
+            if (!container.IsVisible)
+            {
+                border.Visibility = Visibility.Collapsed;
+            }
 
             if (container.Style != null)
             {
-                ApplyPadding(uiContainer, container, parentContainerStyle, context);
+                ApplyPadding(border, uiOuterContainer, container, parentContainerStyle, context);
 
                 // Apply background color
                 ContainerStyleConfig containerStyle = context.Config.ContainerStyles.GetContainerStyleConfig(container.Style);
-                uiContainer.SetBackgroundColor(containerStyle.BackgroundColor, context);
+                border.Background = context.GetColorBrush(containerStyle.BackgroundColor);
+                // uiContainer.SetBackgroundColor(containerStyle.BackgroundColor, context);
 
                 context.ForegroundColors = containerStyle.ForegroundColors;
-            }
-
-            if (container.Bleed && container.CanBleed)
-            {
-                uiContainer.Margin = new Thickness(-10, 0, -10, 0);
             }
 
             switch (container.VerticalContentAlignment)
@@ -60,19 +67,10 @@ namespace AdaptiveCards.Rendering.Wpf
                 return context.RenderSelectAction(container.SelectAction, uiContainer);
             }
 
-            Grid uiOuterContainer = new Grid();
-            uiOuterContainer.Children.Add(uiContainer);
-            Border border = new Border();
-            border.Child = uiOuterContainer;
-
-            if(!container.IsVisible)
-            {
-                border.Visibility = Visibility.Collapsed;
-            }
-
             // Revert context's value to that of outside the Container
             context.ForegroundColors = outerStyle;
             context.ParentStyle = parentContainerStyle;
+
             return border;
         }
 
@@ -91,7 +89,11 @@ namespace AdaptiveCards.Rendering.Wpf
                     else if (uiContainer.Children.Count > 0)
                     {
                         var spacing = context.Config.GetSpacing(cardElement.Spacing);
-                        uiElement.Margin = new Thickness(0, spacing, 0, 0);
+                        Thickness renderedMargin = uiElement.Margin;
+                        uiElement.Margin = new Thickness(renderedMargin.Left,
+                                                         renderedMargin.Top + spacing,
+                                                         renderedMargin.Right,
+                                                         renderedMargin.Bottom);
                     }
 
                     if (cardElement.Height == AdaptiveHeight.Auto)
@@ -142,8 +144,10 @@ namespace AdaptiveCards.Rendering.Wpf
             Grid.SetRow(uiSep, uiContainer.RowDefinitions.Count - 1);
             uiContainer.Children.Add(uiSep);
         }
-
-        public static void ApplyPadding(Grid uiElement, AdaptiveTypedElement element, AdaptiveContainerStyle parentStyle, AdaptiveRenderContext context)
+        
+        // We have to give negative margin for this to work as expected in the case of bleed
+        // We have to give positive padding for this to work
+        public static void ApplyPadding(Border border, Grid uiElement, AdaptiveCollectionElement element, AdaptiveContainerStyle parentStyle, AdaptiveRenderContext context)
         {
             bool canApplyPadding = false;
 
@@ -157,11 +161,15 @@ namespace AdaptiveCards.Rendering.Wpf
                 canApplyPadding = ((columnSet.Style != AdaptiveContainerStyle.None) && (columnSet.Style != parentStyle));
             }
 
+            int padding = context.Config.Spacing.Padding;
+
             if (canApplyPadding)
             {
-                int padding = context.Config.Spacing.Padding;
-                Thickness paddingThickness = new Thickness { Left = padding, Right = padding };
-                uiElement.Margin = paddingThickness;
+                uiElement.Margin = new Thickness { Left = padding, Top = padding, Right = padding, Bottom = padding };
+                if (element.Bleed)
+                {
+                    border.Margin = new Thickness { Left = -padding, Right = -padding };
+                }
             }
         }
     }
