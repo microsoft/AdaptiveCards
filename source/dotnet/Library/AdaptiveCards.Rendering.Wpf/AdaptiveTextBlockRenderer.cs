@@ -59,7 +59,6 @@ namespace AdaptiveCards.Rendering.Wpf
                 var uiGrid = new Grid();
                 uiGrid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
 
-
                 // create hidden textBlock with appropriate linebreaks that we can use to measure the ActualHeight
                 // using same style, fontWeight settings as original textblock
                 var measureBlock = new TextBlock()

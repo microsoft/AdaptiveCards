@@ -1,6 +1,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
@@ -34,6 +35,11 @@ namespace AdaptiveCards.Rendering.Wpf
         public static void SetColor(this TextBlock textBlock, string color, AdaptiveRenderContext context)
         {
             textBlock.Foreground = context.GetColorBrush(color);
+        }
+
+        public static void SetColor(this Span inlineRun, string color, AdaptiveRenderContext context)
+        {
+            inlineRun.Foreground = context.GetColorBrush(color);
         }
 
         public static void SetHorizontalAlignment(this Image image, AdaptiveHorizontalAlignment alignment)

@@ -566,6 +566,61 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
+        public void RichTextBlockFromJson()
+        {
+            var json = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.2"",
+  ""body"": [
+    {
+      ""type"": ""RichTextBlock"",
+      ""horizontalAlignment"": ""center"",
+      ""wrap"": true,
+      ""maxLines"": 3,
+      ""paragraphs"": [
+        {
+          ""inlines"": [
+            {
+              ""type"": ""TextRun"",
+              ""text"": ""Start the first paragraph ""
+            },
+            {
+              ""type"": ""TextRun"",
+              ""size"": ""large"",
+              ""weight"": ""bolder"",
+              ""color"": ""accent"",
+              ""isSubtle"": true,
+              ""text"": ""with some cool looking stuff"",
+              ""fontStyle"": ""monospace""
+            }
+          ]
+        },
+        {
+          ""inlines"": []
+        }
+      ]
+    }
+  ]
+}";
+
+            var card = AdaptiveCard.FromJson(json).Card;
+
+            var richTB = card.Body[0] as AdaptiveRichTextBlock;
+            Assert.AreEqual(richTB.HorizontalAlignment, AdaptiveHorizontalAlignment.Center);
+            Assert.AreEqual(richTB.Wrap, true);
+            Assert.AreEqual(richTB.MaxLines, 3);
+
+            var paragraphs = richTB.Paragraphs;
+
+            var inlines1 = paragraphs[0].Inlines;
+            var run1 = inlines1[0] as AdaptiveRichTextBlock.AdaptiveParagraph.AdaptiveTextRun;
+            Assert.AreEqual(run1.Text, "Start the first paragraph ");
+
+            var run2 = inlines1[1] as AdaptiveRichTextBlock.AdaptiveParagraph.AdaptiveTextRun;
+            Assert.AreEqual(run2.Text, "with some cool looking stuff");
+        }
+
+        [TestMethod]
         public void MediaInvalid_ShouldThrowException()
         {
             var json = @"{
