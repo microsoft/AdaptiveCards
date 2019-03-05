@@ -27,14 +27,14 @@ namespace AdaptiveCards.Rendering.Wpf
                 border.Visibility = Visibility.Collapsed;
             }
 
-            if (container.Style != null)
+            bool inheritsStyleFromParent = (container.Style == AdaptiveContainerStyle.None);
+            if (!inheritsStyleFromParent)
             {
                 ApplyPadding(border, uiOuterContainer, container, parentContainerStyle, context);
 
                 // Apply background color
                 ContainerStyleConfig containerStyle = context.Config.ContainerStyles.GetContainerStyleConfig(container.Style);
                 border.Background = context.GetColorBrush(containerStyle.BackgroundColor);
-                // uiContainer.SetBackgroundColor(containerStyle.BackgroundColor, context);
 
                 context.ForegroundColors = containerStyle.ForegroundColors;
             }
@@ -53,12 +53,7 @@ namespace AdaptiveCards.Rendering.Wpf
             }
 
             // Modify context outer parent style so padding necessity can be determined
-            AdaptiveContainerStyle containerContainerStyle = container.Style ?? parentContainerStyle;
-            if (containerContainerStyle == AdaptiveContainerStyle.None)
-            {
-                containerContainerStyle = parentContainerStyle;
-            }
-            context.ParentStyle = containerContainerStyle;
+            context.ParentStyle = (inheritsStyleFromParent) ? parentContainerStyle : container.Style;
 
             AddContainerElements(uiContainer, container.Items, context);
 

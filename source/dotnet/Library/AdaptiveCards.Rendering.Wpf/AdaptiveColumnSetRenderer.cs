@@ -18,25 +18,19 @@ namespace AdaptiveCards.Rendering.Wpf
             Border border = new Border();
             border.Child = uiColumnSet;
 
-            if (columnSet.Style != null)
+            bool inheritsStyleFromParent = (columnSet.Style == AdaptiveContainerStyle.None);
+            if (!inheritsStyleFromParent)
             {
                 AdaptiveContainerRenderer.ApplyPadding(border, uiColumnSet, columnSet, parentContainerStyle, context);
 
                 // Apply background color
                 var columnSetStyle = context.Config.ContainerStyles.GetContainerStyleConfig(columnSet.Style);
 
-                // uiColumnSet.SetBackgroundColor(columnSetStyle.BackgroundColor, context);
                 border.Background = context.GetColorBrush(columnSetStyle.BackgroundColor);
                 context.ForegroundColors = columnSetStyle.ForegroundColors;
             }
 
-            
-            AdaptiveContainerStyle columnSetContainerStyle = columnSet.Style ?? parentContainerStyle;
-            if (columnSetContainerStyle == AdaptiveContainerStyle.None)
-            {
-                columnSetContainerStyle = parentContainerStyle;
-            }
-            context.ParentStyle = columnSetContainerStyle;
+            context.ParentStyle = (inheritsStyleFromParent) ? parentContainerStyle : columnSet.Style;
             
             foreach (var column in columnSet.Columns)
             {

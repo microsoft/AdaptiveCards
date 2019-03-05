@@ -19,25 +19,21 @@ namespace AdaptiveCards.Rendering.Wpf
 
             Border border = new Border();
             border.Child = uiContainer;
-            
-            if (column.Style != null)
+
+            bool inheritsStyleFromParent = (column.Style == AdaptiveContainerStyle.None);
+
+            if (!inheritsStyleFromParent)
             {
                 AdaptiveContainerRenderer.ApplyPadding(border, uiContainer, column, parentContainerStyle, context);
 
                 // Apply background color
                 ContainerStyleConfig containerStyle = context.Config.ContainerStyles.GetContainerStyleConfig(column.Style);
                 border.Background = context.GetColorBrush(containerStyle.BackgroundColor);
-                // uiContainer.SetBackgroundColor(containerStyle.BackgroundColor, context);
 
                 context.ForegroundColors = containerStyle.ForegroundColors;
             }
 
-            AdaptiveContainerStyle containerContainerStyle = column.Style ?? parentContainerStyle;
-            if (containerContainerStyle == AdaptiveContainerStyle.None)
-            {
-                containerContainerStyle = parentContainerStyle;
-            }
-            context.ParentStyle = containerContainerStyle;
+            context.ParentStyle = (inheritsStyleFromParent) ? parentContainerStyle : column.Style;
 
             AdaptiveContainerRenderer.AddContainerElements(uiContainer, column.Items, context);
 

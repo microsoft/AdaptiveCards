@@ -22,8 +22,8 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlElement]
 #endif
-        [DefaultValue(null)]
-        public AdaptiveContainerStyle? Style { get; set; }
+        [DefaultValue(typeof(AdaptiveContainerStyle), "none")]
+        public AdaptiveContainerStyle Style { get; set; }
 
         /// <summary>
         ///     The content alignment for the eelment inside the container.
@@ -48,7 +48,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     Defines if the element can bleed through its parent's padding
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlElement]
 #endif

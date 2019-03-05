@@ -417,8 +417,8 @@ namespace AdaptiveCards.Test
             var containerEmphasisStyle = card.Body[1] as AdaptiveContainer;
             Assert.AreEqual(AdaptiveContainerStyle.Emphasis, containerEmphasisStyle.Style);
 
-            var containerNonStyle = card.Body[2] as AdaptiveContainer;
-            Assert.AreEqual(null, containerNonStyle.Style);
+            var containerNoneStyle = card.Body[2] as AdaptiveContainer;
+            Assert.AreEqual(AdaptiveContainerStyle.None, containerNoneStyle.Style);
         }
 
         [TestMethod]
@@ -740,12 +740,13 @@ namespace AdaptiveCards.Test
   ""body"": [
     {
       ""type"": ""ColumnSet"",
-      ""columns"": []
+      ""columns"": [],
+      ""style"": ""default""
     },
     {
       ""type"": ""ColumnSet"",
-      ""style"": ""emphasis"",
-      ""columns"": []
+      ""columns"": [],
+      ""style"": ""emphasis""
     }
   ]
 }";

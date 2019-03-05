@@ -204,7 +204,7 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlElement]
 #endif
-        [DefaultValue(typeof(AdaptiveContainerStyle), "default")]
+        [DefaultValue(typeof(AdaptiveContainerStyle), "none")]
         public AdaptiveContainerStyle Style { get; set; }
 
         /// <summary>
@@ -367,30 +367,5 @@ namespace AdaptiveCards
 
             return resourceInformationList;
         }
-
-        public override void PropagateBleedProperty(AdaptiveTypedElement adaptiveTypedElement)
-        {
-            foreach(AdaptiveElement adaptiveElement in Body)
-            {
-                if(adaptiveElement is AdaptiveCollectionElement)
-                {
-                    AdaptiveCollectionElement adaptiveCollectionElement = adaptiveElement as AdaptiveCollectionElement;
-
-                    adaptiveCollectionElement.PropagateBleedProperty(this);
-                }
-            }
-
-            foreach(AdaptiveAction adaptiveAction in Actions)
-            {
-                if(adaptiveAction is AdaptiveShowCardAction)
-                {
-                    AdaptiveShowCardAction adaptiveShowCardAction = adaptiveAction as AdaptiveShowCardAction;
-
-                    AdaptiveCard card = adaptiveShowCardAction.Card;
-                    card.PropagateBleedProperty(null);
-                }
-            }
-        }
-
     }
 }
