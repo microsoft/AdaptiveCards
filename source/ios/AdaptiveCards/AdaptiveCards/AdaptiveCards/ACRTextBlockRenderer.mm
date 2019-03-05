@@ -46,7 +46,6 @@
     lab.style = [viewGroup style];
     NSMutableAttributedString *content = nil;
     if(rootView){
-        lab.rootView = rootView;
         NSMutableDictionary *textMap = [rootView getTextMap];
         // Generate key for ImageViewMap
         NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)txtBlck.get()];
@@ -91,15 +90,8 @@
         lab.attributedText = content;
     }
 
-        //ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:lab.frame];
-    //wrappingview.translatesAutoresizingMaskIntoConstraints = YES;
     lab.translatesAutoresizingMaskIntoConstraints = YES;
-    
-    //CGFloat fixedWidth = lab.frame.size.width;
-    //CGSize newSize = [lab sizeThatFits:CGSizeMake(fixedWidth, MAXFLOAT)];
-    //CGRect newFrame = lab.frame;
-    //newFrame.size = CGSizeMake(fmaxf(newSize.width, fixedWidth), newSize.height);
-    //lab.frame = newFrame;
+
     [lab sizeToFit];
     lab.area = lab.frame.size.width * lab.frame.size.height;
 
@@ -125,7 +117,7 @@
     if(!lab.textContainer.maximumNumberOfLines && !txtBlck->GetWrap()){
         lab.textContainer.maximumNumberOfLines = 1;
     }
-    
+
 
     if(txtBlck->GetHeight() == HeightType::Auto){
         [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];

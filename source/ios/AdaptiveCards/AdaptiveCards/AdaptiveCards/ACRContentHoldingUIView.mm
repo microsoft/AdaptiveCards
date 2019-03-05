@@ -19,20 +19,15 @@ using namespace AdaptiveCards;
 
 - (CGSize)intrinsicContentSize
 {
-//    CGSize size = [super intrinsicContentSize];
     if(self.subviews.count) {
         NSInteger tag = self.subviews.firstObject.tag;
         if((tag == eACRUILabelTag) || (tag == eACRUIImageTag)) {
             UIView *view = [self viewWithTag:tag];
             if(view) {
-                //CGSize sz = [view intrinsicContentSize];
-                //NSLog(@"content holding view tag: %ld, h = %f, w = %f", tag, sz.height, sz.width);
-                view.frame.size = [view intrinsicContentSize];
-                return view.frame.size;
+                return [view intrinsicContentSize];
             }
         }
     }
-    //NSLog(@" content holding view h = %f, w = %f", self.frame.size.height, self.frame.size.width);
     return self.frame.size;
 }
 
@@ -55,11 +50,11 @@ using namespace AdaptiveCards;
                     [shapes addObject:layer];
                 }
             }
-            
+
             for(CALayer *layer in shapes){
                 [layer removeFromSuperlayer];
             }
-        
+
             CGFloat radius = 30.0f;
             CGPoint centerPoint = CGPointMake((self.frame.size.width) / 2, (self.frame.size.height) / 2);
 

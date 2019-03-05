@@ -11,7 +11,6 @@
 
 - (void)config:(nullable NSDictionary<NSString *, id> *)attributes
 {
-    //self.stackView.axis = UILayoutConstraintAxisVertical;
     self.axis = UILayoutConstraintAxisVertical;
     [super config:attributes];
 }
@@ -28,7 +27,6 @@
         [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     }
 
-//    [self.stackView addArrangedSubview:view];
     [super addArrangedSubview:view];
 }
 
