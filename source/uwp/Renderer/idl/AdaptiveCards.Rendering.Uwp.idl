@@ -31,6 +31,7 @@ AdaptiveNamespaceStart
 
     runtimeclass AdaptiveTextBlock;
     runtimeclass AdaptiveCard;
+    runtimeclass AdaptiveBackgroundImage;
     runtimeclass AdaptiveImage;
     runtimeclass AdaptiveImageSet;
     runtimeclass AdaptiveContainer;
@@ -87,13 +88,14 @@ AdaptiveNamespaceStart
 
     runtimeclass AdaptiveElementParserRegistration;
     runtimeclass AdaptiveActionParserRegistration;
+    runtimeclass AdaptiveElementRendererRegistration;
+    runtimeclass AdaptiveActionRendererRegistration;
     runtimeclass AdaptiveCardRenderer;
     runtimeclass AdaptiveChoiceSetInputRenderer;
     runtimeclass AdaptiveColumnRenderer;
     runtimeclass AdaptiveColumnSetRenderer;
     runtimeclass AdaptiveContainerRenderer;
     runtimeclass AdaptiveDateInputRenderer;
-    runtimeclass AdaptiveElementRendererRegistration;
     runtimeclass AdaptiveFactSetRenderer;
     runtimeclass AdaptiveImageRenderer;
     runtimeclass AdaptiveImageSetRenderer;
@@ -109,7 +111,9 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveRemoteResourceInformation;
     runtimeclass AdaptiveToggleVisibilityTarget;
 
+    runtimeclass TileControl;
     runtimeclass WholeItemsPanel;
+
 
     interface IAdaptiveCardResourceResolvers;
     interface IAdaptiveCardResourceResolver;
@@ -119,6 +123,7 @@ AdaptiveNamespaceStart
     interface IAdaptiveActionElement;
     interface IAdaptiveTextBlock;
     interface IAdaptiveCard;
+    interface IAdaptiveBackgroundImage;
     interface IAdaptiveImage;
     interface IAdaptiveImageSet;
     interface IAdaptiveContainer;
@@ -167,12 +172,15 @@ AdaptiveNamespaceStart
     interface IAdaptiveElementParser;
     interface IAdaptiveActionParser;
 
+    interface IAdaptiveActionRenderer;
     interface IAdaptiveElementRenderer;
     interface IAdaptiveElementRendererRegistration;
+    interface IAdaptiveActionRendererRegistration;
     interface IAdaptiveRenderContext;
     interface IAdaptiveRenderArgs;
     interface IAdaptiveActionInvoker;
 
+    interface ITileControl;
     interface IWholeItemsPanel;
 
     [version(NTDDI_WIN10_RS1)]
@@ -228,6 +236,32 @@ AdaptiveNamespaceStart
         Center,
         Right
     } HAlignment;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        [contract(InternalContract, 1)]
+        [internal]
+#endif
+        typedef [v1_enum] enum VAlignment
+        {
+            Top = 0,
+            Center,
+            Bottom
+        } VAlignment;
+
+        [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        [contract(InternalContract, 1)]
+        [internal]
+#endif
+        typedef [v1_enum] enum
+            Mode
+        {
+            Stretch = 0,
+            RepeatHorizontally,
+            RepeatVertically,
+            Repeat
+        } BackgroundImageMode;
 
     [version(NTDDI_WIN10_RS1)]
 #ifdef ADAPTIVE_CARDS_WINDOWS
@@ -398,7 +432,6 @@ AdaptiveNamespaceStart
 #endif
     typedef [v1_enum] enum FontStyle {
         Default = 0,
-        Display,
         Monospace
     } FontStyle;
 
@@ -748,13 +781,50 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
-        exclusiveto(AdaptiveCard),
+        exclusiveto(AdaptiveBackgroundImage),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(a373da1b-6d07-4269-bead-2f5bb5cf4975),
+        uuid(1545EC36-6154-4F39-A81A-E1CF7B384B31),
         contract(InternalContract, 1),
         internal
 #else
-        uuid(1fbf16f2-7c70-4b19-9d76-fb107fc33821)
+        uuid(DBEEF3B8-1446-43C9-8B3B-4EB7CCC72289)
+#endif
+    ] interface IAdaptiveBackgroundImage : IInspectable
+    {
+        [propget] HRESULT Url([out, retval] HSTRING * value);
+        [propput] HRESULT Url([in] HSTRING value);
+
+        [propget] HRESULT Mode([out, retval] BackgroundImageMode * value);
+        [propput] HRESULT Mode([in] BackgroundImageMode value);
+
+        [propget] HRESULT HorizontalAlignment([out, retval] HAlignment * value);
+        [propput] HRESULT HorizontalAlignment([in] HAlignment value);
+
+        [propget] HRESULT VerticalAlignment([out, retval] VAlignment * value);
+        [propput] HRESULT VerticalAlignment([in] VAlignment value);
+
+    };
+
+    [version(NTDDI_WIN10_RS1),
+     activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+     contract(InternalContract, 1),
+     internal,
+     activatable(InternalContract, 1)
+#endif
+    ] runtimeclass AdaptiveBackgroundImage {
+        [default] interface IAdaptiveBackgroundImage;
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveCard),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(932119A6-266B-4AC9-8A19-DBED6261BA9F),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(9D76D8E1-03E4-49F4-8BC2-E7711F1ED3DA)
 #endif
     ]
     interface IAdaptiveCard : IInspectable
@@ -771,8 +841,8 @@ AdaptiveNamespaceStart
         [propget] HRESULT FallbackText([out, retval] HSTRING* value);
         [propput] HRESULT FallbackText([in] HSTRING value);
 
-        [propget] HRESULT BackgroundImage([out, retval] HSTRING* value);
-        [propput] HRESULT BackgroundImage([in] HSTRING value);
+        [propget] HRESULT BackgroundImage([out, retval] AdaptiveBackgroundImage** value);
+        [propput] HRESULT BackgroundImage([in] AdaptiveBackgroundImage* value);
 
         [propget] HRESULT Language([out, retval] HSTRING* value);
         [propput] HRESULT Language([in] HSTRING value);
@@ -914,7 +984,7 @@ AdaptiveNamespaceStart
         [propget] HRESULT PixelHeight([out, retval] UINT32* value);
         [propput] HRESULT PixelHeight([in] UINT32 value);
 
-        [propget] HRESULT HorizontalAlignment([out, retval] HAlignment* value);
+        [propget] HRESULT HorizontalAlignment([out, retval] HAlignment * value);
         [propput] HRESULT HorizontalAlignment([in] HAlignment value);
 
         [propget] HRESULT AltText([out, retval] HSTRING* value);
@@ -1309,6 +1379,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
         [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
+
+        [propget] HRESULT BackgroundImage([out, retval] AdaptiveBackgroundImage * *value);
+        [propput] HRESULT BackgroundImage([in] AdaptiveBackgroundImage * value);
     };
 
     [
@@ -1354,6 +1427,9 @@ AdaptiveNamespaceStart
         [propget] HRESULT Items([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
         [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
         [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
+
+        [propget] HRESULT BackgroundImage([out, retval] AdaptiveBackgroundImage * *value);
+        [propput] HRESULT BackgroundImage([in] AdaptiveBackgroundImage * value);
     };
 
     [
@@ -1574,6 +1650,7 @@ AdaptiveNamespaceStart
         HRESULT RenderAdaptiveCardFromJson([in] Windows.Data.Json.JsonObject* adaptiveJson, [out, retval] RenderedAdaptiveCard** result);
 
         [propget] HRESULT ElementRenderers([out, retval] AdaptiveElementRendererRegistration** result);
+        [propget] HRESULT ActionRenderers([out, retval] AdaptiveActionRendererRegistration** result);
     };
 
     [
@@ -1860,9 +1937,6 @@ AdaptiveNamespaceStart
     {
         [propget] HRESULT Default([out, retval] AdaptiveFontStyleDefinition** value);
         [propput] HRESULT Default([in] AdaptiveFontStyleDefinition* value);
-
-        [propget] HRESULT Display([out, retval] AdaptiveFontStyleDefinition** value);
-        [propput] HRESULT Display([in] AdaptiveFontStyleDefinition* value);
 
         [propget] HRESULT Monospace([out, retval] AdaptiveFontStyleDefinition** value);
         [propput] HRESULT Monospace([in] AdaptiveFontStyleDefinition* value);
@@ -2816,6 +2890,8 @@ AdaptiveNamespaceStart
     {
         [propget] HRESULT OriginatingCard([out, retval] AdaptiveCard** value);
 
+        [propget] HRESULT OriginatingHostConfig([out, retval] AdaptiveHostConfig** value);
+
         [propget] HRESULT FrameworkElement([out, retval] Windows.UI.Xaml.FrameworkElement** value);
 
         [propget] HRESULT UserInputs([out, retval] AdaptiveInputs** value);
@@ -3012,6 +3088,39 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveActionRendererRegistration),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(41EF351F-45AF-428A-A3AC-88455EB03698),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(C638667B-984C-4C33-9AD0-DDCD456C45F2)
+#endif        
+    ]
+    interface IAdaptiveActionRendererRegistration : IInspectable
+    {
+        HRESULT Set([in] HSTRING type, [in] IAdaptiveActionRenderer* renderer);
+        HRESULT Get([in] HSTRING type, [out, retval] IAdaptiveActionRenderer** result);
+        HRESULT Remove([in] HSTRING type);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif        
+    ]
+    runtimeclass AdaptiveActionRendererRegistration
+    {
+        [default] interface IAdaptiveActionRendererRegistration;
+    };
+
+
+    [
+        version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveActionInvoker),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(81d601c7-ebad-4445-a84d-2517d610c993),
@@ -3104,6 +3213,8 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT ElementRenderers([out, retval] AdaptiveElementRendererRegistration** value);
 
+        [propget] HRESULT ActionRenderers([out, retval] AdaptiveActionRendererRegistration** value);
+
         [propget] HRESULT ResourceResolvers([out, retval] AdaptiveCardResourceResolvers** value);
 
         [propget] HRESULT ActionInvoker([out, retval] AdaptiveActionInvoker** value);
@@ -3112,9 +3223,12 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT OverrideStyles([out, retval] Windows.UI.Xaml.ResourceDictionary** overrideDictionary);
 
-        [propget] HRESULT CardFrameworkElement([out, retval] Windows.UI.Xaml.FrameworkElement * *value);
-
         HRESULT AddInputValue([in] IAdaptiveInputValue* inputValue);
+
+        HRESULT AddInlineShowCard([in] AdaptiveActionSet * inputValue,
+                                  [in] AdaptiveShowCardAction * showCardAction,
+                                  [in] Windows.UI.Xaml.UIElement * showCardUIElement);
+
         HRESULT AddError([in] ErrorStatusCode statusCode, [in] HSTRING message);
         HRESULT AddWarning([in] WarningStatusCode statusCode, [in] HSTRING message);
     };
@@ -3146,6 +3260,24 @@ AdaptiveNamespaceStart
     interface IAdaptiveElementRenderer : IInspectable
     {
         HRESULT Render([in] IAdaptiveCardElement* element, [in] AdaptiveRenderContext* context, [in] AdaptiveRenderArgs* renderArgs, [out, retval] Windows.UI.Xaml.UIElement** result);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(0AFBC719-6F2A-4CC7-AAC8-C84E98F78A68),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(B028B6B4-3773-4414-B5E3-58397F8CA37C)
+#endif        
+    ]
+    interface IAdaptiveActionRenderer : IInspectable
+    {
+        HRESULT Render([in] IAdaptiveActionElement * action,
+                       [in] AdaptiveRenderContext * context,
+                       [in] AdaptiveRenderArgs * renderArgs,
+                       [out, retval] Windows.UI.Xaml.UIElement * *result);
     };
 
     [
@@ -3397,9 +3529,10 @@ AdaptiveNamespaceStart
         activatable(InternalContract, 1)
 #endif
     ] 
-    runtimeclass AdaptiveOpenUrlActionParser 
+    runtimeclass AdaptiveOpenUrlActionRenderer 
     { 
-        [default] interface IAdaptiveActionParser; 
+        [default] interface IAdaptiveActionRenderer;
+        interface IAdaptiveActionParser; 
     };
 
     [
@@ -3411,9 +3544,10 @@ AdaptiveNamespaceStart
         activatable(InternalContract, 1)
 #endif
     ] 
-    runtimeclass AdaptiveShowCardActionParser 
+    runtimeclass AdaptiveShowCardActionRenderer 
     { 
-        [default] interface IAdaptiveActionParser; 
+        [default] interface IAdaptiveActionRenderer;
+        interface IAdaptiveActionParser; 
     };
 
     [
@@ -3425,9 +3559,10 @@ AdaptiveNamespaceStart
         activatable(InternalContract, 1)
 #endif
     ] 
-    runtimeclass AdaptiveSubmitActionParser 
+    runtimeclass AdaptiveSubmitActionRenderer 
     {
-        [default] interface IAdaptiveActionParser;
+        [default] interface IAdaptiveActionRenderer;
+        interface IAdaptiveActionParser; 
     };
 
     [version(NTDDI_WIN10_RS1),
@@ -3437,7 +3572,11 @@ AdaptiveNamespaceStart
      internal,
      activatable(InternalContract, 1)
 #endif
-    ] runtimeclass AdaptiveToggleVisibilityActionParser { [default] interface IAdaptiveActionParser; };
+    ] runtimeclass AdaptiveToggleVisibilityActionRenderer 
+    {
+        [default] interface IAdaptiveActionRenderer;
+        interface IAdaptiveActionParser;
+    };
 
     [
         version(NTDDI_WIN10_RS1),
@@ -3456,6 +3595,10 @@ AdaptiveNamespaceStart
         [propput] HRESULT ContainerStyle([in] ContainerStyle value);
         [propget] HRESULT ParentElement([out, retval] IInspectable** value);
         [propput] HRESULT ParentElement([in] IInspectable* value);
+        [propget] HRESULT IsInShowCard([out, retval] boolean * value);
+        [propput] HRESULT IsInShowCard([in] boolean value);
+        [propget] HRESULT AllowAboveTitleIconPlacement([out, retval] boolean * value);
+        [propput] HRESULT AllowAboveTitleIconPlacement([in] boolean value);
     };
 
     [
@@ -3535,6 +3678,48 @@ AdaptiveNamespaceStart
     {
         [default] interface IAdaptiveWarning;
     };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        exclusiveto(TileControl),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(cd0a4aaf-d7f7-4398-a874-e5735f72f78d),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(779a1ef5-69a2-4b62-8ed4-ab239aab96d0)
+#endif
+    ] interface ITileControl : IInspectable
+    {
+        [propget] HRESULT BackgroundImage([out, retval] AdaptiveBackgroundImage** value);
+        [propput] HRESULT BackgroundImage([in] AdaptiveBackgroundImage* value);
+
+        [propget] HRESULT RootElement([out, retval] Windows.UI.Xaml.FrameworkElement * *value);
+        [propput] HRESULT RootElement([in] Windows.UI.Xaml.FrameworkElement * value);
+
+        [propget] HRESULT ResolvedImage([out, retval] Windows.UI.Xaml.UIElement * *value);
+        [propput] HRESULT ResolvedImage([in] Windows.UI.Xaml.UIElement * value);
+
+        [propget] HRESULT ImageSize([out, retval] Windows.Foundation.Size * value);
+        [propput] HRESULT ImageSize([in] Windows.Foundation.Size value);
+
+        HRESULT LoadImageBrush([in] Windows.UI.Xaml.UIElement * uielement);
+    }
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+        threading(both),
+        marshaling_behavior(agile),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif
+    ] runtimeclass TileControl : Windows.UI.Xaml.Controls.ContentControl
+    {
+        [default] interface ITileControl;
+    }
 
     [
         version(NTDDI_WIN10_RS1),

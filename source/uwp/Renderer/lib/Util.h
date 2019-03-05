@@ -171,6 +171,8 @@ HRESULT JsonObjectToJsonCpp(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObje
 HRESULT ProjectedActionTypeToHString(ABI::AdaptiveNamespace::ActionType projectedActionType, _Outptr_ HSTRING* result);
 HRESULT ProjectedElementTypeToHString(ABI::AdaptiveNamespace::ElementType projectedElementType, _Outptr_ HSTRING* result);
 
+HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage* backgroundImageElement, _Out_ BOOL* isValid);
+
 typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*, ABI::AdaptiveNamespace::AdaptiveActionEventArgs*>> ActionEventSource;
 typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveNamespace::RenderedAdaptiveCard*, ABI::AdaptiveNamespace::AdaptiveMediaEventArgs*>> MediaEventSource;
 
@@ -207,10 +209,18 @@ HRESULT SharedWarningsToAdaptiveWarnings(
     std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>> sharedWarnings,
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings);
 
-HRESULT AdaptiveWarningsToSharedWarnings(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-                                         std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>> sharedWarnings);
+HRESULT AdaptiveWarningsToSharedWarnings(
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
+    std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>> sharedWarnings);
 
 ABI::Windows::UI::Color GenerateLighterColor(const ABI::Windows::UI::Color& originalColor);
+
+ABI::Windows::Foundation::DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int day);
+
+HRESULT GetDateTimeReference(unsigned int year,
+                             unsigned int month,
+                             unsigned int day,
+                             _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::Windows::Foundation::DateTime>** dateTimeReference);
 
 namespace AdaptiveNamespace
 {
@@ -256,14 +266,13 @@ namespace AdaptiveNamespace
     template<class TRegistration> HRESULT RegisterDefaultActionRenderers(TRegistration registration)
     {
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.OpenUrl").Get(),
-                                           Make<AdaptiveNamespace::AdaptiveOpenUrlActionParser>().Get()));
+                                           Make<AdaptiveNamespace::AdaptiveOpenUrlActionRenderer>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.ShowCard").Get(),
-                                           Make<AdaptiveNamespace::AdaptiveShowCardActionParser>().Get()));
+                                           Make<AdaptiveNamespace::AdaptiveShowCardActionRenderer>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.Submit").Get(),
-                                           Make<AdaptiveNamespace::AdaptiveSubmitActionParser>().Get()));
+                                           Make<AdaptiveNamespace::AdaptiveSubmitActionRenderer>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.ToggleVisibility").Get(),
-                                           Make<AdaptiveNamespace::AdaptiveToggleVisibilityActionParser>().Get()));
+                                           Make<AdaptiveNamespace::AdaptiveToggleVisibilityActionRenderer>().Get()));
         return S_OK;
     }
 }
-

@@ -31,8 +31,6 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (mediaClickCallback != null)
                 OnMediaClick += (obj, args) => mediaClickCallback(obj, args);
-
-            ClosestParentElement = new Stack<Tuple<AdaptiveTypedElement, AdaptiveContainerStyle>>();
         }
 
         public AdaptiveHostConfig Config { get; set; } = new AdaptiveHostConfig();
@@ -172,12 +170,6 @@ namespace AdaptiveCards.Rendering.Wpf
                 if (element is AdaptiveCard)
                 {
                     CardDepth += 1;
-                    ClosestParentElement.Push(new Tuple<AdaptiveTypedElement, AdaptiveContainerStyle>(element, AdaptiveContainerStyle.Default));
-                }
-                else if (element is AdaptiveCollectionElement)
-                {
-                    AdaptiveCollectionElement collectionElement = element as AdaptiveCollectionElement;
-                    ClosestParentElement.Push(new Tuple<AdaptiveTypedElement, AdaptiveContainerStyle>(element, collectionElement.Style.Value));
                 }
 
                 var rendered = renderer.Invoke(element, this);
@@ -191,11 +183,6 @@ namespace AdaptiveCards.Rendering.Wpf
                 if (element is AdaptiveCard)
                 {
                     CardDepth -= 1;
-                    ClosestParentElement.Pop();
-                }
-                else if (element is AdaptiveCollectionElement)
-                {
-
                 }
 
                 return rendered;
@@ -207,13 +194,9 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public string Lang { get; set; }
 
-        /// <summary>
-        /// This property must not be modified by the user, it tracks the closer parents for applying the bleeding property
-        /// This property doesn't make sense to exist in the shared model, so it's being moved here
-        /// </summary>
-        public Stack<Tuple<AdaptiveTypedElement, AdaptiveContainerStyle>> ClosestParentElement { get; private set; }
-
         public FrameworkElement CardRoot { get; set; }
+
+        public AdaptiveContainerStyle ParentStyle { get; set; } = AdaptiveContainerStyle.Default;
 
         public ForegroundColorsConfig ForegroundColors { get; set; }
     }

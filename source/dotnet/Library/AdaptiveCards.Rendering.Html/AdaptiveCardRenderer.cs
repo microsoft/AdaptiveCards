@@ -271,6 +271,13 @@ namespace AdaptiveCards.Rendering.Html
                 ApplyBackgroundImage(card.BackgroundImage, uiCard, context);
             }
 
+            AdaptiveContainerStyle cardContainerStyle = AdaptiveContainerStyle.Default;
+            if (context.Config.AdaptiveCard.AllowCustomStyle && (card.Style != AdaptiveContainerStyle.None))
+            {
+                cardContainerStyle = card.Style;
+            }
+            context.ParentStyle = cardContainerStyle;
+
             switch (card.VerticalContentAlignment)
             {
                 case AdaptiveVerticalContentAlignment.Center:
@@ -510,6 +517,8 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("display", "flex")
                 .Style("flex-direction", "column");
 
+            var parentContainerStyle = context.ParentStyle;
+
             if (!column.IsVisible)
             {
                 uiColumn.Style("display", "none");
@@ -518,6 +527,17 @@ namespace AdaptiveCards.Rendering.Html
             if (column.BackgroundImage != null)
             {
                 ApplyBackgroundImage(column.BackgroundImage, uiColumn, context);
+            }
+
+            if (column.Style != null)
+            {
+                ApplyPadding(uiColumn, column, parentContainerStyle, context);
+
+                // Apply background color
+                ContainerStyleConfig containerStyle = context.Config.ContainerStyles.GetContainerStyleConfig(column.Style);
+                uiColumn.Style("background-color", context.GetRGBColor(containerStyle.BackgroundColor));
+
+                context.ForegroundColors = containerStyle.ForegroundColors;
             }
 
             switch (column.VerticalContentAlignment)
@@ -534,9 +554,19 @@ namespace AdaptiveCards.Rendering.Html
                     break;
             }
 
+            // Modify context outer parent style so padding necessity can be determined
+            AdaptiveContainerStyle containerContainerStyle = column.Style ?? parentContainerStyle;
+            if (containerContainerStyle == AdaptiveContainerStyle.None)
+            {
+                containerContainerStyle = parentContainerStyle;
+            }
+            context.ParentStyle = containerContainerStyle;
+
             AddContainerElements(uiColumn, column.Items, null, context);
 
             AddSelectAction(uiColumn, column.SelectAction, context);
+
+            context.ParentStyle = parentContainerStyle;
 
             return uiColumn;
         }
@@ -555,17 +585,23 @@ namespace AdaptiveCards.Rendering.Html
 
             AddSelectAction(uiColumnSet, columnSet.SelectAction, context);
 
+            var parentContainerStyle = context.ParentStyle;
+
             if (columnSet.Style != null)
             {
+                ApplyPadding(uiColumnSet, columnSet, parentContainerStyle, context);
                 // Apply background color
-                var columnSetStyle = context.Config.ContainerStyles.Default;
-                if (columnSet.Style == AdaptiveContainerStyle.Emphasis)
-                {
-                    columnSetStyle = context.Config.ContainerStyles.Emphasis;
-                }
-
+                var columnSetStyle = context.Config.ContainerStyles.GetContainerStyleConfig(columnSet.Style);
                 uiColumnSet.Style("background-color", context.GetRGBColor(columnSetStyle.BackgroundColor));
             }
+
+            // Modify context outer parent style so padding necessity can be determined
+            AdaptiveContainerStyle containerContainerStyle = columnSet.Style ?? parentContainerStyle;
+            if (containerContainerStyle == AdaptiveContainerStyle.None)
+            {
+                containerContainerStyle = parentContainerStyle;
+            }
+            context.ParentStyle = containerContainerStyle;
 
             var max = Math.Max(1.0, columnSet.Columns.Select(col =>
             {
@@ -637,6 +673,8 @@ namespace AdaptiveCards.Rendering.Html
                 uiColumnSet.Children.Add(uiColumn);
             }
 
+            context.ParentStyle = parentContainerStyle;
+
             return uiColumnSet;
         }
 
@@ -664,8 +702,11 @@ namespace AdaptiveCards.Rendering.Html
 
             // Keep track of ContainerStyle.ForegroundColors before Container is rendered
             var outerStyle = context.ForegroundColors;
+            var parentContainerStyle = context.ParentStyle;
+
             if (container.Style != null)
             {
+                ApplyPadding(uiContainer, container, parentContainerStyle, context);
                 // Apply background color
                 ContainerStyleConfig containerStyle = context.Config.ContainerStyles.GetContainerStyleConfig(container.Style);
                 uiContainer.Style("background-color", context.GetRGBColor(containerStyle.BackgroundColor));
@@ -687,12 +728,21 @@ namespace AdaptiveCards.Rendering.Html
                     break;
             }
 
+            // Modify context outer parent style so padding necessity can be determined
+            AdaptiveContainerStyle containerContainerStyle = container.Style ?? parentContainerStyle;
+            if (containerContainerStyle == AdaptiveContainerStyle.None)
+            {
+                containerContainerStyle = parentContainerStyle;
+            }
+            context.ParentStyle = containerContainerStyle;
+
             AddContainerElements(uiContainer, container.Items, null, context);
 
             AddSelectAction(uiContainer, container.SelectAction, context);
 
             // Revert context's value to that of outside the Container
             context.ForegroundColors = outerStyle;
+            context.ParentStyle = parentContainerStyle;
             return uiContainer;
         }
 
@@ -1055,6 +1105,7 @@ namespace AdaptiveCards.Rendering.Html
             var thumbnailButton = new DivTag()
                 .AddClass("ac-media-poster")
                 .Attr("role", "button")
+                .Attr("tabindex", "0")
                 .Attr("aria-label", "Play media")
                 .Attr("role", "contentinfo")
                 .Style("position", "relative")
@@ -1707,6 +1758,28 @@ namespace AdaptiveCards.Rendering.Html
                             .Style("background-repeat", "no-repeat")
                             .Style("background-size", "cover");
                     break;
+            }
+        }
+
+        private static void ApplyPadding(HtmlTag uiElement, AdaptiveTypedElement element, AdaptiveContainerStyle parentStyle, AdaptiveRenderContext context)
+        {
+            bool canApplyPadding = false;
+
+            // AdaptiveColumn inherits from AdaptiveContainer so only one check is required for both
+            if (element is AdaptiveContainer container)
+            {
+                canApplyPadding = ((container.BackgroundImage != null) || ((container.Style != AdaptiveContainerStyle.None) && (container.Style != parentStyle)));
+            }
+            else if (element is AdaptiveColumnSet columnSet)
+            {
+                canApplyPadding = ((columnSet.Style != AdaptiveContainerStyle.None) && (columnSet.Style != parentStyle));
+            }
+
+            if (canApplyPadding)
+            {
+                int padding = context.Config.Spacing.Padding;
+                uiElement.Style("margin-right", padding + "px")
+                    .Style("margin-left", padding + "px");
             }
         }
     }

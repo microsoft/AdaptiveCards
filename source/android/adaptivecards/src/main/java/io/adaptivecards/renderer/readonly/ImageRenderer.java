@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
-import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -17,15 +16,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import io.adaptivecards.objectmodel.AdaptiveCardParseWarning;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
-import io.adaptivecards.objectmodel.ParseResult;
-import io.adaptivecards.renderer.AdaptiveCardRenderer;
-import io.adaptivecards.renderer.IDataUriImageLoader;
-import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -38,7 +33,6 @@ import io.adaptivecards.objectmodel.ImageSizesConfig;
 import io.adaptivecards.objectmodel.ImageStyle;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.layout.HorizontalFlowLayout;
-import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public class ImageRenderer extends BaseCardElementRenderer
 {
@@ -169,7 +163,11 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
 
         ImageView imageView = new ImageView(context);
-        imageView.setTag(image);
+        imageView.setTag(new TagContent(image));
+        if(!baseCardElement.GetIsVisible())
+        {
+            imageView.setVisibility(View.GONE);
+        }
 
         String imageBackgroundColor = image.GetBackgroundColor();
         int backgroundColor = 0;
@@ -207,18 +205,6 @@ public class ImageRenderer extends BaseCardElementRenderer
             image.GetImageStyle(),
             backgroundColor,
             imageSizeLimit);
-
-        IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
-        if (onlineImageLoader != null)
-        {
-            imageLoaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
-        }
-
-        IDataUriImageLoader dataUriImageLoader = CardRendererRegistration.getInstance().getDataUriImageLoader();
-        if(dataUriImageLoader != null)
-        {
-            imageLoaderAsync.registerCustomDataUriImageLoader(dataUriImageLoader);
-        }
 
         imageLoaderAsync.execute(image.GetUrl());
 

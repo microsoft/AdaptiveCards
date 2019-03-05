@@ -113,6 +113,15 @@ public class Column extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Column_SetVerticalContentAlignment(swigCPtr, this, value.swigValue());
   }
 
+  public BackgroundImage GetBackgroundImage() {
+    long cPtr = AdaptiveCardObjectModelJNI.Column_GetBackgroundImage(swigCPtr, this);
+    return (cPtr == 0) ? null : new BackgroundImage(cPtr, true);
+  }
+
+  public void SetBackgroundImage(BackgroundImage value) {
+    AdaptiveCardObjectModelJNI.Column_SetBackgroundImage(swigCPtr, this, BackgroundImage.getCPtr(value), value);
+  }
+
   public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {
     AdaptiveCardObjectModelJNI.Column_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceInfo), resourceInfo);
   }

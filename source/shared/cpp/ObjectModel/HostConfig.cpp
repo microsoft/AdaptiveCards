@@ -113,8 +113,6 @@ FontStylesDefinition FontStylesDefinition::Deserialize(const Json::Value& json, 
 
     result.defaultStyle = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontStyleDefinition>(
         json, AdaptiveCardSchemaKey::Default, defaultValue.defaultStyle, FontStyleDefinition::Deserialize);
-    result.displayStyle = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontStyleDefinition>(
-        json, AdaptiveCardSchemaKey::Display, defaultValue.defaultStyle, FontStyleDefinition::Deserialize);
     result.monospaceStyle = ParseUtil::ExtractJsonValueAndMergeWithDefault<FontStyleDefinition>(
         json, AdaptiveCardSchemaKey::Monospace, defaultValue.defaultStyle, FontStyleDefinition::Deserialize);
     return result;
@@ -392,8 +390,6 @@ FontStyleDefinition HostConfig::GetFontStyle(FontStyle style) const
 {
     switch (style)
     {
-    case FontStyle::Display:
-        return _fontStyles.displayStyle;
     case FontStyle::Monospace:
         return _fontStyles.monospaceStyle;
     case FontStyle::Default:
@@ -512,17 +508,12 @@ std::string HostConfig::GetFontFamily(FontStyle style) const
         }
         else
         {
-            // default font family
-            fontFamilyValue = _fontStyles.defaultStyle.fontFamily;
+            // deprecated font family
+            fontFamilyValue = _fontFamily;
             if (fontFamilyValue.empty())
             {
-                // deprecated font family
-                fontFamilyValue = _fontFamily;
-                if (fontFamilyValue.empty())
-                {
-                    // pass empty string for renderer to handle appropriate const default font family
-                    fontFamilyValue = "";
-                }
+                // pass empty string for renderer to handle appropriate const default font family
+                fontFamilyValue = "";
             }
         }
     }

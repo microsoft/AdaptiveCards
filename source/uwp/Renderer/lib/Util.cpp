@@ -871,29 +871,19 @@ HRESULT GetFontFamilyFromStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig*
     RETURN_IF_FAILED(styleDefinition->get_FontFamily(result.GetAddressOf()));
     if (result == NULL)
     {
-        // get FontFamily from Default style
-        RETURN_IF_FAILED(GetFontStyle(hostConfig, ABI::AdaptiveNamespace::FontStyle::Default, &styleDefinition));
-        RETURN_IF_FAILED(styleDefinition->get_FontFamily(result.GetAddressOf()));
-
-        if (result == NULL)
+        if (style == ABI::AdaptiveNamespace::FontStyle::Monospace)
         {
-            // get deprecated FontFamily
+            // fallback to system default monospace FontFamily
+            RETURN_IF_FAILED(UTF8ToHString("Courier New", result.GetAddressOf()));
+        }
+        else
+        {
+            // fallback to deprecated FontFamily
             RETURN_IF_FAILED(hostConfig->get_FontFamily(result.GetAddressOf()));
-
             if (result == NULL)
             {
-                // set system default FontFamily based on desired style
-                switch (style)
-                {
-                case ABI::AdaptiveNamespace::FontStyle::Monospace:
-                    RETURN_IF_FAILED(UTF8ToHString("Courier New", result.GetAddressOf()));
-                    break;
-                case ABI::AdaptiveNamespace::FontStyle::Display:
-                case ABI::AdaptiveNamespace::FontStyle::Default:
-                default:
-                    RETURN_IF_FAILED(UTF8ToHString("Segoe UI", result.GetAddressOf()));
-                    break;
-                }
+                // fallback to system default FontFamily
+                RETURN_IF_FAILED(UTF8ToHString("Segoe UI", result.GetAddressOf()));
             }
         }
     }
@@ -1018,9 +1008,6 @@ HRESULT GetFontStyle(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfi
 
     switch (style)
     {
-    case ABI::AdaptiveNamespace::FontStyle::Display:
-        RETURN_IF_FAILED(fontStyles->get_Display(styleDefinition));
-        break;
     case ABI::AdaptiveNamespace::FontStyle::Monospace:
         RETURN_IF_FAILED(fontStyles->get_Monospace(styleDefinition));
         break;
@@ -1187,6 +1174,23 @@ HRESULT ProjectedElementTypeToHString(ABI::AdaptiveNamespace::ElementType projec
     return UTF8ToHString(CardElementTypeToString(sharedElementType), result);
 }
 
+HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage* backgroundImageElement, _Out_ BOOL* isValid)
+{
+    ComPtr<ABI::AdaptiveNamespace::IAdaptiveBackgroundImage> backgroundImage(backgroundImageElement);
+    if (backgroundImage != NULL)
+    {
+        HSTRING url;
+        THROW_IF_FAILED(backgroundImage->get_Url(&url));
+        if (url != NULL)
+        {
+            *isValid = TRUE;
+			return S_OK;
+        }
+    }
+    *isValid = FALSE;
+    return S_OK;
+}
+
 std::wstring StringToWstring(const std::string& in)
 {
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>, wchar_t> utfConverter;
@@ -1327,4 +1331,39 @@ Color GenerateLighterColor(const Color& originalColor)
     lighterColor.G = originalColor.G + static_cast<int>((255 - originalColor.G) * lightIncrement);
     lighterColor.B = originalColor.B + static_cast<int>((255 - originalColor.B) * lightIncrement);
     return lighterColor;
+}
+
+DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int day)
+{
+    SYSTEMTIME systemTime = {(WORD)year, (WORD)month, 0, (WORD)day};
+
+    // Convert to UTC
+    TIME_ZONE_INFORMATION timeZone;
+    GetTimeZoneInformation(&timeZone);
+    TzSpecificLocalTimeToSystemTime(&timeZone, &systemTime, &systemTime);
+
+    // Convert to ticks
+    FILETIME fileTime;
+    SystemTimeToFileTime(&systemTime, &fileTime);
+    DateTime dateTime{(INT64)fileTime.dwLowDateTime + (((INT64)fileTime.dwHighDateTime) << 32)};
+
+    return dateTime;
+}
+
+HRESULT GetDateTimeReference(unsigned int year, unsigned int month, unsigned int day, _COM_Outptr_ IReference<DateTime>** dateTimeReference)
+{
+    DateTime dateTime = GetDateTime(year, month, day);
+
+    ComPtr<IPropertyValueStatics> factory;
+    RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(), &factory));
+
+    ComPtr<IInspectable> inspectable;
+    RETURN_IF_FAILED(factory->CreateDateTime(dateTime, &inspectable));
+
+    ComPtr<IReference<DateTime>> localDateTimeReference;
+    RETURN_IF_FAILED(inspectable.As(&localDateTimeReference));
+
+    *dateTimeReference = localDateTimeReference.Detach();
+
+    return S_OK;
 }

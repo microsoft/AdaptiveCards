@@ -36,6 +36,12 @@ namespace AdaptiveNamespace
         m_verticalAlignment =
             static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedContainer->GetVerticalContentAlignment());
 
+        auto backgroundImage = sharedContainer->GetBackgroundImage();
+        if (backgroundImage != nullptr && !backgroundImage->GetUrl().empty())
+        {
+            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveBackgroundImage>(m_backgroundImage.GetAddressOf(), backgroundImage));
+        }
+
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedContainer));
         return S_OK;
     }
@@ -87,6 +93,17 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    HRESULT AdaptiveContainer::get_BackgroundImage(_Outptr_ IAdaptiveBackgroundImage** backgroundImage)
+    {
+        return m_backgroundImage.CopyTo(backgroundImage);
+    }
+
+    HRESULT AdaptiveContainer::put_BackgroundImage(_In_ IAdaptiveBackgroundImage* backgroundImage)
+    {
+        m_backgroundImage = backgroundImage;
+        return S_OK;
+    }
+
     HRESULT AdaptiveContainer::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     {
         std::shared_ptr<AdaptiveSharedNamespace::Container> container = std::make_shared<AdaptiveSharedNamespace::Container>();
@@ -101,6 +118,13 @@ namespace AdaptiveNamespace
 
         container->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
         container->SetVerticalContentAlignment(static_cast<AdaptiveSharedNamespace::VerticalContentAlignment>(m_verticalAlignment));
+
+        ComPtr<AdaptiveBackgroundImage> adaptiveBackgroundImage = PeekInnards<AdaptiveBackgroundImage>(m_backgroundImage);
+        std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage> sharedBackgroundImage;
+        if (adaptiveBackgroundImage && SUCCEEDED(adaptiveBackgroundImage->GetSharedModel(sharedBackgroundImage)))
+        {
+            container->SetBackgroundImage(sharedBackgroundImage);
+        }
 
         GenerateSharedElements(m_items.Get(), container->GetItems());
 

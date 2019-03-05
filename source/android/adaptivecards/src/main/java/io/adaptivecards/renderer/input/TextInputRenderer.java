@@ -35,6 +35,7 @@ import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
@@ -154,7 +155,11 @@ public class TextInputRenderer extends BaseCardElementRenderer
     {
         EditText editText = new EditText(context);
         textInputHandler.setView(editText);
-        editText.setTag(textInputHandler);
+        editText.setTag(new TagContent(baseInputElement, textInputHandler));
+        if(!baseInputElement.GetIsVisible())
+        {
+            editText.setVisibility(View.GONE);
+        }
         renderedCard.registerInputHandler(textInputHandler);
 
         if (!TextUtils.isEmpty(value))
@@ -332,7 +337,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
                 textInputHandler,
                 hostConfig);
         editText.setSingleLine(!textInput.GetIsMultiline());
-        editText.setTag(textInput);
+        editText.setTag(new TagContent(textInput, textInputHandler));
         BaseActionElement action = textInput.GetInlineAction();
 
         if (textInput.GetIsMultiline())

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.Gravity;
-import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -16,8 +15,7 @@ import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.AdaptiveWarning;
-import io.adaptivecards.renderer.IDataUriImageLoader;
-import io.adaptivecards.renderer.IOnlineImageLoader;
+import io.adaptivecards.renderer.IResourceResolver;
 import io.adaptivecards.renderer.IActionLayoutRenderer;
 import io.adaptivecards.renderer.IBaseActionElementRenderer;
 import io.adaptivecards.renderer.IOnlineMediaLoader;
@@ -120,16 +118,6 @@ public class CardRendererRegistration
         }
     }
 
-    public void registerOnlineImageLoader(IOnlineImageLoader imageLoader)
-    {
-        m_onlineImageLoader = imageLoader;
-    }
-
-    public  IOnlineImageLoader getOnlineImageLoader()
-    {
-        return m_onlineImageLoader;
-    }
-
     public void registerActionRenderer(IBaseActionElementRenderer actionRenderer)
     {
         m_actionRenderer = actionRenderer;
@@ -155,14 +143,14 @@ public class CardRendererRegistration
         m_onlineMediaLoader = onlineMediaLoader;
     }
 
-    public IDataUriImageLoader getDataUriImageLoader()
+    public void registerResourceResolver(String scheme, IResourceResolver resolver)
     {
-        return m_dataUriImageLoader;
+        m_resourceResolvers.put(scheme, resolver);
     }
 
-    public void registerDataUriImageLoader(IDataUriImageLoader dataUriImageLoader)
+    public IResourceResolver getResourceResolver(String scheme)
     {
-        m_dataUriImageLoader = dataUriImageLoader;
+        return m_resourceResolvers.get(scheme);
     }
 
     public IActionLayoutRenderer getActionLayoutRenderer()
@@ -265,7 +253,6 @@ public class CardRendererRegistration
     private HashMap<String, IBaseCardElementRenderer> m_typeToRendererMap = new HashMap<String, IBaseCardElementRenderer>();
     private IBaseActionElementRenderer m_actionRenderer = null;
     private IActionLayoutRenderer m_actionLayoutRenderer = null;
-    private IOnlineImageLoader m_onlineImageLoader = null;
-    private IDataUriImageLoader m_dataUriImageLoader = null;
+    private HashMap<String, IResourceResolver> m_resourceResolvers = new HashMap<>();
     private IOnlineMediaLoader m_onlineMediaLoader = null;
 }
