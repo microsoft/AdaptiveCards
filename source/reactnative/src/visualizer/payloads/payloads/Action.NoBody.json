@@ -51,16 +51,19 @@
 		},
 		{
 			"type": "Action.Submit",
+			"sentiment": "default",
 			"title": "View",
 			"url": "http://adaptivecards.io"
 		},
 		{
 			"type": "Action.OpenUrl",
+			"sentiment": "positive",
 			"title": "Show Adaptive cards",
 			"url": "http://adaptivecards.io"
 		},
 		{
 			"type": "Action.ShowCard",
+			"sentiment": "destructive",
 			"title": "Set something else",
 			"card": {
 				"type": "AdaptiveCard",

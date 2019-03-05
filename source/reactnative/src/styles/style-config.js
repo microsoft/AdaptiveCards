@@ -70,8 +70,11 @@ export class StyleManager {
 		inputBorderWidth:{
 			borderWidth:this.themeConfig.input[Platform.OS].borderWidth,
 		},
-		defaultDestructiveForegroundColor:{
-			color: this.hostConfig.containerStyles.default.foregroundColors.attention.default,
+		defaultPositiveButtonBackgroundColor:{
+            backgroundColor: this.hostConfig.containerStyles.default.foregroundColors.attention.default,
+        },
+		defaultDestructiveButtonForegroundColor:{
+				color: this.hostConfig.containerStyles.default.foregroundColors.attention.default,
 		},
 	});
 }

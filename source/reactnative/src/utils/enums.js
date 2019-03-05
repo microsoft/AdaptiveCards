@@ -131,3 +131,9 @@ export const Height = Object.freeze({
 	Stretch: 1
 });
 
+export const Sentiment = Object.freeze({
+	        Default: 0,
+	        Positive:1,
+	        Destructive:2
+	});	
+	
