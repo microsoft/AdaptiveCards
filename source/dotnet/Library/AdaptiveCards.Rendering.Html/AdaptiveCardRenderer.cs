@@ -529,7 +529,8 @@ namespace AdaptiveCards.Rendering.Html
                 ApplyBackgroundImage(column.BackgroundImage, uiColumn, context);
             }
 
-            if (column.Style != null)
+            bool inheritsStyleFromParent = (column.Style == AdaptiveContainerStyle.None);
+            if (!inheritsStyleFromParent)
             {
                 ApplyPadding(uiColumn, column, parentContainerStyle, context);
 
@@ -555,12 +556,7 @@ namespace AdaptiveCards.Rendering.Html
             }
 
             // Modify context outer parent style so padding necessity can be determined
-            AdaptiveContainerStyle containerContainerStyle = column.Style ?? parentContainerStyle;
-            if (containerContainerStyle == AdaptiveContainerStyle.None)
-            {
-                containerContainerStyle = parentContainerStyle;
-            }
-            context.ParentStyle = containerContainerStyle;
+            context.ParentStyle = (inheritsStyleFromParent) ? parentContainerStyle : column.Style;
 
             AddContainerElements(uiColumn, column.Items, null, context);
 
@@ -587,7 +583,8 @@ namespace AdaptiveCards.Rendering.Html
 
             var parentContainerStyle = context.ParentStyle;
 
-            if (columnSet.Style != null)
+            bool inheritsStyleFromParent = (columnSet.Style == AdaptiveContainerStyle.None);
+            if (!inheritsStyleFromParent)
             {
                 ApplyPadding(uiColumnSet, columnSet, parentContainerStyle, context);
                 // Apply background color
@@ -596,12 +593,7 @@ namespace AdaptiveCards.Rendering.Html
             }
 
             // Modify context outer parent style so padding necessity can be determined
-            AdaptiveContainerStyle containerContainerStyle = columnSet.Style ?? parentContainerStyle;
-            if (containerContainerStyle == AdaptiveContainerStyle.None)
-            {
-                containerContainerStyle = parentContainerStyle;
-            }
-            context.ParentStyle = containerContainerStyle;
+            context.ParentStyle = (inheritsStyleFromParent) ? parentContainerStyle : columnSet.Style;
 
             var max = Math.Max(1.0, columnSet.Columns.Select(col =>
             {
@@ -704,7 +696,8 @@ namespace AdaptiveCards.Rendering.Html
             var outerStyle = context.ForegroundColors;
             var parentContainerStyle = context.ParentStyle;
 
-            if (container.Style != null)
+            bool inheritsStyleFromParent = (container.Style == AdaptiveContainerStyle.None);
+            if (!inheritsStyleFromParent)
             {
                 ApplyPadding(uiContainer, container, parentContainerStyle, context);
                 // Apply background color
@@ -729,12 +722,7 @@ namespace AdaptiveCards.Rendering.Html
             }
 
             // Modify context outer parent style so padding necessity can be determined
-            AdaptiveContainerStyle containerContainerStyle = container.Style ?? parentContainerStyle;
-            if (containerContainerStyle == AdaptiveContainerStyle.None)
-            {
-                containerContainerStyle = parentContainerStyle;
-            }
-            context.ParentStyle = containerContainerStyle;
+            context.ParentStyle = (inheritsStyleFromParent) ? parentContainerStyle : container.Style;
 
             AddContainerElements(uiContainer, container.Items, null, context);
 
@@ -1761,7 +1749,7 @@ namespace AdaptiveCards.Rendering.Html
             }
         }
 
-        private static void ApplyPadding(HtmlTag uiElement, AdaptiveTypedElement element, AdaptiveContainerStyle parentStyle, AdaptiveRenderContext context)
+        private static void ApplyPadding(HtmlTag uiElement, AdaptiveCollectionElement element, AdaptiveContainerStyle parentStyle, AdaptiveRenderContext context)
         {
             bool canApplyPadding = false;
 
@@ -1778,8 +1766,16 @@ namespace AdaptiveCards.Rendering.Html
             if (canApplyPadding)
             {
                 int padding = context.Config.Spacing.Padding;
-                uiElement.Style("margin-right", padding + "px")
-                    .Style("margin-left", padding + "px");
+                uiElement.Style("padding-right", padding + "px")
+                    .Style("padding-left", padding + "px")
+                    .Style("padding-top", padding + "px")
+                    .Style("padding-bottom", padding + "px");
+
+                if (element.Bleed)
+                {
+                    uiElement.Style("margin-right", -padding + "px")
+                        .Style("margin-left", -padding + "px");
+                }
             }
         }
     }
