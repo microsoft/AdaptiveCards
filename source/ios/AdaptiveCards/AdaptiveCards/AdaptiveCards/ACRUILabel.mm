@@ -28,33 +28,28 @@
 
 - (CGSize)intrinsicContentSize
 {
-    CGSize size = self.frame.size;
-    self.scrollEnabled = YES;
-
-    if(size.height != self.contentSize.height || size.width != self.contentSize.width) {
-        [self sizeToFit];
-    }
-    size = self.frame.size;
-
-    self.scrollEnabled = NO;
-    return size;
+    return self.frame.size;
 }
 
 - (void)layoutSubviews
 {
-    [super layoutSubviews];
     CGSize size = self.frame.size;
     CGFloat area = size.width * size.height;
     if(self.tag == eACRUILabelTag) {
         if(area != _area){
+            _area = area;
+            [self sizeToFit];
+            _area = self.frame.size.width * self.frame.size.height;
             [self.superview invalidateIntrinsicContentSize];
+
         }
     } else if(self.tag == eACRUIFactSetTag) {
         if(area != _area){
-            [self invalidateIntrinsicContentSize];
+            _area = area;
+            [self.superview invalidateIntrinsicContentSize];
         }
     }
-    _area = area;
+    [super layoutSubviews];
 }
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event

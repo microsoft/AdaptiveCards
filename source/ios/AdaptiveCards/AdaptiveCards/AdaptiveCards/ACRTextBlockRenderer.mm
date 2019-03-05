@@ -89,7 +89,13 @@
         lab.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
         lab.attributedText = content;
     }
-
+    
+    lab.textContainer.maximumNumberOfLines = int(txtBlck->GetMaxLines());
+    if(!lab.textContainer.maximumNumberOfLines && !txtBlck->GetWrap()){
+        lab.textContainer.maximumNumberOfLines = 1;
+    }
+    
+    [lab sizeToFit];
     lab.area = lab.frame.size.width * lab.frame.size.height;
 
     ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:lab.frame];
@@ -109,11 +115,6 @@
     [NSLayoutConstraint constraintWithItem:lab attribute:horizontalAlignment relatedBy:NSLayoutRelationEqual toItem:wrappingview attribute:horizontalAlignment multiplier:1.0 constant:0].active = YES;
     [NSLayoutConstraint constraintWithItem:lab attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:wrappingview attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
     [NSLayoutConstraint constraintWithItem:lab attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:wrappingview attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
-
-    lab.textContainer.maximumNumberOfLines = int(txtBlck->GetMaxLines());
-    if(!lab.textContainer.maximumNumberOfLines && !txtBlck->GetWrap()){
-        lab.textContainer.maximumNumberOfLines = 1;
-    }
 
     if(txtBlck->GetHeight() == HeightType::Auto){
         [wrappingview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];

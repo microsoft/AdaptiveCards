@@ -190,7 +190,10 @@
 
     [NSLayoutConstraint constraintWithItem:buttonLayout attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:30].active = YES;
 
-    _scrView = [[UIScrollView alloc] init];
+    _scrView = [[UITableView alloc] init];
+    _scrViewA = [[NSMutableArray alloc] init];
+    _scrView.dataSource = self;
+    _scrView.delegate = self;
     _scrView.showsHorizontalScrollIndicator = NO;
 
     [self.view addSubview:self.scrView];
@@ -198,6 +201,8 @@
     UIScrollView *scrollview = self.scrView;
     scrollview.showsVerticalScrollIndicator = YES;
     _scrView.scrollEnabled = YES;
+    _scrView.showsVerticalScrollIndicator = YES;
+    _scrView.translatesAutoresizingMaskIntoConstraints = NO;
     scrollview.translatesAutoresizingMaskIntoConstraints = NO;
 
     NSDictionary *viewMap = NSDictionaryOfVariableBindings(ACVTabView, buttonLayout, scrollview);
@@ -247,19 +252,21 @@
     {
         ACRView *ad = renderResult.view;
         ad.mediaDelegate = self;
-        if(self.curView)
-            [self.curView removeFromSuperview];
-
-        self.curView = ad;
-
-        [_scrView addSubview:self.curView];
-        UIView *view = self.curView;
-        view.translatesAutoresizingMaskIntoConstraints = NO;
-            
-        [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
-        [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
-        [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:3].active = YES;
-        [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
+        //        if(self.curView)
+        //            [self.curView removeFromSuperview];
+        
+        //        self.curView = ad;
+        [self.scrViewA removeAllObjects];
+        [self.scrViewA addObject:ad];
+        [self.scrView reloadData];
+        //        [_scrView addSubview:self.curView];
+        //        UIView *view = self.curView;
+        //        view.translatesAutoresizingMaskIntoConstraints = NO;
+        //
+        //        [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0].active = YES;
+        //        [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0].active = YES;
+        //        [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:3].active = YES;
+        //        [NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:_scrView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0].active = YES;
     }
 }
 
@@ -393,10 +400,37 @@
     self.scrView.scrollIndicatorInsets = contentInsets;
 }
 
-- (void)didLoadElements
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    [self.curView setNeedsLayout];
-    NSLog(@"completed loading elements");
+    return self.scrViewA.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell * cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@""];
+    
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    UIView * v = [self.scrViewA objectAtIndex:indexPath.row];
+    v.translatesAutoresizingMaskIntoConstraints = NO;
+    [cell.contentView addSubview:v];
+    [v setNeedsUpdateConstraints];
+    [v updateConstraints];
+    [v.topAnchor constraintEqualToAnchor:cell.contentView.topAnchor constant:0].active = YES;
+    [v.leadingAnchor constraintEqualToAnchor:cell.contentView.leadingAnchor constant:0].active = YES;
+    [cell.contentView.trailingAnchor constraintEqualToAnchor:v.trailingAnchor constant:8].active = YES;
+    [cell.contentView.bottomAnchor constraintGreaterThanOrEqualToAnchor:v.bottomAnchor constant:0].active = YES;
+     
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UIView * v = [self.scrViewA objectAtIndex:indexPath.row];
+    if(v.frame.size.height) {
+        return v.frame.size.height + 50;
+    } else {
+        return UITableViewAutomaticDimension;
+    }
 }
 
 

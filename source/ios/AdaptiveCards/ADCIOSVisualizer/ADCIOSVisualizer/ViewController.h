@@ -23,6 +23,7 @@
 @property (strong, nonatomic) ACOHostConfig *config;
 @property (strong, nonatomic) UILabel *userResponseLabel;
 @property ACRView *curView;
-@property UIScrollView *scrView;
+@property UITableView *scrView;
+@property NSMutableArray *scrViewA;
 
 @end
