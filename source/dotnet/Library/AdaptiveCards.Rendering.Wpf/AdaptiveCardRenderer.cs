@@ -34,6 +34,8 @@ namespace AdaptiveCards.Rendering.Wpf
             ElementRenderers.Set<AdaptiveCard>(RenderAdaptiveCardWrapper);
 
             ElementRenderers.Set<AdaptiveTextBlock>(AdaptiveTextBlockRenderer.Render);
+            ElementRenderers.Set<AdaptiveRichTextBlock>(AdaptiveRichTextBlockRenderer.Render);
+
             ElementRenderers.Set<AdaptiveImage>(AdaptiveImageRenderer.Render);
             ElementRenderers.Set<AdaptiveMedia>(AdaptiveMediaRenderer.Render);
 

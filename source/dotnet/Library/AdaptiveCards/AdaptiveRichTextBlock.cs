@@ -62,18 +62,18 @@ namespace AdaptiveCards
         [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
         public class AdaptiveParagraph
         {
-            [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveRun>))]
+            [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveInlineRun>))]
 #if !NETSTANDARD1_3
             [XmlElement(typeof(AdaptiveTextRun))]
 #endif
-            public List<AdaptiveRun> Inlines { get; set; } = new List<AdaptiveRun>();
+            public List<AdaptiveInlineRun> Inlines { get; set; } = new List<AdaptiveInlineRun>();
 
-            public abstract class AdaptiveRun : AdaptiveTypedElement { }
+            public abstract class AdaptiveInlineRun : AdaptiveTypedElement { }
 
 #if !NETSTANDARD1_3
             [XmlType(TypeName = AdaptiveTextBlock.TypeName)]
 #endif
-            public class AdaptiveTextRun : AdaptiveRun, ITextElement
+            public class AdaptiveTextRun : AdaptiveInlineRun, ITextElement
             {
                 public const string TypeName = "TextRun";
 
