@@ -166,15 +166,15 @@ export function validateUrl(url) {
 
 /**
  * @description Return the image url based on its validation (Base64, Absolute)
- * @param {url} url of the image 
- * @return {boolean}  url of the image
+ * @param {string|object} image
+ * @return {string}  url of the image
  */
-export function getImageUrl(url) {
-	if (isNullOrEmpty(url)) {
-		return url
+export function getImageUrl(image) {
+	if (isNullOrEmpty(image)) {
+		return image
 	}
-	return validateUrl(url) ? url :
-	url.split('/').pop().split('.')[0];
+	image = this.isString(image) ? image : image.url
+	return validateUrl(image) ? image : image.split('/').pop().split('.')[0];
 }
 
 /**
