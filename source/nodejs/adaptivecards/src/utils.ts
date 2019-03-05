@@ -6,7 +6,7 @@ export function generateUniqueId(): string {
 }
 
 export function getStringValue(obj: any, defaultValue: string = undefined): string {
-	return obj ? obj.toString(): defaultValue;
+	return obj ? obj.toString() : defaultValue;
 }
 
 export function getValueOrDefault<T>(obj: any, defaultValue: T): T {
@@ -26,13 +26,19 @@ export function appendChild(node: Node, child: Node) {
 export function setProperty(target: any, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
 	if (propertyValue && (!defaultValue || defaultValue !== propertyValue)) {
 		target[propertyName] = propertyValue;
-    }
+	}
+	else {
+		delete target[propertyName];
+	}
 }
 
 export function setEnumProperty(enumType: { [s: number]: string }, target: any, propertyName: string, propertyValue: number, defaultValue?: number) {
 	if (defaultValue === undefined || defaultValue !== propertyValue) {
 		target[propertyName] = enumType[propertyValue];
-    }
+	}
+	else {
+		delete target[propertyName];
+	}
 }
 
 export function getBoolValue(value: any, defaultValue: boolean): boolean {
