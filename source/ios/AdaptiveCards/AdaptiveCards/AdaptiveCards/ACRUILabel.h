@@ -10,4 +10,5 @@
 
 @interface ACRUILabel:UITextView
 @property ACRContainerStyle style;
+@property CGFloat area;
 @end
