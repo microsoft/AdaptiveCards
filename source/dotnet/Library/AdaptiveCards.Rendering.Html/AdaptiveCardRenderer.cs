@@ -70,6 +70,9 @@ namespace AdaptiveCards.Rendering.Html
             ElementRenderers.Set<AdaptiveCard>(AdaptiveCardRender);
 
             ElementRenderers.Set<AdaptiveTextBlock>(TextBlockRender);
+            ElementRenderers.Set<AdaptiveRichTextBlock>(RichTextBlockRender);
+            ElementRenderers.Set<AdaptiveRichTextBlock.AdaptiveParagraph.AdaptiveTextRun>(TextRunRender);
+
             ElementRenderers.Set<AdaptiveImage>(ImageRender);
             ElementRenderers.Set<AdaptiveMedia>(MediaRender);
 
@@ -837,6 +840,129 @@ namespace AdaptiveCards.Rendering.Html
             setParagraphStyles(uiTextBlock);
 
             return uiTextBlock;
+        }
+
+        protected static HtmlTag RichTextBlockRender(AdaptiveRichTextBlock richTextBlock, AdaptiveRenderContext context)
+        {
+            var uiTextBlock = new HtmlTag("div", false)
+                .AddClass($"ac-{richTextBlock.Type.Replace(".", "").ToLower()}")
+                .Attr("name", richTextBlock.Id)
+                .Style("box-sizing", "border-box")
+                .Style("text-align", richTextBlock.HorizontalAlignment.ToString().ToLower());
+
+            if (richTextBlock.Height == AdaptiveHeight.Stretch)
+            {
+                uiTextBlock.Style("flex", "1 1 100%");
+            }
+
+            if (!richTextBlock.IsVisible)
+            {
+                uiTextBlock.Style("display", "none");
+            }
+
+            var setWrapStyleOnParagraph = false;
+            if (richTextBlock.Wrap == false)
+            {
+                uiTextBlock = uiTextBlock
+                    .Style("white-space", "nowrap");
+                setWrapStyleOnParagraph = true;
+            }
+            else
+            {
+                uiTextBlock = uiTextBlock
+                    .Style("word-wrap", "break-word");
+            }
+
+            Action<HtmlTag> removeParagraphTag = null;
+            removeParagraphTag = (HtmlTag htmlTag) =>
+            {
+                var child = htmlTag.Children[0];
+                if (child.Element?.ToLowerInvariant() == "p")
+                {
+                    var grandChildren = new List<HtmlTag>(child.Children);
+                    htmlTag.Children.Remove(child);
+                    htmlTag.Children.AddRange(grandChildren);
+                }
+            };
+
+            int maxFontSize = 0;
+            foreach (var paragraph in richTextBlock.Paragraphs)
+            {
+                var uiParagraph = new HtmlTag("p");
+                foreach (var inlineRun in paragraph.Inlines)
+                {
+                    // keep track of max font size for MaxLines rendering
+                    if (inlineRun is AdaptiveRichTextBlock.AdaptiveParagraph.AdaptiveTextRun)
+                    {
+                        var size = ((AdaptiveRichTextBlock.AdaptiveParagraph.AdaptiveTextRun)inlineRun).Size;
+                        var style = ((AdaptiveRichTextBlock.AdaptiveParagraph.AdaptiveTextRun)inlineRun).FontStyle;
+
+                        maxFontSize = Math.Max(maxFontSize, context.Config.GetFontSize(style, size));
+                    }
+
+                    var uiInlineRun = context.Render(inlineRun);
+                    removeParagraphTag(uiInlineRun);
+                    uiParagraph.Children.Add(uiInlineRun);
+                }
+                uiTextBlock.Children.Add(uiParagraph);
+            }
+
+            Action<HtmlTag> setParagraphStyles = null;
+            setParagraphStyles = (HtmlTag htmlTag) =>
+            {
+                if (htmlTag.Element?.ToLowerInvariant() == "p")
+                {
+                    htmlTag.Style("margin-top", "0px");
+                    htmlTag.Style("margin-bottom", "0px");
+                    htmlTag.Style("width", "100%");
+
+                    if (setWrapStyleOnParagraph)
+                    {
+                        htmlTag.Style("text-overflow", "ellipsis");
+                        htmlTag.Style("overflow", "hidden");
+                    }
+                }
+
+                foreach (var child in htmlTag.Children)
+                {
+                    setParagraphStyles(child);
+                }
+            };
+
+            setParagraphStyles(uiTextBlock);
+
+            if (richTextBlock.MaxLines > 0)
+            {
+                var lineHeight = maxFontSize * 1.33;
+                uiTextBlock = uiTextBlock
+                    .Style("max-height", $"{lineHeight * richTextBlock.MaxLines}px")
+                    .Style("overflow", "hidden");
+
+            }
+
+            return uiTextBlock;
+        }
+
+        protected static HtmlTag TextRunRender(AdaptiveRichTextBlock.AdaptiveParagraph.AdaptiveTextRun textRun, AdaptiveRenderContext context)
+        {
+            string fontFamily = context.Config.GetFontFamily(textRun.FontStyle);
+            int fontSize = context.Config.GetFontSize(textRun.FontStyle, textRun.Size);
+            int weight = context.Config.GetFontWeight(textRun.FontStyle, textRun.Weight);
+
+            // Not sure where this magic value comes from?
+            var lineHeight = fontSize * 1.33;
+
+            var uiTextRun = new HtmlTag("span", true)
+                .AddClass($"ac-{textRun.Type.Replace(".", "").ToLower()}")
+                .Attr("name", textRun.Id)
+                .Style("color", context.GetColor(textRun.Color, textRun.IsSubtle))
+                .Style("line-height", $"{lineHeight.ToString("F")}px")
+                .Style("font-size", $"{fontSize}px")
+                .Style("font-weight", $"{weight}");
+
+            var textTags = MarkdownToHtmlTagConverter.Convert(RendererUtilities.ApplyTextFunctions(textRun.Text, context.Lang));
+            uiTextRun.Children.AddRange(textTags);
+            return uiTextRun;
         }
 
         protected static HtmlTag ImageRender(AdaptiveImage image, AdaptiveRenderContext context)
