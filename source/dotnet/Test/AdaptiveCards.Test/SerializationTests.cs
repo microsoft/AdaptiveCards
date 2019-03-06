@@ -773,5 +773,57 @@ namespace AdaptiveCards.Test
             var deserializedActual = deserializedCard.ToJson();
             Assert.AreEqual(expected: expected, actual: deserializedActual);
         }
+
+        [TestMethod]
+        public void ContainerBleedSerialization()
+        {
+            var expected = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.2"",
+  ""body"": [
+    {
+      ""type"": ""Container"",
+      ""items"": [
+        {
+          ""type"": ""TextBlock"",
+          ""text"": ""This container has a gray background that extends to the edges of the card"",
+          ""wrap"": true
+        }
+      ],
+      ""style"": ""emphasis"",
+      ""bleed"": true
+    }
+  ]
+}";
+
+            var card = new AdaptiveCard("1.2")
+            {
+                Body =
+                {
+                    new AdaptiveContainer()
+                    {
+                        Style = AdaptiveContainerStyle.Emphasis,
+                        Bleed = true,
+                        Items = new List<AdaptiveElement>
+                        {
+                            new AdaptiveTextBlock()
+                            {
+                                Text = "This container has a gray background that extends to the edges of the card",
+                                Wrap = true
+                            }
+                        }
+                    }
+                }
+            };
+
+            var actual = card.ToJson();
+            Assert.AreEqual(expected: expected, actual: actual);
+            var deserializedCard = AdaptiveCard.FromJson(expected).Card;
+            var deserializedActual = deserializedCard.ToJson();
+            Assert.AreEqual(expected: expected, actual: deserializedActual);
+        }
+
+
+        
     }
 }
