@@ -101,21 +101,6 @@ export default class AdaptiveCards extends React.Component {
 				</ContainerWrapper>
 			);
 
-		// checks if BackgroundImage option is available for adaptive card
-		if (!Utils.isNullOrEmpty(this.payload.backgroundImage)) {
-			if (Utils.isString(this.payload.backgroundImage)) {
-				this.payload.backgroundImage = {
-					url: this.payload.backgroundImage
-				}
-			}
-			adaptiveCardContent = (
-				<View style={styles.backgroundImage}>
-					<BackgroundImage backgroundImage={this.payload.backgroundImage} />
-					{adaptiveCardContent}
-				</View >
-			);
-		}
-
 		// checks if selectAction option is available for adaptive card
 		if (!Utils.isNullOrEmpty(this.payload.selectAction)) {
 			adaptiveCardContent = (
