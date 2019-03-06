@@ -20,7 +20,7 @@ import * as Utils from './utils/util';
 import { SelectAction } from './components/actions';
 import ResourceInformation from './utils/resource-information';
 import { ContainerWrapper } from './components/containers/';
-import { BackgroundImage } from './components/elements/backgroung-image';
+import { BackgroundImage } from './components/elements';
 import { ThemeConfigManager } from './utils/theme-config';
 
 export default class AdaptiveCards extends React.Component {
