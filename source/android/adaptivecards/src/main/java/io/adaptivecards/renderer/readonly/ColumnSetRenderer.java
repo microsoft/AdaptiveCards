@@ -80,6 +80,11 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
 
         LinearLayout layout = new LinearLayout(context);
         layout.setTag(new TagContent(columnSet));
+
+        // Add this two for allowing children to bleed
+        layout.setClipChildren(false);
+        layout.setClipToPadding(false);
+
         if(!baseCardElement.GetIsVisible())
         {
             layout.setVisibility(View.GONE);
@@ -110,6 +115,14 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         {
             layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             viewGroup.addView(layout);
+        }
+
+        if (columnSet.GetBleed() && columnSet.GetCanBleed())
+        {
+            long padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) layout.getLayoutParams();
+            layoutParams.setMargins((int)-padding, layoutParams.topMargin, (int)-padding, layoutParams.bottomMargin);
+            layout.setLayoutParams(layoutParams);
         }
 
         if (styleForThis != containerStyle)

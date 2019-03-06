@@ -70,6 +70,11 @@ public class ColumnRenderer extends BaseCardElementRenderer
         LinearLayout returnedView = new LinearLayout(context);
         returnedView.setOrientation(LinearLayout.VERTICAL);
         returnedView.setTag(new TagContent(column));
+
+        // Add this two for allowing children to bleed
+        returnedView.setClipChildren(false);
+        returnedView.setClipToPadding(false);
+
         if(!baseCardElement.GetIsVisible())
         {
             returnedView.setVisibility(View.GONE);
@@ -157,6 +162,13 @@ public class ColumnRenderer extends BaseCardElementRenderer
                     throw new IllegalArgumentException("Column Width (" + column.GetWidth() + ") is not a valid weight ('auto', 'stretch', <integer>).");
                 }
             }
+        }
+
+        if (column.GetBleed() && column.GetCanBleed())
+        {
+            long padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
+            layoutParams.setMargins((int)-padding, 0, (int)-padding, 0);
+            returnedView.setLayoutParams(layoutParams);
         }
 
         if (column.GetSelectAction() != null)
