@@ -10,6 +10,9 @@ export const FlexStart = 'flex-start';
 export const SpaceBetween = 'space-between';
 export const AlignStretch = 'stretch';
 export const Auto = 'auto';
+export const Repeat = 'repeat';
+export const Absolute = "absolute";
+export const Resize = "resize";
 
 export const NoneString = "none";
 export const DoneString = 'Done';
@@ -25,6 +28,8 @@ export const OkText = "OK";
 export const CenterString = "center";
 export const LeftAlign = 'left';
 export const RightString = "right";
+export const TopString = "top";
+export const BottomString = "bottom";
 export const BoldWeight = 'bold';
 
 export const PlatformIOS = 'ios';

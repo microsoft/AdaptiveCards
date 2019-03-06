@@ -49,14 +49,14 @@ export class StyleManager {
 		buttonBackgroundColor: {
 			backgroundColor: this.themeConfig.button[Platform.OS].backgroundColor,
 		},
-		buttonTitleColor: {
-			color: this.themeConfig.button[Platform.OS].titleColor,
+		buttonTitleColor:{
+			color: this.themeConfig.button[Platform.OS].color,
 		},
 		buttonBorderRadius: {
 			borderRadius: this.themeConfig.button[Platform.OS].borderRadius,
 		},
-		buttonTitleTransform: {
-			textTransform: this.themeConfig.button[Platform.OS].titleTransform,
+		buttonTitleTransform:{
+			textTransform: this.themeConfig.button[Platform.OS].textTransform,
 		},
 		inputBorderColor: {
 			borderColor: this.themeConfig.input[Platform.OS].borderColor,
