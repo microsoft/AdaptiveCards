@@ -32,7 +32,7 @@ using namespace AdaptiveCards;
         self = [super initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.height) style:UITableViewStyleGrouped ];
         self.backgroundColor = UIColor.clearColor;
         self.translatesAutoresizingMaskIntoConstraints = NO;
-        self.scrollEnabled = false;
+        self.scrollEnabled = NO;
     }
     return self;
 }

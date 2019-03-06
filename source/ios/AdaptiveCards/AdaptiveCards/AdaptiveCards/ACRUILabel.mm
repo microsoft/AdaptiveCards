@@ -33,22 +33,16 @@
 
 - (void)layoutSubviews
 {
-    CGSize size = self.frame.size;
-    CGFloat area = size.width * size.height;
-    if(self.tag == eACRUILabelTag) {
-        if(area != _area){
-            _area = area;
-            [self sizeToFit];
-            _area = self.frame.size.width * self.frame.size.height;
-            [self.superview invalidateIntrinsicContentSize];
-
-        }
-    } else if(self.tag == eACRUIFactSetTag) {
-        if(area != _area){
-            _area = area;
-            [self.superview invalidateIntrinsicContentSize];
-        }
+    if(self.frame.size.height != self.contentSize.height) {
+        NSLayoutConstraint *heightconst =
+        [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.contentSize.height];
+        heightconst.active = YES;
     }
+
+    [self sizeToFit];
+    //_area = area;
+    _area = self.frame.size.width * self.frame.size.height;
+    [self.superview updateConstraints];
     [super layoutSubviews];
 }
 

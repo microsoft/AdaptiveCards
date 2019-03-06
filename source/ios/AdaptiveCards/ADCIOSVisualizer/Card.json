@@ -1,4 +1,189 @@
-{"body":[{"items":[{"size":"medium","weight":"bolder","type":"TextBlock","text":"Support Case 128852"},{"columns":[{"width":"auto","items":[{"url":"https://urlp.asm.skype.com/v1/url/content?url=http%3a%2f%2ffunkyimg.com%2fi%2f2LkZa.png","size":"small","type":"Image"}],"type":"Column"},{"width":"stretch","items":[{"text":"VPN access request but with a long text nexts","weight":"bolder","type":"TextBlock","wrap":true},{"spacing":"none","text":"Created {{DATE(2018-09-19T06:08:39Z, SHORT)}}","isSubtle":true,"type":"TextBlock","wrap":true}],"type":"Column"}],"type":"ColumnSet"}],"type":"Container"},{"columns":[{"width":"1","items":[{"text":"Status","weight":"bolder","type":"TextBlock","wrap":true},{"text":"Requester","weight":"bolder","type":"TextBlock","wrap":true},{"text":"Primary owner","weight":"bolder","type":"TextBlock","wrap":true},{"text":"Executive sponsor","weight":"bolder","type":"TextBlock","wrap":true},{"text":"Reasoning","weight":"bolder","type":"TextBlock","wrap":true}],"type":"Column"},{"width":"1","items":[{"spacing":"none","text":"Pending approval","type":"TextBlock","wrap":true},{"spacing":"none","text":"Daniela Mandera","type":"TextBlock","wrap":true},{"spacing":"none","text":"Daniela Mandera","type":"TextBlock","wrap":true},{"spacing":"none","text":"I'll be away on assignment in for the next two months and I will need remote access to the network.","type":"TextBlock","wrap":true},{"spacing":"none","text":"I'll be away on assignment in for the next two months and I will need remote access to the network.","type":"TextBlock","wrap":true}],"type":"Column"}],"spacing":"default","type":"ColumnSet"}],"type":"AdaptiveCard","version":"1.0"}
+{"body":
+    [
+        {"items":
+            [
+                {
+                    "size":"medium",
+                    "weight":"bolder",
+                    "type":"TextBlock",
+                    "text":"Support Case 128852"
+                },
+                {
+                    "columns":
+                    [
+                        {
+                            "width": "auto",
+                            "items":
+                            [
+                                {
+                                    "url":"https://urlp.asm.skype.com/v1/url/content?url=http%3a%2f%2ffunkyimg.com%2fi%2f2LkZa.png",
+                                    "size":"small",
+                                    "type":"Image"
+                                }
+                            ],
+                            "type":"Column"
+                        },
+                        {
+                            "width":"stretch",
+                            "items":
+                            [
+                                {
+                                    "text":"VPN access request but with a long text nexts",
+                                    "weight":"bolder",
+                                    "type":"TextBlock",
+                                    "wrap":true
+                                },
+                                {
+                                    "spacing":"none",
+                                    "text":"Created {{DATE(2018-09-19T06:08:39Z, SHORT)}}",
+                                    "isSubtle":true,
+                                    "type":"TextBlock",
+                                    "wrap":true
+                                }
+                            ], 
+                            "type":"Column"
+                        }
+                    ],
+
+                    "type":"ColumnSet"
+                }
+            ],
+
+            "type":"Container"
+        },
+        {"columns":
+            [
+                {
+                    "items":
+                    [
+                        {
+                            "text":"Status",
+                            "weight":"bolder",
+                            "type":"TextBlock",
+                            "wrap":true
+                        },
+                        {
+                            "text":"Requester",
+                            "weight":"bolder",
+                            "type":"TextBlock",
+                            "wrap":true
+                        },
+                        {
+                            "text":"Primary owner",
+                            "weight":"bolder",
+                            "type":"TextBlock",
+                            "wrap":true
+                        },
+                        {
+                            "text":"Executive sponsor",
+                            "weight":"bolder",
+                            "type":"TextBlock",
+                            "wrap":true
+                        },
+                        {
+                            "text":"Reasoning",
+                            "weight":"bolder",
+                            "type":"TextBlock",
+                            "wrap":true
+                        }
+                    ],
+
+                    "type":"Column"
+                },
+                {
+                    "items":
+                    [
+                        {
+                            "spacing":"none",
+                            "text":"Pending approval",
+                            "type":"TextBlock",
+                            "wrap":true
+                        },
+                        {
+                            "spacing":"none",
+                            "text":"Daniela Mandera",
+                            "type":"TextBlock",
+                            "wrap":true
+                        },
+                        {
+                            "spacing":"none",
+                            "text":"Daniela Mandera",
+                            "type":"TextBlock",
+                            "wrap":true
+                        },
+                        {
+                            "spacing":"none", 
+                            "text":"I'll be away on assignment in for the next two months and I will need remote access to the network.",
+                            "type":"TextBlock",
+                            "wrap":true
+                        },
+                        {
+                            "spacing":"none", 
+                            "text":"I'll be away on assignment in for the next two months and I will need remote access to the network.",
+                            "type":"TextBlock",
+                            "wrap":true
+                        }
+                    ],
+                    "type":"Column"
+                }
+            ], 
+            "spacing":"default",
+            "type":"ColumnSet"
+        }
+    ], 
+    "type":"AdaptiveCard", 
+    "actions":
+    [
+        {
+            "title":"Set due date",
+            "card":
+            {
+                "type":"AdaptiveCard",
+                "actions":
+                [
+                    {
+                        "title":"OK",
+                        "type":"Action.Submit"
+                    }
+                ],
+                "body":
+                [
+                    {
+                        "id":"dueDate",
+                        "type":"Input.Date"
+                    }
+                ]
+            },
+            "type":"Action.ShowCard"
+        },
+        {
+            "title":"Comment",
+            "card":
+            {
+                "type":"AdaptiveCard",
+                "actions":
+                [
+                    {
+                        "title":"OK",
+                        "type":"Action.Submit"
+                    }
+                ],
+                "body":
+                [
+                    {
+                        "id":"comment",
+                        "placeholder":"Enter your comment",
+                        "type":"Input.Text",
+                        "isMultiline":true
+                    }
+                ]
+            },
+            "type":"Action.ShowCard"
+        }
+    ],
+    "version":"1.0"
+}
+
     
 
     

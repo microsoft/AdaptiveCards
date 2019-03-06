@@ -256,7 +256,7 @@
         //            [self.curView removeFromSuperview];
         
         //        self.curView = ad;
-        [self.scrViewA removeAllObjects];
+        //[self.scrViewA removeAllObjects];
         [self.scrViewA addObject:ad];
         [self.scrView reloadData];
         //        [_scrView addSubview:self.curView];
@@ -270,6 +270,7 @@
     }
 }
 
+/*
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -277,7 +278,7 @@
     verticalContentInset = (verticalContentInset <= 0)? 20 : verticalContentInset;
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, verticalContentInset, 0.0);
     self.scrView.contentInset = contentInsets;
-}
+}*/
 
 - (void)fromACVTable:(ACVTableViewController *)avcTabVc userSelectedJson:(NSString *)jsonStr
 {
@@ -418,7 +419,6 @@
     [v.topAnchor constraintEqualToAnchor:cell.contentView.topAnchor constant:0].active = YES;
     [v.leadingAnchor constraintEqualToAnchor:cell.contentView.leadingAnchor constant:0].active = YES;
     [cell.contentView.trailingAnchor constraintEqualToAnchor:v.trailingAnchor constant:8].active = YES;
-    [cell.contentView.bottomAnchor constraintGreaterThanOrEqualToAnchor:v.bottomAnchor constant:0].active = YES;
      
     return cell;
 }
@@ -427,11 +427,10 @@
 {
     UIView * v = [self.scrViewA objectAtIndex:indexPath.row];
     if(v.frame.size.height) {
-        return v.frame.size.height + 50;
+        return v.frame.size.height + 10;
     } else {
         return UITableViewAutomaticDimension;
     }
 }
-
 
 @end
