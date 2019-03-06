@@ -40,9 +40,6 @@
     }
 
     [self sizeToFit];
-    //_area = area;
-    _area = self.frame.size.width * self.frame.size.height;
-    [self.superview updateConstraints];
     [super layoutSubviews];
 }
 

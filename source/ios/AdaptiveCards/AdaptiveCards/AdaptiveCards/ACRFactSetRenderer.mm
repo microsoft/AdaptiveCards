@@ -88,7 +88,6 @@
             element->SetId(ID.substr(0, idx));
         }
         [lab sizeToFit];
-        lab.area = lab.frame.size.width * lab.frame.size.height;
     }
 
     lab.textContainer.maximumNumberOfLines = textConfig.wrap ? 0 : 1;

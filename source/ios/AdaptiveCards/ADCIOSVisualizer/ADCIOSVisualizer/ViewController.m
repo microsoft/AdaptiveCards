@@ -418,8 +418,7 @@
     [v updateConstraints];
     [v.topAnchor constraintEqualToAnchor:cell.contentView.topAnchor constant:0].active = YES;
     [v.leadingAnchor constraintEqualToAnchor:cell.contentView.leadingAnchor constant:0].active = YES;
-    [cell.contentView.trailingAnchor constraintEqualToAnchor:v.trailingAnchor constant:8].active = YES;
-     
+    [cell.contentView.trailingAnchor constraintEqualToAnchor:v.trailingAnchor constant:8].active = YES;    
     return cell;
 }
 
