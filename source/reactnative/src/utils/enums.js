@@ -132,8 +132,7 @@ export const Height = Object.freeze({
 });
 
 export const Sentiment = Object.freeze({
-	        Default: 0,
-	        Positive:1,
-	        Destructive:2
-	});	
-	
+	Default: 0,
+	Positive: 1,
+	Destructive: 2
+});
