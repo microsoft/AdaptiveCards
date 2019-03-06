@@ -227,7 +227,7 @@ export class Column extends React.Component {
 		// select action
 		if (this.column.selectAction && HostConfigManager.supportsInteractivity()) {
 			ActionComponent = SelectAction;
-			actionComponentProps = this.column.selectAction;
+			actionComponentProps = { selectActionData: this.column.selectAction };
 		}
 
 		return (<InputContextConsumer>

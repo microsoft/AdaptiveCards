@@ -50,13 +50,13 @@ export class StyleManager {
 			backgroundColor: this.themeConfig.button[Platform.OS].backgroundColor,
 		},
 		buttonTitleColor:{
-			color: this.themeConfig.button[Platform.OS].titleColor,
+			color: this.themeConfig.button[Platform.OS].color,
 		},
 		buttonBorderRadius:{
 			borderRadius: this.themeConfig.button[Platform.OS].borderRadius,
 		},
 		buttonTitleTransform:{
-			textTransform: this.themeConfig.button[Platform.OS].titleTransform,
+			textTransform: this.themeConfig.button[Platform.OS].textTransform,
 		},
 		inputBorderColor:{
 			borderColor: this.themeConfig.input[Platform.OS].borderColor,

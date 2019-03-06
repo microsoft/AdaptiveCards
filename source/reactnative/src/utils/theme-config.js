@@ -49,19 +49,22 @@ class Config {
 /**
  * @description Default Theme config JSON. This can be overriden by invoking setThemeConfig method.
  */
+
+// Open Issue : Setting `textTransform` style in android doesn't render the text itself.
+// Refer : https://github.com/facebook/react-native/issues/21966
 const defaultThemeConfig = {
     button: {
         ios: {
             borderRadius: 15,
             backgroundColor: "#1D9BF6",
-            titleColor: "#FFFFFF",
-            titleTransform: 'none'
+            color: "#FFFFFF",
+            textTransform: 'none'
         },
         android: {
             borderRadius: 15,
             backgroundColor: "#1D9BF6",
-            titleColor: "#FFFFFF",
-            titleTransform: 'none'
+            color: "#FFFFFF",
+            textTransform: undefined
         }
     },
     input: {
