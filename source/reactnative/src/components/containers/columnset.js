@@ -37,22 +37,11 @@ export class ColumnSet extends React.PureComponent {
 			this.renderedElement.push(
 				<Column json={element}
 					columns={columnSetJson.columns}
-					key={`ELEMENT-${this.generateNumber()}`}
+					key={`ELEMENT-${index}`}
 				/>);
 		});
 		return this.renderedElement;
 	}
-
-    /**
-     * @description Generates a random number
-     */
-	generateNumber = () => {
-		min = 1;
-		max = 100000;
-		const rndNum = Math.floor(Math.random() * (max - min + 1) + min);
-
-		return rndNum
-	};
 
 	internalRenderer(columnSetJson) {
 		let backgroundStyle = columnSetJson.style == Constants.Emphasis ?

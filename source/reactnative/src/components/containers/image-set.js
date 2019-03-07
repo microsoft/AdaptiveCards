@@ -41,7 +41,7 @@ export class ImageSet extends React.PureComponent {
 			const Element = register.getComponentOfType(element.type);
 			if (Element) {
 				this.renderedElement.push(<Element json={element}
-					key={`ELEMENT-${this.generateNumber()}`} />);
+					key={`ELEMENT-${index}`} />);
 			} else {
 				let error = { "error": Enums.ValidationError.UnknownElementType, "message": `Unknown Type ${element.type} encountered` };
 				onParseError(error);
@@ -50,16 +50,6 @@ export class ImageSet extends React.PureComponent {
 		});
 		return this.renderedElement;
 	}
-
-    /**
-     * @description Generates a random number
-     */
-	generateNumber = () => {
-		min = 1;
-		max = 100000;
-		const rndNum = Math.floor(Math.random() * (max - min + 1) + min)
-		return rndNum
-	};
 
 	internalRenderer(imageSetJson) {
 		return (
