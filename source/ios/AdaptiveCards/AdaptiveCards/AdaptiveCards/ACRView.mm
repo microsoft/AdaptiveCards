@@ -51,6 +51,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     NSMutableDictionary *_imageContextMap;
     NSMutableDictionary *_imageViewContextMap;
     NSMutableSet *_setOfRemovedObservers;
+    NSMutableDictionary<NSString*, UIView *> *_paddingMap;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -69,6 +70,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
         _imageContextMap = [[NSMutableDictionary alloc] init];
         _imageViewContextMap = [[NSMutableDictionary alloc] init];
         _setOfRemovedObservers = [[NSMutableSet alloc] init];
+        _paddingMap = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -120,7 +122,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     if((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
         imageUrl = backgroundImageProperties->GetUrl();
     }
-    
+
     NSString *key = [NSString stringWithCString:imageUrl.c_str() encoding:[NSString defaultCStringEncoding]];
     if ([key length]) {
         UIView *imgView = nil;
@@ -678,6 +680,20 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
             [object removeObserver:self forKeyPath:@"image"];
         }
     }
+}
+
+- (void)updatePaddingMap:(std::shared_ptr<CollectionTypeElement> const &)collection view:(UIView *)view
+{
+    if (view && collection && collection->GetPadding()) {
+        NSNumber *key = [NSNumber numberWithUnsignedLongLong:collection->GetInternalId().Hash()];
+        _paddingMap[[key stringValue]] = view;
+    }
+}
+
+- (UIView *)getBleedTarget:(InternalId const &)internalId
+{
+    NSNumber *key = [NSNumber numberWithUnsignedLongLong:internalId.Hash()];
+    return _paddingMap[[key stringValue]];
 }
 
 @end
