@@ -46,35 +46,35 @@ export class StyleManager {
 		borderAttention: {
 			borderColor: this.hostConfig.containerStyles.default.foregroundColors.attention.default,
 		},
-		buttonBackgroundColor:{
+		buttonBackgroundColor: {
 			backgroundColor: this.themeConfig.button[Platform.OS].backgroundColor,
 		},
 		buttonTitleColor:{
 			color: this.themeConfig.button[Platform.OS].color,
 		},
-		buttonBorderRadius:{
+		buttonBorderRadius: {
 			borderRadius: this.themeConfig.button[Platform.OS].borderRadius,
 		},
 		buttonTitleTransform:{
 			textTransform: this.themeConfig.button[Platform.OS].textTransform,
 		},
-		inputBorderColor:{
+		inputBorderColor: {
 			borderColor: this.themeConfig.input[Platform.OS].borderColor,
 		},
-		inputBackgroundColor:{
+		inputBackgroundColor: {
 			backgroundColor: this.themeConfig.input[Platform.OS].backgroundColor,
 		},
-		inputBorderRadius:{
+		inputBorderRadius: {
 			borderRadius: this.themeConfig.input[Platform.OS].borderRadius,
 		},
-		inputBorderWidth:{
-			borderWidth:this.themeConfig.input[Platform.OS].borderWidth,
+		inputBorderWidth: {
+			borderWidth: this.themeConfig.input[Platform.OS].borderWidth,
 		},
-		defaultPositiveButtonBackgroundColor:{
-            backgroundColor: this.hostConfig.containerStyles.default.foregroundColors.attention.default,
-        },
-		defaultDestructiveButtonForegroundColor:{
-				color: this.hostConfig.containerStyles.default.foregroundColors.attention.default,
+		defaultPositiveButtonBackgroundColor: {
+			backgroundColor: this.hostConfig.containerStyles.default.foregroundColors.accent.default,
+		},
+		defaultDestructiveButtonForegroundColor: {
+			color: this.hostConfig.containerStyles.default.foregroundColors.attention.default,
 		},
 	});
 }
