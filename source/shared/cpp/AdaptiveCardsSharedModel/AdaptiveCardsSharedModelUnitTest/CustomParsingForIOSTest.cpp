@@ -112,5 +112,36 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::string expected = "{\"payload\":[{\"testloadone\":\"You can even draw attention to certain text with color\"},{\"testloadtwo\":\"You can even draw attention to certain text with markdown\"}]}\n";
             Assert::AreEqual(expected, jsonString);
         }
+
+        TEST_METHOD(RoundTripTestForCustomAction)
+        {
+            const std::string testJsonString{ R"(
+                {
+                    "type": "AdaptiveCard",
+                    "version": "1.0",
+                    "body": [
+                        {
+                            "type": "TextBlock",
+                            "text": "You can even draw attention to certain text with color",
+                            "wrap": true,
+                            "color": "Attention"
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "type": "Alert",
+                            "title": "Submit",
+                            "data": {
+                                "id": "1234567890"
+                            }
+                        }]})"};
+
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
+            Json::FastWriter writer;
+            auto expectedAsString = writer.write(ParseUtil::GetJsonValueFromString(testJsonString));
+            auto serializedCardAsString = writer.write(parseResult->GetAdaptiveCard()->SerializeToJsonValue());
+            Assert::AreEqual(expectedAsString.substr(0, expectedAsString.size() - 1),
+                serializedCardAsString.substr(0, serializedCardAsString.size() - 1));
+        }
     };
 }

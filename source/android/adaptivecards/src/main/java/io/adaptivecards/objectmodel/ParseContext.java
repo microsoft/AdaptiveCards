@@ -86,4 +86,28 @@ public class ParseContext {
     AdaptiveCardObjectModelJNI.ParseContext_PopElement(swigCPtr, this);
   }
 
+  public void SetLanguage(String value) {
+    AdaptiveCardObjectModelJNI.ParseContext_SetLanguage(swigCPtr, this, value);
+  }
+
+  public String GetLanguage() {
+    return AdaptiveCardObjectModelJNI.ParseContext_GetLanguage(swigCPtr, this);
+  }
+
+  public ContainerStyle GetParentalContainerStyle() {
+    return ContainerStyle.swigToEnum(AdaptiveCardObjectModelJNI.ParseContext_GetParentalContainerStyle(swigCPtr, this));
+  }
+
+  public InternalId PaddingParentInternalId() {
+    return new InternalId(AdaptiveCardObjectModelJNI.ParseContext_PaddingParentInternalId(swigCPtr, this), true);
+  }
+
+  public void SaveContextForCollectionTypeElement(CollectionTypeElement current) {
+    AdaptiveCardObjectModelJNI.ParseContext_SaveContextForCollectionTypeElement(swigCPtr, this, CollectionTypeElement.getCPtr(current), current);
+  }
+
+  public void RestoreContextForCollectionTypeElement(CollectionTypeElement current) {
+    AdaptiveCardObjectModelJNI.ParseContext_RestoreContextForCollectionTypeElement(swigCPtr, this, CollectionTypeElement.getCPtr(current), current);
+  }
+
 }

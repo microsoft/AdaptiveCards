@@ -3,6 +3,7 @@
 
 #include "AdaptiveCard.h"
 #include "AdaptiveCardResourceResolvers.h"
+#include "AdaptiveActionRendererRegistration.h"
 #include "AdaptiveActionSetRenderer.h"
 #include "AdaptiveChoiceSetInputRenderer.h"
 #include "AdaptiveColumnRenderer.h"
@@ -16,10 +17,14 @@
 #include "AdaptiveImageSetRenderer.h"
 #include "AdaptiveMediaRenderer.h"
 #include "AdaptiveNumberInputRenderer.h"
+#include "AdaptiveOpenUrlActionRenderer.h"
 #include "AdaptiveRenderContext.h"
+#include "AdaptiveShowCardActionRenderer.h"
+#include "AdaptiveSubmitActionRenderer.h"
 #include "AdaptiveTextBlockRenderer.h"
 #include "AdaptiveTextInputRenderer.h"
 #include "AdaptiveTimeInputRenderer.h"
+#include "AdaptiveToggleVisibilityActionRenderer.h"
 #include "AdaptiveToggleInputRenderer.h"
 #include "AsyncOperations.h"
 #include "DefaultResourceDictionary.h"
@@ -52,7 +57,9 @@ namespace AdaptiveNamespace
     {
         m_xamlBuilder = std::make_shared<XamlBuilder>();
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveElementRendererRegistration>(&m_elementRendererRegistration));
-        RETURN_IF_FAILED(RegisterDefaultElementRenderers());
+        RETURN_IF_FAILED(RegisterDefaultElementRenderers(m_elementRendererRegistration, m_xamlBuilder));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionRendererRegistration>(&m_actionRendererRegistration));
+        RETURN_IF_FAILED(RegisterDefaultActionRenderers(m_actionRendererRegistration));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveHostConfig>(&m_hostConfig));
         InitializeDefaultResourceDictionary();
         UpdateActionSentimentResourceDictionary();
@@ -102,6 +109,7 @@ namespace AdaptiveNamespace
         ComPtr<::AdaptiveNamespace::RenderedAdaptiveCard> renderedCard;
         RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::RenderedAdaptiveCard>(&renderedCard));
         renderedCard->SetOriginatingCard(adaptiveCard);
+        renderedCard->SetOriginatingHostConfig(m_hostConfig.Get());
 
         if (adaptiveCard)
         {
@@ -116,6 +124,7 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRenderContext>(&renderContext,
                                                                       m_hostConfig.Get(),
                                                                       m_elementRendererRegistration.Get(),
+                                                                      m_actionRendererRegistration.Get(),
                                                                       m_resourceResolvers.Get(),
                                                                       m_mergedResourceDictionary.Get(),
                                                                       m_actionSentimentResourceDictionary.Get(),
@@ -127,10 +136,7 @@ namespace AdaptiveNamespace
             m_xamlBuilder->SetEnableXamlImageHandling(true);
             try
             {
-                AdaptiveNamespace::XamlBuilder::BuildXamlTreeFromAdaptiveCard(adaptiveCard,
-                                                                                          &xamlTreeRoot,
-                                                                                          renderContext.Get(),
-                                                                                          m_xamlBuilder);
+                AdaptiveNamespace::XamlBuilder::BuildXamlTreeFromAdaptiveCard(adaptiveCard, &xamlTreeRoot, renderContext.Get(), m_xamlBuilder);
                 renderedCard->SetFrameworkElement(xamlTreeRoot.Get());
             }
             catch (...)
@@ -241,6 +247,11 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveCardRenderer::get_ElementRenderers(_COM_Outptr_ IAdaptiveElementRendererRegistration** value)
     {
         return m_elementRendererRegistration.CopyTo(value);
+    }
+
+    HRESULT AdaptiveCardRenderer::get_ActionRenderers(_COM_Outptr_ IAdaptiveActionRendererRegistration** value)
+    {
+        return m_actionRendererRegistration.CopyTo(value);
     }
 
     void AdaptiveCardRenderer::InitializeDefaultResourceDictionary()

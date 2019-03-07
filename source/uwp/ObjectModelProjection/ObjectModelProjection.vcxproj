@@ -31,6 +31,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveBase64Util.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BackgroundImage.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseElement.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\CollectionTypeElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Media.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\MediaSource.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ParseContext.cpp" />
@@ -93,6 +94,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseInputElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoiceInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ChoiceSetInput.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\CollectionTypeElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Column.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ColumnSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ElementParserRegistration.h" />

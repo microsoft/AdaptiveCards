@@ -9,13 +9,16 @@ namespace AdaptiveCards.Rendering.Wpf
         public static FrameworkElement Render(AdaptiveContainer container, AdaptiveRenderContext context)
         {
             var uiContainer = new Grid();
-            //uiContainer.Margin = new Thickness(context.Config.Spacing.Padding);
             uiContainer.Style = context.GetStyle("Adaptive.Container");
 
             // Keep track of ContainerStyle.ForegroundColors before Container is rendered
             var outerStyle = context.ForegroundColors;
+            var parentContainerStyle = context.ParentStyle;
+
             if (container.Style != null)
             {
+                ApplyPadding(uiContainer, container, parentContainerStyle, context);
+
                 // Apply background color
                 ContainerStyleConfig containerStyle = context.Config.ContainerStyles.GetContainerStyleConfig(container.Style);
                 uiContainer.SetBackgroundColor(containerStyle.BackgroundColor, context);
@@ -36,6 +39,14 @@ namespace AdaptiveCards.Rendering.Wpf
                     break;
             }
 
+            // Modify context outer parent style so padding necessity can be determined
+            AdaptiveContainerStyle containerContainerStyle = container.Style ?? parentContainerStyle;
+            if (containerContainerStyle == AdaptiveContainerStyle.None)
+            {
+                containerContainerStyle = parentContainerStyle;
+            }
+            context.ParentStyle = containerContainerStyle;
+
             AddContainerElements(uiContainer, container.Items, context);
 
             if (container.SelectAction != null)
@@ -55,6 +66,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             // Revert context's value to that of outside the Container
             context.ForegroundColors = outerStyle;
+            context.ParentStyle = parentContainerStyle;
             return border;
         }
 
@@ -118,11 +130,33 @@ namespace AdaptiveCards.Rendering.Wpf
 
             uiSep.Margin = new Thickness(0, (spacing - sepStyle.LineThickness) / 2, 0, 0);
             uiSep.SetHeight(sepStyle.LineThickness);
-            if(!string.IsNullOrWhiteSpace(sepStyle.LineColor))
+            if (!string.IsNullOrWhiteSpace(sepStyle.LineColor))
                 uiSep.SetBackgroundColor(sepStyle.LineColor,context);
             uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
             Grid.SetRow(uiSep, uiContainer.RowDefinitions.Count - 1);
             uiContainer.Children.Add(uiSep);
+        }
+
+        public static void ApplyPadding(Grid uiElement, AdaptiveTypedElement element, AdaptiveContainerStyle parentStyle, AdaptiveRenderContext context)
+        {
+            bool canApplyPadding = false;
+
+            // AdaptiveColumn inherits from AdaptiveContainer so only one check is required for both
+            if (element is AdaptiveContainer container)
+            {
+                canApplyPadding = ((container.BackgroundImage != null) || ((container.Style != AdaptiveContainerStyle.None) && (container.Style != parentStyle)));
+            }
+            else if (element is AdaptiveColumnSet columnSet)
+            {
+                canApplyPadding = ((columnSet.Style != AdaptiveContainerStyle.None) && (columnSet.Style != parentStyle));
+            }
+
+            if (canApplyPadding)
+            {
+                int padding = context.Config.Spacing.Padding;
+                Thickness paddingThickness = new Thickness { Left = padding, Right = padding };
+                uiElement.Margin = paddingThickness;
+            }
         }
     }
 }

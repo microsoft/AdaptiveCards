@@ -124,6 +124,7 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             var outerGrid = new Grid();
             outerGrid.Style = context.GetStyle("Adaptive.Card");
+
             outerGrid.Background = context.GetColorBrush(context.Config.ContainerStyles.Default.BackgroundColor);
             outerGrid.SetBackgroundSource(card.BackgroundImage, context);
 
@@ -131,6 +132,13 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 context.CardRoot = outerGrid;
             }
+
+            AdaptiveContainerStyle cardContainerStyle = AdaptiveContainerStyle.Default;
+            if (context.Config.AdaptiveCard.AllowCustomStyle && (card.Style != AdaptiveContainerStyle.None))
+            {
+                cardContainerStyle = card.Style;
+            }
+            context.ParentStyle = cardContainerStyle;
 
             var grid = new Grid();
             grid.Style = context.GetStyle("Adaptive.InnerCard");

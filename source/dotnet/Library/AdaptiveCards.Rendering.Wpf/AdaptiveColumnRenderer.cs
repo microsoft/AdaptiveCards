@@ -12,6 +12,28 @@ namespace AdaptiveCards.Rendering.Wpf
             var uiContainer = new Grid();
             uiContainer.Style = context.GetStyle("Adaptive.Column");
 
+            // Keep track of ContainerStyle.ForegroundColors before Container is rendered
+            var outerStyle = context.ForegroundColors;
+            var parentContainerStyle = context.ParentStyle;
+           
+            if (column.Style != null)
+            {
+                AdaptiveContainerRenderer.ApplyPadding(uiContainer, column, parentContainerStyle, context);
+
+                // Apply background color
+                ContainerStyleConfig containerStyle = context.Config.ContainerStyles.GetContainerStyleConfig(column.Style);
+                uiContainer.SetBackgroundColor(containerStyle.BackgroundColor, context);
+
+                context.ForegroundColors = containerStyle.ForegroundColors;
+            }
+
+            AdaptiveContainerStyle containerContainerStyle = column.Style ?? parentContainerStyle;
+            if (containerContainerStyle == AdaptiveContainerStyle.None)
+            {
+                containerContainerStyle = parentContainerStyle;
+            }
+            context.ParentStyle = containerContainerStyle;
+
             AdaptiveContainerRenderer.AddContainerElements(uiContainer, column.Items, context);
 
             if (column.SelectAction != null)
@@ -36,6 +58,10 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 uiContainer.Visibility = Visibility.Collapsed;
             }
+
+            // Revert context's value to that of outside the Column
+            context.ForegroundColors = outerStyle;
+            context.ParentStyle = parentContainerStyle;
 
             return uiContainer;
         }

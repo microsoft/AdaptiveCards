@@ -4,6 +4,10 @@
 #include "CustomActionWrapper.h"
 #include "Util.h"
 #include "Vector.h"
+#include "AdaptiveShowCardActionRenderer.h"
+#include "AdaptiveSubmitActionRenderer.h"
+#include "AdaptiveOpenUrlActionRenderer.h"
+#include "AdaptiveToggleVisibilityActionRenderer.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;

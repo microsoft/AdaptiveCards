@@ -190,6 +190,7 @@ std::shared_ptr<BaseCardElement> TextBlockParser::Deserialize(ParseContext& cont
     textBlock->SetMaxLines(ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::MaxLines, 0));
     textBlock->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(
         json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
+    textBlock->SetLanguage(context.GetLanguage());
 
     return textBlock;
 }

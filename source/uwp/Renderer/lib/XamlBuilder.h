@@ -30,8 +30,7 @@ namespace AdaptiveNamespace
             _In_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
             _Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** xamlTreeRoot,
             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-            std::shared_ptr<XamlBuilder> xamlBuilder,
-            boolean isOuterCard = true,
+            Microsoft::WRL::ComPtr<XamlBuilder> xamlBuilder,
             ABI::AdaptiveNamespace::ContainerStyle defaultContainerStyle = ABI::AdaptiveNamespace::ContainerStyle::Default);
         HRESULT AddListener(_In_ IXamlBuilderListener* listener) noexcept;
         HRESULT RemoveListener(_In_ IXamlBuilderListener* listener) noexcept;
@@ -99,6 +98,15 @@ namespace AdaptiveNamespace
                                    _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                    _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
                                    _Outptr_ ABI::Windows::UI::Xaml::IUIElement** containerControl);
+        static void BuildShowCard(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* showCard,
+                                  _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                  _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+                                  bool isBottomActionBar,
+                                  _Outptr_ ABI::Windows::UI::Xaml::IUIElement** uiShowCard);
+        static HRESULT BuildAction(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* adaptiveActionElement,
+                                   _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                   _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+                                   _Outptr_ ABI::Windows::UI::Xaml::IUIElement** actionControl);
 
         template<typename T>
         static HRESULT TryGetResourceFromResourceDictionaries(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* resourceDictionary,
@@ -114,6 +122,9 @@ namespace AdaptiveNamespace
                                                       _In_ ABI::Windows::UI::Xaml::IFrameworkElement* frameworkElement);
 
         static Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::IBrush> GetSolidColorBrush(_In_ ABI::Windows::UI::Color color);
+
+        static HRESULT HandleToggleVisibilityClick(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* cardFrameworkElement,
+                                                   _In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action);
 
     private:
         ImageLoadTracker m_imageLoadTracker;
@@ -167,11 +178,6 @@ namespace AdaptiveNamespace
         void PopulateImageFromUrlAsync(_In_ ABI::Windows::Foundation::IUriRuntimeClass* imageUrl, _In_ T* imageControl);
         void FireAllImagesLoaded();
         void FireImagesLoadingHadError();
-        static void BuildShowCard(ABI::AdaptiveNamespace::IAdaptiveShowCardActionConfig* showCardActionConfig,
-                                  _In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
-                                  _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                  bool isBottomActionBar,
-                                  _Outptr_ ABI::Windows::UI::Xaml::IUIElement** uiShowCard);
 
         static void ArrangeButtonContent(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
                                          _In_ ABI::AdaptiveNamespace::IAdaptiveActionsConfig* actionsConfig,
@@ -185,13 +191,13 @@ namespace AdaptiveNamespace
                                  _In_ ABI::Windows::UI::Xaml::Controls::IPanel* bodyPanel,
                                  bool insertSeparator,
                                  _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                 ABI::AdaptiveNamespace::ContainerStyle containerStyle);
+                                 _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
 
-        static void BuildActionSetHelper(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* children,
-                                         ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                         bool isBottomActionBar,
-                                         ABI::Windows::UI::Xaml::IUIElement** actionSetControl,
-                                         ABI::AdaptiveNamespace::ContainerStyle containerStyle);
+        static void BuildActionSetHelper(_In_opt_ ABI::AdaptiveNamespace::IAdaptiveActionSet* actionSet,
+                                         _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* children,
+                                         _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                         _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+                                         _Outptr_ ABI::Windows::UI::Xaml::IUIElement** actionSetControl);
 
         static void XamlBuilder::HandleInlineAcion(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                                    _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
@@ -274,7 +280,10 @@ namespace AdaptiveNamespace
         static void SetVerticalContentAlignmentToChildren(_In_ T* container,
                                                           _In_ ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment);
 
-        static HRESULT HandleToggleVisibilityClick(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                                   _In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action);
+        static ABI::Windows::UI::Xaml::Thickness GetButtonMargin(_In_ ABI::AdaptiveNamespace::IAdaptiveActionsConfig* actionsConfig);
+
+        static HRESULT HandleActionStyling(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* adaptiveActionElement,
+                                           _In_ ABI::Windows::UI::Xaml::IFrameworkElement* buttonFrameworkElement,
+                                           _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext);
     };
 }

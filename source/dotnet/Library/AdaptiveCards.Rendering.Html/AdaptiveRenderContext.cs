@@ -93,6 +93,8 @@ namespace AdaptiveCards.Rendering.Html
 
         public string Lang { get; set; }
 
+        public AdaptiveContainerStyle ParentStyle { get; set; } = AdaptiveContainerStyle.Default;
+
         public ForegroundColorsConfig ForegroundColors { get; set; }
     }
 }

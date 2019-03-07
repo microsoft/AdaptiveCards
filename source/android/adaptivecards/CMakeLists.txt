@@ -36,6 +36,7 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/ChoiceSetInput.cpp
              ../../shared/cpp/ObjectModel/Column.cpp
              ../../shared/cpp/ObjectModel/ColumnSet.cpp
+             ../../shared/cpp/ObjectModel/CollectionTypeElement.cpp
              ../../shared/cpp/ObjectModel/Container.cpp
              ../../shared/cpp/ObjectModel/DateInput.cpp
              ../../shared/cpp/ObjectModel/DateTimePreparsedToken.cpp

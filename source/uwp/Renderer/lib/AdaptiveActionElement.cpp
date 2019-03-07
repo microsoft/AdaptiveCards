@@ -22,6 +22,8 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetIconUrl(), m_iconUrl.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetSentiment(), m_sentiment.GetAddressOf()));
 
+        m_internalId = sharedModel->GetInternalId();
+
         return S_OK;
     }
 
