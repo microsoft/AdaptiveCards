@@ -19,6 +19,7 @@ import { StyleManager } from '../../styles/style-config';
 import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config';
 import * as Utils from '../../utils/util';
+import * as Enums from '../../utils/enums';
 
 export class Input extends React.Component {
 
@@ -54,7 +55,10 @@ export class Input extends React.Component {
 			type,
 			isMultiline,
 			placeholder,
-			maxLength
+			maxLength,
+			payload,
+			textStyle,
+			keyboardType,
 		} = this;
 
 		if (!id || !type) {
@@ -62,18 +66,13 @@ export class Input extends React.Component {
 		}
 
 		if (!Utils.isNullOrEmpty(this.inlineAction)) {
-			if (this.inlineAction.type === "Action.ShowCard") {
-				let error = { "error": Enums.ValidationError.ActionTypeNotAllowed, "message": `Inline ShowCard is not supported as of now` };
-				onParseError(error);
-				return null;
-			}
 			TextBox = this.inlineActionComponent();
 		}
 		else {
 			TextBox = (
 				<InputContextConsumer>
 					{({ addInputItem }) => (
-						<ElementWrapper json={this.payload} style={this.receivedStyle}>
+						<ElementWrapper json={payload} style={this.receivedStyle}>
 							<TextInput
 								style={[this.getComputedStyles(), this.receivedStyle]}
 								autoCapitalize={Constants.NoneString}
@@ -83,8 +82,8 @@ export class Input extends React.Component {
 								maxLength={maxLength}
 								underlineColorAndroid={Constants.TransparentString}
 								clearButtonMode={Constants.WhileEditingString}
-								textContentType={this.textStyle}
-								keyboardType={this.keyboardType}
+								textContentType={textStyle}
+								keyboardType={keyboardType}
 								onFocus={this.props.handleFocus}
 								onBlur={this.props.handleBlur}
 								onChangeText={(text) => {
@@ -110,10 +109,10 @@ export class Input extends React.Component {
 		const { isMultiline } = this;
 
 		let inputComputedStyles = [this.styleConfig.inputBorderWidth,
-									this.styleConfig.inputBackgroundColor,
-									this.styleConfig.inputBorderRadius,
-									this.styleConfig.fontConfig,
-									styles.input];
+		this.styleConfig.inputBackgroundColor,
+		this.styleConfig.inputBorderRadius,
+		this.styleConfig.fontConfig,
+		styles.input];
 		isMultiline ?
 			inputComputedStyles.push(styles.multiLineHeight) :
 			inputComputedStyles.push(styles.singleLineHeight);
@@ -130,7 +129,7 @@ export class Input extends React.Component {
 	parseHostConfig = () => {
 		this.id = this.payload.id;
 		this.type = this.payload.type;
-		this.isMultiline = (this.payload.isMultiline !== undefined) ? this.payload.isMultiline : false;
+		this.isMultiline = this.payload.isMultiline === undefined ? false : this.payload.isMultiline;
 		this.maxLength = (this.payload.maxLength == undefined ||
 			this.payload.maxLength == 0) ? Number.MAX_VALUE : this.payload.maxLength;
 		this.placeholder = this.payload.placeholder;
@@ -146,21 +145,40 @@ export class Input extends React.Component {
 	textValueChanged = (text) => {
 		this.setState({ text });
 	}
+
 	/**
      * @description Invoked when json payload contains inlineAction prop
      */
 	inlineActionComponent = () => {
+		return (
+			<InputContextConsumer>
+				{({ addInputItem, onExecuteAction, onParseError }) =>
+					this.parsePayload(addInputItem, onExecuteAction, onParseError)
+				}
+			</InputContextConsumer>
+		);
+	}
+
+	/**
+	 * @description Parse the given payload and render the card accordingly
+	 */
+	parsePayload = (addInputItem, onExecuteAction, onParseError) => {
 		const {
 			id,
 			type,
 			isMultiline,
 			placeholder,
-			maxLength
+			maxLength,
+			payload,
+			textStyle,
+			keyboardType,
+			inlineAction,
 		} = this;
 
 		if (!id || !type) {
 			return null;
 		}
+
 		var returnKeyType = "done"
 		let wrapperStyle = [styles.inlineActionWrapper];
 		wrapperStyle.push({ alignItems: 'center' })
@@ -169,55 +187,84 @@ export class Input extends React.Component {
 			wrapperStyle.push({ alignItems: 'flex-end' })
 			returnKeyType = "default";
 		}
-		return (
-			<InputContextConsumer>
-				{({ addInputItem, onExecuteAction }) => (
-					<ElementWrapper json={this.payload} style={wrapperStyle}>
-						<TextInput
-							style={[this.getComputedStyles(), styles.inlineActionTextInput]}
-							autoCapitalize={Constants.NoneString}
-							autoCorrect={false}
-							placeholder={placeholder}
-							placeholderTextColor='#3a3a3a'
-							multiline={isMultiline}
-							maxLength={maxLength}
-							returnKeyLabel={'submit'}
-							returnKeyType={returnKeyType}
-							onSubmitEditing={() => this.onClickHandle(onExecuteAction)}
-							underlineColorAndroid={Constants.TransparentString}
-							clearButtonMode={Constants.WhileEditingString}
-							textContentType={this.textStyle}
-							keyboardType={this.keyboardType}
-							onFocus={this.props.handleFocus}
-							onBlur={this.props.handleBlur}
-							onChangeText={(text) => {
-								this.props.textValueChanged(text, addInputItem);
-								this.textValueChanged(text);
-							}}
-							value={this.props.value}
-						/>
-						<TouchableOpacity onPress={() => { this.onClickHandle(onExecuteAction) }}>
-							{Utils.isNullOrEmpty(this.inlineAction.iconUrl) ?
-								<Text style={styles.inlineActionText}>{this.inlineAction.title}</Text> :
-								<Image
-									style={styles.inlineActionImage}
-									source=
-									{{ uri: this.inlineAction.iconUrl }} />
-							}
-						</TouchableOpacity>
-					</ElementWrapper>
-				)}
-			</InputContextConsumer>
-		);
+		if (inlineAction.type === "Action.ShowCard") {
+			let error = {
+				"error": Enums.ValidationError.ActionTypeNotAllowed,
+				"message": `Inline ShowCard is not supported as of now`
+			};
+			onParseError(error);
+			return null;
+		}
+		else {
+			return (
+				<ElementWrapper json={payload} style={wrapperStyle}>
+					<TextInput
+						style={[this.getComputedStyles(), styles.inlineActionTextInput]}
+						autoCapitalize={Constants.NoneString}
+						autoCorrect={false}
+						placeholder={placeholder}
+						placeholderTextColor='#3a3a3a'
+						multiline={isMultiline}
+						maxLength={maxLength}
+						returnKeyLabel={'submit'}
+						returnKeyType={returnKeyType}
+						onSubmitEditing={() => this.onClickHandle(onExecuteAction, 'onSubmit')}
+						underlineColorAndroid={Constants.TransparentString}
+						clearButtonMode={Constants.WhileEditingString}
+						textContentType={textStyle}
+						keyboardType={keyboardType}
+						onFocus={this.props.handleFocus}
+						onBlur={this.props.handleBlur}
+						onChangeText={(text) => {
+							this.props.textValueChanged(text, addInputItem);
+							this.textValueChanged(text);
+						}}
+						value={this.props.value}
+					/>
+					<TouchableOpacity onPress={() => { this.onClickHandle(onExecuteAction, 'inline-action') }}>
+						{Utils.isNullOrEmpty(inlineAction.iconUrl) ?
+							<Text style={styles.inlineActionText}>{inlineAction.title}</Text> :
+							<Image
+								style={styles.inlineActionImage}
+								source=
+								{{ uri: inlineAction.iconUrl }} />
+						}
+					</TouchableOpacity>
+				</ElementWrapper>
+			);
+		}
 
 	}
 
+
+
+
 	/**
- 	* @description Invoked on tapping the inline-action image component
-	*/
-	onClickHandle(onExecuteAction) {
-		if (this.payload.inlineAction.type === Constants.ActionSubmit && !this.isMultiline) {
-			let actionObject = { "type": Constants.ActionSubmit, "data": this.state.text };
+ 	 * @description Invoked on tapping the inline-action image component
+	 * @param {string} onExecuteAction - the action handler
+	 * @param {string} action - parameter to determine the origin of the action('onSubmit' OR 'inline-action')
+	 */
+	onClickHandle(onExecuteAction, action) {
+		if ((this.inlineAction.type === Constants.ActionSubmit)
+			&&
+			((action === 'onSubmit' && !this.isMultiline)
+				|| action === 'inline-action')) {
+			let actionObject = {
+				"type": Constants.ActionSubmit,
+				"data": this.state.text
+			};
+			onExecuteAction(actionObject);
+		}
+		else if (this.inlineAction.type === Constants.ActionOpenUrl
+			&&
+			!Utils.isNullOrEmpty(this.inlineAction.url)
+			&&
+			((action === 'onSubmit' && !this.isMultiline)
+				|| action === 'inline-action')) {
+			let actionObject = {
+				"type": Constants.ActionOpenUrl,
+				"url": this.inlineAction.url
+			};
 			onExecuteAction(actionObject);
 		}
 	}
@@ -246,10 +293,11 @@ const styles = StyleSheet.create({
 	},
 	inlineActionTextInput: {
 		padding: 5,
-		flex:1,
+		marginTop: 15,
+		flex: 1,
 		backgroundColor: 'transparent',
 		color: '#3a3a3a',
-		borderColor:"#9E9E9E",
+		borderColor: "#9E9E9E",
 		borderWidth: 1,
 	},
 	inlineActionImage: {
@@ -258,7 +306,7 @@ const styles = StyleSheet.create({
 		height: 40,
 		marginTop: 15,
 		backgroundColor: 'transparent',
-		flexShrink:0,
+		flexShrink: 0,
 	},
 });
 
