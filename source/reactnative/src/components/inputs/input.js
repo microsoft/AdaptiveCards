@@ -7,7 +7,8 @@
 import React from 'react';
 import {
 	StyleSheet,
-	TextInput
+	TextInput,
+	Text
 } from 'react-native';
 
 import { InputContextConsumer } from '../../utils/context';
@@ -27,16 +28,11 @@ export class Input extends React.Component {
 		this.payload = props.json;
 		this.id = Constants.EmptyString;
 		this.isMultiline = Boolean;
-		this.maxlength = 0;
+		this.maxLength = 0;
 		this.placeHolder = Constants.EmptyString;
 		this.type = Constants.EmptyString;
-		this.value = Constants.EmptyString;
 		this.keyboardType = Constants.EmptyString;
 		this.textStyle = Constants.EmptyString;
-		this.state = {
-			isError: false,
-			text: Constants.EmptyString,
-		}
 	}
 
 	render() {
@@ -59,10 +55,10 @@ export class Input extends React.Component {
 
 		return (
 			<InputContextConsumer>
-				{({ addInputItem }) => (
+				{({ addInputItem, showErrors }) => (
 					<ElementWrapper json={this.payload}>
 						<TextInput
-							style={this.getComputedStyles()}
+							style={this.getComputedStyles(showErrors)}
 							autoCapitalize={Constants.NoneString}
 							autoCorrect={false}
 							placeholder={placeholder}
@@ -74,9 +70,10 @@ export class Input extends React.Component {
 							keyboardType={this.keyboardType}
 							onFocus={this.props.handleFocus}
 							onBlur={this.props.handleBlur}
-							onChangeText={(text) => this.props.textValueChanged(text, addInputItem)}
 							value={this.props.value}
+							onChangeText={(text) => this.props.textValueChanged(text, addInputItem)}
 						/>
+						{/* <Text style={this.styleConfig.defaultDestructiveForegroundColor}>{"Required"}</Text> */}
 					</ElementWrapper>
 				)}
 			</InputContextConsumer>
@@ -87,7 +84,7 @@ export class Input extends React.Component {
      * @description Return the input styles applicable based on the given payload
 	 * @returns {Array} - Computed styles based on the config 
      */
-	getComputedStyles = () => {
+	getComputedStyles = (showErrors) => {
 		const { isMultiline } = this;
 
 		let inputComputedStyles = [this.styleConfig.inputBorderWidth,
@@ -98,7 +95,7 @@ export class Input extends React.Component {
 		isMultiline ?
 			inputComputedStyles.push(styles.multiLineHeight) :
 			inputComputedStyles.push(styles.singleLineHeight);
-		this.props.isError ?
+		this.props.isError && showErrors ?
 			inputComputedStyles.push(this.styleConfig.borderAttention) :
 			inputComputedStyles.push(this.styleConfig.inputBorderColor);
 
@@ -106,7 +103,7 @@ export class Input extends React.Component {
 	}
 
     /**
-     * @description Parse hostconfig specific to this element
+     * @description Parse hostConfig specific to this element
      */
 	parseHostConfig = () => {
 		this.id = this.payload.id;

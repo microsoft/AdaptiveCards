@@ -34,7 +34,11 @@ export default class AdaptiveCards extends React.Component {
 
 		this.payload = props.payload;
 
-		// hostconfig
+		this.state = {
+			showErrors: false,
+		}
+
+		// hostConfig
 		if (props.hostConfig) {
 			HostConfigManager.setHostConfig(props.hostConfig);
 		}
@@ -89,7 +93,7 @@ export default class AdaptiveCards extends React.Component {
 		return renderedElement;
 	}
 
-	getAdaptiveCardConent() {
+	getAdaptiveCardContent() {
 		var adaptiveCardContent =
 			(
 				<ContainerWrapper style={styles.container} json={this.payload}>
@@ -128,6 +132,7 @@ export default class AdaptiveCards extends React.Component {
 		const isTransparent = this.payload.backgroundImage ? true : false;
 		const onParseError = this.onParseError;
 		const lang = this.payload.lang || 'en';
+		const {showErrors} = this.state;
 
 		// version check
 		if (!this.isSupportedVersion()) {
@@ -137,9 +142,9 @@ export default class AdaptiveCards extends React.Component {
 			)
 		}
 		return (
-			<InputContextProvider value={{ lang, addInputItem, inputArray, onExecuteAction, isTransparent, onParseError, addResourceInformation }}>
+			<InputContextProvider value={{ lang, addInputItem, inputArray, onExecuteAction, isTransparent, onParseError, addResourceInformation, showErrors }}>
 				{
-					this.getAdaptiveCardConent()
+					this.getAdaptiveCardContent()
 				}
 			</InputContextProvider>
 		);
@@ -181,6 +186,7 @@ export default class AdaptiveCards extends React.Component {
 
 	// Invoke onExecuteAction if the consumer app provide it via props.
 	onExecuteAction = (action) => {
+		this.setState({showErrors:true});
 		if (this.props.onExecuteAction) {
 			this.props.onExecuteAction(action);
 		}
