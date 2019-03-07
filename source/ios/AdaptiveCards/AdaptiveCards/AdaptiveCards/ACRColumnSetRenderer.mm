@@ -47,6 +47,8 @@
                                                                   parentStyle:[viewGroup style]
                                                                    hostConfig:acoConfig
                                                                     superview:viewGroup];
+    configBleed(rootView, elem, columnSetView);
+
     [columnSetView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 
     ACRBaseCardElementRenderer *columnRenderer =

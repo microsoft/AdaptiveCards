@@ -16,7 +16,6 @@ using namespace AdaptiveCards;
     NSMutableArray* _targets;
     NSMutableArray<ACRShowCardTarget *>* _showcardTargets;
     ACRContainerStyle _style;
-    NSArray<NSLayoutConstraint *>* _widthconstraint;
 }
 
 - (instancetype)initWithStyle:(ACRContainerStyle)style
@@ -191,6 +190,7 @@ using namespace AdaptiveCards;
                                                                  options:0
                                                                  metrics:nil
                                                                    views:dictionary];
+    
     [self addConstraints:_widthconstraint];
     [self addConstraints:vertConst];
 }
