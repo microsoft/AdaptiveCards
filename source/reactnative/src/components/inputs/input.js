@@ -243,27 +243,24 @@ export class Input extends React.Component {
 	 * @param {string} action - parameter to determine the origin of the action('onSubmit' OR 'inline-action')
 	 */
 	onClickHandle(onExecuteAction, action) {
-		if ((this.inlineAction.type === Constants.ActionSubmit)
-			&&
-			((action === 'onSubmit' && !this.isMultiline)
-				|| action === 'inline-action')) {
+		if (this.isMultiline && action != 'inline-action')
+			return;
+
+		if (this.inlineAction.type === Constants.ActionSubmit) {
 			let actionObject = {
 				"type": Constants.ActionSubmit,
 				"data": this.state.text
 			};
 			onExecuteAction(actionObject);
 		}
-		else if (this.inlineAction.type === Constants.ActionOpenUrl
-			&&
-			!Utils.isNullOrEmpty(this.inlineAction.url)
-			&&
-			((action === 'onSubmit' && !this.isMultiline)
-				|| action === 'inline-action')) {
-			let actionObject = {
-				"type": Constants.ActionOpenUrl,
-				"url": this.inlineAction.url
-			};
-			onExecuteAction(actionObject);
+		else if (this.inlineAction.type === Constants.ActionOpenUrl) {
+			if (!Utils.isNullOrEmpty(this.inlineAction.url)) {
+				let actionObject = {
+					"type": Constants.ActionOpenUrl,
+					"url": this.inlineAction.url
+				};
+				onExecuteAction(actionObject);
+			}
 		}
 	}
 }
