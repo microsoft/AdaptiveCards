@@ -6,8 +6,8 @@ import React from 'react';
 import {
 	StyleSheet,
 	Text,
-	ScrollView,
-	ImageBackground
+	View,
+	ScrollView
 } from 'react-native';
 
 import { Registry } from './components/registration/registry';
@@ -20,6 +20,7 @@ import * as Utils from './utils/util';
 import { SelectAction } from './components/actions';
 import ResourceInformation from './utils/resource-information';
 import { ContainerWrapper } from './components/containers/';
+import { BackgroundImage } from './components/elements';
 import { ThemeConfigManager } from './utils/theme-config';
 
 export default class AdaptiveCards extends React.Component {
@@ -28,7 +29,6 @@ export default class AdaptiveCards extends React.Component {
 	inputArray = {};
 	version = "1.1"; // client supported version
 	resourceInformationArray = [];
-	
 	constructor(props) {
 		super(props);
 
@@ -38,9 +38,9 @@ export default class AdaptiveCards extends React.Component {
 		if (props.hostConfig) {
 			HostConfigManager.setHostConfig(props.hostConfig);
 		}
-		
+
 		// themeConfig
-		if(props.themeConfig){
+		if (props.themeConfig) {
 			ThemeConfigManager.setThemeConfig(props.themeConfig);
 		}
 
@@ -93,23 +93,13 @@ export default class AdaptiveCards extends React.Component {
 		var adaptiveCardContent =
 			(
 				<ContainerWrapper style={styles.container} json={this.payload}>
-					<ScrollView alwaysBounceVertical={false} style={{flexGrow: 0}}>
+					<ScrollView alwaysBounceVertical={false} style={{ flexGrow: 0 }}>
 						{this.parsePayload()}
 						{!Utils.isNullOrEmpty(this.payload.actions) &&
 							<ActionWrapper actions={this.payload.actions} />}
 					</ScrollView>
 				</ContainerWrapper>
 			);
-
-		// checks if BackgroundImage option is available for adaptive card
-		if (!Utils.isNullOrEmpty(this.payload.backgroundImage)) {
-			let backgroundImage = Utils.getImageUrl(this.payload.backgroundImage)
-			adaptiveCardContent = (
-				<ImageBackground source={{ uri: backgroundImage }} style={styles.backgroundImage}>
-					{adaptiveCardContent}
-				</ImageBackground>
-			);
-		}
 
 		// checks if selectAction option is available for adaptive card
 		if (!Utils.isNullOrEmpty(this.payload.selectAction)) {
@@ -147,8 +137,8 @@ export default class AdaptiveCards extends React.Component {
 
 	/**
 	 * Check whether the payload schema version is supported by client.
-	 * @return {boolean} - version supported or not
-	 */
+* @return {boolean} - version supported or not
+		*/
 	isSupportedVersion = () => {
 
 		//Ignore the schema version number when AdaptiveCard is used from Action.ShowCard as it is not mandatory
