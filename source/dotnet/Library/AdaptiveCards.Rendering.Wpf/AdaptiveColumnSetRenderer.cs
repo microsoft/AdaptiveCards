@@ -89,7 +89,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (columnSet.SelectAction != null)
             {
-                return context.RenderSelectAction(columnSet.SelectAction, uiColumnSet);
+                return context.RenderSelectAction(columnSet.SelectAction, border);
             }
 
             if(!columnSet.IsVisible)

@@ -59,7 +59,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (container.SelectAction != null)
             {
-                return context.RenderSelectAction(container.SelectAction, uiContainer);
+                return context.RenderSelectAction(container.SelectAction, border);
             }
 
             // Revert context's value to that of outside the Container

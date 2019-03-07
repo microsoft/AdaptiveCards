@@ -39,7 +39,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (column.SelectAction != null)
             {
-                return context.RenderSelectAction(column.SelectAction, uiContainer);
+                return context.RenderSelectAction(column.SelectAction, border);
             }
             
             switch(column.VerticalContentAlignment)
