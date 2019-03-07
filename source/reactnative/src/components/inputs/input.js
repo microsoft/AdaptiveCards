@@ -237,9 +237,6 @@ export class Input extends React.Component {
 
 	}
 
-
-
-
 	/**
  	 * @description Invoked on tapping the inline-action image component
 	 * @param {string} onExecuteAction - the action handler
@@ -274,7 +271,7 @@ export class Input extends React.Component {
 const styles = StyleSheet.create({
 	inlineActionText: {
 		marginLeft: 5,
-		marginTop:15,
+		marginTop: 15,
 		color: '#3a3a3a',
 	},
 	multiLineHeight: {
