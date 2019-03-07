@@ -14,26 +14,35 @@ namespace AdaptiveCards.Rendering.Wpf
             uiContainer.SetBackgroundSource(column.BackgroundImage, context);
 
             // Keep track of ContainerStyle.ForegroundColors before Container is rendered
-            var outerStyle = context.ForegroundColors;
-            var parentContainerStyle = context.ParentStyle;
+            var parentRenderArgs = context.RenderArgs;
+            var elementRenderArgs = parentRenderArgs.Clone();
 
             Border border = new Border();
             border.Child = uiContainer;
 
             bool inheritsStyleFromParent = (column.Style == AdaptiveContainerStyle.None);
+            bool columnHasPadding = false;
 
             if (!inheritsStyleFromParent)
             {
-                AdaptiveContainerRenderer.ApplyPadding(border, uiContainer, column, parentContainerStyle, context);
+                columnHasPadding = AdaptiveContainerRenderer.ApplyPadding(border, uiContainer, column, parentRenderArgs, context);
 
                 // Apply background color
                 ContainerStyleConfig containerStyle = context.Config.ContainerStyles.GetContainerStyleConfig(column.Style);
                 border.Background = context.GetColorBrush(containerStyle.BackgroundColor);
 
-                context.ForegroundColors = containerStyle.ForegroundColors;
+                elementRenderArgs.ForegroundColors = containerStyle.ForegroundColors;
             }
 
-            context.ParentStyle = (inheritsStyleFromParent) ? parentContainerStyle : column.Style;
+            elementRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : column.Style;
+            if ((parentRenderArgs.ColumnRelativePosition == ColumnPositionEnum.Begin) ||
+                (parentRenderArgs.ColumnRelativePosition == ColumnPositionEnum.End))
+            {
+                elementRenderArgs.ColumnRelativePosition = ColumnPositionEnum.Intermediate;
+            }
+
+            elementRenderArgs.HasParentWithPadding = columnHasPadding;
+            context.RenderArgs = elementRenderArgs;
 
             AdaptiveContainerRenderer.AddContainerElements(uiContainer, column.Items, context);
 
@@ -61,8 +70,7 @@ namespace AdaptiveCards.Rendering.Wpf
             }
             
             // Revert context's value to that of outside the Column
-            context.ForegroundColors = outerStyle;
-            context.ParentStyle = parentContainerStyle;
+            context.RenderArgs = parentRenderArgs;
 
             return border;
         }

@@ -21,26 +21,26 @@ namespace AdaptiveCards.Rendering.Wpf
             switch (textBlock.Color)
             {
                 case AdaptiveTextColor.Accent:
-                    colorOption = context.ForegroundColors.Accent;
+                    colorOption = context.RenderArgs.ForegroundColors.Accent;
                     break;
                 case AdaptiveTextColor.Attention:
-                    colorOption = context.ForegroundColors.Attention;
+                    colorOption = context.RenderArgs.ForegroundColors.Attention;
                     break;
                 case AdaptiveTextColor.Dark:
-                    colorOption = context.ForegroundColors.Dark;
+                    colorOption = context.RenderArgs.ForegroundColors.Dark;
                     break;
                 case AdaptiveTextColor.Good:
-                    colorOption = context.ForegroundColors.Good;
+                    colorOption = context.RenderArgs.ForegroundColors.Good;
                     break;
                 case AdaptiveTextColor.Light:
-                    colorOption = context.ForegroundColors.Light;
+                    colorOption = context.RenderArgs.ForegroundColors.Light;
                     break;
                 case AdaptiveTextColor.Warning:
-                    colorOption = context.ForegroundColors.Warning;
+                    colorOption = context.RenderArgs.ForegroundColors.Warning;
                     break;
                 case AdaptiveTextColor.Default:
                 default:
-                    colorOption = context.ForegroundColors.Default;
+                    colorOption = context.RenderArgs.ForegroundColors.Default;
                     break;
             }
 
