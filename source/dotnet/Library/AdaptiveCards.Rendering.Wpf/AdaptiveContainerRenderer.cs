@@ -140,8 +140,7 @@ namespace AdaptiveCards.Rendering.Wpf
             uiContainer.Children.Add(uiSep);
         }
         
-        // We have to give negative margin for this to work as expected in the case of bleed
-        // We have to give positive padding for this to work
+        // For applying bleeding, we must know if the element has padding, so both properties are applied in the same method
         public static void ApplyPadding(Border border, Grid uiElement, AdaptiveCollectionElement element, AdaptiveContainerStyle parentStyle, AdaptiveRenderContext context)
         {
             bool canApplyPadding = false;
