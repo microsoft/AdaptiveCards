@@ -7,9 +7,7 @@
 
 using namespace AdaptiveSharedNamespace;
 
-Container::Container() :
-    BaseCardElement(CardElementType::Container), m_style(ContainerStyle::None),
-    m_verticalContentAlignment(VerticalContentAlignment::Top)
+Container::Container() : CollectionTypeElement(CardElementType::Container)
 {
     PopulateKnownPropertiesSet();
 }
@@ -24,82 +22,14 @@ std::vector<std::shared_ptr<BaseCardElement>>& Container::GetItems()
     return m_items;
 }
 
-ContainerStyle Container::GetStyle() const
-{
-    return m_style;
-}
-
-void Container::SetStyle(const ContainerStyle value)
-{
-    m_style = value;
-}
-
-std::shared_ptr<BaseActionElement> Container::GetSelectAction() const
-{
-    return m_selectAction;
-}
-
-void Container::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
-{
-    m_selectAction = action;
-}
-
-void Container::SetLanguage(const std::string& value)
-{
-    PropagateLanguage(value, m_items);
-}
-
-VerticalContentAlignment Container::GetVerticalContentAlignment() const
-{
-    return m_verticalContentAlignment;
-}
-
-void Container::SetVerticalContentAlignment(const VerticalContentAlignment value)
-{
-    m_verticalContentAlignment = value;
-}
-
-std::shared_ptr<BackgroundImage> Container::GetBackgroundImage() const
-{
-    return m_backgroundImage;
-}
-
-void Container::SetBackgroundImage(const std::shared_ptr<BackgroundImage> value)
-{
-    m_backgroundImage = value;
-}
-
 Json::Value Container::SerializeToJsonValue() const
 {
-    Json::Value root = BaseCardElement::SerializeToJsonValue();
-
-    if (m_style != ContainerStyle::None)
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = ContainerStyleToString(m_style);
-    }
-
-    if (m_verticalContentAlignment != VerticalContentAlignment::Top)
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment)] =
-            VerticalContentAlignmentToString(m_verticalContentAlignment);
-    }
-
-    if (m_backgroundImage != nullptr && !m_backgroundImage->GetUrl().empty())
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImage)] = m_backgroundImage->SerializeToJsonValue();
-    }
-
+    Json::Value root = CollectionTypeElement::SerializeToJsonValue();
     std::string const& itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
     root[itemsPropertyName] = Json::Value(Json::arrayValue);
     for (const auto& cardElement : m_items)
     {
         root[itemsPropertyName].append(cardElement->SerializeToJsonValue());
-    }
-
-    if (m_selectAction != nullptr)
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] =
-            BaseCardElement::SerializeSelectAction(m_selectAction);
     }
 
     return root;
@@ -109,23 +39,16 @@ std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(ParseContext& cont
 {
     ParseUtil::ExpectTypeString(value, CardElementType::Container);
 
-    auto container = BaseCardElement::Deserialize<Container>(context, value);
-    container->SetStyle(ParseUtil::GetEnumValue<ContainerStyle>(value, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString));
-
-    container->SetVerticalContentAlignment(ParseUtil::GetEnumValue<VerticalContentAlignment>(
-        value, AdaptiveCardSchemaKey::VerticalContentAlignment, VerticalContentAlignment::Top, VerticalContentAlignmentFromString));
-
-    auto backgroundImage = ParseUtil::GetBackgroundImage(value);
-    container->SetBackgroundImage(backgroundImage);
-
-    // Parse Items
-    auto cardElements = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Items, false);
-    container->m_items = std::move(cardElements);
-
-    // Parse optional selectAction
-    container->SetSelectAction(ParseUtil::GetAction(context, value, AdaptiveCardSchemaKey::SelectAction, false));
+    auto container = CollectionTypeElement::Deserialize<Container>(context, value);
 
     return container;
+}
+
+void Container::DeserializeChildren(ParseContext& context, const Json::Value& value)
+{
+    // Parse items
+    auto cardElements = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Items, false);
+    m_items = std::move(cardElements);
 }
 
 std::shared_ptr<BaseCardElement> ContainerParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
@@ -143,19 +66,7 @@ void Container::PopulateKnownPropertiesSet()
 
 void Container::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
 {
-    auto backgroundImage = GetBackgroundImage();
-    if (backgroundImage != nullptr)
-    {
-        RemoteResourceInformation backgroundImageInfo;
-        backgroundImageInfo.url = backgroundImage->GetUrl();
-        backgroundImageInfo.mimeType = "image";
-        resourceInfo.push_back(backgroundImageInfo);
-    }
-
     auto items = GetItems();
-    for (const auto& item : items)
-    {
-        item->GetResourceInformation(resourceInfo);
-    }
+    CollectionTypeElement::GetResourceInformation<BaseCardElement>(resourceInfo, items);
     return;
 }

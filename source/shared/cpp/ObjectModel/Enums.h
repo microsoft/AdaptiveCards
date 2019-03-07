@@ -23,6 +23,7 @@ namespace AdaptiveSharedNamespace
         BackgroundImage,
         BackgroundImageUrl,
         BaseCardElement,
+        Bleed,
         Body,
         Bolder,
         BorderColor,

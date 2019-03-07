@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\ObjectModel\AdaptiveBase64Util.cpp" />
     <ClCompile Include="..\..\ObjectModel\BaseElement.cpp" />
+    <ClCompile Include="..\..\ObjectModel\CollectionTypeElement.cpp" />
     <ClCompile Include="..\..\ObjectModel\ParseContext.cpp" />
     <ClCompile Include="..\..\ObjectModel\BackgroundImage.cpp" />
     <ClCompile Include="..\..\ObjectModel\SemanticVersion.cpp" />
@@ -209,6 +210,7 @@
     <ClInclude Include="..\..\ObjectModel\AdaptiveCardParseException.h" />
     <ClInclude Include="..\..\ObjectModel\AdaptiveCardParseWarning.h" />
     <ClInclude Include="..\..\ObjectModel\BaseElement.h" />
+    <ClInclude Include="..\..\ObjectModel\CollectionTypeElement.h" />
     <ClInclude Include="..\..\ObjectModel\ParseContext.h" />
     <ClInclude Include="..\..\ObjectModel\BackgroundImage.h" />
     <ClInclude Include="..\..\ObjectModel\SemanticVersion.h" />

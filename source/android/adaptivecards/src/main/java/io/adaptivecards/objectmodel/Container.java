@@ -8,7 +8,7 @@
 
 package io.adaptivecards.objectmodel;
 
-public class Container extends BaseCardElement {
+public class Container extends CollectionTypeElement {
   private transient long swigCPtr;
   private transient boolean swigCMemOwnDerived;
 
@@ -54,46 +54,12 @@ public class Container extends BaseCardElement {
     return new JsonValue(AdaptiveCardObjectModelJNI.Container_SerializeToJsonValue(swigCPtr, this), true);
   }
 
+  public void DeserializeChildren(ParseContext context, JsonValue value) {
+    AdaptiveCardObjectModelJNI.Container_DeserializeChildren(swigCPtr, this, ParseContext.getCPtr(context), context, JsonValue.getCPtr(value), value);
+  }
+
   public BaseCardElementVector GetItems() {
     return new BaseCardElementVector(AdaptiveCardObjectModelJNI.Container_GetItems__SWIG_0(swigCPtr, this), false);
-  }
-
-  public ContainerStyle GetStyle() {
-    return ContainerStyle.swigToEnum(AdaptiveCardObjectModelJNI.Container_GetStyle(swigCPtr, this));
-  }
-
-  public void SetStyle(ContainerStyle value) {
-    AdaptiveCardObjectModelJNI.Container_SetStyle(swigCPtr, this, value.swigValue());
-  }
-
-  public BaseActionElement GetSelectAction() {
-    long cPtr = AdaptiveCardObjectModelJNI.Container_GetSelectAction(swigCPtr, this);
-    return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
-  }
-
-  public void SetSelectAction(BaseActionElement action) {
-    AdaptiveCardObjectModelJNI.Container_SetSelectAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
-  }
-
-  public void SetLanguage(String value) {
-    AdaptiveCardObjectModelJNI.Container_SetLanguage(swigCPtr, this, value);
-  }
-
-  public VerticalContentAlignment GetVerticalContentAlignment() {
-    return VerticalContentAlignment.swigToEnum(AdaptiveCardObjectModelJNI.Container_GetVerticalContentAlignment(swigCPtr, this));
-  }
-
-  public void SetVerticalContentAlignment(VerticalContentAlignment value) {
-    AdaptiveCardObjectModelJNI.Container_SetVerticalContentAlignment(swigCPtr, this, value.swigValue());
-  }
-
-  public BackgroundImage GetBackgroundImage() {
-    long cPtr = AdaptiveCardObjectModelJNI.Container_GetBackgroundImage(swigCPtr, this);
-    return (cPtr == 0) ? null : new BackgroundImage(cPtr, true);
-  }
-
-  public void SetBackgroundImage(BackgroundImage value) {
-    AdaptiveCardObjectModelJNI.Container_SetBackgroundImage(swigCPtr, this, BackgroundImage.getCPtr(value), value);
   }
 
   public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {

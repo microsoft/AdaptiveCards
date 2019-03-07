@@ -10,7 +10,7 @@ namespace AdaptiveSharedNamespace
 {
     class BaseElement;
     class InternalId;
-
+    class CollectionTypeElement;
     class ParseContext
     {
     public:
@@ -21,16 +21,24 @@ namespace AdaptiveSharedNamespace
         std::shared_ptr<ElementParserRegistration> elementParserRegistration;
         std::shared_ptr<ActionParserRegistration> actionParserRegistration;
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
-
         // Push/PopElement are used during parsing to track the tree structure of a card.
         void PushElement(const std::string& idJsonProperty,
                          const AdaptiveSharedNamespace::InternalId& internalId,
                          const bool isFallback = false);
         void PopElement();
 
+        void SetLanguage(const std::string& value);
+        std::string GetLanguage() const;
+
+        ContainerStyle GetParentalContainerStyle() const;
+        AdaptiveSharedNamespace::InternalId PaddingParentInternalId() const;
+        void SaveContextForCollectionTypeElement(
+            const std::shared_ptr<CollectionTypeElement>& current);
+        void RestoreContextForCollectionTypeElement(
+            const std::shared_ptr<CollectionTypeElement>& current);
+
     private:
         const AdaptiveSharedNamespace::InternalId GetNearestFallbackId(const AdaptiveSharedNamespace::InternalId& skipId) const;
-
         // This enum is just a helper to keep track of the position of contents within the std::tuple used in m_idStack
         // below. We don't use enum class here because we don't want typed values for use in std::get
         enum TupleIndex : unsigned int
@@ -54,5 +62,10 @@ namespace AdaptiveSharedNamespace
         //
         //                             (ID,  internal ID, isFallback)[]
         std::vector<std::tuple<std::string, AdaptiveSharedNamespace::InternalId, bool>> m_idStack;
+        ContainerStyle m_parentalContainerStyle;
+        std::vector<ContainerStyle> m_parentalContainerStyles;
+        std::vector<AdaptiveSharedNamespace::InternalId> m_parentalPadding;
+
+        std::string m_language;
     };
 }
