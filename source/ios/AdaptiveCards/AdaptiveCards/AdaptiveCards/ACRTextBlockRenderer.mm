@@ -100,7 +100,8 @@
     
     ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:lab.frame];
     wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
-    lab.translatesAutoresizingMaskIntoConstraints = NO;
+    lab.translatesAutoresizingMaskIntoConstraints = YES;
+    lab.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     [wrappingview addSubview:lab];
 

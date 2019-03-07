@@ -33,12 +33,13 @@
 
 - (void)layoutSubviews
 {
-    if (self.tag == eACRUILabelTag && self.frame.size.height != self.contentSize.height) {
+    /*if (self.tag == eACRUILabelTag && self.frame.size.height != self.contentSize.height) {
+        
         NSLayoutConstraint *heightconst =
         [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.contentSize.height];        
-        heightconst.active = YES;
+        //heightconst.active = YES;
         [self sizeToFit];
-    } else if (self.tag == eACRUIFactSetTag) {
+    } else */ if (self.tag == eACRUIFactSetTag) {
         CGFloat area = self.frame.size.height * self.frame.size.width;
         if (area != _area) {
             [self invalidateIntrinsicContentSize];

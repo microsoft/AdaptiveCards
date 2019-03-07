@@ -31,7 +31,7 @@
 		6B22426821E94AD0000ACDA1 /* Action.CustomParsing.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B22426721E94AD0000ACDA1 /* Action.CustomParsing.json */; };
 		6B22426A21FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22426921FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm */; };
 		6B224292222F306D000ACDA1 /* Card.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B224291222F306D000ACDA1 /* Card.json */; };
-		6B22429422303174000ACDA1 /* Test.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B22429322303174000ACDA1 /* Test.json */; };
+		6B22429822319F93000ACDA1 /* Test (1).json in Resources */ = {isa = PBXBuildFile; fileRef = 6B22429722319F93000ACDA1 /* Test (1).json */; };
 		6B2630DB2150804500ED9207 /* ColumnSet.Media.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B2630DA2150804500ED9207 /* ColumnSet.Media.VerticalStretch.json */; };
 		6B2630DD215080FB00ED9207 /* ColumnSet.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B2630DC215080FA00ED9207 /* ColumnSet.VerticalStretch.json */; };
 		6B2630DF2151A23000ED9207 /* FactSetWrapping.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B2630DE2151A22F00ED9207 /* FactSetWrapping.json */; };
@@ -192,7 +192,7 @@
 		6B22426721E94AD0000ACDA1 /* Action.CustomParsing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.CustomParsing.json; path = ../../../../samples/Tests/Action.CustomParsing.json; sourceTree = "<group>"; };
 		6B22426921FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ADCIOSVisualizerUITests.mm; sourceTree = "<group>"; };
 		6B224291222F306D000ACDA1 /* Card.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Card.json; sourceTree = "<group>"; };
-		6B22429322303174000ACDA1 /* Test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Test.json; sourceTree = "<group>"; };
+		6B22429722319F93000ACDA1 /* Test (1).json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Test (1).json"; sourceTree = "<group>"; };
 		6B2630DA2150804500ED9207 /* ColumnSet.Media.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.Media.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet.Media.VerticalStretch.json; sourceTree = "<group>"; };
 		6B2630DC215080FA00ED9207 /* ColumnSet.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet.VerticalStretch.json; sourceTree = "<group>"; };
 		6B2630DE2151A22F00ED9207 /* FactSetWrapping.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = FactSetWrapping.json; path = ../../../../samples/Tests/FactSetWrapping.json; sourceTree = "<group>"; };
@@ -439,7 +439,7 @@
 		F4D33E341F045B6E00941E44 /* Jsons */ = {
 			isa = PBXGroup;
 			children = (
-				6B22429322303174000ACDA1 /* Test.json */,
+				6B22429722319F93000ACDA1 /* Test (1).json */,
 				6B224291222F306D000ACDA1 /* Card.json */,
 				30C340E32214D50F009A785D /* ColumnSet.Style.json */,
 				6B22426721E94AD0000ACDA1 /* Action.CustomParsing.json */,
@@ -707,7 +707,6 @@
 				F4933CD51F79852C00F6EBFD /* Image.SelectAction.json in Resources */,
 				F4071C831FD63D5400AF4FEA /* Solitaire.json in Resources */,
 				F4933CDB1F79852C00F6EBFD /* ImageSet.json in Resources */,
-				6B22429422303174000ACDA1 /* Test.json in Resources */,
 				F4933CC61F79852C00F6EBFD /* Column.SelectAction.json in Resources */,
 				F4933D041F79853B00F6EBFD /* Restaurant.json in Resources */,
 				30860BC220C9B5C9009F9D99 /* (null) in Resources */,
@@ -738,6 +737,7 @@
 				F4F44B852048CDB300A2F24C /* AdditionalProperty.json in Resources */,
 				30860BC820C9B5C9009F9D99 /* ColumnSet.Input.Toggle.VerticalStretch.json in Resources */,
 				30860BCC20C9B5C9009F9D99 /* ColumnSet_Container.VerticalStretch.json in Resources */,
+				6B22429822319F93000ACDA1 /* Test (1).json in Resources */,
 				6BC30F6021DD69D800B9FAAE /* ActionSet.json in Resources */,
 				30860BC920C9B5C9009F9D99 /* ColumnSet.Input.Date.VerticalStretch.json in Resources */,
 				F4933CD61F79852C00F6EBFD /* Image.Size.json in Resources */,

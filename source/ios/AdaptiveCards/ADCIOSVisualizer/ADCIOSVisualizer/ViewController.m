@@ -213,7 +213,7 @@
 
     [ViewController applyConstraints:formats variables:viewMap];
 
-    [self update:self.ACVTabVC.userSelectedJSon];
+    //[self update:self.ACVTabVC.userSelectedJSon];
     
 }
 
@@ -417,6 +417,7 @@
     [v setNeedsUpdateConstraints];
     [v updateConstraints];
     [v.topAnchor constraintEqualToAnchor:cell.contentView.topAnchor constant:0].active = YES;
+    [v.bottomAnchor constraintEqualToAnchor:cell.contentView.bottomAnchor constant:0].active = YES;
     [v.leadingAnchor constraintEqualToAnchor:cell.contentView.leadingAnchor constant:0].active = YES;
     [cell.contentView.trailingAnchor constraintEqualToAnchor:v.trailingAnchor constant:8].active = YES;    
     return cell;
@@ -424,12 +425,14 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    /*
     UIView * v = [self.scrViewA objectAtIndex:indexPath.row];
     if(v.frame.size.height) {
         return v.frame.size.height + 10;
     } else {
+     */
         return UITableViewAutomaticDimension;
-    }
+    //}
 }
 
 @end

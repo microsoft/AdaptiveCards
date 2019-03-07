@@ -1,0 +1,54 @@
+{
+    "body": [
+      {
+        "separator": true,
+        "columns": [
+          {
+            "width": "2.6",
+            "items": [
+              {
+                "horizontalAlignment": "center",
+                "url": "https://PraiseClientProd.azureedge.net/images/badges/en/KindHeartBadge.png?version=1.2",
+                "type": "Image",
+                "altText": "Kind heart"
+              }
+            ],
+            "type": "Column"
+          },
+          {
+            "items": [
+              {
+                "size": "small",
+                "wrap": true,
+                "isSubtle": true,
+                "type": "TextBlock",
+                "text": "Aditya Sinha sent praise to Aditya a aa"
+              },
+              {
+                "size": "medium",
+                "wrap": true,
+                "spacing": "small",
+                "weight": "bolder",
+                "type": "TextBlock",
+                "text": "Gurvinder Bot"
+              },
+              {
+                "wrap": true,
+                "spacing": "small",
+                "type": "TextBlock",
+                "text": "w manses. Nmabnmx mn wd mn. Mn cwenm wm. How vhf h jaj rhjqw jk c kj e cjkwe jkekwebde k kjwekjen kjnckwjecnkjen jnwencjknec w,mnc,n,n mnmndm,n mn,wmn,mnecnewm,cn,m mnwemcn nm  nkjnwekjncjn jkn  jknwenjkenk men the end"
+              }
+            ],
+            "width": "6",
+            "type": "Column",
+            "spacing": "medium"
+          }
+        ],
+        "type": "ColumnSet",
+        "spacing": "large"
+      }
+    ],
+    "version": "1.0",
+    "type": "AdaptiveCard",
+    "$schema": "https://adaptivecards.io/schemas/adaptive-card.json"
+  }
