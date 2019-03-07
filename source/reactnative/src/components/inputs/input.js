@@ -21,6 +21,7 @@ import { HostConfigManager } from '../../utils/host-config';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 
+
 export class Input extends React.Component {
 
 	styleConfig = StyleManager.getManager().styles;
@@ -273,6 +274,7 @@ export class Input extends React.Component {
 const styles = StyleSheet.create({
 	inlineActionText: {
 		marginLeft: 5,
+		marginTop:15,
 		color: '#3a3a3a',
 	},
 	multiLineHeight: {
@@ -293,7 +295,6 @@ const styles = StyleSheet.create({
 	},
 	inlineActionTextInput: {
 		padding: 5,
-		marginTop: 15,
 		flex: 1,
 		backgroundColor: 'transparent',
 		color: '#3a3a3a',
