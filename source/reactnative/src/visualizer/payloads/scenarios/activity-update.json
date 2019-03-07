@@ -105,8 +105,12 @@
                     {
                         "type": "Input.Text",
                         "id": "comment",
-                        "isMultiline": true,
-                        "placeholder": "Enter your comment"
+                        "placeholder": "Enter your comment",
+                        "inlineAction": {
+                            "type": "Action.Submit",
+                            "iconUrl": "https://img.icons8.com/color/48/000000/send.png",
+                            "title": "Reply"
+                        }
                     }
                 ],
                 "actions": [

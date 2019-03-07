@@ -11,6 +11,7 @@ import { Registry } from '../registration/registry';
 import ElementWrapper from '../elements/element-wrapper';
 import { InputContextConsumer } from '../../utils/context';
 import * as Constants from '../../utils/constants';
+import * as Enums from '../../utils/enums';
 
 const FlexWrap = 'wrap';
 const SizeKey = "size";
