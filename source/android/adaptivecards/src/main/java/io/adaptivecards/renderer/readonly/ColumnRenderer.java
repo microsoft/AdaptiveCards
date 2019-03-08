@@ -42,10 +42,14 @@ public class ColumnRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    public void setInformationForColumnRendering(boolean isFirstColumn, boolean isLastColumn)
+    public void setIsRenderingFirstColumn(boolean isRenderingFirstColumn)
     {
-        m_isRenderingFirstColumn = isFirstColumn;
-        m_isRenderingLastColumn = isLastColumn;
+        m_isRenderingFirstColumn = isRenderingFirstColumn;
+    }
+
+    public void setIsRenderingLastColumn(boolean isRenderingLastColumn)
+    {
+        m_isRenderingLastColumn = m_isRenderingLastColumn;
     }
 
     @Override
@@ -178,11 +182,15 @@ public class ColumnRenderer extends BaseCardElementRenderer
             if(m_isRenderingFirstColumn)
             {
                 leftPadding = (int)-padding;
+                // Reset the flag just in case
+                setIsRenderingFirstColumn(false);
             }
 
             if(m_isRenderingLastColumn)
             {
                 rightPadding = (int)-padding;
+                // Reset the flag just in case
+                setIsRenderingLastColumn(false);
             }
 
             layoutParams.setMargins(leftPadding, 0, rightPadding, 0);

@@ -97,7 +97,8 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             if(columnRenderer instanceof ColumnRenderer)
             {
                 rendererAsColumnRenderer = (ColumnRenderer)columnRenderer;
-                rendererAsColumnRenderer.setInformationForColumnRendering((i == 0), (i == (columnVectorSize - 1)));
+                rendererAsColumnRenderer.setIsRenderingFirstColumn(i == 0);
+                rendererAsColumnRenderer.setIsRenderingLastColumn(i == (columnVectorSize - 1));
             }
 
             columnRenderer.render(renderedCard, context, fragmentManager, layout, column, cardActionHandler, hostConfig, containerStyle);
