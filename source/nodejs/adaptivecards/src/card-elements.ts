@@ -406,13 +406,13 @@ export abstract class CardElement implements ICardObject {
         raiseParseElementEvent(this, json, errors);
 
         this.requires.parse(json["requires"], errors);
-        this.id = json["id"];
-        this.isVisible = Utils.parseBoolProperty(json["isVisible"], this.isVisible);
-        this.speak = json["speak"];
-        this.horizontalAlignment = Utils.getEnumValueOrDefault(Enums.HorizontalAlignment, json["horizontalAlignment"], null);
+        this.id = Utils.getStringValue(json["id"]);
+        this.isVisible = Utils.getBoolValue(json["isVisible"], this.isVisible);
+        this.speak = Utils.getStringValue(json["speak"]);
+        this.horizontalAlignment = Utils.getEnumValue(Enums.HorizontalAlignment, json["horizontalAlignment"], null);
 
-        this.spacing = Utils.getEnumValueOrDefault(Enums.Spacing, json["spacing"], Enums.Spacing.Default);
-        this.separator = Utils.parseBoolProperty(json["separator"], this.separator);
+        this.spacing = Utils.getEnumValue(Enums.Spacing, json["spacing"], Enums.Spacing.Default);
+        this.separator = Utils.getBoolValue(json["separator"], this.separator);
 
         let jsonSeparation = json["separation"];
 
@@ -1084,11 +1084,11 @@ export class TextBlock extends CardElement {
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
-        this.text = json["text"];
+        this.text = Utils.getStringValue(json["text"]);
 
-        let sizeString = json["size"];
+        let sizeString = Utils.getStringValue(json["size"]);
 
-        if (sizeString && typeof sizeString === "string" && sizeString.toLowerCase() === "normal") {
+        if (sizeString && sizeString.toLowerCase() === "normal") {
             this.size = Enums.TextSize.Default;
 
             raiseParseError(
@@ -1100,12 +1100,12 @@ export class TextBlock extends CardElement {
             );
         }
         else {
-            this.size = Utils.getEnumValueOrDefault(Enums.TextSize, sizeString, this.size);
+            this.size = Utils.getEnumValue(Enums.TextSize, sizeString, this.size);
         }
 
-        let weightString = json["weight"];
+        let weightString = Utils.getStringValue(json["weight"]);
 
-        if (weightString && typeof weightString === "string" && weightString.toLowerCase() === "normal") {
+        if (weightString && weightString.toLowerCase() === "normal") {
             this.weight = Enums.TextWeight.Default;
 
             raiseParseError(
@@ -1117,13 +1117,13 @@ export class TextBlock extends CardElement {
             );
         }
         else {
-            this.weight = Utils.getEnumValueOrDefault(Enums.TextWeight, weightString, this.weight);
+            this.weight = Utils.getEnumValue(Enums.TextWeight, weightString, this.weight);
         }
 
-        this.color = Utils.getEnumValueOrDefault(Enums.TextColor, json["color"], this.color);
-        this.isSubtle = Utils.parseBoolProperty(json["isSubtle"], this.isSubtle);
-        this.wrap = Utils.parseBoolProperty(json["wrap"], this.wrap);
-        this.style = Utils.getEnumValueOrDefault(Enums.FontStyle, json["style"], this.style);
+        this.color = Utils.getEnumValue(Enums.TextColor, json["color"], this.color);
+        this.isSubtle = Utils.getBoolValue(json["isSubtle"], this.isSubtle);
+        this.wrap = Utils.getBoolValue(json["wrap"], this.wrap);
+        this.style = Utils.getEnumValue(Enums.FontStyle, json["style"], this.style);
 
         if (typeof json["maxLines"] === "number") {
             this.maxLines = json["maxLines"];
@@ -1207,6 +1207,12 @@ export class Fact {
     constructor(name: string = undefined, value: string = undefined) {
         this.name = name;
         this.value = value;
+    }
+
+    parse(json: any) {
+        this.name = Utils.getStringValue(json["title"]);
+        this.value = Utils.getStringValue(json["value"]);
+        this.speak = Utils.getStringValue(json["speak"]);
     }
 
     toJSON() {
@@ -1335,10 +1341,7 @@ export class FactSet extends CardElement {
 
             for (var i = 0; i < jsonFacts.length; i++) {
                 let fact = new Fact();
-
-                fact.name = jsonFacts[i]["title"];
-                fact.value = jsonFacts[i]["value"];
-                fact.speak = jsonFacts[i]["speak"];
+                fact.parse(jsonFacts[i]);
 
                 this.facts.push(fact);
             }
@@ -1581,12 +1584,12 @@ export class Image extends CardElement {
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
-        this.url = json["url"];
-        this.backgroundColor = json["backgroundColor"];
+        this.url = Utils.getStringValue(json["url"]);
+        this.backgroundColor = Utils.getStringValue(json["backgroundColor"]);
 
-        var styleString = json["style"];
+        let styleString = Utils.getStringValue(json["style"]);
 
-        if (styleString && typeof styleString === "string" && styleString.toLowerCase() === "normal") {
+        if (styleString && styleString.toLowerCase() === "normal") {
             this.style = Enums.ImageStyle.Default;
 
             raiseParseError(
@@ -1598,10 +1601,10 @@ export class Image extends CardElement {
             );
         }
         else {
-            this.style = Utils.getEnumValueOrDefault(Enums.ImageStyle, styleString, this.style);
+            this.style = Utils.getEnumValue(Enums.ImageStyle, styleString, this.style);
         }
 
-        this.size = Utils.getEnumValueOrDefault(Enums.Size, json["size"], this.size);
+        this.size = Utils.getEnumValue(Enums.Size, json["size"], this.size);
         this.altText = json["altText"];
 
         // pixelWidth and pixelHeight are only parsed for backwards compatibility.
@@ -1926,7 +1929,7 @@ export class ImageSet extends CardElementContainer {
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
-        this.imageSize = Utils.getEnumValueOrDefault(Enums.Size, json["imageSize"], Enums.Size.Medium);
+        this.imageSize = Utils.getEnumValue(Enums.Size, json["imageSize"], Enums.Size.Medium);
 
         if (json["images"] != null) {
             let jsonImages = json["images"] as Array<any>;
@@ -1986,8 +1989,8 @@ export class MediaSource {
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
-        this.mimeType = json["mimeType"];
-        this.url = json["url"];
+        this.mimeType = Utils.getStringValue(json["mimeType"]);
+        this.url = Utils.getStringValue(json["url"]);
     }
 
     toJSON() {
@@ -2173,8 +2176,8 @@ export class Media extends CardElement {
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
-        this.poster = json["poster"];
-        this.altText = json["altText"];
+        this.poster = Utils.getStringValue(json["poster"]);
+        this.altText = Utils.getStringValue(json["altText"]);
 
         if (json["sources"] != null) {
             let jsonSources = json["sources"] as Array<any>;
@@ -2245,8 +2248,8 @@ export class InputValidationOptions {
     validationFailedText: string = undefined;
 
     parse(json: any) {
-        this.necessity = Utils.getEnumValueOrDefault(Enums.InputValidationNecessity, json["necessity"], this.necessity);
-        this.validationFailedText = json["validationFailedText"];
+        this.necessity = Utils.getEnumValue(Enums.InputValidationNecessity, json["necessity"], this.necessity);
+        this.validationFailedText = Utils.getStringValue(json["validationFailedText"]);
     }
 
     toJSON() {
@@ -2297,8 +2300,8 @@ export abstract class Input extends CardElement implements Shared.IInput {
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
-        this.id = json["id"];
-        this.defaultValue = json["value"];
+        this.id = Utils.getStringValue(json["id"]);
+        this.defaultValue = Utils.getStringValue(json["value"]);
         this.validation.parse(json["validation"]);
     }
 
@@ -2401,9 +2404,9 @@ export class TextInput extends Input {
         super.parse(json, errors);
 
         this.maxLength = json["maxLength"];
-        this.isMultiline = Utils.parseBoolProperty(json["isMultiline"], this.isMultiline);
-        this.placeholder = json["placeholder"];
-        this.style = Utils.getEnumValueOrDefault(Enums.InputTextStyle, json["style"], this.style);
+        this.isMultiline = Utils.getBoolValue(json["isMultiline"], this.isMultiline);
+        this.placeholder = Utils.getStringValue(json["placeholder"]);
+        this.style = Utils.getEnumValue(Enums.InputTextStyle, json["style"], this.style);
     }
 
     get value(): string {
@@ -2490,11 +2493,10 @@ export class ToggleInput extends Input {
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
-        this.title = json["title"];
-
-        this.valueOn = Utils.getValueOrDefault<string>(json["valueOn"], this.valueOn);
-        this.valueOff = Utils.getValueOrDefault<string>(json["valueOff"], this.valueOff);
-        this.wrap = Utils.parseBoolProperty(json["wrap"], this.wrap);
+        this.title = Utils.getStringValue(json["title"]);
+        this.valueOn = Utils.getStringValue(json["valueOn"], this.valueOn);
+        this.valueOff = Utils.getStringValue(json["valueOff"], this.valueOff);
+        this.wrap = Utils.getBoolValue(json["wrap"], this.wrap);
     }
 
     get value(): string {
@@ -2514,6 +2516,11 @@ export class Choice {
     constructor(title: string = undefined, value: string = undefined) {
         this.title = title;
         this.value = value;
+    }
+
+    parse(json: any) {
+        this.title = Utils.getStringValue(json["title"]);
+        this.value = Utils.getStringValue(json["value"]);
     }
 
     toJSON() {
@@ -2751,25 +2758,23 @@ export class ChoiceSetInput extends Input {
         super.parse(json, errors);
 
         this.isCompact = !(json["style"] === "expanded");
-        this.isMultiSelect = Utils.parseBoolProperty(json["isMultiSelect"], this.isMultiSelect);
-        this.placeholder = json["placeholder"];
+        this.isMultiSelect = Utils.getBoolValue(json["isMultiSelect"], this.isMultiSelect);
+        this.placeholder = Utils.getStringValue(json["placeholder"]);
 
         this.choices = [];
 
         if (json["choices"] != undefined) {
-            var choiceArray = json["choices"] as Array<any>;
+            let choiceArray = json["choices"] as Array<any>;
 
-            for (var i = 0; i < choiceArray.length; i++) {
-                var choice = new Choice();
-
-                choice.title = choiceArray[i]["title"];
-                choice.value = choiceArray[i]["value"];
+            for (let i = 0; i < choiceArray.length; i++) {
+                let choice = new Choice();
+                choice.parse(choiceArray[i]);
 
                 this.choices.push(choice);
             }
         }
 
-        this.wrap = Utils.parseBoolProperty(json["wrap"], this.wrap);
+        this.wrap = Utils.getBoolValue(json["wrap"], this.wrap);
     }
 
     get value(): string {
@@ -2860,9 +2865,9 @@ export class NumberInput extends Input {
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
-        this.placeholder = json["placeholder"];
-        this.min = json["min"];
-        this.max = json["max"];
+        this.placeholder = Utils.getStringValue(json["placeholder"]);
+        this.min = Utils.getStringValue(json["min"]);
+        this.max = Utils.getStringValue(json["max"]);
     }
 
     get value(): string {
@@ -3142,7 +3147,7 @@ export abstract class Action implements ICardObject {
         raiseParseActionEvent(this, json, errors);
 
         this.requires.parse(json["requires"], errors);
-        this.id = json["id"];
+        this.id = Utils.getStringValue(json["id"]);
 
         if (!json["title"] && json["title"] !== "") {
             raiseParseError(
@@ -3154,9 +3159,9 @@ export abstract class Action implements ICardObject {
             );
         }
 
-        this.title = json["title"];
-        this.iconUrl = json["iconUrl"];
-        this.sentiment = Utils.getEnumValueOrDefault(Enums.ActionSentiment, json["sentiment"], this.sentiment);
+        this.title = Utils.getStringValue(json["title"]);
+        this.iconUrl = Utils.getStringValue(json["iconUrl"]);
+        this.sentiment = Utils.getEnumValue(Enums.ActionSentiment, json["sentiment"], this.sentiment);
     }
 
     remove(): boolean {
@@ -3293,7 +3298,7 @@ export class OpenUrlAction extends Action {
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
-        this.url = json["url"];
+        this.url = Utils.getStringValue(json["url"]);
     }
 }
 
@@ -3335,7 +3340,7 @@ export class ToggleVisibilityAction extends Action {
                     let jsonElementId = item["elementId"];
 
                     if (jsonElementId && typeof jsonElementId === "string") {
-                        this.targetElements[jsonElementId] = Utils.parseBoolProperty(item["isVisible"], undefined);
+                        this.targetElements[jsonElementId] = Utils.getBoolValue(item["isVisible"], undefined);
                     }
                 }
             }
@@ -3359,6 +3364,11 @@ export class HttpHeader {
     constructor(name: string = "", value: string = "") {
         this.name = name;
         this.value = value;
+    }
+
+    parse(json: any) {
+        this.name = Utils.getStringValue(json["name"]);
+        this.value = Utils.getStringValue(json["value"]);
     }
 
     toJSON() {
@@ -3447,9 +3457,9 @@ export class HttpAction extends Action {
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
-        this.url = json["url"];
-        this.method = json["method"];
-        this.body = json["body"];
+        this.url = Utils.getStringValue(json["url"]);
+        this.method = Utils.getStringValue(json["method"]);
+        this.body = Utils.getStringValue(json["body"]);
 
         this._headers = [];
 
@@ -3458,9 +3468,7 @@ export class HttpAction extends Action {
 
             for (var i = 0; i < jsonHeaders.length; i++) {
                 let httpHeader = new HttpHeader();
-
-                httpHeader.name = jsonHeaders[i]["name"];
-                httpHeader.value = jsonHeaders[i]["value"];
+                httpHeader.parse(jsonHeaders[i]);
 
                 this.headers.push(httpHeader);
             }
@@ -4117,7 +4125,7 @@ export class ActionSet extends CardElement {
         var jsonOrientation = json["orientation"];
 
         if (jsonOrientation) {
-            this.orientation = Utils.getEnumValueOrDefault(Enums.Orientation, jsonOrientation, Enums.Orientation.Horizontal);
+            this.orientation = Utils.getEnumValue(Enums.Orientation, jsonOrientation, Enums.Orientation.Horizontal);
         }
 
         this._actionCollection.parse(json["actions"], errors);
@@ -4292,7 +4300,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
-        this._style = json["style"];
+        this._style = Utils.getStringValue(json["style"]);
     }
 
     render(): HTMLElement {
@@ -4344,10 +4352,10 @@ export class BackgroundImage {
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
-        this.url = json["url"];
-        this.fillMode = Utils.getEnumValueOrDefault(Enums.FillMode, json["fillMode"], this.fillMode);
-        this.horizontalAlignment = Utils.getEnumValueOrDefault(Enums.HorizontalAlignment, json["horizontalAlignment"], this.horizontalAlignment);
-        this.verticalAlignment = Utils.getEnumValueOrDefault(Enums.VerticalAlignment, json["verticalAlignment"], this.verticalAlignment);
+        this.url = Utils.getStringValue(json["url"]);
+        this.fillMode = Utils.getEnumValue(Enums.FillMode, json["fillMode"], this.fillMode);
+        this.horizontalAlignment = Utils.getEnumValue(Enums.HorizontalAlignment, json["horizontalAlignment"], this.horizontalAlignment);
+        this.verticalAlignment = Utils.getEnumValue(Enums.VerticalAlignment, json["verticalAlignment"], this.verticalAlignment);
     }
 
     toJSON() {
@@ -4754,7 +4762,7 @@ export class Container extends StylableCardElementContainer {
             }
         }
 
-        this.verticalContentAlignment = Utils.getEnumValueOrDefault(Enums.VerticalAlignment, json["verticalContentAlignment"], this.verticalContentAlignment);
+        this.verticalContentAlignment = Utils.getEnumValue(Enums.VerticalAlignment, json["verticalContentAlignment"], this.verticalContentAlignment);
 
         if (json[this.getItemsCollectionPropertyName()] != null) {
             let items = json[this.getItemsCollectionPropertyName()] as Array<any>;
@@ -4770,7 +4778,7 @@ export class Container extends StylableCardElementContainer {
             }
         }
 
-        this.bleed = Utils.parseBoolProperty(json["bleed"], this.bleed);
+        this.bleed = Utils.getBoolValue(json["bleed"], this.bleed);
     }
 
     indexOf(cardElement: CardElement): number {
@@ -5223,7 +5231,7 @@ export class ColumnSet extends StylableCardElementContainer {
             }
         }
 
-        this.bleed = Utils.parseBoolProperty(json["bleed"], this.bleed);
+        this.bleed = Utils.getBoolValue(json["bleed"], this.bleed);
     }
 
     validate(): Array<HostConfig.IValidationError> {
@@ -5844,7 +5852,7 @@ export class AdaptiveCard extends ContainerWithActions {
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         this._fallbackCard = null;
 
-        this._cardTypeName = json["type"];
+        this._cardTypeName = Utils.getStringValue(json["type"]);
 
         var langId = json["lang"];
 
@@ -5865,7 +5873,7 @@ export class AdaptiveCard extends ContainerWithActions {
 
         this.version = HostConfig.Version.parse(json["version"], errors);
 
-        this.fallbackText = json["fallbackText"];
+        this.fallbackText = Utils.getStringValue(json["fallbackText"]);
 
         let fallbackElement = createElementInstance(null, json["fallback"], errors);
 
