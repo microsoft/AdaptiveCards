@@ -42,6 +42,12 @@ public class ColumnRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
+    public void setInformationForColumnRendering(boolean isFirstColumn, boolean isLastColumn)
+    {
+        m_isRenderingFirstColumn = isFirstColumn;
+        m_isRenderingLastColumn = isLastColumn;
+    }
+
     @Override
     public View render(
             RenderedAdaptiveCard renderedCard,
@@ -167,7 +173,19 @@ public class ColumnRenderer extends BaseCardElementRenderer
         if (column.GetBleed() && column.GetCanBleed())
         {
             long padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
-            layoutParams.setMargins((int)-padding, 0, (int)-padding, 0);
+            int leftPadding = 0, rightPadding = 0;
+
+            if(m_isRenderingFirstColumn)
+            {
+                leftPadding = (int)-padding;
+            }
+
+            if(m_isRenderingLastColumn)
+            {
+                rightPadding = (int)-padding;
+            }
+
+            layoutParams.setMargins(leftPadding, 0, rightPadding, 0);
             returnedView.setLayoutParams(layoutParams);
         }
 
@@ -184,4 +202,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
     private static ColumnRenderer s_instance = null;
     private final String g_columnSizeAuto = "auto";
     private final String g_columnSizeStretch = "stretch";
+
+    private boolean m_isRenderingFirstColumn = false;
+    private boolean m_isRenderingLastColumn = false;
 }
