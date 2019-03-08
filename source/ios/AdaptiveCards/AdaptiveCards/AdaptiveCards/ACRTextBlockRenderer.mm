@@ -87,21 +87,34 @@
         [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:foregroundColor,} range:NSMakeRange(0, content.length)];
 
         lab.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
+        
+        //lab.scrollEnabled = YES;
+        
         lab.attributedText = content;
+        
+        
+
+        //lab.scrollEnabled = NO;
     }
 
     lab.textContainer.maximumNumberOfLines = int(txtBlck->GetMaxLines());
     if(!lab.textContainer.maximumNumberOfLines && !txtBlck->GetWrap()){
         lab.textContainer.maximumNumberOfLines = 1;
     }
-    
-    
-    [lab sizeToFit];
-    
+   
     ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:lab.frame];
     wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
-    lab.translatesAutoresizingMaskIntoConstraints = YES;
-    lab.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    lab.translatesAutoresizingMaskIntoConstraints = NO;
+    lab.scrollEnabled = YES;
+    //CGSize size = [lab sizeThatFits:CGSizeMake(lab.frame.size.width, FLT_MAX)];
+    //lab.frame = CGRectMake(0, 0, size.width, size.height);
+    //CGSize size =
+    [lab sizeToFit];
+    
+    lab.heightconst = [NSLayoutConstraint constraintWithItem:lab attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:lab.contentSize.height];
+    lab.heightconst.active = YES;
+
+    lab.scrollEnabled = NO;
     
     [wrappingview addSubview:lab];
 

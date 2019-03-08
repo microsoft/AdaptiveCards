@@ -316,6 +316,7 @@
             }
         }
     }
+
 }
 
 - (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame
@@ -347,8 +348,10 @@
         {
             button.backgroundColor = [UIColor colorWithRed:0.11 green:0.68 blue:0.97 alpha:1.0];
         }
-        [self.scrView layoutIfNeeded];
+        //[self.scrView layoutIfNeeded];
     }
+    [self.scrView beginUpdates];
+    [self.scrView endUpdates];
 }
 
 - (void)didFetchMediaViewController:(AVPlayerViewController *)controller card:(ACOAdaptiveCard *)card {
@@ -417,9 +420,12 @@
     [v setNeedsUpdateConstraints];
     [v updateConstraints];
     [v.topAnchor constraintEqualToAnchor:cell.contentView.topAnchor constant:0].active = YES;
-    [v.bottomAnchor constraintEqualToAnchor:cell.contentView.bottomAnchor constant:0].active = YES;
+    NSLayoutConstraint *constraint = [cell.contentView.bottomAnchor constraintEqualToAnchor:v.bottomAnchor constant:0];
+    constraint.priority = 999;
+    constraint.active = YES;
+    
     [v.leadingAnchor constraintEqualToAnchor:cell.contentView.leadingAnchor constant:0].active = YES;
-    [cell.contentView.trailingAnchor constraintEqualToAnchor:v.trailingAnchor constant:8].active = YES;    
+    [cell.contentView.trailingAnchor constraintEqualToAnchor:v.trailingAnchor constant:8].active = YES;
     return cell;
 }
 
