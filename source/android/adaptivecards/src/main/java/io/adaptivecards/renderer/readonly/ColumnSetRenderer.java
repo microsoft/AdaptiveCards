@@ -125,7 +125,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             viewGroup.addView(layout);
         }
 
-        if (columnSet.GetBleed() && columnSet.GetCanBleed())
+        if (columnSet.GetBleed() && (columnSet.GetCanBleed() || (styleForThis != containerStyle || columnSet.GetBackgroundImage() != null)))
         {
             long padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) layout.getLayoutParams();

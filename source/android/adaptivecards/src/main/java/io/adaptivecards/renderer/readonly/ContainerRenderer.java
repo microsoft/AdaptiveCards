@@ -128,7 +128,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
             loaderAsync.execute(backgroundImageProperties.GetUrl());
         }
 
-        if (container.GetBleed() && container.GetCanBleed())
+        if (container.GetBleed() && (container.GetCanBleed() || (styleForThis != containerStyle || container.GetBackgroundImage() != null)))
         {
             long padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) containerView.getLayoutParams();
