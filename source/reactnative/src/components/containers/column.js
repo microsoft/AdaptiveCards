@@ -225,9 +225,9 @@ export class Column extends React.Component {
 		let actionComponentProps = {};
 
 		// select action
-		if (this.column.selectAction && HostConfigManager.supportsInteractivity()) {
+		if ((!Utils.isNullOrEmpty(this.column.selectAction)) && HostConfigManager.supportsInteractivity()) {
 			ActionComponent = SelectAction;
-			actionComponentProps = this.column.selectAction;
+			actionComponentProps = {"selectActionData":this.column.selectAction};
 		}
 
 		return (<InputContextConsumer>
