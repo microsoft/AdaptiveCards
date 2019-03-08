@@ -7,8 +7,7 @@
 import React from 'react';
 import {
 	StyleSheet,
-	TextInput,
-	Text
+	TextInput
 } from 'react-native';
 
 import { InputContextConsumer } from '../../utils/context';
@@ -62,7 +61,6 @@ export class Input extends React.Component {
 			<InputContextConsumer>
 				{({ addInputItem }) => (
 					<ElementWrapper json={this.payload}>
-					{this.payload.isError?<Text>This is a Error</Text>:null}
 						<TextInput
 							style={this.getComputedStyles()}
 							autoCapitalize={Constants.NoneString}

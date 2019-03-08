@@ -51,26 +51,26 @@ export default class AdaptiveCards extends React.Component {
 		};
 	}
 
-	toggleVisibilityForElementWithID = (id) => {
-		 this.toggleObjectWithID(this.payload,'toggleText');
-		// this.payload.body[0].isVisible = !this.payload.body[0].isVisible
+	toggleVisibilityForElementWithID = (idArray) => {
+		 
+		for(id in idArray){
+			this.toggleObjectWithID(this.payload,idArray[id]);
+			console.log("id value is ",id);
+		}
 		this.setState({
 			payload: this.payload,
 		})
 
-	}
-
-	addValidationForElementWithID = (id) => {
-		this.addErrorForObjectWithID(this.payload,'toggleText');
-		this.setState({
-			payload: this.payload,
-		})
 	}
 
 	toggleObjectWithID = (object,idValue) => {
 		if(object.hasOwnProperty('id') && object["id"] == idValue)
 		{
-			object.isVisible = !object.isVisible
+			if (!Utils.isNullOrEmpty(object.isVisible)) {
+				object.isVisible = !object.isVisible
+			}else{
+				object.isVisible = false;
+			}
 			return;
 		}
 		for(var i=0; i<Object.keys(object).length; i++){
@@ -81,19 +81,6 @@ export default class AdaptiveCards extends React.Component {
 		return;
 	}
 
-	addErrorForObjectWithID = (object,idValue) => {
-		if(object.hasOwnProperty('id') && object["id"] == idValue)
-		{
-			object.isError = !object.isError
-			return;
-		}
-		for(var i=0; i<Object.keys(object).length; i++){
-			if(typeof object[Object.keys(object)[i]] == "object"){
-				this.addErrorForObjectWithID(object[Object.keys(object)[i]], idValue);
-			}
-		}
-		return;
-	}
 
 	/**
 	 * @description Returns the resource information in the card elements as an array
@@ -175,7 +162,7 @@ export default class AdaptiveCards extends React.Component {
 	}
 
 	render() {
-		const { addInputItem, inputArray, addResourceInformation, toggleVisibilityForElementWithID, addValidationForElementWithID } = this;
+		const { addInputItem, inputArray, addResourceInformation, toggleVisibilityForElementWithID } = this;
 		const onExecuteAction = this.onExecuteAction;
 		const isTransparent = this.payload.backgroundImage ? true : false;
 		const onParseError = this.onParseError;
@@ -189,7 +176,7 @@ export default class AdaptiveCards extends React.Component {
 			)
 		}
 		return (
-			<InputContextProvider value={{ lang, addInputItem, inputArray, onExecuteAction, isTransparent, onParseError, addResourceInformation, toggleVisibilityForElementWithID, addValidationForElementWithID }}>
+			<InputContextProvider value={{ lang, addInputItem, inputArray, onExecuteAction, isTransparent, onParseError, addResourceInformation, toggleVisibilityForElementWithID }}>
 				{
 					this.getAdaptiveCardConent()
 				}

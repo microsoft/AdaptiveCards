@@ -14,12 +14,27 @@ export class SelectAction extends React.Component {
 
 	render() {
 		const ButtonComponent = TouchableOpacity;
-
+		if (this.props.selectActionData.type === Constants.ActionToggleVisibility) {
+			return (<InputContextConsumer>
+				{({ toggleVisibilityForElementWithID }) => <ButtonComponent onPress={() => { this.onToggleActionCalled(toggleVisibilityForElementWithID) }} style={this.props.style}>
+					<React.Fragment>{this.props.children}</React.Fragment>
+				</ButtonComponent>}
+			</InputContextConsumer>);
+		}
+		else{
 		return (<InputContextConsumer>
 			{({ onExecuteAction }) => <ButtonComponent onPress={() => { this.onClickHandle(onExecuteAction) }} style={this.props.style}>
 				<React.Fragment>{this.props.children}</React.Fragment>
 			</ButtonComponent>}
 		</InputContextConsumer>);
+		}
+	}
+
+	/**
+     * @description Invoked for the action type Constants.ActionToggleVisibility
+     */
+	onToggleActionCalled(toggleVisibilityForElementWithID){
+		toggleVisibilityForElementWithID(this.props.selectActionData.targetElements);
 	}
 
 	/**

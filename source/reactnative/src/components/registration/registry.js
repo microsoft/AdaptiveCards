@@ -72,7 +72,8 @@ export class Registry {
 
 		'Action.ShowCard': ActionButton,
 		'Action.Submit': ActionButton,
-		'Action.OpenUrl': ActionButton
+		'Action.OpenUrl': ActionButton,
+		'Action.ToggleVisibility': ActionButton
 	};
 
 	/**
@@ -149,12 +150,14 @@ export class Registry {
 					}
 				}
 				if (isValid) {
+					if (element.isVisible !== false) {
 					if(!Utils.isNullOrEmpty(element.id)){
 						parsedElement.push(<Element json={element} key={`${element.type}-${index}-${element.id}`} />);
 					}
 					else{
 						parsedElement.push(<Element json={element} key={`${element.type}-${index}`} />);
 					}
+				}
 					
 					
 				}

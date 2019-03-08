@@ -56,7 +56,7 @@ export class ActionButton extends React.Component {
 
 		if (this.payload.type === Constants.ActionSubmit) {
 			return (<InputContextConsumer>
-				{({ inputArray, onExecuteAction, toggleVisibilityForElementWithID, addValidationForElementWithID }) => (
+				{({ inputArray, onExecuteAction }) => (
 					<ButtonComponent style={{ flexGrow: 1 }} onPress={() => {
 						this.onSubmitActionCalled(inputArray, onExecuteAction, toggleVisibilityForElementWithID, addValidationForElementWithID)
 					}}>
@@ -78,13 +78,23 @@ export class ActionButton extends React.Component {
 				onPress={this.changeShowCardState}>
 				{this.buttonContent()}
 			</ButtonComponent>)
+		} else if (this.payload.type === Constants.ActionToggleVisibility) {
+			return (<InputContextConsumer>
+				{({ toggleVisibilityForElementWithID }) => (
+					<ButtonComponent style={{ flexGrow: 1 }} onPress={() => {
+						this.onToggleActionCalled(toggleVisibilityForElementWithID)
+					}}>
+						{this.buttonContent()}
+					</ButtonComponent>
+				)}
+			</InputContextConsumer>);
 		}
 	}
 
     /**
      * @description Invoked for the action type Constants.ActionSubmit
      */
-	onSubmitActionCalled(inputItem, onExecuteAction,toggleVisibilityForElementWithID,addValidationForElementWithID) {
+	onSubmitActionCalled(inputItem, onExecuteAction) {
 		let mergedObject = null;
 		if (this.data !== null) {
 			mergedObject = { ...this.data, ...inputItem };
@@ -93,9 +103,15 @@ export class ActionButton extends React.Component {
 		}
 		let actionObject = { "type": this.payload.type, "data": mergedObject };
 		onExecuteAction(actionObject);
-		toggleVisibilityForElementWithID();
-		// addValidationForElementWithID();
 	}
+
+	/**
+     * @description Invoked for the action type Constants.ActionToggleVisibility
+     */
+	onToggleActionCalled(toggleVisibilityForElementWithID){
+		toggleVisibilityForElementWithID(this.payload.targetElements);
+	}
+
 
 	onOpenURLCalled = (onExecuteAction) => {
 		let actionObject = { "type": this.payload.type, "url": this.payload.url };
