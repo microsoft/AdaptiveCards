@@ -49,7 +49,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
 
     public void setIsRenderingLastColumn(boolean isRenderingLastColumn)
     {
-        m_isRenderingLastColumn = m_isRenderingLastColumn;
+        m_isRenderingLastColumn = isRenderingLastColumn;
     }
 
     @Override
@@ -179,14 +179,14 @@ public class ColumnRenderer extends BaseCardElementRenderer
             long padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
             int leftPadding = 0, rightPadding = 0;
 
-            if(m_isRenderingFirstColumn)
+            if (m_isRenderingFirstColumn)
             {
                 leftPadding = (int)-padding;
                 // Reset the flag just in case
                 setIsRenderingFirstColumn(false);
             }
 
-            if(m_isRenderingLastColumn)
+            if (m_isRenderingLastColumn)
             {
                 rightPadding = (int)-padding;
                 // Reset the flag just in case

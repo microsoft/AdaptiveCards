@@ -94,7 +94,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             Column column = columnVector.get(i);
 
             ColumnRenderer rendererAsColumnRenderer = null;
-            if(columnRenderer instanceof ColumnRenderer)
+            if (columnRenderer instanceof ColumnRenderer)
             {
                 rendererAsColumnRenderer = (ColumnRenderer)columnRenderer;
                 rendererAsColumnRenderer.setIsRenderingFirstColumn(i == 0);
