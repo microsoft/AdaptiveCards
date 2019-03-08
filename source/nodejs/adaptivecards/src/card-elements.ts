@@ -2253,12 +2253,17 @@ export class InputValidationOptions {
     }
 
     toJSON() {
-        let result = {}
+        if (this.necessity != Enums.InputValidationNecessity.Optional || !Utils.isNullOrEmpty(this.validationFailedText)) {
+            let result = {}
 
-        Utils.setEnumProperty(Enums.InputValidationNecessity, result, "necessity", this.necessity, Enums.InputValidationNecessity.Optional);
-        Utils.setProperty(result, "validationFailedText", this.validationFailedText);
+            Utils.setEnumProperty(Enums.InputValidationNecessity, result, "necessity", this.necessity, Enums.InputValidationNecessity.Optional);
+            Utils.setProperty(result, "validationFailedText", this.validationFailedText);
 
-        return result;
+            return result;
+        }
+        else {
+            return null;
+        }
     }
 }
 
@@ -2283,7 +2288,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
 
         Utils.setProperty(result, "title", this.title);
         Utils.setProperty(result, "value", this.renderedElement ? this.value : this.defaultValue);
-        Utils.setProperty(result, "validation", this.validation);
+        Utils.setProperty(result, "validation", this.validation.toJSON());
 
         return result;
     }
@@ -2302,7 +2307,12 @@ export abstract class Input extends CardElement implements Shared.IInput {
 
         this.id = Utils.getStringValue(json["id"]);
         this.defaultValue = Utils.getStringValue(json["value"]);
-        this.validation.parse(json["validation"]);
+
+        let jsonValidation = json["validation"];
+
+        if (jsonValidation) {
+            this.validation.parse(jsonValidation);
+        }
     }
 
     renderSpeech(): string {
