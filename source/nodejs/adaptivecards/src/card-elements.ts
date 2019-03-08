@@ -3056,7 +3056,7 @@ export abstract class Action implements ICardObject {
         // Cache hostConfig for perf
         let hostConfig = this.parent.hostConfig;
 
-        var buttonElement = document.createElement("button");
+        let buttonElement = document.createElement("button");
         buttonElement.className = hostConfig.makeCssClassName("ac-pushButton");
 
         this.addCssClasses(buttonElement);
@@ -3157,6 +3157,7 @@ export abstract class Action implements ICardObject {
         raiseParseActionEvent(this, json, errors);
 
         this.requires.parse(json["requires"], errors);
+
         this.id = Utils.getStringValue(json["id"]);
 
         if (!json["title"] && json["title"] !== "") {
@@ -3234,6 +3235,8 @@ export class SubmitAction extends Action {
     private _originalData: Object;
     private _processedData: Object;
 
+    ignoreInputValidation: boolean = false;
+
     getJsonTypeName(): string {
         return "Action.Submit";
     }
@@ -3241,6 +3244,7 @@ export class SubmitAction extends Action {
     toJSON() {
         let result = super.toJSON();
 
+        Utils.setProperty(result, "ignoreInputValidation", this.ignoreInputValidation, false);
         Utils.setProperty(result, "data", this._originalData);
 
         return result;
@@ -3268,6 +3272,7 @@ export class SubmitAction extends Action {
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
+        this.ignoreInputValidation = Utils.getBoolValue(json["ignoreInputValidation"], this.ignoreInputValidation);
         this.data = json["data"];
     }
 
@@ -3404,6 +3409,7 @@ export class HttpAction extends Action {
     private _headers: Array<HttpHeader> = [];
 
     method: string;
+    ignoreInputValidation: boolean = false;
 
     getJsonTypeName(): string {
         return "Action.Http";
@@ -3415,6 +3421,7 @@ export class HttpAction extends Action {
         Utils.setProperty(result, "method", this.method);
         Utils.setProperty(result, "url", this._url.getOriginal());
         Utils.setProperty(result, "body", this._body.getOriginal());
+        Utils.setProperty(result, "ignoreInputValidation", this.ignoreInputValidation, false);
 
         if (this._headers.length > 0) {
             let headers = [];
@@ -3470,6 +3477,7 @@ export class HttpAction extends Action {
         this.url = Utils.getStringValue(json["url"]);
         this.method = Utils.getStringValue(json["method"]);
         this.body = Utils.getStringValue(json["body"]);
+        this.ignoreInputValidation = Utils.getBoolValue(json["ignoreInputValidation"], this.ignoreInputValidation);
 
         this._headers = [];
 
