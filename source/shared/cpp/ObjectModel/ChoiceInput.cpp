@@ -9,7 +9,7 @@ ChoiceInput::ChoiceInput()
 {
 }
 
-std::shared_ptr<ChoiceInput> ChoiceInput::Deserialize(ParseContext &/*context*/, const Json::Value& json)
+std::shared_ptr<ChoiceInput> ChoiceInput::Deserialize(ParseContext& /*context*/, const Json::Value& json)
 {
     auto choice = std::make_shared<ChoiceInput>();
 
@@ -26,8 +26,7 @@ std::shared_ptr<ChoiceInput> ChoiceInput::DeserializeFromString(ParseContext& co
 
 std::string ChoiceInput::Serialize()
 {
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
+    return ParseUtil::JsonToString(SerializeToJsonValue());
 }
 
 Json::Value ChoiceInput::SerializeToJsonValue()

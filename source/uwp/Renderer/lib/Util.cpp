@@ -1146,8 +1146,7 @@ HRESULT JsonValueToHString(_In_ IJsonValue* inputJsonValue, _Outptr_ HSTRING* re
 
 HRESULT JsonCppToJsonObject(const Json::Value& jsonCppValue, _COM_Outptr_ IJsonObject** result)
 {
-    Json::FastWriter fastWriter;
-    std::string jsonString = fastWriter.write(jsonCppValue);
+    std::string jsonString = ParseUtil::JsonToString(jsonCppValue);
     return StringToJsonObject(jsonString, result);
 }
 

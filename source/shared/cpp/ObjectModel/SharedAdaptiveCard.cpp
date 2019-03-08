@@ -149,7 +149,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, 
     // check if language is valid
     _ValidateLanguage(language, context.warnings);
 
-    if (language.size()) 
+    if (language.size())
     {
         context.SetLanguage(language);
     }
@@ -320,8 +320,7 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::MakeFallbackTextCard(const std::stri
 
 std::string AdaptiveCard::Serialize() const
 {
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
+    return ParseUtil::JsonToString(SerializeToJsonValue());
 }
 
 std::string AdaptiveCard::GetVersion() const

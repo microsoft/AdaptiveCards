@@ -12,6 +12,8 @@ namespace AdaptiveSharedNamespace
 
     namespace ParseUtil
     {
+        std::string JsonToString(const Json::Value& json);
+
         void ThrowIfNotJsonObject(const Json::Value& json);
 
         std::string GetTypeAsString(const Json::Value& json);
