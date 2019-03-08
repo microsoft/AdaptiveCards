@@ -156,7 +156,7 @@ namespace AdaptiveCards.Rendering.Html.Test
                 new AdaptiveElementRenderers<HtmlTag, AdaptiveRenderContext>());
 
             renderContext.ElementRenderers.Set<AdaptiveContainer>(TestHtmlRenderer.CallContainerRender);
-            renderContext.ParentStyle = AdaptiveContainerStyle.Default;
+            renderContext.RenderArgs.ParentStyle = AdaptiveContainerStyle.Default;
 
             var containerWithWorkingBleed = new AdaptiveContainer
             {
@@ -172,7 +172,7 @@ namespace AdaptiveCards.Rendering.Html.Test
                 }
             };
 
-            renderContext.ParentStyle = AdaptiveContainerStyle.Default;
+            renderContext.RenderArgs.ParentStyle = AdaptiveContainerStyle.Default;
 
             var containerWithoutWorkingBleed = new AdaptiveContainer
             {
