@@ -25,12 +25,16 @@ namespace AdaptiveNamespace
     _Use_decl_annotations_ HRESULT AdaptiveBackgroundImage::RuntimeClassInitialize(
         const std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage>& sharedImage) try
     {
-        if (sharedImage == nullptr || sharedImage->GetUrl().empty())
+        if (sharedImage == nullptr)
         {
             return E_INVALIDARG;
         }
 
-        RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetUrl(), m_url.GetAddressOf()));
+        if (!sharedImage->GetUrl().empty())
+        {
+            RETURN_IF_FAILED(UTF8ToHString(sharedImage->GetUrl(), m_url.GetAddressOf()));
+        }
+
         m_mode = static_cast<ABI::AdaptiveNamespace::BackgroundImageMode>(sharedImage->GetMode());
         m_horizontalAlignment = static_cast<ABI::AdaptiveNamespace::HAlignment>(sharedImage->GetHorizontalAlignment());
         m_verticalAlignment = static_cast<ABI::AdaptiveNamespace::VAlignment>(sharedImage->GetVerticalAlignment());
