@@ -30,6 +30,19 @@ export class InputText extends React.Component {
 		}
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+        return nextProps.isError != this.payload.isError;
+	}
+	
+	componentWillReceiveProps(nextProps) {
+		if ( nextProps.value != this.state.value) {
+			this.setState({
+			   text: "text changed"
+			});
+		}
+	}
+
+
     /**
      * @description Invoked on every change in Input field
      * @param {string} text

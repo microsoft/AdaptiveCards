@@ -6,8 +6,42 @@
 		{
 			"type": "TextBlock",
 			"text": "Action.Title is highly recommended, but for the time being not enforced",
-			"wrap": true
-		}
+			"wrap": true,
+			"id": "toggleText",
+			"isVisible": true
+		},
+		{
+			"type": "Container",
+			"height": "stretch",
+			"verticalContentAlignment": "top",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "This text should be at the top",
+					"wrap": true				},
+				{
+					"type": "TextBlock",
+					"text": "This text should be at the bottom",
+					"wrap": true
+				}
+			]
+		},
+		{
+			"type": "Input.Text",
+			"placeholder": "Name",
+			"style": "text",
+			"maxLength": 0,
+			"id": "SimpleVal",
+			"isError": false
+		  },
+		  {
+			  "type": "Input.Text",
+			  "placeholder": "New Name",
+			  "style": "text",
+			  "maxLength": 0,
+			  "id": "SimpleVal",
+			  "isError": false
+			}
 	],
 	"actions": [
 		{

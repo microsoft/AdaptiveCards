@@ -46,6 +46,53 @@ export default class AdaptiveCards extends React.Component {
 
 		// commonly used styles
 		this.styleConfig = StyleManager.getManager().styles;
+		this.state = {
+			payload: this.payload,
+		};
+	}
+
+	toggleVisibilityForElementWithID = (id) => {
+		 this.toggleObjectWithID(this.payload,'toggleText');
+		// this.payload.body[0].isVisible = !this.payload.body[0].isVisible
+		this.setState({
+			payload: this.payload,
+		})
+
+	}
+
+	addValidationForElementWithID = (id) => {
+		this.addErrorForObjectWithID(this.payload,'toggleText');
+		this.setState({
+			payload: this.payload,
+		})
+	}
+
+	toggleObjectWithID = (object,idValue) => {
+		if(object.hasOwnProperty('id') && object["id"] == idValue)
+		{
+			object.isVisible = !object.isVisible
+			return;
+		}
+		for(var i=0; i<Object.keys(object).length; i++){
+			if(typeof object[Object.keys(object)[i]] == "object"){
+				this.toggleObjectWithID(object[Object.keys(object)[i]], idValue);
+			}
+		}
+		return;
+	}
+
+	addErrorForObjectWithID = (object,idValue) => {
+		if(object.hasOwnProperty('id') && object["id"] == idValue)
+		{
+			object.isError = !object.isError
+			return;
+		}
+		for(var i=0; i<Object.keys(object).length; i++){
+			if(typeof object[Object.keys(object)[i]] == "object"){
+				this.addErrorForObjectWithID(object[Object.keys(object)[i]], idValue);
+			}
+		}
+		return;
 	}
 
 	/**
@@ -79,7 +126,7 @@ export default class AdaptiveCards extends React.Component {
 	parsePayload = () => {
 
 		const renderedElement = [];
-		const { body } = this.payload;
+		const { body } = this.state.payload;
 
 		if (!body)
 			return renderedElement;
@@ -92,11 +139,11 @@ export default class AdaptiveCards extends React.Component {
 	getAdaptiveCardConent() {
 		var adaptiveCardContent =
 			(
-				<ContainerWrapper style={styles.container} json={this.payload}>
+				<ContainerWrapper style={styles.container} json={this.state.payload}>
 					<ScrollView alwaysBounceVertical={false} style={{ flexGrow: 0 }}>
 						{this.parsePayload()}
-						{!Utils.isNullOrEmpty(this.payload.actions) &&
-							<ActionWrapper actions={this.payload.actions} />}
+						{!Utils.isNullOrEmpty(this.state.payload.actions) &&
+							<ActionWrapper actions={this.state.payload.actions} />}
 					</ScrollView>
 				</ContainerWrapper>
 			);
@@ -128,7 +175,7 @@ export default class AdaptiveCards extends React.Component {
 	}
 
 	render() {
-		const { addInputItem, inputArray, addResourceInformation } = this;
+		const { addInputItem, inputArray, addResourceInformation, toggleVisibilityForElementWithID, addValidationForElementWithID } = this;
 		const onExecuteAction = this.onExecuteAction;
 		const isTransparent = this.payload.backgroundImage ? true : false;
 		const onParseError = this.onParseError;
@@ -142,7 +189,7 @@ export default class AdaptiveCards extends React.Component {
 			)
 		}
 		return (
-			<InputContextProvider value={{ lang, addInputItem, inputArray, onExecuteAction, isTransparent, onParseError, addResourceInformation }}>
+			<InputContextProvider value={{ lang, addInputItem, inputArray, onExecuteAction, isTransparent, onParseError, addResourceInformation, toggleVisibilityForElementWithID, addValidationForElementWithID }}>
 				{
 					this.getAdaptiveCardConent()
 				}

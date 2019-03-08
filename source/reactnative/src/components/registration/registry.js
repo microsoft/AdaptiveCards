@@ -149,7 +149,14 @@ export class Registry {
 					}
 				}
 				if (isValid) {
-					parsedElement.push(<Element json={element} key={`${element.type}-${index}-${this.generateNumber()}`} />);
+					if(!Utils.isNullOrEmpty(element.id)){
+						parsedElement.push(<Element json={element} key={`${element.type}-${index}-${element.id}`} />);
+					}
+					else{
+						parsedElement.push(<Element json={element} key={`${element.type}-${index}`} />);
+					}
+					
+					
 				}
 			} else {
 				let error = { "error": Enums.ValidationError.UnknownElementType, "message": `Unknown Type ${element.type} encountered` };

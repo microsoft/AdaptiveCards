@@ -56,9 +56,9 @@ export class ActionButton extends React.Component {
 
 		if (this.payload.type === Constants.ActionSubmit) {
 			return (<InputContextConsumer>
-				{({ inputArray, onExecuteAction }) => (
+				{({ inputArray, onExecuteAction, toggleVisibilityForElementWithID, addValidationForElementWithID }) => (
 					<ButtonComponent style={{ flexGrow: 1 }} onPress={() => {
-						this.onSubmitActionCalled(inputArray, onExecuteAction)
+						this.onSubmitActionCalled(inputArray, onExecuteAction, toggleVisibilityForElementWithID, addValidationForElementWithID)
 					}}>
 						{this.buttonContent()}
 					</ButtonComponent>
@@ -84,7 +84,7 @@ export class ActionButton extends React.Component {
     /**
      * @description Invoked for the action type Constants.ActionSubmit
      */
-	onSubmitActionCalled(inputItem, onExecuteAction) {
+	onSubmitActionCalled(inputItem, onExecuteAction,toggleVisibilityForElementWithID,addValidationForElementWithID) {
 		let mergedObject = null;
 		if (this.data !== null) {
 			mergedObject = { ...this.data, ...inputItem };
@@ -93,6 +93,8 @@ export class ActionButton extends React.Component {
 		}
 		let actionObject = { "type": this.payload.type, "data": mergedObject };
 		onExecuteAction(actionObject);
+		toggleVisibilityForElementWithID();
+		// addValidationForElementWithID();
 	}
 
 	onOpenURLCalled = (onExecuteAction) => {
