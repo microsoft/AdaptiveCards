@@ -2240,6 +2240,25 @@ export class Media extends CardElement {
     }
 }
 
+export class InputValidationOptions {
+    necessity: Enums.InputValidationNecessity = Enums.InputValidationNecessity.Optional;
+    validationFailedText: string = undefined;
+
+    parse(json: any) {
+        this.necessity = Utils.getEnumValueOrDefault(Enums.InputValidationNecessity, json["necessity"], this.necessity);
+        this.validationFailedText = json["validationFailedText"];
+    }
+
+    toJSON() {
+        let result = {}
+
+        Utils.setEnumProperty(Enums.InputValidationNecessity, result, "necessity", this.necessity, Enums.InputValidationNecessity.Optional);
+        Utils.setProperty(result, "validationFailedText", this.validationFailedText);
+
+        return result;
+    }
+}
+
 export abstract class Input extends CardElement implements Shared.IInput {
     protected valueChanged() {
         if (this.onValueChanged) {
@@ -2251,6 +2270,8 @@ export abstract class Input extends CardElement implements Shared.IInput {
 
     onValueChanged: (sender: Input) => void;
 
+    readonly validation = new InputValidationOptions();
+
     title: string;
     defaultValue: string;
 
@@ -2259,6 +2280,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
 
         Utils.setProperty(result, "title", this.title);
         Utils.setProperty(result, "value", this.renderedElement ? this.value : this.defaultValue);
+        Utils.setProperty(result, "validation", this.validation);
 
         return result;
     }
@@ -2277,6 +2299,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
 
         this.id = json["id"];
         this.defaultValue = json["value"];
+        this.validation.parse(json["validation"]);
     }
 
     renderSpeech(): string {
