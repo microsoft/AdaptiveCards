@@ -193,8 +193,10 @@ namespace AdaptiveCards.Rendering.Wpf
         }
 
         public string Lang { get; set; }
-
+        
         public FrameworkElement CardRoot { get; set; }
+
+        public AdaptiveContainerStyle ParentStyle { get; set; } = AdaptiveContainerStyle.Default;
 
         public ForegroundColorsConfig ForegroundColors { get; set; }
     }

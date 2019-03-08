@@ -2,17 +2,7 @@ using AdaptiveCards.Rendering.Uwp;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading;
-using System.Threading.Tasks;
-using UWPTestLibrary;
-using Windows.ApplicationModel;
-using Windows.ApplicationModel.Core;
 using Windows.Data.Json;
-using Windows.Storage;
-using Windows.UI.Core;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 namespace UWPUnitTests
 {

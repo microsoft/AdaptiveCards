@@ -80,5 +80,8 @@
     <ClCompile Include="UnsupportedtypesParsingTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ContainerStyleTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

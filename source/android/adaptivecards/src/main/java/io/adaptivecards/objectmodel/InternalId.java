@@ -47,5 +47,9 @@ public class InternalId {
     return new InternalId(AdaptiveCardObjectModelJNI.InternalId_Current(), true);
   }
 
+  public long Hash() {
+    return AdaptiveCardObjectModelJNI.InternalId_Hash(swigCPtr, this);
+  }
+
   public final static long Invalid = 0;
 }

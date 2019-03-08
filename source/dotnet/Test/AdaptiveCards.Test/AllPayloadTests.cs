@@ -100,12 +100,7 @@ namespace AdaptiveCards.Test
         {
             // TODO: bring this test back once I investigate the warnings
             TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.0", "elements"),
-                new string[]
-                {
-                    // TODO: bring these tests back when bug #940 is closed
-                    "Container.Style",
-                    "Action.ShowCard.Style"
-                });
+                new string[] { });
         }
 
         [TestMethod]
@@ -130,6 +125,7 @@ namespace AdaptiveCards.Test
 
                     // These are cards that features haven't been implemented yet
                     "FallbackParsing",
+                    "Bleed.Test",
                 });
         }
     }
