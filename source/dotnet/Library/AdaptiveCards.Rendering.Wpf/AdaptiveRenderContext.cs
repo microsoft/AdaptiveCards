@@ -197,5 +197,27 @@ namespace AdaptiveCards.Rendering.Wpf
         public FrameworkElement CardRoot { get; set; }
 
         public ForegroundColorsConfig ForegroundColors { get; set; }
+
+        public FontColorConfig GetForegroundColors(AdaptiveTextColor textColor)
+        {
+            switch (textColor)
+            {
+                case AdaptiveTextColor.Accent:
+                    return ForegroundColors.Accent;
+                case AdaptiveTextColor.Attention:
+                    return ForegroundColors.Attention;
+                case AdaptiveTextColor.Dark:
+                    return ForegroundColors.Dark;
+                case AdaptiveTextColor.Good:
+                    return ForegroundColors.Good;
+                case AdaptiveTextColor.Light:
+                    return ForegroundColors.Light;
+                case AdaptiveTextColor.Warning:
+                    return ForegroundColors.Warning;
+                case AdaptiveTextColor.Default:
+                default:
+                    return ForegroundColors.Default;
+            }
+        }
     }
 }

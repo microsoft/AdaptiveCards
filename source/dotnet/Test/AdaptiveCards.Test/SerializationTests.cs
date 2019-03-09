@@ -621,6 +621,44 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
+        public void EmptyRichTextBlock()
+        {
+            var json = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.2"",
+  ""body"": [
+    {
+      ""type"": ""RichTextBlock"",
+      ""paragraphs"": [
+        {
+          ""inlines"": []
+        }
+      ]
+    },
+    {
+      ""type"": ""RichTextBlock"",
+      ""paragraphs"": []
+    }
+  ]
+}";
+
+            var card = AdaptiveCard.FromJson(json).Card;
+
+            // Validate first RTB
+            var richTB1 = card.Body[0] as AdaptiveRichTextBlock;
+            Assert.IsTrue(richTB1.Paragraphs.Count == 1);
+
+            var paragraph = richTB1.Paragraphs[0];
+            Assert.IsTrue(paragraph.Inlines.Count == 0);
+
+            // Validate second RTB
+            var richTB2 = card.Body[1] as AdaptiveRichTextBlock;
+            Assert.IsTrue(richTB2.Paragraphs.Count == 0);
+
+            Assert.AreEqual(json, card.ToJson());
+        }
+
+        [TestMethod]
         public void MediaInvalid_ShouldThrowException()
         {
             var json = @"{

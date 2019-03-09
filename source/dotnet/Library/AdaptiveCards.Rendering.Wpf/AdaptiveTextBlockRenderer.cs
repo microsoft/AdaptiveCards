@@ -17,37 +17,7 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             var uiTextBlock = CreateControl(textBlock, context);
 
-            FontColorConfig colorOption;
-            switch (textBlock.Color)
-            {
-                case AdaptiveTextColor.Accent:
-                    colorOption = context.ForegroundColors.Accent;
-                    break;
-                case AdaptiveTextColor.Attention:
-                    colorOption = context.ForegroundColors.Attention;
-                    break;
-                case AdaptiveTextColor.Dark:
-                    colorOption = context.ForegroundColors.Dark;
-                    break;
-                case AdaptiveTextColor.Good:
-                    colorOption = context.ForegroundColors.Good;
-                    break;
-                case AdaptiveTextColor.Light:
-                    colorOption = context.ForegroundColors.Light;
-                    break;
-                case AdaptiveTextColor.Warning:
-                    colorOption = context.ForegroundColors.Warning;
-                    break;
-                case AdaptiveTextColor.Default:
-                default:
-                    colorOption = context.ForegroundColors.Default;
-                    break;
-            }
-
-            if (textBlock.IsSubtle)
-                uiTextBlock.SetColor(colorOption.Subtle, context);
-            else
-                uiTextBlock.SetColor(colorOption.Default, context);
+            uiTextBlock.SetColor(textBlock.Color, textBlock.IsSubtle, context);
 
             if (textBlock.MaxWidth > 0)
             {
@@ -92,7 +62,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             }
 
-            if(!textBlock.IsVisible)
+            if (!textBlock.IsVisible)
             {
                 uiTextBlock.Visibility = Visibility.Collapsed;
             }
