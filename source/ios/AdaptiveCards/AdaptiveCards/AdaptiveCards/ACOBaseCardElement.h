@@ -30,6 +30,7 @@ typedef NS_ENUM(NSInteger, ACRCardElementType) {
     ACRImageSet,
     ACRMedia,
     ACRNumberInput,
+    ACRRichTextBlock,
     ACRTextBlock,
     ACRTextInput,
     ACRTimeInput,
