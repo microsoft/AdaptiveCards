@@ -19,6 +19,9 @@
 #import "Util.h"
 
 @implementation ACRImageRenderer
+{
+    __weak ACRView * _rootView;
+}
 
 + (ACRImageRenderer *)getInstance
 {
@@ -44,6 +47,7 @@
     BOOL hasExplicitMeasurements = (pixelWidth || pixelHeight);
     BOOL isAspectRatioNeeded = !(pixelWidth && pixelHeight);
     CGSize cgsize = [acoConfig getImageSize:imgElem->GetImageSize()];
+    _rootView = rootView;
 
     NSMutableDictionary *imageViewMap = [rootView getImageMap];
     // Syncronize access to imageViewMap
@@ -231,6 +235,8 @@
             ((ACRUIImageView *)imageView).desiredSize = cgsize;
         }
     }
+    
+    [_rootView.acrActionDelegate didChangeViewLayout:imageView.frame newFrame:imageView.frame];
 }
 
 @end

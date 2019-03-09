@@ -26,6 +26,7 @@
     return self;
 }
 
+/*
 - (CGSize)intrinsicContentSize
 {
     CGSize intrinsicContentSize = self.contentSize;
@@ -34,16 +35,17 @@
     
     return intrinsicContentSize;
 }
+ */
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
 
    if (self.tag == eACRUILabelTag) {
-       CGSize size = [self sizeThatFits:self.superview.frame.size];
-       if (!CGSizeEqualToSize(size, [self intrinsicContentSize])) {
-           _heightconst.constant = size.height;
-       }
+       //CGSize size = [self sizeThatFits:self.superview.frame.size];
+       //if (!CGSizeEqualToSize(size, [self intrinsicContentSize])) {
+       //    _heightconst.constant = size.height;
+       //}
        
         //NSLayoutConstraint *heightconst =
         //[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.contentSize.height];

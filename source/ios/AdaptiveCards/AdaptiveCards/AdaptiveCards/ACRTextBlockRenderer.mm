@@ -111,8 +111,8 @@
     //CGSize size =
     [lab sizeToFit];
     
-    lab.heightconst = [NSLayoutConstraint constraintWithItem:lab attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:lab.contentSize.height];
-    lab.heightconst.active = YES;
+    //lab.heightconst = [NSLayoutConstraint constraintWithItem:lab attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:lab.contentSize.height];
+    //lab.heightconst.active = YES;
 
     lab.scrollEnabled = NO;
     

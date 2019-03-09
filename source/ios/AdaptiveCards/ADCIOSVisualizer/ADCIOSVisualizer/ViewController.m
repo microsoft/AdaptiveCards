@@ -245,7 +245,7 @@
         [registration setCustomActionRenderer:customActionRenderer key:type1];
 
         _config = hostconfigParseResult.config;
-        renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:335 delegate:self];
+        renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:320 delegate:self];
     }
     
     if(renderResult.succeeded)
@@ -321,7 +321,8 @@
 
 - (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame
 {
-    [self.scrView scrollRectToVisible:newFrame animated:YES];
+    //[self.scrView scrollRectToVisible:newFrame animated:YES];
+    [self.scrView reloadData];
 }
 
 - (void)didChangeVisibility:(UIButton *)button isVisible:(BOOL)isVisible
@@ -414,31 +415,21 @@
     UITableViewCell * cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@""];
     
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    UIView * v = [self.scrViewA objectAtIndex:indexPath.row];
-    v.translatesAutoresizingMaskIntoConstraints = NO;
-    [cell.contentView addSubview:v];
-    [v setNeedsUpdateConstraints];
-    [v updateConstraints];
-    [v.topAnchor constraintEqualToAnchor:cell.contentView.topAnchor constant:0].active = YES;
-    NSLayoutConstraint *constraint = [cell.contentView.bottomAnchor constraintEqualToAnchor:v.bottomAnchor constant:0];
-    constraint.priority = 999;
-    constraint.active = YES;
+    UIView * v = [self.scrViewA objectAtIndex:indexPath.row];    
+    [v layoutIfNeeded];
     
+    [cell.contentView addSubview:v];
+    [v.topAnchor constraintEqualToAnchor:cell.contentView.topAnchor constant:0].active = YES;
     [v.leadingAnchor constraintEqualToAnchor:cell.contentView.leadingAnchor constant:0].active = YES;
-    [cell.contentView.trailingAnchor constraintEqualToAnchor:v.trailingAnchor constant:8].active = YES;
+    [v.trailingAnchor constraintLessThanOrEqualToAnchor:cell.contentView.trailingAnchor constant:0].active = YES;
+    [v.bottomAnchor constraintLessThanOrEqualToAnchor:cell.contentView.bottomAnchor constant:0].active = YES;
+    
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    /*
-    UIView * v = [self.scrViewA objectAtIndex:indexPath.row];
-    if(v.frame.size.height) {
-        return v.frame.size.height + 10;
-    } else {
-     */
-        return UITableViewAutomaticDimension;
-    //}
+    return UITableViewAutomaticDimension;
 }
 
 @end
