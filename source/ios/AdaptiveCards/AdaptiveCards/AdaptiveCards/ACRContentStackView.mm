@@ -141,12 +141,10 @@ using namespace AdaptiveCards;
     }
 }
 
-/*
 - (CGSize)intrinsicContentSize
 {
     return self.frame.size;
 }
-*/
 
 - (void)addArrangedSubview:(UIView *)view
 {

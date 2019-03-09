@@ -26,43 +26,6 @@
     return self;
 }
 
-/*
-- (CGSize)intrinsicContentSize
-{
-    CGSize intrinsicContentSize = self.contentSize;
-    intrinsicContentSize.width += (self.textContainerInset.left + self.textContainerInset.right ) / 2.0f;
-    intrinsicContentSize.height += (self.textContainerInset.top + self.textContainerInset.bottom) / 2.0f;
-    
-    return intrinsicContentSize;
-}
- */
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-/*
-   if (self.tag == eACRUILabelTag) {
-       //CGSize size = [self sizeThatFits:self.superview.frame.size];
-       //if (!CGSizeEqualToSize(size, [self intrinsicContentSize])) {
-       //    _heightconst.constant = size.height;
-       //}
-       
-        //NSLayoutConstraint *heightconst =
-        //[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.contentSize.height];
-        //heightconst.active = YES;
-       //CGSize size = [self sizeThatFits:CGSizeMake(self.superview.frame.size.width, self.contentSize.height)];
-       //self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, size.width, size.height);
-       //[self sizeToFit];
-    } else  if (self.tag == eACRUIFactSetTag) {
-        CGFloat area = self.frame.size.height * self.frame.size.width;
-        if (area != _area) {
-            [self invalidateIntrinsicContentSize];
-            _area = area;
-        }
-    }
- */
-}
-
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
     CGPoint location = point;

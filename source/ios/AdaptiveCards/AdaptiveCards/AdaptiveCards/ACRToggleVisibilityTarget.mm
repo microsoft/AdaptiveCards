@@ -48,6 +48,8 @@
         } else {
             view.hidden = YES;
         }
+        // notify client the view layout has changed        
+        [_rootView.acrActionDelegate didChangeViewLayout:_rootView.frame newFrame:_rootView.frame];
     }
 }
 

@@ -11,5 +11,4 @@
 @interface ACRUILabel:UITextView
 @property ACRContainerStyle style;
 @property CGFloat area;
-@property NSLayoutConstraint *heightconst;
 @end
