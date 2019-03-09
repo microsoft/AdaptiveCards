@@ -105,14 +105,9 @@
     ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:lab.frame];
     wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
     lab.translatesAutoresizingMaskIntoConstraints = NO;
-    lab.scrollEnabled = YES;
-    //CGSize size = [lab sizeThatFits:CGSizeMake(lab.frame.size.width, FLT_MAX)];
-    //lab.frame = CGRectMake(0, 0, size.width, size.height);
-    //CGSize size =
+    //lab.scrollEnabled = YES;
+
     [lab sizeToFit];
-    
-    //lab.heightconst = [NSLayoutConstraint constraintWithItem:lab attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:lab.contentSize.height];
-    //lab.heightconst.active = YES;
 
     lab.scrollEnabled = NO;
     

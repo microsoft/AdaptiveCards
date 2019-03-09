@@ -40,7 +40,7 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-
+/*
    if (self.tag == eACRUILabelTag) {
        //CGSize size = [self sizeThatFits:self.superview.frame.size];
        //if (!CGSizeEqualToSize(size, [self intrinsicContentSize])) {
@@ -60,6 +60,7 @@
             _area = area;
         }
     }
+ */
 }
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
