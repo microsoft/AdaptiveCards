@@ -28,17 +28,13 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 foreach (var inlineElement in paragraph.Inlines)
                 {
-                    if (inlineElement is AdaptiveRichTextBlock.AdaptiveParagraph.AdaptiveTextRun)
-                    {
-                        var inlineTextRun = inlineElement as AdaptiveRichTextBlock.AdaptiveParagraph.AdaptiveTextRun;
-                        Inline uiInlineText = FormatInlineTextRun(inlineTextRun, context);
-                        uiRichTB.Inlines.Add(uiInlineText);
+                    Inline uiInlineText = FormatInlineTextRun(inlineElement, context);
+                    uiRichTB.Inlines.Add(uiInlineText);
 
-                        // Extract data for MaxLines
-                        totalText.Append(inlineTextRun.Text);
-                        maxTextWeight = SelectMaxTextWeight(maxTextWeight, uiInlineText.FontWeight);
-                        maxTextSize = SelectMaxTextSize(maxTextSize, uiInlineText.FontSize);
-                    }
+                    // Extract data for MaxLines
+                    totalText.Append(inlineElement.Text);
+                    maxTextWeight = SelectMaxTextWeight(maxTextWeight, uiInlineText.FontWeight);
+                    maxTextSize = Math.Max(maxTextSize, uiInlineText.FontSize);
                 }
                 uiRichTB.Inlines.Add(new LineBreak());
             }
@@ -81,7 +77,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             }
 
-            if(!richTB.IsVisible)
+            if (!richTB.IsVisible)
             {
                 uiRichTB.Visibility = Visibility.Collapsed;
             }
@@ -100,52 +96,18 @@ namespace AdaptiveCards.Rendering.Wpf
             string text = RendererUtilities.ApplyTextFunctions(textRun.Text, context.Lang);
 
             // Handle markdown
-            string xaml = $"<Span  xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">{marked.Parse(text)}</Span>";
+            string xaml = $"<Span  xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"  xml:space=\"preserve\">{marked.Parse(text)}</Span>";
             StringReader stringReader = new StringReader(xaml);
             XmlReader xmlReader = XmlReader.Create(stringReader);
 
-            Span uiInlineElement = (Span)XamlReader.Load(xmlReader);
+            Span uiInlineElement = XamlReader.Load(xmlReader) as Span;
             uiInlineElement.Style = context.GetStyle($"Adaptive.{textRun.Type}");
 
             uiInlineElement.FontFamily = new FontFamily(context.Config.GetFontFamily(textRun.FontStyle));
             uiInlineElement.FontWeight = FontWeight.FromOpenTypeWeight(context.Config.GetFontWeight(textRun.FontStyle, textRun.Weight));
             uiInlineElement.FontSize = context.Config.GetFontSize(textRun.FontStyle, textRun.Size);
 
-            FontColorConfig colorOption;
-            switch (textRun.Color)
-            {
-                case AdaptiveTextColor.Accent:
-                    colorOption = context.ForegroundColors.Accent;
-                    break;
-                case AdaptiveTextColor.Attention:
-                    colorOption = context.ForegroundColors.Attention;
-                    break;
-                case AdaptiveTextColor.Dark:
-                    colorOption = context.ForegroundColors.Dark;
-                    break;
-                case AdaptiveTextColor.Good:
-                    colorOption = context.ForegroundColors.Good;
-                    break;
-                case AdaptiveTextColor.Light:
-                    colorOption = context.ForegroundColors.Light;
-                    break;
-                case AdaptiveTextColor.Warning:
-                    colorOption = context.ForegroundColors.Warning;
-                    break;
-                case AdaptiveTextColor.Default:
-                default:
-                    colorOption = context.ForegroundColors.Default;
-                    break;
-            }
-
-            if (textRun.IsSubtle)
-            {
-                uiInlineElement.SetColor(colorOption.Subtle, context);
-            }
-            else
-            {
-                uiInlineElement.SetColor(colorOption.Default, context);
-            }
+            uiInlineElement.SetColor(textRun.Color, textRun.IsSubtle, context);
 
             return uiInlineElement;
         }
@@ -168,11 +130,6 @@ namespace AdaptiveCards.Rendering.Wpf
         }
 
         private static FontWeight SelectMaxTextWeight(FontWeight first, FontWeight second)
-        {
-            return (first > second) ? first : second;
-        }
-
-        private static double SelectMaxTextSize(double first, double second)
         {
             return (first > second) ? first : second;
         }
