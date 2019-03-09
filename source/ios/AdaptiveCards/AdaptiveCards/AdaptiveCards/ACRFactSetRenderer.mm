@@ -86,11 +86,7 @@
         std::size_t idx = ID.find_last_of('_');
         if(std::string::npos != idx){
             element->SetId(ID.substr(0, idx));
-        }        
-
-        [lab sizeToFit];
-        
-        lab.scrollEnabled = NO;
+        }
     }
 
     lab.textContainer.maximumNumberOfLines = textConfig.wrap ? 0 : 1;
@@ -139,7 +135,6 @@
                                                      rootView:rootView
                                                       element:elem];
         [titleLab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-        
         [titleLab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         [titleLab setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
 
