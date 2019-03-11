@@ -3149,7 +3149,11 @@ export abstract class Action implements ICardObject {
         return [];
     }
 
-    prepare(inputs: Array<Input>) {
+    getReferencedInputs(allInputs: Array<Input>): Shared.InputDictionary {
+        return {};
+    }
+
+    prepare(inputs: Shared.InputDictionary) {
         // Do nothing in base implementation
     };
 
@@ -3250,7 +3254,17 @@ export class SubmitAction extends Action {
         return result;
     }
 
-    prepare(inputs: Array<Input>) {
+    getReferencedInputs(allInputs: Array<Input>): Shared.InputDictionary {
+        let result: Shared.InputDictionary = {};
+
+        for (let input of allInputs) {
+            result[input.id] = input;
+        }
+
+        return result;
+    }
+
+    prepare(inputs: Shared.InputDictionary) {
         if (this._originalData) {
             this._processedData = JSON.parse(JSON.stringify(this._originalData));
         }
@@ -3258,11 +3272,11 @@ export class SubmitAction extends Action {
             this._processedData = {};
         }
 
-        for (var i = 0; i < inputs.length; i++) {
-            var inputValue = inputs[i].value;
+        for (let key of Object.keys(inputs)) {
+            let input = inputs[key];
 
-            if (inputValue != null) {
-                this._processedData[inputs[i].id] = inputs[i].value;
+            if (input.value != null) {
+                this._processedData[input.id] = input.value;
             }
         }
 
@@ -3274,10 +3288,6 @@ export class SubmitAction extends Action {
 
         this.ignoreInputValidation = Utils.getBoolValue(json["ignoreInputValidation"], this.ignoreInputValidation);
         this.data = json["data"];
-    }
-
-    validateInputs(): Input[] {
-        
     }
 
     get data(): Object {
@@ -3394,7 +3404,11 @@ export class HttpHeader {
         return { name: this.name, value: this._value.getOriginal() };
     }
 
-    prepare(inputs: Array<Input>) {
+    getReferencedInputs(inputs: Array<Input>, referencedInputs: Shared.InputDictionary) {
+        this._value.getReferencedInputs(inputs, referencedInputs);
+    }
+
+    prepare(inputs: Shared.InputDictionary) {
         this._value.substituteInputValues(inputs, Shared.ContentTypes.applicationXWwwFormUrlencoded);
     }
 
@@ -3459,16 +3473,30 @@ export class HttpAction extends Action {
         return result;
     }
 
-    prepare(inputs: Array<Input>) {
+    getReferencedInputs(allInputs: Array<Input>): Shared.InputDictionary {
+        let result: Shared.InputDictionary = {};
+
+        this._url.getReferencedInputs(allInputs, result);
+
+        for (let header of this._headers) {
+            header.getReferencedInputs(allInputs, result);
+        }
+
+        this._body.getReferencedInputs(allInputs, result);
+
+        return result;
+    }
+
+    prepare(inputs: Shared.InputDictionary) {
         this._url.substituteInputValues(inputs, Shared.ContentTypes.applicationXWwwFormUrlencoded);
 
         let contentType = Shared.ContentTypes.applicationJson;
 
-        for (var i = 0; i < this._headers.length; i++) {
-            this._headers[i].prepare(inputs);
+        for (let header of this._headers) {
+            header.prepare(inputs);
 
-            if (this._headers[i].name && this._headers[i].name.toLowerCase() == "content-type") {
-                contentType = this._headers[i].value;
+            if (header.name && header.name.toLowerCase() == "content-type") {
+                contentType = header.value;
             }
         }
 
@@ -5399,7 +5427,13 @@ function raiseExecuteActionEvent(action: Action) {
     let onExecuteActionHandler = (card && card.onExecuteAction) ? card.onExecuteAction : AdaptiveCard.onExecuteAction;
 
     if (onExecuteActionHandler) {
-        action.prepare(action.parent.getRootElement().getAllInputs());
+        let referencedInputs = action.getReferencedInputs(action.parent.getRootElement().getAllInputs());
+
+        if (AdaptiveCard.useBuiltInInputValidation) {
+            // TODO: Validate inputs
+        }
+
+        action.prepare(referencedInputs);
 
         onExecuteActionHandler(action);
     }
@@ -5706,6 +5740,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static useMarkdownInRadioButtonAndCheckbox: boolean = true;
     static allowMarkForTextHighlighting: boolean = false;
     static alwaysBleedSeparators: boolean = false;
+    static useBuiltInInputValidation: boolean = true;
 
     static readonly elementTypeRegistry = new ElementTypeRegistry();
     static readonly actionTypeRegistry = new ActionTypeRegistry();
