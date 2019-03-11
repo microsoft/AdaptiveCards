@@ -59,7 +59,7 @@ export class ActionButton extends React.Component {
 			return (<InputContextConsumer>
 				{({ inputArray, onExecuteAction }) => (
 					<ButtonComponent style={{ flexGrow: 1 }} onPress={() => {
-						this.onSubmitActionCalled(inputArray, onExecuteAction, toggleVisibilityForElementWithID, addValidationForElementWithID)
+						this.onSubmitActionCalled(inputArray, onExecuteAction)
 					}}>
 						{this.buttonContent()}
 					</ButtonComponent>
