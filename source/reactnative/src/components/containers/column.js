@@ -45,6 +45,7 @@ export class Column extends React.Component {
 
 		// parse elements
 		if (!Utils.isNullOrEmpty(this.column.items)) {
+			if(this.column.isVisible !== false)
 			renderedElement.push(Registry.getManager().parseRegistryComponents(this.column.items, onParseError));
 		}
 		return renderedElement;

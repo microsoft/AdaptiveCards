@@ -55,7 +55,6 @@ export default class AdaptiveCards extends React.Component {
 		 
 		for(id in idArray){
 			this.toggleObjectWithID(this.payload,idArray[id]);
-			console.log("id value is ",idArray[id]);
 		}
 		this.setState({
 			payload: this.payload,
