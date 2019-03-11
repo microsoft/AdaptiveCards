@@ -80,6 +80,11 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
 
         LinearLayout layout = new LinearLayout(context);
         layout.setTag(new TagContent(columnSet));
+
+        // Add this two for allowing children to bleed
+        layout.setClipChildren(false);
+        layout.setClipToPadding(false);
+
         if(!baseCardElement.GetIsVisible())
         {
             layout.setVisibility(View.GONE);
@@ -87,6 +92,15 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
 
         for (int i = 0; i < columnVectorSize; i++) {
             Column column = columnVector.get(i);
+
+            ColumnRenderer rendererAsColumnRenderer = null;
+            if (columnRenderer instanceof ColumnRenderer)
+            {
+                rendererAsColumnRenderer = (ColumnRenderer)columnRenderer;
+                rendererAsColumnRenderer.setIsRenderingFirstColumn(i == 0);
+                rendererAsColumnRenderer.setIsRenderingLastColumn(i == (columnVectorSize - 1));
+            }
+
             columnRenderer.render(renderedCard, context, fragmentManager, layout, column, cardActionHandler, hostConfig, containerStyle);
         }
 
@@ -110,6 +124,14 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         {
             layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             viewGroup.addView(layout);
+        }
+
+        if (columnSet.GetBleed() && (columnSet.GetCanBleed() || (styleForThis != containerStyle || columnSet.GetBackgroundImage() != null)))
+        {
+            long padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) layout.getLayoutParams();
+            layoutParams.setMargins((int)-padding, layoutParams.topMargin, (int)-padding, layoutParams.bottomMargin);
+            layout.setLayoutParams(layoutParams);
         }
 
         if (styleForThis != containerStyle)
