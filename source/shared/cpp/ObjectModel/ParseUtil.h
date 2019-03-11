@@ -86,6 +86,7 @@ namespace AdaptiveSharedNamespace
         std::shared_ptr<BaseActionElement> GetActionFromJsonValue(ParseContext& context, const Json::Value& json);
 
         void ExpectTypeString(const Json::Value& json, CardElementType bodyType);
+        void ExpectTypeString(const Json::Value& json, const std::string& expectedTypeStr);
 
         // throws if the key is missing or the value mapped to the key is the wrong type
         void ExpectKeyAndValueType(const Json::Value& json, const char* expectedKey, std::function<void(const Json::Value&)> throwIfWrongType);

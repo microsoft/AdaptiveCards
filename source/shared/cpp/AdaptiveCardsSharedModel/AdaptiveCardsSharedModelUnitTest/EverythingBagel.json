@@ -271,6 +271,44 @@
 					"url": "https://adaptivecards.io/"
 				}
 			]
+		},
+		{
+			"type": "RichTextBlock",
+			"id": "RichTextBlock_id",
+			"wrap": true,
+			"horizontalAlignment": "right",
+			"maxLines": 5,
+			"paragraphs": [
+				{
+					"inlines": [
+						{
+							"type": "TextRun",
+							"text": "This is a text run in paragraph 1",
+							"color": "Dark",
+							"isSubtle": true,
+							"size": "large",
+							"weight": "Bolder",
+							"fontStyle": "Monospace"
+						},
+						{
+							"type": "TextRun",
+							"text": "This is another text run in paragraph 1"
+						}
+					]
+				},
+				{
+					"inlines": [
+						{
+							"type": "TextRun",
+							"text": "This is a text run in paragraph 2"
+						},
+						{
+							"type": "TextRun",
+							"text": "This is another text run in paragraph 2"
+						}
+					]
+				}
+			]
 		}
 	],
 	"actions": [

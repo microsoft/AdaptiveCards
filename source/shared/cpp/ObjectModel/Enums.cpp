@@ -71,6 +71,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::ImageSizes, "imageSizes"},
             {AdaptiveCardSchemaKey::Images, "images"},
             {AdaptiveCardSchemaKey::InlineAction, "inlineAction"},
+            {AdaptiveCardSchemaKey::Inlines, "inlines"},
             {AdaptiveCardSchemaKey::InlineTopMargin, "inlineTopMargin"},
             {AdaptiveCardSchemaKey::IsMultiSelect, "isMultiSelect"},
             {AdaptiveCardSchemaKey::IsMultiline, "isMultiline"},
@@ -101,6 +102,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Monospace, "monospace"},
             {AdaptiveCardSchemaKey::NumberInput, "numberInput"},
             {AdaptiveCardSchemaKey::Padding, "padding"},
+            {AdaptiveCardSchemaKey::Paragraphs, "paragraphs"},
             {AdaptiveCardSchemaKey::Placeholder, "placeholder"},
             {AdaptiveCardSchemaKey::PlayButton, "playButton"},
             {AdaptiveCardSchemaKey::Poster, "poster"},
@@ -108,6 +110,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::RepeatHorizontally, "repeatHorizontally"},
             {AdaptiveCardSchemaKey::RepeatVertically, "repeatVertically"},
             {AdaptiveCardSchemaKey::Requires, "requires"},
+            {AdaptiveCardSchemaKey::RichTextBlock, "richTextBlock"},
             {AdaptiveCardSchemaKey::Right, "right"},
             {AdaptiveCardSchemaKey::SelectAction, "selectAction"},
             {AdaptiveCardSchemaKey::Sentiment, "sentiment"},
@@ -164,6 +167,7 @@ namespace AdaptiveSharedNamespace
             {CardElementType::TextInput, "Input.Text"},
             {CardElementType::TimeInput, "Input.Time"},
             {CardElementType::ToggleInput, "Input.Toggle"},
+            {CardElementType::RichTextBlock, "RichTextBlock"},
             {CardElementType::TextBlock, "TextBlock"},
             {CardElementType::Custom, "Custom"},
             {CardElementType::Unknown, "Unknown"},
@@ -303,4 +307,7 @@ namespace AdaptiveSharedNamespace
             {VerticalContentAlignment::Top, "Top"},
             {VerticalContentAlignment::Center, "Center"},
             {VerticalContentAlignment::Bottom, "Bottom"}});
+
+    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(InlineElementType, InlineElementType::TextRun, {
+            {InlineElementType::TextRun, "TextRun"}});
 }

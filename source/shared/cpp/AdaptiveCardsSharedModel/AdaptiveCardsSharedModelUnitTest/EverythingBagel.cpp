@@ -14,10 +14,12 @@
 #include "ImageSet.h"
 #include "NumberInput.h"
 #include "OpenUrlAction.h"
+#include "RichTextBlock.h"
 #include "ShowCardAction.h"
 #include "SubmitAction.h"
 #include "TextBlock.h"
 #include "TextInput.h"
+#include "TextRun.h"
 #include "TimeInput.h"
 #include "ToggleInput.h"
 
@@ -362,10 +364,51 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("ActionSet.Action.OpenUrl_id", openUrlAction->GetId().c_str());
     }
 
+    void ValidateRichTextBlock(const RichTextBlock &richTextBlock)
+    {
+        Assert::IsTrue(richTextBlock.GetElementType() == CardElementType::RichTextBlock);
+        Assert::AreEqual(CardElementTypeToString(CardElementType::RichTextBlock), richTextBlock.GetElementTypeString());
+        Assert::AreEqual("RichTextBlock_id"s, richTextBlock.GetId());
+        Assert::IsTrue(HorizontalAlignment::Right == richTextBlock.GetHorizontalAlignment());
+        Assert::AreEqual(5U, richTextBlock.GetMaxLines());
+        Assert::IsTrue(richTextBlock.GetWrap());
+
+        auto paragraphs = richTextBlock.GetParagraphs();
+        Assert::AreEqual(size_t(2), paragraphs.size());
+
+        auto inlines = paragraphs[0]->GetInlines();
+        Assert::AreEqual(size_t(2), inlines.size());
+
+        Assert::IsTrue(InlineElementType::TextRun == inlines[0]->GetInlineType());
+        Assert::AreEqual("TextRun"s, inlines[0]->GetInlineTypeString());
+
+        auto inlineTextElement = std::static_pointer_cast<TextRun>(inlines[0]);
+
+        Assert::AreEqual("This is a text run in paragraph 1"s, inlineTextElement->GetText());
+        Assert::IsTrue(ForegroundColor::Dark == inlineTextElement->GetTextColor());
+        Assert::AreEqual("en"s, inlineTextElement->GetLanguage());
+        Assert::IsTrue(TextSize::Large == inlineTextElement->GetTextSize());
+        Assert::IsTrue(TextWeight::Bolder== inlineTextElement->GetTextWeight());
+        Assert::IsTrue(FontStyle::Monospace == inlineTextElement->GetFontStyle());
+        Assert::IsTrue(inlineTextElement->GetIsSubtle());
+
+        Assert::IsTrue(InlineElementType::TextRun == inlines[1]->GetInlineType());
+        Assert::AreEqual("TextRun"s, inlines[1]->GetInlineTypeString());
+
+        inlines = paragraphs[1]->GetInlines();
+        Assert::AreEqual(size_t(2), inlines.size());
+
+        Assert::IsTrue(InlineElementType::TextRun == inlines[0]->GetInlineType());
+        Assert::AreEqual("TextRun"s, inlines[0]->GetInlineTypeString());
+
+        Assert::IsTrue(InlineElementType::TextRun == inlines[1]->GetInlineType());
+        Assert::AreEqual("TextRun"s, inlines[1]->GetInlineTypeString());
+    }
+
     void ValidateBody(const AdaptiveCard &everythingBagel)
     {
         auto body = everythingBagel.GetBody();
-        Assert::AreEqual(size_t{ 9 }, body.size());
+        Assert::AreEqual(size_t{ 10 }, body.size());
 
         // validate textblock (no style)
         auto textBlock = std::static_pointer_cast<TextBlock>(body.at(0));
@@ -402,6 +445,9 @@ namespace AdaptiveCardsSharedModelUnitTest
         // validate action set
         auto actionSet = std::static_pointer_cast<ActionSet>(body.at(8));
         ValidateActionSet(*actionSet);
+
+        auto richTextBlock = std::static_pointer_cast<RichTextBlock>(body.at(9));
+        ValidateRichTextBlock(*richTextBlock);
     }
 
     void ValidateToplevelActions(const AdaptiveCard &everythingBagel)
