@@ -73,11 +73,11 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
             [XmlType(TypeName = AdaptiveTextBlock.TypeName)]
 #endif
-            public class AdaptiveTextRun : ITextElement
+            public class AdaptiveTextRun : AdaptiveTypedElement, ITextElement
             {
                 public const string TypeName = "TextRun";
 
-                public string Type { get; set; } = TypeName;
+                public override string Type { get; set; } = TypeName;
 
                 public AdaptiveTextRun()
                 {
