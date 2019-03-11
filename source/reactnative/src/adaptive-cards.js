@@ -52,31 +52,57 @@ export default class AdaptiveCards extends React.Component {
 	}
 
 	toggleVisibilityForElementWithID = (idArray) => {
-		 
-		for(id in idArray){
-			this.toggleObjectWithID(this.payload,idArray[id]);
-		}
+		this.toggleObjectWithIDArray(this.payload, [...idArray]);
 		this.setState({
 			payload: this.payload,
 		})
-
 	}
 
-	toggleObjectWithID = (object,idValue) => {
-		if(object.hasOwnProperty('id') && object["id"] == idValue)
-		{
+	/**
+	 * @description Toggles the visibility of the components by their ids recursively
+	 * @param {Object} object - the object to be searched for ids
+	 * @param {Array} idArrayValue - the array of IDs to be toggled
+	 */
+	toggleObjectWithIDArray = (object, idArrayValue) => {
+		if (idArrayValue.length === 0) return
+		if (object.hasOwnProperty('id') && idArrayValue.includes(object["id"])) {
 			if (!Utils.isNullOrEmpty(object.isVisible)) {
 				object.isVisible = !object.isVisible
-			}else{
+			} else {
+				object.isVisible = false;
+			}
+			var index = idArrayValue.indexOf(object["id"]);
+			if (index !== -1) idArrayValue.splice(index, 1);
+			if (idArrayValue.length === 0) return
+		}
+		Object.keys(object).forEach(element => {
+			if (idArrayValue.length === 0) return
+			if (typeof object[element] == "object") {
+				this.toggleObjectWithIDArray(object[element], idArrayValue);
+			}
+		});
+		return;
+	}
+
+	/**
+	 * @description Comveniece method to toggle the visibility of the component by a single id recursively
+	 * @param {Object} object - the object to be searched for ids
+	 * @param {string} idValue - the id of the component to be toggled
+	 */
+	toggleObjectWithID = (object, idValue) => {
+		if (object.hasOwnProperty('id') && object["id"] == idValue) {
+			if (!Utils.isNullOrEmpty(object.isVisible)) {
+				object.isVisible = !object.isVisible
+			} else {
 				object.isVisible = false;
 			}
 			return;
 		}
-		for(var i=0; i<Object.keys(object).length; i++){
-			if(typeof object[Object.keys(object)[i]] == "object"){
-				this.toggleObjectWithID(object[Object.keys(object)[i]], idValue);
+		Object.keys(object).forEach(element => {
+			if (typeof object[element] == "object") {
+				this.toggleObjectWithID(object[element], idValue);
 			}
-		}
+		});
 		return;
 	}
 
