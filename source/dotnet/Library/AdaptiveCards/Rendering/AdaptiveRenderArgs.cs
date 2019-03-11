@@ -13,6 +13,14 @@ namespace AdaptiveCards.Rendering
     {
         public AdaptiveRenderArgs() { }
 
+        public AdaptiveRenderArgs(AdaptiveRenderArgs previousRenderArgs)
+        {
+            ParentStyle = previousRenderArgs.ParentStyle;
+            ForegroundColors = previousRenderArgs.ForegroundColors;
+            ColumnRelativePosition = previousRenderArgs.ColumnRelativePosition;
+            HasParentWithPadding = previousRenderArgs.HasParentWithPadding;
+        }
+
         public AdaptiveContainerStyle ParentStyle { get; set; } = AdaptiveContainerStyle.Default;
 
         public ForegroundColorsConfig ForegroundColors { get; set; }
@@ -20,16 +28,6 @@ namespace AdaptiveCards.Rendering
         public ColumnPositionEnum ColumnRelativePosition { get; set; }
 
         public bool HasParentWithPadding { get; set; } = true;
-
-        public AdaptiveRenderArgs Clone()
-        {
-            return new AdaptiveRenderArgs {
-                ParentStyle = ParentStyle,
-                ForegroundColors = ForegroundColors,
-                ColumnRelativePosition = ColumnRelativePosition,
-                HasParentWithPadding = HasParentWithPadding
-            };
-        }
 
     }
 }

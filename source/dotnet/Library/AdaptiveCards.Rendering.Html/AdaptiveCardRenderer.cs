@@ -114,7 +114,7 @@ namespace AdaptiveCards.Rendering.Html
             tag.AddClass(GetActionCssClass(action))
                 .Attr("role", "button")
                 .Attr("aria-label", action.Title ?? "")
-                .Attr("tabindex","0");
+                .Attr("tabindex", "0");
 
             ActionTransformers.Apply(action, tag, context);
 
@@ -215,10 +215,10 @@ namespace AdaptiveCards.Rendering.Html
                 {
                     string targetElements = string.Empty;
 
-                    foreach(var targetElementObject in toggleVisibilityAction.TargetElements)
+                    foreach (var targetElementObject in toggleVisibilityAction.TargetElements)
                     {
                         // If the string is not empty, append a comma in preparation to add the new target element
-                        if(!String.IsNullOrWhiteSpace(targetElements))
+                        if (!String.IsNullOrWhiteSpace(targetElements))
                         {
                             targetElements += ",";
                         }
@@ -243,7 +243,7 @@ namespace AdaptiveCards.Rendering.Html
 
                         targetElements += (targetElementId + ":" + targetElementToggleAction);
                     }
-                    
+
                     buttonElement.Attr("data-ac-targetelements", targetElements);
                 }
 
@@ -517,9 +517,8 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("display", "flex")
                 .Style("flex-direction", "column");
 
-            // var parentContainerStyle = context.ParentStyle;
             var parentRenderArgs = context.RenderArgs;
-            var elementRenderArgs = parentRenderArgs.Clone();
+            var elementRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
 
             if (!column.IsVisible)
             {
@@ -587,7 +586,7 @@ namespace AdaptiveCards.Rendering.Html
             AddSelectAction(uiColumnSet, columnSet.SelectAction, context);
 
             var parentRenderArgs = context.RenderArgs;
-            var elementRenderArgs = parentRenderArgs.Clone();
+            var elementRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
 
             bool inheritsStyleFromParent = (columnSet.Style == AdaptiveContainerStyle.None);
             bool hasPadding = false;
@@ -614,21 +613,22 @@ namespace AdaptiveCards.Rendering.Html
                 return 0;
             }).Sum());
 
-            foreach (var column in columnSet.Columns)
+            for (int i = 0; i < columnSet.Columns.Count; ++i)
             {
-                var columnRenderArgs = elementRenderArgs.Clone();
+                var column = columnSet.Columns[i];
+
+                var columnRenderArgs = new AdaptiveRenderArgs(elementRenderArgs);
                 if (columnSet.Columns.Count == 1)
                 {
                     columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.Only;
                 }
                 else
                 {
-                    int index = columnSet.Columns.IndexOf(column);
-                    if (index == 0)
+                    if (i == 0)
                     {
                         columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.Begin;
                     }
-                    else if (index == (columnSet.Columns.Count - 1))
+                    else if (i == (columnSet.Columns.Count - 1))
                     {
                         columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.End;
                     }
@@ -725,7 +725,7 @@ namespace AdaptiveCards.Rendering.Html
 
             // Keep track of ContainerStyle.ForegroundColors before Container is rendered
             var parentRenderArgs = context.RenderArgs;
-            var elementRenderArgs = parentRenderArgs.Clone();
+            var elementRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
 
             bool inheritsStyleFromParent = (container.Style == AdaptiveContainerStyle.None);
             bool hasPadding = false;
@@ -1791,10 +1791,6 @@ namespace AdaptiveCards.Rendering.Html
             if (element is AdaptiveContainer container)
             {
                 canApplyPadding = ((container.BackgroundImage != null) || ((container.Style != AdaptiveContainerStyle.None) && (container.Style != parentRenderArgs.ParentStyle)));
-            }
-            else if (element is AdaptiveColumn column)
-            {
-                canApplyPadding = ((column.BackgroundImage != null) || ((column.Style != AdaptiveContainerStyle.None) && (column.Style != parentRenderArgs.ParentStyle)));
             }
             else if (element is AdaptiveColumnSet columnSet)
             {

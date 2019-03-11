@@ -13,7 +13,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             // Keep track of ContainerStyle.ForegroundColors before Container is rendered
             var parentRenderArgs = context.RenderArgs;
-            var elementRenderArgs = parentRenderArgs.Clone();
+            var elementRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
 
             Border border = new Border();
             border.Child = uiColumnSet;
@@ -34,21 +34,22 @@ namespace AdaptiveCards.Rendering.Wpf
             elementRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : columnSet.Style;
             elementRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
             
-            foreach (var column in columnSet.Columns)
+            for (int i = 0; i < columnSet.Columns.Count; ++i)
             {
-                var columnRenderArgs = elementRenderArgs.Clone();
+                AdaptiveColumn column = columnSet.Columns[i];
+
+                var columnRenderArgs = new AdaptiveRenderArgs(elementRenderArgs);
                 if (columnSet.Columns.Count == 1)
                 {
                     columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.Only;
                 }
                 else
                 {
-                    int index = columnSet.Columns.IndexOf(column);
-                    if (index == 0)
+                    if (i == 0)
                     {
                         columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.Begin;
                     }
-                    else if (index == (columnSet.Columns.Count - 1))
+                    else if (i == (columnSet.Columns.Count - 1))
                     {
                         columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.End;
                     }

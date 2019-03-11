@@ -12,7 +12,7 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveColumn.TypeName)]
 #endif
-    public class AdaptiveColumn : AdaptiveCollectionElement
+    public class AdaptiveColumn : AdaptiveContainer
     {
         public new const string TypeName = "Column";
 
@@ -38,33 +38,6 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(null)]
         public string Width { get; set; } // TODO: this should be a ColumnWidth type with implict converter
-
-        [JsonConverter(typeof(AdaptiveBackgroundImageConverter))]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [DefaultValue(null)]
-        public AdaptiveBackgroundImage BackgroundImage { get; set; }
-
-        /// <summary>
-        ///     Elements of the container
-        /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveElement>))]
-#if !NETSTANDARD1_3
-        [XmlElement(typeof(AdaptiveTextBlock))]
-        [XmlElement(typeof(AdaptiveImage))]
-        [XmlElement(typeof(AdaptiveContainer))]
-        [XmlElement(typeof(AdaptiveColumnSet))]
-        [XmlElement(typeof(AdaptiveImageSet))]
-        [XmlElement(typeof(AdaptiveFactSet))]
-        [XmlElement(typeof(AdaptiveTextInput))]
-        [XmlElement(typeof(AdaptiveDateInput))]
-        [XmlElement(typeof(AdaptiveTimeInput))]
-        [XmlElement(typeof(AdaptiveNumberInput))]
-        [XmlElement(typeof(AdaptiveChoiceSetInput))]
-        [XmlElement(typeof(AdaptiveToggleInput))]
-        [XmlElement(typeof(AdaptiveMedia))]
-#endif
-        public List<AdaptiveElement> Items { get; set; } = new List<AdaptiveElement>();
-
+        
     }
 }

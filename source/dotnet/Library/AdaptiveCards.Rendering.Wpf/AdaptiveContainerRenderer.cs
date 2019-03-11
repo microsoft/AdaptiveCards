@@ -14,7 +14,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             // Keep track of ContainerStyle.ForegroundColors before Container is rendered
             var parentRenderArgs = context.RenderArgs;
-            var elementRenderArgs = parentRenderArgs.Clone();
+            var elementRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
             
             Grid uiOuterContainer = new Grid();
             
@@ -151,10 +151,6 @@ namespace AdaptiveCards.Rendering.Wpf
             if (element is AdaptiveContainer container)
             {
                 canApplyPadding = ((container.BackgroundImage != null) || ((container.Style != AdaptiveContainerStyle.None) && (container.Style != parentRenderArgs.ParentStyle)));
-            }
-            else if (element is AdaptiveColumn column)
-            {
-                canApplyPadding = ((column.BackgroundImage != null) || ((column.Style != AdaptiveContainerStyle.None) && (column.Style != parentRenderArgs.ParentStyle)));
             }
             else if (element is AdaptiveColumnSet columnSet)
             {
