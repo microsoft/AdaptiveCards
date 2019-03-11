@@ -2245,19 +2245,19 @@ export class Media extends CardElement {
 
 export class InputValidationOptions {
     necessity: Enums.InputValidationNecessity = Enums.InputValidationNecessity.Optional;
-    validationFailedText: string = undefined;
+    errorMessage: string = undefined;
 
     parse(json: any) {
         this.necessity = Utils.getEnumValue(Enums.InputValidationNecessity, json["necessity"], this.necessity);
-        this.validationFailedText = Utils.getStringValue(json["validationFailedText"]);
+        this.errorMessage = Utils.getStringValue(json["errorMessage"]);
     }
 
     toJSON() {
-        if (this.necessity != Enums.InputValidationNecessity.Optional || !Utils.isNullOrEmpty(this.validationFailedText)) {
+        if (this.necessity != Enums.InputValidationNecessity.Optional || !Utils.isNullOrEmpty(this.errorMessage)) {
             let result = {}
 
             Utils.setEnumProperty(Enums.InputValidationNecessity, result, "necessity", this.necessity, Enums.InputValidationNecessity.Optional);
-            Utils.setProperty(result, "validationFailedText", this.validationFailedText);
+            Utils.setProperty(result, "errorMessage", this.errorMessage);
 
             return result;
         }
@@ -3274,6 +3274,10 @@ export class SubmitAction extends Action {
 
         this.ignoreInputValidation = Utils.getBoolValue(json["ignoreInputValidation"], this.ignoreInputValidation);
         this.data = json["data"];
+    }
+
+    validateInputs(): Input[] {
+        
     }
 
     get data(): Object {

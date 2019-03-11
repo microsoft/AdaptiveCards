@@ -2016,11 +2016,11 @@ export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCard
             this.changed(false);
         }
 
-        let validationFailedText = addLabelAndInput(card, "Error message:", Adaptive.TextInput);
-        validationFailedText.input.placeholder = "(not set)";
-        validationFailedText.input.defaultValue = this.cardElement.validation.validationFailedText;
-        validationFailedText.input.onValueChanged = () => {
-            this.cardElement.validation.validationFailedText = validationFailedText.input.value;
+        let validationErrorMessage = addLabelAndInput(card, "Error message:", Adaptive.TextInput);
+        validationErrorMessage.input.placeholder = "(not set)";
+        validationErrorMessage.input.defaultValue = this.cardElement.validation.errorMessage;
+        validationErrorMessage.input.onValueChanged = () => {
+            this.cardElement.validation.errorMessage = validationErrorMessage.input.value;
 
             this.changed(false);
         }
