@@ -1,91 +1,58 @@
 {
-	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-	"type": "AdaptiveCard",
-	"version": "1.0",
-	"body": [
-		{
-			"type": "Input.Text",
-			"id": "multiline1",
-			"isMultiline": true,
-			"placeholder": "Add a comment"
-		},
-		{
-			"type": "Input.Text",
-			"id": "multiline2",
-			"isMultiline": true,
-			"placeholder": "Add a comment"
-		}
-	],
-	"actions": [
-		{
-			"type": "Action.ShowCard",
-			"title": "Set due date",
-			"card": {
-				"type": "AdaptiveCard",
-				"version": "1.0",
-				"body": [
-					{
-						"type": "Input.Date",
-						"id": "dueDate"
-					},
-					{
-						"type": "Input.Text",
-						"id": "comment",
-						"isMultiline": true,
-						"placeholder": "Add a comment"
-					},
-		{
-			"type": "Input.Number",
-			"id": "numberComment",
-			"placeholder": "Add a comment"
-		}
-				],
-				"actions": [
-					{
-						"type": "Action.Submit",
-						"title": "OK",
-						"url": "http://adaptivecards.io"
-					}
-				]
-			}
-		},
-		{
-			"type": "Action.Submit",
-			"title": "View",
-			"url": "http://adaptivecards.io"
-		},
-		{
-			"type": "Action.OpenUrl",
-			"title": "Show Adaptive cards",
-			"url": "http://adaptivecards.io"
-		},
-		{
-			"type": "Action.ShowCard",
-			"title": "Set something else",
-			"card": {
-				"type": "AdaptiveCard",
-				"version": "1.0",
-				"body": [
-					{
-						"type": "Input.Text",
-						"id": "comment",
-						"isMultiline": true,
-						"placeholder": "Add a comment"
-					},
-		{
-			"type": "Input.Number",
-			"id": "numberComment",
-			"placeholder": "Add a comment"
-		}
-				],
-				"actions": [
-					{
-						"type": "Action.Submit",
-						"title": "OK",
-						"url": "http://adaptivecards.io"
-					}
-				]
-			}
-		}
-	]
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.1",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Text input with an inline action"
+    },
+    {
+      "type": "Input.Text",
+      "id": "input1",
+      "inlineAction": {
+        "type": "Action.Submit",
+        "iconUrl": "http://adaptivecards.io/content/cats/1.png",
+        "title": "Reply"
+      }
+    },
+    {
+      "type": "TextBlock",
+      "text": "Text input with an inline action with no icon",
+      "wrap": true
+    },
+    {
+      "type": "Input.Text",
+      "id": "input2",
+      "inlineAction": {
+        "type": "Action.OpenUrl",
+        "title": "Reply",
+        "url": "http://adaptivecards.io"
+      }
+    },
+    {
+      "type": "TextBlock",
+      "text": "Multiline Text Inputs with inline actions"
+    },
+    {
+      "type": "Input.Text",
+      "id": "input3",
+      "isMultiline": true,
+      "inlineAction": {
+        "type": "Action.Submit",
+        "iconUrl": "http://adaptivecards.io/content/cats/1.png",
+        "title": "Reply"
+      }
+    },
+    {
+      "type": "Input.Text",
+      "id": "input4",
+      "isMultiline": true,
+      "inlineAction": {
+        "type": "Action.OpenUrl",
+        "title": "Reply",
+        "url": "http://adaptivecards.io"
+      }
+    }
+  ]
 }
