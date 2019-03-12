@@ -2303,7 +2303,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
     }
 
     validateValue(): boolean {
-        return this.validation.necessity != Enums.InputValidationNecessity.Optional && Utils.isNullOrEmpty(this.value);
+        return this.validation.necessity != Enums.InputValidationNecessity.Optional ? !Utils.isNullOrEmpty(this.value) : true;
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
@@ -3033,6 +3033,30 @@ export abstract class Action implements ICardObject {
         // Do nothing in base implementation
     }
 
+    protected internalGetReferencedInputs(allInputs: Array<Input>): Shared.Dictionary<Input> {
+        return {};
+    }
+
+    protected internalPrepareForExecution(inputs: Shared.Dictionary<Input>) {
+        // Do nothing in base implementation
+    }
+
+    protected internalValidateInputs(referencedInputs: Shared.Dictionary<Input>): Array<Input> {
+        let result: Input[] = [];
+
+        if (AdaptiveCard.useBuiltInInputValidation && !this.ignoreInputValidation) {
+            for (let key of Object.keys(referencedInputs)) {
+                let input = referencedInputs[key];
+
+                if (!input.validateValue()) {
+                    result.push(input);
+                }
+            }
+        }
+
+        return result;
+    }
+
     abstract getJsonTypeName(): string;
 
     readonly requires = new HostConfig.HostCapabilities();
@@ -3153,18 +3177,6 @@ export abstract class Action implements ICardObject {
         return [];
     }
 
-    protected internalGetReferencedInputs(allInputs: Array<Input>): Shared.Dictionary<Input> {
-        return {};
-    }
-
-    getReferencedInputs(): Shared.Dictionary<Input> {
-        return this.internalGetReferencedInputs(this.parent.getRootElement().getAllInputs());
-    }
-
-    protected internalPrepareForExecution(inputs: Shared.Dictionary<Input>) {
-        // Do nothing in base implementation
-    }
-
     prepareForExecution(): boolean {
         let referencedInputs = this.getReferencedInputs();
 
@@ -3226,20 +3238,8 @@ export abstract class Action implements ICardObject {
         }
     }
 
-    protected internalValidateInputs(referencedInputs: Shared.Dictionary<Input>): Array<Input> {
-        let result: Input[] = [];
-
-        if (AdaptiveCard.useBuiltInInputValidation && !this.ignoreInputValidation) {
-            for (let key of Object.keys(referencedInputs)) {
-                let input = referencedInputs[key];
-
-                if (!input.validateValue()) {
-                    result.push(input);
-                }
-            }
-        }
-
-        return result;
+    getReferencedInputs(): Shared.Dictionary<Input> {
+        return this.internalGetReferencedInputs(this.parent.getRootElement().getAllInputs());
     }
 
     validateInputs() {
@@ -3284,31 +3284,17 @@ export class SubmitAction extends Action {
     private _processedData: Object;
     private _ignoreInputValidation: boolean = false;
 
-    getJsonTypeName(): string {
-        return "Action.Submit";
-    }
-
-    toJSON() {
-        let result = super.toJSON();
-
-        Utils.setProperty(result, "ignoreInputValidation", this.ignoreInputValidation, false);
-        Utils.setProperty(result, "data", this._originalData);
-
-        return result;
-    }
-
-    getReferencedInputs(allInputs: Array<Input> = null): Shared.Dictionary<Input> {
-        let inputs = allInputs ? allInputs : this.parent.getRootElement().getAllInputs();
+    protected internalGetReferencedInputs(allInputs: Array<Input>): Shared.Dictionary<Input> {
         let result: Shared.Dictionary<Input> = {};
 
-        for (let input of inputs) {
+        for (let input of allInputs) {
             result[input.id] = input;
         }
 
         return result;
     }
 
-    protected internalPropareForExecution(inputs: Shared.Dictionary<Input>) {
+    protected internalPrepareForExecution(inputs: Shared.Dictionary<Input>) {
         if (this._originalData) {
             this._processedData = JSON.parse(JSON.stringify(this._originalData));
         }
@@ -3325,6 +3311,19 @@ export class SubmitAction extends Action {
         }
 
         this._isPrepared = true;
+    }
+
+    getJsonTypeName(): string {
+        return "Action.Submit";
+    }
+
+    toJSON() {
+        let result = super.toJSON();
+
+        Utils.setProperty(result, "ignoreInputValidation", this.ignoreInputValidation, false);
+        Utils.setProperty(result, "data", this._originalData);
+
+        return result;
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
@@ -3479,6 +3478,36 @@ export class HttpAction extends Action {
     private _headers: Array<HttpHeader> = [];
     private _ignoreInputValidation: boolean = false;
 
+    protected internalGetReferencedInputs(allInputs: Array<Input>): Shared.Dictionary<Input> {
+        let result: Shared.Dictionary<Input> = {};
+
+        this._url.getReferencedInputs(allInputs, result);
+
+        for (let header of this._headers) {
+            header.getReferencedInputs(allInputs, result);
+        }
+
+        this._body.getReferencedInputs(allInputs, result);
+
+        return result;
+    }
+
+    protected internalPrepareForExecution(inputs: Shared.Dictionary<Input>) {
+        this._url.substituteInputValues(inputs, Shared.ContentTypes.applicationXWwwFormUrlencoded);
+
+        let contentType = Shared.ContentTypes.applicationJson;
+
+        for (let header of this._headers) {
+            header.prepareForExecution(inputs);
+
+            if (header.name && header.name.toLowerCase() == "content-type") {
+                contentType = header.value;
+            }
+        }
+
+        this._body.substituteInputValues(inputs, contentType);
+    };
+
     method: string;
 
     getJsonTypeName(): string {
@@ -3524,36 +3553,6 @@ export class HttpAction extends Action {
 
         return result;
     }
-
-    protected internalGetReferencedInputs(allInputs: Array<Input>): Shared.Dictionary<Input> {
-        let result: Shared.Dictionary<Input> = {};
-
-        this._url.getReferencedInputs(allInputs, result);
-
-        for (let header of this._headers) {
-            header.getReferencedInputs(allInputs, result);
-        }
-
-        this._body.getReferencedInputs(allInputs, result);
-
-        return result;
-    }
-
-    protected internalPrepareForExecution(inputs: Shared.Dictionary<Input>) {
-        this._url.substituteInputValues(inputs, Shared.ContentTypes.applicationXWwwFormUrlencoded);
-
-        let contentType = Shared.ContentTypes.applicationJson;
-
-        for (let header of this._headers) {
-            header.prepareForExecution(inputs);
-
-            if (header.name && header.name.toLowerCase() == "content-type") {
-                contentType = header.value;
-            }
-        }
-
-        this._body.substituteInputValues(inputs, contentType);
-    };
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
