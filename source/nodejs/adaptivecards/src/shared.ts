@@ -13,17 +13,18 @@ export interface ISeparationDefinition {
 
 export interface IInput {
 	id: string;
-	value: string;
+    value: string;
+    validateValue(): boolean;
 }
 
-export type InputDictionary = { [key: string]: IInput };
+export type Dictionary<T> = { [key: string]: T };
 
 export class StringWithSubstitutions {
 	private _isProcessed: boolean = false;
 	private _original: string = null;
     private _processed: string = null;
     
-    getReferencedInputs(inputs: IInput[], referencedInputs: InputDictionary) {
+    getReferencedInputs(inputs: IInput[], referencedInputs: Dictionary<IInput>) {
         if (!referencedInputs) {
             throw new Error("The referencedInputs parameter cannot be null.")
         }
@@ -37,7 +38,7 @@ export class StringWithSubstitutions {
         }
     }
 
-	substituteInputValues(inputs: InputDictionary, contentType: string) {
+	substituteInputValues(inputs: Dictionary<IInput>, contentType: string) {
 		this._processed = this._original;
 
 		let regEx = /\{{2}([a-z0-9_$@]+).value\}{2}/gi;

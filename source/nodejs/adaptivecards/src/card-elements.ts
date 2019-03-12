@@ -2302,6 +2302,10 @@ export abstract class Input extends CardElement implements Shared.IInput {
         }
     }
 
+    validateValue(): boolean {
+        return this.validation.necessity != Enums.InputValidationNecessity.Optional && Utils.isNullOrEmpty(this.value);
+    }
+
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
@@ -3149,12 +3153,28 @@ export abstract class Action implements ICardObject {
         return [];
     }
 
-    getReferencedInputs(allInputs: Array<Input>): Shared.InputDictionary {
+    protected internalGetReferencedInputs(allInputs: Array<Input>): Shared.Dictionary<Input> {
         return {};
     }
 
-    prepare(inputs: Shared.InputDictionary) {
+    getReferencedInputs(): Shared.Dictionary<Input> {
+        return this.internalGetReferencedInputs(this.parent.getRootElement().getAllInputs());
+    }
+
+    protected internalPrepareForExecution(inputs: Shared.Dictionary<Input>) {
         // Do nothing in base implementation
+    }
+
+    prepareForExecution(): boolean {
+        let referencedInputs = this.getReferencedInputs();
+
+        if (this.internalValidateInputs(referencedInputs).length > 0) {
+            return false;
+        }
+
+        this.internalPrepareForExecution(referencedInputs);
+
+        return true;
     };
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
@@ -3206,6 +3226,26 @@ export abstract class Action implements ICardObject {
         }
     }
 
+    protected internalValidateInputs(referencedInputs: Shared.Dictionary<Input>): Array<Input> {
+        let result: Input[] = [];
+
+        if (AdaptiveCard.useBuiltInInputValidation && !this.ignoreInputValidation) {
+            for (let key of Object.keys(referencedInputs)) {
+                let input = referencedInputs[key];
+
+                if (!input.validateValue()) {
+                    result.push(input);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    validateInputs() {
+        return this.internalValidateInputs(this.getReferencedInputs());
+    }
+
     get isPrimary(): boolean {
         return this.sentiment == Enums.ActionSentiment.Positive;
     }
@@ -3219,6 +3259,10 @@ export abstract class Action implements ICardObject {
                 this.sentiment = Enums.ActionSentiment.Default;
             }
         }
+    }
+
+    get ignoreInputValidation(): boolean {
+        return true;
     }
 
     get parent(): CardElement {
@@ -3238,8 +3282,7 @@ export class SubmitAction extends Action {
     private _isPrepared: boolean = false;
     private _originalData: Object;
     private _processedData: Object;
-
-    ignoreInputValidation: boolean = false;
+    private _ignoreInputValidation: boolean = false;
 
     getJsonTypeName(): string {
         return "Action.Submit";
@@ -3254,17 +3297,18 @@ export class SubmitAction extends Action {
         return result;
     }
 
-    getReferencedInputs(allInputs: Array<Input>): Shared.InputDictionary {
-        let result: Shared.InputDictionary = {};
+    getReferencedInputs(allInputs: Array<Input> = null): Shared.Dictionary<Input> {
+        let inputs = allInputs ? allInputs : this.parent.getRootElement().getAllInputs();
+        let result: Shared.Dictionary<Input> = {};
 
-        for (let input of allInputs) {
+        for (let input of inputs) {
             result[input.id] = input;
         }
 
         return result;
     }
 
-    prepare(inputs: Shared.InputDictionary) {
+    protected internalPropareForExecution(inputs: Shared.Dictionary<Input>) {
         if (this._originalData) {
             this._processedData = JSON.parse(JSON.stringify(this._originalData));
         }
@@ -3286,8 +3330,16 @@ export class SubmitAction extends Action {
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
-        this.ignoreInputValidation = Utils.getBoolValue(json["ignoreInputValidation"], this.ignoreInputValidation);
+        this._ignoreInputValidation = Utils.getBoolValue(json["ignoreInputValidation"], this._ignoreInputValidation);
         this.data = json["data"];
+    }
+
+    get ignoreInputValidation(): boolean {
+        return this._ignoreInputValidation;
+    }
+
+    set ignoreInputValidation(value: boolean) {
+        this._ignoreInputValidation = value;
     }
 
     get data(): Object {
@@ -3404,11 +3456,11 @@ export class HttpHeader {
         return { name: this.name, value: this._value.getOriginal() };
     }
 
-    getReferencedInputs(inputs: Array<Input>, referencedInputs: Shared.InputDictionary) {
+    getReferencedInputs(inputs: Array<Input>, referencedInputs: Shared.Dictionary<Input>) {
         this._value.getReferencedInputs(inputs, referencedInputs);
     }
 
-    prepare(inputs: Shared.InputDictionary) {
+    prepareForExecution(inputs: Shared.Dictionary<Input>) {
         this._value.substituteInputValues(inputs, Shared.ContentTypes.applicationXWwwFormUrlencoded);
     }
 
@@ -3425,9 +3477,9 @@ export class HttpAction extends Action {
     private _url = new Shared.StringWithSubstitutions();
     private _body = new Shared.StringWithSubstitutions();
     private _headers: Array<HttpHeader> = [];
+    private _ignoreInputValidation: boolean = false;
 
     method: string;
-    ignoreInputValidation: boolean = false;
 
     getJsonTypeName(): string {
         return "Action.Http";
@@ -3473,8 +3525,8 @@ export class HttpAction extends Action {
         return result;
     }
 
-    getReferencedInputs(allInputs: Array<Input>): Shared.InputDictionary {
-        let result: Shared.InputDictionary = {};
+    protected internalGetReferencedInputs(allInputs: Array<Input>): Shared.Dictionary<Input> {
+        let result: Shared.Dictionary<Input> = {};
 
         this._url.getReferencedInputs(allInputs, result);
 
@@ -3487,13 +3539,13 @@ export class HttpAction extends Action {
         return result;
     }
 
-    prepare(inputs: Shared.InputDictionary) {
+    protected internalPrepareForExecution(inputs: Shared.Dictionary<Input>) {
         this._url.substituteInputValues(inputs, Shared.ContentTypes.applicationXWwwFormUrlencoded);
 
         let contentType = Shared.ContentTypes.applicationJson;
 
         for (let header of this._headers) {
-            header.prepare(inputs);
+            header.prepareForExecution(inputs);
 
             if (header.name && header.name.toLowerCase() == "content-type") {
                 contentType = header.value;
@@ -3509,7 +3561,7 @@ export class HttpAction extends Action {
         this.url = Utils.getStringValue(json["url"]);
         this.method = Utils.getStringValue(json["method"]);
         this.body = Utils.getStringValue(json["body"]);
-        this.ignoreInputValidation = Utils.getBoolValue(json["ignoreInputValidation"], this.ignoreInputValidation);
+        this._ignoreInputValidation = Utils.getBoolValue(json["ignoreInputValidation"], this._ignoreInputValidation);
 
         this._headers = [];
 
@@ -3523,6 +3575,14 @@ export class HttpAction extends Action {
                 this.headers.push(httpHeader);
             }
         }
+    }
+
+    get ignoreInputValidation(): boolean {
+        return this._ignoreInputValidation;
+    }
+
+    set ignoreInputValidation(value: boolean) {
+        this._ignoreInputValidation = value;
     }
 
     get url(): string {
@@ -5427,15 +5487,9 @@ function raiseExecuteActionEvent(action: Action) {
     let onExecuteActionHandler = (card && card.onExecuteAction) ? card.onExecuteAction : AdaptiveCard.onExecuteAction;
 
     if (onExecuteActionHandler) {
-        let referencedInputs = action.getReferencedInputs(action.parent.getRootElement().getAllInputs());
-
-        if (AdaptiveCard.useBuiltInInputValidation) {
-            // TODO: Validate inputs
+        if (action.prepareForExecution()) {
+            onExecuteActionHandler(action);
         }
-
-        action.prepare(referencedInputs);
-
-        onExecuteActionHandler(action);
     }
 }
 
