@@ -2138,7 +2138,7 @@ namespace AdaptiveNamespace
             ComPtr<IEllipse> backgroundEllipse =
                 XamlHelpers::CreateXamlClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
 
-			Stretch imageStretch = (isAspectRatioNeeded) ? Stretch::Stretch_Fill : Stretch::Stretch_UniformToFill;
+            Stretch imageStretch = (isAspectRatioNeeded) ? Stretch::Stretch_Fill : Stretch::Stretch_UniformToFill;
             bool mustHideElement{true};
 
             ComPtr<IInspectable> parentElement;
