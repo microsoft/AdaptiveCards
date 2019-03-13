@@ -44,8 +44,7 @@ export class Column extends React.Component {
 			return renderedElement;
 
 		// parse elements
-		if (!Utils.isNullOrEmpty(this.column.items)) {
-			if(this.column.isVisible !== false)
+		if (!Utils.isNullOrEmpty(this.column.items) && (this.column.isVisible !== false)) {
 			renderedElement.push(Registry.getManager().parseRegistryComponents(this.column.items, onParseError));
 		}
 		return renderedElement;

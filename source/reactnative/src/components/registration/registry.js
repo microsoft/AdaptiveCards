@@ -151,15 +151,9 @@ export class Registry {
 				}
 				if (isValid) {
 					if (element.isVisible !== false) {
-					if(!Utils.isNullOrEmpty(element.id)){
-						parsedElement.push(<Element json={element} key={`${element.type}-${index}-${element.id}`} />);
+						const elementKey = Utils.isNullOrEmpty(element.id) ? `${element.type}-${index}` : `${element.type}-${index}-${element.id}`;
+						parsedElement.push(<Element json={element} key={elementKey} />);
 					}
-					else{
-						parsedElement.push(<Element json={element} key={`${element.type}-${index}`} />);
-					}
-				}
-					
-					
 				}
 			} else {
 				let error = { "error": Enums.ValidationError.UnknownElementType, "message": `Unknown Type ${element.type} encountered` };
@@ -169,16 +163,6 @@ export class Registry {
 		});
 		return parsedElement;
 	}
-
-	/**
-	 * @description Generates a random number
-	 */
-	generateNumber = () => {
-		min = 1;
-		max = 100000;
-		const rndNum = Math.floor(Math.random() * (max - min + 1) + min)
-		return rndNum
-	};
 }
 
 

@@ -29,7 +29,7 @@ export class ImageSet extends React.PureComponent {
      * @description Parse the given payload and render the card accordingly
      */
 	parsePayload = (imageSetJson, onParseError) => {
-		renderedElement = [];
+		const renderedElement = [];
 		if (!this.payload)
 			return renderedElement;
 
@@ -51,16 +51,6 @@ export class ImageSet extends React.PureComponent {
 		});
 		return renderedElement;
 	}
-
-    /**
-     * @description Generates a random number
-     */
-	generateNumber = () => {
-		min = 1;
-		max = 100000;
-		const rndNum = Math.floor(Math.random() * (max - min + 1) + min)
-		return rndNum
-	};
 
 	internalRenderer(imageSetJson) {
 		return (

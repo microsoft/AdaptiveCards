@@ -30,7 +30,7 @@ export class Container extends React.Component {
      * @description Parse the given payload and render the card accordingly
      */
 	parsePayload = (containerJson, onParseError) => {
-		renderedElement = [];
+		const renderedElement = [];
 		if (!this.payload) {
 			return renderedElement;
 		}
