@@ -112,7 +112,7 @@ export class Input extends React.Component {
 		let inputComputedStyles = [this.styleConfig.inputBorderWidth,
 		this.styleConfig.inputBackgroundColor,
 		this.styleConfig.inputBorderRadius,
-		this.styleConfig.fontConfig,
+		this.styleConfig.defaultFontConfig,
 		styles.input];
 		isMultiline ?
 			inputComputedStyles.push(styles.multiLineHeight) :

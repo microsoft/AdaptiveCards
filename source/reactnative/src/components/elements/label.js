@@ -48,19 +48,24 @@ export class Label extends React.Component {
      * @description Parse the host config specific props 
      */
 	getComputedStyle = () => {
-		let { size, weight, color, isSubtle, align } = this.props;
+		let { size, weight, color, isSubtle, fontStyle, align } = this.props;
+
+		let fontStyleValue =  (fontStyle === Enums.FontStyle.Default || fontStyle === undefined ) ?  Enums.FontStyle.Default : Enums.FontStyle.Monospace;
+
 
 		let fontSize = this.hostConfig.getTextFontSize(Utils.parseHostConfigEnum(
 			Enums.TextSize,
 			size,
 			Enums.TextSize.Default
-		));
+		),fontStyleValue);
 
 		let fontWeight = this.hostConfig.getTextFontWeight(Utils.parseHostConfigEnum(
 			Enums.TextWeight,
 			weight,
 			Enums.TextWeight.Default
-		));
+		),fontStyleValue);
+		
+		let fontFamilyValue = this.hostConfig.getTextFontFamily(fontStyleValue);
 
 		let colorDefinition = this.hostConfig.getTextColor(Utils.parseHostConfigEnum(
 			Enums.TextColor,
@@ -78,7 +83,7 @@ export class Label extends React.Component {
 		return {
 			fontSize,
 			fontWeight: fontWeight.toString(),
-			fontFamily: this.hostConfig.fontFamily,
+			fontFamily: fontFamilyValue,
 			color: colorValue,
 			textAlign
 		}

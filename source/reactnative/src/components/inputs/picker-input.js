@@ -74,7 +74,7 @@ export class PickerInput extends React.Component {
 							{/* added extra view to fix touch event in ios . */}
 							<View pointerEvents='none' >
 								<TextInput
-									style={[styles.input, this.styleConfig.fontConfig]}
+									style={[styles.input, this.styleConfig.defaultFontConfig]}
 									autoCapitalize={Constants.NoneString}
 									autoCorrect={false}
 									placeholder={placeholder}

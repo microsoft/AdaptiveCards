@@ -136,3 +136,8 @@ export const Sentiment = Object.freeze({
 	Positive: 1,
 	Destructive: 2
 });
+
+export const FontStyle = Object.freeze({
+	Default: 0,
+	Monospace: 1,
+});

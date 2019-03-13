@@ -14,6 +14,8 @@ import { StyleManager } from '../../styles/style-config';
 import ElementWrapper from '../elements/element-wrapper';
 import { Label } from './';
 import * as Constants from '../../utils/constants';
+import * as Enums from '../../utils/enums';
+import * as Utils from '../../utils/util';
 
 export class TextBlock extends React.Component {
 
@@ -22,6 +24,11 @@ export class TextBlock extends React.Component {
 
 	render() {
 		let payload = this.props.json;
+		let fontStyle = Utils.parseHostConfigEnum(
+			Enums.FontStyle,
+			payload.fontStyle,
+			Enums.FontStyle.Default
+		);
 
 		return (
 			<ElementWrapper json={payload} style={styles.textContainer}>
@@ -31,6 +38,7 @@ export class TextBlock extends React.Component {
 					weight={payload.weight}
 					color={payload.color}
 					isSubtle={payload.isSubtle}
+					fontStyle={fontStyle}
 					wrap={payload.wrap}
 					align={payload.horizontalAlignment}
 					maxLines={payload.maxLines}
