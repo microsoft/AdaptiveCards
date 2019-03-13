@@ -1,11 +1,12 @@
 #include "pch.h"
 
-#include "Util.h"
 #include "ColumnSet.h"
 #include "Container.h"
 #include "FactSet.h"
-#include "TextBlock.h"
+#include "RichTextBlock.h"
 #include "ShowCardAction.h"
+#include "TextBlock.h"
+#include "Util.h"
 
 using namespace AdaptiveSharedNamespace;
 
@@ -140,6 +141,18 @@ void EnsureShowCardVersions(const std::vector<std::shared_ptr<BaseActionElement>
             {
                 showCardAction->GetCard()->SetVersion(version);
             }
+        }
+    }
+}
+
+void HandleUnknownProperties(const Json::Value& json, const std::unordered_set<std::string>& knownProperties, Json::Value& unknownProperties)
+{
+    for (auto it = json.begin(); it != json.end(); ++it)
+    {
+        std::string key = it.key().asCString();
+        if (knownProperties.find(key) == knownProperties.end())
+        {
+            unknownProperties[key] = *it;
         }
     }
 }

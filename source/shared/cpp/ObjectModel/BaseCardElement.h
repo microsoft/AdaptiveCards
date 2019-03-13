@@ -7,6 +7,8 @@
 #include "Separator.h"
 #include "RemoteResourceInformation.h"
 
+void HandleUnknownProperties(const Json::Value& json, const std::unordered_set<std::string>& knownProperties, Json::Value& unknownProperties);
+
 namespace AdaptiveSharedNamespace
 {
     class BaseCardElement : public BaseElement
@@ -71,14 +73,7 @@ namespace AdaptiveSharedNamespace
             ParseUtil::GetEnumValue<Spacing>(json, AdaptiveCardSchemaKey::Spacing, Spacing::Default, SpacingFromString));
 
         // Walk all properties and put any unknown ones in the additional properties json
-        for (auto it = json.begin(); it != json.end(); ++it)
-        {
-            const std::string key{it.key().asCString()};
-            if (baseCardElement->m_knownProperties.find(key) == baseCardElement->m_knownProperties.end())
-            {
-                baseCardElement->m_additionalProperties[key] = *it;
-            }
-        }
+        HandleUnknownProperties(json, baseCardElement->m_knownProperties, baseCardElement->m_additionalProperties);
 
         return cardElement;
     }

@@ -66,6 +66,11 @@ public class ContainerRenderer extends BaseCardElementRenderer
         ContainerStyle styleForThis = container.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? containerStyle : container.GetStyle();
         LinearLayout containerView = new LinearLayout(context);
         containerView.setTag(new TagContent(container));
+
+        // Add this two for allowing children to bleed
+        containerView.setClipChildren(false);
+        containerView.setClipToPadding(false);
+
         if(!baseCardElement.GetIsVisible())
         {
             containerView.setVisibility(View.GONE);
@@ -121,6 +126,14 @@ public class ContainerRenderer extends BaseCardElementRenderer
                     backgroundImageProperties);
 
             loaderAsync.execute(backgroundImageProperties.GetUrl());
+        }
+
+        if (container.GetBleed() && (container.GetCanBleed() || (styleForThis != containerStyle || container.GetBackgroundImage() != null)))
+        {
+            long padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) containerView.getLayoutParams();
+            layoutParams.setMargins((int)-padding, layoutParams.topMargin, (int)-padding, layoutParams.bottomMargin);
+            containerView.setLayoutParams(layoutParams);
         }
 
         if (container.GetSelectAction() != null)

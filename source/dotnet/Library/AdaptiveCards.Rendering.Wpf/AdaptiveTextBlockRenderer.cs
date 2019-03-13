@@ -17,37 +17,7 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             var uiTextBlock = CreateControl(textBlock, context);
 
-            FontColorConfig colorOption;
-            switch (textBlock.Color)
-            {
-                case AdaptiveTextColor.Accent:
-                    colorOption = context.RenderArgs.ForegroundColors.Accent;
-                    break;
-                case AdaptiveTextColor.Attention:
-                    colorOption = context.RenderArgs.ForegroundColors.Attention;
-                    break;
-                case AdaptiveTextColor.Dark:
-                    colorOption = context.RenderArgs.ForegroundColors.Dark;
-                    break;
-                case AdaptiveTextColor.Good:
-                    colorOption = context.RenderArgs.ForegroundColors.Good;
-                    break;
-                case AdaptiveTextColor.Light:
-                    colorOption = context.RenderArgs.ForegroundColors.Light;
-                    break;
-                case AdaptiveTextColor.Warning:
-                    colorOption = context.RenderArgs.ForegroundColors.Warning;
-                    break;
-                case AdaptiveTextColor.Default:
-                default:
-                    colorOption = context.RenderArgs.ForegroundColors.Default;
-                    break;
-            }
-
-            if (textBlock.IsSubtle)
-                uiTextBlock.SetColor(colorOption.Subtle, context);
-            else
-                uiTextBlock.SetColor(colorOption.Default, context);
+            uiTextBlock.SetColor(textBlock.Color, textBlock.IsSubtle, context);
 
             if (textBlock.MaxWidth > 0)
             {
@@ -58,7 +28,6 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 var uiGrid = new Grid();
                 uiGrid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-
 
                 // create hidden textBlock with appropriate linebreaks that we can use to measure the ActualHeight
                 // using same style, fontWeight settings as original textblock
@@ -93,7 +62,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             }
 
-            if(!textBlock.IsVisible)
+            if (!textBlock.IsVisible)
             {
                 uiTextBlock.Visibility = Visibility.Collapsed;
             }

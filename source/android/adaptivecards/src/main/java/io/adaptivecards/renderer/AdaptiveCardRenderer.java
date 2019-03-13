@@ -82,8 +82,16 @@ public class AdaptiveCardRenderer
         rootLayout.setFocusable(true);
         rootLayout.setFocusableInTouchMode(true);
 
+        // Add this two for allowing children to bleed
+        rootLayout.setClipChildren(false);
+        rootLayout.setClipToPadding(false);
+
         LinearLayout layout = new LinearLayout(context);
         layout.setTag(adaptiveCard);
+
+        // Add this two for allowing children to bleed
+        layout.setClipChildren(false);
+        layout.setClipToPadding(false);
 
         if( adaptiveCard.GetHeight() == HeightType.Stretch )
         {

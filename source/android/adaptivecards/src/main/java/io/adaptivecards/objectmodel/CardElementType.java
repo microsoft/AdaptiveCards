@@ -24,6 +24,7 @@ public enum CardElementType {
   ImageSet,
   Media,
   NumberInput,
+  RichTextBlock,
   TextBlock,
   TextInput,
   TimeInput,
