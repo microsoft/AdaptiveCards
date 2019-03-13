@@ -17,6 +17,7 @@ import { StyleManager } from '../../styles/style-config';
 import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config';
 import * as Utils from '../../utils/util';
+import * as Enums from '../../utils/enums';
 
 export class Input extends React.Component {
 
@@ -33,6 +34,10 @@ export class Input extends React.Component {
 		this.type = Constants.EmptyString;
 		this.keyboardType = Constants.EmptyString;
 		this.textStyle = Constants.EmptyString;
+		this.validationText= (this.payload.validation && this.payload.validation.validationFailedText)?
+							 this.payload.validation.validationFailedText : Constants.validationText;
+		this.validationRequiredWithVisualCue = (!this.payload.validation || 
+							Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
 	}
 
 	render() {
@@ -52,32 +57,44 @@ export class Input extends React.Component {
 		if (!id || !type) {
 			return null;
 		}
-
+		
 		return (
 			<InputContextConsumer>
-				{({ addInputItem, showErrors }) => (
-					<ElementWrapper json={this.payload}>
-						<TextInput
-							style={this.getComputedStyles(showErrors)}
-							autoCapitalize={Constants.NoneString}
-							autoCorrect={false}
-							placeholder={placeholder}
-							multiline={isMultiline}
-							maxLength={maxLength}
-							underlineColorAndroid={Constants.TransparentString}
-							clearButtonMode={Constants.WhileEditingString}
-							textContentType={this.textStyle}
-							keyboardType={this.keyboardType}
-							onFocus={this.props.handleFocus}
-							onBlur={this.props.handleBlur}
-							value={this.props.value}
-							onChangeText={(text) => this.props.textValueChanged(text, addInputItem)}
-						/>
-						{/* <Text style={this.styleConfig.defaultDestructiveForegroundColor}>{"Required"}</Text> */}
-					</ElementWrapper>
-				)}
+				{({ addInputItem, showErrors,inputArray }) =>{
+					if(!inputArray[this.id])
+						addInputItem(this.id, {value : this.props.value,errorState:this.props.isError});
+					return(
+						<ElementWrapper json={this.payload}>
+							<TextInput
+								style={this.getComputedStyles(showErrors)}
+								autoCapitalize={Constants.NoneString}
+								autoCorrect={false}
+								placeholder={placeholder}
+								multiline={isMultiline}
+								maxLength={maxLength}
+								underlineColorAndroid={Constants.TransparentString}
+								clearButtonMode={Constants.WhileEditingString}
+								textContentType={this.textStyle}
+								keyboardType={this.keyboardType}
+								onFocus={this.props.handleFocus}
+								onBlur={this.props.handleBlur}
+								value={this.props.value}
+								onChangeText={(text) => this.props.textValueChanged(text, addInputItem)}
+							/>
+							{this.props.isError && showErrors && this.showValidationText()}
+							
+						</ElementWrapper>
+				);}}
 			</InputContextConsumer>
 		);
+	}
+
+	showValidationText=()=>{
+		return(
+			<Text style={this.styleConfig.defaultDestructiveForegroundColor}>
+				{this.validationText}
+			</Text>
+		)
 	}
 
     /**
@@ -95,7 +112,7 @@ export class Input extends React.Component {
 		isMultiline ?
 			inputComputedStyles.push(styles.multiLineHeight) :
 			inputComputedStyles.push(styles.singleLineHeight);
-		this.props.isError && showErrors ?
+		this.props.isError && (showErrors || this.validationRequiredWithVisualCue) ?
 			inputComputedStyles.push(this.styleConfig.borderAttention) :
 			inputComputedStyles.push(this.styleConfig.inputBorderColor);
 

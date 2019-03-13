@@ -85,14 +85,20 @@ export class ActionButton extends React.Component {
      * @description Invoked for the action type Constants.ActionSubmit
      */
 	onSubmitActionCalled(inputItem, onExecuteAction) {
-		let mergedObject = null;
-		if (this.data !== null) {
-			mergedObject = { ...this.data, ...inputItem };
-		} else {
-			mergedObject = inputItem;
+		let mergedObject = {};
+		for (const key in inputItem) {
+			if (inputItem.hasOwnProperty(key)) {
+				mergedObject[key]=inputItem[key].value;
+			}
 		}
+		if (this.data !== null) {
+			if(this.data instanceof Object)
+				mergedObject = {...mergedObject,...this.data}
+			else
+				mergedObject["actionData"]=this.data;
+		} 
 		let actionObject = { "type": this.payload.type, "data": mergedObject };
-		onExecuteAction(actionObject);
+		onExecuteAction(actionObject,this.payload.ignoreInputValidation === true);
 	}
 
 	onOpenURLCalled = (onExecuteAction) => {

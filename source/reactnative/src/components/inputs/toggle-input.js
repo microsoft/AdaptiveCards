@@ -7,7 +7,9 @@
 import React from 'react';
 import {
 	Switch,
-	StyleSheet
+	StyleSheet,
+	View,
+	Text
 } from 'react-native';
 
 import { StyleManager } from '../../styles/style-config';
@@ -16,6 +18,7 @@ import { InputContextConsumer } from '../../utils/context';
 import { Label } from '../elements';
 import ElementWrapper from '../elements/element-wrapper';
 import * as Constants from '../../utils/constants';
+import * as Enums from '../../utils/enums';
 
 export class ToggleInput extends React.Component {
 
@@ -29,10 +32,18 @@ export class ToggleInput extends React.Component {
 		this.valueOff = props.json.valueOff || Constants.FalseString;
 		this.value = props.json.value || this.valueOff;
 		this.id = props.json.id || Constants.ToggleValueOn
+		this.isValidationRequired=!!this.payload.validation && 
+			(Enums.ValidationNecessity.Required == this.payload.validation.necessity ||
+			Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
+		this.validationRequiredWithVisualCue = (!props.json.validation || 
+			Enums.ValidationNecessity.RequiredWithVisualCue == props.json.validation.necessity);
+		this.validationText= (props.json.validation && props.json.validation.validationFailedText)?
+			props.json.validation.validationFailedText : Constants.validationText;
 
 		// state
 		this.state = {
-			toggleValue: (this.value === this.valueOn)
+			toggleValue: (this.value === this.valueOn),
+			isError: this.isValidationRequired && (this.value === this.valueOff)
 		}
 	}
 
@@ -42,8 +53,10 @@ export class ToggleInput extends React.Component {
 	 * @param {InputContextConsumer} addInputItem
 	 */
 	toggleValueChanged = (toggleValue, addInputItem) => {
-		this.setState({ toggleValue });
-		addInputItem(this.id, toggleValue);
+		const changedValue = toggleValue ? this.valueOn : this.valueOff;
+		const isError = this.isValidationRequired ? changedValue === this.valueOff : false;
+		this.setState({ toggleValue ,isError});
+		addInputItem(this.id, {value : changedValue, errorState:isError});
 	}
 
 	render() {
@@ -51,36 +64,61 @@ export class ToggleInput extends React.Component {
 			return null;
 		}
 		const { toggleValue } = this.state;
-
 		return (
 			<ElementWrapper json={this.props.json} style={styles.toggleContainer}>
-				<Label
-					text={this.title}
-					wrap={true}
-					style={styles.title} />
 				<InputContextConsumer>
-					{({ addInputItem }) => (
-						<Switch
-							style={styles.switch}
-							value={toggleValue}
-							onValueChange={toggleValue => {
-								this.toggleValueChanged(toggleValue, addInputItem)
-							}}>
-						</Switch>
-					)}
+					{({ addInputItem,inputArray,showErrors }) => {
+						if(!inputArray[this.id]){
+							const initialValue = toggleValue ? this.valueOn : this.valueOff;
+							const isError = this.isValidationRequired ? initialValue === this.valueOff : false;
+							addInputItem(this.id, {value : initialValue,errorState:isError});
+						}
+						return (
+							<View>
+						<View style={this.getComputedStyles(showErrors)}>
+							<Label text={this.title} wrap={true} style={styles.title} />
+							<Switch
+								style={styles.switch}
+								value={toggleValue}
+								onValueChange={toggleValue => {
+									this.toggleValueChanged(toggleValue, addInputItem)
+								}}>
+							</Switch>
+						</View>
+						{this.state.isError && showErrors && this.showValidationText()}
+						</View>
+					)}}
 				</InputContextConsumer>
 			</ElementWrapper>
+		)
+	}
+	getComputedStyles=(showErrors)=>{
+		let computedStyles = [styles.toggleView];
+		if(this.state.isError && (showErrors || this.validationRequiredWithVisualCue)){
+			computedStyles.push(this.styleConfig.borderAttention);
+			computedStyles.push({borderWidth: 1});
+		}
+		return computedStyles;
+	}
+	showValidationText=()=>{
+		return(
+			<Text style={this.styleConfig.defaultDestructiveForegroundColor}>
+				{this.validationText}
+			</Text>
 		)
 	}
 }
 
 const styles = StyleSheet.create({
 	toggleContainer: {
+		paddingTop: 5,
+		paddingBottom: 5
+	},
+	toggleView :{
+		padding: 5,
 		flexDirection: Constants.FlexRow,
 		justifyContent: Constants.SpaceBetween,
 		alignItems: Constants.CenterString,
-		paddingTop: 5,
-		paddingBottom: 5
 	},
 	title: {
 		flexShrink: 1,

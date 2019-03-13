@@ -10,7 +10,7 @@ import { HostConfigManager } from '../../utils/host-config';
 import { Input } from './input';
 import * as Enums from '../../utils/enums';
 
-const NUM_REGEX = /^[0-9][\.\d]*(,\d+)?$/;
+const NUM_REGEX = /^\-?[1-9]\d*(\.\d*)?$/;
 
 export class NumberInput extends React.Component {
 
@@ -20,8 +20,11 @@ export class NumberInput extends React.Component {
 		this.payload = props.json;
 		this.id = Constants.EmptyString;
 		this.styleValue = Enums.InputTextStyle.Number;
+		this.isValidationRequired=!!this.payload.validation && 
+			(Enums.ValidationNecessity.Required == this.payload.validation.necessity ||
+			Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
 		this.state = {
-			isError: false,
+			isError: this.isValidationRequired,
 			numberValue: Constants.EmptyString,
 		}
 	}
@@ -46,9 +49,10 @@ export class NumberInput extends React.Component {
 	}
 
     /**
-     * @description Parse hostconfig specific to this element
+     * @description Parse hostConfig specific to this element
      */
 	parseHostConfig() {
+		this.id = this.payload.id;
 		this.min = this.payload.min;
 		this.max = this.payload.max;
 	}
@@ -57,7 +61,9 @@ export class NumberInput extends React.Component {
      * @description handle text input when in focus
      */
 	handleFocus = () => {
-
+		this.setState({
+			isError: false
+		});
 	}
 
     /**
@@ -82,19 +88,18 @@ export class NumberInput extends React.Component {
      */
 	onTextChanged = (text, addInputItem) => {
 		this.setState({
-			numberValue: text,
-			isError: this.checkRangeValue(text)
+			numberValue: text
 		})
-		addInputItem(this.id, text);
+		addInputItem(this.id, {value : text,errorState:this.state.isError});
 	}
 
 
 	checkRangeValue = (numberValue) => {
-		if (numberValue === Constants.EmptyString) {
+		if (!this.isValidationRequired) {
 			return false
 		}
 		if (NUM_REGEX.test(numberValue)) {
-			var parsedValue = parseFloat(numberValue)
+			var parsedValue = parseFloat(numberValue);
 			if (parsedValue < this.min || parsedValue > this.max) {
 				return true
 			} else {

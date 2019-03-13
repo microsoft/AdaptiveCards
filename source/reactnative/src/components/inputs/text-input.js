@@ -13,7 +13,7 @@ import * as Utils from '../../utils/util';
 
 const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 const URL_REGEX = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/;
-const TEL_REGEX = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/;
+const TEL_REGEX = /^[2-9]\d{4}\d*$/;
 
 export class InputText extends React.Component {
 
@@ -24,8 +24,11 @@ export class InputText extends React.Component {
 		this.id = Constants.EmptyString;
 		this.style = Constants.EmptyString;
 		this.styleValue = Constants.EmptyString;
+		this.isValidationRequired=!!this.payload.validation && 
+			(Enums.ValidationNecessity.Required == this.payload.validation.necessity ||
+			Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
 		this.state = {
-			isError: false,
+			isError: this.isValidationRequired,
 			text: Constants.EmptyString,
 		}
 	}
@@ -36,11 +39,11 @@ export class InputText extends React.Component {
      */
 	textValueChanged = (text, addInputItem) => {
 		this.setState({ text });
-		addInputItem(this.id, text);
+		addInputItem(this.id, {value : text,errorState:this.state.isError});
 	}
 
 	/**
-     * @description Parse hostconfig specific to this element
+     * @description Parse hostConfig specific to this element
      */
 	parseHostConfig() {
 		this.id = this.payload.id;
@@ -57,7 +60,6 @@ export class InputText extends React.Component {
 		}
 
 		this.parseHostConfig();
-
 		return (
 			<Input
 				json={this.payload}
@@ -73,17 +75,13 @@ export class InputText extends React.Component {
 	}
 
     /**
-     * @description validate the text in the textinput field based on style of the textinput.
+     * @description validate the text in the textInput field based on style of the textInput.
      */
 	validate = () => {
 		let isError = true;
 		let REGEX;
-		let text = this.state.text;
-
-		if (text === Constants.EmptyString) {
-			isError = false;
-		}
-		else {
+		let text = this.state.text.trim();
+		if (text) {
 			switch (this.styleValue) {
 				case Enums.InputTextStyle.Email: {
 					REGEX = EMAIL_REGEX;
@@ -112,7 +110,7 @@ export class InputText extends React.Component {
 	};
 
     /**
-     * @description handle textinput when in focus
+     * @description handle textInput when in focus
      */
 	handleFocus = () => {
 		this.setState({
@@ -121,9 +119,10 @@ export class InputText extends React.Component {
 	}
 
     /**
-     * @description handle textinput when out of focus
+     * @description handle textInput when out of focus
      */
 	handleBlur = () => {
-		this.validate();
+		if(this.isValidationRequired)
+			this.validate();
 	}
 }

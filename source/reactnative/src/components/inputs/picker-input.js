@@ -11,6 +11,7 @@ import {
 	TextInput,
 	DatePickerIOS,
 	Modal,
+	Text,
 	Button,
 	ViewPropTypes
 } from 'react-native';
@@ -18,6 +19,7 @@ import {
 import { InputContextConsumer } from '../../utils/context';
 import ElementWrapper from '../elements/element-wrapper';
 import * as Constants from '../../utils/constants';
+import * as Enums from '../../utils/enums';
 import { StyleManager } from '../../styles/style-config';
 import { HostConfigManager } from '../../utils/host-config';
 
@@ -34,15 +36,30 @@ export class PickerInput extends React.Component {
 		this.type = Constants.EmptyString;
 		this.modalButtonText = Constants.DoneString;
 		this.parseHostConfig();
+		this.isValidationRequired=!!this.payload.validation && 
+			(Enums.ValidationNecessity.Required == this.payload.validation.necessity ||
+			Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
+		this.validationRequiredWithVisualCue = (!this.payload.validation || 
+			Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
+		this.validationText= (this.payload.validation && this.payload.validation.validationFailedText)?
+			this.payload.validation.validationFailedText : Constants.validationText;
+		
+		this.state = {
+				isError: this.isValidationRequired && !this.props.value
+		}
 	}
 
 	/**
-	 * @description Parse hostconfig specific to this element
+	 * @description Parse hostConfig specific to this element
 	 */
 	parseHostConfig() {
 		this.id = this.payload.id;
 		this.type = this.payload.type;
 		this.placeholder = this.payload.placeholder;
+	}
+
+	componentWillReceiveProps(newProps) {
+		this.setState({isError:this.isValidationRequired && !newProps.value})
 	}
 
 	render() {
@@ -68,11 +85,11 @@ export class PickerInput extends React.Component {
 
 		return (
 			<InputContextConsumer>
-				{({ addInputItem }) => (
+				{({ addInputItem , showErrors}) => (
 					<ElementWrapper json={this.payload}>
 						<TouchableOpacity style={styles.inputWrapper} onPress={this.props.showPicker}>
 							{/* added extra view to fix touch event in ios . */}
-							<View pointerEvents='none' >
+							<View pointerEvents='none' style={this.getComputedStyles(showErrors)}>
 								<TextInput
 									style={[styles.input, this.styleConfig.fontConfig]}
 									autoCapitalize={Constants.NoneString}
@@ -81,9 +98,10 @@ export class PickerInput extends React.Component {
 									textContentType={Constants.NoneString}
 									underlineColorAndroid={Constants.TransparentString}
 									value={this.props.value}>
-									{addInputItem(this.id, this.props.value)}
+									{addInputItem(this.id, {value : this.props.value,errorState:this.state.isError})}
 								</TextInput>
 							</View>
+							{this.state.isError && showErrors && this.showValidationText()}
 						</TouchableOpacity>
 						<Modal
 							animationType='slide'
@@ -113,6 +131,21 @@ export class PickerInput extends React.Component {
 				)}
 			</InputContextConsumer>
 		);
+	}
+	getComputedStyles=(showErrors)=>{
+		let computedStyles = [];
+		if(this.state.isError && (showErrors || this.validationRequiredWithVisualCue)){
+			computedStyles.push(this.styleConfig.borderAttention);
+			computedStyles.push({borderWidth: 1});
+		}
+		return computedStyles;
+	}
+	showValidationText=()=>{
+		return(
+			<Text style={this.styleConfig.defaultDestructiveForegroundColor}>
+				{this.validationText}
+			</Text>
+		)
 	}
 }
 
