@@ -12,7 +12,7 @@ namespace AdaptiveCards
 {
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     [JsonConverter(typeof(AdaptiveTypedElementConverter))]
-    public abstract class AdaptiveTypedElement
+    public abstract class AdaptiveTypedElement : AdaptiveBaseElement
     {
         /// <summary>
         /// The type name of the element
@@ -22,16 +22,6 @@ namespace AdaptiveCards
         [XmlIgnore]
 #endif
         public abstract string Type { get; set; }
-
-        /// <summary>
-        /// A unique ID associated with the element. For Inputs the ID will be used as the key for Action.Submit response
-        /// </summary>
-        [JsonProperty(Order = -9, DefaultValueHandling = DefaultValueHandling.Ignore)]
-#if !NETSTANDARD1_3
-        [XmlAttribute]
-#endif
-        [DefaultValue(null)]
-        public string Id { get; set; }
 
         /// <summary>
         /// Additional properties not found on the default schema

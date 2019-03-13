@@ -30,7 +30,8 @@ namespace AdaptiveCards
 
             if (reader.Depth == 0)
             {
-                AdaptiveTypedElementConverter.BeginCard();
+                // Needed for ID collision detection after fallback was introduced
+                ParseContext.Initialize();
 
                 if (jObject.Value<string>("version") == null)
                 {
