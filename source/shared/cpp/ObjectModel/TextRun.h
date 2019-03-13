@@ -49,8 +49,6 @@ namespace AdaptiveSharedNamespace
     protected:
         std::shared_ptr<TextElementProperties> m_textElementProperties;
         virtual void PopulateKnownPropertiesSet() override;
-
-    private:
         std::shared_ptr<BaseActionElement> m_selectAction;
     };
 }
