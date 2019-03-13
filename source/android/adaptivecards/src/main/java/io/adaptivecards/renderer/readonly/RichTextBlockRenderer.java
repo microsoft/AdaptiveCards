@@ -9,6 +9,7 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
@@ -221,6 +222,9 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
 
             textView.append(convertedString);
         }
+
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
+        textView.setClickable(true);
 
         viewGroup.addView(textView);
         return textView;

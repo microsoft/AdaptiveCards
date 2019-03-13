@@ -114,16 +114,6 @@ void TextRun::SetLanguage(const std::string& value)
     m_textElementProperties->SetLanguage(value);
 }
 
-std::shared_ptr<BaseActionElement> TextRun::GetSelectAction() const
-{
-    return m_selectAction;
-}
-
-void TextRun::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
-{
-    m_selectAction = action;
-}
-
 std::shared_ptr<Inline> TextRun::Deserialize(ParseContext& context, const Json::Value& json)
 {
     std::shared_ptr<TextRun> inlineTextRun = std::make_shared<TextRun>();
