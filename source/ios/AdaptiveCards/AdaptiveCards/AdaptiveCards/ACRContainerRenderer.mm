@@ -8,7 +8,6 @@
 #import "ACRContainerRenderer.h"
 #import "ACRColumnView.h"
 #import "ACRRendererPrivate.h"
-#import "ACRViewPrivate.h"
 #import "Container.h"
 #import "SharedAdaptiveCard.h"
 #import "ACRLongPressGestureRecognizerFactory.h"
@@ -45,10 +44,7 @@
 
     configBleed(rootView, elem, container, acoConfig);
 
-    auto backgroundImage = containerElem->GetBackgroundImage();
-    if (backgroundImage != nullptr && !(backgroundImage->GetUrl().empty())) {
-        renderBackgroundImage(backgroundImage.get(), container, rootView);
-    }
+    renderBackgroundImage(containerElem->GetBackgroundImage(), container, rootView);
     
     UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
     if (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom) {
@@ -97,9 +93,9 @@
 {
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Container> containerElem = std::dynamic_pointer_cast<Container>(elem);
-    
     auto backgroundImageProperties = containerElem->GetBackgroundImage();
-    applyBackgroundImageConstraints(backgroundImageProperties.get(), imageView, image);
+    
+    renderBackgroundImage(backgroundImageProperties.get(), imageView, image);
 }
 
 @end
