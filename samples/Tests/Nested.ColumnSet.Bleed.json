@@ -1,0 +1,134 @@
+{
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "style": "default",
+            "columns": [
+                {
+                    "type": "Column",
+                    "style": "emphasis",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Has Padding",
+                            "wrap": true
+                        },
+                        {
+                            "type": "ColumnSet",
+                            "columns": [
+                                {
+                                    "type": "Column",
+                                    "style": "default",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "Bleed\n"
+                                        }
+                                    ],
+                                    "bleed": true,
+                                    "width": "stretch"
+                                },
+                                {
+                                    "type": "Column",
+                                    "style": "default",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "Not Bleed"
+                                        }
+                                    ],
+                                    "bleed": true,
+                                    "width": "stretch"
+                                },
+                                {
+                                    "type": "Column",
+                                    "style": "default",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "Bleed"
+                                        }
+                                    ],
+                                    "bleed": true,
+                                    "width": "stretch"
+                                }
+                            ]
+                        }
+                    ],
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "style": "emphasis",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Has Padding",
+                            "wrap": true
+                        },
+                        {
+                            "type": "ColumnSet",
+                            "columns": [
+                                {
+                                    "type": "Column",
+                                    "items": [
+                                        {
+                                            "type": "Container",
+                                            "style": "default",
+                                            "items": [
+                                                {
+                                                    "type": "TextBlock",
+                                                    "text": "New TextBlock"
+                                                }
+                                            ],
+                                            "bleed": true
+                                        }
+                                    ],
+                                    "width": "stretch"
+                                },
+                                {
+                                    "type": "Column",
+                                    "items": [
+                                        {
+                                            "type": "Container",
+                                            "style": "default",
+                                            "items": [
+                                                {
+                                                    "type": "TextBlock",
+                                                    "text": "New TextBlock"
+                                                }
+                                            ],
+                                            "bleed": true
+                                        }
+                                    ],
+                                    "width": "stretch"
+                                },
+                                {
+                                    "type": "Column",
+                                    "items": [
+                                        {
+                                            "type": "Container",
+                                            "style": "default",
+                                            "items": [
+                                                {
+                                                    "type": "TextBlock",
+                                                    "text": "New TextBlock"
+                                                }
+                                            ],
+                                            "bleed": true
+                                        }
+                                    ],
+                                    "width": "stretch"
+                                }
+                            ]
+                        }
+                    ],
+                    "width": "stretch"
+                }
+            ]
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.2"
+}

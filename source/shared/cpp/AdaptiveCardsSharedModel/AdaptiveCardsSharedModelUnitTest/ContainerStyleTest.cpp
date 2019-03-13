@@ -355,21 +355,340 @@ namespace AdaptiveCardsSharedModelUnitTest
             auto items = column1->GetItems(); 
             std::shared_ptr<Container> container1 = std::static_pointer_cast<Container>(items.back());
             Assert::IsTrue(container1->GetStyle() == ContainerStyle::Default);
-            Assert::IsFalse(container1->GetCanBleed());
+            Assert::IsFalse(container1->GetCanBleed() == ContainerBleedState::BleedRestricted);
 
             auto items1 = container1->GetItems();
             std::shared_ptr<Container> container2 = std::static_pointer_cast<Container>(items1.back());
             Assert::AreEqual<std::string>("4", container2->GetId());
             Assert::IsTrue(container2->GetStyle() == ContainerStyle::Default);
-            Assert::IsFalse(container2->GetCanBleed());
+            Assert::IsFalse(container2->GetCanBleed() == ContainerBleedState::BleedRestricted);
 
             auto items2 = container2->GetItems();
             std::shared_ptr<Container> container3 = std::static_pointer_cast<Container>(items2.back());
             Assert::AreEqual<std::string>("5", container3->GetId());
             Assert::IsTrue(container3->GetStyle() == ContainerStyle::Emphasis);
-            Assert::IsTrue(container3->GetCanBleed());
+            Assert::IsTrue(container3->GetCanBleed() == ContainerBleedState::BleedToBothEdges);
             // check that the container can return the correct parent's ID to which it can expand
             Assert::IsTrue(container1->GetInternalId() == container3->GetParentalId());
+        }
+
+        TEST_METHOD(BleedPropertyColumnSetTest)
+        {
+            std::string testJsonString {R"(
+            {
+                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                "type": "AdaptiveCard",
+                "version": "1.2",
+                "style": "default",
+                "body": [
+                    {
+                        "type": "ColumnSet",
+                        "style": "emphasis",
+                        "bleed": true,
+                        "columns": [
+                            {
+                                "type": "Column",
+                                "width": "stretch",
+                                "style": "default",
+                                "bleed": true,
+                                "items": [
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "Dis is a textblock",
+                                        "wrap": true
+                                    },
+                                    {
+                                        "type": "Container",
+                                        "style": "emphasis",
+                                        "bleed": true,
+                                        "items": [
+                                            {
+                                                "type": "TextBlock",
+                                                "text": "Dis is a textblock"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "Column",
+                                "width": "stretch",
+                                "style": "default",
+                                "bleed": true,
+                                "items": [
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "Dis is a textblock",
+                                        "wrap": true
+                                    },
+                                    {
+                                        "type": "Container",
+                                        "style": "emphasis",
+                                        "bleed": true,
+                                        "items": [
+                                            {
+                                                "type": "TextBlock",
+                                                "text": "Dis is a textblock"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "Column",
+                                "width": "stretch",
+                                "style": "default",
+                                "bleed": true,
+                                "items": [
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "Dis is a textblock",
+                                        "wrap": true
+                                    },
+                                    {
+                                        "type": "Container",
+                                        "style": "emphasis",
+                                        "bleed": true,
+                                        "items": [
+                                            {
+                                                "type": "TextBlock",
+                                                "text": "Dis is a textblock"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "actions": [ ]
+            }
+            )"};
+
+            using std::shared_ptr;
+            using std::static_pointer_cast;
+
+            shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.2");
+            Assert::IsTrue(!parseResult->GetAdaptiveCard()->GetBody().empty());
+
+            shared_ptr<BaseCardElement> elem =  parseResult->GetAdaptiveCard()->GetBody().front();
+            shared_ptr<ColumnSet> columnset= static_pointer_cast<ColumnSet>(elem);
+            Assert::IsTrue(columnset->GetStyle() == ContainerStyle::Emphasis);
+
+            auto columns = columnset->GetColumns();
+            shared_ptr<Column> column1 = static_pointer_cast<Column>(columns.at(0));
+            Assert::IsTrue(column1->GetStyle() == ContainerStyle::Default);
+            Assert::IsTrue(column1->GetCanBleed() == ContainerBleedState::BleedToLeading);
+
+            auto items = column1->GetItems();
+            shared_ptr<Container> container = static_pointer_cast<Container>(items.back());
+            Assert::IsTrue(container->GetCanBleed() == ContainerBleedState::BleedToBothEdges);
+            Assert::IsTrue(column1->GetInternalId() == container->GetParentalId()); 
+
+            shared_ptr<Column> column2 = static_pointer_cast<Column>(columns.at(1));
+            Assert::IsTrue(column2->GetStyle() == ContainerStyle::Default);
+            Assert::IsTrue(column2->GetCanBleed() == ContainerBleedState::BleedRestricted);
+
+            auto items2 = column2->GetItems();
+            shared_ptr<Container> container2 = static_pointer_cast<Container>(items2.back());
+            Assert::IsTrue(container2->GetCanBleed() == ContainerBleedState::BleedToBothEdges);
+            Assert::IsTrue(column2->GetInternalId() == container2->GetParentalId()); 
+
+            shared_ptr<Column> column3 = static_pointer_cast<Column>(columns.at(2));
+            Assert::IsTrue(column3->GetStyle() == ContainerStyle::Default);
+            Assert::IsTrue(column3->GetCanBleed() == ContainerBleedState::BleedToTrailing);
+
+            auto items3 = column3->GetItems();
+            shared_ptr<Container> container3 = static_pointer_cast<Container>(items3.back());
+            Assert::IsTrue(container3->GetCanBleed() == ContainerBleedState::BleedToBothEdges);
+            Assert::IsTrue(column3->GetInternalId() == container3->GetParentalId()); 
+        }
+
+        TEST_METHOD(BleedPropertyNestedColumnSetTest)
+        {
+            std::string testJsonString {R"(
+              {
+                "type": "AdaptiveCard",
+                "body": [
+                    {
+                        "type": "ColumnSet",
+                        "style": "default",
+                        "columns": [
+                            {
+                                "type": "Column",
+                                "style": "emphasis",
+                                "items": [
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "Has Padding",
+                                        "wrap": true
+                                    },
+                                    {
+                                        "type": "ColumnSet",
+                                        "columns": [
+                                            {
+                                                "type": "Column",
+                                                "style": "default",
+                                                "items": [
+                                                    {
+                                                        "type": "TextBlock",
+                                                        "text": "Bleed\n"
+                                                    }
+                                                ],
+                                                "bleed": true,
+                                                "width": "stretch"
+                                            },
+                                            {
+                                                "type": "Column",
+                                                "style": "default",
+                                                "items": [
+                                                    {
+                                                        "type": "TextBlock",
+                                                        "text": "Not Bleed"
+                                                    }
+                                                ],
+                                                "bleed": true,
+                                                "width": "stretch"
+                                            },
+                                            {
+                                                "type": "Column",
+                                                "style": "default",
+                                                "items": [
+                                                    {
+                                                        "type": "TextBlock",
+                                                        "text": "Bleed"
+                                                    }
+                                                ],
+                                                "bleed": true,
+                                                "width": "stretch"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "width": "stretch"
+                            },
+                            {
+                                "type": "Column",
+                                "style": "emphasis",
+                                "items": [
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "Has Padding",
+                                        "wrap": true
+                                    },
+                                    {
+                                        "type": "ColumnSet",
+                                        "columns": [
+                                            {
+                                                "type": "Column",
+                                                "items": [
+                                                    {
+                                                        "type": "Container",
+                                                        "style": "default",
+                                                        "items": [
+                                                            {
+                                                                "type": "TextBlock",
+                                                                "text": "New TextBlock"
+                                                            }
+                                                        ],
+                                                        "bleed": true
+                                                    }
+                                                ],
+                                                "width": "stretch"
+                                            },
+                                            {
+                                                "type": "Column",
+                                                "items": [
+                                                    {
+                                                        "type": "Container",
+                                                        "style": "default",
+                                                        "items": [
+                                                            {
+                                                                "type": "TextBlock",
+                                                                "text": "New TextBlock"
+                                                            }
+                                                        ],
+                                                        "bleed": true
+                                                    }
+                                                ],
+                                                "width": "stretch"
+                                            },
+                                            {
+                                                "type": "Column",
+                                                "items": [
+                                                    {
+                                                        "type": "Container",
+                                                        "style": "default",
+                                                        "items": [
+                                                            {
+                                                                "type": "TextBlock",
+                                                                "text": "New TextBlock"
+                                                            }
+                                                        ],
+                                                        "bleed": true
+                                                    }
+                                                ],
+                                                "width": "stretch"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "width": "stretch"
+                            }
+                        ]
+                    }
+                ],
+                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                "version": "1.1"
+            }
+            )"};
+
+            using std::shared_ptr;
+            using std::static_pointer_cast;
+
+            shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.2");
+            Assert::IsTrue(!parseResult->GetAdaptiveCard()->GetBody().empty());
+
+            shared_ptr<BaseCardElement> elem =  parseResult->GetAdaptiveCard()->GetBody().front();
+            shared_ptr<ColumnSet> columnset= static_pointer_cast<ColumnSet>(elem);
+            Assert::IsTrue(columnset->GetStyle() == ContainerStyle::Default);
+
+            auto columns = columnset->GetColumns();
+            shared_ptr<Column> column1 = static_pointer_cast<Column>(columns.at(0));
+            Assert::IsTrue(column1->GetStyle() == ContainerStyle::Emphasis);
+            Assert::IsTrue(column1->GetCanBleed() == ContainerBleedState::BleedToLeading);
+
+            auto items = column1->GetItems();
+            shared_ptr<ColumnSet> innerconlumnset = static_pointer_cast<ColumnSet>(items.back());
+            auto innercolumns = innerconlumnset->GetColumns();
+            Assert::IsTrue(innercolumns.at(0)->GetCanBleed() == ContainerBleedState::BleedToLeading);
+            Assert::IsTrue(innercolumns.at(0)->GetParentalId() == column1->GetInternalId());
+
+            Assert::IsTrue(innercolumns.at(1)->GetCanBleed() == ContainerBleedState::BleedRestricted);
+
+            Assert::IsTrue(innercolumns.at(2)->GetCanBleed() == ContainerBleedState::BleedToTrailing);
+            Assert::IsTrue(innercolumns.at(2)->GetParentalId() == column1->GetInternalId());
+
+            shared_ptr<Column> column2 = static_pointer_cast<Column>(columns.at(1));
+            Assert::IsTrue(column2->GetStyle() == ContainerStyle::Emphasis);
+            Assert::IsTrue(column2->GetCanBleed() == ContainerBleedState::BleedToTrailing);
+
+            auto items2 = column2->GetItems();
+            shared_ptr<ColumnSet> innerconlumnset2 = static_pointer_cast<ColumnSet>(items2.back());
+            auto innercolumns2 = innerconlumnset2->GetColumns();
+            shared_ptr<Column> innercolumn0 = static_pointer_cast<Column>(innercolumns2.at(0));
+            shared_ptr<Container> innercontainer = static_pointer_cast<Container>(innercolumn0->GetItems().at(0));
+            Assert::IsTrue(innercontainer->GetCanBleed() == ContainerBleedState::BleedToLeading);
+            Assert::IsTrue(innercontainer->GetParentalId() == column2->GetInternalId());
+
+            shared_ptr<Column> innercolumn1 = static_pointer_cast<Column>(innercolumns2.at(1));
+            shared_ptr<Container> innercontainer1 = static_pointer_cast<Container>(innercolumn1->GetItems().at(0));
+            Assert::IsTrue(innercontainer1->GetCanBleed() == ContainerBleedState::BleedRestricted);
+
+            shared_ptr<Column> innercolumn2 = static_pointer_cast<Column>(innercolumns2.at(2));
+            shared_ptr<Container> innercontainer2 = static_pointer_cast<Container>(innercolumn2->GetItems().at(0));
+            Assert::IsTrue(innercontainer2->GetCanBleed() == ContainerBleedState::BleedToTrailing);
+            Assert::IsTrue(innercontainer2->GetParentalId() == column2->GetInternalId());
         }
     };
 }

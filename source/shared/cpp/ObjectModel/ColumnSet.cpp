@@ -47,11 +47,84 @@ std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(ParseContext& cont
 }
 
 void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& value)
-{
-    // Parse Columns
-    auto cardElements =
-        ParseUtil::GetElementCollectionOfSingleType<Column>(context, value, AdaptiveCardSchemaKey::Columns, Column::Deserialize, false);
-    m_columns = std::move(cardElements);
+{ 
+    auto elementArray = ParseUtil::GetArray(value, AdaptiveCardSchemaKey::Columns, false);
+
+    std::vector<std::shared_ptr<Column>> elements;
+    if (elementArray.empty())
+    {
+        m_columns = elements;
+        return;
+    }
+
+    const size_t elemSize = elementArray.size();
+    const size_t endElemIndex = elemSize - 1;
+    elements.reserve(elemSize);
+
+    size_t validChildIndex = 0, currentIndex = 0;
+
+    // only Lc (LeftChild) & Rc (RightChild) get Padding
+    // lc inherites bleedToLeading from parent who is Lc and bleedToLeading
+    // or parent is BleedToBothEdges
+    // same applies to Rc
+    ContainerBleedState previousBleedState = context.GetBleedState();
+
+    if (context.GetBleedState() == ContainerBleedState::BleedToLeading)
+    {
+        // left child
+        validChildIndex = 0;
+    }
+    else if (context.GetBleedState() == ContainerBleedState::BleedToTrailing)
+    {
+        // right child
+        validChildIndex = endElemIndex;
+    }
+    else if (elemSize == 1)
+    {
+        // items in signle column has no restriction
+        context.SetBleedState(ContainerBleedState::BleedToBothEdges);
+    }
+
+    // Deserialize every element in the array
+    for (const Json::Value& curJsonValue : elementArray)
+    {
+        // if restricted in anyways, then all internal nodes are restricted in all direction
+        if (ContainerBleedState::BleedToBothEdges != context.GetBleedState())
+        {
+            // Lc and Rc inherite bleed state from parent
+            if (currentIndex != validChildIndex)
+            {
+                context.SetBleedState(ContainerBleedState::BleedRestricted);
+            }  
+        }
+        // processing the cases where parent's bleed state is not restricted
+        else if (elemSize != 1)
+        {
+            if (currentIndex == 0)
+            {
+                context.SetBleedState(ContainerBleedState::BleedToLeading);
+            }
+            else if (currentIndex == endElemIndex)
+            {
+                context.SetBleedState(ContainerBleedState::BleedToTrailing);
+            } else
+            {
+                context.SetBleedState(ContainerBleedState::BleedRestricted);
+            }
+        }
+
+        // Parse the element
+        auto el = Column::Deserialize(context, curJsonValue);
+        if (el != nullptr)
+        {
+            elements.push_back(el);
+            // restores the parent's bleed state
+            context.SetBleedState(previousBleedState);
+        }
+        ++currentIndex;
+    }
+
+    m_columns = std::move(elements);
 }
 
 std::shared_ptr<BaseCardElement> ColumnSetParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
