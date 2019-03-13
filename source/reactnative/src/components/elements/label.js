@@ -52,7 +52,6 @@ export class Label extends React.Component {
 
 		let fontStyleValue =  (fontStyle === Enums.FontStyle.Default || fontStyle === undefined ) ?  Enums.FontStyle.Default : Enums.FontStyle.Monospace;
 
-
 		let fontSize = this.hostConfig.getTextFontSize(Utils.parseHostConfigEnum(
 			Enums.TextSize,
 			size,

@@ -401,7 +401,6 @@ class FontConfig {
 	}
 }
 
-
 export class HostConfig {
 	choiceSetInputValueSeparator = ",";
 	supportsInteractivity = true;
@@ -598,7 +597,7 @@ export class HostConfig {
 	}
 
 	/**
- * @param {string} weight
+ * @param {string} family
  */
 	getTextFontFamily = (fontStyle) => {
 		switch (fontStyle) {
@@ -608,7 +607,6 @@ export class HostConfig {
 				return this.fontStyles.monospace.fontFamily;
 			default:
 				return this.fontStyles.default.fontFamily;
-
 		}
 	}
 
