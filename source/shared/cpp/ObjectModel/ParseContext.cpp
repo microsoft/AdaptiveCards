@@ -8,13 +8,13 @@ namespace AdaptiveSharedNamespace
 {
     ParseContext::ParseContext() :
         elementParserRegistration{std::make_shared<ElementParserRegistration>()},
-        actionParserRegistration{std::make_shared<ActionParserRegistration>()}, warnings{}, m_idStack{}, m_elementIds{}, m_parentalContainerStyles{}
+        actionParserRegistration{std::make_shared<ActionParserRegistration>()}, warnings{}, m_idStack{}, m_elementIds{},
+        m_parentalContainerStyles{}, m_previousBleedState{ContainerBleedState::BleedToBothEdges}, m_currentBleedState{ContainerBleedState::BleedToBothEdges}
     {
     }
 
     ParseContext::ParseContext(std::shared_ptr<ElementParserRegistration> elementRegistration, std::shared_ptr<ActionParserRegistration> actionRegistration) :
-        warnings{}, m_idStack{}, m_elementIds{}, m_parentalContainerStyles{}
-    {
+        warnings{}, m_idStack{}, m_elementIds{}, m_parentalContainerStyles{}, m_previousBleedState{ContainerBleedState::BleedToBothEdges}, m_currentBleedState{ContainerBleedState::BleedToBothEdges} {
         elementParserRegistration = (elementRegistration) ? elementRegistration : std::make_shared<ElementParserRegistration>();
         actionParserRegistration = (actionRegistration) ? actionRegistration : std::make_shared<ActionParserRegistration>();
     }
@@ -250,7 +250,7 @@ namespace AdaptiveSharedNamespace
 
     AdaptiveSharedNamespace::InternalId ParseContext::PaddingParentInternalId(void) const
     {
-        if(m_parentalPadding.size())
+        if (m_parentalPadding.size())
         {
             return m_parentalPadding.back();
         }
@@ -264,9 +264,12 @@ namespace AdaptiveSharedNamespace
         m_parentalContainerStyles.push_back(current->GetStyle());
 
         // save id of the current if the current has the padding
-        // it will be the new parent id for children, when parsing is continued dfs 
+        // it will be the new parent id for children, when parsing is continued dfs
+        // if current container gets padding, it resets container bleed state to not restricted
         if(current && current->GetPadding()) 
         {
+            SetPreviousBleedState(GetBleedState());
+            SetBleedState(ContainerBleedState::BleedToBothEdges);
             m_parentalPadding.push_back(current->GetInternalId());
         }
     }
@@ -285,6 +288,8 @@ namespace AdaptiveSharedNamespace
         {
             m_parentalPadding.pop_back();
         }
+
+        SetBleedState(GetPreviousBleedState());
     }
 
     void ParseContext::SetLanguage(const std::string& value)

@@ -392,6 +392,15 @@ namespace AdaptiveSharedNamespace
     };
     // No mapping to string needed
 
+    enum class ContainerBleedState
+    {
+        BleedRestricted = 0,
+        BleedToLeading,
+        BleedToTrailing,
+        BleedToBothEdges,
+    };
+    // No mapping to string needed
+
     enum class IconPlacement
     {
         AboveTitle = 0,

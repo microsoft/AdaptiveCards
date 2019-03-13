@@ -36,11 +36,16 @@ namespace AdaptiveSharedNamespace
             const std::shared_ptr<CollectionTypeElement>& current);
         void RestoreContextForCollectionTypeElement(
             const std::shared_ptr<CollectionTypeElement>& current);
+        ContainerBleedState GetBleedState() const { return m_currentBleedState; }
+        void SetBleedState(const ContainerBleedState state) { m_currentBleedState = state; }
 
     private:
+        void SetPreviousBleedState(const ContainerBleedState state) { m_previousBleedState = state; }
+        ContainerBleedState GetPreviousBleedState() const { return m_previousBleedState; }
+
         const AdaptiveSharedNamespace::InternalId GetNearestFallbackId(const AdaptiveSharedNamespace::InternalId& skipId) const;
-        // This enum is just a helper to keep track of the position of contents within the std::tuple used in m_idStack
-        // below. We don't use enum class here because we don't want typed values for use in std::get
+        // This enum is just a helper to keep track of the position of contents within the std::tuple used in
+        // m_idStack below. We don't use enum class here because we don't want typed values for use in std::get
         enum TupleIndex : unsigned int
         {
             Id = 0U,
@@ -56,15 +61,18 @@ namespace AdaptiveSharedNamespace
         //             map ID json property           ->             fallback ID
         std::unordered_multimap<std::string, AdaptiveSharedNamespace::InternalId> m_elementIds;
 
-        // m_idStack is the stack we use during parse time to track the hierarchy of cards as they are encountered. Any
-        // time we parse an element we push it on to the stack, parse its children (if any), then pop it off the stack.
-        // When we pop off the stack, we perform id collision detection.
+        // m_idStack is the stack we use during parse time to track the hierarchy of cards as they are encountered.
+        // Any time we parse an element we push it on to the stack, parse its children (if any), then pop it off the
+        // stack. When we pop off the stack, we perform id collision detection.
         //
         //                             (ID,  internal ID, isFallback)[]
         std::vector<std::tuple<std::string, AdaptiveSharedNamespace::InternalId, bool>> m_idStack;
-        ContainerStyle m_parentalContainerStyle;
         std::vector<ContainerStyle> m_parentalContainerStyles;
         std::vector<AdaptiveSharedNamespace::InternalId> m_parentalPadding;
+
+        ContainerStyle m_parentalContainerStyle;
+        ContainerBleedState m_currentBleedState;
+        ContainerBleedState m_previousBleedState;
 
         std::string m_language;
     };

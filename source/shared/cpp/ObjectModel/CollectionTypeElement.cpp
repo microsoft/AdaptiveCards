@@ -4,9 +4,9 @@
 
 using namespace AdaptiveSharedNamespace;
 
-CollectionTypeElement::CollectionTypeElement(CardElementType type, ContainerStyle style, 
-    VerticalContentAlignment alignment) : BaseCardElement(type), m_style(style), 
-    m_verticalContentAlignment(alignment), m_hasPadding(false), m_hasBleed(false), m_parentalId()
+CollectionTypeElement::CollectionTypeElement(CardElementType type, ContainerStyle style, VerticalContentAlignment alignment) :
+    BaseCardElement(type), m_style(style), m_verticalContentAlignment(alignment), m_hasPadding(false),
+    m_hasBleed(false), m_parentalId(), m_canBleed(ContainerBleedState::BleedToBothEdges)
 {
 }
 
@@ -70,20 +70,20 @@ void CollectionTypeElement::ConfigBleed(const AdaptiveCards::ParseContext& conte
 {
     // we allows bleed when self has padding and at least one parent has padding
     const AdaptiveSharedNamespace::InternalId id = context.PaddingParentInternalId();
-    const bool canBleed = GetBleed() && (id != AdaptiveSharedNamespace::InternalId::Invalid);
-    if (canBleed)
+    bool canBleed = (id != AdaptiveSharedNamespace::InternalId::Invalid);
+    if (canBleed && context.GetBleedState() != ContainerBleedState::BleedRestricted)
     {
         SetParentalId(id);
     }
-    SetCanBleed(canBleed);
+    SetCanBleed(context.GetBleedState());
 }
 
-void CollectionTypeElement::SetCanBleed(const bool value)
+void CollectionTypeElement::SetCanBleed(const ContainerBleedState value)
 {
     m_canBleed = value;
 }
 
-bool CollectionTypeElement::GetCanBleed() const
+ContainerBleedState CollectionTypeElement::GetCanBleed() const
 {
     return m_canBleed;
 }
