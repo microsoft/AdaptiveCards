@@ -43,8 +43,12 @@ namespace AdaptiveSharedNamespace
         void SetLanguage(const std::string& value);
         std::string GetLanguage() const;
 
+        std::shared_ptr<BaseActionElement> GetSelectAction() const;
+        void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
+
     protected:
         std::shared_ptr<TextElementProperties> m_textElementProperties;
         virtual void PopulateKnownPropertiesSet() override;
+        std::shared_ptr<BaseActionElement> m_selectAction;
     };
 }
