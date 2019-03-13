@@ -8,7 +8,6 @@
 #import "ACRColumnRenderer.h"
 #import "ACRColumnView.h"
 #import "ACRRendererPrivate.h"
-#import "ACRViewPrivate.h"
 #import "Column.h"
 #import "SharedAdaptiveCard.h"
 #import "ACRLongPressGestureRecognizerFactory.h"
@@ -41,10 +40,7 @@
     ACRColumnView* column = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)columnElem->GetStyle()
                                                      parentStyle:[viewGroup style] hostConfig:acoConfig superview:viewGroup];
 
-    auto backgroundImage = columnElem->GetBackgroundImage();
-    if (backgroundImage != nullptr && !(backgroundImage->GetUrl().empty())) {
-        renderBackgroundImage(backgroundImage.get(), column, rootView);
-    }
+    renderBackgroundImage(columnElem->GetBackgroundImage(), column, rootView);
     
     column.pixelWidth = columnElem->GetPixelWidth();
     if (columnElem->GetWidth() == "stretch" || columnElem->GetWidth() == "") {
@@ -99,9 +95,9 @@
 {
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Column> columnElem = std::dynamic_pointer_cast<Column>(elem);
-    
     auto backgroundImageProperties = columnElem->GetBackgroundImage();
-    applyBackgroundImageConstraints(backgroundImageProperties.get(), imageView, image);
+    
+    renderBackgroundImage(backgroundImageProperties.get(), imageView, image);
 }
 
 @end

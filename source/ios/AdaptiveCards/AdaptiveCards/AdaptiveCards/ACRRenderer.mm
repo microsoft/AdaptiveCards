@@ -16,7 +16,6 @@
 #import "ACRRegistration.h"
 #import "ACRRendererPrivate.h"
 #import "ACRSeparator.h"
-#import "ACRView.h"
 #import "ACRViewPrivate.h"
 #import "ACRViewController.h"
 #import "ACRContentHoldingUIScrollView.h"
@@ -98,10 +97,9 @@ using namespace AdaptiveCards;
                 
                 // store the image view and card for easy retrieval in ACRView::observeValueForKeyPath
                 [rootView setImageView:key view:view];
-                [rootView setCardContext:key context:adaptiveCard];
             }
         };
-        [rootView loadBackgroundImageAccordingToResourceResolverIF:backgroundImageProperties observerAction:observerAction];
+        [rootView loadBackgroundImageAccordingToResourceResolverIF:backgroundImageProperties key:@"backgroundImage" observerAction:observerAction];
     }
 
     if(![config getHostConfig]->GetMedia().playButton.empty()) {

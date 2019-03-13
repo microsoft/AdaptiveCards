@@ -24,16 +24,6 @@ using namespace AdaptiveCards;
     NSMutableArray *_inputs;
 }
 
-- (instancetype)initWithAdaptiveCard:(std::shared_ptr<AdaptiveCard> &)card
-{
-    self = [super init];
-    if (self && card) {
-        _adaptiveCard = card;
-        _inputs = nullptr;
-    }
-    return self;
-}
-
 - (void)setInputs:(NSArray *) inputs
 {
     _inputs = [[NSMutableArray alloc] initWithArray:inputs];

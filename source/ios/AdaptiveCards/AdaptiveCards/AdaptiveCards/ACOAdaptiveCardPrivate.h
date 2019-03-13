@@ -11,7 +11,6 @@ using namespace AdaptiveCards;
 
 @interface ACOAdaptiveCard()
 
-- (instancetype)initWithAdaptiveCard:(std::shared_ptr<AdaptiveCard> const &)card;
 - (std::shared_ptr<AdaptiveCard> const &)card;
 - (void)setCard:(std::shared_ptr<AdaptiveCard> const &)card;
 
