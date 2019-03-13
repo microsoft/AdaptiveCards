@@ -2268,10 +2268,18 @@ export class InputValidationOptions {
 }
 
 export abstract class Input extends CardElement implements Shared.IInput {
+    private _renderedInputElement: HTMLElement;
+
     protected valueChanged() {
+        this.resetValidationFailureCue();
+
         if (this.onValueChanged) {
             this.onValueChanged(this);
         }
+    }
+
+    protected resetValidationFailureCue() {
+        this._renderedInputElement.classList.remove("ac-input-validation-failed");
     }
 
     abstract get value(): string;
@@ -2303,7 +2311,15 @@ export abstract class Input extends CardElement implements Shared.IInput {
     }
 
     validateValue(): boolean {
-        return this.validation.necessity != Enums.InputValidationNecessity.Optional ? !Utils.isNullOrEmpty(this.value) : true;
+        this.resetValidationFailureCue();
+
+        let result = this.validation.necessity != Enums.InputValidationNecessity.Optional ? !Utils.isNullOrEmpty(this.value) : true;
+
+        if (!result) {
+            this._renderedInputElement.classList.add("ac-input-validation-failed");
+        }
+
+        return result;
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
@@ -2317,6 +2333,23 @@ export abstract class Input extends CardElement implements Shared.IInput {
         if (jsonValidation) {
             this.validation.parse(jsonValidation);
         }
+    }
+
+    render(): HTMLElement {
+        this._renderedInputElement = super.render();
+
+        let hostConfig = this.hostConfig;
+
+        let containerElement = document.createElement("div");
+        containerElement.className = hostConfig.makeCssClassName("ac-input-container");
+
+        if (this.validation.necessity == Enums.InputValidationNecessity.RequiredWithVisualCue) {
+            containerElement.classList.add(hostConfig.makeCssClassName("ac-input-required"));
+        }
+
+        containerElement.appendChild(this._renderedInputElement);
+
+        return containerElement;
     }
 
     renderSpeech(): string {
@@ -2438,7 +2471,7 @@ export class ToggleInput extends Input {
 
     protected internalRender(): HTMLElement {
         let element = document.createElement("div");
-        element.className = this.hostConfig.makeCssClassName("ac-input");
+        element.className = this.hostConfig.makeCssClassName("ac-input", "ac-toggleInput");
         element.style.width = "100%";
         element.style.display = "flex";
         element.style.alignItems = "center";
@@ -2561,7 +2594,7 @@ export class ChoiceSetInput extends Input {
             if (this.isCompact) {
                 // Render as a combo box
                 this._selectElement = document.createElement("select");
-                this._selectElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-multichoiceInput");
+                this._selectElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-multichoiceInput", "ac-choiceSetInput-compact");
                 this._selectElement.style.width = "100%";
 
                 let option = document.createElement("option");
@@ -2598,7 +2631,7 @@ export class ChoiceSetInput extends Input {
                 let uniqueCategoryName = ChoiceSetInput.getUniqueCategoryName();
 
                 let element = document.createElement("div");
-                element.className = this.hostConfig.makeCssClassName("ac-input");
+                element.className = this.hostConfig.makeCssClassName("ac-input", "ac-choiceSetInput-expanded");
                 element.style.width = "100%";
 
                 this._toggleInputs = [];
@@ -2642,6 +2675,7 @@ export class ChoiceSetInput extends Input {
 
                     let compoundInput = document.createElement("div");
                     compoundInput.style.display = "flex";
+                    compoundInput.style.alignItems = "center";
 
                     Utils.appendChild(compoundInput, radioInput);
                     Utils.appendChild(compoundInput, spacerElement);
@@ -2658,7 +2692,7 @@ export class ChoiceSetInput extends Input {
             let defaultValues = this.defaultValue ? this.defaultValue.split(this.hostConfig.choiceSetInputValueSeparator) : null;
 
             let element = document.createElement("div");
-            element.className = this.hostConfig.makeCssClassName("ac-input");
+            element.className = this.hostConfig.makeCssClassName("ac-input", "ac-choiceSetInput-multiSelect");
             element.style.width = "100%";
 
             this._toggleInputs = [];
@@ -2897,6 +2931,7 @@ export class DateInput extends Input {
         this._dateInputElement.setAttribute("type", "date");
         this._dateInputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-dateInput");
         this._dateInputElement.style.width = "100%";
+        this._dateInputElement.oninput =  () => { this.valueChanged(); }
 
         if (!Utils.isNullOrEmpty(this.defaultValue)) {
             this._dateInputElement.value = this.defaultValue;
@@ -2922,6 +2957,7 @@ export class TimeInput extends Input {
         this._timeInputElement.setAttribute("type", "time");
         this._timeInputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-timeInput");
         this._timeInputElement.style.width = "100%";
+        this._timeInputElement.oninput =  () => { this.valueChanged(); }
 
         if (!Utils.isNullOrEmpty(this.defaultValue)) {
             this._timeInputElement.value = this.defaultValue;

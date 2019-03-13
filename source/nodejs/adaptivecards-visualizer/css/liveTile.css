@@ -93,6 +93,23 @@ a.ac-anchor:visited:active {
   background-color: rgba(0, 0, 0, 0.3);
 }
 
+.ac-input-container {
+  display: flex;
+  align-items: center;
+}
+
+.ac-input-container.ac-input-required::after {
+  content: "*";
+  color: red;
+  left: 100%;
+  top: 0;
+  padding-left: 4px;
+}
+
+.ac-input.ac-input-validation-failed {
+  box-shadow: 0px 0px 2px red;
+}
+
 .ac-input {
   font-family: "Segoe UI", sans-serif;
   font-size: 14px;
