@@ -341,6 +341,8 @@ namespace Json {
 %template(ToggleVisibilityTargetVector) std::vector<std::shared_ptr<AdaptiveCards::ToggleVisibilityTarget> >;
 %template(StringVector) std::vector<std::string>;
 %template(CharVector) std::vector<char>;
+%template(InlineVector) std::vector<std::shared_ptr<AdaptiveCards::Inline>>;
+%template(ParagraphVector) std::vector<std::shared_ptr<AdaptiveCards::Paragraph>>;
 
 %template(EnableSharedFromThisContainer) std::enable_shared_from_this<AdaptiveCards::Container>;
 
@@ -656,6 +658,21 @@ namespace Json {
 %extend AdaptiveCards::RichTextBlock {
     static AdaptiveCards::RichTextBlock *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
         return dynamic_cast<AdaptiveCards::RichTextBlock *>(baseCardElement);
+    }
+};
+
+%exception AdaptiveCards::TextRun::dynamic_cast(AdaptiveCards::Inline *inlineVar) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::TextRun {
+    static AdaptiveCards::TextRun *dynamic_cast(AdaptiveCards::Inline *inlineVar) {
+        return dynamic_cast<AdaptiveCards::TextRun *>(inlineVar);
     }
 };
 

@@ -51,8 +51,8 @@ public class Paragraph {
     return new JsonValue(AdaptiveCardObjectModelJNI.Paragraph_SerializeToJsonValue(swigCPtr, this), true);
   }
 
-  public SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__Inline_t_t GetInlines() {
-    return new SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__Inline_t_t(AdaptiveCardObjectModelJNI.Paragraph_GetInlines__SWIG_0(swigCPtr, this), false);
+  public InlineVector GetInlines() {
+    return new InlineVector(AdaptiveCardObjectModelJNI.Paragraph_GetInlines__SWIG_0(swigCPtr, this), false);
   }
 
   public static Paragraph Deserialize(ParseContext context, JsonValue root) {
