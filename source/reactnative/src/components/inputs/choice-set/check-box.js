@@ -1,6 +1,5 @@
 /**
  * CheckBox Component.
- * 
  */
 
 import React from 'react';
@@ -12,7 +11,7 @@ import {
 	ViewPropTypes,
 	Image
 } from 'react-native';
-
+import { Label } from '../../elements'
 import PropTypes from 'prop-types';
 import * as Constants from '../../../utils/constants';
 
@@ -37,6 +36,7 @@ class CheckBox extends React.PureComponent {
 		style: ViewPropTypes.style,
 		onChange: PropTypes.func.isRequired,
 		checked: PropTypes.bool,
+		wrapText: PropTypes.bool,
 		isRadioButtonType: PropTypes.bool,
 		labelStyle: Text.propTypes.style,
 		iconSize: PropTypes.number,
@@ -47,6 +47,7 @@ class CheckBox extends React.PureComponent {
 		checked: false,
 		labelStyle: styles.labelStyle,
 		iconSize: 28,
+		wrapText: false,
 	};
 
 	componentWillMount() {
@@ -61,7 +62,7 @@ class CheckBox extends React.PureComponent {
 		})
 	}
 
-	onChange() {
+	onChange = () => {
 		const newValue = !this.state.checked
 		const { onChange } = this.props
 		this.setState({ checked: newValue }, () => {
@@ -69,11 +70,13 @@ class CheckBox extends React.PureComponent {
 		})
 	}
 
-	renderCheckBoxIcon() {
+	renderCheckBoxIcon = () => {
+		const { iconSize, isRadioButtonType } = this.props;
+
 		return (
 			<Image
-				style={{ width: this.props.iconSize, height: this.props.iconSize }}
-				source={this.props.isRadioButtonType ?
+				style={{ width: iconSize, height: iconSize }}
+				source={isRadioButtonType ?
 					this.state.checked ? require(CheckedRadioImage) :
 						require(UncheckedRadioImage) :
 					this.state.checked ? require(CheckedCheckBoxImage) :
@@ -82,27 +85,27 @@ class CheckBox extends React.PureComponent {
 		)
 	}
 
-	renderContent() {
-		const { labelStyle, label } = this.props
-		const flexDirection = Constants.FlexRow
+	renderContent = () => {
+		const { labelStyle, label, wrapText } = this.props;
+		const flexDirection = Constants.FlexRow;
 
 		return (
 			<View style={[styles.contentStyle, { flexDirection }]}>
-				{this.renderCheckBoxIcon.call(this)}
+				{this.renderCheckBoxIcon()}
 				{
-					label ? <Text style={labelStyle}>{label}</Text> : null
+					label ? <Label text={label} style={labelStyle} wrap={wrapText} /> : null
 				}
 			</View>
 		)
 	}
 
 	render() {
-		const { style } = this.props
+		const { style } = this.props;
 		return (
 			<TouchableOpacity activeOpacity={1}
 				onPress={this.onChange.bind(this)}
 				style={style}>
-				{this.renderContent.call(this)}
+				{this.renderContent()}
 			</TouchableOpacity>
 		)
 	}

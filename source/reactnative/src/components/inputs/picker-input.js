@@ -142,7 +142,7 @@ export class PickerInput extends React.Component {
 	}
 	showValidationText=()=>{
 		return(
-			<Text style={this.styleConfig.defaultDestructiveForegroundColor}>
+			<Text style={this.styleConfig.defaultDestructiveButtonForegroundColor}>
 				{this.validationText}
 			</Text>
 		)

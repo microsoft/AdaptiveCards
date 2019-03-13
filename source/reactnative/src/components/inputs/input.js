@@ -8,7 +8,10 @@ import React from 'react';
 import {
 	StyleSheet,
 	TextInput,
-	Text
+	Image,
+	Text,
+	View,
+	TouchableOpacity,
 } from 'react-native';
 
 import { InputContextConsumer } from '../../utils/context';
@@ -38,6 +41,11 @@ export class Input extends React.Component {
 							 this.payload.validation.validationFailedText : Constants.validationText;
 		this.validationRequiredWithVisualCue = (!this.payload.validation || 
 							Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
+		this.inlineAction = {};
+		this.state = {
+			showInlineActionErrors:false,
+			text: Constants.EmptyString,
+		}
 	}
 
 	render() {
@@ -56,10 +64,14 @@ export class Input extends React.Component {
 
 		if (!id || !type) {
 			return null;
+		}	
+
+		if (!Utils.isNullOrEmpty(this.inlineAction)) {
+			TextBox = this.inlineActionComponent();
 		}
-		
-		return (
-			<InputContextConsumer>
+		else {
+			TextBox = (
+				<InputContextConsumer>
 				{({ addInputItem, showErrors,inputArray }) =>{
 					if(!inputArray[this.id])
 						addInputItem(this.id, {value : this.props.value,errorState:this.props.isError});
@@ -86,12 +98,16 @@ export class Input extends React.Component {
 						</ElementWrapper>
 				);}}
 			</InputContextConsumer>
+			)
+		}
+		return (
+			TextBox
 		);
 	}
 
 	showValidationText=()=>{
 		return(
-			<Text style={this.styleConfig.defaultDestructiveForegroundColor}>
+			<Text style={this.styleConfig.defaultDestructiveButtonForegroundColor}>
 				{this.validationText}
 			</Text>
 		)
@@ -105,10 +121,10 @@ export class Input extends React.Component {
 		const { isMultiline } = this;
 
 		let inputComputedStyles = [this.styleConfig.inputBorderWidth,
-									this.styleConfig.inputBackgroundColor,
-									this.styleConfig.inputBorderRadius,
-									this.styleConfig.fontConfig,
-									styles.input];
+		this.styleConfig.inputBackgroundColor,
+		this.styleConfig.inputBorderRadius,
+		this.styleConfig.fontConfig,
+		styles.input];
 		isMultiline ?
 			inputComputedStyles.push(styles.multiLineHeight) :
 			inputComputedStyles.push(styles.singleLineHeight);
@@ -125,16 +141,159 @@ export class Input extends React.Component {
 	parseHostConfig = () => {
 		this.id = this.payload.id;
 		this.type = this.payload.type;
-		this.isMultiline = (this.payload.isMultiline !== undefined) ? this.payload.isMultiline : false;
+		this.isMultiline = this.payload.isMultiline === undefined ? false : this.payload.isMultiline;
 		this.maxLength = (this.payload.maxLength == undefined ||
 			this.payload.maxLength == 0) ? Number.MAX_VALUE : this.payload.maxLength;
 		this.placeholder = this.payload.placeholder;
 		this.textStyle = Utils.getEffectiveInputStyle(this.props.styleValue);
 		this.keyboardType = Utils.getKeyboardType(this.props.styleValue);
+		this.inlineAction = this.payload.inlineAction;
+	}
+
+    /**
+     * @description Invoked on every change in Input field
+     * @param {string} text
+     */
+	textValueChanged = (text) => {
+		this.setState({ text });
+	}
+
+	/**
+     * @description Invoked when json payload contains inlineAction prop
+     */
+	inlineActionComponent = () => {
+		return (
+			<InputContextConsumer>
+				{({ addInputItem, onExecuteAction, onParseError,inputArray  }) =>{
+					if(!inputArray[this.id])
+						addInputItem(this.id, {value : this.props.value,errorState:this.props.isError});
+					return this.parsePayload(addInputItem, onExecuteAction, onParseError)
+				}}
+			</InputContextConsumer>
+		);
+	}
+
+	/**
+	 * @description Parse the given payload and render the card accordingly
+	 */
+	parsePayload = (addInputItem, onExecuteAction, onParseError) => {
+		const {
+			id,
+			type,
+			isMultiline,
+			placeholder,
+			maxLength,
+			payload,
+			textStyle,
+			keyboardType,
+			inlineAction,
+		} = this;
+
+		if (!id || !type) {
+			return null;
+		}
+		
+		var returnKeyType = "done"
+		let wrapperStyle = [styles.inlineActionWrapper];
+		wrapperStyle.push({ alignItems: 'center' })
+
+		if (isMultiline) {
+			wrapperStyle.push({ alignItems: 'flex-end' })
+			returnKeyType = "default";
+		}
+		if (inlineAction.type === "Action.ShowCard") {
+			let error = {
+				"error": Enums.ValidationError.ActionTypeNotAllowed,
+				"message": `Inline ShowCard is not supported as of now`
+			};
+			onParseError(error);
+			return null;
+		}
+		else {
+			return (
+				<View>
+				<ElementWrapper json={payload} style={wrapperStyle}>
+					<TextInput
+						style={[styles.inlineActionTextInput,this.getComputedStyles(this.state.showInlineActionErrors)]}
+						autoCapitalize={Constants.NoneString}
+						autoCorrect={false}
+						placeholder={placeholder}
+						placeholderTextColor='#3a3a3a'
+						multiline={isMultiline}
+						maxLength={maxLength}
+						returnKeyLabel={'submit'}
+						returnKeyType={returnKeyType}
+						onSubmitEditing={() => this.onClickHandle(onExecuteAction, 'onSubmit')}
+						underlineColorAndroid={Constants.TransparentString}
+						clearButtonMode={Constants.WhileEditingString}
+						textContentType={textStyle}
+						keyboardType={keyboardType}
+						onFocus={this.handleFocus}
+						onBlur={this.props.handleBlur}
+						onChangeText={(text) => {
+							this.props.textValueChanged(text, addInputItem);
+							this.textValueChanged(text);
+						}}
+						value={this.props.value}
+					/>
+					<TouchableOpacity onPress={() => { this.onClickHandle(onExecuteAction, 'inline-action') }}>
+						{Utils.isNullOrEmpty(inlineAction.iconUrl) ?
+							<Text style={styles.inlineActionText}>{inlineAction.title}</Text> :
+							<Image
+								style={styles.inlineActionImage}
+								source=
+								{{ uri: inlineAction.iconUrl }} />
+						}
+					</TouchableOpacity>
+				</ElementWrapper>
+				{this.props.isError && this.state.showInlineActionErrors && this.showValidationText()}
+				</View>
+			);
+		}
+
+	}
+
+	handleFocus = () => {
+		this.setState({
+			showInlineActionErrors: false
+		});
+		this.props.handleFocus();
+	}
+
+	/**
+ 	 * @description Invoked on tapping the inline-action image component
+	 * @param {string} onExecuteAction - the action handler
+	 * @param {string} action - parameter to determine the origin of the action('onSubmit' OR 'inline-action')
+	 */
+	onClickHandle(onExecuteAction, action) {
+		if (this.isMultiline && action != 'inline-action')
+			return;
+		this.setState({showInlineActionErrors : true});
+		if (!this.props.isError && this.inlineAction.type === Constants.ActionSubmit) {
+			let actionObject = {
+				"type": Constants.ActionSubmit,
+				"data": this.state.text
+			};
+			onExecuteAction(actionObject,true);
+		}
+		else if (!this.props.isError && this.inlineAction.type === Constants.ActionOpenUrl) {
+			if (!Utils.isNullOrEmpty(this.inlineAction.url)) {
+				let actionObject = {
+					"type": Constants.ActionOpenUrl,
+					"url": this.inlineAction.url
+				};
+				onExecuteAction(actionObject,true);
+			}
+		}
 	}
 }
 
 const styles = StyleSheet.create({
+	inlineActionText: {
+		marginLeft: 5,
+		marginTop: 15,
+		color: '#3a3a3a',
+	},
 	multiLineHeight: {
 		height: 88,
 	},
@@ -145,6 +304,27 @@ const styles = StyleSheet.create({
 		width: Constants.FullWidth,
 		padding: 5,
 		marginTop: 15,
+	},
+	inlineActionWrapper: {
+		flexDirection: 'row',
+		backgroundColor: "transparent",
+		borderRadius: 5,
+	},
+	inlineActionTextInput: {
+		padding: 5,
+		flex: 1,
+		backgroundColor: 'transparent',
+		color: '#3a3a3a',
+		borderColor: "#9E9E9E",
+		borderWidth: 1,
+	},
+	inlineActionImage: {
+		marginLeft: 10,
+		width: 40,
+		height: 40,
+		marginTop: 15,
+		backgroundColor: 'transparent',
+		flexShrink: 0,
 	},
 });
 

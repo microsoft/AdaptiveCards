@@ -44,6 +44,30 @@ export default payloads = [
     "json": require('./AutoImageSet.json')
   },
   {
+    "title": "BackgroundImage.Stretch.json",
+    "json": require('./BackgroundImage.Stretch.json')
+  },
+  {
+    "title": "BackgroundImage.Repeat.json",
+    "json": require('./BackgroundImage.Repeat.json')
+  },
+  {
+    "title": "BackgroundImage.RepeatVertically.json",
+    "json": require('./BackgroundImage.RepeatVertically.json')
+  },
+  {
+    "title": "BackgroungImage.RepeatHorizontally.json",
+    "json": require('./BackgroungImage.RepeatHorizontally.json')
+  },
+  {
+    "title": "Container.BackgroundImageRepeatHorizontally.json",
+    "json": require('./Container.BackgroundImageRepeatHorizontally.json')
+  },
+  {
+    "title": "Container.BackgroundImageRepeatVertically.json",
+    "json": require('./Container.BackgroundImageRepeatVertically.json')
+  },
+  {
     "title": "Column.Explicit.Size.json",
     "json": require('./Column.Explicit.Size.json')
   },

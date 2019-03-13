@@ -20,6 +20,7 @@ import * as Utils from '../../utils/util';
 import { InputContextConsumer, InputContext } from '../../utils/context';
 import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config';
+import * as Enums from '../../utils/enums';
 
 
 export class ActionButton extends React.Component {
@@ -40,9 +41,9 @@ export class ActionButton extends React.Component {
 		}
 	}
 
-	componentDidMount(){
-		if(!Utils.isNullOrEmpty(this.payload.iconUrl)){
-			this.context.addResourceInformation(this.payload.iconUrl,"");
+	componentDidMount() {
+		if (!Utils.isNullOrEmpty(this.payload.iconUrl)) {
+			this.context.addResourceInformation(this.payload.iconUrl, "");
 		}
 	}
 
@@ -51,7 +52,7 @@ export class ActionButton extends React.Component {
 			return null;
 		}
 		this.parseHostConfig();
-		
+
 		const ButtonComponent = Platform.OS === Constants.PlatformIOS ? TouchableOpacity : TouchableNativeFeedback;
 
 		if (this.payload.type === Constants.ActionSubmit) {
@@ -116,26 +117,45 @@ export class ActionButton extends React.Component {
 		let imageUrl = this.payload.iconUrl
 		this.iconUrl = Utils.getImageUrl(imageUrl)
 		this.data = this.payload.data;
+		this.sentiment = this.payload.sentiment;
+		this.sentiment = Utils.parseHostConfigEnum(
+			Enums.Sentiment,
+			this.payload.sentiment,
+			Enums.Sentiment.Default
+		);
 	}
-	
+
     /**
      * @description Return the button styles applicable
 	 * @returns {Array} computedStyles - Styles based on the config
      */
 	getButtonStyles = () => {
 		let computedStyles = [this.styleConfig.buttonBackgroundColor,
-								this.styleConfig.buttonBorderRadius,
-								this.styleConfig.actionIconFlex,
-								styles.button];
+		this.styleConfig.buttonBorderRadius,
+		this.styleConfig.actionIconFlex,
+		styles.button];
+		if (this.sentiment == Enums.Sentiment.Positive) {
+			computedStyles.push(this.styleConfig.defaultPositiveButtonBackgroundColor);
+		}
 
 		return computedStyles;
 	}
 
-	buttonContent = () => {
-		let titleStyles = [this.styleConfig.fontConfig, 
-							this.styleConfig.buttonTitleColor, 
-							this.styleConfig.buttonTitleTransform];
+	/**
+	* @description Return the button title styles applicable
+	* @returns {Array} computedStyles - Styles based on the config
+	*/
+	getButtonTitleStyles = () => {
+		var computedStyles = [this.styleConfig.fontConfig,
+		this.styleConfig.buttonTitleColor,
+		this.styleConfig.buttonTitleTransform];
+		if (this.sentiment == Enums.Sentiment.Destructive) {
+			computedStyles.push(this.styleConfig.defaultDestructiveButtonForegroundColor);
+		}
+		return computedStyles;
+	}
 
+	buttonContent = () => {
 		return (
 			<View
 				style={this.getButtonStyles()}>
@@ -146,7 +166,7 @@ export class ActionButton extends React.Component {
 							style={[styles.buttonIcon, this.styleConfig.actionIcon]} />
 						: null
 				}
-				<Text style={titleStyles}>
+				<Text style={this.getButtonTitleStyles()}>
 					{this.title}
 				</Text>
 			</View>

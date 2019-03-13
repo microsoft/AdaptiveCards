@@ -70,6 +70,7 @@ export class ChoiceSetInput extends React.Component {
 		this.value = this.payload.value;
 		this.style = this.payload.style;
 		this.choices = this.payload.choices;
+		this.wrapText = this.payload.wrap || false
 	}
 
     /**
@@ -201,6 +202,7 @@ export class ChoiceSetInput extends React.Component {
 						isRadioButtonType={true}
 						index={index}
 						labelStyle={[styles.labelStyle, this.styleConfig.fontConfig]}
+						wrapText={this.wrapText}
 						iconSize={28}
 						checked={this.state.activeIndex == undefined ?
 							index == this.getRadioButtonIndex(this.value,
@@ -229,6 +231,7 @@ export class ChoiceSetInput extends React.Component {
 						isRadioButtonType={false}
 						index={index}
 						labelStyle={[styles.labelStyle, this.styleConfig.fontConfig]}
+						wrapText={this.wrapText}
 						iconSize={28}
 						checked={this.state.checkedValues == undefined ?
 							this.setInitialCheckedValues(this.value,
@@ -258,17 +261,15 @@ export class ChoiceSetInput extends React.Component {
 
 	render() {
 
-		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
+		if (HostConfigManager.supportsInteractivity() === false) {
 			return null;
 		}
 
 		this.parseHostConfig();
-		let { id,
+
+		let {
 			isMultiSelect,
 			style,
-			choices,
-			type,
-			value,
 		} = this
 
 		onPress = () => {
@@ -304,7 +305,7 @@ export class ChoiceSetInput extends React.Component {
 	}
 	showValidationText=()=>{
 		return(
-			<Text style={this.styleConfig.defaultDestructiveForegroundColor}>
+			<Text style={this.styleConfig.defaultDestructiveButtonForegroundColor}>
 				{this.validationText}
 			</Text>
 		)
@@ -339,6 +340,7 @@ const styles = StyleSheet.create({
 		marginRight: 8,
 	},
 	labelStyle: {
-		marginLeft: 8
+		marginLeft: 8,
+		flexShrink: 1,
 	}
 });
