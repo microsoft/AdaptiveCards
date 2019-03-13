@@ -11,7 +11,7 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveTextBlock.TypeName)]
 #endif
-    public class AdaptiveTextBlock : AdaptiveElement
+    public class AdaptiveTextBlock : AdaptiveElement, ITextElement
     {
         public const string TypeName = "TextBlock";
 

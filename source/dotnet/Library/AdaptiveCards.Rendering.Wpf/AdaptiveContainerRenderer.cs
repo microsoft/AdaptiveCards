@@ -13,18 +13,31 @@ namespace AdaptiveCards.Rendering.Wpf
             uiContainer.SetBackgroundSource(container.BackgroundImage, context);
 
             // Keep track of ContainerStyle.ForegroundColors before Container is rendered
-            var outerStyle = context.ForegroundColors;
-            var parentContainerStyle = context.ParentStyle;
+            var parentRenderArgs = context.RenderArgs;
+            var elementRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
+            
+            Grid uiOuterContainer = new Grid();
+            
+            uiOuterContainer.Children.Add(uiContainer);
+            Border border = new Border();
+            border.Child = uiOuterContainer;
 
-            if (container.Style != null)
+            if (!container.IsVisible)
             {
-                ApplyPadding(uiContainer, container, parentContainerStyle, context);
+                border.Visibility = Visibility.Collapsed;
+            }
+
+            bool inheritsStyleFromParent = (container.Style == AdaptiveContainerStyle.None);
+            bool hasPadding = false;
+            if (!inheritsStyleFromParent)
+            {
+                hasPadding = ApplyPadding(border, uiOuterContainer, container, parentRenderArgs, context);
 
                 // Apply background color
                 ContainerStyleConfig containerStyle = context.Config.ContainerStyles.GetContainerStyleConfig(container.Style);
-                uiContainer.SetBackgroundColor(containerStyle.BackgroundColor, context);
+                border.Background = context.GetColorBrush(containerStyle.BackgroundColor);
 
-                context.ForegroundColors = containerStyle.ForegroundColors;
+                elementRenderArgs.ForegroundColors = containerStyle.ForegroundColors;
             }
 
             switch (container.VerticalContentAlignment)
@@ -41,33 +54,20 @@ namespace AdaptiveCards.Rendering.Wpf
             }
 
             // Modify context outer parent style so padding necessity can be determined
-            AdaptiveContainerStyle containerContainerStyle = container.Style ?? parentContainerStyle;
-            if (containerContainerStyle == AdaptiveContainerStyle.None)
-            {
-                containerContainerStyle = parentContainerStyle;
-            }
-            context.ParentStyle = containerContainerStyle;
+            elementRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : container.Style;
+            elementRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
+            context.RenderArgs = elementRenderArgs;
 
             AddContainerElements(uiContainer, container.Items, context);
 
             if (container.SelectAction != null)
             {
-                return context.RenderSelectAction(container.SelectAction, uiContainer);
-            }
-
-            Grid uiOuterContainer = new Grid();
-            uiOuterContainer.Children.Add(uiContainer);
-            Border border = new Border();
-            border.Child = uiOuterContainer;
-
-            if(!container.IsVisible)
-            {
-                border.Visibility = Visibility.Collapsed;
+                return context.RenderSelectAction(container.SelectAction, border);
             }
 
             // Revert context's value to that of outside the Container
-            context.ForegroundColors = outerStyle;
-            context.ParentStyle = parentContainerStyle;
+            context.RenderArgs = parentRenderArgs;
+
             return border;
         }
 
@@ -86,7 +86,11 @@ namespace AdaptiveCards.Rendering.Wpf
                     else if (uiContainer.Children.Count > 0)
                     {
                         var spacing = context.Config.GetSpacing(cardElement.Spacing);
-                        uiElement.Margin = new Thickness(0, spacing, 0, 0);
+                        Thickness renderedMargin = uiElement.Margin;
+                        uiElement.Margin = new Thickness(renderedMargin.Left,
+                                                         renderedMargin.Top + spacing,
+                                                         renderedMargin.Right,
+                                                         renderedMargin.Bottom);
                     }
 
                     if (cardElement.Height == AdaptiveHeight.Auto)
@@ -137,27 +141,54 @@ namespace AdaptiveCards.Rendering.Wpf
             Grid.SetRow(uiSep, uiContainer.RowDefinitions.Count - 1);
             uiContainer.Children.Add(uiSep);
         }
-
-        public static void ApplyPadding(Grid uiElement, AdaptiveTypedElement element, AdaptiveContainerStyle parentStyle, AdaptiveRenderContext context)
+        
+        // For applying bleeding, we must know if the element has padding, so both properties are applied in the same method
+        public static bool ApplyPadding(Border border, Grid uiElement, AdaptiveCollectionElement element, AdaptiveRenderArgs parentRenderArgs, AdaptiveRenderContext context)
         {
             bool canApplyPadding = false;
 
             // AdaptiveColumn inherits from AdaptiveContainer so only one check is required for both
             if (element is AdaptiveContainer container)
             {
-                canApplyPadding = ((container.BackgroundImage != null) || ((container.Style != AdaptiveContainerStyle.None) && (container.Style != parentStyle)));
+                canApplyPadding = ((container.BackgroundImage != null) || ((container.Style != AdaptiveContainerStyle.None) && (container.Style != parentRenderArgs.ParentStyle)));
             }
             else if (element is AdaptiveColumnSet columnSet)
             {
-                canApplyPadding = ((columnSet.Style != AdaptiveContainerStyle.None) && (columnSet.Style != parentStyle));
+                canApplyPadding = ((columnSet.Style != AdaptiveContainerStyle.None) && (columnSet.Style != parentRenderArgs.ParentStyle));
             }
+
+            int padding = context.Config.Spacing.Padding;
 
             if (canApplyPadding)
             {
-                int padding = context.Config.Spacing.Padding;
-                Thickness paddingThickness = new Thickness { Left = padding, Right = padding };
-                uiElement.Margin = paddingThickness;
+                uiElement.Margin = new Thickness { Left = padding, Top = padding, Right = padding, Bottom = padding };
+
+                if (element.Bleed && context.RenderArgs.HasParentWithPadding)
+                {
+                    // Columns have a special rendering behaviour, only the leftmost and rightmost columns must bleed
+                    if (element is AdaptiveColumn column)
+                    {
+                        if (parentRenderArgs.ColumnRelativePosition == ColumnPositionEnum.Begin)
+                        {
+                            border.Margin = new Thickness { Left = -padding };
+                        }
+                        else if (parentRenderArgs.ColumnRelativePosition == ColumnPositionEnum.End)
+                        {
+                            border.Margin = new Thickness { Right = -padding };
+                        }
+                        else if (parentRenderArgs.ColumnRelativePosition == ColumnPositionEnum.Only)
+                        {
+                            border.Margin = new Thickness { Left = -padding, Right = -padding };
+                        }
+                    }
+                    else
+                    {
+                        border.Margin = new Thickness { Left = -padding, Right = -padding };
+                    }
+                }
             }
+
+            return canApplyPadding;
         }
     }
 }

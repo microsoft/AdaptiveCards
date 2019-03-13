@@ -9,6 +9,19 @@
 
 namespace AdaptiveSharedNamespace
 {
+    std::string ParseUtil::JsonToString(const Json::Value& json)
+    {
+        static Json::StreamWriterBuilder builder;
+        builder["commentStyle"] = "None";
+        builder["indentation"] = "";
+        std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
+
+        std::ostringstream outStream;
+        writer->write(json, &outStream);
+        outStream << std::endl;
+        return outStream.str();
+    }
+
     void ParseUtil::ThrowIfNotJsonObject(const Json::Value& json)
     {
         if (!json.isObject())
@@ -312,9 +325,14 @@ namespace AdaptiveSharedNamespace
 
     Json::Value ParseUtil::GetJsonValueFromString(const std::string& jsonString)
     {
-        Json::Reader reader;
+        std::istringstream jsonStream(jsonString);
         Json::Value jsonValue;
-        if (!reader.parse(jsonString.c_str(), jsonValue))
+
+        try
+        {
+            jsonStream >> jsonValue;
+        }
+        catch (const Json::RuntimeError&)
         {
             throw AdaptiveCardParseException(ErrorStatusCode::InvalidJson, "Expected JSON Object");
         }

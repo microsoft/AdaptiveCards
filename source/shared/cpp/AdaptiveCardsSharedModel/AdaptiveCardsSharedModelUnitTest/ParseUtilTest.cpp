@@ -11,34 +11,33 @@ namespace AdaptiveCardsSharedModelUnitTest
     TEST_CLASS(ParseUtilTest)
     {
     public:
+        static Json::Value s_GetJsonObject(const std::string &json)
+        {
+            std::istringstream jsonStream(json);
+            Json::Value jsonValue;
+            jsonStream >> jsonValue;
+            return jsonValue;
+        }
+
         static Json::Value s_GetValidJsonObject()
         {
-            Json::Reader reader;
-            Json::Value jsonValue;
-            reader.parse("{ \"foo\": \"bar\" }", jsonValue);
-            return jsonValue;
+            return s_GetJsonObject("{ \"foo\": \"bar\" }");
         }
 
         static Json::Value s_GetJsonObjectWithType(const std::string &typeName)
         {
-            Json::Reader reader;
-            Json::Value jsonValue;
             std::string jsonTemplate("{ \"foo\": \"bar\", \"type\": \"");
             jsonTemplate.append(typeName);
             jsonTemplate.append("\"}");
-            reader.parse(jsonTemplate, jsonValue);
-            return jsonValue;
+            return s_GetJsonObject(jsonTemplate);
         }
 
         static Json::Value s_GetJsonObjectWithAccent(const std::string &value)
         {
-            Json::Reader reader;
-            Json::Value jsonValue;
             std::string jsonTemplate("{ \"foo\": \"bar\", \"accent\": ");
             jsonTemplate.append(value);
             jsonTemplate.append("}");
-            reader.parse(jsonTemplate, jsonValue);
-            return jsonValue;
+            return s_GetJsonObject(jsonTemplate);
         }
 
         static void s_EmptyFn(const Json::Value&)
