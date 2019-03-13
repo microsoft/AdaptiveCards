@@ -84,8 +84,6 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
             Inline inline = inlines.get(i);
             if(inline.GetInlineType() == InlineElementType.TextRun)
             {
-                // TextRun textRun = (TextRun)inline;
-
                 TextRun textRun = null;
                 if (inline instanceof TextRun)
                 {
@@ -202,7 +200,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
 
         // This is the section for rendering the paragraphs
         // Every paragraph may contain contains any number of inlines
-        // The inline element types are TextRun <- That's the only existing type so far
+        // The current inline element types are TextRun
         ParagraphVector paragraphs = richTextBlock.GetParagraphs();
         int paragraphCount = paragraphs.size();
 
@@ -223,6 +221,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
             textView.append(convertedString);
         }
 
+        // Properties required for actions to fire onClick event
         textView.setMovementMethod(LinkMovementMethod.getInstance());
         textView.setClickable(true);
 
