@@ -44,7 +44,7 @@ export class Column extends React.Component {
 			return renderedElement;
 
 		// parse elements
-		if (!Utils.isNullOrEmpty(this.column.items)) {
+		if (!Utils.isNullOrEmpty(this.column.items) && (this.column.isVisible !== false)) {
 			renderedElement.push(Registry.getManager().parseRegistryComponents(this.column.items, onParseError));
 		}
 		return renderedElement;
@@ -225,7 +225,7 @@ export class Column extends React.Component {
 		let actionComponentProps = {};
 
 		// select action
-		if (this.column.selectAction && HostConfigManager.supportsInteractivity()) {
+		if ((!Utils.isNullOrEmpty(this.column.selectAction)) && HostConfigManager.supportsInteractivity()) {
 			ActionComponent = SelectAction;
 			actionComponentProps = { selectActionData: this.column.selectAction };
 		}
