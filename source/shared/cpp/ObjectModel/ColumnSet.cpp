@@ -62,7 +62,7 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
     const size_t endElemIndex = elemSize - 1;
     elements.reserve(elemSize);
 
-    size_t validChildIndex = 0, currentIndex = 0;
+    size_t currentIndex = 0;
 
     // only Lc (LeftChild) & Rc (RightChild) get Padding
     // lc inherites bleedToLeading from parent who is Lc and bleedToLeading
@@ -70,17 +70,7 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
     // same applies to Rc
     ContainerBleedState previousBleedState = context.GetBleedState();
 
-    if (context.GetBleedState() == ContainerBleedState::BleedToLeading)
-    {
-        // left child
-        validChildIndex = 0;
-    }
-    else if (context.GetBleedState() == ContainerBleedState::BleedToTrailing)
-    {
-        // right child
-        validChildIndex = endElemIndex;
-    }
-    else if (elemSize == 1)
+    if (elemSize == 1)
     {
         // items in signle column has no restriction
         context.SetBleedState(ContainerBleedState::BleedToBothEdges);
@@ -89,17 +79,8 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
     // Deserialize every element in the array
     for (const Json::Value& curJsonValue : elementArray)
     {
-        // if restricted in anyways, then all internal nodes are restricted in all direction
-        if (ContainerBleedState::BleedToBothEdges != context.GetBleedState())
-        {
-            // Lc and Rc inherite bleed state from parent
-            if (currentIndex != validChildIndex)
-            {
-                context.SetBleedState(ContainerBleedState::BleedRestricted);
-            }  
-        }
         // processing the cases where parent's bleed state is not restricted
-        else if (elemSize != 1)
+        if (elemSize != 1)
         {
             if (currentIndex == 0)
             {
