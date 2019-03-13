@@ -93,6 +93,16 @@ std::string TextRun::GetLanguage() const
     return m_textElementProperties->GetLanguage();
 }
 
+std::shared_ptr<BaseActionElement> TextRun::GetSelectAction() const
+{
+    return m_selectAction;
+}
+
+void TextRun::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
+{
+    m_selectAction = action;
+}
+
 void TextRun::SetLanguage(const std::string& value)
 {
     m_textElementProperties->SetLanguage(value);

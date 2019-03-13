@@ -1,13 +1,16 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
+import android.drm.DrmStore;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
@@ -16,6 +19,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import io.adaptivecards.objectmodel.ActionElementParser;
+import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
@@ -31,6 +36,7 @@ import io.adaptivecards.objectmodel.TextRun;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public class RichTextBlockRenderer extends BaseCardElementRenderer
@@ -46,7 +52,29 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    private SpannableStringBuilder processParagraph(InlineVector inlines, HostConfig hostConfig, ContainerStyle containerStyle)
+    private class ActionSpan extends ClickableSpan
+    {
+        public ActionSpan(BaseActionElement action, RenderedAdaptiveCard renderedCard, ICardActionHandler cardActionHandler)
+        {
+            m_actionListener = new ActionElementRenderer.ButtonOnClickListener(renderedCard, action, cardActionHandler);
+        }
+
+        @Override
+        public void onClick(@NonNull View widget)
+        {
+            // Delegate the job to the listener
+            m_actionListener.onClick(widget);
+        }
+
+        private ActionElementRenderer.ButtonOnClickListener m_actionListener;
+    }
+
+    private SpannableStringBuilder buildSpannableParagraph(
+                RenderedAdaptiveCard renderedCard,
+                InlineVector inlines,
+                ICardActionHandler cardActionHandler,
+                HostConfig hostConfig,
+                ContainerStyle containerStyle)
     {
         SpannableStringBuilder paragraph = new SpannableStringBuilder();
         int lastStringLength = 0;
@@ -92,18 +120,10 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
 
                 paragraph.setSpan(new TypefaceSpan(fontName), spanStart, spanEnd, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
 
-                // Let's leave this for later
-                // textView.setOnTouchListener(new TextBlockRenderer.TouchTextView(new SpannableString(text)));
-
-                // This is not implemeneted yet, so I must wait for it to be implemented
-                // if(textRun.GetAction() != null)
-                // {
-                    // if (column.GetSelectAction() != null)
-                    //        {
-                    //            returnedView.setClickable(true);
-                    //            returnedView.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(renderedCard, column.GetSelectAction(), cardActionHandler));
-                    //        }
-                // }
+                if(textRun.GetSelectAction() != null)
+                {
+                    paragraph.setSpan(new ActionSpan(textRun.GetSelectAction(), renderedCard, cardActionHandler), spanStart, spanEnd, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                }
             }
         }
 
@@ -197,13 +217,10 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
                 textView.append(System.getProperty("line.separator"));
             }
 
-            SpannableStringBuilder convertedString = processParagraph(inlines, hostConfig, containerStyle);
+            SpannableStringBuilder convertedString = buildSpannableParagraph(renderedCard, inlines, cardActionHandler, hostConfig, containerStyle);
 
             textView.append(convertedString);
         }
-
-
-        // textView.setText(text);
 
         viewGroup.addView(textView);
         return textView;
