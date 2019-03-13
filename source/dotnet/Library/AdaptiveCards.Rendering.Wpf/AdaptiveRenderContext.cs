@@ -193,32 +193,29 @@ namespace AdaptiveCards.Rendering.Wpf
         }
 
         public string Lang { get; set; }
-        
+
         public FrameworkElement CardRoot { get; set; }
 
-        public AdaptiveContainerStyle ParentStyle { get; set; } = AdaptiveContainerStyle.Default;
-
-        public ForegroundColorsConfig ForegroundColors { get; set; }
-
+        public AdaptiveRenderArgs RenderArgs { get; set; }
         public FontColorConfig GetForegroundColors(AdaptiveTextColor textColor)
         {
             switch (textColor)
             {
                 case AdaptiveTextColor.Accent:
-                    return ForegroundColors.Accent;
+                    return RenderArgs.ForegroundColors.Accent;
                 case AdaptiveTextColor.Attention:
-                    return ForegroundColors.Attention;
+                    return RenderArgs.ForegroundColors.Attention;
                 case AdaptiveTextColor.Dark:
-                    return ForegroundColors.Dark;
+                    return RenderArgs.ForegroundColors.Dark;
                 case AdaptiveTextColor.Good:
-                    return ForegroundColors.Good;
+                    return RenderArgs.ForegroundColors.Good;
                 case AdaptiveTextColor.Light:
-                    return ForegroundColors.Light;
+                    return RenderArgs.ForegroundColors.Light;
                 case AdaptiveTextColor.Warning:
-                    return ForegroundColors.Warning;
+                    return RenderArgs.ForegroundColors.Warning;
                 case AdaptiveTextColor.Default:
                 default:
-                    return ForegroundColors.Default;
+                    return RenderArgs.ForegroundColors.Default;
             }
         }
     }

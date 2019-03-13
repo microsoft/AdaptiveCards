@@ -126,7 +126,7 @@ namespace AdaptiveCards.Rendering.Html.Test
             var generatedHtml = result.Html.ToString();
 
             Assert.AreEqual(
-                "<div class='ac-adaptivecard' style='width: 100%;background-color: rgba(255, 255, 255, 1.00);padding: 15px;box-sizing: border-box;justify-content: flex-start;'><div class='ac-container' style='margin-right: 15px;margin-left: 15px;background-color: rgba(0, 0, 0, 0.03);justify-content: flex-start;'><div class='ac-textblock' style='box-sizing: border-box;text-align: left;color: rgba(204, 51, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;white-space: nowrap;'><p style='margin-top: 0px;margin-bottom: 0px;width: 100%;text-overflow: ellipsis;overflow: hidden;'>container 1 -- emphasis style text</p></div><div class='ac-separator' style='height: 8px;'></div><div class='ac-container' style='margin-right: 15px;margin-left: 15px;background-color: #dce5f7;justify-content: flex-start;'><div class='ac-textblock' style='box-sizing: border-box;text-align: left;color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;white-space: nowrap;'><p style='margin-top: 0px;margin-bottom: 0px;width: 100%;text-overflow: ellipsis;overflow: hidden;'>container 1.1 -- accent style text</p></div></div><div class='ac-separator' style='height: 8px;'></div><div class='ac-textblock' style='box-sizing: border-box;text-align: left;color: rgba(204, 51, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;white-space: nowrap;'><p style='margin-top: 0px;margin-bottom: 0px;width: 100%;text-overflow: ellipsis;overflow: hidden;'>container 1 -- emphasis style text</p></div></div><div class='ac-separator' style='height: 8px;'></div><div class='ac-textblock' style='box-sizing: border-box;text-align: left;color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;white-space: nowrap;'><p style='margin-top: 0px;margin-bottom: 0px;width: 100%;text-overflow: ellipsis;overflow: hidden;'>default style text</p></div></div>",
+                "<div class='ac-adaptivecard' style='width: 100%;background-color: rgba(255, 255, 255, 1.00);padding: 15px;box-sizing: border-box;justify-content: flex-start;'><div class='ac-container' style='padding-right: 15px;padding-left: 15px;padding-top: 15px;padding-bottom: 15px;background-color: rgba(0, 0, 0, 0.03);justify-content: flex-start;'><div class='ac-textblock' style='box-sizing: border-box;text-align: left;color: rgba(204, 51, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;white-space: nowrap;'><p style='margin-top: 0px;margin-bottom: 0px;width: 100%;text-overflow: ellipsis;overflow: hidden;'>container 1 -- emphasis style text</p></div><div class='ac-separator' style='height: 8px;'></div><div class='ac-container' style='padding-right: 15px;padding-left: 15px;padding-top: 15px;padding-bottom: 15px;background-color: #dce5f7;justify-content: flex-start;'><div class='ac-textblock' style='box-sizing: border-box;text-align: left;color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;white-space: nowrap;'><p style='margin-top: 0px;margin-bottom: 0px;width: 100%;text-overflow: ellipsis;overflow: hidden;'>container 1.1 -- accent style text</p></div></div><div class='ac-separator' style='height: 8px;'></div><div class='ac-textblock' style='box-sizing: border-box;text-align: left;color: rgba(204, 51, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;white-space: nowrap;'><p style='margin-top: 0px;margin-bottom: 0px;width: 100%;text-overflow: ellipsis;overflow: hidden;'>container 1 -- emphasis style text</p></div></div><div class='ac-separator' style='height: 8px;'></div><div class='ac-textblock' style='box-sizing: border-box;text-align: left;color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;white-space: nowrap;'><p style='margin-top: 0px;margin-bottom: 0px;width: 100%;text-overflow: ellipsis;overflow: hidden;'>default style text</p></div></div>",
                 generatedHtml);
         }
 
@@ -145,6 +145,11 @@ namespace AdaptiveCards.Rendering.Html.Test
             public static HtmlTag CallChoiceSetInputRender(AdaptiveChoiceSetInput element, AdaptiveRenderContext context)
             {
                 return ChoiceSetRender(element, context);
+            }
+
+            public static HtmlTag CallContainerRender(AdaptiveContainer element, AdaptiveRenderContext context)
+            {
+                return ContainerRender(element, context);
             }
         }
 
@@ -186,6 +191,61 @@ namespace AdaptiveCards.Rendering.Html.Test
             Assert.AreEqual(
                 "<select class='ac-input ac-multichoiceInput' name='1' style='width: 100%;'><option disabled='' hidden='' selected=''/><option value='1'>Value 1</option><option value='2'>Value 2</option><option value='3'>Value 3</option></select>",
                 dropdownGeneratedHtml);
+        }
+
+
+
+        [TestMethod]
+        public void BleedProperty()
+        {
+            var renderContext = new AdaptiveRenderContext(
+                new AdaptiveHostConfig(),
+                new AdaptiveElementRenderers<HtmlTag, AdaptiveRenderContext>());
+
+            renderContext.ElementRenderers.Set<AdaptiveContainer>(TestHtmlRenderer.CallContainerRender);
+            renderContext.RenderArgs.ParentStyle = AdaptiveContainerStyle.Default;
+
+            var containerWithWorkingBleed = new AdaptiveContainer
+            {
+                Style = AdaptiveContainerStyle.Default,
+                Items = new System.Collections.Generic.List<AdaptiveElement>
+                {
+                    new AdaptiveContainer()
+                    {
+                        Style = AdaptiveContainerStyle.Emphasis,
+                        Bleed = true,
+                        Items = new System.Collections.Generic.List<AdaptiveElement>()
+                    }
+                }
+            };
+
+            renderContext.RenderArgs.ParentStyle = AdaptiveContainerStyle.Default;
+
+            var containerWithoutWorkingBleed = new AdaptiveContainer
+            {
+                Style = AdaptiveContainerStyle.Default,
+                Items = new System.Collections.Generic.List<AdaptiveElement>
+                {
+                    new AdaptiveContainer()
+                    {
+                        Style = AdaptiveContainerStyle.Default,
+                        Bleed = true,
+                        Items = new System.Collections.Generic.List<AdaptiveElement>()
+                    }
+                }
+            };
+
+            var workingBleedHtml = TestHtmlRenderer.CallContainerRender(containerWithWorkingBleed, renderContext).ToString();
+            var notWorkingBleedHtml = TestHtmlRenderer.CallContainerRender(containerWithoutWorkingBleed, renderContext).ToString();
+            
+            // Generated HTML should have an additional disabled and hidden option which is selected.
+            Assert.AreEqual(
+                "<div class='ac-container' style='background-color: rgba(255, 255, 255, 1.00);justify-content: flex-start;'><div class='ac-container' style='padding-right: 15px;padding-left: 15px;padding-top: 15px;padding-bottom: 15px;margin-right: -15px;margin-left: -15px;background-color: rgba(0, 0, 0, 0.03);justify-content: flex-start;'></div></div>",
+                workingBleedHtml);
+
+            Assert.AreEqual(
+                "<div class='ac-container' style='background-color: rgba(255, 255, 255, 1.00);justify-content: flex-start;'><div class='ac-container' style='background-color: rgba(255, 255, 255, 1.00);justify-content: flex-start;'></div></div>",
+                notWorkingBleedHtml);
         }
     }
 }
