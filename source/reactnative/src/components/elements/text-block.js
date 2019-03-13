@@ -24,11 +24,16 @@ export class TextBlock extends React.Component {
 
 	render() {
 		let payload = this.props.json;
+
 		let fontStyle = Utils.parseHostConfigEnum(
 			Enums.FontStyle,
 			payload.fontStyle,
 			Enums.FontStyle.Default
 		);
+
+		if (payload.isVisible === false) {
+			return null;
+		}
 
 		return (
 			<ElementWrapper json={payload} style={styles.textContainer}>

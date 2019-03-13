@@ -46,7 +46,66 @@ export default class AdaptiveCards extends React.Component {
 
 		// commonly used styles
 		this.styleConfig = StyleManager.getManager().styles;
+		this.state = {
+			payload: this.payload,
+		};
 	}
+
+	toggleVisibilityForElementWithID = (idArray) => {
+		this.toggleObjectWithIDArray(this.payload, [...idArray]);
+		this.setState({
+			payload: this.payload,
+		})
+	}
+
+	/**
+	 * @description Toggles the visibility of the components by their ids recursively
+	 * @param {Object} object - the object to be searched for ids
+	 * @param {Array} idArrayValue - the array of IDs to be toggled
+	 */
+	toggleObjectWithIDArray = (object, idArrayValue) => {
+		if (idArrayValue.length === 0) return
+		if (object.hasOwnProperty('id') && idArrayValue.includes(object["id"])) {
+			if (!Utils.isNullOrEmpty(object.isVisible)) {
+				object.isVisible = !object.isVisible
+			} else {
+				object.isVisible = false;
+			}
+			var index = idArrayValue.indexOf(object["id"]);
+			if (index !== -1) idArrayValue.splice(index, 1);
+			if (idArrayValue.length === 0) return
+		}
+		Object.keys(object).forEach(element => {
+			if (idArrayValue.length === 0) return
+			if (typeof object[element] == "object") {
+				this.toggleObjectWithIDArray(object[element], idArrayValue);
+			}
+		});
+		return;
+	}
+
+	/**
+	 * @description Comveniece method to toggle the visibility of the component by a single id recursively
+	 * @param {Object} object - the object to be searched for ids
+	 * @param {string} idValue - the id of the component to be toggled
+	 */
+	toggleObjectWithID = (object, idValue) => {
+		if (object.hasOwnProperty('id') && object["id"] == idValue) {
+			if (!Utils.isNullOrEmpty(object.isVisible)) {
+				object.isVisible = !object.isVisible
+			} else {
+				object.isVisible = false;
+			}
+			return;
+		}
+		Object.keys(object).forEach(element => {
+			if (typeof object[element] == "object") {
+				this.toggleObjectWithID(object[element], idValue);
+			}
+		});
+		return;
+	}
+
 
 	/**
 	 * @description Returns the resource information in the card elements as an array
@@ -79,7 +138,7 @@ export default class AdaptiveCards extends React.Component {
 	parsePayload = () => {
 
 		const renderedElement = [];
-		const { body } = this.payload;
+		const { body } = this.state.payload;
 
 		if (!body)
 			return renderedElement;
@@ -92,11 +151,11 @@ export default class AdaptiveCards extends React.Component {
 	getAdaptiveCardConent() {
 		var adaptiveCardContent =
 			(
-				<ContainerWrapper style={styles.container} json={this.payload}>
+				<ContainerWrapper style={styles.container} json={this.state.payload}>
 					<ScrollView alwaysBounceVertical={false} style={{ flexGrow: 0 }}>
 						{this.parsePayload()}
-						{!Utils.isNullOrEmpty(this.payload.actions) &&
-							<ActionWrapper actions={this.payload.actions} />}
+						{!Utils.isNullOrEmpty(this.state.payload.actions) &&
+							<ActionWrapper actions={this.state.payload.actions} />}
 					</ScrollView>
 				</ContainerWrapper>
 			);
@@ -113,7 +172,7 @@ export default class AdaptiveCards extends React.Component {
 	}
 
 	render() {
-		const { addInputItem, inputArray, addResourceInformation } = this;
+		const { addInputItem, inputArray, addResourceInformation, toggleVisibilityForElementWithID } = this;
 		const onExecuteAction = this.onExecuteAction;
 		const isTransparent = this.payload.backgroundImage ? true : false;
 		const onParseError = this.onParseError;
@@ -127,7 +186,7 @@ export default class AdaptiveCards extends React.Component {
 			)
 		}
 		return (
-			<InputContextProvider value={{ lang, addInputItem, inputArray, onExecuteAction, isTransparent, onParseError, addResourceInformation }}>
+			<InputContextProvider value={{ lang, addInputItem, inputArray, onExecuteAction, isTransparent, onParseError, addResourceInformation, toggleVisibilityForElementWithID }}>
 				{
 					this.getAdaptiveCardConent()
 				}
