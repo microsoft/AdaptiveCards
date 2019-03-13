@@ -26,7 +26,13 @@
 }
 
 .ac-input.ac-input-validation-failed {
-  box-shadow: 0px 0px 2px red;
+  border: 1px solid red !important;
+}
+
+.ac-input-validation-error-message {
+  font-size: 12px;
+  color: red;
+  margin-top: 2px;
 }
 
 .ac-input,

@@ -2268,7 +2268,8 @@ export class InputValidationOptions {
 }
 
 export abstract class Input extends CardElement implements Shared.IInput {
-    private _renderedInputElement: HTMLElement;
+    private _outerContainerElement: HTMLElement;
+    private _errorMessageElement: HTMLElement;
 
     protected valueChanged() {
         this.resetValidationFailureCue();
@@ -2276,10 +2277,28 @@ export abstract class Input extends CardElement implements Shared.IInput {
         if (this.onValueChanged) {
             this.onValueChanged(this);
         }
+
+        raiseInputValueChangedEvent(this);
     }
 
     protected resetValidationFailureCue() {
-        this._renderedInputElement.classList.remove("ac-input-validation-failed");
+        this.renderedElement.classList.remove("ac-input-validation-failed");
+
+        if (this._errorMessageElement) {
+            this._outerContainerElement.removeChild(this._errorMessageElement);
+
+            this._errorMessageElement = null;
+        }
+    }
+
+    protected showValidationErrorMessage() {
+        if (AdaptiveCard.displayInputValidationErrors && !Utils.isNullOrEmpty(this.validation.errorMessage)) {
+            this._errorMessageElement = document.createElement("span");
+            this._errorMessageElement.className = "ac-input-validation-error-message";
+            this._errorMessageElement.textContent = this.validation.errorMessage;
+
+            this._outerContainerElement.appendChild(this._errorMessageElement);
+        }
     }
 
     abstract get value(): string;
@@ -2316,7 +2335,9 @@ export abstract class Input extends CardElement implements Shared.IInput {
         let result = this.validation.necessity != Enums.InputValidationNecessity.Optional ? !Utils.isNullOrEmpty(this.value) : true;
 
         if (!result) {
-            this._renderedInputElement.classList.add("ac-input-validation-failed");
+            this.renderedElement.classList.add("ac-input-validation-failed");
+
+            this.showValidationErrorMessage();
         }
 
         return result;
@@ -2336,20 +2357,26 @@ export abstract class Input extends CardElement implements Shared.IInput {
     }
 
     render(): HTMLElement {
-        this._renderedInputElement = super.render();
+        let renderedElement = super.render();
 
         let hostConfig = this.hostConfig;
 
-        let containerElement = document.createElement("div");
-        containerElement.className = hostConfig.makeCssClassName("ac-input-container");
+        this._outerContainerElement = document.createElement("div");
+        this._outerContainerElement.style.display = "flex";
+        this._outerContainerElement.style.flexDirection = "column";
+
+        let innerContainerElement = document.createElement("div");
+        innerContainerElement.className = hostConfig.makeCssClassName("ac-input-container");
 
         if (this.validation.necessity == Enums.InputValidationNecessity.RequiredWithVisualCue) {
-            containerElement.classList.add(hostConfig.makeCssClassName("ac-input-required"));
+            innerContainerElement.classList.add(hostConfig.makeCssClassName("ac-input-required"));
         }
 
-        containerElement.appendChild(this._renderedInputElement);
+        innerContainerElement.appendChild(renderedElement);
 
-        return containerElement;
+        this._outerContainerElement.appendChild(innerContainerElement);
+
+        return this._outerContainerElement;
     }
 
     renderSpeech(): string {
@@ -5537,6 +5564,15 @@ function raiseInlineCardExpandedEvent(action: ShowCardAction, isExpanded: boolea
     }
 }
 
+function raiseInputValueChangedEvent(input: Input) {
+    let card = input.getRootElement() as AdaptiveCard;
+    let onInputValueChangedHandler = (card && card.onInputValueChanged) ? card.onInputValueChanged : AdaptiveCard.onInputValueChanged;
+
+    if (onInputValueChangedHandler) {
+        onInputValueChangedHandler(input);
+    }
+}
+
 function raiseElementVisibilityChangedEvent(element: CardElement, shouldUpdateLayout: boolean = true) {
     let rootElement = element.getRootElement();
 
@@ -5830,6 +5866,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static allowMarkForTextHighlighting: boolean = false;
     static alwaysBleedSeparators: boolean = false;
     static useBuiltInInputValidation: boolean = true;
+    static displayInputValidationErrors: boolean = true;
 
     static readonly elementTypeRegistry = new ElementTypeRegistry();
     static readonly actionTypeRegistry = new ActionTypeRegistry();
@@ -5839,6 +5876,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static onElementVisibilityChanged: (element: CardElement) => void = null;
     static onImageLoaded: (image: Image) => void = null;
     static onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
+    static onInputValueChanged: (input: Input) => void = null;
     static onParseElement: (element: CardElement, json: any, errors?: Array<HostConfig.IValidationError>) => void = null;
     static onParseAction: (element: Action, json: any, errors?: Array<HostConfig.IValidationError>) => void = null;
     static onParseError: (error: HostConfig.IValidationError) => void = null;
@@ -5939,6 +5977,7 @@ export class AdaptiveCard extends ContainerWithActions {
     onElementVisibilityChanged: (element: CardElement) => void = null;
     onImageLoaded: (image: Image) => void = null;
     onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
+    onInputValueChanged: (input: Input) => void = null;
     onParseElement: (element: CardElement, json: any, errors?: Array<HostConfig.IValidationError>) => void = null;
     onParseAction: (element: Action, json: any, errors?: Array<HostConfig.IValidationError>) => void = null;
 
