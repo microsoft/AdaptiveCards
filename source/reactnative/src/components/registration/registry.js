@@ -72,7 +72,8 @@ export class Registry {
 
 		'Action.ShowCard': ActionButton,
 		'Action.Submit': ActionButton,
-		'Action.OpenUrl': ActionButton
+		'Action.OpenUrl': ActionButton,
+		'Action.ToggleVisibility': ActionButton
 	};
 
 	/**
@@ -149,7 +150,10 @@ export class Registry {
 					}
 				}
 				if (isValid) {
-					parsedElement.push(<Element json={element} key={`${element.type}-${index}`} />);
+					if (element.isVisible !== false) {
+						const elementKey = Utils.isNullOrEmpty(element.id) ? `${element.type}-${index}` : `${element.type}-${index}-${element.id}`;
+						parsedElement.push(<Element json={element} key={elementKey} />);
+					}
 				}
 			} else {
 				let error = { "error": Enums.ValidationError.UnknownElementType, "message": `Unknown Type ${element.type} encountered` };

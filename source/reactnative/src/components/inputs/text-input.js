@@ -33,6 +33,8 @@ export class InputText extends React.Component {
 		}
 	}
 
+
+
     /**
      * @description Invoked on every change in Input field
      * @param {string} text

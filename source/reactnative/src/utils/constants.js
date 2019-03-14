@@ -23,6 +23,7 @@ export const NumericString = "numeric";
 export const ActionOpenUrl = "Action.OpenUrl";
 export const ActionSubmit = "Action.Submit";
 export const ActionShowCard = "Action.ShowCard";
+export const ActionToggleVisibility = "Action.ToggleVisibility";
 export const OkText = "OK";
 
 export const CenterString = "center";

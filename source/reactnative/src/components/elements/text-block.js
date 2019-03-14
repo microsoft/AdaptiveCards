@@ -22,6 +22,9 @@ export class TextBlock extends React.Component {
 
 	render() {
 		let payload = this.props.json;
+		if (payload.isVisible === false) {
+			return null;
+		}
 
 		return (
 			<ElementWrapper json={payload} style={styles.textContainer}>

@@ -20,8 +20,6 @@ export class ColumnSet extends React.PureComponent {
 
 	constructor(props) {
 		super(props);
-
-		this.renderedElement = [];
 		this.payload = props.json;
 	}
 
@@ -29,18 +27,19 @@ export class ColumnSet extends React.PureComponent {
      * @description Parse the given payload and render the card accordingly
      */
 	parsePayload = (columnSetJson) => {
+		const renderedElement = [];
 		if (!this.payload)
-			return this.renderedElement;
+			return renderedElement;
 
 		// parse elements
 		columnSetJson.columns.map((element, index) => {
-			this.renderedElement.push(
+			renderedElement.push(
 				<Column json={element}
 					columns={columnSetJson.columns}
 					key={`ELEMENT-${index}`}
 				/>);
 		});
-		return this.renderedElement;
+		return renderedElement;
 	}
 
 	internalRenderer(columnSetJson) {

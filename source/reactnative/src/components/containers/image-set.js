@@ -22,7 +22,6 @@ export class ImageSet extends React.PureComponent {
 	constructor(props) {
 		super(props);
 
-		this.renderedElement = [];
 		this.payload = props.json;
 	}
 
@@ -30,8 +29,9 @@ export class ImageSet extends React.PureComponent {
      * @description Parse the given payload and render the card accordingly
      */
 	parsePayload = (imageSetJson, onParseError) => {
+		const renderedElement = [];
 		if (!this.payload)
-			return this.renderedElement;
+			return renderedElement;
 
 		const register = Registry.getManager();
 		// parse elements 
@@ -41,7 +41,7 @@ export class ImageSet extends React.PureComponent {
 			element[ImageSetKey] = true;
 			const Element = register.getComponentOfType(element.type);
 			if (Element) {
-				this.renderedElement.push(<Element json={element}
+				renderedElement.push(<Element json={element}
 					key={`ELEMENT-${index}`} />);
 			} else {
 				let error = { "error": Enums.ValidationError.UnknownElementType, "message": `Unknown Type ${element.type} encountered` };
@@ -49,7 +49,7 @@ export class ImageSet extends React.PureComponent {
 				return null;
 			}
 		});
-		return this.renderedElement;
+		return renderedElement;
 	}
 
 	internalRenderer(imageSetJson) {

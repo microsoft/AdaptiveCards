@@ -22,8 +22,6 @@ export class Container extends React.Component {
 
 	constructor(props) {
 		super(props);
-
-		this.renderedElement = [];
 		this.payload = props.json;
 		this.selectionActionData = props.json.selectAction;
 	}
@@ -32,13 +30,14 @@ export class Container extends React.Component {
      * @description Parse the given payload and render the card accordingly
      */
 	parsePayload = (containerJson, onParseError) => {
+		const renderedElement = [];
 		if (!this.payload) {
-			return this.renderedElement;
+			return renderedElement;
 		}
 
 		// parse elements
-		this.renderedElement.push(Registry.getManager().parseRegistryComponents(containerJson.items, onParseError));
-		return this.renderedElement;
+		renderedElement.push(Registry.getManager().parseRegistryComponents(containerJson.items, onParseError));
+		return renderedElement;
 	}
 
 	internalRenderer(containerJson) {
