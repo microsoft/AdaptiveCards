@@ -1,0 +1,110 @@
+  {
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Only inner left and right most containers bleed to edges"
+        },
+        {
+            "type": "Container",
+            "style": "emphasis",
+            "items": [
+                {
+                    "type": "ColumnSet",
+                    "style": "default",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "ColumnSet",
+                                    "columns": [
+                                        {
+                                            "type": "Column",
+                                            "items": [
+                                                {
+                                                    "type": "Container",
+                                                    "style": "emphasis",
+                                                    "bleed": true
+                                                }
+                                            ],
+                                            "width": "stretch"
+                                        },
+                                        {
+                                            "type": "Column",
+                                            "items": [
+                                                {
+                                                    "type": "Container",
+                                                    "style": "emphasis",
+                                                    "bleed": true
+                                                }
+                                            ],
+                                            "width": "stretch"
+                                        },
+                                        {
+                                            "type": "Column",
+                                            "items": [
+                                                {
+                                                    "type": "Container",
+                                                    "style": "emphasis"
+                                                }
+                                            ],
+                                            "width": "stretch"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "width": "stretch"
+                        },
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "ColumnSet",
+                                    "columns": [
+                                        {
+                                            "type": "Column",
+                                            "items": [
+                                                {
+                                                    "type": "Container",
+                                                    "style": "emphasis",
+                                                    "bleed": true
+                                                }
+                                            ],
+                                            "width": "stretch"
+                                        },
+                                        {
+                                            "type": "Column",
+                                            "items": [
+                                                {
+                                                    "type": "Container",
+                                                    "style": "emphasis",
+                                                    "bleed": true
+                                                }
+                                            ],
+                                            "width": "stretch"
+                                        },
+                                        {
+                                            "type": "Column",
+                                            "items": [
+                                                {
+                                                    "type": "Container",
+                                                    "style": "emphasis",
+                                                    "bleed": true
+                                                }
+                                            ],
+                                            "width": "stretch"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "width": "stretch"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "2.0"
+}
