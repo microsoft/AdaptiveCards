@@ -25,8 +25,7 @@ namespace AdaptiveNamespace
                                               _In_ IAdaptiveRenderArgs* renderArgs,
                                               _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept try
     {
-        XamlBuilder::BuildTimeInput(cardElement, renderContext, renderArgs, result);
-        return S_OK;
+        return XamlBuilder::BuildTimeInput(cardElement, renderContext, renderArgs, result);
     }
     CATCH_RETURN;
 
