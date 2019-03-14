@@ -34,7 +34,7 @@ using namespace AdaptiveCards;
             [self setBorderColorWithHostConfig:config];
             [self setBorderThicknessWithHostConfig:config];
             [self removeConstraints:self.constraints];
-            //[self applyPadding:config->GetSpacing().paddingSpacing priority:1000];
+            [self applyPadding:config->GetSpacing().paddingSpacing priority:1000];
         }
     }
     return self;
