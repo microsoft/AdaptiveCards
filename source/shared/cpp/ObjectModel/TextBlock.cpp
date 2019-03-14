@@ -11,9 +11,8 @@
 using namespace AdaptiveSharedNamespace;
 
 TextBlock::TextBlock() :
-    BaseCardElement(CardElementType::TextBlock), m_textSize(TextSize::Default), m_textWeight(TextWeight::Default),
-    m_fontStyle(FontStyle::Default), m_textColor(ForegroundColor::Default), m_isSubtle(false), m_wrap(false),
-    m_maxLines(0), m_hAlignment(HorizontalAlignment::Left), m_language()
+    BaseCardElement(CardElementType::TextBlock), m_wrap(false), m_maxLines(0), m_hAlignment(HorizontalAlignment::Left),
+    m_textElementProperties(std::make_shared<TextElementProperties>())
 {
     PopulateKnownPropertiesSet();
 }
@@ -21,26 +20,7 @@ TextBlock::TextBlock() :
 Json::Value TextBlock::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
-
-    if (m_textSize != TextSize::Default)
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size)] = TextSizeToString(m_textSize);
-    }
-
-    if (m_textColor != ForegroundColor::Default)
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color)] = ForegroundColorToString(m_textColor);
-    }
-
-    if (m_textWeight != TextWeight::Default)
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Weight)] = TextWeightToString(m_textWeight);
-    }
-
-    if (m_fontStyle != FontStyle::Default)
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FontStyle)] = FontStyleToString(m_fontStyle);
-    }
+    m_textElementProperties->SerializeToJsonValue(root);
 
     if (m_hAlignment != HorizontalAlignment::Left)
     {
@@ -52,74 +32,67 @@ Json::Value TextBlock::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLines)] = m_maxLines;
     }
 
-    if (m_isSubtle)
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSubtle)] = true;
-    }
-
     if (m_wrap)
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap)] = true;
     }
-
-    root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Text)] = GetText();
 
     return root;
 }
 
 std::string TextBlock::GetText() const
 {
-    return m_text;
+    return m_textElementProperties->GetText();
 }
 
 void TextBlock::SetText(const std::string& value)
 {
-    m_text = value;
+    m_textElementProperties->SetText(value);
 }
 
 DateTimePreparser TextBlock::GetTextForDateParsing() const
 {
-    return DateTimePreparser(m_text);
+    return m_textElementProperties->GetTextForDateParsing();
 }
 
 TextSize TextBlock::GetTextSize() const
 {
-    return m_textSize;
+    return m_textElementProperties->GetTextSize();
 }
 
 void TextBlock::SetTextSize(const TextSize value)
 {
-    m_textSize = value;
+    m_textElementProperties->SetTextSize(value);
 }
 
 TextWeight TextBlock::GetTextWeight() const
 {
-    return m_textWeight;
+    return m_textElementProperties->GetTextWeight();
 }
 
 void TextBlock::SetTextWeight(const TextWeight value)
 {
-    m_textWeight = value;
+    m_textElementProperties->SetTextWeight(value);
 }
 
 FontStyle TextBlock::GetFontStyle() const
 {
-    return m_fontStyle;
+    return m_textElementProperties->GetFontStyle();
 }
 
 void TextBlock::SetFontStyle(const FontStyle value)
 {
-    m_fontStyle = value;
+    m_textElementProperties->SetFontStyle(value);
 }
 
 ForegroundColor TextBlock::GetTextColor() const
 {
-    return m_textColor;
+    return m_textElementProperties->GetTextColor();
 }
 
 void TextBlock::SetTextColor(const ForegroundColor value)
 {
-    m_textColor = value;
+    m_textElementProperties->SetTextColor(value);
 }
 
 bool TextBlock::GetWrap() const
@@ -134,12 +107,12 @@ void TextBlock::SetWrap(const bool value)
 
 bool TextBlock::GetIsSubtle() const
 {
-    return m_isSubtle;
+    return m_textElementProperties->GetIsSubtle();
 }
 
 void TextBlock::SetIsSubtle(const bool value)
 {
-    m_isSubtle = value;
+    m_textElementProperties->SetIsSubtle(value);
 }
 
 unsigned int TextBlock::GetMaxLines() const
@@ -164,12 +137,12 @@ void TextBlock::SetHorizontalAlignment(const HorizontalAlignment value)
 
 std::string TextBlock::GetLanguage() const
 {
-    return m_language;
+    return m_textElementProperties->GetLanguage();
 }
 
 void TextBlock::SetLanguage(const std::string& value)
 {
-    m_language = value;
+    m_textElementProperties->SetLanguage(value);
 }
 
 std::shared_ptr<BaseCardElement> TextBlockParser::Deserialize(ParseContext& context, const Json::Value& json)
@@ -177,20 +150,12 @@ std::shared_ptr<BaseCardElement> TextBlockParser::Deserialize(ParseContext& cont
     ParseUtil::ExpectTypeString(json, CardElementType::TextBlock);
 
     std::shared_ptr<TextBlock> textBlock = BaseCardElement::Deserialize<TextBlock>(context, json);
-    textBlock->SetText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Text, true));
-    textBlock->SetTextSize(ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, TextSize::Default, TextSizeFromString));
-    textBlock->SetTextColor(
-        ParseUtil::GetEnumValue<ForegroundColor>(json, AdaptiveCardSchemaKey::Color, ForegroundColor::Default, ForegroundColorFromString));
-    textBlock->SetTextWeight(
-        ParseUtil::GetEnumValue<TextWeight>(json, AdaptiveCardSchemaKey::TextWeight, TextWeight::Default, TextWeightFromString));
-    textBlock->SetFontStyle(
-        ParseUtil::GetEnumValue<FontStyle>(json, AdaptiveCardSchemaKey::FontStyle, FontStyle::Default, FontStyleFromString));
+    textBlock->m_textElementProperties->Deserialize(context, json);
+
     textBlock->SetWrap(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Wrap, false));
-    textBlock->SetIsSubtle(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsSubtle, false));
     textBlock->SetMaxLines(ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::MaxLines, 0));
     textBlock->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(
         json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
-    textBlock->SetLanguage(context.GetLanguage());
 
     return textBlock;
 }
@@ -202,13 +167,9 @@ std::shared_ptr<BaseCardElement> TextBlockParser::DeserializeFromString(ParseCon
 
 void TextBlock::PopulateKnownPropertiesSet()
 {
-    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Text),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Size),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Color),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::TextWeight),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FontStyle),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsSubtle),
+    m_textElementProperties->PopulateKnownPropertiesSet(m_knownProperties);
+
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLines),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)});
 }

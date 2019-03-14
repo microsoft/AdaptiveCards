@@ -1392,7 +1392,11 @@ namespace AdaptiveNamespace
                         ComPtr<IAdaptiveCard> showCard;
                         THROW_IF_FAILED(showCardAction->get_Card(&showCard));
 
-                        BuildShowCard(showCard.Get(), renderContext, renderArgs, (adaptiveActionSet == nullptr), uiShowCard.GetAddressOf());
+                        BuildShowCard(showCard.Get(),
+                                      renderContext,
+                                      renderArgs,
+                                      (adaptiveActionSet == nullptr),
+                                      uiShowCard.GetAddressOf());
 
                         ComPtr<IPanel> showCardsPanel;
                         THROW_IF_FAILED(showCardsStackPanel.As(&showCardsPanel));
@@ -2140,7 +2144,7 @@ namespace AdaptiveNamespace
             ComPtr<IEllipse> backgroundEllipse =
                 XamlHelpers::CreateXamlClass<IEllipse>(HStringReference(RuntimeClass_Windows_UI_Xaml_Shapes_Ellipse));
 
-            Stretch stretch = (isAspectRatioNeeded) ? Stretch::Stretch_Fill : Stretch::Stretch_UniformToFill;
+            Stretch imageStretch = (isAspectRatioNeeded) ? Stretch::Stretch_Fill : Stretch::Stretch_UniformToFill;
             bool mustHideElement{true};
 
             ComPtr<IInspectable> parentElement;
@@ -2157,18 +2161,16 @@ namespace AdaptiveNamespace
                                 ellipseAsShape.Get(),
                                 isVisible,
                                 &mustHideElement,
-                                stretch);
+                                imageStretch);
 
             ComPtr<IShape> backgroundEllipseAsShape;
             THROW_IF_FAILED(backgroundEllipse.As(&backgroundEllipseAsShape));
 
-            // Set Auto, None, and Stretch to Stretch_UniformToFill. An ellipse set to Stretch_Uniform ends up with size 0.
-            if (size == ABI::AdaptiveNamespace::ImageSize::None || size == ABI::AdaptiveNamespace::ImageSize::Stretch ||
-                size == ABI::AdaptiveNamespace::ImageSize::Auto || hasExplicitMeasurements)
-            {
-                THROW_IF_FAILED(ellipseAsShape->put_Stretch(stretch));
-                THROW_IF_FAILED(backgroundEllipseAsShape->put_Stretch(stretch));
-            }
+            // Set the stretch for the ellipse - this is different to the stretch used for the image brush above.
+            // This will force the ellipse to conform to fit within the confines of its parent.
+            Stretch ellipseStretch = Stretch::Stretch_UniformToFill;
+            THROW_IF_FAILED(ellipseAsShape->put_Stretch(ellipseStretch));
+            THROW_IF_FAILED(backgroundEllipseAsShape->put_Stretch(ellipseStretch));
 
             if (backgroundColor != nullptr)
             {
@@ -2203,7 +2205,7 @@ namespace AdaptiveNamespace
             
             if (backgroundColor != nullptr)
             {
-                // Create a surronding border with solid color background to contain the image
+                // Create a surrounding border with solid color background to contain the image
                 ComPtr<IBorder> border =
                     XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
 
@@ -2249,12 +2251,12 @@ namespace AdaptiveNamespace
         {
             if (pixelWidth)
             {
-                THROW_IF_FAILED(frameworkElement->put_Width(pixelWidth));
+                THROW_IF_FAILED(frameworkElement->put_MaxWidth(pixelWidth));
             }
 
             if (pixelHeight)
             {
-                THROW_IF_FAILED(frameworkElement->put_Height(pixelHeight));
+                THROW_IF_FAILED(frameworkElement->put_MaxHeight(pixelHeight));
             }
         }
         else
@@ -2266,8 +2268,15 @@ namespace AdaptiveNamespace
                 UINT32 imageSize;
                 THROW_IF_FAILED(sizeOptions->get_Small(&imageSize));
 
-                THROW_IF_FAILED(frameworkElement->put_Width(imageSize));
-                THROW_IF_FAILED(frameworkElement->put_Height(imageSize));
+                THROW_IF_FAILED(frameworkElement->put_MaxWidth(imageSize));
+
+                // We don't want to set a max height on the person ellipse as ellipses do not understand preserving
+                // aspect ratio when constrained on both axes. In adaptive cards person images will always be 1:1 aspect
+                // ratio and will always be width constrained (as you can't limit heights in adaptive cards) so only
+                // setting MaxWidth is ok.
+                if (imageStyle != ImageStyle_Person)
+                    THROW_IF_FAILED(frameworkElement->put_MaxHeight(imageSize));
+
                 break;
             }
 
@@ -2276,8 +2285,15 @@ namespace AdaptiveNamespace
                 UINT32 imageSize;
                 THROW_IF_FAILED(sizeOptions->get_Medium(&imageSize));
 
-                THROW_IF_FAILED(frameworkElement->put_Width(imageSize));
-                THROW_IF_FAILED(frameworkElement->put_Height(imageSize));
+                THROW_IF_FAILED(frameworkElement->put_MaxWidth(imageSize));
+
+                // We don't want to set a max height on the person ellipse as ellipses do not understand preserving
+                // aspect ratio when constrained on both axes. In adaptive cards person images will always be 1:1 aspect
+                // ratio and will always be width constrained (as you can't limit heights in adaptive cards) so only
+                // setting MaxWidth is ok.
+                if (imageStyle != ImageStyle_Person)
+                    THROW_IF_FAILED(frameworkElement->put_MaxHeight(imageSize));
+
                 break;
             }
 
@@ -2286,8 +2302,15 @@ namespace AdaptiveNamespace
                 UINT32 imageSize;
                 THROW_IF_FAILED(sizeOptions->get_Large(&imageSize));
 
-                THROW_IF_FAILED(frameworkElement->put_Width(imageSize));
-                THROW_IF_FAILED(frameworkElement->put_Height(imageSize));
+                THROW_IF_FAILED(frameworkElement->put_MaxWidth(imageSize));
+
+                // We don't want to set a max height on the person ellipse as ellipses do not understand preserving
+                // aspect ratio when constrained on both axes. In adaptive cards person images will always be 1:1 aspect
+                // ratio and will always be width constrained (as you can't limit heights in adaptive cards) so only
+                // setting MaxWidth is ok.
+                if (imageStyle != ImageStyle_Person)
+                    THROW_IF_FAILED(frameworkElement->put_MaxHeight(imageSize));
+
                 break;
             }
             }
@@ -3234,7 +3257,6 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(datePickerAsFrameworkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Top));
 
         THROW_IF_FAILED(datePicker.CopyTo(dateInputControl));
-
 
         // Value
         HString hstringValue;

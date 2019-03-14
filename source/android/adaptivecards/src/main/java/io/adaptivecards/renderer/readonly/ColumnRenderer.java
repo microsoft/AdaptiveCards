@@ -42,6 +42,16 @@ public class ColumnRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
+    public void setIsRenderingFirstColumn(boolean isRenderingFirstColumn)
+    {
+        m_isRenderingFirstColumn = isRenderingFirstColumn;
+    }
+
+    public void setIsRenderingLastColumn(boolean isRenderingLastColumn)
+    {
+        m_isRenderingLastColumn = isRenderingLastColumn;
+    }
+
     @Override
     public View render(
             RenderedAdaptiveCard renderedCard,
@@ -70,6 +80,11 @@ public class ColumnRenderer extends BaseCardElementRenderer
         LinearLayout returnedView = new LinearLayout(context);
         returnedView.setOrientation(LinearLayout.VERTICAL);
         returnedView.setTag(new TagContent(column));
+
+        // Add this two for allowing children to bleed
+        returnedView.setClipChildren(false);
+        returnedView.setClipToPadding(false);
+
         if(!baseCardElement.GetIsVisible())
         {
             returnedView.setVisibility(View.GONE);
@@ -159,6 +174,29 @@ public class ColumnRenderer extends BaseCardElementRenderer
             }
         }
 
+        if (column.GetBleed() && column.GetCanBleed())
+        {
+            long padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
+            int leftPadding = 0, rightPadding = 0;
+
+            if (m_isRenderingFirstColumn)
+            {
+                leftPadding = (int)-padding;
+                // Reset the flag just in case
+                setIsRenderingFirstColumn(false);
+            }
+
+            if (m_isRenderingLastColumn)
+            {
+                rightPadding = (int)-padding;
+                // Reset the flag just in case
+                setIsRenderingLastColumn(false);
+            }
+
+            layoutParams.setMargins(leftPadding, 0, rightPadding, 0);
+            returnedView.setLayoutParams(layoutParams);
+        }
+
         if (column.GetSelectAction() != null)
         {
             returnedView.setClickable(true);
@@ -172,4 +210,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
     private static ColumnRenderer s_instance = null;
     private final String g_columnSizeAuto = "auto";
     private final String g_columnSizeStretch = "stretch";
+
+    private boolean m_isRenderingFirstColumn = false;
+    private boolean m_isRenderingLastColumn = false;
 }

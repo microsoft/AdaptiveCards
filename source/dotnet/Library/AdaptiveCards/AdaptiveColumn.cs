@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
@@ -37,15 +38,6 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(null)]
         public string Width { get; set; } // TODO: this should be a ColumnWidth type with implict converter
-
-        /// <summary>
-        ///     The content alignment for the eelment inside the container.
-        /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-#if !NETSTANDARD1_3
-        [XmlElement]
-#endif
-        [DefaultValue(typeof(AdaptiveVerticalContentAlignment), "top")]
-        public AdaptiveVerticalContentAlignment VerticalContentAlignment { get; set; }
+        
     }
 }

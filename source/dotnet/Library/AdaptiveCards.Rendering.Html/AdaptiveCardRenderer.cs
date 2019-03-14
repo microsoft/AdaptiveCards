@@ -70,6 +70,8 @@ namespace AdaptiveCards.Rendering.Html
             ElementRenderers.Set<AdaptiveCard>(AdaptiveCardRender);
 
             ElementRenderers.Set<AdaptiveTextBlock>(TextBlockRender);
+            ElementRenderers.Set<AdaptiveRichTextBlock>(RichTextBlockRender);
+
             ElementRenderers.Set<AdaptiveImage>(ImageRender);
             ElementRenderers.Set<AdaptiveMedia>(MediaRender);
 
@@ -108,7 +110,7 @@ namespace AdaptiveCards.Rendering.Html
             tag.AddClass(GetActionCssClass(action))
                 .Attr("role", "button")
                 .Attr("aria-label", action.Title ?? "")
-                .Attr("tabindex","0");
+                .Attr("tabindex", "0");
 
             ActionTransformers.Apply(action, tag, context);
 
@@ -209,10 +211,10 @@ namespace AdaptiveCards.Rendering.Html
                 {
                     string targetElements = string.Empty;
 
-                    foreach(var targetElementObject in toggleVisibilityAction.TargetElements)
+                    foreach (var targetElementObject in toggleVisibilityAction.TargetElements)
                     {
                         // If the string is not empty, append a comma in preparation to add the new target element
-                        if(!String.IsNullOrWhiteSpace(targetElements))
+                        if (!String.IsNullOrWhiteSpace(targetElements))
                         {
                             targetElements += ",";
                         }
@@ -237,7 +239,7 @@ namespace AdaptiveCards.Rendering.Html
 
                         targetElements += (targetElementId + ":" + targetElementToggleAction);
                     }
-                    
+
                     buttonElement.Attr("data-ac-targetelements", targetElements);
                 }
 
@@ -270,7 +272,7 @@ namespace AdaptiveCards.Rendering.Html
             {
                 cardContainerStyle = card.Style;
             }
-            context.ParentStyle = cardContainerStyle;
+            context.RenderArgs.ParentStyle = cardContainerStyle;
 
             switch (card.VerticalContentAlignment)
             {
@@ -511,7 +513,8 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("display", "flex")
                 .Style("flex-direction", "column");
 
-            var parentContainerStyle = context.ParentStyle;
+            var parentRenderArgs = context.RenderArgs;
+            var elementRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
 
             if (!column.IsVisible)
             {
@@ -523,15 +526,17 @@ namespace AdaptiveCards.Rendering.Html
                 ApplyBackgroundImage(column.BackgroundImage, uiColumn, context);
             }
 
-            if (column.Style != null)
+            bool inheritsStyleFromParent = (column.Style == AdaptiveContainerStyle.None);
+            bool hasPadding = false;
+            if (!inheritsStyleFromParent)
             {
-                ApplyPadding(uiColumn, column, parentContainerStyle, context);
+                hasPadding = ApplyPadding(uiColumn, column, parentRenderArgs, context);
 
                 // Apply background color
                 ContainerStyleConfig containerStyle = context.Config.ContainerStyles.GetContainerStyleConfig(column.Style);
                 uiColumn.Style("background-color", context.GetRGBColor(containerStyle.BackgroundColor));
 
-                context.ForegroundColors = containerStyle.ForegroundColors;
+                elementRenderArgs.ForegroundColors = containerStyle.ForegroundColors;
             }
 
             switch (column.VerticalContentAlignment)
@@ -549,18 +554,15 @@ namespace AdaptiveCards.Rendering.Html
             }
 
             // Modify context outer parent style so padding necessity can be determined
-            AdaptiveContainerStyle containerContainerStyle = column.Style ?? parentContainerStyle;
-            if (containerContainerStyle == AdaptiveContainerStyle.None)
-            {
-                containerContainerStyle = parentContainerStyle;
-            }
-            context.ParentStyle = containerContainerStyle;
+            elementRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : column.Style;
+            elementRenderArgs.HasParentWithPadding = hasPadding;
+            context.RenderArgs = elementRenderArgs;
 
             AddContainerElements(uiColumn, column.Items, null, context);
 
             AddSelectAction(uiColumn, column.SelectAction, context);
 
-            context.ParentStyle = parentContainerStyle;
+            context.RenderArgs = parentRenderArgs;
 
             return uiColumn;
         }
@@ -579,23 +581,22 @@ namespace AdaptiveCards.Rendering.Html
 
             AddSelectAction(uiColumnSet, columnSet.SelectAction, context);
 
-            var parentContainerStyle = context.ParentStyle;
+            var parentRenderArgs = context.RenderArgs;
+            var elementRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
 
-            if (columnSet.Style != null)
+            bool inheritsStyleFromParent = (columnSet.Style == AdaptiveContainerStyle.None);
+            bool hasPadding = false;
+            if (!inheritsStyleFromParent)
             {
-                ApplyPadding(uiColumnSet, columnSet, parentContainerStyle, context);
+                hasPadding = ApplyPadding(uiColumnSet, columnSet, parentRenderArgs, context);
                 // Apply background color
                 var columnSetStyle = context.Config.ContainerStyles.GetContainerStyleConfig(columnSet.Style);
                 uiColumnSet.Style("background-color", context.GetRGBColor(columnSetStyle.BackgroundColor));
             }
 
             // Modify context outer parent style so padding necessity can be determined
-            AdaptiveContainerStyle containerContainerStyle = columnSet.Style ?? parentContainerStyle;
-            if (containerContainerStyle == AdaptiveContainerStyle.None)
-            {
-                containerContainerStyle = parentContainerStyle;
-            }
-            context.ParentStyle = containerContainerStyle;
+            elementRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : columnSet.Style;
+            elementRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
 
             var max = Math.Max(1.0, columnSet.Columns.Select(col =>
             {
@@ -608,8 +609,32 @@ namespace AdaptiveCards.Rendering.Html
                 return 0;
             }).Sum());
 
-            foreach (var column in columnSet.Columns)
+            for (int i = 0; i < columnSet.Columns.Count; ++i)
             {
+                var column = columnSet.Columns[i];
+
+                var columnRenderArgs = new AdaptiveRenderArgs(elementRenderArgs);
+                if (columnSet.Columns.Count == 1)
+                {
+                    columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.Only;
+                }
+                else
+                {
+                    if (i == 0)
+                    {
+                        columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.Begin;
+                    }
+                    else if (i == (columnSet.Columns.Count - 1))
+                    {
+                        columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.End;
+                    }
+                    else
+                    {
+                        columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.Intermediate;
+                    }
+                }
+                context.RenderArgs = columnRenderArgs;
+
                 var uiColumn = context.Render(column);
 
                 // Add horizontal Seperator
@@ -667,7 +692,7 @@ namespace AdaptiveCards.Rendering.Html
                 uiColumnSet.Children.Add(uiColumn);
             }
 
-            context.ParentStyle = parentContainerStyle;
+            context.RenderArgs = parentRenderArgs;
 
             return uiColumnSet;
         }
@@ -690,18 +715,21 @@ namespace AdaptiveCards.Rendering.Html
             }
 
             // Keep track of ContainerStyle.ForegroundColors before Container is rendered
-            var outerStyle = context.ForegroundColors;
-            var parentContainerStyle = context.ParentStyle;
+            var parentRenderArgs = context.RenderArgs;
+            var elementRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
 
-            if (container.Style != null)
+            bool inheritsStyleFromParent = (container.Style == AdaptiveContainerStyle.None);
+            bool hasPadding = false;
+            if (!inheritsStyleFromParent)
             {
-                ApplyPadding(uiContainer, container, parentContainerStyle, context);
+                hasPadding = ApplyPadding(uiContainer, container, parentRenderArgs, context);
                 // Apply background color
                 ContainerStyleConfig containerStyle = context.Config.ContainerStyles.GetContainerStyleConfig(container.Style);
                 uiContainer.Style("background-color", context.GetRGBColor(containerStyle.BackgroundColor));
 
-                context.ForegroundColors = containerStyle.ForegroundColors;
+                elementRenderArgs.ForegroundColors = containerStyle.ForegroundColors;
             }
+            elementRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
 
             switch(container.VerticalContentAlignment)
             {
@@ -718,20 +746,16 @@ namespace AdaptiveCards.Rendering.Html
             }
 
             // Modify context outer parent style so padding necessity can be determined
-            AdaptiveContainerStyle containerContainerStyle = container.Style ?? parentContainerStyle;
-            if (containerContainerStyle == AdaptiveContainerStyle.None)
-            {
-                containerContainerStyle = parentContainerStyle;
-            }
-            context.ParentStyle = containerContainerStyle;
+            elementRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : container.Style;
+            context.RenderArgs = elementRenderArgs;
 
             AddContainerElements(uiContainer, container.Items, null, context);
 
             AddSelectAction(uiContainer, container.SelectAction, context);
 
             // Revert context's value to that of outside the Container
-            context.ForegroundColors = outerStyle;
-            context.ParentStyle = parentContainerStyle;
+            context.RenderArgs = parentRenderArgs;
+
             return uiContainer;
         }
 
@@ -830,18 +854,9 @@ namespace AdaptiveCards.Rendering.Html
                     .Style("max-height", $"{lineHeight * textBlock.MaxLines}px")
                     .Style("overflow", "hidden");
 
-            var setWrapStyleOnParagraph = false;
-            if (textBlock.Wrap == false)
-            {
-                uiTextBlock = uiTextBlock
-                    .Style("white-space", "nowrap");
-                setWrapStyleOnParagraph = true;
-            }
-            else
-            {
-                uiTextBlock = uiTextBlock
-                    .Style("word-wrap", "break-word");
-            }
+            uiTextBlock = textBlock.Wrap ?
+                uiTextBlock.Style("word-wrap", "break-word") :
+                uiTextBlock.Style("white-space", "nowrap");
 
             var textTags = MarkdownToHtmlTagConverter.Convert(RendererUtilities.ApplyTextFunctions(textBlock.Text, context.Lang));
             uiTextBlock.Children.AddRange(textTags);
@@ -860,7 +875,7 @@ namespace AdaptiveCards.Rendering.Html
                         htmlTag.Style("font-family", "'" + fontFamily + "'");
                     }
 
-                    if (setWrapStyleOnParagraph)
+                    if (!textBlock.Wrap)
                     {
                         htmlTag.Style("text-overflow", "ellipsis");
                         htmlTag.Style("overflow", "hidden");
@@ -876,6 +891,115 @@ namespace AdaptiveCards.Rendering.Html
             setParagraphStyles(uiTextBlock);
 
             return uiTextBlock;
+        }
+
+        protected static HtmlTag RichTextBlockRender(AdaptiveRichTextBlock richTextBlock, AdaptiveRenderContext context)
+        {
+            var uiTextBlock = new HtmlTag("div", false)
+                .AddClass($"ac-{richTextBlock.Type.Replace(".", "").ToLower()}")
+                .Attr("name", richTextBlock.Id)
+                .Style("box-sizing", "border-box")
+                .Style("text-align", richTextBlock.HorizontalAlignment.ToString().ToLower());
+
+            if (richTextBlock.Height == AdaptiveHeight.Stretch)
+            {
+                uiTextBlock.Style("flex", "1 1 100%");
+            }
+
+            if (!richTextBlock.IsVisible)
+            {
+                uiTextBlock.Style("display", "none");
+            }
+
+            uiTextBlock = richTextBlock.Wrap ?
+                uiTextBlock.Style("word-wrap", "break-word") :
+                uiTextBlock.Style("white-space", "nowrap");
+
+            Action<HtmlTag> removeParagraphTag = null;
+            removeParagraphTag = (HtmlTag htmlTag) =>
+            {
+                var child = htmlTag.Children[0];
+                if (child.Element?.ToLowerInvariant() == "p")
+                {
+                    var grandChildren = new List<HtmlTag>(child.Children);
+                    htmlTag.Children.Remove(child);
+                    htmlTag.Children.AddRange(grandChildren);
+                }
+            };
+
+            int maxFontSize = 0;
+            foreach (var paragraph in richTextBlock.Paragraphs)
+            {
+                var uiParagraph = new HtmlTag("p");
+                foreach (var inlineRun in paragraph.Inlines)
+                {
+                    // keep track of max font size for MaxLines rendering
+                    var size = inlineRun.Size;
+                    var style = inlineRun.FontStyle;
+                    maxFontSize = Math.Max(maxFontSize, context.Config.GetFontSize(style, size));
+
+                    var uiInlineRun = TextRunRender(inlineRun, context);
+                    removeParagraphTag(uiInlineRun);
+                    uiParagraph.Children.Add(uiInlineRun);
+                }
+                uiTextBlock.Children.Add(uiParagraph);
+            }
+
+            Action<HtmlTag> setParagraphStyles = null;
+            setParagraphStyles = (HtmlTag htmlTag) =>
+            {
+                if (htmlTag.Element?.ToLowerInvariant() == "p")
+                {
+                    htmlTag.Style("margin-top", "0px");
+                    htmlTag.Style("margin-bottom", "0px");
+                    htmlTag.Style("width", "100%");
+
+                    if (!richTextBlock.Wrap)
+                    {
+                        htmlTag.Style("text-overflow", "ellipsis");
+                        htmlTag.Style("overflow", "hidden");
+                    }
+                }
+
+                foreach (var child in htmlTag.Children)
+                {
+                    setParagraphStyles(child);
+                }
+            };
+
+            setParagraphStyles(uiTextBlock);
+
+            if (richTextBlock.MaxLines > 0)
+            {
+                var lineHeight = maxFontSize * 1.33;
+                uiTextBlock = uiTextBlock
+                    .Style("max-height", $"{lineHeight * richTextBlock.MaxLines}px")
+                    .Style("overflow", "hidden");
+
+            }
+
+            return uiTextBlock;
+        }
+
+        protected static HtmlTag TextRunRender(AdaptiveRichTextBlock.AdaptiveParagraph.AdaptiveTextRun textRun, AdaptiveRenderContext context)
+        {
+            string fontFamily = context.Config.GetFontFamily(textRun.FontStyle);
+            int fontSize = context.Config.GetFontSize(textRun.FontStyle, textRun.Size);
+            int weight = context.Config.GetFontWeight(textRun.FontStyle, textRun.Weight);
+
+            // Not sure where this magic value comes from?
+            var lineHeight = fontSize * 1.33;
+
+            var uiTextRun = new HtmlTag("span", true)
+                .AddClass($"ac-{textRun.Type.Replace(".", "").ToLower()}")
+                .Style("color", context.GetColor(textRun.Color, textRun.IsSubtle))
+                .Style("line-height", $"{lineHeight.ToString("F")}px")
+                .Style("font-size", $"{fontSize}px")
+                .Style("font-weight", $"{weight}");
+
+            var textTags = MarkdownToHtmlTagConverter.Convert(RendererUtilities.ApplyTextFunctions(textRun.Text, context.Lang));
+            uiTextRun.Children.AddRange(textTags);
+            return uiTextRun;
         }
 
         protected static HtmlTag ImageRender(AdaptiveImage image, AdaptiveRenderContext context)
@@ -1750,26 +1874,56 @@ namespace AdaptiveCards.Rendering.Html
             }
         }
 
-        private static void ApplyPadding(HtmlTag uiElement, AdaptiveTypedElement element, AdaptiveContainerStyle parentStyle, AdaptiveRenderContext context)
+        private static bool ApplyPadding(HtmlTag uiElement, AdaptiveCollectionElement element, AdaptiveRenderArgs parentRenderArgs, AdaptiveRenderContext context)
         {
             bool canApplyPadding = false;
 
             // AdaptiveColumn inherits from AdaptiveContainer so only one check is required for both
             if (element is AdaptiveContainer container)
             {
-                canApplyPadding = ((container.BackgroundImage != null) || ((container.Style != AdaptiveContainerStyle.None) && (container.Style != parentStyle)));
+                canApplyPadding = ((container.BackgroundImage != null) || ((container.Style != AdaptiveContainerStyle.None) && (container.Style != parentRenderArgs.ParentStyle)));
             }
             else if (element is AdaptiveColumnSet columnSet)
             {
-                canApplyPadding = ((columnSet.Style != AdaptiveContainerStyle.None) && (columnSet.Style != parentStyle));
+                canApplyPadding = ((columnSet.Style != AdaptiveContainerStyle.None) && (columnSet.Style != parentRenderArgs.ParentStyle));
             }
 
             if (canApplyPadding)
             {
                 int padding = context.Config.Spacing.Padding;
-                uiElement.Style("margin-right", padding + "px")
-                    .Style("margin-left", padding + "px");
+                uiElement.Style("padding-right", padding + "px")
+                    .Style("padding-left", padding + "px")
+                    .Style("padding-top", padding + "px")
+                    .Style("padding-bottom", padding + "px");
+
+                if (element.Bleed && context.RenderArgs.HasParentWithPadding)
+                {
+                    // Columns have a special rendering behaviour, only the leftmost and rightmost columns must bleed
+                    if (element is AdaptiveColumn column)
+                    {
+                        if (parentRenderArgs.ColumnRelativePosition == ColumnPositionEnum.Begin)
+                        {
+                            uiElement.Style("margin-left", -padding + "px");
+                        }
+                        else if (parentRenderArgs.ColumnRelativePosition == ColumnPositionEnum.End)
+                        {
+                            uiElement.Style("margin-right", -padding + "px");
+                        }
+                        else if (parentRenderArgs.ColumnRelativePosition == ColumnPositionEnum.Only)
+                        {
+                            uiElement.Style("margin-right", -padding + "px")
+                                    .Style("margin-left", -padding + "px");
+                        }
+                    }
+                    else
+                    {
+                        uiElement.Style("margin-right", -padding + "px")
+                                .Style("margin-left", -padding + "px");
+                    }
+                }
             }
+
+            return canApplyPadding;
         }
     }
 }

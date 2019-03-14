@@ -66,8 +66,7 @@ std::shared_ptr<ToggleVisibilityTarget> ToggleVisibilityTarget::DeserializeFromS
 
 std::string ToggleVisibilityTarget::Serialize()
 {
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
+    return ParseUtil::JsonToString(SerializeToJsonValue());
 }
 
 Json::Value ToggleVisibilityTarget::SerializeToJsonValue()

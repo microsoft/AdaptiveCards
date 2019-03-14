@@ -104,6 +104,13 @@ struct tm {
 #include "../../../shared/cpp/ObjectModel/Media.h"
 #include "../../../shared/cpp/ObjectModel/ToggleVisibilityAction.h"
 #include "../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.h"
+#include "../../../shared/cpp/ObjectModel/UnknownElement.h"
+#include "../../../shared/cpp/ObjectModel/UnknownAction.h"
+#include "../../../shared/cpp/ObjectModel/TextElementProperties.h"
+#include "../../../shared/cpp/ObjectModel/Inline.h"
+#include "../../../shared/cpp/ObjectModel/Paragraph.h"
+#include "../../../shared/cpp/ObjectModel/RichTextBlock.h"
+#include "../../../shared/cpp/ObjectModel/TextRun.h"
 %}
 
 %shared_ptr(AdaptiveCards::BackgroundImage)
@@ -165,6 +172,16 @@ struct tm {
 %shared_ptr(AdaptiveCards::ToggleVisibilityActionParser)
 %shared_ptr(AdaptiveCards::ActionSet)
 %shared_ptr(AdaptiveCards::ActionSetParser)
+%shared_ptr(AdaptiveCards::UnknownElement)
+%shared_ptr(AdaptiveCards::UnknownElementParser)
+%shared_ptr(AdaptiveCards::UnknownAction)
+%shared_ptr(AdaptiveCards::UnknownActionParser)
+%shared_ptr(AdaptiveCards::Inline)
+%shared_ptr(AdaptiveCards::Paragraph)
+%shared_ptr(AdaptiveCards::RichTextBlock)
+%shared_ptr(AdaptiveCards::RichTextBlockParser)
+%shared_ptr(AdaptiveCards::TextRun)
+%shared_ptr(AdaptiveCards::TextElementProperties)
 
 namespace Json {
     %rename(JsonValue) Value;
@@ -627,6 +644,21 @@ namespace Json {
     }
 };
 
+%exception AdaptiveCards::RichTextBlock::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::RichTextBlock {
+    static AdaptiveCards::RichTextBlock *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::RichTextBlock *>(baseCardElement);
+    }
+};
+
 %include "../../../shared/cpp/ObjectModel/pch.h"
 %include "../../../shared/cpp/ObjectModel/EnumMagic.h"
 %include "../../../shared/cpp/ObjectModel/Enums.h"
@@ -672,3 +704,10 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/ToggleVisibilityTarget.h"
 %include "../../../shared/cpp/ObjectModel/ToggleVisibilityAction.h"
 %include "../../../shared/cpp/ObjectModel/ActionSet.h"
+%include "../../../shared/cpp/ObjectModel/UnknownElement.h"
+%include "../../../shared/cpp/ObjectModel/UnknownAction.h"
+%include "../../../shared/cpp/ObjectModel/TextElementProperties.h"
+%include "../../../shared/cpp/ObjectModel/Inline.h"
+%include "../../../shared/cpp/ObjectModel/Paragraph.h"
+%include "../../../shared/cpp/ObjectModel/RichTextBlock.h"
+%include "../../../shared/cpp/ObjectModel/TextRun.h"

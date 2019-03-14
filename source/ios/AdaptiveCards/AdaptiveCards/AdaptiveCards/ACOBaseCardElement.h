@@ -27,6 +27,8 @@ typedef NS_ENUM(NSInteger, ACRCardElementType) {
     ACRChoiceSetInput,
     ACRDateInput,
     ACRNumberInput,
+    ACRRichTextBlock,
+    ACRTextBlock,
     ACRTextInput,
     ACRTimeInput,
     ACRToggleInput,

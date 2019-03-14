@@ -23,6 +23,8 @@ public enum CardElementType {
   ChoiceSetInput,
   DateInput,
   NumberInput,
+  RichTextBlock,
+  TextBlock,
   TextInput,
   TimeInput,
   ToggleInput,

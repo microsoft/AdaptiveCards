@@ -216,7 +216,7 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlElement]
 #endif
-        [DefaultValue(typeof(AdaptiveContainerStyle), "default")]
+        [DefaultValue(typeof(AdaptiveContainerStyle), "none")]
         public AdaptiveContainerStyle Style { get; set; }
 
         /// <summary>

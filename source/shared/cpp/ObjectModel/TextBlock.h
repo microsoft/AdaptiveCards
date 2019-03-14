@@ -6,11 +6,15 @@
 #include <time.h>
 #include "ElementParserRegistration.h"
 #include "DateTimePreparser.h"
+#include "TextElementProperties.h"
 
 namespace AdaptiveSharedNamespace
 {
+    class TextBlockParser;
+
     class TextBlock : public BaseCardElement
     {
+        friend TextBlockParser;
     public:
         TextBlock();
         TextBlock(const TextBlock&) = default;
@@ -53,17 +57,11 @@ namespace AdaptiveSharedNamespace
         std::string GetLanguage() const;
 
     private:
-        std::string m_text;
-        TextSize m_textSize;
-        TextWeight m_textWeight;
-        FontStyle m_fontStyle;
-        ForegroundColor m_textColor;
-        bool m_isSubtle;
         bool m_wrap;
         unsigned int m_maxLines;
         HorizontalAlignment m_hAlignment;
+        std::shared_ptr<TextElementProperties> m_textElementProperties;
         void PopulateKnownPropertiesSet() override;
-        std::string m_language;
     };
 
     class TextBlockParser : public BaseCardElementParser

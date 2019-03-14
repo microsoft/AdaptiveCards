@@ -6,8 +6,7 @@
 
 using namespace AdaptiveSharedNamespace;
 
-Column::Column() :
-    CollectionTypeElement(CardElementType::Column), m_width("Auto"), m_pixelWidth(0)
+Column::Column() : CollectionTypeElement(CardElementType::Column), m_width("Auto"), m_pixelWidth(0)
 {
     PopulateKnownPropertiesSet();
 }
@@ -47,8 +46,7 @@ std::vector<std::shared_ptr<BaseCardElement>>& Column::GetItems()
 
 std::string Column::Serialize() const
 {
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
+    return ParseUtil::JsonToString(SerializeToJsonValue());
 }
 
 Json::Value Column::SerializeToJsonValue() const
@@ -93,7 +91,6 @@ std::shared_ptr<Column> Column::Deserialize(ParseContext& context, const Json::V
     }
 
     column->SetWidth(columnWidth);
-
 
     return column;
 }

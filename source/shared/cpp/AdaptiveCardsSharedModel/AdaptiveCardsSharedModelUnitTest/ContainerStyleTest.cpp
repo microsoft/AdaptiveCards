@@ -2,6 +2,7 @@
 #include "Container.h"
 #include "Column.h"
 #include "ColumnSet.h"
+#include "ParseUtil.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
@@ -69,7 +70,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::IsTrue(container2->GetPadding());
         }
 
-        TEST_METHOD(ColunmContainerStyleTest)
+        TEST_METHOD(ColumnContainerStyleTest)
         {
             std::string testJsonString {R"(
             {
@@ -153,7 +154,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::shared_ptr<Column> column2 = std::static_pointer_cast<Column>(columns.at(2));
             Assert::IsTrue(column2->GetStyle() == ContainerStyle::Emphasis);
 
-            auto items = column2->GetItems(); 
+            auto items = column2->GetItems();
             std::shared_ptr<Container> container1 = std::static_pointer_cast<Container>(items.at(1));
             Assert::IsTrue(container1->GetStyle() == ContainerStyle::None);
             Assert::IsFalse(container1->GetPadding());
@@ -278,13 +279,14 @@ namespace AdaptiveCardsSharedModelUnitTest
             };
 
             std::vector<std::shared_ptr<Container>> containers{};
-            Json::FastWriter writer;
             for(auto json : testJsonStrings) {
                 std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(json, "1.2");
-                auto expectedString = writer.write(ParseUtil::GetJsonValueFromString(json));
-                auto serializedCardAsString = writer.write(parseResult->GetAdaptiveCard()->SerializeToJsonValue());
-                Assert::AreEqual(expectedString.substr(0, expectedString.size() - 1),
-                    serializedCardAsString.substr(0, serializedCardAsString.size() - 1));
+                const auto expectedValue = ParseUtil::GetJsonValueFromString(json);
+                auto expectedString = ParseUtil::JsonToString(expectedValue);
+                const auto serializedCard = parseResult->GetAdaptiveCard()->SerializeToJsonValue();
+                auto serializedCardAsString = ParseUtil::JsonToString(serializedCard);
+                Assert::AreEqual(expectedString, serializedCardAsString);
+                Assert::IsTrue(expectedValue == serializedCard);
             }
         }
 
@@ -352,7 +354,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::shared_ptr<Column> column1 = std::static_pointer_cast<Column>(columns.at(0));
             Assert::IsTrue(column1->GetStyle() == ContainerStyle::Emphasis);
 
-            auto items = column1->GetItems(); 
+            auto items = column1->GetItems();
             std::shared_ptr<Container> container1 = std::static_pointer_cast<Container>(items.back());
             Assert::IsTrue(container1->GetStyle() == ContainerStyle::Default);
             Assert::IsFalse(container1->GetCanBleed());

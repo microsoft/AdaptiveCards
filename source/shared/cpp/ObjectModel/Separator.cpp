@@ -27,8 +27,7 @@ std::shared_ptr<Separator> Separator::DeserializeFromString(const std::string& j
 
 std::string Separator::Serialize()
 {
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
+    return ParseUtil::JsonToString(SerializeToJsonValue());
 }
 
 Json::Value Separator::SerializeToJsonValue()

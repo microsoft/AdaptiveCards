@@ -180,6 +180,10 @@ public class CardRendererRegistration
         layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
         layout.setOrientation(LinearLayout.VERTICAL);
 
+        // Add this two for allowing children to bleed
+        layout.setClipChildren(false);
+        layout.setClipToPadding(false);
+
         VerticalContentAlignment verticalContentAlignment = VerticalContentAlignment.Top;
 
         if(tag instanceof BaseCardElement)

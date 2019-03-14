@@ -7,6 +7,8 @@
 #include "RemoteResourceInformation.h"
 #include "BaseElement.h"
 
+void HandleUnknownProperties(const Json::Value& json, const std::unordered_set<std::string>& knownProperties, Json::Value& unknownProperties);
+
 namespace AdaptiveSharedNamespace
 {
     class BaseActionElement : public BaseElement
@@ -65,14 +67,8 @@ namespace AdaptiveSharedNamespace
         baseActionElement->SetSentiment(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Sentiment, defaultSentiment, false));
 
         // Walk all properties and put any unknown ones in the additional properties json
-        for (auto it = json.begin(); it != json.end(); ++it)
-        {
-            std::string key = it.key().asCString();
-            if (baseActionElement->m_knownProperties.find(key) == baseActionElement->m_knownProperties.end())
-            {
-                baseActionElement->m_additionalProperties[key] = *it;
-            }
-        }
+        HandleUnknownProperties(json, baseActionElement->m_knownProperties, baseActionElement->m_additionalProperties);
+
         return cardElement;
     }
 }
