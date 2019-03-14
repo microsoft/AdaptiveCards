@@ -1,4 +1,4 @@
-  {
+{
     "type": "AdaptiveCard",
     "body": [
         {
@@ -25,6 +25,12 @@
                                                 {
                                                     "type": "Container",
                                                     "style": "emphasis",
+                                                    "items": [
+                                                        {
+                                                            "type": "TextBlock",
+                                                            "text": "Should Bleed"
+                                                        }
+                                                    ],
                                                     "bleed": true
                                                 }
                                             ],
@@ -36,6 +42,12 @@
                                                 {
                                                     "type": "Container",
                                                     "style": "emphasis",
+                                                    "items": [
+                                                        {
+                                                            "type": "TextBlock",
+                                                            "text": "New TextBlock"
+                                                        }
+                                                    ],
                                                     "bleed": true
                                                 }
                                             ],
@@ -46,7 +58,13 @@
                                             "items": [
                                                 {
                                                     "type": "Container",
-                                                    "style": "emphasis"
+                                                    "style": "emphasis",
+                                                    "items": [
+                                                        {
+                                                            "type": "TextBlock",
+                                                            "text": "New TextBlock"
+                                                        }
+                                                    ]
                                                 }
                                             ],
                                             "width": "stretch"
@@ -68,6 +86,12 @@
                                                 {
                                                     "type": "Container",
                                                     "style": "emphasis",
+                                                    "items": [
+                                                        {
+                                                            "type": "TextBlock",
+                                                            "text": "New TextBlock"
+                                                        }
+                                                    ],
                                                     "bleed": true
                                                 }
                                             ],
@@ -79,6 +103,12 @@
                                                 {
                                                     "type": "Container",
                                                     "style": "emphasis",
+                                                    "items": [
+                                                        {
+                                                            "type": "TextBlock",
+                                                            "text": "New TextBlock"
+                                                        }
+                                                    ],
                                                     "bleed": true
                                                 }
                                             ],
@@ -90,6 +120,12 @@
                                                 {
                                                     "type": "Container",
                                                     "style": "emphasis",
+                                                    "items": [
+                                                        {
+                                                            "type": "TextBlock",
+                                                            "text": "New TextBlock"
+                                                        }
+                                                    ],
                                                     "bleed": true
                                                 }
                                             ],
@@ -106,5 +142,5 @@
         }
     ],
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "version": "2.0"
+    "version": "1.1"
 }

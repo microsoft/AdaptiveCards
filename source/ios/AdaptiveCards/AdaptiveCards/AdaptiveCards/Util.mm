@@ -32,8 +32,16 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
                 InternalId internalId = collection->GetParentalId();
                 ACRContentStackView *view = (ACRContentStackView *)[rootView getBleedTarget:internalId];
                 if (view) {
-                    //[container.leadingAnchor constraintEqualToAnchor:view.leadingAnchor].active = YES;
-                    //[container.trailingAnchor constraintEqualToAnchor:view.trailingAnchor].active = YES;
+                    auto direction = collection->GetBleedDirection();
+                    if (direction == ContainerBleedDirection::BleedToLeading ||
+                        direction == ContainerBleedDirection::BleedToBothEdges) {
+                        [container.leadingAnchor constraintEqualToAnchor:view.leadingAnchor].active = YES;
+                    }
+                    
+                    if (direction == ContainerBleedDirection::BleedToTrailing ||
+                        direction == ContainerBleedDirection::BleedToBothEdges) {
+                        [container.trailingAnchor constraintEqualToAnchor:view.trailingAnchor].active = YES;
+                    }
                 }
             }
         }
