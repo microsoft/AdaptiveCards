@@ -7,6 +7,7 @@
 
 #import "Util.h"
 #import "ACRContentStackView.h"
+#import "ACOHostConfigPrivate.h"
 
 using namespace AdaptiveCards;
 
@@ -17,21 +18,23 @@ void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visi
     view.tag = hashkey.hash;
 }
 
-void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem, ACRContentStackView *container)
+void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem, ACRContentStackView *container, ACOHostConfig *acoConfig)
 {
     std::shared_ptr<CollectionTypeElement> collection = std::dynamic_pointer_cast<CollectionTypeElement>(elem);
     if (collection) {
 
         [rootView updatePaddingMap:collection view:container];
 
-        if (collection->GetCanBleed()) {
-            InternalId internalId = collection->GetParentalId();
-            ACRContentStackView *view = (ACRContentStackView *)[rootView getBleedTarget:internalId];
-            if (view) {
-                [container removeConstraints:container.widthconstraint];
-                //[view removeConstraints:view.widthconstraint];
-                [container.layoutMarginsGuide.leadingAnchor constraintEqualToAnchor:view.leadingAnchor].active = YES;
-                [container.trailingAnchor constraintEqualToAnchor:view.trailingAnchor].active = YES;
+        if (collection->GetPadding()) {
+            std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
+            [container applyPadding:config->GetSpacing().paddingSpacing priority:1000];
+            if (collection->GetCanBleed()) {
+                InternalId internalId = collection->GetParentalId();
+                ACRContentStackView *view = (ACRContentStackView *)[rootView getBleedTarget:internalId];
+                if (view) {
+                    //[container.leadingAnchor constraintEqualToAnchor:view.leadingAnchor].active = YES;
+                    //[container.trailingAnchor constraintEqualToAnchor:view.trailingAnchor].active = YES;
+                }
             }
         }
     }

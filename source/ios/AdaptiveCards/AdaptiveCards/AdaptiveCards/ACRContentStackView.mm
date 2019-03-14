@@ -34,7 +34,7 @@ using namespace AdaptiveCards;
             [self setBorderColorWithHostConfig:config];
             [self setBorderThicknessWithHostConfig:config];
             [self removeConstraints:self.constraints];
-            [self applyPadding:config->GetSpacing().paddingSpacing priority:1000];
+            //[self applyPadding:config->GetSpacing().paddingSpacing priority:1000];
         }
     }
     return self;
@@ -190,7 +190,7 @@ using namespace AdaptiveCards;
                                                                  options:0
                                                                  metrics:nil
                                                                    views:dictionary];
-    
+
     [self addConstraints:_widthconstraint];
     [self addConstraints:vertConst];
 }
@@ -202,7 +202,7 @@ using namespace AdaptiveCards;
 
 - (void)layoutSubviews
 {
-    [super layoutSubviews];    
+    [super layoutSubviews];
 
     if (_isActionSet) {
         float accumulatedWidth = 0, accumulatedHeight = 0, spacing = self.stackView.spacing, maxWidth = 0, maxHeight = 0;
@@ -224,7 +224,7 @@ using namespace AdaptiveCards;
         }
 
         if (contentWidth > self.frame.size.width) {
-            [self removeConstraints:_widthconstraint]; 
+            [self removeConstraints:_widthconstraint];
         }
     }
 }
