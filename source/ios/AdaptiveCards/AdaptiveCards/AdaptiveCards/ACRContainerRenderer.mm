@@ -41,8 +41,8 @@
     ACRColumnView *container = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)containerElem->GetStyle()
                                                         parentStyle:[viewGroup style] hostConfig:acoConfig superview:viewGroup];
     [viewGroup addArrangedSubview:container];
-    
-    configBleed(rootView, elem, container);
+
+    configBleed(rootView, elem, container, acoConfig);
 
     UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
     if(containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom){

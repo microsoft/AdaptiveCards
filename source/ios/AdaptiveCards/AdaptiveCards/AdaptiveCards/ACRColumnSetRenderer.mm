@@ -47,7 +47,9 @@
                                                                   parentStyle:[viewGroup style]
                                                                    hostConfig:acoConfig
                                                                     superview:viewGroup];
-    configBleed(rootView, elem, columnSetView);
+    [viewGroup addArrangedSubview:columnSetView];
+
+    configBleed(rootView, elem, columnSetView, acoConfig);
 
     [columnSetView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 
@@ -139,7 +141,6 @@
     if([constraints count]) {
         [columnSetView addConstraints:constraints];
     }
-    [viewGroup addArrangedSubview:columnSetView];
 
     std::shared_ptr<BaseActionElement> selectAction = columnSetElem->GetSelectAction();
     // instantiate and add long press gesture recognizer

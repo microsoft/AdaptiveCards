@@ -26,4 +26,7 @@
 - (void)adjustHuggingForLastElement;
 
 - (void)addTarget:(nonnull NSObject *)target;
+
+- (void)applyPadding:(unsigned int)padding priority:(unsigned int)priority;
+
 @end
