@@ -64,16 +64,20 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
 
     size_t currentIndex = 0;
 
-    // only Lc (LeftChild) & Rc (RightChild) get Padding
-    // lc inherites bleedToLeading from parent who is Lc and bleedToLeading
-    // or parent is BleedToBothEdges
-    // same applies to Rc
-    ContainerBleedState previousBleedState = context.GetBleedState();
+    // Child's bleed get more restricted as we walk down the tree
+    // until padding is reset
+    // padding get rested when padding is added to a collection type element
+    // only left child LC or right child RC have access to the padding of their parents
+    // but if parent also has restriction such as BleedToLeft and BleedToRight,
+    // only child that has same restriction get bleed property
+    // for example, if inherited bleed state was BleedToLeft, only LC gets the bleed,
+    // the rest of children cannot bleed.
+    ContainerBleedDirection previousBleedState = context.GetBleedDirection();
 
     if (elemSize == 1)
     {
         // items in signle column has no restriction
-        context.SetBleedState(ContainerBleedState::BleedToBothEdges);
+        context.SetBleedDirection(previousBleedState);
     }
 
     // Deserialize every element in the array
@@ -84,14 +88,28 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
         {
             if (currentIndex == 0)
             {
-                context.SetBleedState(ContainerBleedState::BleedToLeading);
+                if (previousBleedState == ContainerBleedDirection::BleedToBothEdges)
+                {
+                    context.SetBleedDirection(ContainerBleedDirection::BleedToLeading);
+                }
+                else if (previousBleedState != ContainerBleedDirection::BleedToLeading)
+                {
+                    context.SetBleedDirection(ContainerBleedDirection::BleedRestricted);
+                }
             }
             else if (currentIndex == endElemIndex)
             {
-                context.SetBleedState(ContainerBleedState::BleedToTrailing);
+                if (previousBleedState == ContainerBleedDirection::BleedToBothEdges)
+                {
+                    context.SetBleedDirection(ContainerBleedDirection::BleedToTrailing);
+                }
+                else if (previousBleedState != ContainerBleedDirection::BleedToTrailing)
+                {
+                    context.SetBleedDirection(ContainerBleedDirection::BleedRestricted);
+                }
             } else
             {
-                context.SetBleedState(ContainerBleedState::BleedRestricted);
+                context.SetBleedDirection(ContainerBleedDirection::BleedRestricted);
             }
         }
 
@@ -101,7 +119,7 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
         {
             elements.push_back(el);
             // restores the parent's bleed state
-            context.SetBleedState(previousBleedState);
+            context.SetBleedDirection(previousBleedState);
         }
         ++currentIndex;
     }

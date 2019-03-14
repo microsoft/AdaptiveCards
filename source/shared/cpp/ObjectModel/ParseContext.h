@@ -36,12 +36,12 @@ namespace AdaptiveSharedNamespace
             const std::shared_ptr<CollectionTypeElement>& current);
         void RestoreContextForCollectionTypeElement(
             const std::shared_ptr<CollectionTypeElement>& current);
-        ContainerBleedState GetBleedState() const { return m_currentBleedState; }
-        void SetBleedState(const ContainerBleedState state) { m_currentBleedState = state; }
+        ContainerBleedDirection GetBleedDirection() const { return m_currentBleedDirection; }
+        void SetBleedDirection(const ContainerBleedDirection direction) { m_currentBleedDirection = direction; }
 
     private:
-        void SetPreviousBleedState(const ContainerBleedState state) { m_previousBleedState = state; }
-        ContainerBleedState GetPreviousBleedState() const { return m_previousBleedState; }
+        void SetPreviousBleedState(const ContainerBleedDirection state) { m_previousBleedDirection = state; }
+        ContainerBleedDirection GetPreviousBleedState() const { return m_previousBleedDirection; }
 
         const AdaptiveSharedNamespace::InternalId GetNearestFallbackId(const AdaptiveSharedNamespace::InternalId& skipId) const;
         // This enum is just a helper to keep track of the position of contents within the std::tuple used in
@@ -71,8 +71,8 @@ namespace AdaptiveSharedNamespace
         std::vector<AdaptiveSharedNamespace::InternalId> m_parentalPadding;
 
         ContainerStyle m_parentalContainerStyle;
-        ContainerBleedState m_currentBleedState;
-        ContainerBleedState m_previousBleedState;
+        ContainerBleedDirection m_currentBleedDirection;
+        ContainerBleedDirection m_previousBleedDirection;
 
         std::string m_language;
     };

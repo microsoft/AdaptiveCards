@@ -348,7 +348,10 @@ namespace AdaptiveSharedNamespace
         Good,
         Attention,
         Warning,
-        Accent
+        Accent,
+        // this is different from None, None is a style while NotSet isn't a style
+        // add a new style enums to above NotSet
+        NotSet
     };
     DECLARE_ADAPTIVECARD_ENUM(ContainerStyle);
 
@@ -392,7 +395,7 @@ namespace AdaptiveSharedNamespace
     };
     // No mapping to string needed
 
-    enum class ContainerBleedState
+    enum class ContainerBleedDirection
     {
         BleedRestricted = 0,
         BleedToLeading,
