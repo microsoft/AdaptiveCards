@@ -25,12 +25,6 @@ export class TextBlock extends React.Component {
 	render() {
 		let payload = this.props.json;
 
-		let fontStyle = Utils.parseHostConfigEnum(
-			Enums.FontStyle,
-			payload.fontStyle,
-			Enums.FontStyle.Default
-		);
-
 		if (payload.isVisible === false) {
 			return null;
 		}
@@ -43,7 +37,7 @@ export class TextBlock extends React.Component {
 					weight={payload.weight}
 					color={payload.color}
 					isSubtle={payload.isSubtle}
-					fontStyle={fontStyle}
+					fontStyle={payload.fontStyle}
 					wrap={payload.wrap}
 					align={payload.horizontalAlignment}
 					maxLines={payload.maxLines}

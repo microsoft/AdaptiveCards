@@ -48,32 +48,36 @@ export class Label extends React.Component {
      * @description Parse the host config specific props 
      */
 	getComputedStyle = () => {
-		let { size, weight, color, isSubtle, fontStyle, align } = this.props;
+		const { size, weight, color, isSubtle, fontStyle, align } = this.props;
 
-		let fontStyleValue =  (fontStyle === Enums.FontStyle.Default || fontStyle === undefined ) ?  Enums.FontStyle.Default : Enums.FontStyle.Monospace;
+		const fontStyleValue = this.hostConfig.getTextFontStyle(Utils.parseHostConfigEnum(
+			Enums.FontStyle,
+			fontStyle,
+			Enums.FontStyle.Default
+		));
 
-		let fontSize = this.hostConfig.getTextFontSize(Utils.parseHostConfigEnum(
+		const fontSize = this.hostConfig.getTextFontSize(Utils.parseHostConfigEnum(
 			Enums.TextSize,
 			size,
 			Enums.TextSize.Default
-		),fontStyleValue);
+		), fontStyleValue);
 
-		let fontWeight = this.hostConfig.getTextFontWeight(Utils.parseHostConfigEnum(
+		const fontWeight = this.hostConfig.getTextFontWeight(Utils.parseHostConfigEnum(
 			Enums.TextWeight,
 			weight,
 			Enums.TextWeight.Default
-		),fontStyleValue);
-		
-		let fontFamilyValue = this.hostConfig.getTextFontFamily(fontStyleValue);
+		), fontStyleValue);
 
-		let colorDefinition = this.hostConfig.getTextColor(Utils.parseHostConfigEnum(
+		const fontFamilyValue = fontStyleValue.fontFamily;
+
+		const colorDefinition = this.hostConfig.getTextColor(Utils.parseHostConfigEnum(
 			Enums.TextColor,
 			color,
 			Enums.TextColor.Default
 		));
-		let colorValue = isSubtle ? colorDefinition.subtle : colorDefinition.default;
+		const colorValue = isSubtle ? colorDefinition.subtle : colorDefinition.default;
 
-		let textAlign = this.hostConfig.getTextAlignment(Utils.parseHostConfigEnum(
+		const textAlign = this.hostConfig.getTextAlignment(Utils.parseHostConfigEnum(
 			Enums.HorizontalAlignment,
 			align,
 			Enums.HorizontalAlignment.Left

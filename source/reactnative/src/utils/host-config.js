@@ -550,28 +550,38 @@ export class HostConfig {
 	}
 
 	/**
+	 * @param {string} fontStyle 
+	 */
+	getTextFontStyle = (fontStyle) => {
+
+		switch (fontStyle) {
+			case Enums.FontStyle.Default: 
+				return this.fontStyles.default;
+			case Enums.FontStyle.Monospace: 
+				return this.fontStyles.monospace;
+			default: 
+				return this.fontStyles.default;
+		}
+	}
+
+	/**
 	 * @param {string} fontSize 
 	 */
 	getTextFontSize = (fontSize, fontStyle) => {
+
 		switch (fontSize) {
 			case Enums.TextSize.Small:
-				return (fontStyle === Enums.FontStyle.Default) ?
-					this.fontStyles.default.fontSizes.small : this.fontStyles.monospace.fontSizes.small;
+				return fontStyle.fontSizes.small;
 			case Enums.TextSize.Default:
-				return (fontStyle === Enums.FontStyle.Default) ?
-					this.fontStyles.default.fontSizes.default : this.fontStyles.monospace.fontSizes.default;
+				return fontStyle.fontSizes.default;
 			case Enums.TextSize.Medium:
-				return (fontStyle === Enums.FontStyle.Default) ?
-					this.fontStyles.default.fontSizes.medium : this.fontStyles.monospace.fontSizes.medium;
+				return fontStyle.fontSizes.medium;
 			case Enums.TextSize.Large:
-				return (fontStyle === Enums.FontStyle.Default) ?
-					this.fontStyles.default.fontSizes.large : this.fontStyles.monospace.fontSizes.large;
+				return fontStyle.fontSizes.large;
 			case Enums.TextSize.ExtraLarge:
-				return (fontStyle === Enums.FontStyle.Default) ?
-					this.fontStyles.default.fontSizes.extraLarge : this.fontStyles.monospace.fontSizes.extraLarge;
+				return fontStyle.fontSizes.extraLarge;
 			default:
-				return (fontStyle === Enums.FontStyle.Default) ?
-					this.fontStyles.default.fontSizes.default : this.fontStyles.monospace.fontSizes.default;
+				return fontStyle.fontSizes.default;
 		}
 	}
 
@@ -581,32 +591,13 @@ export class HostConfig {
 	getTextFontWeight = (weight, fontStyle) => {
 		switch (weight) {
 			case Enums.TextWeight.Lighter:
-				return (fontStyle === Enums.FontStyle.Default) ?
-					this.fontStyles.default.fontWeights.lighter : this.fontStyles.monospace.fontWeights.lighter;
+				return fontStyle.fontWeights.lighter;
 			case Enums.TextWeight.Default:
-				return (fontStyle === Enums.FontStyle.Default) ?
-					this.fontStyles.default.fontWeights.default : this.fontStyles.monospace.fontWeights.default;
+				return fontStyle.fontWeights.default;
 			case Enums.TextWeight.Bolder:
-				return (fontStyle === Enums.FontStyle.Default) ?
-					this.fontStyles.default.fontWeights.bolder : this.fontStyles.monospace.fontWeights.bolder;
-
+				return fontStyle.fontWeights.bolder;
 			default:
-				return (fontStyle === Enums.FontStyle.Default) ?
-					this.fontStyles.default.fontWeights.default : this.fontStyles.monospace.fontWeights.default;
-		}
-	}
-
-	/**
- * @param {string} family
- */
-	getTextFontFamily = (fontStyle) => {
-		switch (fontStyle) {
-			case Enums.FontStyle.Default:
-				return this.fontStyles.default.fontFamily;
-			case Enums.FontStyle.Monospace:
-				return this.fontStyles.monospace.fontFamily;
-			default:
-				return this.fontStyles.default.fontFamily;
+				return fontStyle.fontWeights.default;
 		}
 	}
 
@@ -629,7 +620,6 @@ export class HostConfig {
 				return this.containerStyles.default.foregroundColors.warning;
 			case Enums.TextColor.Default:
 				return this.containerStyles.default.foregroundColors.default;
-
 			default:
 				return this.containerStyles.default.foregroundColors.default;
 		}
