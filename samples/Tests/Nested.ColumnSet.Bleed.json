@@ -2,15 +2,21 @@
     "type": "AdaptiveCard",
     "body": [
         {
+            "type": "TextBlock",
+            "text": "Sub Columns marked with Y or N indicate whether they should bleed.\nThe sub column should take up the parent's padding. The parent's padding is makred with \"Has Padding\"",
+            "wrap": true
+        },
+        {
             "type": "ColumnSet",
-            "style": "default",
+            "style": "emphasis",
             "columns": [
                 {
                     "type": "Column",
-                    "style": "emphasis",
+                    "style": "default",
                     "items": [
                         {
                             "type": "TextBlock",
+                            "horizontalAlignment": "Center",
                             "text": "Has Padding",
                             "wrap": true
                         },
@@ -19,11 +25,14 @@
                             "columns": [
                                 {
                                     "type": "Column",
-                                    "style": "default",
+                                    "horizontalAlignment": "Center",
+                                    "style": "emphasis",
                                     "items": [
                                         {
                                             "type": "TextBlock",
-                                            "text": "Bleed\n"
+                                            "horizontalAlignment": "Center",
+                                            "text": "Y",
+                                            "wrap": true
                                         }
                                     ],
                                     "bleed": true,
@@ -31,11 +40,13 @@
                                 },
                                 {
                                     "type": "Column",
-                                    "style": "default",
+                                    "style": "emphasis",
                                     "items": [
                                         {
                                             "type": "TextBlock",
-                                            "text": "Not Bleed"
+                                            "horizontalAlignment": "Center",
+                                            "text": "N",
+                                            "wrap": true
                                         }
                                     ],
                                     "bleed": true,
@@ -43,11 +54,12 @@
                                 },
                                 {
                                     "type": "Column",
-                                    "style": "default",
+                                    "style": "emphasis",
                                     "items": [
                                         {
                                             "type": "TextBlock",
-                                            "text": "Bleed"
+                                            "horizontalAlignment": "Center",
+                                            "text": "Y"
                                         }
                                     ],
                                     "bleed": true,
@@ -60,10 +72,11 @@
                 },
                 {
                     "type": "Column",
-                    "style": "emphasis",
+                    "style": "default",
                     "items": [
                         {
                             "type": "TextBlock",
+                            "horizontalAlignment": "Center",
                             "text": "Has Padding",
                             "wrap": true
                         },
@@ -75,11 +88,13 @@
                                     "items": [
                                         {
                                             "type": "Container",
-                                            "style": "default",
+                                            "style": "emphasis",
                                             "items": [
                                                 {
                                                     "type": "TextBlock",
-                                                    "text": "New TextBlock"
+                                                    "horizontalAlignment": "Center",
+                                                    "text": "Y",
+                                                    "wrap": true
                                                 }
                                             ],
                                             "bleed": true
@@ -92,11 +107,13 @@
                                     "items": [
                                         {
                                             "type": "Container",
-                                            "style": "default",
+                                            "style": "emphasis",
                                             "items": [
                                                 {
                                                     "type": "TextBlock",
-                                                    "text": "New TextBlock"
+                                                    "horizontalAlignment": "Center",
+                                                    "text": "N",
+                                                    "wrap": true
                                                 }
                                             ],
                                             "bleed": true
@@ -109,14 +126,15 @@
                                     "items": [
                                         {
                                             "type": "Container",
-                                            "style": "default",
+                                            "style": "emphasis",
                                             "items": [
                                                 {
                                                     "type": "TextBlock",
-                                                    "text": "New TextBlock"
+                                                    "horizontalAlignment": "Center",
+                                                    "text": "N",
+                                                    "wrap": true
                                                 }
-                                            ],
-                                            "bleed": true
+                                            ]
                                         }
                                     ],
                                     "width": "stretch"

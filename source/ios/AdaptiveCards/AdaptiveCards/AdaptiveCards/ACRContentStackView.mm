@@ -195,6 +195,14 @@ using namespace AdaptiveCards;
     [self addConstraints:vertConst];
 }
 
+- (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *)target
+    direction:(ACRBleedDirection)direction
+{
+    [self removeConstraints:_widthconstraint];
+    // new width will be bleed target - padding left and right
+    [self.stackView.widthAnchor constraintEqualToAnchor:target.widthAnchor constant:padding * -2.0].active = YES;
+}
+
 - (UILayoutConstraintAxis) getAxis
 {
     return self.stackView.axis;
