@@ -63,11 +63,11 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
 
     // Child's bleed get more restricted as we walk down the tree
     // until padding is reset
-    // padding get rested when padding is added to a collection type element
-    // only left child LC or right child RC have access to the padding of their parents
-    // but if parent also has restriction such as BleedToLeft and BleedToRight,
+    // padding get reseted when padding is added to a collection type element
+    // only left child LC or right child RC has access to the padding of their parents
+    // but if parent also has the restriction such as BleedToLeft and BleedToRight,
     // only child that has same restriction get bleed property
-    // for example, if inherited bleed state was BleedToLeft, only LC gets the bleed,
+    // for example, if the inherited bleed state was BleedToLeft, only LC gets the bleed,
     // the rest of children cannot bleed.
     ContainerBleedDirection previousBleedState = context.GetBleedDirection();
 
@@ -81,7 +81,6 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
     for (Json::ArrayIndex i {0}; i < elemSize; i++)
     {
         Json::Value& curJsonValue = elementArray[i];
-        // processing the cases where parent's bleed state is not restricted
         if (elemSize != 1)
         {
             if (i == 0)
@@ -116,9 +115,10 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
         if (el != nullptr)
         {
             elements.push_back(el);
-            // restores the parent's bleed state
-            context.SetBleedDirection(previousBleedState);
         }
+
+        // restores the parent's bleed state
+        context.SetBleedDirection(previousBleedState);
     }
 
     m_columns = std::move(elements);

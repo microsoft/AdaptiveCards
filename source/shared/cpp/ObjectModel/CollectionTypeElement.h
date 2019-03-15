@@ -72,7 +72,7 @@ namespace AdaptiveSharedNamespace
         void ConfigPadding(const AdaptiveCards::ParseContext& context);
         // Applies bleed flag when appropriate
         void ConfigBleed(const AdaptiveCards::ParseContext& context);
-        void SetBleedDirection(const ContainerBleedDirection bleedDirection) { m_bleedDirection= bleedDirection; }
+        void SetBleedDirection(const ContainerBleedDirection bleedDirection) { m_bleedDirection = bleedDirection; }
 
         ContainerStyle m_style;
         VerticalContentAlignment m_verticalContentAlignment;
