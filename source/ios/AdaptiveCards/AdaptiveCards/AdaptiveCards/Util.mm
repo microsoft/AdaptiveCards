@@ -49,13 +49,13 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
                             direction = ACRRestricted;
                             break;
                     }
-                    // creates background view (bv).
-                    // the view is added to a view that is bleed target and parent view (tv).
-                    // bv is then expanded to the tv according to bleed direction
+                    // 1. create a background view (bv).
+                    // 2. bv is added to bleed target view (tv), which is also a parent view.
+                    // bv is then pinned to the tv according to the bleed direction
                     // bv gets current container view's (cv) container style
-                    // and cv's container style is rest, such that
-                    // bv's container style will see through
-                    // then we have two views, containers's stack view (csv) than holds content views, and bv that dislpays container style
+                    // and cv's container style is reset to transparent, such that
+                    // bv's container style will be diplayed.
+                    // container view's stack view (csv) holds content views, and bv dislpays container style
                     // we transpose them, and get the final result
                     UIView *backgroundView = [[UIView alloc] init];
                     backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -65,10 +65,10 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
                     [backgroundView.topAnchor constraintEqualToAnchor:container.topAnchor].active = YES;
                     [backgroundView.bottomAnchor constraintEqualToAnchor:container.bottomAnchor].active = YES;
 
-                    // resets current width constraints and update them with new one according to bleed specification
+                    // reset current width constraints and update them with new one according to bleed specification
                     [container bleed:config->GetSpacing().paddingSpacing priority:1000 target:backgroundView
                            direction:direction];
-                    
+
                     if([container layer].borderWidth) {
                         [backgroundView layer].borderWidth = [container layer].borderWidth;
                         [container layer].borderWidth = 0;
@@ -93,7 +93,8 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
                             [backgroundView.leadingAnchor constraintEqualToAnchor:container.leadingAnchor].active = YES;
                         }
                     }
-                    
+
+                    // recenters content view
                     if (direction != ACRRestricted) {
                         [container.stackView.centerXAnchor constraintEqualToAnchor:backgroundView.centerXAnchor].active = YES;
                     }
