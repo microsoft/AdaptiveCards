@@ -19,6 +19,7 @@ export const DoneString = 'Done';
 export const TransparentString = "transparent";
 export const WhileEditingString = "while-editing";
 export const NumericString = "numeric";
+export const TextRunString = "textrun"
 
 export const ActionOpenUrl = "Action.OpenUrl";
 export const ActionSubmit = "Action.Submit";

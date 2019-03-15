@@ -11,7 +11,8 @@ import {
 import {
 	TextBlock,
 	Media,
-	Img
+	Img,
+	RichTextBlock
 } from '../elements';
 import {
 	Container,
@@ -69,6 +70,7 @@ export class Registry {
 		'TextBlock': TextBlock,
 		'Media': Media,
 		'Image': Img,
+		'RichTextBlock': RichTextBlock,
 
 		'Action.ShowCard': ActionButton,
 		'Action.Submit': ActionButton,
