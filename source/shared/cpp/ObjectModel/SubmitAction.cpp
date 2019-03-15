@@ -11,14 +11,7 @@ SubmitAction::SubmitAction() : BaseActionElement(ActionType::Submit)
 
 std::string SubmitAction::GetDataJson() const
 {
-    if (m_dataJson.empty())
-    {
-        return "";
-    }
-    else
-    {
-        return m_dataJson.toStyledString();
-    }
+    return ParseUtil::JsonToString(m_dataJson);
 }
 
 Json::Value SubmitAction::GetDataJsonAsValue() const

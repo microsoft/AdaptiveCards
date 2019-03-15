@@ -31,8 +31,7 @@ std::shared_ptr<Fact> Fact::DeserializeFromString(ParseContext& context, const s
 
 std::string Fact::Serialize()
 {
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
+    return ParseUtil::JsonToString(SerializeToJsonValue());
 }
 
 Json::Value Fact::SerializeToJsonValue()

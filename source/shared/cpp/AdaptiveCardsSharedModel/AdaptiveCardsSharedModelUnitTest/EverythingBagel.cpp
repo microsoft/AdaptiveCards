@@ -388,7 +388,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::IsTrue(ForegroundColor::Dark == inlineTextElement->GetTextColor());
         Assert::AreEqual("en"s, inlineTextElement->GetLanguage());
         Assert::IsTrue(TextSize::Large == inlineTextElement->GetTextSize());
-        Assert::IsTrue(TextWeight::Bolder== inlineTextElement->GetTextWeight());
+        Assert::IsTrue(TextWeight::Bolder == inlineTextElement->GetTextWeight());
         Assert::IsTrue(FontStyle::Monospace == inlineTextElement->GetFontStyle());
         Assert::IsTrue(inlineTextElement->GetIsSubtle());
 
@@ -400,6 +400,11 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         Assert::IsTrue(InlineElementType::TextRun == inlines[0]->GetInlineType());
         Assert::AreEqual("TextRun"s, inlines[0]->GetInlineTypeString());
+
+        inlineTextElement = std::static_pointer_cast<TextRun>(inlines[0]);
+        auto selectAction = inlineTextElement->GetSelectAction();
+        Assert::IsTrue(selectAction != nullptr);
+        Assert::IsTrue(ActionType::Submit == selectAction->GetElementType());
 
         Assert::IsTrue(InlineElementType::TextRun == inlines[1]->GetInlineType());
         Assert::AreEqual("TextRun"s, inlines[1]->GetInlineTypeString());
@@ -464,7 +469,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual("Action.Submit_id"s, submitAction->GetId());
             Assert::AreEqual("Action.Submit"s, submitAction->GetTitle());
             //Logger::WriteMessage("Submit Data: '"s.append(submitAction->GetDataJson()).append("'").c_str());
-            Assert::AreEqual("{\n   \"submitValue\" : true\n}\n"s, submitAction->GetDataJson());
+            Assert::AreEqual("{\"submitValue\":true}\n"s, submitAction->GetDataJson());
 
             auto additionalProps = submitAction->GetAdditionalProperties();
             Assert::IsTrue(additionalProps.empty());

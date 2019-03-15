@@ -12,29 +12,54 @@ namespace AdaptiveCards.Rendering.Wpf
             uiColumnSet.Style = context.GetStyle($"Adaptive.{columnSet.Type}");
 
             // Keep track of ContainerStyle.ForegroundColors before Container is rendered
-            var outerStyle = context.ForegroundColors;
-            var parentContainerStyle = context.ParentStyle;
+            var parentRenderArgs = context.RenderArgs;
+            var elementRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
 
-            if (columnSet.Style != null)
+            Border border = new Border();
+            border.Child = uiColumnSet;
+
+            bool inheritsStyleFromParent = (columnSet.Style == AdaptiveContainerStyle.None);
+            bool hasPadding = false;
+            if (!inheritsStyleFromParent)
             {
-                AdaptiveContainerRenderer.ApplyPadding(uiColumnSet, columnSet, parentContainerStyle, context);
+                hasPadding = AdaptiveContainerRenderer.ApplyPadding(border, uiColumnSet, columnSet, parentRenderArgs, context);
 
                 // Apply background color
                 var columnSetStyle = context.Config.ContainerStyles.GetContainerStyleConfig(columnSet.Style);
 
-                uiColumnSet.SetBackgroundColor(columnSetStyle.BackgroundColor, context);
-                context.ForegroundColors = columnSetStyle.ForegroundColors;
+                border.Background = context.GetColorBrush(columnSetStyle.BackgroundColor);
+                elementRenderArgs.ForegroundColors = columnSetStyle.ForegroundColors;
             }
 
-            AdaptiveContainerStyle columnSetContainerStyle = columnSet.Style ?? parentContainerStyle;
-            if (columnSetContainerStyle == AdaptiveContainerStyle.None)
-            {
-                columnSetContainerStyle = parentContainerStyle;
-            }
-            context.ParentStyle = columnSetContainerStyle;
+            elementRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : columnSet.Style;
+            elementRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
             
-            foreach (var column in columnSet.Columns)
+            for (int i = 0; i < columnSet.Columns.Count; ++i)
             {
+                AdaptiveColumn column = columnSet.Columns[i];
+
+                var columnRenderArgs = new AdaptiveRenderArgs(elementRenderArgs);
+                if (columnSet.Columns.Count == 1)
+                {
+                    columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.Only;
+                }
+                else
+                {
+                    if (i == 0)
+                    {
+                        columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.Begin;
+                    }
+                    else if (i == (columnSet.Columns.Count - 1))
+                    {
+                        columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.End;
+                    }
+                    else
+                    {
+                        columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.Intermediate;
+                    }
+                }
+                context.RenderArgs = columnRenderArgs;
+
                 FrameworkElement uiContainer = context.Render(column);
 
                 // Add vertical Seperator
@@ -90,7 +115,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (columnSet.SelectAction != null)
             {
-                return context.RenderSelectAction(columnSet.SelectAction, uiColumnSet);
+                return context.RenderSelectAction(columnSet.SelectAction, border);
             }
 
             if(!columnSet.IsVisible)
@@ -99,11 +124,9 @@ namespace AdaptiveCards.Rendering.Wpf
             }
 
             // Revert context's value to that of outside the Container
-            context.ForegroundColors = outerStyle;
-            context.ParentStyle = parentContainerStyle;
+            context.RenderArgs = parentRenderArgs;
 
-            return uiColumnSet;
+            return border;
         }
-
     }
 }

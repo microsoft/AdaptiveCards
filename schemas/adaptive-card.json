@@ -12,7 +12,7 @@
 	"properties": {
 		"version": {
 			"type": "string",
-			"description": "Schema version that this card requires. If a client is **lower** than this version, the `fallbackText` will be rendered.",
+			"description": "Schema version that this card requires. If a client is **lower** than this version, the `fallbackText` will be rendered. NOTE: Version is not required for cards within an `Action.ShowCard`",
 			"examples": [
 				"1.0", "1.1"
 			]
