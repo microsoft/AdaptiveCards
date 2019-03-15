@@ -57,7 +57,7 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
         return;
     }
 
-    const size_t elemSize = elementArray.size();
+    const Json::ArrayIndex elemSize = elementArray.size();
     const size_t endElemIndex = elemSize - 1;
     elements.reserve(elemSize);
 
@@ -78,7 +78,7 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
     }
 
     // Deserialize every element in the array
-    for (auto i {0}; i < elemSize; i++)
+    for (Json::ArrayIndex i {0}; i < elemSize; i++)
     {
         Json::Value& curJsonValue = elementArray[i];
         // processing the cases where parent's bleed state is not restricted
