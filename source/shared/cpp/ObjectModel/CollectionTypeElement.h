@@ -37,8 +37,8 @@ namespace AdaptiveSharedNamespace
         // padding for card, the root, if the padding is allowed,
         // then the element can bleed to the card
         bool GetCanBleed() const { return m_canBleed; }
-        // 1. BleedToLeading: bleed its leading edge to the leading edge of the target parent
-        // 2. BleedToTrailing: bleed its trailing edge to the trailing edge of the target parent
+        // 1. ToLeadingEdge: bleed its leading edge to the leading edge of the target parent
+        // 2. ToTrailingEdge: bleed its trailing edge to the trailing edge of the target parent
         // 3. RestrictedInAllDrections: doesn't bleed
         // 4. BleedToBothEdges: bleed to both edges of the target parent
         ContainerBleedDirection GetBleedDirection() const { return m_bleedDirection; }

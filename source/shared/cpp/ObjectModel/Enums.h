@@ -396,9 +396,9 @@ namespace AdaptiveSharedNamespace
 
     enum class ContainerBleedDirection
     {
-        BleedRestricted = 0,
-        BleedToLeading,
-        BleedToTrailing,
+        Restricted = 0,
+        ToLeadingEdge,
+        ToTrailingEdge,
         BleedToBothEdges,
     };
     // No mapping to string needed

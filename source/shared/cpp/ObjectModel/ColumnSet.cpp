@@ -61,8 +61,6 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
     const size_t endElemIndex = elemSize - 1;
     elements.reserve(elemSize);
 
-    size_t currentIndex = 0;
-
     // Child's bleed get more restricted as we walk down the tree
     // until padding is reset
     // padding get rested when padding is added to a collection type element
@@ -80,35 +78,36 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
     }
 
     // Deserialize every element in the array
-    for (const Json::Value& curJsonValue : elementArray)
+    for (auto i {0}; i < elemSize; i++)
     {
+        Json::Value& curJsonValue = elementArray[i];
         // processing the cases where parent's bleed state is not restricted
         if (elemSize != 1)
         {
-            if (currentIndex == 0)
+            if (i == 0)
             {
                 if (previousBleedState == ContainerBleedDirection::BleedToBothEdges)
                 {
-                    context.SetBleedDirection(ContainerBleedDirection::BleedToLeading);
+                    context.SetBleedDirection(ContainerBleedDirection::ToLeadingEdge);
                 }
-                else if (previousBleedState != ContainerBleedDirection::BleedToLeading)
+                else if (previousBleedState != ContainerBleedDirection::ToLeadingEdge)
                 {
-                    context.SetBleedDirection(ContainerBleedDirection::BleedRestricted);
+                    context.SetBleedDirection(ContainerBleedDirection::Restricted);
                 }
             }
-            else if (currentIndex == endElemIndex)
+            else if (i == endElemIndex)
             {
                 if (previousBleedState == ContainerBleedDirection::BleedToBothEdges)
                 {
-                    context.SetBleedDirection(ContainerBleedDirection::BleedToTrailing);
+                    context.SetBleedDirection(ContainerBleedDirection::ToTrailingEdge);
                 }
-                else if (previousBleedState != ContainerBleedDirection::BleedToTrailing)
+                else if (previousBleedState != ContainerBleedDirection::ToTrailingEdge)
                 {
-                    context.SetBleedDirection(ContainerBleedDirection::BleedRestricted);
+                    context.SetBleedDirection(ContainerBleedDirection::Restricted);
                 }
             } else
             {
-                context.SetBleedDirection(ContainerBleedDirection::BleedRestricted);
+                context.SetBleedDirection(ContainerBleedDirection::Restricted);
             }
         }
 
@@ -120,7 +119,6 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
             // restores the parent's bleed state
             context.SetBleedDirection(previousBleedState);
         }
-        ++currentIndex;
     }
 
     m_columns = std::move(elements);

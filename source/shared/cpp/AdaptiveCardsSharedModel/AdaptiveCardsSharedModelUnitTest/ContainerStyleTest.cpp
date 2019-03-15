@@ -809,7 +809,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::IsTrue(innercontainerRight->GetPadding());
             Assert::IsTrue(innercontainerRight->GetBleed());
             Assert::IsTrue(innercontainerRight->GetCanBleed());
-            Assert::IsTrue(innercontainerRight->GetBleedDirection() == ContainerBleedDirection::BleedToTrailing);
+            Assert::IsTrue(innercontainerRight->GetBleedDirection() == ContainerBleedDirection::ToTrailingEdge);
             Assert::IsTrue(innercontainerRight->GetParentalId() == columnset->GetInternalId());
 
             Assert::IsFalse(innercolumns.at(1)->GetCanBleed());
