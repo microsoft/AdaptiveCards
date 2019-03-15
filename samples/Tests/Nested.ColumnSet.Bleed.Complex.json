@@ -3,7 +3,8 @@
     "body": [
         {
             "type": "TextBlock",
-            "text": "Only inner left and right most containers bleed to edges"
+            "text": "Only inner left and right most containers bleed to edges.\nNotice that column with Y has longer width",
+            "wrap": true
         },
         {
             "type": "Container",
@@ -28,7 +29,8 @@
                                                     "items": [
                                                         {
                                                             "type": "TextBlock",
-                                                            "text": "Should Bleed"
+                                                            "horizontalAlignment": "Center",
+                                                            "text": "Y"
                                                         }
                                                     ],
                                                     "bleed": true
@@ -45,7 +47,9 @@
                                                     "items": [
                                                         {
                                                             "type": "TextBlock",
-                                                            "text": "New TextBlock"
+                                                            "horizontalAlignment": "Center",
+                                                            "text": "N",
+                                                            "wrap": true
                                                         }
                                                     ],
                                                     "bleed": true
@@ -62,7 +66,8 @@
                                                     "items": [
                                                         {
                                                             "type": "TextBlock",
-                                                            "text": "New TextBlock"
+                                                            "horizontalAlignment": "Center",
+                                                            "text": "N"
                                                         }
                                                     ]
                                                 }
@@ -89,7 +94,8 @@
                                                     "items": [
                                                         {
                                                             "type": "TextBlock",
-                                                            "text": "New TextBlock"
+                                                            "horizontalAlignment": "Center",
+                                                            "text": "N"
                                                         }
                                                     ],
                                                     "bleed": true
@@ -106,7 +112,8 @@
                                                     "items": [
                                                         {
                                                             "type": "TextBlock",
-                                                            "text": "New TextBlock"
+                                                            "horizontalAlignment": "Center",
+                                                            "text": "N"
                                                         }
                                                     ],
                                                     "bleed": true
@@ -123,7 +130,8 @@
                                                     "items": [
                                                         {
                                                             "type": "TextBlock",
-                                                            "text": "New TextBlock"
+                                                            "horizontalAlignment": "Center",
+                                                            "text": "Y"
                                                         }
                                                     ],
                                                     "bleed": true
@@ -142,5 +150,5 @@
         }
     ],
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "version": "1.1"
+    "version": "1.2"
 }
