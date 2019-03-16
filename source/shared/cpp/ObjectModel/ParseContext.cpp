@@ -249,6 +249,11 @@ namespace AdaptiveSharedNamespace
     {
         return m_parentalContainerStyles.size() ? m_parentalContainerStyles.back() : ContainerStyle::NotSet;
     }
+    
+    void ParseContext::SetParentalContainerStyle(const ContainerStyle style)
+    {
+        m_parentalContainerStyles.push_back(style);
+    }
 
     AdaptiveSharedNamespace::InternalId ParseContext::PaddingParentInternalId(void) const
     {

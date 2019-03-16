@@ -58,10 +58,12 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
                     // container view's stack view (csv) holds content views, and bv dislpays container style
                     // we transpose them, and get the final result
                     UIView *backgroundView = [[UIView alloc] init];
-                    backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+                    container.backgroundView = backgroundView;
+                    backgroundView.translatesAutoresizingMaskIntoConstraints = NO;                   
                     [view addSubview:backgroundView];
+                    [view sendSubviewToBack:backgroundView];
                     backgroundView.backgroundColor = container.backgroundColor;
-                    container.backgroundColor = NULL;
+                    container.backgroundColor = UIColor.clearColor;
                     [backgroundView.topAnchor constraintEqualToAnchor:container.topAnchor].active = YES;
                     [backgroundView.bottomAnchor constraintEqualToAnchor:container.bottomAnchor].active = YES;
 
@@ -78,9 +80,11 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
                         [backgroundView layer].borderColor = [container layer].borderColor;
                         [container layer].borderColor = 0;
                     }
+                    
+                    UIView *marginalView = view.backgroundView? view.backgroundView : view;
 
                     if (direction == ACRToLeadingEdge || direction == ACRToBothEdges) {
-                        [backgroundView.leadingAnchor constraintEqualToAnchor:view.leadingAnchor].active = YES;
+                        [backgroundView.leadingAnchor constraintEqualToAnchor:marginalView.leadingAnchor].active = YES;
 
                         if (direction == ACRToLeadingEdge) {
                             [backgroundView.trailingAnchor constraintEqualToAnchor:container.trailingAnchor].active = YES;
@@ -88,7 +92,7 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
                     }
 
                     if (direction == ACRToTrailingEdge || direction == ACRToBothEdges) {
-                        [backgroundView.trailingAnchor constraintEqualToAnchor:view.trailingAnchor].active = YES;
+                        [backgroundView.trailingAnchor constraintEqualToAnchor:marginalView.trailingAnchor].active = YES;
                         if (direction == ACRToTrailingEdge) {
                             [backgroundView.leadingAnchor constraintEqualToAnchor:container.leadingAnchor].active = YES;
                         }
