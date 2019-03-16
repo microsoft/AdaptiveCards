@@ -112,6 +112,7 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
             }
         }
 
+        InternalId::Next();        
         // Parse the element
         auto el = Column::Deserialize(context, curJsonValue);
         if (el != nullptr)

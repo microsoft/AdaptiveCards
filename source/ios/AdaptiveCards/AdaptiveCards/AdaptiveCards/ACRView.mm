@@ -110,9 +110,10 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
         [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.frame.size.width].active = YES;
     }
 
-    UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card] inputs:inputs context:self containingView:self hostconfig:_hostConfig];
-
     ContainerStyle style = ([_hostConfig getHostConfig]->GetAdaptiveCard().allowCustomStyle)? [_adaptiveCard card]->GetStyle(): ContainerStyle::Default;
+
+    [self setStyle:[ACOHostConfig getPlatformContainerStyle:style]];
+    UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card] inputs:inputs context:self containingView:self hostconfig:_hostConfig];
 
     newView.backgroundColor = [_hostConfig getBackgroundColorForContainerStyle:
         [ACOHostConfig getPlatformContainerStyle:style]];
@@ -687,6 +688,19 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     if (view && collection && collection->GetPadding()) {
         NSNumber *key = [NSNumber numberWithUnsignedLongLong:collection->GetInternalId().Hash()];
         _paddingMap[[key stringValue]] = view;
+    }
+}
+
+// This adjustment is needed because during parsing the card, host config can't be accessed
+- (void)updatePaddingMapForTopElements:(std::shared_ptr<BaseCardElement> const &)element rootView:(ACRView *)view card:(std::shared_ptr<AdaptiveCard> const &)card
+{
+    const CardElementType type = element->GetElementType();
+    if (type == CardElementType::Container || type == CardElementType::ColumnSet || type == CardElementType::Column) {
+        std::shared_ptr<CollectionTypeElement> collection = std::dynamic_pointer_cast<CollectionTypeElement>(element);
+        if (view && collection && collection->GetStyle() != card->GetStyle()) {
+            NSNumber *key = [NSNumber numberWithUnsignedLongLong:collection->GetInternalId().Hash()];
+            _paddingMap[[key stringValue]] = view;
+        }
     }
 }
 

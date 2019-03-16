@@ -186,6 +186,8 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, 
 
     ContainerStyle style =
         ParseUtil::GetEnumValue<ContainerStyle>(json, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString);
+    context.SetParentalContainerStyle(style);
+    
     VerticalContentAlignment verticalContentAlignment =
         ParseUtil::GetEnumValue<VerticalContentAlignment>(json,
                                                           AdaptiveCardSchemaKey::VerticalContentAlignment,
