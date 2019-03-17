@@ -150,7 +150,7 @@ export class ActionButton extends React.Component {
 	* @returns {Array} computedStyles - Styles based on the config
 	*/
 	getButtonTitleStyles = () => {
-		var computedStyles = [this.styleConfig.fontConfig,
+		var computedStyles = [this.styleConfig.defaultFontConfig,
 		this.styleConfig.buttonTitleColor,
 		this.styleConfig.buttonTitleTransform];
 		if (this.sentiment == Enums.Sentiment.Destructive) {

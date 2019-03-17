@@ -182,7 +182,7 @@ export default class AdaptiveCards extends React.Component {
 		if (!this.isSupportedVersion()) {
 			const message = this.payload.fallbackText || "We're sorry, this card couldn't be displayed";
 			return (
-				<Text style={this.styleConfig.fontConfig}>{message}</Text>
+				<Text style={this.styleConfig.defaultFontConfig}>{message}</Text>
 			)
 		}
 		return (

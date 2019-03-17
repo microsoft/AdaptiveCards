@@ -1,5 +1,9 @@
 import * as Enums from './enums';
 import * as Utils from './util';
+import * as Constants from '../utils/constants';
+import {
+	Platform,
+} from 'react-native';
 
 export class TextColorDefinition {
 	_default = "#000000";
@@ -367,6 +371,36 @@ export class ContainerStyleSet {
 	}
 }
 
+
+class FontStyleConfig {
+	constructor(obj = {}) {
+		this.default = new FontConfig("default", obj);
+		this.monospace = new FontConfig("monospace", obj);
+	}
+}
+// Each instance of this class holds config of specific FontStyle type 
+class FontConfig {
+	constructor(type, customConfig = {}) {
+		this.type = type;
+		let defaultFontStyles = defaultHostConfig["fontStyles"];
+		this.fontFamily = defaultFontStyles[type].fontFamily;
+		this.fontSizes = defaultFontStyles[type].fontSizes;
+		this.fontWeights = defaultFontStyles[type].fontWeights;
+
+		if (customConfig[type]) { // any custom config ?
+			let config = customConfig[type];
+			if (type === "monospace") {
+				this.fontFamily = (Platform.OS === Constants.PlatformIOS) ? "Courier New" : "monospace";
+			}
+			else {
+				this.fontFamily = config["fontFamily"] ? config["fontFamily"] : this.fontFamily;
+			}
+			this.fontSizes = config["fontSizes"] ? { ...this.fontSizes, ...config["fontSizes"] } : this.fontSizes;
+			this.fontWeights = config["fontWeights"] ? { ...this.fontWeights, ...config["fontWeights"] } : this.fontWeights;
+		}
+	}
+}
+
 export class HostConfig {
 	choiceSetInputValueSeparator = ",";
 	supportsInteractivity = true;
@@ -423,6 +457,7 @@ export class HostConfig {
 	imageSet = new ImageSetConfig();
 	media = new MediaConfig();
 	factSet = new FactSetConfig();
+	fontStyles = new FontStyleConfig();
 
 	cssClassNamePrefix = null;
 
@@ -485,6 +520,7 @@ export class HostConfig {
 			this.adaptiveCard = new AdaptiveCardConfig(obj.adaptiveCard || this.adaptiveCard);
 			this.imageSet = new ImageSetConfig(obj["imageSet"]);
 			this.factSet = new FactSetConfig(obj["factSet"])
+			this.fontStyles = new FontStyleConfig(obj["fontStyles"]);
 		}
 	}
 
@@ -514,40 +550,54 @@ export class HostConfig {
 	}
 
 	/**
+	 * @param {string} fontStyle 
+	 */
+	getTextFontStyle = (fontStyle) => {
+
+		switch (fontStyle) {
+			case Enums.FontStyle.Default: 
+				return this.fontStyles.default;
+			case Enums.FontStyle.Monospace: 
+				return this.fontStyles.monospace;
+			default: 
+				return this.fontStyles.default;
+		}
+	}
+
+	/**
 	 * @param {string} fontSize 
 	 */
-	getTextFontSize = (fontSize) => {
+	getTextFontSize = (fontSize, fontStyle) => {
+
 		switch (fontSize) {
 			case Enums.TextSize.Small:
-				return this.fontSizes.small;
+				return fontStyle.fontSizes.small;
 			case Enums.TextSize.Default:
-				return this.fontSizes.default;
+				return fontStyle.fontSizes.default;
 			case Enums.TextSize.Medium:
-				return this.fontSizes.medium;
+				return fontStyle.fontSizes.medium;
 			case Enums.TextSize.Large:
-				return this.fontSizes.large;
+				return fontStyle.fontSizes.large;
 			case Enums.TextSize.ExtraLarge:
-				return this.fontSizes.extraLarge;
-
+				return fontStyle.fontSizes.extraLarge;
 			default:
-				return this.fontSizes.default;
+				return fontStyle.fontSizes.default;
 		}
 	}
 
 	/**
 	 * @param {string} weight
 	 */
-	getTextFontWeight = (weight) => {
+	getTextFontWeight = (weight, fontStyle) => {
 		switch (weight) {
 			case Enums.TextWeight.Lighter:
-				return this.fontWeights.lighter;
+				return fontStyle.fontWeights.lighter;
 			case Enums.TextWeight.Default:
-				return this.fontWeights.default;
+				return fontStyle.fontWeights.default;
 			case Enums.TextWeight.Bolder:
-				return this.fontWeights.bolder;
-
+				return fontStyle.fontWeights.bolder;
 			default:
-				return this.fontWeights.default;
+				return fontStyle.fontWeights.default;
 		}
 	}
 
@@ -570,7 +620,6 @@ export class HostConfig {
 				return this.containerStyles.default.foregroundColors.warning;
 			case Enums.TextColor.Default:
 				return this.containerStyles.default.foregroundColors.default;
-
 			default:
 				return this.containerStyles.default.foregroundColors.default;
 		}
@@ -625,7 +674,38 @@ export class HostConfig {
 
 export const defaultHostConfig = {
 	supportsInteractivity: true,
-	fontFamily: "Helvetica",
+	fontStyles: {
+		default: {
+			fontFamily: "Helvetica",
+			fontSizes: {
+				small: 12,
+				default: 14,
+				medium: 17,
+				large: 21,
+				extraLarge: 26
+			},
+			fontWeights: {
+				lighter: 200,
+				default: 400,
+				bolder: 700
+			}
+		},
+		monospace: {
+			fontFamily: "Courier New",
+			fontSizes: {
+				small: 12,
+				default: 14,
+				medium: 17,
+				large: 21,
+				extraLarge: 26
+			},
+			fontWeights: {
+				lighter: 200,
+				default: 400,
+				bolder: 700
+			}
+		}
+	},
 	spacing: {
 		none: 0,
 		small: 3,
@@ -638,18 +718,6 @@ export const defaultHostConfig = {
 	separator: {
 		lineThickness: 1,
 		lineColor: "#D9D9D9"
-	},
-	fontSizes: {
-		small: 12,
-		default: 14,
-		medium: 17,
-		large: 21,
-		extraLarge: 26
-	},
-	fontWeights: {
-		lighter: 200,
-		default: 400,
-		bolder: 600
 	},
 	imageSizes: {
 		small: 40,

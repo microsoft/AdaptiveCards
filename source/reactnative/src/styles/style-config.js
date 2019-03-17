@@ -23,13 +23,13 @@ export class StyleManager {
 	}
 
 	styles = StyleSheet.create({
-		fontFamilyName: {
-			fontFamily: this.hostConfig.fontFamily
-		},
-		fontConfig: {
-			fontSize: this.hostConfig.fontSizes.default,
-			fontWeight: this.hostConfig.fontWeights.default.toString(),
-			fontFamily: this.hostConfig.fontFamily
+		defaultFontFamilyName: {
+			fontFamily: this.hostConfig.fontStyles.default.fontFamily
+		}, 
+		defaultFontConfig: {
+			fontSize: this.hostConfig.fontStyles.default.fontSizes.default,
+			fontWeight: this.hostConfig.fontStyles.default.fontWeights.default.toString(),
+			fontFamily: this.hostConfig.fontStyles.default.fontFamily
 		},
 		actionIconFlex: {
 			flexDirection: (this.hostConfig.actions.iconPlacement === 0) ?

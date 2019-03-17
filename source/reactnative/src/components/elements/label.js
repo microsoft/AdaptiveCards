@@ -48,28 +48,36 @@ export class Label extends React.Component {
      * @description Parse the host config specific props 
      */
 	getComputedStyle = () => {
-		let { size, weight, color, isSubtle, align } = this.props;
+		const { size, weight, color, isSubtle, fontStyle, align } = this.props;
 
-		let fontSize = this.hostConfig.getTextFontSize(Utils.parseHostConfigEnum(
+		const fontStyleValue = this.hostConfig.getTextFontStyle(Utils.parseHostConfigEnum(
+			Enums.FontStyle,
+			fontStyle,
+			Enums.FontStyle.Default
+		));
+
+		const fontSize = this.hostConfig.getTextFontSize(Utils.parseHostConfigEnum(
 			Enums.TextSize,
 			size,
 			Enums.TextSize.Default
-		));
+		), fontStyleValue);
 
-		let fontWeight = this.hostConfig.getTextFontWeight(Utils.parseHostConfigEnum(
+		const fontWeight = this.hostConfig.getTextFontWeight(Utils.parseHostConfigEnum(
 			Enums.TextWeight,
 			weight,
 			Enums.TextWeight.Default
-		));
+		), fontStyleValue);
 
-		let colorDefinition = this.hostConfig.getTextColor(Utils.parseHostConfigEnum(
+		const fontFamilyValue = fontStyleValue.fontFamily;
+
+		const colorDefinition = this.hostConfig.getTextColor(Utils.parseHostConfigEnum(
 			Enums.TextColor,
 			color,
 			Enums.TextColor.Default
 		));
-		let colorValue = isSubtle ? colorDefinition.subtle : colorDefinition.default;
+		const colorValue = isSubtle ? colorDefinition.subtle : colorDefinition.default;
 
-		let textAlign = this.hostConfig.getTextAlignment(Utils.parseHostConfigEnum(
+		const textAlign = this.hostConfig.getTextAlignment(Utils.parseHostConfigEnum(
 			Enums.HorizontalAlignment,
 			align,
 			Enums.HorizontalAlignment.Left
@@ -78,7 +86,7 @@ export class Label extends React.Component {
 		return {
 			fontSize,
 			fontWeight: fontWeight.toString(),
-			fontFamily: this.hostConfig.fontFamily,
+			fontFamily: fontFamilyValue,
 			color: colorValue,
 			textAlign
 		}

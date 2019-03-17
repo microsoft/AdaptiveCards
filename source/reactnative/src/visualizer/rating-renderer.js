@@ -49,7 +49,7 @@ export class RatingRenderer extends React.Component {
         var processedText = this.text;
 
         //TextBlock styles
-        let textBlockComputedStyle = [styles.text, this.styleConfig.fontConfig];
+        let textBlockComputedStyle = [styles.text, this.styleConfig.defaultFontConfig];
         textBlockComputedStyle.push({
             fontSize: this.fontSize,
             fontWeight: this.fontWeight.toString(),

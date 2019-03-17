@@ -28,7 +28,7 @@ class ThemeConfig {
         this.button = new Config("button", obj);
         this.input = new Config("input", obj);
     }
-}
+} 
 
 // Each instance of this class holds config of specific element type 
 class Config {

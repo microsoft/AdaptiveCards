@@ -140,7 +140,7 @@ export class ChoiceSetInput extends React.Component {
 					onPress={onPress}>
 					<View style={styles.touchView}>
 						<Text
-							style={[styles.text, this.styleConfig.fontConfig]}
+							style={[styles.text, this.styleConfig.defaultFontConfig]}
 						>
 							{this.getPickerSelectedValue(this.state.selectedPickerValue,
 									addInputItem)
@@ -190,7 +190,7 @@ export class ChoiceSetInput extends React.Component {
 						key={index}
 						isRadioButtonType={true}
 						index={index}
-						labelStyle={[styles.labelStyle, this.styleConfig.fontConfig]}
+						labelStyle={[styles.labelStyle, this.styleConfig.defaultFontConfig]}
 						wrapText={this.wrapText}
 						iconSize={28}
 						checked={this.state.activeIndex == undefined ?
@@ -219,7 +219,7 @@ export class ChoiceSetInput extends React.Component {
 						key={index}
 						isRadioButtonType={false}
 						index={index}
-						labelStyle={[styles.labelStyle, this.styleConfig.fontConfig]}
+						labelStyle={[styles.labelStyle, this.styleConfig.defaultFontConfig]}
 						wrapText={this.wrapText}
 						iconSize={28}
 						checked={this.state.checkedValues == undefined ?
