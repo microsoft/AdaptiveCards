@@ -761,17 +761,18 @@ AdaptiveNamespaceStart
 #else
         uuid(09BBE759-0754-441D-B808-3CE2C188D521)
 #endif
-    ] interface IAdaptiveTextRun : IInspectable requires IAdaptiveTextElement
+    ] 
+    interface IAdaptiveTextRun : IInspectable requires IAdaptiveTextElement
     {
-        [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement * *value);
-        [propput] HRESULT SelectAction([in] IAdaptiveActionElement * value);
+        [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
+        [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
     };
 
     [
         version(NTDDI_WIN10_RS1),
         activatable(NTDDI_WIN10_RS1),
 #ifdef ADAPTIVE_CARDS_WINDOWS
-         contract(InternalContract, 1),
+        contract(InternalContract, 1),
         internal,
         activatable(InternalContract, 1)
 #endif
@@ -796,7 +797,7 @@ AdaptiveNamespaceStart
     ] 
     interface IAdaptiveParagraph : IInspectable
     {
-        [propget] HRESULT Inlines([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveInline*> * *value);
+        [propget] HRESULT Inlines([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveInline*>** value);
     };
 
     [
@@ -825,16 +826,16 @@ AdaptiveNamespaceStart
 #endif
     ] interface IAdaptiveRichTextBlock : IInspectable
     {
-        [propget] HRESULT Wrap([out, retval] boolean * value);
+        [propget] HRESULT Wrap([out, retval] boolean* value);
         [propput] HRESULT Wrap([in] boolean value);
 
-        [propget] HRESULT HorizontalAlignment([out, retval] HAlignment * value);
+        [propget] HRESULT HorizontalAlignment([out, retval] HAlignment* value);
         [propput] HRESULT HorizontalAlignment([in] HAlignment value);
 
-        [propget] HRESULT MaxLines([out, retval] UINT32 * value);
+        [propget] HRESULT MaxLines([out, retval] UINT32* value);
         [propput] HRESULT MaxLines([in] UINT32 value);
 
-        [propget] HRESULT Paragraphs([out, retval] Windows.Foundation.Collections.IVector<AdaptiveParagraph*> * *value);
+        [propget] HRESULT Paragraphs([out, retval] Windows.Foundation.Collections.IVector<AdaptiveParagraph*>** value);
     };
 
     [

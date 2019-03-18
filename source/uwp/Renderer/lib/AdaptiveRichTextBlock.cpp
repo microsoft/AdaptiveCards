@@ -82,7 +82,7 @@ namespace AdaptiveNamespace
     }
 
     HRESULT AdaptiveRichTextBlock::get_Paragraphs(
-        ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveParagraph*>** paragraphs)
+        _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveParagraph*>** paragraphs)
     {
         return m_paragraphs.CopyTo(paragraphs);
     }

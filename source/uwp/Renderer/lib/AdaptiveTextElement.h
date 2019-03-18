@@ -55,9 +55,9 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(HStringToUTF8(m_text.Get(), text));
             sharedCardElement->SetText(text);
 
-            std::string language;
             if (!(WindowsIsStringEmpty(m_language.Get())))
             {
+                std::string language;
                 RETURN_IF_FAILED(HStringToUTF8(m_language.Get(), language));
                 sharedCardElement->SetLanguage(language);
             }
