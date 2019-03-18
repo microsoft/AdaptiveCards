@@ -120,14 +120,13 @@ HRESULT StyleTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adap
         RETURN_IF_FAILED(adaptiveTextElement->get_IsSubtle(&isSubtle));
 
         ABI::AdaptiveNamespace::ContainerStyle containerStyle;
-        renderArgs->get_ContainerStyle(&containerStyle);
 
         ABI::Windows::UI::Color fontColor;
-        THROW_IF_FAILED(GetColorFromAdaptiveColor(hostConfig.Get(), adaptiveTextColor, containerStyle, isSubtle, &fontColor));
+        RETURN_IF_FAILED(GetColorFromAdaptiveColor(hostConfig.Get(), adaptiveTextColor, containerStyle, isSubtle, &fontColor));
 
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::IBrush> fontColorBrush =
             AdaptiveNamespace::XamlBuilder::GetSolidColorBrush(fontColor);
-        THROW_IF_FAILED(xamlTextElement->put_Foreground(fontColorBrush.Get()));
+        RETURN_IF_FAILED(xamlTextElement->put_Foreground(fontColorBrush.Get()));
     }
 
     // Retrieve the desired FontFamily, FontSize, and FontWeight values
@@ -143,25 +142,25 @@ HRESULT StyleTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adap
     UINT32 fontSize;
     Microsoft::WRL::Wrappers::HString fontFamilyName;
     ABI::Windows::UI::Text::FontWeight xamlFontWeight;
-    THROW_IF_FAILED(GetFontDataFromStyle(
+    RETURN_IF_FAILED(GetFontDataFromStyle(
         hostConfig.Get(), fontStyle, adaptiveTextSize, adaptiveTextWeight, fontFamilyName.GetAddressOf(), &fontSize, &xamlFontWeight));
 
     // Apply font size
-    THROW_IF_FAILED(xamlTextElement->put_FontSize((double)fontSize));
+    RETURN_IF_FAILED(xamlTextElement->put_FontSize((double)fontSize));
 
     // Apply font weight
-    THROW_IF_FAILED(xamlTextElement->put_FontWeight(xamlFontWeight));
+    RETURN_IF_FAILED(xamlTextElement->put_FontWeight(xamlFontWeight));
 
     // Apply font family
     Microsoft::WRL::ComPtr<IInspectable> inspectable;
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::IFontFamily> fontFamily;
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::IFontFamilyFactory> fontFamilyFactory;
-    THROW_IF_FAILED(Windows::Foundation::GetActivationFactory(
+    RETURN_IF_FAILED(Windows::Foundation::GetActivationFactory(
         Microsoft::WRL::Wrappers::HStringReference(L"Windows.UI.Xaml.Media.FontFamily").Get(), &fontFamilyFactory));
 
-    THROW_IF_FAILED(
+    RETURN_IF_FAILED(
         fontFamilyFactory->CreateInstanceWithName(fontFamilyName.Get(), nullptr, inspectable.ReleaseAndGetAddressOf(), &fontFamily));
-    THROW_IF_FAILED(xamlTextElement->put_FontFamily(fontFamily.Get()));
+    RETURN_IF_FAILED(xamlTextElement->put_FontFamily(fontFamily.Get()));
 
     return S_OK;
 }
