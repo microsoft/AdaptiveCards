@@ -33,7 +33,7 @@ std::shared_ptr<Paragraph> AdaptiveSharedNamespace::Paragraph::Deserialize(Parse
     std::shared_ptr<Paragraph> paragraph = std::make_shared<Paragraph>();
 
     auto inlines =
-        ParseUtil::GetElementCollectionOfSingleType<Inline>(context, json, AdaptiveCardSchemaKey::Inlines, Inline::Deserialize, true);
+        ParseUtil::GetElementCollectionOfSingleType<Inline>(context, json, AdaptiveCardSchemaKey::Inlines, Inline::Deserialize, false);
     paragraph->m_inlines = std::move(inlines);
 
     HandleUnknownProperties(json, paragraph->m_knownProperties, paragraph->m_additionalProperties);

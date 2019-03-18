@@ -13,6 +13,7 @@ import io.adaptivecards.objectmodel.AdaptiveCardObjectModel;
 import io.adaptivecards.objectmodel.Column;
 import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.RichTextBlock;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.IResourceResolver;
@@ -42,6 +43,7 @@ import io.adaptivecards.renderer.readonly.FactSetRenderer;
 import io.adaptivecards.renderer.readonly.ImageRenderer;
 import io.adaptivecards.renderer.readonly.ImageSetRenderer;
 import io.adaptivecards.renderer.readonly.MediaRenderer;
+import io.adaptivecards.renderer.readonly.RichTextBlockRenderer;
 import io.adaptivecards.renderer.readonly.TextBlockRenderer;
 
 import java.util.HashMap;
@@ -58,6 +60,7 @@ public class CardRendererRegistration
         registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.Image), ImageRenderer.getInstance());
         registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.ImageSet), ImageSetRenderer.getInstance());
         registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.Media), MediaRenderer.getInstance());
+        registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.RichTextBlock), RichTextBlockRenderer.getInstance());
         registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.TextBlock), TextBlockRenderer.getInstance());
 
         // Register Input Renderers
