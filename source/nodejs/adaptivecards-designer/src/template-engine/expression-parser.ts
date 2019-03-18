@@ -161,6 +161,9 @@ export class EvaluationContext {
         EvaluationContext._builtInFunctions["JSON.parse"] = (params: any[]) => {
             return JSON.parse(params[0]);
         };
+        EvaluationContext._builtInFunctions["if"] = (params: any[]) => {
+            return params[0] ? params[1] : params[2];
+        };
     }
 
     private _functions = {};
