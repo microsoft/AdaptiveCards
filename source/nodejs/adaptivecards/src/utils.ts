@@ -28,7 +28,9 @@ export function setProperty(target: any, propertyName: string, propertyValue: an
 		target[propertyName] = propertyValue;
 	}
 	else {
-		delete target[propertyName];
+        if (target[propertyName] === defaultValue) {
+            delete target[propertyName];
+        }
 	}
 }
 
@@ -37,7 +39,9 @@ export function setEnumProperty(enumType: { [s: number]: string }, target: any, 
 		target[propertyName] = enumType[propertyValue];
 	}
 	else {
-		delete target[propertyName];
+        if (target[propertyName] === defaultValue) {
+            delete target[propertyName];
+        }
 	}
 }
 
