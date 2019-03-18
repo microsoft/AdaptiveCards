@@ -119,4 +119,18 @@ public class TextRun extends Inline {
     return AdaptiveCardObjectModelJNI.TextRun_GetLanguage(swigCPtr, this);
   }
 
+  public BaseActionElement GetSelectAction() {
+    long cPtr = AdaptiveCardObjectModelJNI.TextRun_GetSelectAction(swigCPtr, this);
+    return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
+  }
+
+  public void SetSelectAction(BaseActionElement action) {
+    AdaptiveCardObjectModelJNI.TextRun_SetSelectAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
+  }
+
+  public static TextRun dynamic_cast(Inline inlineVar) {
+    long cPtr = AdaptiveCardObjectModelJNI.TextRun_dynamic_cast(Inline.getCPtr(inlineVar), inlineVar);
+    return (cPtr == 0) ? null : new TextRun(cPtr, true);
+  }
+
 }

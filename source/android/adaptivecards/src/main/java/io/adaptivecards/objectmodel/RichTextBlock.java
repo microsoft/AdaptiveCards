@@ -78,8 +78,8 @@ public class RichTextBlock extends BaseCardElement {
     AdaptiveCardObjectModelJNI.RichTextBlock_SetHorizontalAlignment(swigCPtr, this, value.swigValue());
   }
 
-  public SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__Paragraph_t_t GetParagraphs() {
-    return new SWIGTYPE_p_std__vectorT_std__shared_ptrT_AdaptiveCards__Paragraph_t_t(AdaptiveCardObjectModelJNI.RichTextBlock_GetParagraphs__SWIG_0(swigCPtr, this), false);
+  public ParagraphVector GetParagraphs() {
+    return new ParagraphVector(AdaptiveCardObjectModelJNI.RichTextBlock_GetParagraphs__SWIG_0(swigCPtr, this), false);
   }
 
   public static RichTextBlock dynamic_cast(BaseCardElement baseCardElement) {
