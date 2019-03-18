@@ -2,6 +2,23 @@
 	"type": "AdaptiveCard",
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"version": "1.2",
+	"actions": [
+		{
+			"type": "MyCoolAction2",
+			"coolnessLevel": "toTheMax",
+			"requires": {
+				"adaptiveCards": "1.2"
+			},
+			"fallback": {
+				"type": "MyCoolAction",
+				"coolnessLevel": "prettyCool",
+				"fallback": {
+					"type": "Action.Submit",
+					"title": "Boring fallback action"
+				}
+			}
+		}
+	],
 	"body": [
 		{
 			"type": "Container",
