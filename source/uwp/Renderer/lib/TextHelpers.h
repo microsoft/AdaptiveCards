@@ -120,6 +120,7 @@ HRESULT StyleTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adap
         RETURN_IF_FAILED(adaptiveTextElement->get_IsSubtle(&isSubtle));
 
         ABI::AdaptiveNamespace::ContainerStyle containerStyle;
+        RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
 
         ABI::Windows::UI::Color fontColor;
         RETURN_IF_FAILED(GetColorFromAdaptiveColor(hostConfig.Get(), adaptiveTextColor, containerStyle, isSubtle, &fontColor));
