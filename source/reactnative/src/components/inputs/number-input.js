@@ -20,9 +20,11 @@ export class NumberInput extends React.Component {
 		this.payload = props.json;
 		this.id = Constants.EmptyString;
 		this.styleValue = Enums.InputTextStyle.Number;
-		this.isValidationRequired=!!this.payload.validation && 
+		
+		this.isValidationRequired = !!this.payload.validation &&
 			(Enums.ValidationNecessity.Required == this.payload.validation.necessity ||
-			Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
+				Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
+
 		this.state = {
 			isError: this.isValidationRequired,
 			numberValue: Constants.EmptyString,

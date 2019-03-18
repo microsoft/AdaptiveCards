@@ -36,16 +36,19 @@ export class PickerInput extends React.Component {
 		this.type = Constants.EmptyString;
 		this.modalButtonText = Constants.DoneString;
 		this.parseHostConfig();
-		this.isValidationRequired=!!this.payload.validation && 
+
+		this.isValidationRequired = !!this.payload.validation &&
 			(Enums.ValidationNecessity.Required == this.payload.validation.necessity ||
+				Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
+
+		this.validationRequiredWithVisualCue = (!this.payload.validation ||
 			Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
-		this.validationRequiredWithVisualCue = (!this.payload.validation || 
-			Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
-		this.validationText= (this.payload.validation && this.payload.validation.validationFailedText)?
+
+		this.validationText = (this.payload.validation && this.payload.validation.validationFailedText) ?
 			this.payload.validation.validationFailedText : Constants.validationText;
-		
+
 		this.state = {
-				isError: this.isValidationRequired && !this.props.value
+			isError: this.isValidationRequired && !this.props.value
 		}
 	}
 

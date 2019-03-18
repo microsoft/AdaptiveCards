@@ -234,8 +234,8 @@ export default class AdaptiveCards extends React.Component {
 	}
 
 	// Invoke onExecuteAction if the consumer app provide it via props.
-	onExecuteAction = (action,showValidationErrors) => {
-		if(!showValidationErrors && !this.validateInputs())
+	onExecuteAction = (action,ignoreInputValidation) => {
+		if(!ignoreInputValidation && !this.validateInputs())
 			this.setState({showErrors:true});
 		else if(this.props.onExecuteAction) {
 			this.props.onExecuteAction(action);

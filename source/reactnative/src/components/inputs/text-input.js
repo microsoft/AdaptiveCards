@@ -24,9 +24,11 @@ export class InputText extends React.Component {
 		this.id = Constants.EmptyString;
 		this.style = Constants.EmptyString;
 		this.styleValue = Constants.EmptyString;
-		this.isValidationRequired=!!this.payload.validation && 
+
+		this.isValidationRequired = !!this.payload.validation &&
 			(Enums.ValidationNecessity.Required == this.payload.validation.necessity ||
-			Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
+				Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
+
 		this.state = {
 			isError: this.isValidationRequired,
 			text: Constants.EmptyString,

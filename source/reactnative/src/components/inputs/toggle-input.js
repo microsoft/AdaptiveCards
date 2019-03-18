@@ -32,13 +32,17 @@ export class ToggleInput extends React.Component {
 		this.valueOff = props.json.valueOff || Constants.FalseString;
 		this.value = props.json.value || this.valueOff;
 		this.id = props.json.id || Constants.ToggleValueOn
-		this.isValidationRequired=!!props.json.validation && 
+		
+		this.isValidationRequired = !!props.json.validation &&
 			(Enums.ValidationNecessity.Required == props.json.validation.necessity ||
+				Enums.ValidationNecessity.RequiredWithVisualCue == props.json.validation.necessity);
+
+		this.validationRequiredWithVisualCue = (!props.json.validation ||
 			Enums.ValidationNecessity.RequiredWithVisualCue == props.json.validation.necessity);
-		this.validationRequiredWithVisualCue = (!props.json.validation || 
-			Enums.ValidationNecessity.RequiredWithVisualCue == props.json.validation.necessity);
-		this.validationText= (props.json.validation && props.json.validation.validationFailedText)?
+
+		this.validationText = (props.json.validation && props.json.validation.validationFailedText) ?
 			props.json.validation.validationFailedText : Constants.validationText;
+
 		this.wrapText = props.json.wrap || false
 
 		// state

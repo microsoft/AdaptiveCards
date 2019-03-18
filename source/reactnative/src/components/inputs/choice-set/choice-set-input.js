@@ -41,16 +41,20 @@ export class ChoiceSetInput extends React.Component {
 		this.value = Constants.EmptyString;
 		this.choices = [];
 		this.payload = props.json;
-		this.isValidationRequired=!!this.payload.validation && 
+		
+		this.isValidationRequired = !!this.payload.validation &&
 			(Enums.ValidationNecessity.Required == this.payload.validation.necessity ||
-			Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
-		this.validationText= (this.payload.validation && this.payload.validation.validationFailedText)?
+				Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
+
+		this.validationText = (this.payload.validation && this.payload.validation.validationFailedText) ?
 			this.payload.validation.validationFailedText : Constants.validationText;
-		this.validationRequiredWithVisualCue = (!this.payload.validation || 
+
+		this.validationRequiredWithVisualCue = (!this.payload.validation ||
 			Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
+
 		this.state = {
-			selectedPickerValue: Utils.isNullOrEmpty(props.json.value) ? 
-			props.json.choices[0].value : props.json.value,
+			selectedPickerValue: Utils.isNullOrEmpty(props.json.value) ?
+				props.json.choices[0].value : props.json.value,
 			isPickerSelected: false,
 			radioButtonIndex: undefined,
 			activeIndex: undefined,
