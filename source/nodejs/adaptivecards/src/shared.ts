@@ -13,31 +13,48 @@ export interface ISeparationDefinition {
 
 export interface IInput {
 	id: string;
-	value: string;
+    value: string;
+    validateValue(): boolean;
 }
+
+export type Dictionary<T> = { [key: string]: T };
 
 export class StringWithSubstitutions {
 	private _isProcessed: boolean = false;
 	private _original: string = null;
-	private _processed: string = null;
+    private _processed: string = null;
+    
+    getReferencedInputs(inputs: IInput[], referencedInputs: Dictionary<IInput>) {
+        if (!referencedInputs) {
+            throw new Error("The referencedInputs parameter cannot be null.")
+        }
 
-	substituteInputValues(inputs: Array<IInput>, contentType: string) {
+        for (let input of inputs) {
+            let matches = new RegExp("\\{{2}(" + input.id + ").value\\}{2}", "gi").exec(this._original);
+
+            if (matches != null) {
+                referencedInputs[input.id] = input;
+            }
+        }
+    }
+
+	substituteInputValues(inputs: Dictionary<IInput>, contentType: string) {
 		this._processed = this._original;
 
-		var regEx = /\{{2}([a-z0-9_$@]+).value\}{2}/gi;
-		var matches;
+		let regEx = /\{{2}([a-z0-9_$@]+).value\}{2}/gi;
+		let matches;
 
 		while ((matches = regEx.exec(this._original)) != null) {
-			var matchedInput: IInput = null;
+			let matchedInput: IInput = null;
 
-			for (var i = 0; i < inputs.length; i++) {
-				if (inputs[i].id.toLowerCase() == matches[1].toLowerCase()) {
-					matchedInput = inputs[i];
+			for (let key of Object.keys(inputs)) {
+				if (key.toLowerCase() == matches[1].toLowerCase()) {
+					matchedInput = inputs[key];
 					break;
 				}
-			}
+            }
 
-			if (matchedInput) {
+            if (matchedInput) {
 				var valueForReplace = "";
 
 				if (matchedInput.value) {

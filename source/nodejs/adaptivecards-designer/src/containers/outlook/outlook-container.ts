@@ -21,7 +21,7 @@ export class OutlookContainer extends Designer.HostContainer {
     private parsePadding(json: any): Adaptive.PaddingDefinition {
         if (json) {
             if (typeof json === "string") {
-                var uniformPadding = Adaptive.getEnumValueOrDefault(Adaptive.Spacing, json, Adaptive.Spacing.None);
+                var uniformPadding = Adaptive.getEnumValue(Adaptive.Spacing, json, Adaptive.Spacing.None);
 
                 return new Adaptive.PaddingDefinition(
                     uniformPadding,
@@ -31,10 +31,10 @@ export class OutlookContainer extends Designer.HostContainer {
             }
             else if (typeof json === "object") {
                 return new Adaptive.PaddingDefinition(
-                    Adaptive.getEnumValueOrDefault(Adaptive.Spacing, json["top"], Adaptive.Spacing.None),
-                    Adaptive.getEnumValueOrDefault(Adaptive.Spacing, json["right"], Adaptive.Spacing.None),
-                    Adaptive.getEnumValueOrDefault(Adaptive.Spacing, json["bottom"], Adaptive.Spacing.None),
-                    Adaptive.getEnumValueOrDefault(Adaptive.Spacing, json["left"], Adaptive.Spacing.None));
+                    Adaptive.getEnumValue(Adaptive.Spacing, json["top"], Adaptive.Spacing.None),
+                    Adaptive.getEnumValue(Adaptive.Spacing, json["right"], Adaptive.Spacing.None),
+                    Adaptive.getEnumValue(Adaptive.Spacing, json["bottom"], Adaptive.Spacing.None),
+                    Adaptive.getEnumValue(Adaptive.Spacing, json["left"], Adaptive.Spacing.None));
             }
         }
 
