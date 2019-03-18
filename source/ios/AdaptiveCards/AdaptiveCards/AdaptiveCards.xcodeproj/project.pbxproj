@@ -37,6 +37,16 @@
 		6B22427A220BAC8B000ACDA1 /* pch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B224277220BAC8B000ACDA1 /* pch.cpp */; };
 		6B2242812220DDF5000ACDA1 /* CollectionTypeElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B22427F2220DDF5000ACDA1 /* CollectionTypeElement.cpp */; };
 		6B2242822220DDF5000ACDA1 /* CollectionTypeElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B2242802220DDF5000ACDA1 /* CollectionTypeElement.h */; };
+		6B2242A32233439E000ACDA1 /* TextElementProperties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B2242A12233439D000ACDA1 /* TextElementProperties.cpp */; };
+		6B2242A42233439E000ACDA1 /* TextElementProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B2242A22233439D000ACDA1 /* TextElementProperties.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6B2242A72233442C000ACDA1 /* RichTextBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B2242A52233442C000ACDA1 /* RichTextBlock.cpp */; };
+		6B2242A82233442C000ACDA1 /* RichTextBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B2242A62233442C000ACDA1 /* RichTextBlock.h */; };
+		6B2242AE22334452000ACDA1 /* TextRun.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B2242A922334451000ACDA1 /* TextRun.h */; };
+		6B2242AF22334452000ACDA1 /* TextRun.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B2242AA22334451000ACDA1 /* TextRun.cpp */; };
+		6B2242B022334452000ACDA1 /* Inline.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B2242AB22334451000ACDA1 /* Inline.h */; };
+		6B2242B122334452000ACDA1 /* Paragraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B2242AC22334452000ACDA1 /* Paragraph.cpp */; };
+		6B2242B222334452000ACDA1 /* Paragraph.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B2242AD22334452000ACDA1 /* Paragraph.h */; };
+		6B2242B422334492000ACDA1 /* Inline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B2242B322334492000ACDA1 /* Inline.cpp */; };
 		6B268FE720CF19E200D99C1B /* RemoteResourceInformation.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B268FE620CF19E100D99C1B /* RemoteResourceInformation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B3787B720CA00D300015401 /* ACRUILabel.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F44B6A203FA8EF00A2F24C /* ACRUILabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B3787BA20CB3E0E00015401 /* ACRContentHoldingUIScrollView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B3787B820CB3E0E00015401 /* ACRContentHoldingUIScrollView.mm */; };
@@ -349,6 +359,16 @@
 		6B224277220BAC8B000ACDA1 /* pch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pch.cpp; path = ../../../../shared/cpp/ObjectModel/pch.cpp; sourceTree = "<group>"; };
 		6B22427F2220DDF5000ACDA1 /* CollectionTypeElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CollectionTypeElement.cpp; path = ../../../../shared/cpp/ObjectModel/CollectionTypeElement.cpp; sourceTree = "<group>"; };
 		6B2242802220DDF5000ACDA1 /* CollectionTypeElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CollectionTypeElement.h; path = ../../../../shared/cpp/ObjectModel/CollectionTypeElement.h; sourceTree = "<group>"; };
+		6B2242A12233439D000ACDA1 /* TextElementProperties.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TextElementProperties.cpp; path = ../../../../shared/cpp/ObjectModel/TextElementProperties.cpp; sourceTree = "<group>"; };
+		6B2242A22233439D000ACDA1 /* TextElementProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TextElementProperties.h; path = ../../../../shared/cpp/ObjectModel/TextElementProperties.h; sourceTree = "<group>"; };
+		6B2242A52233442C000ACDA1 /* RichTextBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RichTextBlock.cpp; path = ../../../../shared/cpp/ObjectModel/RichTextBlock.cpp; sourceTree = "<group>"; };
+		6B2242A62233442C000ACDA1 /* RichTextBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RichTextBlock.h; path = ../../../../shared/cpp/ObjectModel/RichTextBlock.h; sourceTree = "<group>"; };
+		6B2242A922334451000ACDA1 /* TextRun.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TextRun.h; path = ../../../../shared/cpp/ObjectModel/TextRun.h; sourceTree = "<group>"; };
+		6B2242AA22334451000ACDA1 /* TextRun.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TextRun.cpp; path = ../../../../shared/cpp/ObjectModel/TextRun.cpp; sourceTree = "<group>"; };
+		6B2242AB22334451000ACDA1 /* Inline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Inline.h; path = ../../../../shared/cpp/ObjectModel/Inline.h; sourceTree = "<group>"; };
+		6B2242AC22334452000ACDA1 /* Paragraph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Paragraph.cpp; path = ../../../../shared/cpp/ObjectModel/Paragraph.cpp; sourceTree = "<group>"; };
+		6B2242AD22334452000ACDA1 /* Paragraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Paragraph.h; path = ../../../../shared/cpp/ObjectModel/Paragraph.h; sourceTree = "<group>"; };
+		6B2242B322334492000ACDA1 /* Inline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Inline.cpp; path = ../../../../shared/cpp/ObjectModel/Inline.cpp; sourceTree = "<group>"; };
 		6B268FE620CF19E100D99C1B /* RemoteResourceInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteResourceInformation.h; path = ../../../../shared/cpp/ObjectModel/RemoteResourceInformation.h; sourceTree = "<group>"; };
 		6B3787B820CB3E0E00015401 /* ACRContentHoldingUIScrollView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRContentHoldingUIScrollView.mm; sourceTree = "<group>"; };
 		6B3787B920CB3E0E00015401 /* ACRContentHoldingUIScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRContentHoldingUIScrollView.h; sourceTree = "<group>"; };
@@ -771,6 +791,16 @@
 		F423C0D71EE1FF2F00905679 /* SharedLib */ = {
 			isa = PBXGroup;
 			children = (
+				6B2242B322334492000ACDA1 /* Inline.cpp */,
+				6B2242AB22334451000ACDA1 /* Inline.h */,
+				6B2242AC22334452000ACDA1 /* Paragraph.cpp */,
+				6B2242AD22334452000ACDA1 /* Paragraph.h */,
+				6B2242AA22334451000ACDA1 /* TextRun.cpp */,
+				6B2242A922334451000ACDA1 /* TextRun.h */,
+				6B2242A52233442C000ACDA1 /* RichTextBlock.cpp */,
+				6B2242A62233442C000ACDA1 /* RichTextBlock.h */,
+				6B2242A12233439D000ACDA1 /* TextElementProperties.cpp */,
+				6B2242A22233439D000ACDA1 /* TextElementProperties.h */,
 				F4071C781FCCBAEF00AF4FEA /* ActionParserRegistration.cpp */,
 				F4071C741FCCBAEF00AF4FEA /* ActionParserRegistration.h */,
 				C8DEDF37220CDEB00001AAED /* ActionSet.cpp */,
@@ -1103,6 +1133,7 @@
 				F4F44B9D204A16BC00A2F24C /* ACRTextBlockRenderer.h in Headers */,
 				F4F44B9C204A169D00A2F24C /* ACRErrors.h in Headers */,
 				F4F44B9A204A164100A2F24C /* ACRInputToggleRenderer.h in Headers */,
+				6B2242AE22334452000ACDA1 /* TextRun.h in Headers */,
 				F4F44B99204A162900A2F24C /* ACRInputTimeRenderer.h in Headers */,
 				F4F44B9B204A165F00A2F24C /* ACRIBaseInputHandler.h in Headers */,
 				F4F44B93204A155B00A2F24C /* ACRFactSetRenderer.h in Headers */,
@@ -1141,10 +1172,12 @@
 				F4C1F5F11F2BC6840018CB78 /* ACRButton.h in Headers */,
 				F4CAE7841F75AB9000545555 /* ACOAdaptiveCardPrivate.h in Headers */,
 				F42E51771FEC3840008F9642 /* MarkDownBlockParser.h in Headers */,
+				6B2242A82233442C000ACDA1 /* RichTextBlock.h in Headers */,
 				F4CAE77E1F748AF200545555 /* ACOHostConfigPrivate.h in Headers */,
 				F4FE456E1F1985200071D9E5 /* ACRColumnSetView.h in Headers */,
 				F4F2556F1F98247600A80D39 /* ACOBaseActionElementPrivate.h in Headers */,
 				F42E51751FEC3840008F9642 /* MarkDownHtmlGenerator.h in Headers */,
+				6B2242B222334452000ACDA1 /* Paragraph.h in Headers */,
 				F42E51731FEC3840008F9642 /* MarkDownParsedResult.h in Headers */,
 				F429794A1F323BA700E89914 /* ACRDateTextField.h in Headers */,
 				F42979471F322C9000E89914 /* ACRNumericTextField.h in Headers */,
@@ -1159,6 +1192,7 @@
 				6B7B1A9820BE2CBC00260731 /* ACRUIImageView.h in Headers */,
 				F429793E1F3155EF00E89914 /* ACRTextField.h in Headers */,
 				F495FC0F2022AC920093D4DE /* ACRChoiceSetViewDataSourceCompactStyle.h in Headers */,
+				6B2242A42233439E000ACDA1 /* TextElementProperties.h in Headers */,
 				F427411C1EF8A25200399FBB /* ACRRegistration.h in Headers */,
 				F4F6BA38204F2954003741B6 /* ACRParseWarningPrivate.h in Headers */,
 				F49683541F6CA24600DF0D3A /* ACRRenderResult.h in Headers */,
@@ -1179,6 +1213,7 @@
 				6B22425D21E80647000ACDA1 /* ACOParseContextPrivate.h in Headers */,
 				F4C1F5E81F2ABB3C0018CB78 /* ACRIBaseActionElementRenderer.h in Headers */,
 				6BB211FF20FFF9C0009EA1BA /* ACRIMedia.h in Headers */,
+				6B2242B022334452000ACDA1 /* Inline.h in Headers */,
 				6B7B1A9320B4D2AB00260731 /* MediaSource.h in Headers */,
 				7ECFB641219A3940004727A9 /* ParseContext.h in Headers */,
 				6BCE4B292108FBD800021A62 /* ACRLongPressGestureRecognizerFactory.h in Headers */,
@@ -1371,6 +1406,7 @@
 				F43110461F357487001AAE30 /* ACOHostConfig.mm in Sources */,
 				F4F6BA2F204F18D8003741B6 /* ParseResult.cpp in Sources */,
 				F4C1F5F21F2BC6840018CB78 /* ACRButton.mm in Sources */,
+				6B2242B122334452000ACDA1 /* Paragraph.cpp in Sources */,
 				F4F6BA2A204E107F003741B6 /* UnknownElement.cpp in Sources */,
 				F49683531F6CA24600DF0D3A /* ACRRenderer.mm in Sources */,
 				F42741211EF9DB8000399FBB /* ACRContainerRenderer.mm in Sources */,
@@ -1405,6 +1441,7 @@
 				6BCE4B232108EB4E00021A62 /* ACRAVPlayerViewHoldingUIView.mm in Sources */,
 				6B22425F21E80647000ACDA1 /* ACOParseContext.mm in Sources */,
 				F4071C7E1FCCBAEF00AF4FEA /* ActionParserRegistration.cpp in Sources */,
+				6B2242A72233442C000ACDA1 /* RichTextBlock.cpp in Sources */,
 				F4FE456B1F196F3D0071D9E5 /* ACRContentStackView.mm in Sources */,
 				F429793F1F3155EF00E89914 /* ACRTextField.mm in Sources */,
 				F43A94191F20502D0001920B /* ACRInputToggleRenderer.mm in Sources */,
@@ -1412,6 +1449,7 @@
 				F42E51741FEC3840008F9642 /* MarkDownBlockParser.cpp in Sources */,
 				F43A94151F1EED6D0001920B /* ACRInputRenderer.mm in Sources */,
 				F401A87C1F0DCBC8006D7AF2 /* ACRImageSetRenderer.mm in Sources */,
+				6B2242B422334492000ACDA1 /* Inline.cpp in Sources */,
 				F4F44B6E203FAF9300A2F24C /* ACRUILabel.mm in Sources */,
 				F4F44B7C20478C5C00A2F24C /* DateTimePreparsedToken.cpp in Sources */,
 				6BF430782190DDCA0068E432 /* ACRQuickReplyView.mm in Sources */,
@@ -1450,6 +1488,7 @@
 				6B7B1A9720BE2CBC00260731 /* ACRUIImageView.mm in Sources */,
 				6BCE4B252108FA7D00021A62 /* ACRMediaRenderer.mm in Sources */,
 				F4F6BA3B204F3109003741B6 /* ACRAggregateTarget.mm in Sources */,
+				6B2242A32233439E000ACDA1 /* TextElementProperties.cpp in Sources */,
 				F42741251EFB274C00399FBB /* ACRColumnRenderer.mm in Sources */,
 				F4F255701F98247600A80D39 /* ACOBaseActionElement.mm in Sources */,
 				6BF43080219129600068E432 /* ACRQuickReplyMultilineView.mm in Sources */,
@@ -1459,6 +1498,7 @@
 				6B22426E2203BE98000ACDA1 /* UnknownAction.cpp in Sources */,
 				6B224278220BAC8B000ACDA1 /* BaseElement.cpp in Sources */,
 				6B9D650F21095CBF00BB5C7B /* ACRMediaTarget.mm in Sources */,
+				6B2242AF22334452000ACDA1 /* TextRun.cpp in Sources */,
 				F43110441F357487001AAE30 /* ACRInputTableView.mm in Sources */,
 				6B9AB31120DD82A2005C8E15 /* ACRTextView.mm in Sources */,
 				F4F6BA32204F18D8003741B6 /* AdaptiveCardParseWarning.cpp in Sources */,

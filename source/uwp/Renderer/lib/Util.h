@@ -92,6 +92,8 @@ HRESULT GetSpacingSizeFromSpacing(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConf
                                   ABI::AdaptiveNamespace::Spacing spacing,
                                   _Out_ UINT* spacingSize) noexcept;
 
+HRESULT GenerateSharedElement(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* items, std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& containedElement);
+
 HRESULT GenerateSharedElements(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>* items,
                                std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>>& containedElements);
 
@@ -116,6 +118,9 @@ HRESULT GenerateSharedMediaSources(_In_ ABI::Windows::Foundation::Collections::I
 HRESULT GenerateSharedToggleElements(
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveToggleVisibilityTarget*>* items,
     std::vector<std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityTarget>>& containedElements);
+
+HRESULT GenerateElementProjection(_In_ const std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& baseElement,
+                                  _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** projectedElement) noexcept;
 
 HRESULT GenerateContainedElementsProjection(
     const std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>>& containedElements,
@@ -221,6 +226,9 @@ HRESULT GetDateTimeReference(unsigned int year,
                              unsigned int month,
                              unsigned int day,
                              _COM_Outptr_ ABI::Windows::Foundation::IReference<ABI::Windows::Foundation::DateTime>** dateTimeReference);
+
+ABI::AdaptiveNamespace::FallbackType MapSharedFallbackTypeToUwp(const AdaptiveSharedNamespace::FallbackType type);
+AdaptiveSharedNamespace::FallbackType MapUwpFallbackTypeToShared(const ABI::AdaptiveNamespace::FallbackType type);
 
 namespace AdaptiveNamespace
 {

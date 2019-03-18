@@ -32,3 +32,12 @@
 #include "Util.h"
 
 #include "AdaptiveCards.Rendering.Uwp.h"
+
+#ifndef MAKE_HRESULT
+#define MAKE_HRESULT(sev, fac, code) \
+    ((HRESULT)(((unsigned long)(sev) << 31) | ((unsigned long)(fac) << 16) | ((unsigned long)(code))))
+#endif
+
+#define FACILITY_ADAPTIVECARDS 0xADA
+#define ERRORBASE_ADAPTIVECARDS 0x1000
+#define E_PERFORM_FALLBACK MAKE_HRESULT(1, FACILITY_ADAPTIVECARDS, ERRORBASE_ADAPTIVECARDS)

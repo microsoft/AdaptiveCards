@@ -37,6 +37,26 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Id(_Outptr_ HSTRING* id) { return AdaptiveActionElementBase::get_Id(id); }
         IFACEMETHODIMP put_Id(_In_ HSTRING id) { return AdaptiveActionElementBase::put_Id(id); }
 
+        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType* fallback)
+        {
+            return AdaptiveActionElementBase::get_FallbackType(fallback);
+        }
+
+        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** content)
+        {
+            return AdaptiveActionElementBase::get_FallbackContent(content);
+        }
+
+        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveNamespace::FallbackType fallback)
+        {
+            return AdaptiveActionElementBase::put_FallbackType(fallback);
+        }
+
+        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* content)
+        {
+            return AdaptiveActionElementBase::put_FallbackContent(content);
+        }
+
         IFACEMETHODIMP get_IconUrl(_Outptr_ HSTRING* iconUrl)
         {
             return AdaptiveActionElementBase::get_IconUrl(iconUrl);

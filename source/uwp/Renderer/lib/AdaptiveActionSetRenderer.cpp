@@ -12,39 +12,32 @@ using namespace Microsoft::WRL::Wrappers;
 using namespace ABI::AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 
-namespace AdaptiveCards
+namespace AdaptiveNamespace
 {
-    namespace Rendering
+    HRESULT AdaptiveActionSetRenderer::RuntimeClassInitialize() noexcept try
     {
-        namespace Uwp
-        {
-            HRESULT AdaptiveActionSetRenderer::RuntimeClassInitialize() noexcept try
-            {
-                return S_OK;
-            }
-            CATCH_RETURN;
-
-            _Use_decl_annotations_ HRESULT AdaptiveActionSetRenderer::Render(IAdaptiveCardElement* cardElement,
-                                                                             IAdaptiveRenderContext* renderContext,
-                                                                             IAdaptiveRenderArgs* renderArgs,
-                                                                             ABI::Windows::UI::Xaml::IUIElement** result) noexcept try
-            {
-                XamlBuilder::BuildActionSet(cardElement, renderContext, renderArgs, result);
-                return S_OK;
-            }
-            CATCH_RETURN;
-
-            HRESULT AdaptiveActionSetRenderer::FromJson(
-                ABI::Windows::Data::Json::IJsonObject* jsonObject,
-                ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
-                ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
-                ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
-                ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept try
-            {
-                return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveActionSet, AdaptiveSharedNamespace::ActionSet, AdaptiveSharedNamespace::ActionSetParser>(
-                    jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
-            }
-            CATCH_RETURN;
-        }
+        return S_OK;
     }
+    CATCH_RETURN;
+
+    HRESULT AdaptiveActionSetRenderer::Render(_In_ IAdaptiveCardElement* cardElement,
+                                              _In_ IAdaptiveRenderContext* renderContext,
+                                              _In_ IAdaptiveRenderArgs* renderArgs,
+                                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept try
+    {
+        return XamlBuilder::BuildActionSet(cardElement, renderContext, renderArgs, result);
+    }
+    CATCH_RETURN;
+
+    HRESULT AdaptiveActionSetRenderer::FromJson(
+        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
+        _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
+        _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
+        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
+        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept try
+    {
+        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveActionSet, AdaptiveSharedNamespace::ActionSet, AdaptiveSharedNamespace::ActionSetParser>(
+            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
+    }
+    CATCH_RETURN;
 }

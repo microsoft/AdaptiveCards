@@ -33,6 +33,18 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
     return CardElementType.swigToEnum(AdaptiveCardObjectModelJNI.CardElementTypeFromString(t));
   }
 
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__InlineElementType_t getInlineElementTypeEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__InlineElementType_t(AdaptiveCardObjectModelJNI.getInlineElementTypeEnum(), false);
+  }
+
+  public static String InlineElementTypeToString(InlineElementType t) {
+    return AdaptiveCardObjectModelJNI.InlineElementTypeToString(t.swigValue());
+  }
+
+  public static InlineElementType InlineElementTypeFromString(String t) {
+    return InlineElementType.swigToEnum(AdaptiveCardObjectModelJNI.InlineElementTypeFromString(t));
+  }
+
   public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__TextSize_t getTextSizeEnum() {
     return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__TextSize_t(AdaptiveCardObjectModelJNI.getTextSizeEnum(), false);
   }
@@ -283,6 +295,10 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
 
   public static HeightType HeightTypeFromString(String t) {
     return HeightType.swigToEnum(AdaptiveCardObjectModelJNI.HeightTypeFromString(t));
+  }
+
+  public static void HandleUnknownProperties(JsonValue json, SWIGTYPE_p_std__unordered_setT_std__string_t knownProperties, JsonValue unknownProperties) {
+    AdaptiveCardObjectModelJNI.HandleUnknownProperties(JsonValue.getCPtr(json), json, SWIGTYPE_p_std__unordered_setT_std__string_t.getCPtr(knownProperties), JsonValue.getCPtr(unknownProperties), unknownProperties);
   }
 
 }

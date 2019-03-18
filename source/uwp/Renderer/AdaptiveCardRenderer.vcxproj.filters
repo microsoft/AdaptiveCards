@@ -103,6 +103,7 @@
     <ClCompile Include="lib\AdaptiveShowCardActionRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveSubmitActionRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveToggleVisibilityActionRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveUnsupportedAction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -213,6 +214,7 @@
     <ClInclude Include="lib\AdaptiveShowCardActionRenderer.h" />
     <ClInclude Include="lib\AdaptiveSubmitActionRenderer.h" />
     <ClInclude Include="lib\AdaptiveToggleVisibilityActionRenderer.h" />
+    <ClInclude Include="lib\AdaptiveUnsupportedAction.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />

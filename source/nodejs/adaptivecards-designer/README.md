@@ -55,7 +55,7 @@ The simplest way to get started it to include 3 script tags in your page.
 			designer.monacoEditorLoaded();
 		});
 
-		designer.attachTo(document.getElementById("designerRootHost");
+		designer.attachTo(document.getElementById("designerRootHost"));
 	};
 </script>
 

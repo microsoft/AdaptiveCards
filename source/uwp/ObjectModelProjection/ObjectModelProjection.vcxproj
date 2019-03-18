@@ -32,8 +32,10 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BackgroundImage.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\CollectionTypeElement.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\Inline.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Media.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\MediaSource.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\Paragraph.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ParseContext.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
@@ -60,11 +62,14 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\MarkDownParser.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\NumberInput.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ParseResult.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\RichTextBlock.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\SemanticVersion.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Separator.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\DateTimePreparser.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\TextElementProperties.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TextInput.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\DateTimePreparsedToken.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\TextRun.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TimeInput.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ToggleInput.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\OpenUrlAction.cpp" />
@@ -106,6 +111,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Image.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ImageSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\DateInput.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\Inline.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownBlockParser.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownHtmlGenerator.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MarkDownParsedResult.h" />
@@ -113,14 +119,18 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Media.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\MediaSource.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\NumberInput.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\Paragraph.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ParseContext.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ParseResult.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\RemoteResourceInformation.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\RichTextBlock.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\SemanticVersion.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Separator.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\DateTimePreparser.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\TextElementProperties.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TextInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\DateTimePreparsedToken.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\TextRun.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TimeInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ToggleInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\OpenUrlAction.h" />
