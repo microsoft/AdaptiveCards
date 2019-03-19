@@ -43,7 +43,7 @@ export class InputText extends React.Component {
      */
 	textValueChanged = (text, addInputItem) => {
 		this.setState({ text });
-		addInputItem(this.id, {value : text,errorState:this.state.isError});
+		addInputItem(this.id, { value: text, errorState: this.state.isError });
 	}
 
 	/**
@@ -100,10 +100,10 @@ export class InputText extends React.Component {
 					text = text.replace(/\D/g, Constants.EmptyString);
 				}
 					break;
-				default:{
+				default: {
 					isError = false;
 				}
-				break;
+					break;
 			}
 
 			if (REGEX) {
@@ -126,7 +126,7 @@ export class InputText extends React.Component {
      * @description handle textInput when out of focus
      */
 	handleBlur = () => {
-		if(this.isValidationRequired)
+		if (this.isValidationRequired)
 			this.validate();
 	}
 }
