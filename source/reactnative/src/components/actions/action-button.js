@@ -90,18 +90,16 @@ export class ActionButton extends React.Component {
 	onSubmitActionCalled() {
 		let mergedObject = {};
 		for (const key in this.context.inputArray) {
-			if (this.context.inputArray.hasOwnProperty(key)) {
-				mergedObject[key]=this.context.inputArray[key].value;
-			}
+			mergedObject[key] = this.context.inputArray[key].value;
 		}
 		if (this.data !== null) {
-			if(this.data instanceof Object)
-				mergedObject = {...mergedObject,...this.data}
+			if (this.data instanceof Object)
+				mergedObject = { ...mergedObject, ...this.data }
 			else
-				mergedObject["actionData"]=this.data;
-		} 
+				mergedObject["actionData"] = this.data;
+		}
 		let actionObject = { "type": this.payload.type, "data": mergedObject };
-		this.context.onExecuteAction(actionObject,this.payload.ignoreInputValidation === true);
+		this.context.onExecuteAction(actionObject, this.payload.ignoreInputValidation === true);
 	}
 
 	/**

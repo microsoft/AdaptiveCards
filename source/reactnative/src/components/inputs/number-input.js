@@ -20,7 +20,7 @@ export class NumberInput extends React.Component {
 		this.payload = props.json;
 		this.id = Constants.EmptyString;
 		this.styleValue = Enums.InputTextStyle.Number;
-		
+
 		this.isValidationRequired = !!this.payload.validation &&
 			(Enums.ValidationNecessity.Required == this.payload.validation.necessity ||
 				Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
@@ -92,7 +92,7 @@ export class NumberInput extends React.Component {
 		this.setState({
 			numberValue: text
 		})
-		addInputItem(this.id, {value : text,errorState:this.state.isError});
+		addInputItem(this.id, { value: text, errorState: this.state.isError });
 	}
 
 

@@ -41,13 +41,13 @@ export class ChoiceSetInput extends React.Component {
 		this.value = Constants.EmptyString;
 		this.choices = [];
 		this.payload = props.json;
-		
+
 		this.isValidationRequired = !!this.payload.validation &&
 			(Enums.ValidationNecessity.Required == this.payload.validation.necessity ||
 				Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
 
-		this.validationText = (this.payload.validation && this.payload.validation.validationFailedText) ?
-			this.payload.validation.validationFailedText : Constants.validationText;
+		this.errorMessage = (this.payload.validation && this.payload.validation.errorMessage) ?
+			this.payload.validation.errorMessage : Constants.ErrorMessage;
 
 		this.validationRequiredWithVisualCue = (!this.payload.validation ||
 			Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
@@ -85,7 +85,7 @@ export class ChoiceSetInput extends React.Component {
 		if (Utils.isNullOrEmpty(value))
 			return Constants.EmptyString
 		let choiceName = this.choices.find(choice => choice.value === value);
-		addInputItem(this.id, {value :value,errorState:this.state.isError});
+		addInputItem(this.id, { value: value, errorState: this.state.isError });
 		return choiceName.title
 	}
 
@@ -93,7 +93,7 @@ export class ChoiceSetInput extends React.Component {
      * @description Fetches the initial value for the picker component
      */
 	getPickerInitialValue = (addInputItem) => {
-		addInputItem(this.id, {value :this.state.selectedPickerValue,errorState:this.state.isError})
+		addInputItem(this.id, { value: this.state.selectedPickerValue, errorState: this.state.isError })
 		return this.state.selectedPickerValue
 	}
 
@@ -104,10 +104,10 @@ export class ChoiceSetInput extends React.Component {
      */
 	getRadioButtonIndex = (value, choiceArray, addInputItem) => {
 		if (Utils.isNullOrEmpty(value)) {
-			addInputItem(this.id, {value :Constants.EmptyString,errorState:this.state.isError});
+			addInputItem(this.id, { value: Constants.EmptyString, errorState: this.state.isError });
 			return -1
 		}
-		addInputItem(this.id, {value :value,errorState:this.state.isError});
+		addInputItem(this.id, { value: value, errorState: this.state.isError });
 
 		for (var i = 0; i < choiceArray.length; i++) {
 			if (choiceArray[i]["value"] === value) {
@@ -124,10 +124,10 @@ export class ChoiceSetInput extends React.Component {
 	setInitialCheckedValues = (value, addInputItem) => {
 		var array = this.getCheckedIndexes(value);
 		if (array.length > 0) {
-			addInputItem(this.id, {value :value,errorState:this.state.isError})
+			addInputItem(this.id, { value: value, errorState: this.state.isError })
 			return array
 		}
-		addInputItem(this.id, {value :Constants.EmptyString,errorState:this.state.isError})
+		addInputItem(this.id, { value: Constants.EmptyString, errorState: this.state.isError })
 		return []
 	}
 
@@ -149,7 +149,7 @@ export class ChoiceSetInput extends React.Component {
 	renderPickerComponent(addInputItem) {
 		return (
 			<View style={styles.containerView}>
-				{ (Platform.OS === Constants.PlatformIOS) && <TouchableOpacity
+				{(Platform.OS === Constants.PlatformIOS) && <TouchableOpacity
 					activeOpacity={1}
 					onPress={onPress}>
 					<View style={styles.touchView}>
@@ -157,7 +157,7 @@ export class ChoiceSetInput extends React.Component {
 							style={[styles.text, this.styleConfig.fontConfig]}
 						>
 							{this.getPickerSelectedValue(this.state.selectedPickerValue,
-									addInputItem)
+								addInputItem)
 							}
 						</Text>
 						<Image
@@ -165,8 +165,8 @@ export class ChoiceSetInput extends React.Component {
 							source={require(DropDownImage)}
 						/>
 					</View>
-				</TouchableOpacity> }
-				{ ((Platform.OS === Constants.PlatformIOS) ? this.state.isPickerSelected : true) &&
+				</TouchableOpacity>}
+				{((Platform.OS === Constants.PlatformIOS) ? this.state.isPickerSelected : true) &&
 					<View style={styles.pickerContainer}>
 						<Picker
 							mode={'dropdown'}
@@ -175,9 +175,9 @@ export class ChoiceSetInput extends React.Component {
 								(itemValue) => {
 									this.setState({
 										selectedPickerValue: itemValue,
-										isError : false
+										isError: false
 									})
-									addInputItem(this.id, {value:itemValue,errorState:false});
+									addInputItem(this.id, { value: itemValue, errorState: false });
 								}}>
 							{this.choices.map((item, key) => (
 								<Picker.Item
@@ -213,8 +213,8 @@ export class ChoiceSetInput extends React.Component {
 								this.choices, addInputItem) :
 							index == this.state.activeIndex}
 						onChange={() => {
-							this.setState({ activeIndex: index,isError:false })
-							addInputItem(this.id, {value:item.value,errorState:false});
+							this.setState({ activeIndex: index, isError: false })
+							addInputItem(this.id, { value: item.value, errorState: false });
 						}}
 					/>
 				))}
@@ -253,8 +253,8 @@ export class ChoiceSetInput extends React.Component {
 							}
 							let newValue = checkedArray.sort().join()
 							let isError = this.isValidationRequired ? checkedArray.length < 1 : false;
-							this.setState({ checkedValues: newValue,isError:isError })
-							addInputItem(this.id, {value:newValue,errorState:isError});
+							this.setState({ checkedValues: newValue, isError: isError })
+							addInputItem(this.id, { value: newValue, errorState: isError });
 						}
 						}
 					/>
@@ -284,33 +284,42 @@ export class ChoiceSetInput extends React.Component {
 
 		return (
 			<InputContextConsumer>
-				{({ addInputItem ,showErrors}) => (
+				{({ addInputItem, showErrors }) => (
 					<ElementWrapper json={this.payload} style={styles.containerView}>
-					<View style={this.getComputedStyles(showErrors)}>
-						{!isMultiSelect ?
-							((style == CompactStyle || style == undefined) ?
-								this.renderPickerComponent(addInputItem) :
-								this.renderCheckBoxComponent(addInputItem)) :
-							this.renderRadioButtonComponent(addInputItem)
-						}
-					</View>
-						{this.state.isError && showErrors && this.showValidationText()}
+						<View style={this.getComputedStyles(showErrors)}>
+							{!isMultiSelect ?
+								((style == CompactStyle || style == undefined) ?
+									this.renderPickerComponent(addInputItem) :
+									this.renderCheckBoxComponent(addInputItem)) :
+								this.renderRadioButtonComponent(addInputItem)
+							}
+						</View>
+						{this.state.isError && showErrors && this.showErrorMessage()}
 					</ElementWrapper>)}
 			</InputContextConsumer>
 		);
 	}
-	getComputedStyles=(showErrors)=>{
+
+	/**
+	 * @description get styles for showing validation errors
+	 * @param showErrors show errors based on this flag.
+	 */
+	getComputedStyles = (showErrors) => {
 		let computedStyles = [];
-		if(this.state.isError && (showErrors || this.validationRequiredWithVisualCue)){
+		if (this.state.isError && (showErrors || this.validationRequiredWithVisualCue)) {
 			computedStyles.push(this.styleConfig.borderAttention);
-			computedStyles.push({borderWidth: 1});
+			computedStyles.push({ borderWidth: 1 });
 		}
 		return computedStyles;
 	}
-	showValidationText=()=>{
-		return(
+
+	/**
+	 * @description Displays validation error text
+	 */
+	showErrorMessage = () => {
+		return (
 			<Text style={this.styleConfig.defaultDestructiveButtonForegroundColor}>
-				{this.validationText}
+				{this.errorMessage}
 			</Text>
 		)
 	}

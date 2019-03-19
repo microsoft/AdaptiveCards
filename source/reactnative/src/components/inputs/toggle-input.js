@@ -32,7 +32,7 @@ export class ToggleInput extends React.Component {
 		this.valueOff = props.json.valueOff || Constants.FalseString;
 		this.value = props.json.value || this.valueOff;
 		this.id = props.json.id || Constants.ToggleValueOn
-		
+
 		this.isValidationRequired = !!props.json.validation &&
 			(Enums.ValidationNecessity.Required == props.json.validation.necessity ||
 				Enums.ValidationNecessity.RequiredWithVisualCue == props.json.validation.necessity);
@@ -40,8 +40,8 @@ export class ToggleInput extends React.Component {
 		this.validationRequiredWithVisualCue = (!props.json.validation ||
 			Enums.ValidationNecessity.RequiredWithVisualCue == props.json.validation.necessity);
 
-		this.validationText = (props.json.validation && props.json.validation.validationFailedText) ?
-			props.json.validation.validationFailedText : Constants.validationText;
+		this.errorMessage = (props.json.validation && props.json.validation.errorMessage) ?
+			props.json.validation.errorMessage : Constants.ErrorMessage;
 
 		this.wrapText = props.json.wrap || false
 
@@ -60,8 +60,8 @@ export class ToggleInput extends React.Component {
 	toggleValueChanged = (toggleValue, addInputItem) => {
 		const changedValue = toggleValue ? this.valueOn : this.valueOff;
 		const isError = this.isValidationRequired ? changedValue === this.valueOff : false;
-		this.setState({ toggleValue ,isError});
-		addInputItem(this.id, {value : changedValue, errorState:isError});
+		this.setState({ toggleValue, isError });
+		addInputItem(this.id, { value: changedValue, errorState: isError });
 	}
 
 	render() {
@@ -72,11 +72,11 @@ export class ToggleInput extends React.Component {
 		return (
 			<ElementWrapper json={this.props.json} style={styles.toggleContainer}>
 				<InputContextConsumer>
-					{({ addInputItem,inputArray,showErrors }) => {
-						if(!inputArray[this.id]){
+					{({ addInputItem, inputArray, showErrors }) => {
+						if (!inputArray[this.id]) {
 							const initialValue = toggleValue ? this.valueOn : this.valueOff;
 							const isError = this.isValidationRequired ? initialValue === this.valueOff : false;
-							addInputItem(this.id, {value : initialValue,errorState:isError});
+							addInputItem(this.id, { value: initialValue, errorState: isError });
 						}
 						return (
 							<View>
@@ -90,25 +90,35 @@ export class ToggleInput extends React.Component {
 										}}>
 									</Switch>
 								</View>
-								{this.state.isError && showErrors && this.showValidationText()}
+								{this.state.isError && showErrors && this.showErrorMessage()}
 							</View>
-					)}}
+						)
+					}}
 				</InputContextConsumer>
 			</ElementWrapper>
 		)
 	}
-	getComputedStyles=(showErrors)=>{
+
+	/**
+	 * @description get styles for showing validation errors
+	 * @param showErrors show errors based on this flag.
+	 */
+	getComputedStyles = (showErrors) => {
 		let computedStyles = [styles.toggleView];
-		if(this.state.isError && (showErrors || this.validationRequiredWithVisualCue)){
+		if (this.state.isError && (showErrors || this.validationRequiredWithVisualCue)) {
 			computedStyles.push(this.styleConfig.borderAttention);
-			computedStyles.push({borderWidth: 1});
+			computedStyles.push({ borderWidth: 1 });
 		}
 		return computedStyles;
 	}
-	showValidationText=()=>{
-		return(
+
+	/**
+	 * @description Displays validation error text
+	 */
+	showErrorMessage = () => {
+		return (
 			<Text style={this.styleConfig.defaultDestructiveButtonForegroundColor}>
-				{this.validationText}
+				{this.errorMessage}
 			</Text>
 		)
 	}
@@ -119,7 +129,7 @@ const styles = StyleSheet.create({
 		paddingTop: 5,
 		paddingBottom: 5
 	},
-	toggleView :{
+	toggleView: {
 		padding: 5,
 		flexDirection: Constants.FlexRow,
 		justifyContent: Constants.SpaceBetween,

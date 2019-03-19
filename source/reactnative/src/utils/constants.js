@@ -48,4 +48,4 @@ export const Emphasis = 'emphasis';
 
 export const NumberInput = 'Input.Number';
 
-export const ValidationText="Required";
+export const ErrorMessage = "Required";

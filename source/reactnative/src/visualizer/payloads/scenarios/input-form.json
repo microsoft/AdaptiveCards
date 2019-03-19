@@ -24,8 +24,8 @@
         "maxLength": 0,
         "id": "SimpleVal",
         "validation": {
-          "necessity": "requiredWithVisualCue",
-          "validationFailedText": "Required"
+          "necessity": "RequiredWithVisualCue",
+          "errorMessage": "Required"
           }
       },
       {
@@ -65,8 +65,8 @@
         "value": 1,
         "id": "NumVal",
         "validation": {
-          "necessity": "required",
-          "validationFailedText": "Not Valid number"
+          "necessity": "Required",
+          "errorMessage": "Not Valid number"
           }
       },
       {
@@ -74,8 +74,8 @@
         "placeholder": "Due Date",
         "id": "DateVal",
         "validation": {
-          "necessity": "requiredWithVisualCue",
-          "validationFailedText": "Not Valid date"
+          "necessity": "RequiredWithVisualCue",
+          "errorMessage": "Not Valid date"
           }
       },
       {
@@ -177,8 +177,8 @@
         "valueOff": "false",
         "value": "true",
         "validation": {
-          "necessity": "required",
-          "validationFailedText": "Please accept to proceed"
+          "necessity": "Required",
+          "errorMessage": "Please accept to proceed"
           },
         "id": "AcceptsTerms"
       },
@@ -189,8 +189,8 @@
         "valueOff": "NotRedCars",
         "id": "ColorPreference",
         "validation": {
-          "necessity": "optional",
-          "validationFailedText": "Not Required"
+          "necessity": "Optional",
+          "errorMessage": "Not Required"
           }
       }
     ],

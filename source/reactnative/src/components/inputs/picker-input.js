@@ -44,8 +44,8 @@ export class PickerInput extends React.Component {
 		this.validationRequiredWithVisualCue = (!this.payload.validation ||
 			Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
 
-		this.validationText = (this.payload.validation && this.payload.validation.validationFailedText) ?
-			this.payload.validation.validationFailedText : Constants.validationText;
+		this.errorMessage = (this.payload.validation && this.payload.validation.errorMessage) ?
+			this.payload.validation.errorMessage : Constants.ErrorMessage;
 
 		this.state = {
 			isError: this.isValidationRequired && !this.props.value
@@ -62,7 +62,7 @@ export class PickerInput extends React.Component {
 	}
 
 	componentWillReceiveProps(newProps) {
-		this.setState({isError:this.isValidationRequired && !newProps.value})
+		this.setState({ isError: this.isValidationRequired && !newProps.value })
 	}
 
 	render() {
@@ -88,7 +88,7 @@ export class PickerInput extends React.Component {
 
 		return (
 			<InputContextConsumer>
-				{({ addInputItem , showErrors}) => (
+				{({ addInputItem, showErrors }) => (
 					<ElementWrapper json={this.payload}>
 						<TouchableOpacity style={styles.inputWrapper} onPress={this.props.showPicker}>
 							{/* added extra view to fix touch event in ios . */}
@@ -101,10 +101,10 @@ export class PickerInput extends React.Component {
 									textContentType={Constants.NoneString}
 									underlineColorAndroid={Constants.TransparentString}
 									value={this.props.value}>
-									{addInputItem(this.id, {value : this.props.value,errorState:this.state.isError})}
+									{addInputItem(this.id, { value: this.props.value, errorState: this.state.isError })}
 								</TextInput>
 							</View>
-							{this.state.isError && showErrors && this.showValidationText()}
+							{this.state.isError && showErrors && this.showErrorMessage()}
 						</TouchableOpacity>
 						<Modal
 							animationType='slide'
@@ -135,18 +135,27 @@ export class PickerInput extends React.Component {
 			</InputContextConsumer>
 		);
 	}
-	getComputedStyles=(showErrors)=>{
+
+	/**
+	 * @description get styles for showing validation errors
+	 * @param showErrors show errors based on this flag.
+	 */
+	getComputedStyles = (showErrors) => {
 		let computedStyles = [];
-		if(this.state.isError && (showErrors || this.validationRequiredWithVisualCue)){
+		if (this.state.isError && (showErrors || this.validationRequiredWithVisualCue)) {
 			computedStyles.push(this.styleConfig.borderAttention);
-			computedStyles.push({borderWidth: 1});
+			computedStyles.push({ borderWidth: 1 });
 		}
 		return computedStyles;
 	}
-	showValidationText=()=>{
-		return(
+
+	/**
+	 * @description Displays validation error text
+	 */
+	showErrorMessage = () => {
+		return (
 			<Text style={this.styleConfig.defaultDestructiveButtonForegroundColor}>
-				{this.validationText}
+				{this.errorMessage}
 			</Text>
 		)
 	}
