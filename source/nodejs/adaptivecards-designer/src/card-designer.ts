@@ -41,7 +41,6 @@ export class CardDesigner {
     private _hostContainers: Array<HostContainer>;
     private _isMonacoEditorLoaded: boolean = false;
     private _designerSurface: Designer.CardDesignerSurface;
-    // private _propertySheetHostConfig: Adaptive.HostConfig;
     private _designerHostElement: HTMLElement;
     private _draggedPaletteItem: BasePaletteItem;
     private _draggedElement: HTMLElement;
@@ -69,6 +68,7 @@ export class CardDesigner {
         }
         else {
             this._togglePreviewButton.toolTip = "Switch to Preview mode";
+            this._designerSurface.updateLayout();
         }
 
         this.buildTreeView();
