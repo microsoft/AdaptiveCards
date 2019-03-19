@@ -38,6 +38,9 @@ namespace AdaptiveSharedNamespace
         virtual bool GetIsVisible() const;
         virtual void SetIsVisible(const bool value);
 
+        virtual unsigned int GetMinHeight() const;
+        virtual void SetMinHeight(const unsigned int value);
+
         virtual const CardElementType GetElementType() const;
 
         template<typename T> static std::shared_ptr<T> Deserialize(ParseContext& context, const Json::Value& json);
@@ -54,6 +57,7 @@ namespace AdaptiveSharedNamespace
         HeightType m_height;
         bool m_separator;
         bool m_isVisible;
+        unsigned int m_minHeight;
     };
 
     template<typename T> std::shared_ptr<T> BaseCardElement::Deserialize(ParseContext& context, const Json::Value& json)
@@ -71,6 +75,8 @@ namespace AdaptiveSharedNamespace
         baseCardElement->SetSeparator(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Separator, false));
         baseCardElement->SetSpacing(
             ParseUtil::GetEnumValue<Spacing>(json, AdaptiveCardSchemaKey::Spacing, Spacing::Default, SpacingFromString));
+        baseCardElement->SetMinHeight(
+            ParseSizeForPixelSize(ParseUtil::GetString(json, AdaptiveCardSchemaKey::MinHeight), &context.warnings));
 
         // Walk all properties and put any unknown ones in the additional properties json
         HandleUnknownProperties(json, baseCardElement->m_knownProperties, baseCardElement->m_additionalProperties);

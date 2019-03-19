@@ -144,6 +144,11 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             layout.setBackgroundColor(Color.parseColor(color));
         }
 
+        if (columnSet.GetMinHeight() != 0)
+        {
+            layout.setMinimumHeight((int)columnSet.GetMinHeight());
+        }
+
         return layout;
     }
 

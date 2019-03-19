@@ -102,6 +102,11 @@ public class ImageSetRenderer extends BaseCardElementRenderer
             viewGroup.addView(horizFlowLayout, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         }
 
+        if (imageSet.GetMinHeight() != 0)
+        {
+            horizFlowLayout.setMinimumHeight((int)imageSet.GetMinHeight());
+        }
+
         return horizFlowLayout;
     }
 

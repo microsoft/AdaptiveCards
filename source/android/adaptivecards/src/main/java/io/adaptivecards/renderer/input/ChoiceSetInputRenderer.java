@@ -311,6 +311,11 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             viewGroup.addView(view);
         }
 
+        if (choiceSetInput.GetMinHeight() != 0)
+        {
+            view.setMinimumHeight((int)choiceSetInput.GetMinHeight());
+        }
+
         return view;
     }
 

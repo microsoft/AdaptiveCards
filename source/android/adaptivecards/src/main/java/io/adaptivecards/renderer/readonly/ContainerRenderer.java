@@ -142,6 +142,11 @@ public class ContainerRenderer extends BaseCardElementRenderer
             containerView.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(renderedCard, container.GetSelectAction(), cardActionHandler));
         }
 
+        if (container.GetMinHeight() != 0)
+        {
+            containerView.setMinimumHeight((int)container.GetMinHeight());
+        }
+
         viewGroup.addView(containerView);
         return containerView;
     }

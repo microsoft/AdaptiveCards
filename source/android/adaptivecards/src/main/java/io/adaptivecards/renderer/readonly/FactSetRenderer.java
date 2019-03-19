@@ -129,6 +129,11 @@ public class FactSetRenderer extends BaseCardElementRenderer
             tableLayout.addView(factRow);
         }
 
+        if (factSet.GetMinHeight() != 0)
+        {
+            tableLayout.setMinimumHeight((int)factSet.GetMinHeight());
+        }
+
         viewGroup.addView(tableLayout);
         return tableLayout;
     }
