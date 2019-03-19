@@ -24,25 +24,34 @@ export function appendChild(node: Node, child: Node) {
 }
 
 export function setProperty(target: any, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
-	if (propertyValue && (!defaultValue || defaultValue !== propertyValue)) {
+    if (!propertyValue) {
+        delete target[propertyName];
+    }
+    else if (!defaultValue) {
 		target[propertyName] = propertyValue;
 	}
 	else {
         if (target[propertyName] === defaultValue) {
             delete target[propertyName];
         }
+        else {
+            target[propertyName] = defaultValue;
+        }
 	}
 }
 
 export function setEnumProperty(enumType: { [s: number]: string }, target: any, propertyName: string, propertyValue: number, defaultValue?: number) {
-	if (defaultValue === undefined || defaultValue !== propertyValue) {
-		target[propertyName] = enumType[propertyValue];
-	}
-	else {
+    if (!defaultValue) {
+        target[propertyName] = propertyValue;
+    }
+    else {
         if (target[propertyName] === defaultValue) {
             delete target[propertyName];
         }
-	}
+        else {
+            target[propertyName] = defaultValue;
+        }
+    }
 }
 
 export function getBoolValue(value: any, defaultValue: boolean): boolean {
