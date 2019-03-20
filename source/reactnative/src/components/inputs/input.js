@@ -10,6 +10,7 @@ import {
 	TextInput,
 	Image,
 	Text,
+	View,
 	TouchableOpacity,
 } from 'react-native';
 
@@ -21,7 +22,6 @@ import { HostConfigManager } from '../../utils/host-config';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 
-
 export class Input extends React.Component {
 
 	styleConfig = StyleManager.getManager().styles;
@@ -32,15 +32,17 @@ export class Input extends React.Component {
 		this.payload = props.json;
 		this.id = Constants.EmptyString;
 		this.isMultiline = Boolean;
-		this.maxlength = 0;
+		this.maxLength = 0;
 		this.placeHolder = Constants.EmptyString;
 		this.type = Constants.EmptyString;
-		this.value = Constants.EmptyString;
 		this.keyboardType = Constants.EmptyString;
 		this.textStyle = Constants.EmptyString;
+
+		this.validationRequiredWithVisualCue = (!this.payload.validation ||
+			Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
 		this.inlineAction = {};
 		this.state = {
-			isError: false,
+			showInlineActionErrors: false,
 			text: Constants.EmptyString,
 		}
 	}
@@ -56,10 +58,7 @@ export class Input extends React.Component {
 			type,
 			isMultiline,
 			placeholder,
-			maxLength,
-			payload,
-			textStyle,
-			keyboardType,
+			maxLength
 		} = this;
 
 		if (!id || !type) {
@@ -72,28 +71,30 @@ export class Input extends React.Component {
 		else {
 			TextBox = (
 				<InputContextConsumer>
-					{({ addInputItem }) => (
-						<ElementWrapper json={payload} style={this.receivedStyle}>
-							<TextInput
-								style={[this.getComputedStyles(), this.receivedStyle]}
-								autoCapitalize={Constants.NoneString}
-								autoCorrect={false}
-								placeholder={placeholder}
-								multiline={isMultiline}
-								maxLength={maxLength}
-								underlineColorAndroid={Constants.TransparentString}
-								clearButtonMode={Constants.WhileEditingString}
-								textContentType={textStyle}
-								keyboardType={keyboardType}
-								onFocus={this.props.handleFocus}
-								onBlur={this.props.handleBlur}
-								onChangeText={(text) => {
-									this.props.textValueChanged(text, addInputItem);
-								}}
-								value={this.props.value}
-							/>
-						</ElementWrapper>
-					)}
+					{({ addInputItem, showErrors, inputArray }) => {
+						if (!inputArray[this.id])
+							addInputItem(this.id, { value: this.props.value, errorState: this.props.isError });
+						return (
+							<ElementWrapper json={this.payload} isError={this.props.isError}>
+								<TextInput
+									style={this.getComputedStyles(showErrors)}
+									autoCapitalize={Constants.NoneString}
+									autoCorrect={false}
+									placeholder={placeholder}
+									multiline={isMultiline}
+									maxLength={maxLength}
+									underlineColorAndroid={Constants.TransparentString}
+									clearButtonMode={Constants.WhileEditingString}
+									textContentType={this.textStyle}
+									keyboardType={this.keyboardType}
+									onFocus={this.props.handleFocus}
+									onBlur={this.props.handleBlur}
+									value={this.props.value}
+									onChangeText={(text) => this.props.textValueChanged(text, addInputItem)}
+								/>
+							</ElementWrapper>
+						);
+					}}
 				</InputContextConsumer>
 			)
 		}
@@ -106,7 +107,7 @@ export class Input extends React.Component {
      * @description Return the input styles applicable based on the given payload
 	 * @returns {Array} - Computed styles based on the config 
      */
-	getComputedStyles = () => {
+	getComputedStyles = (showErrors) => {
 		const { isMultiline } = this;
 
 		let inputComputedStyles = [this.styleConfig.inputBorderWidth,
@@ -117,7 +118,7 @@ export class Input extends React.Component {
 		isMultiline ?
 			inputComputedStyles.push(styles.multiLineHeight) :
 			inputComputedStyles.push(styles.singleLineHeight);
-		this.props.isError ?
+		this.props.isError && (showErrors || this.validationRequiredWithVisualCue) ?
 			inputComputedStyles.push(this.styleConfig.borderAttention) :
 			inputComputedStyles.push(this.styleConfig.inputBorderColor);
 
@@ -125,7 +126,7 @@ export class Input extends React.Component {
 	}
 
     /**
-     * @description Parse hostconfig specific to this element
+     * @description Parse hostConfig specific to this element
      */
 	parseHostConfig = () => {
 		this.id = this.payload.id;
@@ -153,9 +154,11 @@ export class Input extends React.Component {
 	inlineActionComponent = () => {
 		return (
 			<InputContextConsumer>
-				{({ addInputItem, onExecuteAction, onParseError }) =>
-					this.parsePayload(addInputItem, onExecuteAction, onParseError)
-				}
+				{({ addInputItem, onExecuteAction, onParseError, inputArray }) => {
+					if (!inputArray[this.id])
+						addInputItem(this.id, { value: this.props.value, errorState: this.props.isError });
+					return this.parsePayload(addInputItem, onExecuteAction, onParseError)
+				}}
 			</InputContextConsumer>
 		);
 	}
@@ -198,43 +201,52 @@ export class Input extends React.Component {
 		}
 		else {
 			return (
-				<ElementWrapper json={payload} style={wrapperStyle}>
-					<TextInput
-						style={[this.getComputedStyles(), styles.inlineActionTextInput]}
-						autoCapitalize={Constants.NoneString}
-						autoCorrect={false}
-						placeholder={placeholder}
-						placeholderTextColor='#3a3a3a'
-						multiline={isMultiline}
-						maxLength={maxLength}
-						returnKeyLabel={'submit'}
-						returnKeyType={returnKeyType}
-						onSubmitEditing={() => this.onClickHandle(onExecuteAction, 'onSubmit')}
-						underlineColorAndroid={Constants.TransparentString}
-						clearButtonMode={Constants.WhileEditingString}
-						textContentType={textStyle}
-						keyboardType={keyboardType}
-						onFocus={this.props.handleFocus}
-						onBlur={this.props.handleBlur}
-						onChangeText={(text) => {
-							this.props.textValueChanged(text, addInputItem);
-							this.textValueChanged(text);
-						}}
-						value={this.props.value}
-					/>
-					<TouchableOpacity onPress={() => { this.onClickHandle(onExecuteAction, 'inline-action') }}>
-						{Utils.isNullOrEmpty(inlineAction.iconUrl) ?
-							<Text style={styles.inlineActionText}>{inlineAction.title}</Text> :
-							<Image
-								style={styles.inlineActionImage}
-								source=
-								{{ uri: inlineAction.iconUrl }} />
-						}
-					</TouchableOpacity>
-				</ElementWrapper>
+				<View>
+					<ElementWrapper json={payload} style={wrapperStyle} isError={this.props.isError}>
+						<TextInput
+							style={[styles.inlineActionTextInput, this.getComputedStyles(this.state.showInlineActionErrors)]}
+							autoCapitalize={Constants.NoneString}
+							autoCorrect={false}
+							placeholder={placeholder}
+							placeholderTextColor='#3a3a3a'
+							multiline={isMultiline}
+							maxLength={maxLength}
+							returnKeyLabel={'submit'}
+							returnKeyType={returnKeyType}
+							onSubmitEditing={() => this.onClickHandle(onExecuteAction, 'onSubmit')}
+							underlineColorAndroid={Constants.TransparentString}
+							clearButtonMode={Constants.WhileEditingString}
+							textContentType={textStyle}
+							keyboardType={keyboardType}
+							onFocus={this.handleFocus}
+							onBlur={this.props.handleBlur}
+							onChangeText={(text) => {
+								this.props.textValueChanged(text, addInputItem);
+								this.textValueChanged(text);
+							}}
+							value={this.props.value}
+						/>
+						<TouchableOpacity onPress={() => { this.onClickHandle(onExecuteAction, 'inline-action') }}>
+							{Utils.isNullOrEmpty(inlineAction.iconUrl) ?
+								<Text style={styles.inlineActionText}>{inlineAction.title}</Text> :
+								<Image
+									style={styles.inlineActionImage}
+									source=
+									{{ uri: inlineAction.iconUrl }} />
+							}
+						</TouchableOpacity>
+					</ElementWrapper>
+				</View>
 			);
 		}
 
+	}
+
+	handleFocus = () => {
+		this.setState({
+			showInlineActionErrors: false
+		});
+		this.props.handleFocus();
 	}
 
 	/**
@@ -245,21 +257,21 @@ export class Input extends React.Component {
 	onClickHandle(onExecuteAction, action) {
 		if (this.isMultiline && action != 'inline-action')
 			return;
-
-		if (this.inlineAction.type === Constants.ActionSubmit) {
+		this.setState({ showInlineActionErrors: true });
+		if (!this.props.isError && this.inlineAction.type === Constants.ActionSubmit) {
 			let actionObject = {
 				"type": Constants.ActionSubmit,
 				"data": this.state.text
 			};
-			onExecuteAction(actionObject);
+			onExecuteAction(actionObject, true);
 		}
-		else if (this.inlineAction.type === Constants.ActionOpenUrl) {
+		else if (!this.props.isError && this.inlineAction.type === Constants.ActionOpenUrl) {
 			if (!Utils.isNullOrEmpty(this.inlineAction.url)) {
 				let actionObject = {
 					"type": Constants.ActionOpenUrl,
 					"url": this.inlineAction.url
 				};
-				onExecuteAction(actionObject);
+				onExecuteAction(actionObject, true);
 			}
 		}
 	}

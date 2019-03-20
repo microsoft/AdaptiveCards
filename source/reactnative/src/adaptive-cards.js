@@ -34,7 +34,12 @@ export default class AdaptiveCards extends React.Component {
 
 		this.payload = props.payload;
 
-		// hostconfig
+		this.state = {
+			showErrors: false,
+			payload: this.payload,
+		}
+
+		// hostConfig
 		if (props.hostConfig) {
 			HostConfigManager.setHostConfig(props.hostConfig);
 		}
@@ -46,9 +51,7 @@ export default class AdaptiveCards extends React.Component {
 
 		// commonly used styles
 		this.styleConfig = StyleManager.getManager().styles;
-		this.state = {
-			payload: this.payload,
-		};
+
 	}
 
 	toggleVisibilityForElementWithID = (idArray) => {
@@ -148,7 +151,7 @@ export default class AdaptiveCards extends React.Component {
 		return renderedElement;
 	}
 
-	getAdaptiveCardConent() {
+	getAdaptiveCardContent() {
 		var adaptiveCardContent =
 			(
 				<ContainerWrapper style={styles.container} json={this.state.payload}>
@@ -177,6 +180,7 @@ export default class AdaptiveCards extends React.Component {
 		const isTransparent = this.payload.backgroundImage ? true : false;
 		const onParseError = this.onParseError;
 		const lang = this.payload.lang || 'en';
+		const { showErrors } = this.state;
 
 		// version check
 		if (!this.isSupportedVersion()) {
@@ -186,9 +190,9 @@ export default class AdaptiveCards extends React.Component {
 			)
 		}
 		return (
-			<InputContextProvider value={{ lang, addInputItem, inputArray, onExecuteAction, isTransparent, onParseError, addResourceInformation, toggleVisibilityForElementWithID }}>
+			<InputContextProvider value={{ lang, addInputItem, inputArray, onExecuteAction, isTransparent, onParseError, addResourceInformation, showErrors, toggleVisibilityForElementWithID }}>
 				{
-					this.getAdaptiveCardConent()
+					this.getAdaptiveCardContent()
 				}
 			</InputContextProvider>
 		);
@@ -229,10 +233,23 @@ export default class AdaptiveCards extends React.Component {
 	}
 
 	// Invoke onExecuteAction if the consumer app provide it via props.
-	onExecuteAction = (action) => {
-		if (this.props.onExecuteAction) {
+	onExecuteAction = (action, ignoreInputValidation) => {
+		if (!ignoreInputValidation && !this.validateInputs())
+			this.setState({ showErrors: true });
+		else if (this.props.onExecuteAction) {
 			this.props.onExecuteAction(action);
 		}
+	}
+
+	validateInputs = () => {
+		const { inputArray } = this;
+		if (inputArray) {
+			for (const key in inputArray) {
+				if (inputArray[key].errorState)
+					return false;
+			}
+		}
+		return true;
 	}
 }
 

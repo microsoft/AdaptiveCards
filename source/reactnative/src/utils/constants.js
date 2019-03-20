@@ -47,3 +47,5 @@ export const ToggleValueOn = "toggleValueOn;";
 export const Emphasis = 'emphasis';
 
 export const NumberInput = 'Input.Number';
+
+export const ErrorMessage = "Required";
