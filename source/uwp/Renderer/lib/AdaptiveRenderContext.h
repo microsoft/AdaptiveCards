@@ -31,7 +31,7 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_ActionRenderers(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionRendererRegistration** value) override;
         IFACEMETHODIMP get_ActionInvoker(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionInvoker** value) override;
         IFACEMETHODIMP get_MediaEventInvoker(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveMediaEventInvoker** value) override;
-        IFACEMETHODIMP get_UserInputs(ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputs** value) override;
+        IFACEMETHODIMP get_UserInputs(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputs** value) override;
         IFACEMETHODIMP AddInputValue(_In_ ABI::AdaptiveNamespace::IAdaptiveInputValue* inputValue) override;
         IFACEMETHODIMP AddInlineShowCard(_In_opt_ ABI::AdaptiveNamespace::IAdaptiveActionSet* actionSet,
                                          _In_ ABI::AdaptiveNamespace::IAdaptiveShowCardAction* showCardAction,
