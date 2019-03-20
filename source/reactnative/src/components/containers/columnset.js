@@ -6,7 +6,6 @@
 
 import React from 'react';
 import {
-	View,
 	StyleSheet
 } from 'react-native';
 
@@ -15,6 +14,7 @@ import ElementWrapper from '../elements/element-wrapper';
 import { Column } from "./column";
 import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config';
+import { ContainerWrapper } from './';
 
 export class ColumnSet extends React.PureComponent {
 
@@ -26,60 +26,58 @@ export class ColumnSet extends React.PureComponent {
     /**
      * @description Parse the given payload and render the card accordingly
      */
-	parsePayload = (columnSetJson) => {
-		const renderedElement = [];
+	parsePayload = () => {
+		const payload = this.payload;
+		const children = [];
 		if (!this.payload)
-			return renderedElement;
+			return children;
 
 		// parse elements
-		columnSetJson.columns.map((element, index) => {
-			renderedElement.push(
+		payload.columns.map((element, index) => {
+			children.push(
 				<Column json={element}
-					columns={columnSetJson.columns}
+					columns={payload.columns}
 					key={`ELEMENT-${index}`}
 				/>);
 		});
-		return renderedElement;
+		return children;
 	}
 
-	internalRenderer(columnSetJson) {
-		let backgroundStyle = columnSetJson.style == Constants.Emphasis ?
-			styles.emphasisStyle : styles.defaultBGStyle;
+	internalRenderer() {
+		const children = this.parsePayload();
+		const payload = this.payload;
 
 		var columnSetContent = (
-			<View style={[backgroundStyle, { flex: this.payload.columns.length }]}>
-				<ElementWrapper json={columnSetJson} style={backgroundStyle}>
-					{this.parsePayload(columnSetJson)}
+			<ContainerWrapper style={{ flex: this.payload.columns.length }} json={payload}>
+				<ElementWrapper json={payload} style={styles.defaultBGStyle}>
+					{
+						children.map(ChildElement =>
+							React.cloneElement(ChildElement, { containerStyle: this.payload.style }))
+					}
 				</ElementWrapper>
-			</View>
+			</ContainerWrapper>
 		);
 
-		if ((columnSetJson.selectAction === undefined) ||
-			(HostConfigManager.getHostConfig().supportsInteractivity === false)) {
+		if ((payload.selectAction === undefined) ||
+			(HostConfigManager.supportsInteractivity() === false)) {
 			return columnSetContent;
 		} else {
-			return <SelectAction selectActionData={columnSetJson.selectAction}>
+			return <SelectAction selectActionData={payload.selectAction}>
 				{columnSetContent}
 			</SelectAction>;
 		}
 	}
 
 	render() {
-		let containerRender = this.internalRenderer(this.props.json);
+		let containerRender = this.internalRenderer();
 		return containerRender;
 	}
-
 };
 
 const styles = StyleSheet.create({
 	defaultBGStyle: {
 		flex: 1,
 		backgroundColor: Constants.TransparentString,
-		flexDirection: Constants.FlexRow,
-	},
-	emphasisStyle: {
-		flex: 1,
-		backgroundColor: Constants.EmphasisColor,
 		flexDirection: Constants.FlexRow,
 	},
 });

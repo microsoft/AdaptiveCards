@@ -6,7 +6,6 @@ import React from 'react';
 import {
 	StyleSheet,
 	Text,
-	View,
 	ScrollView
 } from 'react-native';
 
@@ -20,7 +19,6 @@ import * as Utils from './utils/util';
 import { SelectAction } from './components/actions';
 import ResourceInformation from './utils/resource-information';
 import { ContainerWrapper } from './components/containers/';
-import { BackgroundImage } from './components/elements';
 import { ThemeConfigManager } from './utils/theme-config';
 
 export default class AdaptiveCards extends React.Component {
@@ -139,24 +137,23 @@ export default class AdaptiveCards extends React.Component {
 	 * @description Parse the given payload and render the card accordingly
 	 */
 	parsePayload = () => {
-
-		const renderedElement = [];
+		let children = [];
 		const { body } = this.state.payload;
 
 		if (!body)
-			return renderedElement;
+			return children;
 
-		renderedElement.push(Registry.getManager().parseRegistryComponents(body, this.onParseError));
-
-		return renderedElement;
+		children = Registry.getManager().parseRegistryComponents(body, this.onParseError);
+		return children;
 	}
 
 	getAdaptiveCardContent() {
+		let children = this.parsePayload();
 		var adaptiveCardContent =
 			(
 				<ContainerWrapper style={styles.container} json={this.state.payload}>
 					<ScrollView alwaysBounceVertical={false} style={{ flexGrow: 0 }}>
-						{this.parsePayload()}
+						{children.map(ChildElement => React.cloneElement(ChildElement, { containerStyle: this.state.payload.style }))}
 						{!Utils.isNullOrEmpty(this.state.payload.actions) &&
 							<ActionWrapper actions={this.state.payload.actions} />}
 					</ScrollView>
@@ -200,8 +197,8 @@ export default class AdaptiveCards extends React.Component {
 
 	/**
 	 * Check whether the payload schema version is supported by client.
-* @return {boolean} - version supported or not
-		*/
+	 * @return {boolean} - version supported or not
+	 */
 	isSupportedVersion = () => {
 
 		//Ignore the schema version number when AdaptiveCard is used from Action.ShowCard as it is not mandatory
@@ -265,7 +262,6 @@ AdaptiveCards.propTypes = {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: 'transparent',
 	},
 	actionContainer: {
 		marginVertical: 10

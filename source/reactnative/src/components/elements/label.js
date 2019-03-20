@@ -49,19 +49,23 @@ export class Label extends React.Component {
      */
 	getComputedStyle = () => {
 		const { size, weight, color, isSubtle, fontStyle, align } = this.props;
+		let { containerStyle } = this.props;
 
+		// font-style
 		const fontStyleValue = this.hostConfig.getTextFontStyle(Utils.parseHostConfigEnum(
 			Enums.FontStyle,
 			fontStyle,
 			Enums.FontStyle.Default
 		));
 
+		// font-size
 		const fontSize = this.hostConfig.getTextFontSize(Utils.parseHostConfigEnum(
 			Enums.TextSize,
 			size,
 			Enums.TextSize.Default
 		), fontStyleValue);
 
+		// font-weight
 		const fontWeight = this.hostConfig.getTextFontWeight(Utils.parseHostConfigEnum(
 			Enums.TextWeight,
 			weight,
@@ -70,13 +74,19 @@ export class Label extends React.Component {
 
 		const fontFamilyValue = fontStyleValue.fontFamily;
 
-		const colorDefinition = this.hostConfig.getTextColor(Utils.parseHostConfigEnum(
+		// text-color
+		if (Utils.isNullOrEmpty(containerStyle)) {
+			containerStyle = "default";
+		}
+		let colorEnum = Utils.parseHostConfigEnum(
 			Enums.TextColor,
 			color,
 			Enums.TextColor.Default
-		));
-		const colorValue = isSubtle ? colorDefinition.subtle : colorDefinition.default;
+		);
+		let colorDefinition = this.hostConfig.getTextColorForStyle(colorEnum, containerStyle);
+		let colorValue = isSubtle ? colorDefinition.subtle : colorDefinition.default;
 
+		// horizontal text alignment
 		const textAlign = this.hostConfig.getTextAlignment(Utils.parseHostConfigEnum(
 			Enums.HorizontalAlignment,
 			align,
