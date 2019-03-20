@@ -38,16 +38,13 @@ export class ChoiceSetInput extends React.Component {
 		this.isMultiSelect = Boolean;
 		this.style = Constants.EmptyString;
 		this.type = Constants.EmptyString;
-		this.value = Constants.EmptyString;
+		this.value = props.json.value;
 		this.choices = [];
 		this.payload = props.json;
 
 		this.isValidationRequired = !!this.payload.validation &&
 			(Enums.ValidationNecessity.Required == this.payload.validation.necessity ||
 				Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
-
-		this.errorMessage = (this.payload.validation && this.payload.validation.errorMessage) ?
-			this.payload.validation.errorMessage : Constants.ErrorMessage;
 
 		this.validationRequiredWithVisualCue = (!this.payload.validation ||
 			Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
@@ -60,7 +57,7 @@ export class ChoiceSetInput extends React.Component {
 			activeIndex: undefined,
 			checked: undefined,
 			checkedValues: undefined,
-			isError: this.isValidationRequired,
+			isError: this.isValidationRequired ? this.validate() : false
 		}
 	}
 
@@ -71,10 +68,29 @@ export class ChoiceSetInput extends React.Component {
 		this.id = this.payload.id;
 		this.type = this.payload.type;
 		this.isMultiSelect = this.payload.isMultiSelect;
-		this.value = this.payload.value;
 		this.style = this.payload.style;
 		this.choices = this.payload.choices;
 		this.wrapText = this.payload.wrap || false
+	}
+
+	validate = () => {
+		let isError = true;
+		if (this.payload.isMultiSelect) {
+			const array = this.getCheckedIndexes(this.value);
+			if (array.length > 0) {
+				for (key in array) {
+					if ((this.payload.choices.find(choice => choice.value === array[key]))) {
+						isError = false;
+						break;
+					}
+				}
+			}
+		} else {
+			let choiceName = this.payload.choices.find(choice => choice.value === this.value);
+			isError = (CompactStyle === this.payload.style && Utils.isNullOrEmpty(this.value))
+				? false : !choiceName;
+		}
+		return isError;
 	}
 
     /**
@@ -86,7 +102,7 @@ export class ChoiceSetInput extends React.Component {
 			return Constants.EmptyString
 		let choiceName = this.choices.find(choice => choice.value === value);
 		addInputItem(this.id, { value: value, errorState: this.state.isError });
-		return choiceName.title
+		return choiceName ? choiceName.title : Constants.EmptyString;
 	}
 
     /**

@@ -40,9 +40,6 @@ export class ToggleInput extends React.Component {
 		this.validationRequiredWithVisualCue = (!props.json.validation ||
 			Enums.ValidationNecessity.RequiredWithVisualCue == props.json.validation.necessity);
 
-		this.errorMessage = (props.json.validation && props.json.validation.errorMessage) ?
-			props.json.validation.errorMessage : Constants.ErrorMessage;
-
 		this.wrapText = props.json.wrap || false
 
 		// state

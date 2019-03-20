@@ -99,7 +99,10 @@
         "type": "Input.ChoiceSet",
         "id": "CompactSelectVal",
         "style": "compact",
-        "value": "1",
+        "validation": {
+          "necessity": "Required",
+          "errorMessage": "Required"
+          },
         "choices": [
           {
             "title": "Red",
@@ -123,7 +126,11 @@
         "type": "Input.ChoiceSet",
         "id": "SingleSelectVal",
         "style": "expanded",
-        "value": "1",
+        "value" : "incorrect value",
+        "validation": {
+          "necessity": "Required",
+          "errorMessage": "Required"
+          },
         "choices": [
           {
             "title": "Red",
@@ -147,7 +154,11 @@
         "type": "Input.ChoiceSet",
         "id": "MultiSelectVal",
         "isMultiSelect": true,
-        "value": "1,3",
+        "value": "1,2",
+        "validation": {
+          "necessity": "Required",
+          "errorMessage": "Required"
+          },
         "choices": [
           {
             "title": "Red",

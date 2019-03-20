@@ -37,8 +37,7 @@ export class Input extends React.Component {
 		this.type = Constants.EmptyString;
 		this.keyboardType = Constants.EmptyString;
 		this.textStyle = Constants.EmptyString;
-		this.errorMessage = (this.payload.validation && this.payload.validation.errorMessage) ?
-			this.payload.validation.errorMessage : Constants.ErrorMessage;
+
 		this.validationRequiredWithVisualCue = (!this.payload.validation ||
 			Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
 		this.inlineAction = {};

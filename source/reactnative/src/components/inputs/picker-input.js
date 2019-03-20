@@ -44,9 +44,6 @@ export class PickerInput extends React.Component {
 		this.validationRequiredWithVisualCue = (!this.payload.validation ||
 			Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
 
-		this.errorMessage = (this.payload.validation && this.payload.validation.errorMessage) ?
-			this.payload.validation.errorMessage : Constants.ErrorMessage;
-
 		this.state = {
 			isError: this.isValidationRequired && !this.props.value
 		}
