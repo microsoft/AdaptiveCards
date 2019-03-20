@@ -104,7 +104,7 @@ public class ImageSetRenderer extends BaseCardElementRenderer
 
         if (imageSet.GetMinHeight() != 0)
         {
-            horizFlowLayout.setMinimumHeight((int)imageSet.GetMinHeight());
+            horizFlowLayout.setMinimumHeight(Util.dpToPixels(context, (int)imageSet.GetMinHeight()));
         }
 
         return horizFlowLayout;

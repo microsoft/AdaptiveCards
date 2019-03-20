@@ -24,6 +24,7 @@ import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HorizontalAlignment;
@@ -205,7 +206,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
 
         if (textBlock.GetMinHeight() != 0)
         {
-            textView.setMinHeight((int)textBlock.GetMinHeight());
+            textView.setMinHeight(Util.dpToPixels(context, (int)textBlock.GetMinHeight()));
         }
 
         viewGroup.addView(textView);

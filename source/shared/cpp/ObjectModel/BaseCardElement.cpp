@@ -116,7 +116,7 @@ Json::Value BaseCardElement::SerializeToJsonValue() const
 
     if (m_minHeight)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MinHeight)] = GetMinHeight() + "px";
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MinHeight)] = std::to_string(GetMinHeight()) + "px";
     }
 
     return root;

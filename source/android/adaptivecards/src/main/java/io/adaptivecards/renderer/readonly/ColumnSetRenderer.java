@@ -146,7 +146,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
 
         if (columnSet.GetMinHeight() != 0)
         {
-            layout.setMinimumHeight((int)columnSet.GetMinHeight());
+            layout.setMinimumHeight(Util.dpToPixels(context, (int)columnSet.GetMinHeight()));
         }
 
         return layout;

@@ -131,7 +131,7 @@ public class FactSetRenderer extends BaseCardElementRenderer
 
         if (factSet.GetMinHeight() != 0)
         {
-            tableLayout.setMinimumHeight((int)factSet.GetMinHeight());
+            tableLayout.setMinimumHeight(Util.dpToPixels(context, (int)factSet.GetMinHeight()));
         }
 
         viewGroup.addView(tableLayout);

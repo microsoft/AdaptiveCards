@@ -205,7 +205,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
 
         if (column.GetMinHeight() != 0)
         {
-            returnedView.setMinimumHeight((int)column.GetMinHeight());
+            returnedView.setMinimumHeight(Util.dpToPixels(context, (int)column.GetMinHeight()));
         }
 
         viewGroup.addView(returnedView);

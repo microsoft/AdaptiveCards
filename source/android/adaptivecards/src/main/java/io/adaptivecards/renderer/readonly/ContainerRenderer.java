@@ -144,7 +144,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
 
         if (container.GetMinHeight() != 0)
         {
-            containerView.setMinimumHeight((int)container.GetMinHeight());
+            containerView.setMinimumHeight(Util.dpToPixels(context, (int)container.GetMinHeight()));
         }
 
         viewGroup.addView(containerView);

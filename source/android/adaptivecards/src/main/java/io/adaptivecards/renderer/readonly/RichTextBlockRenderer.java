@@ -37,6 +37,7 @@ import io.adaptivecards.objectmodel.TextRun;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
@@ -163,7 +164,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
         // MinHeight
         setSpacingAndSeparator(context, viewGroup, richTextBlock.GetSpacing(), richTextBlock.GetSeparator(), hostConfig, true);
 
-        if(!baseCardElement.GetIsVisible())
+        if (!baseCardElement.GetIsVisible())
         {
             textView.setVisibility(View.GONE);
         }
@@ -179,7 +180,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
 
         if (richTextBlock.GetMinHeight() != 0)
         {
-            textView.setMinHeight((int)richTextBlock.GetMinHeight());
+            textView.setMinimumHeight(Util.dpToPixels(context, (int)richTextBlock.GetMinHeight()));
         }
 
         // RichTextBlock properties

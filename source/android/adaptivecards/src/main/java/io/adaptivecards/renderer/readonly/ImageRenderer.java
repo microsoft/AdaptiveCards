@@ -164,17 +164,17 @@ public class ImageRenderer extends BaseCardElementRenderer
 
         ImageView imageView = new ImageView(context);
         imageView.setTag(new TagContent(image));
-        if(!baseCardElement.GetIsVisible())
+        if (!baseCardElement.GetIsVisible())
         {
             imageView.setVisibility(View.GONE);
         }
 
         String imageBackgroundColor = image.GetBackgroundColor();
         int backgroundColor = 0;
-        if(!TextUtils.isEmpty(imageBackgroundColor))
+        if (!TextUtils.isEmpty(imageBackgroundColor))
         {
             // check that it has 9 characters and that the color string isn't a color name
-            if(imageBackgroundColor.length() == 9 && imageBackgroundColor.charAt(0) == '#')
+            if (imageBackgroundColor.length() == 9 && imageBackgroundColor.charAt(0) == '#')
             {
                 try
                 {
@@ -294,7 +294,7 @@ public class ImageRenderer extends BaseCardElementRenderer
 
         if (image.GetMinHeight() != 0)
         {
-            imageView.setMinimumHeight((int)image.GetMinHeight());
+            imageView.setMinimumHeight(Util.dpToPixels(context, (int)image.GetMinHeight()));
         }
 
         viewGroup.addView(imageView);

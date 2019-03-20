@@ -36,6 +36,7 @@ import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
@@ -298,7 +299,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
         if (baseInputElement.GetMinHeight() != 0)
         {
-            editText.setMinimumHeight((int)baseInputElement.GetMinHeight());
+            editText.setMinimumHeight(Util.dpToPixels(context, (int)baseInputElement.GetMinHeight()));
         }
 
         return editText;
