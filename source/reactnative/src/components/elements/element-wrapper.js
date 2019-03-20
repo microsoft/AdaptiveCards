@@ -1,5 +1,6 @@
 /**
- * ElementWrapper component that wraps all other specific input element.
+ * ElementWrapper component that wraps all other element types and 
+ * takes care of common parsing & styling.
  * 
  * @example
  * <ElementWrapper json={payload}>
@@ -10,32 +11,38 @@
 import React from 'react';
 import {
 	View,
+	Text,
 	StyleSheet
 } from 'react-native';
-
+import { HostConfigManager } from "../../utils/host-config";
+import { StyleManager } from "../../styles/style-config";
+import { InputContext } from '../../utils/context';
+import * as Constants from '../../utils/constants';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
-import { HostConfigManager } from "../../utils/host-config";
-import * as Constants from '../../utils/constants';
-import { StyleManager } from "../../styles/style-config";
 
 export default class ElementWrapper extends React.Component {
 
 	hostConfig = HostConfigManager.getHostConfig();
 	styleConfig = StyleManager.getManager().styles;
 
+	static contextType = InputContext;
+
 	render() {
 		const computedStyles = this.getComputedStyles();
+		const showValidationText = this.props.isError && this.context.showErrors;
 
 		return (
 			<View style={computedStyles} onLayout={this.props.onPageLayout}>
 				{this.props.children}
+				{showValidationText && this.getValidationText()}
 			</View>
 		)
 	}
 
     /**
      * @description Return the styles applicable based on the given payload
+	 * @returns {Array} computedStyles
      */
 	getComputedStyles = () => {
 		const payload = this.props.json;
@@ -70,6 +77,23 @@ export default class ElementWrapper extends React.Component {
 		}
 
 		return computedStyles;
+	}
+
+	/**
+	 * @description Return the validation text message
+	 * @returns {object} Text element with the message
+	 */
+	getValidationText = () => {
+		const payload = this.props.json;
+		const validationTextStyles = [this.styleConfig.fontFamilyName, this.styleConfig.defaultDestructiveButtonForegroundColor];
+		const errorMessage = (payload.validation && payload.validation.errorMessage) ?
+			payload.validation.errorMessage : Constants.ErrorMessage;
+
+		return (
+			<Text style={validationTextStyles}>
+				{errorMessage}
+			</Text>
+		)
 	}
 }
 

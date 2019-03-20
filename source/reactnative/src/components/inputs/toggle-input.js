@@ -70,7 +70,7 @@ export class ToggleInput extends React.Component {
 		}
 		const { toggleValue } = this.state;
 		return (
-			<ElementWrapper json={this.props.json} style={styles.toggleContainer}>
+			<ElementWrapper json={this.props.json} style={styles.toggleContainer} isError={this.state.isError}>
 				<InputContextConsumer>
 					{({ addInputItem, inputArray, showErrors }) => {
 						if (!inputArray[this.id]) {
@@ -90,7 +90,6 @@ export class ToggleInput extends React.Component {
 										}}>
 									</Switch>
 								</View>
-								{this.state.isError && showErrors && this.showErrorMessage()}
 							</View>
 						)
 					}}
@@ -110,17 +109,6 @@ export class ToggleInput extends React.Component {
 			computedStyles.push({ borderWidth: 1 });
 		}
 		return computedStyles;
-	}
-
-	/**
-	 * @description Displays validation error text
-	 */
-	showErrorMessage = () => {
-		return (
-			<Text style={this.styleConfig.defaultDestructiveButtonForegroundColor}>
-				{this.errorMessage}
-			</Text>
-		)
 	}
 }
 

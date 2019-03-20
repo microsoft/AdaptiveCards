@@ -89,7 +89,7 @@ export class PickerInput extends React.Component {
 		return (
 			<InputContextConsumer>
 				{({ addInputItem, showErrors }) => (
-					<ElementWrapper json={this.payload}>
+					<ElementWrapper json={this.payload} isError={this.state.isError}>
 						<TouchableOpacity style={styles.inputWrapper} onPress={this.props.showPicker}>
 							{/* added extra view to fix touch event in ios . */}
 							<View pointerEvents='none' style={this.getComputedStyles(showErrors)}>
@@ -104,7 +104,6 @@ export class PickerInput extends React.Component {
 									{addInputItem(this.id, { value: this.props.value, errorState: this.state.isError })}
 								</TextInput>
 							</View>
-							{this.state.isError && showErrors && this.showErrorMessage()}
 						</TouchableOpacity>
 						<Modal
 							animationType='slide'
@@ -147,17 +146,6 @@ export class PickerInput extends React.Component {
 			computedStyles.push({ borderWidth: 1 });
 		}
 		return computedStyles;
-	}
-
-	/**
-	 * @description Displays validation error text
-	 */
-	showErrorMessage = () => {
-		return (
-			<Text style={this.styleConfig.defaultDestructiveButtonForegroundColor}>
-				{this.errorMessage}
-			</Text>
-		)
 	}
 }
 

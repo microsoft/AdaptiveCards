@@ -285,7 +285,7 @@ export class ChoiceSetInput extends React.Component {
 		return (
 			<InputContextConsumer>
 				{({ addInputItem, showErrors }) => (
-					<ElementWrapper json={this.payload} style={styles.containerView}>
+					<ElementWrapper json={this.payload} style={styles.containerView} isError={this.state.isError}>
 						<View style={this.getComputedStyles(showErrors)}>
 							{!isMultiSelect ?
 								((style == CompactStyle || style == undefined) ?
@@ -294,7 +294,6 @@ export class ChoiceSetInput extends React.Component {
 								this.renderRadioButtonComponent(addInputItem)
 							}
 						</View>
-						{this.state.isError && showErrors && this.showErrorMessage()}
 					</ElementWrapper>)}
 			</InputContextConsumer>
 		);
@@ -311,17 +310,6 @@ export class ChoiceSetInput extends React.Component {
 			computedStyles.push({ borderWidth: 1 });
 		}
 		return computedStyles;
-	}
-
-	/**
-	 * @description Displays validation error text
-	 */
-	showErrorMessage = () => {
-		return (
-			<Text style={this.styleConfig.defaultDestructiveButtonForegroundColor}>
-				{this.errorMessage}
-			</Text>
-		)
 	}
 }
 

@@ -76,7 +76,7 @@ export class Input extends React.Component {
 						if (!inputArray[this.id])
 							addInputItem(this.id, { value: this.props.value, errorState: this.props.isError });
 						return (
-							<ElementWrapper json={this.payload}>
+							<ElementWrapper json={this.payload} isError={this.props.isError}>
 								<TextInput
 									style={this.getComputedStyles(showErrors)}
 									autoCapitalize={Constants.NoneString}
@@ -93,8 +93,6 @@ export class Input extends React.Component {
 									value={this.props.value}
 									onChangeText={(text) => this.props.textValueChanged(text, addInputItem)}
 								/>
-								{this.props.isError && showErrors && this.showErrorMessage()}
-
 							</ElementWrapper>
 						);
 					}}
@@ -104,18 +102,6 @@ export class Input extends React.Component {
 		return (
 			TextBox
 		);
-	}
-
-	/**
-	 * @description Displays validation error text
-	 */
-
-	showErrorMessage = () => {
-		return (
-			<Text style={this.styleConfig.defaultDestructiveButtonForegroundColor}>
-				{this.errorMessage}
-			</Text>
-		)
 	}
 
     /**
@@ -217,7 +203,7 @@ export class Input extends React.Component {
 		else {
 			return (
 				<View>
-					<ElementWrapper json={payload} style={wrapperStyle}>
+					<ElementWrapper json={payload} style={wrapperStyle} isError={this.props.isError}>
 						<TextInput
 							style={[styles.inlineActionTextInput, this.getComputedStyles(this.state.showInlineActionErrors)]}
 							autoCapitalize={Constants.NoneString}
@@ -251,7 +237,6 @@ export class Input extends React.Component {
 							}
 						</TouchableOpacity>
 					</ElementWrapper>
-					{this.props.isError && this.state.showInlineActionErrors && this.showErrorMessage()}
 				</View>
 			);
 		}
