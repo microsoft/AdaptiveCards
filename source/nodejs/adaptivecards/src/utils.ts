@@ -24,32 +24,41 @@ export function appendChild(node: Node, child: Node) {
 }
 
 export function setProperty(target: any, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
-    if (!propertyValue) {
-        delete target[propertyName];
+    let targetIsAlreadySet = target[propertyName] !== undefined;
+
+    if (propertyValue === undefined) {
+        if (!targetIsAlreadySet) {
+            delete target[propertyName];
+        }
     }
-    else if (!defaultValue) {
+    else if (propertyValue !== defaultValue) {
 		target[propertyName] = propertyValue;
 	}
 	else {
-        if (target[propertyName] === defaultValue) {
+        if (!targetIsAlreadySet) {
             delete target[propertyName];
-        }
-        else {
-            target[propertyName] = defaultValue;
         }
 	}
 }
 
-export function setEnumProperty(enumType: { [s: number]: string }, target: any, propertyName: string, propertyValue: number, defaultValue?: number) {
-    if (!defaultValue) {
-        target[propertyName] = propertyValue;
-    }
-    else {
-        if (target[propertyName] === defaultValue) {
+export function setEnumProperty(enumType: { [s: number]: string }, target: any, propertyName: string, propertyValue: number, defaultValue: number = undefined) {
+    let targetValue = target[propertyName];
+
+    let canDeleteTarget = targetValue == undefined ? true : enumType[targetValue] !== undefined;
+    
+    if (propertyValue == defaultValue) {
+        if (canDeleteTarget) {
             delete target[propertyName];
         }
+    }
+    else {
+        if (propertyValue == undefined) {
+            if (canDeleteTarget) {
+                delete target[propertyName];
+            }
+        }
         else {
-            target[propertyName] = defaultValue;
+            target[propertyName] = enumType[propertyValue];
         }
     }
 }
