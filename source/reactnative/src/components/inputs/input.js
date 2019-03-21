@@ -40,6 +40,10 @@ export class Input extends React.Component {
 
 		this.validationRequiredWithVisualCue = (!this.payload.validation ||
 			Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
+
+		this.errorMessage = (this.payload.validation && this.payload.validation.errorMessage) ?
+			this.payload.validation.errorMessage : Constants.ErrorMessage;
+
 		this.inlineAction = {};
 		this.state = {
 			showInlineActionErrors: false,
@@ -236,6 +240,7 @@ export class Input extends React.Component {
 							}
 						</TouchableOpacity>
 					</ElementWrapper>
+					{this.props.isError && this.state.showInlineActionErrors && this.showErrorMessage()}
 				</View>
 			);
 		}
@@ -247,6 +252,18 @@ export class Input extends React.Component {
 			showInlineActionErrors: false
 		});
 		this.props.handleFocus();
+	}
+
+	/**
+	 * @description Displays validation error message for inline action
+	 */
+
+	showErrorMessage = () => {
+		return (
+			<Text style={this.styleConfig.defaultDestructiveButtonForegroundColor}>
+				{this.errorMessage}
+			</Text>
+		)
 	}
 
 	/**
