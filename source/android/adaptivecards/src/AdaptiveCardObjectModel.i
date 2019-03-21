@@ -346,6 +346,36 @@ namespace Json {
 
 %template(EnableSharedFromThisContainer) std::enable_shared_from_this<AdaptiveCards::Container>;
 
+%exception AdaptiveCards::BaseCardElement::dynamic_cast(AdaptiveCards::BaseElement *baseElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::BaseCardElement {
+    static AdaptiveCards::BaseCardElement *dynamic_cast(AdaptiveCards::BaseElement *baseElement) {
+        return dynamic_cast<AdaptiveCards::BaseCardElement *>(baseElement);
+    }
+};
+
+%exception AdaptiveCards::BaseActionElement::dynamic_cast(AdaptiveCards::BaseElement *baseElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::BaseActionElement {
+    static AdaptiveCards::BaseActionElement *dynamic_cast(AdaptiveCards::BaseElement *baseElement) {
+        return dynamic_cast<AdaptiveCards::BaseActionElement *>(baseElement);
+    }
+};
+
 %exception AdaptiveCards::Container::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
     $action
     if (!result) {

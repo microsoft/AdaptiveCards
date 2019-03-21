@@ -21,5 +21,6 @@ public interface IBaseActionElementRenderer
             ViewGroup viewGroup,
             BaseActionElement baseActionElement,
             ICardActionHandler cardActionHandler,
-            HostConfig hostConfig);
+            HostConfig hostConfig,
+            RenderArgs renderArgs);
 }

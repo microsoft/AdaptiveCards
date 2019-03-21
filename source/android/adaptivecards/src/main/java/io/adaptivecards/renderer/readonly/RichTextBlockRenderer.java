@@ -35,6 +35,7 @@ import io.adaptivecards.objectmodel.RichTextBlock;
 import io.adaptivecards.objectmodel.TextBlock;
 import io.adaptivecards.objectmodel.TextRun;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
@@ -75,7 +76,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
                 InlineVector inlines,
                 ICardActionHandler cardActionHandler,
                 HostConfig hostConfig,
-                ContainerStyle containerStyle)
+                RenderArgs renderArgs)
     {
         SpannableStringBuilder paragraph = new SpannableStringBuilder();
         int lastStringLength = 0;
@@ -103,7 +104,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
                 int spanStart = lastStringLength;
                 int spanEnd = lastStringLength + text.length();
 
-                int color = getColor(TextRendererUtil.getTextColor(textRun.GetTextColor(), hostConfig, textRun.GetIsSubtle(), containerStyle));
+                int color = getColor(TextRendererUtil.getTextColor(textRun.GetTextColor(), hostConfig, textRun.GetIsSubtle(), renderArgs.getContainerStyle()));
                 paragraph.setSpan(new ForegroundColorSpan(color), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                 paragraph.setSpan(new StyleSpan(TextRendererUtil.getTextWeight(textRun.GetTextWeight())), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
@@ -138,7 +139,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            ContainerStyle containerStyle)
+            RenderArgs renderArgs)
     {
         RichTextBlock richTextBlock = null;
         if (baseCardElement instanceof TextBlock)
@@ -216,7 +217,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
                 textView.append(System.getProperty("line.separator"));
             }
 
-            SpannableStringBuilder convertedString = buildSpannableParagraph(renderedCard, inlines, cardActionHandler, hostConfig, containerStyle);
+            SpannableStringBuilder convertedString = buildSpannableParagraph(renderedCard, inlines, cardActionHandler, hostConfig, renderArgs);
 
             textView.append(convertedString);
         }

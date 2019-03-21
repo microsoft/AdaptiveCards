@@ -1736,12 +1736,18 @@ SWIGINTERN jobject AdaptiveCards_BaseCardElement_swigOriginalObject(AdaptiveCard
         }
         return NULL;
     }
+SWIGINTERN AdaptiveCards::BaseCardElement *AdaptiveCards_BaseCardElement_dynamic_cast(AdaptiveCards::BaseElement *baseElement){
+        return dynamic_cast<AdaptiveCards::BaseCardElement *>(baseElement);
+    }
 SWIGINTERN jobject AdaptiveCards_BaseActionElement_swigOriginalObject(AdaptiveCards::BaseActionElement *self,JNIEnv *jenv){
         Swig::Director *dir = dynamic_cast<Swig::Director*>(self);
         if (dir) {
             return dir->swig_get_self(jenv);
         }
         return NULL;
+    }
+SWIGINTERN AdaptiveCards::BaseActionElement *AdaptiveCards_BaseActionElement_dynamic_cast(AdaptiveCards::BaseElement *baseElement){
+        return dynamic_cast<AdaptiveCards::BaseActionElement *>(baseElement);
     }
 SWIGINTERN AdaptiveCards::Container *AdaptiveCards_Container_dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement){
         return dynamic_cast<AdaptiveCards::Container *>(baseCardElement);
@@ -9709,6 +9715,41 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 }
 
 
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseElement_1SetFallbackType(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  AdaptiveCards::BaseElement *arg1 = (AdaptiveCards::BaseElement *) 0 ;
+  AdaptiveCards::FallbackType arg2 ;
+  std::shared_ptr< AdaptiveCards::BaseElement > *smartarg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseElement > **)&jarg1;
+  arg1 = (AdaptiveCards::BaseElement *)(smartarg1 ? smartarg1->get() : 0); 
+  arg2 = (AdaptiveCards::FallbackType)jarg2; 
+  (arg1)->SetFallbackType(arg2);
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseElement_1SetFallbackContent(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::BaseElement *arg1 = (AdaptiveCards::BaseElement *) 0 ;
+  std::shared_ptr< AdaptiveCards::BaseElement > arg2 ;
+  std::shared_ptr< AdaptiveCards::BaseElement > *smartarg1 = 0 ;
+  std::shared_ptr< AdaptiveCards::BaseElement > *argp2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseElement > **)&jarg1;
+  arg1 = (AdaptiveCards::BaseElement *)(smartarg1 ? smartarg1->get() : 0); 
+  argp2 = *(std::shared_ptr< AdaptiveCards::BaseElement > **)&jarg2;
+  if (argp2) arg2 = *argp2; 
+  (arg1)->SetFallbackContent(arg2);
+}
+
+
 SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseElement_1MeetsRequirements(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   jboolean jresult = 0 ;
   AdaptiveCards::BaseElement *arg1 = (AdaptiveCards::BaseElement *) 0 ;
@@ -10333,6 +10374,34 @@ SWIGEXPORT jobject JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
 }
 
 
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  AdaptiveCards::BaseElement *arg1 = (AdaptiveCards::BaseElement *) 0 ;
+  std::shared_ptr< AdaptiveCards::BaseElement > *smartarg1 = 0 ;
+  AdaptiveCards::BaseCardElement *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseElement > **)&jarg1;
+  arg1 = (AdaptiveCards::BaseElement *)(smartarg1 ? smartarg1->get() : 0); 
+  {
+    result = (AdaptiveCards::BaseCardElement *)AdaptiveCards_BaseCardElement_dynamic_cast(arg1);
+    if (!result) {
+      jclass excep = jenv->FindClass("java/lang/ClassCastException");
+      if (excep) {
+        jenv->ThrowNew(excep, "dynamic_cast exception");
+      }
+    }
+  }
+  
+  *(std::shared_ptr<  AdaptiveCards::BaseCardElement > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::BaseCardElement >(result SWIG_NO_NULL_DELETER_0) : 0;
+  
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1director_1connect(JNIEnv *jenv, jclass jcls, jobject jself, jlong objarg, jboolean jswig_mem_own, jboolean jweak_global) {
   std::shared_ptr< AdaptiveCards::BaseCardElement > *obj = *((std::shared_ptr< AdaptiveCards::BaseCardElement > **)&objarg);
   (void)jcls;
@@ -10861,6 +10930,34 @@ SWIGEXPORT jobject JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
   arg1 = (AdaptiveCards::BaseActionElement *)(smartarg1 ? smartarg1->get() : 0); 
   result = AdaptiveCards_BaseActionElement_swigOriginalObject(arg1,arg2);
   jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  AdaptiveCards::BaseElement *arg1 = (AdaptiveCards::BaseElement *) 0 ;
+  std::shared_ptr< AdaptiveCards::BaseElement > *smartarg1 = 0 ;
+  AdaptiveCards::BaseActionElement *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseElement > **)&jarg1;
+  arg1 = (AdaptiveCards::BaseElement *)(smartarg1 ? smartarg1->get() : 0); 
+  {
+    result = (AdaptiveCards::BaseActionElement *)AdaptiveCards_BaseActionElement_dynamic_cast(arg1);
+    if (!result) {
+      jclass excep = jenv->FindClass("java/lang/ClassCastException");
+      if (excep) {
+        jenv->ThrowNew(excep, "dynamic_cast exception");
+      }
+    }
+  }
+  
+  *(std::shared_ptr<  AdaptiveCards::BaseActionElement > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::BaseActionElement >(result SWIG_NO_NULL_DELETER_0) : 0;
+  
   return jresult;
 }
 

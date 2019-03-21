@@ -28,6 +28,7 @@ import io.adaptivecards.renderer.GenericImageLoaderAsync;
 import io.adaptivecards.renderer.IResourceResolver;
 import io.adaptivecards.renderer.IMediaDataSourceOnPreparedListener;
 import io.adaptivecards.renderer.IOnlineMediaLoader;
+import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.Util;
@@ -189,7 +190,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     public class CustomBlahRenderer extends BaseCardElementRenderer
     {
         @Override
-        public View render(RenderedAdaptiveCard renderedAdaptiveCard, Context context, FragmentManager fragmentManager, ViewGroup viewGroup, BaseCardElement baseCardElement, ICardActionHandler cardActionHandler, HostConfig hostConfig, ContainerStyle containerStyle) {
+        public View render(RenderedAdaptiveCard renderedAdaptiveCard, Context context, FragmentManager fragmentManager, ViewGroup viewGroup, BaseCardElement baseCardElement, ICardActionHandler cardActionHandler, HostConfig hostConfig, RenderArgs renderArgs) {
             TextView textView = new TextView(context);
 
             CustomCardElement element = (CustomCardElement) baseCardElement.findImplObj();

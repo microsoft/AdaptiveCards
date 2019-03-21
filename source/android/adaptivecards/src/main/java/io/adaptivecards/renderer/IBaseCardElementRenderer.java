@@ -23,5 +23,5 @@ public interface IBaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            ContainerStyle containerStyle);
+            RenderArgs renderArgs);
 }
