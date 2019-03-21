@@ -307,10 +307,18 @@ export class ContainerStyleSet {
 	constructor(obj) {
 		this._allStyles[Enums.ContainerStyle.Default] = new BuiltInContainerStyleDefinition();
 		this._allStyles[Enums.ContainerStyle.Emphasis] = new BuiltInContainerStyleDefinition();
+		this._allStyles[Enums.ContainerStyle.Accent] = new BuiltInContainerStyleDefinition();
+		this._allStyles[Enums.ContainerStyle.Good] = new BuiltInContainerStyleDefinition();
+		this._allStyles[Enums.ContainerStyle.Attention] = new BuiltInContainerStyleDefinition();
+		this._allStyles[Enums.ContainerStyle.Warning] = new BuiltInContainerStyleDefinition();
 
 		if (obj) {
 			this._allStyles[Enums.ContainerStyle.Default].parse(obj[Enums.ContainerStyle.Default]);
 			this._allStyles[Enums.ContainerStyle.Emphasis].parse(obj[Enums.ContainerStyle.Emphasis]);
+			this._allStyles[Enums.ContainerStyle.Accent].parse(obj[Enums.ContainerStyle.Accent]);
+			this._allStyles[Enums.ContainerStyle.Good].parse(obj[Enums.ContainerStyle.Good]);
+			this._allStyles[Enums.ContainerStyle.Attention].parse(obj[Enums.ContainerStyle.Attention]);
+			this._allStyles[Enums.ContainerStyle.Warning].parse(obj[Enums.ContainerStyle.Warning]);
 
 			const customStyleArray = obj["customStyles"];
 
@@ -555,11 +563,11 @@ export class HostConfig {
 	getTextFontStyle = (fontStyle) => {
 
 		switch (fontStyle) {
-			case Enums.FontStyle.Default: 
+			case Enums.FontStyle.Default:
 				return this.fontStyles.default;
-			case Enums.FontStyle.Monospace: 
+			case Enums.FontStyle.Monospace:
 				return this.fontStyles.monospace;
-			default: 
+			default:
 				return this.fontStyles.default;
 		}
 	}
@@ -622,6 +630,31 @@ export class HostConfig {
 				return this.containerStyles.default.foregroundColors.default;
 			default:
 				return this.containerStyles.default.foregroundColors.default;
+		}
+	}
+
+	/**
+	 * @description Return the color definition for the given color in associated container style
+	 * @param {Enums.TextColor} color
+	 * @param {string} style
+	 */
+	getTextColorForStyle = (color, style) => {
+		switch (color) {
+			case Enums.TextColor.Attention:
+				return this.containerStyles.getStyleByName(style, "default").foregroundColors.attention;
+			case Enums.TextColor.Dark:
+				return this.containerStyles.getStyleByName(style, "default").foregroundColors.dark;
+			case Enums.TextColor.Light:
+				return this.containerStyles.getStyleByName(style, "default").foregroundColors.light;
+			case Enums.TextColor.Accent:
+				return this.containerStyles.getStyleByName(style, "default").foregroundColors.accent;
+			case Enums.TextColor.Good:
+				return this.containerStyles.getStyleByName(style, "default").foregroundColors.good;
+			case Enums.TextColor.Warning:
+				return this.containerStyles.getStyleByName(style, "default").foregroundColors.warning;
+			case Enums.TextColor.Default:
+			default:
+				return this.containerStyles.getStyleByName(style, "default").foregroundColors.default;
 		}
 	}
 
@@ -726,68 +759,153 @@ export const defaultHostConfig = {
 	},
 	containerStyles: {
 		default: {
-			backgroundColor: "#FFFFFF",
-			foregroundColors: {
-				default: {
-					default: "#333333",
-					subtle: "#EE333333"
+			"backgroundColor": "transparent",
+			"foregroundColors": {
+				"default": {
+					"default": "#333333",
+					"subtle": "#EE333333"
 				},
-				dark: {
-					default: "#000000",
-					subtle: "#66000000"
+				"accent": {
+					"default": "#2E89FC",
+					"subtle": "#882E89FC"
 				},
-				light: {
-					default: "#FFFFFF",
-					subtle: "#33000000"
+				"good": {
+					"default": "#54A254",
+					"subtle": "#DD54A254"
 				},
-				accent: {
-					default: "#2E89FC",
-					subtle: "#882E89FC"
+				"warning": {
+					"default": "#C3AB23",
+					"subtle": "#DDC3AB23"
 				},
-				attention: {
-					default: "#cc3300",
-					subtle: "#DDcc3300"
-				},
-				good: {
-					default: "#54a254",
-					subtle: "#DD54a254"
-				},
-				warning: {
-					default: "#e69500",
-					subtle: "#DDe69500"
+				"attention": {
+					"default": "#FF0000",
+					"subtle": "#DDFF0000"
 				}
 			}
 		},
 		emphasis: {
-			backgroundColor: "#08000000",
-			foregroundColors: {
-				default: {
-					default: "#333333",
-					subtle: "#EE333333"
+			"backgroundColor": "#08000000",
+			"foregroundColors": {
+				"default": {
+					"default": "#333333",
+					"subtle": "#EE333333"
 				},
-				dark: {
-					default: "#000000",
-					subtle: "#66000000"
+				"accent": {
+					"default": "#2E89FC",
+					"subtle": "#882E89FC"
 				},
-				light: {
-					default: "#FFFFFF",
-					subtle: "#33000000"
+				"good": {
+					"default": "#54A254",
+					"subtle": "#DD54A254"
 				},
-				accent: {
-					default: "#2E89FC",
-					subtle: "#882E89FC"
+				"warning": {
+					"default": "#C3AB23",
+					"subtle": "#DDC3AB23"
 				},
-				attention: {
-					default: "#cc3300",
-					subtle: "#DDcc3300"
+				"attention": {
+					"default": "#FF0000",
+					"subtle": "#DDFF0000"
+				}
+			}
+		},
+		good: {
+			"backgroundColor": "#DD54A254",
+			"foregroundColors": {
+				"default": {
+					"default": "#333333",
+					"subtle": "#EE333333"
 				},
-				good: {
-					default: "#54a254",
-					subtle: "#DD54a254"
+				"accent": {
+					"default": "#2E89FC",
+					"subtle": "#882E89FC"
 				},
-				warning: {
-					default: "#e69500",
-					subtle: "#DDe69500"
+				"good": {
+					"default": "#54A254",
+					"subtle": "#DD54A254"
+				},
+				"warning": {
+					"default": "#C3AB23",
+					"subtle": "#DDC3AB23"
+				},
+				"attention": {
+					"default": "#FFFFFF",
+					"subtle": "#DDFF0000"
+				}
+			},
+		},
+		warning: {
+			"backgroundColor": "#DDC3AB23",
+			"foregroundColors": {
+				"default": {
+					"default": "#FFFFFF",
+					"subtle": "#EE333333"
+				},
+				"accent": {
+					"default": "#FFFFFF",
+					"subtle": "#882E89FC"
+				},
+				"good": {
+					"default": "#FFFFFF",
+					"subtle": "#DD54A254"
+				},
+				"warning": {
+					"default": "#FFFFFF",
+					"subtle": "#DDC3AB23"
+				},
+				"attention": {
+					"default": "#FFFFFF",
+					"subtle": "#DDFF0000"
+				}
+			},
+
+		},
+		attention: {
+			"backgroundColor": "#DDFF0000",
+			"foregroundColors": {
+				"default": {
+					"default": "#333333",
+					"subtle": "#EE333333"
+				},
+				"accent": {
+					"default": "#2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"good": {
+					"default": "#54A254",
+					"subtle": "#DD54A254"
+				},
+				"warning": {
+					"default": "#C3AB23",
+					"subtle": "#DDC3AB23"
+				},
+				"attention": {
+					"default": "#FF0000",
+					"subtle": "#DDFF0000"
+				}
+			}
+		},
+		accent: {
+			"backgroundColor": "#882E89FC",
+			"foregroundColors": {
+				"default": {
+					"default": "#333333",
+					"subtle": "#EE333333"
+				},
+				"accent": {
+					"default": "#2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"good": {
+					"default": "#54A254",
+					"subtle": "#DD54A254"
+				},
+				"warning": {
+					"default": "#C3AB23",
+					"subtle": "#DDC3AB23"
+				},
+				"attention": {
+					"default": "#FFFFFF",
+					"subtle": "#DDFF0000"
 				}
 			}
 		}

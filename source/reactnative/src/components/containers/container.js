@@ -6,7 +6,6 @@
 
 import React from 'react';
 import {
-	View,
 	StyleSheet
 } from 'react-native';
 
@@ -15,10 +14,12 @@ import { Registry } from '../registration/registry';
 import { SelectAction } from '../actions';
 import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config';
-import { InputContextConsumer } from '../../utils/context';
+import { InputContext } from '../../utils/context';
 import { ContainerWrapper } from './';
 
 export class Container extends React.Component {
+
+	static contextType = InputContext;
 
 	constructor(props) {
 		super(props);
@@ -28,49 +29,40 @@ export class Container extends React.Component {
 
     /**
      * @description Parse the given payload and render the card accordingly
+	 * @returns {object} Return the child elements of the container
      */
-	parsePayload = (containerJson, onParseError) => {
-		const renderedElement = [];
+	parsePayload = () => {
+		let children = [];
 		if (!this.payload) {
-			return renderedElement;
+			return children;
 		}
 
-		// parse elements
-		renderedElement.push(Registry.getManager().parseRegistryComponents(containerJson.items, onParseError));
-		return renderedElement;
+		children = Registry.getManager().parseRegistryComponents(this.payload.items, this.context.onParseError);
+		return children.map(ChildElement => React.cloneElement(ChildElement, { containerStyle: this.payload.style }));
 	}
 
-	internalRenderer(containerJson) {
-		let backgroundStyle = containerJson.style == Constants.Emphasis ?
-			styles.emphasisStyle : styles.defaultBGStyle;
+	internalRenderer = () => {
+		const payload = this.payload;
 
-		// verticalContentAlignment property is not considered for now as the container size is determined by its content.
 		var containerContent = (
-			<InputContextConsumer>
-				{({ onParseError }) =>
-					(
-						<ContainerWrapper json={this.payload} style={[styles.container, backgroundStyle]}>
-							<ElementWrapper json={containerJson} style={[backgroundStyle, {flexGrow: 0}]}>
-								{this.parsePayload(containerJson, onParseError)}
-							</ElementWrapper>
-						</ContainerWrapper>
-					)
-				}
-			</InputContextConsumer>
-
+			<ContainerWrapper json={this.payload} style={[styles.container]}>
+				<ElementWrapper json={this.payload} style={[styles.defaultBGStyle, { flexGrow: 0 }]}>
+					{this.parsePayload()}
+				</ElementWrapper>
+			</ContainerWrapper>
 		);
-		if ((containerJson.selectAction === undefined)
-			|| (HostConfigManager.getHostConfig().supportsInteractivity === false)) {
+		if ((payload.selectAction === undefined)
+			|| (HostConfigManager.supportsInteractivity() === false)) {
 			return containerContent;
 		} else {
-			return <SelectAction selectActionData={containerJson.selectAction}>
+			return <SelectAction selectActionData={payload.selectAction}>
 				{containerContent}
 			</SelectAction>;
 		}
 	}
 
 	render() {
-		let containerRender = this.internalRenderer(this.props.json);
+		let containerRender = this.internalRenderer();
 		return containerRender;
 	}
 };
@@ -81,8 +73,5 @@ const styles = StyleSheet.create({
 	},
 	defaultBGStyle: {
 		backgroundColor: Constants.TransparentString,
-	},
-	emphasisStyle: {
-		backgroundColor: Constants.EmphasisColor,
 	},
 });

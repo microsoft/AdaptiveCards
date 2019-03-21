@@ -100,6 +100,6 @@ export default class ElementWrapper extends React.Component {
 
 const styles = StyleSheet.create({
 	inputContainer: {
-		backgroundColor: Constants.WhiteColor
+		backgroundColor: Constants.TransparentString
 	}
 })

@@ -101,7 +101,11 @@ export const InputTextStyle = Object.freeze({
 
 export const ContainerStyle = Object.freeze({
 	Default: "default",
-	Emphasis: "emphasis"
+	Emphasis: "emphasis",
+	Accent: "accent",
+	Good: "good",
+	Attention: "attention",
+	Warning: "warning"
 });
 
 export const ValidationError = Object.freeze({

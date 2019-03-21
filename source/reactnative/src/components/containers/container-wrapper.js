@@ -17,6 +17,7 @@ import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 import * as Constants from "../../utils/constants";
 import { BackgroundImage } from '../elements';
+import { HostConfigManager } from '../../utils/host-config';
 
 export class ContainerWrapper extends React.PureComponent {
 
@@ -58,6 +59,7 @@ export class ContainerWrapper extends React.PureComponent {
      */
     getComputedStyles = () => {
         let computedStyles = [];
+        let hostConfig = HostConfigManager.getHostConfig();
 
         // vertical content alignment
         let verticalContentAlignment = Utils.parseHostConfigEnum(
@@ -76,6 +78,15 @@ export class ContainerWrapper extends React.PureComponent {
                 computedStyles.push({ justifyContent: Constants.FlexStart });
                 break;
         }
+
+        // container BG style
+        let backgroundStyle;
+        let styleDefinition = hostConfig.containerStyles.getStyleByName(this.payload["style"], hostConfig.containerStyles.getStyleByName("default"));
+        if (!Utils.isNullOrEmpty(styleDefinition.backgroundColor)) {
+            backgroundStyle = { backgroundColor: Utils.hexToRGB(styleDefinition.backgroundColor) };
+        }
+        computedStyles.push(backgroundStyle);
+
         return computedStyles;
     }
 }
