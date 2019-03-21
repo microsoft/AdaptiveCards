@@ -29,23 +29,25 @@ export class Container extends React.Component {
 
     /**
      * @description Parse the given payload and render the card accordingly
+	 * @returns {object} Return the child elements of the container
      */
 	parsePayload = () => {
+		let children = [];
 		if (!this.payload) {
-			return [];
+			return children;
 		}
 
-		return Registry.getManager().parseRegistryComponents(this.payload.items, this.context.onParseError);
+		children = Registry.getManager().parseRegistryComponents(this.payload.items, this.context.onParseError);
+		return children.map(ChildElement => React.cloneElement(ChildElement, { containerStyle: this.payload.style }));
 	}
 
 	internalRenderer = () => {
-		const children = this.parsePayload();
 		const payload = this.payload;
 
 		var containerContent = (
 			<ContainerWrapper json={this.payload} style={[styles.container]}>
 				<ElementWrapper json={this.payload} style={[styles.defaultBGStyle, { flexGrow: 0 }]}>
-					{children.map(ChildElement => React.cloneElement(ChildElement, { containerStyle: this.payload.style }))}
+					{this.parsePayload()}
 				</ElementWrapper>
 			</ContainerWrapper>
 		);

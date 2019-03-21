@@ -37,6 +37,7 @@ export class Column extends React.Component {
 
 	/**
 	 * @description Parse the given payload and render the card accordingly
+	 * @returns {object} Return the child elements of the column
 	 */
 	parsePayload = () => {
 		let children = [];
@@ -47,7 +48,7 @@ export class Column extends React.Component {
 		if (!Utils.isNullOrEmpty(this.column.items) && (this.column.isVisible !== false)) {
 			children  = Registry.getManager().parseRegistryComponents(this.column.items, this.context.onParseError);
 		}
-		return children;
+		return children.map(ChildElement => React.cloneElement(ChildElement, { containerStyle: this.column.style }));
 	}
 
 	/**
@@ -228,7 +229,6 @@ export class Column extends React.Component {
 			actionComponentProps = { selectActionData: this.column.selectAction };
 		}
 
-		const children = this.parsePayload();
 		let separatorStyles = [spacingStyle];
 
 		if (separator) {
@@ -239,7 +239,7 @@ export class Column extends React.Component {
 				<ActionComponent {...actionComponentProps}>
 					{separator && this.renderSeparator()}
 					<View style={separatorStyles}>
-						{children.map(ChildElement => React.cloneElement(ChildElement, { containerStyle: this.column.style }))}
+						{this.parsePayload()}
 					</View>
 				</ActionComponent>
 			</ContainerWrapper>

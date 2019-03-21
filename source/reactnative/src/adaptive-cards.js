@@ -135,6 +135,7 @@ export default class AdaptiveCards extends React.Component {
 
 	/**
 	 * @description Parse the given payload and render the card accordingly
+	 * @returns {object} Child elements of the card
 	 */
 	parsePayload = () => {
 		let children = [];
@@ -144,16 +145,15 @@ export default class AdaptiveCards extends React.Component {
 			return children;
 
 		children = Registry.getManager().parseRegistryComponents(body, this.onParseError);
-		return children;
+		return children.map(ChildElement => React.cloneElement(ChildElement, { containerStyle: this.state.payload.style }));
 	}
 
 	getAdaptiveCardContent() {
-		let children = this.parsePayload();
 		var adaptiveCardContent =
 			(
 				<ContainerWrapper style={styles.container} json={this.state.payload}>
 					<ScrollView alwaysBounceVertical={false} style={{ flexGrow: 0 }}>
-						{children.map(ChildElement => React.cloneElement(ChildElement, { containerStyle: this.state.payload.style }))}
+						{this.parsePayload()}
 						{!Utils.isNullOrEmpty(this.state.payload.actions) &&
 							<ActionWrapper actions={this.state.payload.actions} />}
 					</ScrollView>

@@ -25,6 +25,7 @@ export class ColumnSet extends React.PureComponent {
 
     /**
      * @description Parse the given payload and render the card accordingly
+	 * @returns {object} Return the child elements of the columnset
      */
 	parsePayload = () => {
 		const payload = this.payload;
@@ -40,20 +41,16 @@ export class ColumnSet extends React.PureComponent {
 					key={`ELEMENT-${index}`}
 				/>);
 		});
-		return children;
+		return children.map(ChildElement => React.cloneElement(ChildElement, { containerStyle: this.payload.style }));
 	}
 
 	internalRenderer() {
-		const children = this.parsePayload();
 		const payload = this.payload;
 
 		var columnSetContent = (
 			<ContainerWrapper style={{ flex: this.payload.columns.length }} json={payload}>
 				<ElementWrapper json={payload} style={styles.defaultBGStyle}>
-					{
-						children.map(ChildElement =>
-							React.cloneElement(ChildElement, { containerStyle: this.payload.style }))
-					}
+					{this.parsePayload()}
 				</ElementWrapper>
 			</ContainerWrapper>
 		);
