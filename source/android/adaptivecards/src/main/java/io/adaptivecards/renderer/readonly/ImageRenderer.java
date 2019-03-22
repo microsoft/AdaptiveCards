@@ -212,7 +212,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         if (image.GetImageSize() == ImageSize.Stretch)
         {
             //ImageView must match parent for stretch to work
-            if( image.GetHeight() == HeightType.Stretch )
+            if (image.GetHeight() == HeightType.Stretch)
             {
                 layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT, 1);
             }
@@ -223,7 +223,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
         else
         {
-            if( image.GetHeight() == HeightType.Stretch )
+            if (image.GetHeight() == HeightType.Stretch)
             {
                 layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT, 1);
             }
@@ -294,10 +294,17 @@ public class ImageRenderer extends BaseCardElementRenderer
 
         if (image.GetMinHeight() != 0)
         {
-            imageView.setMinimumHeight(Util.dpToPixels(context, (int)image.GetMinHeight()));
+            LinearLayout minHeightLayout = new LinearLayout(context);
+            minHeightLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            minHeightLayout.setMinimumHeight(Util.dpToPixels(context, (int)image.GetMinHeight()));
+            minHeightLayout.addView(imageView);
+            viewGroup.addView(minHeightLayout);
+        }
+        else
+        {
+            viewGroup.addView(imageView);
         }
 
-        viewGroup.addView(imageView);
         return imageView;
     }
 

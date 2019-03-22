@@ -270,12 +270,22 @@ public class TextInputRenderer extends BaseCardElementRenderer
             }
         }
 
-        if(baseInputElement.GetHeight() == HeightType.Stretch)
+        if(baseInputElement.GetHeight() == HeightType.Stretch || baseInputElement.GetMinHeight() != 0)
         {
             LinearLayout containerLayout = new LinearLayout(context);
-            containerLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
 
-            if(textInputViewGroup != null)
+            if (baseInputElement.GetHeight() == HeightType.Stretch)
+            {
+                containerLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+            }
+            else
+            {
+                containerLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            }
+
+            containerLayout.setMinimumHeight(Util.dpToPixels(context, (int)baseInputElement.GetMinHeight()));
+
+            if (textInputViewGroup != null)
             {
                 containerLayout.addView(textInputViewGroup);
             }
@@ -295,11 +305,6 @@ public class TextInputRenderer extends BaseCardElementRenderer
             {
                 viewGroup.addView(editText);
             }
-        }
-
-        if (baseInputElement.GetMinHeight() != 0)
-        {
-            editText.setMinimumHeight(Util.dpToPixels(context, (int)baseInputElement.GetMinHeight()));
         }
 
         return editText;

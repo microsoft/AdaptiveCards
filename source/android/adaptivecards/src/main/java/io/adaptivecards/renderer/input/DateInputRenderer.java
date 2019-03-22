@@ -120,11 +120,6 @@ public class DateInputRenderer extends TextInputRenderer
             editText.setVisibility(View.GONE);
         }
 
-        if (dateInput.GetMinHeight() != 0)
-        {
-            editText.setMinimumHeight((int)dateInput.GetMinHeight());
-        }
-
         return editText;
     }
 
