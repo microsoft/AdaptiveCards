@@ -12,6 +12,10 @@ namespace AdaptiveCards
             IDStack = new Stack<Tuple<string, AdaptiveInternalID, bool>>();
         }
 
+        public enum ContextType { Element, Action };
+
+        public static ContextType Type { get; set; }
+
         private static IDictionary<string, List<AdaptiveInternalID>> ElementIDs = new Dictionary<string, List<AdaptiveInternalID>>();
 
         private static Stack<Tuple<string, AdaptiveInternalID, bool>> IDStack = new Stack<Tuple<string, AdaptiveInternalID, bool>>();
@@ -57,9 +61,9 @@ namespace AdaptiveCards
                         // no collision.
                         try
                         {
-                            // -1 is the last item on the stack (the one we're about to pop)
-                            // -2 is the parent of the last item on the stack
-                            var previousInStack = IDStack.ElementAt(IDStack.Count - 2);
+                            // 0 is the last item on the stack (the one we're about to pop)
+                            // 1 is the parent of the last item on the stack
+                            var previousInStack = IDStack.ElementAt(1);
 
                             if (previousInStack.Item2.Equals(entryFallBackID))
                             {
@@ -67,7 +71,7 @@ namespace AdaptiveCards
                                 break;
                             }
                         }
-                        catch (IndexOutOfRangeException)
+                        catch (ArgumentOutOfRangeException)
                         {
                             // we're looking at a toplevel element
                         }
@@ -113,7 +117,7 @@ namespace AdaptiveCards
                 // if element is fallback
                 if (curElement.Item3)
                 {
-                    if (curElement.Item2.Equals(skipID))
+                    if (!curElement.Item2.Equals(skipID))
                     {
                         return curElement.Item2;
                     }

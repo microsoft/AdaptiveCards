@@ -16,8 +16,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             var actionsConfig = context.Config.Actions;
             var maxActions = actionsConfig.MaxActions;
-            var actionsToProcess = actions
-                .Take(maxActions).ToList();
+            var actionsToProcess = GetActionsToProcess(actions, maxActions);
 
             if (actionsToProcess.Any())
             {
@@ -117,6 +116,13 @@ namespace AdaptiveCards.Rendering.Wpf
                 // Restore the iconPlacement for the context.
                 actionsConfig.IconPlacement = oldConfigIconPlacement;
             }
+        }
+
+        private static List<AdaptiveAction> GetActionsToProcess(IList<AdaptiveAction> actions, int maxActions)
+        {
+            // only consider known actions for ActionsToProcess
+            var actionsToProcess = actions.Where(obj => obj.GetType() != typeof(AdaptiveUnknownAction)).ToList();
+            return actionsToProcess.Take(maxActions).ToList();
         }
     }
 }

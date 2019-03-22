@@ -99,7 +99,6 @@ namespace AdaptiveCards
             if (TypedElementTypes.Value.TryGetValue(typeName, out var type))
             {
                 string objectId = jObject.Value<string>("id");
-                var internalID = AdaptiveInternalID.Next();
                 if (objectId == null)
                 {
                     if (typeof(AdaptiveInput).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()))
@@ -108,32 +107,76 @@ namespace AdaptiveCards
                     }
                 }
 
-                // handle fallback and ID Collision
-                var fallbackJson = jObject.GetValue("fallback");
-                AdaptiveFallbackElement fallback = null;
-                if (fallbackJson != null && fallbackJson.Type == JTokenType.Object)
+                // add id of element to ParseContext
+                AdaptiveInternalID internalID = AdaptiveInternalID.Current();
+                if (type != typeof(AdaptiveCard))
                 {
-                    fallback = AdaptiveFallbackConverter.ParseFallback(jObject.GetValue("fallback"), serializer, objectId, internalID);
+                    internalID = AdaptiveInternalID.Next();
+                    ParseContext.PushElement(objectId, internalID);
                 }
 
                 var result = (AdaptiveTypedElement)Activator.CreateInstance(type);
                 try
                 {
-                    ParseContext.PushElement(objectId, internalID);
                     serializer.Populate(jObject.CreateReader(), result);
-                    ParseContext.PopElement();
                 }
-                catch (JsonSerializationException)
+                catch (JsonSerializationException e) { }
+
+                // handle fallback and ID Collision
+                if (type != typeof(AdaptiveCard))
                 {
-                    return result;
+                    var fallbackJson = jObject.GetValue("fallback");
+                    if (fallbackJson != null)
+                    {
+                        result.Fallback = AdaptiveFallbackConverter.ParseFallback(jObject.GetValue("fallback"), serializer, objectId, internalID);
+                    }
                 }
+
+                // remove id of element from ParseContext
+                if (type != typeof(AdaptiveCard))
+                    ParseContext.PopElement();
 
                 HandleAdditionalProperties(result);
                 return result;
             }
+            else // We're looking at an unknown element
+            {
+                string objectId = jObject.Value<string>("id");
+                AdaptiveInternalID internalID = AdaptiveInternalID.Next();
 
-            Warnings.Add(new AdaptiveWarning(-1, $"Unknown element '{typeName}'"));
-            return null;
+                // Handle deserializing unknown element
+                ParseContext.PushElement(objectId, internalID);
+                AdaptiveTypedElement result = null;
+                if (ParseContext.Type == ParseContext.ContextType.Element)
+                {
+                    try
+                    {
+                        result = (AdaptiveTypedElement)Activator.CreateInstance(typeof(AdaptiveUnknownElement));
+                        serializer.Populate(jObject.CreateReader(), result);
+                    }
+                    catch (JsonSerializationException) { }
+                }
+                else // ParseContext.Type == ParseContext.ContextType.Action
+                {
+                    try
+                    {
+                        result = (AdaptiveTypedElement)Activator.CreateInstance(typeof(AdaptiveUnknownAction));
+                        serializer.Populate(jObject.CreateReader(), result);
+                    }
+                    catch (JsonSerializationException) { }
+                }
+                ParseContext.PopElement();
+
+                // handle fallback for unknown element
+                var fallbackJson = jObject.GetValue("fallback");
+                if (fallbackJson != null)
+                {
+                    result.Fallback = AdaptiveFallbackConverter.ParseFallback(jObject.GetValue("fallback"), serializer, objectId, internalID);
+                }
+
+                Warnings.Add(new AdaptiveWarning(-1, $"Unknown element '{typeName}'"));
+                return result;
+            }
         }
 
         private void HandleAdditionalProperties(AdaptiveTypedElement te)

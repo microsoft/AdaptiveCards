@@ -36,7 +36,13 @@ namespace AdaptiveCards
 
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(string) || objectType == typeof(AdaptiveTypedElement);
+            bool result = objectType == typeof(string) || objectType == typeof(AdaptiveTypedElement);
+
+            if (!result)
+            {
+                throw new AdaptiveSerializationException("Invalid value for fallback");
+            }
+            return result;
         }
 
         public static AdaptiveFallbackElement ParseFallback(JToken fallbackJSON, JsonSerializer serializer, string objectId, AdaptiveInternalID internalId)
@@ -48,7 +54,7 @@ namespace AdaptiveCards
                 if (str == AdaptiveFallbackElement.drop)
                 {
                     // fallback is initialized with "drop" property and empty content
-                    return new AdaptiveFallbackElement(null);
+                    return new AdaptiveFallbackElement(AdaptiveFallbackElement.AdaptiveFallbackType.Drop);
                 }
                 throw new AdaptiveSerializationException("The only valid string value for the fallback property is 'drop'.");
             }
@@ -61,12 +67,10 @@ namespace AdaptiveCards
                 var elem = new AdaptiveFallbackElement(fallbackJSON.ToObject<AdaptiveTypedElement>());
                 ParseContext.PopElement();
 
-                return new AdaptiveFallbackElement(fallbackJSON.ToObject<AdaptiveTypedElement>());
+                return elem;
             }
-            else
-            {
-                return null;
-            }
+            // Should never get here. Instead should be thrown in CanConvert()
+            throw new AdaptiveSerializationException("Invalid value for fallback");
         }
     }
 }
