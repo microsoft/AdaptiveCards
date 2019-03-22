@@ -247,6 +247,38 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
+        public void DropFallbacksSerialization()
+        {
+            var card = new AdaptiveCard("1.2")
+            {
+                Body =
+                {
+                    new AdaptiveTextBlock("text here")
+                    {
+                        Fallback = new AdaptiveFallbackElement(AdaptiveFallbackElement.AdaptiveFallbackType.Drop)
+                    }
+                }
+            };
+
+            string expected = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.2"",
+  ""body"": [
+    {
+      ""type"": ""TextBlock"",
+      ""text"": ""text here"",
+      ""fallback"": ""drop""
+      }
+    }
+  ]
+}";
+
+            var serializedCard = card.ToJson();
+
+            Assert.AreEqual(expected, serializedCard);
+        }
+
+        [TestMethod]
         public void InvalidFallbackStringBody()
         {
             string json = @"{
