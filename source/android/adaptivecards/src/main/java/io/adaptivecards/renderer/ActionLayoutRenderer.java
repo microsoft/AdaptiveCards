@@ -3,6 +3,7 @@ package io.adaptivecards.renderer;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -11,6 +12,9 @@ import io.adaptivecards.objectmodel.ActionAlignment;
 import io.adaptivecards.objectmodel.ActionsOrientation;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseActionElementVector;
+import io.adaptivecards.objectmodel.BaseCardElement;
+import io.adaptivecards.objectmodel.BaseElement;
+import io.adaptivecards.objectmodel.FallbackType;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.IconPlacement;
 import io.adaptivecards.objectmodel.Spacing;
@@ -38,7 +42,15 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
         return s_instance;
     }
 
-    public void renderActions(RenderedAdaptiveCard renderedCard, Context context, FragmentManager fragmentManager, ViewGroup viewGroup, BaseActionElementVector baseActionElementList, ICardActionHandler cardActionHandler, HostConfig hostConfig) {
+    public void renderActions(
+                RenderedAdaptiveCard renderedCard,
+                Context context,
+                FragmentManager fragmentManager,
+                ViewGroup viewGroup,
+                BaseActionElementVector baseActionElementList,
+                ICardActionHandler cardActionHandler,
+                HostConfig hostConfig,
+                RenderArgs renderArgs) {
         long size;
         if (baseActionElementList == null || (size = baseActionElementList.size()) <= 0)
         {
@@ -113,13 +125,61 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
             BaseActionElement actionElement = baseActionElementList.get(i);
 
             IconPlacement originalIconPlacement = hostConfig.GetActions().getIconPlacement();
-            if(!allActionsHaveIcons)
+            if (!allActionsHaveIcons)
             {
                 hostConfig.GetActions().setIconPlacement(IconPlacement.LeftOfTitle);
             }
 
-            IBaseActionElementRenderer actionRenderer = CardRendererRegistration.getInstance().getActionRenderer();
-            actionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig);
+            IBaseActionElementRenderer actionRenderer = CardRendererRegistration.getInstance().getActionRenderer(actionElement.GetElementTypeString());
+            View returnedView = null;
+            if (actionRenderer != null)
+            {
+                returnedView = actionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig, renderArgs);
+            }
+
+            boolean elementHasFallback = (actionElement.GetFallbackType() != FallbackType.None);
+            if (actionRenderer == null || returnedView == null)
+            {
+                if (elementHasFallback)
+                {
+                    if(actionElement.GetFallbackType() == FallbackType.Content)
+                    {
+                        BaseElement fallbackElement = actionElement.GetFallbackContent();
+
+                        while (fallbackElement != null)
+                        {
+                            BaseActionElement fallbackActionElement = null;
+                            if (fallbackElement instanceof BaseActionElement)
+                            {
+                                fallbackActionElement = (BaseActionElement) fallbackElement;
+                            }
+                            else if ((fallbackActionElement = BaseActionElement.dynamic_cast(fallbackElement)) == null)
+                            {
+                                throw new InternalError("Unable to convert BaseElement to BaseActionElement object model.");
+                            }
+
+                            IBaseActionElementRenderer fallbackActionRenderer = CardRendererRegistration.getInstance().getActionRenderer(fallbackActionElement.GetElementTypeString());;
+
+                            if (fallbackActionRenderer != null)
+                            {
+                                fallbackActionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, fallbackActionElement, cardActionHandler, hostConfig, renderArgs);
+                                break;
+                            }
+
+                            if (fallbackActionElement.GetFallbackType() == FallbackType.Content)
+                            {
+                                fallbackElement = fallbackActionElement.GetFallbackContent();
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.UNKNOWN_ELEMENT_TYPE,"Unsupported card element type: " + actionElement.GetElementTypeString()));
+                    continue;
+                }
+            }
+
             hostConfig.GetActions().setIconPlacement(originalIconPlacement);
         }
 

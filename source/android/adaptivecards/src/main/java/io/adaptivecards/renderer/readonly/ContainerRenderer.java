@@ -14,6 +14,7 @@ import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.BackgroundImageLoaderAsync;
+import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
@@ -50,7 +51,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            ContainerStyle containerStyle)
+            RenderArgs renderArgs)
     {
         Container container = null;
         if (baseCardElement instanceof Container)
@@ -62,6 +63,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
             throw new InternalError("Unable to convert BaseCardElement to Container object model.");
         }
 
+        ContainerStyle containerStyle = renderArgs.getContainerStyle();
         setSpacingAndSeparator(context, viewGroup, container.GetSpacing(),container.GetSeparator(), hostConfig, true /* horizontal line */);
         ContainerStyle styleForThis = container.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? containerStyle : container.GetStyle();
         LinearLayout containerView = new LinearLayout(context);
@@ -103,7 +105,20 @@ public class ContainerRenderer extends BaseCardElementRenderer
 
         if (!container.GetItems().isEmpty())
         {
-            CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, containerView, container, container.GetItems(), cardActionHandler, hostConfig, styleForThis);
+            View v = CardRendererRegistration.getInstance().render(renderedCard,
+                                                          context,
+                                                          fragmentManager,
+                                                          containerView,
+                                                          container,
+                                                          container.GetItems(),
+                                                          cardActionHandler,
+                                                          hostConfig,
+                                                          renderArgs);
+
+            if (v == null)
+            {
+                return null;
+            }
         }
 
         if (styleForThis != containerStyle)

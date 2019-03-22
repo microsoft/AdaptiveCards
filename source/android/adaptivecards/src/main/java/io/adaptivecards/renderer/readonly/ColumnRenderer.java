@@ -13,6 +13,7 @@ import io.adaptivecards.objectmodel.BackgroundImage;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.BackgroundImageLoaderAsync;
+import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
@@ -61,7 +62,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            ContainerStyle containerStyle)
+            RenderArgs renderArgs)
     {
         Column column;
         if (baseCardElement instanceof Column)
@@ -76,7 +77,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
         LinearLayout.LayoutParams layoutParams;
         setSpacingAndSeparator(context, viewGroup, column.GetSpacing(), column.GetSeparator(), hostConfig, false);
 
-        ContainerStyle styleForThis = column.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? containerStyle : column.GetStyle();
+        ContainerStyle styleForThis = column.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? renderArgs.getContainerStyle() : column.GetStyle();
         LinearLayout returnedView = new LinearLayout(context);
         returnedView.setOrientation(LinearLayout.VERTICAL);
         returnedView.setTag(new TagContent(column));
@@ -110,11 +111,28 @@ public class ColumnRenderer extends BaseCardElementRenderer
         }
         returnedView.addView(verticalContentAlignmentLayout);
 
+        RenderArgs renderArgs1 = new RenderArgs(renderArgs);
+        renderArgs1.setContainerStyle(styleForThis);
         if (!column.GetItems().isEmpty())
         {
-            CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, verticalContentAlignmentLayout, column, column.GetItems(), cardActionHandler, hostConfig, styleForThis);
+            View v = CardRendererRegistration.getInstance().render(renderedCard,
+                                                          context,
+                                                          fragmentManager,
+                                                          verticalContentAlignmentLayout,
+                                                          column,
+                                                          column.GetItems(),
+                                                          cardActionHandler,
+                                                          hostConfig,
+                                                          renderArgs1);
+
+            // This failed to render, so return null
+            if (v == null)
+            {
+                return null;
+            }
         }
-        if (styleForThis != containerStyle)
+
+        if (styleForThis != renderArgs.getContainerStyle())
         {
             int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
             returnedView.setPadding(padding, padding, padding, padding);

@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
@@ -47,14 +48,14 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
 
     @Override
     public View render(
-            RenderedAdaptiveCard renderedCard,
-            Context context,
-            FragmentManager fragmentManager,
-            ViewGroup viewGroup,
-            BaseCardElement baseCardElement,
-            ICardActionHandler cardActionHandler,
-            HostConfig hostConfig,
-            ContainerStyle containerStyle)
+        RenderedAdaptiveCard renderedCard,
+        Context context,
+        FragmentManager fragmentManager,
+        ViewGroup viewGroup,
+        BaseCardElement baseCardElement,
+        ICardActionHandler cardActionHandler,
+        HostConfig hostConfig,
+        RenderArgs renderArgs)
     {
         ColumnSet columnSet = null;
         if (baseCardElement instanceof ColumnSet)
@@ -73,7 +74,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         }
 
         setSpacingAndSeparator(context, viewGroup, columnSet.GetSpacing(), columnSet.GetSeparator(), hostConfig, true);
-        ContainerStyle styleForThis = columnSet.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? containerStyle : columnSet.GetStyle();
+        ContainerStyle styleForThis = columnSet.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? renderArgs.getContainerStyle() : columnSet.GetStyle();
 
         ColumnVector columnVector = columnSet.GetColumns();
         long columnVectorSize = columnVector.size();
@@ -90,6 +91,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             layout.setVisibility(View.GONE);
         }
 
+        ContainerStyle containerStyle = renderArgs.getContainerStyle();
         for (int i = 0; i < columnVectorSize; i++) {
             Column column = columnVector.get(i);
 
@@ -101,7 +103,11 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
                 rendererAsColumnRenderer.setIsRenderingLastColumn(i == (columnVectorSize - 1));
             }
 
-            columnRenderer.render(renderedCard, context, fragmentManager, layout, column, cardActionHandler, hostConfig, containerStyle);
+            View v = columnRenderer.render(renderedCard, context, fragmentManager, layout, column, cardActionHandler, hostConfig, renderArgs);
+            if (v == null)
+            {
+                return null;
+            }
         }
 
         if (columnSet.GetSelectAction() != null) {

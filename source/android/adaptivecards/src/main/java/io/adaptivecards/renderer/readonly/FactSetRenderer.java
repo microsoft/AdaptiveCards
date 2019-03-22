@@ -12,6 +12,7 @@ import android.widget.TextView;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.FontStyle;
 import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
@@ -65,7 +66,7 @@ public class FactSetRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            ContainerStyle containerStyle)
+            RenderArgs renderArgs)
     {
         FactSet factSet = null;
         if (baseCardElement instanceof FactSet)
@@ -120,11 +121,11 @@ public class FactSetRenderer extends BaseCardElementRenderer
 
             // Handle Title
             String titleWithFormattedDates = parser.GenerateString(fact.GetTitleForDateParsing());
-            factRow.addView(createTextView(context, RendererUtil.handleSpecialText(titleWithFormattedDates), hostConfig.GetFactSet().getTitle(), hostConfig, spacing, containerStyle));
+            factRow.addView(createTextView(context, RendererUtil.handleSpecialText(titleWithFormattedDates), hostConfig.GetFactSet().getTitle(), hostConfig, spacing, renderArgs.getContainerStyle()));
 
             // Handle Value
             String valueWithFormattedDates = parser.GenerateString(fact.GetValueForDateParsing());
-            factRow.addView(createTextView(context, RendererUtil.handleSpecialText(valueWithFormattedDates), hostConfig.GetFactSet().getValue(), hostConfig, 0, containerStyle));
+            factRow.addView(createTextView(context, RendererUtil.handleSpecialText(valueWithFormattedDates), hostConfig.GetFactSet().getValue(), hostConfig, 0, renderArgs.getContainerStyle()));
 
             tableLayout.addView(factRow);
         }

@@ -397,6 +397,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void BaseElement_SetAdditionalProperties(long jarg1, BaseElement jarg1_, long jarg2, JsonValue jarg2_);
   public final static native int BaseElement_GetFallbackType(long jarg1, BaseElement jarg1_);
   public final static native long BaseElement_GetFallbackContent(long jarg1, BaseElement jarg1_);
+  public final static native void BaseElement_SetFallbackType(long jarg1, BaseElement jarg1_, int jarg2);
+  public final static native void BaseElement_SetFallbackContent(long jarg1, BaseElement jarg1_, long jarg2, BaseElement jarg2_);
   public final static native boolean BaseElement_MeetsRequirements(long jarg1, BaseElement jarg1_, long jarg2);
   public final static native void BaseElement_GetResourceInformation(long jarg1, BaseElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native void BaseElement_GetResourceInformationSwigExplicitBaseElement(long jarg1, BaseElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
@@ -432,6 +434,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void BaseCardElement_PopulateKnownPropertiesSet(long jarg1, BaseCardElement jarg1_);
   public final static native void BaseCardElement_PopulateKnownPropertiesSetSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_);
   public final static native Object BaseCardElement_swigOriginalObject(long jarg1, BaseCardElement jarg1_);
+  public final static native long BaseCardElement_dynamic_cast(long jarg1, BaseElement jarg1_);
   public final static native void BaseCardElement_director_connect(BaseCardElement obj, long cptr, boolean mem_own, boolean weak_global);
   public final static native void BaseCardElement_change_ownership(BaseCardElement obj, long cptr, boolean take_or_release);
   public final static native long new_BaseActionElement__SWIG_0(int jarg1);
@@ -460,6 +463,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void BaseActionElement_PopulateKnownPropertiesSet(long jarg1, BaseActionElement jarg1_);
   public final static native void BaseActionElement_PopulateKnownPropertiesSetSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
   public final static native Object BaseActionElement_swigOriginalObject(long jarg1, BaseActionElement jarg1_);
+  public final static native long BaseActionElement_dynamic_cast(long jarg1, BaseElement jarg1_);
   public final static native void BaseActionElement_director_connect(BaseActionElement obj, long cptr, boolean mem_own, boolean weak_global);
   public final static native void BaseActionElement_change_ownership(BaseActionElement obj, long cptr, boolean take_or_release);
   public final static native long new_BackgroundImage__SWIG_0();
