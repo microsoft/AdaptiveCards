@@ -77,6 +77,13 @@ namespace AdaptiveNamespace
         return m_overrideDictionary.CopyTo(overrideDictionary);
     }
 
+    HRESULT AdaptiveRenderContext::get_UserInputs(_COM_Outptr_ IAdaptiveInputs** value)
+    {
+        ComPtr<RenderedAdaptiveCard> renderResult;
+        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
+        return renderResult->get_UserInputs(value);
+    }
+
     HRESULT AdaptiveRenderContext::AddError(ABI::AdaptiveNamespace::ErrorStatusCode statusCode, _In_ HSTRING message)
     {
         ComPtr<AdaptiveError> error;

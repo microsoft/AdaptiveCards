@@ -123,7 +123,7 @@ export class Template {
         if (typeof node === "string") {
             return TemplatizedString.parse(node);
         }
-        else if (typeof node === "object") {
+        else if (typeof node === "object" && node != null) {
             if (Array.isArray(node)) {
                 let result: any[] = [];
 
@@ -198,7 +198,7 @@ export class Template {
                 result = null;
             }
         }
-        else if (typeof node === "object") {
+        else if (typeof node === "object" && node != null) {
             let dropObject = false;
             let when = node["$when"];
 

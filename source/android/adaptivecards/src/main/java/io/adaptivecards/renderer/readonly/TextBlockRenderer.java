@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.FontStyle;
 import io.adaptivecards.objectmodel.ForegroundColor;
@@ -53,55 +55,24 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    static void setTextSize(TextView textView, FontStyle style, TextSize textSize, HostConfig hostConfig)
-    {
-        long value = hostConfig.GetFontSize(style, textSize);
-        textView.setTextSize(value);
-    }
-
     static void setTextAlignment(TextView textView, HorizontalAlignment textAlignment)
     {
-        int alignment;
-        if (textAlignment == HorizontalAlignment.Center)
-        {
-            alignment = Gravity.CENTER;
-        }
-        else if (textAlignment == HorizontalAlignment.Left)
-        {
-            alignment = Gravity.LEFT;
-        }
-        else if (textAlignment == HorizontalAlignment.Right)
-        {
-            alignment = Gravity.RIGHT;
-        }
-        else
-        {
-            throw new IllegalArgumentException("Invalid text alignment: " + textAlignment.toString());
-        }
+        textView.setGravity(TextRendererUtil.getTextAlignment(textAlignment));
+    }
 
-        textView.setGravity(alignment);
+    static void setTextSize(TextView textView, FontStyle style, TextSize textSize, HostConfig hostConfig)
+    {
+        textView.setTextSize(TextRendererUtil.getTextSize(style, textSize, hostConfig));
     }
 
     void setTextFormat(TextView textView, HostConfig hostConfig, FontStyle style, TextWeight textWeight)
     {
-        String fontFamily = hostConfig.GetFontFamily(style);
-
-        Typeface typeface;
-        if (fontFamily.isEmpty() && style == FontStyle.Monospace)
-        {
-            typeface = Typeface.MONOSPACE;
-        }
-        else
-        {
-            typeface = Typeface.create(fontFamily, Typeface.NORMAL);
-        }
-
-        textView.setTypeface(typeface, m_textWeightMap.get(textWeight));
+        textView.setTypeface(TextRendererUtil.getTextFormat(hostConfig, style), m_textWeightMap.get(textWeight));
     }
 
     static void setTextColor(TextView textView, ForegroundColor foregroundColor, HostConfig hostConfig, boolean isSubtle, ContainerStyle containerStyle)
     {
-        textView.setTextColor(getColor(hostConfig.GetForegroundColor(containerStyle, foregroundColor, isSubtle)));
+        textView.setTextColor(getColor(TextRendererUtil.getTextColor(foregroundColor, hostConfig, isSubtle, containerStyle)));
     }
 
     static class TouchTextView implements View.OnTouchListener

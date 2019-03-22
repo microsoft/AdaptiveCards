@@ -455,12 +455,13 @@ export abstract class CardElement extends CardObject {
         raiseParseElementEvent(this, json, errors);
 
         this.requires.parse(json["requires"], errors);
-		this.isVisible = Utils.getBoolValue(json["isVisible"], this.isVisible);
-		this.speak = Utils.getStringValue(json["speak"]);
-		this.horizontalAlignment = Utils.getEnumValue(Enums.HorizontalAlignment, json["horizontalAlignment"], null);
+        this.id = Utils.getStringValue(json["id"]);
+        this.isVisible = Utils.getBoolValue(json["isVisible"], this.isVisible);
+        this.speak = Utils.getStringValue(json["speak"]);
+        this.horizontalAlignment = Utils.getEnumValue(Enums.HorizontalAlignment, json["horizontalAlignment"], this.horizontalAlignment);
 
-		this.spacing = Utils.getEnumValue(Enums.Spacing, json["spacing"], Enums.Spacing.Default);
-		this.separator = Utils.getBoolValue(json["separator"], this.separator);
+        this.spacing = Utils.getEnumValue(Enums.Spacing, json["spacing"], Enums.Spacing.Default);
+        this.separator = Utils.getBoolValue(json["separator"], this.separator);
 
         let jsonSeparation = json["separation"];
 
@@ -1132,11 +1133,11 @@ export class TextBlock extends CardElement {
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
-		this.text = Utils.getStringValue(json["text"]);
+        this.text = Utils.getStringValue(json["text"]);
 
-		let sizeString = Utils.getStringValue(json["size"]);
+        let sizeString = Utils.getStringValue(json["size"]);
 
-        if (sizeString && typeof sizeString === "string" && sizeString.toLowerCase() === "normal") {
+        if (sizeString && sizeString.toLowerCase() === "normal") {
             this.size = Enums.TextSize.Default;
 
             raiseParseError(
@@ -1151,9 +1152,9 @@ export class TextBlock extends CardElement {
             this.size = Utils.getEnumValue(Enums.TextSize, sizeString, this.size);
         }
 
-		let weightString = Utils.getStringValue(json["weight"]);
+        let weightString = Utils.getStringValue(json["weight"]);
 
-        if (weightString && typeof weightString === "string" && weightString.toLowerCase() === "normal") {
+        if (weightString && weightString.toLowerCase() === "normal") {
             this.weight = Enums.TextWeight.Default;
 
             raiseParseError(
@@ -1257,13 +1258,13 @@ export class Fact {
         this.value = value;
     }
 
-	parse(json: any) {
-		this.name = Utils.getStringValue(json["title"]);
-		this.value = Utils.getStringValue(json["value"]);
-		this.speak = Utils.getStringValue(json["speak"]);
-	}
+    parse(json: any) {
+        this.name = Utils.getStringValue(json["title"]);
+        this.value = Utils.getStringValue(json["value"]);
+        this.speak = Utils.getStringValue(json["speak"]);
+    }
 
-	toJSON(): any {
+    toJSON() {
         return { title: this.name, value: this.value };
     }
 
@@ -1632,12 +1633,12 @@ export class Image extends CardElement {
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
-		this.url = Utils.getStringValue(json["url"]);
-		this.backgroundColor = Utils.getStringValue(json["backgroundColor"]);
+        this.url = Utils.getStringValue(json["url"]);
+        this.backgroundColor = Utils.getStringValue(json["backgroundColor"]);
 
-		let styleString = Utils.getStringValue(json["style"]);
+        let styleString = Utils.getStringValue(json["style"]);
 
-        if (styleString && typeof styleString === "string" && styleString.toLowerCase() === "normal") {
+        if (styleString && styleString.toLowerCase() === "normal") {
             this.style = Enums.ImageStyle.Default;
 
             raiseParseError(
@@ -2298,16 +2299,69 @@ export class Media extends CardElement {
     }
 }
 
+export class InputValidationOptions {
+    necessity: Enums.InputValidationNecessity = Enums.InputValidationNecessity.Optional;
+    errorMessage: string = undefined;
+
+    parse(json: any) {
+        this.necessity = Utils.getEnumValue(Enums.InputValidationNecessity, json["necessity"], this.necessity);
+        this.errorMessage = Utils.getStringValue(json["errorMessage"]);
+    }
+
+    toJSON() {
+        if (this.necessity != Enums.InputValidationNecessity.Optional || !Utils.isNullOrEmpty(this.errorMessage)) {
+            let result = {}
+
+            Utils.setEnumProperty(Enums.InputValidationNecessity, result, "necessity", this.necessity, Enums.InputValidationNecessity.Optional);
+            Utils.setProperty(result, "errorMessage", this.errorMessage);
+
+            return result;
+        }
+        else {
+            return null;
+        }
+    }
+}
+
 export abstract class Input extends CardElement implements Shared.IInput {
+    private _outerContainerElement: HTMLElement;
+    private _errorMessageElement: HTMLElement;
+
     protected valueChanged() {
+        this.resetValidationFailureCue();
+
         if (this.onValueChanged) {
             this.onValueChanged(this);
+        }
+
+        raiseInputValueChangedEvent(this);
+    }
+
+    protected resetValidationFailureCue() {
+        this.renderedElement.classList.remove("ac-input-validation-failed");
+
+        if (this._errorMessageElement) {
+            this._outerContainerElement.removeChild(this._errorMessageElement);
+
+            this._errorMessageElement = null;
+        }
+    }
+
+    protected showValidationErrorMessage() {
+        if (AdaptiveCard.displayInputValidationErrors && !Utils.isNullOrEmpty(this.validation.errorMessage)) {
+            this._errorMessageElement = document.createElement("span");
+            this._errorMessageElement.className = "ac-input-validation-error-message";
+            this._errorMessageElement.textContent = this.validation.errorMessage;
+
+            this._outerContainerElement.appendChild(this._errorMessageElement);
         }
     }
 
     abstract get value(): string;
 
     onValueChanged: (sender: Input) => void;
+
+    readonly validation = new InputValidationOptions();
 
     title: string;
     defaultValue: string;
@@ -2317,6 +2371,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
 
         Utils.setProperty(result, "title", this.title);
         Utils.setProperty(result, "value", this.renderedElement ? this.value : this.defaultValue);
+        Utils.setProperty(result, "validation", this.validation.toJSON());
 
         return result;
     }
@@ -2330,10 +2385,54 @@ export abstract class Input extends CardElement implements Shared.IInput {
         }
     }
 
+    validateValue(): boolean {
+        this.resetValidationFailureCue();
+
+        let result = this.validation.necessity != Enums.InputValidationNecessity.Optional ? !Utils.isNullOrEmpty(this.value) : true;
+
+        if (!result) {
+            this.renderedElement.classList.add("ac-input-validation-failed");
+
+            this.showValidationErrorMessage();
+        }
+
+        return result;
+    }
+
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
-		this.defaultValue = Utils.getStringValue(json["value"]);
+        this.id = Utils.getStringValue(json["id"]);
+        this.defaultValue = Utils.getStringValue(json["value"]);
+
+        let jsonValidation = json["validation"];
+
+        if (jsonValidation) {
+            this.validation.parse(jsonValidation);
+        }
+    }
+
+    render(): HTMLElement {
+        let renderedElement = super.render();
+
+        let hostConfig = this.hostConfig;
+
+        this._outerContainerElement = document.createElement("div");
+        this._outerContainerElement.style.display = "flex";
+        this._outerContainerElement.style.flexDirection = "column";
+
+        let innerContainerElement = document.createElement("div");
+        innerContainerElement.className = hostConfig.makeCssClassName("ac-input-container");
+
+        if (this.validation.necessity == Enums.InputValidationNecessity.RequiredWithVisualCue) {
+            innerContainerElement.classList.add(hostConfig.makeCssClassName("ac-input-required"));
+        }
+
+        innerContainerElement.appendChild(renderedElement);
+
+        this._outerContainerElement.appendChild(innerContainerElement);
+
+        return this._outerContainerElement;
     }
 
     renderSpeech(): string {
@@ -2435,9 +2534,9 @@ export class TextInput extends Input {
         super.parse(json, errors);
 
         this.maxLength = json["maxLength"];
-		this.isMultiline = Utils.getBoolValue(json["isMultiline"], this.isMultiline);
-		this.placeholder = Utils.getStringValue(json["placeholder"]);
-		this.style = Utils.getEnumValue(Enums.InputTextStyle, json["style"], this.style);
+        this.isMultiline = Utils.getBoolValue(json["isMultiline"], this.isMultiline);
+        this.placeholder = Utils.getStringValue(json["placeholder"]);
+        this.style = Utils.getEnumValue(Enums.InputTextStyle, json["style"], this.style);
     }
 
     get value(): string {
@@ -2455,7 +2554,7 @@ export class ToggleInput extends Input {
 
     protected internalRender(): HTMLElement {
         let element = document.createElement("div");
-        element.className = this.hostConfig.makeCssClassName("ac-input");
+        element.className = this.hostConfig.makeCssClassName("ac-input", "ac-toggleInput");
         element.style.width = "100%";
         element.style.display = "flex";
         element.style.alignItems = "center";
@@ -2524,10 +2623,10 @@ export class ToggleInput extends Input {
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
-		this.title = Utils.getStringValue(json["title"]);
-		this.valueOn = Utils.getStringValue(json["valueOn"], this.valueOn);
-		this.valueOff = Utils.getStringValue(json["valueOff"], this.valueOff);
-		this.wrap = Utils.getBoolValue(json["wrap"], this.wrap);
+        this.title = Utils.getStringValue(json["title"]);
+        this.valueOn = Utils.getStringValue(json["valueOn"], this.valueOn);
+        this.valueOff = Utils.getStringValue(json["valueOff"], this.valueOff);
+        this.wrap = Utils.getBoolValue(json["wrap"], this.wrap);
     }
 
     get value(): string {
@@ -2547,6 +2646,11 @@ export class Choice {
     constructor(title: string = undefined, value: string = undefined) {
         this.title = title;
         this.value = value;
+    }
+
+    parse(json: any) {
+        this.title = Utils.getStringValue(json["title"]);
+        this.value = Utils.getStringValue(json["value"]);
     }
 
     toJSON(): any {
@@ -2573,7 +2677,7 @@ export class ChoiceSetInput extends Input {
             if (this.isCompact) {
                 // Render as a combo box
                 this._selectElement = document.createElement("select");
-                this._selectElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-multichoiceInput");
+                this._selectElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-multichoiceInput", "ac-choiceSetInput-compact");
                 this._selectElement.style.width = "100%";
 
                 let option = document.createElement("option");
@@ -2610,7 +2714,7 @@ export class ChoiceSetInput extends Input {
                 let uniqueCategoryName = ChoiceSetInput.getUniqueCategoryName();
 
                 let element = document.createElement("div");
-                element.className = this.hostConfig.makeCssClassName("ac-input");
+                element.className = this.hostConfig.makeCssClassName("ac-input", "ac-choiceSetInput-expanded");
                 element.style.width = "100%";
 
                 this._toggleInputs = [];
@@ -2654,7 +2758,7 @@ export class ChoiceSetInput extends Input {
 
                     let compoundInput = document.createElement("div");
                     compoundInput.style.display = "flex";
-					compoundInput.style.alignItems = "center";
+                    compoundInput.style.alignItems = "center";
 
                     Utils.appendChild(compoundInput, radioInput);
                     Utils.appendChild(compoundInput, spacerElement);
@@ -2671,7 +2775,7 @@ export class ChoiceSetInput extends Input {
             let defaultValues = this.defaultValue ? this.defaultValue.split(this.hostConfig.choiceSetInputValueSeparator) : null;
 
             let element = document.createElement("div");
-            element.className = this.hostConfig.makeCssClassName("ac-input");
+            element.className = this.hostConfig.makeCssClassName("ac-input", "ac-choiceSetInput-multiSelect");
             element.style.width = "100%";
 
             this._toggleInputs = [];
@@ -2785,19 +2889,17 @@ export class ChoiceSetInput extends Input {
         super.parse(json, errors);
 
         this.isCompact = !(json["style"] === "expanded");
-		this.isMultiSelect = Utils.getBoolValue(json["isMultiSelect"], this.isMultiSelect);
-		this.placeholder = Utils.getStringValue(json["placeholder"]);
+        this.isMultiSelect = Utils.getBoolValue(json["isMultiSelect"], this.isMultiSelect);
+        this.placeholder = Utils.getStringValue(json["placeholder"]);
 
         this.choices = [];
 
         if (json["choices"] != undefined) {
-            var choiceArray = json["choices"] as Array<any>;
+            let choiceArray = json["choices"] as Array<any>;
 
-            for (var i = 0; i < choiceArray.length; i++) {
-                var choice = new Choice();
-
-				choice.title = Utils.getStringValue(choiceArray[i]["title"]);
-				choice.value = Utils.getStringValue(choiceArray[i]["value"]);
+            for (let i = 0; i < choiceArray.length; i++) {
+                let choice = new Choice();
+                choice.parse(choiceArray[i]);
 
                 this.choices.push(choice);
             }
@@ -2894,9 +2996,9 @@ export class NumberInput extends Input {
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
-		this.placeholder = Utils.getStringValue(json["placeholder"]);
-		this.min = Utils.getStringValue(json["min"]);
-		this.max = Utils.getStringValue(json["max"]);
+        this.placeholder = Utils.getStringValue(json["placeholder"]);
+        this.min = Utils.getStringValue(json["min"]);
+        this.max = Utils.getStringValue(json["max"]);
     }
 
     get value(): string {
@@ -2912,6 +3014,7 @@ export class DateInput extends Input {
         this._dateInputElement.setAttribute("type", "date");
         this._dateInputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-dateInput");
         this._dateInputElement.style.width = "100%";
+        this._dateInputElement.oninput =  () => { this.valueChanged(); }
 
         if (!Utils.isNullOrEmpty(this.defaultValue)) {
             this._dateInputElement.value = this.defaultValue;
@@ -2937,6 +3040,7 @@ export class TimeInput extends Input {
         this._timeInputElement.setAttribute("type", "time");
         this._timeInputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-timeInput");
         this._timeInputElement.style.width = "100%";
+        this._timeInputElement.oninput =  () => { this.valueChanged(); }
 
         if (!Utils.isNullOrEmpty(this.defaultValue)) {
             this._timeInputElement.value = this.defaultValue;
@@ -3048,6 +3152,30 @@ export abstract class Action extends CardObject {
         // Do nothing in base implementation
     }
 
+    protected internalGetReferencedInputs(allInputs: Array<Input>): Shared.Dictionary<Input> {
+        return {};
+    }
+
+    protected internalPrepareForExecution(inputs: Shared.Dictionary<Input>) {
+        // Do nothing in base implementation
+    }
+
+    protected internalValidateInputs(referencedInputs: Shared.Dictionary<Input>): Array<Input> {
+        let result: Input[] = [];
+
+        if (AdaptiveCard.useBuiltInInputValidation && !this.ignoreInputValidation) {
+            for (let key of Object.keys(referencedInputs)) {
+                let input = referencedInputs[key];
+
+                if (!input.validateValue()) {
+                    result.push(input);
+                }
+            }
+        }
+
+        return result;
+    }
+
     abstract getJsonTypeName(): string;
 
     readonly requires = new HostConfig.HostCapabilities();
@@ -3075,7 +3203,7 @@ export abstract class Action extends CardObject {
         // Cache hostConfig for perf
         let hostConfig = this.parent.hostConfig;
 
-        var buttonElement = document.createElement("button");
+        let buttonElement = document.createElement("button");
         buttonElement.className = hostConfig.makeCssClassName("ac-pushButton");
 
         this.addCssClasses(buttonElement);
@@ -3168,8 +3296,16 @@ export abstract class Action extends CardObject {
         return [];
     }
 
-    prepare(inputs: Array<Input>) {
-        // Do nothing in base implementation
+    prepareForExecution(): boolean {
+        let referencedInputs = this.getReferencedInputs();
+
+        if (this.internalValidateInputs(referencedInputs).length > 0) {
+            return false;
+        }
+
+        this.internalPrepareForExecution(referencedInputs);
+
+        return true;
     };
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
@@ -3189,8 +3325,8 @@ export abstract class Action extends CardObject {
             );
         }
 
-		this.title = Utils.getStringValue(json["title"]);
-		this.iconUrl = Utils.getStringValue(json["iconUrl"]);
+        this.title = Utils.getStringValue(json["title"]);
+        this.iconUrl = Utils.getStringValue(json["iconUrl"]);
         this.sentiment = Utils.getEnumValue(Enums.ActionSentiment, json["sentiment"], this.sentiment);
     }
 
@@ -3221,6 +3357,14 @@ export abstract class Action extends CardObject {
         }
     }
 
+    getReferencedInputs(): Shared.Dictionary<Input> {
+        return this.internalGetReferencedInputs(this.parent.getRootElement().getAllInputs());
+    }
+
+    validateInputs() {
+        return this.internalValidateInputs(this.getReferencedInputs());
+    }
+
     get isPrimary(): boolean {
         return this.sentiment == Enums.ActionSentiment.Positive;
     }
@@ -3234,6 +3378,10 @@ export abstract class Action extends CardObject {
                 this.sentiment = Enums.ActionSentiment.Default;
             }
         }
+    }
+
+    get ignoreInputValidation(): boolean {
+        return true;
     }
 
     get parent(): CardElement {
@@ -3253,20 +3401,19 @@ export class SubmitAction extends Action {
     private _isPrepared: boolean = false;
     private _originalData: Object;
     private _processedData: Object;
+    private _ignoreInputValidation: boolean = false;
 
-    getJsonTypeName(): string {
-        return "Action.Submit";
-    }
+    protected internalGetReferencedInputs(allInputs: Array<Input>): Shared.Dictionary<Input> {
+        let result: Shared.Dictionary<Input> = {};
 
-    toJSON(): any {
-        let result = super.toJSON();
-
-        Utils.setProperty(result, "data", this._originalData);
+        for (let input of allInputs) {
+            result[input.id] = input;
+        }
 
         return result;
     }
 
-    prepare(inputs: Array<Input>) {
+    protected internalPrepareForExecution(inputs: Shared.Dictionary<Input>) {
         if (this._originalData) {
             this._processedData = JSON.parse(JSON.stringify(this._originalData));
         }
@@ -3274,21 +3421,43 @@ export class SubmitAction extends Action {
             this._processedData = {};
         }
 
-        for (var i = 0; i < inputs.length; i++) {
-            var inputValue = inputs[i].value;
+        for (let key of Object.keys(inputs)) {
+            let input = inputs[key];
 
-            if (inputValue != null) {
-                this._processedData[inputs[i].id] = inputs[i].value;
+            if (input.value != null) {
+                this._processedData[input.id] = input.value;
             }
         }
 
         this._isPrepared = true;
     }
 
+    getJsonTypeName(): string {
+        return "Action.Submit";
+    }
+
+    toJSON() {
+        let result = super.toJSON();
+
+        Utils.setProperty(result, "ignoreInputValidation", this.ignoreInputValidation, false);
+        Utils.setProperty(result, "data", this._originalData);
+
+        return result;
+    }
+
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
+        this._ignoreInputValidation = Utils.getBoolValue(json["ignoreInputValidation"], this._ignoreInputValidation);
         this.data = json["data"];
+    }
+
+    get ignoreInputValidation(): boolean {
+        return this._ignoreInputValidation;
+    }
+
+    set ignoreInputValidation(value: boolean) {
+        this._ignoreInputValidation = value;
     }
 
     get data(): Object {
@@ -3328,7 +3497,7 @@ export class OpenUrlAction extends Action {
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
-		this.url = Utils.getStringValue(json["url"]);
+        this.url = Utils.getStringValue(json["url"]);
     }
 }
 
@@ -3396,11 +3565,20 @@ export class HttpHeader {
         this.value = value;
     }
 
+    parse(json: any) {
+        this.name = Utils.getStringValue(json["name"]);
+        this.value = Utils.getStringValue(json["value"]);
+    }
+
     toJSON(): any {
         return { name: this.name, value: this._value.getOriginal() };
     }
 
-    prepare(inputs: Array<Input>) {
+    getReferencedInputs(inputs: Array<Input>, referencedInputs: Shared.Dictionary<Input>) {
+        this._value.getReferencedInputs(inputs, referencedInputs);
+    }
+
+    prepareForExecution(inputs: Shared.Dictionary<Input>) {
         this._value.substituteInputValues(inputs, Shared.ContentTypes.applicationXWwwFormUrlencoded);
     }
 
@@ -3417,6 +3595,37 @@ export class HttpAction extends Action {
     private _url = new Shared.StringWithSubstitutions();
     private _body = new Shared.StringWithSubstitutions();
     private _headers: Array<HttpHeader> = [];
+    private _ignoreInputValidation: boolean = false;
+
+    protected internalGetReferencedInputs(allInputs: Array<Input>): Shared.Dictionary<Input> {
+        let result: Shared.Dictionary<Input> = {};
+
+        this._url.getReferencedInputs(allInputs, result);
+
+        for (let header of this._headers) {
+            header.getReferencedInputs(allInputs, result);
+        }
+
+        this._body.getReferencedInputs(allInputs, result);
+
+        return result;
+    }
+
+    protected internalPrepareForExecution(inputs: Shared.Dictionary<Input>) {
+        this._url.substituteInputValues(inputs, Shared.ContentTypes.applicationXWwwFormUrlencoded);
+
+        let contentType = Shared.ContentTypes.applicationJson;
+
+        for (let header of this._headers) {
+            header.prepareForExecution(inputs);
+
+            if (header.name && header.name.toLowerCase() == "content-type") {
+                contentType = header.value;
+            }
+        }
+
+        this._body.substituteInputValues(inputs, contentType);
+    };
 
     method: string;
 
@@ -3430,6 +3639,7 @@ export class HttpAction extends Action {
         Utils.setProperty(result, "method", this.method);
         Utils.setProperty(result, "url", this._url.getOriginal());
         Utils.setProperty(result, "body", this._body.getOriginal());
+        Utils.setProperty(result, "ignoreInputValidation", this.ignoreInputValidation, false);
 
         if (this._headers.length > 0) {
             let headers = [];
@@ -3463,28 +3673,13 @@ export class HttpAction extends Action {
         return result;
     }
 
-    prepare(inputs: Array<Input>) {
-        this._url.substituteInputValues(inputs, Shared.ContentTypes.applicationXWwwFormUrlencoded);
-
-        let contentType = Shared.ContentTypes.applicationJson;
-
-        for (var i = 0; i < this._headers.length; i++) {
-            this._headers[i].prepare(inputs);
-
-            if (this._headers[i].name && this._headers[i].name.toLowerCase() == "content-type") {
-                contentType = this._headers[i].value;
-            }
-        }
-
-        this._body.substituteInputValues(inputs, contentType);
-    };
-
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
-		this.url = Utils.getStringValue(json["url"]);
-		this.method = Utils.getStringValue(json["method"]);
-		this.body = Utils.getStringValue(json["body"]);
+        this.url = Utils.getStringValue(json["url"]);
+        this.method = Utils.getStringValue(json["method"]);
+        this.body = Utils.getStringValue(json["body"]);
+        this._ignoreInputValidation = Utils.getBoolValue(json["ignoreInputValidation"], this._ignoreInputValidation);
 
         this._headers = [];
 
@@ -3493,13 +3688,19 @@ export class HttpAction extends Action {
 
             for (var i = 0; i < jsonHeaders.length; i++) {
                 let httpHeader = new HttpHeader();
-
-				httpHeader.name = Utils.getStringValue(jsonHeaders[i]["name"]);
-				httpHeader.value = Utils.getStringValue(jsonHeaders[i]["value"]);
+                httpHeader.parse(jsonHeaders[i]);
 
                 this.headers.push(httpHeader);
             }
         }
+    }
+
+    get ignoreInputValidation(): boolean {
+        return this._ignoreInputValidation;
+    }
+
+    set ignoreInputValidation(value: boolean) {
+        this._ignoreInputValidation = value;
     }
 
     get url(): string {
@@ -4327,7 +4528,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
-		this._style = Utils.getStringValue(json["style"]);
+        this._style = Utils.getStringValue(json["style"]);
     }
 
     render(): HTMLElement {
@@ -4379,10 +4580,10 @@ export class BackgroundImage {
     }
 
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
-		this.url = Utils.getStringValue(json["url"]);
-		this.fillMode = Utils.getEnumValue(Enums.FillMode, json["fillMode"], this.fillMode);
-		this.horizontalAlignment = Utils.getEnumValue(Enums.HorizontalAlignment, json["horizontalAlignment"], this.horizontalAlignment);
-		this.verticalAlignment = Utils.getEnumValue(Enums.VerticalAlignment, json["verticalAlignment"], this.verticalAlignment);
+        this.url = Utils.getStringValue(json["url"]);
+        this.fillMode = Utils.getEnumValue(Enums.FillMode, json["fillMode"], this.fillMode);
+        this.horizontalAlignment = Utils.getEnumValue(Enums.HorizontalAlignment, json["horizontalAlignment"], this.horizontalAlignment);
+        this.verticalAlignment = Utils.getEnumValue(Enums.VerticalAlignment, json["verticalAlignment"], this.verticalAlignment);
     }
 
     toJSON(): any {
@@ -5404,9 +5605,9 @@ function raiseExecuteActionEvent(action: Action) {
     let onExecuteActionHandler = (card && card.onExecuteAction) ? card.onExecuteAction : AdaptiveCard.onExecuteAction;
 
     if (onExecuteActionHandler) {
-        action.prepare(action.parent.getRootElement().getAllInputs());
-
-        onExecuteActionHandler(action);
+        if (action.prepareForExecution()) {
+            onExecuteActionHandler(action);
+        }
     }
 }
 
@@ -5416,6 +5617,15 @@ function raiseInlineCardExpandedEvent(action: ShowCardAction, isExpanded: boolea
 
     if (onInlineCardExpandedHandler) {
         onInlineCardExpandedHandler(action, isExpanded);
+    }
+}
+
+function raiseInputValueChangedEvent(input: Input) {
+    let card = input.getRootElement() as AdaptiveCard;
+    let onInputValueChangedHandler = (card && card.onInputValueChanged) ? card.onInputValueChanged : AdaptiveCard.onInputValueChanged;
+
+    if (onInputValueChangedHandler) {
+        onInputValueChangedHandler(input);
     }
 }
 
@@ -5712,6 +5922,8 @@ export class AdaptiveCard extends ContainerWithActions {
     static allowMarkForTextHighlighting: boolean = false;
     static alwaysBleedSeparators: boolean = false;
     static enableFullJsonRoundTrip: boolean = false;
+    static useBuiltInInputValidation: boolean = true;
+    static displayInputValidationErrors: boolean = true;
 
     static readonly elementTypeRegistry = new ElementTypeRegistry();
     static readonly actionTypeRegistry = new ActionTypeRegistry();
@@ -5721,6 +5933,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static onElementVisibilityChanged: (element: CardElement) => void = null;
     static onImageLoaded: (image: Image) => void = null;
     static onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
+    static onInputValueChanged: (input: Input) => void = null;
     static onParseElement: (element: CardElement, json: any, errors?: Array<HostConfig.IValidationError>) => void = null;
     static onParseAction: (element: Action, json: any, errors?: Array<HostConfig.IValidationError>) => void = null;
     static onParseError: (error: HostConfig.IValidationError) => void = null;
@@ -5821,6 +6034,7 @@ export class AdaptiveCard extends ContainerWithActions {
     onElementVisibilityChanged: (element: CardElement) => void = null;
     onImageLoaded: (image: Image) => void = null;
     onInlineCardExpanded: (action: ShowCardAction, isExpanded: boolean) => void = null;
+    onInputValueChanged: (input: Input) => void = null;
     onParseElement: (element: CardElement, json: any, errors?: Array<HostConfig.IValidationError>) => void = null;
     onParseAction: (element: Action, json: any, errors?: Array<HostConfig.IValidationError>) => void = null;
 
@@ -5880,7 +6094,7 @@ export class AdaptiveCard extends ContainerWithActions {
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         this._fallbackCard = null;
 
-		this._cardTypeName = Utils.getStringValue(json["type"]);
+        this._cardTypeName = Utils.getStringValue(json["type"]);
 
 		var langId = Utils.getStringValue(json["lang"]);
 
@@ -5901,7 +6115,7 @@ export class AdaptiveCard extends ContainerWithActions {
 
         this.version = HostConfig.Version.parse(json["version"], errors);
 
-		this.fallbackText = Utils.getStringValue(json["fallbackText"]);
+        this.fallbackText = Utils.getStringValue(json["fallbackText"]);
 
         let fallbackElement = createElementInstance(null, json["fallback"], errors);
 

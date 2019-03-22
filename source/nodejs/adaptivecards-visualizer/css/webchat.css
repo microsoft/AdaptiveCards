@@ -83,6 +83,57 @@ a.ac-anchor:visited:active {
   border: none;
 }
 
+.ac-pushButton:hover {
+    background-color: #CCCCCC;
+}
+  
+.ac-pushButton:active {
+    background-color: #BABABA;
+}
+  
+.ac-pushButton.sentiment-positive {
+    background-color: #0078D7;
+    color: white;
+}
+
+.ac-pushButton.sentiment-positive:hover,
+.ac-pushButton.sentiment-positive:active {
+    background-color: #006ABC;
+}
+
+.ac-pushButton.sentiment-destructive {
+    background-color: #E50000;
+    color: white;
+}
+
+.ac-pushButton.sentiment-destructive:hover,
+.ac-pushButton.sentiment-destructive:active {
+    background-color: #BF0000;
+}
+
+.ac-input-container {
+  display: flex;
+  align-items: center;
+}
+
+.ac-input-container.ac-input-required::after {
+  content: "*";
+  color: red;
+  left: 100%;
+  top: 0;
+  padding-left: 4px;
+}
+
+.ac-input.ac-input-validation-failed {
+  border: 1px solid red !important;
+}
+
+.ac-input-validation-error-message {
+  font-size: 12px;
+  color: red;
+  margin-top: 2px;
+}
+
 .ac-input {
   font-family: "Segoe UI", sans-serif;
   font-size: 14px;

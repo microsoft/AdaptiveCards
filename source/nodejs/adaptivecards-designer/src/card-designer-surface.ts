@@ -285,6 +285,8 @@ export class CardDesignerSurface {
                 catch (e) {
                     cardToRender = this.card;
                     cardToRender.designMode = false;
+
+                    alert("Error: " + e.message);
                 }
             }
             else {

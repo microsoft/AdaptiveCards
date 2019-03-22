@@ -3278,6 +3278,8 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT OverrideStyles([out, retval] Windows.UI.Xaml.ResourceDictionary** overrideDictionary);
 
+        [propget] HRESULT UserInputs([out, retval] AdaptiveInputs * *value);
+
         HRESULT AddInputValue([in] IAdaptiveInputValue* inputValue);
 
         HRESULT AddInlineShowCard([in] AdaptiveActionSet * inputValue,
