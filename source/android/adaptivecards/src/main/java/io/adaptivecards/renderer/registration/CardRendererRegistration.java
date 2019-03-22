@@ -79,7 +79,6 @@ public class CardRendererRegistration
         registerActionRenderer(AdaptiveCardObjectModel.ActionTypeToString(ActionType.ShowCard), ActionElementRenderer.getInstance());
         registerActionRenderer(AdaptiveCardObjectModel.ActionTypeToString(ActionType.OpenUrl), ActionElementRenderer.getInstance());
 
-        // m_actionRenderer = ActionElementRenderer.getInstance();
         m_actionLayoutRenderer = ActionLayoutRenderer.getInstance();
     }
 
