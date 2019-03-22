@@ -5,8 +5,8 @@
 using namespace AdaptiveSharedNamespace;
 
 CollectionTypeElement::CollectionTypeElement(CardElementType type, ContainerStyle style, VerticalContentAlignment alignment) :
-    BaseCardElement(type), m_style(style), m_verticalContentAlignment(alignment), m_hasPadding(false), m_hasBleed(false),
-    m_parentalId(), m_canBleed(false), m_bleedDirection(ContainerBleedDirection::BleedToBothEdges)
+    BaseCardElement(type), m_style(style), m_verticalContentAlignment(alignment), m_hasPadding(false),
+    m_hasBleed(false), m_parentalId(), m_bleedDirection(ContainerBleedDirection::BleedToBothEdges)
 {
 }
 
@@ -43,17 +43,9 @@ void CollectionTypeElement::SetPadding(const bool value)
 // Applies Padding Flag When appropriate
 void CollectionTypeElement::ConfigPadding(const ParseContext& context)
 {
-    // we set padding when parental style is different from child's, and its style should not be None
-    if ((GetStyle() != ContainerStyle::None) && (context.GetParentalContainerStyle() != GetStyle()) &&
-        (context.GetParentalContainerStyle() != ContainerStyle::NotSet))
-    {
-        SetPadding(!(context.GetParentalContainerStyle() == ContainerStyle::None &&
-            GetStyle() == ContainerStyle::Default));
-    } 
-    else 
-    {
-        SetPadding(false);
-    }
+    // We set padding when child's style is set explicitly (not None) and is different than the parental style
+    bool padding = (GetStyle() != ContainerStyle::None) && (context.GetParentalContainerStyle() != GetStyle());
+    SetPadding(padding);
 }
 
 bool CollectionTypeElement::GetBleed() const
@@ -69,22 +61,22 @@ void CollectionTypeElement::SetBleed(const bool value)
 // Applies Bleed Flag When appropriate
 void CollectionTypeElement::ConfigBleed(const AdaptiveCards::ParseContext& context)
 {
-    // we allows bleed when self has padding and at least one parent has padding
+    // We allow bleed when the current container has padding and bleed set, and when the parents don't impose a
+    // restiction via bleed direction (i.e. Columnsets)
     const AdaptiveSharedNamespace::InternalId id = context.PaddingParentInternalId();
     const bool canBleed = GetPadding() && GetBleed();
     if (canBleed && context.GetBleedDirection() != ContainerBleedDirection::BleedRestricted)
     {
         SetParentalId(id);
-        SetCanBleed(true);
+        SetBleedDirection(context.GetBleedDirection());
     }
     else
-    { 
-        SetCanBleed(false);
+    {
+        SetBleedDirection(ContainerBleedDirection::BleedRestricted);
     }
-    SetBleedDirection(context.GetBleedDirection());
 }
 
-void CollectionTypeElement::SetParentalId(const AdaptiveSharedNamespace::InternalId &id)
+void CollectionTypeElement::SetParentalId(const AdaptiveSharedNamespace::InternalId& id)
 {
     m_parentalId = id;
 }

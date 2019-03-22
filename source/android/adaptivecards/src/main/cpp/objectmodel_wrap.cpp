@@ -18256,7 +18256,7 @@ SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ParseContext_1SetBleedDirection(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ParseContext_1PushBleedDirection(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
   AdaptiveCards::ParseContext *arg1 = (AdaptiveCards::ParseContext *) 0 ;
   AdaptiveCards::ContainerBleedDirection arg2 ;
   std::shared_ptr< AdaptiveCards::ParseContext > *smartarg1 = 0 ;
@@ -18268,7 +18268,21 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1;
   arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
   arg2 = (AdaptiveCards::ContainerBleedDirection)jarg2; 
-  (arg1)->SetBleedDirection(arg2);
+  (arg1)->PushBleedDirection(arg2);
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ParseContext_1PopBleedDirection(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  AdaptiveCards::ParseContext *arg1 = (AdaptiveCards::ParseContext *) 0 ;
+  std::shared_ptr< AdaptiveCards::ParseContext > *smartarg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1;
+  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
+  (arg1)->PopBleedDirection();
 }
 
 

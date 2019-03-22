@@ -818,7 +818,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void ParseContext_SaveContextForCollectionTypeElement(long jarg1, ParseContext jarg1_, long jarg2, CollectionTypeElement jarg2_);
   public final static native void ParseContext_RestoreContextForCollectionTypeElement(long jarg1, ParseContext jarg1_, long jarg2, CollectionTypeElement jarg2_);
   public final static native int ParseContext_GetBleedDirection(long jarg1, ParseContext jarg1_);
-  public final static native void ParseContext_SetBleedDirection(long jarg1, ParseContext jarg1_, int jarg2);
+  public final static native void ParseContext_PushBleedDirection(long jarg1, ParseContext jarg1_, int jarg2);
+  public final static native void ParseContext_PopBleedDirection(long jarg1, ParseContext jarg1_);
   public final static native void delete_ParseContext(long jarg1);
   public final static native long new_ParseResult(long jarg1, AdaptiveCard jarg1_, long jarg2, AdaptiveCardParseWarningVector jarg2_);
   public final static native long ParseResult_GetAdaptiveCard(long jarg1, ParseResult jarg1_);

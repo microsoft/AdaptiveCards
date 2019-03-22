@@ -14,8 +14,9 @@ namespace AdaptiveSharedNamespace
         CollectionTypeElement& operator=(const CollectionTypeElement&) = default;
         CollectionTypeElement& operator=(CollectionTypeElement&&) = default;
         ~CollectionTypeElement() = default;
-        CollectionTypeElement(CardElementType type, ContainerStyle style = ContainerStyle::None,
-            VerticalContentAlignment alignment = VerticalContentAlignment::Top);
+        CollectionTypeElement(CardElementType type,
+                              ContainerStyle style = ContainerStyle::None,
+                              VerticalContentAlignment alignment = VerticalContentAlignment::Top);
 
         ContainerStyle GetStyle() const;
         void SetStyle(const ContainerStyle value);
@@ -36,7 +37,7 @@ namespace AdaptiveSharedNamespace
         // the renderer must also check if HostConfig has
         // padding for card, the root, if the padding is allowed,
         // then the element can bleed to the card
-        bool GetCanBleed() const { return m_canBleed; }
+        bool GetCanBleed() const { return (m_bleedDirection != ContainerBleedDirection::BleedRestricted); }
         // 1. BleedToLeading: bleed its leading edge to the leading edge of the target parent
         // 2. BleedToTrailing: bleed its trailing edge to the trailing edge of the target parent
         // 3. RestrictedInAllDrections: doesn't bleed
@@ -47,7 +48,7 @@ namespace AdaptiveSharedNamespace
         // such as style, padding and bleed
         void ConfigForContainerStyle(const AdaptiveCards::ParseContext& context);
 
-        void SetParentalId(const AdaptiveSharedNamespace::InternalId &id);
+        void SetParentalId(const AdaptiveSharedNamespace::InternalId& id);
         AdaptiveSharedNamespace::InternalId GetParentalId(void) const;
 
         std::shared_ptr<BaseActionElement> GetSelectAction() const;
@@ -66,8 +67,6 @@ namespace AdaptiveSharedNamespace
         template<typename T> static std::shared_ptr<T> Deserialize(ParseContext& context, const Json::Value& value);
 
     private:
-        void SetCanBleed(const bool value) { m_canBleed = value;}
-
         // Applies padding flag When appropriate
         void ConfigPadding(const AdaptiveCards::ParseContext& context);
         // Applies bleed flag when appropriate
@@ -76,7 +75,6 @@ namespace AdaptiveSharedNamespace
 
         ContainerStyle m_style;
         VerticalContentAlignment m_verticalContentAlignment;
-        bool m_canBleed;
         ContainerBleedDirection m_bleedDirection;
 
         bool m_hasPadding;
