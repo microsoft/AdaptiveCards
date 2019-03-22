@@ -16,40 +16,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 {
                     if (action is AdaptiveToggleVisibilityAction toggleVisibilityAction)
                     {
-                        foreach (object targetElement in toggleVisibilityAction.TargetElements)
-                        {
-                            string targetElementId = "";
-                            bool? targetElementIsVisible = null;
-
-                            if (targetElement is string targetElementString)
-                            {
-                                targetElementId = targetElementString;
-                            }
-                            else if (targetElement is AdaptiveTargetElement targetElementObject)
-                            {
-                                targetElementId = targetElementObject.ElementId;
-                                targetElementIsVisible = targetElementObject.IsVisible;
-                            }
-
-                            var element = LogicalTreeHelper.FindLogicalNode(context.CardRoot, targetElementId);
-
-                            if (element != null && element is FrameworkElement elementFrameworkElement)
-                            {
-                                Visibility visibility = elementFrameworkElement.Visibility;
-                                // if we read something with the format {"elementId": <id>", "isVisible": true} or we just read the id and the element is not visible
-                                if ((targetElementIsVisible.HasValue && targetElementIsVisible.Value) || (!targetElementIsVisible.HasValue && visibility != Visibility.Visible))
-                                {
-                                    elementFrameworkElement.Visibility = Visibility.Visible;
-                                }
-                                // otherwise if we read something with the format {"elementId": <id>", "isVisible": false} or we just read the id and the element is visible
-                                else if ((targetElementIsVisible.HasValue && !targetElementIsVisible.Value) || (!targetElementIsVisible.HasValue && visibility == Visibility.Visible))
-                                {
-                                    elementFrameworkElement.Visibility = Visibility.Collapsed;
-                                }
-
-                            }
-
-                        }
+                        context.ToggleVisibility(toggleVisibilityAction.TargetElements);
                     }
                     else
                     {

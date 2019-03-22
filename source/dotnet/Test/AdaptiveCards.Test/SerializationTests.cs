@@ -823,9 +823,7 @@ namespace AdaptiveCards.Test
             ""elementId"": ""id3"",
             ""isVisible"": true
           },
-          {
-            ""elementId"": ""id4""
-          }
+          ""id4""
         ]
       }
     }
@@ -843,9 +841,7 @@ namespace AdaptiveCards.Test
           ""elementId"": ""id3"",
           ""isVisible"": true
         },
-        {
-          ""elementId"": ""id4""
-        }
+        ""id4""
       ]
     }
   ]
