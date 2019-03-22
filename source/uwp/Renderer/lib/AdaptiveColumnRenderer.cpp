@@ -23,7 +23,6 @@ namespace AdaptiveNamespace
                                            _In_ IAdaptiveRenderArgs* renderArgs,
                                            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result)
     {
-        XamlBuilder::BuildColumn(cardElement, renderContext, renderArgs, result);
-        return S_OK;
+        return XamlBuilder::BuildColumn(cardElement, renderContext, renderArgs, result);
     }
 }
