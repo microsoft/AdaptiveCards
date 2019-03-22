@@ -106,6 +106,7 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveActionInvoker;
     runtimeclass AdaptiveMediaEventInvoker;
     runtimeclass AdaptiveTextBlockRenderer;
+    runtimeclass AdaptiveRichTextBlockRenderer;
     runtimeclass AdaptiveTextInputRenderer;
     runtimeclass AdaptiveTimeInputRenderer;
     runtimeclass AdaptiveToggleInputRenderer;
@@ -292,6 +293,7 @@ AdaptiveNamespaceStart
         Custom,
         Media,
         ActionSet,
+        RichTextBlock,
     } ElementType;
 
     [version(NTDDI_WIN10_RS1)]
@@ -668,6 +670,39 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(6285A2F7-D193-46B3-8F5E-0AE2FDE4225B),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(3B1A599D-7CE2-4E14-A885-682363F96925)
+#endif
+    ] interface IAdaptiveTextElement : IInspectable
+    {
+        [propget] HRESULT Size([out, retval] TextSize * value);
+        [propput] HRESULT Size([in] TextSize value);
+
+        [propget] HRESULT Weight([out, retval] TextWeight * value);
+        [propput] HRESULT Weight([in] TextWeight value);
+
+        [propget] HRESULT Color([out, retval] ForegroundColor * value);
+        [propput] HRESULT Color([in] ForegroundColor value);
+
+        [propget] HRESULT Text([out, retval] HSTRING * value);
+        [propput] HRESULT Text([in] HSTRING value);
+
+        [propget] HRESULT IsSubtle([out, retval] boolean * value);
+        [propput] HRESULT IsSubtle([in] boolean value);
+
+        [propget] HRESULT Language([out, retval] HSTRING * value);
+        [propput] HRESULT Language([in] HSTRING value);
+
+        [propget] HRESULT FontStyle([out, retval] FontStyle * value);
+        [propput] HRESULT FontStyle([in] FontStyle value);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveTextBlock),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(bfafd94d-4c49-4022-b90d-16e03e7be798),
@@ -676,24 +711,121 @@ AdaptiveNamespaceStart
 #else
         uuid(c4b68276-7cd0-4c3e-8498-3edb9ec6abfb)
 #endif
-    ]
-    interface IAdaptiveTextBlock : IInspectable
+    ] interface IAdaptiveTextBlock : IInspectable requires IAdaptiveTextElement
     {
-        [propget] HRESULT Size([out, retval] TextSize* value);
-        [propput] HRESULT Size([in] TextSize value);
+        [propget] HRESULT Wrap([out, retval] boolean* value);
+        [propput] HRESULT Wrap([in] boolean value);
 
-        [propget] HRESULT Weight([out, retval] TextWeight* value);
-        [propput] HRESULT Weight([in] TextWeight value);
+        [propget] HRESULT HorizontalAlignment([out, retval] HAlignment* value);
+        [propput] HRESULT HorizontalAlignment([in] HAlignment value);
 
-        [propget] HRESULT Color([out, retval] ForegroundColor* value);
-        [propput] HRESULT Color([in] ForegroundColor value);
+        [propget] HRESULT MaxLines([out, retval] UINT32* value);
+        [propput] HRESULT MaxLines([in] UINT32 value);
+    };
 
-        [propget] HRESULT Text([out, retval] HSTRING* value);
-        [propput] HRESULT Text([in] HSTRING value);
+    [version(NTDDI_WIN10_RS1),
+     activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+     contract(InternalContract, 1),
+     internal,
+     activatable(InternalContract, 1)
+#endif
+    ] runtimeclass AdaptiveTextBlock 
+    {
+        [default] interface IAdaptiveTextBlock;
+        interface IAdaptiveTextElement;
+        interface IAdaptiveCardElement;
+    };
 
-        [propget] HRESULT IsSubtle([out, retval] boolean* value);
-        [propput] HRESULT IsSubtle([in] boolean value);
+    [
+        version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(25CD5F02-A9F6-4042-BCC0-C6D063AE5EAE),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(0AC70C29-FA90-4C28-A6D1-A6EF58126085)
+#endif
+    ] 
+    interface IAdaptiveInline : IInspectable
+    {
+    };
 
+    [
+        version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveTextRun),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(D81768ED-D724-4494-B141-A9B3F2613EFD),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(09BBE759-0754-441D-B808-3CE2C188D521)
+#endif
+    ] 
+    interface IAdaptiveTextRun : IInspectable requires IAdaptiveTextElement
+    {
+        [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
+        [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif
+    ] 
+    runtimeclass AdaptiveTextRun
+    { 
+        [default] interface IAdaptiveTextRun;
+        interface IAdaptiveInline; 
+        interface IAdaptiveTextElement;
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveParagraph),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(08EBC76C-BC30-4CC4-BBC7-EEEBDF40ADBF),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(B462F8E9-E64F-4698-923B-0E7A9676BEEE)
+#endif
+    ] 
+    interface IAdaptiveParagraph : IInspectable
+    {
+        [propget] HRESULT Inlines([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveInline*>** value);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal,
+        activatable(InternalContract, 1)
+#endif
+    ] 
+    runtimeclass AdaptiveParagraph 
+    {
+        [default] interface IAdaptiveParagraph;
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
+        exclusiveto(AdaptiveRichTextBlock),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(E3858144-63F3-4625-A986-AADD40DAE0BE),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(6095E4E2-BFA7-41C6-B12E-887F980196A9)
+#endif
+    ] interface IAdaptiveRichTextBlock : IInspectable
+    {
         [propget] HRESULT Wrap([out, retval] boolean* value);
         [propput] HRESULT Wrap([in] boolean value);
 
@@ -703,11 +835,7 @@ AdaptiveNamespaceStart
         [propget] HRESULT MaxLines([out, retval] UINT32* value);
         [propput] HRESULT MaxLines([in] UINT32 value);
 
-        [propget] HRESULT Language([out, retval] HSTRING* value);
-        [propput] HRESULT Language([in] HSTRING value);
-
-        [propget] HRESULT FontStyle([out, retval] FontStyle* value);
-        [propput] HRESULT FontStyle([in] FontStyle value);
+        [propget] HRESULT Paragraphs([out, retval] Windows.Foundation.Collections.IVector<AdaptiveParagraph*>** value);
     };
 
     [
@@ -719,9 +847,9 @@ AdaptiveNamespaceStart
         activatable(InternalContract, 1)
 #endif
     ]
-    runtimeclass AdaptiveTextBlock
+    runtimeclass AdaptiveRichTextBlock
     {
-        [default] interface IAdaptiveTextBlock;
+        [default] interface IAdaptiveRichTextBlock;
         interface IAdaptiveCardElement;
     };
 
@@ -3344,6 +3472,19 @@ AdaptiveNamespaceStart
 #endif
     ]
     runtimeclass AdaptiveTextBlockRenderer
+    {
+        [default] interface IAdaptiveElementRenderer;
+        interface IAdaptiveElementParser;
+    };
+
+    [version(NTDDI_WIN10_RS1),
+     activatable(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+     contract(InternalContract, 1),
+     internal,
+     activatable(InternalContract, 1)
+#endif
+    ] runtimeclass AdaptiveRichTextBlockRenderer 
     {
         [default] interface IAdaptiveElementRenderer;
         interface IAdaptiveElementParser;
