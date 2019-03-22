@@ -40,7 +40,20 @@ namespace AdaptiveCards.Rendering.Html
             }
             else
             {
+                // Since no renderer exists for this element, add warning and render fallback (if available)
                 Warnings.Add(new AdaptiveWarning(-1, $"No renderer for element '{element.Type}'"));
+                if (element.Fallback != null && element.Fallback.Type != AdaptiveFallbackElement.AdaptiveFallbackType.None)
+                {
+                    if (element.Fallback.Type == AdaptiveFallbackElement.AdaptiveFallbackType.Drop)
+                    {
+                        throw new NotImplementedException("Don't know how to handle when fallback = drop");
+                    }
+                    else if (element.Fallback.Type == AdaptiveFallbackElement.AdaptiveFallbackType.Content && element.Fallback.Content != null)
+                    {
+                        // Render fallback content
+                        return Render(element.Fallback.Content);
+                    }
+                }
                 return null;
             }
         }

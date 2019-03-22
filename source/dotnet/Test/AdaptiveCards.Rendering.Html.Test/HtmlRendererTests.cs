@@ -76,6 +76,33 @@ namespace AdaptiveCards.Rendering.Html.Test
         }
 
         [TestMethod]
+        public void RenderFallbackItem()
+        {
+            var json = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.2"",
+  ""body"": [
+    {
+      ""type"": ""Graph"",
+      ""text"": ""First textblock"",
+      ""fallback"": {
+        ""type"": ""TextBlock"",
+        ""text"": ""Fallback textblock""
+      }
+    }
+  ]
+}";
+
+            var card = AdaptiveCard.FromJson(json).Card;
+
+            var renderer = new AdaptiveCardRenderer();
+            var result = renderer.RenderCard(card);
+            var generatedHtml = result.Html.ToString();
+
+            Assert.AreEqual("<div class='ac-adaptivecard' style='width: 100%;background-color: rgba(255, 255, 255, 1.00);padding: 15px;box-sizing: border-box;justify-content: flex-start;'><div class='ac-textblock' style='box-sizing: border-box;text-align: left;color: rgba(0, 0, 0, 1.00);line-height: 18.62px;font-size: 14px;font-weight: 400;white-space: nowrap;'><p style='margin-top: 0px;margin-bottom: 0px;width: 100%;text-overflow: ellipsis;overflow: hidden;'>Fallback textblock</p></div></div>", generatedHtml);
+        }
+
+        [TestMethod]
         public void ContainerStyleForegroundColors()
         {
             var hostConfig = new AdaptiveHostConfig();

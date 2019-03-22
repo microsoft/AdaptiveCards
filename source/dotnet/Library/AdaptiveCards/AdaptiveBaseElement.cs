@@ -76,17 +76,17 @@ namespace AdaptiveCards
         public AdaptiveFallbackElement(AdaptiveFallbackType type)
         {
             Type = type;
-            FallbackContent = null;
+            Content = null;
         }
 
         public AdaptiveFallbackElement(AdaptiveTypedElement elem)
         {
             Type = AdaptiveFallbackType.Content;
-            FallbackContent = elem;
+            Content = elem;
         }
 
         public AdaptiveFallbackType Type { get; set; }
 
-        public AdaptiveTypedElement FallbackContent { get; set; }
+        public AdaptiveTypedElement Content { get; set; }
     }
 }
