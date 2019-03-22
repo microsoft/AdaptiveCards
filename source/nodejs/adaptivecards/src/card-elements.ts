@@ -1251,7 +1251,7 @@ export class FactSet extends CardElement {
                 let trElement = document.createElement("tr");
 
                 if (i > 0) {
-                    trElement.style.marginTop = this.hostConfig.factSet.spacing + "px";
+                    trElement.style.marginTop = hostConfig.factSet.spacing + "px";
                 }
 
                 // Title column
@@ -1259,8 +1259,8 @@ export class FactSet extends CardElement {
                 tdElement.style.padding = "0";
                 tdElement.classList.add(hostConfig.makeCssClassName("ac-fact-title"));
 
-                if (this.hostConfig.factSet.title.maxWidth) {
-                    tdElement.style.maxWidth = this.hostConfig.factSet.title.maxWidth + "px";
+                if (hostConfig.factSet.title.maxWidth) {
+                    tdElement.style.maxWidth = hostConfig.factSet.title.maxWidth + "px";
                 }
 
                 tdElement.style.verticalAlign = "top";
@@ -1268,11 +1268,11 @@ export class FactSet extends CardElement {
                 let textBlock = new TextBlock();
                 textBlock.setParent(this);
                 textBlock.text = Utils.isNullOrEmpty(this.facts[i].name) ? "Title" : this.facts[i].name;
-                textBlock.size = this.hostConfig.factSet.title.size;
-                textBlock.color = this.hostConfig.factSet.title.color;
-                textBlock.isSubtle = this.hostConfig.factSet.title.isSubtle;
-                textBlock.weight = this.hostConfig.factSet.title.weight;
-                textBlock.wrap = this.hostConfig.factSet.title.wrap;
+                textBlock.size = hostConfig.factSet.title.size;
+                textBlock.color = hostConfig.factSet.title.color;
+                textBlock.isSubtle = hostConfig.factSet.title.isSubtle;
+                textBlock.weight = hostConfig.factSet.title.weight;
+                textBlock.wrap = hostConfig.factSet.title.wrap;
                 textBlock.spacing = Enums.Spacing.None;
 
                 Utils.appendChild(tdElement, textBlock.render());
@@ -1293,11 +1293,11 @@ export class FactSet extends CardElement {
                 textBlock = new TextBlock();
                 textBlock.setParent(this);
                 textBlock.text = this.facts[i].value;
-                textBlock.size = this.hostConfig.factSet.value.size;
-                textBlock.color = this.hostConfig.factSet.value.color;
-                textBlock.isSubtle = this.hostConfig.factSet.value.isSubtle;
-                textBlock.weight = this.hostConfig.factSet.value.weight;
-                textBlock.wrap = this.hostConfig.factSet.value.wrap;
+                textBlock.size = hostConfig.factSet.value.size;
+                textBlock.color = hostConfig.factSet.value.color;
+                textBlock.isSubtle = hostConfig.factSet.value.isSubtle;
+                textBlock.weight = hostConfig.factSet.value.weight;
+                textBlock.wrap = hostConfig.factSet.value.wrap;
                 textBlock.spacing = Enums.Spacing.None;
 
                 Utils.appendChild(tdElement, textBlock.render());
