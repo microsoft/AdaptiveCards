@@ -100,7 +100,8 @@ public class TimeInputRenderer extends TextInputRenderer
             @Override
             public void onClick(View v)
             {
-                TimeInputHandler timeInputHandler = (TimeInputHandler) v.getTag();
+                TagContent tagContent = (TagContent) v.getTag();
+                TimeInputHandler timeInputHandler = (TimeInputHandler) tagContent.GetInputHandler();
                 TimePickerFragment timePickerFragment = new TimePickerFragment();
                 timePickerFragment.initialize((EditText) v, context);
                 Bundle args = new Bundle();

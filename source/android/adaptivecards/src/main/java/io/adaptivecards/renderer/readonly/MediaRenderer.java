@@ -30,6 +30,7 @@ import io.adaptivecards.renderer.MediaLoaderAsync;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.layout.FullscreenVideoLayout;
 import io.adaptivecards.renderer.layout.FullscreenVideoView;
@@ -317,6 +318,11 @@ public class MediaRenderer extends BaseCardElementRenderer
 
         posterLayout.setOnClickListener(new PosterOnClickListener(posterView, playButtonView, mediaView, hostConfig.GetMedia().getAllowInlinePlayback(), media, renderedCard, cardActionHandler));
         mediaView.setOnCompletionListener(new MediaOnCompletionListener(media, renderedCard, cardActionHandler));
+
+        if (media.GetMinHeight() != 0)
+        {
+            mediaLayout.setMinimumHeight(Util.dpToPixels(context, (int)media.GetMinHeight()));
+        }
 
         mediaLayout.addView(posterLayout);
         viewGroup.addView(mediaLayout);

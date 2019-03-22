@@ -221,6 +221,11 @@ public class ColumnRenderer extends BaseCardElementRenderer
             returnedView.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(renderedCard, column.GetSelectAction(), cardActionHandler));
         }
 
+        if (column.GetMinHeight() != 0)
+        {
+            returnedView.setMinimumHeight(Util.dpToPixels(context, (int)column.GetMinHeight()));
+        }
+
         viewGroup.addView(returnedView);
         return returnedView;
     }

@@ -25,6 +25,7 @@ import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HorizontalAlignment;
@@ -202,6 +203,11 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         else if (!textBlock.GetWrap())
         {
             textView.setMaxLines(1);
+        }
+
+        if (textBlock.GetMinHeight() != 0)
+        {
+            textView.setMinHeight(Util.dpToPixels(context, (int)textBlock.GetMinHeight()));
         }
 
         viewGroup.addView(textView);

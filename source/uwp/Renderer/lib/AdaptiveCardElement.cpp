@@ -21,6 +21,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetElementTypeString(), m_typeString.GetAddressOf()));
         m_height = static_cast<ABI::AdaptiveNamespace::HeightType>(sharedModel->GetHeight());
         m_internalId = sharedModel->GetInternalId();
+        m_minHeight = sharedModel->GetMinHeight();
         m_fallbackType = MapSharedFallbackTypeToUwp(sharedModel->GetFallbackType());
         if (m_fallbackType == ABI::AdaptiveNamespace::FallbackType::Content)
         {
@@ -67,6 +68,18 @@ namespace AdaptiveNamespace
     IFACEMETHODIMP AdaptiveCardElementBase::put_IsVisible(boolean isVisible)
     {
         m_isVisible = isVisible;
+        return S_OK;
+    }
+
+    IFACEMETHODIMP AdaptiveCardElementBase::get_MinHeight(_Out_ UINT32* minHeight)
+    {
+        *minHeight = m_minHeight;
+        return S_OK;
+    }
+
+    IFACEMETHODIMP AdaptiveCardElementBase::put_MinHeight(UINT32 minHeight)
+    {
+        m_minHeight = minHeight;
         return S_OK;
     }
 
@@ -145,6 +158,7 @@ namespace AdaptiveNamespace
         sharedCardElement->SetIsVisible(m_isVisible);
         sharedCardElement->SetSpacing(static_cast<AdaptiveSharedNamespace::Spacing>(m_spacing));
         sharedCardElement->SetHeight(static_cast<AdaptiveSharedNamespace::HeightType>(m_height));
+        sharedCardElement->SetMinHeight(m_minHeight);
         sharedCardElement->SetFallbackType(MapUwpFallbackTypeToShared(m_fallbackType));
 
         if (m_fallbackType == ABI::AdaptiveNamespace::FallbackType::Content)
