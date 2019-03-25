@@ -22,6 +22,7 @@ export class TextBlock extends React.Component {
 
 	render() {
 		let payload = this.props.json;
+
 		if (payload.isVisible === false) {
 			return null;
 		}
@@ -34,10 +35,12 @@ export class TextBlock extends React.Component {
 					weight={payload.weight}
 					color={payload.color}
 					isSubtle={payload.isSubtle}
+					fontStyle={payload.fontStyle}
 					wrap={payload.wrap}
 					align={payload.horizontalAlignment}
 					maxLines={payload.maxLines}
-					style={styles.text} />
+					style={styles.text}
+					containerStyle={this.props.containerStyle} />
 			</ElementWrapper>
 		);
 	}

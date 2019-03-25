@@ -88,14 +88,18 @@ export class ActionButton extends React.Component {
      * @description Invoked for the action type Constants.ActionSubmit
      */
 	onSubmitActionCalled() {
-		let mergedObject = null;
+		let mergedObject = {};
+		for (const key in this.context.inputArray) {
+			mergedObject[key] = this.context.inputArray[key].value;
+		}
 		if (this.data !== null) {
-			mergedObject = { ...this.data, ...this.context.inputArray };
-		} else {
-			mergedObject = { ...this.context.inputArray };
+			if (this.data instanceof Object)
+				mergedObject = { ...mergedObject, ...this.data }
+			else
+				mergedObject["actionData"] = this.data;
 		}
 		let actionObject = { "type": this.payload.type, "data": mergedObject };
-		this.context.onExecuteAction(actionObject);
+		this.context.onExecuteAction(actionObject, this.payload.ignoreInputValidation === true);
 	}
 
 	/**
@@ -150,7 +154,7 @@ export class ActionButton extends React.Component {
 	* @returns {Array} computedStyles - Styles based on the config
 	*/
 	getButtonTitleStyles = () => {
-		var computedStyles = [this.styleConfig.fontConfig,
+		var computedStyles = [this.styleConfig.defaultFontConfig,
 		this.styleConfig.buttonTitleColor,
 		this.styleConfig.buttonTitleTransform];
 		if (this.sentiment == Enums.Sentiment.Destructive) {

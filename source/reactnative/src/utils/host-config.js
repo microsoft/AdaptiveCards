@@ -1,5 +1,9 @@
 import * as Enums from './enums';
 import * as Utils from './util';
+import * as Constants from '../utils/constants';
+import {
+	Platform,
+} from 'react-native';
 
 export class TextColorDefinition {
 	_default = "#000000";
@@ -303,10 +307,18 @@ export class ContainerStyleSet {
 	constructor(obj) {
 		this._allStyles[Enums.ContainerStyle.Default] = new BuiltInContainerStyleDefinition();
 		this._allStyles[Enums.ContainerStyle.Emphasis] = new BuiltInContainerStyleDefinition();
+		this._allStyles[Enums.ContainerStyle.Accent] = new BuiltInContainerStyleDefinition();
+		this._allStyles[Enums.ContainerStyle.Good] = new BuiltInContainerStyleDefinition();
+		this._allStyles[Enums.ContainerStyle.Attention] = new BuiltInContainerStyleDefinition();
+		this._allStyles[Enums.ContainerStyle.Warning] = new BuiltInContainerStyleDefinition();
 
 		if (obj) {
 			this._allStyles[Enums.ContainerStyle.Default].parse(obj[Enums.ContainerStyle.Default]);
 			this._allStyles[Enums.ContainerStyle.Emphasis].parse(obj[Enums.ContainerStyle.Emphasis]);
+			this._allStyles[Enums.ContainerStyle.Accent].parse(obj[Enums.ContainerStyle.Accent]);
+			this._allStyles[Enums.ContainerStyle.Good].parse(obj[Enums.ContainerStyle.Good]);
+			this._allStyles[Enums.ContainerStyle.Attention].parse(obj[Enums.ContainerStyle.Attention]);
+			this._allStyles[Enums.ContainerStyle.Warning].parse(obj[Enums.ContainerStyle.Warning]);
 
 			const customStyleArray = obj["customStyles"];
 
@@ -367,6 +379,36 @@ export class ContainerStyleSet {
 	}
 }
 
+
+class FontStyleConfig {
+	constructor(obj = {}) {
+		this.default = new FontConfig("default", obj);
+		this.monospace = new FontConfig("monospace", obj);
+	}
+}
+// Each instance of this class holds config of specific FontStyle type 
+class FontConfig {
+	constructor(type, customConfig = {}) {
+		this.type = type;
+		let defaultFontStyles = defaultHostConfig["fontStyles"];
+		this.fontFamily = defaultFontStyles[type].fontFamily;
+		this.fontSizes = defaultFontStyles[type].fontSizes;
+		this.fontWeights = defaultFontStyles[type].fontWeights;
+
+		if (customConfig[type]) { // any custom config ?
+			let config = customConfig[type];
+			if (type === "monospace") {
+				this.fontFamily = (Platform.OS === Constants.PlatformIOS) ? "Courier New" : "monospace";
+			}
+			else {
+				this.fontFamily = config["fontFamily"] ? config["fontFamily"] : this.fontFamily;
+			}
+			this.fontSizes = config["fontSizes"] ? { ...this.fontSizes, ...config["fontSizes"] } : this.fontSizes;
+			this.fontWeights = config["fontWeights"] ? { ...this.fontWeights, ...config["fontWeights"] } : this.fontWeights;
+		}
+	}
+}
+
 export class HostConfig {
 	choiceSetInputValueSeparator = ",";
 	supportsInteractivity = true;
@@ -423,6 +465,7 @@ export class HostConfig {
 	imageSet = new ImageSetConfig();
 	media = new MediaConfig();
 	factSet = new FactSetConfig();
+	fontStyles = new FontStyleConfig();
 
 	cssClassNamePrefix = null;
 
@@ -485,6 +528,7 @@ export class HostConfig {
 			this.adaptiveCard = new AdaptiveCardConfig(obj.adaptiveCard || this.adaptiveCard);
 			this.imageSet = new ImageSetConfig(obj["imageSet"]);
 			this.factSet = new FactSetConfig(obj["factSet"])
+			this.fontStyles = new FontStyleConfig(obj["fontStyles"]);
 		}
 	}
 
@@ -514,40 +558,54 @@ export class HostConfig {
 	}
 
 	/**
+	 * @param {string} fontStyle 
+	 */
+	getTextFontStyle = (fontStyle) => {
+
+		switch (fontStyle) {
+			case Enums.FontStyle.Default:
+				return this.fontStyles.default;
+			case Enums.FontStyle.Monospace:
+				return this.fontStyles.monospace;
+			default:
+				return this.fontStyles.default;
+		}
+	}
+
+	/**
 	 * @param {string} fontSize 
 	 */
-	getTextFontSize = (fontSize) => {
+	getTextFontSize = (fontSize, fontStyle) => {
+
 		switch (fontSize) {
 			case Enums.TextSize.Small:
-				return this.fontSizes.small;
+				return fontStyle.fontSizes.small;
 			case Enums.TextSize.Default:
-				return this.fontSizes.default;
+				return fontStyle.fontSizes.default;
 			case Enums.TextSize.Medium:
-				return this.fontSizes.medium;
+				return fontStyle.fontSizes.medium;
 			case Enums.TextSize.Large:
-				return this.fontSizes.large;
+				return fontStyle.fontSizes.large;
 			case Enums.TextSize.ExtraLarge:
-				return this.fontSizes.extraLarge;
-
+				return fontStyle.fontSizes.extraLarge;
 			default:
-				return this.fontSizes.default;
+				return fontStyle.fontSizes.default;
 		}
 	}
 
 	/**
 	 * @param {string} weight
 	 */
-	getTextFontWeight = (weight) => {
+	getTextFontWeight = (weight, fontStyle) => {
 		switch (weight) {
 			case Enums.TextWeight.Lighter:
-				return this.fontWeights.lighter;
+				return fontStyle.fontWeights.lighter;
 			case Enums.TextWeight.Default:
-				return this.fontWeights.default;
+				return fontStyle.fontWeights.default;
 			case Enums.TextWeight.Bolder:
-				return this.fontWeights.bolder;
-
+				return fontStyle.fontWeights.bolder;
 			default:
-				return this.fontWeights.default;
+				return fontStyle.fontWeights.default;
 		}
 	}
 
@@ -570,9 +628,33 @@ export class HostConfig {
 				return this.containerStyles.default.foregroundColors.warning;
 			case Enums.TextColor.Default:
 				return this.containerStyles.default.foregroundColors.default;
-
 			default:
 				return this.containerStyles.default.foregroundColors.default;
+		}
+	}
+
+	/**
+	 * @description Return the color definition for the given color in associated container style
+	 * @param {Enums.TextColor} color
+	 * @param {string} style
+	 */
+	getTextColorForStyle = (color, style) => {
+		switch (color) {
+			case Enums.TextColor.Attention:
+				return this.containerStyles.getStyleByName(style, "default").foregroundColors.attention;
+			case Enums.TextColor.Dark:
+				return this.containerStyles.getStyleByName(style, "default").foregroundColors.dark;
+			case Enums.TextColor.Light:
+				return this.containerStyles.getStyleByName(style, "default").foregroundColors.light;
+			case Enums.TextColor.Accent:
+				return this.containerStyles.getStyleByName(style, "default").foregroundColors.accent;
+			case Enums.TextColor.Good:
+				return this.containerStyles.getStyleByName(style, "default").foregroundColors.good;
+			case Enums.TextColor.Warning:
+				return this.containerStyles.getStyleByName(style, "default").foregroundColors.warning;
+			case Enums.TextColor.Default:
+			default:
+				return this.containerStyles.getStyleByName(style, "default").foregroundColors.default;
 		}
 	}
 
@@ -625,7 +707,38 @@ export class HostConfig {
 
 export const defaultHostConfig = {
 	supportsInteractivity: true,
-	fontFamily: "Helvetica",
+	fontStyles: {
+		default: {
+			fontFamily: "Helvetica",
+			fontSizes: {
+				small: 12,
+				default: 14,
+				medium: 17,
+				large: 21,
+				extraLarge: 26
+			},
+			fontWeights: {
+				lighter: 200,
+				default: 400,
+				bolder: 700
+			}
+		},
+		monospace: {
+			fontFamily: "Courier New",
+			fontSizes: {
+				small: 12,
+				default: 14,
+				medium: 17,
+				large: 21,
+				extraLarge: 26
+			},
+			fontWeights: {
+				lighter: 200,
+				default: 400,
+				bolder: 700
+			}
+		}
+	},
 	spacing: {
 		none: 0,
 		small: 3,
@@ -639,18 +752,6 @@ export const defaultHostConfig = {
 		lineThickness: 1,
 		lineColor: "#D9D9D9"
 	},
-	fontSizes: {
-		small: 12,
-		default: 14,
-		medium: 17,
-		large: 21,
-		extraLarge: 26
-	},
-	fontWeights: {
-		lighter: 200,
-		default: 400,
-		bolder: 600
-	},
 	imageSizes: {
 		small: 40,
 		medium: 80,
@@ -658,68 +759,153 @@ export const defaultHostConfig = {
 	},
 	containerStyles: {
 		default: {
-			backgroundColor: "#FFFFFF",
-			foregroundColors: {
-				default: {
-					default: "#333333",
-					subtle: "#EE333333"
+			"backgroundColor": "transparent",
+			"foregroundColors": {
+				"default": {
+					"default": "#333333",
+					"subtle": "#EE333333"
 				},
-				dark: {
-					default: "#000000",
-					subtle: "#66000000"
+				"accent": {
+					"default": "#2E89FC",
+					"subtle": "#882E89FC"
 				},
-				light: {
-					default: "#FFFFFF",
-					subtle: "#33000000"
+				"good": {
+					"default": "#54A254",
+					"subtle": "#DD54A254"
 				},
-				accent: {
-					default: "#2E89FC",
-					subtle: "#882E89FC"
+				"warning": {
+					"default": "#C3AB23",
+					"subtle": "#DDC3AB23"
 				},
-				attention: {
-					default: "#cc3300",
-					subtle: "#DDcc3300"
-				},
-				good: {
-					default: "#54a254",
-					subtle: "#DD54a254"
-				},
-				warning: {
-					default: "#e69500",
-					subtle: "#DDe69500"
+				"attention": {
+					"default": "#FF0000",
+					"subtle": "#DDFF0000"
 				}
 			}
 		},
 		emphasis: {
-			backgroundColor: "#08000000",
-			foregroundColors: {
-				default: {
-					default: "#333333",
-					subtle: "#EE333333"
+			"backgroundColor": "#08000000",
+			"foregroundColors": {
+				"default": {
+					"default": "#333333",
+					"subtle": "#EE333333"
 				},
-				dark: {
-					default: "#000000",
-					subtle: "#66000000"
+				"accent": {
+					"default": "#2E89FC",
+					"subtle": "#882E89FC"
 				},
-				light: {
-					default: "#FFFFFF",
-					subtle: "#33000000"
+				"good": {
+					"default": "#54A254",
+					"subtle": "#DD54A254"
 				},
-				accent: {
-					default: "#2E89FC",
-					subtle: "#882E89FC"
+				"warning": {
+					"default": "#C3AB23",
+					"subtle": "#DDC3AB23"
 				},
-				attention: {
-					default: "#cc3300",
-					subtle: "#DDcc3300"
+				"attention": {
+					"default": "#FF0000",
+					"subtle": "#DDFF0000"
+				}
+			}
+		},
+		good: {
+			"backgroundColor": "#DD54A254",
+			"foregroundColors": {
+				"default": {
+					"default": "#333333",
+					"subtle": "#EE333333"
 				},
-				good: {
-					default: "#54a254",
-					subtle: "#DD54a254"
+				"accent": {
+					"default": "#2E89FC",
+					"subtle": "#882E89FC"
 				},
-				warning: {
-					default: "#e69500",
-					subtle: "#DDe69500"
+				"good": {
+					"default": "#54A254",
+					"subtle": "#DD54A254"
+				},
+				"warning": {
+					"default": "#C3AB23",
+					"subtle": "#DDC3AB23"
+				},
+				"attention": {
+					"default": "#FFFFFF",
+					"subtle": "#DDFF0000"
+				}
+			},
+		},
+		warning: {
+			"backgroundColor": "#DDC3AB23",
+			"foregroundColors": {
+				"default": {
+					"default": "#FFFFFF",
+					"subtle": "#EE333333"
+				},
+				"accent": {
+					"default": "#FFFFFF",
+					"subtle": "#882E89FC"
+				},
+				"good": {
+					"default": "#FFFFFF",
+					"subtle": "#DD54A254"
+				},
+				"warning": {
+					"default": "#FFFFFF",
+					"subtle": "#DDC3AB23"
+				},
+				"attention": {
+					"default": "#FFFFFF",
+					"subtle": "#DDFF0000"
+				}
+			},
+
+		},
+		attention: {
+			"backgroundColor": "#DDFF0000",
+			"foregroundColors": {
+				"default": {
+					"default": "#333333",
+					"subtle": "#EE333333"
+				},
+				"accent": {
+					"default": "#2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"good": {
+					"default": "#54A254",
+					"subtle": "#DD54A254"
+				},
+				"warning": {
+					"default": "#C3AB23",
+					"subtle": "#DDC3AB23"
+				},
+				"attention": {
+					"default": "#FF0000",
+					"subtle": "#DDFF0000"
+				}
+			}
+		},
+		accent: {
+			"backgroundColor": "#882E89FC",
+			"foregroundColors": {
+				"default": {
+					"default": "#333333",
+					"subtle": "#EE333333"
+				},
+				"accent": {
+					"default": "#2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"good": {
+					"default": "#54A254",
+					"subtle": "#DD54A254"
+				},
+				"warning": {
+					"default": "#C3AB23",
+					"subtle": "#DDC3AB23"
+				},
+				"attention": {
+					"default": "#FFFFFF",
+					"subtle": "#DDFF0000"
 				}
 			}
 		}

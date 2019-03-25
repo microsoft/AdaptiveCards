@@ -101,7 +101,11 @@ export const InputTextStyle = Object.freeze({
 
 export const ContainerStyle = Object.freeze({
 	Default: "default",
-	Emphasis: "emphasis"
+	Emphasis: "emphasis",
+	Accent: "accent",
+	Good: "good",
+	Attention: "attention",
+	Warning: "warning"
 });
 
 export const ValidationError = Object.freeze({
@@ -131,8 +135,19 @@ export const Height = Object.freeze({
 	Stretch: 1
 });
 
+export const ValidationNecessity = {
+	Optional: 'Optional',
+	Required: 'Required',
+	RequiredWithVisualCue: 'RequiredWithVisualCue'
+}
+
 export const Sentiment = Object.freeze({
 	Default: 0,
 	Positive: 1,
 	Destructive: 2
+});
+
+export const FontStyle = Object.freeze({
+	Default: 0,
+	Monospace: 1,
 });

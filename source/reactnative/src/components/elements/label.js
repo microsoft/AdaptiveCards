@@ -48,28 +48,46 @@ export class Label extends React.Component {
      * @description Parse the host config specific props 
      */
 	getComputedStyle = () => {
-		let { size, weight, color, isSubtle, align } = this.props;
+		const { size, weight, color, isSubtle, fontStyle, align } = this.props;
+		let { containerStyle } = this.props;
 
-		let fontSize = this.hostConfig.getTextFontSize(Utils.parseHostConfigEnum(
+		// font-style
+		const fontStyleValue = this.hostConfig.getTextFontStyle(Utils.parseHostConfigEnum(
+			Enums.FontStyle,
+			fontStyle,
+			Enums.FontStyle.Default
+		));
+
+		// font-size
+		const fontSize = this.hostConfig.getTextFontSize(Utils.parseHostConfigEnum(
 			Enums.TextSize,
 			size,
 			Enums.TextSize.Default
-		));
+		), fontStyleValue);
 
-		let fontWeight = this.hostConfig.getTextFontWeight(Utils.parseHostConfigEnum(
+		// font-weight
+		const fontWeight = this.hostConfig.getTextFontWeight(Utils.parseHostConfigEnum(
 			Enums.TextWeight,
 			weight,
 			Enums.TextWeight.Default
-		));
+		), fontStyleValue);
 
-		let colorDefinition = this.hostConfig.getTextColor(Utils.parseHostConfigEnum(
+		const fontFamilyValue = fontStyleValue.fontFamily;
+
+		// text-color
+		if (Utils.isNullOrEmpty(containerStyle)) {
+			containerStyle = "default";
+		}
+		let colorEnum = Utils.parseHostConfigEnum(
 			Enums.TextColor,
 			color,
 			Enums.TextColor.Default
-		));
+		);
+		let colorDefinition = this.hostConfig.getTextColorForStyle(colorEnum, containerStyle);
 		let colorValue = isSubtle ? colorDefinition.subtle : colorDefinition.default;
 
-		let textAlign = this.hostConfig.getTextAlignment(Utils.parseHostConfigEnum(
+		// horizontal text alignment
+		const textAlign = this.hostConfig.getTextAlignment(Utils.parseHostConfigEnum(
 			Enums.HorizontalAlignment,
 			align,
 			Enums.HorizontalAlignment.Left
@@ -78,7 +96,7 @@ export class Label extends React.Component {
 		return {
 			fontSize,
 			fontWeight: fontWeight.toString(),
-			fontFamily: this.hostConfig.fontFamily,
+			fontFamily: fontFamilyValue,
 			color: colorValue,
 			textAlign
 		}

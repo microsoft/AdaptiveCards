@@ -11,7 +11,7 @@ import {
 	Dimensions
 } from 'react-native';
 
-import { InputContextConsumer } from '../../utils/context';
+import { InputContext } from '../../utils/context';
 import { Registry } from '../registration/registry';
 import * as Utils from '../../utils/util';
 import * as Constants from '../../utils/constants';
@@ -25,6 +25,7 @@ const deviceWidth = Dimensions.get('window').width;
 
 export class Column extends React.Component {
 
+	static contextType = InputContext;
 	styleConfig = StyleManager.getManager().styles;
 	hostConfig = HostConfigManager.getHostConfig();
 	spacing = 0;
@@ -36,18 +37,18 @@ export class Column extends React.Component {
 
 	/**
 	 * @description Parse the given payload and render the card accordingly
-	 * @param {func} onParseError - Function reference to be invoked on parse errors (if any)
+	 * @returns {object} Return the child elements of the column
 	 */
-	parsePayload = (onParseError) => {
-		const renderedElement = [];
+	parsePayload = () => {
+		let children = [];
 		if (!this.column)
-			return renderedElement;
+			return children;
 
 		// parse elements
 		if (!Utils.isNullOrEmpty(this.column.items) && (this.column.isVisible !== false)) {
-			renderedElement.push(Registry.getManager().parseRegistryComponents(this.column.items, onParseError));
+			children  = Registry.getManager().parseRegistryComponents(this.column.items, this.context.onParseError);
 		}
-		return renderedElement;
+		return children.map(ChildElement => React.cloneElement(ChildElement, { containerStyle: this.column.style }));
 	}
 
 	/**
@@ -196,9 +197,7 @@ export class Column extends React.Component {
 
 	render() {
 		const separator = this.column.separator || false;
-		let backgroundStyle = this.column.style == Constants.Emphasis ?
-			styles.emphasisStyle : styles.defaultBGStyle;
-		let containerViewStyle = [backgroundStyle, {
+		let containerViewStyle = [{
 			flexDirection: separator ?
 				Constants.FlexRow : Constants.FlexColumn
 		}];
@@ -230,20 +229,20 @@ export class Column extends React.Component {
 			actionComponentProps = { selectActionData: this.column.selectAction };
 		}
 
-		return (<InputContextConsumer>
-			{({ onParseError }) => <ContainerWrapper json={this.column} style={[containerViewStyle]}>
+		let separatorStyles = [spacingStyle];
+
+		if (separator) {
+			separatorStyles = [containerViewStyle, styles.separatorStyle];
+		}
+
+		return <ContainerWrapper json={this.column} style={[containerViewStyle]}>
 				<ActionComponent {...actionComponentProps}>
 					{separator && this.renderSeparator()}
-					{separator ?
-						<View style={[containerViewStyle, styles.separatorStyle]}>
-							{this.parsePayload(onParseError)}
-						</View> :
-						<View style={spacingStyle}>
-							{this.parsePayload(onParseError)}
-						</View>}
+					<View style={separatorStyles}>
+						{this.parsePayload()}
+					</View>
 				</ActionComponent>
-			</ContainerWrapper>}
-		</InputContextConsumer>);
+			</ContainerWrapper>
 	}
 };
 
@@ -254,8 +253,5 @@ const styles = StyleSheet.create({
 	},
 	defaultBGStyle: {
 		backgroundColor: Constants.TransparentString,
-	},
-	emphasisStyle: {
-		backgroundColor: Constants.EmphasisColor,
 	},
 });

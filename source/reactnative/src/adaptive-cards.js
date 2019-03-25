@@ -6,7 +6,6 @@ import React from 'react';
 import {
 	StyleSheet,
 	Text,
-	View,
 	ScrollView
 } from 'react-native';
 
@@ -20,7 +19,6 @@ import * as Utils from './utils/util';
 import { SelectAction } from './components/actions';
 import ResourceInformation from './utils/resource-information';
 import { ContainerWrapper } from './components/containers/';
-import { BackgroundImage } from './components/elements';
 import { ThemeConfigManager } from './utils/theme-config';
 
 export default class AdaptiveCards extends React.Component {
@@ -34,7 +32,12 @@ export default class AdaptiveCards extends React.Component {
 
 		this.payload = props.payload;
 
-		// hostconfig
+		this.state = {
+			showErrors: false,
+			payload: this.payload,
+		}
+
+		// hostConfig
 		if (props.hostConfig) {
 			HostConfigManager.setHostConfig(props.hostConfig);
 		}
@@ -46,9 +49,7 @@ export default class AdaptiveCards extends React.Component {
 
 		// commonly used styles
 		this.styleConfig = StyleManager.getManager().styles;
-		this.state = {
-			payload: this.payload,
-		};
+
 	}
 
 	toggleVisibilityForElementWithID = (idArray) => {
@@ -134,21 +135,20 @@ export default class AdaptiveCards extends React.Component {
 
 	/**
 	 * @description Parse the given payload and render the card accordingly
+	 * @returns {object} Child elements of the card
 	 */
 	parsePayload = () => {
-
-		const renderedElement = [];
+		let children = [];
 		const { body } = this.state.payload;
 
 		if (!body)
-			return renderedElement;
+			return children;
 
-		renderedElement.push(Registry.getManager().parseRegistryComponents(body, this.onParseError));
-
-		return renderedElement;
+		children = Registry.getManager().parseRegistryComponents(body, this.onParseError);
+		return children.map(ChildElement => React.cloneElement(ChildElement, { containerStyle: this.state.payload.style }));
 	}
 
-	getAdaptiveCardConent() {
+	getAdaptiveCardContent() {
 		var adaptiveCardContent =
 			(
 				<ContainerWrapper style={styles.container} json={this.state.payload}>
@@ -177,18 +177,19 @@ export default class AdaptiveCards extends React.Component {
 		const isTransparent = this.payload.backgroundImage ? true : false;
 		const onParseError = this.onParseError;
 		const lang = this.payload.lang || 'en';
+		const { showErrors } = this.state;
 
 		// version check
 		if (!this.isSupportedVersion()) {
 			const message = this.payload.fallbackText || "We're sorry, this card couldn't be displayed";
 			return (
-				<Text style={this.styleConfig.fontConfig}>{message}</Text>
+				<Text style={this.styleConfig.defaultFontConfig}>{message}</Text>
 			)
 		}
 		return (
-			<InputContextProvider value={{ lang, addInputItem, inputArray, onExecuteAction, isTransparent, onParseError, addResourceInformation, toggleVisibilityForElementWithID }}>
+			<InputContextProvider value={{ lang, addInputItem, inputArray, onExecuteAction, isTransparent, onParseError, addResourceInformation, showErrors, toggleVisibilityForElementWithID }}>
 				{
-					this.getAdaptiveCardConent()
+					this.getAdaptiveCardContent()
 				}
 			</InputContextProvider>
 		);
@@ -196,8 +197,8 @@ export default class AdaptiveCards extends React.Component {
 
 	/**
 	 * Check whether the payload schema version is supported by client.
-* @return {boolean} - version supported or not
-		*/
+	 * @return {boolean} - version supported or not
+	 */
 	isSupportedVersion = () => {
 
 		//Ignore the schema version number when AdaptiveCard is used from Action.ShowCard as it is not mandatory
@@ -229,10 +230,23 @@ export default class AdaptiveCards extends React.Component {
 	}
 
 	// Invoke onExecuteAction if the consumer app provide it via props.
-	onExecuteAction = (action) => {
-		if (this.props.onExecuteAction) {
+	onExecuteAction = (action, ignoreInputValidation) => {
+		if (!ignoreInputValidation && !this.validateInputs())
+			this.setState({ showErrors: true });
+		else if (this.props.onExecuteAction) {
 			this.props.onExecuteAction(action);
 		}
+	}
+
+	validateInputs = () => {
+		const { inputArray } = this;
+		if (inputArray) {
+			for (const key in inputArray) {
+				if (inputArray[key].errorState)
+					return false;
+			}
+		}
+		return true;
 	}
 }
 
@@ -248,7 +262,6 @@ AdaptiveCards.propTypes = {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: 'transparent',
 	},
 	actionContainer: {
 		marginVertical: 10
