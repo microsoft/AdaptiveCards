@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import { Label } from './';
-import { InputContextConsumer } from '../../utils/context';
+import { InputContext } from '../../utils/context';
 import { HostConfigManager } from '../../utils/host-config';
 import ElementWrapper from '../elements/element-wrapper';
 import * as Constants from '../../utils/constants';
@@ -20,64 +20,81 @@ import * as Utils from '../../utils/util';
 
 export class RichTextBlock extends React.Component {
 
+    hostConfig = HostConfigManager.getHostConfig();
+    static contextType = InputContext;
+
     constructor(props) {
         super(props);
         this.payload = props.json;
     }
 
+    /**
+     * @description Return the paragraph element from the payload 
+     * @returns {Array} Paragraph elements
+     */
     getParagraphElements = () => {
+        //Applying wrap and maxLines property for the paragraph
+        let { wrap, maxLines } = this.payload;
+        let numberOfLines = wrap ? (maxLines != undefined ? maxLines : 0) : 1;
         var paragraphElements = [];
         if (this.payload.paragraphs) {
             this.payload.paragraphs.forEach((paragraph, index) => {
                 paragraphElements.push(
-                    <Text key={"paragraph" + index}>
+                    <Text key={"paragraph" + index} numberOfLines={numberOfLines}>
                         {this.getTextRunElements(paragraph)}
-                    </Text>
+                    </Text >
                 );
             })
         }
         return paragraphElements;
     }
 
+    /**
+     * @description Return the paragraph element from the payload 
+     * @param {object} selectAction - select action for the text run
+     * @returns {object} constructed select Action component
+     */
     addActionElement = (selectAction) => {
         return (
-            <InputContextConsumer>
-                {({ onExecuteAction }) =>
-                    <Text onPress={() => { (HostConfigManager.getHostConfig().supportsInteractivity === false) ? null : this.onClickHandle(onExecuteAction, selectAction) }}>
-                        <Label
-                            text={selectAction.title}
-                            size={selectAction.size}
-                            weight={selectAction.weight}
-                            color={Enums.TextColor.Accent}
-                            wrap={selectAction.wrap}
-                            align={selectAction.horizontalAlignment}
-                            maxLines={selectAction.maxLines}
-                            style={styles.text} />
-                    </Text>
-                }
-            </InputContextConsumer>
+            <Text onPress={() => { (HostConfigManager.supportsInteractivity() === false) ? null : this.onClickHandle(selectAction) }}>
+                <Label
+                    text={selectAction.title}
+                    size={selectAction.size}
+                    weight={selectAction.weight}
+                    color={Enums.TextColor.Accent}
+                    wrap={selectAction.wrap}
+                    align={selectAction.horizontalAlignment}
+                    maxLines={selectAction.maxLines}
+                    style={styles.text} />
+            </Text>
         );
     }
 
     /**
-	 * @description Invoked on tapping the text with action
-	 */
-    onClickHandle(onExecuteAction, selectAction) {
+     * @description Invoked on tapping the text with action
+     * @param {object} selectAction - select action for the text run
+     */
+    onClickHandle(selectAction) {
         if (selectAction.type === Constants.ActionSubmit) {
             let actionObject = { "type": Constants.ActionSubmit, "data": selectAction.data };
-            onExecuteAction(actionObject);
+            this.context.onExecuteAction(actionObject);
         } else if (selectAction.type === Constants.ActionOpenUrl && !Utils.isNullOrEmpty(selectAction.url)) {
             let actionObject = { "type": Constants.ActionOpenUrl, "url": selectAction.url };
-            onExecuteAction(actionObject);
+            this.context.onExecuteAction(actionObject);
         }
     }
 
+    /**
+     * @description Return the TextRun element from the paragraph 
+     * @param {object} paragraph - paragraph from the payload
+     * @returns {Array} TextRun elements
+     */
     getTextRunElements = (paragraph) => {
         var textRunElements = [];
         paragraph.inlines.forEach((textRun, index) => {
             if (textRun.type.toLowerCase() == Constants.TextRunString) {
                 index > 0 && textRunElements.push(<Text key={"white-sapce-text" + index}>{" "}</Text>);
-                let textRunStyle = textRun.highlight ? [styles.text, { backgroundColor: "#FFFF00" }] : styles.text;
+                let textRunStyle = textRun.highlight ? [styles.text, { backgroundColor: this.hostConfig.richTextBlock.highlightColor }] : styles.text;
                 textRunElements.push(
                     <Label
                         key={Constants.TextRunString + index}

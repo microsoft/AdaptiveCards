@@ -72,6 +72,22 @@ export class AdaptiveCardConfig {
 	}
 }
 
+export class RichTextBlockConfig {
+	highlightColor = "#FFFF00";
+
+	constructor(obj) {
+		if (obj) {
+			this.highlightColor = obj["highlightColor"] != null ? obj["highlightColor"] : this.highlightColor;
+		}
+	}
+
+	toJSON() {
+		return {
+			highlightColor: this.highlightColor
+		}
+	}
+}
+
 export class ImageSetConfig {
 	imageSize = Enums.Size.Medium;
 	maxImageHeight = 100;
@@ -462,6 +478,7 @@ export class HostConfig {
 	containerStyles = new ContainerStyleSet();
 	actions = new ActionsConfig();
 	adaptiveCard = new AdaptiveCardConfig();
+	richTextBlock = new RichTextBlockConfig();
 	imageSet = new ImageSetConfig();
 	media = new MediaConfig();
 	factSet = new FactSetConfig();
@@ -526,6 +543,7 @@ export class HostConfig {
 
 			this.actions = new ActionsConfig(obj.actions || this.actions);
 			this.adaptiveCard = new AdaptiveCardConfig(obj.adaptiveCard || this.adaptiveCard);
+			this.richTextBlock = new RichTextBlockConfig(obj["richTextBlock"]);
 			this.imageSet = new ImageSetConfig(obj["imageSet"]);
 			this.factSet = new FactSetConfig(obj["factSet"])
 			this.fontStyles = new FontStyleConfig(obj["fontStyles"]);
@@ -707,6 +725,9 @@ export class HostConfig {
 
 export const defaultHostConfig = {
 	supportsInteractivity: true,
+	richTextBlock: {
+		highlightColor: "#00FF00"
+	},
 	fontStyles: {
 		default: {
 			fontFamily: "Helvetica",
