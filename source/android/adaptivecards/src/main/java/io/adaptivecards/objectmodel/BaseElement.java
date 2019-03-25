@@ -109,6 +109,14 @@ public class BaseElement {
     return (cPtr == 0) ? null : new BaseElement(cPtr, true);
   }
 
+  public void SetFallbackType(FallbackType type) {
+    AdaptiveCardObjectModelJNI.BaseElement_SetFallbackType(swigCPtr, this, type.swigValue());
+  }
+
+  public void SetFallbackContent(BaseElement element) {
+    AdaptiveCardObjectModelJNI.BaseElement_SetFallbackContent(swigCPtr, this, BaseElement.getCPtr(element), element);
+  }
+
   public boolean MeetsRequirements(SWIGTYPE_p_std__unordered_mapT_std__string_std__string_t hostProvides) {
     return AdaptiveCardObjectModelJNI.BaseElement_MeetsRequirements(swigCPtr, this, SWIGTYPE_p_std__unordered_mapT_std__string_std__string_t.getCPtr(hostProvides));
   }

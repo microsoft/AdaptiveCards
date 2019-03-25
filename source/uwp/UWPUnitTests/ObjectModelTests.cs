@@ -749,5 +749,74 @@ namespace UWPUnitTests
             var jsonString = actionSet.ToJson().ToString();
             Assert.AreEqual("{\"actions\":[{\"title\":\"Submit One\",\"type\":\"Action.Submit\"},{\"title\":\"Submit Two\",\"type\":\"Action.Submit\"}],\"height\":\"Stretch\",\"id\":\"ActionSetId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"extraLarge\",\"type\":\"ActionSet\"}", jsonString);
         }
+
+        [TestMethod]
+        public void RichTextBlock()
+        {
+            AdaptiveTextRun textRun1 = new AdaptiveTextRun
+            {
+                Color = ForegroundColor.Accent,
+                FontStyle = FontStyle.Monospace,
+                IsSubtle = true,
+                Language = "en",
+                Size = TextSize.Large,
+                Text = "This is text run number 1",
+                Weight = TextWeight.Bolder,
+            };
+
+            Assert.AreEqual(ForegroundColor.Accent, textRun1.Color);
+            Assert.AreEqual(FontStyle.Monospace, textRun1.FontStyle);
+            Assert.AreEqual(true, textRun1.IsSubtle);
+            Assert.AreEqual("en", textRun1.Language);
+            Assert.AreEqual(TextSize.Large, textRun1.Size);
+            Assert.AreEqual("This is text run number 1", textRun1.Text);
+            Assert.AreEqual(TextWeight.Bolder, textRun1.Weight);
+
+            textRun1.SelectAction = new AdaptiveSubmitAction
+            {
+                Title = "Select Action"
+            };
+            Assert.IsNotNull(textRun1.SelectAction);
+            Assert.AreEqual("Select Action", textRun1.SelectAction.Title);
+
+            AdaptiveTextRun textRun2 = new AdaptiveTextRun { Text = "This is text run number 2" };
+            AdaptiveTextRun textRun3 = new AdaptiveTextRun { Text = "This is text run number 3" };
+
+            AdaptiveParagraph paragraph1 = new AdaptiveParagraph { };
+
+            paragraph1.Inlines.Add(textRun1);
+            paragraph1.Inlines.Add(textRun2);
+
+            AdaptiveParagraph paragraph2 = new AdaptiveParagraph { };
+            paragraph2.Inlines.Add(textRun3);
+
+            AdaptiveRichTextBlock richTextBlock = new AdaptiveRichTextBlock
+            {
+                Height = HeightType.Stretch,
+                HorizontalAlignment = HAlignment.Center,
+                Id = "RichTextBlockId",
+                IsVisible = false,
+                MaxLines = 3,
+                Separator = true,
+                Spacing = Spacing.Large,
+                Wrap = true
+            };
+
+            ValidateBaseElementProperties(richTextBlock, "RichTextBlockId", false, true, Spacing.Large, HeightType.Stretch);
+
+            Assert.AreEqual(HAlignment.Center, richTextBlock.HorizontalAlignment);
+            Assert.AreEqual<uint>(3, richTextBlock.MaxLines);
+            Assert.AreEqual(true, richTextBlock.Wrap);
+
+            richTextBlock.Paragraphs.Add(paragraph1);
+            richTextBlock.Paragraphs.Add(paragraph2);
+
+            Assert.AreEqual("This is text run number 1", (richTextBlock.Paragraphs[0].Inlines[0] as AdaptiveTextRun).Text);
+            Assert.AreEqual("This is text run number 2", (richTextBlock.Paragraphs[0].Inlines[1] as AdaptiveTextRun).Text);
+            Assert.AreEqual("This is text run number 3", (richTextBlock.Paragraphs[1].Inlines[0] as AdaptiveTextRun).Text);
+
+            var jsonString = richTextBlock.ToJson().ToString();
+            Assert.AreEqual("{\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"RichTextBlockId\",\"isVisible\":false,\"maxLines\":3,\"paragraphs\":[{\"inlines\":[{\"color\":\"Accent\",\"fontStyle\":\"Monospace\",\"isSubtle\":true,\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"size\":\"Large\",\"text\":\"This is text run number 1\",\"type\":\"TextRun\",\"weight\":\"Bolder\"},{\"text\":\"This is text run number 2\",\"type\":\"TextRun\"}]},{\"inlines\":[{\"text\":\"This is text run number 3\",\"type\":\"TextRun\"}]}],\"separator\":true,\"spacing\":\"large\",\"type\":\"RichTextBlock\",\"wrap\":true}", jsonString);
+        }
     }
 }

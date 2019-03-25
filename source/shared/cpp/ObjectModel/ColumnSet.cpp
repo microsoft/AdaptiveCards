@@ -4,6 +4,7 @@
 #include "ParseUtil.h"
 #include "Image.h"
 #include "TextBlock.h"
+#include "Util.h"
 
 using namespace AdaptiveSharedNamespace;
 

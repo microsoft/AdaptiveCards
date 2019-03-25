@@ -38,6 +38,7 @@ import io.adaptivecards.objectmodel.ToggleVisibilityTargetVector;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
 import io.adaptivecards.renderer.IBaseActionElementRenderer;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
+import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
@@ -333,11 +334,12 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
     }
 
     public Button renderButton(
-            Context context,
-            ViewGroup viewGroup,
-            BaseActionElement baseActionElement,
-            HostConfig hostConfig,
-            RenderedAdaptiveCard renderedCard)
+        Context context,
+        ViewGroup viewGroup,
+        BaseActionElement baseActionElement,
+        HostConfig hostConfig,
+        RenderedAdaptiveCard renderedCard,
+        RenderArgs renderArgs)
     {
         Button button = createButton(context, baseActionElement.GetSentiment(), hostConfig);
 
@@ -397,13 +399,14 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             ViewGroup viewGroup,
             BaseActionElement baseActionElement,
             ICardActionHandler cardActionHandler,
-            HostConfig hostConfig) {
+            HostConfig hostConfig,
+            RenderArgs renderArgs) {
         if (cardActionHandler == null)
         {
             throw new IllegalArgumentException("Action Handler is null.");
         }
 
-        Button button = renderButton(context, viewGroup, baseActionElement, hostConfig, renderedCard);
+        Button button = renderButton(context, viewGroup, baseActionElement, hostConfig, renderedCard, renderArgs);
 
         if (baseActionElement.GetElementType() == ActionType.ShowCard
                 && hostConfig.GetActions().getShowCard().getActionMode() == ActionMode.Inline)

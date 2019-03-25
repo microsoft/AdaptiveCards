@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ParseUtil.h"
 #include "TextInput.h"
+#include "Util.h"
 
 using namespace AdaptiveSharedNamespace;
 

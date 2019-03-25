@@ -86,6 +86,7 @@ namespace UWPUnitTests
             public bool Separator { get; set; }
             public Spacing Spacing { get; set; }
             public bool IsVisible { get; set; }
+            public UInt32 MinHeight { get; set; }
             IAdaptiveCardElement IAdaptiveCardElement.FallbackContent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
             FallbackType IAdaptiveCardElement.FallbackType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         };

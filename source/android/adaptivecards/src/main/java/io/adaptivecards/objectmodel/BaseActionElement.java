@@ -126,4 +126,9 @@ public class BaseActionElement extends BaseElement {
     return AdaptiveCardObjectModelJNI.BaseActionElement_swigOriginalObject(swigCPtr, this);
   }
 
+  public static BaseActionElement dynamic_cast(BaseElement baseElement) {
+    long cPtr = AdaptiveCardObjectModelJNI.BaseActionElement_dynamic_cast(BaseElement.getCPtr(baseElement), baseElement);
+    return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
+  }
+
 }

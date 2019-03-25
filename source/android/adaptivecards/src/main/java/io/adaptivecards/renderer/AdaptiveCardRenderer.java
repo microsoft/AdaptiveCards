@@ -141,7 +141,9 @@ public class AdaptiveCardRenderer
 
         layout.setBackgroundColor(Color.parseColor(color));
 
-        CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, layout, adaptiveCard, baseCardElementList, cardActionHandler, hostConfig, style);
+        RenderArgs renderArgs = new RenderArgs();
+        renderArgs.setContainerStyle(style);
+        CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, layout, adaptiveCard, baseCardElementList, cardActionHandler, hostConfig, renderArgs);
 
         if (hostConfig.GetSupportsInteractivity())
         {
@@ -156,7 +158,7 @@ public class AdaptiveCardRenderer
 
                 IActionLayoutRenderer actionLayoutRenderer = CardRendererRegistration.getInstance().getActionLayoutRenderer();
                 if(actionLayoutRenderer != null) {
-                    actionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, layout, baseActionElementList, cardActionHandler, hostConfig);
+                    actionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, layout, baseActionElementList, cardActionHandler, hostConfig, renderArgs);
                 }
             }
         }

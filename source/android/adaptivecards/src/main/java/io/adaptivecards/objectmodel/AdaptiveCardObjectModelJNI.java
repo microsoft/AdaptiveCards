@@ -397,6 +397,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void BaseElement_SetAdditionalProperties(long jarg1, BaseElement jarg1_, long jarg2, JsonValue jarg2_);
   public final static native int BaseElement_GetFallbackType(long jarg1, BaseElement jarg1_);
   public final static native long BaseElement_GetFallbackContent(long jarg1, BaseElement jarg1_);
+  public final static native void BaseElement_SetFallbackType(long jarg1, BaseElement jarg1_, int jarg2);
+  public final static native void BaseElement_SetFallbackContent(long jarg1, BaseElement jarg1_, long jarg2, BaseElement jarg2_);
   public final static native boolean BaseElement_MeetsRequirements(long jarg1, BaseElement jarg1_, long jarg2);
   public final static native void BaseElement_GetResourceInformation(long jarg1, BaseElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native void BaseElement_GetResourceInformationSwigExplicitBaseElement(long jarg1, BaseElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
@@ -426,12 +428,17 @@ public class AdaptiveCardObjectModelJNI {
   public final static native boolean BaseCardElement_GetIsVisibleSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_);
   public final static native void BaseCardElement_SetIsVisible(long jarg1, BaseCardElement jarg1_, boolean jarg2);
   public final static native void BaseCardElement_SetIsVisibleSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_, boolean jarg2);
+  public final static native long BaseCardElement_GetMinHeight(long jarg1, BaseCardElement jarg1_);
+  public final static native long BaseCardElement_GetMinHeightSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_);
+  public final static native void BaseCardElement_SetMinHeight(long jarg1, BaseCardElement jarg1_, long jarg2);
+  public final static native void BaseCardElement_SetMinHeightSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_, long jarg2);
   public final static native int BaseCardElement_GetElementType(long jarg1, BaseCardElement jarg1_);
   public final static native int BaseCardElement_GetElementTypeSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_);
   public final static native void BaseCardElement_ParseJsonObject(long jarg1, ParseContext jarg1_, long jarg2, JsonValue jarg2_, long jarg3, BaseElement jarg3_);
   public final static native void BaseCardElement_PopulateKnownPropertiesSet(long jarg1, BaseCardElement jarg1_);
   public final static native void BaseCardElement_PopulateKnownPropertiesSetSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_);
   public final static native Object BaseCardElement_swigOriginalObject(long jarg1, BaseCardElement jarg1_);
+  public final static native long BaseCardElement_dynamic_cast(long jarg1, BaseElement jarg1_);
   public final static native void BaseCardElement_director_connect(BaseCardElement obj, long cptr, boolean mem_own, boolean weak_global);
   public final static native void BaseCardElement_change_ownership(BaseCardElement obj, long cptr, boolean take_or_release);
   public final static native long new_BaseActionElement__SWIG_0(int jarg1);
@@ -460,6 +467,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void BaseActionElement_PopulateKnownPropertiesSet(long jarg1, BaseActionElement jarg1_);
   public final static native void BaseActionElement_PopulateKnownPropertiesSetSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
   public final static native Object BaseActionElement_swigOriginalObject(long jarg1, BaseActionElement jarg1_);
+  public final static native long BaseActionElement_dynamic_cast(long jarg1, BaseElement jarg1_);
   public final static native void BaseActionElement_director_connect(BaseActionElement obj, long cptr, boolean mem_own, boolean weak_global);
   public final static native void BaseActionElement_change_ownership(BaseActionElement obj, long cptr, boolean take_or_release);
   public final static native long new_BackgroundImage__SWIG_0();
@@ -1420,6 +1428,12 @@ public class AdaptiveCardObjectModelJNI {
   }
   public static void SwigDirector_BaseCardElement_SetIsVisible(BaseCardElement jself, boolean value) {
     jself.SetIsVisible(value);
+  }
+  public static long SwigDirector_BaseCardElement_GetMinHeight(BaseCardElement jself) {
+    return jself.GetMinHeight();
+  }
+  public static void SwigDirector_BaseCardElement_SetMinHeight(BaseCardElement jself, long value) {
+    jself.SetMinHeight(value);
   }
   public static int SwigDirector_BaseCardElement_GetElementType(BaseCardElement jself) {
     return (jself.GetElementType()).swigValue();

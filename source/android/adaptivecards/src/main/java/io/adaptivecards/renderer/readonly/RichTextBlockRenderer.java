@@ -35,8 +35,10 @@ import io.adaptivecards.objectmodel.RichTextBlock;
 import io.adaptivecards.objectmodel.TextBlock;
 import io.adaptivecards.objectmodel.TextRun;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
@@ -75,7 +77,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
                 InlineVector inlines,
                 ICardActionHandler cardActionHandler,
                 HostConfig hostConfig,
-                ContainerStyle containerStyle)
+                RenderArgs renderArgs)
     {
         SpannableStringBuilder paragraph = new SpannableStringBuilder();
         int lastStringLength = 0;
@@ -103,7 +105,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
                 int spanStart = lastStringLength;
                 int spanEnd = lastStringLength + text.length();
 
-                int color = getColor(TextRendererUtil.getTextColor(textRun.GetTextColor(), hostConfig, textRun.GetIsSubtle(), containerStyle));
+                int color = getColor(TextRendererUtil.getTextColor(textRun.GetTextColor(), hostConfig, textRun.GetIsSubtle(), renderArgs.getContainerStyle()));
                 paragraph.setSpan(new ForegroundColorSpan(color), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
                 paragraph.setSpan(new StyleSpan(TextRendererUtil.getTextWeight(textRun.GetTextWeight())), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
@@ -138,7 +140,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            ContainerStyle containerStyle)
+            RenderArgs renderArgs)
     {
         RichTextBlock richTextBlock = null;
         if (baseCardElement instanceof TextBlock)
@@ -160,20 +162,26 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
         // Height
         // IsVisible
         // Spacing
+        // MinHeight
         setSpacingAndSeparator(context, viewGroup, richTextBlock.GetSpacing(), richTextBlock.GetSeparator(), hostConfig, true);
 
-        if(!baseCardElement.GetIsVisible())
+        if (!baseCardElement.GetIsVisible())
         {
             textView.setVisibility(View.GONE);
         }
 
-        if( richTextBlock.GetHeight() == HeightType.Stretch )
+        if (richTextBlock.GetHeight() == HeightType.Stretch)
         {
             textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
         }
         else
         {
             textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        }
+
+        if (richTextBlock.GetMinHeight() != 0)
+        {
+            textView.setMinimumHeight(Util.dpToPixels(context, (int)richTextBlock.GetMinHeight()));
         }
 
         // RichTextBlock properties
@@ -202,7 +210,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
         // Every paragraph may contain contains any number of inlines
         // The current inline element types are TextRun
         ParagraphVector paragraphs = richTextBlock.GetParagraphs();
-        int paragraphCount = paragraphs.size();
+        int paragraphCount = (int)paragraphs.size();
 
         textView.setText("");
 
@@ -216,7 +224,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
                 textView.append(System.getProperty("line.separator"));
             }
 
-            SpannableStringBuilder convertedString = buildSpannableParagraph(renderedCard, inlines, cardActionHandler, hostConfig, containerStyle);
+            SpannableStringBuilder convertedString = buildSpannableParagraph(renderedCard, inlines, cardActionHandler, hostConfig, renderArgs);
 
             textView.append(convertedString);
         }
