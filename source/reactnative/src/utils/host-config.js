@@ -49,8 +49,7 @@ export class HostConfigManager {
 	}
 
 	static setHostConfig(value) {
-		newHostConfig = { ...defaultHostConfig, ...value }
-		this.hostConfig = new HostConfig(newHostConfig);
+		this.hostConfig = new HostConfig(value);
 	}
 
 	/**
@@ -381,21 +380,25 @@ export class ContainerStyleSet {
 
 
 class FontStyleConfig {
-	constructor(obj = {}) {
-		this.default = new FontConfig("default", obj);
+	constructor(obj = {}, customConfigFontFamily, customConfigFontWeights, customConfigFontSizes) {
+		this.default = new FontConfig("default", obj, customConfigFontFamily, customConfigFontWeights, customConfigFontSizes);
 		this.monospace = new FontConfig("monospace", obj);
 	}
 }
 // Each instance of this class holds config of specific FontStyle type 
+// customConfigFontFamily, customConfigWeights, customConfigFontSizes are deprecated and will be removed in future.
 class FontConfig {
-	constructor(type, customConfig = {}) {
+	constructor(type, customConfig = {}, customConfigFontFamily, customConfigFontWeights, customConfigFontSizes) {
 		this.type = type;
+
+
 		let defaultFontStyles = defaultHostConfig["fontStyles"];
 		this.fontFamily = defaultFontStyles[type].fontFamily;
 		this.fontSizes = defaultFontStyles[type].fontSizes;
 		this.fontWeights = defaultFontStyles[type].fontWeights;
 
-		if (customConfig[type]) { // any custom config ?
+
+		if (!Utils.isNullOrEmpty(customConfig[type])) { // any custom config ?
 			let config = customConfig[type];
 			if (type === "monospace") {
 				this.fontFamily = (Platform.OS === Constants.PlatformIOS) ? "Courier New" : "monospace";
@@ -406,6 +409,16 @@ class FontConfig {
 			this.fontSizes = config["fontSizes"] ? { ...this.fontSizes, ...config["fontSizes"] } : this.fontSizes;
 			this.fontWeights = config["fontWeights"] ? { ...this.fontWeights, ...config["fontWeights"] } : this.fontWeights;
 		}
+		else if (!Utils.isNullOrEmpty(customConfigFontFamily)) {
+			this.fontFamily = customConfigFontFamily;
+		}
+		else if (!Utils.isNullOrEmpty(customConfigFontWeights)) {
+			this.fontWeights = customConfigFontWeights;
+		}
+		else if (!Utils.isNullOrEmpty(customConfigFontSizes)) {
+			this.fontSizes = customConfigFontSizes;
+		}
+
 	}
 }
 
@@ -474,7 +487,6 @@ export class HostConfig {
 			if (typeof obj === "string" || obj instanceof String) {
 				obj = JSON.parse(obj);
 			}
-
 			this.choiceSetInputValueSeparator = (obj && typeof obj["choiceSetInputValueSeparator"] === "string") ? obj["choiceSetInputValueSeparator"] : this.choiceSetInputValueSeparator;
 			this.supportsInteractivity = (obj && typeof obj["supportsInteractivity"] === "boolean") ? obj["supportsInteractivity"] : this.supportsInteractivity;
 			this.fontFamily = obj["fontFamily"] || this.fontFamily;
@@ -527,8 +539,8 @@ export class HostConfig {
 			this.actions = new ActionsConfig(obj.actions || this.actions);
 			this.adaptiveCard = new AdaptiveCardConfig(obj.adaptiveCard || this.adaptiveCard);
 			this.imageSet = new ImageSetConfig(obj["imageSet"]);
-			this.factSet = new FactSetConfig(obj["factSet"])
-			this.fontStyles = new FontStyleConfig(obj["fontStyles"]);
+			this.factSet = new FactSetConfig(obj["factSet"]);
+			this.fontStyles = new FontStyleConfig(obj["fontStyles"], obj["fontFamily"], obj["fontWeights"], obj["fontSizes"]);
 		}
 	}
 
@@ -552,7 +564,6 @@ export class HostConfig {
 			case Enums.Spacing.Padding:
 				return this.spacing.padding;
 			default:
-
 				return this.spacing.small;
 		}
 	}
@@ -946,13 +957,3 @@ export const defaultHostConfig = {
 		spacing: 10
 	}
 }
-
-
-
-
-
-
-
-
-
-
