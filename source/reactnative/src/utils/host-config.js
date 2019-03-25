@@ -390,8 +390,6 @@ class FontStyleConfig {
 class FontConfig {
 	constructor(type, customConfig = {}, customConfigFontFamily, customConfigFontWeights, customConfigFontSizes) {
 		this.type = type;
-
-
 		let defaultFontStyles = defaultHostConfig["fontStyles"];
 		this.fontFamily = defaultFontStyles[type].fontFamily;
 		this.fontSizes = defaultFontStyles[type].fontSizes;
@@ -418,7 +416,6 @@ class FontConfig {
 		else if (!Utils.isNullOrEmpty(customConfigFontSizes)) {
 			this.fontSizes = customConfigFontSizes;
 		}
-
 	}
 }
 
