@@ -62,6 +62,13 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public void InvokeAction(FrameworkElement ui, AdaptiveActionEventArgs args)
         {
+            // ToggleVisibility is a renderer-handled action
+            if (args.Action is AdaptiveToggleVisibilityAction toggleVisibilityAction)
+            {
+                this.ToggleVisibility(toggleVisibilityAction.TargetElements);
+                return;
+            }
+
             OnAction?.Invoke(ui, args);
         }
 

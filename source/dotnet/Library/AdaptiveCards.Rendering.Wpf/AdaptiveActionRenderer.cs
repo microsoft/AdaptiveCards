@@ -14,14 +14,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 var uiButton = CreateActionButton(action, context);
                 uiButton.Click += (sender, e) =>
                 {
-                    if (action is AdaptiveToggleVisibilityAction toggleVisibilityAction)
-                    {
-                        context.ToggleVisibility(toggleVisibilityAction.TargetElements);
-                    }
-                    else
-                    {
-                        context.InvokeAction(uiButton, new AdaptiveActionEventArgs(action));
-                    }
+                    context.InvokeAction(uiButton, new AdaptiveActionEventArgs(action));
 
                     // Prevent nested events from triggering
                     e.Handled = true;
