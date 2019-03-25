@@ -9,5 +9,12 @@ import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public interface IActionLayoutRenderer {
-    public void renderActions(RenderedAdaptiveCard renderedCard, Context context, FragmentManager fragmentManager, ViewGroup viewGroup, BaseActionElementVector baseActionElementList, ICardActionHandler cardActionHandler, HostConfig hostConfig);
+    public void renderActions(RenderedAdaptiveCard renderedCard,
+                              Context context,
+                              FragmentManager fragmentManager,
+                              ViewGroup viewGroup,
+                              BaseActionElementVector baseActionElementList,
+                              ICardActionHandler cardActionHandler,
+                              HostConfig hostConfig,
+                              RenderArgs renderArgs);
 }

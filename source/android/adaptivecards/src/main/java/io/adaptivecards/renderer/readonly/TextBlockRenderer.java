@@ -22,8 +22,10 @@ import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.FontStyle;
 import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HorizontalAlignment;
@@ -146,7 +148,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            ContainerStyle containerStyle)
+            RenderArgs renderArgs)
     {
         TextBlock textBlock = null;
         if (baseCardElement instanceof TextBlock)
@@ -181,7 +183,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         setTextFormat(textView, hostConfig, textBlock.GetFontStyle(), textBlock.GetTextWeight());
         setTextSize(textView, textBlock.GetFontStyle(), textBlock.GetTextSize(), hostConfig);
         setSpacingAndSeparator(context, viewGroup, textBlock.GetSpacing(), textBlock.GetSeparator(), hostConfig, true);
-        setTextColor(textView, textBlock.GetTextColor(), hostConfig, textBlock.GetIsSubtle(), containerStyle);
+        setTextColor(textView, textBlock.GetTextColor(), hostConfig, textBlock.GetIsSubtle(), renderArgs.getContainerStyle());
         setTextAlignment(textView, textBlock.GetHorizontalAlignment());
 
         if( textBlock.GetHeight() == HeightType.Stretch )
@@ -201,6 +203,11 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         else if (!textBlock.GetWrap())
         {
             textView.setMaxLines(1);
+        }
+
+        if (textBlock.GetMinHeight() != 0)
+        {
+            textView.setMinHeight(Util.dpToPixels(context, (int)textBlock.GetMinHeight()));
         }
 
         viewGroup.addView(textView);

@@ -119,6 +119,14 @@ public class BaseCardElement extends BaseElement {
     if (getClass() == BaseCardElement.class) AdaptiveCardObjectModelJNI.BaseCardElement_SetIsVisible(swigCPtr, this, value); else AdaptiveCardObjectModelJNI.BaseCardElement_SetIsVisibleSwigExplicitBaseCardElement(swigCPtr, this, value);
   }
 
+  public long GetMinHeight() {
+    return (getClass() == BaseCardElement.class) ? AdaptiveCardObjectModelJNI.BaseCardElement_GetMinHeight(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseCardElement_GetMinHeightSwigExplicitBaseCardElement(swigCPtr, this);
+  }
+
+  public void SetMinHeight(long value) {
+    if (getClass() == BaseCardElement.class) AdaptiveCardObjectModelJNI.BaseCardElement_SetMinHeight(swigCPtr, this, value); else AdaptiveCardObjectModelJNI.BaseCardElement_SetMinHeightSwigExplicitBaseCardElement(swigCPtr, this, value);
+  }
+
   public CardElementType GetElementType() {
     return CardElementType.swigToEnum((getClass() == BaseCardElement.class) ? AdaptiveCardObjectModelJNI.BaseCardElement_GetElementType(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseCardElement_GetElementTypeSwigExplicitBaseCardElement(swigCPtr, this));
   }
@@ -133,6 +141,11 @@ public class BaseCardElement extends BaseElement {
 
   public Object swigOriginalObject() {
     return AdaptiveCardObjectModelJNI.BaseCardElement_swigOriginalObject(swigCPtr, this);
+  }
+
+  public static BaseCardElement dynamic_cast(BaseElement baseElement) {
+    long cPtr = AdaptiveCardObjectModelJNI.BaseCardElement_dynamic_cast(BaseElement.getCPtr(baseElement), baseElement);
+    return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
   }
 
 }

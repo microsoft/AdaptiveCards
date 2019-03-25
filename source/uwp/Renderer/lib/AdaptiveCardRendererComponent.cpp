@@ -21,6 +21,7 @@
 #include "AdaptiveRenderContext.h"
 #include "AdaptiveShowCardActionRenderer.h"
 #include "AdaptiveSubmitActionRenderer.h"
+#include "AdaptiveRichTextBlockRenderer.h"
 #include "AdaptiveTextBlockRenderer.h"
 #include "AdaptiveTextInputRenderer.h"
 #include "AdaptiveTimeInputRenderer.h"

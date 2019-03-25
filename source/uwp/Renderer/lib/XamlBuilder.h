@@ -42,6 +42,10 @@ namespace AdaptiveNamespace
                            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
                            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** imageControl);
 
+        static HRESULT BuildRichTextBlock(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* adaptiveCardElement,
+                                          _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                          _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+                                          _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** textBlockControl);
         static HRESULT BuildTextBlock(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* adaptiveCardElement,
                                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
@@ -213,20 +217,6 @@ namespace AdaptiveNamespace
                                                                                           bool isHorizontal = true);
         static void ApplyMarginToXamlElement(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
                                              _In_ ABI::Windows::UI::Xaml::IFrameworkElement* element);
-        static void StyleXamlTextBlock(ABI::AdaptiveNamespace::FontStyle fontStyle,
-                                       ABI::AdaptiveNamespace::TextSize size,
-                                       ABI::AdaptiveNamespace::ForegroundColor color,
-                                       ABI::AdaptiveNamespace::ContainerStyle containerStyle,
-                                       bool isSubtle,
-                                       bool wrap,
-                                       UINT32 maxWidth,
-                                       ABI::AdaptiveNamespace::TextWeight weight,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock,
-                                       _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig);
-        static void StyleXamlTextBlock(_In_ ABI::AdaptiveNamespace::IAdaptiveTextConfig* textConfig,
-                                       ABI::AdaptiveNamespace::ContainerStyle containerStyle,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock,
-                                       _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig);
         static HRESULT BuildPanelChildren(
             _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>* children,
             _In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel,
