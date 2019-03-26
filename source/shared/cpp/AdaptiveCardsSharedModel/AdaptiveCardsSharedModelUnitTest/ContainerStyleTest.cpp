@@ -479,7 +479,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             auto columns = columnset->GetColumns();
             shared_ptr<Column> column1 = static_pointer_cast<Column>(columns.at(0));
             Assert::IsTrue(column1->GetStyle() == ContainerStyle::Default);
-            Assert::IsFalse(column1->GetCanBleed());
+            Assert::IsTrue(column1->GetCanBleed());
 
             auto items = column1->GetItems();
             shared_ptr<Container> container = static_pointer_cast<Container>(items.back());
@@ -497,7 +497,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
             shared_ptr<Column> column3 = static_pointer_cast<Column>(columns.at(2));
             Assert::IsTrue(column3->GetStyle() == ContainerStyle::Default);
-            Assert::IsFalse(column3->GetCanBleed());
+            Assert::IsTrue(column3->GetCanBleed());
 
             auto items3 = column3->GetItems();
             shared_ptr<Container> container3 = static_pointer_cast<Container>(items3.back());
