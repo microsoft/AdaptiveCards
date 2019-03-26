@@ -87,7 +87,30 @@ export class ContainerWrapper extends React.PureComponent {
         }
         computedStyles.push(backgroundStyle);
 
+        // padding & bleed
+        if (this.canApplyPadding()) {
+            const padding = hostConfig.getEffectiveSpacing(Enums.Spacing.Padding);
+            computedStyles.push({ padding: padding });
+
+            // bleed
+            if (this.payload.bleed) {
+                computedStyles.push({ marginHorizontal: -padding });
+            }
+        }
+
         return computedStyles;
+    }
+
+    /**
+     * @description Determing whether padding can be applied to container 
+     * @returns {boolean}
+     */
+    canApplyPadding = () => {
+        if (this.payload.type === 'AdaptiveCard') {
+            return true;
+        }
+        const parentContainerStyle = this.props.containerStyle;
+        return this.payload.style && parentContainerStyle != this.payload.style;
     }
 }
 
