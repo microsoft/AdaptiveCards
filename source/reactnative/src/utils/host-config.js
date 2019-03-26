@@ -381,14 +381,14 @@ export class ContainerStyleSet {
 
 class FontStyleConfig {
 	constructor(obj = {}) {
-		this.default = new FontConfig("default", obj["fontStyles"], obj["fontFamily"], obj["fontWeights"], obj["fontSizes"]);
-		this.monospace = new FontConfig("monospace", obj["fontStyles"]);
+		this.default = new FontConfig("default",obj);
+		this.monospace = new FontConfig("monospace", obj);
 	}
 }
 // Each instance of this class holds config of specific FontStyle type 
 // customConfigFontFamily, customConfigWeights, customConfigFontSizes are deprecated and will be removed in future.
 class FontConfig {
-	constructor(type, customConfig = {}, customConfigFontFamily, customConfigFontWeights, customConfigFontSizes) {
+	constructor(type, customConfig = {}) {
 		this.type = type;
 		let defaultFontStyles = defaultHostConfig["fontStyles"];
 		this.fontFamily = defaultFontStyles[type].fontFamily;
@@ -407,14 +407,14 @@ class FontConfig {
 			this.fontSizes = config["fontSizes"] ? { ...this.fontSizes, ...config["fontSizes"] } : this.fontSizes;
 			this.fontWeights = config["fontWeights"] ? { ...this.fontWeights, ...config["fontWeights"] } : this.fontWeights;
 		}
-		else if (!Utils.isNullOrEmpty(customConfigFontFamily)) {
-			this.fontFamily = customConfigFontFamily;
+		else if (!Utils.isNullOrEmpty(customConfig["fontFamily"])) {
+			this.fontFamily = customConfig["fontFamily"];
 		}
-		else if (!Utils.isNullOrEmpty(customConfigFontWeights)) {
-			this.fontWeights = customConfigFontWeights;
+		else if (!Utils.isNullOrEmpty(customConfig["fontWeights"])) {
+			this.fontWeights = customConfig["fontWeights"];
 		}
-		else if (!Utils.isNullOrEmpty(customConfigFontSizes)) {
-			this.fontSizes = customConfigFontSizes;
+		else if (!Utils.isNullOrEmpty(customConfig["fontSizes"])) {
+			this.fontSizes = customConfig["fontSizes"];
 		}
 	}
 }
