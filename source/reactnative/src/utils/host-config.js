@@ -278,6 +278,9 @@ export class ContainerStyleDefinition {
 		attention: new TextColorDefinition()
 	};
 
+	highlightBackgroundColor;
+	highlightForegroundColor;
+
 	parse(obj) {
 		if (obj) {
 			this.backgroundColor = obj["backgroundColor"];
@@ -291,6 +294,9 @@ export class ContainerStyleDefinition {
 				this.foregroundColors.warning = this.getTextColorDefinitionOrDefault(obj.foregroundColors["warning"], { default: "#E69500", subtle: "#DDE69500" });
 				this.foregroundColors.attention = this.getTextColorDefinitionOrDefault(obj.foregroundColors["attention"], { default: "#CC3300", subtle: "#DDCC3300" });
 			}
+
+			this.highlightBackgroundColor = obj["highlightBackgroundColor"];
+			this.highlightForegroundColor = obj["highlightForegroundColor"];
 		}
 	}
 

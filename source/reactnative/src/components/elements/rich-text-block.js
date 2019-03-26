@@ -51,20 +51,21 @@ export class RichTextBlock extends React.Component {
 
     /**
      * @description Return the paragraph element from the payload 
-     * @param {object} selectAction - select action for the text run
+     * @param {object} textRun - text run in the paragraph
      * @returns {object} constructed select Action component
      */
-    addActionElement = (selectAction) => {
+    addActionElement = (textRun) => {
         return (
-            <Text onPress={() => { (HostConfigManager.supportsInteractivity() === false) ? null : this.onClickHandle(selectAction) }}>
+            <Text onPress={() => { (HostConfigManager.supportsInteractivity() === false) ? null : this.onClickHandle(textRun.selectAction) }}>
                 <Label
-                    text={selectAction.title}
-                    size={selectAction.size}
-                    weight={selectAction.weight}
+                    text={textRun.text}
+                    size={textRun.size}
+                    weight={textRun.weight}
                     color={Enums.TextColor.Accent}
-                    wrap={selectAction.wrap}
-                    align={selectAction.horizontalAlignment}
-                    maxLines={selectAction.maxLines}
+                    isSubtle={textRun.isSubtle}
+                    wrap={textRun.wrap}
+                    align={textRun.horizontalAlignment}
+                    maxLines={textRun.maxLines}
                     style={styles.text} />
             </Text>
         );
@@ -96,19 +97,20 @@ export class RichTextBlock extends React.Component {
                 index > 0 && textRunElements.push(<Text key={"white-sapce-text" + index}>{" "}</Text>);
                 let textRunStyle = textRun.highlight ? [styles.text, { backgroundColor: this.hostConfig.richTextBlock.highlightColor }] : styles.text;
                 textRunElements.push(
-                    <Label
-                        key={Constants.TextRunString + index}
-                        text={textRun.text}
-                        size={textRun.size}
-                        weight={textRun.weight}
-                        color={textRun.color}
-                        isSubtle={textRun.isSubtle}
-                        wrap={textRun.wrap}
-                        align={textRun.horizontalAlignment}
-                        maxLines={textRun.maxLines}
-                        style={textRunStyle} />
+                    textRun.selectAction ? this.addActionElement(textRun) :
+                        <Label
+                            key={Constants.TextRunString + index}
+                            text={textRun.text}
+                            size={textRun.size}
+                            weight={textRun.weight}
+                            color={textRun.color}
+                            isSubtle={textRun.isSubtle}
+                            wrap={textRun.wrap}
+                            align={textRun.horizontalAlignment}
+                            maxLines={textRun.maxLines}
+                            style={textRunStyle}
+                        />
                 );
-                textRun.selectAction && textRunElements.push([<Text key={"white-sapce-text-action" + index}>{" "}</Text>, this.addActionElement(textRun.selectAction)]);
             }
         })
         return textRunElements;
@@ -126,7 +128,6 @@ export class RichTextBlock extends React.Component {
 const styles = StyleSheet.create({
     textContainer: {
         width: Constants.FullWidth,
-        alignItems: Constants.CenterString,
         backgroundColor: Constants.TransparentString,
     },
     text: {

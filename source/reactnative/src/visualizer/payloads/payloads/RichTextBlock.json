@@ -6,7 +6,7 @@
         {
             "type": "RichTextBlock",
             "wrap": true,
-            "maxLines": 2,
+            "maxLines": 5,
             "paragraphs": [
                 {
                     "inlines": [
@@ -22,7 +22,8 @@
                         },
                         {
                             "type": "TextRun",
-                            "text": "5/23/2016"
+                            "text": "5/23/2016",
+                            "color": "good"
                         },
                         {
                             "type": "TextRun",
@@ -39,12 +40,12 @@
                     "inlines": [
                         {
                             "type": "TextRun",
-                            "text": "Weather in Chennai",
-                            "color": "accent"
+                            "text": "Weather in",
+                            "color": "good"
                         },
                         {
                             "type": "TextRun",
-                            "text": "on",
+                            "text": "Chennai on",
                             "selectAction": {
                                 "type": "Action.OpenUrl",
                                 "title": "5/23/2016",
