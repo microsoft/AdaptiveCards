@@ -380,9 +380,9 @@ export class ContainerStyleSet {
 
 
 class FontStyleConfig {
-	constructor(obj = {}, customConfigFontFamily, customConfigFontWeights, customConfigFontSizes) {
-		this.default = new FontConfig("default", obj, customConfigFontFamily, customConfigFontWeights, customConfigFontSizes);
-		this.monospace = new FontConfig("monospace", obj);
+	constructor(obj = {}) {
+		this.default = new FontConfig("default", obj["fontStyles"], obj["fontFamily"], obj["fontWeights"], obj["fontSizes"]);
+		this.monospace = new FontConfig("monospace", obj["fontStyles"]);
 	}
 }
 // Each instance of this class holds config of specific FontStyle type 
@@ -537,7 +537,7 @@ export class HostConfig {
 			this.adaptiveCard = new AdaptiveCardConfig(obj.adaptiveCard || this.adaptiveCard);
 			this.imageSet = new ImageSetConfig(obj["imageSet"]);
 			this.factSet = new FactSetConfig(obj["factSet"]);
-			this.fontStyles = new FontStyleConfig(obj["fontStyles"], obj["fontFamily"], obj["fontWeights"], obj["fontSizes"]);
+			this.fontStyles = new FontStyleConfig(obj);
 		}
 	}
 
