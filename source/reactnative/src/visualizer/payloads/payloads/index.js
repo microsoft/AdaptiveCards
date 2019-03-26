@@ -236,6 +236,10 @@ export default payloads = [
     "json": require('./NumberedListTest.json')
   },
   {
+    "title": "RichTextBlock.json",
+    "json": require('./RichTextBlock.json')
+  },
+  {
     "title": "TextBlock.Color.json",
     "json": require('./TextBlock.Color.json')
   },
