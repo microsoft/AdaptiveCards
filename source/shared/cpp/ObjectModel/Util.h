@@ -1,6 +1,5 @@
 #pragma once
 
-#include "BaseCardElement.h"
 #include "AdaptiveCardParseWarning.h"
 
 std::string ValidateColor(const std::string& backgroundColor,

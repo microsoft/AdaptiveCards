@@ -8,6 +8,9 @@
 #include "RemoteResourceInformation.h"
 #include "Util.h"
 
+int ParseSizeForPixelSize(const std::string& sizeString,
+                          std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>>* warnings);
+
 void HandleUnknownProperties(const Json::Value& json, const std::unordered_set<std::string>& knownProperties, Json::Value& unknownProperties);
 
 namespace AdaptiveSharedNamespace
@@ -46,7 +49,9 @@ namespace AdaptiveSharedNamespace
 
         template<typename T> static std::shared_ptr<T> Deserialize(ParseContext& context, const Json::Value& json);
 
-        static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& element);
+        static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context,
+                                    const Json::Value& json,
+                                    std::shared_ptr<BaseElement>& element);
 
     protected:
         static Json::Value SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction);
