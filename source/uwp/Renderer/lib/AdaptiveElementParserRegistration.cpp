@@ -15,6 +15,7 @@
 #include "AdaptiveMediaRenderer.h"
 #include "AdaptiveNumberInputRenderer.h"
 #include "AdaptiveRenderContext.h"
+#include "AdaptiveRichTextBlockRenderer.h"
 #include "AdaptiveTextBlockRenderer.h"
 #include "AdaptiveTextInputRenderer.h"
 #include "AdaptiveTimeInputRenderer.h"

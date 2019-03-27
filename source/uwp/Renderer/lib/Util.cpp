@@ -19,15 +19,19 @@
 #include "AdaptiveMediaSource.h"
 #include "AdaptiveNumberInput.h"
 #include "AdaptiveOpenUrlAction.h"
+#include "AdaptiveParagraph.h"
+#include "AdaptiveRichTextBlock.h"
 #include "AdaptiveSeparator.h"
 #include "AdaptiveShowCardAction.h"
 #include "AdaptiveSubmitAction.h"
 #include "AdaptiveTextBlock.h"
 #include "AdaptiveTextInput.h"
+#include "AdaptiveTextRun.h"
 #include "AdaptiveTimeInput.h"
 #include "AdaptiveToggleInput.h"
 #include "AdaptiveToggleVisibilityTarget.h"
 #include "AdaptiveToggleVisibilityAction.h"
+#include "AdaptiveUnsupportedAction.h"
 #include "AdaptiveUnsupportedElement.h"
 #include "AdaptiveWarning.h"
 #include "CustomActionWrapper.h"
@@ -102,103 +106,115 @@ std::shared_ptr<TSharedBaseType> GetSharedModel(_In_ TAdaptiveBaseType* item)
     }
 }
 
+HRESULT GenerateSharedElement(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* item,
+                              std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& baseCardElement)
+{
+    ABI::AdaptiveNamespace::ElementType elementType;
+    RETURN_IF_FAILED(item->get_ElementType(&elementType));
+
+    switch (elementType)
+    {
+    case ABI::AdaptiveNamespace::ElementType::ActionSet:
+        baseCardElement =
+            GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveActionSet>(
+                item);
+        break;
+    case ABI::AdaptiveNamespace::ElementType::ChoiceSetInput:
+        baseCardElement =
+            GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveChoiceSetInput>(
+                item);
+        break;
+    case ABI::AdaptiveNamespace::ElementType::ColumnSet:
+        baseCardElement =
+            GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveColumnSet>(
+                item);
+        break;
+    case ABI::AdaptiveNamespace::ElementType::Container:
+        baseCardElement =
+            GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveContainer>(
+                item);
+        break;
+    case ABI::AdaptiveNamespace::ElementType::DateInput:
+        baseCardElement =
+            GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveDateInput>(
+                item);
+        break;
+    case ABI::AdaptiveNamespace::ElementType::FactSet:
+        baseCardElement =
+            GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveFactSet>(
+                item);
+        break;
+    case ABI::AdaptiveNamespace::ElementType::Image:
+        baseCardElement =
+            GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveImage>(
+                item);
+        break;
+    case ABI::AdaptiveNamespace::ElementType::ImageSet:
+        baseCardElement =
+            GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveImageSet>(
+                item);
+        break;
+    case ABI::AdaptiveNamespace::ElementType::NumberInput:
+        baseCardElement =
+            GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveNumberInput>(
+                item);
+        break;
+    case ABI::AdaptiveNamespace::ElementType::Media:
+        baseCardElement =
+            GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveMedia>(
+                item);
+        break;
+    case ABI::AdaptiveNamespace::ElementType::RichTextBlock:
+        baseCardElement =
+            GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveRichTextBlock>(
+                item);
+        break;
+    case ABI::AdaptiveNamespace::ElementType::TextBlock:
+        baseCardElement =
+            GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveTextBlock>(
+                item);
+        break;
+    case ABI::AdaptiveNamespace::ElementType::TextInput:
+        baseCardElement =
+            GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveTextInput>(
+                item);
+        break;
+    case ABI::AdaptiveNamespace::ElementType::TimeInput:
+        baseCardElement =
+            GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveTimeInput>(
+                item);
+        break;
+    case ABI::AdaptiveNamespace::ElementType::ToggleInput:
+        baseCardElement =
+            GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveToggleInput>(
+                item);
+        break;
+    case ABI::AdaptiveNamespace::ElementType::Unsupported:
+        baseCardElement =
+            GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveUnsupportedElement>(
+                item);
+        break;
+    case ABI::AdaptiveNamespace::ElementType::Custom:
+        baseCardElement = std::make_shared<CustomElementWrapper>(item);
+        break;
+    }
+
+    if (baseCardElement == nullptr)
+    {
+        return E_INVALIDARG;
+    }
+
+    return S_OK;
+}
+
 HRESULT GenerateSharedElements(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>* items,
                                std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>>& containedElements)
 {
     containedElements.clear();
 
     XamlHelpers::IterateOverVector<ABI::AdaptiveNamespace::IAdaptiveCardElement>(items, [&](ABI::AdaptiveNamespace::IAdaptiveCardElement* item) {
-        ABI::AdaptiveNamespace::ElementType elementType;
-        RETURN_IF_FAILED(item->get_ElementType(&elementType));
-
         std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> baseCardElement;
-        switch (elementType)
-        {
-        case ABI::AdaptiveNamespace::ElementType::ActionSet:
-            baseCardElement =
-                GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveActionSet>(
-                    item);
-            break;
-        case ABI::AdaptiveNamespace::ElementType::ChoiceSetInput:
-            baseCardElement =
-                GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveChoiceSetInput>(
-                    item);
-            break;
-        case ABI::AdaptiveNamespace::ElementType::ColumnSet:
-            baseCardElement =
-                GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveColumnSet>(
-                    item);
-            break;
-        case ABI::AdaptiveNamespace::ElementType::Container:
-            baseCardElement =
-                GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveContainer>(
-                    item);
-            break;
-        case ABI::AdaptiveNamespace::ElementType::DateInput:
-            baseCardElement =
-                GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveDateInput>(
-                    item);
-            break;
-        case ABI::AdaptiveNamespace::ElementType::FactSet:
-            baseCardElement =
-                GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveFactSet>(
-                    item);
-            break;
-        case ABI::AdaptiveNamespace::ElementType::Image:
-            baseCardElement =
-                GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveImage>(
-                    item);
-            break;
-        case ABI::AdaptiveNamespace::ElementType::ImageSet:
-            baseCardElement =
-                GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveImageSet>(
-                    item);
-            break;
-        case ABI::AdaptiveNamespace::ElementType::NumberInput:
-            baseCardElement =
-                GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveNumberInput>(
-                    item);
-            break;
-        case ABI::AdaptiveNamespace::ElementType::Media:
-            baseCardElement =
-                GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveMedia>(
-                    item);
-            break;
-        case ABI::AdaptiveNamespace::ElementType::TextBlock:
-            baseCardElement =
-                GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveTextBlock>(
-                    item);
-            break;
-        case ABI::AdaptiveNamespace::ElementType::TextInput:
-            baseCardElement =
-                GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveTextInput>(
-                    item);
-            break;
-        case ABI::AdaptiveNamespace::ElementType::TimeInput:
-            baseCardElement =
-                GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveTimeInput>(
-                    item);
-            break;
-        case ABI::AdaptiveNamespace::ElementType::ToggleInput:
-            baseCardElement =
-                GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveToggleInput>(
-                    item);
-            break;
-        case ABI::AdaptiveNamespace::ElementType::Unsupported:
-            baseCardElement =
-                GetSharedModel<AdaptiveSharedNamespace::BaseCardElement, ABI::AdaptiveNamespace::IAdaptiveCardElement, AdaptiveNamespace::AdaptiveUnsupportedElement>(
-                    item);
-            break;
-        case ABI::AdaptiveNamespace::ElementType::Custom:
-            baseCardElement = std::make_shared<CustomElementWrapper>(item);
-            break;
-        }
-
-        if (baseCardElement == nullptr)
-        {
-            return E_INVALIDARG;
-        }
-
+        RETURN_IF_FAILED(GenerateSharedElement(item, baseCardElement));
         containedElements.push_back(baseCardElement);
 
         return S_OK;
@@ -238,6 +254,10 @@ HRESULT GenerateSharedAction(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement
     case ABI::AdaptiveNamespace::ActionType::Custom:
         sharedAction = std::make_shared<CustomActionWrapper>(action);
         break;
+    case ABI::AdaptiveNamespace::ActionType::Unsupported:
+        sharedAction =
+            GetSharedModel<AdaptiveSharedNamespace::BaseActionElement, ABI::AdaptiveNamespace::IAdaptiveActionElement, AdaptiveNamespace::AdaptiveUnsupportedAction>(
+                action);
     }
 
     return S_OK;
@@ -362,6 +382,52 @@ HRESULT GenerateSharedMediaSources(_In_ ABI::Windows::Foundation::Collections::I
     return S_OK;
 }
 
+HRESULT GenerateSharedInlines(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveInline*>* inlines,
+                              std::vector<std::shared_ptr<AdaptiveSharedNamespace::Inline>>& containedElements)
+{
+    containedElements.clear();
+
+    XamlHelpers::IterateOverVector<ABI::AdaptiveNamespace::IAdaptiveInline, ABI::AdaptiveNamespace::IAdaptiveInline>(
+        inlines, [&](ABI::AdaptiveNamespace::IAdaptiveInline* thisInline) {
+            // We only support text runs for now
+            ComPtr<AdaptiveNamespace::AdaptiveTextRun> adaptiveTextRun = PeekInnards<AdaptiveNamespace::AdaptiveTextRun>(thisInline);
+            if (adaptiveTextRun == nullptr)
+            {
+                return E_INVALIDARG;
+            }
+
+            std::shared_ptr<AdaptiveSharedNamespace::TextRun> sharedTextRun;
+            RETURN_IF_FAILED(adaptiveTextRun->GetSharedModel(sharedTextRun));
+            containedElements.push_back(std::AdaptivePointerCast<AdaptiveSharedNamespace::Inline>(sharedTextRun));
+            return S_OK;
+        });
+
+    return S_OK;
+}
+
+HRESULT GenerateSharedParagraphs(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveParagraph*>* paragraphs,
+                                 std::vector<std::shared_ptr<AdaptiveSharedNamespace::Paragraph>>& containedElements)
+{
+    containedElements.clear();
+
+    XamlHelpers::IterateOverVector<ABI::AdaptiveNamespace::AdaptiveParagraph, ABI::AdaptiveNamespace::IAdaptiveParagraph>(
+        paragraphs, [&](ABI::AdaptiveNamespace::IAdaptiveParagraph* paragraph) {
+            ComPtr<AdaptiveNamespace::AdaptiveParagraph> adaptiveElement =
+                PeekInnards<AdaptiveNamespace::AdaptiveParagraph>(paragraph);
+            if (adaptiveElement == nullptr)
+            {
+                return E_INVALIDARG;
+            }
+
+            std::shared_ptr<AdaptiveSharedNamespace::Paragraph> sharedParagraph;
+            RETURN_IF_FAILED(adaptiveElement->GetSharedModel(sharedParagraph));
+            containedElements.push_back(std::AdaptivePointerCast<AdaptiveSharedNamespace::Paragraph>(sharedParagraph));
+            return S_OK;
+        });
+
+    return S_OK;
+}
+
 HRESULT GenerateSharedToggleElements(
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveToggleVisibilityTarget*>* targets,
     std::vector<std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityTarget>>& containedElements)
@@ -400,6 +466,86 @@ HRESULT GenerateSharedToggleElements(
     return S_OK;
 }
 
+HRESULT GenerateElementProjection(_In_ const std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& baseElement,
+                                  _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** projectedElement) noexcept try
+{
+    *projectedElement = nullptr;
+    switch (baseElement->GetElementType())
+    {
+    case CardElementType::TextBlock:
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveTextBlock>(
+            projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::TextBlock>(baseElement)));
+        break;
+    case CardElementType::Image:
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveImage>(
+            projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::Image>(baseElement)));
+        break;
+    case CardElementType::Container:
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveContainer>(
+            projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::Container>(baseElement)));
+        break;
+    case CardElementType::ColumnSet:
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveColumnSet>(
+            projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::ColumnSet>(baseElement)));
+        break;
+    case CardElementType::FactSet:
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveFactSet>(
+            projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::FactSet>(baseElement)));
+        break;
+    case CardElementType::ImageSet:
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveImageSet>(
+            projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::ImageSet>(baseElement)));
+        break;
+    case CardElementType::ChoiceSetInput:
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveChoiceSetInput>(
+            projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::ChoiceSetInput>(baseElement)));
+        break;
+    case CardElementType::DateInput:
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveDateInput>(
+            projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::DateInput>(baseElement)));
+        break;
+    case CardElementType::Media:
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveMedia>(
+            projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::Media>(baseElement)));
+        break;
+    case CardElementType::NumberInput:
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveNumberInput>(
+            projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::NumberInput>(baseElement)));
+        break;
+    case CardElementType::TextInput:
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveTextInput>(
+            projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::TextInput>(baseElement)));
+        break;
+    case CardElementType::TimeInput:
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveTimeInput>(
+            projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::TimeInput>(baseElement)));
+        break;
+    case CardElementType::ToggleInput:
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveToggleInput>(
+            projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::ToggleInput>(baseElement)));
+        break;
+    case CardElementType::ActionSet:
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveActionSet>(
+            projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::ActionSet>(baseElement)));
+        break;
+    case CardElementType::RichTextBlock:
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveRichTextBlock>(
+            projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::RichTextBlock>(baseElement)));
+        break;
+    case CardElementType::Custom:
+        RETURN_IF_FAILED(std::AdaptivePointerCast<::AdaptiveNamespace::CustomElementWrapper>(baseElement)->GetWrappedElement(projectedElement));
+        break;
+    case CardElementType::Unknown:
+    default:
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveUnsupportedElement>(
+            projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::UnknownElement>(baseElement)));
+        break;
+    }
+
+    return S_OK;
+}
+CATCH_RETURN;
+
 HRESULT GenerateContainedElementsProjection(
     const std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>>& containedElements,
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveCardElement*>* projectedParentContainer) noexcept try
@@ -407,73 +553,7 @@ HRESULT GenerateContainedElementsProjection(
     for (auto& containedElement : containedElements)
     {
         ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardElement> projectedContainedElement;
-        switch (containedElement->GetElementType())
-        {
-        case CardElementType::TextBlock:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveTextBlock>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::TextBlock>(containedElement)));
-            break;
-        case CardElementType::Image:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveImage>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::Image>(containedElement)));
-            break;
-        case CardElementType::Container:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveContainer>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::Container>(containedElement)));
-            break;
-        case CardElementType::ColumnSet:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveColumnSet>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::ColumnSet>(containedElement)));
-            break;
-        case CardElementType::FactSet:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveFactSet>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::FactSet>(containedElement)));
-            break;
-        case CardElementType::ImageSet:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveImageSet>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::ImageSet>(containedElement)));
-            break;
-        case CardElementType::ChoiceSetInput:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveChoiceSetInput>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::ChoiceSetInput>(containedElement)));
-            break;
-        case CardElementType::DateInput:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveDateInput>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::DateInput>(containedElement)));
-            break;
-        case CardElementType::Media:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveMedia>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::Media>(containedElement)));
-            break;
-        case CardElementType::NumberInput:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveNumberInput>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::NumberInput>(containedElement)));
-            break;
-        case CardElementType::TextInput:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveTextInput>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::TextInput>(containedElement)));
-            break;
-        case CardElementType::TimeInput:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveTimeInput>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::TimeInput>(containedElement)));
-            break;
-        case CardElementType::ToggleInput:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveToggleInput>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::ToggleInput>(containedElement)));
-            break;
-        case CardElementType::ActionSet:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveActionSet>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveCards::ActionSet>(containedElement)));
-            break;
-        case CardElementType::Custom:
-            RETURN_IF_FAILED(std::AdaptivePointerCast<CustomElementWrapper>(containedElement)->GetWrappedElement(&projectedContainedElement));
-            break;
-        case CardElementType::Unknown:
-            RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveUnsupportedElement>(
-                &projectedContainedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::UnknownElement>(containedElement)));
-            break;
-        }
-
+        GenerateElementProjection(containedElement, &projectedContainedElement);
         if (projectedContainedElement != nullptr)
         {
             RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
@@ -528,6 +608,10 @@ HRESULT GenerateActionProjection(const std::shared_ptr<AdaptiveSharedNamespace::
     case ActionType::Custom:
         RETURN_IF_FAILED(std::AdaptivePointerCast<CustomActionWrapper>(action)->GetWrappedElement(projectedAction));
         break;
+    case ActionType::UnknownAction:
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveUnsupportedAction>(
+            projectedAction, std::AdaptivePointerCast<AdaptiveSharedNamespace::UnknownAction>(action)));
+        break;
     default:
         return E_UNEXPECTED;
         break;
@@ -560,6 +644,43 @@ HRESULT GenerateFactsProjection(const std::vector<std::shared_ptr<AdaptiveShared
         ComPtr<ABI::AdaptiveNamespace::IAdaptiveFact> projectedContainedElement;
         RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveFact>(
             &projectedContainedElement, std::static_pointer_cast<AdaptiveSharedNamespace::Fact>(containedElement)));
+
+        RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
+    }
+    return S_OK;
+}
+CATCH_RETURN;
+
+HRESULT GenerateInlinesProjection(const std::vector<std::shared_ptr<AdaptiveSharedNamespace::Inline>>& containedElements,
+                                  ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveInline*>* projectedParentContainer) noexcept try
+{
+    for (auto& containedElement : containedElements)
+    {
+        // Only support text runs for now
+        if (containedElement->GetInlineType() != InlineElementType::TextRun)
+        {
+            return E_NOTIMPL;
+        }
+
+        ComPtr<ABI::AdaptiveNamespace::IAdaptiveInline> projectedContainedElement;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveTextRun>(
+            &projectedContainedElement, std::static_pointer_cast<AdaptiveSharedNamespace::TextRun>(containedElement)));
+
+        RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
+    }
+    return S_OK;
+}
+CATCH_RETURN;
+
+HRESULT GenerateParagraphsProjection(
+    const std::vector<std::shared_ptr<AdaptiveSharedNamespace::Paragraph>>& containedElements,
+    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveParagraph*>* projectedParentContainer) noexcept try
+{
+    for (auto& containedElement : containedElements)
+    {
+        ComPtr<ABI::AdaptiveNamespace::IAdaptiveParagraph> projectedContainedElement;
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveParagraph>(
+            &projectedContainedElement, std::static_pointer_cast<AdaptiveSharedNamespace::Paragraph>(containedElement)));
 
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
     }
@@ -1146,8 +1267,7 @@ HRESULT JsonValueToHString(_In_ IJsonValue* inputJsonValue, _Outptr_ HSTRING* re
 
 HRESULT JsonCppToJsonObject(const Json::Value& jsonCppValue, _COM_Outptr_ IJsonObject** result)
 {
-    Json::FastWriter fastWriter;
-    std::string jsonString = fastWriter.write(jsonCppValue);
+    std::string jsonString = ParseUtil::JsonToString(jsonCppValue);
     return StringToJsonObject(jsonString, result);
 }
 
@@ -1184,7 +1304,7 @@ HRESULT IsBackgroundImageValid(_In_ ABI::AdaptiveNamespace::IAdaptiveBackgroundI
         if (url != NULL)
         {
             *isValid = TRUE;
-			return S_OK;
+            return S_OK;
         }
     }
     *isValid = FALSE;
@@ -1366,4 +1486,48 @@ HRESULT GetDateTimeReference(unsigned int year, unsigned int month, unsigned int
     *dateTimeReference = localDateTimeReference.Detach();
 
     return S_OK;
+}
+
+ABI::AdaptiveNamespace::FallbackType MapSharedFallbackTypeToUwp(const AdaptiveSharedNamespace::FallbackType type)
+{
+    switch (type)
+    {
+    case FallbackType::Drop:
+    {
+        return ABI::AdaptiveNamespace::FallbackType::Drop;
+    }
+
+    case FallbackType::Content:
+    {
+        return ABI::AdaptiveNamespace::FallbackType::Content;
+    }
+
+    case FallbackType::None:
+    default:
+    {
+        return ABI::AdaptiveNamespace::FallbackType::None;
+    }
+    }
+}
+
+AdaptiveSharedNamespace::FallbackType MapUwpFallbackTypeToShared(const ABI::AdaptiveNamespace::FallbackType type)
+{
+    switch (type)
+    {
+    case ABI::AdaptiveNamespace::FallbackType::Drop:
+    {
+        return FallbackType::Drop;
+    }
+
+    case ABI::AdaptiveNamespace::FallbackType::Content:
+    {
+        return FallbackType::Content;
+    }
+
+    case ABI::AdaptiveNamespace::FallbackType::None:
+    default:
+    {
+        return FallbackType::None;
+    }
+    }
 }

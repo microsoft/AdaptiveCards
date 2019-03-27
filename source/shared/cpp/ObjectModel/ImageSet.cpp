@@ -2,6 +2,7 @@
 #include "ImageSet.h"
 #include "ParseUtil.h"
 #include "Image.h"
+#include "Util.h"
 
 using namespace AdaptiveSharedNamespace;
 

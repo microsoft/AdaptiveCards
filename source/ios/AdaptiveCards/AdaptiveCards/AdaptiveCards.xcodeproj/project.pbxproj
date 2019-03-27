@@ -279,7 +279,7 @@
 		F4F44B7B20478C5C00A2F24C /* DateTimePreparser.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F44B7720478C5B00A2F24C /* DateTimePreparser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4F44B7C20478C5C00A2F24C /* DateTimePreparsedToken.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4F44B7820478C5C00A2F24C /* DateTimePreparsedToken.cpp */; };
 		F4F44B7D20478C5C00A2F24C /* DateTimePreparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4F44B7920478C5C00A2F24C /* DateTimePreparser.cpp */; };
-		F4F44B8020478C6F00A2F24C /* Util.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F44B7E20478C6F00A2F24C /* Util.h */; };
+		F4F44B8020478C6F00A2F24C /* Util.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F44B7E20478C6F00A2F24C /* Util.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F4F44B8120478C6F00A2F24C /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4F44B7F20478C6F00A2F24C /* Util.cpp */; };
 		F4F44B8D204A11D000A2F24C /* (null) in Headers */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (Public, ); }; };
 		F4F44B8E204A145200A2F24C /* ACOBaseCardElement.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4F44B882048F82F00A2F24C /* ACOBaseCardElement.mm */; };
@@ -1082,6 +1082,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7EDC0F67213878E800077A13 /* SemanticVersion.h in Headers */,
+				F4F44B8020478C6F00A2F24C /* Util.h in Headers */,
 				6B224279220BAC8B000ACDA1 /* BaseElement.h in Headers */,
 				F448732A1EE2261F00FCAFAE /* ToggleInput.h in Headers */,
 				6BC30F7621E5750A00B9FAAE /* EnumMagic.h in Headers */,
@@ -1225,7 +1226,6 @@
 				6BCE4B222108EB4E00021A62 /* ACRAVPlayerViewHoldingUIView.h in Headers */,
 				F4C1F5EB1F2ABD6B0018CB78 /* ACRBaseActionElementRenderer.h in Headers */,
 				6B1147D11F32E53A008846EC /* ACRActionDelegate.h in Headers */,
-				F4F44B8020478C6F00A2F24C /* Util.h in Headers */,
 				F423C0C61EE1FBAA00905679 /* ACFramework.h in Headers */,
 				6B616C4321CB20D2003E29CE /* ACRActionToggleVisibilityRenderer.h in Headers */,
 			);

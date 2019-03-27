@@ -300,7 +300,8 @@
 					"inlines": [
 						{
 							"type": "TextRun",
-							"text": "This is a text run in paragraph 2"
+							"text": "This is a text run in paragraph 2",
+							"selectAction": { "type": "Action.Submit" }
 						},
 						{
 							"type": "TextRun",

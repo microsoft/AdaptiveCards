@@ -250,6 +250,38 @@ public class AdaptiveCardObjectModelJNI {
   public final static native char CharVector_doSet(long jarg1, CharVector jarg1_, int jarg2, char jarg3);
   public final static native void CharVector_doRemoveRange(long jarg1, CharVector jarg1_, int jarg2, int jarg3);
   public final static native void delete_CharVector(long jarg1);
+  public final static native long new_InlineVector__SWIG_0();
+  public final static native long new_InlineVector__SWIG_1(long jarg1, InlineVector jarg1_);
+  public final static native long InlineVector_capacity(long jarg1, InlineVector jarg1_);
+  public final static native void InlineVector_reserve(long jarg1, InlineVector jarg1_, long jarg2);
+  public final static native boolean InlineVector_isEmpty(long jarg1, InlineVector jarg1_);
+  public final static native void InlineVector_clear(long jarg1, InlineVector jarg1_);
+  public final static native long new_InlineVector__SWIG_2(int jarg1);
+  public final static native long new_InlineVector__SWIG_3(int jarg1, long jarg2, Inline jarg2_);
+  public final static native int InlineVector_doSize(long jarg1, InlineVector jarg1_);
+  public final static native void InlineVector_doAdd__SWIG_0(long jarg1, InlineVector jarg1_, long jarg2, Inline jarg2_);
+  public final static native void InlineVector_doAdd__SWIG_1(long jarg1, InlineVector jarg1_, int jarg2, long jarg3, Inline jarg3_);
+  public final static native long InlineVector_doRemove(long jarg1, InlineVector jarg1_, int jarg2);
+  public final static native long InlineVector_doGet(long jarg1, InlineVector jarg1_, int jarg2);
+  public final static native long InlineVector_doSet(long jarg1, InlineVector jarg1_, int jarg2, long jarg3, Inline jarg3_);
+  public final static native void InlineVector_doRemoveRange(long jarg1, InlineVector jarg1_, int jarg2, int jarg3);
+  public final static native void delete_InlineVector(long jarg1);
+  public final static native long new_ParagraphVector__SWIG_0();
+  public final static native long new_ParagraphVector__SWIG_1(long jarg1, ParagraphVector jarg1_);
+  public final static native long ParagraphVector_capacity(long jarg1, ParagraphVector jarg1_);
+  public final static native void ParagraphVector_reserve(long jarg1, ParagraphVector jarg1_, long jarg2);
+  public final static native boolean ParagraphVector_isEmpty(long jarg1, ParagraphVector jarg1_);
+  public final static native void ParagraphVector_clear(long jarg1, ParagraphVector jarg1_);
+  public final static native long new_ParagraphVector__SWIG_2(int jarg1);
+  public final static native long new_ParagraphVector__SWIG_3(int jarg1, long jarg2, Paragraph jarg2_);
+  public final static native int ParagraphVector_doSize(long jarg1, ParagraphVector jarg1_);
+  public final static native void ParagraphVector_doAdd__SWIG_0(long jarg1, ParagraphVector jarg1_, long jarg2, Paragraph jarg2_);
+  public final static native void ParagraphVector_doAdd__SWIG_1(long jarg1, ParagraphVector jarg1_, int jarg2, long jarg3, Paragraph jarg3_);
+  public final static native long ParagraphVector_doRemove(long jarg1, ParagraphVector jarg1_, int jarg2);
+  public final static native long ParagraphVector_doGet(long jarg1, ParagraphVector jarg1_, int jarg2);
+  public final static native long ParagraphVector_doSet(long jarg1, ParagraphVector jarg1_, int jarg2, long jarg3, Paragraph jarg3_);
+  public final static native void ParagraphVector_doRemoveRange(long jarg1, ParagraphVector jarg1_, int jarg2, int jarg3);
+  public final static native void delete_ParagraphVector(long jarg1);
   public final static native long EnableSharedFromThisContainer_shared_from_this(long jarg1, EnableSharedFromThisContainer jarg1_);
   public final static native long new_CaseInsensitiveEqualTo();
   public final static native void delete_CaseInsensitiveEqualTo(long jarg1);
@@ -365,6 +397,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void BaseElement_SetAdditionalProperties(long jarg1, BaseElement jarg1_, long jarg2, JsonValue jarg2_);
   public final static native int BaseElement_GetFallbackType(long jarg1, BaseElement jarg1_);
   public final static native long BaseElement_GetFallbackContent(long jarg1, BaseElement jarg1_);
+  public final static native void BaseElement_SetFallbackType(long jarg1, BaseElement jarg1_, int jarg2);
+  public final static native void BaseElement_SetFallbackContent(long jarg1, BaseElement jarg1_, long jarg2, BaseElement jarg2_);
   public final static native boolean BaseElement_MeetsRequirements(long jarg1, BaseElement jarg1_, long jarg2);
   public final static native void BaseElement_GetResourceInformation(long jarg1, BaseElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native void BaseElement_GetResourceInformationSwigExplicitBaseElement(long jarg1, BaseElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
@@ -394,12 +428,17 @@ public class AdaptiveCardObjectModelJNI {
   public final static native boolean BaseCardElement_GetIsVisibleSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_);
   public final static native void BaseCardElement_SetIsVisible(long jarg1, BaseCardElement jarg1_, boolean jarg2);
   public final static native void BaseCardElement_SetIsVisibleSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_, boolean jarg2);
+  public final static native long BaseCardElement_GetMinHeight(long jarg1, BaseCardElement jarg1_);
+  public final static native long BaseCardElement_GetMinHeightSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_);
+  public final static native void BaseCardElement_SetMinHeight(long jarg1, BaseCardElement jarg1_, long jarg2);
+  public final static native void BaseCardElement_SetMinHeightSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_, long jarg2);
   public final static native int BaseCardElement_GetElementType(long jarg1, BaseCardElement jarg1_);
   public final static native int BaseCardElement_GetElementTypeSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_);
   public final static native void BaseCardElement_ParseJsonObject(long jarg1, ParseContext jarg1_, long jarg2, JsonValue jarg2_, long jarg3, BaseElement jarg3_);
   public final static native void BaseCardElement_PopulateKnownPropertiesSet(long jarg1, BaseCardElement jarg1_);
   public final static native void BaseCardElement_PopulateKnownPropertiesSetSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_);
   public final static native Object BaseCardElement_swigOriginalObject(long jarg1, BaseCardElement jarg1_);
+  public final static native long BaseCardElement_dynamic_cast(long jarg1, BaseElement jarg1_);
   public final static native void BaseCardElement_director_connect(BaseCardElement obj, long cptr, boolean mem_own, boolean weak_global);
   public final static native void BaseCardElement_change_ownership(BaseCardElement obj, long cptr, boolean take_or_release);
   public final static native long new_BaseActionElement__SWIG_0(int jarg1);
@@ -428,6 +467,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void BaseActionElement_PopulateKnownPropertiesSet(long jarg1, BaseActionElement jarg1_);
   public final static native void BaseActionElement_PopulateKnownPropertiesSetSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
   public final static native Object BaseActionElement_swigOriginalObject(long jarg1, BaseActionElement jarg1_);
+  public final static native long BaseActionElement_dynamic_cast(long jarg1, BaseElement jarg1_);
   public final static native void BaseActionElement_director_connect(BaseActionElement obj, long cptr, boolean mem_own, boolean weak_global);
   public final static native void BaseActionElement_change_ownership(BaseActionElement obj, long cptr, boolean take_or_release);
   public final static native long new_BackgroundImage__SWIG_0();
@@ -1281,6 +1321,9 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void TextRun_SetIsSubtle(long jarg1, TextRun jarg1_, boolean jarg2);
   public final static native void TextRun_SetLanguage(long jarg1, TextRun jarg1_, String jarg2);
   public final static native String TextRun_GetLanguage(long jarg1, TextRun jarg1_);
+  public final static native long TextRun_GetSelectAction(long jarg1, TextRun jarg1_);
+  public final static native void TextRun_SetSelectAction(long jarg1, TextRun jarg1_, long jarg2, BaseActionElement jarg2_);
+  public final static native long TextRun_dynamic_cast(long jarg1, Inline jarg1_);
   public final static native long BaseCardElement_SWIGSmartPtrUpcast(long jarg1);
   public final static native long BaseActionElement_SWIGSmartPtrUpcast(long jarg1);
   public final static native long BaseInputElement_SWIGSmartPtrUpcast(long jarg1);
@@ -1385,6 +1428,12 @@ public class AdaptiveCardObjectModelJNI {
   }
   public static void SwigDirector_BaseCardElement_SetIsVisible(BaseCardElement jself, boolean value) {
     jself.SetIsVisible(value);
+  }
+  public static long SwigDirector_BaseCardElement_GetMinHeight(BaseCardElement jself) {
+    return jself.GetMinHeight();
+  }
+  public static void SwigDirector_BaseCardElement_SetMinHeight(BaseCardElement jself, long value) {
+    jself.SetMinHeight(value);
   }
   public static int SwigDirector_BaseCardElement_GetElementType(BaseCardElement jself) {
     return (jself.GetElementType()).swigValue();

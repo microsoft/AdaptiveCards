@@ -3,7 +3,8 @@
 
 using namespace AdaptiveSharedNamespace;
 
-TextRun::TextRun() : Inline(InlineElementType::TextRun), m_textElementProperties(std::make_shared<TextElementProperties>())
+TextRun::TextRun() :
+    Inline(InlineElementType::TextRun), m_textElementProperties(std::make_shared<TextElementProperties>())
 {
     PopulateKnownPropertiesSet();
 }
@@ -19,6 +20,11 @@ Json::Value TextRun::SerializeToJsonValue() const
 
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = GetInlineTypeString();
     m_textElementProperties->SerializeToJsonValue(root);
+
+    if (m_selectAction != nullptr)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction)] = m_selectAction->SerializeToJsonValue();
+    }
 
     return root;
 }
@@ -97,12 +103,25 @@ void TextRun::SetLanguage(const std::string& value)
 {
     m_textElementProperties->SetLanguage(value);
 }
+
+std::shared_ptr<BaseActionElement> TextRun::GetSelectAction() const
+{
+    return m_selectAction;
+}
+
+void TextRun::SetSelectAction(const std::shared_ptr<BaseActionElement> action)
+{
+    m_selectAction = action;
+}
+
 std::shared_ptr<Inline> TextRun::Deserialize(ParseContext& context, const Json::Value& json)
 {
     std::shared_ptr<TextRun> inlineTextRun = std::make_shared<TextRun>();
 
     ParseUtil::ExpectTypeString(json, InlineElementTypeToString(InlineElementType::TextRun));
     inlineTextRun->m_textElementProperties->Deserialize(context, json);
+
+    inlineTextRun->SetSelectAction(ParseUtil::GetAction(context, json, AdaptiveCardSchemaKey::SelectAction, false));
 
     HandleUnknownProperties(json, inlineTextRun->m_knownProperties, inlineTextRun->m_additionalProperties);
 

@@ -6,8 +6,7 @@
 
 using namespace AdaptiveSharedNamespace;
 
-Column::Column() :
-    CollectionTypeElement(CardElementType::Column), m_width("Auto"), m_pixelWidth(0)
+Column::Column() : CollectionTypeElement(CardElementType::Column), m_width("Auto"), m_pixelWidth(0)
 {
     PopulateKnownPropertiesSet();
 }
@@ -53,8 +52,7 @@ std::vector<std::shared_ptr<BaseCardElement>>& Column::GetItems()
 
 std::string Column::Serialize() const
 {
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
+    return ParseUtil::JsonToString(SerializeToJsonValue());
 }
 
 Json::Value Column::SerializeToJsonValue() const
@@ -76,35 +74,6 @@ Json::Value Column::SerializeToJsonValue() const
     return root;
 }
 
-std::shared_ptr<Column> Column::Deserialize(ParseContext& context, const Json::Value& value)
-{
-    auto column = CollectionTypeElement::Deserialize<Column>(context, value);
-
-    std::string columnWidth = ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Width);
-    if (columnWidth == "")
-    {
-        // Look in "size" for back-compat with pre V1.0 cards
-        columnWidth = ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Size);
-    }
-
-    column->SetWidth(columnWidth, &context.warnings);
-
-
-    return column;
-}
-
-void Column::DeserializeChildren(ParseContext& context, const Json::Value& value)
-{
-    // Parse Items
-    auto cardElements = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Items, false);
-    m_items = std::move(cardElements);
-}
-
-std::shared_ptr<Column> Column::DeserializeFromString(ParseContext& context, const std::string& jsonString)
-{
-    return Column::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
-}
-
 void Column::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items),
@@ -120,3 +89,34 @@ void Column::GetResourceInformation(std::vector<RemoteResourceInformation>& reso
     CollectionTypeElement::GetResourceInformation<BaseCardElement>(resourceInfo, columnItems);
     return;
 }
+
+void Column::DeserializeChildren(ParseContext& context, const Json::Value& value)
+{
+    // Parse Items
+    auto cardElements = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Items, false);
+    m_items = std::move(cardElements);
+}
+
+std::shared_ptr<BaseCardElement> ColumnParser::Deserialize(ParseContext& context, const Json::Value& value)
+{
+    auto column = CollectionTypeElement::Deserialize<Column>(context, value);
+
+    std::string columnWidth = ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Width);
+    if (columnWidth == "")
+    {
+        // Look in "size" for back-compat with pre V1.0 cards
+        columnWidth = ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Size);
+    }
+
+    column->SetWidth(ParseUtil::ToLowercase(columnWidth));
+    const int parsedDimension = ParseSizeForPixelSize(column->GetWidth(), &context.warnings);
+    column->SetPixelWidth(parsedDimension);
+
+    return column;
+}
+
+std::shared_ptr<BaseCardElement> ColumnParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
+{
+    return ColumnParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
+}
+

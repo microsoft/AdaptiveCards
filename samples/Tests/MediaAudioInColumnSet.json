@@ -9,6 +9,7 @@
 			"columns":
 			[
 				{
+					"type":"Column",
 					"items":
 					[
 						{
@@ -29,6 +30,7 @@
 					]
 				},
 				{
+					"type":"Column",
 					"items":
 					[
 						{

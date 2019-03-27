@@ -25,8 +25,7 @@ namespace AdaptiveNamespace
                                            _In_ IAdaptiveRenderArgs* renderArgs,
                                            _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept try
     {
-        XamlBuilder::BuildColumn(cardElement, renderContext, renderArgs, result);
-        return S_OK;
+        return XamlBuilder::BuildColumn(cardElement, renderContext, renderArgs, result);
     }
     CATCH_RETURN;
 
@@ -37,7 +36,7 @@ namespace AdaptiveNamespace
         _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
         _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept try
     {
-        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveColumn, AdaptiveSharedNamespace::Column, AdaptiveSharedNamespace::Column>(
+        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveColumn, AdaptiveSharedNamespace::Column, AdaptiveSharedNamespace::ColumnParser>(
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;

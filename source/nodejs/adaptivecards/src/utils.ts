@@ -5,6 +5,10 @@ export function generateUniqueId(): string {
 	return "__ac-" + Shared.UUID.generate();
 }
 
+export function getStringValue(obj: any, defaultValue: string = undefined): string {
+	return obj ? obj.toString() : defaultValue;
+}
+
 export function getValueOrDefault<T>(obj: any, defaultValue: T): T {
 	return obj ? <T>obj : defaultValue;
 }
@@ -23,15 +27,21 @@ export function setProperty(target: any, propertyName: string, propertyValue: an
 	if (propertyValue && (!defaultValue || defaultValue !== propertyValue)) {
 		target[propertyName] = propertyValue;
 	}
+	else {
+		delete target[propertyName];
+	}
 }
 
 export function setEnumProperty(enumType: { [s: number]: string }, target: any, propertyName: string, propertyValue: number, defaultValue?: number) {
 	if (defaultValue === undefined || defaultValue !== propertyValue) {
 		target[propertyName] = enumType[propertyValue];
 	}
+	else {
+		delete target[propertyName];
+	}
 }
 
-export function parseBoolProperty(value: any, defaultValue: boolean): boolean {
+export function getBoolValue(value: any, defaultValue: boolean): boolean {
 	if (typeof value === "boolean") {
 		return value;
 	}
@@ -49,7 +59,7 @@ export function parseBoolProperty(value: any, defaultValue: boolean): boolean {
 	return defaultValue;
 }
 
-export function getEnumValueOrDefault(targetEnum: { [s: number]: string }, name: string, defaultValue: number): number {
+export function getEnumValue(targetEnum: { [s: number]: string }, name: string, defaultValue: number): number {
 	if (isNullOrEmpty(name)) {
 		return defaultValue;
 	}
@@ -73,7 +83,7 @@ export function getEnumValueOrDefault(targetEnum: { [s: number]: string }, name:
 
 export function parseHostConfigEnum(targetEnum: { [s: number]: string }, value: string | number, defaultValue: any): any {
 	if (typeof value === "string") {
-		return getEnumValueOrDefault(targetEnum, value, defaultValue);
+		return getEnumValue(targetEnum, value, defaultValue);
 	} else if (typeof value === "number") {
 		return getValueOrDefault<typeof targetEnum>(value, defaultValue);
 	} else {

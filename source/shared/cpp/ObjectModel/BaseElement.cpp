@@ -26,39 +26,19 @@ namespace AdaptiveSharedNamespace
         return Current();
     }
 
-    InternalId::InternalId() : m_internalId{InternalId::Invalid}
-    {
-    }
+    InternalId::InternalId() : m_internalId{InternalId::Invalid} {}
 
-    InternalId::InternalId(const unsigned int id) : m_internalId{id}
-    {
-    }
+    InternalId::InternalId(const unsigned int id) : m_internalId{id} {}
 
-    std::string BaseElement::Serialize() const
-    {
-        Json::FastWriter writer;
-        return writer.write(SerializeToJsonValue());
-    }
+    std::string BaseElement::Serialize() const { return ParseUtil::JsonToString(SerializeToJsonValue()); }
 
-    std::string BaseElement::GetId() const
-    {
-        return m_id;
-    }
+    std::string BaseElement::GetId() const { return m_id; }
 
-    void BaseElement::SetId(const std::string& value)
-    {
-        m_id = value;
-    }
+    void BaseElement::SetId(const std::string& value) { m_id = value; }
 
-    std::string BaseElement::GetElementTypeString() const
-    {
-        return m_typeString;
-    }
+    std::string BaseElement::GetElementTypeString() const { return m_typeString; }
 
-    void BaseElement::SetElementTypeString(const std::string& value)
-    {
-        m_typeString = value;
-    }
+    void BaseElement::SetElementTypeString(const std::string& value) { m_typeString = value; }
 
     void BaseElement::PopulateKnownPropertiesSet()
     {
@@ -68,20 +48,14 @@ namespace AdaptiveSharedNamespace
                                   AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)});
     }
 
-    Json::Value BaseElement::GetAdditionalProperties() const
-    {
-        return m_additionalProperties;
-    }
+    Json::Value BaseElement::GetAdditionalProperties() const { return m_additionalProperties; }
 
-    void BaseElement::SetAdditionalProperties(Json::Value const& value)
-    {
-        m_additionalProperties = value;
-    }
+    void BaseElement::SetAdditionalProperties(Json::Value const& value) { m_additionalProperties = value; }
 
     // Given a map of what our host provides, determine if this element's requirements are satisfied.
     bool BaseElement::MeetsRequirements(const std::unordered_map<std::string, std::string>& hostProvides) const
     {
-        for (const auto &requirement : m_requires)
+        for (const auto& requirement : m_requires)
         {
             // special case for adaptive cards version
             const auto& requirementName = requirement.first;
@@ -155,12 +129,8 @@ namespace AdaptiveSharedNamespace
         return root;
     }
 
-
     // Base implementation for elements that have no resource information
-    void BaseElement::GetResourceInformation(std::vector<RemoteResourceInformation>& /*resourceInfo*/)
-    {
-        return;
-    }
+    void BaseElement::GetResourceInformation(std::vector<RemoteResourceInformation>& /*resourceInfo*/) { return; }
 
     void BaseElement::ParseRequires(ParseContext& /*context*/, const Json::Value& json)
     {
@@ -182,7 +152,8 @@ namespace AdaptiveSharedNamespace
                     }
                     catch (const AdaptiveCardParseException&)
                     {
-                        throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Invalid version in requires value: '" + memberValue + "'");
+                        throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
+                                                         "Invalid version in requires value: '" + memberValue + "'");
                     }
                 }
                 return;

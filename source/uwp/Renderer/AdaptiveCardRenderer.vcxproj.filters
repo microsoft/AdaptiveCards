@@ -75,7 +75,6 @@
     <ClCompile Include="lib\AdaptiveError.cpp" />
     <ClCompile Include="lib\AdaptiveWarning.cpp" />
     <ClCompile Include="lib\DateTimeParser.cpp" />
-    <ClCompile Include="lib\HtmlHelpers.cpp" />
     <ClCompile Include="lib\InputValue.cpp" />
     <ClCompile Include="lib\pch.cpp" />
     <ClCompile Include="lib\AdaptiveCardElement.cpp" />
@@ -103,6 +102,13 @@
     <ClCompile Include="lib\AdaptiveShowCardActionRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveSubmitActionRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveToggleVisibilityActionRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveUnsupportedAction.cpp" />
+    <ClCompile Include="lib\AdaptiveRichTextBlock.cpp" />
+    <ClCompile Include="lib\AdaptiveRichTextBlockRenderer.cpp" />
+    <ClCompile Include="lib\AdaptiveParagraph.cpp" />
+    <ClCompile Include="lib\AdaptiveTextRun.cpp" />
+    <ClCompile Include="lib\AdaptiveTextElement.cpp" />
+    <ClCompile Include="lib\TextHelpers.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -186,7 +192,6 @@
     <ClInclude Include="lib\AdaptiveError.h" />
     <ClInclude Include="lib\AdaptiveWarning.h" />
     <ClInclude Include="lib\DateTimeParser.h" />
-    <ClInclude Include="lib\HtmlHelpers.h" />
     <ClInclude Include="lib\InputValue.h" />
     <ClInclude Include="lib\AdaptiveCardElement.h" />
     <ClInclude Include="lib\AdaptiveInputElement.h" />
@@ -213,6 +218,13 @@
     <ClInclude Include="lib\AdaptiveShowCardActionRenderer.h" />
     <ClInclude Include="lib\AdaptiveSubmitActionRenderer.h" />
     <ClInclude Include="lib\AdaptiveToggleVisibilityActionRenderer.h" />
+    <ClInclude Include="lib\AdaptiveUnsupportedAction.h" />
+    <ClInclude Include="lib\AdaptiveRichTextBlock.h" />
+    <ClInclude Include="lib\AdaptiveRichTextBlockRenderer.h" />
+    <ClInclude Include="lib\AdaptiveParagraph.h" />
+    <ClInclude Include="lib\AdaptiveTextRun.h" />
+    <ClInclude Include="lib\AdaptiveTextElement.h" />
+    <ClInclude Include="lib\TextHelpers.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />

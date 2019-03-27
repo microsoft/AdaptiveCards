@@ -71,6 +71,9 @@ namespace UWPUnitTests
             public IAdaptiveCardElement InternalTextBlock { get; set; }
             public IAdaptiveActionElement InternalSubmitAction { get; set; }
 
+            public IAdaptiveCardElement FallbackContent { get; }
+            public FallbackType FallbackType { get; }
+
             public JsonObject ToJson()
             {
                 return new JsonObject();
@@ -83,6 +86,9 @@ namespace UWPUnitTests
             public bool Separator { get; set; }
             public Spacing Spacing { get; set; }
             public bool IsVisible { get; set; }
+            public UInt32 MinHeight { get; set; }
+            IAdaptiveCardElement IAdaptiveCardElement.FallbackContent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+            FallbackType IAdaptiveCardElement.FallbackType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         };
         class TestElementParser : IAdaptiveElementParser
         {
@@ -180,10 +186,14 @@ namespace UWPUnitTests
             public JsonObject AdditionalProperties { get; set; }
             public string Id { get { return "TestID"; } set { } }
             public ActionType ActionType { get { return ActionType.Custom; } }
+            public IAdaptiveActionElement FallbackContent { get; }
+            public FallbackType FallbackType { get; }
             public string ActionTypeString { get { return "TestCustomAction"; } }
             public string IconUrl { get; set; }
             public string Sentiment { get; set; }
             public string Title { get; set; }
+            IAdaptiveActionElement IAdaptiveActionElement.FallbackContent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+            FallbackType IAdaptiveActionElement.FallbackType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         };
 
         class TestActionParser : IAdaptiveActionParser

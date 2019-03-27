@@ -84,6 +84,11 @@ namespace AdaptiveSharedNamespace
         // Fallback and Requires support
         FallbackType GetFallbackType() const { return m_fallbackType; }
         std::shared_ptr<BaseElement> GetFallbackContent() const { return m_fallbackContent; }
+        void SetFallbackType(FallbackType type) { m_fallbackType = type; }
+        void SetFallbackContent(std::shared_ptr<BaseElement> element)
+        {
+            m_fallbackContent = element;
+        }
 
         bool MeetsRequirements(const std::unordered_map<std::string, std::string>& hostProvides) const;
 
