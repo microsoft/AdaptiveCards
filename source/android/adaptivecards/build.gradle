@@ -87,7 +87,7 @@ publishing {
     }
     repositories {
         maven {
-            url 'https://microsoft.pkgs.visualstudio.com/_packaging/AdaptiveCards/maven/v1'
+            url 'https://microsoft.pkgs.visualstudio.com/_packaging/AdaptiveCards-Android/maven/v1'
             credentials {
                 username "VSTS"
                 password System.getenv("VSTS_ENV_ACCESS_TOKEN") ?: System.getenv("AdaptiveCardsAuthoTokens")
