@@ -9,7 +9,7 @@
 			"columns":
 			[
 				{
-                    "type":"Column",
+					"type":"Column",
 					"items":
 					[
 						{
@@ -30,7 +30,7 @@
 					]
 				},
 				{
-                    "type":"Column",
+					"type":"Column",
 					"items":
 					[
 						{
