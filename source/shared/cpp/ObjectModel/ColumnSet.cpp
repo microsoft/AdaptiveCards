@@ -38,15 +38,6 @@ Json::Value ColumnSet::SerializeToJsonValue() const
     return root;
 }
 
-std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(ParseContext& context, const Json::Value& value)
-{
-    ParseUtil::ExpectTypeString(value, CardElementType::ColumnSet);
-
-    auto container = CollectionTypeElement::Deserialize<ColumnSet>(context, value);
-
-    return container;
-}
-
 void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& value)
 { 
     auto elementArray = ParseUtil::GetArray(value, AdaptiveCardSchemaKey::Columns, false);
@@ -113,12 +104,16 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
             }
         }
 
-        InternalId::Next();        
+        std::shared_ptr<BaseElement> el;
+        BaseElement::ParseJsonObject<Column>(context, curJsonValue, el);
+
+        //BaseElement::ParseJsonObject<BaseCardElement>(context, curJsonValue, el);
+        // elements.push_back(std::static_pointer_cast<BaseCardElement>(curElement));
+
         // Parse the element
-        auto el = Column::Deserialize(context, curJsonValue);
         if (el != nullptr)
         {
-            elements.push_back(el);
+            elements.push_back(std::static_pointer_cast<Column>(el));
             // restores the parent's bleed state
             context.SetBleedDirection(previousBleedState);
         }
@@ -126,11 +121,6 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
     }
 
     m_columns = std::move(elements);
-}
-
-std::shared_ptr<BaseCardElement> ColumnSetParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
-{
-    return ColumnSetParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
 void ColumnSet::PopulateKnownPropertiesSet()
@@ -146,3 +136,18 @@ void ColumnSet::GetResourceInformation(std::vector<RemoteResourceInformation>& r
     CollectionTypeElement::GetResourceInformation<Column>(resourceInfo, columns);
     return;
 }
+
+std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(ParseContext& context, const Json::Value& value)
+{
+    ParseUtil::ExpectTypeString(value, CardElementType::ColumnSet);
+
+    auto container = CollectionTypeElement::Deserialize<ColumnSet>(context, value);
+
+    return container;
+}
+
+std::shared_ptr<BaseCardElement> ColumnSetParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
+{
+    return ColumnSetParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
+}
+

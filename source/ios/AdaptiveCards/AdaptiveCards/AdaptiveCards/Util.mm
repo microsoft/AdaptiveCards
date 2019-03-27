@@ -59,7 +59,7 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
                     // we transpose them, and get the final result
                     UIView *backgroundView = [[UIView alloc] init];
                     container.backgroundView = backgroundView;
-                    backgroundView.translatesAutoresizingMaskIntoConstraints = NO;                   
+                    backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
                     [view addSubview:backgroundView];
                     [view sendSubviewToBack:backgroundView];
                     backgroundView.backgroundColor = container.backgroundColor;
