@@ -45,7 +45,7 @@ export class Container extends React.Component {
 		const payload = this.payload;
 
 		var containerContent = (
-			<ContainerWrapper json={this.payload} style={[styles.container]}>
+			<ContainerWrapper json={this.payload} style={[styles.container]} containerStyle={this.props.containerStyle}>
 				<ElementWrapper json={this.payload} style={[styles.defaultBGStyle, { flexGrow: 0 }]}>
 					{this.parsePayload()}
 				</ElementWrapper>

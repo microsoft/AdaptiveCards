@@ -235,7 +235,7 @@ export class Column extends React.Component {
 			separatorStyles = [containerViewStyle, styles.separatorStyle];
 		}
 
-		return <ContainerWrapper json={this.column} style={[containerViewStyle]}>
+		return <ContainerWrapper json={this.column} style={[containerViewStyle]} containerStyle={this.props.containerStyle}>
 				<ActionComponent {...actionComponentProps}>
 					{separator && this.renderSeparator()}
 					<View style={separatorStyles}>
