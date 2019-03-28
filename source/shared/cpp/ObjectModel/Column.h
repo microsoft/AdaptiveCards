@@ -18,10 +18,6 @@ namespace AdaptiveSharedNamespace
         std::string Serialize() const override;
         Json::Value SerializeToJsonValue() const override;
 
-        static std::shared_ptr<Column> Deserialize(ParseContext& context, const Json::Value& root);
-
-        static std::shared_ptr<Column> DeserializeFromString(ParseContext& context, const std::string& jsonString);
-
         void DeserializeChildren(ParseContext& context, const Json::Value& value) override;
 
         std::string GetWidth() const;
@@ -44,5 +40,19 @@ namespace AdaptiveSharedNamespace
         std::string m_width;
         unsigned int m_pixelWidth;
         std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>> m_items;
+    };
+
+    class ColumnParser : public BaseCardElementParser
+    {
+    public:
+        ColumnParser() = default;
+        ColumnParser(const ColumnParser&) = default;
+        ColumnParser(ColumnParser&&) = default;
+        ColumnParser& operator=(const ColumnParser&) = default;
+        ColumnParser& operator=(ColumnParser&&) = default;
+        virtual ~ColumnParser() = default;
+
+        std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
+        std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
     };
 }
