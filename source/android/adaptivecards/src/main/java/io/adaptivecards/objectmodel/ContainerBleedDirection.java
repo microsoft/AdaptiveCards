@@ -8,43 +8,39 @@
 
 package io.adaptivecards.objectmodel;
 
-public enum ContainerStyle {
-  None,
-  Default,
-  Emphasis,
-  Good,
-  Attention,
-  Warning,
-  Accent,
-  NotSet;
+public enum ContainerBleedDirection {
+  BleedRestricted(0),
+  BleedToLeading,
+  BleedToTrailing,
+  BleedToBothEdges;
 
   public final int swigValue() {
     return swigValue;
   }
 
-  public static ContainerStyle swigToEnum(int swigValue) {
-    ContainerStyle[] swigValues = ContainerStyle.class.getEnumConstants();
+  public static ContainerBleedDirection swigToEnum(int swigValue) {
+    ContainerBleedDirection[] swigValues = ContainerBleedDirection.class.getEnumConstants();
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
-    for (ContainerStyle swigEnum : swigValues)
+    for (ContainerBleedDirection swigEnum : swigValues)
       if (swigEnum.swigValue == swigValue)
         return swigEnum;
-    throw new IllegalArgumentException("No enum " + ContainerStyle.class + " with value " + swigValue);
+    throw new IllegalArgumentException("No enum " + ContainerBleedDirection.class + " with value " + swigValue);
   }
 
   @SuppressWarnings("unused")
-  private ContainerStyle() {
+  private ContainerBleedDirection() {
     this.swigValue = SwigNext.next++;
   }
 
   @SuppressWarnings("unused")
-  private ContainerStyle(int swigValue) {
+  private ContainerBleedDirection(int swigValue) {
     this.swigValue = swigValue;
     SwigNext.next = swigValue+1;
   }
 
   @SuppressWarnings("unused")
-  private ContainerStyle(ContainerStyle swigEnum) {
+  private ContainerBleedDirection(ContainerBleedDirection swigEnum) {
     this.swigValue = swigEnum.swigValue;
     SwigNext.next = this.swigValue+1;
   }
