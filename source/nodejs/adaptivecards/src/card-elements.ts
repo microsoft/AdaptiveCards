@@ -4398,7 +4398,9 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 
             item = this.getLastVisibleRenderedItem();
 
-            if (this.getHasExpandedAction() || (item && item.isBleedingAtBottom())) {
+            let removeBottomPadding = this.renderedActionCount == 0 ? item && item.isBleedingAtBottom() : this.getHasExpandedAction();
+
+            if (removeBottomPadding) {
                 this.renderedElement.style.paddingBottom = "0px";
             }
         }
@@ -4410,10 +4412,6 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
         return this.hasExplicitStyle && (parentContainer ? parentContainer.getEffectiveStyle() != this.getEffectiveStyle() : false);
     }
 
-    protected getHasExpandedAction(): boolean {
-        return false;
-    }
-
     protected getDefaultPadding(): Shared.PaddingDefinition {
         return this.getHasBackground() ?
             new Shared.PaddingDefinition(
@@ -4421,6 +4419,14 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
                 Enums.Spacing.Padding,
                 Enums.Spacing.Padding,
                 Enums.Spacing.Padding) : super.getDefaultPadding();
+    }
+
+    protected getHasExpandedAction(): boolean {
+        return false;
+    }
+
+    protected get renderedActionCount(): number {
+        return 0;
     }
 
     protected get hasExplicitStyle(): boolean {
@@ -4881,9 +4887,9 @@ export class Container extends StylableCardElementContainer {
     }
 
     isBleedingAtBottom(): boolean {
-        let getLastRenderedItem = this.getLastVisibleRenderedItem();
+        let lastRenderedItem = this.getLastVisibleRenderedItem();
 
-        return this.isBleeding() || (getLastRenderedItem ? getLastRenderedItem.isBleedingAtBottom() : false);
+        return this.isBleeding() || (lastRenderedItem ? lastRenderedItem.isBleedingAtBottom() && lastRenderedItem.getEffectiveStyle() == this.getEffectiveStyle() : false);
     }
 
     validate(): Array<HostConfig.IValidationError> {
@@ -5651,15 +5657,19 @@ export abstract class ContainerWithActions extends Container {
     }
 
     protected getHasExpandedAction(): boolean {
-        if (this._actionCollection.renderedActionCount == 0) {
+        if (this.renderedActionCount == 0) {
             return false;
         }
-        else if (this._actionCollection.items.length == 1) {
+        else if (this.renderedActionCount == 1) {
             return this._actionCollection.expandedAction != null && !this.hostConfig.actions.preExpandSingleShowCardAction;
         }
         else {
             return this._actionCollection.expandedAction != null;
         }
+    }
+
+    protected get renderedActionCount(): number {
+        return this._actionCollection.renderedActionCount;
     }
 
     protected get renderIfEmpty(): boolean {
