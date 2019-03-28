@@ -57,7 +57,7 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
 
     // Child's bleed get more restricted as we walk down the tree
     // until padding is reset
-    // padding get rested when padding is added to a collection type element
+    // padding get reset when padding is added to a collection type element
     // only left child LC or right child RC have access to the padding of their parents
     // but if parent also has restriction such as BleedToLeft and BleedToRight,
     // only child that has same restriction get bleed property
