@@ -205,7 +205,7 @@ namespace AdaptiveCards
         [XmlElement]
 #endif
         [DefaultValue(typeof(AdaptiveContainerStyle), "none")]
-        public AdaptiveContainerStyle Style { get; set; }
+        public AdaptiveContainerStyle? Style { get; set; }
 
         /// <summary>
         ///     Action for the card (this allows a default action at the card level)

@@ -136,9 +136,9 @@ namespace AdaptiveCards.Rendering.Wpf
             }
 
             AdaptiveContainerStyle cardContainerStyle = AdaptiveContainerStyle.Default;
-            if (context.Config.AdaptiveCard.AllowCustomStyle && (card.Style != AdaptiveContainerStyle.None))
+            if (context.Config.AdaptiveCard.AllowCustomStyle && card.Style.HasValue)
             {
-                cardContainerStyle = card.Style;
+                cardContainerStyle = card.Style.Value;
             }
             context.RenderArgs.ParentStyle = cardContainerStyle;
 
