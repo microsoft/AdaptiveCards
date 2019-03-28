@@ -119,4 +119,3 @@ std::shared_ptr<BaseCardElement> ColumnParser::DeserializeFromString(ParseContex
 {
     return ColumnParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }
-

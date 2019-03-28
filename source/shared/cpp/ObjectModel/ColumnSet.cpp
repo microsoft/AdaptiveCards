@@ -72,7 +72,7 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
     }
 
     // Deserialize every element in the array
-    for (const Json::Value& curJsonValue : elementArray)
+    for (Json::Value& curJsonValue : elementArray)
     {
         // processing the cases where parent's bleed state is not restricted
         if (elemSize != 1)
@@ -105,6 +105,15 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
         }
 
         std::shared_ptr<BaseElement> el;
+        const std::string typeString = ParseUtil::GetString(curJsonValue, AdaptiveCardSchemaKey::Type, "Column", false);
+        if (typeString.compare("Column") != 0)
+        {
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Unable to parse element of type " + typeString);
+        }
+
+        // we are covering the case where type is left blank in the client's json
+        curJsonValue[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = typeString;
+
         BaseElement::ParseJsonObject<Column>(context, curJsonValue, el);
 
         // Parse the element
