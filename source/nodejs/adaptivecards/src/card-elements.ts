@@ -2958,7 +2958,7 @@ export class DateInput extends Input {
         this._dateInputElement.setAttribute("type", "date");
         this._dateInputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-dateInput");
         this._dateInputElement.style.width = "100%";
-        this._dateInputElement.oninput =  () => { this.valueChanged(); }
+        this._dateInputElement.oninput = () => { this.valueChanged(); }
 
         if (!Utils.isNullOrEmpty(this.defaultValue)) {
             this._dateInputElement.value = this.defaultValue;
@@ -2984,7 +2984,7 @@ export class TimeInput extends Input {
         this._timeInputElement.setAttribute("type", "time");
         this._timeInputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-timeInput");
         this._timeInputElement.style.width = "100%";
-        this._timeInputElement.oninput =  () => { this.valueChanged(); }
+        this._timeInputElement.oninput = () => { this.valueChanged(); }
 
         if (!Utils.isNullOrEmpty(this.defaultValue)) {
             this._timeInputElement.value = this.defaultValue;
@@ -4344,16 +4344,16 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
             return;
         }
 
-		let physicalPadding = new Shared.SpacingDefinition();
+        let physicalPadding = new Shared.SpacingDefinition();
 
-		if (this.getEffectivePadding()) {
-			physicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(this.getEffectivePadding());
-		}
+        if (this.getEffectivePadding()) {
+            physicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(this.getEffectivePadding());
+        }
 
-		this.renderedElement.style.paddingTop = physicalPadding.top + "px";
-		this.renderedElement.style.paddingRight = physicalPadding.right + "px";
-		this.renderedElement.style.paddingBottom = physicalPadding.bottom + "px";
-		this.renderedElement.style.paddingLeft = physicalPadding.left + "px";
+        this.renderedElement.style.paddingTop = physicalPadding.top + "px";
+        this.renderedElement.style.paddingRight = physicalPadding.right + "px";
+        this.renderedElement.style.paddingBottom = physicalPadding.bottom + "px";
+        this.renderedElement.style.paddingLeft = physicalPadding.left + "px";
 
         if (this.isBleeding()) {
             // Bleed into the first parent that does have padding
@@ -4361,9 +4361,9 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 
             this.getImmediateSurroundingPadding(padding);
 
-			let surroundingPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(padding);
+            let surroundingPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(padding);
 
-			this.renderedElement.style.marginRight = "-" + surroundingPadding.right + "px";
+            this.renderedElement.style.marginRight = "-" + surroundingPadding.right + "px";
             this.renderedElement.style.marginLeft = "-" + surroundingPadding.left + "px";
 
             if (physicalPadding.left == 0) {
@@ -4373,21 +4373,21 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
             if (physicalPadding.right == 0) {
                 this.renderedElement.style.paddingRight = surroundingPadding.right + "px";
             }
-    
-			if (this.separatorElement && this.separatorOrientation == Enums.Orientation.Horizontal) {
-				this.separatorElement.style.marginLeft = "-" + surroundingPadding.left + "px";
-				this.separatorElement.style.marginRight = "-" + surroundingPadding.right + "px";
-			}
-		}
-		else {
-			this.renderedElement.style.marginRight = "0";
-			this.renderedElement.style.marginLeft = "0";
 
-			if (this.separatorElement) {
-				this.separatorElement.style.marginRight = "0";
-				this.separatorElement.style.marginLeft = "0";
-			}
-		}
+            if (this.separatorElement && this.separatorOrientation == Enums.Orientation.Horizontal) {
+                this.separatorElement.style.marginLeft = "-" + surroundingPadding.left + "px";
+                this.separatorElement.style.marginRight = "-" + surroundingPadding.right + "px";
+            }
+        }
+        else {
+            this.renderedElement.style.marginRight = "0";
+            this.renderedElement.style.marginLeft = "0";
+
+            if (this.separatorElement) {
+                this.separatorElement.style.marginRight = "0";
+                this.separatorElement.style.marginLeft = "0";
+            }
+        }
 
         if (!this.isDesignMode()) {
             let item = this.getFirstVisibleRenderedItem();
