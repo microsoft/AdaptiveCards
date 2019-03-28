@@ -4316,7 +4316,7 @@ export class ActionSet extends CardElement {
     }
 
     renderSpeech(): string {
-        // TODO: What's the right thing to do here?
+        // There is nothing that can be spoken in an ActionSet
         return "";
     }
 
