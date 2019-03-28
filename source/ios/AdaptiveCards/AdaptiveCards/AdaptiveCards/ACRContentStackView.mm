@@ -16,7 +16,6 @@ using namespace AdaptiveCards;
     NSMutableArray* _targets;
     NSMutableArray<ACRShowCardTarget *>* _showcardTargets;
     ACRContainerStyle _style;
-    NSArray<NSLayoutConstraint *>* _widthconstraint;
 }
 
 - (instancetype)initWithStyle:(ACRContainerStyle)style
@@ -191,8 +190,17 @@ using namespace AdaptiveCards;
                                                                  options:0
                                                                  metrics:nil
                                                                    views:dictionary];
+
     [self addConstraints:_widthconstraint];
     [self addConstraints:vertConst];
+}
+
+- (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *)target
+    direction:(ACRBleedDirection)direction
+{
+    [self removeConstraints:_widthconstraint];
+    // new width will be bleed target - padding left and right
+    [self.stackView.widthAnchor constraintEqualToAnchor:target.widthAnchor constant:padding * -2.0].active = YES;
 }
 
 - (UILayoutConstraintAxis) getAxis
@@ -202,7 +210,7 @@ using namespace AdaptiveCards;
 
 - (void)layoutSubviews
 {
-    [super layoutSubviews];    
+    [super layoutSubviews];
 
     if (_isActionSet) {
         float accumulatedWidth = 0, accumulatedHeight = 0, spacing = self.stackView.spacing, maxWidth = 0, maxHeight = 0;
@@ -224,7 +232,7 @@ using namespace AdaptiveCards;
         }
 
         if (contentWidth > self.frame.size.width) {
-            [self removeConstraints:_widthconstraint]; 
+            [self removeConstraints:_widthconstraint];
         }
     }
 }

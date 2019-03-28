@@ -151,6 +151,7 @@ struct tm {
 %shared_ptr(AdaptiveCards::ContainerParser)
 %shared_ptr(AdaptiveCards::TextBlockParser)
 %shared_ptr(AdaptiveCards::ImageParser)
+%shared_ptr(AdaptiveCards::ColumnParser)
 %shared_ptr(AdaptiveCards::ColumnSetParser)
 %shared_ptr(AdaptiveCards::FactSetParser)
 %shared_ptr(AdaptiveCards::ChoiceSetInputParser)

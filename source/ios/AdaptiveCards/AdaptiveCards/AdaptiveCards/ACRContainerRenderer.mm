@@ -13,6 +13,7 @@
 #import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "ACRViewPrivate.h"
 #import "Util.h"
 
 @implementation ACRContainerRenderer
@@ -39,6 +40,9 @@
 
     ACRColumnView *container = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)containerElem->GetStyle()
                                                         parentStyle:[viewGroup style] hostConfig:acoConfig superview:viewGroup];
+    [viewGroup addArrangedSubview:container];
+
+    configBleed(rootView, elem, container, acoConfig);
 
     UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
     if(containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom){
@@ -57,8 +61,6 @@
     if(containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && !(container.hasStretchableView))){
         trailingBlankSpace = [container addPaddingSpace];
     }
-
-    [viewGroup addArrangedSubview:container];
 
     if(leadingBlankSpace != nil && trailingBlankSpace != nil){
         [NSLayoutConstraint constraintWithItem:leadingBlankSpace
