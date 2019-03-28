@@ -133,7 +133,7 @@ namespace AdaptiveCards.Test
                     "EmptyFallbackCard",
 
                     // These cards have AdpativeCards with styles on them
-                    "ColumnColumnSetContainer.Bleed.json",
+                    "ColumnColumnSetContainer.Bleed",
                 });
         }
     }
