@@ -198,16 +198,6 @@ namespace AdaptiveCards
         public AdaptiveVerticalContentAlignment VerticalContentAlignment { get; set; }
 
         /// <summary>
-        ///     The container style for the card
-        /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-#if !NETSTANDARD1_3
-        [XmlElement]
-#endif
-        [DefaultValue(typeof(AdaptiveContainerStyle), "none")]
-        public AdaptiveContainerStyle? Style { get; set; }
-
-        /// <summary>
         ///     Action for the card (this allows a default action at the card level)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]

@@ -100,7 +100,11 @@ namespace AdaptiveCards.Test
         {
             // TODO: bring this test back once I investigate the warnings
             TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.0", "elements"),
-                new string[] { });
+                new string[]
+                {
+                    "Container.Style",
+                    "Action.ShowCard.Style"
+                });
         }
 
         [TestMethod]
@@ -127,6 +131,9 @@ namespace AdaptiveCards.Test
                     "FallbackParsing",
                     "DeepFallback",
                     "EmptyFallbackCard",
+
+                    // These cards have AdpativeCards with styles on them
+                    "ColumnColumnSetContainer.Bleed.json",
                 });
         }
     }
