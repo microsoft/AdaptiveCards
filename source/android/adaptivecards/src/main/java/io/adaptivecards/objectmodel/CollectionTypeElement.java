@@ -78,6 +78,10 @@ public class CollectionTypeElement extends BaseCardElement {
     return AdaptiveCardObjectModelJNI.CollectionTypeElement_GetCanBleed(swigCPtr, this);
   }
 
+  public ContainerBleedDirection GetBleedDirection() {
+    return ContainerBleedDirection.swigToEnum(AdaptiveCardObjectModelJNI.CollectionTypeElement_GetBleedDirection(swigCPtr, this));
+  }
+
   public void ConfigForContainerStyle(ParseContext context) {
     AdaptiveCardObjectModelJNI.CollectionTypeElement_ConfigForContainerStyle(swigCPtr, this, ParseContext.getCPtr(context), context);
   }

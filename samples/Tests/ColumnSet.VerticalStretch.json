@@ -8,6 +8,7 @@
 			"type": "ColumnSet",
 			"columns": [
 				{
+					"type":"Column",
 					"width": 1,
 					"items": [
 						{
@@ -18,6 +19,7 @@
 					]
 				},
 				{
+					"type":"Column",
 					"width": 1,
 					"spacing": "large",
 					"separator": true,

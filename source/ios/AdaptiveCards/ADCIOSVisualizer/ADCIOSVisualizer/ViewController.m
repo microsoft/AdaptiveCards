@@ -240,7 +240,7 @@
         [registration setCustomActionRenderer:customActionRenderer key:type1];
 
         _config = hostconfigParseResult.config;
-        renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:335 delegate:self];
+        renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:315 delegate:self];
     }
     
     if(renderResult.succeeded)

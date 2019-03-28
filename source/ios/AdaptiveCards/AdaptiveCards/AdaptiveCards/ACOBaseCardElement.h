@@ -48,6 +48,13 @@ typedef NS_ENUM(NSInteger, ACRContainerStyle) {
     ACRAccent
 };
 
+typedef NS_ENUM(NSInteger, ACRBleedDirection) {
+    ACRRestricted,
+    ACRToLeadingEdge,
+    ACRToTrailingEdge,
+    ACRToBothEdges    
+};
+
 @property ACRCardElementType type;
 
 @end
