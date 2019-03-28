@@ -273,12 +273,8 @@ namespace AdaptiveCards.Rendering.Html
                 ApplyBackgroundImage(card.BackgroundImage, uiCard, context);
             }
 
-            AdaptiveContainerStyle cardContainerStyle = AdaptiveContainerStyle.Default;
-            if (context.Config.AdaptiveCard.AllowCustomStyle && card.Style.HasValue)
-            {
-                cardContainerStyle = card.Style.Value;
-            }
-            context.RenderArgs.ParentStyle = cardContainerStyle;
+            // Reset the parent style
+            context.RenderArgs.ParentStyle = AdaptiveContainerStyle.Default;
 
             switch (card.VerticalContentAlignment)
             {
