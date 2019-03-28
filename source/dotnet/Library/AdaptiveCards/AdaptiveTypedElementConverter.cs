@@ -35,7 +35,7 @@ namespace AdaptiveCards
                 [AdaptiveCard.TypeName] = typeof(AdaptiveCard),
                 [AdaptiveTextBlock.TypeName] = typeof(AdaptiveTextBlock),
                 [AdaptiveRichTextBlock.TypeName] = typeof(AdaptiveRichTextBlock),
-                [AdaptiveRichTextBlock.AdaptiveParagraph.AdaptiveTextRun.TypeName] = typeof(AdaptiveRichTextBlock.AdaptiveParagraph.AdaptiveTextRun),
+                [AdaptiveTextRun.TypeName] = typeof(AdaptiveTextRun),
                 [AdaptiveImage.TypeName] = typeof(AdaptiveImage),
                 [AdaptiveContainer.TypeName] = typeof(AdaptiveContainer),
                 [AdaptiveColumn.TypeName] = typeof(AdaptiveColumn),

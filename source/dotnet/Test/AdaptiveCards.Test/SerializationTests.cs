@@ -507,12 +507,12 @@ namespace AdaptiveCards.Test
             richTB.HorizontalAlignment = AdaptiveHorizontalAlignment.Center;
 
             // Build First Paragraph
-            var paragraph1 = new AdaptiveRichTextBlock.AdaptiveParagraph();
+            var paragraph1 = new AdaptiveParagraph();
 
-            var textRun1 = new AdaptiveRichTextBlock.AdaptiveParagraph.AdaptiveTextRun("Start the first paragraph ");
+            var textRun1 = new AdaptiveTextRun("Start the first paragraph ");
             paragraph1.Inlines.Add(textRun1);
 
-            var textRun2 = new AdaptiveRichTextBlock.AdaptiveParagraph.AdaptiveTextRun("with some cool looking stuff");
+            var textRun2 = new AdaptiveTextRun("with some cool looking stuff");
             textRun2.Color = AdaptiveTextColor.Accent;
             textRun2.FontStyle = AdaptiveFontStyle.Monospace;
             textRun2.IsSubtle = true;
@@ -523,7 +523,7 @@ namespace AdaptiveCards.Test
             richTB.Paragraphs.Add(paragraph1);
 
             // Build Second Paragraph (Empty inlines)
-            var paragraph2 = new AdaptiveRichTextBlock.AdaptiveParagraph();
+            var paragraph2 = new AdaptiveParagraph();
             richTB.Paragraphs.Add(paragraph2);
 
             card.Body.Add(richTB);
@@ -613,10 +613,10 @@ namespace AdaptiveCards.Test
             var paragraphs = richTB.Paragraphs;
 
             var inlines1 = paragraphs[0].Inlines;
-            var run1 = inlines1[0] as AdaptiveRichTextBlock.AdaptiveParagraph.AdaptiveTextRun;
+            var run1 = inlines1[0] as AdaptiveTextRun;
             Assert.AreEqual(run1.Text, "Start the first paragraph ");
 
-            var run2 = inlines1[1] as AdaptiveRichTextBlock.AdaptiveParagraph.AdaptiveTextRun;
+            var run2 = inlines1[1] as AdaptiveTextRun;
             Assert.AreEqual(run2.Text, "with some cool looking stuff");
         }
 

@@ -992,7 +992,7 @@ namespace AdaptiveCards.Rendering.Html
             return uiTextBlock;
         }
 
-        protected static HtmlTag TextRunRender(AdaptiveRichTextBlock.AdaptiveParagraph.AdaptiveTextRun textRun, AdaptiveRenderContext context)
+        protected static HtmlTag TextRunRender(AdaptiveTextRun textRun, AdaptiveRenderContext context)
         {
             string fontFamily = context.Config.GetFontFamily(textRun.FontStyle);
             int fontSize = context.Config.GetFontSize(textRun.FontStyle, textRun.Size);
