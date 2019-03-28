@@ -25,7 +25,6 @@
 							"columns": [
 								{
 									"type": "Column",
-									"horizontalAlignment": "Center",
 									"style": "emphasis",
 									"items": [
 										{
