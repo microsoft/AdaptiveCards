@@ -113,6 +113,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     ContainerStyle style = ([_hostConfig getHostConfig]->GetAdaptiveCard().allowCustomStyle)? [_adaptiveCard card]->GetStyle(): ContainerStyle::Default;
 
     [self setStyle:[ACOHostConfig getPlatformContainerStyle:style]];
+    
     UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card] inputs:inputs context:self containingView:self hostconfig:_hostConfig];
 
     newView.backgroundColor = [_hostConfig getBackgroundColorForContainerStyle:

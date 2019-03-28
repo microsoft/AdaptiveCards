@@ -11,7 +11,7 @@
 @interface ACRContentStackView:UIView<ACRIContentHoldingView>
 
 @property (nonnull) UIStackView* stackView;
-@property (nullable) UIView *backgroundView;
+@property (weak, nullable) UIView *backgroundView;
 @property (nonnull) NSArray<NSLayoutConstraint *>* widthconstraint;
 
 @property BOOL isActionSet;

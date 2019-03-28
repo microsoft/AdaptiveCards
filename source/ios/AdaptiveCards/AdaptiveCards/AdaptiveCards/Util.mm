@@ -32,8 +32,8 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
                 InternalId internalId = collection->GetParentalId();
                 ACRContentStackView *view = (ACRContentStackView *)[rootView getBleedTarget:internalId];
                 // c++ to object-c enum conversion
+                view = view? view: rootView;
                 if (view) {
-
                     ACRBleedDirection direction = ACRRestricted;
                     switch (collection->GetBleedDirection()) {
                         case ContainerBleedDirection::BleedToLeading:
@@ -59,9 +59,11 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
                     // we transpose them, and get the final result
                     UIView *backgroundView = [[UIView alloc] init];
                     container.backgroundView = backgroundView;
-                    backgroundView.translatesAutoresizingMaskIntoConstraints = NO;                   
-                    [view addSubview:backgroundView];
-                    [view sendSubviewToBack:backgroundView];
+                    backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+                    
+                    UIView *marginalView = view.backgroundView? view.backgroundView : view;
+                    [marginalView addSubview:backgroundView];
+                    [marginalView sendSubviewToBack:backgroundView];
                     backgroundView.backgroundColor = container.backgroundColor;
                     container.backgroundColor = UIColor.clearColor;
                     [backgroundView.topAnchor constraintEqualToAnchor:container.topAnchor].active = YES;
@@ -80,8 +82,6 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
                         [backgroundView layer].borderColor = [container layer].borderColor;
                         [container layer].borderColor = 0;
                     }
-                    
-                    UIView *marginalView = view.backgroundView? view.backgroundView : view;
 
                     if (direction == ACRToLeadingEdge || direction == ACRToBothEdges) {
                         [backgroundView.leadingAnchor constraintEqualToAnchor:marginalView.leadingAnchor].active = YES;
