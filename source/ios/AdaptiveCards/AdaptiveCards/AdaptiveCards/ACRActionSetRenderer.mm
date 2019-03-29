@@ -117,8 +117,8 @@
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup rootView:(ACRView *)rootView inputs:(NSArray *)inputs baseCardElement:(ACOBaseCardElement *)acoElem hostConfig:(ACOHostConfig *)acoConfig {
-        ACOAdaptiveCard *card = [[ACOAdaptiveCard alloc] init];
-        [card setCard:[[rootView card] card]];
+    ACOAdaptiveCard *card = [[ACOAdaptiveCard alloc] init];
+    [card setCard:[[rootView card] card]];
     return [[ACRActionSetRenderer getInstance] renderButtons:rootView inputs:(NSMutableArray *)inputs superview:viewGroup card:card hostConfig:acoConfig];
 }
 
