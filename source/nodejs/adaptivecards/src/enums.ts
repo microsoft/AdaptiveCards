@@ -1,3 +1,9 @@
+export enum ActionSentiment {
+    Default,
+    Positive,
+    Destructive
+}
+
 export enum Size {
     Auto,
     Stretch,
@@ -101,6 +107,12 @@ export enum InputTextStyle {
     Tel,
     Url,
     Email
+}
+
+export enum InputValidationNecessity {
+    Optional,
+    Required,
+    RequiredWithVisualCue
 }
 
 /*

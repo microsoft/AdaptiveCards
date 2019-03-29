@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
@@ -47,14 +48,14 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
 
     @Override
     public View render(
-            RenderedAdaptiveCard renderedCard,
-            Context context,
-            FragmentManager fragmentManager,
-            ViewGroup viewGroup,
-            BaseCardElement baseCardElement,
-            ICardActionHandler cardActionHandler,
-            HostConfig hostConfig,
-            ContainerStyle containerStyle)
+        RenderedAdaptiveCard renderedCard,
+        Context context,
+        FragmentManager fragmentManager,
+        ViewGroup viewGroup,
+        BaseCardElement baseCardElement,
+        ICardActionHandler cardActionHandler,
+        HostConfig hostConfig,
+        RenderArgs renderArgs)
     {
         ColumnSet columnSet = null;
         if (baseCardElement instanceof ColumnSet)
@@ -73,21 +74,40 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         }
 
         setSpacingAndSeparator(context, viewGroup, columnSet.GetSpacing(), columnSet.GetSeparator(), hostConfig, true);
-        ContainerStyle styleForThis = columnSet.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? containerStyle : columnSet.GetStyle();
+        ContainerStyle styleForThis = columnSet.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? renderArgs.getContainerStyle() : columnSet.GetStyle();
 
         ColumnVector columnVector = columnSet.GetColumns();
         long columnVectorSize = columnVector.size();
 
         LinearLayout layout = new LinearLayout(context);
         layout.setTag(new TagContent(columnSet));
+
+        // Add this two for allowing children to bleed
+        layout.setClipChildren(false);
+        layout.setClipToPadding(false);
+
         if(!baseCardElement.GetIsVisible())
         {
             layout.setVisibility(View.GONE);
         }
 
+        ContainerStyle containerStyle = renderArgs.getContainerStyle();
         for (int i = 0; i < columnVectorSize; i++) {
             Column column = columnVector.get(i);
-            columnRenderer.render(renderedCard, context, fragmentManager, layout, column, cardActionHandler, hostConfig, containerStyle);
+
+            ColumnRenderer rendererAsColumnRenderer = null;
+            if (columnRenderer instanceof ColumnRenderer)
+            {
+                rendererAsColumnRenderer = (ColumnRenderer)columnRenderer;
+                rendererAsColumnRenderer.setIsRenderingFirstColumn(i == 0);
+                rendererAsColumnRenderer.setIsRenderingLastColumn(i == (columnVectorSize - 1));
+            }
+
+            View v = columnRenderer.render(renderedCard, context, fragmentManager, layout, column, cardActionHandler, hostConfig, renderArgs);
+            if (v == null)
+            {
+                return null;
+            }
         }
 
         if (columnSet.GetSelectAction() != null) {
@@ -112,6 +132,14 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             viewGroup.addView(layout);
         }
 
+        if (columnSet.GetBleed() && (columnSet.GetCanBleed() || (styleForThis != containerStyle || columnSet.GetBackgroundImage() != null)))
+        {
+            long padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
+            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) layout.getLayoutParams();
+            layoutParams.setMargins((int)-padding, layoutParams.topMargin, (int)-padding, layoutParams.bottomMargin);
+            layout.setLayoutParams(layoutParams);
+        }
+
         if (styleForThis != containerStyle)
         {
             int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
@@ -120,6 +148,11 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
                 hostConfig.GetContainerStyles().getEmphasisPalette().getBackgroundColor() :
                 hostConfig.GetContainerStyles().getDefaultPalette().getBackgroundColor();
             layout.setBackgroundColor(Color.parseColor(color));
+        }
+
+        if (columnSet.GetMinHeight() != 0)
+        {
+            layout.setMinimumHeight(Util.dpToPixels(context, (int)columnSet.GetMinHeight()));
         }
 
         return layout;

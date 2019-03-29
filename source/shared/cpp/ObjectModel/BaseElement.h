@@ -20,6 +20,8 @@ namespace AdaptiveSharedNamespace
         static InternalId Current();
         static constexpr unsigned int Invalid = 0;
 
+        std::size_t const Hash() const { return std::hash<unsigned int>()(m_internalId); }
+
         bool operator==(const unsigned int other) const { return m_internalId == other; }
         bool operator!=(const unsigned int other) const { return m_internalId != other; }
         bool operator==(const InternalId& other) const { return m_internalId == other.m_internalId; }
@@ -29,6 +31,11 @@ namespace AdaptiveSharedNamespace
         static unsigned int s_currentInternalId;
         InternalId(const unsigned int id);
         unsigned int m_internalId;
+    };
+
+    struct InternalIdKeyHash
+    {
+        std::size_t operator()(const InternalId& internalId) const { return internalId.Hash(); }
     };
 
     class BaseElement
@@ -77,6 +84,11 @@ namespace AdaptiveSharedNamespace
         // Fallback and Requires support
         FallbackType GetFallbackType() const { return m_fallbackType; }
         std::shared_ptr<BaseElement> GetFallbackContent() const { return m_fallbackContent; }
+        void SetFallbackType(FallbackType type) { m_fallbackType = type; }
+        void SetFallbackContent(std::shared_ptr<BaseElement> element)
+        {
+            m_fallbackContent = element;
+        }
 
         bool MeetsRequirements(const std::unordered_map<std::string, std::string>& hostProvides) const;
 

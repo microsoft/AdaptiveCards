@@ -82,8 +82,16 @@ public class AdaptiveCardRenderer
         rootLayout.setFocusable(true);
         rootLayout.setFocusableInTouchMode(true);
 
+        // Add this two for allowing children to bleed
+        rootLayout.setClipChildren(false);
+        rootLayout.setClipToPadding(false);
+
         LinearLayout layout = new LinearLayout(context);
         layout.setTag(adaptiveCard);
+
+        // Add this two for allowing children to bleed
+        layout.setClipChildren(false);
+        layout.setClipToPadding(false);
 
         if( adaptiveCard.GetHeight() == HeightType.Stretch )
         {
@@ -133,7 +141,9 @@ public class AdaptiveCardRenderer
 
         layout.setBackgroundColor(Color.parseColor(color));
 
-        CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, layout, adaptiveCard, baseCardElementList, cardActionHandler, hostConfig, style);
+        RenderArgs renderArgs = new RenderArgs();
+        renderArgs.setContainerStyle(style);
+        CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, layout, adaptiveCard, baseCardElementList, cardActionHandler, hostConfig, renderArgs);
 
         if (hostConfig.GetSupportsInteractivity())
         {
@@ -148,7 +158,7 @@ public class AdaptiveCardRenderer
 
                 IActionLayoutRenderer actionLayoutRenderer = CardRendererRegistration.getInstance().getActionLayoutRenderer();
                 if(actionLayoutRenderer != null) {
-                    actionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, layout, baseActionElementList, cardActionHandler, hostConfig);
+                    actionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, layout, baseActionElementList, cardActionHandler, hostConfig, renderArgs);
                 }
             }
         }

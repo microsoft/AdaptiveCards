@@ -58,6 +58,82 @@ namespace AdaptiveCards
         public AdaptiveCard() : this(new AdaptiveSchemaVersion(1, 0)) { }
 
         /// <summary>
+        ///     Schema version that this card requires. If a client is lower than this version the fallbackText will be rendered.
+        /// </summary>
+        [JsonProperty(Order = -10, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, NullValueHandling = NullValueHandling.Include)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(null)]
+        public AdaptiveSchemaVersion Version { get; set; }
+
+        /// <summary>
+        ///     This is obsolete. Use the <see cref="Version" property instead/>
+        /// </summary>
+        [JsonProperty(Order = -9, NullValueHandling = NullValueHandling.Ignore)]
+        [Obsolete("Use the Version property instead")]
+        public AdaptiveSchemaVersion MinVersion { get; set; }
+
+        /// <summary>
+        ///     Text shown when the client doesn’t support the version specified. This can be in markdown format.
+        /// </summary>
+        [JsonProperty(Order = -8, NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(null)]
+        public string FallbackText { get; set; }
+
+        /// <summary>
+        ///     Speak annotation for the card
+        /// </summary>
+        [JsonProperty(Order = -7, NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(null)]
+        public string Speak { get; set; }
+
+        /// <summary>
+        ///     The 2-letter ISO-639-1 language used in the card. Used to localize any date/time functions
+        /// </summary>
+        [JsonProperty(Order = -7, NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(null)]
+        public string Lang { get; set; }
+
+        /// <summary>
+        ///     Title for the card (used when displayed in a dialog)
+        /// </summary>
+        [JsonProperty(Order = -6, NullValueHandling = NullValueHandling.Ignore)]
+        [Obsolete("The Title property is not officially supported right now and should not be used")]
+        public string Title { get; set; }
+
+        /// <summary>
+        ///     Background image for card
+        /// </summary>
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [JsonProperty(Order = -5, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonConverter(typeof(AdaptiveBackgroundImageConverter))]
+        [DefaultValue(null)]
+        public AdaptiveBackgroundImage BackgroundImage { get; set; }
+
+        /// <summary>
+        ///     Value that denotes if the card must use all the vertical space that is set to it. Default value is <see cref="AdaptiveHeight.Default"/>.
+        /// </summary>
+        [JsonConverter(typeof(StringSizeWithUnitConverter), true)]
+        [JsonProperty(Order = -4, DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlElement(typeof(AdaptiveHeight))]
+#endif
+        [DefaultValue(typeof(AdaptiveHeight), "auto")]
+        public AdaptiveHeight Height { get; set; }
+
+        /// <summary>
         /// The Body elements for this card
         /// </summary>
         [JsonProperty(Order = -3)]
@@ -98,72 +174,21 @@ namespace AdaptiveCards
         public bool ShouldSerializeActions() => Actions?.Count > 0;
 
         /// <summary>
-        ///     Speak annotation for the card
+        /// This makes sure the $schema property doesn't show up in AdditionalProperties
         /// </summary>
-        [JsonProperty(Order = -7, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("$schema")]
 #if !NETSTANDARD1_3
-        [XmlElement]
+        [XmlIgnore]
 #endif
-        [DefaultValue(null)]
-        public string Speak { get; set; }
+        internal string JsonSchema { get; set; }
+
+        public bool ShouldSerializeJsonSchema()
+        {
+            return false;
+        }
 
         /// <summary>
-        ///     Title for the card (used when displayed in a dialog)
-        /// </summary>
-        [JsonProperty(Order = -6, NullValueHandling = NullValueHandling.Ignore)]
-        [Obsolete("The Title property is not officially supported right now and should not be used")]
-        public string Title { get; set; }
-
-        /// <summary>
-        ///     Background image for card
-        /// </summary>
-#if !NETSTANDARD1_3
-        [XmlElement]
-#endif
-        [JsonProperty(Order = -5, DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [JsonConverter(typeof(AdaptiveBackgroundImageConverter))]
-        [DefaultValue(null)]
-        public AdaptiveBackgroundImage BackgroundImage { get; set; }
-
-        /// <summary>
-        ///     Schema version that this card requires. If a client is lower than this version the fallbackText will be rendered.
-        /// </summary>
-        [JsonProperty(Order = -10, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, NullValueHandling = NullValueHandling.Include)]
-#if !NETSTANDARD1_3
-        [XmlElement]
-#endif
-        [DefaultValue(null)]
-        public AdaptiveSchemaVersion Version { get; set; }
-
-        /// <summary>
-        ///     This is obsolete. Use the <see cref="Version" property instead/>
-        /// </summary>
-        [JsonProperty(Order = -9, NullValueHandling = NullValueHandling.Ignore)]
-        [Obsolete("Use the Version property instead")]
-        public AdaptiveSchemaVersion MinVersion { get; set; }
-
-        /// <summary>
-        ///     Text shown when the client doesn’t support the version specified. This can be in markdown format.
-        /// </summary>
-        [JsonProperty(Order = -8, NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
-        [XmlAttribute]
-#endif
-        [DefaultValue(null)]
-        public string FallbackText { get; set; }
-
-        /// <summary>
-        ///     The 2-letter ISO-639-1 language used in the card. Used to localize any date/time functions
-        /// </summary>
-        [JsonProperty(Order = -7, NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
-        [XmlAttribute]
-#endif
-        [DefaultValue(null)]
-        public string Lang { get; set; }
-
-        /// <summary>
-        ///     The content alignment for the eelment inside the container.
+        ///     The content alignment for the element inside the container.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
@@ -171,6 +196,16 @@ namespace AdaptiveCards
 #endif
         [DefaultValue(typeof(AdaptiveVerticalContentAlignment), "top")]
         public AdaptiveVerticalContentAlignment VerticalContentAlignment { get; set; }
+
+        /// <summary>
+        ///     The container style for the card
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(typeof(AdaptiveContainerStyle), "none")]
+        public AdaptiveContainerStyle Style { get; set; }
 
         /// <summary>
         ///     Action for the card (this allows a default action at the card level)
@@ -203,17 +238,6 @@ namespace AdaptiveCards
         }
 
         /// <summary>
-        ///     Value that denotes if the card must use all the vertical space that is set to it. Default value is <see cref="AdaptiveHeight.Default"/>.
-        /// </summary>
-        [JsonConverter(typeof(StringSizeWithUnitConverter), true)]
-        [JsonProperty(Order = -4, DefaultValueHandling = DefaultValueHandling.Ignore)]
-#if !NETSTANDARD1_3
-        [XmlElement(typeof(AdaptiveHeight))]
-#endif
-        [DefaultValue(typeof(AdaptiveHeight), "auto")]
-        public AdaptiveHeight Height { get; set; }
-
-        /// <summary>
         /// Parse an AdaptiveCard from a JSON string
         /// </summary>
         /// <param name="json">A JSON-serialized Adaptive Card</param>
@@ -237,7 +261,6 @@ namespace AdaptiveCards
             return parseResult;
         }
 
-
         /// <summary>
         ///  Serialize this Adaptive Card to JSON
         /// </summary>
@@ -245,20 +268,6 @@ namespace AdaptiveCards
         public string ToJson()
         {
             return JsonConvert.SerializeObject(this, Newtonsoft.Json.Formatting.Indented);
-        }
-
-        /// <summary>
-        /// This makes sure the $schema property doesn't show up in AdditionalProperties
-        /// </summary>
-        [JsonProperty("$schema")]
-#if !NETSTANDARD1_3
-        [XmlIgnore]
-#endif
-        internal string JsonSchema { get; set; }
-
-        public bool ShouldSerializeJsonSchema()
-        {
-            return false;
         }
 
         /// <summary>

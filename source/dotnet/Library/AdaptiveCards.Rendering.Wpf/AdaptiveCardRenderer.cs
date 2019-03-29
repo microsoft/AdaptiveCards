@@ -34,6 +34,8 @@ namespace AdaptiveCards.Rendering.Wpf
             ElementRenderers.Set<AdaptiveCard>(RenderAdaptiveCardWrapper);
 
             ElementRenderers.Set<AdaptiveTextBlock>(AdaptiveTextBlockRenderer.Render);
+            ElementRenderers.Set<AdaptiveRichTextBlock>(AdaptiveRichTextBlockRenderer.Render);
+
             ElementRenderers.Set<AdaptiveImage>(AdaptiveImageRenderer.Render);
             ElementRenderers.Set<AdaptiveMedia>(AdaptiveMediaRenderer.Render);
 
@@ -124,6 +126,7 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             var outerGrid = new Grid();
             outerGrid.Style = context.GetStyle("Adaptive.Card");
+
             outerGrid.Background = context.GetColorBrush(context.Config.ContainerStyles.Default.BackgroundColor);
             outerGrid.SetBackgroundSource(card.BackgroundImage, context);
 
@@ -131,6 +134,13 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 context.CardRoot = outerGrid;
             }
+
+            AdaptiveContainerStyle cardContainerStyle = AdaptiveContainerStyle.Default;
+            if (context.Config.AdaptiveCard.AllowCustomStyle && (card.Style != AdaptiveContainerStyle.None))
+            {
+                cardContainerStyle = card.Style;
+            }
+            context.RenderArgs.ParentStyle = cardContainerStyle;
 
             var grid = new Grid();
             grid.Style = context.GetStyle("Adaptive.InnerCard");
@@ -229,7 +239,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 Resources = Resources,
                 ElementRenderers = ElementRenderers,
                 Lang = card.Lang,
-                ForegroundColors = (HostConfig != null) ? HostConfig.ContainerStyles.Default.ForegroundColors : new ContainerStylesConfig().Default.ForegroundColors
+                RenderArgs = new AdaptiveRenderArgs { ForegroundColors = (HostConfig != null) ? HostConfig.ContainerStyles.Default.ForegroundColors : new ContainerStylesConfig().Default.ForegroundColors }
             };
 
             string accentColor = HostConfig.ContainerStyles.Default.ForegroundColors.Accent.Default;
@@ -241,11 +251,10 @@ namespace AdaptiveCards.Rendering.Wpf
             Resources["Adaptive.Action.Positive.Button.MouseOver.Background"] = context.GetColorBrush(lighterAccentColor);
             Resources["Adaptive.Action.Destructive.Button.Foreground"] = context.GetColorBrush(attentionColor);
             Resources["Adaptive.Action.Destructive.Button.MouseOver.Foreground"] = context.GetColorBrush(lighterAttentionColor);
-
+            
             var element = context.Render(card);
 
             renderCard = new RenderedAdaptiveCard(element, card, context.Warnings, context.InputBindings);
-
 
             return renderCard;
         }
@@ -285,7 +294,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     Resources = Resources,
                     ElementRenderers = ElementRenderers,
                     Lang = card.Lang,
-                    ForegroundColors = (HostConfig != null) ? HostConfig.ContainerStyles.Default.ForegroundColors : new ContainerStylesConfig().Default.ForegroundColors
+                    RenderArgs = new AdaptiveRenderArgs { ForegroundColors = (HostConfig != null) ? HostConfig.ContainerStyles.Default.ForegroundColors : new ContainerStylesConfig().Default.ForegroundColors }
                 };
 
                 var stream = context.Render(card).RenderToImage(width);

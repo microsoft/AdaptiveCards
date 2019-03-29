@@ -149,6 +149,15 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, 
     // check if language is valid
     _ValidateLanguage(language, context.warnings);
 
+    if (language.size())
+    {
+        context.SetLanguage(language);
+    }
+    else
+    {
+        language = context.GetLanguage();
+    }
+
     // Perform version validation
     if (enforceVersion)
     {
@@ -311,8 +320,7 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::MakeFallbackTextCard(const std::stri
 
 std::string AdaptiveCard::Serialize() const
 {
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
+    return ParseUtil::JsonToString(SerializeToJsonValue());
 }
 
 std::string AdaptiveCard::GetVersion() const
@@ -373,20 +381,6 @@ std::string AdaptiveCard::GetLanguage() const
 void AdaptiveCard::SetLanguage(const std::string& value)
 {
     m_language = value;
-    // Propagate language to ColumnSet, Containers, TextBlocks and showCardActions
-    PropagateLanguage(value, m_body);
-
-    for (auto& actionElement : m_actions)
-    {
-        if (actionElement->GetElementType() == ActionType::ShowCard)
-        {
-            auto showCard = std::static_pointer_cast<ShowCardAction>(actionElement);
-            if (showCard != nullptr)
-            {
-                showCard->SetLanguage(value);
-            }
-        }
-    }
 }
 
 HeightType AdaptiveCard::GetHeight() const

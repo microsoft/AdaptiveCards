@@ -633,7 +633,7 @@ export class ActionPeer extends DesignerPeer {
             card.addItem(actionType);
         }
 
-        var id = addLabelAndInput(card, "Id:", Adaptive.TextInput);
+        let id = addLabelAndInput(card, "Id:", Adaptive.TextInput);
         id.input.defaultValue = this.action.id;
         id.input.placeholder = "(not set)";
         id.input.onValueChanged = () => {
@@ -642,7 +642,7 @@ export class ActionPeer extends DesignerPeer {
             this.changed(false);
         }
 
-        var title = addLabelAndInput(card, "Title:", Adaptive.TextInput);
+        let title = addLabelAndInput(card, "Title:", Adaptive.TextInput);
         title.input.defaultValue = this.action.title;
         title.input.placeholder = "(not set)";
         title.input.onValueChanged = () => {
@@ -651,7 +651,19 @@ export class ActionPeer extends DesignerPeer {
             this.changed(false);
         }
 
-        var iconUrl = addLabelAndInput(card, "Icon URL:", Adaptive.TextInput);
+        let sentiment = addLabelAndInput(card, "Sentiment:", Adaptive.ChoiceSetInput);
+        sentiment.input.isCompact = true;
+        sentiment.input.choices.push(new Adaptive.Choice("Default", Adaptive.ActionSentiment.Default.toString()));
+        sentiment.input.choices.push(new Adaptive.Choice("Positive", Adaptive.ActionSentiment.Positive.toString()));
+        sentiment.input.choices.push(new Adaptive.Choice("Destructive", Adaptive.ActionSentiment.Destructive.toString()));
+        sentiment.input.defaultValue = this.action.sentiment.toString();
+        sentiment.input.onValueChanged = () => {
+            this.action.sentiment = <Adaptive.ActionSentiment>parseInt(sentiment.input.value);
+
+            this.changed(false);
+        }
+
+        let iconUrl = addLabelAndInput(card, "Icon URL:", Adaptive.TextInput);
         iconUrl.input.defaultValue = this.action.iconUrl;
         iconUrl.input.placeholder = "(not set)";
         iconUrl.input.onValueChanged = () => {
@@ -680,7 +692,15 @@ export class HttpActionPeer extends TypedActionPeer<Adaptive.HttpAction> {
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
-        var method = addLabelAndInput(card, "Method:", Adaptive.ChoiceSetInput);
+        let ignoreInputValidation = addLabelAndInput(card, "Ignore input validation:", Adaptive.ToggleInput);
+        ignoreInputValidation.input.defaultValue = String(this.action.ignoreInputValidation);
+        ignoreInputValidation.input.onValueChanged = () => {
+            this.action.ignoreInputValidation = ignoreInputValidation.input.value == "true";
+
+            this.changed(false);
+        }
+
+        let method = addLabelAndInput(card, "Method:", Adaptive.ChoiceSetInput);
         method.input.isCompact = true;
         method.input.choices.push(new Adaptive.Choice("GET", "GET"));
         method.input.choices.push(new Adaptive.Choice("POST", "POST"));
@@ -692,7 +712,7 @@ export class HttpActionPeer extends TypedActionPeer<Adaptive.HttpAction> {
             this.changed(true);
         }
 
-        var url = addLabelAndInput(card, "Url:", Adaptive.TextInput);
+        let url = addLabelAndInput(card, "Url:", Adaptive.TextInput);
         url.input.defaultValue = this.action.url;
         url.input.placeholder = "(not set)";
         url.input.onValueChanged = () => {
@@ -740,7 +760,15 @@ export class SubmitActionPeer extends TypedActionPeer<Adaptive.SubmitAction> {
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
-        var data = addLabelAndInput(card, "Data:", Adaptive.TextInput);
+        let ignoreInputValidation = addLabelAndInput(card, "Ignore input validation:", Adaptive.ToggleInput);
+        ignoreInputValidation.input.defaultValue = String(this.action.ignoreInputValidation);
+        ignoreInputValidation.input.onValueChanged = () => {
+            this.action.ignoreInputValidation = ignoreInputValidation.input.value == "true";
+
+            this.changed(false);
+        }
+
+        let data = addLabelAndInput(card, "Data:", Adaptive.TextInput);
         data.input.isMultiline = true;
         data.input.defaultValue = JSON.stringify(this.action.data);
         data.input.placeholder = "(not set)";
@@ -1958,7 +1986,7 @@ export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCard
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
-        var title = addLabelAndInput(card, "Title:", Adaptive.TextInput);
+        let title = addLabelAndInput(card, "Title:", Adaptive.TextInput);
         title.input.placeholder = "(not set)";
         title.input.defaultValue = this.cardElement.title;
         title.input.onValueChanged = () => {
@@ -1967,11 +1995,32 @@ export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCard
             this.changed(false);
         }
 
-        var defaultValue = addLabelAndInput(card, "Default value:", Adaptive.TextInput);
+        let defaultValue = addLabelAndInput(card, "Default value:", Adaptive.TextInput);
         defaultValue.input.placeholder = "(not set)";
         defaultValue.input.defaultValue = this.cardElement.defaultValue;
         defaultValue.input.onValueChanged = () => {
             this.cardElement.defaultValue = defaultValue.input.value;
+
+            this.changed(false);
+        }
+
+        let validationNecessity = addLabelAndInput(card, "Necessity:", Adaptive.ChoiceSetInput);
+        validationNecessity.input.isCompact = true;
+        validationNecessity.input.choices.push(new Adaptive.Choice("Optional", Adaptive.InputValidationNecessity.Optional.toString()));
+        validationNecessity.input.choices.push(new Adaptive.Choice("Required", Adaptive.InputValidationNecessity.Required.toString()));
+        validationNecessity.input.choices.push(new Adaptive.Choice("Required with visual cue", Adaptive.InputValidationNecessity.RequiredWithVisualCue.toString()));
+        validationNecessity.input.defaultValue = this.cardElement.validation.necessity.toString();
+        validationNecessity.input.onValueChanged = () => {
+            this.cardElement.validation.necessity = <Adaptive.InputValidationNecessity>parseInt(validationNecessity.input.value);
+
+            this.changed(false);
+        }
+
+        let validationErrorMessage = addLabelAndInput(card, "Error message:", Adaptive.TextInput);
+        validationErrorMessage.input.placeholder = "(not set)";
+        validationErrorMessage.input.defaultValue = this.cardElement.validation.errorMessage;
+        validationErrorMessage.input.onValueChanged = () => {
+            this.cardElement.validation.errorMessage = validationErrorMessage.input.value;
 
             this.changed(false);
         }

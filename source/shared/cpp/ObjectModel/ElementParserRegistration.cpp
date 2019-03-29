@@ -10,6 +10,7 @@
 #include "ImageSet.h"
 #include "Media.h"
 #include "NumberInput.h"
+#include "RichTextBlock.h"
 #include "TextBlock.h"
 #include "TextInput.h"
 #include "TimeInput.h"
@@ -53,6 +54,7 @@ namespace AdaptiveSharedNamespace
             CardElementTypeToString(CardElementType::DateInput),
             CardElementTypeToString(CardElementType::Media),
             CardElementTypeToString(CardElementType::NumberInput),
+            CardElementTypeToString(CardElementType::RichTextBlock),
             CardElementTypeToString(CardElementType::TextBlock),
             CardElementTypeToString(CardElementType::TextInput),
             CardElementTypeToString(CardElementType::TimeInput),
@@ -71,6 +73,7 @@ namespace AdaptiveSharedNamespace
              {CardElementTypeToString(CardElementType::DateInput), std::make_shared<DateInputParser>()},
              {CardElementTypeToString(CardElementType::Media), std::make_shared<MediaParser>()},
              {CardElementTypeToString(CardElementType::NumberInput), std::make_shared<NumberInputParser>()},
+             {CardElementTypeToString(CardElementType::RichTextBlock), std::make_shared<RichTextBlockParser>()},
              {CardElementTypeToString(CardElementType::TextBlock), std::make_shared<TextBlockParser>()},
              {CardElementTypeToString(CardElementType::TextInput), std::make_shared<TextInputParser>()},
              {CardElementTypeToString(CardElementType::TimeInput), std::make_shared<TimeInputParser>()},

@@ -8,7 +8,7 @@
 
 package io.adaptivecards.objectmodel;
 
-public class Column extends BaseCardElement {
+public class Column extends CollectionTypeElement {
   private transient long swigCPtr;
   private transient boolean swigCMemOwnDerived;
 
@@ -64,6 +64,10 @@ public class Column extends BaseCardElement {
     return (cPtr == 0) ? null : new Column(cPtr, true);
   }
 
+  public void DeserializeChildren(ParseContext context, JsonValue value) {
+    AdaptiveCardObjectModelJNI.Column_DeserializeChildren(swigCPtr, this, ParseContext.getCPtr(context), context, JsonValue.getCPtr(value), value);
+  }
+
   public String GetWidth() {
     return AdaptiveCardObjectModelJNI.Column_GetWidth(swigCPtr, this);
   }
@@ -80,46 +84,8 @@ public class Column extends BaseCardElement {
     AdaptiveCardObjectModelJNI.Column_SetPixelWidth(swigCPtr, this, value);
   }
 
-  public ContainerStyle GetStyle() {
-    return ContainerStyle.swigToEnum(AdaptiveCardObjectModelJNI.Column_GetStyle(swigCPtr, this));
-  }
-
-  public void SetStyle(ContainerStyle value) {
-    AdaptiveCardObjectModelJNI.Column_SetStyle(swigCPtr, this, value.swigValue());
-  }
-
   public BaseCardElementVector GetItems() {
     return new BaseCardElementVector(AdaptiveCardObjectModelJNI.Column_GetItems__SWIG_0(swigCPtr, this), false);
-  }
-
-  public BaseActionElement GetSelectAction() {
-    long cPtr = AdaptiveCardObjectModelJNI.Column_GetSelectAction(swigCPtr, this);
-    return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
-  }
-
-  public void SetSelectAction(BaseActionElement action) {
-    AdaptiveCardObjectModelJNI.Column_SetSelectAction(swigCPtr, this, BaseActionElement.getCPtr(action), action);
-  }
-
-  public void SetLanguage(String language) {
-    AdaptiveCardObjectModelJNI.Column_SetLanguage(swigCPtr, this, language);
-  }
-
-  public VerticalContentAlignment GetVerticalContentAlignment() {
-    return VerticalContentAlignment.swigToEnum(AdaptiveCardObjectModelJNI.Column_GetVerticalContentAlignment(swigCPtr, this));
-  }
-
-  public void SetVerticalContentAlignment(VerticalContentAlignment value) {
-    AdaptiveCardObjectModelJNI.Column_SetVerticalContentAlignment(swigCPtr, this, value.swigValue());
-  }
-
-  public BackgroundImage GetBackgroundImage() {
-    long cPtr = AdaptiveCardObjectModelJNI.Column_GetBackgroundImage(swigCPtr, this);
-    return (cPtr == 0) ? null : new BackgroundImage(cPtr, true);
-  }
-
-  public void SetBackgroundImage(BackgroundImage value) {
-    AdaptiveCardObjectModelJNI.Column_SetBackgroundImage(swigCPtr, this, BackgroundImage.getCPtr(value), value);
   }
 
   public void GetResourceInformation(RemoteResourceInformationVector resourceInfo) {

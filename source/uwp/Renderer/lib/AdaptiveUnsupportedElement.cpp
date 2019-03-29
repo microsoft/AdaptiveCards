@@ -1,5 +1,7 @@
 #include "pch.h"
+
 #include "AdaptiveUnsupportedElement.h"
+
 #include "Util.h"
 #include <windows.foundation.collections.h>
 

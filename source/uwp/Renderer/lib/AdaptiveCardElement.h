@@ -7,6 +7,9 @@ namespace AdaptiveNamespace
 {
     class DECLSPEC_UUID("49496982-18E7-48A8-9D16-99E389BE9133") AdaptiveCardElementBase : public IUnknown
     {
+    public:
+        InternalId GetInternalId() { return m_internalId; }
+
     protected:
         HRESULT InitializeBaseElement(const std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel);
 
@@ -21,6 +24,14 @@ namespace AdaptiveNamespace
 
         IFACEMETHODIMP get_IsVisible(_Out_ boolean* separator);
         IFACEMETHODIMP put_IsVisible(boolean separator);
+
+        IFACEMETHODIMP get_MinHeight(_Out_ UINT32* minHeight);
+        IFACEMETHODIMP put_MinHeight(UINT32 minHeight);
+
+        IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType * fallback);
+        IFACEMETHODIMP put_FallbackType(ABI::AdaptiveNamespace::FallbackType fallback);
+        IFACEMETHODIMP get_FallbackContent(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement ** content);
+        IFACEMETHODIMP put_FallbackContent(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement * content);
 
         IFACEMETHODIMP get_ElementTypeString(_Outptr_ HSTRING* type);
 
@@ -44,5 +55,9 @@ namespace AdaptiveNamespace
         Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonObject> m_additionalProperties;
         Microsoft::WRL::Wrappers::HString m_typeString;
         ABI::AdaptiveNamespace::HeightType m_height;
+        InternalId m_internalId;
+        UINT32 m_minHeight;
+        ABI::AdaptiveNamespace::FallbackType m_fallbackType;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardElement> m_fallbackContent;
     };
 }

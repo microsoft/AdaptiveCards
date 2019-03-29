@@ -19,6 +19,7 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveRenderContext::RuntimeClassInitialize(_In_ IAdaptiveHostConfig* hostConfig,
                                                           _In_ IAdaptiveElementRendererRegistration* elementRendererRegistration,
+                                                          _In_ IAdaptiveActionRendererRegistration* actionRendererRegistration,
                                                           _In_ IAdaptiveCardResourceResolvers* resourceResolvers,
                                                           _In_ IResourceDictionary* overrideDictionary,
                                                           _In_ IResourceDictionary* defaultActionSentimentStyles,
@@ -26,6 +27,7 @@ namespace AdaptiveNamespace
     {
         m_hostConfig = hostConfig;
         m_elementRendererRegistration = elementRendererRegistration;
+        m_actionRendererRegistration = actionRendererRegistration;
         m_resourceResolvers = resourceResolvers;
         m_overrideDictionary = overrideDictionary;
         m_actionSentimentDefaultDictionary = defaultActionSentimentStyles;
@@ -50,6 +52,11 @@ namespace AdaptiveNamespace
         return m_elementRendererRegistration.CopyTo(value);
     }
 
+    HRESULT AdaptiveRenderContext::get_ActionRenderers(_COM_Outptr_ IAdaptiveActionRendererRegistration** value)
+    {
+        return m_actionRendererRegistration.CopyTo(value);
+    }
+
     HRESULT AdaptiveRenderContext::get_ActionInvoker(_COM_Outptr_ IAdaptiveActionInvoker** value)
     {
         return m_actionInvoker.CopyTo(value);
@@ -68,6 +75,13 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveRenderContext::get_OverrideStyles(_COM_Outptr_ IResourceDictionary** overrideDictionary)
     {
         return m_overrideDictionary.CopyTo(overrideDictionary);
+    }
+
+    HRESULT AdaptiveRenderContext::get_UserInputs(_COM_Outptr_ IAdaptiveInputs** value)
+    {
+        ComPtr<RenderedAdaptiveCard> renderResult;
+        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
+        return renderResult->get_UserInputs(value);
     }
 
     HRESULT AdaptiveRenderContext::AddError(ABI::AdaptiveNamespace::ErrorStatusCode statusCode, _In_ HSTRING message)
@@ -92,15 +106,13 @@ namespace AdaptiveNamespace
         return (warnings->Append(warning.Detach()));
     }
 
-    HRESULT AdaptiveRenderContext::get_CardFrameworkElement(_COM_Outptr_ ABI::Windows::UI::Xaml::IFrameworkElement** value)
+    HRESULT AdaptiveRenderContext::AddInlineShowCard(_In_opt_ IAdaptiveActionSet* actionSet,
+                                                     _In_ IAdaptiveShowCardAction* showCardAction,
+                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement)
     {
-        return m_cardFrameworkElement.CopyTo(value);
-    }
-
-    HRESULT AdaptiveRenderContext::put_CardFrameworkElement(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* value)
-    {
-        m_cardFrameworkElement = value;
-        return S_OK;
+        ComPtr<RenderedAdaptiveCard> renderResult;
+        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
+        return renderResult->AddInlineShowCard(actionSet, showCardAction, showCardFrameworkElement);
     }
 
     HRESULT AdaptiveRenderContext::AddInputValue(_In_ IAdaptiveInputValue* inputValue)

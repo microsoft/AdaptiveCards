@@ -55,6 +55,12 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ActionSet.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\UnknownAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseElement.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\CollectionTypeElement.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\Inline.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\Paragraph.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\RichTextBlock.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\TextRun.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\TextElementProperties.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Container.h" />
@@ -116,6 +122,12 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ActionSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\UnknownAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseElement.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\CollectionTypeElement.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\Inline.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\Paragraph.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\RichTextBlock.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\TextRun.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\TextElementProperties.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="json">

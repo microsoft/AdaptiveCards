@@ -26,7 +26,7 @@ namespace UWPUnitTests
                 VerticalContentAlignment = VerticalContentAlignment.Center,
             };
 
-            Assert.AreEqual("https://www.stuff.com/background.jpg", card.BackgroundImage);
+            Assert.AreEqual("https://www.stuff.com/background.jpg", card.BackgroundImage.Url);
             Assert.AreEqual("Fallback Text", card.FallbackText);
             Assert.AreEqual(HeightType.Stretch, card.Height);
             Assert.AreEqual("en", card.Language);
@@ -127,7 +127,7 @@ namespace UWPUnitTests
             Assert.AreEqual(true, textBlock.Wrap);
 
             var jsonString = textBlock.ToJson().ToString();
-            Assert.AreEqual("{\"color\":\"Accent\",\"fontStyle\":\"Monospace\",\"height\":\"Stretch\",\"horizontalAlignment\":\"Center\",\"id\":\"TextBlockId\",\"isSubtle\":true,\"isVisible\":false,\"maxLines\":3,\"separator\":true,\"size\":\"Large\",\"spacing\":\"large\",\"text\":\"This is a text block\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true}", jsonString);
+            Assert.AreEqual("{\"color\":\"Accent\",\"fontStyle\":\"Monospace\",\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"TextBlockId\",\"isSubtle\":true,\"isVisible\":false,\"maxLines\":3,\"separator\":true,\"size\":\"Large\",\"spacing\":\"large\",\"text\":\"This is a text block\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true}", jsonString);
         }
 
         [TestMethod]
@@ -162,7 +162,7 @@ namespace UWPUnitTests
             Assert.AreEqual("https://www.stuff.com/picture.jpg", image.Url);
 
             var jsonString = image.ToJson().ToString();
-            Assert.AreEqual("{\"altText\":\"This is a picture\",\"backgroundColor\":\"0xffffffff\",\"height\":\"50px\",\"horizontalAlignment\":\"Center\",\"id\":\"ImageId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"large\",\"style\":\"person\",\"type\":\"Image\",\"url\":\"https://www.stuff.com/picture.jpg\",\"width\":\"40px\"}", jsonString);
+            Assert.AreEqual("{\"altText\":\"This is a picture\",\"backgroundColor\":\"0xffffffff\",\"height\":\"50px\",\"horizontalAlignment\":\"center\",\"id\":\"ImageId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"large\",\"style\":\"person\",\"type\":\"Image\",\"url\":\"https://www.stuff.com/picture.jpg\",\"width\":\"40px\"}", jsonString);
         }
 
         [TestMethod]
@@ -330,7 +330,7 @@ namespace UWPUnitTests
             Assert.AreEqual("Column2Id", columnSet.Columns[1].Id);
 
             var jsonString = columnSet.ToJson().ToString();
-            Assert.AreEqual("{\"columns\":[{\"height\":\"Stretch\",\"id\":\"ColumnId\",\"isVisible\":false,\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"selectAction\":{\"id\":\"\",\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"separator\":true,\"spacing\":\"small\",\"style\":\"Emphasis\",\"type\":\"Column\",\"verticalContentAlignment\":\"Bottom\",\"width\":\"50px\"},{\"id\":\"Column2Id\",\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"}],\"type\":\"Column\",\"width\":\"auto\"}],\"height\":\"Stretch\",\"id\":\"ColumnSetId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"small\",\"style\":\"Emphasis\",\"type\":\"ColumnSet\"}", jsonString);
+            Assert.AreEqual("{\"columns\":[{\"height\":\"Stretch\",\"id\":\"ColumnId\",\"isVisible\":false,\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"separator\":true,\"spacing\":\"small\",\"style\":\"Emphasis\",\"type\":\"Column\",\"verticalContentAlignment\":\"Bottom\",\"width\":\"50px\"},{\"id\":\"Column2Id\",\"items\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"}],\"type\":\"Column\",\"width\":\"auto\"}],\"height\":\"Stretch\",\"id\":\"ColumnSetId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"small\",\"style\":\"Emphasis\",\"type\":\"ColumnSet\"}", jsonString);
         }
 
         [TestMethod]
@@ -748,6 +748,75 @@ namespace UWPUnitTests
 
             var jsonString = actionSet.ToJson().ToString();
             Assert.AreEqual("{\"actions\":[{\"title\":\"Submit One\",\"type\":\"Action.Submit\"},{\"title\":\"Submit Two\",\"type\":\"Action.Submit\"}],\"height\":\"Stretch\",\"id\":\"ActionSetId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"extraLarge\",\"type\":\"ActionSet\"}", jsonString);
+        }
+
+        [TestMethod]
+        public void RichTextBlock()
+        {
+            AdaptiveTextRun textRun1 = new AdaptiveTextRun
+            {
+                Color = ForegroundColor.Accent,
+                FontStyle = FontStyle.Monospace,
+                IsSubtle = true,
+                Language = "en",
+                Size = TextSize.Large,
+                Text = "This is text run number 1",
+                Weight = TextWeight.Bolder,
+            };
+
+            Assert.AreEqual(ForegroundColor.Accent, textRun1.Color);
+            Assert.AreEqual(FontStyle.Monospace, textRun1.FontStyle);
+            Assert.AreEqual(true, textRun1.IsSubtle);
+            Assert.AreEqual("en", textRun1.Language);
+            Assert.AreEqual(TextSize.Large, textRun1.Size);
+            Assert.AreEqual("This is text run number 1", textRun1.Text);
+            Assert.AreEqual(TextWeight.Bolder, textRun1.Weight);
+
+            textRun1.SelectAction = new AdaptiveSubmitAction
+            {
+                Title = "Select Action"
+            };
+            Assert.IsNotNull(textRun1.SelectAction);
+            Assert.AreEqual("Select Action", textRun1.SelectAction.Title);
+
+            AdaptiveTextRun textRun2 = new AdaptiveTextRun { Text = "This is text run number 2" };
+            AdaptiveTextRun textRun3 = new AdaptiveTextRun { Text = "This is text run number 3" };
+
+            AdaptiveParagraph paragraph1 = new AdaptiveParagraph { };
+
+            paragraph1.Inlines.Add(textRun1);
+            paragraph1.Inlines.Add(textRun2);
+
+            AdaptiveParagraph paragraph2 = new AdaptiveParagraph { };
+            paragraph2.Inlines.Add(textRun3);
+
+            AdaptiveRichTextBlock richTextBlock = new AdaptiveRichTextBlock
+            {
+                Height = HeightType.Stretch,
+                HorizontalAlignment = HAlignment.Center,
+                Id = "RichTextBlockId",
+                IsVisible = false,
+                MaxLines = 3,
+                Separator = true,
+                Spacing = Spacing.Large,
+                Wrap = true
+            };
+
+            ValidateBaseElementProperties(richTextBlock, "RichTextBlockId", false, true, Spacing.Large, HeightType.Stretch);
+
+            Assert.AreEqual(HAlignment.Center, richTextBlock.HorizontalAlignment);
+            Assert.AreEqual<uint>(3, richTextBlock.MaxLines);
+            Assert.AreEqual(true, richTextBlock.Wrap);
+
+            richTextBlock.Paragraphs.Add(paragraph1);
+            richTextBlock.Paragraphs.Add(paragraph2);
+
+            Assert.AreEqual("This is text run number 1", (richTextBlock.Paragraphs[0].Inlines[0] as AdaptiveTextRun).Text);
+            Assert.AreEqual("This is text run number 2", (richTextBlock.Paragraphs[0].Inlines[1] as AdaptiveTextRun).Text);
+            Assert.AreEqual("This is text run number 3", (richTextBlock.Paragraphs[1].Inlines[0] as AdaptiveTextRun).Text);
+
+            var jsonString = richTextBlock.ToJson().ToString();
+            Assert.AreEqual("{\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"RichTextBlockId\",\"isVisible\":false,\"maxLines\":3,\"paragraphs\":[{\"inlines\":[{\"color\":\"Accent\",\"fontStyle\":\"Monospace\",\"isSubtle\":true,\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"size\":\"Large\",\"text\":\"This is text run number 1\",\"type\":\"TextRun\",\"weight\":\"Bolder\"},{\"text\":\"This is text run number 2\",\"type\":\"TextRun\"}]},{\"inlines\":[{\"text\":\"This is text run number 3\",\"type\":\"TextRun\"}]}],\"separator\":true,\"spacing\":\"large\",\"type\":\"RichTextBlock\",\"wrap\":true}", jsonString);
         }
     }
 }
