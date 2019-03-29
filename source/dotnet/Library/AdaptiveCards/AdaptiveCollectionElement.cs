@@ -18,12 +18,13 @@ namespace AdaptiveCards
         /// <summary>
         ///     The style in which the image is displayed.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonConverter(typeof(IgnoreNullEnumConverter<AdaptiveContainerStyle>), true)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlElement]
 #endif
-        [DefaultValue(typeof(AdaptiveContainerStyle), "none")]
-        public AdaptiveContainerStyle Style { get; set; }
+        [DefaultValue(null)]
+        public AdaptiveContainerStyle? Style { get; set; }
 
         /// <summary>
         ///     The content alignment for the eelment inside the container.

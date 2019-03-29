@@ -18,7 +18,7 @@ namespace AdaptiveCards.Rendering.Wpf
             Border border = new Border();
             border.Child = uiColumnSet;
 
-            bool inheritsStyleFromParent = (columnSet.Style == AdaptiveContainerStyle.None);
+            bool inheritsStyleFromParent = !columnSet.Style.HasValue;
             bool hasPadding = false;
             if (!inheritsStyleFromParent)
             {
@@ -31,7 +31,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 elementRenderArgs.ForegroundColors = columnSetStyle.ForegroundColors;
             }
 
-            elementRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : columnSet.Style;
+            elementRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : columnSet.Style.Value;
             elementRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
             
             for (int i = 0; i < columnSet.Columns.Count; ++i)

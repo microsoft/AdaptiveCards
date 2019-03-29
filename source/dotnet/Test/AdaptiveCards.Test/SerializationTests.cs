@@ -418,7 +418,7 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(AdaptiveContainerStyle.Emphasis, containerEmphasisStyle.Style);
 
             var containerNoneStyle = card.Body[2] as AdaptiveContainer;
-            Assert.AreEqual(AdaptiveContainerStyle.None, containerNoneStyle.Style);
+            Assert.IsNull(containerNoneStyle.Style);
         }
 
         [TestMethod]
