@@ -16,8 +16,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import io.adaptivecards.objectmodel.CardElementType;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
@@ -34,6 +36,7 @@ import io.adaptivecards.objectmodel.ImageSizesConfig;
 import io.adaptivecards.objectmodel.ImageStyle;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.layout.HorizontalFlowLayout;
+import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public class ImageRenderer extends BaseCardElementRenderer
 {
@@ -206,6 +209,12 @@ public class ImageRenderer extends BaseCardElementRenderer
             image.GetImageStyle(),
             backgroundColor,
             imageSizeLimit);
+
+        IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
+        if (onlineImageLoader != null)
+        {
+            imageLoaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
+        }
 
         imageLoaderAsync.execute(image.GetUrl());
 
