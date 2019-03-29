@@ -9,7 +9,7 @@
 			"height": "stretch",
 			"columns": [
 				{
-                    "type":"Column",
+					"type": "Column",
 					"width": 1,
 					"items": [
 						{
@@ -20,7 +20,7 @@
 					]
 				},
 				{
-                    "type":"Column",
+					"type": "Column",
 					"width": 1,
 					"spacing": "large",
 					"separator": true,
@@ -31,14 +31,10 @@
 							"wrap": true
 						},
 						{
-							"type": "Media",
-							"poster": "http://adaptivecards.io/content/cats/1.png",
-							"sources": [
-								{
-									"mimeType": "video/mp4",
-									"url": "https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4"
-								}
-							],
+							"type": "Input.Number",
+							"id": "input1",
+							"placeholder": "enter comment",
+							"max": 500,
 							"height": "stretch"
 						},
 						{

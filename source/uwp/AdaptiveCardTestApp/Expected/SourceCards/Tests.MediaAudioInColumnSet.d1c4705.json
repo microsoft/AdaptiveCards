@@ -2,16 +2,13 @@
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"version": "1.0",
-	"body":
-	[
+	"body": [
 		{
 			"type": "ColumnSet",
-			"columns":
-			[
+			"columns": [
 				{
-                    "type":"Column",
-					"items":
-					[
+					"type": "Column",
+					"items": [
 						{
 							"type": "TextBlock",
 							"text": "This is a media element which specifies a poster:",
@@ -30,9 +27,8 @@
 					]
 				},
 				{
-                    "type":"Column",
-					"items":
-					[
+					"type": "Column",
+					"items": [
 						{
 							"type": "TextBlock",
 							"text": "This is a media element which doesn't specify a poster. It will use the poster from the host config if present:",

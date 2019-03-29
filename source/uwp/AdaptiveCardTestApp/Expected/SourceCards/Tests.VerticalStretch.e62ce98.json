@@ -32,7 +32,7 @@
 			"height": "stretch",
 			"columns": [
 				{
-                    "type":"Column",
+					"type": "Column",
 					"width": "auto",
 					"items": [
 						{
@@ -44,7 +44,7 @@
 					]
 				},
 				{
-                    "type":"Column",
+					"type": "Column",
 					"width": "stretch",
 					"spacing": "large",
 					"separator": true,
