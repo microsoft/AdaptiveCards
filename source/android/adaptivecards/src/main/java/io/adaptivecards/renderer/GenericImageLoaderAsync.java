@@ -15,6 +15,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
 
+import io.adaptivecards.objectmodel.Paragraph;
 import io.adaptivecards.renderer.http.HttpRequestHelper;
 import io.adaptivecards.renderer.http.HttpRequestResult;
 import io.adaptivecards.objectmodel.CharVector;
@@ -27,6 +28,7 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
     RenderedAdaptiveCard m_renderedCard;
     String m_imageBaseUrl;
     int m_maxWidth;
+    IOnlineImageLoader m_onlineImageLoader = null;
 
     GenericImageLoaderAsync(RenderedAdaptiveCard renderedCard, String imageBaseUrl)
     {
@@ -103,7 +105,22 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
             // Try loading online using only the path first
             try
             {
-                return loadOnlineImage(path);
+                if(m_onlineImageLoader != null)
+                {
+                    HttpRequestResult<Bitmap> loadedOnlineImage = m_onlineImageLoader.loadOnlineImage(path, this);
+                    if(loadedOnlineImage.getResult() != null)
+                    {
+                        return new HttpRequestResult(styleBitmap(loadedOnlineImage.getResult()));
+                    }
+                    else
+                    {
+                        return loadedOnlineImage;
+                    }
+                }
+                else
+                {
+                    return loadOnlineImage(path);
+                }
             }
             catch (MalformedURLException e1) {
                 // Then try using image base URL to load online
@@ -118,7 +135,22 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
                     URL urlContext = new URL(m_imageBaseUrl);
                     URL url = new URL(urlContext, path);
 
-                    return loadOnlineImage(url.toString());
+                    if(m_onlineImageLoader != null)
+                    {
+                        HttpRequestResult<Bitmap> loadedOnlineImage = m_onlineImageLoader.loadOnlineImage(url.toString(), this);
+                        if(loadedOnlineImage.getResult() != null)
+                        {
+                            return new HttpRequestResult(styleBitmap(loadedOnlineImage.getResult()));
+                        }
+                        else
+                        {
+                            return loadedOnlineImage;
+                        }
+                    }
+                    else
+                    {
+                        return loadOnlineImage(url.toString());
+                    }
                 }
                 catch (MalformedURLException e2)
                 {
@@ -200,6 +232,15 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
         Bitmap bitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
         bitmap = styleBitmap(bitmap);
         return new HttpRequestResult<>(bitmap);
+    }
+
+    /**
+     * @deprecated Deprecated as of AdaptiveCards 1.2, replaced by {@link IResourceResolver}
+     */
+    @Deprecated
+    public void registerCustomOnlineImageLoader(IOnlineImageLoader onlineImageLoader)
+    {
+        m_onlineImageLoader = onlineImageLoader;
     }
 
     // By default, this function keeps the bitmap as is

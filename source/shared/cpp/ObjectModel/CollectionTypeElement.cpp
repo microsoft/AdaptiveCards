@@ -4,9 +4,9 @@
 
 using namespace AdaptiveSharedNamespace;
 
-CollectionTypeElement::CollectionTypeElement(CardElementType type, ContainerStyle style, 
-    VerticalContentAlignment alignment) : BaseCardElement(type), m_style(style), 
-    m_verticalContentAlignment(alignment), m_hasPadding(false), m_hasBleed(false), m_parentalId()
+CollectionTypeElement::CollectionTypeElement(CardElementType type, ContainerStyle style, VerticalContentAlignment alignment) :
+    BaseCardElement(type), m_style(style), m_verticalContentAlignment(alignment), m_hasPadding(false), m_hasBleed(false),
+    m_parentalId(), m_canBleed(false), m_bleedDirection(ContainerBleedDirection::BleedToBothEdges)
 {
 }
 
@@ -44,7 +44,8 @@ void CollectionTypeElement::SetPadding(const bool value)
 void CollectionTypeElement::ConfigPadding(const ParseContext& context)
 {
     // we set padding when parental style is different from child's, and its style should not be None
-    if ((GetStyle() != ContainerStyle::None) && (context.GetParentalContainerStyle() != GetStyle()))
+    if ((GetStyle() != ContainerStyle::None) && (context.GetParentalContainerStyle() != GetStyle()) &&
+        (context.GetParentalContainerStyle() != ContainerStyle::NotSet))
     {
         SetPadding(!(context.GetParentalContainerStyle() == ContainerStyle::None &&
             GetStyle() == ContainerStyle::Default));
@@ -70,22 +71,17 @@ void CollectionTypeElement::ConfigBleed(const AdaptiveCards::ParseContext& conte
 {
     // we allows bleed when self has padding and at least one parent has padding
     const AdaptiveSharedNamespace::InternalId id = context.PaddingParentInternalId();
-    const bool canBleed = GetBleed() && (id != AdaptiveSharedNamespace::InternalId::Invalid);
-    if (canBleed)
+    const bool canBleed = GetPadding() && GetBleed();
+    if (canBleed && context.GetBleedDirection() != ContainerBleedDirection::BleedRestricted)
     {
         SetParentalId(id);
+        SetCanBleed(true);
     }
-    SetCanBleed(canBleed);
-}
-
-void CollectionTypeElement::SetCanBleed(const bool value)
-{
-    m_canBleed = value;
-}
-
-bool CollectionTypeElement::GetCanBleed() const
-{
-    return m_canBleed;
+    else
+    { 
+        SetCanBleed(false);
+    }
+    SetBleedDirection(context.GetBleedDirection());
 }
 
 void CollectionTypeElement::SetParentalId(const AdaptiveSharedNamespace::InternalId &id)

@@ -30,6 +30,10 @@
 		6B22426621E92AF9000ACDA1 /* CustomActionNewType.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22426521E92AF9000ACDA1 /* CustomActionNewType.mm */; };
 		6B22426821E94AD0000ACDA1 /* Action.CustomParsing.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B22426721E94AD0000ACDA1 /* Action.CustomParsing.json */; };
 		6B22426A21FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22426921FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm */; };
+		6B224296223089C9000ACDA1 /* Bleed.Test.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B224295223089C9000ACDA1 /* Bleed.Test.json */; };
+		6B2242B82239E08C000ACDA1 /* Nested.ColumnSet.Bleed.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B2242B72239E08C000ACDA1 /* Nested.ColumnSet.Bleed.json */; };
+		6B2242BA2239E0A9000ACDA1 /* Nested.ColumnSet.Bleed.Complex.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B2242B92239E0A9000ACDA1 /* Nested.ColumnSet.Bleed.Complex.json */; };
+		6B2242BC223C71BA000ACDA1 /* ColumnColumnSetContainer.Bleed.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B2242BB223C71B9000ACDA1 /* ColumnColumnSetContainer.Bleed.json */; };
 		6B2630DB2150804500ED9207 /* ColumnSet.Media.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B2630DA2150804500ED9207 /* ColumnSet.Media.VerticalStretch.json */; };
 		6B2630DD215080FB00ED9207 /* ColumnSet.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B2630DC215080FA00ED9207 /* ColumnSet.VerticalStretch.json */; };
 		6B2630DF2151A23000ED9207 /* FactSetWrapping.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B2630DE2151A22F00ED9207 /* FactSetWrapping.json */; };
@@ -189,6 +193,10 @@
 		6B22426521E92AF9000ACDA1 /* CustomActionNewType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomActionNewType.mm; sourceTree = "<group>"; };
 		6B22426721E94AD0000ACDA1 /* Action.CustomParsing.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.CustomParsing.json; path = ../../../../samples/Tests/Action.CustomParsing.json; sourceTree = "<group>"; };
 		6B22426921FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ADCIOSVisualizerUITests.mm; sourceTree = "<group>"; };
+		6B224295223089C9000ACDA1 /* Bleed.Test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Bleed.Test.json; path = ../../../../samples/Tests/Bleed.Test.json; sourceTree = "<group>"; };
+		6B2242B72239E08C000ACDA1 /* Nested.ColumnSet.Bleed.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Nested.ColumnSet.Bleed.json; path = ../../../../samples/Tests/Nested.ColumnSet.Bleed.json; sourceTree = "<group>"; };
+		6B2242B92239E0A9000ACDA1 /* Nested.ColumnSet.Bleed.Complex.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Nested.ColumnSet.Bleed.Complex.json; path = ../../../../samples/Tests/Nested.ColumnSet.Bleed.Complex.json; sourceTree = "<group>"; };
+		6B2242BB223C71B9000ACDA1 /* ColumnColumnSetContainer.Bleed.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnColumnSetContainer.Bleed.json; path = ../../../../samples/Tests/ColumnColumnSetContainer.Bleed.json; sourceTree = "<group>"; };
 		6B2630DA2150804500ED9207 /* ColumnSet.Media.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.Media.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet.Media.VerticalStretch.json; sourceTree = "<group>"; };
 		6B2630DC215080FA00ED9207 /* ColumnSet.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet.VerticalStretch.json; sourceTree = "<group>"; };
 		6B2630DE2151A22F00ED9207 /* FactSetWrapping.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = FactSetWrapping.json; path = ../../../../samples/Tests/FactSetWrapping.json; sourceTree = "<group>"; };
@@ -435,7 +443,6 @@
 		F4D33E341F045B6E00941E44 /* Jsons */ = {
 			isa = PBXGroup;
 			children = (
-				30C340E32214D50F009A785D /* ColumnSet.Style.json */,
 				6B22426721E94AD0000ACDA1 /* Action.CustomParsing.json */,
 				6B98093E216573EE0024B79B /* Action.IconUrl.TwoActions.json */,
 				6B980944216573EF0024B79B /* Action.OpenUrl.IconUrl.json */,
@@ -449,27 +456,9 @@
 				6BC30F5F21DD69D800B9FAAE /* ActionSet.json */,
 				F4933CEF1F79853B00F6EBFD /* ActivityUpdate.json */,
 				300ECB67219A234D00371DC5 /* AdaptiveCard.BackgroundImage.DataUri.json */,
-				300ECB66219A234D00371DC5 /* Image.DataUri.json */,
-				300ECB65219A234C00371DC5 /* Image.DataUri.Style.Person.json */,
-				6BF430792190F1140068E432 /* Input.Text.InlineAction.json */,
-				6B98093E216573EE0024B79B /* Action.IconUrl.TwoActions.json */,
-				6B980944216573EF0024B79B /* Action.OpenUrl.IconUrl.json */,
-				6B98093F216573EF0024B79B /* Column.VerticalContentAlignment.json */,
-				6B980940216573EF0024B79B /* Container.VerticalContentAlignment.json */,
-				6B98093D216573EE0024B79B /* VerticalContentAlignment_ForcedColumn.json */,
-				6B980945216573EF0024B79B /* VerticalContentAlignment_ForcedContainer.json */,
-				6B980943216573EF0024B79B /* VerticalContentAlignment.json */,
-				6B2630E22152CF1500ED9207 /* ColumnSet.json */,
-				7EF887CC21FBCEF900BAFF02 /* Container.Style.json */,
-				6B2630E02151A26100ED9207 /* LongFactSet.json */,
-				6B2630DE2151A22F00ED9207 /* FactSetWrapping.json */,
-				6B2630DC215080FA00ED9207 /* ColumnSet.VerticalStretch.json */,
-				6B2630DA2150804500ED9207 /* ColumnSet.Media.VerticalStretch.json */,
-				6B5D2412212E15740010EB07 /* Feedback.json */,
-				6B5D23FA2124ADAB0010EB07 /* Image.ImageBaseUrl.json */,
-				6B5D23F2212393480010EB07 /* Image.BackgroundColor.json */,
 				F4F44B842048CDB300A2F24C /* AdditionalProperty.json */,
 				6B616C4521CB2493003E29CE /* AutoImageSet.json */,
+				6B224295223089C9000ACDA1 /* Bleed.Test.json */,
 				F4933CF01F79853B00F6EBFD /* CalendarReminder.json */,
 				6B9BDF7B20E6E0C200F13155 /* Column.Explicit.Size.json */,
 				F4933C991F79852C00F6EBFD /* Column.SelectAction.json */,
@@ -477,6 +466,7 @@
 				F4933C9B1F79852C00F6EBFD /* Column.Style.json */,
 				6B98093F216573EF0024B79B /* Column.VerticalContentAlignment.json */,
 				F4933C9C1F79852C00F6EBFD /* Column.Width.json */,
+				6B2242BB223C71B9000ACDA1 /* ColumnColumnSetContainer.Bleed.json */,
 				30860BC020C9B5C9009F9D99 /* ColumnSet_Container.VerticalStretch.json */,
 				30860BBE20C9B5C8009F9D99 /* ColumnSet.FactSet.VerticalStretch.json */,
 				30860BBB20C9B5C8009F9D99 /* ColumnSet.ImageSet.VerticalStretch.json */,
@@ -489,9 +479,11 @@
 				6B2630E22152CF1500ED9207 /* ColumnSet.json */,
 				6B2630DA2150804500ED9207 /* ColumnSet.Media.VerticalStretch.json */,
 				F4933CA01F79852C00F6EBFD /* ColumnSet.Spacing.json */,
+				30C340E32214D50F009A785D /* ColumnSet.Style.json */,
 				6B2630DC215080FA00ED9207 /* ColumnSet.VerticalStretch.json */,
 				F4933CA21F79852C00F6EBFD /* Container.SelectAction.json */,
 				F4933CA41F79852C00F6EBFD /* Container.Spacing.json */,
+				7EF887CC21FBCEF900BAFF02 /* Container.Style.json */,
 				6B980940216573EF0024B79B /* Container.VerticalContentAlignment.json */,
 				F4F44BA6204CF97100A2F24C /* CustomParsingTestUsingProgressBar.json */,
 				F4F44B8220478E1100A2F24C /* DateTimeTestTranslation.json */,
@@ -527,6 +519,8 @@
 				6B2630E02151A26100ED9207 /* LongFactSet.json */,
 				6BC30F6621DFE8E900B9FAAE /* Media.json */,
 				6BC30F6521DFE8E900B9FAAE /* Media.Sources.json */,
+				6B2242B92239E0A9000ACDA1 /* Nested.ColumnSet.Bleed.Complex.json */,
+				6B2242B72239E08C000ACDA1 /* Nested.ColumnSet.Bleed.json */,
 				30A3885C20D315AA00AAEE59 /* NotificationCard.json */,
 				6BC30F6921DFECB400B9FAAE /* ProductVideo.json */,
 				F4933CF71F79853B00F6EBFD /* Restaurant.json */,
@@ -665,10 +659,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				300ECB68219A234D00371DC5 /* Image.DataUri.Style.Person.json in Resources */,
+				6B224296223089C9000ACDA1 /* Bleed.Test.json in Resources */,
 				F4933CDE1F79852C00F6EBFD /* Input.Number.json in Resources */,
 				300ECB6A219A234D00371DC5 /* AdaptiveCard.BackgroundImage.DataUri.json in Resources */,
 				F4933CE41F79852C00F6EBFD /* TextBlock.Color.json in Resources */,
 				6B98094F216573F00024B79B /* VerticalContentAlignment_ForcedContainer.json in Resources */,
+				6B2242BA2239E0A9000ACDA1 /* Nested.ColumnSet.Bleed.Complex.json in Resources */,
 				F4933CD41F79852C00F6EBFD /* Image.HorizontalAlignment.json in Resources */,
 				F4933CC51F79852C00F6EBFD /* Action.Submit.json in Resources */,
 				6BC30F6721DFE8EA00B9FAAE /* Media.Sources.json in Resources */,
@@ -691,6 +687,7 @@
 				F4933D021F79853B00F6EBFD /* InputForm.json in Resources */,
 				6B9AB30620D9857B005C8E15 /* Image.Explicit.Size.json in Resources */,
 				30860BCA20C9B5C9009F9D99 /* ColumnSet.FactSet.VerticalStretch.json in Resources */,
+				6B2242BC223C71BA000ACDA1 /* ColumnColumnSetContainer.Bleed.json in Resources */,
 				6B980948216573F00024B79B /* Action.IconUrl.TwoActions.json in Resources */,
 				F4933CD81F79852C00F6EBFD /* Image.Style.json in Resources */,
 				6B980947216573F00024B79B /* VerticalContentAlignment_ForcedColumn.json in Resources */,
@@ -727,6 +724,7 @@
 				F4933CE01F79852C00F6EBFD /* Input.Text.Style.json in Resources */,
 				6B9BDF7C20E6E0C200F13155 /* Column.Explicit.Size.json in Resources */,
 				F4933CC71F79852C00F6EBFD /* Column.Spacing.json in Resources */,
+				6B2242B82239E08C000ACDA1 /* Nested.ColumnSet.Bleed.json in Resources */,
 				F4933CC31F79852C00F6EBFD /* Action.ShowCard.json in Resources */,
 				F4933CD31F79852C00F6EBFD /* FactSet.json in Resources */,
 				6B98094D216573F00024B79B /* VerticalContentAlignment.json in Resources */,

@@ -9,6 +9,7 @@
 			"height": "stretch",
 			"columns": [
 				{
+					"type":"Column",
 					"width": 1,
 					"items": [
 						{
@@ -19,6 +20,7 @@
 					]
 				},
 				{
+					"type":"Column",
 					"width": 1,
 					"spacing": "large",
 					"separator": true,
@@ -176,6 +178,7 @@
 			"height": "stretch",
 			"columns": [
 				{
+					"type":"Column",
 					"width": 1,
 					"items": [
 						{
@@ -186,6 +189,7 @@
 					]
 				},
 				{
+					"type":"Column",
 					"width": 1,
 					"spacing": "large",
 					"separator": true,
@@ -244,6 +248,7 @@
 					]
 				},
 				{
+					"type":"Column",
 					"width": 1,
 					"spacing": "large",
 					"separator": true,
