@@ -54,16 +54,6 @@ public class Column extends CollectionTypeElement {
     return new JsonValue(AdaptiveCardObjectModelJNI.Column_SerializeToJsonValue(swigCPtr, this), true);
   }
 
-  public static Column Deserialize(ParseContext context, JsonValue root) {
-    long cPtr = AdaptiveCardObjectModelJNI.Column_Deserialize(ParseContext.getCPtr(context), context, JsonValue.getCPtr(root), root);
-    return (cPtr == 0) ? null : new Column(cPtr, true);
-  }
-
-  public static Column DeserializeFromString(ParseContext context, String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.Column_DeserializeFromString(ParseContext.getCPtr(context), context, jsonString);
-    return (cPtr == 0) ? null : new Column(cPtr, true);
-  }
-
   public void DeserializeChildren(ParseContext context, JsonValue value) {
     AdaptiveCardObjectModelJNI.Column_DeserializeChildren(swigCPtr, this, ParseContext.getCPtr(context), context, JsonValue.getCPtr(value), value);
   }

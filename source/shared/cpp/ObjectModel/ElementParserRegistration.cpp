@@ -3,6 +3,7 @@
 #include "ActionSet.h"
 #include "ChoiceSetInput.h"
 #include "ColumnSet.h"
+#include "Column.h"
 #include "Container.h"
 #include "DateInput.h"
 #include "FactSet.h"
@@ -46,6 +47,7 @@ namespace AdaptiveSharedNamespace
         m_knownElements.insert({
             CardElementTypeToString(CardElementType::ActionSet),
             CardElementTypeToString(CardElementType::Container),
+            CardElementTypeToString(CardElementType::Column),
             CardElementTypeToString(CardElementType::ColumnSet),
             CardElementTypeToString(CardElementType::FactSet),
             CardElementTypeToString(CardElementType::Image),
@@ -65,6 +67,7 @@ namespace AdaptiveSharedNamespace
         m_cardElementParsers.insert(
             {{CardElementTypeToString(CardElementType::ActionSet), std::make_shared<ActionSetParser>()},
              {CardElementTypeToString(CardElementType::Container), std::make_shared<ContainerParser>()},
+             {CardElementTypeToString(CardElementType::Column), std::make_shared<ColumnParser>()},
              {CardElementTypeToString(CardElementType::ColumnSet), std::make_shared<ColumnSetParser>()},
              {CardElementTypeToString(CardElementType::FactSet), std::make_shared<FactSetParser>()},
              {CardElementTypeToString(CardElementType::Image), std::make_shared<ImageParser>()},
