@@ -9,7 +9,7 @@
 			"height": "stretch",
 			"columns": [
 				{
-                    "type":"Column",
+					"type": "Column",
 					"width": 1,
 					"items": [
 						{
@@ -20,7 +20,7 @@
 					]
 				},
 				{
-                    "type":"Column",
+					"type": "Column",
 					"width": 1,
 					"spacing": "large",
 					"separator": true,
@@ -172,13 +172,12 @@
 				}
 			]
 		},
-		
 		{
 			"type": "ColumnSet",
 			"height": "stretch",
 			"columns": [
 				{
-                    "type":"Column",
+					"type": "Column",
 					"width": 1,
 					"items": [
 						{
@@ -189,7 +188,7 @@
 					]
 				},
 				{
-                    "type":"Column",
+					"type": "Column",
 					"width": 1,
 					"spacing": "large",
 					"separator": true,
@@ -248,7 +247,7 @@
 					]
 				},
 				{
-                    "type":"Column",
+					"type": "Column",
 					"width": 1,
 					"spacing": "large",
 					"separator": true,
@@ -311,7 +310,6 @@
 				}
 			]
 		}
-		
 	],
 	"actions": [
 		{

@@ -9,7 +9,7 @@
 			"height": "stretch",
 			"columns": [
 				{
-                    "type":"Column",
+					"type": "Column",
 					"width": 1,
 					"items": [
 						{
@@ -20,7 +20,7 @@
 					]
 				},
 				{
-                    "type":"Column",
+					"type": "Column",
 					"width": 1,
 					"spacing": "large",
 					"separator": true,
@@ -31,18 +31,10 @@
 							"wrap": true
 						},
 						{
-							"type": "FactSet",
-							"height": "stretch",
-							"facts": [
-								{
-									"title": "Fact 1",
-									"value": "Value 1"
-								},
-								{
-									"title": "Fact 2",
-									"value": "Value 2"
-								}
-							]
+							"type": "Input.Toggle",
+							"id": "input1",
+							"title": "Placeholder title",
+							"height": "stretch"
 						},
 						{
 							"type": "TextBlock",

@@ -9,7 +9,7 @@
 			"height": "stretch",
 			"columns": [
 				{
-                    "type":"Column",
+					"type": "Column",
 					"width": 1,
 					"items": [
 						{
@@ -20,7 +20,7 @@
 					]
 				},
 				{
-                    "type":"Column",
+					"type": "Column",
 					"width": 1,
 					"spacing": "large",
 					"separator": true,
@@ -31,9 +31,9 @@
 							"wrap": true
 						},
 						{
-							"type": "Input.Time",
+							"type": "Input.Date",
 							"id": "input1",
-							"placeholder": "enter time",
+							"placeholder": "enter date",
 							"height": "stretch"
 						},
 						{

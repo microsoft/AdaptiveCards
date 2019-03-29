@@ -9,7 +9,7 @@
 			"height": "stretch",
 			"columns": [
 				{
-                    "type":"Column",
+					"type": "Column",
 					"width": 1,
 					"items": [
 						{
@@ -20,7 +20,7 @@
 					]
 				},
 				{
-                    "type":"Column",
+					"type": "Column",
 					"width": 1,
 					"spacing": "large",
 					"separator": true,
@@ -35,12 +35,7 @@
 							"id": "input1",
 							"placeholder": "enter comment",
 							"maxLength": 500,
-							"height": "stretch",
-							"inlineAction": {
-								"type": "Action.OpenUrl",
-								"title": "Reply",
-								"url": "http://adaptivecards.io"
-							}
+							"height": "stretch"
 						},
 						{
 							"type": "TextBlock",
