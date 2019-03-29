@@ -98,6 +98,10 @@ public class ParseContext {
     return ContainerStyle.swigToEnum(AdaptiveCardObjectModelJNI.ParseContext_GetParentalContainerStyle(swigCPtr, this));
   }
 
+  public void SetParentalContainerStyle(ContainerStyle style) {
+    AdaptiveCardObjectModelJNI.ParseContext_SetParentalContainerStyle(swigCPtr, this, style.swigValue());
+  }
+
   public InternalId PaddingParentInternalId() {
     return new InternalId(AdaptiveCardObjectModelJNI.ParseContext_PaddingParentInternalId(swigCPtr, this), true);
   }
@@ -108,6 +112,14 @@ public class ParseContext {
 
   public void RestoreContextForCollectionTypeElement(CollectionTypeElement current) {
     AdaptiveCardObjectModelJNI.ParseContext_RestoreContextForCollectionTypeElement(swigCPtr, this, CollectionTypeElement.getCPtr(current), current);
+  }
+
+  public ContainerBleedDirection GetBleedDirection() {
+    return ContainerBleedDirection.swigToEnum(AdaptiveCardObjectModelJNI.ParseContext_GetBleedDirection(swigCPtr, this));
+  }
+
+  public void SetBleedDirection(ContainerBleedDirection direction) {
+    AdaptiveCardObjectModelJNI.ParseContext_SetBleedDirection(swigCPtr, this, direction.swigValue());
   }
 
 }

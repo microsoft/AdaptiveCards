@@ -28,12 +28,21 @@ namespace AdaptiveSharedNamespace
 
         bool GetBleed() const;
         void SetBleed(const bool value);
-        // tells if current element can bleed 
-        // when GetCanBleed() return false and GetBleed() returns true 
+        // tells if current element can bleed
+        // when GetCanBleed() return true
+        // Can Bleed
+        // To find the direction of the bleed
+        // Call GetBleedDirection()        
         // the renderer must also check if HostConfig has
         // padding for card, the root, if the padding is allowed,
         // then the element can bleed to the card
-        bool GetCanBleed() const;
+        bool GetCanBleed() const { return m_canBleed; }
+        // 1. BleedToLeading: bleed its leading edge to the leading edge of the target parent
+        // 2. BleedToTrailing: bleed its trailing edge to the trailing edge of the target parent
+        // 3. RestrictedInAllDrections: doesn't bleed
+        // 4. BleedToBothEdges: bleed to both edges of the target parent
+        ContainerBleedDirection GetBleedDirection() const { return m_bleedDirection; }
+
         // configures container style related attributes
         // such as style, padding and bleed
         void ConfigForContainerStyle(const AdaptiveCards::ParseContext& context);
@@ -57,18 +66,21 @@ namespace AdaptiveSharedNamespace
         template<typename T> static std::shared_ptr<T> Deserialize(ParseContext& context, const Json::Value& value);
 
     private:
-        void SetCanBleed(const bool value);
+        void SetCanBleed(const bool value) { m_canBleed = value;}
 
         // Applies padding flag When appropriate
         void ConfigPadding(const AdaptiveCards::ParseContext& context);
         // Applies bleed flag when appropriate
         void ConfigBleed(const AdaptiveCards::ParseContext& context);
+        void SetBleedDirection(const ContainerBleedDirection bleedDirection) { m_bleedDirection = bleedDirection; }
 
         ContainerStyle m_style;
         VerticalContentAlignment m_verticalContentAlignment;
+        bool m_canBleed;
+        ContainerBleedDirection m_bleedDirection;
+
         bool m_hasPadding;
         bool m_hasBleed;
-        bool m_canBleed;
         // id refers to parent to where bleed property should target
         AdaptiveSharedNamespace::InternalId m_parentalId;
 
