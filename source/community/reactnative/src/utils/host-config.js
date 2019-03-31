@@ -49,7 +49,7 @@ export class HostConfigManager {
 	}
 
 	static setHostConfig(value) {
-		this.hostConfig = new HostConfig(value);
+		this.hostConfig = new HostConfig({...defaultHostConfig, ...value});
 	}
 
 	/**
