@@ -37,25 +37,25 @@ namespace AdaptiveCards.Rendering.Html.Test
                     new AdaptiveRichTextBlock()
                     {
                         Paragraphs = {
-                            new AdaptiveRichTextBlock.AdaptiveParagraph() {
+                            new AdaptiveParagraph() {
                                 Inlines = {
-                                    new AdaptiveRichTextBlock.AdaptiveParagraph.AdaptiveTextRun
+                                    new AdaptiveTextRun
                                     {
                                         Text = "Paragraph 1 Inline 1"
                                     },
-                                    new AdaptiveRichTextBlock.AdaptiveParagraph.AdaptiveTextRun
+                                    new AdaptiveTextRun
                                     {
                                         Text = "Paragraph 1 Inline 2"
                                     }
                                 }
                             },
-                            new AdaptiveRichTextBlock.AdaptiveParagraph() {
+                            new AdaptiveParagraph() {
                                 Inlines = {
-                                    new AdaptiveRichTextBlock.AdaptiveParagraph.AdaptiveTextRun
+                                    new AdaptiveTextRun
                                     {
                                         Text = "Paragraph 2 Inline 1"
                                     },
-                                    new AdaptiveRichTextBlock.AdaptiveParagraph.AdaptiveTextRun
+                                    new AdaptiveTextRun
                                     {
                                         Text = "Paragraph 2 Inline 2"
                                     }
@@ -237,7 +237,7 @@ namespace AdaptiveCards.Rendering.Html.Test
 
             var workingBleedHtml = TestHtmlRenderer.CallContainerRender(containerWithWorkingBleed, renderContext).ToString();
             var notWorkingBleedHtml = TestHtmlRenderer.CallContainerRender(containerWithoutWorkingBleed, renderContext).ToString();
-            
+
             // Generated HTML should have an additional disabled and hidden option which is selected.
             Assert.AreEqual(
                 "<div class='ac-container' style='background-color: rgba(255, 255, 255, 1.00);justify-content: flex-start;'><div class='ac-container' style='padding-right: 15px;padding-left: 15px;padding-top: 15px;padding-bottom: 15px;margin-right: -15px;margin-left: -15px;background-color: rgba(0, 0, 0, 0.03);justify-content: flex-start;'></div></div>",

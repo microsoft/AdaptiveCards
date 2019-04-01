@@ -7,6 +7,7 @@
 #include "TextBlock.h"
 #include "DateTimePreparser.h"
 #include "ParseUtil.h"
+#include "Util.h"
 
 using namespace AdaptiveSharedNamespace;
 

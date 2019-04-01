@@ -38,6 +38,7 @@ import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
@@ -161,20 +162,26 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
         // Height
         // IsVisible
         // Spacing
+        // MinHeight
         setSpacingAndSeparator(context, viewGroup, richTextBlock.GetSpacing(), richTextBlock.GetSeparator(), hostConfig, true);
 
-        if(!baseCardElement.GetIsVisible())
+        if (!baseCardElement.GetIsVisible())
         {
             textView.setVisibility(View.GONE);
         }
 
-        if( richTextBlock.GetHeight() == HeightType.Stretch )
+        if (richTextBlock.GetHeight() == HeightType.Stretch)
         {
             textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
         }
         else
         {
             textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        }
+
+        if (richTextBlock.GetMinHeight() != 0)
+        {
+            textView.setMinimumHeight(Util.dpToPixels(context, (int)richTextBlock.GetMinHeight()));
         }
 
         // RichTextBlock properties
@@ -203,7 +210,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
         // Every paragraph may contain contains any number of inlines
         // The current inline element types are TextRun
         ParagraphVector paragraphs = richTextBlock.GetParagraphs();
-        int paragraphCount = paragraphs.size();
+        int paragraphCount = (int)paragraphs.size();
 
         textView.setText("");
 

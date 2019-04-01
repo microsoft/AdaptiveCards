@@ -37,6 +37,7 @@ import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
@@ -201,14 +202,14 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
             BaseActionElement action = textInput.GetInlineAction();
 
-            if (action != null) 
+            if (action != null)
             {
-                if ((hostConfig.GetActions().getShowCard().getActionMode() == ActionMode.Inline) && 
-                    (action.GetElementType() == ActionType.ShowCard)) 
+                if ((hostConfig.GetActions().getShowCard().getActionMode() == ActionMode.Inline) &&
+                    (action.GetElementType() == ActionType.ShowCard))
                 {
                     renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INTERACTIVITY_DISALLOWED, "Inline ShowCard not supported for InlineAction"));
-                } 
-                else 
+                }
+                else
                 {
                     textInputViewGroup = new LinearLayout(context);
                     textInputViewGroup.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -219,16 +220,16 @@ public class TextInputRenderer extends BaseCardElementRenderer
                     TypedValue buttonStyle = new TypedValue();
 
                     String url = action.GetIconUrl();
-                    if (url != null && !url.isEmpty()) 
+                    if (url != null && !url.isEmpty())
                     {
                         ImageButton inlineButton = null;
                         // check for style from resources
-                        if (theme.resolveAttribute(R.attr.adaptiveInlineActionImage, buttonStyle, true)) 
+                        if (theme.resolveAttribute(R.attr.adaptiveInlineActionImage, buttonStyle, true))
                         {
                             Context themedContext = new ContextThemeWrapper(context, R.style.adaptiveInlineActionImage);
                             inlineButton = new ImageButton(themedContext, null, 0);
-                        } 
-                        else 
+                        }
+                        else
                         {
                             inlineButton = new ImageButton(context);
                             inlineButton.setBackgroundColor(Color.TRANSPARENT);
@@ -244,18 +245,18 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
                         imageLoader.execute(url);
                         textInputViewGroup.addView(inlineButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
-                    } 
-                    else 
+                    }
+                    else
                     {
                         String title = action.GetTitle();
                         Button inlineButton = null;
                         // check for styles from references
-                        if (theme.resolveAttribute(R.attr.adaptiveInlineAction, buttonStyle, true)) 
+                        if (theme.resolveAttribute(R.attr.adaptiveInlineAction, buttonStyle, true))
                         {
                             Context themedContext = new ContextThemeWrapper(context, R.style.adaptiveInlineAction);
                             inlineButton = new Button(themedContext, null, 0);
-                        } 
-                        else 
+                        }
+                        else
                         {
                             inlineButton = new Button(context);
                             inlineButton.setBackgroundColor(Color.TRANSPARENT);
@@ -270,12 +271,22 @@ public class TextInputRenderer extends BaseCardElementRenderer
             }
         }
 
-        if(baseInputElement.GetHeight() == HeightType.Stretch)
+        if(baseInputElement.GetHeight() == HeightType.Stretch || baseInputElement.GetMinHeight() != 0)
         {
             LinearLayout containerLayout = new LinearLayout(context);
-            containerLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
 
-            if(textInputViewGroup != null)
+            if (baseInputElement.GetHeight() == HeightType.Stretch)
+            {
+                containerLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+            }
+            else
+            {
+                containerLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            }
+
+            containerLayout.setMinimumHeight(Util.dpToPixels(context, (int)baseInputElement.GetMinHeight()));
+
+            if (textInputViewGroup != null)
             {
                 containerLayout.addView(textInputViewGroup);
             }
@@ -296,6 +307,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
                 viewGroup.addView(editText);
             }
         }
+
         return editText;
     }
 

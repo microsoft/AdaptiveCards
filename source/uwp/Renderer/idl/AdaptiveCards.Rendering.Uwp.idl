@@ -571,8 +571,11 @@ AdaptiveNamespaceStart
         [propget] HRESULT Id([out, retval] HSTRING* value);
         [propput] HRESULT Id([in] HSTRING value);
 
-        [propget] HRESULT IsVisible([out, retval] boolean * value);
+        [propget] HRESULT IsVisible([out, retval] boolean* value);
         [propput] HRESULT IsVisible([in] boolean value);
+
+        [propget] HRESULT MinHeight([out, retval] UINT32* value);
+        [propput] HRESULT MinHeight([in] UINT32 value);
 
         [propget] HRESULT FallbackType([out, retval] FallbackType * value);
         [propput] HRESULT FallbackType([in] FallbackType value);

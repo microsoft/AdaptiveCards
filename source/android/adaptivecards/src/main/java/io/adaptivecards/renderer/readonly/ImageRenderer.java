@@ -16,8 +16,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import io.adaptivecards.objectmodel.CardElementType;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
@@ -34,6 +36,7 @@ import io.adaptivecards.objectmodel.ImageSizesConfig;
 import io.adaptivecards.objectmodel.ImageStyle;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.layout.HorizontalFlowLayout;
+import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public class ImageRenderer extends BaseCardElementRenderer
 {
@@ -165,17 +168,17 @@ public class ImageRenderer extends BaseCardElementRenderer
 
         ImageView imageView = new ImageView(context);
         imageView.setTag(new TagContent(image));
-        if(!baseCardElement.GetIsVisible())
+        if (!baseCardElement.GetIsVisible())
         {
             imageView.setVisibility(View.GONE);
         }
 
         String imageBackgroundColor = image.GetBackgroundColor();
         int backgroundColor = 0;
-        if(!TextUtils.isEmpty(imageBackgroundColor))
+        if (!TextUtils.isEmpty(imageBackgroundColor))
         {
             // check that it has 9 characters and that the color string isn't a color name
-            if(imageBackgroundColor.length() == 9 && imageBackgroundColor.charAt(0) == '#')
+            if (imageBackgroundColor.length() == 9 && imageBackgroundColor.charAt(0) == '#')
             {
                 try
                 {
@@ -207,13 +210,19 @@ public class ImageRenderer extends BaseCardElementRenderer
             backgroundColor,
             imageSizeLimit);
 
+        IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
+        if (onlineImageLoader != null)
+        {
+            imageLoaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
+        }
+
         imageLoaderAsync.execute(image.GetUrl());
 
         LinearLayout.LayoutParams layoutParams;
         if (image.GetImageSize() == ImageSize.Stretch)
         {
             //ImageView must match parent for stretch to work
-            if( image.GetHeight() == HeightType.Stretch )
+            if (image.GetHeight() == HeightType.Stretch)
             {
                 layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT, 1);
             }
@@ -224,7 +233,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
         else
         {
-            if( image.GetHeight() == HeightType.Stretch )
+            if (image.GetHeight() == HeightType.Stretch)
             {
                 layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT, 1);
             }
@@ -293,7 +302,19 @@ public class ImageRenderer extends BaseCardElementRenderer
         boolean isInImageSet = viewGroup instanceof HorizontalFlowLayout;
         setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, !isInImageSet /* horizontal line */, isInImageSet);
 
-        viewGroup.addView(imageView);
+        if (image.GetMinHeight() != 0)
+        {
+            LinearLayout minHeightLayout = new LinearLayout(context);
+            minHeightLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            minHeightLayout.setMinimumHeight(Util.dpToPixels(context, (int)image.GetMinHeight()));
+            minHeightLayout.addView(imageView);
+            viewGroup.addView(minHeightLayout);
+        }
+        else
+        {
+            viewGroup.addView(imageView);
+        }
+
         return imageView;
     }
 

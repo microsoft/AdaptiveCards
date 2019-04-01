@@ -102,7 +102,8 @@ public class DateInputRenderer extends TextInputRenderer
             @Override
             public void onClick(View v)
             {
-                DateInputHandler dateInputHandler = (DateInputHandler) v.getTag();
+                TagContent tagContent = (TagContent) v.getTag();
+                DateInputHandler dateInputHandler = (DateInputHandler) tagContent.GetInputHandler();
                 DateInput dateInput = (DateInput) dateInputHandler.getBaseInputElement();
                 DatePickerFragment datePickerFragment = new DatePickerFragment();
                 datePickerFragment.initialize(dateInput, (EditText) v, context);
@@ -116,7 +117,8 @@ public class DateInputRenderer extends TextInputRenderer
             }
         });
         editText.setTag(new TagContent(dateInput, dateInputHandler));
-        if(!baseCardElement.GetIsVisible())
+
+        if (!baseCardElement.GetIsVisible())
         {
             editText.setVisibility(View.GONE);
         }

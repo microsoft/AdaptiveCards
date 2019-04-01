@@ -16,6 +16,7 @@ import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
@@ -113,10 +114,21 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
             }
         });
 
-        if(toggleInput.GetHeight() == HeightType.Stretch)
+        if (toggleInput.GetHeight() == HeightType.Stretch || toggleInput.GetMinHeight() != 0)
         {
             LinearLayout toggleInputContainer = new LinearLayout(context);
-            toggleInputContainer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+
+            if (toggleInput.GetHeight() == HeightType.Stretch )
+            {
+                toggleInputContainer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+            }
+            else
+            {
+                toggleInputContainer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            }
+
+            toggleInputContainer.setMinimumHeight(Util.dpToPixels(context, (int)toggleInput.GetMinHeight()));
+
             toggleInputContainer.addView(checkBox);
             viewGroup.addView(toggleInputContainer);
         }
