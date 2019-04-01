@@ -40,7 +40,8 @@ export class Label extends React.Component {
 				defaultStyles={[receivedStyle, computedStyle]}
 				numberOfLines={numberOfLines}
 				text={formattedText}
-				onDidLayout={onDidLayout} />
+				onDidLayout={onDidLayout}
+				onClick={() => { this.props.onClick && this.props.onClick() }} />
 		)
 	}
 

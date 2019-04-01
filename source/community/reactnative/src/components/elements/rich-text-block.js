@@ -66,7 +66,8 @@ export class RichTextBlock extends React.Component {
                     wrap={textRun.wrap}
                     align={textRun.horizontalAlignment}
                     maxLines={textRun.maxLines}
-                    style={styles.text} />
+                    style={styles.text}
+                    onClick={() => this.onClickHandle(textRun.selectAction)} />
             </Text>
         );
     }
