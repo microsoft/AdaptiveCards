@@ -9,6 +9,8 @@
 #import "ACRView.h"
 #import "Image.h"
 #import "SharedAdaptiveCard.h"
+#import "CollectionTypeElement.h"
+#include "ActionParserRegistration.h"
 
 using namespace AdaptiveCards;
 
@@ -33,4 +35,8 @@ typedef void (^ObserverActionBlockForBaseAction)(NSObject<ACOIResourceResolver> 
 
 - (void)loadImageAccordingToResourceResolverIF:(std::shared_ptr<BaseCardElement> const &)elem
     key:(NSString *)key observerAction:(ObserverActionBlock)observerAction;
+
+- (void)updatePaddingMap:(std::shared_ptr<CollectionTypeElement> const &)collection view:(UIView *)view;
+
+- (UIView *)getBleedTarget:(InternalId const &)internalId;
 @end

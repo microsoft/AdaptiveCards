@@ -18,6 +18,7 @@ import io.adaptivecards.objectmodel.FactSet;
 import io.adaptivecards.objectmodel.FallbackType;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.AdaptiveWarning;
+import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.IResourceResolver;
 import io.adaptivecards.renderer.IActionLayoutRenderer;
 import io.adaptivecards.renderer.IBaseActionElementRenderer;
@@ -150,6 +151,24 @@ public class CardRendererRegistration
     public void registerOnlineMediaLoader(IOnlineMediaLoader onlineMediaLoader)
     {
         m_onlineMediaLoader = onlineMediaLoader;
+    }
+
+    /**
+     * @deprecated As of AdaptiveCards 1.2, replaced by {@link #registerResourceResolver(String, IResourceResolver)}
+     */
+    @Deprecated
+    public void registerOnlineImageLoader(IOnlineImageLoader imageLoader)
+    {
+        m_onlineImageLoader = imageLoader;
+    }
+
+    /**
+     * @deprecated As of AdaptiveCards 1.2, replaced by {@link #getResourceResolver(String)}
+     */
+    @Deprecated
+    public  IOnlineImageLoader getOnlineImageLoader()
+    {
+        return m_onlineImageLoader;
     }
 
     public void registerResourceResolver(String scheme, IResourceResolver resolver)
@@ -318,6 +337,7 @@ public class CardRendererRegistration
     private HashMap<String, IBaseCardElementRenderer> m_typeToRendererMap = new HashMap<String, IBaseCardElementRenderer>();
     private HashMap<String, IBaseActionElementRenderer> m_typeToRenderActionMap = new HashMap<String, IBaseActionElementRenderer>();
     private IActionLayoutRenderer m_actionLayoutRenderer = null;
+    private IOnlineImageLoader m_onlineImageLoader = null;
     private HashMap<String, IResourceResolver> m_resourceResolvers = new HashMap<>();
     private IOnlineMediaLoader m_onlineMediaLoader = null;
 }

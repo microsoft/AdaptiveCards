@@ -26,7 +26,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 border.Visibility = Visibility.Collapsed;
             }
 
-            bool inheritsStyleFromParent = (container.Style == AdaptiveContainerStyle.None);
+            bool inheritsStyleFromParent = !container.Style.HasValue;
             bool hasPadding = false;
             if (!inheritsStyleFromParent)
             {
@@ -53,7 +53,7 @@ namespace AdaptiveCards.Rendering.Wpf
             }
 
             // Modify context outer parent style so padding necessity can be determined
-            elementRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : container.Style;
+            elementRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : container.Style.Value;
             elementRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
             context.RenderArgs = elementRenderArgs;
 
@@ -149,11 +149,11 @@ namespace AdaptiveCards.Rendering.Wpf
             // AdaptiveColumn inherits from AdaptiveContainer so only one check is required for both
             if (element is AdaptiveContainer container)
             {
-                canApplyPadding = ((container.BackgroundImage != null) || ((container.Style != AdaptiveContainerStyle.None) && (container.Style != parentRenderArgs.ParentStyle)));
+                canApplyPadding = ((container.BackgroundImage != null) || (container.Style.HasValue && (container.Style != parentRenderArgs.ParentStyle)));
             }
             else if (element is AdaptiveColumnSet columnSet)
             {
-                canApplyPadding = ((columnSet.Style != AdaptiveContainerStyle.None) && (columnSet.Style != parentRenderArgs.ParentStyle));
+                canApplyPadding = (columnSet.Style.HasValue && (columnSet.Style != parentRenderArgs.ParentStyle));
             }
 
             int padding = context.Config.Spacing.Padding;

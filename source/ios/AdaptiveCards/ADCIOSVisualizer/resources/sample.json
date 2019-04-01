@@ -89,7 +89,7 @@
 			},
 			"backgroundColor": "#08000000",
 			"borderColor": "#FF000000",
-			"borderThickness": 2
+			"borderThickness": 1
 		},
 		"good": {
 			"foregroundColors": {
@@ -201,7 +201,7 @@
 		"medium": 20,
 		"large": 30,
 		"extraLarge": 40,
-		"padding": 5
+		"padding": 10
 	},
 	"separator": {
 		"lineThickness": 1,

@@ -40,6 +40,10 @@
     ACRColumnView* column = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)columnElem->GetStyle()
                                                      parentStyle:[viewGroup style] hostConfig:acoConfig superview:viewGroup];
 
+    [viewGroup addArrangedSubview:column];
+
+    configBleed(rootView, elem, column, acoConfig);
+
     column.pixelWidth = columnElem->GetPixelWidth();
     if(columnElem->GetWidth() == "stretch" || columnElem->GetWidth() == "") {
         column.columnWidth = @"stretch";
@@ -62,7 +66,6 @@
         trailingBlankSpace = [column addPaddingSpace];
     }
 
-    [viewGroup addArrangedSubview:column];
 
     [column setClipsToBounds:TRUE];
 

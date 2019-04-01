@@ -68,45 +68,6 @@ Json::Value Column::SerializeToJsonValue() const
     return root;
 }
 
-std::shared_ptr<Column> Column::Deserialize(ParseContext& context, const Json::Value& value)
-{
-    auto column = CollectionTypeElement::Deserialize<Column>(context, value);
-
-    std::string columnWidth = ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Width);
-    if (columnWidth == "")
-    {
-        // Look in "size" for back-compat with pre V1.0 cards
-        columnWidth = ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Size);
-    }
-
-    // validate user input; validation only applies to user input for explicit column width
-    // the other input checks are remained unchanged
-    column->SetPixelWidth(0);
-    if (ShouldParseForExplicitDimension(columnWidth))
-    {
-        const std::string unit = "px";
-        int parsedDimension = 0;
-        ValidateUserInputForDimensionWithUnit(unit, columnWidth, parsedDimension, context.warnings);
-        column->SetPixelWidth(parsedDimension);
-    }
-
-    column->SetWidth(columnWidth);
-
-    return column;
-}
-
-void Column::DeserializeChildren(ParseContext& context, const Json::Value& value)
-{
-    // Parse Items
-    auto cardElements = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Items, false);
-    m_items = std::move(cardElements);
-}
-
-std::shared_ptr<Column> Column::DeserializeFromString(ParseContext& context, const std::string& jsonString)
-{
-    return Column::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
-}
-
 void Column::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items),
@@ -121,4 +82,34 @@ void Column::GetResourceInformation(std::vector<RemoteResourceInformation>& reso
     auto columnItems = GetItems();
     CollectionTypeElement::GetResourceInformation<BaseCardElement>(resourceInfo, columnItems);
     return;
+}
+
+void Column::DeserializeChildren(ParseContext& context, const Json::Value& value)
+{
+    // Parse Items
+    auto cardElements = ParseUtil::GetElementCollection(context, value, AdaptiveCardSchemaKey::Items, false);
+    m_items = std::move(cardElements);
+}
+
+std::shared_ptr<BaseCardElement> ColumnParser::Deserialize(ParseContext& context, const Json::Value& value)
+{
+    auto column = CollectionTypeElement::Deserialize<Column>(context, value);
+
+    std::string columnWidth = ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Width);
+    if (columnWidth == "")
+    {
+        // Look in "size" for back-compat with pre V1.0 cards
+        columnWidth = ParseUtil::GetValueAsString(value, AdaptiveCardSchemaKey::Size);
+    }
+
+    column->SetWidth(ParseUtil::ToLowercase(columnWidth));
+    const int parsedDimension = ParseSizeForPixelSize(column->GetWidth(), &context.warnings);
+    column->SetPixelWidth(parsedDimension);
+
+    return column;
+}
+
+std::shared_ptr<BaseCardElement> ColumnParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
+{
+    return ColumnParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }

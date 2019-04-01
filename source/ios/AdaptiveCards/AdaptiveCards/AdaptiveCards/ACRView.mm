@@ -51,6 +51,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     NSMutableDictionary *_imageContextMap;
     NSMutableDictionary *_imageViewContextMap;
     NSMutableSet *_setOfRemovedObservers;
+    NSMutableDictionary<NSString*, UIView *> *_paddingMap;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -69,6 +70,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
         _imageContextMap = [[NSMutableDictionary alloc] init];
         _imageViewContextMap = [[NSMutableDictionary alloc] init];
         _setOfRemovedObservers = [[NSMutableSet alloc] init];
+        _paddingMap = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -108,9 +110,11 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
         [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.frame.size.width].active = YES;
     }
 
-    UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card] inputs:inputs context:self containingView:self hostconfig:_hostConfig];
-
     ContainerStyle style = ([_hostConfig getHostConfig]->GetAdaptiveCard().allowCustomStyle)? [_adaptiveCard card]->GetStyle(): ContainerStyle::Default;
+
+    [self setStyle:[ACOHostConfig getPlatformContainerStyle:style]];
+    
+    UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card] inputs:inputs context:self containingView:self hostconfig:_hostConfig];
 
     newView.backgroundColor = [_hostConfig getBackgroundColorForContainerStyle:
         [ACOHostConfig getPlatformContainerStyle:style]];
@@ -120,7 +124,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
     if((backgroundImageProperties != nullptr) && !(backgroundImageProperties->GetUrl().empty())) {
         imageUrl = backgroundImageProperties->GetUrl();
     }
-    
+
     NSString *key = [NSString stringWithCString:imageUrl.c_str() encoding:[NSString defaultCStringEncoding]];
     if ([key length]) {
         UIView *imgView = nil;
@@ -678,6 +682,33 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
             [object removeObserver:self forKeyPath:@"image"];
         }
     }
+}
+
+- (void)updatePaddingMap:(std::shared_ptr<CollectionTypeElement> const &)collection view:(UIView *)view
+{
+    if (view && collection && collection->GetPadding()) {
+        NSNumber *key = [NSNumber numberWithUnsignedLongLong:collection->GetInternalId().Hash()];
+        _paddingMap[[key stringValue]] = view;
+    }
+}
+
+// This adjustment is needed because during parsing the card, host config can't be accessed
+- (void)updatePaddingMapForTopElements:(std::shared_ptr<BaseCardElement> const &)element rootView:(ACRView *)view card:(std::shared_ptr<AdaptiveCard> const &)card
+{
+    const CardElementType type = element->GetElementType();
+    if (type == CardElementType::Container || type == CardElementType::ColumnSet || type == CardElementType::Column) {
+        std::shared_ptr<CollectionTypeElement> collection = std::dynamic_pointer_cast<CollectionTypeElement>(element);
+        if (view && collection && collection->GetStyle() != card->GetStyle()) {
+            NSNumber *key = [NSNumber numberWithUnsignedLongLong:collection->GetInternalId().Hash()];
+            _paddingMap[[key stringValue]] = view;
+        }
+    }
+}
+
+- (UIView *)getBleedTarget:(InternalId const &)internalId
+{
+    NSNumber *key = [NSNumber numberWithUnsignedLongLong:internalId.Hash()];
+    return _paddingMap[[key stringValue]];
 }
 
 @end

@@ -261,7 +261,7 @@ namespace AdaptiveCards.Test
             AdaptiveImage image = (AdaptiveImage) container.Items[1];
 
             // Container property tests
-            Assert.AreEqual(AdaptiveContainerStyle.None, container.Style);
+            Assert.IsNull(container.Style);
             Assert.AreEqual(AdaptiveSpacing.Default, container.Spacing);
 
             // TextBlock property tests
