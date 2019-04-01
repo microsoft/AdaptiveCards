@@ -22,7 +22,10 @@ const DOUBLE c_playIconCornerRadius = 5;
 const DOUBLE c_playIconOpacity = .5;
 const DOUBLE c_audioHeight = 100;
 
-void GetMediaPosterAsImage(IAdaptiveRenderContext* renderContext, IAdaptiveRenderArgs* renderArgs, IAdaptiveMedia* adaptiveMedia, IImage** posterImage)
+void GetMediaPosterAsImage(_In_ IAdaptiveRenderContext* renderContext,
+                           _In_ IAdaptiveRenderArgs* renderArgs,
+                           _In_ IAdaptiveMedia* adaptiveMedia,
+                           _Outptr_ IImage** posterImage)
 {
     HString posterString;
     THROW_IF_FAILED(adaptiveMedia->get_Poster(posterString.GetAddressOf()));
@@ -69,7 +72,7 @@ void GetMediaPosterAsImage(IAdaptiveRenderContext* renderContext, IAdaptiveRende
     THROW_IF_FAILED(posterAsImage.CopyTo(posterImage));
 }
 
-void AddDefaultPlayIcon(IPanel* posterPanel, IAdaptiveHostConfig* hostConfig, IAdaptiveRenderArgs* renderArgs)
+void AddDefaultPlayIcon(_In_ IPanel* posterPanel, _In_ IAdaptiveHostConfig* hostConfig, _In_ IAdaptiveRenderArgs* renderArgs)
 {
     // Create a rectangle
     ComPtr<IRectangle> rectangle =
@@ -136,7 +139,7 @@ void AddDefaultPlayIcon(IPanel* posterPanel, IAdaptiveHostConfig* hostConfig, IA
     THROW_IF_FAILED(relativePanelStatics->SetAlignVerticalCenterWithPanel(playIconAsUIElement.Get(), true));
 }
 
-void AddCustomPlayIcon(IPanel* posterPanel, HSTRING playIconString, IAdaptiveRenderContext* renderContext, IAdaptiveRenderArgs* renderArgs)
+void AddCustomPlayIcon(_In_ IPanel* posterPanel, _In_ HSTRING playIconString, _In_ IAdaptiveRenderContext* renderContext, _In_ IAdaptiveRenderArgs* renderArgs)
 {
     // Render the custom play icon using the image renderer
     ComPtr<IAdaptiveImage> playIconAdaptiveImage;
@@ -168,7 +171,7 @@ void AddCustomPlayIcon(IPanel* posterPanel, HSTRING playIconString, IAdaptiveRen
     THROW_IF_FAILED(relativePanelStatics->SetAlignVerticalCenterWithPanel(playIconUIElement.Get(), true));
 }
 
-void AddPlayIcon(IPanel* posterPanel, IAdaptiveRenderContext* renderContext, IAdaptiveRenderArgs* renderArgs)
+void AddPlayIcon(_In_ IPanel* posterPanel, _In_ IAdaptiveRenderContext* renderContext, _In_ IAdaptiveRenderArgs* renderArgs)
 {
     ComPtr<IAdaptiveHostConfig> hostConfig;
     THROW_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
@@ -189,10 +192,10 @@ void AddPlayIcon(IPanel* posterPanel, IAdaptiveRenderContext* renderContext, IAd
     }
 }
 
-void CreatePosterContainerWithPlayButton(IImage* posterImage,
-                                         IAdaptiveRenderContext* renderContext,
-                                         IAdaptiveRenderArgs* renderArgs,
-                                         IUIElement** posterContainer)
+void CreatePosterContainerWithPlayButton(_In_ IImage* posterImage,
+                                         _In_ IAdaptiveRenderContext* renderContext,
+                                         _In_ IAdaptiveRenderArgs* renderArgs,
+                                         _Outptr_ IUIElement** posterContainer)
 {
     ComPtr<IRelativePanel> posterRelativePanel =
         XamlHelpers::CreateXamlClass<IRelativePanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RelativePanel));
@@ -217,7 +220,10 @@ void CreatePosterContainerWithPlayButton(IImage* posterImage,
     THROW_IF_FAILED(posterRelativePanelAsUIElement.CopyTo(posterContainer));
 }
 
-void GetMediaSource(IAdaptiveHostConfig* hostConfig, IAdaptiveMedia* adaptiveMedia, IUriRuntimeClass** mediaSourceUrl, HSTRING* mimeType)
+void GetMediaSource(_In_ IAdaptiveHostConfig* hostConfig,
+                    _In_ IAdaptiveMedia* adaptiveMedia,
+                    _Outptr_ IUriRuntimeClass** mediaSourceUrl,
+                    _Outptr_ HSTRING* mimeType)
 {
     LPWSTR supportedMimeTypes[] = {
         L"video/mp4",
@@ -274,10 +280,10 @@ void GetMediaSource(IAdaptiveHostConfig* hostConfig, IAdaptiveMedia* adaptiveMed
     }
 }
 
-HRESULT HandleMediaResourceResolverCompleted(IAsyncOperation<IRandomAccessStream*>* operation,
+HRESULT HandleMediaResourceResolverCompleted(_In_ IAsyncOperation<IRandomAccessStream*>* operation,
                                              AsyncStatus status,
-                                             IMediaElement* mediaElement,
-                                             HSTRING mimeType)
+                                             _In_ IMediaElement* mediaElement,
+                                             _In_ HSTRING mimeType)
 {
     if (status == AsyncStatus::Completed)
     {
@@ -293,13 +299,13 @@ HRESULT HandleMediaResourceResolverCompleted(IAsyncOperation<IRandomAccessStream
     return S_OK;
 }
 
-HRESULT HandleMediaClick(IAdaptiveRenderContext* renderContext,
-                         IAdaptiveMedia* adaptiveMedia,
-                         IMediaElement* mediaElement,
-                         IUIElement* posterContainer,
-                         IUriRuntimeClass* mediaSourceUrl,
-                         HSTRING mimeType,
-                         IAdaptiveMediaEventInvoker* mediaInvoker)
+HRESULT HandleMediaClick(_In_ IAdaptiveRenderContext* renderContext,
+                         _In_ IAdaptiveMedia* adaptiveMedia,
+                         _In_ IMediaElement* mediaElement,
+                         _In_ IUIElement* posterContainer,
+                         _In_ IUriRuntimeClass* mediaSourceUrl,
+                         _In_ HSTRING mimeType,
+                         _In_ IAdaptiveMediaEventInvoker* mediaInvoker)
 {
     // When the user clicks: hide the poster, show the media element, open and play the media
     if (mediaElement)

@@ -16,14 +16,18 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.FontStyle;
 import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
-import io.adaptivecards.objectmodel.FontSizesConfig;
 import io.adaptivecards.objectmodel.HorizontalAlignment;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.TextBlock;
@@ -53,62 +57,24 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    static void setTextSize(TextView textView, FontStyle style, TextSize textSize, HostConfig hostConfig)
-    {
-        long value = hostConfig.GetFontSize(style, textSize);
-        textView.setTextSize(value);
-    }
-
     static void setTextAlignment(TextView textView, HorizontalAlignment textAlignment)
     {
-        int alignment;
-        if (textAlignment == HorizontalAlignment.Center)
-        {
-            alignment = Gravity.CENTER;
-        }
-        else if (textAlignment == HorizontalAlignment.Left)
-        {
-            alignment = Gravity.LEFT;
-        }
-        else if (textAlignment == HorizontalAlignment.Right)
-        {
-            alignment = Gravity.RIGHT;
-        }
-        else
-        {
-            throw new IllegalArgumentException("Invalid text alignment: " + textAlignment.toString());
-        }
+        textView.setGravity(TextRendererUtil.getTextAlignment(textAlignment));
+    }
 
-        textView.setGravity(alignment);
+    static void setTextSize(TextView textView, FontStyle style, TextSize textSize, HostConfig hostConfig)
+    {
+        textView.setTextSize(TextRendererUtil.getTextSize(style, textSize, hostConfig));
     }
 
     void setTextFormat(TextView textView, HostConfig hostConfig, FontStyle style, TextWeight textWeight)
     {
-        String fontFamily = hostConfig.GetFontFamily(style);
-
-        Typeface typeface;
-        if (fontFamily.isEmpty() && style == FontStyle.Monospace)
-        {
-            typeface = Typeface.MONOSPACE;
-        }
-        else
-        {
-            typeface = Typeface.create(fontFamily, Typeface.NORMAL);
-        }
-
-        textView.setTypeface(typeface, m_textWeightMap.get(textWeight));
+        textView.setTypeface(TextRendererUtil.getTextFormat(hostConfig, style), m_textWeightMap.get(textWeight));
     }
 
     static void setTextColor(TextView textView, ForegroundColor foregroundColor, HostConfig hostConfig, boolean isSubtle, ContainerStyle containerStyle)
     {
-        if (containerStyle == ContainerStyle.Emphasis)
-        {
-            textView.setTextColor(getColor(foregroundColor, hostConfig.GetContainerStyles().getEmphasisPalette().getForegroundColors(), isSubtle));
-        }
-        else
-        {
-            textView.setTextColor(getColor(foregroundColor, hostConfig.GetContainerStyles().getDefaultPalette().getForegroundColors(), isSubtle));
-        }
+        textView.setTextColor(getColor(TextRendererUtil.getTextColor(foregroundColor, hostConfig, isSubtle, containerStyle)));
     }
 
     static class TouchTextView implements View.OnTouchListener
@@ -182,7 +148,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            ContainerStyle containerStyle)
+            RenderArgs renderArgs)
     {
         TextBlock textBlock = null;
         if (baseCardElement instanceof TextBlock)
@@ -195,7 +161,11 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         }
 
         TextView textView = new TextView(context);
-        textView.setTag(baseCardElement);
+        textView.setTag(new TagContent(textBlock));
+        if(!baseCardElement.GetIsVisible())
+        {
+            textView.setVisibility(View.GONE);
+        }
 
         DateTimeParser parser = new DateTimeParser(textBlock.GetLanguage());
         String textWithFormattedDates = parser.GenerateString(textBlock.GetTextForDateParsing());
@@ -213,7 +183,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         setTextFormat(textView, hostConfig, textBlock.GetFontStyle(), textBlock.GetTextWeight());
         setTextSize(textView, textBlock.GetFontStyle(), textBlock.GetTextSize(), hostConfig);
         setSpacingAndSeparator(context, viewGroup, textBlock.GetSpacing(), textBlock.GetSeparator(), hostConfig, true);
-        setTextColor(textView, textBlock.GetTextColor(), hostConfig, textBlock.GetIsSubtle(), containerStyle);
+        setTextColor(textView, textBlock.GetTextColor(), hostConfig, textBlock.GetIsSubtle(), renderArgs.getContainerStyle());
         setTextAlignment(textView, textBlock.GetHorizontalAlignment());
 
         if( textBlock.GetHeight() == HeightType.Stretch )
@@ -233,6 +203,11 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         else if (!textBlock.GetWrap())
         {
             textView.setMaxLines(1);
+        }
+
+        if (textBlock.GetMinHeight() != 0)
+        {
+            textView.setMinHeight(Util.dpToPixels(context, (int)textBlock.GetMinHeight()));
         }
 
         viewGroup.addView(textView);

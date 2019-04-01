@@ -21,7 +21,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveImage::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Image>& sharedImage) try
+    HRESULT AdaptiveImage::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Image>& sharedImage) try
     {
         if (sharedImage == nullptr)
         {
@@ -45,96 +45,96 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveImage::get_Url(HSTRING* url) { return m_url.CopyTo(url); }
+    HRESULT AdaptiveImage::get_Url(_Outptr_ HSTRING* url) { return m_url.CopyTo(url); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImage::put_Url(HSTRING url) { return m_url.Set(url); }
+    HRESULT AdaptiveImage::put_Url(_In_ HSTRING url) { return m_url.Set(url); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImage::get_BackgroundColor(HSTRING* backgroundColor)
+    HRESULT AdaptiveImage::get_BackgroundColor(_Outptr_ HSTRING* backgroundColor)
     {
         return m_backgroundColor.CopyTo(backgroundColor);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImage::put_BackgroundColor(HSTRING backgroundColor)
+    HRESULT AdaptiveImage::put_BackgroundColor(_In_ HSTRING backgroundColor)
     {
         return m_backgroundColor.Set(backgroundColor);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImage::get_Style(ABI::AdaptiveNamespace::ImageStyle* imageStyle)
+    HRESULT AdaptiveImage::get_Style(_Out_ ABI::AdaptiveNamespace::ImageStyle* imageStyle)
     {
         *imageStyle = m_imageStyle;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImage::put_Style(ABI::AdaptiveNamespace::ImageStyle imageStyle)
+    HRESULT AdaptiveImage::put_Style(ABI::AdaptiveNamespace::ImageStyle imageStyle)
     {
         m_imageStyle = imageStyle;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImage::get_Size(ABI::AdaptiveNamespace::ImageSize* imageSize)
+    HRESULT AdaptiveImage::get_Size(_Out_ ABI::AdaptiveNamespace::ImageSize* imageSize)
     {
         *imageSize = m_imageSize;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImage::put_Size(ABI::AdaptiveNamespace::ImageSize imageSize)
+    HRESULT AdaptiveImage::put_Size(ABI::AdaptiveNamespace::ImageSize imageSize)
     {
         m_imageSize = imageSize;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImage::get_PixelWidth(UINT32* pixelWidth)
+    HRESULT AdaptiveImage::get_PixelWidth(_Out_ UINT32* pixelWidth)
     {
         *pixelWidth = m_pixelWidth;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImage::put_PixelWidth(UINT32 pixelWidth)
+    HRESULT AdaptiveImage::put_PixelWidth(UINT32 pixelWidth)
     {
         m_pixelWidth = pixelWidth;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImage::get_PixelHeight(UINT32* pixelHeight)
+    HRESULT AdaptiveImage::get_PixelHeight(_Out_ UINT32* pixelHeight)
     {
         *pixelHeight = m_pixelHeight;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImage::put_PixelHeight(UINT32 pixelHeight)
+    HRESULT AdaptiveImage::put_PixelHeight(UINT32 pixelHeight)
     {
         m_pixelHeight = pixelHeight;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImage::get_AltText(HSTRING* text) { return m_altText.CopyTo(text); }
+    HRESULT AdaptiveImage::get_AltText(_Outptr_ HSTRING* text) { return m_altText.CopyTo(text); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImage::put_AltText(HSTRING text) { return m_altText.Set(text); }
+    HRESULT AdaptiveImage::put_AltText(_In_ HSTRING text) { return m_altText.Set(text); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImage::get_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment* alignment)
+    HRESULT AdaptiveImage::get_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment* alignment)
     {
         *alignment = m_horizontalAlignment;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImage::put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment alignment)
+    HRESULT AdaptiveImage::put_HorizontalAlignment(ABI::AdaptiveNamespace::HAlignment alignment)
     {
         m_horizontalAlignment = alignment;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImage::get_ElementType(ElementType* elementType)
+    HRESULT AdaptiveImage::get_ElementType(_Out_ ElementType* elementType)
     {
         *elementType = ElementType::Image;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImage::get_SelectAction(IAdaptiveActionElement** action)
+    HRESULT AdaptiveImage::get_SelectAction(_COM_Outptr_ IAdaptiveActionElement** action)
     {
         return m_selectAction.CopyTo(action);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveImage::put_SelectAction(IAdaptiveActionElement* action)
+    HRESULT AdaptiveImage::put_SelectAction(_In_ IAdaptiveActionElement* action)
     {
         m_selectAction = action;
         return S_OK;

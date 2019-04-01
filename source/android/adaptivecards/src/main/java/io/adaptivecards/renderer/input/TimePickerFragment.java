@@ -2,6 +2,7 @@ package io.adaptivecards.renderer.input;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.widget.EditText;
@@ -15,9 +16,10 @@ import java.util.GregorianCalendar;
 public class TimePickerFragment extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener
 {
-    public void initialize(EditText editText)
+    public void initialize(EditText editText, Context context)
     {
         m_editText = editText;
+        m_context = context;
     }
 
     @Override
@@ -37,7 +39,7 @@ public class TimePickerFragment extends DialogFragment
             calendar = Calendar.getInstance();
         }
 
-        return new TimePickerDialog(getActivity(), this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
+        return new TimePickerDialog(m_context, this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
     }
 
     @Override
@@ -49,4 +51,5 @@ public class TimePickerFragment extends DialogFragment
     }
 
     private EditText m_editText;
+    private Context m_context;
 }

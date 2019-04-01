@@ -11,8 +11,55 @@ namespace AdaptiveCards.Rendering.Wpf
             var uiColumnSet = new Grid();
             uiColumnSet.Style = context.GetStyle($"Adaptive.{columnSet.Type}");
 
-            foreach (var column in columnSet.Columns)
+            // Keep track of ContainerStyle.ForegroundColors before Container is rendered
+            var parentRenderArgs = context.RenderArgs;
+            var elementRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
+
+            Border border = new Border();
+            border.Child = uiColumnSet;
+
+            bool inheritsStyleFromParent = !columnSet.Style.HasValue;
+            bool hasPadding = false;
+            if (!inheritsStyleFromParent)
             {
+                hasPadding = AdaptiveContainerRenderer.ApplyPadding(border, uiColumnSet, columnSet, parentRenderArgs, context);
+
+                // Apply background color
+                var columnSetStyle = context.Config.ContainerStyles.GetContainerStyleConfig(columnSet.Style);
+
+                border.Background = context.GetColorBrush(columnSetStyle.BackgroundColor);
+                elementRenderArgs.ForegroundColors = columnSetStyle.ForegroundColors;
+            }
+
+            elementRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : columnSet.Style.Value;
+            elementRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
+            
+            for (int i = 0; i < columnSet.Columns.Count; ++i)
+            {
+                AdaptiveColumn column = columnSet.Columns[i];
+
+                var columnRenderArgs = new AdaptiveRenderArgs(elementRenderArgs);
+                if (columnSet.Columns.Count == 1)
+                {
+                    columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.Only;
+                }
+                else
+                {
+                    if (i == 0)
+                    {
+                        columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.Begin;
+                    }
+                    else if (i == (columnSet.Columns.Count - 1))
+                    {
+                        columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.End;
+                    }
+                    else
+                    {
+                        columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.Intermediate;
+                    }
+                }
+                context.RenderArgs = columnRenderArgs;
+
                 FrameworkElement uiContainer = context.Render(column);
 
                 // Add vertical Seperator
@@ -39,7 +86,6 @@ namespace AdaptiveCards.Rendering.Wpf
                     }
 
                 }
-
 
                 // do some sizing magic using the magic GridUnitType.Star
                 var width = column.Width?.ToLower();
@@ -69,10 +115,18 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (columnSet.SelectAction != null)
             {
-                return context.RenderSelectAction(columnSet.SelectAction, uiColumnSet);
+                return context.RenderSelectAction(columnSet.SelectAction, border);
             }
-            return uiColumnSet;
-        }
 
+            if(!columnSet.IsVisible)
+            {
+                uiColumnSet.Visibility = Visibility.Collapsed;
+            }
+
+            // Revert context's value to that of outside the Container
+            context.RenderArgs = parentRenderArgs;
+
+            return border;
+        }
     }
 }

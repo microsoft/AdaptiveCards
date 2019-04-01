@@ -9,7 +9,9 @@ import android.widget.EditText;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.renderer.AdaptiveWarning;
+import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
@@ -44,7 +46,7 @@ public class NumberInputRenderer extends TextInputRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            ContainerStyle containerStyle)
+            RenderArgs renderArgs)
     {
         if (!hostConfig.GetSupportsInteractivity())
         {
@@ -74,6 +76,13 @@ public class NumberInputRenderer extends TextInputRenderer
                 numberInputHandler,
                 hostConfig);
         editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
+        editText.setTag(new TagContent(numberInput, numberInputHandler));
+        if(!baseCardElement.GetIsVisible())
+        {
+            editText.setVisibility(View.GONE);
+        }
+
 
         return editText;
     }

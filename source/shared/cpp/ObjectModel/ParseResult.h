@@ -1,11 +1,11 @@
 #pragma once
 
 #include "pch.h"
-#include "AdaptiveCardParseWarning.h"
 
 namespace AdaptiveSharedNamespace
 {
     class AdaptiveCard;
+    class AdaptiveCardParseWarning;
 
     class ParseResult
     {

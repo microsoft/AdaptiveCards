@@ -9,7 +9,9 @@ import android.widget.EditText;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.renderer.AdaptiveWarning;
+import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.DateInputHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
@@ -43,13 +45,13 @@ public class DateInputRenderer extends TextInputRenderer
     @Override
     public View render(
             RenderedAdaptiveCard renderedCard,
-            Context context,
+            final Context context,
             FragmentManager fragmentManager,
             ViewGroup viewGroup,
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            ContainerStyle containerStyle)
+            RenderArgs renderArgs)
     {
 
         if (!hostConfig.GetSupportsInteractivity())
@@ -100,10 +102,11 @@ public class DateInputRenderer extends TextInputRenderer
             @Override
             public void onClick(View v)
             {
-                DateInputHandler dateInputHandler = (DateInputHandler) v.getTag();
+                TagContent tagContent = (TagContent) v.getTag();
+                DateInputHandler dateInputHandler = (DateInputHandler) tagContent.GetInputHandler();
                 DateInput dateInput = (DateInput) dateInputHandler.getBaseInputElement();
                 DatePickerFragment datePickerFragment = new DatePickerFragment();
-                datePickerFragment.initialize(dateInput, (EditText) v);
+                datePickerFragment.initialize(dateInput, (EditText) v, context);
                 Bundle args = new Bundle();
                 args.putString("title", TITLE);
                 datePickerFragment.setArguments(args);
@@ -113,6 +116,12 @@ public class DateInputRenderer extends TextInputRenderer
 
             }
         });
+        editText.setTag(new TagContent(dateInput, dateInputHandler));
+
+        if (!baseCardElement.GetIsVisible())
+        {
+            editText.setVisibility(View.GONE);
+        }
 
         return editText;
     }

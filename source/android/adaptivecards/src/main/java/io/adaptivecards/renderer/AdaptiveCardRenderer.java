@@ -1,31 +1,24 @@
 package io.adaptivecards.renderer;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
-import io.adaptivecards.objectmodel.ActionAlignment;
-import io.adaptivecards.objectmodel.ActionsOrientation;
 import io.adaptivecards.objectmodel.AdaptiveCard;
+import io.adaptivecards.objectmodel.BackgroundImage;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseActionElementVector;
 import io.adaptivecards.objectmodel.BaseCardElementVector;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HostConfig;
-import io.adaptivecards.objectmodel.IconPlacement;
-import io.adaptivecards.objectmodel.Spacing;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.http.HttpRequestResult;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public class AdaptiveCardRenderer
@@ -44,37 +37,6 @@ public class AdaptiveCardRenderer
         }
 
         return s_instance;
-    }
-
-    private class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
-    {
-        private Context m_context;
-        private LinearLayout m_layout;
-
-        public BackgroundImageLoaderAsync(RenderedAdaptiveCard renderedCard, Context context, LinearLayout layout, String imageBaseUrl)
-        {
-            super(renderedCard, imageBaseUrl);
-
-            m_context = context;
-            m_layout = layout;
-        }
-
-        @Override
-        protected HttpRequestResult<Bitmap> doInBackground(String... args)
-        {
-            if (args.length == 0)
-            {
-                return null;
-            }
-            return loadImage(args[0], m_context);
-        }
-
-        void onSuccessfulPostExecute(Bitmap bitmap)
-        {
-            BitmapDrawable background = new BitmapDrawable(m_context.getResources(), bitmap);
-            m_layout.setBackground(background);
-            m_layout.bringChildToFront(m_layout.getChildAt(0));
-        }
     }
 
     public RenderedAdaptiveCard render(Context context, FragmentManager fragmentManager, AdaptiveCard adaptiveCard, ICardActionHandler cardActionHandler)
@@ -120,8 +82,16 @@ public class AdaptiveCardRenderer
         rootLayout.setFocusable(true);
         rootLayout.setFocusableInTouchMode(true);
 
+        // Add this two for allowing children to bleed
+        rootLayout.setClipChildren(false);
+        rootLayout.setClipToPadding(false);
+
         LinearLayout layout = new LinearLayout(context);
         layout.setTag(adaptiveCard);
+
+        // Add this two for allowing children to bleed
+        layout.setClipChildren(false);
+        layout.setClipToPadding(false);
 
         if( adaptiveCard.GetHeight() == HeightType.Stretch )
         {
@@ -167,19 +137,13 @@ public class AdaptiveCardRenderer
             style = adaptiveCard.GetStyle();
         }
 
-        String color;
-        if (style == ContainerStyle.Default)
-        {
-            color = hostConfig.GetContainerStyles().getDefaultPalette().getBackgroundColor();
-        }
-        else
-        {
-            color = hostConfig.GetContainerStyles().getEmphasisPalette().getBackgroundColor();
-        }
+        String color = hostConfig.GetBackgroundColor(style);
 
         layout.setBackgroundColor(Color.parseColor(color));
 
-        CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, layout, adaptiveCard, baseCardElementList, cardActionHandler, hostConfig, style);
+        RenderArgs renderArgs = new RenderArgs();
+        renderArgs.setContainerStyle(style);
+        CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, layout, adaptiveCard, baseCardElementList, cardActionHandler, hostConfig, renderArgs);
 
         if (hostConfig.GetSupportsInteractivity())
         {
@@ -194,7 +158,7 @@ public class AdaptiveCardRenderer
 
                 IActionLayoutRenderer actionLayoutRenderer = CardRendererRegistration.getInstance().getActionLayoutRenderer();
                 if(actionLayoutRenderer != null) {
-                    actionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, layout, baseActionElementList, cardActionHandler, hostConfig);
+                    actionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, layout, baseActionElementList, cardActionHandler, hostConfig, renderArgs);
                 }
             }
         }
@@ -203,24 +167,24 @@ public class AdaptiveCardRenderer
             renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INTERACTIVITY_DISALLOWED, "Interactivity is not allowed. Actions not rendered."));
         }
 
-        String imageUrl = adaptiveCard.GetBackgroundImage();
-        if (!imageUrl.isEmpty())
+        BackgroundImage backgroundImageProperties = adaptiveCard.GetBackgroundImage();
+        if (backgroundImageProperties != null && !backgroundImageProperties.GetUrl().isEmpty())
         {
-            BackgroundImageLoaderAsync loaderAsync = new BackgroundImageLoaderAsync(renderedCard, context, layout, hostConfig.GetImageBaseUrl());
+            BackgroundImageLoaderAsync loaderAsync = new BackgroundImageLoaderAsync(
+                    renderedCard,
+                    context,
+                    layout,
+                    hostConfig.GetImageBaseUrl(),
+                    context.getResources().getDisplayMetrics().widthPixels,
+                    backgroundImageProperties);
 
             IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
-            if(onlineImageLoader != null)
+            if (onlineImageLoader != null)
             {
                 loaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
             }
 
-            IDataUriImageLoader dataUriImageLoader = CardRendererRegistration.getInstance().getDataUriImageLoader();
-            if(dataUriImageLoader != null)
-            {
-                loaderAsync.registerCustomDataUriImageLoader(dataUriImageLoader);
-            }
-
-            loaderAsync.execute(imageUrl);
+            loaderAsync.execute(backgroundImageProperties.GetUrl());
         }
 
         BaseActionElement selectAction = renderedCard.getAdaptiveCard().GetSelectAction();
@@ -234,8 +198,6 @@ public class AdaptiveCardRenderer
     }
 
     private static AdaptiveCardRenderer s_instance = null;
-
     private IOnlineImageLoader m_onlineImageLoader = null;
-
     private HostConfig defaultHostConfig = new HostConfig();
 }

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "EverythingBagel.h"
-#include "SharedAdaptiveCard.h"
+
+#include "ActionSet.h"
 #include "ChoiceInput.h"
 #include "ChoiceSetInput.h"
 #include "Column.h"
@@ -13,10 +14,12 @@
 #include "ImageSet.h"
 #include "NumberInput.h"
 #include "OpenUrlAction.h"
+#include "RichTextBlock.h"
 #include "ShowCardAction.h"
 #include "SubmitAction.h"
 #include "TextBlock.h"
 #include "TextInput.h"
+#include "TextRun.h"
 #include "TimeInput.h"
 #include "ToggleInput.h"
 
@@ -27,9 +30,17 @@ using namespace AdaptiveCards;
 
 namespace AdaptiveCardsSharedModelUnitTest
 {
+    void ValidateBackgroundImage(const BackgroundImage& backImage, BackgroundImageMode mode, HorizontalAlignment hAlignment, VerticalAlignment vAlignment)
+    {
+        Assert::AreEqual("https://adaptivecards.io/content/cats/1.png"s, backImage.GetUrl());
+        Assert::IsTrue(mode == backImage.GetMode());
+        Assert::IsTrue(hAlignment == backImage.GetHorizontalAlignment());
+        Assert::IsTrue(vAlignment == backImage.GetVerticalAlignment());
+    }
+
     void ValidateTopLevelProperties(const AdaptiveCard &everythingBagel)
     {
-        Assert::AreEqual("https://adaptivecards.io/content/cats/1.png"s, everythingBagel.GetBackgroundImage());
+        ValidateBackgroundImage(*everythingBagel.GetBackgroundImage(), BackgroundImageMode::Stretch, HorizontalAlignment::Left, VerticalAlignment::Top);
         Assert::IsTrue(CardElementType::AdaptiveCard == everythingBagel.GetElementType());
         Assert::AreEqual("fallbackText"s, everythingBagel.GetFallbackText());
         Assert::IsTrue(HeightType::Auto == everythingBagel.GetHeight());
@@ -74,6 +85,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::IsTrue(HorizontalAlignment::Center == image.GetHorizontalAlignment());
         Assert::IsTrue(ImageSize::Auto == image.GetImageSize());
         Assert::IsTrue(image.GetSeparator());
+        Assert::IsFalse(image.GetIsVisible());
 
         auto imageAction = std::static_pointer_cast<OpenUrlAction>(image.GetSelectAction());
         Assert::IsTrue((bool)imageAction);
@@ -140,7 +152,6 @@ namespace AdaptiveCardsSharedModelUnitTest
             auto textBlockItem = std::static_pointer_cast<TextBlock>(items.at(1));
             Assert::AreEqual("Column3_TextBlock_text"s, textBlockItem->GetText());
             Assert::AreEqual("Column3_TextBlock_id"s, textBlockItem->GetId());
-            Assert::IsTrue(FontStyle::Display == textBlockItem->GetFontStyle());
         }
     }
 
@@ -341,10 +352,68 @@ namespace AdaptiveCardsSharedModelUnitTest
         ValidateInputChoiceSet(*choiceSet);
     }
 
+    void ValidateActionSet(const ActionSet &actionSet)
+    {
+        auto actions = actionSet.GetActions();
+        Assert::AreEqual(size_t{ 2 }, actions.size());
+
+        auto submitAction = actions.at(0);
+        Assert::AreEqual("ActionSet.Action.Submit_id", submitAction->GetId().c_str());
+
+        auto openUrlAction = actions.at(1);
+        Assert::AreEqual("ActionSet.Action.OpenUrl_id", openUrlAction->GetId().c_str());
+    }
+
+    void ValidateRichTextBlock(const RichTextBlock &richTextBlock)
+    {
+        Assert::IsTrue(richTextBlock.GetElementType() == CardElementType::RichTextBlock);
+        Assert::AreEqual(CardElementTypeToString(CardElementType::RichTextBlock), richTextBlock.GetElementTypeString());
+        Assert::AreEqual("RichTextBlock_id"s, richTextBlock.GetId());
+        Assert::IsTrue(HorizontalAlignment::Right == richTextBlock.GetHorizontalAlignment());
+        Assert::AreEqual(5U, richTextBlock.GetMaxLines());
+        Assert::IsTrue(richTextBlock.GetWrap());
+
+        auto paragraphs = richTextBlock.GetParagraphs();
+        Assert::AreEqual(size_t(2), paragraphs.size());
+
+        auto inlines = paragraphs[0]->GetInlines();
+        Assert::AreEqual(size_t(2), inlines.size());
+
+        Assert::IsTrue(InlineElementType::TextRun == inlines[0]->GetInlineType());
+        Assert::AreEqual("TextRun"s, inlines[0]->GetInlineTypeString());
+
+        auto inlineTextElement = std::static_pointer_cast<TextRun>(inlines[0]);
+
+        Assert::AreEqual("This is a text run in paragraph 1"s, inlineTextElement->GetText());
+        Assert::IsTrue(ForegroundColor::Dark == inlineTextElement->GetTextColor());
+        Assert::AreEqual("en"s, inlineTextElement->GetLanguage());
+        Assert::IsTrue(TextSize::Large == inlineTextElement->GetTextSize());
+        Assert::IsTrue(TextWeight::Bolder == inlineTextElement->GetTextWeight());
+        Assert::IsTrue(FontStyle::Monospace == inlineTextElement->GetFontStyle());
+        Assert::IsTrue(inlineTextElement->GetIsSubtle());
+
+        Assert::IsTrue(InlineElementType::TextRun == inlines[1]->GetInlineType());
+        Assert::AreEqual("TextRun"s, inlines[1]->GetInlineTypeString());
+
+        inlines = paragraphs[1]->GetInlines();
+        Assert::AreEqual(size_t(2), inlines.size());
+
+        Assert::IsTrue(InlineElementType::TextRun == inlines[0]->GetInlineType());
+        Assert::AreEqual("TextRun"s, inlines[0]->GetInlineTypeString());
+
+        inlineTextElement = std::static_pointer_cast<TextRun>(inlines[0]);
+        auto selectAction = inlineTextElement->GetSelectAction();
+        Assert::IsTrue(selectAction != nullptr);
+        Assert::IsTrue(ActionType::Submit == selectAction->GetElementType());
+
+        Assert::IsTrue(InlineElementType::TextRun == inlines[1]->GetInlineType());
+        Assert::AreEqual("TextRun"s, inlines[1]->GetInlineTypeString());
+    }
+
     void ValidateBody(const AdaptiveCard &everythingBagel)
     {
         auto body = everythingBagel.GetBody();
-        Assert::AreEqual(size_t{ 8 }, body.size());
+        Assert::AreEqual(size_t{ 10 }, body.size());
 
         // validate textblock (no style)
         auto textBlock = std::static_pointer_cast<TextBlock>(body.at(0));
@@ -377,6 +446,13 @@ namespace AdaptiveCardsSharedModelUnitTest
         // validate input container
         auto inputContainer = std::static_pointer_cast<Container>(body.at(7));
         ValidateInputContainer(*inputContainer);
+
+        // validate action set
+        auto actionSet = std::static_pointer_cast<ActionSet>(body.at(8));
+        ValidateActionSet(*actionSet);
+
+        auto richTextBlock = std::static_pointer_cast<RichTextBlock>(body.at(9));
+        ValidateRichTextBlock(*richTextBlock);
     }
 
     void ValidateToplevelActions(const AdaptiveCard &everythingBagel)
@@ -393,7 +469,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual("Action.Submit_id"s, submitAction->GetId());
             Assert::AreEqual("Action.Submit"s, submitAction->GetTitle());
             //Logger::WriteMessage("Submit Data: '"s.append(submitAction->GetDataJson()).append("'").c_str());
-            Assert::AreEqual("{\n   \"submitValue\" : true\n}\n"s, submitAction->GetDataJson());
+            Assert::AreEqual("{\"submitValue\":true}\n"s, submitAction->GetDataJson());
 
             auto additionalProps = submitAction->GetAdditionalProperties();
             Assert::IsTrue(additionalProps.empty());
@@ -417,13 +493,13 @@ namespace AdaptiveCardsSharedModelUnitTest
 
             std::vector<RemoteResourceInformation> resourceUris;
             showCardAction->GetResourceInformation(resourceUris);
-            Assert::AreEqual(size_t{ 0 }, resourceUris.size());
+            Assert::AreEqual(size_t{ 1 }, resourceUris.size());
 
             // validate the subcard
             {
                 auto subCard = std::static_pointer_cast<AdaptiveCard>(showCardAction->GetCard());
                 Assert::AreEqual(size_t{ 0 }, subCard->GetActions().size());
-                Assert::AreEqual(""s, subCard->GetBackgroundImage());
+                ValidateBackgroundImage(*subCard->GetBackgroundImage(), BackgroundImageMode::Repeat, HorizontalAlignment::Right, VerticalAlignment::Center);
                 Assert::IsTrue(CardElementType::AdaptiveCard == subCard->GetElementType());
                 Assert::AreEqual(""s, subCard->GetFallbackText());
                 Assert::IsTrue(HeightType::Auto == subCard->GetHeight());
@@ -435,7 +511,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                 Assert::IsTrue(VerticalContentAlignment::Top == subCard->GetVerticalContentAlignment());
 
                 //Logger::WriteMessage("Submit Data: '"s.append(subCard->Serialize()).append("'").c_str());
-                Assert::AreEqual("{\"actions\":[],\"body\":[{\"isSubtle\":true,\"text\":\"Action.ShowCard text\",\"type\":\"TextBlock\"}],\"lang\":\"en\",\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}\n"s,
+                Assert::AreEqual("{\"actions\":[],\"backgroundImage\":{\"horizontalAlignment\":\"right\",\"mode\":\"repeat\",\"url\":\"https://adaptivecards.io/content/cats/1.png\",\"verticalAlignment\":\"center\"},\"body\":[{\"isSubtle\":true,\"text\":\"Action.ShowCard text\",\"type\":\"TextBlock\"}],\"lang\":\"en\",\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}\n"s,
                     subCard->Serialize());
             }
         }
@@ -475,8 +551,11 @@ namespace AdaptiveCardsSharedModelUnitTest
             // re-serialize the card and verify
 
             // uncomment the following line to output the serialized json
-            //Logger::WriteMessage("Submit Data: '"s.append(everythingBagel->Serialize()).append("'").c_str());
-            Assert::AreEqual(std::string(EVERYTHING_JSON), everythingBagel->Serialize());
+            Logger::WriteMessage("Expected: '"s.append(EVERYTHING_JSON).append("'").c_str());
+            Logger::WriteMessage("Actual: '"s.append(everythingBagel->Serialize()).append("'").c_str());
+            const std::string expectedJson {EVERYTHING_JSON};
+            const std::string actualJson {everythingBagel->Serialize()};
+            Assert::AreEqual(expectedJson, actualJson);
         }
     };
 }

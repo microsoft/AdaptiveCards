@@ -1,7 +1,11 @@
 package io.adaptivecards.renderer.input;
 
 import android.content.Context;
+import android.opengl.Visibility;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -12,14 +16,19 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import io.adaptivecards.objectmodel.ChoiceInput;
 import io.adaptivecards.objectmodel.ChoiceInputVector;
 import io.adaptivecards.objectmodel.ChoiceSetStyle;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.objectmodel.IsVisible;
 import io.adaptivecards.renderer.AdaptiveWarning;
+import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.CheckBoxSetInputHandler;
 import io.adaptivecards.renderer.inputhandler.ComboBoxInputHandler;
@@ -31,6 +40,7 @@ import io.adaptivecards.renderer.inputhandler.RadioGroupInputHandler;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -67,13 +77,24 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         defaults.addAll(Arrays.asList(value.split(",")));
         final CheckBoxSetInputHandler checkBoxSetInputHandler = new CheckBoxSetInputHandler(choiceSetInput, checkBoxList);
         checkBoxSetInputHandler.setView(layout);
-        layout.setTag(checkBoxSetInputHandler);
+        layout.setTag(new TagContent(choiceSetInput, checkBoxSetInputHandler));
+        if(!choiceSetInput.GetIsVisible())
+        {
+            layout.setVisibility(View.GONE);
+        }
 
         for (int i = 0; i < size; i++)
         {
             ChoiceInput choiceInput = choiceInputVector.get(i);
             CheckBox checkBox = new CheckBox(context);
             checkBox.setText(choiceInput.GetTitle());
+
+            if(!choiceSetInput.GetWrap())
+            {
+                checkBox.setLines(1);
+                checkBox.setEllipsize(TextUtils.TruncateAt.END);
+            }
+
             if (defaults.contains(choiceInput.GetValue()))
             {
                 checkBox.setChecked(true);
@@ -102,7 +123,11 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         RadioGroup radioGroup = new RadioGroup(context);
         final RadioGroupInputHandler radioGroupInputHandler = new RadioGroupInputHandler(choiceSetInput);
         radioGroupInputHandler.setView(radioGroup);
-        radioGroup.setTag(radioGroupInputHandler);
+        radioGroup.setTag(new TagContent(choiceSetInput, radioGroupInputHandler));
+        if(!choiceSetInput.GetIsVisible())
+        {
+            radioGroup.setVisibility(View.GONE);
+        }
 
         radioGroup.setOrientation(RadioGroup.VERTICAL);
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
@@ -113,6 +138,13 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             ChoiceInput choiceInput = choiceInputVector.get(i);
             RadioButton radioButton = new RadioButton(context);
             radioButton.setId(i);
+
+            if(!choiceSetInput.GetWrap())
+            {
+                radioButton.setLines(1);
+                radioButton.setEllipsize(TextUtils.TruncateAt.END);
+            }
+
             radioButton.setText(choiceInput.GetTitle());
             if (choiceInput.GetValue().equals(value))
             {
@@ -156,9 +188,44 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         final ComboBoxInputHandler comboBoxInputHandler = new ComboBoxInputHandler(choiceSetInput);
         Spinner spinner = new Spinner(context);
         comboBoxInputHandler.setView(spinner);
-        spinner.setTag(comboBoxInputHandler);
+        spinner.setTag(new TagContent(choiceSetInput, comboBoxInputHandler));
+        if(!choiceSetInput.GetIsVisible())
+        {
+            spinner.setVisibility(View.GONE);
+        }
+
         renderedCard.registerInputHandler(comboBoxInputHandler);
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, titleList);
+
+        class WrappedTextSpinnerAdapter extends ArrayAdapter<String>
+        {
+            WrappedTextSpinnerAdapter(Context context, int resource,
+                               Vector<String>items)
+            {
+                super(context, resource, items);
+            }
+            @NonNull
+            @Override
+            // getView returns the view when spinner is not selected
+            // override method disables single line setting
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
+            {
+                View view = super.getView(position, convertView, parent);
+                TextView txtView = view.findViewById(android.R.id.text1);
+                txtView.setSingleLine(false);
+                return view;
+            }
+        }
+
+        ArrayAdapter<String> spinnerArrayAdapter;
+        if(choiceSetInput.GetWrap())
+        {
+            spinnerArrayAdapter = new WrappedTextSpinnerAdapter(context, android.R.layout.simple_spinner_item, titleList);
+        }
+        else
+        {
+            spinnerArrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, titleList);
+        }
+
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerArrayAdapter);
         spinner.setSelection(selection);
@@ -188,7 +255,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            ContainerStyle containerStyle)
+            RenderArgs renderArgs)
     {
         if (!hostConfig.GetSupportsInteractivity())
         {
@@ -244,6 +311,11 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         else
         {
             viewGroup.addView(view);
+        }
+
+        if (choiceSetInput.GetMinHeight() != 0)
+        {
+            view.setMinimumHeight(Util.dpToPixels(context, (int)choiceSetInput.GetMinHeight()));
         }
 
         return view;

@@ -17,37 +17,7 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             var uiTextBlock = CreateControl(textBlock, context);
 
-            FontColorConfig colorOption;
-            switch (textBlock.Color)
-            {
-                case AdaptiveTextColor.Accent:
-                    colorOption = context.Config.ContainerStyles.Default.ForegroundColors.Accent;
-                    break;
-                case AdaptiveTextColor.Attention:
-                    colorOption = context.Config.ContainerStyles.Default.ForegroundColors.Attention;
-                    break;
-                case AdaptiveTextColor.Dark:
-                    colorOption = context.Config.ContainerStyles.Default.ForegroundColors.Dark;
-                    break;
-                case AdaptiveTextColor.Good:
-                    colorOption = context.Config.ContainerStyles.Default.ForegroundColors.Good;
-                    break;
-                case AdaptiveTextColor.Light:
-                    colorOption = context.Config.ContainerStyles.Default.ForegroundColors.Light;
-                    break;
-                case AdaptiveTextColor.Warning:
-                    colorOption = context.Config.ContainerStyles.Default.ForegroundColors.Warning;
-                    break;
-                case AdaptiveTextColor.Default:
-                default:
-                    colorOption = context.Config.ContainerStyles.Default.ForegroundColors.Default;
-                    break;
-            }
-
-            if (textBlock.IsSubtle)
-                uiTextBlock.SetColor(colorOption.Subtle, context);
-            else
-                uiTextBlock.SetColor(colorOption.Default, context);
+            uiTextBlock.SetColor(textBlock.Color, textBlock.IsSubtle, context);
 
             if (textBlock.MaxWidth > 0)
             {
@@ -58,7 +28,6 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 var uiGrid = new Grid();
                 uiGrid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-
 
                 // create hidden textBlock with appropriate linebreaks that we can use to measure the ActualHeight
                 // using same style, fontWeight settings as original textblock
@@ -93,6 +62,11 @@ namespace AdaptiveCards.Rendering.Wpf
 
             }
 
+            if (!textBlock.IsVisible)
+            {
+                uiTextBlock.Visibility = Visibility.Collapsed;
+            }
+
             return uiTextBlock;
         }
 
@@ -122,9 +96,9 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (textBlock.HorizontalAlignment != AdaptiveHorizontalAlignment.Left)
             {
-                System.Windows.HorizontalAlignment alignment;
-                if (Enum.TryParse<System.Windows.HorizontalAlignment>(textBlock.HorizontalAlignment.ToString(), out alignment))
-                    uiTextBlock.HorizontalAlignment = alignment;
+                System.Windows.TextAlignment alignment;
+                if (Enum.TryParse<System.Windows.TextAlignment>(textBlock.HorizontalAlignment.ToString(), out alignment))
+                    uiTextBlock.TextAlignment = alignment;
             }
 
             if (textBlock.Wrap)

@@ -12,7 +12,7 @@
 	"properties": {
 		"version": {
 			"type": "string",
-			"description": "Schema version that this card requires. If a client is **lower** than this version, the `fallbackText` will be rendered.",
+			"description": "Schema version that this card requires. If a client is **lower** than this version, the `fallbackText` will be rendered. NOTE: Version is not required for cards within an `Action.ShowCard`",
 			"examples": [
 				"1.0", "1.1"
 			]
@@ -173,6 +173,7 @@
 				"selectAction": {
 					"description": "An Action that will be invoked when the card is tapped or selected. `Action.ShowCard` is not supported.",
 					"type": "object",
+					"version": "1.1",
 					"oneOf": [
 						{ "$ref": "#/definitions/Action.Submit" },
 						{ "$ref": "#/definitions/Action.OpenUrl" }
@@ -306,6 +307,7 @@
 				"selectAction": {
 					"description": "An Action that will be invoked when the `Column` is tapped or selected. `Action.ShowCard` is not supported.",
 					"type": "object",
+					"version": "1.1",
 					"oneOf": [
 						{ "$ref": "#/definitions/Action.Submit" },
 						{ "$ref": "#/definitions/Action.OpenUrl" }
@@ -324,7 +326,13 @@
 						"string",
 						"number"
 					],
-					"description": "`\"auto\"`, `\"stretch\"`, or a number representing relative width of the column in the column group."
+					"description": "The width of the column. Can be `\"auto\"`, `\"stretch\"`, a weighted number relative to other columns, or a string specifying pixel width (50px). NOTE: Pixel-sized columns were introduced in version 1.1",
+					"examples": [
+						"auto",
+						"stretch",
+						"2",
+						"50px"
+					]
 				},
 				"type": {
 					"type": "string",
@@ -358,6 +366,7 @@
 				"selectAction": {
 					"description": "An Action that will be invoked when the `ColumnSet` is tapped or selected. `Action.ShowCard` is not supported.",
 					"type": "object",
+					"version": "1.1",
 					"oneOf": [
 						{ "$ref": "#/definitions/Action.Submit" },
 						{ "$ref": "#/definitions/Action.OpenUrl" }
@@ -399,6 +408,7 @@
 				"selectAction": {
 					"description": "An Action that will be invoked when the `Container` is tapped or selected. `Action.ShowCard` is not supported.",
 					"type": "object",
+					"version": "1.1",
 					"oneOf": [
 						{ "$ref": "#/definitions/Action.Submit" },
 						{ "$ref": "#/definitions/Action.OpenUrl" }
@@ -551,7 +561,8 @@
 				}
 			},
 			"required": [
-				"type"
+				"type",
+				"sources"
 			]
 		},
 		"Image": {
@@ -568,12 +579,25 @@
 					"type": "string",
 					"description": "Alternate text describing the image."
 				},
+				"backgroundColor": {
+					"type": "string",
+					"description": "Applies a background to a transparent image. This property will respect the image style.",
+					"example": "#DDDDDD",
+					"version": "1.1"
+				},
+				"height": {
+					"type": "string",
+					"description": "The desired on-screen height of the image, ending in 'px'. E.g., 50px. This overrides the `size` property.",
+					"examples": ["50px"],
+					"version": "1.1"
+				},
 				"horizontalAlignment": {
 					"$ref": "#/definitions/HorizontalAlignment"
 				},
 				"selectAction": {
 					"description": "An Action that will be invoked when the `Image` is tapped or selected. `Action.ShowCard` is not supported.",
 					"type": "object",
+					"version": "1.1",
 					"oneOf": [
 						{ "$ref": "#/definitions/Action.Submit" },
 						{ "$ref": "#/definitions/Action.OpenUrl" }
@@ -596,6 +620,12 @@
 					"type": "string",
 					"format": "uri",
 					"description": "The URL to the image."
+				},
+				"width": {
+					"type": "string",
+					"description": "The desired on-screen width of the image, ending in 'px'. E.g., 50px. This overrides the `size` property.",
+					"examples": ["50px"],
+					"version": "1.1"
 				}
 			},
 			"required": [
@@ -686,7 +716,7 @@
 					"$ref": "#/definitions/ChoiceInputStyle"
 				},
 				"type": {
-					"description": "Must be `\"Input.ChoiceInput\"`.",
+					"description": "Must be `\"Input.ChoiceSet\"`.",
 					"enum": [
 						"Input.ChoiceSet"
 					],

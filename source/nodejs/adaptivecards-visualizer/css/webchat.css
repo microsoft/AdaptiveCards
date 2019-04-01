@@ -83,6 +83,29 @@ a.ac-anchor:visited:active {
   border: none;
 }
 
+.ac-input-container {
+  display: flex;
+  align-items: center;
+}
+
+.ac-input-container.ac-input-required::after {
+  content: "*";
+  color: red;
+  left: 100%;
+  top: 0;
+  padding-left: 4px;
+}
+
+.ac-input.ac-input-validation-failed {
+  border: 1px solid red !important;
+}
+
+.ac-input-validation-error-message {
+  font-size: 12px;
+  color: red;
+  margin-top: 2px;
+}
+
 .ac-input {
   font-family: "Segoe UI", sans-serif;
   font-size: 14px;

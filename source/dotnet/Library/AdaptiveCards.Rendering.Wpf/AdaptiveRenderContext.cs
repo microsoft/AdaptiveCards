@@ -174,6 +174,11 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 var rendered = renderer.Invoke(element, this);
 
+                if (!String.IsNullOrEmpty(element.Id))
+                {
+                    rendered.Name = element.Id;
+                }
+
                 // Decrement card depth after inner card is rendered
                 if (element is AdaptiveCard)
                 {
@@ -188,5 +193,30 @@ namespace AdaptiveCards.Rendering.Wpf
         }
 
         public string Lang { get; set; }
+
+        public FrameworkElement CardRoot { get; set; }
+
+        public AdaptiveRenderArgs RenderArgs { get; set; }
+        public FontColorConfig GetForegroundColors(AdaptiveTextColor textColor)
+        {
+            switch (textColor)
+            {
+                case AdaptiveTextColor.Accent:
+                    return RenderArgs.ForegroundColors.Accent;
+                case AdaptiveTextColor.Attention:
+                    return RenderArgs.ForegroundColors.Attention;
+                case AdaptiveTextColor.Dark:
+                    return RenderArgs.ForegroundColors.Dark;
+                case AdaptiveTextColor.Good:
+                    return RenderArgs.ForegroundColors.Good;
+                case AdaptiveTextColor.Light:
+                    return RenderArgs.ForegroundColors.Light;
+                case AdaptiveTextColor.Warning:
+                    return RenderArgs.ForegroundColors.Warning;
+                case AdaptiveTextColor.Default:
+                default:
+                    return RenderArgs.ForegroundColors.Default;
+            }
+        }
     }
 }

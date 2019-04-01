@@ -102,7 +102,6 @@ namespace AdaptiveCards.Test
             TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.0", "elements"),
                 new string[]
                 {
-                    // TODO: bring these tests back when bug #940 is closed
                     "Container.Style",
                     "Action.ShowCard.Style"
                 });
@@ -125,9 +124,16 @@ namespace AdaptiveCards.Test
                     "AdaptiveCard.Version1.3",
                     "FlightItinerary_es_fail",
                     "Action.DuplicateIds",
-                    "Action.NestedDuplicateIds"
+                    "Action.NestedDuplicateIds",
+                    "Action.CustomParsing",
 
                     // These are cards that features haven't been implemented yet
+                    "FallbackParsing",
+                    "DeepFallback",
+                    "EmptyFallbackCard",
+
+                    // These cards have AdpativeCards with styles on them
+                    "ColumnColumnSetContainer.Bleed",
                 });
         }
     }

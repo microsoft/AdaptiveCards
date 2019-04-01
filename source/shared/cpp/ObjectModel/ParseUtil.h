@@ -2,20 +2,19 @@
 
 #include "pch.h"
 #include "AdaptiveCardParseException.h"
-#include "Enums.h"
-#include "json/json.h"
 #include "ParseContext.h"
 
 namespace AdaptiveSharedNamespace
 {
     class BaseCardElement;
     class BaseActionElement;
+    class BackgroundImage;
 
     namespace ParseUtil
     {
-        void ThrowIfNotJsonObject(const Json::Value& json);
+        std::string JsonToString(const Json::Value& json);
 
-        void ExpectString(const Json::Value& json);
+        void ThrowIfNotJsonObject(const Json::Value& json);
 
         std::string GetTypeAsString(const Json::Value& json);
 
@@ -23,10 +22,14 @@ namespace AdaptiveSharedNamespace
 
         std::string GetString(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
 
+        std::string GetString(const Json::Value& json, AdaptiveCardSchemaKey key, const std::string& defaultValue, bool isRequired = false);
+
         // Gets the specified property and returns a JSON string of the value
         std::string GetJsonString(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
 
         std::string GetValueAsString(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
+
+        std::shared_ptr<BackgroundImage> GetBackgroundImage(const Json::Value& json);
 
         bool GetBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool defaultValue, bool isRequired = false);
 
@@ -73,10 +76,8 @@ namespace AdaptiveSharedNamespace
                                                                             AdaptiveCardSchemaKey key,
                                                                             bool isRequired = false);
 
-        std::shared_ptr<BaseActionElement> GetAction(ParseContext& context,
-                                                     const Json::Value& json,
-                                                     AdaptiveCardSchemaKey key,
-                                                     bool isRequired = false);
+        std::shared_ptr<BaseActionElement>
+        GetAction(ParseContext& context, const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
 
         template<typename T>
         T ExtractJsonValueAndMergeWithDefault(const Json::Value& rootJson,
@@ -87,6 +88,7 @@ namespace AdaptiveSharedNamespace
         std::shared_ptr<BaseActionElement> GetActionFromJsonValue(ParseContext& context, const Json::Value& json);
 
         void ExpectTypeString(const Json::Value& json, CardElementType bodyType);
+        void ExpectTypeString(const Json::Value& json, const std::string& expectedTypeStr);
 
         // throws if the key is missing or the value mapped to the key is the wrong type
         void ExpectKeyAndValueType(const Json::Value& json, const char* expectedKey, std::function<void(const Json::Value&)> throwIfWrongType);

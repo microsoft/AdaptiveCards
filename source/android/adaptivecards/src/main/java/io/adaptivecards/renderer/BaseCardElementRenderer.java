@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ColorsConfig;
+import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Spacing;
@@ -53,43 +54,9 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
         return (int) spacingSize;
     }
 
-    protected static int getColor(ForegroundColor color, ColorsConfig colorsConfig, boolean isSubtle)
+    protected static int getColor(String colorCode)
     {
-        io.adaptivecards.objectmodel.ColorConfig colorConfig;
-        if (color == ForegroundColor.Accent)
-        {
-            colorConfig = colorsConfig.getAccent();
-        }
-        else if (color == ForegroundColor.Attention)
-        {
-            colorConfig = colorsConfig.getAttention();
-        }
-        else if (color == ForegroundColor.Dark)
-        {
-            colorConfig = colorsConfig.getDark();
-        }
-        else if (color == ForegroundColor.Default)
-        {
-            colorConfig = colorsConfig.getDefaultColor();
-        }
-        else if (color == ForegroundColor.Good)
-        {
-            colorConfig = colorsConfig.getGood();
-        }
-        else if (color == ForegroundColor.Light)
-        {
-            colorConfig = colorsConfig.getLight();
-        }
-        else if (color == ForegroundColor.Warning)
-        {
-            colorConfig = colorsConfig.getWarning();
-        }
-        else
-        {
-            throw new IllegalArgumentException("Unknown color: " + color.toString());
-        }
-
-        return android.graphics.Color.parseColor(isSubtle ? colorConfig.getSubtleColor() : colorConfig.getDefaultColor());
+        return android.graphics.Color.parseColor(colorCode);
     }
 
     protected static void setSpacingAndSeparator(Context context,

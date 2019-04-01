@@ -11,7 +11,7 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveColumnSet.TypeName)]
 #endif
-    public class AdaptiveColumnSet : AdaptiveElement
+    public class AdaptiveColumnSet : AdaptiveCollectionElement
     {
         public const string TypeName = "ColumnSet";
 
@@ -29,14 +29,5 @@ namespace AdaptiveCards
 #endif
         public List<AdaptiveColumn> Columns { get; set; } = new List<AdaptiveColumn>();
 
-        /// <summary>
-        ///     Action for this ColumnSet (this allows a default action at the column set level)
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-#if !NETSTANDARD1_3
-        [XmlElement]
-#endif
-        [DefaultValue(null)]
-        public AdaptiveAction SelectAction { get; set; }
     }
 }

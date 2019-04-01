@@ -9,21 +9,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import io.adaptivecards.objectmodel.BackgroundImage;
 import io.adaptivecards.objectmodel.ContainerStyle;
-import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
+import io.adaptivecards.renderer.BackgroundImageLoaderAsync;
+import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Column;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
-import java.util.Vector;
 import java.util.Locale;
 
 public class ColumnRenderer extends BaseCardElementRenderer
@@ -42,6 +43,16 @@ public class ColumnRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
+    public void setIsRenderingFirstColumn(boolean isRenderingFirstColumn)
+    {
+        m_isRenderingFirstColumn = isRenderingFirstColumn;
+    }
+
+    public void setIsRenderingLastColumn(boolean isRenderingLastColumn)
+    {
+        m_isRenderingLastColumn = isRenderingLastColumn;
+    }
+
     @Override
     public View render(
             RenderedAdaptiveCard renderedCard,
@@ -51,7 +62,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            ContainerStyle containerStyle)
+            RenderArgs renderArgs)
     {
         Column column;
         if (baseCardElement instanceof Column)
@@ -66,16 +77,26 @@ public class ColumnRenderer extends BaseCardElementRenderer
         LinearLayout.LayoutParams layoutParams;
         setSpacingAndSeparator(context, viewGroup, column.GetSpacing(), column.GetSeparator(), hostConfig, false);
 
-        ContainerStyle styleForThis = column.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? containerStyle : column.GetStyle();
+        ContainerStyle styleForThis = column.GetStyle().swigValue() == ContainerStyle.None.swigValue() ? renderArgs.getContainerStyle() : column.GetStyle();
         LinearLayout returnedView = new LinearLayout(context);
         returnedView.setOrientation(LinearLayout.VERTICAL);
+        returnedView.setTag(new TagContent(column));
+
+        // Add this two for allowing children to bleed
+        returnedView.setClipChildren(false);
+        returnedView.setClipToPadding(false);
+
+        if(!baseCardElement.GetIsVisible())
+        {
+            returnedView.setVisibility(View.GONE);
+        }
 
         LinearLayout verticalContentAlignmentLayout = new LinearLayout(context);
         verticalContentAlignmentLayout.setOrientation(LinearLayout.HORIZONTAL);
         verticalContentAlignmentLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         VerticalContentAlignment contentAlignment = column.GetVerticalContentAlignment();
-        switch(contentAlignment)
+        switch (contentAlignment)
         {
             case Center:
                 verticalContentAlignmentLayout.setGravity(Gravity.CENTER_VERTICAL);
@@ -90,18 +111,46 @@ public class ColumnRenderer extends BaseCardElementRenderer
         }
         returnedView.addView(verticalContentAlignmentLayout);
 
+        RenderArgs renderArgs1 = new RenderArgs(renderArgs);
+        renderArgs1.setContainerStyle(styleForThis);
         if (!column.GetItems().isEmpty())
         {
-            CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, verticalContentAlignmentLayout, column, column.GetItems(), cardActionHandler, hostConfig, styleForThis);
+            View v = CardRendererRegistration.getInstance().render(renderedCard,
+                                                          context,
+                                                          fragmentManager,
+                                                          verticalContentAlignmentLayout,
+                                                          column,
+                                                          column.GetItems(),
+                                                          cardActionHandler,
+                                                          hostConfig,
+                                                          renderArgs1);
+
+            // This failed to render, so return null
+            if (v == null)
+            {
+                return null;
+            }
         }
-        if (styleForThis != containerStyle)
+
+        if (styleForThis != renderArgs.getContainerStyle())
         {
             int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
             returnedView.setPadding(padding, padding, padding, padding);
-            String color = styleForThis == containerStyle.Emphasis ?
-                    hostConfig.GetContainerStyles().getEmphasisPalette().getBackgroundColor() :
-                    hostConfig.GetContainerStyles().getDefaultPalette().getBackgroundColor();
+            String color = hostConfig.GetBackgroundColor(styleForThis);
             returnedView.setBackgroundColor(Color.parseColor(color));
+        }
+
+        BackgroundImage backgroundImageProperties = column.GetBackgroundImage();
+        if (backgroundImageProperties != null && !backgroundImageProperties.GetUrl().isEmpty())
+        {
+            BackgroundImageLoaderAsync loaderAsync = new BackgroundImageLoaderAsync(
+                    renderedCard,
+                    context,
+                    returnedView,
+                    hostConfig.GetImageBaseUrl(),
+                    context.getResources().getDisplayMetrics().widthPixels,
+                    backgroundImageProperties);
+            loaderAsync.execute(backgroundImageProperties.GetUrl());
         }
 
         String columnSize = column.GetWidth().toLowerCase(Locale.getDefault());
@@ -143,10 +192,38 @@ public class ColumnRenderer extends BaseCardElementRenderer
             }
         }
 
+        if (column.GetBleed() && column.GetCanBleed())
+        {
+            long padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
+            int leftPadding = 0, rightPadding = 0;
+
+            if (m_isRenderingFirstColumn)
+            {
+                leftPadding = (int)-padding;
+                // Reset the flag just in case
+                setIsRenderingFirstColumn(false);
+            }
+
+            if (m_isRenderingLastColumn)
+            {
+                rightPadding = (int)-padding;
+                // Reset the flag just in case
+                setIsRenderingLastColumn(false);
+            }
+
+            layoutParams.setMargins(leftPadding, 0, rightPadding, 0);
+            returnedView.setLayoutParams(layoutParams);
+        }
+
         if (column.GetSelectAction() != null)
         {
             returnedView.setClickable(true);
             returnedView.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(renderedCard, column.GetSelectAction(), cardActionHandler));
+        }
+
+        if (column.GetMinHeight() != 0)
+        {
+            returnedView.setMinimumHeight(Util.dpToPixels(context, (int)column.GetMinHeight()));
         }
 
         viewGroup.addView(returnedView);
@@ -156,4 +233,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
     private static ColumnRenderer s_instance = null;
     private final String g_columnSizeAuto = "auto";
     private final String g_columnSizeStretch = "stretch";
+
+    private boolean m_isRenderingFirstColumn = false;
+    private boolean m_isRenderingLastColumn = false;
 }

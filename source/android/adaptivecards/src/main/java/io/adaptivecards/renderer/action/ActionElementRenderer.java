@@ -25,17 +25,22 @@ import io.adaptivecards.objectmodel.ActionMode;
 import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.ActionsOrientation;
 import io.adaptivecards.objectmodel.BaseActionElement;
-import io.adaptivecards.objectmodel.ColorsConfig;
+import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HostConfig;
-import io.adaptivecards.objectmodel.ActionsConfig;
 import io.adaptivecards.objectmodel.IconPlacement;
-import io.adaptivecards.objectmodel.Sentiment;
+import io.adaptivecards.objectmodel.IsVisible;
 import io.adaptivecards.objectmodel.ShowCardAction;
+import io.adaptivecards.objectmodel.ToggleInput;
+import io.adaptivecards.objectmodel.ToggleVisibilityAction;
+import io.adaptivecards.objectmodel.ToggleVisibilityTarget;
+import io.adaptivecards.objectmodel.ToggleVisibilityTargetVector;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
 import io.adaptivecards.renderer.IBaseActionElementRenderer;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
+import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
@@ -68,7 +73,54 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         @Override
         public void onClick(View v)
         {
-            m_cardActionHandler.onAction(m_action, m_renderedAdaptiveCard);
+            if(m_action.GetElementType() == ActionType.ToggleVisibility)
+            {
+                ToggleVisibilityAction toggleVisibilityAction = null;
+                if (m_action instanceof ToggleVisibilityAction)
+                {
+                    toggleVisibilityAction = (ToggleVisibilityAction) m_action;
+                }
+                else if ((toggleVisibilityAction = ToggleVisibilityAction.dynamic_cast(m_action)) == null)
+                {
+                    throw new InternalError("Unable to convert BaseActionElement to ToggleVisibilityAction object model.");
+                }
+
+                ToggleVisibilityTargetVector toggleVisibilityTargetVector = toggleVisibilityAction.GetTargetElements();
+                View rootView = m_renderedAdaptiveCard.getView();
+                for (int i = 0; i < toggleVisibilityTargetVector.size(); ++i)
+                {
+                    ToggleVisibilityTarget target = toggleVisibilityTargetVector.get(i);
+                    View foundView = rootView.findViewWithTag(new TagContent(target.GetElementId()));
+                    if(foundView != null)
+                    {
+                        IsVisible isVisible = target.GetIsVisible();
+                        if(isVisible == IsVisible.IsVisibleFalse)
+                        {
+                            foundView.setVisibility(View.GONE);
+                        }
+                        else if(isVisible == IsVisible.IsVisibleTrue)
+                        {
+                            foundView.setVisibility(View.VISIBLE);
+                        }
+                        else
+                        {
+                            if(foundView.getVisibility() == View.GONE)
+                            {
+                                foundView.setVisibility(View.VISIBLE);
+                            }
+                            else
+                            {
+                                foundView.setVisibility(View.GONE);
+                            }
+                        }
+                    }
+                }
+
+            }
+            else
+            {
+                m_cardActionHandler.onAction(m_action, m_renderedAdaptiveCard);
+            }
         }
 
         private BaseActionElement m_action;
@@ -182,7 +234,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
 
         protected ActionElementRendererIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl, IconPlacement iconPlacement, long iconSize)
         {
-            super(renderedCard, containerView, imageBaseUrl);
+            super(renderedCard, containerView, imageBaseUrl, containerView.getResources().getDisplayMetrics().widthPixels);
             m_iconPlacement = iconPlacement;
             m_iconSize = iconSize;
         }
@@ -229,23 +281,9 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         }
     }
 
-    private int getColor(ForegroundColor color, ColorsConfig colorsConfig)
+    private int getColor(String colorCode)
     {
-        io.adaptivecards.objectmodel.ColorConfig colorConfig;
-        if (color == ForegroundColor.Accent)
-        {
-            colorConfig = colorsConfig.getAccent();
-        }
-        else if (color == ForegroundColor.Attention)
-        {
-            colorConfig = colorsConfig.getAttention();
-        }
-        else
-        {
-            throw new IllegalArgumentException("Unknown color: " + color.toString());
-        }
-
-        return android.graphics.Color.parseColor(colorConfig.getDefaultColor());
+        return android.graphics.Color.parseColor(colorCode);
     }
 
     private Button createButtonWithTheme(Context context, int theme)
@@ -254,14 +292,17 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         return new Button(themedContext);
     }
 
-    private Button createButton(Context context, Sentiment sentiment, HostConfig hostConfig)
+    private Button createButton(Context context, String sentiment, HostConfig hostConfig)
     {
-        if(sentiment == Sentiment.Positive || sentiment == Sentiment.Destructive)
+        boolean isPositiveSentiment = sentiment.equalsIgnoreCase("Positive");
+        boolean isDestructiveSentiment = sentiment.equalsIgnoreCase("Destructive");
+
+        if(isPositiveSentiment || isDestructiveSentiment)
         {
             Resources.Theme theme = context.getTheme();
             TypedValue buttonStyle = new TypedValue();
 
-            if(sentiment == sentiment.Positive)
+            if(isPositiveSentiment)
             {
                 if(theme.resolveAttribute(R.attr.adaptiveActionPositive, buttonStyle, true))
                 {
@@ -270,7 +311,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
                 else
                 {
                     Button button = new Button(context);
-                    button.getBackground().setColorFilter(getColor(ForegroundColor.Accent, hostConfig.GetContainerStyles().getDefaultPalette().getForegroundColors()), PorterDuff.Mode.MULTIPLY);
+                    button.getBackground().setColorFilter(getColor(hostConfig.GetForegroundColor(ContainerStyle.Default, ForegroundColor.Accent, false)), PorterDuff.Mode.MULTIPLY);
                     return button;
                 }
             }
@@ -283,7 +324,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
                 else
                 {
                     Button button = new Button(context);
-                    button.setTextColor(getColor(ForegroundColor.Attention, hostConfig.GetContainerStyles().getDefaultPalette().getForegroundColors()));
+                    button.setTextColor(getColor(hostConfig.GetForegroundColor(ContainerStyle.Default, ForegroundColor.Attention, false)));
                     return button;
                 }
             }
@@ -293,11 +334,12 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
     }
 
     public Button renderButton(
-            Context context,
-            ViewGroup viewGroup,
-            BaseActionElement baseActionElement,
-            HostConfig hostConfig,
-            RenderedAdaptiveCard renderedCard)
+        Context context,
+        ViewGroup viewGroup,
+        BaseActionElement baseActionElement,
+        HostConfig hostConfig,
+        RenderedAdaptiveCard renderedCard,
+        RenderArgs renderArgs)
     {
         Button button = createButton(context, baseActionElement.GetSentiment(), hostConfig);
 
@@ -357,13 +399,14 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
             ViewGroup viewGroup,
             BaseActionElement baseActionElement,
             ICardActionHandler cardActionHandler,
-            HostConfig hostConfig) {
+            HostConfig hostConfig,
+            RenderArgs renderArgs) {
         if (cardActionHandler == null)
         {
             throw new IllegalArgumentException("Action Handler is null.");
         }
 
-        Button button = renderButton(context, viewGroup, baseActionElement, hostConfig, renderedCard);
+        Button button = renderButton(context, viewGroup, baseActionElement, hostConfig, renderedCard, renderArgs);
 
         if (baseActionElement.GetElementType() == ActionType.ShowCard
                 && hostConfig.GetActions().getShowCard().getActionMode() == ActionMode.Inline)

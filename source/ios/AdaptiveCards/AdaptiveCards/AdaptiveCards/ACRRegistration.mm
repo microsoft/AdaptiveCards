@@ -24,13 +24,17 @@
 #import "ACRContainerRenderer.h"
 #import "ACRColumnSetRenderer.h"
 #import "ACRColumnRenderer.h"
+#import "ACOBaseActionElement.h"
 #import "ACRActionOpenURLRenderer.h"
 #import "ACRActionShowCardRenderer.h"
 #import "ACRActionSubmitRenderer.h"
+#import "ACRActionToggleVisibilityRenderer.h"
 #import "ACRActionSetRenderer.h"
 #import "ACRCustomRenderer.h"
+#import "ACRCustomActionRenderer.h"
 #import "BaseCardElement.h"
 #import "HostConfig.h"
+#import "ACOParseContextPrivate.h"
 
 using namespace AdaptiveCards;
 
@@ -38,10 +42,14 @@ using namespace AdaptiveCards;
 {
     NSDictionary *typeToRendererDict;
     NSDictionary *actionRendererDict;
+
+    NSMutableDictionary<NSString*, NSObject<ACOIBaseCardElementParser>*> *_elementParserDict;
+    NSMutableDictionary<NSString*, NSObject<ACOIBaseActionElementParser>*> *_actionParserDict;
     id<ACRIBaseActionSetRenderer> _actionSetRenderer;
     NSMutableDictionary *overridenBaseElementRendererList;
     NSMutableDictionary *overridenBaseActionRendererList;
     id<ACRIBaseActionSetRenderer> _defaultActionSetRenderer;
+    ACOParseContext *_parseContext;
 }
 
 - (instancetype) init
@@ -65,6 +73,7 @@ using namespace AdaptiveCards;
              [ACRContainerRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRContainerRenderer elemType]],
              [ACRColumnSetRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRColumnSetRenderer elemType]],
              [ACRColumnRenderer getInstance],     [NSNumber numberWithInt:(int)[ACRColumnRenderer elemType]],
+             [ACRActionSetRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRActionSetRenderer elemType]],
              [ACRCustomRenderer getInstance],     [NSNumber numberWithInt:(int)[ACRCustomRenderer elemType]],
              nil];
         actionRendererDict =
@@ -72,7 +81,13 @@ using namespace AdaptiveCards;
              [ACRActionOpenURLRenderer  getInstance], [NSNumber numberWithInt:(int)ActionType::OpenUrl],
              [ACRActionShowCardRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::ShowCard],
              [ACRActionSubmitRenderer   getInstance], [NSNumber numberWithInt:(int)ActionType::Submit],
+             [ACRActionToggleVisibilityRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::ToggleVisibility],
+             [ACRCustomActionRenderer   getInstance], [NSNumber numberWithInt:(int)ActionType::UnknownAction],
              nil];
+
+        _elementParserDict = [[NSMutableDictionary alloc] init];
+        _actionParserDict = [[NSMutableDictionary alloc] init];
+
         _actionSetRenderer = [ACRActionSetRenderer getInstance];
         _defaultActionSetRenderer = _actionSetRenderer;
 
@@ -84,9 +99,7 @@ using namespace AdaptiveCards;
 
 + (ACRRegistration *)getInstance
 {
-    static ACRRegistration *singletonInstance = nil;
-    static dispatch_once_t predicate;
-    dispatch_once(&predicate, ^{singletonInstance = [[self alloc] init];});
+    static ACRRegistration *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 
@@ -116,8 +129,14 @@ using namespace AdaptiveCards;
     _actionSetRenderer = actionsetRenderer;
 }
 
-- (void) setActionRenderer:(ACRBaseActionElementRenderer *)renderer cardElementType:(NSNumber *)cardElementType
+- (void)setActionRenderer:(ACRBaseActionElementRenderer *)renderer cardElementType:(NSNumber *)cardElementType
 {
+    // custom action must be registered through set custom action renderer method
+    // standard actions element enum value must be higher than ACRUnknownAction
+    if(cardElementType.longValue > ACRUnknownAction) {
+        return;
+    }
+
     if(!renderer) {
         [overridenBaseActionRendererList removeObjectForKey:cardElementType];
     } else {
@@ -125,7 +144,7 @@ using namespace AdaptiveCards;
     }
 }
 
-- (void) setBaseCardElementRenderer:(ACRBaseCardElementRenderer *)renderer cardElementType:(ACRCardElementType)cardElementType
+- (void)setBaseCardElementRenderer:(ACRBaseCardElementRenderer *)renderer cardElementType:(ACRCardElementType)cardElementType
 {
     if(!renderer) {
         [overridenBaseElementRendererList removeObjectForKey:[NSNumber numberWithInteger:cardElementType]];
@@ -134,13 +153,71 @@ using namespace AdaptiveCards;
     }
 }
 
-- (void) setCustomElementParser:(NSObject<ACOIBaseCardElementParser> *)customElementParser
+- (void)setCustomElementParser:(NSObject<ACOIBaseCardElementParser> *)customElementParser
 {
     ACRCustomRenderer *customRenderer = [ACRCustomRenderer getInstance];
     customRenderer.customElementParser = customElementParser;
 }
 
-- (BOOL) isActionRendererOverriden:(NSNumber *)cardElementType
+- (void)setCustomElementParser:(NSObject<ACOIBaseCardElementParser> *)parser key:(NSString *)key
+{
+    if(!_parseContext) {
+        _parseContext = [[ACOParseContext alloc] init];
+    }
+    if(parser && key) {
+        _elementParserDict[key] = parser;
+    }
+}
+
+- (NSObject<ACOIBaseCardElementParser> *)getCustomElementParser:(NSString *)key
+{
+    return _elementParserDict[key];
+}
+
+- (void)setCustomElementRenderer:(ACRBaseCardElementRenderer *)renderer key:(NSString *)key
+{
+    if(key) {
+        if(renderer) {
+            [overridenBaseElementRendererList setObject:renderer forKey:[NSNumber numberWithLong:key.hash]];
+        } else {
+            [overridenBaseElementRendererList removeObjectForKey:[NSNumber numberWithLong:key.hash]];
+        }
+    }
+}
+
+- (void)setCustomActionElementParser:(NSObject<ACOIBaseActionElementParser> *)parser key:(NSString *)key
+{
+    if(!_parseContext) {
+        _parseContext = [[ACOParseContext alloc] init];
+    }
+    if(parser && key) {
+        _actionParserDict[key] = parser;
+    }
+}
+
+- (NSObject<ACOIBaseActionElementParser> *)getCustomActionElementParser:(NSString *)key
+{
+    return _actionParserDict[key];
+}
+
+- (ACOParseContext *)getParseContext
+{
+    return _parseContext;
+}
+
+- (void)setCustomActionRenderer:(ACRBaseActionElementRenderer *)renderer key:(NSString *)key
+{
+    if(key) {
+        if(renderer) {
+            [overridenBaseActionRendererList setObject:renderer forKey:[NSNumber numberWithLong:key.hash]];
+        } else {
+            [overridenBaseActionRendererList removeObjectForKey:[NSNumber numberWithLong:key.hash]];
+        }
+    }
+}
+
+
+- (BOOL)isActionRendererOverridden:(NSNumber *)cardElementType
 {
     if([overridenBaseActionRendererList objectForKey:cardElementType]){
         return YES;
@@ -148,7 +225,7 @@ using namespace AdaptiveCards;
     return NO;
 }
 
-- (BOOL) isElementRendererOverriden:(ACRCardElementType)cardElementType
+- (BOOL)isElementRendererOverridden:(ACRCardElementType)cardElementType
 {
     if([overridenBaseElementRendererList objectForKey:[NSNumber numberWithInteger:cardElementType]]){
         return YES;

@@ -1,6 +1,7 @@
 package io.adaptivecards.renderer.input;
 
 import android.content.Context;
+import android.nfc.Tag;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,7 +13,10 @@ import android.widget.LinearLayout;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.AdaptiveWarning;
+import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
@@ -50,7 +54,7 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            ContainerStyle containerStyle)
+            RenderArgs renderArgs)
     {
         if (!hostConfig.GetSupportsInteractivity())
         {
@@ -72,8 +76,18 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
 
         final ToggleInputHandler toggleInputHandler = new ToggleInputHandler(toggleInput);
         CheckBox checkBox = new CheckBox(context);
+        if(!toggleInput.GetWrap())
+        {
+            checkBox.setLines(1);
+            checkBox.setEllipsize(TextUtils.TruncateAt.END);
+        }
         toggleInputHandler.setView(checkBox);
-        checkBox.setTag(toggleInputHandler);
+        checkBox.setTag(new TagContent(toggleInput, toggleInputHandler));
+        if(!baseCardElement.GetIsVisible())
+        {
+            checkBox.setVisibility(View.GONE);
+        }
+
         checkBox.setText(toggleInput.GetTitle());
         renderedCard.registerInputHandler(toggleInputHandler);
 
@@ -100,10 +114,21 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
             }
         });
 
-        if(toggleInput.GetHeight() == HeightType.Stretch)
+        if (toggleInput.GetHeight() == HeightType.Stretch || toggleInput.GetMinHeight() != 0)
         {
             LinearLayout toggleInputContainer = new LinearLayout(context);
-            toggleInputContainer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+
+            if (toggleInput.GetHeight() == HeightType.Stretch )
+            {
+                toggleInputContainer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+            }
+            else
+            {
+                toggleInputContainer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            }
+
+            toggleInputContainer.setMinimumHeight(Util.dpToPixels(context, (int)toggleInput.GetMinHeight()));
+
             toggleInputContainer.addView(checkBox);
             viewGroup.addView(toggleInputContainer);
         }

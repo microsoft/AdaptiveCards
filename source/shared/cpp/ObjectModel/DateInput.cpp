@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "DateInput.h"
 #include "ParseUtil.h"
+#include "Util.h"
 
 using namespace AdaptiveSharedNamespace;
 
@@ -76,11 +77,11 @@ void DateInput::SetValue(const std::string& value)
     m_value = value;
 }
 
-std::shared_ptr<BaseCardElement> DateInputParser::Deserialize(ParseContext&, const Json::Value& json)
+std::shared_ptr<BaseCardElement> DateInputParser::Deserialize(ParseContext& context, const Json::Value& json)
 {
     ParseUtil::ExpectTypeString(json, CardElementType::DateInput);
 
-    std::shared_ptr<DateInput> dateInput = BaseInputElement::Deserialize<DateInput>(json);
+    std::shared_ptr<DateInput> dateInput = BaseInputElement::Deserialize<DateInput>(context, json);
 
     dateInput->SetMax(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Max));
     dateInput->SetMin(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Min));

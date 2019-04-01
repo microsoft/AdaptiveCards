@@ -7,38 +7,52 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "ACOParseContext.h"
 
 @interface ACOBaseCardElement:NSObject
 
 - (NSData *)additionalProperty;
 
 typedef NS_ENUM(NSInteger, ACRCardElementType) {
-    ACRUnsupported = 0,
+    // The order of enums must match with ones in enums.h
+    ACRActionSet = 0,
     ACRAdaptiveCard,
-    ACRTextBlock,
-    ACRImage,
-    ACRContainer,
-    ACRColumn,
-    ACRColumnSet,
-    ACRFactSet,
-    ACRFact,
-    ACRImageSet,
     ACRChoiceInput,
     ACRChoiceSetInput,
+    ACRColumn,
+    ACRColumnSet,
+    ACRContainer,
+    ACRCustom,
     ACRDateInput,
+    ACRFact,
+    ACRFactSet,
+    ACRImage,
+    ACRImageSet,
+    ACRMedia,
     ACRNumberInput,
+    ACRRichTextBlock,
+    ACRTextBlock,
     ACRTextInput,
     ACRTimeInput,
     ACRToggleInput,
-    ACRCustom,
-    ACRUnknown,
-    ACRMedia,
+    ACRUnknown
 };
 
 typedef NS_ENUM(NSInteger, ACRContainerStyle) {
     ACRNone,
     ACRDefault,
-    ACREmphasis
+    ACREmphasis,
+    ACRGood,
+    ACRWarning,
+    ACRAttention,
+    ACRAccent
+};
+
+typedef NS_ENUM(NSInteger, ACRBleedDirection) {
+    ACRRestricted,
+    ACRToLeadingEdge,
+    ACRToTrailingEdge,
+    ACRToBothEdges    
 };
 
 @property ACRCardElementType type;
@@ -47,7 +61,6 @@ typedef NS_ENUM(NSInteger, ACRContainerStyle) {
 
 @protocol ACOIBaseCardElementParser
 
-@optional
-- (UIView *)deserializeToCustomUIElement:(NSData* )json;
+- (ACOBaseCardElement *)deserialize:(NSData *)json parseContext:(ACOParseContext* )parseContext;
 
 @end

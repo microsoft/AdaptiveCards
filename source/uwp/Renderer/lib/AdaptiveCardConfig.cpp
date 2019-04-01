@@ -21,13 +21,13 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveCardConfig::get_AllowCustomStyle(boolean* allowCustomStyle)
+    HRESULT AdaptiveCardConfig::get_AllowCustomStyle(_Out_ boolean* allowCustomStyle)
     {
         *allowCustomStyle = m_allowCustomStyle;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveCardConfig::put_AllowCustomStyle(boolean allowCustomStyle)
+    HRESULT AdaptiveCardConfig::put_AllowCustomStyle(boolean allowCustomStyle)
     {
         m_allowCustomStyle = allowCustomStyle;
         return S_OK;

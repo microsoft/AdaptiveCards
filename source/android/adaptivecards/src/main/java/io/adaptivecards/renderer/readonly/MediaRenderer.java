@@ -27,7 +27,10 @@ import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.IMediaDataSourceOnPreparedListener;
 import io.adaptivecards.renderer.IOnlineMediaLoader;
 import io.adaptivecards.renderer.MediaLoaderAsync;
+import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.layout.FullscreenVideoLayout;
 import io.adaptivecards.renderer.layout.FullscreenVideoView;
@@ -135,7 +138,7 @@ public class MediaRenderer extends BaseCardElementRenderer
             Media media,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            ContainerStyle containerStyle)
+            RenderArgs renderArgs)
     {
         ImageView posterView = null;
 
@@ -153,7 +156,7 @@ public class MediaRenderer extends BaseCardElementRenderer
         {
             // Draw poster in posterLayout
             poster.SetImageSize(ImageSize.Auto);
-            posterView = (ImageView) ImageRenderer.getInstance().render(renderedCard, context, fragmentManager, viewGroup, poster, cardActionHandler, hostConfig, containerStyle);
+            posterView = (ImageView) ImageRenderer.getInstance().render(renderedCard, context, fragmentManager, viewGroup, poster, cardActionHandler, hostConfig, renderArgs);
 
             RelativeLayout.LayoutParams posterLayoutParams = (RelativeLayout.LayoutParams) posterView.getLayoutParams();
             posterLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
@@ -169,7 +172,7 @@ public class MediaRenderer extends BaseCardElementRenderer
             ViewGroup viewGroup,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            ContainerStyle containerStyle)
+            RenderArgs renderArgs)
     {
         // Draw play button on top of poster (or instead of the poster if no poster defined)
         ImageView playButtonView;
@@ -180,7 +183,7 @@ public class MediaRenderer extends BaseCardElementRenderer
             playButton.SetUrl(playButtonUrl);
             playButton.SetImageSize(ImageSize.Small);
 
-            playButtonView = (ImageView) ImageRenderer.getInstance().render(renderedCard, context, fragmentManager, viewGroup, playButton, cardActionHandler, hostConfig, containerStyle);
+            playButtonView = (ImageView) ImageRenderer.getInstance().render(renderedCard, context, fragmentManager, viewGroup, playButton, cardActionHandler, hostConfig, renderArgs);
         }
         else
         {
@@ -276,7 +279,7 @@ public class MediaRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            ContainerStyle containerStyle)
+            RenderArgs renderArgs)
     {
         Media media = null;
 
@@ -292,6 +295,12 @@ public class MediaRenderer extends BaseCardElementRenderer
         setSpacingAndSeparator(context, viewGroup, media.GetSpacing(), media.GetSeparator(), hostConfig, true);
 
         LinearLayout mediaLayout = new LinearLayout(context);
+        mediaLayout.setTag(new TagContent(media));
+        if(!baseCardElement.GetIsVisible())
+        {
+            mediaLayout.setVisibility(View.GONE);
+        }
+
         if( media.GetHeight() == HeightType.Stretch )
         {
             mediaLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
@@ -303,12 +312,17 @@ public class MediaRenderer extends BaseCardElementRenderer
         mediaLayout.setOrientation(LinearLayout.VERTICAL);
 
         RelativeLayout posterLayout = new RelativeLayout(context);
-        ImageView posterView = renderPoster(renderedCard, context, fragmentManager, posterLayout, media, cardActionHandler, hostConfig, containerStyle);
-        ImageView playButtonView = renderPlayButton(renderedCard, context, fragmentManager, posterLayout, cardActionHandler, hostConfig, containerStyle);
+        ImageView posterView = renderPoster(renderedCard, context, fragmentManager, posterLayout, media, cardActionHandler, hostConfig, renderArgs);
+        ImageView playButtonView = renderPlayButton(renderedCard, context, fragmentManager, posterLayout, cardActionHandler, hostConfig, renderArgs);
         FullscreenVideoView mediaView = renderMediaPlayer(context, posterLayout, media, hostConfig);
 
         posterLayout.setOnClickListener(new PosterOnClickListener(posterView, playButtonView, mediaView, hostConfig.GetMedia().getAllowInlinePlayback(), media, renderedCard, cardActionHandler));
         mediaView.setOnCompletionListener(new MediaOnCompletionListener(media, renderedCard, cardActionHandler));
+
+        if (media.GetMinHeight() != 0)
+        {
+            mediaLayout.setMinimumHeight(Util.dpToPixels(context, (int)media.GetMinHeight()));
+        }
 
         mediaLayout.addView(posterLayout);
         viewGroup.addView(mediaLayout);

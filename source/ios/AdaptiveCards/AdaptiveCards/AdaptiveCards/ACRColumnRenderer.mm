@@ -13,6 +13,7 @@
 #import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "Util.h"
 
 @implementation ACRColumnRenderer
 
@@ -39,6 +40,10 @@
     ACRColumnView* column = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)columnElem->GetStyle()
                                                      parentStyle:[viewGroup style] hostConfig:acoConfig superview:viewGroup];
 
+    [viewGroup addArrangedSubview:column];
+
+    configBleed(rootView, elem, column, acoConfig);
+
     column.pixelWidth = columnElem->GetPixelWidth();
     if(columnElem->GetWidth() == "stretch" || columnElem->GetWidth() == "") {
         column.columnWidth = @"stretch";
@@ -61,7 +66,6 @@
         trailingBlankSpace = [column addPaddingSpace];
     }
 
-    [viewGroup addArrangedSubview:column];
 
     [column setClipsToBounds:TRUE];
 
@@ -82,6 +86,9 @@
                                     multiplier:1.0
                                       constant:0].active = YES;
     }
+
+    configVisibility(column, elem);
+
     return column;
 }
 

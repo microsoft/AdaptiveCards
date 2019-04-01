@@ -13,34 +13,77 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveRenderArgs::RuntimeClassInitialize() noexcept { return S_OK; }
 
     HRESULT AdaptiveRenderArgs::RuntimeClassInitialize(ABI::AdaptiveNamespace::ContainerStyle containerStyle,
-                                                       IInspectable* parentElement) noexcept try
+                                                       _In_opt_ IInspectable* parentElement,
+                                                       _In_opt_ IAdaptiveRenderArgs* renderArgs) noexcept try
     {
         m_containerStyle = containerStyle;
         m_parentElement = parentElement;
+
+        if (renderArgs)
+        {
+            RETURN_IF_FAILED(renderArgs->get_AncestorHasFallback(&m_ancestorHasFallback));
+        }
+
         return S_OK;
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveRenderArgs::get_ContainerStyle(ABI::AdaptiveNamespace::ContainerStyle* value)
+    HRESULT AdaptiveRenderArgs::get_ContainerStyle(_Out_ ABI::AdaptiveNamespace::ContainerStyle* value)
     {
         *value = m_containerStyle;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveRenderArgs::put_ContainerStyle(ABI::AdaptiveNamespace::ContainerStyle value)
+    HRESULT AdaptiveRenderArgs::put_ContainerStyle(ABI::AdaptiveNamespace::ContainerStyle value)
     {
         m_containerStyle = value;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveRenderArgs::get_ParentElement(_COM_Outptr_ IInspectable** value)
+    HRESULT AdaptiveRenderArgs::get_ParentElement(_COM_Outptr_ IInspectable** value)
     {
         return m_parentElement.CopyTo(value);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveRenderArgs::put_ParentElement(_In_ IInspectable* value)
+    HRESULT AdaptiveRenderArgs::put_ParentElement(_In_ IInspectable* value)
     {
         m_parentElement = value;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveRenderArgs::get_IsInShowCard(_Out_ boolean* isInShowCard)
+    {
+        *isInShowCard = m_isInShowCard;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveRenderArgs::put_IsInShowCard(boolean isInShowCard)
+    {
+        m_isInShowCard = isInShowCard;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveRenderArgs::get_AllowAboveTitleIconPlacement(_Out_ boolean* value)
+    {
+        *value = m_allowAboveTitleIconPlacement;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveRenderArgs::put_AllowAboveTitleIconPlacement(boolean value)
+    {
+        m_allowAboveTitleIconPlacement = value;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveRenderArgs::get_AncestorHasFallback(_Out_ boolean* hasFallback)
+    {
+        *hasFallback = m_ancestorHasFallback;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveRenderArgs::put_AncestorHasFallback(boolean hasFallback)
+    {
+        m_ancestorHasFallback = hasFallback;
         return S_OK;
     }
 }

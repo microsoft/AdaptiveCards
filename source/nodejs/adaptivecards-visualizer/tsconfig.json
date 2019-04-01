@@ -1,17 +1,8 @@
 {
+	"extends": "../tsconfig.json",
 	"compilerOptions": {
-		"lib": [
-			"dom",
-			"es2015"
-		],
-		"module": "commonjs",
-		"moduleResolution": "node",
-		"sourceMap": true,
-		"target": "es5",
-		"allowJs": true,
-		"outDir": "lib"
+        "outDir": "./lib",
+        "resolveJsonModule": true
 	},
-	"include": [
-		"src"
-	]
+	"files": [ "./src/app.ts"]
 }

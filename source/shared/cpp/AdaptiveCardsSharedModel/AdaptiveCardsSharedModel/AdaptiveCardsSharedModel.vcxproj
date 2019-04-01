@@ -22,7 +22,8 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{430407C5-059C-48E8-9260-62A12D30F81C}</ProjectGuid>
     <RootNamespace>AdaptiveCardsSharedModel</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.15063.0</WindowsTargetPlatformMinVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -147,7 +148,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\ObjectModel\AdaptiveBase64Util.cpp" />
+    <ClCompile Include="..\..\ObjectModel\BaseElement.cpp" />
+    <ClCompile Include="..\..\ObjectModel\CollectionTypeElement.cpp" />
+    <ClCompile Include="..\..\ObjectModel\Inline.cpp" />
+    <ClCompile Include="..\..\ObjectModel\TextElementProperties.cpp" />
+    <ClCompile Include="..\..\ObjectModel\TextRun.cpp" />
+    <ClCompile Include="..\..\ObjectModel\Paragraph.cpp" />
     <ClCompile Include="..\..\ObjectModel\ParseContext.cpp" />
+    <ClCompile Include="..\..\ObjectModel\BackgroundImage.cpp" />
+    <ClCompile Include="..\..\ObjectModel\RichTextBlock.cpp" />
     <ClCompile Include="..\..\ObjectModel\SemanticVersion.cpp" />
     <ClCompile Include="..\..\ObjectModel\Media.cpp" />
     <ClCompile Include="..\..\ObjectModel\MediaSource.cpp" />
@@ -155,6 +164,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\..\ObjectModel\ActionParserRegistration.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ActionSet.cpp" />
     <ClCompile Include="..\..\ObjectModel\AdaptiveCardParseException.cpp" />
     <ClCompile Include="..\..\ObjectModel\AdaptiveCardParseWarning.cpp" />
     <ClCompile Include="..\..\ObjectModel\BaseActionElement.cpp" />
@@ -192,15 +202,27 @@
     <ClCompile Include="..\..\ObjectModel\TextInput.cpp" />
     <ClCompile Include="..\..\ObjectModel\TimeInput.cpp" />
     <ClCompile Include="..\..\ObjectModel\ToggleInput.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ToggleVisibilityAction.cpp" />
+    <ClCompile Include="..\..\ObjectModel\ToggleVisibilityTarget.cpp" />
+    <ClCompile Include="..\..\ObjectModel\UnknownAction.cpp" />
     <ClCompile Include="..\..\ObjectModel\UnknownElement.cpp" />
     <ClCompile Include="..\..\ObjectModel\Util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\ObjectModel\ActionParserRegistration.h" />
+    <ClInclude Include="..\..\ObjectModel\ActionSet.h" />
     <ClInclude Include="..\..\ObjectModel\AdaptiveBase64Util.h" />
     <ClInclude Include="..\..\ObjectModel\AdaptiveCardParseException.h" />
     <ClInclude Include="..\..\ObjectModel\AdaptiveCardParseWarning.h" />
+    <ClInclude Include="..\..\ObjectModel\BaseElement.h" />
+    <ClInclude Include="..\..\ObjectModel\CollectionTypeElement.h" />
+    <ClInclude Include="..\..\ObjectModel\Inline.h" />
+    <ClInclude Include="..\..\ObjectModel\TextElementProperties.h" />
+    <ClInclude Include="..\..\ObjectModel\TextRun.h" />
+    <ClInclude Include="..\..\ObjectModel\Paragraph.h" />
     <ClInclude Include="..\..\ObjectModel\ParseContext.h" />
+    <ClInclude Include="..\..\ObjectModel\BackgroundImage.h" />
+    <ClInclude Include="..\..\ObjectModel\RichTextBlock.h" />
     <ClInclude Include="..\..\ObjectModel\SemanticVersion.h" />
     <ClInclude Include="..\..\ObjectModel\BaseActionElement.h" />
     <ClInclude Include="..\..\ObjectModel\BaseCardElement.h" />
@@ -220,7 +242,6 @@
     <ClInclude Include="..\..\ObjectModel\HostConfig.h" />
     <ClInclude Include="..\..\ObjectModel\Image.h" />
     <ClInclude Include="..\..\ObjectModel\ImageSet.h" />
-    <ClInclude Include="..\..\ObjectModel\LinkState.h" />
     <ClInclude Include="..\..\ObjectModel\MarkDownBlockParser.h" />
     <ClInclude Include="..\..\ObjectModel\MarkDownHtmlGenerator.h" />
     <ClInclude Include="..\..\ObjectModel\MarkDownParsedResult.h" />
@@ -240,6 +261,9 @@
     <ClInclude Include="..\..\ObjectModel\TextInput.h" />
     <ClInclude Include="..\..\ObjectModel\TimeInput.h" />
     <ClInclude Include="..\..\ObjectModel\ToggleInput.h" />
+    <ClInclude Include="..\..\ObjectModel\ToggleVisibilityAction.h" />
+    <ClInclude Include="..\..\ObjectModel\ToggleVisibilityTarget.h" />
+    <ClInclude Include="..\..\ObjectModel\UnknownAction.h" />
     <ClInclude Include="..\..\ObjectModel\UnknownElement.h" />
     <ClInclude Include="..\..\ObjectModel\RemoteResourceInformation.h" />
     <ClInclude Include="..\..\ObjectModel\Util.h" />

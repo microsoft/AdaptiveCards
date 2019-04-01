@@ -1,26 +1,24 @@
 {
 	"name": "adaptivecards-site",
-	"version": "0.2.0",
+	"version": "0.3.3",
 	"private": true,
 	"scripts": {
 		"build": "hexo generate",
-		"build-all": "cd ../adaptivecards-visualizer && npm run build-all",
-		"build-and-generate": "npm run build-all && hexo generate",
 		"generate-md-ac": "node node_modules/marked-schema/bin/marked-schema ../../../schemas/adaptive-card.json ./schema-explorer-toc.yml -r AdaptiveCard",
-		"generate-md-hc": "node node_modules/marked-schema/bin/marked-schema ../../../schemas/host-config.json ./schema-hostconfig-toc.yml -r AdaptiveCardConfig"
+		"generate-md-hc": "node node_modules/marked-schema/bin/marked-schema ../../../schemas/host-config.json ./schema-hostconfig-toc.yml -r AdaptiveCardConfig",
+		"release": "hexo clean && hexo generate",
+		"start": "hexo server"
 	},
 	"hexo": {
 		"version": "3.7.1"
 	},
-	"dependencies": {
-		"adaptivecards": "latest",
-		"adaptivecards-visualizer": "latest",
+	"devDependencies": {
 		"change-case": "^3.0.1",
-		"glob": "^7.1.2",
+		"glob": "7.1.2",
 		"hexo": "^3.7.1",
 		"hexo-browsersync": "^0.3.0",
 		"hexo-cli": "^1.1.0",
-		"hexo-fs": "^0.2.2",
+		"hexo-fs": "^0.2.3",
 		"hexo-generator-archive": "^0.1.5",
 		"hexo-generator-category": "^0.1.3",
 		"hexo-generator-index": "^0.2.0",
@@ -29,8 +27,19 @@
 		"hexo-renderer-marked": "^0.3.2",
 		"hexo-renderer-stylus": "^0.3.1",
 		"hexo-server": "^0.3.3",
-		"marked-schema": "^0.1.2",
+		"marked-schema": "^0.1.4",
 		"minimist": "^1.2.0",
-		"monaco-editor": "^0.14.1"
+		"rimraf": "^2.6.2",
+		"typescript": "^3.2.2",
+		"webpack": "^4.27.1",
+		"webpack-cli": "^3.1.2",
+		"webpack-dev-server": "^3.1.14"
+	},
+	"dependencies": {
+		"adaptivecards": "^1.1.3",
+		"adaptivecards-designer": "^0.4.0",
+		"adaptivecards-visualizer": "^1.1.5",
+		"markdown-it": "^8.4.0",
+		"monaco-editor": "^0.15.6"
 	}
 }

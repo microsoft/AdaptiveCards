@@ -10,11 +10,28 @@
 
 @implementation ADCResolver
 
-- (UIImage *)resolveImageResource:(NSURL *)url { 
-    // download image
-    UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-    return img;
+
+- (UIImageView *)resolveImageViewResource:(NSURL *)url {
+    __block UIImageView *imageView = [[UIImageView alloc] init];
+    NSURLSessionDownloadTask *downloadPhotoTask = [[NSURLSession sharedSession]
+                                                   downloadTaskWithURL:url completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+                                                       // iOS uses NSInteger as HTTP URL status
+                                                       NSInteger status = 200;
+                                                       if([response isKindOfClass:[NSHTTPURLResponse class]]) {
+                                                           status = ((NSHTTPURLResponse *)response).statusCode;
+                                                       }
+                                                       if(!error && status == 200) {
+                                                           UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:location]];
+                                                           if(image) {
+                                                               dispatch_async(dispatch_get_main_queue(), ^{
+                                                                   imageView.image = image;});
+                                                           }
+                                                       }
+                                                   }];
+    [downloadPhotoTask resume];
+    return imageView;
 }
+
 
 @end
 

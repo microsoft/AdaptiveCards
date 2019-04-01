@@ -22,6 +22,7 @@ namespace AdaptiveCards.Rendering.Wpf
             }
 
             uiImage.SetSource(image, finalUri, context);
+            
             uiImage.SetHorizontalAlignment(image.HorizontalAlignment);
 
             string style = $"Adaptive.{image.Type}";
@@ -70,6 +71,16 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 return context.RenderSelectAction(image.SelectAction, uiBorder ?? uiImage);
             }
+
+            if(uiBorder != null && !image.IsVisible)
+            {
+                uiBorder.Visibility = Visibility.Collapsed;
+            }
+            else if(uiImage != null && !image.IsVisible)
+            {
+                uiImage.Visibility = Visibility.Collapsed;
+            }
+
             return uiBorder ?? uiImage;
         }
 

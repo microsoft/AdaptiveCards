@@ -1,4 +1,4 @@
-import { StringWithSubstitutions, IInput}  from "../../utils";
+import { StringWithSubstitutions, IInput}  from "../../shared";
 import { TextInput } from "../../card-elements";
 
 test('application/json encoding works', () => {
@@ -6,10 +6,11 @@ test('application/json encoding works', () => {
 
     let input1: IInput = {
         id: "input1",
-        value: "text:\n{value}\"quote\"end"
+        value: "text:\n{value}\"quote\"end",
+        validateValue: () => { return true; }
     }
 
-    let inputs = [input1];
+    let inputs = { input1: input1 };
 
     v.set("key:{{input1.value}}")
 
@@ -23,10 +24,11 @@ test('application/x-www-form-urlencoded encoding works', () => {
 
     let input1: IInput = {
         id: "input1",
-        value: "text=3&b=4\nsecondline"
+        value: "text=3&b=4\nsecondline",
+        validateValue: () => { return true; }
     }
 
-    let inputs = [input1];
+    let inputs = { input1: input1 };
 
     v.set("key={{input1.value}}")
 
@@ -40,10 +42,11 @@ test('unknown content type no escaping', () => {
 
     let input1: IInput = {
         id: "input1",
-        value: "text=3&b=4\nsecondline"
+        value: "text=3&b=4\nsecondline",
+        validateValue: () => { return true; }
     }
 
-    let inputs = [input1];
+    let inputs = { input1: input1 };
 
     v.set("key={{input1.value}}")
 

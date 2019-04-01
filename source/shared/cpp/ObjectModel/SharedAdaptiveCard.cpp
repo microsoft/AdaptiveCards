@@ -7,6 +7,7 @@
 #include "AdaptiveCardParseWarning.h"
 #include "SemanticVersion.h"
 #include "ParseContext.h"
+#include "BackgroundImage.h"
 
 using namespace AdaptiveSharedNamespace;
 
@@ -17,7 +18,39 @@ AdaptiveCard::AdaptiveCard() :
 
 AdaptiveCard::AdaptiveCard(std::string const& version,
                            std::string const& fallbackText,
-                           std::string const& backgroundImage,
+                           std::string const& backgroundImageUrl,
+                           ContainerStyle style,
+                           std::string const& speak,
+                           std::string const& language,
+                           VerticalContentAlignment verticalContentAlignment,
+                           HeightType height) :
+    m_version(version),
+    m_fallbackText(fallbackText), m_speak(speak), m_style(style), m_language(language),
+    m_verticalContentAlignment(verticalContentAlignment), m_height(height)
+{
+    m_backgroundImage = std::shared_ptr<BackgroundImage>(new BackgroundImage(backgroundImageUrl));
+}
+
+AdaptiveCard::AdaptiveCard(std::string const& version,
+                           std::string const& fallbackText,
+                           std::string const& backgroundImageUrl,
+                           ContainerStyle style,
+                           std::string const& speak,
+                           std::string const& language,
+                           VerticalContentAlignment verticalContentAlignment,
+                           HeightType height,
+                           std::vector<std::shared_ptr<BaseCardElement>>& body,
+                           std::vector<std::shared_ptr<BaseActionElement>>& actions) :
+    m_version(version),
+    m_fallbackText(fallbackText), m_speak(speak), m_style(style), m_language(language),
+    m_verticalContentAlignment(verticalContentAlignment), m_height(height), m_body(body), m_actions(actions)
+{
+    m_backgroundImage = std::shared_ptr<BackgroundImage>(new BackgroundImage(backgroundImageUrl));
+}
+
+AdaptiveCard::AdaptiveCard(std::string const& version,
+                           std::string const& fallbackText,
+                           std::shared_ptr<BackgroundImage> backgroundImage,
                            ContainerStyle style,
                            std::string const& speak,
                            std::string const& language,
@@ -31,7 +64,7 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
 
 AdaptiveCard::AdaptiveCard(std::string const& version,
                            std::string const& fallbackText,
-                           std::string const& backgroundImage,
+                           std::shared_ptr<BackgroundImage> backgroundImage,
                            ContainerStyle style,
                            std::string const& speak,
                            std::string const& language,
@@ -116,6 +149,15 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, 
     // check if language is valid
     _ValidateLanguage(language, context.warnings);
 
+    if (language.size())
+    {
+        context.SetLanguage(language);
+    }
+    else
+    {
+        language = context.GetLanguage();
+    }
+
     // Perform version validation
     if (enforceVersion)
     {
@@ -140,11 +182,12 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, 
         }
     }
 
-    std::string backgroundImageUrl = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundImageUrl);
-    std::string backgroundImage =
-        backgroundImageUrl != "" ? backgroundImageUrl : ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundImage);
+    auto backgroundImage = ParseUtil::GetBackgroundImage(json);
+
     ContainerStyle style =
         ParseUtil::GetEnumValue<ContainerStyle>(json, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString);
+    context.SetParentalContainerStyle(style);
+    
     VerticalContentAlignment verticalContentAlignment =
         ParseUtil::GetEnumValue<VerticalContentAlignment>(json,
                                                           AdaptiveCardSchemaKey::VerticalContentAlignment,
@@ -210,9 +253,9 @@ Json::Value AdaptiveCard::SerializeToJsonValue() const
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FallbackText)] = m_fallbackText;
     }
-    if (!m_backgroundImage.empty())
+    if (m_backgroundImage != nullptr && !m_backgroundImage->GetUrl().empty())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImage)] = m_backgroundImage;
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImage)] = m_backgroundImage->SerializeToJsonValue();
     }
     if (!m_speak.empty())
     {
@@ -279,8 +322,7 @@ std::shared_ptr<AdaptiveCard> AdaptiveCard::MakeFallbackTextCard(const std::stri
 
 std::string AdaptiveCard::Serialize() const
 {
-    Json::FastWriter writer;
-    return writer.write(SerializeToJsonValue());
+    return ParseUtil::JsonToString(SerializeToJsonValue());
 }
 
 std::string AdaptiveCard::GetVersion() const
@@ -303,12 +345,12 @@ void AdaptiveCard::SetFallbackText(const std::string& value)
     m_fallbackText = value;
 }
 
-std::string AdaptiveCard::GetBackgroundImage() const
+std::shared_ptr<BackgroundImage> AdaptiveCard::GetBackgroundImage() const
 {
     return m_backgroundImage;
 }
 
-void AdaptiveCard::SetBackgroundImage(const std::string& value)
+void AdaptiveCard::SetBackgroundImage(const std::shared_ptr<BackgroundImage> value)
 {
     m_backgroundImage = value;
 }
@@ -341,20 +383,6 @@ std::string AdaptiveCard::GetLanguage() const
 void AdaptiveCard::SetLanguage(const std::string& value)
 {
     m_language = value;
-    // Propagate language to ColumnSet, Containers, TextBlocks and showCardActions
-    PropagateLanguage(value, m_body);
-
-    for (auto& actionElement : m_actions)
-    {
-        if (actionElement->GetElementType() == ActionType::ShowCard)
-        {
-            auto showCard = std::static_pointer_cast<ShowCardAction>(actionElement);
-            if (showCard != nullptr)
-            {
-                showCard->SetLanguage(value);
-            }
-        }
-    }
 }
 
 HeightType AdaptiveCard::GetHeight() const
@@ -417,10 +445,10 @@ std::vector<RemoteResourceInformation> AdaptiveCard::GetResourceInformation()
     auto resourceVector = std::vector<RemoteResourceInformation>();
 
     auto backgroundImage = GetBackgroundImage();
-    if (!backgroundImage.empty())
+    if (backgroundImage != nullptr)
     {
         RemoteResourceInformation backgroundImageInfo;
-        backgroundImageInfo.url = backgroundImage;
+        backgroundImageInfo.url = backgroundImage->GetUrl();
         backgroundImageInfo.mimeType = "image";
         resourceVector.push_back(backgroundImageInfo);
     }

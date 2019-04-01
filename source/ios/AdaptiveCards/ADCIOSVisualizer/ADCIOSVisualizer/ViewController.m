@@ -12,6 +12,7 @@
 #import "CustomProgressBarRenderer.h"
 #import "CustomTextBlockRenderer.h"
 #import "CustomImageRenderer.h"
+#import "CustomActionNewType.h"
 #import "ADCResolver.h"
 #import "AdaptiveCards/ACRButton.h"
 
@@ -65,6 +66,7 @@
                               @"V:|-40-[editView(==200)]-[buttonLayout]", nil];
     [ViewController applyConstraints:formats variables:viewMap];
 }
+
 - (IBAction)toggleCustomRenderer:(id)sender
 {
     _enableCustomRenderer = !_enableCustomRenderer;
@@ -75,6 +77,7 @@
         [registration setBaseCardElementRenderer:[CustomTextBlockRenderer getInstance] cardElementType:ACRTextBlock];
         [registration setBaseCardElementRenderer:[CustomInputNumberRenderer getInstance] cardElementType:ACRNumberInput];
         [registration setBaseCardElementRenderer:[CustomImageRenderer getInstance] cardElementType:ACRImage];
+        
         _enableCustomRendererButton.backgroundColor = UIColor.redColor;
         _defaultRenderer = [registration getActionSetRenderer];
         [registration setActionSetRenderer:self];
@@ -93,16 +96,18 @@
 - (IBAction)applyText:(id)sender
 {
     UITableView *ACVTabView = self.ACVTabVC.tableView;
-    [self update:self.editView.text];
-    [self.view addSubview: ACVTabView];
-    [self.editView removeFromSuperview];
+    if(_editView.text != NULL && ![_editView.text isEqualToString:@""]){
+        [self update:self.editView.text];
+        [self.view addSubview: ACVTabView];
+        [self.editView removeFromSuperview];
 
-    UIStackView *buttonLayout = self.buttonLayout;
-    NSDictionary *viewMap = NSDictionaryOfVariableBindings(ACVTabView, buttonLayout);
-    NSArray<NSString *> *formats = 
-        [NSArray arrayWithObjects:@"H:|-[ACVTabView]-|",   
-                              @"V:|-40-[ACVTabView(==200)]-[buttonLayout]", nil];
-    [ViewController applyConstraints:formats variables:viewMap];
+        UIStackView *buttonLayout = self.buttonLayout;
+        NSDictionary *viewMap = NSDictionaryOfVariableBindings(ACVTabView, buttonLayout);
+        NSArray<NSString *> *formats =
+            [NSArray arrayWithObjects:@"H:|-[ACVTabView]-|",
+                                  @"V:|-40-[ACVTabView(==200)]-[buttonLayout]", nil];
+        [ViewController applyConstraints:formats variables:viewMap];
+    }
 }
 
 - (void)viewDidLoad {
@@ -111,6 +116,7 @@
     _resolvers = [[ACOResourceResolvers alloc] init];
     ADCResolver *resolver = [[ADCResolver alloc] init];
     [_resolvers setResourceResolver:resolver scheme:@"http"];
+    [_resolvers setResourceResolver:resolver scheme:@"https"];
     _enableCustomRenderer = NO;
     self.curView = nil;
     self.ACVTabVC = [[ACVTableViewController alloc] init];
@@ -219,16 +225,27 @@
     if(cardParseResult.isValid){
         ACRRegistration *registration = [ACRRegistration getInstance];
 
+        NSString *type = @"ProgressBar";
+        CACProgressBar *progressBarParser = [[CACProgressBar alloc] init];
+        [registration setCustomElementParser:progressBarParser key:type];
+
         CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
-        [registration setCustomElementParser:progressBarRenderer];
+        [registration setCustomElementRenderer:progressBarRenderer key:type];
+
+        CustomActionNewType *customParser = [[CustomActionNewType alloc] init];
+        NSString *type1 = @"NewStyle";
+        [registration setCustomActionElementParser:customParser key:type1];
+
+        CustomActionNewTypeRenderer *customActionRenderer = [CustomActionNewTypeRenderer getInstance];
+        [registration setCustomActionRenderer:customActionRenderer key:type1];
+
         _config = hostconfigParseResult.config;
-        renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:335];
+        renderResult = [ACRRenderer render:cardParseResult.card config:hostconfigParseResult.config widthConstraint:315 delegate:self];
     }
     
     if(renderResult.succeeded)
     {
         ACRView *ad = renderResult.view;
-        ad.acrActionDelegate = self;
         ad.mediaDelegate = self;
         if(self.curView)
             [self.curView removeFromSuperview];
@@ -283,6 +300,13 @@
         }
         _userResponseLabel.text = str;
         NSLog(@"user response fetched: %@ with %@", str, [action data]);
+    } else if (action.type == ACRUnknownAction) {
+        if([action isKindOfClass:[CustomActionNewType class]]) {
+            CustomActionNewType *newType = (CustomActionNewType *)action;
+            if(newType.alertController) {
+                [self presentViewController:newType.alertController animated:YES completion:nil];
+            }
+        }
     }
 }
 
@@ -301,8 +325,8 @@
     {
         if([button isKindOfClass:[ACRButton class]])
         {
-            ACRButton *acrButton = (ACRButton*)button;
-            if(acrButton.sentiment != ACRSentimentDefault)
+            ACRButton *acrButton = (ACRButton *)button;
+            if(acrButton.sentiment && [@"default" caseInsensitiveCompare:acrButton.sentiment] != NSOrderedSame)
             {
                 [acrButton applySentimentStyling];
             }
@@ -345,6 +369,7 @@
                                                  name:UIKeyboardWillHideNotification object:nil];
 
 }
+
 // Called when the UIKeyboardDidShowNotification is sent.
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
@@ -367,5 +392,12 @@
     self.scrView.contentInset = contentInsets;
     self.scrView.scrollIndicatorInsets = contentInsets;
 }
+
+- (void)didLoadElements
+{
+    [self.curView setNeedsLayout];
+    NSLog(@"completed loading elements");
+}
+
 
 @end

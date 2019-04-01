@@ -12,7 +12,10 @@ namespace AdaptiveCards.Test
         [TestMethod]
         public void TestAssigningVersion()
         {
-            AdaptiveCard card = new AdaptiveCard();
+            AdaptiveCard card = new AdaptiveCard("1.0");
+
+            Assert.AreEqual(1, card.Version.Major);
+            Assert.AreEqual(0, card.Version.Minor);
             card.Version = new AdaptiveSchemaVersion(4, 5);
 
             Assert.AreEqual(4, card.Version.Major);
@@ -22,7 +25,7 @@ namespace AdaptiveCards.Test
         [TestMethod]
         public void TestAssigningVersionAsString()
         {
-            AdaptiveCard card = new AdaptiveCard();
+            AdaptiveCard card = new AdaptiveCard("1.0");
             card.Version = "4.5";
 
             Assert.AreEqual(4, card.Version.Major);
@@ -89,8 +92,7 @@ namespace AdaptiveCards.Test
     }
   ]
 }";
-            // TODO: No longer throwing on this exception to work around bot framework integration issues. Revisit later
-            //Assert.ThrowsException<AdaptiveSerializationException>(() => AdaptiveCard.FromJson(json));
+            Assert.ThrowsException<AdaptiveSerializationException>(() => AdaptiveCard.FromJson(json));
         }
 
         [TestMethod]
@@ -259,7 +261,7 @@ namespace AdaptiveCards.Test
             AdaptiveImage image = (AdaptiveImage) container.Items[1];
 
             // Container property tests
-            Assert.AreEqual(AdaptiveContainerStyle.Default, container.Style);
+            Assert.IsNull(container.Style);
             Assert.AreEqual(AdaptiveSpacing.Default, container.Spacing);
 
             // TextBlock property tests
@@ -799,6 +801,18 @@ namespace AdaptiveCards.Test
             // One AdditionalProp
             Assert.AreEqual(1, image.AdditionalProperties.Count);
             Assert.AreEqual("cheetah", image.AdditionalProperties["test-image-prop"]);
+        }
+
+        [TestMethod]
+        public void BackgroundImageBackCompatWithLegacyUriType()
+        {
+            var testUrl = new Uri("https://bing.com");
+
+            var card = new AdaptiveCard("1.0");
+            card.BackgroundImage = testUrl;
+
+            Assert.AreEqual(card.BackgroundImage.UrlString, testUrl.ToString());
+            Assert.AreEqual(card.BackgroundImage.Url, testUrl);
         }
     }
 }

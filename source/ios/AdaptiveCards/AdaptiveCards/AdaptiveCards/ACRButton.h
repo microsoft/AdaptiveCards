@@ -16,16 +16,18 @@
 @property IBInspectable NSNumber *destructiveUseDefault;
 @property IBInspectable UIColor *destructiveForegroundColor;
 @property IBInspectable UIColor *destructiveBackgroundColor;
-@property ACRSentiment sentiment;
+@property NSString *sentiment;
 @property UIColor *defaultPositiveBackgroundColor;
 @property UIColor *defaultDestructiveForegroundColor;
+@property ACRIconPlacement iconPlacement;
+@property __weak UIImageView *iconView;
 
 + (UIButton *)rootView:(ACRView *)rootView
      baseActionElement:(ACOBaseActionElement *)acoAction
                  title:(NSString *)title
          andHostConfig:(ACOHostConfig *)config;
 
-+ (void)setImageView:(UIImage*)image inButton:(UIButton*)button withConfig:(ACOHostConfig *)config contentSize:(CGSize)contentSize inconPlacement:(ACRIconPlacement)iconPlacement;
+- (void)setImageView:(UIImage*)image withConfig:(ACOHostConfig *)config;
 
 - (void)applySentimentStyling;
 @end

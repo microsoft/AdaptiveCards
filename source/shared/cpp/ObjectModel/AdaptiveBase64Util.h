@@ -2,6 +2,10 @@
 
 #include "pch.h"
 
+#ifdef USE_CPPCORECHECK
+#pragma warning(disable : ALL_CPPCORECHECK_WARNINGS)
+#endif
+
 namespace AdaptiveSharedNamespace
 {
     class AdaptiveBase64Util

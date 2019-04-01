@@ -9,8 +9,6 @@
 #import "ACRIBaseInputHandler.h"
 #import "ACOBaseCardElement.h"
 
-extern const NSInteger kACRTextView;
-
 @interface ACRTextView:UITextView<ACRIBaseInputHandler, UITextViewDelegate>
 @property NSString* id;
 @property NSString* placeholderText;

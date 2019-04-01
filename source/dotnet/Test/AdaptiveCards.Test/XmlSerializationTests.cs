@@ -25,7 +25,10 @@ namespace AdaptiveCards.Test
             {
                 AttributesToIgnore = new List<Type>(new[] { typeof(ObsoleteAttribute) }),
                 MembersToIgnore = new List<string>(new[] { "Version" }),
-                CustomComparers = new List<BaseTypeComparer>(new[] { new JObjectComparer(RootComparerFactory.GetRootComparer()) })
+                CustomComparers = new List<BaseTypeComparer>(new BaseTypeComparer[] {
+                    new JObjectComparer(RootComparerFactory.GetRootComparer()),
+                    new UriComparer(RootComparerFactory.GetRootComparer())
+                })
             });
 
             XmlSerializer serializer = new XmlSerializer(typeof(AdaptiveCard));
@@ -42,9 +45,37 @@ namespace AdaptiveCards.Test
                 var card2 = (AdaptiveCard)serializer.Deserialize(new StringReader(xml));
 
                 var result = compareLogic.Compare(card, card2);
-                //Assert.IsTrue(result.AreEqual, result.DifferencesString);
-                // TODO: This is failing on the Url serialization changing %20 to a space.
-                // The serilaization is working through. Will bring this back once I fix the test
+                Assert.IsTrue(result.AreEqual, result.DifferencesString);
+            }
+        }
+    }
+
+    public class UriComparer : BaseTypeComparer
+    {
+        public UriComparer(RootComparer rootComparer) : base(rootComparer)
+        {
+        }
+
+        public override bool IsTypeMatch(Type type1, Type type2)
+        {
+            return type1 == typeof(Uri);
+        }
+
+        public override void CompareType(CompareParms parms)
+        {
+            // Weird hack to replace %20 in certain image URLs
+            var st1 = ((Uri)parms.Object1).AbsoluteUri;
+            var st2 = ((Uri)parms.Object2).AbsoluteUri;
+            if (st1 != st2)
+            {
+                Difference difference = new Difference
+                {
+                    PropertyName = parms.BreadCrumb,
+                    Object1Value = st1,
+                    Object2Value = st2
+                };
+
+                parms.Result.Differences.Add(difference);
             }
         }
     }
@@ -62,6 +93,7 @@ namespace AdaptiveCards.Test
 
         public override void CompareType(CompareParms parms)
         {
+            // Weird hack to replace %20 in certain image URLs
             var st1 = JsonConvert.SerializeObject((JObject)parms.Object1);
             var st2 = JsonConvert.SerializeObject((JObject)parms.Object2);
             if (st1 != st2)

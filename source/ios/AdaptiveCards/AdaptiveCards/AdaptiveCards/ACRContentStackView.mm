@@ -87,28 +87,26 @@ using namespace AdaptiveCards;
                     alpha:((num & 0xFF000000) >> 24) / 255.0];
 }
 
-- (const ContainerStyleDefinition &)paletteForHostConfig:(std::shared_ptr<HostConfig> const &)config
-{
-    return (_style == ACREmphasis)? config->GetContainerStyles().emphasisPalette : config->GetContainerStyles().defaultPalette;
-}
-
 - (void)setBackgroundColorWithHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    UIColor *color = [ACOHostConfig convertHexColorCodeToUIColor:[self paletteForHostConfig:config].backgroundColor];
+    auto backgroundColor = config->GetBackgroundColor([ACOHostConfig getSharedContainerStyle:_style]);
+    UIColor *color = [ACOHostConfig convertHexColorCodeToUIColor:backgroundColor];
 
     self.backgroundColor = color;
 }
 
 - (void)setBorderColorWithHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    UIColor *color = [ACOHostConfig convertHexColorCodeToUIColor:[self paletteForHostConfig:config].borderColor];
+    auto borderColor = config->GetBorderColor([ACOHostConfig getSharedContainerStyle:_style]);
+    UIColor *color = [ACOHostConfig convertHexColorCodeToUIColor:borderColor];
 
     [[self layer] setBorderColor:[color CGColor]];
 }
 
 - (void)setBorderThicknessWithHostConfig:(std::shared_ptr<HostConfig> const &)config
 {
-    const CGFloat borderWidth = [self paletteForHostConfig:config].borderThickness;
+    auto borderThickness = config->GetBorderThickness([ACOHostConfig getSharedContainerStyle:_style]);
+    const CGFloat borderWidth = borderThickness;
 
     [[self layer] setBorderWidth:borderWidth];
 }
@@ -184,21 +182,59 @@ using namespace AdaptiveCards;
     NSString *verString = [[NSString alloc] initWithFormat:@"V:|-(%u@%u)-[_stackView]-(%u@%u)-|",
                            padding, priority, padding, priority];
     NSDictionary *dictionary = NSDictionaryOfVariableBindings(_stackView);
-    NSArray *horzConst = [NSLayoutConstraint constraintsWithVisualFormat:horString
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:dictionary];
+    _widthconstraint = [NSLayoutConstraint constraintsWithVisualFormat:horString
+                                                                options:0
+                                                                metrics:nil
+                                                                  views:dictionary];
     NSArray *vertConst = [NSLayoutConstraint constraintsWithVisualFormat:verString
                                                                  options:0
                                                                  metrics:nil
                                                                    views:dictionary];
-    [self addConstraints:horzConst];
+
+    [self addConstraints:_widthconstraint];
     [self addConstraints:vertConst];
+}
+
+- (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *)target
+    direction:(ACRBleedDirection)direction
+{
+    [self removeConstraints:_widthconstraint];
+    // new width will be bleed target - padding left and right
+    [self.stackView.widthAnchor constraintEqualToAnchor:target.widthAnchor constant:padding * -2.0].active = YES;
 }
 
 - (UILayoutConstraintAxis) getAxis
 {
     return self.stackView.axis;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+
+    if (_isActionSet) {
+        float accumulatedWidth = 0, accumulatedHeight = 0, spacing = self.stackView.spacing, maxWidth = 0, maxHeight = 0;
+
+        for(UIView *view in self.stackView.subviews){
+            accumulatedWidth += [view intrinsicContentSize].width;
+            accumulatedHeight += [view intrinsicContentSize].height;
+            maxWidth = MAX(maxWidth, [view intrinsicContentSize].width);
+            maxHeight = MAX(maxHeight, [view intrinsicContentSize].height);
+        }
+
+        float contentWidth = accumulatedWidth, contentHeight = accumulatedHeight;
+        if(self.stackView.axis == UILayoutConstraintAxisHorizontal) {
+            contentWidth += (self.stackView.subviews.count - 1) * spacing;
+            contentHeight = maxHeight;
+        } else {
+            contentHeight += (self.stackView.subviews.count - 1) * spacing;
+            contentWidth = maxWidth;
+        }
+
+        if (contentWidth > self.frame.size.width) {
+            [self removeConstraints:_widthconstraint];
+        }
+    }
 }
 
 @end

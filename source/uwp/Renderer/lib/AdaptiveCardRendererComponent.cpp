@@ -3,6 +3,8 @@
 
 #include "AdaptiveCard.h"
 #include "AdaptiveCardResourceResolvers.h"
+#include "AdaptiveActionRendererRegistration.h"
+#include "AdaptiveActionSetRenderer.h"
 #include "AdaptiveChoiceSetInputRenderer.h"
 #include "AdaptiveColumnRenderer.h"
 #include "AdaptiveColumnSetRenderer.h"
@@ -15,10 +17,15 @@
 #include "AdaptiveImageSetRenderer.h"
 #include "AdaptiveMediaRenderer.h"
 #include "AdaptiveNumberInputRenderer.h"
+#include "AdaptiveOpenUrlActionRenderer.h"
 #include "AdaptiveRenderContext.h"
+#include "AdaptiveShowCardActionRenderer.h"
+#include "AdaptiveSubmitActionRenderer.h"
+#include "AdaptiveRichTextBlockRenderer.h"
 #include "AdaptiveTextBlockRenderer.h"
 #include "AdaptiveTextInputRenderer.h"
 #include "AdaptiveTimeInputRenderer.h"
+#include "AdaptiveToggleVisibilityActionRenderer.h"
 #include "AdaptiveToggleInputRenderer.h"
 #include "AsyncOperations.h"
 #include "DefaultResourceDictionary.h"
@@ -49,39 +56,41 @@ namespace AdaptiveNamespace
 {
     HRESULT AdaptiveCardRenderer::RuntimeClassInitialize()
     {
-        m_xamlBuilder = std::make_shared<XamlBuilder>();
+        RETURN_IF_FAILED(MakeAndInitialize<XamlBuilder>(&m_xamlBuilder));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveElementRendererRegistration>(&m_elementRendererRegistration));
-        RETURN_IF_FAILED(RegisterDefaultElementRenderers());
+        RETURN_IF_FAILED(RegisterDefaultElementRenderers(m_elementRendererRegistration, m_xamlBuilder));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionRendererRegistration>(&m_actionRendererRegistration));
+        RETURN_IF_FAILED(RegisterDefaultActionRenderers(m_actionRendererRegistration));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveHostConfig>(&m_hostConfig));
         InitializeDefaultResourceDictionary();
         UpdateActionSentimentResourceDictionary();
         return MakeAndInitialize<AdaptiveCardResourceResolvers>(&m_resourceResolvers);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveCardRenderer::put_OverrideStyles(ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary)
+    HRESULT AdaptiveCardRenderer::put_OverrideStyles(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary)
     {
         m_overrideDictionary = overrideDictionary;
         return SetMergedDictionary();
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveCardRenderer::get_OverrideStyles(_COM_Outptr_ ABI::Windows::UI::Xaml::IResourceDictionary** overrideDictionary)
+    HRESULT AdaptiveCardRenderer::get_OverrideStyles(_COM_Outptr_ ABI::Windows::UI::Xaml::IResourceDictionary** overrideDictionary)
     {
         return m_overrideDictionary.CopyTo(overrideDictionary);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveCardRenderer::put_HostConfig(IAdaptiveHostConfig* hostConfig)
+    HRESULT AdaptiveCardRenderer::put_HostConfig(_In_ IAdaptiveHostConfig* hostConfig)
     {
         m_hostConfig = hostConfig;
         UpdateActionSentimentResourceDictionary();
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveCardRenderer::get_HostConfig(IAdaptiveHostConfig** hostConfig)
+    HRESULT AdaptiveCardRenderer::get_HostConfig(_COM_Outptr_ IAdaptiveHostConfig** hostConfig)
     {
         return m_hostConfig.CopyTo(hostConfig);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveCardRenderer::SetFixedDimensions(_In_ UINT32 desiredWidth, _In_ UINT32 desiredHeight)
+    HRESULT AdaptiveCardRenderer::SetFixedDimensions(UINT32 desiredWidth, UINT32 desiredHeight)
     {
         m_explicitDimensions = true;
         m_desiredWidth = desiredWidth;
@@ -96,11 +105,12 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveCardRenderer::RenderAdaptiveCard(IAdaptiveCard* adaptiveCard, IRenderedAdaptiveCard** result)
+    HRESULT AdaptiveCardRenderer::RenderAdaptiveCard(_In_ IAdaptiveCard* adaptiveCard, _COM_Outptr_ IRenderedAdaptiveCard** result)
     {
         ComPtr<::AdaptiveNamespace::RenderedAdaptiveCard> renderedCard;
         RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::RenderedAdaptiveCard>(&renderedCard));
         renderedCard->SetOriginatingCard(adaptiveCard);
+        renderedCard->SetOriginatingHostConfig(m_hostConfig.Get());
 
         if (adaptiveCard)
         {
@@ -115,6 +125,7 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRenderContext>(&renderContext,
                                                                       m_hostConfig.Get(),
                                                                       m_elementRendererRegistration.Get(),
+                                                                      m_actionRendererRegistration.Get(),
                                                                       m_resourceResolvers.Get(),
                                                                       m_mergedResourceDictionary.Get(),
                                                                       m_actionSentimentResourceDictionary.Get(),
@@ -126,7 +137,7 @@ namespace AdaptiveNamespace
             m_xamlBuilder->SetEnableXamlImageHandling(true);
             try
             {
-                m_xamlBuilder->BuildXamlTreeFromAdaptiveCard(adaptiveCard, &xamlTreeRoot, this, renderContext.Get());
+                AdaptiveNamespace::XamlBuilder::BuildXamlTreeFromAdaptiveCard(adaptiveCard, &xamlTreeRoot, renderContext.Get(), m_xamlBuilder);
                 renderedCard->SetFrameworkElement(xamlTreeRoot.Get());
             }
             catch (...)
@@ -141,16 +152,15 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT
-    AdaptiveCardRenderer::RenderCardAsXamlAsync(IAdaptiveCard* adaptiveCard,
-                                                IAsyncOperation<ABI::AdaptiveNamespace::RenderedAdaptiveCard*>** result)
+    HRESULT AdaptiveCardRenderer::RenderCardAsXamlAsync(_In_ IAdaptiveCard* adaptiveCard,
+                                                        _COM_Outptr_ IAsyncOperation<ABI::AdaptiveNamespace::RenderedAdaptiveCard*>** result)
     {
         *result = Make<RenderCardAsXamlAsyncOperation>(adaptiveCard, this).Detach();
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveCardRenderer::RenderAdaptiveCardFromJsonString(HSTRING adaptiveJson,
-                                                                                          IRenderedAdaptiveCard** result)
+    HRESULT AdaptiveCardRenderer::RenderAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson,
+                                                                   _COM_Outptr_ IRenderedAdaptiveCard** result)
     {
         ComPtr<::AdaptiveNamespace::RenderedAdaptiveCard> renderedCard;
         RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::RenderedAdaptiveCard>(&renderedCard));
@@ -161,11 +171,11 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(adaptiveCardParseResult->get_AdaptiveCard(&parsedCard));
         if (parsedCard == nullptr)
         {
-            ComPtr<IVector<IAdaptiveError*>> renderResultErrors;
+            ComPtr<IVector<AdaptiveError*>> renderResultErrors;
             RETURN_IF_FAILED(renderedCard->get_Errors(&renderResultErrors));
-            ComPtr<IVector<IAdaptiveError*>> parseErrors;
+            ComPtr<IVector<AdaptiveError*>> parseErrors;
             RETURN_IF_FAILED(adaptiveCardParseResult->get_Errors(&parseErrors));
-            XamlHelpers::IterateOverVector<IAdaptiveError>(parseErrors.Get(), [&](IAdaptiveError* error) {
+            XamlHelpers::IterateOverVector<AdaptiveError, IAdaptiveError>(parseErrors.Get(), [&](IAdaptiveError* error) {
                 ComPtr<IAdaptiveError> localError(error);
                 return renderResultErrors->Append(localError.Get());
             });
@@ -180,17 +190,16 @@ namespace AdaptiveNamespace
         }
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveCardRenderer::RenderAdaptiveCardFromJson(IJsonObject* adaptiveJson,
-                                                                                    IRenderedAdaptiveCard** result)
+    HRESULT AdaptiveCardRenderer::RenderAdaptiveCardFromJson(_In_ IJsonObject* adaptiveJson,
+                                                             _COM_Outptr_ IRenderedAdaptiveCard** result)
     {
         HString adaptiveJsonAsHstring;
         RETURN_IF_FAILED(JsonObjectToHString(adaptiveJson, adaptiveJsonAsHstring.GetAddressOf()));
         return RenderAdaptiveCardFromJsonString(adaptiveJsonAsHstring.Get(), result);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveCardRenderer::RenderAdaptiveJsonAsXamlAsync(
-        HSTRING adaptiveJson,
-        IAsyncOperation<ABI::AdaptiveNamespace::RenderedAdaptiveCard*>** result)
+    HRESULT AdaptiveCardRenderer::RenderAdaptiveJsonAsXamlAsync(_In_ HSTRING adaptiveJson,
+                                                                _COM_Outptr_ IAsyncOperation<ABI::AdaptiveNamespace::RenderedAdaptiveCard*>** result)
     {
         ComPtr<IAdaptiveCardParseResult> adaptiveCardParseResult;
         RETURN_IF_FAILED(CreateAdaptiveCardFromJsonString(adaptiveJson, &adaptiveCardParseResult));
@@ -200,8 +209,8 @@ namespace AdaptiveNamespace
         return RenderCardAsXamlAsync(adaptiveCard.Get(), result);
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveCardRenderer::CreateAdaptiveCardFromJsonString(HSTRING adaptiveJson,
-                                                                                          ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult)
+    HRESULT AdaptiveCardRenderer::CreateAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson,
+                                                                   _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult)
     {
         ComPtr<IAdaptiveCardStatics> adaptiveCardStatics;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardStaticsImpl>(&adaptiveCardStatics));
@@ -210,14 +219,17 @@ namespace AdaptiveNamespace
 
     IAdaptiveHostConfig* AdaptiveCardRenderer::GetHostConfig() { return m_hostConfig.Get(); }
 
-    _Use_decl_annotations_ HRESULT AdaptiveCardRenderer::get_ResourceResolvers(IAdaptiveCardResourceResolvers** value)
+    HRESULT AdaptiveCardRenderer::get_ResourceResolvers(_COM_Outptr_ IAdaptiveCardResourceResolvers** value)
     {
         return m_resourceResolvers.CopyTo(value);
     }
 
     ComPtr<IResourceDictionary> AdaptiveCardRenderer::GetMergedDictionary() { return m_mergedResourceDictionary; }
 
-    ComPtr<IResourceDictionary> AdaptiveCardRenderer::GetActionSentimentResourceDictionary() { return m_actionSentimentResourceDictionary; }
+    ComPtr<IResourceDictionary> AdaptiveCardRenderer::GetActionSentimentResourceDictionary()
+    {
+        return m_actionSentimentResourceDictionary;
+    }
 
     bool AdaptiveCardRenderer::GetFixedDimensions(_Out_ UINT32* width, _Out_ UINT32* height)
     {
@@ -233,9 +245,14 @@ namespace AdaptiveNamespace
         return m_explicitDimensions;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveCardRenderer::get_ElementRenderers(IAdaptiveElementRendererRegistration** value)
+    HRESULT AdaptiveCardRenderer::get_ElementRenderers(_COM_Outptr_ IAdaptiveElementRendererRegistration** value)
     {
         return m_elementRendererRegistration.CopyTo(value);
+    }
+
+    HRESULT AdaptiveCardRenderer::get_ActionRenderers(_COM_Outptr_ IAdaptiveActionRendererRegistration** value)
+    {
+        return m_actionRendererRegistration.CopyTo(value);
     }
 
     void AdaptiveCardRenderer::InitializeDefaultResourceDictionary()
@@ -254,13 +271,14 @@ namespace AdaptiveNamespace
         m_defaultResourceDictionary = resourceDictionary;
 
         ComPtr<IInspectable> actionSentimentResourceDictionaryInspectable;
-        THROW_IF_FAILED(xamlReaderStatics->Load(HStringReference(c_defaultActionSentimentResourceDictionary).Get(), &actionSentimentResourceDictionaryInspectable));
+        THROW_IF_FAILED(xamlReaderStatics->Load(HStringReference(c_defaultActionSentimentResourceDictionary).Get(),
+                                                &actionSentimentResourceDictionaryInspectable));
         ComPtr<IResourceDictionary> actionSentimentResourceDictionary;
         THROW_IF_FAILED(actionSentimentResourceDictionaryInspectable.As(&actionSentimentResourceDictionary));
 
         m_actionSentimentResourceDictionary = actionSentimentResourceDictionary;
     }
-    
+
     void AdaptiveCardRenderer::UpdateActionSentimentResourceDictionary()
     {
         ABI::Windows::UI::Color accentColor;
@@ -281,16 +299,24 @@ namespace AdaptiveNamespace
         ABI::Windows::UI::Color lighterAttentionColor = GenerateLighterColor(attentionColor);
 
         ComPtr<IBrush> accentColorBrush = XamlBuilder::GetSolidColorBrush(accentColor);
-        THROW_IF_FAILED(XamlBuilder::TryInsertResourceToResourceDictionaries(m_actionSentimentResourceDictionary.Get(), L"Adaptive.Action.Positive.Button.Static.Background", accentColorBrush.Get()));
+        THROW_IF_FAILED(XamlBuilder::TryInsertResourceToResourceDictionaries(m_actionSentimentResourceDictionary.Get(),
+                                                                             L"Adaptive.Action.Positive.Button.Static.Background",
+                                                                             accentColorBrush.Get()));
 
         ComPtr<IBrush> lightAccentColorBrush = XamlBuilder::GetSolidColorBrush(lighterAccentColor);
-        THROW_IF_FAILED(XamlBuilder::TryInsertResourceToResourceDictionaries(m_actionSentimentResourceDictionary.Get(), L"Adaptive.Action.Positive.Button.MouseOver.Background", lightAccentColorBrush.Get()));
+        THROW_IF_FAILED(XamlBuilder::TryInsertResourceToResourceDictionaries(m_actionSentimentResourceDictionary.Get(),
+                                                                             L"Adaptive.Action.Positive.Button.MouseOver.Background",
+                                                                             lightAccentColorBrush.Get()));
 
         ComPtr<IBrush> attentionColorBrush = XamlBuilder::GetSolidColorBrush(attentionColor);
-        THROW_IF_FAILED(XamlBuilder::TryInsertResourceToResourceDictionaries(m_actionSentimentResourceDictionary.Get(), L"Adaptive.Action.Destructive.Button.Foreground", attentionColorBrush.Get()));
+        THROW_IF_FAILED(XamlBuilder::TryInsertResourceToResourceDictionaries(m_actionSentimentResourceDictionary.Get(),
+                                                                             L"Adaptive.Action.Destructive.Button.Foreground",
+                                                                             attentionColorBrush.Get()));
 
         ComPtr<IBrush> lightAttentionColorBrush = XamlBuilder::GetSolidColorBrush(lighterAttentionColor);
-        THROW_IF_FAILED(XamlBuilder::TryInsertResourceToResourceDictionaries(m_actionSentimentResourceDictionary.Get(), L"Adaptive.Action.Destructive.Button.MouseOver.Foreground", lightAttentionColorBrush.Get()));
+        THROW_IF_FAILED(XamlBuilder::TryInsertResourceToResourceDictionaries(m_actionSentimentResourceDictionary.Get(),
+                                                                             L"Adaptive.Action.Destructive.Button.MouseOver.Foreground",
+                                                                             lightAttentionColorBrush.Get()));
     }
 
     HRESULT AdaptiveCardRenderer::SetMergedDictionary()
@@ -305,38 +331,5 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveCardRenderer::RegisterDefaultElementRenderers()
-    {
-        RETURN_IF_FAILED(
-            m_elementRendererRegistration->Set(HStringReference(L"Column").Get(), Make<AdaptiveColumnRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"ColumnSet").Get(),
-                                                            Make<AdaptiveColumnSetRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Container").Get(),
-                                                            Make<AdaptiveContainerRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"FactSet").Get(),
-                                                            Make<AdaptiveFactSetRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Image").Get(),
-                                                            Make<AdaptiveImageRenderer>(m_xamlBuilder).Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"ImageSet").Get(),
-                                                            Make<AdaptiveImageSetRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.ChoiceSet").Get(),
-                                                            Make<AdaptiveChoiceSetInputRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Date").Get(),
-                                                            Make<AdaptiveDateInputRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Number").Get(),
-                                                            Make<AdaptiveNumberInputRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Text").Get(),
-                                                            Make<AdaptiveTextInputRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Time").Get(),
-                                                            Make<AdaptiveTimeInputRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"Input.Toggle").Get(),
-                                                            Make<AdaptiveToggleInputRenderer>().Get()));
-        RETURN_IF_FAILED(
-            m_elementRendererRegistration->Set(HStringReference(L"Media").Get(), Make<AdaptiveMediaRenderer>().Get()));
-        RETURN_IF_FAILED(m_elementRendererRegistration->Set(HStringReference(L"TextBlock").Get(),
-                                                            Make<AdaptiveTextBlockRenderer>().Get()));
-        return S_OK;
-    }
-
-    std::shared_ptr<XamlBuilder> AdaptiveCardRenderer::GetXamlBuilder() { return m_xamlBuilder; }
+    ComPtr<XamlBuilder> AdaptiveCardRenderer::GetXamlBuilder() { return m_xamlBuilder; }
 }

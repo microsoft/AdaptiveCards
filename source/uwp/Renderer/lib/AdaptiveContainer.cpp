@@ -23,7 +23,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveContainer::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Container>& sharedContainer) try
+    HRESULT AdaptiveContainer::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Container>& sharedContainer) try
     {
         if (sharedContainer == nullptr)
         {
@@ -36,54 +36,71 @@ namespace AdaptiveNamespace
         m_verticalAlignment =
             static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedContainer->GetVerticalContentAlignment());
 
+        auto backgroundImage = sharedContainer->GetBackgroundImage();
+        if (backgroundImage != nullptr && !backgroundImage->GetUrl().empty())
+        {
+            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveBackgroundImage>(m_backgroundImage.GetAddressOf(), backgroundImage));
+        }
+
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedContainer));
         return S_OK;
     }
     CATCH_RETURN;
 
-    _Use_decl_annotations_ HRESULT AdaptiveContainer::get_Items(IVector<IAdaptiveCardElement*>** items)
+    HRESULT AdaptiveContainer::get_Items(_COM_Outptr_ IVector<IAdaptiveCardElement*>** items)
     {
         return m_items.CopyTo(items);
     }
 
-    _Use_decl_annotations_ IFACEMETHODIMP AdaptiveContainer::get_SelectAction(IAdaptiveActionElement** action)
+    IFACEMETHODIMP AdaptiveContainer::get_SelectAction(_COM_Outptr_ IAdaptiveActionElement** action)
     {
         return m_selectAction.CopyTo(action);
     }
 
-    _Use_decl_annotations_ IFACEMETHODIMP AdaptiveContainer::put_SelectAction(IAdaptiveActionElement* action)
+    IFACEMETHODIMP AdaptiveContainer::put_SelectAction(_In_ IAdaptiveActionElement* action)
     {
         m_selectAction = action;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveContainer::get_ElementType(ElementType* elementType)
+    HRESULT AdaptiveContainer::get_ElementType(_Out_ ElementType* elementType)
     {
         *elementType = ElementType::Container;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveContainer::get_Style(ABI::AdaptiveNamespace::ContainerStyle* style)
+    HRESULT AdaptiveContainer::get_Style(_Out_ ABI::AdaptiveNamespace::ContainerStyle* style)
     {
         *style = m_style;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveContainer::put_Style(ABI::AdaptiveNamespace::ContainerStyle style)
+    HRESULT AdaptiveContainer::put_Style(ABI::AdaptiveNamespace::ContainerStyle style)
     {
         m_style = style;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveContainer::get_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment* verticalAlignment)
+    HRESULT AdaptiveContainer::get_VerticalContentAlignment(_Out_ ABI::AdaptiveNamespace::VerticalContentAlignment* verticalAlignment)
     {
         *verticalAlignment = m_verticalAlignment;
         return S_OK;
     }
 
-    _Use_decl_annotations_ HRESULT AdaptiveContainer::put_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment verticalAlignment)
+    HRESULT AdaptiveContainer::put_VerticalContentAlignment(ABI::AdaptiveNamespace::VerticalContentAlignment verticalAlignment)
     {
         m_verticalAlignment = verticalAlignment;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveContainer::get_BackgroundImage(_Outptr_ IAdaptiveBackgroundImage** backgroundImage)
+    {
+        return m_backgroundImage.CopyTo(backgroundImage);
+    }
+
+    HRESULT AdaptiveContainer::put_BackgroundImage(_In_ IAdaptiveBackgroundImage* backgroundImage)
+    {
+        m_backgroundImage = backgroundImage;
         return S_OK;
     }
 
@@ -101,6 +118,13 @@ namespace AdaptiveNamespace
 
         container->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
         container->SetVerticalContentAlignment(static_cast<AdaptiveSharedNamespace::VerticalContentAlignment>(m_verticalAlignment));
+
+        ComPtr<AdaptiveBackgroundImage> adaptiveBackgroundImage = PeekInnards<AdaptiveBackgroundImage>(m_backgroundImage);
+        std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage> sharedBackgroundImage;
+        if (adaptiveBackgroundImage && SUCCEEDED(adaptiveBackgroundImage->GetSharedModel(sharedBackgroundImage)))
+        {
+            container->SetBackgroundImage(sharedBackgroundImage);
+        }
 
         GenerateSharedElements(m_items.Get(), container->GetItems());
 

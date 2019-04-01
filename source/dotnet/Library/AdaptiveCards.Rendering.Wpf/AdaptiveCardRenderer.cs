@@ -34,6 +34,8 @@ namespace AdaptiveCards.Rendering.Wpf
             ElementRenderers.Set<AdaptiveCard>(RenderAdaptiveCardWrapper);
 
             ElementRenderers.Set<AdaptiveTextBlock>(AdaptiveTextBlockRenderer.Render);
+            ElementRenderers.Set<AdaptiveRichTextBlock>(AdaptiveRichTextBlockRenderer.Render);
+
             ElementRenderers.Set<AdaptiveImage>(AdaptiveImageRenderer.Render);
             ElementRenderers.Set<AdaptiveMedia>(AdaptiveMediaRenderer.Render);
 
@@ -124,8 +126,17 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             var outerGrid = new Grid();
             outerGrid.Style = context.GetStyle("Adaptive.Card");
+
             outerGrid.Background = context.GetColorBrush(context.Config.ContainerStyles.Default.BackgroundColor);
             outerGrid.SetBackgroundSource(card.BackgroundImage, context);
+
+            if(context.CardRoot == null)
+            {
+                context.CardRoot = outerGrid;
+            }
+
+            // Reset the parent style
+            context.RenderArgs.ParentStyle = AdaptiveContainerStyle.Default;
 
             var grid = new Grid();
             grid.Style = context.GetStyle("Adaptive.InnerCard");
@@ -193,26 +204,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 return outerGridWithSelectAction;
             }
-
+            
             return outerGrid;
-        }
-
-        private string GenerateLighterColor(string hexColor)
-        {
-            int color = int.Parse(hexColor.Substring(1), System.Globalization.NumberStyles.HexNumber);
-
-            const double colorIncrement = 0.25;
-            int originalR = (color & 0x00FF0000) >> 16;
-            int originalG = (color & 0x0000FF00) >> 8;
-            int originalB = (color & 0x000000FF);
-
-            int newColorR = originalR + (int)((255 - originalR) * colorIncrement);
-            int newColorG = originalG + (int)((255 - originalG) * colorIncrement);
-            int newColorB = originalB + (int)((255 - originalB) * colorIncrement);
-
-            int newColor = ((newColorR << 16) | (newColorG << 8) | (newColorB));
-
-            return "#" + newColor.ToString("X");
         }
 
         /// <summary>
@@ -241,23 +234,23 @@ namespace AdaptiveCards.Rendering.Wpf
                 Config = HostConfig ?? new AdaptiveHostConfig(),
                 Resources = Resources,
                 ElementRenderers = ElementRenderers,
-                Lang = card.Lang
+                Lang = card.Lang,
+                RenderArgs = new AdaptiveRenderArgs { ForegroundColors = (HostConfig != null) ? HostConfig.ContainerStyles.Default.ForegroundColors : new ContainerStylesConfig().Default.ForegroundColors }
             };
 
             string accentColor = HostConfig.ContainerStyles.Default.ForegroundColors.Accent.Default;
-            string lighterAccentColor = GenerateLighterColor(accentColor);
+            string lighterAccentColor = ColorUtil.GenerateLighterColor(accentColor);
             string attentionColor = HostConfig.ContainerStyles.Default.ForegroundColors.Attention.Default;
-            string lighterAttentionColor = GenerateLighterColor(attentionColor);
+            string lighterAttentionColor = ColorUtil.GenerateLighterColor(attentionColor);
 
             Resources["Adaptive.Action.Positive.Button.Static.Background"] = context.GetColorBrush(accentColor);
             Resources["Adaptive.Action.Positive.Button.MouseOver.Background"] = context.GetColorBrush(lighterAccentColor);
             Resources["Adaptive.Action.Destructive.Button.Foreground"] = context.GetColorBrush(attentionColor);
             Resources["Adaptive.Action.Destructive.Button.MouseOver.Foreground"] = context.GetColorBrush(lighterAttentionColor);
-
+            
             var element = context.Render(card);
 
             renderCard = new RenderedAdaptiveCard(element, card, context.Warnings, context.InputBindings);
-
 
             return renderCard;
         }
@@ -296,7 +289,8 @@ namespace AdaptiveCards.Rendering.Wpf
                     Config = HostConfig ?? new AdaptiveHostConfig(),
                     Resources = Resources,
                     ElementRenderers = ElementRenderers,
-                    Lang = card.Lang
+                    Lang = card.Lang,
+                    RenderArgs = new AdaptiveRenderArgs { ForegroundColors = (HostConfig != null) ? HostConfig.ContainerStyles.Default.ForegroundColors : new ContainerStylesConfig().Default.ForegroundColors }
                 };
 
                 var stream = context.Render(card).RenderToImage(width);

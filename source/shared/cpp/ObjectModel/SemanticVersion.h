@@ -14,6 +14,13 @@ namespace AdaptiveSharedNamespace
         unsigned int GetBuild() const { return _build; }
         unsigned int GetRevision() const { return _revision; }
 
+        operator std::string() const
+        {
+            std::stringstream version{};
+            version << _major << '.' << _minor << '.' << _build << '.'  << _revision;
+            return version.str();
+        }
+
     private:
         unsigned int _major;
         unsigned int _minor;

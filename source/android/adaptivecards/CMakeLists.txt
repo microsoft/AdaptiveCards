@@ -24,15 +24,19 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/jsoncpp.cpp
              ../../shared/cpp/ObjectModel/ActionParserRegistration.cpp
              ../../shared/cpp/ObjectModel/AdaptiveBase64Util.cpp
+             ../../shared/cpp/ObjectModel/ActionSet.cpp
              ../../shared/cpp/ObjectModel/AdaptiveCardParseException.cpp
              ../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.cpp
              ../../shared/cpp/ObjectModel/BaseActionElement.cpp
+             ../../shared/cpp/ObjectModel/BackgroundImage.cpp
              ../../shared/cpp/ObjectModel/BaseCardElement.cpp
+             ../../shared/cpp/ObjectModel/BaseElement.cpp
              ../../shared/cpp/ObjectModel/BaseInputElement.cpp
              ../../shared/cpp/ObjectModel/ChoiceInput.cpp
              ../../shared/cpp/ObjectModel/ChoiceSetInput.cpp
              ../../shared/cpp/ObjectModel/Column.cpp
              ../../shared/cpp/ObjectModel/ColumnSet.cpp
+             ../../shared/cpp/ObjectModel/CollectionTypeElement.cpp
              ../../shared/cpp/ObjectModel/Container.cpp
              ../../shared/cpp/ObjectModel/DateInput.cpp
              ../../shared/cpp/ObjectModel/DateTimePreparsedToken.cpp
@@ -44,6 +48,7 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/HostConfig.cpp
              ../../shared/cpp/ObjectModel/Image.cpp
              ../../shared/cpp/ObjectModel/ImageSet.cpp
+             ../../shared/cpp/ObjectModel/Inline.cpp
              ../../shared/cpp/ObjectModel/MarkDownBlockParser.cpp
              ../../shared/cpp/ObjectModel/MarkDownHtmlGenerator.cpp
              ../../shared/cpp/ObjectModel/MarkDownParsedResult.cpp
@@ -52,18 +57,25 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/MediaSource.cpp
              ../../shared/cpp/ObjectModel/NumberInput.cpp
              ../../shared/cpp/ObjectModel/OpenUrlAction.cpp
+             ../../shared/cpp/ObjectModel/Paragraph.cpp
              ../../shared/cpp/ObjectModel/ParseContext.cpp
              ../../shared/cpp/ObjectModel/ParseResult.cpp
              ../../shared/cpp/ObjectModel/ParseUtil.cpp
+             ../../shared/cpp/ObjectModel/RichTextBlock.cpp
              ../../shared/cpp/ObjectModel/SemanticVersion.cpp
              ../../shared/cpp/ObjectModel/SharedAdaptiveCard.cpp
              ../../shared/cpp/ObjectModel/ShowCardAction.cpp
              ../../shared/cpp/ObjectModel/SubmitAction.cpp
              ../../shared/cpp/ObjectModel/TextBlock.cpp
+             ../../shared/cpp/ObjectModel/TextElementProperties.cpp
              ../../shared/cpp/ObjectModel/TextInput.cpp
+             ../../shared/cpp/ObjectModel/TextRun.cpp
              ../../shared/cpp/ObjectModel/TimeInput.cpp
              ../../shared/cpp/ObjectModel/ToggleInput.cpp
+             ../../shared/cpp/ObjectModel/ToggleVisibilityAction.cpp
+             ../../shared/cpp/ObjectModel/ToggleVisibilityTarget.cpp
              ../../shared/cpp/ObjectModel/UnknownElement.cpp
+             ../../shared/cpp/ObjectModel/UnknownAction.cpp
              ../../shared/cpp/ObjectModel/Util.cpp
              src/main/cpp/objectmodel_wrap.cpp
              )

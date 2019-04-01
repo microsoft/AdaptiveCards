@@ -2,17 +2,24 @@
 
 #include "pch.h"
 #include "BaseCardElement.h"
-#include "Enums.h"
-#include <time.h>
 #include "ElementParserRegistration.h"
 #include "DateTimePreparser.h"
+#include "TextElementProperties.h"
 
 namespace AdaptiveSharedNamespace
 {
+    class TextBlockParser;
+
     class TextBlock : public BaseCardElement
     {
+        friend TextBlockParser;
     public:
         TextBlock();
+        TextBlock(const TextBlock&) = default;
+        TextBlock(TextBlock&&) = default;
+        TextBlock& operator=(const TextBlock&) = default;
+        TextBlock& operator=(TextBlock&&) = default;
+        ~TextBlock() = default;
 
         Json::Value SerializeToJsonValue() const override;
 
@@ -48,17 +55,11 @@ namespace AdaptiveSharedNamespace
         std::string GetLanguage() const;
 
     private:
-        std::string m_text;
-        TextSize m_textSize;
-        TextWeight m_textWeight;
-        FontStyle m_fontStyle;
-        ForegroundColor m_textColor;
-        bool m_isSubtle;
         bool m_wrap;
         unsigned int m_maxLines;
         HorizontalAlignment m_hAlignment;
+        std::shared_ptr<TextElementProperties> m_textElementProperties;
         void PopulateKnownPropertiesSet() override;
-        std::string m_language;
     };
 
     class TextBlockParser : public BaseCardElementParser
@@ -69,7 +70,7 @@ namespace AdaptiveSharedNamespace
         TextBlockParser(TextBlockParser&&) = default;
         TextBlockParser& operator=(const TextBlockParser&) = default;
         TextBlockParser& operator=(TextBlockParser&&) = default;
-        ~TextBlockParser() = default;
+        virtual ~TextBlockParser() = default;
 
         std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
         std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;

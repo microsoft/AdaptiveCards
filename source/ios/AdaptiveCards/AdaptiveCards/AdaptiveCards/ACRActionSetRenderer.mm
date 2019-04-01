@@ -15,6 +15,8 @@
 #import "ACRContentHoldingUIScrollView.h"
 #import "ACOBaseActionElementPrivate.h"
 #import "ACRIContentHoldingView.h"
+#import "ACRRenderer.h"
+
 @implementation ACRActionSetRenderer
 
 + (ACRActionSetRenderer *)getInstance
@@ -37,9 +39,11 @@
 
     if(ActionsOrientation::Horizontal == [config getHostConfig]->GetActions().actionsOrientation){
         childview = [[ACRColumnSetView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height) attributes:attributes];
+        ((ACRColumnSetView *)childview).isActionSet = YES;
     }
     else{
         childview = [[ACRColumnView alloc] initWithFrame:CGRectMake(0, 0, superview.frame.size.width, superview.frame.size.height) attributes:attributes];
+        ((ACRColumnView *)childview).isActionSet = YES;
     }
 
     ACOBaseActionElement *acoElem = [[ACOBaseActionElement alloc] init];
@@ -106,6 +110,16 @@
         vConstraint.priority = UILayoutPriorityDefaultLow;
     }
     return containingView;
+}
+
++ (ACRCardElementType)elemType {
+    return ACRActionSet;
+}
+
+- (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup rootView:(ACRView *)rootView inputs:(NSArray *)inputs baseCardElement:(ACOBaseCardElement *)acoElem hostConfig:(ACOHostConfig *)acoConfig {
+    ACOAdaptiveCard *card = [[ACOAdaptiveCard alloc] init];
+    [card setCard:[[rootView card] card]];
+    return [[ACRActionSetRenderer getInstance] renderButtons:rootView inputs:(NSMutableArray *)inputs superview:viewGroup card:card hostConfig:acoConfig];
 }
 
 @end

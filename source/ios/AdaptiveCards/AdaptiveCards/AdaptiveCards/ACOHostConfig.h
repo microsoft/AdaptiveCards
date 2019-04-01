@@ -20,6 +20,8 @@
 
 - (NSObject<ACOIResourceResolver> *)getResourceResolverForScheme:(NSString *)scheme;
 
+- (ACOResolverIFType)getResolverIFType:(NSString *)scheme;
+
 + (ACOHostConfigParseResult *)fromJson:(NSString *)payload;
 
 + (ACOHostConfigParseResult *)fromJson:(NSString *)payload resourceResolvers:(ACOResourceResolvers *)resolvers;

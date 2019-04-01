@@ -2,7 +2,6 @@
 
 #include "pch.h"
 #include "BaseInputElement.h"
-#include "Enums.h"
 #include "ElementParserRegistration.h"
 
 namespace AdaptiveSharedNamespace
@@ -11,6 +10,11 @@ namespace AdaptiveSharedNamespace
     {
     public:
         ToggleInput();
+        ToggleInput(const ToggleInput&) = default;
+        ToggleInput(ToggleInput&&) = default;
+        ToggleInput& operator=(const ToggleInput&) = default;
+        ToggleInput& operator=(ToggleInput&&) = default;
+        ~ToggleInput() = default;
 
         Json::Value SerializeToJsonValue() const override;
 
@@ -26,6 +30,9 @@ namespace AdaptiveSharedNamespace
         std::string GetValueOn() const;
         void SetValueOn(const std::string& value);
 
+        bool GetWrap() const;
+        void SetWrap(bool value);
+
     private:
         void PopulateKnownPropertiesSet() override;
 
@@ -33,6 +40,7 @@ namespace AdaptiveSharedNamespace
         std::string m_value;
         std::string m_valueOff;
         std::string m_valueOn;
+        bool m_wrap;
     };
 
     class ToggleInputParser : public BaseCardElementParser
@@ -43,7 +51,7 @@ namespace AdaptiveSharedNamespace
         ToggleInputParser(ToggleInputParser&&) = default;
         ToggleInputParser& operator=(const ToggleInputParser&) = default;
         ToggleInputParser& operator=(ToggleInputParser&&) = default;
-        ~ToggleInputParser() = default;
+        virtual ~ToggleInputParser() = default;
 
         std::shared_ptr<BaseCardElement> Deserialize(ParseContext& context, const Json::Value& root) override;
         std::shared_ptr<BaseCardElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;

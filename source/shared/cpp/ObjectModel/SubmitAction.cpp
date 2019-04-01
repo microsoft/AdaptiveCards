@@ -11,19 +11,17 @@ SubmitAction::SubmitAction() : BaseActionElement(ActionType::Submit)
 
 std::string SubmitAction::GetDataJson() const
 {
-    if (m_dataJson.empty())
-    {
-        return "";
-    }
-    else
-    {
-        return m_dataJson.toStyledString();
-    }
+    return ParseUtil::JsonToString(m_dataJson);
 }
 
 Json::Value SubmitAction::GetDataJsonAsValue() const
 {
     return m_dataJson;
+}
+
+void SubmitAction::SetDataJson(const std::string value)
+{
+    SetDataJson(ParseUtil::GetJsonValueFromString(value));
 }
 
 void SubmitAction::SetDataJson(const Json::Value& value)
@@ -43,17 +41,16 @@ Json::Value SubmitAction::SerializeToJsonValue() const
     return root;
 }
 
-std::shared_ptr<BaseActionElement> SubmitActionParser::Deserialize(ParseContext&, const Json::Value& json)
+std::shared_ptr<BaseActionElement> SubmitActionParser::Deserialize(ParseContext& context, const Json::Value& json)
 {
-    std::shared_ptr<SubmitAction> submitAction = BaseActionElement::Deserialize<SubmitAction>(json);
+    std::shared_ptr<SubmitAction> submitAction = BaseActionElement::Deserialize<SubmitAction>(context, json);
 
     submitAction->SetDataJson(ParseUtil::ExtractJsonValue(json, AdaptiveCardSchemaKey::Data));
 
     return submitAction;
 }
 
-std::shared_ptr<BaseActionElement>
-SubmitActionParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
+std::shared_ptr<BaseActionElement> SubmitActionParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
     return SubmitActionParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }

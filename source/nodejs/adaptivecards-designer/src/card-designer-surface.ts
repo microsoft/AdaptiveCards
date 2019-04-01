@@ -1,10 +1,7 @@
 import * as Adaptive from "adaptivecards";
 import * as Controls from "adaptivecards-controls";
-import * as Outlook from "./containers/outlook-container";
-import { TreeItem } from "./treeitem";
 import { DraggableElement } from "./draggable-element";
-import { Rect, IPoint } from "./miscellaneous";
-import { PeerCommand } from "./peer-command";
+import { IPoint } from "./miscellaneous";
 import * as DesignerPeers from "./designer-peers";
 
 export type CardElementType = { new(): Adaptive.CardElement };
@@ -127,8 +124,6 @@ export class ActionPeerRegistry extends DesignerPeerRegistry<ActionType, ActionP
         this.registerPeer(Adaptive.SubmitAction, DesignerPeers.SubmitActionPeer, DesignerPeerCategory.Actions, "acd-icon-actionSubmit");
         this.registerPeer(Adaptive.OpenUrlAction, DesignerPeers.OpenUrlActionPeer, DesignerPeerCategory.Actions, "acd-icon-actionOpenUrl");
         this.registerPeer(Adaptive.ShowCardAction, DesignerPeers.ShowCardActionPeer, DesignerPeerCategory.Actions, "acd-icon-actionShowCard");
-
-        this.registerPeer(Outlook.ToggleVisibilityAction, DesignerPeers.ActionPeer, DesignerPeerCategory.Actions, "acd-icon-actionToggleVisibility");
     }
 
     createPeerInstance(designerSurface: CardDesignerSurface, parent: DesignerPeers.DesignerPeer, action: Adaptive.Action): DesignerPeers.ActionPeer {
@@ -266,7 +261,13 @@ export class CardDesignerSurface {
                 this.onCardValidated(allErrors);
             }
 
-            this._cardHost.appendChild(this.card.render());
+            let renderedCard = this.card.render();
+
+            if (this.fixedHeightCard) {
+                renderedCard.style.height = "100%";
+            }
+
+            this._cardHost.appendChild(renderedCard);
         }
     }
 
@@ -419,9 +420,10 @@ export class CardDesignerSurface {
         var rootElement = document.createElement("div");
         rootElement.style.position = "relative";
         rootElement.style.width = "100%";
-        rootElement.style.height = "auto";
+        rootElement.style.height = "100%";
 
         this._cardHost = document.createElement("div");
+        this._cardHost.style.height = "100%";
 
         rootElement.appendChild(this._cardHost);
 
@@ -472,6 +474,8 @@ export class CardDesignerSurface {
     onCardValidated: (errors: Array<Adaptive.IValidationError>) => void;
     onSelectedPeerChanged: (peer: DesignerPeers.DesignerPeer) => void;
     onLayoutUpdated: (isFullRefresh: boolean) => void;
+
+    fixedHeightCard: boolean = false;
 
     getDesignerSurfaceOffset(): IPoint {
         let clientRect = this._designerSurface.getBoundingClientRect();
