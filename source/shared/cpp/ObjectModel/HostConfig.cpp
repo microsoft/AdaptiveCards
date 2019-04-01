@@ -133,6 +133,12 @@ ColorConfig ColorConfig::Deserialize(const Json::Value& json, const ColorConfig&
     return result;
 }
 
+void ColorConfig::SetBaseColor(std::string baseColor)
+{
+    defaultColor = baseColor;
+    subtleColor = baseColor;
+}
+
 ColorConfig GetColorConfig(const Json::Value& json, AdaptiveCardSchemaKey key, const ColorConfig& defaultValue)
 {
     std::string stringResult = ParseUtil::TryGetString(json, key);
@@ -162,6 +168,17 @@ ColorsConfig ColorsConfig::Deserialize(const Json::Value& json, const ColorsConf
     result.attention = GetColorConfig(json, AdaptiveCardSchemaKey::Attention, defaultValue.attention);
 
     return result;
+}
+
+void ColorsConfig::SetBaseColor(std::string baseColor)
+{
+    defaultColor.SetBaseColor(baseColor);
+    accent.SetBaseColor(baseColor);
+    dark.SetBaseColor(baseColor);
+    light.SetBaseColor(baseColor);
+    good.SetBaseColor(baseColor);
+    warning.SetBaseColor(baseColor);
+    attention.SetBaseColor(baseColor);
 }
 
 TextConfig TextConfig::Deserialize(const Json::Value& json, const TextConfig& defaultValue)
@@ -328,6 +345,30 @@ ContainerStyleDefinition ContainerStyleDefinition::Deserialize(const Json::Value
     return result;
 }
 
+void ContainerStyleDefinition::SetBaseStyle(const Json::Value& json)
+{
+    Json::Value baseContainterStyleJson =
+        json.get(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BaseContainerStyle), Json::Value());
+
+    std::string baseBackgroundColor = ParseUtil::TryGetString(baseContainterStyleJson, AdaptiveCardSchemaKey::BackgroundColor);
+    if (!baseBackgroundColor.empty())
+    {
+        backgroundColor = baseBackgroundColor;
+    }
+
+    std::string baseForegroundColor = ParseUtil::TryGetString(baseContainterStyleJson, AdaptiveCardSchemaKey::ForegroundColor);
+    if (!baseForegroundColor.empty())
+    {
+        foregroundColors.SetBaseColor(baseForegroundColor);
+    }
+
+    std::string baseHighlightColor = ParseUtil::TryGetString(baseContainterStyleJson, AdaptiveCardSchemaKey::HighlightColor);
+    if (!baseHighlightColor.empty())
+    {
+        highlightColors.SetBaseColor(baseHighlightColor);
+    }
+}
+
 ContainerStylesDefinition ContainerStylesDefinition::Deserialize(const Json::Value& json, const ContainerStylesDefinition& defaultValue)
 {
     ContainerStylesDefinition result;
@@ -353,25 +394,14 @@ ContainerStylesDefinition ContainerStylesDefinition::Deserialize(const Json::Val
     return result;
 }
 
-void AdaptiveSharedNamespace::ContainerStylesDefinition::SetBaseStyle(const Json::Value& json)
+void ContainerStylesDefinition::SetBaseStyle(const Json::Value& json)
 {
-    defaultPalette = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStyleDefinition>(
-        json, AdaptiveCardSchemaKey::BaseContainerStyle, defaultPalette, ContainerStyleDefinition::Deserialize);
-
-    emphasisPalette = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStyleDefinition>(
-        json, AdaptiveCardSchemaKey::BaseContainerStyle, emphasisPalette, ContainerStyleDefinition::Deserialize);
-
-    goodPalette = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStyleDefinition>(
-        json, AdaptiveCardSchemaKey::BaseContainerStyle, goodPalette, ContainerStyleDefinition::Deserialize);
-
-    attentionPalette = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStyleDefinition>(
-        json, AdaptiveCardSchemaKey::BaseContainerStyle, attentionPalette, ContainerStyleDefinition::Deserialize);
-
-    warningPalette = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStyleDefinition>(
-        json, AdaptiveCardSchemaKey::BaseContainerStyle, warningPalette, ContainerStyleDefinition::Deserialize);
-
-    accentPalette = ParseUtil::ExtractJsonValueAndMergeWithDefault<ContainerStyleDefinition>(
-        json, AdaptiveCardSchemaKey::BaseContainerStyle, accentPalette, ContainerStyleDefinition::Deserialize);
+    defaultPalette.SetBaseStyle(json);
+    emphasisPalette.SetBaseStyle(json);
+    goodPalette.SetBaseStyle(json);
+    attentionPalette.SetBaseStyle(json);
+    warningPalette.SetBaseStyle(json);
+    accentPalette.SetBaseStyle(json);
 }
 
 FontWeightsConfig FontWeightsConfig::Deserialize(const Json::Value& json, const FontWeightsConfig& defaultValue)

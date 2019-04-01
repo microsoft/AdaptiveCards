@@ -45,15 +45,7 @@
 		}
 	},
 	"baseContainerStyle": {
-		"highlightColors": {
-			"default": "#FFADFF2F",
-			"accent": "#FFADFF2F",
-			"attention": "#FFADFF2F",
-			"good": "#FFADFF2F",
-			"warning": "#FFADFF2F",
-			"dark": "#FFADFF2F",
-			"light": "#FFADFF2F"
-		}
+		"highlightColor": "#FFADFF2F"
 	},
 	"containerStyles": {
 		"default": {
