@@ -44,12 +44,12 @@ namespace AdaptiveNamespace
         m_foregroundColors = colorsConfig;
         return S_OK;
     }
-    HRESULT AdaptiveContainerStyleDefinition::get_HighlightColors(ABI::AdaptiveNamespace::IAdaptiveColorsConfig** colorsConfig)
+    HRESULT AdaptiveContainerStyleDefinition::get_HighlightColors(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveColorsConfig** colorsConfig)
     {
         return m_highlightColors.CopyTo(colorsConfig);
     }
-	
-    HRESULT AdaptiveContainerStyleDefinition::put_HighlightColors(ABI::AdaptiveNamespace::IAdaptiveColorsConfig* colorsConfig)
+
+    HRESULT AdaptiveContainerStyleDefinition::put_HighlightColors(_In_ ABI::AdaptiveNamespace::IAdaptiveColorsConfig* colorsConfig)
     {
         m_highlightColors = colorsConfig;
         return S_OK;

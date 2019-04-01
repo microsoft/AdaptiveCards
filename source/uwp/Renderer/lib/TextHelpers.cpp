@@ -112,7 +112,7 @@ HRESULT SetXamlInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adapti
     auto htmlString = markdownParser.TransformToHtml();
 
     bool handledAsHtml = false;
-    UINT localCharacterLength;
+    UINT localCharacterLength = 0;
     if (markdownParser.HasHtmlTags())
     {
         HString htmlHString;
@@ -249,7 +249,7 @@ HRESULT AddListInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adapti
 
         RETURN_IF_FAILED(inlines->Append(runAsInline.Get()));
 
-        UINT textCharacterLength;
+        UINT textCharacterLength = 0;
         RETURN_IF_FAILED(
             AddTextInlines(adaptiveTextElement, renderContext, renderArgs, listChild.Get(), false, false, isInHyperlink, inlines, &textCharacterLength));
         totalCharacterLength += textCharacterLength;
@@ -394,7 +394,7 @@ HRESULT AddTextInlines(_In_ IAdaptiveTextElement* adaptiveTextElement,
         INT32 isTextResult;
         RETURN_IF_FAILED(WindowsCompareStringOrdinal(nodeName.Get(), HStringReference(L"#text").Get(), &isTextResult));
 
-        UINT nodeCharacterLength;
+        UINT nodeCharacterLength = 0;
         if (isLinkResult == 0)
         {
             RETURN_IF_FAILED(
@@ -457,7 +457,7 @@ HRESULT AddHtmlInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adapti
         INT32 isParagraphResult;
         RETURN_IF_FAILED(WindowsCompareStringOrdinal(nodeName.Get(), HStringReference(L"p").Get(), &isParagraphResult));
 
-        UINT nodeCharacterLength;
+        UINT nodeCharacterLength = 0;
         if ((isOrderedListResult == 0) || (isUnorderedListResult == 0))
         {
             RETURN_IF_FAILED(AddListInlines(

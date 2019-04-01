@@ -133,7 +133,7 @@ ColorConfig ColorConfig::Deserialize(const Json::Value& json, const ColorConfig&
     return result;
 }
 
-void ColorConfig::SetBaseColor(std::string baseColor)
+void ColorConfig::SetBaseColor(const std::string& baseColor)
 {
     defaultColor = baseColor;
     subtleColor = baseColor;
@@ -170,7 +170,7 @@ ColorsConfig ColorsConfig::Deserialize(const Json::Value& json, const ColorsConf
     return result;
 }
 
-void ColorsConfig::SetBaseColor(std::string baseColor)
+void ColorsConfig::SetBaseColor(const std::string& baseColor)
 {
     defaultColor.SetBaseColor(baseColor);
     accent.SetBaseColor(baseColor);

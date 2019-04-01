@@ -70,7 +70,7 @@ namespace AdaptiveSharedNamespace
         std::string subtleColor;
 
         static ColorConfig Deserialize(const Json::Value& json, const ColorConfig& defaultValue);
-        void SetBaseColor(std::string baseColor);
+        void SetBaseColor(const std::string& baseColor);
     };
 
     struct ColorsConfig
@@ -84,7 +84,7 @@ namespace AdaptiveSharedNamespace
         ColorConfig attention = {"#FF8B0000", "#B28B0000"};
 
         static ColorsConfig Deserialize(const Json::Value& json, const ColorsConfig& defaultValue);
-        void SetBaseColor(std::string baseColor);
+        void SetBaseColor(const std::string& baseColor);
     };
 
     struct TextConfig
