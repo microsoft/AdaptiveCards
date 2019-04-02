@@ -295,6 +295,22 @@ namespace Json {
   $result = *tmp;
 %}
 
+%typemap(javadirectorin) std::shared_ptr<AdaptiveCards::ActionParserRegistration> "new $typemap(jstype, AdaptiveCards::ActionParserRegistration)($1,true)";
+%typemap(directorin,descriptor="Lio/adaptivecards/objectmodel/ActionParserRegistration;") std::shared_ptr<AdaptiveCards::ActionParserRegistration> %{
+  *($&1_type*)&j$1 = new $1_type($1);
+%}
+
+%typemap(javadirectorout) std::shared_ptr<AdaptiveCards::ActionParserRegistration> "$typemap(jstype, AdaptiveCards::ActionParserRegistration).getCPtr($javacall)";
+%typemap(directorout) std::shared_ptr<AdaptiveCards::ActionParserRegistration> %{
+  $&1_type tmp = NULL;
+  *($&1_type*)&tmp = *($&1_type*)&$input;
+  if (!tmp) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null $1_type");
+    return NULL;
+  }
+  $result = *tmp;
+%}
+
 %typemap(javadirectorin) std::shared_ptr<AdaptiveCards::ElementParserRegistration> "new $typemap(jstype, AdaptiveCards::ElementParserRegistration)($1,true)";
 %typemap(directorin,descriptor="Lio/adaptivecards/objectmodel/ElementParserRegistration;") std::shared_ptr<AdaptiveCards::ElementParserRegistration> %{
   *($&1_type*)&j$1 = new $1_type($1);

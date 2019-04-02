@@ -27,6 +27,11 @@ namespace AdaptiveSharedNamespace
         return element;
     }
 
+    std::shared_ptr<BaseActionElement> ActionElementParserWrapper::DeserializeFromString(ParseContext& context, const std::string& value)
+    {
+        return Deserialize(context, ParseUtil::GetJsonValueFromString(value));
+    }
+
     ActionParserRegistration::ActionParserRegistration()
     {
         m_knownElements.insert({

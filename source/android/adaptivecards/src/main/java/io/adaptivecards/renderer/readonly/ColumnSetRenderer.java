@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
@@ -112,7 +113,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
 
         if (columnSet.GetSelectAction() != null) {
             layout.setClickable(true);
-            layout.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(renderedCard, columnSet.GetSelectAction(), cardActionHandler));
+            layout.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, columnSet.GetSelectAction(), cardActionHandler));
         }
 
         if(columnSet.GetHeight() == HeightType.Stretch)

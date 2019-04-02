@@ -79,6 +79,7 @@ public class CardRendererRegistration
         registerActionRenderer(AdaptiveCardObjectModel.ActionTypeToString(ActionType.Submit), ActionElementRenderer.getInstance());
         registerActionRenderer(AdaptiveCardObjectModel.ActionTypeToString(ActionType.ShowCard), ActionElementRenderer.getInstance());
         registerActionRenderer(AdaptiveCardObjectModel.ActionTypeToString(ActionType.OpenUrl), ActionElementRenderer.getInstance());
+        registerActionRenderer(AdaptiveCardObjectModel.ActionTypeToString(ActionType.ToggleVisibility), ActionElementRenderer.getInstance());
 
         m_actionLayoutRenderer = ActionLayoutRenderer.getInstance();
     }
@@ -130,6 +131,15 @@ public class CardRendererRegistration
 
     public void registerActionRenderer(String actionElementType, IBaseActionElementRenderer actionRenderer)
     {
+        if (TextUtils.isEmpty(actionElementType))
+        {
+            throw new IllegalArgumentException("cardElementType is null");
+        }
+        if (actionRenderer == null)
+        {
+            throw new IllegalArgumentException("renderer is null");
+        }
+
         m_typeToRenderActionMap.put(actionElementType, actionRenderer);
     }
 

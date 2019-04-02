@@ -42,14 +42,6 @@ public class UnknownActionParser extends ActionElementParser {
     super.delete();
   }
 
-  public UnknownActionParser() {
-    this(AdaptiveCardObjectModelJNI.new_UnknownActionParser__SWIG_0(), true);
-  }
-
-  public UnknownActionParser(UnknownActionParser arg0) {
-    this(AdaptiveCardObjectModelJNI.new_UnknownActionParser__SWIG_1(UnknownActionParser.getCPtr(arg0), arg0), true);
-  }
-
   public BaseActionElement Deserialize(ParseContext context, JsonValue root) {
     long cPtr = AdaptiveCardObjectModelJNI.UnknownActionParser_Deserialize(swigCPtr, this, ParseContext.getCPtr(context), context, JsonValue.getCPtr(root), root);
     return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
