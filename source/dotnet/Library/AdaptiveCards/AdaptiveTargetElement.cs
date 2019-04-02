@@ -1,4 +1,6 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
@@ -12,7 +14,6 @@ namespace AdaptiveCards
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class AdaptiveTargetElement
     {
-
         public AdaptiveTargetElement() { }
 
         public AdaptiveTargetElement(string elementId)
@@ -43,5 +44,13 @@ namespace AdaptiveCards
 #endif
         public bool? IsVisible { get; set; } = null;
 
+        /// <summary>
+        /// Implicit conversion from <see cref="string"/> to <see cref="AdaptiveTargetElement"/>.
+        /// </summary>
+        /// <param name="elementId"></param>
+        public static implicit operator AdaptiveTargetElement(string elementId)
+        {
+            return new AdaptiveTargetElement(elementId);
+        }
     }
 }
