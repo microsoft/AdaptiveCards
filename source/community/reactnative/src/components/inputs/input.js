@@ -79,7 +79,7 @@ export class Input extends React.Component {
 						if (!inputArray[this.id])
 							addInputItem(this.id, { value: this.props.value, errorState: this.props.isError });
 						return (
-							<ElementWrapper json={this.payload} isError={this.props.isError}>
+							<ElementWrapper json={this.payload} isError={this.props.isError} isFirst={this.props.isFirst}>
 								<TextInput
 									style={this.getComputedStyles(showErrors)}
 									autoCapitalize={Constants.NoneString}
@@ -206,7 +206,7 @@ export class Input extends React.Component {
 		else {
 			return (
 				<View>
-					<ElementWrapper json={payload} style={wrapperStyle} isError={this.props.isError}>
+					<ElementWrapper json={payload} style={wrapperStyle} isError={this.props.isError} isFirst={this.props.isFirst}>
 						<TextInput
 							style={[styles.inlineActionTextInput, this.getComputedStyles(this.state.showInlineActionErrors)]}
 							autoCapitalize={Constants.NoneString}

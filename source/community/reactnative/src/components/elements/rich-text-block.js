@@ -118,7 +118,7 @@ export class RichTextBlock extends React.Component {
 
     render() {
         return (
-            <ElementWrapper json={this.payload} style={styles.textContainer}>
+            <ElementWrapper json={this.payload} style={styles.textContainer} isFirst={this.props.isFirst}>
                 {this.getParagraphElements()}
             </ElementWrapper>
         );

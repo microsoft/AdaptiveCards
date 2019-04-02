@@ -38,7 +38,7 @@ export class Container extends React.Component {
 		}
 
 		children = Registry.getManager().parseRegistryComponents(this.payload.items, this.context.onParseError);
-		return children.map(ChildElement => React.cloneElement(ChildElement, { containerStyle: this.payload.style }));
+		return children.map((ChildElement, index) => React.cloneElement(ChildElement, { containerStyle: this.payload.style, isFirst: index === 0 }));
 	}
 
 	internalRenderer = () => {
@@ -46,7 +46,7 @@ export class Container extends React.Component {
 
 		var containerContent = (
 			<ContainerWrapper json={this.payload} style={[styles.container]} containerStyle={this.props.containerStyle}>
-				<ElementWrapper json={this.payload} style={[styles.defaultBGStyle, { flexGrow: 0 }]}>
+				<ElementWrapper json={this.payload} style={[styles.defaultBGStyle, { flexGrow: 0 }]} isFirst={this.props.isFirst}>
 					{this.parsePayload()}
 				</ElementWrapper>
 			</ContainerWrapper>

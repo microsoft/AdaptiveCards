@@ -46,9 +46,9 @@ export class Column extends React.Component {
 
 		// parse elements
 		if (!Utils.isNullOrEmpty(this.column.items) && (this.column.isVisible !== false)) {
-			children  = Registry.getManager().parseRegistryComponents(this.column.items, this.context.onParseError);
+			children = Registry.getManager().parseRegistryComponents(this.column.items, this.context.onParseError);
 		}
-		return children.map(ChildElement => React.cloneElement(ChildElement, { containerStyle: this.column.style }));
+		return children.map((ChildElement, index) => React.cloneElement(ChildElement, { containerStyle: this.column.style, isFirst: index === 0 }));
 	}
 
 	/**
@@ -236,13 +236,13 @@ export class Column extends React.Component {
 		}
 
 		return <ContainerWrapper json={this.column} style={[containerViewStyle]} containerStyle={this.props.containerStyle}>
-				<ActionComponent {...actionComponentProps}>
-					{separator && this.renderSeparator()}
-					<View style={separatorStyles}>
-						{this.parsePayload()}
-					</View>
-				</ActionComponent>
-			</ContainerWrapper>
+			<ActionComponent {...actionComponentProps}>
+				{separator && this.renderSeparator()}
+				<View style={separatorStyles}>
+					{this.parsePayload()}
+				</View>
+			</ActionComponent>
+		</ContainerWrapper>
 	}
 };
 

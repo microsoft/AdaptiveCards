@@ -145,7 +145,7 @@ export default class AdaptiveCards extends React.Component {
 			return children;
 
 		children = Registry.getManager().parseRegistryComponents(body, this.onParseError);
-		return children.map(ChildElement => React.cloneElement(ChildElement, { containerStyle: this.state.payload.style }));
+		return children.map((ChildElement, index) => React.cloneElement(ChildElement, { containerStyle: this.state.payload.style, isFirst: index === 0 }));
 	}
 
 	getAdaptiveCardContent() {

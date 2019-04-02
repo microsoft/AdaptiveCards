@@ -55,7 +55,7 @@ export class ImageSet extends React.PureComponent {
 	internalRenderer(imageSetJson) {
 		return (
 			(<InputContextConsumer>
-				{({ onParseError }) => <ElementWrapper json={imageSetJson} style={[styles.container, styles.defaultBGStyle]}>
+				{({ onParseError }) => <ElementWrapper json={imageSetJson} style={[styles.container, styles.defaultBGStyle]} isFirst={this.props.isFirst}>
 					{this.parsePayload(imageSetJson, onParseError)}
 				</ElementWrapper>}
 			</InputContextConsumer>)
