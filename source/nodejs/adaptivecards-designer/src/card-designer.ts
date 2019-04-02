@@ -316,8 +316,13 @@ export class CardDesigner {
     private preventCardUpdate: boolean = false;
     
     private setJsonPayload(payload: object) {
-        this._monacoEditor.setValue(JSON.stringify(payload, null, 4));
-    }
+		this.setJsonPayloadAsString(JSON.stringify(payload, null, 4));
+	}
+	
+	private setJsonPayloadAsString(payload: string) {
+		this._monacoEditor.setValue(payload);
+		this.sendCardToClients();
+	}
 
     private updateJsonFromCard(addToUndoStack: boolean = true) {
         try {
@@ -357,7 +362,8 @@ export class CardDesigner {
             this.preventJsonUpdate = true;
     
             if (!this.preventCardUpdate) {
-                this.designerSurface.setCardPayloadAsString(this.getCurrentJsonPayload());
+				this.designerSurface.setCardPayloadAsString(this.getCurrentJsonPayload());
+				this.sendCardToClients();
             }
         }
         finally {
@@ -380,6 +386,8 @@ export class CardDesigner {
     }
     
     private _fullScreenHandler = new FullScreenHandler();
+    private _shareButton: ToolbarButton;
+    private _joinButton: ToolbarButton;
     private _fullScreenButton: ToolbarButton;
     private _hostContainerChoicePicker: ToolbarChoicePicker;
     private _undoButton: ToolbarButton;
@@ -388,6 +396,39 @@ export class CardDesigner {
     private _copyJSONButton: ToolbarButton;
 
     private prepareToolbar() {
+        this._shareButton = new ToolbarButton(
+            CardDesigner.ToolbarCommands.FullScreen,
+            "Share",
+            "acd-icon-share",
+            (sender) => { this.share(); });
+        this._shareButton.displayCaption = true;
+        this._shareButton.toolTip = "Share";
+		this._shareButton.alignment = ToolbarElementAlignment.Right;
+		
+		this.toolbar.addElement(this._shareButton);
+
+        var acceptJoinButton = new ToolbarButton(
+            CardDesigner.ToolbarCommands.FullScreen,
+            "Accept",
+            "acd-icon-share",
+            (sender) => { this.acceptJoin(); });
+		acceptJoinButton.displayCaption = true;
+		acceptJoinButton.toolTip = "Accept";
+		acceptJoinButton.alignment = ToolbarElementAlignment.Right;
+		
+		this.toolbar.addElement(acceptJoinButton);
+		
+        this._joinButton = new ToolbarButton(
+            CardDesigner.ToolbarCommands.FullScreen,
+            "Join",
+            "acd-icon-share",
+            (sender) => { this.join(); });
+        this._joinButton.displayCaption = true;
+        this._joinButton.toolTip = "Join";
+		this._joinButton.alignment = ToolbarElementAlignment.Right;
+
+		this.toolbar.addElement(this._joinButton);
+
         this._fullScreenButton = new ToolbarButton(
             CardDesigner.ToolbarCommands.FullScreen,
             "Enter Full Screen",
@@ -1049,7 +1090,83 @@ export class CardDesigner {
         }
 
         this.card = card;
-    }
+	}
+
+	private _hostPeerConn: any;
+	private _hostDataChannel: any;
+	private _clientPeerConn: any;
+	
+	share() {
+		// Code from https://github.com/jameshfisher/serverless-webrtc/blob/master/index.html
+		this._hostPeerConn = new RTCPeerConnection({'iceServers': [{'urls': ['stun:stun.l.google.com:19302']}]});
+		console.log("Creating ...");
+		this._hostPeerConn.createOffer()
+		var dataChannel = this._hostPeerConn.createDataChannel('test');
+		dataChannel.onopen = (e) => {
+			// window.say = (msg) => { dataChannel.send(msg); };
+			alert("Opened data channel");
+			this._hostDataChannel = dataChannel;
+			this.sendCardToClients();
+		};
+		dataChannel.onmessage = (e) => { console.log('Got message:', e.data); };
+		this._hostPeerConn.createOffer({})
+		.then((desc) => this._hostPeerConn.setLocalDescription(desc))
+		.then(() => {})
+		.catch((err) => console.error(err));
+		this._hostPeerConn.onicecandidate = (e) => {
+			if (e.candidate == null) {
+				console.log("Get joiners to call: ", "join(", JSON.stringify(this._hostPeerConn.localDescription), ")");
+				alert(JSON.stringify(this._hostPeerConn.localDescription));
+			}
+		};
+	}
+
+	sendCardToClients() {
+		if (this._hostDataChannel) {
+			try {
+				this._hostDataChannel.send(JSON.stringify({
+					cardPayload: this.getCurrentJsonPayload()
+				}));
+			} catch (ex) {
+				this._hostDataChannel = null;
+			}
+		}
+	}
+
+	acceptJoin() {
+		var answer = JSON.parse(prompt("Enter join answer"));
+
+		this._hostPeerConn.setRemoteDescription(new RTCSessionDescription(answer));
+	}
+
+	join() {
+		var offer: any = JSON.parse(prompt("Enter join offer"));
+
+		this._clientPeerConn = new RTCPeerConnection({'iceServers': [{'urls': ['stun:stun.l.google.com:19302']}]});
+		this._clientPeerConn.ondatachannel = (e) => {
+			var dataChannel = e.channel;
+			dataChannel.onopen = (e) => {
+			  console.log('Connected');
+			};
+			dataChannel.onmessage = (e) => {
+				console.log('Got message:', e.data);
+				var dataMessage = JSON.parse(e.data);
+				var cardPayload: string = dataMessage.cardPayload;
+				this.setJsonPayloadAsString(cardPayload);
+			}
+		  };
+		  this._clientPeerConn.onicecandidate = (e) => {
+			if (e.candidate == null) {
+			  console.log("Get the creator to call: gotAnswer(", JSON.stringify(this._clientPeerConn.localDescription), ")");
+			  alert(JSON.stringify(this._clientPeerConn.localDescription));
+			}
+		  };
+		  var offerDesc = new RTCSessionDescription(offer);
+		  this._clientPeerConn.setRemoteDescription(offerDesc);
+		  this._clientPeerConn.createAnswer({})
+			.then((answerDesc) => this._clientPeerConn.setLocalDescription(answerDesc))
+			.catch((err) => console.warn("Couldn't create answer"));
+	}
 
     undo() {
         if (this.canUndo) {
@@ -1178,6 +1295,7 @@ export class CardDesigner {
 
 export module CardDesigner {
     export class ToolbarCommands {
+		static Share = "__share";
         static FullScreen = "__fullScreenButton";
         static HostAppPicker = "__hostAppPicker";
         static Undo = "__undoButton";

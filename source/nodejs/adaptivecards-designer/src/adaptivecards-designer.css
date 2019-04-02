@@ -240,6 +240,10 @@ body {
     content: "\F321";
 }
 
+.acd-icon-share::before {
+    content: "\E72D";
+}
+
 .acd-icon-fullScreen::before {
     content: "\E740";
 }
