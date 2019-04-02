@@ -49,7 +49,7 @@ export class HostConfigManager {
 	}
 
 	static setHostConfig(value) {
-		this.hostConfig = new HostConfig({...defaultHostConfig, ...value});
+		this.hostConfig = new HostConfig(value);
 	}
 
 	/**
@@ -159,13 +159,21 @@ export class FactTextDefinition {
 
 export class FactTitleDefinition extends FactTextDefinition {
 	weight = Enums.TextWeight.Bolder;
+	size = Enums.TextSize.Default;
+	color = Enums.TextColor.Default;;
+	isSubtle = false;
+	wrap = true;
 
 	constructor(obj) {
 		super(obj);
 
 		if (obj) {
 			this.maxWidth = obj["maxWidth"] != null ? obj["maxWidth"] : this.maxWidth;
-			this.weight = Utils.parseHostConfigEnum(Enums.TextWeight, obj["weight"], Enums.TextWeight.Bolder);
+			this.size = Utils.parseHostConfigEnum(Enums.TextSize, obj["size"], Enums.TextSize.Default);
+			this.color = Utils.parseHostConfigEnum(Enums.TextColor, obj["color"], Enums.TextColor.Default);
+			this.isSubtle = obj["isSubtle"] || this.isSubtle;
+			this.weight = Utils.parseHostConfigEnum(Enums.TextWeight, obj["weight"], this.getDefaultWeight());
+			this.wrap = obj["wrap"] != null ? obj["wrap"] : this.wrap;
 		}
 	}
 
@@ -213,7 +221,7 @@ export class ShowCardActionConfig {
 export class ActionsConfig {
 	maxActions = 5;
 	spacing = Enums.Spacing.Default;
-	buttonSpacing = 20;
+	buttonSpacing = 10;
 	showCard = new ShowCardActionConfig();
 	preExpandSingleShowCardAction = false;
 	actionsOrientation = Enums.Orientation.Horizontal;
@@ -261,46 +269,31 @@ export class ActionsConfig {
 }
 
 export class ContainerStyleDefinition {
-	getTextColorDefinitionOrDefault(obj, defaultValue) {
-		return new TextColorDefinition(obj ? obj : defaultValue);
+	getTextColorDefinition(value) {
+		return new TextColorDefinition(value);
 	}
 
 	backgroundColor;
 
 	foregroundColors = {
 		default: new TextColorDefinition(),
-		dark: new TextColorDefinition(),
-		light: new TextColorDefinition(),
 		accent: new TextColorDefinition(),
 		good: new TextColorDefinition(),
 		warning: new TextColorDefinition(),
 		attention: new TextColorDefinition()
 	};
 
-	highlightBackgroundColor;
-	highlightForegroundColor;
-
-	parse(obj) {
-		if (obj) {
-			this.backgroundColor = obj["backgroundColor"];
-
-			if (obj.foregroundColors) {
-				this.foregroundColors.default = this.getTextColorDefinitionOrDefault(obj.foregroundColors["default"], { default: "#333333", subtle: "#EE333333" });
-				this.foregroundColors.dark = this.getTextColorDefinitionOrDefault(obj.foregroundColors["dark"], { default: "#000000", subtle: "#66000000" });
-				this.foregroundColors.light = this.getTextColorDefinitionOrDefault(obj.foregroundColors["light"], { default: "#FFFFFF", subtle: "#33000000" });
-				this.foregroundColors.accent = this.getTextColorDefinitionOrDefault(obj.foregroundColors["accent"], { default: "#2E89FC", subtle: "#882E89FC" });
-				this.foregroundColors.good = this.getTextColorDefinitionOrDefault(obj.foregroundColors["good"], { default: "#54A254", subtle: "#DD54A254" });
-				this.foregroundColors.warning = this.getTextColorDefinitionOrDefault(obj.foregroundColors["warning"], { default: "#E69500", subtle: "#DDE69500" });
-				this.foregroundColors.attention = this.getTextColorDefinitionOrDefault(obj.foregroundColors["attention"], { default: "#CC3300", subtle: "#DDCC3300" });
-			}
-
-			this.highlightBackgroundColor = obj["highlightBackgroundColor"];
-			this.highlightForegroundColor = obj["highlightForegroundColor"];
-		}
+	parse(obj, type) {
+		this.backgroundColor = obj && obj["backgroundColor"] ? obj["backgroundColor"] : defaultHostConfig["containerStyles"][type]["backgroundColor"];
+		this.foregroundColors.default = obj ? this.getTextColorDefinition(obj[type].foregroundColors["default"]) : this.getTextColorDefinition(defaultHostConfig["containerStyles"][type].foregroundColors["default"]);
+		this.foregroundColors.accent = obj ? this.getTextColorDefinition(obj[type].foregroundColors["accent"]) : this.getTextColorDefinition(defaultHostConfig["containerStyles"][type].foregroundColors["accent"]);
+		this.foregroundColors.good = obj ? this.getTextColorDefinition(obj[type].foregroundColors["good"]) : this.getTextColorDefinition(defaultHostConfig["containerStyles"][type].foregroundColors["good"]);
+		this.foregroundColors.warning = obj ? this.getTextColorDefinition(obj[type].foregroundColors["warning"]) : this.getTextColorDefinition(defaultHostConfig["containerStyles"][type].foregroundColors["warning"]);
+		this.foregroundColors.attention = obj ? this.getTextColorDefinition(obj[type].foregroundColors["attention"]) : this.getTextColorDefinition(defaultHostConfig["containerStyles"][type].foregroundColors["attention"]);
 	}
 
-	constructor(obj) {
-		this.parse(obj);
+	constructor(obj, type) {
+		this.parse(obj, type);
 	}
 
 	get isBuiltIn() {
@@ -308,58 +301,16 @@ export class ContainerStyleDefinition {
 	}
 }
 
-class BuiltInContainerStyleDefinition extends ContainerStyleDefinition {
-	get isBuiltIn() {
-		return true;
-	}
-}
-
-export class ILineHeightDefinitions {
-	small;
-	medium;
-	default;
-	large;
-	extraLarge;
-}
-
 export class ContainerStyleSet {
 	_allStyles = {};
 
 	constructor(obj) {
-		this._allStyles[Enums.ContainerStyle.Default] = new BuiltInContainerStyleDefinition();
-		this._allStyles[Enums.ContainerStyle.Emphasis] = new BuiltInContainerStyleDefinition();
-		this._allStyles[Enums.ContainerStyle.Accent] = new BuiltInContainerStyleDefinition();
-		this._allStyles[Enums.ContainerStyle.Good] = new BuiltInContainerStyleDefinition();
-		this._allStyles[Enums.ContainerStyle.Attention] = new BuiltInContainerStyleDefinition();
-		this._allStyles[Enums.ContainerStyle.Warning] = new BuiltInContainerStyleDefinition();
-
-		if (obj) {
-			this._allStyles[Enums.ContainerStyle.Default].parse(obj[Enums.ContainerStyle.Default]);
-			this._allStyles[Enums.ContainerStyle.Emphasis].parse(obj[Enums.ContainerStyle.Emphasis]);
-			this._allStyles[Enums.ContainerStyle.Accent].parse(obj[Enums.ContainerStyle.Accent]);
-			this._allStyles[Enums.ContainerStyle.Good].parse(obj[Enums.ContainerStyle.Good]);
-			this._allStyles[Enums.ContainerStyle.Attention].parse(obj[Enums.ContainerStyle.Attention]);
-			this._allStyles[Enums.ContainerStyle.Warning].parse(obj[Enums.ContainerStyle.Warning]);
-
-			const customStyleArray = obj["customStyles"];
-
-			if (customStyleArray && Array.isArray(customStyleArray)) {
-				for (var customStyle of customStyleArray) {
-					if (customStyle) {
-						var styleName = customStyle["name"];
-
-						if (styleName && typeof styleName === "string") {
-							if (this._allStyles.hasOwnProperty(styleName)) {
-								this._allStyles[styleName].parse(customStyle["style"]);
-							}
-							else {
-								this._allStyles[styleName] = new ContainerStyleDefinition(customStyle["style"]);
-							}
-						}
-					}
-				}
-			}
-		}
+		this._allStyles[Enums.ContainerStyle.Default] = new ContainerStyleDefinition(obj, Enums.ContainerStyle.Default);
+		this._allStyles[Enums.ContainerStyle.Emphasis] = new ContainerStyleDefinition(obj, Enums.ContainerStyle.Emphasis);
+		this._allStyles[Enums.ContainerStyle.Accent] = new ContainerStyleDefinition(obj, Enums.ContainerStyle.Accent);
+		this._allStyles[Enums.ContainerStyle.Good] = new ContainerStyleDefinition(obj, Enums.ContainerStyle.Good);
+		this._allStyles[Enums.ContainerStyle.Attention] = new ContainerStyleDefinition(obj, Enums.ContainerStyle.Attention);
+		this._allStyles[Enums.ContainerStyle.Warning] = new ContainerStyleDefinition(obj, Enums.ContainerStyle.Warning);
 	}
 
 	toJSON() {
@@ -403,12 +354,12 @@ export class ContainerStyleSet {
 
 class FontStyleConfig {
 	constructor(obj = {}) {
-		this.default = new FontConfig("default",obj);
+		this.default = new FontConfig("default", obj);
 		this.monospace = new FontConfig("monospace", obj);
 	}
 }
-// Each instance of this class holds config of specific FontStyle type 
-// customConfigFontFamily, customConfigWeights, customConfigFontSizes are deprecated and will be removed in future.
+/* Each instance of this class holds config of specific FontStyle type 
+ customConfigFontFamily, customConfigWeights, customConfigFontSizes are deprecated and will be removed in future. */
 class FontConfig {
 	constructor(type, customConfig = {}) {
 		this.type = type;
@@ -460,7 +411,7 @@ export class HostConfig {
 
 	separator = {
 		lineThickness: 1,
-		lineColor: "#EEEEEE"
+		lineColor: "#D9D9D9"
 	};
 
 	fontSizes = {
@@ -489,6 +440,43 @@ export class HostConfig {
 	height = {
 		auto: 0,
 		stretch: 1
+	};
+
+	richTextBlock = {
+		highlightColor: "#00FF00"
+	};
+
+	fontStyles = {
+		default: {
+			fontFamily: "Helvetica",
+			fontSizes: {
+				small: 12,
+				default: 14,
+				medium: 17,
+				large: 21,
+				extraLarge: 26
+			},
+			fontWeights: {
+				lighter: 200,
+				default: 400,
+				bolder: 700
+			}
+		},
+		monospace: {
+			fontFamily: "Courier New",
+			fontSizes: {
+				small: 12,
+				default: 14,
+				medium: 17,
+				large: 21,
+				extraLarge: 26
+			},
+			fontWeights: {
+				lighter: 200,
+				default: 400,
+				bolder: 700
+			}
+		}
 	};
 
 	containerStyles = new ContainerStyleSet();
@@ -707,24 +695,6 @@ export class HostConfig {
 		}
 	}
 
-	makeCssClassName = (...classNames) => {
-		let result = "";
-
-		for (let i = 0; i < classNames.length; i++) {
-			if (i > 0) {
-				result += " ";
-			}
-
-			if (this.cssClassNamePrefix) {
-				result += this.cssClassNamePrefix + "-";
-			}
-
-			result += classNames[i];
-		}
-
-		return result;
-	}
-
 	getEffectiveHeight = (height) => {
 		switch (height) {
 			case Enums.Height.Auto:
@@ -794,7 +764,7 @@ export const defaultHostConfig = {
 	},
 	containerStyles: {
 		default: {
-			"backgroundColor": "transparent",
+			"backgroundColor": "#EAEAEA",
 			"foregroundColors": {
 				"default": {
 					"default": "#333333",
