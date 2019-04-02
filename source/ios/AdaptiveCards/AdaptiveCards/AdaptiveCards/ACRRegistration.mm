@@ -73,6 +73,7 @@ using namespace AdaptiveCards;
              [ACRContainerRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRContainerRenderer elemType]],
              [ACRColumnSetRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRColumnSetRenderer elemType]],
              [ACRColumnRenderer getInstance],     [NSNumber numberWithInt:(int)[ACRColumnRenderer elemType]],
+             [ACRActionSetRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRActionSetRenderer elemType]],
              [ACRCustomRenderer getInstance],     [NSNumber numberWithInt:(int)[ACRCustomRenderer elemType]],
              nil];
         actionRendererDict =

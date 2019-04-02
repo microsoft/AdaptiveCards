@@ -217,7 +217,7 @@ namespace AdaptiveCards.Rendering.Html
                 {
                     string targetElements = string.Empty;
 
-                    foreach (var targetElementObject in toggleVisibilityAction.TargetElements)
+                    foreach (var targetElement in toggleVisibilityAction.TargetElements)
                     {
                         // If the string is not empty, append a comma in preparation to add the new target element
                         if (!String.IsNullOrWhiteSpace(targetElements))
@@ -225,11 +225,10 @@ namespace AdaptiveCards.Rendering.Html
                             targetElements += ",";
                         }
 
-                        AdaptiveTargetElement targetElement = null;
                         string targetElementId = null;
                         string targetElementToggleAction = "Toggle";
 
-                        if ((targetElement = targetElementObject as AdaptiveTargetElement) != null)
+                        if (targetElement != null)
                         {
                             targetElementId = targetElement.ElementId;
 
@@ -237,10 +236,6 @@ namespace AdaptiveCards.Rendering.Html
                             {
                                 targetElementToggleAction = targetElement.IsVisible.Value.ToString();
                             }
-                        }
-                        else
-                        {
-                            targetElementId = targetElementObject as string;
                         }
 
                         targetElements += (targetElementId + ":" + targetElementToggleAction);
@@ -988,7 +983,7 @@ namespace AdaptiveCards.Rendering.Html
             return uiTextBlock;
         }
 
-        protected static HtmlTag TextRunRender(AdaptiveRichTextBlock.AdaptiveParagraph.AdaptiveTextRun textRun, AdaptiveRenderContext context)
+        protected static HtmlTag TextRunRender(AdaptiveTextRun textRun, AdaptiveRenderContext context)
         {
             string fontFamily = context.Config.GetFontFamily(textRun.FontStyle);
             int fontSize = context.Config.GetFontSize(textRun.FontStyle, textRun.Size);
