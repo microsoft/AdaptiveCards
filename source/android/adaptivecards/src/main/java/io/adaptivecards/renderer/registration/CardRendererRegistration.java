@@ -27,6 +27,7 @@ import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.ActionLayoutRenderer;
+import io.adaptivecards.renderer.action.ActionSetRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.BaseCardElementVector;
@@ -76,6 +77,7 @@ public class CardRendererRegistration
         registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.ChoiceSetInput), ChoiceSetInputRenderer.getInstance());
 
         // Register Action Renderer
+        registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.ActionSet), ActionSetRenderer.getInstance());
         registerActionRenderer(AdaptiveCardObjectModel.ActionTypeToString(ActionType.Submit), ActionElementRenderer.getInstance());
         registerActionRenderer(AdaptiveCardObjectModel.ActionTypeToString(ActionType.ShowCard), ActionElementRenderer.getInstance());
         registerActionRenderer(AdaptiveCardObjectModel.ActionTypeToString(ActionType.OpenUrl), ActionElementRenderer.getInstance());
