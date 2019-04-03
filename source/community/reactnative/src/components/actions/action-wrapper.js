@@ -11,7 +11,7 @@ import {
 import { Registry } from '../registration/registry';
 import * as Constants from '../../utils/constants';
 import { InputContextConsumer } from '../../utils/context';
-import AdaptiveCards from '../../adaptive-cards';
+import AdaptiveCard from '../../adaptive-cards';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 
@@ -95,7 +95,7 @@ export class ActionWrapper extends React.Component {
 						{this.parseActionsArray(onParseError)}
 					</View>
 					{this.hasShowCard ? ((this.state.isShowCard) ?
-						<AdaptiveCards
+						<AdaptiveCard
 							payload={this.state.cardJson}
 							onExecuteAction={onExecuteAction} isActionShowCard={true} /> : null) : null}
 				</View>

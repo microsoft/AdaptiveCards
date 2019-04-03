@@ -14,7 +14,7 @@ import {
     ScrollView
 } from 'react-native';
 
-import AdaptiveCards from '../adaptive-cards';
+import AdaptiveCard from '../adaptive-cards';
 import { RatingRenderer } from './rating-renderer';
 import { Registry } from '../components/registration/registry';
 
@@ -66,7 +66,7 @@ export default class Renderer extends React.Component {
                         </Text>
                     </ScrollView>
                     :
-                    <AdaptiveCards
+                    <AdaptiveCard
                         payload={this.payload}
                         onExecuteAction={this.onExecuteAction}
                         hostConfig={this.customHostConfig}
