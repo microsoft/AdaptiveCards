@@ -54,9 +54,9 @@ export class RichTextBlock extends React.Component {
      * @param {object} textRun - text run in the paragraph
      * @returns {object} constructed select Action component
      */
-    addActionElement = (textRun) => {
+    addActionElement = (textRun, index) => {
         return (
-            <Text onPress={() => { (HostConfigManager.supportsInteractivity() === false) ? null : this.onClickHandle(textRun.selectAction) }}>
+            <Text key={"text-wrapper" + index} onPress={() => { this.onClickHandle(textRun.selectAction) }}>
                 <Label
                     text={textRun.text}
                     size={textRun.size}
@@ -98,7 +98,7 @@ export class RichTextBlock extends React.Component {
                 index > 0 && textRunElements.push(<Text key={"white-sapce-text" + index}>{" "}</Text>);
                 let textRunStyle = textRun.highlight ? [styles.text, { backgroundColor: this.hostConfig.richTextBlock.highlightColor }] : styles.text;
                 textRunElements.push(
-                    textRun.selectAction ? this.addActionElement(textRun) :
+                    textRun.selectAction ? this.addActionElement(textRun, index) :
                         <Label
                             key={Constants.TextRunString + index}
                             text={textRun.text}
