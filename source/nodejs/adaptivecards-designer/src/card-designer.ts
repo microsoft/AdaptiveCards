@@ -1095,30 +1095,77 @@ export class CardDesigner {
 	private _hostPeerConn: any;
 	private _hostDataChannel: any;
 	private _clientPeerConn: any;
+	private _hostWebSocket: WebSocket;
+	private _signalingServerBaseUrl = "signalingserver.azurewebsites.net/api/subscriptions";
+	// private _signalingServerBaseUrl = "localhost:44381/api/subscriptions";
 	
 	share() {
-		// Code from https://github.com/jameshfisher/serverless-webrtc/blob/master/index.html
-		this._hostPeerConn = new RTCPeerConnection({'iceServers': [{'urls': ['stun:stun.l.google.com:19302']}]});
 		console.log("Creating ...");
-		this._hostPeerConn.createOffer()
-		var dataChannel = this._hostPeerConn.createDataChannel('test');
-		dataChannel.onopen = (e) => {
-			// window.say = (msg) => { dataChannel.send(msg); };
-			alert("Opened data channel");
-			this._hostDataChannel = dataChannel;
-			this.sendCardToClients();
-		};
-		dataChannel.onmessage = (e) => { console.log('Got message:', e.data); };
+		// Code from https://github.com/jameshfisher/serverless-webrtc/blob/master/index.html
+		if (!this._hostPeerConn) {
+			this._hostPeerConn = new RTCPeerConnection({'iceServers': [{'urls': ['stun:stun.l.google.com:19302']}]});
+			var dataChannel = this._hostPeerConn.createDataChannel('test');
+			dataChannel.onopen = (e) => {
+				// window.say = (msg) => { dataChannel.send(msg); };
+				alert("Opened data channel");
+				this._hostDataChannel = dataChannel;
+				this.sendCardToClients();
+			};
+		}
 		this._hostPeerConn.createOffer({})
 		.then((desc) => this._hostPeerConn.setLocalDescription(desc))
 		.then(() => {})
 		.catch((err) => console.error(err));
 		this._hostPeerConn.onicecandidate = (e) => {
 			if (e.candidate == null) {
-				console.log("Get joiners to call: ", "join(", JSON.stringify(this._hostPeerConn.localDescription), ")");
-				alert(JSON.stringify(this._hostPeerConn.localDescription));
+				var offer = JSON.stringify(this._hostPeerConn.localDescription);
+
+				fetch("https://" + this._signalingServerBaseUrl, {
+					method: "POST"
+				})
+				.then(resp => {
+					if (resp.ok) {
+						return resp.text();
+					}
+					throw new Error("Network response wasn't ok");
+				})
+				.then(id => {
+					var webSocketUrl = "wss://" + this._signalingServerBaseUrl + "/" + id;
+					this._hostWebSocket = new WebSocket(webSocketUrl);
+
+					var offerInfo = {
+						offer: this._hostPeerConn.localDescription,
+						respondId: id
+					};
+
+					this._hostWebSocket.onopen = function() {
+						alert(JSON.stringify(offerInfo));
+					};
+
+					this._hostWebSocket.onerror = function(error) {
+						alert("Error with web socket" + JSON.stringify(error));
+					};
+
+					var thisCardDesigner: CardDesigner = this;
+					this._hostWebSocket.onmessage = function(event) {
+						thisCardDesigner.onHostSocketReceivedMessage(event);
+					};
+				})
+				.catch(error => {
+					alert("Failed creating subscription: " + error);
+				});
 			}
 		};
+	}
+
+	private onHostSocketReceivedMessage(event) {
+		alert("Socket received message: " + event.data);
+		var answer = JSON.parse(event.data);
+		if (!this._hostPeerConn) {
+			alert("Host null");
+		}
+		this._hostPeerConn.setRemoteDescription(new RTCSessionDescription(answer));
+		alert("Client connected!");
 	}
 
 	sendCardToClients() {
@@ -1140,7 +1187,9 @@ export class CardDesigner {
 	}
 
 	join() {
-		var offer: any = JSON.parse(prompt("Enter join offer"));
+		var offerInfo = JSON.parse(prompt("Enter join offer info"));
+		var offer = offerInfo.offer;
+		var respondId: string = offerInfo.respondId;
 
 		this._clientPeerConn = new RTCPeerConnection({'iceServers': [{'urls': ['stun:stun.l.google.com:19302']}]});
 		this._clientPeerConn.ondatachannel = (e) => {
@@ -1158,7 +1207,25 @@ export class CardDesigner {
 		  this._clientPeerConn.onicecandidate = (e) => {
 			if (e.candidate == null) {
 			  console.log("Get the creator to call: gotAnswer(", JSON.stringify(this._clientPeerConn.localDescription), ")");
-			  alert(JSON.stringify(this._clientPeerConn.localDescription));
+
+			  var answer = JSON.stringify(this._clientPeerConn.localDescription);
+
+			  fetch("https://" + this._signalingServerBaseUrl + "/" + respondId, {
+				method: "PUT",
+				body: answer
+			  })
+			  .then(resp => {
+				if (resp.ok) {
+					return resp.text();
+				}
+				throw new Error("Network response wasn't ok");
+			  })
+			  .then(txt => {
+				alert("Success");
+			  })
+			  .catch(error => {
+				alert(error);
+			  });
 			}
 		  };
 		  var offerDesc = new RTCSessionDescription(offer);
