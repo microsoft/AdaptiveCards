@@ -111,6 +111,14 @@ public class TextRun extends Inline {
     AdaptiveCardObjectModelJNI.TextRun_SetIsSubtle(swigCPtr, this, value);
   }
 
+  public boolean GetHighlight() {
+    return AdaptiveCardObjectModelJNI.TextRun_GetHighlight(swigCPtr, this);
+  }
+
+  public void SetHighlight(boolean value) {
+    AdaptiveCardObjectModelJNI.TextRun_SetHighlight(swigCPtr, this, value);
+  }
+
   public void SetLanguage(String value) {
     AdaptiveCardObjectModelJNI.TextRun_SetLanguage(swigCPtr, this, value);
   }
