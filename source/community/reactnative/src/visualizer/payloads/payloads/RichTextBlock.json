@@ -12,7 +12,7 @@
                     "inlines": [
                         {
                             "type": "TextRun",
-                            "text": "The Huffington Post",
+                            "text": "**The Huffington Post**",
                             "color": "good",
                             "selectAction": {
                                 "type": "Action.Submit",
@@ -23,7 +23,12 @@
                         {
                             "type": "TextRun",
                             "text": "5/23/2016",
-                            "color": "good"
+                            "color": "good",
+                            "selectAction": {
+                                "type": "Action.Submit",
+                                "title": "cool link",
+                                "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                            }
                         },
                         {
                             "type": "TextRun",
@@ -40,12 +45,17 @@
                     "inlines": [
                         {
                             "type": "TextRun",
-                            "text": "Weather in",
-                            "color": "good"
+                            "text": "[Weather in](http://google.com)",
+                            "color": "good",
+                            "selectAction": {
+                                "type": "Action.OpenUrl",
+                                "title": "5/23/2016",
+                                "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                            }
                         },
                         {
                             "type": "TextRun",
-                            "text": "Chennai on",
+                            "text": "**Chennai on**",
                             "selectAction": {
                                 "type": "Action.OpenUrl",
                                 "title": "5/23/2016",

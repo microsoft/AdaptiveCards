@@ -373,6 +373,10 @@ export default class MarkdownFormatter extends React.PureComponent {
 	 */
 	addOnPress = (url) => {
 		if (!url) {
+			//Check for rich-text-block textRun action
+			if (this.props.onClick) {
+				this.props.onClick()
+			}
 			return null;
 		} else {
 			Linking.canOpenURL(url).then(supported => {
