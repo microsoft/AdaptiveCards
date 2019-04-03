@@ -140,20 +140,19 @@ namespace AdaptiveCards.Test
 
             Assert.IsInstanceOfType(toggleVisibilityAction, typeof(AdaptiveToggleVisibilityAction));
 
-            List<object> targetElements = (toggleVisibilityAction as AdaptiveToggleVisibilityAction).TargetElements;
+            List<AdaptiveTargetElement> targetElements = (toggleVisibilityAction as AdaptiveToggleVisibilityAction).TargetElements;
 
             Assert.AreEqual(3, targetElements.Count);
 
-            Assert.IsTrue(targetElements[0] is string);
-            Assert.AreEqual("id1", targetElements[0] as string);
-
-            Assert.IsTrue(targetElements[1] is AdaptiveTargetElement);
-            AdaptiveTargetElement targetElement = targetElements[1] as AdaptiveTargetElement;
+            AdaptiveTargetElement targetElement = targetElements[0];
+            Assert.AreEqual("id1", targetElement.ElementId);
+            Assert.IsNull(targetElement.IsVisible);
+            
+            targetElement = targetElements[1];
             Assert.AreEqual("id2", targetElement.ElementId);
             Assert.IsTrue(targetElement.IsVisible == false);
-
-            Assert.IsTrue(targetElements[2] is AdaptiveTargetElement);
-            targetElement = targetElements[2] as AdaptiveTargetElement;
+            
+            targetElement = targetElements[2];
             Assert.AreEqual("id3", targetElement.ElementId);
             Assert.IsTrue(targetElement.IsVisible == true);
         }

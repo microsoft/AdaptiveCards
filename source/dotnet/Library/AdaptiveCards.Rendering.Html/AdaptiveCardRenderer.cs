@@ -217,7 +217,7 @@ namespace AdaptiveCards.Rendering.Html
                 {
                     string targetElements = string.Empty;
 
-                    foreach (var targetElementObject in toggleVisibilityAction.TargetElements)
+                    foreach (var targetElement in toggleVisibilityAction.TargetElements)
                     {
                         // If the string is not empty, append a comma in preparation to add the new target element
                         if (!String.IsNullOrWhiteSpace(targetElements))
@@ -225,11 +225,10 @@ namespace AdaptiveCards.Rendering.Html
                             targetElements += ",";
                         }
 
-                        AdaptiveTargetElement targetElement = null;
                         string targetElementId = null;
                         string targetElementToggleAction = "Toggle";
 
-                        if ((targetElement = targetElementObject as AdaptiveTargetElement) != null)
+                        if (targetElement != null)
                         {
                             targetElementId = targetElement.ElementId;
 
@@ -237,10 +236,6 @@ namespace AdaptiveCards.Rendering.Html
                             {
                                 targetElementToggleAction = targetElement.IsVisible.Value.ToString();
                             }
-                        }
-                        else
-                        {
-                            targetElementId = targetElementObject as string;
                         }
 
                         targetElements += (targetElementId + ":" + targetElementToggleAction);
@@ -273,12 +268,8 @@ namespace AdaptiveCards.Rendering.Html
                 ApplyBackgroundImage(card.BackgroundImage, uiCard, context);
             }
 
-            AdaptiveContainerStyle cardContainerStyle = AdaptiveContainerStyle.Default;
-            if (context.Config.AdaptiveCard.AllowCustomStyle && (card.Style != AdaptiveContainerStyle.None))
-            {
-                cardContainerStyle = card.Style;
-            }
-            context.RenderArgs.ParentStyle = cardContainerStyle;
+            // Reset the parent style
+            context.RenderArgs.ParentStyle = AdaptiveContainerStyle.Default;
 
             switch (card.VerticalContentAlignment)
             {
@@ -532,7 +523,7 @@ namespace AdaptiveCards.Rendering.Html
                 ApplyBackgroundImage(column.BackgroundImage, uiColumn, context);
             }
 
-            bool inheritsStyleFromParent = (column.Style == AdaptiveContainerStyle.None);
+            bool inheritsStyleFromParent = !column.Style.HasValue;
             bool hasPadding = false;
             if (!inheritsStyleFromParent)
             {
@@ -560,7 +551,7 @@ namespace AdaptiveCards.Rendering.Html
             }
 
             // Modify context outer parent style so padding necessity can be determined
-            elementRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : column.Style;
+            elementRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : column.Style.Value;
             elementRenderArgs.HasParentWithPadding = hasPadding;
             context.RenderArgs = elementRenderArgs;
 
@@ -590,7 +581,7 @@ namespace AdaptiveCards.Rendering.Html
             var parentRenderArgs = context.RenderArgs;
             var elementRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
 
-            bool inheritsStyleFromParent = (columnSet.Style == AdaptiveContainerStyle.None);
+            bool inheritsStyleFromParent = !columnSet.Style.HasValue;
             bool hasPadding = false;
             if (!inheritsStyleFromParent)
             {
@@ -601,7 +592,7 @@ namespace AdaptiveCards.Rendering.Html
             }
 
             // Modify context outer parent style so padding necessity can be determined
-            elementRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : columnSet.Style;
+            elementRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : columnSet.Style.Value;
             elementRenderArgs.HasParentWithPadding = (hasPadding || parentRenderArgs.HasParentWithPadding);
 
             var max = Math.Max(1.0, columnSet.Columns.Select(col =>
@@ -729,7 +720,7 @@ namespace AdaptiveCards.Rendering.Html
             var parentRenderArgs = context.RenderArgs;
             var elementRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
 
-            bool inheritsStyleFromParent = (container.Style == AdaptiveContainerStyle.None);
+            bool inheritsStyleFromParent = !container.Style.HasValue;
             bool hasPadding = false;
             if (!inheritsStyleFromParent)
             {
@@ -757,7 +748,7 @@ namespace AdaptiveCards.Rendering.Html
             }
 
             // Modify context outer parent style so padding necessity can be determined
-            elementRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : container.Style;
+            elementRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : container.Style.Value;
             context.RenderArgs = elementRenderArgs;
 
             AddContainerElements(uiContainer, container.Items, null, context);
@@ -992,7 +983,7 @@ namespace AdaptiveCards.Rendering.Html
             return uiTextBlock;
         }
 
-        protected static HtmlTag TextRunRender(AdaptiveRichTextBlock.AdaptiveParagraph.AdaptiveTextRun textRun, AdaptiveRenderContext context)
+        protected static HtmlTag TextRunRender(AdaptiveTextRun textRun, AdaptiveRenderContext context)
         {
             string fontFamily = context.Config.GetFontFamily(textRun.FontStyle);
             int fontSize = context.Config.GetFontSize(textRun.FontStyle, textRun.Size);
@@ -1892,11 +1883,11 @@ namespace AdaptiveCards.Rendering.Html
             // AdaptiveColumn inherits from AdaptiveContainer so only one check is required for both
             if (element is AdaptiveContainer container)
             {
-                canApplyPadding = ((container.BackgroundImage != null) || ((container.Style != AdaptiveContainerStyle.None) && (container.Style != parentRenderArgs.ParentStyle)));
+                canApplyPadding = ((container.BackgroundImage != null) || (container.Style.HasValue && (container.Style != parentRenderArgs.ParentStyle)));
             }
             else if (element is AdaptiveColumnSet columnSet)
             {
-                canApplyPadding = ((columnSet.Style != AdaptiveContainerStyle.None) && (columnSet.Style != parentRenderArgs.ParentStyle));
+                canApplyPadding = (columnSet.Style.HasValue && (columnSet.Style != parentRenderArgs.ParentStyle));
             }
 
             if (canApplyPadding)

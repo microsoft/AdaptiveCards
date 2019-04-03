@@ -17,6 +17,7 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveContainerStyleDefinition::RuntimeClassInitialize(ContainerStyleDefinition styleDefinition) noexcept
     {
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveColorsConfig>(m_foregroundColors.GetAddressOf(), styleDefinition.foregroundColors));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveColorsConfig>(m_highlightColors.GetAddressOf(), styleDefinition.highlightColors));
         RETURN_IF_FAILED(GetColorFromString(styleDefinition.backgroundColor, &m_backgroundColor));
         return S_OK;
     }
@@ -41,6 +42,16 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveContainerStyleDefinition::put_ForegroundColors(_In_ ABI::AdaptiveNamespace::IAdaptiveColorsConfig* colorsConfig)
     {
         m_foregroundColors = colorsConfig;
+        return S_OK;
+    }
+    HRESULT AdaptiveContainerStyleDefinition::get_HighlightColors(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveColorsConfig** colorsConfig)
+    {
+        return m_highlightColors.CopyTo(colorsConfig);
+    }
+
+    HRESULT AdaptiveContainerStyleDefinition::put_HighlightColors(_In_ ABI::AdaptiveNamespace::IAdaptiveColorsConfig* colorsConfig)
+    {
+        m_highlightColors = colorsConfig;
         return S_OK;
     }
 }

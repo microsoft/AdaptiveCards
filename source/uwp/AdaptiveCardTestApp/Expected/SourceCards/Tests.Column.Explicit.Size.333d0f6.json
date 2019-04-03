@@ -7,7 +7,7 @@
 			"type": "ColumnSet",
 			"columns": [
 				{
-                    "type":"Column",
+					"type": "Column",
 					"width": "50px",
 					"items": [
 						{
@@ -18,7 +18,7 @@
 					]
 				},
 				{
-                    "type":"Column",
+					"type": "Column",
 					"width": "stretch",
 					"verticalContentAlignment": "center",
 					"items": [
@@ -35,11 +35,11 @@
 			"type": "ColumnSet",
 			"columns": [
 				{
-                    "type":"Column",
+					"type": "Column",
 					"width": "50px"
 				},
 				{
-                    "type":"Column",
+					"type": "Column",
 					"width": "stretch",
 					"verticalContentAlignment": "center",
 					"items": [
@@ -56,7 +56,7 @@
 			"type": "ColumnSet",
 			"columns": [
 				{
-                    "type":"Column",
+					"type": "Column",
 					"width": "stretch",
 					"verticalContentAlignment": "center",
 					"items": [
@@ -68,7 +68,7 @@
 					]
 				},
 				{
-                    "type":"Column",
+					"type": "Column",
 					"width": "-1",
 					"items": [
 						{

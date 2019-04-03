@@ -21,11 +21,25 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveTextRun::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextRun>& sharedTextRun) noexcept try
     {
+        m_highlight = sharedTextRun->GetHighlight();
+
         RETURN_IF_FAILED(GenerateActionProjection(sharedTextRun->GetSelectAction(), &m_selectAction));
         RETURN_IF_FAILED(AdaptiveTextElement::InitializeTextElement(sharedTextRun));
         return S_OK;
     }
     CATCH_RETURN;
+
+    HRESULT AdaptiveTextRun::get_Highlight(boolean* highlight)
+    {
+        *highlight = m_highlight;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveTextRun::put_Highlight(boolean highlight)
+    {
+        m_highlight = highlight;
+        return S_OK;
+    }
 
     HRESULT AdaptiveTextRun::get_SelectAction(_COM_Outptr_ IAdaptiveActionElement** action)
     {
@@ -42,6 +56,8 @@ namespace AdaptiveNamespace
     {
         std::shared_ptr<AdaptiveSharedNamespace::TextRun> textRun = std::make_shared<AdaptiveSharedNamespace::TextRun>();
         RETURN_IF_FAILED(AdaptiveTextElement::SetTextElementProperties(textRun));
+
+        textRun->SetHighlight(m_highlight);
 
         if (m_selectAction != nullptr)
         {
