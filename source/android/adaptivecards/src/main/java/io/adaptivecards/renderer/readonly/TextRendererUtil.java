@@ -67,7 +67,6 @@ public class TextRendererUtil
 
     static String getHighlightColor(ForegroundColor foregroundColor, HostConfig hostConfig, boolean isSubtle, ContainerStyle containerStyle)
     {
-
         return hostConfig.GetHighlightColor(containerStyle, foregroundColor, isSubtle);
     }
 

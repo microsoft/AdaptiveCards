@@ -109,7 +109,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
                 int color = getColor(TextRendererUtil.getTextColor(textRun.GetTextColor(), hostConfig, textRun.GetIsSubtle(), renderArgs.getContainerStyle()));
                 paragraph.setSpan(new ForegroundColorSpan(color), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
-                if(textRun.GetHighlight())
+                if (textRun.GetHighlight())
                 {
                     int highlightColor = getColor(TextRendererUtil.getHighlightColor(textRun.GetTextColor(), hostConfig, textRun.GetIsSubtle(), renderArgs.getContainerStyle()));
                     paragraph.setSpan(new BackgroundColorSpan(highlightColor), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
