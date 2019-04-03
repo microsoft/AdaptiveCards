@@ -165,6 +165,11 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
                             {
                                 fallbackElement = fallbackActionElement.GetFallbackContent();
                             }
+                            else
+                            {
+                                // Either fallback is "drop" or not defined, in that case, stop trying
+                                break;
+                            }
                         }
                     }
                 }
