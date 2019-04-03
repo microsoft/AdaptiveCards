@@ -31,16 +31,22 @@ namespace AdaptiveSharedNamespace
         std::string GetLanguage() const;
 
         ContainerStyle GetParentalContainerStyle() const;
+        void SetParentalContainerStyle(const ContainerStyle style);
         AdaptiveSharedNamespace::InternalId PaddingParentInternalId() const;
         void SaveContextForCollectionTypeElement(
             const std::shared_ptr<CollectionTypeElement>& current);
         void RestoreContextForCollectionTypeElement(
             const std::shared_ptr<CollectionTypeElement>& current);
+        ContainerBleedDirection GetBleedDirection() const { return m_currentBleedDirection; }
+        void SetBleedDirection(const ContainerBleedDirection direction) { m_currentBleedDirection = direction; }
 
     private:
+        void SetPreviousBleedState(const ContainerBleedDirection state) { m_previousBleedDirection = state; }
+        ContainerBleedDirection GetPreviousBleedState() const { return m_previousBleedDirection; }
+
         const AdaptiveSharedNamespace::InternalId GetNearestFallbackId(const AdaptiveSharedNamespace::InternalId& skipId) const;
-        // This enum is just a helper to keep track of the position of contents within the std::tuple used in m_idStack
-        // below. We don't use enum class here because we don't want typed values for use in std::get
+        // This enum is just a helper to keep track of the position of contents within the std::tuple used in
+        // m_idStack below. We don't use enum class here because we don't want typed values for use in std::get
         enum TupleIndex : unsigned int
         {
             Id = 0U,
@@ -56,15 +62,18 @@ namespace AdaptiveSharedNamespace
         //             map ID json property           ->             fallback ID
         std::unordered_multimap<std::string, AdaptiveSharedNamespace::InternalId> m_elementIds;
 
-        // m_idStack is the stack we use during parse time to track the hierarchy of cards as they are encountered. Any
-        // time we parse an element we push it on to the stack, parse its children (if any), then pop it off the stack.
-        // When we pop off the stack, we perform id collision detection.
+        // m_idStack is the stack we use during parse time to track the hierarchy of cards as they are encountered.
+        // Any time we parse an element we push it on to the stack, parse its children (if any), then pop it off the
+        // stack. When we pop off the stack, we perform id collision detection.
         //
         //                             (ID,  internal ID, isFallback)[]
         std::vector<std::tuple<std::string, AdaptiveSharedNamespace::InternalId, bool>> m_idStack;
-        ContainerStyle m_parentalContainerStyle;
         std::vector<ContainerStyle> m_parentalContainerStyles;
         std::vector<AdaptiveSharedNamespace::InternalId> m_parentalPadding;
+
+        ContainerStyle m_parentalContainerStyle;
+        ContainerBleedDirection m_currentBleedDirection;
+        ContainerBleedDirection m_previousBleedDirection;
 
         std::string m_language;
     };

@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import io.adaptivecards.renderer.GenericImageLoaderAsync;
+import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.IResourceResolver;
 import io.adaptivecards.renderer.IMediaDataSourceOnPreparedListener;
 import io.adaptivecards.renderer.IOnlineMediaLoader;
@@ -733,5 +734,30 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                 return new HttpRequestResult<>(bitmap);
             }
         });
+
+        // Code to demonstrate how IOnlineImageLoader registration works, uncomment to test, you should see that all images rendered are all the same cat
+        /*
+        CardRendererRegistration.getInstance().registerOnlineImageLoader(new IOnlineImageLoader() {
+            @Override
+            public HttpRequestResult<Bitmap> loadOnlineImage(String url, GenericImageLoaderAsync loader) throws IOException, URISyntaxException
+            {
+                String catImnageUri = "http://adaptivecards.io/content/cats/1.png";
+                byte[] bytes = HttpRequestHelper.get(catImnageUri);
+                if (bytes == null)
+                {
+                    throw new IOException("Failed to retrieve content from " + catImnageUri);
+                }
+
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+                if (bitmap == null)
+                {
+                    throw new IOException("Failed to convert content to bitmap: " + new String(bytes));
+                }
+
+                return new HttpRequestResult<>(bitmap);
+            }
+        });
+        */
     }
 }

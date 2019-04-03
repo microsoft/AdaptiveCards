@@ -6,27 +6,25 @@ namespace AdaptiveCards
     [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveContainerStyle>), true)]
     public enum AdaptiveContainerStyle
     {
-        None = 0,
-
-        /// <summary>
-        /// The container is a default container
-        /// </summary>
-        Default = 1,
-
         /// <summary>
         /// The container is a normal container
         /// </summary>
         [Obsolete("ContainerStyle.Normal has been deprecated.  Use ContainerStyle.Default", false)]
-        Normal = 1,
+        Normal = 0,
+
+        /// <summary>
+        /// The container is a default container
+        /// </summary>
+        Default = 0,
 
         /// <summary>
         /// The container should be emphasized as a grouping of elements
         /// </summary>
-        Emphasis = 2,
+        Emphasis = 1,
 
-        Good = 3,
-        Attention = 4,
-        Warning = 5,
-        Accent = 6
+        Good = 2,
+        Attention = 3,
+        Warning = 4,
+        Accent = 5
     }
 }

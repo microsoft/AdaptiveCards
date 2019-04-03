@@ -135,12 +135,8 @@ namespace AdaptiveCards.Rendering.Wpf
                 context.CardRoot = outerGrid;
             }
 
-            AdaptiveContainerStyle cardContainerStyle = AdaptiveContainerStyle.Default;
-            if (context.Config.AdaptiveCard.AllowCustomStyle && (card.Style != AdaptiveContainerStyle.None))
-            {
-                cardContainerStyle = card.Style;
-            }
-            context.RenderArgs.ParentStyle = cardContainerStyle;
+            // Reset the parent style
+            context.RenderArgs.ParentStyle = AdaptiveContainerStyle.Default;
 
             var grid = new Grid();
             grid.Style = context.GetStyle("Adaptive.InnerCard");

@@ -62,6 +62,13 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public void InvokeAction(FrameworkElement ui, AdaptiveActionEventArgs args)
         {
+            // ToggleVisibility is a renderer-handled action
+            if (args.Action is AdaptiveToggleVisibilityAction toggleVisibilityAction)
+            {
+                this.ToggleVisibility(toggleVisibilityAction.TargetElements);
+                return;
+            }
+
             OnAction?.Invoke(ui, args);
         }
 
@@ -216,6 +223,29 @@ namespace AdaptiveCards.Rendering.Wpf
                 case AdaptiveTextColor.Default:
                 default:
                     return RenderArgs.ForegroundColors.Default;
+            }
+        }
+
+        public void ToggleVisibility(IEnumerable<AdaptiveTargetElement> targetElements)
+        {
+            foreach (AdaptiveTargetElement targetElement in targetElements)
+            {
+                var element = LogicalTreeHelper.FindLogicalNode(CardRoot, targetElement.ElementId);
+
+                if (element != null && element is FrameworkElement elementFrameworkElement)
+                {
+                    Visibility visibility = elementFrameworkElement.Visibility;
+                    // if we read something with the format {"elementId": <id>", "isVisible": true} or we just read the id and the element is not visible
+                    if ((targetElement.IsVisible.HasValue && targetElement.IsVisible.Value) || (!targetElement.IsVisible.HasValue && visibility != Visibility.Visible))
+                    {
+                        elementFrameworkElement.Visibility = Visibility.Visible;
+                    }
+                    // otherwise if we read something with the format {"elementId": <id>", "isVisible": false} or we just read the id and the element is visible
+                    else if ((targetElement.IsVisible.HasValue && !targetElement.IsVisible.Value) || (!targetElement.IsVisible.HasValue && visibility == Visibility.Visible))
+                    {
+                        elementFrameworkElement.Visibility = Visibility.Collapsed;
+                    }
+                }
             }
         }
     }
