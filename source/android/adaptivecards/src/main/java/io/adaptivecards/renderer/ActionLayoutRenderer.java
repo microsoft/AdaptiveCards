@@ -42,7 +42,7 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
         return s_instance;
     }
 
-    public void renderActions(
+    public View renderActions(
                 RenderedAdaptiveCard renderedCard,
                 Context context,
                 FragmentManager fragmentManager,
@@ -54,7 +54,7 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
         long size;
         if (baseActionElementList == null || (size = baseActionElementList.size()) <= 0)
         {
-            return;
+            return null;
         }
 
         LinearLayout actionButtonsLayout = new LinearLayout(context);
@@ -187,6 +187,8 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
         {
             renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.MAX_ACTIONS_EXCEEDED, "A maximum of " + maxActions + " actions are allowed"));
         }
+
+        return actionButtonsLayout;
     }
 
     private static ActionLayoutRenderer s_instance = null;
