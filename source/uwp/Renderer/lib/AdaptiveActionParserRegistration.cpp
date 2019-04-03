@@ -122,4 +122,9 @@ namespace AdaptiveNamespace
         std::shared_ptr<CustomActionWrapper> actionWrapper = std::make_shared<CustomActionWrapper>(actionElement.Get());
         return actionWrapper;
     }
+
+    std::shared_ptr<BaseActionElement> SharedModelActionParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
+    {
+        return Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
+    }
 }
