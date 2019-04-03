@@ -18,14 +18,14 @@ import PropTypes from 'prop-types';
 import * as Utils from './utils/util';
 import { SelectAction } from './components/actions';
 import ResourceInformation from './utils/resource-information';
-import { ContainerWrapper } from './components/containers/';
+import { ContainerWrapper } from './components/containers';
 import { ThemeConfigManager } from './utils/theme-config';
 
-export default class AdaptiveCards extends React.Component {
+export default class AdaptiveCard extends React.Component {
 
 	// Input elements with its identifier and value
 	inputArray = {};
-	version = "1.1"; // client supported version
+	version = "1.2"; // client supported version
 	resourceInformationArray = [];
 	constructor(props) {
 		super(props);
@@ -250,8 +250,8 @@ export default class AdaptiveCards extends React.Component {
 	}
 }
 
-// AdaptiveCards.propTypes
-AdaptiveCards.propTypes = {
+// AdaptiveCard.propTypes
+AdaptiveCard.propTypes = {
 	payload: PropTypes.object.isRequired,
 	hostConfig: PropTypes.object,
 	themeConfig: PropTypes.object,
