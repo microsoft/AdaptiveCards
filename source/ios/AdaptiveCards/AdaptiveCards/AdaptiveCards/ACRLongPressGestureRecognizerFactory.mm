@@ -85,7 +85,7 @@ using namespace AdaptiveCards;
 }
 
 + (void)addTapGestureRecognizerToUITextView:(UITextView *)textView
-                                     targer:(NSObject<ACRSelectActionDelegate> *)target
+                                     target:(NSObject<ACRSelectActionDelegate> *)target
                                    rootView:(ACRView *)rootView
                                  hostConfig:(ACOHostConfig *)config
 {

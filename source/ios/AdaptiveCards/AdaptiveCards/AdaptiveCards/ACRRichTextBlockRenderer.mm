@@ -96,7 +96,7 @@
                         NSObject<ACRSelectActionDelegate> *target = [ACRLongPressGestureRecognizerFactory buildTarget:textRun->GetSelectAction() rootView:rootView hostConfig:acoConfig destinationViewForShowCard:nil];
                         if(target) {
                             [textRunContent addAttribute:@"SelectAction" value:target range:NSMakeRange(0, textRunContent.length - 1)];
-                            [ACRLongPressGestureRecognizerFactory addTapGestureRecognizerToUITextView:lab targer:target rootView:rootView hostConfig:acoConfig];
+                            [ACRLongPressGestureRecognizerFactory addTapGestureRecognizerToUITextView:lab target:target rootView:rootView hostConfig:acoConfig];
                         }
                     }
 
