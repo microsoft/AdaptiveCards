@@ -26101,6 +26101,42 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1UnknownActionParser_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  AdaptiveCards::UnknownActionParser *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (AdaptiveCards::UnknownActionParser *)new AdaptiveCards::UnknownActionParser();
+  
+  *(std::shared_ptr<  AdaptiveCards::UnknownActionParser > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::UnknownActionParser >(result SWIG_NO_NULL_DELETER_1) : 0;
+  
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1UnknownActionParser_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  AdaptiveCards::UnknownActionParser *arg1 = 0 ;
+  AdaptiveCards::UnknownActionParser *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  arg1 = (AdaptiveCards::UnknownActionParser *)((*(std::shared_ptr< const AdaptiveCards::UnknownActionParser > **)&jarg1) ? (*(std::shared_ptr< const AdaptiveCards::UnknownActionParser > **)&jarg1)->get() : 0);
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::UnknownActionParser const & reference is null");
+    return 0;
+  } 
+  result = (AdaptiveCards::UnknownActionParser *)new AdaptiveCards::UnknownActionParser((AdaptiveCards::UnknownActionParser const &)*arg1);
+  
+  *(std::shared_ptr<  AdaptiveCards::UnknownActionParser > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::UnknownActionParser >(result SWIG_NO_NULL_DELETER_1) : 0;
+  
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1UnknownActionParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::UnknownActionParser *arg1 = (AdaptiveCards::UnknownActionParser *) 0 ;
   std::shared_ptr< AdaptiveCards::UnknownActionParser > *smartarg1 = 0 ;
@@ -26142,6 +26178,42 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
     return 0;
   } 
   result = (arg1)->Deserialize(*arg2,(Json::Value const &)*arg3);
+  *(std::shared_ptr< AdaptiveCards::BaseActionElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseActionElement >(result) : 0; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_UnknownActionParser_1DeserializeFromString(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jstring jarg3) {
+  jlong jresult = 0 ;
+  AdaptiveCards::UnknownActionParser *arg1 = (AdaptiveCards::UnknownActionParser *) 0 ;
+  AdaptiveCards::ParseContext *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::shared_ptr< AdaptiveCards::UnknownActionParser > *smartarg1 = 0 ;
+  std::shared_ptr< AdaptiveCards::BaseActionElement > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::UnknownActionParser > **)&jarg1;
+  arg1 = (AdaptiveCards::UnknownActionParser *)(smartarg1 ? smartarg1->get() : 0); 
+  
+  arg2 = (AdaptiveCards::ParseContext *)((*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg2) ? (*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg2)->get() : 0);
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::ParseContext & reference is null");
+    return 0;
+  } 
+  if(!jarg3) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg3_pstr = (const char *)jenv->GetStringUTFChars(jarg3, 0); 
+  if (!arg3_pstr) return 0;
+  std::string arg3_str(arg3_pstr);
+  arg3 = &arg3_str;
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  result = (arg1)->DeserializeFromString(*arg2,(std::string const &)*arg3);
   *(std::shared_ptr< AdaptiveCards::BaseActionElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseActionElement >(result) : 0; 
   return jresult;
 }

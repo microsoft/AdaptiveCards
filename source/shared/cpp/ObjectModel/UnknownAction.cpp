@@ -20,3 +20,9 @@ std::shared_ptr<BaseActionElement> UnknownActionParser::Deserialize(ParseContext
     unknown->SetElementTypeString(actualType);
     return unknown;
 }
+
+std::shared_ptr<BaseActionElement>
+UnknownActionParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
+{
+    return UnknownActionParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
+}

@@ -1250,8 +1250,11 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long new_UnknownAction();
   public final static native long UnknownAction_SerializeToJsonValue(long jarg1, UnknownAction jarg1_);
   public final static native void delete_UnknownAction(long jarg1);
+  public final static native long new_UnknownActionParser__SWIG_0();
+  public final static native long new_UnknownActionParser__SWIG_1(long jarg1, UnknownActionParser jarg1_);
   public final static native void delete_UnknownActionParser(long jarg1);
   public final static native long UnknownActionParser_Deserialize(long jarg1, UnknownActionParser jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
+  public final static native long UnknownActionParser_DeserializeFromString(long jarg1, UnknownActionParser jarg1_, long jarg2, ParseContext jarg2_, String jarg3);
   public final static native long new_TextElementProperties__SWIG_0();
   public final static native long new_TextElementProperties__SWIG_1(long jarg1, TextElementProperties jarg1_);
   public final static native void delete_TextElementProperties(long jarg1);
