@@ -23,12 +23,8 @@
 /* Begin PBXBuildFile section */
 		300ECB63219A12D100371DC5 /* AdaptiveBase64Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 300ECB61219A12D100371DC5 /* AdaptiveBase64Util.cpp */; };
 		300ECB64219A12D100371DC5 /* AdaptiveBase64Util.h in Headers */ = {isa = PBXBuildFile; fileRef = 300ECB62219A12D100371DC5 /* AdaptiveBase64Util.h */; };
-		6B096D42224EDE14006CC034 /* ACOTextInlines.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B096D40224EDE13006CC034 /* ACOTextInlines.mm */; };
-		6B096D43224EDE14006CC034 /* ACOTextInlines.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B096D41224EDE13006CC034 /* ACOTextInlines.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6B096D45224EE052006CC034 /* ACOTextInlinesPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B096D44224EE051006CC034 /* ACOTextInlinesPrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6B096D49224EE354006CC034 /* ACOInline.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B096D46224EE354006CC034 /* ACOInline.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6B096D4A224EE354006CC034 /* ACOInline.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B096D47224EE354006CC034 /* ACOInline.mm */; };
-		6B096D4B224EE354006CC034 /* ACOInlinePrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B096D48224EE354006CC034 /* ACOInlinePrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6B096D4E225431D0006CC034 /* ACRRichTextBlockRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B096D4C225431D0006CC034 /* ACRRichTextBlockRenderer.h */; };
+		6B096D4F225431D0006CC034 /* ACRRichTextBlockRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B096D4D225431D0006CC034 /* ACRRichTextBlockRenderer.mm */; };
 		6B1147D11F32E53A008846EC /* ACRActionDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B1147D01F32E53A008846EC /* ACRActionDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B1147D81F32F922008846EC /* ACRShowCardTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B1147D61F32F922008846EC /* ACRShowCardTarget.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B1147D91F32F922008846EC /* ACRShowCardTarget.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B1147D71F32F922008846EC /* ACRShowCardTarget.mm */; };
@@ -351,12 +347,8 @@
 /* Begin PBXFileReference section */
 		300ECB61219A12D100371DC5 /* AdaptiveBase64Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AdaptiveBase64Util.cpp; path = ../../../../shared/cpp/ObjectModel/AdaptiveBase64Util.cpp; sourceTree = "<group>"; };
 		300ECB62219A12D100371DC5 /* AdaptiveBase64Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AdaptiveBase64Util.h; path = ../../../../shared/cpp/ObjectModel/AdaptiveBase64Util.h; sourceTree = "<group>"; };
-		6B096D40224EDE13006CC034 /* ACOTextInlines.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOTextInlines.mm; sourceTree = "<group>"; };
-		6B096D41224EDE13006CC034 /* ACOTextInlines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOTextInlines.h; sourceTree = "<group>"; };
-		6B096D44224EE051006CC034 /* ACOTextInlinesPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOTextInlinesPrivate.h; sourceTree = "<group>"; };
-		6B096D46224EE354006CC034 /* ACOInline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOInline.h; sourceTree = "<group>"; };
-		6B096D47224EE354006CC034 /* ACOInline.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOInline.mm; sourceTree = "<group>"; };
-		6B096D48224EE354006CC034 /* ACOInlinePrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOInlinePrivate.h; sourceTree = "<group>"; };
+		6B096D4C225431D0006CC034 /* ACRRichTextBlockRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRRichTextBlockRenderer.h; sourceTree = "<group>"; };
+		6B096D4D225431D0006CC034 /* ACRRichTextBlockRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRRichTextBlockRenderer.mm; sourceTree = "<group>"; };
 		6B1147D01F32E53A008846EC /* ACRActionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRActionDelegate.h; sourceTree = "<group>"; };
 		6B1147D61F32F922008846EC /* ACRShowCardTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRShowCardTarget.h; sourceTree = "<group>"; };
 		6B1147D71F32F922008846EC /* ACRShowCardTarget.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRShowCardTarget.mm; sourceTree = "<group>"; };
@@ -1005,12 +997,8 @@
 		F42979341F3007C500E89914 /* ReadOnlyObjects */ = {
 			isa = PBXGroup;
 			children = (
-				6B096D46224EE354006CC034 /* ACOInline.h */,
-				6B096D47224EE354006CC034 /* ACOInline.mm */,
-				6B096D48224EE354006CC034 /* ACOInlinePrivate.h */,
-				6B096D41224EDE13006CC034 /* ACOTextInlines.h */,
-				6B096D40224EDE13006CC034 /* ACOTextInlines.mm */,
-				6B096D44224EE051006CC034 /* ACOTextInlinesPrivate.h */,
+				6B096D4C225431D0006CC034 /* ACRRichTextBlockRenderer.h */,
+				6B096D4D225431D0006CC034 /* ACRRichTextBlockRenderer.mm */,
 				F42741081EF864A900399FBB /* ACRBaseCardElementRenderer.h */,
 				F42741091EF864A900399FBB /* ACRBaseCardElementRenderer.mm */,
 				F42741221EFB274C00399FBB /* ACRColumnRenderer.h */,
@@ -1099,10 +1087,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6B096D45224EE052006CC034 /* ACOTextInlinesPrivate.h in Headers */,
-				6B096D43224EDE14006CC034 /* ACOTextInlines.h in Headers */,
-				6B096D49224EE354006CC034 /* ACOInline.h in Headers */,
-				6B096D4B224EE354006CC034 /* ACOInlinePrivate.h in Headers */,
 				6B2242B022334452000ACDA1 /* Inline.h in Headers */,
 				7EDC0F67213878E800077A13 /* SemanticVersion.h in Headers */,
 				F4F44B8020478C6F00A2F24C /* Util.h in Headers */,
@@ -1202,6 +1186,7 @@
 				F42E51731FEC3840008F9642 /* MarkDownParsedResult.h in Headers */,
 				F429794A1F323BA700E89914 /* ACRDateTextField.h in Headers */,
 				F42979471F322C9000E89914 /* ACRNumericTextField.h in Headers */,
+				6B096D4E225431D0006CC034 /* ACRRichTextBlockRenderer.h in Headers */,
 				F4CAE7861F75B25C00545555 /* ACRRendererPrivate.h in Headers */,
 				F4D0694C205B27EA003645E4 /* ACRViewPrivate.h in Headers */,
 				F42E51791FEC3840008F9642 /* MarkDownParser.h in Headers */,
@@ -1472,6 +1457,7 @@
 				F43A94151F1EED6D0001920B /* ACRInputRenderer.mm in Sources */,
 				F401A87C1F0DCBC8006D7AF2 /* ACRImageSetRenderer.mm in Sources */,
 				6B2242B422334492000ACDA1 /* Inline.cpp in Sources */,
+				6B096D4F225431D0006CC034 /* ACRRichTextBlockRenderer.mm in Sources */,
 				F4F44B6E203FAF9300A2F24C /* ACRUILabel.mm in Sources */,
 				F4F44B7C20478C5C00A2F24C /* DateTimePreparsedToken.cpp in Sources */,
 				6BF430782190DDCA0068E432 /* ACRQuickReplyView.mm in Sources */,
@@ -1501,7 +1487,6 @@
 				6BC30F6E21E56CF900B9FAAE /* Util.mm in Sources */,
 				6B3787BA20CB3E0E00015401 /* ACRContentHoldingUIScrollView.mm in Sources */,
 				F44873231EE2261F00FCAFAE /* TextBlock.cpp in Sources */,
-				6B096D42224EDE14006CC034 /* ACOTextInlines.mm in Sources */,
 				F44872F91EE2261F00FCAFAE /* BaseCardElement.cpp in Sources */,
 				F427410B1EF864A900399FBB /* ACRBaseCardElementRenderer.mm in Sources */,
 				F43660781F0706D800EBA868 /* SharedAdaptiveCard.cpp in Sources */,
@@ -1516,7 +1501,6 @@
 				F4F255701F98247600A80D39 /* ACOBaseActionElement.mm in Sources */,
 				6BF43080219129600068E432 /* ACRQuickReplyMultilineView.mm in Sources */,
 				6B9BDF7320E1BD0E00F13155 /* ACRToggleInputDataSource.mm in Sources */,
-				6B096D4A224EE354006CC034 /* ACOInline.mm in Sources */,
 				F4C1F5DA1F218ABC0018CB78 /* ACRInputTimeRenderer.mm in Sources */,
 				F4D402121F7DAC2C00D0356B /* ACOAdaptiveCardParseResult.mm in Sources */,
 				6B22426E2203BE98000ACDA1 /* UnknownAction.cpp in Sources */,

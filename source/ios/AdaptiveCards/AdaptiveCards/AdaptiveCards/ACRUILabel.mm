@@ -7,6 +7,7 @@
 
 #import "ACRUILabel.h"
 #import "ACRContentHoldingUIView.h"
+#import "ACRAggregateTarget.h"
 
 @implementation ACRUILabel
 
@@ -67,11 +68,29 @@
                                                            inTextContainer:self.textContainer
                                   fractionOfDistanceBetweenInsertionPoints:&fraction];
     if (!(fraction == 0.0 || fraction == 1.0) && characterIndex < self.textStorage.length) {
-        if ([self.textStorage attribute:NSLinkAttributeName atIndex:characterIndex effectiveRange:NULL]) {
+        if ([self.textStorage attribute:NSLinkAttributeName atIndex:characterIndex effectiveRange:NULL] ||
+            [self.textStorage attribute:@"SelectAction" atIndex:characterIndex effectiveRange:NULL]) {
             return self;
         }
     }
     return nil;
+}
+
+- (void)handleInlineAction:(UIGestureRecognizer *)gestureRecognizer
+{
+    ACRUILabel *view = (ACRUILabel *)gestureRecognizer.view;
+    
+    CGPoint pt = [gestureRecognizer locationInView:view];
+    pt.x -= view.textContainerInset.left;
+    pt.y -= view.textContainerInset.top;
+    
+    NSUInteger indexAtChar = [[view layoutManager] characterIndexForPoint:pt inTextContainer:view.textContainer fractionOfDistanceBetweenInsertionPoints:NULL];
+    if(indexAtChar < view.textStorage.length) {
+        id target = [view.attributedText attribute:@"SelectAction" atIndex:indexAtChar effectiveRange:nil];
+        if([target respondsToSelector:@selector(doSelectAction)]) {
+            [target doSelectAction];
+        }
+    }
 }
 
 @end

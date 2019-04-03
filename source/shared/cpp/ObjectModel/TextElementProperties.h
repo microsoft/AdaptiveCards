@@ -4,6 +4,7 @@
 #include "BaseCardElement.h"
 #include "ElementParserRegistration.h"
 #include "DateTimePreparser.h"
+#include "HostConfig.h"
 
 namespace AdaptiveSharedNamespace
 {
@@ -11,6 +12,7 @@ namespace AdaptiveSharedNamespace
     {
     public:
         TextElementProperties();
+        TextElementProperties(const TextConfig &, const std::string &, const std::string &);
         TextElementProperties(const TextElementProperties&) = default;
         TextElementProperties(TextElementProperties&&) = default;
         TextElementProperties& operator=(const TextElementProperties&) = default;

@@ -9,8 +9,6 @@
 #import <XCTest/XCTest.h>
 #import <AdaptiveCards/ACFramework.h>
 #import "AdaptiveCards/ACORemoteResourceInformationPrivate.h"
-#include "AdaptiveCards/ACOTextInlinesPrivate.h"
-#include "AdaptiveCards/ACOInlinePrivate.h"
 
 @interface ADCIOSVisualizerTests : XCTestCase
 
@@ -102,17 +100,6 @@
     XCTAssertNotNil(acrTextView);
     XCTAssertTrue([acrTextView.text length] == 0);
 }
-
-- (void)testACOTextInlines{
-    std::shared_ptr<AdaptiveCards::Paragraph> paragraph = std::make_shared<AdaptiveCards::Paragraph>();
-    ACOTextInlines *acoTextInlines = [[ACOTextInlines alloc] init:paragraph];
-}
-
-- (void)testACOInline{
-    std::shared_ptr<AdaptiveCards::Inline> inlineText = std::make_shared<AdaptiveCards::Inline>();
-    ACOInline *acoInline = [[ACOInline alloc] init:inlineText];
-}
-
 
 - (void)testChoiceSetInputCanGatherDefaultValues {
     NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"Input.ChoiceSet" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
