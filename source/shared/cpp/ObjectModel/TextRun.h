@@ -40,6 +40,9 @@ namespace AdaptiveSharedNamespace
         bool GetIsSubtle() const;
         void SetIsSubtle(const bool value);
 
+        bool GetHighlight() const;
+        void SetHighlight(const bool value);
+
         void SetLanguage(const std::string& value);
         std::string GetLanguage() const;
 
@@ -50,5 +53,6 @@ namespace AdaptiveSharedNamespace
         std::shared_ptr<TextElementProperties> m_textElementProperties;
         virtual void PopulateKnownPropertiesSet() override;
         std::shared_ptr<BaseActionElement> m_selectAction;
+        bool m_highlight;
     };
 }

@@ -14,35 +14,49 @@ namespace AdaptiveCards
 
         public override bool CanConvert(Type objectType)
         {
-            return typeof(List<object>).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
+            return typeof(List<AdaptiveTargetElement>).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var array = JArray.Load(reader);
             List<object> list = array.ToObject<List<object>>();
-            List<object> arrayList = new List<object>();
+            List<AdaptiveTargetElement> arrayList = new List<AdaptiveTargetElement>();
 
             foreach(object obj in list)
             {
-                if(obj is string)
+                if(obj is string s)
                 {
-                    arrayList.Add(obj);
+                    arrayList.Add(new AdaptiveTargetElement(s));
                 }
                 else
                 {
                     JObject jobj = (JObject)obj;
-                    arrayList.Add(jobj.ToObject(typeof(AdaptiveTargetElement)));
+                    arrayList.Add((AdaptiveTargetElement)jobj.ToObject(typeof(AdaptiveTargetElement)));
                 }
             }
             return arrayList;
         }
 
-        public override bool CanWrite => false;
-
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            throw new NotImplementedException();
+            List<AdaptiveTargetElement> targetElements = (List<AdaptiveTargetElement>)value;
+
+            JArray jArray = new JArray();
+
+            foreach (var el in targetElements)
+            {
+                if (el.IsVisible == null)
+                {
+                    jArray.Add(JToken.FromObject(el.ElementId));
+                }
+                else
+                {
+                    jArray.Add(JToken.FromObject(el));
+                }
+            }
+
+            jArray.WriteTo(writer);
         }
 
     }

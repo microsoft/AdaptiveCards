@@ -108,7 +108,7 @@ void AddDefaultPlayIcon(_In_ IPanel* posterPanel, _In_ IAdaptiveHostConfig* host
     THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Colors).Get(), &colorsStatics));
 
     ABI::Windows::UI::Color darkBrushColor;
-    THROW_IF_FAILED(GetColorFromAdaptiveColor(hostConfig, ForegroundColor_Dark, containerStyle, false, &darkBrushColor));
+    THROW_IF_FAILED(GetColorFromAdaptiveColor(hostConfig, ForegroundColor_Dark, containerStyle, false, false, &darkBrushColor));
 
     ComPtr<IBrush> darkBrush = XamlBuilder::GetSolidColorBrush(darkBrushColor);
     rectangleAsShape->put_Stroke(darkBrush.Get());
