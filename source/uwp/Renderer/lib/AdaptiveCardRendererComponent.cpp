@@ -285,14 +285,16 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(GetColorFromAdaptiveColor(m_hostConfig.Get(),
                                                   ABI::AdaptiveNamespace::ForegroundColor_Accent,
                                                   ABI::AdaptiveNamespace::ContainerStyle_Default,
-                                                  false /* isSubtle */,
+                                                  false, // isSubtle
+                                                  false, // highlight
                                                   &accentColor));
 
         ABI::Windows::UI::Color attentionColor;
         THROW_IF_FAILED(GetColorFromAdaptiveColor(m_hostConfig.Get(),
                                                   ABI::AdaptiveNamespace::ForegroundColor_Attention,
                                                   ABI::AdaptiveNamespace::ContainerStyle_Default,
-                                                  false /* isSubtle */,
+                                                  false, // isSubtle
+                                                  false, // highlight
                                                   &attentionColor));
 
         ABI::Windows::UI::Color lighterAccentColor = GenerateLighterColor(accentColor);

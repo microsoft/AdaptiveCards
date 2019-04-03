@@ -54,6 +54,20 @@ namespace AdaptiveSharedNamespace
         }
     }
 
+    std::string ParseUtil::TryGetString(const Json::Value& json, AdaptiveCardSchemaKey key)
+    {
+        std::string propertyName = AdaptiveCardSchemaKeyToString(key);
+        auto propertyValue = json.get(propertyName, Json::Value());
+        if (propertyValue.empty() || !propertyValue.isString())
+        {
+            return "";
+        }
+        else
+        {
+            return propertyValue.asString();
+        }
+    }
+
     std::string ParseUtil::GetString(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired)
     {
         std::string propertyName = AdaptiveCardSchemaKeyToString(key);

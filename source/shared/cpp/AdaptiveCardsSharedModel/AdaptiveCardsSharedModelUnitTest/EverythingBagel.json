@@ -288,7 +288,8 @@
 							"isSubtle": true,
 							"size": "large",
 							"weight": "Bolder",
-							"fontStyle": "Monospace"
+							"fontStyle": "Monospace",
+							"highlight": true
 						},
 						{
 							"type": "TextRun",

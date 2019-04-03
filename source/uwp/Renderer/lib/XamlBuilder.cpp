@@ -1799,84 +1799,105 @@ namespace AdaptiveNamespace
         ComPtr<IVector<AdaptiveParagraph*>> paragraphs;
         RETURN_IF_FAILED(adaptiveRichTextBlock->get_Paragraphs(&paragraphs));
 
-        XamlHelpers::IterateOverVector<AdaptiveParagraph, IAdaptiveParagraph>(
-            paragraphs.Get(), [xamlBlocks, renderContext, renderArgs](IAdaptiveParagraph* paragraph) {
-                ComPtr<IParagraph> xamlParagraph =
-                    XamlHelpers::CreateXamlClass<IParagraph>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Paragraph));
+        ComPtr<IRichTextBlock5> xamlRichTextBlock5;
+        xamlRichTextBlock.As(&xamlRichTextBlock5);
 
-                ComPtr<IBlock> paragraphAsBlock;
-                RETURN_IF_FAILED(xamlParagraph.As(&paragraphAsBlock));
-                RETURN_IF_FAILED(xamlBlocks->Append(paragraphAsBlock.Get()));
+        ComPtr<IVector<TextHighlighter*>> textHighlighters;
+        xamlRichTextBlock5->get_TextHighlighters(&textHighlighters);
 
-                // Add the Inlines
-                ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> xamlInlines;
-                RETURN_IF_FAILED(xamlParagraph->get_Inlines(&xamlInlines));
+        UINT currentOffset = 0;
+        XamlHelpers::IterateOverVector<AdaptiveParagraph, IAdaptiveParagraph>(paragraphs.Get(), [&](IAdaptiveParagraph* paragraph) {
+            ComPtr<IParagraph> xamlParagraph =
+                XamlHelpers::CreateXamlClass<IParagraph>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Paragraph));
 
-                ComPtr<IVector<IAdaptiveInline*>> adaptiveInlines;
-                RETURN_IF_FAILED(paragraph->get_Inlines(&adaptiveInlines));
+            ComPtr<IBlock> paragraphAsBlock;
+            RETURN_IF_FAILED(xamlParagraph.As(&paragraphAsBlock));
+            RETURN_IF_FAILED(xamlBlocks->Append(paragraphAsBlock.Get()));
 
-                XamlHelpers::IterateOverVector<IAdaptiveInline>(adaptiveInlines.Get(), [xamlInlines, renderContext, renderArgs](IAdaptiveInline* adaptiveInline) {
-                    ComPtr<IInline> xamlInline =
-                        XamlHelpers::CreateXamlClass<IInline>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Inline));
+            // Add the Inlines
+            ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> xamlInlines;
+            RETURN_IF_FAILED(xamlParagraph->get_Inlines(&xamlInlines));
 
-                    // We only support TextRun inlines for now
-                    ComPtr<IAdaptiveInline> localInline(adaptiveInline);
-                    ComPtr<IAdaptiveTextRun> adaptiveTextRun;
-                    RETURN_IF_FAILED(localInline.As(&adaptiveTextRun));
+            ComPtr<IVector<IAdaptiveInline*>> adaptiveInlines;
+            RETURN_IF_FAILED(paragraph->get_Inlines(&adaptiveInlines));
 
-                    ComPtr<IAdaptiveActionElement> selectAction;
-                    RETURN_IF_FAILED(adaptiveTextRun->get_SelectAction(&selectAction));
+            XamlHelpers::IterateOverVector<IAdaptiveInline>(adaptiveInlines.Get(), [&](IAdaptiveInline* adaptiveInline) {
+                // We only support TextRun inlines for now
+                ComPtr<IAdaptiveInline> localInline(adaptiveInline);
+                ComPtr<IAdaptiveTextRun> adaptiveTextRun;
+                RETURN_IF_FAILED(localInline.As(&adaptiveTextRun));
 
-                    ComPtr<IAdaptiveTextElement> adaptiveTextElement;
-                    RETURN_IF_FAILED(localInline.As(&adaptiveTextElement));
+                ComPtr<IAdaptiveActionElement> selectAction;
+                RETURN_IF_FAILED(adaptiveTextRun->get_SelectAction(&selectAction));
 
-                    if (selectAction != nullptr)
-                    {
-                        // If there's a select action, create a hyperlink that triggers the action
-                        ComPtr<ABI::Windows::UI::Xaml::Documents::IHyperlink> hyperlink =
-                            XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IHyperlink>(
-                                HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Hyperlink));
+                ComPtr<IAdaptiveTextElement> adaptiveTextElement;
+                RETURN_IF_FAILED(localInline.As(&adaptiveTextElement));
 
-                        ComPtr<IAdaptiveActionInvoker> actionInvoker;
-                        renderContext->get_ActionInvoker(&actionInvoker);
+                UINT inlineLength;
+                if (selectAction != nullptr)
+                {
+                    // If there's a select action, create a hyperlink that triggers the action
+                    ComPtr<ABI::Windows::UI::Xaml::Documents::IHyperlink> hyperlink =
+                        XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IHyperlink>(
+                            HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Hyperlink));
 
-                        EventRegistrationToken clickToken;
-                        RETURN_IF_FAILED(hyperlink->add_Click(
-                            Callback<ABI::Windows::Foundation::ITypedEventHandler<Hyperlink*, HyperlinkClickEventArgs*>>(
-                                [selectAction, actionInvoker](IInspectable*, IHyperlinkClickEventArgs*) -> HRESULT {
-                                    return actionInvoker->SendActionEvent(selectAction.Get());
-                                })
-                                .Get(),
-                            &clickToken));
+                    ComPtr<IAdaptiveActionInvoker> actionInvoker;
+                    renderContext->get_ActionInvoker(&actionInvoker);
 
-                        // Add the run text to the hyperlink's inlines
-                        ComPtr<ABI::Windows::UI::Xaml::Documents::ISpan> hyperlinkAsSpan;
-                        RETURN_IF_FAILED(hyperlink.As(&hyperlinkAsSpan));
+                    EventRegistrationToken clickToken;
+                    RETURN_IF_FAILED(hyperlink->add_Click(
+                        Callback<ABI::Windows::Foundation::ITypedEventHandler<Hyperlink*, HyperlinkClickEventArgs*>>(
+                            [selectAction, actionInvoker](IInspectable*, IHyperlinkClickEventArgs*) -> HRESULT {
+                                return actionInvoker->SendActionEvent(selectAction.Get());
+                            })
+                            .Get(),
+                        &clickToken));
 
-                        ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> hyperlinkInlines;
-                        RETURN_IF_FAILED(hyperlinkAsSpan->get_Inlines(hyperlinkInlines.GetAddressOf()));
+                    // Add the run text to the hyperlink's inlines
+                    ComPtr<ABI::Windows::UI::Xaml::Documents::ISpan> hyperlinkAsSpan;
+                    RETURN_IF_FAILED(hyperlink.As(&hyperlinkAsSpan));
 
-                        RETURN_IF_FAILED(
-                            SetXamlInlines(adaptiveTextElement.Get(), renderContext, renderArgs, true, hyperlinkInlines.Get()));
+                    ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> hyperlinkInlines;
+                    RETURN_IF_FAILED(hyperlinkAsSpan->get_Inlines(hyperlinkInlines.GetAddressOf()));
 
-                        ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> hyperlinkAsInline;
-                        RETURN_IF_FAILED(hyperlink.As(&hyperlinkAsInline));
+                    RETURN_IF_FAILED(
+                        SetXamlInlines(adaptiveTextElement.Get(), renderContext, renderArgs, true, hyperlinkInlines.Get(), &inlineLength));
 
-                        // Add the hyperlink to the paragraph's inlines
-                        RETURN_IF_FAILED(xamlInlines->Append(hyperlinkAsInline.Get()));
-                    }
-                    else
-                    {
-                        // Add the text to the paragraph's inlines
-                        RETURN_IF_FAILED(
-                            SetXamlInlines(adaptiveTextElement.Get(), renderContext, renderArgs, false, xamlInlines.Get()));
-                    }
+                    ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> hyperlinkAsInline;
+                    RETURN_IF_FAILED(hyperlink.As(&hyperlinkAsInline));
 
-                    return S_OK;
-                });
+                    // Add the hyperlink to the paragraph's inlines
+                    RETURN_IF_FAILED(xamlInlines->Append(hyperlinkAsInline.Get()));
+                }
+                else
+                {
+                    // Add the text to the paragraph's inlines
+                    RETURN_IF_FAILED(
+                        SetXamlInlines(adaptiveTextElement.Get(), renderContext, renderArgs, false, xamlInlines.Get(), &inlineLength));
+                }
 
+                boolean highlight;
+                RETURN_IF_FAILED(adaptiveTextRun->get_Highlight(&highlight));
+
+                if (highlight)
+                {
+                    ComPtr<ITextHighlighter> textHighlighter;
+                    RETURN_IF_FAILED(GetHighlighter(adaptiveTextElement.Get(), renderContext, renderArgs, &textHighlighter));
+
+                    ComPtr<IVector<TextRange>> ranges;
+                    RETURN_IF_FAILED(textHighlighter->get_Ranges(&ranges));
+
+                    TextRange textRange = {(INT32)currentOffset, (INT32)inlineLength};
+                    RETURN_IF_FAILED(ranges->Append(textRange));
+
+                    RETURN_IF_FAILED(textHighlighters->Append(textHighlighter.Get()));
+                }
+
+                currentOffset += inlineLength;
                 return S_OK;
             });
+            return S_OK;
+        });
 
         return xamlRichTextBlock.CopyTo(textBlockControl);
     }

@@ -1300,7 +1300,7 @@ export class FactSet extends CardElement {
                 let trElement = document.createElement("tr");
 
                 if (i > 0) {
-                    trElement.style.marginTop = this.hostConfig.factSet.spacing + "px";
+                    trElement.style.marginTop = hostConfig.factSet.spacing + "px";
                 }
 
                 // Title column
@@ -1308,8 +1308,8 @@ export class FactSet extends CardElement {
                 tdElement.style.padding = "0";
                 tdElement.classList.add(hostConfig.makeCssClassName("ac-fact-title"));
 
-                if (this.hostConfig.factSet.title.maxWidth) {
-                    tdElement.style.maxWidth = this.hostConfig.factSet.title.maxWidth + "px";
+                if (hostConfig.factSet.title.maxWidth) {
+                    tdElement.style.maxWidth = hostConfig.factSet.title.maxWidth + "px";
                 }
 
                 tdElement.style.verticalAlign = "top";
@@ -1317,11 +1317,11 @@ export class FactSet extends CardElement {
                 let textBlock = new TextBlock();
                 textBlock.setParent(this);
                 textBlock.text = Utils.isNullOrEmpty(this.facts[i].name) ? "Title" : this.facts[i].name;
-                textBlock.size = this.hostConfig.factSet.title.size;
-                textBlock.color = this.hostConfig.factSet.title.color;
-                textBlock.isSubtle = this.hostConfig.factSet.title.isSubtle;
-                textBlock.weight = this.hostConfig.factSet.title.weight;
-                textBlock.wrap = this.hostConfig.factSet.title.wrap;
+                textBlock.size = hostConfig.factSet.title.size;
+                textBlock.color = hostConfig.factSet.title.color;
+                textBlock.isSubtle = hostConfig.factSet.title.isSubtle;
+                textBlock.weight = hostConfig.factSet.title.weight;
+                textBlock.wrap = hostConfig.factSet.title.wrap;
                 textBlock.spacing = Enums.Spacing.None;
 
                 Utils.appendChild(tdElement, textBlock.render());
@@ -1342,11 +1342,11 @@ export class FactSet extends CardElement {
                 textBlock = new TextBlock();
                 textBlock.setParent(this);
                 textBlock.text = this.facts[i].value;
-                textBlock.size = this.hostConfig.factSet.value.size;
-                textBlock.color = this.hostConfig.factSet.value.color;
-                textBlock.isSubtle = this.hostConfig.factSet.value.isSubtle;
-                textBlock.weight = this.hostConfig.factSet.value.weight;
-                textBlock.wrap = this.hostConfig.factSet.value.wrap;
+                textBlock.size = hostConfig.factSet.value.size;
+                textBlock.color = hostConfig.factSet.value.color;
+                textBlock.isSubtle = hostConfig.factSet.value.isSubtle;
+                textBlock.weight = hostConfig.factSet.value.weight;
+                textBlock.wrap = hostConfig.factSet.value.wrap;
                 textBlock.spacing = Enums.Spacing.None;
 
                 Utils.appendChild(tdElement, textBlock.render());
@@ -3014,7 +3014,7 @@ export class DateInput extends Input {
         this._dateInputElement.setAttribute("type", "date");
         this._dateInputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-dateInput");
         this._dateInputElement.style.width = "100%";
-        this._dateInputElement.oninput =  () => { this.valueChanged(); }
+        this._dateInputElement.oninput = () => { this.valueChanged(); }
 
         if (!Utils.isNullOrEmpty(this.defaultValue)) {
             this._dateInputElement.value = this.defaultValue;
@@ -3040,7 +3040,7 @@ export class TimeInput extends Input {
         this._timeInputElement.setAttribute("type", "time");
         this._timeInputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-timeInput");
         this._timeInputElement.style.width = "100%";
-        this._timeInputElement.oninput =  () => { this.valueChanged(); }
+        this._timeInputElement.oninput = () => { this.valueChanged(); }
 
         if (!Utils.isNullOrEmpty(this.defaultValue)) {
             this._timeInputElement.value = this.defaultValue;
@@ -4372,7 +4372,7 @@ export class ActionSet extends CardElement {
     }
 
     renderSpeech(): string {
-        // TODO: What's the right thing to do here?
+        // There is nothing that can be spoken in an ActionSet
         return "";
     }
 
@@ -4400,16 +4400,16 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
             return;
         }
 
-		let physicalPadding = new Shared.SpacingDefinition();
+        let physicalPadding = new Shared.SpacingDefinition();
 
-		if (this.getEffectivePadding()) {
-			physicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(this.getEffectivePadding());
-		}
+        if (this.getEffectivePadding()) {
+            physicalPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(this.getEffectivePadding());
+        }
 
-		this.renderedElement.style.paddingTop = physicalPadding.top + "px";
-		this.renderedElement.style.paddingRight = physicalPadding.right + "px";
-		this.renderedElement.style.paddingBottom = physicalPadding.bottom + "px";
-		this.renderedElement.style.paddingLeft = physicalPadding.left + "px";
+        this.renderedElement.style.paddingTop = physicalPadding.top + "px";
+        this.renderedElement.style.paddingRight = physicalPadding.right + "px";
+        this.renderedElement.style.paddingBottom = physicalPadding.bottom + "px";
+        this.renderedElement.style.paddingLeft = physicalPadding.left + "px";
 
         if (this.isBleeding()) {
             // Bleed into the first parent that does have padding
@@ -4417,9 +4417,9 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 
             this.getImmediateSurroundingPadding(padding);
 
-			let surroundingPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(padding);
+            let surroundingPadding = this.hostConfig.paddingDefinitionToSpacingDefinition(padding);
 
-			this.renderedElement.style.marginRight = "-" + surroundingPadding.right + "px";
+            this.renderedElement.style.marginRight = "-" + surroundingPadding.right + "px";
             this.renderedElement.style.marginLeft = "-" + surroundingPadding.left + "px";
 
             if (physicalPadding.left == 0) {
@@ -4429,21 +4429,21 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
             if (physicalPadding.right == 0) {
                 this.renderedElement.style.paddingRight = surroundingPadding.right + "px";
             }
-    
-			if (this.separatorElement && this.separatorOrientation == Enums.Orientation.Horizontal) {
-				this.separatorElement.style.marginLeft = "-" + surroundingPadding.left + "px";
-				this.separatorElement.style.marginRight = "-" + surroundingPadding.right + "px";
-			}
-		}
-		else {
-			this.renderedElement.style.marginRight = "0";
-			this.renderedElement.style.marginLeft = "0";
 
-			if (this.separatorElement) {
-				this.separatorElement.style.marginRight = "0";
-				this.separatorElement.style.marginLeft = "0";
-			}
-		}
+            if (this.separatorElement && this.separatorOrientation == Enums.Orientation.Horizontal) {
+                this.separatorElement.style.marginLeft = "-" + surroundingPadding.left + "px";
+                this.separatorElement.style.marginRight = "-" + surroundingPadding.right + "px";
+            }
+        }
+        else {
+            this.renderedElement.style.marginRight = "0";
+            this.renderedElement.style.marginLeft = "0";
+
+            if (this.separatorElement) {
+                this.separatorElement.style.marginRight = "0";
+                this.separatorElement.style.marginLeft = "0";
+            }
+        }
 
         if (!this.isDesignMode()) {
             let item = this.getFirstVisibleRenderedItem();
@@ -4454,7 +4454,9 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 
             item = this.getLastVisibleRenderedItem();
 
-            if (this.getHasExpandedAction() || (item && item.isBleedingAtBottom())) {
+            let removeBottomPadding = this.renderedActionCount == 0 ? item && item.isBleedingAtBottom() : this.getHasExpandedAction();
+
+            if (removeBottomPadding) {
                 this.renderedElement.style.paddingBottom = "0px";
             }
         }
@@ -4466,10 +4468,6 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
         return this.hasExplicitStyle && (parentContainer ? parentContainer.getEffectiveStyle() != this.getEffectiveStyle() : false);
     }
 
-    protected getHasExpandedAction(): boolean {
-        return false;
-    }
-
     protected getDefaultPadding(): Shared.PaddingDefinition {
         return this.getHasBackground() ?
             new Shared.PaddingDefinition(
@@ -4477,6 +4475,14 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
                 Enums.Spacing.Padding,
                 Enums.Spacing.Padding,
                 Enums.Spacing.Padding) : super.getDefaultPadding();
+    }
+
+    protected getHasExpandedAction(): boolean {
+        return false;
+    }
+
+    protected get renderedActionCount(): number {
+        return 0;
     }
 
     protected get hasExplicitStyle(): boolean {
@@ -4937,9 +4943,9 @@ export class Container extends StylableCardElementContainer {
     }
 
     isBleedingAtBottom(): boolean {
-        let getLastRenderedItem = this.getLastVisibleRenderedItem();
+        let lastRenderedItem = this.getLastVisibleRenderedItem();
 
-        return this.isBleeding() || (getLastRenderedItem ? getLastRenderedItem.isBleedingAtBottom() : false);
+        return this.isBleeding() || (lastRenderedItem ? lastRenderedItem.isBleedingAtBottom() && lastRenderedItem.getEffectiveStyle() == this.getEffectiveStyle() : false);
     }
 
     validate(): Array<HostConfig.IValidationError> {
@@ -5707,15 +5713,19 @@ export abstract class ContainerWithActions extends Container {
     }
 
     protected getHasExpandedAction(): boolean {
-        if (this._actionCollection.renderedActionCount == 0) {
+        if (this.renderedActionCount == 0) {
             return false;
         }
-        else if (this._actionCollection.items.length == 1) {
+        else if (this.renderedActionCount == 1) {
             return this._actionCollection.expandedAction != null && !this.hostConfig.actions.preExpandSingleShowCardAction;
         }
         else {
             return this._actionCollection.expandedAction != null;
         }
+    }
+
+    protected get renderedActionCount(): number {
+        return this._actionCollection.renderedActionCount;
     }
 
     protected get renderIfEmpty(): boolean {

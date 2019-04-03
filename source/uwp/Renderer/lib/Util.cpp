@@ -40,6 +40,7 @@
 #include "util.h"
 #include <windows.foundation.collections.h>
 #include "XamlHelpers.h"
+#include "XamlBuilder.h"
 
 using namespace AdaptiveCards;
 using namespace Microsoft::WRL;
@@ -871,13 +872,21 @@ HRESULT GetColorFromAdaptiveColor(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConf
                                   ABI::AdaptiveNamespace::ForegroundColor adaptiveColor,
                                   ABI::AdaptiveNamespace::ContainerStyle containerStyle,
                                   bool isSubtle,
+                                  bool highlight,
                                   _Out_ ABI::Windows::UI::Color* uiColor) noexcept try
 {
     ComPtr<ABI::AdaptiveNamespace::IAdaptiveContainerStyleDefinition> styleDefinition;
     GetContainerStyleDefinition(containerStyle, hostConfig, &styleDefinition);
 
     ComPtr<ABI::AdaptiveNamespace::IAdaptiveColorsConfig> colorsConfig;
-    RETURN_IF_FAILED(styleDefinition->get_ForegroundColors(&colorsConfig));
+    if (highlight)
+    {
+        RETURN_IF_FAILED(styleDefinition->get_HighlightColors(&colorsConfig));
+    }
+    else
+    {
+        RETURN_IF_FAILED(styleDefinition->get_ForegroundColors(&colorsConfig));
+    }
 
     ComPtr<ABI::AdaptiveNamespace::IAdaptiveColorConfig> colorConfig;
     switch (adaptiveColor)
@@ -911,6 +920,40 @@ HRESULT GetColorFromAdaptiveColor(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConf
     return S_OK;
 }
 CATCH_RETURN;
+
+HRESULT GetHighlighter(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adaptiveTextElement,
+                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+                       _Out_ ABI::Windows::UI::Xaml::Documents::ITextHighlighter** textHighlighter) noexcept
+{
+    ComPtr<ABI::Windows::UI::Xaml::Documents::ITextHighlighter> localTextHighlighter =
+        XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::ITextHighlighter>(
+            HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_TextHighlighter));
+
+    ComPtr<ABI::AdaptiveNamespace::IAdaptiveHostConfig> hostConfig;
+    RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+    ABI::AdaptiveNamespace::ForegroundColor adaptiveForegroundColor;
+    RETURN_IF_FAILED(adaptiveTextElement->get_Color(&adaptiveForegroundColor));
+
+    boolean isSubtle;
+    RETURN_IF_FAILED(adaptiveTextElement->get_IsSubtle(&isSubtle));
+
+    ABI::AdaptiveNamespace::ContainerStyle containerStyle;
+    RETURN_IF_FAILED(renderArgs->get_ContainerStyle(&containerStyle));
+
+    ABI::Windows::UI::Color backgroundColor;
+    RETURN_IF_FAILED(GetColorFromAdaptiveColor(hostConfig.Get(), adaptiveForegroundColor, containerStyle, isSubtle, true, &backgroundColor));
+
+    ABI::Windows::UI::Color foregroundColor;
+    RETURN_IF_FAILED(GetColorFromAdaptiveColor(hostConfig.Get(), adaptiveForegroundColor, containerStyle, isSubtle, false, &foregroundColor));
+
+    RETURN_IF_FAILED(localTextHighlighter->put_Background(XamlBuilder::GetSolidColorBrush(backgroundColor).Get()));
+    RETURN_IF_FAILED(localTextHighlighter->put_Foreground(XamlBuilder::GetSolidColorBrush(foregroundColor).Get()));
+
+    localTextHighlighter.CopyTo(textHighlighter);
+    return S_OK;
+}
 
 HRESULT GetSpacingSizeFromSpacing(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
                                   ABI::AdaptiveNamespace::Spacing spacing,

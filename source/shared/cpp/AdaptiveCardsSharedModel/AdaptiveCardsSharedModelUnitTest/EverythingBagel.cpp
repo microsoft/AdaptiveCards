@@ -391,6 +391,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::IsTrue(TextWeight::Bolder == inlineTextElement->GetTextWeight());
         Assert::IsTrue(FontStyle::Monospace == inlineTextElement->GetFontStyle());
         Assert::IsTrue(inlineTextElement->GetIsSubtle());
+        Assert::IsTrue(inlineTextElement->GetHighlight());
 
         Assert::IsTrue(InlineElementType::TextRun == inlines[1]->GetInlineType());
         Assert::AreEqual("TextRun"s, inlines[1]->GetInlineTypeString());

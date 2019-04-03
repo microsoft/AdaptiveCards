@@ -21,9 +21,13 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_ForegroundColors(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveColorsConfig** colorsConfig);
         IFACEMETHODIMP put_ForegroundColors(_In_ ABI::AdaptiveNamespace::IAdaptiveColorsConfig* colorsConfig);
 
+        IFACEMETHODIMP get_HighlightColors(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveColorsConfig** colorsConfig);
+        IFACEMETHODIMP put_HighlightColors(_In_ ABI::AdaptiveNamespace::IAdaptiveColorsConfig* colorsConfig);
+
     private:
         ABI::Windows::UI::Color m_backgroundColor;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveColorsConfig> m_foregroundColors;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveColorsConfig> m_highlightColors;
     };
 
     ActivatableClass(AdaptiveContainerStyleDefinition);

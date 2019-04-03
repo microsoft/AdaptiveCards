@@ -71,6 +71,7 @@ namespace AdaptiveSharedNamespace
         std::string subtleColor;
 
         static ColorConfig Deserialize(const Json::Value& json, const ColorConfig& defaultValue);
+        void SetBaseColor(const std::string& baseColor);
     };
 
     struct ColorsConfig
@@ -84,6 +85,7 @@ namespace AdaptiveSharedNamespace
         ColorConfig attention = {"#FF8B0000", "#B28B0000"};
 
         static ColorsConfig Deserialize(const Json::Value& json, const ColorsConfig& defaultValue);
+        void SetBaseColor(const std::string& baseColor);
     };
 
     struct TextConfig
@@ -165,17 +167,42 @@ namespace AdaptiveSharedNamespace
         std::string borderColor = "#FF7F7F7F7F"; // CAUTION: Experimental feature for iOS. Not in v1 schema, subject to change.
         unsigned int borderThickness = 0; // CAUTION: Experimental feature for iOS. Not in v1 schema, subject to change.
         ColorsConfig foregroundColors;
+        ColorsConfig highlightColors;
 
         static ContainerStyleDefinition Deserialize(const Json::Value& json, const ContainerStyleDefinition& defaultValue);
+        void SetBaseStyle(const Json::Value& json);
     };
 
     struct ContainerStylesDefinition
     {
-        ContainerStyleDefinition defaultPalette;
+        ContainerStyleDefinition defaultPalette = {"#FFFFFFFF",
+                                                   "#FF7F7F7F7F",
+                                                   0,
+                                                   {
+                                                       // Foreground Colors
+                                                       {"#FF000000", "#B2000000"}, // defaultColor
+                                                       {"#FF0000FF", "#B20000FF"}, // accent
+                                                       {"#FF101010", "#B2101010"}, // dark
+                                                       {"#FFFFFFFF", "#B2FFFFFF"}, // light
+                                                       {"#FF008000", "#B2008000"}, // good
+                                                       {"#FFFFD700", "#B2FFD700"}, // warning
+                                                       {"#FF8B0000", "#B28B0000"}  // attention
+                                                   },
+                                                   {
+                                                       // Highlight Colors
+                                                       {"#FFFFFF00", "#FFFFFFE0"}, // defaultColor
+                                                       {"#FFFFFF00", "#FFFFFFE0"}, // accent
+                                                       {"#FFFFFF00", "#FFFFFFE0"}, // dark
+                                                       {"#FFFFFF00", "#FFFFFFE0"}, // light
+                                                       {"#FFFFFF00", "#FFFFFFE0"}, // good
+                                                       {"#FFFFFF00", "#FFFFFFE0"}, // warning
+                                                       {"#FFFFFF00", "#FFFFFFE0"}  // attention
+                                                   }};
         ContainerStyleDefinition emphasisPalette = {"#08000000",
                                                     "#08000000",
                                                     0,
                                                     {
+                                                        // Foreground Colors
                                                         {"#FF000000", "#B2000000"}, // defaultColor
                                                         {"#FF0000FF", "#B20000FF"}, // accent
                                                         {"#FF101010", "#B2101010"}, // dark
@@ -183,11 +210,22 @@ namespace AdaptiveSharedNamespace
                                                         {"#FF008000", "#B2008000"}, // good
                                                         {"#FFFFD700", "#B2FFD700"}, // warning
                                                         {"#FF8B0000", "#B28B0000"}  // attention
+                                                    },
+                                                    {
+                                                        // Highlight Colors
+                                                        {"#FFFFFF00", "#FFFFFFE0"}, // defaultColor
+                                                        {"#FFFFFF00", "#FFFFFFE0"}, // accent
+                                                        {"#FFFFFF00", "#FFFFFFE0"}, // dark
+                                                        {"#FFFFFF00", "#FFFFFFE0"}, // light
+                                                        {"#FFFFFF00", "#FFFFFFE0"}, // good
+                                                        {"#FFFFFF00", "#FFFFFFE0"}, // warning
+                                                        {"#FFFFFF00", "#FFFFFFE0"}  // attention
                                                     }};
         ContainerStyleDefinition goodPalette = {"#FFD5F0DD",
                                                 "#FF7F7F7F7F",
                                                 0,
                                                 {
+                                                    // Foreground Colors
                                                     {"#FF000000", "#B2000000"}, // defaultColor
                                                     {"#FF0000FF", "#B20000FF"}, // accent
                                                     {"#FF101010", "#B2101010"}, // dark
@@ -195,11 +233,22 @@ namespace AdaptiveSharedNamespace
                                                     {"#FF008000", "#B2008000"}, // good
                                                     {"#FFA60000", "#B2FFA600"}, // warning
                                                     {"#FF8B0000", "#B28B0000"}  // attention
+                                                },
+                                                {
+                                                    // Highlight Colors
+                                                    {"#FFFFFF00", "#FFFFFFE0"}, // defaultColor
+                                                    {"#FFFFFF00", "#FFFFFFE0"}, // accent
+                                                    {"#FFFFFF00", "#FFFFFFE0"}, // dark
+                                                    {"#FFFFFF00", "#FFFFFFE0"}, // light
+                                                    {"#FFFFFF00", "#FFFFFFE0"}, // good
+                                                    {"#FFFFFF00", "#FFFFFFE0"}, // warning
+                                                    {"#FFFFFF00", "#FFFFFFE0"}  // attention
                                                 }};
         ContainerStyleDefinition attentionPalette = {"#F7E9E9",
                                                      "#FF7F7F7F7F",
                                                      0,
                                                      {
+                                                         // Foreground Colors
                                                          {"#FF000000", "#B2000000"}, // defaultColor
                                                          {"#FF0000FF", "#B20000FF"}, // accent
                                                          {"#FF101010", "#B2101010"}, // dark
@@ -207,11 +256,22 @@ namespace AdaptiveSharedNamespace
                                                          {"#FF008000", "#B2008000"}, // good
                                                          {"#FFA60000", "#B2FFA600"}, // warning
                                                          {"#FF8B0000", "#B28B0000"}  // attention
+                                                     },
+                                                     {
+                                                         // Highlight Colors
+                                                         {"#FFFFFF00", "#FFFFFFE0"}, // defaultColor
+                                                         {"#FFFFFF00", "#FFFFFFE0"}, // accent
+                                                         {"#FFFFFF00", "#FFFFFFE0"}, // dark
+                                                         {"#FFFFFF00", "#FFFFFFE0"}, // light
+                                                         {"#FFFFFF00", "#FFFFFFE0"}, // good
+                                                         {"#FFFFFF00", "#FFFFFFE0"}, // warning
+                                                         {"#FFFFFF00", "#FFFFFFE0"}  // attention
                                                      }};
         ContainerStyleDefinition warningPalette = {"#F7F7DF",
                                                    "#FF7F7F7F7F",
                                                    0,
                                                    {
+                                                       // Foreground Colors
                                                        {"#FF000000", "#B2000000"}, // defaultColor
                                                        {"#FF0000FF", "#B20000FF"}, // accent
                                                        {"#FF101010", "#B2101010"}, // dark
@@ -219,11 +279,22 @@ namespace AdaptiveSharedNamespace
                                                        {"#FF008000", "#B2008000"}, // good
                                                        {"#FFA60000", "#B2FFA600"}, // warning
                                                        {"#FF8B0000", "#B28B0000"}  // attention
+                                                   },
+                                                   {
+                                                       // Highlight Colors
+                                                       {"#FFFFFF00", "#FFFFFFE0"}, // defaultColor
+                                                       {"#FFFFFF00", "#FFFFFFE0"}, // accent
+                                                       {"#FFFFFF00", "#FFFFFFE0"}, // dark
+                                                       {"#FFFFFF00", "#FFFFFFE0"}, // light
+                                                       {"#FFFFFF00", "#FFFFFFE0"}, // good
+                                                       {"#FFFFFF00", "#FFFFFFE0"}, // warning
+                                                       {"#FFFFFF00", "#FFFFFFE0"}  // attention
                                                    }};
         ContainerStyleDefinition accentPalette = {"#DCE5F7",
                                                   "#FF7F7F7F7F",
                                                   0,
                                                   {
+                                                      // Foreground Colors
                                                       {"#FF000000", "#B2000000"}, // defaultColor
                                                       {"#FF0000FF", "#B20000FF"}, // accent
                                                       {"#FF101010", "#B2101010"}, // dark
@@ -231,9 +302,20 @@ namespace AdaptiveSharedNamespace
                                                       {"#FF008000", "#B2008000"}, // good
                                                       {"#FFA60000", "#B2FFA600"}, // warning
                                                       {"#FF8B0000", "#B28B0000"}  // attention
+                                                  },
+                                                  {
+                                                      // Highlight Colors
+                                                      {"#FFFFFF00", "#FFFFFFE0"}, // defaultColor
+                                                      {"#FFFFFF00", "#FFFFFFE0"}, // accent
+                                                      {"#FFFFFF00", "#FFFFFFE0"}, // dark
+                                                      {"#FFFFFF00", "#FFFFFFE0"}, // light
+                                                      {"#FFFFFF00", "#FFFFFFE0"}, // good
+                                                      {"#FFFFFF00", "#FFFFFFE0"}, // warning
+                                                      {"#FFFFFF00", "#FFFFFFE0"}  // attention
                                                   }};
 
         static ContainerStylesDefinition Deserialize(const Json::Value& json, const ContainerStylesDefinition& defaultValue);
+        void SetBaseStyle(const Json::Value& json);
     };
 
     struct ShowCardActionConfig
@@ -282,6 +364,7 @@ namespace AdaptiveSharedNamespace
 
         std::string GetBackgroundColor(ContainerStyle style) const;
         std::string GetForegroundColor(ContainerStyle style, ForegroundColor color, bool isSubtle) const;
+        std::string GetHighlightColor(ContainerStyle style, ForegroundColor color, bool isSubtle) const;
         std::string GetBorderColor(ContainerStyle style) const;
         unsigned int GetBorderThickness(ContainerStyle style) const;
 
@@ -335,6 +418,7 @@ namespace AdaptiveSharedNamespace
 
     private:
         const ContainerStyleDefinition& GetContainerStyle(ContainerStyle style) const;
+        std::string GetContainerColor(const ColorsConfig& colors, ForegroundColor color, bool isSubtle) const;
 
         std::string _fontFamily;
         FontSizesConfig _fontSizes;

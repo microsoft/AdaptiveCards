@@ -768,6 +768,9 @@ AdaptiveNamespaceStart
     ] 
     interface IAdaptiveTextRun : IInspectable requires IAdaptiveTextElement
     {
+        [propget] HRESULT Highlight([out, retval] boolean * value);
+        [propput] HRESULT Highlight([in] boolean value);
+
         [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
         [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
     };
@@ -1922,6 +1925,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT ForegroundColors([out, retval] AdaptiveColorsConfig** value);
         [propput] HRESULT ForegroundColors([in] AdaptiveColorsConfig* value);
+
+        [propget] HRESULT HighlightColors([out, retval] AdaptiveColorsConfig * *value);
+        [propput] HRESULT HighlightColors([in] AdaptiveColorsConfig * value);
     };
 
     [

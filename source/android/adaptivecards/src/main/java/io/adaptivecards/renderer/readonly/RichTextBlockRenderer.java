@@ -11,6 +11,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.AbsoluteSizeSpan;
+import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
@@ -107,6 +108,13 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
 
                 int color = getColor(TextRendererUtil.getTextColor(textRun.GetTextColor(), hostConfig, textRun.GetIsSubtle(), renderArgs.getContainerStyle()));
                 paragraph.setSpan(new ForegroundColorSpan(color), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+
+                if (textRun.GetHighlight())
+                {
+                    int highlightColor = getColor(TextRendererUtil.getHighlightColor(textRun.GetTextColor(), hostConfig, textRun.GetIsSubtle(), renderArgs.getContainerStyle()));
+                    paragraph.setSpan(new BackgroundColorSpan(highlightColor), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                }
+
                 paragraph.setSpan(new StyleSpan(TextRendererUtil.getTextWeight(textRun.GetTextWeight())), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
                 long textSize = TextRendererUtil.getTextSize(textRun.GetFontStyle(), textRun.GetTextSize(), hostConfig);
