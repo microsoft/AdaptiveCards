@@ -71,6 +71,10 @@ public class HostConfig {
     return AdaptiveCardObjectModelJNI.HostConfig_GetForegroundColor(swigCPtr, this, style.swigValue(), color.swigValue(), isSubtle);
   }
 
+  public String GetHighlightColor(ContainerStyle style, ForegroundColor color, boolean isSubtle) {
+    return AdaptiveCardObjectModelJNI.HostConfig_GetHighlightColor(swigCPtr, this, style.swigValue(), color.swigValue(), isSubtle);
+  }
+
   public String GetBorderColor(ContainerStyle style) {
     return AdaptiveCardObjectModelJNI.HostConfig_GetBorderColor(swigCPtr, this, style.swigValue());
   }

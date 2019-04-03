@@ -22,6 +22,9 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextRun>& sharedTextRun) noexcept;
 
         // IAdaptiveTextRun
+        IFACEMETHODIMP get_Highlight(_Out_ boolean* highlight);
+        IFACEMETHODIMP put_Highlight(boolean highlight);
+
         IFACEMETHODIMP get_SelectAction(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** action);
         IFACEMETHODIMP put_SelectAction(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action);
 
@@ -78,6 +81,7 @@ namespace AdaptiveNamespace
 
     private:
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_selectAction;
+        boolean m_highlight;
     };
 
     ActivatableClass(AdaptiveTextRun);

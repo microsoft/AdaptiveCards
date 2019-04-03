@@ -4,7 +4,7 @@
 using namespace AdaptiveSharedNamespace;
 
 TextRun::TextRun() :
-    Inline(InlineElementType::TextRun), m_textElementProperties(std::make_shared<TextElementProperties>())
+    Inline(InlineElementType::TextRun), m_textElementProperties(std::make_shared<TextElementProperties>()), m_highlight(false)
 {
     PopulateKnownPropertiesSet();
 }
@@ -20,6 +20,11 @@ Json::Value TextRun::SerializeToJsonValue() const
 
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = GetInlineTypeString();
     m_textElementProperties->SerializeToJsonValue(root);
+
+    if (m_highlight)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Highlight)] = true;
+    }
 
     if (m_selectAction != nullptr)
     {
@@ -94,6 +99,16 @@ void TextRun::SetIsSubtle(const bool value)
     m_textElementProperties->SetIsSubtle(value);
 }
 
+bool TextRun::GetHighlight() const
+{
+    return m_highlight;
+}
+
+void AdaptiveSharedNamespace::TextRun::SetHighlight(const bool value)
+{
+    m_highlight = value;
+}
+
 std::string TextRun::GetLanguage() const
 {
     return m_textElementProperties->GetLanguage();
@@ -121,6 +136,7 @@ std::shared_ptr<Inline> TextRun::Deserialize(ParseContext& context, const Json::
     ParseUtil::ExpectTypeString(json, InlineElementTypeToString(InlineElementType::TextRun));
     inlineTextRun->m_textElementProperties->Deserialize(context, json);
 
+    inlineTextRun->SetHighlight(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Highlight, false));
     inlineTextRun->SetSelectAction(ParseUtil::GetAction(context, json, AdaptiveCardSchemaKey::SelectAction, false));
 
     HandleUnknownProperties(json, inlineTextRun->m_knownProperties, inlineTextRun->m_additionalProperties);
