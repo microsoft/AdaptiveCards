@@ -27,7 +27,6 @@
 				{
 					"type": "Column",
 					"items": [
-
 						{
 							"type": "Image",
 							"url": "https://picsum.photos/100/100?image=123",
@@ -51,8 +50,8 @@
 							"color": "good",
 							"selectAction": {
 								"type": "Action.OpenURL",
-                                "url": "http://adaptivecards.io",
-                                "title": "Default"
+								"url": "http://adaptivecards.io",
+								"title": "Default"
 							}
 						},
 						{
@@ -79,11 +78,11 @@
 							"type": "TextRun",
 							"text": "Interacting with the text in the accent color will toggle visibility ",
 							"color": "accent",
-                            "selectAction":{
-                                "type": "Action.ToggleVisibility",
-                                "title": "Toggle!",
-                                "targetElements": [ "textToToggle", "imageToToggle", "imageToToggle2" ]
-                            }
+							"selectAction":{
+								"type": "Action.ToggleVisibility",
+								"title": "Toggle!",
+								"targetElements": [ "textToToggle", "imageToToggle", "imageToToggle2" ]
+							}
 						}
 					]
 				}
