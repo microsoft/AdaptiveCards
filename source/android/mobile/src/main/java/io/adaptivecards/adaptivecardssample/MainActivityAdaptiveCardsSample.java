@@ -232,6 +232,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
             CustomRedActionElement customAction = (CustomRedActionElement) baseActionElement.findImplObj();
 
+            backwardActionButton.setBackgroundColor(getResources().getColor(R.color.redActionColor));
             backwardActionButton.setText(customAction.getBackwardString());
             backwardActionButton.setAllCaps(false);
             backwardActionButton.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, baseActionElement, cardActionHandler));
@@ -263,18 +264,18 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         @Override
         public BaseActionElement Deserialize(ParseContext context, JsonValue value)
         {
-            CustomRedActionElement element = new CustomRedActionElement(ActionType.Custom);
+            CustomGreenActionElement element = new CustomGreenActionElement(ActionType.Custom);
             element.SetElementTypeString(CustomGreenActionElement.CustomActionId);
-            element.SetId("backwardActionDeserialize");
+            element.SetId("greenActionDeserialize");
             return element;
         }
 
         @Override
         public BaseActionElement DeserializeFromString(ParseContext context, String jsonString)
         {
-            CustomRedActionElement element = new CustomRedActionElement(ActionType.Custom);
+            CustomGreenActionElement element = new CustomGreenActionElement(ActionType.Custom);
             element.SetElementTypeString(CustomGreenActionElement.CustomActionId);
-            element.SetId("backwardActionDeserialize");
+            element.SetId("greenActionDeserialize");
             return element;
         }
     }
@@ -295,6 +296,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
             CustomGreenActionElement customAction = (CustomGreenActionElement) baseActionElement.findImplObj();
 
+            greenActionButton.setBackgroundColor(getResources().getColor(R.color.greenActionColor));
             greenActionButton.setText(customAction.getMessage());
             greenActionButton.setAllCaps(false);
             greenActionButton.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, baseActionElement, cardActionHandler));
@@ -356,6 +358,31 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             viewGroup.addView(textView);
 
             return textView;
+        }
+    }
+
+    public class ShowCardOverrideRenderer extends BaseActionElementRenderer
+    {
+
+        @Override
+        public Button render(RenderedAdaptiveCard renderedCard,
+                             Context context,
+                             FragmentManager fragmentManager,
+                             ViewGroup viewGroup,
+                             BaseActionElement baseActionElement,
+                             ICardActionHandler cardActionHandler,
+                             HostConfig hostConfig,
+                             RenderArgs renderArgs)
+        {
+            Button button = new Button(context);
+
+            button.setBackgroundColor(getResources().getColor(R.color.yellowActionColor));
+            button.setText(baseActionElement.GetTitle() +"(ShowCard)");
+
+            button.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig));
+
+            viewGroup.addView(button);
+            return button;
         }
     }
 
@@ -538,6 +565,8 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             CardRendererRegistration.getInstance().registerRenderer("blah", new CustomBlahRenderer());
             CardRendererRegistration.getInstance().registerActionRenderer(CustomRedActionElement.CustomActionId, new CustomRedActionRenderer());
             CardRendererRegistration.getInstance().registerActionRenderer(CustomGreenActionElement.CustomActionId, new CustomGreenActionRenderer());
+            // Example on how to override the showcard renderer
+            // CardRendererRegistration.getInstance().registerActionRenderer(AdaptiveCardObjectModel.ActionTypeToString(ActionType.ShowCard), new ShowCardOverrideRenderer());
 
             // Example on how a custom OnlineMediaLoader should be registered
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
