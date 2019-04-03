@@ -85,7 +85,7 @@ namespace AdaptiveCards.Rendering.Wpf
             return uiRichTB;
         }
 
-        private static Inline FormatInlineTextRun(AdaptiveRichTextBlock.AdaptiveParagraph.AdaptiveTextRun textRun, AdaptiveRenderContext context)
+        private static Inline FormatInlineTextRun(AdaptiveTextRun textRun, AdaptiveRenderContext context)
         {
             Marked marked = new Marked();
             marked.Options.Renderer = new AdaptiveXamlMarkdownRenderer();

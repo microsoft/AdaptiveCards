@@ -9,7 +9,7 @@
 			"height": "stretch",
 			"columns": [
 				{
-                    "type":"Column",
+					"type": "Column",
 					"width": 1,
 					"items": [
 						{
@@ -20,7 +20,7 @@
 					]
 				},
 				{
-                    "type":"Column",
+					"type": "Column",
 					"width": 1,
 					"spacing": "large",
 					"separator": true,
@@ -31,10 +31,19 @@
 							"wrap": true
 						},
 						{
-							"type": "Input.Toggle",
-							"id": "input1",
-							"title": "Placeholder title",
-							"height": "stretch"
+							"type": "ImageSet",
+							"imageSize": "small",
+							"height": "stretch",
+							"images": [
+								{
+									"type": "Image",
+									"url": "http://adaptivecards.io/content/cats/1.png"
+								},
+								{
+									"type": "Image",
+									"url": "http://adaptivecards.io/content/cats/2.png"
+								}
+							]
 						},
 						{
 							"type": "TextBlock",

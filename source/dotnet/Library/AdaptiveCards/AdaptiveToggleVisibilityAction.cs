@@ -1,4 +1,6 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +34,6 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlIgnore]
 #endif
-        public List<object> TargetElements { get; set; } = new List<object>();
+        public List<AdaptiveTargetElement> TargetElements { get; set; } = new List<AdaptiveTargetElement>();
     }
 }
