@@ -65,6 +65,11 @@ public class TextRendererUtil
         return hostConfig.GetForegroundColor(containerStyle, foregroundColor, isSubtle);
     }
 
+    static String getHighlightColor(ForegroundColor foregroundColor, HostConfig hostConfig, boolean isSubtle, ContainerStyle containerStyle)
+    {
+        return hostConfig.GetHighlightColor(containerStyle, foregroundColor, isSubtle);
+    }
+
     static int getTextWeight(TextWeight textWeight)
     {
         int weight;
