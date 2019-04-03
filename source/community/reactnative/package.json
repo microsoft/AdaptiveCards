@@ -27,9 +27,9 @@
     "src/components",
     "src/styles",
     "src/utils",
-    "src/adaptive-cards.js"
+    "src/adaptive-card.js"
   ],
-  "main": "./src/adaptive-cards",
+  "main": "./src/adaptive-card",
   "devDependencies": {
     "react": "16.6.0-alpha.8af6728",
     "react-native": "0.57.4",

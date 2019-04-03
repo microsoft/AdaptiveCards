@@ -11,7 +11,7 @@ import {
 import { Registry } from '../registration/registry';
 import * as Constants from '../../utils/constants';
 import { InputContextConsumer } from '../../utils/context';
-import AdaptiveCard from '../../adaptive-cards';
+import AdaptiveCard from '../../adaptive-card';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 

@@ -14,7 +14,7 @@ import {
     ScrollView
 } from 'react-native';
 
-import AdaptiveCard from '../adaptive-cards';
+import AdaptiveCard from '../adaptive-card';
 import { RatingRenderer } from './rating-renderer';
 import { Registry } from '../components/registration/registry';
 
