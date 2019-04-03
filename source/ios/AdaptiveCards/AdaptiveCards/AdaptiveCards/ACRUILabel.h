@@ -13,4 +13,5 @@
 @property CGFloat area;
 
 - (void)handleInlineAction:(UIGestureRecognizer *)gestureRecognizer;
+
 @end

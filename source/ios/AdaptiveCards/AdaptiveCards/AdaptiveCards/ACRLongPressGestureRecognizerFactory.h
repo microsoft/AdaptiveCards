@@ -29,9 +29,9 @@
                                       hostConfig:(ACOHostConfig * _Nonnull)config
                       destinationViewForShowCard:( UIView<ACRIContentHoldingView> * _Nullable)viewGroup;
 
-+ (void)addTapGestureRecognizerToUITextView:(UITextView *)textView
-                                     targer:(NSObject<ACRSelectActionDelegate> *)target
-                                   rootView:(ACRView *)rootView
-                                 hostConfig:(ACOHostConfig *)config;
++ (void)addTapGestureRecognizerToUITextView:(UITextView *_Nonnull)textView
+                                     target:(NSObject<ACRSelectActionDelegate> *_Nonnull)target
+                                   rootView:(ACRView * _Nonnull)rootView
+                                 hostConfig:(ACOHostConfig * _Nonnull)config;
 
 @end

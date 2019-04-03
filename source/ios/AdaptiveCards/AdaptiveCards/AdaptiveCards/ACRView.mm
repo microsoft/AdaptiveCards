@@ -236,7 +236,6 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
                 NSString *key = [NSString stringWithCString:elem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
                 key = [key stringByAppendingString:@"*"];
                 int rowFactId = 0;
-                const TextElementProperties textProp;
                 for(auto fact : factSet->GetFacts()) {
 
                     TextElementProperties titleTextProp{[_hostConfig getHostConfig]->GetFactSet().title, fact->GetTitle(), fact->GetLanguage()};
@@ -400,7 +399,7 @@ typedef UIImage* (^ImageLoadBlock)(NSURL *url);
 - (void)processTextConcurrently:(TextElementProperties const &)textProperties
                       elementId:(NSString *)elementId
 {
-    TextElementProperties textProp = textProperties;
+    TextElementProperties textProp = std::move(textProperties);
     /// dispatch to concurrent queue
     dispatch_group_async(_async_tasks_group, _global_queue,
         ^{
