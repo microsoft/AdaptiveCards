@@ -50,6 +50,10 @@ namespace AdaptiveCardsSharedModelUnitTest
                 {
                     return std::make_shared<TestCustomElement>(value);
                 }
+                virtual std::shared_ptr<BaseActionElement> DeserializeFromString(ParseContext &context, const std::string& value) override
+                {
+                    return Deserialize(context, ParseUtil::GetJsonValueFromString(value));
+                }
             };
 
             ActionParserRegistration actionParser;
