@@ -284,12 +284,20 @@ export class ContainerStyleDefinition {
 	};
 
 	parse(obj, type) {
-		this.backgroundColor = obj && obj["backgroundColor"] ? obj["backgroundColor"] : defaultHostConfig["containerStyles"][type]["backgroundColor"];
-		this.foregroundColors.default = obj ? this.getTextColorDefinition(obj[type].foregroundColors["default"]) : this.getTextColorDefinition(defaultHostConfig["containerStyles"][type].foregroundColors["default"]);
-		this.foregroundColors.accent = obj ? this.getTextColorDefinition(obj[type].foregroundColors["accent"]) : this.getTextColorDefinition(defaultHostConfig["containerStyles"][type].foregroundColors["accent"]);
-		this.foregroundColors.good = obj ? this.getTextColorDefinition(obj[type].foregroundColors["good"]) : this.getTextColorDefinition(defaultHostConfig["containerStyles"][type].foregroundColors["good"]);
-		this.foregroundColors.warning = obj ? this.getTextColorDefinition(obj[type].foregroundColors["warning"]) : this.getTextColorDefinition(defaultHostConfig["containerStyles"][type].foregroundColors["warning"]);
-		this.foregroundColors.attention = obj ? this.getTextColorDefinition(obj[type].foregroundColors["attention"]) : this.getTextColorDefinition(defaultHostConfig["containerStyles"][type].foregroundColors["attention"]);
+		if (obj) {
+			this.backgroundColor = obj["backgroundColor"];
+			this.foregroundColors.default = this.getTextColorDefinition(obj[type].foregroundColors["default"]);
+			this.foregroundColors.accent = this.getTextColorDefinition(obj[type].foregroundColors["accent"]);
+			this.foregroundColors.good = this.getTextColorDefinition(obj[type].foregroundColors["good"]);
+			this.foregroundColors.warning = this.getTextColorDefinition(obj[type].foregroundColors["warning"]);
+			this.foregroundColors.attention = this.getTextColorDefinition(obj[type].foregroundColors["attention"]);
+		}
+		this.backgroundColor = defaultHostConfig["containerStyles"][type]["backgroundColor"];
+		this.foregroundColors.default = this.getTextColorDefinition(defaultHostConfig["containerStyles"][type].foregroundColors["default"]);
+		this.foregroundColors.accent = this.getTextColorDefinition(defaultHostConfig["containerStyles"][type].foregroundColors["accent"]);
+		this.foregroundColors.good = this.getTextColorDefinition(defaultHostConfig["containerStyles"][type].foregroundColors["good"]);
+		this.foregroundColors.warning = this.getTextColorDefinition(defaultHostConfig["containerStyles"][type].foregroundColors["warning"]);
+		this.foregroundColors.attention = this.getTextColorDefinition(defaultHostConfig["containerStyles"][type].foregroundColors["attention"]);
 	}
 
 	constructor(obj, type) {
