@@ -383,8 +383,9 @@ public class TextInputRenderer extends BaseCardElementRenderer
                 ViewGroup subViewGroup = (ViewGroup) subView;
                 for (int index = 0; index < subViewGroup.getChildCount(); ++index) {
                     View view = subViewGroup.getChildAt(index);
-                    if (view instanceof Button || view instanceof ImageButton) {
-                        view.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(renderedCard, action, cardActionHandler));
+                    if (view instanceof Button || view instanceof ImageButton)
+                    {
+                        view.setOnClickListener(new ActionElementRenderer.SelectActionOnClickListener(renderedCard, action, cardActionHandler));
                     }
                 }
             }
