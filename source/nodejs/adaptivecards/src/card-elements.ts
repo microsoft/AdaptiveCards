@@ -303,7 +303,6 @@ export abstract class CardElement implements ICardObject {
     readonly requires = new HostConfig.HostCapabilities();
 
     id: string;
-    speak: string;
     horizontalAlignment?: Enums.HorizontalAlignment = null;
     spacing: Enums.Spacing = Enums.Spacing.Default;
     separator: boolean = false;
@@ -312,7 +311,6 @@ export abstract class CardElement implements ICardObject {
     minPixelHeight?: number = null;
 
     abstract getJsonTypeName(): string;
-    abstract renderSpeech(): string;
 
     isBleeding(): boolean {
         return false;
@@ -408,7 +406,7 @@ export abstract class CardElement implements ICardObject {
         this.requires.parse(json["requires"], errors);
         this.id = Utils.getStringValue(json["id"]);
         this.isVisible = Utils.getBoolValue(json["isVisible"], this.isVisible);
-        this.speak = Utils.getStringValue(json["speak"]);
+        // this.speak = Utils.getStringValue(json["speak"]);
         this.horizontalAlignment = Utils.getEnumValue(Enums.HorizontalAlignment, json["horizontalAlignment"], this.horizontalAlignment);
 
         this.spacing = Utils.getEnumValue(Enums.Spacing, json["spacing"], Enums.Spacing.Default);
@@ -1134,16 +1132,6 @@ export class TextBlock extends CardElement {
         return "TextBlock";
     }
 
-    renderSpeech(): string {
-        if (this.speak != null)
-            return this.speak + '\n';
-
-        if (this.text)
-            return '<s>' + this.text + '</s>\n';
-
-        return null;
-    }
-
     updateLayout(processChildren: boolean = false) {
         super.updateLayout(processChildren);
 
@@ -1181,6 +1169,175 @@ export class TextBlock extends CardElement {
     }
 }
 
+export abstract class Inline {
+    private _owner: Paragraph = null;
+
+    abstract parse(json: any, errors?: Array<HostConfig.IValidationError>);
+    abstract getJsonTypeName(): string;
+
+    get owner(): Paragraph {
+        return this._owner;
+    }
+}
+
+export class TextRun extends Inline {
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+
+    }
+
+    getJsonTypeName(): string {
+        return "TextRun";
+    }
+}
+
+export class Paragraph {
+    private _owner: RichTextBlock = null;
+    private _inlines: Inline[] = [];
+
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+        let jsonInlines = json["inlines"];
+
+        if (Array.isArray(jsonInlines)) {
+            for (let jsonInline of jsonInlines) {
+                let inlineType = jsonInline["type"];
+                let inline: Inline = null;
+
+                switch (inlineType) {
+                    case "TextRun":
+                        inline = new TextRun();
+
+                        break;
+                    default:
+                        throw new Error("Paragraph.parse: Unknown inline type: " + inlineType);
+                }
+
+                if (inline != null) {
+                    inline.parse(jsonInline, errors);
+
+                    this.addInline(inline);
+                }
+            }
+        }
+    }
+
+    indexOfInline(inline: Inline): number {
+        return this._inlines.indexOf(inline);
+    }
+
+    getInlineCount(): number {
+        return this._inlines.length;
+    }
+
+    getInlineAt(index: number): Inline {
+        if (index >= 0 && index < this.getInlineCount()) {
+            return this._inlines[index];
+        }
+        else {
+            throw new Error("Paragraph.getInlineAt: index out of range.");
+        }
+    }
+
+    addInline(inline: Inline) {
+        if (inline.owner != null) {
+            if (inline.owner != this) {
+                throw new Error("Paragraph.addInline: specified inline already belongs to another Paragraph.");
+            }
+        }
+        else {
+            this._inlines.push(inline);
+
+            inline["_owner"] = this;
+        }
+    }
+
+    removeInline(inline: Inline): boolean {
+        let index = this.indexOfInline(inline);
+
+        if (index >= 0) {
+            this._inlines.splice(index, 1);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    get owner(): RichTextBlock {
+        return this._owner;
+    }
+}
+
+export class RichTextBlock extends CardElement {
+    private _paragraphs: Paragraph[] = [];
+
+    protected internalRender(): HTMLElement {
+        throw new Error("Not implemented");
+    }
+
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+        super.parse(json, errors);
+
+        this._paragraphs = [];
+
+        let jsonParagraphs = json["paragraphs"];
+
+        if (Array.isArray(jsonParagraphs)) {
+            for (let jsonParagraph of jsonParagraphs) {
+                let paragraph = new Paragraph();
+                paragraph.parse(jsonParagraph, errors);
+
+                this.addParagraph(paragraph);
+            }
+        }
+    }
+
+    indexOfParagraph(paragraph: Paragraph): number {
+        return this._paragraphs.indexOf(paragraph);
+    }
+
+    getJsonTypeName(): string {
+        return "RichTextBlock";
+    }
+
+    getParagraphCount(): number {
+        return this._paragraphs.length;
+    }
+
+    getParagraphAt(index: number): Paragraph {
+        if (index >= 0 && index < this.getParagraphCount()) {
+            return this._paragraphs[index];
+        }
+        else {
+            throw new Error("getParagraphAt: index out of range.");
+        }
+    }
+
+    addParagraph(paragraph: Paragraph) {
+        if (paragraph.owner != null) {
+            if (paragraph.owner != this) {
+                throw new Error("RichTextBlock.addParagraph: specified paragraph already belongs to another RichTextBlock.");
+            }
+        }
+        else {
+            this._paragraphs.push(paragraph);
+
+            paragraph["_owner"] = this;
+        }
+    }
+
+    removeParagraph(paragraph: Paragraph): boolean {
+        let index = this.indexOfParagraph(paragraph);
+
+        if (index >= 0) {
+            this._paragraphs.splice(index, 1);
+
+            return true;
+        }
+
+        return false;
+    }
+}
+
 class Label extends TextBlock {
     protected getRenderedDomElementType(): string {
         return "label";
@@ -1202,7 +1359,6 @@ class Label extends TextBlock {
 export class Fact {
     name: string;
     value: string;
-    speak: string;
 
     constructor(name: string = undefined, value: string = undefined) {
         this.name = name;
@@ -1212,19 +1368,10 @@ export class Fact {
     parse(json: any) {
         this.name = Utils.getStringValue(json["title"]);
         this.value = Utils.getStringValue(json["value"]);
-        this.speak = Utils.getStringValue(json["speak"]);
     }
 
     toJSON() {
         return { title: this.name, value: this.value };
-    }
-
-    renderSpeech(): string {
-        if (this.speak != null) {
-            return this.speak + '\n';
-        }
-
-        return '<s>' + this.name + ' ' + this.value + '</s>\n';
     }
 }
 
@@ -1346,29 +1493,6 @@ export class FactSet extends CardElement {
                 this.facts.push(fact);
             }
         }
-    }
-
-    renderSpeech(): string {
-        if (this.speak != null) {
-            return this.speak + '\n';
-        }
-
-        // render each fact
-        let speak = null;
-
-        if (this.facts.length > 0) {
-            speak = '';
-
-            for (var i = 0; i < this.facts.length; i++) {
-                let speech = this.facts[i].renderSpeech();
-
-                if (speech) {
-                    speak += speech;
-                }
-            }
-        }
-
-        return '<p>' + speak + '\n</p>\n';
     }
 }
 
@@ -1658,14 +1782,6 @@ export class Image extends CardElement {
         else {
             return [];
         }
-    }
-
-    renderSpeech(): string {
-        if (this.speak != null) {
-            return this.speak + '\n';
-        }
-
-        return null;
     }
 
     get selectAction(): Action {
@@ -1959,24 +2075,6 @@ export class ImageSet extends CardElementContainer {
     indexOf(cardElement: CardElement): number {
         return cardElement instanceof Image ? this._images.indexOf(cardElement) : -1;
     }
-
-    renderSpeech(): string {
-        if (this.speak != null) {
-            return this.speak;
-        }
-
-        var speak = null;
-
-        if (this._images.length > 0) {
-            speak = '';
-
-            for (var i = 0; i < this._images.length; i++) {
-                speak += this._images[i].renderSpeech();
-            }
-        }
-
-        return speak;
-    }
 }
 
 export class MediaSource {
@@ -2234,10 +2332,6 @@ export class Media extends CardElement {
         return result;
     }
 
-    renderSpeech(): string {
-        return this.altText;
-    }
-
     get selectedMediaType(): string {
         return this._selectedMediaType;
     }
@@ -2377,18 +2471,6 @@ export abstract class Input extends CardElement implements Shared.IInput {
         this._outerContainerElement.appendChild(innerContainerElement);
 
         return this._outerContainerElement;
-    }
-
-    renderSpeech(): string {
-        if (this.speak != null) {
-            return this.speak;
-        }
-
-        if (this.title) {
-            return '<s>' + this.title + '</s>\n';
-        }
-
-        return null;
     }
 
     getAllInputs(): Array<Input> {
@@ -4315,11 +4397,6 @@ export class ActionSet extends CardElement {
         return this._actionCollection.getResourceInformation();
     }
 
-    renderSpeech(): string {
-        // There is nothing that can be spoken in an ActionSet
-        return "";
-    }
-
     get isInteractive(): boolean {
         return true;
     }
@@ -5027,29 +5104,6 @@ export class Container extends StylableCardElementContainer {
         return result;
     }
 
-    renderSpeech(): string {
-        if (this.speak != null) {
-            return this.speak;
-        }
-
-        // render each item
-        let speak = null;
-
-        if (this._items.length > 0) {
-            speak = '';
-
-            for (var i = 0; i < this._items.length; i++) {
-                var result = this._items[i].renderSpeech();
-
-                if (result) {
-                    speak += result;
-                }
-            }
-        }
-
-        return speak;
-    }
-
     get bleed(): boolean {
         return this.getBleed();
     }
@@ -5490,23 +5544,6 @@ export class ColumnSet extends StylableCardElementContainer {
         }
 
         return result;
-    }
-
-    renderSpeech(): string {
-        if (this.speak != null) {
-            return this.speak;
-        }
-
-        // render each item
-        let speak = '';
-
-        if (this._columns.length > 0) {
-            for (var i = 0; i < this._columns.length; i++) {
-                speak += this._columns[i].renderSpeech();
-            }
-        }
-
-        return speak;
     }
 
     get bleed(): boolean {
@@ -5993,6 +6030,7 @@ export class AdaptiveCard extends ContainerWithActions {
 
     version?: HostConfig.Version = new HostConfig.Version(1, 0);
     fallbackText: string;
+    speak: string;
     designMode: boolean = false;
 
     getJsonTypeName(): string {
@@ -6048,8 +6086,9 @@ export class AdaptiveCard extends ContainerWithActions {
         this._fallbackCard = null;
 
         this._cardTypeName = Utils.getStringValue(json["type"]);
+        this.speak = Utils.getStringValue(json["speak"]);
 
-        var langId = json["lang"];
+        let langId = json["lang"];
 
         if (langId && typeof langId === "string") {
             try {
