@@ -34,13 +34,17 @@ export class Label extends React.Component {
 
 		// number of lines
 		let numberOfLines = wrap ? (maxLines != undefined ? maxLines : 0) : 1;
-
+		let clickProps;
+		if (this.props.onClick) {
+			clickProps = { onClick: this.props.onClick }
+		}
 		return (
 			<MarkDownFormatter
 				defaultStyles={[receivedStyle, computedStyle]}
 				numberOfLines={numberOfLines}
 				text={formattedText}
-				onDidLayout={onDidLayout} />
+				onDidLayout={onDidLayout}
+				{...clickProps} />
 		)
 	}
 

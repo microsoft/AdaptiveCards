@@ -7,12 +7,12 @@ npm install adaptivecards-reactnative
 ```
 - Import the root component
 ``` javascript
-import AdaptiveCards from 'adaptivecards-reactnative'
+import AdaptiveCard from 'adaptivecards-reactnative'
 ```
 - Render the component with required props
 
 ``` html
-<AdaptiveCards payload={} 
+<AdaptiveCard payload={} 
                hostConfig={}
                themeConfig={}
                onExecuteAction={} 
@@ -47,7 +47,7 @@ Registry.getManager().registerComponent('Rating',RatingComponent);
 Registry.getManager().removeComponent('Input.Date');
 ```
 ## Theme Config
-* For customising UI styles of elements, Host App can pass styles (plain JSON object) as an optional prop to root element `<AdaptiveCards/>`.
+* For customising UI styles of elements, Host App can pass styles (plain JSON object) as an optional prop to root element `<AdaptiveCard/>`.
 
 * Host app can provide `platform specific styles` as seen in the below example. For same styles across platforms, pass the styles without platform.
 
