@@ -79,6 +79,8 @@
                         lab.userInteractionEnabled = YES;
                     } else {
                         textRunContent = [[NSMutableAttributedString alloc] initWithString:text attributes:descriptor];
+                        // text is preprocessed by markdown parser, and will wrapped by <p></P>
+                        // lines below remove the p tags
                         [textRunContent deleteCharactersInRange:NSMakeRange(0, 3)];
                         [textRunContent deleteCharactersInRange:NSMakeRange([textRunContent length] -4, 4)];
                     }
@@ -90,16 +92,18 @@
                     ACRContainerStyle style = lab.style;
                     auto foregroundColor = [acoConfig getTextBlockColor:style textColor:textRun->GetTextColor() subtleOption:textRun->GetIsSubtle()];
 
-                    // Config and Add Select Action
+                    // Config and add Select Action
                     std::shared_ptr<BaseActionElement> baseAction = textRun->GetSelectAction();
                     if(baseAction) {
                         NSObject<ACRSelectActionDelegate> *target = [ACRLongPressGestureRecognizerFactory buildTarget:textRun->GetSelectAction() rootView:rootView hostConfig:acoConfig destinationViewForShowCard:nil];
                         if(target) {
+                            // add target as attribute of the NSAttributedString for rather retrieval when touch event is triggered
                             [textRunContent addAttribute:@"SelectAction" value:target range:NSMakeRange(0, textRunContent.length - 1)];
                             [ACRLongPressGestureRecognizerFactory addTapGestureRecognizerToUITextView:lab target:target rootView:rootView hostConfig:acoConfig];
                         }
                     }
 
+                    // apply hightlight to textrun
                     if(textRun->GetHighlight()) {
                         UIColor *highlightColor = [acoConfig getHighlightColor:style
                                                                foregroundColor:textRun->GetTextColor()
@@ -114,7 +118,7 @@
                 }
             }
 
-            // text range is has to -1 from length because of the new line added here
+            // inserts a new line
             NSAttributedString * const newline = [[NSAttributedString alloc] initWithString:@"\n"];
             [content appendAttributedString:newline];
         }

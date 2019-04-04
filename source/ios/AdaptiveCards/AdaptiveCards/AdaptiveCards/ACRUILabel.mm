@@ -67,6 +67,8 @@
     NSUInteger characterIndex = [self.layoutManager characterIndexForPoint:location
                                                            inTextContainer:self.textContainer
                                   fractionOfDistanceBetweenInsertionPoints:&fraction];
+    // TextView will handle the touch event if the touch was landed whithin the range over 
+    // that link or custom attribute, SelectAction was defined
     if (!(fraction == 0.0 || fraction == 1.0) && characterIndex < self.textStorage.length) {
         if ([self.textStorage attribute:NSLinkAttributeName atIndex:characterIndex effectiveRange:NULL] ||
             [self.textStorage attribute:@"SelectAction" atIndex:characterIndex effectiveRange:NULL]) {
@@ -76,6 +78,9 @@
     return nil;
 }
 
+// translate point where touch landed into character index in text container,
+// since an exception, which is expensive and hard to handle in obj-c is thrown,
+// we check the range for the index, and try to retrieve an attribute at the index 
 - (void)handleInlineAction:(UIGestureRecognizer *)gestureRecognizer
 {
     ACRUILabel *view = (ACRUILabel *)gestureRecognizer.view;
