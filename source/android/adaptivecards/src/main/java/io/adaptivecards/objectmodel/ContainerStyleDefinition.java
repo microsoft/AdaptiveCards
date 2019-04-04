@@ -68,6 +68,15 @@ public class ContainerStyleDefinition {
     return (cPtr == 0) ? null : new ColorsConfig(cPtr, false);
   }
 
+  public void setHighlightColors(ColorsConfig value) {
+    AdaptiveCardObjectModelJNI.ContainerStyleDefinition_highlightColors_set(swigCPtr, this, ColorsConfig.getCPtr(value), value);
+  }
+
+  public ColorsConfig getHighlightColors() {
+    long cPtr = AdaptiveCardObjectModelJNI.ContainerStyleDefinition_highlightColors_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new ColorsConfig(cPtr, false);
+  }
+
   public static ContainerStyleDefinition Deserialize(JsonValue json, ContainerStyleDefinition defaultValue) {
     return new ContainerStyleDefinition(AdaptiveCardObjectModelJNI.ContainerStyleDefinition_Deserialize(JsonValue.getCPtr(json), json, ContainerStyleDefinition.getCPtr(defaultValue), defaultValue), true);
   }
