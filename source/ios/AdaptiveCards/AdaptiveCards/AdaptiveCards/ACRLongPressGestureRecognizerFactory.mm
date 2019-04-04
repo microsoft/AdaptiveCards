@@ -23,9 +23,9 @@ using namespace AdaptiveCards;
 // and instantiate a tap gesture reconginizer with target, and return it
 // when failed, nil is returned
 + (NSObject<ACRSelectActionDelegate> *)buildTarget:(std::shared_ptr<BaseActionElement> const &)action
-                                        rootView:(ACRView *)rootView
-                                      hostConfig:(ACOHostConfig *)config
-                      destinationViewForShowCard:( UIView<ACRIContentHoldingView> * _Nullable) viewGroup
+                                          rootView:(ACRView *)rootView
+                                        hostConfig:(ACOHostConfig *)config
+                        destinationViewForShowCard:( UIView<ACRIContentHoldingView> * _Nullable) viewGroup
 {
     ACOBaseActionElement *actionElement = [[ACOBaseActionElement alloc] initWithBaseActionElement:action];
 

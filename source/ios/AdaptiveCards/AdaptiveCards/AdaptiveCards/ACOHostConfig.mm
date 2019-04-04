@@ -112,7 +112,7 @@ using namespace AdaptiveCards;
 }
 
 - (UIColor *)getHighlightColor:(ACRContainerStyle)style
-                     foregroundColor:(ForegroundColor)color
+               foregroundColor:(ForegroundColor)color
                   subtleOption:(bool)isSubtle
 {
     const std::string str = _config->GetHighlightColor([ACOHostConfig getSharedContainerStyle:style], color, isSubtle);
