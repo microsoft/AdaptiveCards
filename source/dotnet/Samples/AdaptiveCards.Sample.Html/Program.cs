@@ -204,7 +204,7 @@ namespace AdaptiveCards.Sample.Html
         }}
 
         // Sample JavaScript code to test showCard action
-		const showCardActions = document.getElementsByClassName('ac-action-showCard');
+        const showCardActions = document.getElementsByClassName('ac-action-showCard');
         for (var i = 0; i < showCardActions.length; i++)
         {{
             const showCardAction = showCardActions[i];
@@ -214,7 +214,7 @@ namespace AdaptiveCards.Sample.Html
                     const showCard = document.getElementById(showCardId);
 
                     if(showCard.style.display == 'none') {{
-                        showCard.style.display = 'flex';
+                        showCard.style.display = 'inline';
                     }}
                     else {{
                         showCard.style.display = 'none'
