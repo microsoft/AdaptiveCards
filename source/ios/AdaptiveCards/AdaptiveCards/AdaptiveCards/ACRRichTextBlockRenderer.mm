@@ -72,8 +72,6 @@
                     // Initializing NSMutableAttributedString for HTML rendering is very slow
                     if(htmlData) {
                         textRunContent = [[NSMutableAttributedString alloc] initWithData:htmlData options:options documentAttributes:nil error:nil];
-                        // Drop newline char
-                        [textRunContent deleteCharactersInRange:NSMakeRange([textRunContent length] -1, 1)];
                         lab.selectable = YES;
                         lab.dataDetectorTypes = UIDataDetectorTypeLink;
                         lab.userInteractionEnabled = YES;

@@ -997,8 +997,6 @@
 		F42979341F3007C500E89914 /* ReadOnlyObjects */ = {
 			isa = PBXGroup;
 			children = (
-				6B096D4C225431D0006CC034 /* ACRRichTextBlockRenderer.h */,
-				6B096D4D225431D0006CC034 /* ACRRichTextBlockRenderer.mm */,
 				F42741081EF864A900399FBB /* ACRBaseCardElementRenderer.h */,
 				F42741091EF864A900399FBB /* ACRBaseCardElementRenderer.mm */,
 				F42741221EFB274C00399FBB /* ACRColumnRenderer.h */,
@@ -1018,6 +1016,8 @@
 				F401A87A1F0DCBC8006D7AF2 /* ACRImageSetRenderer.mm */,
 				F401A8751F0DB69B006D7AF2 /* ACRImageSetUICollectionView.h */,
 				F401A8761F0DB69B006D7AF2 /* ACRImageSetUICollectionView.mm */,
+				6B096D4C225431D0006CC034 /* ACRRichTextBlockRenderer.h */,
+				6B096D4D225431D0006CC034 /* ACRRichTextBlockRenderer.mm */,
 				F42741141EF895AB00399FBB /* ACRTextBlockRenderer.h */,
 				F42741151EF895AB00399FBB /* ACRTextBlockRenderer.mm */,
 				6B7B1A9620BE2CBC00260731 /* ACRUIImageView.h */,
