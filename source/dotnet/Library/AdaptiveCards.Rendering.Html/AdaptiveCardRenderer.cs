@@ -110,7 +110,6 @@ namespace AdaptiveCards.Rendering.Html
             return transformers;
         }
 
-
         protected static HtmlTag AddActionAttributes(AdaptiveAction action, HtmlTag tag, AdaptiveRenderContext context)
         {
             tag.AddClass(GetActionCssClass(action))
