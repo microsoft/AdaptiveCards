@@ -781,7 +781,7 @@ export const defaultHostConfig = {
 		medium: 20,
 		large: 30,
 		extraLarge: 40,
-		padding: 5
+		padding: 10
 	},
 	separator: {
 		lineThickness: 1,

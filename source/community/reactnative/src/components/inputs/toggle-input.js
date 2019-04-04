@@ -67,7 +67,7 @@ export class ToggleInput extends React.Component {
 		}
 		const { toggleValue } = this.state;
 		return (
-			<ElementWrapper json={this.props.json} style={styles.toggleContainer} isError={this.state.isError}>
+			<ElementWrapper json={this.props.json} style={styles.toggleContainer} isError={this.state.isError} isFirst={this.props.isFirst}>
 				<InputContextConsumer>
 					{({ addInputItem, inputArray, showErrors }) => {
 						if (!inputArray[this.id]) {

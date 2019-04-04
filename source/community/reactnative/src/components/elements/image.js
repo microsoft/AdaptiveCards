@@ -331,7 +331,7 @@ export class Img extends React.Component {
 		
 		let imageUrl = Utils.getImageUrl(url);
 
-		var containerContent = (<ElementWrapper json={this.payload}
+		var containerContent = (<ElementWrapper json={this.payload} isFirst={this.props.isFirst}
 			style={wrapperComputedStyle}
 			onPageLayout={this.onPageLayoutHandler}>
         

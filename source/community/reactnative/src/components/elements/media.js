@@ -84,7 +84,7 @@ export class Media extends React.Component {
             <InputContextConsumer>
                 {({ onParseError }) =>
                     (
-                        <ElementWrapper json={this.payload}>
+                        <ElementWrapper json={this.payload} isFirst={this.props.isFirst}>
                             <View style={styles.container}>
                                 {
                                     this.sources &&

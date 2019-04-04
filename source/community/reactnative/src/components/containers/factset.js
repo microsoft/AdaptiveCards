@@ -129,7 +129,7 @@ export class FactSet extends React.Component {
 		let factSetObject = null;
 		factSetObject = this.parsePayload(containerJson)
 		return (
-			<ElementWrapper json={containerJson}>
+			<ElementWrapper json={containerJson} isFirst={this.props.isFirst}>
 				<View style={[styles.container]} onLayout={(event) => { this.measureView(event) }}>
 					{factSetObject}
 				</View>
