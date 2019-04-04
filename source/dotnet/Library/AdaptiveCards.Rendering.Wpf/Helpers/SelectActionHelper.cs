@@ -34,19 +34,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiButton.Content = uiElement;
                 uiButton.Style = context.GetStyle("Adaptive.Action.Tap");
 
-                // Handle ShowCard
-                if (selectAction is AdaptiveShowCardAction showCardAction)
-                {
-                    var actionsConfig = context.Config.Actions;
-                    bool isInline = (actionsConfig.ShowCard.ActionMode == ShowCardActionMode.Inline);
-                    if (isInline && context.CardDepth == 1)
-                    {
-                        FrameworkElement uiShowCardContainer = showCardAction.CreateShowCard(context, actionsConfig);
-
-                        // Add to the list of show cards in context
-                        context.ActionShowCards.Add(new Tuple<FrameworkElement, Button>(uiShowCardContainer, uiButton));
-                    }
-                }
+                // SelectAction doesn't allow showCard actions
 
                 return uiButton;
             }
