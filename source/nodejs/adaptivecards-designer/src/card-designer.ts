@@ -13,6 +13,7 @@ import { Splitter } from "./splitter";
 import { IPoint, Utils } from "./miscellaneous";
 import { BasePaletteItem, ElementPaletteItem } from "./tool-palette";
 import { DefaultContainer } from "./containers/default/default-container";
+import { QRCode } from "qrcode-generator-ts/js";
 
 export class CardDesigner {
     private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
@@ -1118,10 +1119,12 @@ export class CardDesigner {
 		.catch((err) => console.error(err));
 		this._hostPeerConn.onicecandidate = (e) => {
 			if (e.candidate == null) {
-				var offer = JSON.stringify(this._hostPeerConn.localDescription);
+				var offerStr = JSON.stringify(this._hostPeerConn.localDescription);
 
+				// Create the subscription
 				fetch("https://" + this._signalingServerBaseUrl, {
-					method: "POST"
+					method: "POST",
+					body: offerStr
 				})
 				.then(resp => {
 					if (resp.ok) {
@@ -1129,17 +1132,22 @@ export class CardDesigner {
 					}
 					throw new Error("Network response wasn't ok");
 				})
-				.then(id => {
-					var webSocketUrl = "wss://" + this._signalingServerBaseUrl + "/" + id;
+				.then(respondId => {
+					// Create the web socket
+					var webSocketUrl = "wss://" + this._signalingServerBaseUrl + "/" + respondId;
 					this._hostWebSocket = new WebSocket(webSocketUrl);
 
-					var offerInfo = {
-						offer: this._hostPeerConn.localDescription,
-						respondId: id
-					};
-
 					this._hostWebSocket.onopen = function() {
-						alert(JSON.stringify(offerInfo));
+						// Show QR code
+						var qr = new QRCode();
+						qr.setTypeNumber(4);
+						qr.addData(respondId);
+						qr.make();
+						alert(respondId);
+						var dataUrl = qr.toDataURL();
+						var qrImg = document.createElement("img");
+						qrImg.setAttribute("src", dataUrl);
+						document.getElementById("toolbarHost").appendChild(qrImg);
 					};
 
 					this._hostWebSocket.onerror = function(error) {
@@ -1187,52 +1195,62 @@ export class CardDesigner {
 	}
 
 	join() {
-		var offerInfo = JSON.parse(prompt("Enter join offer info"));
-		var offer = offerInfo.offer;
-		var respondId: string = offerInfo.respondId;
+		var respondId = prompt("Enter respond id");
 
-		this._clientPeerConn = new RTCPeerConnection({'iceServers': [{'urls': ['stun:stun.l.google.com:19302']}]});
-		this._clientPeerConn.ondatachannel = (e) => {
-			var dataChannel = e.channel;
-			dataChannel.onopen = (e) => {
-			  console.log('Connected');
-			};
-			dataChannel.onmessage = (e) => {
-				console.log('Got message:', e.data);
-				var dataMessage = JSON.parse(e.data);
-				var cardPayload: string = dataMessage.cardPayload;
-				this.setJsonPayloadAsString(cardPayload);
+		fetch("https://" + this._signalingServerBaseUrl + "/" + respondId)
+		.then(resp => {
+			if (resp.ok) {
+				return resp.json();
 			}
-		  };
-		  this._clientPeerConn.onicecandidate = (e) => {
-			if (e.candidate == null) {
-			  console.log("Get the creator to call: gotAnswer(", JSON.stringify(this._clientPeerConn.localDescription), ")");
-
-			  var answer = JSON.stringify(this._clientPeerConn.localDescription);
-
-			  fetch("https://" + this._signalingServerBaseUrl + "/" + respondId, {
-				method: "PUT",
-				body: answer
-			  })
-			  .then(resp => {
-				if (resp.ok) {
-					return resp.text();
+			throw new Error("Network response wasn't ok");
+		})
+		.then(offer => {
+			this._clientPeerConn = new RTCPeerConnection({'iceServers': [{'urls': ['stun:stun.l.google.com:19302']}]});
+			this._clientPeerConn.ondatachannel = (e) => {
+				var dataChannel = e.channel;
+				dataChannel.onopen = (e) => {
+				console.log('Connected');
+				};
+				dataChannel.onmessage = (e) => {
+					console.log('Got message:', e.data);
+					var dataMessage = JSON.parse(e.data);
+					var cardPayload: string = dataMessage.cardPayload;
+					this.setJsonPayloadAsString(cardPayload);
 				}
-				throw new Error("Network response wasn't ok");
-			  })
-			  .then(txt => {
-				alert("Success");
-			  })
-			  .catch(error => {
-				alert(error);
-			  });
-			}
-		  };
-		  var offerDesc = new RTCSessionDescription(offer);
-		  this._clientPeerConn.setRemoteDescription(offerDesc);
-		  this._clientPeerConn.createAnswer({})
-			.then((answerDesc) => this._clientPeerConn.setLocalDescription(answerDesc))
-			.catch((err) => console.warn("Couldn't create answer"));
+			};
+			this._clientPeerConn.onicecandidate = (e) => {
+				if (e.candidate == null) {
+				console.log("Get the creator to call: gotAnswer(", JSON.stringify(this._clientPeerConn.localDescription), ")");
+
+				var answer = JSON.stringify(this._clientPeerConn.localDescription);
+
+				fetch("https://" + this._signalingServerBaseUrl + "/" + respondId, {
+					method: "PUT",
+					body: answer
+				})
+				.then(resp => {
+					if (resp.ok) {
+						return resp.text();
+					}
+					throw new Error("Network response wasn't ok");
+				})
+				.then(txt => {
+					alert("Success");
+				})
+				.catch(error => {
+					alert(error);
+				});
+				}
+			};
+			var offerDesc = new RTCSessionDescription(offer);
+			this._clientPeerConn.setRemoteDescription(offerDesc);
+			this._clientPeerConn.createAnswer({})
+				.then((answerDesc) => this._clientPeerConn.setLocalDescription(answerDesc))
+				.catch((err) => console.warn("Couldn't create answer"));
+		})
+		.catch(error => {
+			alert(error);
+		});
 	}
 
     undo() {
