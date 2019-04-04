@@ -9,8 +9,8 @@ namespace AdaptiveSharedNamespace
     public:
         FeatureRegistration();
 
-        void AddFeature(std::string const& featureName, const std::string& featureVersion);
-        void RemoveFeature(std::string const& featureName);
+        void AddFeature(const std::string& featureName, const std::string& featureVersion);
+        void RemoveFeature(const std::string& featureName);
         std::string GetFeatureVersion(const std::string& featureName) const;
 
     private:

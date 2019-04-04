@@ -16,7 +16,7 @@ namespace AdaptiveSharedNamespace
         if (featureVersion != "*")
         {
             // the below will throw if the version is invalid
-            SemanticVersion version(featureVersion);
+            const SemanticVersion version(featureVersion);
         }
 
         if (m_supportedFeatures.find(featureName) == m_supportedFeatures.end())
@@ -34,7 +34,7 @@ namespace AdaptiveSharedNamespace
         }
     }
 
-    void FeatureRegistration::RemoveFeature(std::string const& featureName)
+    void FeatureRegistration::RemoveFeature(const std::string& featureName)
     {
         m_supportedFeatures.erase(featureName);
     }
