@@ -177,7 +177,7 @@
     <ClCompile Include="FactUnitTest.cpp" />
     <ClCompile Include="FontStylesUnitTest.cpp" />
     <ClCompile Include="ImageBackgroundColorTest.cpp" />
-    <ClCompile Include="ParserRegistrationTest.cpp" />
+    <ClCompile Include="RegistrationTests.cpp" />
     <ClCompile Include="ResourceInformationTests.cpp" />
     <ClCompile Include="MarkDownUnitTest.cpp" />
     <ClCompile Include="ObjectModelTest.cpp" />

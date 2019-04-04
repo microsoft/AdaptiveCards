@@ -53,9 +53,6 @@
     <ClCompile Include="ImageBackgroundColorTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ParserRegistrationTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AdaptiveCardParseExceptionTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -81,6 +78,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ContainerStyleTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RegistrationTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

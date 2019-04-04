@@ -17,7 +17,25 @@ namespace AdaptiveSharedNamespace
         operator std::string() const
         {
             std::stringstream version{};
-            version << _major << '.' << _minor << '.' << _build << '.'  << _revision;
+
+            // always add major
+            version << _major;
+
+            if (_minor != 0 || _build != 0 || _revision != 0)
+            {
+                version << '.' << _minor;
+            }
+
+            if (_build != 0 || _revision != 0)
+            {
+                version << '.' << _build;
+            }
+
+            if (_revision != 0)
+            {
+                version << '.' << _revision;
+            }
+
             return version.str();
         }
 

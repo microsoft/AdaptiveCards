@@ -367,7 +367,8 @@ namespace AdaptiveSharedNamespace
         RequiredPropertyMissing,
         InvalidPropertyValue,
         UnsupportedParserOverride,
-        IdCollision
+        IdCollision,
+        DuplicateFeatureName
     };
     // No mapping to string needed
 

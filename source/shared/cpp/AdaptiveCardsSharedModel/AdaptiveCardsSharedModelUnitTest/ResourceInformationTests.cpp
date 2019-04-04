@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#include "FeatureRegistration.h"
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace AdaptiveCards;
 
@@ -253,7 +255,10 @@ namespace AdaptiveCardsSharedModelUnitTest
             auto actionRegistration = std::make_shared<ActionParserRegistration>();
             actionRegistration->AddParser("CustomActionWithImage", std::make_shared<TestCustomActionParser>());
 
-            ParseContext context(elementRegistration, actionRegistration);
+            auto featureRegistration = std::make_shared<FeatureRegistration>();
+            featureRegistration->AddFeature("CoolFeature", "1");
+
+            ParseContext context(elementRegistration, actionRegistration, featureRegistration);
             // Parse the card and get the image uris
             auto resourceInformation = AdaptiveCard::DeserializeFromString(testJsonString, "1.0", context)->GetAdaptiveCard()->GetResourceInformation();
             ValidateResourceInformation(expectedValues, resourceInformation);
@@ -284,6 +289,14 @@ namespace AdaptiveCardsSharedModelUnitTest
                     {\
                         \"type\": \"CustomTypeWithImage\",\
                         \"customImageProperty\": \"Custom.png\"\
+                    },\
+                    {\
+                        \"type\": \"TextBlock\",\
+                        \"text\": \"this is a textblock\",\
+                        \"requires\": \
+                        {\
+                            \"CoolFeature\": \"1\"\
+                        }\
                     }\
                 ], \
                 \"actions\" : \

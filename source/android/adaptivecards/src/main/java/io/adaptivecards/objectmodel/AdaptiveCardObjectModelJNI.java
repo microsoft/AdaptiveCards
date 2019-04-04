@@ -399,7 +399,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long BaseElement_GetFallbackContent(long jarg1, BaseElement jarg1_);
   public final static native void BaseElement_SetFallbackType(long jarg1, BaseElement jarg1_, int jarg2);
   public final static native void BaseElement_SetFallbackContent(long jarg1, BaseElement jarg1_, long jarg2, BaseElement jarg2_);
-  public final static native boolean BaseElement_MeetsRequirements(long jarg1, BaseElement jarg1_, long jarg2);
+  public final static native boolean BaseElement_MeetsRequirements(long jarg1, BaseElement jarg1_, long jarg2, ParseContext jarg2_);
   public final static native void BaseElement_GetResourceInformation(long jarg1, BaseElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native void BaseElement_GetResourceInformationSwigExplicitBaseElement(long jarg1, BaseElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native void BaseElement_PopulateKnownPropertiesSet(long jarg1, BaseElement jarg1_);
@@ -546,6 +546,11 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void ElementParserRegistration_RemoveParser(long jarg1, ElementParserRegistration jarg1_, String jarg2);
   public final static native long ElementParserRegistration_GetParser(long jarg1, ElementParserRegistration jarg1_, String jarg2);
   public final static native void delete_ElementParserRegistration(long jarg1);
+  public final static native long new_FeatureRegistration();
+  public final static native void FeatureRegistration_AddFeature(long jarg1, FeatureRegistration jarg1_, String jarg2, String jarg3);
+  public final static native void FeatureRegistration_RemoveFeature(long jarg1, FeatureRegistration jarg1_, String jarg2);
+  public final static native String FeatureRegistration_GetFeatureVersion(long jarg1, FeatureRegistration jarg1_, String jarg2);
+  public final static native void delete_FeatureRegistration(long jarg1);
   public final static native long new_Container__SWIG_0();
   public final static native long new_Container__SWIG_1(long jarg1, Container jarg1_);
   public final static native void delete_Container(long jarg1);
@@ -801,10 +806,13 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long SubmitActionParser_DeserializeFromString(long jarg1, SubmitActionParser jarg1_, long jarg2, ParseContext jarg2_, String jarg3);
   public final static native long new_ParseContext__SWIG_0();
   public final static native long new_ParseContext__SWIG_1(long jarg1, ElementParserRegistration jarg1_, long jarg2, ActionParserRegistration jarg2_);
+  public final static native long new_ParseContext__SWIG_2(long jarg1, ElementParserRegistration jarg1_, long jarg2, ActionParserRegistration jarg2_, long jarg3, FeatureRegistration jarg3_);
   public final static native void ParseContext_elementParserRegistration_set(long jarg1, ParseContext jarg1_, long jarg2, ElementParserRegistration jarg2_);
   public final static native long ParseContext_elementParserRegistration_get(long jarg1, ParseContext jarg1_);
   public final static native void ParseContext_actionParserRegistration_set(long jarg1, ParseContext jarg1_, long jarg2, ActionParserRegistration jarg2_);
   public final static native long ParseContext_actionParserRegistration_get(long jarg1, ParseContext jarg1_);
+  public final static native void ParseContext_featureRegistration_set(long jarg1, ParseContext jarg1_, long jarg2, FeatureRegistration jarg2_);
+  public final static native long ParseContext_featureRegistration_get(long jarg1, ParseContext jarg1_);
   public final static native void ParseContext_warnings_set(long jarg1, ParseContext jarg1_, long jarg2, AdaptiveCardParseWarningVector jarg2_);
   public final static native long ParseContext_warnings_get(long jarg1, ParseContext jarg1_);
   public final static native void ParseContext_PushElement__SWIG_0(long jarg1, ParseContext jarg1_, String jarg2, long jarg3, InternalId jarg3_, boolean jarg4);

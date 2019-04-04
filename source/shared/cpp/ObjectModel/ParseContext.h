@@ -2,9 +2,10 @@
 
 #include "pch.h"
 
-#include "ElementParserRegistration.h"
 #include "ActionParserRegistration.h"
 #include "AdaptiveCardParseWarning.h"
+#include "ElementParserRegistration.h"
+#include "FeatureRegistration.h"
 
 namespace AdaptiveSharedNamespace
 {
@@ -18,8 +19,14 @@ namespace AdaptiveSharedNamespace
         ParseContext(std::shared_ptr<ElementParserRegistration> elementRegistration,
                      std::shared_ptr<ActionParserRegistration> actionRegistration);
 
+        ParseContext(std::shared_ptr<ElementParserRegistration> elementRegistration,
+                     std::shared_ptr<ActionParserRegistration> actionRegistration,
+                     std::shared_ptr<FeatureRegistration> featureRegistration);
+
         std::shared_ptr<ElementParserRegistration> elementParserRegistration;
         std::shared_ptr<ActionParserRegistration> actionParserRegistration;
+        std::shared_ptr<FeatureRegistration> featureRegistration;
+
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
         // Push/PopElement are used during parsing to track the tree structure of a card.
         void PushElement(const std::string& idJsonProperty,
