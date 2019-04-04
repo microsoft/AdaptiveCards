@@ -19,6 +19,8 @@ import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
+import java.util.HashMap;
+
 import io.adaptivecards.R;
 import io.adaptivecards.objectmodel.ActionAlignment;
 import io.adaptivecards.objectmodel.ActionMode;
@@ -36,6 +38,7 @@ import io.adaptivecards.objectmodel.ToggleVisibilityAction;
 import io.adaptivecards.objectmodel.ToggleVisibilityTarget;
 import io.adaptivecards.objectmodel.ToggleVisibilityTargetVector;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
+import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.IBaseActionElementRenderer;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderArgs;
@@ -44,7 +47,7 @@ import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
-public class ActionElementRenderer implements IBaseActionElementRenderer
+public class ActionElementRenderer extends BaseActionElementRenderer
 {
     protected ActionElementRenderer()
     {
@@ -58,173 +61,6 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         }
 
         return s_instance;
-    }
-
-    public static class ButtonOnClickListener implements View.OnClickListener
-    {
-
-        public ButtonOnClickListener(RenderedAdaptiveCard renderedCard, BaseActionElement action, ICardActionHandler cardActionHandler)
-        {
-            m_action = action;
-            m_renderedAdaptiveCard = renderedCard;
-            m_cardActionHandler = cardActionHandler;
-        }
-
-        @Override
-        public void onClick(View v)
-        {
-            if(m_action.GetElementType() == ActionType.ToggleVisibility)
-            {
-                ToggleVisibilityAction toggleVisibilityAction = null;
-                if (m_action instanceof ToggleVisibilityAction)
-                {
-                    toggleVisibilityAction = (ToggleVisibilityAction) m_action;
-                }
-                else if ((toggleVisibilityAction = ToggleVisibilityAction.dynamic_cast(m_action)) == null)
-                {
-                    throw new InternalError("Unable to convert BaseActionElement to ToggleVisibilityAction object model.");
-                }
-
-                ToggleVisibilityTargetVector toggleVisibilityTargetVector = toggleVisibilityAction.GetTargetElements();
-                View rootView = m_renderedAdaptiveCard.getView();
-                for (int i = 0; i < toggleVisibilityTargetVector.size(); ++i)
-                {
-                    ToggleVisibilityTarget target = toggleVisibilityTargetVector.get(i);
-                    View foundView = rootView.findViewWithTag(new TagContent(target.GetElementId()));
-                    if(foundView != null)
-                    {
-                        IsVisible isVisible = target.GetIsVisible();
-                        if(isVisible == IsVisible.IsVisibleFalse)
-                        {
-                            foundView.setVisibility(View.GONE);
-                        }
-                        else if(isVisible == IsVisible.IsVisibleTrue)
-                        {
-                            foundView.setVisibility(View.VISIBLE);
-                        }
-                        else
-                        {
-                            if(foundView.getVisibility() == View.GONE)
-                            {
-                                foundView.setVisibility(View.VISIBLE);
-                            }
-                            else
-                            {
-                                foundView.setVisibility(View.GONE);
-                            }
-                        }
-                    }
-                }
-
-            }
-            else
-            {
-                m_cardActionHandler.onAction(m_action, m_renderedAdaptiveCard);
-            }
-        }
-
-        private BaseActionElement m_action;
-        private RenderedAdaptiveCard m_renderedAdaptiveCard;
-        private ICardActionHandler m_cardActionHandler;
-    }
-
-    public static class ButtonOnLayoutChangedListener implements View.OnLayoutChangeListener
-    {
-        @Override
-        public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom)
-        {
-            Button button = (Button)v;
-
-            double textHeight = button.getTextSize();
-
-            Rect bounds = new Rect();
-            String text = button.getText().toString().toUpperCase();
-
-            Paint paint = button.getPaint();
-            paint.setTextSize((float) textHeight);
-            paint.getTextBounds(text, 0, text.length(), bounds);
-
-            Drawable[] icons = button.getCompoundDrawables();
-            if(icons[0] != null) {
-                double iconWidth = icons[0].getIntrinsicWidth();
-                double buttonWidth = button.getWidth();
-                double boundsWidth = bounds.width();
-                double iconStartPosition = (buttonWidth - (iconWidth + mPadding + boundsWidth)) / 2;
-
-                button.setCompoundDrawablePadding((int) (-iconStartPosition + mPadding));
-                button.setPadding((int) iconStartPosition, 0, 0, 0);
-            }
-        }
-
-        void setPadding(int padding){
-            mPadding = padding;
-        }
-
-        private int mPadding;
-    }
-
-    protected class ShowCardInlineClickListener implements View.OnClickListener
-    {
-        public ShowCardInlineClickListener(View invisibleCard, ViewGroup hiddenCardsLayout)
-        {
-            m_invisibleCard = invisibleCard;
-            m_hiddenCardsLayout = hiddenCardsLayout;
-        }
-
-        private Activity getActivity(Context context)
-        {
-            while (context instanceof ContextWrapper)
-            {
-                if (context instanceof Activity)
-                {
-                    return (Activity)context;
-                }
-                context = ((ContextWrapper)context).getBaseContext();
-            }
-            return null;
-        }
-
-        @Override
-        public void onClick(View v)
-        {
-            Activity hostingActivity = getActivity(v.getContext());
-            if(hostingActivity != null)
-            {
-                View currentFocusedView = hostingActivity.getCurrentFocus();
-                if (currentFocusedView != null)
-                {
-                    currentFocusedView.clearFocus();
-                }
-            }
-
-            v.setPressed(m_invisibleCard.getVisibility() != View.VISIBLE);
-            for(int i = 0; i < m_hiddenCardsLayout.getChildCount(); ++i)
-            {
-                View child = m_hiddenCardsLayout.getChildAt(i);
-                if (child != m_invisibleCard)
-                {
-                    child.setVisibility(View.GONE);
-                }
-            }
-
-            m_invisibleCard.setVisibility(m_invisibleCard.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-
-            View mainCardView = ((ViewGroup) m_hiddenCardsLayout.getParent()).getChildAt(0);
-            int padding = mainCardView.getPaddingTop();
-
-            //remove bottom padding from top linear layout
-            if (m_invisibleCard.getVisibility() == View.VISIBLE)
-            {
-                mainCardView.setPadding(padding, padding, padding, 0);
-                m_invisibleCard.requestFocus();
-            }
-            else
-            {
-                mainCardView.setPadding(padding, padding, padding, padding);
-            }
-        }
-        private View m_invisibleCard;
-        private ViewGroup m_hiddenCardsLayout;
     }
 
     private class ActionElementRendererIconImageLoaderAsync extends InnerImageLoaderAsync
@@ -281,18 +117,13 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         }
     }
 
-    private int getColor(String colorCode)
-    {
-        return android.graphics.Color.parseColor(colorCode);
-    }
-
-    private Button createButtonWithTheme(Context context, int theme)
+    private static Button createButtonWithTheme(Context context, int theme)
     {
         Context themedContext = new ContextThemeWrapper(context, theme);
         return new Button(themedContext);
     }
 
-    private Button createButton(Context context, String sentiment, HostConfig hostConfig)
+    protected static Button getButtonForSentiment(Context context, String sentiment, HostConfig hostConfig)
     {
         boolean isPositiveSentiment = sentiment.equalsIgnoreCase("Positive");
         boolean isDestructiveSentiment = sentiment.equalsIgnoreCase("Destructive");
@@ -341,7 +172,7 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         RenderedAdaptiveCard renderedCard,
         RenderArgs renderArgs)
     {
-        Button button = createButton(context, baseActionElement.GetSentiment(), hostConfig);
+        Button button = getButtonForSentiment(context, baseActionElement.GetSentiment(), hostConfig);
 
         button.setText(baseActionElement.GetTitle());
         ActionAlignment alignment = hostConfig.GetActions().getActionAlignment();
@@ -368,17 +199,23 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         String iconUrl = baseActionElement.GetIconUrl();
         if (!iconUrl.isEmpty())
         {
+            IconPlacement iconPlacement = hostConfig.GetActions().getIconPlacement();
+            if (!renderArgs.getAllowAboveTitleIconPlacement())
+            {
+                iconPlacement = IconPlacement.LeftOfTitle;
+            }
+
             ActionElementRendererIconImageLoaderAsync imageLoader = new ActionElementRendererIconImageLoaderAsync(
                     renderedCard,
                     button,
                     hostConfig.GetImageBaseUrl(),
-                    hostConfig.GetActions().getIconPlacement(),
+                    iconPlacement,
                     hostConfig.GetActions().getIconSize()
             );
             imageLoader.execute(baseActionElement.GetIconUrl());
 
             // Only when the icon must be placed to the left of the title, we have to do this
-            if (hostConfig.GetActions().getIconPlacement() == IconPlacement.LeftOfTitle) {
+            if (iconPlacement == IconPlacement.LeftOfTitle) {
                 int padding = (int) hostConfig.GetSpacing().getDefaultSpacing();
                 ButtonOnLayoutChangedListener layoutChangedListener = new ButtonOnLayoutChangedListener();
                 layoutChangedListener.setPadding(padding);
@@ -407,46 +244,8 @@ public class ActionElementRenderer implements IBaseActionElementRenderer
         }
 
         Button button = renderButton(context, viewGroup, baseActionElement, hostConfig, renderedCard, renderArgs);
+        button.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig));
 
-        if (baseActionElement.GetElementType() == ActionType.ShowCard
-                && hostConfig.GetActions().getShowCard().getActionMode() == ActionMode.Inline)
-        {
-
-            ShowCardAction showCardAction = null;
-            if (baseActionElement instanceof ShowCardAction)
-            {
-                showCardAction = (ShowCardAction) baseActionElement;
-            }
-            else if ((showCardAction = ShowCardAction.dynamic_cast(baseActionElement)) == null)
-            {
-                throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
-            }
-
-            View invisibleCard = AdaptiveCardRenderer.getInstance().internalRender(renderedCard, context, fragmentManager, showCardAction.GetCard(), cardActionHandler, hostConfig, true);
-            invisibleCard.setVisibility(View.GONE);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            layoutParams.setMargins(0, Util.dpToPixels(context, hostConfig.GetActions().getShowCard().getInlineTopMargin()), 0, 0);
-            invisibleCard.setLayoutParams(layoutParams);
-
-            ViewGroup parent = (ViewGroup) viewGroup.getParent();
-            if(parent instanceof HorizontalScrollView) // Required when the actions are set in horizontal
-            {
-                parent = (ViewGroup) parent.getParent().getParent();
-            }
-            else
-            {
-                parent = (ViewGroup) parent.getParent();
-            }
-
-            ViewGroup hiddenCards = (ViewGroup) parent.getChildAt(1);
-            hiddenCards.addView(invisibleCard);
-
-            button.setOnClickListener(new ShowCardInlineClickListener(invisibleCard, hiddenCards));
-        }
-        else
-        {
-            button.setOnClickListener(new ButtonOnClickListener(renderedCard, baseActionElement, cardActionHandler));
-        }
         return button;
     }
 

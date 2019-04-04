@@ -55,4 +55,9 @@ public class UnknownActionParser extends ActionElementParser {
     return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
   }
 
+  public BaseActionElement DeserializeFromString(ParseContext context, String jsonString) {
+    long cPtr = AdaptiveCardObjectModelJNI.UnknownActionParser_DeserializeFromString(swigCPtr, this, ParseContext.getCPtr(context), context, jsonString);
+    return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
+  }
+
 }

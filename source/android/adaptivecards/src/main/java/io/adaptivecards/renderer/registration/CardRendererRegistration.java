@@ -67,6 +67,7 @@ public class CardRendererRegistration
         registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.Media), MediaRenderer.getInstance());
         registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.RichTextBlock), RichTextBlockRenderer.getInstance());
         registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.TextBlock), TextBlockRenderer.getInstance());
+        registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.ActionSet), ActionSetRenderer.getInstance());
 
         // Register Input Renderers
         registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.TextInput), TextInputRenderer.getInstance());
@@ -77,10 +78,10 @@ public class CardRendererRegistration
         registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.ChoiceSetInput), ChoiceSetInputRenderer.getInstance());
 
         // Register Action Renderer
-        registerRenderer(AdaptiveCardObjectModel.CardElementTypeToString(CardElementType.ActionSet), ActionSetRenderer.getInstance());
         registerActionRenderer(AdaptiveCardObjectModel.ActionTypeToString(ActionType.Submit), ActionElementRenderer.getInstance());
         registerActionRenderer(AdaptiveCardObjectModel.ActionTypeToString(ActionType.ShowCard), ActionElementRenderer.getInstance());
         registerActionRenderer(AdaptiveCardObjectModel.ActionTypeToString(ActionType.OpenUrl), ActionElementRenderer.getInstance());
+        registerActionRenderer(AdaptiveCardObjectModel.ActionTypeToString(ActionType.ToggleVisibility), ActionElementRenderer.getInstance());
 
         m_actionLayoutRenderer = ActionLayoutRenderer.getInstance();
     }
@@ -132,6 +133,15 @@ public class CardRendererRegistration
 
     public void registerActionRenderer(String actionElementType, IBaseActionElementRenderer actionRenderer)
     {
+        if (TextUtils.isEmpty(actionElementType))
+        {
+            throw new IllegalArgumentException("cardElementType is null");
+        }
+        if (actionRenderer == null)
+        {
+            throw new IllegalArgumentException("renderer is null");
+        }
+
         m_typeToRenderActionMap.put(actionElementType, actionRenderer);
     }
 

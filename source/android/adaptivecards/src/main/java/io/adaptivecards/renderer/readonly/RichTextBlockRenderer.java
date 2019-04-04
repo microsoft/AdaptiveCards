@@ -35,6 +35,7 @@ import io.adaptivecards.objectmodel.ParagraphVector;
 import io.adaptivecards.objectmodel.RichTextBlock;
 import io.adaptivecards.objectmodel.TextBlock;
 import io.adaptivecards.objectmodel.TextRun;
+import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
@@ -60,7 +61,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
     {
         public ActionSpan(BaseActionElement action, RenderedAdaptiveCard renderedCard, ICardActionHandler cardActionHandler)
         {
-            m_actionListener = new ActionElementRenderer.ButtonOnClickListener(renderedCard, action, cardActionHandler);
+            m_actionListener = new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, action, cardActionHandler);
         }
 
         @Override
@@ -70,7 +71,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
             m_actionListener.onClick(widget);
         }
 
-        private ActionElementRenderer.ButtonOnClickListener m_actionListener;
+        private BaseActionElementRenderer.SelectActionOnClickListener m_actionListener;
     }
 
     private SpannableStringBuilder buildSpannableParagraph(
