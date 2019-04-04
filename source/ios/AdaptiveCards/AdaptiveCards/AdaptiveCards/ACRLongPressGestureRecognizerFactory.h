@@ -14,12 +14,24 @@
 @interface ACRLongPressGestureRecognizerFactory:NSObject
 /// instantiates a target for UITapGestureRecognizer object
 /// and instantiate a tap gesture reconginizer with target, and return it
-+ (void)addLongPressGestureRecognizerToUIView:(UIView<ACRIContentHoldingView> *)viewGroup
-                                                               rootView:(ACRView *)rootView
-                                                          recipientView:(UIView *)receipientView
++ (void)addLongPressGestureRecognizerToUIView:(UIView<ACRIContentHoldingView> * _Nonnull)viewGroup
+                                                               rootView:(ACRView * _Nonnull)rootView
+                                                          recipientView:(UIView * _Nonnull)receipientView
                                                           actionElement:(std::shared_ptr<AdaptiveCards::BaseActionElement> const &)action
-                                                             hostConfig:(ACOHostConfig *)config;
+                                                             hostConfig:(ACOHostConfig * _Nonnull)config;
 
-+ (UILongPressGestureRecognizer *)getGestureRecognizer:(UIView<ACRIContentHoldingView> *)viewGroup
-                                                target:(NSObject<ACRSelectActionDelegate> *)target;
++ (UILongPressGestureRecognizer * _Nullable)getGestureRecognizer:(UIView<ACRIContentHoldingView> * _Nonnull)viewGroup
+                                                target:(NSObject<ACRSelectActionDelegate> * _Nonnull)target;
+
+// creates target for the gesture
++ (NSObject<ACRSelectActionDelegate> * _Nullable)buildTarget:(std::shared_ptr<AdaptiveCards::BaseActionElement> const &)action
+                                        rootView:(ACRView * _Nonnull)rootView
+                                      hostConfig:(ACOHostConfig * _Nonnull)config
+                      destinationViewForShowCard:( UIView<ACRIContentHoldingView> * _Nullable)viewGroup;
+
++ (void)addTapGestureRecognizerToUITextView:(UITextView *_Nonnull)textView
+                                     target:(NSObject<ACRSelectActionDelegate> *_Nonnull)target
+                                   rootView:(ACRView * _Nonnull)rootView
+                                 hostConfig:(ACOHostConfig * _Nonnull)config;
+
 @end
