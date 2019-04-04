@@ -80,6 +80,7 @@ namespace AdaptiveCards.Rendering.Html
             ElementRenderers.Set<AdaptiveColumnSet>(ColumnSetRender);
             ElementRenderers.Set<AdaptiveFactSet>(FactSetRender);
             ElementRenderers.Set<AdaptiveImageSet>(ImageSetRender);
+            ElementRenderers.Set<AdaptiveActionSet>(ActionSetRender);
 
             ElementRenderers.Set<AdaptiveChoiceSetInput>(ChoiceSetRender);
             ElementRenderers.Set<AdaptiveTextInput>(TextInputRender);
@@ -285,7 +286,8 @@ namespace AdaptiveCards.Rendering.Html
                     break;
             }
 
-            AddContainerElements(uiCard, card.Body, card.Actions, context);
+            AddContainerElements(uiCard, card.Body, context);
+            AddActions(uiCard, card.Actions, context);
 
             AddSelectAction(uiCard, card.SelectAction, context);
 
@@ -326,26 +328,8 @@ namespace AdaptiveCards.Rendering.Html
             }
         }
 
-        protected static void AddContainerElements(HtmlTag uiContainer, IList<AdaptiveElement> elements, IList<AdaptiveAction> actions, AdaptiveRenderContext context)
+        protected static void AddActions(HtmlTag uiContainer, IList<AdaptiveAction> actions, AdaptiveRenderContext context)
         {
-            if (elements != null)
-            {
-                foreach (var cardElement in elements)
-                {
-                    // each element has a row
-                    var uiElement = context.Render(cardElement);
-                    if (uiElement != null)
-                    {
-                        if (uiContainer.Children.Any())
-                        {
-                            AddSeparator(uiContainer, cardElement, context);
-                        }
-
-                        uiContainer.Children.Add(uiElement);
-                    }
-                }
-            }
-
             if (context.Config.SupportsInteractivity && actions != null)
             {
                 var uiButtonStrip = new DivTag()
@@ -473,6 +457,27 @@ namespace AdaptiveCards.Rendering.Html
             }
         }
 
+        protected static void AddContainerElements(HtmlTag uiContainer, IList<AdaptiveElement> elements, AdaptiveRenderContext context)
+        {
+            if (elements != null)
+            {
+                foreach (var cardElement in elements)
+                {
+                    // each element has a row
+                    var uiElement = context.Render(cardElement);
+                    if (uiElement != null)
+                    {
+                        if (uiContainer.Children.Any())
+                        {
+                            AddSeparator(uiContainer, cardElement, context);
+                        }
+
+                        uiContainer.Children.Add(uiElement);
+                    }
+                }
+            }           
+        }
+
         protected static void AddSeparator(HtmlTag uiContainer, AdaptiveElement adaptiveElement, AdaptiveRenderContext context)
         {
             if (!adaptiveElement.Separator && adaptiveElement.Spacing == AdaptiveSpacing.None)
@@ -555,7 +560,7 @@ namespace AdaptiveCards.Rendering.Html
             elementRenderArgs.HasParentWithPadding = hasPadding;
             context.RenderArgs = elementRenderArgs;
 
-            AddContainerElements(uiColumn, column.Items, null, context);
+            AddContainerElements(uiColumn, column.Items, context);
 
             AddSelectAction(uiColumn, column.SelectAction, context);
 
@@ -751,7 +756,7 @@ namespace AdaptiveCards.Rendering.Html
             elementRenderArgs.ParentStyle = (inheritsStyleFromParent) ? parentRenderArgs.ParentStyle : container.Style.Value;
             context.RenderArgs = elementRenderArgs;
 
-            AddContainerElements(uiContainer, container.Items, null, context);
+            AddContainerElements(uiContainer, container.Items, context);
 
             AddSelectAction(uiContainer, container.SelectAction, context);
 
@@ -1402,6 +1407,15 @@ namespace AdaptiveCards.Rendering.Html
                 uiImageSet.Children.Add(uiImage);
             }
             return uiImageSet;
+        }
+
+        protected static HtmlTag ActionSetRender(AdaptiveActionSet actionSet, AdaptiveRenderContext context)
+        {
+            var outerContainer = new DivTag()
+                .Style("box-sizing", "border-box")
+                .Style("width", "100%");
+            AddActions(outerContainer, actionSet.Actions, context);
+            return outerContainer;
         }
 
         /// <summary>
