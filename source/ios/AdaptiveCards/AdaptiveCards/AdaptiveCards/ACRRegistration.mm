@@ -14,6 +14,7 @@
 #import "ACRImageSetRenderer.h"
 #import "ACRMediaRenderer.h"
 #import "ACRTextBlockRenderer.h"
+#import "ACRRichTextBlockRenderer.h"
 #import "ACRInputRenderer.h"
 #import "ACRInputToggleRenderer.h"
 #import "ACRInputChoiceSetRenderer.h"
@@ -63,12 +64,13 @@ using namespace AdaptiveCards;
              [ACRImageRenderer getInstance],      [NSNumber numberWithInt:(int)[ACRImageRenderer elemType]],
              [ACRImageSetRenderer getInstance],   [NSNumber numberWithInt:(int)[ACRImageSetRenderer elemType]],
              [ACRTextBlockRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRTextBlockRenderer elemType]],
+             [ACRRichTextBlockRenderer getInstance], [NSNumber numberWithInt:(int)[ACRRichTextBlockRenderer elemType]],
              [ACRInputRenderer     getInstance],  [NSNumber numberWithInt:(int)[ACRInputRenderer elemType]],
              [ACRInputToggleRenderer getInstance],[NSNumber numberWithInt:(int)[ACRInputToggleRenderer elemType]],
-             [ACRInputChoiceSetRenderer getInstance],[NSNumber numberWithInt:(int)[ACRInputChoiceSetRenderer elemType]],
+             [ACRInputChoiceSetRenderer getInstance], [NSNumber numberWithInt:(int)[ACRInputChoiceSetRenderer elemType]],
              [ACRInputDateRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRInputDateRenderer elemType]],
              [ACRInputTimeRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRInputTimeRenderer elemType]],
-             [ACRInputNumberRenderer getInstance],[NSNumber numberWithInt:(int)[ACRInputNumberRenderer elemType]],
+             [ACRInputNumberRenderer getInstance], [NSNumber numberWithInt:(int)[ACRInputNumberRenderer elemType]],
              [ACRFactSetRenderer getInstance],    [NSNumber numberWithInt:(int)[ACRFactSetRenderer elemType]],
              [ACRContainerRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRContainerRenderer elemType]],
              [ACRColumnSetRenderer getInstance],  [NSNumber numberWithInt:(int)[ACRColumnSetRenderer elemType]],

@@ -12,6 +12,7 @@ import io.adaptivecards.objectmodel.AdaptiveCard;
 import io.adaptivecards.objectmodel.BackgroundImage;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseActionElementVector;
+import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.BaseCardElementVector;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
@@ -191,7 +192,7 @@ public class AdaptiveCardRenderer
         if (selectAction != null)
         {
             rootLayout.setClickable(true);
-            rootLayout.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(renderedCard, selectAction, cardActionHandler));
+            rootLayout.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard,selectAction, cardActionHandler));
         }
 
         return rootLayout;
