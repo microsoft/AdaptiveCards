@@ -43,8 +43,5 @@ typedef void (^ObserverActionBlockForBaseAction)(NSObject<ACOIResourceResolver> 
 
 - (UIView *)getBleedTarget:(InternalId const &)internalId;
 
-+ (void)renderBackgroundImageView:(const AdaptiveCards::BackgroundImage *)backgroundImageProperties containerView:(UIView *)containerView rootView:(UIView *)rootView;
-
-+ (void)applyBackgroundImageConstraints:(const AdaptiveCards::BackgroundImage *)backgroundImageProperties imageView:(UIView *)imageView;
 
 @end
