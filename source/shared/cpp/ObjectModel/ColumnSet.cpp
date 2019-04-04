@@ -64,7 +64,6 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
     // for example, if inherited bleed state was BleedToLeft, only LC gets the bleed,
     // the rest of children cannot bleed.
     ContainerBleedDirection previousBleedState = context.GetBleedDirection();
-    auto storedBleedState = previousBleedState; 
 
     if (elemSize == 1)
     {
@@ -128,7 +127,6 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
     }
 
     m_columns = std::move(elements);
-    context.SetBleedDirection(storedBleedState);
 }
 
 void ColumnSet::PopulateKnownPropertiesSet()

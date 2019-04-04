@@ -17,7 +17,7 @@ namespace AdaptiveSharedNamespace
         TextRun& operator=(TextRun&&) = default;
         ~TextRun() = default;
 
-        virtual Json::Value SerializeToJsonValue() const override;
+        virtual Json::Value SerializeToJsonValue() const;
 
         static std::shared_ptr<Inline> Deserialize(ParseContext& context, const Json::Value& root);
 
