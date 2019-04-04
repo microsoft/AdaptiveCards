@@ -31,12 +31,16 @@ export default class ElementWrapper extends React.Component {
 	render() {
 		const computedStyles = this.getComputedStyles();
 		const showValidationText = this.props.isError && this.context.showErrors;
+        const isFirstElement = this.props.isFirst; // Is first element?
 
 		return (
-			<View style={computedStyles} onLayout={this.props.onPageLayout}>
-				{this.props.children}
-				{showValidationText && this.getValidationText()}
-			</View>
+			<React.Fragment>
+				{!isFirstElement && this.getSpacingElement()}
+				<View style={computedStyles} onLayout={this.props.onPageLayout}>
+					{this.props.children}
+					{showValidationText && this.getValidationText()}
+				</View>
+			</React.Fragment>
 		)
 	}
 
@@ -49,21 +53,6 @@ export default class ElementWrapper extends React.Component {
 		const receivedStyles = this.props.style;
 
 		let computedStyles = [styles.inputContainer, receivedStyles];
-
-		// spacing
-		const spacingEnumValue = Utils.parseHostConfigEnum(
-			Enums.Spacing,
-			payload.spacing,
-			Enums.Spacing.Small);
-		const spacing = this.hostConfig.getEffectiveSpacing(spacingEnumValue);
-		computedStyles.push({ marginTop: spacing });
-
-		// separator
-		const separator = payload.separator || false;
-		if (separator) {
-			computedStyles.push(this.styleConfig.separatorStyle);
-			computedStyles.push({ paddingTop: spacing / 2, marginTop: spacing / 2 });
-		}
 
 		// height 
 		const height = payload.height || false;
@@ -94,6 +83,31 @@ export default class ElementWrapper extends React.Component {
 				{errorMessage}
 			</Text>
 		)
+	}
+
+	/**
+     * @description Return the element for spacing and/or separator
+     * @returns {object} View element with spacing based on `spacing` and `separator` prop
+     */
+	getSpacingElement = () => {
+		const payload = this.props.json;
+		const spacingEnumValue = Utils.parseHostConfigEnum(
+			Enums.Spacing,
+			payload.spacing,
+			Enums.Spacing.Default);
+		const spacing = this.hostConfig.getEffectiveSpacing(spacingEnumValue);
+		const separator = payload.separator || false;
+
+		// spacing styles
+		const separatorStyles = [{ height: spacing }];
+
+		// separator styles
+		if (separator) {
+			separatorStyles.push(this.styleConfig.separatorStyle);
+			separatorStyles.push({ paddingTop: spacing / 2, marginTop: spacing / 2, height: 0 });
+		}
+
+		return <View style={separatorStyles}></View>
 	}
 }
 

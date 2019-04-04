@@ -86,7 +86,7 @@ export class PickerInput extends React.Component {
 		return (
 			<InputContextConsumer>
 				{({ addInputItem, showErrors }) => (
-					<ElementWrapper json={this.payload} isError={this.state.isError}>
+					<ElementWrapper json={this.payload} isError={this.state.isError} isFirst={this.props.isFirst}>
 						<TouchableOpacity style={styles.inputWrapper} onPress={this.props.showPicker}>
 							{/* added extra view to fix touch event in ios . */}
 							<View pointerEvents='none' style={this.getComputedStyles(showErrors)}>
