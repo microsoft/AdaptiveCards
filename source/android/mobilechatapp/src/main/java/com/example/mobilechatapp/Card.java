@@ -45,7 +45,7 @@ public class Card
 
         try
         {
-            ParseContext context = new ParseContext(null, null);
+            ParseContext context = new ParseContext(AdaptiveCardRenderer.VERSION, null, null, null);
             m_parsedCard = AdaptiveCard.DeserializeFromString(fullCardString, AdaptiveCardRenderer.VERSION, context);
             if(m_parsedCard != null)
             {

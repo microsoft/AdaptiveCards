@@ -41,3 +41,8 @@
 #define FACILITY_ADAPTIVECARDS 0xADA
 #define ERRORBASE_ADAPTIVECARDS 0x1000
 #define E_PERFORM_FALLBACK MAKE_HRESULT(1, FACILITY_ADAPTIVECARDS, ERRORBASE_ADAPTIVECARDS)
+
+namespace AdaptiveNamespace
+{
+    constexpr const char * const c_rendererVersion = "1.2";
+}

@@ -103,6 +103,13 @@ namespace AdaptiveNamespace
                                                       _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
                                                       _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult) noexcept;
 
+        IFACEMETHODIMP FromJsonWithParserAndFeatureRegistration(
+            _In_ ABI::Windows::Data::Json::IJsonObject* adaptiveJson,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration,
+            _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult) noexcept;
+
         IFACEMETHODIMP FromJsonString(_In_ HSTRING adaptiveJson,
                                       _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult) noexcept;
 
@@ -112,10 +119,18 @@ namespace AdaptiveNamespace
             _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
             _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult) noexcept;
 
+        IFACEMETHODIMP FromJsonStringWithParserAndFeatureRegistration(
+            _In_ HSTRING adaptiveJson,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration,
+            _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult) noexcept;
+
     private:
         HRESULT _FromJsonString(const std::string& jsonString,
                                 _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
                                 _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
+                                _In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration,
                                 _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** parseResult);
     };
 

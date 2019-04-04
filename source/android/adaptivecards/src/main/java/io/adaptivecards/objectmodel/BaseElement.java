@@ -117,8 +117,8 @@ public class BaseElement {
     AdaptiveCardObjectModelJNI.BaseElement_SetFallbackContent(swigCPtr, this, BaseElement.getCPtr(element), element);
   }
 
-  public boolean MeetsRequirements(SWIGTYPE_p_std__unordered_mapT_std__string_std__string_t hostProvides) {
-    return AdaptiveCardObjectModelJNI.BaseElement_MeetsRequirements(swigCPtr, this, SWIGTYPE_p_std__unordered_mapT_std__string_std__string_t.getCPtr(hostProvides));
+  public boolean MeetsRequirements(ParseContext context) {
+    return AdaptiveCardObjectModelJNI.BaseElement_MeetsRequirements(swigCPtr, this, ParseContext.getCPtr(context), context);
   }
 
   public void GetResourceInformation(RemoteResourceInformationVector resourceUris) {

@@ -3,6 +3,11 @@
 #include "AdaptiveCards.Rendering.Uwp.h"
 #include "Util.h"
 #include "AdaptiveActionParserRegistration.h"
+#include "AdaptiveFeatureRegistration.h"
+#include "AdaptiveParseContext.h"
+
+#include <wrl.h>
+#include <wrl/wrappers/corewrappers.h>
 
 namespace AdaptiveNamespace
 {
@@ -62,17 +67,46 @@ namespace AdaptiveNamespace
                      _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
                      _COM_Outptr_ TAdaptiveElementInterface** element)
     {
+        *element = nullptr;
+
+        ComPtr<IAdaptiveParseContext> context;
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveParseContext>(&context, elementParserRegistration, actionParserRegistration, nullptr));
+        return FromJson<TAdaptiveCardElement, TSharedModelElement, TSharedModelParser, TAdaptiveElementInterface>(
+            jsonObject, context.Get(), adaptiveWarnings, element);
+    }
+
+    template<typename TAdaptiveCardElement, typename TSharedModelElement, typename TSharedModelParser, typename TAdaptiveElementInterface>
+    HRESULT FromJson(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
+                     _In_ ABI::AdaptiveNamespace::IAdaptiveParseContext* parseContext,
+                     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
+                     _COM_Outptr_ TAdaptiveElementInterface** element)
+    {
         std::string jsonString;
         JsonObjectToString(jsonObject, jsonString);
 
+        ComPtr<IAdaptiveElementParserRegistration> elementParserRegistration;
+        RETURN_IF_FAILED(parseContext->get_ElementParsers(&elementParserRegistration));
         ComPtr<AdaptiveElementParserRegistration> elementParserRegistrationImpl =
             PeekInnards<AdaptiveElementParserRegistration>(elementParserRegistration);
 
+        ComPtr<IAdaptiveActionParserRegistration> actionParserRegistration;
+        RETURN_IF_FAILED(parseContext->get_ActionParsers(&actionParserRegistration));
         ComPtr<AdaptiveActionParserRegistration> actionParserRegistrationImpl =
             PeekInnards<AdaptiveActionParserRegistration>(actionParserRegistration);
 
-        ParseContext context(elementParserRegistrationImpl->GetSharedParserRegistration(),
-                             actionParserRegistrationImpl->GetSharedParserRegistration());
+        ComPtr<IAdaptiveFeatureRegistration> featureRegistration;
+        RETURN_IF_FAILED(parseContext->get_Features(&featureRegistration));
+        ComPtr<AdaptiveFeatureRegistration> featureRegistrationImpl = PeekInnards<AdaptiveFeatureRegistration>(featureRegistration);
+
+        Microsoft::WRL::Wrappers::HString adaptiveCardsVersion;
+        RETURN_IF_FAILED(parseContext->get_AdaptiveCardsVersion(adaptiveCardsVersion.GetAddressOf()));
+        std::string strAdaptiveCardsVersion;
+        RETURN_IF_FAILED(HStringToUTF8(adaptiveCardsVersion.Get(), strAdaptiveCardsVersion));
+
+        ParseContext context(strAdaptiveCardsVersion,
+                             elementParserRegistrationImpl->GetSharedParserRegistration(),
+                             actionParserRegistrationImpl->GetSharedParserRegistration(),
+                             featureRegistrationImpl->GetSharedFeatureRegistration());
 
         std::vector<std::shared_ptr<AdaptiveCardParseWarning>> warnings;
         std::shared_ptr<TSharedModelParser> parser = std::make_shared<TSharedModelParser>();
@@ -80,7 +114,7 @@ namespace AdaptiveNamespace
 
         RETURN_IF_FAILED(SharedWarningsToAdaptiveWarnings(context.warnings, adaptiveWarnings));
 
-        THROW_IF_FAILED(MakeAndInitialize<TAdaptiveCardElement>(element, std::AdaptivePointerCast<TSharedModelElement>(baseCardElement)));
+        RETURN_IF_FAILED(MakeAndInitialize<TAdaptiveCardElement>(element, std::AdaptivePointerCast<TSharedModelElement>(baseCardElement)));
 
         return S_OK;
     }

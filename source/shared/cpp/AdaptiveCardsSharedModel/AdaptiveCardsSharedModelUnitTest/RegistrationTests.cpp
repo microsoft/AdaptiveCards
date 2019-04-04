@@ -1,6 +1,7 @@
 
 #include "stdafx.h"
 #include "ActionParserRegistration.h"
+#include "FeatureRegistration.h"
 #include "ParseUtil.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -114,6 +115,27 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::IsTrue((bool)elementParser.GetParser(CardElementTypeToString(CardElementType::Container)));
             Assert::ExpectException<AdaptiveCardParseException>([&]() { elementParser.RemoveParser(CardElementTypeToString(CardElementType::Container)); });
             Assert::IsTrue((bool)elementParser.GetParser(CardElementTypeToString(CardElementType::Container)));
+        }
+
+        TEST_METHOD(FeatureRegistrationTests)
+        {
+            FeatureRegistration fr;
+            Assert::ExpectException<AdaptiveCardParseException>([&]() { fr.AddFeature("adaptiveCards"s, "2.0"s); });
+            Assert::ExpectException<AdaptiveCardParseException>([&]() { fr.RemoveFeature("adaptiveCards"s); });
+            fr.AddFeature("NewFeature"s, "1.0"s);
+            Assert::AreEqual("1.0"s, fr.GetFeatureVersion("NewFeature"s));
+            fr.AddFeature("NewFeature"s, "1.0"s);
+            Assert::ExpectException<AdaptiveCardParseException>([&]() { fr.AddFeature("NewFeature"s, "2.0"s); });
+            fr.AddFeature("AnotherNewFeature"s, "*"s);
+            Assert::AreEqual("*"s, fr.GetFeatureVersion("AnotherNewFeature"s));
+            fr.RemoveFeature("NewFeature"s);
+            Assert::AreEqual(""s, fr.GetFeatureVersion("NewFeature"s));
+
+            Assert::ExpectException<AdaptiveCardParseException>([&]() { fr.AddFeature("InvalidFeatureVersion"s, "not a semantic version"s); });
+
+            Assert::AreEqual("1.2"s, fr.GetFeatureVersion("adaptiveCards"));
+            const SemanticVersion oneDotTwo{"1.2"};
+            Assert::IsTrue(oneDotTwo == fr.GetAdaptiveCardsVersion());
         }
     };
 }

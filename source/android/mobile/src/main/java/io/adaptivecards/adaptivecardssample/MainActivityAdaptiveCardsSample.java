@@ -562,6 +562,9 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             actionParserRegistration.AddParser(CustomRedActionElement.CustomActionId, new CustomRedActionParser());
             actionParserRegistration.AddParser(CustomGreenActionElement.CustomActionId, new CustomGreenActionParser());
 
+            FeatureRegistration featureRegistration = new FeatureRegistration(AdaptiveCardRenderer.VERSION);
+            featureRegistration.AddFeature("customFeature", "1.0");
+
             CardRendererRegistration.getInstance().registerRenderer("blah", new CustomBlahRenderer());
             CardRendererRegistration.getInstance().registerActionRenderer(CustomRedActionElement.CustomActionId, new CustomRedActionRenderer());
             CardRendererRegistration.getInstance().registerActionRenderer(CustomGreenActionElement.CustomActionId, new CustomGreenActionRenderer());
@@ -573,7 +576,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                 CardRendererRegistration.getInstance().registerOnlineMediaLoader(new OnlineMediaLoader());
             }
 
-            ParseContext context = new ParseContext(elementParserRegistration, actionParserRegistration);
+            ParseContext context = new ParseContext(AdaptiveCardRenderer.VERSION, elementParserRegistration, actionParserRegistration, featureRegistration);
 
             ParseResult parseResult = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.VERSION, context);
             LinearLayout layout = (LinearLayout) findViewById(R.id.visualAdaptiveCardLayout);

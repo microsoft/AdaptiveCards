@@ -3,6 +3,7 @@
 #include "AdaptiveCardParseResult.h"
 #include "AdaptiveActionParserRegistration.h"
 #include "AdaptiveElementParserRegistration.h"
+#include "AdaptiveFeatureRegistration.h"
 #include "AdaptiveCardParseException.h"
 #include "AdaptiveError.h"
 #include "AdaptiveWarning.h"
@@ -26,7 +27,7 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveCardStaticsImpl::FromJsonString(_In_ HSTRING adaptiveJson,
                                                     _COM_Outptr_ IAdaptiveCardParseResult** parseResult) noexcept try
     {
-        return FromJsonStringWithParserRegistration(adaptiveJson, nullptr, nullptr, parseResult);
+        return FromJsonStringWithParserAndFeatureRegistration(adaptiveJson, nullptr, nullptr, nullptr, parseResult);
     }
     CATCH_RETURN;
 
@@ -36,18 +37,30 @@ namespace AdaptiveNamespace
                                                                           _COM_Outptr_ IAdaptiveCardParseResult** parseResult) noexcept try
     {
         *parseResult = nullptr;
+        return FromJsonStringWithParserAndFeatureRegistration(adaptiveJson, elementParserRegistration, actionParserRegistration, nullptr, parseResult);
+    }
+    CATCH_RETURN;
+
+    HRESULT AdaptiveCardStaticsImpl::FromJsonStringWithParserAndFeatureRegistration(
+        _In_ HSTRING adaptiveJson,
+        _In_ IAdaptiveElementParserRegistration* elementParserRegistration,
+        _In_ IAdaptiveActionParserRegistration* actionParserRegistration,
+        _In_ IAdaptiveFeatureRegistration* featureRegistration,
+        _COM_Outptr_ IAdaptiveCardParseResult** parseResult) noexcept try
+    {
+        *parseResult = nullptr;
 
         std::string adaptiveJsonString;
         RETURN_IF_FAILED(HStringToUTF8(adaptiveJson, adaptiveJsonString));
 
-        return _FromJsonString(adaptiveJsonString, elementParserRegistration, actionParserRegistration, parseResult);
+        return _FromJsonString(adaptiveJsonString, elementParserRegistration, actionParserRegistration, featureRegistration, parseResult);
     }
     CATCH_RETURN;
 
     HRESULT AdaptiveCardStaticsImpl::FromJson(_In_ IJsonObject* adaptiveJson,
                                               _COM_Outptr_ IAdaptiveCardParseResult** parseResult) noexcept try
     {
-        return FromJsonWithParserRegistration(adaptiveJson, nullptr, nullptr, parseResult);
+        return FromJsonWithParserAndFeatureRegistration(adaptiveJson, nullptr, nullptr, nullptr, parseResult);
     }
     CATCH_RETURN;
 
@@ -57,17 +70,30 @@ namespace AdaptiveNamespace
                                                                     _COM_Outptr_ IAdaptiveCardParseResult** parseResult) noexcept try
     {
         *parseResult = nullptr;
+        return FromJsonWithParserAndFeatureRegistration(adaptiveJson, elementParserRegistration, actionParserRegistration, nullptr, parseResult);
+    }
+    CATCH_RETURN;
+
+    HRESULT AdaptiveCardStaticsImpl::FromJsonWithParserAndFeatureRegistration(
+        _In_ IJsonObject* adaptiveJson,
+        _In_ IAdaptiveElementParserRegistration* elementParserRegistration,
+        _In_ IAdaptiveActionParserRegistration* actionParserRegistration,
+        _In_ IAdaptiveFeatureRegistration* featureRegistration,
+        _COM_Outptr_ IAdaptiveCardParseResult** parseResult) noexcept try
+    {
+        *parseResult = nullptr;
 
         std::string adaptiveJsonString;
         RETURN_IF_FAILED(JsonObjectToString(adaptiveJson, adaptiveJsonString));
 
-        return _FromJsonString(adaptiveJsonString, elementParserRegistration, actionParserRegistration, parseResult);
+        return _FromJsonString(adaptiveJsonString, elementParserRegistration, actionParserRegistration, nullptr, parseResult);
     }
     CATCH_RETURN;
 
     HRESULT AdaptiveCardStaticsImpl::_FromJsonString(const std::string& jsonString,
                                                      _In_ IAdaptiveElementParserRegistration* elementParserRegistration,
                                                      _In_ IAdaptiveActionParserRegistration* actionParserRegistration,
+                                                     _In_ IAdaptiveFeatureRegistration* featureRegistration,
                                                      _COM_Outptr_ IAdaptiveCardParseResult** parseResult)
     {
         std::shared_ptr<ElementParserRegistration> sharedModelElementParserRegistration;
@@ -92,12 +118,22 @@ namespace AdaptiveNamespace
             }
         }
 
+        std::shared_ptr<FeatureRegistration> sharedModelFeatureRegistration;
+        if (featureRegistration != nullptr)
+        {
+            ComPtr<AdaptiveFeatureRegistration> featureRegistrationImpl =
+                PeekInnards<AdaptiveFeatureRegistration>(featureRegistration);
+            if (featureRegistrationImpl != nullptr)
+            {
+                sharedModelFeatureRegistration = featureRegistrationImpl->GetSharedFeatureRegistration();
+            }
+        }
+
         ComPtr<AdaptiveCardParseResult> adaptiveParseResult;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCardParseResult>(&adaptiveParseResult));
         try
         {
-            ParseContext context(sharedModelElementParserRegistration, sharedModelActionParserRegistration);
-            const std::string c_rendererVersion = "1.2";
+            ParseContext context(c_rendererVersion, sharedModelElementParserRegistration, sharedModelActionParserRegistration, sharedModelFeatureRegistration);
             std::shared_ptr<AdaptiveSharedNamespace::ParseResult> sharedParseResult =
                 AdaptiveSharedNamespace::AdaptiveCard::DeserializeFromString(jsonString, c_rendererVersion, context);
             ComPtr<IAdaptiveCard> adaptiveCard;

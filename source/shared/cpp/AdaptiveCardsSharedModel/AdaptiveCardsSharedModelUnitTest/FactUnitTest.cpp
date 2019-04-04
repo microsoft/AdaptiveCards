@@ -28,7 +28,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::string json_data = emptyFact.Serialize();
             Assert::IsTrue(json_data == "{\"title\":\"1 Example Title!\",\"value\":\"1 Example Value!\"}\n");
 
-            ParseContext context{};
+            ParseContext context;
 
             auto parsedFact = Fact::DeserializeFromString(context, json_data);
 

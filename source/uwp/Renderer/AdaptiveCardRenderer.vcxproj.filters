@@ -109,6 +109,8 @@
     <ClCompile Include="lib\AdaptiveTextRun.cpp" />
     <ClCompile Include="lib\AdaptiveTextElement.cpp" />
     <ClCompile Include="lib\TextHelpers.cpp" />
+    <ClCompile Include="lib\AdaptiveFeatureRegistration.cpp" />
+    <ClCompile Include="lib\AdaptiveParseContext.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -225,6 +227,8 @@
     <ClInclude Include="lib\AdaptiveTextRun.h" />
     <ClInclude Include="lib\AdaptiveTextElement.h" />
     <ClInclude Include="lib\TextHelpers.h" />
+    <ClInclude Include="lib\AdaptiveFeatureRegistration.h" />
+    <ClInclude Include="lib\AdaptiveParseContext.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />

@@ -979,7 +979,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             auto parseResult = AdaptiveCard::DeserializeFromString(cardStr, "1.2");
             auto card = parseResult->GetAdaptiveCard();
             auto serializedCard = card->Serialize();
-            Assert::AreEqual("{\"actions\":[],\"body\":[{\"fallback\":{\"text\":\"This element has no version requirement\",\"type\":\"TextBlock\"},\"requires\":{\"adaptiveCards\":\"1.2.0.0\",\"foobar\":\"2.0.0.0\"},\"text\":\"This element requires version 1.2\",\"type\":\"TextBlock\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.2\"}\n",
+            Assert::AreEqual("{\"actions\":[],\"body\":[{\"fallback\":{\"text\":\"This element has no version requirement\",\"type\":\"TextBlock\"},\"requires\":{\"adaptiveCards\":\"1.2\",\"foobar\":\"2\"},\"text\":\"This element requires version 1.2\",\"type\":\"TextBlock\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.2\"}\n",
                 serializedCard.c_str());
         }
 
@@ -1009,19 +1009,21 @@ namespace AdaptiveCardsSharedModelUnitTest
             auto body = card->GetBody();
             auto textBlock = std::static_pointer_cast<TextBlock>(body[0]);
             auto textBlockNoRequires = std::static_pointer_cast<TextBlock>(body[1]);
-            std::unordered_map<std::string, std::string> hostProvides { { "foobar", "2" } };
-            Assert::IsTrue(textBlock->MeetsRequirements(hostProvides));
-            Assert::IsTrue(textBlockNoRequires->MeetsRequirements(hostProvides));
-            hostProvides.clear();
-            Assert::IsFalse(textBlock->MeetsRequirements(hostProvides));
-            Assert::IsTrue(textBlockNoRequires->MeetsRequirements(hostProvides));
-            hostProvides.insert({ "foobar", "1.9.9.9" });
-            Assert::IsFalse(textBlock->MeetsRequirements(hostProvides));
-            Assert::IsTrue(textBlockNoRequires->MeetsRequirements(hostProvides));
-            hostProvides.clear();
-            hostProvides.insert({ "foobar", "99" });
-            Assert::IsTrue(textBlock->MeetsRequirements(hostProvides));
-            Assert::IsTrue(textBlockNoRequires->MeetsRequirements(hostProvides));
+
+            ParseContext context;
+            context.featureRegistration->AddFeature("foobar", "2");
+            Assert::IsTrue(textBlock->MeetsRequirements(context));
+            Assert::IsTrue(textBlockNoRequires->MeetsRequirements(context));
+            context.featureRegistration->RemoveFeature("foobar");
+            Assert::IsFalse(textBlock->MeetsRequirements(context));
+            Assert::IsTrue(textBlockNoRequires->MeetsRequirements(context));
+            context.featureRegistration->AddFeature("foobar", "1.9.9.9");
+            Assert::IsFalse(textBlock->MeetsRequirements(context));
+            Assert::IsTrue(textBlockNoRequires->MeetsRequirements(context));
+            context.featureRegistration->RemoveFeature("foobar");
+            context.featureRegistration->AddFeature("foobar", "99");
+            Assert::IsTrue(textBlock->MeetsRequirements(context));
+            Assert::IsTrue(textBlockNoRequires->MeetsRequirements(context));
         }
 
         TEST_METHOD(NestedFallbacksSerialization)

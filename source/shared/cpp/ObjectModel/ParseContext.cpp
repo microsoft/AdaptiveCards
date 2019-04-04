@@ -1,23 +1,34 @@
 #include "pch.h"
 #include "ParseContext.h"
+
 #include "AdaptiveCardParseException.h"
 #include "BaseElement.h"
 #include "CollectionTypeElement.h"
+#include "FeatureRegistration.h"
 
 namespace AdaptiveSharedNamespace
 {
     ParseContext::ParseContext() :
         elementParserRegistration{std::make_shared<ElementParserRegistration>()},
-        actionParserRegistration{std::make_shared<ActionParserRegistration>()}, warnings{}, m_idStack{}, m_elementIds{},
+        actionParserRegistration{std::make_shared<ActionParserRegistration>()},
+        featureRegistration{std::make_shared<FeatureRegistration>()}, warnings{}, m_idStack{}, m_elementIds{},
         m_parentalContainerStyles{}, m_parentalPadding{}, m_parentalBleedDirection{}
     {
     }
 
-    ParseContext::ParseContext(std::shared_ptr<ElementParserRegistration> elementRegistration, std::shared_ptr<ActionParserRegistration> actionRegistration) :
-        warnings{}, m_idStack{}, m_elementIds{}, m_parentalContainerStyles{}, m_parentalPadding{}, m_parentalBleedDirection{}
+    ParseContext::ParseContext(std::shared_ptr<ElementParserRegistration> elementRegistration,
+                               std::shared_ptr<ActionParserRegistration> actionRegistration,
+                               std::shared_ptr<FeatureRegistration> featureRegistration) :
+        warnings{},
+        m_idStack{}, m_elementIds{}, m_parentalContainerStyles{}, m_parentalPadding{}, m_parentalBleedDirection{}
     {
         elementParserRegistration = (elementRegistration) ? elementRegistration : std::make_shared<ElementParserRegistration>();
         actionParserRegistration = (actionRegistration) ? actionRegistration : std::make_shared<ActionParserRegistration>();
+
+        if (!featureRegistration)
+        {
+            featureRegistration = std::make_shared<FeatureRegistration>();
+        }
     }
 
     // Detecting ID collisions

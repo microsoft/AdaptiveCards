@@ -30,7 +30,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             std::string json_data = emptyTB.Serialize();
             Assert::IsTrue(json_data == "{\"text\":\"\",\"type\":\"TextBlock\"}\n");
 
-            ParseContext context {};
+            ParseContext context;
 
             TextBlockParser parser;
             auto parsedObject = parser.DeserializeFromString(context, json_data);

@@ -34,11 +34,24 @@ namespace AdaptiveNamespace
         _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
         _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
         _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
-        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
+        _Inout_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
+        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept try
+    {
+        *element = nullptr;
+        ComPtr<IAdaptiveParseContext> context;
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveParseContext>(&context, elementParserRegistration, actionParserRegistration, nullptr));
+        return FromJsonWithParseContext(jsonObject, context.Get(), adaptiveWarnings, element);
+    }
+    CATCH_RETURN;
+
+    HRESULT AdaptiveRichTextBlockRenderer::FromJsonWithParseContext(
+        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
+        _In_ ABI::AdaptiveNamespace::IAdaptiveParseContext* parseContext,
+        _Inout_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
         _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept try
     {
         return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveRichTextBlock, AdaptiveSharedNamespace::RichTextBlock, AdaptiveSharedNamespace::RichTextBlockParser>(
-            jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
+            jsonObject, parseContext, adaptiveWarnings, element);
     }
     CATCH_RETURN;
 }

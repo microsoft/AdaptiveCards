@@ -15,44 +15,44 @@ namespace AdaptiveSharedNamespace
     public:
         AdaptiveCard();
 
-        AdaptiveCard(std::string const& version,
-                     std::string const& fallbackText,
-                     std::string const& backgroundImageUrl,
+        AdaptiveCard(const std::string& version,
+                     const std::string& fallbackText,
+                     const std::string& backgroundImageUrl,
                      ContainerStyle style,
-                     std::string const& speak,
-                     std::string const& language,
+                     const std::string& speak,
+                     const std::string& language,
                      VerticalContentAlignment verticalContentAlignment,
                      HeightType height,
                      unsigned int minHeight);
 
-        AdaptiveCard(std::string const& version,
-                     std::string const& fallbackText,
-                     std::string const& backgroundImageUrl,
+        AdaptiveCard(const std::string& version,
+                     const std::string& fallbackText,
+                     const std::string& backgroundImageUrl,
                      ContainerStyle style,
-                     std::string const& speak,
-                     std::string const& language,
+                     const std::string& speak,
+                     const std::string& language,
                      VerticalContentAlignment verticalContentAlignment,
                      HeightType height,
                      unsigned int minHeight,
                      std::vector<std::shared_ptr<BaseCardElement>>& body,
                      std::vector<std::shared_ptr<BaseActionElement>>& actions);
 
-        AdaptiveCard(std::string const& version,
-                     std::string const& fallbackText,
+        AdaptiveCard(const std::string& version,
+                     const std::string& fallbackText,
                      std::shared_ptr<BackgroundImage> backgroundImage,
                      ContainerStyle style,
-                     std::string const& speak,
-                     std::string const& language,
+                     const std::string& speak,
+                     const std::string& language,
                      VerticalContentAlignment verticalContentAlignment,
                      HeightType height,
                      unsigned int minHeight);
 
-        AdaptiveCard(std::string const& version,
-                     std::string const& fallbackText,
+        AdaptiveCard(const std::string& version,
+                     const std::string& fallbackText,
                      std::shared_ptr<BackgroundImage> backgroundImage,
                      ContainerStyle style,
-                     std::string const& speak,
-                     std::string const& language,
+                     const std::string& speak,
+                     const std::string& language,
                      VerticalContentAlignment verticalContentAlignment,
                      HeightType height,
                      unsigned int minHeight,
@@ -91,37 +91,37 @@ namespace AdaptiveSharedNamespace
         const CardElementType GetElementType() const;
 #ifdef __ANDROID__
         static std::shared_ptr<ParseResult> DeserializeFromFile(const std::string& jsonFile,
-                                                                std::string rendererVersion,
+                                                                const std::string& rendererVersion,
                                                                 ParseContext& context) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
         static std::shared_ptr<ParseResult> DeserializeFromFile(const std::string& jsonFile,
                                                                 std::string rendererVersion) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
 
         static std::shared_ptr<ParseResult> Deserialize(const Json::Value& json,
-                                                        std::string rendererVersion,
+                                                        const std::string& rendererVersion,
                                                         ParseContext& context) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
 
         static std::shared_ptr<ParseResult> DeserializeFromString(const std::string& jsonString,
-                                                                  std::string rendererVersion,
+                                                                  const std::string& rendererVersion,
                                                                   ParseContext& context) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
         static std::shared_ptr<ParseResult> DeserializeFromString(const std::string& jsonString,
-                                                                  std::string rendererVersion) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
+                                                                  const std::string& rendererVersion) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
         static std::shared_ptr<AdaptiveCard> MakeFallbackTextCard(const std::string& fallbackText,
                                                                   const std::string& language,
                                                                   const std::string& speak) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
 #else
         static std::shared_ptr<ParseResult> DeserializeFromFile(const std::string& jsonFile,
-                                                                std::string rendererVersion,
+                                                                const std::string& rendererVersion,
                                                                 ParseContext& context);
         static std::shared_ptr<ParseResult> DeserializeFromFile(const std::string& jsonFile,
-                                                                std::string rendererVersion);
+                                                                const std::string& rendererVersion);
 
-        static std::shared_ptr<ParseResult> Deserialize(const Json::Value& json, std::string rendererVersion, ParseContext& context);
+        static std::shared_ptr<ParseResult> Deserialize(const Json::Value& json, const std::string& rendererVersion, ParseContext& context);
 
         static std::shared_ptr<ParseResult> DeserializeFromString(const std::string& jsonString,
-                                                                  std::string rendererVersion,
+                                                                  const std::string& rendererVersion,
                                                                   ParseContext& context);
         static std::shared_ptr<ParseResult> DeserializeFromString(const std::string& jsonString,
-                                                                  std::string rendererVersion);
+                                                                  const std::string& rendererVersion);
 
         static std::shared_ptr<AdaptiveCard> MakeFallbackTextCard(const std::string& fallbackText,
                                                                   const std::string& language,

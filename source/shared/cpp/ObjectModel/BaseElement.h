@@ -90,7 +90,7 @@ namespace AdaptiveSharedNamespace
             m_fallbackContent = element;
         }
 
-        bool MeetsRequirements(const std::unordered_map<std::string, std::string>& hostProvides) const;
+        bool MeetsRequirements(AdaptiveSharedNamespace::ParseContext& context) const;
 
         // Misc.
         virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris);

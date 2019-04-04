@@ -14,7 +14,8 @@ public enum ErrorStatusCode {
   RequiredPropertyMissing,
   InvalidPropertyValue,
   UnsupportedParserOverride,
-  IdCollision;
+  IdCollision,
+  DuplicateFeatureName;
 
   public final int swigValue() {
     return swigValue;
