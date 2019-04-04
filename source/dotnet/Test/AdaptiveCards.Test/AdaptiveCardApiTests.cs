@@ -814,5 +814,176 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(card.BackgroundImage.UrlString, testUrl.ToString());
             Assert.AreEqual(card.BackgroundImage.Url, testUrl);
         }
+
+        [TestMethod]
+        public void TestParseActionSetElement()
+        {
+            var payload =
+                @"{
+                    ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                    ""type"": ""AdaptiveCard"",
+                    ""version"": ""1.2"",
+                    ""body"": [
+                      {
+                        ""type"": ""ActionSet"",
+                        ""actions"": [
+                          {
+                            ""type"": ""Action.Submit"",
+                            ""title"": ""Action.Submit"",
+                            ""data"": {
+                              ""x"": 13
+                            }
+                          },
+                          {
+                            ""type"": ""Action.OpenUrl"",
+                            ""title"": ""OpenUrl"",
+                            ""url"": ""http://adaptivecards.io""
+                          },
+                          {
+                            ""type"": ""Action.ShowCard"",
+                            ""title"": ""ShowCard"",
+                            ""card"": {
+                              ""type"": ""AdaptiveCard"",
+                              ""body"": [
+                                {
+                                  ""type"": ""TextBlock"",
+                                  ""text"": ""This is a show card""
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            ""type"": ""Action.ToggleVisibility"",
+                            ""title"": ""Toggle"",
+                            ""targetElements"": [ ""test"" ]
+                          }
+                        ]
+                      }
+                    ],
+                  ""actions"": []
+                }";
+
+            var result = AdaptiveCard.FromJson(payload);
+            var card = result?.Card;
+            var containers = card.Body;
+            Assert.AreEqual(containers.Count, 1);
+
+            var actionSet = (AdaptiveActionSet)card.Body[0];
+            Assert.AreEqual(4, actionSet.Actions.Count);
+
+            Assert.IsTrue(actionSet.Actions[0] is AdaptiveSubmitAction);
+            var actionSubmit = (AdaptiveSubmitAction)actionSet.Actions[0];
+            Assert.IsTrue(actionSubmit.Title == "Action.Submit");
+            Assert.IsNotNull(actionSubmit.Data);
+
+            Assert.IsTrue(actionSet.Actions[1] is AdaptiveOpenUrlAction);
+            var actionOpenUrl = (AdaptiveOpenUrlAction)actionSet.Actions[1];
+            Assert.IsTrue(actionOpenUrl.Title == "OpenUrl");
+            Assert.IsFalse(String.IsNullOrWhiteSpace(actionOpenUrl.UrlString));
+
+            Assert.IsTrue(actionSet.Actions[2] is AdaptiveShowCardAction);
+            var actionShowCard = (AdaptiveShowCardAction)actionSet.Actions[2];
+            Assert.IsTrue(actionShowCard.Title == "ShowCard");
+            Assert.IsNotNull(actionShowCard.Card);
+
+            Assert.IsTrue(actionSet.Actions[3] is AdaptiveToggleVisibilityAction);
+            var actionToggleVisibility = (AdaptiveToggleVisibilityAction)actionSet.Actions[3];
+            Assert.IsTrue(actionToggleVisibility.Title == "Toggle");
+            Assert.IsTrue(actionToggleVisibility.TargetElements.Count != 0);
+        }
+
+        [TestMethod]
+        public void TestObjectModelActionSetElement()
+        {
+            AdaptiveCard card = new AdaptiveCard(new AdaptiveSchemaVersion("1.2"));
+            AdaptiveActionSet actionSet = new AdaptiveActionSet();
+            card.Body.Add(actionSet);
+
+            AdaptiveSubmitAction submitAction = new AdaptiveSubmitAction
+            {
+                Title = "Action.Submit",
+                DataJson = "{\"x\": 13}"
+            };
+            actionSet.Actions.Add(submitAction);
+
+            AdaptiveOpenUrlAction openUrlAction = new AdaptiveOpenUrlAction
+            {
+                Title = "OpenUrl",
+                UrlString = "http://adaptivecards.io"
+            };
+            actionSet.Actions.Add(openUrlAction);
+
+            AdaptiveShowCardAction showCardAction = new AdaptiveShowCardAction
+            {
+                Title = "ShowCard",
+                Card = new AdaptiveCard
+                {
+                    Body = new List<AdaptiveElement>
+                    {
+                        new AdaptiveTextBlock
+                        {
+                            Text = "This is a show card"
+                        }
+                    }
+                }
+            };
+            actionSet.Actions.Add(showCardAction);
+
+            AdaptiveToggleVisibilityAction toggleVisibilityAction = new AdaptiveToggleVisibilityAction
+            {
+                Title = "Toggle",
+                TargetElements = new List<AdaptiveTargetElement> { "test" }
+            };
+            actionSet.Actions.Add(toggleVisibilityAction);
+
+            var expectedJson =
+@"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.2"",
+  ""body"": [
+    {
+      ""type"": ""ActionSet"",
+      ""actions"": [
+        {
+          ""type"": ""Action.Submit"",
+          ""data"": {
+            ""x"": 13
+          },
+          ""title"": ""Action.Submit""
+        },
+        {
+          ""type"": ""Action.OpenUrl"",
+          ""url"": ""http://adaptivecards.io"",
+          ""title"": ""OpenUrl""
+        },
+        {
+          ""type"": ""Action.ShowCard"",
+          ""card"": {
+            ""type"": ""AdaptiveCard"",
+            ""version"": ""1.0"",
+            ""body"": [
+              {
+                ""type"": ""TextBlock"",
+                ""text"": ""This is a show card""
+              }
+            ]
+          },
+          ""title"": ""ShowCard""
+        },
+        {
+          ""type"": ""Action.ToggleVisibility"",
+          ""targetElements"": [
+            ""test""
+          ],
+          ""title"": ""Toggle""
+        }
+      ]
+    }
+  ]
+}";
+
+            var outputJson = card.ToJson();
+            Assert.AreEqual(outputJson, expectedJson);
+        }
     }
 }
