@@ -196,8 +196,7 @@ public class CardRetriever
             value = FirstSectionValue.all;
         }
         else if( (firstSectionString.compareToIgnoreCase("random") == 0) ||
-                (firstSectionString.charAt(0) == 'R') ||
-                (firstSectionString.charAt(0) == 'r') )
+                (firstSectionString.compareToIgnoreCase("R") == 0 ) )
         {
             value = FirstSectionValue.random;
         }

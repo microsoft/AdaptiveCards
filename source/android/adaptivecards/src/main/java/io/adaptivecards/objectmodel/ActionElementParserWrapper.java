@@ -51,6 +51,11 @@ public class ActionElementParserWrapper extends ActionElementParser {
     return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
   }
 
+  public BaseActionElement DeserializeFromString(ParseContext context, String value) {
+    long cPtr = AdaptiveCardObjectModelJNI.ActionElementParserWrapper_DeserializeFromString(swigCPtr, this, ParseContext.getCPtr(context), context, value);
+    return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
+  }
+
   public ActionElementParser GetActualParser() {
     long cPtr = AdaptiveCardObjectModelJNI.ActionElementParserWrapper_GetActualParser(swigCPtr, this);
     return (cPtr == 0) ? null : new ActionElementParser(cPtr, true);

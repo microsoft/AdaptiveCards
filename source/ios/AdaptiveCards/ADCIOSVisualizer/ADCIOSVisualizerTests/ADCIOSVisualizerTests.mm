@@ -10,7 +10,6 @@
 #import <AdaptiveCards/ACFramework.h>
 #import "AdaptiveCards/ACORemoteResourceInformationPrivate.h"
 
-
 @interface ADCIOSVisualizerTests : XCTestCase
 
 @end
