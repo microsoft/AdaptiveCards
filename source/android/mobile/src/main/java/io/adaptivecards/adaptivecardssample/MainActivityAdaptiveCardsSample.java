@@ -61,6 +61,8 @@ import java.util.TimerTask;
 import android.media.MediaDataSource;
 import android.support.annotation.RequiresApi;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.pixplicity.sharp.Sharp;
 
 public class MainActivityAdaptiveCardsSample extends FragmentActivity
@@ -421,6 +423,11 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         }
     }
 
+    public void onScanQrClicked(View view)
+    {
+        new IntentIntegrator(this).initiateScan();
+    }
+
     private String loadFile(Uri uri)
     {
         // Get the Uri of the selected file
@@ -493,6 +500,38 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult qrResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (qrResult != null)
+        {
+            String contents = qrResult.getContents();
+            if (contents != null)
+            {
+                RemoteClientConnection remoteConn = new RemoteClientConnection(this, new RemoteClientConnection.Observer()
+                {
+                    @Override
+                    public void onConnecting(String status)
+                    {
+                        Toast.makeText(getApplicationContext(), status, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onConnected()
+                    {
+                        Toast.makeText(getApplicationContext(), "Connected!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onConnectFailed(String errorMessage)
+                    {
+                        Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                remoteConn.connect(contents);
+            }
+            return;
+        }
+
         switch (requestCode) {
             case FILE_SELECT_CARD:
                 if (resultCode == RESULT_OK)

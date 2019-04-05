@@ -407,17 +407,6 @@ export class CardDesigner {
 		this._shareButton.alignment = ToolbarElementAlignment.Right;
 		
 		this.toolbar.addElement(this._shareButton);
-
-        var acceptJoinButton = new ToolbarButton(
-            CardDesigner.ToolbarCommands.FullScreen,
-            "Accept",
-            "acd-icon-share",
-            (sender) => { this.acceptJoin(); });
-		acceptJoinButton.displayCaption = true;
-		acceptJoinButton.toolTip = "Accept";
-		acceptJoinButton.alignment = ToolbarElementAlignment.Right;
-		
-		this.toolbar.addElement(acceptJoinButton);
 		
         this._joinButton = new ToolbarButton(
             CardDesigner.ToolbarCommands.FullScreen,
@@ -1117,14 +1106,23 @@ export class CardDesigner {
 		.then((desc) => this._hostPeerConn.setLocalDescription(desc))
 		.then(() => {})
 		.catch((err) => console.error(err));
+
+		var candidates = [];
 		this._hostPeerConn.onicecandidate = (e) => {
-			if (e.candidate == null) {
-				var offerStr = JSON.stringify(this._hostPeerConn.localDescription);
+			if (e.candidate != null) {
+				candidates.push(e.candidate);
+			} else {
+				var offerAndCandidates = {
+					sdp: this._hostPeerConn.localDescription.sdp,
+					candidates: candidates
+				};
+
+				var offerAndCandidatesStr = JSON.stringify(offerAndCandidates);
 
 				// Create the subscription
 				fetch("https://" + this._signalingServerBaseUrl, {
 					method: "POST",
-					body: offerStr
+					body: offerAndCandidatesStr
 				})
 				.then(resp => {
 					if (resp.ok) {
@@ -1168,11 +1166,20 @@ export class CardDesigner {
 
 	private onHostSocketReceivedMessage(event) {
 		alert("Socket received message: " + event.data);
-		var answer = JSON.parse(event.data);
+		var answerAndCandidatesStr: string = event.data;
+		var answerAndCandidates = JSON.parse(answerAndCandidatesStr);
 		if (!this._hostPeerConn) {
 			alert("Host null");
+			return;
 		}
+		var answer: any = {
+			type: "answer",
+			sdp: answerAndCandidates.sdp
+		};
 		this._hostPeerConn.setRemoteDescription(new RTCSessionDescription(answer));
+		for (var i = 0; i < answerAndCandidates.candidates.length; i++) {
+			this._hostPeerConn.addIceCandidate(answerAndCandidates.candidates[i]);
+		}
 		alert("Client connected!");
 	}
 
@@ -1188,15 +1195,10 @@ export class CardDesigner {
 		}
 	}
 
-	acceptJoin() {
-		var answer = JSON.parse(prompt("Enter join answer"));
-
-		this._hostPeerConn.setRemoteDescription(new RTCSessionDescription(answer));
-	}
-
 	join() {
 		var respondId = prompt("Enter respond id");
 
+		var candidates = [];
 		fetch("https://" + this._signalingServerBaseUrl + "/" + respondId)
 		.then(resp => {
 			if (resp.ok) {
@@ -1204,7 +1206,7 @@ export class CardDesigner {
 			}
 			throw new Error("Network response wasn't ok");
 		})
-		.then(offer => {
+		.then(offerAndCandidates => {
 			this._clientPeerConn = new RTCPeerConnection({'iceServers': [{'urls': ['stun:stun.l.google.com:19302']}]});
 			this._clientPeerConn.ondatachannel = (e) => {
 				var dataChannel = e.channel;
@@ -1219,31 +1221,43 @@ export class CardDesigner {
 				}
 			};
 			this._clientPeerConn.onicecandidate = (e) => {
-				if (e.candidate == null) {
-				console.log("Get the creator to call: gotAnswer(", JSON.stringify(this._clientPeerConn.localDescription), ")");
+				if (e.candidate != null) {
+					candidates.push(e.candidate);
+				} else {
+					console.log("Get the creator to call: gotAnswer(", JSON.stringify(this._clientPeerConn.localDescription), ")");
 
-				var answer = JSON.stringify(this._clientPeerConn.localDescription);
+					var answerAndCandidates = {
+						sdp: this._clientPeerConn.localDescription.sdp,
+						candidates: candidates
+					};
 
-				fetch("https://" + this._signalingServerBaseUrl + "/" + respondId, {
-					method: "PUT",
-					body: answer
-				})
-				.then(resp => {
-					if (resp.ok) {
-						return resp.text();
-					}
-					throw new Error("Network response wasn't ok");
-				})
-				.then(txt => {
-					alert("Success");
-				})
-				.catch(error => {
-					alert(error);
-				});
+					fetch("https://" + this._signalingServerBaseUrl + "/" + respondId, {
+						method: "PUT",
+						body: JSON.stringify(answerAndCandidates)
+					})
+					.then(resp => {
+						if (resp.ok) {
+							return resp.text();
+						}
+						throw new Error("Network response wasn't ok");
+					})
+					.then(txt => {
+						alert("Success");
+					})
+					.catch(error => {
+						alert(error);
+					});
 				}
+			};
+			var offer: any = {
+				type: "offer",
+				sdp: offerAndCandidates.sdp
 			};
 			var offerDesc = new RTCSessionDescription(offer);
 			this._clientPeerConn.setRemoteDescription(offerDesc);
+			for (var i = 0; i < offerAndCandidates.candidates.length; i++) {
+				this._clientPeerConn.addIceCandidate(offerAndCandidates.candidates[i]);
+			}
 			this._clientPeerConn.createAnswer({})
 				.then((answerDesc) => this._clientPeerConn.setLocalDescription(answerDesc))
 				.catch((err) => console.warn("Couldn't create answer"));
