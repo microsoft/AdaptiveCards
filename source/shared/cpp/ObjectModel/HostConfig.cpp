@@ -141,7 +141,7 @@ void ColorConfig::SetBaseColor(const std::string& baseColor)
 
 ColorConfig GetColorConfig(const Json::Value& json, AdaptiveCardSchemaKey key, const ColorConfig& defaultValue)
 {
-    std::string stringResult = ParseUtil::TryGetString(json, key);
+    const std::string stringResult = ParseUtil::TryGetString(json, key);
     if (!stringResult.empty())
     {
         // If the host sets the color config to a single string, use that string for both default and subtle

@@ -33,10 +33,8 @@ namespace AdaptiveSharedNamespace
         ContainerStyle GetParentalContainerStyle() const;
         void SetParentalContainerStyle(const ContainerStyle style);
         AdaptiveSharedNamespace::InternalId PaddingParentInternalId() const;
-        void SaveContextForCollectionTypeElement(
-            const std::shared_ptr<CollectionTypeElement>& current);
-        void RestoreContextForCollectionTypeElement(
-            const std::shared_ptr<CollectionTypeElement>& current);
+        void SaveContextForCollectionTypeElement(const CollectionTypeElement& current);
+        void RestoreContextForCollectionTypeElement(const CollectionTypeElement& current);
         ContainerBleedDirection GetBleedDirection() const { return m_currentBleedDirection; }
         void SetBleedDirection(const ContainerBleedDirection direction) { m_currentBleedDirection = direction; }
 
@@ -71,7 +69,6 @@ namespace AdaptiveSharedNamespace
         std::vector<ContainerStyle> m_parentalContainerStyles;
         std::vector<AdaptiveSharedNamespace::InternalId> m_parentalPadding;
 
-        ContainerStyle m_parentalContainerStyle;
         ContainerBleedDirection m_currentBleedDirection;
         ContainerBleedDirection m_previousBleedDirection;
 
