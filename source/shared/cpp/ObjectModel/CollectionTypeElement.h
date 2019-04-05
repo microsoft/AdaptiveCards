@@ -32,7 +32,7 @@ namespace AdaptiveSharedNamespace
         // when GetCanBleed() return true
         // Can Bleed
         // To find the direction of the bleed
-        // Call GetBleedDirection()        
+        // Call GetBleedDirection()
         // the renderer must also check if HostConfig has
         // padding for card, the root, if the padding is allowed,
         // then the element can bleed to the card
@@ -109,13 +109,13 @@ namespace AdaptiveSharedNamespace
 
         // we walk parse tree dfs, so we need to save current style,
         // before we walk back up to a parent.
-        context.SaveContextForCollectionTypeElement(collection);
+        context.SaveContextForCollectionTypeElement(*collection);
 
         // Parse Items
         collection->DeserializeChildren(context, value);
 
         // since we are walking dfs, we have to restore the style before we back up
-        context.RestoreContextForCollectionTypeElement(collection);
+        context.RestoreContextForCollectionTypeElement(*collection);
 
         // Parse optional selectAction
         collection->SetSelectAction(ParseUtil::GetAction(context, value, AdaptiveCardSchemaKey::SelectAction, false));

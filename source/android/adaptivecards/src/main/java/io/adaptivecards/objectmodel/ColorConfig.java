@@ -55,6 +55,10 @@ public class ColorConfig {
     return new ColorConfig(AdaptiveCardObjectModelJNI.ColorConfig_Deserialize(JsonValue.getCPtr(json), json, ColorConfig.getCPtr(defaultValue), defaultValue), true);
   }
 
+  public void SetBaseColor(String baseColor) {
+    AdaptiveCardObjectModelJNI.ColorConfig_SetBaseColor(swigCPtr, this, baseColor);
+  }
+
   public ColorConfig() {
     this(AdaptiveCardObjectModelJNI.new_ColorConfig(), true);
   }

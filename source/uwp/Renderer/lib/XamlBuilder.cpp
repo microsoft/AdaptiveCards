@@ -3284,7 +3284,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(adaptiveDateInput->get_Value(hstringValue.GetAddressOf()));
         std::string value = HStringToUTF8(hstringValue.Get());
         unsigned int year, month, day;
-        if (DateTimePreparser::TryParseSimpleDate(value, &year, &month, &day))
+        if (DateTimePreparser::TryParseSimpleDate(value, year, month, day))
         {
             ComPtr<IReference<DateTime>> initialDateTimeReference;
             RETURN_IF_FAILED(GetDateTimeReference(year, month, day, &initialDateTimeReference));
@@ -3295,7 +3295,7 @@ namespace AdaptiveNamespace
         HString hstringMin;
         RETURN_IF_FAILED(adaptiveDateInput->get_Min(hstringMin.GetAddressOf()));
         std::string min = HStringToUTF8(hstringMin.Get());
-        if (DateTimePreparser::TryParseSimpleDate(min, &year, &month, &day))
+        if (DateTimePreparser::TryParseSimpleDate(min, year, month, day))
         {
             DateTime minDate = GetDateTime(year, month, day);
             RETURN_IF_FAILED(datePicker->put_MinDate(minDate));
@@ -3305,7 +3305,7 @@ namespace AdaptiveNamespace
         HString hstringMax;
         RETURN_IF_FAILED(adaptiveDateInput->get_Max(hstringMax.GetAddressOf()));
         std::string max = HStringToUTF8(hstringMax.Get());
-        if (DateTimePreparser::TryParseSimpleDate(max, &year, &month, &day))
+        if (DateTimePreparser::TryParseSimpleDate(max, year, month, day))
         {
             DateTime maxDate = GetDateTime(year, month, day);
             RETURN_IF_FAILED(datePicker->put_MaxDate(maxDate));
@@ -3760,7 +3760,7 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(adaptiveTimeInput->get_Value(hstringValue.GetAddressOf()));
         std::string value = HStringToUTF8(hstringValue.Get());
         unsigned int hours, minutes;
-        if (DateTimePreparser::TryParseSimpleTime(value, &hours, &minutes))
+        if (DateTimePreparser::TryParseSimpleTime(value, hours, minutes))
         {
             TimeSpan initialTime{(INT64)(hours * 60 + minutes) * 10000000 * 60};
             THROW_IF_FAILED(timePicker->put_Time(initialTime));

@@ -39,7 +39,7 @@ Json::Value ColumnSet::SerializeToJsonValue() const
 }
 
 void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& value)
-{ 
+{
     auto elementArray = ParseUtil::GetArray(value, AdaptiveCardSchemaKey::Columns, false);
 
     std::vector<std::shared_ptr<Column>> elements;
@@ -63,7 +63,7 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
     // only child that has same restriction get bleed property
     // for example, if inherited bleed state was BleedToLeft, only LC gets the bleed,
     // the rest of children cannot bleed.
-    ContainerBleedDirection previousBleedState = context.GetBleedDirection();
+    const ContainerBleedDirection previousBleedState = context.GetBleedDirection();
 
     if (elemSize == 1)
     {
@@ -156,4 +156,3 @@ std::shared_ptr<BaseCardElement> ColumnSetParser::DeserializeFromString(ParseCon
 {
     return ColumnSetParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }
-
