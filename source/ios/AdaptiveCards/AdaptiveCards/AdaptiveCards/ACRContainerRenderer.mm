@@ -42,7 +42,7 @@
                                                         parentStyle:[viewGroup style] hostConfig:acoConfig superview:viewGroup];
     [viewGroup addArrangedSubview:container];
 
-    //configBleed(rootView, elem, container, acoConfig);
+    configBleed(rootView, elem, container, acoConfig);
 
     renderBackgroundImage(containerElem->GetBackgroundImage(), container, rootView);
 
