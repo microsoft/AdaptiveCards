@@ -52,7 +52,7 @@ export class CardDesigner {
 	private _treeViewPane: SidePane;
 	private _assetPath: string;
 
-    private buildTreeView() {
+    private async buildTreeView() {
         if (this._treeViewPane.content) {
             this._treeViewPane.content.innerHTML = "";
             this._treeViewPane.content.appendChild(this.designerSurface.rootPeer.treeItem.render());
@@ -1087,9 +1087,10 @@ export class CardDesigner {
 	private _clientPeerConn: any;
 	private _hostWebSocket: WebSocket;
 	private _signalingServerBaseUrl = "signalingserver.azurewebsites.net/api/subscriptions";
+	private _joinRespondId: string;
 	// private _signalingServerBaseUrl = "localhost:44381/api/subscriptions";
 	
-	share() {
+	private async share() {
 		console.log("Creating ...");
 		// Code from https://github.com/jameshfisher/serverless-webrtc/blob/master/index.html
 		if (!this._hostPeerConn) {
@@ -1102,10 +1103,8 @@ export class CardDesigner {
 				this.sendCardToClients();
 			};
 		}
-		this._hostPeerConn.createOffer({})
-		.then((desc) => this._hostPeerConn.setLocalDescription(desc))
-		.then(() => {})
-		.catch((err) => console.error(err));
+		var desc = await this._hostPeerConn.createOffer({});
+		this._hostPeerConn.setLocalDescription(desc);
 
 		var candidates = [];
 		this._hostPeerConn.onicecandidate = (e) => {
@@ -1164,7 +1163,7 @@ export class CardDesigner {
 		};
 	}
 
-	private onHostSocketReceivedMessage(event) {
+	private async onHostSocketReceivedMessage(event) {
 		alert("Socket received message: " + event.data);
 		var answerAndCandidatesStr: string = event.data;
 		var answerAndCandidates = JSON.parse(answerAndCandidatesStr);
@@ -1176,10 +1175,10 @@ export class CardDesigner {
 			type: "answer",
 			sdp: answerAndCandidates.sdp
 		};
-		this._hostPeerConn.setRemoteDescription(new RTCSessionDescription(answer));
-		for (var i = 0; i < answerAndCandidates.candidates.length; i++) {
-			this._hostPeerConn.addIceCandidate(answerAndCandidates.candidates[i]);
-		}
+
+		
+		await this._hostPeerConn.setRemoteDescription(new RTCSessionDescription(answer));
+		await this.addIceCandidates(this._hostPeerConn, answerAndCandidates.candidates);
 		alert("Client connected!");
 	}
 
@@ -1195,76 +1194,81 @@ export class CardDesigner {
 		}
 	}
 
-	join() {
-		var respondId = prompt("Enter respond id");
+	private join() {
+		this._joinRespondId = prompt("Enter respond id");
 
-		var candidates = [];
-		fetch("https://" + this._signalingServerBaseUrl + "/" + respondId)
+		fetch("https://" + this._signalingServerBaseUrl + "/" + this._joinRespondId)
 		.then(resp => {
 			if (resp.ok) {
 				return resp.json();
 			}
 			throw new Error("Network response wasn't ok");
 		})
-		.then(offerAndCandidates => {
-			this._clientPeerConn = new RTCPeerConnection({'iceServers': [{'urls': ['stun:stun.l.google.com:19302']}]});
-			this._clientPeerConn.ondatachannel = (e) => {
-				var dataChannel = e.channel;
-				dataChannel.onopen = (e) => {
-				console.log('Connected');
-				};
-				dataChannel.onmessage = (e) => {
-					console.log('Got message:', e.data);
-					var dataMessage = JSON.parse(e.data);
-					var cardPayload: string = dataMessage.cardPayload;
-					this.setJsonPayloadAsString(cardPayload);
-				}
-			};
-			this._clientPeerConn.onicecandidate = (e) => {
-				if (e.candidate != null) {
-					candidates.push(e.candidate);
-				} else {
-					console.log("Get the creator to call: gotAnswer(", JSON.stringify(this._clientPeerConn.localDescription), ")");
-
-					var answerAndCandidates = {
-						sdp: this._clientPeerConn.localDescription.sdp,
-						candidates: candidates
-					};
-
-					fetch("https://" + this._signalingServerBaseUrl + "/" + respondId, {
-						method: "PUT",
-						body: JSON.stringify(answerAndCandidates)
-					})
-					.then(resp => {
-						if (resp.ok) {
-							return resp.text();
-						}
-						throw new Error("Network response wasn't ok");
-					})
-					.then(txt => {
-						alert("Success");
-					})
-					.catch(error => {
-						alert(error);
-					});
-				}
-			};
-			var offer: any = {
-				type: "offer",
-				sdp: offerAndCandidates.sdp
-			};
-			var offerDesc = new RTCSessionDescription(offer);
-			this._clientPeerConn.setRemoteDescription(offerDesc);
-			for (var i = 0; i < offerAndCandidates.candidates.length; i++) {
-				this._clientPeerConn.addIceCandidate(offerAndCandidates.candidates[i]);
-			}
-			this._clientPeerConn.createAnswer({})
-				.then((answerDesc) => this._clientPeerConn.setLocalDescription(answerDesc))
-				.catch((err) => console.warn("Couldn't create answer"));
-		})
+		.then(this.joinReceivedOfferAndCandidates.bind(this))
 		.catch(error => {
 			alert(error);
 		});
+	}
+
+	private async joinReceivedOfferAndCandidates(offerAndCandidates) {
+		var candidates = [];
+		this._clientPeerConn = new RTCPeerConnection({'iceServers': [{'urls': ['stun:stun.l.google.com:19302']}]});
+		this._clientPeerConn.ondatachannel = (e) => {
+			var dataChannel = e.channel;
+			dataChannel.onopen = (e) => {
+			console.log('Connected');
+			};
+			dataChannel.onmessage = (e) => {
+				console.log('Got message:', e.data);
+				var dataMessage = JSON.parse(e.data);
+				var cardPayload: string = dataMessage.cardPayload;
+				this.setJsonPayloadAsString(cardPayload);
+			}
+		};
+		this._clientPeerConn.onicecandidate = (e) => {
+			if (e.candidate != null) {
+				candidates.push(e.candidate);
+			} else {
+				console.log("Get the creator to call: gotAnswer(", JSON.stringify(this._clientPeerConn.localDescription), ")");
+
+				var answerAndCandidates = {
+					sdp: this._clientPeerConn.localDescription.sdp,
+					candidates: candidates
+				};
+
+				fetch("https://" + this._signalingServerBaseUrl + "/" + this._joinRespondId, {
+					method: "PUT",
+					body: JSON.stringify(answerAndCandidates)
+				})
+				.then(resp => {
+					if (resp.ok) {
+						return resp.text();
+					}
+					throw new Error("Network response wasn't ok");
+				})
+				.then(txt => {
+					alert("Success");
+				})
+				.catch(error => {
+					alert(error);
+				});
+			}
+		};
+		var offer: any = {
+			type: "offer",
+			sdp: offerAndCandidates.sdp
+		};
+		var offerDesc = new RTCSessionDescription(offer);
+		await this._clientPeerConn.setRemoteDescription(offerDesc);
+		await this.addIceCandidates(this._clientPeerConn, offerAndCandidates.candidates);
+		var answerDesc = await this._clientPeerConn.createAnswer({});
+		this._clientPeerConn.setLocalDescription(answerDesc);
+	}
+
+	private async addIceCandidates(peerConn: any, candidates: any) {
+		for (var i = 0; i < candidates.length; i++) {
+			await peerConn.addIceCandidate(candidates[i]);
+		}
 	}
 
     undo() {
