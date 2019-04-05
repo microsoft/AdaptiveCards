@@ -42,10 +42,10 @@
                                                         parentStyle:[viewGroup style] hostConfig:acoConfig superview:viewGroup];
     [viewGroup addArrangedSubview:container];
 
-    configBleed(rootView, elem, container, acoConfig);
+    //configBleed(rootView, elem, container, acoConfig);
 
     renderBackgroundImage(containerElem->GetBackgroundImage(), container, rootView);
-    
+
     UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
     if (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom) {
         leadingBlankSpace = [container addPaddingSpace];
@@ -63,7 +63,7 @@
     if (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && !(container.hasStretchableView))) {
         trailingBlankSpace = [container addPaddingSpace];
     }
-    
+
     [container setClipsToBounds:TRUE];
 
     if (leadingBlankSpace != nil && trailingBlankSpace != nil) {
@@ -94,7 +94,7 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Container> containerElem = std::dynamic_pointer_cast<Container>(elem);
     auto backgroundImageProperties = containerElem->GetBackgroundImage();
-    
+
     renderBackgroundImage(backgroundImageProperties.get(), imageView, image);
 }
 
