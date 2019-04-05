@@ -25,6 +25,12 @@ namespace AdaptiveCards.Rendering.Wpf
             
             uiImage.SetHorizontalAlignment(image.HorizontalAlignment);
 
+            // This must be executed before trying to retrieve image width or height
+            if (image.PixelHeight == 0 && image.PixelWidth == 0)
+            {
+                uiImage.SetImageProperties(image, context);
+            }
+
             string style = $"Adaptive.{image.Type}";
             if (image.Style == AdaptiveImageStyle.Person)
             {
@@ -44,11 +50,6 @@ namespace AdaptiveCards.Rendering.Wpf
             }
             uiImage.Style = context.GetStyle(style);
 
-            if (image.PixelHeight == 0 && image.PixelWidth == 0)
-            {
-                uiImage.SetImageProperties(image, context);
-            }
-
             // If we have a background color, we'll create a border for the background and put the image on top
             if (!string.IsNullOrEmpty(image.BackgroundColor))
             {
@@ -67,21 +68,8 @@ namespace AdaptiveCards.Rendering.Wpf
                     };
                 }
             }
-            if (image.SelectAction != null)
-            {
-                return context.RenderSelectAction(image.SelectAction, uiBorder ?? uiImage);
-            }
 
-            if(uiBorder != null && !image.IsVisible)
-            {
-                uiBorder.Visibility = Visibility.Collapsed;
-            }
-            else if(uiImage != null && !image.IsVisible)
-            {
-                uiImage.Visibility = Visibility.Collapsed;
-            }
-
-            return uiBorder ?? uiImage;
+            return RendererUtil.ApplySelectAction(uiBorder ?? uiImage, image, context);
         }
 
     }
