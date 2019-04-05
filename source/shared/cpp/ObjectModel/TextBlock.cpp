@@ -21,7 +21,9 @@ TextBlock::TextBlock() :
 Json::Value TextBlock::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
-    m_textElementProperties->SerializeToJsonValue(root);
+
+    // ignore return -- properties are added directly to root
+    (void)m_textElementProperties->SerializeToJsonValue(root);
 
     if (m_hAlignment != HorizontalAlignment::Left)
     {
