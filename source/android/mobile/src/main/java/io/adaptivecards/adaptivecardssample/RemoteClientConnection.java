@@ -1,5 +1,6 @@
 package io.adaptivecards.adaptivecardssample;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -35,6 +36,7 @@ import org.webrtc.SdpObserver;
 import org.webrtc.SessionDescription;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class RemoteClientConnection
@@ -42,13 +44,15 @@ public class RemoteClientConnection
     private static final String LOG_TAG = "RemoteClientConnection";
     private Observer m_observer;
     private Context m_context;
+    private Activity m_activity;
     private PeerConnection m_conn;
     private String m_hostId;
     private String m_answerSdp;
 
-    public RemoteClientConnection(Context context, Observer observer)
+    public RemoteClientConnection(Activity activity, Observer observer)
     {
-        this.m_context = context;
+        this.m_activity = activity;
+        this.m_context = activity;
         this.m_observer = observer;
     }
 
@@ -59,6 +63,8 @@ public class RemoteClientConnection
         void onConnected();
 
         void onConnectFailed(String errorMessage);
+
+        void onMessage(String cardPayload);
     }
 
     public void connect(String hostId)
@@ -87,6 +93,11 @@ public class RemoteClientConnection
         // Add the request to the queue
         m_observer.onConnecting("Requesting offer info...");
         queue.add(stringRequest);
+    }
+
+    private void runOnUiThread(Runnable action)
+    {
+        m_activity.runOnUiThread(action);
     }
 
     private void connectToHost(final JSONObject offerAndCandidates)
@@ -123,7 +134,6 @@ public class RemoteClientConnection
                 // Yeah looks like it: https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/onicecandidate
                 Log.i(LOG_TAG, "New candidate");
                 iceCandidates.add(iceCandidate);
-                Log.i(LOG_TAG, "CandidateURL: " + iceCandidate.serverUrl);
             }
 
             @Override
@@ -139,11 +149,37 @@ public class RemoteClientConnection
                     @Override
                     public void onStateChange() {
                         Log.i(LOG_TAG, "DataChannel state changed: " + currDataChannel.state());
+                        if (currDataChannel.state() == DataChannel.State.OPEN)
+                        {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    m_observer.onConnected();
+                                }
+                            });
+                        }
                     }
 
                     @Override
                     public void onMessage(DataChannel.Buffer buffer) {
                         Log.i(LOG_TAG, "DataChannel message received");
+                        try {
+                            byte[] dataBytes = new byte[buffer.data.capacity()];
+                            buffer.data.get(dataBytes);
+
+                            String dataStr = new String(dataBytes);
+                            JSONObject dataMessage = new JSONObject(dataStr);
+                            final String cardPayload = dataMessage.getString("cardPayload");
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    m_observer.onMessage(cardPayload);
+                                }
+                            });
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        //runOnUiThread();
                     }
                 });
             }

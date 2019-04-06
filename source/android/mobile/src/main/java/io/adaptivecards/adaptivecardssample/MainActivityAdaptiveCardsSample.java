@@ -481,6 +481,12 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
     }
 
+    private void loadAdaptiveCard(String payload)
+    {
+        EditText jsonText = (EditText) findViewById(R.id.jsonAdaptiveCard);
+        jsonText.setText(payload);
+    }
+
     private void loadHostConfig(Intent data)
     {
         String fullString = loadFile(data.getData());
@@ -524,6 +530,12 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                     public void onConnectFailed(String errorMessage)
                     {
                         Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onMessage(String cardPayload)
+                    {
+                        loadAdaptiveCard(cardPayload);
                     }
                 });
 
