@@ -967,7 +967,13 @@ export class CardDesigner {
                     '<div id="bottomCollapsedPaneTabHost" style="border-top: 1px solid #D2D2D2;"></div>' +
                 '</div>' +
                 '<div id="rightCollapsedPaneTabHost" class="acd-verticalCollapsedTabContainer" style="border-left: 1px solid #D2D2D2;"></div>' +
-            '</div>';
+			'</div>' +
+			'<div id="modalShare" class="modal">' +
+				'<div class="modal-content">' +
+					'<span class="close">&times;</span>' +
+					'<img class="qr-code"/>' +
+				'</div>' +
+			'</div>';
 
         this.toolbar.attachTo(document.getElementById("toolbarHost"));
 
