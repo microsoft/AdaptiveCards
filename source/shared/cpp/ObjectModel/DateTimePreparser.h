@@ -9,20 +9,20 @@ namespace AdaptiveSharedNamespace
     {
     public:
         DateTimePreparser();
-        DateTimePreparser(std::string const& in);
+        DateTimePreparser(const std::string& in);
         std::vector<std::shared_ptr<DateTimePreparsedToken>> GetTextTokens() const;
         bool HasDateTokens() const;
-        static bool TryParseSimpleTime(std::string string, unsigned int* hours, unsigned int* minutes);
-        static bool TryParseSimpleDate(std::string string, unsigned int* year, unsigned int* month, unsigned int* day);
+        static bool TryParseSimpleTime(const std::string& string, unsigned int& hours, unsigned int& minutes);
+        static bool TryParseSimpleDate(const std::string& string, unsigned int& year, unsigned int& month, unsigned int& day);
 
     private:
-        void AddTextToken(std::string const& text, DateTimePreparsedTokenFormat format);
-        void AddDateToken(std::string const& text, struct tm date, DateTimePreparsedTokenFormat format);
+        void AddTextToken(const std::string& text, DateTimePreparsedTokenFormat format);
+        void AddDateToken(const std::string& text, struct tm& date, DateTimePreparsedTokenFormat format);
         std::string Concatenate() const;
-        void ParseDateTime(std::string const& in);
-        static bool IsValidDate(const int year, const int month, const int day);
-        static bool IsValidTime(const int hours, const int minutes, const int seconds);
-        static bool IsValidTimeAndDate(const struct tm& parsedTm, const int hours, const int minutes);
+        void ParseDateTime(const std::string& in);
+        static inline bool IsValidDate(const int year, const int month, const int day);
+        static inline bool IsValidTime(const int hours, const int minutes, const int seconds);
+        static inline bool IsValidTimeAndDate(const struct tm& parsedTm, const int hours, const int minutes);
 
         std::vector<std::shared_ptr<DateTimePreparsedToken>> m_textTokenCollection;
         bool m_hasDateTokens;

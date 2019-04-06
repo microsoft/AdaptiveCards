@@ -44,8 +44,10 @@
 
     configBleed(rootView, elem, container, acoConfig);
 
+    renderBackgroundImage(containerElem->GetBackgroundImage(), container, rootView);
+
     UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
-    if(containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom){
+    if (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom) {
         leadingBlankSpace = [container addPaddingSpace];
     }
 
@@ -58,11 +60,13 @@
           andHostConfig:acoConfig];
 
     // Dont add the trailing space if the vertical content alignment is top/default
-    if(containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && !(container.hasStretchableView))){
+    if (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (containerElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && !(container.hasStretchableView))) {
         trailingBlankSpace = [container addPaddingSpace];
     }
 
-    if(leadingBlankSpace != nil && trailingBlankSpace != nil){
+    [container setClipsToBounds:TRUE];
+
+    if (leadingBlankSpace != nil && trailingBlankSpace != nil) {
         [NSLayoutConstraint constraintWithItem:leadingBlankSpace
                                      attribute:NSLayoutAttributeHeight
                                      relatedBy:NSLayoutRelationEqual
@@ -83,6 +87,15 @@
     configVisibility(container, elem);
 
     return viewGroup;
+}
+
+- (void)configUpdateForUIImageView:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
+{
+    std::shared_ptr<BaseCardElement> elem = [acoElem element];
+    std::shared_ptr<Container> containerElem = std::dynamic_pointer_cast<Container>(elem);
+    auto backgroundImageProperties = containerElem->GetBackgroundImage();
+
+    renderBackgroundImage(backgroundImageProperties.get(), imageView, image);
 }
 
 @end

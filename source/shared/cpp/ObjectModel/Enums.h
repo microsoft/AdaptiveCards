@@ -353,10 +353,7 @@ namespace AdaptiveSharedNamespace
         Good,
         Attention,
         Warning,
-        Accent,
-        // this is different from None, None is a style while NotSet isn't a style
-        // add a new style enums to above NotSet
-        NotSet
+        Accent
     };
     DECLARE_ADAPTIVECARD_ENUM(ContainerStyle);
 

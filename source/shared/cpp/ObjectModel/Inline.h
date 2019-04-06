@@ -16,7 +16,7 @@ namespace AdaptiveSharedNamespace
         Inline(Inline&&) = default;
         Inline& operator=(const Inline&) = default;
         Inline& operator=(Inline&&) = default;
-        ~Inline() = default;
+        virtual ~Inline() = default;
 
         virtual Json::Value SerializeToJsonValue() const;
 

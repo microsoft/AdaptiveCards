@@ -13,7 +13,7 @@ namespace AdaptiveSharedNamespace
         Paragraph(Paragraph&&) = default;
         Paragraph& operator=(const Paragraph&) = default;
         Paragraph& operator=(Paragraph&&) = default;
-        ~Paragraph() = default;
+        virtual ~Paragraph() = default;
 
         virtual Json::Value SerializeToJsonValue() const;
 
