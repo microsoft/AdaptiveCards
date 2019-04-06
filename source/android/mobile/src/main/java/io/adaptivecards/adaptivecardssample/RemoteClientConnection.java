@@ -100,8 +100,20 @@ public class RemoteClientConnection
         PeerConnectionFactory factory = PeerConnectionFactory.builder().createPeerConnectionFactory();
 
         ArrayList<PeerConnection.IceServer> iceServers = new ArrayList<>();
-        iceServers.add(PeerConnection.IceServer.builder("stun:stun.l.google.com:19302").createIceServer());
-        iceServers.add(PeerConnection.IceServer.builder("turn:turn.bistri.com:80").setUsername("homeo").setPassword("homeo").createIceServer());
+        iceServers.add(PeerConnection.IceServer.builder("stun:ws-turn3.xirsys.com").createIceServer());
+        String[] turnServers = new String[]
+        {
+            "turn:ws-turn3.xirsys.com:80?transport=udp",
+            "turn:ws-turn3.xirsys.com:3478?transport=udp",
+            "turn:ws-turn3.xirsys.com:80?transport=tcp",
+            "turn:ws-turn3.xirsys.com:3478?transport=tcp",
+            "turns:ws-turn3.xirsys.com:443?transport=tcp",
+            "turns:ws-turn3.xirsys.com:5349?transport=tcp"
+        };
+        for (String turnServer : turnServers)
+        {
+            iceServers.add(PeerConnection.IceServer.builder(turnServer).setUsername("e-HcX5lqoTEzSQetY5biyT3YzM45GIl3HK4FQuo3y73xvsLAmts_gF8PylqkwBR6AAAAAFyoMKphbGVhZGVy").setPassword("d97cbeee-5827-11e9-bef6-069f0817bf63").createIceServer());
+        }
         final ArrayList<IceCandidate> iceCandidates = new ArrayList<>();
 
         m_conn = factory.createPeerConnection(iceServers, new PeerConnection.Observer() {
