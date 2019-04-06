@@ -14,6 +14,8 @@ import { IPoint, Utils } from "./miscellaneous";
 import { BasePaletteItem, ElementPaletteItem } from "./tool-palette";
 import { DefaultContainer } from "./containers/default/default-container";
 import { QRCode } from "qrcode-generator-ts/js";
+import { ShareDialog } from "./share-dialog";
+import { SignalDispatcher } from "strongly-typed-events";
 
 export class CardDesigner {
     private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
@@ -33,6 +35,18 @@ export class CardDesigner {
 
     private static MAX_UNDO_STACK_SIZE = 50;
 
+    private _onCardPayloadChanged = new SignalDispatcher();
+    private _onHostConfigPayloadChanged = new SignalDispatcher();
+
+    get onCardPayloadChanged() {
+        return this._onCardPayloadChanged.asEvent();
+    }
+
+    get onHostConfigPayloadChanged() {
+        return this._onHostConfigPayloadChanged.asEvent();
+    }
+
+    private _root: HTMLElement;
     private _monacoEditor: monaco.editor.IStandaloneCodeEditor;
     private _hostContainers: Array<HostContainer>;
     private _isMonacoEditorLoaded: boolean = false;
@@ -290,7 +304,7 @@ export class CardDesigner {
 
     private activeHostContainerChanged() {
 		this.recreateDesignerSurface();
-		this.sendHostConfigToClients();
+		this._onHostConfigPayloadChanged.dispatch();
     }
 
     public updateJsonEditorLayout() {
@@ -322,8 +336,8 @@ export class CardDesigner {
 	}
 	
 	private setJsonPayloadAsString(payload: string) {
-		this._monacoEditor.setValue(payload);
-		this.sendCardToClients();
+        this._monacoEditor.setValue(payload);
+        this._onCardPayloadChanged.dispatch();
 	}
 
     private updateJsonFromCard(addToUndoStack: boolean = true) {
@@ -355,8 +369,12 @@ export class CardDesigner {
     
     private preventJsonUpdate: boolean = false;
     
-    private getCurrentJsonPayload(): string {
+    getCurrentJsonPayload(): string {
         return this._isMonacoEditorLoaded ? this._monacoEditor.getValue() : Constants.defaultPayload;
+    }
+
+    getCurrentHostConfigPayload(): string {
+        return JSON.stringify(this.activeHostContainer.getHostConfig());
     }
 
     private updateCardFromJson() {
@@ -365,7 +383,7 @@ export class CardDesigner {
     
             if (!this.preventCardUpdate) {
 				this.designerSurface.setCardPayloadAsString(this.getCurrentJsonPayload());
-				this.sendCardToClients();
+				this._onCardPayloadChanged.dispatch();
             }
         }
         finally {
@@ -933,6 +951,8 @@ export class CardDesigner {
             this._activeHostContainer = new DefaultContainer("Default", "default-container.css");
         }
 
+        this._root = root;
+
         root.style.flex = "1 1 auto";
         root.style.display = "flex";
         root.style.flexDirection = "column";
@@ -1096,76 +1116,8 @@ export class CardDesigner {
 	private _signalingServerBaseUrl = "signalingserver.azurewebsites.net/api/subscriptions";
 	private _joinRespondId: string;
 	
-	private async share() {
-		console.log("Creating ...");
-		// Code from https://github.com/jameshfisher/serverless-webrtc/blob/master/index.html
-		if (!this._hostPeerConn) {
-			this._hostPeerConn = this.createPeerConnection();
-			var dataChannel = this._hostPeerConn.createDataChannel('test');
-			dataChannel.onopen = (e) => {
-				console.log("Opened data channel");
-				this._hostDataChannel = dataChannel;
-				this.sendCardAndHostConfigToClients();
-			};
-		}
-		var desc = await this._hostPeerConn.createOffer({});
-		this._hostPeerConn.setLocalDescription(desc);
-
-		var candidates = [];
-		this._hostPeerConn.onicecandidate = (e) => {
-			if (e.candidate != null) {
-				candidates.push(e.candidate);
-			} else {
-				var offerAndCandidates = {
-					sdp: this._hostPeerConn.localDescription.sdp,
-					candidates: candidates
-				};
-
-				var offerAndCandidatesStr = JSON.stringify(offerAndCandidates);
-
-				// Create the subscription
-				fetch("https://" + this._signalingServerBaseUrl, {
-					method: "POST",
-					body: offerAndCandidatesStr
-				})
-				.then(resp => {
-					if (resp.ok) {
-						return resp.text();
-					}
-					throw new Error("Network response wasn't ok");
-				})
-				.then(respondId => {
-					// Create the web socket
-					var webSocketUrl = "wss://" + this._signalingServerBaseUrl + "/" + respondId;
-					this._hostWebSocket = new WebSocket(webSocketUrl);
-
-					this._hostWebSocket.onopen = function() {
-						// Show QR code
-						var qr = new QRCode();
-						qr.setTypeNumber(4);
-						qr.addData(respondId);
-						qr.make();
-						alert(respondId);
-						var dataUrl = qr.toDataURL();
-						var qrImg = document.createElement("img");
-						qrImg.setAttribute("src", dataUrl);
-						document.getElementById("toolbarHost").appendChild(qrImg);
-					};
-
-					this._hostWebSocket.onerror = function(error) {
-						alert("Error with web socket" + JSON.stringify(error));
-					};
-
-					var thisCardDesigner: CardDesigner = this;
-					this._hostWebSocket.onmessage = function(event) {
-						thisCardDesigner.onHostSocketReceivedMessage(event);
-					};
-				})
-				.catch(error => {
-					alert("Failed creating subscription: " + error);
-				});
-			}
-		};
+	private share() {
+        new ShareDialog(this._root, this);
 	}
 
 	private async onHostSocketReceivedMessage(event) {
@@ -1185,37 +1137,6 @@ export class CardDesigner {
 		await this._hostPeerConn.setRemoteDescription(new RTCSessionDescription(answer));
 		await this.addIceCandidates(this._hostPeerConn, answerAndCandidates.candidates);
 		console.log("Client connected!");
-	}
-
-	private sendCardToClients() {
-		this.sendToClients(true, false);
-	}
-
-	private sendCardAndHostConfigToClients() {
-		this.sendToClients(true, true);
-	}
-
-	private sendHostConfigToClients() {
-		this.sendToClients(false, true);
-	}
-
-	private sendToClients(includeCardPayload: boolean, includeHostConfigPayload: boolean) {
-		if (this._hostDataChannel) {
-			try {
-				var dataMessage: any = {};
-				if (includeCardPayload)
-				{
-					dataMessage.cardPayload = this.getCurrentJsonPayload();
-				}
-				if (includeHostConfigPayload)
-				{
-					dataMessage.hostConfigPayload = JSON.stringify(this.activeHostContainer.getHostConfig());
-				}
-				this._hostDataChannel.send(JSON.stringify(dataMessage));
-			} catch (ex) {
-				this._hostDataChannel = null;
-			}
-		}
 	}
 
 	private join() {

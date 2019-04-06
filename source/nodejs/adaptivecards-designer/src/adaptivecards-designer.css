@@ -763,6 +763,7 @@ a.default-ac-anchor:visited:active {
   padding: 20px;
   border: 1px solid #888;
   width: 80%; /* Could be more or less, depending on screen size */
+  max-width: 600px;
 }
 
 /* The Close Button */
@@ -781,6 +782,6 @@ a.default-ac-anchor:visited:active {
 }
 
 .qr-code {
-	width: 150px;
-	height: 150px;
+  width: 150px;
+  height: 150px;
 }
