@@ -289,7 +289,8 @@ export class CardDesigner {
     }
 
     private activeHostContainerChanged() {
-        this.recreateDesignerSurface();
+		this.recreateDesignerSurface();
+		this.sendHostConfigToClients();
     }
 
     public updateJsonEditorLayout() {
@@ -1088,7 +1089,6 @@ export class CardDesigner {
 	private _hostWebSocket: WebSocket;
 	private _signalingServerBaseUrl = "signalingserver.azurewebsites.net/api/subscriptions";
 	private _joinRespondId: string;
-	// private _signalingServerBaseUrl = "localhost:44381/api/subscriptions";
 	
 	private async share() {
 		console.log("Creating ...");
@@ -1097,10 +1097,9 @@ export class CardDesigner {
 			this._hostPeerConn = this.createPeerConnection();
 			var dataChannel = this._hostPeerConn.createDataChannel('test');
 			dataChannel.onopen = (e) => {
-				// window.say = (msg) => { dataChannel.send(msg); };
 				console.log("Opened data channel");
 				this._hostDataChannel = dataChannel;
-				this.sendCardToClients();
+				this.sendCardAndHostConfigToClients();
 			};
 		}
 		var desc = await this._hostPeerConn.createOffer({});
@@ -1182,12 +1181,31 @@ export class CardDesigner {
 		console.log("Client connected!");
 	}
 
-	sendCardToClients() {
+	private sendCardToClients() {
+		this.sendToClients(true, false);
+	}
+
+	private sendCardAndHostConfigToClients() {
+		this.sendToClients(true, true);
+	}
+
+	private sendHostConfigToClients() {
+		this.sendToClients(false, true);
+	}
+
+	private sendToClients(includeCardPayload: boolean, includeHostConfigPayload: boolean) {
 		if (this._hostDataChannel) {
 			try {
-				this._hostDataChannel.send(JSON.stringify({
-					cardPayload: this.getCurrentJsonPayload()
-				}));
+				var dataMessage: any = {};
+				if (includeCardPayload)
+				{
+					dataMessage.cardPayload = this.getCurrentJsonPayload();
+				}
+				if (includeHostConfigPayload)
+				{
+					dataMessage.hostConfigPayload = JSON.stringify(this.activeHostContainer.getHostConfig());
+				}
+				this._hostDataChannel.send(JSON.stringify(dataMessage));
 			} catch (ex) {
 				this._hostDataChannel = null;
 			}
@@ -1245,8 +1263,14 @@ export class CardDesigner {
 			dataChannel.onmessage = (e) => {
 				console.log('Got message:', e.data);
 				var dataMessage = JSON.parse(e.data);
-				var cardPayload: string = dataMessage.cardPayload;
-				this.setJsonPayloadAsString(cardPayload);
+				if (dataMessage.cardPayload !== undefined) {
+					var cardPayload: string = dataMessage.cardPayload;
+					this.setJsonPayloadAsString(cardPayload);
+				}
+				if (dataMessage.hostConfigPayload !== undefined) {
+					var hostConfigPayload: string = dataMessage.hostConfigPayload;
+					this.activeHostContainer.getHostConfig
+				}
 			}
 		};
 		this._clientPeerConn.onicecandidate = (e) => {

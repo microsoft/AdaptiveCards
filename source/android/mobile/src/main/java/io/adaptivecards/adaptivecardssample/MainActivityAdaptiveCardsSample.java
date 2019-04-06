@@ -524,12 +524,17 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             return;
         }
 
-        m_configEditText.setText(fullString);
+        loadHostConfig(fullString);
 
         EditText fileEditText = (EditText) findViewById(R.id.hostConfigFileEditText);
         List path = data.getData().getPathSegments();
         fileEditText.setText((String)path.get(path.size()-1));
 
+    }
+
+    private void loadHostConfig(String hostConfigStr)
+    {
+        m_configEditText.setText(hostConfigStr);
     }
 
     @Override
@@ -563,9 +568,15 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                     }
 
                     @Override
-                    public void onMessage(String cardPayload)
+                    public void onCardPayload(String cardPayload)
                     {
                         loadAdaptiveCard(cardPayload);
+                    }
+
+                    @Override
+                    public void onHostConfigPayload(String hostConfigPayload)
+                    {
+                        loadHostConfig(hostConfigPayload);
                     }
                 });
 

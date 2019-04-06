@@ -64,7 +64,9 @@ public class RemoteClientConnection
 
         void onConnectFailed(String errorMessage);
 
-        void onMessage(String cardPayload);
+        void onCardPayload(String cardPayload);
+
+        void onHostConfigPayload(String hostConfigPayload);
     }
 
     public void connect(String hostId)
@@ -179,13 +181,24 @@ public class RemoteClientConnection
 
                             String dataStr = new String(dataBytes);
                             JSONObject dataMessage = new JSONObject(dataStr);
-                            final String cardPayload = dataMessage.getString("cardPayload");
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    m_observer.onMessage(cardPayload);
-                                }
-                            });
+                            if (dataMessage.has("cardPayload")) {
+                                final String cardPayload = dataMessage.getString("cardPayload");
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        m_observer.onCardPayload(cardPayload);
+                                    }
+                                });
+                            }
+                            if (dataMessage.has("hostConfigPayload")) {
+                                final String hostConfigPayload = dataMessage.getString("hostConfigPayload");
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        m_observer.onHostConfigPayload(hostConfigPayload);
+                                    }
+                                });
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
