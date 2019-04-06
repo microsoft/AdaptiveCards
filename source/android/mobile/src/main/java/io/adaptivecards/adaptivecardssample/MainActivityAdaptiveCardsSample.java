@@ -16,6 +16,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
@@ -75,17 +76,30 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     }
 
     private static String IS_CARD = "isCard";
+    private RemoteClientConnection m_remoteClientConnection;
+    private Button m_buttonScanQr;
+    private Button m_buttonDisconnect;
+    private View m_adaptiveCardPickerGroup;
+    private View m_hostConfigPickerGroup;
+    private EditText m_jsonEditText;
+    private EditText m_configEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_adaptive_cards_sample);
+
+        m_buttonScanQr = (Button)findViewById(R.id.buttonScanQr);
+        m_buttonDisconnect = (Button)findViewById(R.id.buttonDisconnect);
+        m_adaptiveCardPickerGroup = findViewById(R.id.adaptiveCardPickerGroup);
+        m_hostConfigPickerGroup = findViewById(R.id.hostConfigPickerGroup);
+
         setupTabs();
         setupImageLoader();
 
         // Add text change handler
-        final EditText jsonEditText = (EditText) findViewById(R.id.jsonAdaptiveCard);
-        final EditText configEditText = (EditText) findViewById(R.id.hostConfig);
+        m_jsonEditText = (EditText) findViewById(R.id.jsonAdaptiveCard);
+        m_configEditText = (EditText) findViewById(R.id.hostConfig);
 
         TextWatcher watcher = new TextWatcher()
         {
@@ -98,7 +112,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                 {
                     public void run()
                     {
-                        jsonEditText.post(new Runnable()
+                        m_jsonEditText.post(new Runnable()
                         {
                             public void run()
                             {
@@ -119,8 +133,8 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             private final long DELAY = 1000; // milliseconds
         };
 
-        jsonEditText.addTextChangedListener(watcher);
-        configEditText.addTextChangedListener(watcher);
+        m_jsonEditText.addTextChangedListener(watcher);
+        m_configEditText.addTextChangedListener(watcher);
     }
 
     public class CustomCardElement extends BaseCardElement
@@ -360,13 +374,13 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     {
         try
         {
-            String jsonText = ((EditText) findViewById(R.id.jsonAdaptiveCard)).getText().toString();
+            String jsonText = m_jsonEditText.getText().toString();
             if (jsonText == null)
             {
                 return;
             }
 
-            String hostConfigText = ((EditText) findViewById(R.id.hostConfig)).getText().toString();
+            String hostConfigText = m_configEditText.getText().toString();
             HostConfig hostConfig;
             if (hostConfigText.isEmpty())
             {
@@ -425,7 +439,24 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
     public void onScanQrClicked(View view)
     {
+        goToConnectingState();
+
         new IntentIntegrator(this).initiateScan();
+    }
+
+    public void onDisconnectClicked(View view)
+    {
+        disconnect();
+        goToDisconnectedState();
+    }
+
+    private void disconnect()
+    {
+        if (m_remoteClientConnection != null)
+        {
+            m_remoteClientConnection.disconnect();
+            m_remoteClientConnection = null;
+        }
     }
 
     private String loadFile(Uri uri)
@@ -472,8 +503,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         {
             return;
         }
-        EditText jsonText = (EditText) findViewById(R.id.jsonAdaptiveCard);
-        jsonText.setText(fullString);
+        m_jsonEditText.setText(fullString);
 
         EditText fileEditText = (EditText) findViewById(R.id.fileEditText);
         List path = data.getData().getPathSegments();
@@ -483,8 +513,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
     private void loadAdaptiveCard(String payload)
     {
-        EditText jsonText = (EditText) findViewById(R.id.jsonAdaptiveCard);
-        jsonText.setText(payload);
+        m_jsonEditText.setText(payload);
     }
 
     private void loadHostConfig(Intent data)
@@ -495,8 +524,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             return;
         }
 
-        EditText configText = (EditText) findViewById(R.id.hostConfig);
-        configText.setText(fullString);
+        m_configEditText.setText(fullString);
 
         EditText fileEditText = (EditText) findViewById(R.id.hostConfigFileEditText);
         List path = data.getData().getPathSegments();
@@ -512,7 +540,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             String contents = qrResult.getContents();
             if (contents != null)
             {
-                RemoteClientConnection remoteConn = new RemoteClientConnection(this, new RemoteClientConnection.Observer()
+                m_remoteClientConnection = new RemoteClientConnection(this, new RemoteClientConnection.Observer()
                 {
                     @Override
                     public void onConnecting(String status)
@@ -523,13 +551,15 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                     @Override
                     public void onConnected()
                     {
-                        Toast.makeText(getApplicationContext(), "Connected!", Toast.LENGTH_SHORT).show();
+                        goToConnectedState();
                     }
 
                     @Override
                     public void onConnectFailed(String errorMessage)
                     {
                         Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                        m_remoteClientConnection = null;
+                        goToDisconnectedState();
                     }
 
                     @Override
@@ -539,8 +569,10 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                     }
                 });
 
-                remoteConn.connect(contents);
+                m_remoteClientConnection.connect(contents);
             }
+
+            Button buttonScanQr = findViewById(R.id.buttonScanQr);
             return;
         }
 
@@ -606,7 +638,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         }
 
         ShowCardFragment showCardFragment = new ShowCardFragment();
-        String hostConfigText = ((EditText) findViewById(R.id.hostConfig)).getText().toString();
+        String hostConfigText = m_configEditText.getText().toString();
         HostConfig hostConfig;
         if (hostConfigText.isEmpty())
         {
@@ -674,6 +706,47 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     public void onMediaStop(BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard)
     {
         showToast("Media ended playing: " + mediaElement, Toast.LENGTH_LONG);
+    }
+
+    private void goToConnectingState()
+    {
+        m_buttonScanQr.setText("Connecting...");
+        m_buttonScanQr.setVisibility(View.VISIBLE);
+        m_buttonScanQr.setEnabled(false);
+        m_buttonDisconnect.setVisibility(View.GONE);
+        goToReadOnlyState();
+    }
+
+    private void goToConnectedState()
+    {
+        m_buttonScanQr.setVisibility(View.GONE);
+        m_buttonDisconnect.setVisibility(View.VISIBLE);
+        goToReadOnlyState();
+    }
+
+    private void goToDisconnectedState()
+    {
+        m_buttonScanQr.setText("Connect via QR Code");
+        m_buttonScanQr.setVisibility(View.VISIBLE);
+        m_buttonScanQr.setEnabled(true);
+        m_buttonDisconnect.setVisibility(View.GONE);
+        goToEditableState();
+    }
+
+    private void goToReadOnlyState()
+    {
+        m_adaptiveCardPickerGroup.setVisibility(View.GONE);
+        m_hostConfigPickerGroup.setVisibility(View.GONE);
+        m_jsonEditText.setEnabled(false);
+        m_configEditText.setEnabled(false);
+    }
+
+    private void goToEditableState()
+    {
+        m_adaptiveCardPickerGroup.setVisibility(View.VISIBLE);
+        m_hostConfigPickerGroup.setVisibility(View.VISIBLE);
+        m_jsonEditText.setEnabled(true);
+        m_configEditText.setEnabled(true);
     }
 
     public void showToast(String text, int duration)

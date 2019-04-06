@@ -95,6 +95,16 @@ public class RemoteClientConnection
         queue.add(stringRequest);
     }
 
+    public void disconnect()
+    {
+        if (m_conn != null)
+        {
+            m_conn.dispose();
+        }
+
+        m_observer = null;
+    }
+
     private void runOnUiThread(Runnable action)
     {
         m_activity.runOnUiThread(action);
