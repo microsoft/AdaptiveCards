@@ -1098,7 +1098,7 @@ export class CardDesigner {
 			var dataChannel = this._hostPeerConn.createDataChannel('test');
 			dataChannel.onopen = (e) => {
 				// window.say = (msg) => { dataChannel.send(msg); };
-				alert("Opened data channel");
+				console.log("Opened data channel");
 				this._hostDataChannel = dataChannel;
 				this.sendCardToClients();
 			};
@@ -1164,7 +1164,7 @@ export class CardDesigner {
 	}
 
 	private async onHostSocketReceivedMessage(event) {
-		alert("Socket received message: " + event.data);
+		console.log("Socket received message: " + event.data);
 		var answerAndCandidatesStr: string = event.data;
 		var answerAndCandidates = JSON.parse(answerAndCandidatesStr);
 		if (!this._hostPeerConn) {
@@ -1179,7 +1179,7 @@ export class CardDesigner {
 		
 		await this._hostPeerConn.setRemoteDescription(new RTCSessionDescription(answer));
 		await this.addIceCandidates(this._hostPeerConn, answerAndCandidates.candidates);
-		alert("Client connected!");
+		console.log("Client connected!");
 	}
 
 	sendCardToClients() {
@@ -1238,7 +1238,9 @@ export class CardDesigner {
 		this._clientPeerConn.ondatachannel = (e) => {
 			var dataChannel = e.channel;
 			dataChannel.onopen = (e) => {
-			console.log('Connected');
+                console.log('Connected');
+                this._joinButton.caption = "Joined!";
+                this._joinButton.toolTip = "Joined!";
 			};
 			dataChannel.onmessage = (e) => {
 				console.log('Got message:', e.data);
@@ -1251,8 +1253,6 @@ export class CardDesigner {
 			if (e.candidate != null) {
 				candidates.push(e.candidate);
 			} else {
-				console.log("Get the creator to call: gotAnswer(", JSON.stringify(this._clientPeerConn.localDescription), ")");
-
 				var answerAndCandidates = {
 					sdp: this._clientPeerConn.localDescription.sdp,
 					candidates: candidates
@@ -1269,7 +1269,7 @@ export class CardDesigner {
 					throw new Error("Network response wasn't ok");
 				})
 				.then(txt => {
-					alert("Success");
+                    console.log("Success sending answer");
 				})
 				.catch(error => {
 					alert(error);
