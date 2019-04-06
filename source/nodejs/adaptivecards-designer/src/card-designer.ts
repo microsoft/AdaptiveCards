@@ -1094,7 +1094,7 @@ export class CardDesigner {
 		console.log("Creating ...");
 		// Code from https://github.com/jameshfisher/serverless-webrtc/blob/master/index.html
 		if (!this._hostPeerConn) {
-			this._hostPeerConn = new RTCPeerConnection({'iceServers': [{'urls': ['stun:stun.l.google.com:19302']}]});
+			this._hostPeerConn = this.createPeerConnection();
 			var dataChannel = this._hostPeerConn.createDataChannel('test');
 			dataChannel.onopen = (e) => {
 				// window.say = (msg) => { dataChannel.send(msg); };
@@ -1210,9 +1210,24 @@ export class CardDesigner {
 		});
 	}
 
+	private createPeerConnection() {
+		return new RTCPeerConnection({
+			iceServers: [
+				{
+					urls: ['stun:stun.l.google.com:19302']
+				},
+				{
+					urls: ['turn:turn.bistri.com:80'],
+					username: "homeo",
+					credential: "homeo"
+				}
+			]
+		});
+	}
+
 	private async joinReceivedOfferAndCandidates(offerAndCandidates) {
 		var candidates = [];
-		this._clientPeerConn = new RTCPeerConnection({'iceServers': [{'urls': ['stun:stun.l.google.com:19302']}]});
+		this._clientPeerConn = this.createPeerConnection();
 		this._clientPeerConn.ondatachannel = (e) => {
 			var dataChannel = e.channel;
 			dataChannel.onopen = (e) => {

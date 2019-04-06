@@ -100,7 +100,8 @@ public class RemoteClientConnection
         PeerConnectionFactory factory = PeerConnectionFactory.builder().createPeerConnectionFactory();
 
         ArrayList<PeerConnection.IceServer> iceServers = new ArrayList<>();
-        iceServers.add(new PeerConnection.IceServer("stun:stun.l.google.com:19302"));
+        iceServers.add(PeerConnection.IceServer.builder("stun:stun.l.google.com:19302").createIceServer());
+        iceServers.add(PeerConnection.IceServer.builder("turn:turn.bistri.com:80").setUsername("homeo").setPassword("homeo").createIceServer());
         final ArrayList<IceCandidate> iceCandidates = new ArrayList<>();
 
         m_conn = factory.createPeerConnection(iceServers, new PeerConnection.Observer() {
@@ -137,10 +138,12 @@ public class RemoteClientConnection
 
             @Override
             public void onSignalingChange(PeerConnection.SignalingState signalingState) {
+                Log.i(LOG_TAG, "SignalingChange: " + signalingState);
             }
 
             @Override
             public void onIceConnectionChange(PeerConnection.IceConnectionState iceConnectionState) {
+                Log.i(LOG_TAG, "ConnectionChange: " + iceConnectionState);
             }
 
             @Override
@@ -195,7 +198,7 @@ public class RemoteClientConnection
 
             @Override
             public void onRenegotiationNeeded() {
-
+                Log.i(LOG_TAG, "Renegotiation needed");
             }
 
             @Override
@@ -302,7 +305,7 @@ public class RemoteClientConnection
 
     private void openDataChannel()
     {
-        Log.i(LOG_TAG, "Creating data channel");
+        /*Log.i(LOG_TAG, "Creating data channel");
         DataChannel dataChannel = m_conn.createDataChannel("test", new DataChannel.Init());
         dataChannel.registerObserver(new DataChannel.Observer() {
             @Override
@@ -320,7 +323,7 @@ public class RemoteClientConnection
                 Log.i(LOG_TAG, "DataChannel message received");
             }
         });
-        Log.i(LOG_TAG, "Created data channel");
+        Log.i(LOG_TAG, "Created data channel");*/
         //dataChannel.send()
     }
 
