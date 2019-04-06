@@ -118,8 +118,12 @@ public class ParseContext {
     return ContainerBleedDirection.swigToEnum(AdaptiveCardObjectModelJNI.ParseContext_GetBleedDirection(swigCPtr, this));
   }
 
-  public void SetBleedDirection(ContainerBleedDirection direction) {
-    AdaptiveCardObjectModelJNI.ParseContext_SetBleedDirection(swigCPtr, this, direction.swigValue());
+  public void PushBleedDirection(ContainerBleedDirection direction) {
+    AdaptiveCardObjectModelJNI.ParseContext_PushBleedDirection(swigCPtr, this, direction.swigValue());
+  }
+
+  public void PopBleedDirection() {
+    AdaptiveCardObjectModelJNI.ParseContext_PopBleedDirection(swigCPtr, this);
   }
 
 }

@@ -8,8 +8,7 @@
 
 using namespace AdaptiveSharedNamespace;
 
-ColumnSet::ColumnSet() :
-    CollectionTypeElement(CardElementType::ColumnSet)
+ColumnSet::ColumnSet() : CollectionTypeElement(CardElementType::ColumnSet)
 {
     PopulateKnownPropertiesSet();
 }
@@ -65,44 +64,42 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
     // the rest of children cannot bleed.
     const ContainerBleedDirection previousBleedState = context.GetBleedDirection();
 
-    if (elemSize == 1)
-    {
-        // items in signle column has no restriction
-        context.SetBleedDirection(previousBleedState);
-    }
-
     // Deserialize every element in the array
     for (Json::Value& curJsonValue : elementArray)
     {
-        // processing the cases where parent's bleed state is not restricted
+        ContainerBleedDirection currentBleedState = previousBleedState;
+
+        // Items in single column have no restriction
         if (elemSize != 1)
         {
             if (currentIndex == 0)
             {
-                if (previousBleedState == ContainerBleedDirection::BleedToBothEdges)
+                // If we're in the left column, we can only bleed left
+                if (previousBleedState != ContainerBleedDirection::BleedToLeading)
                 {
-                    context.SetBleedDirection(ContainerBleedDirection::BleedToLeading);
-                }
-                else if (previousBleedState != ContainerBleedDirection::BleedToLeading)
-                {
-                    context.SetBleedDirection(ContainerBleedDirection::BleedRestricted);
+                    currentBleedState = (previousBleedState == ContainerBleedDirection::BleedToBothEdges) ?
+                        ContainerBleedDirection::BleedToLeading :
+                        ContainerBleedDirection::BleedRestricted;
                 }
             }
             else if (currentIndex == endElemIndex)
             {
-                if (previousBleedState == ContainerBleedDirection::BleedToBothEdges)
+                // If we're in the right column, we can only bleed right
+                if (previousBleedState != ContainerBleedDirection::BleedToTrailing)
                 {
-                    context.SetBleedDirection(ContainerBleedDirection::BleedToTrailing);
+                    currentBleedState = (previousBleedState == ContainerBleedDirection::BleedToBothEdges) ?
+                        ContainerBleedDirection::BleedToTrailing :
+                        ContainerBleedDirection::BleedRestricted;
                 }
-                else if (previousBleedState != ContainerBleedDirection::BleedToTrailing)
-                {
-                    context.SetBleedDirection(ContainerBleedDirection::BleedRestricted);
-                }
-            } else
+            }
+            else
             {
-                context.SetBleedDirection(ContainerBleedDirection::BleedRestricted);
+                // If we're in an internal column, we can't bleed
+                currentBleedState = ContainerBleedDirection::BleedRestricted;
             }
         }
+
+        context.PushBleedDirection(currentBleedState);
 
         std::shared_ptr<BaseElement> el;
         const std::string typeString = ParseUtil::GetString(curJsonValue, AdaptiveCardSchemaKey::Type, "Column", false);
@@ -120,9 +117,11 @@ void ColumnSet::DeserializeChildren(ParseContext& context, const Json::Value& va
         if (el != nullptr)
         {
             elements.push_back(std::static_pointer_cast<Column>(el));
-            // restores the parent's bleed state
-            context.SetBleedDirection(previousBleedState);
         }
+
+        // restores the parent's bleed state
+        context.PopBleedDirection();
+
         ++currentIndex;
     }
 
