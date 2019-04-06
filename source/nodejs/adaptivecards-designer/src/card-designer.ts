@@ -1214,13 +1214,20 @@ export class CardDesigner {
 		return new RTCPeerConnection({
 			iceServers: [
 				{
-					urls: ['stun:stun.l.google.com:19302']
-				},
-				{
-					urls: ['turn:turn.bistri.com:80'],
-					username: "homeo",
-					credential: "homeo"
-				}
+                    urls: [ "stun:ws-turn3.xirsys.com" ]
+                 },
+                 {
+                    username: "e-HcX5lqoTEzSQetY5biyT3YzM45GIl3HK4FQuo3y73xvsLAmts_gF8PylqkwBR6AAAAAFyoMKphbGVhZGVy",
+                    credential: "d97cbeee-5827-11e9-bef6-069f0817bf63",
+                    urls: [
+                        "turn:ws-turn3.xirsys.com:80?transport=udp",
+                        "turn:ws-turn3.xirsys.com:3478?transport=udp",
+                        "turn:ws-turn3.xirsys.com:80?transport=tcp",
+                        "turn:ws-turn3.xirsys.com:3478?transport=tcp",
+                        "turns:ws-turn3.xirsys.com:443?transport=tcp",
+                        "turns:ws-turn3.xirsys.com:5349?transport=tcp"
+                    ]
+                 }
 			]
 		});
 	}
