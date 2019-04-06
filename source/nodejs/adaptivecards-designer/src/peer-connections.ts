@@ -30,12 +30,34 @@ export class PeerConnections {
             body: JSON.stringify(offerAndCandidates)
         });
 
-        if (response.ok) {
-            var respondId: string = await response.text();
-            return respondId;
-        } else {
+        if (!response.ok) {
             throw new Error("Network response was " + response.status);
         }
+
+        var respondId: string = await response.text();
+        return respondId;
+    }
+
+    static async getJoinInfo(respondId: string) : Promise<any> {
+        var response = await fetch("https://" + this._signalingServerBaseUrl + "/" + respondId);
+        if (!response.ok) {
+            throw new Error("Network response was " + response.status);
+        }
+
+        var joinInfo = await response.json();
+        return joinInfo;
+    }
+
+    static async sendAnswerInfo(respondId: string, answerAndCandidates: any) : Promise<any> {
+        var response = await fetch("https://" + this._signalingServerBaseUrl + "/" + respondId, {
+            method: "PUT",
+            body: JSON.stringify(answerAndCandidates)
+        });
+        if (!response.ok) {
+            throw new Error("Network response wasn't ok");
+        }
+
+        // Otherwise, success! Don't have anything to return
     }
 
     static getWebSocketUrl(respondId: string) {

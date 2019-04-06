@@ -13,9 +13,9 @@ import { Splitter } from "./splitter";
 import { IPoint, Utils } from "./miscellaneous";
 import { BasePaletteItem, ElementPaletteItem } from "./tool-palette";
 import { DefaultContainer } from "./containers/default/default-container";
-import { QRCode } from "qrcode-generator-ts/js";
 import { ShareDialog } from "./share-dialog";
 import { SignalDispatcher } from "strongly-typed-events";
+import { JoinDialog } from "./join-dialog";
 
 export class CardDesigner {
     private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
@@ -335,7 +335,7 @@ export class CardDesigner {
 		this.setJsonPayloadAsString(JSON.stringify(payload, null, 4));
 	}
 	
-	private setJsonPayloadAsString(payload: string) {
+	setJsonPayloadAsString(payload: string) {
         this._monacoEditor.setValue(payload);
         this._onCardPayloadChanged.dispatch();
 	}
@@ -1108,141 +1108,29 @@ export class CardDesigner {
 
         this.card = card;
 	}
-
-	private _hostPeerConn: any;
-	private _hostDataChannel: any;
-	private _clientPeerConn: any;
-	private _hostWebSocket: WebSocket;
-	private _signalingServerBaseUrl = "signalingserver.azurewebsites.net/api/subscriptions";
-	private _joinRespondId: string;
 	
 	private share() {
         new ShareDialog(this._root, this);
 	}
 
-	private async onHostSocketReceivedMessage(event) {
-		console.log("Socket received message: " + event.data);
-		var answerAndCandidatesStr: string = event.data;
-		var answerAndCandidates = JSON.parse(answerAndCandidatesStr);
-		if (!this._hostPeerConn) {
-			alert("Host null");
-			return;
-		}
-		var answer: any = {
-			type: "answer",
-			sdp: answerAndCandidates.sdp
-		};
-
-		
-		await this._hostPeerConn.setRemoteDescription(new RTCSessionDescription(answer));
-		await this.addIceCandidates(this._hostPeerConn, answerAndCandidates.candidates);
-		console.log("Client connected!");
-	}
-
 	private join() {
-		this._joinRespondId = prompt("Enter respond id");
+        new JoinDialog(this);
+    }
+    
+    markJoined() {
+        this._joinButton.caption = "Joined!";
+        this._joinButton.toolTip = "Joined!";
+        this._joinButton.onClick = function () {
+            alert("You're joined! To disconnect, refresh the page.");
+        };
+        this._shareButton.hidden = true;
+    }
 
-		fetch("https://" + this._signalingServerBaseUrl + "/" + this._joinRespondId)
-		.then(resp => {
-			if (resp.ok) {
-				return resp.json();
-			}
-			throw new Error("Network response wasn't ok");
-		})
-		.then(this.joinReceivedOfferAndCandidates.bind(this))
-		.catch(error => {
-			alert(error);
-		});
-	}
-
-	private createPeerConnection() {
-		return new RTCPeerConnection({
-			iceServers: [
-				{
-                    urls: [ "stun:ws-turn3.xirsys.com" ]
-                 },
-                 {
-                    username: "e-HcX5lqoTEzSQetY5biyT3YzM45GIl3HK4FQuo3y73xvsLAmts_gF8PylqkwBR6AAAAAFyoMKphbGVhZGVy",
-                    credential: "d97cbeee-5827-11e9-bef6-069f0817bf63",
-                    urls: [
-                        "turn:ws-turn3.xirsys.com:80?transport=udp",
-                        "turn:ws-turn3.xirsys.com:3478?transport=udp",
-                        "turn:ws-turn3.xirsys.com:80?transport=tcp",
-                        "turn:ws-turn3.xirsys.com:3478?transport=tcp",
-                        "turns:ws-turn3.xirsys.com:443?transport=tcp",
-                        "turns:ws-turn3.xirsys.com:5349?transport=tcp"
-                    ]
-                 }
-			]
-		});
-	}
-
-	private async joinReceivedOfferAndCandidates(offerAndCandidates) {
-		var candidates = [];
-		this._clientPeerConn = this.createPeerConnection();
-		this._clientPeerConn.ondatachannel = (e) => {
-			var dataChannel = e.channel;
-			dataChannel.onopen = (e) => {
-                console.log('Connected');
-                this._joinButton.caption = "Joined!";
-                this._joinButton.toolTip = "Joined!";
-			};
-			dataChannel.onmessage = (e) => {
-				console.log('Got message:', e.data);
-				var dataMessage = JSON.parse(e.data);
-				if (dataMessage.cardPayload !== undefined) {
-					var cardPayload: string = dataMessage.cardPayload;
-					this.setJsonPayloadAsString(cardPayload);
-				}
-				if (dataMessage.hostConfigPayload !== undefined) {
-					var hostConfigPayload: string = dataMessage.hostConfigPayload;
-					this.activeHostContainer.getHostConfig
-				}
-			}
-		};
-		this._clientPeerConn.onicecandidate = (e) => {
-			if (e.candidate != null) {
-				candidates.push(e.candidate);
-			} else {
-				var answerAndCandidates = {
-					sdp: this._clientPeerConn.localDescription.sdp,
-					candidates: candidates
-				};
-
-				fetch("https://" + this._signalingServerBaseUrl + "/" + this._joinRespondId, {
-					method: "PUT",
-					body: JSON.stringify(answerAndCandidates)
-				})
-				.then(resp => {
-					if (resp.ok) {
-						return resp.text();
-					}
-					throw new Error("Network response wasn't ok");
-				})
-				.then(txt => {
-                    console.log("Success sending answer");
-				})
-				.catch(error => {
-					alert(error);
-				});
-			}
-		};
-		var offer: any = {
-			type: "offer",
-			sdp: offerAndCandidates.sdp
-		};
-		var offerDesc = new RTCSessionDescription(offer);
-		await this._clientPeerConn.setRemoteDescription(offerDesc);
-		await this.addIceCandidates(this._clientPeerConn, offerAndCandidates.candidates);
-		var answerDesc = await this._clientPeerConn.createAnswer({});
-		this._clientPeerConn.setLocalDescription(answerDesc);
-	}
-
-	private async addIceCandidates(peerConn: any, candidates: any) {
-		for (var i = 0; i < candidates.length; i++) {
-			await peerConn.addIceCandidate(candidates[i]);
-		}
-	}
+    markShared() {
+        this._joinButton.hidden = true;
+        this._shareButton.caption = "Sharing!";
+        this._shareButton.toolTip = "Sharing!";
+    }
 
     undo() {
         if (this.canUndo) {

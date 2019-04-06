@@ -8,6 +8,7 @@ export enum ToolbarElementAlignment {
 
 export abstract class ToolbarElement {
     private _renderedElement: HTMLElement = undefined;
+    private _hidden: boolean = false;
 
     protected abstract internalRender(): HTMLElement;
 
@@ -46,6 +47,16 @@ export abstract class ToolbarElement {
     get renderedElement(): HTMLElement {
         return this._renderedElement;
     }
+
+    get hidden(): boolean {
+        return this._hidden;
+    }
+
+    set hidden(value: boolean) {
+        this._hidden = value;
+
+        this.updateLayout();
+    }
 }
 
 export class ToolbarButton extends ToolbarElement {
@@ -78,6 +89,7 @@ export class ToolbarButton extends ToolbarElement {
         }
 
         this.renderedElement.title = this.toolTip ? this.toolTip : "";
+        this.renderedElement.style.display = this.hidden ? "none" : "flex";
     }
 
     protected internalRender(): HTMLElement {

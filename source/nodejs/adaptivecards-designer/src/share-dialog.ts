@@ -102,11 +102,12 @@ export class ShareDialog {
             var dataChannel = this._hostPeerConn.createDataChannel('test');
             dataChannel.onopen = (e) => {
                 console.log("Opened data channel");
-                this.removeModal();
+                this.close();
                 this._hostDataChannel = dataChannel;
                 this._unsubOnCardPayloadChanged = this._cardDesigner.onCardPayloadChanged.subscribe(this.onCardPayloadChanged.bind(this));
                 this._unsubOnHostConfigPayloadChanged = this._cardDesigner.onHostConfigPayloadChanged.subscribe(this.onHostConfigPayloadChanged.bind(this));
                 this.sendCardAndHostConfigToClients();
+                this._cardDesigner.markShared();
             };
         }
         var desc = await this._hostPeerConn.createOffer({});
@@ -228,10 +229,6 @@ export class ShareDialog {
             this._unsubOnHostConfigPayloadChanged();
             this._unsubOnHostConfigPayloadChanged = null;
         }
-    }
-
-    private removeModal() {
-        this._modalElement.remove();
     }
     
     private fail(message: string) {
