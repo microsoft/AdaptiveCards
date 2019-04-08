@@ -341,6 +341,11 @@ namespace AdaptiveCards.Rendering.Html
                             AddSeparator(uiContainer, cardElement, context);
                         }
 
+                        if (cardElement.PixelMinHeight > 0)
+                        {
+                            uiElement.Style("min-height", cardElement.PixelMinHeight + "px");
+                        }
+
                         uiContainer.Children.Add(uiElement);
                     }
                 }
@@ -1011,7 +1016,7 @@ namespace AdaptiveCards.Rendering.Html
                 .Attr("name", image.Id)
                 .Style("display", "block");
 
-            if (image.Height == AdaptiveHeight.Auto)
+            if (image.Height != AdaptiveHeight.Stretch)
             {
                 uiDiv.Style("box-sizing", "border-box");
             }
@@ -1653,7 +1658,10 @@ namespace AdaptiveCards.Rendering.Html
             }
             else
             {
-                uiTextInput.Style("flex", "1 1 auto");
+                if (!input.IsMultiline)
+                {
+                    uiTextInput.Style("flex", "1 1 auto");
+                }
             }
 
             if (!string.IsNullOrEmpty(input.Placeholder))
