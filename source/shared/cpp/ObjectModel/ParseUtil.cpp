@@ -154,14 +154,14 @@ namespace AdaptiveSharedNamespace
             std::string backgroundImageUrl = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundImage, false);
             if (backgroundImageUrl != "")
             {
-                return std::shared_ptr<BackgroundImage>(new BackgroundImage(backgroundImageUrl));
+                return std::make_shared<BackgroundImage>(backgroundImageUrl);
             }
 
             // handle "backgroundImageUrl": <string>
             backgroundImageUrl = ParseUtil::GetString(json, AdaptiveCardSchemaKey::BackgroundImageUrl, false);
             if (backgroundImageUrl != "")
             {
-                return std::shared_ptr<BackgroundImage>(new BackgroundImage(backgroundImageUrl));
+                return std::make_shared<BackgroundImage>(backgroundImageUrl);
             }
             return nullptr;
         }

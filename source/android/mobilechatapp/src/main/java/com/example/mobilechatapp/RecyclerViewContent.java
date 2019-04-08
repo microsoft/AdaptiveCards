@@ -3,6 +3,7 @@ package com.example.mobilechatapp;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 
 import java.util.List;
@@ -19,18 +20,28 @@ public class RecyclerViewContent
     private class CardRendererTask extends AsyncTask<ParseResult, Void, View>
     {
 
-        public CardRendererTask(Context context, FragmentManager fragmentManager, ICardActionHandler cardActionHandler, HostConfig hostConfig)
+        public CardRendererTask(Context context, FragmentManager fragmentManager, ICardActionHandler cardActionHandler, HostConfig hostConfig, String filename)
         {
             m_context = context;
             m_fragmentManager = fragmentManager;
             m_cardActionHandler = cardActionHandler;
             m_hostConfig = hostConfig;
+            m_filename = filename;
         }
 
         @Override
         protected View doInBackground(ParseResult... objects) {
-            RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(m_context, m_fragmentManager, objects[0].GetAdaptiveCard(), m_cardActionHandler, m_hostConfig);
-            return renderedCard.getView();
+            try
+            {
+                RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(m_context, m_fragmentManager, objects[0].GetAdaptiveCard(), m_cardActionHandler, m_hostConfig);
+                return renderedCard.getView();
+            }
+            catch (Exception e)
+            {
+                Log.e(m_fileName, e.getMessage());
+                e.printStackTrace();
+                return null;
+            }
         }
 
         @Override
@@ -60,6 +71,7 @@ public class RecyclerViewContent
         private ICardActionHandler m_cardActionHandler;
         private HostConfig m_hostConfig;
         private RecyclerViewAdapter.ICardRenderedListener m_cardRenderedListener = null;
+        private String m_filename;
     }
 
 
@@ -69,7 +81,7 @@ public class RecyclerViewContent
         m_cardHasRendered = false;
         m_renderedCard = null;
 
-        m_cardRendererTask = new CardRendererTask(context, fragmentManager, cardActionHandler, hostConfig);
+        m_cardRendererTask = new CardRendererTask(context, fragmentManager, cardActionHandler, hostConfig, m_fileName);
         m_cardRendererTask.execute(parseResult);
     }
 

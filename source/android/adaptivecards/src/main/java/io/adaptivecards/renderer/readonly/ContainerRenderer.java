@@ -14,6 +14,7 @@ import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.BackgroundImageLoaderAsync;
+import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
@@ -154,7 +155,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
         if (container.GetSelectAction() != null)
         {
             containerView.setClickable(true);
-            containerView.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(renderedCard, container.GetSelectAction(), cardActionHandler));
+            containerView.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, container.GetSelectAction(), cardActionHandler));
         }
 
         if (container.GetMinHeight() != 0)

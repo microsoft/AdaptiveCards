@@ -16,6 +16,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
@@ -24,6 +25,7 @@ import android.view.Menu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.GenericImageLoaderAsync;
 import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.IResourceResolver;
@@ -33,6 +35,7 @@ import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.Util;
+import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.*;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
@@ -152,6 +155,158 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         tabHost.setCurrentTab(0);
     }
 
+    public class CustomRedActionElement extends BaseActionElement
+    {
+
+        public CustomRedActionElement(ActionType type) {
+            super(type);
+        }
+
+        public String getBackwardString()
+        {
+            return m_backwardsString;
+        }
+
+        public void setBackwardString(String s)
+        {
+            m_backwardsString = new String();
+            for(int i = s.length() - 1; i >= 0; i--)
+            {
+                m_backwardsString += s.charAt(i);
+            }
+        }
+
+        private String m_backwardsString;
+        public static final String CustomActionId = "redAction";
+    }
+
+    public class CustomRedActionParser extends ActionElementParser
+    {
+        @Override
+        public BaseActionElement Deserialize(ParseContext context, JsonValue value)
+        {
+            CustomRedActionElement element = new CustomRedActionElement(ActionType.Custom);
+            element.SetElementTypeString(CustomRedActionElement.CustomActionId);
+            element.SetId("backwardActionDeserialize");
+            String val = value.getString();
+            try {
+                JSONObject obj = new JSONObject(val);
+                element.setBackwardString(obj.getString("backwardString"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+                element.setBackwardString("deliaF");
+            }
+            return element;
+        }
+
+        @Override
+        public BaseActionElement DeserializeFromString(ParseContext context, String jsonString)
+        {
+            CustomRedActionElement element = new CustomRedActionElement(ActionType.Custom);
+            element.SetElementTypeString(CustomRedActionElement.CustomActionId);
+            element.SetId("backwardActionDeserialize");
+            try {
+                JSONObject obj = new JSONObject(jsonString);
+                element.setBackwardString(obj.getString("backwardString"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+                element.setBackwardString("deliaF");
+            }
+            return element;
+        }
+    }
+
+    public class CustomRedActionRenderer extends BaseActionElementRenderer
+    {
+        @Override
+        public Button render(RenderedAdaptiveCard renderedCard,
+                             Context context,
+                             FragmentManager fragmentManager,
+                             ViewGroup viewGroup,
+                             BaseActionElement baseActionElement,
+                             ICardActionHandler cardActionHandler,
+                             HostConfig hostConfig,
+                             RenderArgs renderArgs)
+        {
+            Button backwardActionButton = new Button(context);
+
+            CustomRedActionElement customAction = (CustomRedActionElement) baseActionElement.findImplObj();
+
+            backwardActionButton.setBackgroundColor(getResources().getColor(R.color.redActionColor));
+            backwardActionButton.setText(customAction.getBackwardString());
+            backwardActionButton.setAllCaps(false);
+            backwardActionButton.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, baseActionElement, cardActionHandler));
+
+            viewGroup.addView(backwardActionButton);
+
+            return backwardActionButton;
+        }
+    }
+
+    public class CustomGreenActionElement extends BaseActionElement
+    {
+
+        public CustomGreenActionElement(ActionType type) {
+            super(type);
+        }
+
+        public String getMessage()
+        {
+            return m_message;
+        }
+
+        private final String m_message = "Smell you later!";
+        public static final String CustomActionId = "greenAction";
+    }
+
+    public class CustomGreenActionParser extends ActionElementParser
+    {
+        @Override
+        public BaseActionElement Deserialize(ParseContext context, JsonValue value)
+        {
+            CustomGreenActionElement element = new CustomGreenActionElement(ActionType.Custom);
+            element.SetElementTypeString(CustomGreenActionElement.CustomActionId);
+            element.SetId("greenActionDeserialize");
+            return element;
+        }
+
+        @Override
+        public BaseActionElement DeserializeFromString(ParseContext context, String jsonString)
+        {
+            CustomGreenActionElement element = new CustomGreenActionElement(ActionType.Custom);
+            element.SetElementTypeString(CustomGreenActionElement.CustomActionId);
+            element.SetId("greenActionDeserialize");
+            return element;
+        }
+    }
+
+    public class CustomGreenActionRenderer extends BaseActionElementRenderer
+    {
+        @Override
+        public Button render(RenderedAdaptiveCard renderedCard,
+                             Context context,
+                             FragmentManager fragmentManager,
+                             ViewGroup viewGroup,
+                             BaseActionElement baseActionElement,
+                             ICardActionHandler cardActionHandler,
+                             HostConfig hostConfig,
+                             RenderArgs renderArgs)
+        {
+            Button greenActionButton = new Button(context);
+
+            CustomGreenActionElement customAction = (CustomGreenActionElement) baseActionElement.findImplObj();
+
+            greenActionButton.setBackgroundColor(getResources().getColor(R.color.greenActionColor));
+            greenActionButton.setText(customAction.getMessage());
+            greenActionButton.setAllCaps(false);
+            greenActionButton.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, baseActionElement, cardActionHandler));
+
+            viewGroup.addView(greenActionButton);
+
+            return greenActionButton;
+        }
+    }
+
     public class CustomBlahParser extends BaseCardElementParser
     {
         @Override
@@ -203,6 +358,31 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             viewGroup.addView(textView);
 
             return textView;
+        }
+    }
+
+    public class ShowCardOverrideRenderer extends BaseActionElementRenderer
+    {
+
+        @Override
+        public Button render(RenderedAdaptiveCard renderedCard,
+                             Context context,
+                             FragmentManager fragmentManager,
+                             ViewGroup viewGroup,
+                             BaseActionElement baseActionElement,
+                             ICardActionHandler cardActionHandler,
+                             HostConfig hostConfig,
+                             RenderArgs renderArgs)
+        {
+            Button button = new Button(context);
+
+            button.setBackgroundColor(getResources().getColor(R.color.yellowActionColor));
+            button.setText(baseActionElement.GetTitle() +"(ShowCard)");
+
+            button.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig));
+
+            viewGroup.addView(button);
+            return button;
         }
     }
 
@@ -378,14 +558,22 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             ElementParserRegistration elementParserRegistration = new ElementParserRegistration();
             elementParserRegistration.AddParser("blah", new CustomBlahParser());
 
+            ActionParserRegistration actionParserRegistration = new ActionParserRegistration();
+            actionParserRegistration.AddParser(CustomRedActionElement.CustomActionId, new CustomRedActionParser());
+            actionParserRegistration.AddParser(CustomGreenActionElement.CustomActionId, new CustomGreenActionParser());
+
             CardRendererRegistration.getInstance().registerRenderer("blah", new CustomBlahRenderer());
+            CardRendererRegistration.getInstance().registerActionRenderer(CustomRedActionElement.CustomActionId, new CustomRedActionRenderer());
+            CardRendererRegistration.getInstance().registerActionRenderer(CustomGreenActionElement.CustomActionId, new CustomGreenActionRenderer());
+            // Example on how to override the showcard renderer
+            // CardRendererRegistration.getInstance().registerActionRenderer(AdaptiveCardObjectModel.ActionTypeToString(ActionType.ShowCard), new ShowCardOverrideRenderer());
 
             // Example on how a custom OnlineMediaLoader should be registered
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 CardRendererRegistration.getInstance().registerOnlineMediaLoader(new OnlineMediaLoader());
             }
 
-            ParseContext context = new ParseContext(elementParserRegistration, null);
+            ParseContext context = new ParseContext(elementParserRegistration, actionParserRegistration);
 
             ParseResult parseResult = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.VERSION, context);
             LinearLayout layout = (LinearLayout) findViewById(R.id.visualAdaptiveCardLayout);

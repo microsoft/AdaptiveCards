@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import io.adaptivecards.objectmodel.CardElementType;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderArgs;
@@ -256,7 +257,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         if (image.GetSelectAction() != null)
         {
             imageView.setClickable(true);
-            imageView.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(renderedCard, image.GetSelectAction(), cardActionHandler));
+            imageView.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, image.GetSelectAction(), cardActionHandler));
         }
 
         //set horizontalAlignment

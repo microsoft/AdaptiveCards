@@ -112,12 +112,13 @@ public:
     SwigDirector_ActionElementParser(JNIEnv *jenv);
     virtual ~SwigDirector_ActionElementParser();
     virtual std::shared_ptr< AdaptiveCards::BaseActionElement > Deserialize(AdaptiveCards::ParseContext &context, Json::Value const &value);
+    virtual std::shared_ptr< AdaptiveCards::BaseActionElement > DeserializeFromString(AdaptiveCards::ParseContext &context, std::string const &value);
 public:
     bool swig_overrides(int n) {
-      return (n < 1 ? swig_override[n] : false);
+      return (n < 2 ? swig_override[n] : false);
     }
 protected:
-    Swig::BoolArray<1> swig_override;
+    Swig::BoolArray<2> swig_override;
 };
 
 class SwigDirector_BaseCardElementParser : public AdaptiveCards::BaseCardElementParser, public Swig::Director {

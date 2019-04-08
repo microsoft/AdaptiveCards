@@ -49,15 +49,19 @@ namespace AdaptiveCardsSharedModelUnitTest
 				}
 			};
 
-			// Define custom action parser
-			class TestCustomActionParser : public ActionElementParser
-			{
-			public:
-				virtual std::shared_ptr<BaseActionElement> Deserialize(ParseContext &context, const Json::Value& value) override
-				{
-					return std::make_shared<TestCustomElement>(value);
-				}
-			};
+            // Define custom action parser
+            class TestCustomActionParser : public ActionElementParser
+            {
+            public:
+                virtual std::shared_ptr<BaseActionElement> Deserialize(ParseContext &context, const Json::Value& value) override
+                {
+                    return std::make_shared<TestCustomElement>(value);
+                }
+                virtual std::shared_ptr<BaseActionElement> DeserializeFromString(ParseContext &context, const std::string& value) override
+                {
+                    return Deserialize(context, ParseUtil::GetJsonValueFromString(value));
+                }
+            };
 
 			ActionParserRegistration actionParser;
 			ElementParserRegistration elementParser;
