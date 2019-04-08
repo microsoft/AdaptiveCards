@@ -20,6 +20,5 @@
                                      config:(ACOHostConfig *)config
                                       frame:(CGRect)frame
                                    delegate:(id<ACRActionDelegate>)acrActionDelegate;
-;
 
 @end

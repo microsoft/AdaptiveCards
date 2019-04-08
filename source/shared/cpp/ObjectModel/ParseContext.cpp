@@ -9,13 +9,12 @@ namespace AdaptiveSharedNamespace
     ParseContext::ParseContext() :
         elementParserRegistration{std::make_shared<ElementParserRegistration>()},
         actionParserRegistration{std::make_shared<ActionParserRegistration>()}, warnings{}, m_idStack{}, m_elementIds{},
-        m_parentalContainerStyles{}, m_previousBleedDirection{ContainerBleedDirection::BleedToBothEdges}, m_currentBleedDirection{ContainerBleedDirection::BleedToBothEdges}
+        m_parentalContainerStyles{}, m_parentalPadding{}, m_parentalBleedDirection{}
     {
     }
 
     ParseContext::ParseContext(std::shared_ptr<ElementParserRegistration> elementRegistration, std::shared_ptr<ActionParserRegistration> actionRegistration) :
-        warnings{}, m_idStack{}, m_elementIds{}, m_parentalContainerStyles{},
-        m_previousBleedDirection{ContainerBleedDirection::BleedToBothEdges}, m_currentBleedDirection{ContainerBleedDirection::BleedToBothEdges}
+        warnings{}, m_idStack{}, m_elementIds{}, m_parentalContainerStyles{}, m_parentalPadding{}, m_parentalBleedDirection{}
     {
         elementParserRegistration = (elementRegistration) ? elementRegistration : std::make_shared<ElementParserRegistration>();
         actionParserRegistration = (actionRegistration) ? actionRegistration : std::make_shared<ActionParserRegistration>();
@@ -247,9 +246,9 @@ namespace AdaptiveSharedNamespace
 
     ContainerStyle ParseContext::GetParentalContainerStyle() const
     {
-        return m_parentalContainerStyles.size() ? m_parentalContainerStyles.back() : ContainerStyle::NotSet;
+        return m_parentalContainerStyles.size() ? m_parentalContainerStyles.back() : ContainerStyle::None;
     }
-    
+
     void ParseContext::SetParentalContainerStyle(const ContainerStyle style)
     {
         m_parentalContainerStyles.push_back(style);
@@ -265,47 +264,60 @@ namespace AdaptiveSharedNamespace
         return std::move(invalidId);
     }
 
-    void ParseContext::SaveContextForCollectionTypeElement(const std::shared_ptr<CollectionTypeElement>& current)
+    void ParseContext::SaveContextForCollectionTypeElement(const CollectionTypeElement& current)
     {
         // save current style value
-        if (current->GetStyle() != ContainerStyle::None)
+        if (current.GetStyle() != ContainerStyle::None)
         {
-            m_parentalContainerStyles.push_back(current->GetStyle());
+            m_parentalContainerStyles.push_back(current.GetStyle());
         }
 
         // save id of the current if the current has the padding
         // it will be the new parent id for children, when parsing is continued dfs
         // if current container gets padding, it resets container bleed state to not restricted
-        if(current && current->GetPadding()) 
+        if (current.GetPadding())
         {
-            SetPreviousBleedState(GetBleedDirection());
-            SetBleedDirection(ContainerBleedDirection::BleedToBothEdges);
-            m_parentalPadding.push_back(current->GetInternalId());
+            PushBleedDirection(ContainerBleedDirection::BleedToBothEdges);
+            m_parentalPadding.push_back(current.GetInternalId());
         }
     }
 
-    void ParseContext::RestoreContextForCollectionTypeElement(
-        const std::shared_ptr<CollectionTypeElement>& current)
+    void ParseContext::RestoreContextForCollectionTypeElement(const CollectionTypeElement& current)
     {
         // pop container style
-        if(m_parentalContainerStyles.size() && current->GetStyle() != ContainerStyle::None)
+        if (m_parentalContainerStyles.size() && current.GetStyle() != ContainerStyle::None)
         {
             m_parentalContainerStyles.pop_back();
         }
 
         // restore to previous parental id for further parsing of remaining items
-        if(current && current->GetPadding())
+        if (current.GetPadding())
         {
             m_parentalPadding.pop_back();
+            PopBleedDirection();
         }
-
-        SetBleedDirection(GetPreviousBleedState());
     }
 
-    void ParseContext::SetLanguage(const std::string& value)
+    ContainerBleedDirection ParseContext::GetBleedDirection() const
     {
-        m_language = value;
+        if (!m_parentalBleedDirection.empty())
+        {
+            return m_parentalBleedDirection.back();
+        }
+        else
+        {
+            return ContainerBleedDirection::BleedToBothEdges;
+        }
     }
+
+    void ParseContext::PushBleedDirection(const ContainerBleedDirection direction)
+    {
+        m_parentalBleedDirection.push_back(direction);
+    }
+
+    void ParseContext::PopBleedDirection() { m_parentalBleedDirection.pop_back(); }
+
+    void ParseContext::SetLanguage(const std::string& value) { m_language = value; }
 
     std::string ParseContext::GetLanguage() const { return m_language; }
 }
