@@ -87,6 +87,11 @@ export class ContainerWrapper extends React.PureComponent {
         }
         computedStyles.push(backgroundStyle);
 
+        // border
+        const borderThickness = styleDefinition.borderThickness || 0;
+        const borderColor = styleDefinition.borderColor;
+        computedStyles.push({borderWidth: borderThickness, borderColor: Utils.hexToRGB(borderColor)});
+
         // padding & bleed
         if (this.canApplyPadding()) {
             const padding = hostConfig.getEffectiveSpacing(Enums.Spacing.Padding);
