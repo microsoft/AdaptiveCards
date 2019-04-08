@@ -378,20 +378,28 @@ export abstract class CardElement implements ICardObject {
             let effectivePadding = this.parent.getEffectivePadding();
 
             if (effectivePadding) {
-                if (doProcessTop) {
+                if (doProcessTop && effectivePadding.top != Enums.Spacing.None) {
                     result.top = effectivePadding.top;
+
+                    doProcessTop = false;
                 }
 
-                if (doProcessRight) {
+                if (doProcessRight && effectivePadding.right != Enums.Spacing.None) {
                     result.right = effectivePadding.right;
+
+                    doProcessRight = false;
                 }
 
-                if (doProcessBottom) {
+                if (doProcessBottom && effectivePadding.bottom != Enums.Spacing.None) {
                     result.bottom = effectivePadding.bottom;
+
+                    doProcessBottom = false;
                 }
 
-                if (doProcessLeft) {
+                if (doProcessLeft && effectivePadding.left != Enums.Spacing.None) {
                     result.left = effectivePadding.left;
+
+                    doProcessLeft = false;
                 }
             }
 
@@ -4094,7 +4102,7 @@ class ActionCollection {
                 }
             }
 
-            let parentContainerStyle = this.getParentContainer().style;
+            let parentContainerStyle = this.getParentContainer().getEffectiveStyle();
 
             for (let i = 0; i < this.items.length; i++) {
                 if (isActionAllowed(this.items[i], forbiddenActionTypes)) {
@@ -4413,9 +4421,17 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
     }
 
     protected getHasBackground(): boolean {
-        let parentContainer = this.getParentContainer();
+        let currentElement: CardElement = this.parent;
 
-        return this.hasExplicitStyle && (parentContainer ? parentContainer.getEffectiveStyle() != this.getEffectiveStyle() : false);
+        while (currentElement) {
+            if (currentElement instanceof StylableCardElementContainer) {
+                return this.hasExplicitStyle && currentElement.getEffectiveStyle() != this.getEffectiveStyle();
+            }
+
+            currentElement = currentElement.parent;
+        }
+
+        return false;
     }
 
     protected getDefaultPadding(): Shared.PaddingDefinition {
