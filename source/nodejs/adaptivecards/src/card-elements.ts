@@ -374,20 +374,28 @@ export abstract class CardElement implements ICardObject {
             let effectivePadding = this.parent.getEffectivePadding();
 
             if (effectivePadding) {
-                if (doProcessTop) {
+                if (doProcessTop && effectivePadding.top != Enums.Spacing.None) {
                     result.top = effectivePadding.top;
+
+                    doProcessTop = false;
                 }
 
-                if (doProcessRight) {
+                if (doProcessRight && effectivePadding.right != Enums.Spacing.None) {
                     result.right = effectivePadding.right;
+
+                    doProcessRight = false;
                 }
 
-                if (doProcessBottom) {
+                if (doProcessBottom && effectivePadding.bottom != Enums.Spacing.None) {
                     result.bottom = effectivePadding.bottom;
+
+                    doProcessBottom = false;
                 }
 
-                if (doProcessLeft) {
+                if (doProcessLeft && effectivePadding.left != Enums.Spacing.None) {
                     result.left = effectivePadding.left;
+
+                    doProcessLeft = false;
                 }
             }
 
