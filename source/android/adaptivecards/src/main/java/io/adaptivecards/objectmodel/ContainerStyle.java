@@ -15,8 +15,7 @@ public enum ContainerStyle {
   Good,
   Attention,
   Warning,
-  Accent,
-  NotSet;
+  Accent;
 
   public final int swigValue() {
     return swigValue;

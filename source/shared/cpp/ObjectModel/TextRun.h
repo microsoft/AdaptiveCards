@@ -17,7 +17,7 @@ namespace AdaptiveSharedNamespace
         TextRun& operator=(TextRun&&) = default;
         ~TextRun() = default;
 
-        virtual Json::Value SerializeToJsonValue() const;
+        Json::Value SerializeToJsonValue() const override;
 
         static std::shared_ptr<Inline> Deserialize(ParseContext& context, const Json::Value& root);
 
@@ -51,7 +51,7 @@ namespace AdaptiveSharedNamespace
 
     protected:
         std::shared_ptr<TextElementProperties> m_textElementProperties;
-        virtual void PopulateKnownPropertiesSet() override;
+        void PopulateKnownPropertiesSet() override;
         std::shared_ptr<BaseActionElement> m_selectAction;
         bool m_highlight;
     };

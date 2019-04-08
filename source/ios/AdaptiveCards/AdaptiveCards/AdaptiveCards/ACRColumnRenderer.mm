@@ -41,18 +41,20 @@
                                                      parentStyle:[viewGroup style] hostConfig:acoConfig superview:viewGroup];
 
     [viewGroup addArrangedSubview:column];
-
+    
     configBleed(rootView, elem, column, acoConfig);
-
+        
+    renderBackgroundImage(columnElem->GetBackgroundImage(), column, rootView);
+    
     column.pixelWidth = columnElem->GetPixelWidth();
-    if(columnElem->GetWidth() == "stretch" || columnElem->GetWidth() == "") {
+    if (columnElem->GetWidth() == "stretch" || columnElem->GetWidth() == "") {
         column.columnWidth = @"stretch";
-    } else if(columnElem->GetWidth() == "auto"){
+    } else if (columnElem->GetWidth() == "auto"){
         column.columnWidth = @"auto";
     }
 
     UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
-    if(columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom){
+    if (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom) {
         leadingBlankSpace = [column addPaddingSpace];
     }
 
@@ -62,7 +64,7 @@
           withCardElems:columnElem->GetItems()
           andHostConfig:acoConfig];
 
-    if(columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && _fillAlignment)){
+    if (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && _fillAlignment)) {
         trailingBlankSpace = [column addPaddingSpace];
     }
 
@@ -77,7 +79,7 @@
                                                                   actionElement:selectAction
                                                                      hostConfig:acoConfig];
 
-    if(leadingBlankSpace != nil && trailingBlankSpace != nil){
+    if (leadingBlankSpace != nil && trailingBlankSpace != nil) {
         [NSLayoutConstraint constraintWithItem:leadingBlankSpace
                                      attribute:NSLayoutAttributeHeight
                                      relatedBy:NSLayoutRelationEqual
@@ -90,6 +92,15 @@
     configVisibility(column, elem);
 
     return column;
+}
+
+- (void)configUpdateForUIImageView:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
+{
+    std::shared_ptr<BaseCardElement> elem = [acoElem element];
+    std::shared_ptr<Column> columnElem = std::dynamic_pointer_cast<Column>(elem);
+    auto backgroundImageProperties = columnElem->GetBackgroundImage();
+    
+    renderBackgroundImage(backgroundImageProperties.get(), imageView, image);
 }
 
 @end
