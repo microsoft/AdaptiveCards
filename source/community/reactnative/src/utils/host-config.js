@@ -31,6 +31,12 @@ export class TextColorDefinition {
 	set default(color) {
 		this._default = color;
 	}
+	toJSON() {
+		return {
+			default: this._default,
+			subtle:this._subtle
+		}
+	}
 }
 
 export class HostConfigManager {
@@ -291,13 +297,15 @@ export class ContainerStyleDefinition {
 		this.foregroundColors.warning = this.getTextColorDefinition(defaultHostConfig["containerStyles"][type].foregroundColors["warning"]);
 		this.foregroundColors.attention = this.getTextColorDefinition(defaultHostConfig["containerStyles"][type].foregroundColors["attention"]);
 		
-		if (obj) {
-			this.backgroundColor = obj["backgroundColor"];
-			this.foregroundColors.default = this.getTextColorDefinition(obj[type].foregroundColors["default"]);
-			this.foregroundColors.accent = this.getTextColorDefinition(obj[type].foregroundColors["accent"]);
-			this.foregroundColors.good = this.getTextColorDefinition(obj[type].foregroundColors["good"]);
-			this.foregroundColors.warning = this.getTextColorDefinition(obj[type].foregroundColors["warning"]);
-			this.foregroundColors.attention = this.getTextColorDefinition(obj[type].foregroundColors["attention"]);
+		if (obj && obj[type]) {
+			this.backgroundColor = obj[type]["backgroundColor"]  ? obj[type]["backgroundColor"] : this.backgroundColor;
+			if(obj[type]["foregroundColors"]) {
+				this.foregroundColors.default = this.getTextColorDefinition(obj[type].foregroundColors["default"],this.foregroundColors.default.toJSON);
+				this.foregroundColors.accent = this.getTextColorDefinition(obj[type].foregroundColors["accent"],this.foregroundColors.accent.toJSON);
+				this.foregroundColors.good = this.getTextColorDefinition(obj[type].foregroundColors["good"],this.foregroundColors.good.toJSON);
+				this.foregroundColors.warning = this.getTextColorDefinition(obj[type].foregroundColors["warning"],this.foregroundColors.warning.toJSON);
+				this.foregroundColors.attention = this.getTextColorDefinition(obj[type].foregroundColors["attention"],this.foregroundColors.attention.toJSON);
+			}
 		}
 	}
 
