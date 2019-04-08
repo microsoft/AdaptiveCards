@@ -1,7 +1,7 @@
 {
   "name": "adaptivecards-reactnative",
   "description": "AdaptiveCards implementation in ReactNative",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "keywords": [
     "adaptivecards",
     "cards",
@@ -27,9 +27,9 @@
     "src/components",
     "src/styles",
     "src/utils",
-    "src/adaptive-cards.js"
+    "src/adaptive-card.js"
   ],
-  "main": "./src/adaptive-cards",
+  "main": "./src/adaptive-card",
   "devDependencies": {
     "react": "16.6.0-alpha.8af6728",
     "react-native": "0.57.4",

@@ -301,7 +301,7 @@ export class ChoiceSetInput extends React.Component {
 		return (
 			<InputContextConsumer>
 				{({ addInputItem, showErrors }) => (
-					<ElementWrapper json={this.payload} style={styles.containerView} isError={this.state.isError}>
+					<ElementWrapper json={this.payload} style={styles.containerView} isError={this.state.isError} isFirst={this.props.isFirst}>
 						<View style={this.getComputedStyles(showErrors)}>
 							{!isMultiSelect ?
 								((style == CompactStyle || style == undefined) ?
