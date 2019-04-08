@@ -8,6 +8,40 @@
       "text": "Text input with an inline action"
     },
     {
+      "type": "ActionSet",
+      "actions": [
+        {
+          "type": "Action.OpenUrl",
+          "title": "Set due date",
+          "url": "https://msn.com"
+        },
+        {
+          "type": "Action.OpenUrl",
+          "title": "View",
+          "url": "https://msn.com"
+        },
+        {
+          "type": "Action.ShowCard",
+          "title": "Set due date",
+          "card": {
+            "type": "AdaptiveCard",
+            "body": [
+              {
+                "type": "Input.Date",
+                "id": "dueDate"
+              }
+            ],
+            "actions": [
+              {
+                "type": "Action.Submit",
+                "title": "OK"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
       "type": "Input.Text",
       "id": "input1",
       "inlineAction": {
