@@ -819,5 +819,96 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::IsTrue(columnLeft->GetStyle() == ContainerStyle::None);
             Assert::IsFalse(columnLeft->GetCanBleed());
         }
+
+        TEST_METHOD(BleedSequentialColumnSets)
+        {
+            std::string testJsonString {R"(
+            {
+                "type": "AdaptiveCard",
+                "version":"1.0",
+                "body": [
+                    {
+                        "type": "ColumnSet",
+                        "columns": [
+                            {
+                                "type": "Column",
+                                "style": "good",
+                                "items": [
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "Column 1"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "Column",
+                                "style": "attention",
+                                "items": [
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "Column 2"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "Column",
+                                "style": "warning",
+                                "items": [
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "Column 3"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "ColumnSet",
+                        "columns": [
+                            {
+                                "type": "Column",
+                                "style": "good",
+                                "items": [
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "Column 1"
+                                    }
+                                ],
+                                "bleed": true
+                            },
+                            {
+                                "type": "Column",
+                                "style": "attention",
+                                "items": [
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "Column 2"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "Column",
+                                "style": "warning",
+                                "items": [
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "Column 3"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+            )"};
+
+            auto adaptiveCard = AdaptiveCard::DeserializeFromString(testJsonString, "1.2")->GetAdaptiveCard();
+            Assert::IsTrue(adaptiveCard != nullptr);
+
+            // The first column in the second column set should bleed to the left
+            auto secondColumnSet = std::static_pointer_cast<ColumnSet>(adaptiveCard->GetBody()[1]);
+            Assert::IsTrue(secondColumnSet->GetColumns()[0]->GetCanBleed());
+            Assert::IsTrue(secondColumnSet->GetColumns()[0]->GetBleedDirection() == ContainerBleedDirection::BleedToLeading);
+        }
     };
 }

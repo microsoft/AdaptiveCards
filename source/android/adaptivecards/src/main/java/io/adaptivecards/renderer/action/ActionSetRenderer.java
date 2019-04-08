@@ -22,7 +22,6 @@ import io.adaptivecards.renderer.readonly.RichTextBlockRenderer;
 
 public class ActionSetRenderer extends BaseCardElementRenderer
 {
-
     public static ActionSetRenderer getInstance()
     {
         if (s_instance == null)

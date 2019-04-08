@@ -34,7 +34,17 @@ public class RenderArgs
         m_containerStyle = containerStyle;
     }
 
-    private boolean m_ancestorHasFallback;
+    public boolean getAllowAboveTitleIconPlacement()
+    {
+        return m_allowAboveTitleIconPlacement;
+    }
 
+    public void setAllowAboveTitleIconPlacement(boolean allowAboveTitleIconPlacement)
+    {
+        m_allowAboveTitleIconPlacement = allowAboveTitleIconPlacement;
+    }
+
+    private boolean m_ancestorHasFallback;
     private ContainerStyle m_containerStyle;
+    private boolean m_allowAboveTitleIconPlacement;
 }

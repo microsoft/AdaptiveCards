@@ -21,6 +21,7 @@ import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.Image;
 import io.adaptivecards.objectmodel.ImageSet;
 import io.adaptivecards.objectmodel.ImageVector;
+import io.adaptivecards.objectmodel.ParseContext;
 import io.adaptivecards.objectmodel.ParseResult;
 import io.adaptivecards.objectmodel.ShowCardAction;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
@@ -44,7 +45,8 @@ public class Card
 
         try
         {
-            m_parsedCard = AdaptiveCard.DeserializeFromString(fullCardString, AdaptiveCardRenderer.VERSION, null);
+            ParseContext context = new ParseContext(null, null);
+            m_parsedCard = AdaptiveCard.DeserializeFromString(fullCardString, AdaptiveCardRenderer.VERSION, context);
             if(m_parsedCard != null)
             {
                 fillElementTypes(m_parsedCard.GetAdaptiveCard());

@@ -1,5 +1,8 @@
 package com.example.mobilechatapp;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -17,20 +20,31 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.example.mobilechatapp.ShowCardFragment;
+import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.ElementParserRegistration;
 import io.adaptivecards.objectmodel.HostConfig;
+import io.adaptivecards.objectmodel.OpenUrlAction;
+import io.adaptivecards.objectmodel.ShowCardAction;
+import io.adaptivecards.objectmodel.SubmitAction;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
@@ -222,8 +236,116 @@ public class MainActivity extends AppCompatActivity implements ICardActionHandle
         return super.onOptionsItemSelected(item);
     }
 
+    public void showToast(String text, int duration)
+    {
+        class RunnableExtended implements Runnable
+        {
+            public RunnableExtended(Context context, String text, int duration)
+            {
+                m_context = context;
+                m_text = text;
+                m_duration = duration;
+            }
+
+            @Override
+            public void run()
+            {
+                Toast.makeText(m_context, m_text, m_duration).show();
+            }
+
+            private Context m_context;
+            private String m_text;
+            private int m_duration;
+        }
+
+        this.runOnUiThread(new RunnableExtended(this, text, duration));
+    }
+
+    private void onSubmit(BaseActionElement actionElement, RenderedAdaptiveCard renderedAdaptiveCard) {
+        SubmitAction submitAction = null;
+        if (actionElement instanceof SubmitAction) {
+            submitAction = (SubmitAction) actionElement;
+        } else if ((submitAction = SubmitAction.dynamic_cast(actionElement)) == null) {
+            throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
+        }
+
+        String data = submitAction.GetDataJson();
+        Map<String, String> keyValueMap = renderedAdaptiveCard.getInputs();
+        if (!data.isEmpty())
+        {
+            try {
+                JSONObject object = new JSONObject(data);
+                showToast("Submit data: " + object.toString() + "\nInput: " + keyValueMap.toString(), Toast.LENGTH_LONG);
+            } catch (JSONException e) {
+                showToast(e.toString(), Toast.LENGTH_LONG);
+            }
+        }
+        else
+        {
+            showToast("Submit input: " + keyValueMap.toString(), Toast.LENGTH_LONG);
+        }
+    }
+
+    private void onShowCard(BaseActionElement actionElement)
+    {
+        ShowCardAction showCardAction = null;
+        if (actionElement instanceof ShowCardAction)
+        {
+            showCardAction = (ShowCardAction) actionElement;
+        }
+        else if ((showCardAction = ShowCardAction.dynamic_cast(actionElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
+        }
+
+        ShowCardFragment showCardFragment = new ShowCardFragment();
+        HostConfig hostConfig = new HostConfig();
+
+        showCardFragment.initialize(this, getSupportFragmentManager(), showCardAction, this, hostConfig);
+        Bundle args = new Bundle();
+        args.putString("title", showCardAction.GetTitle());
+        showCardFragment.setArguments(args);
+
+        FragmentManager fm = getSupportFragmentManager();
+        showCardFragment.show(fm, showCardAction.GetTitle());
+    }
+
+    private void onOpenUrl(BaseActionElement actionElement)
+    {
+        OpenUrlAction openUrlAction = null;
+        if (actionElement instanceof ShowCardAction)
+        {
+            openUrlAction = (OpenUrlAction) actionElement;
+        }
+        else if ((openUrlAction = OpenUrlAction.dynamic_cast(actionElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
+        }
+
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(openUrlAction.GetUrl()));
+        this.startActivity(browserIntent);
+    }
+
     @Override
-    public void onAction(BaseActionElement actionElement, RenderedAdaptiveCard renderedAdaptiveCard) {
+    public void onAction(BaseActionElement actionElement, RenderedAdaptiveCard renderedAdaptiveCard)
+    {
+        ActionType actionType = actionElement.GetElementType();
+        if (actionType == ActionType.Submit)
+        {
+            onSubmit(actionElement, renderedAdaptiveCard);
+        }
+        else if (actionType == ActionType.ShowCard)
+        {
+            onShowCard(actionElement);
+        }
+        else if (actionType == ActionType.OpenUrl)
+        {
+            onOpenUrl(actionElement);
+        }
+        else
+        {
+            showToast("Unknown Action!" , Toast.LENGTH_LONG);
+        }
     }
 
     @Override

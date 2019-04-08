@@ -62,7 +62,7 @@ namespace AdaptiveSharedNamespace
 
     std::shared_ptr<BackgroundImage> BackgroundImage::Deserialize(const Json::Value& json)
     {
-        std::shared_ptr<BackgroundImage> image = std::shared_ptr<BackgroundImage>(new BackgroundImage());
+        std::shared_ptr<BackgroundImage> image = std::make_shared<BackgroundImage>();
 
         image->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, true));
 
