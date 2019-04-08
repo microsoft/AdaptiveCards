@@ -230,6 +230,10 @@ export abstract class CardElement implements ICardObject {
 
     protected abstract internalRender(): HTMLElement;
 
+    protected overrideInternalRender(): HTMLElement {
+        return this.internalRender();
+    }
+
     protected applyPadding() {
         if (this.separatorElement) {
             if (AdaptiveCard.alwaysBleedSeparators && this.separatorOrientation == Enums.Orientation.Horizontal && !this.isBleeding()) {
@@ -496,7 +500,7 @@ export abstract class CardElement implements ICardObject {
     }
 
     render(): HTMLElement {
-        this._renderedElement = this.internalRender();
+        this._renderedElement = this.overrideInternalRender();
         this._separatorElement = this.internalRenderSeparator();
 
         if (this._renderedElement) {
@@ -2271,6 +2275,31 @@ export abstract class Input extends CardElement implements Shared.IInput {
     private _outerContainerElement: HTMLElement;
     private _errorMessageElement: HTMLElement;
 
+    protected _inputControlElement: HTMLElement;
+
+    protected overrideInternalRender(): HTMLElement {
+        let hostConfig = this.hostConfig;
+
+        this._outerContainerElement = document.createElement("div");
+        this._outerContainerElement.style.display = "flex";
+        this._outerContainerElement.style.flexDirection = "column";
+
+        let innerContainerElement = document.createElement("div");
+        innerContainerElement.className = hostConfig.makeCssClassName("ac-input-container");
+
+        if (this.validation.necessity == Enums.InputValidationNecessity.RequiredWithVisualCue) {
+            innerContainerElement.classList.add(hostConfig.makeCssClassName("ac-input-required"));
+        }
+
+        this._inputControlElement = this.internalRender();
+
+        innerContainerElement.appendChild(this._inputControlElement);
+
+        this._outerContainerElement.appendChild(innerContainerElement);
+
+        return this._outerContainerElement;
+    }
+
     protected valueChanged() {
         this.resetValidationFailureCue();
 
@@ -2282,7 +2311,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
     }
 
     protected resetValidationFailureCue() {
-        this.renderedElement.classList.remove("ac-input-validation-failed");
+        this._inputControlElement.classList.remove("ac-input-validation-failed");
 
         if (this._errorMessageElement) {
             this._outerContainerElement.removeChild(this._errorMessageElement);
@@ -2335,7 +2364,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
         let result = this.validation.necessity != Enums.InputValidationNecessity.Optional ? !Utils.isNullOrEmpty(this.value) : true;
 
         if (!result) {
-            this.renderedElement.classList.add("ac-input-validation-failed");
+            this._inputControlElement.classList.add("ac-input-validation-failed");
 
             this.showValidationErrorMessage();
         }
@@ -2354,29 +2383,6 @@ export abstract class Input extends CardElement implements Shared.IInput {
         if (jsonValidation) {
             this.validation.parse(jsonValidation);
         }
-    }
-
-    render(): HTMLElement {
-        let renderedElement = super.render();
-
-        let hostConfig = this.hostConfig;
-
-        this._outerContainerElement = document.createElement("div");
-        this._outerContainerElement.style.display = "flex";
-        this._outerContainerElement.style.flexDirection = "column";
-
-        let innerContainerElement = document.createElement("div");
-        innerContainerElement.className = hostConfig.makeCssClassName("ac-input-container");
-
-        if (this.validation.necessity == Enums.InputValidationNecessity.RequiredWithVisualCue) {
-            innerContainerElement.classList.add(hostConfig.makeCssClassName("ac-input-required"));
-        }
-
-        innerContainerElement.appendChild(renderedElement);
-
-        this._outerContainerElement.appendChild(innerContainerElement);
-
-        return this._outerContainerElement;
     }
 
     renderSpeech(): string {
