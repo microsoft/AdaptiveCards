@@ -9,12 +9,8 @@
     },
     {
       "type": "ActionSet",
+      "separator": true,
       "actions": [
-        {
-          "type": "Action.OpenUrl",
-          "title": "Set due date",
-          "url": "https://msn.com"
-        },
         {
           "type": "Action.OpenUrl",
           "title": "View",
@@ -86,6 +82,32 @@
         "type": "Action.OpenUrl",
         "title": "Reply",
         "url": "http://adaptivecards.io"
+      }
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.OpenUrl",
+      "title": "View",
+      "url": "https://msn.com"
+    },
+    {
+      "type": "Action.ShowCard",
+      "title": "Set due date",
+      "card": {
+        "type": "AdaptiveCard",
+        "body": [
+          {
+            "type": "Input.Date",
+            "id": "dueDate"
+          }
+        ],
+        "actions": [
+          {
+            "type": "Action.Submit",
+            "title": "OK"
+          }
+        ]
       }
     }
   ]

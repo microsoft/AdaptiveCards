@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 
 import ElementWrapper from '../elements/element-wrapper';
-import * as Constants from '../../utils/constants';
 import { ActionWrapper } from './action-wrapper';
 
 export class ActionSet extends React.Component {
@@ -19,7 +18,7 @@ export class ActionSet extends React.Component {
 		let payload = this.props.json;
 
 		return (
-			<ElementWrapper json={payload} isFirst={this.props.isFirst}>
+			<ElementWrapper json={payload} style={styles.actionButtonContainer} isFirst={this.props.isFirst}>
 				<ActionWrapper actions={payload.actions} />
 			</ElementWrapper>
 		);
@@ -29,9 +28,6 @@ export class ActionSet extends React.Component {
 const styles = StyleSheet.create({
 	actionButtonContainer: {
 		flex: 1,
-		flexWrap: Constants.FlexWrap,
-		flexDirection: Constants.FlexRow,
-		justifyContent: Constants.CenterString
 	}
 });
 
