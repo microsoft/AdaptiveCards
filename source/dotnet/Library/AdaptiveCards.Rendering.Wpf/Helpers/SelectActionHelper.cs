@@ -11,6 +11,13 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             if (context.Config.SupportsInteractivity)
             {
+                // SelectAction doesn't allow showCard actions
+                if (selectAction is AdaptiveShowCardAction && context.Config.Actions.ShowCard.ActionMode == ShowCardActionMode.Inline)
+                {
+                    context.Warnings.Add(new AdaptiveWarning(1, "Inline ShowCard not supported for SelectAction"));
+                    return uiElement;
+                }
+
                 context.IsRenderingSelectAction = true;
                 var uiButton = (Button) context.Render(selectAction);
                 context.IsRenderingSelectAction = false;
@@ -33,8 +40,6 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiButton.BorderThickness = new Thickness(0);
                 uiButton.Content = uiElement;
                 uiButton.Style = context.GetStyle("Adaptive.Action.Tap");
-
-                // SelectAction doesn't allow showCard actions
 
                 return uiButton;
             }
