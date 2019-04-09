@@ -9,14 +9,6 @@ namespace AdaptiveCards.Rendering.Wpf
 {
     static class RendererUtil
     {
-        public static void ApplyMinHeight(FrameworkElement uiElement, AdaptiveElement element)
-        {
-            if (element.PixelMinHeight > 0)
-            {
-                uiElement.MinHeight = element.PixelMinHeight;
-            }
-        }
-
         public static void ApplyIsVisible(FrameworkElement uiElement, AdaptiveElement element)
         {
             if (!element.IsVisible)

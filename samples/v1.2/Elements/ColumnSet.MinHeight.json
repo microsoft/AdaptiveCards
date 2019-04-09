@@ -1,0 +1,40 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.2",
+	"body": [
+		{
+			"type": "ColumnSet",
+			"minHeight": "200px",
+			"columns": [
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "TextBlock"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "FactSet",
+							"facts": [
+								{
+									"title": "Fact 1",
+									"value": "Value 1"
+								},
+								{
+									"title": "Fact 2",
+									"value": "Value 2"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

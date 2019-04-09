@@ -48,7 +48,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             RendererUtil.ApplyVerticalContentAlignment(uiContainer, column);
             RendererUtil.ApplyIsVisible(uiContainer, column);
-            RendererUtil.ApplyMinHeight(uiContainer, column);
+            uiContainer.MinHeight = column.PixelMinHeight;
             
             // Revert context's value to that of outside the Column
             context.RenderArgs = parentRenderArgs;

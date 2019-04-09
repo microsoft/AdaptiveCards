@@ -25,7 +25,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             RendererUtil.ApplyVerticalContentAlignment(uiContainer, container);
             RendererUtil.ApplyIsVisible(border, container);
-            RendererUtil.ApplyMinHeight(uiContainer, container);
+            uiContainer.MinHeight = container.PixelMinHeight;
 
             bool inheritsStyleFromParent = !container.Style.HasValue;
             bool hasPadding = false;
@@ -75,31 +75,20 @@ namespace AdaptiveCards.Rendering.Wpf
                                                          renderedMargin.Bottom);
                     }
 
+                    if (cardElement.Type == "Container" || cardElement.Type == "ColumnSet")
+                    {
+                        AdaptiveCollectionElement collectionElement = (AdaptiveCollectionElement)cardElement;
+                        uiElement.MinHeight = collectionElement.PixelMinHeight;
+                    }
+
                     if (cardElement.Height != AdaptiveHeight.Stretch)
                     {
                         uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
                         Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
 
-                        if (cardElement.PixelMinHeight > 0)
-                        {
-                            StackPanel container = new StackPanel();
-                            container.MinHeight = cardElement.PixelMinHeight;
-                            RendererUtil.ApplyIsVisible(container, cardElement);
-                            if (!String.IsNullOrEmpty(cardElement.Id))
-                            {
-                                container.Name = cardElement.Id;
-                            }
-                            container.Children.Add(uiElement);
-
-                            Grid.SetRow(container, uiContainer.RowDefinitions.Count - 1);
-                            uiContainer.Children.Add(container);
-                        }
-                        else
-                        {
-                            RendererUtil.ApplyIsVisible(uiElement, cardElement);
-                            Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
-                            uiContainer.Children.Add(uiElement);
-                        }
+                        RendererUtil.ApplyIsVisible(uiElement, cardElement);
+                        Grid.SetRow(uiElement, uiContainer.RowDefinitions.Count - 1);
+                        uiContainer.Children.Add(uiElement);
                     }
                     else
                     {
@@ -114,10 +103,6 @@ namespace AdaptiveCards.Rendering.Wpf
                         {
                             StackPanel panel = new StackPanel();
                             RendererUtil.ApplyIsVisible(panel, cardElement);
-                            if (cardElement.PixelMinHeight > 0)
-                            {
-                                panel.MinHeight = cardElement.PixelMinHeight;
-                            }
                             if (!String.IsNullOrEmpty(cardElement.Id))
                             {
                                 panel.Name = cardElement.Id;

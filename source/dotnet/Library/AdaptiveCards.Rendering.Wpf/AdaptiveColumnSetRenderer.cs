@@ -117,7 +117,7 @@ namespace AdaptiveCards.Rendering.Wpf
             context.RenderArgs = parentRenderArgs;
 
             RendererUtil.ApplyIsVisible(uiColumnSet, columnSet);
-            RendererUtil.ApplyMinHeight(uiColumnSet, columnSet);
+            uiColumnSet.MinHeight = columnSet.PixelMinHeight;
 
             return RendererUtil.ApplySelectAction(border, columnSet, context);
         }

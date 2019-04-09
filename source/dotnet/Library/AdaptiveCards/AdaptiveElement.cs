@@ -67,17 +67,6 @@ namespace AdaptiveCards
         public AdaptiveHeight Height { get; set; }
 
         /// <summary>
-        ///    Explicit card element minimum height
-        /// </summary>
-        [JsonConverter(typeof(StringSizeWithUnitConverter), false)]
-        [JsonProperty("minHeight", DefaultValueHandling = DefaultValueHandling.Ignore)]
-#if !NETSTANDARD1_3
-        [XmlAttribute]
-#endif
-        [DefaultValue(0)]
-        public uint PixelMinHeight { get; set; }
-
-        /// <summary>
         /// Indicates whether the element should be visible when the card has been rendered.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
