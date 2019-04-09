@@ -279,8 +279,9 @@ export class ContainerStyleDefinition {
 		return new TextColorDefinition(value);
 	}
 
+	borderColor;
+	borderThickness;
 	backgroundColor;
-
 	foregroundColors = {
 		default: new TextColorDefinition(),
 		accent: new TextColorDefinition(),
@@ -290,6 +291,8 @@ export class ContainerStyleDefinition {
 	};
 
 	parse(obj, type) {
+		this.borderColor = defaultHostConfig["containerStyles"][type]["borderColor"];
+		this.borderThickness = defaultHostConfig["containerStyles"][type]["borderThickness"];
 		this.backgroundColor = defaultHostConfig["containerStyles"][type]["backgroundColor"];
 		this.foregroundColors.default = this.getTextColorDefinition(defaultHostConfig["containerStyles"][type].foregroundColors["default"]);
 		this.foregroundColors.accent = this.getTextColorDefinition(defaultHostConfig["containerStyles"][type].foregroundColors["accent"]);
@@ -299,6 +302,8 @@ export class ContainerStyleDefinition {
 		
 		if (obj && obj[type]) {
 			this.backgroundColor = obj[type]["backgroundColor"]  ? obj[type]["backgroundColor"] : this.backgroundColor;
+			this.borderColor = obj[type]["borderColor"] ? obj[type]["borderColor"] : this.borderColor;
+			this.borderThickness = obj[type]["borderThickness"] ? obj[type]["borderThickness"] : this.borderThickness;
 			if(obj[type]["foregroundColors"]) {
 				this.foregroundColors.default = this.getTextColorDefinition(obj[type].foregroundColors["default"],this.foregroundColors.default.toJSON);
 				this.foregroundColors.accent = this.getTextColorDefinition(obj[type].foregroundColors["accent"],this.foregroundColors.accent.toJSON);
@@ -807,6 +812,8 @@ export const defaultHostConfig = {
 		},
 		emphasis: {
 			"backgroundColor": "#08000000",
+			"borderColor": "#FF000000",
+			"borderThickness": 1,
 			"foregroundColors": {
 				"default": {
 					"default": "#333333",
