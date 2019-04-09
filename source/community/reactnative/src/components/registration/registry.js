@@ -21,7 +21,10 @@ import {
 	FactSet,
 	ImageSet
 } from '../containers';
-import { ActionButton } from '../actions';
+import {
+	ActionButton,
+	ActionSet
+} from '../actions';
 import * as Enums from '../../utils/enums';
 import * as Utils from '../../utils/util';
 
@@ -75,7 +78,8 @@ export class Registry {
 		'Action.ShowCard': ActionButton,
 		'Action.Submit': ActionButton,
 		'Action.OpenUrl': ActionButton,
-		'Action.ToggleVisibility': ActionButton
+		'Action.ToggleVisibility': ActionButton,
+		'ActionSet': ActionSet
 	};
 
 	/**
@@ -118,7 +122,8 @@ export class Registry {
 
 		'Action.ShowCard': { 'type': 'Action.ShowCard', 'card': 'Object' },
 		'Action.Submit': { 'type': 'Action.Submit' },
-		'Action.OpenUrl': { 'type': 'Action.OpenUrl', 'url': 'String' }
+		'Action.OpenUrl': { 'type': 'Action.OpenUrl', 'url': 'String' },
+		'ActionSet': { 'type': 'ActionSet', 'actions': 'Array' },
 	};
 
 	/**
