@@ -28,7 +28,7 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
     m_fallbackText(fallbackText), m_speak(speak), m_style(style), m_language(language),
     m_verticalContentAlignment(verticalContentAlignment), m_height(height)
 {
-    m_backgroundImage = std::shared_ptr<BackgroundImage>(new BackgroundImage(backgroundImageUrl));
+    m_backgroundImage = std::make_shared<BackgroundImage>(backgroundImageUrl);
 }
 
 AdaptiveCard::AdaptiveCard(std::string const& version,
@@ -45,7 +45,7 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
     m_fallbackText(fallbackText), m_speak(speak), m_style(style), m_language(language),
     m_verticalContentAlignment(verticalContentAlignment), m_height(height), m_body(body), m_actions(actions)
 {
-    m_backgroundImage = std::shared_ptr<BackgroundImage>(new BackgroundImage(backgroundImageUrl));
+    m_backgroundImage = std::make_shared<BackgroundImage>(backgroundImageUrl);
 }
 
 AdaptiveCard::AdaptiveCard(std::string const& version,
@@ -187,7 +187,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, 
     ContainerStyle style =
         ParseUtil::GetEnumValue<ContainerStyle>(json, AdaptiveCardSchemaKey::Style, ContainerStyle::None, ContainerStyleFromString);
     context.SetParentalContainerStyle(style);
-    
+
     VerticalContentAlignment verticalContentAlignment =
         ParseUtil::GetEnumValue<VerticalContentAlignment>(json,
                                                           AdaptiveCardSchemaKey::VerticalContentAlignment,

@@ -43,8 +43,12 @@ public class TextElementProperties {
     this(AdaptiveCardObjectModelJNI.new_TextElementProperties__SWIG_0(), true);
   }
 
+  public TextElementProperties(TextConfig arg0, String arg1, String arg2) {
+    this(AdaptiveCardObjectModelJNI.new_TextElementProperties__SWIG_1(TextConfig.getCPtr(arg0), arg0, arg1, arg2), true);
+  }
+
   public TextElementProperties(TextElementProperties arg0) {
-    this(AdaptiveCardObjectModelJNI.new_TextElementProperties__SWIG_1(TextElementProperties.getCPtr(arg0), arg0), true);
+    this(AdaptiveCardObjectModelJNI.new_TextElementProperties__SWIG_2(TextElementProperties.getCPtr(arg0), arg0), true);
   }
 
   public JsonValue SerializeToJsonValue(JsonValue root) {
