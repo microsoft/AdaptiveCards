@@ -896,6 +896,26 @@ export class CardElementPeer extends DesignerPeer {
         }
     }
 
+    protected internalAddMinHeightProperty(card: Adaptive.AdaptiveCard) {
+        let minPixelHeight = addLabelAndInput(card, "Minimum height in pixels:", Adaptive.NumberInput);
+
+        if (this.cardElement.minPixelHeight) {
+            minPixelHeight.input.defaultValue = this.cardElement.minPixelHeight.toString();
+        }
+
+        minPixelHeight.input.placeholder = "(not set)"
+        minPixelHeight.input.onValueChanged = () => {
+            try {
+                this.cardElement.minPixelHeight = parseInt(minPixelHeight.input.value);
+            }
+            catch {
+                this.cardElement.minPixelHeight = null;
+            }
+
+            this.changed(false);
+        }
+    }
+
     constructor(designerSurface: CardDesignerSurface, registration: DesignerPeerRegistrationBase, cardElement: Adaptive.CardElement) {
         super(designerSurface, registration);
 
@@ -1105,24 +1125,6 @@ export class CardElementPeer extends DesignerPeer {
                 this.changed(true);
             }
         }
-
-        let pixelWidth = addLabelAndInput(card, "Minimum height in pixels:", Adaptive.NumberInput);
-
-        if (this.cardElement.minPixelHeight) {
-            pixelWidth.input.defaultValue = this.cardElement.minPixelHeight.toString();
-        }
-
-        pixelWidth.input.placeholder = "(not set)"
-        pixelWidth.input.onValueChanged = () => {
-            try {
-                this.cardElement.minPixelHeight = parseInt(pixelWidth.input.value);
-            }
-            catch {
-                this.cardElement.minPixelHeight = null;
-            }
-
-            this.changed(false);
-        }
     }
 
     get cardElement(): Adaptive.CardElement {
@@ -1226,6 +1228,8 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
 
             this.changed(false);
         }
+
+        this.internalAddMinHeightProperty(card);
 
         let verticalContentAlignment = addLabelAndInput(card, "Vertical content alignment:", Adaptive.ChoiceSetInput);
         verticalContentAlignment.input.isCompact = true;
@@ -1365,6 +1369,8 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
             this.changed(true);
         }
 
+        this.internalAddMinHeightProperty(card);
+
         let verticalContentAlignment = addLabelAndInput(card, "Vertical content alignment:", Adaptive.ChoiceSetInput);
         verticalContentAlignment.input.isCompact = true;
         verticalContentAlignment.input.choices.push(new Adaptive.Choice("Top", Adaptive.VerticalAlignment.Top.toString()));
@@ -1479,6 +1485,8 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
 
+        this.internalAddMinHeightProperty(card);
+
         let style = addLabelAndInput(card, "Style:", Adaptive.ChoiceSetInput);
         style.input.isCompact = true;
         style.input.choices.push(new Adaptive.Choice("(not set)", "not_set"));
@@ -1547,6 +1555,8 @@ export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
 
     internalAddPropertySheetEntries(card: Adaptive.AdaptiveCard, includeHeader: boolean) {
         super.internalAddPropertySheetEntries(card, includeHeader);
+
+        this.internalAddMinHeightProperty(card);
 
         let verticalContentAlignment = addLabelAndInput(card, "Vertical content alignment:", Adaptive.ChoiceSetInput);
         verticalContentAlignment.input.isCompact = true;

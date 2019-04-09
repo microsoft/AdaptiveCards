@@ -284,6 +284,10 @@ export abstract class CardElement implements ICardObject {
         return false;
     }
 
+    protected get supportsMinHeight(): boolean {
+        return false;
+    }
+
     protected get useDefaultSizing(): boolean {
         return true;
     }
@@ -457,32 +461,34 @@ export abstract class CardElement implements ICardObject {
             this.height = jsonHeight;
         }
 
-        let jsonMinHeight = json["minHeight"];
+        if (this.supportsMinHeight) {
+            let jsonMinHeight = json["minHeight"];
 
-        if (jsonMinHeight && typeof jsonMinHeight === "string") {
-            let isValid = false;
+            if (jsonMinHeight && typeof jsonMinHeight === "string") {
+                let isValid = false;
 
-            try {
-                let size = Shared.SizeAndUnit.parse(jsonMinHeight, true);
+                try {
+                    let size = Shared.SizeAndUnit.parse(jsonMinHeight, true);
 
-                if (size.unit == Enums.SizeUnit.Pixel) {
-                    this.minPixelHeight = size.physicalSize;
+                    if (size.unit == Enums.SizeUnit.Pixel) {
+                        this.minPixelHeight = size.physicalSize;
 
-                    isValid = true;
+                        isValid = true;
+                    }
                 }
-            }
-            catch {
-                // Do nothing. A parse error is emitted below
-            }
+                catch {
+                    // Do nothing. A parse error is emitted below
+                }
 
-            if (!isValid) {
-                raiseParseError(
-                    {
-                        error: Enums.ValidationError.InvalidPropertyValue,
-                        message: "Invalid \"minHeight\" value: " + jsonMinHeight
-                    },
-                    errors
-                );
+                if (!isValid) {
+                    raiseParseError(
+                        {
+                            error: Enums.ValidationError.InvalidPropertyValue,
+                            message: "Invalid \"minHeight\" value: " + jsonMinHeight
+                        },
+                        errors
+                    );
+                }
             }
         }
     }
@@ -2417,6 +2423,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
 export class TextInput extends Input {
     private _textareaElement: HTMLTextAreaElement;
     private _inputElement: HTMLInputElement;
+    private _inlineAction: Action;
 
     protected internalRender(): HTMLElement {
         if (this.isMultiline) {
@@ -2477,6 +2484,16 @@ export class TextInput extends Input {
         return "Input.Text";
     }
 
+    getActionById(id: string) {
+        let result = super.getActionById(id);
+
+        if (!result && this.inlineAction) {
+            result = this.inlineAction.getActionById(id);
+        }
+
+        return result;
+    }
+
     toJSON() {
         let result = super.toJSON();
 
@@ -2484,6 +2501,10 @@ export class TextInput extends Input {
         Utils.setProperty(result, "maxLength", this.maxLength, 0);
         Utils.setProperty(result, "isMultiline", this.isMultiline, false);
         Utils.setEnumProperty(Enums.InputTextStyle, result, "style", this.style, Enums.InputTextStyle.Text);
+
+        if (this._inlineAction) {
+            Utils.setProperty(result, "inlineAction", this._inlineAction.toJSON());
+        }
 
         return result;
     }
@@ -2495,6 +2516,22 @@ export class TextInput extends Input {
         this.isMultiline = Utils.getBoolValue(json["isMultiline"], this.isMultiline);
         this.placeholder = Utils.getStringValue(json["placeholder"]);
         this.style = Utils.getEnumValue(Enums.InputTextStyle, json["style"], this.style);
+        this.inlineAction = createActionInstance(
+            this,
+            json["inlineAction"],
+            errors);
+    }
+
+    get inlineAction(): Action {
+        return this._inlineAction;
+    }
+
+    set inlineAction(value: Action) {
+        this._inlineAction = value;
+
+        if (this._inlineAction) {
+            this._inlineAction.setParent(this);
+        }
     }
 
     get value(): string {
@@ -4447,6 +4484,14 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
         return false;
     }
 
+    protected getBleed(): boolean {
+        return this._bleed;
+    }
+
+    protected setBleed(value: boolean) {
+        this._bleed = value;
+    }
+
     protected get renderedActionCount(): number {
         return 0;
     }
@@ -4459,12 +4504,8 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
         return true;
     }
 
-    protected getBleed(): boolean {
-        return this._bleed;
-    }
-
-    protected setBleed(value: boolean) {
-        this._bleed = value;
+    protected get supportsMinHeight(): boolean {
+        return true;
     }
 
     isBleeding(): boolean {
