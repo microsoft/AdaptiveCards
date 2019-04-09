@@ -25,18 +25,13 @@
 		},
 		{
 			"type": "TextBlock",
-			"text": "color: attention",
+			"text": "color: attention", 
 			"color": "attention"
 		},
 		{
 			"type": "TextBlock",
 			"text": "color: light",
-			"color": "light"
-		},
-		{
-			"type": "TextBlock",
-			"text": "color: dark",
-			"color": "dark"
+			"color": "emphasis"
 		}
 	]
 }
