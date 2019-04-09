@@ -98,7 +98,7 @@ export class ContainerWrapper extends React.PureComponent {
             computedStyles.push({ padding: padding });
 
             // bleed
-            if (this.payload.bleed) {
+            if (this.payload.bleed && this.props.containerStyle) {
                 computedStyles.push({ marginHorizontal: -padding });
             }
         }
