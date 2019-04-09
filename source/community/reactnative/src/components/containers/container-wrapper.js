@@ -111,9 +111,10 @@ export class ContainerWrapper extends React.PureComponent {
      * @returns {boolean}
      */
     canApplyPadding = () => {
-        if (this.payload.type === 'AdaptiveCard') {
+        //Removing the default padding applied to Adaptive card root element
+        /* if (this.payload.type === 'AdaptiveCard') {
             return true;
-        }
+        } */
         const parentContainerStyle = this.props.containerStyle;
         return this.payload.style && parentContainerStyle != this.payload.style;
     }
