@@ -6,10 +6,12 @@
 		{
 			"type": "Container",
 			"minHeight": "100px",
+			"style": "emphasis",
 			"items": [
 				{
 					"type": "TextBlock",
-					"text": "TextBlock"
+					"wrap": true,
+					"text": "This textblock is inside a container with a min height of 100px"
 				}
 			]
 		}

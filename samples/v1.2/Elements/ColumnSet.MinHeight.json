@@ -5,6 +5,7 @@
 	"body": [
 		{
 			"type": "ColumnSet",
+			"style": "emphasis",
 			"minHeight": "200px",
 			"columns": [
 				{
@@ -12,7 +13,8 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "TextBlock"
+							"wrap": true,
+							"text": "This column set has a minimum height of 200px"
 						}
 					]
 				},
@@ -23,12 +25,12 @@
 							"type": "FactSet",
 							"facts": [
 								{
-									"title": "Fact 1",
-									"value": "Value 1"
+									"title": "ColumnSet",
+									"value": "minHeight: 200px"
 								},
 								{
-									"title": "Fact 2",
-									"value": "Value 2"
+									"title": "Column",
+									"value": "minHeight: not specified"
 								}
 							]
 						}

@@ -6,7 +6,8 @@
 	"body": [
 		{
 			"type": "TextBlock",
-			"text": "TextBlock"
+			"wrap": true,
+			"text": "This card has a minHeight of 100px"
 		}
 	]
 }

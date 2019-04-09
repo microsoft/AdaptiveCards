@@ -5,32 +5,40 @@
 	"body": [
 		{
 			"type": "ColumnSet",
+			"style": "emphasis",
 			"minHeight": "100px",
 			"columns": [
 				{
 					"type": "Column",
+					"style": "default",
 					"minHeight": "200px",
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "TextBlock"
+							"wrap": true,
+							"text": "The columnset has a minHeight of 100px while this column has a minHeight of 200px so it should override"
 						}
 					]
 				},
 				{
 					"type": "Column",
+					"style": "default",
 					"minHeight": "50px",
 					"items": [
 						{
 							"type": "FactSet",
 							"facts": [
 								{
-									"title": "Fact 1",
-									"value": "Value 1"
+									"title": "ColumnSet",
+									"value": "MinHeight: 100px"
 								},
 								{
-									"title": "Fact 2",
-									"value": "Value 2"
+									"title": "Column 1",
+									"value": "MinHeight: 200px"
+								},
+								{
+									"title": "Column 2",
+									"value": "MinHeight: 50px"
 								}
 							]
 						}
