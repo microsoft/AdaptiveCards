@@ -574,9 +574,6 @@ AdaptiveNamespaceStart
         [propget] HRESULT IsVisible([out, retval] boolean* value);
         [propput] HRESULT IsVisible([in] boolean value);
 
-        [propget] HRESULT MinHeight([out, retval] UINT32* value);
-        [propput] HRESULT MinHeight([in] UINT32 value);
-
         [propget] HRESULT FallbackType([out, retval] FallbackType * value);
         [propput] HRESULT FallbackType([in] FallbackType value);
         [propget] HRESULT FallbackContent([out, retval] IAdaptiveCardElement ** content);
@@ -1012,6 +1009,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT Height([out, retval] HeightType* value);
         [propput] HRESULT Height([in] HeightType value);
+
+        [propget] HRESULT MinHeight([out, retval] UINT32* value);
+        [propput] HRESULT MinHeight([in] UINT32 value);
 
         HRESULT ToJson([out, retval] Windows.Data.Json.JsonObject** value);
 
@@ -1533,6 +1533,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT BackgroundImage([out, retval] AdaptiveBackgroundImage * *value);
         [propput] HRESULT BackgroundImage([in] AdaptiveBackgroundImage * value);
+
+        [propget] HRESULT MinHeight([out, retval] UINT32* value);
+        [propput] HRESULT MinHeight([in] UINT32 value);
     };
 
     [
@@ -1581,6 +1584,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT BackgroundImage([out, retval] AdaptiveBackgroundImage * *value);
         [propput] HRESULT BackgroundImage([in] AdaptiveBackgroundImage * value);
+
+        [propget] HRESULT MinHeight([out, retval] UINT32* value);
+        [propput] HRESULT MinHeight([in] UINT32 value);
     };
 
     [
@@ -1618,6 +1624,9 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT Style([out, retval] ContainerStyle* value);
         [propput] HRESULT Style([in] ContainerStyle value);
+
+        [propget] HRESULT MinHeight([out, retval] UINT32* value);
+        [propput] HRESULT MinHeight([in] UINT32 value);
     };
 
     [
