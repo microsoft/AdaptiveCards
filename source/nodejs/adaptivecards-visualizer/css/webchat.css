@@ -83,17 +83,31 @@ a.ac-anchor:visited:active {
   border: none;
 }
 
-.ac-input-container {
-  display: flex;
-  align-items: center;
+.ac-pushButton:hover {
+    background-color: #CCCCCC;
+}
+  
+.ac-pushButton:active {
+    background-color: #BABABA;
 }
 
+.ac-input-container {
+  display: flex;
+  align-items: flex-end;
+}
+
+/*
 .ac-input-container.ac-input-required::after {
-  content: "*";
-  color: red;
-  left: 100%;
-  top: 0;
-  padding-left: 4px;
+    content: "*";
+    color: red;
+    left: 100%;
+    top: 0;
+    padding-left: 4px;
+}
+*/
+
+.ac-input.ac-input-required {
+    border-left: 1px solid red !important;
 }
 
 .ac-input.ac-input-validation-failed {
@@ -127,6 +141,41 @@ a.ac-anchor:visited:active {
 .ac-input.ac-textInput, .ac-input.ac-numberInput, .ac-input.ac-dateInput, .ac-input.ac-timeInput, .ac-input.ac-multichoiceInput {
   border: 1px solid #DDDDDD;
   padding: 4px 8px 4px 8px;
+}
+
+/* ac-inlineActionButton should set height to the same as ac-input.ac-textInput */
+
+.ac-inlineActionButton {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    font-family: "Segoe UI", sans-serif;
+    font-size: 14px;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    border: none;
+    background-color: transparent;
+    height: 31px;
+}
+
+.ac-inlineActionButton.textOnly {
+    padding: 0 8px;
+}
+
+.ac-inlineActionButton.iconOnly {
+    padding: 0;
+}
+
+.ac-inlineActionButton:hover {
+    background-color: #EEEEEE;
+}
+  
+.ac-inlineActionButton:active {
+    background-color: #CCCCCC;
 }
 
 .webChatOuterContainer {
