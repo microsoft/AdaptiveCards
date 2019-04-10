@@ -19,7 +19,6 @@
 #include "AdaptiveMediaSource.h"
 #include "AdaptiveNumberInput.h"
 #include "AdaptiveOpenUrlAction.h"
-#include "AdaptiveParagraph.h"
 #include "AdaptiveRichTextBlock.h"
 #include "AdaptiveSeparator.h"
 #include "AdaptiveShowCardAction.h"
@@ -406,29 +405,6 @@ HRESULT GenerateSharedInlines(ABI::Windows::Foundation::Collections::IVector<ABI
     return S_OK;
 }
 
-HRESULT GenerateSharedParagraphs(ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveParagraph*>* paragraphs,
-                                 std::vector<std::shared_ptr<AdaptiveSharedNamespace::Paragraph>>& containedElements)
-{
-    containedElements.clear();
-
-    XamlHelpers::IterateOverVector<ABI::AdaptiveNamespace::AdaptiveParagraph, ABI::AdaptiveNamespace::IAdaptiveParagraph>(
-        paragraphs, [&](ABI::AdaptiveNamespace::IAdaptiveParagraph* paragraph) {
-            ComPtr<AdaptiveNamespace::AdaptiveParagraph> adaptiveElement =
-                PeekInnards<AdaptiveNamespace::AdaptiveParagraph>(paragraph);
-            if (adaptiveElement == nullptr)
-            {
-                return E_INVALIDARG;
-            }
-
-            std::shared_ptr<AdaptiveSharedNamespace::Paragraph> sharedParagraph;
-            RETURN_IF_FAILED(adaptiveElement->GetSharedModel(sharedParagraph));
-            containedElements.push_back(std::AdaptivePointerCast<AdaptiveSharedNamespace::Paragraph>(sharedParagraph));
-            return S_OK;
-        });
-
-    return S_OK;
-}
-
 HRESULT GenerateSharedToggleElements(
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveToggleVisibilityTarget*>* targets,
     std::vector<std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityTarget>>& containedElements)
@@ -666,22 +642,6 @@ HRESULT GenerateInlinesProjection(const std::vector<std::shared_ptr<AdaptiveShar
         ComPtr<ABI::AdaptiveNamespace::IAdaptiveInline> projectedContainedElement;
         RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveTextRun>(
             &projectedContainedElement, std::static_pointer_cast<AdaptiveSharedNamespace::TextRun>(containedElement)));
-
-        RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
-    }
-    return S_OK;
-}
-CATCH_RETURN;
-
-HRESULT GenerateParagraphsProjection(
-    const std::vector<std::shared_ptr<AdaptiveSharedNamespace::Paragraph>>& containedElements,
-    ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveParagraph*>* projectedParentContainer) noexcept try
-{
-    for (auto& containedElement : containedElements)
-    {
-        ComPtr<ABI::AdaptiveNamespace::IAdaptiveParagraph> projectedContainedElement;
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveParagraph>(
-            &projectedContainedElement, std::static_pointer_cast<AdaptiveSharedNamespace::Paragraph>(containedElement)));
 
         RETURN_IF_FAILED(projectedParentContainer->Append(projectedContainedElement.Detach()));
     }

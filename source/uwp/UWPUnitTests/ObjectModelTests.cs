@@ -759,7 +759,6 @@ namespace UWPUnitTests
                 FontStyle = FontStyle.Monospace,
                 Highlight = true,
                 IsSubtle = true,
-                Italics = true,
                 Language = "en",
                 Size = TextSize.Large,
                 Text = "This is text run number 1",
@@ -770,7 +769,6 @@ namespace UWPUnitTests
             Assert.AreEqual(FontStyle.Monospace, textRun1.FontStyle);
             Assert.IsTrue(textRun1.Highlight);
             Assert.IsTrue(textRun1.IsSubtle);
-            Assert.IsTrue(textRun1.Italics);
             Assert.AreEqual("en", textRun1.Language);
             Assert.AreEqual(TextSize.Large, textRun1.Size);
             Assert.AreEqual("This is text run number 1", textRun1.Text);
@@ -786,41 +784,30 @@ namespace UWPUnitTests
             AdaptiveTextRun textRun2 = new AdaptiveTextRun { Text = "This is text run number 2" };
             AdaptiveTextRun textRun3 = new AdaptiveTextRun { Text = "This is text run number 3" };
 
-            AdaptiveParagraph paragraph1 = new AdaptiveParagraph { };
-
-            paragraph1.Inlines.Add(textRun1);
-            paragraph1.Inlines.Add(textRun2);
-
-            AdaptiveParagraph paragraph2 = new AdaptiveParagraph { };
-            paragraph2.Inlines.Add(textRun3);
-
             AdaptiveRichTextBlock richTextBlock = new AdaptiveRichTextBlock
             {
                 Height = HeightType.Stretch,
                 HorizontalAlignment = HAlignment.Center,
                 Id = "RichTextBlockId",
                 IsVisible = false,
-                MaxLines = 3,
                 Separator = true,
                 Spacing = Spacing.Large,
-                Wrap = true
             };
 
             ValidateBaseElementProperties(richTextBlock, "RichTextBlockId", false, true, Spacing.Large, HeightType.Stretch);
 
             Assert.AreEqual(HAlignment.Center, richTextBlock.HorizontalAlignment);
-            Assert.AreEqual<uint>(3, richTextBlock.MaxLines);
-            Assert.AreEqual(true, richTextBlock.Wrap);
 
-            richTextBlock.Paragraphs.Add(paragraph1);
-            richTextBlock.Paragraphs.Add(paragraph2);
+            richTextBlock.Inlines.Add(textRun1);
+            richTextBlock.Inlines.Add(textRun2);
+            richTextBlock.Inlines.Add(textRun3);
 
-            Assert.AreEqual("This is text run number 1", (richTextBlock.Paragraphs[0].Inlines[0] as AdaptiveTextRun).Text);
-            Assert.AreEqual("This is text run number 2", (richTextBlock.Paragraphs[0].Inlines[1] as AdaptiveTextRun).Text);
-            Assert.AreEqual("This is text run number 3", (richTextBlock.Paragraphs[1].Inlines[0] as AdaptiveTextRun).Text);
+            Assert.AreEqual("This is text run number 1", (richTextBlock.Inlines[0] as AdaptiveTextRun).Text);
+            Assert.AreEqual("This is text run number 2", (richTextBlock.Inlines[1] as AdaptiveTextRun).Text);
+            Assert.AreEqual("This is text run number 3", (richTextBlock.Inlines[2] as AdaptiveTextRun).Text);
 
             var jsonString = richTextBlock.ToJson().ToString();
-            Assert.AreEqual("{\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"RichTextBlockId\",\"inlines\":[{\"color\":\"Accent\",\"fontStyle\":\"Monospace\",\"highlight\":true,\"isSubtle\":true,\"italics\":true,\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"size\":\"Large\",\"text\":\"This is text run number 1\",\"type\":\"TextRun\",\"weight\":\"Bolder\"},{\"text\":\"This is text run number 2\",\"type\":\"TextRun\"},{\"text\":\"This is text run number 3\",\"type\":\"TextRun\"}],\"isVisible\":false,\"separator\":true,\"spacing\":\"large\",\"type\":\"RichTextBlock\"}", jsonString);
+            Assert.AreEqual("{\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"RichTextBlockId\",\"inlines\":[{\"color\":\"Accent\",\"fontStyle\":\"Monospace\",\"highlight\":true,\"isSubtle\":true,\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"size\":\"Large\",\"text\":\"This is text run number 1\",\"type\":\"TextRun\",\"weight\":\"Bolder\"},{\"text\":\"This is text run number 2\",\"type\":\"TextRun\"},{\"text\":\"This is text run number 3\",\"type\":\"TextRun\"}],\"isVisible\":false,\"separator\":true,\"spacing\":\"large\",\"type\":\"RichTextBlock\"}", jsonString);
         }
     }
 }

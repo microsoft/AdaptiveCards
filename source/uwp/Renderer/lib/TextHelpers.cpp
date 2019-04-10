@@ -19,21 +19,36 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml;
 
-HRESULT SetMaxLines(ITextBlock* textBlock, UINT maxLines)
+HRESULT StyleXamlTextBlockProperties(_In_ ABI::AdaptiveNamespace::IAdaptiveTextBlock* adaptiveTextBlock,
+                                     _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                     _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+                                     _In_ ITextBlock* xamlTextBlock)
 {
-    ComPtr<ITextBlock> localTextBlock(textBlock);
-    ComPtr<ITextBlock2> xamlTextBlock2;
-    localTextBlock.As(&xamlTextBlock2);
-    RETURN_IF_FAILED(xamlTextBlock2->put_MaxLines(maxLines));
-    return S_OK;
-}
+    boolean wrap;
+    RETURN_IF_FAILED(adaptiveTextBlock->get_Wrap(&wrap));
+    RETURN_IF_FAILED(SetWrapProperties(xamlTextBlock, wrap));
 
-HRESULT SetMaxLines(IRichTextBlock* textBlock, UINT maxLines)
-{
-    ComPtr<IRichTextBlock> localTextBlock(textBlock);
-    ComPtr<IRichTextBlock2> xamlTextBlock2;
-    localTextBlock.As(&xamlTextBlock2);
-    RETURN_IF_FAILED(xamlTextBlock2->put_MaxLines(maxLines));
+    UINT32 maxLines;
+    RETURN_IF_FAILED(adaptiveTextBlock->get_MaxLines(&maxLines));
+    if (maxLines != MAXUINT32)
+    {
+        ComPtr<ITextBlock> localXamlTextBlock(xamlTextBlock);
+        ComPtr<ITextBlock2> xamlTextBlock2;
+        RETURN_IF_FAILED(localXamlTextBlock.As(&xamlTextBlock2));
+        RETURN_IF_FAILED(xamlTextBlock2->put_MaxLines(maxLines));
+    }
+
+    RETURN_IF_FAILED(SetHorizontalAlignment(adaptiveTextBlock, xamlTextBlock));
+
+    ComPtr<IAdaptiveTextBlock> localAdaptiveTextBlock(adaptiveTextBlock);
+    ComPtr<IAdaptiveTextElement> adaptiveTextElement;
+    RETURN_IF_FAILED(localAdaptiveTextBlock.As(&adaptiveTextElement));
+
+    if (adaptiveTextElement)
+    {
+        RETURN_IF_FAILED(StyleTextElement(adaptiveTextElement.Get(), renderContext, renderArgs, false, xamlTextBlock));
+    }
+
     return S_OK;
 }
 
@@ -79,7 +94,7 @@ HRESULT SetXamlInlinesWithTextConfig(_In_ IAdaptiveRenderContext* renderContext,
     // Set wrap and maxwidth
     boolean wrap;
     RETURN_IF_FAILED(textConfig->get_Wrap(&wrap));
-    RETURN_IF_FAILED(SetWrapProperties(textBlock, wrap, true));
+    RETURN_IF_FAILED(SetWrapProperties(textBlock, wrap));
 
     ComPtr<IFrameworkElement> textBlockAsFrameworkElement;
     ComPtr<ITextBlock> localTextBlock(textBlock);
@@ -89,6 +104,14 @@ HRESULT SetXamlInlinesWithTextConfig(_In_ IAdaptiveRenderContext* renderContext,
     RETURN_IF_FAILED(textConfig->get_MaxWidth(&maxWidth));
     textBlockAsFrameworkElement->put_MaxWidth(maxWidth);
 
+    return S_OK;
+}
+
+HRESULT SetWrapProperties(ABI::Windows::UI::Xaml::Controls::ITextBlock* xamlTextBlock, bool wrap)
+{
+    // Set whether the text wraps
+    RETURN_IF_FAILED(xamlTextBlock->put_TextWrapping(wrap ? TextWrapping::TextWrapping_WrapWholeWords : TextWrapping::TextWrapping_NoWrap));
+    RETURN_IF_FAILED(xamlTextBlock->put_TextTrimming(TextTrimming::TextTrimming_CharacterEllipsis));
     return S_OK;
 }
 
@@ -105,10 +128,7 @@ HRESULT SetXamlInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adapti
     HString language;
     RETURN_IF_FAILED(adaptiveTextElement->get_Language(language.GetAddressOf()));
 
-    DateTimeParser parser(HStringToUTF8(language.Get()));
-    auto textWithParsedDates = parser.GenerateString(HStringToUTF8(text.Get()));
-
-    MarkDownParser markdownParser(textWithParsedDates);
+    MarkDownParser markdownParser(HStringToUTF8(text.Get()));
     auto htmlString = markdownParser.TransformToHtml();
 
     bool handledAsHtml = false;
@@ -139,9 +159,7 @@ HRESULT SetXamlInlines(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adapti
 
     if (!handledAsHtml)
     {
-        HString hString;
-        UTF8ToHString(textWithParsedDates, hString.GetAddressOf());
-        AddSingleTextInline(adaptiveTextElement, renderContext, renderArgs, hString.Get(), false, false, isInHyperlink, inlines, &localCharacterLength);
+        AddSingleTextInline(adaptiveTextElement, renderContext, renderArgs, text.Get(), false, false, isInHyperlink, inlines, &localCharacterLength);
     }
 
     if (characterLength)
@@ -328,7 +346,17 @@ HRESULT AddSingleTextInline(_In_ IAdaptiveTextElement* adaptiveTextElement,
 {
     ComPtr<ABI::Windows::UI::Xaml::Documents::IRun> run = XamlHelpers::CreateXamlClass<ABI::Windows::UI::Xaml::Documents::IRun>(
         HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
-    RETURN_IF_FAILED(run->put_Text(string));
+
+    HString language;
+    RETURN_IF_FAILED(adaptiveTextElement->get_Language(language.GetAddressOf()));
+
+    DateTimeParser parser(HStringToUTF8(language.Get()));
+    auto textWithParsedDates = parser.GenerateString(HStringToUTF8(string));
+
+    HString textWithParsedDatesHString;
+    UTF8ToHString(textWithParsedDates, textWithParsedDatesHString.GetAddressOf());
+
+    RETURN_IF_FAILED(run->put_Text(textWithParsedDatesHString.Get()));
 
     ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement> runAsTextElement;
     RETURN_IF_FAILED(run.As(&runAsTextElement));
