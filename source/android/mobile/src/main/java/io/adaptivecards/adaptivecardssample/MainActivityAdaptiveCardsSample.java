@@ -83,6 +83,8 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     private View m_hostConfigPickerGroup;
     private EditText m_jsonEditText;
     private EditText m_configEditText;
+    private Timer m_timer=new Timer();
+    private final long DELAY = 1000; // milliseconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,21 +108,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             @Override
             public void afterTextChanged(Editable editable)
             {
-                m_timer.cancel();
-                m_timer = new Timer();
-                m_timer.schedule(new TimerTask()
-                {
-                    public void run()
-                    {
-                        m_jsonEditText.post(new Runnable()
-                        {
-                            public void run()
-                            {
-                                renderAdaptiveCard(true);
-                            }
-                        });
-                    }
-                }, DELAY);
+                renderAdaptiveCardAfterDelay(true);
             }
 
             @Override
@@ -129,8 +117,6 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) { }
 
-            private Timer m_timer=new Timer();
-            private final long DELAY = 1000; // milliseconds
         };
 
         m_jsonEditText.addTextChangedListener(watcher);
@@ -370,8 +356,31 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         }
     }
 
+    private void renderAdaptiveCardAfterDelay(boolean showErrorToast)
+    {
+        m_timer.cancel();
+        m_timer = new Timer();
+        m_timer.schedule(new TimerTask()
+        {
+            public void run()
+            {
+                m_jsonEditText.post(new Runnable()
+                {
+                    public void run()
+                    {
+                        renderAdaptiveCard(true);
+                    }
+                });
+            }
+        }, DELAY);
+    }
+
     private void renderAdaptiveCard(boolean showErrorToast)
     {
+        // Cancel any existing timer, in case we were rendered on-demand while a
+        // delay render was still in the queue
+        m_timer.cancel();
+
         try
         {
             String jsonText = m_jsonEditText.getText().toString();
@@ -514,6 +523,9 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     private void loadAdaptiveCard(String payload)
     {
         m_jsonEditText.setText(payload);
+
+        // Render it immediately
+        renderAdaptiveCard(true);
     }
 
     private void loadHostConfig(Intent data)
@@ -535,6 +547,9 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     private void loadHostConfig(String hostConfigStr)
     {
         m_configEditText.setText(hostConfigStr);
+
+        // Render it immediately
+        renderAdaptiveCard(true);
     }
 
     @Override
