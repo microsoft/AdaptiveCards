@@ -12,7 +12,7 @@ namespace AdaptiveCards.Rendering.Wpf
             if (context.Config.SupportsInteractivity)
             {
                 // SelectAction doesn't allow showCard actions
-                if (selectAction is AdaptiveShowCardAction && context.Config.Actions.ShowCard.ActionMode == ShowCardActionMode.Inline)
+                if (selectAction is AdaptiveShowCardAction)
                 {
                     context.Warnings.Add(new AdaptiveWarning(-1, "Inline ShowCard not supported for SelectAction"));
                     return uiElement;
