@@ -97,6 +97,26 @@ void TextRun::SetIsSubtle(const bool value)
     m_textElementProperties->SetIsSubtle(value);
 }
 
+bool TextRun::GetItalic() const
+{
+    return m_textElementProperties->GetItalic();
+}
+
+void TextRun::SetItalic(const bool value)
+{
+    m_textElementProperties->SetItalic(value);
+}
+
+bool TextRun::GetStrikethrough() const
+{
+    return m_textElementProperties->GetStrikethrough();
+}
+
+void TextRun::SetStrikethrough(const bool value)
+{
+    m_textElementProperties->SetStrikethrough(value);
+}
+
 bool TextRun::GetHighlight() const
 {
     return m_highlight;

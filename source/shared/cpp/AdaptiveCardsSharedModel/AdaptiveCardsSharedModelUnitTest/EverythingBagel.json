@@ -13,13 +13,15 @@
 			"color": "default",
 			"horizontalAlignment": "left",
 			"isSubtle": false,
+			"italic": true,
 			"maxLines": 1,
 			"size": "default",
 			"weight": "default",
 			"wrap": false,
 			"id": "TextBlock_id",
 			"spacing": "default",
-			"separator": false
+			"separator": false,
+			"strikethrough": true
 		},
 		{
 			"type": "TextBlock",
@@ -27,6 +29,7 @@
 			"color": "default",
 			"horizontalAlignment": "left",
 			"isSubtle": false,
+			"italic": true,
 			"maxLines": 1,
 			"size": "default",
 			"weight": "normAl",
@@ -34,6 +37,7 @@
 			"id": "TextBlock_id_mono",
 			"spacing": "default",
 			"separator": false,
+			"strikethrough": true,
 			"fontStyle": "monospace"
 		},
 		{
@@ -42,6 +46,7 @@
 			"color": "default",
 			"horizontalAlignment": "left",
 			"isSubtle": false,
+			"italic": true,
 			"maxLines": 1,
 			"size": "default",
 			"weight": "default",
@@ -49,6 +54,7 @@
 			"id": "TextBlock_id_def",
 			"spacing": "default",
 			"separator": false,
+			"strikethrough": true,
 			"fontStyle": "default"
 		},
 		{
@@ -282,7 +288,9 @@
 					"fontStyle": "Monospace",
 					"highlight": true,
 					"isSubtle": true,
+					"italic": true,
 					"size": "large",
+					"strikethrough": true,
 					"text": "This is a text run",
 					"type": "TextRun",
 					"weight": "Bolder"

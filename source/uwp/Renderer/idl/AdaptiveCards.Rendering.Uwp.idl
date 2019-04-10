@@ -705,6 +705,12 @@ AdaptiveNamespaceStart
         [propget] HRESULT IsSubtle([out, retval] boolean * value);
         [propput] HRESULT IsSubtle([in] boolean value);
 
+        [propget] HRESULT Italic([out, retval] boolean * value);
+        [propput] HRESULT Italic([in] boolean value);
+
+        [propget] HRESULT Strikethrough([out, retval] boolean * value);
+        [propput] HRESULT Strikethrough([in] boolean value);
+
         [propget] HRESULT Language([out, retval] HSTRING * value);
         [propput] HRESULT Language([in] HSTRING value);
 

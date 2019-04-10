@@ -67,7 +67,9 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::IsTrue(TextWeight::Default == textBlock.GetTextWeight());
         Assert::IsTrue(fontStyle == textBlock.GetFontStyle());
         Assert::IsFalse(textBlock.GetIsSubtle());
+        Assert::IsTrue(textBlock.GetItalic());
         Assert::IsFalse(textBlock.GetSeparator());
+        Assert::IsTrue(textBlock.GetStrikethrough());
         Assert::IsFalse(textBlock.GetWrap());
     }
 
@@ -386,7 +388,9 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::IsTrue(TextWeight::Bolder == inlineTextElement->GetTextWeight());
         Assert::IsTrue(FontStyle::Monospace == inlineTextElement->GetFontStyle());
         Assert::IsTrue(inlineTextElement->GetIsSubtle());
+        Assert::IsTrue(inlineTextElement->GetItalic());
         Assert::IsTrue(inlineTextElement->GetHighlight());
+        Assert::IsTrue(inlineTextElement->GetStrikethrough());
 
         Assert::IsTrue(InlineElementType::TextRun == inlines[1]->GetInlineType());
         Assert::AreEqual("TextRun"s, inlines[1]->GetInlineTypeString());
