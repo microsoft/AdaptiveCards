@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "io.adaptivecards.adaptivecardssample"
-        minSdkVersion 26
+        minSdkVersion 19
         targetSdkVersion 26
         versionCode 2
         versionName "1.0.1"
@@ -15,6 +15,12 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    // Enable minSdkVersion to be lower than 26 (since requires Invoke-customs)
+    // https://stackoverflow.com/a/50198499/1454643
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
