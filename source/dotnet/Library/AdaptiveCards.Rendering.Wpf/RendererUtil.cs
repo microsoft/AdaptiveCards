@@ -35,21 +35,20 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public static FrameworkElement ApplySelectAction(FrameworkElement uiElement, AdaptiveElement element, AdaptiveRenderContext context)
         {
+            AdaptiveAction selectAction = null;
             if (element is AdaptiveCollectionElement)
             {
-                AdaptiveCollectionElement collectionElement = element as AdaptiveCollectionElement;
-                if (collectionElement.SelectAction != null)
-                {
-                    return context.RenderSelectAction(collectionElement.SelectAction, uiElement);
-                }
+                selectAction = (element as AdaptiveCollectionElement).SelectAction;
+                
             }
             else if (element is AdaptiveImage)
             {
-                AdaptiveImage image = element as AdaptiveImage;
-                if (image.SelectAction != null)
-                {
-                    return context.RenderSelectAction(image.SelectAction, uiElement);
-                }
+                selectAction = (element as AdaptiveImage).SelectAction;
+            }
+
+            if (selectAction != null)
+            {
+                return context.RenderSelectAction(selectAction, uiElement);
             }
 
             return uiElement;
