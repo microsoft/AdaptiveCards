@@ -108,7 +108,6 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Monospace, "monospace"},
             {AdaptiveCardSchemaKey::NumberInput, "numberInput"},
             {AdaptiveCardSchemaKey::Padding, "padding"},
-            {AdaptiveCardSchemaKey::Paragraphs, "paragraphs"},
             {AdaptiveCardSchemaKey::Placeholder, "placeholder"},
             {AdaptiveCardSchemaKey::PlayButton, "playButton"},
             {AdaptiveCardSchemaKey::Poster, "poster"},

@@ -275,41 +275,24 @@
 		{
 			"type": "RichTextBlock",
 			"id": "RichTextBlock_id",
-			"wrap": true,
 			"horizontalAlignment": "right",
-			"maxLines": 5,
-			"paragraphs": [
+			"inlines": [
 				{
-					"inlines": [
-						{
-							"type": "TextRun",
-							"text": "This is a text run in paragraph 1",
-							"color": "Dark",
-							"isSubtle": true,
-							"size": "large",
-							"weight": "Bolder",
-							"fontStyle": "Monospace",
-							"highlight": true
-						},
-						{
-							"type": "TextRun",
-							"text": "This is another text run in paragraph 1"
-						}
-					]
+					"color": "Dark",
+					"fontStyle": "Monospace",
+					"highlight": true,
+					"isSubtle": true,
+					"size": "large",
+					"text": "This is a text run",
+					"type": "TextRun",
+					"weight": "Bolder"
 				},
 				{
-					"inlines": [
-						{
-							"type": "TextRun",
-							"text": "This is a text run in paragraph 2",
-							"selectAction": { "type": "Action.Submit" }
-						},
-						{
-							"type": "TextRun",
-							"text": "This is another text run in paragraph 2"
-						}
-					]
-				}
+					"type": "TextRun",
+					"text": "This is another text run",
+					"selectAction": { "type": "Action.Submit" }
+				},
+				"This is a text run specified as a string"
 			]
 		}
 	],

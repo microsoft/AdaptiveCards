@@ -759,6 +759,7 @@ namespace UWPUnitTests
                 FontStyle = FontStyle.Monospace,
                 Highlight = true,
                 IsSubtle = true,
+                Italics = true,
                 Language = "en",
                 Size = TextSize.Large,
                 Text = "This is text run number 1",
@@ -767,8 +768,9 @@ namespace UWPUnitTests
 
             Assert.AreEqual(ForegroundColor.Accent, textRun1.Color);
             Assert.AreEqual(FontStyle.Monospace, textRun1.FontStyle);
-            Assert.AreEqual(true, textRun1.Highlight);
-            Assert.AreEqual(true, textRun1.IsSubtle);
+            Assert.IsTrue(textRun1.Highlight);
+            Assert.IsTrue(textRun1.IsSubtle);
+            Assert.IsTrue(textRun1.Italics);
             Assert.AreEqual("en", textRun1.Language);
             Assert.AreEqual(TextSize.Large, textRun1.Size);
             Assert.AreEqual("This is text run number 1", textRun1.Text);
@@ -818,7 +820,7 @@ namespace UWPUnitTests
             Assert.AreEqual("This is text run number 3", (richTextBlock.Paragraphs[1].Inlines[0] as AdaptiveTextRun).Text);
 
             var jsonString = richTextBlock.ToJson().ToString();
-            Assert.AreEqual("{\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"RichTextBlockId\",\"isVisible\":false,\"maxLines\":3,\"paragraphs\":[{\"inlines\":[{\"color\":\"Accent\",\"fontStyle\":\"Monospace\",\"highlight\":true,\"isSubtle\":true,\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"size\":\"Large\",\"text\":\"This is text run number 1\",\"type\":\"TextRun\",\"weight\":\"Bolder\"},{\"text\":\"This is text run number 2\",\"type\":\"TextRun\"}]},{\"inlines\":[{\"text\":\"This is text run number 3\",\"type\":\"TextRun\"}]}],\"separator\":true,\"spacing\":\"large\",\"type\":\"RichTextBlock\",\"wrap\":true}", jsonString);
+            Assert.AreEqual("{\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"RichTextBlockId\",\"inlines\":[{\"color\":\"Accent\",\"fontStyle\":\"Monospace\",\"highlight\":true,\"isSubtle\":true,\"italics\":true,\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"size\":\"Large\",\"text\":\"This is text run number 1\",\"type\":\"TextRun\",\"weight\":\"Bolder\"},{\"text\":\"This is text run number 2\",\"type\":\"TextRun\"},{\"text\":\"This is text run number 3\",\"type\":\"TextRun\"}],\"isVisible\":false,\"separator\":true,\"spacing\":\"large\",\"type\":\"RichTextBlock\"}", jsonString);
         }
     }
 }

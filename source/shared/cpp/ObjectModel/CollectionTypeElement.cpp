@@ -44,7 +44,7 @@ void CollectionTypeElement::SetPadding(const bool value)
 void CollectionTypeElement::ConfigPadding(const ParseContext& context)
 {
     // We set padding when child's style is set explicitly (not None) and is different than the parental style
-    bool padding = (GetStyle() != ContainerStyle::None) && (context.GetParentalContainerStyle() != GetStyle());
+    const bool padding = (GetStyle() != ContainerStyle::None) && (context.GetParentalContainerStyle() != GetStyle());
     SetPadding(padding);
 }
 

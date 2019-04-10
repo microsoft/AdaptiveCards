@@ -110,7 +110,6 @@ namespace AdaptiveSharedNamespace
         Monospace,
         NumberInput,
         Padding,
-        Paragraphs,
         Placeholder,
         PlayButton,
         Poster,
