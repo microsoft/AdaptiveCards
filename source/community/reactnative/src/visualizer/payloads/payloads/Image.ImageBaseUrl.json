@@ -1,0 +1,37 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"backgroundImage": "Assets/background.png",
+	"body": [
+		{
+			"type": "Image",
+			"url": "Assets/adaptive10.png"
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.ShowCard",
+			"title": "Open Card",
+			"iconUrl": "Assets/button.png",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "Input.Text",
+						"id": "comment",
+						"isMultiline": true,
+						"placeholder": "Enter your comment"
+					}
+				],
+				"actions": [
+					{
+						"type": "Action.Submit",
+						"iconUrl": "Assets/button.png",
+						"title": "OK"
+					}
+				]
+			}
+		}
+	]
+}
