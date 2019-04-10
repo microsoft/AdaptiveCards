@@ -41,18 +41,61 @@ import java.util.ArrayList;
 
 public class RemoteClientConnection
 {
+    public enum State {
+        // Working on connecting for the first time.
+        // Next states: Connected or Closed.
+        CONNECTING,
+
+        // Connected! Everything's good!
+        // Next states: Reconnecting or Closed.
+        CONNECTED,
+
+        // Attempting to re-connect after being disconnected (might be network issues).
+        // Next states: Connected or Closed.
+        RECONNECTING,
+
+        // Connection closed. End of the line, please disembark the train.
+        // Next states: N/A
+        CLOSED
+    }
+
     private static final String LOG_TAG = "RemoteClientConnection";
     private Observer m_observer;
     private Context m_context;
-    private Activity m_activity;
     private PeerConnection m_conn;
     private String m_hostId;
     private String m_answerSdp;
+    private State m_state = State.CONNECTING;
 
-    public RemoteClientConnection(Activity activity, Observer observer)
+    private void changeState(State newState)
     {
-        this.m_activity = activity;
-        this.m_context = activity;
+        // If we're already closed, don't allow any other changes
+        if (m_state == State.CLOSED)
+        {
+            return;
+        }
+
+        // We can't enter the connecting state, it's the first state, that's a programming error
+        if (newState == State.CONNECTING)
+        {
+            return;
+        }
+
+        if (m_state != newState)
+        {
+            m_state = newState;
+            m_observer.onStateChanged(newState);
+        }
+    }
+
+    private void changeStateToClosed()
+    {
+        changeState(State.CLOSED);
+    }
+
+    public RemoteClientConnection(Context context, Observer observer)
+    {
+        this.m_context = context;
         this.m_observer = observer;
     }
 
@@ -60,13 +103,13 @@ public class RemoteClientConnection
     {
         void onConnecting(String status);
 
-        void onConnected();
-
         void onConnectFailed(String errorMessage);
 
         void onCardPayload(String cardPayload);
 
         void onHostConfigPayload(String hostConfigPayload);
+
+        void onStateChanged(State state);
     }
 
     public void connect(String hostId)
@@ -89,6 +132,7 @@ public class RemoteClientConnection
             public void onErrorResponse(VolleyError error)
             {
                 m_observer.onConnectFailed("Is your internet working? Failed to request offer info.");
+                changeStateToClosed();
             }
         });
 
@@ -105,11 +149,6 @@ public class RemoteClientConnection
         }
 
         m_observer = null;
-    }
-
-    private void runOnUiThread(Runnable action)
-    {
-        m_activity.runOnUiThread(action);
     }
 
     private void connectToHost(final JSONObject offerAndCandidates)
@@ -163,12 +202,7 @@ public class RemoteClientConnection
                         Log.i(LOG_TAG, "DataChannel state changed: " + currDataChannel.state());
                         if (currDataChannel.state() == DataChannel.State.OPEN)
                         {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    m_observer.onConnected();
-                                }
-                            });
+                            changeState(State.CONNECTED);
                         }
                     }
 
@@ -183,21 +217,11 @@ public class RemoteClientConnection
                             JSONObject dataMessage = new JSONObject(dataStr);
                             if (dataMessage.has("cardPayload")) {
                                 final String cardPayload = dataMessage.getString("cardPayload");
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        m_observer.onCardPayload(cardPayload);
-                                    }
-                                });
+                                m_observer.onCardPayload(cardPayload);
                             }
                             if (dataMessage.has("hostConfigPayload")) {
                                 final String hostConfigPayload = dataMessage.getString("hostConfigPayload");
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        m_observer.onHostConfigPayload(hostConfigPayload);
-                                    }
-                                });
+                                m_observer.onHostConfigPayload(hostConfigPayload);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -215,6 +239,20 @@ public class RemoteClientConnection
             @Override
             public void onIceConnectionChange(PeerConnection.IceConnectionState iceConnectionState) {
                 Log.i(LOG_TAG, "ConnectionChange: " + iceConnectionState);
+
+                // Docs for these states are here: https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/iceConnectionState
+                switch (iceConnectionState)
+                {
+                    // Means it's temporarily disconnected, it'll try to re-estabilsh connection
+                    case DISCONNECTED:
+                        changeState(State.RECONNECTING);
+                        break;
+
+                    case CLOSED:
+                    case FAILED:
+                        changeStateToClosed();
+                        break;
+                }
             }
 
             @Override
@@ -284,6 +322,7 @@ public class RemoteClientConnection
         } catch (JSONException e) {
             e.printStackTrace();
             m_observer.onConnectFailed("Invalid JSON");
+            changeStateToClosed();
             return;
         }
         m_conn.setRemoteDescription(new SdpObserver() {
@@ -310,6 +349,7 @@ public class RemoteClientConnection
                 {
                     e.printStackTrace();
                     m_observer.onConnectFailed("Invalid JSON");
+                    changeStateToClosed();
                     return;
                 }
             }
@@ -321,6 +361,7 @@ public class RemoteClientConnection
             @Override
             public void onSetFailure(String s) {
                 m_observer.onConnectFailed("Setting offer failed");
+                changeStateToClosed();
             }
         }, offerDescription);
     }
@@ -344,6 +385,7 @@ public class RemoteClientConnection
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     m_observer.onConnectFailed("Are you connected to the internet? Failed to send answer back.");
+                    changeStateToClosed();
                 }
         });
 

@@ -565,33 +565,76 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                     @Override
                     public void onConnecting(String status)
                     {
-                        Toast.makeText(getApplicationContext(), status, Toast.LENGTH_SHORT).show();
+                        final String finalStatus = status;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), finalStatus, Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
 
                     @Override
-                    public void onConnected()
+                    public void onStateChanged(RemoteClientConnection.State state)
                     {
-                        goToConnectedState();
+                        final RemoteClientConnection.State s = state;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                switch (s) {
+                                    // Connecting omitted because that's never hit, it's already
+                                    // connecting by the time we started observing
+                                    case CONNECTED:
+                                        goToConnectedState();
+                                        break;
+
+                                    case RECONNECTING:
+                                        goToReconnectingState();
+                                        break;
+
+                                    case CLOSED:
+                                        goToDisconnectedState();
+                                        break;
+                                }
+                            }
+                        });
                     }
 
                     @Override
                     public void onConnectFailed(String errorMessage)
                     {
-                        Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
                         m_remoteClientConnection = null;
-                        goToDisconnectedState();
+                        final String finalErrorMessage = errorMessage;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), finalErrorMessage, Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
 
                     @Override
                     public void onCardPayload(String cardPayload)
                     {
-                        loadAdaptiveCard(cardPayload);
+                        final String cPayload = cardPayload;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                loadAdaptiveCard(cPayload);
+                            }
+                        });
                     }
 
                     @Override
                     public void onHostConfigPayload(String hostConfigPayload)
                     {
-                        loadHostConfig(hostConfigPayload);
+                        final String hPayload = hostConfigPayload;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                loadHostConfig(hPayload);
+                            }
+                        });
                     }
                 });
 
@@ -747,6 +790,15 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     {
         m_buttonScanQr.setVisibility(View.GONE);
         m_buttonDisconnect.setVisibility(View.VISIBLE);
+        m_buttonDisconnect.setText("Connected! Click to disconnect");
+        goToReadOnlyState();
+    }
+
+    private void goToReconnectingState()
+    {
+        m_buttonScanQr.setVisibility(View.GONE);
+        m_buttonDisconnect.setVisibility(View.VISIBLE);
+        m_buttonDisconnect.setText("Reconnecting... Tap to disconnect");
         goToReadOnlyState();
     }
 
