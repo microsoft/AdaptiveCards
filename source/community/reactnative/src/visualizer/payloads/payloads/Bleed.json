@@ -1,0 +1,405 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "Container",
+            "style": "emphasis",
+            "bleed": true,
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Bleeding container at the top of the card",
+                    "wrap": true
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "Dummy TextBlock"
+        },
+        {
+            "type": "Container",
+            "style": "emphasis",
+            "bleed": true,
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Bleeding container in the middle of the card",
+                    "wrap": true
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "Dummy TextBlock"
+        },
+        {
+            "type": "Container",
+            "style": "emphasis",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Non-bleeding container",
+                    "wrap": true
+                },
+                {
+                    "type": "Container",
+                    "style": "default",
+                    "bleed": true,
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Bleeding sub-container with style explicitly set to default",
+                            "wrap": true
+                        }
+                    ]
+                },
+                {
+                    "type": "Container",
+                    "style": "default",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Non-bleeding sub-container with style explicitly set to default",
+                            "wrap": true
+                        }
+                    ]
+                },
+                {
+                    "type": "Container",
+                    "bleed": true,
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Bleeding sub-container with no explicit style",
+                            "wrap": true
+                        }
+                    ]
+                },
+                {
+                    "type": "Container",
+                    "style": "good",
+                    "bleed": true,
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Bleeding sub-container with no explicit style",
+                            "wrap": true
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "Bleeding ColumnSet below"
+        },
+        {
+            "type": "ColumnSet",
+            "style": "emphasis",
+            "bleed": true,
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "Image",
+                            "url": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
+                            "size": "small",
+                            "style": "person"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "verticalContentAlignment": "center",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "horizontalAlignment": "center",
+                            "text": "Middle column",
+                            "wrap": true
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "verticalContentAlignment": "center",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "horizontalAlignment": "right",
+                            "text": "Right column",
+                            "wrap": true
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "Left and right column bleeding only"
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "style": "emphasis",
+                    "bleed": true,
+                    "items": [
+                        {
+                            "type": "Image",
+                            "url": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
+                            "size": "small",
+                            "style": "person"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "verticalContentAlignment": "center",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "horizontalAlignment": "center",
+                            "text": "Middle column",
+                            "wrap": true
+                        },
+                        {
+                            "type": "Container",
+                            "style": "emphasis",
+                            "spacing": "none",
+                            "bleed": true,
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Bleeding sub-container in center column",
+                                    "wrap": true,
+                                    "horizontalAlignment": "center"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "style": "emphasis",
+                    "bleed": true,
+                    "verticalContentAlignment": "center",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "horizontalAlignment": "right",
+                            "text": "Right column",
+                            "wrap": true
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "Dummy TextBlock"
+        },
+        {
+            "type": "Container",
+            "style": "emphasis",
+            "bleed": true,
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Bleeding container",
+                    "wrap": true
+                },
+                {
+                    "type": "Container",
+                    "style": "default",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Non-bleeding sub-container",
+                            "wrap": true
+                        },
+                        {
+                            "type": "Container",
+                            "style": "emphasis",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Non-bleeding sub-sub-container",
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "Container",
+                                    "style": "default",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "Non-bleeding sub-sub-sub-container containing bleeding ColumnSet",
+                                            "wrap": true
+                                        },
+                                        {
+                                            "type": "ColumnSet",
+                                            "style": "emphasis",
+                                            "bleed": true,
+                                            "columns": [
+                                                {
+                                                    "type": "Column",
+                                                    "width": "stretch",
+                                                    "items": [
+                                                        {
+                                                            "type": "Image",
+                                                            "url": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
+                                                            "size": "small",
+                                                            "style": "person"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "Column",
+                                                    "width": "stretch",
+                                                    "verticalContentAlignment": "center",
+                                                    "items": [
+                                                        {
+                                                            "type": "TextBlock",
+                                                            "horizontalAlignment": "center",
+                                                            "text": "Middle column",
+                                                            "wrap": true
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "Column",
+                                                    "width": "stretch",
+                                                    "verticalContentAlignment": "center",
+                                                    "items": [
+                                                        {
+                                                            "type": "TextBlock",
+                                                            "horizontalAlignment": "right",
+                                                            "text": "Right column",
+                                                            "wrap": true
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Non-bleeding container",
+                    "wrap": true
+                },
+                {
+                    "type": "Container",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Non-bleeding sub-container",
+                            "wrap": true
+                        },
+                        {
+                            "type": "Container",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Non-bleeding sub-sub-container",
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "Container",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "Non-bleeding sub-sub-sub-container containing bleeding ColumnSet",
+                                            "wrap": true
+                                        },
+                                        {
+                                            "type": "ColumnSet",
+                                            "style": "emphasis",
+                                            "bleed": true,
+                                            "columns": [
+                                                {
+                                                    "type": "Column",
+                                                    "width": "stretch",
+                                                    "items": [
+                                                        {
+                                                            "type": "Image",
+                                                            "url": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
+                                                            "size": "small",
+                                                            "style": "person"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "Column",
+                                                    "width": "stretch",
+                                                    "verticalContentAlignment": "center",
+                                                    "items": [
+                                                        {
+                                                            "type": "TextBlock",
+                                                            "horizontalAlignment": "center",
+                                                            "text": "Middle column",
+                                                            "wrap": true
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "type": "Column",
+                                                    "width": "stretch",
+                                                    "verticalContentAlignment": "center",
+                                                    "items": [
+                                                        {
+                                                            "type": "TextBlock",
+                                                            "horizontalAlignment": "right",
+                                                            "text": "Right column",
+                                                            "wrap": true
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "Dummy TextBlock"
+        },
+        {
+            "type": "Container",
+            "style": "emphasis",
+            "bleed": true,
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Bleeding container at the bottom of the card",
+                    "wrap": true
+                }
+            ]
+        }
+    ]
+}

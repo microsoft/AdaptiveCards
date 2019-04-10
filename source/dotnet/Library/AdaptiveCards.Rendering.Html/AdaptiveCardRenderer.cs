@@ -111,7 +111,6 @@ namespace AdaptiveCards.Rendering.Html
             return transformers;
         }
 
-
         protected static HtmlTag AddActionAttributes(AdaptiveAction action, HtmlTag tag, AdaptiveRenderContext context)
         {
             tag.AddClass(GetActionCssClass(action))
@@ -304,27 +303,15 @@ namespace AdaptiveCards.Rendering.Html
         {
             if (context.Config.SupportsInteractivity && selectAction != null)
             {
-                tag.AddClass("ac-selectable");
-                AddActionAttributes(selectAction, tag, context);
-
-                // Create the additional card below for showCard actions
-                if (selectAction is AdaptiveShowCardAction showCardAction)
+                // SelectAction doesn't allow showCard actions
+                if (selectAction is AdaptiveShowCardAction)
                 {
-                    var cardId = tag.Attributes["data-ac-showCardId"];
-
-                    var uiShowCard = context.Render(showCardAction.Card);
-                    if (uiShowCard != null)
-                    {
-                        uiShowCard.Attr("id", cardId)
-                            .AddClass("ac-showCard")
-                            .Style("padding", "0")
-                            .Style("display", "none")
-                            .Style("margin-top", $"{context.Config.Actions.ShowCard.InlineTopMargin}px");
-
-                        // Store all showCard tags inside context
-                        context.ShowCardTags.Add(uiShowCard);
-                    }
+                    context.Warnings.Add(new AdaptiveWarning(-1, "Inline ShowCard not supported for SelectAction"));
+                    return;
                 }
+
+                tag.AddClass("ac-selectable");
+                AddActionAttributes(selectAction, tag, context);                
             }
         }
 
