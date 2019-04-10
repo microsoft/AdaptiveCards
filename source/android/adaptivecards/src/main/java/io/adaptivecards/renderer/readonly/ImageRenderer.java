@@ -303,18 +303,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         boolean isInImageSet = viewGroup instanceof HorizontalFlowLayout;
         setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, !isInImageSet /* horizontal line */, isInImageSet);
 
-        if (image.GetMinHeight() != 0)
-        {
-            LinearLayout minHeightLayout = new LinearLayout(context);
-            minHeightLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            minHeightLayout.setMinimumHeight(Util.dpToPixels(context, (int)image.GetMinHeight()));
-            minHeightLayout.addView(imageView);
-            viewGroup.addView(minHeightLayout);
-        }
-        else
-        {
-            viewGroup.addView(imageView);
-        }
+        viewGroup.addView(imageView);
 
         return imageView;
     }

@@ -12,7 +12,7 @@ using namespace AdaptiveSharedNamespace;
 BaseCardElement::BaseCardElement(CardElementType type, Spacing spacing, bool separator, HeightType height) :
     m_type(type), m_spacing(spacing),
     m_height(height), m_separator(separator),
-    m_isVisible(true), m_minHeight(0)
+    m_isVisible(true)
 {
     SetTypeString(CardElementTypeToString(type));
     PopulateKnownPropertiesSet();
@@ -20,7 +20,7 @@ BaseCardElement::BaseCardElement(CardElementType type, Spacing spacing, bool sep
 
 BaseCardElement::BaseCardElement(CardElementType type) :
     m_type(type), m_spacing(Spacing::Default), m_separator(false),
-    m_height(HeightType::Auto), m_isVisible(true), m_minHeight(0)
+    m_height(HeightType::Auto), m_isVisible(true)
 {
     SetTypeString(CardElementTypeToString(type));
     PopulateKnownPropertiesSet();
@@ -75,16 +75,6 @@ void BaseCardElement::SetIsVisible(const bool value)
     m_isVisible = value;
 }
 
-unsigned int BaseCardElement::GetMinHeight() const
-{
-    return m_minHeight;
-}
-
-void BaseCardElement::SetMinHeight(const unsigned int value)
-{
-    m_minHeight = value;
-}
-
 const CardElementType BaseCardElement::GetElementType() const
 {
     return m_type;
@@ -112,11 +102,6 @@ Json::Value BaseCardElement::SerializeToJsonValue() const
     if (!m_isVisible)
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsVisible)] = false;
-    }
-
-    if (m_minHeight)
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MinHeight)] = std::to_string(GetMinHeight()) + "px";
     }
 
     return root;

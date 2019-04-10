@@ -160,6 +160,7 @@ namespace AdaptiveNamespace
         m_verticalAlignment =
             static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedAdaptiveCard->GetVerticalContentAlignment());
         m_height = static_cast<ABI::AdaptiveNamespace::HeightType>(sharedAdaptiveCard->GetHeight());
+        m_minHeight = sharedAdaptiveCard->GetMinHeight();
 
         auto backgroundImage = sharedAdaptiveCard->GetBackgroundImage();
         if (backgroundImage != nullptr && !backgroundImage->GetUrl().empty())
@@ -260,6 +261,18 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    HRESULT AdaptiveCard::get_MinHeight(_Out_ UINT32* minHeight)
+    {
+        *minHeight = m_minHeight;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveCard::put_MinHeight(UINT32 minHeight)
+    {
+        m_minHeight = minHeight;
+        return S_OK;
+    }
+
     HRESULT AdaptiveCard::ToJson(_COM_Outptr_ IJsonObject** result)
     {
         std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> sharedModel;
@@ -278,6 +291,7 @@ namespace AdaptiveNamespace
         adaptiveCard->SetSpeak(HStringToUTF8(m_speak.Get()));
         adaptiveCard->SetHeight(static_cast<AdaptiveSharedNamespace::HeightType>(m_height));
         adaptiveCard->SetLanguage(HStringToUTF8(m_language.Get()));
+        adaptiveCard->SetMinHeight(m_minHeight);
 
         ComPtr<AdaptiveBackgroundImage> adaptiveBackgroundImage = PeekInnards<AdaptiveBackgroundImage>(m_backgroundImage);
         std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage> sharedBackgroundImage;
