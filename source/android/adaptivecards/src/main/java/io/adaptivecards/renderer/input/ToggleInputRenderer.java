@@ -114,11 +114,11 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
             }
         });
 
-        if (toggleInput.GetHeight() == HeightType.Stretch || toggleInput.GetMinHeight() != 0)
+        if (toggleInput.GetHeight() == HeightType.Stretch)
         {
             LinearLayout toggleInputContainer = new LinearLayout(context);
 
-            if (toggleInput.GetHeight() == HeightType.Stretch )
+            if (toggleInput.GetHeight() == HeightType.Stretch)
             {
                 toggleInputContainer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
             }
@@ -126,8 +126,6 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
             {
                 toggleInputContainer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             }
-
-            toggleInputContainer.setMinimumHeight(Util.dpToPixels(context, (int)toggleInput.GetMinHeight()));
 
             toggleInputContainer.addView(checkBox);
             viewGroup.addView(toggleInputContainer);

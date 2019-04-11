@@ -39,6 +39,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_BackgroundImage(_Outptr_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage** backgroundImage);
         IFACEMETHODIMP put_BackgroundImage(_In_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage* backgroundImage);
 
+        IFACEMETHODIMP get_MinHeight(_Out_ UINT32* minHeight);
+        IFACEMETHODIMP put_MinHeight(UINT32 minHeight);
+
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
 
@@ -65,12 +68,6 @@ namespace AdaptiveNamespace
 
         IFACEMETHODIMP get_Id(_Outptr_ HSTRING* id) { return AdaptiveCardElementBase::get_Id(id); }
         IFACEMETHODIMP put_Id(_In_ HSTRING id) { return AdaptiveCardElementBase::put_Id(id); }
-
-        IFACEMETHODIMP get_MinHeight(_Out_ UINT32* minHeight)
-        {
-            return AdaptiveCardElementBase::get_MinHeight(minHeight);
-        }
-        IFACEMETHODIMP put_MinHeight(UINT32 minHeight) { return AdaptiveCardElementBase::put_MinHeight(minHeight); }
 
         IFACEMETHODIMP get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType* fallback)
         {
@@ -130,6 +127,7 @@ namespace AdaptiveNamespace
         ABI::AdaptiveNamespace::ContainerStyle m_style;
         ABI::AdaptiveNamespace::VerticalContentAlignment m_verticalAlignment;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveBackgroundImage> m_backgroundImage;
+        UINT32 m_minHeight;
     };
 
     ActivatableClass(AdaptiveContainer);

@@ -171,8 +171,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 foreach (var showCardTuple in context.ActionShowCards)
                 {
-                    var currentShowCard = showCardTuple.Item1;
-                    var uiButton = showCardTuple.Item2;
+                    var currentShowCard = showCardTuple.Value;
+                    var uiButton = showCardTuple.Key;
 
                     Grid.SetRow(currentShowCard, grid.RowDefinitions.Count - 1);
                     grid.Children.Add(currentShowCard);
@@ -185,7 +185,7 @@ namespace AdaptiveCards.Rendering.Wpf
                         // Collapse all the show cards
                         foreach (var t in context.ActionShowCards)
                         {
-                            var showCard = t.Item1;
+                            var showCard = t.Value;
                             showCard.Visibility = Visibility.Collapsed;
                         }
 

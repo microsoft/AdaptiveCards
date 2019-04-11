@@ -36,6 +36,7 @@ namespace AdaptiveNamespace
         GenerateActionProjection(sharedColumnSet->GetSelectAction(), &m_selectAction);
 
         m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedColumnSet->GetStyle());
+        m_minHeight = sharedColumnSet->GetMinHeight();
 
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedColumnSet));
 
@@ -68,6 +69,18 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveColumnSet::put_Style(ABI::AdaptiveNamespace::ContainerStyle style)
     {
         m_style = style;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveColumnSet::get_MinHeight(_Out_ UINT32* minHeight)
+    {
+        *minHeight = m_minHeight;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveColumnSet::put_MinHeight(UINT32 minHeight)
+    {
+        m_minHeight = minHeight;
         return S_OK;
     }
 
@@ -108,6 +121,7 @@ namespace AdaptiveNamespace
         });
 
         columnSet->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
+        columnSet->SetMinHeight(m_minHeight);
 
         sharedModel = columnSet;
         return S_OK;

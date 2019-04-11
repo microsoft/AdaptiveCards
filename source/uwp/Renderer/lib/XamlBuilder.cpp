@@ -152,6 +152,13 @@ namespace AdaptiveNamespace
             ComPtr<IFrameworkElement> rootAsFrameworkElement;
             RETURN_IF_FAILED(rootElement.As(&rootAsFrameworkElement));
 
+            UINT32 cardMinHeight{};
+            RETURN_IF_FAILED(adaptiveCard->get_MinHeight(&cardMinHeight));
+            if (cardMinHeight > 0)
+            {
+                RETURN_IF_FAILED(rootAsFrameworkElement->put_MinHeight(cardMinHeight));
+            }
+
             ComPtr<IAdaptiveActionElement> selectAction;
             RETURN_IF_FAILED(adaptiveCard->get_SelectAction(&selectAction));
 
@@ -2392,6 +2399,7 @@ namespace AdaptiveNamespace
 
         ComPtr<IFrameworkElement> containerPanelAsFrameWorkElement;
         RETURN_IF_FAILED(containerPanel.As(&containerPanelAsFrameWorkElement));
+
         // Assign vertical alignment to the top so that on fixed height cards, the content
         // still renders at the top even if the content is shorter than the full card
         ABI::AdaptiveNamespace::HeightType containerHeightType{};
@@ -2399,6 +2407,13 @@ namespace AdaptiveNamespace
         if (containerHeightType == ABI::AdaptiveNamespace::HeightType::Auto)
         {
             RETURN_IF_FAILED(containerPanelAsFrameWorkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Top));
+        }
+
+        UINT32 containerMinHeight{};
+        RETURN_IF_FAILED(adaptiveContainer->get_MinHeight(&containerMinHeight));
+        if (containerMinHeight > 0)
+        {
+            RETURN_IF_FAILED(containerPanelAsFrameWorkElement->put_MinHeight(containerMinHeight));
         }
 
         ABI::AdaptiveNamespace::ContainerStyle containerStyle;
@@ -2567,6 +2582,13 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(columnPanelAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Stretch));
 
         RETURN_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Column", columnPanelAsFrameworkElement.Get()));
+
+        UINT32 columnMinHeight{};
+        RETURN_IF_FAILED(adaptiveColumn->get_MinHeight(&columnMinHeight));
+        if (columnMinHeight > 0)
+        {
+            RETURN_IF_FAILED(columnPanelAsFrameworkElement->put_MinHeight(columnMinHeight));
+        }
 
         ComPtr<IAdaptiveActionElement> selectAction;
         RETURN_IF_FAILED(adaptiveColumn->get_SelectAction(&selectAction));
@@ -2795,6 +2817,8 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(gridContainer.As(&gridContainerAsPanel));
         ComPtr<IUIElement> gridContainerAsUIElement;
         RETURN_IF_FAILED(gridContainer.As(&gridContainerAsUIElement));
+        ComPtr<IFrameworkElement> gridContainerAsFrameworkElement;
+        RETURN_IF_FAILED(gridContainer.As(&gridContainerAsFrameworkElement));
 
         ComPtr<IUIElement> gridAsUIElement;
         RETURN_IF_FAILED(xamlGrid.As(&gridAsUIElement));
@@ -2804,6 +2828,13 @@ namespace AdaptiveNamespace
 
         ABI::AdaptiveNamespace::HeightType columnSetHeightType;
         RETURN_IF_FAILED(columnSetAsCardElement->get_Height(&columnSetHeightType));
+
+        UINT32 columnSetMinHeight{};
+        RETURN_IF_FAILED(adaptiveColumnSet->get_MinHeight(&columnSetMinHeight));
+        if (columnSetMinHeight > 0)
+        {
+            RETURN_IF_FAILED(gridContainerAsFrameworkElement->put_MinHeight(columnSetMinHeight));
+        }
 
         XamlHelpers::AppendXamlElementToPanel(xamlGrid.Get(), gridContainerAsPanel.Get(), columnSetHeightType);
         HandleSelectAction(adaptiveCardElement,
