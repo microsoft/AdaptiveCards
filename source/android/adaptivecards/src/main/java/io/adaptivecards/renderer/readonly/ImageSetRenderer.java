@@ -94,20 +94,9 @@ public class ImageSetRenderer extends BaseCardElementRenderer
             ((ImageView) imageView).setMaxHeight(Util.dpToPixels(context, hostConfig.GetImageSet().getMaxImageHeight()));
         }
 
-        if (imageSet.GetHeight() == HeightType.Stretch || imageSet.GetMinHeight() != 0)
+        if (imageSet.GetHeight() == HeightType.Stretch)
         {
-            if (imageSet.GetHeight() == HeightType.Stretch)
-            {
-                viewGroup.addView(horizFlowLayout, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
-            }
-            else
-            {
-                LinearLayout minHeightLayout = new LinearLayout(context);
-                minHeightLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                minHeightLayout.setMinimumHeight(Util.dpToPixels(context, (int)imageSet.GetMinHeight()));
-                minHeightLayout.addView(horizFlowLayout, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                viewGroup.addView(minHeightLayout);
-            }
+            viewGroup.addView(horizFlowLayout, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
         }
         else
         {

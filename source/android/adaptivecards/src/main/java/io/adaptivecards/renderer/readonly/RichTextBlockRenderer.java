@@ -171,7 +171,6 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
         // Height
         // IsVisible
         // Spacing
-        // MinHeight
         setSpacingAndSeparator(context, viewGroup, richTextBlock.GetSpacing(), richTextBlock.GetSeparator(), hostConfig, true);
 
         if (!baseCardElement.GetIsVisible())
@@ -186,11 +185,6 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
         else
         {
             textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        }
-
-        if (richTextBlock.GetMinHeight() != 0)
-        {
-            textView.setMinimumHeight(Util.dpToPixels(context, (int)richTextBlock.GetMinHeight()));
         }
 
         // RichTextBlock properties
