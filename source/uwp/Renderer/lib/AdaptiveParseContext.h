@@ -6,14 +6,13 @@ namespace AdaptiveNamespace
 {
     class DECLSPEC_UUID("8b651035-0177-4eb4-8dbc-cdcf1c42213a") AdaptiveParseContext
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveNamespace::IAdaptiveParseContext,
-                                              Microsoft::WRL::CloakedIid<ITypePeek>>
+                                              Microsoft::WRL::Implements<ABI::AdaptiveNamespace::IAdaptiveParseContext>,
+                                              Microsoft::WRL::CloakedIid<ITypePeek>,
+                                              Microsoft::WRL::FtmBase>
     {
         AdaptiveRuntime(AdaptiveParseContext);
 
     public:
-        AdaptiveParseContext();
-
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(_In_opt_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementRegistration,
                                        _In_opt_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionRegistration,

@@ -15,7 +15,6 @@ namespace AdaptiveNamespace
         typedef std::unordered_map<std::string, Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionParser>, CaseInsensitiveHash, CaseInsensitiveEqualTo> RegistrationMap;
 
     public:
-        AdaptiveActionParserRegistration();
         HRESULT RuntimeClassInitialize() noexcept;
         HRESULT RuntimeClassInitialize(std::shared_ptr<AdaptiveSharedNamespace::ActionParserRegistration> sharedParserRegistration) noexcept;
 

@@ -101,14 +101,14 @@ namespace UWPUnitTests
                 return new TestCustomElement(textBlockElement) as IAdaptiveCardElement;
             }
 
-            IAdaptiveCardElement IAdaptiveElementParser.FromJson(JsonObject inputJson, AdaptiveElementParserRegistration elementParsers, AdaptiveActionParserRegistration actionParsers, IList<AdaptiveWarning> warnings)
+            public IAdaptiveCardElement FromJson(JsonObject inputJson, AdaptiveParseContext parseContext, IList<AdaptiveWarning> warnings)
             {
-                throw new NotImplementedException();
-            }
+                JsonObject jsonTextBlock = inputJson.GetNamedObject("internalTextBlock");
 
-            IAdaptiveCardElement IAdaptiveElementParser.FromJson(JsonObject inputJson, AdaptiveParseContext parseContext, IList<AdaptiveWarning> warnings)
-            {
-                throw new NotImplementedException();
+                var textBlockParser = parseContext.ElementParsers.Get("TextBlock");
+
+                IAdaptiveCardElement textBlockElement = textBlockParser.FromJson(jsonTextBlock, parseContext, warnings);
+                return new TestCustomElement(textBlockElement) as IAdaptiveCardElement;
             }
         };
 

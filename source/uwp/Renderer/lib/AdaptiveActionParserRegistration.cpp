@@ -16,8 +16,6 @@ using namespace ABI::Windows::UI;
 
 namespace AdaptiveNamespace
 {
-    AdaptiveActionParserRegistration::AdaptiveActionParserRegistration() {}
-
     HRESULT AdaptiveActionParserRegistration::RuntimeClassInitialize() noexcept try
     {
         std::shared_ptr<ActionParserRegistration> sharedParserRegistration = std::make_shared<ActionParserRegistration>();

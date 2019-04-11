@@ -11,8 +11,6 @@ using namespace ABI::Windows::Foundation::Collections;
 
 namespace AdaptiveNamespace
 {
-    AdaptiveParseContext::AdaptiveParseContext() {}
-
     HRESULT AdaptiveParseContext::RuntimeClassInitialize() noexcept try
     {
         return RuntimeClassInitialize(nullptr, nullptr, nullptr);
