@@ -995,7 +995,13 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     {
         goToConnectingState();
 
-        new IntentIntegrator(this).initiateScan();
+        // Docs here: https://github.com/journeyapps/zxing-android-embedded
+        IntentIntegrator integrator = new IntentIntegrator(this);
+        integrator.setPrompt("Scan QR code from the Designer");
+        integrator.setBeepEnabled(false);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+        integrator.setOrientationLocked(true);
+        integrator.initiateScan();
     }
 
     private boolean handleQrActivityResult(int requestCode, int resultCode, Intent data)
@@ -1086,6 +1092,12 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
                 m_remoteClientConnection.connect(contents);
             }
+
+            else
+            {
+                goToDisconnectedState();
+            }
+
 
             return true;
         }
