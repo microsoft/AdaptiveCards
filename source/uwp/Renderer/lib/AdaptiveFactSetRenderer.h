@@ -26,6 +26,12 @@ namespace AdaptiveNamespace
                                 _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParsers,
                                 _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
                                 _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept override;
+
+        IFACEMETHODIMP FromJsonWithParseContext(
+            _In_ ABI::Windows::Data::Json::IJsonObject*,
+            _In_ ABI::AdaptiveNamespace::IAdaptiveParseContext* parseContext,
+            _Inout_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
+            _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept override;
     };
 
     ActivatableClass(AdaptiveFactSetRenderer);

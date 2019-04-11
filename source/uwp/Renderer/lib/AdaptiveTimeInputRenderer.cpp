@@ -40,4 +40,15 @@ namespace AdaptiveNamespace
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;
+
+    HRESULT AdaptiveTimeInputRenderer::FromJsonWithParseContext(
+        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
+        _In_ ABI::AdaptiveNamespace::IAdaptiveParseContext* parseContext,
+        _Inout_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
+        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept try
+    {
+        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveTimeInput, AdaptiveSharedNamespace::TimeInput, AdaptiveSharedNamespace::TimeInputParser>(
+            jsonObject, parseContext, adaptiveWarnings, element);
+    }
+    CATCH_RETURN;
 }

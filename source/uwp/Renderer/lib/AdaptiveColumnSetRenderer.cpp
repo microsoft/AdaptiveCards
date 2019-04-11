@@ -40,4 +40,15 @@ namespace AdaptiveNamespace
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;
+
+    HRESULT AdaptiveColumnSetRenderer::FromJsonWithParseContext(
+        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
+        _In_ ABI::AdaptiveNamespace::IAdaptiveParseContext* parseContext,
+        _Inout_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
+        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept try
+    {
+        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveColumnSet, AdaptiveSharedNamespace::ColumnSet, AdaptiveSharedNamespace::ColumnSetParser>(
+            jsonObject, parseContext, adaptiveWarnings, element);
+    }
+    CATCH_RETURN;
 }

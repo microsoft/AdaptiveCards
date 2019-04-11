@@ -1024,6 +1024,9 @@ AdaptiveNamespaceStart
         [propget] HRESULT Height([out, retval] HeightType* value);
         [propput] HRESULT Height([in] HeightType value);
 
+        [propget] HRESULT MinHeight([out, retval] UINT32* value);
+        [propput] HRESULT MinHeight([in] UINT32 value);
+
         HRESULT ToJson([out, retval] Windows.Data.Json.JsonObject** value);
 
         HRESULT GetResourceInformation([out, retval] Windows.Foundation.Collections.IVectorView<AdaptiveRemoteResourceInformation*>** result);
@@ -3214,7 +3217,6 @@ AdaptiveNamespaceStart
     ]
     interface IAdaptiveParseContext : IInspectable
     {
-        [propget] HRESULT AdaptiveCardsVersion([out, retval] HSTRING *version);
         [propget] HRESULT ElementParsers([out, retval] AdaptiveElementParserRegistration** elementParsers);
         [propget] HRESULT ActionParsers([out, retval] AdaptiveActionParserRegistration** actionParsers);
         [propget] HRESULT Features([out, retval] AdaptiveFeatureRegistration** featureRegistration);

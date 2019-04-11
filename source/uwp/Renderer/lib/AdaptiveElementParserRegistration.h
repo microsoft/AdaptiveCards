@@ -98,13 +98,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(parseContext->get_Features(&featureRegistration));
         ComPtr<AdaptiveFeatureRegistration> featureRegistrationImpl = PeekInnards<AdaptiveFeatureRegistration>(featureRegistration);
 
-        Microsoft::WRL::Wrappers::HString adaptiveCardsVersion;
-        RETURN_IF_FAILED(parseContext->get_AdaptiveCardsVersion(adaptiveCardsVersion.GetAddressOf()));
-        std::string strAdaptiveCardsVersion;
-        RETURN_IF_FAILED(HStringToUTF8(adaptiveCardsVersion.Get(), strAdaptiveCardsVersion));
-
-        ParseContext context(strAdaptiveCardsVersion,
-                             elementParserRegistrationImpl->GetSharedParserRegistration(),
+        ParseContext context(elementParserRegistrationImpl->GetSharedParserRegistration(),
                              actionParserRegistrationImpl->GetSharedParserRegistration(),
                              featureRegistrationImpl->GetSharedFeatureRegistration());
 

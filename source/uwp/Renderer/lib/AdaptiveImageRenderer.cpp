@@ -15,9 +15,7 @@ namespace AdaptiveNamespace
 {
     AdaptiveImageRenderer::AdaptiveImageRenderer() {}
 
-    AdaptiveImageRenderer::AdaptiveImageRenderer(ComPtr<XamlBuilder> xamlBuilder) : m_xamlBuilder(xamlBuilder)
-    {
-    }
+    AdaptiveImageRenderer::AdaptiveImageRenderer(ComPtr<XamlBuilder> xamlBuilder) : m_xamlBuilder(xamlBuilder) {}
 
     HRESULT AdaptiveImageRenderer::RuntimeClassInitialize() noexcept try
     {
@@ -44,6 +42,17 @@ namespace AdaptiveNamespace
     {
         return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveImage, AdaptiveSharedNamespace::Image, AdaptiveSharedNamespace::ImageParser>(
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
+    }
+    CATCH_RETURN;
+
+    HRESULT AdaptiveImageRenderer::FromJsonWithParseContext(
+        _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
+        _In_ ABI::AdaptiveNamespace::IAdaptiveParseContext* parseContext,
+        _Inout_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
+        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept try
+    {
+        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveImage, AdaptiveSharedNamespace::Image, AdaptiveSharedNamespace::ImageParser>(
+            jsonObject, parseContext, adaptiveWarnings, element);
     }
     CATCH_RETURN;
 }

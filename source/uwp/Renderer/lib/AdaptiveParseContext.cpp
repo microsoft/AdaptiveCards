@@ -15,7 +15,7 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveParseContext::RuntimeClassInitialize() noexcept try
     {
-        return RuntimeClassInitialize(nullptr, nullptr, nullptr, nullptr);
+        return RuntimeClassInitialize(nullptr, nullptr, nullptr);
     }
     CATCH_RETURN;
 

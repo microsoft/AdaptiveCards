@@ -24,6 +24,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_ActionParsers(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration** actionRegistration);
         IFACEMETHODIMP get_Features(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration** featureRegistration);
 
+        // ITypePeek
+        void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
+
     private:
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration> m_elementRegistration;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration> m_actionRegistration;
