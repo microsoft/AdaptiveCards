@@ -1,14 +1,145 @@
 {
-	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"version": "99.0",
-	"minVersion": "99.0",
-	"fallbackText": "This card requires Adaptive Cards version 99.0, which probably doesn't exist",
+	"version": "1.2",
 	"body": [
 		{
 			"type": "TextBlock",
-			"text": "THIS SHOULD NOT APPEAR! It should show the fallback text",
+			"text": "Press the buttons to toggle the images!",
 			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Here are some images:",
+			"isVisible": false,
+			"id": "textToToggle"
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"items": [
+						{
+							"style": "person",
+							"type": "Image",
+							"url": "https://picsum.photos/100/100?image=112",
+							"isVisible": false,
+							"id": "imageToToggle",
+							"size": "medium"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "Image",
+							"url": "https://picsum.photos/100/100?image=123",
+							"isVisible": false,
+							"id": "imageToToggle2",
+							"size": "medium"
+						}
+					]
+				}
+			]
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.ToggleVisibility",
+			"title": "Toggle!",
+			"targetElements": [
+				"textToToggle",
+				"imageToToggle",
+				"imageToToggle2"
+			]
+		},
+		{
+			"type": "Action.ToggleVisibility",
+			"title": "Also Toggle!",
+			"targetElements": [
+				{
+					"elementId": "textToToggle"
+				},
+				{
+					"elementId": "imageToToggle"
+				},
+				{
+					"elementId": "imageToToggle2"
+				}
+			]
+		},
+		{
+			"type": "Action.ToggleVisibility",
+			"title": "Show!",
+			"targetElements": [
+				{
+					"elementId": "textToToggle",
+					"isVisible": true
+				},
+				{
+					"elementId": "imageToToggle",
+					"isVisible": true
+				},
+				{
+					"elementId": "imageToToggle2",
+					"isVisible": true
+				}
+			]
+		},
+		{
+			"type": "Action.ToggleVisibility",
+			"title": "Hide!",
+			"targetElements": [
+				{
+					"elementId": "textToToggle",
+					"isVisible": false
+				},
+				{
+					"elementId": "imageToToggle",
+					"isVisible": false
+				},
+				{
+					"elementId": "imageToToggle2",
+					"isVisible": false
+				}
+			]
+		},
+		{
+			"type": "Action.ToggleVisibility",
+			"title": "Grain!",
+			"targetElements": [
+				{
+					"elementId": "textToToggle",
+					"isVisible": true
+				},
+				{
+					"elementId": "imageToToggle",
+					"isVisible": true
+				},
+				{
+					"elementId": "imageToToggle2",
+					"isVisible": false
+				}
+			]
+		},
+		{
+			"type": "Action.ToggleVisibility",
+			"title": "Water!",
+			"targetElements": [
+				{
+					"elementId": "textToToggle",
+					"isVisible": true
+				},
+				{
+					"elementId": "imageToToggle",
+					"isVisible": false
+				},
+				{
+					"elementId": "imageToToggle2",
+					"isVisible": true
+				}
+			]
 		}
 	]
 }
