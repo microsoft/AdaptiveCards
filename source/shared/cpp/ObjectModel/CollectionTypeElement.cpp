@@ -6,7 +6,7 @@ using namespace AdaptiveSharedNamespace;
 
 CollectionTypeElement::CollectionTypeElement(CardElementType type, ContainerStyle style, VerticalContentAlignment alignment) :
     BaseCardElement(type), m_style(style), m_verticalContentAlignment(alignment), m_hasPadding(false),
-    m_hasBleed(false), m_parentalId(), m_bleedDirection(ContainerBleedDirection::BleedToBothEdges)
+    m_hasBleed(false), m_parentalId(), m_bleedDirection(ContainerBleedDirection::BleedToBothEdges), m_minHeight(0)
 {
 }
 
@@ -103,6 +103,16 @@ void CollectionTypeElement::SetBackgroundImage(const std::shared_ptr<BackgroundI
     m_backgroundImage = value;
 }
 
+unsigned int CollectionTypeElement::GetMinHeight() const
+{
+    return m_minHeight;
+}
+
+void CollectionTypeElement::SetMinHeight(const unsigned int value)
+{
+    m_minHeight = value;
+}
+
 std::shared_ptr<BaseActionElement> CollectionTypeElement::GetSelectAction() const
 {
     return m_selectAction;
@@ -142,6 +152,11 @@ Json::Value CollectionTypeElement::SerializeToJsonValue() const
     if (GetBleed())
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Bleed)] = true;
+    }
+
+    if (m_minHeight)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MinHeight)] = std::to_string(GetMinHeight()) + "px";
     }
 
     return root;

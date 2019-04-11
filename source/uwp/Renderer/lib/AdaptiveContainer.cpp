@@ -35,6 +35,7 @@ namespace AdaptiveNamespace
         m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedContainer->GetStyle());
         m_verticalAlignment =
             static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedContainer->GetVerticalContentAlignment());
+        m_minHeight = sharedContainer->GetMinHeight();
 
         auto backgroundImage = sharedContainer->GetBackgroundImage();
         if (backgroundImage != nullptr && !backgroundImage->GetUrl().empty())
@@ -104,6 +105,18 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    HRESULT AdaptiveContainer::get_MinHeight(_Out_ UINT32* minHeight)
+    {
+        *minHeight = m_minHeight;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveContainer::put_MinHeight(UINT32 minHeight)
+    {
+        m_minHeight = minHeight;
+        return S_OK;
+    }
+
     HRESULT AdaptiveContainer::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     {
         std::shared_ptr<AdaptiveSharedNamespace::Container> container = std::make_shared<AdaptiveSharedNamespace::Container>();
@@ -118,6 +131,7 @@ namespace AdaptiveNamespace
 
         container->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
         container->SetVerticalContentAlignment(static_cast<AdaptiveSharedNamespace::VerticalContentAlignment>(m_verticalAlignment));
+        container->SetMinHeight(m_minHeight);
 
         ComPtr<AdaptiveBackgroundImage> adaptiveBackgroundImage = PeekInnards<AdaptiveBackgroundImage>(m_backgroundImage);
         std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage> sharedBackgroundImage;

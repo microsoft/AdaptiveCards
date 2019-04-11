@@ -94,13 +94,18 @@ public class AdaptiveCardRenderer
         layout.setClipChildren(false);
         layout.setClipToPadding(false);
 
-        if( adaptiveCard.GetHeight() == HeightType.Stretch )
+        if (adaptiveCard.GetHeight() == HeightType.Stretch)
         {
             layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
         }
         else
         {
             layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        }
+
+        if (adaptiveCard.GetMinHeight() != 0)
+        {
+            rootLayout.setMinimumHeight(Util.dpToPixels(context, (int)adaptiveCard.GetMinHeight()));
         }
 
         VerticalContentAlignment contentAlignment = adaptiveCard.GetVerticalContentAlignment();
