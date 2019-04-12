@@ -572,7 +572,8 @@ AdaptiveNamespaceStart
     {
         [propget] HRESULT ElementType([out, retval] ElementType* value);
         [propget] HRESULT ElementTypeString([out, retval] HSTRING* value);
-
+
+
         [propget] HRESULT Height([out, retval] HeightType* value);
         [propput] HRESULT Height([in] HeightType value);
 
