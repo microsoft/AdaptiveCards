@@ -128,6 +128,7 @@ export abstract class CardElement implements ICardObject {
 
     private internalRenderSeparator(): HTMLElement {
         let renderedSeparator = Utils.renderSeparation(
+            this.hostConfig,
             {
                 spacing: this.hostConfig.getEffectiveSpacing(this.spacing),
                 lineThickness: this.separator ? this.hostConfig.separator.lineThickness : null,
@@ -230,6 +231,10 @@ export abstract class CardElement implements ICardObject {
 
     protected abstract internalRender(): HTMLElement;
 
+    protected overrideInternalRender(): HTMLElement {
+        return this.internalRender();
+    }
+
     protected applyPadding() {
         if (this.separatorElement) {
             if (AdaptiveCard.alwaysBleedSeparators && this.separatorOrientation == Enums.Orientation.Horizontal && !this.isBleeding()) {
@@ -277,6 +282,10 @@ export abstract class CardElement implements ICardObject {
     }
 
     protected getHasBackground(): boolean {
+        return false;
+    }
+
+    protected get supportsMinHeight(): boolean {
         return false;
     }
 
@@ -453,32 +462,34 @@ export abstract class CardElement implements ICardObject {
             this.height = jsonHeight;
         }
 
-        let jsonMinHeight = json["minHeight"];
+        if (this.supportsMinHeight) {
+            let jsonMinHeight = json["minHeight"];
 
-        if (jsonMinHeight && typeof jsonMinHeight === "string") {
-            let isValid = false;
+            if (jsonMinHeight && typeof jsonMinHeight === "string") {
+                let isValid = false;
 
-            try {
-                let size = Shared.SizeAndUnit.parse(jsonMinHeight, true);
+                try {
+                    let size = Shared.SizeAndUnit.parse(jsonMinHeight, true);
 
-                if (size.unit == Enums.SizeUnit.Pixel) {
-                    this.minPixelHeight = size.physicalSize;
+                    if (size.unit == Enums.SizeUnit.Pixel) {
+                        this.minPixelHeight = size.physicalSize;
 
-                    isValid = true;
+                        isValid = true;
+                    }
                 }
-            }
-            catch {
-                // Do nothing. A parse error is emitted below
-            }
+                catch {
+                    // Do nothing. A parse error is emitted below
+                }
 
-            if (!isValid) {
-                raiseParseError(
-                    {
-                        error: Enums.ValidationError.InvalidPropertyValue,
-                        message: "Invalid \"minHeight\" value: " + jsonMinHeight
-                    },
-                    errors
-                );
+                if (!isValid) {
+                    raiseParseError(
+                        {
+                            error: Enums.ValidationError.InvalidPropertyValue,
+                            message: "Invalid \"minHeight\" value: " + jsonMinHeight
+                        },
+                        errors
+                    );
+                }
             }
         }
     }
@@ -504,7 +515,7 @@ export abstract class CardElement implements ICardObject {
     }
 
     render(): HTMLElement {
-        this._renderedElement = this.internalRender();
+        this._renderedElement = this.overrideInternalRender();
         this._separatorElement = this.internalRenderSeparator();
 
         if (this._renderedElement) {
@@ -2046,7 +2057,7 @@ export class Media extends CardElement {
         const playButtonArrowHeight = 15;
 
         let posterRootElement = document.createElement("div");
-        posterRootElement.className = "ac-media-poster";
+        posterRootElement.className = this.hostConfig.makeCssClassName("ac-media-poster");
         posterRootElement.setAttribute("role", "contentinfo");
         posterRootElement.setAttribute("aria-label", this.altText ? this.altText : "Media content");
         posterRootElement.style.position = "relative";
@@ -2078,7 +2089,7 @@ export class Media extends CardElement {
             let playButtonOuterElement = document.createElement("div");
             playButtonOuterElement.setAttribute("role", "button");
             playButtonOuterElement.setAttribute("aria-label", "Play media");
-            playButtonOuterElement.className = "ac-media-playButton";
+            playButtonOuterElement.className = this.hostConfig.makeCssClassName("ac-media-playButton");
             playButtonOuterElement.style.display = "flex";
             playButtonOuterElement.style.alignItems = "center";
             playButtonOuterElement.style.justifyContent = "center";
@@ -2099,7 +2110,7 @@ export class Media extends CardElement {
             }
 
             let playButtonInnerElement = document.createElement("div");
-            playButtonInnerElement.className = "ac-media-playButton-arrow";
+            playButtonInnerElement.className = this.hostConfig.makeCssClassName("ac-media-playButton-arrow");
             playButtonInnerElement.style.width = playButtonArrowWidth + "px";
             playButtonInnerElement.style.height = playButtonArrowHeight + "px";
             playButtonInnerElement.style.borderTopWidth = (playButtonArrowHeight / 2) + "px";
@@ -2277,7 +2288,46 @@ export class InputValidationOptions {
 
 export abstract class Input extends CardElement implements Shared.IInput {
     private _outerContainerElement: HTMLElement;
+    private _inputControlContainerElement: HTMLElement;
     private _errorMessageElement: HTMLElement;
+    private _renderedInputControlElement: HTMLElement;
+
+    protected get isNullable(): boolean {
+        return true;
+    }
+
+    protected get renderedInputControlElement(): HTMLElement {
+        return this._renderedInputControlElement;
+    }
+
+    protected get inputControlContainerElement(): HTMLElement {
+        return this._inputControlContainerElement;
+    }
+
+    protected overrideInternalRender(): HTMLElement {
+        let hostConfig = this.hostConfig;
+
+        this._outerContainerElement = document.createElement("div");
+        this._outerContainerElement.style.display = "flex";
+        this._outerContainerElement.style.flexDirection = "column";
+
+        this._inputControlContainerElement = document.createElement("div");
+        this._inputControlContainerElement.className = hostConfig.makeCssClassName("ac-input-container");
+        this._inputControlContainerElement.style.display = "flex";
+
+        this._renderedInputControlElement = this.internalRender();
+        this._renderedInputControlElement.style.minWidth = "0px";
+
+        if (this.isNullable && this.validation.necessity == Enums.InputValidationNecessity.RequiredWithVisualCue) {
+            this._renderedInputControlElement.classList.add(hostConfig.makeCssClassName("ac-input-required"));
+        }
+
+        this._inputControlContainerElement.appendChild(this._renderedInputControlElement);
+
+        this._outerContainerElement.appendChild(this._inputControlContainerElement);
+
+        return this._outerContainerElement;
+    }
 
     protected valueChanged() {
         this.resetValidationFailureCue();
@@ -2290,7 +2340,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
     }
 
     protected resetValidationFailureCue() {
-        this.renderedElement.classList.remove("ac-input-validation-failed");
+        this._renderedInputControlElement.classList.remove(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
 
         if (this._errorMessageElement) {
             this._outerContainerElement.removeChild(this._errorMessageElement);
@@ -2302,7 +2352,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
     protected showValidationErrorMessage() {
         if (AdaptiveCard.displayInputValidationErrors && !Utils.isNullOrEmpty(this.validation.errorMessage)) {
             this._errorMessageElement = document.createElement("span");
-            this._errorMessageElement.className = "ac-input-validation-error-message";
+            this._errorMessageElement.className = this.hostConfig.makeCssClassName("ac-input-validation-error-message");
             this._errorMessageElement.textContent = this.validation.errorMessage;
 
             this._outerContainerElement.appendChild(this._errorMessageElement);
@@ -2343,7 +2393,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
         let result = this.validation.necessity != Enums.InputValidationNecessity.Optional ? !Utils.isNullOrEmpty(this.value) : true;
 
         if (!result) {
-            this.renderedElement.classList.add("ac-input-validation-failed");
+            this._renderedInputControlElement.classList.add(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
 
             this.showValidationErrorMessage();
         }
@@ -2362,29 +2412,6 @@ export abstract class Input extends CardElement implements Shared.IInput {
         if (jsonValidation) {
             this.validation.parse(jsonValidation);
         }
-    }
-
-    render(): HTMLElement {
-        let renderedElement = super.render();
-
-        let hostConfig = this.hostConfig;
-
-        this._outerContainerElement = document.createElement("div");
-        this._outerContainerElement.style.display = "flex";
-        this._outerContainerElement.style.flexDirection = "column";
-
-        let innerContainerElement = document.createElement("div");
-        innerContainerElement.className = hostConfig.makeCssClassName("ac-input-container");
-
-        if (this.validation.necessity == Enums.InputValidationNecessity.RequiredWithVisualCue) {
-            innerContainerElement.classList.add(hostConfig.makeCssClassName("ac-input-required"));
-        }
-
-        innerContainerElement.appendChild(renderedElement);
-
-        this._outerContainerElement.appendChild(innerContainerElement);
-
-        return this._outerContainerElement;
     }
 
     renderSpeech(): string {
@@ -2409,57 +2436,117 @@ export abstract class Input extends CardElement implements Shared.IInput {
 }
 
 export class TextInput extends Input {
-    private _textareaElement: HTMLTextAreaElement;
-    private _inputElement: HTMLInputElement;
+    private _inlineAction: Action;
 
     protected internalRender(): HTMLElement {
         if (this.isMultiline) {
-            this._textareaElement = document.createElement("textarea");
-            this._textareaElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput", "ac-multiline");
-            this._textareaElement.style.width = "100%";
-            this._textareaElement.tabIndex = 0;
+            let textareaElement = document.createElement("textarea");
+            textareaElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput", "ac-multiline");
+            textareaElement.style.flex = "1 1 auto";
+            textareaElement.tabIndex = 0;
 
             if (!Utils.isNullOrEmpty(this.placeholder)) {
-                this._textareaElement.placeholder = this.placeholder;
-                this._textareaElement.setAttribute("aria-label", this.placeholder)
+                textareaElement.placeholder = this.placeholder;
+                textareaElement.setAttribute("aria-label", this.placeholder)
             }
 
             if (!Utils.isNullOrEmpty(this.defaultValue)) {
-                this._textareaElement.value = this.defaultValue;
+                textareaElement.value = this.defaultValue;
             }
 
             if (this.maxLength > 0) {
-                this._textareaElement.maxLength = this.maxLength;
+                textareaElement.maxLength = this.maxLength;
             }
 
-            this._textareaElement.oninput = () => { this.valueChanged(); }
+            textareaElement.oninput = () => { this.valueChanged(); }
+            textareaElement.onkeypress = (e: KeyboardEvent) => {
+                // Ctrl+Enter pressed
+                if (e.keyCode == 10 && this.inlineAction) {
+                    this.inlineAction.execute();
+                }
+            }
 
-            return this._textareaElement;
+            return textareaElement;
         }
         else {
-            this._inputElement = document.createElement("input");
-            this._inputElement.type = Enums.InputTextStyle[this.style].toLowerCase();
-            this._inputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput");
-            this._inputElement.style.width = "100%";
-            this._inputElement.tabIndex = 0;
+            let inputElement = document.createElement("input");
+            inputElement.type = Enums.InputTextStyle[this.style].toLowerCase();
+            inputElement.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput");
+            inputElement.style.flex = "1 1 auto";
+            inputElement.tabIndex = 0;
 
             if (!Utils.isNullOrEmpty(this.placeholder)) {
-                this._inputElement.placeholder = this.placeholder;
-                this._inputElement.setAttribute("aria-label", this.placeholder)
+                inputElement.placeholder = this.placeholder;
+                inputElement.setAttribute("aria-label", this.placeholder)
             }
 
             if (!Utils.isNullOrEmpty(this.defaultValue)) {
-                this._inputElement.value = this.defaultValue;
+                inputElement.value = this.defaultValue;
             }
 
             if (this.maxLength > 0) {
-                this._inputElement.maxLength = this.maxLength;
+                inputElement.maxLength = this.maxLength;
             }
 
-            this._inputElement.oninput = () => { this.valueChanged(); }
+            inputElement.oninput = () => { this.valueChanged(); }
+            inputElement.onkeypress = (e: KeyboardEvent) => {
+                // Enter pressed
+                if (e.keyCode == 13 && this.inlineAction) {
+                    this.inlineAction.execute();
+                }
+            }
 
-            return this._inputElement;
+            return inputElement;
         }
+    }
+
+    protected overrideInternalRender(): HTMLElement {
+        let renderedInputControl = super.overrideInternalRender();
+
+        if (this.inlineAction) {
+            let button = document.createElement("button");
+            button.className = this.hostConfig.makeCssClassName("ac-inlineActionButton");
+            button.onclick = () => { this.inlineAction.execute(); };
+
+            if (!Utils.isNullOrEmpty(this.inlineAction.iconUrl)) {
+                button.classList.add("iconOnly");
+
+                let icon = document.createElement("img");
+                icon.style.height = "100%";
+
+                // The below trick is necessary as a workaround in Chrome where the icon is initially displayed
+                // at its native size then resized to 100% of the button's height. This cfreates an unpleasant
+                // flicker. On top of that, Chrome's flex implementation fails to prperly re-layout the button
+                // after the image has loaded and been gicven its final size. The below trick also fixes that.
+                icon.style.display = "none";
+                icon.onload = () => {
+                    icon.style.removeProperty("display");
+                };
+                icon.onerror = () => {
+                    button.removeChild(icon);
+                    button.classList.remove("iconOnly");
+                    button.classList.add("textOnly");
+                    button.textContent = !Utils.isNullOrEmpty(this.inlineAction.title) ? this.inlineAction.title : "Title";
+                }
+                icon.src = this.inlineAction.iconUrl;
+
+                button.appendChild(icon);
+
+                if (!Utils.isNullOrEmpty(this.inlineAction.title)) {
+                    button.title = this.inlineAction.title;
+                }
+            }
+            else {
+                button.classList.add("textOnly");
+                button.textContent = !Utils.isNullOrEmpty(this.inlineAction.title) ? this.inlineAction.title : "Title";
+            }
+
+            button.style.marginLeft = "8px";
+
+            this.inputControlContainerElement.appendChild(button);
+        }
+
+        return renderedInputControl;
     }
 
     maxLength: number;
@@ -2471,6 +2558,16 @@ export class TextInput extends Input {
         return "Input.Text";
     }
 
+    getActionById(id: string) {
+        let result = super.getActionById(id);
+
+        if (!result && this.inlineAction) {
+            result = this.inlineAction.getActionById(id);
+        }
+
+        return result;
+    }
+
     toJSON() {
         let result = super.toJSON();
 
@@ -2478,6 +2575,10 @@ export class TextInput extends Input {
         Utils.setProperty(result, "maxLength", this.maxLength, 0);
         Utils.setProperty(result, "isMultiline", this.isMultiline, false);
         Utils.setEnumProperty(Enums.InputTextStyle, result, "style", this.style, Enums.InputTextStyle.Text);
+
+        if (this._inlineAction) {
+            Utils.setProperty(result, "inlineAction", this._inlineAction.toJSON());
+        }
 
         return result;
     }
@@ -2489,14 +2590,35 @@ export class TextInput extends Input {
         this.isMultiline = Utils.getBoolValue(json["isMultiline"], this.isMultiline);
         this.placeholder = Utils.getStringValue(json["placeholder"]);
         this.style = Utils.getEnumValue(Enums.InputTextStyle, json["style"], this.style);
+        this.inlineAction = createActionInstance(
+            this,
+            json["inlineAction"],
+            errors);
+    }
+
+    get inlineAction(): Action {
+        return this._inlineAction;
+    }
+
+    set inlineAction(value: Action) {
+        this._inlineAction = value;
+
+        if (this._inlineAction) {
+            this._inlineAction.setParent(this);
+        }
     }
 
     get value(): string {
-        if (this.isMultiline) {
-            return this._textareaElement ? this._textareaElement.value : null;
+        if (this.renderedInputControlElement) {
+            if (this.isMultiline) {
+                return (<HTMLTextAreaElement>this.renderedInputControlElement).value;
+            }
+            else {
+                return (<HTMLInputElement>this.renderedInputControlElement).value;
+            }
         }
         else {
-            return this._inputElement ? this._inputElement.value : null;
+            return null;
         }
     }
 }
@@ -2552,6 +2674,10 @@ export class ToggleInput extends Input {
         }
 
         return element;
+    }
+
+    protected get isNullable(): boolean {
+        return false;
     }
 
     valueOn: string = "true";
@@ -3151,12 +3277,11 @@ export abstract class Action implements ICardObject {
         return result;
     }
 
-    render() {
+    render(baseCssClass: string = "ac-pushButton") {
         // Cache hostConfig for perf
         let hostConfig = this.parent.hostConfig;
 
         let buttonElement = document.createElement("button");
-        buttonElement.className = hostConfig.makeCssClassName("ac-pushButton");
 
         this.addCssClasses(buttonElement);
 
@@ -4441,6 +4566,14 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
         return false;
     }
 
+    protected getBleed(): boolean {
+        return this._bleed;
+    }
+
+    protected setBleed(value: boolean) {
+        this._bleed = value;
+    }
+
     protected get renderedActionCount(): number {
         return 0;
     }
@@ -4453,12 +4586,8 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
         return true;
     }
 
-    protected getBleed(): boolean {
-        return this._bleed;
-    }
-
-    protected setBleed(value: boolean) {
-        this._bleed = value;
+    protected get supportsMinHeight(): boolean {
+        return true;
     }
 
     isBleeding(): boolean {
@@ -5655,6 +5784,7 @@ export abstract class ContainerWithActions extends Container {
             Utils.appendChild(
                 element,
                 Utils.renderSeparation(
+                    this.hostConfig,
                     {
                         spacing: this.hostConfig.getEffectiveSpacing(this.hostConfig.actions.spacing),
                         lineThickness: null,
@@ -6136,6 +6266,7 @@ export class AdaptiveCard extends ContainerWithActions {
             renderedCard = super.render();
 
             if (renderedCard) {
+                renderedCard.classList.add(this.hostConfig.makeCssClassName("ac-adaptiveCard"));
                 renderedCard.tabIndex = 0;
 
                 if (!Utils.isNullOrEmpty(this.speak)) {
