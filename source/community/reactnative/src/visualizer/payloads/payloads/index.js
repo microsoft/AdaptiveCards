@@ -136,6 +136,10 @@ export default payloads = [
     "json": require('./ColumnSet_Container.VerticalStretch.json')
   },
   {
+    "title": "CustomElement.Rendering.json",
+    "json": require('./CustomElement.Rendering.json')
+  },
+  {
     "title": "CustomParsingTestUsingProgressBar.json",
     "json": require('./CustomParsingTestUsingProgressBar.json')
   },
