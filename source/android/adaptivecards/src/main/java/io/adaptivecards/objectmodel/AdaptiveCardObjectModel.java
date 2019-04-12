@@ -9,6 +9,10 @@
 package io.adaptivecards.objectmodel;
 
 public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants {
+  public static String getC_sharedModelVersion() {
+    return AdaptiveCardObjectModelJNI.c_sharedModelVersion_get();
+  }
+
   public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__AdaptiveCardSchemaKey_t getAdaptiveCardSchemaKeyEnum() {
     return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__AdaptiveCardSchemaKey_t(AdaptiveCardObjectModelJNI.getAdaptiveCardSchemaKeyEnum(), false);
   }

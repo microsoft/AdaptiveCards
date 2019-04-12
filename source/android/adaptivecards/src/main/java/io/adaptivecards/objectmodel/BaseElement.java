@@ -117,8 +117,16 @@ public class BaseElement {
     AdaptiveCardObjectModelJNI.BaseElement_SetFallbackContent(swigCPtr, this, BaseElement.getCPtr(element), element);
   }
 
-  public boolean MeetsRequirements(SWIGTYPE_p_std__unordered_mapT_std__string_std__string_t hostProvides) {
-    return AdaptiveCardObjectModelJNI.BaseElement_MeetsRequirements(swigCPtr, this, SWIGTYPE_p_std__unordered_mapT_std__string_std__string_t.getCPtr(hostProvides));
+  public boolean MeetsRequirements(SWIGTYPE_p_AdaptiveCards__FeatureRegistration hostProvides) {
+    return AdaptiveCardObjectModelJNI.BaseElement_MeetsRequirements(swigCPtr, this, SWIGTYPE_p_AdaptiveCards__FeatureRegistration.getCPtr(hostProvides));
+  }
+
+  public SWIGTYPE_p_std__shared_ptrT_std__unordered_mapT_std__string_SemanticVersion_t_t GetRequirements() {
+    return new SWIGTYPE_p_std__shared_ptrT_std__unordered_mapT_std__string_SemanticVersion_t_t(AdaptiveCardObjectModelJNI.BaseElement_GetRequirements(swigCPtr, this), true);
+  }
+
+  public void SetRequirements(SWIGTYPE_p_std__unordered_mapT_std__string_SemanticVersion_t requirements) {
+    AdaptiveCardObjectModelJNI.BaseElement_SetRequirements(swigCPtr, this, SWIGTYPE_p_std__unordered_mapT_std__string_SemanticVersion_t.getCPtr(requirements));
   }
 
   public void GetResourceInformation(RemoteResourceInformationVector resourceUris) {

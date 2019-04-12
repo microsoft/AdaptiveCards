@@ -6,12 +6,14 @@
 #include "AdaptiveCardResourceResolvers.h"
 #include "AdaptiveColorsConfig.h"
 #include "AdaptiveColorConfig.h"
+#include "AdaptiveFeatureRegistration.h"
 #include "AdaptiveHostConfig.h"
 #include "AdaptiveImage.h"
 #include "AdaptiveRenderArgs.h"
 #include "AdaptiveShowCardAction.h"
 #include "AdaptiveTextRun.h"
 #include "DateTimeParser.h"
+#include "FeatureRegistration.h"
 #include "TextHelpers.h"
 #include "json/json.h"
 #include "MarkDownParser.h"
@@ -886,47 +888,73 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    void XamlBuilder::AddSeparatorIfNeeded(int &currentElement,
+                                           ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* element,
+                                           Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig>& hostConfig,
+                                           ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
+                                           ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel)
+    {
+        // First element does not need a separator added
+        if (currentElement++ > 0)
+        {
+            bool needsSeparator;
+            UINT spacing;
+            UINT separatorThickness;
+            ABI::Windows::UI::Color separatorColor;
+            GetSeparationConfigForElement(element, hostConfig.Get(), &spacing, &separatorThickness, &separatorColor, &needsSeparator);
+            if (needsSeparator)
+            {
+                auto separator = CreateSeparator(renderContext, spacing, separatorThickness, separatorColor);
+                XamlHelpers::AppendXamlElementToPanel(separator.Get(), parentPanel);
+            }
+        }
+    }
+
     HRESULT XamlBuilder::BuildPanelChildren(_In_ IVector<IAdaptiveCardElement*>* children,
                                             _In_ IPanel* parentPanel,
                                             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
                                             std::function<void(IUIElement* child)> childCreatedCallback)
     {
-        int currentElement = 0;
+        int iElement = 0;
         unsigned int childrenSize;
         RETURN_IF_FAILED(children->get_Size(&childrenSize));
         boolean ancestorHasFallback;
         RETURN_IF_FAILED(renderArgs->get_AncestorHasFallback(&ancestorHasFallback));
+
+        ComPtr<IAdaptiveFeatureRegistration> featureRegistration;
+        RETURN_IF_FAILED(renderContext->get_FeatureRegistration(&featureRegistration));
+        ComPtr<AdaptiveFeatureRegistration> featureRegistrationImpl = PeekInnards<AdaptiveFeatureRegistration>(featureRegistration);
+        std::shared_ptr<FeatureRegistration> sharedFeatureRegistration = featureRegistrationImpl->GetSharedFeatureRegistration();
+
         HRESULT hr = XamlHelpers::IterateOverVector<IAdaptiveCardElement>(children, ancestorHasFallback, [&](IAdaptiveCardElement* element) {
             HRESULT hr = S_OK;
-            HString elementType;
-            RETURN_IF_FAILED(element->get_ElementTypeString(elementType.GetAddressOf()));
-            ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
-            RETURN_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
-            ComPtr<IAdaptiveElementRenderer> elementRenderer;
-            RETURN_IF_FAILED(elementRenderers->Get(elementType.Get(), &elementRenderer));
+
+            // Get fallback state
             ABI::AdaptiveNamespace::FallbackType elementFallback;
             element->get_FallbackType(&elementFallback);
             const bool elementHasFallback = (elementFallback != FallbackType_None);
             renderArgs->put_AncestorHasFallback(elementHasFallback || ancestorHasFallback);
-            if (elementRenderer != nullptr)
+
+            // Check to see if element's requirements are being met
+            boolean requirementsMet;
+            RETURN_IF_FAILED(element->MeetsRequirements(featureRegistration.Get(), &requirementsMet));
+            hr = requirementsMet ? S_OK : E_PERFORM_FALLBACK;
+
+            // Get element renderer
+            ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
+            RETURN_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
+            ComPtr<IAdaptiveElementRenderer> elementRenderer;
+            HString elementType;
+            RETURN_IF_FAILED(element->get_ElementTypeString(elementType.GetAddressOf()));
+            RETURN_IF_FAILED(elementRenderers->Get(elementType.Get(), &elementRenderer));
+
+            ComPtr<IAdaptiveHostConfig> hostConfig;
+            RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+            if (SUCCEEDED(hr) && elementRenderer != nullptr)
             {
-                ComPtr<IAdaptiveHostConfig> hostConfig;
-                RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-                // First element does not need a separator added
-                if (currentElement++ > 0)
-                {
-                    bool needsSeparator;
-                    UINT spacing;
-                    UINT separatorThickness;
-                    ABI::Windows::UI::Color separatorColor;
-                    GetSeparationConfigForElement(element, hostConfig.Get(), &spacing, &separatorThickness, &separatorColor, &needsSeparator);
-                    if (needsSeparator)
-                    {
-                        auto separator = CreateSeparator(renderContext, spacing, separatorThickness, separatorColor);
-                        XamlHelpers::AppendXamlElementToPanel(separator.Get(), parentPanel);
-                    }
-                }
+                AddSeparatorIfNeeded(iElement, element, hostConfig, renderContext, parentPanel);
 
                 ComPtr<IUIElement> newControl;
                 hr = elementRenderer->Render(element, renderContext, renderArgs, newControl.GetAddressOf());
@@ -954,6 +982,8 @@ namespace AdaptiveNamespace
 
                             if (fallbackElementRenderer)
                             {
+                                AddSeparatorIfNeeded(iElement, element, hostConfig, renderContext, parentPanel);
+
                                 // perform this element's fallback
                                 ComPtr<IUIElement> newControl;
                                 fallbackElementRenderer->Render(fallbackElement.Get(), renderContext, renderArgs, &newControl);

@@ -2,6 +2,7 @@
 
 #include "pch.h"
 #include "json/json.h"
+#include "FeatureRegistration.h"
 #include "ParseContext.h"
 #include "ParseUtil.h"
 #include "SemanticVersion.h"
@@ -90,7 +91,9 @@ namespace AdaptiveSharedNamespace
             m_fallbackContent = element;
         }
 
-        bool MeetsRequirements(const std::unordered_map<std::string, std::string>& hostProvides) const;
+        bool MeetsRequirements(const AdaptiveSharedNamespace::FeatureRegistration& hostProvides) const;
+        std::shared_ptr<std::unordered_map<std::string, SemanticVersion>> GetRequirements() const;
+        void SetRequirements(const std::unordered_map<std::string, SemanticVersion>& requirements);
 
         // Misc.
         virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris);

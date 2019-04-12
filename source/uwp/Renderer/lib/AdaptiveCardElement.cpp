@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AdaptiveCardElement.h"
+#include "SemanticVersion.h"
 #include "Util.h"
 
 using namespace Microsoft::WRL;
@@ -24,12 +25,15 @@ namespace AdaptiveNamespace
         m_fallbackType = MapSharedFallbackTypeToUwp(sharedModel->GetFallbackType());
         if (m_fallbackType == ABI::AdaptiveNamespace::FallbackType::Content)
         {
-            const auto fallbackObject = std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(sharedModel->GetFallbackContent());
+            const auto fallbackObject =
+                std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(sharedModel->GetFallbackContent());
             if (fallbackObject)
             {
                 RETURN_IF_FAILED(GenerateElementProjection(fallbackObject, m_fallbackContent.GetAddressOf()));
             }
         }
+
+        m_requires = sharedModel->GetRequirements();
 
         return S_OK;
     }
@@ -70,13 +74,13 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType * fallback)
+    IFACEMETHODIMP AdaptiveCardElementBase::get_FallbackType(_Out_ ABI::AdaptiveNamespace::FallbackType* fallback)
     {
         *fallback = m_fallbackType;
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::get_FallbackContent(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement ** content)
+    IFACEMETHODIMP AdaptiveCardElementBase::get_FallbackContent(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** content)
     {
         return m_fallbackContent.CopyTo(content);
     }
@@ -92,7 +96,7 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveCardElementBase::put_FallbackContent(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement * content)
+    IFACEMETHODIMP AdaptiveCardElementBase::put_FallbackContent(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* content)
     {
         m_fallbackContent = content;
         return S_OK;
@@ -130,6 +134,40 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    IFACEMETHODIMP AdaptiveCardElementBase::MeetsRequirements(_In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration,
+                                                              _Out_ boolean* value)
+    {
+        *value = true;
+        for (const auto& requirement : *m_requires)
+        {
+            HString requirementName;
+            RETURN_IF_FAILED(UTF8ToHString(requirement.first, requirementName.GetAddressOf()));
+
+            const auto& requirementVersion = requirement.second;
+
+            HString featureVersion;
+            RETURN_IF_FAILED(featureRegistration->Get(requirementName.Get(), featureVersion.GetAddressOf()));
+            if (!featureVersion.IsValid())
+            {
+                // host doesn't provide this requirement
+                *value = false;
+                return S_OK;
+            }
+            else
+            {
+                // host provides this requirement, but does it provide an acceptible version?
+                const SemanticVersion providesVersion{HStringToUTF8(featureVersion.Get())};
+                if (providesVersion < requirementVersion)
+                {
+                    // host's provided version is too low
+                    *value = false;
+                    return S_OK;
+                }
+            }
+        }
+        return S_OK;
+    }
+
     IFACEMETHODIMP AdaptiveCardElementBase::ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
     {
         std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedModel;
@@ -146,6 +184,7 @@ namespace AdaptiveNamespace
         sharedCardElement->SetSpacing(static_cast<AdaptiveSharedNamespace::Spacing>(m_spacing));
         sharedCardElement->SetHeight(static_cast<AdaptiveSharedNamespace::HeightType>(m_height));
         sharedCardElement->SetFallbackType(MapUwpFallbackTypeToShared(m_fallbackType));
+        sharedCardElement->SetRequirements(*m_requires);
 
         if (m_fallbackType == ABI::AdaptiveNamespace::FallbackType::Content)
         {

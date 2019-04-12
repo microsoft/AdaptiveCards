@@ -7922,6 +7922,18 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 }
 
 
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_c_1sharedModelVersion_1get(JNIEnv *jenv, jclass jcls) {
+  jstring jresult = 0 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (char *)(char *)AdaptiveCards::c_sharedModelVersion;
+  if (result) jresult = jenv->NewStringUTF((const char *)result);
+  return jresult;
+}
+
+
 SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1CaseInsensitiveEqualTo(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::CaseInsensitiveEqualTo *result = 0 ;
@@ -9797,7 +9809,7 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseElement_1MeetsRequirements(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   jboolean jresult = 0 ;
   AdaptiveCards::BaseElement *arg1 = (AdaptiveCards::BaseElement *) 0 ;
-  std::unordered_map< std::string,std::string > *arg2 = 0 ;
+  AdaptiveCards::FeatureRegistration *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::BaseElement const > *smartarg1 = 0 ;
   bool result;
   
@@ -9807,14 +9819,52 @@ SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObject
   
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::BaseElement > **)&jarg1;
   arg1 = (AdaptiveCards::BaseElement *)(smartarg1 ? smartarg1->get() : 0); 
-  arg2 = *(std::unordered_map< std::string,std::string > **)&jarg2;
+  arg2 = *(AdaptiveCards::FeatureRegistration **)&jarg2;
   if (!arg2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::unordered_map< std::string,std::string > const & reference is null");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::FeatureRegistration const & reference is null");
     return 0;
   } 
-  result = (bool)((AdaptiveCards::BaseElement const *)arg1)->MeetsRequirements((std::unordered_map< std::string,std::string > const &)*arg2);
+  result = (bool)((AdaptiveCards::BaseElement const *)arg1)->MeetsRequirements((AdaptiveCards::FeatureRegistration const &)*arg2);
   jresult = (jboolean)result; 
   return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseElement_1GetRequirements(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  AdaptiveCards::BaseElement *arg1 = (AdaptiveCards::BaseElement *) 0 ;
+  std::shared_ptr< AdaptiveCards::BaseElement const > *smartarg1 = 0 ;
+  SwigValueWrapper< std::shared_ptr< std::unordered_map< std::string,SemanticVersion > > > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::BaseElement > **)&jarg1;
+  arg1 = (AdaptiveCards::BaseElement *)(smartarg1 ? smartarg1->get() : 0); 
+  result = ((AdaptiveCards::BaseElement const *)arg1)->GetRequirements();
+  *(std::shared_ptr< std::unordered_map< std::string,SemanticVersion > > **)&jresult = new std::shared_ptr< std::unordered_map< std::string,SemanticVersion > >((const std::shared_ptr< std::unordered_map< std::string,SemanticVersion > > &)result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseElement_1SetRequirements(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  AdaptiveCards::BaseElement *arg1 = (AdaptiveCards::BaseElement *) 0 ;
+  std::unordered_map< std::string,SemanticVersion > *arg2 = 0 ;
+  std::shared_ptr< AdaptiveCards::BaseElement > *smartarg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseElement > **)&jarg1;
+  arg1 = (AdaptiveCards::BaseElement *)(smartarg1 ? smartarg1->get() : 0); 
+  arg2 = *(std::unordered_map< std::string,SemanticVersion > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::unordered_map< std::string,SemanticVersion > const & reference is null");
+    return ;
+  } 
+  (arg1)->SetRequirements((std::unordered_map< std::string,SemanticVersion > const &)*arg2);
 }
 
 
