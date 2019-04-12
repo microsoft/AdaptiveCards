@@ -12,6 +12,10 @@ export default payloads = [
     "json": require('./Action.Title.json')
   },
   {
+    "title": "Action.ToggleVisibility.json",
+    "json": require('./Action.ToggleVisibility.json')
+  },
+  {
     "title": "AdaptiveCard.MinVersion.json",
     "json": require('./AdaptiveCard.MinVersion.json')
   },
