@@ -326,7 +326,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                 "{\
                 \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
-                \"version\": \"1.0\",\
+                \"version\": \"1.2\",\
                 \"body\": [\
                     {\
                         \"type\": \"ColumnSet\",\
@@ -347,7 +347,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                 ]\
             }";
 
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.2");
             std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
             std::shared_ptr<ColumnSet> columnSet = std::static_pointer_cast<ColumnSet>(element);
             Assert::AreEqual<bool>(columnSet->GetMinHeight() == 50, true);
@@ -361,7 +361,7 @@ namespace AdaptiveCardsSharedModelUnitTest
                 "{\
                 \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
-                \"version\": \"1.0\",\
+                \"version\": \"1.2\",\
                 \"body\": [\
                     {\
                         \"type\": \"Container\",\
@@ -376,314 +376,38 @@ namespace AdaptiveCardsSharedModelUnitTest
                 ]\
             }";
 
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.2");
             std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
             std::shared_ptr<Container> container = std::static_pointer_cast<Container>(element);
             Assert::AreEqual<bool>(container->GetMinHeight() == 100, true);
         }
 
-        void ValidateFactSetMinHeight()
+        void ValidateAdaptiveCardMinHeight()
         {
             std::string testJsonString =
                 "{\
                 \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
                 \"type\": \"AdaptiveCard\",\
-                \"version\": \"1.0\",\
-                \"body\": [\
-                    {\
-                        \"type\": \"FactSet\",\
-                        \"minHeight\": \"125px\",\
-                        \"facts\": [\
-                            {\
-                                \"title\": \"Fact 1\",\
-                                \"value\" : \"Value 1\"\
-                            }\
-                        ]\
-                    }\
-                ]\
-            }";
-
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-            std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
-            std::shared_ptr<FactSet> factSet = std::static_pointer_cast<FactSet>(element);
-            Assert::AreEqual<bool>(factSet->GetMinHeight() == 125, true);
-        }
-
-        void ValidateImageMinHeight()
-        {
-            std::string testJsonString =
-                "{\
-                \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
-                \"type\": \"AdaptiveCard\",\
-                \"version\": \"1.0\",\
-                \"body\": [\
-                    {\
-                        \"type\": \"Image\",\
-                        \"url\" : \"http://adaptivecards.io/content/cats/1.png\",\
-                        \"minHeight\" : \"150px\"\
-                    }\
-                ]\
-            }";
-
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-            std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
-            std::shared_ptr<Image> image = std::static_pointer_cast<Image>(element);
-            Assert::AreEqual<bool>(image->GetMinHeight() == 150, true);
-        }
-
-        void ValidateImageSetMinHeight()
-        {
-            std::string testJsonString =
-                "{\
-                \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
-                \"type\": \"AdaptiveCard\",\
-                \"version\": \"1.0\",\
-                \"body\" : [\
-                    {\
-                        \"type\": \"ImageSet\",\
-                        \"minHeight\": \"175px\",\
-                        \"images\": [\
-                            {\
-                                \"type\": \"Image\",\
-                                \"url\": \"http://adaptivecards.io/content/cats/1.png\"\
-                            },\
-                            {\
-                                \"type\": \"Image\",\
-                                \"url\": \"http://adaptivecards.io/content/cats/1.png\"\
-                            }\
-                        ]\
-                    }\
-                ]\
-            }";
-
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-            std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
-            std::shared_ptr<ImageSet> imageSet = std::static_pointer_cast<ImageSet>(element);
-            Assert::AreEqual<bool>(imageSet->GetMinHeight() == 175, true);
-        }
-
-        void ValidateChoiceSetInputMinHeight()
-        {
-            std::string testJsonString =
-                "{\
-                \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
-                \"type\": \"AdaptiveCard\",\
-                \"version\": \"1.0\",\
-                \"body\": [\
-                    {\
-                        \"type\": \"Input.ChoiceSet\",\
-                        \"id\": \"myColor\",\
-                        \"style\": \"compact\",\
-                        \"isMultiSelect\": false,\
-                        \"value\": \"1\",\
-                        \"minHeight\": \"200px\",\
-                        \"choices\": [\
-                            {\
-                                \"title\": \"Red\",\
-                                \"value\": \"1\"\
-                            }\
-                        ]\
-                    }\
-                ]\
-            }";
-
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-            std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
-            std::shared_ptr<ChoiceSetInput> choiceSetInput = std::static_pointer_cast<ChoiceSetInput>(element);
-            Assert::AreEqual<bool>(choiceSetInput->GetMinHeight() == 200, true);
-        }
-
-        void ValidateDateInputMinHeight()
-        {
-            std::string testJsonString =
-                "{\
-                \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
-                \"type\": \"AdaptiveCard\",\
-                \"version\": \"1.0\",\
-                \"body\": [\
-                    {\
-                        \"type\": \"Input.Date\",\
-                        \"id\": \"date\",\
-                        \"minHeight\": \"225px\",\
-                        \"placeholder\": \"Enter a date\",\
-                        \"value\": \"2017-10-12\"\
-                    }\
-                ]\
-            }";
-
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-            std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
-            std::shared_ptr<DateInput> dateInput = std::static_pointer_cast<DateInput>(element);
-            Assert::AreEqual<bool>(dateInput->GetMinHeight() == 225, true);
-        }
-
-        void ValidateNumberInputMinHeight()
-        {
-            std::string testJsonString =
-                "{\
-                \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
-                \"type\": \"AdaptiveCard\",\
-                \"version\": \"1.0\",\
-                \"body\": [\
-                    {\
-                        \"type\": \"Input.Number\",\
-                        \"id\": \"number\",\
-                        \"minHeight\": \"250px\",\
-                        \"placeholder\": \"Enter a number\",\
-                        \"min\": 1,\
-                        \"max\": 10,\
-                        \"value\": 3\
-                    }\
-                ]\
-            }";
-
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-            std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
-            std::shared_ptr<NumberInput> numberInput = std::static_pointer_cast<NumberInput>(element);
-            Assert::AreEqual<bool>(numberInput->GetMinHeight() == 250, true);
-        }
-
-        void ValidateTextInputMinHeight()
-        {
-            std::string testJsonString =
-                "{\
-                \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
-                \"type\": \"AdaptiveCard\",\
-                \"version\": \"1.0\",\
-                \"body\" : [\
-                    {\
-                        \"type\": \"Input.Text\",\
-                        \"id\": \"input2\",\
-                        \"minHeight\": \"275px\",\
-                        \"placeholder\": \"enter comment\",\
-                        \"maxLength\": 500,\
-                        \"isMultiline\": true\
-                    }\
-                ]\
-            }";
-
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-            std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
-            std::shared_ptr<TextInput> textInput = std::static_pointer_cast<TextInput>(element);
-            Assert::AreEqual<bool>(textInput->GetMinHeight() == 275, true);
-        }
-
-        void ValidateTimeInputMinHeight()
-        {
-            std::string testJsonString =
-                "{\
-                \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
-                \"type\": \"AdaptiveCard\",\
-                \"version\": \"1.0\",\
-                \"body\": [\
-                    {\
-                        \"type\": \"Input.Time\",\
-                        \"id\": \"time\",\
-                        \"minHeight\": \"300px\",\
-                        \"min\": \"09:00\",\
-                        \"max\": \"17:00\",\
-                        \"value\": \"15:30\"\
-                    }\
-                ]\
-            }";
-
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-            std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
-            std::shared_ptr<TimeInput> timeInput = std::static_pointer_cast<TimeInput>(element);
-            Assert::AreEqual<bool>(timeInput->GetMinHeight() == 300, true);
-        }
-
-        void ValidateToggleInputMinHeight()
-        {
-            std::string testJsonString =
-                "{\
-                \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
-                \"type\": \"AdaptiveCard\",\
-                \"version\": \"1.0\",\
-                \"body\": [\
-                    {\
-                        \"type\": \"Input.Toggle\",\
-                        \"id\": \"acceptTerms\",\
-                        \"minHeight\": \"325px\",\
-                        \"title\": \"I accept the terms and agreements\",\
-                        \"value\": \"true\",\
-                        \"valueOn\": \"true\",\
-                        \"valueOff\": \"false\"\
-                    }\
-                ]\
-            }";
-
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-            std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
-            std::shared_ptr<ToggleInput> toggleInput = std::static_pointer_cast<ToggleInput>(element);
-            Assert::AreEqual<bool>(toggleInput->GetMinHeight() == 325, true);
-        }
-
-        void ValidateTextBlockMinHeight()
-        {
-            std::string testJsonString =
-                "{\
-                \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
-                \"type\": \"AdaptiveCard\",\
-                \"version\": \"1.0\",\
+                \"version\": \"1.2\",\
+                \"minHeight\": \"100px\",\
                 \"body\": [\
                     {\
                         \"type\": \"TextBlock\",\
-                        \"text\": \"Text\",\
-                        \"minHeight\": \"350px\"\
+                        \"text\": \"This is some text\"\
                     }\
                 ]\
             }";
 
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-            std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
-            std::shared_ptr<TextBlock> textBlock = std::static_pointer_cast<TextBlock>(element);
-            Assert::AreEqual<bool>(textBlock->GetMinHeight() == 350, true);
-        }
-
-        void ValidateMediaMinHeight()
-        {
-            std::string testJsonString =
-                "{\
-                \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\
-                \"type\": \"AdaptiveCard\",\
-                \"version\": \"1.0\",\
-                \"body\": [\
-                    {\
-                        \"type\": \"Media\",\
-                        \"poster\": \"https://adaptivecards.io/content/poster-video.png\",\
-                        \"minHeight\": \"375px\",\
-                        \"sources\": [\
-                            {\
-                                \"mimeType\": \"video/mp4\",\
-                                \"url\": \"https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4\"\
-                            }\
-                        ]\
-                    }\
-                ]\
-            }";
-
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.0");
-            std::shared_ptr<BaseCardElement> element = parseResult->GetAdaptiveCard()->GetBody().front();
-            std::shared_ptr<Media> media = std::static_pointer_cast<Media>(element);
-            Assert::AreEqual<bool>(media->GetMinHeight() == 375, true);
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(testJsonString, "1.2");
+            Assert::AreEqual<bool>(parseResult->GetAdaptiveCard()->GetMinHeight() == 100, true);
         }
 
         TEST_METHOD(MinHeightForAllElementsTest)
         {
+            // This test validates columnset and column minHeigh property
             ValidateColumnSetMinHeight();
             ValidateContainerMinHeight();
-            ValidateFactSetMinHeight();
-            ValidateImageMinHeight();
-            ValidateImageSetMinHeight();
-            ValidateChoiceSetInputMinHeight();
-            ValidateDateInputMinHeight();
-            ValidateNumberInputMinHeight();
-            ValidateTextInputMinHeight();
-            ValidateTimeInputMinHeight();
-            ValidateToggleInputMinHeight();
-            ValidateTextBlockMinHeight();
-            ValidateMediaMinHeight();
+            ValidateAdaptiveCardMinHeight();
         }
     };
 

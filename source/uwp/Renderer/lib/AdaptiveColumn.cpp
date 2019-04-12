@@ -34,6 +34,7 @@ namespace AdaptiveNamespace
 
         RETURN_IF_FAILED(UTF8ToHString(sharedColumn->GetWidth(), m_width.GetAddressOf()));
         m_pixelWidth = sharedColumn->GetPixelWidth();
+        m_minHeight = sharedColumn->GetMinHeight();
 
         auto backgroundImage = sharedColumn->GetBackgroundImage();
         if (backgroundImage != nullptr && !backgroundImage->GetUrl().empty())
@@ -95,6 +96,18 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    HRESULT AdaptiveColumn::get_MinHeight(_Out_ UINT32* minHeight)
+    {
+        *minHeight = m_minHeight;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveColumn::put_MinHeight(UINT32 minHeight)
+    {
+        m_minHeight = minHeight;
+        return S_OK;
+    }
+
     HRESULT AdaptiveColumn::get_Items(_COM_Outptr_ IVector<IAdaptiveCardElement*>** items)
     {
         return m_items.CopyTo(items);
@@ -126,6 +139,7 @@ namespace AdaptiveNamespace
         column->SetVerticalContentAlignment(static_cast<AdaptiveSharedNamespace::VerticalContentAlignment>(m_verticalAlignment));
         column->SetWidth(HStringToUTF8(m_width.Get()));
         column->SetPixelWidth(m_pixelWidth);
+        column->SetMinHeight(m_minHeight);
 
         ComPtr<AdaptiveBackgroundImage> adaptiveBackgroundImage = PeekInnards<AdaptiveBackgroundImage>(m_backgroundImage);
         std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage> sharedBackgroundImage;

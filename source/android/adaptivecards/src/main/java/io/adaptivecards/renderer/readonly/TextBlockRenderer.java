@@ -205,11 +205,6 @@ public class TextBlockRenderer extends BaseCardElementRenderer
             textView.setMaxLines(1);
         }
 
-        if (textBlock.GetMinHeight() != 0)
-        {
-            textView.setMinHeight(Util.dpToPixels(context, (int)textBlock.GetMinHeight()));
-        }
-
         viewGroup.addView(textView);
         return textView;
     }

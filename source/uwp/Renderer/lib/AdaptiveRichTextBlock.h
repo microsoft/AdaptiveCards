@@ -109,11 +109,6 @@ namespace AdaptiveNamespace
         {
             return AdaptiveCardElementBase::put_Height(height);
         }
-        IFACEMETHODIMP get_MinHeight(_Out_ UINT32* minHeight)
-        {
-            return AdaptiveCardElementBase::get_MinHeight(minHeight);
-        }
-        IFACEMETHODIMP put_MinHeight(UINT32 minHeight) { return AdaptiveCardElementBase::put_MinHeight(minHeight); }
 
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
