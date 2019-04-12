@@ -39,7 +39,9 @@
     if(reg) {
         NSString *type = [NSString stringWithCString:customAction->GetElementTypeString().c_str() encoding:NSUTF8StringEncoding];
         NSObject<ACOIBaseActionElementParser> *parser = [reg getCustomActionElementParser:type];
-
+        if(!parser) {
+            @throw [NSException exceptionWithName:@"ParsingError" reason:@"UnknownParser" userInfo:nil];
+        }
         Json::Value blob = customAction->GetAdditionalProperties();
         Json::FastWriter fastWriter;
         NSString *jsonString = [[NSString alloc] initWithCString:fastWriter.write(blob).c_str() encoding:NSUTF8StringEncoding];

@@ -150,6 +150,31 @@ using namespace AdaptiveCards;
     [self.stackView addArrangedSubview:view];
 }
 
+- (void)removeLastViewFromArrangedSubview
+{
+    if([self.stackView.subviews count]) {
+        UIView *view = [self getLastSubview];
+        if (view) {
+            [self.stackView removeArrangedSubview:view];
+            [view removeFromSuperview];
+        }
+    }
+    
+}
+- (UIView *)getLastSubview
+{
+    UIView *view = nil;
+    if([self.stackView.subviews count]) {
+        view = self.stackView.subviews[[self.stackView.subviews count] - 1];
+    }
+    return view;
+}
+
+- (NSUInteger)subviewsCounts
+{
+    return [self.stackView.subviews count];
+}
+
 - (void)addTarget:(NSObject *)target
 {
     [_targets addObject:target];
@@ -203,7 +228,7 @@ using namespace AdaptiveCards;
     [self.stackView.widthAnchor constraintEqualToAnchor:target.widthAnchor constant:padding * -2.0].active = YES;
 }
 
-- (UILayoutConstraintAxis) getAxis
+- (UILayoutConstraintAxis)getAxis
 {
     return self.stackView.axis;
 }

@@ -16,6 +16,7 @@
 #import "ACOBaseActionElementPrivate.h"
 #import "ACRIContentHoldingView.h"
 #import "ACRRenderer.h"
+#import "Util.h"
 
 @implementation ACRActionSetRenderer
 
@@ -61,14 +62,37 @@
         }
 
         [acoElem setElem:elem];
-        UIButton *button = [actionRenderer renderButton:rootView inputs:inputs superview:superview baseActionElement:acoElem hostConfig:config];
+        
+        NSUInteger numElem = [childview subviewsCounts];
 
-        accumulatedWidth += [button intrinsicContentSize].width;
-        accumulatedHeight += [button intrinsicContentSize].height;
-        maxWidth = MAX(maxWidth, [button intrinsicContentSize].width);
-        maxHeight = MAX(maxHeight, [button intrinsicContentSize].height);
+        @try {
+            UIButton *button = [actionRenderer renderButton:rootView inputs:inputs superview:superview baseActionElement:acoElem hostConfig:config];
+            accumulatedWidth += [button intrinsicContentSize].width;
+            accumulatedHeight += [button intrinsicContentSize].height;
+            maxWidth = MAX(maxWidth, [button intrinsicContentSize].width);
+            maxHeight = MAX(maxHeight, [button intrinsicContentSize].height);
 
-        [childview addArrangedSubview:button];
+            [childview addArrangedSubview:button];
+        } @catch (NSException * exception) {
+            handleActionException(exception,
+                                  superview,
+                                  rootView,
+                                  inputs,
+                                  acoElem,
+                                  config,
+                                  childview);
+            NSUInteger count = [childview subviewsCounts];
+            if(count > numElem) {
+                UIView *view = [childview getLastSubview];
+                if (view && [view isKindOfClass:[UIButton class]]) {
+                    UIButton *button = (UIButton *)view;
+                    accumulatedWidth += [button intrinsicContentSize].width;
+                    accumulatedHeight += [button intrinsicContentSize].height;
+                    maxWidth = MAX(maxWidth, [button intrinsicContentSize].width);
+                    maxHeight = MAX(maxHeight, [button intrinsicContentSize].height);
+                }
+            }
+        }
     }
 
     float contentWidth = accumulatedWidth, contentHeight = accumulatedHeight;
