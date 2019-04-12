@@ -16,17 +16,14 @@
     <ProjectConfiguration Include="Release|ARM">
       <Configuration>Release</Configuration>
       <Platform>ARM</Platform>
-      <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
-      <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
-      <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
@@ -166,7 +163,6 @@
     <WindowsTargetPlatformMinVersion>10.0.15063.0</WindowsTargetPlatformMinVersion>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
     <ProjectName>ObjectModelProjection</ProjectName>
-    <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
