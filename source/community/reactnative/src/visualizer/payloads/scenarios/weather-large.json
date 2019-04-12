@@ -32,8 +32,7 @@
                             "type": "TextBlock",
                             "text": "Monday April 1",
                             "weight": "bolder",
-                            "size": "large",
-                            "color": "light"
+                            "size": "large"
                         },
                         {
                             "type": "TextBlock",
