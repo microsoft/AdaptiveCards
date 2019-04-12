@@ -2512,8 +2512,23 @@ export class TextInput extends Input {
                 button.classList.add("iconOnly");
 
                 let icon = document.createElement("img");
-                icon.src = this.inlineAction.iconUrl;
                 icon.style.height = "100%";
+
+                // The below trick is necessary as a workaround in Chrome where the icon is initially displayed
+                // at its native size then resized to 100% of the button's height. This cfreates an unpleasant
+                // flicker. On top of that, Chrome's flex implementation fails to prperly re-layout the button
+                // after the image has loaded and been gicven its final size. The below trick also fixes that.
+                icon.style.display = "none";
+                icon.onload = () => {
+                    icon.style.removeProperty("display");
+                };
+                icon.onerror = () => {
+                    button.removeChild(icon);
+                    button.classList.remove("iconOnly");
+                    button.classList.add("textOnly");
+                    button.textContent = !Utils.isNullOrEmpty(this.inlineAction.title) ? this.inlineAction.title : "Title";
+                }
+                icon.src = this.inlineAction.iconUrl;
 
                 button.appendChild(icon);
 
