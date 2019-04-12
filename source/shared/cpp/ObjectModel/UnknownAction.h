@@ -25,5 +25,6 @@ namespace AdaptiveSharedNamespace
         virtual ~UnknownActionParser() = default;
 
         std::shared_ptr<BaseActionElement> Deserialize(ParseContext& context, const Json::Value& root) override;
+        std::shared_ptr<BaseActionElement> DeserializeFromString(ParseContext& context, const std::string& jsonString) override;
     };
 }

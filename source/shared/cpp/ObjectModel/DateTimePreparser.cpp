@@ -34,7 +34,7 @@ bool DateTimePreparser::HasDateTokens() const
     return m_hasDateTokens;
 }
 
-void DateTimePreparser::AddTextToken(std::string const& text, DateTimePreparsedTokenFormat format)
+void DateTimePreparser::AddTextToken(const std::string& text, DateTimePreparsedTokenFormat format)
 {
     if (!text.empty())
     {
@@ -42,7 +42,7 @@ void DateTimePreparser::AddTextToken(std::string const& text, DateTimePreparsedT
     }
 }
 
-void DateTimePreparser::AddDateToken(std::string const& text, struct tm date, DateTimePreparsedTokenFormat format)
+void DateTimePreparser::AddDateToken(const std::string& text, struct tm& date, DateTimePreparsedTokenFormat format)
 {
     m_textTokenCollection.emplace_back(std::make_shared<DateTimePreparsedToken>(text, date, format));
     m_hasDateTokens = true;
@@ -265,7 +265,7 @@ void DateTimePreparser::ParseDateTime(std::string const& in)
 }
 
 // Parses a time of the form HH:MM
-bool DateTimePreparser::TryParseSimpleTime(std::string string, unsigned int* hours, unsigned int* minutes)
+bool DateTimePreparser::TryParseSimpleTime(const std::string& string, unsigned int& hours, unsigned int& minutes)
 {
     std::smatch subMatches;
     static const std::regex timeMatch(R"regex(^(\d{2}):(\d{2})$)regex");
@@ -278,8 +278,8 @@ bool DateTimePreparser::TryParseSimpleTime(std::string string, unsigned int* hou
 
             if (IsValidTime(parsedHours, parsedMinutes, 0))
             {
-                *hours = parsedHours;
-                *minutes = parsedMinutes;
+                hours = parsedHours;
+                minutes = parsedMinutes;
                 return true;
             }
         }
@@ -288,7 +288,7 @@ bool DateTimePreparser::TryParseSimpleTime(std::string string, unsigned int* hou
 }
 
 // Parses a date of the form YYYY-MM-DD
-bool DateTimePreparser::TryParseSimpleDate(std::string string, unsigned int* year, unsigned int* month, unsigned int* day)
+bool DateTimePreparser::TryParseSimpleDate(const std::string& string, unsigned int& year, unsigned int& month, unsigned int& day)
 {
     std::smatch subMatches;
     static const std::regex dateMatch(R"regex(^(\d{4})-(\d{2})-(\d{2})$)regex");
@@ -302,9 +302,9 @@ bool DateTimePreparser::TryParseSimpleDate(std::string string, unsigned int* yea
 
             if (IsValidDate(parsedYear, parsedMonth, parsedDay))
             {
-                *year = parsedYear;
-                *month = parsedMonth;
-                *day = parsedDay;
+                year = parsedYear;
+                month = parsedMonth;
+                day = parsedDay;
                 return true;
             }
         }

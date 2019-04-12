@@ -16,6 +16,13 @@ TextElementProperties::TextElementProperties() :
 {
 }
 
+TextElementProperties::TextElementProperties(const TextConfig &config, const std::string& text,
+        const std::string &language) :
+    m_textSize(config.size), m_textWeight(config.weight), m_fontStyle(config.style),
+m_textColor(config.color), m_isSubtle(config.isSubtle), m_text(text), m_language(language)
+{
+}
+
 Json::Value TextElementProperties::SerializeToJsonValue(Json::Value& root) const
 {
     if (m_textSize != TextSize::Default)
@@ -123,7 +130,7 @@ void TextElementProperties::SetLanguage(const std::string& value)
     m_language = value;
 }
 
-void TextElementProperties::Deserialize(ParseContext& context, const Json::Value& json)
+void TextElementProperties::Deserialize(const ParseContext& context, const Json::Value& json)
 {
     SetText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Text, true));
     SetTextSize(ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, TextSize::Default, TextSizeFromString));

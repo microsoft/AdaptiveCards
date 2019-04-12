@@ -271,7 +271,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
             }
         }
 
-        if(baseInputElement.GetHeight() == HeightType.Stretch || baseInputElement.GetMinHeight() != 0)
+        if(baseInputElement.GetHeight() == HeightType.Stretch)
         {
             LinearLayout containerLayout = new LinearLayout(context);
 
@@ -283,8 +283,6 @@ public class TextInputRenderer extends BaseCardElementRenderer
             {
                 containerLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             }
-
-            containerLayout.setMinimumHeight(Util.dpToPixels(context, (int)baseInputElement.GetMinHeight()));
 
             if (textInputViewGroup != null)
             {
@@ -383,8 +381,9 @@ public class TextInputRenderer extends BaseCardElementRenderer
                 ViewGroup subViewGroup = (ViewGroup) subView;
                 for (int index = 0; index < subViewGroup.getChildCount(); ++index) {
                     View view = subViewGroup.getChildAt(index);
-                    if (view instanceof Button || view instanceof ImageButton) {
-                        view.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(renderedCard, action, cardActionHandler));
+                    if (view instanceof Button || view instanceof ImageButton)
+                    {
+                        view.setOnClickListener(new ActionElementRenderer.SelectActionOnClickListener(renderedCard, action, cardActionHandler));
                     }
                 }
             }

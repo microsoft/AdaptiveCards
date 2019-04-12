@@ -1,0 +1,240 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+      {
+        "type": "TextBlock",
+        "size": "medium",
+        "weight": "bolder",
+        "text": "Input.Text elements",
+        "horizontalAlignment": "center"
+      },
+      {
+        "type": "TextBlock",
+        "spacing": "none",
+        "text": "Created {{DATE(2017-02-14T06:08:39Z,LONG)}} {{TIME(2017-02-14T06:08:39Z)}}",
+        "isSubtle": true,
+        "wrap": true
+      },
+      {
+        "type": "Input.Text",
+        "placeholder": "Name",
+        "style": "text",
+        "maxLength": 0,
+        "id": "SimpleVal",
+        "validation": {
+          "necessity": "RequiredWithVisualCue",
+          "errorMessage": "Required"
+          }
+      },
+      {
+        "type": "Input.Text",
+        "placeholder": "Homepage",
+        "style": "url",
+        "maxLength": 0,
+        "id": "UrlVal"
+      },
+      {
+        "type": "Input.Text",
+        "placeholder": "Email",
+        "style": "email",
+        "maxLength": 0,
+        "id": "EmailVal"
+      },
+      {
+        "type": "Input.Text",
+        "placeholder": "Phone",
+        "style": "tel",
+        "maxLength": 0,
+        "id": "TelVal"
+      },
+      {
+        "type": "Input.Text",
+        "placeholder": "Comments",
+        "style": "text",
+        "isMultiline": true,
+        "maxLength": 0,
+        "id": "MultiLineVal"
+      },
+      {
+        "type": "Input.Number",
+        "placeholder": "Quantity",
+        "min": -5,
+        "max": 5,
+        "value": 1,
+        "id": "NumVal",
+        "validation": {
+          "necessity": "Required",
+          "errorMessage": "Not Valid number"
+          }
+      },
+      {
+        "type": "Input.Date",
+        "placeholder": "Due Date",
+        "id": "DateVal",
+        "validation": {
+          "necessity": "RequiredWithVisualCue",
+          "errorMessage": "Not Valid date"
+          }
+      },
+      {
+        "type": "Input.Time",
+        "placeholder": "Start time",
+        "id": "TimeVal",
+        "value": "16:59"
+      },
+      {
+        "type": "TextBlock",
+        "size": "medium",
+        "weight": "bolder",
+        "text": "Input.ChoiceSet",
+        "horizontalAlignment": "center"
+      },
+      {
+        "type": "TextBlock",
+        "text": "What color do you want? (compact)"
+      },
+      {
+        "type": "Input.ChoiceSet",
+        "id": "CompactSelectVal",
+        "style": "compact",
+        "validation": {
+          "necessity": "Required",
+          "errorMessage": "Required"
+          },
+        "choices": [
+          {
+            "title": "Red",
+            "value": "1"
+          },
+          {
+            "title": "Green",
+            "value": "2"
+          },
+          {
+            "title": "Blue",
+            "value": "3"
+          }
+        ]
+      },
+      {
+        "type": "TextBlock",
+        "text": "What color do you want? (expanded)"
+      },
+      {
+        "type": "Input.ChoiceSet",
+        "id": "SingleSelectVal",
+        "style": "expanded",
+        "value" : "incorrect value",
+        "validation": {
+          "necessity": "Required",
+          "errorMessage": "Required"
+          },
+        "choices": [
+          {
+            "title": "Red",
+            "value": "1"
+          },
+          {
+            "title": "Green",
+            "value": "2"
+          },
+          {
+            "title": "Blue",
+            "value": "3"
+          }
+        ]
+      },
+      {
+        "type": "TextBlock",
+        "text": "What colors do you want? (multiselect)"
+      },
+      {
+        "type": "Input.ChoiceSet",
+        "id": "MultiSelectVal",
+        "isMultiSelect": true,
+        "value": "1,2",
+        "validation": {
+          "necessity": "Required",
+          "errorMessage": "Required"
+          },
+        "choices": [
+          {
+            "title": "Red",
+            "value": "1"
+          },
+          {
+            "title": "Green",
+            "value": "2"
+          },
+          {
+            "title": "Blue",
+            "value": "3"
+          }
+        ]
+      },
+      {
+        "type": "TextBlock",
+        "size": "medium",
+        "weight": "bolder",
+        "text": "Input.Toggle",
+        "horizontalAlignment": "center"
+      },
+      {
+        "type": "Input.Toggle",
+        "title": "I accept the terms and conditions (True/False)",
+        "valueOn": "true",
+        "valueOff": "false",
+        "value": "true",
+        "validation": {
+          "necessity": "Required",
+          "errorMessage": "Please accept to proceed"
+          },
+        "id": "AcceptsTerms"
+      },
+      {
+        "type": "Input.Toggle",
+        "title": "Red cars are better than other cars",
+        "valueOn": "RedCars",
+        "valueOff": "NotRedCars",
+        "id": "ColorPreference",
+        "validation": {
+          "necessity": "Optional",
+          "errorMessage": "Not Required"
+          }
+      }
+    ],
+    "actions": [
+      {
+        "type": "Action.Submit",
+        "title": "Submit",
+        "ignoreInputValidation": false,
+        "data": {
+          "id": "1234567890"
+        }
+      },
+      {
+        "type": "Action.ShowCard",
+        "title": "Show Card",
+        "card": {
+          "type": "AdaptiveCard",
+          "body": [
+            {
+              "type": "Input.Text",
+              "placeholder": "enter comment",
+              "style": "text",
+              "maxLength": 0,
+              "id": "CommentVal"
+            }
+          ],
+          "actions": [
+            {
+              "type": "Action.Submit",
+              "title": "OK"
+            }
+          ]
+        }
+      }
+    ]
+  }

@@ -111,6 +111,14 @@ using namespace AdaptiveCards;
     return [_resolvers getResolverIFType:scheme];
 }
 
+- (UIColor *)getHighlightColor:(ACRContainerStyle)style
+               foregroundColor:(ForegroundColor)color
+                  subtleOption:(bool)isSubtle
+{
+    const std::string str = _config->GetHighlightColor([ACOHostConfig getSharedContainerStyle:style], color, isSubtle);
+    return [ACOHostConfig convertHexColorCodeToUIColor:str];
+}
+
 - (UIColor *)getTextBlockColor:(ACRContainerStyle)style
                      textColor:(ForegroundColor)txtClr
                   subtleOption:(bool)isSubtle

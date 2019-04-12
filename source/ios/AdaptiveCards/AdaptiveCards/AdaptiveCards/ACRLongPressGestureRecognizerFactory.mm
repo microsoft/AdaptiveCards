@@ -14,6 +14,7 @@
 #import "ToggleVisibilityAction.h"
 #import "ACRAggregateTarget.h"
 #import "ACOBaseActionElementPrivate.h"
+#import "ACRUILabel.h"
 
 using namespace AdaptiveCards;
 
@@ -21,6 +22,48 @@ using namespace AdaptiveCards;
 // instantiates a target for UILongPressGestureRecognizer object
 // and instantiate a tap gesture reconginizer with target, and return it
 // when failed, nil is returned
++ (NSObject<ACRSelectActionDelegate> *)buildTarget:(std::shared_ptr<BaseActionElement> const &)action
+                                          rootView:(ACRView *)rootView
+                                        hostConfig:(ACOHostConfig *)config
+                        destinationViewForShowCard:( UIView<ACRIContentHoldingView> * _Nullable) viewGroup
+{
+    ACOBaseActionElement *actionElement = [[ACOBaseActionElement alloc] initWithBaseActionElement:action];
+
+    NSObject<ACRSelectActionDelegate> *target = nil;
+
+    switch(action->GetElementType()) {
+        // instantiates a target that handles Submit action
+        case ActionType::Submit:
+        case ActionType::OpenUrl:
+        {
+            target = [[ACRAggregateTarget alloc] initWithActionElement:actionElement rootView:rootView];
+            break;
+        }
+        // instantiates a target that handles ShowCard action
+        case ActionType::ShowCard:
+        {
+            std::shared_ptr<ShowCardAction> showCardAction = std::dynamic_pointer_cast<ShowCardAction>(action);
+            // instantiate a ShowCardTarget
+            target = [[ACRShowCardTarget alloc] initWithActionElement:showCardAction config:config superview:viewGroup rootView:rootView button:nil];
+            break;
+        }
+        case ActionType::ToggleVisibility:
+        {
+            std::shared_ptr<ToggleVisibilityAction> toggleAction = std::dynamic_pointer_cast<ToggleVisibilityAction>(action);
+
+            target = [[ACRToggleVisibilityTarget alloc] initWithActionElement:toggleAction config:config rootView:rootView];
+            break;
+        }
+        // everything else is not valid request
+        case ActionType::Unsupported: case ActionType::Custom:
+        default:
+        {
+            NSLog(@"Unknown Action Type");
+        }
+    }
+    return target;
+}
+
 + (void)addLongPressGestureRecognizerToUIView:(UIView<ACRIContentHoldingView> *)viewGroup
                                      rootView:(ACRView *)rootView
                                 recipientView:(UIView *)recipientView
@@ -28,46 +71,28 @@ using namespace AdaptiveCards;
                                    hostConfig:(ACOHostConfig *)config
 {
     if(action != nullptr){
-        NSObject<ACRSelectActionDelegate> *target = nil;
-        ACOBaseActionElement *actionElement = [[ACOBaseActionElement alloc] initWithBaseActionElement:action];
-
-        switch(action->GetElementType()) {
-            // instantiates a target that handles Submit action
-            case ActionType::Submit:
-            case ActionType::OpenUrl:
-            {
-                target = [[ACRAggregateTarget alloc] initWithActionElement:actionElement rootView:rootView];
-                break;
-            }
-            // instantiates a target that handles ShowCard action
-            case ActionType::ShowCard:
-            {
-                std::shared_ptr<ShowCardAction> showCardAction = std::dynamic_pointer_cast<ShowCardAction>(action);
-                // instantiate a ShowCardTarget
-                target = [[ACRShowCardTarget alloc] initWithActionElement:showCardAction config:config superview:viewGroup rootView:rootView button:nil];
-                break;
-            }
-            case ActionType::ToggleVisibility:
-            {
-                std::shared_ptr<ToggleVisibilityAction> toggleAction = std::dynamic_pointer_cast<ToggleVisibilityAction>(action);
-                
-                target = [[ACRToggleVisibilityTarget alloc]
-                             initWithActionElement:toggleAction config:config rootView:rootView];
-                break;
-            }
-            // everything else is not valid request
-            case ActionType::Unsupported: case ActionType::Custom:
-            default:
-            {
-                NSLog(@"Unknown Action Type");
-            }
-        }
+        NSObject<ACRSelectActionDelegate> *target = [ACRLongPressGestureRecognizerFactory buildTarget:action
+                                                                                             rootView:rootView
+                                                                                           hostConfig:config
+                                                                           destinationViewForShowCard:viewGroup];
 
         if(target && viewGroup){
             UILongPressGestureRecognizer *recognizer = [ACRLongPressGestureRecognizerFactory getGestureRecognizer:viewGroup target:target];
             [recipientView addGestureRecognizer:recognizer];
             recipientView.userInteractionEnabled = YES;
         }
+    }
+}
+
++ (void)addTapGestureRecognizerToUITextView:(UITextView *)textView
+                                     target:(NSObject<ACRSelectActionDelegate> *)target
+                                   rootView:(ACRView *)rootView
+                                 hostConfig:(ACOHostConfig *)config
+{
+    if(target && textView){
+        UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:textView action:@selector(handleInlineAction:)];
+        [textView addGestureRecognizer:recognizer];
+        textView.userInteractionEnabled = YES;
     }
 }
 

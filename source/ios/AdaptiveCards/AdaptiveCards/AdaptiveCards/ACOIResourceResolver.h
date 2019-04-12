@@ -15,4 +15,6 @@
 
 - (UIImageView *)resolveImageViewResource:(NSURL *)url;
 
+- (UIImageView *)resolveBackgroundImageViewResource:(NSURL *)url hasStretch:(BOOL)hasStretch;
+
 @end

@@ -152,6 +152,13 @@ namespace AdaptiveNamespace
             ComPtr<IFrameworkElement> rootAsFrameworkElement;
             RETURN_IF_FAILED(rootElement.As(&rootAsFrameworkElement));
 
+            UINT32 cardMinHeight{};
+            RETURN_IF_FAILED(adaptiveCard->get_MinHeight(&cardMinHeight));
+            if (cardMinHeight > 0)
+            {
+                RETURN_IF_FAILED(rootAsFrameworkElement->put_MinHeight(cardMinHeight));
+            }
+
             ComPtr<IAdaptiveActionElement> selectAction;
             RETURN_IF_FAILED(adaptiveCard->get_SelectAction(&selectAction));
 
@@ -2389,6 +2396,7 @@ namespace AdaptiveNamespace
 
         ComPtr<IFrameworkElement> containerPanelAsFrameWorkElement;
         RETURN_IF_FAILED(containerPanel.As(&containerPanelAsFrameWorkElement));
+
         // Assign vertical alignment to the top so that on fixed height cards, the content
         // still renders at the top even if the content is shorter than the full card
         ABI::AdaptiveNamespace::HeightType containerHeightType{};
@@ -2396,6 +2404,13 @@ namespace AdaptiveNamespace
         if (containerHeightType == ABI::AdaptiveNamespace::HeightType::Auto)
         {
             RETURN_IF_FAILED(containerPanelAsFrameWorkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Top));
+        }
+
+        UINT32 containerMinHeight{};
+        RETURN_IF_FAILED(adaptiveContainer->get_MinHeight(&containerMinHeight));
+        if (containerMinHeight > 0)
+        {
+            RETURN_IF_FAILED(containerPanelAsFrameWorkElement->put_MinHeight(containerMinHeight));
         }
 
         ABI::AdaptiveNamespace::ContainerStyle containerStyle;
@@ -2564,6 +2579,13 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(columnPanelAsFrameworkElement->put_VerticalAlignment(VerticalAlignment_Stretch));
 
         RETURN_IF_FAILED(SetStyleFromResourceDictionary(renderContext, L"Adaptive.Column", columnPanelAsFrameworkElement.Get()));
+
+        UINT32 columnMinHeight{};
+        RETURN_IF_FAILED(adaptiveColumn->get_MinHeight(&columnMinHeight));
+        if (columnMinHeight > 0)
+        {
+            RETURN_IF_FAILED(columnPanelAsFrameworkElement->put_MinHeight(columnMinHeight));
+        }
 
         ComPtr<IAdaptiveActionElement> selectAction;
         RETURN_IF_FAILED(adaptiveColumn->get_SelectAction(&selectAction));
@@ -2792,6 +2814,8 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(gridContainer.As(&gridContainerAsPanel));
         ComPtr<IUIElement> gridContainerAsUIElement;
         RETURN_IF_FAILED(gridContainer.As(&gridContainerAsUIElement));
+        ComPtr<IFrameworkElement> gridContainerAsFrameworkElement;
+        RETURN_IF_FAILED(gridContainer.As(&gridContainerAsFrameworkElement));
 
         ComPtr<IUIElement> gridAsUIElement;
         RETURN_IF_FAILED(xamlGrid.As(&gridAsUIElement));
@@ -2801,6 +2825,13 @@ namespace AdaptiveNamespace
 
         ABI::AdaptiveNamespace::HeightType columnSetHeightType;
         RETURN_IF_FAILED(columnSetAsCardElement->get_Height(&columnSetHeightType));
+
+        UINT32 columnSetMinHeight{};
+        RETURN_IF_FAILED(adaptiveColumnSet->get_MinHeight(&columnSetMinHeight));
+        if (columnSetMinHeight > 0)
+        {
+            RETURN_IF_FAILED(gridContainerAsFrameworkElement->put_MinHeight(columnSetMinHeight));
+        }
 
         XamlHelpers::AppendXamlElementToPanel(xamlGrid.Get(), gridContainerAsPanel.Get(), columnSetHeightType);
         HandleSelectAction(adaptiveCardElement,
@@ -3284,7 +3315,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(adaptiveDateInput->get_Value(hstringValue.GetAddressOf()));
         std::string value = HStringToUTF8(hstringValue.Get());
         unsigned int year, month, day;
-        if (DateTimePreparser::TryParseSimpleDate(value, &year, &month, &day))
+        if (DateTimePreparser::TryParseSimpleDate(value, year, month, day))
         {
             ComPtr<IReference<DateTime>> initialDateTimeReference;
             RETURN_IF_FAILED(GetDateTimeReference(year, month, day, &initialDateTimeReference));
@@ -3295,7 +3326,7 @@ namespace AdaptiveNamespace
         HString hstringMin;
         RETURN_IF_FAILED(adaptiveDateInput->get_Min(hstringMin.GetAddressOf()));
         std::string min = HStringToUTF8(hstringMin.Get());
-        if (DateTimePreparser::TryParseSimpleDate(min, &year, &month, &day))
+        if (DateTimePreparser::TryParseSimpleDate(min, year, month, day))
         {
             DateTime minDate = GetDateTime(year, month, day);
             RETURN_IF_FAILED(datePicker->put_MinDate(minDate));
@@ -3305,7 +3336,7 @@ namespace AdaptiveNamespace
         HString hstringMax;
         RETURN_IF_FAILED(adaptiveDateInput->get_Max(hstringMax.GetAddressOf()));
         std::string max = HStringToUTF8(hstringMax.Get());
-        if (DateTimePreparser::TryParseSimpleDate(max, &year, &month, &day))
+        if (DateTimePreparser::TryParseSimpleDate(max, year, month, day))
         {
             DateTime maxDate = GetDateTime(year, month, day);
             RETURN_IF_FAILED(datePicker->put_MaxDate(maxDate));
@@ -3760,7 +3791,7 @@ namespace AdaptiveNamespace
         THROW_IF_FAILED(adaptiveTimeInput->get_Value(hstringValue.GetAddressOf()));
         std::string value = HStringToUTF8(hstringValue.Get());
         unsigned int hours, minutes;
-        if (DateTimePreparser::TryParseSimpleTime(value, &hours, &minutes))
+        if (DateTimePreparser::TryParseSimpleTime(value, hours, minutes))
         {
             TimeSpan initialTime{(INT64)(hours * 60 + minutes) * 10000000 * 60};
             THROW_IF_FAILED(timePicker->put_Time(initialTime));

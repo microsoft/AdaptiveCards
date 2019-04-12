@@ -109,13 +109,14 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
         int i = 0;
         long maxActions = hostConfig.GetActions().getMaxActions();
 
-        boolean allActionsHaveIcons = true;
+        // Allow the actions to have the icon drawn at the top as long as all actions have an icon
+        renderArgs.setAllowAboveTitleIconPlacement(true);
         for(; i < size && i < maxActions; ++i)
         {
             BaseActionElement actionElement = baseActionElementList.get(i);
             if(actionElement.GetIconUrl().isEmpty())
             {
-                allActionsHaveIcons = false;
+                renderArgs.setAllowAboveTitleIconPlacement(false);
                 break;
             }
         }
@@ -123,12 +124,6 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
         for (i = 0; i < size && i < maxActions; i++)
         {
             BaseActionElement actionElement = baseActionElementList.get(i);
-
-            IconPlacement originalIconPlacement = hostConfig.GetActions().getIconPlacement();
-            if (!allActionsHaveIcons)
-            {
-                hostConfig.GetActions().setIconPlacement(IconPlacement.LeftOfTitle);
-            }
 
             IBaseActionElementRenderer actionRenderer = CardRendererRegistration.getInstance().getActionRenderer(actionElement.GetElementTypeString());
             View returnedView = null;
@@ -170,6 +165,11 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
                             {
                                 fallbackElement = fallbackActionElement.GetFallbackContent();
                             }
+                            else
+                            {
+                                // Either fallback is "drop" or not defined, in that case, stop trying
+                                break;
+                            }
                         }
                     }
                 }
@@ -180,7 +180,6 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
                 }
             }
 
-            hostConfig.GetActions().setIconPlacement(originalIconPlacement);
         }
 
         if (i >= maxActions && size != maxActions)

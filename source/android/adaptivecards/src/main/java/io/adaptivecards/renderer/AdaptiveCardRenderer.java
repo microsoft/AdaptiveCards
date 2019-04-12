@@ -12,6 +12,7 @@ import io.adaptivecards.objectmodel.AdaptiveCard;
 import io.adaptivecards.objectmodel.BackgroundImage;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseActionElementVector;
+import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.BaseCardElementVector;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
@@ -93,13 +94,18 @@ public class AdaptiveCardRenderer
         layout.setClipChildren(false);
         layout.setClipToPadding(false);
 
-        if( adaptiveCard.GetHeight() == HeightType.Stretch )
+        if (adaptiveCard.GetHeight() == HeightType.Stretch)
         {
             layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
         }
         else
         {
             layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        }
+
+        if (adaptiveCard.GetMinHeight() != 0)
+        {
+            rootLayout.setMinimumHeight(Util.dpToPixels(context, (int)adaptiveCard.GetMinHeight()));
         }
 
         VerticalContentAlignment contentAlignment = adaptiveCard.GetVerticalContentAlignment();
@@ -191,7 +197,7 @@ public class AdaptiveCardRenderer
         if (selectAction != null)
         {
             rootLayout.setClickable(true);
-            rootLayout.setOnClickListener(new ActionElementRenderer.ButtonOnClickListener(renderedCard, selectAction, cardActionHandler));
+            rootLayout.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard,selectAction, cardActionHandler));
         }
 
         return rootLayout;

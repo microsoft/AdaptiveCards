@@ -4,6 +4,7 @@
 #include "BaseCardElement.h"
 #include "ElementParserRegistration.h"
 #include "DateTimePreparser.h"
+#include "HostConfig.h"
 
 namespace AdaptiveSharedNamespace
 {
@@ -11,6 +12,7 @@ namespace AdaptiveSharedNamespace
     {
     public:
         TextElementProperties();
+        TextElementProperties(const TextConfig &, const std::string &, const std::string &);
         TextElementProperties(const TextElementProperties&) = default;
         TextElementProperties(TextElementProperties&&) = default;
         TextElementProperties& operator=(const TextElementProperties&) = default;
@@ -41,7 +43,7 @@ namespace AdaptiveSharedNamespace
         void SetLanguage(const std::string& value);
         std::string GetLanguage() const;
 
-        void Deserialize(ParseContext& context, const Json::Value& root);
+        void Deserialize(const ParseContext& context, const Json::Value& root);
         void PopulateKnownPropertiesSet(std::unordered_set<std::string>& knownProperties);
 
     private:

@@ -47,7 +47,6 @@
     NSMutableAttributedString *content = nil;
     if(rootView){
         NSMutableDictionary *textMap = [rootView getTextMap];
-        // Generate key for ImageViewMap
         NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)txtBlck.get()];
         NSString *key = [number stringValue];
         NSDictionary* data = textMap[key];
@@ -82,7 +81,7 @@
         // Obtain text color to apply to the attributed string
         ACRContainerStyle style = lab.style;
         auto foregroundColor = [acoConfig getTextBlockColor:style textColor:txtBlck->GetTextColor() subtleOption:txtBlck->GetIsSubtle()];
-        
+
         // Add paragraph style, text color, text weight as attributes to a NSMutableAttributedString, content.
         [content addAttributes:@{NSParagraphStyleAttributeName:paragraphStyle, NSForegroundColorAttributeName:foregroundColor,} range:NSMakeRange(0, content.length)];
 

@@ -61,15 +61,13 @@ public:
     virtual void SetSpacing(AdaptiveCards::Spacing const value);
     virtual bool GetIsVisible() const;
     virtual void SetIsVisible(bool const value);
-    virtual unsigned int GetMinHeight() const;
-    virtual void SetMinHeight(unsigned int const value);
     virtual AdaptiveCards::CardElementType const GetElementType() const;
 public:
     bool swig_overrides(int n) {
-      return (n < 15 ? swig_override[n] : false);
+      return (n < 13 ? swig_override[n] : false);
     }
 protected:
-    Swig::BoolArray<15> swig_override;
+    Swig::BoolArray<13> swig_override;
 };
 
 class SwigDirector_BaseActionElement : public AdaptiveCards::BaseActionElement, public Swig::Director {
@@ -111,12 +109,13 @@ public:
     void swig_connect_director(JNIEnv *jenv, jobject jself, jclass jcls, bool swig_mem_own, bool weak_global);
     SwigDirector_ActionElementParser(JNIEnv *jenv);
     virtual std::shared_ptr< AdaptiveCards::BaseActionElement > Deserialize(AdaptiveCards::ParseContext &context, Json::Value const &value);
+    virtual std::shared_ptr< AdaptiveCards::BaseActionElement > DeserializeFromString(AdaptiveCards::ParseContext &context, std::string const &value);
 public:
     bool swig_overrides(int n) {
-      return (n < 1 ? swig_override[n] : false);
+      return (n < 2 ? swig_override[n] : false);
     }
 protected:
-    Swig::BoolArray<1> swig_override;
+    Swig::BoolArray<2> swig_override;
 };
 
 class SwigDirector_BaseCardElementParser : public AdaptiveCards::BaseCardElementParser, public Swig::Director {
