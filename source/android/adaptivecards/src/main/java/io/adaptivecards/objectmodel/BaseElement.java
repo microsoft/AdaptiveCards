@@ -117,8 +117,12 @@ public class BaseElement {
     AdaptiveCardObjectModelJNI.BaseElement_SetFallbackContent(swigCPtr, this, BaseElement.getCPtr(element), element);
   }
 
-  public boolean MeetsRequirements(ParseContext context) {
-    return AdaptiveCardObjectModelJNI.BaseElement_MeetsRequirements(swigCPtr, this, ParseContext.getCPtr(context), context);
+  public boolean RequirementsMet() {
+    return AdaptiveCardObjectModelJNI.BaseElement_RequirementsMet(swigCPtr, this);
+  }
+
+  public void ProcessRequirements(FeatureRegistration featureRegistration) {
+    AdaptiveCardObjectModelJNI.BaseElement_ProcessRequirements(swigCPtr, this, FeatureRegistration.getCPtr(featureRegistration), featureRegistration);
   }
 
   public void GetResourceInformation(RemoteResourceInformationVector resourceUris) {

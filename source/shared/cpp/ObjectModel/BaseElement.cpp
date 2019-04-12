@@ -54,18 +54,19 @@ namespace AdaptiveSharedNamespace
     void BaseElement::SetAdditionalProperties(Json::Value const& value) { m_additionalProperties = value; }
 
     // Given a map of what our host provides, determine if this element's requirements are satisfied.
-    bool BaseElement::MeetsRequirements(AdaptiveSharedNamespace::ParseContext& context) const
+    void BaseElement::ProcessRequirements(const AdaptiveSharedNamespace::FeatureRegistration& featureRegistration)
     {
         for (const auto& requirement : m_requires)
         {
             // special case for adaptive cards version
             const auto& requirementName = requirement.first;
             const auto& requirementVersion = requirement.second;
-            const auto& featureVersion = context.featureRegistration->GetFeatureVersion(requirementName);
+            const auto& featureVersion = featureRegistration.GetFeatureVersion(requirementName);
             if (featureVersion.empty())
             {
                 // host doesn't provide this requirement
-                return false;
+                m_requirementsMet = false;
+                return;
             }
             else
             {
@@ -74,11 +75,12 @@ namespace AdaptiveSharedNamespace
                 if (providesVersion < requirementVersion)
                 {
                     // host's provided version is too low
-                    return false;
+                    m_requirementsMet = false;
+                    return;
                 }
             }
         }
-        return true;
+        m_requirementsMet = true;
     }
 
     Json::Value BaseElement::SerializeToJsonValue() const

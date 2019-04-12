@@ -43,7 +43,7 @@ namespace AdaptiveSharedNamespace
     public:
         BaseElement() :
             m_additionalProperties{}, m_typeString{}, m_requires(0), m_fallbackContent(nullptr),
-            m_fallbackType(FallbackType::None), m_id{}, m_internalId{InternalId::Current()}
+            m_fallbackType(FallbackType::None), m_id{}, m_internalId{InternalId::Current()}, m_requirementsMet(true)
         {
             PopulateKnownPropertiesSet();
         }
@@ -85,12 +85,10 @@ namespace AdaptiveSharedNamespace
         FallbackType GetFallbackType() const { return m_fallbackType; }
         std::shared_ptr<BaseElement> GetFallbackContent() const { return m_fallbackContent; }
         void SetFallbackType(FallbackType type) { m_fallbackType = type; }
-        void SetFallbackContent(std::shared_ptr<BaseElement> element)
-        {
-            m_fallbackContent = element;
-        }
+        void SetFallbackContent(std::shared_ptr<BaseElement> element) { m_fallbackContent = element; }
 
-        bool MeetsRequirements(AdaptiveSharedNamespace::ParseContext& context) const;
+        bool RequirementsMet() const { return m_requirementsMet; }
+        void ProcessRequirements(const AdaptiveSharedNamespace::FeatureRegistration& featureRegistration);
 
         // Misc.
         virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris);
@@ -111,6 +109,7 @@ namespace AdaptiveSharedNamespace
         InternalId m_internalId;
         FallbackType m_fallbackType;
         std::string m_id;
+        bool m_requirementsMet;
     };
 
     template<typename T> void BaseElement::DeserializeBase(ParseContext& context, const Json::Value& json)

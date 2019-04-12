@@ -1012,18 +1012,30 @@ namespace AdaptiveCardsSharedModelUnitTest
 
             ParseContext context;
             context.featureRegistration->AddFeature("foobar", "2");
-            Assert::IsTrue(textBlock->MeetsRequirements(context));
-            Assert::IsTrue(textBlockNoRequires->MeetsRequirements(context));
+
+            textBlock->ProcessRequirements(*(context.featureRegistration));
+            Assert::IsTrue(textBlock->RequirementsMet(), L"textBlock should get its foobar 2.0");
+            textBlockNoRequires->ProcessRequirements(*(context.featureRegistration));
+            Assert::IsTrue(textBlockNoRequires->RequirementsMet(), L"textBlockNoRequires should always be satisfied");
+
             context.featureRegistration->RemoveFeature("foobar");
-            Assert::IsFalse(textBlock->MeetsRequirements(context));
-            Assert::IsTrue(textBlockNoRequires->MeetsRequirements(context));
+            textBlock->ProcessRequirements(*(context.featureRegistration));
+            Assert::IsFalse(textBlock->RequirementsMet(), L"textBlock doesn't have its foobar");
+            textBlockNoRequires->ProcessRequirements(*(context.featureRegistration));
+            Assert::IsTrue(textBlockNoRequires->RequirementsMet(), L"textBlockNoRequires should always be satisfied");
+
             context.featureRegistration->AddFeature("foobar", "1.9.9.9");
-            Assert::IsFalse(textBlock->MeetsRequirements(context));
-            Assert::IsTrue(textBlockNoRequires->MeetsRequirements(context));
+            textBlock->ProcessRequirements(*(context.featureRegistration));
+            Assert::IsFalse(textBlock->RequirementsMet(), L"textBlock's foobar requirements too high");
+            textBlockNoRequires->ProcessRequirements(*(context.featureRegistration));
+            Assert::IsTrue(textBlockNoRequires->RequirementsMet(), L"textBlockNoRequires should always be satisfied");
+
             context.featureRegistration->RemoveFeature("foobar");
             context.featureRegistration->AddFeature("foobar", "99");
-            Assert::IsTrue(textBlock->MeetsRequirements(context));
-            Assert::IsTrue(textBlockNoRequires->MeetsRequirements(context));
+            textBlock->ProcessRequirements(*(context.featureRegistration));
+            Assert::IsTrue(textBlock->RequirementsMet(), L"textBlock should be happy with foobar v99");
+            textBlockNoRequires->ProcessRequirements(*(context.featureRegistration));
+            Assert::IsTrue(textBlockNoRequires->RequirementsMet(), L"textBlockNoRequires should always be satisfied");
         }
 
         TEST_METHOD(NestedFallbacksSerialization)

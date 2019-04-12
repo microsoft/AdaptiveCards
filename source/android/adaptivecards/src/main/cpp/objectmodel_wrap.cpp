@@ -9814,29 +9814,43 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseElement_1MeetsRequirements(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseElement_1RequirementsMet(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
   AdaptiveCards::BaseElement *arg1 = (AdaptiveCards::BaseElement *) 0 ;
-  AdaptiveCards::ParseContext *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::BaseElement const > *smartarg1 = 0 ;
   bool result;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  (void)jarg2_;
   
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::BaseElement > **)&jarg1;
   arg1 = (AdaptiveCards::BaseElement *)(smartarg1 ? smartarg1->get() : 0); 
-  
-  arg2 = (AdaptiveCards::ParseContext *)((*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg2) ? (*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg2)->get() : 0);
-  if (!arg2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::ParseContext & reference is null");
-    return 0;
-  } 
-  result = (bool)((AdaptiveCards::BaseElement const *)arg1)->MeetsRequirements(*arg2);
+  result = (bool)((AdaptiveCards::BaseElement const *)arg1)->RequirementsMet();
   jresult = (jboolean)result; 
   return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseElement_1ProcessRequirements(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::BaseElement *arg1 = (AdaptiveCards::BaseElement *) 0 ;
+  AdaptiveCards::FeatureRegistration *arg2 = 0 ;
+  std::shared_ptr< AdaptiveCards::BaseElement > *smartarg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseElement > **)&jarg1;
+  arg1 = (AdaptiveCards::BaseElement *)(smartarg1 ? smartarg1->get() : 0); 
+  
+  arg2 = (AdaptiveCards::FeatureRegistration *)((*(std::shared_ptr< const AdaptiveCards::FeatureRegistration > **)&jarg2) ? (*(std::shared_ptr< const AdaptiveCards::FeatureRegistration > **)&jarg2)->get() : 0);
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::FeatureRegistration const & reference is null");
+    return ;
+  } 
+  (arg1)->ProcessRequirements((AdaptiveCards::FeatureRegistration const &)*arg2);
 }
 
 
