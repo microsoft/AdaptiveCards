@@ -600,21 +600,21 @@ namespace AdaptiveCards.Rendering.Html
                 var columnRenderArgs = new AdaptiveRenderArgs(elementRenderArgs);
                 if (columnSet.Columns.Count == 1)
                 {
-                    columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.Only;
+                    // columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.Only;
                 }
                 else
                 {
                     if (i == 0)
                     {
-                        columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.Begin;
+                        // columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.Begin;
                     }
                     else if (i == (columnSet.Columns.Count - 1))
                     {
-                        columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.End;
+                        // columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.End;
                     }
                     else
                     {
-                        columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.Intermediate;
+                        // columnRenderArgs.ColumnRelativePosition = ColumnPositionEnum.Intermediate;
                     }
                 }
                 context.RenderArgs = columnRenderArgs;
@@ -1890,6 +1890,7 @@ namespace AdaptiveCards.Rendering.Html
                     // Columns have a special rendering behaviour, only the leftmost and rightmost columns must bleed
                     if (element is AdaptiveColumn column)
                     {
+                        /*
                         if (parentRenderArgs.ColumnRelativePosition == ColumnPositionEnum.Begin)
                         {
                             uiElement.Style("margin-left", -padding + "px");
@@ -1903,6 +1904,7 @@ namespace AdaptiveCards.Rendering.Html
                             uiElement.Style("margin-right", -padding + "px")
                                     .Style("margin-left", -padding + "px");
                         }
+                        */
                     }
                     else
                     {
