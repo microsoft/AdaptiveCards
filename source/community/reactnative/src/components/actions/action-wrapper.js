@@ -14,10 +14,14 @@ import { InputContextConsumer } from '../../utils/context';
 import AdaptiveCard from '../../adaptive-card';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
+import { HostConfigManager } from '../../utils/host-config';
 
 const padding = 10;
 
 export class ActionWrapper extends React.Component {
+
+	hostConfig = HostConfigManager.getHostConfig();
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -87,11 +91,17 @@ export class ActionWrapper extends React.Component {
 		return renderedElement;
 	}
 
+	getActionOrientation() {
+		if (this.hostConfig.actions.actionsOrientation === Enums.Orientation.Horizontal)
+			return styles.actionAlignmentHorizontal
+		else return styles.actionAlignmentVertical
+	}
+
 	render() {
 		return (<InputContextConsumer>
 			{({ onExecuteAction, onParseError }) =>
 				<View>
-					<View style={[styles.actionButtonContainer]}>
+					<View style={[styles.actionButtonContainer, this.getActionOrientation()]}>
 						{this.parseActionsArray(onParseError)}
 					</View>
 					{this.hasShowCard ? ((this.state.isShowCard) ?
@@ -109,8 +119,13 @@ const styles = StyleSheet.create({
 		flex: 1,
 		paddingTop: padding,
 		flexWrap: Constants.FlexWrap,
-		flexDirection: Constants.FlexRow,
 		justifyContent: Constants.CenterString
+	},
+	actionAlignmentHorizontal: {
+		flexDirection: Constants.FlexRow,
+	},
+	actionAlignmentVertical: {
+		flexDirection: Constants.FlexColumn,
 	}
 });
 

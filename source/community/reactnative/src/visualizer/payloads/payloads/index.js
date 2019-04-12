@@ -60,6 +60,10 @@ export default payloads = [
     "json": require('./BackgroungImage.RepeatHorizontally.json')
   },
   {
+    "title": "Bleed.json",
+    "json": require('./Bleed.json')
+  },
+  {
     "title": "Container.BackgroundImageRepeatHorizontally.json",
     "json": require('./Container.BackgroundImageRepeatHorizontally.json')
   },
