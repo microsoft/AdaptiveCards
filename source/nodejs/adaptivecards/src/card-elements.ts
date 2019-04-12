@@ -2291,6 +2291,10 @@ export abstract class Input extends CardElement implements Shared.IInput {
     private _errorMessageElement: HTMLElement;
     private _renderedInputControlElement: HTMLElement;
 
+    protected get isNullable(): boolean {
+        return true;
+    }
+
     protected get renderedInputControlElement(): HTMLElement {
         return this._renderedInputControlElement;
     }
@@ -2311,7 +2315,7 @@ export abstract class Input extends CardElement implements Shared.IInput {
 
         this._renderedInputControlElement = this.internalRender();
 
-        if (this.validation.necessity == Enums.InputValidationNecessity.RequiredWithVisualCue) {
+        if (this.isNullable && this.validation.necessity == Enums.InputValidationNecessity.RequiredWithVisualCue) {
             this._renderedInputControlElement.classList.add(hostConfig.makeCssClassName("ac-input-required"));
         }
 
@@ -2509,6 +2513,10 @@ export class TextInput extends Input {
                 icon.style.height = "100%";
 
                 button.appendChild(icon);
+
+                if (!Utils.isNullOrEmpty(this.inlineAction.title)) {
+                    button.title = this.inlineAction.title;
+                }
             }
             else {
                 button.classList.add("textOnly");
@@ -2648,6 +2656,10 @@ export class ToggleInput extends Input {
         }
 
         return element;
+    }
+
+    protected get isNullable(): boolean {
+        return false;
     }
 
     valueOn: string = "true";
