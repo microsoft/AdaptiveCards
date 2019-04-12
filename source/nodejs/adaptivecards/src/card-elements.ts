@@ -128,6 +128,7 @@ export abstract class CardElement implements ICardObject {
 
     private internalRenderSeparator(): HTMLElement {
         let renderedSeparator = Utils.renderSeparation(
+            this.hostConfig,
             {
                 spacing: this.hostConfig.getEffectiveSpacing(this.spacing),
                 lineThickness: this.separator ? this.hostConfig.separator.lineThickness : null,
@@ -2312,8 +2313,10 @@ export abstract class Input extends CardElement implements Shared.IInput {
 
         this._inputControlContainerElement = document.createElement("div");
         this._inputControlContainerElement.className = hostConfig.makeCssClassName("ac-input-container");
+        this._inputControlContainerElement.style.display = "flex";
 
         this._renderedInputControlElement = this.internalRender();
+        this._renderedInputControlElement.style.minWidth = "0px";
 
         if (this.isNullable && this.validation.necessity == Enums.InputValidationNecessity.RequiredWithVisualCue) {
             this._renderedInputControlElement.classList.add(hostConfig.makeCssClassName("ac-input-required"));
@@ -2520,7 +2523,7 @@ export class TextInput extends Input {
             }
             else {
                 button.classList.add("textOnly");
-                button.textContent = this.inlineAction.title;
+                button.textContent = !Utils.isNullOrEmpty(this.inlineAction.title) ? this.inlineAction.title : "Title";
             }
 
             button.style.marginLeft = "8px";
@@ -5766,6 +5769,7 @@ export abstract class ContainerWithActions extends Container {
             Utils.appendChild(
                 element,
                 Utils.renderSeparation(
+                    this.hostConfig,
                     {
                         spacing: this.hostConfig.getEffectiveSpacing(this.hostConfig.actions.spacing),
                         lineThickness: null,

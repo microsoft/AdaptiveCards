@@ -1246,7 +1246,10 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
 
         this.internalAddBackgroundImageProperties(card, this.cardElement.backgroundImage);
         
-        let actionSelector = createActionSelector(card, this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
+        let actionSelector = createActionSelector(
+            "Select action",
+            card,
+            this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
 
         actionSelector.input.onValueChanged = () => {
             if (actionSelector.input.value == "none") {
@@ -1422,7 +1425,10 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
 
         this.internalAddBackgroundImageProperties(card, this.cardElement.backgroundImage);
 
-        let actionSelector = createActionSelector(card, this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
+        let actionSelector = createActionSelector(
+            "Select action",
+            card,
+            this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
 
         actionSelector.input.onValueChanged = () => {
             if (actionSelector.input.value == "none") {
@@ -1523,7 +1529,10 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
             this.changed(false);
         }
 
-        var actionSelector = createActionSelector(card, this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
+        var actionSelector = createActionSelector(
+            "Select action",
+            card,
+            this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
 
         actionSelector.input.onValueChanged = () => {
             if (actionSelector.input.value == "none") {
@@ -1609,7 +1618,10 @@ export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
 
         this.internalAddBackgroundImageProperties(card, this.cardElement.backgroundImage);
 
-        let actionSelector = createActionSelector(card, this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
+        let actionSelector = createActionSelector(
+            "Select action",
+            card,
+            this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
 
         actionSelector.input.onValueChanged = () => {
             if (actionSelector.input.value == "none") {
@@ -1670,8 +1682,8 @@ export class ActionSetPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
     }
 }
 
-function createActionSelector(card: Adaptive.AdaptiveCard, defaultValue: string): ILabelAndInput<Adaptive.ChoiceSetInput> {
-    let header = addHeader(card, "Select action");
+function createActionSelector(title: string, card: Adaptive.AdaptiveCard, defaultValue: string): ILabelAndInput<Adaptive.ChoiceSetInput> {
+    let header = addHeader(card, title);
     header.separator = true;
 
     let actionSelector = addLabelAndInput(card, "Action type:", Adaptive.ChoiceSetInput);
@@ -1853,7 +1865,10 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
                 this.changed(false);
             }
 
-            var actionSelector = createActionSelector(card, this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
+            var actionSelector = createActionSelector(
+                "Select action",
+                card,
+                this.cardElement.selectAction ? this.cardElement.selectAction.getJsonTypeName() : "none");
 
             actionSelector.input.onValueChanged = () => {
                 if (actionSelector.input.value == "none") {
@@ -2083,6 +2098,28 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
 
                 this.changed(false);
             }
+        }
+
+        let actionSelector = createActionSelector(
+            "Inline action",
+            card,
+            this.cardElement.inlineAction ? this.cardElement.inlineAction.getJsonTypeName() : "none");
+
+        actionSelector.input.onValueChanged = () => {
+            if (actionSelector.input.value == "none") {
+                this.cardElement.inlineAction = null;
+            }
+            else {
+                this.cardElement.inlineAction = Adaptive.AdaptiveCard.actionTypeRegistry.createInstance(actionSelector.input.value);
+            }
+
+            this.changed(true);
+        }
+
+        if (this.cardElement.inlineAction) {
+            let inlineActionPeer = CardDesignerSurface.actionPeerRegistry.createPeerInstance(this.designerSurface, null, this.cardElement.inlineAction);
+            inlineActionPeer.internalAddPropertySheetEntries(card, false);
+            inlineActionPeer.onChanged = (sender: DesignerPeer, updatePropertySheet: boolean) => { this.changed(updatePropertySheet); };
         }
     }
 }
