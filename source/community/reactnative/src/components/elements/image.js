@@ -238,11 +238,8 @@ export class Img extends React.Component {
 		return sizeStyle;
 	}
 
-
 	onPageLayoutHandler = (event) => {
-
-		const { width: layoutWidth, height: layoutHeight } = event.nativeEvent.layout;
-		let sizeValue = Utils.parseHostConfigEnum(Enums.Size, this.payload.size, Enums.Size.Auto)
+		const { width: layoutWidth } = event.nativeEvent.layout;
 		if (!Utils.isNullOrEmpty(this.url)) {
 			if (Utils.validateUrl(this.url)) {
 				//This function is implemented to determine the actual dimensions of the component.
@@ -304,7 +301,7 @@ export class Img extends React.Component {
 			spacing,
 		} = this;
 
-		if (!type) {
+		if (!type || !Utils.isValidImageURI(this.payload.url)) {
 			return null;
 		}
 
