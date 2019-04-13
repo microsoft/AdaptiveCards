@@ -24,9 +24,6 @@ namespace AdaptiveCards.Rendering.Wpf
             Border border = new Border();
             border.Child = uiOuterContainer;
 
-            border.BorderThickness = new Thickness(2);
-            border.BorderBrush = new SolidColorBrush(Colors.Red);
-
             if (!container.IsVisible)
             {
                 border.Visibility = Visibility.Collapsed;
