@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
@@ -22,6 +23,9 @@ namespace AdaptiveCards.Rendering.Wpf
             uiOuterContainer.Children.Add(uiContainer);
             Border border = new Border();
             border.Child = uiOuterContainer;
+
+            border.BorderThickness = new Thickness(2);
+            border.BorderBrush = new SolidColorBrush(Colors.Red);
 
             if (!container.IsVisible)
             {

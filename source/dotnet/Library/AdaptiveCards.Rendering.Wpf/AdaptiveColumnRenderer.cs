@@ -39,7 +39,6 @@ namespace AdaptiveCards.Rendering.Wpf
 
             // If the column has no padding or has padding and doesn't bleed, then the children can bleed
             // to the side the column would have bled
-            // The column bled, that means the children can only bleed to the same side as the parent bled
             if (columnHasPadding)
             {
                 childRenderArgs.BleedDirection = BleedDirection.Both;
