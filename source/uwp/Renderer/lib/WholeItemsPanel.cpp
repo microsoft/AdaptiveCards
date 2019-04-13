@@ -304,7 +304,8 @@ namespace AdaptiveNamespace
 
         // Now set the clipping region to ensure that items moved away will never be rendered
         // But we allow the items to slightly expand above the panel because we explicitly set negative
-        // margins for text on the first line of a tile
+        // margins for text on the first line of a tile. Additionally, leave space on the left and right
+        // according to the value set by s_bleedMargin.
         ComPtr<IFrameworkElement> spThisAsIFrameworkElement;
         Thickness margin;
         RETURN_IF_FAILED(QueryInterface(IID_PPV_ARGS(&spThisAsIFrameworkElement)));
@@ -316,9 +317,9 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(QueryInterface(IID_PPV_ARGS(&spThisAsIUIElement)));
         RETURN_IF_FAILED(spThisAsIUIElement->put_Clip(spClip.Get()));
 
-        float x0 = static_cast<float>(-margin.Left);
+        float x0 = static_cast<float>(-margin.Left - s_bleedMargin);
         float y0 = static_cast<float>(-margin.Top);
-        float x1 = static_cast<float>(margin.Left + finalSize.Width + margin.Right);
+        float x1 = static_cast<float>(2 * s_bleedMargin + margin.Left + finalSize.Width + margin.Right);
         float y1 = static_cast<float>(margin.Top + finalSize.Height + margin.Bottom);
         RETURN_IF_FAILED(spClip->put_Rect({x0, y0, x1, y1}));
 
@@ -381,9 +382,17 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    void WholeItemsPanel::SetAdaptiveHeight(_In_ bool value) { m_adaptiveHeight = value; }
+    void WholeItemsPanel::SetAdaptiveHeight(bool value) { m_adaptiveHeight = value; }
 
-    void WholeItemsPanel::SetMainPanel(_In_ bool value) { m_isMainPanel = value; }
+    UINT WholeItemsPanel::s_bleedMargin = 0;
+    void WholeItemsPanel::SetBleedMargin(UINT bleedMargin)
+    {
+        // Bleed margin is the extent to which the content may "bleed" out of the panel on the left and right. It is
+        // used to ensure that the clip rectangle doesn't clip off bleeding content.
+        s_bleedMargin = bleedMargin;
+    }
+
+    void WholeItemsPanel::SetMainPanel(bool value) { m_isMainPanel = value; }
 
     void WholeItemsPanel::AddElementToStretchablesList(_In_ IUIElement* element)
     {
@@ -586,5 +595,4 @@ namespace AdaptiveNamespace
 
         return !isnan(definedImageHeight) || !isnan(definedImageWidth);
     }
-
 }

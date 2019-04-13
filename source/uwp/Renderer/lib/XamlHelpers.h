@@ -8,6 +8,8 @@ namespace AdaptiveNamespace
     class XamlHelpers
     {
     public:
+        static Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::IBrush> GetSolidColorBrush(_In_ ABI::Windows::UI::Color color);
+
         template<typename T>
         static Microsoft::WRL::ComPtr<T> CreateXamlClass(Microsoft::WRL::Wrappers::HStringReference className)
         {

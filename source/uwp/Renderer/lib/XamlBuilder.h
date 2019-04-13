@@ -126,8 +126,6 @@ namespace AdaptiveNamespace
                                                       std::wstring resourceName,
                                                       _In_ ABI::Windows::UI::Xaml::IFrameworkElement* frameworkElement);
 
-        static Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::IBrush> GetSolidColorBrush(_In_ ABI::Windows::UI::Color color);
-
         static HRESULT HandleToggleVisibilityClick(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* cardFrameworkElement,
                                                    _In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action);
 

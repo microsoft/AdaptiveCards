@@ -130,7 +130,7 @@ HRESULT StyleTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adap
         RETURN_IF_FAILED(GetColorFromAdaptiveColor(hostConfig.Get(), adaptiveTextColor, containerStyle, isSubtle, false, &fontColor));
 
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Media::IBrush> fontColorBrush =
-            AdaptiveNamespace::XamlBuilder::GetSolidColorBrush(fontColor);
+            AdaptiveNamespace::XamlHelpers::GetSolidColorBrush(fontColor);
         RETURN_IF_FAILED(xamlTextElement->put_Foreground(fontColorBrush.Get()));
     }
 
