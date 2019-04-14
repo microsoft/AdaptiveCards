@@ -82,12 +82,12 @@ namespace AdaptiveSharedNamespace
         return true;
     }
 
-    std::shared_ptr<std::unordered_map<std::string, SemanticVersion>> BaseElement::GetRequirements() const
+    std::shared_ptr<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>> BaseElement::GetRequirements() const
     {
-        return std::make_shared<std::unordered_map<std::string, SemanticVersion>>(m_requires);
+        return std::make_shared<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>>(m_requires);
     }
 
-    void BaseElement::SetRequirements(const std::unordered_map<std::string, SemanticVersion>& requirements)
+    void BaseElement::SetRequirements(const std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>& requirements)
     {
         m_requires = requirements;
     }

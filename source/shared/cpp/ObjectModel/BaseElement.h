@@ -92,8 +92,8 @@ namespace AdaptiveSharedNamespace
         }
 
         bool MeetsRequirements(const AdaptiveSharedNamespace::FeatureRegistration& hostProvides) const;
-        std::shared_ptr<std::unordered_map<std::string, SemanticVersion>> GetRequirements() const;
-        void SetRequirements(const std::unordered_map<std::string, SemanticVersion>& requirements);
+        std::shared_ptr<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>> GetRequirements() const;
+        void SetRequirements(const std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>& requirements);
 
         // Misc.
         virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris);
@@ -109,7 +109,7 @@ namespace AdaptiveSharedNamespace
         template<typename T> void ParseFallback(ParseContext& context, const Json::Value& json);
         void ParseRequires(ParseContext& context, const Json::Value& json);
 
-        std::unordered_map<std::string, SemanticVersion> m_requires;
+        std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion> m_requires;
         std::shared_ptr<BaseElement> m_fallbackContent;
         InternalId m_internalId;
         FallbackType m_fallbackType;

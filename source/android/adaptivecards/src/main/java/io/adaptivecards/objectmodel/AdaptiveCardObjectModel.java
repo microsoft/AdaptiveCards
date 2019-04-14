@@ -305,4 +305,8 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
     AdaptiveCardObjectModelJNI.HandleUnknownProperties(JsonValue.getCPtr(json), json, SWIGTYPE_p_std__unordered_setT_std__string_t.getCPtr(knownProperties), JsonValue.getCPtr(unknownProperties), unknownProperties);
   }
 
+  public static String getC_adaptiveCardsFeature() {
+    return AdaptiveCardObjectModelJNI.c_adaptiveCardsFeature_get();
+  }
+
 }
