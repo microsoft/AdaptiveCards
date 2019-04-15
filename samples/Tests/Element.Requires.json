@@ -43,7 +43,6 @@
 				},
 				{
 					"type": "Column",
-					"fallback": "drop",
 					"items": [
 						{
 							"type": "TextBlock",
@@ -52,6 +51,12 @@
 							"wrap": true,
 							"requires": {
 								"acTest": "2.0"
+							},
+							"fallback": {
+								"type": "TextBlock",
+								"color": "good",
+								"text": "✓:We don't support acTest 2.0",
+								"wrap": true
 							}
 						}
 					]
