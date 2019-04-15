@@ -184,7 +184,7 @@ namespace AdaptiveNamespace
         sharedCardElement->SetSpacing(static_cast<AdaptiveSharedNamespace::Spacing>(m_spacing));
         sharedCardElement->SetHeight(static_cast<AdaptiveSharedNamespace::HeightType>(m_height));
         sharedCardElement->SetFallbackType(MapUwpFallbackTypeToShared(m_fallbackType));
-        sharedCardElement->SetRequirements(*m_requires);
+        sharedCardElement->SetRequirements(m_requires);
 
         if (m_fallbackType == ABI::AdaptiveNamespace::FallbackType::Content)
         {
