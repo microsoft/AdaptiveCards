@@ -1,5 +1,6 @@
 import * as Enums from "./enums";
 import * as Shared from "./shared";
+import { HostConfig } from "./host-config";
 
 export function generateUniqueId(): string {
 	return "__ac-" + Shared.UUID.generate();
@@ -91,10 +92,10 @@ export function parseHostConfigEnum(targetEnum: { [s: number]: string }, value: 
 	}
 }
 
-export function renderSeparation(separationDefinition: Shared.ISeparationDefinition, orientation: Enums.Orientation): HTMLElement {
+export function renderSeparation(hostConfig: HostConfig, separationDefinition: Shared.ISeparationDefinition, orientation: Enums.Orientation): HTMLElement {
 	if (separationDefinition.spacing > 0 || separationDefinition.lineThickness > 0) {
 		let separator = document.createElement("div");
-		separator.className = "ac-" + (orientation == Enums.Orientation.Horizontal ? "horizontal" : "vertical") + "-separator";
+		separator.className = hostConfig.makeCssClassName("ac-" + (orientation == Enums.Orientation.Horizontal ? "horizontal" : "vertical") + "-separator");
 
 		if (orientation == Enums.Orientation.Horizontal) {
 			if (separationDefinition.lineThickness) {
