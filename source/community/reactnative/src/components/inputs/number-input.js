@@ -10,7 +10,7 @@ import { HostConfigManager } from '../../utils/host-config';
 import { Input } from './input';
 import * as Enums from '../../utils/enums';
 
-const NUM_REGEX = /^\-?[1-9]\d*(\.\d*)?$/;
+const NUM_REGEX = /^\-?[0-9]\d*(\.\d*)?$/;
 
 export class NumberInput extends React.Component {
 
@@ -20,16 +20,16 @@ export class NumberInput extends React.Component {
 		this.payload = props.json;
 		this.id = Constants.EmptyString;
 		this.styleValue = Enums.InputTextStyle.Number;
-		
-		this.parseHostConfig();
+
+		this.parse();
 		this.state = {
 			isError: this.isInvalid(this.payload.value),
-			numberValue:this.payload.value.toString(),
+			numberValue: this.payload.value.toString(),
 		}
 	}
 
 	render() {
-		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
+		if (HostConfigManager.supportsInteractivity() === false) {
 			return null;
 		}
 
@@ -47,9 +47,9 @@ export class NumberInput extends React.Component {
 	}
 
     /**
-     * @description Parse hostConfig specific to this element
+     * @description Parse payload specific to this element
      */
-	parseHostConfig() {
+	parse() {
 		this.id = this.payload.id;
 		this.min = this.payload.min ? this.payload.min : Number.MIN_VALUE;
 		this.max = this.payload.max ? this.payload.max : Number.MAX_VALUE;
@@ -67,7 +67,7 @@ export class NumberInput extends React.Component {
     /**
      * @description handle text input when out of focus
      */
-	handleBlur = () => {	
+	handleBlur = () => {
 		this.validate(this.state.numberValue);
 	}
 
@@ -91,7 +91,11 @@ export class NumberInput extends React.Component {
 		addInputItem(this.id, { value: text, errorState: this.isInvalid(text) });
 	}
 
-
+	/**
+     * @description Invoked to check whether the entered number falls
+	 * within the range mentioned in the payload.
+     * @param {Integer} value
+     */
 	isInvalid = (numberValue) => {
 		if (NUM_REGEX.test(numberValue)) {
 			var parsedValue = parseFloat(numberValue);
