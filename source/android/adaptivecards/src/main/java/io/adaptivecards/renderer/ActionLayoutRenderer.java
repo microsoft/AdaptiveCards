@@ -15,6 +15,7 @@ import io.adaptivecards.objectmodel.BaseActionElementVector;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.BaseElement;
 import io.adaptivecards.objectmodel.FallbackType;
+import io.adaptivecards.objectmodel.FeatureRegistration;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.IconPlacement;
 import io.adaptivecards.objectmodel.Spacing;
@@ -121,6 +122,7 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
             }
         }
 
+        FeatureRegistration featureRegistration = CardRendererRegistration.getInstance().getFeatureRegistration();
         for (i = 0; i < size && i < maxActions; i++)
         {
             BaseActionElement actionElement = baseActionElementList.get(i);
@@ -129,7 +131,10 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
             View returnedView = null;
             if (actionRenderer != null)
             {
-                returnedView = actionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig, renderArgs);
+                if (actionElement.MeetsRequirements(featureRegistration))
+                {
+                    returnedView = actionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig, renderArgs);
+                }
             }
 
             boolean elementHasFallback = (actionElement.GetFallbackType() != FallbackType.None);
@@ -157,8 +162,11 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
 
                             if (fallbackActionRenderer != null)
                             {
-                                fallbackActionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, fallbackActionElement, cardActionHandler, hostConfig, renderArgs);
-                                break;
+                                if (fallbackActionElement.MeetsRequirements(featureRegistration))
+                                {
+                                    fallbackActionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, fallbackActionElement, cardActionHandler, hostConfig, renderArgs);
+                                    break;
+                                }
                             }
 
                             if (fallbackActionElement.GetFallbackType() == FallbackType.Content)

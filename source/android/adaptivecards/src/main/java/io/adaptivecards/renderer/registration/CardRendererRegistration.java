@@ -16,6 +16,7 @@ import io.adaptivecards.objectmodel.Column;
 import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.FactSet;
 import io.adaptivecards.objectmodel.FallbackType;
+import io.adaptivecards.objectmodel.FeatureRegistration;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.IOnlineImageLoader;
@@ -198,6 +199,16 @@ public class CardRendererRegistration
         return m_actionLayoutRenderer;
     }
 
+    public void registerFeatureRegistration(FeatureRegistration featureRegistration)
+    {
+        m_featureRegistration = featureRegistration;
+    }
+
+    public FeatureRegistration getFeatureRegistration()
+    {
+        return m_featureRegistration;
+    }
+
     public View render(
             RenderedAdaptiveCard renderedCard,
             Context context,
@@ -257,7 +268,10 @@ public class CardRendererRegistration
             View returnedView = null;
             if (renderer != null)
             {
-                returnedView = renderer.render(renderedCard, context, fragmentManager, layout, cardElement, cardActionHandler, hostConfig, childRenderArgs);
+                if (cardElement.MeetsRequirements(m_featureRegistration))
+                {
+                    returnedView = renderer.render(renderedCard, context, fragmentManager, layout, cardElement, cardActionHandler, hostConfig, childRenderArgs);
+                }
             }
 
             // If there's no renderer or the rendering failed, then try the fallback
@@ -285,8 +299,11 @@ public class CardRendererRegistration
 
                             if (fallbackRenderer != null)
                             {
-                                fallbackRenderer.render(renderedCard, context, fragmentManager, layout, fallbackCardElement, cardActionHandler, hostConfig, childRenderArgs);
-                                break;
+                                if (fallbackElement.MeetsRequirements(m_featureRegistration))
+                                {
+                                    fallbackRenderer.render(renderedCard, context, fragmentManager, layout, fallbackCardElement, cardActionHandler, hostConfig, childRenderArgs);
+                                    break;
+                                }
                             }
 
                             if (fallbackElement.GetFallbackType() == FallbackType.Content)
@@ -352,4 +369,5 @@ public class CardRendererRegistration
     private IOnlineImageLoader m_onlineImageLoader = null;
     private HashMap<String, IResourceResolver> m_resourceResolvers = new HashMap<>();
     private IOnlineMediaLoader m_onlineMediaLoader = null;
+    private FeatureRegistration m_featureRegistration = null;
 }

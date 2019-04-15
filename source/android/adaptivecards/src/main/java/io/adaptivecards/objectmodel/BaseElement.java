@@ -125,10 +125,6 @@ public class BaseElement {
     return new SWIGTYPE_p_std__shared_ptrT_std__unordered_mapT_std__string_AdaptiveCards__SemanticVersion_t_t(AdaptiveCardObjectModelJNI.BaseElement_GetRequirements(swigCPtr, this), true);
   }
 
-  public void SetRequirements(SWIGTYPE_p_std__unordered_mapT_std__string_AdaptiveCards__SemanticVersion_t requirements) {
-    AdaptiveCardObjectModelJNI.BaseElement_SetRequirements(swigCPtr, this, SWIGTYPE_p_std__unordered_mapT_std__string_AdaptiveCards__SemanticVersion_t.getCPtr(requirements));
-  }
-
   public void GetResourceInformation(RemoteResourceInformationVector resourceUris) {
     if (getClass() == BaseElement.class) AdaptiveCardObjectModelJNI.BaseElement_GetResourceInformation(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceUris), resourceUris); else AdaptiveCardObjectModelJNI.BaseElement_GetResourceInformationSwigExplicitBaseElement(swigCPtr, this, RemoteResourceInformationVector.getCPtr(resourceUris), resourceUris);
   }
