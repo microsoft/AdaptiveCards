@@ -300,22 +300,22 @@ namespace AdaptiveNamespace
         ABI::Windows::UI::Color lighterAccentColor = GenerateLighterColor(accentColor);
         ABI::Windows::UI::Color lighterAttentionColor = GenerateLighterColor(attentionColor);
 
-        ComPtr<IBrush> accentColorBrush = XamlBuilder::GetSolidColorBrush(accentColor);
+        ComPtr<IBrush> accentColorBrush = XamlHelpers::GetSolidColorBrush(accentColor);
         THROW_IF_FAILED(XamlBuilder::TryInsertResourceToResourceDictionaries(m_actionSentimentResourceDictionary.Get(),
                                                                              L"Adaptive.Action.Positive.Button.Static.Background",
                                                                              accentColorBrush.Get()));
 
-        ComPtr<IBrush> lightAccentColorBrush = XamlBuilder::GetSolidColorBrush(lighterAccentColor);
+        ComPtr<IBrush> lightAccentColorBrush = XamlHelpers::GetSolidColorBrush(lighterAccentColor);
         THROW_IF_FAILED(XamlBuilder::TryInsertResourceToResourceDictionaries(m_actionSentimentResourceDictionary.Get(),
                                                                              L"Adaptive.Action.Positive.Button.MouseOver.Background",
                                                                              lightAccentColorBrush.Get()));
 
-        ComPtr<IBrush> attentionColorBrush = XamlBuilder::GetSolidColorBrush(attentionColor);
+        ComPtr<IBrush> attentionColorBrush = XamlHelpers::GetSolidColorBrush(attentionColor);
         THROW_IF_FAILED(XamlBuilder::TryInsertResourceToResourceDictionaries(m_actionSentimentResourceDictionary.Get(),
                                                                              L"Adaptive.Action.Destructive.Button.Foreground",
                                                                              attentionColorBrush.Get()));
 
-        ComPtr<IBrush> lightAttentionColorBrush = XamlBuilder::GetSolidColorBrush(lighterAttentionColor);
+        ComPtr<IBrush> lightAttentionColorBrush = XamlHelpers::GetSolidColorBrush(lighterAttentionColor);
         THROW_IF_FAILED(XamlBuilder::TryInsertResourceToResourceDictionaries(m_actionSentimentResourceDictionary.Get(),
                                                                              L"Adaptive.Action.Destructive.Button.MouseOver.Foreground",
                                                                              lightAttentionColorBrush.Get()));

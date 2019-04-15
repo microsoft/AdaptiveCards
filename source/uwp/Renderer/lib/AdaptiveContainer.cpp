@@ -14,7 +14,10 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    AdaptiveContainer::AdaptiveContainer() { m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>(); }
+    AdaptiveContainer::AdaptiveContainer() : m_bleedDirection(ABI::AdaptiveNamespace::BleedDirection::None)
+    {
+        m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
+    }
 
     HRESULT AdaptiveContainer::RuntimeClassInitialize() noexcept try
     {
@@ -35,6 +38,9 @@ namespace AdaptiveNamespace
         m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedContainer->GetStyle());
         m_verticalAlignment =
             static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedContainer->GetVerticalContentAlignment());
+        m_minHeight = sharedContainer->GetMinHeight();
+        m_bleed = sharedContainer->GetBleed();
+        m_bleedDirection = static_cast<ABI::AdaptiveNamespace::BleedDirection>(sharedContainer->GetBleedDirection());
 
         auto backgroundImage = sharedContainer->GetBackgroundImage();
         if (backgroundImage != nullptr && !backgroundImage->GetUrl().empty())
@@ -104,6 +110,38 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    HRESULT AdaptiveContainer::get_MinHeight(_Out_ UINT32* minHeight)
+    {
+        *minHeight = m_minHeight;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveContainer::put_MinHeight(UINT32 minHeight)
+    {
+        m_minHeight = minHeight;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveContainer::get_Bleed(_Out_ boolean* isBleed)
+    {
+        *isBleed = m_bleed;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveContainer::put_Bleed(boolean isBleed)
+    {
+        m_bleed = isBleed;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveContainer::get_BleedDirection(ABI::AdaptiveNamespace::BleedDirection* bleedDirection)
+    {
+        // TODO: Current behavior is broken because it doesn't update when bleed updates. Unfortunately, neither does
+        // the shared model logic.
+        *bleedDirection = m_bleedDirection;
+        return S_OK;
+    }
+
     HRESULT AdaptiveContainer::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
     {
         std::shared_ptr<AdaptiveSharedNamespace::Container> container = std::make_shared<AdaptiveSharedNamespace::Container>();
@@ -118,6 +156,7 @@ namespace AdaptiveNamespace
 
         container->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
         container->SetVerticalContentAlignment(static_cast<AdaptiveSharedNamespace::VerticalContentAlignment>(m_verticalAlignment));
+        container->SetMinHeight(m_minHeight);
 
         ComPtr<AdaptiveBackgroundImage> adaptiveBackgroundImage = PeekInnards<AdaptiveBackgroundImage>(m_backgroundImage);
         std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage> sharedBackgroundImage;
@@ -125,6 +164,8 @@ namespace AdaptiveNamespace
         {
             container->SetBackgroundImage(sharedBackgroundImage);
         }
+
+        container->SetBleed(m_bleed);
 
         GenerateSharedElements(m_items.Get(), container->GetItems());
 
