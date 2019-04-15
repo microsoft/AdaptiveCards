@@ -1,8 +1,6 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
-import android.drm.DrmStore;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.text.Spannable;
@@ -21,17 +19,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import io.adaptivecards.objectmodel.ActionElementParser;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseCardElement;
-import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Inline;
 import io.adaptivecards.objectmodel.InlineElementType;
 import io.adaptivecards.objectmodel.InlineVector;
-import io.adaptivecards.objectmodel.Paragraph;
-import io.adaptivecards.objectmodel.ParagraphVector;
 import io.adaptivecards.objectmodel.RichTextBlock;
 import io.adaptivecards.objectmodel.TextBlock;
 import io.adaptivecards.objectmodel.TextRun;
@@ -40,8 +34,6 @@ import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
-import io.adaptivecards.renderer.Util;
-import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public class RichTextBlockRenderer extends BaseCardElementRenderer
@@ -188,49 +180,19 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
         }
 
         // RichTextBlock properties
-        // Wrap
-        // MaxLines
         // HorizontalAlignment
-        // Paragraphs
-        if (!richTextBlock.GetWrap())
-        {
-            textView.setMaxLines(1);
-        }
-
-        int maxLines = (int)richTextBlock.GetMaxLines();
-        if (maxLines > 0 && richTextBlock.GetWrap())
-        {
-            textView.setMaxLines(maxLines);
-        }
-        else if (!richTextBlock.GetWrap())
-        {
-            textView.setMaxLines(1);
-        }
+        // Inlines
 
         textView.setGravity(TextRendererUtil.getTextAlignment(richTextBlock.GetHorizontalAlignment()));
 
         // This is the section for rendering the paragraphs
         // Every paragraph may contain contains any number of inlines
         // The current inline element types are TextRun
-        ParagraphVector paragraphs = richTextBlock.GetParagraphs();
-        int paragraphCount = (int)paragraphs.size();
+        InlineVector inlines = richTextBlock.GetInlines();
 
         textView.setText("");
-
-        for (int i = 0; i < paragraphCount; ++i)
-        {
-            Paragraph p = paragraphs.get(i);
-            InlineVector inlines = p.GetInlines();
-
-            if ((i != 0) && (inlines.size() != 0))
-            {
-                textView.append(System.getProperty("line.separator"));
-            }
-
-            SpannableStringBuilder convertedString = buildSpannableParagraph(renderedCard, inlines, cardActionHandler, hostConfig, renderArgs);
-
-            textView.append(convertedString);
-        }
+        SpannableStringBuilder convertedString = buildSpannableParagraph(renderedCard, inlines, cardActionHandler, hostConfig, renderArgs);
+        textView.append(convertedString);
 
         // Properties required for actions to fire onClick event
         textView.setMovementMethod(LinkMovementMethod.getInstance());
