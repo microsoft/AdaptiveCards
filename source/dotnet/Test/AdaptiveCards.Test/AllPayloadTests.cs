@@ -133,6 +133,7 @@ namespace AdaptiveCards.Test
                     "EmptyFallbackCard",
                     "RichTextBlock.Highlights",
                     "RichTextBlock.TextRun.SelectActions",
+                    "Element.Requires",
 
                     // These cards have AdpativeCards with styles on them
                     "ColumnColumnSetContainer.Bleed",
