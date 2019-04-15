@@ -43,6 +43,21 @@
 				},
 				{
 					"type": "Column",
+					"fallback": "drop",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "✗: This textblock requires acTest 2.0",
+							"color": "attention",
+							"wrap": true,
+							"requires": {
+								"acTest": "2.0"
+							}
+						}
+					]
+				},
+				{
+					"type": "Column",
 					"items": [
 						{
 							"type": "TextBlock",
