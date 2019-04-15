@@ -94,7 +94,6 @@ namespace AdaptiveSharedNamespace
         auto backgroundImage = ParseUtil::GetBackgroundImage(value);
         collection->SetBackgroundImage(backgroundImage);
 
-        
         bool canFallbackToAncestor = context.GetCanFallbackToAncestor();
         context.SetCanFallbackToAncestor(canFallbackToAncestor || (collection->GetFallbackType() != FallbackType::None));
         collection->SetCanFallbackToAncestor(canFallbackToAncestor);
@@ -117,7 +116,6 @@ namespace AdaptiveSharedNamespace
         // Parse Items
         collection->DeserializeChildren(context, value);
         
-
         // since we are walking dfs, we have to restore the style before we back up
         context.RestoreContextForCollectionTypeElement(*collection);
         

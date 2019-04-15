@@ -218,18 +218,17 @@ using namespace AdaptiveCards;
                     heightConstraint.priority = UILayoutPriorityDefaultLow;
                     heightConstraint.active = YES;
                 }
-                
+
                 if([view isKindOfClass:[ACRColumnView class]]){
                     ACRColumnView *columnView = (ACRColumnView*)view;
                     columnView.hasStretchableView = YES;
                 }
-                
+
                 prevStretchableElem = curStretchableElem;
             }
         } @catch (NSException *e){
             handleException(e, view, rootView, inputs, elem, config);
-            NSLog(@"Unsupported card element type:%d\n", (int) elem->GetElementType());
-        }       
+        }
     }
 
     return view;
