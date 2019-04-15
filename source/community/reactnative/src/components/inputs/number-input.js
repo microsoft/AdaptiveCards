@@ -20,14 +20,11 @@ export class NumberInput extends React.Component {
 		this.payload = props.json;
 		this.id = Constants.EmptyString;
 		this.styleValue = Enums.InputTextStyle.Number;
-
-		this.isValidationRequired = !!this.payload.validation &&
-			(Enums.ValidationNecessity.Required == this.payload.validation.necessity ||
-				Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
-
+		
+		this.parseHostConfig();
 		this.state = {
-			isError: this.isValidationRequired,
-			numberValue: Constants.EmptyString,
+			isError: this.isInvalid(this.payload.value),
+			numberValue:this.payload.value.toString(),
 		}
 	}
 
@@ -35,7 +32,6 @@ export class NumberInput extends React.Component {
 		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
 			return null;
 		}
-		this.parseHostConfig();
 
 		return (
 			<Input
@@ -55,8 +51,8 @@ export class NumberInput extends React.Component {
      */
 	parseHostConfig() {
 		this.id = this.payload.id;
-		this.min = this.payload.min;
-		this.max = this.payload.max;
+		this.min = this.payload.min ? this.payload.min : Number.MIN_VALUE;
+		this.max = this.payload.max ? this.payload.max : Number.MAX_VALUE;
 	}
 
     /**
@@ -71,7 +67,7 @@ export class NumberInput extends React.Component {
     /**
      * @description handle text input when out of focus
      */
-	handleBlur = () => {
+	handleBlur = () => {	
 		this.validate(this.state.numberValue);
 	}
 
@@ -80,7 +76,7 @@ export class NumberInput extends React.Component {
      */
 	validate = (numberValue) => {
 		this.setState({
-			isError: this.checkRangeValue(numberValue)
+			isError: this.isInvalid(numberValue)
 		})
 	};
 
@@ -92,14 +88,11 @@ export class NumberInput extends React.Component {
 		this.setState({
 			numberValue: text
 		})
-		addInputItem(this.id, { value: text, errorState: this.state.isError });
+		addInputItem(this.id, { value: text, errorState: this.isInvalid(text) });
 	}
 
 
-	checkRangeValue = (numberValue) => {
-		if (!this.isValidationRequired) {
-			return false
-		}
+	isInvalid = (numberValue) => {
 		if (NUM_REGEX.test(numberValue)) {
 			var parsedValue = parseFloat(numberValue);
 			if (parsedValue < this.min || parsedValue > this.max) {
