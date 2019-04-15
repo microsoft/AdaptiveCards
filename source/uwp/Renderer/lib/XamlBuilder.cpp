@@ -888,7 +888,7 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    void XamlBuilder::AddSeparatorIfNeeded(int &currentElement,
+    void XamlBuilder::AddSeparatorIfNeeded(int& currentElement,
                                            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveCardElement* element,
                                            Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveHostConfig>& hostConfig,
                                            ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveRenderContext* renderContext,
@@ -932,9 +932,9 @@ namespace AdaptiveNamespace
 
             // Get fallback state
             ABI::AdaptiveNamespace::FallbackType elementFallback;
-            element->get_FallbackType(&elementFallback);
+            RETURN_IF_FAILED(element->get_FallbackType(&elementFallback));
             const bool elementHasFallback = (elementFallback != FallbackType_None);
-            renderArgs->put_AncestorHasFallback(elementHasFallback || ancestorHasFallback);
+            RETURN_IF_FAILED(renderArgs->put_AncestorHasFallback(elementHasFallback || ancestorHasFallback));
 
             // Check to see if element's requirements are being met
             boolean requirementsMet;
@@ -963,7 +963,7 @@ namespace AdaptiveNamespace
 
             if (elementRenderer == nullptr || hr == E_PERFORM_FALLBACK)
             {
-                // unknown element.
+                // unknown element or requirements unmet
                 if (elementHasFallback)
                 {
                     if (elementFallback == FallbackType_Content)
