@@ -922,7 +922,8 @@ namespace AdaptiveCards.Test
                     }
                 }
             };
-            
+
+            // This lines are not indented so the comparisson doesn't fail due to extra spaces
             var expectedJson =
 @"{
   ""type"": ""AdaptiveCard"",
