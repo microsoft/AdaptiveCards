@@ -53,7 +53,7 @@ export class ActionButton extends React.Component {
 		}
 		this.parseHostConfig();
 
-		const ButtonComponent = Platform.OS === Constants.PlatformIOS ? TouchableOpacity : TouchableNativeFeedback;
+		const ButtonComponent = Platform.OS === Constants.PlatformAndroid ? TouchableNativeFeedback : TouchableOpacity;
 
 		return (<ButtonComponent
 			style={{ flexGrow: 1 }}

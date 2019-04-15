@@ -65,7 +65,13 @@ const defaultThemeConfig = {
             backgroundColor: "#1D9BF6",
             color: "#FFFFFF",
             textTransform: undefined
-        }
+        },
+        windows: {
+            borderRadius: 15,
+            backgroundColor: "#1D9BF6",
+            color: "#FFFFFF",
+            textTransform: 'none'
+        },
     },
     input: {
         ios: {
@@ -79,6 +85,12 @@ const defaultThemeConfig = {
             backgroundColor: "#FFFFFF",
             borderRadius: 5,
             borderWidth: 1
-        }
+        },
+        windows: {
+            borderColor: "#dcdcdc",
+            backgroundColor: "#FFFFFF",
+            borderRadius: 5,
+            borderWidth: 1
+        },
     }
 }
