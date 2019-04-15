@@ -39,7 +39,7 @@ export class Media extends React.Component {
                 this.context.addResourceInformation(source.url, source.mimeType);
             })
         }
-        if(!Utils.isNullOrEmpty(this.payload.poster)){
+        if (!Utils.isNullOrEmpty(this.payload.poster)) {
             this.context.addResourceInformation(this.payload.poster, "");
         }
     }
@@ -48,6 +48,10 @@ export class Media extends React.Component {
         if (this.payload.sources && this.payload.sources.length > 0) {
             sources.forEach(source => {
                 this.addUriAttribute(source);
+                //removing the source if its uri is empty
+                if (Utils.isNullOrEmpty(source.uri)) {
+                    sources.splice(source, 1);
+                }
             })
             return sources;
         } else {
@@ -87,13 +91,13 @@ export class Media extends React.Component {
                         <ElementWrapper json={this.payload} isFirst={this.props.isFirst}>
                             <View style={styles.container}>
                                 {
-                                    this.sources &&
+                                    (this.sources && this.sources.length > 0) &&
                                     <Video
                                         source={this.sources[this.state.currentSourceIndex]}
                                         fullscreen={true}
                                         controls={true}
                                         id={this.payload.id ? this.payload.id : "video"}
-                                        paused={false}
+                                        paused={true}
                                         onError={() => { this.videoError(onParseError) }}
                                         onLoad={this.videoLoadSuccess}
                                         style={styles.nativeVideoControls}
