@@ -952,8 +952,8 @@ HRESULT GetHighlighter(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adapti
     ABI::Windows::UI::Color foregroundColor;
     RETURN_IF_FAILED(GetColorFromAdaptiveColor(hostConfig.Get(), adaptiveForegroundColor, containerStyle, isSubtle, false, &foregroundColor));
 
-    RETURN_IF_FAILED(localTextHighlighter->put_Background(XamlBuilder::GetSolidColorBrush(backgroundColor).Get()));
-    RETURN_IF_FAILED(localTextHighlighter->put_Foreground(XamlBuilder::GetSolidColorBrush(foregroundColor).Get()));
+    RETURN_IF_FAILED(localTextHighlighter->put_Background(XamlHelpers::GetSolidColorBrush(backgroundColor).Get()));
+    RETURN_IF_FAILED(localTextHighlighter->put_Foreground(XamlHelpers::GetSolidColorBrush(foregroundColor).Get()));
 
     localTextHighlighter.CopyTo(textHighlighter);
     return S_OK;

@@ -64,6 +64,8 @@ import java.util.TimerTask;
 import android.media.MediaDataSource;
 import android.support.annotation.RequiresApi;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.pixplicity.sharp.Sharp;
 
 public class MainActivityAdaptiveCardsSample extends FragmentActivity
@@ -76,38 +78,39 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     }
 
     private static String IS_CARD = "isCard";
+    private RemoteClientConnection m_remoteClientConnection;
+    private Button m_buttonScanQr;
+    private Button m_buttonDisconnect;
+    private View m_adaptiveCardPickerGroup;
+    private View m_hostConfigPickerGroup;
+    private EditText m_jsonEditText;
+    private EditText m_configEditText;
+    private Timer m_timer=new Timer();
+    private final long DELAY = 1000; // milliseconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_adaptive_cards_sample);
+
+        m_buttonScanQr = (Button)findViewById(R.id.buttonScanQr);
+        m_buttonDisconnect = (Button)findViewById(R.id.buttonDisconnect);
+        m_adaptiveCardPickerGroup = findViewById(R.id.adaptiveCardPickerGroup);
+        m_hostConfigPickerGroup = findViewById(R.id.hostConfigPickerGroup);
+
         setupTabs();
         setupImageLoader();
 
         // Add text change handler
-        final EditText jsonEditText = (EditText) findViewById(R.id.jsonAdaptiveCard);
-        final EditText configEditText = (EditText) findViewById(R.id.hostConfig);
+        m_jsonEditText = (EditText) findViewById(R.id.jsonAdaptiveCard);
+        m_configEditText = (EditText) findViewById(R.id.hostConfig);
 
         TextWatcher watcher = new TextWatcher()
         {
             @Override
             public void afterTextChanged(Editable editable)
             {
-                m_timer.cancel();
-                m_timer = new Timer();
-                m_timer.schedule(new TimerTask()
-                {
-                    public void run()
-                    {
-                        jsonEditText.post(new Runnable()
-                        {
-                            public void run()
-                            {
-                                renderAdaptiveCard(true);
-                            }
-                        });
-                    }
-                }, DELAY);
+                renderAdaptiveCardAfterDelay(true);
             }
 
             @Override
@@ -115,13 +118,10 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) { }
-
-            private Timer m_timer=new Timer();
-            private final long DELAY = 1000; // milliseconds
         };
 
-        jsonEditText.addTextChangedListener(watcher);
-        configEditText.addTextChangedListener(watcher);
+        m_jsonEditText.addTextChangedListener(watcher);
+        m_configEditText.addTextChangedListener(watcher);
     }
 
     public class CustomCardElement extends BaseCardElement
@@ -534,17 +534,40 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         }
     }
 
+    private void renderAdaptiveCardAfterDelay(boolean showErrorToast)
+    {
+        m_timer.cancel();
+        m_timer = new Timer();
+        m_timer.schedule(new TimerTask()
+        {
+            public void run()
+            {
+                m_jsonEditText.post(new Runnable()
+                {
+                    public void run()
+                    {
+                        renderAdaptiveCard(true);
+                    }
+                });
+            }
+        }, DELAY);
+    }
+
     private void renderAdaptiveCard(boolean showErrorToast)
     {
+        // Cancel any existing timer, in case we were rendered on-demand while a
+        // delay render was still in the queue
+        m_timer.cancel();
+
         try
         {
-            String jsonText = ((EditText) findViewById(R.id.jsonAdaptiveCard)).getText().toString();
+            String jsonText = m_jsonEditText.getText().toString();
             if (jsonText == null)
             {
                 return;
             }
 
-            String hostConfigText = ((EditText) findViewById(R.id.hostConfig)).getText().toString();
+            String hostConfigText = m_configEditText.getText().toString();
             HostConfig hostConfig;
             if (hostConfigText.isEmpty())
             {
@@ -653,14 +676,22 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         {
             return;
         }
-        EditText jsonText = (EditText) findViewById(R.id.jsonAdaptiveCard);
-        jsonText.setText(fullString);
+        loadAdaptiveCard(fullString);
 
         EditText fileEditText = (EditText) findViewById(R.id.fileEditText);
         List path = data.getData().getPathSegments();
         fileEditText.setText((String)path.get(path.size()-1));
 
     }
+
+    private void loadAdaptiveCard(String payload)
+    {
+        m_jsonEditText.setText(payload);
+
+        // Render it immediately
+        renderAdaptiveCard(true);
+    }
+
 
     private void loadHostConfig(Intent data)
     {
@@ -670,8 +701,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             return;
         }
 
-        EditText configText = (EditText) findViewById(R.id.hostConfig);
-        configText.setText(fullString);
+        loadHostConfig(fullString);
 
         EditText fileEditText = (EditText) findViewById(R.id.hostConfigFileEditText);
         List path = data.getData().getPathSegments();
@@ -679,8 +709,20 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
     }
 
+    private void loadHostConfig(String hostConfigStr)
+    {
+        m_configEditText.setText(hostConfigStr);
+
+        // Render it immediately
+        renderAdaptiveCard(true);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (handleQrActivityResult(requestCode, resultCode, data)) {
+            return;
+        }
+
         switch (requestCode) {
             case FILE_SELECT_CARD:
                 if (resultCode == RESULT_OK)
@@ -947,5 +989,184 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             }
         });
         */
+    }
+
+    public void onScanQrClicked(View view)
+    {
+        goToConnectingState();
+
+        // Docs here: https://github.com/journeyapps/zxing-android-embedded
+        IntentIntegrator integrator = new IntentIntegrator(this);
+        integrator.setPrompt("Scan QR code from the Designer");
+        integrator.setBeepEnabled(false);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+        integrator.setOrientationLocked(true);
+        integrator.initiateScan();
+    }
+
+    private boolean handleQrActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        IntentResult qrResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (qrResult != null)
+        {
+            String contents = qrResult.getContents();
+            if (contents != null)
+            {
+                m_remoteClientConnection = new RemoteClientConnection(this, new RemoteClientConnection.Observer()
+                {
+                    @Override
+                    public void onConnecting(String status)
+                    {
+                        final String finalStatus = status;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), finalStatus, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onStateChanged(RemoteClientConnection.State state)
+                    {
+                        final RemoteClientConnection.State s = state;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                switch (s) {
+                                    // Connecting omitted because that's never hit, it's already
+                                    // connecting by the time we started observing
+                                    case CONNECTED:
+                                        goToConnectedState();
+                                        break;
+
+                                    case RECONNECTING:
+                                        goToReconnectingState();
+                                        break;
+
+                                    case CLOSED:
+                                        goToDisconnectedState();
+                                        break;
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onConnectFailed(String errorMessage)
+                    {
+                        m_remoteClientConnection = null;
+                        final String finalErrorMessage = errorMessage;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), finalErrorMessage, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCardPayload(String cardPayload)
+                    {
+                        final String cPayload = cardPayload;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                loadAdaptiveCard(cPayload);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onHostConfigPayload(String hostConfigPayload)
+                    {
+                        final String hPayload = hostConfigPayload;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                loadHostConfig(hPayload);
+                            }
+                        });
+                    }
+                });
+
+                m_remoteClientConnection.connect(contents);
+            }
+
+            else
+            {
+                goToDisconnectedState();
+            }
+
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public void onDisconnectClicked(View view)
+    {
+        disconnect();
+        goToDisconnectedState();
+    }
+
+    private void disconnect()
+    {
+        if (m_remoteClientConnection != null)
+        {
+            m_remoteClientConnection.disconnect();
+            m_remoteClientConnection = null;
+        }
+    }
+
+    private void goToConnectingState()
+    {
+        m_buttonScanQr.setText("Connecting...");
+        m_buttonScanQr.setVisibility(View.VISIBLE);
+        m_buttonScanQr.setEnabled(false);
+        m_buttonDisconnect.setVisibility(View.GONE);
+        goToReadOnlyState();
+    }
+
+    private void goToConnectedState()
+    {
+        m_buttonScanQr.setVisibility(View.GONE);
+        m_buttonDisconnect.setVisibility(View.VISIBLE);
+        m_buttonDisconnect.setText("Connected! Click to disconnect");
+        goToReadOnlyState();
+    }
+
+    private void goToReconnectingState()
+    {
+        m_buttonScanQr.setVisibility(View.GONE);
+        m_buttonDisconnect.setVisibility(View.VISIBLE);
+        m_buttonDisconnect.setText("Reconnecting... Tap to disconnect");
+        goToReadOnlyState();
+    }
+
+    private void goToDisconnectedState()
+    {
+        m_buttonScanQr.setText("Connect via QR Code");
+        m_buttonScanQr.setVisibility(View.VISIBLE);
+        m_buttonScanQr.setEnabled(true);
+        m_buttonDisconnect.setVisibility(View.GONE);
+        goToEditableState();
+    }
+
+    private void goToReadOnlyState()
+    {
+        m_adaptiveCardPickerGroup.setVisibility(View.GONE);
+        m_hostConfigPickerGroup.setVisibility(View.GONE);
+        m_jsonEditText.setEnabled(false);
+        m_configEditText.setEnabled(false);
+    }
+
+    private void goToEditableState()
+    {
+        m_adaptiveCardPickerGroup.setVisibility(View.VISIBLE);
+        m_hostConfigPickerGroup.setVisibility(View.VISIBLE);
+        m_jsonEditText.setEnabled(true);
+        m_configEditText.setEnabled(true);
     }
 }
