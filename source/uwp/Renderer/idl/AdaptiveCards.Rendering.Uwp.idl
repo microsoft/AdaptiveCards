@@ -526,6 +526,17 @@ AdaptiveNamespaceStart
         Content
     } FallbackType;
 
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)][internal]
+#endif
+    typedef[v1_enum] enum BleedDirection {
+        None = 0,
+        Left,
+        Right,
+        Both
+    } BleedDirection;
+
     declare
     {
         interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
@@ -1474,6 +1485,33 @@ AdaptiveNamespaceStart
 
     [
         version(NTDDI_WIN10_RS1),
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(F0B8422A-FE6B-40C4-87D8-7D3480774D75),
+        contract(InternalContract, 1),
+        internal
+#else
+        uuid(7989B476-BEC2-4D4E-B84E-EC9816B4E0DE)
+#endif
+    ]
+    interface IAdaptiveContainerBase : IInspectable
+    {
+        [propget] HRESULT Style([out, retval] ContainerStyle* value);
+        [propput] HRESULT Style([in] ContainerStyle value);
+
+        [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
+        [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
+
+        [propget] HRESULT Bleed([out, retval] boolean* value);
+        [propput] HRESULT Bleed([in] boolean value);
+
+        [propget] HRESULT BleedDirection([out, retval] BleedDirection* bleedDirection);
+
+        [propget] HRESULT MinHeight([out, retval] UINT32 * value);
+        [propput] HRESULT MinHeight([in] UINT32 value);
+    };
+
+    [
+        version(NTDDI_WIN10_RS1),
         exclusiveto(AdaptiveContainer),
 #ifdef ADAPTIVE_CARDS_WINDOWS
         uuid(60554c5a-32db-4130-8613-d39737ced7c4),
@@ -1482,25 +1520,16 @@ AdaptiveNamespaceStart
 #else
         uuid(ba90da3f-556c-4e3a-9d01-11f2ce78dcd7)
 #endif
-    ]
-    interface IAdaptiveContainer : IInspectable
+    ] 
+    interface IAdaptiveContainer : IInspectable requires IAdaptiveContainerBase
     {
-        [propget] HRESULT Style([out, retval] ContainerStyle* value);
-        [propput] HRESULT Style([in] ContainerStyle value);
-
         [propget] HRESULT VerticalContentAlignment([out, retval] VerticalContentAlignment* value);
         [propput] HRESULT VerticalContentAlignment([in] VerticalContentAlignment value);
 
         [propget] HRESULT Items([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
 
-        [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
-        [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
-
         [propget] HRESULT BackgroundImage([out, retval] AdaptiveBackgroundImage * *value);
         [propput] HRESULT BackgroundImage([in] AdaptiveBackgroundImage * value);
-
-        [propget] HRESULT MinHeight([out, retval] UINT32* value);
-        [propput] HRESULT MinHeight([in] UINT32 value);
     };
 
     [
@@ -1515,6 +1544,7 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveContainer
     {
         [default] interface IAdaptiveContainer;
+        interface IAdaptiveContainerBase;
         interface IAdaptiveCardElement;
     };
 
@@ -1528,8 +1558,8 @@ AdaptiveNamespaceStart
 #else
         uuid(91e03800-d239-43bc-b5fb-2ccfe0cc7fcb)
 #endif
-    ]
-    interface IAdaptiveColumn : IInspectable
+    ] 
+    interface IAdaptiveColumn : IInspectable requires IAdaptiveContainerBase
     {
         [propget] HRESULT Width([out, retval] HSTRING* value);
         [propput] HRESULT Width([in] HSTRING value);
@@ -1537,21 +1567,13 @@ AdaptiveNamespaceStart
         [propget] HRESULT PixelWidth([out, retval] UINT32* value);
         [propput] HRESULT PixelWidth([in] UINT32 value);
 
-        [propget] HRESULT Style([out, retval] ContainerStyle* value);
-        [propput] HRESULT Style([in] ContainerStyle value);
-
         [propget] HRESULT VerticalContentAlignment([out, retval] VerticalContentAlignment* value);
         [propput] HRESULT VerticalContentAlignment([in] VerticalContentAlignment value);
 
         [propget] HRESULT Items([out, retval] Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>** value);
-        [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
-        [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
 
         [propget] HRESULT BackgroundImage([out, retval] AdaptiveBackgroundImage * *value);
         [propput] HRESULT BackgroundImage([in] AdaptiveBackgroundImage * value);
-
-        [propget] HRESULT MinHeight([out, retval] UINT32* value);
-        [propput] HRESULT MinHeight([in] UINT32 value);
     };
 
     [
@@ -1566,6 +1588,7 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveColumn
     {
         [default] interface IAdaptiveColumn;
+        interface IAdaptiveContainerBase;
         interface IAdaptiveCardElement;
     };
 
@@ -1580,18 +1603,9 @@ AdaptiveNamespaceStart
         uuid(4e3e1cd1-906b-4718-96ea-0a6e16bf0199)
 #endif
     ]
-    interface IAdaptiveColumnSet : IInspectable
+    interface IAdaptiveColumnSet : IInspectable requires IAdaptiveContainerBase
     {
         [propget] HRESULT Columns([out, retval] Windows.Foundation.Collections.IVector<AdaptiveColumn*>** value);
-
-        [propget] HRESULT SelectAction([out, retval] IAdaptiveActionElement** value);
-        [propput] HRESULT SelectAction([in] IAdaptiveActionElement* value);
-
-        [propget] HRESULT Style([out, retval] ContainerStyle* value);
-        [propput] HRESULT Style([in] ContainerStyle value);
-
-        [propget] HRESULT MinHeight([out, retval] UINT32* value);
-        [propput] HRESULT MinHeight([in] UINT32 value);
     };
 
     [
@@ -1606,6 +1620,7 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveColumnSet
     {
         [default] interface IAdaptiveColumnSet;
+        interface IAdaptiveContainerBase;
         interface IAdaptiveCardElement;
     };
 
