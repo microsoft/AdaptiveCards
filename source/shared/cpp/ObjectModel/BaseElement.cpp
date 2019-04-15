@@ -87,11 +87,6 @@ namespace AdaptiveSharedNamespace
         return m_requires;
     }
 
-    void BaseElement::SetRequirements(std::shared_ptr<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>> requirements)
-    {
-        m_requires = requirements;
-    }
-
     Json::Value BaseElement::SerializeToJsonValue() const
     {
         Json::Value root = GetAdditionalProperties();

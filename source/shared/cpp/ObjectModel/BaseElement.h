@@ -91,7 +91,6 @@ namespace AdaptiveSharedNamespace
 
         bool MeetsRequirements(const AdaptiveSharedNamespace::FeatureRegistration& hostProvides) const;
         std::shared_ptr<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>> GetRequirements() const;
-        void SetRequirements(std::shared_ptr<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>> requirements);
 
         // Misc.
         virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris);
