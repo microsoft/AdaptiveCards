@@ -157,6 +157,8 @@ namespace AdaptiveCards.Rendering.Wpf
                     break;
             }
 
+            outerGrid.MinHeight = card.PixelMinHeight;
+
             AdaptiveContainerRenderer.AddContainerElements(grid, card.Body, context);
             AdaptiveActionSetRenderer.AddActions(grid, card.Actions, context);
 
