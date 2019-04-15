@@ -1012,20 +1012,23 @@ namespace AdaptiveCardsSharedModelUnitTest
             auto textBlockNoRequires = std::static_pointer_cast<TextBlock>(body[1]);
 
             FeatureRegistration featureRegistration;
-            featureRegistration.AddFeature("foobar", "2");
 
+            featureRegistration.AddFeature("foobar", "2");
             Assert::IsTrue(textBlock->MeetsRequirements(featureRegistration));
             Assert::IsTrue(textBlockNoRequires->MeetsRequirements(featureRegistration));
-            // hostProvides.clear();
-            // Assert::IsFalse(textBlock->MeetsRequirements(hostProvides));
-            // Assert::IsTrue(textBlockNoRequires->MeetsRequirements(hostProvides));
-            // hostProvides.insert({ "foobar", "1.9.9.9" });
-            // Assert::IsFalse(textBlock->MeetsRequirements(hostProvides));
-            // Assert::IsTrue(textBlockNoRequires->MeetsRequirements(hostProvides));
-            // hostProvides.clear();
-            // hostProvides.insert({ "foobar", "99" });
-            // Assert::IsTrue(textBlock->MeetsRequirements(hostProvides));
-            // Assert::IsTrue(textBlockNoRequires->MeetsRequirements(hostProvides));
+
+            featureRegistration.RemoveFeature("foobar");
+            Assert::IsFalse(textBlock->MeetsRequirements(featureRegistration));
+            Assert::IsTrue(textBlockNoRequires->MeetsRequirements(featureRegistration));
+
+            featureRegistration.AddFeature("foobar", "1.9.9.9");
+            Assert::IsFalse(textBlock->MeetsRequirements(featureRegistration));
+            Assert::IsTrue(textBlockNoRequires->MeetsRequirements(featureRegistration));
+
+            featureRegistration.RemoveFeature("foobar");
+            featureRegistration.AddFeature("foobar", "99");
+            Assert::IsTrue(textBlock->MeetsRequirements(featureRegistration));
+            Assert::IsTrue(textBlockNoRequires->MeetsRequirements(featureRegistration));
         }
 
         TEST_METHOD(NestedFallbacksSerialization)
