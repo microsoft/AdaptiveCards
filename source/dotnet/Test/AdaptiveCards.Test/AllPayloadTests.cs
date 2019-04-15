@@ -132,7 +132,6 @@ namespace AdaptiveCards.Test
                     "DeepFallback",
                     "EmptyFallbackCard",
                     "RichTextBlock.Highlights",
-                    "RichTextBlock.TextRun.SelectActions",
 
                     // These cards have AdpativeCards with styles on them
                     "ColumnColumnSetContainer.Bleed",
