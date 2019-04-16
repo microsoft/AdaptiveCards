@@ -1565,9 +1565,6 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT BackgroundImage([out, retval] AdaptiveBackgroundImage * *value);
         [propput] HRESULT BackgroundImage([in] AdaptiveBackgroundImage * value);
-
-        [propget] HRESULT MinHeight([out, retval] UINT32* value);
-        [propput] HRESULT MinHeight([in] UINT32 value);
     };
 
     [
@@ -1612,9 +1609,6 @@ AdaptiveNamespaceStart
 
         [propget] HRESULT BackgroundImage([out, retval] AdaptiveBackgroundImage * *value);
         [propput] HRESULT BackgroundImage([in] AdaptiveBackgroundImage * value);
-
-        [propget] HRESULT MinHeight([out, retval] UINT32* value);
-        [propput] HRESULT MinHeight([in] UINT32 value);
     };
 
     [
