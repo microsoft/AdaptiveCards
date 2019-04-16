@@ -77,11 +77,6 @@ namespace AdaptiveCards.Rendering.Wpf
 
             }
 
-            if (!richTB.IsVisible)
-            {
-                uiRichTB.Visibility = Visibility.Collapsed;
-            }
-
             return uiRichTB;
         }
 
