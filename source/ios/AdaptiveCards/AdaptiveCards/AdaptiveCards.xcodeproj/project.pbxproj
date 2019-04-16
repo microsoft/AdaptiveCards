@@ -115,7 +115,7 @@
 		7EDC0F68213878E800077A13 /* SemanticVersion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7EDC0F66213878E800077A13 /* SemanticVersion.cpp */; };
 		7EF8879D21F14CDD00BAFF02 /* BackgroundImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 7EF8879B21F14CDD00BAFF02 /* BackgroundImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7EF8879E21F14CDD00BAFF02 /* BackgroundImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7EF8879C21F14CDD00BAFF02 /* BackgroundImage.cpp */; };
-		8404BA8E226697800091A0AD /* FeatureRegistration.h in Headers */ = {isa = PBXBuildFile; fileRef = 8404BA8C226697800091A0AD /* FeatureRegistration.h */; };
+		8404BA8E226697800091A0AD /* FeatureRegistration.h in Headers */ = {isa = PBXBuildFile; fileRef = 8404BA8C226697800091A0AD /* FeatureRegistration.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8404BA8F226697800091A0AD /* FeatureRegistration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8404BA8D226697800091A0AD /* FeatureRegistration.cpp */; };
 		C8DEDF39220CDEB00001AAED /* ActionSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8DEDF37220CDEB00001AAED /* ActionSet.cpp */; };
 		C8DEDF3A220CDEB00001AAED /* ActionSet.h in Headers */ = {isa = PBXBuildFile; fileRef = C8DEDF38220CDEB00001AAED /* ActionSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1096,6 +1096,7 @@
 				6B2242B022334452000ACDA1 /* Inline.h in Headers */,
 				7EDC0F67213878E800077A13 /* SemanticVersion.h in Headers */,
 				F4F44B8020478C6F00A2F24C /* Util.h in Headers */,
+				8404BA8E226697800091A0AD /* FeatureRegistration.h in Headers */,
 				6B2242B222334452000ACDA1 /* Paragraph.h in Headers */,
 				6B224279220BAC8B000ACDA1 /* BaseElement.h in Headers */,
 				F448732A1EE2261F00FCAFAE /* ToggleInput.h in Headers */,
@@ -1168,7 +1169,6 @@
 				F4C1F5EE1F2BB2810018CB78 /* ACRIContentHoldingView.h in Headers */,
 				F4FE456A1F196F3D0071D9E5 /* ACRContentStackView.h in Headers */,
 				F4071C7D1FCCBAEF00AF4FEA /* json.h in Headers */,
-				8404BA8E226697800091A0AD /* FeatureRegistration.h in Headers */,
 				F4071C7C1FCCBAEF00AF4FEA /* json-forwards.h in Headers */,
 				F4D402111F7DAC2C00D0356B /* ACOAdaptiveCardParseResult.h in Headers */,
 				F42741071EF8624F00399FBB /* ACRIBaseCardElementRenderer.h in Headers */,
