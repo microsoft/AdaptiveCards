@@ -2875,6 +2875,7 @@ namespace AdaptiveNamespace
 
         ComPtr<IPanel> gridContainerAsPanel;
         RETURN_IF_FAILED(gridContainer.As(&gridContainerAsPanel));
+
         ComPtr<IFrameworkElement> gridContainerAsFrameworkElement;
         RETURN_IF_FAILED(gridContainer.As(&gridContainerAsFrameworkElement));
 

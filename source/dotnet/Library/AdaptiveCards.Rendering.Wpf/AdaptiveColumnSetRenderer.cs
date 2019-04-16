@@ -113,20 +113,13 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiColumnSet.Children.Add(uiContainer);
             }
 
-            if (columnSet.SelectAction != null)
-            {
-                return context.RenderSelectAction(columnSet.SelectAction, border);
-            }
-
-            if(!columnSet.IsVisible)
-            {
-                uiColumnSet.Visibility = Visibility.Collapsed;
-            }
-
             // Revert context's value to that of outside the Container
             context.RenderArgs = parentRenderArgs;
 
-            return border;
+            RendererUtil.ApplyIsVisible(uiColumnSet, columnSet);
+            uiColumnSet.MinHeight = columnSet.PixelMinHeight;
+
+            return RendererUtil.ApplySelectAction(border, columnSet, context);
         }
     }
 }
