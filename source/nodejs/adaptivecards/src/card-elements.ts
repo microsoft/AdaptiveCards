@@ -1257,26 +1257,28 @@ export class TextRun extends BaseTextBlock {
     protected internalRender(): HTMLElement {
         if (!Utils.isNullOrEmpty(this.text)) {
             let hostConfig = this.hostConfig;
-            let element: HTMLElement = null;
+
+            let element = document.createElement("span");
+            element.classList.add(hostConfig.makeCssClassName("ac-textRun"));
+
+            this.applyStylesTo(element);
 
             if (this.selectAction && hostConfig.supportsInteractivity) {
-                element = document.createElement("a");
-                element.classList.add(hostConfig.makeCssClassName("ac-anchor"));
-                (<HTMLAnchorElement>element).target = "_blank";
-                element.onclick = (e) => {
-                    if (raiseAnchorClickedEvent(this, e.target as HTMLAnchorElement)) {
-                        e.preventDefault();
-                    }
+                let anchor = document.createElement("a");
+                anchor.classList.add(hostConfig.makeCssClassName("ac-anchor"));
+                anchor.href = this.selectAction.getHref();
+                anchor.target = "_blank";
+                anchor.onclick = (e) => {
+                    e.preventDefault();
+
+                    this.selectAction.execute();
                 }
+
+                anchor.innerText = this.text;
+
+                element.appendChild(anchor);
             }
             else {
-                element = document.createElement("span");
-                element.classList.add(hostConfig.makeCssClassName("ac-textRun"));
-            }
-
-            if (element != null) {
-                this.applyStylesTo(element);
-
                 element.innerText = this.text;
             }
 
@@ -1287,8 +1289,40 @@ export class TextRun extends BaseTextBlock {
         }
     }
 
+    italic: boolean = false;
+    strikethrough: boolean = false;
+    highlight: boolean = false;
+
+    applyStylesTo(targetElement: HTMLElement) {
+        super.applyStylesTo(targetElement);
+
+        if (this.italic) {
+            targetElement.style.fontStyle = "italic";
+        }
+
+        if (this.strikethrough) {
+            targetElement.style.textDecoration = "line-through";
+        }
+
+        if (this.highlight) {
+            let effectiveStyle = this.getEffectiveStyleDefinition();
+
+            if (effectiveStyle.highlightBackgroundColor) {
+                targetElement.style.backgroundColor = effectiveStyle.highlightBackgroundColor;
+            }
+
+            if (effectiveStyle.highlightForegroundColor && this.color != Enums.TextColor.Default) {
+                targetElement.style.color = effectiveStyle.highlightForegroundColor;
+            }
+        }
+    }
+
     toJSON() {
         let result = super.toJSON();
+
+        Utils.setProperty(result, "italic", this.italic, false);
+        Utils.setProperty(result, "strikethrough", this.strikethrough, false);
+        Utils.setProperty(result, "highlight", this.highlight, false);
 
         if (this.selectAction) {
             Utils.setProperty(result, "selectAction", this.selectAction.toJSON());
@@ -1300,6 +1334,9 @@ export class TextRun extends BaseTextBlock {
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         super.parse(json, errors);
 
+        this.italic = Utils.getBoolValue(json["italic"], this.italic);
+        this.strikethrough = Utils.getBoolValue(json["strikethrough"], this.strikethrough);
+        this.highlight = Utils.getBoolValue(json["highlight"], this.highlight);
         this.selectAction = createActionInstance(
             this,
             json["selectAction"],
@@ -3375,6 +3412,10 @@ export abstract class Action implements ICardObject {
 
     onExecute: (sender: Action) => void;
 
+    getHref(): string {
+        return "";
+    }
+
     toJSON() {
         let result = {};
 
@@ -3552,6 +3593,10 @@ export abstract class Action implements ICardObject {
         return this.internalValidateInputs(this.getReferencedInputs());
     }
 
+    shouldFallback(): boolean {
+        return this._shouldFallback || !this.requires.areAllMet(this.parent.hostConfig.hostCapabilities);
+    }
+
     get isPrimary(): boolean {
         return this.sentiment == Enums.ActionSentiment.Positive;
     }
@@ -3577,10 +3622,6 @@ export abstract class Action implements ICardObject {
 
     get renderedElement(): HTMLElement {
         return this._renderedElement;
-    }
-
-    shouldFallback(): boolean {
-        return this._shouldFallback || !this.requires.areAllMet(this.parent.hostConfig.hostCapabilities);
     }
 }
 
@@ -3685,6 +3726,10 @@ export class OpenUrlAction extends Action {
         super.parse(json, errors);
 
         this.url = Utils.getStringValue(json["url"]);
+    }
+
+    getHref(): string {
+        return this.url;
     }
 }
 
