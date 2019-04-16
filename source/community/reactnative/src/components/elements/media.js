@@ -73,7 +73,7 @@ export class Media extends React.Component {
         if (source.url) {
             source.uri = source.url
         }
-        source.uri = source.uri.trim()
+        source.uri = source.uri ? source.uri.trim() : ""
         return source;
     }
 
