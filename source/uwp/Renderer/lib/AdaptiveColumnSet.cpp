@@ -41,7 +41,7 @@ namespace AdaptiveNamespace
         m_style = static_cast<ABI::AdaptiveNamespace::ContainerStyle>(sharedColumnSet->GetStyle());
         m_minHeight = sharedColumnSet->GetMinHeight();
         m_bleed = sharedColumnSet->GetBleed();
-       m_bleedDirection = static_cast<ABI::AdaptiveNamespace::BleedDirection>(sharedColumnSet->GetBleedDirection());
+        m_bleedDirection = static_cast<ABI::AdaptiveNamespace::BleedDirection>(sharedColumnSet->GetBleedDirection());
 
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedColumnSet));
 

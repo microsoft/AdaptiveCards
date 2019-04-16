@@ -13,6 +13,10 @@
 		300ECB72219A53B800371DC5 /* Action.Submit.Sentiment.json in Resources */ = {isa = PBXBuildFile; fileRef = 300ECB6F219A53B800371DC5 /* Action.Submit.Sentiment.json */; };
 		300ECB73219A53B800371DC5 /* Action.OpenUrl.Sentiment.json in Resources */ = {isa = PBXBuildFile; fileRef = 300ECB70219A53B800371DC5 /* Action.OpenUrl.Sentiment.json */; };
 		300ECB74219A53B800371DC5 /* Action.ShowCard.Sentiment.json in Resources */ = {isa = PBXBuildFile; fileRef = 300ECB71219A53B800371DC5 /* Action.ShowCard.Sentiment.json */; };
+		30164559225E602A0032E11C /* AdaptiveCard.MinHeight.json in Resources */ = {isa = PBXBuildFile; fileRef = 30164555225E60290032E11C /* AdaptiveCard.MinHeight.json */; };
+		3016455A225E602A0032E11C /* Container.MinHeight.json in Resources */ = {isa = PBXBuildFile; fileRef = 30164556225E60290032E11C /* Container.MinHeight.json */; };
+		3016455B225E602A0032E11C /* Column.MinHeight.json in Resources */ = {isa = PBXBuildFile; fileRef = 30164557225E602A0032E11C /* Column.MinHeight.json */; };
+		3016455C225E602A0032E11C /* ColumnSet.MinHeight.json in Resources */ = {isa = PBXBuildFile; fileRef = 30164558225E602A0032E11C /* ColumnSet.MinHeight.json */; };
 		30860BC220C9B5C9009F9D99 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		30860BC320C9B5C9009F9D99 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json in Resources */ = {isa = PBXBuildFile; fileRef = 30860BB720C9B5C8009F9D99 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json */; };
 		30860BC420C9B5C9009F9D99 /* (null) in Resources */ = {isa = PBXBuildFile; };
@@ -186,6 +190,10 @@
 		300ECB6F219A53B800371DC5 /* Action.Submit.Sentiment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.Submit.Sentiment.json; path = ../../../../samples/v1.2/Elements/Action.Submit.Sentiment.json; sourceTree = "<group>"; };
 		300ECB70219A53B800371DC5 /* Action.OpenUrl.Sentiment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.OpenUrl.Sentiment.json; path = ../../../../samples/v1.2/Elements/Action.OpenUrl.Sentiment.json; sourceTree = "<group>"; };
 		300ECB71219A53B800371DC5 /* Action.ShowCard.Sentiment.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.ShowCard.Sentiment.json; path = ../../../../samples/v1.2/Elements/Action.ShowCard.Sentiment.json; sourceTree = "<group>"; };
+		30164555225E60290032E11C /* AdaptiveCard.MinHeight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = AdaptiveCard.MinHeight.json; path = ../../../../samples/v1.2/Elements/AdaptiveCard.MinHeight.json; sourceTree = "<group>"; };
+		30164556225E60290032E11C /* Container.MinHeight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Container.MinHeight.json; path = ../../../../samples/v1.2/Elements/Container.MinHeight.json; sourceTree = "<group>"; };
+		30164557225E602A0032E11C /* Column.MinHeight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Column.MinHeight.json; path = ../../../../samples/v1.2/Elements/Column.MinHeight.json; sourceTree = "<group>"; };
+		30164558225E602A0032E11C /* ColumnSet.MinHeight.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.MinHeight.json; path = ../../../../samples/v1.2/Elements/ColumnSet.MinHeight.json; sourceTree = "<group>"; };
 		30860BB720C9B5C8009F9D99 /* ColumnSet.Input.ChoiceSet.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.Input.ChoiceSet.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet.Input.ChoiceSet.VerticalStretch.json; sourceTree = "<group>"; };
 		30860BBA20C9B5C8009F9D99 /* ColumnSet.Input.Number.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.Input.Number.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet.Input.Number.VerticalStretch.json; sourceTree = "<group>"; };
 		30860BBB20C9B5C8009F9D99 /* ColumnSet.ImageSet.VerticalStretch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ColumnSet.ImageSet.VerticalStretch.json; path = ../../../../samples/Tests/ColumnSet.ImageSet.VerticalStretch.json; sourceTree = "<group>"; };
@@ -459,6 +467,10 @@
 		F4D33E341F045B6E00941E44 /* Jsons */ = {
 			isa = PBXGroup;
 			children = (
+				30164555225E60290032E11C /* AdaptiveCard.MinHeight.json */,
+				30164557225E602A0032E11C /* Column.MinHeight.json */,
+				30164558225E602A0032E11C /* ColumnSet.MinHeight.json */,
+				30164556225E60290032E11C /* Container.MinHeight.json */,
 				6B22426721E94AD0000ACDA1 /* Action.CustomParsing.json */,
 				6B096D572257DA0B006CC034 /* Action.IconUrl.TwoActions.json */,
 				6B980944216573EF0024B79B /* Action.OpenUrl.IconUrl.json */,
@@ -694,6 +706,7 @@
 				6B268FE520CEF89100D99C1B /* (null) in Resources */,
 				6B9AB30C20DC4FB3005C8E15 /* IconsInSomeActions.json in Resources */,
 				F4933CED1F79852C00F6EBFD /* TextBlock.Weight.json in Resources */,
+				3016455A225E602A0032E11C /* Container.MinHeight.json in Resources */,
 				F4933D061F79853B00F6EBFD /* StockUpdate.json in Resources */,
 				30860BC620C9B5C9009F9D99 /* ColumnSet.Input.Number.VerticalStretch.json in Resources */,
 				F4933D081F79853B00F6EBFD /* WeatherLarge.json in Resources */,
@@ -750,6 +763,8 @@
 				F4933CE01F79852C00F6EBFD /* Input.Text.Style.json in Resources */,
 				C8D72160220CFBAF00E903B3 /* Column.BackgroundImage.json in Resources */,
 				6B9BDF7C20E6E0C200F13155 /* Column.Explicit.Size.json in Resources */,
+				3016455C225E602A0032E11C /* ColumnSet.MinHeight.json in Resources */,
+				30164559225E602A0032E11C /* AdaptiveCard.MinHeight.json in Resources */,
 				F4933CC71F79852C00F6EBFD /* Column.Spacing.json in Resources */,
 				F4933CC31F79852C00F6EBFD /* Action.ShowCard.json in Resources */,
 				F4933CD31F79852C00F6EBFD /* FactSet.json in Resources */,
@@ -769,6 +784,7 @@
 				7EF887CD21FBCEF900BAFF02 /* Container.Style.json in Resources */,
 				F4933CEE1F79852C00F6EBFD /* TextBlock.Wrap.json in Resources */,
 				6B096D582257DA0C006CC034 /* Action.IconUrl.TwoActions.json in Resources */,
+				3016455B225E602A0032E11C /* Column.MinHeight.json in Resources */,
 				F4933CE71F79852C00F6EBFD /* TextBlock.IsSubtle.json in Resources */,
 				F4933CC41F79852C00F6EBFD /* Action.ShowCard.Style.json in Resources */,
 				F4F44B852048CDB300A2F24C /* AdditionalProperty.json in Resources */,
