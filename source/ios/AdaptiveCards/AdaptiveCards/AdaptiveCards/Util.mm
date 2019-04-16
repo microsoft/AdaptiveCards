@@ -269,12 +269,12 @@ ObserverActionBlock generateBackgroundImageObserverAction(std::shared_ptr<Backgr
     };
 }
 
-void handleException(NSException *exception,
-                     UIView<ACRIContentHoldingView> *view,
-                     ACRView *rootView,
-                     NSMutableArray *inputs,
-                     std::shared_ptr<BaseCardElement> const &givenElem,
-                     ACOHostConfig *config)
+void handleFallbackException(ACOFallbackException *exception,
+                             UIView<ACRIContentHoldingView> *view,
+                             ACRView *rootView,
+                             NSMutableArray *inputs,
+                             std::shared_ptr<BaseCardElement> const &givenElem,
+                             ACOHostConfig *config)
 {
     std::shared_ptr<BaseElement> fallbackBaseElement = nullptr;
     std::shared_ptr<BaseCardElement> elem = givenElem;
@@ -291,7 +291,7 @@ void handleException(NSException *exception,
 
         fallbackBaseElement = elem->GetFallbackContent();
         elem = std::static_pointer_cast<BaseCardElement>(fallbackBaseElement);
-        if(!elem) {
+        if (!elem) {
             break;
         }
 
@@ -301,23 +301,21 @@ void handleException(NSException *exception,
         ACRBaseCardElementRenderer *renderer =
             [reg getRenderer:[NSNumber numberWithInt:(int)elem->GetElementType()]];
 
-        if(renderer) {
+        if (renderer) {
             @try {
                 const CardElementType elemType = givenElem->GetElementType();
                 removeLastViewFromCollectionView(elemType, view);
                 [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
-                elem = nullptr;
                 bHandled = true;
-            } @catch (NSException *e){
-                NSLog(@"Fallabck Failed, trying different fallback");
+            } @catch (ACOFallbackException *e){
+                NSLog(@"Fallback Failed, trying different fallback");
                 NSLog(@"%@", e);
             }
         }
 
     } while (!bHandled);
 
-    if (!bHandled)
-    {
+    if (!bHandled) {
         if (bCanFallbackToAncestor && fallbackType != FallbackType::Drop) {
             @throw exception;
         } else {
@@ -336,13 +334,13 @@ void removeLastViewFromCollectionView(const CardElementType elemType, UIView<ACR
     }
 }
 
-void handleActionException(NSException *exception,
-                           UIView<ACRIContentHoldingView> *view,
-                           ACRView *rootView,
-                           NSMutableArray *inputs,
-                           ACOBaseActionElement *acoElem,
-                           ACOHostConfig *config,
-                           UIView<ACRIContentHoldingView> *actionSet)
+void handleActionFallbackException(ACOFallbackException *exception,
+                                   UIView<ACRIContentHoldingView> *view,
+                                   ACRView *rootView,
+                                   NSMutableArray *inputs,
+                                   ACOBaseActionElement *acoElem,
+                                   ACOHostConfig *config,
+                                   UIView<ACRIContentHoldingView> *actionSet)
 {
     std::shared_ptr<BaseElement> fallbackBaseElement = nullptr;
     std::shared_ptr<BaseActionElement> elem = acoElem.element;
@@ -359,7 +357,7 @@ void handleActionException(NSException *exception,
 
         fallbackBaseElement = elem->GetFallbackContent();
         elem = std::static_pointer_cast<BaseActionElement>(fallbackBaseElement);
-        if(!elem) {
+        if (!elem) {
             break;
         }
 
@@ -368,7 +366,7 @@ void handleActionException(NSException *exception,
         ACRBaseActionElementRenderer *renderer =
             [reg getActionRenderer:[NSNumber numberWithInt:(int)elem->GetElementType()]];
 
-        if(renderer) {
+        if (renderer) {
             @try {
                 UIButton *button = [renderer renderButton:rootView
                                                    inputs:inputs
@@ -376,9 +374,8 @@ void handleActionException(NSException *exception,
                                         baseActionElement:acoElem
                                                hostConfig:config];
                 [actionSet addArrangedSubview:button];
-                elem = nullptr;
                 bHandled = true;
-            } @catch (NSException *e){
+            } @catch (ACOFallbackException *e) {
                 NSLog(@"Fallabck Failed, trying different fallback");
                 NSLog(@"%@", e);
             }
@@ -386,8 +383,7 @@ void handleActionException(NSException *exception,
 
     } while (!bHandled);
 
-    if (!bHandled)
-    {
+    if (!bHandled) {
         if (bCanFallbackToAncestor && fallbackType != FallbackType::Drop) {
             @throw exception;
         }

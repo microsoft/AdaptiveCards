@@ -62,37 +62,35 @@
         }
 
         [acoElem setElem:elem];
-        
+
         NSUInteger numElem = [childview subviewsCounts];
 
-        @try {
-            UIButton *button = [actionRenderer renderButton:rootView inputs:inputs superview:superview baseActionElement:acoElem hostConfig:config];
-            accumulatedWidth += [button intrinsicContentSize].width;
-            accumulatedHeight += [button intrinsicContentSize].height;
-            maxWidth = MAX(maxWidth, [button intrinsicContentSize].width);
-            maxHeight = MAX(maxHeight, [button intrinsicContentSize].height);
+        UIButton *button = nil;
 
+        @try {
+            button = [actionRenderer renderButton:rootView inputs:inputs superview:superview baseActionElement:acoElem hostConfig:config];
             [childview addArrangedSubview:button];
-        } @catch (NSException * exception) {
-            handleActionException(exception,
-                                  superview,
-                                  rootView,
-                                  inputs,
-                                  acoElem,
-                                  config,
-                                  childview);
+        } @catch (ACOFallbackException *exception) {
+            handleActionFallbackException(exception,
+                                          superview,
+                                          rootView,
+                                          inputs,
+                                          acoElem,
+                                          config,
+                                          childview);
             NSUInteger count = [childview subviewsCounts];
-            if(count > numElem) {
+            if (count > numElem) {
                 UIView *view = [childview getLastSubview];
                 if (view && [view isKindOfClass:[UIButton class]]) {
-                    UIButton *button = (UIButton *)view;
-                    accumulatedWidth += [button intrinsicContentSize].width;
-                    accumulatedHeight += [button intrinsicContentSize].height;
-                    maxWidth = MAX(maxWidth, [button intrinsicContentSize].width);
-                    maxHeight = MAX(maxHeight, [button intrinsicContentSize].height);
+                    button = (UIButton *)view;
                 }
             }
         }
+
+        accumulatedWidth += [button intrinsicContentSize].width;
+        accumulatedHeight += [button intrinsicContentSize].height;
+        maxWidth = MAX(maxWidth, [button intrinsicContentSize].width);
+        maxHeight = MAX(maxHeight, [button intrinsicContentSize].height);
     }
 
     float contentWidth = accumulatedWidth, contentHeight = accumulatedHeight;

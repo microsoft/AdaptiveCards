@@ -74,7 +74,7 @@ namespace AdaptiveSharedNamespace
         std::vector<AdaptiveSharedNamespace::InternalId> m_parentalPadding;
         std::vector<ContainerBleedDirection> m_parentalBleedDirection;
 
-        unsigned int m_canFallbackToAncestor;
+        bool m_canFallbackToAncestor;
         std::string m_language;
     };
 }

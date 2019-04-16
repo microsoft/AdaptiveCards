@@ -226,8 +226,8 @@ using namespace AdaptiveCards;
 
                 prevStretchableElem = curStretchableElem;
             }
-        } @catch (NSException *e){
-            handleException(e, view, rootView, inputs, elem, config);
+        } @catch (ACOFallbackException *e){
+            handleFallbackException(e, view, rootView, inputs, elem, config);
         }
     }
 
