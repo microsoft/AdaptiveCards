@@ -227,7 +227,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="..\..\node_modules\react-native-windows\Yoga\csharp\Yoga\bin\Universal\$(Platform)\$(DependencyConfiguration)\yoga.dll">
-      <Link>%(Filename)%(Extension)</Link>
+      <Link>yoga.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Visible>False</Visible>
     </Content>

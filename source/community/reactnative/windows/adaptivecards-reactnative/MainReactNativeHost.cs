@@ -1,6 +1,7 @@
 ﻿using ReactNative;
 using ReactNative.Modules.Core;
 using ReactNative.Shell;
+using ReactNativeVideo;
 using System.Collections.Generic;
 
 namespace adaptivecards-reactnative
@@ -24,6 +25,7 @@ namespace adaptivecards-reactnative
         protected override List<IReactPackage> Packages => new List<IReactPackage>
         {
             new MainReactPackage(),
+            new ReactVideoPackage(),
         };
     }
 }
