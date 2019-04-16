@@ -712,6 +712,10 @@ export abstract class CardElement implements ICardObject {
         return true;
     }
 
+    get isInline(): boolean {
+        return false;
+    }
+
     get parent(): CardElement {
         return this._parent;
     }
@@ -759,210 +763,37 @@ export abstract class CardElement implements ICardObject {
     }
 }
 
-export class TextBlock extends CardElement {
-    private _computedLineHeight: number;
-    private _originalInnerHtml: string;
+export abstract class BaseTextBlock extends CardElement {
     private _text: string;
-    private _processedText: string = null;
-    private _treatAsPlainText: boolean = true;
     private _selectAction: Action = null;
 
-    private restoreOriginalContent() {
-        var maxHeight = this.maxLines
-            ? (this._computedLineHeight * this.maxLines) + 'px'
-            : null;
-
-        this.renderedElement.style.maxHeight = maxHeight;
-        this.renderedElement.innerHTML = this._originalInnerHtml;
-    }
-
-    private truncateIfSupported(maxHeight: number): boolean {
-        // For now, only truncate TextBlocks that contain just a single
-        // paragraph -- since the maxLines calculation doesn't take into
-        // account Markdown lists
-        var children = this.renderedElement.children;
-        var isTextOnly = !children.length;
-
-        var truncationSupported = isTextOnly || children.length == 1
-            && (<HTMLElement>children[0]).tagName.toLowerCase() == 'p';
-
-        if (truncationSupported) {
-            var element = isTextOnly
-                ? this.renderedElement
-                : <HTMLElement>children[0];
-
-            Utils.truncate(element, maxHeight, this._computedLineHeight);
-            return true;
-        }
-
-        return false;
-    }
-
-    private getEffectiveStyleDefinition() {
+    protected getEffectiveStyleDefinition() {
         return this.hostConfig.containerStyles.getStyleByName(this.getEffectiveStyle());
     }
 
-    protected getRenderedDomElementType(): string {
-        return "div";
-    }
-
-    protected internalRender(): HTMLElement {
-        this._processedText = null;
-
-        if (!Utils.isNullOrEmpty(this.text)) {
-            let hostConfig = this.hostConfig;
-
-            let element = document.createElement(this.getRenderedDomElementType());
-            element.classList.add(hostConfig.makeCssClassName("ac-textBlock"));
-            element.style.overflow = "hidden";
-
-            this.applyStylesTo(element);
-
-            if (this.selectAction) {
-                element.onclick = (e) => {
-                    this.selectAction.execute();
-
-                    e.cancelBubble = true;
-                }
-            }
-
-            if (!this._processedText) {
-                this._treatAsPlainText = true;
-
-                let formattedText = TextFormatters.formatText(this.lang, this.text);
-
-                if (this.useMarkdown) {
-                    if (AdaptiveCard.allowMarkForTextHighlighting) {
-                        formattedText = formattedText.replace(/<mark>/g, "===").replace(/<\/mark>/g, "/==");
-                    }
-
-                    let markdownProcessingResult = AdaptiveCard.applyMarkdown(formattedText);
-
-                    if (markdownProcessingResult.didProcess && markdownProcessingResult.outputHtml) {
-                        this._processedText = markdownProcessingResult.outputHtml;
-                        this._treatAsPlainText = false;
-
-                        // Only process <mark> tag if markdown processing was applied because
-                        // markdown processing is also responsible for sanitizing the input string
-                        if (AdaptiveCard.allowMarkForTextHighlighting) {
-                            let markStyle: string = "";
-                            let effectiveStyle = this.getEffectiveStyleDefinition();
-
-                            if (effectiveStyle.highlightBackgroundColor) {
-                                markStyle += "background-color: " + effectiveStyle.highlightBackgroundColor + ";";
-                            }
-
-                            if (effectiveStyle.highlightForegroundColor) {
-                                markStyle += "color: " + effectiveStyle.highlightForegroundColor + ";";
-                            }
-
-                            if (!Utils.isNullOrEmpty(markStyle)) {
-                                markStyle = 'style="' + markStyle + '"';
-                            }
-
-                            this._processedText = this._processedText.replace(/===/g, "<mark " + markStyle + ">").replace(/\/==/g, "</mark>");
-                        }
-                    } else {
-                        this._processedText = formattedText;
-                        this._treatAsPlainText = true;
-                    }
-                }
-                else {
-                    this._processedText = formattedText;
-                    this._treatAsPlainText = true;
-                }
-            }
-
-            if (this._treatAsPlainText) {
-                element.innerText = this._processedText;
-            }
-            else {
-                element.innerHTML = this._processedText;
-            }
-
-            if (element.firstElementChild instanceof HTMLElement) {
-                let firstElementChild = <HTMLElement>element.firstElementChild;
-                firstElementChild.style.marginTop = "0px";
-                firstElementChild.style.width = "100%";
-
-                if (!this.wrap) {
-                    firstElementChild.style.overflow = "hidden";
-                    firstElementChild.style.textOverflow = "ellipsis";
-                }
-            }
-
-            if (element.lastElementChild instanceof HTMLElement) {
-                (<HTMLElement>element.lastElementChild).style.marginBottom = "0px";
-            }
-
-            let anchors = element.getElementsByTagName("a");
-
-            for (let i = 0; i < anchors.length; i++) {
-                let anchor = <HTMLAnchorElement>anchors[i];
-                anchor.classList.add(this.hostConfig.makeCssClassName("ac-anchor"));
-                anchor.target = "_blank";
-                anchor.onclick = (e) => {
-                    if (raiseAnchorClickedEvent(this, e.target as HTMLAnchorElement)) {
-                        e.preventDefault();
-                    }
-                }
-            }
-
-            if (this.wrap) {
-                element.style.wordWrap = "break-word";
-
-                if (this.maxLines > 0) {
-                    element.style.maxHeight = (this._computedLineHeight * this.maxLines) + "px";
-                    element.style.overflow = "hidden";
-                }
-            }
-            else {
-                element.style.whiteSpace = "nowrap";
-                element.style.textOverflow = "ellipsis";
-            }
-
-            if (AdaptiveCard.useAdvancedTextBlockTruncation || AdaptiveCard.useAdvancedCardBottomTruncation) {
-                this._originalInnerHtml = element.innerHTML;
-            }
-
-            if (this.selectAction != null && hostConfig.supportsInteractivity) {
-                element.tabIndex = 0
-                element.setAttribute("role", "button");
-                element.setAttribute("aria-label", this.selectAction.title);
-                element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
-            }
-
-            return element;
-        }
-        else {
-            return null;
+    protected getFontSize(fontStyle: HostConfig.FontStyleDefinition): number {
+        switch (this.size) {
+            case Enums.TextSize.Small:
+                return fontStyle.fontSizes.small;
+            case Enums.TextSize.Medium:
+                return fontStyle.fontSizes.medium;
+            case Enums.TextSize.Large:
+                return fontStyle.fontSizes.large;
+            case Enums.TextSize.ExtraLarge:
+                return fontStyle.fontSizes.extraLarge;
+            default:
+                return fontStyle.fontSizes.default;
         }
     }
 
-    protected truncateOverflow(maxHeight: number): boolean {
-        if (maxHeight >= this._computedLineHeight) {
-            return this.truncateIfSupported(maxHeight);
-        }
-
-        return false;
-    }
-
-    protected undoOverflowTruncation() {
-        this.restoreOriginalContent();
-
-        if (AdaptiveCard.useAdvancedTextBlockTruncation && this.maxLines) {
-            var maxHeight = this._computedLineHeight * this.maxLines;
-            this.truncateIfSupported(maxHeight);
-        }
+    protected setText(value: string) {
+        this._text = value;
     }
 
     size: Enums.TextSize = Enums.TextSize.Default;
     weight: Enums.TextWeight = Enums.TextWeight.Default;
     color: Enums.TextColor = Enums.TextColor.Default;
     isSubtle: boolean = false;
-    wrap: boolean = false;
-    maxLines: number;
-    useMarkdown: boolean = true;
     style?: Enums.FontStyle = null;
 
     toJSON() {
@@ -973,8 +804,6 @@ export class TextBlock extends CardElement {
         Utils.setEnumProperty(Enums.TextColor, result, "color", this.color, Enums.TextColor.Default);
         Utils.setProperty(result, "text", this.text);
         Utils.setProperty(result, "isSubtle", this.isSubtle, false);
-        Utils.setProperty(result, "wrap", this.wrap, false);
-        Utils.setProperty(result, "maxLines", this.maxLines, 0);
         Utils.setEnumProperty(Enums.FontStyle, result, "style", this.style, Enums.FontStyle.Default);
 
         return result;
@@ -1022,33 +851,7 @@ export class TextBlock extends CardElement {
                 break;
         }
 
-        if (this.hostConfig.lineHeights) {
-            switch (this.size) {
-                case Enums.TextSize.Small:
-                    this._computedLineHeight = this.hostConfig.lineHeights.small;
-                    break;
-                case Enums.TextSize.Medium:
-                    this._computedLineHeight = this.hostConfig.lineHeights.medium;
-                    break;
-                case Enums.TextSize.Large:
-                    this._computedLineHeight = this.hostConfig.lineHeights.large;
-                    break;
-                case Enums.TextSize.ExtraLarge:
-                    this._computedLineHeight = this.hostConfig.lineHeights.extraLarge;
-                    break;
-                default:
-                    this._computedLineHeight = this.hostConfig.lineHeights.default;
-                    break;
-            }
-        }
-        else {
-            // Looks like 1.33 is the magic number to compute line-height
-            // from font size.
-            this._computedLineHeight = fontSize * 1.33;
-        }
-
         targetElement.style.fontSize = fontSize + "px";
-        targetElement.style.lineHeight = this._computedLineHeight + "px";
 
         let styleDefinition = this.getEffectiveStyleDefinition();
 
@@ -1139,8 +942,277 @@ export class TextBlock extends CardElement {
 
         this.color = Utils.getEnumValue(Enums.TextColor, json["color"], this.color);
         this.isSubtle = Utils.getBoolValue(json["isSubtle"], this.isSubtle);
-        this.wrap = Utils.getBoolValue(json["wrap"], this.wrap);
         this.style = Utils.getEnumValue(Enums.FontStyle, json["style"], this.style);
+    }
+
+    get text(): string {
+        return this._text;
+    }
+
+    set text(value: string) {
+        this.setText(value);
+    }
+
+    get selectAction(): Action {
+        return this._selectAction;
+    }
+
+    set selectAction(value: Action) {
+        this._selectAction = value;
+
+        if (this._selectAction) {
+            this._selectAction.setParent(this);
+        }
+    }
+}
+
+export class TextBlock extends BaseTextBlock {
+    private _computedLineHeight: number;
+    private _originalInnerHtml: string;
+    private _processedText: string = null;
+    private _treatAsPlainText: boolean = true;
+
+    private restoreOriginalContent() {
+        var maxHeight = this.maxLines
+            ? (this._computedLineHeight * this.maxLines) + 'px'
+            : null;
+
+        this.renderedElement.style.maxHeight = maxHeight;
+        this.renderedElement.innerHTML = this._originalInnerHtml;
+    }
+
+    private truncateIfSupported(maxHeight: number): boolean {
+        // For now, only truncate TextBlocks that contain just a single
+        // paragraph -- since the maxLines calculation doesn't take into
+        // account Markdown lists
+        var children = this.renderedElement.children;
+        var isTextOnly = !children.length;
+
+        var truncationSupported = isTextOnly || children.length == 1
+            && (<HTMLElement>children[0]).tagName.toLowerCase() == 'p';
+
+        if (truncationSupported) {
+            var element = isTextOnly
+                ? this.renderedElement
+                : <HTMLElement>children[0];
+
+            Utils.truncate(element, maxHeight, this._computedLineHeight);
+            return true;
+        }
+
+        return false;
+    }
+
+    protected serText(value: string) {
+        super.setText(value);
+
+        this._processedText = null;
+    }
+
+    protected getRenderedDomElementType(): string {
+        return "div";
+    }
+
+    protected internalRender(): HTMLElement {
+        this._processedText = null;
+
+        if (!Utils.isNullOrEmpty(this.text)) {
+            let hostConfig = this.hostConfig;
+
+            let element = document.createElement(this.getRenderedDomElementType());
+            element.classList.add(hostConfig.makeCssClassName("ac-textBlock"));
+            element.style.overflow = "hidden";
+
+            this.applyStylesTo(element);
+
+            if (this.selectAction) {
+                element.onclick = (e) => {
+                    this.selectAction.execute();
+
+                    e.cancelBubble = true;
+                }
+
+                if (hostConfig.supportsInteractivity) {
+                    element.tabIndex = 0
+                    element.setAttribute("role", "button");
+                    element.setAttribute("aria-label", this.selectAction.title);
+                    element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
+                }
+            }
+
+            if (!this._processedText) {
+                this._treatAsPlainText = true;
+
+                let formattedText = TextFormatters.formatText(this.lang, this.text);
+
+                if (this.useMarkdown) {
+                    if (AdaptiveCard.allowMarkForTextHighlighting) {
+                        formattedText = formattedText.replace(/<mark>/g, "===").replace(/<\/mark>/g, "/==");
+                    }
+
+                    let markdownProcessingResult = AdaptiveCard.applyMarkdown(formattedText);
+
+                    if (markdownProcessingResult.didProcess && markdownProcessingResult.outputHtml) {
+                        this._processedText = markdownProcessingResult.outputHtml;
+                        this._treatAsPlainText = false;
+
+                        // Only process <mark> tag if markdown processing was applied because
+                        // markdown processing is also responsible for sanitizing the input string
+                        if (AdaptiveCard.allowMarkForTextHighlighting) {
+                            let markStyle: string = "";
+                            let effectiveStyle = this.getEffectiveStyleDefinition();
+
+                            if (effectiveStyle.highlightBackgroundColor) {
+                                markStyle += "background-color: " + effectiveStyle.highlightBackgroundColor + ";";
+                            }
+
+                            if (effectiveStyle.highlightForegroundColor) {
+                                markStyle += "color: " + effectiveStyle.highlightForegroundColor + ";";
+                            }
+
+                            if (!Utils.isNullOrEmpty(markStyle)) {
+                                markStyle = 'style="' + markStyle + '"';
+                            }
+
+                            this._processedText = this._processedText.replace(/===/g, "<mark " + markStyle + ">").replace(/\/==/g, "</mark>");
+                        }
+                    } else {
+                        this._processedText = formattedText;
+                        this._treatAsPlainText = true;
+                    }
+                }
+                else {
+                    this._processedText = formattedText;
+                    this._treatAsPlainText = true;
+                }
+            }
+
+            if (this._treatAsPlainText) {
+                element.innerText = this._processedText;
+            }
+            else {
+                element.innerHTML = this._processedText;
+            }
+
+            if (element.firstElementChild instanceof HTMLElement) {
+                let firstElementChild = <HTMLElement>element.firstElementChild;
+                firstElementChild.style.marginTop = "0px";
+                firstElementChild.style.width = "100%";
+
+                if (!this.wrap) {
+                    firstElementChild.style.overflow = "hidden";
+                    firstElementChild.style.textOverflow = "ellipsis";
+                }
+            }
+
+            if (element.lastElementChild instanceof HTMLElement) {
+                (<HTMLElement>element.lastElementChild).style.marginBottom = "0px";
+            }
+
+            let anchors = element.getElementsByTagName("a");
+
+            for (let i = 0; i < anchors.length; i++) {
+                let anchor = <HTMLAnchorElement>anchors[i];
+                anchor.classList.add(hostConfig.makeCssClassName("ac-anchor"));
+                anchor.target = "_blank";
+                anchor.onclick = (e) => {
+                    if (raiseAnchorClickedEvent(this, e.target as HTMLAnchorElement)) {
+                        e.preventDefault();
+                    }
+                }
+            }
+
+            if (this.wrap) {
+                element.style.wordWrap = "break-word";
+
+                if (this.maxLines > 0) {
+                    element.style.maxHeight = (this._computedLineHeight * this.maxLines) + "px";
+                    element.style.overflow = "hidden";
+                }
+            }
+            else {
+                element.style.whiteSpace = "nowrap";
+                element.style.textOverflow = "ellipsis";
+            }
+
+            if (AdaptiveCard.useAdvancedTextBlockTruncation || AdaptiveCard.useAdvancedCardBottomTruncation) {
+                this._originalInnerHtml = element.innerHTML;
+            }
+
+            return element;
+        }
+        else {
+            return null;
+        }
+    }
+
+    protected truncateOverflow(maxHeight: number): boolean {
+        if (maxHeight >= this._computedLineHeight) {
+            return this.truncateIfSupported(maxHeight);
+        }
+
+        return false;
+    }
+
+    protected undoOverflowTruncation() {
+        this.restoreOriginalContent();
+
+        if (AdaptiveCard.useAdvancedTextBlockTruncation && this.maxLines) {
+            var maxHeight = this._computedLineHeight * this.maxLines;
+            this.truncateIfSupported(maxHeight);
+        }
+    }
+
+    wrap: boolean = false;
+    maxLines: number;
+    useMarkdown: boolean = true;
+
+    toJSON() {
+        let result = super.toJSON();
+
+        Utils.setProperty(result, "wrap", this.wrap, false);
+        Utils.setProperty(result, "maxLines", this.maxLines, 0);
+
+        return result;
+    }
+
+    applyStylesTo(targetElement: HTMLElement) {
+        super.applyStylesTo(targetElement);
+
+        let lineHeights = this.hostConfig.lineHeights;
+
+        if (lineHeights) {
+            switch (this.size) {
+                case Enums.TextSize.Small:
+                    this._computedLineHeight = lineHeights.small;
+                    break;
+                case Enums.TextSize.Medium:
+                    this._computedLineHeight = lineHeights.medium;
+                    break;
+                case Enums.TextSize.Large:
+                    this._computedLineHeight = lineHeights.large;
+                    break;
+                case Enums.TextSize.ExtraLarge:
+                    this._computedLineHeight = lineHeights.extraLarge;
+                    break;
+                default:
+                    this._computedLineHeight = lineHeights.default;
+                    break;
+            }
+        }
+        else {
+            // Looks like 1.33 is the magic number to compute line-height
+            // from font size.
+            this._computedLineHeight = this.getFontSize(this.hostConfig.getFontStyleDefinition(this.style)) * 1.33;
+        }
+
+        targetElement.style.lineHeight = this._computedLineHeight + "px";
+    }
+
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+        super.parse(json, errors);
+
+        this.wrap = Utils.getBoolValue(json["wrap"], this.wrap);
 
         if (typeof json["maxLines"] === "number") {
             this.maxLines = json["maxLines"];
@@ -1158,202 +1230,8 @@ export class TextBlock extends CardElement {
             // Reset the element's innerHTML in case the available room for
             // content has increased
             this.restoreOriginalContent();
-            var maxHeight = this._computedLineHeight * this.maxLines;
-            this.truncateIfSupported(maxHeight);
+            this.truncateIfSupported(this._computedLineHeight * this.maxLines);
         }
-    }
-
-    get text(): string {
-        return this._text;
-    }
-
-    set text(value: string) {
-        if (this._text != value) {
-            this._text = value;
-
-            this._processedText = null;
-        }
-    }
-
-    get selectAction(): Action {
-        return this._selectAction;
-    }
-
-    set selectAction(value: Action) {
-        this._selectAction = value;
-
-        if (this._selectAction) {
-            this._selectAction.setParent(this);
-        }
-    }
-}
-
-export abstract class Inline {
-    private _owner: Paragraph = null;
-
-    abstract parse(json: any, errors?: Array<HostConfig.IValidationError>);
-    abstract getJsonTypeName(): string;
-
-    get owner(): Paragraph {
-        return this._owner;
-    }
-}
-
-export class TextRun extends Inline {
-    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
-
-    }
-
-    getJsonTypeName(): string {
-        return "TextRun";
-    }
-}
-
-export class Paragraph {
-    private _owner: RichTextBlock = null;
-    private _inlines: Inline[] = [];
-
-    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
-        let jsonInlines = json["inlines"];
-
-        if (Array.isArray(jsonInlines)) {
-            for (let jsonInline of jsonInlines) {
-                let inlineType = jsonInline["type"];
-                let inline: Inline = null;
-
-                switch (inlineType) {
-                    case "TextRun":
-                        inline = new TextRun();
-
-                        break;
-                    default:
-                        throw new Error("Paragraph.parse: Unknown inline type: " + inlineType);
-                }
-
-                if (inline != null) {
-                    inline.parse(jsonInline, errors);
-
-                    this.addInline(inline);
-                }
-            }
-        }
-    }
-
-    indexOfInline(inline: Inline): number {
-        return this._inlines.indexOf(inline);
-    }
-
-    getInlineCount(): number {
-        return this._inlines.length;
-    }
-
-    getInlineAt(index: number): Inline {
-        if (index >= 0 && index < this.getInlineCount()) {
-            return this._inlines[index];
-        }
-        else {
-            throw new Error("Paragraph.getInlineAt: index out of range.");
-        }
-    }
-
-    addInline(inline: Inline) {
-        if (inline.owner != null) {
-            if (inline.owner != this) {
-                throw new Error("Paragraph.addInline: specified inline already belongs to another Paragraph.");
-            }
-        }
-        else {
-            this._inlines.push(inline);
-
-            inline["_owner"] = this;
-        }
-    }
-
-    removeInline(inline: Inline): boolean {
-        let index = this.indexOfInline(inline);
-
-        if (index >= 0) {
-            this._inlines.splice(index, 1);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    get owner(): RichTextBlock {
-        return this._owner;
-    }
-}
-
-export class RichTextBlock extends CardElement {
-    private _paragraphs: Paragraph[] = [];
-
-    protected internalRender(): HTMLElement {
-        throw new Error("Not implemented");
-    }
-
-    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
-        super.parse(json, errors);
-
-        this._paragraphs = [];
-
-        let jsonParagraphs = json["paragraphs"];
-
-        if (Array.isArray(jsonParagraphs)) {
-            for (let jsonParagraph of jsonParagraphs) {
-                let paragraph = new Paragraph();
-                paragraph.parse(jsonParagraph, errors);
-
-                this.addParagraph(paragraph);
-            }
-        }
-    }
-
-    indexOfParagraph(paragraph: Paragraph): number {
-        return this._paragraphs.indexOf(paragraph);
-    }
-
-    getJsonTypeName(): string {
-        return "RichTextBlock";
-    }
-
-    getParagraphCount(): number {
-        return this._paragraphs.length;
-    }
-
-    getParagraphAt(index: number): Paragraph {
-        if (index >= 0 && index < this.getParagraphCount()) {
-            return this._paragraphs[index];
-        }
-        else {
-            throw new Error("getParagraphAt: index out of range.");
-        }
-    }
-
-    addParagraph(paragraph: Paragraph) {
-        if (paragraph.owner != null) {
-            if (paragraph.owner != this) {
-                throw new Error("RichTextBlock.addParagraph: specified paragraph already belongs to another RichTextBlock.");
-            }
-        }
-        else {
-            this._paragraphs.push(paragraph);
-
-            paragraph["_owner"] = this;
-        }
-    }
-
-    removeParagraph(paragraph: Paragraph): boolean {
-        let index = this.indexOfParagraph(paragraph);
-
-        if (index >= 0) {
-            this._paragraphs.splice(index, 1);
-
-            return true;
-        }
-
-        return false;
     }
 }
 
@@ -1373,6 +1251,156 @@ class Label extends TextBlock {
     }
 
     forElementId: string;
+}
+
+export class TextRun extends BaseTextBlock {
+    protected internalRender(): HTMLElement {
+        if (!Utils.isNullOrEmpty(this.text)) {
+            let hostConfig = this.hostConfig;
+            let element: HTMLElement = null;
+
+            if (this.selectAction && hostConfig.supportsInteractivity) {
+                element = document.createElement("a");
+                element.classList.add(hostConfig.makeCssClassName("ac-anchor"));
+                (<HTMLAnchorElement>element).target = "_blank";
+                element.onclick = (e) => {
+                    if (raiseAnchorClickedEvent(this, e.target as HTMLAnchorElement)) {
+                        e.preventDefault();
+                    }
+                }
+            }
+            else {
+                element = document.createElement("span");
+                element.classList.add(hostConfig.makeCssClassName("ac-textRun"));
+            }
+
+            if (element != null) {
+                this.applyStylesTo(element);
+
+                element.innerText = this.text;
+            }
+
+            return element;
+        }
+        else {
+            return null;
+        }
+    }
+
+    toJSON() {
+        let result = super.toJSON();
+
+        if (this.selectAction) {
+            Utils.setProperty(result, "selectAction", this.selectAction.toJSON());
+        }
+    
+        return result;
+    }
+
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+        super.parse(json, errors);
+
+        this.selectAction = createActionInstance(
+            this,
+            json["selectAction"],
+            errors);
+    }
+    
+    getJsonTypeName(): string {
+        return "TextRun";
+    }
+
+    get isStandalone(): boolean {
+        return false;
+    }
+
+    get isInline(): boolean {
+        return true;
+    }
+}
+
+export class RichTextBlock extends CardElement {
+    private _inlines: CardElement[] = [];
+
+    private internalAddInline(inline: CardElement, forceAdd: boolean = false) {
+        if (!inline.isInline) {
+            throw new Error("RichTextBlock.addInline: the specified card element cannot be used as a RichTextBlock inline.");
+        }
+
+        let doAdd: boolean = inline.parent == null || forceAdd;
+
+        if (!doAdd && inline.parent != this) {
+            throw new Error("RichTextBlock.addInline: the specified inline already belongs to another RichTextBlock.");
+        }
+        else {
+            inline.setParent(this);
+
+            this._inlines.push(inline);
+        }
+    }
+
+    protected internalRender(): HTMLElement {
+        if (this._inlines.length > 0) {
+            let element = document.createElement("div");
+            element.className = this.hostConfig.makeCssClassName("ac-richTextBlock");
+
+            for (let inline of this._inlines) {
+                element.appendChild(inline.render());
+            }
+
+            return element;
+        }
+        else {
+            return null;
+        }
+    }
+
+    parse(json: any, errors?: Array<HostConfig.IValidationError>) {
+        super.parse(json, errors);
+
+        this._inlines = [];
+
+        if (Array.isArray(json["inlines"])) {
+            for (let jsonInline of json["inlines"]) {
+                let inline: CardElement;
+
+                if (typeof jsonInline === "string") {
+                    let textRun = new TextRun();
+                    textRun.text = jsonInline;
+
+                    inline = textRun;
+                }
+                else {
+                    inline = createElementInstance(this, jsonInline, errors);
+                }
+
+                if (inline) {
+                    this.internalAddInline(inline, true);
+                }
+            }
+        }
+    }
+
+    getJsonTypeName(): string {
+        return "RichTextBlock";
+    }
+
+    addInline(inline: CardElement) {
+        this.internalAddInline(inline);
+    }
+
+    removeInline(inline: CardElement): boolean {
+        let index = this._inlines.indexOf(inline);
+
+        if (index >= 0) {
+            this._inlines[index].setParent(null);
+            this._inlines.splice(index, 1);
+
+            return true;
+        }
+
+        return false;
+    }
 }
 
 export class Fact {
@@ -6019,6 +6047,8 @@ export class ElementTypeRegistry extends TypeRegistry<CardElement> {
 
         this.registerType("Container", () => { return new Container(); });
         this.registerType("TextBlock", () => { return new TextBlock(); });
+        this.registerType("RichTextBlock", () => { return new RichTextBlock(); });
+        this.registerType("TextRun", () => { return new TextRun(); });
         this.registerType("Image", () => { return new Image(); });
         this.registerType("ImageSet", () => { return new ImageSet(); });
         this.registerType("Media", () => { return new Media(); });
