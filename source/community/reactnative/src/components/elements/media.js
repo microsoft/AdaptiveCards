@@ -26,7 +26,7 @@ export class Media extends React.Component {
     constructor(props) {
         super(props);
         this.payload = props.json;
-        this.sources = this.getMediaSources(this.payload.sources)
+        this.sources = this.getMediaSources();
         this.state = {
             currentSourceIndex: 0,
             onLoad: false,
@@ -46,11 +46,11 @@ export class Media extends React.Component {
 
     /**
      * @description Return the MediaSources from the payload 
-     * @param {Array} sources - sources from the payload
-     * @returns {Array} sources from the payload
+     * @returns {Array} Updated sources from the payload
      */
-    getMediaSources = (sources) => {
-        if (this.payload.sources && this.payload.sources.length > 0) {
+    getMediaSources = () => {
+        let sources = this.payload.sources;
+        if (sources && sources.length > 0) {
             sources.forEach(source => {
                 this.addUriAttribute(source);
                 //removing the source if its uri is empty
@@ -78,17 +78,16 @@ export class Media extends React.Component {
     }
 
     /**
-     * @description Error handler for the video component 
-     * @param {object} onParseError - parse error
+     * @description Error handler for the video component
      */
-    videoError = (onParseError) => {
+    videoError = () => {
         if (this.state.currentSourceIndex < (this.sources.length - 1)) {
             this.setState({
                 currentSourceIndex: this.state.currentSourceIndex + 1
             })
         } else {
             let error = { "error": Enums.ValidationError.InvalidPropertyValue, "message": `Not able to play the source` };
-            onParseError(error);
+            this.context.onParseError(error);
         }
     }
 
@@ -113,12 +112,12 @@ export class Media extends React.Component {
                             controls={true}
                             id={this.payload.id ? this.payload.id : "video"}
                             paused={true}
-                            onError={() => { this.videoError(this.context.onParseError) }}
+                            onError={this.videoError}
                             onLoad={this.videoLoadSuccess}
                             style={styles.nativeVideoControls}
                         />
                     }
-                    {(!this.state.onLoad && this.payload.poster) && <Image source={{ uri: this.payload.poster }} resizeMode={Constants.Contain} style={styles.nativeVideoControls}></Image>}
+                    {(!this.state.onLoad && this.payload.poster) && <Image source={{ uri: this.payload.poster }} resizeMode="contain" style={styles.nativeVideoControls}></Image>}
                 </View>
             </ElementWrapper>
         );
