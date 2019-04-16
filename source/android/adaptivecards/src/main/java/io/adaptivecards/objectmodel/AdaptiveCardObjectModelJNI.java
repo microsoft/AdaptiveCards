@@ -402,7 +402,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void BaseElement_SetFallbackContent(long jarg1, BaseElement jarg1_, long jarg2, BaseElement jarg2_);
   public final static native boolean BaseElement_MeetsRequirements(long jarg1, BaseElement jarg1_, long jarg2, FeatureRegistration jarg2_);
   public final static native long BaseElement_GetRequirements(long jarg1, BaseElement jarg1_);
-  public final static native void BaseElement_SetRequirements(long jarg1, BaseElement jarg1_, long jarg2);
   public final static native void BaseElement_GetResourceInformation(long jarg1, BaseElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native void BaseElement_GetResourceInformationSwigExplicitBaseElement(long jarg1, BaseElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native void BaseElement_PopulateKnownPropertiesSet(long jarg1, BaseElement jarg1_);
