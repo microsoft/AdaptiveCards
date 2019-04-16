@@ -267,6 +267,11 @@ namespace AdaptiveCards.Rendering.Html
                 ApplyBackgroundImage(card.BackgroundImage, uiCard, context);
             }
 
+            if (card.PixelMinHeight > 0)
+            {
+                uiCard.Style("min-height", card.PixelMinHeight + "px");
+            }
+
             // Reset the parent style
             context.RenderArgs.ParentStyle = AdaptiveContainerStyle.Default;
 
@@ -326,6 +331,14 @@ namespace AdaptiveCards.Rendering.Html
                         if (uiContainer.Children.Any())
                         {
                             AddSeparator(uiContainer, cardElement, context);
+                        }
+
+                        if (cardElement is AdaptiveCollectionElement collectionElement)
+                        {
+                            if (collectionElement.PixelMinHeight > 0)
+                            {
+                                uiElement.Style("min-height", collectionElement.PixelMinHeight + "px");
+                            }
                         }
 
                         uiContainer.Children.Add(uiElement);
@@ -499,6 +512,11 @@ namespace AdaptiveCards.Rendering.Html
 
             var parentRenderArgs = context.RenderArgs;
             var elementRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
+
+            if (column.PixelMinHeight > 0)
+            {
+                uiColumn.Style("min-height", column.PixelMinHeight + "px");
+            }
 
             if (!column.IsVisible)
             {
@@ -998,7 +1016,7 @@ namespace AdaptiveCards.Rendering.Html
                 .Attr("name", image.Id)
                 .Style("display", "block");
 
-            if (image.Height == AdaptiveHeight.Auto)
+            if (image.Height != AdaptiveHeight.Stretch)
             {
                 uiDiv.Style("box-sizing", "border-box");
             }
@@ -1640,7 +1658,10 @@ namespace AdaptiveCards.Rendering.Html
             }
             else
             {
-                uiTextInput.Style("flex", "1 1 auto");
+                if (!input.IsMultiline)
+                {
+                    uiTextInput.Style("flex", "1 1 auto");
+                }
             }
 
             if (!string.IsNullOrEmpty(input.Placeholder))
