@@ -17,7 +17,12 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Dis is a textblock",
+							"text": "This columnSet bleed",
+							"wrap": true
+						},
+						{
+							"type": "TextBlock",
+							"text": "This column should bleed to the left",
 							"wrap": true
 						},
 						{
@@ -27,7 +32,8 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"text": "Dis is a textblock"
+									"wrap": true,
+									"text": "This container should bleed to both sides"
 								}
 							]
 						}
@@ -41,7 +47,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Dis is a textblock",
+							"text": "This column should not bleed",
 							"wrap": true
 						},
 						{
@@ -51,7 +57,8 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"text": "Dis is a textblock"
+									"wrap": true
+,									"text": "This container should bleed to both sides"
 								}
 							]
 						}
@@ -65,7 +72,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Dis is a textblock",
+							"text": "This column should bleed to the right",
 							"wrap": true
 						},
 						{
@@ -75,7 +82,8 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"text": "Dis is a textblock"
+									"wrap": true,
+									"text": "This container should bleed to both sides"
 								}
 							]
 						}
@@ -96,7 +104,12 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Dis is a textblock",
+							"text": "This columnSet should bleed",
+							"wrap": true
+						},
+						{
+							"type": "TextBlock",
+							"text": "This column has the same style, it shouldn't bleed",
 							"wrap": true
 						},
 						{
@@ -106,7 +119,8 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"text": "Dis is a textblock"
+									"wrap": true,
+									"text": "This container should bleed to the left"
 								}
 							]
 						}
@@ -120,7 +134,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Dis is a textblock",
+							"text": "This column should not bleed",
 							"wrap": true
 						},
 						{
@@ -130,7 +144,8 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"text": "Dis is a textblock"
+									"wrap": true,
+									"text": "This container should bleed to the edge of the column"
 								}
 							]
 						}
@@ -144,7 +159,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Dis is a textblock",
+							"text": "This column has the same style, it shouldn't bleed",
 							"wrap": true
 						},
 						{
@@ -154,7 +169,8 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"text": "Dis is a textblock"
+									"wrap": true,
+									"text": "This container should bleed to the right"
 								}
 							]
 						}
@@ -162,8 +178,6 @@
 				}
 			]
 		},
-
-
 		{
 			"type": "ColumnSet",
 			"style": "emphasis",
@@ -177,7 +191,12 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Dis is a textblock",
+							"text": "This columnSet should bleed",
+							"wrap": true
+						},
+						{
+							"type": "TextBlock",
+							"text": "This column has the same style it shouldn't bleed",
 							"wrap": true
 						},
 						{
@@ -187,7 +206,8 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"text": "Dis is a textblock"
+									"wrap": true,
+									"text": "This container has the same style it shouldn't bleed"
 								},
 								{
 									"type": "Container",
@@ -196,7 +216,8 @@
 									"items": [
 										{
 											"type": "TextBlock",
-											"text": "Dis is a textblock"
+											"wrap": true,
+											"text": "This container should bleed to the left"
 										}
 									]
 								}
@@ -212,7 +233,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Dis is a textblock",
+							"text": "This column shouldn't bleed",
 							"wrap": true
 						},
 						{
@@ -222,7 +243,8 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"text": "Dis is a textblock"
+									"wrap": true,
+									"text": "This container should bleed"
 								},
 								{
 									"type": "Container",
@@ -231,7 +253,8 @@
 									"items": [
 										{
 											"type": "TextBlock",
-											"text": "Dis is a textblock"
+											"wrap": true,
+											"text": "This container should bleed"
 										}
 									]
 								}
@@ -247,7 +270,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Dis is a textblock",
+							"text": "This column shouldn't bleed",
 							"wrap": true
 						},
 						{
@@ -257,7 +280,8 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"text": "Dis is a textblock"
+									"wrap": true,
+									"text": "This column should bleed to the right"
 								}
 							]
 						}
@@ -265,8 +289,6 @@
 				}
 			]
 		},
-
-
 		{
 			"type": "Container",
 			"style": "emphasis",
@@ -274,7 +296,8 @@
 			"items": [
 				{
 					"type": "TextBlock",
-					"text": "Dis is a textblock"
+					"wrap": true,
+					"text": "This container should bleed"
 				},
 				{
 					"type": "Container",
@@ -283,7 +306,8 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Dis is a textblock"
+							"wrap": true,
+							"text": "This container should bleed"
 						}
 					]
 				}
@@ -295,7 +319,8 @@
 			"items": [
 				{
 					"type": "TextBlock",
-					"text": "Dis is a textblock"
+					"wrap": true,
+					"text": "This container doesn't want to bleed"
 				},
 				{
 					"type": "Container",
@@ -304,7 +329,8 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Dis is a textblock"
+							"wrap": true,
+							"text": "This container should bleed to the container edges"
 						}
 					]
 				}
