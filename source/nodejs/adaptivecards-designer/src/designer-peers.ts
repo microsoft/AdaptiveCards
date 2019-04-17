@@ -2372,14 +2372,14 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
             }
         }
 
-        var style = addLabelAndInput(card, "Style:", Adaptive.ChoiceSetInput);
-        style.input.placeholder = "Default";
-        style.input.isCompact = true;
-        style.input.choices.push(new Adaptive.Choice("Default", Adaptive.FontStyle.Default.toString()));
-        style.input.choices.push(new Adaptive.Choice("Monospace", Adaptive.FontStyle.Monospace.toString()));
-        style.input.defaultValue = this.cardElement.style ? this.cardElement.style.toString() : "Default";
-        style.input.onValueChanged = () => {
-            this.cardElement.style = <Adaptive.FontStyle>parseInt(style.input.value);
+        var fontFamily = addLabelAndInput(card, "Font family:", Adaptive.ChoiceSetInput);
+        fontFamily.input.placeholder = "Default";
+        fontFamily.input.isCompact = true;
+        fontFamily.input.choices.push(new Adaptive.Choice("Default", Adaptive.FontFamily.Default.toString()));
+        fontFamily.input.choices.push(new Adaptive.Choice("Monospace", Adaptive.FontFamily.Monospace.toString()));
+        fontFamily.input.defaultValue = this.cardElement.fontFamily ? this.cardElement.fontFamily.toString() : "Default";
+        fontFamily.input.onValueChanged = () => {
+            this.cardElement.fontFamily = <Adaptive.FontFamily>parseInt(fontFamily.input.value);
 
             this.changed(false);
         }

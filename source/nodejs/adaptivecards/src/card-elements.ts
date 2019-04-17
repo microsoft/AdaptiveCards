@@ -817,7 +817,7 @@ export abstract class BaseTextBlock extends CardElement {
     weight: Enums.TextWeight = Enums.TextWeight.Default;
     color: Enums.TextColor = Enums.TextColor.Default;
     isSubtle: boolean = false;
-    style?: Enums.FontStyle = null;
+    fontFamily?: Enums.FontFamily = null;
 
     asString(): string {
         return this.text;
@@ -831,13 +831,13 @@ export abstract class BaseTextBlock extends CardElement {
         Utils.setEnumProperty(Enums.TextColor, result, "color", this.color, Enums.TextColor.Default);
         Utils.setProperty(result, "text", this.text);
         Utils.setProperty(result, "isSubtle", this.isSubtle, false);
-        Utils.setEnumProperty(Enums.FontStyle, result, "style", this.style, Enums.FontStyle.Default);
+        Utils.setEnumProperty(Enums.FontFamily, result, "fontFamily", this.fontFamily, Enums.FontFamily.Default);
 
         return result;
     }
 
     applyStylesTo(targetElement: HTMLElement) {
-        let fontStyle = this.hostConfig.getFontStyleDefinition(this.style);
+        let fontStyle = this.hostConfig.getFontStyleDefinition(this.fontFamily);
 
         if (fontStyle.fontFamily) {
             targetElement.style.fontFamily = fontStyle.fontFamily;
@@ -927,7 +927,7 @@ export abstract class BaseTextBlock extends CardElement {
 
         this.color = Utils.getEnumValue(Enums.TextColor, json["color"], this.color);
         this.isSubtle = Utils.getBoolValue(json["isSubtle"], this.isSubtle);
-        this.style = Utils.getEnumValue(Enums.FontStyle, json["style"], this.style);
+        this.fontFamily = Utils.getEnumValue(Enums.FontFamily, json["fontFamily"], this.fontFamily);
     }
 
     get effectiveColor(): Enums.TextColor {
@@ -1207,7 +1207,7 @@ export class TextBlock extends BaseTextBlock {
         else {
             // Looks like 1.33 is the magic number to compute line-height
             // from font size.
-            this._computedLineHeight = this.getFontSize(this.hostConfig.getFontStyleDefinition(this.style)) * 1.33;
+            this._computedLineHeight = this.getFontSize(this.hostConfig.getFontStyleDefinition(this.fontFamily)) * 1.33;
         }
 
         targetElement.style.lineHeight = this._computedLineHeight + "px";

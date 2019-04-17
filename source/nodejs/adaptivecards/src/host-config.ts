@@ -593,11 +593,11 @@ export class FontStyleSet {
         }
     }
 
-    getStyleDefinition(style: Enums.FontStyle): FontStyleDefinition {
+    getStyleDefinition(style: Enums.FontFamily): FontStyleDefinition {
         switch (style) {
-            case Enums.FontStyle.Monospace:
+            case Enums.FontFamily.Monospace:
                 return this.monospace;
-            case Enums.FontStyle.Default:
+            case Enums.FontFamily.Default:
             default:
                 return this.default;
         }
@@ -697,12 +697,12 @@ export class HostConfig {
         }
     }
 
-    getFontStyleDefinition(style?: Enums.FontStyle): FontStyleDefinition {
+    getFontStyleDefinition(style?: Enums.FontFamily): FontStyleDefinition {
         if (this.fontStyles) {
             return this.fontStyles.getStyleDefinition(style);
         }
         else {
-            return style == Enums.FontStyle.Monospace ? FontStyleDefinition.monospace : this._legacyFontStyle;
+            return style == Enums.FontFamily.Monospace ? FontStyleDefinition.monospace : this._legacyFontStyle;
         }
     }
 
