@@ -67,8 +67,8 @@ HRESULT SetHorizontalAlignment(TAdaptiveType* adaptiveTextBlock, TXamlTextBlockT
     return S_OK;
 }
 
-HRESULT SetStrikethrough(ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock);
-HRESULT SetStrikethrough(ABI::Windows::UI::Xaml::Documents::ITextElement* textBlock);
+HRESULT SetStrikethrough(_In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock);
+HRESULT SetStrikethrough(_In_ ABI::Windows::UI::Xaml::Documents::ITextElement* textBlock);
 
 template<typename TXamlTextBlockType>
 HRESULT StyleTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* adaptiveTextElement,

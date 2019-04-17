@@ -1535,8 +1535,8 @@ AdaptiveSharedNamespace::FallbackType MapUwpFallbackTypeToShared(const ABI::Adap
     }
 }
 
-HRESULT CopyTextElement(ABI::AdaptiveNamespace::IAdaptiveTextElement* textElement,
-                        ABI::AdaptiveNamespace::IAdaptiveTextElement** copiedTextElement)
+HRESULT CopyTextElement(_In_ ABI::AdaptiveNamespace::IAdaptiveTextElement* textElement,
+                        _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveTextElement** copiedTextElement)
 {
 
     ComPtr<AdaptiveNamespace::AdaptiveTextElement> localCopiedTextElement;

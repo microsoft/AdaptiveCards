@@ -52,7 +52,7 @@ HRESULT StyleXamlTextBlockProperties(_In_ ABI::AdaptiveNamespace::IAdaptiveTextB
     return S_OK;
 }
 
-HRESULT SetStrikethrough(ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock)
+HRESULT SetStrikethrough(_In_ ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock)
 {
     ComPtr<ITextBlock> localTextBlock(textBlock);
     ComPtr<ITextBlock5> textBlock5;
@@ -61,7 +61,7 @@ HRESULT SetStrikethrough(ABI::Windows::UI::Xaml::Controls::ITextBlock* textBlock
     return S_OK;
 }
 
-HRESULT SetStrikethrough(ABI::Windows::UI::Xaml::Documents::ITextElement* textElement)
+HRESULT SetStrikethrough(_In_ ABI::Windows::UI::Xaml::Documents::ITextElement* textElement)
 {
     ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement> localTextElement(textElement);
     ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement4> textElement4;
