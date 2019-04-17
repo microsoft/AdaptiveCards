@@ -9,6 +9,7 @@
 #import "ACRViewPrivate.h"
 #import "BaseCardElement.h"
 #import "CollectionTypeElement.h"
+#import "ACRErrors.h"
 
 using namespace AdaptiveCards;
 
@@ -23,3 +24,20 @@ void renderBackgroundImage(const BackgroundImage *backgroundImageProperties, UII
 void applyBackgroundImageConstraints(const BackgroundImage *backgroundImageProperties, UIImageView *imageView, UIImage *img);
 
 ObserverActionBlock generateBackgroundImageObserverAction(std::shared_ptr<BackgroundImage> backgroundImageProperties, ACRView *observer, std::shared_ptr<BaseCardElement> const &context);
+
+void handleFallbackException(ACOFallbackException *exception, 
+                             UIView<ACRIContentHoldingView> *view,
+                             ACRView *rootView, 
+                             NSMutableArray *inputs,
+                             std::shared_ptr<BaseCardElement> const &elem,
+                             ACOHostConfig *config);
+
+void handleActionFallbackException(ACOFallbackException *exception,
+                                   UIView<ACRIContentHoldingView> *view,
+                                   ACRView *rootView,
+                                   NSMutableArray *inputs,
+                                   ACOBaseActionElement *acoElem,
+                                   ACOHostConfig *config,
+                                   UIView<ACRIContentHoldingView> *actionSet);
+
+void removeLastViewFromCollectionView(const CardElementType elemType, UIView<ACRIContentHoldingView> *view);
